@@ -35,6 +35,7 @@
  */
 
 import { rechercherTrancheEffectif } from "@/features/dossier-client/recherche-entreprises";
+import { sirenDuClient } from "@/lib/siret";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 
 /** Code INSEE → borne basse de la tranche et libellé officiel. */
@@ -113,9 +114,11 @@ export interface BaseEffectif {
   client: {
     findUnique(args: {
       where: { id: string };
-      select: { siren: true; type: true; effectif: true; effectifSource: true };
+      select: { siren: true; siret: true; type: true; effectif: true; effectifSource: true };
     }): Promise<{
       siren: string | null;
+      /** Lot A9 : une fiche qui n'a que son SIRET est relevée sur son SIREN. */
+      siret?: string | null;
       type: string;
       effectif: number | null;
       effectifSource: "saisie" | "insee" | null;
@@ -151,14 +154,16 @@ export async function rafraichirEffectifInsee(
 ): Promise<ResultatReleveEffectif> {
   const fiche = await db.client.findUnique({
     where: { id: clientId },
-    select: { siren: true, type: true, effectif: true, effectifSource: true },
+    select: { siren: true, siret: true, type: true, effectif: true, effectifSource: true },
   });
-  if (fiche === null || fiche.type === "particulier" || !fiche.siren) {
+  // Lot A9 : le SIREN se lit aussi dans le SIRET (règle unique `sirenDuClient`).
+  const siren = fiche === null ? null : sirenDuClient(fiche);
+  if (fiche === null || fiche.type === "particulier" || siren === null) {
     return { statut: "sans_siren" };
   }
   if (!effectifOuvertAuReleveInsee(fiche)) return { statut: "saisie_conservee" };
 
-  const releve = await rechercherTrancheEffectif(fiche.siren, {
+  const releve = await rechercherTrancheEffectif(siren, {
     ...(options.fetch !== undefined ? { fetch: options.fetch } : {}),
   });
   if (!releve.ok) return { statut: "indisponible" };

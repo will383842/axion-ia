@@ -8,6 +8,9 @@
  * le bouton (rien à rafraîchir : la saisie prime) ; l'annuaire n'est JAMAIS
  * interrogé au rendu.
  * Contre-témoin : un particulier n'a ni bloc OPCO ni effectif.
+ *
+ * Lot A9 : l'effectif ne se lit plus qu'une fois, dans la tuile « Effectif »
+ * du bloc « Branche et OPCO » ; le bouton INSEE et son message y sont aussi.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -93,6 +96,12 @@ beforeEach(() => {
   );
 });
 
+/** La tuile « Effectif » du bloc « Branche et OPCO », découpée dans le rendu. */
+function tuileEffectif(html: string): string {
+  const debut = html.search(/<p[^>]*>Effectif<\/p>/);
+  return debut < 0 ? "" : html.slice(debut, html.indexOf(">OPCO<", debut));
+}
+
 describe("la fiche dit ce que l'OPCO a déjà pris en charge", () => {
   it("année en cours et précédente, pour l'OPCO typé, en euros", async () => {
     const html = await rendreFiche(Page as never);
@@ -106,16 +115,17 @@ describe("la fiche dit ce que l'OPCO a déjà pris en charge", () => {
 
   it("effectif INSEE : provenance, date, et bouton de rafraîchissement — sans appel au rendu", async () => {
     const html = await rendreFiche(Page as never);
-    expect(html).toContain("10 salariés");
-    expect(html).toContain("Relevé INSEE (borne basse de la tranche)");
-    expect(html).toContain("Rafraîchir depuis l&#x27;INSEE");
+    const tuile = tuileEffectif(html);
+    expect(tuile).toContain(">10<");
+    expect(tuile).toContain("INSEE (borne basse de la tranche) · ");
+    expect(tuile).toContain("Rafraîchir depuis l&#x27;INSEE");
     expect(d.annuaire).not.toHaveBeenCalled();
   });
 
   it("effectif SAISI : provenance « saisi », pas de bouton (la saisie prime)", async () => {
     d.fiche = { ...d.fiche, effectifSource: "saisie" };
     const html = await rendreFiche(Page as never);
-    expect(html).toContain("Saisi en console");
+    expect(tuileEffectif(html)).toContain("Saisi · ");
     expect(html).not.toContain("Rafraîchir depuis l&#x27;INSEE");
   });
 
@@ -130,6 +140,6 @@ describe("la fiche dit ce que l'OPCO a déjà pris en charge", () => {
     d.fiche = { ...d.fiche, type: "particulier" };
     const html = await rendreFiche(Page as never);
     expect(html).not.toContain("Déjà pris en charge par l");
-    expect(html).not.toContain('data-champ="effectif"');
+    expect(html).not.toMatch(/<p[^>]*>Effectif<\/p>/);
   });
 });

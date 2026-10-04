@@ -1353,6 +1353,13 @@ jobs:
       - name: File de sortie Axion Partners (Postgres réel)
         run: pnpm test:integration tests/integration/partners-sync
 
+      # Lot A9 (2026-10-04) — la migration `siren_deduit_du_siret` jouée telle
+      # quelle sur une table temporaire : elle ne recopie le SIREN que d'un SIRET
+      # valide (relecture A09 : `00000000000000` donnait `000000000`). Le témoin
+      # statique lit le fichier ; seul un vrai Postgres prouve ce qu'il écrit.
+      - name: SIREN déduit du SIRET (Postgres réel)
+        run: pnpm test:integration tests/integration/siren-deduit-du-siret
+
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #
       # 🔴 Pourquoi ici, et pas dans un job à part : Gate D est le SEUL endroit

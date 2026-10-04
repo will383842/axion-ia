@@ -91,6 +91,8 @@ export function ClientEditForm({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
+  // Lot A9 : SIREN en base conservé parce que le SIRET saisi le contredit.
+  const [avertissement, setAvertissement] = useState<string | null>(null);
 
   const [v, setV] = useState<ClientEditValues>(initial);
   const [flags, setFlags] = useState<ClientEditFlags>(initialFlags);
@@ -161,6 +163,7 @@ export function ClientEditForm({
         setError(result.error);
       } else {
         setOk(true);
+        setAvertissement(result.data.avertissement ?? null);
         router.refresh();
       }
     });
@@ -360,6 +363,14 @@ export function ClientEditForm({
           className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
           Fiche enregistrée.
+        </p>
+      )}
+      {ok && avertissement !== null && (
+        <p
+          role="status"
+          className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+        >
+          {avertissement}
         </p>
       )}
 

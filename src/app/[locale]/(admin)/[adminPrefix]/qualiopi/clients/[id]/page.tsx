@@ -47,12 +47,7 @@ import {
   calculerEncoursDuCents,
   resteDuNetCents,
 } from "@/server/qualiopi/crm/clients";
-import {
-  nomOpcoDuClient,
-  opcoDuClient,
-  referenceOpcoDuClient,
-  OPCO_LABELS,
-} from "@/server/qualiopi/financements/opco-referentiel";
+import { opcoDuClient, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   anneeParis,
   consommationOpcoParAnnee,
@@ -63,6 +58,7 @@ import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco
 import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { AVERTISSEMENT_SIREN_CONTRAIRE, sirenContreditLeSiret, sirenDuClient } from "@/lib/siret";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { gardePage } from "@/server/auth/garde-page";
@@ -330,7 +326,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande
   // (lien « Chercher le SIREN »), côté serveur, 3 s au plus. Aucun JavaScript
   // dans le navigateur : la console est au bord de son cliquet de poids.
-  const sirenACompleter = client.type === "entreprise" && !client.siren;
+  // Lot A9 : le SIREN se lit aussi dans le SIRET (règle unique `sirenDuClient`).
+  const sirenLu = estEntreprise ? sirenDuClient(client) : null;
+  const sirenContraire = estEntreprise && sirenContreditLeSiret(client);
+  const sirenACompleter = estEntreprise && sirenLu === null;
   const annuaire: ResultatAnnuaire | null =
     sirenACompleter && acces.peutEcrire && sp.annuaire === "1"
       ? await rechercherSiren(client.raisonSociale, client.adresseVille ?? null)
@@ -426,9 +425,6 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     .filter((part) => part !== null && part !== undefined && part !== "")
     .join(", ");
   const adresse = adresseStructuree !== "" ? adresseStructuree : (client.adresse ?? null);
-  const contactLigne = [client.contactNom, client.contactEmail, client.contactTelephone]
-    .filter(Boolean)
-    .join(" · ");
   const nbEmailsAValider = client._count.emailsEnAttente;
 
   const infoLabelCls =
@@ -441,6 +437,34 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
   const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
   const sectionCls = "mb-[var(--space-admin-8)]";
+  const blocCls =
+    "min-w-0 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
+  const blocTitreCls =
+    "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+
+  // Adresse et pénalités : au bloc Société d'une entreprise, au bloc Contact
+  // d'un particulier (lot A9).
+  const adresseEtPenalites = (
+    <>
+      <div className="sm:col-span-2">
+        <p className={infoLabelCls}>Adresse</p>
+        <p className={infoValueCls}>{adresse ?? "—"}</p>
+      </div>
+      {/* Pénalités de retard : APPLICATION opt-in, désactivée par défaut.
+          Affiché sur la fiche parce que c'est une décision commerciale qu'on
+          doit pouvoir constater sans ouvrir le formulaire d'édition.
+          ⚠️ Ne dit RIEN des mentions légales, imprimées sans condition sur
+          toute facture (art. L.441-9 / L.441-10 / D.441-5). */}
+      <div className="sm:col-span-2">
+        <p className={infoLabelCls}>Pénalités de retard</p>
+        <p className={infoValueCls}>
+          {client.penalitesRetardActives
+            ? "Appliquées à ce client (chiffrées dans les relances)"
+            : "Non appliquées (mentions légales imprimées sur les factures dans tous les cas)"}
+        </p>
+      </div>
+    </>
+  );
 
   return (
     <AdminPageShell width="wide">
@@ -507,144 +531,147 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
 
       {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
           adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
-      <BrancheOpcoBloc client={client} peutEcrire={acces.peutEcrire} />
+      <BrancheOpcoBloc
+        client={client}
+        peutEcrire={acces.peutEcrire}
+        complementEffectif={
+          <>
+            {acces.peutEcrire && sirenLu !== null && client.effectifSource !== "saisie" ? (
+              <form
+                action={rafraichirEffectifInseeFormAction}
+                className="mt-[var(--space-admin-1)]"
+              >
+                <input type="hidden" name="clientId" value={client.id} />
+                <button type="submit" className="admin-button-ghost">
+                  Rafraîchir depuis l&apos;INSEE
+                </button>
+              </form>
+            ) : null}
+            {messageReleveInsee !== null ? (
+              <p
+                role="status"
+                className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
+              >
+                {messageReleveInsee}
+              </p>
+            ) : null}
+          </>
+        }
+      />
 
-      {/* ── Identité + contact ─────────────────────────────────────────────── */}
-      <section className={sectionCls}>
-        <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
-          <div className="col-span-2">
-            <p className={infoLabelCls}>Contact</p>
-            <p className={infoValueCls}>{contactLigne !== "" ? contactLigne : "—"}</p>
-            {client.contactFonction ? (
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {client.contactFonction}
-              </p>
-            ) : null}
-          </div>
-          <div>
-            <p className={infoLabelCls}>SIRET</p>
-            <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
-            {client.type === "entreprise" ? (
-              client.siren ? (
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  SIREN <span className="font-mono">{client.siren}</span>
-                </p>
-              ) : (
-                <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
-                  <AdminBadge tone="warning" className="self-start">
-                    SIREN à compléter
-                  </AdminBadge>
-                  {acces.peutEcrire && annuaire === null ? (
-                    <Link
-                      href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                    >
-                      Chercher le SIREN dans l&apos;annuaire
-                    </Link>
-                  ) : null}
-                  {annuaire !== null && !annuaire.ok ? (
-                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                      L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
-                      le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez plus tard.
-                    </p>
-                  ) : null}
-                  {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
-                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                      Aucune entreprise trouvée à ce nom.
-                    </p>
-                  ) : null}
-                  {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
-                    <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
-                      {annuaire.propositions.map((prop) => (
-                        <li key={prop.siren}>
-                          <form
-                            action={confirmerSirenFormAction}
-                            className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
-                          >
-                            <input type="hidden" name="clientId" value={client.id} />
-                            <input type="hidden" name="siren" value={prop.siren} />
-                            <span className="font-mono">{prop.siren}</span>
-                            <span>{prop.nom}</span>
-                            <span className="text-[color:var(--color-admin-fg-muted)]">
-                              {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
-                            </span>
-                            <button type="submit" className="admin-button-ghost">
-                              C&apos;est elle
-                            </button>
-                          </form>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-              )
-            ) : null}
-          </div>
-          <div>
-            <p className={infoLabelCls}>OPCO</p>
-            <p className={infoValueCls}>
-              {referenceOpcoDuClient(client) !== null ? nomOpcoDuClient(client) : "À déterminer"}
-              {client.opcoNumeroAdherent ? ` · adh. ${client.opcoNumeroAdherent}` : ""}
-            </p>
-          </div>
-          {estEntreprise ? (
-            <div data-champ="effectif">
-              <p className={infoLabelCls}>Effectif</p>
-              <p className={infoValueCls}>
-                {typeof client.effectif === "number"
-                  ? `${client.effectif} salarié${client.effectif > 1 ? "s" : ""}`
-                  : "Inconnu"}
-              </p>
-              {typeof client.effectif === "number" ? (
-                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  {client.effectifSource === "insee"
-                    ? "Relevé INSEE (borne basse de la tranche)"
-                    : "Saisi en console"}
-                  {client.effectifReleveLe
-                    ? ` · ${formatDateFrShort(client.effectifReleveLe)}`
-                    : ""}
-                </p>
-              ) : null}
-              {acces.peutEcrire && client.siren && client.effectifSource !== "saisie" ? (
-                <form
-                  action={rafraichirEffectifInseeFormAction}
-                  className="mt-[var(--space-admin-1)]"
-                >
-                  <input type="hidden" name="clientId" value={client.id} />
-                  <button type="submit" className="admin-button-ghost">
-                    Rafraîchir depuis l&apos;INSEE
-                  </button>
-                </form>
-              ) : null}
-              {messageReleveInsee !== null ? (
-                <p
-                  role="status"
-                  className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
-                >
-                  {messageReleveInsee}
-                </p>
-              ) : null}
+      {/* ── Société | Contact (lot A9) ─────────────────────────────────────────
+          Deux blocs : aucun identifiant de la société ne doit sembler appartenir
+          à la personne. Un particulier n'a que le bloc Contact. L'effectif et
+          l'OPCO se lisent dans « Branche et OPCO », une seule fois. ─────────── */}
+      <div className={`${sectionCls} grid gap-[var(--space-admin-4)] lg:grid-cols-[3fr_2fr]`}>
+        {estEntreprise ? (
+          <section data-bloc="societe" aria-labelledby="bloc-societe" className={blocCls}>
+            <h2 id="bloc-societe" className={blocTitreCls}>
+              Société
+            </h2>
+            <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+              <div className="sm:col-span-2">
+                <p className={infoLabelCls}>Raison sociale</p>
+                <p className={infoValueCls}>{client.raisonSociale}</p>
+              </div>
+              <div>
+                <p className={infoLabelCls}>SIRET</p>
+                <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
+              </div>
+              <div>
+                <p className={infoLabelCls}>SIREN</p>
+                {sirenLu !== null ? (
+                  <>
+                    <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
+                    {sirenContraire ? (
+                      <p
+                        role="status"
+                        className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
+                      >
+                        {AVERTISSEMENT_SIREN_CONTRAIRE}
+                      </p>
+                    ) : null}
+                  </>
+                ) : (
+                  <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
+                    <AdminBadge tone="warning" className="self-start">
+                      SIREN à compléter
+                    </AdminBadge>
+                    {acces.peutEcrire && annuaire === null ? (
+                      <Link
+                        href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      >
+                        Chercher le SIREN dans l&apos;annuaire
+                      </Link>
+                    ) : null}
+                    {annuaire !== null && !annuaire.ok ? (
+                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                        L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
+                        le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez plus tard.
+                      </p>
+                    ) : null}
+                    {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
+                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                        Aucune entreprise trouvée à ce nom.
+                      </p>
+                    ) : null}
+                    {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
+                      <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+                        {annuaire.propositions.map((prop) => (
+                          <li key={prop.siren}>
+                            <form
+                              action={confirmerSirenFormAction}
+                              className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                            >
+                              <input type="hidden" name="clientId" value={client.id} />
+                              <input type="hidden" name="siren" value={prop.siren} />
+                              <span className="font-mono">{prop.siren}</span>
+                              <span>{prop.nom}</span>
+                              <span className="text-[color:var(--color-admin-fg-muted)]">
+                                {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
+                              </span>
+                              <button type="submit" className="admin-button-ghost">
+                                C&apos;est elle
+                              </button>
+                            </form>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+              {adresseEtPenalites}
             </div>
-          ) : null}
-          <div className="col-span-2 sm:col-span-4">
-            <p className={infoLabelCls}>Adresse</p>
-            <p className={infoValueCls}>{adresse ?? "—"}</p>
+          </section>
+        ) : null}
+
+        <section data-bloc="contact" aria-labelledby="bloc-contact" className={blocCls}>
+          <h2 id="bloc-contact" className={blocTitreCls}>
+            Contact
+          </h2>
+          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+            <div>
+              <p className={infoLabelCls}>Nom</p>
+              <p className={infoValueCls}>{client.contactNom || "—"}</p>
+            </div>
+            <div>
+              <p className={infoLabelCls}>Rôle</p>
+              <p className={infoValueCls}>{client.contactFonction || "—"}</p>
+            </div>
+            <div className="min-w-0">
+              <p className={infoLabelCls}>E-mail</p>
+              <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
+            </div>
+            <div>
+              <p className={infoLabelCls}>Téléphone</p>
+              <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
+            </div>
+            {!estEntreprise ? adresseEtPenalites : null}
           </div>
-          {/* Pénalités de retard : APPLICATION opt-in, désactivée par défaut.
-              Affiché sur la fiche parce que c'est une décision commerciale qu'on
-              doit pouvoir constater sans ouvrir le formulaire d'édition.
-              ⚠️ Ne dit RIEN des mentions légales, imprimées sans condition sur
-              toute facture (art. L.441-9 / L.441-10 / D.441-5). */}
-          <div className="col-span-2 sm:col-span-4">
-            <p className={infoLabelCls}>Pénalités de retard</p>
-            <p className={infoValueCls}>
-              {client.penalitesRetardActives
-                ? "Appliquées à ce client (chiffrées dans les relances)"
-                : "Non appliquées (mentions légales imprimées sur les factures dans tous les cas)"}
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {estEntreprise ? (
         <section className={sectionCls}>
