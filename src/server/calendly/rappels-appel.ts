@@ -510,6 +510,12 @@ export async function executerPassage(
       await prisma.calendlyEvent.update({
         where: { id: rdv.id },
         data: marqueurPose(p.marqueur, new Date(nowMs)),
+        // 🔑 `select` ÉTROIT (2026-10-04) : sans lui, Prisma relit TOUTES les
+        // colonnes de la ligne. Pendant la fenêtre app/worker (le worker tourne
+        // le nouveau code ~50 min avant la migration), une colonne pas encore
+        // posée ferait échouer CETTE écriture — message parti, marqueur non
+        // posé, donc renvoyé à chaque passage.
+        select: { id: true },
       });
       envoyes += 1;
     } catch (e) {
