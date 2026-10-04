@@ -137,8 +137,24 @@ export type Fait<T> = {
   aVerifier?: boolean;
 };
 
-/** Qui dépose la demande de prise en charge, tel que constaté sur la source. */
-export type ModeDeDepot = "compte_adherent" | "of_mandate";
+/**
+ * Qui dépose la demande de prise en charge, tel que constaté sur la source
+ * (INT-T64-A) : l'organisme de formation mandaté par l'entreprise, ou
+ * l'entreprise depuis son compte adhérent sur le portail de l'OPCO.
+ *
+ * Un ENUM à deux valeurs, jamais un booléen. Il vit ici et pas en base : aucune
+ * table ne porte l'OPCO comme entité (l'enum Prisma `Opco` n'est qu'une clé), et
+ * la valeur est un fait sourcé de `OPCO_FICHES`, pas une saisie. L'absence de
+ * relevé est `valeur: null` (« non constaté »), pas une troisième valeur.
+ */
+export const MODES_DE_DEPOT = ["of_mandate", "compte_adherent"] as const;
+
+export type ModeDeDepot = (typeof MODES_DE_DEPOT)[number];
+
+/** Garde de type : vrai si la valeur est l'un des deux modes de dépôt. */
+export function isModeDeDepot(value: unknown): value is ModeDeDepot {
+  return typeof value === "string" && (MODES_DE_DEPOT as readonly string[]).includes(value);
+}
 
 export type OpcoFiche = {
   portailEntrepriseUrl: Fait<string>;
@@ -199,6 +215,12 @@ function ficheVide(horsChampTva: boolean): OpcoFiche {
  * 2026-10-03. Les règles varient par branche et par dispositif : un fait
  * renseigné est la règle générale de la source citée, pas une garantie pour
  * un dossier donné.
+ *
+ * `modeDeDepotConstate` (INT-T64-A) : seuls Atlas et OPCO 2i sont constatés.
+ * Les neuf autres restent « non constatés » : leurs pages n'étaient pas lisibles
+ * le 2026-10-04 et ne sont pas devinées. ⚠️ `compte_adherent` déclenche l'envoi
+ * automatique du dossier à l'entreprise (suivi-entreprise/planning.ts) : ne le
+ * poser que sur une page de l'OPCO lue et citée.
  */
 export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
   atlas: {
