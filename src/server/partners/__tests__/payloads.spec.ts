@@ -18,6 +18,7 @@ import { describe, expect, it } from "vitest";
 import { champsInterditsSelonFrontiere } from "../frontiere";
 import {
   MOTIFS_REMBOURSEMENT,
+  codesDesOffresDuDevis,
   payloadAvoirEmis,
   payloadCandidatureRecue,
   payloadClientCree,
@@ -327,6 +328,9 @@ describe("REQ-INT-032 — `paiement.rembourse` couvre les DEUX formes, et six mo
   });
 });
 
+/** Aucun prix public connu : chaque ligne part sans prix de référence. */
+const SANS_PRIX: ReadonlyMap<string, number | null> = new Map();
+
 describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   const devis = {
     id: "77777777-7777-4777-8777-777777777777",
@@ -351,7 +355,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   };
 
   it("porte par ligne les quatre champs de REQ-INT-006 et ceux de REQ-DM-040", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise });
+    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
     const ligne = p.lignes[0];
 
     expect(ligne).toBeDefined();
@@ -368,7 +372,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   });
 
   it("🔴 `jours` identifie le palier et n'est JAMAIS un multiplicateur", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise });
+    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
     const ligne = p.lignes[0];
     expect(ligne?.jours).toBe(2);
     expect(ligne?.commissionId).toBe("com-formation-2j");
@@ -376,7 +380,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   });
 
   it("le montant HT de la ligne est celui du devis, pas un produit recalculé de travers", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise });
+    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
     expect(p.lignes[0]?.montantHtCents).toBe(500_000); // 2 × 250 000
     expect(p.montantTotalHtCents).toBe(500_000);
   });
@@ -387,7 +391,11 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       activite: "site_web" as const,
       lignes: [{ designation: "Site vitrine", quantite: 1, prixUnitaireHtCents: 300_000 }],
     };
-    const p = payloadDevisSigne({ devis: siteWeb, client: clientEntreprise });
+    const p = payloadDevisSigne({
+      devis: siteWeb,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+    });
     expect(p.lignes).toHaveLength(1);
     expect(p.lignes[0]?.commission.statut).toBe("bloquee");
     expect(p.lignes[0]?.commission.motifBlocage).toBe("a_qualifier");
@@ -395,7 +403,11 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
 
   it("un devis NON signé lève : `devis.signe` n'est pas `devis.envoye`", () => {
     expect(() =>
-      payloadDevisSigne({ devis: { ...devis, acceptedAt: null }, client: clientEntreprise }),
+      payloadDevisSigne({
+        devis: { ...devis, acceptedAt: null },
+        client: clientEntreprise,
+        prixPublics: SANS_PRIX,
+      }),
     ).toThrow(/sign/i);
   });
 
@@ -406,8 +418,53 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       payloadDevisSigne({
         devis: { ...devis, lignes: [{ designation: "???" }] as never },
         client: clientEntreprise,
+        prixPublics: SANS_PRIX,
       }),
     ).toThrow(/ligne/i);
+  });
+
+  it("REQ-INT-006 : TÉMOIN — chaque ligne porte prixReferenceHtCents, le prix public de la LIGNE (arbitrage d'A02)", () => {
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: new Map([["AXI-OFF-004", 1900]]),
+    });
+    expect(p.lignes[0]?.prixReferenceHtCents).toBe(380_000); // 2 × 190 000
+  });
+
+  it("REQ-INT-006 : TÉMOIN — sans offre, ou sans prix public ferme, null : jamais 0", () => {
+    const sansOffre = {
+      ...devis,
+      lignes: [{ designation: "Atelier", quantite: 1, prixUnitaireHtCents: 100_000 }],
+    };
+    expect(
+      payloadDevisSigne({ devis: sansOffre, client: clientEntreprise, prixPublics: new Map() })
+        .lignes[0]?.prixReferenceHtCents,
+    ).toBeNull();
+    expect(
+      payloadDevisSigne({
+        devis,
+        client: clientEntreprise,
+        prixPublics: new Map([["AXI-OFF-004", null]]),
+      }).lignes[0]?.prixReferenceHtCents,
+    ).toBeNull();
+    expect(
+      payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX }).lignes[0]
+        ?.prixReferenceHtCents,
+    ).toBeNull();
+  });
+
+  it("REQ-INT-006 : les codes d'offre d'un devis, lus dans ses lignes, dédoublonnés", () => {
+    expect(
+      codesDesOffresDuDevis([
+        { offreCode: "AXI-OFF-004" },
+        { offreCode: "AXI-OFF-004" },
+        { designation: "sans offre" },
+        { offreCode: "" },
+        { offreCode: "AXI-OFF-007" },
+      ]),
+    ).toEqual(["AXI-OFF-004", "AXI-OFF-007"]);
+    expect(codesDesOffresDuDevis("pas un tableau")).toEqual([]);
   });
 });
 
