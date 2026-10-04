@@ -57,6 +57,7 @@ export const NOM_TYPE_CIBLE: Readonly<Record<string, string>> = {
   Formation: "Formation",
   EmailOutbox: "E-mail",
   BaremeOpco: "Barème OPCO",
+  EtatFondsOpco: "État des fonds OPCO",
   // Chantier visio (PR 6) : les alertes du circuit du compte rendu.
   Rencontre: "Rendez-vous",
 };

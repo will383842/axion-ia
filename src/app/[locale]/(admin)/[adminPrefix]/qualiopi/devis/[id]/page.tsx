@@ -21,6 +21,9 @@ import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signatu
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
+import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
+import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
+import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/estimation-certification";
 import { getClient } from "@/server/qualiopi/crm/clients";
@@ -133,6 +136,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   if (!devis) notFound();
 
   const client = await getClient(devis.clientId);
+  // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
+  const bandeauFonds = client ? bandeauEtatFonds(await etatFondsDuClient(client)) : null;
 
   // Sous-lot 8G — même règle que celle appliquée au PDF, lue au même endroit :
   // deux calculs du même régime finiraient par diverger, et l'écran affirmerait
@@ -216,6 +221,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             : `Client inconnu · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
         }
       />
+
+      <BandeauEtatFonds bandeau={bandeauFonds} />
 
       {/* ── Fiche de statut ─────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
