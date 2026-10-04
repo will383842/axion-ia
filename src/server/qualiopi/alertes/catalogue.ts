@@ -1239,6 +1239,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Chantier OPCO A3 : session subrogée terminée, facture à l'OPCO non émise,
+  // à J-15 de la date limite de facturation du référentiel OPCO. Se referme
+  // dès que la facture est émise.
+  delai_facturation_opco: {
+    niveau: "important",
+    titre: "Facture OPCO à émettre avant la date limite",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Lot A4 — un devis ouvert ou une session OPCO à venir n'a AUCUN barème
   // applicable (OPCO × branche IDCC × tranche) : l'estimation repose sur les
   // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).

@@ -133,6 +133,8 @@ const CODES_ATTENDUS: string[] = [
   "bareme_opco_perime",
   // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO.
   "etat_fonds_perime",
+  // Chantier OPCO A3 : facture à l'OPCO à émettre avant la date limite.
+  "delai_facturation_opco",
   // Lot A4 — devis ou session OPCO à venir sans barème applicable (branche × taille).
   "aucun_bareme_opco",
   // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
