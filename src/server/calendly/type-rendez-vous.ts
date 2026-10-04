@@ -295,7 +295,9 @@ export function besoinDesReponses(questionsAndAnswers: unknown): string | null {
     const a = o?.["answer"];
     if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
     const libelle = normaliserNom(q);
-    if (libelle.includes("service") || libelle.includes("besoin")) {
+    // Le libellé RÉEL (« Quel service vous intéresse ? ») ou l'ancien « Quel est
+    // votre besoin… » — pas n'importe quelle question qui cite « nos services ».
+    if (libelle.includes("quel service") || libelle.includes("votre besoin")) {
       return a.trim().slice(0, BESOIN_MAX);
     }
   }

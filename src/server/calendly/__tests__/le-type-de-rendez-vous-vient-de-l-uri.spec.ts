@@ -219,6 +219,10 @@ describe("lecture de la charge brute", () => {
     expect(besoinDesReponses(qa)).toBe("Formation");
     expect(besoinDesReponses([{ question: "Votre BESOIN", answer: " Audit " }])).toBe("Audit");
     expect(besoinDesReponses([{ question: "Secteur", answer: "BTP" }])).toBe(null);
+    // Une autre question qui cite « services » ou « besoin » n'est pas le besoin.
+    expect(
+      besoinDesReponses([{ question: "Comment avez-vous connu nos services ?", answer: "LinkedIn" }]),
+    ).toBe(null);
     expect(besoinDesReponses(undefined)).toBe(null);
     expect(besoinDuBrut({ invitee: { questions_and_answers: qa } })).toBe("Formation");
   });

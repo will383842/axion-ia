@@ -1,4 +1,5 @@
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
   estTypeRendezVous,
@@ -161,7 +162,9 @@ export async function syncCalendlyEventToCrm(
   // 🔑 Depuis le 2026-10-04 elle lit le TYPE classé (URI d'abord), avec repli
   // sur le nom. Le chemin iframe, qui ne portait que le slug, n'y échappait pas
   // seulement par chance : « echange-apporteur-affaires » contient le mot-clé.
-  if (payload.typeRendezVous === "apporteur") return;
+  // Double verrou : le type OU le nom. Un futur slug « apporteur-salon-… »
+  // classé « salon » par l'URI ne doit pas fuir vers les ventes.
+  if (payload.typeRendezVous === "apporteur" || estAppelApporteur(payload.eventTypeName)) return;
 
   const map = {
     booked: "calendly_booked",
