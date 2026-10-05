@@ -36,6 +36,15 @@ interface StickyMobileCtaProps {
    * celui des autres pages du site.
    */
   couleur?: "terracotta";
+  /**
+   * Identifiant d'un élément (le formulaire) : tant qu'il est visible dans la
+   * fenêtre, le bouton se masque — il n'a plus d'utilité et recouvrirait le bas
+   * du formulaire (la mention de confidentialité sous « Continuer »). Il se
+   * réaffiche quand l'élément sort de l'écran. `IntersectionObserver` : aucun
+   * calcul au scroll, aucun saut de mise en page (le bouton est `fixed`, il
+   * glisse déjà hors écran, sans animation si `prefers-reduced-motion`).
+   */
+  masquerQuandVisible?: string;
 }
 
 export function StickyMobileCta({
@@ -45,6 +54,7 @@ export function StickyMobileCta({
   threshold = 600,
   suivi,
   couleur,
+  masquerQuandVisible,
 }: StickyMobileCtaProps) {
   const teinte =
     couleur === "terracotta"
@@ -64,11 +74,12 @@ export function StickyMobileCta({
     // que si la valeur change réellement.
     let scheduled = false;
     let lastVisible = false;
+    let cibleVisible = false;
     const compute = () => {
       const past = window.scrollY > threshold;
       const nearBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
-      const next = past && !nearBottom;
+      const next = past && !nearBottom && !cibleVisible;
       if (next !== lastVisible) {
         lastVisible = next;
         setVisible(next);
@@ -80,14 +91,28 @@ export function StickyMobileCta({
       scheduled = true;
       requestAnimationFrame(compute);
     };
+    // Le formulaire est rendu par un composant client : il peut apparaître après
+    // ce bouton. On le cherche à l'hydratation, puis on observe.
+    let observateur: IntersectionObserver | null = null;
+    const cible = masquerQuandVisible ? document.getElementById(masquerQuandVisible) : null;
+    if (cible && typeof IntersectionObserver !== "undefined") {
+      observateur = new IntersectionObserver((entrees) => {
+        const derniere = entrees[entrees.length - 1];
+        if (!derniere) return;
+        cibleVisible = derniere.isIntersecting;
+        compute();
+      });
+      observateur.observe(cible);
+    }
     compute();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      observateur?.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [threshold]);
+  }, [threshold, masquerQuandVisible]);
 
   return (
     <>
