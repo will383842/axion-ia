@@ -21,6 +21,7 @@ import {
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
 import { CLE_REGISTRE_INDISPONIBLE } from "@/features/apporteurs-reseau/signature-regles";
 import { gardePage } from "@/server/auth/garde-page";
+import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,10 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const { dossier: d } = fiche;
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
+  // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
+  const voitPii = peutOuvrirDossierApporteur(acces.role);
+  const MASQUE = "Réservé aux rôles autorisés";
+  const purgees = new Set(fiche.piecesPurgeesIds);
   const pieces: PieceAffichee[] = d.pieces.map((p) => ({
     id: p.id,
     type: p.type,
@@ -84,6 +89,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
     motif: p.motif,
     nomFichier: p.nomFichier,
     deposeeLe: jour(p.deposeeAt),
+    purgee: purgees.has(p.id),
     lienOuvrir: `${base}/${d.id}/pieces/${p.id}`,
   }));
   const statut =
@@ -129,11 +135,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
       <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Identité et activité</h2>
-          <Ligne libelle="E-mail" valeur={d.email} />
-          <Ligne libelle="Téléphone" valeur={d.telephone} />
+          <Ligne libelle="E-mail" valeur={voitPii ? d.email : MASQUE} />
+          <Ligne libelle="Téléphone" valeur={voitPii ? d.telephone : MASQUE} />
           <Ligne libelle="SIREN" valeur={d.siren} />
           <Ligne libelle="Entreprise" valeur={d.denomination} />
-          <Ligne libelle="Adresse" valeur={d.adresse} />
+          <Ligne libelle="Adresse" valeur={voitPii ? d.adresse : MASQUE} />
           <Ligne libelle="Statut" valeur={statut} />
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
           {CLE_REGISTRE_INDISPONIBLE in d.declarations ? (
@@ -156,16 +162,26 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
                   : null
             }
           />
-          <Ligne libelle="IBAN" valeur={d.ibanMasque} />
+          <Ligne
+            libelle="IBAN"
+            valeur={voitPii ? d.ibanMasque : d.ibanMasque ? "•••• •••• ••••" : null}
+          />
         </AdminCard>
 
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Pièces</h2>
-          <PiecesVerification
-            apporteurId={d.id}
-            pieces={pieces}
-            modifiable={aVerifier || d.statut === "signe"}
-          />
+          {voitPii ? (
+            <PiecesVerification
+              apporteurId={d.id}
+              pieces={pieces}
+              modifiable={aVerifier || d.statut === "signe"}
+            />
+          ) : (
+            <p className="text-[color:var(--color-admin-fg-muted)]">
+              {pieces.length} pièce(s) au dossier. L&apos;accès aux pièces est réservé aux rôles
+              autorisés.
+            </p>
+          )}
         </AdminCard>
 
         <AdminCard as="section">
@@ -179,7 +195,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
             valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null}
           />
           <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
-            {fiche.aContratApporteur ? (
+            {voitPii && fiche.aContratApporteur ? (
               <a
                 className="admin-button-secondary"
                 href={`${base}/${d.id}/contrat?quel=apporteur`}
@@ -189,7 +205,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
                 Contrat signé par l&apos;apporteur
               </a>
             ) : null}
-            {fiche.aContratSigne ? (
+            {voitPii && fiche.aContratSigne ? (
               <a
                 className="admin-button-secondary"
                 href={`${base}/${d.id}/contrat?quel=signe`}

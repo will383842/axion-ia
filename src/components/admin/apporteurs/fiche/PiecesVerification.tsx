@@ -21,6 +21,8 @@ export interface PieceAffichee {
   motif: string | null;
   nomFichier: string;
   deposeeLe: string;
+  /** Le fichier a été effacé après vérification : pas de lien, pas de bouton. */
+  purgee?: boolean;
   lienOuvrir: string | null;
 }
 
@@ -83,7 +85,11 @@ function LignePiece({
         </span>
       </div>
       <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-        {piece.lienOuvrir ? (
+        {piece.purgee ? (
+          <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Purgée après vérification
+          </span>
+        ) : piece.lienOuvrir ? (
           <a
             className="admin-button-secondary"
             href={piece.lienOuvrir}

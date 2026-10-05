@@ -122,7 +122,7 @@ export interface CommissionDeLApporteur {
 export async function lireFicheApporteur(id: string) {
   const dossier = await lireDossier(id);
   if (!dossier) return null;
-  const [a, presentations, commissions, parrains, piecesVigilance] = await Promise.all([
+  const [a, presentations, commissions, parrains, piecesVigilance, purgees] = await Promise.all([
     prisma.apporteurReseau.findUnique({
       where: { id },
       select: {
@@ -175,6 +175,11 @@ export async function lireFicheApporteur(id: string) {
       where: { apporteurId: id, type: { in: ["vigilance", "immatriculation"] }, remplaceeAt: null },
       select: { type: true, statut: true, expireAt: true, remplaceeAt: true },
     }),
+    // Pièces dont le fichier est effacé : la console n'affiche plus de lien « Ouvrir ».
+    prisma.pieceApporteur.findMany({
+      where: { apporteurId: id, remplaceeAt: null, purgeeAt: { not: null } },
+      select: { id: true },
+    }),
   ]);
   const cumulVigilanceCents = commissions
     .filter((c) => (STATUTS_CUMUL as readonly string[]).includes(c.statut))
@@ -183,6 +188,7 @@ export async function lireFicheApporteur(id: string) {
     `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
   return {
     dossier,
+    piecesPurgeesIds: purgees.map((p) => p.id),
     noteInterne: a?.noteInterne ?? null,
     parrainId: a?.parrainId ?? null,
     aContratApporteur: !!a?.contratCle,
