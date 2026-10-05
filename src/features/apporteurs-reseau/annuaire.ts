@@ -15,6 +15,16 @@ import { sirenValide, type StatutJuridique } from "./regles";
 
 const URL = "https://recherche-entreprises.api.gouv.fr/search";
 const DELAI_MS = 4_000;
+/** Le registre limite les appels par adresse (429 + `Retry-After`) : on patiente, deux fois au plus. */
+const TENTATIVES = 3;
+const ATTENTE_MAX_MS = 5_000;
+
+/** Attente avant une nouvelle tentative : `Retry-After` (secondes) borné, sinon 1 s. */
+export function attenteAvantReessai(retryAfter: string | null): number {
+  const s = Number(retryAfter);
+  const ms = Number.isFinite(s) && s > 0 ? s * 1000 : 1000;
+  return Math.min(ms, ATTENTE_MAX_MS);
+}
 
 export interface EntrepriseRegistre {
   siren: string;
@@ -61,16 +71,29 @@ function texte(v: unknown): string | null {
 /** Lit l'entreprise d'un SIREN. Injectable (`fetch`) pour les tests. */
 export async function lireEntrepriseParSiren(
   brut: string,
-  options: { fetch?: typeof fetch } = {},
+  options: { fetch?: typeof fetch; attendre?: (ms: number) => Promise<void> } = {},
 ): Promise<ResultatRegistre> {
   const siren = brut.replace(/\s+/g, "");
   if (!sirenValide(siren)) return { ok: false, raison: "siren_invalide" };
-  const f = options.fetch ?? fetch;
+  const f = options.fetch ?? ((u, init) => fetch(u, init));
+  const attendre =
+    options.attendre ?? ((ms: number) => new Promise<void>((ok) => setTimeout(ok, ms)));
   try {
-    const r = await f(`${URL}?q=${siren}&page=1&per_page=5`, {
-      signal: AbortSignal.timeout(DELAI_MS),
-      headers: { accept: "application/json" },
-    });
+    let r!: Response;
+    for (let essai = 1; essai <= TENTATIVES; essai++) {
+      const controleur = new AbortController();
+      const minuteur = setTimeout(() => controleur.abort(), DELAI_MS);
+      try {
+        r = await f(`${URL}?q=${siren}&page=1&per_page=5`, {
+          signal: controleur.signal,
+          headers: { accept: "application/json" },
+        });
+      } finally {
+        clearTimeout(minuteur);
+      }
+      if (r.status !== 429 || essai === TENTATIVES) break;
+      await attendre(attenteAvantReessai(r.headers.get("retry-after")));
+    }
     if (!r.ok) return { ok: false, raison: "indisponible" };
     const d = (await r.json()) as { results?: unknown[] };
     const res = (d.results ?? []).find(
