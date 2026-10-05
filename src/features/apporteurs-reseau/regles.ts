@@ -155,10 +155,14 @@ export const DECLARATIONS = [
 /** Les clauses qui exigent une acceptation distincte dans le contrat. */
 export const ACCEPTATIONS = [
   { cle: "art_3_7", texte: "J'accepte l'article 3.7 (sincérité des présentations)." },
-  { cle: "art_4_5", texte: "J'accepte l'article 4.5 (reprise d'une commission en cas de remboursement)." },
+  {
+    cle: "art_4_5",
+    texte: "J'accepte l'article 4.5 (reprise d'une commission en cas de remboursement).",
+  },
   {
     cle: "art_5_2",
-    texte: "Je donne mandat à Axion-IA d'établir mes factures de commission (art. 5.2 et annexe 2).",
+    texte:
+      "Je donne mandat à Axion-IA d'établir mes factures de commission (art. 5.2 et annexe 2).",
   },
   { cle: "art_7", texte: "J'accepte l'article 7 (données personnelles)." },
   { cle: "art_12", texte: "J'accepte l'article 12 (effets de la fin du contrat)." },
@@ -313,13 +317,48 @@ export function commandeCouverte(e: {
 
 /** Les paliers de formation de l'annexe 1 : prix public HT et forfait, en centimes. */
 export const PALIERS_FORMATION = [
-  { id: "formation-generale-4h", libelle: "Formation générale, 4 heures", prixCents: 120_000, forfaitCents: 25_000 },
-  { id: "formation-generale-1j", libelle: "Formation générale, 1 jour", prixCents: 190_000, forfaitCents: 50_000 },
-  { id: "formation-generale-2j", libelle: "Formation générale, 2 jours", prixCents: 360_000, forfaitCents: 100_000 },
-  { id: "formation-metier-1j", libelle: "Formation par métier, 1 jour", prixCents: 190_000, forfaitCents: 50_000 },
-  { id: "formation-metier-2j", libelle: "Formation par métier, 2 jours", prixCents: 360_000, forfaitCents: 100_000 },
-  { id: "formation-secteur-1j", libelle: "Formation par secteur, 1 jour", prixCents: 220_000, forfaitCents: 50_000 },
-  { id: "formation-secteur-2j", libelle: "Formation par secteur, 2 jours", prixCents: 390_000, forfaitCents: 100_000 },
+  {
+    id: "formation-generale-4h",
+    libelle: "Formation générale, 4 heures",
+    prixCents: 120_000,
+    forfaitCents: 25_000,
+  },
+  {
+    id: "formation-generale-1j",
+    libelle: "Formation générale, 1 jour",
+    prixCents: 190_000,
+    forfaitCents: 50_000,
+  },
+  {
+    id: "formation-generale-2j",
+    libelle: "Formation générale, 2 jours",
+    prixCents: 360_000,
+    forfaitCents: 100_000,
+  },
+  {
+    id: "formation-metier-1j",
+    libelle: "Formation par métier, 1 jour",
+    prixCents: 190_000,
+    forfaitCents: 50_000,
+  },
+  {
+    id: "formation-metier-2j",
+    libelle: "Formation par métier, 2 jours",
+    prixCents: 360_000,
+    forfaitCents: 100_000,
+  },
+  {
+    id: "formation-secteur-1j",
+    libelle: "Formation par secteur, 1 jour",
+    prixCents: 220_000,
+    forfaitCents: 50_000,
+  },
+  {
+    id: "formation-secteur-2j",
+    libelle: "Formation par secteur, 2 jours",
+    prixCents: 390_000,
+    forfaitCents: 100_000,
+  },
 ] as const;
 export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 
@@ -329,7 +368,12 @@ export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as 
 export type ActiviteCommission = "formation" | "un_a_un" | "audit" | "implementation" | "site_web";
 
 export type CalculCommission =
-  | { statut: "calculee"; montantCents: number; palier: string | null; prixPublicCents: number | null }
+  | {
+      statut: "calculee";
+      montantCents: number;
+      palier: string | null;
+      prixPublicCents: number | null;
+    }
   | { statut: "a_qualifier" }
   | { statut: "aucune" };
 
@@ -351,8 +395,14 @@ export function calculerCommission(e: {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
     const ht = Math.max(0, e.factureHtCents);
-    const montant = ht >= p.prixCents ? p.forfaitCents : Math.floor((p.forfaitCents * ht) / p.prixCents);
-    return { statut: "calculee", montantCents: montant, palier: p.id, prixPublicCents: p.prixCents };
+    const montant =
+      ht >= p.prixCents ? p.forfaitCents : Math.floor((p.forfaitCents * ht) / p.prixCents);
+    return {
+      statut: "calculee",
+      montantCents: montant,
+      palier: p.id,
+      prixPublicCents: p.prixCents,
+    };
   }
   const bps = TAUX_BPS[e.activite];
   return {

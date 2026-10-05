@@ -10,8 +10,14 @@ import { ADRESSE_CONTACT, TEXTES } from "./textes";
 export default function ErreurDossier({ retry }: { error: Error; retry: () => void }) {
   return (
     <Coquille>
-      <section aria-labelledby="erreur-titre" className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 sm:p-8">
-        <h1 id="erreur-titre" className="font-serif text-[30px] leading-tight font-medium tracking-tight">
+      <section
+        aria-labelledby="erreur-titre"
+        className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 sm:p-8"
+      >
+        <h1
+          id="erreur-titre"
+          className="font-serif text-[30px] leading-tight font-medium tracking-tight"
+        >
           {TEXTES.erreurTitre}
         </h1>
         <p className="text-fg-soft mt-3 text-[18px] leading-relaxed">

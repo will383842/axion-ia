@@ -15,7 +15,9 @@ vi.mock("../donnees", () => ({
 }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("@/lib/r2-storage", () => ({ uploadToR2: (...a: unknown[]) => uploadToR2(...a) }));
-vi.mock("@/lib/prisma", () => ({ prisma: { apporteurReseau: { updateMany: (...a: unknown[]) => updateMany(...a) } } }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: { apporteurReseau: { updateMany: (...a: unknown[]) => updateMany(...a) } },
+}));
 vi.mock("../contrat-pdf", async () => {
   const { createHash } = await import("node:crypto");
   return {
@@ -114,8 +116,18 @@ describe("dossier en ligne — règles d'état", () => {
   });
 
   it("une pièce à retransmettre ne compte pas comme déposée", () => {
-    expect(typesDeposes([{ type: "identite", statut: "a_retransmettre" }, { type: "rib", statut: "deposee" }])).toEqual(["rib"]);
-    const d = dossierComplet({ pieces: [{ type: "identite", statut: "a_retransmettre" }, { type: "rib", statut: "deposee" }] });
+    expect(
+      typesDeposes([
+        { type: "identite", statut: "a_retransmettre" },
+        { type: "rib", statut: "deposee" },
+      ]),
+    ).toEqual(["rib"]);
+    const d = dossierComplet({
+      pieces: [
+        { type: "identite", statut: "a_retransmettre" },
+        { type: "rib", statut: "deposee" },
+      ],
+    });
     expect(manquesDuDossier(d as never)).toEqual(["pièce d'identité"]);
   });
 
@@ -131,11 +143,26 @@ describe("dossier en ligne — règles d'état", () => {
     };
     expect(verifierAvantSignature(base)).toEqual({ ok: true });
     expect(verifierAvantSignature({ ...base, statut: "a_completer" })).toEqual({ ok: true });
-    expect(verifierAvantSignature({ ...base, statut: "a_verifier" })).toEqual({ ok: false, refus: "non_modifiable" });
-    expect(verifierAvantSignature({ ...base, statut: "signe" })).toEqual({ ok: false, refus: "non_modifiable" });
-    expect(verifierAvantSignature({ ...base, manques: ["votre IBAN"] })).toEqual({ ok: false, refus: "incomplet" });
-    expect(verifierAvantSignature({ ...base, acceptations: [] })).toEqual({ ok: false, refus: "cases" });
-    expect(verifierAvantSignature({ ...base, nomTape: "Quelqu'un" })).toEqual({ ok: false, refus: "nom" });
+    expect(verifierAvantSignature({ ...base, statut: "a_verifier" })).toEqual({
+      ok: false,
+      refus: "non_modifiable",
+    });
+    expect(verifierAvantSignature({ ...base, statut: "signe" })).toEqual({
+      ok: false,
+      refus: "non_modifiable",
+    });
+    expect(verifierAvantSignature({ ...base, manques: ["votre IBAN"] })).toEqual({
+      ok: false,
+      refus: "incomplet",
+    });
+    expect(verifierAvantSignature({ ...base, acceptations: [] })).toEqual({
+      ok: false,
+      refus: "cases",
+    });
+    expect(verifierAvantSignature({ ...base, nomTape: "Quelqu'un" })).toEqual({
+      ok: false,
+      refus: "nom",
+    });
   });
 });
 
@@ -150,13 +177,19 @@ describe("dossier en ligne — valeurs du contrat", () => {
       qualite: "entrepreneur individuel",
       grilleDate: "5 octobre 2026",
     });
-    expect(valeursDuContrat(dossierComplet({ statutJuridique: "sas" }) as never, new Date()).qualite).toBe("société commerciale");
+    expect(
+      valeursDuContrat(dossierComplet({ statutJuridique: "sas" }) as never, new Date()).qualite,
+    ).toBe("société commerciale");
   });
 
   it("clé R2 et navigateur résumé", () => {
-    expect(cleContratApporteur(ID, "abcdef0123456789")).toBe(`apporteurs/${ID}/contrat-v2-apporteur-abcdef01.pdf`);
+    expect(cleContratApporteur(ID, "abcdef0123456789")).toBe(
+      `apporteurs/${ID}/contrat-v2-apporteur-abcdef01.pdf`,
+    );
     expect(
-      resumerNavigateur("Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/129.0 Mobile Safari/537.36"),
+      resumerNavigateur(
+        "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/129.0 Mobile Safari/537.36",
+      ),
     ).toBe("Chrome sur Android");
     expect(resumerNavigateur(null)).toBeNull();
   });
@@ -170,7 +203,8 @@ describe("dossier en ligne — signerContrat", () => {
     declarations: [...CLES_DECLARATIONS],
     acceptations: [...CLES_ACCEPTATIONS],
     ipHash: "0123456789abcdef",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Version/17.0 Mobile/15E148 Safari/604.1",
+    userAgent:
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Version/17.0 Mobile/15E148 Safari/604.1",
     maintenant: new Date("2026-10-05T12:34:00Z"),
   };
 
@@ -195,8 +229,12 @@ describe("dossier en ligne — signerContrat", () => {
     lireDossierParLien.mockResolvedValue(dossierComplet({ statut: "a_verifier" }));
     expect(await signerContrat(entree)).toMatchObject({ ok: false, raison: "refus" });
     lireDossierParLien.mockResolvedValue(dossierComplet());
-    expect(await signerContrat({ ...entree, acceptations: CLES_ACCEPTATIONS.slice(1) })).toMatchObject({ ok: false });
-    expect(await signerContrat({ ...entree, nomTape: "Autre Personne" })).toMatchObject({ ok: false });
+    expect(
+      await signerContrat({ ...entree, acceptations: CLES_ACCEPTATIONS.slice(1) }),
+    ).toMatchObject({ ok: false });
+    expect(await signerContrat({ ...entree, nomTape: "Autre Personne" })).toMatchObject({
+      ok: false,
+    });
     lireDossierParLien.mockResolvedValue(dossierComplet({ ibanSaisi: false }));
     expect(await signerContrat(entree)).toMatchObject({ ok: false });
     expect(updateMany).not.toHaveBeenCalled();
@@ -210,9 +248,15 @@ describe("dossier en ligne — signerContrat", () => {
 
     expect(rendreContratPdf.mock.calls[0]![0]).toMatchObject({
       societe: null,
-      apporteur: { nomTape: "eloise lefevre", navigateur: "Safari sur iPhone", ipHash: "0123456789abcdef" },
+      apporteur: {
+        nomTape: "eloise lefevre",
+        navigateur: "Safari sur iPhone",
+        ipHash: "0123456789abcdef",
+      },
     });
-    expect(uploadToR2.mock.calls[0]![0]).toBe(`apporteurs/${ID}/contrat-v2-apporteur-${sha.slice(0, 8)}.pdf`);
+    expect(uploadToR2.mock.calls[0]![0]).toBe(
+      `apporteurs/${ID}/contrat-v2-apporteur-${sha.slice(0, 8)}.pdf`,
+    );
 
     const arg = updateMany.mock.calls[0]![0] as {
       where: { statut: { in: string[] } };

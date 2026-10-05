@@ -57,7 +57,10 @@ export function EcranEtat({
   children?: React.ReactNode;
 }) {
   return (
-    <section aria-labelledby="etat-titre" className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 sm:p-8">
+    <section
+      aria-labelledby="etat-titre"
+      className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 sm:p-8"
+    >
       {succes ? (
         <span className="bg-sage grid h-16 w-16 place-items-center rounded-full text-white">
           {icone(COCHE, "h-8 w-8")}
@@ -80,7 +83,11 @@ export function EcranEtat({
 /** La page NEUTRE : lien faux, révoqué, inconnu, dossier refusé ou résilié. */
 export function EcranInvalide() {
   return (
-    <EcranEtat pastilleTexte={TEXTES.invalidePastille} titre={TEXTES.invalideTitre} ligne={TEXTES.invalideLigne}>
+    <EcranEtat
+      pastilleTexte={TEXTES.invalidePastille}
+      titre={TEXTES.invalideTitre}
+      ligne={TEXTES.invalideLigne}
+    >
       <a
         href={`mailto:${ADRESSE_CONTACT}`}
         className="bg-terracotta hover:bg-terracotta-deep focus-visible:outline-terracotta mt-6 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-7 text-[18px] font-bold text-white focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-solid"

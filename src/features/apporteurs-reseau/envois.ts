@@ -56,7 +56,9 @@ export interface EnvoiApporteur {
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
 }
 
-export async function apercu(e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">): Promise<{
+export async function apercu(
+  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">,
+): Promise<{
   sujet: string;
   html: string;
   destinataire: string;

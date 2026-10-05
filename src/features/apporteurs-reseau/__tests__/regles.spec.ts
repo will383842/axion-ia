@@ -32,19 +32,49 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
   it("prolongation : une seule fois, sur des faits de la Société", () => {
     const terme = d("2026-06-30");
     expect(
-      motifDeProlongation({ deja: false, devisEnCours: true, dernierEchangeAt: null, financementEnCours: false, terme }),
+      motifDeProlongation({
+        deja: false,
+        devisEnCours: true,
+        dernierEchangeAt: null,
+        financementEnCours: false,
+        terme,
+      }),
     ).toBe("devis_en_cours");
     expect(
-      motifDeProlongation({ deja: false, devisEnCours: false, dernierEchangeAt: d("2026-06-15"), financementEnCours: false, terme }),
+      motifDeProlongation({
+        deja: false,
+        devisEnCours: false,
+        dernierEchangeAt: d("2026-06-15"),
+        financementEnCours: false,
+        terme,
+      }),
     ).toBe("echange_recent");
     expect(
-      motifDeProlongation({ deja: false, devisEnCours: false, dernierEchangeAt: d("2026-05-15"), financementEnCours: false, terme }),
+      motifDeProlongation({
+        deja: false,
+        devisEnCours: false,
+        dernierEchangeAt: d("2026-05-15"),
+        financementEnCours: false,
+        terme,
+      }),
     ).toBeNull();
     expect(
-      motifDeProlongation({ deja: false, devisEnCours: false, dernierEchangeAt: null, financementEnCours: true, terme }),
+      motifDeProlongation({
+        deja: false,
+        devisEnCours: false,
+        dernierEchangeAt: null,
+        financementEnCours: true,
+        terme,
+      }),
     ).toBe("financement_en_cours");
     expect(
-      motifDeProlongation({ deja: true, devisEnCours: true, dernierEchangeAt: null, financementEnCours: true, terme }),
+      motifDeProlongation({
+        deja: true,
+        devisEnCours: true,
+        dernierEchangeAt: null,
+        financementEnCours: true,
+        terme,
+      }),
     ).toBeNull();
   });
 
@@ -56,15 +86,27 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
   });
 
   it("formation : forfait réduit au prorata de la remise, jamais augmenté", () => {
-    expect(calculerCommission({ activite: "formation", palier: "formation-generale-1j", factureHtCents: 152_000 })).toEqual({
+    expect(
+      calculerCommission({
+        activite: "formation",
+        palier: "formation-generale-1j",
+        factureHtCents: 152_000,
+      }),
+    ).toEqual({
       statut: "calculee",
       montantCents: 40_000,
       palier: "formation-generale-1j",
       prixPublicCents: 190_000,
     });
-    const plusCher = calculerCommission({ activite: "formation", palier: "formation-secteur-2j", factureHtCents: 500_000 });
+    const plusCher = calculerCommission({
+      activite: "formation",
+      palier: "formation-secteur-2j",
+      factureHtCents: 500_000,
+    });
     expect(plusCher.statut === "calculee" && plusCher.montantCents).toBe(100_000);
-    expect(calculerCommission({ activite: "formation", palier: null, factureHtCents: 190_000 })).toEqual({ statut: "a_qualifier" });
+    expect(
+      calculerCommission({ activite: "formation", palier: null, factureHtCents: 190_000 }),
+    ).toEqual({ statut: "a_qualifier" });
   });
 
   it("audit 30 %, intégration 15 %, 1-to-1 30 %, web aucune", () => {
@@ -75,21 +117,45 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     expect(m("audit")).toBe(57_000);
     expect(m("implementation")).toBe(28_500);
     expect(m("un_a_un")).toBe(57_000);
-    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toEqual({ statut: "aucune" });
-    expect(calculerCommission({ activite: null, factureHtCents: 100_000 })).toEqual({ statut: "a_qualifier" });
+    expect(calculerCommission({ activite: "site_web", factureHtCents: 100_000 })).toEqual({
+      statut: "aucune",
+    });
+    expect(calculerCommission({ activite: null, factureHtCents: 100_000 })).toEqual({
+      statut: "a_qualifier",
+    });
   });
 
   it("parrainage : 10 % pendant les 6 mois qui suivent la signature du filleul", () => {
     const filleulSigneAt = d("2026-01-01");
-    expect(partParrainage({ commissionFilleulCents: 50_000, filleulSigneAt, commandeSigneeAt: d("2026-06-30") })).toBe(5_000);
-    expect(partParrainage({ commissionFilleulCents: 50_000, filleulSigneAt, commandeSigneeAt: d("2026-07-02") })).toBe(0);
+    expect(
+      partParrainage({
+        commissionFilleulCents: 50_000,
+        filleulSigneAt,
+        commandeSigneeAt: d("2026-06-30"),
+      }),
+    ).toBe(5_000);
+    expect(
+      partParrainage({
+        commissionFilleulCents: 50_000,
+        filleulSigneAt,
+        commandeSigneeAt: d("2026-07-02"),
+      }),
+    ).toBe(0);
   });
 
   it("vigilance : demandée à l'approche de 5 000 €, seul le versement au-delà attend", () => {
-    expect(etatVigilance({ cumulCents: 300_000, nouvelleCents: 50_000, piecesValides: false })).toEqual({ demander: false, attendre: false });
-    expect(etatVigilance({ cumulCents: 380_000, nouvelleCents: 100_000, piecesValides: false })).toEqual({ demander: true, attendre: false });
-    expect(etatVigilance({ cumulCents: 480_000, nouvelleCents: 50_000, piecesValides: false })).toEqual({ demander: true, attendre: true });
-    expect(etatVigilance({ cumulCents: 480_000, nouvelleCents: 50_000, piecesValides: true })).toEqual({ demander: false, attendre: false });
+    expect(
+      etatVigilance({ cumulCents: 300_000, nouvelleCents: 50_000, piecesValides: false }),
+    ).toEqual({ demander: false, attendre: false });
+    expect(
+      etatVigilance({ cumulCents: 380_000, nouvelleCents: 100_000, piecesValides: false }),
+    ).toEqual({ demander: true, attendre: false });
+    expect(
+      etatVigilance({ cumulCents: 480_000, nouvelleCents: 50_000, piecesValides: false }),
+    ).toEqual({ demander: true, attendre: true });
+    expect(
+      etatVigilance({ cumulCents: 480_000, nouvelleCents: 50_000, piecesValides: true }),
+    ).toEqual({ demander: false, attendre: false });
   });
 
   it("relevé : 50 € minimum, sauf en janvier et au dernier relevé", () => {
@@ -100,10 +166,22 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
   });
 
   it("admission : refus nommés, professions à revoir signalées", () => {
-    expect(jugerAdmission({ active: true, francaise: true, naf: "70.22Z" })).toEqual({ ok: true, aRevoir: false });
-    expect(jugerAdmission({ active: false, francaise: true, naf: "70.22Z" })).toEqual({ ok: false, motif: "siren_inactif" });
-    expect(jugerAdmission({ active: true, francaise: true, naf: "6910Z" })).toEqual({ ok: false, motif: "profession_exclue" });
-    expect(jugerAdmission({ active: true, francaise: true, naf: "69.20Z" })).toEqual({ ok: true, aRevoir: true });
+    expect(jugerAdmission({ active: true, francaise: true, naf: "70.22Z" })).toEqual({
+      ok: true,
+      aRevoir: false,
+    });
+    expect(jugerAdmission({ active: false, francaise: true, naf: "70.22Z" })).toEqual({
+      ok: false,
+      motif: "siren_inactif",
+    });
+    expect(jugerAdmission({ active: true, francaise: true, naf: "6910Z" })).toEqual({
+      ok: false,
+      motif: "profession_exclue",
+    });
+    expect(jugerAdmission({ active: true, francaise: true, naf: "69.20Z" })).toEqual({
+      ok: true,
+      aRevoir: true,
+    });
     expect(normaliserNaf("69.20z")).toBe("69.20Z");
   });
 
@@ -116,8 +194,21 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
 
   it("ce qui manque pour signer", () => {
     expect(
-      manquesPourSigner({ siren: null, statutJuridique: null, regimeTva: "assujetti", numeroTva: null, iban: null, piecesDeposees: ["rib"] }),
-    ).toEqual(["votre numéro SIREN", "votre statut", "votre numéro de TVA", "votre IBAN", "pièce d'identité"]);
+      manquesPourSigner({
+        siren: null,
+        statutJuridique: null,
+        regimeTva: "assujetti",
+        numeroTva: null,
+        iban: null,
+        piecesDeposees: ["rib"],
+      }),
+    ).toEqual([
+      "votre numéro SIREN",
+      "votre statut",
+      "votre numéro de TVA",
+      "votre IBAN",
+      "pièce d'identité",
+    ]);
     expect(
       manquesPourSigner({
         siren: "732829320",

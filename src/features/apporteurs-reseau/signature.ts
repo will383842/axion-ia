@@ -93,7 +93,8 @@ export async function signerContrat(e: {
     prenom: dossier.prenom,
     nom: dossier.nom,
   });
-  if (!verdict.ok) return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE[verdict.refus] };
+  if (!verdict.ok)
+    return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE[verdict.refus] };
 
   const maintenant = e.maintenant ?? new Date();
   const valeurs = valeursDuContrat(dossier, maintenant);

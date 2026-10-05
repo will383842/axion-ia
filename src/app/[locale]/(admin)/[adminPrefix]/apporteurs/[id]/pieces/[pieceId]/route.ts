@@ -43,9 +43,13 @@ export async function GET(
   const p = await lireOctetsPiece(id.toLowerCase(), pieceId.toLowerCase());
   if (!p || !TYPES.has(p.typeMime)) return refus(404, "Pièce introuvable.");
   const verdict = await analyserOctets(p.octets, 30_000);
-  if (verdict.issue === "infecte") return refus(409, "L'antivirus a trouvé un risque dans ce fichier.");
+  if (verdict.issue === "infecte")
+    return refus(409, "L'antivirus a trouvé un risque dans ce fichier.");
   if (verdict.issue === "indisponible") {
-    return refus(503, "La vérification antivirus est momentanément indisponible. Réessayez dans quelques minutes.");
+    return refus(
+      503,
+      "La vérification antivirus est momentanément indisponible. Réessayez dans quelques minutes.",
+    );
   }
   const nom = p.nomFichier.replace(/[^\w.\- ]+/g, "_");
   return new NextResponse(p.octets as unknown as BodyInit, {
@@ -54,7 +58,8 @@ export async function GET(
       "Content-Type": p.typeMime,
       "Content-Length": String(p.octets.length),
       "Content-Disposition": `inline; filename="${nom}"`,
-      "Content-Security-Policy": "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox",
+      "Content-Security-Policy":
+        "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox",
       "Cache-Control": "private, no-store",
       "X-Content-Type-Options": "nosniff",
       "X-Robots-Tag": "noindex",

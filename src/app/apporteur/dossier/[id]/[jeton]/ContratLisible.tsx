@@ -37,13 +37,19 @@ export function ContratLisible({ texte }: { texte: string }) {
     if (!b || b === "---") continue;
     if (b.startsWith("## ")) {
       blocs.push(
-        <h3 key={n++} className="mt-6 mb-3 text-center font-serif text-[20px] font-medium first:mt-0">
+        <h3
+          key={n++}
+          className="mt-6 mb-3 text-center font-serif text-[20px] font-medium first:mt-0"
+        >
           {b.slice(3).trim()}
         </h3>,
       );
     } else if (b.startsWith("### ")) {
       blocs.push(
-        <h4 key={n++} className="text-terracotta-deep border-border mt-5 mb-2 border-b pb-1 text-[16px] font-bold">
+        <h4
+          key={n++}
+          className="text-terracotta-deep border-border mt-5 mb-2 border-b pb-1 text-[16px] font-bold"
+        >
           {b.slice(4).trim()}
         </h4>,
       );
@@ -62,7 +68,11 @@ export function ContratLisible({ texte }: { texte: string }) {
               <thead className="bg-terracotta-soft">
                 <tr>
                   {cellules(entete).map((c, j) => (
-                    <th key={j} scope="col" className="border-border border p-1.5 text-left font-semibold">
+                    <th
+                      key={j}
+                      scope="col"
+                      className="border-border border p-1.5 text-left font-semibold"
+                    >
                       {enLigne(c)}
                     </th>
                   ))}

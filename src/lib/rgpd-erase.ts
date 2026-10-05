@@ -2172,7 +2172,6 @@ export async function rejouerEffacements(
   });
 }
 
-
 // ═════════════════════════════════════════════════════════════════════════════
 // RÉSEAU D'APPORTEURS — démarrage manuel (2026-10-05)
 //
@@ -2190,7 +2189,9 @@ export interface EraseReseauApporteurResult {
   presentationsAnonymisees: number;
 }
 
-export async function eraseReseauApporteurForEmail(email: string): Promise<EraseReseauApporteurResult> {
+export async function eraseReseauApporteurForEmail(
+  email: string,
+): Promise<EraseReseauApporteurResult> {
   const empreinte = hashEmailForLookup(email);
   if (!empreinte) return { apporteur: "aucun", presentationsAnonymisees: 0 };
   const presentations = await prisma.presentationEntreprise.updateMany({
@@ -2220,7 +2221,10 @@ export async function eraseReseauApporteurForEmail(email: string): Promise<Erase
       where: { id: a.id },
       data: { telephone: null, noteInterne: null, versionLien: { increment: 1 } },
     });
-    return { apporteur: "conserve_obligation_legale", presentationsAnonymisees: presentations.count };
+    return {
+      apporteur: "conserve_obligation_legale",
+      presentationsAnonymisees: presentations.count,
+    };
   }
   await prisma.apporteurReseau.update({
     where: { id: a.id },

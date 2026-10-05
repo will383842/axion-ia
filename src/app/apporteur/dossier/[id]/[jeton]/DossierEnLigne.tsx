@@ -28,7 +28,12 @@ import {
   nomTapeCorrespond,
 } from "@/features/apporteurs-reseau/signature-regles";
 
-import { enregistrerActiviteAction, rechercherSirenAction, signerAction, type ResultatRecherche } from "./actions";
+import {
+  enregistrerActiviteAction,
+  rechercherSirenAction,
+  signerAction,
+  type ResultatRecherche,
+} from "./actions";
 import { COCHE, icone } from "./Coquille";
 import { DepotPiece, type PieceAffichee } from "./DepotPiece";
 import { ETAPES, TEXTES } from "./textes";
@@ -67,7 +72,10 @@ const carte = "bg-paper shadow-card rounded-2xl p-4 sm:p-5";
 function Erreur({ message }: { message: string | null }) {
   if (!message) return null;
   return (
-    <p role="alert" className="bg-terracotta-soft text-error mt-4 rounded-xl p-3 text-[16px] font-semibold">
+    <p
+      role="alert"
+      className="bg-terracotta-soft text-error mt-4 rounded-xl p-3 text-[16px] font-semibold"
+    >
       {message}
     </p>
   );
@@ -81,7 +89,11 @@ function Progression({ etape }: { etape: number }) {
           const n = i + 1;
           const cls = n < etape ? "bg-sage" : n === etape ? "bg-terracotta" : "bg-sand-deep";
           return (
-            <li key={nom} className={`h-2 flex-1 rounded-full ${cls}`} aria-current={n === etape ? "step" : undefined}>
+            <li
+              key={nom}
+              className={`h-2 flex-1 rounded-full ${cls}`}
+              aria-current={n === etape ? "step" : undefined}
+            >
               <span className="sr-only">
                 {n}. {nom}
               </span>
@@ -90,7 +102,8 @@ function Progression({ etape }: { etape: number }) {
         })}
       </ol>
       <p className="text-fg-soft mt-2 text-[15px]">
-        {TEXTES.etapeNsur4(etape)} · <span className="text-fg font-semibold">{ETAPES[etape - 1]}</span>
+        {TEXTES.etapeNsur4(etape)} ·{" "}
+        <span className="text-fg font-semibold">{ETAPES[etape - 1]}</span>
       </p>
     </div>
   );
@@ -212,7 +225,9 @@ export function DossierEnLigne({
   const aRenvoyer = dossier.pieces.filter((p) => p.statut === "a_retransmettre");
   const attendu = `${dossier.prenom} ${dossier.nom}`.trim();
   const peutSigner =
-    manques.length === 0 && casesCompletes(declarations, acceptations) && nomTapeCorrespond(nomTape, dossier.prenom, dossier.nom);
+    manques.length === 0 &&
+    casesCompletes(declarations, acceptations) &&
+    nomTapeCorrespond(nomTape, dossier.prenom, dossier.nom);
 
   function signer() {
     setErreur(null);
@@ -235,11 +250,17 @@ export function DossierEnLigne({
   if (signe) {
     return (
       <div ref={haut}>
-        <section aria-labelledby="fin-titre" className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 text-center sm:p-8">
+        <section
+          aria-labelledby="fin-titre"
+          className="bg-paper bg-halo-warm shadow-card rounded-3xl p-6 text-center sm:p-8"
+        >
           <span className="bg-sage mx-auto grid h-16 w-16 place-items-center rounded-full text-white">
             {icone(COCHE, "h-8 w-8")}
           </span>
-          <h1 id="fin-titre" className="mt-5 font-serif text-[32px] leading-tight font-medium tracking-tight">
+          <h1
+            id="fin-titre"
+            className="mt-5 font-serif text-[32px] leading-tight font-medium tracking-tight"
+          >
             {TEXTES.merciTitre}
           </h1>
           <p className="text-fg-soft mt-3 text-[18px] leading-relaxed">{TEXTES.merciLigne}</p>
@@ -252,12 +273,17 @@ export function DossierEnLigne({
   return (
     <div ref={haut} className="scroll-mt-4">
       {dossier.statut === "a_completer" ? (
-        <section aria-labelledby="a-completer" className="border-terracotta bg-terracotta-soft mb-5 rounded-2xl border-l-4 p-4">
+        <section
+          aria-labelledby="a-completer"
+          className="border-terracotta bg-terracotta-soft mb-5 rounded-2xl border-l-4 p-4"
+        >
           <h2 id="a-completer" className="text-terracotta-deep text-[18px] font-bold">
             {TEXTES.aCompleterTitre}
           </h2>
           {dossier.dernierMessage ? (
-            <p className="text-fg mt-1 text-[16px] leading-relaxed whitespace-pre-line">{dossier.dernierMessage}</p>
+            <p className="text-fg mt-1 text-[16px] leading-relaxed whitespace-pre-line">
+              {dossier.dernierMessage}
+            </p>
           ) : null}
           {aRenvoyer.length > 0 ? (
             <ul className="mt-2 grid gap-1 text-[16px]">
@@ -290,7 +316,9 @@ export function DossierEnLigne({
             ).map(([l, v]) => (
               <div key={l}>
                 <span className={etiquette}>{l}</span>
-                <p className="bg-sand mt-1 flex min-h-[52px] items-center rounded-xl px-3.5 text-[17px] break-all">{v}</p>
+                <p className="bg-sand mt-1 flex min-h-[52px] items-center rounded-xl px-3.5 text-[17px] break-all">
+                  {v}
+                </p>
               </div>
             ))}
             <p className="text-fg-soft text-[14px]">{TEXTES.lectureSeule}</p>
@@ -356,7 +384,9 @@ export function DossierEnLigne({
               <p className="text-sage font-bold">
                 ✓ {TEXTES.trouve} : {trouve.entreprise.denomination ?? "—"}
               </p>
-              {trouve.entreprise.adresse ? <p className="mt-0.5">{trouve.entreprise.adresse}</p> : null}
+              {trouve.entreprise.adresse ? (
+                <p className="mt-0.5">{trouve.entreprise.adresse}</p>
+              ) : null}
               <p className="text-fg-soft mt-0.5 text-[15px]">
                 {TEXTES.active}
                 {trouve.entreprise.naf ? ` · NAF ${trouve.entreprise.naf}` : ""}
@@ -364,7 +394,10 @@ export function DossierEnLigne({
             </div>
           ) : null}
           {refus ? (
-            <p role="alert" className="bg-terracotta-soft text-error mt-3 rounded-xl p-3 text-[16px] font-semibold">
+            <p
+              role="alert"
+              className="bg-terracotta-soft text-error mt-3 rounded-xl p-3 text-[16px] font-semibold"
+            >
               {refus}
             </p>
           ) : null}
@@ -439,7 +472,9 @@ export function DossierEnLigne({
                     <label
                       key={v}
                       className={`flex min-h-[52px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 px-3 text-[16px] font-semibold ${
-                        tva === v ? "border-terracotta bg-terracotta-soft text-terracotta-deep" : "border-border bg-paper"
+                        tva === v
+                          ? "border-terracotta bg-terracotta-soft text-terracotta-deep"
+                          : "border-border bg-paper"
                       }`}
                     >
                       <input
@@ -551,7 +586,12 @@ export function DossierEnLigne({
             <button type="button" className={boutonSecondaire} onClick={() => aller(2)}>
               {TEXTES.retour}
             </button>
-            <button type="button" className={boutonPrincipal} disabled={manques.length > 0} onClick={() => aller(4)}>
+            <button
+              type="button"
+              className={boutonPrincipal}
+              disabled={manques.length > 0}
+              onClick={() => aller(4)}
+            >
               {TEXTES.continuer}
             </button>
           </div>
@@ -619,13 +659,20 @@ export function DossierEnLigne({
             />
           </div>
 
-          {manques.length > 0 ? <Erreur message={`${TEXTES.manque} ${manques.join(", ")}.`} /> : null}
+          {manques.length > 0 ? (
+            <Erreur message={`${TEXTES.manque} ${manques.join(", ")}.`} />
+          ) : null}
           <Erreur message={erreur} />
           <div className="mt-5 flex gap-2">
             <button type="button" className={boutonSecondaire} onClick={() => aller(3)}>
               {TEXTES.retour}
             </button>
-            <button type="button" className={boutonPrincipal} disabled={enCours || !peutSigner} onClick={signer}>
+            <button
+              type="button"
+              className={boutonPrincipal}
+              disabled={enCours || !peutSigner}
+              onClick={signer}
+            >
               {enCours ? TEXTES.signature : TEXTES.signer}
             </button>
           </div>

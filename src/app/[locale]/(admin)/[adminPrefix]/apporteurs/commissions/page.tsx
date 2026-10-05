@@ -7,7 +7,10 @@ import Link from "next/link";
 import { AdminBadge, AdminCard, AdminPageHeader, AdminStatCard } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
-import { QualifierForm, VerserForm } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
+import {
+  QualifierForm,
+  VerserForm,
+} from "@/components/admin/apporteurs/commissions/FormulairesCommission";
 import {
   compterCommissions,
   libelleMois,
@@ -80,29 +83,47 @@ export default async function CommissionsApporteursPage({ params, searchParams }
       />
 
       <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-4">
-        <AdminStatCard label="À qualifier" value={comptes.a_qualifier} href={`${base}?statut=a_qualifier`} />
+        <AdminStatCard
+          label="À qualifier"
+          value={comptes.a_qualifier}
+          href={`${base}?statut=a_qualifier`}
+        />
         <AdminStatCard label="Dues" value={comptes.due} href={`${base}?statut=due`} />
-        <AdminStatCard label="Attente vigilance" value={comptes.en_attente_vigilance} href={`${base}?statut=en_attente_vigilance`} />
+        <AdminStatCard
+          label="Attente vigilance"
+          value={comptes.en_attente_vigilance}
+          href={`${base}?statut=en_attente_vigilance`}
+        />
         <AdminStatCard label="Versées" value={comptes.versee} href={`${base}?statut=versee`} />
       </div>
 
       <AdminCard as="section">
-        <h2 className="mb-[var(--space-admin-3)] font-semibold">💶 Relevés de {libelleMois(moisParis(maintenant))}</h2>
+        <h2 className="mb-[var(--space-admin-3)] font-semibold">
+          💶 Relevés de {libelleMois(moisParis(maintenant))}
+        </h2>
         {releves.length === 0 ? (
           <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission due.</p>
         ) : (
           <ul className="flex flex-col divide-y divide-[color:var(--color-admin-border)]">
             {releves.map((r) => (
-              <li key={r.apporteurId} className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-3)]">
+              <li
+                key={r.apporteurId}
+                className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-3)]"
+              >
                 <div>
-                  <Link href={`/fr/${adminPrefix}/apporteurs/${r.apporteurId}`} className="font-medium">
+                  <Link
+                    href={`/fr/${adminPrefix}/apporteurs/${r.apporteurId}`}
+                    className="font-medium"
+                  >
                     {r.apporteur}
                   </Link>
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     {euros(r.soldeCents)} · {r.lignes} ligne(s){r.raison ? ` · ${r.raison}` : ""}
                   </p>
                 </div>
-                {r.emis && peutPayer ? <VerserForm apporteurId={r.apporteurId} montant={euros(r.soldeCents)} /> : null}
+                {r.emis && peutPayer ? (
+                  <VerserForm apporteurId={r.apporteurId} montant={euros(r.soldeCents)} />
+                ) : null}
               </li>
             ))}
           </ul>
@@ -111,7 +132,12 @@ export default async function CommissionsApporteursPage({ params, searchParams }
 
       <AdminFilterTabs
         current={onglet}
-        options={ONGLETS.map((o) => ({ value: o.cle, label: o.libelle, href: `${base}?statut=${o.cle}`, count: comptes[o.cle] }))}
+        options={ONGLETS.map((o) => ({
+          value: o.cle,
+          label: o.libelle,
+          href: `${base}?statut=${o.cle}`,
+          count: comptes[o.cle],
+        }))}
       />
 
       {lignes.length === 0 ? (
@@ -125,16 +151,20 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   <div>
                     <p className="font-semibold">
                       {c.montantCents !== null ? euros(c.montantCents) : "—"}{" "}
-                      <span className="font-normal text-[color:var(--color-admin-fg-muted)]">· {c.apporteur}</span>
+                      <span className="font-normal text-[color:var(--color-admin-fg-muted)]">
+                        · {c.apporteur}
+                      </span>
                     </p>
                     <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                      {c.entreprise ?? "?"} · {ACTIVITE[c.activite] ?? c.activite} · facture {c.factureNumero ?? "?"} (
-                      {euros(c.factureHtCents)} HT)
+                      {c.entreprise ?? "?"} · {ACTIVITE[c.activite] ?? c.activite} · facture{" "}
+                      {c.factureNumero ?? "?"} ({euros(c.factureHtCents)} HT)
                     </p>
                   </div>
                   <div className="flex gap-[var(--space-admin-1)]">
                     {c.parrainage ? <AdminBadge tone="info">Parrainage</AdminBadge> : null}
-                    {c.autofactureNumero ? <AdminBadge tone="outline">{c.autofactureNumero}</AdminBadge> : null}
+                    {c.autofactureNumero ? (
+                      <AdminBadge tone="outline">{c.autofactureNumero}</AdminBadge>
+                    ) : null}
                   </div>
                 </div>
                 {c.palier ? (
@@ -142,7 +172,10 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     {PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier}
                   </p>
                 ) : null}
-                {c.statut === "a_qualifier" && !c.parrainage && c.activite === "formation" && peutPayer ? (
+                {c.statut === "a_qualifier" &&
+                !c.parrainage &&
+                c.activite === "formation" &&
+                peutPayer ? (
                   <QualifierForm id={c.id} paliers={PALIERS} />
                 ) : null}
                 {c.statut === "a_qualifier" && c.parrainage ? (

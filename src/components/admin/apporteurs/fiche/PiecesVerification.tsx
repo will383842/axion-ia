@@ -5,7 +5,11 @@
 import { useState, useTransition } from "react";
 
 import { jugerPieceAction } from "@/features/apporteurs-reseau/actions-apporteurs";
-import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, type TypePiece } from "@/features/apporteurs-reseau/regles";
+import {
+  LIBELLE_PIECE,
+  MOTIFS_A_RETRANSMETTRE,
+  type TypePiece,
+} from "@/features/apporteurs-reseau/regles";
 
 import { MessageRetour } from "./ApercuEmail";
 
@@ -20,21 +24,43 @@ export interface PieceAffichee {
 }
 
 const PASTILLE: Record<PieceAffichee["statut"], { texte: string; classe: string }> = {
-  deposee: { texte: "À vérifier", classe: "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]" },
-  conforme: { texte: "Conforme", classe: "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]" },
+  deposee: {
+    texte: "À vérifier",
+    classe: "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+  },
+  conforme: {
+    texte: "Conforme",
+    classe: "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
+  },
   a_retransmettre: {
     texte: "À retransmettre",
-    classe: "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
+    classe:
+      "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
   },
 };
 
-function LignePiece({ apporteurId, piece, modifiable }: { apporteurId: string; piece: PieceAffichee; modifiable: boolean }) {
+function LignePiece({
+  apporteurId,
+  piece,
+  modifiable,
+}: {
+  apporteurId: string;
+  piece: PieceAffichee;
+  modifiable: boolean;
+}) {
   const [motif, setMotif] = useState<string>(piece.motif ?? "illisible");
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
   const [enCours, demarrer] = useTransition();
   const juger = (verdict: "conforme" | "a_retransmettre") =>
     demarrer(async () => {
-      setRetour(await jugerPieceAction({ apporteurId, pieceId: piece.id, verdict, motif: verdict === "conforme" ? null : motif }));
+      setRetour(
+        await jugerPieceAction({
+          apporteurId,
+          pieceId: piece.id,
+          verdict,
+          motif: verdict === "conforme" ? null : motif,
+        }),
+      );
     });
   const p = PASTILLE[piece.statut];
   return (
@@ -46,7 +72,9 @@ function LignePiece({ apporteurId, piece, modifiable }: { apporteurId: string; p
             {piece.nomFichier} · déposée le {piece.deposeeLe}
           </div>
         </div>
-        <span className={`rounded-full px-3 py-1 text-[length:var(--text-admin-sm)] font-semibold ${p.classe}`}>
+        <span
+          className={`rounded-full px-3 py-1 text-[length:var(--text-admin-sm)] font-semibold ${p.classe}`}
+        >
           {p.texte}
           {piece.statut === "a_retransmettre" && piece.motif
             ? ` (${MOTIFS_A_RETRANSMETTRE.find((m) => m.valeur === piece.motif)?.libelle ?? piece.motif})`
@@ -55,7 +83,12 @@ function LignePiece({ apporteurId, piece, modifiable }: { apporteurId: string; p
       </div>
       <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
         {piece.lienOuvrir ? (
-          <a className="admin-button-secondary" href={piece.lienOuvrir} target="_blank" rel="noreferrer">
+          <a
+            className="admin-button-secondary"
+            href={piece.lienOuvrir}
+            target="_blank"
+            rel="noreferrer"
+          >
             Ouvrir
           </a>
         ) : (
@@ -65,7 +98,12 @@ function LignePiece({ apporteurId, piece, modifiable }: { apporteurId: string; p
         )}
         {modifiable ? (
           <>
-            <button type="button" className="admin-button" disabled={enCours} onClick={() => juger("conforme")}>
+            <button
+              type="button"
+              className="admin-button"
+              disabled={enCours}
+              onClick={() => juger("conforme")}
+            >
               Conforme
             </button>
             <select
@@ -81,7 +119,12 @@ function LignePiece({ apporteurId, piece, modifiable }: { apporteurId: string; p
                 </option>
               ))}
             </select>
-            <button type="button" className="admin-button-secondary" disabled={enCours} onClick={() => juger("a_retransmettre")}>
+            <button
+              type="button"
+              className="admin-button-secondary"
+              disabled={enCours}
+              onClick={() => juger("a_retransmettre")}
+            >
               À retransmettre
             </button>
           </>
@@ -102,7 +145,11 @@ export function PiecesVerification({
   modifiable: boolean;
 }) {
   if (pieces.length === 0) {
-    return <p className="text-[color:var(--color-admin-fg-muted)]">Aucune pièce déposée pour l&apos;instant.</p>;
+    return (
+      <p className="text-[color:var(--color-admin-fg-muted)]">
+        Aucune pièce déposée pour l&apos;instant.
+      </p>
+    );
   }
   return (
     <ul className="flex flex-col gap-[var(--space-admin-2)]">

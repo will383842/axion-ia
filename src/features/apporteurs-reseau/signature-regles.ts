@@ -8,9 +8,16 @@
 
 // Import de TYPE seul : effacé à la compilation, il n'embarque pas le module serveur.
 import type { ValeursContrat } from "./contrat-pdf";
-import { ACCEPTATIONS, DECLARATIONS, MOTIFS_A_RETRANSMETTRE, manquesPourSigner, type TypePiece } from "./regles";
+import {
+  ACCEPTATIONS,
+  DECLARATIONS,
+  MOTIFS_A_RETRANSMETTRE,
+  manquesPourSigner,
+  type TypePiece,
+} from "./regles";
 
-export type StatutDossier = "dossier_en_cours" | "a_verifier" | "a_completer" | "signe" | "refuse" | "resilie";
+export type StatutDossier =
+  "dossier_en_cours" | "a_verifier" | "a_completer" | "signe" | "refuse" | "resilie";
 
 // ── États de la page ─────────────────────────────────────────────────────
 
@@ -113,7 +120,10 @@ export function casesConnues(cochees: readonly string[], reference: readonly str
 }
 
 /** Les 4 déclarations et les 6 acceptations sont-elles TOUTES cochées ? */
-export function casesCompletes(declarations: readonly string[], acceptations: readonly string[]): boolean {
+export function casesCompletes(
+  declarations: readonly string[],
+  acceptations: readonly string[],
+): boolean {
   return (
     casesConnues(declarations, CLES_DECLARATIONS).length === CLES_DECLARATIONS.length &&
     casesConnues(acceptations, CLES_ACCEPTATIONS).length === CLES_ACCEPTATIONS.length
@@ -153,12 +163,21 @@ const A_COMPLETER = "[à compléter]";
 
 /** « 5 octobre 2026 », à Paris. */
 export function dateFrancaise(d: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "long", year: "numeric" }).format(d);
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
 }
 
 /** « 5 octobre 2026 à 14 h 32 (heure de Paris) ». */
 export function dateHeureParis(d: Date): string {
-  const heure = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit" })
+  const heure = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
     .format(d)
     .replace(":", " h ");
   return `${dateFrancaise(d)} à ${heure} (heure de Paris)`;
@@ -177,7 +196,13 @@ function qualite(statut: string): string {
  * (aperçu seulement : on ne signe qu'un dossier complet).
  */
 export function valeursDuContrat(
-  d: { prenom: string; nom: string; statutJuridique: string | null; siren: string | null; adresse: string | null },
+  d: {
+    prenom: string;
+    nom: string;
+    statutJuridique: string | null;
+    siren: string | null;
+    adresse: string | null;
+  },
   le: Date,
 ): ValeursContrat {
   const identite = `${d.prenom.trim()} ${d.nom.trim().toLocaleUpperCase("fr-FR")}`.trim();

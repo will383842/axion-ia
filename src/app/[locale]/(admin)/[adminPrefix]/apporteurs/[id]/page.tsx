@@ -9,8 +9,14 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
-import { PiecesVerification, type PieceAffichee } from "@/components/admin/apporteurs/fiche/PiecesVerification";
-import { LIBELLE_STATUT_APPORTEUR, lireFicheApporteur } from "@/features/apporteurs-reseau/requetes-console";
+import {
+  PiecesVerification,
+  type PieceAffichee,
+} from "@/components/admin/apporteurs/fiche/PiecesVerification";
+import {
+  LIBELLE_STATUT_APPORTEUR,
+  lireFicheApporteur,
+} from "@/features/apporteurs-reseau/requetes-console";
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
 import { gardePage } from "@/server/auth/garde-page";
 
@@ -21,7 +27,13 @@ interface PageProps {
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const jour = (d: Date) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Paris" });
+const jour = (d: Date) =>
+  d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 const jourHeure = (d: Date) =>
   `${jour(d)} à ${d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" })}`;
 
@@ -70,8 +82,11 @@ export default async function FicheApporteurPage({ params }: PageProps) {
     deposeeLe: jour(p.deposeeAt),
     lienOuvrir: `${base}/${d.id}/pieces/${p.id}`,
   }));
-  const statut = STATUTS_JURIDIQUES.find((s) => s.valeur === d.statutJuridique)?.libelle ?? d.statutJuridique;
-  const totalVerse = fiche.commissions.filter((c) => c.statut === "versee").reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  const statut =
+    STATUTS_JURIDIQUES.find((s) => s.valeur === d.statutJuridique)?.libelle ?? d.statutJuridique;
+  const totalVerse = fiche.commissions
+    .filter((c) => c.statut === "versee")
+    .reduce((s, c) => s + (c.montantCents ?? 0), 0);
   const totalDu = fiche.commissions
     .filter((c) => c.statut === "due" || c.statut === "en_attente_vigilance")
     .reduce((s, c) => s + (c.montantCents ?? 0), 0);
@@ -119,28 +134,54 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
           <Ligne
             libelle="TVA"
-            valeur={d.regimeTva === "assujetti" ? `Facture la TVA (${d.numeroTva ?? "numéro manquant"})` : d.regimeTva ? "Ne facture pas la TVA (293 B)" : null}
+            valeur={
+              d.regimeTva === "assujetti"
+                ? `Facture la TVA (${d.numeroTva ?? "numéro manquant"})`
+                : d.regimeTva
+                  ? "Ne facture pas la TVA (293 B)"
+                  : null
+            }
           />
           <Ligne libelle="IBAN" valeur={d.ibanMasque} />
         </AdminCard>
 
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Pièces</h2>
-          <PiecesVerification apporteurId={d.id} pieces={pieces} modifiable={aVerifier || d.statut === "signe"} />
+          <PiecesVerification
+            apporteurId={d.id}
+            pieces={pieces}
+            modifiable={aVerifier || d.statut === "signe"}
+          />
         </AdminCard>
 
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Contrat</h2>
-          <Ligne libelle="Signé par l'apporteur" valeur={d.signeParApporteurAt ? jourHeure(d.signeParApporteurAt) : null} />
-          <Ligne libelle="Contresigné" valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null} />
+          <Ligne
+            libelle="Signé par l'apporteur"
+            valeur={d.signeParApporteurAt ? jourHeure(d.signeParApporteurAt) : null}
+          />
+          <Ligne
+            libelle="Contresigné"
+            valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null}
+          />
           <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
             {fiche.aContratApporteur ? (
-              <a className="admin-button-secondary" href={`${base}/${d.id}/contrat?quel=apporteur`} target="_blank" rel="noreferrer">
+              <a
+                className="admin-button-secondary"
+                href={`${base}/${d.id}/contrat?quel=apporteur`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Contrat signé par l&apos;apporteur
               </a>
             ) : null}
             {fiche.aContratSigne ? (
-              <a className="admin-button-secondary" href={`${base}/${d.id}/contrat?quel=signe`} target="_blank" rel="noreferrer">
+              <a
+                className="admin-button-secondary"
+                href={`${base}/${d.id}/contrat?quel=signe`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Contrat signé des deux parties
               </a>
             ) : null}
@@ -184,14 +225,20 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </Link>
         </div>
         {fiche.entreprises.length === 0 ? (
-          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune entreprise présentée pour l&apos;instant.</p>
+          <p className="text-[color:var(--color-admin-fg-muted)]">
+            Aucune entreprise présentée pour l&apos;instant.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[length:var(--text-admin-sm)]">
               <thead>
                 <tr className="text-[color:var(--color-admin-fg-muted)]">
-                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Ajoutée le</th>
-                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Entreprise</th>
+                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
+                    Ajoutée le
+                  </th>
+                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
+                    Entreprise
+                  </th>
                   <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">État</th>
                   <th className="py-[var(--space-admin-2)]">Protégée jusqu&apos;au</th>
                 </tr>
@@ -199,7 +246,9 @@ export default async function FicheApporteurPage({ params }: PageProps) {
               <tbody>
                 {fiche.entreprises.map((e) => (
                   <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
-                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">{jourHeure(e.recueAt)}</td>
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
+                      {jourHeure(e.recueAt)}
+                    </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
                       <strong>{e.denomination}</strong>
                       <div className="text-[color:var(--color-admin-fg-muted)]">{e.siren}</div>
@@ -208,7 +257,9 @@ export default async function FicheApporteurPage({ params }: PageProps) {
                       {LIBELLE_PRESENTATION[e.statut] ?? e.statut}
                       {e.prolongeeAt ? " (prolongée)" : ""}
                     </td>
-                    <td className="py-[var(--space-admin-2)]">{e.protegeeJusquAt ? jour(e.protegeeJusquAt) : "—"}</td>
+                    <td className="py-[var(--space-admin-2)]">
+                      {e.protegeeJusquAt ? jour(e.protegeeJusquAt) : "—"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -227,7 +278,9 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </Link>
         </div>
         {fiche.commissions.length === 0 ? (
-          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission pour l&apos;instant.</p>
+          <p className="text-[color:var(--color-admin-fg-muted)]">
+            Aucune commission pour l&apos;instant.
+          </p>
         ) : (
           <ul className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
             {fiche.commissions.map((c) => (
@@ -237,7 +290,8 @@ export default async function FicheApporteurPage({ params }: PageProps) {
                   {c.palier ? ` (${c.palier})` : ""} · facture {euros(c.factureHtCents)} HT
                 </span>
                 <span className="font-semibold">
-                  {c.montantCents !== null ? euros(c.montantCents) : "—"} · {LIBELLE_COMMISSION[c.statut] ?? c.statut}
+                  {c.montantCents !== null ? euros(c.montantCents) : "—"} ·{" "}
+                  {LIBELLE_COMMISSION[c.statut] ?? c.statut}
                 </span>
               </li>
             ))}

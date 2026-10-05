@@ -28,7 +28,13 @@ const ACTIF =
 const REPOS =
   "border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg)]";
 
-export function ReponsePresentation({ id, nomFamilleSuggere }: { id: string; nomFamilleSuggere: string }) {
+export function ReponsePresentation({
+  id,
+  nomFamilleSuggere,
+}: {
+  id: string;
+  nomFamilleSuggere: string;
+}) {
   const [choix, setChoix] = useState<Reponse | null>(null);
   const [civilite, setCivilite] = useState("");
   const [nomFamille, setNomFamille] = useState(nomFamilleSuggere);
@@ -44,19 +50,27 @@ export function ReponsePresentation({ id, nomFamilleSuggere }: { id: string; nom
 
   function voir(): void {
     if (!choix) return;
-    lancer(async () => setApercu(await apercuReponseAction({ id, reponse: choix, civilite, nomFamille })));
+    lancer(async () =>
+      setApercu(await apercuReponseAction({ id, reponse: choix, civilite, nomFamille })),
+    );
   }
 
   function envoyer(): void {
     if (!choix) return;
     lancer(async () => {
-      setRetour(await repondreAction({ id, reponse: choix, civilite, nomFamille, confirmer: true }));
+      setRetour(
+        await repondreAction({ id, reponse: choix, civilite, nomFamille, confirmer: true }),
+      );
       setApercu(null);
     });
   }
 
   if (retour?.etat === "ok") {
-    return <p role="status" className="text-[color:var(--color-admin-success)]">{retour.message}</p>;
+    return (
+      <p role="status" className="text-[color:var(--color-admin-success)]">
+        {retour.message}
+      </p>
+    );
   }
 
   return (
@@ -118,10 +132,14 @@ export function ReponsePresentation({ id, nomFamilleSuggere }: { id: string; nom
       ) : null}
 
       {apercu?.etat === "erreur" ? (
-        <p role="alert" className="text-[color:var(--color-admin-destructive)]">{apercu.message}</p>
+        <p role="alert" className="text-[color:var(--color-admin-destructive)]">
+          {apercu.message}
+        </p>
       ) : null}
       {retour?.etat === "erreur" ? (
-        <p role="alert" className="text-[color:var(--color-admin-destructive)]">{retour.message}</p>
+        <p role="alert" className="text-[color:var(--color-admin-destructive)]">
+          {retour.message}
+        </p>
       ) : null}
 
       {apercu?.etat === "apercu" ? (
@@ -149,9 +167,18 @@ export function ReponsePresentation({ id, nomFamilleSuggere }: { id: string; nom
           ))}
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
             <button type="button" className="admin-button" onClick={envoyer} disabled={occupe}>
-              {occupe ? "Envoi…" : apercu.emails.length > 1 ? `Envoyer les ${apercu.emails.length} e-mails` : "Envoyer"}
+              {occupe
+                ? "Envoi…"
+                : apercu.emails.length > 1
+                  ? `Envoyer les ${apercu.emails.length} e-mails`
+                  : "Envoyer"}
             </button>
-            <button type="button" className="admin-button-secondary" onClick={() => setApercu(null)} disabled={occupe}>
+            <button
+              type="button"
+              className="admin-button-secondary"
+              onClick={() => setApercu(null)}
+              disabled={occupe}
+            >
               Annuler
             </button>
           </div>

@@ -30,13 +30,21 @@ import { ajouterMois, finDeProtection, sirenValide } from "./regles";
 // ── Signalements avant de répondre ───────────────────────────────────────
 
 export type Signalement =
-  | { type: "deja_presentee"; apporteur: string; statut: "reservee" | "confirmee"; jusquAu: Date | null }
+  | {
+      type: "deja_presentee";
+      apporteur: string;
+      statut: "reservee" | "confirmee";
+      jusquAu: Date | null;
+    }
   | { type: "facture_recente"; nombre: number }
   | { type: "devis_recent"; nombre: number }
   | { type: "devis_signe_non_facture"; nombre: number };
 
 /** Un devis signé est-il entièrement facturé ? (factures hors avoirs, brouillons et annulées) */
-export function devisSigneNonFacture(d: { montantTotalHtCents: number; facturesHtCents: readonly number[] }): boolean {
+export function devisSigneNonFacture(d: {
+  montantTotalHtCents: number;
+  facturesHtCents: readonly number[];
+}): boolean {
   const facture = d.facturesHtCents.reduce((s, x) => s + x, 0);
   return facture < d.montantTotalHtCents;
 }
@@ -47,18 +55,27 @@ export function presentationOccupe(
   maintenant: Date,
 ): boolean {
   if (p.statut === "reservee") return true;
-  if (p.statut === "confirmee") return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
+  if (p.statut === "confirmee")
+    return !p.protegeeJusquAt || p.protegeeJusquAt.getTime() >= maintenant.getTime();
   return false;
 }
 
 const STATUTS_FACTURE_EMISE = ["emise", "partiellement_payee", "en_retard", "payee"] as const;
 
 /** Ce que la console signale avant que Williams réponde. `saufId` : la présentation elle-même. */
-export async function lireSignalements(siren: string, maintenant: Date, saufId?: string): Promise<Signalement[]> {
+export async function lireSignalements(
+  siren: string,
+  maintenant: Date,
+  saufId?: string,
+): Promise<Signalement[]> {
   const out: Signalement[] = [];
   const [presentations, clients] = await Promise.all([
     prisma.presentationEntreprise.findMany({
-      where: { siren, statut: { in: ["reservee", "confirmee"] }, ...(saufId ? { id: { not: saufId } } : {}) },
+      where: {
+        siren,
+        statut: { in: ["reservee", "confirmee"] },
+        ...(saufId ? { id: { not: saufId } } : {}),
+      },
       select: {
         statut: true,
         protegeeJusquAt: true,
@@ -142,12 +159,22 @@ export function nomComplet(prenomChiffre: string, nomChiffre: string): string {
 }
 
 export function dateCourte(d: Date): string {
-  return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 }
 
 /** « lundi 5 octobre », en heure de Paris (format attendu par les gabarits). */
 export function dateGabarit(d: Date): string {
-  return d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Paris" });
+  return d.toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "Europe/Paris",
+  });
 }
 
 /** Le nom de famille deviné dans « Claire Durand » : tout sauf le premier mot. */
@@ -180,9 +207,14 @@ export async function creerPresentation(
 ): Promise<{ ok: true; id: string } | { ok: false; message: string }> {
   const siren = s.siren.replace(/\s+/g, "");
   if (!sirenValide(siren)) return { ok: false, message: "Numéro SIREN invalide." };
-  if (!s.personneNom.trim()) return { ok: false, message: "Indique le nom de la personne présentée." };
-  if (!EMAIL.test(s.personneEmail.trim())) return { ok: false, message: "Adresse e-mail de la personne invalide." };
-  if (Number.isNaN(s.recueAt.getTime()) || s.recueAt.getTime() > maintenant.getTime() + 5 * 60_000) {
+  if (!s.personneNom.trim())
+    return { ok: false, message: "Indique le nom de la personne présentée." };
+  if (!EMAIL.test(s.personneEmail.trim()))
+    return { ok: false, message: "Adresse e-mail de la personne invalide." };
+  if (
+    Number.isNaN(s.recueAt.getTime()) ||
+    s.recueAt.getTime() > maintenant.getTime() + 5 * 60_000
+  ) {
     return { ok: false, message: "Date de réception de l'e-mail invalide (dans le futur ?)." };
   }
   const apporteur = await prisma.apporteurReseau.findUnique({
@@ -197,8 +229,12 @@ export async function creerPresentation(
     const r = await lireEntrepriseParSiren(siren);
     denomination = r.ok ? (r.entreprise.denomination ?? "") : "";
   }
-  if (!denomination) return { ok: false, message: "Indique le nom de l'entreprise (registre muet)." };
-  const dateEchange = s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange) ? new Date(`${s.dateEchange}T00:00:00Z`) : null;
+  if (!denomination)
+    return { ok: false, message: "Indique le nom de l'entreprise (registre muet)." };
+  const dateEchange =
+    s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange)
+      ? new Date(`${s.dateEchange}T00:00:00Z`)
+      : null;
   const cree = await prisma.presentationEntreprise.create({
     data: {
       apporteurId: s.apporteurId,
@@ -209,7 +245,9 @@ export async function creerPresentation(
       personneEmail: encryptPii(s.personneEmail.trim()),
       // Empreinte de recherche : export et effacement RGPD de la personne présentée.
       personneEmailHash: hashEmailForLookup(s.personneEmail.trim()) || null,
-      personneTelephone: s.personneTelephone?.trim() ? encryptPii(s.personneTelephone.trim()) : null,
+      personneTelephone: s.personneTelephone?.trim()
+        ? encryptPii(s.personneTelephone.trim())
+        : null,
       besoin: s.besoin?.trim() || null,
       dateEchange,
       recueAt: s.recueAt,
@@ -247,7 +285,10 @@ export interface PresentationVue {
   aTraiter: boolean;
 }
 
-export function estATraiter(p: { statut: StatutPresentation; contactEnvoyeAt: Date | null }): boolean {
+export function estATraiter(p: {
+  statut: StatutPresentation;
+  contactEnvoyeAt: Date | null;
+}): boolean {
   return p.statut === "reservee" && p.contactEnvoyeAt === null;
 }
 
@@ -257,7 +298,10 @@ function filtreOnglet(onglet: OngletPresentations) {
       return { statut: "reservee" as const, contactEnvoyeAt: null };
     case "protegees":
       return {
-        OR: [{ statut: "reservee" as const, contactEnvoyeAt: { not: null } }, { statut: "confirmee" as const }],
+        OR: [
+          { statut: "reservee" as const, contactEnvoyeAt: { not: null } },
+          { statut: "confirmee" as const },
+        ],
       };
     default:
       return {};
@@ -330,7 +374,13 @@ export interface OptionsReponse {
 }
 
 interface DonneesEnvoi {
-  presentation: { id: string; denomination: string; recueAt: Date; personneNom: string; personneEmail: string };
+  presentation: {
+    id: string;
+    denomination: string;
+    recueAt: Date;
+    personneNom: string;
+    personneEmail: string;
+  };
   apporteur: { id: string; prenom: string; nom: string; email: string };
 }
 
@@ -356,7 +406,9 @@ export function construireEnvoisReponse(
         gabarit: "entreprise-prise-de-contact-apporteur",
         destinataire: d.presentation.personneEmail,
         payload: {
-          ...(o.civilite && o.nomFamille.trim() ? { civilite: o.civilite, nomFamille: o.nomFamille.trim() } : {}),
+          ...(o.civilite && o.nomFamille.trim()
+            ? { civilite: o.civilite, nomFamille: o.nomFamille.trim() }
+            : {}),
           contactName: d.presentation.personneNom,
           nomApporteur,
           entreprise: d.presentation.denomination,
@@ -392,7 +444,9 @@ export function construireEnvoisReponse(
   ];
 }
 
-async function chargerDonneesEnvoi(id: string): Promise<(DonneesEnvoi & { statut: StatutPresentation; contactEnvoyeAt: Date | null }) | null> {
+async function chargerDonneesEnvoi(
+  id: string,
+): Promise<(DonneesEnvoi & { statut: StatutPresentation; contactEnvoyeAt: Date | null }) | null> {
   const p = await prisma.presentationEntreprise.findUnique({
     where: { id },
     include: { apporteur: { select: { id: true, prenom: true, nom: true, email: true } } },
@@ -421,7 +475,10 @@ export async function apercuReponse(
   id: string,
   reponse: ReponsePresentation,
   o: OptionsReponse,
-): Promise<{ ok: true; emails: Array<{ sujet: string; html: string; destinataire: string }> } | { ok: false; message: string }> {
+): Promise<
+  | { ok: true; emails: Array<{ sujet: string; html: string; destinataire: string }> }
+  | { ok: false; message: string }
+> {
   const d = await chargerDonneesEnvoi(id);
   if (!d) return { ok: false, message: "Présentation introuvable." };
   if (!estATraiter(d)) return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
@@ -452,15 +509,22 @@ export async function appliquerReponse(
         ? { contactEnvoyeAt: maintenant }
         : { statut: reponse === "deja_connue" ? "deja_connue" : "hors_champ" },
   });
-  if (prise.count !== 1) return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
+  if (prise.count !== 1)
+    return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
 
   if (reponse === "bien_recu") {
     const [versEntreprise, versApporteur] = envois as [EnvoiApporteur, EnvoiApporteur];
     const r1 = await envoyer(versEntreprise);
     if (!PARTI.has(r1)) {
       // Sans prise de contact, le délai de 30 jours ne court pas : on rend la main.
-      await prisma.presentationEntreprise.update({ where: { id }, data: { contactEnvoyeAt: null } });
-      return { ok: false, message: `Le message à l'entreprise n'est pas parti (${r1}). Réessaie plus tard.` };
+      await prisma.presentationEntreprise.update({
+        where: { id },
+        data: { contactEnvoyeAt: null },
+      });
+      return {
+        ok: false,
+        message: `Le message à l'entreprise n'est pas parti (${r1}). Réessaie plus tard.`,
+      };
     }
     const r2 = await envoyer(versApporteur);
     return {
@@ -473,7 +537,9 @@ export async function appliquerReponse(
   const r = await envoyer(envois[0]!);
   return {
     ok: true,
-    message: PARTI.has(r) ? "Réponse envoyée à l'apporteur." : `Statut enregistré, mais l'e-mail n'est pas parti (${r}).`,
+    message: PARTI.has(r)
+      ? "Réponse envoyée à l'apporteur."
+      : `Statut enregistré, mais l'e-mail n'est pas parti (${r}).`,
   };
 }
 
@@ -485,10 +551,16 @@ export async function confirmerPresentation(
   confirmeeAt: Date,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  if (Number.isNaN(confirmeeAt.getTime()) || confirmeeAt.getTime() > maintenant.getTime() + 60_000) {
+  if (
+    Number.isNaN(confirmeeAt.getTime()) ||
+    confirmeeAt.getTime() > maintenant.getTime() + 60_000
+  ) {
     return { ok: false, message: "Date de réponse invalide." };
   }
-  const p = await prisma.presentationEntreprise.findUnique({ where: { id }, select: { recueAt: true } });
+  const p = await prisma.presentationEntreprise.findUnique({
+    where: { id },
+    select: { recueAt: true },
+  });
   if (!p) return { ok: false, message: "Présentation introuvable." };
   if (confirmeeAt.getTime() < p.recueAt.getTime() - 86_400_000) {
     return { ok: false, message: "La réponse ne peut pas précéder la présentation." };
@@ -504,16 +576,22 @@ export async function confirmerPresentation(
       protegeeJusquAt: finDeProtection(confirmeeAt),
     },
   });
-  return r.count === 1 ? { ok: true } : { ok: false, message: "Seule une présentation en attente peut être confirmée." };
+  return r.count === 1
+    ? { ok: true }
+    : { ok: false, message: "Seule une présentation en attente peut être confirmée." };
 }
 
 /** « L'entreprise dit ne pas connaître l'apporteur » (art. 3.7). */
-export async function dementirPresentation(id: string): Promise<{ ok: true } | { ok: false; message: string }> {
+export async function dementirPresentation(
+  id: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
   const r = await prisma.presentationEntreprise.updateMany({
     where: { id, statut: { in: ["reservee", "confirmee"] } },
     data: { statut: "dementie" },
   });
-  return r.count === 1 ? { ok: true } : { ok: false, message: "Cette présentation n'est plus en cours." };
+  return r.count === 1
+    ? { ok: true }
+    : { ok: false, message: "Cette présentation n'est plus en cours." };
 }
 
 export async function noterPresentation(id: string, note: string): Promise<void> {

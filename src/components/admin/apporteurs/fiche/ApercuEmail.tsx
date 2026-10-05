@@ -44,7 +44,12 @@ export function ApercuEmail({
         <button type="button" className="admin-button" disabled={occupe} onClick={onEnvoyer}>
           {occupe ? "Envoi…" : libelleEnvoyer}
         </button>
-        <button type="button" className="admin-button-secondary" disabled={occupe} onClick={onAnnuler}>
+        <button
+          type="button"
+          className="admin-button-secondary"
+          disabled={occupe}
+          onClick={onAnnuler}
+        >
           Annuler
         </button>
       </div>

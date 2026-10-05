@@ -40,7 +40,11 @@ import {
   type StatutJuridique,
   type TypePiece,
 } from "@/features/apporteurs-reseau/regles";
-import { etatDeLaPage, piecesDeposables, signerContrat } from "@/features/apporteurs-reseau/signature";
+import {
+  etatDeLaPage,
+  piecesDeposables,
+  signerContrat,
+} from "@/features/apporteurs-reseau/signature";
 
 import { TEXTES } from "./textes";
 
@@ -59,7 +63,11 @@ export type ResultatRecherche =
       };
       refus: string | null;
     }
-  | { ok: false; raison: "siren_invalide" | "introuvable" | "indisponible" | "erreur"; message: string };
+  | {
+      ok: false;
+      raison: "siren_invalide" | "introuvable" | "indisponible" | "erreur";
+      message: string;
+    };
 
 /**
  * Limites par IP et par quart d'heure. Panne de Redis : LAISSER PASSER, comme le
@@ -103,15 +111,24 @@ async function dossierModifiableParLien(id: string, jeton: string): Promise<Doss
 
 // ── Étape 2 : recherche du SIREN ─────────────────────────────────────────
 
-export async function rechercherSirenAction(id: string, jeton: string, siren: string): Promise<ResultatRecherche> {
-  if (!(await debitAutorise("recherche"))) return { ok: false, raison: "erreur", message: TEXTES.trop };
+export async function rechercherSirenAction(
+  id: string,
+  jeton: string,
+  siren: string,
+): Promise<ResultatRecherche> {
+  if (!(await debitAutorise("recherche")))
+    return { ok: false, raison: "erreur", message: TEXTES.trop };
   if (!(await dossierModifiableParLien(lien(id), lien(jeton)))) {
     return { ok: false, raison: "erreur", message: TEXTES.invalideTitre };
   }
   const r = await lireEntrepriseParSiren(String(siren).slice(0, 20));
   if (!r.ok) {
     const message =
-      r.raison === "siren_invalide" ? TEXTES.sirenInvalide : r.raison === "introuvable" ? TEXTES.introuvable : TEXTES.indisponible;
+      r.raison === "siren_invalide"
+        ? TEXTES.sirenInvalide
+        : r.raison === "introuvable"
+          ? TEXTES.introuvable
+          : TEXTES.indisponible;
     return { ok: false, raison: r.raison, message };
   }
   const e = r.entreprise;
@@ -155,12 +172,15 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   } else if (registre.raison === "siren_invalide") {
     return { ok: false, message: TEXTES.sirenInvalide };
   }
-  if (!denomination || !adresse) return { ok: false, message: "Indiquez le nom et l'adresse de votre entreprise." };
+  if (!denomination || !adresse)
+    return { ok: false, message: "Indiquez le nom et l'adresse de votre entreprise." };
 
   const statutJuridique = champ(fd, "statutJuridique", 40);
-  if (!estStatutJuridique(statutJuridique)) return { ok: false, message: "Choisissez votre statut." };
+  if (!estStatutJuridique(statutJuridique))
+    return { ok: false, message: "Choisissez votre statut." };
   const tva = champ(fd, "regimeTva", 20);
-  if (tva !== "assujetti" && tva !== "franchise_293b") return { ok: false, message: "Dites-nous si vous facturez la TVA." };
+  if (tva !== "assujetti" && tva !== "franchise_293b")
+    return { ok: false, message: "Dites-nous si vous facturez la TVA." };
 
   const iban = champ(fd, "iban", 50).replace(/\s+/g, "").toUpperCase();
   if (!iban && !dossier.ibanSaisi) return { ok: false, message: "Indiquez votre IBAN." };
@@ -201,8 +221,10 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
   if (!piecesDeposables(etatDeLaPage(dossier.statut)).includes(type)) return NEUTRE;
 
   const fichier = fd.get("fichier");
-  if (!(fichier instanceof File) || fichier.size === 0) return { ok: false, message: "Choisissez un fichier." };
-  if (fichier.size > TAILLE_MAX_PIECE) return { ok: false, message: "Le fichier doit faire moins de 10 Mo." };
+  if (!(fichier instanceof File) || fichier.size === 0)
+    return { ok: false, message: "Choisissez un fichier." };
+  if (fichier.size > TAILLE_MAX_PIECE)
+    return { ok: false, message: "Le fichier doit faire moins de 10 Mo." };
 
   let expireAt: Date | null = null;
   if (type === "vigilance") {
@@ -212,7 +234,10 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
     }
     expireAt = ajouterMois(delivree, VIGILANCE_VALIDITE_MOIS);
     if (expireAt.getTime() <= Date.now()) {
-      return { ok: false, message: "Cette attestation a plus de 6 mois : téléchargez-en une nouvelle." };
+      return {
+        ok: false,
+        message: "Cette attestation a plus de 6 mois : téléchargez-en une nouvelle.",
+      };
     }
   }
 

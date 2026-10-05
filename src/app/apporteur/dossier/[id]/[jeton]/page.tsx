@@ -56,7 +56,11 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   if (etat === "a_verifier") {
     return (
       <Coquille titre={titre}>
-        <EcranEtat pastilleTexte={TEXTES.recuPastille} titre={TEXTES.recuTitre} ligne={TEXTES.recuLigne} />
+        <EcranEtat
+          pastilleTexte={TEXTES.recuPastille}
+          titre={TEXTES.recuTitre}
+          ligne={TEXTES.recuLigne}
+        />
       </Coquille>
     );
   }
@@ -64,7 +68,12 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   if (etat === "signe") {
     return (
       <Coquille titre={titre}>
-        <EcranEtat pastilleTexte={TEXTES.signePastille} titre={TEXTES.signeTitre} ligne={TEXTES.signeLigne} succes />
+        <EcranEtat
+          pastilleTexte={TEXTES.signePastille}
+          titre={TEXTES.signeTitre}
+          ligne={TEXTES.signeLigne}
+          succes
+        />
         <ul className="mt-5 grid gap-3">
           {PIECES_VIGILANCE.map((t) => {
             const p = dossier.pieces.find((x) => x.type === t) ?? null;
@@ -105,7 +114,12 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     ibanMasque: dossier.ibanMasque,
     ibanSaisi: dossier.ibanSaisi,
     dernierMessage: dossier.statut === "a_completer" ? dossier.dernierMessage : null,
-    pieces: dossier.pieces.map((p) => ({ type: p.type, statut: p.statut, motif: p.motif, nomFichier: p.nomFichier })),
+    pieces: dossier.pieces.map((p) => ({
+      type: p.type,
+      statut: p.statut,
+      motif: p.motif,
+      nomFichier: p.nomFichier,
+    })),
   };
 
   // Première étape à montrer : la première qui reste à faire.
@@ -115,7 +129,13 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     !!dossier.regimeTva &&
     (dossier.regimeTva !== "assujetti" || !!dossier.numeroTva) &&
     dossier.ibanSaisi;
-  const etapeInitiale = !dossier.siren ? 1 : !activiteFaite ? 2 : manquesDuDossier(dossier).length > 0 ? 3 : 4;
+  const etapeInitiale = !dossier.siren
+    ? 1
+    : !activiteFaite
+      ? 2
+      : manquesDuDossier(dossier).length > 0
+        ? 3
+        : 4;
 
   const texte = texteDuContrat(valeursDuContrat(dossier, new Date()));
 

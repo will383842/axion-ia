@@ -458,43 +458,37 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "apporteur-dossier-refuse": {
     categorie: "recrutement",
-    quand:
-      "Bouton « Non, définitif » de la vérification d'un dossier signé",
+    quand: "Bouton « Non, définitif » de la vérification d'un dossier signé",
     destinataire: "l'apporteur dont le dossier n'est pas retenu",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-dossier-a-verifier": {
     categorie: "recrutement",
-    quand:
-      "Dès qu'un apporteur signe son contrat en ligne",
+    quand: "Dès qu'un apporteur signe son contrat en ligne",
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-contrat-signe": {
     categorie: "recrutement",
-    quand:
-      "Bouton « Oui, contresigner » : le contrat signé des deux parties en pièce jointe",
+    quand: "Bouton « Oui, contresigner » : le contrat signé des deux parties en pièce jointe",
     destinataire: "l'apporteur dont le contrat vient d'être contresigné",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-presentation-recue": {
     categorie: "recrutement",
-    quand:
-      "Bouton « Bien reçu » d'une entreprise présentée, après aperçu",
+    quand: "Bouton « Bien reçu » d'une entreprise présentée, après aperçu",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-presentation-refusee": {
     categorie: "recrutement",
-    quand:
-      "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
+    quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "entreprise-prise-de-contact-apporteur": {
     categorie: "recrutement",
-    quand:
-      "Avec « Bien reçu » : la prise de contact de Williams, de la part de l'apporteur",
+    quand: "Avec « Bien reçu » : la prise de contact de Williams, de la part de l'apporteur",
     destinataire: "la personne présentée par un apporteur",
     source: "features/apporteurs-reseau/envois.ts",
   },
@@ -507,8 +501,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "apporteur-commande-signee": {
     categorie: "recrutement",
-    quand:
-      "Tâche quotidienne : quand une entreprise protégée signe un devis",
+    quand: "Tâche quotidienne : quand une entreprise protégée signe un devis",
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },

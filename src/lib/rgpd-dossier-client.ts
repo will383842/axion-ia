@@ -423,7 +423,6 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
   }
 }
 
-
 // ═════════════════════════════════════════════════════════════════════════════
 // RÉSEAU D'APPORTEURS — démarrage manuel (2026-10-05)
 //
@@ -447,8 +446,16 @@ export interface ExportReseauApporteur {
     readonly regimeTva: string | null;
     readonly signeLe: Date | null;
     readonly contresigneLe: Date | null;
-    readonly pieces: ReadonlyArray<{ readonly type: string; readonly statut: string; readonly deposeeLe: Date }>;
-    readonly entreprisesPresentees: ReadonlyArray<{ readonly entreprise: string; readonly presenteeLe: Date; readonly statut: string }>;
+    readonly pieces: ReadonlyArray<{
+      readonly type: string;
+      readonly statut: string;
+      readonly deposeeLe: Date;
+    }>;
+    readonly entreprisesPresentees: ReadonlyArray<{
+      readonly entreprise: string;
+      readonly presenteeLe: Date;
+      readonly statut: string;
+    }>;
   };
   readonly presenteePar: ReadonlyArray<{
     readonly entreprise: string;
@@ -481,7 +488,13 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
     }),
     prisma.presentationEntreprise.findMany({
       where: { personneEmailHash: empreinte },
-      select: { denomination: true, personneNom: true, personneFonction: true, personneTelephone: true, recueAt: true },
+      select: {
+        denomination: true,
+        personneNom: true,
+        personneFonction: true,
+        personneTelephone: true,
+        recueAt: true,
+      },
     }),
   ]);
   const pieces = a
@@ -510,7 +523,11 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           signeLe: a.signeParApporteurAt,
           contresigneLe: a.signeParSocieteAt,
           pieces: pieces.map((p) => ({ type: p.type, statut: p.statut, deposeeLe: p.deposeeAt })),
-          entreprisesPresentees: siennes.map((p) => ({ entreprise: p.denomination, presenteeLe: p.recueAt, statut: p.statut })),
+          entreprisesPresentees: siennes.map((p) => ({
+            entreprise: p.denomination,
+            presenteeLe: p.recueAt,
+            statut: p.statut,
+          })),
         }
       : null,
     presenteePar: presentee.map((p) => ({

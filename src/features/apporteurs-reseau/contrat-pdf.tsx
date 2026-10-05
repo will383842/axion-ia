@@ -11,8 +11,6 @@
  * jeu (accents, «», —, €, œ). Rendu serveur exclusif.
  */
 
-
-
 import "server-only";
 
 import { createHash } from "node:crypto";
@@ -77,13 +75,36 @@ export function empreinte(texte: string): string {
 
 // ── Rendu ────────────────────────────────────────────────────────────────
 
-const C = { texte: "#241d15", doux: "#6b6153", terracotta: "#c24a1b", fonce: "#8c3010", trait: "#eee2d2", fond: "#f7ebe2" };
+const C = {
+  texte: "#241d15",
+  doux: "#6b6153",
+  terracotta: "#c24a1b",
+  fonce: "#8c3010",
+  trait: "#eee2d2",
+  fond: "#f7ebe2",
+};
 
 const s = StyleSheet.create({
-  page: { paddingTop: 48, paddingBottom: 56, paddingHorizontal: 50, fontFamily: "Helvetica", fontSize: 9.4, color: C.texte },
+  page: {
+    paddingTop: 48,
+    paddingBottom: 56,
+    paddingHorizontal: 50,
+    fontFamily: "Helvetica",
+    fontSize: 9.4,
+    color: C.texte,
+  },
   titre: { fontFamily: "Helvetica-Bold", fontSize: 16, textAlign: "center", marginBottom: 14 },
-  h3: { fontFamily: "Helvetica-Bold", fontSize: 10.5, color: C.fonce, marginTop: 12, marginBottom: 5, paddingBottom: 2, borderBottomWidth: 0.6, borderBottomColor: C.trait },
-  p: { marginBottom: 5, },
+  h3: {
+    fontFamily: "Helvetica-Bold",
+    fontSize: 10.5,
+    color: C.fonce,
+    marginTop: 12,
+    marginBottom: 5,
+    paddingBottom: 2,
+    borderBottomWidth: 0.6,
+    borderBottomColor: C.trait,
+  },
+  p: { marginBottom: 5 },
   quote: { marginBottom: 5, padding: 6, backgroundColor: "#f6f1e8", color: "#3a3025" },
   gras: { fontFamily: "Helvetica-Bold" },
   italique: { fontFamily: "Helvetica-Oblique" },
@@ -91,7 +112,16 @@ const s = StyleSheet.create({
   ligne: { flexDirection: "row", borderBottomWidth: 0.6, borderBottomColor: C.trait },
   entete: { backgroundColor: C.fond },
   cellule: { flex: 1, padding: 3, fontSize: 8.4 },
-  pied: { position: "absolute", bottom: 26, left: 50, right: 50, fontSize: 7.5, color: C.doux, flexDirection: "row", justifyContent: "space-between" },
+  pied: {
+    position: "absolute",
+    bottom: 26,
+    left: 50,
+    right: 50,
+    fontSize: 7.5,
+    color: C.doux,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   certif: { marginTop: 8, padding: 10, borderWidth: 0.8, borderColor: C.terracotta },
   certifTitre: { fontFamily: "Helvetica-Bold", fontSize: 13, color: C.fonce, marginBottom: 8 },
   petit: { fontSize: 8.2, color: C.doux },
@@ -109,9 +139,13 @@ function enLigne(texte: string): React.ReactNode[] {
     const brut = m[0];
     out.push(
       brut.startsWith("**") ? (
-        <Text key={n++} style={s.gras}>{brut.slice(2, -2)}</Text>
+        <Text key={n++} style={s.gras}>
+          {brut.slice(2, -2)}
+        </Text>
       ) : (
-        <Text key={n++} style={s.italique}>{brut.slice(1, -1)}</Text>
+        <Text key={n++} style={s.italique}>
+          {brut.slice(1, -1)}
+        </Text>
       ),
     );
     i = m.index + brut.length;
@@ -128,26 +162,47 @@ function blocs(markdown: string): React.ReactNode[] {
     const b = brut.trim();
     if (!b || b === "---") continue;
     if (b.startsWith("## ")) {
-      out.push(<Text key={n++} style={s.titre} break={b.includes("Annexe")}>{b.slice(3).trim()}</Text>);
+      out.push(
+        <Text key={n++} style={s.titre} break={b.includes("Annexe")}>
+          {b.slice(3).trim()}
+        </Text>,
+      );
     } else if (b.startsWith("### ")) {
-      out.push(<Text key={n++} style={s.h3} minPresenceAhead={40}>{b.slice(4).trim()}</Text>);
+      out.push(
+        <Text key={n++} style={s.h3} minPresenceAhead={40}>
+          {b.slice(4).trim()}
+        </Text>,
+      );
     } else if (b.startsWith("|")) {
       const lignes = b.split("\n").filter((l) => l.startsWith("|") && !/^\|\s*-+/.test(l));
       out.push(
         <View key={n++} style={s.tableau} wrap={false}>
           {lignes.map((l, i) => (
             <View key={i} style={i === 0 ? [s.ligne, s.entete] : s.ligne}>
-              {l.replace(/^\||\|$/g, "").split("|").map((c, j) => (
-                <Text key={j} style={i === 0 ? [s.cellule, s.gras] : s.cellule}>{enLigne(c.trim())}</Text>
-              ))}
+              {l
+                .replace(/^\||\|$/g, "")
+                .split("|")
+                .map((c, j) => (
+                  <Text key={j} style={i === 0 ? [s.cellule, s.gras] : s.cellule}>
+                    {enLigne(c.trim())}
+                  </Text>
+                ))}
             </View>
           ))}
         </View>,
       );
     } else if (b.startsWith(">")) {
-      out.push(<Text key={n++} style={s.quote}>{enLigne(b.replace(/^>\s?/gm, "").replace(/\n/g, " "))}</Text>);
+      out.push(
+        <Text key={n++} style={s.quote}>
+          {enLigne(b.replace(/^>\s?/gm, "").replace(/\n/g, " "))}
+        </Text>,
+      );
     } else {
-      out.push(<Text key={n++} style={s.p}>{enLigne(b.replace(/\n/g, " "))}</Text>);
+      out.push(
+        <Text key={n++} style={s.p}>
+          {enLigne(b.replace(/\n/g, " "))}
+        </Text>,
+      );
     }
   }
   return out;
@@ -163,12 +218,15 @@ function Certificat({
   societe: SignatureSociete | null;
 }) {
   const libelle = (cle: string) =>
-    ACCEPTATIONS.find((a) => a.cle === cle)?.texte ?? DECLARATIONS.find((d) => d.cle === cle)?.texte ?? cle;
+    ACCEPTATIONS.find((a) => a.cle === cle)?.texte ??
+    DECLARATIONS.find((d) => d.cle === cle)?.texte ??
+    cle;
   return (
     <View break>
       <Text style={s.certifTitre}>Certificat de signature électronique</Text>
       <Text style={s.p}>
-        Document : contrat d&apos;apporteur d&apos;affaires, version 2, et ses annexes. Empreinte SHA-256 du texte signé :
+        Document : contrat d&apos;apporteur d&apos;affaires, version 2, et ses annexes. Empreinte
+        SHA-256 du texte signé :
       </Text>
       <Text style={[s.p, s.gras]}>{sha}</Text>
       <View style={s.certif}>
@@ -179,11 +237,14 @@ function Certificat({
               Signé par « {apporteur.nomTape} » le {apporteur.signeAt}, depuis son lien personnel.
             </Text>
             <Text style={s.petit}>
-              Adresse IP (empreinte) : {apporteur.ipHash ?? "non relevée"} · Navigateur : {apporteur.navigateur ?? "non relevé"}
+              Adresse IP (empreinte) : {apporteur.ipHash ?? "non relevée"} · Navigateur :{" "}
+              {apporteur.navigateur ?? "non relevé"}
             </Text>
             <Text style={[s.p, { marginTop: 5 }]}>Cases cochées avant la signature :</Text>
             {[...apporteur.declarations, ...apporteur.acceptations].map((c) => (
-              <Text key={c} style={s.petit}>· {libelle(c)}</Text>
+              <Text key={c} style={s.petit}>
+                · {libelle(c)}
+              </Text>
             ))}
           </>
         ) : (
@@ -194,12 +255,13 @@ function Certificat({
         <Text style={s.gras}>Signature de la Société</Text>
         {societe ? (
           <Text style={s.p}>
-            Contresigné pour AXION IA SAS par {societe.nom}, Président, le {societe.signeAt}. Le contrat est conclu à
-            cette date.
+            Contresigné pour AXION IA SAS par {societe.nom}, Président, le {societe.signeAt}. Le
+            contrat est conclu à cette date.
           </Text>
         ) : (
           <Text style={s.petit}>
-            En attente de la contresignature de la Société. Le contrat n&apos;est conclu qu&apos;à cette contresignature.
+            En attente de la contresignature de la Société. Le contrat n&apos;est conclu qu&apos;à
+            cette contresignature.
           </Text>
         )}
       </View>
@@ -228,7 +290,9 @@ export async function rendreContratPdf(entree: {
   const flux = await pdf(doc).toBuffer();
   return await new Promise<Buffer>((resolve, reject) => {
     const morceaux: Buffer[] = [];
-    flux.on("data", (c: Buffer | Uint8Array) => morceaux.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
+    flux.on("data", (c: Buffer | Uint8Array) =>
+      morceaux.push(Buffer.isBuffer(c) ? c : Buffer.from(c)),
+    );
     flux.on("end", () => resolve(Buffer.concat(morceaux)));
     flux.on("error", reject);
   });

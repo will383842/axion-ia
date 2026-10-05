@@ -35,7 +35,12 @@ const SIGNATAIRE_SOCIETE = "Williams Jullin";
 
 /** « 5 octobre 2026 à 14 h 02 », heure de Paris. */
 export function dateHeureParis(d: Date): string {
-  const jour = d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+  const jour = d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
   const heure = d
     .toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" })
     .replace(":", " h ");
@@ -49,7 +54,10 @@ export async function jugerPiece(
   verdict: "conforme" | "a_retransmettre",
   motif: string | null,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  const p = await prisma.pieceApporteur.findUnique({ where: { id: pieceId }, select: { id: true, type: true, purgeeAt: true } });
+  const p = await prisma.pieceApporteur.findUnique({
+    where: { id: pieceId },
+    select: { id: true, type: true, purgeeAt: true },
+  });
   if (!p) return { ok: false, message: "Pièce introuvable." };
   if (verdict === "a_retransmettre" && !MOTIFS_A_RETRANSMETTRE.some((m) => m.valeur === motif)) {
     return { ok: false, message: "Choisis un motif." };
@@ -80,7 +88,8 @@ export async function piecesARetransmettre(apporteurId: string): Promise<string[
     select: { type: true, motif: true },
   });
   return pieces.map((p) => {
-    const motif = MOTIFS_A_RETRANSMETTRE.find((m) => m.valeur === p.motif)?.libelle ?? "à remplacer";
+    const motif =
+      MOTIFS_A_RETRANSMETTRE.find((m) => m.valeur === p.motif)?.libelle ?? "à remplacer";
     return `${LIBELLE_PIECE[p.type as TypePiece]} : ${motif}`;
   });
 }
@@ -112,7 +121,8 @@ function lireSignature(json: unknown): SignatureLue | null {
     qualite: chaine(v.qualite) ?? "",
     grilleDate: chaine(v.grilleDate) ?? "",
   };
-  const liste = (x: unknown) => (Array.isArray(x) ? x.filter((y): y is string => typeof y === "string") : []);
+  const liste = (x: unknown) =>
+    Array.isArray(x) ? x.filter((y): y is string => typeof y === "string") : [];
   return {
     nomTape: j.nomTape as string,
     signeAt: j.signeAt as string,
@@ -133,13 +143,18 @@ export async function preparerDecision(
 ): Promise<{ ok: true; envoi: EnvoiApporteur } | { ok: false; message: string }> {
   const d = await lireDossier(apporteurId);
   if (!d) return { ok: false, message: "Apporteur introuvable." };
-  if (d.statut !== "a_verifier") return { ok: false, message: "Ce dossier n'attend pas de vérification." };
+  if (d.statut !== "a_verifier")
+    return { ok: false, message: "Ce dossier n'attend pas de vérification." };
   const base = { destinataire: d.email, entityType: "ApporteurReseau" as const, entityId: d.id };
   const mot = note?.trim() || null;
   if (decision === "contresigner") {
     const nonConformes = d.pieces.filter((p) => p.statut !== "conforme" && p.type !== "rc_pro");
     if (nonConformes.length > 0) {
-      return { ok: false, message: "Toutes les pièces obligatoires doivent être marquées conformes avant de contresigner." };
+      return {
+        ok: false,
+        message:
+          "Toutes les pièces obligatoires doivent être marquées conformes avant de contresigner.",
+      };
     }
     const gabarit: GabaritApporteur = "apporteur-contrat-signe";
     return { ok: true, envoi: { ...base, gabarit, payload: { contactName: d.prenom } } };
@@ -147,7 +162,10 @@ export async function preparerDecision(
   if (decision === "a_completer") {
     const pieces = await piecesARetransmettre(apporteurId);
     if (pieces.length === 0 && !mot) {
-      return { ok: false, message: "Indique ce qui manque : une pièce à retransmettre ou une note." };
+      return {
+        ok: false,
+        message: "Indique ce qui manque : une pièce à retransmettre ou une note.",
+      };
     }
     const nouvelleVersion = d.versionLien;
     return {
@@ -199,12 +217,20 @@ export async function appliquerDecision(
       select: { signatureApporteur: true, contratSha256: true },
     });
     const sig = lireSignature(a?.signatureApporteur);
-    if (!sig) return { ok: false, message: "La signature de l'apporteur est illisible : demande-lui de signer à nouveau." };
+    if (!sig)
+      return {
+        ok: false,
+        message: "La signature de l'apporteur est illisible : demande-lui de signer à nouveau.",
+      };
     const texte = texteDuContrat(sig.valeurs);
     if (empreinte(texte) !== sig.texteSha256) {
-      return { ok: false, message: "Le texte signé ne correspond plus : demande à l'apporteur de signer à nouveau." };
+      return {
+        ok: false,
+        message: "Le texte signé ne correspond plus : demande à l'apporteur de signer à nouveau.",
+      };
     }
-    if (!isR2Configured()) return { ok: false, message: "Le stockage des documents n'est pas configuré." };
+    if (!isR2Configured())
+      return { ok: false, message: "Le stockage des documents n'est pas configuré." };
     const pdf = await rendreContratPdf({
       texte,
       apporteur: {
@@ -222,14 +248,26 @@ export async function appliquerDecision(
     await uploadToR2(cle, pdf, "application/pdf");
     await prisma.apporteurReseau.update({
       where: { id: apporteurId },
-      data: { statut: "signe", contratSigneCle: cle, contratSigneSha256: sha, signeParSocieteAt: maintenant, dernierMessage: null },
+      data: {
+        statut: "signe",
+        contratSigneCle: cle,
+        contratSigneSha256: sha,
+        signeParSocieteAt: maintenant,
+        dernierMessage: null,
+      },
     });
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,
-      attachments: [{ filename: "Contrat-apporteur-Axion-IA.pdf", r2Key: cle, contentType: "application/pdf" }],
+      attachments: [
+        { filename: "Contrat-apporteur-Axion-IA.pdf", r2Key: cle, contentType: "application/pdf" },
+      ],
     });
-    return { ok: true, message: r === "envoye" ? "Contrat contresigné et envoyé." : `Contrat contresigné (e-mail : ${r}).` };
+    return {
+      ok: true,
+      message:
+        r === "envoye" ? "Contrat contresigné et envoyé." : `Contrat contresigné (e-mail : ${r}).`,
+    };
   }
 
   if (decision === "a_completer") {
@@ -237,16 +275,31 @@ export async function appliquerDecision(
       where: { id: apporteurId },
       data: { statut: "a_completer", dernierMessage: note?.trim() || null },
     });
-    const r = await envoyer({ ...prep.envoi, jobId: `apporteur-dossier-a-completer-${apporteurId}-${maintenant.getTime()}` });
-    return { ok: true, message: r === "envoye" ? "Demande de complément envoyée." : `Dossier rouvert (e-mail : ${r}).` };
+    const r = await envoyer({
+      ...prep.envoi,
+      jobId: `apporteur-dossier-a-completer-${apporteurId}-${maintenant.getTime()}`,
+    });
+    return {
+      ok: true,
+      message:
+        r === "envoye" ? "Demande de complément envoyée." : `Dossier rouvert (e-mail : ${r}).`,
+    };
   }
 
   await prisma.apporteurReseau.update({
     where: { id: apporteurId },
-    data: { statut: "refuse", refuseAt: maintenant, dernierMessage: note?.trim() || null, versionLien: { increment: 1 } },
+    data: {
+      statut: "refuse",
+      refuseAt: maintenant,
+      dernierMessage: note?.trim() || null,
+      versionLien: { increment: 1 },
+    },
   });
   const r = await envoyer({ ...prep.envoi, jobId: `apporteur-dossier-refuse-${apporteurId}` });
-  return { ok: true, message: r === "envoye" ? "Refus envoyé." : `Dossier refusé (e-mail : ${r}).` };
+  return {
+    ok: true,
+    message: r === "envoye" ? "Refus envoyé." : `Dossier refusé (e-mail : ${r}).`,
+  };
 }
 
 // ── Lien du dossier ──────────────────────────────────────────────────────
@@ -254,13 +307,19 @@ export async function appliquerDecision(
 export async function preparerLien(apporteurId: string, mot: string | null) {
   const d = await lireDossier(apporteurId);
   if (!d) return { ok: false as const, message: "Apporteur introuvable." };
-  if (d.statut === "refuse" || d.statut === "resilie") return { ok: false as const, message: "Ce dossier est fermé." };
+  if (d.statut === "refuse" || d.statut === "resilie")
+    return { ok: false as const, message: "Ce dossier est fermé." };
   const url = urlDossier(d.id, d.versionLien);
-  if (!url) return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
+  if (!url)
+    return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
   const envoi: EnvoiApporteur = {
     gabarit: "apporteur-dossier-lien",
     destinataire: d.email,
-    payload: { contactName: d.prenom, dossierUrl: url, ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}) },
+    payload: {
+      contactName: d.prenom,
+      dossierUrl: url,
+      ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}),
+    },
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
@@ -270,13 +329,22 @@ export async function preparerLien(apporteurId: string, mot: string | null) {
 export async function envoyerLien(apporteurId: string, mot: string | null) {
   const prep = await preparerLien(apporteurId, mot);
   if (!prep.ok) return prep;
-  const r = await envoyer({ ...prep.envoi, jobId: `apporteur-dossier-lien-${apporteurId}-${Date.now()}` });
-  return { ok: true as const, message: r === "envoye" ? "Lien envoyé." : `Lien préparé (e-mail : ${r}).` };
+  const r = await envoyer({
+    ...prep.envoi,
+    jobId: `apporteur-dossier-lien-${apporteurId}-${Date.now()}`,
+  });
+  return {
+    ok: true as const,
+    message: r === "envoye" ? "Lien envoyé." : `Lien préparé (e-mail : ${r}).`,
+  };
 }
 
 // ── Documents pour la console ────────────────────────────────────────────
 
-export async function lireContratPdf(apporteurId: string, quel: "apporteur" | "signe"): Promise<Buffer | null> {
+export async function lireContratPdf(
+  apporteurId: string,
+  quel: "apporteur" | "signe",
+): Promise<Buffer | null> {
   const a = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
     select: { contratCle: true, contratSigneCle: true },
@@ -288,7 +356,10 @@ export async function lireContratPdf(apporteurId: string, quel: "apporteur" | "s
 
 /** Nom affiché d'un apporteur (console). */
 export async function nomApporteur(apporteurId: string): Promise<string> {
-  const a = await prisma.apporteurReseau.findUnique({ where: { id: apporteurId }, select: { prenom: true, nom: true } });
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { prenom: true, nom: true },
+  });
   return a ? `${decryptPii(a.prenom) ?? ""} ${decryptPii(a.nom) ?? ""}`.trim() : "";
 }
 
@@ -304,8 +375,12 @@ export async function ouvrirDossierManuel(e: {
   const { hashEmailForLookup } = await import("@/lib/security/email-hash");
   const email = e.email.trim();
   const hash = hashEmailForLookup(email);
-  if (!e.prenom.trim() || !e.nom.trim() || !hash) return { ok: false, message: "Prénom, nom et e-mail sont nécessaires." };
-  const existant = await prisma.apporteurReseau.findUnique({ where: { emailHash: hash }, select: { id: true } });
+  if (!e.prenom.trim() || !e.nom.trim() || !hash)
+    return { ok: false, message: "Prénom, nom et e-mail sont nécessaires." };
+  const existant = await prisma.apporteurReseau.findUnique({
+    where: { emailHash: hash },
+    select: { id: true },
+  });
   if (existant) return { ok: true, apporteurId: existant.id };
   const a = await prisma.apporteurReseau.create({
     data: {

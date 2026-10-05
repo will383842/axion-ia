@@ -32,7 +32,8 @@ import {
 } from "./presentations";
 import { sirenValide } from "./regles";
 
-export type EtatAction = { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
+export type EtatAction =
+  { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -63,7 +64,8 @@ export async function verifierSirenAction(brut: string): Promise<VerificationSir
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const siren = brut.replace(/\s+/g, "");
-  if (!sirenValide(siren)) return { etat: "erreur", message: "Numéro SIREN invalide (9 chiffres)." };
+  if (!sirenValide(siren))
+    return { etat: "erreur", message: "Numéro SIREN invalide (9 chiffres)." };
   const [registre, signalements] = await Promise.all([
     lireEntrepriseParSiren(siren),
     lireSignalements(siren, new Date()),
@@ -78,13 +80,17 @@ export async function verifierSirenAction(brut: string): Promise<VerificationSir
 
 // ── Nouvelle entreprise présentée ────────────────────────────────────────
 
-export async function creerPresentationAction(_prev: EtatAction, fd: FormData): Promise<EtatAction> {
+export async function creerPresentationAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const apporteurId = texte(fd, "apporteurId");
   if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Choisis l'apporteur." };
   const recueAt = fromParisLocalInput(texte(fd, "recueAt"));
-  if (!recueAt) return { etat: "erreur", message: "Indique la date et l'heure de réception de l'e-mail." };
+  if (!recueAt)
+    return { etat: "erreur", message: "Indique la date et l'heure de réception de l'e-mail." };
   try {
     const r = await creerPresentation({
       apporteurId,
@@ -116,7 +122,9 @@ export interface SaisieReponse {
   nomFamille?: string;
 }
 
-function lireSaisie(s: SaisieReponse): { id: string; reponse: ReponsePresentation; civilite: Civilite; nomFamille: string } | string {
+function lireSaisie(
+  s: SaisieReponse,
+): { id: string; reponse: ReponsePresentation; civilite: Civilite; nomFamille: string } | string {
   if (!UUID.test(s.id)) return "Présentation inconnue.";
   if (!REPONSES.includes(s.reponse as ReponsePresentation)) return "Réponse inconnue.";
   const civilite: Civilite = s.civilite === "Monsieur" || s.civilite === "Madame" ? s.civilite : "";
@@ -146,10 +154,13 @@ export async function apercuReponseAction(s: SaisieReponse): Promise<ApercuRepon
   }
 }
 
-export async function repondreAction(s: SaisieReponse & { confirmer: boolean }): Promise<EtatAction> {
+export async function repondreAction(
+  s: SaisieReponse & { confirmer: boolean },
+): Promise<EtatAction> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
-  if (s.confirmer !== true) return { etat: "erreur", message: "Regarde l'aperçu, puis confirme l'envoi." };
+  if (s.confirmer !== true)
+    return { etat: "erreur", message: "Regarde l'aperçu, puis confirme l'envoi." };
   const l = lireSaisie(s);
   if (typeof l === "string") return { etat: "erreur", message: l };
   try {
@@ -164,12 +175,16 @@ export async function repondreAction(s: SaisieReponse & { confirmer: boolean }):
 
 // ── Actions manuelles ────────────────────────────────────────────────────
 
-export async function confirmerPresentationAction(_prev: EtatAction, fd: FormData): Promise<EtatAction> {
+export async function confirmerPresentationAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const id = texte(fd, "id");
   const jour = texte(fd, "confirmeeLe");
-  if (!UUID.test(id) || !/^\d{4}-\d{2}-\d{2}$/.test(jour)) return { etat: "erreur", message: "Indique la date de la réponse." };
+  if (!UUID.test(id) || !/^\d{4}-\d{2}-\d{2}$/.test(jour))
+    return { etat: "erreur", message: "Indique la date de la réponse." };
   // Midi, heure de Paris : la date saisie est un jour, pas un instant.
   const date = fromParisLocalInput(`${jour}T12:00`);
   if (!date) return { etat: "erreur", message: "Date invalide." };
@@ -179,7 +194,10 @@ export async function confirmerPresentationAction(_prev: EtatAction, fd: FormDat
   return { etat: "ok", message: "Confirmée : protection de 6 mois." };
 }
 
-export async function dementirPresentationAction(_prev: EtatAction, fd: FormData): Promise<EtatAction> {
+export async function dementirPresentationAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const id = texte(fd, "id");
@@ -191,7 +209,10 @@ export async function dementirPresentationAction(_prev: EtatAction, fd: FormData
   return { etat: "ok", message: "Notée comme démentie." };
 }
 
-export async function noterPresentationAction(_prev: EtatAction, fd: FormData): Promise<EtatAction> {
+export async function noterPresentationAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const id = texte(fd, "id");

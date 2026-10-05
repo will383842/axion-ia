@@ -136,10 +136,12 @@ export const COPY_DEMARRAGE = {
     ficheLien: "la fiche en PDF",
   },
   presentationRecue: {
-    subject: (e: string) => (e ? `${e} : c'est noté, elle vous est réservée` : "C'est noté, l'entreprise vous est réservée"),
+    subject: (e: string) =>
+      e
+        ? `${e} : c'est noté, elle vous est réservée`
+        : "C'est noté, l'entreprise vous est réservée",
     title: "Bien reçu : elle est à vous",
-    preview:
-      "Voici ce qui se passe maintenant, et ce que vous n'avez pas à faire.",
+    preview: "Voici ce qui se passe maintenant, et ce que vous n'avez pas à faire.",
     recu: (e: string, d: string | null) =>
       `Nous avons bien reçu votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""} : nous la réservons à votre nom.`,
     suiteTitre: "La suite",
@@ -152,8 +154,7 @@ export const COPY_DEMARRAGE = {
   presentationRefusee: {
     subject: (e: string) => (e ? `Votre présentation de ${e}` : "Votre présentation"),
     title: "Cette entreprise n'est pas disponible",
-    preview:
-      "Merci pour votre présentation. Voici pourquoi nous ne pouvons pas vous la réserver.",
+    preview: "Merci pour votre présentation. Voici pourquoi nous ne pouvons pas vous la réserver.",
     merci: (e: string, d: string | null) =>
       `Merci pour votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""}.`,
     motif: {
@@ -200,7 +201,8 @@ export const COPY_DEMARRAGE = {
   dossierLien: {
     subject: "Votre contrat d'apporteur : à compléter en ligne",
     title: "Votre dossier et votre contrat",
-    preview: "Environ 10 minutes : vos informations, deux documents, puis votre signature en ligne.",
+    preview:
+      "Environ 10 minutes : vos informations, deux documents, puis votre signature en ligne.",
     intro:
       "Voici votre lien personnel pour compléter votre dossier d'apporteur d'affaires et signer votre contrat en ligne. Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
     etapes: [
@@ -217,7 +219,8 @@ export const COPY_DEMARRAGE = {
     subject: "Votre dossier d'apporteur : un complément",
     title: "Il nous manque un élément",
     preview: "Quelques éléments à reprendre dans votre dossier, puis une nouvelle signature.",
-    intro: "Merci pour votre dossier. Avant de contresigner votre contrat, nous avons besoin d'un complément :",
+    intro:
+      "Merci pour votre dossier. Avant de contresigner votre contrat, nous avons besoin d'un complément :",
     note: "Notre message :",
     suite:
       "Votre lien personnel ouvre de nouveau votre dossier : corrigez ce qui est indiqué, puis signez à nouveau votre contrat.",
@@ -234,7 +237,8 @@ export const COPY_DEMARRAGE = {
   vigilance: {
     subject: "Deux documents pour vous verser vos commissions",
     title: "Deux documents à nous transmettre",
-    preview: "Votre attestation URSSAF et votre extrait d'immatriculation, à déposer avec votre lien personnel.",
+    preview:
+      "Votre attestation URSSAF et votre extrait d'immatriculation, à déposer avec votre lien personnel.",
     premiere:
       "Bonne nouvelle : vos commissions approchent 5 000 €. À partir de ce montant, la loi nous demande deux documents (articles L.8222-1 et D.8222-5 du code du travail) :",
     renouvellement:
@@ -251,16 +255,19 @@ export const COPY_DEMARRAGE = {
     cta: "Déposer mes documents",
   },
   commandeSignee: {
-    subject: (e: string) => (e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée"),
+    subject: (e: string) =>
+      e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
     title: "Une commande vient d'être signée",
-    preview: "Votre commission sera versée dès que le client aura réglé l'intégralité de sa facture.",
+    preview:
+      "Votre commission sera versée dès que le client aura réglé l'intégralité de sa facture.",
     texte: (e: string) =>
       `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
     suite:
       "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; elle figurera alors sur votre relevé mensuel.",
   },
   releve: {
-    subject: (m: string) => (m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions"),
+    subject: (m: string) =>
+      m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions",
     title: "Votre relevé de commissions",
     preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
     texte: (m: string, montant: string) =>
@@ -269,7 +276,8 @@ export const COPY_DEMARRAGE = {
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
   interneAVerifier: {
-    subject: (n: string) => (n ? `Dossier apporteur à vérifier : ${n}` : "Un dossier apporteur à vérifier"),
+    subject: (n: string) =>
+      n ? `Dossier apporteur à vérifier : ${n}` : "Un dossier apporteur à vérifier",
     title: "Un dossier apporteur est signé",
     preview: "Pièces à vérifier, puis oui, à compléter ou non, depuis la console.",
     texte: (n: string) =>
@@ -352,8 +360,13 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
 
 // ── Présentation reçue ───────────────────────────────────────────────────
 
-export const apporteurPresentationRecueSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
-  COPY_DEMARRAGE.presentationRecue.subject(texteOuNull((payload as Payload | undefined)?.entreprise) ?? "");
+export const apporteurPresentationRecueSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.presentationRecue.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
 
 export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -373,7 +386,9 @@ export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
         {t.recu(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
       </Text>
       <Text style={intertitre}>{t.suiteTitre}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.confirmation(texteOuNull(p.personnePresentee))}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.confirmation(texteOuNull(p.personnePresentee))}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.protection(FENETRE_ATTRIBUTION_APPORTEUR_MOIS, CONFIRMATION_TACITE_JOURS)}
       </Text>
@@ -384,8 +399,13 @@ export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
 
 // ── Présentation refusée ─────────────────────────────────────────────────
 
-export const apporteurPresentationRefuseeSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
-  COPY_DEMARRAGE.presentationRefusee.subject(texteOuNull((payload as Payload | undefined)?.entreprise) ?? "");
+export const apporteurPresentationRefuseeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.presentationRefusee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
 
 function lireMotif(v: unknown): MotifRefus {
   return v === "pas-disponible" || v === "hors-champ" ? v : "deja-connue";
@@ -417,8 +437,13 @@ export function ApporteurPresentationRefuseeEmail({ locale, payload }: Props) {
 
 // ── Confirmation demandée à l'entreprise ─────────────────────────────────
 
-export const entrepriseConfirmationApporteurSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
-  COPY_DEMARRAGE.confirmation.subject(texteOuNull((payload as Payload | undefined)?.nomApporteur) ?? "");
+export const entrepriseConfirmationApporteurSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.confirmation.subject(
+    texteOuNull((payload as Payload | undefined)?.nomApporteur) ?? "",
+  );
 
 export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -445,7 +470,13 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
       {/* Petit, après le corps : l'information de l'art. 14 RGPD (l'adresse vient
           d'un tiers). ⛔ AUCUNE question de contrôle : on ne dit jamais à
           l'entreprise qu'on vérifie (Will, 2026-10-05 : « contre-vendeur »). */}
-      <Text style={{ ...emailStyles.paragraphStyle, fontSize: "13px", color: emailStyles.COLORS.textMuted }}>
+      <Text
+        style={{
+          ...emailStyles.paragraphStyle,
+          fontSize: "13px",
+          color: emailStyles.COLORS.textMuted,
+        }}
+      >
         {t.info(IDENTITE_LEGALE.legalName, adresseSiegeUneLigne())}
         <a href={LIEN_POLITIQUE} style={{ color: emailStyles.COLORS.terracotta }}>
           {t.infoLien}
@@ -458,7 +489,8 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
 
 // ── Lien du dossier ──────────────────────────────────────────────────────
 
-export const apporteurDossierLienSubject = (_locale: Locale): string => COPY_DEMARRAGE.dossierLien.subject;
+export const apporteurDossierLienSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.dossierLien.subject;
 
 export function ApporteurDossierLienEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -489,7 +521,8 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
 
 // ── À compléter ──────────────────────────────────────────────────────────
 
-export const apporteurDossierACompleterSubject = (_locale: Locale): string => COPY_DEMARRAGE.aCompleter.subject;
+export const apporteurDossierACompleterSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.aCompleter.subject;
 
 export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -528,7 +561,8 @@ export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
 
 // ── Refus ────────────────────────────────────────────────────────────────
 
-export const apporteurDossierRefuseSubject = (_locale: Locale): string => COPY_DEMARRAGE.refuse.subject;
+export const apporteurDossierRefuseSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.refuse.subject;
 
 export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -552,7 +586,8 @@ export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
 
 // ── Vigilance (5 000 €, puis tous les 6 mois) ────────────────────────────
 
-export const apporteurVigilanceSubject = (_locale: Locale): string => COPY_DEMARRAGE.vigilance.subject;
+export const apporteurVigilanceSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.vigilance.subject;
 
 export function ApporteurVigilanceEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -570,7 +605,9 @@ export function ApporteurVigilanceEmail({ locale, payload }: Props) {
       {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{renouvellement ? t.renouvellement : t.premiere}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {renouvellement ? t.renouvellement : t.premiere}
+      </Text>
       {(renouvellement ? t.documentsRenouvellement : t.documents).map((d) => (
         <Text key={d} style={puce}>
           • {d}
@@ -583,8 +620,13 @@ export function ApporteurVigilanceEmail({ locale, payload }: Props) {
 
 // ── Commande signée ──────────────────────────────────────────────────────
 
-export const apporteurCommandeSigneeSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
-  COPY_DEMARRAGE.commandeSignee.subject(texteOuNull((payload as Payload | undefined)?.entreprise) ?? "");
+export const apporteurCommandeSigneeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.commandeSignee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
 
 export function ApporteurCommandeSigneeEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -607,7 +649,10 @@ export function ApporteurCommandeSigneeEmail({ locale, payload }: Props) {
 
 // ── Relevé mensuel ───────────────────────────────────────────────────────
 
-export const apporteurReleveSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
+export const apporteurReleveSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
   COPY_DEMARRAGE.releve.subject(texteOuNull((payload as Payload | undefined)?.mois) ?? "");
 
 export function ApporteurReleveEmail({ locale, payload }: Props) {
@@ -626,15 +671,22 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.texte(texteOuNull(p.mois) ?? "", texteOuNull(p.montant) ?? "")}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.facture(texteOuNull(p.numeroAutofacture) ?? "")}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
+      </Text>
     </EmailLayout>
   );
 }
 
 // ── Interne : un dossier à vérifier ──────────────────────────────────────
 
-export const apporteurDossierAVerifierSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
-  COPY_DEMARRAGE.interneAVerifier.subject(texteOuNull((payload as Payload | undefined)?.contactName) ?? "");
+export const apporteurDossierAVerifierSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.interneAVerifier.subject(
+    texteOuNull((payload as Payload | undefined)?.contactName) ?? "",
+  );
 
 export function ApporteurDossierAVerifierEmail({ locale, payload }: Props) {
   const p = payload as Payload;

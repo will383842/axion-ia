@@ -53,7 +53,14 @@ export function ActionsPresentation({
           <input type="hidden" name="id" value={id} />
           <label className="flex flex-col gap-1">
             L&apos;entreprise a répondu le
-            <input type="date" name="confirmeeLe" required defaultValue={aujourdhui} max={aujourdhui} className="admin-input" />
+            <input
+              type="date"
+              name="confirmeeLe"
+              required
+              defaultValue={aujourdhui}
+              max={aujourdhui}
+              className="admin-input"
+            />
           </label>
           <button type="submit" className="admin-button" disabled={cEnCours}>
             Confirmer
@@ -80,7 +87,13 @@ export function ActionsPresentation({
         <input type="hidden" name="id" value={id} />
         <label className="flex min-w-[16rem] flex-1 flex-col gap-1">
           Note
-          <textarea name="note" rows={2} defaultValue={note ?? ""} maxLength={4000} className="admin-input" />
+          <textarea
+            name="note"
+            rows={2}
+            defaultValue={note ?? ""}
+            maxLength={4000}
+            className="admin-input"
+          />
         </label>
         <button type="submit" className="admin-button-secondary" disabled={nEnCours}>
           Enregistrer

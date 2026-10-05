@@ -35,7 +35,9 @@ export interface ApporteurPourAutofacture {
   readonly email: string | null;
 }
 
-export function regimeHonorairesApporteur(r: ApporteurPourAutofacture["regimeTva"]): TvaRegimeHonoraires | null {
+export function regimeHonorairesApporteur(
+  r: ApporteurPourAutofacture["regimeTva"],
+): TvaRegimeHonoraires | null {
   if (r === "franchise_293b") return "franchise_293b";
   if (r === "assujetti") return "assujetti_20";
   return null;
@@ -54,7 +56,10 @@ export function lignesAutofacture(
 ): LigneHonoraires[] {
   return commissions
     .filter((c) => c.montantCents !== null && c.montantCents > 0)
-    .map((c) => ({ designation: designationCommission(c, libelleMois), montantHtCents: c.montantCents ?? 0 }));
+    .map((c) => ({
+      designation: designationCommission(c, libelleMois),
+      montantHtCents: c.montantCents ?? 0,
+    }));
 }
 
 export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
@@ -62,7 +67,12 @@ export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
 }
 
 function dateFr(d: Date): string {
-  return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric", timeZone: "Europe/Paris" });
+  return d.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 }
 
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
@@ -79,11 +89,15 @@ export function construireDonneesAutofacture(e: {
   if (!regime) return { ok: false, motif: "régime de TVA de l'apporteur non renseigné" };
   const siren = e.apporteur.siren?.trim();
   const adresse = e.apporteur.adresse?.trim();
-  if (!siren || !adresse) return { ok: false, motif: "identité de facturation de l'apporteur incomplète" };
+  if (!siren || !adresse)
+    return { ok: false, motif: "identité de facturation de l'apporteur incomplète" };
   const lignes = lignesAutofacture(e.commissions, e.releveLibelle);
   if (lignes.length === 0) return { ok: false, motif: "aucune commission à facturer" };
-  if (totalHtCents(lignes) !== e.totalAttenduCents) return { ok: false, motif: "total des lignes différent du total versé" };
-  const limite = new Date(e.dateEmission.getTime() + DELAI_CONTESTATION_APPORTEUR_JOURS * 86_400_000);
+  if (totalHtCents(lignes) !== e.totalAttenduCents)
+    return { ok: false, motif: "total des lignes différent du total versé" };
+  const limite = new Date(
+    e.dateEmission.getTime() + DELAI_CONTESTATION_APPORTEUR_JOURS * 86_400_000,
+  );
   return {
     ok: true,
     data: {

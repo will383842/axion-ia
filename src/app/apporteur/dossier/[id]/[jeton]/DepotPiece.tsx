@@ -80,7 +80,9 @@ export function DepotPiece({
         <div className="min-w-0">
           <p className="text-[17px] font-bold">
             {libelle}
-            {facultatif ? <span className="text-fg-soft font-normal"> ({TEXTES.facultatif})</span> : null}
+            {facultatif ? (
+              <span className="text-fg-soft font-normal"> ({TEXTES.facultatif})</span>
+            ) : null}
           </p>
           <p className="text-fg-soft mt-0.5 text-[15px] leading-snug">{aide}</p>
         </div>
@@ -91,9 +93,13 @@ export function DepotPiece({
         ) : null}
       </div>
       {aRenvoyer ? (
-        <p className="text-error mt-2 text-[15px] font-semibold">{TEXTES.aRetransmettre(motifLibelle ?? "")}</p>
+        <p className="text-error mt-2 text-[15px] font-semibold">
+          {TEXTES.aRetransmettre(motifLibelle ?? "")}
+        </p>
       ) : null}
-      {presente ? <p className="text-fg-soft mt-1 truncate text-[14px]">{piece.nomFichier}</p> : null}
+      {presente ? (
+        <p className="text-fg-soft mt-1 truncate text-[14px]">{piece.nomFichier}</p>
+      ) : null}
 
       {avecDate ? (
         <div className="mt-3">
@@ -111,7 +117,9 @@ export function DepotPiece({
         </div>
       ) : null}
 
-      <div className={`mt-3 grid grid-cols-2 gap-2 ${bloque ? "pointer-events-none opacity-60" : ""}`}>
+      <div
+        className={`mt-3 grid grid-cols-2 gap-2 ${bloque ? "pointer-events-none opacity-60" : ""}`}
+      >
         <label className={bouton}>
           <input
             type="file"

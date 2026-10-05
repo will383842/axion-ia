@@ -32,22 +32,35 @@ import {
 // ── Vigilance ────────────────────────────────────────────────────────────
 
 /** Statuts qui comptent dans le cumul de vigilance (contrat art. 5.4). */
-export const STATUTS_CUMUL: readonly StatutCommissionApporteur[] = ["due", "versee", "en_attente_vigilance"];
+export const STATUTS_CUMUL: readonly StatutCommissionApporteur[] = [
+  "due",
+  "versee",
+  "en_attente_vigilance",
+];
 
 /** Pièces courantes `vigilance` ET `immatriculation` conformes, l'attestation non expirée. */
 export function piecesVigilanceConformes(
-  pieces: ReadonlyArray<{ type: string; statut: string; expireAt: Date | null; remplaceeAt: Date | null }>,
+  pieces: ReadonlyArray<{
+    type: string;
+    statut: string;
+    expireAt: Date | null;
+    remplaceeAt: Date | null;
+  }>,
   maintenant: Date,
 ): boolean {
   const courantes = pieces.filter((p) => p.remplaceeAt === null && p.statut === "conforme");
   const vigilance = courantes.some(
-    (p) => p.type === "vigilance" && p.expireAt !== null && p.expireAt.getTime() > maintenant.getTime(),
+    (p) =>
+      p.type === "vigilance" && p.expireAt !== null && p.expireAt.getTime() > maintenant.getTime(),
   );
   const immatriculation = courantes.some((p) => p.type === "immatriculation");
   return vigilance && immatriculation;
 }
 
-export async function piecesVigilanceValides(apporteurId: string, maintenant: Date): Promise<boolean> {
+export async function piecesVigilanceValides(
+  apporteurId: string,
+  maintenant: Date,
+): Promise<boolean> {
   const pieces = await prisma.pieceApporteur.findMany({
     where: { apporteurId, type: { in: ["vigilance", "immatriculation"] }, remplaceeAt: null },
     select: { type: true, statut: true, expireAt: true, remplaceeAt: true },
@@ -57,7 +70,11 @@ export async function piecesVigilanceValides(apporteurId: string, maintenant: Da
 
 export async function cumulVigilanceCents(apporteurId: string, saufId?: string): Promise<number> {
   const r = await prisma.commissionApporteur.aggregate({
-    where: { apporteurId, statut: { in: [...STATUTS_CUMUL] }, ...(saufId ? { id: { not: saufId } } : {}) },
+    where: {
+      apporteurId,
+      statut: { in: [...STATUTS_CUMUL] },
+      ...(saufId ? { id: { not: saufId } } : {}),
+    },
     _sum: { montantCents: true },
   });
   return r._sum.montantCents ?? 0;
@@ -72,7 +89,11 @@ export async function dejaEnvoye(jobId: string): Promise<boolean> {
 export type VarianteVigilance = "premiere" | "renouvellement";
 
 /** Clé « une fois » de la demande de pièces. */
-export function jobIdVigilance(apporteurId: string, variante: VarianteVigilance, echeance?: Date): string {
+export function jobIdVigilance(
+  apporteurId: string,
+  variante: VarianteVigilance,
+  echeance?: Date,
+): string {
   return variante === "premiere"
     ? `apporteur-vigilance-premiere-${apporteurId}`
     : `apporteur-vigilance-renouvellement-${apporteurId}-${(echeance ?? new Date(0)).toISOString().slice(0, 10)}`;
@@ -119,7 +140,11 @@ export async function statutApresVigilance(
     cumulVigilanceCents(apporteurId, saufId),
     piecesVigilanceValides(apporteurId, maintenant),
   ]);
-  const v = etatVigilance({ cumulCents: cumul, nouvelleCents: montantCents, piecesValides: valides });
+  const v = etatVigilance({
+    cumulCents: cumul,
+    nouvelleCents: montantCents,
+    piecesValides: valides,
+  });
   return { statut: v.attendre ? "en_attente_vigilance" : "due", demander: v.demander };
 }
 
@@ -130,20 +155,41 @@ export async function qualifierCommission(
   palier: string,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (!PALIERS_FORMATION.some((p) => p.id === palier)) return { ok: false, message: "Palier inconnu." };
+  if (!PALIERS_FORMATION.some((p) => p.id === palier))
+    return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
-    select: { id: true, apporteurId: true, factureId: true, parrainage: true, activite: true, factureHtCents: true, statut: true },
+    select: {
+      id: true,
+      apporteurId: true,
+      factureId: true,
+      parrainage: true,
+      activite: true,
+      factureHtCents: true,
+      statut: true,
+    },
   });
   if (!c) return { ok: false, message: "Commission introuvable." };
-  if (c.statut !== "a_qualifier" || c.parrainage) return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation") return { ok: false, message: "Seule une formation se qualifie par palier." };
-  const calc = calculerCommission({ activite: "formation", factureHtCents: c.factureHtCents, palier });
-  if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible pour ce palier." };
+  if (c.statut !== "a_qualifier" || c.parrainage)
+    return { ok: false, message: "Cette commission n'est pas à qualifier." };
+  if (c.activite !== "formation")
+    return { ok: false, message: "Seule une formation se qualifie par palier." };
+  const calc = calculerCommission({
+    activite: "formation",
+    factureHtCents: c.factureHtCents,
+    palier,
+  });
+  if (calc.statut !== "calculee")
+    return { ok: false, message: "Calcul impossible pour ce palier." };
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
-    data: { palier: calc.palier, prixPublicHtCents: calc.prixPublicCents, montantCents: calc.montantCents, statut: v.statut },
+    data: {
+      palier: calc.palier,
+      prixPublicHtCents: calc.prixPublicCents,
+      montantCents: calc.montantCents,
+      statut: v.statut,
+    },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être qualifiée." };
   if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
@@ -164,7 +210,13 @@ async function qualifierPartParrainage(
   });
   if (!filleul?.parrainId) return;
   const part = await prisma.commissionApporteur.findUnique({
-    where: { factureId_apporteurId_parrainage: { factureId, apporteurId: filleul.parrainId, parrainage: true } },
+    where: {
+      factureId_apporteurId_parrainage: {
+        factureId,
+        apporteurId: filleul.parrainId,
+        parrainage: true,
+      },
+    },
     select: { id: true, statut: true, apporteurId: true },
   });
   if (!part || part.statut !== "a_qualifier") return;
@@ -198,7 +250,9 @@ export interface CommissionVue {
   creeAt: Date;
 }
 
-export async function lireCommissions(statut: StatutCommissionApporteur | null): Promise<CommissionVue[]> {
+export async function lireCommissions(
+  statut: StatutCommissionApporteur | null,
+): Promise<CommissionVue[]> {
   const lignes = await prisma.commissionApporteur.findMany({
     where: statut ? { statut } : {},
     orderBy: { creeAt: "desc" },
@@ -216,7 +270,9 @@ export async function lireCommissions(statut: StatutCommissionApporteur | null):
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
-    apporteur: [decryptPii(l.apporteur.prenom), decryptPii(l.apporteur.nom)].filter(Boolean).join(" "),
+    apporteur: [decryptPii(l.apporteur.prenom), decryptPii(l.apporteur.nom)]
+      .filter(Boolean)
+      .join(" "),
     entreprise: l.presentation?.denomination ?? null,
     factureNumero: numero.get(l.factureId) ?? null,
     parrainage: l.parrainage,
@@ -249,7 +305,11 @@ export async function compterCommissions(): Promise<Record<StatutCommissionAppor
 
 /** « 2026-10 » en heure de Paris. */
 export function moisParis(d: Date): string {
-  const p = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris", year: "numeric", month: "2-digit" }).format(d);
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+  }).format(d);
   return p.slice(0, 7);
 }
 
@@ -332,7 +392,10 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
   });
   let registre: Array<{ numero: string }> = [];
   try {
-    registre = await prisma.numeroEmis.findMany({ where: { numero: { startsWith: prefixe } }, select: { numero: true } });
+    registre = await prisma.numeroEmis.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    });
   } catch {
     registre = [];
   }
@@ -379,13 +442,17 @@ export async function genererPdfAutofacture(e: {
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
-    const [{ getOrganismeIdentite }, { renderPdfToBuffer, storeAndSignPdf }, { AutofactureHonorairesPdf }, React] =
-      await Promise.all([
-        import("@/server/qualiopi/documents/organisme"),
-        import("@/server/qualiopi/documents/render"),
-        import("@/server/qualiopi/documents/templates/autofacture-honoraires"),
-        import("react"),
-      ]);
+    const [
+      { getOrganismeIdentite },
+      { renderPdfToBuffer, storeAndSignPdf },
+      { AutofactureHonorairesPdf },
+      React,
+    ] = await Promise.all([
+      import("@/server/qualiopi/documents/organisme"),
+      import("@/server/qualiopi/documents/render"),
+      import("@/server/qualiopi/documents/templates/autofacture-honoraires"),
+      import("react"),
+    ]);
     const construit = construireDonneesAutofacture({
       numero: e.numero,
       releveLibelle: libelleMois(e.releveMois),
@@ -404,13 +471,17 @@ export async function genererPdfAutofacture(e: {
       totalAttenduCents: e.totalCents,
     });
     if (!construit.ok) throw new Error(`autofacture non établie : ${construit.motif}`);
-    const { buffer } = await renderPdfToBuffer(React.createElement(AutofactureHonorairesPdf, { data: construit.data }));
+    const { buffer } = await renderPdfToBuffer(
+      React.createElement(AutofactureHonorairesPdf, { data: construit.data }),
+    );
     const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
     return { r2Key, filename: `${e.numero}.pdf` };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
-    Sentry.captureException(err, { tags: { action: "reseau-apporteurs", etape: "autofacture-pdf" } });
+    Sentry.captureException(err, {
+      tags: { action: "reseau-apporteurs", etape: "autofacture-pdf" },
+    });
     return null;
   }
 }
@@ -422,7 +493,10 @@ export async function genererPdfAutofacture(e: {
 export async function marquerVerse(
   apporteurId: string,
   maintenant: Date = new Date(),
-): Promise<{ ok: true; numero: string; totalCents: number; envoi: ResultatEnvoi } | { ok: false; message: string }> {
+): Promise<
+  | { ok: true; numero: string; totalCents: number; envoi: ResultatEnvoi }
+  | { ok: false; message: string }
+> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
     select: { id: true, prenom: true, nom: true, email: true, statut: true },
@@ -437,15 +511,25 @@ export async function marquerVerse(
       select: { id: true, montantCents: true },
     });
     const total = dues.reduce((s, d) => s + (d.montantCents ?? 0), 0);
-    if (!releveEmis({ soldeCents: total, mois: Number(releveMois.slice(5, 7)), dernier: apporteur.statut === "resilie" })) {
-      return { ok: false as const, message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil)." };
+    if (
+      !releveEmis({
+        soldeCents: total,
+        mois: Number(releveMois.slice(5, 7)),
+        dernier: apporteur.statut === "resilie",
+      })
+    ) {
+      return {
+        ok: false as const,
+        message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil).",
+      };
     }
     const numero = await allouerNumeroAutofacture(annee);
     const r = await tx.commissionApporteur.updateMany({
       where: { id: { in: dues.map((d) => d.id) }, statut: "due" },
       data: { statut: "versee", verseeAt: maintenant, releveMois, autofactureNumero: numero },
     });
-    if (r.count !== dues.length) throw new Error("Les commissions ont changé pendant le versement : recommence.");
+    if (r.count !== dues.length)
+      throw new Error("Les commissions ont changé pendant le versement : recommence.");
     return { ok: true as const, numero, total, ids: dues.map((d) => d.id) };
   });
   if (!resultat.ok) return resultat;
@@ -462,7 +546,9 @@ export async function marquerVerse(
     gabarit: "apporteur-releve",
     destinataire: decryptPii(apporteur.email) ?? "",
     payload: {
-      contactName: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
+      contactName: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)]
+        .filter(Boolean)
+        .join(" "),
       mois: libelleMois(releveMois),
       montant: euros(resultat.total),
       numeroAutofacture: resultat.numero,
@@ -470,7 +556,13 @@ export async function marquerVerse(
     entityType: "ApporteurReseau",
     entityId: apporteurId,
     jobId: `apporteur-releve-${resultat.numero}`,
-    ...(pdf ? { attachments: [{ filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" }] } : {}),
+    ...(pdf
+      ? {
+          attachments: [
+            { filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" },
+          ],
+        }
+      : {}),
   });
   return { ok: true, numero: resultat.numero, totalCents: resultat.total, envoi };
 }
@@ -496,9 +588,19 @@ export interface LigneDas2 {
 }
 
 export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): string {
-  const entete = ["annee", "beneficiaire", "denomination", "siren", "adresse", "montant_verse_eur", "nombre_commissions"];
+  const entete = [
+    "annee",
+    "beneficiaire",
+    "denomination",
+    "siren",
+    "adresse",
+    "montant_verse_eur",
+    "nombre_commissions",
+  ];
   const corps = lignes.map((l) =>
-    [annee, l.nom, l.denomination, l.siren, l.adresse, centimesCsv(l.totalCents), l.lignes].map(champCsv).join(";"),
+    [annee, l.nom, l.denomination, l.siren, l.adresse, centimesCsv(l.totalCents), l.lignes]
+      .map(champCsv)
+      .join(";"),
   );
   return `﻿${[entete.join(";"), ...corps].join("\r\n")}\r\n`;
 }
@@ -509,7 +611,10 @@ export async function exportDas2(annee: number): Promise<string> {
     by: ["apporteurId"],
     where: {
       statut: "versee",
-      verseeAt: { gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000), lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000) },
+      verseeAt: {
+        gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
+        lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),
+      },
     },
     _sum: { montantCents: true },
     _count: { _all: true },

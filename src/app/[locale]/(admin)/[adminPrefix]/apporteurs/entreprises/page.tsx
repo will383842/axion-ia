@@ -36,7 +36,10 @@ const ONGLETS: ReadonlyArray<{ cle: OngletPresentations; libelle: string }> = [
   { cle: "toutes", libelle: "Toutes" },
 ];
 
-const STATUT: Record<string, { libelle: string; ton: "neutral" | "info" | "success" | "warning" | "destructive" }> = {
+const STATUT: Record<
+  string,
+  { libelle: string; ton: "neutral" | "info" | "success" | "warning" | "destructive" }
+> = {
   reservee: { libelle: "En attente de l'entreprise", ton: "info" },
   confirmee: { libelle: "Protégée", ton: "success" },
   deja_connue: { libelle: "Déjà connue", ton: "neutral" },
@@ -46,7 +49,13 @@ const STATUT: Record<string, { libelle: string; ton: "neutral" | "info" | "succe
 };
 
 const heure = (d: Date) =>
-  d.toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
+  d.toLocaleString("fr-FR", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+  });
 
 export default async function EntreprisesPresenteesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -66,20 +75,34 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     await Promise.all(
       lignes
         .filter((p) => p.aTraiter)
-        .map(async (p) => [p.id, (await lireSignalements(p.siren, maintenant, p.id)).map(libelleSignalement)] as const),
+        .map(
+          async (p) =>
+            [
+              p.id,
+              (await lireSignalements(p.siren, maintenant, p.id)).map(libelleSignalement),
+            ] as const,
+        ),
     ),
   );
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
-      <AdminPageHeader title="Entreprises présentées" description="Une ligne par e-mail d'apporteur reçu." />
+      <AdminPageHeader
+        title="Entreprises présentées"
+        description="Une ligne par e-mail d'apporteur reçu."
+      />
 
       {acces.peutEcrire ? (
         <AdminCard as="section">
           <details>
-            <summary className="cursor-pointer font-semibold">➕ Nouvelle entreprise présentée</summary>
+            <summary className="cursor-pointer font-semibold">
+              ➕ Nouvelle entreprise présentée
+            </summary>
             <div className="pt-[var(--space-admin-4)]">
-              <NouvellePresentationForm apporteurs={apporteurs} maintenantLocal={toParisLocalInput(maintenant)} />
+              <NouvellePresentationForm
+                apporteurs={apporteurs}
+                maintenantLocal={toParisLocalInput(maintenant)}
+              />
             </div>
           </details>
         </AdminCard>
@@ -87,7 +110,12 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
 
       <AdminFilterTabs
         current={onglet}
-        options={ONGLETS.map((o) => ({ value: o.cle, label: o.libelle, href: `${base}?onglet=${o.cle}`, count: comptes[o.cle] }))}
+        options={ONGLETS.map((o) => ({
+          value: o.cle,
+          label: o.libelle,
+          href: `${base}?onglet=${o.cle}`,
+          count: comptes[o.cle],
+        }))}
       />
 
       {lignes.length === 0 ? (
@@ -120,7 +148,9 @@ function Carte({
   peutEcrire: boolean;
   aujourdhui: string;
 }) {
-  const statut = p.aTraiter ? { libelle: "À traiter", ton: "warning" as const } : (STATUT[p.statut] ?? STATUT.terminee!);
+  const statut = p.aTraiter
+    ? { libelle: "À traiter", ton: "warning" as const }
+    : (STATUT[p.statut] ?? STATUT.terminee!);
   return (
     <AdminCard as="article">
       <div className="flex flex-col gap-[var(--space-admin-3)]">
@@ -193,11 +223,15 @@ function Carte({
           </div>
         ) : null}
 
-        {peutEcrire && p.aTraiter ? <ReponsePresentation id={p.id} nomFamilleSuggere={nomFamilleDe(p.personneNom)} /> : null}
+        {peutEcrire && p.aTraiter ? (
+          <ReponsePresentation id={p.id} nomFamilleSuggere={nomFamilleDe(p.personneNom)} />
+        ) : null}
 
         {peutEcrire && !p.aTraiter ? (
           <details>
-            <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">Actions</summary>
+            <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">
+              Actions
+            </summary>
             <div className="pt-[var(--space-admin-3)]">
               <ActionsPresentation
                 id={p.id}
@@ -209,7 +243,9 @@ function Carte({
             </div>
           </details>
         ) : null}
-        {!peutEcrire && p.note ? <p className="text-[length:var(--text-admin-sm)]">📝 {p.note}</p> : null}
+        {!peutEcrire && p.note ? (
+          <p className="text-[length:var(--text-admin-sm)]">📝 {p.note}</p>
+        ) : null}
       </div>
     </AdminCard>
   );

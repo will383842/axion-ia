@@ -97,17 +97,24 @@ export function presentationQuiCouvre<T extends PresentationProtegee>(
 /** La commande tombe-t-elle dans les 6 mois du parrainage (contrat art. 4.6) ? */
 export function dansFenetreParrainage(filleulSigneAt: Date, commandeSigneeAt: Date): boolean {
   const t = commandeSigneeAt.getTime();
-  return t >= filleulSigneAt.getTime() && t <= ajouterMois(filleulSigneAt, PARRAINAGE_MOIS).getTime();
+  return (
+    t >= filleulSigneAt.getTime() && t <= ajouterMois(filleulSigneAt, PARRAINAGE_MOIS).getTime()
+  );
 }
 
 /** Date de commande d'une facture : l'acceptation du devis, sinon l'émission. */
-export function dateDeCommande(f: { devis: { acceptedAt: Date | null } | null; emiseAt: Date | null }): Date | null {
+export function dateDeCommande(f: {
+  devis: { acceptedAt: Date | null } | null;
+  emiseAt: Date | null;
+}): Date | null {
   return f.devis?.acceptedAt ?? f.emiseAt ?? null;
 }
 
 // ── Le passage ───────────────────────────────────────────────────────────
 
-export async function passerReseauApporteurs(maintenant: Date = new Date()): Promise<BilanPassageReseau> {
+export async function passerReseauApporteurs(
+  maintenant: Date = new Date(),
+): Promise<BilanPassageReseau> {
   const bilan: BilanPassageReseau = {
     confirmeesTacites: 0,
     prolongees: 0,
@@ -221,7 +228,9 @@ export async function faitsDeLaSociete(
         })
       : Promise.resolve([] as Array<{ startTime: Date | null }>),
     clients.length
-      ? prisma.dossierFinancement.count({ where: { clientId, statut: { in: [...STATUTS_FINANCEMENT_OUVERT] } } })
+      ? prisma.dossierFinancement.count({
+          where: { clientId, statut: { in: [...STATUTS_FINANCEMENT_OUVERT] } },
+        })
       : Promise.resolve(0),
   ]);
   const dates = [
@@ -229,13 +238,23 @@ export async function faitsDeLaSociete(
     ...calendly.map((c) => c.startTime),
   ].filter((d): d is Date => d instanceof Date);
   const dernier = dates.length ? new Date(Math.max(...dates.map((d) => d.getTime()))) : null;
-  return { devisEnCours: devis > 0, dernierEchangeAt: dernier, financementEnCours: financements > 0 };
+  return {
+    devisEnCours: devis > 0,
+    dernierEchangeAt: dernier,
+    financementEnCours: financements > 0,
+  };
 }
 
 async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
   const echues = await prisma.presentationEntreprise.findMany({
     where: { statut: "confirmee", protegeeJusquAt: { lte: maintenant } },
-    select: { id: true, siren: true, protegeeJusquAt: true, prolongeeAt: true, personneEmail: true },
+    select: {
+      id: true,
+      siren: true,
+      protegeeJusquAt: true,
+      prolongeeAt: true,
+      personneEmail: true,
+    },
   });
   for (const p of echues) {
     const terme = p.protegeeJusquAt!;
@@ -247,7 +266,11 @@ async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<
     if (motif) {
       const r = await prisma.presentationEntreprise.updateMany({
         where: { id: p.id, statut: "confirmee", prolongeeAt: null },
-        data: { protegeeJusquAt: ajouterMois(terme, PROLONGATION_MOIS), prolongeeAt: maintenant, motifProlongation: motif },
+        data: {
+          protegeeJusquAt: ajouterMois(terme, PROLONGATION_MOIS),
+          prolongeeAt: maintenant,
+          motifProlongation: motif,
+        },
       });
       bilan.prolongees += r.count;
     } else {
@@ -278,7 +301,9 @@ async function lirePresentationsProtegees() {
       recueAt: true,
       confirmeeAt: true,
       protegeeJusquAt: true,
-      apporteur: { select: { prenom: true, nom: true, email: true, parrainId: true, signeParSocieteAt: true } },
+      apporteur: {
+        select: { prenom: true, nom: true, email: true, parrainId: true, signeParSocieteAt: true },
+      },
     },
   });
 }
@@ -366,7 +391,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
 
     // La part du parrain (un seul niveau), dans les 6 mois de la signature du filleul.
     const { parrainId, signeParSocieteAt } = p.apporteur;
-    if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt)) continue;
+    if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt))
+      continue;
     if (deja.has(cle(f.id, parrainId, true))) continue;
     try {
       if (calc.statut === "calculee") {
@@ -377,7 +403,13 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
         });
         const v = await statutApresVigilance(parrainId, part, maintenant);
         await prisma.commissionApporteur.create({
-          data: { ...base, apporteurId: parrainId, parrainage: true, montantCents: part, statut: v.statut },
+          data: {
+            ...base,
+            apporteurId: parrainId,
+            parrainage: true,
+            montantCents: part,
+            statut: v.statut,
+          },
         });
         if (v.demander && (await demanderVigilance(parrainId, "premiere")) !== "deja") {
           bilan.vigilancesDemandees += 1;
@@ -440,7 +472,11 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
   const index = parSiren(presentations);
   const devis = await prisma.devis.findMany({
     where: {
-      acceptedAt: { not: null, gte: ajouterJours(maintenant, -FENETRE_COMMANDE_SIGNEE_JOURS), lte: maintenant },
+      acceptedAt: {
+        not: null,
+        gte: ajouterJours(maintenant, -FENETRE_COMMANDE_SIGNEE_JOURS),
+        lte: maintenant,
+      },
       client: { siren: { in: [...index.keys()] } },
     },
     select: { id: true, acceptedAt: true, client: { select: { siren: true } } },
@@ -454,7 +490,9 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
       gabarit: "apporteur-commande-signee",
       destinataire: decryptPii(p.apporteur.email) ?? "",
       payload: {
-        contactName: [decryptPii(p.apporteur.prenom), decryptPii(p.apporteur.nom)].filter(Boolean).join(" "),
+        contactName: [decryptPii(p.apporteur.prenom), decryptPii(p.apporteur.nom)]
+          .filter(Boolean)
+          .join(" "),
         entreprise: p.denomination,
       },
       entityType: "PresentationEntreprise",

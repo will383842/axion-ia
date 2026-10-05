@@ -19,7 +19,13 @@ const apporteur: ApporteurPourAutofacture = {
   email: null,
 };
 const commissions = [
-  { id: "a", activite: "formation", palier: "formation-generale-1j", parrainage: false, montantCents: 12_000 },
+  {
+    id: "a",
+    activite: "formation",
+    palier: "formation-generale-1j",
+    parrainage: false,
+    montantCents: 12_000,
+  },
   { id: "b", activite: "formation", palier: null, parrainage: true, montantCents: 1_500 },
   { id: "c", activite: "formation", palier: null, parrainage: false, montantCents: null },
 ];
@@ -54,8 +60,14 @@ describe("autofacture apporteur", () => {
     }
   });
   it("refuse sans régime, sans identité ou si le total diverge", () => {
-    expect(construireDonneesAutofacture({ ...base, apporteur: { ...apporteur, regimeTva: null } }).ok).toBe(false);
-    expect(construireDonneesAutofacture({ ...base, apporteur: { ...apporteur, siren: null } }).ok).toBe(false);
-    expect(construireDonneesAutofacture({ ...base, apporteur, totalAttenduCents: 1 }).ok).toBe(false);
+    expect(
+      construireDonneesAutofacture({ ...base, apporteur: { ...apporteur, regimeTva: null } }).ok,
+    ).toBe(false);
+    expect(
+      construireDonneesAutofacture({ ...base, apporteur: { ...apporteur, siren: null } }).ok,
+    ).toBe(false);
+    expect(construireDonneesAutofacture({ ...base, apporteur, totalAttenduCents: 1 }).ok).toBe(
+      false,
+    );
   });
 });

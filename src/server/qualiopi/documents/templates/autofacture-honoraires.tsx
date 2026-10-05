@@ -168,7 +168,9 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
         */}
         <LegalCallout variant="legal" title={mentions.titre}>
           <Text style={styles.legalLine}>{mentions.pourLeCompte}</Text>
-          {data.mandatReference ? <Text style={styles.legalLine}>{data.mandatReference}</Text> : null}
+          {data.mandatReference ? (
+            <Text style={styles.legalLine}>{data.mandatReference}</Text>
+          ) : null}
           <Text style={styles.legalLine}>
             {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur la présente facture.`}
           </Text>

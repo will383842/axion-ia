@@ -33,7 +33,10 @@ export type ResultatRegistre =
   | { ok: false; raison: "siren_invalide" | "introuvable" | "indisponible" };
 
 /** Nature juridique INSEE → statut de la liste fermée (une suggestion). */
-export function statutDepuisNature(nature: string | null, entrepreneurIndividuel: boolean): StatutJuridique | null {
+export function statutDepuisNature(
+  nature: string | null,
+  entrepreneurIndividuel: boolean,
+): StatutJuridique | null {
   if (entrepreneurIndividuel || nature === "1000") return "micro_entrepreneur";
   switch (nature) {
     case "5498":

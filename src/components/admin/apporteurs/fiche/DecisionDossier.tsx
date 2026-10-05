@@ -52,7 +52,8 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
     <div className="flex flex-col gap-[var(--space-admin-3)]">
       <label className="flex flex-col gap-[var(--space-admin-1)]">
         <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          Note pour l&apos;apporteur (facultative ; reprise dans l&apos;e-mail « à compléter » ou « non »)
+          Note pour l&apos;apporteur (facultative ; reprise dans l&apos;e-mail « à compléter » ou «
+          non »)
         </span>
         <textarea
           className="admin-textarea min-h-[90px]"
@@ -64,13 +65,28 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
       </label>
       {!email ? (
         <div className="flex flex-wrap gap-[var(--space-admin-2)]">
-          <button type="button" className="admin-button" disabled={enCours} onClick={() => preparer("contresigner")}>
+          <button
+            type="button"
+            className="admin-button"
+            disabled={enCours}
+            onClick={() => preparer("contresigner")}
+          >
             {LIBELLE.contresigner.bouton}
           </button>
-          <button type="button" className="admin-button-secondary" disabled={enCours} onClick={() => preparer("a_completer")}>
+          <button
+            type="button"
+            className="admin-button-secondary"
+            disabled={enCours}
+            onClick={() => preparer("a_completer")}
+          >
             {LIBELLE.a_completer.bouton}
           </button>
-          <button type="button" className="admin-button-secondary" disabled={enCours} onClick={() => preparer("refuser")}>
+          <button
+            type="button"
+            className="admin-button-secondary"
+            disabled={enCours}
+            onClick={() => preparer("refuser")}
+          >
             {LIBELLE.refuser.bouton}
           </button>
         </div>

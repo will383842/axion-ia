@@ -17,9 +17,7 @@ import { marquerVerse, qualifierCommission } from "./commissions";
 import { euros } from "./regles";
 
 export type EtatActionCommission =
-  | { etat: "initial" }
-  | { etat: "ok"; message: string }
-  | { etat: "erreur"; message: string };
+  { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -36,7 +34,10 @@ function texte(fd: FormData, cle: string): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
-export async function qualifierCommissionAction(_prev: EtatActionCommission, fd: FormData): Promise<EtatActionCommission> {
+export async function qualifierCommissionAction(
+  _prev: EtatActionCommission,
+  fd: FormData,
+): Promise<EtatActionCommission> {
   const refus = await sessionArgent();
   if (refus) return { etat: "erreur", message: refus };
   const id = texte(fd, "id");
@@ -52,20 +53,33 @@ export async function qualifierCommissionAction(_prev: EtatActionCommission, fd:
   }
 }
 
-export async function marquerVerseAction(_prev: EtatActionCommission, fd: FormData): Promise<EtatActionCommission> {
+export async function marquerVerseAction(
+  _prev: EtatActionCommission,
+  fd: FormData,
+): Promise<EtatActionCommission> {
   const refus = await sessionArgent();
   if (refus) return { etat: "erreur", message: refus };
   const apporteurId = texte(fd, "apporteurId");
   if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Apporteur inconnu." };
-  if (texte(fd, "confirmer") !== "oui") return { etat: "erreur", message: "Confirme d'abord le virement." };
+  if (texte(fd, "confirmer") !== "oui")
+    return { etat: "erreur", message: "Confirme d'abord le virement." };
   try {
     const r = await marquerVerse(apporteurId);
     if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
-    const mail = r.envoi === "envoye" || r.envoi === "en-validation" ? "relevé envoyé" : `relevé NON parti (${r.envoi})`;
-    return { etat: "ok", message: `${euros(r.totalCents)} versés, autofacture ${r.numero}, ${mail}.` };
+    const mail =
+      r.envoi === "envoye" || r.envoi === "en-validation"
+        ? "relevé envoyé"
+        : `relevé NON parti (${r.envoi})`;
+    return {
+      etat: "ok",
+      message: `${euros(r.totalCents)} versés, autofacture ${r.numero}, ${mail}.`,
+    };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-verser" } });
-    return { etat: "erreur", message: err instanceof Error ? err.message : "Versement impossible. Réessaie." };
+    return {
+      etat: "erreur",
+      message: err instanceof Error ? err.message : "Versement impossible. Réessaie.",
+    };
   }
 }

@@ -57,7 +57,8 @@ export async function jugerPieceAction(input: {
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
-  if (!UUID.test(input.pieceId) || !UUID.test(input.apporteurId)) return { ok: false, message: "Pièce inconnue." };
+  if (!UUID.test(input.pieceId) || !UUID.test(input.apporteurId))
+    return { ok: false, message: "Pièce inconnue." };
   const piece = await prisma.pieceApporteur.findFirst({
     where: { id: input.pieceId, apporteurId: input.apporteurId },
     select: { id: true },
@@ -66,7 +67,10 @@ export async function jugerPieceAction(input: {
   const r = await jugerPiece(input.pieceId, input.verdict, input.motif);
   if (!r.ok) return r;
   rafraichir(input.apporteurId);
-  return { ok: true, message: input.verdict === "conforme" ? "Pièce conforme." : "Pièce à retransmettre." };
+  return {
+    ok: true,
+    message: input.verdict === "conforme" ? "Pièce conforme." : "Pièce à retransmettre.",
+  };
 }
 
 export async function apercuDecisionAction(input: {
@@ -76,9 +80,14 @@ export async function apercuDecisionAction(input: {
 }): Promise<RetourApercu> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
-  if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision)) return { ok: false, message: "Demande invalide." };
+  if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision))
+    return { ok: false, message: "Demande invalide." };
   try {
-    return await apercuDecision(input.apporteurId, input.decision, (input.note ?? "").slice(0, 2000));
+    return await apercuDecision(
+      input.apporteurId,
+      input.decision,
+      (input.note ?? "").slice(0, 2000),
+    );
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-decision", step: "apercu" } });
     return { ok: false, message: "L'aperçu n'a pas pu être préparé." };
@@ -92,9 +101,14 @@ export async function appliquerDecisionAction(input: {
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
-  if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision)) return { ok: false, message: "Demande invalide." };
+  if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision))
+    return { ok: false, message: "Demande invalide." };
   try {
-    const r = await appliquerDecision(input.apporteurId, input.decision, (input.note ?? "").slice(0, 2000));
+    const r = await appliquerDecision(
+      input.apporteurId,
+      input.decision,
+      (input.note ?? "").slice(0, 2000),
+    );
     rafraichir(input.apporteurId);
     return r;
   } catch (err) {
@@ -103,7 +117,10 @@ export async function appliquerDecisionAction(input: {
   }
 }
 
-export async function apercuLienAction(input: { apporteurId: string; mot: string | null }): Promise<RetourApercu> {
+export async function apercuLienAction(input: {
+  apporteurId: string;
+  mot: string | null;
+}): Promise<RetourApercu> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
@@ -112,7 +129,10 @@ export async function apercuLienAction(input: { apporteurId: string; mot: string
   return { ok: true, email: await apercu(prep.envoi) };
 }
 
-export async function envoyerLienAction(input: { apporteurId: string; mot: string | null }): Promise<Retour> {
+export async function envoyerLienAction(input: {
+  apporteurId: string;
+  mot: string | null;
+}): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
@@ -129,7 +149,8 @@ export async function ouvrirDossierManuelAction(input: {
 }): Promise<{ ok: true; apporteurId: string } | { ok: false; message: string }> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) return { ok: false, message: "Adresse e-mail invalide." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim()))
+    return { ok: false, message: "Adresse e-mail invalide." };
   const r = await ouvrirDossierManuel({
     prenom: input.prenom.slice(0, 80),
     nom: input.nom.slice(0, 80),
@@ -140,7 +161,10 @@ export async function ouvrirDossierManuelAction(input: {
   return r;
 }
 
-export async function enregistrerNoteAction(input: { apporteurId: string; note: string }): Promise<Retour> {
+export async function enregistrerNoteAction(input: {
+  apporteurId: string;
+  note: string;
+}): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
@@ -173,7 +197,10 @@ export async function rattacherParrainAction(input: {
       return { ok: false, message: "Ce parrain est déjà le filleul de cet apporteur." };
     }
   }
-  await prisma.apporteurReseau.update({ where: { id: input.apporteurId }, data: { parrainId: input.parrainId } });
+  await prisma.apporteurReseau.update({
+    where: { id: input.apporteurId },
+    data: { parrainId: input.parrainId },
+  });
   rafraichir(input.apporteurId);
   return { ok: true, message: input.parrainId ? "Parrain rattaché." : "Parrain retiré." };
 }

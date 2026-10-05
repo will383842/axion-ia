@@ -38,7 +38,13 @@ export function QualifierForm({
   return (
     <form action={action} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
       <input type="hidden" name="id" value={id} />
-      <select name="palier" required defaultValue="" className="admin-input" aria-label="Palier de formation">
+      <select
+        name="palier"
+        required
+        defaultValue=""
+        className="admin-input"
+        aria-label="Palier de formation"
+      >
         <option value="" disabled>
           Palier…
         </option>

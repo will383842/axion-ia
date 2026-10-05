@@ -142,7 +142,8 @@ export async function lireFicheApporteur(id: string) {
       take: 500,
     }),
   ]);
-  const nom = (x: { prenom: string; nom: string }) => `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
+  const nom = (x: { prenom: string; nom: string }) =>
+    `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
   return {
     dossier,
     noteInterne: a?.noteInterne ?? null,
@@ -164,8 +165,17 @@ export type FicheApporteur = NonNullable<Awaited<ReturnType<typeof lireFicheAppo
 export async function lireOctetsPiece(apporteurId: string, pieceId: string) {
   const p = await prisma.pieceApporteur.findFirst({
     where: { id: pieceId, apporteurId },
-    select: { nomFichier: true, typeMime: true, purgeeAt: true, contenu: { select: { octets: true } } },
+    select: {
+      nomFichier: true,
+      typeMime: true,
+      purgeeAt: true,
+      contenu: { select: { octets: true } },
+    },
   });
   if (!p || p.purgeeAt || !p.contenu) return null;
-  return { nomFichier: p.nomFichier, typeMime: p.typeMime, octets: new Uint8Array(p.contenu.octets) };
+  return {
+    nomFichier: p.nomFichier,
+    typeMime: p.typeMime,
+    octets: new Uint8Array(p.contenu.octets),
+  };
 }

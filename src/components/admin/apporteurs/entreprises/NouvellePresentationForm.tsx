@@ -64,7 +64,13 @@ export function NouvellePresentationForm({
         </label>
         <label className={CHAMP}>
           E-mail reçu le (fait foi)
-          <input type="datetime-local" name="recueAt" required defaultValue={maintenantLocal} className="admin-input" />
+          <input
+            type="datetime-local"
+            name="recueAt"
+            required
+            defaultValue={maintenantLocal}
+            className="admin-input"
+          />
         </label>
         <div className={CHAMP}>
           <label htmlFor="np-siren">SIREN de l&apos;entreprise</label>
@@ -81,7 +87,12 @@ export function NouvellePresentationForm({
               }}
               className="admin-input flex-1"
             />
-            <button type="button" className="admin-button-secondary" onClick={verifier} disabled={verifEnCours || !siren}>
+            <button
+              type="button"
+              className="admin-button-secondary"
+              onClick={verifier}
+              disabled={verifEnCours || !siren}
+            >
               {verifEnCours ? "…" : "Vérifier"}
             </button>
           </div>
@@ -105,7 +116,9 @@ export function NouvellePresentationForm({
       ) : null}
       {verif?.etat === "ok" ? (
         <div className="flex flex-wrap gap-[var(--space-admin-2)]">
-          {verif.active === false ? <Pastille ton="alerte">Entreprise cessée au registre</Pastille> : null}
+          {verif.active === false ? (
+            <Pastille ton="alerte">Entreprise cessée au registre</Pastille>
+          ) : null}
           {verif.signalements.length === 0 ? (
             <Pastille ton="ok">Rien de connu sur ce SIREN</Pastille>
           ) : (

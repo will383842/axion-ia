@@ -31,7 +31,11 @@ import { estStatutJuridique, ibanValide, type TypePiece } from "./regles";
 export const TAILLE_MAX_PIECE = 10 * 1024 * 1024;
 const FORMATS_PIECE = new Set(["pdf", "png", "jpg"]);
 
-const MIME: Record<string, string> = { pdf: "application/pdf", png: "image/png", jpg: "image/jpeg" };
+const MIME: Record<string, string> = {
+  pdf: "application/pdf",
+  png: "image/png",
+  jpg: "image/jpeg",
+};
 
 // ── Création ─────────────────────────────────────────────────────────────
 
@@ -45,8 +49,11 @@ function separerNom(complet: string): { prenom: string; nom: string } {
  * Ouvre (ou retrouve) le dossier d'un apporteur à partir de sa candidature.
  * Idempotent : une même adresse e-mail n'ouvre qu'un dossier.
  */
-export async function ouvrirDossierDepuisCandidature(submissionId: string): Promise<
-  { ok: true; apporteurId: string; versionLien: number; email: string; prenom: string } | { ok: false; message: string }
+export async function ouvrirDossierDepuisCandidature(
+  submissionId: string,
+): Promise<
+  | { ok: true; apporteurId: string; versionLien: number; email: string; prenom: string }
+  | { ok: false; message: string }
 > {
   const s = await prisma.submission.findUnique({
     where: { id: submissionId },
@@ -55,7 +62,8 @@ export async function ouvrirDossierDepuisCandidature(submissionId: string): Prom
   if (!s) return { ok: false, message: "Candidature introuvable." };
   const email = decryptPii(s.contactEmail)?.trim() ?? "";
   const emailHash = hashEmailForLookup(email);
-  if (!email || !emailHash) return { ok: false, message: "Cette candidature n'a pas d'adresse e-mail utilisable." };
+  if (!email || !emailHash)
+    return { ok: false, message: "Cette candidature n'a pas d'adresse e-mail utilisable." };
   const existant = await prisma.apporteurReseau.findUnique({
     where: { emailHash },
     select: { id: true, versionLien: true, prenom: true },
@@ -132,7 +140,14 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
       pieces: {
         where: { remplaceeAt: null },
         orderBy: { deposeeAt: "asc" },
-        select: { id: true, type: true, statut: true, motif: true, nomFichier: true, deposeeAt: true },
+        select: {
+          id: true,
+          type: true,
+          statut: true,
+          motif: true,
+          nomFichier: true,
+          deposeeAt: true,
+        },
       },
     },
   });
@@ -164,10 +179,16 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
 }
 
 /** Le dossier, si le lien est valide. `null` pour tout lien faux, révoqué ou inconnu. */
-export async function lireDossierParLien(apporteurId: string, jeton: string): Promise<DossierVue | null> {
+export async function lireDossierParLien(
+  apporteurId: string,
+  jeton: string,
+): Promise<DossierVue | null> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return null;
   const id = apporteurId.toLowerCase();
-  const a = await prisma.apporteurReseau.findUnique({ where: { id }, select: { versionLien: true } });
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id },
+    select: { versionLien: true },
+  });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
   return lireDossier(id);
 }
@@ -195,8 +216,12 @@ export async function enregistrerActivite(
   apporteurId: string,
   s: SaisieActivite,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  if (!estStatutJuridique(s.statutJuridique)) return { ok: false, message: "Choisissez votre statut." };
-  if (s.regimeTva === "assujetti" && !/^FR[0-9A-Z]{2}\d{9}$/.test((s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase())) {
+  if (!estStatutJuridique(s.statutJuridique))
+    return { ok: false, message: "Choisissez votre statut." };
+  if (
+    s.regimeTva === "assujetti" &&
+    !/^FR[0-9A-Z]{2}\d{9}$/.test((s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase())
+  ) {
     return { ok: false, message: "Indiquez votre numéro de TVA (FR suivi de 11 caractères)." };
   }
   if (s.iban !== null && s.iban !== "" && !ibanValide(s.iban)) {
@@ -205,14 +230,17 @@ export async function enregistrerActivite(
   await prisma.apporteurReseau.update({
     where: { id: apporteurId },
     data: {
-      ...(s.telephone !== undefined ? { telephone: s.telephone ? encryptPii(s.telephone) : null } : {}),
+      ...(s.telephone !== undefined
+        ? { telephone: s.telephone ? encryptPii(s.telephone) : null }
+        : {}),
       siren: s.siren,
       denomination: s.denomination.slice(0, 250),
       adresse: s.adresse,
       codeNaf: s.codeNaf,
       statutJuridique: s.statutJuridique,
       regimeTva: s.regimeTva,
-      numeroTva: s.regimeTva === "assujetti" ? (s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase() : null,
+      numeroTva:
+        s.regimeTva === "assujetti" ? (s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase() : null,
       ...(s.iban ? { iban: encryptPii(s.iban.replace(/\s+/g, "").toUpperCase()) } : {}),
     },
   });
@@ -241,7 +269,10 @@ export async function deposerPiece(
   }
   const verdict = await analyserOctets(octets, 60_000);
   if (verdict.issue === "infecte") {
-    return { ok: false, message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre." };
+    return {
+      ok: false,
+      message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre.",
+    };
   }
   const sha256 = createHash("sha256").update(octets).digest("hex");
   const maintenant = new Date();
@@ -267,7 +298,10 @@ export async function deposerPiece(
   return { ok: true };
 }
 
-export async function enregistrerDeclarations(apporteurId: string, cles: readonly string[]): Promise<void> {
+export async function enregistrerDeclarations(
+  apporteurId: string,
+  cles: readonly string[],
+): Promise<void> {
   const maintenant = new Date().toISOString();
   await prisma.apporteurReseau.update({
     where: { id: apporteurId },
@@ -277,6 +311,9 @@ export async function enregistrerDeclarations(apporteurId: string, cles: readonl
 
 /** IBAN en clair, pour le relevé et le virement (console seulement). */
 export async function lireIban(apporteurId: string): Promise<string | null> {
-  const a = await prisma.apporteurReseau.findUnique({ where: { id: apporteurId }, select: { iban: true } });
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { iban: true },
+  });
   return decryptPii(a?.iban ?? null);
 }

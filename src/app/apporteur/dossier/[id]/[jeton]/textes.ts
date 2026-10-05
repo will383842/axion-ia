@@ -68,8 +68,7 @@ export const TEXTES = {
   aCompleterLigne: "Corrigez, puis signez de nouveau.",
   // Fin
   merciTitre: "Merci, c'est signé",
-  merciLigne:
-    "Nous vérifions votre dossier et vous recevrez votre contrat contresigné par e‑mail.",
+  merciLigne: "Nous vérifions votre dossier et vous recevrez votre contrat contresigné par e‑mail.",
   recuPastille: "Dossier reçu",
   recuTitre: "Dossier reçu, en cours de vérification",
   recuLigne: "Vous recevrez votre contrat contresigné par e‑mail.",
@@ -84,6 +83,7 @@ export const TEXTES = {
   nousEcrire: "Nous écrire",
   trop: "Trop d'essais depuis cette connexion. Réessayez dans quelques minutes.",
   erreurTitre: "Un souci est survenu",
-  erreurLigne: "Votre saisie enregistrée est conservée. Réessayez dans quelques minutes, ou écrivez à",
+  erreurLigne:
+    "Votre saisie enregistrée est conservée. Réessayez dans quelques minutes, ou écrivez à",
   reessayer: "Réessayer",
 } as const;

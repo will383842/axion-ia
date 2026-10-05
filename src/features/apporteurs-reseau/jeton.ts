@@ -45,7 +45,11 @@ export function jetonDossier(apporteurId: string, versionLien: number): string |
 }
 
 /** Le jeton est-il celui de ce dossier, à sa version courante ? Temps constant. */
-export function jetonDossierValide(apporteurId: string, versionLien: number, jeton: string): boolean {
+export function jetonDossierValide(
+  apporteurId: string,
+  versionLien: number,
+  jeton: string,
+): boolean {
   const id = apporteurId.toLowerCase();
   if (!UUID.test(id) || !JETON.test(jeton)) return false;
   const attendu = jetonDossier(id, versionLien);

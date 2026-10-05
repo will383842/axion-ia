@@ -15,7 +15,8 @@ import { describe, expect, it } from "vitest";
 import { estRouteARequeteSecrete } from "@/lib/observability/sentry-pii-scrub";
 
 const RACINE = process.cwd();
-const LIEN = "/apporteur/dossier/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCd";
+const LIEN =
+  "/apporteur/dossier/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCd";
 
 function matcherRegex(): RegExp {
   const source = readFileSync(join(RACINE, "src/proxy.ts"), "utf8");

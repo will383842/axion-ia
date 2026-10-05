@@ -91,7 +91,12 @@ export function ParrainEtNote({
           Parrain (10 % de ses commissions pendant 6 mois)
         </span>
         <div className="flex flex-wrap gap-[var(--space-admin-2)]">
-          <select className="admin-select" value={parrain} onChange={(e) => setParrain(e.target.value)} disabled={enCours}>
+          <select
+            className="admin-select"
+            value={parrain}
+            onChange={(e) => setParrain(e.target.value)}
+            disabled={enCours}
+          >
             <option value="">Aucun</option>
             {parrainsPossibles.map((p) => (
               <option key={p.id} value={p.id}>
@@ -103,21 +108,38 @@ export function ParrainEtNote({
             type="button"
             className="admin-button-secondary"
             disabled={enCours || parrain === (parrainId ?? "")}
-            onClick={() => demarrer(async () => setRetour(await rattacherParrainAction({ apporteurId, parrainId: parrain || null })))}
+            onClick={() =>
+              demarrer(async () =>
+                setRetour(
+                  await rattacherParrainAction({ apporteurId, parrainId: parrain || null }),
+                ),
+              )
+            }
           >
             Enregistrer
           </button>
         </div>
       </label>
       <label className="flex flex-col gap-[var(--space-admin-1)]">
-        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">Note interne</span>
-        <textarea className="admin-textarea min-h-[80px]" value={texte} maxLength={5000} onChange={(e) => setTexte(e.target.value)} />
+        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Note interne
+        </span>
+        <textarea
+          className="admin-textarea min-h-[80px]"
+          value={texte}
+          maxLength={5000}
+          onChange={(e) => setTexte(e.target.value)}
+        />
         <div>
           <button
             type="button"
             className="admin-button-secondary"
             disabled={enCours}
-            onClick={() => demarrer(async () => setRetour(await enregistrerNoteAction({ apporteurId, note: texte })))}
+            onClick={() =>
+              demarrer(async () =>
+                setRetour(await enregistrerNoteAction({ apporteurId, note: texte })),
+              )
+            }
           >
             Enregistrer la note
           </button>
@@ -157,7 +179,11 @@ export function NouvelApporteurForm({ base }: { base: string }) {
         <input
           key={k}
           className="admin-input"
-          placeholder={{ prenom: "Prénom", nom: "Nom", email: "E-mail", telephone: "Téléphone (facultatif)" }[k]}
+          placeholder={
+            { prenom: "Prénom", nom: "Nom", email: "E-mail", telephone: "Téléphone (facultatif)" }[
+              k
+            ]
+          }
           type={k === "email" ? "email" : "text"}
           required={k !== "telephone"}
           value={v[k]}
