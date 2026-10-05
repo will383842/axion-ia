@@ -7,8 +7,8 @@
 // pourrait écrire un téléphone sur la ligne de quelqu'un d'autre — ou deviner
 // qu'une adresse est déjà connue.
 //
-// Format : `<base64url(JSON)>.<HMAC-SHA256 en hexa>`, comme les jetons de
-// prévisualisation du dépôt (`server/content-gen/shared/preview-token.ts`), sans
+// Format : `<base64url(JSON)>.<HMAC-SHA256 en hexa>`, comme d'autres jetons
+// du dépôt, sans
 // dépendance JWT. Comparaison à temps constant.
 //
 // ── Ce que le jeton porte ─────────────────────────────────────────────────

@@ -545,7 +545,7 @@ async function suiteEtape2(a: {
 
   // B1 : « C'est noté » + bouton de réservation. Un seul par adresse.
   try {
-    await envoyerEtape2Vsl({
+    const parti = await envoyerEtape2Vsl({
       email,
       prenom,
       // Sans lien Calendly valide, le bouton mène à la page de remerciement,
@@ -554,6 +554,9 @@ async function suiteEtape2(a: {
       dossierUrl: `${SITE_URL}/fr${DOSSIER_COMPLET_PATH}`,
       submissionId: a.ligne.id,
     });
+    // `false` : rien n'est parti (file absente, adresse retenue, garé en validation).
+    // Aucune trace d'envoi n'est écrite ici ; on le dit au journal, sans lever.
+    if (!parti) console.warn("[lead-vsl] e-mail B1 non remis à la file");
   } catch (err) {
     console.error("[lead-vsl] e-mail B1 non envoyé:", err);
     Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "email-b1" } });

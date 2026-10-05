@@ -549,6 +549,21 @@ describe("étape 2 — completerLeadVsl", () => {
     expect(JSON.stringify(recap[0]?.payload)).toContain("De 5 à 20");
   });
 
+  it("B1 non remis à la file (envoi refusé) : aucune trace, la ligne et la notification restent", async () => {
+    ligneParId = ligneVsl();
+    enfiler.mockImplementation(async (...a: unknown[]) => ({
+      enqueued: a[0] !== "lead-apporteur-recu",
+    }));
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(r.ok).toBe(true);
+    // Aucune écriture de « message parti » : seule l'avancée d'étape est écrite.
+    expect(majCible).not.toHaveBeenCalled();
+    expect(avancer).toHaveBeenCalledTimes(1);
+    expect(notifier).toHaveBeenCalledTimes(1);
+    enfiler.mockImplementation(async () => ({ enqueued: true }));
+  });
+
   it("R3 : un double clic (étape 2 déjà atteinte) répond « succès » sans second e-mail ni seconde notification", async () => {
     ligneParId = ligneVsl();
     avancer.mockResolvedValue("deja");
