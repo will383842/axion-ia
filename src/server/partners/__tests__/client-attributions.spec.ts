@@ -18,8 +18,12 @@ import {
   CACHE_ATTRIBUTIONS_MS,
   CHEMIN_API_ATTRIBUTIONS,
   DELAI_API_ATTRIBUTIONS_MS,
+  TEXTES_DU_BANDEAU,
+  bandeauPourLeRole,
   creerCacheAttributions,
   lireAttributionPartners,
+  moisEnLettres,
+  texteDuBandeau,
   type AttributionPartners,
 } from "../client-attributions";
 
@@ -54,7 +58,10 @@ function reseau(reponse: () => Response | Promise<Response>) {
 }
 
 const json = (corps: unknown, statut = 200) =>
-  new Response(JSON.stringify(corps), { status: statut, headers: { "content-type": "application/json" } });
+  new Response(JSON.stringify(corps), {
+    status: statut,
+    headers: { "content-type": "application/json" },
+  });
 
 const ATTRIBUEE: AttributionPartners = {
   statut: "attribuee",
@@ -133,8 +140,8 @@ describe("REQ-INT-014 — l'appel de l'API 1 : la cible, le jeton et son kid", (
 describe("REQ-INT-015 — l'échec ouvert : une panne ne bloque jamais le devis, et elle est signalée", () => {
   it("REQ-INT-015 — TÉMOIN : un refus (404), une panne (503), un réseau coupé : jamais une exception, un motif et un signal", async () => {
     for (const [reponse, motif] of [
-      [() => new Response(null, { status: 404 }), "refus"],
-      [() => new Response(null, { status: 503 }), "refus"],
+      [() => new Response(null, { status: 404 }), "http_404"],
+      [() => new Response(null, { status: 503 }), "http_503"],
       [
         () => {
           throw new TypeError("fetch failed");
@@ -182,8 +189,8 @@ describe("REQ-INT-015 — l'échec ouvert : une panne ne bloque jamais le devis,
       cache: creerCacheAttributions(),
     });
     await vi.advanceTimersByTimeAsync(2_000);
-    expect(await apres).toEqual({ ok: false, motif: "delai" });
-    expect(signales).toEqual(["delai"]);
+    expect(await apres).toEqual({ ok: false, motif: "timeout" });
+    expect(signales).toEqual(["timeout"]);
   });
 
   it("REQ-INT-015 — TÉMOIN : une réponse hors contrat est refusée, comme une panne, et le nom n'en sort pas", async () => {
@@ -201,8 +208,8 @@ describe("REQ-INT-015 — l'échec ouvert : une panne ne bloque jamais le devis,
       const r = reseau(() => json(corps));
       const { appeler, signales } = lire(SIREN, r);
       const lu = await appeler();
-      expect(lu, JSON.stringify(corps)).toEqual({ ok: false, motif: "reponse_hors_contrat" });
-      expect(signales).toEqual(["reponse_hors_contrat"]);
+      expect(lu, JSON.stringify(corps)).toEqual({ ok: false, motif: "illisible" });
+      expect(signales).toEqual(["illisible"]);
     }
   });
 
@@ -260,7 +267,9 @@ describe("REQ-INT-015 — le nom n'entre dans aucun journal", () => {
   it("REQ-INT-015 — TÉMOIN : en panne comme en succès, rien n'est écrit sur la console qui porte le SIREN ou le nom", async () => {
     const ecrits: string[] = [];
     const espions = (["log", "info", "warn", "error", "debug"] as const).map((n) =>
-      vi.spyOn(console, n).mockImplementation((...a: unknown[]) => void ecrits.push(a.map(String).join(" "))),
+      vi
+        .spyOn(console, n)
+        .mockImplementation((...a: unknown[]) => void ecrits.push(a.map(String).join(" "))),
     );
     try {
       for (const reponse of [() => json(ATTRIBUEE), () => new Response(null, { status: 503 })]) {
@@ -276,6 +285,74 @@ describe("REQ-INT-015 — le nom n'entre dans aucun journal", () => {
     }
     expect(ecrits.join("\n")).not.toContain(SIREN);
     expect(ecrits.join("\n")).not.toContain("Paul");
-    expect(ecrits.some((l) => l.includes("refus"))).toBe(true);
+    expect(ecrits.some((l) => l.includes("http_503"))).toBe(true);
+  });
+});
+
+describe("REQ-INT-014 — le bandeau : les textes de la juriste, mot pour mot", () => {
+  const lu = (a: AttributionPartners) => ({ ok: true as const, attribution: a });
+
+  it("REQ-INT-014 — TÉMOIN : réservée, déposée, cliente, avec le nom ; le mois en toutes lettres", () => {
+    expect(texteDuBandeau(lu({ ...ATTRIBUEE, until: "2026-12" }))).toBe(
+      TEXTES_DU_BANDEAU.reservee.replace("{nom}", "Paul D.").replace("{mois}", "décembre 2026"),
+    );
+    expect(texteDuBandeau(lu({ ...ATTRIBUEE, until: null }))).toBe(
+      TEXTES_DU_BANDEAU.deposee.replace("{nom}", "Paul D."),
+    );
+    expect(
+      texteDuBandeau(
+        lu({ statut: "cliente", until: null, apporteurRef: REF, nomAffichable: "Paul D." }),
+      ),
+    ).toBe(TEXTES_DU_BANDEAU.cliente.replace("{nom}", "Paul D."));
+    expect(moisEnLettres("2027-01")).toBe("janvier 2027");
+  });
+
+  it("REQ-INT-014 — TÉMOIN : le nom indisponible devient « un apporteur », et rien d'autre ne change", () => {
+    const sans = texteDuBandeau(lu({ ...ATTRIBUEE, nomAffichable: null, until: null }));
+    expect(sans).toBe(TEXTES_DU_BANDEAU.deposee.replace("{nom}", "un apporteur"));
+    expect(sans).not.toMatch(/[0-9a-f]{8}-/);
+  });
+
+  it("REQ-INT-015 — TÉMOIN À DEUX FACES : libre, canal inerte ou client sans SIREN : aucun bandeau ; toute panne : le texte de la panne, jamais un bandeau vide", () => {
+    expect(
+      texteDuBandeau(lu({ statut: "libre", until: null, apporteurRef: null, nomAffichable: null })),
+    ).toBeNull();
+    expect(texteDuBandeau({ ok: false, motif: "inactif" })).toBeNull();
+    expect(texteDuBandeau({ ok: false, motif: "siren_invalide" })).toBeNull();
+    for (const motif of ["timeout", "http_503", "http_404", "illisible", "reseau"] as const)
+      expect(texteDuBandeau({ ok: false, motif }), motif).toBe(TEXTES_DU_BANDEAU.panne);
+  });
+});
+
+describe("REQ-INT-014 — le bandeau n'existe que pour un rôle qui crée un devis, jugé au serveur avant l'appel", () => {
+  it("REQ-INT-014 — TÉMOIN À DEUX FACES : super_admin, admin, responsable_qualite, secretaire et editor voient le bandeau ; reader, une session sans rôle ou un rôle inconnu : ni bandeau, ni appel", async () => {
+    for (const role of ["super_admin", "admin", "responsable_qualite", "secretaire", "editor"]) {
+      const r = reseau(() => json(ATTRIBUEE));
+      const texte = await bandeauPourLeRole(role, SIREN, {
+        fetch: r.fetch,
+        maintenantMs: () => T0,
+        cache: creerCacheAttributions(),
+      });
+      expect(texte, role).toContain("Paul D.");
+      expect(r.appels, role).toHaveLength(1);
+    }
+    for (const role of ["reader", null, undefined, "", "role_futur"]) {
+      const r = reseau(() => json(ATTRIBUEE));
+      const texte = await bandeauPourLeRole(role, SIREN, {
+        fetch: r.fetch,
+        maintenantMs: () => T0,
+        cache: creerCacheAttributions(),
+      });
+      expect(texte, String(role)).toBeNull();
+      expect(r.appels, String(role)).toEqual([]);
+    }
+  });
+
+  it("REQ-INT-014 : un client sans SIREN n'appelle pas Partners", async () => {
+    const r = reseau(() => json(ATTRIBUEE));
+    expect(
+      await bandeauPourLeRole("admin", null, { fetch: r.fetch, cache: creerCacheAttributions() }),
+    ).toBeNull();
+    expect(r.appels).toEqual([]);
   });
 });
