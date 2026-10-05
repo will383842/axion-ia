@@ -29,7 +29,7 @@ const fr = (d: Date) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "
 export default async function ApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
-  if (!acces.autorise) return <AccesRefuse motif={acces.motif} />;
+  if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/apporteurs`;
   const tous = await listerApporteurs();

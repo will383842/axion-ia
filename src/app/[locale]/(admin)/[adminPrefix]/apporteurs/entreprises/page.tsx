@@ -51,7 +51,7 @@ const heure = (d: Date) =>
 export default async function EntreprisesPresenteesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
-  if (!acces.autorise) return <AccesRefuse motif={acces.motif} />;
+  if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const sp = await searchParams;
   const onglet = ONGLETS.find((o) => o.cle === sp.onglet)?.cle ?? "a-traiter";
   const base = `/fr/${adminPrefix}/apporteurs/entreprises`;

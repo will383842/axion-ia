@@ -54,7 +54,7 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
 export default async function FicheApporteurPage({ params }: PageProps) {
   const { adminPrefix, id } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
-  if (!acces.autorise) return <AccesRefuse motif={acces.motif} />;
+  if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!UUID.test(id)) notFound();
   const fiche = await lireFicheApporteur(id.toLowerCase());
   if (!fiche) notFound();
@@ -80,7 +80,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
     <div className="flex flex-col gap-[var(--space-admin-5)]">
       <AdminPageHeader
         title={`${d.prenom} ${d.nom}`.trim() || "Apporteur"}
-        description={d.denomination ?? undefined}
+        {...(d.denomination ? { description: d.denomination } : {})}
         meta={<span className="font-semibold">{LIBELLE_STATUT_APPORTEUR[d.statut]}</span>}
         actions={
           <Link href={base} className="admin-button-secondary">

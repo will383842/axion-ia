@@ -132,6 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     destinatairesResult,
     signaturesCoachingResult,
     appelsResult,
+    reseauApporteurResult,
     reponsesEntrantesResult,
     dossierClientResult,
   ] = await Promise.all([
@@ -268,6 +269,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         dossierClient: dossierClientResult,
+        reseauApporteur: { ...reseauApporteurResult },
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,

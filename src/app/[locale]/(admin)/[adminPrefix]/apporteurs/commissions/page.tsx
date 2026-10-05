@@ -52,7 +52,7 @@ const PALIERS = PALIERS_FORMATION.map((p) => ({
 export default async function CommissionsApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
-  if (!acces.autorise) return <AccesRefuse motif={acces.motif} />;
+  if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const peutPayer = peutEngager(acces.role, "facturer");
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/apporteurs/commissions`;

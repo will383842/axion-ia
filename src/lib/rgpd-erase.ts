@@ -30,6 +30,7 @@ import type {
   Prisma,
   PrismaClient,
 } from "../../prisma/generated/client";
+import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -2217,7 +2218,7 @@ export async function eraseReseauApporteurForEmail(email: string): Promise<Erase
   if (conserver) {
     await prisma.apporteurReseau.update({
       where: { id: a.id },
-      data: { telephone: null, noteInterne: null, declarations: undefined, versionLien: { increment: 1 } },
+      data: { telephone: null, noteInterne: null, versionLien: { increment: 1 } },
     });
     return { apporteur: "conserve_obligation_legale", presentationsAnonymisees: presentations.count };
   }
@@ -2233,7 +2234,7 @@ export async function eraseReseauApporteurForEmail(email: string): Promise<Erase
       adresse: null,
       noteInterne: null,
       dernierMessage: null,
-      signatureApporteur: undefined,
+      signatureApporteur: PrismaRuntime.DbNull,
       statut: "refuse",
       versionLien: { increment: 1 },
     },
