@@ -6,6 +6,7 @@
  * montants en centimes ; franchise 293 B ou TVA 20 % selon le régime de l'apporteur.
  */
 
+import { ajouterJoursOuvres } from "@/lib/jours-ouvres";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { LigneHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
@@ -91,18 +92,7 @@ export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
 /** Art. 5.3 : virement dans les dix jours ouvrés suivant l'établissement du relevé. */
 export const ECHEANCE_JOURS_OUVRES = 10;
 
-/** Ajoute des jours ouvrés (lundi à vendredi, calendrier de Paris ; jours fériés non retranchés). */
-export function ajouterJoursOuvres(depuis: Date, jours: number): Date {
-  const semaine = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Europe/Paris" });
-  const d = new Date(depuis.getTime());
-  let restant = jours;
-  while (restant > 0) {
-    d.setTime(d.getTime() + 86_400_000);
-    const j = semaine.format(d);
-    if (j !== "Sat" && j !== "Sun") restant -= 1;
-  }
-  return d;
-}
+export { ajouterJoursOuvres };
 
 function dateFr(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
