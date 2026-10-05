@@ -154,6 +154,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // existe encore (contrôle 3, cliquet des symboles). Il n'appelle rien : sans
   // ce chargement, une entrée morte dans la liste resterait verte pour toujours.
   "src/server/mcp/__tests__/harnais.spec.ts",
+  // Réseau d'apporteurs (2026-10-05) — l'autofacture de l'apporteur RÉUTILISE le gabarit PDF,
+  //    l'identité de l'organisme et la construction de pièce d'autofacturation des formateurs
+  //    (même pièce, vendeur et acheteur inversés) plutôt que d'en écrire une seconde. Nommés un par un.
+  "src/features/apporteurs-reseau/autofacture-donnees.ts",
+  "src/features/apporteurs-reseau/commissions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
