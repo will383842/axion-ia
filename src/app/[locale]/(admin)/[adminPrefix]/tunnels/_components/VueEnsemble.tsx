@@ -45,7 +45,14 @@ export function VueEnsemble({
       // page publique — et le contrat de `AdminTable` est clair : le lien étiré
       // recouvre la ligne, donc il interdit tout autre élément cliquable.
       cell: (r) => (
-        <Link href={`${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`} className="admin-link">
+        <Link
+          href={
+            r.cle === "apporteur"
+              ? `${base}/apporteurs`
+              : `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`
+          }
+          className="admin-link"
+        >
           {r.libelle}
         </Link>
       ),
