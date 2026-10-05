@@ -118,7 +118,10 @@ describe("Retenu — bienvenue dans le réseau", () => {
     );
     expect(t).toContain(`Audit : ${audit} % du montant HT de la facture.`);
     expect(t).toContain(`Intégration : ${integration} % du montant HT de la facture.`);
-    expect(t).toContain(`attribuée pendant ${FENETRE_ATTRIBUTION_APPORTEUR_MOIS} mois`);
+    // Décision de Will (2026-10-05) : la durée d'attribution ne s'écrit PAS dans cet e-mail.
+    expect(t).toContain("réglé l'intégralité de sa facture.");
+    expect(t).not.toContain("attribuée");
+    expect(t).not.toContain("6 mois");
     // Témoin des valeurs décidées : si le SSOT bouge, ce test le dit.
     expect([
       COMMISSION_FORMATION_PAR_JOURNEE_EUR,
