@@ -84,6 +84,7 @@ describe("listerFichesRattachables — même nom, autre adresse", () => {
     });
 
     expect(fiches.map((f) => [f.id, f.groupe])).toEqual([["indeed", "nom-probable"]]);
+    expect(fiches[0]?.intitule).toContain("Même nom");
   });
 
   it("ne cherche aucun nom pour un appel client", async () => {

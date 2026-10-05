@@ -44,11 +44,19 @@ export interface FicheRattachable {
   id: string;
   libelle: string;
   groupe: GroupeFiche;
+  /** Titre du groupe, affiché par le sélecteur (qui ne le recalcule pas : poids du bundle). */
+  intitule: string;
 }
 
 // Fenêtre des fiches « récentes » : déclarée dans un module PUR, parce que le
 // sélecteur qui l'annonce est un composant client (voir l'en-tête là-bas).
 export { JOURS_FICHES_RECENTES };
+const INTITULE_GROUPE: Record<GroupeFiche, string> = {
+  actuelle: "Fiche rattachée",
+  "meme-personne": "Même adresse e-mail",
+  "nom-probable": "Même nom, autre adresse (à vérifier)",
+  recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
+};
 const PLAFOND_PAR_GROUPE = 25;
 const PLAFOND_NOM_PROBABLE = 5;
 /** Combien de dossiers apporteur on relit (et déchiffre) pour chercher un nom. */
@@ -153,7 +161,7 @@ export async function listerFichesRattachables(rdv: {
   const ajouter = (l: Ligne, groupe: GroupeFiche): void => {
     if (vus.has(l.id)) return;
     vus.add(l.id);
-    fiches.push({ id: l.id, libelle: libelle(l), groupe });
+    fiches.push({ id: l.id, libelle: libelle(l), groupe, intitule: INTITULE_GROUPE[groupe] });
   };
 
   if (actuelle) ajouter(actuelle as Ligne, "actuelle");
