@@ -23,6 +23,11 @@ export interface CommissionPourAutofacture {
   readonly palier: string | null;
   readonly parrainage: boolean;
   readonly montantCents: number | null;
+  /** Art. 4.1 bis : prix public de la formation et prix réellement facturé (HT), s'ils sont connus. */
+  readonly prixPublicHtCents?: number | null;
+  readonly factureHtCents?: number | null;
+  /** `reprise` : ligne négative (art. 4.5), jamais une commission. */
+  readonly statut?: string;
 }
 
 export interface ApporteurPourAutofacture {
@@ -43,11 +48,28 @@ export function regimeHonorairesApporteur(
   return null;
 }
 
-/** Désignation d'une ligne : l'activité, le palier retenu, la part de parrainage. */
+/** « 1 900,00 € » : toujours deux décimales sur une pièce comptable. */
+function eurosHt(cents: number): string {
+  return `${(cents / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+}
+
+/**
+ * Désignation d'une ligne : l'activité, le palier retenu, la part de parrainage, et — par
+ * commande — le prix public, le prix facturé (la commission étant le montant de la ligne), pour
+ * que la proportionnalité de l'art. 4.1 bis se lise sur la pièce.
+ */
 export function designationCommission(c: CommissionPourAutofacture, libelleMois: string): string {
+  if (c.statut === "reprise")
+    return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
   const base = c.parrainage ? "Commission de parrainage" : `Commission d'apport (${c.activite})`;
   const palier = c.palier ? ` — palier ${c.palier}` : "";
-  return `${base}${palier} — relevé de ${libelleMois}`;
+  const prix =
+    c.prixPublicHtCents != null && c.factureHtCents != null
+      ? ` — prix public ${eurosHt(c.prixPublicHtCents)} HT, prix facturé ${eurosHt(c.factureHtCents)} HT`
+      : c.factureHtCents != null && c.factureHtCents > 0
+        ? ` — prix facturé ${eurosHt(c.factureHtCents)} HT`
+        : "";
+  return `${base}${palier}${prix} — relevé de ${libelleMois}`;
 }
 
 export function lignesAutofacture(
@@ -55,7 +77,7 @@ export function lignesAutofacture(
   libelleMois: string,
 ): LigneHonoraires[] {
   return commissions
-    .filter((c) => c.montantCents !== null && c.montantCents > 0)
+    .filter((c) => c.montantCents !== null && c.montantCents !== 0)
     .map((c) => ({
       designation: designationCommission(c, libelleMois),
       montantHtCents: c.montantCents ?? 0,
@@ -64,6 +86,22 @@ export function lignesAutofacture(
 
 export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
   return lignes.reduce((s, l) => s + l.montantHtCents, 0);
+}
+
+/** Art. 5.3 : virement dans les dix jours ouvrés suivant l'établissement du relevé. */
+export const ECHEANCE_JOURS_OUVRES = 10;
+
+/** Ajoute des jours ouvrés (lundi à vendredi, calendrier de Paris ; jours fériés non retranchés). */
+export function ajouterJoursOuvres(depuis: Date, jours: number): Date {
+  const semaine = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Europe/Paris" });
+  const d = new Date(depuis.getTime());
+  let restant = jours;
+  while (restant > 0) {
+    d.setTime(d.getTime() + 86_400_000);
+    const j = semaine.format(d);
+    if (j !== "Sat" && j !== "Sun") restant -= 1;
+  }
+  return d;
 }
 
 function dateFr(d: Date): string {
@@ -103,7 +141,7 @@ export function construireDonneesAutofacture(e: {
     data: {
       numero: e.numero,
       dateEmission: dateFr(e.dateEmission),
-      dateEcheance: dateFr(e.dateEmission),
+      dateEcheance: dateFr(ajouterJoursOuvres(e.dateEmission, ECHEANCE_JOURS_OUVRES)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.releveLibelle,
       sousTraitant: {

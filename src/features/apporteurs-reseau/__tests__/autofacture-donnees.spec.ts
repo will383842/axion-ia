@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  ajouterJoursOuvres,
+  designationCommission,
   construireDonneesAutofacture,
   lignesAutofacture,
   regimeHonorairesApporteur,
@@ -69,5 +71,77 @@ describe("autofacture apporteur", () => {
     expect(construireDonneesAutofacture({ ...base, apporteur, totalAttenduCents: 1 }).ok).toBe(
       false,
     );
+  });
+});
+
+describe("autofacture : prix public, prix facturé, échéance, reprise (art. 4.1 bis, 5.3, 4.5)", () => {
+  it("la désignation porte le prix public et le prix facturé, la commission est le montant de la ligne", () => {
+    const d = designationCommission(
+      {
+        id: "a",
+        activite: "formation",
+        palier: "formation-generale-1j",
+        parrainage: false,
+        montantCents: 40_000,
+        prixPublicHtCents: 190_000,
+        factureHtCents: 152_000,
+      },
+      "octobre 2026",
+    );
+    expect(d).toContain("prix public 1 900,00 € HT".replace(" ", " "));
+    expect(d).toContain("prix facturé 1 520,00 € HT");
+    expect(d).toContain("palier formation-generale-1j");
+  });
+  it("sans prix public (audit, intégration) : seul le prix facturé est cité", () => {
+    const d = designationCommission(
+      {
+        id: "a",
+        activite: "audit",
+        palier: null,
+        parrainage: false,
+        montantCents: 1,
+        factureHtCents: 500_000,
+      },
+      "octobre 2026",
+    );
+    expect(d).toContain("prix facturé");
+    expect(d).not.toContain("prix public");
+  });
+  it("échéance : dix jours ouvrés après l'émission, pas le jour même", () => {
+    // Lundi 5 octobre 2026 + 10 jours ouvrés = lundi 19 octobre.
+    expect(
+      ajouterJoursOuvres(new Date("2026-10-05T10:00:00Z"), 10).toISOString().slice(0, 10),
+    ).toBe("2026-10-19");
+    // Vendredi 9 octobre + 10 jours ouvrés = vendredi 23 octobre (les week-ends ne comptent pas).
+    expect(
+      ajouterJoursOuvres(new Date("2026-10-09T10:00:00Z"), 10).toISOString().slice(0, 10),
+    ).toBe("2026-10-23");
+    const r = construireDonneesAutofacture({ ...base, apporteur });
+    expect(r.ok && r.data.dateEcheance !== r.data.dateEmission).toBe(true);
+    expect(r.ok && r.data.dateEcheance).toContain("19 octobre 2026");
+  });
+  it("une reprise est une ligne négative qui vient en déduction du total", () => {
+    const avecReprise = [
+      ...commissions.slice(0, 2),
+      {
+        id: "r",
+        activite: "reprise",
+        palier: null,
+        parrainage: false,
+        montantCents: -5_000,
+        statut: "reprise",
+      },
+    ];
+    const l = lignesAutofacture(avecReprise, "octobre 2026");
+    expect(l).toHaveLength(3);
+    expect(totalHtCents(l)).toBe(8_500);
+    expect(l[2]!.designation).toContain("Reprise");
+    const r = construireDonneesAutofacture({
+      ...base,
+      apporteur,
+      commissions: avecReprise,
+      totalAttenduCents: 8_500,
+    });
+    expect(r.ok).toBe(true);
   });
 });
