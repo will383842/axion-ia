@@ -1,7 +1,7 @@
 /**
  * Réseau d'apporteurs (démarrage manuel) — le PASSAGE QUOTIDIEN.
  *
- * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Cinq étapes, chacune
+ * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Six étapes, chacune
  * isolée (une étape en échec n'empêche pas les suivantes) et rejouable (toute écriture est
  * conditionnelle, tout e-mail a une clé « une fois ») :
  *
@@ -11,7 +11,8 @@
  *   (c) une commission par COMMANDE soldée d'une entreprise protégée à la date de commande,
  *       plus la part du parrain dans les 6 mois de la signature du filleul ;
  *   (d) vigilance : libère les commissions en attente dès que les pièces sont là, demande
- *       les pièces (une fois), et le renouvellement 15 jours avant l'échéance ;
+ *       les pièces, relance tous les 15 jours (trois au plus), alerte Williams d'un dépôt à
+ *       vérifier, et demande le renouvellement 15 jours avant l'échéance ;
  *   (e) « commande signée » à l'apporteur, une fois par devis accepté (sans montant) ;
  *   (f) rappel du dossier non complété : J+3 puis J+7 après l'envoi du lien, jamais au-delà.
  *
@@ -19,7 +20,7 @@
  */
 
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
-// module importe. ⛔ `envois.ts` en porte encore un : à retirer avant la mise en service.
+// module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
 import * as Sentry from "@sentry/nextjs";
 
@@ -29,10 +30,13 @@ import { decryptPii } from "@/lib/pii-crypto";
 import {
   demanderVigilance,
   dejaEnvoye,
+  libererSiPiecesValides,
   piecesVigilanceValides,
+  relancerVigilance,
   statutApresVigilance,
 } from "./commissions";
 import { envoyer } from "./envois";
+import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { commandesSoldees } from "./commandes";
 import { urlDossier } from "./jeton";
 import {
@@ -112,6 +116,8 @@ export interface BilanPassageReseau {
   partsParrainage: number;
   liberees: number;
   vigilancesDemandees: number;
+  relancesVigilance: number;
+  alertesPiecesVigilance: number;
   commandesSigneesAnnoncees: number;
   rappelsDossier: number;
   erreurs: number;
@@ -175,6 +181,8 @@ export async function passerReseauApporteurs(
     partsParrainage: 0,
     liberees: 0,
     vigilancesDemandees: 0,
+    relancesVigilance: 0,
+    alertesPiecesVigilance: 0,
     commandesSigneesAnnoncees: 0,
     rappelsDossier: 0,
     erreurs: 0,
@@ -184,6 +192,11 @@ export async function passerReseauApporteurs(
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
+    [
+      "alerte-pieces-vigilance",
+      async () =>
+        void (bilan.alertesPiecesVigilance += await alerterPiecesVigilanceDeposees(maintenant)),
+    ],
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
   ];
@@ -527,13 +540,11 @@ async function etapeVigilance(maintenant: Date, bilan: BilanPassageReseau): Prom
   });
   for (const g of enAttente) {
     if (await piecesVigilanceValides(g.apporteurId, maintenant)) {
-      const r = await prisma.commissionApporteur.updateMany({
-        where: { apporteurId: g.apporteurId, statut: "en_attente_vigilance" },
-        data: { statut: "due" },
-      });
-      bilan.liberees += r.count;
+      bilan.liberees += await libererSiPiecesValides(g.apporteurId, maintenant);
     } else if ((await demanderVigilance(g.apporteurId, "premiere")) !== "deja") {
       bilan.vigilancesDemandees += 1;
+    } else if (await relancerVigilance(g.apporteurId, maintenant)) {
+      bilan.relancesVigilance += 1;
     }
   }
   // Renouvellement : 15 jours avant l'échéance de l'attestation conforme, une fois par échéance.

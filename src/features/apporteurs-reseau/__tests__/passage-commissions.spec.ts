@@ -13,7 +13,10 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("../envois", () => ({ envoyer: vi.fn(async () => "envoye") }));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
+vi.mock("../alerte-vigilance", () => ({ alerterPiecesVigilanceDeposees: vi.fn(async () => 0) }));
 vi.mock("../commissions", () => ({
+  libererSiPiecesValides: vi.fn(async () => 0),
+  relancerVigilance: vi.fn(async () => false),
   demanderVigilance: vi.fn(async () => "deja"),
   dejaEnvoye: vi.fn(async () => true),
   piecesVigilanceValides: vi.fn(async () => true),

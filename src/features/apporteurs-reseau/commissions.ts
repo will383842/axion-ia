@@ -68,6 +68,103 @@ export async function piecesVigilanceValides(
   return piecesVigilanceConformes(pieces, maintenant);
 }
 
+/** Relances de la demande de pièces : une tous les 15 jours après le dernier envoi, trois au plus. */
+export const RELANCE_VIGILANCE_JOURS = 15;
+export const RELANCES_VIGILANCE_MAX = 3;
+
+/**
+ * Quelle relance envoyer maintenant ? `envoisAt` = dates d'envoi de la demande initiale puis
+ * de chaque relance déjà partie (ordre chronologique). Rend le numéro de la relance (1 à 3), ou
+ * `null` : rien n'est parti, le délai n'est pas écoulé, ou les trois relances sont faites. Pur.
+ */
+export function relanceVigilanceDue(envoisAt: readonly Date[], maintenant: Date): 1 | 2 | 3 | null {
+  if (envoisAt.length === 0 || envoisAt.length > RELANCES_VIGILANCE_MAX) return null;
+  const dernier = Math.max(...envoisAt.map((d) => d.getTime()));
+  if (maintenant.getTime() < dernier + RELANCE_VIGILANCE_JOURS * 86_400_000) return null;
+  return envoisAt.length as 1 | 2 | 3;
+}
+
+/** Clé « une fois » d'une relance : une par numéro. */
+export function jobIdRelanceVigilance(apporteurId: string, numero: 1 | 2 | 3): string {
+  return `apporteur-vigilance-relance-${apporteurId}-${numero}`;
+}
+
+/** Envoi de la demande initiale et des relances déjà parties, dans l'ordre. */
+async function envoisDemandeVigilance(apporteurId: string): Promise<Date[]> {
+  const l = await prisma.emailLog.findMany({
+    where: {
+      template: "apporteur-vigilance",
+      entityType: "ApporteurReseau",
+      entityId: apporteurId,
+      sentAt: { not: null },
+      status: { not: "failed" },
+      OR: [
+        { jobId: jobIdVigilance(apporteurId, "premiere") },
+        { jobId: { startsWith: `apporteur-vigilance-relance-${apporteurId}-` } },
+      ],
+    },
+    select: { sentAt: true },
+    orderBy: { sentAt: "asc" },
+  });
+  return l.map((x) => x.sentAt).filter((d): d is Date => d instanceof Date);
+}
+
+/**
+ * Relance la demande de pièces si elle est due (et qu'aucune pièce n'attend déjà la vérification
+ * de Williams). Même gabarit que la demande initiale. Rend vrai si une relance est partie.
+ */
+export async function relancerVigilance(apporteurId: string, maintenant: Date): Promise<boolean> {
+  const numero = relanceVigilanceDue(await envoisDemandeVigilance(apporteurId), maintenant);
+  if (numero === null) return false;
+  const enAttente = await prisma.pieceApporteur.count({
+    where: {
+      apporteurId,
+      type: { in: ["vigilance", "immatriculation"] },
+      statut: "deposee",
+      remplaceeAt: null,
+      purgeeAt: null,
+    },
+  });
+  if (enAttente > 0) return false;
+  const jobId = jobIdRelanceVigilance(apporteurId, numero);
+  if (await dejaEnvoye(jobId)) return false;
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { id: true, prenom: true, nom: true, email: true, versionLien: true },
+  });
+  if (!a) return false;
+  const dossierUrl = urlDossier(a.id, a.versionLien);
+  const r = await envoyer({
+    gabarit: "apporteur-vigilance",
+    destinataire: decryptPii(a.email) ?? "",
+    payload: {
+      contactName: [decryptPii(a.prenom), decryptPii(a.nom)].filter(Boolean).join(" "),
+      ...(dossierUrl ? { dossierUrl } : {}),
+      variante: "premiere",
+    },
+    entityType: "ApporteurReseau",
+    entityId: a.id,
+    jobId,
+  });
+  return r === "envoye";
+}
+
+/**
+ * Libère les commissions en attente dès que les pièces sont conformes — appelée au jugement de la
+ * pièce par Williams, pas au passage du lendemain. Rend le nombre de commissions libérées.
+ */
+export async function libererSiPiecesValides(
+  apporteurId: string,
+  maintenant: Date = new Date(),
+): Promise<number> {
+  if (!(await piecesVigilanceValides(apporteurId, maintenant))) return 0;
+  const r = await prisma.commissionApporteur.updateMany({
+    where: { apporteurId, statut: "en_attente_vigilance" },
+    data: { statut: "due" },
+  });
+  return r.count;
+}
+
 export async function cumulVigilanceCents(apporteurId: string, saufId?: string): Promise<number> {
   const r = await prisma.commissionApporteur.aggregate({
     where: {
