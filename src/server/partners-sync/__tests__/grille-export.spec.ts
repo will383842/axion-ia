@@ -298,7 +298,9 @@ describe("DM-03-A · la fixture pseudonymisée de Partners (DM-03-P, RM-03)", ()
     for (const v of valeurs(vraie)) expect(valeurs(fixture)).not.toContain(v);
     expect(fixture.hash).toBe(empreinteGrille(fixture.contenu));
     expect(fixture.hash).not.toBe(vraie.hash);
-    expect(verifierPublications([fixture])).toEqual([]);
+    // La fixture prend la place de la dernière publication DANS sa chaîne : seule, une v2 ou plus
+    // violerait la contiguïté depuis la v1 (INT-T53-A, première republication).
+    expect(verifierPublications([...lirePublications().slice(0, -1), fixture])).toEqual([]);
   });
 
   it("TÉMOIN — aucune empreinte calculée sur les VRAIES valeurs ne traverse la fixture (grilleVersionEvenement compris)", () => {

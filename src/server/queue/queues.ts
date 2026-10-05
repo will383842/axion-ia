@@ -28,6 +28,7 @@ import type {
   ApporteurCronJobData,
   ApporteurCronJobType,
   VisioBalayageJobData,
+  OpcoSiroImportJobData,
   VisioJobData,
   VisioJobName,
 } from "./types";
@@ -252,6 +253,29 @@ export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
 
 /** Cadence du balayage du dossier client : toutes les 5 minutes. */
 export const PATTERN_BALAYAGE_VISIO = "*/5 * * * *";
+
+/**
+ * INT-T60-A — import MENSUEL de la table IDCC → OPCO (SIRO de France
+ * compétences), consommé par `workers/opco-siro-import-worker.ts` en
+ * concurrence 1. `attempts: 1` : un passage refusé laisse la table intacte et
+ * se relance à la main (ou le mois suivant) ; le relancer seul retéléchargerait
+ * 109 Mo pour le même refus.
+ */
+export const opcoSiroImportQueue: Queue<OpcoSiroImportJobData> | null = connection
+  ? new Queue<OpcoSiroImportJobData>("opco-siro-import", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 400 * 24 * 3600, count: 12 },
+        removeOnFail: { age: 400 * 24 * 3600, count: 24 },
+      },
+    })
+  : null;
+
+/** Le 20 de chaque mois, 06:00 À PARIS (fuseau porté par le répétable). */
+export const PATTERN_IMPORT_SIRO = "0 6 20 * *";
+export const FUSEAU_IMPORT_SIRO = "Europe/Paris";
 
 /**
  * 2026-09-29 (chantier visio, PR 6) — la file `visio` du CIRCUIT du compte
@@ -1290,6 +1314,23 @@ export async function bootRepeatableJobs(): Promise<void> {
       "balayage",
       { tick: new Date().toISOString() },
       { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
+    );
+  }
+
+  // ── INT-T60-A — import mensuel de la table IDCC → OPCO ────────────────
+  // Purge exhaustive d'abord (un seul répétable, cadence à jour). Le drapeau
+  // `IDCC_OPCO_IMPORT_ENABLED` est lu par le worker, au passage.
+  if (opcoSiroImportQueue) {
+    for (const existing of await opcoSiroImportQueue.getRepeatableJobs()) {
+      await opcoSiroImportQueue.removeRepeatableByKey(existing.key);
+    }
+    await opcoSiroImportQueue.add(
+      "import-mensuel",
+      { tick: new Date().toISOString() },
+      {
+        repeat: { pattern: PATTERN_IMPORT_SIRO, tz: FUSEAU_IMPORT_SIRO },
+        jobId: "opco-siro-import-cron",
+      },
     );
   }
 

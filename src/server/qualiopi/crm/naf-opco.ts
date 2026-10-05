@@ -5,7 +5,8 @@
  * Retourne `null` si inconnu (à déterminer manuellement côté CRM).
  *
  * Sources : liste officielle des branches par OPCO (DGEFP 2024).
- * Module PUR (pas d'import Prisma/next) — testable sans DB.
+ * Module PUR (pas d'import Prisma/next) — testable sans DB : la table
+ * `idcc_opco` se lit par un lecteur INJECTÉ (`opcosDeLIdcc`).
  *
  * ⚠️ ORDRE DE PRÉSÉANCE — l'OPCO est déterminé LÉGALEMENT par la convention
  * collective (IDCC), PAS par le code NAF. `prisma/schema.prisma` le dit
@@ -14,7 +15,7 @@
  * — qui interroge l'IDCC d'abord — et jamais `inferOpcoFromNaf()` seul.
  */
 
-import type { OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
+import { isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
 /**
  * Map : code NAF exact (5 caractères, ex. "6201Z") → identifiant OPCO.
@@ -208,34 +209,66 @@ export const NAF_OPCO_MAP: Record<string, OpcoId> = {
  */
 export const NAF_PREFIX4_SANS_REPLI: ReadonlySet<string> = new Set(["8559"]);
 
-/** Une entrée IDCC → OPCO, avec la référence qui l'établit. */
-export interface IdccOpco {
-  readonly opco: OpcoId;
-  /**
-   * Source traçable. NON décorative : cette valeur finit imprimée sur une
-   * convention tripartite et un kit OPCO ; un auditeur Qualiopi (ind. 23/24,
-   * veille légale) doit pouvoir remonter à la règle. N'ajouter AUCUNE entrée
-   * sans source — un champ rempli sans fondement est plus dommageable en audit
-   * qu'un « à déterminer » assumé.
-   *
-   * ⚠️ Pas de date de consultation figée ici : une date gelée dans le code
-   * atteste une veille qui n'a pas lieu. La fraîcheur se tient dans le registre
-   * de veille légale, qui est la pièce opposable.
-   */
-  readonly source: string;
+/**
+ * IDCC → OPCO : plus de constante ici (INT-T60-A). La correspondance se lit
+ * dans la table `idcc_opco`, importée chaque mois de la Table SIRET-OPCO
+ * (SIRO) de France compétences — source citable, millésime et URL portés par
+ * chaque ligne (`financements/idcc-import.ts`).
+ *
+ * Table VIDE (avant le premier import) : aucune déduction par l'IDCC, et
+ * surtout pas l'ancienne entrée codée en dur (1516 → AKTO). Le repli NAF
+ * continue de jouer — 8559A donne toujours AKTO — et l'écran Clients garde son
+ * sélecteur manuel. La SIRO rattache d'ailleurs 1516 à DEUX OPCO (AKTO 26 492
+ * SIRET, OPCO 2i 1 au millésime 2026-06) : une constante à une valeur
+ * tranchait déjà ce que la source ne tranche pas.
+ */
+export interface LecteurIdccOpco {
+  idccOpco: {
+    findMany(args: {
+      where: { idcc: string };
+      select: { opco: true };
+    }): Promise<Array<{ opco: string }>>;
+  };
 }
 
 /**
- * IDCC (4 chiffres) → OPCO. Source AUTORITAIRE : c'est la convention collective
- * qui rattache une entreprise à son OPCO, le NAF n'en est qu'un indice.
+ * Normalise une saisie d'IDCC sur 4 chiffres, ou `null`. Un IDCC tient sur
+ * 4 chiffres, parfois saisi avec un zéro de tête (« 01516 ») ou des espaces
+ * (« 1 516 »). On refuse au-delà plutôt que de tronquer : « 11516 » n'est pas
+ * « 1516 », et deviner ici reviendrait à désigner un financeur au hasard.
  */
-export const IDCC_OPCO_MAP: Record<string, IdccOpco> = {
-  "1516": {
-    opco: "akto",
-    source:
-      "CCN des organismes de formation, IDCC 1516 — branche « Organismes de formation » rattachée à AKTO (akto.fr/nos-secteurs-activite ; opco.fr/trouver/ape-8559A/idcc-1516). À revérifier à chaque mise à jour du référentiel OPCO — registre de veille légale, ind. 23/24.",
-  },
-};
+export function normaliserIdcc(idcc: string | null | undefined): string | null {
+  if (!idcc) return null;
+  const chiffres = idcc.replace(/\D/g, "");
+  if (chiffres.length === 0) return null;
+  if (chiffres.length > 5 || (chiffres.length === 5 && !chiffres.startsWith("0"))) return null;
+  return chiffres.padStart(4, "0").slice(-4);
+}
+
+/**
+ * Les OPCO auxquels la table rattache cet IDCC, triés — vide si l'IDCC est
+ * inconnu, mal formé, ou si la table ne peut pas être lue (une inférence ratée
+ * ne doit jamais bloquer l'enregistrement d'une fiche : l'OPCO reste « à
+ * déterminer »). Plusieurs OPCO = plusieurs lignes de la source, jamais
+ * tranchées ici.
+ */
+export async function opcosDeLIdcc(
+  idcc: string | null | undefined,
+  db: LecteurIdccOpco,
+): Promise<OpcoId[]> {
+  const cle = normaliserIdcc(idcc);
+  if (cle === null) return [];
+  try {
+    const lignes = await db.idccOpco.findMany({ where: { idcc: cle }, select: { opco: true } });
+    return [...new Set(lignes.map((l) => l.opco).filter(isOpcoId))].sort();
+  } catch (err) {
+    console.error(
+      "[naf-opco] table idcc_opco illisible, aucune déduction par l'IDCC :",
+      err instanceof Error ? err.message : String(err),
+    );
+    return [];
+  }
+}
 
 /**
  * Infère l'OPCO depuis un code NAF (APE). HEURISTIQUE de repli seulement :
@@ -278,34 +311,31 @@ export function inferOpcoFromNaf(naf: string | null | undefined): OpcoId | null 
 }
 
 /**
- * Infère l'OPCO depuis le code IDCC de la convention collective. Source
- * AUTORITAIRE — à préférer au NAF chaque fois qu'elle est renseignée.
- *
- * @param idcc  Code IDCC (ex. "1516" ; « 01516 » et « 1 516 » acceptés).
- */
-export function inferOpcoFromIdcc(idcc: string | null | undefined): OpcoId | null {
-  if (!idcc) return null;
-  const chiffres = idcc.replace(/\D/g, "");
-  if (chiffres.length === 0) return null;
-  // Un IDCC tient sur 4 chiffres, parfois saisi avec un zéro de tête. On refuse
-  // au-delà plutôt que de tronquer : « 11516 » n'est pas « 1516 », et deviner
-  // ici reviendrait à désigner un financeur au hasard.
-  if (chiffres.length > 5 || (chiffres.length === 5 && !chiffres.startsWith("0"))) return null;
-  const cle = chiffres.padStart(4, "0").slice(-4);
-  return IDCC_OPCO_MAP[cle]?.opco ?? null;
-}
-
-/**
  * Inférence combinée, à utiliser partout : IDCC prioritaire (la convention
  * collective détermine l'OPCO en droit), repli NAF (heuristique).
  *
- * Les deux clés sont REQUISES (valeurs nullables) et non optionnelles :
- * `exactOptionalPropertyTypes` est actif, une clé optionnelle obligerait chaque
- * appelant à un `?? null` supplémentaire pour compiler.
+ * - l'IDCC donne UN OPCO dans la table : c'est lui ;
+ * - il en donne PLUSIEURS : jamais de majorité — le NAF ne départage que s'il
+ *   désigne l'un d'eux, sinon `null` (« à déterminer ») ;
+ * - il n'en donne aucun (inconnu, table vide) : repli NAF.
+ *
+ * Fonction PURE : les OPCO de l'IDCC sont lus avant (`opcosDeLIdcc`).
  */
 export function inferOpco(input: {
-  idcc: string | null | undefined;
+  opcosIdcc: readonly OpcoId[];
   naf: string | null | undefined;
 }): OpcoId | null {
-  return inferOpcoFromIdcc(input.idcc) ?? inferOpcoFromNaf(input.naf);
+  const [seul, ...autres] = input.opcosIdcc;
+  if (seul !== undefined && autres.length === 0) return seul;
+  const parNaf = inferOpcoFromNaf(input.naf);
+  if (seul === undefined) return parNaf;
+  return parNaf !== null && input.opcosIdcc.includes(parNaf) ? parNaf : null;
+}
+
+/** `opcosDeLIdcc` puis `inferOpco` : le chemin des actions serveur. */
+export async function inferOpcoDepuisTable(
+  db: LecteurIdccOpco,
+  input: { idcc: string | null | undefined; naf: string | null | undefined },
+): Promise<OpcoId | null> {
+  return inferOpco({ opcosIdcc: await opcosDeLIdcc(input.idcc, db), naf: input.naf });
 }

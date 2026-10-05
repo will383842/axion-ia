@@ -161,6 +161,107 @@ interface Payload {
   cancelUrl?: string;
   rescheduleUrl?: string;
   moment?: MomentAppel;
+  /**
+   * Le TYPE du rendez-vous (2026-10-04, chantier « Types de rendez-vous »,
+   * lot L3) : `diagnostic`, `echange_projet`… Posé par `rappels-appel.ts`
+   * (colonne, sinon nom). Facultatif : une charge d'avant, déjà en file, rend
+   * le message générique d'hier — jamais une erreur.
+   */
+  typeRendezVous?: string;
+  /** Le service choisi pour un échange projet (« Formation »…), s'il est connu. */
+  besoin?: string;
+}
+
+/**
+ * Ce qui change d'un type à l'autre : surtitre, objets, titres des rappels et
+ * la phrase qui dit à quoi s'attendre. Le reste du message — récapitulatif,
+ * lien de visio, liens pour reporter ou annuler — est commun.
+ *
+ * ⚠️ Rien de non tenable : pas de compte rendu promis, pas de « point chaque
+ * semaine ». On annonce l'échange, pas une prestation.
+ *
+ * Français seulement : les e-mails partent en `fr` ; en anglais, le message
+ * générique reste celui d'hier.
+ */
+interface VarianteType {
+  readonly eyebrow: string;
+  readonly objetConfirme: string;
+  readonly objetConfirmeSansDate: string;
+  /**
+   * Objets des rappels : `heure` `null` quand la charge ne la porte pas. Ils
+   * passent par `objetCompose` (borne de 45 caractères), comme la confirmation.
+   */
+  readonly objetJ1: (heure: string | null) => string;
+  readonly objetH1: (heure: string | null) => string;
+  readonly titreJ1: string;
+  readonly titreH1: string;
+  /** Après la salutation de la confirmation. */
+  readonly deroule: (besoin: string | null) => string;
+  /** Après la salutation des rappels. */
+  readonly attendu: (besoin: string | null) => string;
+  /** Remplace la puce « Rien à préparer » de « Ce qui se passe maintenant ». */
+  readonly puceRienAPreparer: (besoin: string | null) => string;
+}
+
+const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteType>> = {
+  diagnostic: {
+    eyebrow: "Diagnostic IA gratuit",
+    objetConfirme: "Diagnostic IA :",
+    objetConfirmeSansDate: "Votre diagnostic IA gratuit est confirmé",
+    objetJ1: (h) =>
+      objetCompose(
+        "Rappel :",
+        h ? `votre diagnostic IA demain à ${h}` : "votre diagnostic IA demain",
+      ),
+    objetH1: (h) =>
+      objetCompose("Votre diagnostic IA", h ? `dans une heure, à ${h}` : "dans une heure"),
+    titreJ1: "Votre diagnostic IA a lieu demain",
+    titreH1: "Votre diagnostic IA a lieu dans une heure",
+    deroule: () =>
+      "Merci d'avoir réservé votre diagnostic IA gratuit. Vos réponses nous aident à préparer l'échange ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
+    attendu: () => "Rien à préparer. Vos réponses nous aident à préparer l'échange.",
+    puceRienAPreparer: () =>
+      "Rien d'autre à préparer : nous partons de vos réponses au questionnaire.",
+  },
+  echange_projet: {
+    eyebrow: "Échange projet",
+    objetConfirme: "Échange projet :",
+    objetConfirmeSansDate: "Votre échange projet est confirmé",
+    objetJ1: (h) =>
+      objetCompose(
+        "Rappel :",
+        h ? `votre échange projet demain à ${h}` : "votre échange projet demain",
+      ),
+    objetH1: (h) =>
+      objetCompose("Votre échange projet", h ? `dans une heure, à ${h}` : "dans une heure"),
+    titreJ1: "Votre échange projet a lieu demain",
+    titreH1: "Votre échange projet a lieu dans une heure",
+    deroule: (b) =>
+      `${b ? `Nous partons de votre projet et du service qui vous intéresse : ${b}.` : "Nous partons de votre projet."} Vous repartez avec un avis clair sur la suite — même si la réponse est « ce n'est pas pour vous ».`,
+    attendu: (b) =>
+      b
+        ? `Rien à préparer. Nous partons de votre projet et du service choisi : ${b}.`
+        : "Rien à préparer. Nous partons de votre projet.",
+    puceRienAPreparer: (b) =>
+      b
+        ? `Rien à préparer : nous partons de votre projet et du service choisi (${b}).`
+        : "Rien à préparer : nous partons de votre projet.",
+  },
+};
+
+/** La variante du type, ou `null` (type absent, autre, ou message anglais). */
+function varianteDe(locale: Locale, p: { typeRendezVous?: unknown }): VarianteType | null {
+  if (locale !== "fr") return null;
+  return p.typeRendezVous === "diagnostic" || p.typeRendezVous === "echange_projet"
+    ? VARIANTES_FR[p.typeRendezVous]
+    : null;
+}
+
+/** Le service choisi, borné : il vient d'une réponse de formulaire. */
+function besoinDe(p: { besoin?: unknown }): string | null {
+  const b = typeof p.besoin === "string" ? p.besoin.trim() : "";
+  if (!b) return null;
+  return b.length > 80 ? `${b.slice(0, 79)}…` : b;
 }
 
 const momentDe = (p: { moment?: MomentAppel }): MomentAppel => p.moment ?? "h1";
@@ -196,6 +297,14 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const p = payload as unknown as Payload;
   const m = momentDe(p);
   const quand = quandTexte(locale, p);
+  const v = varianteDe(locale, p);
+  if (v) {
+    const heure = texteOuNull(p.heure);
+    if (m === "confirmation")
+      return quand ? objetCompose(v.objetConfirme, quand) : v.objetConfirmeSansDate;
+    if (m === "j1") return v.objetJ1(heure);
+    return v.objetH1(heure);
+  }
   if (locale === "fr") {
     // 🔑 `objetCompose` n'est appelé QUE s'il y a de quoi composer. Sans
     // horaire, « Confirmé : undefined » serait un objet parfaitement conforme à
@@ -292,6 +401,8 @@ const COMMUN = {
     lieuVisioSansLien:
       "Le lien de connexion figure dans l'invitation d'agenda que vous recevez séparément.",
     lieuTelephone: (l: string) => `Nous vous appellerons au ${l}.`,
+    // Sur place (2026-10-04, salon GOFAB) : une ADRESSE, ni appel ni lien.
+    lieuSurPlace: (l: string) => `Rendez-vous sur place : ${l}`,
     lieuIndetermine: (l: string) => `Lieu du rendez-vous : ${l}`,
     // On dit ce qu'on va faire, pas ce qu'on attend. La personne n'a rien à préparer.
     attendu: `${RIEN_A_PREPARER.fr} ${DEROULE.fr}`,
@@ -312,6 +423,7 @@ const COMMUN = {
     recapFuseau: "Heure de Paris",
     recapVisio: "Visioconférence",
     recapTelephone: "Téléphone",
+    recapSurPlace: "Sur place",
     // ── Ce qui se passe maintenant (confirmation seule) ────────────────────
     maintenantTitre: "Ce qui se passe maintenant",
     maintenantPuces: [
@@ -329,6 +441,7 @@ const COMMUN = {
     lieuVisio: "Video meeting link:",
     lieuVisioSansLien: "The joining link is in the calendar invitation you receive separately.",
     lieuTelephone: (l: string) => `We will call you on ${l}.`,
+    lieuSurPlace: (l: string) => `In-person meeting: ${l}`,
     lieuIndetermine: (l: string) => `Meeting location: ${l}`,
     attendu: `${RIEN_A_PREPARER.en} ${DEROULE.en}`,
     deroule: DEROULE.en,
@@ -341,6 +454,7 @@ const COMMUN = {
     recapFuseau: "Paris time",
     recapVisio: "Video meeting",
     recapTelephone: "Phone call",
+    recapSurPlace: "In person",
     maintenantTitre: "What happens next",
     maintenantPuces: [
       `${INVITATION_AGENDA.en} Same meeting — nothing for you to confirm.`,
@@ -440,7 +554,12 @@ const estUnLienDeReunion = (valeur: string): boolean => /^https?:\/\//i.test(val
  * valeur hors nomenclature retombe donc sur la déduction, jamais sur elle-même.
  */
 function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
-  if (p.format === "telephone" || p.format === "visio" || p.format === "inconnu") {
+  if (
+    p.format === "telephone" ||
+    p.format === "visio" ||
+    p.format === "sur_place" ||
+    p.format === "inconnu"
+  ) {
     return p.format;
   }
   return canalDuRendezVous(p.lieu);
@@ -571,6 +690,12 @@ function lignesRecap(
   const duree = dureeTexte(p);
   if (duree) lignes.push({ libelle: c.recapDuree, valeur: duree });
 
+  // Échange projet : le service choisi, pour que la personne sache que nous
+  // l'avons lu (2026-10-04). Français seulement, comme les variantes de type.
+  const besoin =
+    varianteDe(locale, p) && p.typeRendezVous === "echange_projet" ? besoinDe(p) : null;
+  if (besoin) lignes.push({ libelle: "Service choisi", valeur: besoin });
+
   const lieu = texteOuNull(p.lieu);
 
   if (format === "visio") {
@@ -603,6 +728,17 @@ function lignesRecap(
       libelle: c.recapFormat,
       valeur: c.recapTelephone,
       precision: c.lieuTelephone(lieu),
+    });
+    return lignes;
+  }
+
+  // Sur place : le format est SÛR même sans adresse — on l'annonce, et
+  // l'adresse en précision quand Calendly l'a donnée. Jamais d'appel promis.
+  if (format === "sur_place") {
+    lignes.push({
+      libelle: c.recapFormat,
+      valeur: c.recapSurPlace,
+      ...(lieu ? { precision: lieu } : {}),
     });
     return lignes;
   }
@@ -691,7 +827,11 @@ function LigneLieu({
 
   return (
     <Text style={emailStyles.paragraphStyle}>
-      {format === "telephone" ? c.lieuTelephone(valeur) : c.lieuIndetermine(valeur)}
+      {format === "telephone"
+        ? c.lieuTelephone(valeur)
+        : format === "sur_place"
+          ? c.lieuSurPlace(valeur)
+          : c.lieuIndetermine(valeur)}
     </Text>
   );
 }
@@ -754,16 +894,26 @@ function CeQuiSePasseMaintenant({
   c,
   locale,
   format,
+  p,
 }: {
   c: Copie;
   locale: Locale;
   format: CanalRendezVous;
+  p: Payload;
 }) {
+  // Type connu : la troisième puce (« Rien à préparer… ») dit ce que le type
+  // apporte — les réponses utiles pour un diagnostic, le service choisi pour un échange
+  // projet. Les deux premières (invitation d'agenda, rappels) sont communes.
+  const v = varianteDe(locale, p);
+  const [puceAgenda, puceRappels] = c.maintenantPuces;
+  const communes = v
+    ? [puceAgenda, puceRappels, v.puceRienAPreparer(besoinDe(p))]
+    : [...c.maintenantPuces];
   // Chantier visio (PR 8, T21) — en visio seulement, une puce d'information
   // SANS lien (budget de liens de la confirmation, voir l'en-tête). `null` tant
   // que l'enregistrement n'est pas annoncé (`src/server/visio/visio-annonce.ts`).
   const enregistrement = format === "visio" ? phraseConfirmationVisio(locale) : null;
-  const puces = enregistrement ? [...c.maintenantPuces, enregistrement] : c.maintenantPuces;
+  const puces = enregistrement ? [...communes, enregistrement] : communes;
   return (
     <Section style={{ margin: "26px 0 0 0" }}>
       <Text style={titreBloc}>{c.maintenantTitre}</Text>
@@ -809,6 +959,9 @@ export function AppelRappelEmail({
   // décident du canal, et un e-mail qui promet un appel à qui attend un lien.
   const format = formatDuRendezVous(p);
   const duree = dureeTexte(p);
+  // Le type (diagnostic, échange projet) : surtitre, titres et phrases propres.
+  const v = varianteDe(locale, p);
+  const besoin = besoinDe(p);
 
   // ── Famille B — la confirmation ────────────────────────────────────────────
   if (m === "confirmation") {
@@ -817,7 +970,7 @@ export function AppelRappelEmail({
       <EmailLayout
         famille="B"
         preview={t.preview(duree)}
-        eyebrow={t.eyebrow}
+        eyebrow={v ? v.eyebrow : t.eyebrow}
         title={t.title}
         locale={locale}
         // 🔑 Voir l'en-tête, « le budget était dépassé en production » : sans
@@ -838,10 +991,10 @@ export function AppelRappelEmail({
         <Text style={emailStyles.paragraphStyle}>
           {c.intro(p.prenom)}
           <br />
-          {c.deroule}
+          {v ? v.deroule(besoin) : c.deroule}
         </Text>
 
-        <CeQuiSePasseMaintenant c={c} locale={locale} format={format} />
+        <CeQuiSePasseMaintenant c={c} locale={locale} format={format} p={p} />
         <GuideAvantLAppel locale={locale} />
         <ActionsSecondaires p={p} c={c} encadre />
         <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>
@@ -858,13 +1011,18 @@ export function AppelRappelEmail({
   const t = COPY[locale][m === "j1" ? "j1" : "h1"];
   const heure = texteOuNull(p.heure) ?? (locale === "fr" ? "l'heure prévue" : "the agreed time");
   return (
-    <EmailLayout famille="C" preview={t.preview(duree)} title={t.title} locale={locale}>
+    <EmailLayout
+      famille="C"
+      preview={t.preview(duree)}
+      title={v ? (m === "j1" ? v.titreJ1 : v.titreH1) : t.title}
+      locale={locale}
+    >
       <Text style={emailStyles.paragraphStyle}>{t.quand(heure, duree)}</Text>
       <LigneLieu lieu={p.lieu} format={format} c={c} />
       <Text style={emailStyles.paragraphStyle}>
         {c.intro(p.prenom)}
         <br />
-        {c.attendu}
+        {v ? v.attendu(besoin) : c.attendu}
       </Text>
       <ActionsSecondaires p={p} c={c} encadre={false} />
       <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>

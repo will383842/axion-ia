@@ -26,13 +26,37 @@
 //   · une vue « Jour », ouverte par défaut : la question qu'on pose à cet écran
 //     est « qui j'appelle aujourd'hui », pas « combien en juillet ».
 // La liste reste à `?vue=liste`, le calendrier à `?vue=calendrier`.
+//
+// ── QUATRE TYPES (2026-10-04, chantier « Types de rendez-vous », lot L3) ──
+// La pastille binaire devient celle du TYPE (Diagnostic IA, Échange projet,
+// Apporteur, Salon ; « Autre » discret), lu par `typeRendezVous` — colonne
+// classée par l'URI du type Calendly, nom en repli. Le filtre `?type=`
+// remplace `?public=`, gardé en alias (clients = diagnostic + échange projet +
+// autre). Chaque onglet porte son compteur.
+//
+// ── CE QUE RAPPORTE CHAQUE RENDEZ-VOUS (2026-10-04, lot L5b) ─────────────
+// Quatrième vue `?vue=rapport` : sur 30 ou 90 jours (`?jours=`), par type puis
+// par bouton (`utm_content`), réservés / honorés / absents / annulés / rangés
+// sur une fiche. Une vue et non une page : aucune entrée de console de plus.
 
 import Link from "next/link";
 import {
+  filtrerParPublic,
   getRdvMonth,
   listRendezVous,
   lirePointsDesRendezVous,
 } from "@/features/admin-rendezvous/queries";
+import {
+  LIBELLE_TYPE_RDV,
+  TYPES_FILTRABLES,
+  compterParType,
+  lireFiltreType,
+} from "@/features/admin-rendezvous/type-rdv";
+import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
+import { BilanRendezVousVue } from "@/components/admin/contacts/BilanRendezVousVue";
+import { lirePeriodeBilan, PERIODES_BILAN } from "@/features/admin-rendezvous/bilan-rendez-vous";
+import { lireBilanRendezVous } from "@/features/admin-rendezvous/bilan-rendez-vous-queries";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 import { libelleDuPoint, type PointLu } from "@/features/admin-rendezvous/point";
 import {
   RDV_STATUS_LABELS,
@@ -40,7 +64,6 @@ import {
   type RdvFilters,
   type UnifiedRdv,
 } from "@/features/admin-rendezvous/types";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
   INTITULE_FORMAT,
   LIBELLE_CANAL,
@@ -92,11 +115,11 @@ const MONTHS = [
 const PAGE_SIZE = 25;
 
 /**
- * Pastille de FORMAT — téléphone, visio, ou « à préciser ».
+ * Pastille de FORMAT — téléphone, visio, sur place, ou « à préciser ».
  *
  * Teinte d'identité (non sémantique) quand le format est connu, badge neutre
  * sinon : un format indécis ne doit pas ressembler à un format décidé. Le choix
- * des deux couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
+ * des couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
  */
 function PastilleFormat({ format }: { format: CanalRendezVous }) {
   const teinte = TEINTE_CANAL[format];
@@ -126,31 +149,12 @@ function PastilleFormat({ format }: { format: CanalRendezVous }) {
 }
 
 /**
- * Pastille de PUBLIC — « Apporteur » ou « Client ».
- *
- * Deux teintes d'identité distinctes de celles du format (bleu = téléphone,
- * teal = visio) : les deux pastilles voisinent sur la même ligne et ne doivent
- * pas se lire comme une seule information.
+ * Les paramètres d'URL du filtre : `type=` pour un type, `public=` pour les
+ * deux anciens alias — sinon un lien perdrait l'alias en route.
  */
-function PastillePublic({ titre }: { titre: string }) {
-  const apporteur = estAppelApporteur(titre);
-  const teinte = apporteur ? "violet" : "or";
-  return (
-    <span
-      className="inline-flex items-center rounded-[var(--radius-admin-sm)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium"
-      style={{
-        background: `var(--color-admin-id-${teinte}-soft)`,
-        color: `var(--color-admin-id-${teinte})`,
-      }}
-    >
-      {apporteur ? "Apporteur" : "Client"}
-    </span>
-  );
-}
-
-/** Lit `?public=` : toute autre valeur vaut « tous » (aucun filtre). */
-function lirePublic(v: string | undefined): PublicRdv | undefined {
-  return v === "clients" || v === "apporteurs" ? v : undefined;
+function paramsFiltre(f: PublicRdv | undefined): Record<string, string | undefined> {
+  if (f === "clients" || f === "apporteurs") return { public: f };
+  return { type: f };
 }
 
 /** Clé jour valide « YYYY-MM-DD », sinon `null` (on retombe sur aujourd'hui). */
@@ -200,7 +204,7 @@ function LigneRdv({ r, point }: { r: UnifiedRdv; point?: PointLu | undefined }) 
           ) : null}
         </span>
         <span className="flex shrink-0 flex-wrap items-center justify-end gap-2">
-          <PastillePublic titre={r.title} />
+          <PastilleTypeRdv type={r.typeRendezVous} besoin={r.besoinChoisi} />
           <PastilleFormat format={r.format} />
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             {libelleStatut(r, point)} ›
@@ -278,15 +282,22 @@ export default async function AppelsPage({
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/contacts/appels`;
   // « Jour » par défaut (2026-09-19) : les deux autres vues se demandent.
-  const vue = sp["vue"] === "calendrier" ? "calendrier" : sp["vue"] === "liste" ? "liste" : "jour";
-  const publicRdv = lirePublic(sp["public"]);
-  const optionsPublic = publicRdv ? { public: publicRdv } : {};
+  const vue =
+    sp["vue"] === "calendrier"
+      ? "calendrier"
+      : sp["vue"] === "liste"
+        ? "liste"
+        : sp["vue"] === "rapport"
+          ? "rapport"
+          : "jour";
+  const publicRdv = lireFiltreType(sp["type"], sp["public"]);
+  const filtre = paramsFiltre(publicRdv);
   const apiConfigured = isCalendlyApiConfigured();
 
   const header = (
     <AdminPageHeader
       title="Appels réservés"
-      description="Appels clients et échanges apporteurs réservés via Calendly — la pastille dit à qui s'adresse chaque rendez-vous."
+      description="Rendez-vous réservés via Calendly — la pastille dit qui vient pour quoi."
       actions={
         <div className="flex gap-2">
           <ManualCalendlyEventButton />
@@ -304,45 +315,64 @@ export default async function AppelsPage({
     />
   );
 
-  // Le filtre de public SUIT l'utilisateur d'une vue à l'autre, et la vue suit
-  // le changement de public : sinon chaque clic en défait un autre.
-  const choixPublic: ReadonlyArray<{ value: string; label: string; cible?: PublicRdv }> = [
-    { value: "tous", label: "Tous" },
-    { value: "clients", label: "Clients", cible: "clients" },
-    { value: "apporteurs", label: "Apporteurs", cible: "apporteurs" },
-  ];
-  const tabs = (
-    <div className="flex flex-wrap gap-[var(--space-admin-4)]">
-      <AdminFilterTabs
-        label="Vue"
-        current={vue}
-        options={[
-          { value: "jour", label: "Jour", href: lien(base, { public: publicRdv }) },
-          { value: "liste", label: "Liste", href: lien(base, { vue: "liste", public: publicRdv }) },
-          {
-            value: "calendrier",
-            label: "Calendrier",
-            href: lien(base, { vue: "calendrier", public: publicRdv }),
-          },
-        ]}
-      />
-      <AdminFilterTabs
-        label="Public"
-        current={publicRdv ?? "tous"}
-        options={choixPublic.map(({ value, label, cible }) => ({
-          value,
-          label,
-          href: lien(base, {
-            vue: vue === "jour" ? undefined : vue,
-            public: cible,
-            year: vue === "calendrier" ? sp["year"] : undefined,
-            month: vue === "calendrier" ? sp["month"] : undefined,
-            date: vue === "liste" ? undefined : sp["date"],
-          }),
-        }))}
-      />
-    </div>
-  );
+  // Le filtre de type SUIT l'utilisateur d'une vue à l'autre, et la vue suit
+  // le changement de type : sinon chaque clic en défait un autre.
+  //
+  // `compte` : les rendez-vous de la période affichée, par type, AVANT le
+  // filtre — chaque onglet annonce ce qu'il montrera. « Autre » n'a d'onglet
+  // que s'il y en a ; l'alias `clients` garde le sien tant qu'il est actif.
+  const onglets = (compte: Record<TypeRendezVous, number>) => {
+    const total = Object.values(compte).reduce((n, x) => n + x, 0);
+    const choix: Array<{ value: string; label: string; cible?: PublicRdv }> = [
+      { value: "tous", label: `Tous (${total})` },
+      ...TYPES_FILTRABLES.map((t) => ({
+        value: t,
+        label: `${LIBELLE_TYPE_RDV[t]} (${compte[t]})`,
+        cible: t,
+      })),
+      ...(compte.autre > 0 || publicRdv === "autre"
+        ? [{ value: "autre", label: `Autre (${compte.autre})`, cible: "autre" as const }]
+        : []),
+      ...(publicRdv === "clients"
+        ? [{ value: "clients", label: "Clients", cible: "clients" as const }]
+        : []),
+    ];
+    return (
+      <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+        <AdminFilterTabs
+          label="Vue"
+          current={vue}
+          options={[
+            { value: "jour", label: "Jour", href: lien(base, filtre) },
+            { value: "liste", label: "Liste", href: lien(base, { vue: "liste", ...filtre }) },
+            {
+              value: "calendrier",
+              label: "Calendrier",
+              href: lien(base, { vue: "calendrier", ...filtre }),
+            },
+            { value: "rapport", label: "Ce que ça rapporte", href: lien(base, { vue: "rapport" }) },
+          ]}
+        />
+        {vue === "rapport" ? null : (
+          <AdminFilterTabs
+            label="Type"
+            current={publicRdv === "apporteurs" ? "apporteur" : (publicRdv ?? "tous")}
+            options={choix.map(({ value, label, cible }) => ({
+              value,
+              label,
+              href: lien(base, {
+                vue: vue === "jour" ? undefined : vue,
+                ...paramsFiltre(cible),
+                year: vue === "calendrier" ? sp["year"] : undefined,
+                month: vue === "calendrier" ? sp["month"] : undefined,
+                date: vue === "liste" ? undefined : sp["date"],
+              }),
+            }))}
+          />
+        )}
+      </div>
+    );
+  };
 
   // Bandeau honnête sur ce que la capture gratuite sait — et ne sait pas —
   // faire. Le texte dépend de la présence du token API : sans lui, aucune
@@ -381,19 +411,49 @@ export default async function AppelsPage({
     </div>
   );
 
+  // ── Vue « Ce que ça rapporte » ────────────────────────────────────────────
+  if (vue === "rapport") {
+    const jours = lirePeriodeBilan(sp["jours"]);
+    const bilan = await lireBilanRendezVous(jours);
+    return (
+      <>
+        {header}
+        <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
+          {onglets(compterParType([]))}
+          <AdminFilterTabs
+            label="Période"
+            current={String(jours)}
+            options={PERIODES_BILAN.map((j) => ({
+              value: String(j),
+              label: `${j} jours`,
+              href: lien(base, { vue: "rapport", jours: j === 30 ? undefined : j }),
+            }))}
+          />
+        </div>
+        <BilanRendezVousVue bilan={bilan} jours={jours} />
+      </>
+    );
+  }
+
   // ── Vue calendrier ────────────────────────────────────────────────────────
   if (vue === "calendrier") {
     const now = new Date();
     const year = sp["year"] ? parseInt(sp["year"], 10) : now.getFullYear();
     const month = sp["month"] ? parseInt(sp["month"], 10) : now.getMonth() + 1;
     const selectedDate = sp["date"] ?? null;
-    const byDay = await getRdvMonth(year, month, optionsPublic);
+    const moisTous = await getRdvMonth(year, month);
+    const compte = compterParType([...moisTous.values()].flat());
+    const byDay = new Map(
+      [...moisTous.entries()]
+        .map(([k, arr]) => [k, filtrerParPublic(arr, publicRdv)] as const)
+        .filter(([, arr]) => arr.length > 0),
+    );
     const monthTotal = [...byDay.values()].reduce((n, a) => n + a.length, 0);
 
     const days: MonthGridDay[] = [...byDay.entries()].map(([dayKey, arr]) => ({
       dayKey,
       count: arr.length,
-      href: lien(base, { vue: "calendrier", public: publicRdv, year, month, date: dayKey }),
+      href: lien(base, { vue: "calendrier", ...filtre, year, month, date: dayKey }),
       selected: dayKey === selectedDate,
     }));
 
@@ -405,7 +465,7 @@ export default async function AppelsPage({
     return (
       <>
         {header}
-        <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+        <div className="mb-[var(--space-admin-4)]">{onglets(compte)}</div>
         {banner}
 
         <p className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -414,7 +474,7 @@ export default async function AppelsPage({
 
         <div className="mt-[var(--space-admin-3)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
           <AdminButton
-            href={lien(base, { vue: "calendrier", public: publicRdv, year: prev.y, month: prev.m })}
+            href={lien(base, { vue: "calendrier", ...filtre, year: prev.y, month: prev.m })}
             variant="ghost"
             size="sm"
             icon={ArrowLeft}
@@ -422,14 +482,14 @@ export default async function AppelsPage({
             {MONTHS[prev.m - 1]}
           </AdminButton>
           <AdminButton
-            href={lien(base, { vue: "calendrier", public: publicRdv })}
+            href={lien(base, { vue: "calendrier", ...filtre })}
             variant="ghost"
             size="sm"
           >
             Aujourd&apos;hui
           </AdminButton>
           <AdminButton
-            href={lien(base, { vue: "calendrier", public: publicRdv, year: next.y, month: next.m })}
+            href={lien(base, { vue: "calendrier", ...filtre, year: next.y, month: next.m })}
             variant="ghost"
             size="sm"
             iconAfter={ArrowRight}
@@ -473,7 +533,9 @@ export default async function AppelsPage({
     const aujourdhui = dayKeyInParis(new Date());
     const jour = lireJour(sp["date"]) ?? aujourdhui;
     const [anneeJour = 1970, moisJour = 1] = jour.split("-").map(Number);
-    const rdvJour = (await getRdvMonth(anneeJour, moisJour, optionsPublic)).get(jour) ?? [];
+    const rdvTousDuJour = (await getRdvMonth(anneeJour, moisJour)).get(jour) ?? [];
+    const compte = compterParType(rdvTousDuJour);
+    const rdvJour = filtrerParPublic(rdvTousDuJour, publicRdv);
     const pointsJour = await pointsDe(rdvJour);
     const veille = decalerJour(jour, -1);
     const lendemain = decalerJour(jour, 1);
@@ -481,7 +543,7 @@ export default async function AppelsPage({
     return (
       <>
         {header}
-        <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+        <div className="mb-[var(--space-admin-4)]">{onglets(compte)}</div>
 
         {/* Les prochains rendez-vous, avec leur bouton de visio, ont leur
             propre onglet (épinglé sous « Agenda »). Cet écran-ci reste celui
@@ -496,18 +558,18 @@ export default async function AppelsPage({
 
         <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
           <AdminButton
-            href={lien(base, { public: publicRdv, date: veille })}
+            href={lien(base, { ...filtre, date: veille })}
             variant="ghost"
             size="sm"
             icon={ArrowLeft}
           >
             {formatDateFrShort(veille)}
           </AdminButton>
-          <AdminButton href={lien(base, { public: publicRdv })} variant="ghost" size="sm">
+          <AdminButton href={lien(base, filtre)} variant="ghost" size="sm">
             Aujourd&apos;hui
           </AdminButton>
           <AdminButton
-            href={lien(base, { public: publicRdv, date: lendemain })}
+            href={lien(base, { ...filtre, date: lendemain })}
             variant="ghost"
             size="sm"
             iconAfter={ArrowRight}
@@ -535,10 +597,10 @@ export default async function AppelsPage({
 
   // ── Vue liste ─────────────────────────────────────────────────────────────
   const page = sp["page"] ? parseInt(sp["page"], 10) : 1;
-  const { rows, total } = await listRendezVous({
+  const { rows, total, parType } = await listRendezVous({
     page,
     pageSize: PAGE_SIZE,
-    ...optionsPublic,
+    ...(publicRdv ? { public: publicRdv } : {}),
     ...(sp["status"] ? { status: sp["status"] as NonNullable<RdvFilters["status"]> } : {}),
     ...(sp["q"] ? { q: sp["q"] } : {}),
     ...(sp["from"] ? { from: sp["from"] } : {}),
@@ -562,8 +624,11 @@ export default async function AppelsPage({
         </span>
       ),
     },
-    { key: "title", header: "Type d'appel", cell: (r) => r.title },
-    { key: "public", header: "Public", cell: (r) => <PastillePublic titre={r.title} /> },
+    {
+      key: "type",
+      header: "Type",
+      cell: (r) => <PastilleTypeRdv type={r.typeRendezVous} besoin={r.besoinChoisi} />,
+    },
     {
       key: "contact",
       header: "Contact",
@@ -614,7 +679,7 @@ export default async function AppelsPage({
   return (
     <>
       {header}
-      <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+      <div className="mb-[var(--space-admin-4)]">{onglets(parType)}</div>
       {banner}
 
       <p className="mt-[var(--space-admin-4)] mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -647,11 +712,11 @@ export default async function AppelsPage({
         page={page}
         totalPages={totalPages}
         baseHref={base}
-        // `vue` et `public` voyagent avec la page : sans eux, « page 2 »
+        // `vue` et le filtre de type voyagent avec la page : sans eux, « page 2 »
         // ramènerait sur la vue Jour, désormais celle par défaut.
         preservedParams={{
           vue: "liste",
-          public: publicRdv,
+          ...filtre,
           status: sp["status"],
           q: sp["q"],
           from: sp["from"],

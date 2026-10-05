@@ -45,6 +45,50 @@ import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
+import {
+  besoinDesReponses,
+  reponsesDesQuestions,
+  classerRendezVous,
+  estColonneTypeRendezVousAbsente,
+  eventTypeUriDuBrut,
+  sansColonnesTypeRendezVous,
+  uriDeTypeValide,
+  utmDuTracking,
+  type TypeRendezVous,
+} from "./type-rendez-vous";
+
+/** Colonnes lues à chaque enrichissement, hors celles du lot « Types de rendez-vous ». */
+const SELECT_LIGNE = {
+  id: true,
+  eventUri: true,
+  inviteeUri: true,
+  inviteeName: true,
+  inviteeEmail: true,
+  inviteePhone: true,
+  startTime: true,
+  endTime: true,
+  location: true,
+  status: true,
+  eventTypeName: true,
+  eventTypeSlug: true,
+  cancelUrl: true,
+  rescheduleUrl: true,
+  rawPayload: true,
+  utmSource: true,
+  utmMedium: true,
+  utmCampaign: true,
+  // Lus pour le rattachement automatique d'un échange apporteur : on ne
+  // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
+  linkedSubmissionId: true,
+  linkedJobApplicationId: true,
+} as const;
+
+/**
+ * Colonnes ajoutées par le lot « Types de rendez-vous » (2026-10-04). Lues À
+ * PART : pendant la fenêtre app/worker, elles n'existent pas encore en base, et
+ * leur absence ne doit pas empêcher l'enrichissement du reste.
+ */
+const SELECT_TYPE_RDV = { typeRendezVous: true, eventTypeUri: true, utmContent: true } as const;
 
 export type EnrichOutcome =
   | {
@@ -102,34 +146,35 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     cancelUrl: string | null;
     rescheduleUrl: string | null;
     rawPayload: unknown;
+    utmSource: string | null;
+    utmMedium: string | null;
+    utmCampaign: string | null;
     linkedSubmissionId: string | null;
     linkedJobApplicationId: string | null;
+    typeRendezVous: TypeRendezVous | null;
+    eventTypeUri: string | null;
+    utmContent: string | null;
   } | null;
+  // Vrai pendant la fenêtre app/worker : la migration du lot « Types de
+  // rendez-vous » n'est pas passée, on n'écrit donc pas ses colonnes.
+  let colonnesTypeAbsentes = false;
   try {
-    row = await prisma.calendlyEvent.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        eventUri: true,
-        inviteeUri: true,
-        inviteeName: true,
-        inviteeEmail: true,
-        inviteePhone: true,
-        startTime: true,
-        endTime: true,
-        location: true,
-        status: true,
-        eventTypeName: true,
-        eventTypeSlug: true,
-        cancelUrl: true,
-        rescheduleUrl: true,
-        rawPayload: true,
-        // Lus pour le rattachement automatique d'un échange apporteur : on ne
-        // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
-        linkedSubmissionId: true,
-        linkedJobApplicationId: true,
-      },
-    });
+    try {
+      row = await prisma.calendlyEvent.findUnique({
+        where: { id: eventId },
+        select: { ...SELECT_LIGNE, ...SELECT_TYPE_RDV },
+      });
+    } catch (e) {
+      if (!estColonneTypeRendezVousAbsente(e)) throw e;
+      colonnesTypeAbsentes = true;
+      const sansType = await prisma.calendlyEvent.findUnique({
+        where: { id: eventId },
+        select: SELECT_LIGNE,
+      });
+      row = sansType
+        ? { ...sansType, typeRendezVous: null, eventTypeUri: null, utmContent: null }
+        : null;
+    }
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_read_failed" };
@@ -235,6 +280,36 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // lever : lire `d.raw.invitee` sans garde suffirait a violer ce contrat le
   // jour ou un appelant rendrait la forme courte.
   const brutFrais = d.raw;
+
+  // ── Le type du rendez-vous et sa provenance (2026-10-04) ─────────────────
+  //
+  // Reclassé à CHAQUE passage : l'URI du type n'est souvent connue qu'ici (la
+  // capture par l'iframe n'en porte aucune), et c'est elle qui fait foi — un
+  // type renommé dans Calendly garde son URI. Hors de `updatedFields`, comme la
+  // charge brute : ce sont des métadonnées, pas un changement de la fiche.
+  const eventTypeUriFrais =
+    uriDeTypeValide(brutFrais?.event?.["event_type"]) ??
+    row.eventTypeUri ??
+    eventTypeUriDuBrut(row.rawPayload);
+  const typeRendezVous = await classerRendezVous({
+    eventTypeUri: eventTypeUriFrais,
+    eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+  });
+  const besoin = besoinDesReponses(brutFrais?.invitee?.["questions_and_answers"]);
+  const reponses = reponsesDesQuestions(brutFrais?.invitee?.["questions_and_answers"]);
+  const utm = utmDuTracking(brutFrais?.invitee);
+  if (!colonnesTypeAbsentes) {
+    if (eventTypeUriFrais && eventTypeUriFrais !== row.eventTypeUri) {
+      data["eventTypeUri"] = eventTypeUriFrais;
+    }
+    if (typeRendezVous !== row.typeRendezVous) data["typeRendezVous"] = typeRendezVous;
+    if (row.utmContent == null && utm.utmContent) data["utmContent"] = utm.utmContent;
+  }
+  // Les UTM de l'iframe priment : on ne complète que ce qui est vide.
+  if (row.utmSource == null && utm.utmSource) data["utmSource"] = utm.utmSource;
+  if (row.utmMedium == null && utm.utmMedium) data["utmMedium"] = utm.utmMedium;
+  if (row.utmCampaign == null && utm.utmCampaign) data["utmCampaign"] = utm.utmCampaign;
+
   if (
     brutFrais &&
     (Object.keys(brutFrais.invitee).length > 0 || Object.keys(brutFrais.event).length > 0)
@@ -253,10 +328,23 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   }
 
   try {
-    await prisma.calendlyEvent.update({
-      where: { id: eventId },
-      data: { ...data, enrichedAt: new Date() },
-    });
+    const ecriture = { ...data, enrichedAt: new Date() };
+    // `select` ÉTROIT : sans lui, Prisma relit toutes les colonnes, y compris
+    // celles qu'une migration pas encore passée n'a pas posées.
+    try {
+      await prisma.calendlyEvent.update({
+        where: { id: eventId },
+        data: ecriture,
+        select: { id: true },
+      });
+    } catch (e) {
+      if (!estColonneTypeRendezVousAbsente(e)) throw e;
+      await prisma.calendlyEvent.update({
+        where: { id: eventId },
+        data: sansColonnesTypeRendezVous(ecriture),
+        select: { id: true },
+      });
+    }
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_write_failed" };
@@ -296,6 +384,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     await rattacherEchangeApporteur({
       id: eventId,
       eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      typeRendezVous,
       inviteeEmail,
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
@@ -338,7 +427,13 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
           fullName: inviteeName ?? null,
           phone: (data["inviteePhone"] as string | undefined) ?? row.inviteePhone ?? null,
         },
-        payload: { eventTypeName: eventName ?? row.eventTypeName, source: "api_poll" },
+        payload: {
+          eventTypeName: eventName ?? row.eventTypeName,
+          typeRendezVous,
+          besoin,
+          reponses,
+          source: "api_poll",
+        },
       });
     } catch (e) {
       Sentry.captureException(e);

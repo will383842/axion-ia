@@ -1,4 +1,5 @@
 import type { CanalRendezVous } from "@/server/calendly/canal";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 import type { EtatRdv } from "./visio";
 // Module RV téléphonique — view-model unifié des rendez-vous (read-only).
 //
@@ -46,7 +47,7 @@ export interface UnifiedRdv {
    */
   lienVisio: string | null;
   /**
-   * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
+   * Téléphone, visio ou sur place — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le
    * format se recalcule à chaque lecture, donc les lignes déjà en base
@@ -68,6 +69,14 @@ export interface UnifiedRdv {
    * question « Enregistrer cette visio ? » quand il est posé.
    */
   linkedJobApplicationId: string | null;
+  /**
+   * Le TYPE du rendez-vous (2026-10-04, lot L3) : diagnostic, échange projet,
+   * apporteur, salon, autre. Colonne `typeRendezVous` si elle est posée, sinon
+   * le nom (`typeEffectif`) — jamais la colonne seule, elle peut être NULL.
+   */
+  typeRendezVous: TypeRendezVous;
+  /** Échange projet : le service choisi dans le formulaire Calendly, ou `null`. */
+  besoinChoisi: string | null;
 }
 
 /** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
@@ -111,14 +120,16 @@ export interface RdvPasse extends UnifiedRdv {
 }
 
 /**
- * À qui s'adresse le rendez-vous : un client, ou un candidat apporteur
- * (2026-09-19).
+ * Le filtre « qui vient pour quoi » des écrans de rendez-vous.
  *
- * DÉRIVÉ du nom du type d'événement Calendly (`estAppelApporteur`), jamais
- * stocké — même doctrine que `format` : les lignes déjà en base répondent
- * juste sans migration.
+ * · un TYPE (2026-10-04, lot L3) : `diagnostic`, `echange_projet`,
+ *   `apporteur`, `salon`, `autre` — lu par `typeRendezVous` (colonne, sinon
+ *   nom) ;
+ * · `clients` / `apporteurs` (2026-09-19) : les deux anciens publics, gardés
+ *   comme ALIAS rétrocompatibles des liens déjà partagés (`?public=`).
+ *   `clients` = diagnostic + échange projet + autre ; `apporteurs` = apporteur.
  */
-export type PublicRdv = "clients" | "apporteurs";
+export type PublicRdv = "clients" | "apporteurs" | TypeRendezVous;
 
 export interface RdvFilters {
   source?: RdvSource;

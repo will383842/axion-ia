@@ -193,11 +193,31 @@ export function getFinancingPromptFact(): string {
 
 /**
  * Seuil PAR DÉFAUT de la condition suspensive de prise en charge par l'OPCO
- * (INT-T65-A), en points de base : 5000 = 50 % du prix TTC de la convention.
+ * (INT-T65-A), en points de base : 5000 = 50 % du prix HORS TAXES de la
+ * convention (correction de la juriste A07 : la convention imprime un total HT).
  *
  * Source : décision de Williams du 2026-10-04 (issue axion-apporteurs#656,
  * messages 5978053857 et 5978330543). C'est un DÉFAUT proposé à la saisie : la
- * valeur retenue est stockée sur la convention (`seuilBps` ou `seuilCents`) et
+ * valeur retenue est stockée sur la convention (`seuilConditionBps` ou `seuilConditionCents`) et
  * modifiable convention par convention. Entier, jamais de flottant.
  */
 export const SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS = 5000 as const;
+
+/**
+ * SEUIL de la règle de la part (INT-T61-A, règle d'A02 sur l'issue 656,
+ * commentaire 5980505240), en POINTS DE BASE : 9 000 = 90 %.
+ *
+ * La part de l'OPCO saisi = son nombre de SIRET dans la table `idcc_opco`,
+ * divisé par la somme des SIRET de l'IDCC, même millésime. Part ≥ seuil →
+ * « concordant » ; sinon « à confirmer ». Comparaison en ENTIERS (jamais de
+ * flottant) dans `financements/idcc-controle.ts`.
+ *
+ * SOURCE ET DÉCISION : arbitrage de la coordination du 2026-10-04, par
+ * délégation de Williams, fondé sur la distribution SIRO de 2026-06 (IDCC 1596 :
+ * CONSTRUCTYS 274 837 SIRET contre OPCO EP 1 ; IDCC 8822 : AKTO 235 contre
+ * OCAPIAT 67). L'issue « à confirmer » ne bloque rien : elle demande une
+ * confirmation humaine.
+ *
+ * Changer cette valeur est une DÉCISION : la dater et la sourcer ici.
+ */
+export const SEUIL_CONCORDANCE_IDCC_OPCO_BPS = 9000;

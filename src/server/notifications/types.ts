@@ -417,7 +417,7 @@ export type NotificationEvent =
         eventStartTime: string;
         eventName: string;
         /**
-         * Format du rendez-vous — `telephone`, `visio` ou `inconnu`.
+         * Format du rendez-vous — `telephone`, `visio`, `sur_place` ou `inconnu`.
          *
          * Optionnel parce que DEUX émetteurs alimentent cette catégorie
          * (`discover.ts` et `POST /api/calendly/client-event`) et qu'ils ne
@@ -443,6 +443,14 @@ export type NotificationEvent =
         cancelUrl?: string;
         /** Réponses libres du formulaire Calendly (hors téléphone), « Q : R » concaténées. */
         answersText?: string;
+        /**
+         * Type classé du rendez-vous (2026-10-04, lot L3) — `diagnostic`,
+         * `echange_projet`, `apporteur`, `salon`, `autre`. Facultatif : un
+         * payload d'avant se classe par `eventName` (`format.ts`).
+         */
+        typeRendezVous?: string;
+        /** Service choisi pour un échange projet (« Formation »…), s'il est connu. */
+        besoin?: string;
       };
     }
   | {

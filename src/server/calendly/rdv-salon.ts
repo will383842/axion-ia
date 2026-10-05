@@ -47,12 +47,42 @@ export function salonDuNom(nomTypeEvenement: string | null | undefined): CleSalo
   return normaliser(nomTypeEvenement).includes("gofab") ? "gofab" : null;
 }
 
+// ── Les clauses Prisma (2026-10-04 : le TYPE classé d'abord) ──────────────
+//
+// Même construction que `appel-apporteur.ts` : la colonne `typeRendezVous`
+// quand elle est posée, le nom quand elle est NULL (lignes écrites pendant la
+// fenêtre de déploiement). Les `…_PAR_NOM` restent pour le repli du worker,
+// qui peut tourner le nouveau code avant la migration.
+//
+// Ici PAS de double verrou : un salon se reconnaît par l'URI de son type
+// (slug « …salon… »), et la priorité apporteur est tenue par
+// `HORS_APPELS_APPORTEUR`, que les passages salon ajoutent toujours.
+
+/** Les quatre types qui ne sont pas un salon (miroir de l'enum Prisma). */
+const TYPES_HORS_SALON = ["diagnostic", "echange_projet", "apporteur", "autre"] as const;
+
+/** Clause historique, nom seul : « SEULEMENT les rendez-vous salon ». */
+export const SEULS_RDV_SALON_PAR_NOM = {
+  eventTypeName: { contains: MOT_CLE_TYPE_RDV_SALON, mode: "insensitive" as const },
+};
+
+/** Clause historique, nom seul : « tout SAUF les rendez-vous salon ». */
+export const HORS_RDV_SALON_PAR_NOM = {
+  NOT: { eventTypeName: { contains: MOT_CLE_TYPE_RDV_SALON, mode: "insensitive" as const } },
+};
+
 /** Clause Prisma : « SEULEMENT les rendez-vous salon ». Écrite en positif. */
 export const SEULS_RDV_SALON = {
-  eventTypeName: { contains: MOT_CLE_TYPE_RDV_SALON, mode: "insensitive" as const },
+  OR: [
+    { typeRendezVous: "salon" as const },
+    { AND: [{ typeRendezVous: null }, SEULS_RDV_SALON_PAR_NOM] },
+  ],
 };
 
 /** Clause Prisma : « tout SAUF les rendez-vous salon ». Écrite explicitement, jamais dérivée. */
 export const HORS_RDV_SALON = {
-  NOT: { eventTypeName: { contains: MOT_CLE_TYPE_RDV_SALON, mode: "insensitive" as const } },
+  OR: [
+    { typeRendezVous: { in: [...TYPES_HORS_SALON] } },
+    { AND: [{ typeRendezVous: null }, HORS_RDV_SALON_PAR_NOM] },
+  ],
 };
