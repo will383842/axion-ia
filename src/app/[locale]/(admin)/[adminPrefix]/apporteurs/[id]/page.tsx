@@ -136,7 +136,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
             {fiche.aContratApporteur ? (
               <a className="admin-button-secondary" href={`${base}/${d.id}/contrat?quel=apporteur`} target="_blank" rel="noreferrer">
-                Contrat signé par l'apporteur
+                Contrat signé par l&apos;apporteur
               </a>
             ) : null}
             {fiche.aContratSigne ? (
@@ -184,7 +184,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </Link>
         </div>
         {fiche.entreprises.length === 0 ? (
-          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune entreprise présentée pour l'instant.</p>
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune entreprise présentée pour l&apos;instant.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[length:var(--text-admin-sm)]">
@@ -193,7 +193,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
                   <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Ajoutée le</th>
                   <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Entreprise</th>
                   <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">État</th>
-                  <th className="py-[var(--space-admin-2)]">Protégée jusqu'au</th>
+                  <th className="py-[var(--space-admin-2)]">Protégée jusqu&apos;au</th>
                 </tr>
               </thead>
               <tbody>
@@ -227,7 +227,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </Link>
         </div>
         {fiche.commissions.length === 0 ? (
-          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission pour l'instant.</p>
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission pour l&apos;instant.</p>
         ) : (
           <ul className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
             {fiche.commissions.map((c) => (

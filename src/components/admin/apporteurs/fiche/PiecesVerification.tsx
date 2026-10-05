@@ -102,7 +102,7 @@ export function PiecesVerification({
   modifiable: boolean;
 }) {
   if (pieces.length === 0) {
-    return <p className="text-[color:var(--color-admin-fg-muted)]">Aucune pièce déposée pour l'instant.</p>;
+    return <p className="text-[color:var(--color-admin-fg-muted)]">Aucune pièce déposée pour l&apos;instant.</p>;
   }
   return (
     <ul className="flex flex-col gap-[var(--space-admin-2)]">

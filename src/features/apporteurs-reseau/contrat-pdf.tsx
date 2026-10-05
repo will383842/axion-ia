@@ -168,11 +168,11 @@ function Certificat({
     <View break>
       <Text style={s.certifTitre}>Certificat de signature électronique</Text>
       <Text style={s.p}>
-        Document : contrat d'apporteur d'affaires, version 2, et ses annexes. Empreinte SHA-256 du texte signé :
+        Document : contrat d&apos;apporteur d&apos;affaires, version 2, et ses annexes. Empreinte SHA-256 du texte signé :
       </Text>
       <Text style={[s.p, s.gras]}>{sha}</Text>
       <View style={s.certif}>
-        <Text style={s.gras}>Signature de l'Apporteur</Text>
+        <Text style={s.gras}>Signature de l&apos;Apporteur</Text>
         {apporteur ? (
           <>
             <Text style={s.p}>
@@ -199,7 +199,7 @@ function Certificat({
           </Text>
         ) : (
           <Text style={s.petit}>
-            En attente de la contresignature de la Société. Le contrat n'est conclu qu'à cette contresignature.
+            En attente de la contresignature de la Société. Le contrat n&apos;est conclu qu&apos;à cette contresignature.
           </Text>
         )}
       </View>
@@ -219,7 +219,7 @@ export async function rendreContratPdf(entree: {
         {blocs(entree.texte)}
         <Certificat sha={sha} apporteur={entree.apporteur} societe={entree.societe} />
         <View style={s.pied} fixed>
-          <Text>Contrat d'apporteur d'affaires · AXION IA SAS</Text>
+          <Text>Contrat d&apos;apporteur d&apos;affaires · AXION IA SAS</Text>
           <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
       </Page>

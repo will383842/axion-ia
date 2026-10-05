@@ -71,7 +71,7 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
         </Link>
       </nav>
       {lignes.length === 0 ? (
-        <p className="text-[color:var(--color-admin-fg-muted)]">Aucun apporteur ici pour l'instant.</p>
+        <p className="text-[color:var(--color-admin-fg-muted)]">Aucun apporteur ici pour l&apos;instant.</p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
           <table className="w-full text-left text-[length:var(--text-admin-sm)]">
