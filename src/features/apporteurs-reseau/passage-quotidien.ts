@@ -33,6 +33,7 @@ import {
   statutApresVigilance,
 } from "./commissions";
 import { envoyer } from "./envois";
+import { commandesSoldees } from "./commandes";
 import { urlDossier } from "./jeton";
 import {
   ajouterJours,
@@ -375,10 +376,26 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const presentations = await lirePresentationsProtegees();
   if (presentations.length === 0) return;
   const index = parSiren(presentations);
-  const factures = await prisma.factureFormation.findMany({
+  const payees = await prisma.factureFormation.findMany({
     where: { statut: "payee", avoirDeId: null, client: { siren: { in: [...index.keys()] } } },
+    select: { id: true, devisId: true },
+  });
+  if (payees.length === 0) return;
+  // La commande entière : toutes les factures du même devis (acompte + solde), et les avoirs.
+  const devisIds = [...new Set(payees.map((f) => f.devisId).filter((d): d is string => !!d))];
+  const lignes = await prisma.factureFormation.findMany({
+    where: {
+      avoirDeId: null,
+      OR: [
+        { id: { in: payees.map((f) => f.id) } },
+        ...(devisIds.length ? [{ devisId: { in: devisIds } }] : []),
+      ],
+    },
     select: {
       id: true,
+      devisId: true,
+      statut: true,
+      avoirDeId: true,
       activite: true,
       montantHtCents: true,
       emiseAt: true,
@@ -386,15 +403,35 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       client: { select: { siren: true } },
     },
   });
-  if (factures.length === 0) return;
+  const avoirsLignes = await prisma.factureFormation.findMany({
+    where: { avoirDeId: { in: lignes.map((f) => f.id) } },
+    select: {
+      id: true,
+      devisId: true,
+      statut: true,
+      avoirDeId: true,
+      montantHtCents: true,
+      emiseAt: true,
+    },
+  });
+  const parId = new Map(lignes.map((f) => [f.id, f]));
+  const commandes = commandesSoldees([...lignes, ...avoirsLignes]);
+  if (commandes.length === 0) return;
   const existantes = await prisma.commissionApporteur.findMany({
-    where: { factureId: { in: factures.map((f) => f.id) } },
+    where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
     select: { factureId: true, apporteurId: true, parrainage: true },
   });
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
-  const deja = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
+  const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
+  // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.
+  const deja = {
+    has: (_f: string, a: string, p: boolean, c: { factureIds: string[] }) =>
+      c.factureIds.some((id) => dejaCle.has(cle(id, a, p))),
+  };
 
-  for (const f of factures) {
+  for (const commande of commandes) {
+    const f = parId.get(commande.factureCleId);
+    if (!f) continue;
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
@@ -402,19 +439,19 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     if (!p) continue;
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
-      factureHtCents: f.montantHtCents,
+      factureHtCents: commande.totalHtCents,
       palier: null,
     });
     if (calc.statut === "aucune") continue;
     const base = {
       presentationId: p.id,
-      factureId: f.id,
+      factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: f.montantHtCents,
+      factureHtCents: commande.totalHtCents,
     };
 
     // La commission de l'apporteur.
-    if (!deja.has(cle(f.id, p.apporteurId, false))) {
+    if (!deja.has(f.id, p.apporteurId, false, commande)) {
       try {
         if (calc.statut === "calculee") {
           const v = await statutApresVigilance(p.apporteurId, calc.montantCents, maintenant);
@@ -446,7 +483,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const { parrainId, signeParSocieteAt } = p.apporteur;
     if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt))
       continue;
-    if (deja.has(cle(f.id, parrainId, true))) continue;
+    if (deja.has(f.id, parrainId, true, commande)) continue;
     try {
       if (calc.statut === "calculee") {
         const part = partParrainage({
