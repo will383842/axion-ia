@@ -7,7 +7,7 @@
  * à la personne qui s'est trompée de frappe.
  */
 
-import { VSL_ERREURS, VSL_REPONSES } from "@/content/recrutement/vsl-apporteur";
+import { VSL_ERREURS, VSL_REPONSES } from "@/content/recrutement/vsl-apporteur-client";
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 /** Un téléphone plausible : chiffre ou `+` au début, au moins six caractères utiles. */

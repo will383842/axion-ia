@@ -22,14 +22,13 @@
 //
 // Le test `vsl-apporteur.spec.ts` verrouille ces règles sur le TEXTE servi.
 
-/** Dimension d'analyse de la page (propriété `landing` des événements). */
-export const VSL_SLUG = "vsl-apporteur-v1";
+import { VSL_PAGE_PATH } from "@/lib/commercial-application/vsl-apporteur";
 
-/** Chemins sans préfixe de langue (le `Link` d'`@/i18n/navigation` le pose). */
-export const VSL_PATH = "/apporteur-affaires/video";
-export const VSL_MERCI_PATH = "/apporteur-affaires/video/merci";
-/** Ancre du formulaire — tous les boutons de la page y mènent. */
-export const VSL_ANCRE = "candidater";
+export * from "./vsl-apporteur-client";
+export * from "./vsl-apporteur-merci";
+
+/** Chemin de la page (sans préfixe de langue). */
+export const VSL_PATH = VSL_PAGE_PATH;
 
 export const VSL_META = {
   title: "Apporteur d'affaires IA : présentez, nous faisons le reste",
@@ -161,74 +160,3 @@ export function faqVsl(commissionParJournee: string): readonly {
     },
   ];
 }
-
-/** Réponses fermées de l'étape 2 — les identifiants sont ceux du contrat serveur. */
-export const VSL_REPONSES = [
-  { id: "moins-5", libelle: "Moins de 5" },
-  { id: "5-20", libelle: "De 5 à 20" },
-  { id: "20-50", libelle: "De 20 à 50" },
-  { id: "plus-50", libelle: "Plus de 50" },
-] as const;
-
-export const VSL_FORMULAIRE = {
-  titre: "Candidater en 2 minutes",
-  etape1: {
-    eyebrow: "Étape 1 sur 2",
-    titre: "Parlons de vous",
-    micro: "20 secondes.",
-    prenom: "Prénom",
-    prenomAide: "Pour vous écrire correctement.",
-    email: "E-mail",
-    emailAide: "Pour vous envoyer la confirmation.",
-    bouton: "Continuer",
-    // ⚠️ Texte versionné : le serveur enregistre la VERSION du consentement
-    // (`LEAD_APPORTEUR_CONSENT_VERSION`, v3 portée par la PR de capture). Ce
-    // texte doit rester celui de cette version ; il dit explicitement qu'on peut
-    // écrire à la personne même si elle ne termine pas (relance d'abandon).
-    consent:
-      "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires, y compris si je ne termine pas mon inscription. Données conservées 24 mois après la clôture de mon dossier, jamais cédées à des tiers.",
-    legal: "Vos données sont utilisées pour traiter votre candidature.",
-    legalLien: "Politique de confidentialité",
-  },
-  etape2: {
-    eyebrow: "Étape 2 sur 2",
-    titre: "Dernière étape",
-    telephone: "Téléphone",
-    telephoneAide:
-      "Pour vous joindre au sujet de votre rendez-vous. Nous ne l'affichons jamais publiquement.",
-    question: "Combien de dirigeants connaissez-vous à peu près ?",
-    bouton: "Envoyer et choisir mon créneau",
-    micro: "Un échange de 15 minutes. Aucun engagement.",
-    retour: "Modifier mes réponses précédentes",
-  },
-  annonceEtape: (n: number) => `Étape ${n} sur 2`,
-} as const;
-
-/** Messages d'erreur — simples, jamais accusateurs. */
-export const VSL_ERREURS = {
-  prenom: "Votre prénom, pour savoir à qui nous écrivons.",
-  emailVide: "Votre e-mail, pour vous envoyer la confirmation.",
-  emailInvalide: "Cette adresse semble incomplète.",
-  consent: "Cochez la case pour que nous puissions vous écrire.",
-  telephoneVide: "Votre numéro, pour vous joindre au sujet de votre rendez-vous.",
-  telephoneInvalide: "Ce numéro ne ressemble pas à un téléphone.",
-  reponse: "Choisissez la réponse qui s'en approche le plus.",
-  invalide: "Une information semble incorrecte. Vérifiez vos réponses et réessayez.",
-  rate: "Trop de tentatives pour le moment. Réessayez dans quelques minutes.",
-  jeton: "Votre inscription a expiré. Reprenez l'étape 1 : ce sera très rapide.",
-  inconnue: "Une erreur est survenue. Réessayez ou écrivez-nous à contact@axion-ia.com.",
-  perime: "Le site vient d'être mis à jour. Rechargez la page et renvoyez le formulaire.",
-} as const;
-
-/** Page de remerciement. */
-export const VSL_MERCI = {
-  title: "C'est noté.",
-  texte: "Choisissez maintenant le créneau de 15 minutes qui vous convient.",
-  cta: "Choisir mon créneau",
-  ctaMicro: "Un échange de 15 minutes. Aucun engagement.",
-  email: "Vous recevez aussi le lien par e-mail. Pensez à regarder vos courriers indésirables.",
-  aucunCreneau: "Aucun créneau ne vous convient ? Répondez à l'e-mail de confirmation.",
-  kitTitre: "En attendant, découvrez ce que vous pourrez recommander",
-  kitCatalogue: "Le catalogue des prestations",
-  description: "Choisissez votre créneau de 15 minutes.",
-} as const;

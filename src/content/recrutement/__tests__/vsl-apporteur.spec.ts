@@ -9,6 +9,7 @@
 import { describe, expect, it } from "vitest";
 import * as contenu from "../vsl-apporteur";
 import { faqVsl } from "../vsl-apporteur";
+import { VSL_CONSENT_TEXTE } from "@/lib/commercial-application/vsl-apporteur";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 
 /** Toutes les chaînes que le module exporte, à plat (fonctions exclues). */
@@ -25,7 +26,9 @@ const TOUT_LE_TEXTE = [
   // La FAQ prend une somme en paramètre : on la lit avec un montant factice.
   ...chaines(faqVsl("MONTANT")),
   contenu.VSL_FORMULAIRE.annonceEtape(1),
-].join("\n");
+]
+  .join("\n")
+  .replace(VSL_CONSENT_TEXTE, ""); // texte versionné v3 : validé par la PR capture
 
 describe("le texte de la page VSL apporteurs", () => {
   it("témoin : on lit bien un texte conséquent", () => {

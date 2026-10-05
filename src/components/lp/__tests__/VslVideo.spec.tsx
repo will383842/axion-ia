@@ -6,12 +6,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
-const { trackFunnel, trackVsl } = vi.hoisted(() => ({
-  trackFunnel: vi.fn(),
-  trackVsl: vi.fn(),
-}));
+const { trackFunnel } = vi.hoisted(() => ({ trackFunnel: vi.fn() }));
 vi.mock("@/lib/tracking", () => ({ trackFunnel }));
-vi.mock("@/lib/analytics/vsl-apporteur-events", () => ({ trackVsl }));
 vi.mock("next/image", () => ({
   // eslint-disable-next-line @next/next/no-img-element
   default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
@@ -58,7 +54,7 @@ describe("VslVideo — rétrocompatibilité (appel de /diagnostic)", () => {
     expect(container.querySelector("track")).toBeNull();
     expect(container.querySelector("details")).toBeNull();
     avancer(v, 99);
-    expect(trackVsl).not.toHaveBeenCalled();
+    expect(trackFunnel).not.toHaveBeenCalled();
   });
 
   it("le clic sur lecture émet « Landing Video Played » avec le slug", () => {
@@ -103,7 +99,7 @@ describe("VslVideo — extension", () => {
     const { container } = render(<VslVideo {...BASE} suiviProgression />);
     const v = film(container);
     avancer(v, 10);
-    expect(trackVsl).not.toHaveBeenCalled();
+    expect(trackFunnel).not.toHaveBeenCalled();
     avancer(v, 26);
     avancer(v, 30);
     avancer(v, 51);
@@ -111,8 +107,11 @@ describe("VslVideo — extension", () => {
     avancer(v, 96);
     avancer(v, 10); // retour en arrière
     avancer(v, 97); // jalon déjà émis
-    expect(trackVsl.mock.calls.map((c) => c[1].step)).toEqual(["p25", "p50", "p75", "p95"]);
-    expect(trackVsl).toHaveBeenCalledWith("Video Progress", { landing: "vsl-test", step: "p25" });
+    expect(trackFunnel.mock.calls.map((c) => c[1].step)).toEqual(["p25", "p50", "p75", "p95"]);
+    expect(trackFunnel).toHaveBeenCalledWith("Video Progress", {
+      landing: "vsl-test",
+      step: "p25",
+    });
   });
 
   it("ne plante pas quand la durée est inconnue (NaN, 0)", () => {
@@ -120,7 +119,7 @@ describe("VslVideo — extension", () => {
     const v = film(container);
     avancer(v, 5, Number.NaN);
     avancer(v, 5, 0);
-    expect(trackVsl).not.toHaveBeenCalled();
+    expect(trackFunnel).not.toHaveBeenCalled();
   });
 
   it("légende lisible sur fond clair (tone=light)", () => {

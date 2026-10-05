@@ -25,7 +25,6 @@ import Image from "next/image";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackFunnel } from "@/lib/tracking";
-import { trackVsl } from "@/lib/analytics/vsl-apporteur-events";
 
 /** Jalons de progression émis (en % de la durée). Un seul calcul par jalon. */
 const JALONS = [25, 50, 75, 95] as const;
@@ -82,7 +81,7 @@ export function VslVideo({
     for (const jalon of JALONS) {
       if (pct >= jalon && !jalonsEmis.current.has(jalon)) {
         jalonsEmis.current.add(jalon);
-        trackVsl("Video Progress", { landing, step: `p${jalon}` });
+        trackFunnel("Video Progress", { landing, step: `p${jalon}` });
       }
     }
   }, [landing]);

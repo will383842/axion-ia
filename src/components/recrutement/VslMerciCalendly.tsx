@@ -19,12 +19,13 @@
 // rattacher la réservation à la fiche (`rattachement-apporteur.ts`).
 
 import * as React from "react";
+import { trackFunnel } from "@/lib/tracking";
 import { CalendarCheck } from "lucide-react";
 import { CalendlyConsentGate } from "@/components/booking/CalendlyConsentGate";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
-import { trackVsl } from "@/lib/analytics/vsl-apporteur-events";
 import { lireIdentitePourMerci } from "@/lib/recrutement/vsl-etat";
-import { VSL_MERCI } from "@/content/recrutement/vsl-apporteur";
+import { trackMetaSchedule } from "@/lib/analytics/meta-pixel";
+import { VSL_MERCI } from "@/content/recrutement/vsl-apporteur-merci";
 
 interface VslMerciCalendlyProps {
   /** Lien Calendly direct (avec les UTM d'arrivée). */
@@ -84,8 +85,24 @@ export function VslMerciCalendly({
   );
 
   React.useEffect(() => {
-    trackVsl("Call Booking Viewed", { landing });
+    trackFunnel("Call Booking Viewed", { landing });
   }, [landing]);
+
+  // `Schedule` (Meta) à la réservation faite dans le calendrier intégré. `eventID`
+  // = `schedule:<uuid de la réservation>`, comme l'envoi serveur. Sans pixel
+  // (bannière non acceptée), `trackMetaSchedule` ne fait rien.
+  React.useEffect(() => {
+    const surMessage = (e: MessageEvent) => {
+      if (e.origin !== "https://calendly.com" && !e.origin.endsWith(".calendly.com")) return;
+      const d = e.data as { event?: unknown; payload?: { event?: { uri?: unknown } } } | null;
+      if (!d || d.event !== "calendly.event_scheduled") return;
+      const uri = d.payload?.event?.uri;
+      const id = typeof uri === "string" ? uri.split("/").filter(Boolean).pop() : undefined;
+      if (id && /^[A-Za-z0-9_-]{6,80}$/.test(id)) trackMetaSchedule(`schedule:${id}`);
+    };
+    window.addEventListener("message", surMessage);
+    return () => window.removeEventListener("message", surMessage);
+  }, []);
 
   return (
     <>

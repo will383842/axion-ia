@@ -26,10 +26,7 @@
 // 🔴 RYTHME VERTICAL : chaque `<Section>` porte un `lg:py-*` EXPLICITE (le défaut
 //    de `Section.tsx` est `lg:py-36`, `twMerge` ne le remplace que sur le même variant).
 //
-// ⚠️ « À BRANCHER APRÈS LA PR CAPTURE » : les deux actions du formulaire viennent
-// aujourd'hui de `lead-vsl-branchement.ts` (réponse `unknown`, rien n'est
-// enregistré). Dès que `lead-vsl-actions.ts` est sur `main`, remplacer l'import
-// ci-dessous (deux lignes) — signatures identiques, voir `lead-vsl-contrat.ts`.
+// Les deux actions du formulaire (`lead-vsl-actions.ts`, PR capture) arrivent à l'île PAR PROPS.
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -42,8 +39,8 @@ import { Section } from "@/components/layout/Section";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
+import { VslVideoDiffere } from "@/components/lp/VslVideoDiffere";
 import { VslCta } from "@/components/lp/VslCta";
-import { VslVideo } from "@/components/lp/VslVideo";
 import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShell";
 import { VslFormulaire } from "@/components/recrutement/VslFormulaire";
 import { VslVue } from "@/components/recrutement/VslVue";
@@ -64,9 +61,9 @@ import {
   faqVsl,
 } from "@/content/recrutement/vsl-apporteur";
 import {
-  capturerLeadVslProvisoire as capturerLeadVsl,
-  completerLeadVslProvisoire as completerLeadVsl,
-} from "@/features/commercial-application/lead-vsl-branchement";
+  capturerLeadVsl,
+  completerLeadVsl,
+} from "@/features/commercial-application/lead-vsl-actions";
 import { fichierPublicExiste, lireTranscription, videoDisponible } from "@/lib/lp/video-disponible";
 
 export const revalidate = 3600;
@@ -139,7 +136,7 @@ export default async function Page({ params }: Props) {
           </p>
 
           {film ? (
-            <VslVideo
+            <VslVideoDiffere
               src={VSL_VIDEO_FICHIERS.src}
               poster={VSL_VIDEO_FICHIERS.poster}
               durationLabel={VSL_VIDEO_FICHIERS.durationLabel}

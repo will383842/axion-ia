@@ -74,10 +74,30 @@ function ecrireSession(e: EtatVsl): void {
   }
 }
 
+/**
+ * Reprise depuis l'e-mail d'abandon : `?r=<jeton>` sur la page. Le jeton ne
+ * permet QUE de terminer l'inscription de la personne qui a reçu le message
+ * (elle a coché la case de consentement à l'étape 1) : on ouvre l'étape 2.
+ */
+function lireReprise(): EtatVsl | null {
+  try {
+    const r = new URLSearchParams(window.location.search).get("r");
+    if (!r || r.length > 600 || !/^[A-Za-z0-9._~-]+$/.test(r)) return null;
+    return { ...ETAT_VSL_INITIAL, etape: 2, consent: true, jeton: r };
+  } catch {
+    return null;
+  }
+}
+
 export function lireEtatVsl(): EtatVsl {
   if (!charge) {
     charge = true;
-    courant = lireSession() ?? ETAT_VSL_INITIAL;
+    const reprise = lireReprise();
+    const session = lireSession();
+    // Un jeton de reprise plus récent que la session de l'onglet l'emporte.
+    courant = reprise
+      ? { ...(session ?? ETAT_VSL_INITIAL), etape: 2, consent: true, jeton: reprise.jeton }
+      : (session ?? ETAT_VSL_INITIAL);
   }
   return courant;
 }

@@ -10,10 +10,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
-const { push, trackFunnel, trackVsl, consentement } = vi.hoisted(() => ({
+const { push, trackFunnel, trackMetaLead, consentement } = vi.hoisted(() => ({
   push: vi.fn(),
   trackFunnel: vi.fn(),
-  trackVsl: vi.fn(),
+  trackMetaLead: vi.fn(),
   consentement: { valeur: "accepted" as "accepted" | "declined" | "unknown" },
 }));
 
@@ -24,8 +24,10 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 vi.mock("@/lib/tracking", () => ({ trackFunnel }));
-vi.mock("@/lib/analytics/vsl-apporteur-events", () => ({ trackVsl }));
-vi.mock("@/lib/analytics/meta-pixel", () => ({ lireCookieFbp: () => "fb.1.1700000000000.123456" }));
+vi.mock("@/lib/analytics/meta-pixel", () => ({
+  lireCookieFbp: () => "fb.1.1700000000000.123456",
+  trackMetaLead,
+}));
 vi.mock("@/components/analytics/CookieConsent", () => ({
   readAnalyticsConsent: () => consentement.valeur,
 }));
@@ -92,7 +94,7 @@ describe("étape 1", () => {
 
   it("émet « Lead Step Viewed » (étape 1 sur 2) à l'affichage", () => {
     monter();
-    expect(trackVsl).toHaveBeenCalledWith("Lead Step Viewed", {
+    expect(trackFunnel).toHaveBeenCalledWith("Lead Step Viewed", {
       landing: "vsl-apporteur-v1",
       step: "1",
       stepIndex: 1,
@@ -161,8 +163,10 @@ describe("étape 1", () => {
     expect(screen.getByRole("status").textContent).toBe("Étape 2 sur 2");
     // Historique : « Retour » du téléphone ramène à l'étape 1.
     expect(pushState).toHaveBeenCalledWith({ vslEtape: 2 }, "");
-    expect(trackVsl).toHaveBeenCalledWith("Lead Email Captured", { landing: "facebook" });
-    expect(trackVsl).toHaveBeenCalledWith(
+    // `Lead` du pixel avec l'event_id partagé avec le serveur (déduplication).
+    expect(trackMetaLead).toHaveBeenCalledWith("lead:lead-de-test");
+    expect(trackFunnel).toHaveBeenCalledWith("Lead Email Captured", { landing: "facebook" });
+    expect(trackFunnel).toHaveBeenCalledWith(
       "Lead Step Viewed",
       expect.objectContaining({ step: "2" }),
     );
@@ -324,6 +328,24 @@ describe("étape 2", () => {
 });
 
 describe("historique, reprise et hauteur", () => {
+  it("reprise depuis l'e-mail d'abandon : ?r=<jeton> ouvre l'étape 2 avec ce jeton", async () => {
+    window.history.replaceState(null, "", "/fr/apporteur-affaires/video?r=jeton-de-reprise.abc");
+    __reinitialiserEtatVslPourTests();
+    const { appelsCompleter } = monter();
+    expect(await screen.findByRole("heading", { name: /Dernière étape/ })).toBeTruthy();
+    remplirEtape2();
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer et choisir mon créneau/ }));
+    await waitFor(() => expect(appelsCompleter).toHaveLength(1));
+    expect(appelsCompleter[0]!.jeton).toBe("jeton-de-reprise.abc");
+  });
+
+  it("un ?r= suspect est ignoré (étape 1)", () => {
+    window.history.replaceState(null, "", "/fr/apporteur-affaires/video?r=%3Cscript%3E");
+    __reinitialiserEtatVslPourTests();
+    monter();
+    expect(screen.getByRole("heading", { name: /Parlons de vous/ })).toBeTruthy();
+  });
+
   it("« Retour » du navigateur ramène à l'étape 1 en gardant les réponses ; « Suivant » revient à l'étape 2", async () => {
     const { appelsCapturer } = monter();
     await allerEtape2();

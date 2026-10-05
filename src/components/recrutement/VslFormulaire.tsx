@@ -25,27 +25,21 @@
 //  · Terracotta partout, jamais le bleu du bouton par défaut (`PrimaryButton`).
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Link, useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/routes";
 import { trackFunnel } from "@/lib/tracking";
-import { trackVsl } from "@/lib/analytics/vsl-apporteur-events";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
-import { lireCookieFbp } from "@/lib/analytics/meta-pixel";
+import { lireCookieFbp, trackMetaLead } from "@/lib/analytics/meta-pixel";
 import { readAnalyticsConsent } from "@/components/analytics/CookieConsent";
 import { HoneypotField } from "@/components/forms/HoneypotField";
-import {
-  ChipGroup,
-  Chip,
-  PrimaryButton,
-  TextField,
-} from "@/components/forms/commercial-application/ui";
+import { PrimaryButton, TextField } from "@/components/forms/commercial-application/ui";
 import {
   VSL_ERREURS,
   VSL_FORMULAIRE,
   VSL_MERCI_PATH,
-  VSL_REPONSES,
   VSL_SLUG,
-} from "@/content/recrutement/vsl-apporteur";
+} from "@/content/recrutement/vsl-apporteur-client";
 import type {
   CapturerLeadVslAction,
   CompleterLeadVslAction,
@@ -79,6 +73,14 @@ function avecErreur<T extends Partial<Record<string, string>>>(
   else delete (n as Record<string, string | undefined>)[cle];
   return n;
 }
+
+// L'étape 2 (téléphone + question à puces) est un chunk à part : elle ne s'affiche
+// qu'après l'étape 1, et ne pèse donc pas sur le chunk de la page. Le cadre à
+// hauteur minimale (`HAUTEUR_MIN`) absorbe son chargement : CLS = 0.
+const Etape2 = dynamic(() => import("./VslEtape2").then((m) => m.VslEtape2), {
+  ssr: false,
+  loading: () => <p className="sr-only">Chargement…</p>,
+});
 
 interface VslFormulaireProps {
   /** Étape 1 — enregistre prénom + e-mail, rend un jeton. */
@@ -126,7 +128,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
   React.useEffect(() => {
     if (etapeVue.current === etape) return;
     etapeVue.current = etape;
-    trackVsl("Lead Step Viewed", {
+    trackFunnel("Lead Step Viewed", {
       landing: VSL_SLUG,
       step: String(etape),
       stepIndex: etape,
@@ -222,7 +224,10 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
         return;
       }
       majEtatVsl({ jeton: r.jeton, leadId: r.leadId });
-      trackVsl("Lead Email Captured", { landing: canalDepuisQuery(window.location.search) });
+      // `Lead` du pixel (seulement si la bannière est acceptée : sans pixel, no-op) ;
+      // le serveur envoie le même `event_id` : Meta les dédoublonne.
+      if (r.leadId) trackMetaLead(`lead:${r.leadId}`);
+      trackFunnel("Lead Email Captured", { landing: canalDepuisQuery(window.location.search) });
       setEnvoi(false);
       allerEtape2();
     } catch (err) {
@@ -274,7 +279,6 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
   };
 
   const f1 = VSL_FORMULAIRE.etape1;
-  const f2 = VSL_FORMULAIRE.etape2;
 
   const set = (patch: Partial<Pick<EtatVsl, "prenom" | "email" | "consent">>) => {
     // Modifier l'identité après la capture invalide le jeton : l'étape 1 sera renvoyée.
@@ -407,89 +411,28 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
           </p>
         </form>
       ) : (
-        <form ref={formRef} onSubmit={envoyerEtape2} noValidate aria-labelledby="vsl-titre-etape">
-          <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
-            {f2.eyebrow}
-          </p>
-          <h3
-            id="vsl-titre-etape"
-            ref={titreRef}
-            tabIndex={-1}
-            className="text-fg mt-2 font-serif text-2xl leading-tight font-semibold outline-none"
-          >
-            {f2.titre}
-          </h3>
-
-          <div className="mt-5 grid gap-5">
-            <div>
-              <TextField
-                label={f2.telephone}
-                fieldId="vsl-telephone"
-                name="telephone"
-                type="tel"
-                inputMode="tel"
-                requiredField
-                value={etat.telephone}
-                onChange={(e) => {
-                  majEtatVsl({ telephone: e.target.value });
-                  if (
-                    erreurs2.telephone &&
-                    !validerEtape2({ ...etat, telephone: e.target.value }).telephone
-                  )
-                    setErreurs2((anc) => avecErreur(anc, "telephone", undefined));
-                }}
-                onBlur={() =>
-                  setErreurs2((anc) => avecErreur(anc, "telephone", validerEtape2(etat).telephone))
-                }
-                autoComplete="tel"
-                maxLength={40}
-                error={erreurs2.telephone}
-              />
-              <p className="text-fg-muted mt-1 text-[13px]">{f2.telephoneAide}</p>
-            </div>
-
-            <ChipGroup legend={f2.question} requiredField error={erreurs2.reponse}>
-              {VSL_REPONSES.map((r) => (
-                <Chip
-                  key={r.id}
-                  name="reponse"
-                  value={r.id}
-                  label={r.libelle}
-                  checked={etat.reponse === r.id}
-                  onToggle={(v) => {
-                    majEtatVsl({ reponse: v as ReponseNombreDirigeants });
-                    setErreurs2((anc) => avecErreur(anc, "reponse", undefined));
-                  }}
-                />
-              ))}
-            </ChipGroup>
-          </div>
-
-          {erreurServeur ? (
-            <p role="alert" className="text-terracotta-deep mt-4 text-sm font-medium">
-              {erreurServeur}
-            </p>
-          ) : null}
-
-          <PrimaryButton
-            type="submit"
-            disabled={envoi}
-            className={`mt-6 ${BOUTON_TERRACOTTA}`}
-            data-cta="vsl-etape2-envoyer"
-          >
-            {envoi ? "Envoi…" : `${f2.bouton} →`}
-          </PrimaryButton>
-          <p className="text-fg-muted mt-3 text-center text-[13px]">{f2.micro}</p>
-          <p className="mt-2 text-center">
-            <button
-              type="button"
-              onClick={retourEtape1}
-              className="text-terracotta-deep text-[13px] underline underline-offset-2"
-            >
-              {f2.retour}
-            </button>
-          </p>
-        </form>
+        <Etape2
+          formRef={formRef}
+          titreRef={titreRef}
+          etat={etat}
+          erreurs={erreurs2}
+          erreurServeur={erreurServeur}
+          envoi={envoi}
+          onSubmit={envoyerEtape2}
+          onTelephone={(v) => {
+            majEtatVsl({ telephone: v });
+            if (erreurs2.telephone && !validerEtape2({ ...etat, telephone: v }).telephone)
+              setErreurs2((anc) => avecErreur(anc, "telephone", undefined));
+          }}
+          onTelephoneBlur={() =>
+            setErreurs2((anc) => avecErreur(anc, "telephone", validerEtape2(etat).telephone))
+          }
+          onReponse={(v) => {
+            majEtatVsl({ reponse: v });
+            setErreurs2((anc) => avecErreur(anc, "reponse", undefined));
+          }}
+          onRetour={retourEtape1}
+        />
       )}
     </div>
   );

@@ -11,6 +11,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 const { film } = vi.hoisted(() => ({ film: { present: false } }));
 
+vi.mock("@/features/commercial-application/lead-vsl-actions", () => ({
+  capturerLeadVsl: async () => ({ ok: false, error: "unknown" }),
+  completerLeadVsl: async () => ({ ok: false, error: "unknown" }),
+}));
+vi.mock("@/components/lp/VslVideoDiffere", async () => {
+  const { VslVideo } = await import("@/components/lp/VslVideo");
+  return { VslVideoDiffere: VslVideo };
+});
 vi.mock("next-intl/server", () => ({ setRequestLocale: () => undefined }));
 vi.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ push: () => undefined }),
