@@ -58,7 +58,7 @@ describe("motsDuNom / nomCorrespond", () => {
 
   it("ne confond pas deux personnes qui ne partagent qu'un prénom", () => {
     const mots = motsDuNom("Marie Mafo");
-    expect(nomCorrespond(mots, "Marie", "marie.dupont@gmail.com")).toBe(false);
+    expect(nomCorrespond(mots, "Marie", "marie.dupont@exemple.fr")).toBe(false);
   });
 
   it("ignore accents et tirets", () => {
@@ -73,11 +73,11 @@ describe("listerFichesRattachables — même nom, autre adresse", () => {
       .mockResolvedValueOnce([]) // récentes : rien (la fiche date d'août)
       .mockResolvedValueOnce([
         ligne("indeed", "Marie", "marienoelmafogangocxep_uuo@indeedemail.com"),
-        ligne("autre", "Marie", "marie.dupont@gmail.com"),
+        ligne("autre", "Marie", "marie.dupont@exemple.fr"),
       ]);
 
     const fiches = await listerFichesRattachables({
-      inviteeEmail: "marienoelmafo1@gmail.com",
+      inviteeEmail: "marienoelmafo1@exemple.fr",
       inviteeName: "Marie Mafo",
       linkedSubmissionId: null,
       estEchangeApporteur: true,
@@ -99,10 +99,10 @@ describe("listerFichesRattachables — même nom, autre adresse", () => {
   });
 
   it("ne propose pas deux fois une fiche déjà trouvée par son adresse", async () => {
-    const f = ligne("x", "Marie", "marienoelmafo1@gmail.com");
+    const f = ligne("x", "Marie", "marienoelmafo1@exemple.fr");
     findMany.mockResolvedValueOnce([f]).mockResolvedValueOnce([]).mockResolvedValueOnce([f]);
     const fiches = await listerFichesRattachables({
-      inviteeEmail: "marienoelmafo1@gmail.com",
+      inviteeEmail: "marienoelmafo1@exemple.fr",
       inviteeName: "Marie Mafo",
       linkedSubmissionId: null,
       estEchangeApporteur: true,

@@ -32,7 +32,7 @@ const fiche = (id: string, nom: string, email: string) => ({
 const rdv = (o: Record<string, unknown> = {}) => ({
   id: "evt",
   eventTypeName: "Échange apporteur d'affaires (15 min)",
-  inviteeEmail: "marienoelmafo1@gmail.com",
+  inviteeEmail: "marienoelmafo1@exemple.fr",
   inviteeName: "Marie Mafo",
   linkedSubmissionId: null,
   linkedJobApplicationId: null,
@@ -49,7 +49,7 @@ describe("rattachement par nom (repli)", () => {
   it("rattache quand une seule fiche porte le nom", async () => {
     findMany.mockResolvedValue([
       fiche("indeed", "Marie", "marienoelmafogangocxep_uuo@indeedemail.com"),
-      fiche("autre", "Marie", "marie.dupont@gmail.com"),
+      fiche("autre", "Marie", "marie.dupont@exemple.fr"),
     ]);
     const r = await rattacherEchangeApporteur(rdv());
     expect(r).toEqual({ rattache: true, submissionId: "indeed", parNom: true });
