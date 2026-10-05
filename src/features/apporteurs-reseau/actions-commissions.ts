@@ -45,7 +45,10 @@ export async function qualifierCommissionAction(
   const id = texte(fd, "id");
   if (!UUID.test(id)) return { etat: "erreur", message: "Commission inconnue." };
   try {
-    const r = await qualifierCommission(id, texte(fd, "palier"));
+    const quantite = Number(texte(fd, "quantite") || "1");
+    if (!Number.isInteger(quantite) || quantite < 1 || quantite > 99)
+      return { etat: "erreur", message: "Le nombre de sessions doit être un entier de 1 à 99." };
+    const r = await qualifierCommission(id, texte(fd, "palier"), quantite);
     if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
     return { etat: "ok", message: `Qualifiée : ${euros(r.montantCents)}.` };

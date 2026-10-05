@@ -7,6 +7,7 @@
  */
 
 import { ajouterJoursOuvres } from "@/lib/jours-ouvres";
+import { PALIERS_FORMATION } from "./regles";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { LigneHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
@@ -63,7 +64,15 @@ export function designationCommission(c: CommissionPourAutofacture, libelleMois:
   if (c.statut === "reprise")
     return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
   const base = c.parrainage ? "Commission de parrainage" : `Commission d'apport (${c.activite})`;
-  const palier = c.palier ? ` — palier ${c.palier}` : "";
+  // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
+  const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);
+  const sessions =
+    paliers && c.prixPublicHtCents != null
+      ? Math.round(c.prixPublicHtCents / paliers.prixCents)
+      : 1;
+  const palier = c.palier
+    ? ` — palier ${c.palier}${sessions > 1 ? ` × ${sessions} sessions` : ""}`
+    : "";
   const prix =
     c.prixPublicHtCents != null && c.factureHtCents != null
       ? ` — prix public ${eurosHt(c.prixPublicHtCents)} HT, prix facturé ${eurosHt(c.factureHtCents)} HT`

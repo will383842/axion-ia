@@ -250,6 +250,7 @@ export async function statutApresVigilance(
 export async function qualifierCommission(
   id: string,
   palier: string,
+  quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
   if (!PALIERS_FORMATION.some((p) => p.id === palier))
@@ -275,6 +276,7 @@ export async function qualifierCommission(
     activite: "formation",
     factureHtCents: c.factureHtCents,
     palier,
+    quantite,
   });
   if (calc.statut !== "calculee")
     return { ok: false, message: "Calcul impossible pour ce palier." };

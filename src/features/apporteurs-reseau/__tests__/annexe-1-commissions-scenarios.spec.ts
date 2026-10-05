@@ -175,3 +175,75 @@ describe("période de démarrage (art. 2.8) : délais opérés à la main, pas p
     "automatiser la fin d'attribution sans adresse valide (45 j) et la péremption sans suite (90 j) à la sortie de la période de démarrage",
   );
 });
+
+describe("formation : nombre de sessions du même palier dans une commande", () => {
+  const unJour = PALIERS_FORMATION.find((x) => x.id === "formation-generale-1j")!;
+  const m = (r: ReturnType<typeof calculerCommission>) =>
+    r.statut === "calculee" ? r.montantCents : null;
+
+  it("par défaut une seule session : 500 € pour une journée au plein tarif", () => {
+    expect(
+      m(calculerCommission({ activite: "formation", palier: unJour.id, factureHtCents: 190_000 })),
+    ).toBe(50_000);
+  });
+  it("trois sessions d'une journée au plein tarif : 500 € × 3 = 1 500 €", () => {
+    const r = calculerCommission({
+      activite: "formation",
+      palier: unJour.id,
+      quantite: 3,
+      factureHtCents: 570_000,
+    });
+    expect(m(r)).toBe(150_000);
+    expect(r.statut === "calculee" && r.prixPublicCents).toBe(570_000);
+  });
+  it("trois sessions avec 10 % de remise : 1 500 € × 0,9 = 1 350 €", () => {
+    expect(
+      m(
+        calculerCommission({
+          activite: "formation",
+          palier: unJour.id,
+          quantite: 3,
+          factureHtCents: 513_000,
+        }),
+      ),
+    ).toBe(135_000);
+  });
+  it("trois sessions vendues plus cher que le public : plafonné à 1 500 €", () => {
+    expect(
+      m(
+        calculerCommission({
+          activite: "formation",
+          palier: unJour.id,
+          quantite: 3,
+          factureHtCents: 900_000,
+        }),
+      ),
+    ).toBe(150_000);
+  });
+  it("deux demi-journées au plein tarif : 250 € × 2 = 500 €", () => {
+    expect(
+      m(
+        calculerCommission({
+          activite: "formation",
+          palier: "formation-generale-4h",
+          quantite: 2,
+          factureHtCents: 240_000,
+        }),
+      ),
+    ).toBe(50_000);
+  });
+  it("un nombre de sessions invalide (0, 2,5, négatif, 100) vaut 1", () => {
+    for (const quantite of [0, 2.5, -1, 100]) {
+      expect(
+        m(
+          calculerCommission({
+            activite: "formation",
+            palier: unJour.id,
+            quantite,
+            factureHtCents: 190_000,
+          }),
+        ),
+      ).toBe(50_000);
+    }
+  });
+});
