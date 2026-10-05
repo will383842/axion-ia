@@ -508,6 +508,19 @@ describe("étape 2 — completerLeadVsl", () => {
     });
   });
 
+  it("le message de la fiche suit l'avancée : « terminée », plus « étape 1 sur 2 »", async () => {
+    ligneParId = ligneVsl();
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    const message = String((avancer.mock.calls[0]?.[0] as { message: string }).message);
+    expect(message).toContain(
+      "Inscription terminée depuis la page vidéo /apporteur-affaires/video",
+    );
+    expect(message).toContain("source : Facebook");
+    expect(message).toContain("créneau à choisir");
+    expect(message).not.toContain("étape 1 sur 2");
+  });
+
   it("R1/R2 : annule la branche A (A1, A2, A3) et envoie B1 une seule fois, avec le bouton de réservation", async () => {
     process.env["CALENDLY_APPORTEUR_URL"] = "https://calendly.com/axion-ia/echange-apporteur";
     ligneParId = ligneVsl();

@@ -277,7 +277,12 @@ export default async function Page({ params }: Props) {
         className="py-10 sm:py-12 lg:py-14"
       />
 
-      <StickyMobileCta href={ANCRE} label={`${VSL_HERO.cta} →`} track="vsl-sticky-cta" />
+      <StickyMobileCta
+        href={ANCRE}
+        label={`${VSL_HERO.cta} →`}
+        track="vsl-sticky-cta"
+        couleur="terracotta"
+      />
     </TunnelFacebookShell>
   );
 }
