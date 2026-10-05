@@ -37,6 +37,19 @@ const plausible = vi.fn(async (..._a: unknown[]) => true);
 vi.mock("@/lib/analytics/plausible-serveur", () => ({
   emettreEvenementPlausible: (...a: unknown[]) => plausible(...a),
 }));
+const schedule = vi.fn(async (..._a: unknown[]) => ({ envoye: true as const }));
+vi.mock("@/server/meta/schedule-apporteur", () => ({
+  envoyerScheduleApporteur: (...a: unknown[]) => schedule(...a),
+}));
+type IssueRattachementTest =
+  { rattache: true; submissionId: string } | { rattache: false; motif: string };
+const rattacher = vi.fn(async (..._a: unknown[]): Promise<IssueRattachementTest> => ({
+  rattache: false,
+  motif: "aucun_dossier_apporteur",
+}));
+vi.mock("../rattachement-apporteur", () => ({
+  rattacherEchangeApporteur: (...a: unknown[]) => rattacher(...a),
+}));
 const annuler = vi.fn(async (..._a: unknown[]) => 3);
 vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
   annulerRelancesLeadApporteur: (...a: unknown[]) => annuler(...a),
@@ -203,5 +216,67 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     fetchInvitee.mockResolvedValueOnce(api());
     plausible.mockRejectedValueOnce(new Error("hors ligne"));
     expect((await enrichCalendlyEvent("evt_1")).ok).toBe(true);
+  });
+});
+
+describe("`Schedule` vers Meta à la réservation (lot 5)", () => {
+  const marqueSchedule = () =>
+    JSON.stringify(majLigne.mock.calls[0]?.[0] ?? {}).includes("_scheduleMeta");
+
+  async function reserver(r = row(), a = api()) {
+    findUnique.mockResolvedValueOnce(r);
+    fetchInvitee.mockResolvedValueOnce(a);
+    return enrichCalendlyEvent("evt_1");
+  }
+
+  it("envoie `Schedule` UNE fois, pour la fiche rattachée, avec l'adresse confirmée par l'API", async () => {
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
+    await reserver();
+    expect(schedule).toHaveBeenCalledTimes(1);
+    expect(schedule.mock.calls[0]?.[0]).toMatchObject({
+      calendlyEventId: "evt_1",
+      submissionId: "sub_lea",
+      email: "lea@example.com",
+      nom: "Léa",
+    });
+    expect(marqueSchedule()).toBe(true);
+  });
+
+  it("DÉDOUBLONNAGE : au sondage suivant (marqueur posé), rien n'est ré-envoyé", async () => {
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
+    await reserver(row({ rawPayload: { _scheduleMeta: "2026-10-07T08:00:00Z" } }));
+    expect(schedule).not.toHaveBeenCalled();
+  });
+
+  it("une réservation déjà rattachée à la main utilise cette fiche", async () => {
+    await reserver(row({ linkedSubmissionId: "sub_manuel" }));
+    expect(schedule.mock.calls[0]?.[0]).toMatchObject({ submissionId: "sub_manuel" });
+  });
+
+  it("sans fiche rattachée, rien ne part (le consentement vit sur la fiche)", async () => {
+    await reserver();
+    expect(schedule).not.toHaveBeenCalled();
+  });
+
+  it("n'est PAS écarté quand le navigateur a déjà tiré l'événement (_ipHash) : Meta dédoublonne sur event_id", async () => {
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
+    await reserver(row({ rawPayload: { _ipHash: "abc" } }));
+    expect(schedule).toHaveBeenCalledTimes(1);
+  });
+
+  it("rien pour un appel client, ni pour un créneau annulé", async () => {
+    rattacher.mockResolvedValue({ rattache: true, submissionId: "sub_lea" });
+    await reserver(
+      row({ eventTypeName: "Appel découverte", eventTypeSlug: "appel-decouverte" }),
+      api({ eventTypeName: "Appel découverte — 30 min" }),
+    );
+    await reserver(row(), api({ calendlyStatus: "canceled" }));
+    expect(schedule).not.toHaveBeenCalled();
+  });
+
+  it("une panne de l'envoi ne fait pas échouer l'enrichissement", async () => {
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
+    schedule.mockRejectedValueOnce(new Error("meta indisponible"));
+    expect((await reserver()).ok).toBe(true);
   });
 });

@@ -48,6 +48,7 @@ import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { VSL_MERCI_PATH } from "@/lib/commercial-application/vsl-apporteur";
+import { envoyerScheduleApporteur } from "@/server/meta/schedule-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 import {
   besoinDesReponses,
@@ -300,6 +301,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
   });
   let callBookedAEmettre = false;
+  let scheduleMetaAEmettre = false;
   const besoin = besoinDesReponses(brutFrais?.invitee?.["questions_and_answers"]);
   const reponses = reponsesDesQuestions(brutFrais?.invitee?.["questions_and_answers"]);
   const utm = utmDuTracking(brutFrais?.invitee);
@@ -334,19 +336,33 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     // par la capture de l'iframe porte `_ipHash`, et l'événement navigateur
     // `Call Booked` la couvre (sans cela Plausible compterait deux fois).
     // Émis APRÈS l'écriture réussie : un échec d'écriture ne marque rien.
-    if (
+    const echangeApporteurActif =
       d.calendlyStatus === "active" &&
       !d.noShow &&
       estRendezVousApporteur({
         eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
         typeRendezVous,
-      }) &&
+      });
+    if (
+      echangeApporteurActif &&
       ancienBrut["_ipHash"] === undefined &&
       ancienBrut["_callBookedServeur"] === undefined
     ) {
       (data["rawPayload"] as Record<string, unknown>)["_callBookedServeur"] =
         new Date().toISOString();
       callBookedAEmettre = true;
+    }
+    // ── `Schedule` vers Meta (lot 5, 2026-10-05) ─────────────────────────────
+    // Même mécanique, même raison : l'enrichissement est le seul endroit qui
+    // connaisse la réservation de façon sûre. UNE tentative par réservation
+    // (marqueur `_scheduleMeta`, clé privée préservée) — et, à la différence de
+    // Plausible, AUSSI pour une réservation que le navigateur a tirée : Meta
+    // dédoublonne sur `event_id` (`schedule:<id de la réservation>`), et le tir
+    // navigateur se perd (bloqueurs, onglet fermé). Le consentement, lui, est lu
+    // sur la fiche (`envoyerScheduleApporteur`) : sans accord tracé, rien ne part.
+    if (echangeApporteurActif && ancienBrut["_scheduleMeta"] === undefined) {
+      (data["rawPayload"] as Record<string, unknown>)["_scheduleMeta"] = new Date().toISOString();
+      scheduleMetaAEmettre = true;
     }
     // ⚠️ VOLONTAIREMENT ABSENT de `updatedFields`. Ce tableau annonce ce qui a
     // CHANGE pour la fiche — il alimente le journal et l'alerte. La charge brute
@@ -408,8 +424,9 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   //
   // Best-effort strict : un rattachement raté laisse la fiche comme avant (le
   // sélecteur de la console reste là), il ne fait pas échouer l'enrichissement.
+  let ficheRattachee: string | null = row.linkedSubmissionId ?? null;
   try {
-    await rattacherEchangeApporteur({
+    const issueRattachement = await rattacherEchangeApporteur({
       id: eventId,
       eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
       typeRendezVous,
@@ -417,9 +434,27 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
     });
+    if (issueRattachement.rattache) ficheRattachee = issueRattachement.submissionId;
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
   }
+  // `Schedule` (Meta, serveur) : seulement si la réservation est rattachée à une
+  // fiche — c'est elle qui porte la réponse à la bannière, la source de la
+  // campagne et le `fbclid` horodaté. Fail-soft, borné à 3 s, ne lève jamais.
+  if (scheduleMetaAEmettre && ficheRattachee && inviteeEmail) {
+    try {
+      await envoyerScheduleApporteur({
+        calendlyEventId: eventId,
+        submissionId: ficheRattachee,
+        email: inviteeEmail,
+        nom: d.inviteeName ?? row.inviteeName,
+        telephone: d.inviteePhone ?? row.inviteePhone,
+      });
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-schedule-meta" } });
+    }
+  }
+
   // `Call Booked` (serveur) : le libellé de campagne seulement, jamais une donnée
   // personnelle (règle de `plausible-serveur.ts`). Fail-soft, borné à 1,5 s.
   if (callBookedAEmettre) {

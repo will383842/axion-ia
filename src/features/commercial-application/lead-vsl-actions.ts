@@ -20,7 +20,10 @@
 // ── Ce que ces actions NE font PAS ──────────────────────────────────────────
 //   · aucun envoi au CRM (règle du 19/09 B2, garde
 //     `le-dossier-apporteur-ne-part-pas-au-crm`) ;
-//   · aucun événement Meta : il arrive au lot 5 ;
+//   · aucun envoi Meta AVANT le consentement publicitaire : `Lead` part à l'étape 1
+//     (`event_id` = `lead:<id de la ligne>`, le MÊME que le navigateur tire), et
+//     seulement avec la réponse « acceptée » à la bannière, jamais pour une ligne
+//     « suspecte », jamais pour un contact qui ne vient pas de Facebook ;
 //   · aucune promesse de délai ni de rappel dans les messages (R8).
 //
 // ── Anti-doublon (R3), dans l'ordre ─────────────────────────────────────────
@@ -71,6 +74,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { envoyerEvenementMeta } from "@/server/meta/conversions-api";
 import {
   CANDIDATURE_COMMERCIALE_SUBTYPE,
   SOURCE_OPTIONS,
@@ -80,6 +84,7 @@ import {
   DOSSIER_COMPLET_PATH,
   LEAD_APPORTEUR_ETAPE,
   extraireFbclid,
+  leadCompteChezMeta,
   sourceDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import {
@@ -336,12 +341,14 @@ async function creerLead(
     maintenant - d.ctx.fbclidAt <= FBCLID_AGE_MAX_MS
       ? d.ctx.fbclidAt
       : undefined;
+  // L'heure d'ARRIVÉE du clic : c'est elle qui fait un `fbc` correct pour Meta.
+  const fbcCreeLe = fbclid && consentPub === true ? new Date(fbclidAt ?? maintenant) : null;
   const funnel: Record<string, unknown> = {};
   if (Object.keys(utm).length > 0) funnel["utm"] = utm;
   if (fbclid) funnel["fbclid"] = true;
-  if (fbclid && consentPub === true) {
+  if (fbclid && fbcCreeLe) {
     funnel["fbclidValeur"] = fbclid;
-    funnel["fbcCreeLe"] = new Date(fbclidAt ?? maintenant).toISOString();
+    funnel["fbcCreeLe"] = fbcCreeLe.toISOString();
   }
   if (d.ctx.fbp && consentPub === true) funnel["fbp"] = d.ctx.fbp;
   const referrer = d.ctx.referrer?.trim();
@@ -432,7 +439,39 @@ async function creerLead(
     Sentry.captureException(err, { tags: { action: "capturerLeadVsl", step: "relances" } });
   }
 
-  // L'événement Meta `Lead` (étape 1) est posé au lot 5.
+  // `Lead` vers Meta (API Conversions), étape 1 : SEULEMENT avec la réponse
+  // « acceptée » à la bannière (règle de `conversions-api.ts`, inchangée), pour un
+  // contact venu de Facebook / Instagram, et jamais pour une ligne « suspecte »
+  // (déjà sortie plus haut). Sans téléphone ni ville à ce moment : seuls l'e-mail
+  // et le prénom, hachés. Le navigateur tire le même événement avec le même
+  // `eventID` : Meta les dédoublonne.
+  // Lancé SANS attendre : Meta peut mettre jusqu'à 3 s à répondre, et la personne
+  // n'a pas à attendre pour passer à l'étape 2. `envoyerEvenementMeta` ne lève
+  // jamais ; le `catch` ne protège que contre un défaut de programmation.
+  if (leadCompteChezMeta(source)) {
+    void envoyerEvenementMeta(
+      "Lead",
+      {
+        eventId: `lead:${submission.id}`,
+        email: d.email,
+        prenom: d.prenom,
+        ip,
+        userAgent,
+        fbp: consentPub === true ? (d.ctx.fbp ?? null) : null,
+        fbclid: consentPub === true ? fbclid : null,
+        fbcCreeLe,
+        sourceUrl: `${SITE_URL}/fr${VSL_PAGE_PATH}`,
+        at: submission.submittedAt,
+      },
+      {
+        consentPub:
+          consentPub === true ? "accepted" : consentPub === false ? "declined" : "unknown",
+      },
+    ).catch((err: unknown) => {
+      Sentry.captureException(err, { tags: { action: "capturerLeadVsl", step: "meta-lead" } });
+    });
+  }
+
   return reponseJeton(submission.id, false);
 }
 
