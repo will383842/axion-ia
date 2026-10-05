@@ -51,6 +51,7 @@ function separerNom(complet: string): { prenom: string; nom: string } {
  */
 export async function ouvrirDossierDepuisCandidature(
   submissionId: string,
+  options: { creer?: boolean } = {},
 ): Promise<
   | { ok: true; apporteurId: string; versionLien: number; email: string; prenom: string }
   | { ok: false; message: string }
@@ -77,6 +78,8 @@ export async function ouvrirDossierDepuisCandidature(
       prenom: decryptPii(existant.prenom) ?? "",
     };
   }
+  // `creer: false` (aperçu de la console) : on lit, on n'écrit rien.
+  if (options.creer === false) return { ok: false, message: "Dossier pas encore ouvert." };
   const { prenom, nom } = separerNom(decryptPii(s.contactName) ?? "");
   const cree = await prisma.apporteurReseau.create({
     data: {

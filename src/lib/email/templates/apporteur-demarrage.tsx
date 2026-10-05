@@ -163,7 +163,7 @@ export const COPY_DEMARRAGE = {
       "pas-disponible":
         "Nous ne pouvons pas vous la réserver : elle nous a déjà été présentée. Si elle redevient disponible, nous vous préviendrons et vous aurez 15 jours pour nous la présenter à nouveau.",
       "hors-champ":
-        "Nous ne pouvons pas vous la réserver : il s'agit d'un organisme avec lequel Axion-IA travaille déjà directement (administration, financeur ou organisme de formation), ou d'une entreprise qui a cessé son activité.",
+        "Nous ne pouvons pas vous la réserver : il s'agit d'un organisme avec lequel Axion-IA travaille déjà directement (administration, organisme public ou organisme de formation), ou d'une entreprise qui a cessé son activité.",
     } satisfies Record<MotifRefus, string>,
     contester: (j: number) =>
       `Si vous pensez qu'il y a une erreur, dites-le-nous en répondant à cet e-mail : nous vous répondrons dans les ${j} jours.`,
@@ -199,7 +199,7 @@ export const COPY_DEMARRAGE = {
     cta: "Prendre rendez-vous",
   },
   dossierLien: {
-    subject: "Votre contrat d'apporteur : à compléter en ligne",
+    subject: "Votre contrat d'apporteur, en ligne",
     title: "Votre dossier et votre contrat",
     preview:
       "Environ 10 minutes : vos informations, deux documents, puis votre signature en ligne.",
@@ -235,7 +235,7 @@ export const COPY_DEMARRAGE = {
     fin: "Nous vous souhaitons une belle réussite dans vos projets.",
   },
   vigilance: {
-    subject: "Deux documents pour vous verser vos commissions",
+    subject: "Deux documents pour vos commissions",
     title: "Deux documents à nous transmettre",
     preview:
       "Votre attestation URSSAF et votre extrait d'immatriculation, à déposer avec votre lien personnel.",

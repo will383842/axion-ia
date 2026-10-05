@@ -144,6 +144,8 @@ export async function preparerIssueApporteur(input: {
   calendlyEventId: string;
   issue: IssueApporteur;
   motPersonnel?: string | null;
+  /** `true` à l'enregistrement : ouvre le dossier de l'apporteur. L'aperçu, lui, n'écrit rien. */
+  ouvrirDossier?: boolean;
 }): Promise<PreparationIssue> {
   const evt = await prisma.calendlyEvent.findUnique({
     where: { id: input.calendlyEventId },
@@ -260,14 +262,22 @@ export async function preparerIssueApporteur(input: {
     };
   }
 
-  // Démarrage manuel du réseau (2026-10-05) : « Retenu » ouvre le dossier en ligne de
-  // l'apporteur et met son lien personnel sous le bouton de l'e-mail. Ouvrir le dossier
-  // dès l'aperçu est sans effet visible (idempotent, aucun e-mail) et garde l'aperçu
-  // identique, au caractère près, à ce qui part.
+  // Démarrage manuel du réseau (2026-10-05) : « Retenu » met le lien personnel du dossier
+  // en ligne de l'apporteur sous le bouton de l'e-mail. Le dossier n'est ouvert qu'à
+  // l'enregistrement (l'aperçu n'écrit rien : il montre le lien s'il existe déjà, sinon un
+  // lien d'exemple). Le lien ne doit JAMAIS faire échouer l'envoi : en cas de panne,
+  // l'e-mail part sans lui (l'apporteur recevra le lien à la main).
   let dossierUrl: string | null = null;
-  if (gabarit === "apporteur-issue-retenu" && fiche) {
-    const dossier = await ouvrirDossierDepuisCandidature(fiche.id);
-    if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
+  if (gabarit === "apporteur-issue-retenu") {
+    try {
+      const dossier = await ouvrirDossierDepuisCandidature(fiche.id, {
+        creer: input.ouvrirDossier === true,
+      });
+      if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
+      else if (input.ouvrirDossier !== true) dossierUrl = urlDossier("apercu", 1);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "dossier-lien" } });
+    }
   }
 
   const mot = input.motPersonnel?.trim();
