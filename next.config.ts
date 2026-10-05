@@ -813,6 +813,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Films des pages d'atterrissage (`public/videos/`, ex. VSL apporteurs) : nom de
+      // fichier VERSIONNÉ (`…-v1.mp4`), donc cache long et immuable (1 an). Un film refait
+      // prend un nouveau nom. Sans cette règle, Cloudflare revalide chaque lecture.
+      {
+        source: "/videos/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
       // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).
       //
