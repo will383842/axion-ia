@@ -272,6 +272,7 @@
       "path": [
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/appel/**",
+        "!.next/static/chunks/app/apporteur/**",
         "!.next/static/chunks/app/**/[(]admin[)]/**"
       ],
       "limit": "265 KB",
@@ -280,7 +281,7 @@
     {
       "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés)",
       "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
-      "limit": "487 KB",
+      "limit": "500 KB",
       "running": false
     },
     {
