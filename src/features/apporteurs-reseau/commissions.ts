@@ -6,17 +6,18 @@
  * versées. Montants en centimes, arrondis au centime inférieur (`regles.ts`).
  *
  * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par relevé (toutes les
- * lignes versées ensemble le partagent). Le PDF n'est PAS généré ici :
- * `genererPdfAutofactureTODO` est le point de branchement, et l'e-mail part sans pièce
- * jointe tant qu'il rend `null`.
+ * lignes versées ensemble le partagent). Le PDF est généré par `genererPdfAutofacture` ;
+ * s'il rend `null`, l'e-mail part sans pièce jointe.
  */
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
 
+import { construireDonneesAutofacture } from "./autofacture-donnees";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import {
@@ -344,17 +345,74 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
 }
 
 /**
- * TODO (branchement prévu) : générer le PDF de l'autofacture, le déposer sur R2 et
- * rendre sa clé. Tant qu'il rend `null`, l'e-mail de relevé part SANS pièce jointe.
+ * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
+ * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : le versement
+ * n'échoue jamais pour une pièce, l'e-mail part alors sans pièce jointe.
  */
-export async function genererPdfAutofactureTODO(_e: {
+export async function genererPdfAutofacture(e: {
   apporteurId: string;
   numero: string;
   releveMois: string;
   commissionIds: readonly string[];
   totalCents: number;
+  maintenant?: Date;
 }): Promise<{ r2Key: string; filename: string } | null> {
-  return null;
+  try {
+    const [apporteur, commissions] = await Promise.all([
+      prisma.apporteurReseau.findUnique({
+        where: { id: e.apporteurId },
+        select: {
+          prenom: true,
+          nom: true,
+          email: true,
+          denomination: true,
+          siren: true,
+          adresse: true,
+          regimeTva: true,
+          numeroTva: true,
+        },
+      }),
+      prisma.commissionApporteur.findMany({
+        where: { id: { in: [...e.commissionIds] } },
+        select: { id: true, activite: true, palier: true, parrainage: true, montantCents: true },
+        orderBy: { creeAt: "asc" },
+      }),
+    ]);
+    if (!apporteur) throw new Error("apporteur introuvable");
+    const [{ getOrganismeIdentite }, { renderPdfToBuffer, storeAndSignPdf }, { AutofactureHonorairesPdf }, React] =
+      await Promise.all([
+        import("@/server/qualiopi/documents/organisme"),
+        import("@/server/qualiopi/documents/render"),
+        import("@/server/qualiopi/documents/templates/autofacture-honoraires"),
+        import("react"),
+      ]);
+    const construit = construireDonneesAutofacture({
+      numero: e.numero,
+      releveLibelle: libelleMois(e.releveMois),
+      dateEmission: e.maintenant ?? new Date(),
+      apporteur: {
+        nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
+        denomination: apporteur.denomination,
+        siren: apporteur.siren,
+        adresse: decryptPii(apporteur.adresse),
+        regimeTva: apporteur.regimeTva,
+        numeroTva: apporteur.numeroTva,
+        email: decryptPii(apporteur.email) ?? null,
+      },
+      commissions,
+      organisme: await getOrganismeIdentite(),
+      totalAttenduCents: e.totalCents,
+    });
+    if (!construit.ok) throw new Error(`autofacture non établie : ${construit.motif}`);
+    const { buffer } = await renderPdfToBuffer(React.createElement(AutofactureHonorairesPdf, { data: construit.data }));
+    const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
+    if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
+    return { r2Key, filename: `${e.numero}.pdf` };
+  } catch (err) {
+    console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
+    Sentry.captureException(err, { tags: { action: "reseau-apporteurs", etape: "autofacture-pdf" } });
+    return null;
+  }
 }
 
 /**
@@ -392,12 +450,13 @@ export async function marquerVerse(
   });
   if (!resultat.ok) return resultat;
 
-  const pdf = await genererPdfAutofactureTODO({
+  const pdf = await genererPdfAutofacture({
     apporteurId,
     numero: resultat.numero,
     releveMois,
     commissionIds: resultat.ids,
     totalCents: resultat.total,
+    maintenant,
   });
   const envoi = await envoyer({
     gabarit: "apporteur-releve",
