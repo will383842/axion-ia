@@ -7,13 +7,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 
-import { marquerVerse, qualifierCommission } from "./commissions";
+import { classerActiviteCommission, marquerVerse, qualifierCommission } from "./commissions";
+import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
 import { euros } from "./regles";
 
 export type EtatActionCommission =
@@ -82,4 +84,74 @@ export async function marquerVerseAction(
       message: err instanceof Error ? err.message : "Versement impossible. Réessaie.",
     };
   }
+}
+
+// ── Fin de vie : résilier, enregistrer une reprise ───────────────────────
+// Formulaires SANS JavaScript client (rendu serveur) : l'action redirige vers la fiche avec
+// le résultat dans l'adresse (`?retour=` ou `?erreur=`), affiché par la page.
+
+function versFiche(apporteurId: string, cle: "retour" | "erreur", message: string): never {
+  redirect(`${adminPath("fr", `apporteurs/${apporteurId}`)}?${cle}=${encodeURIComponent(message)}`);
+}
+
+export async function resilierApporteurAction(fd: FormData): Promise<void> {
+  const apporteurId = texte(fd, "apporteurId");
+  if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs"));
+  const refus = await sessionArgent();
+  if (refus) versFiche(apporteurId, "erreur", refus);
+  if (texte(fd, "confirmer") !== "oui")
+    versFiche(apporteurId, "erreur", "Cochez la confirmation avant de résilier.");
+  let r: Awaited<ReturnType<typeof resilierApporteur>>;
+  try {
+    r = await resilierApporteur(apporteurId);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-resilier" } });
+    return versFiche(apporteurId, "erreur", "Résiliation impossible. Réessayez.");
+  }
+  revalidatePath(adminPath("fr", "apporteurs"));
+  versFiche(apporteurId, r.ok ? "retour" : "erreur", r.message);
+}
+
+export async function enregistrerRepriseAction(fd: FormData): Promise<void> {
+  const apporteurId = texte(fd, "apporteurId");
+  if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs"));
+  const refus = await sessionArgent();
+  if (refus) versFiche(apporteurId, "erreur", refus);
+  const commissionId = texte(fd, "commissionId");
+  const montant = montantEnCentimes(texte(fd, "montant"));
+  if (!UUID.test(commissionId))
+    versFiche(apporteurId, "erreur", "Choisissez la commission versée.");
+  if (montant === null)
+    versFiche(apporteurId, "erreur", "Indiquez un montant en euros, par exemple 150,50.");
+  if (texte(fd, "confirmer") !== "oui")
+    versFiche(apporteurId, "erreur", "Cochez la confirmation avant d'enregistrer la reprise.");
+  let r: Awaited<ReturnType<typeof enregistrerReprise>>;
+  try {
+    r = await enregistrerReprise({
+      commissionId,
+      apporteurId,
+      demandeeCents: montant!,
+      motif: texte(fd, "motif"),
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-reprise" } });
+    return versFiche(apporteurId, "erreur", "Enregistrement impossible. Réessayez.");
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  versFiche(apporteurId, r.ok ? "retour" : "erreur", r.message);
+}
+
+/** Classe une ligne « à qualifier » dont la facture ne portait pas d'activité (formulaire sans JS). */
+export async function classerActiviteAction(fd: FormData): Promise<void> {
+  const retour = adminPath("fr", "apporteurs/commissions");
+  const refus = await sessionArgent();
+  const id = texte(fd, "id");
+  if (refus || !UUID.test(id)) redirect(retour);
+  try {
+    await classerActiviteCommission(id, texte(fd, "activite"));
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-classer" } });
+  }
+  revalidatePath(retour);
+  redirect(retour);
 }

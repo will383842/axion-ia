@@ -294,6 +294,103 @@ export async function qualifierCommission(
   return { ok: true, montantCents: calc.montantCents };
 }
 
+/** Activités qu'une ligne « à qualifier » peut recevoir quand la facture n'en portait pas. */
+export const ACTIVITES_CLASSABLES = [
+  "formation",
+  "un_a_un",
+  "audit",
+  "implementation",
+  "site_web",
+] as const;
+export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
+
+/**
+ * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
+ * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
+ * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
+ * l'activité est posée, le palier se choisit ensuite comme d'habitude.
+ */
+export async function classerActiviteCommission(
+  id: string,
+  activite: string,
+  maintenant: Date = new Date(),
+): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+  if (!(ACTIVITES_CLASSABLES as readonly string[]).includes(activite))
+    return { ok: false, message: "Activité inconnue." };
+  const c = await prisma.commissionApporteur.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      apporteurId: true,
+      factureId: true,
+      parrainage: true,
+      activite: true,
+      factureHtCents: true,
+      statut: true,
+    },
+  });
+  if (!c) return { ok: false, message: "Commission introuvable." };
+  if (c.statut !== "a_qualifier" || c.parrainage || c.activite === "formation")
+    return { ok: false, message: "Cette commission n'est pas à classer." };
+  const choisie = activite as ActiviteClassable;
+  if (choisie === "formation") {
+    const r = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: { activite: "formation" },
+    });
+    return r.count === 1
+      ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
+      : { ok: false, message: "Cette commission vient d'être modifiée." };
+  }
+  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  if (calc.statut === "aucune") {
+    const r = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: {
+        activite: choisie,
+        palier: "aucune-commission",
+        montantCents: 0,
+        statut: "versee",
+        verseeAt: maintenant,
+      },
+    });
+    if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
+    // La part du parrain suit la commission du filleul : aucune non plus.
+    await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
+    return {
+      ok: true,
+      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+    };
+  }
+  if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };
+  const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
+  const r = await prisma.commissionApporteur.updateMany({
+    where: { id, statut: "a_qualifier" },
+    data: { activite: choisie, montantCents: calc.montantCents, statut: v.statut },
+  });
+  if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
+  if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
+  await qualifierPartParrainage(c.factureId, c.apporteurId, calc.montantCents, maintenant);
+  return { ok: true, message: `Qualifiée : ${euros(calc.montantCents)}.` };
+}
+
+/** Ferme à 0 € la part du parrain d'une commission sans commission. */
+async function clorePartParrainage(
+  factureId: string,
+  filleulId: string,
+  maintenant: Date,
+): Promise<void> {
+  const filleul = await prisma.apporteurReseau.findUnique({
+    where: { id: filleulId },
+    select: { parrainId: true },
+  });
+  if (!filleul?.parrainId) return;
+  await prisma.commissionApporteur.updateMany({
+    where: { factureId, apporteurId: filleul.parrainId, parrainage: true, statut: "a_qualifier" },
+    data: { montantCents: 0, statut: "versee", verseeAt: maintenant, palier: "aucune-commission" },
+  });
+}
+
 /** La part du parrain, restée « à qualifier » avec la commission du filleul. */
 async function qualifierPartParrainage(
   factureId: string,
@@ -347,13 +444,19 @@ export interface CommissionVue {
   creeAt: Date;
 }
 
+/** Taille d'une page de la liste des commissions (précédent / suivant dans la console). */
+export const COMMISSIONS_PAR_PAGE = 100;
+
 export async function lireCommissions(
   statut: StatutCommissionApporteur | null,
+  page = 1,
 ): Promise<CommissionVue[]> {
+  const p = Math.max(1, Math.floor(page));
   const lignes = await prisma.commissionApporteur.findMany({
     where: statut ? { statut } : {},
-    orderBy: { creeAt: "desc" },
-    take: 500,
+    orderBy: [{ creeAt: "desc" }, { id: "asc" }],
+    take: COMMISSIONS_PAR_PAGE,
+    skip: (p - 1) * COMMISSIONS_PAR_PAGE,
     include: {
       apporteur: { select: { prenom: true, nom: true } },
       presentation: { select: { denomination: true } },

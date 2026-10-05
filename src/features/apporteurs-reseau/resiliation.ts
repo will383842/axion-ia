@@ -124,11 +124,20 @@ export function verifierReprise(e: {
   return { ok: true };
 }
 
+/** « 150,50 » ou « 150.5 » → 15050 centimes ; `null` si ce n'est pas un montant. */
+export function montantEnCentimes(brut: string): number | null {
+  const s = brut.replace(/\s/g, "").replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(s)) return null;
+  return Math.round(Number(s) * 100);
+}
+
 /** Préfixe du champ `palier` d'une ligne de reprise : il porte l'id de la commission d'origine. */
 export const PREFIXE_PALIER_REPRISE = "reprise-de:";
 
 export async function enregistrerReprise(e: {
   commissionId: string;
+  /** L'apporteur dont on ouvre la fiche : la commission doit être la sienne. */
+  apporteurId?: string;
   demandeeCents: number;
   motif: string;
   /** Date de l'annulation (remboursement, avoir) ; par défaut aujourd'hui. */
@@ -148,7 +157,8 @@ export async function enregistrerReprise(e: {
       autofactureNumero: true,
     },
   });
-  if (!origine) return { ok: false, message: "Commission introuvable." };
+  if (!origine || (e.apporteurId && origine.apporteurId !== e.apporteurId))
+    return { ok: false, message: "Commission introuvable." };
   const deja = await prisma.commissionApporteur.findMany({
     where: { apporteurId: origine.apporteurId, palier: `${PREFIXE_PALIER_REPRISE}${origine.id}` },
     select: { montantCents: true },
