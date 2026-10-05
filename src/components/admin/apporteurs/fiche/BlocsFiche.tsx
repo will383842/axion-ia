@@ -28,6 +28,7 @@ export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
         <>
           <input
             className="admin-input"
+            aria-label="Un mot personnel (facultatif)"
             placeholder="Un mot personnel (facultatif)"
             value={mot}
             maxLength={500}
@@ -180,6 +181,11 @@ export function NouvelApporteurForm({ base }: { base: string }) {
         <input
           key={k}
           className="admin-input"
+          aria-label={
+            { prenom: "Prénom", nom: "Nom", email: "E-mail", telephone: "Téléphone (facultatif)" }[
+              k
+            ]
+          }
           placeholder={
             { prenom: "Prénom", nom: "Nom", email: "E-mail", telephone: "Téléphone (facultatif)" }[
               k

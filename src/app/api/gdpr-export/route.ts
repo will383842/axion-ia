@@ -35,11 +35,8 @@ import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
-import {
-  exporterDossierClientPour,
-  exporterReseauApporteurPour,
-  NOTICE_EXCLUSIONS_DOSSIER,
-} from "@/lib/rgpd-dossier-client";
+import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
+import { exporterReseauApporteurPour } from "@/lib/rgpd-reseau-apporteur";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
 
@@ -253,7 +250,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // participations, SES paroles, les faits la concernant (énoncé seul quand
   // un tiers les a dits), ses preuves d'accord, les questions reçues. Rien de
   // ce qui ne concerne que d'autres personnes. Détail et exclusions déclarées
-  // dans `src/lib/rgpd-dossier-client.ts`.
+  // dans `src/lib/rgpd-reseau-apporteur.ts`.
   const dossierClient = await exporterDossierClientPour(email);
 
   // Réseau d'apporteurs (2026-10-05) : le dossier de l'apporteur, ou qui a présenté la personne.

@@ -8,6 +8,7 @@
 import { NextResponse } from "next/server";
 
 import { getClientIp } from "@/lib/client-ip";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { rendreContratPdf, texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
@@ -27,7 +28,7 @@ function introuvable(): NextResponse {
 }
 
 export async function GET(
-  _req: Request,
+  req: Request,
   ctx: { params: Promise<{ id: string; jeton: string }> },
 ): Promise<NextResponse> {
   const { id, jeton } = await ctx.params;
@@ -59,7 +60,10 @@ export async function GET(
     headers: {
       ...ENTETES_COMMUNS,
       "Content-Type": "application/pdf",
-      "Content-Disposition": 'attachment; filename="contrat-apporteur-axion-ia.pdf"',
+      "Content-Disposition": enTeteContentDisposition(
+        dispositionDemandee(req.url),
+        "contrat-apporteur-axion-ia.pdf",
+      ),
     },
   });
 }
