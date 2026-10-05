@@ -28,19 +28,12 @@ import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
 
-import {
-  DECLARATIONS_MAX_PAR_JOUR,
-  etatPourApporteur,
-  validerDeclaration,
-  type EtatDeclaration,
-} from "./declaration-regles";
+import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 
 export type ResultatDeclaration = { ok: true } | { ok: false; message: string };
 
 export const MESSAGE_NEUTRE = "Cette déclaration n'a pas pu être enregistrée.";
-export const MESSAGE_LIMITE =
-  "Vous avez atteint le nombre de déclarations possibles pour aujourd'hui.";
 export const MESSAGE_DEJA = "Vous avez déjà déclaré cette entreprise.";
 
 /** Une déclaration de l'apporteur, telle qu'il la voit. */
@@ -88,11 +81,8 @@ export async function declarerEntreprise(
   });
   if (!apporteur || apporteur.statut !== "signe") return { ok: false, message: MESSAGE_NEUTRE };
 
-  // Limite : 20 déclarations par apporteur et par 24 h (message neutre, sans chiffre).
-  const recentes = await prisma.presentationEntreprise.count({
-    where: { apporteurId, creeAt: { gte: new Date(maintenant.getTime() - 24 * 3_600_000) } },
-  });
-  if (recentes >= DECLARATIONS_MAX_PAR_JOUR) return { ok: false, message: MESSAGE_LIMITE };
+  // Aucun plafond par apporteur (contrat art. 3.7 : « aucun seuil ») ; la limite par adresse IP
+  // hachée, anti-robot, vit côté route.
 
   // Doublon de l'apporteur lui-même : la déclaration occupe déjà ce SIREN.
   const siennes = await prisma.presentationEntreprise.findMany({
