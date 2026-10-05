@@ -699,6 +699,30 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "apporteurs",
       navLevel: 0,
     },
+    // Réseau d'apporteurs, démarrage manuel (2026-10-05) : les apporteurs retenus (dossier,
+    // contrat signé puis contresigné), les entreprises qu'ils présentent et leurs
+    // commissions, en attendant Axion Partners.
+    {
+      href: `${base}/apporteurs`,
+      label: "Apporteurs signés",
+      icon: "Handshake",
+      group: "apporteurs",
+      navLevel: 0,
+    },
+    {
+      href: `${base}/apporteurs/entreprises`,
+      label: "Entreprises présentées",
+      icon: "Building2",
+      group: "apporteurs",
+      navLevel: 0,
+    },
+    {
+      href: `${base}/apporteurs/commissions`,
+      label: "Commissions apporteurs",
+      icon: "Coins",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,

@@ -888,6 +888,33 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Dossier en ligne d'un apporteur du réseau (2026-10-05) —
+      // `/apporteur/dossier/<id>/<jeton>`. Page racine EXCLUE du proxy, comme le
+      // questionnaire : même CSP stricte (aucun hôte tiers, formulaire vers
+      // elle-même), `same-origin` (pas de politique plus stricte : elle casserait
+      // les actions serveur, voir plus haut) et `noindex`. Le jeton est dans l'adresse.
+      {
+        source: "/apporteur/dossier/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
       // Lot OPCO A8 (2026-10-04) — réponse en un clic de l'entreprise,
       // `/api/qualiopi/suivi-opco/<jeton>` : le jeton est dans l'adresse. Même
       // valeurs que `ENTETES_PAGE_SUIVI` (la route les pose aussi) ; placée

@@ -38,6 +38,8 @@ interface Payload {
   contactName?: string;
   /** Absent seulement : le lien de réservation (`CALENDLY_APPORTEUR_URL`, validé à l'envoi). */
   calendlyUrl?: string;
+  /** Retenu seulement : le lien personnel du dossier en ligne (démarrage manuel, 2026-10-05). */
+  dossierUrl?: string;
   /** Absent seulement : « mardi 22 septembre », déjà formaté en heure de Paris. */
   dateEchange?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
@@ -115,8 +117,13 @@ export const COPY_ISSUE_ECHANGE = {
       // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
       // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
+      // 2026-10-05 (Will) : plus de date promise pour l'espace en ligne.
       espace:
-        "Votre espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, répondez simplement à cet e-mail avec son nom et celui de votre contact.",
+        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par simple e-mail.",
+      // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
+      dossier:
+        "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
+      ctaDossier: "Compléter mon dossier",
       kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
@@ -174,8 +181,10 @@ export const COPY_ISSUE_ECHANGE = {
         "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIRET number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
       contrat: "We will send you your introducer agreement to sign online.",
-      espace:
-        "Your personal introducer space will open within a month. Until then, to introduce a company, simply reply to this email with its name and your contact's name.",
+      espace: "Once your agreement is signed, you can introduce companies to us by simple email.",
+      dossier:
+        "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
+      ctaDossier: "Complete my file",
       kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
@@ -252,6 +261,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const l = langue(locale);
   const t = COPY_ISSUE_ECHANGE[l].retenu;
+  const dossierUrl = texteOuNull(p.dossierUrl);
   return (
     <EmailLayout
       famille="B"
@@ -260,6 +270,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       locale={locale}
       sansReseauxSociaux
       signature="fondateur-court"
+      {...(dossierUrl ? { cta: { label: t.ctaDossier, href: dossierUrl }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{COPY_ISSUE_ECHANGE[l].bonjour(prenomDe(p))}</Text>
       <MotPersonnel p={p} />
@@ -284,7 +295,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{t.statut}</Text>
 
       <Text style={intertitre}>{t.suiteTitre}</Text>
-      <Text style={puce}>• {t.contrat}</Text>
+      <Text style={puce}>• {dossierUrl ? t.dossier : t.contrat}</Text>
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />

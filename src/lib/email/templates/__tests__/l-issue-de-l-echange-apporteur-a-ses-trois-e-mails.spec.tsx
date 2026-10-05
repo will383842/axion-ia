@@ -93,8 +93,11 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("numéro SIRET");
     expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
     expect(t).not.toContain("prochains jours");
-    expect(t).toContain("Votre espace apporteur personnel ouvrira d'ici un mois");
-    expect(t).toContain("répondez simplement à cet e-mail avec son nom et celui de votre contact");
+    // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne (démarrage à la main).
+    expect(t).not.toContain("d'ici un mois");
+    expect(t).toContain("Dès votre contrat signé, vous pourrez nous présenter des entreprises");
+    // (La consigne « répondez avec son nom et celui de votre contact » allait avec la date
+    // promise : elle est retirée avec elle ; la présentation par e-mail reste dite ci-dessus.)
     // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une
     // seule fois, pas deux.
     expect(t.match(/Une question \?/g)).toHaveLength(1);

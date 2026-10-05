@@ -1,0 +1,706 @@
+// E-mails — le RÉSEAU D'APPORTEURS EN DÉMARRAGE MANUEL (2026-10-05).
+//
+// Tant que l'espace apporteur (Axion Partners) n'est pas ouvert, Will gère les
+// apporteurs signés depuis la console : les présentations arrivent par e-mail,
+// et la console envoie les réponses. Quatre messages, un seul fichier :
+//   · `apporteur-contrat-signe`        — le contrat est signé : comment nous présenter une entreprise ;
+//   · `apporteur-presentation-recue`   — « bien reçu, elle vous est réservée » ;
+//   · `apporteur-presentation-refusee` — déjà connue / pas disponible / hors champ ;
+//   · `entreprise-confirmation-apporteur` — à la PERSONNE PRÉSENTÉE : confirmez-vous
+//     avoir échangé avec l'apporteur ? (contrat, art. 3.2 et 3.7).
+//
+// Ils ne partent JAMAIS seuls : Will clique, relit l'aperçu (ce rendu exact),
+// puis confirme — comme les issues de l'échange (`apporteur-issue-echange`).
+//
+// Même châssis que l'e-mail « Bienvenue » de l'issue retenue : famille B,
+// sans rangée sociale, vouvoiement, signature du fondateur (§6.1, sans téléphone).
+//
+// ── Vocabulaire (anti-requalification) ────────────────────────────────────
+// « présenter », « mettre en relation », « apporteur indépendant », « commission ».
+// JAMAIS « mission », « objectif », « prospecter pour nous », « suivi du client » :
+// l'apporteur n'a aucune obligation d'activité ni de suivi (contrat, art. 1.1 et 2.2).
+//
+// ── Ce que l'apporteur ne doit JAMAIS apprendre ───────────────────────────
+// Qui occupe une entreprise « pas disponible » (contrat, art. 3.5). Le motif dit
+// la catégorie, jamais l'occupant.
+
+import { Text } from "@react-email/components";
+import type { ReactElement } from "react";
+
+import { EmailLayout, emailStyles } from "./_layout";
+import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
+import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
+import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import type { Locale } from "../../../../prisma/generated/client";
+
+/** Délai de la confirmation réputée acquise (contrat, art. 3.2 — CONFIRMATION_TACITE_JOURS). */
+export const CONFIRMATION_TACITE_JOURS = 30;
+/** Délai de réponse à une contestation (contrat, art. 3.3). */
+const REPONSE_CONTESTATION_JOURS = 15;
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
+const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
+const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
+const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
+
+const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
+const PCT_INTEGRATION = getCommissionById("com-integration").percent ?? 0;
+
+export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
+
+interface Payload {
+  /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
+  contactName?: string;
+  /** Entreprise présentée, telle que saisie. */
+  entreprise?: string;
+  /** « lundi 5 octobre », déjà formaté en heure de Paris. */
+  datePresentation?: string;
+  /** Personne présentée : « Claire Durand ». */
+  personnePresentee?: string;
+  /** Refus seulement. */
+  motif?: MotifRefus;
+  /** Confirmation seulement : « Monsieur » / « Madame », et le nom de famille. */
+  civilite?: string;
+  nomFamille?: string;
+  /** Confirmation seulement : prénom et nom de l'apporteur (art. 3.2 : ils sont communiqués). */
+  nomApporteur?: string;
+  /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
+  motPersonnel?: string;
+  /** Lien personnel du dossier en ligne. */
+  dossierUrl?: string;
+  /** « À compléter » : les pièces à retransmettre, déjà formulées (« RIB : illisible »). */
+  piecesARetransmettre?: string[];
+  /** Vigilance : `premiere` (approche de 5 000 €) ou `renouvellement` (6 mois). */
+  variante?: string;
+  /** Relevé : mois (« octobre 2026 »), montant formaté, numéro d'autofacture. */
+  mois?: string;
+  montant?: string;
+  numeroAutofacture?: string;
+  /** Interne : lien de la fiche de l'apporteur dans la console. */
+  lienConsole?: string;
+}
+
+interface Props {
+  locale: Locale;
+  payload: Record<string, unknown>;
+}
+
+function texteOuNull(v: unknown): string | null {
+  const s = typeof v === "string" ? v.trim() : "";
+  return s === "" ? null : s;
+}
+
+function prenomDe(p: Payload): string {
+  return (texteOuNull(p.contactName) ?? "").split(/\s+/)[0] ?? "";
+}
+
+const bonjour = (n: string) => (n ? `Bonjour ${n},` : "Bonjour,");
+
+// ── Textes ───────────────────────────────────────────────────────────────
+
+export const COPY_DEMARRAGE = {
+  contratSigne: {
+    // ≤ 45 caractères (§3.4).
+    subject: "Votre contrat est signé : à vous de jouer",
+    title: "Vous pouvez nous présenter des entreprises",
+    preview:
+      "Comment nous présenter une entreprise, ce qui se passe ensuite et quand vous êtes payé.",
+    merci:
+      "Votre contrat d'apporteur d'affaires est signé : merci, et bienvenue officiellement dans le réseau d'Axion-IA.",
+    presenterTitre: "Pour nous présenter une entreprise",
+    presenter:
+      "Répondez simplement à cet e-mail, ou écrivez-nous à contact@axion-ia.com avec pour objet « Nouvelle entreprise ». Indiquez :",
+    champs: [
+      "le nom de l'entreprise et son numéro SIREN ;",
+      "la personne rencontrée : son nom, sa fonction, son e-mail et son téléphone ;",
+      "la date de votre échange et son besoin, en une ligne.",
+    ],
+    prevenir:
+      "Prévenez simplement la personne que vous nous transmettez ses coordonnées : nous prendrons contact avec elle de votre part.",
+    ensuiteTitre: "Ensuite",
+    ensuite: [
+      "Nous vous répondons pour vous confirmer que c'est noté.",
+      "L'entreprise vous est réservée : la date de votre e-mail fait foi.",
+      (mois: number) =>
+        `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
+    ],
+    commissionTitre: "Votre commission",
+    formation: (eur: number) =>
+      `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
+    audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
+    integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
+    paiement:
+      "Elle vous est versée dès que le client a réglé l'intégralité de sa facture : nous établissons votre facture pour vous, puis nous faisons le virement.",
+    fiche:
+      "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
+    ficheLien: "la fiche en PDF",
+  },
+  presentationRecue: {
+    subject: (e: string) =>
+      e
+        ? `${e} : c'est noté, elle vous est réservée`
+        : "C'est noté, l'entreprise vous est réservée",
+    title: "Bien reçu : elle est à vous",
+    preview: "Voici ce qui se passe maintenant, et ce que vous n'avez pas à faire.",
+    recu: (e: string, d: string | null) =>
+      `Nous avons bien reçu votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""} : nous la réservons à votre nom.`,
+    suiteTitre: "La suite",
+    confirmation: (personne: string | null) =>
+      `Nous prenons contact avec ${personne ?? "la personne que vous avez rencontrée"} de votre part : nous lui indiquons que c'est vous qui nous avez parlé d'elle (votre prénom et votre nom, jamais vos coordonnées).`,
+    protection: (mois: number, jours: number) =>
+      `Dès qu'elle nous répond, ou au plus tard ${jours} jours après notre message, toutes les commandes de l'entreprise signées pendant ${mois} mois vous sont commissionnées.`,
+    relais: "Nous prenons le relais : vous n'avez rien d'autre à faire.",
+  },
+  presentationRefusee: {
+    subject: (e: string) => (e ? `Votre présentation de ${e}` : "Votre présentation"),
+    title: "Cette entreprise n'est pas disponible",
+    preview: "Merci pour votre présentation. Voici pourquoi nous ne pouvons pas vous la réserver.",
+    merci: (e: string, d: string | null) =>
+      `Merci pour votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""}.`,
+    motif: {
+      "deja-connue":
+        "Nous ne pouvons pas vous la réserver : elle est déjà cliente d'Axion-IA, ou elle a reçu un devis de notre part récemment.",
+      "pas-disponible":
+        "Nous ne pouvons pas vous la réserver : elle nous a déjà été présentée. Si elle redevient disponible, nous vous préviendrons et vous aurez 15 jours pour nous la présenter à nouveau.",
+      "hors-champ":
+        "Nous ne pouvons pas vous la réserver : il s'agit d'un organisme avec lequel Axion-IA travaille déjà directement (administration, organisme public ou organisme de formation), ou d'une entreprise qui a cessé son activité.",
+    } satisfies Record<MotifRefus, string>,
+    contester: (j: number) =>
+      `Si vous pensez qu'il y a une erreur, dites-le-nous en répondant à cet e-mail : nous vous répondrons dans les ${j} jours.`,
+    sansConsequence:
+      "Cela n'a aucune conséquence pour vous, et vous pouvez nous présenter d'autres entreprises quand vous le souhaitez.",
+  },
+  confirmation: {
+    // Une PRISE DE CONTACT de Williams, jamais un contrôle (Will, 2026-10-05 :
+    // « il ne faut jamais dire que nous vérifions, c'est contre-vendeur »).
+    // La confirmation se lit dans ce que fait la personne : elle prend rendez-vous
+    // ou répond, ou cite l'apporteur au rendez-vous (« qui vous a parlé de nous ? ») ;
+    // sans réponse pendant 30 jours, elle est réputée confirmée (art. 3.2).
+    subject: (a: string) => (a ? `${a} m'a parlé de vous` : "On m'a parlé de vous"),
+    title: "Faisons connaissance",
+    preview:
+      "Quelques mots sur Axion-IA, et la possibilité d'en parler 30 minutes si le sujet vous intéresse.",
+    bonjour: (civ: string | null, nom: string | null, prenom: string) =>
+      civ && nom ? `Bonjour ${civ} ${nom},` : bonjour(prenom),
+    presentation: (a: string, e: string | null) =>
+      `${a || "Une personne de notre réseau"} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
+    quiSommesNous:
+      "Je dirige Axion-IA, un cabinet qui aide les entreprises à tirer parti de l'IA : former les équipes, repérer ce qui peut être automatisé, puis le mettre en place, de bout en bout.",
+    proposition:
+      "Si le sujet vous intéresse, nous pouvons en parler 30 minutes, sans engagement : vous me dites où vous en êtes, je vous dis ce qui est possible.",
+    info: (responsable: string, adresse: string) =>
+      `Vos coordonnées nous ont été transmises par la personne citée plus haut. Qui les traite : ${responsable}, ${adresse}. ` +
+      "Pourquoi : vous présenter nos services et suivre notre relation avec la personne qui nous a mis en relation. " +
+      "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
+      "Tout est détaillé dans notre ",
+    infoLien: "politique de confidentialité",
+    desinscription:
+      "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
+    cta: "Prendre rendez-vous",
+  },
+  dossierLien: {
+    subject: "Votre contrat d'apporteur, en ligne",
+    title: "Votre dossier et votre contrat",
+    preview:
+      "Environ 10 minutes : vos informations, deux documents, puis votre signature en ligne.",
+    intro:
+      "Voici votre lien personnel pour compléter votre dossier d'apporteur d'affaires et signer votre contrat en ligne. Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
+    etapes: [
+      "vos coordonnées, déjà remplies ;",
+      "votre numéro SIREN : nous retrouvons le reste dans le registre officiel ;",
+      "votre pièce d'identité et votre RIB, en photo ou en PDF ;",
+      "la lecture de votre contrat, puis votre signature.",
+    ],
+    ensuite:
+      "Nous vérifions ensuite votre dossier et contresignons votre contrat : vous recevez alors votre exemplaire signé des deux parties.",
+    cta: "Compléter mon dossier",
+  },
+  aCompleter: {
+    subject: "Votre dossier d'apporteur : un complément",
+    title: "Il nous manque un élément",
+    preview: "Quelques éléments à reprendre dans votre dossier, puis une nouvelle signature.",
+    intro:
+      "Merci pour votre dossier. Avant de contresigner votre contrat, nous avons besoin d'un complément :",
+    note: "Notre message :",
+    suite:
+      "Votre lien personnel ouvre de nouveau votre dossier : corrigez ce qui est indiqué, puis signez à nouveau votre contrat.",
+    cta: "Reprendre mon dossier",
+  },
+  refuse: {
+    subject: "Votre dossier d'apporteur d'affaires",
+    title: "Merci pour votre intérêt",
+    preview: "Notre réponse à votre dossier d'apporteur d'affaires.",
+    texte:
+      "Merci pour le temps consacré à votre dossier. Après examen, nous ne sommes pas en mesure de donner suite : votre contrat ne sera pas contresigné et ne prendra pas effet.",
+    fin: "Nous vous souhaitons une belle réussite dans vos projets.",
+  },
+  vigilance: {
+    subject: "Deux documents pour vos commissions",
+    title: "Deux documents à nous transmettre",
+    preview:
+      "Votre attestation URSSAF et votre extrait d'immatriculation, à déposer avec votre lien personnel.",
+    premiere:
+      "Bonne nouvelle : vos commissions approchent 5 000 €. À partir de ce montant, la loi nous demande deux documents (articles L.8222-1 et D.8222-5 du code du travail) :",
+    renouvellement:
+      "Votre attestation URSSAF de vigilance arrive à échéance : elle se renouvelle tous les six mois. Merci de nous transmettre la nouvelle :",
+    documents: [
+      "votre attestation URSSAF de vigilance, de moins de 6 mois (gratuite, dans votre espace URSSAF) ;",
+      "un extrait de votre immatriculation : Kbis ou extrait RNE (gratuit sur data.inpi.fr).",
+    ],
+    documentsRenouvellement: [
+      "votre attestation URSSAF de vigilance, de moins de 6 mois (gratuite, dans votre espace URSSAF).",
+    ],
+    rassurer:
+      "Vos commissions restent acquises : seul leur versement attend ces documents. Vous continuez à nous présenter des entreprises normalement.",
+    cta: "Déposer mes documents",
+  },
+  commandeSignee: {
+    subject: (e: string) =>
+      e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
+    title: "Une commande vient d'être signée",
+    preview:
+      "Votre commission sera versée dès que le client aura réglé l'intégralité de sa facture.",
+    texte: (e: string) =>
+      `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
+    suite:
+      "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; elle figurera alors sur votre relevé mensuel.",
+  },
+  releve: {
+    subject: (m: string) =>
+      m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions",
+    title: "Votre relevé de commissions",
+    preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
+    texte: (m: string, montant: string) =>
+      `Voici votre relevé de commissions${m ? ` de ${m}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
+    facture: (n: string) =>
+      `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  interneAVerifier: {
+    subject: (n: string) =>
+      n ? `Dossier apporteur à vérifier : ${n}` : "Un dossier apporteur à vérifier",
+    title: "Un dossier apporteur est signé",
+    preview: "Pièces à vérifier, puis oui, à compléter ou non, depuis la console.",
+    texte: (n: string) =>
+      `${n || "Un apporteur"} a complété son dossier et signé son contrat. Il reste à vérifier ses pièces, puis à contresigner, demander un complément ou refuser.`,
+    cta: "Ouvrir sa fiche",
+  },
+} as const;
+
+// ── Morceaux communs ─────────────────────────────────────────────────────
+
+const intertitre: React.CSSProperties = {
+  ...emailStyles.paragraphStyle,
+  fontWeight: 700,
+  margin: "20px 0 8px",
+};
+
+const puce: React.CSSProperties = { ...emailStyles.paragraphStyle, margin: "0 0 6px" };
+
+/** « 30 % » — la typographie française. */
+const pourcent = (n: number): string => `${n} %`;
+
+function MotPersonnel({ p }: { p: Payload }): ReactElement | null {
+  const mot = texteOuNull(p.motPersonnel);
+  if (!mot) return null;
+  return <Text style={{ ...emailStyles.paragraphStyle, whiteSpace: "pre-line" }}>{mot}</Text>;
+}
+
+// ── Contrat signé ────────────────────────────────────────────────────────
+
+export const apporteurContratSigneSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.contratSigne.subject;
+
+export function ApporteurContratSigneEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.contratSigne;
+  const [e1, e2, e3] = t.ensuite;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>{t.merci}</Text>
+
+      <Text style={intertitre}>{t.presenterTitre}</Text>
+      <Text style={puce}>{t.presenter}</Text>
+      {t.champs.map((c) => (
+        <Text key={c} style={puce}>
+          • {c}
+        </Text>
+      ))}
+      <Text style={emailStyles.paragraphStyle}>{t.prevenir}</Text>
+
+      <Text style={intertitre}>{t.ensuiteTitre}</Text>
+      <Text style={puce}>1. {e1}</Text>
+      <Text style={puce}>2. {e2}</Text>
+      <Text style={emailStyles.paragraphStyle}>3. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}</Text>
+
+      <Text style={intertitre}>{t.commissionTitre}</Text>
+      <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
+      <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT))}</Text>
+      <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
+
+      <Text style={emailStyles.paragraphStyle}>
+        {t.fiche}
+        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
+          {t.ficheLien}
+        </a>
+        .
+      </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Présentation reçue ───────────────────────────────────────────────────
+
+export const apporteurPresentationRecueSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.presentationRecue.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
+
+export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.presentationRecue;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>
+        {t.recu(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
+      </Text>
+      <Text style={intertitre}>{t.suiteTitre}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.confirmation(texteOuNull(p.personnePresentee))}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.protection(FENETRE_ATTRIBUTION_APPORTEUR_MOIS, CONFIRMATION_TACITE_JOURS)}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.relais}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Présentation refusée ─────────────────────────────────────────────────
+
+export const apporteurPresentationRefuseeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.presentationRefusee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
+
+function lireMotif(v: unknown): MotifRefus {
+  return v === "pas-disponible" || v === "hors-champ" ? v : "deja-connue";
+}
+
+export function ApporteurPresentationRefuseeEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.presentationRefusee;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>
+        {t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.motif[lireMotif(p.motif)]}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.contester(REPONSE_CONTESTATION_JOURS)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.sansConsequence}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Confirmation demandée à l'entreprise ─────────────────────────────────
+
+export const entrepriseConfirmationApporteurSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.confirmation.subject(
+    texteOuNull((payload as Payload | undefined)?.nomApporteur) ?? "",
+  );
+
+export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.confirmation;
+  const nomApporteur = texteOuNull(p.nomApporteur) ?? "";
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur"
+      cta={{ label: t.cta, href: LIEN_RENDEZ_VOUS }}
+    >
+      <Text style={emailStyles.paragraphStyle}>
+        {t.bonjour(texteOuNull(p.civilite), texteOuNull(p.nomFamille), prenomDe(p))}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
+      {/* Petit, après le corps : l'information de l'art. 14 RGPD (l'adresse vient
+          d'un tiers). ⛔ AUCUNE question de contrôle : on ne dit jamais à
+          l'entreprise qu'on vérifie (Will, 2026-10-05 : « contre-vendeur »). */}
+      <Text
+        style={{
+          ...emailStyles.paragraphStyle,
+          fontSize: "13px",
+          color: emailStyles.COLORS.textMuted,
+        }}
+      >
+        {t.info(IDENTITE_LEGALE.legalName, adresseSiegeUneLigne())}
+        <a href={LIEN_POLITIQUE} style={{ color: emailStyles.COLORS.terracotta }}>
+          {t.infoLien}
+        </a>
+        . {t.desinscription}
+      </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Lien du dossier ──────────────────────────────────────────────────────
+
+export const apporteurDossierLienSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.dossierLien.subject;
+
+export function ApporteurDossierLienEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.dossierLien;
+  const url = texteOuNull(p.dossierUrl);
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      {t.etapes.map((e, i) => (
+        <Text key={e} style={puce}>
+          {i + 1}. {e}
+        </Text>
+      ))}
+      <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── À compléter ──────────────────────────────────────────────────────────
+
+export const apporteurDossierACompleterSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.aCompleter.subject;
+
+export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.aCompleter;
+  const url = texteOuNull(p.dossierUrl);
+  const pieces = Array.isArray(p.piecesARetransmettre)
+    ? p.piecesARetransmettre.filter((x): x is string => typeof x === "string" && x.trim() !== "")
+    : [];
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      {pieces.map((x) => (
+        <Text key={x} style={puce}>
+          • {x}
+        </Text>
+      ))}
+      {texteOuNull(p.motPersonnel) ? (
+        <>
+          <Text style={intertitre}>{t.note}</Text>
+          <MotPersonnel p={p} />
+        </>
+      ) : null}
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Refus ────────────────────────────────────────────────────────────────
+
+export const apporteurDossierRefuseSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.refuse.subject;
+
+export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.refuse;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>{t.fin}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Vigilance (5 000 €, puis tous les 6 mois) ────────────────────────────
+
+export const apporteurVigilanceSubject = (_locale: Locale): string =>
+  COPY_DEMARRAGE.vigilance.subject;
+
+export function ApporteurVigilanceEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.vigilance;
+  const url = texteOuNull(p.dossierUrl);
+  const renouvellement = p.variante === "renouvellement";
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {renouvellement ? t.renouvellement : t.premiere}
+      </Text>
+      {(renouvellement ? t.documentsRenouvellement : t.documents).map((d) => (
+        <Text key={d} style={puce}>
+          • {d}
+        </Text>
+      ))}
+      <Text style={emailStyles.paragraphStyle}>{t.rassurer}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Commande signée ──────────────────────────────────────────────────────
+
+export const apporteurCommandeSigneeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.commandeSignee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
+
+export function ApporteurCommandeSigneeEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commandeSignee;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.entreprise) ?? "")}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Relevé mensuel ───────────────────────────────────────────────────────
+
+export const apporteurReleveSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.releve.subject(texteOuNull((payload as Payload | undefined)?.mois) ?? "");
+
+export function ApporteurReleveEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.releve;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.texte(texteOuNull(p.mois) ?? "", texteOuNull(p.montant) ?? "")}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
+      </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Interne : un dossier à vérifier ──────────────────────────────────────
+
+export const apporteurDossierAVerifierSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.interneAVerifier.subject(
+    texteOuNull((payload as Payload | undefined)?.contactName) ?? "",
+  );
+
+export function ApporteurDossierAVerifierEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.interneAVerifier;
+  const url = texteOuNull(p.lienConsole);
+  return (
+    <EmailLayout
+      famille="A"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      {...(url ? { cta: { label: t.cta, href: url } } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.contactName) ?? "")}</Text>
+    </EmailLayout>
+  );
+}
