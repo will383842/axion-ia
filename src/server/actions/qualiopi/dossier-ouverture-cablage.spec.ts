@@ -30,13 +30,19 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
   assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
 }));
 
-const { mockSessionFindUnique, mockSessionUpdate, mockDossierFindFirst, mockDossierCreate } =
-  vi.hoisted(() => ({
-    mockSessionFindUnique: vi.fn(),
-    mockSessionUpdate: vi.fn(),
-    mockDossierFindFirst: vi.fn(),
-    mockDossierCreate: vi.fn(),
-  }));
+const {
+  mockClientFindMany,
+  mockSessionFindUnique,
+  mockSessionUpdate,
+  mockDossierFindFirst,
+  mockDossierCreate,
+} = vi.hoisted(() => ({
+  mockClientFindMany: vi.fn(),
+  mockSessionFindUnique: vi.fn(),
+  mockSessionUpdate: vi.fn(),
+  mockDossierFindFirst: vi.fn(),
+  mockDossierCreate: vi.fn(),
+}));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -46,7 +52,12 @@ vi.mock("@/lib/prisma", () => ({
       update: mockSessionUpdate,
     },
     dossierFinancement: { findFirst: mockDossierFindFirst, create: mockDossierCreate },
-    client: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), count: vi.fn() },
+    client: {
+      findUnique: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: mockClientFindMany,
+      count: vi.fn(),
+    },
     activityLog: { create: vi.fn() },
   },
 }));
@@ -90,6 +101,15 @@ function sessionLue(financementType: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // INT-T67-A : par défaut l'employeur a son IDCC CONFIRMÉ ; le refus a son témoin.
+  mockClientFindMany.mockResolvedValue([
+    {
+      id: "c-1",
+      raisonSociale: "Acme",
+      idcc: "1516",
+      idccControle: { statut: "confirme", idcc: "1516" },
+    },
+  ]);
   mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
   mockDossierFindFirst.mockResolvedValue(null);
   mockDossierCreate.mockResolvedValue({ id: "d-1" });
@@ -211,5 +231,31 @@ describe("🔴 l'ouverture est FAIL-SOFT — elle ne doit jamais perdre la donn�
 
     expect("data" in r, "l'échec du dossier a fait perdre le financement saisi").toBe(true);
     expect(mockSessionUpdate).toHaveBeenCalled();
+  });
+});
+
+describe("🔴 INT-T67-A — l'ouverture refusée faute d'IDCC confirmé n'est pas muette", () => {
+  it("IDCC « probable » : aucun dossier, et l'écran dit pourquoi", async () => {
+    mockClientFindMany.mockResolvedValue([
+      {
+        id: "c-1",
+        raisonSociale: "Acme",
+        idcc: "1516",
+        idccControle: { statut: "probable", idcc: "1516" },
+      },
+    ]);
+    mockSessionFindUnique
+      .mockResolvedValueOnce({ client: { type: "entreprise" } })
+      .mockResolvedValueOnce({ financementType: "direct" })
+      .mockResolvedValue(sessionLue("opco"));
+
+    const r = await setFinancementSessionAction({ sessionId: SESSION_ID, financementType: "opco" });
+
+    expect("data" in r, "le financement saisi doit rester enregistré").toBe(true);
+    expect(mockDossierCreate).not.toHaveBeenCalled();
+    const avertissement = "data" in r ? r.data.avertissement : undefined;
+    expect(avertissement).toContain("le dossier de financement n'a pas été ouvert");
+    expect(avertissement).toContain("« Acme »");
+    expect(avertissement).toContain("Confirmez l'IDCC");
   });
 });

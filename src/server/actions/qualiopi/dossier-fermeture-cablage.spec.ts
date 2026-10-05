@@ -35,6 +35,7 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
 }));
 
 const {
+  mockClientFindMany,
   mockSessionFindUnique,
   mockSessionUpdate,
   mockDossierFindFirst,
@@ -44,6 +45,7 @@ const {
   mockDossierCreate,
   mockLog,
 } = vi.hoisted(() => ({
+  mockClientFindMany: vi.fn(),
   mockSessionFindUnique: vi.fn(),
   mockSessionUpdate: vi.fn(),
   mockDossierFindFirst: vi.fn(),
@@ -68,7 +70,12 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: mockDossierUpdateMany,
       create: mockDossierCreate,
     },
-    client: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), count: vi.fn() },
+    client: {
+      findUnique: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: mockClientFindMany,
+      count: vi.fn(),
+    },
     activityLog: { create: vi.fn() },
   },
 }));
@@ -131,6 +138,15 @@ function dossiersClos(): string[] {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // INT-T67-A : par défaut l'employeur a son IDCC CONFIRMÉ ; le refus a son témoin.
+  mockClientFindMany.mockResolvedValue([
+    {
+      id: "c-1",
+      raisonSociale: "Acme",
+      idcc: "1516",
+      idccControle: { statut: "confirme", idcc: "1516" },
+    },
+  ]);
   mockLog.mockResolvedValue(undefined);
   mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
   mockDossierFindFirst.mockResolvedValue(null);
