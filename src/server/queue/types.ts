@@ -191,6 +191,8 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise déclarée par formulaire.
+  | "apporteur-declaration-recue"
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE et
   // relances de dépôt / de réponse de l'OPCO, avec réponses en un clic à jeton.
   | "opco-suivi-entreprise";

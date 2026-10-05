@@ -12,6 +12,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { texteParDefaut } from "@/lib/email/templates/apporteur-demarrage";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
@@ -54,17 +55,43 @@ export interface EnvoiApporteur {
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
 }
 
-export async function apercu(
-  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">,
-): Promise<{
+/** L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut. */
+export interface ApercuRendu {
+  gabarit: GabaritApporteur;
   sujet: string;
   html: string;
   destinataire: string;
-}> {
+  /** Texte principal par défaut, pour pré-remplir « Modifier le texte » ; absent si non modifiable. */
+  texteDefaut?: string;
+}
+
+/**
+ * Ajoute le texte réécrit par Will au payload (jamais vide : validé en amont).
+ * Sans texte, le payload est rendu tel quel.
+ */
+export function avecTexteLibre(
+  payload: Record<string, unknown>,
+  texte: string | undefined,
+): Record<string, unknown> {
+  return texte ? { ...payload, texteLibre: texte } : payload;
+}
+
+export async function apercu(
+  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">,
+): Promise<ApercuRendu> {
   const r = await renderEmailTemplate(e.gabarit as EmailJobName, "fr", e.payload, {
     destinataire: e.destinataire,
   });
-  return { sujet: r.subject, html: r.html, destinataire: e.destinataire };
+  // Le texte par défaut se calcule SANS le texte réécrit : « Texte d'origine » reste possible.
+  const { texteLibre: _ignore, ...sansTexte } = e.payload;
+  const texteDefaut = texteParDefaut(e.gabarit, sansTexte);
+  return {
+    gabarit: e.gabarit,
+    sujet: r.subject,
+    html: r.html,
+    destinataire: e.destinataire,
+    ...(texteDefaut !== null ? { texteDefaut } : {}),
+  };
 }
 
 export type ResultatEnvoi = "envoye" | "en-validation" | "retenu" | "indisponible";

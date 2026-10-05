@@ -120,8 +120,8 @@ aucun effet. Une entreprise ne peut être attribuée qu'à un seul Apporteur, qu
 établissements.
 
 **3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, adressée
-par l'Apporteur par courrier électronique à l'adresse que lui indique la Société ou, une fois l'espace en ligne
-ouvert, au moyen du formulaire qu'il contient. Elle n'est pas acquise du seul fait d'une démarche non déclarée.
+par l'Apporteur par courrier électronique à l'adresse que lui indique la Société, ou au moyen du formulaire
+accessible depuis son lien personnel, puis, une fois l'espace en ligne ouvert, de celui qu'il contient. Elle n'est pas acquise du seul fait d'une démarche non déclarée.
 
 La déclaration comporte l'identification de l'entreprise et son numéro SIREN, le **nom et la fonction de la
 personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de

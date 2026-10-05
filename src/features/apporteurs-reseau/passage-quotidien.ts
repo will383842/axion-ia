@@ -12,7 +12,8 @@
  *       plus la part du parrain dans les 6 mois de la signature du filleul ;
  *   (d) vigilance : libère les commissions en attente dès que les pièces sont là, demande
  *       les pièces (une fois), et le renouvellement 15 jours avant l'échéance ;
- *   (e) « commande signée » à l'apporteur, une fois par devis accepté (sans montant).
+ *   (e) « commande signée » à l'apporteur, une fois par devis accepté (sans montant) ;
+ *   (f) rappel du dossier non complété : J+3 puis J+7 après l'envoi du lien, jamais au-delà.
  *
  * Les DÉCISIONS sont dans `regles.ts` (pures, testées) ; ce module lit et écrit.
  */
@@ -32,6 +33,7 @@ import {
   statutApresVigilance,
 } from "./commissions";
 import { envoyer } from "./envois";
+import { urlDossier } from "./jeton";
 import {
   ajouterJours,
   ajouterMois,
@@ -53,6 +55,20 @@ export const RENOUVELLEMENT_VIGILANCE_JOURS = 15;
 /** « Commande signée » : on ne regarde que les devis acceptés dans cette fenêtre. */
 export const FENETRE_COMMANDE_SIGNEE_JOURS = 30;
 
+/** Rappel du dossier : jours après l'envoi du lien (J+3, J+7) et fenêtre au-delà de laquelle on se tait. */
+export const RAPPEL_DOSSIER_JOURS = [3, 7] as const;
+export const RAPPEL_DOSSIER_FIN_JOURS = 14;
+
+/**
+ * Quel rappel est dû, d'après l'âge du lien ? 1 = de J+3 à J+7, 2 = de J+7 à J+14,
+ * `null` avant J+3 et après J+14 (un lien resté sans suite depuis longtemps n'est pas relancé).
+ */
+export function rappelDossierDu(lienEnvoyeAt: Date, maintenant: Date): 1 | 2 | null {
+  const jours = (maintenant.getTime() - lienEnvoyeAt.getTime()) / 86_400_000;
+  if (jours >= RAPPEL_DOSSIER_FIN_JOURS || jours < RAPPEL_DOSSIER_JOURS[0]) return null;
+  return jours >= RAPPEL_DOSSIER_JOURS[1] ? 2 : 1;
+}
+
 export interface BilanPassageReseau {
   confirmeesTacites: number;
   prolongees: number;
@@ -62,6 +78,7 @@ export interface BilanPassageReseau {
   liberees: number;
   vigilancesDemandees: number;
   commandesSigneesAnnoncees: number;
+  rappelsDossier: number;
   erreurs: number;
 }
 
@@ -124,6 +141,7 @@ export async function passerReseauApporteurs(
     liberees: 0,
     vigilancesDemandees: 0,
     commandesSigneesAnnoncees: 0,
+    rappelsDossier: 0,
     erreurs: 0,
   };
   const etapes: Array<[string, () => Promise<void>]> = [
@@ -132,6 +150,7 @@ export async function passerReseauApporteurs(
     ["commissions", () => etapeCommissions(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
+    ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
   ];
   for (const [nom, etape] of etapes) {
     try {
@@ -500,5 +519,48 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
       jobId,
     });
     if (r === "envoye" || r === "en-validation") bilan.commandesSigneesAnnoncees += 1;
+  }
+}
+
+// (f) ─────────────────────────────────────────────────────────────────────
+
+/**
+ * Dossier non complété : un rappel à J+3, un à J+7 après l'ENVOI du lien (journal d'e-mails),
+ * puis plus rien. Un lien renvoyé repart de zéro (la clé « une fois » porte l'id de l'envoi).
+ * Ni refusé, ni résilié, ni déjà signé ; une adresse morte n'est pas relancée.
+ */
+async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
+  const candidats = await prisma.apporteurReseau.findMany({
+    where: { statut: "dossier_en_cours", signeParApporteurAt: null },
+    select: { id: true, prenom: true, email: true, versionLien: true },
+  });
+  for (const a of candidats) {
+    const envoi = await prisma.emailLog.findFirst({
+      where: {
+        template: "apporteur-dossier-lien",
+        entityType: "ApporteurReseau",
+        entityId: a.id,
+        sentAt: { not: null },
+      },
+      orderBy: { sentAt: "desc" },
+      select: { id: true, sentAt: true, bounceType: true },
+    });
+    if (!envoi?.sentAt || envoi.bounceType === "hard") continue;
+    const rappel = rappelDossierDu(envoi.sentAt, maintenant);
+    if (rappel === null) continue;
+    const jobId = `apporteur-dossier-rappel-${a.id}-${envoi.id}-j${RAPPEL_DOSSIER_JOURS[rappel - 1]}`;
+    if (await dejaEnvoye(jobId)) continue;
+    const url = urlDossier(a.id, a.versionLien);
+    const destinataire = decryptPii(a.email);
+    if (!url || !destinataire) continue;
+    const r = await envoyer({
+      gabarit: "apporteur-dossier-lien",
+      destinataire,
+      payload: { contactName: decryptPii(a.prenom) ?? "", dossierUrl: url, rappel },
+      entityType: "ApporteurReseau",
+      entityId: a.id,
+      jobId,
+    });
+    if (r === "envoye") bilan.rappelsDossier += 1;
   }
 }

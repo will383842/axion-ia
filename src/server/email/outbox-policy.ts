@@ -113,6 +113,8 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // Apporteurs (2026-10-05) : alerte INTERNE « une entreprise est déclarée ».
+  "apporteur-declaration-recue",
   // Réseau d'apporteurs (2026-10-05) : l'alerte INTERNE « un dossier est signé » et
   // la demande de l'attestation de vigilance, exigée par la loi au seuil de 5 000 €.
   "apporteur-dossier-a-verifier",
@@ -163,6 +165,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
+  "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,
   // globale ou par client, le retient en corbeille comme tout envoi non

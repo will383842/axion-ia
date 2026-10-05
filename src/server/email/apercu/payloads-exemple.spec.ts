@@ -140,7 +140,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-10-05 — RELEVÉ À 67 : `apporteur-demarrage`, les e-mails du réseau
     // d'apporteurs en démarrage manuel (UN fichier, onze noms de job). Ses champs
     // sont tous facultatifs.
-    expect(tous.length).toBe(67);
+    // 🔴 2026-10-05 — RELEVÉ À 68 : `apporteur-declaration-recue`, l'alerte INTERNE
+    // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(68);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

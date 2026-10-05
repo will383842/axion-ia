@@ -351,7 +351,11 @@ const GABARITS_AVANT_SIGNATURE = [
  * (lien du dossier, pièces) ne citent aucun montant ; le seul barème cité l'est dans « contrat
  * signé », envoyé une fois le contrat signé — il est alors celui du contrat, pas indicatif.
  */
-const GABARITS_APRES_SIGNATURE: readonly string[] = ["apporteur-demarrage.tsx"];
+const GABARITS_APRES_SIGNATURE: readonly string[] = [
+  "apporteur-demarrage.tsx",
+  // Alerte INTERNE (2026-10-05) : aucun barème, destinataire Williams.
+  "apporteur-declaration-recue.tsx",
+];
 const CITE_UN_MONTANT =
   /commission\s*\(|€|\d\s?%|\}\s?%|COMMISSION_FORMATION|getCommissionById|COMMERCIAL_COMMISSIONS/;
 const MENTION = /à\s+titre\s+indicatif/i;

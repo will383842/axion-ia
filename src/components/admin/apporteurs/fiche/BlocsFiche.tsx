@@ -20,6 +20,8 @@ import { ApercuEmail, MessageRetour, type EmailApercu } from "./ApercuEmail";
 export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
   const [mot, setMot] = useState("");
   const [email, setEmail] = useState<EmailApercu | null>(null);
+  // Texte principal réécrit (null = texte d'origine) ; appliqué à l'aperçu ET à l'envoi.
+  const [texte, setTexte] = useState<string | null>(null);
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
   const [enCours, demarrer] = useTransition();
   return (
@@ -42,8 +44,10 @@ export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
               onClick={() =>
                 demarrer(async () => {
                   const r = await apercuLienAction({ apporteurId, mot });
-                  if (r.ok) setEmail(r.email);
-                  else setRetour(r);
+                  if (r.ok) {
+                    setTexte(null);
+                    setEmail(r.email);
+                  } else setRetour(r);
                 })
               }
             >
@@ -56,12 +60,28 @@ export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
           email={email}
           libelleEnvoyer="Envoyer le lien"
           occupe={enCours}
-          onAnnuler={() => setEmail(null)}
+          onAnnuler={() => {
+            setEmail(null);
+            setTexte(null);
+          }}
+          texte={texte}
+          onActualiserTexte={(t) =>
+            demarrer(async () => {
+              const r = await apercuLienAction({ apporteurId, mot, texte: t });
+              if (r.ok) {
+                setTexte(t);
+                setEmail(r.email);
+              } else setRetour(r);
+            })
+          }
           onEnvoyer={() =>
             demarrer(async () => {
-              const r = await envoyerLienAction({ apporteurId, mot });
+              const r = await envoyerLienAction({ apporteurId, mot, texte });
               setRetour(r);
-              if (r.ok) setEmail(null);
+              if (r.ok) {
+                setEmail(null);
+                setTexte(null);
+              }
             })
           }
         />

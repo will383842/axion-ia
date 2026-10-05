@@ -24,6 +24,8 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
   const [note, setNote] = useState("");
   const [choix, setChoix] = useState<Decision | null>(null);
   const [email, setEmail] = useState<EmailApercu | null>(null);
+  // Texte principal réécrit (null = texte d'origine) ; appliqué à l'aperçu ET à l'envoi.
+  const [texte, setTexte] = useState<string | null>(null);
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
   const [enCours, demarrer] = useTransition();
 
@@ -33,6 +35,19 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
       const r = await apercuDecisionAction({ apporteurId, decision: d, note });
       if (r.ok) {
         setChoix(d);
+        setTexte(null);
+        setEmail(r.email);
+      } else {
+        setRetour(r);
+      }
+    });
+  const actualiser = (t: string | null) =>
+    demarrer(async () => {
+      if (!choix) return;
+      setRetour(null);
+      const r = await apercuDecisionAction({ apporteurId, decision: choix, note, texte: t });
+      if (r.ok) {
+        setTexte(t);
         setEmail(r.email);
       } else {
         setRetour(r);
@@ -41,11 +56,12 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
   const confirmer = () =>
     demarrer(async () => {
       if (!choix) return;
-      const r = await appliquerDecisionAction({ apporteurId, decision: choix, note });
+      const r = await appliquerDecisionAction({ apporteurId, decision: choix, note, texte });
       setRetour(r);
       if (r.ok) {
         setEmail(null);
         setChoix(null);
+        setTexte(null);
       }
     });
 
@@ -97,9 +113,12 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
           libelleEnvoyer={choix ? LIBELLE[choix].envoyer : "Envoyer"}
           occupe={enCours}
           onEnvoyer={confirmer}
+          texte={texte}
+          onActualiserTexte={actualiser}
           onAnnuler={() => {
             setEmail(null);
             setChoix(null);
+            setTexte(null);
           }}
         />
       )}

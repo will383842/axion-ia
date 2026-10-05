@@ -187,6 +187,10 @@ import {
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
+import {
+  ApporteurDeclarationRecueEmail,
+  apporteurDeclarationRecueSubject,
+} from "./apporteur-declaration-recue";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -558,6 +562,12 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
+  },
+  // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise vient d'être déclarée par le
+  // formulaire du lien personnel (`features/apporteurs-reseau/declaration-entreprise.ts`).
+  "apporteur-declaration-recue": {
+    subject: apporteurDeclarationRecueSubject,
+    component: ApporteurDeclarationRecueEmail,
   },
   // Lot OPCO A8 (2026-10-04) — dossier prêt à déposer envoyé à l'entreprise,
   // puis relances « dépôt fait ? » / « réponse de l'OPCO ? » (boutons à jeton).
