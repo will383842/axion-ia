@@ -214,8 +214,8 @@ export function IssueEchangeApporteurForm({
               className="admin-input"
             />
           </label>
-          {!apercuPret ? (
-            <div>
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            {!apercuPret ? (
               <button
                 type="button"
                 className="admin-button-secondary"
@@ -224,8 +224,17 @@ export function IssueEchangeApporteurForm({
               >
                 {apercuEnCours ? "Préparation de l'aperçu…" : "Voir l'e-mail avant envoi"}
               </button>
-            </div>
-          ) : null}
+            ) : null}
+            <button
+              type="submit"
+              name="issueSansEmail"
+              value={choix}
+              className="admin-button-secondary"
+              disabled={occupe}
+            >
+              Enregistrer sans envoyer d&apos;e-mail
+            </button>
+          </div>
         </div>
       ) : null}
 
