@@ -26,6 +26,9 @@ import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackFunnel } from "@/lib/tracking";
 
+/** Jalons de progression émis (en % de la durée). Un seul calcul par jalon. */
+const JALONS = [25, 50, 75, 95] as const;
+
 interface VslVideoProps {
   src: string;
   poster: string;
@@ -35,11 +38,53 @@ interface VslVideoProps {
   /** Slug de la page, pour l'analyse par variante. */
   landing: string;
   className?: string;
+  /**
+   * Cadrage. `"16:9"` (défaut, comportement historique de `/diagnostic`) ou
+   * `"4:5-mobile"` : 4:5 sur téléphone (la publicité Facebook se regarde en
+   * portrait), 16:9 dès `md`. En 4:5 le film n'est jamais rogné : sur grand
+   * écran il est centré sur le fond de la boîte.
+   */
+  ratio?: "16:9" | "4:5-mobile";
+  /** Piste de sous-titres WebVTT (même domaine). Ajoute `<track kind="captions">`. */
+  sousTitres?: { src: string; langue?: string; libelle?: string };
+  /** Répliques du film, pour la transcription repliable. Vide ou absent : pas de bloc. */
+  transcription?: readonly string[];
+  /** `"light"` : légende en encre sur fond clair (page apporteurs). Défaut `"dark"` : fond encre (`/diagnostic`). */
+  tone?: "dark" | "light";
+  /** Émet « Video Progress » à 25 / 50 / 75 / 95 %. Défaut : non (comportement historique). */
+  suiviProgression?: boolean;
 }
 
-export function VslVideo({ src, poster, durationLabel, label, landing, className }: VslVideoProps) {
+export function VslVideo({
+  src,
+  poster,
+  durationLabel,
+  label,
+  landing,
+  className,
+  ratio = "16:9",
+  sousTitres,
+  transcription,
+  suiviProgression = false,
+  tone = "dark",
+}: VslVideoProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [started, setStarted] = React.useState(false);
+  const jalonsEmis = React.useRef<Set<number>>(new Set());
+
+  // Un calcul par `timeupdate` (≈ 4 fois par seconde), jamais par image : rien
+  // de mesurable sur l'INP. Chaque jalon part UNE fois, même si l'on revient en arrière.
+  const surProgression = React.useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    const pct = (video.currentTime / video.duration) * 100;
+    for (const jalon of JALONS) {
+      if (pct >= jalon && !jalonsEmis.current.has(jalon)) {
+        jalonsEmis.current.add(jalon);
+        trackFunnel("Video Progress", { landing, step: `p${jalon}` });
+      }
+    }
+  }, [landing]);
 
   const play = React.useCallback(() => {
     const video = videoRef.current;
@@ -54,7 +99,12 @@ export function VslVideo({ src, poster, durationLabel, label, landing, className
 
   return (
     <figure className={cn("min-w-0", className)}>
-      <figcaption className="text-mocha-fg mb-3 text-center text-[14px] font-bold tracking-tight">
+      <figcaption
+        className={cn(
+          "mb-3 text-center text-[14px] font-bold tracking-tight",
+          tone === "light" ? "text-fg" : "text-mocha-fg",
+        )}
+      >
         {label}
       </figcaption>
 
@@ -62,7 +112,12 @@ export function VslVideo({ src, poster, durationLabel, label, landing, className
         {/* `aspect-video` fige la place AVANT tout chargement : sans lui, l'affiche
             qui arrive pousse le contenu et coûte du CLS, dont le budget du dépôt
             exige zéro. */}
-        <div className="relative aspect-video w-full">
+        <div
+          className={cn(
+            "relative w-full",
+            ratio === "4:5-mobile" ? "aspect-[4/5] md:aspect-video" : "aspect-video",
+          )}
+        >
           <video
             ref={videoRef}
             src={src}
@@ -70,8 +125,21 @@ export function VslVideo({ src, poster, durationLabel, label, landing, className
             preload="none"
             playsInline
             controls={started}
-            className="h-full w-full object-cover"
+            {...(suiviProgression ? { onTimeUpdate: surProgression } : {})}
+            className={cn(
+              "h-full w-full",
+              ratio === "4:5-mobile" ? "object-contain" : "object-cover",
+            )}
           >
+            {sousTitres ? (
+              <track
+                kind="captions"
+                src={sousTitres.src}
+                srcLang={sousTitres.langue ?? "fr"}
+                label={sousTitres.libelle ?? "Français"}
+                default
+              />
+            ) : null}
             {/* Repli pour les navigateurs sans balise vidéo — rarissime, mais un
                 lien mort à la place d'une vidéo serait pire. */}
             <a href={src}>Télécharger la vidéo</a>
@@ -108,6 +176,19 @@ export function VslVideo({ src, poster, durationLabel, label, landing, className
           ) : null}
         </div>
       </div>
+
+      {transcription && transcription.length > 0 ? (
+        <details className="border-border bg-paper mt-3 rounded-xl border px-4 py-3">
+          <summary className="text-fg cursor-pointer text-sm font-semibold">
+            Lire la transcription
+          </summary>
+          <div className="text-fg-soft mt-3 space-y-2 text-sm leading-relaxed">
+            {transcription.map((ligne, i) => (
+              <p key={i}>{ligne}</p>
+            ))}
+          </div>
+        </details>
+      ) : null}
     </figure>
   );
 }

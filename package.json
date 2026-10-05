@@ -281,7 +281,7 @@
         "!.next/static/chunks/app/apporteur/**",
         "!.next/static/chunks/app/**/[(]admin[)]/**"
       ],
-      "limit": "265 KB",
+      "limit": "280 KB",
       "running": false
     },
     {

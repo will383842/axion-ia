@@ -23,6 +23,17 @@ export function trackMetaLead(eventId: string): void {
   f("track", "Lead", {}, { eventID: eventId });
 }
 
+/**
+ * Événement standard `Schedule` (réservation du créneau), `eventID` =
+ * `schedule:<identifiant de la réservation Calendly>` — le serveur envoie le même
+ * `event_id` (enrichissement Calendly) : Meta ne compte qu'une conversion.
+ */
+export function trackMetaSchedule(eventId: string): void {
+  const f = fbq();
+  if (!f) return;
+  f("track", "Schedule", {}, { eventID: eventId });
+}
+
 /** Cookie `_fbp` posé par le pixel — transmis à l'API Conversions pour l'appariement. */
 export function lireCookieFbp(): string | undefined {
   if (typeof document === "undefined") return undefined;

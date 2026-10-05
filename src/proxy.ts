@@ -561,6 +561,6 @@ export const config = {
     // comme le questionnaire. Sans l'exclusion, la règle 0bis la 301 vers
     // `/fr/apporteur/dossier/…` (404). En-têtes posés par `next.config.ts`.
     // `/fr/apporteurs…` reste couvert (le motif exige `apporteur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|questionnaire/|document/|apporteur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|questionnaire/|document/|apporteur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
