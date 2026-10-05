@@ -8,7 +8,7 @@
  *   (a) confirmation réputée acquise, 30 jours après la prise de contact (art. 3.2) ;
  *   (b) au terme de la protection, prolongation UNIQUE de 3 mois si un fait de la Société
  *       le justifie (art. 3.4 al. 3), sinon `terminee` ;
- *   (c) une commission par facture soldée d'une entreprise protégée à la date de commande,
+ *   (c) une commission par COMMANDE soldée d'une entreprise protégée à la date de commande,
  *       plus la part du parrain dans les 6 mois de la signature du filleul ;
  *   (d) vigilance : libère les commissions en attente dès que les pièces sont là, demande
  *       les pièces (une fois), et le renouvellement 15 jours avant l'échéance ;
@@ -67,6 +67,40 @@ export function rappelDossierDu(lienEnvoyeAt: Date, maintenant: Date): 1 | 2 | n
   const jours = (maintenant.getTime() - lienEnvoyeAt.getTime()) / 86_400_000;
   if (jours >= RAPPEL_DOSSIER_FIN_JOURS || jours < RAPPEL_DOSSIER_JOURS[0]) return null;
   return jours >= RAPPEL_DOSSIER_JOURS[1] ? 2 : 1;
+}
+
+/** Préfixe de la clé d'envoi d'un rappel : ces envois ne sont JAMAIS l'origine d'un délai. */
+export const PREFIXE_JOB_RAPPEL_DOSSIER = "apporteur-dossier-rappel-";
+
+export interface EnvoiLienDossier {
+  id: string;
+  sentAt: Date | null;
+  jobId: string | null;
+  bounceType: string | null;
+}
+
+/**
+ * Le rappel du dossier à envoyer maintenant, ou `null`. Décision PURE.
+ * L'origine du délai est le dernier lien ENVOYÉ (premier envoi ou renvoi à la main), jamais
+ * un rappel : sans cela chaque rappel remettrait l'horloge à zéro et bouclerait (J+3, J+6, …).
+ */
+export function rappelDossierAEnvoyer(
+  envois: readonly EnvoiLienDossier[],
+  maintenant: Date,
+): { origineId: string; rappel: 1 | 2; jobId: (apporteurId: string) => string } | null {
+  const origines = envois
+    .filter((e) => e.sentAt !== null && !(e.jobId ?? "").startsWith(PREFIXE_JOB_RAPPEL_DOSSIER))
+    .sort((a, b) => b.sentAt!.getTime() - a.sentAt!.getTime());
+  const origine = origines[0];
+  if (!origine?.sentAt || origine.bounceType === "hard") return null;
+  const rappel = rappelDossierDu(origine.sentAt, maintenant);
+  if (rappel === null) return null;
+  return {
+    origineId: origine.id,
+    rappel,
+    jobId: (apporteurId) =>
+      `${PREFIXE_JOB_RAPPEL_DOSSIER}${apporteurId}-${origine.id}-j${RAPPEL_DOSSIER_JOURS[rappel - 1]}`,
+  };
 }
 
 export interface BilanPassageReseau {
@@ -535,20 +569,23 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     select: { id: true, prenom: true, email: true, versionLien: true },
   });
   for (const a of candidats) {
-    const envoi = await prisma.emailLog.findFirst({
+    const envois = await prisma.emailLog.findMany({
       where: {
         template: "apporteur-dossier-lien",
         entityType: "ApporteurReseau",
         entityId: a.id,
         sentAt: { not: null },
+        // Les rappels portent le même gabarit : on les écarte (un jobId nul reste un envoi d'origine).
+        OR: [{ jobId: null }, { NOT: { jobId: { startsWith: PREFIXE_JOB_RAPPEL_DOSSIER } } }],
       },
       orderBy: { sentAt: "desc" },
-      select: { id: true, sentAt: true, bounceType: true },
+      take: 5,
+      select: { id: true, sentAt: true, jobId: true, bounceType: true },
     });
-    if (!envoi?.sentAt || envoi.bounceType === "hard") continue;
-    const rappel = rappelDossierDu(envoi.sentAt, maintenant);
-    if (rappel === null) continue;
-    const jobId = `apporteur-dossier-rappel-${a.id}-${envoi.id}-j${RAPPEL_DOSSIER_JOURS[rappel - 1]}`;
+    const decision = rappelDossierAEnvoyer(envois, maintenant);
+    if (!decision) continue;
+    const { rappel } = decision;
+    const jobId = decision.jobId(a.id);
     if (await dejaEnvoye(jobId)) continue;
     const url = urlDossier(a.id, a.versionLien);
     const destinataire = decryptPii(a.email);
