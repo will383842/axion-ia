@@ -547,6 +547,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "contact de l'entreprise cliente",
     source: "server/qualiopi/financements/suivi-entreprise/envoi.ts",
   },
+  "apporteur-declaration-recue": {
+    categorie: "recrutement",
+    quand:
+      "Un apporteur au contrat signé déclare une entreprise par le formulaire de son lien personnel — aucune donnée sur la personne rencontrée",
+    destinataire: "Williams (alerte interne)",
+    source: "features/apporteurs-reseau/declaration-entreprise.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:

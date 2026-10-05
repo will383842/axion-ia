@@ -45,6 +45,8 @@ export interface ExportReseauApporteur {
     readonly fonction: string | null;
     readonly telephone: string | null;
     readonly presenteeLe: Date;
+    /** Date du contact déclarée par l'apporteur (formulaire de déclaration). */
+    readonly contactLe: Date | null;
   }>;
 }
 
@@ -75,6 +77,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         personneNom: true,
         personneFonction: true,
         personneTelephone: true,
+        dateEchange: true,
         recueAt: true,
       },
     }),
@@ -118,6 +121,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
       fonction: p.personneFonction,
       telephone: decryptPii(p.personneTelephone),
       presenteeLe: p.recueAt,
+      contactLe: p.dateEchange,
     })),
   };
 }

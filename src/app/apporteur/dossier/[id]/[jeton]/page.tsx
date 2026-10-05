@@ -7,7 +7,8 @@
 //     statut 404 (`not-found.tsx`) : rien ne dit lequel ;
 //   · dossier en cours ou à compléter → le parcours en 4 étapes (`DossierEnLigne`) ;
 //   · à vérifier → « Dossier reçu », plus rien ne se modifie ;
-//   · signé → « Votre contrat est signé », et le dépôt des pièces de vigilance
+//   · signé → « Votre contrat est signé », la déclaration d'entreprise (art. 3.2 du
+//     contrat) avec la liste de SES déclarations, et le dépôt des pièces de vigilance
 //     (attestation URSSAF, extrait d'immatriculation), demandées à 5 000 € puis tous
 //     les 6 mois.
 //
@@ -27,10 +28,14 @@ import {
   valeursDuContrat,
 } from "@/features/apporteurs-reseau/signature";
 
+import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
+import { DeclarationEntreprise } from "./DeclarationEntreprise";
 import { DepotPiece } from "./DepotPiece";
 import { DossierEnLigne, type DossierPublic } from "./DossierEnLigne";
+import { ListeDeclarations } from "./ListeDeclarations";
 import { TEXTES } from "./textes";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +71,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   }
 
   if (etat === "signe") {
+    const declarations = await lireDeclarationsDe(dossier.id);
     return (
       <Coquille titre={titre}>
         <EcranEtat
@@ -74,6 +80,8 @@ export default async function DossierApporteurPage({ params }: PageProps) {
           ligne={TEXTES.signeLigne}
           succes
         />
+        <DeclarationEntreprise id={dossier.id} jeton={jeton} />
+        <ListeDeclarations declarations={declarations} />
         <ul className="mt-5 grid gap-3">
           {PIECES_VIGILANCE.map((t) => {
             const p = dossier.pieces.find((x) => x.type === t) ?? null;
