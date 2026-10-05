@@ -106,8 +106,8 @@ export const COPY_DEMARRAGE = {
       "Prévenez simplement la personne que vous nous transmettez ses coordonnées : nous prendrons contact avec elle de votre part.",
     ensuiteTitre: "Ensuite",
     ensuite: [
-      "Nous regardons si l'entreprise est disponible et vous répondons.",
-      "Si elle l'est, elle vous est réservée : la date de votre e-mail fait foi.",
+      "Nous vous répondons pour vous confirmer que c'est noté.",
+      "L'entreprise vous est réservée : la date de votre e-mail fait foi.",
       (mois: number) =>
         `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
@@ -125,9 +125,9 @@ export const COPY_DEMARRAGE = {
     subject: (e: string) => (e ? `${e} : c'est noté, elle vous est réservée` : "C'est noté, l'entreprise vous est réservée"),
     title: "Bien reçu : elle est à vous",
     preview:
-      "L'entreprise est disponible. Voici ce qui se passe maintenant, et ce que vous n'avez pas à faire.",
+      "Voici ce qui se passe maintenant, et ce que vous n'avez pas à faire.",
     recu: (e: string, d: string | null) =>
-      `Nous avons bien reçu votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""}. Elle est disponible : nous la réservons à votre nom.`,
+      `Nous avons bien reçu votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""} : nous la réservons à votre nom.`,
     suiteTitre: "La suite",
     confirmation: (personne: string | null) =>
       `Nous prenons contact avec ${personne ?? "la personne que vous avez rencontrée"} de votre part : nous lui indiquons que c'est vous qui nous avez parlé d'elle (votre prénom et votre nom, jamais vos coordonnées).`,
