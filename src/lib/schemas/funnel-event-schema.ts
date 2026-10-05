@@ -29,6 +29,10 @@ import { z } from "zod";
  *   - `diagnostic` : page d'atterrissage publicitaire (vidéo + promesse)
  *   - `simulateur` : questionnaire servi nu, cible des boutons de la VSL
  *   - `roi`        : même questionnaire servi dans le site public
+ *   - `apporteur`  : tunnel de recrutement d'apporteurs d'affaires (page
+ *                    courte `/apporteur-affaires`, page vidéo, merci). Posée le
+ *                    2026-10-05 pour avoir un TÉMOIN chiffré de l'ancienne page
+ *                    avant de lancer la nouvelle.
  *
  * La clé dit OÙ l'événement a eu lieu. Le PARCOURS, lui, se reconstitue par
  * `sessionId` : c'est ainsi qu'on voit qu'un visiteur est entré par
@@ -38,7 +42,7 @@ import { z } from "zod";
  * (`simulateur`, `Simulateur`, `simu`) qui disperseraient les agrégats sans
  * jamais lever d'erreur.
  */
-export const FUNNEL_KEYS = ["diagnostic", "simulateur", "roi"] as const;
+export const FUNNEL_KEYS = ["diagnostic", "simulateur", "roi", "apporteur"] as const;
 export type FunnelKey = (typeof FUNNEL_KEYS)[number];
 
 /**
@@ -56,6 +60,16 @@ export const FUNNEL_EVENT_NAMES = [
   "Simulator Completed",
   "Simulator Report Requested",
   "Simulator Callback Requested",
+  // Tunnel apporteurs (2026-10-05) — anonymes : nom d'écran, rang, jamais de
+  // donnée personnelle. `Lead Apporteur Submitted` existait déjà côté Plausible ;
+  // le doubler en base permet de lire le même entonnoir sur la page témoin et
+  // sur la nouvelle.
+  "Video Progress",
+  "Lead Step Viewed",
+  "Lead Email Captured",
+  "Lead Apporteur Submitted",
+  "Call Booking Viewed",
+  "Consent Banner Answered",
 ] as const;
 
 /** Tranches de gain annuel estimé — alignées sur `gainBucketOf`. */

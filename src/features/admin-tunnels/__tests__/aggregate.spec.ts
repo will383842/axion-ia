@@ -140,8 +140,8 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     ];
 
     const parTunnel = agregerTunnels(lignes).parTunnel;
-    // Les trois tunnels connus sont toujours là ; un seul porte la session.
-    expect(parTunnel).toHaveLength(3);
+    // Les quatre tunnels connus sont toujours là ; un seul porte la session.
+    expect(parTunnel).toHaveLength(4);
     expect(parTunnel[0]?.cle).toBe("diagnostic");
     expect(parTunnel[0]?.questionnairesTermines).toBe(1);
     expect(parTunnel.find((t) => t.cle === "simulateur")?.sessions).toBe(0);
@@ -153,9 +153,9 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     // lisait « /roi n'est pas suivie » au lieu de « personne n'est venu ».
     const parTunnel = agregerTunnels([]).parTunnel;
     expect(parTunnel.map((t) => t.cle)).toEqual(
-      expect.arrayContaining(["diagnostic", "simulateur", "roi"]),
+      expect.arrayContaining(["diagnostic", "simulateur", "roi", "apporteur"]),
     );
-    expect(parTunnel).toHaveLength(3);
+    expect(parTunnel).toHaveLength(4);
     expect(parTunnel.every((t) => t.sessions === 0)).toBe(true);
     // Chaque ligne porte de quoi ouvrir la page publique depuis la console.
     expect(parTunnel.find((t) => t.cle === "roi")?.chemin).toBe("/fr/roi");

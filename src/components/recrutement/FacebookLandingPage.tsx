@@ -57,6 +57,8 @@ import { Section } from "@/components/layout/Section";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { LandingViewTracker } from "@/components/lp/LandingViewTracker";
+import { SuiviClicCta } from "@/components/lp/SuiviClicCta";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
@@ -95,6 +97,13 @@ const CONFIANCE_CERTIFIE: readonly string[] = [
 ];
 
 const ANCRE_FORMULAIRE = `${TUNNEL_FACEBOOK_PATH}#contact`;
+
+/**
+ * Identifiant de cette page dans la mesure du tunnel (`landing`). Cette page
+ * est le TÉMOIN du test contre la page vidéo : on la mesure sans la modifier
+ * (voir `SuiviClicCta`).
+ */
+const LANDING_MESURE = "apporteur-court";
 
 /**
  * Une icône par étape, dans l'ordre de `ETAPES`. Elles vivent ICI et pas dans
@@ -172,16 +181,27 @@ function Photo({
 }
 
 /** Bouton vers le formulaire — pleine largeur sous le pouce, ancre interne. */
-function CtaFormulaire({ track, label = HERO.cta }: { track: string; label?: string }) {
+function CtaFormulaire({
+  track,
+  placement,
+  label = HERO.cta,
+}: {
+  track: string;
+  /** Emplacement mesuré (`hero`, `montants`, `bas`) — pas le libellé. */
+  placement: string;
+  label?: string;
+}) {
   return (
-    <Cta
-      href={ANCRE_FORMULAIRE}
-      size="lg"
-      track={track}
-      className="w-full shrink-0 justify-center whitespace-nowrap sm:w-auto"
-    >
-      {label} →
-    </Cta>
+    <SuiviClicCta landing={LANDING_MESURE} placement={placement}>
+      <Cta
+        href={ANCRE_FORMULAIRE}
+        size="lg"
+        track={track}
+        className="w-full shrink-0 justify-center whitespace-nowrap sm:w-auto"
+      >
+        {label} →
+      </Cta>
+    </SuiviClicCta>
   );
 }
 
@@ -310,7 +330,7 @@ export async function FacebookLandingPage({ params }: Props) {
             </p>
 
             <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <CtaFormulaire track="facebook-hero-cta" />
+              <CtaFormulaire track="facebook-hero-cta" placement="hero" />
               <p className="text-fg-soft text-sm font-medium">{HERO.micro}</p>
             </div>
 
@@ -464,7 +484,7 @@ export async function FacebookLandingPage({ params }: Props) {
           ventes réellement payées.
         </p>
         <div className="mt-7">
-          <CtaFormulaire track="facebook-montants-cta" />
+          <CtaFormulaire track="facebook-montants-cta" placement="montants" />
         </div>
       </Section>
 
@@ -574,7 +594,7 @@ export async function FacebookLandingPage({ params }: Props) {
             Quatre champs, zéro CV, aucun engagement.
           </p>
           <div className="mt-7 flex justify-center">
-            <CtaFormulaire track="facebook-final-cta" />
+            <CtaFormulaire track="facebook-final-cta" placement="bas" />
           </div>
         </Container>
       </section>
@@ -583,7 +603,9 @@ export async function FacebookLandingPage({ params }: Props) {
         href={ANCRE_FORMULAIRE}
         label={`${HERO.cta} →`}
         track="facebook-sticky-cta"
+        suivi={{ landing: LANDING_MESURE }}
       />
+      <LandingViewTracker landing={LANDING_MESURE} />
     </TunnelFacebookShell>
   );
 }

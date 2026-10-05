@@ -147,11 +147,13 @@ describe("funnelEventSchema — bornes alignées sur les colonnes", () => {
 });
 
 describe("vocabulaire", () => {
-  it("couvre les trois pages du tunnel et les huit événements d'acquisition", () => {
+  it("couvre les quatre tunnels et les événements d'acquisition", () => {
     // `/roi` sert le MÊME questionnaire que `/simulateur` : l'oublier ferait
     // rejeter en silence toutes les balises du site public.
-    expect(FUNNEL_KEYS).toEqual(["diagnostic", "simulateur", "roi"]);
-    expect(FUNNEL_EVENT_NAMES).toHaveLength(8);
+    // `apporteur` (2026-10-05) : tunnel de recrutement d'apporteurs.
+    expect(FUNNEL_KEYS).toEqual(["diagnostic", "simulateur", "roi", "apporteur"]);
+    // 8 événements d'origine + 6 du tunnel apporteurs.
+    expect(FUNNEL_EVENT_NAMES).toHaveLength(14);
     expect(new Set(FUNNEL_EVENT_NAMES).size).toBe(FUNNEL_EVENT_NAMES.length);
   });
 });
