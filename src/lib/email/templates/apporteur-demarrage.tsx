@@ -39,6 +39,7 @@ export const CONFIRMATION_TACITE_JOURS = 30;
 const REPONSE_CONTESTATION_JOURS = 15;
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
+const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
 
 const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
@@ -62,9 +63,6 @@ interface Payload {
   nomFamille?: string;
   /** Confirmation seulement : prénom et nom de l'apporteur (art. 3.2 : ils sont communiqués). */
   nomApporteur?: string;
-  /** Confirmation seulement : les deux liens de réponse (jeton signé, un usage). */
-  lienOui?: string;
-  lienNon?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
   motPersonnel?: string;
 }
@@ -105,13 +103,13 @@ export const COPY_DEMARRAGE = {
       "la date de votre échange et son besoin, en une ligne.",
     ],
     prevenir:
-      "Prévenez simplement la personne que vous nous transmettez ses coordonnées : nous lui écrirons pour qu'elle confirme votre échange.",
+      "Prévenez simplement la personne que vous nous transmettez ses coordonnées : nous prendrons contact avec elle de votre part.",
     ensuiteTitre: "Ensuite",
     ensuite: [
-      "Nous vérifions que l'entreprise est disponible et vous répondons.",
+      "Nous regardons si l'entreprise est disponible et vous répondons.",
       "Si elle l'est, elle vous est réservée : la date de votre e-mail fait foi.",
       (mois: number) =>
-        `Dès que l'entreprise confirme vous connaître, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
+        `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
     commissionTitre: "Votre commission",
     formation: (eur: number) =>
@@ -132,9 +130,9 @@ export const COPY_DEMARRAGE = {
       `Nous avons bien reçu votre présentation de ${e || "l'entreprise"}${d ? ` du ${d}` : ""}. Elle est disponible : nous la réservons à votre nom.`,
     suiteTitre: "La suite",
     confirmation: (personne: string | null) =>
-      `Nous écrivons à ${personne ?? "la personne que vous avez rencontrée"} pour qu'elle nous confirme votre échange. Elle y verra votre prénom et votre nom, mais pas vos coordonnées.`,
+      `Nous prenons contact avec ${personne ?? "la personne que vous avez rencontrée"} de votre part : nous lui indiquons que c'est vous qui nous avez parlé d'elle (votre prénom et votre nom, jamais vos coordonnées).`,
     protection: (mois: number, jours: number) =>
-      `Dès sa confirmation, ou au bout de ${jours} jours sans réponse de sa part, toutes les commandes de l'entreprise signées pendant ${mois} mois vous sont commissionnées.`,
+      `Dès qu'elle nous répond, ou au plus tard ${jours} jours après notre message, toutes les commandes de l'entreprise signées pendant ${mois} mois vous sont commissionnées.`,
     relais: "Nous prenons le relais : vous n'avez rien d'autre à faire.",
   },
   presentationRefusee: {
@@ -158,29 +156,32 @@ export const COPY_DEMARRAGE = {
       "Cela n'a aucune conséquence pour vous, et vous pouvez nous présenter d'autres entreprises quand vous le souhaitez.",
   },
   confirmation: {
-    subject: (a: string) => (a ? `${a} nous a parlé de vous` : "Une personne nous a parlé de vous"),
-    title: "Pouvez-vous nous confirmer cet échange ?",
-    preview: "Un simple clic suffit. Voici aussi qui nous sommes et ce que nous faisons de vos coordonnées.",
+    // Une PRISE DE CONTACT de Williams, jamais un contrôle (Will, 2026-10-05 :
+    // « il ne faut jamais dire que nous vérifions, c'est contre-vendeur »).
+    // La confirmation se lit dans ce que fait la personne : elle prend rendez-vous
+    // ou répond, ou cite l'apporteur au rendez-vous (« qui vous a parlé de nous ? ») ;
+    // sans réponse pendant 30 jours, elle est réputée confirmée (art. 3.2).
+    subject: (a: string) => (a ? `${a} m'a parlé de vous` : "On m'a parlé de vous"),
+    title: "Faisons connaissance",
+    preview:
+      "Quelques mots sur Axion-IA, et la possibilité d'en parler 30 minutes si le sujet vous intéresse.",
     bonjour: (civ: string | null, nom: string | null, prenom: string) =>
       civ && nom ? `Bonjour ${civ} ${nom},` : bonjour(prenom),
     presentation: (a: string, e: string | null) =>
-      `${a || "Un apporteur d'affaires indépendant"}, apporteur d'affaires indépendant, nous a transmis vos coordonnées en nous indiquant que vous aviez échangé au sujet de l'intelligence artificielle${e ? ` chez ${e}` : ""}.`,
-    question: "Pouvez-vous nous confirmer cet échange ? Un clic suffit.",
-    oui: "Oui, nous avons échangé",
-    non: "Non, je ne connais pas cette personne",
-    sansReponse:
-      "Vous ne vous souvenez pas, ou vous préférez ne pas répondre ? Vous n'avez rien à faire.",
+      `${a || "Une personne de notre réseau"} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
     quiSommesNous:
-      "Axion-IA accompagne les entreprises dans l'usage de l'intelligence artificielle : formation, audit et mise en place d'outils.",
+      "Je dirige Axion-IA, un cabinet qui aide les entreprises à tirer parti de l'IA : former les équipes, repérer ce qui peut être automatisé, puis le mettre en place, de bout en bout.",
+    proposition:
+      "Si le sujet vous intéresse, nous pouvons en parler 30 minutes, sans engagement : vous me dites où vous en êtes, je vous dis ce qui est possible.",
     info: (responsable: string, adresse: string) =>
-      `Qui traite vos coordonnées : ${responsable}, ${adresse}. ` +
-      "Pourquoi : vérifier cet échange et vous proposer nos services. " +
-      "D'où elles viennent : de la personne citée plus haut. " +
+      `Vos coordonnées nous ont été transmises par la personne citée plus haut. Qui les traite : ${responsable}, ${adresse}. ` +
+      "Pourquoi : vous présenter nos services et suivre notre relation avec la personne qui nous a mis en relation. " +
       "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",
     desinscription:
       "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
+    cta: "Prendre rendez-vous",
   },
 } as const;
 
@@ -193,29 +194,6 @@ const intertitre: React.CSSProperties = {
 };
 
 const puce: React.CSSProperties = { ...emailStyles.paragraphStyle, margin: "0 0 6px" };
-
-const boutonPrincipal: React.CSSProperties = {
-  display: "inline-block",
-  margin: "0 0 8px",
-  padding: "11px 18px",
-  borderRadius: "8px",
-  border: `1px solid ${emailStyles.COLORS.terracotta}`,
-  backgroundColor: emailStyles.COLORS.terracotta,
-  color: "#ffffff",
-  fontWeight: 600,
-  textDecoration: "none",
-};
-
-const boutonSecondaire: React.CSSProperties = {
-  display: "inline-block",
-  margin: "0 0 8px",
-  padding: "11px 18px",
-  borderRadius: "8px",
-  border: `1px solid ${emailStyles.COLORS.terracotta}`,
-  color: emailStyles.COLORS.terracotta,
-  fontWeight: 600,
-  textDecoration: "none",
-};
 
 /** « 30 % » — la typographie française. */
 const pourcent = (n: number): string => `${n} %`;
@@ -346,8 +324,7 @@ export const entrepriseConfirmationApporteurSubject = (_locale: Locale, payload?
 export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.confirmation;
-  const lienOui = texteOuNull(p.lienOui);
-  const lienNon = texteOuNull(p.lienNon);
+  const nomApporteur = texteOuNull(p.nomApporteur) ?? "";
   return (
     <EmailLayout
       famille="B"
@@ -356,32 +333,20 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
       locale={locale === "fr" ? "fr" : "en"}
       sansReseauxSociaux
       signature="fondateur"
+      cta={{ label: t.cta, href: LIEN_RENDEZ_VOUS }}
     >
       <Text style={emailStyles.paragraphStyle}>
         {t.bonjour(texteOuNull(p.civilite), texteOuNull(p.nomFamille), prenomDe(p))}
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.presentation(texteOuNull(p.nomApporteur) ?? "", texteOuNull(p.entreprise))}
+        {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.question}</Text>
-      {/* Les deux réponses côte à côte, à poids égal : la question ne souffle
-          pas la réponse (consigne du 2026-09-28). Liens à jeton : jamais
-          imprimés en clair. */}
-      {lienOui && lienNon ? (
-        <Text style={{ ...emailStyles.paragraphStyle, margin: "4px 0 18px" }}>
-          <a href={lienOui} style={boutonPrincipal}>
-            {t.oui}
-          </a>
-          &nbsp;&nbsp;
-          <a href={lienNon} style={boutonSecondaire}>
-            {t.non}
-          </a>
-        </Text>
-      ) : null}
-      <Text style={emailStyles.paragraphStyle}>{t.sansReponse}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
-      {/* Information de l'art. 14 RGPD : l'adresse vient d'un tiers (l'apporteur). */}
-      <Text style={{ ...emailStyles.paragraphStyle, fontSize: "13px" }}>
+      <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
+      {/* Petit, après le corps : l'information de l'art. 14 RGPD (l'adresse vient
+          d'un tiers). ⛔ AUCUNE question de contrôle : on ne dit jamais à
+          l'entreprise qu'on vérifie (Will, 2026-10-05 : « contre-vendeur »). */}
+      <Text style={{ ...emailStyles.paragraphStyle, fontSize: "13px", color: emailStyles.COLORS.textMuted }}>
         {t.info(IDENTITE_LEGALE.legalName, adresseSiegeUneLigne())}
         <a href={LIEN_POLITIQUE} style={{ color: emailStyles.COLORS.terracotta }}>
           {t.infoLien}
