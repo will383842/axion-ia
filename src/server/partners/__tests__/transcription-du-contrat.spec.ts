@@ -46,7 +46,9 @@ describe("REQ-QA-007 — transcription du contrat d'événements", () => {
   });
 
   it("l'empreinte attendue est LUE dans le fichier `.sha256` de Partners, pas écrite en dur ici", () => {
-    const ligne = readFileSync(path.join(RACINE, "contracts.sha256"), "utf8").trim();
+    // INT-T72-A : la PREMIÈRE ligne est celle du contrat publié ; les suivantes (la chaîne canonique
+    // de la relecture et ses vecteurs) s'ajoutent après elle, et `empreinteContratPublie` lit la première.
+    const ligne = readFileSync(path.join(RACINE, "contracts.sha256"), "utf8").split("\n")[0]!;
 
     // Format `sha256sum` : « <hash>  <nom de fichier> ».
     expect(ligne).toMatch(/^[0-9a-f]{64} {2}contracts\.v2\.json$/);

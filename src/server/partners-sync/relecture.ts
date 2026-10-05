@@ -19,16 +19,23 @@
  * que `signerCorps`).
  *
  * ── Authentification de la réponse (axionia → Partners) ──────────────────────────────────────
- * Le corps de réponse est signé EXACTEMENT comme un envoi du relais : `X-Axionia-Timestamp` /
- * `X-Axionia-Signature` sur « t.corps » avec le secret d'émission. Partners la vérifie avec la
- * fonction qu'il a déjà (`verifierSignatureAxionia`) : une relecture ne vaut pas moins qu'un envoi.
+ * INT-T72-A : la réponse est signée, avec le secret d'émission, sur la chaîne CANONIQUE que Partners
+ * vérifie (INT-T74-P ; condition 3 de la sécurité, forme d'A02) :
+ *
+ *     <horodatage>.<after_sequence>.<limit>.<x-axionia-derniere-sequence>.<x-axionia-suite>.<corps>
+ *
+ * construite par la fonction PARTAGÉE, copiée à l'octet depuis Partners
+ * (`@/server/partners/contrat/signature-relecture`). Elle lie la page à SA requête et couvre les deux
+ * en-têtes qui disent où reprendre. `X-Axionia-Kid` désigne la clé qui a signé (REQ-QA-030) : Partners
+ * refuse une réponse sans lui. La forme courte « t.corps » n'est plus émise.
  *
  * ── Inertie ──────────────────────────────────────────────────────────────────────────────────
  * Canal fermé, build, ou secret absent : 404, avant toute lecture — la route n'existe pas.
  */
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { chaineCanoniqueDeRelecture } from "@/server/partners/contrat/signature-relecture";
+import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
 
@@ -141,16 +148,31 @@ export async function repondreRelecture(
   const corps = rendues.map((l) => l.corps).join("\n");
   const derniere = rendues.at(-1)?.sequence ?? parametres.apres;
 
+  const suite = lignes.length > parametres.limite ? "1" : "0";
   const horodatage = horodatageSignature(new Date(maintenantMs));
+  // La chaîne commence par « <horodatage>. » : `signerCorps` signe « t.reste », soit la chaîne entière.
+  const chaine = chaineCanoniqueDeRelecture({
+    horodatage,
+    afterSequence: parametres.apres,
+    limit: parametres.limite,
+    derniereSequence: derniere,
+    suite,
+    corps,
+  });
   return new Response(corps, {
     status: 200,
     headers: {
       "Content-Type": "application/x-ndjson",
       "Cache-Control": "no-store",
       "X-Axionia-Timestamp": horodatage,
-      "X-Axionia-Signature": signerCorps(secretEmission, horodatage, corps),
+      "X-Axionia-Signature": signerCorps(
+        secretEmission,
+        horodatage,
+        chaine.slice(horodatage.length + 1),
+      ),
+      [ENTETE_KID]: kidDe(secretEmission),
       "X-Axionia-Derniere-Sequence": derniere.toString(),
-      "X-Axionia-Suite": lignes.length > parametres.limite ? "1" : "0",
+      "X-Axionia-Suite": suite,
     },
   });
 }
