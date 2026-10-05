@@ -157,6 +157,18 @@ export type EmailJobName =
   | "apporteur-issue-absent"
   | "apporteur-issue-retenu"
   | "apporteur-issue-non-retenu"
+  // Réseau d'apporteurs, démarrage manuel (2026-10-05).
+  | "apporteur-dossier-lien"
+  | "apporteur-dossier-a-completer"
+  | "apporteur-dossier-refuse"
+  | "apporteur-dossier-a-verifier"
+  | "apporteur-contrat-signe"
+  | "apporteur-presentation-recue"
+  | "apporteur-presentation-refusee"
+  | "entreprise-prise-de-contact-apporteur"
+  | "apporteur-vigilance"
+  | "apporteur-commande-signee"
+  | "apporteur-releve"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"

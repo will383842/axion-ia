@@ -30,6 +30,8 @@ import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enqueueEmail } from "@/server/queue/queues";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { lienReservation } from "@/features/commercial-application/relances-invitation-apporteur";
+import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
+import { urlDossier } from "@/features/apporteurs-reseau/jeton";
 import {
   gabaritDeLIssue,
   jourMoisParis,
@@ -258,9 +260,20 @@ export async function preparerIssueApporteur(input: {
     };
   }
 
+  // Démarrage manuel du réseau (2026-10-05) : « Retenu » ouvre le dossier en ligne de
+  // l'apporteur et met son lien personnel sous le bouton de l'e-mail. Ouvrir le dossier
+  // dès l'aperçu est sans effet visible (idempotent, aucun e-mail) et garde l'aperçu
+  // identique, au caractère près, à ce qui part.
+  let dossierUrl: string | null = null;
+  if (gabarit === "apporteur-issue-retenu" && fiche) {
+    const dossier = await ouvrirDossierDepuisCandidature(fiche.id);
+    if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
+  }
+
   const mot = input.motPersonnel?.trim();
   const payload: Record<string, unknown> = {
     contactName: nom ?? "",
+    ...(dossierUrl ? { dossierUrl } : {}),
     ...(calendlyUrl ? { calendlyUrl } : {}),
     ...(gabarit === "apporteur-issue-absent" && evt.startTime
       ? { dateEchange: dateLongueParis(evt.startTime) }

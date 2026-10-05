@@ -39,6 +39,7 @@ export const CONFIRMATION_TACITE_JOURS = 30;
 const REPONSE_CONTESTATION_JOURS = 15;
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
+const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
 
@@ -65,6 +66,18 @@ interface Payload {
   nomApporteur?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
   motPersonnel?: string;
+  /** Lien personnel du dossier en ligne. */
+  dossierUrl?: string;
+  /** « À compléter » : les pièces à retransmettre, déjà formulées (« RIB : illisible »). */
+  piecesARetransmettre?: string[];
+  /** Vigilance : `premiere` (approche de 5 000 €) ou `renouvellement` (6 mois). */
+  variante?: string;
+  /** Relevé : mois (« octobre 2026 »), montant formaté, numéro d'autofacture. */
+  mois?: string;
+  montant?: string;
+  numeroAutofacture?: string;
+  /** Interne : lien de la fiche de l'apporteur dans la console. */
+  lienConsole?: string;
 }
 
 interface Props {
@@ -119,7 +132,8 @@ export const COPY_DEMARRAGE = {
     paiement:
       "Elle vous est versée dès que le client a réglé l'intégralité de sa facture : nous établissons votre facture pour vous, puis nous faisons le virement.",
     fiche:
-      "Vous trouverez en pièce jointe la fiche « Comment ça marche », à garder sous la main.",
+      "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
+    ficheLien: "la fiche en PDF",
   },
   presentationRecue: {
     subject: (e: string) => (e ? `${e} : c'est noté, elle vous est réservée` : "C'est noté, l'entreprise vous est réservée"),
@@ -182,6 +196,85 @@ export const COPY_DEMARRAGE = {
     desinscription:
       "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
     cta: "Prendre rendez-vous",
+  },
+  dossierLien: {
+    subject: "Votre contrat d'apporteur : à compléter en ligne",
+    title: "Votre dossier et votre contrat",
+    preview: "Environ 10 minutes : vos informations, deux documents, puis votre signature en ligne.",
+    intro:
+      "Voici votre lien personnel pour compléter votre dossier d'apporteur d'affaires et signer votre contrat en ligne. Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
+    etapes: [
+      "vos coordonnées, déjà remplies ;",
+      "votre numéro SIREN : nous retrouvons le reste dans le registre officiel ;",
+      "votre pièce d'identité et votre RIB, en photo ou en PDF ;",
+      "la lecture de votre contrat, puis votre signature.",
+    ],
+    ensuite:
+      "Nous vérifions ensuite votre dossier et contresignons votre contrat : vous recevez alors votre exemplaire signé des deux parties.",
+    cta: "Compléter mon dossier",
+  },
+  aCompleter: {
+    subject: "Votre dossier d'apporteur : un complément",
+    title: "Il nous manque un élément",
+    preview: "Quelques éléments à reprendre dans votre dossier, puis une nouvelle signature.",
+    intro: "Merci pour votre dossier. Avant de contresigner votre contrat, nous avons besoin d'un complément :",
+    note: "Notre message :",
+    suite:
+      "Votre lien personnel ouvre de nouveau votre dossier : corrigez ce qui est indiqué, puis signez à nouveau votre contrat.",
+    cta: "Reprendre mon dossier",
+  },
+  refuse: {
+    subject: "Votre dossier d'apporteur d'affaires",
+    title: "Merci pour votre intérêt",
+    preview: "Notre réponse à votre dossier d'apporteur d'affaires.",
+    texte:
+      "Merci pour le temps consacré à votre dossier. Après examen, nous ne sommes pas en mesure de donner suite : votre contrat ne sera pas contresigné et ne prendra pas effet.",
+    fin: "Nous vous souhaitons une belle réussite dans vos projets.",
+  },
+  vigilance: {
+    subject: "Deux documents pour vous verser vos commissions",
+    title: "Deux documents à nous transmettre",
+    preview: "Votre attestation URSSAF et votre extrait d'immatriculation, à déposer avec votre lien personnel.",
+    premiere:
+      "Bonne nouvelle : vos commissions approchent 5 000 €. À partir de ce montant, la loi nous demande deux documents (articles L.8222-1 et D.8222-5 du code du travail) :",
+    renouvellement:
+      "Votre attestation URSSAF de vigilance arrive à échéance : elle se renouvelle tous les six mois. Merci de nous transmettre la nouvelle :",
+    documents: [
+      "votre attestation URSSAF de vigilance, de moins de 6 mois (gratuite, dans votre espace URSSAF) ;",
+      "un extrait de votre immatriculation : Kbis ou extrait RNE (gratuit sur data.inpi.fr).",
+    ],
+    documentsRenouvellement: [
+      "votre attestation URSSAF de vigilance, de moins de 6 mois (gratuite, dans votre espace URSSAF).",
+    ],
+    rassurer:
+      "Vos commissions restent acquises : seul leur versement attend ces documents. Vous continuez à nous présenter des entreprises normalement.",
+    cta: "Déposer mes documents",
+  },
+  commandeSignee: {
+    subject: (e: string) => (e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée"),
+    title: "Une commande vient d'être signée",
+    preview: "Votre commission sera versée dès que le client aura réglé l'intégralité de sa facture.",
+    texte: (e: string) =>
+      `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
+    suite:
+      "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; elle figurera alors sur votre relevé mensuel.",
+  },
+  releve: {
+    subject: (m: string) => (m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions"),
+    title: "Votre relevé de commissions",
+    preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
+    texte: (m: string, montant: string) =>
+      `Voici votre relevé de commissions${m ? ` de ${m}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
+    facture: (n: string) =>
+      `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  interneAVerifier: {
+    subject: (n: string) => (n ? `Dossier apporteur à vérifier : ${n}` : "Un dossier apporteur à vérifier"),
+    title: "Un dossier apporteur est signé",
+    preview: "Pièces à vérifier, puis oui, à compléter ou non, depuis la console.",
+    texte: (n: string) =>
+      `${n || "Un apporteur"} a complété son dossier et signé son contrat. Il reste à vérifier ses pièces, puis à contresigner, demander un complément ou refuser.`,
+    cta: "Ouvrir sa fiche",
   },
 } as const;
 
@@ -246,7 +339,13 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
       <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
 
-      <Text style={emailStyles.paragraphStyle}>{t.fiche}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.fiche}
+        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
+          {t.ficheLien}
+        </a>
+        .
+      </Text>
     </EmailLayout>
   );
 }
@@ -353,6 +452,203 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
         </a>
         . {t.desinscription}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Lien du dossier ──────────────────────────────────────────────────────
+
+export const apporteurDossierLienSubject = (_locale: Locale): string => COPY_DEMARRAGE.dossierLien.subject;
+
+export function ApporteurDossierLienEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.dossierLien;
+  const url = texteOuNull(p.dossierUrl);
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      {t.etapes.map((e, i) => (
+        <Text key={e} style={puce}>
+          {i + 1}. {e}
+        </Text>
+      ))}
+      <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── À compléter ──────────────────────────────────────────────────────────
+
+export const apporteurDossierACompleterSubject = (_locale: Locale): string => COPY_DEMARRAGE.aCompleter.subject;
+
+export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.aCompleter;
+  const url = texteOuNull(p.dossierUrl);
+  const pieces = Array.isArray(p.piecesARetransmettre)
+    ? p.piecesARetransmettre.filter((x): x is string => typeof x === "string" && x.trim() !== "")
+    : [];
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      {pieces.map((x) => (
+        <Text key={x} style={puce}>
+          • {x}
+        </Text>
+      ))}
+      {texteOuNull(p.motPersonnel) ? (
+        <>
+          <Text style={intertitre}>{t.note}</Text>
+          <MotPersonnel p={p} />
+        </>
+      ) : null}
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Refus ────────────────────────────────────────────────────────────────
+
+export const apporteurDossierRefuseSubject = (_locale: Locale): string => COPY_DEMARRAGE.refuse.subject;
+
+export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.refuse;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <MotPersonnel p={p} />
+      <Text style={emailStyles.paragraphStyle}>{t.fin}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Vigilance (5 000 €, puis tous les 6 mois) ────────────────────────────
+
+export const apporteurVigilanceSubject = (_locale: Locale): string => COPY_DEMARRAGE.vigilance.subject;
+
+export function ApporteurVigilanceEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.vigilance;
+  const url = texteOuNull(p.dossierUrl);
+  const renouvellement = p.variante === "renouvellement";
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{renouvellement ? t.renouvellement : t.premiere}</Text>
+      {(renouvellement ? t.documentsRenouvellement : t.documents).map((d) => (
+        <Text key={d} style={puce}>
+          • {d}
+        </Text>
+      ))}
+      <Text style={emailStyles.paragraphStyle}>{t.rassurer}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Commande signée ──────────────────────────────────────────────────────
+
+export const apporteurCommandeSigneeSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
+  COPY_DEMARRAGE.commandeSignee.subject(texteOuNull((payload as Payload | undefined)?.entreprise) ?? "");
+
+export function ApporteurCommandeSigneeEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commandeSignee;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.entreprise) ?? "")}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Relevé mensuel ───────────────────────────────────────────────────────
+
+export const apporteurReleveSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
+  COPY_DEMARRAGE.releve.subject(texteOuNull((payload as Payload | undefined)?.mois) ?? "");
+
+export function ApporteurReleveEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.releve;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.texte(texteOuNull(p.mois) ?? "", texteOuNull(p.montant) ?? "")}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.facture(texteOuNull(p.numeroAutofacture) ?? "")}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Interne : un dossier à vérifier ──────────────────────────────────────
+
+export const apporteurDossierAVerifierSubject = (_locale: Locale, payload?: Record<string, unknown>): string =>
+  COPY_DEMARRAGE.interneAVerifier.subject(texteOuNull((payload as Payload | undefined)?.contactName) ?? "");
+
+export function ApporteurDossierAVerifierEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.interneAVerifier;
+  const url = texteOuNull(p.lienConsole);
+  return (
+    <EmailLayout
+      famille="A"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      {...(url ? { cta: { label: t.cta, href: url } } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.contactName) ?? "")}</Text>
     </EmailLayout>
   );
 }
