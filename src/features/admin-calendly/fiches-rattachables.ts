@@ -11,6 +11,13 @@
 //   1. les fiches de la MÊME PERSONNE (même empreinte d'adresse) — le cas
 //      normal, et celui que le rattachement automatique couvre déjà pour un
 //      échange apporteur ;
+//   1 bis. les fiches apporteur dont le NOM correspond, quand l'adresse diffère
+//      (2026-10-05) : un candidat venu d'Indeed porte sur sa fiche une adresse
+//      RELAIS (`marienoelmafogangocxep_uuo@indeedemail.com`), alors qu'il
+//      réserve Calendly avec sa vraie adresse. Aucune empreinte ne correspond,
+//      et la fiche, vieille de plusieurs semaines, sort de la fenêtre des
+//      récentes : l'échange restait rattaché à rien et l'e-mail d'issue était
+//      bloqué. On PROPOSE ; on ne rattache jamais seul sur une ressemblance ;
 //   2. les fiches RÉCENTES du même public (apporteurs pour un échange
 //      apporteur, le reste pour un appel client) — pour la personne qui a
 //      réservé avec une autre adresse que celle de sa demande ;
@@ -28,7 +35,7 @@ import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 
-export type GroupeFiche = "meme-personne" | "recentes" | "actuelle";
+export type GroupeFiche = "meme-personne" | "nom-probable" | "recentes" | "actuelle";
 
 export interface FicheRattachable {
   id: string;
@@ -40,6 +47,9 @@ export interface FicheRattachable {
 // sélecteur qui l'annonce est un composant client (voir l'en-tête là-bas).
 export { JOURS_FICHES_RECENTES };
 const PLAFOND_PAR_GROUPE = 25;
+const PLAFOND_NOM_PROBABLE = 5;
+/** Combien de dossiers apporteur on relit (et déchiffre) pour chercher un nom. */
+const PLAFOND_LECTURE_NOMS = 600;
 
 const SELECT = {
   id: true,
@@ -49,12 +59,47 @@ const SELECT = {
   contactName: true,
 } as const;
 
+const SELECT_NOM = { ...SELECT, contactEmail: true } as const;
+
 interface Ligne {
   id: string;
   type: string;
   details: unknown;
   submittedAt: Date;
   contactName: string | null;
+}
+
+/** Minuscules, sans accents ni ponctuation : « Marie-Noëlle » → « marie noelle ». */
+function normaliser(v: string): string {
+  return v
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/**
+ * Les mots du nom de l'invité qui comptent (3 lettres au moins). Il en faut
+ * DEUX pour chercher : un prénom seul ressemble à trop de monde.
+ */
+export function motsDuNom(nom: string | null | undefined): string[] {
+  if (!nom) return [];
+  const mots = normaliser(nom)
+    .split(" ")
+    .filter((m) => m.length >= 3);
+  return mots.length >= 2 ? [...new Set(mots)] : [];
+}
+
+/**
+ * Vrai si la fiche porte tous les mots du nom — dans son nom, ou dans la partie
+ * locale de son adresse (une adresse relais Indeed contient prénom + nom).
+ */
+export function nomCorrespond(mots: string[], nomFiche: string | null, emailFiche: string | null) {
+  if (mots.length === 0) return false;
+  const local = emailFiche ? (emailFiche.split("@")[0] ?? "") : "";
+  const bloc = normaliser(`${nomFiche ?? ""} ${local}`).replace(/ /g, "");
+  return mots.every((m) => bloc.includes(m));
 }
 
 function dechiffrer(v: string | null | undefined): string | null {
@@ -81,6 +126,7 @@ function libelle(l: Ligne): string {
 
 export async function listerFichesRattachables(rdv: {
   inviteeEmail: string | null;
+  inviteeName?: string | null;
   linkedSubmissionId: string | null;
   estEchangeApporteur: boolean;
 }): Promise<FicheRattachable[]> {
@@ -94,7 +140,8 @@ export async function listerFichesRattachables(rdv: {
   }
 
   const depuis = new Date(Date.now() - JOURS_FICHES_RECENTES * 86_400_000);
-  const [memePersonne, recentes, actuelle] = await Promise.all([
+  const mots = rdv.estEchangeApporteur ? motsDuNom(rdv.inviteeName) : [];
+  const [memePersonne, recentes, actuelle, dossiersNommes] = await Promise.all([
     empreinte
       ? prisma.submission.findMany({
           where: { contactEmailHash: empreinte, deletedAt: null },
@@ -120,6 +167,15 @@ export async function listerFichesRattachables(rdv: {
     rdv.linkedSubmissionId
       ? prisma.submission.findUnique({ where: { id: rdv.linkedSubmissionId }, select: SELECT })
       : Promise.resolve(null),
+    // Seulement pour un échange apporteur dont le nom se cherche (deux mots).
+    mots.length > 0
+      ? prisma.submission.findMany({
+          where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+          orderBy: { submittedAt: "desc" },
+          take: PLAFOND_LECTURE_NOMS,
+          select: SELECT_NOM,
+        })
+      : Promise.resolve([] as Array<Ligne & { contactEmail: string | null }>),
   ]);
 
   const vus = new Set<string>();
@@ -132,6 +188,14 @@ export async function listerFichesRattachables(rdv: {
 
   if (actuelle) ajouter(actuelle as Ligne, "actuelle");
   for (const l of memePersonne as Ligne[]) ajouter(l, "meme-personne");
+  let probables = 0;
+  for (const l of dossiersNommes as Array<Ligne & { contactEmail: string | null }>) {
+    if (probables >= PLAFOND_NOM_PROBABLE) break;
+    if (vus.has(l.id) || !estApporteur(l.details)) continue;
+    if (!nomCorrespond(mots, dechiffrer(l.contactName), dechiffrer(l.contactEmail))) continue;
+    ajouter(l, "nom-probable");
+    probables += 1;
+  }
   let n = 0;
   for (const l of recentes as Ligne[]) {
     if (n >= PLAFOND_PAR_GROUPE) break;

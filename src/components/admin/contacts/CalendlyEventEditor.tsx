@@ -17,7 +17,7 @@ import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 interface FicheRattachable {
   readonly id: string;
   readonly libelle: string;
-  readonly groupe: "meme-personne" | "recentes" | "actuelle";
+  readonly groupe: "meme-personne" | "nom-probable" | "recentes" | "actuelle";
 }
 
 // 🔑 La fenêtre est LUE, pas retapée. Le nombre de jours vit dans
@@ -27,6 +27,7 @@ interface FicheRattachable {
 const INTITULE_GROUPE: Record<FicheRattachable["groupe"], string> = {
   actuelle: "Fiche rattachée",
   "meme-personne": "Même adresse e-mail",
+  "nom-probable": "Même nom, autre adresse (à vérifier)",
   recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
 };
 
@@ -216,7 +217,7 @@ export function CalendlyEventEditor({
             disabled={isPending}
           >
             <option value="">Aucune fiche</option>
-            {(["actuelle", "meme-personne", "recentes"] as const).map((groupe) => {
+            {(["actuelle", "meme-personne", "nom-probable", "recentes"] as const).map((groupe) => {
               const fiches = fichesRattachables.filter((f) => f.groupe === groupe);
               if (fiches.length === 0) return null;
               return (
