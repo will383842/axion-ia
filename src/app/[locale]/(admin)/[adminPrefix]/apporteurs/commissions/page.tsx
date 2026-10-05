@@ -11,7 +11,9 @@ import {
   QualifierForm,
   VerserForm,
 } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
+import { classerActiviteAction } from "@/features/apporteurs-reseau/actions-commissions";
 import {
+  COMMISSIONS_PAR_PAGE,
   compterCommissions,
   libelleMois,
   lireCommissions,
@@ -63,7 +65,12 @@ export default async function CommissionsApporteursPage({ params, searchParams }
   const comptes = await compterCommissions();
   const ongletDefaut = comptes.a_qualifier > 0 ? "a_qualifier" : "due";
   const onglet = ONGLETS.find((o) => o.cle === sp.statut)?.cle ?? ongletDefaut;
-  const [lignes, releves] = await Promise.all([lireCommissions(onglet), relevesDuMois(maintenant)]);
+  const pages = Math.max(1, Math.ceil(comptes[onglet] / COMMISSIONS_PAR_PAGE));
+  const page = Math.min(pages, Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1));
+  const [lignes, releves] = await Promise.all([
+    lireCommissions(onglet, page),
+    relevesDuMois(maintenant),
+  ]);
   const annee = maintenant.getUTCFullYear();
 
   return (
@@ -183,16 +190,61 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     Calculée quand la commission du filleul sera qualifiée.
                   </p>
                 ) : null}
-                {c.statut === "a_qualifier" && !c.parrainage && c.activite !== "formation" ? (
-                  <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                    Activité de la facture inconnue : renseigne-la sur la facture.
-                  </p>
+                {c.statut === "a_qualifier" &&
+                !c.parrainage &&
+                c.activite !== "formation" &&
+                peutPayer ? (
+                  <form
+                    action={classerActiviteAction}
+                    className="flex flex-wrap items-end gap-[var(--space-admin-2)]"
+                  >
+                    <input type="hidden" name="id" value={c.id} />
+                    <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
+                      Activité de la facture (inconnue)
+                      <select name="activite" className="admin-input" defaultValue="">
+                        <option value="" disabled>
+                          Choisir…
+                        </option>
+                        <option value="formation">Formation (puis palier)</option>
+                        <option value="un_a_un">1-to-1 (30 %)</option>
+                        <option value="audit">Audit (30 %)</option>
+                        <option value="implementation">Intégration (15 %)</option>
+                        <option value="site_web">Site web (aucune commission)</option>
+                      </select>
+                    </label>
+                    <button type="submit" className="admin-button-secondary">
+                      Classer
+                    </button>
+                  </form>
                 ) : null}
               </div>
             </AdminCard>
           ))}
         </div>
       )}
+      {pages > 1 ? (
+        <nav aria-label="Pages" className="flex items-center gap-[var(--space-admin-3)]">
+          {page > 1 ? (
+            <Link
+              href={`${base}?statut=${onglet}&page=${page - 1}`}
+              className="admin-button-secondary"
+            >
+              Précédent
+            </Link>
+          ) : null}
+          <span className="text-[color:var(--color-admin-fg-muted)]">
+            Page {page} sur {pages}
+          </span>
+          {page < pages ? (
+            <Link
+              href={`${base}?statut=${onglet}&page=${page + 1}`}
+              className="admin-button-secondary"
+            >
+              Suivant
+            </Link>
+          ) : null}
+        </nav>
+      ) : null}
     </div>
   );
 }

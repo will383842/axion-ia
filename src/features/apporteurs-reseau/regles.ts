@@ -20,9 +20,15 @@ export const PROLONGATION_MOIS = 3;
 export const PROLONGATION_FAITS_RECENTS_JOURS = 30;
 /** Art. 3.2 : confirmation réputée acquise, à compter du premier message de la Société. */
 export const CONFIRMATION_TACITE_JOURS = 30;
-/** Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin. */
+/**
+ * Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin.
+ * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
+ */
 export const ADRESSE_VALIDE_JOURS = 45;
-/** Art. 3.4 al. 2 : sans rendez-vous, devis ni commande dans ce délai après la première réponse. */
+/**
+ * Art. 3.4 al. 2 : sans rendez-vous, devis ni commande dans ce délai après la première réponse.
+ * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
+ */
 export const PEREMPTION_JOURS = 90;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
@@ -388,6 +394,8 @@ export function calculerCommission(e: {
   activite: ActiviteCommission | null;
   factureHtCents: number;
   palier?: string | null;
+  /** Formation : nombre de sessions identiques du palier dans la commande (1 par défaut). */
+  quantite?: number;
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
   if (e.activite === "site_web") return { statut: "aucune" };
@@ -395,13 +403,17 @@ export function calculerCommission(e: {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
     const ht = Math.max(0, e.factureHtCents);
+    // Le forfait du palier vaut pour UNE session (la durée est déjà dans le palier : 4 h = 250 €,
+    // 1 jour = 500 €, 2 jours = 1 000 €). Plusieurs sessions identiques dans la même commande :
+    // forfait × nombre de sessions, au prorata du prix si le prix baisse, plafonné au plein tarif.
+    const q = quantiteSessions(e.quantite);
     const montant =
-      ht >= p.prixCents ? p.forfaitCents : Math.floor((p.forfaitCents * ht) / p.prixCents);
+      ht >= p.prixCents * q ? p.forfaitCents * q : Math.floor((p.forfaitCents * ht) / p.prixCents);
     return {
       statut: "calculee",
       montantCents: montant,
       palier: p.id,
-      prixPublicCents: p.prixCents,
+      prixPublicCents: p.prixCents * q,
     };
   }
   const bps = TAUX_BPS[e.activite];
@@ -411,6 +423,11 @@ export function calculerCommission(e: {
     palier: null,
     prixPublicCents: null,
   };
+}
+
+/** Nombre de sessions retenu : entier de 1 à 99 ; toute autre valeur vaut 1. */
+export function quantiteSessions(brut: number | undefined): number {
+  return typeof brut === "number" && Number.isInteger(brut) && brut >= 1 && brut <= 99 ? brut : 1;
 }
 
 /** Part du parrain : 10 % de la commission du filleul, si la commande tombe dans ses 6 mois. */

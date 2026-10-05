@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  DECLARATIONS_MAX_PAR_JOUR,
   aujourdhuiParis,
   dateContactValide,
   etatPourApporteur,
@@ -64,8 +63,9 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
     expect(dateContactValide("2019-12-31", MAINTENANT)).toBe(false);
   });
 
-  it("la limite est de 20 par jour", () => {
-    expect(DECLARATIONS_MAX_PAR_JOUR).toBe(20);
+  it("aucun plafond de déclarations par apporteur n'est exporté (art. 3.7)", async () => {
+    const regles = await import("../declaration-regles");
+    expect(Object.keys(regles).filter((k) => /MAX|PLAFOND|LIMITE/i.test(k))).toEqual([]);
   });
 
   it("l'état montré à l'apporteur", () => {

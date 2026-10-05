@@ -119,18 +119,19 @@ export const COPY_DEMARRAGE = {
       "Votre contrat d'apporteur d'affaires est signé : merci, et bienvenue officiellement dans le réseau d'Axion-IA.",
     presenterTitre: "Pour nous présenter une entreprise",
     presenter:
-      "Répondez simplement à cet e-mail, ou écrivez-nous à contact@axion-ia.com avec pour objet « Nouvelle entreprise ». Indiquez :",
+      "Ouvrez votre lien personnel, celui de votre dossier : le formulaire « Déclarer une entreprise » vous y attend. Il demande :",
+    cta: "Déclarer une entreprise",
     champs: [
       "le nom de l'entreprise et son numéro SIREN ;",
       "la personne rencontrée : son nom, sa fonction, son e-mail et son téléphone ;",
-      "la date de votre échange et son besoin, en une ligne.",
+      "la date de votre échange.",
     ],
     prevenir:
       "Prévenez simplement la personne que vous nous transmettez ses coordonnées : nous prendrons contact avec elle de votre part.",
     ensuiteTitre: "Ensuite",
     ensuite: [
       "Nous vous répondons pour vous confirmer que c'est noté.",
-      "L'entreprise vous est réservée : la date de votre e-mail fait foi.",
+      "L'entreprise vous est réservée : la date de votre déclaration fait foi.",
       (mois: number) =>
         `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
@@ -346,6 +347,8 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
   const t = COPY_DEMARRAGE.contratSigne;
   const [e1, e2, e3] = t.ensuite;
   const libres = paragraphesLibres(p.texteLibre);
+  // Le lien du dossier porte le formulaire de déclaration : bouton quand on l'a.
+  const url = texteOuNull(p.dossierUrl);
   return (
     <EmailLayout
       famille="B"
@@ -354,6 +357,7 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
       locale={locale === "fr" ? "fr" : "en"}
       sansReseauxSociaux
       signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       {libres ? (

@@ -9,7 +9,9 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
 
+import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
+import { SEUIL_VIGILANCE_CENTS } from "./regles";
 
 export const LIBELLE_STATUT_APPORTEUR: Readonly<Record<ApporteurReseauStatut, string>> = {
   dossier_en_cours: "Dossier en cours",
@@ -32,11 +34,39 @@ export interface LigneApporteur {
   signeParSocieteAt: Date | null;
 }
 
-export async function listerApporteurs(): Promise<LigneApporteur[]> {
+/** Taille d'une page des listes de la console (pagination simple, précédent / suivant). */
+export const PAR_PAGE = 100;
+
+/** Nombre d'apporteurs par statut, et total des commissions à verser (toutes pages confondues). */
+export async function compterApporteurs(): Promise<{
+  parStatut: Partial<Record<ApporteurReseauStatut, number>>;
+  commissionsDuesCents: number;
+}> {
+  if (process.env.DATABASE_URL?.includes("stub.invalid"))
+    return { parStatut: {}, commissionsDuesCents: 0 };
+  const [g, dues] = await Promise.all([
+    prisma.apporteurReseau.groupBy({ by: ["statut"], _count: { _all: true } }),
+    prisma.commissionApporteur.aggregate({
+      where: { statut: { in: ["due", "en_attente_vigilance"] } },
+      _sum: { montantCents: true },
+    }),
+  ]);
+  return {
+    parStatut: Object.fromEntries(g.map((x) => [x.statut, x._count._all])),
+    commissionsDuesCents: dues._sum.montantCents ?? 0,
+  };
+}
+
+export async function listerApporteurs(
+  o: { statuts?: readonly ApporteurReseauStatut[]; page?: number } = {},
+): Promise<LigneApporteur[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
+  const page = Math.max(1, Math.floor(o.page ?? 1));
   const lignes = await prisma.apporteurReseau.findMany({
-    orderBy: { creeAt: "desc" },
-    take: 500,
+    ...(o.statuts ? { where: { statut: { in: [...o.statuts] } } } : {}),
+    orderBy: [{ creeAt: "desc" }, { id: "asc" }],
+    take: PAR_PAGE,
+    skip: (page - 1) * PAR_PAGE,
     select: {
       id: true,
       prenom: true,
@@ -92,7 +122,7 @@ export interface CommissionDeLApporteur {
 export async function lireFicheApporteur(id: string) {
   const dossier = await lireDossier(id);
   if (!dossier) return null;
-  const [a, presentations, commissions, parrains] = await Promise.all([
+  const [a, presentations, commissions, parrains, piecesVigilance, purgees] = await Promise.all([
     prisma.apporteurReseau.findUnique({
       where: { id },
       select: {
@@ -141,11 +171,24 @@ export async function lireFicheApporteur(id: string) {
       select: { id: true, prenom: true, nom: true },
       take: 500,
     }),
+    prisma.pieceApporteur.findMany({
+      where: { apporteurId: id, type: { in: ["vigilance", "immatriculation"] }, remplaceeAt: null },
+      select: { type: true, statut: true, expireAt: true, remplaceeAt: true },
+    }),
+    // Pièces dont le fichier est effacé : la console n'affiche plus de lien « Ouvrir ».
+    prisma.pieceApporteur.findMany({
+      where: { apporteurId: id, remplaceeAt: null, purgeeAt: { not: null } },
+      select: { id: true },
+    }),
   ]);
+  const cumulVigilanceCents = commissions
+    .filter((c) => (STATUTS_CUMUL as readonly string[]).includes(c.statut))
+    .reduce((s, c) => s + (c.montantCents ?? 0), 0);
   const nom = (x: { prenom: string; nom: string }) =>
     `${decryptPii(x.prenom) ?? ""} ${decryptPii(x.nom) ?? ""}`.trim();
   return {
     dossier,
+    piecesPurgeesIds: purgees.map((p) => p.id),
     noteInterne: a?.noteInterne ?? null,
     parrainId: a?.parrainId ?? null,
     aContratApporteur: !!a?.contratCle,
@@ -156,6 +199,13 @@ export async function lireFicheApporteur(id: string) {
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
     entreprises: presentations as EntrepriseDeLApporteur[],
     commissions: commissions as CommissionDeLApporteur[],
+    /** Cumul vers le seuil de 5 000 € (art. 5.4) et état des deux pièces demandées. */
+    vigilance: {
+      cumulCents: cumulVigilanceCents,
+      seuilCents: SEUIL_VIGILANCE_CENTS,
+      piecesConformes: piecesVigilanceConformes(piecesVigilance, new Date()),
+      piecesEnAttente: piecesVigilance.filter((p) => p.statut === "deposee").length,
+    },
   };
 }
 

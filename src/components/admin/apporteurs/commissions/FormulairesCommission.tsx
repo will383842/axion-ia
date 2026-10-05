@@ -54,6 +54,19 @@ export function QualifierForm({
           </option>
         ))}
       </select>
+      <input
+        type="number"
+        name="quantite"
+        min={1}
+        max={99}
+        step={1}
+        defaultValue={1}
+        required
+        className="admin-input"
+        style={{ width: "5rem" }}
+        aria-label="Nombre de sessions du palier"
+        title="Nombre de sessions identiques dans la commande"
+      />
       <button type="submit" className="admin-button" disabled={enCours}>
         Qualifier
       </button>

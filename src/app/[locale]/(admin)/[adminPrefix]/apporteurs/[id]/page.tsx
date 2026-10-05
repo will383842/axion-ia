@@ -9,6 +9,7 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
+import { CumulVigilance, FinDeVie } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
 import {
   PiecesVerification,
   type PieceAffichee,
@@ -18,12 +19,15 @@ import {
   lireFicheApporteur,
 } from "@/features/apporteurs-reseau/requetes-console";
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
+import { CLE_REGISTRE_INDISPONIBLE } from "@/features/apporteurs-reseau/signature-regles";
 import { gardePage } from "@/server/auth/garde-page";
+import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
+  searchParams: Promise<{ retour?: string; erreur?: string }>;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -63,8 +67,9 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
   );
 }
 
-export default async function FicheApporteurPage({ params }: PageProps) {
+export default async function FicheApporteurPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const { retour, erreur } = await searchParams;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!UUID.test(id)) notFound();
@@ -73,6 +78,10 @@ export default async function FicheApporteurPage({ params }: PageProps) {
   const { dossier: d } = fiche;
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
+  // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
+  const voitPii = peutOuvrirDossierApporteur(acces.role);
+  const MASQUE = "Réservé aux rôles autorisés";
+  const purgees = new Set(fiche.piecesPurgeesIds);
   const pieces: PieceAffichee[] = d.pieces.map((p) => ({
     id: p.id,
     type: p.type,
@@ -80,6 +89,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
     motif: p.motif,
     nomFichier: p.nomFichier,
     deposeeLe: jour(p.deposeeAt),
+    purgee: purgees.has(p.id),
     lienOuvrir: `${base}/${d.id}/pieces/${p.id}`,
   }));
   const statut =
@@ -125,13 +135,23 @@ export default async function FicheApporteurPage({ params }: PageProps) {
       <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Identité et activité</h2>
-          <Ligne libelle="E-mail" valeur={d.email} />
-          <Ligne libelle="Téléphone" valeur={d.telephone} />
+          <Ligne libelle="E-mail" valeur={voitPii ? d.email : MASQUE} />
+          <Ligne libelle="Téléphone" valeur={voitPii ? d.telephone : MASQUE} />
           <Ligne libelle="SIREN" valeur={d.siren} />
           <Ligne libelle="Entreprise" valeur={d.denomination} />
-          <Ligne libelle="Adresse" valeur={d.adresse} />
+          <Ligne libelle="Adresse" valeur={voitPii ? d.adresse : MASQUE} />
           <Ligne libelle="Statut" valeur={statut} />
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
+          {CLE_REGISTRE_INDISPONIBLE in d.declarations ? (
+            <Ligne
+              libelle="À contrôler"
+              valeur={
+                <span className="rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-warning-fg)]">
+                  Registre indisponible : vérifier le SIREN, l&apos;activité et le NAF à la main
+                </span>
+              }
+            />
+          ) : null}
           <Ligne
             libelle="TVA"
             valeur={
@@ -142,16 +162,26 @@ export default async function FicheApporteurPage({ params }: PageProps) {
                   : null
             }
           />
-          <Ligne libelle="IBAN" valeur={d.ibanMasque} />
+          <Ligne
+            libelle="IBAN"
+            valeur={voitPii ? d.ibanMasque : d.ibanMasque ? "•••• •••• ••••" : null}
+          />
         </AdminCard>
 
         <AdminCard as="section">
           <h2 className="mb-[var(--space-admin-2)] font-semibold">Pièces</h2>
-          <PiecesVerification
-            apporteurId={d.id}
-            pieces={pieces}
-            modifiable={aVerifier || d.statut === "signe"}
-          />
+          {voitPii ? (
+            <PiecesVerification
+              apporteurId={d.id}
+              pieces={pieces}
+              modifiable={aVerifier || d.statut === "signe"}
+            />
+          ) : (
+            <p className="text-[color:var(--color-admin-fg-muted)]">
+              {pieces.length} pièce(s) au dossier. L&apos;accès aux pièces est réservé aux rôles
+              autorisés.
+            </p>
+          )}
         </AdminCard>
 
         <AdminCard as="section">
@@ -165,7 +195,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
             valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null}
           />
           <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
-            {fiche.aContratApporteur ? (
+            {voitPii && fiche.aContratApporteur ? (
               <a
                 className="admin-button-secondary"
                 href={`${base}/${d.id}/contrat?quel=apporteur`}
@@ -175,7 +205,7 @@ export default async function FicheApporteurPage({ params }: PageProps) {
                 Contrat signé par l&apos;apporteur
               </a>
             ) : null}
-            {fiche.aContratSigne ? (
+            {voitPii && fiche.aContratSigne ? (
               <a
                 className="admin-button-secondary"
                 href={`${base}/${d.id}/contrat?quel=signe`}
@@ -188,7 +218,10 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </div>
           {d.statut === "dossier_en_cours" || d.statut === "a_completer" || d.statut === "signe" ? (
             <div className="mt-[var(--space-admin-4)]">
-              <EnvoiLienDossier apporteurId={d.id} />
+              <EnvoiLienDossier
+                apporteurId={d.id}
+                contratSigne={d.statut === "signe" && fiche.aContratSigne}
+              />
             </div>
           ) : null}
         </AdminCard>
@@ -267,6 +300,23 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </div>
         )}
       </AdminCard>
+
+      <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
+        <CumulVigilance v={fiche.vigilance} />
+        <FinDeVie
+          apporteurId={d.id}
+          signe={d.statut === "signe"}
+          retour={retour?.slice(0, 400)}
+          erreur={erreur?.slice(0, 400)}
+          versees={fiche.commissions
+            .filter((c) => c.statut === "versee" && (c.montantCents ?? 0) > 0)
+            .map((c) => ({
+              id: c.id,
+              libelle: `${c.verseeAt ? jour(c.verseeAt) : jour(c.creeAt)} · ${c.parrainage ? "Parrainage" : c.activite}`,
+              montantCents: c.montantCents ?? 0,
+            }))}
+        />
+      </div>
 
       <AdminCard as="section">
         <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">

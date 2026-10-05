@@ -6,6 +6,8 @@
  * montants en centimes ; franchise 293 B ou TVA 20 % selon le régime de l'apporteur.
  */
 
+import { ajouterJoursOuvres } from "@/lib/jours-ouvres";
+import { PALIERS_FORMATION } from "./regles";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { LigneHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
@@ -23,6 +25,11 @@ export interface CommissionPourAutofacture {
   readonly palier: string | null;
   readonly parrainage: boolean;
   readonly montantCents: number | null;
+  /** Art. 4.1 bis : prix public de la formation et prix réellement facturé (HT), s'ils sont connus. */
+  readonly prixPublicHtCents?: number | null;
+  readonly factureHtCents?: number | null;
+  /** `reprise` : ligne négative (art. 4.5), jamais une commission. */
+  readonly statut?: string;
 }
 
 export interface ApporteurPourAutofacture {
@@ -43,11 +50,36 @@ export function regimeHonorairesApporteur(
   return null;
 }
 
-/** Désignation d'une ligne : l'activité, le palier retenu, la part de parrainage. */
+/** « 1 900,00 € » : toujours deux décimales sur une pièce comptable. */
+function eurosHt(cents: number): string {
+  return `${(cents / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+}
+
+/**
+ * Désignation d'une ligne : l'activité, le palier retenu, la part de parrainage, et — par
+ * commande — le prix public, le prix facturé (la commission étant le montant de la ligne), pour
+ * que la proportionnalité de l'art. 4.1 bis se lise sur la pièce.
+ */
 export function designationCommission(c: CommissionPourAutofacture, libelleMois: string): string {
+  if (c.statut === "reprise")
+    return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
   const base = c.parrainage ? "Commission de parrainage" : `Commission d'apport (${c.activite})`;
-  const palier = c.palier ? ` — palier ${c.palier}` : "";
-  return `${base}${palier} — relevé de ${libelleMois}`;
+  // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
+  const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);
+  const sessions =
+    paliers && c.prixPublicHtCents != null
+      ? Math.round(c.prixPublicHtCents / paliers.prixCents)
+      : 1;
+  const palier = c.palier
+    ? ` — palier ${c.palier}${sessions > 1 ? ` × ${sessions} sessions` : ""}`
+    : "";
+  const prix =
+    c.prixPublicHtCents != null && c.factureHtCents != null
+      ? ` — prix public ${eurosHt(c.prixPublicHtCents)} HT, prix facturé ${eurosHt(c.factureHtCents)} HT`
+      : c.factureHtCents != null && c.factureHtCents > 0
+        ? ` — prix facturé ${eurosHt(c.factureHtCents)} HT`
+        : "";
+  return `${base}${palier}${prix} — relevé de ${libelleMois}`;
 }
 
 export function lignesAutofacture(
@@ -55,7 +87,7 @@ export function lignesAutofacture(
   libelleMois: string,
 ): LigneHonoraires[] {
   return commissions
-    .filter((c) => c.montantCents !== null && c.montantCents > 0)
+    .filter((c) => c.montantCents !== null && c.montantCents !== 0)
     .map((c) => ({
       designation: designationCommission(c, libelleMois),
       montantHtCents: c.montantCents ?? 0,
@@ -65,6 +97,11 @@ export function lignesAutofacture(
 export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
   return lignes.reduce((s, l) => s + l.montantHtCents, 0);
 }
+
+/** Art. 5.3 : virement dans les dix jours ouvrés suivant l'établissement du relevé. */
+export const ECHEANCE_JOURS_OUVRES = 10;
+
+export { ajouterJoursOuvres };
 
 function dateFr(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
@@ -103,7 +140,7 @@ export function construireDonneesAutofacture(e: {
     data: {
       numero: e.numero,
       dateEmission: dateFr(e.dateEmission),
-      dateEcheance: dateFr(e.dateEmission),
+      dateEcheance: dateFr(ajouterJoursOuvres(e.dateEmission, ECHEANCE_JOURS_OUVRES)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.releveLibelle,
       sousTraitant: {

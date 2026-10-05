@@ -1,5 +1,6 @@
 /**
- * Le texte du contrat d'apporteur d'affaires, VERSION 2, validé par Williams le 2026-10-05.
+ * Le texte du contrat d'apporteur d'affaires, VERSION 2 — texte de travail, à valider par Will
+ * avant la première signature (2026-10-05).
  *
  * GÉNÉRÉ depuis `_APPORTEURS-DEMARRAGE-2026-10-05/CONTRAT-APPORTEUR-V2.md` (hors dépôt) :
  * gabarit v1 d'Axion Partners + décisions du 28/09 au 05/10. Les valeurs de la Société et
@@ -105,11 +106,17 @@ instruction, une directive, une consigne de méthode ou une demande de compte re
 invoqué comme tel. L'Apporteur n'est tenu à aucune fréquence de connexion à l'espace en ligne ; l'absence
 de réponse à un message de la Société, quelle qu'en soit la durée, n'emporte aucune conséquence.
 
-**2.8 — Période de démarrage.** Tant que l'espace en ligne n'est pas ouvert, les déclarations de
-l'article 3.2, les notifications de l'article 20, les relevés et les factures de l'article 5 sont adressés par
-courrier électronique, et toute mention de l'espace en ligne s'entend de ces échanges. La Société informe
-l'Apporteur de l'ouverture de l'espace ; les déclarations, attributions et commissions nées auparavant y sont
+**2.8 — Période de démarrage.** Tant que l'espace en ligne n'est pas ouvert, aucune date d'ouverture
+n'étant promise, les déclarations de l'article 3.2 sont faites par courrier électronique ou par le formulaire
+du lien personnel ; les notifications de l'article 20, les relevés et les factures de l'article 5 sont
+adressés par courrier électronique ; toute mention de l'espace en ligne s'entend de ces échanges. Pendant
+cette période, les contrôles, relances et délais prévus au présent contrat sont opérés manuellement par la
+Société, à la date où elle les constate. Un retard ou une omission dans leur mise en œuvre ne vaut ni
+renonciation de la Société, ni acquisition d'un droit par l'une ou l'autre des parties au-delà des délais
+fixés au contrat. Le présent article ne crée aucune obligation nouvelle. Si l'espace en ligne est ouvert, la
+Société en informe l'Apporteur ; les déclarations, attributions et commissions nées auparavant y sont
 reprises avec leur date d'origine.
+
 ---
 
 ### Article 3 — Déclaration des entreprises et attribution 
@@ -121,11 +128,11 @@ aucun effet. Une entreprise ne peut être attribuée qu'à un seul Apporteur, qu
 
 **3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, adressée
 par l'Apporteur par courrier électronique à l'adresse que lui indique la Société, ou au moyen du formulaire
-accessible depuis son lien personnel, puis, une fois l'espace en ligne ouvert, de celui qu'il contient. Elle n'est pas acquise du seul fait d'une démarche non déclarée.
+accessible depuis son lien personnel et, une fois l'espace en ligne ouvert, de celui qu'il contient. Elle n'est pas acquise du seul fait d'une démarche non déclarée.
 
 La déclaration comporte l'identification de l'entreprise et son numéro SIREN, le **nom et la fonction de la
 personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de
-téléphone, et la **date du contact**, laquelle n'est recueillie qu'aux fins de l'article 3.7 et ne fait l'objet
+téléphone, et la **date du contact**, laquelle n'est recueillie qu'aux seules fins de l'article 3.7 et ne fait l'objet
 d'aucune exploitation statistique.
 
 L'attribution est d'abord **provisoire**. Après l'enregistrement de la déclaration, la Société **prend contact**
@@ -136,8 +143,8 @@ pas communiquées.**
 
 L'attribution devient **définitive** dès que l'entreprise répond à la Société, prend rendez-vous avec elle ou
 échange avec elle, sans indiquer n'avoir eu aucun échange avec l'Apporteur. À défaut, elle est **réputée
-confirmée** à l'expiration d'un délai de **30 jours** à compter de l'envoi du premier
-message de la Société, dès lors que ce message n'est pas retourné en erreur. **Tant que le message revient en
+confirmée** à l'expiration d'un délai de **30 jours** à compter de la prise de contact
+(envoi du premier message de la Société), dès lors que ce message n'est pas retourné en erreur. **Tant que le message revient en
 erreur et que l'Apporteur n'a pas communiqué une adresse corrigée, ce délai ne court pas** ; à défaut d'adresse
 valide dans un délai de **45 jours** à compter de la déclaration, l'attribution prend
 fin, sans autre conséquence pour l'Apporteur que celle-ci : il ne peut déclarer à nouveau la même entreprise
@@ -150,9 +157,11 @@ commission : la commission ne naît que dans les conditions de l'article 4.
 **3.3 — Antériorité de la Société.** Aucune attribution ne peut porter sur une entreprise que la Société
 connaît déjà à la date de la déclaration, c'est-à-dire **cliente au titre d'une prestation facturée au
 cours des vingt-quatre derniers mois, destinataire d'un devis de moins de six mois, ou ayant signé un devis
-qui n'a été ni entièrement facturé, ni annulé, quelle que soit sa date**. Le contrôle est
-opéré automatiquement sur les données dont la Société dispose à cet instant, et la déclaration est refusée
-immédiatement, le motif étant indiqué. **Lorsque l'antériorité est établie postérieurement à
+qui n'a été ni entièrement facturé, ni annulé, quelle que soit sa date**. La Société enregistre
+la déclaration ; lorsqu'elle constate, sur les données dont elle dispose, que l'entreprise lui est déjà connue
+au sens du présent alinéa ou est déjà attribuée à un autre Apporteur, elle refuse la déclaration par une
+décision motivée adressée à l'Apporteur, sans lui révéler l'identité de l'occupant (article 3.5). À défaut,
+l'attribution est provisoire jusqu'à sa confirmation (article 3.2). **Lorsque l'antériorité est établie postérieurement à
 l'enregistrement, l'attribution est annulée, l'Apporteur en est informé avec le motif, et aucune commission
 nouvelle n'est due ; les commissions déjà acquises restent acquises. L'Apporteur peut contester un refus ou
 une annulation par écrit ; la Société y répond de façon motivée dans les quinze jours.**
@@ -167,11 +176,12 @@ catégorie ; il n'emporte aucune autre conséquence et n'est pas un manquement.
 
 **3.4 — Durée.** L'attribution est consentie pour **6 mois** à compter de sa confirmation.
 
-Elle expire par anticipation si, dans un délai de **90 jours à compter de la première
-prise de contact de la Société avec l'entreprise déclarée**, aucun rendez-vous n'a été tenu, aucun devis
-n'a été émis et aucune commande n'a été signée. **Ce délai ne court pas tant que ce contact n'a pas eu
-lieu. La première prise de contact s'entend de la première réponse de l'entreprise à la Société, quel qu'en
-soit le moyen ; l'envoi d'un message resté sans réponse n'en tient pas lieu. L'attribution n'expire
+Elle expire par anticipation si, dans un délai de **90 jours à compter du premier échange de la
+Société avec l'entreprise déclarée**, aucun rendez-vous n'a été tenu, aucun devis
+n'a été émis et aucune commande n'a été signée. **Ce délai ne court pas tant que cet échange n'a pas eu
+lieu. Le premier échange s'entend de la première réponse de l'entreprise à la Société, quel qu'en
+soit le moyen ; l'envoi d'un message resté sans réponse, notamment la prise de contact de l'article 3.2,
+n'en tient pas lieu. L'attribution n'expire
 pas au titre du présent alinéa lorsque l'absence de rendez-vous, de devis et de commande est imputable à
 la Société ; seule la durée de l'alinéa 1 s'applique alors.** L'entreprise
 redevient ensuite librement déclarable par tout Apporteur.
@@ -268,14 +278,14 @@ Lorsque le représentant de l'entreprise déclarée indique expressément n'avoi
 l'Apporteur, l'attribution correspondante s'éteint et l'entreprise redevient librement déclarable. Vaut une telle
 indication la déclaration en ce sens faite par l'entreprise à la Société, lors d'un échange avec elle. Ne valent
 pas une telle indication
-l'impossibilité de joindre l'entreprise, l'absence de réponse à la demande de confirmation, l'absence de
+l'impossibilité de joindre l'entreprise, l'absence de réponse à la prise de contact, l'absence de
 souvenir de l'échange, le changement d'interlocuteur ou le refus de répondre : dans ces cas l'attribution
-est maintenue, sous la seule réserve de l'article 3.2. La réponse de l'entreprise est journalisée avec sa date, la personne interrogée ou destinataire de la demande, et ses termes ; l'extrait en est communiqué à l'Apporteur sur sa demande.
+est maintenue, sous la seule réserve de l'article 3.2. La réponse de l'entreprise est journalisée avec sa date, la personne qui l'a donnée, et ses termes ; l'extrait en est communiqué à l'Apporteur sur sa demande.
 
 La Société peut suspendre l'enregistrement de nouvelles déclarations le temps d'une vérification. La
-suspension est notifiée avec les faits qui la motivent, lesquels ne peuvent être que l'absence de
-confirmation par l'entreprise déclarée ou des éléments établissant la fabrication ou l'automatisation d'une
-déclaration. **Aucune suspension ne peut être fondée, même partiellement, sur le nombre de déclarations,
+suspension est notifiée avec les faits qui la motivent, lesquels ne peuvent être que l'indication
+de l'entreprise déclarée prévue au deuxième alinéa ou des éléments établissant la fabrication ou
+l'automatisation d'une déclaration. **Aucune suspension ne peut être fondée, même partiellement, sur le nombre de déclarations,
 sur leur rythme, sur l'heure ou le lieu depuis lesquels elles sont faites, ni sur la zone, le secteur ou la
 méthode de l'Apporteur.** Elle n'obéit à aucun barème, à aucun compteur et à aucun seuil. Elle porte
 exclusivement sur l'enregistrement de nouvelles déclarations : **elle est sans effet sur les attributions
@@ -348,9 +358,9 @@ caduque.
 Sont commissionnées toutes les commandes de l'entreprise attribuée **signées pendant la durée de
 l'attribution**, pour les prestations figurant à la grille — quel que soit leur nombre. Une commande signée entre la
 déclaration et la confirmation de l'attribution est commissionnée si l'attribution est ensuite confirmée,
-y compris tacitement ; elle est réputée signée pendant la durée de l'attribution. Lorsqu'une commande est
-signée alors que la demande de confirmation fait l'objet d'une vérification, la Société demande à
-l'entreprise, à cette occasion, de confirmer l'échange. **Cette commission
+y compris tacitement ; elle est réputée signée pendant la durée de l'attribution. La Société ne demande à
+l'entreprise de confirmer aucun échange à cette occasion : l'attribution suit les seules règles de
+l'article 3.2. **Cette commission
 rémunère la seule mise en relation initiale, dont le prix est ainsi forfaitisé sur la durée de
 l'attribution ; elle ne rémunère aucun suivi, aucune intervention ni aucune mission de l'Apporteur
 postérieure à sa déclaration, dont le contrat ne met aucune à sa charge (article 2.2).**
@@ -455,7 +465,7 @@ l'Apporteur (article 1.2).**
 
 > *Cette clause fait l'objet d'une case d'acceptation distincte dans l'enveloppe de signature.*
 
-**5.3 — Paiement.** Le versement intervient par virement **dans les dix jours ouvrés suivant
+**5.3 — Paiement.** Le versement intervient par virement **dans les dix jours ouvrés (du lundi au vendredi, hors jours fériés en France métropolitaine) suivant
 l'établissement du relevé**, et en tout état de cause dans les soixante jours de l'émission de la facture
 correspondante. **Au relevé du mois de janvier, le seuil de l'article 5.1 n'est pas appliqué : tout solde
 positif reporté est versé.** Ce seuil ne s'applique pas davantage au dernier relevé établi après la fin du
@@ -476,6 +486,10 @@ soixante jours (annexe 1, A1.7).**
 Les sommes dont le versement est ainsi différé demeurent acquises à l'Apporteur. Elles sont versées au
 premier relevé suivant la régularisation, sans application du seuil de l'article 5.1. Le motif du blocage lui est
 indiqué par courrier électronique ou dans son espace.
+
+Les sommes suspendues faute de pièces de vigilance (article 6.2) le restent après la fin du contrat, sans
+limite de délai, jusqu'à la production des pièces ; ce report n'ouvre droit à aucune pénalité et n'oblige la
+Société à aucune relance.
 
 **5.5 — Contestation des relevés.** Toute contestation portant sur l'existence, l'assiette ou le calcul
 d'une commission est formée par écrit dans les douze mois de la mise à disposition du relevé qui aurait dû
@@ -654,13 +668,16 @@ définitives non converties prennent fin ; les entreprises correspondantes redev
 déclarables.
 
 **12.2** **Les commissions déjà acquises sont payées** au dernier relevé, sans application du seuil de
-l'article 5.1.
+l'article 5.1, sous la seule réserve de l'article 5.4. Seule l'attribution peut être provisoire : une
+commission créée est acquise, qu'elle soit à qualifier, en attente de pièces de vigilance ou due.
 
 **12.3** Les commandes signées avant la fin du contrat continuent d'ouvrir droit à commission. Celle-ci
 est acquise au fur et à mesure des encaissements correspondants, dans les conditions de l'article 4, quelle
 qu'en soit la date. La Société établit un relevé, selon l'article 5, jusqu'à extinction complète de ces
-droits. L'Apporteur conserve l'accès en lecture à son espace, ou reçoit par courrier électronique ses
-relevés, ses factures et le motif de tout blocage, jusqu'à l'extinction de ses droits.
+droits. L'Apporteur reçoit par courrier électronique ses
+relevés, ses factures et le motif de tout blocage, jusqu'à l'extinction de ses droits ; son lien personnel
+est révoqué à la fin du contrat. Il peut obtenir sur simple demande à contact@axion-ia.com la copie de son
+contrat signé et de ses relevés.
 
 **12.4** Si le solde de l'Apporteur est négatif à la suite de reprises, ce solde s'impute par compensation
 sur les commissions à venir.
@@ -834,11 +851,17 @@ la disposition de chaque partie.
 
 ### A1.1 — Formations collectives
 
-*Forfait de 500 € HT par journée de formation au prix public, réduit au prorata en cas de remise (article 4.1 bis).
-Prix par groupe de 2 à 15 participants.*
+*Forfait de 500 € HT par journée de formation vendue, au prix public, réduit au prorata en cas de remise
+(article 4.1 bis). La commission suit le nombre de journées de la commande : chaque palier porte sa propre
+durée (une demi-journée, une journée, deux jours) et, lorsqu'une même commande porte plusieurs sessions d'un
+même palier, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
 
 *Exemple : une formation générale d'un jour vendue 1 520 € HT au lieu de 1 900 € (remise de 20 %) donne une
 commission de 500 € × 1 520 ÷ 1 900 = 400 €. Vendue au prix public ou plus cher, elle donne 500 €.*
+
+*Exemple de plusieurs journées : cinq journées de formation générale vendues 9 500 € HT (au prix public)
+donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent 2 500 € × 8 550 ÷ 9 500 =
+2 250 €. Aucune limite n'est fixée au nombre de journées.*
 
 | Formation | Durée | Prix public HT | Commission du présent contrat |
 | --- | --- | --- | --- |

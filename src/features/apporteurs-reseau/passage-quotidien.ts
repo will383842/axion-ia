@@ -1,17 +1,18 @@
 /**
  * Réseau d'apporteurs (démarrage manuel) — le PASSAGE QUOTIDIEN.
  *
- * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Cinq étapes, chacune
+ * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Six étapes, chacune
  * isolée (une étape en échec n'empêche pas les suivantes) et rejouable (toute écriture est
  * conditionnelle, tout e-mail a une clé « une fois ») :
  *
  *   (a) confirmation réputée acquise, 30 jours après la prise de contact (art. 3.2) ;
  *   (b) au terme de la protection, prolongation UNIQUE de 3 mois si un fait de la Société
  *       le justifie (art. 3.4 al. 3), sinon `terminee` ;
- *   (c) une commission par facture soldée d'une entreprise protégée à la date de commande,
+ *   (c) une commission par COMMANDE soldée d'une entreprise protégée à la date de commande,
  *       plus la part du parrain dans les 6 mois de la signature du filleul ;
  *   (d) vigilance : libère les commissions en attente dès que les pièces sont là, demande
- *       les pièces (une fois), et le renouvellement 15 jours avant l'échéance ;
+ *       les pièces, relance tous les 15 jours (trois au plus), alerte Williams d'un dépôt à
+ *       vérifier, et demande le renouvellement 15 jours avant l'échéance ;
  *   (e) « commande signée » à l'apporteur, une fois par devis accepté (sans montant) ;
  *   (f) rappel du dossier non complété : J+3 puis J+7 après l'envoi du lien, jamais au-delà.
  *
@@ -19,7 +20,7 @@
  */
 
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
-// module importe. ⛔ `envois.ts` en porte encore un : à retirer avant la mise en service.
+// module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
 import * as Sentry from "@sentry/nextjs";
 
@@ -29,10 +30,14 @@ import { decryptPii } from "@/lib/pii-crypto";
 import {
   demanderVigilance,
   dejaEnvoye,
+  libererSiPiecesValides,
   piecesVigilanceValides,
+  relancerVigilance,
   statutApresVigilance,
 } from "./commissions";
 import { envoyer } from "./envois";
+import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { commandesSoldees } from "./commandes";
 import { urlDossier } from "./jeton";
 import {
   ajouterJours,
@@ -69,6 +74,40 @@ export function rappelDossierDu(lienEnvoyeAt: Date, maintenant: Date): 1 | 2 | n
   return jours >= RAPPEL_DOSSIER_JOURS[1] ? 2 : 1;
 }
 
+/** Préfixe de la clé d'envoi d'un rappel : ces envois ne sont JAMAIS l'origine d'un délai. */
+export const PREFIXE_JOB_RAPPEL_DOSSIER = "apporteur-dossier-rappel-";
+
+export interface EnvoiLienDossier {
+  id: string;
+  sentAt: Date | null;
+  jobId: string | null;
+  bounceType: string | null;
+}
+
+/**
+ * Le rappel du dossier à envoyer maintenant, ou `null`. Décision PURE.
+ * L'origine du délai est le dernier lien ENVOYÉ (premier envoi ou renvoi à la main), jamais
+ * un rappel : sans cela chaque rappel remettrait l'horloge à zéro et bouclerait (J+3, J+6, …).
+ */
+export function rappelDossierAEnvoyer(
+  envois: readonly EnvoiLienDossier[],
+  maintenant: Date,
+): { origineId: string; rappel: 1 | 2; jobId: (apporteurId: string) => string } | null {
+  const origines = envois
+    .filter((e) => e.sentAt !== null && !(e.jobId ?? "").startsWith(PREFIXE_JOB_RAPPEL_DOSSIER))
+    .sort((a, b) => b.sentAt!.getTime() - a.sentAt!.getTime());
+  const origine = origines[0];
+  if (!origine?.sentAt || origine.bounceType === "hard") return null;
+  const rappel = rappelDossierDu(origine.sentAt, maintenant);
+  if (rappel === null) return null;
+  return {
+    origineId: origine.id,
+    rappel,
+    jobId: (apporteurId) =>
+      `${PREFIXE_JOB_RAPPEL_DOSSIER}${apporteurId}-${origine.id}-j${RAPPEL_DOSSIER_JOURS[rappel - 1]}`,
+  };
+}
+
 export interface BilanPassageReseau {
   confirmeesTacites: number;
   prolongees: number;
@@ -77,6 +116,8 @@ export interface BilanPassageReseau {
   partsParrainage: number;
   liberees: number;
   vigilancesDemandees: number;
+  relancesVigilance: number;
+  alertesPiecesVigilance: number;
   commandesSigneesAnnoncees: number;
   rappelsDossier: number;
   erreurs: number;
@@ -140,6 +181,8 @@ export async function passerReseauApporteurs(
     partsParrainage: 0,
     liberees: 0,
     vigilancesDemandees: 0,
+    relancesVigilance: 0,
+    alertesPiecesVigilance: 0,
     commandesSigneesAnnoncees: 0,
     rappelsDossier: 0,
     erreurs: 0,
@@ -149,6 +192,11 @@ export async function passerReseauApporteurs(
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
+    [
+      "alerte-pieces-vigilance",
+      async () =>
+        void (bilan.alertesPiecesVigilance += await alerterPiecesVigilanceDeposees(maintenant)),
+    ],
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
   ];
@@ -341,10 +389,26 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const presentations = await lirePresentationsProtegees();
   if (presentations.length === 0) return;
   const index = parSiren(presentations);
-  const factures = await prisma.factureFormation.findMany({
+  const payees = await prisma.factureFormation.findMany({
     where: { statut: "payee", avoirDeId: null, client: { siren: { in: [...index.keys()] } } },
+    select: { id: true, devisId: true },
+  });
+  if (payees.length === 0) return;
+  // La commande entière : toutes les factures du même devis (acompte + solde), et les avoirs.
+  const devisIds = [...new Set(payees.map((f) => f.devisId).filter((d): d is string => !!d))];
+  const lignes = await prisma.factureFormation.findMany({
+    where: {
+      avoirDeId: null,
+      OR: [
+        { id: { in: payees.map((f) => f.id) } },
+        ...(devisIds.length ? [{ devisId: { in: devisIds } }] : []),
+      ],
+    },
     select: {
       id: true,
+      devisId: true,
+      statut: true,
+      avoirDeId: true,
       activite: true,
       montantHtCents: true,
       emiseAt: true,
@@ -352,15 +416,35 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       client: { select: { siren: true } },
     },
   });
-  if (factures.length === 0) return;
+  const avoirsLignes = await prisma.factureFormation.findMany({
+    where: { avoirDeId: { in: lignes.map((f) => f.id) } },
+    select: {
+      id: true,
+      devisId: true,
+      statut: true,
+      avoirDeId: true,
+      montantHtCents: true,
+      emiseAt: true,
+    },
+  });
+  const parId = new Map(lignes.map((f) => [f.id, f]));
+  const commandes = commandesSoldees([...lignes, ...avoirsLignes]);
+  if (commandes.length === 0) return;
   const existantes = await prisma.commissionApporteur.findMany({
-    where: { factureId: { in: factures.map((f) => f.id) } },
+    where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
     select: { factureId: true, apporteurId: true, parrainage: true },
   });
   const cle = (f: string, a: string, p: boolean) => `${f}|${a}|${p ? 1 : 0}`;
-  const deja = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
+  const dejaCle = new Set(existantes.map((e) => cle(e.factureId, e.apporteurId, e.parrainage)));
+  // Une commission déjà créée sur n'importe quelle facture de la commande vaut pour la commande.
+  const deja = {
+    has: (_f: string, a: string, p: boolean, c: { factureIds: string[] }) =>
+      c.factureIds.some((id) => dejaCle.has(cle(id, a, p))),
+  };
 
-  for (const f of factures) {
+  for (const commande of commandes) {
+    const f = parId.get(commande.factureCleId);
+    if (!f) continue;
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
@@ -368,19 +452,19 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     if (!p) continue;
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
-      factureHtCents: f.montantHtCents,
+      factureHtCents: commande.totalHtCents,
       palier: null,
     });
     if (calc.statut === "aucune") continue;
     const base = {
       presentationId: p.id,
-      factureId: f.id,
+      factureId: commande.factureCleId,
       activite: f.activite ?? "inconnue",
-      factureHtCents: f.montantHtCents,
+      factureHtCents: commande.totalHtCents,
     };
 
     // La commission de l'apporteur.
-    if (!deja.has(cle(f.id, p.apporteurId, false))) {
+    if (!deja.has(f.id, p.apporteurId, false, commande)) {
       try {
         if (calc.statut === "calculee") {
           const v = await statutApresVigilance(p.apporteurId, calc.montantCents, maintenant);
@@ -412,7 +496,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const { parrainId, signeParSocieteAt } = p.apporteur;
     if (!parrainId || !signeParSocieteAt || !dansFenetreParrainage(signeParSocieteAt, signeeAt))
       continue;
-    if (deja.has(cle(f.id, parrainId, true))) continue;
+    if (deja.has(f.id, parrainId, true, commande)) continue;
     try {
       if (calc.statut === "calculee") {
         const part = partParrainage({
@@ -456,13 +540,11 @@ async function etapeVigilance(maintenant: Date, bilan: BilanPassageReseau): Prom
   });
   for (const g of enAttente) {
     if (await piecesVigilanceValides(g.apporteurId, maintenant)) {
-      const r = await prisma.commissionApporteur.updateMany({
-        where: { apporteurId: g.apporteurId, statut: "en_attente_vigilance" },
-        data: { statut: "due" },
-      });
-      bilan.liberees += r.count;
+      bilan.liberees += await libererSiPiecesValides(g.apporteurId, maintenant);
     } else if ((await demanderVigilance(g.apporteurId, "premiere")) !== "deja") {
       bilan.vigilancesDemandees += 1;
+    } else if (await relancerVigilance(g.apporteurId, maintenant)) {
+      bilan.relancesVigilance += 1;
     }
   }
   // Renouvellement : 15 jours avant l'échéance de l'attestation conforme, une fois par échéance.
@@ -535,20 +617,23 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     select: { id: true, prenom: true, email: true, versionLien: true },
   });
   for (const a of candidats) {
-    const envoi = await prisma.emailLog.findFirst({
+    const envois = await prisma.emailLog.findMany({
       where: {
         template: "apporteur-dossier-lien",
         entityType: "ApporteurReseau",
         entityId: a.id,
         sentAt: { not: null },
+        // Les rappels portent le même gabarit : on les écarte (un jobId nul reste un envoi d'origine).
+        OR: [{ jobId: null }, { NOT: { jobId: { startsWith: PREFIXE_JOB_RAPPEL_DOSSIER } } }],
       },
       orderBy: { sentAt: "desc" },
-      select: { id: true, sentAt: true, bounceType: true },
+      take: 5,
+      select: { id: true, sentAt: true, jobId: true, bounceType: true },
     });
-    if (!envoi?.sentAt || envoi.bounceType === "hard") continue;
-    const rappel = rappelDossierDu(envoi.sentAt, maintenant);
-    if (rappel === null) continue;
-    const jobId = `apporteur-dossier-rappel-${a.id}-${envoi.id}-j${RAPPEL_DOSSIER_JOURS[rappel - 1]}`;
+    const decision = rappelDossierAEnvoyer(envois, maintenant);
+    if (!decision) continue;
+    const { rappel } = decision;
+    const jobId = decision.jobId(a.id);
     if (await dejaEnvoye(jobId)) continue;
     const url = urlDossier(a.id, a.versionLien);
     const destinataire = decryptPii(a.email);

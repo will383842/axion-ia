@@ -401,6 +401,18 @@ export function peutOuvrirDossierCandidat(
 }
 
 /**
+ * Le dossier d'un APPORTEUR du réseau — identité, coordonnées, IBAN, pièces d'identité.
+ * Même frontière que le dossier candidat, pour la même raison : `reader` (consultation)
+ * et `editor` ne lisent pas les données personnelles d'une personne. Les routes
+ * `pieces/[pieceId]` et `contrat` sont plus étroites encore (administrateurs seulement).
+ */
+export function peutOuvrirDossierApporteur(
+  role: string | null | undefined,
+): role is (typeof ROLES_DOSSIER_CANDIDAT)[number] {
+  return peutOuvrirDossierCandidat(role);
+}
+
+/**
  * ── Les deux derniers ensembles du périmètre RECRUTEMENT ────────────────────
  *
  * 🔴 POURQUOI ILS MONTENT ICI ALORS QUE PERSONNE NE CHANGE DE DROIT.
