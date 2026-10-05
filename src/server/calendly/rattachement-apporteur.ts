@@ -120,7 +120,8 @@ export async function rattacherEchangeApporteur(
       };
       const trouvees = lignes.filter(
         (l) =>
-          estApporteur(l.details) && nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
+          estApporteur(l.details) &&
+          nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
       );
       const seule = trouvees.length === 1 ? trouvees[0] : undefined;
       if (seule) cible = { id: seule.id, parNom: true };

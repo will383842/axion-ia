@@ -100,10 +100,7 @@ describe("listerFichesRattachables — même nom, autre adresse", () => {
 
   it("ne propose pas deux fois une fiche déjà trouvée par son adresse", async () => {
     const f = ligne("x", "Marie", "marienoelmafo1@gmail.com");
-    findMany
-      .mockResolvedValueOnce([f])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([f]);
+    findMany.mockResolvedValueOnce([f]).mockResolvedValueOnce([]).mockResolvedValueOnce([f]);
     const fiches = await listerFichesRattachables({
       inviteeEmail: "marienoelmafo1@gmail.com",
       inviteeName: "Marie Mafo",
