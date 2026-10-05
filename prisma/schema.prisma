@@ -7063,6 +7063,16 @@ enum DocumentType {
   /// app/worker : le worker tourne du code plus récent que l'app pendant ~50 min
   /// après chaque fusion, et c'est l'entrypoint de l'APP qui joue la migration).
   contrat_travail
+  /// Mandat SPÉCIAL de l'entreprise à l'organisme pour déposer auprès de son
+  /// OPCO la demande de prise en charge d'UNE action désignée. Limité,
+  /// révocable par écrit, sans AUCUN pouvoir de recevoir des fonds (ne vaut pas
+  /// subrogation). Distinct de l'annexe 2 du contrat d'apporteur. Signé par le
+  /// canal maison (ADR 0037), comme les conventions.
+  ///
+  /// ⚠️ Valeur ajoutée à l'énumération AVANT tout code qui l'émet (contrat
+  /// app/worker : le worker tourne du code plus récent que l'app pendant ~50 min
+  /// après chaque fusion, et c'est l'entrypoint de l'APP qui joue la migration).
+  mandat_opco
 }
 
 /// INT-T65-A — état de la condition suspensive OPCO d'une convention.

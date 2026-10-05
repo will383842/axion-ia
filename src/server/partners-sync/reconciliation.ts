@@ -25,8 +25,9 @@
  * identifiant d'événement, ni corps, ni donnée de personne.
  *
  * ── Authentification de la réponse (axionia → Partners) ──────────────────────────────────────
- * Comme la relecture : `X-Axionia-Timestamp` / `X-Axionia-Signature` sur « t.corps », secret
- * d'émission.
+ * `X-Axionia-Timestamp` / `X-Axionia-Signature` sur « t.corps », secret d'émission, et
+ * `X-Axionia-Kid`, la clé qui a signé (INT-T72-A, REQ-QA-030 : Partners refuse une réponse sans
+ * kid). La forme canonique n'est définie que pour la relecture ; le rejeu garde « t.corps ».
  *
  * ── Inertie ──────────────────────────────────────────────────────────────────────────────────
  * Canal fermé, build, ou secret absent : 404, avant toute lecture — la route n'existe pas.
@@ -35,7 +36,7 @@ import { z } from "zod";
 
 import type { RateLimitConfig } from "@/lib/rate-limit";
 
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
 import { verifierRequetePartners } from "./relecture";
@@ -143,6 +144,7 @@ export async function repondreReconciliation(
       "Cache-Control": "no-store",
       "X-Axionia-Timestamp": horodatage,
       "X-Axionia-Signature": signerCorps(secretEmission, horodatage, corps),
+      [ENTETE_KID]: kidDe(secretEmission),
     },
   });
 }

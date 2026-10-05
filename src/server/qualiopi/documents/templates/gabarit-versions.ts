@@ -63,7 +63,8 @@ export type TypeGabaritSignable =
   | "contrat_sous_traitance"
   | "contrat_travail"
   | "releve_connexion"
-  | "lettre_mission";
+  | "lettre_mission"
+  | "mandat_opco";
 
 /**
  * Version courante du texte rendu, par type de pièce.
@@ -84,6 +85,7 @@ export type TypeGabaritSignable =
  * | `convention_tripartite` | 4 | 04/10 — même réécriture du § 5 que la bipartite. **v3 archivée** |
  * | `convention` | 5 | 04/10 — INT-T65-A : clause « 5 bis. Condition suspensive de prise en charge par l'opérateur de compétences » (texte de la juriste A07 validé par Williams, axion-apporteurs#656 commentaire 5978462914), imprimée SEULEMENT si la case est cochée. Sans la case, le texte imprimé est celui de la v4 ; l'incrément est gardé par prudence (cf. ci-dessous). **v4 archivée** |
  * | `convention_tripartite` | 5 | 04/10 — même clause, mot pour mot. **v4 archivée** |
+ * | `mandat_opco` | 1 | 04/10 — premier texte (INT-T66-A) : mandat spécial, limité, révocable, sans pouvoir de recevoir des fonds ; relu par la juriste avant fusion |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -157,6 +159,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   contrat_travail: 2,
   releve_connexion: 2,
   lettre_mission: 1,
+  mandat_opco: 1,
 };
 
 /**

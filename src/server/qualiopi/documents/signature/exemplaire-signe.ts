@@ -57,6 +57,7 @@ import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/c
 import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat-travail";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
+import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 import {
   typeGabarit,
@@ -91,6 +92,7 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   // type rendrait `type_non_rendu`, la preuve reste consultable au registre.
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
   lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
+  mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
 };
 
 /**

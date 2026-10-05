@@ -136,6 +136,10 @@ export const CANAL_DE_REMISE: Record<DocumentType, CanalRemise> = {
   procedure_sous_traitance: "aucun",
   cv_formateur: "aucun",
   liste_formateurs: "aucun",
+  // Mandat OPCO (INT-T66-A) : pièce entreprise ↔ organisme, jamais produite au
+  // jalon. Elle part avec la convention, par son circuit de signature ; le
+  // stagiaire n'en est pas destinataire.
+  mandat_opco: "aucun",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

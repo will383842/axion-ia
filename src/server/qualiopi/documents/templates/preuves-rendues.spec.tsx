@@ -39,6 +39,7 @@ import { ContratTravailPdf } from "./contrat-travail";
 import { AutorisationCaptationPdf } from "./autorisation-captation";
 import { ReleveConnexionPdf } from "./releve-connexion";
 import { LettreMissionPdf } from "./lettre-mission";
+import { MandatOpcoPdf } from "./mandat-opco";
 
 beforeAll(() => registerPdfTestFontsFallback());
 
@@ -265,6 +266,33 @@ const CAS: ReadonlyArray<{
       formations: [],
       tarifJourHt: 850,
       dateMission: "01/06/2026",
+    },
+  },
+  {
+    // Mandat OPCO (INT-T66-A) : l'entreprise mandante signe la première, par
+    // le canal maison, comme pour une convention.
+    type: "mandat_opco",
+    Composant: MandatOpcoPdf as unknown as ComposantTest,
+    partie: "client",
+    identiteEnProp: true,
+    data: {
+      numero: "AXI-DOC-2026-090",
+      entreprise: {
+        raisonSociale: "Acme SAS",
+        siret: "98765432100011",
+        adresse: "10 av. de la République, 42000 Saint-Étienne",
+        representant: "Claire Durand",
+        qualiteRepresentant: "Gérante",
+      },
+      opco: { nom: "OPCO Atlas" },
+      action: {
+        intitule: "IA appliquée",
+        dateDebut: "12/10/2026",
+        dateFin: "13/10/2026",
+        dureeHeures: 14,
+        stagiaires: ["Jean Martin"],
+      },
+      dateMandat: "04/10/2026",
     },
   },
   // 2026-08-10 (décision Will) : le cas `protocole_afest` est parti avec son
