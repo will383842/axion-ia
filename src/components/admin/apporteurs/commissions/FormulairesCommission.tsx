@@ -62,7 +62,8 @@ export function QualifierForm({
         step={1}
         defaultValue={1}
         required
-        className="admin-input w-20"
+        className="admin-input"
+        style={{ width: "5rem" }}
         aria-label="Nombre de sessions du palier"
         title="Nombre de sessions identiques dans la commande"
       />
