@@ -14,7 +14,9 @@
  *
  * ── L'échec ouvert ───────────────────────────────────────────────────────────────────────────
  * Le délai est de 2 s. Une panne ne LÈVE JAMAIS : elle rend un motif fermé (`timeout`, `http_<code>`,
- * `illisible`, `reseau`), signalé sur la console sans la réponse, sans le SIREN et sans le nom. Le
+ * `illisible`, `reseau`, `redirection`), signalé sur la console sans la réponse, sans le SIREN et sans
+ * le nom. Une redirection n'est JAMAIS suivie (`redirect: "manual"`, dette de la sécurité, #754,
+ * 5987357109) : le jeton porteur ne part vers aucune autre adresse, et tout 3xx est une panne. Le
  * devis n'est jamais bloqué ; l'affichage, lui, dit la panne (jamais un « libre » par défaut).
  *
  * ── La donnée de personne ────────────────────────────────────────────────────────────────────
@@ -77,7 +79,13 @@ export type AttributionPartners = z.infer<ReturnType<typeof schemaReponse>>;
 
 /** Les motifs fermés d'une lecture impossible. */
 export type MotifDIndisponibilite =
-  "inactif" | "siren_invalide" | "timeout" | `http_${number}` | "illisible" | "reseau";
+  | "inactif"
+  | "siren_invalide"
+  | "timeout"
+  | `http_${number}`
+  | "illisible"
+  | "reseau"
+  | "redirection";
 
 export type LectureAttribution =
   | { readonly ok: true; readonly attribution: AttributionPartners }
@@ -170,12 +178,16 @@ export async function lireAttributionPartners(
       headers: { Authorization: `Bearer ${jeton}`, "x-axionia-kid": kidDe(jeton) },
       signal: abandon.signal,
       cache: "no-store",
+      redirect: "manual",
     });
   } catch {
     return echec(abandon.signal.aborted ? "timeout" : "reseau");
   } finally {
     clearTimeout(minuteur);
   }
+  // Un 3xx rendu tel quel (Node) ou une redirection opaque (navigateur) : jamais suivie, une panne.
+  if (reponse.type === "opaqueredirect" || (reponse.status >= 300 && reponse.status < 400))
+    return echec("redirection");
   if (reponse.status !== 200) return echec(`http_${reponse.status}`);
 
   let corps: unknown;

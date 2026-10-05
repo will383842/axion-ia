@@ -156,6 +156,29 @@ describe("REQ-INT-015 — l'échec ouvert : une panne ne bloque jamais le devis,
     }
   });
 
+  it("REQ-INT-015 — TÉMOIN : une redirection (302, 301, 307, 308 ou opaque) n'est jamais suivie : le jeton ne part pas ailleurs, c'est une panne, jamais mise en cache", async () => {
+    const vers = { location: "https://ailleurs.example.test/collecte" };
+    for (const [nom, reponse] of [
+      ["302", () => new Response(null, { status: 302, headers: vers })],
+      ["301", () => new Response(null, { status: 301, headers: vers })],
+      ["307", () => new Response(null, { status: 307, headers: vers })],
+      ["308", () => new Response(null, { status: 308, headers: vers })],
+      ["opaque", () => ({ type: "opaqueredirect", status: 0, ok: false }) as unknown as Response],
+    ] as const) {
+      const r = reseau(reponse);
+      const { appeler, signales } = lire(SIREN, r);
+      await expect(appeler(), nom).resolves.toEqual({ ok: false, motif: "redirection" });
+      expect(r.appels[0]!.init.redirect, nom).toBe("manual");
+      expect(signales, nom).toEqual(["redirection"]);
+      await appeler();
+      expect(r.appels, nom).toHaveLength(2);
+      expect(
+        r.appels.every((a) => a.url.startsWith("https://partners.example.test/")),
+        nom,
+      ).toBe(true);
+    }
+  });
+
   it("REQ-INT-015 — TÉMOIN À DEUX FACES : le délai de 2 s ; à 1 999 ms la réponse passe, à 2 000 ms l'appel est abandonné", async () => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     // Un réseau qui ne répond qu'au bout de `ms`, et que l'abandon interrompt.
@@ -319,7 +342,14 @@ describe("REQ-INT-014 — le bandeau : les textes de la juriste, mot pour mot", 
     ).toBeNull();
     expect(texteDuBandeau({ ok: false, motif: "inactif" })).toBeNull();
     expect(texteDuBandeau({ ok: false, motif: "siren_invalide" })).toBeNull();
-    for (const motif of ["timeout", "http_503", "http_404", "illisible", "reseau"] as const)
+    for (const motif of [
+      "timeout",
+      "http_503",
+      "http_404",
+      "illisible",
+      "reseau",
+      "redirection",
+    ] as const)
       expect(texteDuBandeau({ ok: false, motif }), motif).toBe(TEXTES_DU_BANDEAU.panne);
   });
 });
