@@ -9,8 +9,6 @@
  * à Williams avant chaque envoi décidé par lui.
  */
 
-import "server-only";
-
 import * as Sentry from "@sentry/nextjs";
 
 import { renderEmailTemplate } from "@/lib/email/templates";
