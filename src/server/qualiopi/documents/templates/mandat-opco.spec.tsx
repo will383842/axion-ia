@@ -489,10 +489,10 @@ describe("🔴 le bouton « Générer le mandat OPCO » suit le financement", ()
     }
   });
 
-  it("présent sur une session OPCO ou mixte", () => {
+  it("présent sur une session OPCO ou mixte (chargé à part, il apparaît après coup)", async () => {
     for (const f of ["opco", "mixte"] as const) {
       rendre(f);
-      expect(screen.getByRole("button", { name: "Générer le mandat OPCO" })).toBeTruthy();
+      expect(await screen.findByRole("button", { name: "Générer le mandat OPCO" })).toBeTruthy();
     }
   });
 });
