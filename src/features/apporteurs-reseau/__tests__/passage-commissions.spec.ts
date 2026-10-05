@@ -159,4 +159,91 @@ describe("passage quotidien : commission par commande soldée", () => {
     await passerReseauApporteurs(MAINTENANT);
     expect(etat.crees).toEqual([]);
   });
+
+  const unePayee = (o: Record<string, unknown> = {}) => {
+    etat.payees = [{ id: "A", devisId: "D1" }];
+    etat.lignes = [fac({ id: "A", ...o })];
+  };
+
+  it("SIREN pas encore confirmé par l'entreprise à la date de commande : aucune commission", async () => {
+    etat.presentations = [{ ...protegee, confirmeeAt: null, protegeeJusquAt: null }];
+    unePayee();
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+
+  it("commande signée après la fin de la protection : aucune commission", async () => {
+    unePayee({ devis: { acceptedAt: new Date("2027-02-06T00:00:00Z") } });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+
+  it("SIREN attribué à un autre apporteur seulement : l'apporteur sans présentation ne touche rien", async () => {
+    unePayee({ client: { siren: "552100554" } });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+
+  it("développement web : aucune commission, même soldé et attribué", async () => {
+    unePayee({ activite: "site_web" });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toEqual([]);
+  });
+
+  it("implémentation : 15 % du HT ; 1-to-1 : 30 % du HT", async () => {
+    unePayee({ activite: "implementation", montantHtCents: 200_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 30_000 });
+    etat.crees = [];
+    unePayee({ activite: "un_a_un", montantHtCents: 200_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ montantCents: 60_000 });
+  });
+
+  it("formation : ligne « à qualifier » sans montant (le palier se choisit à la main)", async () => {
+    unePayee({ activite: "formation", montantHtCents: 190_000 });
+    await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees[0]).toMatchObject({ statut: "a_qualifier", activite: "formation" });
+    expect(etat.crees[0]).not.toHaveProperty("montantCents");
+  });
+
+  it("parrain : 10 % de la commission du filleul quand la commande tombe dans les 6 mois", async () => {
+    etat.presentations = [
+      {
+        ...protegee,
+        apporteur: {
+          ...protegee.apporteur,
+          parrainId: "PAR1",
+          signeParSocieteAt: new Date("2026-06-01T00:00:00Z"),
+        },
+      },
+    ];
+    unePayee({ montantHtCents: 200_000 });
+    const bilan = await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toHaveLength(2);
+    expect(etat.crees[0]).toMatchObject({ apporteurId: "APP1", montantCents: 60_000 });
+    expect(etat.crees[1]).toMatchObject({
+      apporteurId: "PAR1",
+      parrainage: true,
+      montantCents: 6_000,
+    });
+    expect(bilan.partsParrainage).toBe(1);
+  });
+
+  it("parrain : rien au-delà de 6 mois après la signature du filleul", async () => {
+    etat.presentations = [
+      {
+        ...protegee,
+        apporteur: {
+          ...protegee.apporteur,
+          parrainId: "PAR1",
+          signeParSocieteAt: new Date("2026-01-01T00:00:00Z"),
+        },
+      },
+    ];
+    unePayee({ montantHtCents: 200_000 });
+    const bilan = await passerReseauApporteurs(MAINTENANT);
+    expect(etat.crees).toHaveLength(1);
+    expect(bilan.partsParrainage).toBe(0);
+  });
 });

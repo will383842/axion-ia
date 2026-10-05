@@ -20,9 +20,15 @@ export const PROLONGATION_MOIS = 3;
 export const PROLONGATION_FAITS_RECENTS_JOURS = 30;
 /** Art. 3.2 : confirmation réputée acquise, à compter du premier message de la Société. */
 export const CONFIRMATION_TACITE_JOURS = 30;
-/** Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin. */
+/**
+ * Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin.
+ * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
+ */
 export const ADRESSE_VALIDE_JOURS = 45;
-/** Art. 3.4 al. 2 : sans rendez-vous, devis ni commande dans ce délai après la première réponse. */
+/**
+ * Art. 3.4 al. 2 : sans rendez-vous, devis ni commande dans ce délai après la première réponse.
+ * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
+ */
 export const PEREMPTION_JOURS = 90;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
