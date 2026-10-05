@@ -24,8 +24,9 @@ import type {
   TypePieceApporteur,
 } from "../../../prisma/generated/client";
 
+import { alerterPieceVigilance } from "./alerte-vigilance";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
-import { estStatutJuridique, ibanValide, type TypePiece } from "./regles";
+import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { CLE_REGISTRE_INDISPONIBLE, vigilanceDemandee } from "./signature-regles";
 
 /** Taille maximale d'une pièce déposée (10 Mo : une photo de téléphone y tient). */
@@ -363,6 +364,7 @@ export async function deposerPiece(
   }
   const sha256 = createHash("sha256").update(octets).digest("hex");
   const maintenant = new Date();
+  let pieceId = "";
   await prisma.$transaction(async (tx) => {
     // La pièce d'identité remplacée n'a plus de raison d'être gardée : contenu purgé.
     if (type === "identite") {
@@ -384,8 +386,18 @@ export async function deposerPiece(
       },
       select: { id: true },
     });
+    pieceId = p.id;
     await tx.pieceApporteurContenu.create({ data: { pieceId: p.id, octets: Buffer.from(octets) } });
   });
+  // Attestation URSSAF ou immatriculation : Williams est alerté tout de suite (une seule fois par
+  // pièce). Une panne d'envoi ne doit jamais faire échouer le dépôt de l'apporteur.
+  if (pieceId && (PIECES_VIGILANCE as readonly string[]).includes(type)) {
+    try {
+      await alerterPieceVigilance(pieceId);
+    } catch {
+      // le passage quotidien rattrape l'alerte
+    }
+  }
   return { ok: true };
 }
 
