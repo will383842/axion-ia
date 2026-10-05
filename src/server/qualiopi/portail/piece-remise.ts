@@ -132,6 +132,10 @@ const JALONS: Readonly<Record<string, JalonRemise>> = {
   //    organisme ↔ intervenant. Elles portent des montants, des barèmes et des
   //    conditions qui ne concernent pas la personne formée.
   facture: "jamais",
+  // ⚠️ `jamais` : le mandat OPCO (INT-T66-A) lie l'ENTREPRISE à son OPCO pour la
+  // demande de prise en charge. Le stagiaire n'en est pas partie, et il désigne
+  // l'OPCO, l'action et les autres stagiaires : rien qui le regarde.
+  mandat_opco: "jamais",
   // ⚠️ `jamais`, et la raison DIFFÈRE de celle de la facture juste au-dessus.
   // Une facture client n'est pas remise au jalon parce que son envoi est un
   // geste commercial. Une autofacture ne l'est pas parce que son destinataire

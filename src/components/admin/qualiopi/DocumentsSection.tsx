@@ -23,6 +23,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import {
   genererConventionAction,
@@ -95,6 +96,15 @@ import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+
+/**
+ * INT-T66-A — le bouton du mandat OPCO n'est utile qu'aux sessions financées par
+ * un OPCO : il est chargé à part, à l'affichage, pour ne pas alourdir la page de
+ * toutes les sessions (cliquet de poids de la console).
+ */
+const MandatOpcoButton = dynamic(() =>
+  import("@/components/admin/qualiopi/MandatOpcoButton").then((m) => m.MandatOpcoButton),
+);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -275,6 +285,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
   contrat_travail: "Contrat de travail (formateur salarié)",
   procedure_sous_traitance: "Procédure de sous-traitance (indicateur 27)",
+  mandat_opco: "Mandat OPCO",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -301,7 +312,7 @@ const MOTIF_RECTIFICATION_MIN = 10;
  * la page (et l'automatisation du navigateur avec), et son texte n'est ni
  * traduisible ni accessible.
  */
-function useMotifRectification(dejaGenereLe: string | undefined): {
+export function useMotifRectification(dejaGenereLe: string | undefined): {
   /** La pièce existe déjà → une régénération doit être motivée. */
   requis: boolean;
   ouvert: boolean;
@@ -1731,7 +1742,31 @@ export function DocumentsSection({
                   pieceMiseEnAvant(b.type, contexte),
               )
             : boutons;
-          const attendues = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          // Mandat OPCO (INT-T66-A) : à côté des conventions, et SEULEMENT sur
+          // une session OPCO ou mixte. Absent ailleurs — ni replié ni proposé :
+          // sans OPCO, le mandat n'a pas d'objet. Pas de première émission
+          // sur un dossier clos : le serveur la refuserait.
+          const avecMandatOpco =
+            !fige && (contexte.financement === "opco" || contexte.financement === "mixte");
+          const enAvant = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          const posConventions = enAvant.findIndex((b) => b.type === "convention_tripartite");
+          const attendues = avecMandatOpco
+            ? [
+                ...enAvant.slice(0, posConventions + 1),
+                {
+                  type: "mandat_opco",
+                  el: (
+                    <MandatOpcoButton
+                      key="mandat_opco"
+                      sessionId={sessionId}
+                      onDone={handleDone}
+                      dejaGenereLe={dernierSessionParType.get("mandat_opco")}
+                    />
+                  ),
+                },
+                ...enAvant.slice(posConventions + 1),
+              ]
+            : enAvant;
           const autres = proposables.filter((b) => !pieceMiseEnAvant(b.type, contexte));
 
           return (

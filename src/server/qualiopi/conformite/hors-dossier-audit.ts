@@ -84,6 +84,9 @@ const DESTINATION_DOCUMENT: Record<DocumentType, Destination> = {
   autorisation_captation: "joint",
   liste_formateurs: "joint",
   procedure_sous_traitance: "joint",
+  // Mandat de l'entreprise pour agir auprès de son OPCO (INT-T66-A) : pièce
+  // contractuelle signée, qui accompagne la convention — jointe comme elle.
+  mandat_opco: "joint",
   // Rémunération d'un intervenant, personne physique : aucune exigence du RNQ.
   autofacture_honoraires: "hors_dossier",
   // Pièce d'employeur. La nature du lien contractuel exigée par l'indicateur 21
