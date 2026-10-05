@@ -36,7 +36,7 @@ import {
 } from "./actions";
 import { COCHE, icone } from "./Coquille";
 import { DepotPiece, type PieceAffichee } from "./DepotPiece";
-import { ETAPES, TEXTES } from "./textes";
+import { ADRESSE_CONTACT, ETAPES, TEXTES } from "./textes";
 
 export interface DossierPublic {
   id: string;
@@ -131,7 +131,8 @@ export function DossierEnLigne({
   const [enCours, demarrer] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
 
-  // Étape 1
+  // Étape 1 (le nom n'est modifiable que s'il manque : nom d'un seul mot)
+  const [nomSaisi, setNomSaisi] = useState("");
   const [telephone, setTelephone] = useState(dossier.telephone ?? "");
   // Étape 2
   const [siren, setSiren] = useState(dossier.siren ?? "");
@@ -155,6 +156,8 @@ export function DossierEnLigne({
       return;
     }
     haut.current?.scrollIntoView({ block: "start" });
+    // Le focus suit l'étape (clavier, lecteur d'écran) ; l'annonce est dans la zone `status`.
+    haut.current?.querySelector<HTMLElement>("h1")?.focus({ preventScroll: true });
   }, [etape, signe]);
 
   function aller(n: number) {
@@ -187,12 +190,17 @@ export function DossierEnLigne({
   function rechercher() {
     setErreur(null);
     demarrer(async () => {
-      const r = await rechercherSirenAction(dossier.id, dossier.jeton, sirenNet);
-      setRecherche(r);
-      if (r.ok) {
-        if (r.entreprise.denomination) setDenomination(r.entreprise.denomination);
-        if (r.entreprise.adresse) setAdresse(r.entreprise.adresse);
-        if (r.entreprise.statutSuggere) setStatut(r.entreprise.statutSuggere);
+      try {
+        const r = await rechercherSirenAction(dossier.id, dossier.jeton, sirenNet);
+        setRecherche(r);
+        if (r.ok) {
+          if (r.entreprise.denomination) setDenomination(r.entreprise.denomination);
+          if (r.entreprise.adresse) setAdresse(r.entreprise.adresse);
+          if (r.entreprise.statutSuggere) setStatut(r.entreprise.statutSuggere);
+        }
+      } catch {
+        // Coupure réseau : rien n'est vidé, l'apporteur réessaie sur place.
+        setErreur(TEXTES.connexionPerdue);
       }
     });
   }
@@ -203,6 +211,7 @@ export function DossierEnLigne({
     fd.set("id", dossier.id);
     fd.set("jeton", dossier.jeton);
     fd.set("telephone", telephone);
+    if (nomSaisi.trim()) fd.set("nom", nomSaisi.trim());
     fd.set("siren", sirenNet);
     fd.set("denomination", denomination);
     fd.set("adresse", adresse);
@@ -211,11 +220,15 @@ export function DossierEnLigne({
     fd.set("numeroTva", numeroTva);
     fd.set("iban", ibanNet);
     demarrer(async () => {
-      const r = await enregistrerActiviteAction(fd);
-      if (!r.ok) return setErreur(r.message);
-      setIban("");
-      router.refresh();
-      setEtape(3);
+      try {
+        const r = await enregistrerActiviteAction(fd);
+        if (!r.ok) return setErreur(r.message);
+        setIban("");
+        router.refresh();
+        setEtape(3);
+      } catch {
+        setErreur(TEXTES.connexionPerdue);
+      }
     });
   }
 
@@ -238,9 +251,14 @@ export function DossierEnLigne({
     declarations.forEach((c) => fd.append("declarations", c));
     acceptations.forEach((c) => fd.append("acceptations", c));
     demarrer(async () => {
-      const r = await signerAction(fd);
-      if (r.ok) setSigne(true);
-      else setErreur(r.message);
+      try {
+        const r = await signerAction(fd);
+        if (r.ok) setSigne(true);
+        else setErreur(r.message);
+      } catch {
+        // Cases cochées et nom tapé restent à l'écran.
+        setErreur(TEXTES.connexionPerdue);
+      }
     });
   }
 
@@ -272,6 +290,9 @@ export function DossierEnLigne({
 
   return (
     <div ref={haut} className="scroll-mt-4">
+      <p role="status" aria-live="polite" className="sr-only">
+        {TEXTES.etapeAnnonce(etape, ETAPES[etape - 1] ?? "")}
+      </p>
       {dossier.statut === "a_completer" ? (
         <section
           aria-labelledby="a-completer"
@@ -302,7 +323,11 @@ export function DossierEnLigne({
 
       {etape === 1 ? (
         <section aria-labelledby={`${uid}-t1`} className={carte}>
-          <h1 id={`${uid}-t1`} className="font-serif text-[26px] font-medium">
+          <h1
+            id={`${uid}-t1`}
+            tabIndex={-1}
+            className="font-serif text-[26px] font-medium outline-none"
+          >
             {ETAPES[0]}
           </h1>
           <p className="text-fg-soft mt-1 text-[15px]">{TEXTES.duree}</p>
@@ -310,7 +335,7 @@ export function DossierEnLigne({
             {(
               [
                 [TEXTES.prenom, dossier.prenom],
-                [TEXTES.nom, dossier.nom],
+                ...(dossier.nom.trim() !== "" ? ([[TEXTES.nom, dossier.nom]] as const) : []),
                 [TEXTES.email, dossier.email],
               ] as const
             ).map(([l, v]) => (
@@ -321,7 +346,30 @@ export function DossierEnLigne({
                 </p>
               </div>
             ))}
-            <p className="text-fg-soft text-[14px]">{TEXTES.lectureSeule}</p>
+            {dossier.nom.trim() === "" ? (
+              <div>
+                <label htmlFor={`${uid}-nom1`} className={etiquette}>
+                  {TEXTES.nom}
+                </label>
+                <input
+                  id={`${uid}-nom1`}
+                  autoComplete="family-name"
+                  value={nomSaisi}
+                  onChange={(e) => setNomSaisi(e.target.value)}
+                  className={champ}
+                />
+                <p className="text-fg-soft mt-1 text-[14px]">{TEXTES.nomManquant}</p>
+              </div>
+            ) : null}
+            <p className="text-fg-soft text-[14px]">
+              {TEXTES.lectureSeule}{" "}
+              <a
+                href={`mailto:${ADRESSE_CONTACT}`}
+                className="text-terracotta-deep font-semibold underline underline-offset-2"
+              >
+                {ADRESSE_CONTACT}
+              </a>
+            </p>
             <div>
               <label htmlFor={`${uid}-tel`} className={etiquette}>
                 {TEXTES.telephone}
@@ -337,7 +385,12 @@ export function DossierEnLigne({
               />
             </div>
           </div>
-          <button type="button" className={`${boutonPrincipal} mt-5`} onClick={() => aller(2)}>
+          <button
+            type="button"
+            className={`${boutonPrincipal} mt-5`}
+            disabled={dossier.nom.trim() === "" && nomSaisi.trim() === ""}
+            onClick={() => aller(2)}
+          >
             {TEXTES.continuer}
           </button>
         </section>
@@ -345,7 +398,11 @@ export function DossierEnLigne({
 
       {etape === 2 ? (
         <section aria-labelledby={`${uid}-t2`} className={carte}>
-          <h1 id={`${uid}-t2`} className="font-serif text-[26px] font-medium">
+          <h1
+            id={`${uid}-t2`}
+            tabIndex={-1}
+            className="font-serif text-[26px] font-medium outline-none"
+          >
             {ETAPES[1]}
           </h1>
           <div className="mt-4">
@@ -551,7 +608,11 @@ export function DossierEnLigne({
 
       {etape === 3 ? (
         <section aria-labelledby={`${uid}-t3`}>
-          <h1 id={`${uid}-t3`} className="mb-3 font-serif text-[26px] font-medium">
+          <h1
+            id={`${uid}-t3`}
+            tabIndex={-1}
+            className="mb-3 font-serif text-[26px] font-medium outline-none"
+          >
             {ETAPES[2]}
           </h1>
           <ul className="grid gap-3">
@@ -600,7 +661,11 @@ export function DossierEnLigne({
 
       {etape === 4 ? (
         <section aria-labelledby={`${uid}-t4`}>
-          <h1 id={`${uid}-t4`} className="mb-3 font-serif text-[26px] font-medium">
+          <h1
+            id={`${uid}-t4`}
+            tabIndex={-1}
+            className="mb-3 font-serif text-[26px] font-medium outline-none"
+          >
             {TEXTES.contratTitre}
           </h1>
           <div

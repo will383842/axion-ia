@@ -42,6 +42,7 @@ import {
 } from "@/features/apporteurs-reseau/regles";
 import {
   etatDeLaPage,
+  nomAjoutable,
   piecesDeposables,
   signerContrat,
 } from "@/features/apporteurs-reseau/signature";
@@ -162,6 +163,9 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   let denomination = champ(fd, "denomination", 250);
   let adresse = champ(fd, "adresse", 400);
   let codeNaf: string | null = null;
+  // Registre muet (panne, 429 persistant, entreprise introuvable) : on garde la saisie
+  // manuelle, mais le dossier est MARQUÉ « à contrôler » dans la console (jamais en silence).
+  let registreIndisponible = false;
   const registre = await lireEntrepriseParSiren(siren);
   if (registre.ok) {
     const admission = jugerAdmission(registre.entreprise);
@@ -171,6 +175,8 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
     codeNaf = registre.entreprise.naf?.slice(0, 8) ?? null;
   } else if (registre.raison === "siren_invalide") {
     return { ok: false, message: TEXTES.sirenInvalide };
+  } else {
+    registreIndisponible = true;
   }
   if (!denomination || !adresse)
     return { ok: false, message: "Indiquez le nom et l'adresse de votre entreprise." };
@@ -191,8 +197,13 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
     return { ok: false, message: "Ce numéro de téléphone n'est pas valide." };
   }
 
+  // Nom d'un seul mot : l'étape 1 laisse compléter le nom, mais jamais réécrire un nom connu.
+  const nom = nomAjoutable(dossier.nom, champ(fd, "nom", 80));
+
   return enregistrerActivite(dossier.id, {
     telephone: telephone || null,
+    ...(nom ? { nom } : {}),
+    registreIndisponible,
     siren,
     denomination,
     adresse,

@@ -10,6 +10,7 @@
 import type { ValeursContrat } from "./contrat-pdf";
 import {
   ACCEPTATIONS,
+  APPROCHE_VIGILANCE_CENTS,
   DECLARATIONS,
   MOTIFS_A_RETRANSMETTRE,
   manquesPourSigner,
@@ -42,6 +43,20 @@ export function etatDeLaPage(statut: StatutDossier): EtatPage {
     default:
       return "neutre";
   }
+}
+
+/**
+ * Les pièces de vigilance (attestation URSSAF, extrait d'immatriculation) sont-elles
+ * DEMANDÉES à l'apporteur ? Seulement à l'approche du seuil (cumul déjà dû), ou si des
+ * commissions attendent ces pièces, ou s'il en a déjà déposé. Avant, la page « signé » ne
+ * dit pas « déposez » : il n'y a rien à déposer.
+ */
+export function vigilanceDemandee(e: {
+  cumulCents: number;
+  enAttente: boolean;
+  piecesDeposees: number;
+}): boolean {
+  return e.enAttente || e.piecesDeposees > 0 || e.cumulCents >= APPROCHE_VIGILANCE_CENTS;
 }
 
 /** Types de pièces que l'apporteur peut déposer, selon l'état de son dossier. */
@@ -107,6 +122,24 @@ export function nomTapeCorrespond(tape: string, prenom: string, nom: string): bo
   if (!t || !p || !n) return false;
   return t === `${p} ${n}` || t === `${n} ${p}`;
 }
+
+/**
+ * Étape 1 : un nom d'UN SEUL MOT (prénom seul) laisse `nom` vide et la signature est
+ * impossible. L'apporteur peut alors compléter son nom ; on ne l'accepte que si le
+ * dossier n'en a pas déjà un (le serveur ne laisse jamais réécrire un nom connu).
+ * Rend le nom nettoyé, ou `null` s'il ne faut rien écrire.
+ */
+export function nomAjoutable(
+  nomDuDossier: string,
+  saisi: string | null | undefined,
+): string | null {
+  if (nomDuDossier.trim() !== "") return null;
+  const propre = (saisi ?? "").replace(/\s+/g, " ").trim().slice(0, 80);
+  return propre === "" ? null : propre;
+}
+
+/** Marqueur, dans le JSON `declarations`, d'une admission non jugée (registre muet). */
+export const CLE_REGISTRE_INDISPONIBLE = "_registre_indisponible";
 
 // ── Cases ────────────────────────────────────────────────────────────────
 

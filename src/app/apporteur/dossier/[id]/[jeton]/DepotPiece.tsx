@@ -65,9 +65,14 @@ export function DepotPiece({
     fd.set("fichier", fichier);
     if (avecDate) fd.set("dateDelivrance", date);
     demarrer(async () => {
-      const r = await deposerPieceAction(fd);
-      if (r.ok) router.refresh();
-      else setErreur(r.message);
+      try {
+        const r = await deposerPieceAction(fd);
+        if (r.ok) router.refresh();
+        else setErreur(r.message);
+      } catch {
+        // Coupure réseau : le message reste sur l'écran, le choix de la date aussi.
+        setErreur(TEXTES.connexionPerdue);
+      }
     });
   }
 
