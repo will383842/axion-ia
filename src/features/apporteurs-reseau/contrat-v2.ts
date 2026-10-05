@@ -851,11 +851,17 @@ la disposition de chaque partie.
 
 ### A1.1 — Formations collectives
 
-*Forfait de 500 € HT par journée de formation au prix public, réduit au prorata en cas de remise (article 4.1 bis).
-Prix par groupe de 2 à 15 participants.*
+*Forfait de 500 € HT par journée de formation vendue, au prix public, réduit au prorata en cas de remise
+(article 4.1 bis). La commission suit le nombre de journées de la commande : chaque palier porte sa propre
+durée (une demi-journée, une journée, deux jours) et, lorsqu'une même commande porte plusieurs sessions d'un
+même palier, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
 
 *Exemple : une formation générale d'un jour vendue 1 520 € HT au lieu de 1 900 € (remise de 20 %) donne une
 commission de 500 € × 1 520 ÷ 1 900 = 400 €. Vendue au prix public ou plus cher, elle donne 500 €.*
+
+*Exemple de plusieurs journées : cinq journées de formation générale vendues 9 500 € HT (au prix public)
+donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles donnent 2 500 € × 8 550 ÷ 9 500 =
+2 250 €. Aucune limite n'est fixée au nombre de journées.*
 
 | Formation | Durée | Prix public HT | Commission du présent contrat |
 | --- | --- | --- | --- |
