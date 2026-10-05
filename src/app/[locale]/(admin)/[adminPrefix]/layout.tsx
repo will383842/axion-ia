@@ -116,6 +116,11 @@ import {
   COMPTEURS_VIDES,
   type QualiopiNavCounts,
 } from "@/server/admin/qualiopi-nav-counts";
+import {
+  APPORTEURS_NAV_VIDES,
+  compterApporteursNav,
+  type ApporteursNavCounts,
+} from "@/server/admin/apporteurs-nav-counts";
 
 import { peutConsulter } from "@/server/auth/habilitations";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -296,6 +301,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   let staleJobOffersCount = 0;
   // Pastille « Rendez-vous » — seulement pour qui peut voir les appels.
   let rendezVousAFaireCount = 0;
+  // Pastilles du groupe « Apporteurs d'affaires » (fail-soft interne → 0).
+  let apporteursCounts: ApporteursNavCounts = APPORTEURS_NAV_VIDES;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -315,6 +322,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       qualiopiNavCounts,
       staleJobsCount,
       rdvAFaireCount,
+      apporteursNavCounts,
     ] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
@@ -331,6 +339,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       compterQualiopiNav().catch(() => COMPTEURS_VIDES),
       getStaleJobPostingsCount().catch(() => 0),
       peutVoirLesAppels(roleSession) ? getRendezVousAFaireCount().catch(() => 0) : 0,
+      compterApporteursNav().catch(() => APPORTEURS_NAV_VIDES),
     ]);
 
     failedJobsCount = failedCount;
@@ -340,6 +349,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     qualiopiCounts = qualiopiNavCounts;
     staleJobOffersCount = staleJobsCount;
     rendezVousAFaireCount = rdvAFaireCount;
+    apporteursCounts = apporteursNavCounts;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -494,6 +504,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             qualiopiCounts={qualiopiCounts}
             staleJobOffersCount={staleJobOffersCount}
             rendezVousAFaireCount={rendezVousAFaireCount}
+            apporteursCounts={apporteursCounts}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}
