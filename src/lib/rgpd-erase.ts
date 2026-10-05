@@ -31,6 +31,7 @@ import type {
   PrismaClient,
 } from "../../prisma/generated/client";
 import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -2207,7 +2208,13 @@ export async function eraseReseauApporteurForEmail(
   });
   const a = await prisma.apporteurReseau.findUnique({
     where: { emailHash: empreinte },
-    select: { id: true, signeParSocieteAt: true, _count: { select: { commissions: true } } },
+    select: {
+      id: true,
+      signeParSocieteAt: true,
+      contratCle: true,
+      contratSigneCle: true,
+      _count: { select: { commissions: true } },
+    },
   });
   if (!a) return { apporteur: "aucun", presentationsAnonymisees: presentations.count };
   await prisma.pieceApporteurContenu.deleteMany({ where: { piece: { apporteurId: a.id } } });
@@ -2226,9 +2233,25 @@ export async function eraseReseauApporteurForEmail(
       presentationsAnonymisees: presentations.count,
     };
   }
+  // Dossier NON conservé par obligation légale : les PDF signés (nom tapé, identité du
+  // contrat) quittent aussi R2. Une panne de R2 ne bloque pas l'effacement : elle est
+  // signalée (sans donnée personnelle) et les clés sont tout de même retirées de la base.
+  for (const cle of [a.contratCle, a.contratSigneCle]) {
+    if (!cle) continue;
+    try {
+      const { deleteFromR2 } = await import("@/lib/r2-storage");
+      await deleteFromR2(cle);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "rgpd-erase", step: "pdf-apporteur-r2" } });
+    }
+  }
   await prisma.apporteurReseau.update({
     where: { id: a.id },
     data: {
+      contratCle: null,
+      contratSha256: null,
+      contratSigneCle: null,
+      contratSigneSha256: null,
       prenom: ERASED_PLACEHOLDER,
       nom: ERASED_PLACEHOLDER,
       email: ERASED_PLACEHOLDER,
