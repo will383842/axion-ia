@@ -29,6 +29,7 @@ import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -238,7 +239,16 @@ export function ApporteurIssueAbsentEmail({ locale, payload }: Props) {
       famille="B"
       preview={t.absent.preview}
       title={t.absent.title}
-      {...(calendlyUrl ? { cta: { label: t.absent.cta, href: calendlyUrl } } : {})}
+      {...(calendlyUrl
+        ? {
+            // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
+            // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).
+            cta: {
+              label: t.absent.cta,
+              href: lienDeReservationDuSite(calendlyUrl, { depuis: "email-issue-apporteur" }),
+            },
+          }
+        : {})}
       locale={locale}
       sansReseauxSociaux
       signature="fondateur-court"

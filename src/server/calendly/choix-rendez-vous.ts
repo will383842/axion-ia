@@ -3,9 +3,13 @@
 // Chantier « Types de rendez-vous », lot L2. Plan :
 // `_PLAN-TYPES-RDV-2026-10-04/PLAN.md`.
 //
-// `/appel` propose désormais deux rendez-vous, pris sur le MÊME compte Calendly :
+// `/appel` propose deux rendez-vous au public, pris sur le MÊME compte Calendly :
 //   · `?rdv=diagnostic` — « Diagnostic IA » (type `diagnostic-ia`) ;
 //   · `?rdv=projet`     — « Échange projet » (type `premier-contact`).
+// Depuis le 2026-10-05, deux autres types « En privé » suivent le même parcours,
+// sans figurer sur l'écran du choix : `apporteur` et `salon`. La table qui décrit
+// les quatre est `types-reservables.ts` ; ce module n'en garde que la traduction
+// « choix → URL Calendly », le repli et les paramètres d'URL.
 //
 // Ce module est la SEULE traduction « choix du visiteur → URL Calendly ». Le
 // widget, les créneaux, le formulaire maison, le lien de secours, la capture de
@@ -30,15 +34,23 @@ import {
   classerParNom,
   estTypeRendezVous,
   uriDeTypeValide,
-  URL_CALENDLY_APPEL_PAR_DEFAUT,
-  URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
-  URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
+import {
+  CHOIX_PUBLICS,
+  CHOIX_RENDEZ_VOUS,
+  choixDuTypeRendezVous,
+  configDuChoix,
+  estUnChoix,
+  estUnChoixPublic,
+  urlConfigureeDuChoix,
+  type ChoixPublic,
+  type ChoixRendezVous,
+} from "@/server/calendly/types-reservables";
 
-/** Les deux choix offerts au public. */
-export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet"] as const;
-export type ChoixRendezVous = (typeof CHOIX_RENDEZ_VOUS)[number];
+// Réexportés : toutes les pages du parcours importent leurs choix d'ici.
+export { CHOIX_PUBLICS, CHOIX_RENDEZ_VOUS, urlConfigureeDuChoix };
+export type { ChoixPublic, ChoixRendezVous };
 
 /** Nom du paramètre d'URL qui porte le choix (`/appel?rdv=…`). */
 export const PARAM_RDV = "rdv";
@@ -49,7 +61,7 @@ export const PARAM_DEPUIS = "depuis";
 export function lireChoixRendezVous(valeur: unknown): ChoixRendezVous | null {
   if (typeof valeur !== "string") return null;
   const v = valeur.trim().toLowerCase();
-  return (CHOIX_RENDEZ_VOUS as readonly string[]).includes(v) ? (v as ChoixRendezVous) : null;
+  return estUnChoix(v) ? v : null;
 }
 
 /** Longueur maximale de l'emplacement : `utm_content` en tient 100. */
@@ -69,7 +81,7 @@ export function lireDepuis(valeur: unknown): string | null {
 
 /** Le type de rendez-vous visé par un choix. */
 export function typeDuChoix(choix: ChoixRendezVous): TypeRendezVous {
-  return choix === "diagnostic" ? "diagnostic" : "echange_projet";
+  return configDuChoix(choix).type;
 }
 
 /**
@@ -146,27 +158,41 @@ export function parametresDuRetour(depuis?: string | null, suivi?: SuiviArrivee 
   return p.toString();
 }
 
-function urlOuDefaut(valeur: string | undefined, defaut: string): string {
-  const v = valeur?.trim();
-  return v ? v : defaut;
-}
-
 /** URL du type appel (« Échange projet »), configurée ou par défaut. */
 export function urlCalendlyAppel(): string {
-  return urlOuDefaut(process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL, URL_CALENDLY_APPEL_PAR_DEFAUT);
+  return urlConfigureeDuChoix("projet");
 }
 
 /** URL du type « Diagnostic IA », configurée ou par défaut. */
 export function urlCalendlyDiagnostic(): string {
-  return urlOuDefaut(
-    process.env.NEXT_PUBLIC_CALENDLY_DIAGNOSTIC_URL,
-    URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
-  );
+  return urlConfigureeDuChoix("diagnostic");
 }
 
-/** L'URL configurée d'un choix, SANS vérification chez Calendly. */
-export function urlConfigureeDuChoix(choix: ChoixRendezVous): string {
-  return choix === "diagnostic" ? urlCalendlyDiagnostic() : urlCalendlyAppel();
+/**
+ * Où ramener le visiteur vers le CALENDRIER de ce rendez-vous.
+ *
+ * · diagnostic / projet : `/fr/appel?rdv=…` — l'adresse historique, inchangée ;
+ * · apporteur / salon (liens privés) : leur propre adresse, `/fr/appel/<route>`,
+ *   sans jamais passer par l'écran du choix qui ne les liste pas.
+ *
+ * 🔑 UNE SEULE FONCTION pour la page du formulaire, l'action qui l'envoie et le
+ * retour d'erreur : trois constructions de la même adresse finiraient par
+ * diverger, et la divergence ramènerait un invité privé sur le choix public.
+ */
+export function lienDuCalendrier(
+  locale: string,
+  choix: ChoixRendezVous,
+  depuis?: string | null,
+  suivi?: SuiviArrivee | null,
+): string {
+  if (estUnChoixPublic(choix)) return `/${locale}/appel?${parametresDuChoix(choix, depuis, suivi)}`;
+  const retour = parametresDuRetour(depuis, suivi);
+  return `/${locale}/appel/${configDuChoix(choix).route}${retour ? `?${retour}` : ""}`;
+}
+
+/** Ajoute `cle=valeur` à une adresse qui porte, ou non, déjà une chaîne de requête. */
+export function avecParametre(chemin: string, parametre: string): string {
+  return `${chemin}${chemin.includes("?") ? "&" : "?"}${parametre}`;
 }
 
 /** Vrai au build (stubs) ou sans jeton : aucune requête ne doit partir. */
@@ -258,10 +284,8 @@ export async function resoudreChoix(choix: ChoixRendezVous): Promise<ChoixResolu
   return resoudreAvec(choix, await typesParChemin());
 }
 
-/** Les deux choix résolus d'un coup (une seule lecture de la liste, en cache). */
-export async function resoudreLesDeuxChoix(): Promise<
-  Readonly<Record<ChoixRendezVous, ChoixResolu>>
-> {
+/** Les deux choix PUBLICS résolus d'un coup (une seule lecture de la liste, en cache). */
+export async function resoudreLesDeuxChoix(): Promise<Readonly<Record<ChoixPublic, ChoixResolu>>> {
   const table = await typesParChemin();
   return { diagnostic: resoudreAvec("diagnostic", table), projet: resoudreAvec("projet", table) };
 }
@@ -293,17 +317,15 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
     ? rdv.typeRendezVous
     : classerParNom(rdv.eventTypeName);
   if (type === "diagnostic") return resoudreAvec("diagnostic", table).url;
-  if (type === "apporteur") {
-    return urlOuDefaut(process.env.CALENDLY_APPORTEUR_URL, URL_CALENDLY_APPORTEUR_PAR_DEFAUT);
-  }
-  return urlCalendlyAppel();
+  // Apporteur, salon : leur propre adresse. Avant le 2026-10-05, un salon retombait
+  // ici sur le type appel — ce que seul l'écran « sur place » du report masquait.
+  const choix = choixDuTypeRendezVous(type);
+  return choix ? urlConfigureeDuChoix(choix) : urlCalendlyAppel();
 }
 
-/** Le choix public correspondant à un type stocké (`null` hors des deux choix). */
+/** Le choix correspondant à un type stocké (`null` pour `autre`). */
 export function choixDuType(type: unknown): ChoixRendezVous | null {
-  if (type === "diagnostic") return "diagnostic";
-  if (type === "echange_projet") return "projet";
-  return null;
+  return choixDuTypeRendezVous(type);
 }
 
 /**

@@ -99,7 +99,10 @@ describe("l'invitation — le seul e-mail qui porte le lien de réservation", ()
         payload={{ contactName: "Nadia Ben", calendlyUrl: CALENDLY, dossierUrl: DOSSIER }}
       />,
     );
-    expect(h).toContain(CALENDLY);
+    // 2026-10-05 : le bouton mène à NOTRE page de réservation (l'adresse Calendly
+    // reste dans la charge utile, jamais dans le message).
+    expect(h).toContain("/fr/appel/apporteur");
+    expect(h).not.toContain(CALENDLY);
     expect(h).toMatch(/\/fr\/catalogue"/);
     expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(h).toContain(DOSSIER);

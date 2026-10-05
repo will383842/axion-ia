@@ -89,8 +89,13 @@
 import { CALENDLY_API_BASE } from "./api";
 import { canalDuRendezVous } from "./canal";
 
-/** Le format demandé, tel que la page le propose. */
-export type FormatDemande = "telephone" | "visio";
+/**
+ * Le format demandé, tel que la page le propose.
+ *
+ * `sur_place` (2026-10-05) : la rencontre au salon GOFAB. NON MESURÉ contre l'API
+ * de production à l'écriture (pas de jeton en local) — voir `corpsDeLaDemande`.
+ */
+export type FormatDemande = "telephone" | "visio" | "sur_place";
 
 /**
  * Correspondance entre notre vocabulaire et celui de Calendly.
@@ -102,6 +107,11 @@ export type FormatDemande = "telephone" | "visio";
 const KIND_CALENDLY: Readonly<Record<FormatDemande, string>> = {
   telephone: "outbound_call",
   visio: "google_conference",
+  // ⚠️ Le seul des trois NON mesuré : c'est le `kind` que la référence publique
+  // de Calendly illustre pour le présentiel. S'il était refusé, la réservation
+  // retombe sur `refus` (formulaire rendu avec son lien Calendly) — jamais sur un
+  // rendez-vous au mauvais format, que la relecture du lieu refuserait de toute façon.
+  sur_place: "physical",
 };
 
 /** Ce que l'appelant doit savoir pour choisir sa réponse. */
@@ -210,6 +220,11 @@ export interface DemandeReservation {
    * `tracking` de l'invité, puis dans notre colonne `utm_content` au sondage.
    */
   readonly utmContent?: string | null;
+  /**
+   * L'adresse du lieu, pour un rendez-vous SUR PLACE : celle que Calendly donne
+   * lui-même dans les lieux de l'événement. Jamais saisie par le visiteur.
+   */
+  readonly adresseDuLieu?: string | null;
 }
 
 /** Nombre maximal d'invités accepté par Calendly. */
@@ -279,6 +294,9 @@ export function corpsDeLaDemande(
   // 🔑 Le numéro va dans `location.location`. Vérifié le 2026-09-01 : c'est là
   // que Calendly le range, et l'événement créé le rend à cet endroit.
   if (d.format === "telephone" && d.telephone) lieu["location"] = d.telephone;
+  // Sur place : l'adresse de l'événement, telle que Calendly la porte — jamais un
+  // texte du visiteur. Sans elle, `kind` seul : le lieu unique de l'événement.
+  if (d.format === "sur_place" && d.adresseDuLieu) lieu["location"] = d.adresseDuLieu;
 
   // 🔴 ET AUSSI DANS `invitee.text_reminder_number`, DEPUIS LE 2026-09-03.
   //

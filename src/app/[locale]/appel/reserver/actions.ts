@@ -57,7 +57,10 @@ import {
   provenanceEnBloc,
   resoudreChoix,
   utmContentDuChoix,
+  avecParametre,
+  lienDuCalendrier,
 } from "@/server/calendly/choix-rendez-vous";
+import { formatsProposes } from "@/server/calendly/types-reservables";
 
 /**
  * ## 🔴 DEUX QUOTAS, ET C'EST LA LEÇON D'UN DÉFAUT DÉJÀ PAYÉ
@@ -154,7 +157,9 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   // renvoi (erreur, drapeau éteint) les garde dans l'URL.
   const suivi = lireSuiviArrivee(Object.fromEntries(fd.entries()));
   const params = parametresDuChoix(choix, depuis, suivi);
-  const calendrier = `/${locale}/appel?${params}`;
+  // Le calendrier DU BON TYPE (`lienDuCalendrier`) : l'adresse historique pour les
+  // deux types publics, la leur pour l'échange apporteur et le salon.
+  const calendrier = lienDuCalendrier(locale, choix, depuis, suivi);
 
   // Le drapeau peut s'éteindre entre l'affichage du formulaire et son envoi —
   // c'est même tout l'intérêt d'un drapeau : pouvoir couper en une minute.
@@ -249,6 +254,9 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     ...provenanceEnBloc(suivi, utm),
     // Le BOUTON qui a mené ici — mesure « quel bouton rapporte ».
     utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
+    // Les formats DE CE TYPE, jugés comme la page du formulaire les a annoncés.
+    formats: formatsProposes(choix, et.lieux?.formats),
+    adresseDuLieu: et.lieux?.adresse ?? null,
   });
 
   // 🔴 UN CRÉNEAU EXPIRÉ NE SE REPLIE PAS VERS LE FORMULAIRE.
@@ -264,7 +272,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   // n'existe plus, donc le formulaire n'aurait rien à confirmer. Ce qui se
   // répare, c'est le silence.
   if (!validation.ok && validation.erreurs[CHAMPS.debut] !== undefined) {
-    redirect(`${calendrier}&creneau=indisponible`);
+    redirect(avecParametre(calendrier, "creneau=indisponible"));
   }
 
   if (!validation.ok) {

@@ -45,6 +45,7 @@ import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import { SITE_URL } from "@/lib/site-url";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import type { Locale } from "../../../../prisma/generated/client";
 // 🔑 `import type`, et rien d'autre : le type est celui que la console FABRIQUE
 // (`invitation-apporteur.ts`), le gabarit ne fait que le lire. L'import est
@@ -58,6 +59,11 @@ interface Payload {
   contactName?: string;
   /** Lien de réservation Calendly (validé à l'envoi : https, calendly.com). */
   calendlyUrl: string;
+  /**
+   * Vrai pour l'aperçu RECONSTITUÉ d'une invitation partie avant le 2026-10-05 :
+   * le bouton garde le lien Calendly brut, comme dans le message réellement envoyé.
+   */
+  lienBrut?: boolean;
   /** Présent seulement si le dossier complet n'est pas encore arrivé. */
   dossierUrl?: string;
   /** Saisie manuelle seulement. Absent : texte d'origine (jobs anciens compris). */
@@ -307,6 +313,14 @@ export function ApporteurInvitationAppelEmail({
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
   const dossierUrl =
     typeof p.dossierUrl === "string" && p.dossierUrl.length > 0 ? p.dossierUrl : null;
+  // 2026-10-05 : le bouton mène à NOTRE page de réservation (`/fr/appel/apporteur`)
+  // quand l'adresse reçue est celle de l'échange apporteur ; toute autre adresse
+  // (lien saisi à la main) reste telle quelle. La charge utile garde l'adresse
+  // Calendly : voir `@/lib/calendly/lien-du-site`.
+  const lienReservation =
+    p.lienBrut === true
+      ? p.calendlyUrl
+      : lienDeReservationDuSite(p.calendlyUrl, { depuis: "email-invitation-apporteur" });
   // 2026-09-28 — la variante `offre` l'emporte sur tout le reste : elle porte
   // sa propre provenance (art. 14) et son propre récit.
   const offre = lireOffre(payload);
@@ -324,7 +338,7 @@ export function ApporteurInvitationAppelEmail({
         famille="B"
         preview={t.previewOffre}
         title={t.titleOffre}
-        cta={{ label: t.ctaCandidature, href: p.calendlyUrl }}
+        cta={{ label: t.ctaCandidature, href: lienReservation }}
         locale={locale}
         sansReseauxSociaux
         {...(p.sansSignature !== true ? { signature: "fondateur-court" as const } : {})}
@@ -363,7 +377,7 @@ export function ApporteurInvitationAppelEmail({
       famille="B"
       preview={candidature ? t.previewCandidature : t.preview}
       title={candidature ? t.titleCandidature : t.title}
-      cta={{ label: candidature ? t.ctaCandidature : t.cta, href: p.calendlyUrl }}
+      cta={{ label: candidature ? t.ctaCandidature : t.cta, href: lienReservation }}
       locale={locale}
       sansReseauxSociaux
       // 2026-09-27 (Will) : l'invitation d'un CANDIDAT ouvre un vrai dialogue

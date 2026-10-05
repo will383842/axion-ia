@@ -42,6 +42,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import { VARIANTE_DOSSIER_COMMENCE } from "@/lib/commercial-application/kit-apporteur";
 import {
   VARIANTE_VSL_ABANDON,
@@ -177,7 +178,12 @@ export function LeadApporteurRecuEmail({
         ? t.bodyDossier
         : t.body;
   const bouton = etape2
-    ? { label: t.ctaEtape2, href: p.calendlyUrl as string }
+    ? {
+        label: t.ctaEtape2,
+        // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
+        // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).
+        href: lienDeReservationDuSite(p.calendlyUrl as string, { depuis: "email-vsl-apporteur" }),
+      }
     : { label: abandon ? t.ctaAbandon : t.cta, href: p.dossierUrl };
   return (
     <EmailLayout

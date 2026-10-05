@@ -105,7 +105,9 @@ describe("objets", () => {
 describe("le lien de réservation", () => {
   it("part dans B1, en bouton principal", async () => {
     const h = await html(B1);
-    expect(h).toContain(CALENDLY);
+    // 2026-10-05 : le bouton mène à NOTRE page de réservation.
+    expect(h).toContain("/fr/appel/apporteur");
+    expect(h).not.toContain(CALENDLY);
     expect(texte(h)).toMatch(/Choisir mon créneau/);
   });
 
