@@ -556,6 +556,11 @@ export const config = {
     // `[locale]`. Sans l'exclusion, la règle 0bis la 301 vers `/fr/document/…`
     // (404). Ses en-têtes sont posés par la route et par `next.config.ts`.
     // `/documents-x` reste couvert (la barre fait partie du motif).
-    "/((?!api/|widget/|qr/|questionnaire/|document/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    // `apporteur/dossier/` exclu (2026-10-05) : le dossier en ligne d'un apporteur du
+    // réseau (`src/app/apporteur/dossier/[id]/[jeton]/`), page racine hors `[locale]`
+    // comme le questionnaire. Sans l'exclusion, la règle 0bis la 301 vers
+    // `/fr/apporteur/dossier/…` (404). En-têtes posés par `next.config.ts`.
+    // `/fr/apporteurs…` reste couvert (le motif exige `apporteur/dossier/` en tête).
+    "/((?!api/|widget/|qr/|questionnaire/|document/|apporteur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

@@ -35,7 +35,11 @@ import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
-import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
+import {
+  exporterDossierClientPour,
+  exporterReseauApporteurPour,
+  NOTICE_EXCLUSIONS_DOSSIER,
+} from "@/lib/rgpd-dossier-client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
 
@@ -252,6 +256,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // dans `src/lib/rgpd-dossier-client.ts`.
   const dossierClient = await exporterDossierClientPour(email);
 
+  // Réseau d'apporteurs (2026-10-05) : le dossier de l'apporteur, ou qui a présenté la personne.
+  const reseauApporteurs = await exporterReseauApporteurPour(email);
+
   // Registre de consentements (lot L4) — la PREUVE de ce que la personne a
   // accepté, et quand. Elle fait partie de « toutes les données la concernant ».
   const consentEvents = lookupHash
@@ -466,6 +473,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      * paroles, les faits vous concernant, les preuves de votre accord.
      */
     dossierClient,
+    reseauApporteurs,
     consentEvents,
     /** Liste d'opposition : l'empreinte de votre adresse, si vous vous êtes opposé(e). */
     oppositions,

@@ -1,0 +1,249 @@
+// Réseau d'apporteurs (démarrage manuel, 2026-10-05) — la FICHE d'un apporteur :
+// son dossier, ses pièces à vérifier, la décision (oui / à compléter / non), son contrat,
+// les entreprises qu'il a présentées (avec la date d'ajout), ses commissions, son parrain.
+
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
+import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
+import { PiecesVerification, type PieceAffichee } from "@/components/admin/apporteurs/fiche/PiecesVerification";
+import { LIBELLE_STATUT_APPORTEUR, lireFicheApporteur } from "@/features/apporteurs-reseau/requetes-console";
+import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
+import { gardePage } from "@/server/auth/garde-page";
+
+export const dynamic = "force-dynamic";
+
+interface PageProps {
+  params: Promise<{ adminPrefix: string; id: string }>;
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const jour = (d: Date) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Paris" });
+const jourHeure = (d: Date) =>
+  `${jour(d)} à ${d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" })}`;
+
+const LIBELLE_PRESENTATION: Record<string, string> = {
+  reservee: "Réservée, en attente de réponse",
+  confirmee: "Protégée",
+  deja_connue: "Déjà connue",
+  hors_champ: "Hors champ",
+  dementie: "Démentie par l'entreprise",
+  terminee: "Terminée",
+};
+
+const LIBELLE_COMMISSION: Record<string, string> = {
+  a_qualifier: "À qualifier",
+  due: "À verser",
+  en_attente_vigilance: "En attente des pièces URSSAF",
+  versee: "Versée",
+  reprise: "Reprise",
+};
+
+function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0">
+      <span className="text-[color:var(--color-admin-fg-muted)]">{libelle}</span>
+      <span className="text-right font-medium">{valeur ?? "—"}</span>
+    </div>
+  );
+}
+
+export default async function FicheApporteurPage({ params }: PageProps) {
+  const { adminPrefix, id } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) return <AccesRefuse motif={acces.motif} />;
+  if (!UUID.test(id)) notFound();
+  const fiche = await lireFicheApporteur(id.toLowerCase());
+  if (!fiche) notFound();
+  const { dossier: d } = fiche;
+  const base = `/fr/${adminPrefix}/apporteurs`;
+  const aVerifier = d.statut === "a_verifier";
+  const pieces: PieceAffichee[] = d.pieces.map((p) => ({
+    id: p.id,
+    type: p.type,
+    statut: p.statut,
+    motif: p.motif,
+    nomFichier: p.nomFichier,
+    deposeeLe: jour(p.deposeeAt),
+    lienOuvrir: `${base}/${d.id}/pieces/${p.id}`,
+  }));
+  const statut = STATUTS_JURIDIQUES.find((s) => s.valeur === d.statutJuridique)?.libelle ?? d.statutJuridique;
+  const totalVerse = fiche.commissions.filter((c) => c.statut === "versee").reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  const totalDu = fiche.commissions
+    .filter((c) => c.statut === "due" || c.statut === "en_attente_vigilance")
+    .reduce((s, c) => s + (c.montantCents ?? 0), 0);
+
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-5)]">
+      <AdminPageHeader
+        title={`${d.prenom} ${d.nom}`.trim() || "Apporteur"}
+        description={d.denomination ?? undefined}
+        meta={<span className="font-semibold">{LIBELLE_STATUT_APPORTEUR[d.statut]}</span>}
+        actions={
+          <Link href={base} className="admin-button-secondary">
+            Tous les apporteurs
+          </Link>
+        }
+      />
+
+      {aVerifier ? (
+        <AdminCard as="section" elevation={2}>
+          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
+            Dossier signé : à vérifier
+          </h2>
+          <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+            Vérifie chaque pièce, relis le contrat signé, puis choisis.
+          </p>
+          <DecisionDossier apporteurId={d.id} />
+        </AdminCard>
+      ) : null}
+
+      {d.statut === "a_completer" && d.dernierMessage ? (
+        <AdminCard as="section">
+          <strong>Complément demandé :</strong> {d.dernierMessage}
+        </AdminCard>
+      ) : null}
+
+      <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
+        <AdminCard as="section">
+          <h2 className="mb-[var(--space-admin-2)] font-semibold">Identité et activité</h2>
+          <Ligne libelle="E-mail" valeur={d.email} />
+          <Ligne libelle="Téléphone" valeur={d.telephone} />
+          <Ligne libelle="SIREN" valeur={d.siren} />
+          <Ligne libelle="Entreprise" valeur={d.denomination} />
+          <Ligne libelle="Adresse" valeur={d.adresse} />
+          <Ligne libelle="Statut" valeur={statut} />
+          <Ligne libelle="Code NAF" valeur={d.codeNaf} />
+          <Ligne
+            libelle="TVA"
+            valeur={d.regimeTva === "assujetti" ? `Facture la TVA (${d.numeroTva ?? "numéro manquant"})` : d.regimeTva ? "Ne facture pas la TVA (293 B)" : null}
+          />
+          <Ligne libelle="IBAN" valeur={d.ibanMasque} />
+        </AdminCard>
+
+        <AdminCard as="section">
+          <h2 className="mb-[var(--space-admin-2)] font-semibold">Pièces</h2>
+          <PiecesVerification apporteurId={d.id} pieces={pieces} modifiable={aVerifier || d.statut === "signe"} />
+        </AdminCard>
+
+        <AdminCard as="section">
+          <h2 className="mb-[var(--space-admin-2)] font-semibold">Contrat</h2>
+          <Ligne libelle="Signé par l'apporteur" valeur={d.signeParApporteurAt ? jourHeure(d.signeParApporteurAt) : null} />
+          <Ligne libelle="Contresigné" valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null} />
+          <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
+            {fiche.aContratApporteur ? (
+              <a className="admin-button-secondary" href={`${base}/${d.id}/contrat?quel=apporteur`} target="_blank" rel="noreferrer">
+                Contrat signé par l'apporteur
+              </a>
+            ) : null}
+            {fiche.aContratSigne ? (
+              <a className="admin-button-secondary" href={`${base}/${d.id}/contrat?quel=signe`} target="_blank" rel="noreferrer">
+                Contrat signé des deux parties
+              </a>
+            ) : null}
+          </div>
+          {d.statut === "dossier_en_cours" || d.statut === "a_completer" || d.statut === "signe" ? (
+            <div className="mt-[var(--space-admin-4)]">
+              <EnvoiLienDossier apporteurId={d.id} />
+            </div>
+          ) : null}
+        </AdminCard>
+
+        <AdminCard as="section">
+          <h2 className="mb-[var(--space-admin-2)] font-semibold">Parrainage et note</h2>
+          {fiche.filleuls.length > 0 ? (
+            <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+              Filleuls :{" "}
+              {fiche.filleuls.map((f, i) => (
+                <span key={f.id}>
+                  {i > 0 ? ", " : ""}
+                  <Link href={`${base}/${f.id}`} className="underline">
+                    {f.nom}
+                  </Link>
+                </span>
+              ))}
+            </p>
+          ) : null}
+          <ParrainEtNote
+            apporteurId={d.id}
+            parrainId={fiche.parrainId}
+            parrainsPossibles={fiche.parrainsPossibles}
+            note={fiche.noteInterne}
+          />
+        </AdminCard>
+      </div>
+
+      <AdminCard as="section">
+        <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
+          <h2 className="font-semibold">Entreprises présentées ({fiche.entreprises.length})</h2>
+          <Link href={`${base}/entreprises`} className="admin-button-secondary">
+            Ajouter une entreprise présentée
+          </Link>
+        </div>
+        {fiche.entreprises.length === 0 ? (
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune entreprise présentée pour l'instant.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-[length:var(--text-admin-sm)]">
+              <thead>
+                <tr className="text-[color:var(--color-admin-fg-muted)]">
+                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Ajoutée le</th>
+                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">Entreprise</th>
+                  <th className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">État</th>
+                  <th className="py-[var(--space-admin-2)]">Protégée jusqu'au</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fiche.entreprises.map((e) => (
+                  <tr key={e.id} className="border-t border-[color:var(--color-admin-border)]">
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">{jourHeure(e.recueAt)}</td>
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
+                      <strong>{e.denomination}</strong>
+                      <div className="text-[color:var(--color-admin-fg-muted)]">{e.siren}</div>
+                    </td>
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-3)]">
+                      {LIBELLE_PRESENTATION[e.statut] ?? e.statut}
+                      {e.prolongeeAt ? " (prolongée)" : ""}
+                    </td>
+                    <td className="py-[var(--space-admin-2)]">{e.protegeeJusquAt ? jour(e.protegeeJusquAt) : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </AdminCard>
+
+      <AdminCard as="section">
+        <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
+          <h2 className="font-semibold">
+            Commissions · à verser {euros(totalDu)} · versé {euros(totalVerse)}
+          </h2>
+          <Link href={`${base}/commissions`} className="admin-button-secondary">
+            Toutes les commissions
+          </Link>
+        </div>
+        {fiche.commissions.length === 0 ? (
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission pour l'instant.</p>
+        ) : (
+          <ul className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+            {fiche.commissions.map((c) => (
+              <li key={c.id} className="flex flex-wrap justify-between gap-[var(--space-admin-2)]">
+                <span>
+                  {jour(c.creeAt)} · {c.parrainage ? "Parrainage" : c.activite}
+                  {c.palier ? ` (${c.palier})` : ""} · facture {euros(c.factureHtCents)} HT
+                </span>
+                <span className="font-semibold">
+                  {c.montantCents !== null ? euros(c.montantCents) : "—"} · {LIBELLE_COMMISSION[c.statut] ?? c.statut}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </AdminCard>
+    </div>
+  );
+}

@@ -91,6 +91,7 @@ CREATE TABLE "presentations_entreprise" (
     "personne_nom" TEXT NOT NULL,
     "personne_fonction" VARCHAR(150),
     "personne_email" TEXT NOT NULL,
+    "personne_email_hash" VARCHAR(64),
     "personne_telephone" TEXT,
     "besoin" TEXT,
     "date_echange" DATE,
@@ -154,6 +155,9 @@ CREATE INDEX "presentations_entreprise_apporteur_id_idx" ON "presentations_entre
 
 -- CreateIndex
 CREATE INDEX "presentations_entreprise_statut_idx" ON "presentations_entreprise"("statut");
+
+-- CreateIndex
+CREATE INDEX "presentations_entreprise_personne_email_hash_idx" ON "presentations_entreprise"("personne_email_hash");
 
 -- CreateIndex
 CREATE INDEX "commissions_apporteur_apporteur_id_statut_idx" ON "commissions_apporteur"("apporteur_id", "statut");

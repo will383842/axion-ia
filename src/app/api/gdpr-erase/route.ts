@@ -48,6 +48,7 @@ import {
   eraseDocumentRecipientsForEmail,
   eraseCoachingSignaturesForEmail,
   eraseCalendlyEventsForEmail,
+  eraseReseauApporteurForEmail,
   eraseReponsesEntrantesForEmail,
   effacerCibleParAdresses,
 } from "@/lib/rgpd-erase";
@@ -211,6 +212,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseDocumentRecipientsForEmail(email),
     eraseCoachingSignaturesForEmail(email),
     eraseCalendlyEventsForEmail(email),
+    // Réseau d'apporteurs (2026-10-05) : l'apporteur et les personnes présentées.
+    eraseReseauApporteurForEmail(email),
     // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
     // relevées dans la boîte Zoho : objet et extrait de SES messages.
     eraseReponsesEntrantesForEmail(email),

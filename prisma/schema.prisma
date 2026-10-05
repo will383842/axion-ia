@@ -15298,6 +15298,9 @@ model PresentationEntreprise {
   personneNom        String                @map("personne_nom") @db.Text
   personneFonction   String?               @map("personne_fonction") @db.VarChar(150)
   personneEmail      String                @map("personne_email") @db.Text
+  /// Empreinte de recherche de l'e-mail de la personne (`hashEmailForLookup`) : sert à
+  /// l'export et à l'effacement RGPD de la personne présentée.
+  personneEmailHash  String?               @map("personne_email_hash") @db.VarChar(64)
   personneTelephone  String?               @map("personne_telephone") @db.Text
   besoin             String?               @db.Text
   dateEchange        DateTime?             @map("date_echange") @db.Date
@@ -15322,6 +15325,7 @@ model PresentationEntreprise {
   @@index([siren])
   @@index([apporteurId])
   @@index([statut])
+  @@index([personneEmailHash])
   @@map("presentations_entreprise")
 }
 

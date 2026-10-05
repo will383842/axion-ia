@@ -236,7 +236,9 @@ export type ApporteurCronJobType =
   // 2026-09-27 — relevé des réponses des candidats dans la boîte Zoho Mail.
   | "reponses-entrantes"
   // 2026-09-28 — invitation automatique 15 minutes après la candidature.
-  | "invitation-auto";
+  | "invitation-auto"
+  // 2026-10-05 — démarrage manuel du réseau : protections, commissions, vigilance.
+  | "reseau-quotidien";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
