@@ -94,14 +94,15 @@ const EMPREINTES: Readonly<
 > = {
   devis: { sha: "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90", version: 1 },
   convention: {
-    // v4 — 04/10/2026 : § 5 réécrit (relecture juridique, tour 2) ; v3 archivée.
-    sha: "1e175dba72907cd70a9557fa563fc8aa6f8e39c13b57dcee2b792e7bf24c4d2f",
-    version: 4,
+    // v5 — 04/10/2026 : clause de condition suspensive OPCO (INT-T65-A), de FOND
+    // même si une convention sans case imprime le texte v4 ; v4 archivée.
+    sha: "2bb846d9e800199e49eb27fe59e034268d3b0f925398621b0709d5d8dbd22035",
+    version: 5,
   },
   convention_tripartite: {
-    // v4 — 04/10/2026 : § 5 réécrit (relecture juridique, tour 2) ; v3 archivée.
-    sha: "8216086dbdbf3ef850f3db8180743ce8da785412d09090c57362699f336a647d",
-    version: 4,
+    // v5 — 04/10/2026 : même clause, mot pour mot (INT-T65-A) ; v4 archivée.
+    sha: "b9b3ccb96488c5e04e09f6a089ae13a4e29d995c70cf9b2931661f020eadb5ac",
+    version: 5,
   },
   contrat_formation: {
     // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
@@ -280,6 +281,9 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "convention.v3.tsx": "3dcbfec9920cd196164c5d91111044656f6c717709b294453780a57c6baccdc3",
   "convention-tripartite.v3.tsx":
     "72db3db385ee38f6172f44d52c04d3e5a3488af2212c46a27a655a8119f0772c",
+  "convention.v4.tsx": "4f4a212643f49e4873bae2517b28dfaceab218057e6c9895287e4005798c4b1c",
+  "convention-tripartite.v4.tsx":
+    "fb7fa23dae608dc04921190e5e0538373fc94615bc228f145354c4cda53b154e",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",

@@ -71,7 +71,23 @@ import {
   requireAdminWrite,
   requireHabilitation,
   logQualiopiActivity,
+  donneesJournalQualiopi,
 } from "@/server/actions/qualiopi/_guards";
+import {
+  estJourIso,
+  jourDeParis,
+  debutDuJourDeParis,
+  SEUIL_BPS_MAX,
+  SEUIL_BPS_MIN,
+  SEUIL_CENTS_MIN,
+  type SeuilConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive";
+import {
+  appliquerTransition,
+  changementsTransition,
+  evaluerLecture,
+  lireConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive-service";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
@@ -180,10 +196,59 @@ const sessionIdSchema = z.object({
  * Absent → `ACOMPTE_DEFAUT_PERCENT` (0 depuis le 2026-09-05 : on ne réclame pas
  * par défaut de l'argent que personne n'a promis — cf. `acompte-defaut.ts`).
  */
+/**
+ * INT-T65-A — la condition suspensive OPCO, telle que l'écran l'envoie quand
+ * la case est cochée (forme d'A02). Absente = case non cochée.
+ *
+ * 🔴 AUCUN FLOTTANT ne passe : points de base OU centimes, ENTIERS, exactement
+ * un des deux (les mêmes bornes que les CHECK SQL, dites ici pour rendre un
+ * message plutôt qu'une erreur Postgres). La date limite est un JOUR civil de
+ * Paris (« YYYY-MM-DD »), jamais passé : une condition dont le délai est déjà
+ * écoulé serait caduque à la signature.
+ */
+const conditionSuspensiveOpcoSchema = z
+  .object({
+    seuilConditionBps: z.number().int().min(SEUIL_BPS_MIN).max(SEUIL_BPS_MAX).nullable(),
+    seuilConditionCents: z
+      .number()
+      .int()
+      .min(SEUIL_CENTS_MIN)
+      .max(Number.MAX_SAFE_INTEGER)
+      .nullable(),
+    dateLimite: z.string().refine(estJourIso, "Date limite invalide"),
+  })
+  .strict()
+  .refine((c) => (c.seuilConditionBps === null) !== (c.seuilConditionCents === null), {
+    message: "Un seul seuil : en pourcentage OU en euros",
+  });
+
+type ConditionSuspensiveOpcoEntree = z.infer<typeof conditionSuspensiveOpcoSchema>;
+
+/** Option des producteurs ; `{ erreur }` si la date limite est déjà passée. */
+function optionCondition(
+  c: ConditionSuspensiveOpcoEntree | undefined,
+): { seuil: SeuilConditionSuspensive; jourLimite: string } | undefined | { erreur: string } {
+  if (c === undefined) return undefined;
+  if (c.dateLimite < jourDeParis(new Date())) {
+    return { erreur: "La date limite de la condition suspensive est déjà passée." };
+  }
+  const seuil: SeuilConditionSuspensive =
+    c.seuilConditionBps !== null
+      ? { type: "pourcentage", bps: c.seuilConditionBps }
+      : { type: "montant", cents: c.seuilConditionCents as number };
+  return { seuil, jourLimite: c.dateLimite };
+}
+
 const genererConventionSchema = z.object({
   sessionId: z.string().uuid(),
   acomptePercent: z.number().int().min(0).max(100).optional(),
   rectificationMotif: rectificationMotifSchema,
+  conditionSuspensiveOpco: conditionSuspensiveOpcoSchema.optional(),
+});
+const genererConventionTripartiteSchema = z.object({
+  sessionId: z.string().uuid(),
+  rectificationMotif: rectificationMotifSchema,
+  conditionSuspensiveOpco: conditionSuspensiveOpcoSchema.optional(),
 });
 const enrollmentIdSchema = z.object({
   enrollmentId: z.string().uuid(),
@@ -202,6 +267,7 @@ export async function genererConventionAction(input: {
   sessionId: string;
   acomptePercent?: number;
   rectificationMotif?: string;
+  conditionSuspensiveOpco?: ConditionSuspensiveOpcoEntree;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
@@ -209,6 +275,8 @@ export async function genererConventionAction(input: {
   const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
+  const condition = optionCondition(parsed.data.conditionSuspensiveOpco);
+  if (condition !== undefined && "erreur" in condition) return { error: condition.erreur };
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
@@ -218,6 +286,7 @@ export async function genererConventionAction(input: {
   const resultat = await produireConvention(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+    ...(condition !== undefined ? { conditionSuspensiveOpco: condition } : {}),
   });
   if (!resultat.ok) return { error: resultat.motif };
   const doc = { id: resultat.documentId, numero: resultat.numero };
@@ -232,6 +301,9 @@ export async function genererConventionAction(input: {
       documentId: doc.id,
       numero: doc.numero,
       acomptePercent: acomptePercent ?? ACOMPTE_DEFAUT_PERCENT,
+      // INT-T65-A — la condition est une CLAUSE : seuil, date limite et base
+      // figée appartiennent au journal, comme l'acompte.
+      conditionSuspensiveOpco: resultat.details?.["conditionSuspensiveOpco"] ?? null,
     },
     session: adminSession,
   });
@@ -249,13 +321,16 @@ export async function genererConventionAction(input: {
 export async function genererConventionTripartiteAction(input: {
   sessionId: string;
   rectificationMotif?: string;
+  conditionSuspensiveOpco?: ConditionSuspensiveOpcoEntree;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
-  const parsed = sessionIdSchema.safeParse(input);
+  const parsed = genererConventionTripartiteSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  const condition = optionCondition(parsed.data.conditionSuspensiveOpco);
+  if (condition !== undefined && "erreur" in condition) return { error: condition.erreur };
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
@@ -264,6 +339,7 @@ export async function genererConventionTripartiteAction(input: {
   // worker S5) — ici : garde, validation, journal.
   const resultat = await produireConventionTripartite(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
+    ...(condition !== undefined ? { conditionSuspensiveOpco: condition } : {}),
   });
   if (!resultat.ok) return { error: resultat.motif };
   const doc = { id: resultat.documentId, numero: resultat.numero };
@@ -272,11 +348,167 @@ export async function genererConventionTripartiteAction(input: {
     action: "qualiopi.document.convention_tripartite.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      conditionSuspensiveOpco: resultat.details?.["conditionSuspensiveOpco"] ?? null,
+    },
     session: adminSession,
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2ter. INT-T65-A — condition suspensive OPCO : constat et renonciation
+// ─────────────────────────────────────────────────────────────────────────────
+
+const documentIdSchema = z.object({ documentId: z.string().uuid() }).strict();
+
+const LIBELLE_ETAT: Record<string, string> = {
+  en_attente: "en attente de l'accord de l'OPCO",
+  active: "active",
+  caduque: "caduque",
+};
+
+/**
+ * Constate l'état de la condition suspensive d'une convention, d'après les
+ * dossiers de financement (accord écrit et montant accordé, refus) et la date
+ * limite (fin du jour civil de Paris), et APPLIQUE la transition si elle est
+ * due : `en_attente → active` (accord ≥ seuil dans le délai) ou
+ * `en_attente → caduque` (refus, accord inférieur, délai dépassé).
+ *
+ * Journalisée dans la même transaction que l'écriture. Rien ne sort jamais
+ * d'`active` ni de `caduque` : un accord obtenu après la défaillance appelle
+ * une NOUVELLE convention, qui prend effet à sa propre date de signature.
+ */
+export async function constaterConditionSuspensiveAction(input: {
+  documentId: string;
+}): Promise<ActionResult<{ etat: string; message: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Action désactivée en mode build (stub)" };
+  const parsed = documentIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const lecture = await lireConditionSuspensive(parsed.data.documentId);
+  if (lecture === null) return { error: "Cette pièce ne porte pas de condition suspensive." };
+  if (lecture.document.annulee) return { error: "Cette convention est annulée au registre." };
+  if (lecture.document.etat !== "en_attente") {
+    return {
+      data: {
+        etat: lecture.document.etat,
+        message: `La condition est déjà ${LIBELLE_ETAT[lecture.document.etat]} : son état ne change plus.`,
+      },
+    };
+  }
+
+  const evaluation = evaluerLecture(lecture, new Date());
+  if (evaluation.etat === "en_attente") {
+    return {
+      data: {
+        etat: "en_attente",
+        message:
+          "Aucun accord écrit ni refus n'est saisi sur le dossier de financement, et la date limite n'est pas passée : la condition reste en attente.",
+      },
+    };
+  }
+
+  const journal = await donneesJournalQualiopi({
+    action: `qualiopi.convention.condition_suspensive.${evaluation.etat}`,
+    targetType: "DocumentGenere",
+    targetId: lecture.document.id,
+    changes: changementsTransition(lecture, evaluation),
+    session: adminSession,
+  });
+  const ecrit = await appliquerTransition({
+    documentId: lecture.document.id,
+    vers: evaluation.etat,
+    journal,
+  });
+  if (!ecrit) return { error: "L'état de la condition vient de changer : rechargez la page." };
+  return {
+    data: {
+      etat: evaluation.etat,
+      message:
+        evaluation.etat === "active"
+          ? "Condition accomplie : la convention produit ses effets à sa date de signature."
+          : "Condition défaillie : la convention est caduque. Un accord ultérieur appelle une nouvelle convention.",
+    },
+  };
+}
+
+const renonciationSchema = z
+  .object({
+    documentId: z.string().uuid(),
+    /** Jour (Paris) de la renonciation écrite du client, « YYYY-MM-DD ». */
+    recueLe: z.string().refine(estJourIso, "Date invalide"),
+  })
+  .strict();
+
+/**
+ * Enregistre la RENONCIATION écrite du client à la condition (C. civ. 1304-4),
+ * qu'il peut faire tant qu'elle n'est ni accomplie ni défaillie : la convention
+ * devient `active` et produit ses effets à sa DATE DE SIGNATURE.
+ *
+ * Refusée si un accord, un refus ou la date limite a déjà décidé avant la
+ * renonciation : on ne renonce pas à une condition défaillie.
+ */
+export async function renoncerConditionSuspensiveAction(input: {
+  documentId: string;
+  recueLe: string;
+}): Promise<ActionResult<{ etat: string; message: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Action désactivée en mode build (stub)" };
+  const parsed = renonciationSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const maintenant = new Date();
+  if (parsed.data.recueLe > jourDeParis(maintenant)) {
+    return { error: "La renonciation ne peut pas être datée dans le futur." };
+  }
+  const lecture = await lireConditionSuspensive(parsed.data.documentId);
+  if (lecture === null) return { error: "Cette pièce ne porte pas de condition suspensive." };
+  if (lecture.document.annulee) return { error: "Cette convention est annulée au registre." };
+  if (lecture.document.etat !== "en_attente") {
+    return { error: `La condition est déjà ${LIBELLE_ETAT[lecture.document.etat]}.` };
+  }
+
+  // La renonciation du jour J compte à 00:00 heure de Paris ; aujourd'hui, à
+  // l'instant présent (un événement « futur » ne serait pas lu).
+  const le =
+    parsed.data.recueLe === jourDeParis(maintenant)
+      ? maintenant
+      : debutDuJourDeParis(parsed.data.recueLe);
+  const evaluation = evaluerLecture(lecture, maintenant, [{ type: "renonciation", le }]);
+  if (evaluation.cause !== "renonciation") {
+    return {
+      error:
+        "La condition était déjà accomplie ou défaillie à cette date : la renonciation est sans objet. Utilisez « Constater ».",
+    };
+  }
+
+  const journal = await donneesJournalQualiopi({
+    action: "qualiopi.convention.condition_suspensive.renonciation",
+    targetType: "DocumentGenere",
+    targetId: lecture.document.id,
+    changes: changementsTransition(lecture, evaluation, {
+      renonciationRecueLe: parsed.data.recueLe,
+    }),
+    session: adminSession,
+  });
+  const ecrit = await appliquerTransition({
+    documentId: lecture.document.id,
+    vers: "active",
+    journal,
+  });
+  if (!ecrit) return { error: "L'état de la condition vient de changer : rechargez la page." };
+  return {
+    data: {
+      etat: "active",
+      message:
+        "Renonciation enregistrée : la convention produit ses effets à sa date de signature.",
+    },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

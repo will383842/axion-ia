@@ -118,6 +118,7 @@ import {
 } from "./delai-evaluation-finale";
 import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
 import { regleDepotOpcoAFaire } from "./regle-depot-opco-a-faire";
+import { regleConditionSuspensiveOpco } from "./regle-condition-suspensive-opco";
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
@@ -5071,6 +5072,10 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "moteur_assemble_a_publier", fn: regleMoteurAssembleAPublier },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
   { nom: "exemplaire_signe_non_transmis", fn: regleExemplaireSigneNonTransmis },
+  // INT-T65-A — rappel J-7, état à constater, aucune exécution avant l'accord.
+  // Après les règles de signature : leurs témoins lisent le PREMIER appel à
+  // `documentGenere.findMany`.
+  { nom: "condition_suspensive_opco", fn: regleConditionSuspensiveOpco },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },

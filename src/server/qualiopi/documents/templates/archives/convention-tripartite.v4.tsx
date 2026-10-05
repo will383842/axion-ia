@@ -1,4 +1,20 @@
 /**
+ * ⛔ GABARIT ARCHIVÉ — `convention_tripartite` version 4. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/convention-tripartite.tsx` tel qu'il était sur la branche
+ * `opco/int-t65-a-condition-suspensive` (6c4fd528, à jour de `main`) le 2026-10-04,
+ * avant l'ajout de la clause de condition suspensive OPCO (INT-T65-A, v5).
+ * Seule différence : la mention légale est FIGÉE dans ce fichier, et non plus
+ * lue dans le module vivant `legal-mentions.ts`. Elle n'est pas ajoutée à
+ * `./mentions-figees`, dont l'empreinte est elle-même verrouillée.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts`.
+ */
+
+/**
  * Qualiopi — Convention de formation tripartite (OF + Client + OPCO).
  *
  * Extension de la convention bipartite avec subrogation de paiement OPCO.
@@ -42,12 +58,12 @@ import {
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+
+/** Mention imprimée par la v4, figée au 2026-10-04 (cf. en-tête). */
+const LEGAL_MENTIONS = {
+  convention: "Établie conformément aux articles L.6353-1 et D.6353-1 du Code du travail.",
+} as const;
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import {
-  libelleSeuilClause,
-  type ParametresClauseConditionSuspensiveOpco,
-} from "@/server/qualiopi/financements/condition-suspensive";
 
 // ============================================================
 // Types
@@ -126,12 +142,6 @@ export interface ConventionTripartiteData {
    * et la pièce qu'on lui remettait affichait encore des cadres vides.
    */
   signatures?: PreuvesParPartie;
-  /**
-   * INT-T65-A — paramètres de la clause de condition suspensive OPCO, posés
-   * quand la case a été cochée à la génération. Absent ou `null` : aucune
-   * clause, et le texte imprimé est celui de la v4 (cf. `gabarit-versions.ts`).
-   */
-  conditionSuspensiveOpco?: ParametresClauseConditionSuspensiveOpco | null;
 }
 
 // ============================================================
@@ -189,81 +199,6 @@ function formatEur(montant: number): string {
       currency: "EUR",
       minimumFractionDigits: 2,
     }).format(montant),
-  );
-}
-
-// ============================================================
-// INT-T65-A — clause de condition suspensive OPCO
-// ============================================================
-
-/**
- * 🔴 TEXTE DE LA JURISTE (A07), MOT POUR MOT — validé par Williams le
- * 2026-10-04 à 09h19 UTC, « clause validée, on garde le point 5 »
- * (axion-apporteurs#656, commentaire 5978462914). Il ne se reformule PAS ici :
- * `condition-suspensive-opco-clause.spec.tsx` compare chaque caractère, et la
- * jumelle de cette fonction, dans l'autre convention, porte le même texte
- * (`les-deux-conventions-portent-le-meme-socle.spec.ts`).
- *
- * Imprimée SEULEMENT si la case a été cochée à la génération. Ses trois
- * paramètres sont posés par la convention ; aucun nombre n'est écrit dans le
- * texte : `{opco}` (libellé de l'OPCO du client), `{dateLimite}` (jour civil de
- * Paris, jj/mm/aaaa) et `{seuil}` (« 50 % du prix hors taxes de la
- * présente convention », ou un montant en euros, centimes entiers).
- */
-function ClauseConditionSuspensiveOpco({
-  p,
-}: {
-  p: ParametresClauseConditionSuspensiveOpco;
-}): React.ReactElement {
-  const opco = p.opco;
-  const dateLimite = p.dateLimite;
-  const seuil = libelleSeuilClause(p.seuil);
-  const gras = { fontWeight: "bold" as const };
-  return (
-    <DocSection title="5 bis. Condition suspensive de prise en charge par l'opérateur de compétences">
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"1. La condition."}</Text>
-        {` La présente convention est conclue sous la condition suspensive que l'opérateur de compétences du Client, ${opco}, accorde par écrit, au plus tard le ${dateLimite}, une prise en charge de l'action au moins égale à ${seuil}.`}
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"2. Les diligences."}</Text>
-        {
-          " Le Client dépose sa demande de prise en charge auprès de son opérateur de compétences dans les délais et selon les modalités fixés par celui-ci ; Axion-IA lui remet sans délai les pièces nécessaires. La condition est réputée accomplie si le Client en a empêché l'accomplissement (article 1304-3 du code civil)."
-        }
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"3. L'accomplissement."}</Text>
-        {
-          " Si l'accord écrit est obtenu dans le délai, la condition est accomplie et la convention produit ses effets "
-        }
-        <Text style={gras}>{"à compter de sa date de signature"}</Text>
-        {
-          " (article 1304-6 du code civil). La part du prix non prise en charge reste due par le Client, dans les conditions des conditions générales de vente."
-        }
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"4. La renonciation."}</Text>
-        {
-          " La condition est stipulée dans l'intérêt exclusif du Client. Il peut y renoncer par écrit tant qu'elle n'est ni accomplie ni défaillie (article 1304-4 du code civil) : la convention produit alors ses effets à compter de sa date de signature, et le prix est dû dans les conditions des conditions générales de vente."
-        }
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"5. La défaillance."}</Text>
-        {` À défaut d'accord écrit au moins égal à ${seuil} au ${dateLimite}, ou en cas de refus ou d'accord inférieur notifié avant cette date, la condition défaille : la convention est caduque de plein droit et réputée n'avoir jamais existé. Aucune somme n'est due par le Client et les sommes versées lui sont restituées. Aucune action n'est exécutée avant l'accomplissement de la condition ou la renonciation du Client.`}
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"6. Après la défaillance."}</Text>
-        {
-          " Un accord de prise en charge obtenu après la défaillance ne fait pas revivre la présente convention. Les parties peuvent conclure une nouvelle convention, qui prend effet à sa propre date de signature."
-        }
-      </Text>
-      <Text style={pdfStyles.paragraph}>
-        <Text style={gras}>{"7. Champ de la clause."}</Text>
-        {
-          " La présente clause ne s'applique que si elle figure à la convention. À défaut, la prise en charge par l'opérateur de compétences ne conditionne pas la convention, et elle est régie par les conditions générales de vente."
-        }
-      </Text>
-    </DocSection>
   );
 }
 
@@ -509,11 +444,6 @@ export function ConventionTripartitePdf({
             l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
           </Text>
         </DocSection>
-
-        {/* 5 bis. INT-T65-A — imprimée SEULEMENT si la case a été cochée. */}
-        {data.conditionSuspensiveOpco ? (
-          <ClauseConditionSuspensiveOpco p={data.conditionSuspensiveOpco} />
-        ) : null}
 
         {/* 6. Données personnelles */}
         <DocSection title="6. Données à caractère personnel">
