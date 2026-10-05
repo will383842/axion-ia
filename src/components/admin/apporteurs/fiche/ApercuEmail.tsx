@@ -1,4 +1,5 @@
 "use client";
+// use-client: aperçu d'e-mail à la demande (état local, Server Action d'aperçu)
 
 // L'aperçu EXACT d'un e-mail avant envoi (même motif que l'issue de l'échange apporteur).
 

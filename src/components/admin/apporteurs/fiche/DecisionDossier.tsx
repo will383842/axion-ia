@@ -1,4 +1,5 @@
 "use client";
+// use-client: choix de l'issue du dossier (état local, useTransition + Server Actions)
 
 // Les trois issues d'un dossier signé : oui (contresigner), à compléter, non définitif.
 // Toujours un aperçu de l'e-mail, puis une confirmation.

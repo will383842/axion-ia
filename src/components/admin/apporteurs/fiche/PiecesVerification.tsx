@@ -1,4 +1,5 @@
 "use client";
+// use-client: jugement des pièces (état local, useTransition + Server Actions)
 
 // Les pièces d'un apporteur : ouvrir, puis « conforme » ou « à retransmettre » avec un motif.
 

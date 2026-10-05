@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaires de la fiche (état local, useTransition + Server Actions)
 
 // Fiche apporteur : envoyer le lien du dossier, rattacher un parrain, note interne,
 // et ouvrir un dossier à la main.
