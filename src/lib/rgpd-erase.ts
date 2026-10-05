@@ -30,6 +30,7 @@ import type {
   Prisma,
   PrismaClient,
 } from "../../prisma/generated/client";
+import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -2169,4 +2170,78 @@ export async function rejouerEffacements(
     await tx.clientContactAdresse.deleteMany({ where: { contactId: { in: contactsEffaces } } });
     return { lues: lignes.length, reappliquees };
   });
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// RÉSEAU D'APPORTEURS — démarrage manuel (2026-10-05)
+//
+// · Personne PRÉSENTÉE : ses coordonnées sont remplacées par le marqueur d'effacement ;
+//   la présentation reste (entreprise, SIREN, dates), car elle fonde le droit à
+//   commission de l'apporteur.
+// · APPORTEUR : les octets de ses pièces sont supprimés. S'il a un contrat contresigné
+//   ou des commissions, son identité de facturation est CONSERVÉE (contrat, relevés et
+//   autofactures : art. L.123-22 du code de commerce, art. 17(3)(b)) ; sinon, toutes
+//   ses données personnelles sont effacées et son dossier est fermé.
+// ═════════════════════════════════════════════════════════════════════════════
+
+export interface EraseReseauApporteurResult {
+  apporteur: "aucun" | "efface" | "conserve_obligation_legale";
+  presentationsAnonymisees: number;
+}
+
+export async function eraseReseauApporteurForEmail(
+  email: string,
+): Promise<EraseReseauApporteurResult> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) return { apporteur: "aucun", presentationsAnonymisees: 0 };
+  const presentations = await prisma.presentationEntreprise.updateMany({
+    where: { personneEmailHash: empreinte },
+    data: {
+      personneNom: ERASED_PLACEHOLDER,
+      personneEmail: ERASED_PLACEHOLDER,
+      personneTelephone: null,
+      personneFonction: null,
+      personneEmailHash: null,
+      besoin: null,
+    },
+  });
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { emailHash: empreinte },
+    select: { id: true, signeParSocieteAt: true, _count: { select: { commissions: true } } },
+  });
+  if (!a) return { apporteur: "aucun", presentationsAnonymisees: presentations.count };
+  await prisma.pieceApporteurContenu.deleteMany({ where: { piece: { apporteurId: a.id } } });
+  await prisma.pieceApporteur.updateMany({
+    where: { apporteurId: a.id },
+    data: { nomFichier: ERASED_PLACEHOLDER, purgeeAt: new Date() },
+  });
+  const conserver = a.signeParSocieteAt !== null || a._count.commissions > 0;
+  if (conserver) {
+    await prisma.apporteurReseau.update({
+      where: { id: a.id },
+      data: { telephone: null, noteInterne: null, versionLien: { increment: 1 } },
+    });
+    return {
+      apporteur: "conserve_obligation_legale",
+      presentationsAnonymisees: presentations.count,
+    };
+  }
+  await prisma.apporteurReseau.update({
+    where: { id: a.id },
+    data: {
+      prenom: ERASED_PLACEHOLDER,
+      nom: ERASED_PLACEHOLDER,
+      email: ERASED_PLACEHOLDER,
+      emailHash: `erased:${a.id}`,
+      telephone: null,
+      iban: null,
+      adresse: null,
+      noteInterne: null,
+      dernierMessage: null,
+      signatureApporteur: PrismaRuntime.DbNull,
+      statut: "refuse",
+      versionLien: { increment: 1 },
+    },
+  });
+  return { apporteur: "efface", presentationsAnonymisees: presentations.count };
 }

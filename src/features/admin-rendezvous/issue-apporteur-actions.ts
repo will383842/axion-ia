@@ -139,6 +139,7 @@ export async function enregistrerIssueApporteurAction(
       calendlyEventId: saisie.calendlyEventId,
       issue: saisie.issue,
       motPersonnel: saisie.motPersonnel,
+      ouvrirDossier: true,
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "preparation" } });

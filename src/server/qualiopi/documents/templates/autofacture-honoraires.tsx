@@ -130,6 +130,12 @@ export interface AutofactureData {
   identite: OrganismeIdentite;
   lignes: readonly LigneHonoraires[];
   regimeHonoraires: TvaRegimeHonoraires;
+  /** Délai de contestation en jours (défaut : celui des formateurs, 8 jours). */
+  delaiContestationJours?: number;
+  /** Libellé de l'identifiant du fournisseur (défaut « SIRET »). */
+  libelleIdentifiantFournisseur?: string;
+  /** Référence du mandat de facturation, citée dans l'encart (ex. annexe 2 du contrat). */
+  mandatReference?: string;
   estCopie?: boolean;
   estSpecimen?: boolean;
   specimenMotif?: string;
@@ -142,6 +148,7 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
   const totaux = computeTotauxFacture(lignes, regimeTva, TAUX_TVA_STANDARD);
   const mentionRegimeTva = mentionTva(regimeTva);
   const mentions = mentionsAutofacture(sousTraitant.nom);
+  const delaiJours = data.delaiContestationJours ?? DELAI_CONTESTATION_JOURS;
 
   return (
     <Document>
@@ -161,11 +168,14 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
         */}
         <LegalCallout variant="legal" title={mentions.titre}>
           <Text style={styles.legalLine}>{mentions.pourLeCompte}</Text>
+          {data.mandatReference ? (
+            <Text style={styles.legalLine}>{data.mandatReference}</Text>
+          ) : null}
           <Text style={styles.legalLine}>
             {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur la présente facture.`}
           </Text>
           <Text style={styles.legalLine}>
-            {`Cette facture lui est transmise dès son émission. Il dispose de ${DELAI_CONTESTATION_JOURS} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, elle est réputée acceptée. Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises.`}
+            {`Cette facture lui est transmise dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, elle est réputée acceptée. Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises.`}
           </Text>
         </LegalCallout>
 
@@ -192,7 +202,11 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             value={sousTraitant.adresseProfessionnelle}
             required
           />
-          <FieldRow label="SIRET" value={sousTraitant.siret} required />
+          <FieldRow
+            label={data.libelleIdentifiantFournisseur ?? "SIRET"}
+            value={sousTraitant.siret}
+            required
+          />
           {/*
             ⚠️ Le n° de TVA n'est exigé QUE de l'assujetti. Le réclamer en
             franchise 293 B ou en exonération formation afficherait

@@ -201,13 +201,14 @@ console.log("");
 
 // ══════════════════════════════════════════════════════════════════════════
 // PARTITION — le contrôle qui DISCRIMINE. Cf. en-tête, « ≥ 1 fichier ne suffit
-// pas ». Ces trois buckets se partagent la population des `page-*.js` : chaque
+// pas ». Ces quatre buckets se partagent la population des `page-*.js` : chaque
 // chunk de page appartient à un et un seul d'entre eux.
 // ══════════════════════════════════════════════════════════════════════════
 const PARTITION = {
   univers: ".next/static/chunks/app/**/page-*.js",
   parts: [
     "Routes /appel",
+    "Routes /apporteur/dossier",
     "SOMME des page chunks PUBLICS",
     "SOMME des page chunks de la CONSOLE ADMIN",
   ],
