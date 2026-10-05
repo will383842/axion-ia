@@ -15,11 +15,12 @@ import {
 
 import { EditeurTexte } from "../fiche/ApercuEmail";
 
-type Reponse = "bien_recu" | "deja_connue" | "hors_champ";
+type Reponse = "bien_recu" | "deja_connue" | "pas_disponible" | "hors_champ";
 
 const LIBELLE: Record<Reponse, string> = {
   bien_recu: "✅ Bien reçu",
   deja_connue: "🔁 Déjà connue",
+  pas_disponible: "⛔ Pas disponible",
   hors_champ: "🚫 Hors champ",
 };
 

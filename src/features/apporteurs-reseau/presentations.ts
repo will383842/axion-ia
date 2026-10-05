@@ -5,6 +5,8 @@
  * (`recueAt` fait foi, contrat v2 art. 3.5), puis choisit une réponse :
  *   · « Bien reçu »   → `reservee`, accusé à l'apporteur ET prise de contact de l'entreprise ;
  *   · « Déjà connue » → `deja_connue`, refus motivé « deja-connue » ;
+ *   · « Pas disponible » → `deja_connue`, refus motivé « pas-disponible » (entreprise déjà
+ *     attribuée à un autre apporteur : aucune seconde prise de contact) ;
  *   · « Hors champ »  → `hors_champ`, refus motivé « hors-champ ».
  *
  * 🔑 Une présentation « à traiter » est une `reservee` sans `contactEnvoyeAt` : le schéma
@@ -370,8 +372,57 @@ export async function lireApporteursSignes(): Promise<Array<{ id: string; nom: s
 
 // ── Les trois réponses ───────────────────────────────────────────────────
 
-export type ReponsePresentation = "bien_recu" | "deja_connue" | "hors_champ";
-export const REPONSES: readonly ReponsePresentation[] = ["bien_recu", "deja_connue", "hors_champ"];
+export type ReponsePresentation = "bien_recu" | "deja_connue" | "pas_disponible" | "hors_champ";
+export const REPONSES: readonly ReponsePresentation[] = [
+  "bien_recu",
+  "deja_connue",
+  "pas_disponible",
+  "hors_champ",
+];
+
+export const MESSAGE_DEJA_ATTRIBUEE =
+  "Cette entreprise est déjà attribuée à un autre apporteur : aucune seconde prise de contact ne part. Répondez « Pas disponible » à cet apporteur.";
+
+/**
+ * Cette entreprise est-elle déjà attribuée à UN AUTRE apporteur ? Oui si, pour le même SIREN,
+ * une autre présentation a déjà reçu « Bien reçu » (prise de contact partie) et court encore
+ * (réservée ou confirmée). Une seconde prise de contact nommerait un autre apporteur.
+ */
+export function dejaAttribueeAUnAutre(
+  autres: ReadonlyArray<{
+    apporteurId: string;
+    statut: StatutPresentation;
+    contactEnvoyeAt: Date | null;
+  }>,
+  apporteurId: string,
+): boolean {
+  return autres.some(
+    (a) =>
+      a.apporteurId !== apporteurId &&
+      a.contactEnvoyeAt !== null &&
+      (a.statut === "reservee" || a.statut === "confirmee"),
+  );
+}
+
+async function entrepriseDejaAttribuee(presentationId: string): Promise<boolean> {
+  const p = await prisma.presentationEntreprise.findUnique({
+    where: { id: presentationId },
+    select: { siren: true, apporteurId: true },
+  });
+  if (!p) return false;
+  const autres = await prisma.presentationEntreprise.findMany({
+    where: {
+      siren: p.siren,
+      id: { not: presentationId },
+      apporteurId: { not: p.apporteurId },
+      contactEnvoyeAt: { not: null },
+      statut: { in: ["reservee", "confirmee"] },
+    },
+    select: { apporteurId: true, statut: true, contactEnvoyeAt: true },
+    take: 5,
+  });
+  return dejaAttribueeAUnAutre(autres, p.apporteurId);
+}
 
 export type Civilite = "" | "Monsieur" | "Madame";
 
@@ -393,6 +444,12 @@ interface DonneesEnvoi {
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
 }
+
+const MOTIF_PAR_REPONSE = {
+  deja_connue: "deja-connue",
+  pas_disponible: "pas-disponible",
+  hors_champ: "hors-champ",
+} as const;
 
 /** Les e-mails d'une réponse, dans l'ordre d'envoi. Pur. */
 export function construireEnvoisReponse(
@@ -453,7 +510,7 @@ export function construireEnvoisReponse(
           contactName: nomApporteur,
           entreprise: d.presentation.denomination,
           datePresentation,
-          motif: reponse === "deja_connue" ? "deja-connue" : "hors-champ",
+          motif: MOTIF_PAR_REPONSE[reponse],
         },
         o.textes?.["apporteur-presentation-refusee"],
       ),
@@ -498,6 +555,8 @@ export async function apercuReponse(
   const d = await chargerDonneesEnvoi(id);
   if (!d) return { ok: false, message: "Présentation introuvable." };
   if (!estATraiter(d)) return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
+  if (reponse === "bien_recu" && (await entrepriseDejaAttribuee(id)))
+    return { ok: false, message: MESSAGE_DEJA_ATTRIBUEE };
   const emails = await Promise.all(construireEnvoisReponse(d, reponse, o).map((e) => apercu(e)));
   return { ok: true, emails };
 }
@@ -515,6 +574,8 @@ export async function appliquerReponse(
   if (!d.presentation.personneEmail && reponse === "bien_recu") {
     return { ok: false, message: "La personne présentée n'a pas d'adresse e-mail lisible." };
   }
+  if (reponse === "bien_recu" && (await entrepriseDejaAttribuee(id)))
+    return { ok: false, message: MESSAGE_DEJA_ATTRIBUEE };
   const envois = construireEnvoisReponse(d, reponse, o);
   // 🔑 La ligne est « prise » AVANT tout envoi, par une écriture conditionnelle :
   // deux clics (ou deux onglets) ne répondent jamais deux fois.
@@ -523,7 +584,10 @@ export async function appliquerReponse(
     data:
       reponse === "bien_recu"
         ? { contactEnvoyeAt: maintenant }
-        : { statut: reponse === "deja_connue" ? "deja_connue" : "hors_champ" },
+        : {
+            // « Pas disponible » : la présentation est refusée (déjà attribuée ou connue).
+            statut: reponse === "hors_champ" ? "hors_champ" : "deja_connue",
+          },
   });
   if (prise.count !== 1)
     return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
