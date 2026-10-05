@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { trackFunnel } from "@/lib/tracking";
 
 interface StickyMobileCtaProps {
   /** Cible du CTA principal (path interne i18n). */
@@ -23,10 +24,26 @@ interface StickyMobileCtaProps {
   track?: string;
   /** Scroll Y minimum avant apparition (px). Défaut 600 (~1 hero passé). */
   threshold?: number;
+  /**
+   * Mesure du tunnel (2026-10-05) : si `suivi` est fourni, un clic émet
+   * « Landing CTA Clicked » avec `placement: "sticky"`. Facultatif : les autres
+   * pages qui utilisent ce bouton n'émettent rien, comme avant.
+   */
+  suivi?: { landing: string };
 }
 
-export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyMobileCtaProps) {
+export function StickyMobileCta({
+  href,
+  label,
+  track,
+  threshold = 600,
+  suivi,
+}: StickyMobileCtaProps) {
   const [visible, setVisible] = useState(false);
+  const landingSuivi = suivi?.landing;
+  const auClic = landingSuivi
+    ? () => trackFunnel("Landing CTA Clicked", { landing: landingSuivi, placement: "sticky" })
+    : undefined;
 
   useEffect(() => {
     // P-200 — rAF + dedup pour limiter les setState à 1/frame (60 Hz).
@@ -80,6 +97,7 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
         >
           <Link
             href={href as never}
+            onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
             className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
@@ -103,6 +121,7 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
       >
         <Link
           href={href as never}
+          onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
           className={`bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${

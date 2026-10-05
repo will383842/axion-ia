@@ -23,6 +23,22 @@ describe("funnelKeyFromPath", () => {
     expect(funnelKeyFromPath("/fr/roi")).toBe("roi");
   });
 
+  it("reconnaît le tunnel apporteurs et toutes ses sous-pages", () => {
+    expect(funnelKeyFromPath("/fr/apporteur-affaires")).toBe("apporteur");
+    expect(funnelKeyFromPath("/fr/apporteur-affaires/video")).toBe("apporteur");
+    expect(funnelKeyFromPath("/fr/apporteur-affaires/video/merci")).toBe("apporteur");
+    expect(funnelKeyFromPath("/fr/apporteur-affaires/merci")).toBe("apporteur");
+  });
+
+  it("ne confond PAS la page SEO apporteurs ni le dossier complet avec le tunnel payant", () => {
+    // La page indexée ne reçoit pas de trafic payant : la compter fausserait
+    // le témoin.
+    expect(
+      funnelKeyFromPath("/fr/apporteur-affaires-independant-formation-ia-entreprise"),
+    ).toBeNull();
+    expect(funnelKeyFromPath("/fr/devenir-commercial-ia/candidature")).toBeNull();
+  });
+
   it("ne se laisse pas piéger par une correspondance PARTIELLE", () => {
     // Le piège concret : `/interventions/diagnostic-express` est une page de
     // service sans rapport. Un `includes` nu l'aurait comptée comme du tunnel

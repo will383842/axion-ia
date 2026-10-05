@@ -45,6 +45,7 @@ import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 import { isRouteTunnelFacebook } from "@/lib/analytics/tunnel-facebook-routes";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import { Link } from "@/i18n/navigation";
+import { trackFunnel } from "@/lib/tracking";
 
 export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v1";
 const ANALYTICS_CONSENT_TS_KEY = "axion-cookie-consent-v1:ts";
@@ -294,6 +295,20 @@ export const SCRIPT_AVANT_HYDRATATION = [
   "})();",
 ].join("");
 
+/**
+ * Réponse donnée AU BANDEAU (et non dans « Préférences cookies »). Émet
+ * l'événement anonyme « Consent Banner Answered » : sans ce taux d'acceptation,
+ * on ne saurait pas quelle part des visiteurs d'une publicité le pixel peut
+ * voir. La balise en base ne part que sur les pages du tunnel apporteurs
+ * (`funnelKeyFromPath`) ; Plausible, lui, est sans cookie. ⚠️ Un clic donné
+ * AVANT l'hydratation est traité par le script en ligne, pas par React : il
+ * n'est pas compté (rare, et sans effet sur la décision).
+ */
+function repondreAuBandeau(choix: ConsentChoice): void {
+  writeAnalyticsConsent(choix);
+  trackFunnel("Consent Banner Answered", { step: choix });
+}
+
 export function CookieConsent() {
   const locale = useLocale();
   const isFr = locale === "fr";
@@ -406,7 +421,7 @@ export function CookieConsent() {
             <button
               type="button"
               data-consent="declined"
-              onClick={() => writeAnalyticsConsent("declined")}
+              onClick={() => repondreAuBandeau("declined")}
               className="border-border text-fg hover:bg-bg-soft focus-visible:ring-terracotta h-11 rounded-md border px-4 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
             >
               {isFr ? "Refuser" : "Decline"}
@@ -414,7 +429,7 @@ export function CookieConsent() {
             <button
               type="button"
               data-consent="accepted"
-              onClick={() => writeAnalyticsConsent("accepted")}
+              onClick={() => repondreAuBandeau("accepted")}
               className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta h-11 rounded-md px-4 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
             >
               {isFr ? "Accepter" : "Accept"}
