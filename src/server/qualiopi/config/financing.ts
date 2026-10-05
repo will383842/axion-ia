@@ -192,6 +192,18 @@ export function getFinancingPromptFact(): string {
 }
 
 /**
+ * Seuil PAR DÉFAUT de la condition suspensive de prise en charge par l'OPCO
+ * (INT-T65-A), en points de base : 5000 = 50 % du prix HORS TAXES de la
+ * convention (correction de la juriste A07 : la convention imprime un total HT).
+ *
+ * Source : décision de Williams du 2026-10-04 (issue axion-apporteurs#656,
+ * messages 5978053857 et 5978330543). C'est un DÉFAUT proposé à la saisie : la
+ * valeur retenue est stockée sur la convention (`seuilConditionBps` ou `seuilConditionCents`) et
+ * modifiable convention par convention. Entier, jamais de flottant.
+ */
+export const SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS = 5000 as const;
+
+/**
  * SEUIL de la règle de la part (INT-T61-A, règle d'A02 sur l'issue 656,
  * commentaire 5980505240), en POINTS DE BASE : 9 000 = 90 %.
  *
