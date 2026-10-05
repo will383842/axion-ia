@@ -15,9 +15,9 @@
  * ── L'échec ouvert ───────────────────────────────────────────────────────────────────────────
  * Le délai est de 2 s. Une panne ne LÈVE JAMAIS : elle rend un motif fermé (`timeout`, `http_<code>`,
  * `illisible`, `reseau`, `redirection`), signalé sur la console sans la réponse, sans le SIREN et sans
- * le nom. Une redirection n'est JAMAIS suivie (`redirect: "manual"`, dette de la sécurité, #754,
- * 5987357109) : le jeton porteur ne part vers aucune autre adresse, et tout 3xx est une panne. Le
- * devis n'est jamais bloqué ; l'affichage, lui, dit la panne (jamais un « libre » par défaut).
+ * le nom. Une redirection n'est JAMAIS suivie (`redirect: "manual"`, dette de la sécurité, issue
+ * Partners 754, 5987357109) : le jeton porteur ne part vers aucune autre adresse, et tout 3xx est
+ * une panne. Le devis n'est jamais bloqué ; l'affichage, lui, dit la panne (jamais un « libre » par défaut).
  *
  * ── La donnée de personne ────────────────────────────────────────────────────────────────────
  * Le nom affichable (prénom et initiale) n'est conservé que le temps du cache : 5 minutes, en
@@ -202,7 +202,7 @@ export async function lireAttributionPartners(
   return { ok: true, attribution: lu.data };
 }
 
-// ── Le bandeau (textes de la juriste, #754, 5987058132, MOT POUR MOT) ───────────────────────────
+// ── Le bandeau (textes de la juriste, issue Partners 754, 5987058132, MOT POUR MOT) ─────────────
 
 /**
  * Les textes du bandeau d'attribution, recopiés de la juriste. `{nom}` est le nom affichable rendu
@@ -263,9 +263,9 @@ export function texteDuBandeau(lecture: LectureAttribution): string | null {
 }
 
 /**
- * Le bandeau pour CE rôle (arbitrage de la coordination sur #754) : seuls les rôles qui peuvent
- * créer un devis (`peutEcrire`) le voient. Le rôle est jugé AU SERVEUR, AVANT l'appel : pour un autre
- * rôle, Partners n'est pas appelé, et aucun nom n'entre dans ce qui part au navigateur.
+ * Le bandeau pour CE rôle (arbitrage de la coordination sur l'issue Partners 754) : seuls les rôles
+ * qui peuvent créer un devis (`peutEcrire`) le voient. Le rôle est jugé AU SERVEUR, AVANT l'appel :
+ * pour un autre rôle, Partners n'est pas appelé, et aucun nom n'entre dans ce qui part au navigateur.
  */
 export async function bandeauPourLeRole(
   role: string | null | undefined,

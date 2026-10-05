@@ -1,7 +1,7 @@
 // @req REQ-INT-014
 /**
  * Chantier Axion Partners — INT-T07-A : le bandeau d'attribution d'Axion Partners, et le nom qu'il
- * porte (conditions de la sécurité sur #754).
+ * porte (conditions de la sécurité sur l'issue Partners 754).
  *
  * Ce fichier garde :
  *  — le RENDU : le texte décidé au serveur s'affiche comme TEXTE (jamais en HTML), et rien ne
