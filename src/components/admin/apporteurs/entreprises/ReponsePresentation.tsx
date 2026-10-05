@@ -13,6 +13,8 @@ import {
   type EtatAction,
 } from "@/features/apporteurs-reseau/actions-presentations";
 
+import { EditeurTexte } from "../fiche/ApercuEmail";
+
 type Reponse = "bien_recu" | "deja_connue" | "hors_champ";
 
 const LIBELLE: Record<Reponse, string> = {
@@ -39,13 +41,34 @@ export function ReponsePresentation({
   const [civilite, setCivilite] = useState("");
   const [nomFamille, setNomFamille] = useState(nomFamilleSuggere);
   const [apercu, setApercu] = useState<ApercuReponse | null>(null);
+  // Textes principaux réécrits, par gabarit (absent = texte d'origine) : aperçu ET envoi.
+  const [textes, setTextes] = useState<Record<string, string>>({});
   const [retour, setRetour] = useState<EtatAction | null>(null);
   const [occupe, lancer] = useTransition();
 
   function choisir(r: Reponse): void {
     setChoix(r);
     setApercu(null);
+    setTextes({});
     setRetour(null);
+  }
+
+  function actualiser(gabarit: string, t: string | null): void {
+    if (!choix) return;
+    const suivants = { ...textes };
+    if (t === null) delete suivants[gabarit];
+    else suivants[gabarit] = t;
+    lancer(async () => {
+      const r = await apercuReponseAction({
+        id,
+        reponse: choix,
+        civilite,
+        nomFamille,
+        textes: suivants,
+      });
+      if (r.etat === "apercu") setTextes(suivants);
+      setApercu(r);
+    });
   }
 
   function voir(): void {
@@ -59,7 +82,7 @@ export function ReponsePresentation({
     if (!choix) return;
     lancer(async () => {
       setRetour(
-        await repondreAction({ id, reponse: choix, civilite, nomFamille, confirmer: true }),
+        await repondreAction({ id, reponse: choix, civilite, nomFamille, textes, confirmer: true }),
       );
       setApercu(null);
     });
@@ -163,6 +186,15 @@ export function ReponsePresentation({
                 referrerPolicy="no-referrer"
                 className="h-[50vh] w-full max-w-[680px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-white"
               />
+              {e.gabarit && e.texteDefaut !== undefined ? (
+                <EditeurTexte
+                  key={e.gabarit}
+                  texteDefaut={e.texteDefaut}
+                  texte={textes[e.gabarit] ?? null}
+                  occupe={occupe}
+                  onActualiser={(t) => actualiser(e.gabarit as string, t)}
+                />
+              ) : null}
             </div>
           ))}
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">

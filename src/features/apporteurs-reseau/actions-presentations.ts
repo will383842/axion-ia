@@ -14,9 +14,11 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { fromParisLocalInput } from "@/lib/calendar-grid";
+import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 
 import { lireEntrepriseParSiren } from "./annuaire";
+import type { ApercuRendu, GabaritApporteur } from "./envois";
 import {
   apercuReponse,
   appliquerReponse,
@@ -120,25 +122,47 @@ export interface SaisieReponse {
   reponse: string;
   civilite?: string;
   nomFamille?: string;
+  /** Textes principaux réécrits, par gabarit (facultatif). Jamais journalisés. */
+  textes?: Record<string, string>;
 }
 
-function lireSaisie(
-  s: SaisieReponse,
-): { id: string; reponse: ReponsePresentation; civilite: Civilite; nomFamille: string } | string {
+/** Les seuls gabarits dont la réponse à une présentation laisse réécrire le texte. */
+const GABARITS_REPONSE: readonly GabaritApporteur[] = [
+  "entreprise-prise-de-contact-apporteur",
+  "apporteur-presentation-recue",
+  "apporteur-presentation-refusee",
+];
+
+function lireSaisie(s: SaisieReponse):
+  | {
+      id: string;
+      reponse: ReponsePresentation;
+      civilite: Civilite;
+      nomFamille: string;
+      textes: Partial<Record<GabaritApporteur, string>>;
+    }
+  | string {
   if (!UUID.test(s.id)) return "Présentation inconnue.";
   if (!REPONSES.includes(s.reponse as ReponsePresentation)) return "Réponse inconnue.";
   const civilite: Civilite = s.civilite === "Monsieur" || s.civilite === "Madame" ? s.civilite : "";
+  const textes: Partial<Record<GabaritApporteur, string>> = {};
+  for (const [gabarit, brut] of Object.entries(s.textes ?? {})) {
+    if (!GABARITS_REPONSE.includes(gabarit as GabaritApporteur)) continue;
+    const v = validerTexteLibre(brut);
+    if (!v.ok) return v.message;
+    if (v.texte) textes[gabarit as GabaritApporteur] = v.texte;
+  }
   return {
     id: s.id,
     reponse: s.reponse as ReponsePresentation,
     civilite,
     nomFamille: (s.nomFamille ?? "").trim().slice(0, 120),
+    textes,
   };
 }
 
 export type ApercuReponse =
-  | { etat: "erreur"; message: string }
-  | { etat: "apercu"; emails: Array<{ sujet: string; html: string; destinataire: string }> };
+  { etat: "erreur"; message: string } | { etat: "apercu"; emails: ApercuRendu[] };
 
 export async function apercuReponseAction(s: SaisieReponse): Promise<ApercuReponse> {
   const refus = await sessionEcriture();

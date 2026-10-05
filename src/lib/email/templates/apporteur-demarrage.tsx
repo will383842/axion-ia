@@ -28,6 +28,7 @@ import { Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
+import { paragraphesLibres } from "./texte-libre-reseau";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
@@ -80,6 +81,13 @@ interface Payload {
   numeroAutofacture?: string;
   /** Interne : lien de la fiche de l'apporteur dans la console. */
   lienConsole?: string;
+  /**
+   * Texte principal réécrit par Will (paragraphes séparés par une ligne vide). Quand il
+   * est présent il REMPLACE le corps par défaut (et prime sur `rappel`/`motPersonnel`) ;
+   * le bonjour, le bouton d'action, les pièces à retransmettre, l'information RGPD et la
+   * signature sont conservés. Rendu comme du texte (échappé), jamais en HTML.
+   */
+  texteLibre?: string;
 }
 
 interface Props {
@@ -315,6 +323,19 @@ function MotPersonnel({ p }: { p: Payload }): ReactElement | null {
   return <Text style={{ ...emailStyles.paragraphStyle, whiteSpace: "pre-line" }}>{mot}</Text>;
 }
 
+/** Le texte réécrit de Will, rendu paragraphe par paragraphe (échappé par React). */
+function TexteLibre({ paragraphes }: { paragraphes: string[] }): ReactElement {
+  return (
+    <>
+      {paragraphes.map((t, i) => (
+        <Text key={i} style={{ ...emailStyles.paragraphStyle, whiteSpace: "pre-line" }}>
+          {t}
+        </Text>
+      ))}
+    </>
+  );
+}
+
 // ── Contrat signé ────────────────────────────────────────────────────────
 
 export const apporteurContratSigneSubject = (_locale: Locale): string =>
@@ -324,6 +345,7 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.contratSigne;
   const [e1, e2, e3] = t.ensuite;
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -334,36 +356,44 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>{t.merci}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <MotPersonnel p={p} />
+          <Text style={emailStyles.paragraphStyle}>{t.merci}</Text>
 
-      <Text style={intertitre}>{t.presenterTitre}</Text>
-      <Text style={puce}>{t.presenter}</Text>
-      {t.champs.map((c) => (
-        <Text key={c} style={puce}>
-          • {c}
-        </Text>
-      ))}
-      <Text style={emailStyles.paragraphStyle}>{t.prevenir}</Text>
+          <Text style={intertitre}>{t.presenterTitre}</Text>
+          <Text style={puce}>{t.presenter}</Text>
+          {t.champs.map((c) => (
+            <Text key={c} style={puce}>
+              • {c}
+            </Text>
+          ))}
+          <Text style={emailStyles.paragraphStyle}>{t.prevenir}</Text>
 
-      <Text style={intertitre}>{t.ensuiteTitre}</Text>
-      <Text style={puce}>1. {e1}</Text>
-      <Text style={puce}>2. {e2}</Text>
-      <Text style={emailStyles.paragraphStyle}>3. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}</Text>
+          <Text style={intertitre}>{t.ensuiteTitre}</Text>
+          <Text style={puce}>1. {e1}</Text>
+          <Text style={puce}>2. {e2}</Text>
+          <Text style={emailStyles.paragraphStyle}>
+            3. {e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
+          </Text>
 
-      <Text style={intertitre}>{t.commissionTitre}</Text>
-      <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
-      <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT))}</Text>
-      <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
+          <Text style={intertitre}>{t.commissionTitre}</Text>
+          <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
+          <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT))}</Text>
+          <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
 
-      <Text style={emailStyles.paragraphStyle}>
-        {t.fiche}
-        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
-          {t.ficheLien}
-        </a>
-        .
-      </Text>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.fiche}
+            <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
+              {t.ficheLien}
+            </a>
+            .
+          </Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -381,6 +411,7 @@ export const apporteurPresentationRecueSubject = (
 export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.presentationRecue;
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -391,18 +422,24 @@ export function ApporteurPresentationRecueEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>
-        {t.recu(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
-      </Text>
-      <Text style={intertitre}>{t.suiteTitre}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.confirmation(texteOuNull(p.personnePresentee))}
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.protection(FENETRE_ATTRIBUTION_APPORTEUR_MOIS, CONFIRMATION_TACITE_JOURS)}
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.relais}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <MotPersonnel p={p} />
+          <Text style={emailStyles.paragraphStyle}>
+            {t.recu(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
+          </Text>
+          <Text style={intertitre}>{t.suiteTitre}</Text>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.confirmation(texteOuNull(p.personnePresentee))}
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.protection(FENETRE_ATTRIBUTION_APPORTEUR_MOIS, CONFIRMATION_TACITE_JOURS)}
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>{t.relais}</Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -424,6 +461,7 @@ function lireMotif(v: unknown): MotifRefus {
 export function ApporteurPresentationRefuseeEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.presentationRefusee;
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -434,13 +472,19 @@ export function ApporteurPresentationRefuseeEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>
-        {t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.motif[lireMotif(p.motif)]}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.contester(REPONSE_CONTESTATION_JOURS)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.sansConsequence}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <MotPersonnel p={p} />
+          <Text style={emailStyles.paragraphStyle}>
+            {t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation))}
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>{t.motif[lireMotif(p.motif)]}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.contester(REPONSE_CONTESTATION_JOURS)}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.sansConsequence}</Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -459,6 +503,7 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.confirmation;
   const nomApporteur = texteOuNull(p.nomApporteur) ?? "";
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -472,11 +517,17 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
       <Text style={emailStyles.paragraphStyle}>
         {t.bonjour(texteOuNull(p.civilite), texteOuNull(p.nomFamille), prenomDe(p))}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
+        </>
+      )}
       {/* Petit, après le corps : l'information de l'art. 14 RGPD (l'adresse vient
           d'un tiers). ⛔ AUCUNE question de contrôle : on ne dit jamais à
           l'entreprise qu'on vérifie (Will, 2026-10-05 : « contre-vendeur »). */}
@@ -509,6 +560,7 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
   // Rappel (1 = J+3, 2 = J+7) : même sujet et mêmes étapes, seul l'en-tête change.
   const rappel = p.rappel === 1 || p.rappel === 2 ? p.rappel : null;
   const r = COPY_DEMARRAGE.dossierRappel;
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -520,16 +572,22 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
       {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>
-        {rappel === 1 ? r.intro1 : rappel === 2 ? r.intro2 : t.intro}
-      </Text>
-      {t.etapes.map((e, i) => (
-        <Text key={e} style={puce}>
-          {i + 1}. {e}
-        </Text>
-      ))}
-      <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <MotPersonnel p={p} />
+          <Text style={emailStyles.paragraphStyle}>
+            {rappel === 1 ? r.intro1 : rappel === 2 ? r.intro2 : t.intro}
+          </Text>
+          {t.etapes.map((e, i) => (
+            <Text key={e} style={puce}>
+              {i + 1}. {e}
+            </Text>
+          ))}
+          <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -546,6 +604,7 @@ export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
   const pieces = Array.isArray(p.piecesARetransmettre)
     ? p.piecesARetransmettre.filter((x): x is string => typeof x === "string" && x.trim() !== "")
     : [];
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -557,19 +616,33 @@ export function ApporteurDossierACompleterEmail({ locale, payload }: Props) {
       {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
-      {pieces.map((x) => (
-        <Text key={x} style={puce}>
-          • {x}
-        </Text>
-      ))}
-      {texteOuNull(p.motPersonnel) ? (
+      {libres ? (
         <>
-          <Text style={intertitre}>{t.note}</Text>
-          <MotPersonnel p={p} />
+          <TexteLibre paragraphes={libres} />
+          {/* Les pièces à retransmettre restent listées sous le texte réécrit. */}
+          {pieces.map((x) => (
+            <Text key={x} style={puce}>
+              • {x}
+            </Text>
+          ))}
         </>
-      ) : null}
-      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+      ) : (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+          {pieces.map((x) => (
+            <Text key={x} style={puce}>
+              • {x}
+            </Text>
+          ))}
+          {texteOuNull(p.motPersonnel) ? (
+            <>
+              <Text style={intertitre}>{t.note}</Text>
+              <MotPersonnel p={p} />
+            </>
+          ) : null}
+          <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -582,6 +655,7 @@ export const apporteurDossierRefuseSubject = (_locale: Locale): string =>
 export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.refuse;
+  const libres = paragraphesLibres(p.texteLibre);
   return (
     <EmailLayout
       famille="B"
@@ -592,9 +666,15 @@ export function ApporteurDossierRefuseEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
-      <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>{t.fin}</Text>
+      {libres ? (
+        <TexteLibre paragraphes={libres} />
+      ) : (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+          <MotPersonnel p={p} />
+          <Text style={emailStyles.paragraphStyle}>{t.fin}</Text>
+        </>
+      )}
     </EmailLayout>
   );
 }
@@ -718,4 +798,99 @@ export function ApporteurDossierAVerifierEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.contactName) ?? "")}</Text>
     </EmailLayout>
   );
+}
+
+// ── Texte par défaut (pré-remplit la zone « Modifier le texte » de la console) ──
+
+/** Gabarits dont Will peut réécrire le texte principal avant l'envoi. */
+export const GABARITS_TEXTE_MODIFIABLE = [
+  "apporteur-dossier-lien",
+  "apporteur-dossier-a-completer",
+  "apporteur-dossier-refuse",
+  "apporteur-contrat-signe",
+  "apporteur-presentation-recue",
+  "apporteur-presentation-refusee",
+  "entreprise-prise-de-contact-apporteur",
+] as const;
+
+export type GabaritTexteModifiable = (typeof GABARITS_TEXTE_MODIFIABLE)[number];
+
+export function estTexteModifiable(g: string): g is GabaritTexteModifiable {
+  return (GABARITS_TEXTE_MODIFIABLE as readonly string[]).includes(g);
+}
+
+/**
+ * Le texte principal du gabarit, en texte brut, tel que l'e-mail le dit par défaut :
+ * paragraphes séparés par une ligne vide, SANS le « Bonjour » (le gabarit l'ajoute),
+ * sans le bouton, la signature, ni l'information RGPD (conservés autour du texte).
+ * Pur. `null` pour un gabarit dont le texte n'est pas modifiable.
+ */
+export function texteParDefaut(gabarit: string, payload: Record<string, unknown>): string | null {
+  if (!estTexteModifiable(gabarit)) return null;
+  const p = payload as Payload;
+  const mot = texteOuNull(p.motPersonnel);
+  const avecMot = (blocs: Array<string | null>): string =>
+    blocs.filter((b): b is string => b !== null && b !== "").join("\n\n");
+  const liste = (xs: readonly string[], num = false): string =>
+    xs.map((x, i) => `${num ? `${i + 1}.` : "•"} ${x}`).join("\n");
+
+  switch (gabarit) {
+    case "apporteur-dossier-lien": {
+      const t = COPY_DEMARRAGE.dossierLien;
+      const r = COPY_DEMARRAGE.dossierRappel;
+      const intro = p.rappel === 1 ? r.intro1 : p.rappel === 2 ? r.intro2 : t.intro;
+      return avecMot([mot, intro, liste(t.etapes, true), t.ensuite]);
+    }
+    case "apporteur-dossier-a-completer": {
+      // Les pièces à retransmettre restent listées par le gabarit, sous ce texte.
+      const t = COPY_DEMARRAGE.aCompleter;
+      return avecMot([t.intro, mot ? `${t.note} ${mot}` : null, t.suite]);
+    }
+    case "apporteur-dossier-refuse": {
+      const t = COPY_DEMARRAGE.refuse;
+      return avecMot([t.texte, mot, t.fin]);
+    }
+    case "apporteur-contrat-signe": {
+      const t = COPY_DEMARRAGE.contratSigne;
+      const [e1, e2, e3] = t.ensuite;
+      return avecMot([
+        mot,
+        t.merci,
+        `${t.presenterTitre}\n${t.presenter}\n${liste(t.champs)}`,
+        t.prevenir,
+        `${t.ensuiteTitre}\n1. ${e1}\n2. ${e2}\n3. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
+        `${t.commissionTitre}\n• ${t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}\n• ${t.audit(pourcent(PCT_AUDIT))}\n• ${t.integration(pourcent(PCT_INTEGRATION))}`,
+        t.paiement,
+        "Votre contrat signé des deux parties est en pièce jointe.",
+      ]);
+    }
+    case "apporteur-presentation-recue": {
+      const t = COPY_DEMARRAGE.presentationRecue;
+      return avecMot([
+        mot,
+        t.recu(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation)),
+        `${t.suiteTitre}\n${t.confirmation(texteOuNull(p.personnePresentee))}`,
+        t.protection(FENETRE_ATTRIBUTION_APPORTEUR_MOIS, CONFIRMATION_TACITE_JOURS),
+        t.relais,
+      ]);
+    }
+    case "apporteur-presentation-refusee": {
+      const t = COPY_DEMARRAGE.presentationRefusee;
+      return avecMot([
+        mot,
+        t.merci(texteOuNull(p.entreprise) ?? "", texteOuNull(p.datePresentation)),
+        t.motif[lireMotif(p.motif)],
+        t.contester(REPONSE_CONTESTATION_JOURS),
+        t.sansConsequence,
+      ]);
+    }
+    case "entreprise-prise-de-contact-apporteur": {
+      const t = COPY_DEMARRAGE.confirmation;
+      return avecMot([
+        t.presentation(texteOuNull(p.nomApporteur) ?? "", texteOuNull(p.entreprise)),
+        t.quiSommesNous,
+        t.proposition,
+      ]);
+    }
+  }
 }

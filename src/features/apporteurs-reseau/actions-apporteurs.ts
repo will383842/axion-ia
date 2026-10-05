@@ -13,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
+import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
 import { prisma } from "@/lib/prisma";
 
 import {
@@ -24,12 +25,10 @@ import {
   preparerLien,
   type Decision,
 } from "./verification";
-import { apercu } from "./envois";
+import { apercu, type ApercuRendu } from "./envois";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
-export type RetourApercu =
-  | { ok: true; email: { sujet: string; html: string; destinataire: string } }
-  | { ok: false; message: string };
+export type RetourApercu = { ok: true; email: ApercuRendu } | { ok: false; message: string };
 
 const ROLES = new Set(["super_admin", "admin"]);
 
@@ -77,16 +76,21 @@ export async function apercuDecisionAction(input: {
   apporteurId: string;
   decision: Decision;
   note: string | null;
+  /** Texte principal réécrit (facultatif). Jamais journalisé. */
+  texte?: string | null;
 }): Promise<RetourApercu> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision))
     return { ok: false, message: "Demande invalide." };
+  const texte = validerTexteLibre(input.texte);
+  if (!texte.ok) return texte;
   try {
     return await apercuDecision(
       input.apporteurId,
       input.decision,
       (input.note ?? "").slice(0, 2000),
+      texte.texte,
     );
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-decision", step: "apercu" } });
@@ -98,16 +102,21 @@ export async function appliquerDecisionAction(input: {
   apporteurId: string;
   decision: Decision;
   note: string | null;
+  /** Texte principal réécrit (facultatif). Jamais journalisé. */
+  texte?: string | null;
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId) || !DECISIONS.includes(input.decision))
     return { ok: false, message: "Demande invalide." };
+  const texte = validerTexteLibre(input.texte);
+  if (!texte.ok) return texte;
   try {
     const r = await appliquerDecision(
       input.apporteurId,
       input.decision,
       (input.note ?? "").slice(0, 2000),
+      texte.texte,
     );
     rafraichir(input.apporteurId);
     return r;
@@ -120,11 +129,15 @@ export async function appliquerDecisionAction(input: {
 export async function apercuLienAction(input: {
   apporteurId: string;
   mot: string | null;
+  /** Texte principal réécrit (facultatif). Jamais journalisé. */
+  texte?: string | null;
 }): Promise<RetourApercu> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
-  const prep = await preparerLien(input.apporteurId, input.mot);
+  const texte = validerTexteLibre(input.texte);
+  if (!texte.ok) return texte;
+  const prep = await preparerLien(input.apporteurId, input.mot, texte.texte);
   if (!prep.ok) return prep;
   return { ok: true, email: await apercu(prep.envoi) };
 }
@@ -132,11 +145,15 @@ export async function apercuLienAction(input: {
 export async function envoyerLienAction(input: {
   apporteurId: string;
   mot: string | null;
+  /** Texte principal réécrit (facultatif). Jamais journalisé. */
+  texte?: string | null;
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
-  const r = await envoyerLien(input.apporteurId, input.mot);
+  const texte = validerTexteLibre(input.texte);
+  if (!texte.ok) return texte;
+  const r = await envoyerLien(input.apporteurId, input.mot, texte.texte);
   rafraichir(input.apporteurId);
   return r;
 }

@@ -25,7 +25,13 @@ import { getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage"
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireDossier } from "./donnees";
-import { apercu, envoyer, type EnvoiApporteur, type GabaritApporteur } from "./envois";
+import {
+  apercu,
+  avecTexteLibre,
+  envoyer,
+  type EnvoiApporteur,
+  type GabaritApporteur,
+} from "./envois";
 import { urlDossier } from "./jeton";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, type TypePiece } from "./regles";
 
@@ -140,6 +146,7 @@ export async function preparerDecision(
   apporteurId: string,
   decision: Decision,
   note: string | null,
+  texte?: string,
 ): Promise<{ ok: true; envoi: EnvoiApporteur } | { ok: false; message: string }> {
   const d = await lireDossier(apporteurId);
   if (!d) return { ok: false, message: "Apporteur introuvable." };
@@ -157,7 +164,10 @@ export async function preparerDecision(
       };
     }
     const gabarit: GabaritApporteur = "apporteur-contrat-signe";
-    return { ok: true, envoi: { ...base, gabarit, payload: { contactName: d.prenom } } };
+    return {
+      ok: true,
+      envoi: { ...base, gabarit, payload: avecTexteLibre({ contactName: d.prenom }, texte) },
+    };
   }
   if (decision === "a_completer") {
     const pieces = await piecesARetransmettre(apporteurId);
@@ -173,12 +183,15 @@ export async function preparerDecision(
       envoi: {
         ...base,
         gabarit: "apporteur-dossier-a-completer",
-        payload: {
-          contactName: d.prenom,
-          piecesARetransmettre: pieces,
-          ...(mot ? { motPersonnel: mot } : {}),
-          dossierUrl: urlDossier(d.id, nouvelleVersion) ?? "",
-        },
+        payload: avecTexteLibre(
+          {
+            contactName: d.prenom,
+            piecesARetransmettre: pieces,
+            ...(mot ? { motPersonnel: mot } : {}),
+            dossierUrl: urlDossier(d.id, nouvelleVersion) ?? "",
+          },
+          texte,
+        ),
       },
     };
   }
@@ -187,13 +200,21 @@ export async function preparerDecision(
     envoi: {
       ...base,
       gabarit: "apporteur-dossier-refuse",
-      payload: { contactName: d.prenom, ...(mot ? { motPersonnel: mot } : {}) },
+      payload: avecTexteLibre(
+        { contactName: d.prenom, ...(mot ? { motPersonnel: mot } : {}) },
+        texte,
+      ),
     },
   };
 }
 
-export async function apercuDecision(apporteurId: string, decision: Decision, note: string | null) {
-  const prep = await preparerDecision(apporteurId, decision, note);
+export async function apercuDecision(
+  apporteurId: string,
+  decision: Decision,
+  note: string | null,
+  texte?: string,
+) {
+  const prep = await preparerDecision(apporteurId, decision, note, texte);
   if (!prep.ok) return prep;
   return { ok: true as const, email: await apercu(prep.envoi) };
 }
@@ -206,8 +227,9 @@ export async function appliquerDecision(
   apporteurId: string,
   decision: Decision,
   note: string | null,
+  texte?: string,
 ): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
-  const prep = await preparerDecision(apporteurId, decision, note);
+  const prep = await preparerDecision(apporteurId, decision, note, texte);
   if (!prep.ok) return prep;
   const maintenant = new Date();
 
@@ -304,7 +326,7 @@ export async function appliquerDecision(
 
 // ── Lien du dossier ──────────────────────────────────────────────────────
 
-export async function preparerLien(apporteurId: string, mot: string | null) {
+export async function preparerLien(apporteurId: string, mot: string | null, texte?: string) {
   const d = await lireDossier(apporteurId);
   if (!d) return { ok: false as const, message: "Apporteur introuvable." };
   if (d.statut === "refuse" || d.statut === "resilie")
@@ -315,19 +337,22 @@ export async function preparerLien(apporteurId: string, mot: string | null) {
   const envoi: EnvoiApporteur = {
     gabarit: "apporteur-dossier-lien",
     destinataire: d.email,
-    payload: {
-      contactName: d.prenom,
-      dossierUrl: url,
-      ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}),
-    },
+    payload: avecTexteLibre(
+      {
+        contactName: d.prenom,
+        dossierUrl: url,
+        ...(mot?.trim() ? { motPersonnel: mot.trim() } : {}),
+      },
+      texte,
+    ),
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
   return { ok: true as const, envoi, url };
 }
 
-export async function envoyerLien(apporteurId: string, mot: string | null) {
-  const prep = await preparerLien(apporteurId, mot);
+export async function envoyerLien(apporteurId: string, mot: string | null, texte?: string) {
+  const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
   const r = await envoyer({
     ...prep.envoi,

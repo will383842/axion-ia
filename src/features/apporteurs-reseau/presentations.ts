@@ -24,7 +24,15 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import type { StatutPresentation } from "../../../prisma/generated/client";
 
 import { lireEntrepriseParSiren } from "./annuaire";
-import { apercu, envoyer, type EnvoiApporteur, type ResultatEnvoi } from "./envois";
+import {
+  apercu,
+  avecTexteLibre,
+  envoyer,
+  type ApercuRendu,
+  type EnvoiApporteur,
+  type GabaritApporteur,
+  type ResultatEnvoi,
+} from "./envois";
 import { ajouterMois, finDeProtection, sirenValide } from "./regles";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -371,6 +379,8 @@ export interface OptionsReponse {
   /** Prise de contact de l'entreprise : « Bonjour Madame Durand » (vide → prénom). */
   civilite: Civilite;
   nomFamille: string;
+  /** Textes réécrits par Will, par gabarit (déjà validés). Absent = texte par défaut. */
+  textes?: Partial<Record<GabaritApporteur, string>>;
 }
 
 interface DonneesEnvoi {
@@ -405,25 +415,31 @@ export function construireEnvoisReponse(
       {
         gabarit: "entreprise-prise-de-contact-apporteur",
         destinataire: d.presentation.personneEmail,
-        payload: {
-          ...(o.civilite && o.nomFamille.trim()
-            ? { civilite: o.civilite, nomFamille: o.nomFamille.trim() }
-            : {}),
-          contactName: d.presentation.personneNom,
-          nomApporteur,
-          entreprise: d.presentation.denomination,
-        },
+        payload: avecTexteLibre(
+          {
+            ...(o.civilite && o.nomFamille.trim()
+              ? { civilite: o.civilite, nomFamille: o.nomFamille.trim() }
+              : {}),
+            contactName: d.presentation.personneNom,
+            nomApporteur,
+            entreprise: d.presentation.denomination,
+          },
+          o.textes?.["entreprise-prise-de-contact-apporteur"],
+        ),
         ...commun,
         jobId: `entreprise-contact-apporteur-${d.presentation.id}`,
       },
       {
         gabarit: "apporteur-presentation-recue",
-        payload: {
-          contactName: nomApporteur,
-          entreprise: d.presentation.denomination,
-          datePresentation,
-          personnePresentee: d.presentation.personneNom,
-        },
+        payload: avecTexteLibre(
+          {
+            contactName: nomApporteur,
+            entreprise: d.presentation.denomination,
+            datePresentation,
+            personnePresentee: d.presentation.personneNom,
+          },
+          o.textes?.["apporteur-presentation-recue"],
+        ),
         ...versApporteur,
         jobId: `apporteur-presentation-recue-${d.presentation.id}`,
       },
@@ -432,12 +448,15 @@ export function construireEnvoisReponse(
   return [
     {
       gabarit: "apporteur-presentation-refusee",
-      payload: {
-        contactName: nomApporteur,
-        entreprise: d.presentation.denomination,
-        datePresentation,
-        motif: reponse === "deja_connue" ? "deja-connue" : "hors-champ",
-      },
+      payload: avecTexteLibre(
+        {
+          contactName: nomApporteur,
+          entreprise: d.presentation.denomination,
+          datePresentation,
+          motif: reponse === "deja_connue" ? "deja-connue" : "hors-champ",
+        },
+        o.textes?.["apporteur-presentation-refusee"],
+      ),
       ...versApporteur,
       jobId: `apporteur-presentation-refusee-${d.presentation.id}`,
     },
@@ -475,10 +494,7 @@ export async function apercuReponse(
   id: string,
   reponse: ReponsePresentation,
   o: OptionsReponse,
-): Promise<
-  | { ok: true; emails: Array<{ sujet: string; html: string; destinataire: string }> }
-  | { ok: false; message: string }
-> {
+): Promise<{ ok: true; emails: ApercuRendu[] } | { ok: false; message: string }> {
   const d = await chargerDonneesEnvoi(id);
   if (!d) return { ok: false, message: "Présentation introuvable." };
   if (!estATraiter(d)) return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
