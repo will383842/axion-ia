@@ -38,6 +38,7 @@ const avancer = vi.fn<(...a: unknown[]) => Promise<"avance" | "deja" | "introuva
   async () => "avance",
 );
 const majCible = vi.fn(async (..._a: unknown[]) => undefined);
+const envoyerMeta = vi.fn(async (..._a: unknown[]) => ({ envoye: true as const }));
 const verrou = vi.fn<(...a: unknown[]) => Promise<string | null>>(async () => "OK");
 const verrouRendu = vi.fn(async (..._a: unknown[]) => 1);
 let cookieUtm: string | undefined;
@@ -106,6 +107,9 @@ vi.mock("@/lib/destinataires-internes", () => ({
 vi.mock("@/lib/security/honeypot-observable", () => ({
   signalerHoneypot: (...a: unknown[]) => honeypot(...a),
 }));
+vi.mock("@/server/meta/conversions-api", () => ({
+  envoyerEvenementMeta: (...a: unknown[]) => envoyerMeta(...a),
+}));
 vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
 vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/console/${p}` }));
 vi.mock("../lead-vsl-details", async (importOriginal) => {
@@ -173,6 +177,7 @@ beforeEach(() => {
   avancer.mockReset();
   avancer.mockResolvedValue("avance");
   majCible.mockClear();
+  envoyerMeta.mockClear();
   verrou.mockReset();
   verrou.mockResolvedValue("OK");
   verrouRendu.mockClear();
@@ -676,5 +681,94 @@ describe("R1/R2 — les tâches d'attente s'arrêtent à chaque avancée (réser
         "lead-apporteur-relance-j7-hnadiaexamplecom",
       ].sort(),
     );
+  });
+});
+
+describe("Lead vers Meta à l'étape 1 (lot 5)", () => {
+  const appel = () =>
+    envoyerMeta.mock.calls[0] as unknown as [
+      string,
+      {
+        eventId: string;
+        email: string;
+        telephone?: string | null;
+        prenom: string;
+        fbp: string | null;
+        fbclid: string | null;
+        fbcCreeLe: Date | null;
+        sourceUrl: string;
+      },
+      { consentPub: string },
+    ];
+
+  it("part à l'étape 1 avec event_id `lead:<id de la ligne>` — celui que le navigateur reçoit", async () => {
+    cookieUtm = serializeUtmCookie({ utm_source: "facebook" });
+    const r = await capturer();
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(envoyerMeta).toHaveBeenCalledTimes(1);
+    const [nom, evt, opts] = appel();
+    expect(nom).toBe("Lead");
+    // Déduplication : le navigateur tire `Lead` avec `eventID = "lead:" + leadId`.
+    expect(evt.eventId).toBe(`lead:${r.leadId}`);
+    expect(opts.consentPub).toBe("accepted");
+    expect(evt.sourceUrl).toBe("https://axion-ia.com/fr/apporteur-affaires/video");
+  });
+
+  it("à l'étape 1 il n'y a NI téléphone NI ville : rien d'autre que l'e-mail et le prénom", async () => {
+    await capturer();
+    const [, evt] = appel();
+    expect(evt.email).toBe("nadia@example.com");
+    expect(evt.prenom).toBe("Nadia");
+    expect(evt).not.toHaveProperty("telephone");
+    expect(evt).not.toHaveProperty("ville");
+  });
+
+  it("le fbc se fabrique avec l'heure d'ARRIVÉE du clic, pas celle de l'envoi", async () => {
+    await capturer();
+    const [, evt] = appel();
+    expect(evt.fbclid).toBe("IwAR0abcdefghijklmnop");
+    expect(evt.fbcCreeLe?.getTime()).toBe(MAINTENANT - 60_000);
+    expect(evt.fbp).toBe("fb.1.1725000000000.123456");
+  });
+
+  it("sans consentement publicitaire : la règle de refus reste celle de Meta (consentPub passé tel quel), fbp et fbclid ne sont pas transmis", async () => {
+    await capturer({ consentPub: false });
+    const [, evt, opts] = appel();
+    expect(opts.consentPub).toBe("declined");
+    expect(evt.fbp).toBeNull();
+    expect(evt.fbclid).toBeNull();
+    expect(evt.fbcCreeLe).toBeNull();
+  });
+
+  it("réponse à la bannière inconnue : « unknown » — le serveur n'en déduit jamais un accord", async () => {
+    await capturer({ consentPub: undefined });
+    expect(appel()[2].consentPub).toBe("unknown");
+  });
+
+  it("une ligne « suspecte » n'envoie RIEN à Meta", async () => {
+    await capturer({}, { renderedAt: MAINTENANT - 500 });
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("un contact venu d'ailleurs (LinkedIn) n'est pas compté par la campagne Facebook", async () => {
+    cookieUtm = serializeUtmCookie({ utm_source: "linkedin" });
+    await capturer({}, { query: "?utm_source=linkedin" });
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("une adresse déjà connue, un lead réutilisé, un leurre : aucun nouvel événement (pas de double comptage)", async () => {
+    lignesExistantes = [{ id: "ancien", details: { etape: "premier-contact", subType: "x" } }];
+    await capturer();
+    lignesExistantes = [{ id: "lead-existant", details: { vsl: { etapeAtteinte: 1 } } }];
+    await capturer();
+    lignesExistantes = [];
+    await capturer({ honeypot: "spam" });
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("une panne de Meta ne fait pas échouer la capture", async () => {
+    envoyerMeta.mockRejectedValueOnce(new Error("meta indisponible"));
+    const r = await capturer();
+    expect(r.ok).toBe(true);
   });
 });
