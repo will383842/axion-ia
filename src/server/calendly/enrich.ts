@@ -46,6 +46,8 @@ import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
+import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
+import { VSL_MERCI_PATH } from "@/lib/commercial-application/vsl-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 import {
   besoinDesReponses,
@@ -297,6 +299,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     eventTypeUri: eventTypeUriFrais,
     eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
   });
+  let callBookedAEmettre = false;
   const besoin = besoinDesReponses(brutFrais?.invitee?.["questions_and_answers"]);
   const reponses = reponsesDesQuestions(brutFrais?.invitee?.["questions_and_answers"]);
   const utm = utmDuTracking(brutFrais?.invitee);
@@ -322,6 +325,29 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       event: brutFrais.event,
       _refreshedAt: new Date().toISOString(),
     } as never;
+    // ── `Call Booked` côté SERVEUR (lot 4 du tunnel vidéo, 2026-10-05) ───────
+    // Une réservation faite depuis le lien de l'e-mail (B1, invitation) n'est
+    // vue par AUCUN script du site : seul l'enrichissement la connaît de façon
+    // sûre. UNE fois par réservation — le marqueur `_callBookedServeur` vit dans
+    // les clés privées (préfixe `_`, préservées à chaque passage) — et JAMAIS
+    // pour une réservation que le NAVIGATEUR a déjà comptée : une ligne créée
+    // par la capture de l'iframe porte `_ipHash`, et l'événement navigateur
+    // `Call Booked` la couvre (sans cela Plausible compterait deux fois).
+    // Émis APRÈS l'écriture réussie : un échec d'écriture ne marque rien.
+    if (
+      d.calendlyStatus === "active" &&
+      !d.noShow &&
+      estRendezVousApporteur({
+        eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+        typeRendezVous,
+      }) &&
+      ancienBrut["_ipHash"] === undefined &&
+      ancienBrut["_callBookedServeur"] === undefined
+    ) {
+      (data["rawPayload"] as Record<string, unknown>)["_callBookedServeur"] =
+        new Date().toISOString();
+      callBookedAEmettre = true;
+    }
     // ⚠️ VOLONTAIREMENT ABSENT de `updatedFields`. Ce tableau annonce ce qui a
     // CHANGE pour la fiche — il alimente le journal et l'alerte. La charge brute
     // change a chaque passage, ne serait-ce que par son horodatage : l'y inscrire
@@ -394,6 +420,23 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
   }
+  // `Call Booked` (serveur) : le libellé de campagne seulement, jamais une donnée
+  // personnelle (règle de `plausible-serveur.ts`). Fail-soft, borné à 1,5 s.
+  if (callBookedAEmettre) {
+    try {
+      await emettreEvenementPlausible({
+        nom: "Call Booked",
+        chemin: VSL_MERCI_PATH,
+        props: {
+          source: (data["utmSource"] as string | undefined) ?? row.utmSource ?? "direct",
+          origine: "serveur",
+        },
+      });
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-call-booked-serveur" } });
+    }
+  }
+
   // ── Réservation d'un échange apporteur : les messages d'attente s'arrêtent ──
   // (tunnel vidéo, règles R1/R2 de 03-MESSAGES-ET-DECISIONS) : une personne qui
   // a RÉSERVÉ ne reçoit plus « votre inscription n'est pas terminée », ni les
