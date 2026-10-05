@@ -59,6 +59,8 @@ interface Payload {
   personnePresentee?: string;
   /** Refus seulement. */
   motif?: MotifRefus;
+  /** Lien du dossier seulement : 1 = rappel J+3, 2 = rappel J+7 (absent = premier envoi). */
+  rappel?: number;
   /** Confirmation seulement : « Monsieur » / « Madame », et le nom de famille. */
   civilite?: string;
   nomFamille?: string;
@@ -214,6 +216,14 @@ export const COPY_DEMARRAGE = {
     ensuite:
       "Nous vérifions ensuite votre dossier et contresignons votre contrat : vous recevez alors votre exemplaire signé des deux parties.",
     cta: "Compléter mon dossier",
+  },
+  dossierRappel: {
+    title: "Votre dossier vous attend",
+    preview: "Votre lien personnel est toujours actif : une dizaine de minutes suffisent.",
+    intro1:
+      "Petit rappel : votre dossier d'apporteur d'affaires n'est pas encore complété. Votre lien personnel est toujours actif ; vous pouvez reprendre là où vous vous êtes arrêté.",
+    intro2:
+      "Dernier rappel de notre part : votre dossier d'apporteur d'affaires n'est pas encore complété. Votre lien personnel reste actif ; si vous ne souhaitez pas donner suite, vous n'avez rien à faire.",
   },
   aCompleter: {
     subject: "Votre dossier d'apporteur : un complément",
@@ -496,11 +506,14 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const t = COPY_DEMARRAGE.dossierLien;
   const url = texteOuNull(p.dossierUrl);
+  // Rappel (1 = J+3, 2 = J+7) : même sujet et mêmes étapes, seul l'en-tête change.
+  const rappel = p.rappel === 1 || p.rappel === 2 ? p.rappel : null;
+  const r = COPY_DEMARRAGE.dossierRappel;
   return (
     <EmailLayout
       famille="B"
-      preview={t.preview}
-      title={t.title}
+      preview={rappel ? r.preview : t.preview}
+      title={rappel ? r.title : t.title}
       locale={locale === "fr" ? "fr" : "en"}
       sansReseauxSociaux
       signature="fondateur-court"
@@ -508,7 +521,9 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <MotPersonnel p={p} />
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {rappel === 1 ? r.intro1 : rappel === 2 ? r.intro2 : t.intro}
+      </Text>
       {t.etapes.map((e, i) => (
         <Text key={e} style={puce}>
           {i + 1}. {e}
