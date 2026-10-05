@@ -81,6 +81,7 @@ import {
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
 import { lireChoixRendezVous, typeDuChoix } from "@/server/calendly/choix-rendez-vous";
+import { choixDuTypeRendezVous, configDuChoix } from "@/server/calendly/types-reservables";
 
 export const dynamic = "force-dynamic";
 
@@ -285,9 +286,11 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
  * publics (ou inconnu).
  */
 function nomDuRendezVous(type: TypeRendezVous | null): string {
-  return type === "diagnostic" || type === "echange_projet"
-    ? LIBELLES_TYPE_RENDEZ_VOUS[type]
-    : "Premier contact";
+  if (type === "diagnostic" || type === "echange_projet") return LIBELLES_TYPE_RENDEZ_VOUS[type];
+  // L'échange apporteur et la rencontre au salon portent leur nom de la table des
+  // types (2026-10-05) : « Premier contact » ne leur correspond pas.
+  const choix = choixDuTypeRendezVous(type);
+  return choix ? configDuChoix(choix).nom : "Premier contact";
 }
 
 function Confirme({
@@ -521,7 +524,12 @@ function CeQuiSePasseMaintenant({
     {
       Picto: BellRing,
       titre: "Deux rappels, sans rien faire",
-      corps: "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
+      // Le salon n'a pas de rappel une heure avant : on est déjà en route
+      // (`rappels-appel.ts`, passes `rdv-salon-*` : J-2 et J-1).
+      corps:
+        type === "salon"
+          ? "Un deux jours avant, un autre la veille. Vous ne pouvez pas l'oublier."
+          : "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
     },
     {
       Picto: CalendarClock,

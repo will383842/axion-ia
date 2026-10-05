@@ -63,7 +63,9 @@ describe("Absent — « nous vous avons attendu »", () => {
     );
     expect(t).toContain("un imprévu arrive à tout le monde");
     expect(t).toContain("Choisir un nouveau créneau");
-    expect(r.html).toContain(CALENDLY);
+    // 2026-10-05 : le bouton mène à NOTRE page de réservation.
+    expect(r.html).toContain("/fr/appel/apporteur");
+    expect(r.html).not.toContain(CALENDLY);
     // Aucune relance automatique ensuite, et c'est dit.
     expect(t).toContain("nous ne vous relancerons pas");
   });

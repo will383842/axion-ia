@@ -51,12 +51,13 @@ import {
   lireChoixRendezVous,
   lireDepuis,
   lireSuiviArrivee,
-  parametresDuChoix,
+  lienDuCalendrier,
   resoudreChoix,
   utmContentDuChoix,
   PARAM_DEPUIS,
   PARAM_RDV,
 } from "@/server/calendly/choix-rendez-vous";
+import { formatsProposes } from "@/server/calendly/types-reservables";
 
 /**
  * Rendu à chaque requête.
@@ -117,7 +118,9 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // Les UTM d'arrivée (L5a) voyagent avec le choix : retour au calendrier ET
   // champs cachés, pour que les renvois de l'action les gardent aussi.
   const suivi = lireSuiviArrivee(sp);
-  const calendrier = `/${locale}/appel?${parametresDuChoix(choix, depuis, suivi)}`;
+  // Le calendrier DU BON TYPE : l'adresse historique pour les deux types publics,
+  // la leur pour l'échange apporteur et le salon (`lienDuCalendrier`).
+  const calendrier = lienDuCalendrier(locale, choix, depuis, suivi);
 
   // Le drapeau d'abord : tant qu'il est éteint, cette route n'existe pas pour
   // le visiteur, et les créneaux continuent de pointer vers Calendly.
@@ -234,6 +237,9 @@ export default async function ReserverPage({ params, searchParams }: Props) {
               suivi,
             )}
             action={soumettreLaReservation}
+            // Les formats DE CE TYPE — le même jugement que l'action
+            // (`formatsProposes`), jamais une liste recopiée ici.
+            formats={formatsProposes(choix, et.lieux?.formats)}
             locale={locale}
             champLocale={CHAMP_LOCALE}
             champLeurre={CHAMP_LEURRE}

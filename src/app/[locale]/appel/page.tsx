@@ -26,16 +26,20 @@ import {
   lireChoixRendezVous,
   lireDepuis,
   lireSuiviArrivee,
+  lienDuCalendrier,
   parametresDuChoix,
   parametresDuRetour,
+  resoudreChoix,
   resoudreLesDeuxChoix,
   utmContentDuChoix,
   PARAM_DEPUIS,
   PARAM_RDV,
+  type ChoixPublic,
   type ChoixRendezVous,
   type ChoixResolu,
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
+import { configDuChoix, estUnChoixPublic } from "@/server/calendly/types-reservables";
 
 /**
  * 15 minutes — la fraîcheur des CRÉNEAUX, pas celle du texte. Aligné sur
@@ -88,10 +92,19 @@ interface Props {
  * aucun saut de mise en page (CLS 0).
  */
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
+  // Un rendez-vous « En privé » (échange apporteur, salon) ne s'indexe JAMAIS :
+  // son lien est secret, et cette page n'est que son calendrier.
+  const choixDemande = lireChoixRendezVous((await searchParams)[PARAM_RDV]);
+  if (choixDemande && !estUnChoixPublic(choixDemande)) {
+    return {
+      title: { absolute: `${configDuChoix(choixDemande).nom} · réservation · Axion-IA` },
+      robots: { index: false, follow: false },
+    };
+  }
   // Le titre reprend l'ancre nav/footer « Réserver un appel » pour aligner le
   // label sitelink sur l'intention de recherche (audit sitelinks 2026-07-06).
   const titleStr = isFr
@@ -143,6 +156,15 @@ export default async function AppelPage({ params, searchParams }: Props) {
   const suivi = lireSuiviArrivee(sp);
   // Une seule lecture de la liste des types (en cache 24 h) pour les deux.
   const resolus = await resoudreLesDeuxChoix();
+  // Les deux types privés (apporteur, salon) ne sont pas dans `resolus` : ils se
+  // résolvent à part, avec la même règle (`resoudreChoix`).
+  const resolu: ChoixResolu = !choix
+    ? resolus.projet
+    : estUnChoixPublic(choix)
+      ? resolus[choix]
+      : await resoudreChoix(choix);
+  // Un type privé n'a ni description structurée ni fil d'Ariane de référencement.
+  const referencable = !choix || estUnChoixPublic(choix);
 
   // Sprint Notif Infra 2026-05-26 / fix P1-5 — extraction UTM côté Server.
   const trackingContext: {
@@ -153,7 +175,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
     utmContent?: string;
     referrer?: string;
   } = {
-    pageUrl: `${SITE_URL}/${locale}/appel${choix ? `?${parametresDuChoix(choix, depuis, suivi)}` : ""}`,
+    pageUrl: `${SITE_URL}${choix ? lienDuCalendrier(locale, choix, depuis, suivi) : `/${locale}/appel`}`,
   };
   if (suivi.utm_source) trackingContext.utmSource = suivi.utm_source;
   if (suivi.utm_campaign) trackingContext.utmCampaign = suivi.utm_campaign;
@@ -191,8 +213,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
 
   return (
     <>
-      <JsonLd data={jsonLd} />
-      <JsonLd data={breadcrumbJsonLd} />
+      {referencable ? <JsonLd data={jsonLd} /> : null}
+      {referencable ? <JsonLd data={breadcrumbJsonLd} /> : null}
       {/* Le composant préfixe déjà « Accueil » (fullItems) : le repasser ici
           affichait « Accueil / Accueil / … » à l'écran. */}
       <Breadcrumbs items={[{ label: "Réserver un appel", href: "/appel" }]} emitJsonLd={false} />
@@ -205,7 +227,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
         {choix ? (
           <Calendrier
             choix={choix}
-            resolu={resolus[choix]}
+            resolu={resolu}
             depuis={depuis}
             suivi={suivi}
             locale={locale}
@@ -293,7 +315,7 @@ function ChoixDuRendezVous({
   suivi,
   locale,
 }: {
-  resolus: Readonly<Record<ChoixRendezVous, ChoixResolu>>;
+  resolus: Readonly<Record<ChoixPublic, ChoixResolu>>;
   depuis: string | null;
   suivi: SuiviArrivee;
   locale: string;
@@ -412,13 +434,13 @@ function ChoixDuRendezVous({
   );
 }
 
-/** Ce que le visiteur fait pendant le rendez-vous — la seule étape qui change. */
-const TROISIEME_ETAPE: Readonly<Record<ChoixRendezVous, string>> = {
-  diagnostic: "Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.",
-  projet: "On discute de votre projet ou tout autre besoin de renseignements.",
-};
-
-/** L'ÉCRAN DU CALENDRIER — celui d'avant, sur le type choisi. */
+/**
+ * L'ÉCRAN DU CALENDRIER — celui d'avant, sur le type choisi.
+ *
+ * Les libellés propres à chaque type (nom, titre, promesse, trois étapes) viennent
+ * de la table `types-reservables.ts` : un cinquième type s'y règle en une entrée,
+ * sans toucher à cette page.
+ */
 function Calendrier({
   choix,
   resolu,
@@ -443,6 +465,7 @@ function Calendrier({
     referrer?: string;
   };
 }) {
+  const config = configDuChoix(choix);
   const duree = libelleDuree(resolu);
   const utmContent = utmContentDuChoix(choix, depuis);
   const retour = parametresDuRetour(depuis, suivi);
@@ -457,25 +480,28 @@ function Calendrier({
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-terracotta mb-2 inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase sm:text-xs">
               <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-              {choix === "diagnostic" ? "Diagnostic IA" : "Échange projet"} · Gratuit et sans
-              engagement
+              {config.nom} · {config.promesse}
             </p>
             <h1
               id="appel-hero-h1"
               className="text-fg text-[clamp(1.625rem,4vw,2.5rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {choix === "diagnostic" ? "Votre diagnostic IA" : "Votre échange projet"}
+              {config.titre}
             </h1>
-            {/* Lien DISCRET pour changer d'avis : le choix n'enferme pas. */}
-            <a
-              href={retourAuChoix}
-              data-cta="appel_changer_de_rendez_vous"
-              className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta mt-1 inline-flex min-h-11 items-center gap-1.5 rounded px-1 text-sm underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:outline-none"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Changer de rendez-vous
-            </a>
+            {/* Lien DISCRET pour changer d'avis : le choix n'enferme pas. Il ramène
+                à l'écran du choix PUBLIC — donc il n'existe pas pour un rendez-vous
+                « En privé », qui n'y figure pas et que le visiteur n'a pas « choisi ». */}
+            {config.public ? (
+              <a
+                href={retourAuChoix}
+                data-cta="appel_changer_de_rendez_vous"
+                className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta mt-1 inline-flex min-h-11 items-center gap-1.5 rounded px-1 text-sm underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Changer de rendez-vous
+              </a>
+            ) : null}
           </div>
         </Container>
       </section>
@@ -528,17 +554,15 @@ function Calendrier({
                 </h3>
                 <ol className="space-y-3">
                   {[
-                    // 🔴 Le CHOIX DU FORMAT s'annonce ici, et pas ailleurs :
-                    // c'est l'étape 1 parce que c'est le moment où l'on
-                    // s'apprête à cliquer. Chantier visio (B5, Will 28/09) :
-                    // le rendez-vous se tient en Google Meet SEULEMENT
-                    // (`DISCUTONS_MEET_SEUL`).
-                    "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet.",
-                    // ⚠️ RÉALIGNÉE sur ce que le code envoie vraiment
-                    // (`rappels-appel.ts`) : la confirmation dans la minute,
-                    // puis les rappels J-1 et H-1.
-                    "Vous recevez notre confirmation dans la minute, l'invitation d'agenda séparément, puis un rappel la veille et une heure avant.",
-                    TROISIEME_ETAPE[choix],
+                    // 🔴 Le CHOIX DU FORMAT s'annonce ici (étape 1), et pas
+                    // ailleurs : c'est le moment où l'on s'apprête à cliquer.
+                    // Chantier visio (B5, Will 28/09) : « Discutons » se tient en
+                    // Google Meet SEULEMENT (`DISCUTONS_MEET_SEUL`). Les trois
+                    // textes viennent de la table des types (`types-reservables.ts`),
+                    // où chacun dit ce que le code envoie vraiment pour CE type.
+                    config.premiereEtape,
+                    config.deuxiemeEtape,
+                    config.troisiemeEtape,
                   ].map((step, i) => (
                     <li key={step} className="flex gap-3">
                       <span className="bg-terracotta text-paper flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
@@ -559,9 +583,7 @@ function Calendrier({
                 </div>
                 <div className="bg-paper border-border rounded-xl border p-3 text-center">
                   <Shield className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
-                  <p className="text-fg-soft text-[11px] leading-tight">
-                    Gratuit et sans engagement
-                  </p>
+                  <p className="text-fg-soft text-[11px] leading-tight">{config.promesse}</p>
                 </div>
                 <div className="bg-paper border-border rounded-xl border p-3 text-center">
                   <CheckCircle

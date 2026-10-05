@@ -213,6 +213,10 @@ export async function reconstituerInvitation(e: DetailEmail): Promise<ApercuReco
     const payload: Record<string, unknown> = {
       contactName: nom,
       calendlyUrl,
+      // 🔴 Ces invitations sont parties AVANT le 2026-10-05, avec le lien Calendly
+      // brut dans le bouton : l'aperçu ne doit pas montrer la page du site, qui n'a
+      // pas été envoyée. `lienBrut` coupe la traduction du gabarit.
+      lienBrut: true,
       ...(dossierUrl ? { dossierUrl } : {}),
       ...(provenance ? { provenance } : {}),
       // Même règle que l'envoi : `offre` (fiche née d'une candidature à une
