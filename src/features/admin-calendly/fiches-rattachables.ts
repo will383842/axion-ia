@@ -34,6 +34,9 @@ import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-applicat
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
+import { motsDuNom, nomCorrespond } from "@/lib/calendly/nom-fiche";
+
+export { motsDuNom, nomCorrespond };
 
 export type GroupeFiche = "meme-personne" | "nom-probable" | "recentes" | "actuelle";
 
@@ -67,39 +70,6 @@ interface Ligne {
   details: unknown;
   submittedAt: Date;
   contactName: string | null;
-}
-
-/** Minuscules, sans accents ni ponctuation : « Marie-Noëlle » → « marie noelle ». */
-function normaliser(v: string): string {
-  return v
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-/**
- * Les mots du nom de l'invité qui comptent (3 lettres au moins). Il en faut
- * DEUX pour chercher : un prénom seul ressemble à trop de monde.
- */
-export function motsDuNom(nom: string | null | undefined): string[] {
-  if (!nom) return [];
-  const mots = normaliser(nom)
-    .split(" ")
-    .filter((m) => m.length >= 3);
-  return mots.length >= 2 ? [...new Set(mots)] : [];
-}
-
-/**
- * Vrai si la fiche porte tous les mots du nom — dans son nom, ou dans la partie
- * locale de son adresse (une adresse relais Indeed contient prénom + nom).
- */
-export function nomCorrespond(mots: string[], nomFiche: string | null, emailFiche: string | null) {
-  if (mots.length === 0) return false;
-  const local = emailFiche ? (emailFiche.split("@")[0] ?? "") : "";
-  const bloc = normaliser(`${nomFiche ?? ""} ${local}`).replace(/ /g, "");
-  return mots.every((m) => bloc.includes(m));
 }
 
 function dechiffrer(v: string | null | undefined): string | null {

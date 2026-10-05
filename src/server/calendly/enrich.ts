@@ -386,6 +386,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
       typeRendezVous,
       inviteeEmail,
+      inviteeName: d.inviteeName ?? null,
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
     });
