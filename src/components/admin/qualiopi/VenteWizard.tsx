@@ -16,7 +16,7 @@
  * dans ses entités réelles.
  */
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Circle, CircleCheck, CircleMinus, ExternalLink, OctagonAlert } from "lucide-react";
@@ -33,7 +33,12 @@ import {
 import { cn } from "@/lib/utils";
 import { createClientAction } from "@/server/actions/qualiopi/clients";
 import { FichesProches } from "@/components/admin/qualiopi/FichesProches";
-import { createDevisAction, sendDevisAction } from "@/server/actions/qualiopi/devis";
+import {
+  createDevisAction,
+  lireBandeauAttributionAction,
+  sendDevisAction,
+} from "@/server/actions/qualiopi/devis";
+import { BandeauAttributionPartners } from "@/components/admin/qualiopi/BandeauAttributionPartners";
 import { duplicateFormationAction } from "@/server/actions/qualiopi/formations";
 import { createSessionAction } from "@/server/actions/qualiopi/sessions";
 import {
@@ -210,6 +215,25 @@ export function VenteWizard({
   const [rechercheClient, setRechercheClient] = useState("");
   const [clientId, setClientId] = useState(brouillon?.clientId ?? clientInitialId ?? "");
   const [clientCree, setClientCree] = useState<{ id: string; numero: string } | null>(null);
+  // INT-T07-A : le bandeau d'attribution d'Axion Partners du client, décidé au serveur, avant le devis.
+  // L'état garde le client auquel le texte se rapporte : un texte d'un autre client ne s'affiche pas.
+  const [bandeau, setBandeau] = useState<{ clientId: string; texte: string | null } | null>(null);
+  useEffect(() => {
+    if (clientId === "") return;
+    let actif = true;
+    lireBandeauAttributionAction(clientId).then(
+      (texte) => {
+        if (actif) setBandeau({ clientId, texte });
+      },
+      () => {
+        if (actif) setBandeau({ clientId, texte: null });
+      },
+    );
+    return () => {
+      actif = false;
+    };
+  }, [clientId]);
+  const bandeauAffiche = bandeau !== null && bandeau.clientId === clientId ? bandeau.texte : null;
   const [raisonSociale, setRaisonSociale] = useState(chaine(p, "raisonSociale"));
   const [siret, setSiret] = useState(chaine(p, "siret"));
   const [contactEmail, setContactEmail] = useState(chaine(p, "contactEmail"));
@@ -1084,6 +1108,7 @@ export function VenteWizard({
                   </AdminButton>
                 </div>
               ) : null}
+              <BandeauAttributionPartners texte={bandeauAffiche} />
               <div>
                 <AdminButton onClick={creerDevis} loading={isPending} disabled={clientId === ""}>
                   Créer le devis (brouillon)

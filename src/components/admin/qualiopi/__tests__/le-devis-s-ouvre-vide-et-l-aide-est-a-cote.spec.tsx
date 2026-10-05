@@ -26,6 +26,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 const createDevisActionMock = vi.fn();
 vi.mock("@/server/actions/qualiopi/devis", () => ({
   createDevisAction: (...args: unknown[]) => createDevisActionMock(...args),
+  // INT-T07-A : le bandeau d'attribution d'Axion Partners, sans attribution ici.
+  lireBandeauAttributionAction: async () => null,
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn() }),
