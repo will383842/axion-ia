@@ -268,6 +268,12 @@
       "running": false
     },
     {
+      "name": "Routes /apporteur/dossier (lien secret, noindex — dossier d'apporteur en ligne) — 25 KB cumulé",
+      "path": ".next/static/chunks/app/apporteur/**/page-*.js",
+      "limit": "25 KB",
+      "running": false
+    },
+    {
       "name": "SOMME des page chunks PUBLICS (hors /appel, hors console admin) — cliquet anti-croissance, PAS un budget par route",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
