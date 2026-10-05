@@ -45,6 +45,8 @@ import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
+import { estRendezVousApporteur } from "./appel-apporteur";
+import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 import {
   besoinDesReponses,
   reponsesDesQuestions,
@@ -391,6 +393,29 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     });
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
+  }
+  // ── Réservation d'un échange apporteur : les messages d'attente s'arrêtent ──
+  // (tunnel vidéo, règles R1/R2 de 03-MESSAGES-ET-DECISIONS) : une personne qui
+  // a RÉSERVÉ ne reçoit plus « votre inscription n'est pas terminée », ni les
+  // rappels J+2 / J+7. Fait ICI, avec l'adresse que Calendly CONFIRME, et pas au
+  // rattachement : il doit valoir même si la personne n'a aucune fiche, ou une
+  // fiche déjà rattachée à la main. Retire des tâches, n'en crée aucune ; une
+  // annulation ultérieure du créneau ne les rétablit pas. Best-effort strict.
+  if (
+    inviteeEmail &&
+    estRendezVousApporteur({
+      eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      typeRendezVous,
+    })
+  ) {
+    try {
+      await annulerRelancesLeadApporteur(
+        inviteeEmail,
+        "Envoi annulé : un échange apporteur a été réservé.",
+      );
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-annuler-relances-apporteur" } });
+    }
   }
   // Le nom et le type de RDV viennent de la ligne, complétés par ce que
   // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement

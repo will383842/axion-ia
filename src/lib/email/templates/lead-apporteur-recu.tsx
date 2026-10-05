@@ -14,6 +14,16 @@
 //     et ANNULÉ si le dossier arrive entre-temps : elle n'a rien demandé
 //     d'autre que de candidater.
 //
+// Deux variantes du tunnel avec vidéo (2026-10-05, 03-MESSAGES-ET-DECISIONS §2) :
+//   · `vsl-abandon` (A1) — l'étape 1 (prénom + e-mail) est validée, pas la
+//     suivante. Envoyé 30 min plus tard, ANNULÉ dès l'étape 2, le dossier
+//     complet ou une réservation. Le bouton ramène à la page (lien de reprise) ;
+//   · `vsl-etape2` (B1) — l'étape 2 (téléphone + question) est validée : « C'est
+//     noté » + LE bouton de réservation, qui est ici le CTA. Dit « choisissez
+//     votre créneau », jamais « votre candidature est retenue » (c'est le texte
+//     de l'invitation du filet à +24 h, R4) ; aucune retenue, aucun délai promis.
+//     Seul e-mail automatique, avec l'invitation, à porter le lien de réservation.
+//
 // Il fait trois choses, dans cet ordre :
 //   1. dire que c'est noté — sans délai chiffré, sans appel promis ;
 //   2. donner le KIT (décision Will 2026-09-19 : tout le monde le reçoit dès
@@ -33,6 +43,10 @@ import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
 import { VARIANTE_DOSSIER_COMMENCE } from "@/lib/commercial-application/kit-apporteur";
+import {
+  VARIANTE_VSL_ABANDON,
+  VARIANTE_VSL_ETAPE2,
+} from "@/lib/commercial-application/vsl-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -41,8 +55,10 @@ interface Payload {
   submissionId?: string;
   /** Lien du dossier complet — le wizard, pré-rempli par le brouillon local. */
   dossierUrl: string;
-  /** `dossier-commence` pour la personne qui a quitté le dossier en cours. */
+  /** `dossier-commence` pour la personne qui a quitté le dossier en cours ; `vsl-*` : tunnel vidéo. */
   variante?: string;
+  /** `vsl-etape2` : le lien de réservation (bouton principal). */
+  calendlyUrl?: string;
 }
 
 const COPY = {
@@ -55,6 +71,19 @@ const COPY = {
       "Le catalogue de nos prestations, et votre dossier à terminer : il reste quelques écrans.",
     bodyDossier:
       "Vous avez commencé votre dossier pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Il n'est pas encore arrivé : il vous reste quelques écrans.",
+    titleAbandon: "Votre inscription n'est pas terminée",
+    previewAbandon: "Il vous reste une étape pour terminer votre inscription.",
+    bodyAbandon:
+      "Vous avez commencé votre inscription au réseau d'apporteurs d'affaires d'Axion-IA, et il ne vous reste qu'une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
+    ctaAbandon: "Terminer mon inscription",
+    titleEtape2: "C'est noté",
+    previewEtape2: "Choisissez le créneau qui vous convient pour un échange de 15 minutes.",
+    bodyEtape2:
+      "Merci, votre inscription au réseau d'apporteurs d'affaires d'Axion-IA est bien enregistrée. Pour faire connaissance, choisissez dès maintenant le créneau qui vous convient pour un échange de 15 minutes en visio. Aucun engagement : vous décidez après.",
+    ctaEtape2: "Choisir mon créneau",
+    dossierEtape2Avant: "Si vous le souhaitez, vous pouvez aussi ",
+    dossierEtape2Lien: "compléter votre dossier",
+    dossierEtape2Apres: " dès maintenant : sans CV, sans lettre de motivation.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     dossier:
       "Et pour que nous préparions notre échange à partir de votre situation, complétez votre dossier — trois minutes, sans CV, sans lettre de motivation. Vos coordonnées sont déjà remplies.",
@@ -70,6 +99,19 @@ const COPY = {
     previewDossier: "Our catalogue of services, and your file to finish: only a few screens left.",
     bodyDossier:
       "You started your file to join Axion-IA's network of business introducers. Thank you! It has not arrived yet: only a few screens are left.",
+    titleAbandon: "Your registration is not finished",
+    previewAbandon: "One step left to finish your registration.",
+    bodyAbandon:
+      "You started your registration to Axion-IA's network of business introducers, and only one step is left: your phone number and one question. Your details are already saved, just pick up where you left off.",
+    ctaAbandon: "Finish my registration",
+    titleEtape2: "Noted",
+    previewEtape2: "Pick the slot that suits you for a 15-minute call.",
+    bodyEtape2:
+      "Thank you, your registration to Axion-IA's network of business introducers is saved. To get acquainted, pick the slot that suits you for a 15-minute video call. No commitment: you decide afterwards.",
+    ctaEtape2: "Pick my slot",
+    dossierEtape2Avant: "If you wish, you can also ",
+    dossierEtape2Lien: "complete your file",
+    dossierEtape2Apres: " right now: no resume, no cover letter.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     dossier:
       "And so we can prepare our conversation around your situation, complete your file — three minutes, no resume, no cover letter. Your details are already filled in.",
@@ -83,8 +125,18 @@ function estDossierCommence(p: Record<string, unknown>): boolean {
   return p["variante"] === VARIANTE_DOSSIER_COMMENCE;
 }
 
+function estVslAbandon(p: Record<string, unknown>): boolean {
+  return p["variante"] === VARIANTE_VSL_ABANDON;
+}
+
+function estVslEtape2(p: Record<string, unknown>): boolean {
+  return p["variante"] === VARIANTE_VSL_ETAPE2;
+}
+
 export const leadApporteurRecuSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const t = COPY[locale === "fr" ? "fr" : "en"];
+  if (estVslAbandon(p)) return t.titleAbandon;
+  if (estVslEtape2(p)) return t.titleEtape2;
   return estDossierCommence(p) ? t.titleDossier : t.title;
 };
 
@@ -98,20 +150,58 @@ export function LeadApporteurRecuEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   const dossierCommence = estDossierCommence(payload);
+  const abandon = estVslAbandon(payload);
+  // Sans lien de réservation exploitable, B1 retombe sur le comportement d'un
+  // accusé ordinaire : jamais un bouton qui ne mène nulle part.
+  const etape2 = estVslEtape2(payload) && Boolean(p.calendlyUrl);
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
+  const titre = abandon
+    ? t.titleAbandon
+    : etape2
+      ? t.titleEtape2
+      : dossierCommence
+        ? t.titleDossier
+        : t.title;
+  const apercu = abandon
+    ? t.previewAbandon
+    : etape2
+      ? t.previewEtape2
+      : dossierCommence
+        ? t.previewDossier
+        : t.preview;
+  const corps = abandon
+    ? t.bodyAbandon
+    : etape2
+      ? t.bodyEtape2
+      : dossierCommence
+        ? t.bodyDossier
+        : t.body;
+  const bouton = etape2
+    ? { label: t.ctaEtape2, href: p.calendlyUrl as string }
+    : { label: abandon ? t.ctaAbandon : t.cta, href: p.dossierUrl };
   return (
     <EmailLayout
       famille="B"
-      preview={dossierCommence ? t.previewDossier : t.preview}
-      title={dossierCommence ? t.titleDossier : t.title}
-      cta={{ label: t.cta, href: p.dossierUrl }}
+      preview={apercu}
+      title={titre}
+      cta={bouton}
       locale={locale}
       sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{dossierCommence ? t.bodyDossier : t.body}</Text>
+      <Text style={emailStyles.paragraphStyle}>{corps}</Text>
       <BlocKitApporteur locale={locale} />
-      <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>
+      {abandon ? null : etape2 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {t.dossierEtape2Avant}
+          <a href={p.dossierUrl} style={{ color: emailStyles.COLORS.terracotta, fontWeight: 600 }}>
+            {t.dossierEtape2Lien}
+          </a>
+          {t.dossierEtape2Apres}
+        </Text>
+      ) : (
+        <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.spam}</Text>
       {p.submissionId ? (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
