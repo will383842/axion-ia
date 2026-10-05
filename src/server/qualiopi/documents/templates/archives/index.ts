@@ -35,6 +35,8 @@ import { ConventionPdf as ConventionPdfV2 } from "./convention.v2";
 import { ConventionTripartitePdf as ConventionTripartitePdfV2 } from "./convention-tripartite.v2";
 import { ConventionPdf as ConventionPdfV3 } from "./convention.v3";
 import { ConventionTripartitePdf as ConventionTripartitePdfV3 } from "./convention-tripartite.v3";
+import { ConventionPdf as ConventionPdfV4 } from "./convention.v4";
+import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./convention-tripartite.v4";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
 
@@ -52,6 +54,7 @@ export const GABARITS_ARCHIVES: Readonly<
   convention: {
     2: { fichier: "convention.v2.tsx", Composant: ConventionPdfV2 as unknown as ComposantPiece },
     3: { fichier: "convention.v3.tsx", Composant: ConventionPdfV3 as unknown as ComposantPiece },
+    4: { fichier: "convention.v4.tsx", Composant: ConventionPdfV4 as unknown as ComposantPiece },
   },
   convention_tripartite: {
     2: {
@@ -61,6 +64,10 @@ export const GABARITS_ARCHIVES: Readonly<
     3: {
       fichier: "convention-tripartite.v3.tsx",
       Composant: ConventionTripartitePdfV3 as unknown as ComposantPiece,
+    },
+    4: {
+      fichier: "convention-tripartite.v4.tsx",
+      Composant: ConventionTripartitePdfV4 as unknown as ComposantPiece,
     },
   },
   contrat_formation: {

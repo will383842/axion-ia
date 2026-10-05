@@ -67,7 +67,7 @@ export async function Footer() {
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
-    { href: "/appel", label: isFr ? "Réserver un appel" : "Book a call" },
+    { href: "/appel?depuis=pied", label: isFr ? "Réserver un appel" : "Book a call" },
     // Réseau d'apporteurs d'affaires (déplacé ici depuis « Carrières » le
     // 2026-09-19, décision Will B5). Un apporteur est un indépendant qui
     // recommande, sans lien de subordination : le ranger parmi « Nos offres

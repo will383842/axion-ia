@@ -182,6 +182,24 @@ const AVANT_CORRECTION: readonly Cas[] = [
     versionSignee: 1,
     empreinteAvant: "b41856afd05cf4ef1ca04994e7af6b4e83483853ade63ebf2445f8d41f6d45bf",
   },
+  // INT-T65-A (04/10/2026) — la v4 des deux conventions est archivée par le
+  // passage en v5 (clause de condition suspensive OPCO). Empreintes relevées
+  // par ce même test sur la tête de `opco/int-t65-a-condition-suspensive` À JOUR
+  // DE MAIN et AVANT la retouche des gabarits, la v4 étant alors courante.
+  {
+    type: "convention",
+    data: DATA_CONVENTION,
+    parties: ["client", "axionia"],
+    versionSignee: 4,
+    empreinteAvant: "37bd68dbd4f920038afbabe497a85f072467c4e4911313829cb83b6c1180788c",
+  },
+  {
+    type: "convention_tripartite",
+    data: DATA_TRIPARTITE,
+    parties: ["client", "financeur", "axionia"],
+    versionSignee: 4,
+    empreinteAvant: "7407ec141571e9f5aa39898f219718ce5691a28350ef7a9cb2f814f293464404",
+  },
 ];
 
 function lignesSignature(parties: readonly string[]) {
@@ -319,8 +337,8 @@ describe("une pièce générée AUJOURD'HUI porte les citations corrigées", () 
   }
 
   it("les pièces retouchées ont changé de version (sinon l'archive ne serait jamais lue)", () => {
-    expect(versionGabaritCourante("convention")).toBe(4);
-    expect(versionGabaritCourante("convention_tripartite")).toBe(4);
+    expect(versionGabaritCourante("convention")).toBe(5);
+    expect(versionGabaritCourante("convention_tripartite")).toBe(5);
     expect(versionGabaritCourante("contrat_formation")).toBe(2);
     expect(versionGabaritCourante("releve_connexion")).toBe(2);
   });

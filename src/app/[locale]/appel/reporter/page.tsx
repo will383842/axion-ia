@@ -58,6 +58,8 @@ import {
   CHAMP_NOUVEAU_DEBUT,
 } from "@/server/calendly/liens-rendez-vous";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { ReportSurPlace } from "@/components/booking/ReportSurPlace";
+import { urlDeReprogrammation } from "@/server/calendly/choix-rendez-vous";
 import { creneauExploitable } from "@/server/calendly/formulaire-reservation";
 import { reporterDepuisLeLien } from "./actions";
 
@@ -117,14 +119,44 @@ export default async function ReporterPage({ params, searchParams }: Props) {
 
   const rdv = await prisma.calendlyEvent.findUnique({
     where: { id: lecture.rendezVousId },
-    select: { id: true, startTime: true, status: true, location: true, rawPayload: true },
+    select: {
+      id: true,
+      startTime: true,
+      status: true,
+      location: true,
+      rawPayload: true,
+      // Le TYPE d'origine : un rendez-vous reprogrammé garde son type
+      // (chantier « Types de rendez-vous », L2 — `urlDeReprogrammation`).
+      eventTypeUri: true,
+      typeRendezVous: true,
+      eventTypeName: true,
+      // Sur place : le lien de report NATIF de Calendly, seul chemin qui marche.
+      rescheduleUrl: true,
+    },
   });
   if (!rdv) return <Introuvable />;
   if (rdv.status === "canceled") return <DejaAnnule locale={locale} />;
 
   const format = canalDuRendezVous(rdv.location, rdv.rawPayload);
   const libelleFormat =
-    format === "visio" ? "en visioconférence" : format === "telephone" ? "par téléphone" : null;
+    format === "visio"
+      ? "en visioconférence"
+      : format === "telephone"
+        ? "par téléphone"
+        : format === "sur_place"
+          ? "sur place"
+          : null;
+
+  // ── SUR PLACE : pas de créneaux, la sortie qui marche tout de suite ───────
+  // La réservation directe ne sait rejouer qu'un appel ou une visio : montrer
+  // les créneaux menait à « Confirmer », puis à un refus, en boucle.
+  if (format === "sur_place") {
+    return (
+      <Cadre>
+        <ReportSurPlace lienCalendly={rdv.rescheduleUrl} />
+      </Cadre>
+    );
+  }
 
   // ── ÉCRAN 2 : confirmer un créneau déjà choisi ────────────────────────────
   if (nouveauDebut !== "" && creneauExploitable(nouveauDebut, new Date())) {
@@ -198,8 +230,10 @@ export default async function ReporterPage({ params, searchParams }: Props) {
   }
 
   // ── ÉCRAN 1 : choisir ─────────────────────────────────────────────────────
+  // 🔴 Les créneaux du type D'ORIGINE, jamais ceux du type appel par défaut :
+  // un diagnostic déplacé reste un diagnostic.
   const dispo = await fetchAvailableSlots({
-    schedulingUrl: process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
+    schedulingUrl: await urlDeReprogrammation(rdv),
   });
 
   return (

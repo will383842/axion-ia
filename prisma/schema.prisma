@@ -4400,6 +4400,10 @@ model CalendlyEvent {
   utmSource             String?             @map("utm_source") @db.VarChar(100)
   utmCampaign           String?             @map("utm_campaign") @db.VarChar(100)
   utmMedium             String?             @map("utm_medium") @db.VarChar(100)
+  /// `utm_content` de la réservation (2026-10-04, chantier « Types de rendez-vous »).
+  /// Rempli par l'iframe quand la page le transmet, et recopié du `tracking` de
+  /// l'invité Calendly au sondage / à l'enrichissement quand il est vide.
+  utmContent            String?             @map("utm_content") @db.VarChar(100)
   referrer              String?             @db.VarChar(500)
   /// Match manuel par Will via admin (lien vers une Submission existante).
   linkedSubmissionId    String?             @map("linked_submission_id") @db.Uuid
@@ -4407,6 +4411,16 @@ model CalendlyEvent {
   updatedAt             DateTime            @updatedAt @map("updated_at")
   /// Notes admin manuelles (debrief post-call, etc.).
   notes                 String?             @db.Text
+
+  /// Chantier « Types de rendez-vous » (2026-10-04, lot L1). Le TYPE du rendez-vous,
+  /// classé UNE fois à l'écriture par `server/calendly/type-rendez-vous.ts` :
+  /// d'abord par l'URI du type Calendly (renommer un type ne change rien), sinon
+  /// par le nom. `null` = ligne pas encore classée (reprise faite par la migration).
+  typeRendezVous TypeRendezVous? @map("type_rendez_vous")
+  /// URI API du type d'événement Calendly (`scheduled_event.event_type`, ex.
+  /// « https://api.calendly.com/event_types/UUID »). Clé STABLE du type, que le
+  /// nom n'est pas.
+  eventTypeUri   String?         @map("event_type_uri") @db.VarChar(255)
 
   linkedSubmission       Submission?      @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
   /// Lot 2 du chantier recrutement — LE LIEN QUI MANQUAIT.
@@ -4435,6 +4449,7 @@ model CalendlyEvent {
   @@index([linkedSubmissionId])
   @@index([linkedJobApplicationId])
   @@index([enrichedAt])
+  @@index([typeRendezVous])
   @@map("calendly_events")
 }
 
@@ -4456,6 +4471,18 @@ model CalendlyEvent {
 //
 // RGPD : `note` est une appréciation écrite sur la personne — exportée
 // (art. 15, `api/gdpr-export`) et effacée avec le reste (`lib/rgpd-erase`).
+
+/// Chantier « Types de rendez-vous » (2026-10-04) — qui vient pour quoi, sur le
+/// compte Calendly unique. Classement : `server/calendly/type-rendez-vous.ts`.
+enum TypeRendezVous {
+  diagnostic
+  echange_projet
+  apporteur
+  salon
+  autre
+
+  @@map("type_rendez_vous")
+}
 
 enum RendezVousIssue {
   eu_lieu
@@ -5040,11 +5067,15 @@ model Client {
   formations             Formation[]
   sessions               TrainingSession[]
   documents              DocumentGenere[]
-  enrollmentsFinances    Enrollment[]           @relation("EnrollmentClient")
+  enrollmentsFinances    Enrollment[]                @relation("EnrollmentClient")
   coachingContracts      CoachingContract[]
   auditMissions          AuditMission[]
   facturesFormation      FactureFormation[]
   dossiersFinancement    DossierFinancement[]
+  /// INT-T61-A — statut du contrôle croisé de l'IDCC (table à part : aucune
+  /// colonne n'est ajoutée à `clients`). Absente = `non_renseigne`.
+  idccControle           ClientIdccControle?
+  idccControleJournal    ClientIdccControleJournal[]
   plansRecurrents        PlanRecurrent[]
   // ── Conditions de paiement propres au client (F61) ──
   //
@@ -5052,10 +5083,10 @@ model Client {
   // condition particulière et un client réglé explicitement sur la même
   // valeur se comportent pareil AUJOURD'HUI, mais divergeront le jour où le
   // défaut global changera.
-  delaiPaiementJours     Int?                   @map("delai_paiement_jours")
+  delaiPaiementJours     Int?                        @map("delai_paiement_jours")
   /// Taux appliqué au RESTE À CHARGE, pas au montant total.
-  tauxAcomptePct         Int?                   @map("taux_acompte_pct")
-  modeFacturation        ModeFacturationClient? @map("mode_facturation")
+  tauxAcomptePct         Int?                        @map("taux_acompte_pct")
+  modeFacturation        ModeFacturationClient?      @map("mode_facturation")
   /// Applique-t-on les pénalités de retard (art. L.441-10) à CE client ?
   ///
   /// `false` par DÉFAUT, et ce défaut est une décision produit explicite :
@@ -5068,7 +5099,7 @@ model Client {
   /// toute facture entre professionnels (art. L.441-9 / L.441-10 / D.441-5) et
   /// restent imprimées sans condition. Ne pas conditionner leur affichage à ce
   /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
-  penalitesRetardActives Boolean                @default(false) @map("penalites_retard_actives")
+  penalitesRetardActives Boolean                     @default(false) @map("penalites_retard_actives")
 
   emailsEnAttente  EmailOutbox[]
   reglesEmail      EmailAutomationSetting[]
@@ -7044,52 +7075,61 @@ enum DocumentType {
   mandat_opco
 }
 
+/// INT-T65-A — état de la condition suspensive OPCO d'une convention.
+enum EtatConditionSuspensive {
+  en_attente
+  /// Accomplie (accord écrit ≥ seuil dans le délai) ou levée par renonciation.
+  active
+  /// Défaillie : refus, accord inférieur ou date limite dépassée.
+  caduque
+}
+
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
 /// signed URL S3, QR de vérification (attestation/certificat), conservation 5 ans.
 model DocumentGenere {
-  id                      String                  @id @default(uuid()) @db.Uuid
+  id                      String                   @id @default(uuid()) @db.Uuid
   type                    DocumentType
-  numero                  String                  @unique @db.VarChar(40)
-  formationId             String?                 @map("formation_id") @db.Uuid
-  formation               Formation?              @relation(fields: [formationId], references: [id], onDelete: SetNull)
-  sessionId               String?                 @map("session_id") @db.Uuid
-  session                 TrainingSession?        @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  traineeId               String?                 @map("trainee_id") @db.Uuid
-  trainee                 Trainee?                @relation(fields: [traineeId], references: [id], onDelete: SetNull)
-  clientId                String?                 @map("client_id") @db.Uuid
-  client                  Client?                 @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  numero                  String                   @unique @db.VarChar(40)
+  formationId             String?                  @map("formation_id") @db.Uuid
+  formation               Formation?               @relation(fields: [formationId], references: [id], onDelete: SetNull)
+  sessionId               String?                  @map("session_id") @db.Uuid
+  session                 TrainingSession?         @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  traineeId               String?                  @map("trainee_id") @db.Uuid
+  trainee                 Trainee?                 @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId                String?                  @map("client_id") @db.Uuid
+  client                  Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
   /// 🔴 Sous-traitant partie au contrat. `genererContratSousTraitanceAction` ne
   /// passait AUCUN `refs` : la pièce n'était reliée au sous-traitant par rien, et
   /// il était donc impossible de savoir à qui adresser le lien de signature.
-  sousTraitantId          String?                 @map("sous_traitant_id") @db.Uuid
-  sousTraitant            SousTraitant?           @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  sousTraitantId          String?                  @map("sous_traitant_id") @db.Uuid
+  sousTraitant            SousTraitant?            @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
   /// Null pour les documents de formation collective (inchangé).
-  coachingSessionId       String?                 @map("coaching_session_id") @db.Uuid
-  coachingSession         CoachingSession?        @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  coachingSessionId       String?                  @map("coaching_session_id") @db.Uuid
+  coachingSession         CoachingSession?         @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
   /// 🔴 Formateur MANDATÉ par la pièce (lettre de mission). Ajouté 2026-08-01 :
   /// la lettre-cadre couvre PLUSIEURS sessions — aucune session unique ne peut
   /// plus désigner le mandataire, il faut donc l'ancrer ici. FK réelle et jamais
   /// `metadata` : l'identité d'un signataire se résout depuis les rattachements
   /// (doctrine du canal maison, cf. refs-circuits.spec.ts).
-  trainerId               String?                 @map("trainer_id") @db.Uuid
-  trainer                 Trainer?                @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
+  trainerId               String?                  @map("trainer_id") @db.Uuid
+  trainer                 Trainer?                 @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
   /// URL signée S3/R2 (expiration courte). Regénérée à la demande.
-  pdfUrl                  String?                 @map("pdf_url") @db.Text
-  hashSha256              String                  @map("hash_sha256") @db.VarChar(64)
-  sizeBytes               Int                     @default(0) @map("size_bytes")
+  pdfUrl                  String?                  @map("pdf_url") @db.Text
+  hashSha256              String                   @map("hash_sha256") @db.VarChar(64)
+  sizeBytes               Int                      @default(0) @map("size_bytes")
   /// Filigrane COPIE si true.
-  estCopie                Boolean                 @default(false) @map("est_copie")
+  estCopie                Boolean                  @default(false) @map("est_copie")
   /// Token QR de vérification publique (timingSafeEqual), attestation/certificat.
-  qrToken                 String?                 @unique @map("qr_token") @db.VarChar(64)
-  qrTokenCreatedAt        DateTime?               @map("qr_token_created_at")
-  envoyeAt                DateTime?               @map("envoye_at")
+  qrToken                 String?                  @unique @map("qr_token") @db.VarChar(64)
+  qrTokenCreatedAt        DateTime?                @map("qr_token_created_at")
+  envoyeAt                DateTime?                @map("envoye_at")
   /// = createdAt + 5 ans (rétention légale).
-  suppressionPrevueAt     DateTime                @map("suppression_prevue_at")
+  suppressionPrevueAt     DateTime                 @map("suppression_prevue_at")
   /// Pointe vers le fichier source ORIGINAL archivé (ex. CSV Zoom/Teams pour un
   /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
-  fichierOriginalPath     String?                 @map("fichier_original_path") @db.Text
-  metadata                Json                    @default("{}")
+  fichierOriginalPath     String?                  @map("fichier_original_path") @db.Text
+  metadata                Json                     @default("{}")
   /// 🔴 ANNULATION au registre — la pièce reste, elle cesse de faire foi.
   ///
   /// Une pièce erronée ne se SUPPRIME pas : son numéro est alloué dans une série
@@ -7098,20 +7138,20 @@ model DocumentGenere {
   /// `annuleeMotif` est rendu obligatoire par une contrainte CHECK dès que
   /// `annuleeAt` est posé : une annulation sans raison ne vaut pas mieux que la
   /// contradiction qu'elle lève.
-  annuleeAt               DateTime?               @map("annulee_at")
-  annuleeMotif            String?                 @map("annulee_motif") @db.Text
+  annuleeAt               DateTime?                @map("annulee_at")
+  annuleeMotif            String?                  @map("annulee_motif") @db.Text
   /// Identité humaine de l'auteur de l'annulation, telle qu'affichée au registre.
-  annuleePar              String?                 @map("annulee_par") @db.Text
+  annuleePar              String?                  @map("annulee_par") @db.Text
   /// Numéro de la pièce qui REMPLACE celle-ci (contre-trace de la rectification).
   ///
   /// La nouvelle pièce porte `metadata.rectifie` ; sans cette colonne, la pièce
   /// périmée ne disait rien de son sort et il fallait déjà connaître la nouvelle
   /// pour apprendre que l'ancienne était morte. Chaque pièce dit son sort.
-  remplaceeParNumero      String?                 @map("remplacee_par_numero") @db.VarChar(40)
+  remplaceeParNumero      String?                  @map("remplacee_par_numero") @db.VarChar(40)
   /// Statut DÉRIVÉ des lignes `DocumentSignature`. Cache de lecture : la source
   /// de vérité reste la table de signatures, jamais cette colonne.
   /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
-  statutSignature         DocumentStatutSignature @default(non_requise) @map("statut_signature")
+  statutSignature         DocumentStatutSignature  @default(non_requise) @map("statut_signature")
   /// 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ a-t-il été transmis au signataire ?
   ///
   /// Défaut vécu en production le 2026-09-04 : la convention AXI-DOC-2026-039 a
@@ -7129,7 +7169,7 @@ model DocumentGenere {
   ///     rattrapage n'avait nulle part où s'écrire. C'est ce qui la rend
   ///     indispensable même une fois l'envoi câblé — l'alerte
   ///     `exemplaire_signe_non_transmis` la lit.
-  exemplaireSigneEnvoyeAt DateTime?               @map("exemplaire_signe_envoye_at")
+  exemplaireSigneEnvoyeAt DateTime?                @map("exemplaire_signe_envoye_at")
   /// Clé R2 du PDF intégralement signé, archivée à la transmission.
   ///
   /// `rendreExemplaireSigne` REJOUE l'instantané de rendu à chaque appel et ne
@@ -7137,9 +7177,29 @@ model DocumentGenere {
   /// consulté par un admin ; ça n'en a plus dès qu'on l'ENVOIE, pour deux
   /// raisons : `enqueueEmail` n'accepte de pièce jointe que par clé R2, et une
   /// pièce transmise à un tiers doit rester relisable telle qu'elle est partie.
-  exemplaireSigneKey      String?                 @map("exemplaire_signe_key") @db.Text
-  createdAt               DateTime                @default(now()) @map("created_at")
-  updatedAt               DateTime                @updatedAt @map("updated_at")
+  exemplaireSigneKey      String?                  @map("exemplaire_signe_key") @db.Text
+  /// INT-T65-A — convention conclue sous la condition suspensive de l'accord de
+  /// prise en charge de l'OPCO (C. civ. 1304 s.). Forme d'A02, telle quelle.
+  /// Portée par la PIÈCE GÉNÉRÉE (`convention` ou `convention_tripartite`) :
+  /// la clause imprimée et ses paramètres ne font qu'un.
+  /// `false` par défaut : aucune pièce existante ne change de sens.
+  conditionSuspensiveOpco Boolean                  @default(false) @map("condition_suspensive_opco")
+  /// Seuil en points de base (1 à 10 000) du prix TTC de la convention. Le
+  /// défaut de 50 % vit dans la SSOT `SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS` et se
+  /// pose à l'écran : jamais de DEFAULT en base. CHECK `convention_seuil_bps_borne`.
+  seuilConditionBps       Int?                     @map("seuil_condition_bps")
+  /// Seuil en centimes entiers (>= 1), comparé au montant accordé par l'OPCO.
+  /// CHECK `convention_seuil_cents_positif`. Exactement un des deux seuils quand
+  /// la case est cochée (CHECK `convention_condition_coherente`).
+  seuilConditionCents     Int?                     @map("seuil_condition_cents")
+  /// Instant de 00:00 (heure de Paris) du JOUR LIMITE. La borne est la FIN de
+  /// ce jour civil de Paris (minuit exclusif) : cf. `condition-suspensive.ts`.
+  dateLimiteCondition     DateTime?                @map("date_limite_condition") @db.Timestamptz(3)
+  /// État fermé de la condition ; `null` tant qu'aucune condition n'est posée.
+  /// Chaque transition est journalisée (`activity_logs`).
+  etatConditionSuspensive EtatConditionSuspensive? @map("etat_condition_suspensive")
+  createdAt               DateTime                 @default(now()) @map("created_at")
+  updatedAt               DateTime                 @updatedAt @map("updated_at")
 
   enrollmentsAttestation Enrollment[]             @relation("EnrollmentAttestation")
   signatures             DocumentSignature[]
@@ -8831,6 +8891,134 @@ enum StatutFondsOpco {
   ouvert
   reduit
   suspendu
+}
+
+/// Correspondance IDCC → OPCO (INT-T60-A), importée de la table SIRET-OPCO
+/// « SIRO » de France compétences. Clé primaire = le COUPLE (idcc, opco) : un
+/// IDCC rattaché à deux OPCO a DEUX lignes, jamais tranché par une majorité.
+/// La table ne porte qu'UN millésime à la fois : un import remplace le
+/// millésime entier dans une seule transaction (`idcc-import.ts`), et chaque
+/// écart avec le précédent est journalisé dans `IdccOpcoChangement`.
+/// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration (ici et sur le journal).
+/// rgpd: technique — référentiel public des conventions collectives et de leur
+/// OPCO ; aucune donnée sur une personne
+model IdccOpco {
+  idcc            String   @db.Char(4)
+  opco            Opco
+  /// Nombre de SIRET DISTINCTS de la source déclarant ce couple dans ce
+  /// millésime (fait brut, forme d'A02 sur #656). Remplacé avec le millésime,
+  /// jamais cumulé. CHECK (siret_nombre >= 1) posé par la migration.
+  siretNombre     Int      @map("siret_nombre")
+  /// Date du fichier SIRO dont la ligne est issue.
+  millesimeSource DateTime @map("millesime_source") @db.Date
+  /// URL du fichier SIRO lu.
+  sourceUrl       String   @map("source_url") @db.Text
+  importeAt       DateTime @map("importe_at") @db.Timestamptz(6)
+  /// Intitulé de la convention. Source DISTINCTE de la SIRO (liste du
+  /// ministère du Travail) : nullable, et sa provenance dans `intituleSource`.
+  intitule        String?  @db.Text
+  intituleSource  String?  @map("intitule_source") @db.Text
+
+  @@id([idcc, opco])
+  @@index([opco])
+  @@map("idcc_opco")
+}
+
+/// Journal des changements de la correspondance IDCC → OPCO (INT-T60-A) : un
+/// import ne réécrit jamais une ligne en silence. `ancienOpco` null = IDCC
+/// nouvellement rattaché ; `nouvelOpco` null = rattachement disparu du fichier.
+/// Ajouts seuls : aucune ligne n'est modifiée ni supprimée.
+/// rgpd: technique — référentiel public des conventions collectives et de leur
+/// OPCO ; aucune donnée sur une personne
+model IdccOpcoChangement {
+  id              String   @id @default(uuid()) @db.Uuid
+  idcc            String   @db.Char(4)
+  ancienOpco      Opco?    @map("ancien_opco")
+  nouvelOpco      Opco?    @map("nouvel_opco")
+  /// Millésime qui a introduit le changement.
+  millesimeSource DateTime @map("millesime_source") @db.Date
+  importeAt       DateTime @map("importe_at") @db.Timestamptz(6)
+
+  @@index([idcc, importeAt])
+  @@map("idcc_opco_changements")
+}
+
+/// Statut du contrôle croisé de l'IDCC d'une entreprise (INT-T61-A, forme
+/// d'A02) : énumération FERMÉE. Calculé par `financements/idcc-controle.ts` à
+/// partir de trois témoins — l'IDCC saisi, `liste_idcc` de l'API Recherche
+/// d'entreprises, le code NAF — et de la règle de la part (table `idcc_opco`).
+/// `confirme` n'est JAMAIS calculé : il exige une preuve déclarative.
+/// Les issues « à confirmer » et « inconnu » de la règle de la part ne sont pas
+/// des statuts : elles alimentent `probable` et `anomalie`.
+enum StatutIdcc {
+  non_renseigne
+  probable
+  concordant
+  anomalie
+  confirme
+}
+
+/// Nature de la PREUVE DÉCLARATIVE qui confirme un IDCC (INT-T61-A). Une
+/// déclaration, jamais une pièce : aucun fichier n'est reçu ni conservé. Le
+/// bulletin de paie n'est PAS une preuve admise (D-OPCO-6) et ne doit jamais
+/// entrer dans cette liste.
+enum PreuveIdccDeclarative {
+  attestation_entreprise
+  declaration_opco
+  accord_prise_en_charge_opco
+}
+
+/// Statut IDCC courant d'une entreprise (INT-T61-A). Une ligne par client au
+/// plus ; pas de ligne = `non_renseigne`. `idcc` est l'IDCC (normalisé, quatre
+/// chiffres) sur lequel le statut a été établi : si la saisie change, le statut
+/// se recalcule et une confirmation antérieure tombe.
+/// CHECK posés par la migration :
+///  - `idcc` ~ '^[0-9]{4}$' ;
+///  - les trois champs de preuve sont posés ENSEMBLE ou pas du tout ;
+///  - `statut = 'confirme'` ⇔ une preuve et un IDCC.
+/// AUCUN champ de fichier, d'adresse de fichier ni de texte libre.
+/// rgpd: technique — statut de la convention collective d'une ENTREPRISE ;
+/// l'auteur de la preuve est un administrateur (identifiant seul) ; aucune
+/// donnée sur une personne
+model ClientIdccControle {
+  clientId       String                 @id @map("client_id") @db.Uuid
+  client         Client                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  statut         StatutIdcc             @default(non_renseigne)
+  idcc           String?                @db.Char(4)
+  preuveType     PreuveIdccDeclarative? @map("preuve_type")
+  /// OPCO de l'accord de prise en charge, posé SEULEMENT pour la preuve
+  /// `accord_prise_en_charge_opco` (CHECK `client_idcc_controles_preuve_opco`).
+  preuveOpco     Opco?                  @map("preuve_opco")
+  /// Administrateur qui a enregistré la déclaration (AdminUser.id), sans clé
+  /// étrangère : la ligne survit au départ d'un administrateur.
+  preuveAuteurId String?                @map("preuve_auteur_id") @db.Uuid
+  /// Date de la déclaration (posée par le serveur).
+  preuveLe       DateTime?              @map("preuve_le") @db.Timestamptz(6)
+  majAt          DateTime               @updatedAt @map("maj_at") @db.Timestamptz(6)
+
+  @@index([statut])
+  @@map("client_idcc_controles")
+}
+
+/// Journal des changements de statut IDCC (INT-T61-A). Il ne porte AUCUN
+/// contenu : des statuts, un type de preuve, un identifiant d'auteur, une date.
+/// Ni l'IDCC, ni l'OPCO, ni texte, ni fichier. Ajouts seuls.
+/// CHECK posés par la migration : `de` ≠ `vers` ; `vers = 'confirme'` ⇒ un
+/// type de preuve et un auteur.
+/// rgpd: technique — journal de statut d'une ENTREPRISE, sans contenu ;
+/// l'auteur est un administrateur (identifiant seul)
+model ClientIdccControleJournal {
+  id         String                 @id @default(uuid()) @db.Uuid
+  clientId   String                 @map("client_id") @db.Uuid
+  client     Client                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  de         StatutIdcc?
+  vers       StatutIdcc
+  preuveType PreuveIdccDeclarative? @map("preuve_type")
+  auteurId   String?                @map("auteur_id") @db.Uuid
+  creeAt     DateTime               @default(now()) @map("cree_at") @db.Timestamptz(6)
+
+  @@index([clientId, creeAt])
+  @@map("client_idcc_controle_journal")
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

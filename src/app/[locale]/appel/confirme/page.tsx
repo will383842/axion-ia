@@ -62,6 +62,8 @@ import {
   BellRing,
   ExternalLink,
   HelpCircle,
+  ListChecks,
+  MapPin,
   Phone,
   Video,
 } from "lucide-react";
@@ -71,8 +73,14 @@ import { Container } from "@/components/layout/Container";
 import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
-import { canalDuRendezVous } from "@/server/calendly/canal";
+import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
 import { phraseConfirmationVisio } from "@/content/visio-annonce-textes";
+import {
+  classerRendezVous,
+  LIBELLES_TYPE_RENDEZ_VOUS,
+  type TypeRendezVous,
+} from "@/server/calendly/type-rendez-vous";
+import { lireChoixRendezVous, typeDuChoix } from "@/server/calendly/choix-rendez-vous";
 
 export const dynamic = "force-dynamic";
 
@@ -106,8 +114,12 @@ interface Props {
 interface DetailEvenement {
   readonly debut: Date | null;
   readonly fin: Date | null;
-  readonly format: "telephone" | "visio" | "inconnu";
+  readonly format: CanalRendezVous;
   readonly lienReunion: string | null;
+  /** Sur place : l'adresse que Calendly porte dans `location.location`. */
+  readonly adresse: string | null;
+  /** Le type, classé par l'URI du type Calendly (repli : son nom). */
+  readonly type: TypeRendezVous;
 }
 
 /**
@@ -144,7 +156,19 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       typeof lieu === "object" && lieu !== null
         ? (lieu as Record<string, unknown>)["join_url"]
         : null;
+    const texteDuLieu =
+      typeof lieu === "object" && lieu !== null
+        ? (lieu as Record<string, unknown>)["location"]
+        : null;
+    const format = canalDuRendezVous(null, { event: { location: lieu } });
+    // Le TYPE (chantier « Types de rendez-vous », L2) : par l'URI du type
+    // d'événement, la même règle que partout ailleurs — jamais d'exception.
+    const type = await classerRendezVous({
+      eventTypeUri: typeof o["event_type"] === "string" ? o["event_type"] : null,
+      eventTypeName: typeof o["name"] === "string" ? o["name"] : null,
+    });
     return {
+      type,
       debut: dateOuNull(o["start_time"]),
       // La fin sert UNIQUEMENT à afficher une durée mesurée. Sans elle, aucune
       // durée n'est écrite : « 45 minutes » recopié depuis la page de
@@ -153,8 +177,12 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       // 🔑 La MÊME dérivation que partout ailleurs. Écrire ici une seconde
       // façon de lire le format ferait diverger la page de l'e-mail que le
       // visiteur reçoit dans la minute.
-      format: canalDuRendezVous(null, { event: { location: lieu } }),
+      format,
       lienReunion: typeof join === "string" && join.startsWith("http") ? join : null,
+      adresse:
+        format === "sur_place" && typeof texteDuLieu === "string" && texteDuLieu.trim() !== ""
+          ? texteDuLieu.trim()
+          : null,
     };
   } catch {
     return null;
@@ -222,6 +250,11 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   if (uuid !== "" && !FORME_IDENTIFIANT.test(uuid)) notFound();
 
   const detail = uuid !== "" ? await relireLEvenement(uuid) : null;
+  // Le type : celui que Calendly a enregistré ; à défaut (relecture en échec),
+  // le choix transmis par notre formulaire (`&rdv=`). Sinon aucun.
+  const choixTransmis = lireChoixRendezVous(sp["rdv"]);
+  const type: TypeRendezVous | null =
+    detail?.type ?? (choixTransmis ? typeDuChoix(choixTransmis) : null);
 
   return (
     <div className="bg-canvas min-h-screen pt-8 pb-20 sm:pt-14">
@@ -234,9 +267,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
           {incertain ? (
             <EnCoursDeVerification />
           ) : aVerifier ? (
-            <ADeuxVerifier detail={detail} />
+            <ADeuxVerifier detail={detail} type={type} />
           ) : (
-            <Confirme detail={detail} />
+            <Confirme detail={detail} type={type} />
           )}
 
           <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
@@ -246,12 +279,30 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   );
 }
 
-function Confirme({ detail }: { detail: DetailEvenement | null }) {
+/**
+ * Le nom du rendez-vous en tête d'écran : « Diagnostic IA », « Échange projet »,
+ * ou « Premier contact » quand le type n'est pas l'un des deux rendez-vous
+ * publics (ou inconnu).
+ */
+function nomDuRendezVous(type: TypeRendezVous | null): string {
+  return type === "diagnostic" || type === "echange_projet"
+    ? LIBELLES_TYPE_RENDEZ_VOUS[type]
+    : "Premier contact";
+}
+
+function Confirme({
+  detail,
+  type,
+}: {
+  detail: DetailEvenement | null;
+  type: TypeRendezVous | null;
+}) {
+  const nom = nomDuRendezVous(type);
   return (
     <>
       {detail?.debut ? (
         <TeteDeParcours
-          surtitre="Premier contact · confirmé"
+          surtitre={`${nom} · confirmé`}
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="C'est réservé."
@@ -264,7 +315,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
         // trait pour trait au succès complet, et rien n'indiquait au visiteur
         // OÙ vérifier. On le dit : l'e-mail fait foi.
         <TeteDeParcours
-          surtitre="Premier contact · enregistré"
+          surtitre={`${nom} · enregistré`}
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="Votre réservation est enregistrée."
@@ -281,6 +332,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
           fin={detail.fin}
           format={detail.format}
           lienReunion={detail.lienReunion}
+          adresse={detail.adresse}
         />
       ) : null}
 
@@ -288,7 +340,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
           détail. Elle ne dit rien de la date ni du format : elle dit ce qui
           arrive ensuite, et c'est précisément là que le visiteur privé de
           récapitulatif a le plus besoin d'être tenu. */}
-      <CeQuiSePasseMaintenant format={detail?.format ?? "inconnu"} />
+      <CeQuiSePasseMaintenant format={detail?.format ?? "inconnu"} type={type} />
     </>
   );
 }
@@ -306,15 +358,24 @@ function CarteRendezVous({
   fin,
   format,
   lienReunion,
+  adresse,
 }: {
   debut: Date;
   fin: Date | null;
   format: DetailEvenement["format"];
   lienReunion: string | null;
+  adresse: string | null;
 }) {
   const { jour, heure } = quandEnDeux(debut);
   const minutes = dureeEnMinutes(debut, fin);
-  const PictoFormat = format === "visio" ? Video : format === "telephone" ? Phone : Mail;
+  const PictoFormat =
+    format === "visio"
+      ? Video
+      : format === "telephone"
+        ? Phone
+        : format === "sur_place"
+          ? MapPin
+          : Mail;
 
   return (
     <section
@@ -366,8 +427,13 @@ function CarteRendezVous({
                   ? "En visioconférence"
                   : format === "telephone"
                     ? "Par téléphone — nous vous appelons"
-                    : "Le format vous sera précisé par e-mail"}
+                    : format === "sur_place"
+                      ? "Sur place, en personne"
+                      : "Le format vous sera précisé par e-mail"}
               </p>
+              {format === "sur_place" && adresse ? (
+                <p className="text-fg-soft mt-2 text-sm">{adresse}</p>
+              ) : null}
 
               {format === "visio" ? (
                 lienReunion ? (
@@ -418,8 +484,26 @@ function CarteRendezVous({
  * ⚠️ Aucune ligne ne cite d'horaire : la séquence est vraie quelle que soit la
  * date, et le reste vrai même quand la relecture Calendly n'a rien rendu.
  */
-function CeQuiSePasseMaintenant({ format }: { format: DetailEvenement["format"] }) {
+function CeQuiSePasseMaintenant({
+  format,
+  type,
+}: {
+  format: DetailEvenement["format"];
+  type: TypeRendezVous | null;
+}) {
   const etapes = [
+    // Le diagnostic se PRÉPARE (chantier « Types de rendez-vous », L2) : on y
+    // arrive avec des exemples concrets, c'est ce qui donne de bonnes pistes.
+    ...(type === "diagnostic"
+      ? [
+          {
+            Picto: ListChecks,
+            titre: "Préparez deux ou trois exemples",
+            corps:
+              "Les tâches qui vous prennent le plus de temps : c'est d'elles que partent les premières pistes.",
+          },
+        ]
+      : []),
     {
       Picto: Mail,
       titre: "Notre e-mail de confirmation",
@@ -485,11 +569,17 @@ function CeQuiSePasseMaintenant({ format }: { format: DetailEvenement["format"] 
   );
 }
 
-function ADeuxVerifier({ detail }: { detail: DetailEvenement | null }) {
+function ADeuxVerifier({
+  detail,
+  type,
+}: {
+  detail: DetailEvenement | null;
+  type: TypeRendezVous | null;
+}) {
   return (
     <>
       <TeteDeParcours
-        surtitre="Premier contact · un point à confirmer"
+        surtitre={`${nomDuRendezVous(type)} · un point à confirmer`}
         icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Votre rendez-vous est pris."

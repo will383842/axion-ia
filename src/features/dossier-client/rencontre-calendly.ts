@@ -133,7 +133,12 @@ export function codeMeet(location: string | null | undefined): string | null {
 /** Le type de rencontre, dérivé du lieu Calendly comme partout ailleurs. */
 export function typeDeRencontre(location: string | null, rawPayload: unknown): RencontreType {
   const canal = canalDuRendezVous(location, rawPayload);
-  return canal === "visio" ? "visio" : canal === "telephone" ? "telephone" : "inconnu";
+  if (canal === "visio") return "visio";
+  if (canal === "telephone") return "telephone";
+  // Sur place (lieu Calendly `physical`) : la rencontre en personne existe
+  // déjà dans le dossier client sous le nom `presentiel`.
+  if (canal === "sur_place") return "presentiel";
+  return "inconnu";
 }
 
 // ── Écriture ─────────────────────────────────────────────────────────────────

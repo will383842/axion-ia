@@ -27,6 +27,10 @@
  * Usage :
  *   curl -s -X POST https://axion-ia.com/api/internal/calendly-availability \
  *        -H "X-Revalidate-Secret: $REVALIDATE_SECRET" | jq
+ *
+ * Type de rendez-vous (chantier « Types de rendez-vous », L2) : `?rdv=diagnostic`
+ * ou `?rdv=projet` (défaut). La réponse dit quelle URL a été interrogée et si le
+ * diagnostic, introuvable chez Calendly, a été remplacé par le type appel.
  */
 
 import crypto from "node:crypto";
@@ -34,6 +38,7 @@ import type { NextRequest } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { fetchAvailableSlots, parisDayKey } from "@/server/calendly/availability";
 import { ipDepuisEntetes } from "@/lib/client-ip";
+import { lireChoixRendezVous, resoudreChoix } from "@/server/calendly/choix-rendez-vous";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,13 +65,16 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response("unauthorized", { status: 401 });
   }
 
-  const res = await fetchAvailableSlots({
-    schedulingUrl: process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL,
-  });
+  const resolu = await resoudreChoix(
+    lireChoixRendezVous(req.nextUrl.searchParams.get("rdv")) ?? "projet",
+  );
+  const rendezVous = { choix: resolu.choix, url: resolu.url, replie: resolu.replie };
+  const res = await fetchAvailableSlots({ schedulingUrl: resolu.url });
 
   if (!res.ok) {
     return Response.json({
       ok: false,
+      rendezVous,
       reason: res.reason,
       ...(res.failure ? { failure: res.failure } : {}),
       ...(res.diagnostics ? { diagnostics: res.diagnostics } : {}),
@@ -79,6 +87,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   return Response.json({
     ok: true,
+    rendezVous,
     jours: res.days.length,
     creneaux,
     premierJour: res.days[0]?.dateKey ?? null,

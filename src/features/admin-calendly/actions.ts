@@ -20,6 +20,7 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import { besoinDuBrut, classerParNom, reponsesDuBrut } from "@/server/calendly/type-rendez-vous";
 import { peutVoirLesAppels } from "./acces";
 
 // 🔴 LA LISTE DE RÔLES A DÉMÉNAGÉ DANS `./acces.ts` (2026-08-27) — elle était
@@ -113,6 +114,9 @@ export async function updateCalendlyEventAction(
         },
         payload: {
           eventTypeName: updated.eventTypeName,
+          typeRendezVous: updated.typeRendezVous ?? classerParNom(updated.eventTypeName),
+          besoin: besoinDuBrut(updated.rawPayload),
+          reponses: reponsesDuBrut(updated.rawPayload),
           source: "admin_status_change",
         },
       });
@@ -162,6 +166,8 @@ export async function createManualCalendlyEventAction(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides" };
   }
   const data = parsed.data;
+  // Une saisie manuelle ne porte pas d'URI de type : classement par le nom.
+  const typeRendezVous = classerParNom(data.eventTypeName);
 
   try {
     const event = await prisma.calendlyEvent.create({
@@ -170,6 +176,7 @@ export async function createManualCalendlyEventAction(
         eventTypeSlug: data.eventTypeSlug,
         status: "scheduled",
         source: "manual_import",
+        typeRendezVous,
         ...(data.inviteeName ? { inviteeName: data.inviteeName } : {}),
         ...(data.inviteeEmail ? { inviteeEmail: data.inviteeEmail } : {}),
         ...(data.inviteePhone ? { inviteePhone: data.inviteePhone } : {}),
@@ -194,7 +201,12 @@ export async function createManualCalendlyEventAction(
           fullName: data.inviteeName ?? null,
           phone: data.inviteePhone ?? null,
         },
-        payload: { eventTypeName: data.eventTypeName, source: "manual_import" },
+        payload: {
+          eventTypeName: data.eventTypeName,
+          typeRendezVous,
+          besoin: null,
+          source: "manual_import",
+        },
       });
     }
 

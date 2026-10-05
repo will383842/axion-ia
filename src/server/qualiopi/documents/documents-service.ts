@@ -115,6 +115,18 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
 export interface GenerateDocumentInput {
   type: DocumentType;
   /**
+   * INT-T65-A — colonnes de la condition suspensive OPCO, écrites sur la
+   * convention avec la pièce (forme d'A02). Absentes : la case reste à `false`
+   * et tout le reste à NULL, comme toute pièce existante. Les CHECK SQL
+   * (`convention_condition_coherente`, `_seuil_bps_borne`, `_seuil_cents_positif`)
+   * refusent une combinaison incohérente : on ne la répare pas ici.
+   */
+  conditionSuspensiveOpco?: {
+    seuilConditionBps: number | null;
+    seuilConditionCents: number | null;
+    dateLimiteCondition: Date;
+  };
+  /**
    * Élément React pré-construit (legacy — le numéro séquentiel NE sera PAS
    * injecté dans le rendu, utiliser `buildElement` pour corriger l'en-tête).
    * Obligatoire si `buildElement` est absent.
@@ -728,6 +740,16 @@ export async function generateDocument(
           ...(input.refs?.trainerId != null ? { trainerId: input.refs.trainerId } : {}),
           ...(input.fichierOriginalPath != null
             ? { fichierOriginalPath: input.fichierOriginalPath }
+            : {}),
+          // INT-T65-A — la pièce naît EN ATTENTE de l'accord de l'OPCO.
+          ...(input.conditionSuspensiveOpco !== undefined
+            ? {
+                conditionSuspensiveOpco: true,
+                seuilConditionBps: input.conditionSuspensiveOpco.seuilConditionBps,
+                seuilConditionCents: input.conditionSuspensiveOpco.seuilConditionCents,
+                dateLimiteCondition: input.conditionSuspensiveOpco.dateLimiteCondition,
+                etatConditionSuspensive: "en_attente" as const,
+              }
             : {}),
         },
         select: { id: true, numero: true, pdfUrl: true, hashSha256: true },

@@ -42,6 +42,12 @@ import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trai
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import {
+  euroDepuisCentimes,
+  libelleJourLimite,
+  pourcentageDepuisBps,
+  seuilDepuisColonnes,
+} from "@/server/qualiopi/financements/condition-suspensive";
 import { ContactEtConflitSession } from "@/components/admin/qualiopi/ContactEtConflitSession";
 import { conflitsFormateurSession } from "@/server/qualiopi/sessions/conflit-formateur";
 import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
@@ -301,6 +307,30 @@ function chargerInscriptions(id: string, colonneDeclaration: boolean) {
   });
 }
 
+/**
+ * INT-T65-A — ce que l'écran affiche d'une convention générée sous condition
+ * suspensive OPCO : état, seuil et date limite (jour de Paris). `null` sinon.
+ */
+function suiviConditionSuspensive(d: {
+  conditionSuspensiveOpco: boolean;
+  seuilConditionBps: number | null;
+  seuilConditionCents: number | null;
+  dateLimiteCondition: Date | null;
+  etatConditionSuspensive: string | null;
+}): { etat: string; dateLimite: string; seuil: string } | null {
+  if (!d.conditionSuspensiveOpco || d.dateLimiteCondition === null) return null;
+  const seuil = seuilDepuisColonnes(d);
+  if (seuil === null || d.etatConditionSuspensive === null) return null;
+  return {
+    etat: d.etatConditionSuspensive,
+    dateLimite: libelleJourLimite(d.dateLimiteCondition),
+    seuil:
+      seuil.type === "pourcentage"
+        ? `${pourcentageDepuisBps(seuil.bps)} % du prix TTC`
+        : euroDepuisCentimes(seuil.cents),
+  };
+}
+
 function chargerPieces(id: string) {
   return prisma.documentGenere.findMany({
     where: { sessionId: id },
@@ -335,6 +365,12 @@ function chargerPieces(id: string) {
       // `relancerRemiseExemplaireAction`.
       statutSignature: true,
       exemplaireSigneEnvoyeAt: true,
+      // INT-T65-A — condition suspensive OPCO portée par la convention.
+      conditionSuspensiveOpco: true,
+      seuilConditionBps: true,
+      seuilConditionCents: true,
+      dateLimiteCondition: true,
+      etatConditionSuspensive: true,
     },
   });
 }
@@ -723,6 +759,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       exemplaireSigneEnvoyeAt: d.exemplaireSigneEnvoyeAt
         ? d.exemplaireSigneEnvoyeAt.toISOString()
         : null,
+      conditionSuspensiveOpco: suiviConditionSuspensive(d),
     };
   });
 

@@ -15,7 +15,9 @@ import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { salonDuNom } from "@/server/calendly/rdv-salon";
+import { typeEffectif } from "@/server/calendly/type-effectif";
+import { estTypeRendezVous, type TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -247,13 +249,56 @@ function libelleFormat(v: string | undefined): string | undefined {
  * un payload d'aujourd'hui. Sans nom de type (payload incomplet), on garde le
  * titre neutre plutôt que d'affirmer « client » sans le savoir.
  */
+//
+// 🔑 Depuis le 2026-10-04 (chantier « Types de rendez-vous », lot L3), le
+// payload peut porter le TYPE classé (`typeRendezVous`) et le service choisi
+// (`besoin`). Tous deux FACULTATIFS : un payload d'avant, sans eux, se classe
+// par le nom (`typeEffectif`), comme partout ailleurs.
 function titreDe(event: NotificationEvent): string {
   if (event.category === "CALENDLY_INVITEE_CREATED") {
-    const nomType = (event.payload as { eventName?: unknown }).eventName;
-    if (typeof nomType !== "string" || nomType.trim() === "") return TITLES[event.category];
-    return estAppelApporteur(nomType) ? "Échange apporteur réservé" : "Appel client réservé";
+    const p = event.payload as { eventName?: unknown; typeRendezVous?: unknown; besoin?: unknown };
+    const nomType = typeof p.eventName === "string" ? p.eventName : "";
+    const typeClasse = estTypeRendezVous(p.typeRendezVous) ? p.typeRendezVous : null;
+    if (nomType.trim() === "" && !typeClasse) return TITLES[event.category];
+    const besoin = typeof p.besoin === "string" ? p.besoin : null;
+    return titreReservation(
+      typeEffectif({ typeRendezVous: typeClasse, eventTypeName: nomType }),
+      nomType,
+      besoin,
+    );
   }
   return TITLES[event.category];
+}
+
+/** Longueur maximale du besoin recopié dans un titre d'alerte. */
+const BESOIN_TITRE_MAX = 60;
+
+/**
+ * Le titre d'une réservation selon son type. « Appel client réservé » reste
+ * le titre de tout ce qui n'est pas classé (`autre`) : c'était celui de tous
+ * les rendez-vous non apporteurs, il ne change pas pour eux.
+ */
+export function titreReservation(
+  type: TypeRendezVous,
+  nomType: string,
+  besoin: string | null,
+): string {
+  switch (type) {
+    case "apporteur":
+      return "Échange apporteur réservé";
+    case "diagnostic":
+      return "Diagnostic IA réservé";
+    case "echange_projet": {
+      const b = (besoin ?? "").trim();
+      return b
+        ? `Échange projet réservé — Besoin : ${b.length > BESOIN_TITRE_MAX ? `${b.slice(0, BESOIN_TITRE_MAX - 1)}…` : b}`
+        : "Échange projet réservé";
+    }
+    case "salon":
+      return salonDuNom(nomType) === "gofab" ? "Salon GOFAB réservé" : "Rendez-vous salon réservé";
+    case "autre":
+      return "Appel client réservé";
+  }
 }
 
 function formatBody(event: NotificationEvent): string {

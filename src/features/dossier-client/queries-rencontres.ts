@@ -28,6 +28,8 @@ import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { TEXTE_ILLISIBLE } from "./queries";
 import { debriefsExistants, type DebriefExistant } from "./debriefs-existants";
 import { entrepriseDeclaree, reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
+import { typeEffectif } from "@/server/calendly/type-effectif";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 import { lireEtat } from "@/server/visio/etat-compte-rendu";
 import { evocationsDe, type Evocations } from "./projets-evoques";
 import {
@@ -80,6 +82,11 @@ export interface RencontreDetaillee {
   readonly motifProposition: MotifProposition | null;
   readonly projetId: string | null;
   readonly calendlyEventId: string | null;
+  /**
+   * Le type du rendez-vous Calendly d'origine (lot L5b) — colonne, sinon nom
+   * (`typeEffectif`). `null` pour une rencontre saisie dans la console.
+   */
+  readonly typeRendezVous?: TypeRendezVous | null;
   /** Le titulaire de la réservation (écran d'un administrateur). */
   readonly titulaire: { readonly nom: string | null; readonly email: string | null } | null;
   readonly entrepriseDeclaree: { readonly nom: string | null; readonly ville: string | null };
@@ -186,7 +193,14 @@ export async function lireRencontreDetaillee(
   const ev = r.calendlyEventId
     ? await prisma.calendlyEvent.findUnique({
         where: { id: r.calendlyEventId },
-        select: { inviteeName: true, inviteeEmail: true, rawPayload: true, notes: true },
+        select: {
+          inviteeName: true,
+          inviteeEmail: true,
+          rawPayload: true,
+          notes: true,
+          eventTypeName: true,
+          typeRendezVous: true,
+        },
       })
     : null;
   const point = r.calendlyEventId
@@ -212,6 +226,7 @@ export async function lireRencontreDetaillee(
     motifProposition: r.motifProposition,
     projetId: r.projetId,
     calendlyEventId: r.calendlyEventId,
+    typeRendezVous: ev ? typeEffectif(ev) : null,
     titulaire: ev ? { nom: ev.inviteeName, email: ev.inviteeEmail } : null,
     entrepriseDeclaree: ev ? entrepriseDeclaree(ev.rawPayload) : { nom: null, ville: null },
     // Le téléphone est déjà écarté par la règle de l'onglet « Rendez-vous ».
