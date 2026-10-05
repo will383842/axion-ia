@@ -20,8 +20,10 @@
 
 import "server-only";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { adminPath } from "@/lib/admin-path";
-import { ADRESSE_INTERNE_PAR_DEFAUT } from "@/lib/destinataires-internes";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
 import { uploadToR2 } from "@/lib/r2-storage";
 import { SITE_URL } from "@/lib/site-url";
@@ -145,13 +147,24 @@ export async function signerContrat(e: {
   await enregistrerDeclarations(dossier.id, declarations);
 
   const lienConsole = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `apporteurs/${dossier.id}`)}`;
-  await envoyer({
+  // Clé d'idempotence PAR SIGNATURE (horodatage inclus) : une re-signature après
+  // « à compléter » alerte de nouveau, même si le texte du contrat n'a pas changé.
+  const alerte = await envoyer({
     gabarit: "apporteur-dossier-a-verifier",
-    destinataire: ADRESSE_INTERNE_PAR_DEFAUT,
+    destinataire: destinataireAlertesInternes(),
     payload: { contactName: `${dossier.prenom} ${dossier.nom}`.trim(), lienConsole },
     entityType: "ApporteurReseau",
     entityId: dossier.id,
-    jobId: `apporteur-dossier-a-verifier-${dossier.id}-${sha256.slice(0, 8)}`,
+    jobId: `apporteur-dossier-a-verifier-${dossier.id}-${maintenant.getTime()}`,
   });
+  if (alerte !== "envoye") {
+    // La signature est actée : on ne la défait pas. Mais on ne perd pas l'alerte en silence
+    // (message sans donnée personnelle : ni nom, ni identifiant du dossier).
+    console.warn(`[apporteur-dossier] alerte « à vérifier » non partie (${alerte})`);
+    Sentry.captureMessage("apporteur-dossier : alerte interne « à vérifier » non envoyée", {
+      level: "warning",
+      tags: { service: "apporteur-dossier", etape: "alerte-a-verifier", resultat: alerte },
+    });
+  }
   return { ok: true, sha256 };
 }

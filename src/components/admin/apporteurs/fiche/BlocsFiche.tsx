@@ -13,11 +13,19 @@ import {
   envoyerLienAction,
   ouvrirDossierManuelAction,
   rattacherParrainAction,
+  renvoyerContratSigneAction,
 } from "@/features/apporteurs-reseau/actions-apporteurs";
 
 import { ApercuEmail, MessageRetour, type EmailApercu } from "./ApercuEmail";
 
-export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
+export function EnvoiLienDossier({
+  apporteurId,
+  contratSigne = false,
+}: {
+  apporteurId: string;
+  /** Vrai quand le contrat contresigné existe : propose de rejouer son e-mail. */
+  contratSigne?: boolean;
+}) {
   const [mot, setMot] = useState("");
   const [email, setEmail] = useState<EmailApercu | null>(null);
   // Texte principal réécrit (null = texte d'origine) ; appliqué à l'aperçu ET à l'envoi.
@@ -86,6 +94,20 @@ export function EnvoiLienDossier({ apporteurId }: { apporteurId: string }) {
           }
         />
       )}
+      {contratSigne && !email ? (
+        <div>
+          <button
+            type="button"
+            className="admin-button-secondary"
+            disabled={enCours}
+            onClick={() =>
+              demarrer(async () => setRetour(await renvoyerContratSigneAction({ apporteurId })))
+            }
+          >
+            Renvoyer le contrat signé
+          </button>
+        </div>
+      ) : null}
       <MessageRetour retour={retour} />
     </div>
   );

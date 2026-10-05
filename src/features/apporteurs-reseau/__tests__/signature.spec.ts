@@ -9,6 +9,11 @@ const uploadToR2 = vi.fn();
 const updateMany = vi.fn();
 const rendreContratPdf = vi.fn();
 
+const captureMessage = vi.fn();
+vi.mock("@sentry/nextjs", () => ({
+  captureMessage: (...a: unknown[]) => captureMessage(...a),
+  captureException: vi.fn(),
+}));
 vi.mock("../donnees", () => ({
   lireDossierParLien: (...a: unknown[]) => lireDossierParLien(...a),
   enregistrerDeclarations: (...a: unknown[]) => enregistrerDeclarations(...a),
@@ -27,6 +32,7 @@ vi.mock("../contrat-pdf", async () => {
   };
 });
 
+import { APPROCHE_VIGILANCE_CENTS } from "../regles";
 import {
   CLES_ACCEPTATIONS,
   CLES_DECLARATIONS,
@@ -34,8 +40,10 @@ import {
   cleContratApporteur,
   etatDeLaPage,
   manquesDuDossier,
+  nomAjoutable,
   nomTapeCorrespond,
   piecesDeposables,
+  vigilanceDemandee,
   resumerNavigateur,
   signerContrat,
   typesDeposes,
@@ -80,6 +88,46 @@ describe("dossier en ligne — nom tapé", () => {
     expect(nomTapeCorrespond("Éloïse Martin", "Éloïse", "Lefèvre")).toBe(false);
     expect(nomTapeCorrespond("", "Éloïse", "Lefèvre")).toBe(false);
     expect(nomTapeCorrespond("Éloïse", "Éloïse", "")).toBe(false);
+  });
+});
+
+describe("dossier en ligne — nom d'un seul mot (D2)", () => {
+  it("l'étape 1 accepte un nom saisi seulement si le dossier n'en a pas", () => {
+    expect(nomAjoutable("", "  Dupont   Martin ")).toBe("Dupont Martin");
+    expect(nomAjoutable("", "   ")).toBeNull();
+    expect(nomAjoutable("", undefined)).toBeNull();
+    // Un nom connu n'est jamais réécrit depuis le lien.
+    expect(nomAjoutable("Lefèvre", "Autre")).toBeNull();
+  });
+
+  it("une fois le nom complété, la signature est possible (prénom + nom tapés)", () => {
+    expect(nomTapeCorrespond("Madonna Ciccone", "Madonna", "")).toBe(false);
+    const nom = nomAjoutable("", "Ciccone")!;
+    expect(nomTapeCorrespond("madonna ciccone", "Madonna", nom)).toBe(true);
+  });
+});
+
+describe("dossier signé — pièces de vigilance demandées (D20)", () => {
+  it("rien à déposer avant l'approche du seuil", () => {
+    expect(vigilanceDemandee({ cumulCents: 0, enAttente: false, piecesDeposees: 0 })).toBe(false);
+    expect(
+      vigilanceDemandee({
+        cumulCents: APPROCHE_VIGILANCE_CENTS - 1,
+        enAttente: false,
+        piecesDeposees: 0,
+      }),
+    ).toBe(false);
+  });
+  it("demandées à l'approche, si des commissions attendent, ou si déjà déposées", () => {
+    expect(
+      vigilanceDemandee({
+        cumulCents: APPROCHE_VIGILANCE_CENTS,
+        enAttente: false,
+        piecesDeposees: 0,
+      }),
+    ).toBe(true);
+    expect(vigilanceDemandee({ cumulCents: 0, enAttente: true, piecesDeposees: 0 })).toBe(true);
+    expect(vigilanceDemandee({ cumulCents: 0, enAttente: false, piecesDeposees: 1 })).toBe(true);
   });
 });
 
@@ -275,9 +323,46 @@ describe("dossier en ligne — signerContrat", () => {
     expect(enregistrerDeclarations).toHaveBeenCalledWith(ID, [...CLES_DECLARATIONS]);
     expect(envoyer.mock.calls[0]![0]).toMatchObject({
       gabarit: "apporteur-dossier-a-verifier",
-      jobId: `apporteur-dossier-a-verifier-${ID}-${sha.slice(0, 8)}`,
+      destinataire: "contact@axion-ia.com",
+      // Clé PAR SIGNATURE (horodatage), plus par empreinte du texte.
+      jobId: `apporteur-dossier-a-verifier-${ID}-${entree.maintenant.getTime()}`,
       payload: { contactName: "Éloïse Lefèvre" },
     });
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it("D3 : l'alerte suit le destinataire d'alertes internes configuré", async () => {
+    vi.stubEnv("QUALIOPI_ALERTE_EMAIL", "williams@axion-ia.com");
+    try {
+      lireDossierParLien.mockResolvedValue(dossierComplet());
+      await signerContrat(entree);
+      expect(envoyer.mock.calls[0]![0].destinataire).toBe("williams@axion-ia.com");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("D3 : une re-signature après « à compléter » alerte de nouveau (autre clé)", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    await signerContrat(entree);
+    lireDossierParLien.mockResolvedValue(dossierComplet({ statut: "a_completer" }));
+    await signerContrat({ ...entree, maintenant: new Date("2026-10-05T15:00:00Z") });
+    const cles = envoyer.mock.calls.map((c) => (c[0] as { jobId: string }).jobId);
+    expect(new Set(cles).size).toBe(2);
+  });
+
+  it("D3 : alerte non partie → journal et Sentry, sans donnée personnelle ; signature conservée", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    envoyer.mockResolvedValue("indisponible");
+    const avertir = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const r = await signerContrat(entree);
+    expect(r.ok).toBe(true);
+    expect(avertir).toHaveBeenCalled();
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    const trace = JSON.stringify([captureMessage.mock.calls, avertir.mock.calls]);
+    expect(trace).not.toContain("Lefèvre");
+    expect(trace).not.toContain(ID);
+    avertir.mockRestore();
   });
 
   it("deux signatures simultanées : la seconde ne réécrit rien et n'alerte pas", async () => {

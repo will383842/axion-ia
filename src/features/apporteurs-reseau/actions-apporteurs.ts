@@ -14,6 +14,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 
 import {
@@ -23,9 +24,12 @@ import {
   jugerPiece,
   ouvrirDossierManuel,
   preparerLien,
+  renvoyerContratSigne,
   type Decision,
 } from "./verification";
+import { libererSiPiecesValides } from "./commissions";
 import { apercu, type ApercuRendu } from "./envois";
+import { refusRattachement, type IdentiteParrainage } from "./parrainage";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
 export type RetourApercu = { ok: true; email: ApercuRendu } | { ok: false; message: string };
@@ -65,6 +69,15 @@ export async function jugerPieceAction(input: {
   if (!piece) return { ok: false, message: "Pièce inconnue." };
   const r = await jugerPiece(input.pieceId, input.verdict, input.motif);
   if (!r.ok) return r;
+  // Pièces de vigilance conformes : les commissions en attente sont libérées TOUT DE SUITE,
+  // pas au passage du lendemain.
+  if (input.verdict === "conforme") {
+    try {
+      await libererSiPiecesValides(input.apporteurId);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "apporteurs-piece", step: "liberation" } });
+    }
+  }
   rafraichir(input.apporteurId);
   return {
     ok: true,
@@ -158,6 +171,22 @@ export async function envoyerLienAction(input: {
   return r;
 }
 
+export async function renvoyerContratSigneAction(input: { apporteurId: string }): Promise<Retour> {
+  const refus = await exigerAdmin();
+  if (refus) return { ok: false, message: refus };
+  if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
+  try {
+    const r = await renvoyerContratSigne(input.apporteurId);
+    rafraichir(input.apporteurId);
+    return r;
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "apporteurs-decision", step: "renvoi-contrat" },
+    });
+    return { ok: false, message: "Le renvoi n'a pas pu être préparé." };
+  }
+}
+
 export async function ouvrirDossierManuelAction(input: {
   prenom: string;
   nom: string;
@@ -205,14 +234,40 @@ export async function rattacherParrainAction(input: {
     if (!UUID.test(input.parrainId) || input.parrainId === input.apporteurId) {
       return { ok: false, message: "Un apporteur ne peut pas être son propre parrain." };
     }
-    const parrain = await prisma.apporteurReseau.findUnique({
-      where: { id: input.parrainId },
-      select: { parrainId: true, statut: true },
-    });
+    const choix = { siren: true, email: true, telephone: true, iban: true } as const;
+    const [parrain, filleul] = await Promise.all([
+      prisma.apporteurReseau.findUnique({
+        where: { id: input.parrainId },
+        select: { parrainId: true, statut: true, ...choix },
+      }),
+      prisma.apporteurReseau.findUnique({
+        where: { id: input.apporteurId },
+        select: choix,
+      }),
+    ]);
     if (!parrain) return { ok: false, message: "Parrain inconnu." };
     if (parrain.parrainId === input.apporteurId) {
       return { ok: false, message: "Ce parrain est déjà le filleul de cet apporteur." };
     }
+    const identite = (a: {
+      siren: string | null;
+      email: string;
+      telephone: string | null;
+      iban: string | null;
+    }): IdentiteParrainage => ({
+      siren: a.siren,
+      email: decryptPii(a.email) ?? null,
+      telephone: decryptPii(a.telephone) ?? null,
+      iban: decryptPii(a.iban) ?? null,
+    });
+    const refusParrain = filleul
+      ? refusRattachement({
+          parrainStatut: parrain.statut,
+          filleul: identite(filleul),
+          parrain: identite(parrain),
+        })
+      : "Apporteur inconnu.";
+    if (refusParrain) return { ok: false, message: refusParrain };
   }
   await prisma.apporteurReseau.update({
     where: { id: input.apporteurId },

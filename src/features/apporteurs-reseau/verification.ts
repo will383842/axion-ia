@@ -24,7 +24,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
-import { lireDossier } from "./donnees";
+import { lireDossier, purgerContenuPieces } from "./donnees";
 import {
   apercu,
   avecTexteLibre,
@@ -34,6 +34,9 @@ import {
 } from "./envois";
 import { urlDossier } from "./jeton";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, type TypePiece } from "./regles";
+
+const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
+  url ? { dossierUrl: url } : {};
 
 export type Decision = "contresigner" | "a_completer" | "refuser";
 
@@ -166,7 +169,15 @@ export async function preparerDecision(
     const gabarit: GabaritApporteur = "apporteur-contrat-signe";
     return {
       ok: true,
-      envoi: { ...base, gabarit, payload: avecTexteLibre({ contactName: d.prenom }, texte) },
+      envoi: {
+        ...base,
+        gabarit,
+        // Le lien du dossier porte le formulaire « Déclarer une entreprise » (bouton de l'e-mail).
+        payload: avecTexteLibre(
+          { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+          texte,
+        ),
+      },
     };
   }
   if (decision === "a_completer") {
@@ -308,19 +319,63 @@ export async function appliquerDecision(
     };
   }
 
-  await prisma.apporteurReseau.update({
-    where: { id: apporteurId },
-    data: {
-      statut: "refuse",
-      refuseAt: maintenant,
-      dernierMessage: note?.trim() || null,
-      versionLien: { increment: 1 },
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.apporteurReseau.update({
+      where: { id: apporteurId },
+      data: {
+        statut: "refuse",
+        refuseAt: maintenant,
+        dernierMessage: note?.trim() || null,
+        versionLien: { increment: 1 },
+      },
+    });
+    // Refus définitif : plus aucune raison de garder la pièce d'identité ni le RIB.
+    await purgerContenuPieces(tx, { apporteurId, types: ["identite", "rib"] });
   });
   const r = await envoyer({ ...prep.envoi, jobId: `apporteur-dossier-refuse-${apporteurId}` });
   return {
     ok: true,
     message: r === "envoye" ? "Refus envoyé." : `Dossier refusé (e-mail : ${r}).`,
+  };
+}
+
+/**
+ * Rejoue l'e-mail « contrat signé » (avec le contrat des deux parties en pièce jointe),
+ * SANS refaire la signature : pour le cas où le premier envoi n'est jamais arrivé
+ * (file en panne, adresse retenue, pièce introuvable). La clé d'idempotence est distincte
+ * à chaque renvoi.
+ */
+export async function renvoyerContratSigne(
+  apporteurId: string,
+  maintenant: Date = new Date(),
+): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+  const d = await lireDossier(apporteurId);
+  if (!d) return { ok: false, message: "Apporteur introuvable." };
+  if (d.statut !== "signe")
+    return { ok: false, message: "Ce contrat n'est pas encore contresigné." };
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { contratSigneCle: true },
+  });
+  if (!a?.contratSigneCle) return { ok: false, message: "Le contrat signé est introuvable." };
+  const r = await envoyer({
+    destinataire: d.email,
+    entityType: "ApporteurReseau",
+    entityId: d.id,
+    gabarit: "apporteur-contrat-signe",
+    payload: { contactName: d.prenom, ...dossierUrlSi(urlDossier(d.id, d.versionLien)) },
+    jobId: `apporteur-contrat-signe-${apporteurId}-renvoi-${maintenant.getTime()}`,
+    attachments: [
+      {
+        filename: "Contrat-apporteur-Axion-IA.pdf",
+        r2Key: a.contratSigneCle,
+        contentType: "application/pdf",
+      },
+    ],
+  });
+  return {
+    ok: true,
+    message: r === "envoye" ? "Contrat signé renvoyé." : `Renvoi préparé (e-mail : ${r}).`,
   };
 }
 

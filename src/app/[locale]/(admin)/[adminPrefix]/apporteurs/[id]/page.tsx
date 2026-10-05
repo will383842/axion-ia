@@ -9,6 +9,7 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
+import { CumulVigilance, FinDeVie } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
 import {
   PiecesVerification,
   type PieceAffichee,
@@ -18,12 +19,14 @@ import {
   lireFicheApporteur,
 } from "@/features/apporteurs-reseau/requetes-console";
 import { STATUTS_JURIDIQUES, euros } from "@/features/apporteurs-reseau/regles";
+import { CLE_REGISTRE_INDISPONIBLE } from "@/features/apporteurs-reseau/signature-regles";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
+  searchParams: Promise<{ retour?: string; erreur?: string }>;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -63,8 +66,9 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
   );
 }
 
-export default async function FicheApporteurPage({ params }: PageProps) {
+export default async function FicheApporteurPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const { retour, erreur } = await searchParams;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!UUID.test(id)) notFound();
@@ -132,6 +136,16 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           <Ligne libelle="Adresse" valeur={d.adresse} />
           <Ligne libelle="Statut" valeur={statut} />
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
+          {CLE_REGISTRE_INDISPONIBLE in d.declarations ? (
+            <Ligne
+              libelle="À contrôler"
+              valeur={
+                <span className="rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-warning-soft)] px-[var(--space-admin-2)] font-semibold text-[color:var(--color-admin-warning-fg)]">
+                  Registre indisponible : vérifier le SIREN, l&apos;activité et le NAF à la main
+                </span>
+              }
+            />
+          ) : null}
           <Ligne
             libelle="TVA"
             valeur={
@@ -188,7 +202,10 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </div>
           {d.statut === "dossier_en_cours" || d.statut === "a_completer" || d.statut === "signe" ? (
             <div className="mt-[var(--space-admin-4)]">
-              <EnvoiLienDossier apporteurId={d.id} />
+              <EnvoiLienDossier
+                apporteurId={d.id}
+                contratSigne={d.statut === "signe" && fiche.aContratSigne}
+              />
             </div>
           ) : null}
         </AdminCard>
@@ -267,6 +284,23 @@ export default async function FicheApporteurPage({ params }: PageProps) {
           </div>
         )}
       </AdminCard>
+
+      <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
+        <CumulVigilance v={fiche.vigilance} />
+        <FinDeVie
+          apporteurId={d.id}
+          signe={d.statut === "signe"}
+          retour={retour?.slice(0, 400)}
+          erreur={erreur?.slice(0, 400)}
+          versees={fiche.commissions
+            .filter((c) => c.statut === "versee" && (c.montantCents ?? 0) > 0)
+            .map((c) => ({
+              id: c.id,
+              libelle: `${c.verseeAt ? jour(c.verseeAt) : jour(c.creeAt)} · ${c.parrainage ? "Parrainage" : c.activite}`,
+              montantCents: c.montantCents ?? 0,
+            }))}
+        />
+      </div>
 
       <AdminCard as="section">
         <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
