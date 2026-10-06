@@ -804,6 +804,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Coins",
       group: "tunnels",
     },
+    {
+      // De la publicité Facebook à l'apporteur qui présente une entreprise,
+      // coût compris (dépenses saisies à la main).
+      href: `${base}/tunnels/apporteurs`,
+      label: "Tunnel apporteurs",
+      icon: "Handshake",
+      group: "tunnels",
+    },
     // ── contenu ──────────────────────────────────────────────────────────
     {
       href: `${base}/connaissances`,
