@@ -240,7 +240,9 @@ export type ApporteurCronJobType =
   // 2026-09-28 — invitation automatique 15 minutes après la candidature.
   | "invitation-auto"
   // 2026-10-05 — démarrage manuel du réseau : protections, commissions, vigilance.
-  | "reseau-quotidien";
+  | "reseau-quotidien"
+  // 2026-10-06 — facturation des commissions dès qu'elles sont dues : toutes les heures.
+  | "reseau-facturation";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;

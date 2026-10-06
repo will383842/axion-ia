@@ -4,8 +4,8 @@
  * Contrat v2, article 12 :
  *   · 12.1 les attributions provisoires (réservées, en attente) sont annulées, les attributions
  *     définitives non converties prennent fin ;
- *   · 12.2 les commissions déjà acquises sont payées au dernier relevé, SANS seuil minimal
- *     (`releveEmis` le sait : `dernier` vaut vrai dès que l'apporteur est `resilie`) ;
+ *   · 12.2 les commissions déjà acquises sont facturées et payées comme les autres (plus de
+ *     seuil ni de « dernier relevé » : chaque commission due est facturée dès qu'elle l'est) ;
  *   · 12.3 les commandes signées AVANT la fin continuent d'ouvrir droit à commission : le
  *     passage quotidien lit les présentations protégées, y compris terminées, et
  *     `commandeCouverte` compare la date de commande au terme de la protection. On ramène donc
@@ -15,7 +15,7 @@
  * n'est jamais annulée ni supprimée ici. Le brief parlait de « provisoires » ; le contrat (12.2
  * et 12.3) ne connaît de provisoire que l'attribution, pas la commission.
  *
- * Reprise (art. 4.5 et 12.4) : une ligne `reprise` de montant NÉGATIF, déduite du prochain relevé.
+ * Reprise (art. 4.5 et 12.4) : une ligne `reprise` de montant NÉGATIF, déduite de la prochaine autofacture du même apporteur.
  * Elle est enregistrée à la main (montant + motif) : savoir si la restitution donne lieu à reprise
  * (client qui réclame, ou restitution décidée par la Société) est un jugement, pas un calcul.
  *
@@ -93,7 +93,7 @@ export async function resilierApporteur(
   if (termine === null) return { ok: false, message: "Ce contrat vient déjà d'être résilié." };
   return {
     ok: true,
-    message: `Contrat résilié : ${termine} attribution(s) terminée(s), liens révoqués, rappels coupés. Les commissions acquises restent à verser (dernier relevé sans seuil).`,
+    message: `Contrat résilié : ${termine} attribution(s) terminée(s), liens révoqués, rappels coupés. Les commissions acquises restent à verser : elles sont facturées comme les autres.`,
   };
 }
 
@@ -209,6 +209,6 @@ export async function enregistrerReprise(e: {
   );
   return {
     ok: true,
-    message: `Reprise de ${euros(e.demandeeCents)} enregistrée : elle sera déduite du prochain relevé.`,
+    message: `Reprise de ${euros(e.demandeeCents)} enregistrée : elle sera déduite de la prochaine autofacture de cet apporteur.`,
   };
 }

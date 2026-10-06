@@ -78,9 +78,9 @@ interface Payload {
   piecesARetransmettre?: string[];
   /** Vigilance : `premiere` (approche de 5 000 €) ou `renouvellement` (6 mois). */
   variante?: string;
-  /** Relevé : mois (« octobre 2026 »), montant formaté, numéro d'autofacture. */
-  mois?: string;
+  /** Commission facturée : montant formaté, numéro d'autofacture, échéance de paiement (J+30). */
   montant?: string;
+  echeance?: string;
   numeroAutofacture?: string;
   /** Interne : lien de la fiche de l'apporteur dans la console. */
   lienConsole?: string;
@@ -298,15 +298,15 @@ export const COPY_DEMARRAGE = {
     texte: (e: string) =>
       `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
     suite:
-      "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; elle figurera alors sur votre relevé mensuel.",
+      "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail.",
   },
   releve: {
-    subject: (m: string) =>
-      m ? `Votre relevé de commissions ${moisAvecArticle(m)}` : "Votre relevé de commissions",
-    title: "Votre relevé de commissions",
-    preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
-    texte: (m: string, montant: string) =>
-      `Voici votre relevé de commissions${m ? ` du mois ${moisAvecArticle(m)}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
+    subject: "Votre commission est facturée",
+    title: "Votre commission est facturée",
+    preview: "Votre facture, établie par nos soins, est jointe à ce message.",
+    texte: (montant: string) =>
+      `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
+    echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
@@ -764,13 +764,12 @@ export function ApporteurCommandeSigneeEmail({ locale, payload }: Props) {
   );
 }
 
-// ── Relevé mensuel ───────────────────────────────────────────────────────
+// ── Commission facturée (autofacture envoyée dès l'encaissement) ───────────────────────────────────────────────────────
 
 export const apporteurReleveSubject = (
   _locale: Locale,
-  payload?: Record<string, unknown>,
-): string =>
-  COPY_DEMARRAGE.releve.subject(texteOuNull((payload as Payload | undefined)?.mois) ?? "");
+  _payload?: Record<string, unknown>,
+): string => COPY_DEMARRAGE.releve.subject;
 
 export function ApporteurReleveEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -785,9 +784,10 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.texte(texteOuNull(p.mois) ?? "", texteOuNull(p.montant) ?? "")}
-      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.montant) ?? "")}</Text>
+      {texteOuNull(p.echeance) ? (
+        <Text style={emailStyles.paragraphStyle}>{t.echeance(texteOuNull(p.echeance) ?? "")}</Text>
+      ) : null}
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>

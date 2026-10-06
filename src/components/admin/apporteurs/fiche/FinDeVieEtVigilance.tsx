@@ -88,7 +88,7 @@ export function FinDeVie({
           <summary className="cursor-pointer font-medium">Enregistrer une reprise</summary>
           <p className="my-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Après un avoir ou un remboursement qui suit un versement (art. 4.5) : une ligne
-            négative, déduite du prochain relevé. La ligne d&apos;origine est conservée.
+            négative, déduite de la prochaine autofacture. La ligne d&apos;origine est conservée.
           </p>
           <form
             action={enregistrerRepriseAction}
@@ -141,7 +141,7 @@ export function FinDeVie({
           <p className="my-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Les attributions en cours prennent fin (les commandes déjà signées restent couvertes),
             le lien personnel est révoqué et les rappels s&apos;arrêtent. Les commissions déjà
-            acquises restent dues : un dernier relevé part sans seuil minimal.
+            acquises restent dues : elles sont facturées et virées comme les autres.
           </p>
           <form
             action={resilierApporteurAction}

@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 const ATTEINTS_PAR_LE_WORKER = [
   "passage-quotidien.ts",
   "commissions.ts",
+  "facturation.ts",
   "envois.ts",
   "regles.ts",
   "jeton.ts",

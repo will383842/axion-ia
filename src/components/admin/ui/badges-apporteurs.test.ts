@@ -4,7 +4,7 @@ import { badgeApporteurs } from "./badges-apporteurs";
 import { buildAdminNav } from "@/lib/admin-nav";
 
 const BASE = "/fr/p";
-const c = { presentations: 3, pieces: 2, releve: 1 };
+const c = { presentations: 3, pieces: 2, virements: 1 };
 
 describe("pastilles du menu « Apporteurs d'affaires »", () => {
   it("présentations à traiter sur « Entreprises présentées »", () => {
@@ -20,10 +20,10 @@ describe("pastilles du menu « Apporteurs d'affaires »", () => {
       label: "pièces de vigilance déposées",
     });
   });
-  it("relevés du mois à émettre sur « Commissions apporteurs »", () => {
+  it("virements à faire sur « Commissions apporteurs »", () => {
     expect(badgeApporteurs(`${BASE}/apporteurs/commissions`, BASE, c)).toMatchObject({
       count: 1,
-      label: "relevés du mois à émettre",
+      label: "virements à faire",
     });
   });
   it("à zéro, ou sans compteurs : aucune pastille", () => {
@@ -31,7 +31,7 @@ describe("pastilles du menu « Apporteurs d'affaires »", () => {
       badgeApporteurs(`${BASE}/apporteurs/entreprises`, BASE, {
         presentations: 0,
         pieces: 0,
-        releve: 0,
+        virements: 0,
       }),
     ).toBeNull();
     expect(badgeApporteurs(`${BASE}/apporteurs`, BASE, undefined)).toBeNull();

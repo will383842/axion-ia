@@ -75,18 +75,27 @@ export function QualifierForm({
   );
 }
 
-export function VerserForm({ apporteurId, montant }: { apporteurId: string; montant: string }) {
+export function VerserForm({
+  apporteurId,
+  numero,
+  montant,
+}: {
+  apporteurId: string;
+  numero: string;
+  montant: string;
+}) {
   const [etat, action, enCours] = useActionState(marquerVerseAction, INITIAL);
   if (etat.etat === "ok") return <Retour etat={etat} />;
   return (
     <form action={action} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
       <input type="hidden" name="apporteurId" value={apporteurId} />
+      <input type="hidden" name="numero" value={numero} />
       <label className="inline-flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
         <input type="checkbox" name="confirmer" value="oui" required />
         Virement de {montant} fait
       </label>
       <button type="submit" className="admin-button" disabled={enCours}>
-        {enCours ? "…" : "Marquer versé"}
+        {enCours ? "…" : "Virement fait"}
       </button>
       <Retour etat={etat} />
     </form>

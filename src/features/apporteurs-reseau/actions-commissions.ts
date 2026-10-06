@@ -1,8 +1,8 @@
 // Réseau d'apporteurs (démarrage manuel) — actions de la console sur les COMMISSIONS.
 //
 // L'argent qui sort : même garde que la facturation (`peutEngager(role, "facturer")`,
-// super-admin et admin). « Marquer versé » exige `confirmer=oui`, posé par le bouton de
-// confirmation seulement.
+// super-admin et admin). « Virement fait » exige `confirmer=oui`, posé par le bouton de
+// confirmation seulement ; il ne génère AUCUN PDF (l'autofacture est déjà partie).
 
 "use server";
 
@@ -14,7 +14,8 @@ import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 
-import { classerActiviteCommission, marquerVerse, qualifierCommission } from "./commissions";
+import { classerActiviteCommission, qualifierCommission } from "./commissions";
+import { marquerVerse } from "./facturation";
 import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
 import { euros } from "./regles";
 
@@ -68,23 +69,22 @@ export async function marquerVerseAction(
   if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Apporteur inconnu." };
   if (texte(fd, "confirmer") !== "oui")
     return { etat: "erreur", message: "Confirme d'abord le virement." };
+  const numero = texte(fd, "numero");
+  if (numero && !/^AXI-APP-\d{4}-\d{4,}$/.test(numero))
+    return { etat: "erreur", message: "Numéro d'autofacture inconnu." };
   try {
-    const r = await marquerVerse(apporteurId);
+    const r = await marquerVerse(apporteurId, new Date(), numero || undefined);
     if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
-    const mail =
-      r.envoi === "envoye" || r.envoi === "en-validation"
-        ? "relevé envoyé"
-        : `relevé NON parti (${r.envoi})`;
     return {
       etat: "ok",
-      message: `${euros(r.totalCents)} versés, autofacture ${r.numero}, ${mail}.`,
+      message: `Virement de ${euros(r.totalCents)} confirmé (${r.numeros.join(", ")}).`,
     };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-verser" } });
     return {
       etat: "erreur",
-      message: err instanceof Error ? err.message : "Versement impossible. Réessaie.",
+      message: err instanceof Error ? err.message : "Confirmation impossible. Réessaie.",
     };
   }
 }
