@@ -21,6 +21,7 @@ export async function lireOrigineRendezVous(
       e.type_rendez_vous::text AS "typeRendezVous",
       e.event_type_name AS "eventTypeName",
       e.captured_at AS "capturedAt",
+      e.status::text AS "status",
       e.utm_source AS "utmSource",
       e.utm_medium AS "utmMedium",
       e.utm_campaign AS "utmCampaign",

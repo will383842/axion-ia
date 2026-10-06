@@ -144,4 +144,36 @@ describe("agregerOrigines", () => {
     expect(b.utm[0]?.origines.sans_reponse).toBe(1);
     expect(b.sansUtm).toBe(1);
   });
+
+  it("un rendez-vous annulé n'est compté nulle part, mais il est dénombré à part", () => {
+    const b = agregerOrigines(
+      [
+        ligne({ status: "canceled", utmSource: "facebook", utmCampaign: "vsl" }),
+        ligne({
+          status: "canceled",
+          typeRendezVous: "salon",
+          qa: [{ question: Q, answer: "E-mail reçu" }],
+        }),
+        // contre-témoins : un actif et un absent sont toujours comptés
+        ligne({ status: "active", utmSource: "facebook", utmCampaign: "vsl" }),
+        ligne({ status: "no_show", qa: [{ question: Q, answer: "LinkedIn" }] }),
+      ],
+      30,
+      maintenant,
+    );
+    expect(b.annules).toBe(2);
+    expect(total(b.total)).toBe(2);
+    expect(b.total.email).toBe(0);
+    expect(b.total.linkedin).toBe(1);
+    expect(b.parType.map((x) => x.type)).not.toContain("salon");
+    const sem = b.semaines.find((s) => s.lundi === "2026-09-28");
+    expect(sem && total(sem.compteurs)).toBe(2);
+    expect(b.utm).toHaveLength(1);
+    expect(b.utm[0]?.n).toBe(1);
+    expect(b.sansUtm).toBe(1);
+  });
+
+  it("sans annulé : le compteur reste à zéro", () => {
+    expect(agregerOrigines([ligne({})], 30, maintenant).annules).toBe(0);
+  });
 });

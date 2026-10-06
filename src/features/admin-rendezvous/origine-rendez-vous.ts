@@ -12,10 +12,13 @@
 //     « Autre / non classé » — jamais d'erreur, jamais de perte ;
 //   · pas de réponse du tout (réservations d'avant la question obligatoire) :
 //     « Sans réponse », compté à part ;
+//   · les rendez-vous ANNULÉS (statut `canceled`, comme le bilan) ne comptent nulle
+//     part : ils sont seulement dénombrés à part ;
 //   · le type est celui de `typeEffectif` ; les UTM viennent des colonnes.
 //
 // Module PUR : la lecture bornée vit dans `origine-rendez-vous-queries.ts`.
 
+import { etatDuRendezVous } from "@/features/admin-rendezvous/bilan-rendez-vous";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { TYPES_RENDEZ_VOUS, type TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 
@@ -98,6 +101,8 @@ export interface LigneOrigineBrute {
   readonly typeRendezVous: string | null;
   readonly eventTypeName: string | null;
   readonly capturedAt: Date | string;
+  /** Statut Calendly (`canceled` = annulé). Absent : compté comme actif. */
+  readonly status?: string | null;
   readonly utmSource: string | null;
   readonly utmMedium: string | null;
   readonly utmCampaign: string | null;
@@ -145,6 +150,8 @@ export interface BilanOrigine {
   /** Les combinaisons d'UTM les plus fréquentes ; `sansUtm` = réservations sans aucune UTM. */
   readonly utm: readonly LigneUtm[];
   readonly sansUtm: number;
+  /** Rendez-vous annulés, écartés de tous les comptes ci-dessus (même définition que le bilan). */
+  readonly annules: number;
 }
 
 /** Nombre de combinaisons d'UTM affichées. */
@@ -194,8 +201,14 @@ export function agregerOrigines(
     { ligne: Omit<LigneUtm, "n" | "origines">; n: number; o: Compteurs }
   >();
   let sansUtm = 0;
+  let annules = 0;
 
   for (const l of lignes) {
+    // Un annulé n'a pas eu lieu : on le compte à part, pas dans les origines.
+    if (etatDuRendezVous(l.status ?? "", null) === "annule") {
+      annules += 1;
+      continue;
+    }
     const origine = lireOrigine(l.qa);
     totalC[origine] += 1;
     const type = typeEffectif(l);
@@ -237,5 +250,6 @@ export function agregerOrigines(
       .slice(0, UTM_MAX)
       .map((e) => ({ ...e.ligne, n: e.n, origines: e.o })),
     sansUtm,
+    annules,
   };
 }
