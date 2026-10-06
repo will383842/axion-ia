@@ -119,7 +119,7 @@ export const COPY_ISSUE_ECHANGE = {
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
       // 2026-10-05 (Will) : plus de date promise pour l'espace en ligne.
       espace:
-        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par simple e-mail.",
+        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par e-mail ou depuis votre lien personnel.",
       // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
       dossier:
         "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",

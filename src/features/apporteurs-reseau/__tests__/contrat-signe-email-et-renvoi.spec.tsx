@@ -54,6 +54,21 @@ describe("e-mail « contrat signé » (D5)", () => {
     }
   });
 
+  it("liste TOUTES les commissions du contrat : formation, audit, intégration, 1-to-1 et parrainage", async () => {
+    const h = await html({ contactName: "Claire", dossierUrl: URL_DOSSIER });
+    const t = texteParDefaut("apporteur-contrat-signe", { contactName: "Claire" })!;
+    for (const x of [h, t]) {
+      expect(x).toMatch(/Formation : 500/);
+      expect(x).toContain("Audit : 30 % du montant HT");
+      expect(x).toContain("Intégration : 15 % du montant HT");
+      expect(x).toContain("1-to-1) : 30 % du montant HT");
+      expect(x).toContain(
+        "Parrainage : si vous présentez une personne qui devient elle-même apporteur",
+      );
+      expect(x).toContain("10 % de ses commissions pendant 6 mois");
+    }
+  });
+
   it("le texte par défaut (« Modifier le texte ») dit la même chose que le gabarit", () => {
     const t = texteParDefaut("apporteur-contrat-signe", { contactName: "Claire" })!;
     expect(t).toContain("lien personnel");

@@ -615,17 +615,18 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
 // (f) ─────────────────────────────────────────────────────────────────────
 
 /**
- * Dossier non complété : un rappel à J+3, un à J+7 après l'ENVOI du lien (journal d'e-mails),
+ * Dossier non complété : un rappel à J+3, un à J+7 après l'ENVOI du lien (journal d'e-mails : le lien
+ * envoyé à la main OU l'e-mail « Retenu » qui le porte),
  * puis plus rien. Un lien renvoyé repart de zéro (la clé « une fois » porte l'id de l'envoi).
  * Ni refusé, ni résilié, ni déjà signé ; une adresse morte n'est pas relancée.
  */
 async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
   const candidats = await prisma.apporteurReseau.findMany({
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
-    select: { id: true, prenom: true, email: true, versionLien: true },
+    select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
   for (const a of candidats) {
-    const envois = await prisma.emailLog.findMany({
+    const envoisLien = await prisma.emailLog.findMany({
       where: {
         template: "apporteur-dossier-lien",
         entityType: "ApporteurReseau",
@@ -638,6 +639,22 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       take: 5,
       select: { id: true, sentAt: true, jobId: true, bounceType: true },
     });
+    // Chemin principal : l'e-mail « Retenu » porte lui-même le lien du dossier. Il est journalisé
+    // sur la candidature (`Submission`), rattachée à l'apporteur par `submissionId`.
+    const envoisRetenu = a.submissionId
+      ? await prisma.emailLog.findMany({
+          where: {
+            template: "apporteur-issue-retenu",
+            entityType: "Submission",
+            entityId: a.submissionId,
+            sentAt: { not: null },
+          },
+          orderBy: { sentAt: "desc" },
+          take: 5,
+          select: { id: true, sentAt: true, jobId: true, bounceType: true },
+        })
+      : [];
+    const envois = [...envoisLien, ...envoisRetenu];
     const decision = rappelDossierAEnvoyer(envois, maintenant);
     if (!decision) continue;
     const { rappel } = decision;

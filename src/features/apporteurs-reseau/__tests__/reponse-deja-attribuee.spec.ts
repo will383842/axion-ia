@@ -21,8 +21,9 @@ vi.mock("../envois", () => ({
     return "envoye";
   }),
 }));
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
+    $transaction: async (f: (t: unknown) => unknown) => f(prisma),
     presentationEntreprise: {
       findUnique: vi.fn(async (a: { include?: unknown }) => {
         const base = {
@@ -50,13 +51,16 @@ vi.mock("@/lib/prisma", () => ({
       }),
       update: vi.fn(async () => ({})),
     },
-  },
-}));
+  };
+  return { prisma };
+});
 
 import {
   appliquerReponse,
   construireEnvoisReponse,
   dejaAttribueeAUnAutre,
+  existeDeclarationPlusAncienne,
+  MESSAGE_DECLARATION_PLUS_ANCIENNE,
   MESSAGE_DEJA_ATTRIBUEE,
 } from "../presentations";
 
@@ -133,5 +137,99 @@ describe("doublon « Bien reçu » : une entreprise déjà attribuée ne reçoit
     };
     expect(construireEnvoisReponse(d, "deja_connue", opts)[0]!.payload.motif).toBe("deja-connue");
     expect(construireEnvoisReponse(d, "hors_champ", opts)[0]!.payload.motif).toBe("hors-champ");
+  });
+});
+
+describe("art. 3.5 : la déclaration la plus ancienne passe en premier", () => {
+  const maintenant = new Date("2026-10-06T10:00:00Z");
+  const moi = { apporteurId: "APP2", recueAt: new Date("2026-10-01T00:00:00Z") };
+  const ancienne = {
+    apporteurId: "APP1",
+    statut: "reservee" as const,
+    contactEnvoyeAt: null,
+    recueAt: new Date("2026-09-25T00:00:00Z"),
+    protegeeJusquAt: null,
+  };
+
+  it("règle pure : une déclaration plus ancienne d'un autre apporteur, encore en cours, prime", () => {
+    expect(existeDeclarationPlusAncienne([ancienne], moi, maintenant)).toBe(true);
+    expect(
+      existeDeclarationPlusAncienne(
+        [{ ...ancienne, statut: "confirmee" as const, protegeeJusquAt: new Date("2027-01-01") }],
+        moi,
+        maintenant,
+      ),
+    ).toBe(true);
+  });
+  it("règle pure : plus récente, même apporteur, refusée ou protection échue = pas de priorité", () => {
+    expect(
+      existeDeclarationPlusAncienne(
+        [{ ...ancienne, recueAt: new Date("2026-10-03") }],
+        moi,
+        maintenant,
+      ),
+    ).toBe(false);
+    expect(
+      existeDeclarationPlusAncienne([{ ...ancienne, apporteurId: "APP2" }], moi, maintenant),
+    ).toBe(false);
+    expect(
+      existeDeclarationPlusAncienne(
+        [{ ...ancienne, statut: "deja_connue" as unknown as "reservee" }],
+        moi,
+        maintenant,
+      ),
+    ).toBe(false);
+    expect(
+      existeDeclarationPlusAncienne(
+        [{ ...ancienne, statut: "confirmee" as const, protegeeJusquAt: new Date("2026-09-30") }],
+        moi,
+        maintenant,
+      ),
+    ).toBe(false);
+  });
+  it("« Bien reçu » sur la plus récente est refusé avec un message clair, rien n'est écrit ni envoyé", async () => {
+    etat.autres = [ancienne];
+    const r = await appliquerReponse("P2", "bien_recu", opts, maintenant);
+    expect(r).toEqual({ ok: false, message: MESSAGE_DECLARATION_PLUS_ANCIENNE });
+    expect(MESSAGE_DECLARATION_PLUS_ANCIENNE).toContain("plus ancienne");
+    expect(etat.maj).toEqual([]);
+    expect(etat.envoyes).toEqual([]);
+  });
+  it("la plus ancienne elle-même peut répondre « Bien reçu » (l'autre est plus récente)", async () => {
+    etat.autres = [{ ...ancienne, recueAt: new Date("2026-10-03T00:00:00Z") }];
+    const r = await appliquerReponse("P2", "bien_recu", opts, maintenant);
+    expect(r.ok).toBe(true);
+  });
+  it("double clic simultané : la vérification et la prise de la ligne sont dans UNE transaction sérialisable", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    const spy = vi.spyOn(prisma, "$transaction");
+    await appliquerReponse("P2", "bien_recu", opts, maintenant);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls[0]![1]).toMatchObject({ isolationLevel: "Serializable" });
+  });
+  it("conflit de sérialisation (deux clics en même temps) : message de nouvelle tentative, rien n'est envoyé", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    vi.spyOn(prisma, "$transaction").mockRejectedValueOnce(
+      Object.assign(new Error("write conflict"), { code: "P2034" }),
+    );
+    const r = await appliquerReponse("P2", "bien_recu", opts, maintenant);
+    expect(r.ok).toBe(false);
+    expect(etat.envoyes).toEqual([]);
+  });
+});
+
+describe("« Pas disponible » : aucune promesse que la Société ne peut pas tenir", () => {
+  it("le motif ne promet ni prévenance ni délai de 15 jours", async () => {
+    const { COPY_DEMARRAGE } = await import("@/lib/email/templates/apporteur-demarrage");
+    const m = COPY_DEMARRAGE.presentationRefusee.motif["pas-disponible"];
+    expect(m).toContain("déjà suivie par Axion-IA");
+    expect(m).toContain("nous ne pouvons pas la rattacher à votre déclaration");
+    expect(m).not.toMatch(/préviendrons|15 jours|à nouveau/);
+  });
+  it("l'objet reste sous 45 caractères", async () => {
+    const { COPY_DEMARRAGE } = await import("@/lib/email/templates/apporteur-demarrage");
+    expect(
+      COPY_DEMARRAGE.presentationRefusee.subject("Acme Industries").length,
+    ).toBeLessThanOrEqual(45);
   });
 });

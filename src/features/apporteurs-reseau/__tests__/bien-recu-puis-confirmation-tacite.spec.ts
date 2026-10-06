@@ -52,8 +52,9 @@ vi.mock("../envois", () => ({
     return "envoye";
   }),
 }));
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
+    $transaction: async (f: (t: unknown) => unknown) => f(prisma),
     presentationEntreprise: {
       findUnique: vi.fn(async (a: { include?: unknown }) =>
         a.include
@@ -103,8 +104,9 @@ vi.mock("@/lib/prisma", () => ({
     pieceApporteur: { findMany: vi.fn(async () => []) },
     devis: { findMany: vi.fn(async () => []) },
     apporteurReseau: { findMany: vi.fn(async () => []) },
-  },
-}));
+  };
+  return { prisma };
+});
 
 import { passerReseauApporteurs } from "../passage-quotidien";
 import { appliquerReponse } from "../presentations";
