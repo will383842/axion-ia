@@ -331,6 +331,14 @@ describe("dossier en ligne — signerContrat", () => {
     expect(captureMessage).not.toHaveBeenCalled();
   });
 
+  it("F8c : déclarations non enregistrées → signature réussie pour l'apporteur ET alerte envoyée", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    enregistrerDeclarations.mockRejectedValueOnce(new Error("base muette"));
+    const r = await signerContrat(entree);
+    expect(r.ok).toBe(true);
+    expect(envoyer.mock.calls[0]![0]).toMatchObject({ gabarit: "apporteur-dossier-a-verifier" });
+  });
+
   it("D3 : l'alerte suit le destinataire d'alertes internes configuré", async () => {
     vi.stubEnv("QUALIOPI_ALERTE_EMAIL", "williams@axion-ia.com");
     try {

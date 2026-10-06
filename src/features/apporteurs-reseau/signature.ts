@@ -32,6 +32,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { envoyer } from "./envois";
+import { signalerErreurReseau } from "./signaler";
 import {
   CLES_ACCEPTATIONS,
   CLES_DECLARATIONS,
@@ -144,7 +145,14 @@ export async function signerContrat(e: {
   if (ecrit.count === 0) {
     return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.non_modifiable };
   }
-  await enregistrerDeclarations(dossier.id, declarations);
+  // La signature est actée et le dossier est « à vérifier » : un échec de l'enregistrement des
+  // déclarations ne doit ni faire voir une erreur à l'apporteur ni retarder l'alerte à Williams.
+  try {
+    await enregistrerDeclarations(dossier.id, declarations);
+  } catch (err) {
+    console.error("[apporteur-dossier] déclarations non enregistrées :", err);
+    signalerErreurReseau("signature : déclarations non enregistrées", err);
+  }
 
   const lienConsole = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `apporteurs/${dossier.id}`)}`;
   // Clé d'idempotence PAR SIGNATURE (horodatage inclus) : une re-signature après

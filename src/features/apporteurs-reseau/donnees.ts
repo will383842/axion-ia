@@ -27,7 +27,24 @@ import type {
 import { alerterPieceVigilance } from "./alerte-vigilance";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
+import { signalerErreurReseau } from "./signaler";
 import { CLE_REGISTRE_INDISPONIBLE, vigilanceDemandee } from "./signature-regles";
+
+const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
+let derniereAlerteAntivirus = 0;
+
+/** Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée personnelle. */
+export function alerterAntivirusIndisponible(maintenant: number = Date.now()): boolean {
+  if (maintenant - derniereAlerteAntivirus < FENETRE_ALERTE_ANTIVIRUS_MS) return false;
+  derniereAlerteAntivirus = maintenant;
+  signalerErreurReseau("antivirus indisponible", new Error("pièce refusée : antivirus muet"));
+  return true;
+}
+
+/** Réservé aux tests : remet la garde à zéro. */
+export function reinitialiserAlerteAntivirus(): void {
+  derniereAlerteAntivirus = 0;
+}
 
 /** Taille maximale d'une pièce déposée (10 Mo : une photo de téléphone y tient). */
 export const TAILLE_MAX_PIECE = 10 * 1024 * 1024;
@@ -76,22 +93,25 @@ export async function ouvrirDossierDepuisCandidature(
     // refus est mort (`versionLien` incrémentée) ; on en ouvre un nouveau, et les pièces
     // purgées au refus doivent être redéposées.
     const maintenant = new Date();
-    const rouvert = await prisma.$transaction(async (tx) => {
-      await tx.pieceApporteur.updateMany({
-        where: { apporteurId: existant.id, type: { in: ["identite", "rib"] }, remplaceeAt: null },
-        data: { remplaceeAt: maintenant },
-      });
-      return tx.apporteurReseau.update({
-        where: { id: existant.id },
-        data: {
-          statut: "dossier_en_cours",
-          refuseAt: null,
-          dernierMessage: null,
-          versionLien: { increment: 1 },
-        },
-        select: { versionLien: true },
-      });
-    });
+    const rouvert = await prisma.$transaction(
+      async (tx) => {
+        await tx.pieceApporteur.updateMany({
+          where: { apporteurId: existant.id, type: { in: ["identite", "rib"] }, remplaceeAt: null },
+          data: { remplaceeAt: maintenant },
+        });
+        return tx.apporteurReseau.update({
+          where: { id: existant.id },
+          data: {
+            statut: "dossier_en_cours",
+            refuseAt: null,
+            dernierMessage: null,
+            versionLien: { increment: 1 },
+          },
+          select: { versionLien: true },
+        });
+      },
+      { timeout: 15_000 },
+    );
     return {
       ok: true,
       apporteurId: existant.id,
@@ -357,6 +377,7 @@ export async function deposerPiece(
     };
   }
   if (verdict.issue !== "sain") {
+    alerterAntivirusIndisponible();
     return {
       ok: false,
       message: "Le contrôle du fichier n'a pas pu se faire. Réessayez dans un instant.",
@@ -365,30 +386,39 @@ export async function deposerPiece(
   const sha256 = createHash("sha256").update(octets).digest("hex");
   const maintenant = new Date();
   let pieceId = "";
-  await prisma.$transaction(async (tx) => {
-    // La pièce d'identité remplacée n'a plus de raison d'être gardée : contenu purgé.
-    if (type === "identite") {
-      await purgerContenuPieces(tx, { apporteurId, types: ["identite"], courantesSeulement: true });
-    }
-    await tx.pieceApporteur.updateMany({
-      where: { apporteurId, type, remplaceeAt: null },
-      data: { remplaceeAt: maintenant },
-    });
-    const p = await tx.pieceApporteur.create({
-      data: {
-        apporteurId,
-        type,
-        nomFichier: nomFichier.slice(0, 200),
-        typeMime: MIME[format] ?? "application/octet-stream",
-        taille: octets.length,
-        sha256,
-        expireAt,
-      },
-      select: { id: true },
-    });
-    pieceId = p.id;
-    await tx.pieceApporteurContenu.create({ data: { pieceId: p.id, octets: Buffer.from(octets) } });
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      // La pièce d'identité remplacée n'a plus de raison d'être gardée : contenu purgé.
+      if (type === "identite") {
+        await purgerContenuPieces(tx, {
+          apporteurId,
+          types: ["identite"],
+          courantesSeulement: true,
+        });
+      }
+      await tx.pieceApporteur.updateMany({
+        where: { apporteurId, type, remplaceeAt: null },
+        data: { remplaceeAt: maintenant },
+      });
+      const p = await tx.pieceApporteur.create({
+        data: {
+          apporteurId,
+          type,
+          nomFichier: nomFichier.slice(0, 200),
+          typeMime: MIME[format] ?? "application/octet-stream",
+          taille: octets.length,
+          sha256,
+          expireAt,
+        },
+        select: { id: true },
+      });
+      pieceId = p.id;
+      await tx.pieceApporteurContenu.create({
+        data: { pieceId: p.id, octets: Buffer.from(octets) },
+      });
+    },
+    { timeout: 15_000 },
+  );
   // Attestation URSSAF ou immatriculation : Williams est alerté tout de suite (une seule fois par
   // pièce). Une panne d'envoi ne doit jamais faire échouer le dépôt de l'apporteur.
   if (pieceId && (PIECES_VIGILANCE as readonly string[]).includes(type)) {

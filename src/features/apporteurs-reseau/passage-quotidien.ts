@@ -22,8 +22,6 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
-import * as Sentry from "@sentry/nextjs";
-
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 
@@ -39,6 +37,7 @@ import { envoyer } from "./envois";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { commandesSoldees } from "./commandes";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
@@ -206,7 +205,7 @@ export async function passerReseauApporteurs(
     } catch (err) {
       bilan.erreurs += 1;
       console.error(`[reseau-apporteurs] étape « ${nom} » en échec :`, err);
-      Sentry.captureException(err, { tags: { action: "reseau-apporteurs", etape: nom } });
+      signalerErreurReseau(`passage quotidien : ${nom}`, err);
     }
   }
   return bilan;

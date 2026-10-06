@@ -12,7 +12,6 @@
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
-import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
@@ -20,6 +19,7 @@ import type { StatutCommissionApporteur } from "../../../prisma/generated/client
 import { construireDonneesAutofacture } from "./autofacture-donnees";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
   etatVigilance,
@@ -691,9 +691,7 @@ export async function genererPdfAutofacture(e: {
     return { r2Key, filename: `${e.numero}.pdf` };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
-    Sentry.captureException(err, {
-      tags: { action: "reseau-apporteurs", etape: "autofacture-pdf" },
-    });
+    signalerErreurReseau("autofacture pdf", err);
     return null;
   }
 }
@@ -761,34 +759,37 @@ export async function marquerVerse(
     };
   }
 
-  await prisma.$transaction(async (tx) => {
-    const maintenantLues = await lireARegler(tx);
-    const memes =
-      maintenantLues.length === avant.length &&
-      maintenantLues.every(
-        (c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents,
-      );
-    if (!memes) throw new Error("Les commissions ont changé pendant le versement : recommence.");
-    const commun = { verseeAt: maintenant, releveMois, autofactureNumero: numero };
-    const dues = await tx.commissionApporteur.updateMany({
-      where: {
-        id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
-        statut: "due",
-      },
-      data: { statut: "versee", ...commun },
-    });
-    // Une reprise imputée garde son statut (c'est une reprise) et porte le relevé qui l'a absorbée.
-    const reprises = await tx.commissionApporteur.updateMany({
-      where: {
-        id: { in: avant.filter((d) => d.statut === "reprise").map((d) => d.id) },
-        statut: "reprise",
-        releveMois: null,
-      },
-      data: commun,
-    });
-    if (dues.count + reprises.count !== avant.length)
-      throw new Error("Les commissions ont changé pendant le versement : recommence.");
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      const maintenantLues = await lireARegler(tx);
+      const memes =
+        maintenantLues.length === avant.length &&
+        maintenantLues.every(
+          (c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents,
+        );
+      if (!memes) throw new Error("Les commissions ont changé pendant le versement : recommence.");
+      const commun = { verseeAt: maintenant, releveMois, autofactureNumero: numero };
+      const dues = await tx.commissionApporteur.updateMany({
+        where: {
+          id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
+          statut: "due",
+        },
+        data: { statut: "versee", ...commun },
+      });
+      // Une reprise imputée garde son statut (c'est une reprise) et porte le relevé qui l'a absorbée.
+      const reprises = await tx.commissionApporteur.updateMany({
+        where: {
+          id: { in: avant.filter((d) => d.statut === "reprise").map((d) => d.id) },
+          statut: "reprise",
+          releveMois: null,
+        },
+        data: commun,
+      });
+      if (dues.count + reprises.count !== avant.length)
+        throw new Error("Les commissions ont changé pendant le versement : recommence.");
+    },
+    { timeout: 15_000 },
+  );
   const resultat = { numero, total };
 
   const envoi = await envoyer({

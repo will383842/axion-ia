@@ -72,21 +72,24 @@ export async function jugerPiece(
     return { ok: false, message: "Choisis un motif." };
   }
   const maintenant = new Date();
-  await prisma.$transaction(async (tx) => {
-    await tx.pieceApporteur.update({
-      where: { id: pieceId },
-      data: {
-        statut: verdict,
-        motif: verdict === "a_retransmettre" ? motif : null,
-        verifieeAt: maintenant,
-        // La pièce d'identité n'est gardée que le temps de la vérifier (REQ-JUR-029 de Partners).
-        ...(verdict === "conforme" && p.type === "identite" ? { purgeeAt: maintenant } : {}),
-      },
-    });
-    if (verdict === "conforme" && p.type === "identite") {
-      await tx.pieceApporteurContenu.deleteMany({ where: { pieceId } });
-    }
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      await tx.pieceApporteur.update({
+        where: { id: pieceId },
+        data: {
+          statut: verdict,
+          motif: verdict === "a_retransmettre" ? motif : null,
+          verifieeAt: maintenant,
+          // La pièce d'identité n'est gardée que le temps de la vérifier (REQ-JUR-029 de Partners).
+          ...(verdict === "conforme" && p.type === "identite" ? { purgeeAt: maintenant } : {}),
+        },
+      });
+      if (verdict === "conforme" && p.type === "identite") {
+        await tx.pieceApporteurContenu.deleteMany({ where: { pieceId } });
+      }
+    },
+    { timeout: 15_000 },
+  );
   return { ok: true };
 }
 
@@ -319,19 +322,22 @@ export async function appliquerDecision(
     };
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.apporteurReseau.update({
-      where: { id: apporteurId },
-      data: {
-        statut: "refuse",
-        refuseAt: maintenant,
-        dernierMessage: note?.trim() || null,
-        versionLien: { increment: 1 },
-      },
-    });
-    // Refus définitif : plus aucune raison de garder la pièce d'identité ni le RIB.
-    await purgerContenuPieces(tx, { apporteurId, types: ["identite", "rib"] });
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      await tx.apporteurReseau.update({
+        where: { id: apporteurId },
+        data: {
+          statut: "refuse",
+          refuseAt: maintenant,
+          dernierMessage: note?.trim() || null,
+          versionLien: { increment: 1 },
+        },
+      });
+      // Refus définitif : plus aucune raison de garder la pièce d'identité ni le RIB.
+      await purgerContenuPieces(tx, { apporteurId, types: ["identite", "rib"] });
+    },
+    { timeout: 15_000 },
+  );
   const r = await envoyer({ ...prep.envoi, jobId: `apporteur-dossier-refuse-${apporteurId}` });
   return {
     ok: true,
