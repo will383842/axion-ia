@@ -88,7 +88,6 @@ export const AFFICHER_BLOC_COMMISSION: boolean = true;
 export function commissionVsl(montant: string): {
   readonly titre: string;
   readonly indicatif: string;
-  readonly avant: string;
   readonly montant: string;
   readonly apres: string;
   readonly sousLigne: string;
@@ -96,7 +95,6 @@ export function commissionVsl(montant: string): {
   return {
     titre: "Votre commission",
     indicatif: "À titre indicatif",
-    avant: "jusqu'à",
     montant,
     apres: "par journée de formation facturée",
     sousLigne:
@@ -177,7 +175,7 @@ export function faqVsl(commissionParJournee: string): readonly {
     {
       id: "gains",
       question: "Combien puis-je gagner ?",
-      answer: `À titre indicatif, jusqu'à ${commissionParJournee} par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
+      answer: `À titre indicatif, ${commissionParJournee} par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
     },
     {
       id: "negocier",

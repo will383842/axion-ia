@@ -193,7 +193,6 @@ export default async function Page({ params }: Props) {
               <span className="text-mocha-fg-muted block text-[15px] font-semibold tracking-normal">
                 {commission.indicatif}
               </span>
-              {commission.avant}{" "}
               <span
                 className="text-terracotta-on-mocha"
                 style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}
