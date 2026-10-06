@@ -155,8 +155,8 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     // Exactement deux sommes : le bloc commission et la réponse de la FAQ.
     const montants = t.match(/\d[\d\s]*\s€/g) ?? [];
     expect(montants).toHaveLength(2);
-    expect(t).toMatch(/À titre indicatif, jusqu'à 500 € par journée/);
-    expect(t).toMatch(/jusqu'à 500 € par journée de formation facturée/);
+    expect(t).toMatch(/À titre indicatif, 500 € par journée/);
+    expect(t).toMatch(/500 € par journée de formation facturée/);
 
     // PAS dans le titre <h1>, ni dans le sous-titre du héro, ni dans le badge.
     const h1 = h.match(/<h1[\s\S]*?<\/h1>/)?.[0] ?? "";
@@ -286,7 +286,7 @@ describe("l'interrupteur du bloc commission", () => {
     expect(h).not.toContain('aria-labelledby="vsl-commission"');
     expect(texte(h)).not.toContain("Votre commission");
     // La FAQ garde la somme « à titre indicatif ».
-    expect(texte(h)).toMatch(/À titre indicatif, jusqu'à 500 € par journée/);
+    expect(texte(h)).toMatch(/À titre indicatif, 500 € par journée/);
     expect(h).toContain('id="vsl-formulaire"');
     vi.doUnmock("@/content/recrutement/vsl-apporteur");
     vi.resetModules();

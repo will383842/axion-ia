@@ -104,11 +104,9 @@ describe("le bloc « Votre commission »", () => {
     expect(AFFICHER_BLOC_COMMISSION).toBe(true);
   });
 
-  it("titre, grand chiffre « jusqu'à … par journée de formation facturée », sous-ligne obligatoire", () => {
+  it("titre, grand chiffre « … par journée de formation facturée », sous-ligne obligatoire", () => {
     expect(c.titre).toBe("Votre commission");
-    expect(`${c.avant} ${c.montant} ${c.apres}`).toBe(
-      "jusqu'à 500 € par journée de formation facturée",
-    );
+    expect(`${c.montant} ${c.apres}`).toBe("500 € par journée de formation facturée");
     expect(c.sousLigne).toBe(
       "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
     );
