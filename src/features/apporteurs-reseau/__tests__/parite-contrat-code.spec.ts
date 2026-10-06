@@ -11,6 +11,7 @@ import { CONTRAT_V2_MARKDOWN } from "../contrat-v2";
 import {
   ADRESSE_VALIDE_JOURS,
   CONFIRMATION_TACITE_JOURS,
+  FORFAIT_CONFERENCE_CENTS,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   PARRAINAGE_MOIS,
@@ -84,6 +85,16 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
       SEUIL_RELEVE_CENTS / 100,
       "SEUIL_RELEVE_CENTS / 100",
     );
+  });
+  it("conférence : 500 € HT par conférence, jamais « Aucune » (A1.4 bis, A1.5)", () => {
+    expect(TEXTE).toMatch(/500 € hors taxes par conférence figurant à la commande/);
+    expect(FORFAIT_CONFERENCE_CENTS / 100).toBe(500);
+    // A1.5 ne doit plus lister la conférence parmi les prestations non commissionnées.
+    const a15 = TEXTE.slice(
+      TEXTE.indexOf("A1.5 — Prestations non commissionnées"),
+      TEXTE.indexOf("A1.6"),
+    );
+    expect(a15).not.toMatch(/\| Conférence \| \*\*Aucune\*\*/);
   });
   it("virement sous dix jours ouvrés (art. 5.3)", () => {
     attendre(

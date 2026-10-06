@@ -96,7 +96,7 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
   });
   it("facture typée formation : le palier « Conférence » de la qualification pose 500 €", async () => {
     etat.commission = { ...ligne, activite: "formation", factureHtCents: 100_000 };
-    const r = await qualifierCommission("C1", "conference", 5);
+    const r = await qualifierCommission("C1", "conference", 1);
     expect(r).toEqual({ ok: true, montantCents: 50_000 });
     expect(etat.maj[0]!.data).toMatchObject({
       activite: "conference",

@@ -48,7 +48,8 @@ export const ACCEPTATIONS = [
   { cle: "art_3_7", texte: "J'accepte l'article 3.7 (sincérité des présentations)." },
   {
     cle: "art_4_5",
-    texte: "J'accepte l'article 4.5 (reprise d'une commission en cas de remboursement).",
+    texte:
+      "J'accepte l'article 4.5 (recalcul et reprise d'une commission en cas d'avoir ou de remboursement).",
   },
   {
     cle: "art_5_2",
@@ -60,7 +61,7 @@ export const ACCEPTATIONS = [
   {
     cle: "art_14",
     texte:
-      "J'accepte l'article 14 : en cas de litige entre commerçants, les tribunaux du siège d'Axion-IA sont seuls compétents.",
+      "J'accepte l'article 14 : en cas de litige entre commerçants, les tribunaux du siège d'Axion-IA sont seuls compétents, sous réserve des juridictions spécialisées prévues par la loi.",
   },
 ] as const;
 

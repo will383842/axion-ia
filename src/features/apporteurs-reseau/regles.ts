@@ -264,8 +264,8 @@ export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as const;
 
 /**
- * Conférence : un forfait fixe par COMMANDE (une fois, quel que soit le nombre de participants),
- * sans prorata de remise. Source unique : `COMMISSION_CONFERENCE_EUR` (décision du 2026-10-01,
+ * Conférence : un forfait fixe PAR CONFÉRENCE (quel que soit le nombre de participants), sans
+ * prorata de remise ; une commande de plusieurs conférences : forfait × nombre de conférences. Source unique : `COMMISSION_CONFERENCE_EUR` (décision du 2026-10-01,
  * publiée sur le site), en centimes.
  */
 export const FORFAIT_CONFERENCE_CENTS = COMMISSION_CONFERENCE_EUR * 100;
@@ -306,11 +306,13 @@ export function calculerCommission(e: {
     e.activite === "conference" ||
     (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
   ) {
-    // Forfait fixe : ni prorata de remise, ni multiplication par `quantite`. Une commande vide ou
+    // Forfait fixe par conférence : aucun prorata de remise ; `quantite` = nombre de conférences de
+    // la commande. Jamais plus que le prix HT facturé (annexe 1, A1.4 bis) ; une commande vide ou
     // remboursée (HT ≤ 0) ne rapporte rien.
+    const ht = Math.max(0, e.factureHtCents);
     return {
       statut: "calculee",
-      montantCents: e.factureHtCents > 0 ? FORFAIT_CONFERENCE_CENTS : 0,
+      montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
       palier: PALIER_CONFERENCE,
       prixPublicCents: null,
     };
