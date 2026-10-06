@@ -3307,6 +3307,7 @@ model FunnelEvent {
 /// ligne par versement relevé dans le Gestionnaire de publicités. Sert au seul
 /// tableau « Tunnel apporteurs » de la console (coût par marche, par apporteur
 /// actif). Aucune donnée personnelle. Montant en CENTIMES, jamais en flottant.
+/// rgpd: technique — montant, période et canal d'une dépense publicitaire ; aucune donnée personnelle
 model AcquisitionSpend {
   id              String   @id @default(uuid()) @db.Uuid
   /// Jour de la dépense (date seule, sans heure).
