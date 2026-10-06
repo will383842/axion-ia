@@ -7,12 +7,11 @@
  *
  * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par relevé (toutes les
  * lignes versées ensemble le partagent). Le PDF est généré par `genererPdfAutofacture` ;
- * s'il rend `null`, l'e-mail part sans pièce jointe.
+ * s'il rend `null`, `marquerVerse` n'écrit rien (pas de versement sans pièce).
  */
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
 
-import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
@@ -20,6 +19,7 @@ import type { StatutCommissionApporteur } from "../../../prisma/generated/client
 import { construireDonneesAutofacture } from "./autofacture-donnees";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import {
   calculerCommission,
   etatVigilance,
@@ -66,6 +66,103 @@ export async function piecesVigilanceValides(
     select: { type: true, statut: true, expireAt: true, remplaceeAt: true },
   });
   return piecesVigilanceConformes(pieces, maintenant);
+}
+
+/** Relances de la demande de pièces : une tous les 15 jours après le dernier envoi, trois au plus. */
+export const RELANCE_VIGILANCE_JOURS = 15;
+export const RELANCES_VIGILANCE_MAX = 3;
+
+/**
+ * Quelle relance envoyer maintenant ? `envoisAt` = dates d'envoi de la demande initiale puis
+ * de chaque relance déjà partie (ordre chronologique). Rend le numéro de la relance (1 à 3), ou
+ * `null` : rien n'est parti, le délai n'est pas écoulé, ou les trois relances sont faites. Pur.
+ */
+export function relanceVigilanceDue(envoisAt: readonly Date[], maintenant: Date): 1 | 2 | 3 | null {
+  if (envoisAt.length === 0 || envoisAt.length > RELANCES_VIGILANCE_MAX) return null;
+  const dernier = Math.max(...envoisAt.map((d) => d.getTime()));
+  if (maintenant.getTime() < dernier + RELANCE_VIGILANCE_JOURS * 86_400_000) return null;
+  return envoisAt.length as 1 | 2 | 3;
+}
+
+/** Clé « une fois » d'une relance : une par numéro. */
+export function jobIdRelanceVigilance(apporteurId: string, numero: 1 | 2 | 3): string {
+  return `apporteur-vigilance-relance-${apporteurId}-${numero}`;
+}
+
+/** Envoi de la demande initiale et des relances déjà parties, dans l'ordre. */
+async function envoisDemandeVigilance(apporteurId: string): Promise<Date[]> {
+  const l = await prisma.emailLog.findMany({
+    where: {
+      template: "apporteur-vigilance",
+      entityType: "ApporteurReseau",
+      entityId: apporteurId,
+      sentAt: { not: null },
+      status: { not: "failed" },
+      OR: [
+        { jobId: jobIdVigilance(apporteurId, "premiere") },
+        { jobId: { startsWith: `apporteur-vigilance-relance-${apporteurId}-` } },
+      ],
+    },
+    select: { sentAt: true },
+    orderBy: { sentAt: "asc" },
+  });
+  return l.map((x) => x.sentAt).filter((d): d is Date => d instanceof Date);
+}
+
+/**
+ * Relance la demande de pièces si elle est due (et qu'aucune pièce n'attend déjà la vérification
+ * de Williams). Même gabarit que la demande initiale. Rend vrai si une relance est partie.
+ */
+export async function relancerVigilance(apporteurId: string, maintenant: Date): Promise<boolean> {
+  const numero = relanceVigilanceDue(await envoisDemandeVigilance(apporteurId), maintenant);
+  if (numero === null) return false;
+  const enAttente = await prisma.pieceApporteur.count({
+    where: {
+      apporteurId,
+      type: { in: ["vigilance", "immatriculation"] },
+      statut: "deposee",
+      remplaceeAt: null,
+      purgeeAt: null,
+    },
+  });
+  if (enAttente > 0) return false;
+  const jobId = jobIdRelanceVigilance(apporteurId, numero);
+  if (await dejaEnvoye(jobId)) return false;
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { id: true, prenom: true, nom: true, email: true, versionLien: true },
+  });
+  if (!a) return false;
+  const dossierUrl = urlDossier(a.id, a.versionLien);
+  const r = await envoyer({
+    gabarit: "apporteur-vigilance",
+    destinataire: decryptPii(a.email) ?? "",
+    payload: {
+      contactName: [decryptPii(a.prenom), decryptPii(a.nom)].filter(Boolean).join(" "),
+      ...(dossierUrl ? { dossierUrl } : {}),
+      variante: "premiere",
+    },
+    entityType: "ApporteurReseau",
+    entityId: a.id,
+    jobId,
+  });
+  return r === "envoye";
+}
+
+/**
+ * Libère les commissions en attente dès que les pièces sont conformes — appelée au jugement de la
+ * pièce par Williams, pas au passage du lendemain. Rend le nombre de commissions libérées.
+ */
+export async function libererSiPiecesValides(
+  apporteurId: string,
+  maintenant: Date = new Date(),
+): Promise<number> {
+  if (!(await piecesVigilanceValides(apporteurId, maintenant))) return 0;
+  const r = await prisma.commissionApporteur.updateMany({
+    where: { apporteurId, statut: "en_attente_vigilance" },
+    data: { statut: "due" },
+  });
+  return r.count;
 }
 
 export async function cumulVigilanceCents(apporteurId: string, saufId?: string): Promise<number> {
@@ -153,6 +250,7 @@ export async function statutApresVigilance(
 export async function qualifierCommission(
   id: string,
   palier: string,
+  quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
   if (!PALIERS_FORMATION.some((p) => p.id === palier))
@@ -178,6 +276,7 @@ export async function qualifierCommission(
     activite: "formation",
     factureHtCents: c.factureHtCents,
     palier,
+    quantite,
   });
   if (calc.statut !== "calculee")
     return { ok: false, message: "Calcul impossible pour ce palier." };
@@ -195,6 +294,103 @@ export async function qualifierCommission(
   if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
   await qualifierPartParrainage(c.factureId, c.apporteurId, calc.montantCents, maintenant);
   return { ok: true, montantCents: calc.montantCents };
+}
+
+/** Activités qu'une ligne « à qualifier » peut recevoir quand la facture n'en portait pas. */
+export const ACTIVITES_CLASSABLES = [
+  "formation",
+  "un_a_un",
+  "audit",
+  "implementation",
+  "site_web",
+] as const;
+export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
+
+/**
+ * Une ligne « à qualifier » qui n'est pas une formation (activité de la facture inconnue) :
+ * Williams la classe. 1-to-1, audit, intégration : la commission se calcule tout de suite sur le
+ * HT facturé. Site web : aucune commission (annexe 1, A1.5), la ligne est close à 0 €. Formation :
+ * l'activité est posée, le palier se choisit ensuite comme d'habitude.
+ */
+export async function classerActiviteCommission(
+  id: string,
+  activite: string,
+  maintenant: Date = new Date(),
+): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+  if (!(ACTIVITES_CLASSABLES as readonly string[]).includes(activite))
+    return { ok: false, message: "Activité inconnue." };
+  const c = await prisma.commissionApporteur.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      apporteurId: true,
+      factureId: true,
+      parrainage: true,
+      activite: true,
+      factureHtCents: true,
+      statut: true,
+    },
+  });
+  if (!c) return { ok: false, message: "Commission introuvable." };
+  if (c.statut !== "a_qualifier" || c.parrainage || c.activite === "formation")
+    return { ok: false, message: "Cette commission n'est pas à classer." };
+  const choisie = activite as ActiviteClassable;
+  if (choisie === "formation") {
+    const r = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: { activite: "formation" },
+    });
+    return r.count === 1
+      ? { ok: true, message: "Classée en formation : choisissez maintenant son palier." }
+      : { ok: false, message: "Cette commission vient d'être modifiée." };
+  }
+  const calc = calculerCommission({ activite: choisie, factureHtCents: c.factureHtCents });
+  if (calc.statut === "aucune") {
+    const r = await prisma.commissionApporteur.updateMany({
+      where: { id, statut: "a_qualifier" },
+      data: {
+        activite: choisie,
+        palier: "aucune-commission",
+        montantCents: 0,
+        statut: "versee",
+        verseeAt: maintenant,
+      },
+    });
+    if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
+    // La part du parrain suit la commission du filleul : aucune non plus.
+    await clorePartParrainage(c.factureId, c.apporteurId, maintenant);
+    return {
+      ok: true,
+      message: "Aucune commission pour ce type de prestation : ligne close à 0 €.",
+    };
+  }
+  if (calc.statut !== "calculee") return { ok: false, message: "Calcul impossible." };
+  const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
+  const r = await prisma.commissionApporteur.updateMany({
+    where: { id, statut: "a_qualifier" },
+    data: { activite: choisie, montantCents: calc.montantCents, statut: v.statut },
+  });
+  if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
+  if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
+  await qualifierPartParrainage(c.factureId, c.apporteurId, calc.montantCents, maintenant);
+  return { ok: true, message: `Qualifiée : ${euros(calc.montantCents)}.` };
+}
+
+/** Ferme à 0 € la part du parrain d'une commission sans commission. */
+async function clorePartParrainage(
+  factureId: string,
+  filleulId: string,
+  maintenant: Date,
+): Promise<void> {
+  const filleul = await prisma.apporteurReseau.findUnique({
+    where: { id: filleulId },
+    select: { parrainId: true },
+  });
+  if (!filleul?.parrainId) return;
+  await prisma.commissionApporteur.updateMany({
+    where: { factureId, apporteurId: filleul.parrainId, parrainage: true, statut: "a_qualifier" },
+    data: { montantCents: 0, statut: "versee", verseeAt: maintenant, palier: "aucune-commission" },
+  });
 }
 
 /** La part du parrain, restée « à qualifier » avec la commission du filleul. */
@@ -250,13 +446,19 @@ export interface CommissionVue {
   creeAt: Date;
 }
 
+/** Taille d'une page de la liste des commissions (précédent / suivant dans la console). */
+export const COMMISSIONS_PAR_PAGE = 100;
+
 export async function lireCommissions(
   statut: StatutCommissionApporteur | null,
+  page = 1,
 ): Promise<CommissionVue[]> {
+  const p = Math.max(1, Math.floor(page));
   const lignes = await prisma.commissionApporteur.findMany({
     where: statut ? { statut } : {},
-    orderBy: { creeAt: "desc" },
-    take: 500,
+    orderBy: [{ creeAt: "desc" }, { id: "asc" }],
+    take: COMMISSIONS_PAR_PAGE,
+    skip: (p - 1) * COMMISSIONS_PAR_PAGE,
     include: {
       apporteur: { select: { prenom: true, nom: true } },
       presentation: { select: { denomination: true } },
@@ -335,9 +537,10 @@ export interface ReleveApporteur {
 
 /** Le relevé de chaque apporteur qui a des commissions dues. */
 export async function relevesDuMois(maintenant: Date = new Date()): Promise<ReleveApporteur[]> {
+  // Les commissions dues ET les reprises pas encore imputées (montants négatifs) : le relevé est net.
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
-    where: { statut: "due", montantCents: { not: null } },
+    where: { statut: { in: ["due", "reprise"] }, releveMois: null, montantCents: { not: null } },
     _sum: { montantCents: true },
     _count: { _all: true },
   });
@@ -409,8 +612,8 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
 
 /**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
- * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : le versement
- * n'échoue jamais pour une pièce, l'e-mail part alors sans pièce jointe.
+ * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
+ * n'enregistre alors AUCUN versement.
  */
 export async function genererPdfAutofacture(e: {
   apporteurId: string;
@@ -437,7 +640,16 @@ export async function genererPdfAutofacture(e: {
       }),
       prisma.commissionApporteur.findMany({
         where: { id: { in: [...e.commissionIds] } },
-        select: { id: true, activite: true, palier: true, parrainage: true, montantCents: true },
+        select: {
+          id: true,
+          activite: true,
+          palier: true,
+          parrainage: true,
+          montantCents: true,
+          prixPublicHtCents: true,
+          factureHtCents: true,
+          statut: true,
+        },
         orderBy: { creeAt: "asc" },
       }),
     ]);
@@ -479,16 +691,18 @@ export async function genererPdfAutofacture(e: {
     return { r2Key, filename: `${e.numero}.pdf` };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
-    Sentry.captureException(err, {
-      tags: { action: "reseau-apporteurs", etape: "autofacture-pdf" },
-    });
+    signalerErreurReseau("autofacture pdf", err);
     return null;
   }
 }
 
 /**
- * « Marquer versé » : toutes les commissions DUES de l'apporteur passent en `versee`
- * sous un même numéro d'autofacture, puis le relevé part.
+ * « Marquer versé » : toutes les commissions DUES de l'apporteur passent en `versee` sous un
+ * même numéro d'autofacture, les REPRISES non encore imputées (montants négatifs, art. 4.5)
+ * sont déduites du même relevé, puis le relevé part.
+ *
+ * 🔑 Pas de versement sans pièce : le PDF de l'autofacture est établi AVANT toute écriture.
+ * S'il échoue, rien n'est marqué versé et le même bouton rejoue l'opération telle quelle.
  */
 export async function marquerVerse(
   apporteurId: string,
@@ -505,43 +719,102 @@ export async function marquerVerse(
   const releveMois = moisParis(maintenant);
   const annee = Number(releveMois.slice(0, 4));
 
-  const resultat = await prisma.$transaction(async (tx) => {
-    const dues = await tx.commissionApporteur.findMany({
-      where: { apporteurId, statut: "due", montantCents: { not: null } },
-      select: { id: true, montantCents: true },
+  const lireARegler = (db: Pick<typeof prisma, "commissionApporteur">) =>
+    db.commissionApporteur.findMany({
+      where: {
+        apporteurId,
+        statut: { in: ["due", "reprise"] },
+        releveMois: null,
+        montantCents: { not: null },
+      },
+      select: { id: true, statut: true, montantCents: true },
+      orderBy: { creeAt: "asc" },
     });
-    const total = dues.reduce((s, d) => s + (d.montantCents ?? 0), 0);
-    if (
-      !releveEmis({
-        soldeCents: total,
-        mois: Number(releveMois.slice(5, 7)),
-        dernier: apporteur.statut === "resilie",
-      })
-    ) {
-      return {
-        ok: false as const,
-        message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil).",
-      };
-    }
-    const numero = await allouerNumeroAutofacture(annee);
-    const r = await tx.commissionApporteur.updateMany({
-      where: { id: { in: dues.map((d) => d.id) }, statut: "due" },
-      data: { statut: "versee", verseeAt: maintenant, releveMois, autofactureNumero: numero },
-    });
-    if (r.count !== dues.length)
-      throw new Error("Les commissions ont changé pendant le versement : recommence.");
-    return { ok: true as const, numero, total, ids: dues.map((d) => d.id) };
-  });
-  if (!resultat.ok) return resultat;
 
+  const avant = await lireARegler(prisma);
+  const total = avant.reduce((s, d) => s + (d.montantCents ?? 0), 0);
+  if (
+    !releveEmis({
+      soldeCents: total,
+      mois: Number(releveMois.slice(5, 7)),
+      dernier: apporteur.statut === "resilie",
+    })
+  ) {
+    return { ok: false, message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil)." };
+  }
+  // Vigilance REVÉRIFIÉE à l'émission : une attestation périmée depuis que les commissions sont
+  // devenues dues ne doit pas laisser partir un versement au-delà du seuil (art. 5.4 et 6.2).
+  const [cumul, valides] = await Promise.all([
+    cumulVigilanceCents(apporteurId),
+    piecesVigilanceValides(apporteurId, maintenant),
+  ]);
+  if (etatVigilance({ cumulCents: cumul, nouvelleCents: 0, piecesValides: valides }).attendre) {
+    // Les commissions dues repassent en attente de vigilance (le passage quotidien demande, relance
+    // puis libère dès que les pièces sont conformes) ; les reprises restent à imputer.
+    await prisma.commissionApporteur.updateMany({
+      where: {
+        id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
+        statut: "due",
+        releveMois: null,
+      },
+      data: { statut: "en_attente_vigilance" },
+    });
+    return {
+      ok: false,
+      message:
+        "L'attestation de vigilance ou l'immatriculation n'est plus valable : les commissions sont remises en attente de vigilance, rien n'a été versé. Les pièces seront redemandées à l'apporteur.",
+    };
+  }
+  const numero = await allouerNumeroAutofacture(annee);
   const pdf = await genererPdfAutofacture({
     apporteurId,
-    numero: resultat.numero,
+    numero,
     releveMois,
-    commissionIds: resultat.ids,
-    totalCents: resultat.total,
+    commissionIds: avant.map((d) => d.id),
+    totalCents: total,
     maintenant,
   });
+  if (!pdf) {
+    return {
+      ok: false,
+      message:
+        "L'autofacture n'a pas pu être établie (identité de facturation, régime de TVA ou stockage) : rien n'a été marqué versé. Corrigez puis recommencez avec le même bouton.",
+    };
+  }
+
+  await prisma.$transaction(
+    async (tx) => {
+      const maintenantLues = await lireARegler(tx);
+      const memes =
+        maintenantLues.length === avant.length &&
+        maintenantLues.every(
+          (c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents,
+        );
+      if (!memes) throw new Error("Les commissions ont changé pendant le versement : recommence.");
+      const commun = { verseeAt: maintenant, releveMois, autofactureNumero: numero };
+      const dues = await tx.commissionApporteur.updateMany({
+        where: {
+          id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
+          statut: "due",
+        },
+        data: { statut: "versee", ...commun },
+      });
+      // Une reprise imputée garde son statut (c'est une reprise) et porte le relevé qui l'a absorbée.
+      const reprises = await tx.commissionApporteur.updateMany({
+        where: {
+          id: { in: avant.filter((d) => d.statut === "reprise").map((d) => d.id) },
+          statut: "reprise",
+          releveMois: null,
+        },
+        data: commun,
+      });
+      if (dues.count + reprises.count !== avant.length)
+        throw new Error("Les commissions ont changé pendant le versement : recommence.");
+    },
+    { timeout: 15_000 },
+  );
+  const resultat = { numero, total };
+
   const envoi = await envoyer({
     gabarit: "apporteur-releve",
     destinataire: decryptPii(apporteur.email) ?? "",
@@ -556,13 +829,7 @@ export async function marquerVerse(
     entityType: "ApporteurReseau",
     entityId: apporteurId,
     jobId: `apporteur-releve-${resultat.numero}`,
-    ...(pdf
-      ? {
-          attachments: [
-            { filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" },
-          ],
-        }
-      : {}),
+    attachments: [{ filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" }],
   });
   return { ok: true, numero: resultat.numero, totalCents: resultat.total, envoi };
 }
@@ -610,7 +877,8 @@ export async function exportDas2(annee: number): Promise<string> {
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
-      statut: "versee",
+      // Les reprises imputées à un relevé viennent en déduction du versé de l'année.
+      OR: [{ statut: "versee" }, { statut: "reprise", releveMois: { not: null } }],
       verseeAt: {
         gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
         lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),

@@ -29,12 +29,7 @@ vi.mock("@/server/queue/queues", () => ({
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
-import {
-  MESSAGE_DEJA,
-  MESSAGE_LIMITE,
-  MESSAGE_NEUTRE,
-  declarerEntreprise,
-} from "../declaration-entreprise";
+import { MESSAGE_DEJA, MESSAGE_NEUTRE, declarerEntreprise } from "../declaration-entreprise";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const MAINTENANT = new Date("2026-10-05T10:00:00Z");
@@ -100,14 +95,11 @@ describe("declarerEntreprise", () => {
     expect(creerPresentation).not.toHaveBeenCalled();
   });
 
-  it("limite : 20 déclarations en 24 h, message neutre", async () => {
-    count.mockResolvedValue(20);
-    expect(await declarerEntreprise(ID, BONNE, MAINTENANT)).toEqual({
-      ok: false,
-      message: MESSAGE_LIMITE,
-    });
-    expect(creerPresentation).not.toHaveBeenCalled();
-    expect(count.mock.calls[0]![0].where.apporteurId).toBe(ID);
+  it("aucun plafond par apporteur : même après 500 déclarations en 24 h, la suivante passe (art. 3.7)", async () => {
+    count.mockResolvedValue(500);
+    expect(await declarerEntreprise(ID, BONNE, MAINTENANT)).toEqual({ ok: true });
+    expect(creerPresentation).toHaveBeenCalledTimes(1);
+    expect(count).not.toHaveBeenCalled();
   });
 
   it("doublon : sa propre déclaration encore en cours n'est pas redéclarée", async () => {

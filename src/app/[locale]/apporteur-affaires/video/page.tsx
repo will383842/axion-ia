@@ -36,7 +36,6 @@ import { Check, X } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
-import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VslVideoDiffere } from "@/components/lp/VslVideoDiffere";
@@ -58,6 +57,8 @@ import {
   VSL_PREUVES,
   VSL_SLUG,
   VSL_VIDEO_FICHIERS,
+  AFFICHER_BLOC_COMMISSION,
+  commissionVsl,
   faqVsl,
 } from "@/content/recrutement/vsl-apporteur";
 import {
@@ -103,6 +104,7 @@ export default async function Page({ params }: Props) {
   setRequestLocale(locale as Locale);
 
   const faq = faqVsl(euros(COMMISSION_FORMATION_PAR_JOURNEE_EUR));
+  const commission = commissionVsl(euros(COMMISSION_FORMATION_PAR_JOURNEE_EUR));
 
   // Le film n'apparaît QUE si ses deux fichiers existent : la page est livrable sans.
   const film = videoDisponible(VSL_VIDEO_FICHIERS);
@@ -116,22 +118,32 @@ export default async function Page({ params }: Props) {
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
       <VslVue landing={VSL_SLUG} />
 
-      {/* 1 ── Entrée : promesse, film (s'il existe), UN bouton. */}
-      <Section tone="halo-warm" className="pt-8 pb-10 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-14">
+      {/* 1 ── Entrée : promesse, film (s'il existe), UN bouton. Habit SOMBRE des
+          pages VSL du site (`.bg-vsl`, encre + halo terracotta) : texte clair sur
+          fond encre, accents terracotta des jetons du site. Les surfaces crème
+          sur crème de l'ancienne version passaient AA mais n'avaient aucun
+          point focal. */}
+      <section className="bg-vsl text-mocha-fg px-4 pt-8 pb-12 sm:px-6 sm:pt-12 sm:pb-14 lg:pt-14">
         <div className="mx-auto max-w-2xl text-center">
-          <HeroBadge className="mb-5">{VSL_HERO.badge}</HeroBadge>
+          <p className="border-border-on-mocha bg-mocha/60 text-mocha-fg mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border px-4 py-1.5 text-[14px] leading-snug font-semibold">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta-on-mocha h-1.5 w-1.5 shrink-0 rounded-full"
+            />
+            {VSL_HERO.badge}
+          </p>
 
-          <h1 className="display-editorial text-fg text-balance">
+          <h1 className="display-editorial text-mocha-fg text-balance">
             {VSL_HERO.h1}{" "}
             <span
-              className="text-terracotta-deep italic"
+              className="text-terracotta-on-mocha italic"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {VSL_HERO.h1Em}
             </span>
           </h1>
 
-          <p className="text-fg-soft mt-5 text-lg leading-relaxed text-pretty">
+          <p className="text-mocha-fg mt-5 text-[17px] leading-relaxed text-pretty sm:text-lg">
             {VSL_HERO.sousTitre}
           </p>
 
@@ -143,7 +155,7 @@ export default async function Page({ params }: Props) {
               label={VSL_HERO.videoLabel}
               landing={VSL_SLUG}
               ratio="4:5-mobile"
-              tone="light"
+              tone="dark"
               suiviProgression
               {...(sousTitres ? { sousTitres } : {})}
               {...(transcription.length > 0 ? { transcription } : {})}
@@ -158,10 +170,43 @@ export default async function Page({ params }: Props) {
               placement={film ? "sous-video" : "hero"}
               landing={VSL_SLUG}
             />
-            <p className="text-fg-soft text-sm font-medium">{VSL_HERO.micro}</p>
+            <p className="text-mocha-fg-muted text-[15px] font-medium">{VSL_HERO.micro}</p>
           </div>
         </div>
-      </Section>
+      </section>
+
+      {/* 1 bis ── Votre commission : le point d'accroche, sur fond sombre, JUSTE
+          après le héro. Un interrupteur dans le contenu le retire en un commit. */}
+      {AFFICHER_BLOC_COMMISSION ? (
+        <section
+          aria-labelledby="vsl-commission"
+          className="bg-vsl text-mocha-fg border-border-on-mocha border-t px-4 py-10 sm:px-6 sm:py-12"
+        >
+          <div className="mx-auto max-w-xl text-center">
+            <h2
+              id="vsl-commission"
+              className="text-mocha-fg-muted text-[15px] font-bold tracking-[0.16em] uppercase"
+            >
+              {commission.titre}
+            </h2>
+            <p className="text-mocha-fg mt-4 text-[34px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[42px]">
+              <span className="text-mocha-fg-muted block text-[15px] font-semibold tracking-normal">
+                {commission.indicatif}
+              </span>
+              <span
+                className="text-terracotta-on-mocha"
+                style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}
+              >
+                {commission.montant}
+              </span>{" "}
+              {commission.apres}
+            </p>
+            <p className="text-mocha-fg mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-pretty">
+              {commission.sousLigne}
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       {/* 2 ── Pour qui : trois pastilles. */}
       <Section className="py-10 sm:py-12 lg:py-14">
@@ -170,14 +215,14 @@ export default async function Page({ params }: Props) {
             {VSL_POUR_QUI.map((t) => (
               <li
                 key={t}
-                className="border-border bg-paper flex items-start gap-3 rounded-2xl border px-4 py-3.5"
+                className="border-border-strong bg-paper shadow-card flex items-start gap-3 rounded-2xl border px-4 py-3.5"
               >
                 <Check aria-hidden="true" className="text-sage mt-0.5 h-5 w-5 shrink-0" />
-                <span className="text-fg leading-snug font-medium">{t}</span>
+                <span className="text-fg text-[17px] leading-snug font-medium">{t}</span>
               </li>
             ))}
           </ul>
-          <p className="text-fg-muted mt-4 text-center text-sm leading-relaxed">
+          <p className="text-fg-soft mt-4 text-center text-[15px] leading-relaxed">
             {VSL_PAS_POUR_QUI}
           </p>
         </div>
@@ -190,7 +235,7 @@ export default async function Page({ params }: Props) {
             {VSL_ETAPES.map((e, i) => (
               <li
                 key={e.titre}
-                className="bg-paper border-border flex gap-4 rounded-2xl border p-5"
+                className="bg-paper border-border-strong shadow-card flex gap-4 rounded-2xl border p-5"
               >
                 <span
                   aria-hidden="true"
@@ -200,7 +245,7 @@ export default async function Page({ params }: Props) {
                 </span>
                 <div>
                   <h2 className="text-fg text-lg font-semibold">{e.titre}</h2>
-                  <p className="text-fg-soft mt-1 leading-relaxed">{e.texte}</p>
+                  <p className="text-fg mt-1 text-[16px] leading-relaxed">{e.texte}</p>
                 </div>
               </li>
             ))}
@@ -218,7 +263,7 @@ export default async function Page({ params }: Props) {
             {VSL_PAS_CA.map((t) => (
               <li key={t} className="flex items-start gap-3">
                 <X aria-hidden="true" className="text-terracotta mt-0.5 h-5 w-5 shrink-0" />
-                <span className="text-fg-soft leading-snug">{t}</span>
+                <span className="text-fg text-[16px] leading-snug">{t}</span>
               </li>
             ))}
           </ul>
@@ -231,9 +276,9 @@ export default async function Page({ params }: Props) {
       {/* 5 ── Preuves honnêtes : ce qui existe réellement, aucune statistique. */}
       <Section tone="sand" className="py-10 sm:py-12 lg:py-14">
         <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-3">
-          <div className="bg-paper border-border rounded-2xl border p-5">
+          <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.catalogue.titre}</p>
-            <p className="mt-3 text-sm">
+            <p className="mt-3 text-[15px]">
               <a
                 href="/fr/catalogue"
                 target="_blank"
@@ -244,11 +289,11 @@ export default async function Page({ params }: Props) {
               </a>
             </p>
           </div>
-          <div className="bg-paper border-border rounded-2xl border p-5">
+          <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.commission.titre}</p>
-            <p className="text-fg-soft mt-2 text-sm">{VSL_PREUVES.commission.texte}</p>
+            <p className="text-fg-soft mt-2 text-[15px]">{VSL_PREUVES.commission.texte}</p>
           </div>
-          <div className="bg-paper border-border rounded-2xl border p-5">
+          <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.echange.titre}</p>
           </div>
         </div>
@@ -260,7 +305,7 @@ export default async function Page({ params }: Props) {
           <h2 className="text-fg text-center font-serif text-3xl leading-tight font-semibold">
             {VSL_FORMULAIRE.titre}
           </h2>
-          <div className="bg-paper border-border shadow-card mt-6 rounded-2xl border p-5 sm:p-7">
+          <div className="bg-paper border-border-strong shadow-card mt-6 rounded-2xl border p-5 sm:p-7">
             <VslFormulaire capturer={capturerLeadVsl} completer={completerLeadVsl} />
           </div>
         </div>
@@ -277,7 +322,13 @@ export default async function Page({ params }: Props) {
         className="py-10 sm:py-12 lg:py-14"
       />
 
-      <StickyMobileCta href={ANCRE} label={`${VSL_HERO.cta} →`} track="vsl-sticky-cta" />
+      <StickyMobileCta
+        href={ANCRE}
+        label={`${VSL_HERO.cta} →`}
+        track="vsl-sticky-cta"
+        couleur="terracotta"
+        masquerQuandVisible="vsl-formulaire"
+      />
     </TunnelFacebookShell>
   );
 }

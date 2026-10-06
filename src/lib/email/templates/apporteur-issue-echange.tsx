@@ -31,7 +31,6 @@ import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
 import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
-import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -109,8 +108,8 @@ export const COPY_ISSUE_ECHANGE = {
         `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
       audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
       integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
-      versement: (mois: number) =>
-        `Elle vous est versée dès que le client a réglé l'intégralité de sa facture. Chaque entreprise que vous nous présentez vous est attribuée pendant ${mois} mois.`,
+      versement: () =>
+        "Elle vous est versée dès que le client a réglé l'intégralité de sa facture.",
       statutTitre: "Votre statut",
       statut:
         "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIRET (une micro-entreprise, par exemple).",
@@ -120,7 +119,7 @@ export const COPY_ISSUE_ECHANGE = {
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
       // 2026-10-05 (Will) : plus de date promise pour l'espace en ligne.
       espace:
-        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par simple e-mail.",
+        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par e-mail ou depuis votre lien personnel.",
       // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
       dossier:
         "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
@@ -175,8 +174,7 @@ export const COPY_ISSUE_ECHANGE = {
         `Training: €${eur} excl. VAT per training day at the public rate (reduced pro rata if a discount is granted to the client).`,
       audit: (pct: string) => `Audit: ${pct} of the invoice amount excl. VAT.`,
       integration: (pct: string) => `Integration: ${pct} of the invoice amount excl. VAT.`,
-      versement: (mois: number) =>
-        `It is paid as soon as the client has settled their invoice in full. Each company you introduce to us is attributed to you for ${mois} months.`,
+      versement: () => "It is paid as soon as the client has settled their invoice in full.",
       statutTitre: "Your status",
       statut:
         "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIRET number (a micro-enterprise, for example).",
@@ -297,9 +295,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
       <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT, l))}</Text>
       <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION, l))}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.versement(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
-      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.versement()}</Text>
 
       <Text style={intertitre}>{t.statutTitre}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.statut}</Text>

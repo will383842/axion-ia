@@ -127,6 +127,42 @@ const s = StyleSheet.create({
   petit: { fontSize: 8.2, color: C.doux },
 });
 
+const WIN_ANSI_EXTRA = new Set(
+  [..."€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"].map((c) => c.codePointAt(0) as number),
+);
+const ESPACES_FINES = /[ -​  　]/g;
+
+function enWinAnsi(c: string): boolean {
+  const n = c.codePointAt(0) as number;
+  return (
+    n === 0x0a || (n >= 0x20 && n <= 0x7e) || (n >= 0xa0 && n <= 0xff) || WIN_ANSI_EXTRA.has(n)
+  );
+}
+
+/**
+ * Mise en forme POUR LE PDF seulement (le texte signé et son empreinte ne bougent pas) :
+ * les polices standard ne connaissent que WinAnsi ; un caractère hors alphabet (ł, ő…)
+ * laisserait un trou. On le remplace par son équivalent ASCII le plus proche (normalisation
+ * NFD sans diacritiques), sinon par « ? ».
+ */
+export function pourPdf(texte: string): string {
+  const sansFines = texte.replace(ESPACES_FINES, " ").replace(/‑/g, "-");
+  let out = "";
+  for (const c of sansFines) {
+    if (enWinAnsi(c)) {
+      out += c;
+      continue;
+    }
+    const base = c.normalize("NFD").replace(/[̀-ͯ]/g, "");
+    const aMap = (
+      { ł: "l", Ł: "L", đ: "d", Đ: "D", ø: "o", Ø: "O", ı: "i" } as Record<string, string>
+    )[c];
+    const rendu = aMap ?? base;
+    out += [...rendu].every((x) => enWinAnsi(x)) && rendu.length > 0 ? rendu : "?";
+  }
+  return out;
+}
+
 /** `**gras**` et `*italique*` en ligne. */
 function enLigne(texte: string): React.ReactNode[] {
   const out: React.ReactNode[] = [];
@@ -274,12 +310,18 @@ export async function rendreContratPdf(entree: {
   apporteur: SignatureApporteur | null;
   societe: SignatureSociete | null;
 }): Promise<Buffer> {
+  // L'empreinte porte sur le texte SIGNÉ ; seule la mise en page passe par `pourPdf`.
   const sha = empreinte(entree.texte);
+  const texte = pourPdf(entree.texte);
+  const apporteur = entree.apporteur
+    ? { ...entree.apporteur, nomTape: pourPdf(entree.apporteur.nomTape) }
+    : null;
+  const societe = entree.societe ? { ...entree.societe, nom: pourPdf(entree.societe.nom) } : null;
   const doc = (
     <Document title="Contrat d'apporteur d'affaires" author="AXION IA SAS" language="fr">
       <Page size="A4" style={s.page} wrap>
-        {blocs(entree.texte)}
-        <Certificat sha={sha} apporteur={entree.apporteur} societe={entree.societe} />
+        {blocs(texte)}
+        <Certificat sha={sha} apporteur={apporteur} societe={societe} />
         <View style={s.pied} fixed>
           <Text>Contrat d&apos;apporteur d&apos;affaires · AXION IA SAS</Text>
           <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />

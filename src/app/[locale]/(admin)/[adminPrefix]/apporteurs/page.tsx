@@ -8,6 +8,8 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { NouvelApporteurForm } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import {
   LIBELLE_STATUT_APPORTEUR,
+  PAR_PAGE,
+  compterApporteurs,
   listerApporteurs,
 } from "@/features/apporteurs-reseau/requetes-console";
 import { euros } from "@/features/apporteurs-reseau/regles";
@@ -41,13 +43,16 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/apporteurs`;
-  const tous = await listerApporteurs();
-  const ongletParDefaut = tous.some((a) => a.statut === "a_verifier") ? "a_verifier" : "signes";
+  const { parStatut, commissionsDuesCents } = await compterApporteurs();
+  const compte = (statuts: readonly string[]) =>
+    statuts.reduce((s, st) => s + (parStatut[st as keyof typeof parStatut] ?? 0), 0);
+  const ongletParDefaut = compte(["a_verifier"]) > 0 ? "a_verifier" : "signes";
   const onglet =
     ONGLETS.find((o) => o.cle === sp.onglet) ?? ONGLETS.find((o) => o.cle === ongletParDefaut)!;
-  const lignes = tous.filter((a) => (onglet.statuts as readonly string[]).includes(a.statut));
-  const compte = (statuts: readonly string[]) =>
-    tous.filter((a) => statuts.includes(a.statut)).length;
+  const total = compte(onglet.statuts);
+  const pages = Math.max(1, Math.ceil(total / PAR_PAGE));
+  const page = Math.min(pages, Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1));
+  const lignes = await listerApporteurs({ statuts: onglet.statuts, page });
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
@@ -70,7 +75,7 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
         <AdminStatCard label="Signés" value={compte(["signe"])} href={`${base}?onglet=signes`} />
         <AdminStatCard
           label="Commissions à verser"
-          value={euros(tous.reduce((s, a) => s + a.commissionsDuesCents, 0))}
+          value={euros(commissionsDuesCents)}
           href={`${base}/commissions`}
         />
       </div>
@@ -135,6 +140,29 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
           </table>
         </div>
       )}
+      {pages > 1 ? (
+        <nav aria-label="Pages" className="flex items-center gap-[var(--space-admin-3)]">
+          {page > 1 ? (
+            <Link
+              href={`${base}?onglet=${onglet.cle}&page=${page - 1}`}
+              className="admin-button-secondary"
+            >
+              Précédent
+            </Link>
+          ) : null}
+          <span className="text-[color:var(--color-admin-fg-muted)]">
+            Page {page} sur {pages}
+          </span>
+          {page < pages ? (
+            <Link
+              href={`${base}?onglet=${onglet.cle}&page=${page + 1}`}
+              className="admin-button-secondary"
+            >
+              Suivant
+            </Link>
+          ) : null}
+        </nav>
+      ) : null}
     </div>
   );
 }

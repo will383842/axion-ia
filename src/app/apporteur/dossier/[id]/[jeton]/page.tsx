@@ -19,7 +19,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
-import { lireDossierParLien } from "@/features/apporteurs-reseau/donnees";
+import { lireDossierParLien, vigilanceDemandeeA } from "@/features/apporteurs-reseau/donnees";
 import { AIDE_PIECE, LIBELLE_PIECE, PIECES_VIGILANCE } from "@/features/apporteurs-reseau/regles";
 import {
   etatDeLaPage,
@@ -72,34 +72,47 @@ export default async function DossierApporteurPage({ params }: PageProps) {
 
   if (etat === "signe") {
     const declarations = await lireDeclarationsDe(dossier.id);
+    // Les attestations ne sont « demandées » qu'à l'approche du seuil : avant, pas de dépôt proposé.
+    const vigilance = await vigilanceDemandeeA(dossier.id);
     return (
       <Coquille titre={titre}>
         <EcranEtat
           pastilleTexte={TEXTES.signePastille}
           titre={TEXTES.signeTitre}
-          ligne={TEXTES.signeLigne}
+          ligne={vigilance ? TEXTES.signeLigneVigilance : TEXTES.signeLigne}
           succes
-        />
+        >
+          {dossier.aContratSigne ? (
+            <a
+              href={`/apporteur/dossier/${dossier.id}/${jeton}/contrat?dl=1`}
+              className="text-terracotta-deep mt-4 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+            >
+              ↓ {TEXTES.telechargerSigne}
+            </a>
+          ) : null}
+        </EcranEtat>
         <DeclarationEntreprise id={dossier.id} jeton={jeton} />
         <ListeDeclarations declarations={declarations} />
-        <ul className="mt-5 grid gap-3">
-          {PIECES_VIGILANCE.map((t) => {
-            const p = dossier.pieces.find((x) => x.type === t) ?? null;
-            return (
-              <DepotPiece
-                key={t}
-                id={dossier.id}
-                jeton={jeton}
-                type={t}
-                libelle={LIBELLE_PIECE[t]}
-                aide={AIDE_PIECE[t]}
-                piece={p ? { statut: p.statut, motif: p.motif, nomFichier: p.nomFichier } : null}
-                motifLibelle={p?.statut === "a_retransmettre" ? libelleMotif(p.motif) : null}
-                avecDate={t === "vigilance"}
-              />
-            );
-          })}
-        </ul>
+        {vigilance ? (
+          <ul className="mt-5 grid gap-3">
+            {PIECES_VIGILANCE.map((t) => {
+              const p = dossier.pieces.find((x) => x.type === t) ?? null;
+              return (
+                <DepotPiece
+                  key={t}
+                  id={dossier.id}
+                  jeton={jeton}
+                  type={t}
+                  libelle={LIBELLE_PIECE[t]}
+                  aide={AIDE_PIECE[t]}
+                  piece={p ? { statut: p.statut, motif: p.motif, nomFichier: p.nomFichier } : null}
+                  motifLibelle={p?.statut === "a_retransmettre" ? libelleMotif(p.motif) : null}
+                  avecDate={t === "vigilance"}
+                />
+              );
+            })}
+          </ul>
+        ) : null}
       </Coquille>
     );
   }
@@ -137,13 +150,14 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     !!dossier.regimeTva &&
     (dossier.regimeTva !== "assujetti" || !!dossier.numeroTva) &&
     dossier.ibanSaisi;
-  const etapeInitiale = !dossier.siren
-    ? 1
-    : !activiteFaite
-      ? 2
-      : manquesDuDossier(dossier).length > 0
-        ? 3
-        : 4;
+  const etapeInitiale =
+    !dossier.siren || dossier.nom.trim() === ""
+      ? 1
+      : !activiteFaite
+        ? 2
+        : manquesDuDossier(dossier).length > 0
+          ? 3
+          : 4;
 
   const texte = texteDuContrat(valeursDuContrat(dossier, new Date()));
 

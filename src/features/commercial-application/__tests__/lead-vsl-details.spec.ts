@@ -30,7 +30,13 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { avancerVslEtape2, etapeVsl, lireVsl, majVslCible } from "../lead-vsl-details";
+import {
+  avancerVslEtape2,
+  etapeVsl,
+  lireVsl,
+  majMessageVsl,
+  majVslCible,
+} from "../lead-vsl-details";
 
 beforeEach(() => {
   executes.length = 0;
@@ -82,7 +88,9 @@ describe("avancerVslEtape2", () => {
     expect(executes[0]?.texte).toContain("FOR UPDATE");
     const ecriture = executes[1];
     expect(ecriture?.texte).toContain("contact_phone = COALESCE(contact_phone");
-    const patch = JSON.parse(String(ecriture?.valeurs[0])) as Record<string, unknown>;
+    const patch = JSON.parse(
+      String(ecriture?.valeurs.find((v) => String(v).includes("etapeAtteinte"))),
+    ) as Record<string, unknown>;
     expect(patch["etapeAtteinte"]).toBe(2);
     // L'heure de l'étape 1 est conservée, celle de l'étape 2 s'ajoute.
     expect(patch["atteinte"]).toEqual({
@@ -113,7 +121,46 @@ describe("avancerVslEtape2", () => {
 
   it("marque le bloc « suspect » quand c'est le cas", async () => {
     await avancerVslEtape2({ ...base, suspect: true });
-    const patch = JSON.parse(String(executes[1]?.valeurs[0])) as Record<string, unknown>;
+    const patch = JSON.parse(
+      String(executes[1]?.valeurs.find((v) => String(v).includes("etapeAtteinte"))),
+    ) as Record<string, unknown>;
     expect(patch["suspect"]).toBe(true);
+  });
+});
+
+describe("message de la fiche (console)", () => {
+  it("l'étape 2 réécrit details.message dans la MÊME instruction, quand un message est fourni", async () => {
+    ligneVerrouillee = [{ vsl: { etapeAtteinte: 1 } }];
+    await avancerVslEtape2({
+      id: "11111111-1111-4111-8111-111111111111",
+      telephoneChiffre: "enc:06",
+      reponseId: "5-20",
+      suspect: false,
+      maintenant: new Date("2026-10-05T10:05:00Z"),
+      message: "Inscription terminée",
+    });
+    expect(executes[1]?.texte).toContain("'{message}'");
+    expect(executes[1]?.valeurs).toContain(JSON.stringify("Inscription terminée"));
+  });
+
+  it("sans message fourni, details.message n'est pas touché (valeur JSON null écartée par le CASE)", async () => {
+    ligneVerrouillee = [{ vsl: { etapeAtteinte: 1 } }];
+    await avancerVslEtape2({
+      id: "11111111-1111-4111-8111-111111111111",
+      telephoneChiffre: null,
+      reponseId: "5-20",
+      suspect: false,
+      maintenant: new Date(),
+    });
+    expect(executes[1]?.valeurs).toContain("null");
+    expect(executes[1]?.texte).toContain("WHEN");
+  });
+
+  it("majMessageVsl ne vise QUE les lignes qui portent un bloc vsl", async () => {
+    await majMessageVsl("11111111-1111-4111-8111-111111111111", "Échange réservé");
+    const sql = executes[0]?.texte ?? "";
+    expect(sql).toContain("details ? 'vsl'");
+    expect(sql).toContain("'{message}'");
+    expect(executes[0]?.valeurs).toContain(JSON.stringify("Échange réservé"));
   });
 });

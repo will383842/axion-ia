@@ -47,6 +47,7 @@ import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
+import { majMessageVsl } from "@/features/commercial-application/lead-vsl-details";
 import { VSL_MERCI_PATH } from "@/lib/commercial-application/vsl-apporteur";
 import { envoyerScheduleApporteur } from "@/server/meta/schedule-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
@@ -435,7 +436,19 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
     });
-    if (issueRattachement.rattache) ficheRattachee = issueRattachement.submissionId;
+    if (issueRattachement.rattache) {
+      ficheRattachee = issueRattachement.submissionId;
+      // Fiche née de la page vidéo : le message de la console dit la suite.
+      // Sans bloc `vsl`, la requête ne touche rien (autres parcours inchangés).
+      try {
+        await majMessageVsl(
+          issueRattachement.submissionId,
+          "Échange réservé (inscription depuis la page vidéo /apporteur-affaires/video) — téléphone et réponse donnés.",
+        );
+      } catch (e) {
+        Sentry.captureException(e, { tags: { service: "calendly-message-vsl" } });
+      }
+    }
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
   }

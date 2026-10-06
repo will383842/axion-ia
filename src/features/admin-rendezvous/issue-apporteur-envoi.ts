@@ -31,7 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { lienReservation } from "@/features/commercial-application/relances-invitation-apporteur";
 import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
-import { urlDossier } from "@/features/apporteurs-reseau/jeton";
+import { urlDossier, urlDossierExemple } from "@/features/apporteurs-reseau/jeton";
 import {
   gabaritDeLIssue,
   jourMoisParis,
@@ -274,7 +274,7 @@ export async function preparerIssueApporteur(input: {
         creer: input.ouvrirDossier === true,
       });
       if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
-      else if (input.ouvrirDossier !== true) dossierUrl = urlDossier("apercu", 1);
+      else if (input.ouvrirDossier !== true) dossierUrl = urlDossierExemple();
     } catch (err) {
       Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "dossier-lien" } });
     }

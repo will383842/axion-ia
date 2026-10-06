@@ -11,8 +11,9 @@ import { z } from "zod";
 
 import { sirenValide } from "./regles";
 
-/** Au plus 20 déclarations par apporteur et par 24 heures. */
-export const DECLARATIONS_MAX_PAR_JOUR = 20;
+// Aucun plafond par apporteur : le contrat (art. 3.7) n'en connaît aucun, et nulle suspension ne
+// peut reposer sur le nombre de déclarations. Seule la limite par adresse IP hachée (anti-robot,
+// côté route) subsiste.
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEPHONE = /^[0-9+().\s-]{6,30}$/;

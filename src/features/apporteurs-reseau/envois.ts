@@ -9,12 +9,12 @@
  * à Williams avant chaque envoi décidé par lui.
  */
 
-import * as Sentry from "@sentry/nextjs";
-
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { texteParDefaut } from "@/lib/email/templates/apporteur-demarrage";
-import { enqueueEmail } from "@/server/queue/queues";
+import { emailsQueue, enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
+
+import { signalerErreurReseau } from "./signaler";
 
 export type GabaritApporteur =
   | "apporteur-dossier-lien"
@@ -96,19 +96,38 @@ export async function apercu(
 
 export type ResultatEnvoi = "envoye" | "en-validation" | "retenu" | "indisponible";
 
+/**
+ * Un job ÉCHOUÉ reste 30 jours dans Redis (`removeOnFail`) : son identifiant fixe ferait
+ * ignorer en silence la nouvelle tentative, alors que `enqueueEmail` répond « enfilé ».
+ * On le retire AVANT de ré-enfiler. Un job terminé, actif ou en attente n'est JAMAIS
+ * touché (l'idempotence est conservée). Fail-soft : ne lève jamais.
+ */
+export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
+  try {
+    const file = emailsQueue;
+    if (!file) return;
+    const job = await file.getJob(jobId);
+    if (job && (await job.isFailed())) await job.remove();
+  } catch {
+    // Au pire, on retombe sur le comportement d'avant.
+  }
+}
+
 export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
   try {
+    const jobId = e.jobId ? e.jobId.replace(/:/g, "-") : undefined;
+    if (jobId) await retirerEnvoiEchoue(jobId);
     const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", e.payload, {
       entityType: e.entityType,
       entityId: e.entityId,
-      ...(e.jobId ? { jobId: e.jobId.replace(/:/g, "-") } : {}),
+      ...(jobId ? { jobId } : {}),
       ...(e.attachments ? { attachments: e.attachments } : {}),
     });
     if (r.garePourValidation) return "en-validation";
     if (r.enqueued) return "envoye";
     return r.retenu ? "retenu" : "indisponible";
   } catch (err) {
-    Sentry.captureException(err, { tags: { action: "apporteurs-reseau", gabarit: e.gabarit } });
+    signalerErreurReseau(`envoi ${e.gabarit}`, err);
     return "indisponible";
   }
 }

@@ -30,6 +30,21 @@ interface StickyMobileCtaProps {
    * pages qui utilisent ce bouton n'émettent rien, comme avant.
    */
   suivi?: { landing: string };
+  /**
+   * `terracotta` : pages du tunnel apporteurs. La charte d'Axion-IA est
+   * terracotta (le bleu est réservé aux liens) ; le bouton par défaut reste
+   * celui des autres pages du site.
+   */
+  couleur?: "terracotta";
+  /**
+   * Identifiant d'un élément (le formulaire) : tant qu'il est visible dans la
+   * fenêtre, le bouton se masque — il n'a plus d'utilité et recouvrirait le bas
+   * du formulaire (la mention de confidentialité sous « Continuer »). Il se
+   * réaffiche quand l'élément sort de l'écran. `IntersectionObserver` : aucun
+   * calcul au scroll, aucun saut de mise en page (le bouton est `fixed`, il
+   * glisse déjà hors écran, sans animation si `prefers-reduced-motion`).
+   */
+  masquerQuandVisible?: string;
 }
 
 export function StickyMobileCta({
@@ -38,7 +53,13 @@ export function StickyMobileCta({
   track,
   threshold = 600,
   suivi,
+  couleur,
+  masquerQuandVisible,
 }: StickyMobileCtaProps) {
+  const teinte =
+    couleur === "terracotta"
+      ? "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-on-mocha"
+      : "bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary";
   const [visible, setVisible] = useState(false);
   const landingSuivi = suivi?.landing;
   const auClic = landingSuivi
@@ -53,11 +74,12 @@ export function StickyMobileCta({
     // que si la valeur change réellement.
     let scheduled = false;
     let lastVisible = false;
+    let cibleVisible = false;
     const compute = () => {
       const past = window.scrollY > threshold;
       const nearBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
-      const next = past && !nearBottom;
+      const next = past && !nearBottom && !cibleVisible;
       if (next !== lastVisible) {
         lastVisible = next;
         setVisible(next);
@@ -69,14 +91,28 @@ export function StickyMobileCta({
       scheduled = true;
       requestAnimationFrame(compute);
     };
+    // Le formulaire est rendu par un composant client : il peut apparaître après
+    // ce bouton. On le cherche à l'hydratation, puis on observe.
+    let observateur: IntersectionObserver | null = null;
+    const cible = masquerQuandVisible ? document.getElementById(masquerQuandVisible) : null;
+    if (cible && typeof IntersectionObserver !== "undefined") {
+      observateur = new IntersectionObserver((entrees) => {
+        const derniere = entrees[entrees.length - 1];
+        if (!derniere) return;
+        cibleVisible = derniere.isIntersecting;
+        compute();
+      });
+      observateur.observe(cible);
+    }
     compute();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      observateur?.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [threshold]);
+  }, [threshold, masquerQuandVisible]);
 
   return (
     <>
@@ -100,7 +136,7 @@ export function StickyMobileCta({
             onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
-            className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${teinte} flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
           >
             {label}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -124,7 +160,7 @@ export function StickyMobileCta({
           onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
-          className={`bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
+          className={`${teinte} inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
             visible ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >

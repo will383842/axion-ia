@@ -5,6 +5,8 @@
  * (`recueAt` fait foi, contrat v2 art. 3.5), puis choisit une réponse :
  *   · « Bien reçu »   → `reservee`, accusé à l'apporteur ET prise de contact de l'entreprise ;
  *   · « Déjà connue » → `deja_connue`, refus motivé « deja-connue » ;
+ *   · « Pas disponible » → `deja_connue`, refus motivé « pas-disponible » (entreprise déjà
+ *     attribuée à un autre apporteur : aucune seconde prise de contact) ;
  *   · « Hors champ »  → `hors_champ`, refus motivé « hors-champ ».
  *
  * 🔑 Une présentation « à traiter » est une `reservee` sans `contactEnvoyeAt` : le schéma
@@ -33,6 +35,7 @@ import {
   type GabaritApporteur,
   type ResultatEnvoi,
 } from "./envois";
+import { idsPriseDeContactRebondie } from "./rebonds";
 import { ajouterMois, finDeProtection, sirenValide } from "./regles";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -291,6 +294,8 @@ export interface PresentationVue {
   motifProlongation: string | null;
   note: string | null;
   aTraiter: boolean;
+  /** La prise de contact est revenue en erreur définitive : adresse à corriger, le délai ne court pas. */
+  adresseACorriger: boolean;
 }
 
 export function estATraiter(p: {
@@ -323,6 +328,9 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     take: 300,
     include: { apporteur: { select: { prenom: true, nom: true } } },
   });
+  const rebonds = await idsPriseDeContactRebondie(
+    lignes.filter((p) => p.statut === "reservee" && p.contactEnvoyeAt).map((p) => p.id),
+  );
   return lignes.map((p) => ({
     id: p.id,
     apporteurId: p.apporteurId,
@@ -345,6 +353,7 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     motifProlongation: p.motifProlongation,
     note: p.note,
     aTraiter: estATraiter(p),
+    adresseACorriger: rebonds.has(p.id),
   }));
 }
 
@@ -370,8 +379,110 @@ export async function lireApporteursSignes(): Promise<Array<{ id: string; nom: s
 
 // ── Les trois réponses ───────────────────────────────────────────────────
 
-export type ReponsePresentation = "bien_recu" | "deja_connue" | "hors_champ";
-export const REPONSES: readonly ReponsePresentation[] = ["bien_recu", "deja_connue", "hors_champ"];
+export type ReponsePresentation = "bien_recu" | "deja_connue" | "pas_disponible" | "hors_champ";
+export const REPONSES: readonly ReponsePresentation[] = [
+  "bien_recu",
+  "deja_connue",
+  "pas_disponible",
+  "hors_champ",
+];
+
+export const MESSAGE_DEJA_ATTRIBUEE =
+  "Cette entreprise est déjà attribuée à un autre apporteur : aucune seconde prise de contact ne part. Répondez « Pas disponible » à cet apporteur.";
+
+/**
+ * Cette entreprise est-elle déjà attribuée à UN AUTRE apporteur ? Oui si, pour le même SIREN,
+ * une autre présentation a déjà reçu « Bien reçu » (prise de contact partie) et court encore
+ * (réservée ou confirmée). Une seconde prise de contact nommerait un autre apporteur.
+ */
+export function dejaAttribueeAUnAutre(
+  autres: ReadonlyArray<{
+    apporteurId: string;
+    statut: StatutPresentation;
+    contactEnvoyeAt: Date | null;
+  }>,
+  apporteurId: string,
+): boolean {
+  return autres.some(
+    (a) =>
+      a.apporteurId !== apporteurId &&
+      a.contactEnvoyeAt !== null &&
+      (a.statut === "reservee" || a.statut === "confirmee"),
+  );
+}
+
+export const MESSAGE_DECLARATION_PLUS_ANCIENNE =
+  "Une déclaration plus ancienne existe encore pour ce SIREN, déposée par un autre apporteur : elle passe en premier (contrat art. 3.5). Traitez d'abord la plus ancienne ; cette entreprise ne peut pas être contactée sur celle-ci tant que l'autre court.";
+
+/**
+ * Une déclaration PLUS ANCIENNE (`recueAt`) du même SIREN, d'un autre apporteur, occupe-t-elle
+ * encore le SIREN ? Si oui, « Bien reçu » sur la plus récente est refusé (art. 3.5 : la
+ * déclaration la plus ancienne est prioritaire). Pur.
+ */
+export function existeDeclarationPlusAncienne(
+  autres: ReadonlyArray<{
+    apporteurId: string;
+    statut: StatutPresentation;
+    protegeeJusquAt?: Date | null;
+    recueAt?: Date | null;
+  }>,
+  moi: { apporteurId: string; recueAt: Date },
+  maintenant: Date,
+): boolean {
+  return autres.some(
+    (a) =>
+      a.apporteurId !== moi.apporteurId &&
+      !!a.recueAt &&
+      a.recueAt.getTime() < moi.recueAt.getTime() &&
+      presentationOccupe(
+        { statut: a.statut, protegeeJusquAt: a.protegeeJusquAt ?? null },
+        maintenant,
+      ),
+  );
+}
+
+/**
+ * Le refus éventuel de « Bien reçu » (message), ou `null`. Lu dans `db` : appelé DANS la
+ * transaction qui prend la ligne, pour que deux clics simultanés (sur deux apporteurs du même
+ * SIREN) ne passent pas tous les deux.
+ */
+async function refusBienRecu(
+  db: Pick<typeof prisma, "presentationEntreprise">,
+  presentationId: string,
+  maintenant: Date,
+): Promise<string | null> {
+  const p = await db.presentationEntreprise.findUnique({
+    where: { id: presentationId },
+    select: { siren: true, apporteurId: true, recueAt: true },
+  });
+  if (!p) return null;
+  const autres = await db.presentationEntreprise.findMany({
+    where: {
+      siren: p.siren,
+      id: { not: presentationId },
+      apporteurId: { not: p.apporteurId },
+      statut: { in: ["reservee", "confirmee"] },
+    },
+    select: {
+      apporteurId: true,
+      statut: true,
+      contactEnvoyeAt: true,
+      recueAt: true,
+      protegeeJusquAt: true,
+    },
+    take: 20,
+  });
+  if (dejaAttribueeAUnAutre(autres, p.apporteurId)) return MESSAGE_DEJA_ATTRIBUEE;
+  if (
+    existeDeclarationPlusAncienne(
+      autres,
+      { apporteurId: p.apporteurId, recueAt: p.recueAt },
+      maintenant,
+    )
+  )
+    return MESSAGE_DECLARATION_PLUS_ANCIENNE;
+  return null;
+}
 
 export type Civilite = "" | "Monsieur" | "Madame";
 
@@ -393,6 +504,12 @@ interface DonneesEnvoi {
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
 }
+
+const MOTIF_PAR_REPONSE = {
+  deja_connue: "deja-connue",
+  pas_disponible: "pas-disponible",
+  hors_champ: "hors-champ",
+} as const;
 
 /** Les e-mails d'une réponse, dans l'ordre d'envoi. Pur. */
 export function construireEnvoisReponse(
@@ -453,7 +570,7 @@ export function construireEnvoisReponse(
           contactName: nomApporteur,
           entreprise: d.presentation.denomination,
           datePresentation,
-          motif: reponse === "deja_connue" ? "deja-connue" : "hors-champ",
+          motif: MOTIF_PAR_REPONSE[reponse],
         },
         o.textes?.["apporteur-presentation-refusee"],
       ),
@@ -498,6 +615,10 @@ export async function apercuReponse(
   const d = await chargerDonneesEnvoi(id);
   if (!d) return { ok: false, message: "Présentation introuvable." };
   if (!estATraiter(d)) return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
+  if (reponse === "bien_recu") {
+    const refus = await refusBienRecu(prisma, id, new Date());
+    if (refus) return { ok: false, message: refus };
+  }
   const emails = await Promise.all(construireEnvoisReponse(d, reponse, o).map((e) => apercu(e)));
   return { ok: true, emails };
 }
@@ -518,13 +639,44 @@ export async function appliquerReponse(
   const envois = construireEnvoisReponse(d, reponse, o);
   // 🔑 La ligne est « prise » AVANT tout envoi, par une écriture conditionnelle :
   // deux clics (ou deux onglets) ne répondent jamais deux fois.
-  const prise = await prisma.presentationEntreprise.updateMany({
-    where: { id, statut: "reservee", contactEnvoyeAt: null },
-    data:
-      reponse === "bien_recu"
-        ? { contactEnvoyeAt: maintenant }
-        : { statut: reponse === "deja_connue" ? "deja_connue" : "hors_champ" },
-  });
+  const prendre = (db: Pick<typeof prisma, "presentationEntreprise">) =>
+    db.presentationEntreprise.updateMany({
+      where: { id, statut: "reservee", contactEnvoyeAt: null },
+      data:
+        reponse === "bien_recu"
+          ? { contactEnvoyeAt: maintenant }
+          : {
+              // « Pas disponible » : la présentation est refusée (déjà attribuée ou connue).
+              statut: reponse === "hors_champ" ? "hors_champ" : "deja_connue",
+            },
+    });
+  let prise: { count: number };
+  if (reponse === "bien_recu") {
+    // Vérification (déjà attribuée / déclaration plus ancienne) ET prise de la ligne dans une
+    // même transaction sérialisable : deux « Bien reçu » simultanés sur un même SIREN ne passent
+    // pas tous les deux (l'un échoue et rend la main).
+    try {
+      const r = await prisma.$transaction(
+        async (tx) => {
+          const refus = await refusBienRecu(tx, id, maintenant);
+          if (refus) return { refus } as const;
+          return { prise: await prendre(tx) } as const;
+        },
+        { isolationLevel: "Serializable", timeout: 15_000 },
+      );
+      if ("refus" in r) return { ok: false, message: r.refus };
+      prise = r.prise;
+    } catch (err) {
+      if ((err as { code?: unknown } | null)?.code === "P2034")
+        return {
+          ok: false,
+          message: "Une autre réponse est en cours sur ce SIREN : réessayez dans un instant.",
+        };
+      throw err;
+    }
+  } else {
+    prise = await prendre(prisma);
+  }
   if (prise.count !== 1)
     return { ok: false, message: "Cette présentation a déjà reçu une réponse." };
 

@@ -44,6 +44,14 @@ export function jetonDossier(apporteurId: string, versionLien: number): string |
   return k === null ? null : signer(k, id, versionLien);
 }
 
+/**
+ * Le lien est-il BIEN FORMÉ (UUID + jeton de 43 caractères base64url) ? À tester AVANT
+ * toute requête : un identifiant tronqué fait lever Prisma sur une colonne `@db.Uuid`.
+ */
+export function lienDossierBienForme(apporteurId: string, jeton: string): boolean {
+  return UUID.test(apporteurId.toLowerCase()) && JETON.test(jeton);
+}
+
 /** Le jeton est-il celui de ce dossier, à sa version courante ? Temps constant. */
 export function jetonDossierValide(
   apporteurId: string,
@@ -64,4 +72,12 @@ export function urlDossier(apporteurId: string, versionLien: number): string | n
   const jeton = jetonDossier(apporteurId, versionLien);
   if (jeton === null) return null;
   return `${SITE_URL.replace(/\/+$/, "")}/apporteur/dossier/${apporteurId.toLowerCase()}/${jeton}`;
+}
+
+/**
+ * Lien D'EXEMPLE pour l'aperçu de la console (dossier pas encore ouvert) : même forme que
+ * le vrai, mais ni l'identifiant ni le jeton ne sont valides (jamais de jeton fabriqué).
+ */
+export function urlDossierExemple(): string {
+  return `${SITE_URL.replace(/\/+$/, "")}/apporteur/dossier/00000000-0000-4000-8000-000000000000/${"x".repeat(43)}`;
 }

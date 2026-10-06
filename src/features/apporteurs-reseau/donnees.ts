@@ -15,7 +15,7 @@ import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { analyserOctets } from "@/server/careers/clamav";
+import { analyserOctets, type VerdictAntivirus } from "@/server/careers/clamav";
 import { formatDepuisNom, signatureConforme } from "@/features/dossier-client/documents/formats";
 import type {
   ApporteurReseauStatut,
@@ -24,8 +24,27 @@ import type {
   TypePieceApporteur,
 } from "../../../prisma/generated/client";
 
-import { jetonDossierValide } from "./jeton";
-import { estStatutJuridique, ibanValide, type TypePiece } from "./regles";
+import { alerterPieceVigilance } from "./alerte-vigilance";
+import { jetonDossierValide, lienDossierBienForme } from "./jeton";
+import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
+import { signalerErreurReseau } from "./signaler";
+import { CLE_REGISTRE_INDISPONIBLE, vigilanceDemandee } from "./signature-regles";
+
+const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
+let derniereAlerteAntivirus = 0;
+
+/** Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée personnelle. */
+export function alerterAntivirusIndisponible(maintenant: number = Date.now()): boolean {
+  if (maintenant - derniereAlerteAntivirus < FENETRE_ALERTE_ANTIVIRUS_MS) return false;
+  derniereAlerteAntivirus = maintenant;
+  signalerErreurReseau("antivirus indisponible", new Error("pièce refusée : antivirus muet"));
+  return true;
+}
+
+/** Réservé aux tests : remet la garde à zéro. */
+export function reinitialiserAlerteAntivirus(): void {
+  derniereAlerteAntivirus = 0;
+}
 
 /** Taille maximale d'une pièce déposée (10 Mo : une photo de téléphone y tient). */
 export const TAILLE_MAX_PIECE = 10 * 1024 * 1024;
@@ -67,8 +86,40 @@ export async function ouvrirDossierDepuisCandidature(
     return { ok: false, message: "Cette candidature n'a pas d'adresse e-mail utilisable." };
   const existant = await prisma.apporteurReseau.findUnique({
     where: { emailHash },
-    select: { id: true, versionLien: true, prenom: true },
+    select: { id: true, versionLien: true, prenom: true, statut: true },
   });
+  if (existant && existant.statut === "refuse" && options.creer !== false) {
+    // Dossier refusé puis « Retenu » plus tard : on le rouvre PROPREMENT. Le lien envoyé au
+    // refus est mort (`versionLien` incrémentée) ; on en ouvre un nouveau, et les pièces
+    // purgées au refus doivent être redéposées.
+    const maintenant = new Date();
+    const rouvert = await prisma.$transaction(
+      async (tx) => {
+        await tx.pieceApporteur.updateMany({
+          where: { apporteurId: existant.id, type: { in: ["identite", "rib"] }, remplaceeAt: null },
+          data: { remplaceeAt: maintenant },
+        });
+        return tx.apporteurReseau.update({
+          where: { id: existant.id },
+          data: {
+            statut: "dossier_en_cours",
+            refuseAt: null,
+            dernierMessage: null,
+            versionLien: { increment: 1 },
+          },
+          select: { versionLien: true },
+        });
+      },
+      { timeout: 15_000 },
+    );
+    return {
+      ok: true,
+      apporteurId: existant.id,
+      versionLien: rouvert.versionLien,
+      email,
+      prenom: decryptPii(existant.prenom) ?? "",
+    };
+  }
   if (existant) {
     return {
       ok: true,
@@ -127,6 +178,8 @@ export interface DossierVue {
   dernierMessage: string | null;
   signeParApporteurAt: Date | null;
   signeParSocieteAt: Date | null;
+  /** Le contrat signé des deux parties existe (téléchargeable par l'apporteur). */
+  aContratSigne: boolean;
   pieces: PieceVue[];
 }
 
@@ -177,6 +230,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     dernierMessage: a.dernierMessage,
     signeParApporteurAt: a.signeParApporteurAt,
     signeParSocieteAt: a.signeParSocieteAt,
+    aContratSigne: !!a.contratSigneCle,
     pieces: a.pieces.map((p) => ({ ...p, type: p.type as TypePiece })),
   };
 }
@@ -187,6 +241,9 @@ export async function lireDossierParLien(
   jeton: string,
 ): Promise<DossierVue | null> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return null;
+  // Lien tronqué ou mal formé : page neutre, SANS requête (un id non UUID ferait lever
+  // Prisma sur la colonne `@db.Uuid`).
+  if (!lienDossierBienForme(apporteurId, jeton)) return null;
   const id = apporteurId.toLowerCase();
   const a = await prisma.apporteurReseau.findUnique({
     where: { id },
@@ -194,6 +251,25 @@ export async function lireDossierParLien(
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
   return lireDossier(id);
+}
+
+/** Faut-il demander les pièces de vigilance à cet apporteur (page « signé ») ? */
+export async function vigilanceDemandeeA(apporteurId: string): Promise<boolean> {
+  const [cumul, enAttente] = await Promise.all([
+    prisma.commissionApporteur.aggregate({
+      where: { apporteurId, statut: { in: ["due", "versee", "en_attente_vigilance"] } },
+      _sum: { montantCents: true },
+    }),
+    prisma.commissionApporteur.count({ where: { apporteurId, statut: "en_attente_vigilance" } }),
+  ]);
+  const deposees = await prisma.pieceApporteur.count({
+    where: { apporteurId, remplaceeAt: null, type: { in: ["vigilance", "immatriculation"] } },
+  });
+  return vigilanceDemandee({
+    cumulCents: cumul._sum.montantCents ?? 0,
+    enAttente: enAttente > 0,
+    piecesDeposees: deposees,
+  });
 }
 
 /** Le dossier peut-il encore être modifié par l'apporteur ? */
@@ -205,6 +281,10 @@ export function dossierModifiable(statut: ApporteurReseauStatut): boolean {
 
 export interface SaisieActivite {
   telephone?: string | null;
+  /** Nom de famille, accepté SEULEMENT si le dossier n'en a pas (nom d'un seul mot). */
+  nom?: string | null;
+  /** Le registre n'a pas répondu : l'admission n'a pas été jugée (à contrôler en console). */
+  registreIndisponible?: boolean;
   siren: string;
   denomination: string;
   adresse: string;
@@ -230,9 +310,22 @@ export async function enregistrerActivite(
   if (s.iban !== null && s.iban !== "" && !ibanValide(s.iban)) {
     return { ok: false, message: "Cet IBAN n'est pas valide : vérifiez-le." };
   }
+  let declarations: Record<string, string> | undefined;
+  if (s.registreIndisponible !== undefined) {
+    // Sans migration : le marqueur vit dans le JSON `declarations`, à côté des cases cochées.
+    const lu = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { declarations: true },
+    });
+    declarations = { ...((lu?.declarations as Record<string, string> | null) ?? {}) };
+    if (s.registreIndisponible) declarations[CLE_REGISTRE_INDISPONIBLE] = new Date().toISOString();
+    else delete declarations[CLE_REGISTRE_INDISPONIBLE];
+  }
   await prisma.apporteurReseau.update({
     where: { id: apporteurId },
     data: {
+      ...(declarations ? { declarations } : {}),
+      ...(s.nom ? { nom: encryptPii(s.nom) } : {}),
       ...(s.telephone !== undefined
         ? { telephone: s.telephone ? encryptPii(s.telephone) : null }
         : {}),
@@ -252,9 +345,10 @@ export async function enregistrerActivite(
 
 /**
  * Dépose une pièce. Contrôles : format (PDF, PNG, JPG) par l'extension ET les premiers
- * octets, taille, antivirus (un fichier infecté est refusé ; si l'antivirus ne répond
- * pas, la pièce est gardée et la console la réanalyse au téléchargement).
- * Un nouveau dépôt remplace la pièce courante du même type.
+ * octets, taille, antivirus (le verdict « sain » est OBLIGATOIRE : un fichier infecté est
+ * refusé, et si l'antivirus ne répond pas la pièce est refusée aussi — jamais de pièce
+ * gardée sans verdict). Un nouveau dépôt remplace la pièce courante du même type ; une
+ * pièce d'identité remplacée voit son contenu purgé.
  */
 export async function deposerPiece(
   apporteurId: string,
@@ -270,35 +364,97 @@ export async function deposerPiece(
   if (octets.length === 0 || octets.length > TAILLE_MAX_PIECE) {
     return { ok: false, message: "Le fichier doit faire moins de 10 Mo." };
   }
-  const verdict = await analyserOctets(octets, 60_000);
+  let verdict: VerdictAntivirus;
+  try {
+    verdict = await analyserOctets(octets, 60_000);
+  } catch {
+    verdict = { issue: "indisponible", raison: "erreur" };
+  }
   if (verdict.issue === "infecte") {
     return {
       ok: false,
       message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre.",
     };
   }
+  if (verdict.issue !== "sain") {
+    alerterAntivirusIndisponible();
+    return {
+      ok: false,
+      message: "Le contrôle du fichier n'a pas pu se faire. Réessayez dans un instant.",
+    };
+  }
   const sha256 = createHash("sha256").update(octets).digest("hex");
   const maintenant = new Date();
-  await prisma.$transaction(async (tx) => {
-    await tx.pieceApporteur.updateMany({
-      where: { apporteurId, type, remplaceeAt: null },
-      data: { remplaceeAt: maintenant },
-    });
-    const p = await tx.pieceApporteur.create({
-      data: {
-        apporteurId,
-        type,
-        nomFichier: nomFichier.slice(0, 200),
-        typeMime: MIME[format] ?? "application/octet-stream",
-        taille: octets.length,
-        sha256,
-        expireAt,
-      },
-      select: { id: true },
-    });
-    await tx.pieceApporteurContenu.create({ data: { pieceId: p.id, octets: Buffer.from(octets) } });
-  });
+  let pieceId = "";
+  await prisma.$transaction(
+    async (tx) => {
+      // La pièce d'identité ou le RIB remplacés n'ont plus de raison d'être gardés : contenu purgé.
+      if (type === "identite" || type === "rib") {
+        await purgerContenuPieces(tx, {
+          apporteurId,
+          types: [type],
+          courantesSeulement: true,
+        });
+      }
+      await tx.pieceApporteur.updateMany({
+        where: { apporteurId, type, remplaceeAt: null },
+        data: { remplaceeAt: maintenant },
+      });
+      const p = await tx.pieceApporteur.create({
+        data: {
+          apporteurId,
+          type,
+          nomFichier: nomFichier.slice(0, 200),
+          typeMime: MIME[format] ?? "application/octet-stream",
+          taille: octets.length,
+          sha256,
+          expireAt,
+        },
+        select: { id: true },
+      });
+      pieceId = p.id;
+      await tx.pieceApporteurContenu.create({
+        data: { pieceId: p.id, octets: Buffer.from(octets) },
+      });
+    },
+    { timeout: 15_000 },
+  );
+  // Attestation URSSAF ou immatriculation : Williams est alerté tout de suite (une seule fois par
+  // pièce). Une panne d'envoi ne doit jamais faire échouer le dépôt de l'apporteur.
+  if (pieceId && (PIECES_VIGILANCE as readonly string[]).includes(type)) {
+    try {
+      await alerterPieceVigilance(pieceId);
+    } catch {
+      // le passage quotidien rattrape l'alerte
+    }
+  }
   return { ok: true };
+}
+
+/**
+ * Supprime les OCTETS des pièces (la ligne reste, marquée `purgeeAt`) : pièce d'identité
+ * jugée conforme, remplacée, ou dossier refusé. Ne touche jamais aux autres types.
+ */
+export async function purgerContenuPieces(
+  tx: Pick<typeof prisma, "pieceApporteur" | "pieceApporteurContenu">,
+  f: { apporteurId: string; types: readonly TypePieceApporteur[]; courantesSeulement?: boolean },
+): Promise<number> {
+  const pieces = await tx.pieceApporteur.findMany({
+    where: {
+      apporteurId: f.apporteurId,
+      type: { in: [...f.types] },
+      ...(f.courantesSeulement ? { remplaceeAt: null } : {}),
+    },
+    select: { id: true },
+  });
+  if (pieces.length === 0) return 0;
+  const ids = pieces.map((p) => p.id);
+  await tx.pieceApporteurContenu.deleteMany({ where: { pieceId: { in: ids } } });
+  await tx.pieceApporteur.updateMany({
+    where: { id: { in: ids }, purgeeAt: null },
+    data: { purgeeAt: new Date() },
+  });
+  return ids.length;
 }
 
 export async function enregistrerDeclarations(
@@ -306,9 +462,20 @@ export async function enregistrerDeclarations(
   cles: readonly string[],
 ): Promise<void> {
   const maintenant = new Date().toISOString();
+  // Le marqueur « registre indisponible » (D10) survit à la signature.
+  const lu = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { declarations: true },
+  });
+  const marqueur = (lu?.declarations as Record<string, string> | null)?.[CLE_REGISTRE_INDISPONIBLE];
   await prisma.apporteurReseau.update({
     where: { id: apporteurId },
-    data: { declarations: Object.fromEntries(cles.map((c) => [c, maintenant])) },
+    data: {
+      declarations: {
+        ...Object.fromEntries(cles.map((c) => [c, maintenant])),
+        ...(marqueur ? { [CLE_REGISTRE_INDISPONIBLE]: marqueur } : {}),
+      },
+    },
   });
 }
 

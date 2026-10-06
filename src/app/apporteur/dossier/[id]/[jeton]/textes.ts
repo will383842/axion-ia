@@ -20,7 +20,8 @@ export const TEXTES = {
   nom: "Nom",
   email: "E‑mail",
   telephone: "Téléphone",
-  lectureSeule: "Une erreur ? Écrivez-nous.",
+  lectureSeule: "Une erreur ? Écrivez-nous :",
+  nomManquant: "Indiquez votre nom de famille : il figure sur votre contrat.",
   // Étape 2
   siren: "Numéro SIREN (9 chiffres)",
   rechercher: "Rechercher",
@@ -74,7 +75,11 @@ export const TEXTES = {
   recuLigne: "Vous recevrez votre contrat contresigné par e‑mail.",
   signePastille: "Contrat signé",
   signeTitre: "Votre contrat est signé",
-  signeLigne: "Déposez ici les attestations que nous vous demandons.",
+  signeLigne: "Vous pouvez nous déclarer une entreprise ci-dessous.",
+  signeLigneVigilance: "Déposez ici les attestations que nous vous demandons.",
+  telechargerSigne: "Télécharger mon contrat signé (PDF)",
+  connexionPerdue: "Connexion perdue : vos réponses sont conservées sur cet écran, réessayez.",
+  etapeAnnonce: (n: number, nom: string) => `Étape ${n} sur 4 : ${nom}`,
   fermer: "Vous pouvez fermer cette page.",
   // Lien invalide
   invalidePastille: "Lien invalide",

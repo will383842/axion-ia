@@ -66,6 +66,42 @@ export const VSL_VIDEO_FICHIERS = {
   durationLabel: "1 min 20",
 } as const;
 
+/**
+ * Bloc « Votre commission » (décision de Will du 05/10 : on PARLE de la
+ * commission sur la page, c'est le gros point d'accroche).
+ *
+ * 🔴 UN INTERRUPTEUR : `AFFICHER_BLOC_COMMISSION`. Les allégations de revenus
+ * sont surveillées par Meta : si la page était refusée, on retire le bloc en UN
+ * commit (le passer à `false`), sans toucher à la page ni au reste du texte.
+ *
+ * 🔴 Le montant n'est JAMAIS écrit ici : il entre par paramètre, formaté par la
+ * page à partir de `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`).
+ * 🔴 Il ne figure NI dans le titre de la page, NI dans le sous-titre du héro, NI
+ * dans les métadonnées / OG / annonce : seulement ce bloc et la FAQ.
+ * 🔴 « À titre indicatif » est dans le bloc (garde `jur:remuneration-indicative`) ;
+ * la sous-ligne dit que c'est une règle du contrat et non une promesse. Aucun
+ * exemple chiffré cumulé, aucun « revenu complémentaire », « sans effort » ni
+ * « garanti ».
+ */
+export const AFFICHER_BLOC_COMMISSION: boolean = true;
+
+export function commissionVsl(montant: string): {
+  readonly titre: string;
+  readonly indicatif: string;
+  readonly montant: string;
+  readonly apres: string;
+  readonly sousLigne: string;
+} {
+  return {
+    titre: "Votre commission",
+    indicatif: "À titre indicatif",
+    montant,
+    apres: "par journée de formation facturée",
+    sousLigne:
+      "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
+  };
+}
+
 /** Les trois pastilles « pour qui ». */
 export const VSL_POUR_QUI: readonly string[] = [
   "Vous avez des contacts de dirigeants de PME",
@@ -139,7 +175,7 @@ export function faqVsl(commissionParJournee: string): readonly {
     {
       id: "gains",
       question: "Combien puis-je gagner ?",
-      answer: `À titre indicatif, jusqu'à ${commissionParJournee} par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
+      answer: `À titre indicatif, ${commissionParJournee} par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
     },
     {
       id: "negocier",

@@ -16,11 +16,25 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 //    et ce que la Société a enregistré sur elle.
 // ═════════════════════════════════════════════════════════════════════════════
 
+export interface PreuveSignatureExport {
+  readonly nomTape: string | null;
+  readonly signeLe: string | null;
+  readonly navigateur: string | null;
+  readonly empreinteTexte: string | null;
+  readonly acceptations: readonly string[];
+  readonly declarations: readonly string[];
+}
+
 export interface ExportReseauApporteur {
   readonly apporteur: null | {
     readonly prenom: string;
     readonly nom: string;
+    readonly email: string;
     readonly telephone: string | null;
+    /** IBAN déchiffré : c'est SA donnée (art. 15). */
+    readonly iban: string | null;
+    /** Note interne de la Société sur son dossier : c'est une donnée le concernant (art. 15). */
+    readonly noteInterne: string | null;
     readonly siren: string | null;
     readonly entreprise: string | null;
     readonly adresse: string | null;
@@ -32,6 +46,19 @@ export interface ExportReseauApporteur {
       readonly type: string;
       readonly statut: string;
       readonly deposeeLe: Date;
+    }>;
+    /** Preuve de sa signature : sans le texte complet du contrat (seulement son empreinte). */
+    readonly preuveSignature: PreuveSignatureExport | null;
+    readonly commissions: ReadonlyArray<{
+      readonly activite: string;
+      readonly parrainage: boolean;
+      /** Absent (null) pour une ligne de parrainage : aucun montant par filleul (art. 4.6). */
+      readonly factureHtCents: number | null;
+      readonly montantCents: number | null;
+      readonly statut: string;
+      readonly creeLe: Date;
+      readonly verseeLe: Date | null;
+      readonly autofacture: string | null;
     }>;
     readonly entreprisesPresentees: ReadonlyArray<{
       readonly entreprise: string;
@@ -50,6 +77,23 @@ export interface ExportReseauApporteur {
   }>;
 }
 
+/** La preuve de signature, SANS le texte du contrat ni les valeurs d'identité qu'il contient. */
+function preuveDeSignature(json: unknown): PreuveSignatureExport | null {
+  if (!json || typeof json !== "object") return null;
+  const j = json as Record<string, unknown>;
+  const chaine = (x: unknown) => (typeof x === "string" ? x : null);
+  const liste = (x: unknown) =>
+    Array.isArray(x) ? x.filter((y): y is string => typeof y === "string") : [];
+  return {
+    nomTape: chaine(j.nomTape),
+    signeLe: chaine(j.signeAt),
+    navigateur: chaine(j.navigateur),
+    empreinteTexte: chaine(j.texteSha256),
+    acceptations: liste(j.acceptations),
+    declarations: liste(j.declarations),
+  };
+}
+
 export async function exporterReseauApporteurPour(email: string): Promise<ExportReseauApporteur> {
   const empreinte = hashEmailForLookup(email);
   if (!empreinte) return { apporteur: null, presenteePar: [] };
@@ -60,7 +104,11 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         id: true,
         prenom: true,
         nom: true,
+        email: true,
         telephone: true,
+        iban: true,
+        noteInterne: true,
+        signatureApporteur: true,
         siren: true,
         denomination: true,
         adresse: true,
@@ -88,6 +136,21 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         select: { type: true, statut: true, deposeeAt: true },
       })
     : [];
+  const commissions = a
+    ? await prisma.commissionApporteur.findMany({
+        where: { apporteurId: a.id },
+        select: {
+          activite: true,
+          parrainage: true,
+          factureHtCents: true,
+          montantCents: true,
+          statut: true,
+          creeAt: true,
+          verseeAt: true,
+          autofactureNumero: true,
+        },
+      })
+    : [];
   const siennes = a
     ? await prisma.presentationEntreprise.findMany({
         where: { apporteurId: a.id },
@@ -99,7 +162,22 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
       ? {
           prenom: decryptPii(a.prenom) ?? "",
           nom: decryptPii(a.nom) ?? "",
+          email: decryptPii(a.email) ?? "",
           telephone: decryptPii(a.telephone),
+          iban: decryptPii(a.iban),
+          noteInterne: a.noteInterne ?? null,
+          preuveSignature: preuveDeSignature(a.signatureApporteur),
+          commissions: commissions.map((c) => ({
+            activite: c.activite,
+            parrainage: c.parrainage,
+            // Parrainage : ni prix facturé ni palier du filleul (contrat art. 4.6).
+            factureHtCents: c.parrainage ? null : c.factureHtCents,
+            montantCents: c.montantCents,
+            statut: c.statut,
+            creeLe: c.creeAt,
+            verseeLe: c.verseeAt,
+            autofacture: c.autofactureNumero,
+          })),
           siren: a.siren,
           entreprise: a.denomination,
           adresse: a.adresse,
