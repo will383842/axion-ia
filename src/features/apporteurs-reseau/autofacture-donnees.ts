@@ -6,7 +6,7 @@
  * montants en centimes ; franchise 293 B ou TVA 20 % selon le régime de l'apporteur.
  */
 
-import { ajouterJoursOuvres } from "@/lib/jours-ouvres";
+import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION } from "./regles";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -30,6 +30,10 @@ export interface CommissionPourAutofacture {
   readonly factureHtCents?: number | null;
   /** `reprise` : ligne négative (art. 4.5), jamais une commission. */
   readonly statut?: string;
+  /** Reprise : autofacture d'origine (numéro et mois), pour le renvoi de l'avoir. */
+  readonly origineNumero?: string | null;
+  /** « AAAA-MM » du mois d'émission de l'autofacture d'origine. */
+  readonly origineMois?: string | null;
 }
 
 export interface ApporteurPourAutofacture {
@@ -60,11 +64,42 @@ function eurosHt(cents: number): string {
  * commande — le prix public, le prix facturé (la commission étant le montant de la ligne), pour
  * que la proportionnalité de l'art. 4.1 bis se lise sur la pièce.
  */
-export function designationCommission(c: CommissionPourAutofacture, libelleMois: string): string {
-  if (c.statut === "reprise")
-    return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
+/** « octobre 2026 » depuis « 2026-10 ». */
+export function libelleMois(mois: string): string {
+  const [a, m] = mois.split("-").map(Number);
+  return new Date(Date.UTC(a!, (m ?? 1) - 1, 15)).toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export const LIBELLE_PARRAINAGE = "Parrainage (art. 4.6)";
+
+/**
+ * Une reprise est un AVOIR d'autofacture (art. 4.5), jamais une autofacture diminuée en silence :
+ * la ligne le dit et renvoie à l'autofacture d'origine (numéro et mois) quand on la connaît.
+ */
+export function designationAvoir(c: CommissionPourAutofacture): string {
+  const renvoi = c.origineNumero
+    ? ` — renvoi à l'autofacture ${c.origineNumero}${c.origineMois ? ` émise en ${libelleMois(c.origineMois)}` : ""}`
+    : "";
+  return `Autofacturation — avoir (reprise, art. 4.5)${renvoi}`;
+}
+
+export function designationCommission(c: CommissionPourAutofacture): string {
+  if (c.statut === "reprise") return designationAvoir(c);
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
-  if (c.parrainage) return `Commission de parrainage — relevé de ${libelleMois}`;
+  // Art. 4.6 : une ligne unique, sans identité du filleul, sans commande, prix ni commission.
+  if (c.parrainage) return LIBELLE_PARRAINAGE;
+  // Conférence : forfait fixe par commande, ni palier de formation ni prix public à rappeler.
+  if (c.activite === "conference") {
+    const prixConf =
+      c.factureHtCents != null && c.factureHtCents > 0
+        ? ` — prix facturé ${eurosHt(c.factureHtCents)} HT`
+        : "";
+    return `Commission d'apport — conférence${prixConf}`;
+  }
   const base = `Commission d'apport (${c.activite})`;
   // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
   const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);
@@ -81,17 +116,16 @@ export function designationCommission(c: CommissionPourAutofacture, libelleMois:
       : c.factureHtCents != null && c.factureHtCents > 0
         ? ` — prix facturé ${eurosHt(c.factureHtCents)} HT`
         : "";
-  return `${base}${palier}${prix} — relevé de ${libelleMois}`;
+  return `${base}${palier}${prix}`;
 }
 
 export function lignesAutofacture(
   commissions: readonly CommissionPourAutofacture[],
-  libelleMois: string,
 ): LigneHonoraires[] {
   return commissions
     .filter((c) => c.montantCents !== null && c.montantCents !== 0)
     .map((c) => ({
-      designation: designationCommission(c, libelleMois),
+      designation: designationCommission(c),
       montantHtCents: c.montantCents ?? 0,
     }));
 }
@@ -100,14 +134,80 @@ export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
   return lignes.reduce((s, l) => s + l.montantHtCents, 0);
 }
 
-/** Art. 5.3 : virement dans les dix jours ouvrés suivant l'établissement du relevé. */
-export const ECHEANCE_JOURS_OUVRES = 10;
+/** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
+export const ECHEANCE_JOURS = 30;
+/** OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission. */
+export const OBJECTIF_VIREMENT_JOURS_OUVRES = 2;
 
 export { ajouterJoursOuvres };
 
-function dateFr(d: Date): string {
-  return d.toLocaleDateString("fr-FR", {
+/** « AAAA-MM-JJ » du jour de Paris. */
+function jourParis(d: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
     day: "2-digit",
+  }).format(d);
+}
+
+/** Échéance ferme : jour de Paris de l'émission + 30 jours calendaires (rendue à midi UTC). */
+export function echeancePaiement(emission: Date): Date {
+  const [a, m, j] = jourParis(emission).split("-").map(Number);
+  return new Date(Date.UTC(a!, m! - 1, j! + ECHEANCE_JOURS, 12));
+}
+
+function estOuvre(d: Date): boolean {
+  const jour = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Paris",
+    weekday: "short",
+  }).format(d);
+  return jour !== "Sat" && jour !== "Sun" && !estJourFerieFrance(d);
+}
+
+/**
+ * Date d'encaissement RETENUE : le jour où le crédit est constaté s'il est ouvré ; sinon le premier
+ * jour ouvré suivant (le crédit tombe un week-end ou un férié, ou n'est constaté que plus tard).
+ */
+export function dateEncaissementRetenue(constateLe: Date): Date {
+  const d = new Date(constateLe.getTime());
+  while (!estOuvre(d)) d.setTime(d.getTime() + 86_400_000);
+  return d;
+}
+
+/** Objectif de virement : encaissement retenu + 2 jours ouvrés (week-ends et fériés exclus). */
+export function objectifVirement(emission: Date): Date {
+  return ajouterJoursOuvres(dateEncaissementRetenue(emission), OBJECTIF_VIREMENT_JOURS_OUVRES);
+}
+
+/**
+ * Où en est une autofacture non réglée ? L'objectif dépassé n'est qu'un signal ORANGE ; seule
+ * l'échéance de trente jours dépassée est ROUGE. Aucune pénalité n'est calculée ici.
+ */
+export function etatEcheances(
+  emission: Date,
+  maintenant: Date,
+): {
+  objectif: Date;
+  echeance: Date;
+  objectifDepasse: boolean;
+  echeanceDepassee: boolean;
+} {
+  const objectif = objectifVirement(emission);
+  const echeance = echeancePaiement(emission);
+  const jour = jourParis(maintenant);
+  return {
+    objectif,
+    echeance,
+    objectifDepasse: jour > jourParis(objectif),
+    echeanceDepassee: jour > jourParis(echeance),
+  };
+}
+
+/** « 8 octobre 2026 ». */
+export function dateFr(d: Date): string {
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
     month: "long",
     year: "numeric",
     timeZone: "Europe/Paris",
@@ -117,7 +217,8 @@ function dateFr(d: Date): string {
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
 export function construireDonneesAutofacture(e: {
   numero: string;
-  releveLibelle: string;
+  /** Période des prestations imprimée sur la pièce, ex. « commissions exigibles au 6 octobre 2026 ». */
+  periodeLibelle: string;
   dateEmission: Date;
   apporteur: ApporteurPourAutofacture;
   commissions: readonly CommissionPourAutofacture[];
@@ -130,7 +231,7 @@ export function construireDonneesAutofacture(e: {
   const adresse = e.apporteur.adresse?.trim();
   if (!siren || !adresse)
     return { ok: false, motif: "identité de facturation de l'apporteur incomplète" };
-  const lignes = lignesAutofacture(e.commissions, e.releveLibelle);
+  const lignes = lignesAutofacture(e.commissions);
   if (lignes.length === 0) return { ok: false, motif: "aucune commission à facturer" };
   if (totalHtCents(lignes) !== e.totalAttenduCents)
     return { ok: false, motif: "total des lignes différent du total versé" };
@@ -142,9 +243,11 @@ export function construireDonneesAutofacture(e: {
     data: {
       numero: e.numero,
       dateEmission: dateFr(e.dateEmission),
-      dateEcheance: dateFr(ajouterJoursOuvres(e.dateEmission, ECHEANCE_JOURS_OUVRES)),
+      // L'autofacture est datée du jour d'établissement ; la date de prestation est l'encaissement retenu.
+      datePrestation: dateFr(dateEncaissementRetenue(e.dateEmission)),
+      dateEcheance: dateFr(echeancePaiement(e.dateEmission)),
       contestationAvant: dateFr(limite),
-      periodeLabel: e.releveLibelle,
+      periodeLabel: e.periodeLibelle,
       sousTraitant: {
         nom: e.apporteur.denomination?.trim() || e.apporteur.nom,
         siret: siren,

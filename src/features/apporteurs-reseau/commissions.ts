@@ -1,13 +1,14 @@
 /**
  * Réseau d'apporteurs (démarrage manuel) — les COMMISSIONS.
  *
- * Elles naissent dans le passage quotidien (`passage-quotidien.ts`) ; la console les
- * qualifie (formation : choix du palier), les regroupe en relevé mensuel et les marque
- * versées. Montants en centimes, arrondis au centime inférieur (`regles.ts`).
+ * Elles naissent dans le passage (`passage-quotidien.ts`) ; la console les qualifie
+ * (formation : choix du palier). Dès qu'une commission est DUE, `facturation.ts` établit
+ * l'autofacture et l'envoie ; « Virement fait » la marque versée. Montants en centimes,
+ * arrondis au centime inférieur (`regles.ts`).
  *
- * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par relevé (toutes les
- * lignes versées ensemble le partagent). Le PDF est généré par `genererPdfAutofacture` ;
- * s'il rend `null`, `marquerVerse` n'écrit rien (pas de versement sans pièce).
+ * Autofacture : numéro de série `AXI-APP-AAAA-NNNN`, UN numéro par apporteur et par passe
+ * (toutes les lignes facturées ensemble le partagent). Le PDF est généré par
+ * `genererPdfAutofacture` ; s'il rend `null`, rien n'est écrit (pas de facture sans pièce).
  */
 
 // ⚠️ Atteint par le WORKER (passage quotidien, tsx hors Next) : aucun `server-only` ici.
@@ -17,6 +18,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
 
 import { construireDonneesAutofacture } from "./autofacture-donnees";
+import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -24,9 +26,9 @@ import {
   calculerCommission,
   etatVigilance,
   euros,
+  PALIER_CONFERENCE,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
-  releveEmis,
 } from "./regles";
 
 // ── Vigilance ────────────────────────────────────────────────────────────
@@ -253,7 +255,7 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (!PALIERS_FORMATION.some((p) => p.id === palier))
+  if (palier !== PALIER_CONFERENCE && !PALIERS_FORMATION.some((p) => p.id === palier))
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
@@ -270,10 +272,10 @@ export async function qualifierCommission(
   if (!c) return { ok: false, message: "Commission introuvable." };
   if (c.statut !== "a_qualifier" || c.parrainage)
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation")
+  if (c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
   const calc = calculerCommission({
-    activite: "formation",
+    activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
     factureHtCents: c.factureHtCents,
     palier,
     quantite,
@@ -284,6 +286,8 @@ export async function qualifierCommission(
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
     data: {
+      // Une facture de conférence typée « formation » : la ligne devient une conférence.
+      ...(palier === PALIER_CONFERENCE ? { activite: "conference" } : {}),
       palier: calc.palier,
       prixPublicHtCents: calc.prixPublicCents,
       montantCents: calc.montantCents,
@@ -303,6 +307,7 @@ export const ACTIVITES_CLASSABLES = [
   "audit",
   "implementation",
   "site_web",
+  "conference",
 ] as const;
 export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 
@@ -368,7 +373,12 @@ export async function classerActiviteCommission(
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
-    data: { activite: choisie, montantCents: calc.montantCents, statut: v.statut },
+    data: {
+      activite: choisie,
+      ...(calc.palier ? { palier: calc.palier } : {}),
+      montantCents: calc.montantCents,
+      statut: v.statut,
+    },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
   if (v.demander) await demanderVigilance(c.apporteurId, "premiere");
@@ -444,6 +454,8 @@ export interface CommissionVue {
   autofactureNumero: string | null;
   verseeAt: Date | null;
   creeAt: Date;
+  /** Dernière écriture : pour une commission facturée non versée, c'est la date d'émission de l'autofacture. */
+  majAt: Date;
 }
 
 /** Taille d'une page de la liste des commissions (précédent / suivant dans la console). */
@@ -487,6 +499,7 @@ export async function lireCommissions(
     autofactureNumero: l.autofactureNumero,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
+    majAt: l.majAt,
   }));
 }
 
@@ -503,7 +516,7 @@ export async function compterCommissions(): Promise<Record<StatutCommissionAppor
   return out;
 }
 
-// ── Relevé du mois ───────────────────────────────────────────────────────
+// ── Dates ────────────────────────────────────────────────────────────────
 
 /** « 2026-10 » en heure de Paris. */
 export function moisParis(d: Date): string {
@@ -513,59 +526,6 @@ export function moisParis(d: Date): string {
     month: "2-digit",
   }).format(d);
   return p.slice(0, 7);
-}
-
-/** « octobre 2026 ». */
-export function libelleMois(mois: string): string {
-  const [a, m] = mois.split("-").map(Number);
-  return new Date(Date.UTC(a!, (m ?? 1) - 1, 15)).toLocaleDateString("fr-FR", {
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}
-
-export interface ReleveApporteur {
-  apporteurId: string;
-  apporteur: string;
-  soldeCents: number;
-  lignes: number;
-  emis: boolean;
-  /** Pourquoi pas de relevé ce mois-ci. */
-  raison: string | null;
-}
-
-/** Le relevé de chaque apporteur qui a des commissions dues. */
-export async function relevesDuMois(maintenant: Date = new Date()): Promise<ReleveApporteur[]> {
-  // Les commissions dues ET les reprises pas encore imputées (montants négatifs) : le relevé est net.
-  const g = await prisma.commissionApporteur.groupBy({
-    by: ["apporteurId"],
-    where: { statut: { in: ["due", "reprise"] }, releveMois: null, montantCents: { not: null } },
-    _sum: { montantCents: true },
-    _count: { _all: true },
-  });
-  if (g.length === 0) return [];
-  const apporteurs = await prisma.apporteurReseau.findMany({
-    where: { id: { in: g.map((x) => x.apporteurId) } },
-    select: { id: true, prenom: true, nom: true, statut: true },
-  });
-  const parId = new Map(apporteurs.map((a) => [a.id, a]));
-  const mois = Number(moisParis(maintenant).slice(5, 7));
-  return g
-    .map((x) => {
-      const a = parId.get(x.apporteurId);
-      const solde = x._sum.montantCents ?? 0;
-      const emis = releveEmis({ soldeCents: solde, mois, dernier: a?.statut === "resilie" });
-      return {
-        apporteurId: x.apporteurId,
-        apporteur: a ? [decryptPii(a.prenom), decryptPii(a.nom)].filter(Boolean).join(" ") : "?",
-        soldeCents: solde,
-        lignes: x._count._all,
-        emis,
-        raison: emis ? null : `sous le seuil de ${euros(5_000)} : reporté au mois suivant`,
-      };
-    })
-    .sort((a, b) => b.soldeCents - a.soldeCents);
 }
 
 // ── Autofacture et versement ─────────────────────────────────────────────
@@ -611,14 +571,45 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
 }
 
 /**
+ * Pour chaque reprise, l'autofacture d'ORIGINE (numéro et mois d'émission) : le renvoi de l'avoir
+ * (art. 4.5). Clé = id de la ligne de reprise. ⚠️ Pas de jour exact : aucune colonne ne garde la
+ * date d'émission une fois le virement fait (`majAt` bouge) ; `releveMois` garde le mois.
+ */
+export async function originesDesReprises(
+  reprises: ReadonlyArray<{ id: string; palier: string | null }>,
+): Promise<Map<string, { numero: string | null; mois: string | null }>> {
+  const origineDe = new Map<string, string>();
+  for (const r of reprises) {
+    if (r.palier?.startsWith(PREFIXE_PALIER_REPRISE))
+      origineDe.set(r.id, r.palier.slice(PREFIXE_PALIER_REPRISE.length));
+  }
+  const out = new Map<string, { numero: string | null; mois: string | null }>();
+  if (origineDe.size === 0) return out;
+  const origines = await prisma.commissionApporteur.findMany({
+    where: { id: { in: [...new Set(origineDe.values())] } },
+    select: { id: true, autofactureNumero: true, releveMois: true },
+  });
+  const parId = new Map(origines.map((o) => [o.id, o]));
+  for (const [repriseId, origineId] of origineDe) {
+    const o = parId.get(origineId);
+    out.set(repriseId, {
+      numero: o?.autofactureNumero ?? null,
+      mois: o?.releveMois ?? null,
+    });
+  }
+  return out;
+}
+
+/**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
  * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
- * n'enregistre alors AUCUN versement.
+ * n'enregistre alors AUCUNE facturation.
  */
 export async function genererPdfAutofacture(e: {
   apporteurId: string;
   numero: string;
-  releveMois: string;
+  /** Période des prestations imprimée sur la pièce, ex. « commissions exigibles au 6 octobre 2026 ». */
+  periodeLibelle: string;
   commissionIds: readonly string[];
   totalCents: number;
   maintenant?: Date;
@@ -654,6 +645,7 @@ export async function genererPdfAutofacture(e: {
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
+    const origines = await originesDesReprises(commissions);
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -667,7 +659,7 @@ export async function genererPdfAutofacture(e: {
     ]);
     const construit = construireDonneesAutofacture({
       numero: e.numero,
-      releveLibelle: libelleMois(e.releveMois),
+      periodeLibelle: e.periodeLibelle,
       dateEmission: e.maintenant ?? new Date(),
       apporteur: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
@@ -678,7 +670,11 @@ export async function genererPdfAutofacture(e: {
         numeroTva: apporteur.numeroTva,
         email: decryptPii(apporteur.email) ?? null,
       },
-      commissions,
+      commissions: commissions.map((l) => ({
+        ...l,
+        origineNumero: origines.get(l.id)?.numero ?? null,
+        origineMois: origines.get(l.id)?.mois ?? null,
+      })),
       organisme: await getOrganismeIdentite(),
       totalAttenduCents: e.totalCents,
     });
@@ -694,144 +690,6 @@ export async function genererPdfAutofacture(e: {
     signalerErreurReseau("autofacture pdf", err);
     return null;
   }
-}
-
-/**
- * « Marquer versé » : toutes les commissions DUES de l'apporteur passent en `versee` sous un
- * même numéro d'autofacture, les REPRISES non encore imputées (montants négatifs, art. 4.5)
- * sont déduites du même relevé, puis le relevé part.
- *
- * 🔑 Pas de versement sans pièce : le PDF de l'autofacture est établi AVANT toute écriture.
- * S'il échoue, rien n'est marqué versé et le même bouton rejoue l'opération telle quelle.
- */
-export async function marquerVerse(
-  apporteurId: string,
-  maintenant: Date = new Date(),
-): Promise<
-  | { ok: true; numero: string; totalCents: number; envoi: ResultatEnvoi }
-  | { ok: false; message: string }
-> {
-  const apporteur = await prisma.apporteurReseau.findUnique({
-    where: { id: apporteurId },
-    select: { id: true, prenom: true, nom: true, email: true, statut: true },
-  });
-  if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
-  const releveMois = moisParis(maintenant);
-  const annee = Number(releveMois.slice(0, 4));
-
-  const lireARegler = (db: Pick<typeof prisma, "commissionApporteur">) =>
-    db.commissionApporteur.findMany({
-      where: {
-        apporteurId,
-        statut: { in: ["due", "reprise"] },
-        releveMois: null,
-        montantCents: { not: null },
-      },
-      select: { id: true, statut: true, montantCents: true },
-      orderBy: { creeAt: "asc" },
-    });
-
-  const avant = await lireARegler(prisma);
-  const total = avant.reduce((s, d) => s + (d.montantCents ?? 0), 0);
-  if (
-    !releveEmis({
-      soldeCents: total,
-      mois: Number(releveMois.slice(5, 7)),
-      dernier: apporteur.statut === "resilie",
-    })
-  ) {
-    return { ok: false, message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil)." };
-  }
-  // Vigilance REVÉRIFIÉE à l'émission : une attestation périmée depuis que les commissions sont
-  // devenues dues ne doit pas laisser partir un versement au-delà du seuil (art. 5.4 et 6.2).
-  const [cumul, valides] = await Promise.all([
-    cumulVigilanceCents(apporteurId),
-    piecesVigilanceValides(apporteurId, maintenant),
-  ]);
-  if (etatVigilance({ cumulCents: cumul, nouvelleCents: 0, piecesValides: valides }).attendre) {
-    // Les commissions dues repassent en attente de vigilance (le passage quotidien demande, relance
-    // puis libère dès que les pièces sont conformes) ; les reprises restent à imputer.
-    await prisma.commissionApporteur.updateMany({
-      where: {
-        id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
-        statut: "due",
-        releveMois: null,
-      },
-      data: { statut: "en_attente_vigilance" },
-    });
-    return {
-      ok: false,
-      message:
-        "L'attestation de vigilance ou l'immatriculation n'est plus valable : les commissions sont remises en attente de vigilance, rien n'a été versé. Les pièces seront redemandées à l'apporteur.",
-    };
-  }
-  const numero = await allouerNumeroAutofacture(annee);
-  const pdf = await genererPdfAutofacture({
-    apporteurId,
-    numero,
-    releveMois,
-    commissionIds: avant.map((d) => d.id),
-    totalCents: total,
-    maintenant,
-  });
-  if (!pdf) {
-    return {
-      ok: false,
-      message:
-        "L'autofacture n'a pas pu être établie (identité de facturation, régime de TVA ou stockage) : rien n'a été marqué versé. Corrigez puis recommencez avec le même bouton.",
-    };
-  }
-
-  await prisma.$transaction(
-    async (tx) => {
-      const maintenantLues = await lireARegler(tx);
-      const memes =
-        maintenantLues.length === avant.length &&
-        maintenantLues.every(
-          (c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents,
-        );
-      if (!memes) throw new Error("Les commissions ont changé pendant le versement : recommence.");
-      const commun = { verseeAt: maintenant, releveMois, autofactureNumero: numero };
-      const dues = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
-          statut: "due",
-        },
-        data: { statut: "versee", ...commun },
-      });
-      // Une reprise imputée garde son statut (c'est une reprise) et porte le relevé qui l'a absorbée.
-      const reprises = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: avant.filter((d) => d.statut === "reprise").map((d) => d.id) },
-          statut: "reprise",
-          releveMois: null,
-        },
-        data: commun,
-      });
-      if (dues.count + reprises.count !== avant.length)
-        throw new Error("Les commissions ont changé pendant le versement : recommence.");
-    },
-    { timeout: 15_000 },
-  );
-  const resultat = { numero, total };
-
-  const envoi = await envoyer({
-    gabarit: "apporteur-releve",
-    destinataire: decryptPii(apporteur.email) ?? "",
-    payload: {
-      contactName: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)]
-        .filter(Boolean)
-        .join(" "),
-      mois: libelleMois(releveMois),
-      montant: euros(resultat.total),
-      numeroAutofacture: resultat.numero,
-    },
-    entityType: "ApporteurReseau",
-    entityId: apporteurId,
-    jobId: `apporteur-releve-${resultat.numero}`,
-    attachments: [{ filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" }],
-  });
-  return { ok: true, numero: resultat.numero, totalCents: resultat.total, envoi };
 }
 
 // ── Export annuel (DAS2) ─────────────────────────────────────────────────

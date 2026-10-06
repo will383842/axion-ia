@@ -20,7 +20,7 @@ import {
   ibanValide,
   sirenValide,
   type TypePiece,
-} from "@/features/apporteurs-reseau/regles";
+} from "@/features/apporteurs-reseau/regles-dossier";
 import {
   casesCompletes,
   libelleMotif,

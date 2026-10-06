@@ -10,7 +10,7 @@ import {
   LIBELLE_PIECE,
   MOTIFS_A_RETRANSMETTRE,
   type TypePiece,
-} from "@/features/apporteurs-reseau/regles";
+} from "@/features/apporteurs-reseau/regles-dossier";
 
 import { MessageRetour } from "./ApercuEmail";
 

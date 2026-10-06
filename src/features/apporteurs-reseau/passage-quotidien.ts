@@ -1,7 +1,7 @@
 /**
  * Réseau d'apporteurs (démarrage manuel) — le PASSAGE QUOTIDIEN.
  *
- * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Six étapes, chacune
+ * Planifié sur la file `apporteur-crons` (job `reseau-quotidien`). Sept étapes, chacune
  * isolée (une étape en échec n'empêche pas les suivantes) et rejouable (toute écriture est
  * conditionnelle, tout e-mail a une clé « une fois ») :
  *
@@ -10,6 +10,9 @@
  *       le justifie (art. 3.4 al. 3), sinon `terminee` ;
  *   (c) une commission par COMMANDE soldée d'une entreprise protégée à la date de commande,
  *       plus la part du parrain dans les 6 mois de la signature du filleul ;
+ *   (c bis) autofacturation : une autofacture par apporteur pour ses commissions dues pas encore
+ *       facturées (`facturation.ts`) — aussi lancée TOUTES LES HEURES avec (c), par le job
+ *       `reseau-facturation` (`passerFacturationApporteurs`) ;
  *   (d) vigilance : libère les commissions en attente dès que les pièces sont là, demande
  *       les pièces, relance tous les 15 jours (trois au plus), alerte Williams d'un dépôt à
  *       vérifier, et demande le renouvellement 15 jours avant l'échéance ;
@@ -34,6 +37,7 @@ import {
   statutApresVigilance,
 } from "./commissions";
 import { envoyer } from "./envois";
+import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
@@ -115,6 +119,9 @@ export interface BilanPassageReseau {
   commissionsCreees: number;
   partsParrainage: number;
   liberees: number;
+  autofacturesEmises: number;
+  commissionsFacturees: number;
+  autofacturesEcartees: number;
   vigilancesDemandees: number;
   relancesVigilance: number;
   alertesPiecesVigilance: number;
@@ -170,16 +177,30 @@ export function dateDeCommande(f: {
 
 // ── Le passage ───────────────────────────────────────────────────────────
 
-export async function passerReseauApporteurs(
-  maintenant: Date = new Date(),
-): Promise<BilanPassageReseau> {
-  const bilan: BilanPassageReseau = {
+/** Étapes du passage, dans l'ordre. `facturation` = celles du job HORAIRE. */
+type NomEtape =
+  | "confirmation-tacite"
+  | "terme"
+  | "commissions"
+  | "autofacturation"
+  | "vigilance"
+  | "alerte-pieces-vigilance"
+  | "commande-signee"
+  | "rappels-dossier";
+
+const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "autofacturation"];
+
+function bilanVide(): BilanPassageReseau {
+  return {
     confirmeesTacites: 0,
     prolongees: 0,
     terminees: 0,
     commissionsCreees: 0,
     partsParrainage: 0,
     liberees: 0,
+    autofacturesEmises: 0,
+    commissionsFacturees: 0,
+    autofacturesEcartees: 0,
     vigilancesDemandees: 0,
     relancesVigilance: 0,
     alertesPiecesVigilance: 0,
@@ -187,10 +208,20 @@ export async function passerReseauApporteurs(
     rappelsDossier: 0,
     erreurs: 0,
   };
-  const etapes: Array<[string, () => Promise<void>]> = [
+}
+
+async function passer(
+  maintenant: Date,
+  seulement: readonly NomEtape[] | null,
+): Promise<BilanPassageReseau> {
+  const bilan = bilanVide();
+  const etapes: Array<[NomEtape, () => Promise<void>]> = [
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],
+    // Les commissions devenues dues (ci-dessus) sont facturées dans la foulée, puis celles que la
+    // vigilance libère (ci-dessous) le sont au passage horaire suivant.
+    ["autofacturation", () => etapeAutofacturation(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
     [
       "alerte-pieces-vigilance",
@@ -201,6 +232,7 @@ export async function passerReseauApporteurs(
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
   ];
   for (const [nom, etape] of etapes) {
+    if (seulement && !seulement.includes(nom)) continue;
     try {
       await etape();
     } catch (err) {
@@ -210,6 +242,41 @@ export async function passerReseauApporteurs(
     }
   }
   return bilan;
+}
+
+/** Le passage QUOTIDIEN : toutes les étapes. */
+export async function passerReseauApporteurs(
+  maintenant: Date = new Date(),
+): Promise<BilanPassageReseau> {
+  const bilan = await passer(maintenant, null);
+  // Les commissions libérées par la vigilance ce matin sont facturées tout de suite, pas dans l'heure.
+  if (bilan.liberees > 0) {
+    try {
+      await etapeAutofacturation(maintenant, bilan);
+    } catch (err) {
+      bilan.erreurs += 1;
+      signalerErreurReseau("passage quotidien : autofacturation après libération", err);
+    }
+  }
+  return bilan;
+}
+
+/**
+ * Le passage HORAIRE (job `reseau-facturation`) : UNIQUEMENT « commissions » et « autofacturation ».
+ * Une commission devient due dès que le client a payé à 100 % : l'apporteur est facturé dans l'heure.
+ */
+export async function passerFacturationApporteurs(
+  maintenant: Date = new Date(),
+): Promise<BilanPassageReseau> {
+  return passer(maintenant, ETAPES_FACTURATION);
+}
+
+async function etapeAutofacturation(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
+  const r = await facturerCommissionsDues(maintenant);
+  bilan.autofacturesEmises += r.autofactures;
+  bilan.commissionsFacturees += r.commissions;
+  bilan.autofacturesEcartees += r.ecartees;
+  bilan.erreurs += r.erreurs;
 }
 
 // (a) ─────────────────────────────────────────────────────────────────────

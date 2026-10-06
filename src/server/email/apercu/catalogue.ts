@@ -508,8 +508,8 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-releve": {
     categorie: "recrutement",
     quand:
-      "Bouton « Envoyer le relevé » des commissions du mois, avec l'autofacture en pièce jointe",
-    destinataire: "l'apporteur payé ce mois-ci",
+      "Tâche horaire : dès qu'une commission devient due (client payé à 100 %), avec l'autofacture en pièce jointe",
+    destinataire: "l'apporteur dont la commission vient d'être facturée",
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-issue-non-retenu": {

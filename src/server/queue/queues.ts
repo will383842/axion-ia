@@ -241,6 +241,15 @@ export const PATTERN_INVITATION_AUTO = "*/5 * * * *";
 export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
 
 /**
+ * 2026-10-06 — FACTURATION des commissions : TOUTES LES HEURES, à la minute 10 (UTC), hors de
+ * l'heure ronde déjà chargée. Une commission est due dès que le client a payé à 100 % ; l'apporteur
+ * reçoit son autofacture dans l'heure (objectif de virement : deux jours ouvrés). N'exécute que les
+ * étapes « commissions » et « autofacturation » (`passerFacturationApporteurs`), idempotentes ;
+ * le quotidien garde tout le reste.
+ */
+export const PATTERN_RESEAU_FACTURATION = "10 * * * *";
+
+/**
  * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
  * (`server/visio/balayage.ts`) : rencontres des rendez-vous Calendly, rappel
  * « rendez-vous tenu sans compte rendu », battement. Passe par `connection`
@@ -1294,6 +1303,11 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "reseau-quotidien" as const,
         pattern: PATTERN_RESEAU_QUOTIDIEN,
         jobId: "apporteur-reseau-quotidien-cron",
+      },
+      {
+        type: "reseau-facturation" as const,
+        pattern: PATTERN_RESEAU_FACTURATION,
+        jobId: "apporteur-reseau-facturation-cron",
       },
     ];
     const wanted = new Set(programme.map((s) => `${s.type}|${s.pattern}`));

@@ -168,7 +168,8 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           noteInterne: a.noteInterne ?? null,
           preuveSignature: preuveDeSignature(a.signatureApporteur),
           commissions: commissions.map((c) => ({
-            activite: c.activite,
+            // Parrainage : pas même l'activité de la commande du filleul (art. 4.6).
+            activite: c.parrainage ? "parrainage" : c.activite,
             parrainage: c.parrainage,
             // Parrainage : ni prix facturé ni palier du filleul (contrat art. 4.6).
             factureHtCents: c.parrainage ? null : c.factureHtCents,

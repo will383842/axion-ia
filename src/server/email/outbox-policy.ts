@@ -141,7 +141,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "entreprise-prise-de-contact-apporteur": "Prise de contact avec une entreprise présentée",
   "apporteur-vigilance": "Apporteur : attestation URSSAF demandée",
   "apporteur-commande-signee": "Apporteur : une commande signée",
-  "apporteur-releve": "Apporteur : relevé mensuel et autofacture",
+  "apporteur-releve": "Apporteur : commission facturée et autofacture",
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",

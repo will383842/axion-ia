@@ -13,7 +13,6 @@ import {
   motifDeProlongation,
   normaliserNaf,
   partParrainage,
-  releveEmis,
   sirenValide,
 } from "../regles";
 
@@ -156,13 +155,6 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     expect(
       etatVigilance({ cumulCents: 480_000, nouvelleCents: 50_000, piecesValides: true }),
     ).toEqual({ demander: false, attendre: false });
-  });
-
-  it("relevé : 50 € minimum, sauf en janvier et au dernier relevé", () => {
-    expect(releveEmis({ soldeCents: 4_000, mois: 3, dernier: false })).toBe(false);
-    expect(releveEmis({ soldeCents: 4_000, mois: 1, dernier: false })).toBe(true);
-    expect(releveEmis({ soldeCents: 4_000, mois: 3, dernier: true })).toBe(true);
-    expect(releveEmis({ soldeCents: 0, mois: 1, dernier: true })).toBe(false);
   });
 
   it("admission : refus nommés, professions à revoir signalées", () => {

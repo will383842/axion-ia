@@ -10,6 +10,17 @@
  * et les tâches de fond.
  */
 
+import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
+
+import {
+  LIBELLE_PIECE,
+  PIECES_POUR_SIGNER,
+  estStatutJuridique,
+  type TypePiece,
+} from "./regles-dossier";
+
+export * from "./regles-dossier";
+
 // ── Délais (contrat v2) ──────────────────────────────────────────────────
 
 /** Art. 3.4 : durée de la protection, à compter de la confirmation. */
@@ -33,8 +44,6 @@ export const PEREMPTION_JOURS = 90;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
 export const PARRAINAGE_MOIS = 6;
-/** Art. 5.1 : seuil d'émission d'un relevé (hors janvier et dernier relevé), en centimes. */
-export const SEUIL_RELEVE_CENTS = 5_000;
 /** Art. 5.4 et 6.2 (L.8222-1, D.8222-5) : seuil de vigilance, et son approche. */
 export const SEUIL_VIGILANCE_CENTS = 500_000;
 export const APPROCHE_VIGILANCE_CENTS = 400_000;
@@ -58,23 +67,6 @@ export function ajouterJours(d: Date, jours: number): Date {
 }
 
 // ── Dossier de l'apporteur ───────────────────────────────────────────────
-
-/** Liste fermée de Partners (`StatutJuridique`, PR #727), avec ses libellés. */
-export const STATUTS_JURIDIQUES = [
-  { valeur: "micro_entrepreneur", libelle: "Micro-entrepreneur (auto-entrepreneur)" },
-  { valeur: "entrepreneur_individuel", libelle: "Entrepreneur individuel (hors micro)" },
-  { valeur: "eurl", libelle: "EURL" },
-  { valeur: "sarl", libelle: "SARL" },
-  { valeur: "sasu", libelle: "SASU" },
-  { valeur: "sas", libelle: "SAS" },
-  { valeur: "sa", libelle: "SA" },
-  { valeur: "snc", libelle: "SNC" },
-] as const;
-export type StatutJuridique = (typeof STATUTS_JURIDIQUES)[number]["valeur"];
-
-export function estStatutJuridique(v: unknown): v is StatutJuridique {
-  return STATUTS_JURIDIQUES.some((s) => s.valeur === v);
-}
 
 /**
  * Codes NAF des professions dont les règles interdisent de rémunérer un apport de
@@ -137,79 +129,6 @@ export const LIBELLE_REFUS_ADMISSION: Readonly<Record<RefusAdmission, string>> =
     "Les règles de votre profession interdisent de percevoir une commission pour un apport de clientèle : nous ne pouvons pas vous proposer ce contrat.",
 };
 
-/** Les déclarations que l'apporteur coche avant de signer (contrat v2). */
-export const DECLARATIONS = [
-  {
-    cle: "residence_fiscale_france",
-    texte: "Ma résidence fiscale est en France.",
-  },
-  {
-    cle: "aucune_clause_contraire",
-    texte:
-      "Aucune clause de non-concurrence ou d'exclusivité, ni aucune règle professionnelle ne m'interdit cette activité (art. 23).",
-  },
-  {
-    cle: "aucun_lien_societe",
-    texte: "Je ne suis ni salarié ni associé d'Axion-IA.",
-  },
-  {
-    cle: "pas_de_travail_dissimule",
-    texte: "Je n'ai recours à aucun travail dissimulé (art. 6.6).",
-  },
-] as const;
-
-/** Les clauses qui exigent une acceptation distincte dans le contrat. */
-export const ACCEPTATIONS = [
-  { cle: "art_3_7", texte: "J'accepte l'article 3.7 (sincérité des présentations)." },
-  {
-    cle: "art_4_5",
-    texte: "J'accepte l'article 4.5 (reprise d'une commission en cas de remboursement).",
-  },
-  {
-    cle: "art_5_2",
-    texte:
-      "Je donne mandat à Axion-IA d'établir mes factures de commission (art. 5.2 et annexe 2).",
-  },
-  { cle: "art_7", texte: "J'accepte l'article 7 (données personnelles)." },
-  { cle: "art_12", texte: "J'accepte l'article 12 (effets de la fin du contrat)." },
-  {
-    cle: "art_14",
-    texte:
-      "J'accepte l'article 14 : en cas de litige entre commerçants, les tribunaux du siège d'Axion-IA sont seuls compétents.",
-  },
-] as const;
-
-/** Pièces : celles qu'il faut pour signer, et l'assurance, facultative. */
-export const PIECES_POUR_SIGNER = ["identite", "rib"] as const;
-export const PIECES_FACULTATIVES = ["rc_pro"] as const;
-export const PIECES_VIGILANCE = ["vigilance", "immatriculation"] as const;
-export type TypePiece = "identite" | "rib" | "rc_pro" | "vigilance" | "immatriculation";
-
-export const LIBELLE_PIECE: Readonly<Record<TypePiece, string>> = {
-  identite: "Pièce d'identité",
-  rib: "RIB",
-  rc_pro: "Attestation d'assurance RC pro",
-  vigilance: "Attestation URSSAF de vigilance",
-  immatriculation: "Extrait d'immatriculation (Kbis ou extrait RNE)",
-};
-
-export const AIDE_PIECE: Readonly<Record<TypePiece, string>> = {
-  identite: "Carte d'identité ou passeport. Supprimée dès qu'elle est vérifiée.",
-  rib: "À votre nom ou à celui de votre société.",
-  rc_pro: "Facultatif : seulement si vous en avez une.",
-  vigilance: "Gratuite, à télécharger dans votre espace URSSAF. Moins de 6 mois.",
-  immatriculation: "Gratuit sur data.inpi.fr.",
-};
-
-export const MOTIFS_A_RETRANSMETTRE = [
-  { valeur: "illisible", libelle: "illisible" },
-  { valeur: "perimee", libelle: "périmé" },
-  { valeur: "mauvais_nom", libelle: "pas au bon nom" },
-  { valeur: "incomplete", libelle: "incomplet" },
-  { valeur: "autre", libelle: "à remplacer" },
-] as const;
-export type MotifARetransmettre = (typeof MOTIFS_A_RETRANSMETTRE)[number]["valeur"];
-
 /** Ce qui manque encore pour pouvoir signer. */
 export function manquesPourSigner(d: {
   siren: string | null;
@@ -229,35 +148,6 @@ export function manquesPourSigner(d: {
     if (!d.piecesDeposees.includes(p)) m.push(LIBELLE_PIECE[p].toLowerCase());
   }
   return m;
-}
-
-/** IBAN : forme et clé de contrôle (ISO 13616, modulo 97). */
-export function ibanValide(brut: string): boolean {
-  const s = brut.replace(/\s+/g, "").toUpperCase();
-  if (!/^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(s)) return false;
-  const r = s.slice(4) + s.slice(0, 4);
-  let reste = 0;
-  for (const c of r) {
-    const v = c >= "A" && c <= "Z" ? (c.charCodeAt(0) - 55).toString() : c;
-    for (const ch of v) reste = (reste * 10 + Number(ch)) % 97;
-  }
-  return reste === 1;
-}
-
-/** SIREN : 9 chiffres et clé de Luhn. */
-export function sirenValide(brut: string): boolean {
-  const s = brut.replace(/\s+/g, "");
-  if (!/^\d{9}$/.test(s)) return false;
-  let somme = 0;
-  for (let i = 0; i < 9; i++) {
-    let n = Number(s[8 - i]);
-    if (i % 2 === 1) {
-      n *= 2;
-      if (n > 9) n -= 9;
-    }
-    somme += n;
-  }
-  return somme % 10 === 0;
 }
 
 // ── Protection d'une entreprise présentée ────────────────────────────────
@@ -371,7 +261,17 @@ export type PalierFormation = (typeof PALIERS_FORMATION)[number]["id"];
 /** Taux de l'annexe 1, en points de base, par activité facturée. */
 export const TAUX_BPS = { audit: 3000, implementation: 1500, un_a_un: 3000 } as const;
 
-export type ActiviteCommission = "formation" | "un_a_un" | "audit" | "implementation" | "site_web";
+/**
+ * Conférence : un forfait fixe PAR CONFÉRENCE (quel que soit le nombre de participants), sans
+ * prorata de remise ; une commande de plusieurs conférences : forfait × nombre de conférences. Source unique : `COMMISSION_CONFERENCE_EUR` (décision du 2026-10-01,
+ * publiée sur le site), en centimes.
+ */
+export const FORFAIT_CONFERENCE_CENTS = COMMISSION_CONFERENCE_EUR * 100;
+/** Palier posé sur la ligne d'une conférence. */
+export const PALIER_CONFERENCE = "conference";
+
+export type ActiviteCommission =
+  "formation" | "un_a_un" | "audit" | "implementation" | "site_web" | "conference";
 
 export type CalculCommission =
   | {
@@ -388,6 +288,7 @@ export type CalculCommission =
  * - formation : forfait × min(1, HT facturé ÷ prix public), arrondi au centime inférieur
  *   (art. 4.1 bis) ; sans palier connu, elle reste « à qualifier », jamais zéro ;
  * - 1-to-1 et coaching 30 %, audit 30 %, intégration 15 % du HT facturé ;
+ * - conférence : forfait fixe de 500 € par commande, sans prorata ;
  * - développement web : aucune (annexe 1, A1.5).
  */
 export function calculerCommission(e: {
@@ -399,6 +300,21 @@ export function calculerCommission(e: {
 }): CalculCommission {
   if (e.activite === null) return { statut: "a_qualifier" };
   if (e.activite === "site_web") return { statut: "aucune" };
+  if (
+    e.activite === "conference" ||
+    (e.activite === "formation" && e.palier === PALIER_CONFERENCE)
+  ) {
+    // Forfait fixe par conférence : aucun prorata de remise ; `quantite` = nombre de conférences de
+    // la commande. Jamais plus que le prix HT facturé (annexe 1, A1.4 bis) ; une commande vide ou
+    // remboursée (HT ≤ 0) ne rapporte rien.
+    const ht = Math.max(0, e.factureHtCents);
+    return {
+      statut: "calculee",
+      montantCents: Math.min(FORFAIT_CONFERENCE_CENTS * quantiteSessions(e.quantite), ht),
+      palier: PALIER_CONFERENCE,
+      prixPublicCents: null,
+    };
+  }
   if (e.activite === "formation") {
     const p = PALIERS_FORMATION.find((x) => x.id === e.palier);
     if (!p) return { statut: "a_qualifier" };
@@ -457,13 +373,6 @@ export function etatVigilance(e: {
     demander: apres >= APPROCHE_VIGILANCE_CENTS,
     attendre: apres >= SEUIL_VIGILANCE_CENTS,
   };
-}
-
-/** Un relevé est-il émis ce mois-ci (art. 5.1 et 5.3) ? */
-export function releveEmis(e: { soldeCents: number; mois: number; dernier: boolean }): boolean {
-  if (e.soldeCents <= 0) return false;
-  if (e.mois === 1 || e.dernier) return true;
-  return e.soldeCents >= SEUIL_RELEVE_CENTS;
 }
 
 /** « 1 234,56 € » */

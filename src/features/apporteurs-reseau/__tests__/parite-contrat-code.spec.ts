@@ -6,17 +6,21 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { DELAI_CONTESTATION_APPORTEUR_JOURS, ECHEANCE_JOURS_OUVRES } from "../autofacture-donnees";
+import {
+  DELAI_CONTESTATION_APPORTEUR_JOURS,
+  ECHEANCE_JOURS,
+  OBJECTIF_VIREMENT_JOURS_OUVRES,
+} from "../autofacture-donnees";
 import { CONTRAT_V2_MARKDOWN } from "../contrat-v2";
 import {
   ADRESSE_VALIDE_JOURS,
   CONFIRMATION_TACITE_JOURS,
+  FORFAIT_CONFERENCE_CENTS,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   PARRAINAGE_MOIS,
   PEREMPTION_JOURS,
   PROTECTION_MOIS,
-  SEUIL_RELEVE_CENTS,
   TAUX_BPS,
 } from "../regles";
 
@@ -77,21 +81,29 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
       "PROTECTION_MOIS",
     );
   });
-  it("seuil de relevé de 50 € (art. 5.1)", () => {
-    attendre(
-      "seuil de relevé, en euros",
-      lire("seuil de relevé", /solde est inférieur à (\d+) € hors taxes/),
-      SEUIL_RELEVE_CENTS / 100,
-      "SEUIL_RELEVE_CENTS / 100",
-    );
+  it("plus aucun seuil minimum ni relevé mensuel (art. 5.1, 5.3)", () => {
+    expect(TEXTE).toMatch(/Aucun montant minimum ne s'applique/);
+    expect(TEXTE).not.toMatch(/solde est inférieur à \d+ € hors taxes/);
+    expect(TEXTE).not.toMatch(/premier jour ouvré de chaque mois/);
   });
-  it("virement sous dix jours ouvrés (art. 5.3)", () => {
-    attendre(
-      "paiement, en jours ouvrés",
-      lire("paiement", /dans les (\w+) jours ouvrés/),
-      ECHEANCE_JOURS_OUVRES,
-      "ECHEANCE_JOURS_OUVRES",
+  it("conférence : 500 € HT par conférence, jamais « Aucune » (A1.4 bis, A1.5)", () => {
+    expect(TEXTE).toMatch(/500 € hors taxes par conférence figurant à la commande/);
+    expect(FORFAIT_CONFERENCE_CENTS / 100).toBe(500);
+    // A1.5 ne doit plus lister la conférence parmi les prestations non commissionnées.
+    const a15 = TEXTE.slice(
+      TEXTE.indexOf("A1.5 — Prestations non commissionnées"),
+      TEXTE.indexOf("A1.6"),
     );
+    expect(a15).not.toMatch(/\| Conférence \| \*\*Aucune\*\*/);
+  });
+  it("échéance ferme de trente jours après l'émission de l'autofacture (art. 5.3)", () => {
+    expect(TEXTE).toMatch(/trentième jour suivant son émission/);
+    expect(ECHEANCE_JOURS).toBe(30);
+  });
+  it("délai indicatif de deux jours ouvrés, sans engagement ni frais (art. 5.3)", () => {
+    expect(TEXTE).toMatch(/s'efforce de verser la commission dans les deux jours ouvrés/);
+    expect(TEXTE).toMatch(/ne constitue pas un engagement de la Société/);
+    expect(OBJECTIF_VIREMENT_JOURS_OUVRES).toBe(2);
   });
   it("parrainage : 10 % pendant 6 mois (art. 4.6)", () => {
     attendre(

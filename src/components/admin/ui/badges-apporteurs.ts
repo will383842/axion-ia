@@ -8,7 +8,7 @@
 export interface ApporteursNavCountsProp {
   presentations: number;
   pieces: number;
-  releve: number;
+  virements: number;
 }
 
 export function badgeApporteurs(
@@ -21,7 +21,7 @@ export function badgeApporteurs(
     return { count: c.presentations, tone: "danger", label: "présentations à traiter" };
   if (href === `${base}/apporteurs` && c.pieces > 0)
     return { count: c.pieces, tone: "warn", label: "pièces de vigilance déposées" };
-  if (href === `${base}/apporteurs/commissions` && c.releve > 0)
-    return { count: c.releve, tone: "warn", label: "relevés du mois à émettre" };
+  if (href === `${base}/apporteurs/commissions` && c.virements > 0)
+    return { count: c.virements, tone: "warn", label: "virements à faire" };
   return null;
 }

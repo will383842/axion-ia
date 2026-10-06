@@ -1,6 +1,6 @@
 // Réseau d'apporteurs (démarrage manuel, 2026-10-05) — les COMMISSIONS.
-// Relevés du mois (« Marquer versé »), puis la liste par statut, avec « Qualifier »
-// pour une formation. Export annuel des versements (DAS2).
+// Virements à faire (autofactures émises dès l'encaissement : « Virement fait »), puis la liste
+// par statut, avec « Qualifier » pour une formation. Export annuel des versements (DAS2).
 
 import Link from "next/link";
 
@@ -15,13 +15,16 @@ import { classerActiviteAction } from "@/features/apporteurs-reseau/actions-comm
 import {
   COMMISSIONS_PAR_PAGE,
   compterCommissions,
-  libelleMois,
   lireCommissions,
-  moisParis,
-  relevesDuMois,
 } from "@/features/apporteurs-reseau/commissions";
-import { euros, PALIERS_FORMATION } from "@/features/apporteurs-reseau/regles";
-import { moisAvecArticle } from "@/lib/email/templates/apporteur-demarrage";
+import { lireVirementsAFaire } from "@/features/apporteurs-reseau/facturation";
+import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-donnees";
+import {
+  euros,
+  FORFAIT_CONFERENCE_CENTS,
+  PALIER_CONFERENCE,
+  PALIERS_FORMATION,
+} from "@/features/apporteurs-reseau/regles";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
 import type { StatutCommissionApporteur } from "../../../../../../../prisma/generated/client";
@@ -35,7 +38,7 @@ interface PageProps {
 
 const ONGLETS: ReadonlyArray<{ cle: StatutCommissionApporteur; libelle: string }> = [
   { cle: "a_qualifier", libelle: "À qualifier" },
-  { cle: "due", libelle: "Dues" },
+  { cle: "due", libelle: "Dues (facturées)" },
   { cle: "en_attente_vigilance", libelle: "Attente vigilance" },
   { cle: "versee", libelle: "Versées" },
   { cle: "reprise", libelle: "Reprises" },
@@ -47,13 +50,58 @@ const ACTIVITE: Record<string, string> = {
   audit: "Audit",
   implementation: "Intégration",
   site_web: "Site web",
+  conference: "Conférence",
 };
 
-const PALIERS = PALIERS_FORMATION.map((p) => ({
-  id: p.id,
-  libelle: p.libelle,
-  detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
-}));
+/**
+ * Objectif de virement (2 jours ouvrés, sans pénalité : ORANGE s'il est dépassé, jamais rouge) et
+ * échéance ferme de 30 jours (ROUGE seulement une fois dépassée).
+ */
+function Echeances({ emission, maintenant }: { emission: Date; maintenant: Date }) {
+  const e = etatEcheances(emission, maintenant);
+  return (
+    <p className="text-[length:var(--text-admin-sm)]">
+      <span style={e.objectifDepasse ? { color: "var(--color-admin-warning)" } : undefined}>
+        Objectif de virement : avant le {dateFr(e.objectif)}
+        {e.objectifDepasse ? " (dépassé)" : ""}
+      </span>
+      {" · "}
+      <span
+        style={e.echeanceDepassee ? { color: "var(--color-admin-destructive)" } : undefined}
+        className={e.echeanceDepassee ? "font-semibold" : undefined}
+      >
+        échéance : {dateFr(e.echeance)}
+        {e.echeanceDepassee ? " (dépassée)" : ""}
+      </span>
+    </p>
+  );
+}
+
+function LienPdf({ numero, base }: { numero: string; base: string }) {
+  return (
+    <a
+      href={`${base}/autofacture?numero=${encodeURIComponent(numero)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline"
+    >
+      {numero} (PDF)
+    </a>
+  );
+}
+
+const PALIERS = [
+  ...PALIERS_FORMATION.map((p) => ({
+    id: p.id,
+    libelle: p.libelle,
+    detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
+  })),
+  {
+    id: PALIER_CONFERENCE,
+    libelle: "Conférence (500 € fixes)",
+    detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par commande`,
+  },
+];
 
 export default async function CommissionsApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -68,9 +116,9 @@ export default async function CommissionsApporteursPage({ params, searchParams }
   const onglet = ONGLETS.find((o) => o.cle === sp.statut)?.cle ?? ongletDefaut;
   const pages = Math.max(1, Math.ceil(comptes[onglet] / COMMISSIONS_PAR_PAGE));
   const page = Math.min(pages, Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1));
-  const [lignes, releves] = await Promise.all([
+  const [lignes, virements] = await Promise.all([
     lireCommissions(onglet, page),
-    relevesDuMois(maintenant),
+    lireVirementsAFaire(),
   ]);
   const annee = maintenant.getUTCFullYear();
 
@@ -106,31 +154,37 @@ export default async function CommissionsApporteursPage({ params, searchParams }
       </div>
 
       <AdminCard as="section">
-        <h2 className="mb-[var(--space-admin-3)] font-semibold">
-          💶 Relevé du mois {moisAvecArticle(libelleMois(moisParis(maintenant)))}
-        </h2>
-        {releves.length === 0 ? (
-          <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission due.</p>
+        <h2 className="mb-[var(--space-admin-3)] font-semibold">💶 Virements à faire</h2>
+        {virements.length === 0 ? (
+          <p className="text-[color:var(--color-admin-fg-muted)]">
+            Aucun virement en attente : chaque commission est facturée dès que le client a payé.
+          </p>
         ) : (
           <ul className="flex flex-col divide-y divide-[color:var(--color-admin-border)]">
-            {releves.map((r) => (
+            {virements.map((v) => (
               <li
-                key={r.apporteurId}
+                key={v.numero}
                 className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-3)]"
               >
                 <div>
                   <Link
-                    href={`/fr/${adminPrefix}/apporteurs/${r.apporteurId}`}
+                    href={`/fr/${adminPrefix}/apporteurs/${v.apporteurId}`}
                     className="font-medium"
                   >
-                    {r.apporteur}
+                    {v.apporteur}
                   </Link>
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                    {euros(r.soldeCents)} · {r.lignes} ligne(s){r.raison ? ` · ${r.raison}` : ""}
+                    {euros(v.totalCents)} · {v.lignes} ligne(s) ·{" "}
+                    <LienPdf numero={v.numero} base={base} />
                   </p>
+                  <Echeances emission={v.emissionAt} maintenant={maintenant} />
                 </div>
-                {r.emis && peutPayer ? (
-                  <VerserForm apporteurId={r.apporteurId} montant={euros(r.soldeCents)} />
+                {peutPayer ? (
+                  <VerserForm
+                    apporteurId={v.apporteurId}
+                    numero={v.numero}
+                    montant={euros(v.totalCents)}
+                  />
                 ) : null}
               </li>
             ))}
@@ -175,9 +229,25 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     ) : null}
                   </div>
                 </div>
+                {c.statut === "due" && c.autofactureNumero ? (
+                  <>
+                    <p className="text-[length:var(--text-admin-sm)]">
+                      Facturée : <LienPdf numero={c.autofactureNumero} base={base} />
+                    </p>
+                    <Echeances emission={c.majAt} maintenant={maintenant} />
+                  </>
+                ) : null}
+                {c.statut === "due" && !c.autofactureNumero ? (
+                  <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                    Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
+                    part pas, vérifiez l&apos;identité et le régime de TVA de l&apos;apporteur).
+                  </p>
+                ) : null}
                 {c.palier ? (
                   <p className="text-[length:var(--text-admin-sm)]">
-                    {PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier}
+                    {c.palier === PALIER_CONFERENCE
+                      ? "Conférence"
+                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier)}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" &&
@@ -210,6 +280,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         <option value="un_a_un">1-to-1 (30 %)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
+                        <option value="conference">Conférence (500 € fixes)</option>
                         <option value="site_web">Site web (aucune commission)</option>
                       </select>
                     </label>
