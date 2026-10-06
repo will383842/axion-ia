@@ -146,17 +146,77 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(new Set(boutons)).toEqual(new Set(["Je candidate (2 minutes)"]));
   });
 
-  it("aucun mot interdit, aucun téléphone, aucun montant hors FAQ, aucun gain en tête de page", async () => {
-    const t = texte(await rendre());
+  it("aucun mot interdit, aucun téléphone ; la somme vit UNIQUEMENT dans le bloc commission et la FAQ, via pricing.ts", async () => {
+    const h = await rendre();
+    const t = texte(h);
     expect(t).not.toMatch(/qualiopi|parrain|vendre|commercial|recrutement|facebook/i);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
     expect(t).not.toMatch(/tel:/i);
-    // La seule somme vient de pricing.ts et vit dans la FAQ, « à titre indicatif ».
+    // Exactement deux sommes : le bloc commission et la réponse de la FAQ.
     const montants = t.match(/\d[\d\s]*\s€/g) ?? [];
-    expect(montants).toHaveLength(1);
+    expect(montants).toHaveLength(2);
     expect(t).toMatch(/À titre indicatif, jusqu'à 500 € par journée/);
+    expect(t).toMatch(/jusqu'à 500 € par journée de formation facturée/);
+
+    // PAS dans le titre <h1>, ni dans le sous-titre du héro, ni dans le badge.
+    const h1 = h.match(/<h1[\s\S]*?<\/h1>/)?.[0] ?? "";
+    expect(texte(h1)).not.toMatch(/€|gagn|commission/i);
+    const hero = h.slice(h.indexOf("<h1"), h.indexOf('aria-labelledby="vsl-commission"'));
+    expect(texte(hero)).not.toMatch(/€|gagn|commission/i);
     const tete = t.slice(0, t.indexOf("Je candidate"));
     expect(tete).not.toMatch(/€|gagn/);
+
+    // Le montant n'apparaît que dans le bloc et dans la FAQ.
+    const bloc = h.slice(
+      h.indexOf('aria-labelledby="vsl-commission"'),
+      h.indexOf("</section>", h.indexOf('aria-labelledby="vsl-commission"')),
+    );
+    expect(texte(bloc)).toContain("500 €");
+    const horsBlocEtFaq = h.replace(bloc, "").replace(/<details[\s\S]*?<\/details>/g, "");
+    const reste = texte(horsBlocEtFaq).match(/\d[\d\s]*\s€/g) ?? [];
+    expect(reste).toHaveLength(0);
+  });
+
+  it("les métadonnées (titre, description, OG) ne portent ni somme ni promesse de gain", async () => {
+    const m = await generateMetadata({ params: Promise.resolve({ locale: "fr" }) });
+    const brut = JSON.stringify(m);
+    expect(brut).not.toMatch(/€|\beuros?\b|gagn|commission|revenu/i);
+  });
+
+  it("le bloc commission : titre, grand chiffre, sous-ligne lisible, « aucun gain garanti » conservé", async () => {
+    const t = texte(await rendre());
+    expect(t).toContain("Votre commission");
+    expect(t).toContain(
+      "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
+    );
+    expect(t).toContain("Aucun gain garanti");
+    expect(t).not.toMatch(/revenu complémentaire|sans effort/i);
+    // Après le héro (donc après le premier bouton), avant les pastilles « pour qui ».
+    expect(t.indexOf("Votre commission")).toBeGreaterThan(t.indexOf("Je candidate"));
+    expect(t.indexOf("Votre commission")).toBeLessThan(t.indexOf("Vous avez des contacts"));
+  });
+
+  it("habit sombre des pages VSL sur le héro ET le bloc commission, jetons du site seulement", async () => {
+    const h = await rendre();
+    const entree = h.slice(
+      h.indexOf("<h1") - 900,
+      h.indexOf('aria-labelledby="vsl-commission"') + 200,
+    );
+    expect(entree).toContain("bg-vsl");
+    expect(h.match(/bg-vsl/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(h).toContain("text-terracotta-on-mocha");
+    // Aucune couleur inventée : pas de valeur hexadécimale ni rgb() dans la page.
+    expect(h).not.toMatch(/#[0-9a-fA-F]{6}\b/);
+  });
+
+  it("le bouton principal fait au moins 56 px de haut, le corps 16 px ou plus, les notes 14 px ou plus", async () => {
+    const h = await rendre();
+    expect(h).toMatch(/min-h-\[60px\]/);
+    // La FAQ est un bloc partagé du site (hors périmètre de cette retouche).
+    const sansFaq = h.slice(0, h.lastIndexOf("<p", h.indexOf(">FAQ<")));
+    const tailles = [...sansFaq.matchAll(/text-\[(\d+)px\]/g)].map((m) => Number(m[1]));
+    // Plus aucune note de page sous 14 px (les 13 px d'avant sont montés à 14-15 px).
+    expect(tailles.filter((n) => n < 14)).toEqual([]);
   });
 
   it("une colonne, pas d'image avant le formulaire (le LCP est le titre) ni de lien vers le site", async () => {
@@ -209,5 +269,26 @@ describe("les films : servis hors du proxy, en cache long", () => {
     const i = config.indexOf('source: "/videos/:path*"');
     expect(i).toBeGreaterThan(0);
     expect(config.slice(i, i + 300)).toContain("public, max-age=31536000, immutable");
+  });
+});
+
+describe("l'interrupteur du bloc commission", () => {
+  it("à false, le bloc disparaît et le reste de la page tient (retrait en un commit)", async () => {
+    vi.resetModules();
+    vi.doMock("@/content/recrutement/vsl-apporteur", async (original) => {
+      const reel = await original<typeof import("@/content/recrutement/vsl-apporteur")>();
+      return { ...reel, AFFICHER_BLOC_COMMISSION: false };
+    });
+    const { default: PageSansBloc } = await import("../page");
+    const h = renderToStaticMarkup(
+      await PageSansBloc({ params: Promise.resolve({ locale: "fr" }) }),
+    );
+    expect(h).not.toContain('aria-labelledby="vsl-commission"');
+    expect(texte(h)).not.toContain("Votre commission");
+    // La FAQ garde la somme « à titre indicatif ».
+    expect(texte(h)).toMatch(/À titre indicatif, jusqu'à 500 € par journée/);
+    expect(h).toContain('id="vsl-formulaire"');
+    vi.doUnmock("@/content/recrutement/vsl-apporteur");
+    vi.resetModules();
   });
 });

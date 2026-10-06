@@ -54,7 +54,7 @@ export function VslEtape2({
   }, [titreRef]);
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate aria-labelledby="vsl-titre-etape">
-      <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+      <p className="text-terracotta-deep text-[14px] font-semibold tracking-[0.16em] uppercase">
         {f2.eyebrow}
       </p>
       <h3
@@ -82,7 +82,7 @@ export function VslEtape2({
             maxLength={40}
             error={erreurs.telephone}
           />
-          <p className="text-fg-muted mt-1 text-[13px]">{f2.telephoneAide}</p>
+          <p className="text-fg-soft mt-1 text-[14px]">{f2.telephoneAide}</p>
         </div>
 
         <ChipGroup legend={f2.question} requiredField error={erreurs.reponse}>
@@ -113,12 +113,12 @@ export function VslEtape2({
       >
         {envoi ? "Envoi…" : `${f2.bouton} →`}
       </PrimaryButton>
-      <p className="text-fg-muted mt-3 text-center text-[13px]">{f2.micro}</p>
+      <p className="text-fg-soft mt-3 text-center text-[14px]">{f2.micro}</p>
       <p className="mt-2 text-center">
         <button
           type="button"
           onClick={onRetour}
-          className="text-terracotta-deep text-[13px] underline underline-offset-2"
+          className="text-terracotta-deep text-[14px] underline underline-offset-2"
         >
           {f2.retour}
         </button>

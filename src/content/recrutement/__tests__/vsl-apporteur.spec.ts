@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from "vitest";
 import * as contenu from "../vsl-apporteur";
-import { faqVsl } from "../vsl-apporteur";
+import { AFFICHER_BLOC_COMMISSION, commissionVsl, faqVsl } from "../vsl-apporteur";
 import { VSL_CONSENT_TEXTE } from "@/lib/commercial-application/vsl-apporteur";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 
@@ -25,6 +25,8 @@ const TOUT_LE_TEXTE = [
   ...chaines(Object.values(contenu).filter((v) => typeof v !== "function")),
   // La FAQ prend une somme en paramètre : on la lit avec un montant factice.
   ...chaines(faqVsl("MONTANT")),
+  // Le bloc commission prend, lui aussi, sa somme en paramètre.
+  ...chaines(commissionVsl("MONTANT")),
   contenu.VSL_FORMULAIRE.annonceEtape(1),
 ]
   .join("\n")
@@ -91,5 +93,40 @@ describe("le texte de la page VSL apporteurs", () => {
     expect(contenu.VSL_PATH).toBe("/apporteur-affaires/video");
     expect(contenu.VSL_MERCI_PATH).toBe("/apporteur-affaires/video/merci");
     expect(`${contenu.VSL_PATH}${contenu.VSL_MERCI_PATH}`).not.toMatch(/facebook/i);
+  });
+});
+
+describe("le bloc « Votre commission »", () => {
+  const c = commissionVsl("500 €");
+
+  it("un interrupteur, actif par défaut : retirer le bloc se fait en un commit", () => {
+    expect(typeof AFFICHER_BLOC_COMMISSION).toBe("boolean");
+    expect(AFFICHER_BLOC_COMMISSION).toBe(true);
+  });
+
+  it("titre, grand chiffre « jusqu'à … par journée de formation facturée », sous-ligne obligatoire", () => {
+    expect(c.titre).toBe("Votre commission");
+    expect(`${c.avant} ${c.montant} ${c.apres}`).toBe(
+      "jusqu'à 500 € par journée de formation facturée",
+    );
+    expect(c.sousLigne).toBe(
+      "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
+    );
+  });
+
+  it("« à titre indicatif » accompagne le chiffre (garde jur:remuneration-indicative)", () => {
+    expect(c.indicatif).toMatch(/à titre indicatif/i);
+  });
+
+  it("le montant entre par PARAMÈTRE : rien n'est écrit en dur dans le texte", () => {
+    const sansMontant = chaines(commissionVsl("MONTANT")).join(" ");
+    expect(sansMontant).toContain("MONTANT");
+    expect(sansMontant).not.toMatch(/\d\s?€|\beuros?\b|\b500\b/);
+  });
+
+  it("aucun exemple cumulé, aucune promesse de revenu, vouvoiement", () => {
+    const t = chaines(c).join(" ");
+    expect(t).not.toMatch(/revenu|complémentaire|sans effort|garanti|\d\s?jours?\s?=|cumul/i);
+    expect(t).not.toMatch(/(?<![\p{L}'])(?:tu|toi|ton|ta|tes|te|t')(?![\p{L}])/iu);
   });
 });

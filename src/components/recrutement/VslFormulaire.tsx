@@ -310,7 +310,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
       {etape === 1 ? (
         <form ref={formRef} onSubmit={envoyerEtape1} noValidate aria-labelledby="vsl-titre-etape">
           <HoneypotField />
-          <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+          <p className="text-terracotta-deep text-[14px] font-semibold tracking-[0.16em] uppercase">
             {f1.eyebrow}
           </p>
           <h3
@@ -337,7 +337,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
                 maxLength={60}
                 error={erreurs1.prenom}
               />
-              <p className="text-fg-muted mt-1 text-[13px]">{f1.prenomAide}</p>
+              <p className="text-fg-soft mt-1 text-[14px]">{f1.prenomAide}</p>
             </div>
             <div>
               <TextField
@@ -356,7 +356,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
                 maxLength={180}
                 error={erreurs1.email}
               />
-              <p className="text-fg-muted mt-1 text-[13px]">{f1.emailAide}</p>
+              <p className="text-fg-soft mt-1 text-[14px]">{f1.emailAide}</p>
             </div>
           </div>
 
@@ -399,7 +399,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
           >
             {envoi ? "Envoi…" : `${f1.bouton} →`}
           </PrimaryButton>
-          <p className="text-fg-muted mt-3 text-center text-[13px] leading-snug">
+          <p className="text-fg-soft mt-3 text-center text-[14px] leading-snug">
             {f1.legal}{" "}
             <Link
               href={ROUTES.privacy as never}
