@@ -14,6 +14,7 @@ import {
   declarerEntrepriseAction,
   rechercherEntrepriseDeclarationAction,
 } from "./actions-declaration";
+import { TEXTES } from "./textes";
 import { TEXTES_DECLARATION as T } from "./textes-declaration";
 
 const champ =
@@ -65,7 +66,11 @@ export function DeclarationEntreprise({ id, jeton }: { id: string; jeton: string
   const [erreur, setErreur] = useState<string | null>(null);
   const [recue, setRecue] = useState(false);
   const [denomination, setDenomination] = useState("");
-  const aujourdhui = new Date().toISOString().slice(0, 10);
+  // « Aujourd'hui » en heure de Paris, comme le serveur (et non en UTC : entre 00 h et 02 h
+  // la date UTC est celle d'hier et refuserait le jour même).
+  const aujourdhui = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(
+    new Date(),
+  );
 
   async function completerNom(siren: string) {
     const s = siren.replace(/\s+/g, "");
@@ -82,14 +87,19 @@ export function DeclarationEntreprise({ id, jeton }: { id: string; jeton: string
     fd.set("jeton", jeton);
     setErreur(null);
     demarrer(async () => {
-      const r = await declarerEntrepriseAction(fd);
-      if (r.ok) {
-        formulaire.reset();
-        setDenomination("");
-        setRecue(true);
-        router.refresh();
-      } else {
-        setErreur(r.message);
+      try {
+        const r = await declarerEntrepriseAction(fd);
+        if (r.ok) {
+          formulaire.reset();
+          setDenomination("");
+          setRecue(true);
+          router.refresh();
+        } else {
+          setErreur(r.message);
+        }
+      } catch {
+        // Connexion perdue : la saisie reste à l'écran (le formulaire n'est pas réinitialisé).
+        setErreur(TEXTES.connexionPerdue);
       }
     });
   }

@@ -5,12 +5,14 @@
  * (pièce, apporteur) : 404. Un fichier ne sort qu'avec un verdict antivirus « sain »
  * (409 infecté, 503 antivirus indisponible), comme les documents de projet. Servi
  * en ligne pour être lu dans le navigateur (PDF, JPG, PNG seulement, contrôlés au
- * dépôt), sous une politique de sécurité qui interdit tout script.
+ * dépôt), sous une politique de sécurité qui interdit tout script (images ; un PDF part sans `sandbox`,
+ * que Chrome n'affiche pas).
  */
 
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
+import { entetesPiece } from "@/features/apporteurs-reseau/entetes-piece";
 import { lireOctetsPiece } from "@/features/apporteurs-reseau/requetes-console";
 import { analyserOctets } from "@/server/careers/clamav";
 
@@ -51,18 +53,8 @@ export async function GET(
       "La vérification antivirus est momentanément indisponible. Réessayez dans quelques minutes.",
     );
   }
-  const nom = p.nomFichier.replace(/[^\w.\- ]+/g, "_");
   return new NextResponse(p.octets as unknown as BodyInit, {
     status: 200,
-    headers: {
-      "Content-Type": p.typeMime,
-      "Content-Length": String(p.octets.length),
-      "Content-Disposition": `inline; filename="${nom}"`,
-      "Content-Security-Policy":
-        "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox",
-      "Cache-Control": "private, no-store",
-      "X-Content-Type-Options": "nosniff",
-      "X-Robots-Tag": "noindex",
-    },
+    headers: entetesPiece(p.typeMime, p.nomFichier, p.octets.length),
   });
 }

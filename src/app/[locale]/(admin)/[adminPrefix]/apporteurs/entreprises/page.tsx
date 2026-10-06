@@ -89,7 +89,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     <div className="flex flex-col gap-[var(--space-admin-5)]">
       <AdminPageHeader
         title="Entreprises présentées"
-        description="Une ligne par e-mail d'apporteur reçu."
+        description="Les entreprises présentées par les apporteurs, par e-mail ou par leur formulaire."
       />
 
       {acces.peutEcrire ? (

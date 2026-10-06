@@ -108,6 +108,15 @@ const bonjour = (n: string) => (n ? `Bonjour ${n},` : "Bonjour,");
 
 // ── Textes ───────────────────────────────────────────────────────────────
 
+/**
+ * « octobre 2026 » → « d'octobre 2026 » ; « novembre 2026 » → « de novembre 2026 ».
+ * L'élision ne vaut que devant une voyelle (avril, août, octobre).
+ */
+export function moisAvecArticle(m: string): string {
+  const t = m.trim();
+  return /^[aeiouyàâéèêîôû]/i.test(t) ? `d'${t}` : `de ${t}`;
+}
+
 export const COPY_DEMARRAGE = {
   contratSigne: {
     // ≤ 45 caractères (§3.4).
@@ -286,11 +295,11 @@ export const COPY_DEMARRAGE = {
   },
   releve: {
     subject: (m: string) =>
-      m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions",
+      m ? `Votre relevé de commissions ${moisAvecArticle(m)}` : "Votre relevé de commissions",
     title: "Votre relevé de commissions",
     preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
     texte: (m: string, montant: string) =>
-      `Voici votre relevé de commissions${m ? ` de ${m}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
+      `Voici votre relevé de commissions${m ? ` du mois ${moisAvecArticle(m)}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
