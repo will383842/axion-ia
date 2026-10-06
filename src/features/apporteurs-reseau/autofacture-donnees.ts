@@ -65,6 +65,14 @@ export function designationCommission(c: CommissionPourAutofacture, libelleMois:
     return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
   if (c.parrainage) return `Commission de parrainage — relevé de ${libelleMois}`;
+  // Conférence : forfait fixe par commande, ni palier de formation ni prix public à rappeler.
+  if (c.activite === "conference") {
+    const prixConf =
+      c.factureHtCents != null && c.factureHtCents > 0
+        ? ` — prix facturé ${eurosHt(c.factureHtCents)} HT`
+        : "";
+    return `Commission d'apport — conférence${prixConf} — relevé de ${libelleMois}`;
+  }
   const base = `Commission d'apport (${c.activite})`;
   // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
   const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);

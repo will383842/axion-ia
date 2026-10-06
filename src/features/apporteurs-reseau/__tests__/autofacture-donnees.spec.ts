@@ -164,3 +164,24 @@ describe("autofacture : prix public, prix facturé, échéance, reprise (art. 4.
     expect(r.ok).toBe(true);
   });
 });
+
+describe("désignation d'une commission de conférence", () => {
+  it("« Commission d'apport — conférence », sans palier de formation", () => {
+    const d = designationCommission(
+      {
+        id: "k",
+        activite: "conference",
+        palier: "conference",
+        parrainage: false,
+        statut: "versee",
+        montantCents: 50_000,
+        factureHtCents: 210_000,
+        prixPublicHtCents: null,
+      } as never,
+      "octobre 2026",
+    );
+    expect(d).toContain("Commission d'apport — conférence");
+    expect(d).not.toContain("palier");
+    expect(d).toContain("octobre 2026");
+  });
+});

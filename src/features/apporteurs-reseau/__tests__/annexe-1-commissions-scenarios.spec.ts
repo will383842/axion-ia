@@ -9,6 +9,7 @@ import { commandesSoldees, type FactureDeCommande } from "../commandes";
 import {
   ADRESSE_VALIDE_JOURS,
   PALIERS_FORMATION,
+  FORFAIT_CONFERENCE_CENTS,
   PEREMPTION_JOURS,
   calculerCommission,
   partParrainage,
@@ -245,5 +246,86 @@ describe("formation : nombre de sessions du même palier dans une commande", () 
         ),
       ).toBe(50_000);
     }
+  });
+});
+
+describe("conférence : 500 € HT fixes par commande, sans prorata (décision du 06/10)", () => {
+  const conf = (ht: number, extra: object = {}) =>
+    calculerCommission({ activite: "conference", factureHtCents: ht, ...extra });
+  const f = (o: Partial<FactureDeCommande>): FactureDeCommande => ({
+    id: "F1",
+    devisId: null,
+    statut: "payee",
+    avoirDeId: null,
+    montantHtCents: 300_000,
+    emiseAt: new Date("2026-10-01T10:00:00Z"),
+    ...o,
+  });
+
+  it("le forfait vient de la source unique du site : 500 €", () => {
+    expect(FORFAIT_CONFERENCE_CENTS).toBe(50_000);
+  });
+  it("conférence au plein tarif = 500 €", () => {
+    expect(montant(conf(300_000))).toBe(50_000);
+  });
+  it("conférence remisée de 30 % = toujours 500 €", () => {
+    expect(montant(conf(210_000))).toBe(50_000);
+  });
+  it("le nombre de sessions n'y change rien : un forfait par commande", () => {
+    expect(montant(conf(300_000, { quantite: 3 }))).toBe(50_000);
+  });
+  it("facture de conférence typée formation, palier conférence choisi : 500 €, sans prorata", () => {
+    const r = calculerCommission({
+      activite: "formation",
+      palier: "conference",
+      quantite: 4,
+      factureHtCents: 100_000,
+    });
+    expect(montant(r)).toBe(50_000);
+    expect(r.statut === "calculee" && r.palier).toBe("conference");
+  });
+  it("commande remboursée en totalité (HT nul) : rien", () => {
+    expect(montant(conf(0))).toBe(0);
+  });
+  it("2 conférences dans 2 commandes = 2 forfaits", () => {
+    const commandes = commandesSoldees([
+      f({ id: "A", devisId: "D1" }),
+      f({ id: "B", devisId: "D2" }),
+    ]);
+    expect(commandes).toHaveLength(2);
+    const total = commandes.reduce((s, c) => s + (montant(conf(c.totalHtCents)) ?? 0), 0);
+    expect(total).toBe(100_000);
+  });
+  it("une commande de conférence avec acompte seul payé = rien (règle de la commande soldée)", () => {
+    const acompte = f({ id: "ACO", devisId: "D1", montantHtCents: 100_000 });
+    expect(commandesSoldees([acompte], new Map([["D1", 300_000]]))).toEqual([]);
+  });
+  it("acompte + solde payés : une seule commande, donc un seul forfait", () => {
+    const c = commandesSoldees(
+      [
+        f({ id: "ACO", devisId: "D1", montantHtCents: 100_000 }),
+        f({ id: "SOL", devisId: "D1", montantHtCents: 200_000 }),
+      ],
+      new Map([["D1", 300_000]]),
+    );
+    expect(c).toHaveLength(1);
+    expect(montant(conf(c[0]!.totalHtCents))).toBe(50_000);
+  });
+  it("parrain 10 % sur la commission de conférence = 50 €", () => {
+    expect(
+      partParrainage({
+        commissionFilleulCents: FORFAIT_CONFERENCE_CENTS,
+        filleulSigneAt: new Date("2026-09-01T10:00:00Z"),
+        commandeSigneeAt: new Date("2026-10-06T10:00:00Z"),
+      }),
+    ).toBe(5_000);
+  });
+  it("formation inchangée : 4 h 250 €, 1 jour 500 €, 2 jours 1 000 €, 3 sessions d'un jour 1 500 €", () => {
+    const fm = (palier: string, ht: number, quantite = 1) =>
+      montant(calculerCommission({ activite: "formation", palier, factureHtCents: ht, quantite }));
+    expect(fm("formation-generale-4h", 120_000)).toBe(25_000);
+    expect(fm("formation-generale-1j", 190_000)).toBe(50_000);
+    expect(fm("formation-generale-2j", 360_000)).toBe(100_000);
+    expect(fm("formation-generale-1j", 570_000, 3)).toBe(150_000);
   });
 });

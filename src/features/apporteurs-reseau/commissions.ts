@@ -24,6 +24,7 @@ import {
   calculerCommission,
   etatVigilance,
   euros,
+  PALIER_CONFERENCE,
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   releveEmis,
@@ -253,7 +254,7 @@ export async function qualifierCommission(
   quantite: number = 1,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; montantCents: number } | { ok: false; message: string }> {
-  if (!PALIERS_FORMATION.some((p) => p.id === palier))
+  if (palier !== PALIER_CONFERENCE && !PALIERS_FORMATION.some((p) => p.id === palier))
     return { ok: false, message: "Palier inconnu." };
   const c = await prisma.commissionApporteur.findUnique({
     where: { id },
@@ -270,10 +271,10 @@ export async function qualifierCommission(
   if (!c) return { ok: false, message: "Commission introuvable." };
   if (c.statut !== "a_qualifier" || c.parrainage)
     return { ok: false, message: "Cette commission n'est pas à qualifier." };
-  if (c.activite !== "formation")
+  if (c.activite !== "formation" && c.activite !== "conference")
     return { ok: false, message: "Seule une formation se qualifie par palier." };
   const calc = calculerCommission({
-    activite: "formation",
+    activite: palier === PALIER_CONFERENCE ? "conference" : "formation",
     factureHtCents: c.factureHtCents,
     palier,
     quantite,
@@ -284,6 +285,8 @@ export async function qualifierCommission(
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
     data: {
+      // Une facture de conférence typée « formation » : la ligne devient une conférence.
+      ...(palier === PALIER_CONFERENCE ? { activite: "conference" } : {}),
       palier: calc.palier,
       prixPublicHtCents: calc.prixPublicCents,
       montantCents: calc.montantCents,
@@ -303,6 +306,7 @@ export const ACTIVITES_CLASSABLES = [
   "audit",
   "implementation",
   "site_web",
+  "conference",
 ] as const;
 export type ActiviteClassable = (typeof ACTIVITES_CLASSABLES)[number];
 
@@ -368,7 +372,12 @@ export async function classerActiviteCommission(
   const v = await statutApresVigilance(c.apporteurId, calc.montantCents, maintenant, c.id);
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, statut: "a_qualifier" },
-    data: { activite: choisie, montantCents: calc.montantCents, statut: v.statut },
+    data: {
+      activite: choisie,
+      ...(calc.palier ? { palier: calc.palier } : {}),
+      montantCents: calc.montantCents,
+      statut: v.statut,
+    },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission vient d'être modifiée." };
   if (v.demander) await demanderVigilance(c.apporteurId, "premiere");

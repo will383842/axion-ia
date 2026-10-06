@@ -30,7 +30,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { classerActiviteCommission } from "../commissions";
+import { classerActiviteCommission, qualifierCommission } from "../commissions";
 import { montantEnCentimes } from "../resiliation";
 
 const ligne = {
@@ -77,6 +77,32 @@ describe("ligne « à qualifier » d'une activité inconnue : qualifiable ou cla
     await classerActiviteCommission("C1", "site_web");
     expect(etat.maj[1]!.where).toMatchObject({ apporteurId: "PAR1", parrainage: true });
     expect(etat.maj[1]!.data).toMatchObject({ montantCents: 0 });
+  });
+  it("classement manuel d'une ligne à qualifier en conférence : 500 € fixes, due", async () => {
+    etat.commission = { ...ligne, factureHtCents: 210_000 };
+    const r = await classerActiviteCommission("C1", "conference");
+    expect(r.ok).toBe(true);
+    expect(etat.maj[0]!.data).toMatchObject({
+      activite: "conference",
+      palier: "conference",
+      montantCents: 50_000,
+      statut: "due",
+    });
+  });
+  it("conférence : la part du parrain suit (10 % de 500 € = 50 €)", async () => {
+    etat.parrainId = "PAR1";
+    await classerActiviteCommission("C1", "conference");
+    expect(etat.maj[0]!.data).toMatchObject({ montantCents: 50_000 });
+  });
+  it("facture typée formation : le palier « Conférence » de la qualification pose 500 €", async () => {
+    etat.commission = { ...ligne, activite: "formation", factureHtCents: 100_000 };
+    const r = await qualifierCommission("C1", "conference", 5);
+    expect(r).toEqual({ ok: true, montantCents: 50_000 });
+    expect(etat.maj[0]!.data).toMatchObject({
+      activite: "conference",
+      palier: "conference",
+      montantCents: 50_000,
+    });
   });
   it("formation : l'activité est posée, le palier se choisit ensuite", async () => {
     const r = await classerActiviteCommission("C1", "formation");

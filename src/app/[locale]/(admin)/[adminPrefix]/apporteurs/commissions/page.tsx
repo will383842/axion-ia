@@ -20,7 +20,12 @@ import {
   moisParis,
   relevesDuMois,
 } from "@/features/apporteurs-reseau/commissions";
-import { euros, PALIERS_FORMATION } from "@/features/apporteurs-reseau/regles";
+import {
+  euros,
+  FORFAIT_CONFERENCE_CENTS,
+  PALIER_CONFERENCE,
+  PALIERS_FORMATION,
+} from "@/features/apporteurs-reseau/regles";
 import { moisAvecArticle } from "@/lib/email/templates/apporteur-demarrage";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
@@ -47,13 +52,21 @@ const ACTIVITE: Record<string, string> = {
   audit: "Audit",
   implementation: "Intégration",
   site_web: "Site web",
+  conference: "Conférence",
 };
 
-const PALIERS = PALIERS_FORMATION.map((p) => ({
-  id: p.id,
-  libelle: p.libelle,
-  detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
-}));
+const PALIERS = [
+  ...PALIERS_FORMATION.map((p) => ({
+    id: p.id,
+    libelle: p.libelle,
+    detail: `${euros(p.forfaitCents)} si ${euros(p.prixCents)} HT`,
+  })),
+  {
+    id: PALIER_CONFERENCE,
+    libelle: "Conférence (500 € fixes)",
+    detail: `${euros(FORFAIT_CONFERENCE_CENTS)} par commande`,
+  },
+];
 
 export default async function CommissionsApporteursPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -177,7 +190,9 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                 </div>
                 {c.palier ? (
                   <p className="text-[length:var(--text-admin-sm)]">
-                    {PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier}
+                    {c.palier === PALIER_CONFERENCE
+                      ? "Conférence"
+                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier)}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" &&
@@ -210,6 +225,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         <option value="un_a_un">1-to-1 (30 %)</option>
                         <option value="audit">Audit (30 %)</option>
                         <option value="implementation">Intégration (15 %)</option>
+                        <option value="conference">Conférence (500 € fixes)</option>
                         <option value="site_web">Site web (aucune commission)</option>
                       </select>
                     </label>
