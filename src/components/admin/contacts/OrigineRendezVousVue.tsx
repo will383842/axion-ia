@@ -211,6 +211,13 @@ export function OrigineRendezVousVue({
           {bilan.sansUtm} réservation{bilan.sansUtm > 1 ? "s" : ""} sans lien suivi.
         </p>
       </section>
+
+      {bilan.annules > 0 ? (
+        <p className={`text-[length:var(--text-admin-xs)] ${mutedCls}`}>
+          {bilan.annules} rendez-vous annulé{bilan.annules > 1 ? "s" : ""} non compté
+          {bilan.annules > 1 ? "s" : ""}.
+        </p>
+      ) : null}
     </div>
   );
 }
