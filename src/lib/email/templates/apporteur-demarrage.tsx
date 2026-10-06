@@ -81,6 +81,9 @@ interface Payload {
   /** Commission facturée : montant formaté, numéro d'autofacture, échéance de paiement (J+30). */
   montant?: string;
   echeance?: string;
+  /** Commission facturée avec reprise : lignes « avoir imputé » et somme réellement virée. */
+  avoirs?: string[];
+  sommeVirement?: string;
   numeroAutofacture?: string;
   /** Interne : lien de la fiche de l'apporteur dans la console. */
   lienConsole?: string;
@@ -307,6 +310,7 @@ export const COPY_DEMARRAGE = {
     texte: (montant: string) =>
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
     echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
+    somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
@@ -785,6 +789,18 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.montant) ?? "")}</Text>
+      {Array.isArray(p.avoirs)
+        ? p.avoirs.map((a) => (
+            <Text key={a} style={emailStyles.paragraphStyle}>
+              {texteOuNull(a)}
+            </Text>
+          ))
+        : null}
+      {texteOuNull(p.sommeVirement) ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {t.somme(texteOuNull(p.sommeVirement) ?? "")}
+        </Text>
+      ) : null}
       {texteOuNull(p.echeance) ? (
         <Text style={emailStyles.paragraphStyle}>{t.echeance(texteOuNull(p.echeance) ?? "")}</Text>
       ) : null}

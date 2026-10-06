@@ -18,6 +18,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
 
 import { construireDonneesAutofacture } from "./autofacture-donnees";
+import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -570,6 +571,36 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
 }
 
 /**
+ * Pour chaque reprise, l'autofacture d'ORIGINE (numéro et mois d'émission) : le renvoi de l'avoir
+ * (art. 4.5). Clé = id de la ligne de reprise. ⚠️ Pas de jour exact : aucune colonne ne garde la
+ * date d'émission une fois le virement fait (`majAt` bouge) ; `releveMois` garde le mois.
+ */
+export async function originesDesReprises(
+  reprises: ReadonlyArray<{ id: string; palier: string | null }>,
+): Promise<Map<string, { numero: string | null; mois: string | null }>> {
+  const origineDe = new Map<string, string>();
+  for (const r of reprises) {
+    if (r.palier?.startsWith(PREFIXE_PALIER_REPRISE))
+      origineDe.set(r.id, r.palier.slice(PREFIXE_PALIER_REPRISE.length));
+  }
+  const out = new Map<string, { numero: string | null; mois: string | null }>();
+  if (origineDe.size === 0) return out;
+  const origines = await prisma.commissionApporteur.findMany({
+    where: { id: { in: [...new Set(origineDe.values())] } },
+    select: { id: true, autofactureNumero: true, releveMois: true },
+  });
+  const parId = new Map(origines.map((o) => [o.id, o]));
+  for (const [repriseId, origineId] of origineDe) {
+    const o = parId.get(origineId);
+    out.set(repriseId, {
+      numero: o?.autofactureNumero ?? null,
+      mois: o?.releveMois ?? null,
+    });
+  }
+  return out;
+}
+
+/**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
  * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
  * n'enregistre alors AUCUNE facturation.
@@ -614,6 +645,7 @@ export async function genererPdfAutofacture(e: {
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
+    const origines = await originesDesReprises(commissions);
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -638,7 +670,11 @@ export async function genererPdfAutofacture(e: {
         numeroTva: apporteur.numeroTva,
         email: decryptPii(apporteur.email) ?? null,
       },
-      commissions,
+      commissions: commissions.map((l) => ({
+        ...l,
+        origineNumero: origines.get(l.id)?.numero ?? null,
+        origineMois: origines.get(l.id)?.mois ?? null,
+      })),
       organisme: await getOrganismeIdentite(),
       totalAttenduCents: e.totalCents,
     });

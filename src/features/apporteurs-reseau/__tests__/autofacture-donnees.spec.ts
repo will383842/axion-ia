@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   ECHEANCE_JOURS,
+  dateEncaissementRetenue,
   echeancePaiement,
   etatEcheances,
   objectifVirement,
@@ -56,7 +57,7 @@ describe("autofacture apporteur", () => {
         prixPublicHtCents: 200_000,
       },
     ]);
-    expect(l!.designation).toBe("Commission de parrainage");
+    expect(l!.designation).toBe("Parrainage (art. 4.6)");
     expect(l!.designation).not.toMatch(/prix|palier|1\s?234|2\s?000/i);
     expect(l!.montantHtCents).toBe(1_500);
   });
@@ -141,7 +142,7 @@ describe("autofacture : prix public, prix facturé, échéance, reprise (art. 4.
     const l = lignesAutofacture(avecReprise);
     expect(l).toHaveLength(3);
     expect(totalHtCents(l)).toBe(8_500);
-    expect(l[2]!.designation).toContain("Reprise");
+    expect(l[2]!.designation).toContain("avoir");
     const r = construireDonneesAutofacture({
       ...base,
       apporteur,
@@ -201,5 +202,53 @@ describe("objectif de virement (2 jours ouvrés) et échéance (30 jours)", () =
   it("le jour 30 lui-même : pas encore rouge", () => {
     const e = etatEcheances(new Date("2026-10-06T09:00:00Z"), new Date("2026-11-05T20:00:00Z"));
     expect(e.echeanceDepassee).toBe(false);
+  });
+});
+
+describe("avoir, parrainage, dates (validation juridique)", () => {
+  const date = (d: Date) => d.toISOString().slice(0, 10);
+  it("une reprise s'imprime comme un AVOIR d'autofacturation, avec renvoi à l'autofacture d'origine", () => {
+    const d = designationCommission({
+      id: "r",
+      activite: "reprise",
+      palier: "reprise-de:x",
+      parrainage: false,
+      statut: "reprise",
+      montantCents: -5_000,
+      origineNumero: "AXI-APP-2026-0003",
+      origineMois: "2026-09",
+    });
+    expect(d).toContain("Autofacturation — avoir");
+    expect(d).toContain("AXI-APP-2026-0003");
+    expect(d).toContain("septembre 2026");
+  });
+  it("parrainage : une ligne unique, ni filleul, ni commande, ni prix, ni commission du filleul", () => {
+    const d = designationCommission({
+      id: "p",
+      activite: "formation",
+      palier: "formation-generale-1j",
+      parrainage: true,
+      montantCents: 1_500,
+      factureHtCents: 123_456,
+      prixPublicHtCents: 200_000,
+    });
+    expect(d).toBe("Parrainage (art. 4.6)");
+  });
+  it("encaissement constaté un samedi : retenu le lundi, objectif le mercredi", () => {
+    const samedi = new Date("2026-10-10T10:00:00Z");
+    expect(date(dateEncaissementRetenue(samedi))).toBe("2026-10-12");
+    expect(date(objectifVirement(samedi))).toBe("2026-10-14");
+  });
+  it("encaissement constaté un jour ouvré : retenu ce jour-là", () => {
+    expect(date(dateEncaissementRetenue(new Date("2026-10-06T09:00:00Z")))).toBe("2026-10-06");
+  });
+  it("la pièce est datée du jour d'établissement et porte la date de prestation, les pénalités restent au gabarit", () => {
+    const r = construireDonneesAutofacture({
+      ...base,
+      apporteur,
+      dateEmission: new Date("2026-10-10T10:00:00Z"),
+    });
+    expect(r.ok && r.data.dateEmission).toContain("10 octobre 2026");
+    expect(r.ok && r.data.datePrestation).toContain("12 octobre 2026");
   });
 });

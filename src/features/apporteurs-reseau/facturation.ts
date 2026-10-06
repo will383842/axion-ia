@@ -34,9 +34,10 @@ import {
   demanderVigilance,
   genererPdfAutofacture,
   moisParis,
+  originesDesReprises,
   piecesVigilanceValides,
 } from "./commissions";
-import { dateFr, echeancePaiement, objectifVirement } from "./autofacture-donnees";
+import { dateFr, echeancePaiement, libelleMois, objectifVirement } from "./autofacture-donnees";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { signalerErreurReseau } from "./signaler";
@@ -60,7 +61,7 @@ function lireAFacturer(db: Db, apporteurId: string) {
       montantCents: { not: null },
       OR: [{ statut: "due" }, { statut: "reprise", releveMois: null }],
     },
-    select: { id: true, statut: true, montantCents: true },
+    select: { id: true, statut: true, montantCents: true, palier: true },
     orderBy: { creeAt: "asc" },
   });
 }
@@ -168,6 +169,17 @@ export async function facturerApporteur(
   );
 
   const nom = [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" ");
+  // Une reprise est un AVOIR imputé : le décompte le dit, avec le renvoi à l'autofacture d'origine.
+  const reprises = avant.filter((c) => c.statut === "reprise");
+  const origines = await originesDesReprises(reprises).catch(() => new Map());
+  const avoirs = reprises.map((r) => {
+    const o = origines.get(r.id);
+    const renvoi = o?.numero
+      ? ` (renvoi à l'autofacture ${o.numero}${o.mois ? `, émise en ${libelleMois(o.mois)}` : ""})`
+      : "";
+    return `Avoir imputé : ${euros(-(r.montantCents ?? 0))}${renvoi}`;
+  });
+  const brut = dues.reduce((s, c) => s + (c.montantCents ?? 0), 0);
   let envoi: ResultatEnvoi = "indisponible";
   try {
     envoi = await envoyer({
@@ -175,9 +187,10 @@ export async function facturerApporteur(
       destinataire: decryptPii(apporteur.email) ?? "",
       payload: {
         contactName: nom,
-        montant: euros(total),
+        montant: euros(brut),
         numeroAutofacture: numero,
         echeance: dateFr(echeancePaiement(maintenant)),
+        ...(avoirs.length > 0 ? { avoirs, sommeVirement: euros(total) } : {}),
       },
       entityType: "ApporteurReseau",
       entityId: apporteurId,

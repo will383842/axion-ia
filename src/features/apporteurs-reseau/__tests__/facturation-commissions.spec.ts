@@ -324,7 +324,35 @@ describe("reprises", () => {
     const [c, r] = lignes();
     expect(r!.autofactureNumero).toBe(c!.autofactureNumero);
     expect(r!.statut).toBe("reprise");
-    expect((etat.envoyes[0]!["payload"] as Record<string, string>)["montant"]).toContain("250");
+    expect((etat.envoyes[0]!["payload"] as Record<string, string>)["sommeVirement"]).toContain(
+      "250",
+    );
+  });
+
+  it("le décompte e-mail présente la reprise comme un avoir imputé, avec renvoi à l'autofacture d'origine, et la somme virée", async () => {
+    etat.lignes = [
+      ligne("c0", "versee", 30_000, {
+        autofactureNumero: "AXI-APP-2026-0001",
+        releveMois: "2026-09",
+      }),
+      ligne("c1", "due", 40_000),
+      ligne("r1", "reprise", -15_000, { palier: "reprise-de:c0" }),
+    ];
+    await facturerCommissionsDues(MARDI);
+    const p = etat.envoyes[0]!["payload"] as Record<string, unknown>;
+    expect(p["avoirs"]).toEqual([
+      "Avoir imputé : 150 € (renvoi à l'autofacture AXI-APP-2026-0001, émise en septembre 2026)",
+    ]);
+    expect(p["montant"]).toContain("400");
+    expect(p["sommeVirement"]).toContain("250");
+  });
+
+  it("sans reprise : le décompte ne parle ni d'avoir ni de somme virée", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const p = etat.envoyes[0]!["payload"] as Record<string, unknown>;
+    expect(p["avoirs"]).toBeUndefined();
+    expect(p["sommeVirement"]).toBeUndefined();
   });
 
   it("reprise plus grosse que les commissions dues : pas d'autofacture, la reprise reste à imputer", async () => {

@@ -121,6 +121,8 @@ export interface AutofactureData {
   numero: string;
   dateEmission: string;
   dateEcheance: string;
+  /** Date de la prestation (encaissement du client retenu), si elle diffère de la date d'émission. */
+  datePrestation?: string;
   /** Date limite de contestation, déjà calculée (jamais « sous 8 jours » brut). */
   contestationAvant: string;
   /** Période des honoraires — la prestation que la facture rémunère. */
@@ -182,6 +184,9 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
         <DocSection title="Informations de facturation">
           <FieldRow label="N° de facture" value={data.numero} required />
           <FieldRow label="Date d'émission" value={data.dateEmission} required />
+          {data.datePrestation ? (
+            <FieldRow label="Date de la prestation" value={data.datePrestation} required />
+          ) : null}
           <FieldRow label="Période des prestations" value={data.periodeLabel} required />
           <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
         </DocSection>
