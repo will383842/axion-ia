@@ -22,6 +22,8 @@ import {
 import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporteurs-reseau/regles";
 import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
+import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
+import { coordonneesAffichables } from "@/features/apporteurs-reseau/coordonnees-presentees";
 
 export const dynamic = "force-dynamic";
 
@@ -65,6 +67,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
   const onglet = ONGLETS.find((o) => o.cle === sp.onglet)?.cle ?? "a-traiter";
   const base = `/fr/${adminPrefix}/apporteurs/entreprises`;
   const maintenant = new Date();
+  const voitPii = peutOuvrirDossierApporteur(acces.role);
 
   const [comptes, lignes, apporteurs] = await Promise.all([
     compterParOnglet(),
@@ -128,6 +131,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
               p={p}
               signalements={signalements.get(p.id) ?? []}
               peutEcrire={acces.peutEcrire}
+              voitPii={voitPii}
               aujourdhui={dayKeyInParis(maintenant)}
             />
           ))}
@@ -141,11 +145,14 @@ function Carte({
   p,
   signalements,
   peutEcrire,
+  voitPii,
   aujourdhui,
 }: {
   p: PresentationVue;
   signalements: string[];
   peutEcrire: boolean;
+  /** Les coordonnées des personnes présentées sont réservées aux rôles autorisés. */
+  voitPii: boolean;
   aujourdhui: string;
 }) {
   const statut = p.aTraiter
@@ -173,10 +180,7 @@ function Carte({
             {p.personneFonction ? `, ${p.personneFonction}` : ""}
           </dd>
           <dt className="text-[color:var(--color-admin-fg-muted)]">✉️</dt>
-          <dd>
-            {p.personneEmail}
-            {p.personneTelephone ? ` · ${p.personneTelephone}` : ""}
-          </dd>
+          <dd>{coordonneesAffichables(p, voitPii)}</dd>
           {p.besoin ? (
             <>
               <dt className="text-[color:var(--color-admin-fg-muted)]">🎯</dt>
@@ -198,6 +202,15 @@ function Carte({
                 {p.motifProlongation
                   ? ` · prolongée : ${LIBELLE_PROLONGATION[p.motifProlongation as MotifProlongation] ?? p.motifProlongation}`
                   : ""}
+              </dd>
+            </>
+          ) : null}
+          {p.adresseACorriger ? (
+            <>
+              <dt className="text-[color:var(--color-admin-fg-muted)]">⚠️</dt>
+              <dd>
+                <AdminBadge tone="warning">Adresse à corriger</AdminBadge> le message de prise de
+                contact est revenu en erreur : les 30 jours ne courent pas.
               </dd>
             </>
           ) : null}

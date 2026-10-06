@@ -35,6 +35,7 @@ import {
   type GabaritApporteur,
   type ResultatEnvoi,
 } from "./envois";
+import { idsPriseDeContactRebondie } from "./rebonds";
 import { ajouterMois, finDeProtection, sirenValide } from "./regles";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -293,6 +294,8 @@ export interface PresentationVue {
   motifProlongation: string | null;
   note: string | null;
   aTraiter: boolean;
+  /** La prise de contact est revenue en erreur définitive : adresse à corriger, le délai ne court pas. */
+  adresseACorriger: boolean;
 }
 
 export function estATraiter(p: {
@@ -325,6 +328,9 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     take: 300,
     include: { apporteur: { select: { prenom: true, nom: true } } },
   });
+  const rebonds = await idsPriseDeContactRebondie(
+    lignes.filter((p) => p.statut === "reservee" && p.contactEnvoyeAt).map((p) => p.id),
+  );
   return lignes.map((p) => ({
     id: p.id,
     apporteurId: p.apporteurId,
@@ -347,6 +353,7 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     motifProlongation: p.motifProlongation,
     note: p.note,
     aTraiter: estATraiter(p),
+    adresseACorriger: rebonds.has(p.id),
   }));
 }
 

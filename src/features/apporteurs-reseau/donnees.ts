@@ -388,11 +388,11 @@ export async function deposerPiece(
   let pieceId = "";
   await prisma.$transaction(
     async (tx) => {
-      // La pièce d'identité remplacée n'a plus de raison d'être gardée : contenu purgé.
-      if (type === "identite") {
+      // La pièce d'identité ou le RIB remplacés n'ont plus de raison d'être gardés : contenu purgé.
+      if (type === "identite" || type === "rib") {
         await purgerContenuPieces(tx, {
           apporteurId,
-          types: ["identite"],
+          types: [type],
           courantesSeulement: true,
         });
       }

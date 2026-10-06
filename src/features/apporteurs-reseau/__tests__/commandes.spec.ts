@@ -87,3 +87,64 @@ describe("commande soldée : la commission attend les 100 %", () => {
     expect(r.map((c) => c.devisId)).toEqual(["D1"]);
   });
 });
+
+describe("commande soldée : comparée au total du devis accepté", () => {
+  const totaux = (n: number) => new Map([["D1", n]]);
+
+  it("acompte payé, aucune facture de solde (brouillon ignoré) : rien", () => {
+    expect(
+      commandesSoldees(
+        [
+          f({ id: "A", montantHtCents: 60_000 }),
+          f({ id: "S", statut: "brouillon", montantHtCents: 140_000 }),
+        ],
+        totaux(200_000),
+      ),
+    ).toEqual([]);
+  });
+
+  it("acompte seul payé, solde jamais créé : rien", () => {
+    expect(commandesSoldees([f({ id: "A", montantHtCents: 60_000 })], totaux(200_000))).toEqual([]);
+  });
+
+  it("acompte + solde payés : une commission sur le total", () => {
+    const r = commandesSoldees(
+      [f({ id: "A", montantHtCents: 60_000 }), f({ id: "S", montantHtCents: 140_000 })],
+      totaux(200_000),
+    );
+    expect(r).toHaveLength(1);
+    expect(r[0]!.totalHtCents).toBe(200_000);
+  });
+
+  it("solde émis mais impayé : rien", () => {
+    expect(
+      commandesSoldees(
+        [
+          f({ id: "A", montantHtCents: 60_000 }),
+          f({ id: "S", statut: "emise", montantHtCents: 140_000 }),
+        ],
+        totaux(200_000),
+      ),
+    ).toEqual([]);
+  });
+
+  it("devis modifié à la hausse après l'acompte : la commande attend la facture du complément", () => {
+    expect(commandesSoldees([f({ id: "A", montantHtCents: 200_000 })], totaux(250_000))).toEqual(
+      [],
+    );
+  });
+
+  it("devis modifié à la baisse : le facturé dépasse le total, la commande est soldée", () => {
+    expect(
+      commandesSoldees([f({ id: "A", montantHtCents: 200_000 })], totaux(150_000)),
+    ).toHaveLength(1);
+  });
+
+  it("factures sans devis : une par une, comportement inchangé", () => {
+    const r = commandesSoldees(
+      [f({ id: "L1", devisId: null, montantHtCents: 10_000 })],
+      totaux(999),
+    );
+    expect(r.map((c) => c.factureCleId)).toEqual(["L1"]);
+  });
+});

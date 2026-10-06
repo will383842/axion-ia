@@ -742,6 +742,29 @@ export async function marquerVerse(
   ) {
     return { ok: false, message: "Pas de relevé ce mois-ci (solde nul ou sous le seuil)." };
   }
+  // Vigilance REVÉRIFIÉE à l'émission : une attestation périmée depuis que les commissions sont
+  // devenues dues ne doit pas laisser partir un versement au-delà du seuil (art. 5.4 et 6.2).
+  const [cumul, valides] = await Promise.all([
+    cumulVigilanceCents(apporteurId),
+    piecesVigilanceValides(apporteurId, maintenant),
+  ]);
+  if (etatVigilance({ cumulCents: cumul, nouvelleCents: 0, piecesValides: valides }).attendre) {
+    // Les commissions dues repassent en attente de vigilance (le passage quotidien demande, relance
+    // puis libère dès que les pièces sont conformes) ; les reprises restent à imputer.
+    await prisma.commissionApporteur.updateMany({
+      where: {
+        id: { in: avant.filter((d) => d.statut === "due").map((d) => d.id) },
+        statut: "due",
+        releveMois: null,
+      },
+      data: { statut: "en_attente_vigilance" },
+    });
+    return {
+      ok: false,
+      message:
+        "L'attestation de vigilance ou l'immatriculation n'est plus valable : les commissions sont remises en attente de vigilance, rien n'a été versé. Les pièces seront redemandées à l'apporteur.",
+    };
+  }
   const numero = await allouerNumeroAutofacture(annee);
   const pdf = await genererPdfAutofacture({
     apporteurId,

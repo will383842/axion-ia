@@ -7,6 +7,9 @@ const etat = vi.hoisted(() => ({
   stockage: "ok" as "ok" | "ko",
   envoyes: [] as Array<Record<string, unknown>>,
   enAttente: [] as Array<Record<string, unknown>>,
+  /** Cumul de vigilance (due + versée + en attente) et pièces valides pour ce test. */
+  cumulCents: 0,
+  piecesValides: true,
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -58,12 +61,37 @@ vi.mock("@/lib/prisma", () => {
           }));
         return etat.aRegler;
       }),
+      aggregate: vi.fn(async () => ({ _sum: { montantCents: etat.cumulCents } })),
       updateMany: vi.fn(
         async (a: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
           etat.maj.push(a);
           const ids = (a.where.id as { in: string[] }).in;
           return { count: ids.length };
         },
+      ),
+    },
+    // Cumul de vigilance et pièces : par défaut sous le seuil, pièces valides.
+    pieceApporteur: {
+      findMany: vi.fn(async () =>
+        etat.piecesValides
+          ? [
+              {
+                type: "vigilance",
+                statut: "conforme",
+                expireAt: new Date("2027-06-01T00:00:00Z"),
+                remplaceeAt: null,
+              },
+              { type: "immatriculation", statut: "conforme", expireAt: null, remplaceeAt: null },
+            ]
+          : [
+              {
+                type: "vigilance",
+                statut: "conforme",
+                expireAt: new Date("2026-09-30T00:00:00Z"),
+                remplaceeAt: null,
+              },
+              { type: "immatriculation", statut: "conforme", expireAt: null, remplaceeAt: null },
+            ],
       ),
     },
     numeroEmis: { findMany: vi.fn(async () => []) },
@@ -84,6 +112,8 @@ beforeEach(() => {
   etat.maj = [];
   etat.stockage = "ok";
   etat.envoyes = [];
+  etat.cumulCents = 0;
+  etat.piecesValides = true;
 });
 
 describe("versement du relevé : jamais sans pièce, reprises déduites", () => {
@@ -148,5 +178,32 @@ describe("versement du relevé : jamais sans pièce, reprises déduites", () => 
   it("janvier : le seuil ne s'applique pas (art. 5.3)", async () => {
     etat.aRegler = [ligne("c1", "due", 3_000)];
     expect((await marquerVerse("APP1", JANVIER)).ok).toBe(true);
+  });
+
+  it("attestation périmée et cumul au-delà de 5 000 € : rien n'est versé, les commissions repassent en attente de vigilance", async () => {
+    etat.aRegler = [ligne("c1", "due", 40_000), ligne("r1", "reprise", -5_000)];
+    etat.cumulCents = 600_000;
+    etat.piecesValides = false;
+    const r = await marquerVerse("APP1", OCTOBRE);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.message).toContain("vigilance");
+    expect(etat.envoyes).toEqual([]);
+    expect(etat.maj).toHaveLength(1);
+    expect(etat.maj[0]!.data).toEqual({ statut: "en_attente_vigilance" });
+    // Seules les commissions dues sont remises en attente, pas la reprise.
+    expect((etat.maj[0]!.where.id as { in: string[] }).in).toEqual(["c1"]);
+  });
+
+  it("attestation périmée mais cumul sous le seuil de vigilance : le versement part", async () => {
+    etat.aRegler = [ligne("c1", "due", 40_000)];
+    etat.cumulCents = 100_000;
+    etat.piecesValides = false;
+    expect((await marquerVerse("APP1", OCTOBRE)).ok).toBe(true);
+  });
+
+  it("cumul au-delà de 5 000 € avec pièces valides : le versement part", async () => {
+    etat.aRegler = [ligne("c1", "due", 40_000)];
+    etat.cumulCents = 600_000;
+    expect((await marquerVerse("APP1", OCTOBRE)).ok).toBe(true);
   });
 });

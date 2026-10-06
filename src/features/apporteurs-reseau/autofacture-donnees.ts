@@ -63,7 +63,9 @@ function eurosHt(cents: number): string {
 export function designationCommission(c: CommissionPourAutofacture, libelleMois: string): string {
   if (c.statut === "reprise")
     return `Reprise sur une commission déjà versée (art. 4.5) — relevé de ${libelleMois}`;
-  const base = c.parrainage ? "Commission de parrainage" : `Commission d'apport (${c.activite})`;
+  // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
+  if (c.parrainage) return `Commission de parrainage — relevé de ${libelleMois}`;
+  const base = `Commission d'apport (${c.activite})`;
   // Plusieurs sessions du même palier : le prix public porté est celui de TOUTES les sessions.
   const paliers = PALIERS_FORMATION.find((p) => p.id === c.palier);
   const sessions =

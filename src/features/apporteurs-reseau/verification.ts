@@ -117,6 +117,8 @@ interface SignatureLue {
   declarations: string[];
   texteSha256: string;
   valeurs: ValeursContrat;
+  /** Texte exact signé, archivé à la signature (absent des anciens dossiers). */
+  texte: string | null;
 }
 
 function lireSignature(json: unknown): SignatureLue | null {
@@ -144,6 +146,7 @@ function lireSignature(json: unknown): SignatureLue | null {
     declarations: liste(j.declarations),
     texteSha256: j.texteSha256 as string,
     valeurs,
+    texte: typeof j.texte === "string" && j.texte.length > 0 ? j.texte : null,
   };
 }
 
@@ -258,7 +261,9 @@ export async function appliquerDecision(
         ok: false,
         message: "La signature de l'apporteur est illisible : demande-lui de signer à nouveau.",
       };
-    const texte = texteDuContrat(sig.valeurs);
+    // Texte archivé à la signature (empreinte revérifiée) ; sinon, ancien dossier : on
+    // reconstruit depuis le contrat courant et on compare.
+    const texte = sig.texte ?? texteDuContrat(sig.valeurs);
     if (empreinte(texte) !== sig.texteSha256) {
       return {
         ok: false,
@@ -331,6 +336,8 @@ export async function appliquerDecision(
           refuseAt: maintenant,
           dernierMessage: note?.trim() || null,
           versionLien: { increment: 1 },
+          // Refus définitif : l'IBAN (chiffré) n'a plus de raison d'être gardé non plus.
+          iban: null,
         },
       });
       // Refus définitif : plus aucune raison de garder la pièce d'identité ni le RIB.

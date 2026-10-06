@@ -166,8 +166,21 @@ describe("RGPD : pièce d'identité remplacée", () => {
     });
   });
 
-  it("un autre type de pièce remplacé n'est pas purgé par ce chemin", async () => {
-    await deposerPiece(ID, "rib", "rib.pdf", PDF);
+  it("un RIB remplacé : le contenu de l'ancien RIB est purgé, celui de l'identité n'est pas visé", async () => {
+    p.pieceFindMany.mockResolvedValue([{ id: "ancien-rib" }]);
+    expect(await deposerPiece(ID, "rib", "rib.pdf", PDF)).toEqual({ ok: true });
+    expect(p.contenuDeleteMany).toHaveBeenCalledWith({
+      where: { pieceId: { in: ["ancien-rib"] } },
+    });
+    expect(p.pieceFindMany.mock.calls[0]![0].where).toMatchObject({
+      apporteurId: ID,
+      type: { in: ["rib"] },
+      remplaceeAt: null,
+    });
+  });
+
+  it("une attestation de vigilance remplacée n'est pas purgée par ce chemin", async () => {
+    await deposerPiece(ID, "vigilance", "attestation.pdf", PDF);
     expect(p.contenuDeleteMany).not.toHaveBeenCalled();
   });
 });

@@ -13,9 +13,10 @@
  *      signatures simultanées n'en écrivent qu'une ;
  *   6. les déclarations, puis l'alerte interne à Williams.
  *
- * `signatureApporteur` garde aussi les `valeurs` EXACTES passées à `texteDuContrat` : la
- * contresignature (console) reconstruit le même texte et compare son empreinte à
- * `texteSha256` avant de contresigner.
+ * `signatureApporteur` garde aussi les `valeurs` EXACTES passées à `texteDuContrat` et le
+ * TEXTE signé : la contresignature (console) fabrique le PDF depuis ce texte archivé (après avoir
+ * vérifié son empreinte contre `texteSha256`) ; sans archive (ancien dossier), elle reconstruit
+ * le texte et compare l'empreinte.
  */
 
 import "server-only";
@@ -63,6 +64,12 @@ export interface SignatureApporteurJson {
   texteSha256: string;
   /** Les valeurs EXACTES passées à `texteDuContrat`. */
   valeurs: ValeursContrat;
+  /**
+   * Le TEXTE EXACT signé (rendu avec les valeurs de l'apporteur). La contresignature fabrique le
+   * PDF depuis cette archive : un changement du contrat après la signature ne la bloque plus.
+   * Absent des dossiers signés avant cette archive. Jamais recopié dans l'export RGPD.
+   */
+  texte?: string;
 }
 
 export type ResultatSignature =
@@ -129,6 +136,7 @@ export async function signerContrat(e: {
     declarations,
     texteSha256: sha256,
     valeurs,
+    texte,
   };
   // Écriture conditionnée au statut : un dossier passé entre-temps « à vérifier »
   // (double clic, deux onglets) n'est pas réécrit.

@@ -15,6 +15,7 @@ const ATTEINTS_PAR_LE_WORKER = [
   "commandes.ts",
   "alerte-vigilance.ts",
   "signaler.ts",
+  "rebonds.ts",
 ];
 
 describe("modules atteints par le worker des apporteurs", () => {

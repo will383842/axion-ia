@@ -36,6 +36,7 @@ import {
 import { envoyer } from "./envois";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { commandesSoldees } from "./commandes";
+import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
@@ -219,7 +220,11 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
     where: { statut: "reservee", contactEnvoyeAt: { not: null, lte: seuil } },
     select: { id: true, contactEnvoyeAt: true },
   });
+  if (lignes.length === 0) return;
+  // Contrat art. 3.2 : le délai ne court pas tant que la prise de contact revient en erreur.
+  const rebonds = await idsPriseDeContactRebondie(lignes.map((l) => l.id));
   for (const p of lignes) {
+    if (rebonds.has(p.id)) continue;
     const confirmeeAt = dateConfirmationTacite(p.contactEnvoyeAt!);
     if (confirmeeAt.getTime() > maintenant.getTime()) continue;
     const r = await prisma.presentationEntreprise.updateMany({
@@ -411,7 +416,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
-      devis: { select: { acceptedAt: true } },
+      devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
       client: { select: { siren: true } },
     },
   });
@@ -427,7 +432,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     },
   });
   const parId = new Map(lignes.map((f) => [f.id, f]));
-  const commandes = commandesSoldees([...lignes, ...avoirsLignes]);
+  const totauxDevis = new Map<string, number>();
+  for (const l of lignes) {
+    if (l.devisId && l.devis) totauxDevis.set(l.devisId, l.devis.montantTotalHtCents);
+  }
+  const commandes = commandesSoldees([...lignes, ...avoirsLignes], totauxDevis);
   if (commandes.length === 0) return;
   const existantes = await prisma.commissionApporteur.findMany({
     where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },

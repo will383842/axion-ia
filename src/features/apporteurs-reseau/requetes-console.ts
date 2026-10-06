@@ -119,6 +119,13 @@ export interface CommissionDeLApporteur {
   verseeAt: Date | null;
 }
 
+/** La preuve de signature pour l'écran : le texte archivé (~60 Ko) reste en base. */
+function sansTexteArchive(json: unknown): Record<string, unknown> | null {
+  if (!json || typeof json !== "object") return null;
+  const { texte: _texte, ...reste } = json as Record<string, unknown>;
+  return reste;
+}
+
 export async function lireFicheApporteur(id: string) {
   const dossier = await lireDossier(id);
   if (!dossier) return null;
@@ -194,7 +201,7 @@ export async function lireFicheApporteur(id: string) {
     aContratApporteur: !!a?.contratCle,
     aContratSigne: !!a?.contratSigneCle,
     submissionId: a?.submissionId ?? null,
-    signature: (a?.signatureApporteur as Record<string, unknown> | null) ?? null,
+    signature: sansTexteArchive(a?.signatureApporteur),
     filleuls: (a?.filleuls ?? []).map((f) => ({ id: f.id, nom: nom(f), statut: f.statut })),
     parrainsPossibles: parrains.map((p) => ({ id: p.id, nom: nom(p) })),
     entreprises: presentations as EntrepriseDeLApporteur[],

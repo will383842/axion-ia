@@ -20,7 +20,11 @@ type Ligne = {
   personneEmail: string;
 };
 
-const etat = vi.hoisted(() => ({ ligne: null as unknown as Ligne, envoyes: [] as unknown[] }));
+const etat = vi.hoisted(() => ({
+  ligne: null as unknown as Ligne,
+  envoyes: [] as unknown[],
+  rebond: null as "hard" | "soft" | null,
+}));
 
 vi.mock("server-only", () => ({}));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -86,6 +90,14 @@ vi.mock("@/lib/prisma", () => ({
       ),
       update: vi.fn(async () => ({})),
     },
+    // Rebond de l'e-mail de prise de contact : `hard` seul bloque (le filtre est dans la requête).
+    emailLog: {
+      findMany: vi.fn(async (a: { where: { bounceType?: string } }) =>
+        etat.rebond !== null && etat.rebond === a.where.bounceType
+          ? [{ entityId: etat.ligne.id }]
+          : [],
+      ),
+    },
     factureFormation: { findMany: vi.fn(async () => []) },
     commissionApporteur: { findMany: vi.fn(async () => []), groupBy: vi.fn(async () => []) },
     pieceApporteur: { findMany: vi.fn(async () => []) },
@@ -102,6 +114,7 @@ const opts = { civilite: "" as const, nomFamille: "" };
 
 beforeEach(() => {
   etat.envoyes = [];
+  etat.rebond = null;
   etat.ligne = {
     id: "P1",
     siren: "123456782",
@@ -155,5 +168,21 @@ describe("« Bien reçu » puis confirmation réputée acquise à 30 jours", () 
     await passerReseauApporteurs(new Date("2026-11-05T09:30:00Z"));
     const bilan = await passerReseauApporteurs(new Date("2026-11-06T09:30:00Z"));
     expect(bilan.confirmeesTacites).toBe(0);
+  });
+
+  it("rebond hard de la prise de contact : pas de confirmation à J+30", async () => {
+    await appliquerReponse("P1", "bien_recu", opts, BIEN_RECU_LE);
+    etat.rebond = "hard";
+    const bilan = await passerReseauApporteurs(new Date("2026-11-05T09:30:00Z"));
+    expect(bilan.confirmeesTacites).toBe(0);
+    expect(etat.ligne.statut).toBe("reservee");
+  });
+
+  it("rebond soft : confirmation à J+30 comme d'habitude", async () => {
+    await appliquerReponse("P1", "bien_recu", opts, BIEN_RECU_LE);
+    etat.rebond = "soft";
+    const bilan = await passerReseauApporteurs(new Date("2026-11-05T09:30:00Z"));
+    expect(bilan.confirmeesTacites).toBe(1);
+    expect(etat.ligne.statut).toBe("confirmee");
   });
 });

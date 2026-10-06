@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Vérification d'un dossier signé : refus définitif (pièces purgées), renvoi du contrat
@@ -22,11 +23,18 @@ vi.mock("../donnees", () => ({
   lireDossier: (...a: unknown[]) => h.lireDossier(...a),
   purgerContenuPieces: (...a: unknown[]) => h.purgerContenuPieces(...a),
 }));
-vi.mock("../contrat-pdf", () => ({
+const pdf = vi.hoisted(() => ({
   texteDuContrat: vi.fn(),
-  empreinte: vi.fn(),
   rendreContratPdf: vi.fn(),
 }));
+vi.mock("../contrat-pdf", async () => {
+  const { createHash } = await import("node:crypto");
+  return {
+    texteDuContrat: (...a: unknown[]) => pdf.texteDuContrat(...a),
+    empreinte: (t: string) => createHash("sha256").update(t).digest("hex"),
+    rendreContratPdf: (...a: unknown[]) => pdf.rendreContratPdf(...a),
+  };
+});
 vi.mock("@/lib/r2-storage", () => ({
   getObjectBufferR2: vi.fn(),
   isR2Configured: () => true,
@@ -77,6 +85,8 @@ describe("refus définitif : identité ET RIB purgés", () => {
     expect(r).toMatchObject({ ok: true });
     const maj = h.appUpdate.mock.calls[0]![0];
     expect(maj.data).toMatchObject({ statut: "refuse", versionLien: { increment: 1 } });
+    // L'IBAN (chiffré) est vidé avec les pièces.
+    expect(maj.data.iban).toBeNull();
     expect(h.purgerContenuPieces).toHaveBeenCalledTimes(1);
     const [, filtre] = h.purgerContenuPieces.mock.calls[0]!;
     expect(filtre).toEqual({ apporteurId: ID, types: ["identite", "rib"] });
@@ -163,5 +173,70 @@ describe("D4 : renvoyer le contrat signé", () => {
     const r = await renvoyerContratSigne(ID);
     expect(r).toMatchObject({ ok: true });
     expect((r as { message: string }).message).toContain("retenu");
+  });
+});
+
+describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la signature", () => {
+  const sha = (t: string) => createHash("sha256").update(t).digest("hex");
+  const TEXTE_SIGNE = "CONTRAT version du jour de la signature";
+  const signature = (over: Record<string, unknown> = {}) => ({
+    nomTape: "Claire Martin",
+    signeAt: "2026-10-05T10:00:00.000Z",
+    ipHash: null,
+    navigateur: "Chrome sur Android",
+    acceptations: [],
+    declarations: [],
+    texteSha256: sha(TEXTE_SIGNE),
+    valeurs: { identite: "Claire MARTIN" },
+    ...over,
+  });
+
+  beforeEach(() => {
+    pdf.rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
+  });
+
+  it("texte du contrat modifié depuis la signature : contresignature OK depuis l'archive", async () => {
+    pdf.texteDuContrat.mockReturnValue("CONTRAT version modifiée après coup");
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: true });
+    expect(pdf.rendreContratPdf.mock.calls[0]![0].texte).toBe(TEXTE_SIGNE);
+    expect(pdf.texteDuContrat).not.toHaveBeenCalled();
+  });
+
+  it("archive altérée (empreinte différente) : refus, aucun PDF", async () => {
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature({ texte: TEXTE_SIGNE + " altéré" }),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("signer à nouveau");
+    expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
+  });
+
+  it("ancien dossier sans archive, contrat inchangé : reconstruction + comparaison, OK", async () => {
+    pdf.texteDuContrat.mockReturnValue(TEXTE_SIGNE);
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature(),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    expect(pdf.texteDuContrat).toHaveBeenCalledTimes(1);
+  });
+
+  it("ancien dossier sans archive, contrat modifié : « signer à nouveau »", async () => {
+    pdf.texteDuContrat.mockReturnValue("CONTRAT autre texte");
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: signature(),
+      contratSha256: sha(TEXTE_SIGNE),
+    });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("signer à nouveau");
+    expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
   });
 });
