@@ -521,7 +521,14 @@ export async function completerLeadVsl(
     const tropRapide = jeton.genre === "saisie" && maintenant - jeton.iat < DELAI_MIN_ETAPE2_MS;
     const suspect = jeton.suspect || vsl?.suspect === true || tropRapide;
 
+    const detailsLigne = ligne.details as { candidature?: { sourceConnaissance?: string } };
+    const sourceLigne = optionLabel(
+      SOURCE_OPTIONS,
+      detailsLigne.candidature?.sourceConnaissance ?? "facebook",
+    );
     const issue = await avancerVslEtape2({
+      // Le message de la fiche (console) suit l'avancée : il disait « étape 1 sur 2 ».
+      message: `Inscription terminée depuis la page vidéo ${VSL_PAGE_PATH} (source : ${sourceLigne}) — téléphone et réponse donnés, créneau à choisir.`,
       id: ligne.id,
       telephoneChiffre: encryptPii(d.telephone) ?? null,
       reponseId: d.reponseId,

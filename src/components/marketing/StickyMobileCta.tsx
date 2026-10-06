@@ -30,6 +30,12 @@ interface StickyMobileCtaProps {
    * pages qui utilisent ce bouton n'émettent rien, comme avant.
    */
   suivi?: { landing: string };
+  /**
+   * `terracotta` : pages du tunnel apporteurs. La charte d'Axion-IA est
+   * terracotta (le bleu est réservé aux liens) ; le bouton par défaut reste
+   * celui des autres pages du site.
+   */
+  couleur?: "terracotta";
 }
 
 export function StickyMobileCta({
@@ -38,7 +44,12 @@ export function StickyMobileCta({
   track,
   threshold = 600,
   suivi,
+  couleur,
 }: StickyMobileCtaProps) {
+  const teinte =
+    couleur === "terracotta"
+      ? "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-on-mocha"
+      : "bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary";
   const [visible, setVisible] = useState(false);
   const landingSuivi = suivi?.landing;
   const auClic = landingSuivi
@@ -100,7 +111,7 @@ export function StickyMobileCta({
             onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
-            className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${teinte} flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
           >
             {label}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -124,7 +135,7 @@ export function StickyMobileCta({
           onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
-          className={`bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
+          className={`${teinte} inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
             visible ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >

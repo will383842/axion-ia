@@ -65,6 +65,21 @@ export async function majVslCible(id: string, patch: Record<string, unknown>): P
   `;
 }
 
+/**
+ * Met à jour le message affiché sur la fiche (`details.message`) d'un lead
+ * VIDÉO uniquement — une seule instruction, aucune relecture. Sans bloc `vsl`,
+ * la ligne n'est pas touchée (jamais l'ancien formulaire ni un dossier).
+ */
+export async function majMessageVsl(id: string, message: string): Promise<void> {
+  const json = JSON.stringify(message);
+  await prisma.$executeRaw`
+    UPDATE submissions
+    SET details = jsonb_set(details, '{message}', ${json}::jsonb, true),
+        updated_at = now()
+    WHERE id = ${id}::uuid AND deleted_at IS NULL AND details ? 'vsl'
+  `;
+}
+
 export interface AvancerEtape2 {
   readonly id: string;
   /** Téléphone DÉJÀ chiffré (`encryptPii`). */
@@ -72,6 +87,8 @@ export interface AvancerEtape2 {
   readonly reponseId: string;
   readonly suspect: boolean;
   readonly maintenant: Date;
+  /** Nouveau texte de `details.message` (la console l'affiche) ; sinon inchangé. */
+  readonly message?: string;
 }
 
 export type IssueAvancement = "avance" | "deja" | "introuvable";
@@ -106,14 +123,28 @@ export async function avancerVslEtape2(a: AvancerEtape2): Promise<IssueAvancemen
       ...(a.suspect ? { suspect: true as const } : {}),
     };
     const json = JSON.stringify(patch);
+    const message = JSON.stringify(a.message ?? null);
     await tx.$executeRaw`
       UPDATE submissions
-      SET details = jsonb_set(
-            COALESCE(details, '{}'::jsonb),
-            '{vsl}',
-            COALESCE(details -> 'vsl', '{}'::jsonb) || ${json}::jsonb,
-            true
-          ),
+      SET details = CASE
+            WHEN ${message}::jsonb = 'null'::jsonb THEN jsonb_set(
+              COALESCE(details, '{}'::jsonb),
+              '{vsl}',
+              COALESCE(details -> 'vsl', '{}'::jsonb) || ${json}::jsonb,
+              true
+            )
+            ELSE jsonb_set(
+              jsonb_set(
+                COALESCE(details, '{}'::jsonb),
+                '{vsl}',
+                COALESCE(details -> 'vsl', '{}'::jsonb) || ${json}::jsonb,
+                true
+              ),
+              '{message}',
+              ${message}::jsonb,
+              true
+            )
+          END,
           contact_phone = COALESCE(contact_phone, ${a.telephoneChiffre}),
           updated_at = now()
       WHERE id = ${a.id}::uuid

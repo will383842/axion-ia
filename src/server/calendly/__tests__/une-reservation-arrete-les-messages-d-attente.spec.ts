@@ -50,6 +50,10 @@ const rattacher = vi.fn(async (..._a: unknown[]): Promise<IssueRattachementTest>
 vi.mock("../rattachement-apporteur", () => ({
   rattacherEchangeApporteur: (...a: unknown[]) => rattacher(...a),
 }));
+const majMessage = vi.fn(async (..._a: unknown[]) => undefined);
+vi.mock("@/features/commercial-application/lead-vsl-details", () => ({
+  majMessageVsl: (...a: unknown[]) => majMessage(...a),
+}));
 const annuler = vi.fn(async (..._a: unknown[]) => 3);
 vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
   annulerRelancesLeadApporteur: (...a: unknown[]) => annuler(...a),
@@ -278,5 +282,23 @@ describe("`Schedule` vers Meta à la réservation (lot 5)", () => {
     rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
     schedule.mockRejectedValueOnce(new Error("meta indisponible"));
     expect((await reserver()).ok).toBe(true);
+  });
+});
+
+describe("message de la fiche à la réservation", () => {
+  it("une réservation rattachée met à jour le message de la fiche (lead vidéo seulement : la requête le garantit)", async () => {
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_lea" });
+    await enrichCalendlyEvent("evt_1");
+    expect(majMessage).toHaveBeenCalledWith("sub_lea", expect.stringContaining("Échange réservé"));
+  });
+
+  it("sans rattachement, rien n'est écrit sur une fiche", async () => {
+    rattacher.mockResolvedValue({ rattache: false, motif: "aucun_dossier_apporteur" });
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(majMessage).not.toHaveBeenCalled();
   });
 });

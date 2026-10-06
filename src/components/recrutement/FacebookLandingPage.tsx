@@ -604,6 +604,7 @@ export async function FacebookLandingPage({ params }: Props) {
         label={`${HERO.cta} →`}
         track="facebook-sticky-cta"
         suivi={{ landing: LANDING_MESURE }}
+        couleur="terracotta"
       />
       <LandingViewTracker landing={LANDING_MESURE} />
     </TunnelFacebookShell>

@@ -310,7 +310,7 @@ export async function SubmissionsV2({
     const suivi = estBadgeDecision(badge) || base.label === "Sans réponse" ? badge : null;
     const r = suivi ? badgeInvitation(suivi) : base;
     const accuse = accuses.get(s.id);
-    const { prenom, nom } = splitNomPrenom(s.contactName);
+    const { prenom, nom } = splitNomPrenom(s.contactName, s.prenomSeul === true);
     return {
       id: s.id,
       detailHref: lienDetail(s),

@@ -8,12 +8,18 @@
  * comme nom seul (un contact qui n'a saisi que « Dupont » n'a pas donné de
  * prénom).
  */
-export function splitNomPrenom(full: string | null | undefined): {
+export function splitNomPrenom(
+  full: string | null | undefined,
+  prenomSeul = false,
+): {
   prenom: string | null;
   nom: string | null;
 } {
   const clean = (full ?? "").trim();
   if (!clean) return { prenom: null, nom: null };
+  // Tunnel vidéo : `contactName` ne porte QUE le prénom (le nom n'est pas
+  // demandé). Un mot unique serait lu comme un nom ; ici c'est un prénom.
+  if (prenomSeul) return { prenom: clean, nom: null };
   const parts = clean.split(/\s+/);
   const first = parts[0] ?? null;
   if (parts.length === 1) return { prenom: null, nom: first };
