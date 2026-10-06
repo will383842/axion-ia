@@ -134,13 +134,6 @@ export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
   return lignes.reduce((s, l) => s + l.montantHtCents, 0);
 }
 
-/**
- * ⚠️ Ancienne règle (relevé mensuel, dix jours ouvrés) : plus utilisée par le code, conservée
- * seulement parce que `parite-contrat-code.spec.ts` la lit encore. À retirer avec la mise à jour
- * de ce test (contrat).
- */
-export const ECHEANCE_JOURS_OUVRES = 10;
-
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
 export const ECHEANCE_JOURS = 30;
 /** OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission. */

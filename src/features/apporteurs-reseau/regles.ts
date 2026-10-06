@@ -44,12 +44,6 @@ export const PEREMPTION_JOURS = 90;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
 export const PARRAINAGE_MOIS = 6;
-/**
- * ⚠️ Ancien seuil du relevé mensuel : SUPPRIMÉ de la règle (06/10, chaque commission est facturée
- * dès qu'elle est due). Plus lu par le code ; conservé seulement parce que
- * `parite-contrat-code.spec.ts` l'importe encore (à retirer avec la mise à jour du contrat).
- */
-export const SEUIL_RELEVE_CENTS = 5_000;
 /** Art. 5.4 et 6.2 (L.8222-1, D.8222-5) : seuil de vigilance, et son approche. */
 export const SEUIL_VIGILANCE_CENTS = 500_000;
 export const APPROCHE_VIGILANCE_CENTS = 400_000;

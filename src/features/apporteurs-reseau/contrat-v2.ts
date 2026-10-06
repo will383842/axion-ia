@@ -105,14 +105,17 @@ de réponse à un message de la Société, quelle qu'en soit la durée, n'emport
 
 **2.8 — Période de démarrage.** Tant que l'espace en ligne n'est pas ouvert, aucune date d'ouverture
 n'étant promise, les déclarations de l'article 3.2 sont faites par courrier électronique ou par le formulaire
-du lien personnel ; les notifications de l'article 20, les relevés et les factures de l'article 5 sont
+du lien personnel ; les notifications de l'article 20, les autofactures et leurs décomptes (article 5) sont
 adressés par courrier électronique ; toute mention de l'espace en ligne s'entend de ces échanges.
 
-Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.2 à 5.5) et les échéances de
+Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de
 paiement ne sont ni suspendus ni prorogés par la présente période. **Elle ne reporte aucun délai de
-paiement (article 5.3 ; article L.441-10 du code de commerce) et ne suspend aucune pénalité de retard.**
+paiement (article 5.3 ; article L.441-10 du code de commerce) et ne suspend aucune pénalité de retard.
+L'encaissement, au sens de l'article 4.0, s'entend du jour où la somme est créditée sur le compte bancaire de
+la Société, quel que soit le moyen de paiement du client (virement, carte bancaire, opérateur de compétences
+ou autre financeur).**
 Les opérations que le contrat confie à la Société (enregistrement des déclarations, refus, informations,
-relevés, factures, réponses) sont effectuées manuellement ; elles le sont dans les délais que le contrat
+autofactures, décomptes, réponses) sont effectuées manuellement ; elles le sont dans les délais que le contrat
 fixe et, à défaut, dans un délai raisonnable. Le retard de la Société dans l'une de ces opérations ne prive
 l'Apporteur d'aucun droit et ne vaut pas renonciation de la Société à se prévaloir de la stipulation
 concernée.
@@ -323,8 +326,10 @@ acquises.
 
 ### Article 4 — Rémunération
 
-**4.0 — Définitions.** Pour l'application du présent contrat : *encaissement* s'entend de la réception
-effective des fonds sur un compte bancaire de la Société ; *prix facturé* s'entend du prix de la commande,
+**4.0 — Définitions.** Pour l'application du présent contrat : *encaissement* s'entend du crédit
+effectif des fonds sur un compte bancaire de la Société, quel que soit le moyen de paiement du client
+(virement, carte bancaire, opérateur de compétences ou autre financeur) ; la date de l'encaissement est celle
+du jour où la somme est créditée sur ce compte ; *prix facturé* s'entend du prix de la commande,
 net des avoirs ; *commission acquise* s'entend de la commission dont le fait générateur de l'article 4.2 est
 réalisé ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro
 SIREN.
@@ -358,8 +363,8 @@ signé par l'entreprise ou, à défaut de devis, à la date de la commande. Lors
 vendues à un prix global, ce prix est réparti entre elles au prorata de leurs prix publics hors taxes. Un
 avoir ou un remboursement partiel diminue le prix facturé : la commission est recalculée sur le prix net
 selon la présente formule et la différence fait l'objet d'une reprise (article 4.5). Une remise consentie
-dans le seul but de réduire la commission est sans effet sur celle-ci. Le relevé indique, pour chaque
-commande concernée, le prix public, le prix facturé et la commission qui en résulte. Le forfait de
+dans le seul but de réduire la commission est sans effet sur celle-ci. L'autofacture, ou le décompte qui
+l'accompagne, indique, pour chaque commande concernée, le prix public, le prix facturé et la commission qui en résulte. Le forfait de
 conférence (annexe 1, A1.4 bis) n'est jamais réduit à raison d'une remise. Le pourcentage n'est pas
 concerné : il s'applique au montant hors taxes facturé.
 
@@ -368,7 +373,7 @@ prix facturé au client au titre de la commande, tous payeurs confondus, y compr
 tout autre financeur — jamais à la signature, jamais à l'émission de la facture.
 
 **4.3 — Paiement partiel.** Aucune part de commission n'est due au titre d'un paiement partiel. La commission
-est portée sur le relevé qui suit l'encaissement complet.
+est facturée et versée dans les conditions de l'article 5, à compter de l'encaissement complet.
 
 **4.4 — Périmètre.** **On entend par commande le devis, le bon de commande ou la convention de formation
 signé par l'entreprise attribuée ; la date retenue est celle de cette signature et, à défaut de document
@@ -413,7 +418,14 @@ avoir imputé sur la facture, rejet ou révocation d'un prélèvement ou d'un vi
 faveur du client, ou toute autre restitution des fonds — **à l'exclusion des restitutions décidées par la
 Société sans réclamation du client, et de celles résultant de l'inexécution par la Société de ses propres
 obligations, qui ne donnent lieu à aucune reprise** —, la commission correspondante fait l'objet d'une
-reprise, déduite du relevé suivant. La ligne d'origine est conservée ; la reprise s'y ajoute.
+reprise. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
+l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention
+« Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date, article 289 du code
+général des impôts) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
+somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un
+montant diminué d'une reprise.** L'avoir est imputé sur la prochaine somme à virer, dans les conditions du
+présent article ; le décompte qui accompagne l'autofacture de cette commission indique l'avoir imputé et la
+somme virée.
 
 La reprise ne peut intervenir que dans les douze mois suivant **la date de l'annulation** — et non celle
 de l'encaissement d'origine, une annulation pouvant survenir longtemps après lui.
@@ -431,7 +443,13 @@ signature de son contrat par cette personne, l'identité et l'adresse électroni
 le parrain ; le rattachement est enregistré par la Société à la date de cette communication et notifié à
 l'Apporteur et à cette personne.
 
-Cette somme est versée par la Société et **n'est jamais prélevée sur la rémunération du filleul**.
+Cette somme est versée par la Société et **n'est jamais prélevée sur la rémunération du filleul**. Elle est
+facturée et versée dans les conditions de l'article 5, le jour où la commission du filleul dont elle procède
+devient acquise tenant lieu de jour d'encaissement. **L'autofacture de cette somme, son décompte et l'avoir
+qui en reprendrait une partie (article 4.5) la portent sur une ligne unique libellée « Parrainage
+(article 4.6) » : ils n'indiquent ni l'identité du filleul, ni aucune commande, ni le prix, la commission ou
+toute autre somme du filleul.** Lorsque les commissions de plusieurs filleuls deviennent acquises le même
+jour, la somme est portée pour leur total.
 
 **Aucune somme n'est due au titre de l'inscription elle-même**, ni au titre du nombre de personnes
 présentées : seules les ventes effectivement encaissées par le filleul ouvrent droit à rémunération. Le
@@ -461,8 +479,8 @@ du parrain.** La période de 6 mois prévue au premier alinéa lui est rappelée
 texte identique pour tous les parrains, sans date calculée.
 
 Le droit au parrainage suit le sort des commissions ordinaires : il subsiste après la fin du contrat de
-l'Apporteur pour les commissions du filleul acquises jusqu'au terme de la période de
-6 mois, et prend fin avec le contrat du filleul.
+l'Apporteur pour les commissions du filleul nées de commandes signées jusqu'au terme de la période de
+6 mois, et ne porte pas sur les commandes signées après la fin du contrat du filleul.
 
 **Correction du rattachement.** La Société peut rattacher un filleul à un autre parrain pour l'un des seuls
 motifs suivants, limitativement énumérés : une erreur dans le rattachement initial ; une fraude ou un
@@ -481,20 +499,32 @@ changement et sans indication du motif.
 assujetti à la taxe sur la valeur ajoutée, la taxe au taux en vigueur (20 % à la date de la présente version)
 s'ajoute à la commission et figure sur la facture ; lorsqu'il bénéficie de la franchise en base, la facture
 porte la mention « TVA non applicable, article 293 B du CGI ». Les commissions sont facturées selon le
-régime que l'Apporteur a déclaré (article 6.3) à la date d'établissement du relevé.
+régime que l'Apporteur a déclaré (article 6.3) à la date d'établissement de l'autofacture. L'autofacture
+porte la date de son établissement comme date d'émission et la date de l'encaissement intégral comme date de
+la prestation ; l'exigibilité de la taxe suit le régime déclaré par l'Apporteur, y compris, le cas échéant,
+son option pour le paiement de la taxe d'après les débits, que la facture mentionne.
 
 ---
 
 ### Article 5 — Facturation et paiement 
 
-**5.1 — Relevé.** La Société établit, le premier jour ouvré de chaque mois, un relevé des commissions
-**acquises et non encore relevées à cette date**, déduction faite des reprises. **Aucun relevé n'est établi
-et aucune facture n'est émise lorsque le solde est inférieur à 50 € hors taxes ; les
-commissions correspondantes sont reportées au relevé suivant.**
+**5.1 — Autofacture.** Le jour de l'encaissement intégral qui rend une commission acquise (article 4.2) — ou,
+si le crédit intervient un jour non ouvré ou n'est constaté que plus tard, le premier jour ouvré où la Société
+le constate —, la Société établit, au nom et pour le compte de l'Apporteur (article 5.2 et annexe 2),
+l'autofacture correspondante et la lui transmet par courrier électronique, forme sous laquelle l'Apporteur
+accepte de la recevoir. Une autofacture est établie pour chaque encaissement intégral ; lorsque plusieurs
+commissions de l'Apporteur, y compris les sommes de parrainage de l'article 4.6, deviennent acquises le même
+jour, une seule autofacture est établie pour l'ensemble. Elle est accompagnée d'un décompte indiquant, pour
+chaque commande, le prix facturé, le prix public, la commission et la date de l'encaissement intégral, ainsi
+que, le cas échéant, l'avoir imputé (article 4.5) et la somme virée ; les sommes de parrainage y figurent dans
+les conditions de l'article 4.6. **L'autofacture est émise pour le montant intégral de la commission : elle
+n'est jamais diminuée d'une reprise. Toute commission acquise est facturée et versée, quel que soit son
+montant : aucun montant minimum n'est appliqué.**
 
 **5.2 — Mandat de facturation.** L'Apporteur donne mandat à la Société d'établir en son nom et pour son
-compte les factures correspondant à ces relevés, dans les conditions de l'**annexe 2**. Chaque facture
-porte la mention « Autofacturation ». L'Apporteur peut contester une facture dans un délai de trente jours
+compte les autofactures de l'article 5.1, ainsi que les factures complémentaires et les avoirs des
+articles 4.5, 5.6 et 5.7, dans les conditions de l'**annexe 2**. Chaque facture porte la mention
+« Autofacturation ». L'Apporteur peut contester une facture ou un avoir dans un délai de trente jours
 à compter de l'envoi du courrier électronique
 qui lui transmet la facture ou en signale la mise à disposition dans l'espace en ligne, la date d'envoi étant
 journalisée ; à défaut, elle est réputée acceptée, **sauf
@@ -508,18 +538,26 @@ l'Apporteur (article 1.2).**
 
 > *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
 
-**5.3 — Paiement.** Le versement intervient par virement **dans les dix jours ouvrés (du lundi au vendredi, hors jours fériés en France métropolitaine) suivant
-l'établissement du relevé** : le dixième jour ouvré suivant l'établissement du relevé est la date d'échéance de
-chaque facture, qui n'en connaît pas d'autre. **Au relevé du mois de janvier, le seuil de l'article 5.1 n'est pas appliqué : tout solde
-positif reporté est versé.** Ce seuil ne s'applique pas davantage au dernier relevé établi après la fin du
-contrat. **Tout retard de versement donne lieu, de plein droit, à compter du lendemain de l'échéance et sans rappel
-préalable, à des pénalités calculées au taux d'intérêt
+**5.3 — Paiement.** La Société verse la commission par virement. **La date d'échéance de chaque
+autofacture est le trentième jour suivant son émission, laquelle a lieu le jour de l'encaissement intégral
+(article 5.1) ; elle n'en connaît pas d'autre et figure sur l'autofacture, avec les conditions de pénalité du
+présent article.** Ce délai ne court jamais de la signature de la commande ni de l'émission de la facture au
+client ; le retour en erreur de la transmission (article 20) ne le modifie pas. Une facture complémentaire
+(articles 5.6 et 5.7) a la même échéance, comptée de son émission.
+
+**Délai indicatif.** La Société s'efforce de verser la commission dans les deux jours ouvrés (du lundi au
+vendredi, hors jours fériés en France métropolitaine) suivant l'encaissement intégral. **Ce délai n'est pas une
+échéance et ne constitue pas un engagement de la Société : un virement effectué après lui, mais au plus tard à
+l'échéance de trente jours, ne donne lieu à aucun frais, aucune pénalité et aucune indemnité.** Aucun montant
+minimum ne s'applique, y compris après la fin du contrat. **Tout retard de versement au-delà de l'échéance
+donne lieu, de plein droit, conformément à l'article L.441-10 du code de commerce, à compter du lendemain de
+l'échéance et sans rappel préalable, à des pénalités calculées au taux d'intérêt
 de la Banque centrale européenne à son opération de refinancement la plus récente majoré de dix points,
 ainsi qu'à l'indemnité forfaitaire pour frais de recouvrement de 40 euros prévue à l'article D.441-5 du
 code de commerce.**
 
-**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide ni
-coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
+**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide, régime de
+taxe sur la valeur ajoutée déclaré (article 6.3) ni coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
 d'immatriculation prévus à l'article 6.2 conditionnent en outre le versement des sommes qui portent le cumul
 des sommes dues au titre du présent contrat au seuil fixé par les articles L.8222-1 et D.8222-5 du code du
 travail, et au-delà. **Aucune autre pièce et aucun autre motif ne
@@ -528,26 +566,35 @@ rattachement d'un encaissement, ni l'absence de palier à la grille ne peuvent l
 soixante jours (annexe 1, A1.7).**
 
 Les sommes dont le versement est ainsi différé demeurent acquises à l'Apporteur. Elles ne sont
-ni relevées ni facturées avant la régularisation ; elles sont portées au premier relevé suivant celle-ci et
-versées sans application du seuil de l'article 5.1. Le motif du blocage lui est
+ni facturées ni versées avant la régularisation ; l'autofacture est alors établie et transmise, et la somme
+est versée dans les conditions de l'article 5.3, le délai indicatif de deux jours ouvrés et l'échéance de
+trente jours courant de la régularisation, sans montant minimum. La régularisation s'entend de la réception
+par la Société de la dernière pièce ou information manquante ; l'autofacture porte alors la date de la
+régularisation comme date d'émission et mentionne la date de l'encaissement intégral comme date de la
+prestation. Le motif du blocage lui est
 indiqué par courrier électronique ou dans son espace.
 
 Les sommes suspendues faute de pièces de vigilance (article 6.2) le restent après la fin du contrat, sans
 limite de délai, jusqu'à la production des pièces ; ce report n'ouvre droit à aucune pénalité et n'oblige la
 Société à aucune relance.
 
-**5.5 — Contestation des relevés.** Toute contestation portant sur l'existence, l'assiette ou le calcul
-d'une commission est formée par écrit dans les douze mois de la mise à disposition du relevé qui aurait dû
-la porter. **Le présent délai organise la contestation des relevés ; il n'abrège pas la prescription de
+**5.5 — Contestation de la commission.** Toute contestation portant sur l'existence, l'assiette, le calcul ou
+la date d'encaissement d'une commission est formée par écrit dans les douze mois de l'envoi de l'autofacture qui aurait dû
+la porter. **Le présent délai organise la contestation de la commission ; il n'abrège pas la prescription de
 l'action en paiement.**
 
 **5.6 — Réponse.** La Société répond de façon motivée dans les trente jours de la réception d'une
-contestation formée dans le délai de l'article 5.5. La commission est soit maintenue, soit ajustée ;
-l'ajustement figure sur le relevé suivant sous son propre libellé.
+contestation formée dans le délai de l'article 5.5. Elle justifie, à la demande de l'Apporteur, la date de
+l'encaissement intégral par un extrait de son compte bancaire dont les mentions étrangères à l'opération sont
+masquées (pour une somme de parrainage, par une attestation qui n'identifie pas le filleul). La commission est
+soit maintenue, soit ajustée ; l'ajustement donne lieu, selon le cas, à une facture complémentaire ou à un
+avoir d'autofacture, établis avec la réponse et faisant référence à l'autofacture d'origine (numéro et date).
 
-**5.7 — Ajustements.** La Société peut porter au relevé une ligne d'ajustement corrigeant une erreur
-matérielle de calcul, dans un sens comme dans l'autre, dans le délai de l'article 5.5, avec l'indication de
-son motif et de la ligne corrigée. Aucun autre ajustement ne peut réduire un relevé.
+**5.7 — Ajustements.** La Société peut corriger une erreur matérielle de calcul, dans un sens comme dans
+l'autre, dans le délai de l'article 5.5, par une facture complémentaire (commission insuffisante) ou par un
+avoir d'autofacture (commission excessive), qui font référence à l'autofacture d'origine (numéro et date),
+indiquent leur motif et la ligne corrigée et suivent respectivement l'article 5.3 et l'article 4.5. Aucun autre
+ajustement que la reprise de l'article 4.5 ne peut réduire une commission.
 
 ---
 
@@ -629,7 +676,7 @@ traitement.
 **7.8** La Société traite les données de l'Apporteur (identité, coordonnées, pièces justificatives,
 coordonnées bancaires, commissions) pour conclure et exécuter le contrat, tenir sa comptabilité et satisfaire
 à ses obligations légales, notamment fiscales. Les pièces justificatives sont conservées pendant la durée
-indiquée par la politique de confidentialité de la Société ; le contrat, les relevés et les factures sont
+indiquée par la politique de confidentialité de la Société ; le contrat, les autofactures et leurs décomptes sont
 conservés cinq ans après la fin du contrat, les pièces comptables pendant la durée légale. L'information
 prévue à l'article 13 du règlement est accessible depuis la politique de confidentialité du site de la
 Société.
@@ -731,25 +778,28 @@ contrat ; cette annulation est sans effet sur les commandes déjà signées, qui
 l'article 12.3. Les attributions définitives non converties prennent fin ; les entreprises correspondantes
 redeviennent librement déclarables, sans préjudice de ces mêmes commandes.
 
-**12.2** **Les commissions acquises à la date de fin du contrat sont payées** au dernier relevé, sans
-application du seuil de l'article 5.1, sous la seule réserve de l'article 5.4.
+**12.2** **Les autofactures émises avant la fin du contrat restent payables à leur échéance. Les commissions
+acquises à cette date et non encore facturées sont facturées et versées** dans les conditions des
+articles 5.1 et 5.3, sans montant minimum, sous la seule réserve de l'article 5.4.
 
 **12.3** Les commandes signées avant la fin du contrat, ou pendant le préavis, continuent d'ouvrir droit à
 commission, y compris lorsque l'attribution n'était pas encore confirmée à cette date, sauf annulation ou
 extinction de l'attribution au titre des articles 3.3 ou 3.7. Cette commission devient acquise dans les
-conditions de l'article 4.2 et est portée sur le relevé qui suit l'encaissement complet (article 4.3), quelle
-que soit la date de cet encaissement. La Société établit un relevé, selon l'article 5, jusqu'à extinction complète de ces
-droits. L'Apporteur reçoit par courrier électronique ses
-relevés, ses factures et le motif de tout blocage, jusqu'à l'extinction de ses droits ; son lien personnel
+conditions de l'article 4.2 et est facturée et versée dans les conditions des articles 5.1 et 5.3 (article
+4.3), quelle que soit la date de l'encaissement complet. La Société établit les autofactures et, le cas échéant, les avoirs, selon
+les articles 4.5 et 5, jusqu'à extinction complète de ces droits. L'Apporteur reçoit par courrier
+électronique ses autofactures, ses avoirs, leurs décomptes et le motif de tout blocage, jusqu'à l'extinction de ses droits ; son lien personnel
 est révoqué à la fin du contrat. Il peut obtenir sur simple demande à contact@axion-ia.com la copie de son
-contrat signé et de ses relevés.
+contrat signé et de ses autofactures.
 
-**12.4** Si le solde de l'Apporteur est négatif à la suite de reprises, ce solde s'impute par compensation
-sur les commissions à venir.
+**12.4** Si le solde de l'Apporteur est négatif à la suite de reprises ou d'avoirs de l'article 5.7, ce solde
+s'impute par compensation sur les commissions à venir.
 
 À défaut de commissions à venir permettant cette imputation dans un délai de douze mois — que le contrat
-soit en cours ou terminé —, la Société peut en demander le remboursement, dans la limite des commissions
-qui ont été versées à l'Apporteur au cours des douze mois précédant l'annulation à l'origine de la reprise.
+soit en cours ou terminé —, la Société peut en demander le remboursement par écrit, avec l'avoir
+d'autofacture et son décompte ; il est dû dans les trente jours de la demande, dans la limite des commissions
+qui ont été versées à l'Apporteur au cours des douze mois précédant l'annulation ou l'erreur à l'origine de
+la reprise ou de l'avoir.
 
 Le solde négatif non recouvré est constaté en créance et n'emporte aucune autre conséquence.
 
@@ -759,7 +809,8 @@ radiation de son immatriculation, sans préavis. **L'ouverture d'une procédure 
 l'Apporteur est sans effet sur le présent contrat, dont le sort est réglé par les articles L.622-13 et
 L.641-11-1 du code de commerce.** Les commissions acquises à cette date sont versées, selon le cas, à
 l'Apporteur, à ses ayants droit ou au mandataire désigné, sur justification de leur qualité et de
-coordonnées bancaires à leur nom, l'article 5.4 étant écarté pour le seul numéro SIREN.
+coordonnées bancaires à leur nom, l'article 5.4 étant écarté pour le seul numéro SIREN ; le mandat de
+facturation ayant pris fin, la facture est alors établie dans les conditions de l'article 2.5 de l'annexe 2.
 
 > *Aucune commission acquise, ni aucune commission afférente à une commande signée avant la fin du contrat,
 > n'est perdue du fait de la résiliation, quelle qu'en soit la cause.*
@@ -812,7 +863,7 @@ la qualité suivante : {{APPORTEUR_QUALITE}}.**
 
 Aucune partie n'est responsable de l'inexécution due à un événement de force majeure au sens de
 l'article 1218 du code civil. Si l'empêchement dure plus de trois mois, chaque partie peut résilier sans
-préavis. La force majeure ne dispense ni du paiement des sommes dues, ni de l'établissement du relevé.
+préavis. La force majeure ne dispense ni du paiement des sommes dues, ni de l'établissement des autofactures.
 
 ---
 
@@ -835,7 +886,7 @@ Le contrat et ses annexes expriment l'intégralité de l'accord et remplacent to
 de contradiction : le contrat, puis l'annexe 1, puis l'annexe 2 ; aucun contenu de l'espace en ligne, des
 documents de présentation ou d'un courrier électronique, **ni aucun support public ou commercial de la
 Société, notamment les pages de son site présentant les commissions,** n'a valeur contractuelle, **à
-l'exception des documents que le présent contrat désigne — relevés, factures, notifications de
+l'exception des documents que le présent contrat désigne — autofactures, avoirs et décomptes, notifications de
 l'article 20, décisions relatives aux attributions et extraits du registre de l'article 3.5 —, qui font
 partie de l'exécution du contrat. La présente stipulation ne limite ni n'exclut le devoir d'information de
 l'article 1112-1 du code civil.**
@@ -861,13 +912,14 @@ ou par message déposé dans l'espace en ligne, avec effet à sa date d'envoi ; 
 conformément à l'article 1366 du code civil, que ces écrits électroniques ont la même force probante qu'un
 écrit sur support papier.
 
-**Toute notification faisant courir un délai — et notamment la mise à disposition d'une facture
-(article 5.2), la mise en demeure et la résiliation (article 11) — est adressée par courrier électronique à
+**Toute notification faisant courir un délai — et notamment la transmission d'une autofacture
+(articles 5.1 et 5.2), la mise en demeure et la résiliation (article 11) — est adressée par courrier électronique à
 l'adresse déclarée par le destinataire ; le délai court à compter de cet envoi, dont la date est
 journalisée. Le dépôt d'un message dans l'espace en ligne ne fait courir aucun délai. Après la fin du
 contrat, les notifications sont faites par courrier électronique à la dernière adresse déclarée. Lorsqu'un
 message est retourné en erreur, le délai ne court qu'à compter de son renvoi à une adresse valide
-communiquée par le destinataire.**
+communiquée par le destinataire, à l'exception de l'échéance de paiement de l'article 5.3, qui court de
+l'émission.**
 
 ---
 
@@ -1070,35 +1122,64 @@ dehors de ce cas.
 
 ## Annexe 2 — Mandat donné à la Société aux fins d'autofacturation
 
-**2.1** L'Apporteur donne mandat à la Société d'établir en son nom et pour son compte les factures
-afférentes aux commissions dues au titre du présent contrat. **Ce mandat est exclusivement un mandat de
+**2.1** L'Apporteur donne mandat à la Société d'établir en son nom et pour son compte les factures, factures
+complémentaires et avoirs afférents aux commissions et aux sommes de parrainage dues au titre du présent
+contrat. Il accepte, par la signature du contrat, de les recevoir sous forme électronique et que chacun de ces
+documents soit soumis à la procédure d'acceptation de l'article 2.4. **Ce mandat est exclusivement un mandat de
 facturation au sens de l'article 289, I, 2 du code général des impôts. Il est donné PAR l'Apporteur À la
 Société, aux seules fins d'établir des factures en son nom ; il n'emporte aucun pouvoir de l'Apporteur de
 représenter la Société, ni aucun mandat de la Société à l'Apporteur (article 1.2).**
 
+**2.1 bis** Chaque autofacture est établie le jour de l'encaissement intégral qui rend la commission acquise
+ou, à défaut, le premier jour ouvré où la Société le constate (article 5.1) ; elle porte son jour d'établissement
+comme date d'émission et la date de l'encaissement intégral comme date de la prestation, est numérotée selon
+une séquence chronologique unique et continue, sans rupture, propre à l'Apporteur, et est transmise le même
+jour à l'Apporteur par courrier électronique avec un décompte (commande, prix facturé, prix public,
+commission, date de l'encaissement). Une autofacture est établie pour chaque encaissement intégral ; lorsque
+plusieurs commissions de l'Apporteur deviennent acquises le même jour, une seule autofacture les regroupe.
+Elle n'est jamais diminuée d'une reprise : celle-ci est constatée par un avoir d'autofacture, de même
+séquence, qui porte la mention « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et
+date) et indique la commission corrigée et la taxe correspondante (article 4.5).
+
 **2.2** Chaque facture ainsi émise comporte l'ensemble des mentions légales — **y compris le taux des
 pénalités de retard et l'indemnité forfaitaire de recouvrement de 40 euros mentionnés à l'article 5.3**, la
-date d'échéance du règlement et les conditions d'escompte (« pas d'escompte pour paiement anticipé ») —,
-la mention « **Autofacturation** », et l'identification complète des deux parties.
+date d'échéance du règlement (trente jours à compter de l'émission, article 5.3) et les conditions d'escompte (« pas d'escompte pour paiement anticipé »),
+le numéro d'ordre, la date d'émission et la date de la prestation, la désignation de la prestation (mise en
+relation, commande concernée), les numéros SIREN des deux parties et, lorsque l'Apporteur est assujetti, les
+numéros de taxe sur la valeur ajoutée des deux parties, ainsi que le taux et le montant de la taxe ou la
+mention « TVA non applicable, article 293 B du CGI » —, la mention « **Autofacturation** », et
+l'identification complète des deux parties. Ces mentions figurent sur chaque facture, quel que soit le délai
+effectif de paiement.
 
 **2.3** L'Apporteur conserve la qualité d'émetteur des factures et en assume les conséquences fiscales. Il
 demeure tenu de reverser la taxe sur la valeur ajoutée éventuellement mentionnée. **Lorsque la mention de
 la taxe résulte d'une erreur imputable à la Société ou à son système de facturation, celle-ci en fait son
-affaire, émet sans délai une facture rectificative et garantit l'Apporteur de toute conséquence.**
+affaire, émet sans délai une facture rectificative et garantit l'Apporteur de toute conséquence.** L'avoir
+d'autofacture diminue la taxe mentionnée sur la facture d'origine ; l'Apporteur en tire les conséquences dans
+sa déclaration.
 
 **2.4** L'Apporteur dispose d'un délai de trente jours à compter de l'envoi du courrier électronique qui lui
-transmet la facture ou en signale la mise à disposition dans l'espace en ligne, la date d'envoi étant
-journalisée (ou, si le message est retourné en erreur, celle de son renvoi à une adresse valide communiquée
-par l'Apporteur), pour la contester ; à défaut, elle est réputée acceptée, **sauf erreur matérielle ou preuve
-contraire. Cette acceptation porte sur la forme et les mentions de la facture ; la contestation du calcul
-de la commission qu'elle porte obéit à l'article 5.5.**
+transmet la facture ou l'avoir, ou en signale la mise à disposition dans l'espace en ligne, la date d'envoi
+étant journalisée (ou, si le message est retourné en erreur, celle de son renvoi à une adresse valide
+communiquée par l'Apporteur), pour la contester ; à défaut, elle est réputée acceptée, **sauf erreur matérielle
+ou preuve contraire. Cette acceptation porte sur la forme et les mentions de la facture ; la contestation du
+calcul de la commission qu'elle porte obéit à l'article 5.5.** La contestation de la forme ou des mentions
+reçoit une réponse motivée dans les trente jours et, si elle est fondée, une facture rectificative faisant
+référence à la facture d'origine.
 
 **2.5** Le mandat prend fin en même temps que le contrat, **sous réserve de sa survie pour
-les seules commissions restant à acquérir au titre de l'article 12.3, jusqu'à leur extinction complète, sauf
+les seules commissions restant à acquérir au titre de l'article 12.3 et les reprises de l'article 4.5,
+jusqu'à leur extinction complète, sauf
 décès de l'Apporteur, ouverture d'une procédure collective à son égard ou cessation de son activité, cas dans
 lesquels le mandat prend fin et la dernière phrase du présent article s'applique.**
 Il peut être dénoncé par écrit par l'une ou l'autre des parties avec un préavis de trente jours. **La fin
 du mandat, quelle qu'en soit la cause, ne fait obstacle ni à l'acquisition ni au paiement des commissions :
-à compter de cette date, la Société met le relevé mensuel à disposition de l'Apporteur, qui établit
-lui-même sa facture, et le paiement intervient dans les trente jours de sa réception conforme.**
+à compter de cette date, la Société transmet à l'Apporteur — ou, selon le cas, à ses ayants droit ou au
+mandataire désigné — le décompte de la commission ou de la reprise, qu'il facture lui-même par une facture
+ou un avoir conforme à l'article 2.2, faisant référence, le cas échéant, à l'autofacture d'origine. Le paiement
+intervient dans les trente jours de la réception de la facture conforme et au plus tard soixante jours après sa
+date d'émission, aux conditions de l'article 5.3 (pénalités et indemnité à compter du lendemain de
+l'échéance) ; le délai indicatif de deux jours ouvrés ne s'applique pas. La Société indique, dans un délai
+raisonnable, ce qui rend une facture non conforme ; le délai court de la réception de la facture
+corrigée.**
 `;
