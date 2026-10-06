@@ -13,9 +13,10 @@
  *      signatures simultanées n'en écrivent qu'une ;
  *   6. les déclarations, puis l'alerte interne à Williams.
  *
- * `signatureApporteur` garde aussi les `valeurs` EXACTES passées à `texteDuContrat` : la
- * contresignature (console) reconstruit le même texte et compare son empreinte à
- * `texteSha256` avant de contresigner.
+ * `signatureApporteur` garde aussi les `valeurs` EXACTES passées à `texteDuContrat` et le
+ * TEXTE signé : la contresignature (console) fabrique le PDF depuis ce texte archivé (après avoir
+ * vérifié son empreinte contre `texteSha256`) ; sans archive (ancien dossier), elle reconstruit
+ * le texte et compare l'empreinte.
  */
 
 import "server-only";
@@ -32,6 +33,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { envoyer } from "./envois";
+import { signalerErreurReseau } from "./signaler";
 import {
   CLES_ACCEPTATIONS,
   CLES_DECLARATIONS,
@@ -62,6 +64,12 @@ export interface SignatureApporteurJson {
   texteSha256: string;
   /** Les valeurs EXACTES passées à `texteDuContrat`. */
   valeurs: ValeursContrat;
+  /**
+   * Le TEXTE EXACT signé (rendu avec les valeurs de l'apporteur). La contresignature fabrique le
+   * PDF depuis cette archive : un changement du contrat après la signature ne la bloque plus.
+   * Absent des dossiers signés avant cette archive. Jamais recopié dans l'export RGPD.
+   */
+  texte?: string;
 }
 
 export type ResultatSignature =
@@ -128,6 +136,7 @@ export async function signerContrat(e: {
     declarations,
     texteSha256: sha256,
     valeurs,
+    texte,
   };
   // Écriture conditionnée au statut : un dossier passé entre-temps « à vérifier »
   // (double clic, deux onglets) n'est pas réécrit.
@@ -144,7 +153,14 @@ export async function signerContrat(e: {
   if (ecrit.count === 0) {
     return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.non_modifiable };
   }
-  await enregistrerDeclarations(dossier.id, declarations);
+  // La signature est actée et le dossier est « à vérifier » : un échec de l'enregistrement des
+  // déclarations ne doit ni faire voir une erreur à l'apporteur ni retarder l'alerte à Williams.
+  try {
+    await enregistrerDeclarations(dossier.id, declarations);
+  } catch (err) {
+    console.error("[apporteur-dossier] déclarations non enregistrées :", err);
+    signalerErreurReseau("signature : déclarations non enregistrées", err);
+  }
 
   const lienConsole = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", `apporteurs/${dossier.id}`)}`;
   // Clé d'idempotence PAR SIGNATURE (horodatage inclus) : une re-signature après

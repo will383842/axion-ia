@@ -98,6 +98,10 @@ describe("Retenu — bienvenue dans le réseau", () => {
     // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne (démarrage à la main).
     expect(t).not.toContain("d'ici un mois");
     expect(t).toContain("Dès votre contrat signé, vous pourrez nous présenter des entreprises");
+    // 2026-10-06 : le dossier signé renvoie au formulaire du lien personnel : « par simple
+    // e-mail » ne disait que la moitié du chemin (et promettait un canal que l'espace ne garantit pas).
+    expect(t).toContain("par e-mail ou depuis votre lien personnel");
+    expect(t).not.toContain("par simple e-mail");
     // (La consigne « répondez avec son nom et celui de votre contact » allait avec la date
     // promise : elle est retirée avec elle ; la présentation par e-mail reste dite ci-dessus.)
     // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une

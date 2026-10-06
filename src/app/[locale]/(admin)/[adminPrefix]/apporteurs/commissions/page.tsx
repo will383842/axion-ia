@@ -21,6 +21,7 @@ import {
   relevesDuMois,
 } from "@/features/apporteurs-reseau/commissions";
 import { euros, PALIERS_FORMATION } from "@/features/apporteurs-reseau/regles";
+import { moisAvecArticle } from "@/lib/email/templates/apporteur-demarrage";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
 import type { StatutCommissionApporteur } from "../../../../../../../prisma/generated/client";
@@ -106,7 +107,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
 
       <AdminCard as="section">
         <h2 className="mb-[var(--space-admin-3)] font-semibold">
-          💶 Relevés de {libelleMois(moisParis(maintenant))}
+          💶 Relevé du mois {moisAvecArticle(libelleMois(moisParis(maintenant)))}
         </h2>
         {releves.length === 0 ? (
           <p className="text-[color:var(--color-admin-fg-muted)]">Aucune commission due.</p>

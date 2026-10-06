@@ -315,6 +315,9 @@ describe("dossier en ligne — signerContrat", () => {
     expect(arg.data.contratSha256).toBe(sha);
     const s = arg.data.signatureApporteur;
     expect(s.texteSha256).toBe(sha);
+    // B3 : le texte exact signé est archivé (sa SHA-256 = l'empreinte signée).
+    expect(s.texte).toBe(rendreContratPdf.mock.calls[0]![0].texte);
+    expect(s.texte).toContain("CONTRAT");
     expect(s.signeAt).toBe("2026-10-05T12:34:00.000Z");
     expect(s.valeurs.identite).toBe("Éloïse LEFÈVRE");
     expect(s.declarations).toEqual([...CLES_DECLARATIONS]);
@@ -329,6 +332,14 @@ describe("dossier en ligne — signerContrat", () => {
       payload: { contactName: "Éloïse Lefèvre" },
     });
     expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it("F8c : déclarations non enregistrées → signature réussie pour l'apporteur ET alerte envoyée", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    enregistrerDeclarations.mockRejectedValueOnce(new Error("base muette"));
+    const r = await signerContrat(entree);
+    expect(r.ok).toBe(true);
+    expect(envoyer.mock.calls[0]![0]).toMatchObject({ gabarit: "apporteur-dossier-a-verifier" });
   });
 
   it("D3 : l'alerte suit le destinataire d'alertes internes configuré", async () => {

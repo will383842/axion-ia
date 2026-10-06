@@ -41,6 +41,25 @@ const base = {
 };
 
 describe("autofacture apporteur", () => {
+  it("parrainage : ni prix facturé, ni prix public, ni palier du filleul sur la ligne (art. 4.6)", () => {
+    const [l] = lignesAutofacture(
+      [
+        {
+          id: "p",
+          activite: "formation",
+          palier: "formation-generale-1j",
+          parrainage: true,
+          montantCents: 1_500,
+          factureHtCents: 123_456,
+          prixPublicHtCents: 200_000,
+        },
+      ],
+      "octobre 2026",
+    );
+    expect(l!.designation).toBe("Commission de parrainage — relevé de octobre 2026");
+    expect(l!.designation).not.toMatch(/prix|palier|1\s?234|2\s?000/i);
+    expect(l!.montantHtCents).toBe(1_500);
+  });
   it("une ligne par commission chiffrée, total en centimes", () => {
     const l = lignesAutofacture(commissions, "octobre 2026");
     expect(l).toHaveLength(2);

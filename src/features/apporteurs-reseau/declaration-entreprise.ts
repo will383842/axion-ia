@@ -23,7 +23,7 @@ import "server-only";
 import * as Sentry from "@sentry/nextjs";
 
 import { adminPath } from "@/lib/admin-path";
-import { ADRESSE_INTERNE_PAR_DEFAUT } from "@/lib/destinataires-internes";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -127,7 +127,7 @@ async function prevenirWilliams(
     const consoleUrl = `${SITE_URL.replace(/\/+$/, "")}${adminPath("fr", "apporteurs/entreprises?onglet=a-traiter")}`;
     await enqueueEmail(
       "apporteur-declaration-recue",
-      ADRESSE_INTERNE_PAR_DEFAUT,
+      destinataireAlertesInternes(),
       "fr",
       { entreprise, apporteur, consoleUrl },
       {

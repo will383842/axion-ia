@@ -22,8 +22,6 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
-import * as Sentry from "@sentry/nextjs";
-
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 
@@ -38,7 +36,9 @@ import {
 import { envoyer } from "./envois";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { commandesSoldees } from "./commandes";
+import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import {
   ajouterJours,
   ajouterMois,
@@ -206,7 +206,7 @@ export async function passerReseauApporteurs(
     } catch (err) {
       bilan.erreurs += 1;
       console.error(`[reseau-apporteurs] étape « ${nom} » en échec :`, err);
-      Sentry.captureException(err, { tags: { action: "reseau-apporteurs", etape: nom } });
+      signalerErreurReseau(`passage quotidien : ${nom}`, err);
     }
   }
   return bilan;
@@ -220,7 +220,11 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
     where: { statut: "reservee", contactEnvoyeAt: { not: null, lte: seuil } },
     select: { id: true, contactEnvoyeAt: true },
   });
+  if (lignes.length === 0) return;
+  // Contrat art. 3.2 : le délai ne court pas tant que la prise de contact revient en erreur.
+  const rebonds = await idsPriseDeContactRebondie(lignes.map((l) => l.id));
   for (const p of lignes) {
+    if (rebonds.has(p.id)) continue;
     const confirmeeAt = dateConfirmationTacite(p.contactEnvoyeAt!);
     if (confirmeeAt.getTime() > maintenant.getTime()) continue;
     const r = await prisma.presentationEntreprise.updateMany({
@@ -412,7 +416,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       activite: true,
       montantHtCents: true,
       emiseAt: true,
-      devis: { select: { acceptedAt: true } },
+      devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
       client: { select: { siren: true } },
     },
   });
@@ -428,7 +432,11 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     },
   });
   const parId = new Map(lignes.map((f) => [f.id, f]));
-  const commandes = commandesSoldees([...lignes, ...avoirsLignes]);
+  const totauxDevis = new Map<string, number>();
+  for (const l of lignes) {
+    if (l.devisId && l.devis) totauxDevis.set(l.devisId, l.devis.montantTotalHtCents);
+  }
+  const commandes = commandesSoldees([...lignes, ...avoirsLignes], totauxDevis);
   if (commandes.length === 0) return;
   const existantes = await prisma.commissionApporteur.findMany({
     where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
@@ -607,17 +615,18 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
 // (f) ─────────────────────────────────────────────────────────────────────
 
 /**
- * Dossier non complété : un rappel à J+3, un à J+7 après l'ENVOI du lien (journal d'e-mails),
+ * Dossier non complété : un rappel à J+3, un à J+7 après l'ENVOI du lien (journal d'e-mails : le lien
+ * envoyé à la main OU l'e-mail « Retenu » qui le porte),
  * puis plus rien. Un lien renvoyé repart de zéro (la clé « une fois » porte l'id de l'envoi).
  * Ni refusé, ni résilié, ni déjà signé ; une adresse morte n'est pas relancée.
  */
 async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
   const candidats = await prisma.apporteurReseau.findMany({
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
-    select: { id: true, prenom: true, email: true, versionLien: true },
+    select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
   for (const a of candidats) {
-    const envois = await prisma.emailLog.findMany({
+    const envoisLien = await prisma.emailLog.findMany({
       where: {
         template: "apporteur-dossier-lien",
         entityType: "ApporteurReseau",
@@ -630,6 +639,22 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
       take: 5,
       select: { id: true, sentAt: true, jobId: true, bounceType: true },
     });
+    // Chemin principal : l'e-mail « Retenu » porte lui-même le lien du dossier. Il est journalisé
+    // sur la candidature (`Submission`), rattachée à l'apporteur par `submissionId`.
+    const envoisRetenu = a.submissionId
+      ? await prisma.emailLog.findMany({
+          where: {
+            template: "apporteur-issue-retenu",
+            entityType: "Submission",
+            entityId: a.submissionId,
+            sentAt: { not: null },
+          },
+          orderBy: { sentAt: "desc" },
+          take: 5,
+          select: { id: true, sentAt: true, jobId: true, bounceType: true },
+        })
+      : [];
+    const envois = [...envoisLien, ...envoisRetenu];
     const decision = rappelDossierAEnvoyer(envois, maintenant);
     if (!decision) continue;
     const { rappel } = decision;

@@ -67,26 +67,29 @@ export async function resilierApporteur(
   if (!(STATUTS_RESILIABLES as readonly string[]).includes(a.statut))
     return { ok: false, message: "Seul un contrat signé peut être résilié." };
 
-  const termine = await prisma.$transaction(async (tx) => {
-    // Écriture conditionnelle : deux clics ne résilient pas deux fois.
-    const r = await tx.apporteurReseau.updateMany({
-      where: { id: apporteurId, statut: "signe" },
-      data: { statut: "resilie", resilieAt: maintenant, versionLien: { increment: 1 } },
-    });
-    if (r.count !== 1) return null;
-    const presentations = await tx.presentationEntreprise.findMany({
-      where: { apporteurId, statut: { in: ["reservee", "confirmee"] } },
-      select: { id: true, statut: true, protegeeJusquAt: true },
-    });
-    const plan = planResiliation(presentations, maintenant);
-    for (const p of plan) {
-      await tx.presentationEntreprise.update({
-        where: { id: p.id },
-        data: { statut: "terminee", protegeeJusquAt: p.protegeeJusquAt },
+  const termine = await prisma.$transaction(
+    async (tx) => {
+      // Écriture conditionnelle : deux clics ne résilient pas deux fois.
+      const r = await tx.apporteurReseau.updateMany({
+        where: { id: apporteurId, statut: "signe" },
+        data: { statut: "resilie", resilieAt: maintenant, versionLien: { increment: 1 } },
       });
-    }
-    return plan.length;
-  });
+      if (r.count !== 1) return null;
+      const presentations = await tx.presentationEntreprise.findMany({
+        where: { apporteurId, statut: { in: ["reservee", "confirmee"] } },
+        select: { id: true, statut: true, protegeeJusquAt: true },
+      });
+      const plan = planResiliation(presentations, maintenant);
+      for (const p of plan) {
+        await tx.presentationEntreprise.update({
+          where: { id: p.id },
+          data: { statut: "terminee", protegeeJusquAt: p.protegeeJusquAt },
+        });
+      }
+      return plan.length;
+    },
+    { timeout: 15_000 },
+  );
   if (termine === null) return { ok: false, message: "Ce contrat vient déjà d'être résilié." };
   return {
     ok: true,
@@ -175,32 +178,35 @@ export async function enregistrerReprise(e: {
   });
   if (!verdict.ok) return verdict;
   const motif = e.motif.trim().slice(0, 500);
-  await prisma.$transaction(async (tx) => {
-    // `factureId` n'a pas de clé étrangère : la ligne de reprise porte son propre identifiant, la
-    // ligne d'origine est conservée telle quelle (art. 4.5) et la contrainte d'unicité est tenue.
-    await tx.commissionApporteur.create({
-      data: {
-        apporteurId: origine.apporteurId,
-        presentationId: origine.presentationId,
-        factureId: randomUUID(),
-        parrainage: origine.parrainage,
-        activite: "reprise",
-        palier: `${PREFIXE_PALIER_REPRISE}${origine.id}`,
-        factureHtCents: 0,
-        montantCents: -e.demandeeCents,
-        statut: "reprise",
-      },
-    });
-    const a = await tx.apporteurReseau.findUnique({
-      where: { id: origine.apporteurId },
-      select: { noteInterne: true },
-    });
-    const ligne = `[${maintenant.toISOString().slice(0, 10)}] Reprise de ${euros(e.demandeeCents)} sur une commission versée${origine.autofactureNumero ? ` (${origine.autofactureNumero})` : ""} : ${motif}`;
-    await tx.apporteurReseau.update({
-      where: { id: origine.apporteurId },
-      data: { noteInterne: [a?.noteInterne, ligne].filter(Boolean).join("\n").slice(0, 5000) },
-    });
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      // `factureId` n'a pas de clé étrangère : la ligne de reprise porte son propre identifiant, la
+      // ligne d'origine est conservée telle quelle (art. 4.5) et la contrainte d'unicité est tenue.
+      await tx.commissionApporteur.create({
+        data: {
+          apporteurId: origine.apporteurId,
+          presentationId: origine.presentationId,
+          factureId: randomUUID(),
+          parrainage: origine.parrainage,
+          activite: "reprise",
+          palier: `${PREFIXE_PALIER_REPRISE}${origine.id}`,
+          factureHtCents: 0,
+          montantCents: -e.demandeeCents,
+          statut: "reprise",
+        },
+      });
+      const a = await tx.apporteurReseau.findUnique({
+        where: { id: origine.apporteurId },
+        select: { noteInterne: true },
+      });
+      const ligne = `[${maintenant.toISOString().slice(0, 10)}] Reprise de ${euros(e.demandeeCents)} sur une commission versée${origine.autofactureNumero ? ` (${origine.autofactureNumero})` : ""} : ${motif}`;
+      await tx.apporteurReseau.update({
+        where: { id: origine.apporteurId },
+        data: { noteInterne: [a?.noteInterne, ligne].filter(Boolean).join("\n").slice(0, 5000) },
+      });
+    },
+    { timeout: 15_000 },
+  );
   return {
     ok: true,
     message: `Reprise de ${euros(e.demandeeCents)} enregistrée : elle sera déduite du prochain relevé.`,

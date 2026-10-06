@@ -12,6 +12,8 @@ vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string | null) => (v === null ? null : `enc:${v}`),
   decryptPii: (v: string | null) => (v ? v.replace(/^enc:/, "") : null),
 }));
+const { signaler } = vi.hoisted(() => ({ signaler: vi.fn() }));
+vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => signaler(...a) }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "empreinte" }));
 
 const { p, tx } = vi.hoisted(() => {
@@ -51,7 +53,9 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import {
+  alerterAntivirusIndisponible,
   deposerPiece,
+  reinitialiserAlerteAntivirus,
   enregistrerActivite,
   enregistrerDeclarations,
   lireDossierParLien,
@@ -111,6 +115,19 @@ describe("antivirus : le verdict « sain » est obligatoire", () => {
     expect(p.contenuCreate).not.toHaveBeenCalled();
   });
 
+  it("antivirus muet : Williams est prévenu UNE fois par 15 minutes, sans donnée personnelle", async () => {
+    reinitialiserAlerteAntivirus();
+    signaler.mockClear();
+    analyserOctets.mockResolvedValue({ issue: "indisponible", raison: "délai dépassé" });
+    await deposerPiece(ID, "rib", "rib.pdf", PDF);
+    await deposerPiece(ID, "rib", "rib.pdf", PDF);
+    expect(signaler).toHaveBeenCalledTimes(1);
+    expect(signaler.mock.calls[0]![0]).toBe("antivirus indisponible");
+    expect(JSON.stringify(signaler.mock.calls[0])).not.toContain(ID);
+    expect(alerterAntivirusIndisponible(Date.now() + 16 * 60 * 1000)).toBe(true);
+    expect(signaler).toHaveBeenCalledTimes(2);
+  });
+
   it("antivirus qui lève : même refus", async () => {
     analyserOctets.mockRejectedValue(new Error("ECONNREFUSED"));
     expect(await deposerPiece(ID, "rib", "rib.pdf", PDF)).toMatchObject({ ok: false });
@@ -149,8 +166,21 @@ describe("RGPD : pièce d'identité remplacée", () => {
     });
   });
 
-  it("un autre type de pièce remplacé n'est pas purgé par ce chemin", async () => {
-    await deposerPiece(ID, "rib", "rib.pdf", PDF);
+  it("un RIB remplacé : le contenu de l'ancien RIB est purgé, celui de l'identité n'est pas visé", async () => {
+    p.pieceFindMany.mockResolvedValue([{ id: "ancien-rib" }]);
+    expect(await deposerPiece(ID, "rib", "rib.pdf", PDF)).toEqual({ ok: true });
+    expect(p.contenuDeleteMany).toHaveBeenCalledWith({
+      where: { pieceId: { in: ["ancien-rib"] } },
+    });
+    expect(p.pieceFindMany.mock.calls[0]![0].where).toMatchObject({
+      apporteurId: ID,
+      type: { in: ["rib"] },
+      remplaceeAt: null,
+    });
+  });
+
+  it("une attestation de vigilance remplacée n'est pas purgée par ce chemin", async () => {
+    await deposerPiece(ID, "vigilance", "attestation.pdf", PDF);
     expect(p.contenuDeleteMany).not.toHaveBeenCalled();
   });
 });

@@ -33,6 +33,8 @@ export interface ExportReseauApporteur {
     readonly telephone: string | null;
     /** IBAN déchiffré : c'est SA donnée (art. 15). */
     readonly iban: string | null;
+    /** Note interne de la Société sur son dossier : c'est une donnée le concernant (art. 15). */
+    readonly noteInterne: string | null;
     readonly siren: string | null;
     readonly entreprise: string | null;
     readonly adresse: string | null;
@@ -50,7 +52,8 @@ export interface ExportReseauApporteur {
     readonly commissions: ReadonlyArray<{
       readonly activite: string;
       readonly parrainage: boolean;
-      readonly factureHtCents: number;
+      /** Absent (null) pour une ligne de parrainage : aucun montant par filleul (art. 4.6). */
+      readonly factureHtCents: number | null;
       readonly montantCents: number | null;
       readonly statut: string;
       readonly creeLe: Date;
@@ -104,6 +107,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
         email: true,
         telephone: true,
         iban: true,
+        noteInterne: true,
         signatureApporteur: true,
         siren: true,
         denomination: true,
@@ -161,11 +165,13 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           email: decryptPii(a.email) ?? "",
           telephone: decryptPii(a.telephone),
           iban: decryptPii(a.iban),
+          noteInterne: a.noteInterne ?? null,
           preuveSignature: preuveDeSignature(a.signatureApporteur),
           commissions: commissions.map((c) => ({
             activite: c.activite,
             parrainage: c.parrainage,
-            factureHtCents: c.factureHtCents,
+            // Parrainage : ni prix facturé ni palier du filleul (contrat art. 4.6).
+            factureHtCents: c.parrainage ? null : c.factureHtCents,
             montantCents: c.montantCents,
             statut: c.statut,
             creeLe: c.creeAt,

@@ -35,7 +35,15 @@ const STATUTS_SANS_EFFET = new Set(["brouillon", "annulee"]);
  * Les commandes intégralement payées parmi `factures` (factures ET avoirs, tous statuts).
  * Une commande dont le total net est nul ou négatif (tout remboursé) n'est pas rendue.
  */
-export function commandesSoldees(factures: readonly FactureDeCommande[]): CommandeSoldee[] {
+export function commandesSoldees(
+  factures: readonly FactureDeCommande[],
+  /**
+   * Total HT du devis accepté, par id de devis. Quand il est connu, la commande n'est soldée que
+   * si le facturé (hors avoirs, brouillons et annulées) atteint ce total : un acompte payé seul,
+   * solde pas encore facturé, ne solde rien (même règle que `devisSigneNonFacture`).
+   */
+  totauxDevis?: ReadonlyMap<string, number>,
+): CommandeSoldee[] {
   const actives = factures.filter((f) => !STATUTS_SANS_EFFET.has(f.statut));
   const factures0 = actives.filter((f) => f.avoirDeId === null);
   const avoirs = actives.filter((f) => f.avoirDeId !== null);
@@ -49,6 +57,10 @@ export function commandesSoldees(factures: readonly FactureDeCommande[]): Comman
   const out: CommandeSoldee[] = [];
   for (const [, membres] of groupes) {
     if (membres.length === 0 || membres.some((f) => f.statut !== "payee")) continue;
+    const devisId = membres[0]!.devisId;
+    const totalDevis = devisId ? totauxDevis?.get(devisId) : undefined;
+    if (totalDevis !== undefined && membres.reduce((s, f) => s + f.montantHtCents, 0) < totalDevis)
+      continue;
     const ids = new Set(membres.map((f) => f.id));
     const net =
       membres.reduce((s, f) => s + f.montantHtCents, 0) +

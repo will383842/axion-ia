@@ -30,6 +30,7 @@ import type { ReactElement } from "react";
 import { EmailLayout, emailStyles } from "./_layout";
 import { paragraphesLibres } from "./texte-libre-reseau";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
+import { PARRAINAGE_BPS, PARRAINAGE_MOIS, TAUX_BPS } from "@/features/apporteurs-reseau/regles";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -46,6 +47,8 @@ const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apport
 
 const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
 const PCT_INTEGRATION = getCommissionById("com-integration").percent ?? 0;
+const PCT_UN_A_UN = TAUX_BPS.un_a_un / 100;
+const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
 
@@ -108,6 +111,15 @@ const bonjour = (n: string) => (n ? `Bonjour ${n},` : "Bonjour,");
 
 // ── Textes ───────────────────────────────────────────────────────────────
 
+/**
+ * « octobre 2026 » → « d'octobre 2026 » ; « novembre 2026 » → « de novembre 2026 ».
+ * L'élision ne vaut que devant une voyelle (avril, août, octobre).
+ */
+export function moisAvecArticle(m: string): string {
+  const t = m.trim();
+  return /^[aeiouyàâéèêîôû]/i.test(t) ? `d'${t}` : `de ${t}`;
+}
+
 export const COPY_DEMARRAGE = {
   contratSigne: {
     // ≤ 45 caractères (§3.4).
@@ -140,6 +152,10 @@ export const COPY_DEMARRAGE = {
       `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
     audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
     integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
+    unAUn: (pct: string) =>
+      `Accompagnement individuel et coaching (1-to-1) : ${pct} du montant HT de la facture.`,
+    parrainage: (pct: string, mois: number) =>
+      `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} de ses commissions pendant ${mois} mois à compter de sa signature.`,
     paiement:
       "Elle vous est versée dès que le client a réglé l'intégralité de sa facture : nous établissons votre facture pour vous, puis nous faisons le virement.",
     fiche:
@@ -172,7 +188,7 @@ export const COPY_DEMARRAGE = {
       "deja-connue":
         "Nous ne pouvons pas vous la réserver : elle est déjà cliente d'Axion-IA, ou elle a reçu un devis de notre part récemment.",
       "pas-disponible":
-        "Nous ne pouvons pas vous la réserver : elle nous a déjà été présentée. Si elle redevient disponible, nous vous préviendrons et vous aurez 15 jours pour nous la présenter à nouveau.",
+        "Nous ne pouvons pas vous la réserver : cette entreprise est déjà suivie par Axion-IA, et nous ne pouvons pas la rattacher à votre déclaration.",
       "hors-champ":
         "Nous ne pouvons pas vous la réserver : il s'agit d'un organisme avec lequel Axion-IA travaille déjà directement (administration, organisme public ou organisme de formation), ou d'une entreprise qui a cessé son activité.",
     } satisfies Record<MotifRefus, string>,
@@ -286,11 +302,11 @@ export const COPY_DEMARRAGE = {
   },
   releve: {
     subject: (m: string) =>
-      m ? `Votre relevé de commissions de ${m}` : "Votre relevé de commissions",
+      m ? `Votre relevé de commissions ${moisAvecArticle(m)}` : "Votre relevé de commissions",
     title: "Votre relevé de commissions",
     preview: "Le détail de vos commissions et votre facture, établie par nos soins.",
     texte: (m: string, montant: string) =>
-      `Voici votre relevé de commissions${m ? ` de ${m}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
+      `Voici votre relevé de commissions${m ? ` du mois ${moisAvecArticle(m)}` : ""} : ${montant || "le montant indiqué en pièce jointe"} hors taxes. Le virement vous parvient dans les dix jours ouvrés.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
@@ -387,6 +403,8 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
           <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
           <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT))}</Text>
           <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
+          <Text style={puce}>• {t.unAUn(pourcent(PCT_UN_A_UN))}</Text>
+          <Text style={puce}>• {t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
 
           <Text style={emailStyles.paragraphStyle}>
@@ -863,7 +881,9 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
         `${t.presenterTitre}\n${t.presenter}\n${liste(t.champs)}`,
         t.prevenir,
         `${t.ensuiteTitre}\n1. ${e1}\n2. ${e2}\n3. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
-        `${t.commissionTitre}\n• ${t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}\n• ${t.audit(pourcent(PCT_AUDIT))}\n• ${t.integration(pourcent(PCT_INTEGRATION))}`,
+        `${t.commissionTitre}\n• ${t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}\n• ${t.audit(pourcent(PCT_AUDIT))}\n• ${t.integration(pourcent(PCT_INTEGRATION))}
+• ${t.unAUn(pourcent(PCT_UN_A_UN))}
+• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
         t.paiement,
         "Votre contrat signé des deux parties est en pièce jointe.",
       ]);

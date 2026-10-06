@@ -813,6 +813,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Logos et images des e-mails (`public/email/`) : publics, non sensibles. L'aperçu d'e-mail
+      // de la console les charge depuis une iframe `sandbox=""` (origine opaque), que la règle
+      // globale `same-origin` bloquerait (logo cassé). Placée APRÈS `/:path*` : la dernière gagne.
+      {
+        source: "/email/:path*",
+        headers: [{ key: "Cross-Origin-Resource-Policy", value: "cross-origin" }],
+      },
       // Films des pages d'atterrissage (`public/videos/`, ex. VSL apporteurs) : nom de
       // fichier VERSIONNÉ (`…-v1.mp4`), donc cache long et immuable (1 an). Un film refait
       // prend un nouveau nom. Sans cette règle, Cloudflare revalide chaque lecture.

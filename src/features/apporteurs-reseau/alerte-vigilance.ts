@@ -10,8 +10,6 @@
  * lui-même peut l'appeler pour une alerte immédiate (`alerterPieceVigilance`).
  */
 
-import * as Sentry from "@sentry/nextjs";
-
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -19,6 +17,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 
 import { dejaEnvoye } from "./commissions";
 import { LIBELLE_PIECE, type TypePiece } from "./regles";
+import { signalerErreurReseau } from "./signaler";
 
 /** On ne signale que les dépôts récents : un vieux dépôt oublié n'est pas une alerte du jour. */
 export const FENETRE_ALERTE_PIECE_JOURS = 30;
@@ -84,9 +83,7 @@ export async function alerterPiecesVigilanceDeposees(maintenant: Date): Promise<
     try {
       if (await alerterPieceVigilance(p.id)) n += 1;
     } catch (err) {
-      Sentry.captureException(err, {
-        tags: { action: "reseau-apporteurs", etape: "alerte-piece" },
-      });
+      signalerErreurReseau("alerte pièce", err);
     }
   }
   return n;

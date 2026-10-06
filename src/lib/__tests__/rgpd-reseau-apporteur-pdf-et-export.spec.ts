@@ -143,6 +143,7 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
     declarations: ["d1"],
     texteSha256: "f".repeat(64),
     valeurs: { identite: "Claire DURAND", siren: "732829320" },
+    texte: "TEXTE COMPLET DU CONTRAT signé par Claire DURAND",
   };
 
   beforeEach(() => {
@@ -153,6 +154,7 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
       email: "enc:claire@exemple.fr",
       telephone: "enc:0612345678",
       iban: "enc:FR7630006000011234567890189",
+      noteInterne: "Rappeler en novembre",
       signatureApporteur: signature,
       siren: "732829320",
       denomination: "Durand Conseil",
@@ -209,6 +211,33 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
     expect(json).not.toContain("valeurs");
     expect(json).not.toContain("hash-ip");
     expect(json).not.toContain("732829320");
+    // Le texte archivé à la signature (B3) ne sort jamais dans l'export.
+    expect(json).not.toContain("TEXTE COMPLET");
+    expect(JSON.stringify(r.apporteur)).not.toContain("TEXTE COMPLET");
+  });
+
+  it("la note interne du dossier fait partie de l'export", async () => {
+    const r = await exporterReseauApporteurPour("claire@exemple.fr");
+    expect(r.apporteur!.noteInterne).toBe("Rappeler en novembre");
+  });
+
+  it("parrainage : le prix facturé du filleul n'est pas exporté (art. 4.6)", async () => {
+    h.commissionFindMany.mockResolvedValue([
+      {
+        activite: "formation",
+        parrainage: true,
+        factureHtCents: 123_456,
+        montantCents: 1_000,
+        statut: "versee",
+        creeAt: new Date("2026-10-10T00:00:00Z"),
+        verseeAt: null,
+        autofactureNumero: null,
+      },
+    ]);
+    const r = await exporterReseauApporteurPour("claire@exemple.fr");
+    expect(r.apporteur!.commissions[0]!.factureHtCents).toBeNull();
+    expect(JSON.stringify(r.apporteur!.commissions)).not.toContain("123456");
+    expect(r.apporteur!.commissions[0]!.montantCents).toBe(1_000);
   });
 
   it("sans signature enregistrée, la preuve est nulle", async () => {
@@ -219,6 +248,7 @@ describe("export art. 15 : l'apporteur retrouve tout ce qui le concerne", () => 
       email: "enc:claire@exemple.fr",
       telephone: null,
       iban: null,
+      noteInterne: null,
       signatureApporteur: null,
       siren: null,
       denomination: null,
