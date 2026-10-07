@@ -128,6 +128,11 @@ vi.mock("@/lib/prisma", () => {
         return { count: cibles.length };
       }),
     },
+    // Retrait du réseau (#1353) : personne n'est retiré dans ce scénario.
+    apporteurReseauRetrait: {
+      findUnique: vi.fn(async () => null),
+      findMany: vi.fn(async () => []),
+    },
     apporteurReseau: {
       findUnique: vi.fn(
         async (a: { where: { emailHash: string } }) =>
@@ -494,7 +499,8 @@ describe("lot de suite (07/10) : « Retenu »", () => {
 });
 
 describe("lot de suite (07/10) : l'aperçu prévient AVANT l'envoi", () => {
-  it("dossier résilié : l'avertissement est DANS l'aperçu", async () => {
+  // 2026-10-07 (a1) : plus de Bienvenue SANS lien — un contrat résilié est refusé dès l'aperçu.
+  it("dossier résilié : l'aperçu REFUSE, avec la raison", async () => {
     await creer();
     await preparerIssueApporteur({
       calendlyEventId: "evt_1",
@@ -505,8 +511,8 @@ describe("lot de suite (07/10) : l'aperçu prévient AVANT l'envoi", () => {
     const { apercuIssueApporteurAction } =
       await import("@/features/admin-rendezvous/issue-apporteur-actions");
     const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
-    expect(a).toMatchObject({ etat: "apercu" });
-    expect((a as { alerte?: string }).alerte).toContain("résilié");
+    expect(a).toMatchObject({ etat: "erreur" });
+    expect((a as { message: string }).message).toContain("résilié");
   });
 });
 

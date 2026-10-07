@@ -28,6 +28,8 @@ const suiviCount = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { findUnique: vi.fn(async () => db.evenement) },
+    // Le dossier d'apporteur de la personne (aucun par défaut) — lu AVANT l'ouverture.
+    apporteurReseau: { findUnique: vi.fn(async () => dossierExistant.valeur) },
     submission: {
       findUnique: vi.fn(async () => db.fiche),
       findMany: vi.fn(async () => (db.fiche ? [{ id: db.fiche["id"] }, { id: "sub_autre" }] : [])),
@@ -57,6 +59,17 @@ vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   })),
 }));
 vi.mock("@/features/apporteurs-reseau/verification", () => ({ envoyerLien: vi.fn() }));
+const dossierExistant = vi.hoisted(() => ({
+  valeur: null as null | { id: string; statut: string },
+}));
+vi.mock("@/lib/security/email-hash", () => ({
+  hashEmailForLookup: (v: string) => (v ? `h:${v}` : null),
+}));
+// Retrait du réseau (#1353) : personne n'est retiré, sauf dans le scénario dédié.
+const { retraitDe } = vi.hoisted(() => ({ retraitDe: vi.fn(async () => null as Date | null) }));
+vi.mock("@/features/apporteurs-reseau/retrait", () => ({
+  retraitDe: (...a: unknown[]) => retraitDe(...(a as [])),
+}));
 
 const enqueueEmail = vi.fn();
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => enqueueEmail(...a) }));
@@ -386,5 +399,63 @@ describe("garde-fous de la fiche", () => {
     );
     expect(r.etat).toBe("erreur");
     expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 « Retenu » refusé AVANT l'ouverture du dossier (2026-10-07)", () => {
+  const ouvrir = async () =>
+    (await import("@/features/apporteurs-reseau/donnees"))
+      .ouvrirDossierDepuisCandidature as unknown as {
+      mock: { calls: unknown[] };
+      mockClear: () => void;
+    };
+
+  it("apporteur RETIRÉ (dossier refusé ou non) : aperçu et envoi refusés, le dossier n'est JAMAIS ouvert", async () => {
+    dossierExistant.valeur = { id: "app-1", statut: "refuse" };
+    retraitDe.mockResolvedValue(new Date());
+    (await ouvrir()).mockClear();
+    try {
+      const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+      expect(a).toMatchObject({ etat: "erreur" });
+      expect((a as { message: string }).message).toMatch(/retiré du réseau.*remettez-le/i);
+      const r = await enregistrerIssueApporteurAction(
+        INITIAL,
+        fd({ issue: "retenu", confirmer: "oui", noteSur20: "17", justification: "Réseau solide." }),
+      );
+      expect(r).toMatchObject({ etat: "erreur" });
+      // Ouvrir un dossier refusé le rouvrirait : jamais pour un retiré.
+      expect((await ouvrir()).mock.calls).toHaveLength(0);
+      expect(enqueueEmail).not.toHaveBeenCalled();
+      expect(upsert).not.toHaveBeenCalled();
+    } finally {
+      retraitDe.mockResolvedValue(null);
+      dossierExistant.valeur = null;
+    }
+  });
+
+  it("contrat RÉSILIÉ : pas de Bienvenue sans lien — refusé, rien ne part", async () => {
+    dossierExistant.valeur = { id: "app-1", statut: "resilie" };
+    (await ouvrir()).mockClear();
+    try {
+      const r = await enregistrerIssueApporteurAction(
+        INITIAL,
+        fd({ issue: "retenu", confirmer: "oui", noteSur20: "17", justification: "Réseau solide." }),
+      );
+      expect(r).toMatchObject({ etat: "erreur" });
+      expect((r as { message: string }).message).toMatch(/résilié/);
+      expect((await ouvrir()).mock.calls).toHaveLength(0);
+      expect(enqueueEmail).not.toHaveBeenCalled();
+    } finally {
+      dossierExistant.valeur = null;
+    }
+  });
+
+  it("contre-témoin : sans dossier existant, « Retenu » part normalement", async () => {
+    dossierExistant.valeur = null;
+    const r = await enregistrerIssueApporteurAction(
+      INITIAL,
+      fd({ issue: "retenu", confirmer: "oui", noteSur20: "17", justification: "Réseau solide." }),
+    );
+    expect(r).toMatchObject({ etat: "ok" });
   });
 });

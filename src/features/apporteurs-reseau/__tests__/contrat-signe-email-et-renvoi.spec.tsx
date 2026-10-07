@@ -65,7 +65,7 @@ describe("e-mail « contrat signé » (D5)", () => {
       expect(x).toContain(
         "Parrainage : si vous présentez une personne qui devient elle-même apporteur",
       );
-      expect(x).toContain("10 % de ses commissions pendant 6 mois");
+      expect(x).toContain("10 % des commissions nées de ses commandes signées pendant les 6 mois");
     }
   });
 
