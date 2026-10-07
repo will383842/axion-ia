@@ -35,6 +35,7 @@
  */
 import { z } from "zod";
 
+import type { Prisma } from "../../../prisma/generated/client";
 import type { RateLimitConfig } from "@/lib/rate-limit";
 import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
@@ -128,16 +129,51 @@ export async function rattraperUnePage(
   };
 }
 
+/**
+ * L'émission d'UN fait de l'historique, dans la transaction `tx`, par l'unique fonction d'émission
+ * de son producteur.
+ *
+ * ── REQ-INT-011 : le parent part AVANT l'enfant ───────────────────────────────────────────────
+ * Partners garde un devis dont le client manque en `en_attente_dependance` et le rejoue à
+ * l'arrivée du parent ; le backfill n'a pas à le lui faire attendre. Pour un devis (signé ou
+ * émis), le client destinataire est émis (`client.cree`, clé `client.cree:<id>`) DANS LA MÊME
+ * transaction, AVANT le devis : l'ordre ne dépend donc pas de l'ordre dans lequel l'appelant
+ * demande les familles, et aucun devis du backfill ne part sans son client. Un client déjà émis
+ * ne réécrit rien (même clé de fait).
+ */
+export async function emettreFaitHistorique(
+  tx: Prisma.TransactionClient,
+  famille: FamilleBackfill,
+  id: string,
+): Promise<string | null> {
+  if (!canalPartnersOuvert()) return null;
+  const { emettreFaitClient, CREATION_CLIENT } = await import("./producteurs/client");
+  switch (famille) {
+    case "clients":
+      return emettreFaitClient(tx, id, CREATION_CLIENT);
+    case "candidatures": {
+      const { emettreCandidatureRecue } = await import("./producteurs/candidature");
+      return emettreCandidatureRecue(tx, id);
+    }
+    case "devis_signes":
+    case "devis_emis": {
+      const devis = await tx.devis.findUnique({ where: { id }, select: { clientId: true } });
+      if (devis === null) {
+        throw new Error(`[partners-sync] backfill : devis ${id} introuvable dans la transaction.`);
+      }
+      await emettreFaitClient(tx, devis.clientId, CREATION_CLIENT);
+      const { emettreDevisSigne, emettreDevisEmis } = await import("./producteurs/devis");
+      return famille === "devis_signes" ? emettreDevisSigne(tx, id) : emettreDevisEmis(tx, id);
+    }
+  }
+}
+
 /** Les sources de production : la base, et les producteurs, un fait par transaction. */
 export async function sourcesDeProduction(): Promise<SourcesBackfill> {
   if (!canalPartnersOuvert()) {
     return { lister: async () => [], emettre: async () => null };
   }
   const { prisma } = await import("@/lib/prisma");
-  const { emettreFaitClient, CREATION_CLIENT } = await import("./producteurs/client");
-  const { emettreDevisSigne, emettreDevisEmis } = await import("./producteurs/devis");
-  const { emettreCandidatureRecue } = await import("./producteurs/candidature");
-
   const pageId = (limite: number) =>
     ({ orderBy: { id: "asc" }, take: limite, select: { id: true } }) as const;
 
@@ -196,18 +232,7 @@ export async function sourcesDeProduction(): Promise<SourcesBackfill> {
       }
     },
     async emettre(famille, id) {
-      return prisma.$transaction(async (tx) => {
-        switch (famille) {
-          case "clients":
-            return emettreFaitClient(tx, id, CREATION_CLIENT);
-          case "devis_signes":
-            return emettreDevisSigne(tx, id);
-          case "devis_emis":
-            return emettreDevisEmis(tx, id);
-          case "candidatures":
-            return emettreCandidatureRecue(tx, id);
-        }
-      });
+      return prisma.$transaction((tx) => emettreFaitHistorique(tx, famille, id));
     },
   };
 }
