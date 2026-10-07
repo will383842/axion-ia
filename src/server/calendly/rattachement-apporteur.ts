@@ -54,6 +54,35 @@ export interface LigneARattacher {
   linkedJobApplicationId: string | null | undefined;
 }
 
+/**
+ * Les fiches apporteur (non supprimées) dont le NOM correspond à celui confirmé par
+ * Calendly — repli « même nom, autre adresse » (adresse relais Indeed). Lecture seule.
+ */
+export async function fichesApporteurAuNom(nom: string | null | undefined): Promise<string[]> {
+  const mots = motsDuNom(nom);
+  if (mots.length === 0) return [];
+  const lignes = await prisma.submission.findMany({
+    where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+    orderBy: { submittedAt: "desc" },
+    take: PLAFOND_LECTURE_NOMS,
+    select: { id: true, details: true, contactName: true, contactEmail: true },
+  });
+  const clair = (v: string | null): string | null => {
+    if (!v) return null;
+    try {
+      return decryptPii(v);
+    } catch {
+      return null;
+    }
+  };
+  return lignes
+    .filter(
+      (l) =>
+        estApporteur(l.details) && nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
+    )
+    .map((l) => l.id);
+}
+
 export type IssueRattachement =
   | { rattache: true; submissionId: string; parNom?: true }
   | {
@@ -102,30 +131,9 @@ export async function rattacherEchangeApporteur(
   // fiche apporteur au nom correspondant : zéro ou plusieurs → on ne fait rien,
   // le sélecteur de la console les PROPOSE et un humain choisit.
   if (!cible) {
-    const mots = motsDuNom(ligne.inviteeName);
-    if (mots.length > 0) {
-      const lignes = await prisma.submission.findMany({
-        where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
-        orderBy: { submittedAt: "desc" },
-        take: PLAFOND_LECTURE_NOMS,
-        select: { id: true, details: true, contactName: true, contactEmail: true },
-      });
-      const clair = (v: string | null): string | null => {
-        if (!v) return null;
-        try {
-          return decryptPii(v);
-        } catch {
-          return null;
-        }
-      };
-      const trouvees = lignes.filter(
-        (l) =>
-          estApporteur(l.details) &&
-          nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
-      );
-      const seule = trouvees.length === 1 ? trouvees[0] : undefined;
-      if (seule) cible = { id: seule.id, parNom: true };
-    }
+    const trouvees = await fichesApporteurAuNom(ligne.inviteeName);
+    const seule = trouvees.length === 1 ? trouvees[0] : undefined;
+    if (seule) cible = { id: seule, parNom: true };
   }
   if (!cible) return { rattache: false, motif: "aucun_dossier_apporteur" };
 

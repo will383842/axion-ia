@@ -45,6 +45,7 @@ import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
+import { creerFicheDepuisRendezVous } from "./fiche-rendez-vous-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { majMessageVsl } from "@/features/commercial-application/lead-vsl-details";
@@ -436,6 +437,21 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
     });
+    // Aucune fiche apporteur, ni à l'adresse ni au nom (réservation sans formulaire) :
+    // on la crée, sans e-mail, pour que « Retenu » puisse ouvrir le dossier (07/10).
+    if (!issueRattachement.rattache && issueRattachement.motif === "aucun_dossier_apporteur") {
+      try {
+        await creerFicheDepuisRendezVous({
+          eventId,
+          email: inviteeEmail,
+          nom: d.inviteeName ?? null,
+          telephone: d.inviteePhone ?? row.inviteePhone ?? null,
+          reponses: d.answersText ?? null,
+        });
+      } catch (e) {
+        Sentry.captureException(e, { tags: { service: "calendly-fiche-rendez-vous" } });
+      }
+    }
     if (issueRattachement.rattache) {
       ficheRattachee = issueRattachement.submissionId;
       // Fiche née de la page vidéo : le message de la console dit la suite.
