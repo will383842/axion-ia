@@ -420,17 +420,16 @@ Société sans réclamation du client, et de celles résultant de l'inexécution
 obligations, qui ne donnent lieu à aucune reprise** —, la commission correspondante fait l'objet d'une
 reprise. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
 l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention
-« Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date, article 289 du code
-général des impôts) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
+« Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
 somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un
-montant diminué d'une reprise.** L'avoir est imputé sur la prochaine somme à virer, dans les conditions du
+montant diminué d'une reprise.** L'avoir s'impute par compensation conventionnelle (article 1348-2 du code civil) sur la prochaine somme à verser, dans les conditions du
 présent article ; le décompte qui accompagne l'autofacture de cette commission indique l'avoir imputé et la
 somme virée.
 
 La reprise ne peut intervenir que dans les douze mois suivant **la date de l'annulation** — et non celle
 de l'encaissement d'origine, une annulation pouvant survenir longtemps après lui.
 
-Elle s'impute par compensation sur les commissions à venir. **À défaut de commissions à venir suffisantes,
+Elle s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les commissions à venir. **À défaut de commissions à venir suffisantes,
 le solde négatif suit le régime de l'article 12.4**, que le contrat soit en cours ou terminé.
 
 > *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
@@ -498,7 +497,7 @@ changement et sans indication du motif.
 **4.7 — Taxe sur la valeur ajoutée.** Les commissions sont exprimées hors taxes. Lorsque l'Apporteur est
 assujetti à la taxe sur la valeur ajoutée, la taxe au taux en vigueur (20 % à la date de la présente version)
 s'ajoute à la commission et figure sur la facture ; lorsqu'il bénéficie de la franchise en base, la facture
-porte la mention « TVA non applicable, article 293 B du CGI ». Les commissions sont facturées selon le
+porte la mention « TVA non applicable, article 293 B du CGI » ou, à compter de l'entrée en vigueur du code des impositions sur les biens et services (CIBS), la mention correspondante de ce code. Les commissions sont facturées selon le
 régime que l'Apporteur a déclaré (article 6.3) à la date d'établissement de l'autofacture. L'autofacture
 porte la date de son établissement comme date d'émission et la date de l'encaissement intégral comme date de
 la prestation ; l'exigibilité de la taxe suit le régime déclaré par l'Apporteur, y compris, le cas échéant,
@@ -532,7 +531,7 @@ erreur matérielle ou preuve contraire. Cette acceptation porte sur la forme et 
 la contestation du calcul de la commission qu'elle porte obéit à l'article 5.5.**
 
 **Ce mandat est exclusivement un mandat de facturation au sens de l'article 289, I, 2 du code général des
-impôts. Il est donné PAR l'Apporteur À la Société, aux seules fins d'établir des factures en son nom ; il
+impôts, ou de la disposition qui lui succède dans le code des impositions sur les biens et services (CIBS) à compter de son entrée en vigueur. Il est donné PAR l'Apporteur À la Société, aux seules fins d'établir des factures en son nom ; il
 n'emporte aucun pouvoir de l'Apporteur de représenter la Société, ni aucun mandat de la Société à
 l'Apporteur (article 1.2).**
 
@@ -552,14 +551,14 @@ l'échéance de trente jours, ne donne lieu à aucun frais, aucune pénalité et
 minimum ne s'applique, y compris après la fin du contrat. **Tout retard de versement au-delà de l'échéance
 donne lieu, de plein droit, conformément à l'article L.441-10 du code de commerce, à compter du lendemain de
 l'échéance et sans rappel préalable, à des pénalités calculées au taux d'intérêt
-de la Banque centrale européenne à son opération de refinancement la plus récente majoré de dix points,
+de la Banque centrale européenne à son opération de refinancement la plus récente majoré de dix points de pourcentage, sans pouvoir être inférieur à trois fois le taux d'intérêt légal,
 ainsi qu'à l'indemnité forfaitaire pour frais de recouvrement de 40 euros prévue à l'article D.441-5 du
 code de commerce.**
 
 **5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide, régime de
 taxe sur la valeur ajoutée déclaré (article 6.3) ni coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
 d'immatriculation prévus à l'article 6.2 conditionnent en outre le versement des sommes qui portent le cumul
-des sommes dues au titre du présent contrat au seuil fixé par les articles L.8222-1 et D.8222-5 du code du
+des sommes dues au titre du présent contrat au seuil fixé par l'article R.8222-1 du code du
 travail, et au-delà. **Aucune autre pièce et aucun autre motif ne
 peuvent différer un versement ; en particulier ni un défaut de
 rattachement d'un encaissement, ni l'absence de palier à la grille ne peuvent le différer au-delà de
@@ -603,9 +602,10 @@ ajustement que la reprise de l'article 4.5 ne peut réduire une commission.
 **6.1** L'Apporteur exerce sous un statut régulièrement déclaré et demeure à jour de ses obligations
 sociales et fiscales.
 
-**6.2** Lorsque le cumul des sommes dues au titre du présent contrat, apprécié toutes taxes comprises,
-approche le seuil fixé par les articles L.8222-1 et D.8222-5 du code du travail — la Société appréciant
-cette approche au vu des commissions acquises et des commandes signées —, elle lui demande son
+**6.2** Lorsque le cumul des sommes dues au titre du présent contrat
+approche le seuil fixé par l'article R.8222-1 du code du travail pour l'application de l'article L.8222-1 — la Société appréciant par prudence ce
+cumul toutes taxes comprises, ce qui est plus strict que le seuil légal, apprécié hors taxes, et cette approche
+au vu des commissions acquises et des commandes signées —, elle lui demande son
 **attestation de vigilance** délivrée par l'URSSAF, datant de moins de six mois et portant son code de vérification, ainsi
 que les documents d'immatriculation prévus par l'article D.8222-5 (**extrait d'immatriculation** ou
 document équivalent) ; il les lui remet, puis une attestation actualisée tous les six mois tant que le
@@ -630,8 +630,8 @@ n'est tenue pour son compte d'aucune retenue, d'aucun reversement et d'aucune d�
 celles que la loi met à sa charge, notamment la déclaration prévue à l'article 240 du code général des
 impôts, dont un récapitulatif est mis à sa disposition.
 
-**6.6 — Absence de travail dissimulé.** L'Apporteur déclare n'avoir recours à aucun travail dissimulé au
-sens des articles L.8221-3 et L.8221-5 du code du travail et n'employer aucun travailleur étranger dépourvu
+**6.6 — Absence de travail dissimulé.** L'Apporteur déclare ne pas se trouver dans les situations définies aux
+articles L.8221-3 et L.8221-5 du code du travail, n'avoir recours à aucun travail dissimulé et n'employer aucun travailleur étranger dépourvu
 d'autorisation de travail ; il remet, le cas échéant, la liste nominative prévue à l'article D.8254-2. Il
 indemnise la Société du préjudice **qu'elle établit avoir subi** du fait d'une mise en cause au titre des
 articles L.8222-1 à L.8222-5 ou L.8254-1 du code du travail imputable à un manquement de sa part.
@@ -645,7 +645,7 @@ professionnelles d'une personne physique. Il garantit avoir informé cette perso
 de l'article 13 du règlement (UE) 2016/679**, de la transmission de ses coordonnées et de sa finalité.
 
 **7.2** La Société est responsable du traitement de ces données. Elle en informe la personne concernée dans
-les conditions de l'article 14 du règlement (UE) 2016/679 et les conserve pour la durée nécessaire au suivi de l'affaire et aux finalités de l'article 3.5 alinéa
+les conditions de l'article 14 du règlement (UE) 2016/679, au plus tard à la première communication avec elle et en tout état de cause dans le délai d'un mois (article 14, 3 du règlement), et les conserve pour la durée nécessaire au suivi de l'affaire et aux finalités de l'article 3.5 alinéa
 4, dans la limite des durées de conservation qu'elle porte à la connaissance de la personne ; elle l'informe
 de son droit de s'opposer à tout moment à la prospection. La Société conserve en outre ces données dans son
 outil de gestion de la relation client, à des fins de prospection et de gestion de sa relation commerciale
@@ -676,8 +676,8 @@ traitement.
 **7.8** La Société traite les données de l'Apporteur (identité, coordonnées, pièces justificatives,
 coordonnées bancaires, commissions) pour conclure et exécuter le contrat, tenir sa comptabilité et satisfaire
 à ses obligations légales, notamment fiscales. Les pièces justificatives sont conservées pendant la durée
-indiquée par la politique de confidentialité de la Société ; le contrat, les autofactures et leurs décomptes sont
-conservés cinq ans après la fin du contrat, les pièces comptables pendant la durée légale. L'information
+indiquée par la politique de confidentialité de la Société ; le contrat et son fichier de preuve sont
+conservés cinq ans après la fin du contrat ; les autofactures, leurs décomptes et les pièces comptables, pendant la durée légale de conservation (dix ans, article L.123-22 du code de commerce). L'information
 prévue à l'article 13 du règlement est accessible depuis la politique de confidentialité du site de la
 Société.
 
@@ -693,7 +693,7 @@ Société.
 
 Aucune commission n'est due au titre d'une prestation **effectivement financée, en tout ou partie, par le
 compte personnel de formation**, quelle que soit l'origine du contact. Les paliers susceptibles d'un tel
-financement sont identifiés dans la grille annexée.
+financement sont identifiés dans la grille annexée. Cette absence de commission est une règle du présent contrat et non de la loi.
 
 **8.2** Il ne se présente pas comme salarié, mandataire, agent ou représentant de la Société, n'utilise
 aucune adresse électronique ni aucun support laissant croire à un lien de cette nature, et ne fait aucune
@@ -747,8 +747,8 @@ objet et donnant naissance à une attribution bornée et non reconductible (arti
 
 **11.1** Chaque partie peut résilier le contrat à tout moment, par écrit et sans avoir à motiver sa
 décision, moyennant un préavis de **30 jours.
-Ce préavis est stipulé au titre de l'article L.442-1, II du code de commerce, à l'exclusion de toute
-application des articles L.134-11 et suivants du même code.** Il n'est pas dû en cas de résiliation fondée
+Ce préavis est stipulé en considération de la durée prévisible de la relation et sans préjudice de l'article L.442-1, II du code de commerce.
+Les parties n'ayant pas entendu conclure un contrat d'agence commerciale (article 1.4), les articles L.134-11 et suivants du même code ne s'appliquent pas.** Il n'est pas dû en cas de résiliation fondée
 sur l'article 11.2 ni en cas de force majeure.
 
 **11.1 bis** Pendant le préavis, le contrat continue de produire ses effets : l'Apporteur peut déclarer de
@@ -793,7 +793,7 @@ est révoqué à la fin du contrat. Il peut obtenir sur simple demande à contac
 contrat signé et de ses autofactures.
 
 **12.4** Si le solde de l'Apporteur est négatif à la suite de reprises ou d'avoirs de l'article 5.7, ce solde
-s'impute par compensation sur les commissions à venir.
+s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les commissions à venir.
 
 À défaut de commissions à venir permettant cette imputation dans un délai de douze mois — que le contrat
 soit en cours ou terminé —, la Société peut en demander le remboursement par écrit, avec l'avoir
@@ -806,8 +806,8 @@ Le solde négatif non recouvré est constaté en créance et n'emporte aucune au
 **12.5** **Le contrat étant conclu en considération de la personne de l'Apporteur (articles 2.6 et 16), il**
 prend fin de plein droit au décès de l'Apporteur personne physique, à la cessation de son activité ou à la
 radiation de son immatriculation, sans préavis. **L'ouverture d'une procédure collective à l'égard de
-l'Apporteur est sans effet sur le présent contrat, dont le sort est réglé par les articles L.622-13 et
-L.641-11-1 du code de commerce.** Les commissions acquises à cette date sont versées, selon le cas, à
+l'Apporteur n'entraîne pas, à elle seule, la fin du contrat, dont le sort est réglé par le livre VI du code de commerce, notamment les articles L.622-13 et
+L.641-11-1 ; elle met seulement fin au mandat de facturation, dans les conditions de l'article 2.5 de l'annexe 2.** Les commissions acquises à la date de fin du contrat, ou à celle de la fin du mandat de facturation, sont versées, selon le cas, à
 l'Apporteur, à ses ayants droit ou au mandataire désigné, sur justification de leur qualité et de
 coordonnées bancaires à leur nom, l'article 5.4 étant écarté pour le seul numéro SIREN ; le mandat de
 facturation ayant pris fin, la facture est alors établie dans les conditions de l'article 2.5 de l'annexe 2.
@@ -846,8 +846,8 @@ Le présent contrat est soumis au droit français.
 À défaut d'accord amiable, **TOUT LITIGE RELATIF AU PRÉSENT CONTRAT RELÈVE DE LA COMPÉTENCE EXCLUSIVE DES
 TRIBUNAUX DU RESSORT DU SIÈGE DE LA SOCIÉTÉ, DANS LA MESURE OÙ LES DEUX PARTIES ONT CONTRACTÉ EN QUALITÉ
 DE COMMERÇANT. À DÉFAUT, LES RÈGLES DE COMPÉTENCE DE DROIT COMMUN S'APPLIQUENT.** La présente clause est
-stipulée sous réserve des règles impératives de compétence d'attribution applicables aux litiges relevant de
-l'article L.442-1 du code de commerce.
+stipulée sous réserve des juridictions spécialisées désignées par la loi pour les litiges relevant des
+articles L.442-1 et suivants du code de commerce (article L.442-4, III et article D.442-3).
 
 **Les parties reconnaissent que la présente clause a fait l'objet, dans le parcours de signature
 électronique, d'une acceptation distincte et spécialement signalée, conservée dans le fichier de preuve
@@ -871,9 +871,9 @@ préavis. La force majeure ne dispense ni du paiement des sommes dues, ni de l'�
 
 Le contrat est conclu en considération de la personne de l'Apporteur : il ne peut ni le céder ni le
 transférer. La Société peut céder le contrat à toute société qu'elle contrôle, qui la contrôle, ou à
-laquelle elle transfère l'activité concernée. **L'Apporteur y consent par avance au sens de l'article 1216
-du code civil ; la cession produit effet à son égard lorsqu'elle lui est notifiée par écrit, et libère la
-Société pour l'avenir au sens de l'article 1216-1 du même code.** L'Apporteur peut, dans les trente jours
+laquelle elle transfère l'activité concernée. **L'Apporteur consent expressément, par avance, à la cession du contrat (article 1216 du code civil)
+et à la libération de la Société pour l'avenir (article 1216-1) ; la cession produit effet à son égard
+lorsqu'elle lui est notifiée par écrit.** L'Apporteur peut, dans les trente jours
 de la notification de la cession, résilier le contrat sans préavis. Le cessionnaire reprend les commissions
 acquises ou afférentes à des commandes signées, les engagements de l'annexe 2 et la grille en vigueur, qu'une
 cession ne peut modifier.
@@ -965,14 +965,14 @@ demeure libre de ne pas y donner suite, sans avoir à motiver sa décision, ou d
 dossier. La contresignature est notifiée à l'Apporteur par courrier électronique.
 
 **Signature électronique et preuve.** Le présent contrat est signé sous forme électronique, au moyen d'une
-signature électronique simple au sens de l'article 3, 10°, du règlement (UE) n° 910/2014. L'Apporteur est
+signature électronique au sens de l'article 3, 10°, du règlement (UE) n° 910/2014, ni avancée ni qualifiée, dont l'effet juridique n'est pas refusé au seul motif de sa forme électronique (article 25, 1 du même règlement). L'Apporteur est
 identifié par le lien personnel adressé à l'adresse électronique qu'il a déclarée et exprime son
 consentement en validant la signature ; la Société signe par son représentant légal depuis un accès
 personnel. À chaque signature sont enregistrés dans un fichier de preuve : la date et l'heure, l'empreinte
 numérique du texte signé, l'adresse IP de connexion sous forme hachée, le navigateur utilisé et les cases
 cochées. Le texte signé est figé : toute modification en change l'empreinte. Les parties reconnaissent que
 ces éléments font foi, jusqu'à preuve contraire, de l'identité du signataire, de son consentement et de
-l'intégrité du texte signé (articles 1356, 1366 et 1367 du code civil). Le fichier de preuve est une annexe
+l'intégrité du texte signé (articles 1356, 1366 et 1367 du code civil). La présomption de fiabilité de l'article 1367 ne joue que pour la signature électronique qualifiée ; pour la présente signature, la convention de preuve de l'article 1356 s'applique. Le fichier de preuve est une annexe
 du contrat signé ; le contrat signé et son fichier de preuve sont conservés par la Société pendant la durée
 du contrat et cinq ans après sa fin ; un exemplaire de chacun est adressé à l'Apporteur par courrier
 électronique à la contresignature et lui est remis sur simple demande.
@@ -1126,7 +1126,7 @@ dehors de ce cas.
 complémentaires et avoirs afférents aux commissions et aux sommes de parrainage dues au titre du présent
 contrat. Il accepte, par la signature du contrat, de les recevoir sous forme électronique et que chacun de ces
 documents soit soumis à la procédure d'acceptation de l'article 2.4. **Ce mandat est exclusivement un mandat de
-facturation au sens de l'article 289, I, 2 du code général des impôts. Il est donné PAR l'Apporteur À la
+facturation au sens de l'article 289, I, 2 du code général des impôts, ou de la disposition qui lui succède dans le code des impositions sur les biens et services (CIBS) à compter de son entrée en vigueur. Il est donné PAR l'Apporteur À la
 Société, aux seules fins d'établir des factures en son nom ; il n'emporte aucun pouvoir de l'Apporteur de
 représenter la Société, ni aucun mandat de la Société à l'Apporteur (article 1.2).**
 
@@ -1141,13 +1141,15 @@ Elle n'est jamais diminuée d'une reprise : celle-ci est constatée par un avoir
 séquence, qui porte la mention « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et
 date) et indique la commission corrigée et la taxe correspondante (article 4.5).
 
-**2.2** Chaque facture ainsi émise comporte l'ensemble des mentions légales — **y compris le taux des
+**2.2** Chaque facture ainsi émise comporte l'ensemble des mentions légales : au titre de l'article L.441-9 du code de commerce, **le taux des
 pénalités de retard et l'indemnité forfaitaire de recouvrement de 40 euros mentionnés à l'article 5.3**, la
-date d'échéance du règlement (trente jours à compter de l'émission, article 5.3) et les conditions d'escompte (« pas d'escompte pour paiement anticipé »),
+date d'échéance du règlement (trente jours à compter de l'émission, article 5.3) et les conditions d'escompte (« pas d'escompte pour paiement anticipé ») ;
+au titre de l'article 242 nonies A de l'annexe II du code général des impôts, ou de la disposition qui lui succède à compter de son entrée en vigueur,
 le numéro d'ordre, la date d'émission et la date de la prestation, la désignation de la prestation (mise en
-relation, commande concernée), les numéros SIREN des deux parties et, lorsque l'Apporteur est assujetti, les
+relation, commande concernée), la quantité et le prix unitaire hors taxes, les numéros SIREN des deux parties et, lorsque l'Apporteur est assujetti, les
 numéros de taxe sur la valeur ajoutée des deux parties, ainsi que le taux et le montant de la taxe ou la
-mention « TVA non applicable, article 293 B du CGI » —, la mention « **Autofacturation** », et
+mention « TVA non applicable, article 293 B du CGI » ou, à compter de l'entrée en vigueur du code des impositions sur les biens et services (CIBS), la mention correspondante de ce code,
+la mention « Option pour le paiement de la taxe d'après les débits » lorsque l'Apporteur y a opté, la mention « **Autofacturation** » (14° du même article), et
 l'identification complète des deux parties. Ces mentions figurent sur chaque facture, quel que soit le délai
 effectif de paiement.
 
@@ -1171,7 +1173,8 @@ référence à la facture d'origine.
 les seules commissions restant à acquérir au titre de l'article 12.3 et les reprises de l'article 4.5,
 jusqu'à leur extinction complète, sauf
 décès de l'Apporteur, ouverture d'une procédure collective à son égard ou cessation de son activité, cas dans
-lesquels le mandat prend fin et la dernière phrase du présent article s'applique.**
+lesquels le mandat prend fin et la dernière phrase du présent article s'applique ; la fin du mandat à l'ouverture d'une procédure
+collective n'entraîne pas, à elle seule, la fin du contrat, dont le sort est réglé par l'article 12.5.**
 Il peut être dénoncé par écrit par l'une ou l'autre des parties avec un préavis de trente jours. **La fin
 du mandat, quelle qu'en soit la cause, ne fait obstacle ni à l'acquisition ni au paiement des commissions :
 à compter de cette date, la Société transmet à l'Apporteur — ou, selon le cas, à ses ayants droit ou au
