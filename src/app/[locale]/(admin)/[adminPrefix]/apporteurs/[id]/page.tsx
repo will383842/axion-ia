@@ -343,6 +343,12 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
                   {c.montantCents !== null ? euros(c.montantCents) : "—"} ·{" "}
                   {LIBELLE_COMMISSION[c.statut] ?? c.statut}
                 </span>
+                {c.statut === "due" && c.autofactureAttenteMotif ? (
+                  <span className="w-full" style={{ color: "var(--color-admin-warning)" }}>
+                    Autofacture en attente : il manque {c.autofactureAttenteMotif}. Elle partira
+                    d&apos;elle-même dans l&apos;heure une fois la fiche complétée.
+                  </span>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -274,6 +274,22 @@ export function dateFr(d: Date): string {
   });
 }
 
+/**
+ * Ce qui manque à la fiche de l'apporteur pour établir son autofacture (vide = rien ne manque).
+ * Mêmes conditions que `construireDonneesAutofacture` : régime de TVA, SIREN, adresse (déchiffrée).
+ */
+export function donneesManquantesAutofacture(a: {
+  regimeTva: ApporteurPourAutofacture["regimeTva"];
+  siren: string | null;
+  adresse: string | null;
+}): string[] {
+  const manques: string[] = [];
+  if (!regimeHonorairesApporteur(a.regimeTva)) manques.push("régime de TVA de l'apporteur");
+  if (!a.siren?.trim()) manques.push("SIREN de l'apporteur");
+  if (!a.adresse?.trim()) manques.push("adresse de l'apporteur");
+  return manques;
+}
+
 /** Données du gabarit, ou le motif pour lequel la pièce ne peut pas être établie. */
 export function construireDonneesAutofacture(e: {
   numero: string;

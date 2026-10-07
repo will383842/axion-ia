@@ -48,6 +48,7 @@ import {
 import {
   aVirerTtcCents,
   dateFr,
+  donneesManquantesAutofacture,
   echeancePaiement,
   libelleMois,
   objectifVirement,
@@ -64,6 +65,11 @@ export function jobIdAlerteAutofacture(numero: string): string {
   return `apporteur-autofacture-alerte-${numero}`;
 }
 
+/** Alerte « autofacture en attente » : une par blocage (clé = première commission bloquée). */
+export function jobIdAlerteAttente(apporteurId: string, commissionId: string): string {
+  return `apporteur-autofacture-attente-${apporteurId}-${commissionId}`;
+}
+
 type Db = Pick<typeof prisma, "commissionApporteur">;
 
 /** Lignes à facturer : commissions dues pas encore facturées + reprises pas encore imputées. */
@@ -75,7 +81,13 @@ function lireAFacturer(db: Db, apporteurId: string) {
       montantCents: { not: null },
       OR: [{ statut: "due" }, { statut: "reprise", releveMois: null }],
     },
-    select: { id: true, statut: true, montantCents: true, palier: true },
+    select: {
+      id: true,
+      statut: true,
+      montantCents: true,
+      palier: true,
+      autofactureAttenteMotif: true,
+    },
     orderBy: { creeAt: "asc" },
   });
 }
@@ -120,8 +132,12 @@ export type ResultatFacturation =
 
 /**
  * Facture les commissions dues d'UN apporteur, en une autofacture. `ok: false` quand il n'y a rien
- * à facturer ou que la pièce ne peut pas être établie (identité de facturation, TVA, stockage) :
- * dans ce cas RIEN n'est écrit, et le passage suivant réessaie.
+ * à facturer ou que la pièce ne peut pas être établie : RIEN n'est facturé, le passage suivant
+ * réessaie. Deux cas :
+ *   · une DONNÉE de la fiche manque (TVA, SIREN, adresse) : les commissions restent dues, marquées
+ *     « en attente : <ce qui manque> » (visible dans la console), UNE alerte au premier blocage,
+ *     aucun PDF tenté ni Sentry ; dès que la fiche est complète, le passage suivant facture ;
+ *   · une erreur TECHNIQUE (PDF, stockage) : Sentry et nouvel essai à chaque passage.
  */
 export async function facturerApporteur(
   apporteurId: string,
@@ -167,6 +183,9 @@ export async function facturerApporteur(
         "L'attestation de vigilance ou l'immatriculation n'est plus valable : les commissions sont remises en attente de vigilance, rien n'a été facturé.",
     };
   }
+
+  const attente = await mettreEnAttenteSiIncomplet(apporteurId, dues, maintenant);
+  if (attente) return { ok: false, message: attente };
 
   const reprisesAvant = avant.filter((c) => c.statut === "reprise");
   const origines: Origines = reprisesAvant.length
@@ -231,6 +250,8 @@ export async function facturerApporteur(
         releveMois: moisParis(maintenant),
         autofactureNumero: numero,
         autofactureEmiseAt: maintenant,
+        autofactureAttenteMotif: null,
+        autofactureAttenteDepuis: null,
       };
       const dues2 = await tx.commissionApporteur.updateMany({
         where: {
@@ -305,6 +326,78 @@ export async function facturerApporteur(
     signalerErreurReseau("autofacture : alerte interne", err);
   }
   return { ok: true, numero, totalCents: aVirer, commissions: dues.length, envoi };
+}
+
+/**
+ * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
+ * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
+ * à afficher, ou `null` quand rien ne manque.
+ */
+async function mettreEnAttenteSiIncomplet(
+  apporteurId: string,
+  dues: ReadonlyArray<{ id: string; autofactureAttenteMotif: string | null }>,
+  maintenant: Date,
+): Promise<string | null> {
+  const fiche = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { prenom: true, nom: true, regimeTva: true, siren: true, adresse: true },
+  });
+  if (!fiche) return null;
+  const manques = donneesManquantesAutofacture({
+    regimeTva: fiche.regimeTva,
+    siren: fiche.siren,
+    adresse: decryptPii(fiche.adresse),
+  });
+  if (manques.length === 0) return null;
+  const motif = manques.join(", ");
+  const dejaBloque = dues.some((d) => d.autofactureAttenteMotif);
+  const ids = dues.map((d) => d.id);
+  const base = { id: { in: ids }, statut: "due" as const, autofactureNumero: null };
+  const nouvelles = await prisma.commissionApporteur.updateMany({
+    where: { ...base, autofactureAttenteMotif: null },
+    data: { autofactureAttenteMotif: motif, autofactureAttenteDepuis: maintenant },
+  });
+  // Ce qui manque a changé (une donnée complétée, une autre encore absente) : le motif suit.
+  await prisma.commissionApporteur.updateMany({
+    where: { ...base, autofactureAttenteMotif: { not: motif } },
+    data: { autofactureAttenteMotif: motif },
+  });
+  const premierBlocage = nouvelles.count > 0 && !dejaBloque;
+  if (premierBlocage) {
+    try {
+      const nom = [decryptPii(fiche.prenom), decryptPii(fiche.nom)].filter(Boolean).join(" ");
+      await alerterAttente({ apporteurId, nom: nom || "un apporteur", motif, ids, maintenant });
+    } catch (err) {
+      signalerErreurReseau("autofacture en attente : alerte interne", err);
+    }
+  }
+  return `Autofacture en attente : il manque ${motif}. Complétez la fiche de l'apporteur ; l'autofacture partira d'elle-même au passage suivant (toutes les heures).`;
+}
+
+async function alerterAttente(e: {
+  apporteurId: string;
+  nom: string;
+  motif: string;
+  ids: readonly string[];
+  maintenant: Date;
+}): Promise<void> {
+  const jobId = jobIdAlerteAttente(e.apporteurId, e.ids[0]!);
+  if (await dejaEnvoye(jobId)) return;
+  await enqueueEmail(
+    "qualiopi-alerte-interne",
+    destinataireAlertesInternes(),
+    "fr",
+    {
+      niveau: "important",
+      code: "apporteur_autofacture_en_attente",
+      titre: `Autofacture en attente : ${e.nom}`,
+      message: `L'autofacture de ${e.nom} ne peut pas être établie : il manque ${e.motif}. La commission reste due. Complétez sa fiche dans la console : l'autofacture partira d'elle-même au passage suivant (toutes les heures).`,
+      cibleType: "ApporteurReseau",
+      cibleId: e.apporteurId,
+      createdAt: e.maintenant.toLocaleDateString("fr-FR"),
+    },
+    { jobId, entityType: "ApporteurReseau", entityId: e.apporteurId },
+  );
 }
 
 /** Alerte interne « À virer », une seule fois par autofacture. */
