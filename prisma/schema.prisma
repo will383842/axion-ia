@@ -15370,27 +15370,31 @@ enum StatutCommissionApporteur {
 /// Une commission (ou une part de parrainage) née d'une facture soldée.
 /// rgpd: technique — montants, paliers et identifiants ; aucune donnée personnelle en clair
 model CommissionApporteur {
-  id                String                    @id @default(uuid()) @db.Uuid
-  apporteurId       String                    @map("apporteur_id") @db.Uuid
-  apporteur         ApporteurReseau           @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
-  presentationId    String?                   @map("presentation_id") @db.Uuid
-  presentation      PresentationEntreprise?   @relation(fields: [presentationId], references: [id], onDelete: Restrict)
-  factureId         String                    @map("facture_id") @db.Uuid
+  id                 String                    @id @default(uuid()) @db.Uuid
+  apporteurId        String                    @map("apporteur_id") @db.Uuid
+  apporteur          ApporteurReseau           @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  presentationId     String?                   @map("presentation_id") @db.Uuid
+  presentation       PresentationEntreprise?   @relation(fields: [presentationId], references: [id], onDelete: Restrict)
+  factureId          String                    @map("facture_id") @db.Uuid
   /// Vrai pour la part de parrainage (10 % de la commission du filleul, 6 mois).
-  parrainage        Boolean                   @default(false)
-  activite          String                    @db.VarChar(20)
+  parrainage         Boolean                   @default(false)
+  activite           String                    @db.VarChar(20)
   /// Palier retenu (ex. « formation-generale-1j »), son prix public et le HT facturé.
-  palier            String?                   @db.VarChar(60)
-  prixPublicHtCents Int?                      @map("prix_public_ht_cents")
-  factureHtCents    Int                       @map("facture_ht_cents")
-  montantCents      Int?                      @map("montant_cents")
-  statut            StatutCommissionApporteur @default(a_qualifier)
+  palier             String?                   @db.VarChar(60)
+  prixPublicHtCents  Int?                      @map("prix_public_ht_cents")
+  factureHtCents     Int                       @map("facture_ht_cents")
+  montantCents       Int?                      @map("montant_cents")
+  statut             StatutCommissionApporteur @default(a_qualifier)
   /// Mois du relevé (AAAA-MM) et numéro d'autofacture une fois versée.
-  releveMois        String?                   @map("releve_mois") @db.Char(7)
-  autofactureNumero String?                   @map("autofacture_numero") @db.VarChar(40)
-  verseeAt          DateTime?                 @map("versee_at") @db.Timestamptz(3)
-  creeAt            DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
-  majAt             DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)
+  releveMois         String?                   @map("releve_mois") @db.Char(7)
+  autofactureNumero  String?                   @map("autofacture_numero") @db.VarChar(40)
+  /// Date d'émission de l'autofacture (posée à la facturation ; `majAt` pour les plus anciennes).
+  autofactureEmiseAt DateTime?                 @map("autofacture_emise_at") @db.Timestamptz(3)
+  /// Reprise : numéro de l'AVOIR d'autofacture (même série), distinct de l'autofacture d'imputation.
+  avoirNumero        String?                   @map("avoir_numero") @db.VarChar(40)
+  verseeAt           DateTime?                 @map("versee_at") @db.Timestamptz(3)
+  creeAt             DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt              DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)
 
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])

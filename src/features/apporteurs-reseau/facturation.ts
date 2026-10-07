@@ -15,8 +15,16 @@
  *   · OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission ;
  *   · ÉCHÉANCE FERME : trente jours calendaires après l'émission. Aucune pénalité n'est calculée
  *     ici : la loi s'applique, le contrat le dit.
- * La date d'émission n'a pas de colonne : c'est `majAt` de la commission facturée non versée (la
- * seule écriture qu'elle reçoit entre la facturation et le virement). Aucune migration.
+ * La date d'émission est `autofactureEmiseAt`, posée à la facturation (repli sur `majAt` pour les
+ * lignes facturées avant cette colonne).
+ *
+ * Reprises (art. 4.5) : chacune donne un AVOIR d'autofacture, PDF numéroté dans la MÊME série,
+ * qui renvoie à l'autofacture rectifiée et vient en déduction du virement. L'avoir est émis avec
+ * l'autofacture suivante : la ligne garde `autofactureNumero` = l'autofacture d'imputation, et
+ * porte `avoirNumero`.
+ *
+ * Montant à VIRER = TTC de l'autofacture moins TTC des avoirs : pour un apporteur qui facture la
+ * TVA, c'est TVA comprise (`aVirerTtcCents`).
  *
  * ⚠️ Atteint par le WORKER (job horaire `reseau-facturation`, tsx hors Next) : aucun `server-only`.
  * Idempotent : toute écriture est conditionnelle, e-mail et alerte ont une clé « une fois ».
@@ -28,7 +36,7 @@ import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import {
-  allouerNumeroAutofacture,
+  allouerNumerosAutofacture,
   cumulVigilanceCents,
   dejaEnvoye,
   demanderVigilance,
@@ -37,8 +45,14 @@ import {
   originesDesReprises,
   piecesVigilanceValides,
 } from "./commissions";
-import { dateFr, echeancePaiement, libelleMois, objectifVirement } from "./autofacture-donnees";
-import { envoyer, type ResultatEnvoi } from "./envois";
+import {
+  aVirerTtcCents,
+  dateFr,
+  echeancePaiement,
+  libelleMois,
+  objectifVirement,
+} from "./autofacture-donnees";
+import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { signalerErreurReseau } from "./signaler";
 
@@ -64,6 +78,40 @@ function lireAFacturer(db: Db, apporteurId: string) {
     select: { id: true, statut: true, montantCents: true, palier: true },
     orderBy: { creeAt: "asc" },
   });
+}
+
+type LigneAFacturer = Awaited<ReturnType<typeof lireAFacturer>>[number];
+type Origines = Map<string, { numero: string | null; mois: string | null; emission?: Date | null }>;
+
+/** Les reprises regroupées par autofacture d'ORIGINE : un avoir par autofacture rectifiée. */
+function grouperReprises(
+  reprises: readonly LigneAFacturer[],
+  origines: Origines,
+): Array<{
+  origine: string;
+  mois: string | null;
+  emission: Date | null;
+  lignes: LigneAFacturer[];
+}> {
+  const groupes = new Map<
+    string,
+    { origine: string; mois: string | null; emission: Date | null; lignes: LigneAFacturer[] }
+  >();
+  for (const r of reprises) {
+    const o = origines.get(r.id);
+    // Une reprise porte toujours sur une commission VERSÉE, donc facturée : l'origine est connue.
+    // Par prudence, une origine introuvable fait son propre avoir, sans renvoi inventé.
+    const cle = o?.numero ?? `?${r.id}`;
+    const g = groupes.get(cle) ?? {
+      origine: o?.numero ?? "",
+      mois: o?.mois ?? null,
+      emission: o?.emission ?? null,
+      lignes: [],
+    };
+    g.lignes.push(r);
+    groupes.set(cle, g);
+  }
+  return [...groupes.values()];
 }
 
 export type ResultatFacturation =
@@ -120,16 +168,50 @@ export async function facturerApporteur(
     };
   }
 
-  const numero = await allouerNumeroAutofacture(annee);
+  const reprisesAvant = avant.filter((c) => c.statut === "reprise");
+  const origines: Origines = reprisesAvant.length
+    ? await originesDesReprises(reprisesAvant)
+    : new Map();
+  const groupes = grouperReprises(reprisesAvant, origines);
+  const numeros = await allouerNumerosAutofacture(annee, 1 + groupes.length);
+  const numero = numeros[0]!;
+  const brut = dues.reduce((s, c) => s + (c.montantCents ?? 0), 0);
   const pdf = await genererPdfAutofacture({
     apporteurId,
     numero,
     periodeLibelle: `commissions exigibles au ${dateFr(maintenant)}`,
-    commissionIds: avant.map((c) => c.id),
-    totalCents: total,
+    commissionIds: dues.map((c) => c.id),
+    totalCents: brut,
     maintenant,
   });
-  if (!pdf) {
+  const avoirsPdf: Array<
+    (typeof groupes)[number] & {
+      numero: string;
+      montant: number;
+      pdf: Awaited<ReturnType<typeof genererPdfAutofacture>>;
+    }
+  > = [];
+  for (const [i, g] of groupes.entries()) {
+    const numeroAvoir = numeros[i + 1]!;
+    const montant = -g.lignes.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+    const a = pdf
+      ? await genererPdfAutofacture({
+          apporteurId,
+          numero: numeroAvoir,
+          periodeLibelle: `reprise de commissions au ${dateFr(maintenant)}`,
+          commissionIds: g.lignes.map((c) => c.id),
+          totalCents: montant,
+          maintenant,
+          avoir: {
+            factureInitiale: g.origine || "non retrouvée",
+            dateFactureInitiale: g.emission ? dateFr(g.emission) : null,
+            imputation: `déduit du virement de l'autofacture N° ${numero}`,
+          },
+        })
+      : null;
+    avoirsPdf.push({ ...g, numero: numeroAvoir, montant, pdf: a });
+  }
+  if (!pdf || avoirsPdf.some((a) => !a.pdf)) {
     return {
       ok: false,
       message:
@@ -145,7 +227,11 @@ export async function facturerApporteur(
         lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
       if (!memes) throw new Error("Les commissions ont changé pendant la facturation : réessai.");
       // Le mois ne sert qu'à marquer la ligne comme imputée (une reprise imputée n'est plus à déduire).
-      const commun = { releveMois: moisParis(maintenant), autofactureNumero: numero };
+      const commun = {
+        releveMois: moisParis(maintenant),
+        autofactureNumero: numero,
+        autofactureEmiseAt: maintenant,
+      };
       const dues2 = await tx.commissionApporteur.updateMany({
         where: {
           id: { in: dues.map((c) => c.id) },
@@ -154,32 +240,34 @@ export async function facturerApporteur(
         },
         data: commun,
       });
-      const reprises = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: avant.filter((c) => c.statut === "reprise").map((c) => c.id) },
-          statut: "reprise",
-          releveMois: null,
-        },
-        data: commun,
-      });
-      if (dues2.count + reprises.count !== avant.length)
+      let reprises = 0;
+      for (const a of avoirsPdf) {
+        const r = await tx.commissionApporteur.updateMany({
+          where: { id: { in: a.lignes.map((c) => c.id) }, statut: "reprise", releveMois: null },
+          data: { ...commun, avoirNumero: a.numero },
+        });
+        reprises += r.count;
+      }
+      if (dues2.count + reprises !== avant.length)
         throw new Error("Les commissions ont changé pendant la facturation : réessai.");
     },
     { timeout: 15_000 },
   );
 
   const nom = [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" ");
-  // Une reprise est un AVOIR imputé : le décompte le dit, avec le renvoi à l'autofacture d'origine.
-  const reprises = avant.filter((c) => c.statut === "reprise");
-  const origines = await originesDesReprises(reprises).catch(() => new Map());
-  const avoirs = reprises.map((r) => {
-    const o = origines.get(r.id);
-    const renvoi = o?.numero
-      ? ` (renvoi à l'autofacture ${o.numero}${o.mois ? `, émise en ${libelleMois(o.mois)}` : ""})`
-      : "";
-    return `Avoir imputé : ${euros(-(r.montantCents ?? 0))}${renvoi}`;
+  // Chaque reprise est un AVOIR numéroté, joint à l'e-mail, qui renvoie à l'autofacture rectifiée.
+  const avoirs = avoirsPdf.map((a) => {
+    const quand = a.emission
+      ? ` du ${dateFr(a.emission)}`
+      : a.mois
+        ? `, émise en ${libelleMois(a.mois)}`
+        : "";
+    const renvoi = a.origine ? ` (rectifie l'autofacture ${a.origine}${quand})` : "";
+    return `Avoir n° ${a.numero} : ${euros(a.montant)} hors taxes, déduit du virement${renvoi}`;
   });
-  const brut = dues.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // La somme virée est TVA comprise pour un apporteur assujetti : elle se lit sur les pièces.
+  const aVirer = pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0);
+  const montrerSomme = avoirs.length > 0 || aVirer !== brut;
   let envoi: ResultatEnvoi = "indisponible";
   try {
     envoi = await envoyer({
@@ -190,12 +278,17 @@ export async function facturerApporteur(
         montant: euros(brut),
         numeroAutofacture: numero,
         echeance: dateFr(echeancePaiement(maintenant)),
-        ...(avoirs.length > 0 ? { avoirs, sommeVirement: euros(total) } : {}),
+        ...(avoirs.length > 0 ? { avoirs } : {}),
+        ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
       },
       entityType: "ApporteurReseau",
       entityId: apporteurId,
       jobId: jobIdEmailAutofacture(numero),
-      attachments: [{ filename: pdf.filename, r2Key: pdf.r2Key, contentType: "application/pdf" }],
+      attachments: [pdf, ...avoirsPdf.map((a) => a.pdf!)].map((x) => ({
+        filename: x.filename,
+        r2Key: x.r2Key,
+        contentType: "application/pdf",
+      })),
     });
   } catch (err) {
     signalerErreurReseau("autofacture : e-mail à l'apporteur", err);
@@ -207,11 +300,11 @@ export async function facturerApporteur(
     );
   }
   try {
-    await alerterAVirer({ apporteurId, nom, numero, totalCents: total, emission: maintenant });
+    await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
   }
-  return { ok: true, numero, totalCents: total, commissions: dues.length, envoi };
+  return { ok: true, numero, totalCents: aVirer, commissions: dues.length, envoi };
 }
 
 /** Alerte interne « À virer », une seule fois par autofacture. */
@@ -235,7 +328,7 @@ export async function alerterAVirer(e: {
       niveau: "important",
       code: "apporteur_autofacture_a_virer",
       titre: `À virer : ${euros(e.totalCents)} à ${nom}`,
-      message: `À virer : ${euros(e.totalCents)} à ${nom} avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
+      message: `À virer : ${euros(e.totalCents)} à ${nom} (TVA comprise si l'apporteur la facture) avant le ${objectif} (objectif de virement). Échéance de paiement : ${echeance}. Autofacture ${e.numero} envoyée à l'apporteur ; une fois le virement fait, cliquez « Virement fait » dans les commissions.`,
       cibleType: "ApporteurReseau",
       cibleId: e.apporteurId,
       createdAt: e.emission.toLocaleDateString("fr-FR"),
@@ -300,7 +393,7 @@ export async function marquerVerse(
 ): Promise<{ ok: true; numeros: string[]; totalCents: number } | { ok: false; message: string }> {
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: apporteurId },
-    select: { id: true },
+    select: { id: true, prenom: true, nom: true, email: true, regimeTva: true },
   });
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
 
@@ -322,14 +415,29 @@ export async function marquerVerse(
         autofactureNumero: numero ? numero : { not: null },
         OR: [{ statut: "due" }, { statut: "reprise", verseeAt: null }],
       },
-      select: { id: true, statut: true, montantCents: true, autofactureNumero: true },
+      select: {
+        id: true,
+        statut: true,
+        montantCents: true,
+        autofactureNumero: true,
+        avoirNumero: true,
+      },
       orderBy: { creeAt: "asc" },
     });
 
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucun virement à confirmer." };
-  const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // TVA comprise pour un apporteur assujetti, calculée pièce par pièce comme sur les PDF.
+  const parFacture = new Map<string, typeof avant>();
+  for (const c of avant) {
+    const k = c.autofactureNumero ?? "";
+    parFacture.set(k, [...(parFacture.get(k) ?? []), c]);
+  }
+  const total = [...parFacture.values()].reduce(
+    (s, lignes) => s + aVirerTtcCents(apporteur.regimeTva, lignes),
+    0,
+  );
 
   await prisma.$transaction(
     async (tx) => {
@@ -359,6 +467,24 @@ export async function marquerVerse(
   const numeros = [
     ...new Set(avant.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
   ];
+  // E-mail de confirmation à l'apporteur, une seule fois par virement : jamais bloquant.
+  try {
+    const destinataire = decryptPii(apporteur.email) ?? "";
+    if (destinataire) {
+      await envoyerConfirmationVirement({
+        apporteurId,
+        destinataire,
+        contactName: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)]
+          .filter(Boolean)
+          .join(" "),
+        montant: euros(total),
+        numeros,
+        dateVirement: dateFr(maintenant),
+      });
+    }
+  } catch (err) {
+    signalerErreurReseau("virement fait : e-mail de confirmation", err);
+  }
   return { ok: true, numeros, totalCents: total };
 }
 
@@ -368,10 +494,10 @@ export interface VirementAFaire {
   apporteurId: string;
   apporteur: string;
   numero: string;
-  /** Net : commissions facturées moins reprises imputées à cette autofacture. */
+  /** À virer : TTC de l'autofacture moins TTC des avoirs imputés (TVA comprise si assujetti). */
   totalCents: number;
   lignes: number;
-  /** Date d'émission de l'autofacture (voir l'en-tête : `majAt`). */
+  /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli `majAt`). */
   emissionAt: Date;
 }
 
@@ -386,16 +512,21 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
     select: {
       apporteurId: true,
       autofactureNumero: true,
+      avoirNumero: true,
       montantCents: true,
       statut: true,
       majAt: true,
-      apporteur: { select: { prenom: true, nom: true } },
+      autofactureEmiseAt: true,
+      apporteur: { select: { prenom: true, nom: true, regimeTva: true } },
     },
   });
   const m = new Map<string, VirementAFaire>();
+  const parNumero = new Map<string, typeof lignes>();
   for (const l of lignes) {
     const numero = l.autofactureNumero!;
+    parNumero.set(numero, [...(parNumero.get(numero) ?? []), l]);
     const cur = m.get(numero);
+    const emission = l.autofactureEmiseAt ?? l.majAt;
     const nom = [decryptPii(l.apporteur.prenom), decryptPii(l.apporteur.nom)]
       .filter(Boolean)
       .join(" ");
@@ -404,15 +535,17 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
         apporteurId: l.apporteurId,
         apporteur: nom,
         numero,
-        totalCents: l.montantCents ?? 0,
+        totalCents: 0,
         lignes: 1,
-        emissionAt: l.majAt,
+        emissionAt: emission,
       });
     } else {
-      cur.totalCents += l.montantCents ?? 0;
       cur.lignes += 1;
-      if (l.majAt.getTime() < cur.emissionAt.getTime()) cur.emissionAt = l.majAt;
+      if (emission.getTime() < cur.emissionAt.getTime()) cur.emissionAt = emission;
     }
+  }
+  for (const [numero, ls] of parNumero) {
+    m.get(numero)!.totalCents = aVirerTtcCents(ls[0]!.apporteur.regimeTva, ls);
   }
   // Les plus anciennes d'abord : ce sont les premières à virer.
   return [...m.values()].sort((a, b) => a.emissionAt.getTime() - b.emissionAt.getTime());

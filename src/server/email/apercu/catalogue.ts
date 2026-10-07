@@ -512,6 +512,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont la commission vient d'être facturée",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-virement-fait": {
+    categorie: "recrutement",
+    quand: "Console : bouton « Virement fait » sur une autofacture",
+    destinataire: "l'apporteur dont la commission vient d'être virée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-issue-non-retenu": {
     categorie: "recrutement",
     quand:

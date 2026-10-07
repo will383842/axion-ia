@@ -10,7 +10,11 @@ import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION } from "./regles";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import type { LigneHonoraires } from "@/server/qualiopi/remuneration/autofacture-pieces";
+import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
+import {
+  regimeFactureDepuisHonoraires,
+  type LigneHonoraires,
+} from "@/server/qualiopi/remuneration/autofacture-pieces";
 import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul";
 
 /** Délai de contestation de l'annexe 2 (art. 2.4) du contrat v2. */
@@ -119,6 +123,19 @@ export function designationCommission(c: CommissionPourAutofacture): string {
   return `${base}${palier}${prix}`;
 }
 
+/**
+ * Ligne d'un AVOIR d'autofacture : la commission reprise, en montant POSITIF (c'est le titre
+ * « Avoir » qui en fait un crédit) ; le renvoi à l'autofacture rectifiée est porté par l'en-tête.
+ */
+export function lignesAvoir(reprises: readonly CommissionPourAutofacture[]): LigneHonoraires[] {
+  return reprises
+    .filter((c) => c.montantCents !== null && c.montantCents !== 0)
+    .map((c) => ({
+      designation: "Reprise d'une commission d'apport déjà versée (art. 4.5)",
+      montantHtCents: Math.abs(c.montantCents ?? 0),
+    }));
+}
+
 export function lignesAutofacture(
   commissions: readonly CommissionPourAutofacture[],
 ): LigneHonoraires[] {
@@ -132,6 +149,49 @@ export function lignesAutofacture(
 
 export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
   return lignes.reduce((s, l) => s + l.montantHtCents, 0);
+}
+
+/** Total TTC d'une pièce (mêmes règles d'arrondi que le PDF) ; régime inconnu = sans TVA. */
+export function totalTtcPieceCents(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  montantsHtCents: readonly number[],
+): number {
+  const regime = regimeHonorairesApporteur(regimeTva);
+  const total = montantsHtCents.reduce((s, m) => s + m, 0);
+  if (!regime) return total;
+  return computeTotauxFacture(
+    montantsHtCents.map((m) => ({ quantite: 1, prixUnitaireHtCents: m })),
+    regimeFactureDepuisHonoraires(regime),
+    TAUX_TVA_STANDARD,
+  ).totalTtcCents;
+}
+
+/**
+ * Somme à VIRER pour une autofacture : son TTC, moins le TTC de chaque avoir imputé. Pour un
+ * apporteur qui facture la TVA, c'est le montant TVA comprise (jamais le hors-taxes).
+ * Une reprise sans numéro d'avoir (anciennes lignes) compte comme une ligne de l'autofacture.
+ */
+export function aVirerTtcCents(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  lignes: ReadonlyArray<{
+    statut: string;
+    montantCents: number | null;
+    avoirNumero?: string | null;
+  }>,
+): number {
+  const facture: number[] = [];
+  const avoirs = new Map<string, number[]>();
+  for (const l of lignes) {
+    const m = l.montantCents ?? 0;
+    if (l.statut === "reprise" && l.avoirNumero) {
+      avoirs.set(l.avoirNumero, [...(avoirs.get(l.avoirNumero) ?? []), Math.abs(m)]);
+    } else {
+      facture.push(m);
+    }
+  }
+  let total = totalTtcPieceCents(regimeTva, facture);
+  for (const a of avoirs.values()) total -= totalTtcPieceCents(regimeTva, a);
+  return total;
 }
 
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
@@ -224,6 +284,8 @@ export function construireDonneesAutofacture(e: {
   commissions: readonly CommissionPourAutofacture[];
   organisme: OrganismeIdentite;
   totalAttenduCents: number;
+  /** AVOIR : les `commissions` sont les reprises, `totalAttenduCents` leur total POSITIF. */
+  avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
 }): { ok: true; data: AutofactureData } | { ok: false; motif: string } {
   const regime = regimeHonorairesApporteur(e.apporteur.regimeTva);
   if (!regime) return { ok: false, motif: "régime de TVA de l'apporteur non renseigné" };
@@ -231,7 +293,7 @@ export function construireDonneesAutofacture(e: {
   const adresse = e.apporteur.adresse?.trim();
   if (!siren || !adresse)
     return { ok: false, motif: "identité de facturation de l'apporteur incomplète" };
-  const lignes = lignesAutofacture(e.commissions);
+  const lignes = e.avoir ? lignesAvoir(e.commissions) : lignesAutofacture(e.commissions);
   if (lignes.length === 0) return { ok: false, motif: "aucune commission à facturer" };
   if (totalHtCents(lignes) !== e.totalAttenduCents)
     return { ok: false, motif: "total des lignes différent du total versé" };
@@ -261,6 +323,7 @@ export function construireDonneesAutofacture(e: {
       delaiContestationJours: DELAI_CONTESTATION_APPORTEUR_JOURS,
       libelleIdentifiantFournisseur: "SIREN",
       mandatReference: REFERENCE_MANDAT_APPORTEUR,
+      ...(e.avoir ? { avoir: e.avoir } : {}),
     },
   };
 }

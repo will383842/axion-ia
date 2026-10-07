@@ -169,6 +169,7 @@ export type EmailJobName =
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
   | "apporteur-releve"
+  | "apporteur-virement-fait"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"

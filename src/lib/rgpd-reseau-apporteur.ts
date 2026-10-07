@@ -148,6 +148,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
           creeAt: true,
           verseeAt: true,
           autofactureNumero: true,
+          avoirNumero: true,
         },
       })
     : [];
@@ -178,6 +179,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
             creeLe: c.creeAt,
             verseeLe: c.verseeAt,
             autofacture: c.autofactureNumero,
+            avoir: c.avoirNumero,
           })),
           siren: a.siren,
           entreprise: a.denomination,
