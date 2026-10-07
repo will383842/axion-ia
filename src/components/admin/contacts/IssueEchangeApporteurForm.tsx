@@ -342,7 +342,7 @@ export function IssueEchangeApporteurForm({
               </div>
             </>
           )}
-          {retourDossier ? (
+          {retourDossier && retourDossier.etat !== "initial" ? (
             <p
               role={retourDossier.etat === "ok" ? "status" : "alert"}
               className={
