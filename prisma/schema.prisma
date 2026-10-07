@@ -15181,50 +15181,52 @@ enum RegimeTvaApporteur {
 /// sont CHIFFRÉS (`encryptPii`) ; l'e-mail porte en plus son empreinte de recherche.
 /// rgpd: dossier-client
 model ApporteurReseau {
-  id                  String                   @id @default(uuid()) @db.Uuid
-  statut              ApporteurReseauStatut    @default(dossier_en_cours)
+  id                            String                @id @default(uuid()) @db.Uuid
+  statut                        ApporteurReseauStatut @default(dossier_en_cours)
   /// La candidature d'origine (`Submission`), si l'apporteur vient du tunnel.
-  submissionId        String?                  @unique @map("submission_id") @db.Uuid
-  prenom              String                   @db.Text
-  nom                 String                   @db.Text
-  email               String                   @db.Text
-  emailHash           String                   @unique @map("email_hash") @db.VarChar(64)
-  telephone           String?                  @db.Text
+  submissionId                  String?               @unique @map("submission_id") @db.Uuid
+  prenom                        String                @db.Text
+  nom                           String                @db.Text
+  email                         String                @db.Text
+  emailHash                     String                @unique @map("email_hash") @db.VarChar(64)
+  telephone                     String?               @db.Text
   /// Identité de facturation, lue dans le registre public par le SIREN.
-  siren               String?                  @db.Char(9)
-  denomination        String?                  @db.VarChar(250)
-  adresse             String?                  @db.Text
-  codeNaf             String?                  @map("code_naf") @db.VarChar(8)
+  siren                         String?               @db.Char(9)
+  denomination                  String?               @db.VarChar(250)
+  adresse                       String?               @db.Text
+  codeNaf                       String?               @map("code_naf") @db.VarChar(8)
   /// Liste fermée de Partners (`StatutJuridique`, PR #727) : micro_entrepreneur…
-  statutJuridique     String?                  @map("statut_juridique") @db.VarChar(40)
-  regimeTva           RegimeTvaApporteur?      @map("regime_tva")
-  numeroTva           String?                  @map("numero_tva") @db.VarChar(20)
-  iban                String?                  @db.Text
+  statutJuridique               String?               @map("statut_juridique") @db.VarChar(40)
+  regimeTva                     RegimeTvaApporteur?   @map("regime_tva")
+  numeroTva                     String?               @map("numero_tva") @db.VarChar(20)
+  iban                          String?               @db.Text
   /// Les déclarations cochées par l'apporteur avant de signer (clé → date ISO).
-  declarations        Json?
+  declarations                  Json?
   /// Parrain dans le réseau (un seul niveau rémunéré, contrat art. 4.6).
-  parrainId           String?                  @map("parrain_id") @db.Uuid
-  parrain             ApporteurReseau?         @relation("ParrainageReseau", fields: [parrainId], references: [id], onDelete: Restrict)
-  filleuls            ApporteurReseau[]        @relation("ParrainageReseau")
+  parrainId                     String?               @map("parrain_id") @db.Uuid
+  parrain                       ApporteurReseau?      @relation("ParrainageReseau", fields: [parrainId], references: [id], onDelete: Restrict)
+  filleuls                      ApporteurReseau[]     @relation("ParrainageReseau")
   /// Incrémenté pour révoquer les liens personnels déjà envoyés.
-  versionLien         Int                      @default(1) @map("version_lien")
+  versionLien                   Int                   @default(1) @map("version_lien")
   /// Le contrat généré et signé par l'apporteur : clé R2 et empreinte SHA-256.
-  contratCle          String?                  @map("contrat_cle") @db.VarChar(300)
-  contratSha256       String?                  @map("contrat_sha256") @db.Char(64)
+  contratCle                    String?               @map("contrat_cle") @db.VarChar(300)
+  contratSha256                 String?               @map("contrat_sha256") @db.Char(64)
   /// Preuve de la signature de l'apporteur : nom tapé, IP hachée, navigateur, cases.
-  signatureApporteur  Json?                    @map("signature_apporteur")
-  signeParApporteurAt DateTime?                @map("signe_par_apporteur_at") @db.Timestamptz(3)
+  signatureApporteur            Json?                 @map("signature_apporteur")
+  signeParApporteurAt           DateTime?             @map("signe_par_apporteur_at") @db.Timestamptz(3)
   /// Le contrat contresigné par la Société : il naît à cette date (contrat v2).
-  contratSigneCle     String?                  @map("contrat_signe_cle") @db.VarChar(300)
-  contratSigneSha256  String?                  @map("contrat_signe_sha256") @db.Char(64)
-  signeParSocieteAt   DateTime?                @map("signe_par_societe_at") @db.Timestamptz(3)
+  contratSigneCle               String?               @map("contrat_signe_cle") @db.VarChar(300)
+  contratSigneSha256            String?               @map("contrat_signe_sha256") @db.Char(64)
+  signeParSocieteAt             DateTime?             @map("signe_par_societe_at") @db.Timestamptz(3)
+  /// Contresignature en cours (double clic) : réservée jusqu'à cette date, reprise ensuite.
+  contresignatureReserveeJusqua DateTime?             @map("contresignature_reservee_jusqua") @db.Timestamptz(3)
   /// Dernier message de Williams (« à compléter » ou refus), tel qu'envoyé.
-  dernierMessage      String?                  @map("dernier_message") @db.Text
-  refuseAt            DateTime?                @map("refuse_at") @db.Timestamptz(3)
-  resilieAt           DateTime?                @map("resilie_at") @db.Timestamptz(3)
-  noteInterne         String?                  @map("note_interne") @db.Text
-  creeAt              DateTime                 @default(now()) @map("cree_at") @db.Timestamptz(3)
-  majAt               DateTime                 @updatedAt @map("maj_at") @db.Timestamptz(3)
+  dernierMessage                String?               @map("dernier_message") @db.Text
+  refuseAt                      DateTime?             @map("refuse_at") @db.Timestamptz(3)
+  resilieAt                     DateTime?             @map("resilie_at") @db.Timestamptz(3)
+  noteInterne                   String?               @map("note_interne") @db.Text
+  creeAt                        DateTime              @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt                         DateTime              @updatedAt @map("maj_at") @db.Timestamptz(3)
 
   pieces        PieceApporteur[]
   presentations PresentationEntreprise[]

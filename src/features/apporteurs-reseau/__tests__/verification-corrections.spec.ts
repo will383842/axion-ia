@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Vérification d'un dossier signé : refus définitif (pièces purgées), renvoi du contrat
@@ -37,7 +39,9 @@ vi.mock("../contrat-pdf", async () => {
     rendreContratPdf: (...a: unknown[]) => pdf.rendreContratPdf(...a),
   };
 });
+const r2 = vi.hoisted(() => ({ deleteFromR2: vi.fn() }));
 vi.mock("@/lib/r2-storage", () => ({
+  deleteFromR2: (...a: unknown[]) => r2.deleteFromR2(...a),
   getObjectBufferR2: vi.fn(),
   isR2Configured: () => true,
   uploadToR2: vi.fn(),
@@ -262,16 +266,27 @@ describe("07/10 : la contresignature est réservée avant le PDF (double clic)",
   it("second clic : « déjà contresigné », aucun PDF ni e-mail", async () => {
     h.appUpdateMany.mockResolvedValueOnce({ count: 0 });
     const r = await appliquerDecision(ID, "contresigner", null);
-    expect(r).toMatchObject({ ok: false, message: "Ce contrat est déjà contresigné." });
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("déjà contresigné");
     expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
     expect(h.envoyer).not.toHaveBeenCalled();
   });
 
   it("la réservation est conditionnée au statut « à vérifier », et le PDF porte la version signée", async () => {
     expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
-    expect(h.appUpdateMany.mock.calls[0]![0]).toMatchObject({
-      where: { id: ID, statut: "a_verifier", signeParSocieteAt: null },
+    // Réservation DÉDIÉE et reprenable une fois expirée ; `signeParSocieteAt` n'y est pas posé.
+    const reservation = h.appUpdateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(reservation.where).toMatchObject({
+      id: ID,
+      statut: "a_verifier",
+      signeParSocieteAt: null,
     });
+    expect(JSON.stringify(reservation.where.OR)).toContain("contresignatureReserveeJusqua");
+    expect(reservation.data).not.toHaveProperty("signeParSocieteAt");
+    expect(reservation.data.contresignatureReserveeJusqua).toBeInstanceOf(Date);
     expect(pdf.rendreContratPdf.mock.calls[0]![0].version).toBe("2.1");
   });
 
@@ -279,8 +294,33 @@ describe("07/10 : la contresignature est réservée avant le PDF (double clic)",
     pdf.rendreContratPdf.mockRejectedValueOnce(new Error("rendu impossible"));
     await expect(appliquerDecision(ID, "contresigner", null)).rejects.toThrow();
     const levee = h.appUpdateMany.mock.calls.find(
-      (c) => (c[0] as { data: Record<string, unknown> }).data.signeParSocieteAt === null,
+      (c) =>
+        (c[0] as { data: Record<string, unknown> }).data.contresignatureReserveeJusqua === null,
     );
     expect(levee).toBeTruthy();
+  });
+
+  it("écriture finale qui ne trouve rien : PDF orphelin retiré de R2, AUCUN e-mail", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 }) // réservation
+      .mockResolvedValueOnce({ count: 0 }); // écriture finale
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect(r2.deleteFromR2).toHaveBeenCalledTimes(1);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("écriture finale qui lève : même chose, rien n'est envoyé", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 })
+      .mockRejectedValueOnce(new Error("base coupée"));
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: false });
+    expect(r2.deleteFromR2).toHaveBeenCalledTimes(1);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("l'effacement RGPD ne conserve qu'un contrat VRAIMENT contresigné (PDF référencé)", () => {
+    const src = readFileSync(resolve(__dirname, "../../../lib/rgpd-erase.ts"), "utf8");
+    expect(src).toContain("(a.signeParSocieteAt !== null && a.contratSigneCle !== null)");
   });
 });

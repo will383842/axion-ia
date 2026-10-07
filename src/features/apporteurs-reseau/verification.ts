@@ -21,7 +21,7 @@ import { createHash } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import { getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
+import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireDossier, purgerContenuPieces } from "./donnees";
@@ -33,6 +33,7 @@ import {
   type GabaritApporteur,
 } from "./envois";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, type TypePiece } from "./regles";
 
 const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
@@ -152,6 +153,9 @@ function lireSignature(json: unknown): SignatureLue | null {
     texte: typeof j.texte === "string" && j.texte.length > 0 ? j.texte : null,
   };
 }
+
+/** Durée d'une réservation de contresignature : au-delà, un nouveau clic la reprend. */
+const RESERVATION_CONTRESIGNATURE_MS = 10 * 60 * 1000;
 
 /** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
 export async function preparerDecision(
@@ -275,19 +279,39 @@ export async function appliquerDecision(
     }
     if (!isR2Configured())
       return { ok: false, message: "Le stockage des documents n'est pas configuré." };
-    // Double clic, deux onglets : une seule contresignature. Le dossier est RÉSERVÉ (date de
-    // contresignature posée sous condition) avant de fabriquer le PDF ; le second clic ne trouve
-    // plus rien et ne fabrique pas un second PDF qui écraserait le premier sur R2.
+    // Double clic, deux onglets : une seule contresignature. Le dossier est RÉSERVÉ par un champ
+    // DÉDIÉ, qui expire (un conteneur redémarré pendant le PDF ne bloque rien au-delà) ;
+    // `signeParSocieteAt` n'est posé qu'à la toute fin, avec le PDF référencé.
+    const jusqua = new Date(maintenant.getTime() + RESERVATION_CONTRESIGNATURE_MS);
     const reserve = await prisma.apporteurReseau.updateMany({
-      where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: null },
-      data: { signeParSocieteAt: maintenant },
+      where: {
+        id: apporteurId,
+        statut: "a_verifier",
+        signeParSocieteAt: null,
+        OR: [
+          { contresignatureReserveeJusqua: null },
+          { contresignatureReserveeJusqua: { lt: maintenant } },
+        ],
+      },
+      data: { contresignatureReserveeJusqua: jusqua },
     });
-    if (reserve.count === 0) return { ok: false, message: "Ce contrat est déjà contresigné." };
-    const liberer = () =>
-      prisma.apporteurReseau.updateMany({
-        where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: maintenant },
-        data: { signeParSocieteAt: null },
-      });
+    if (reserve.count === 0) {
+      return {
+        ok: false,
+        message: "Ce contrat est déjà contresigné, ou sa contresignature est en cours.",
+      };
+    }
+    const liberer = async () => {
+      try {
+        await prisma.apporteurReseau.updateMany({
+          where: { id: apporteurId, contresignatureReserveeJusqua: jusqua },
+          data: { contresignatureReserveeJusqua: null },
+        });
+      } catch (err) {
+        // La réservation expire d'elle-même : jamais de blocage définitif.
+        signalerErreurReseau("contresignature : réservation non levée", err);
+      }
+    };
     let pdf: Buffer;
     try {
       pdf = await rendreContratPdf({
@@ -315,15 +339,38 @@ export async function appliquerDecision(
       await liberer();
       throw err;
     }
-    await prisma.apporteurReseau.updateMany({
-      where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: maintenant },
-      data: {
-        statut: "signe",
-        contratSigneCle: cle,
-        contratSigneSha256: sha,
-        dernierMessage: null,
-      },
-    });
+    // Écriture finale CONDITIONNÉE à NOTRE réservation, et vérifiée : sans elle, le PDF déposé
+    // serait un orphelin jamais effacé (RGPD) — on le retire, et aucun e-mail ne part.
+    let ecrit = 0;
+    try {
+      const r = await prisma.apporteurReseau.updateMany({
+        where: { id: apporteurId, statut: "a_verifier", contresignatureReserveeJusqua: jusqua },
+        data: {
+          statut: "signe",
+          contratSigneCle: cle,
+          contratSigneSha256: sha,
+          signeParSocieteAt: maintenant,
+          contresignatureReserveeJusqua: null,
+          dernierMessage: null,
+        },
+      });
+      ecrit = r.count;
+    } catch (err) {
+      signalerErreurReseau("contresignature : écriture finale", err);
+    }
+    if (ecrit !== 1) {
+      try {
+        await deleteFromR2(cle);
+      } catch (err) {
+        signalerErreurReseau("contresignature : PDF orphelin non retiré de R2", err);
+      }
+      await liberer();
+      return {
+        ok: false,
+        message:
+          "La contresignature n'a pas pu être enregistrée : rien n'est parti. Réessayez dans un instant.",
+      };
+    }
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,
