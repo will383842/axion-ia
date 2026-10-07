@@ -390,6 +390,19 @@ export const env = createEnv({
     R2_BUCKET_NAME: z.string().optional(),
     R2_ENDPOINT: z.string().optional(),
     R2_BUCKET_IMMUTABLE: z.string().optional(),
+    // Candidatures unifiées L4 (ADR 0065, 2026-10-07) — la bibliothèque de
+    // fichiers partagés (LUT, rushs, vidéos d'exemple). Compartiment R2 DÉDIÉ,
+    // distinct des sauvegardes. TOUTES facultatives : tant que le compartiment
+    // ou `PARTAGES_SECRET` manque, la bibliothèque est ÉTEINTE (la console le
+    // dit) — `src/server/partages/config.ts`. Ne casse pas `SKIP_ENV_VALIDATION`.
+    // Les clés d'accès dédiées sont recommandées (jeton R2 limité à ce seul
+    // compartiment) ; à défaut, `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY`.
+    R2_PARTAGES_BUCKET_NAME: z.string().optional(),
+    R2_PARTAGES_ACCESS_KEY_ID: z.string().optional(),
+    R2_PARTAGES_SECRET_ACCESS_KEY: z.string().optional(),
+    /// Clé des liens privés envoyés aux candidats (HMAC, L5). Indépendante
+    /// d'`AUTH_SECRET` : sa rotation couperait tous les liens. 32 caractères au moins.
+    PARTAGES_SECRET: z.string().min(32).optional(),
 
     HETZNER_STORAGE_ENDPOINT: z.string().optional(),
     HETZNER_STORAGE_BUCKET: z.string().optional(),
@@ -732,6 +745,10 @@ export const env = createEnv({
     R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
     R2_ENDPOINT: process.env.R2_ENDPOINT,
     R2_BUCKET_IMMUTABLE: process.env.R2_BUCKET_IMMUTABLE,
+    R2_PARTAGES_BUCKET_NAME: process.env.R2_PARTAGES_BUCKET_NAME,
+    R2_PARTAGES_ACCESS_KEY_ID: process.env.R2_PARTAGES_ACCESS_KEY_ID,
+    R2_PARTAGES_SECRET_ACCESS_KEY: process.env.R2_PARTAGES_SECRET_ACCESS_KEY,
+    PARTAGES_SECRET: process.env.PARTAGES_SECRET,
     HETZNER_STORAGE_ENDPOINT: process.env.HETZNER_STORAGE_ENDPOINT,
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,
