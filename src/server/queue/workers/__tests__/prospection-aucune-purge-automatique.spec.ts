@@ -31,11 +31,11 @@
  * pas un effacement décidé.** Un drapeau à `false` n'aurait pas suffi : il se
  * bascule, et il aurait laissé croire que la question restait ouverte.
  *
- * ## Ce qui reste purgé, et qui n'est pas concerné
+ * ## Le journal d'accès
  *
- * `ProspectionAccessLog` — le journal technique de qui a consulté quoi, avec sa
- * propre durée (12 mois). Ce n'est pas une fiche. La décision porte sur les
- * FICHES.
+ * `ProspectionAccessLog` — le journal de qui a consulté quoi — était encore
+ * purgé à 12 mois. Depuis le 2026-10-07 (Will : « coupe tous les effacements »),
+ * il ne l'est plus non plus : garde `aucun-effacement-automatique-de-personnes.spec.ts`.
  */
 
 import { describe, it, expect } from "vitest";
@@ -77,7 +77,7 @@ describe("🛑 fiches de prospection — aucune suppression automatique", () => 
     // problème.
     const code = sansCommentaires(readFileSync(SOURCE, "utf8"));
     expect(code).toContain("executerPurgeRetention");
-    expect(code.length).toBeGreaterThan(5_000);
+    expect(code.length).toBeGreaterThan(2_500);
   });
 
   it("🛑 aucun `deleteMany` sur les fiches entreprises, personnes ou praticiens", () => {
@@ -105,11 +105,13 @@ describe("🛑 fiches de prospection — aucune suppression automatique", () => 
     );
   });
 
-  it("le journal d'ACCÈS reste purgé — il n'est pas concerné par la décision", () => {
-    // Témoin inverse : sans lui, un correctif qui viderait tout le bloc
-    // prospection ferait passer les cas ci-dessus en supprimant aussi une purge
-    // légitime. On prouverait l'obéissance par la destruction.
+  it("les purges techniques restent en place — le worker n'a pas été vidé", () => {
+    // Témoin inverse : sans lui, un correctif qui viderait tout le worker ferait
+    // passer les cas ci-dessus en supprimant aussi des purges légitimes. On
+    // prouverait l'obéissance par la destruction. (Le journal d'accès de la
+    // prospection, lui, n'est plus purgé depuis le 2026-10-07.)
     const code = sansCommentaires(readFileSync(SOURCE, "utf8"));
-    expect(code).toMatch(/prisma\.prospectionAccessLog\s*\.\s*deleteMany/);
+    expect(code).toMatch(/prisma\.webVitalSample\s*\.\s*deleteMany/);
+    expect(code).not.toMatch(/prospectionAccessLog\s*\.\s*delete/);
   });
 });

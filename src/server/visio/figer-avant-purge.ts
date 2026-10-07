@@ -11,7 +11,9 @@
  * suppression (le CHECK exige les deux ensemble). Garde :
  * `src/server/queue/workers/__tests__/la-purge-des-36-mois-fige-le-statut-avant-de-supprimer.spec.ts`.
  *
- * Module neutre (le worker de conservation l'appelle).
+ * Module neutre. 🛑 Depuis le 2026-10-07 (Will : « coupe tous les
+ * effacements »), la purge des 36 mois est retirée du worker : cette fonction
+ * n'a plus d'appelant planifié.
  */
 
 import type {

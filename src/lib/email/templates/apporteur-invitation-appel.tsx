@@ -97,14 +97,6 @@ interface Payload {
   sansSignature?: boolean;
 }
 
-/**
- * Durée de conservation annoncée — celle de la purge des dossiers classés
- * (`DEFAULTS.submissionsArchived` de `retention-purge-worker.ts`), et celle que
- * publie la politique de confidentialité, section « Réseau d'apporteurs
- * d'affaires ». Les trois doivent dire la même chose.
- */
-const CONSERVATION_MOIS = 24;
-
 /** Ancre de la section apporteurs dans la politique (titre → slug, cf. `LegalPageTemplate`). */
 const ANCRE_POLITIQUE = "reseau-d-apporteurs-d-affaires";
 const ANCRE_POLITIQUE_EN = "business-introducer-network";
@@ -176,7 +168,10 @@ const COPY = {
     info: (responsable: string, adresse: string) =>
       `Qui traite votre adresse : ${responsable}, ${adresse}. ` +
       "Pourquoi : vous proposer un échange sur le réseau d'apporteurs d'affaires. " +
-      `Combien de temps : ${CONSERVATION_MOIS} mois après le classement de votre dossier. ` +
+      // Conservation (2026-10-07, décision Will) : aucun dossier n'est supprimé
+      // automatiquement — même phrase que la politique de confidentialité,
+      // section « Réseau d'apporteurs d'affaires ».
+      "Combien de temps : votre dossier est conservé pour garder la trace de nos échanges ; il n'est pas supprimé automatiquement. " +
       "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",
@@ -244,7 +239,7 @@ const COPY = {
     info: (responsable: string, adresse: string) =>
       `Who processes your address: ${responsable}, ${adresse}. ` +
       "Why: to offer you a call about the business introducer network. " +
-      `How long: ${CONSERVATION_MOIS} months after your file is closed. ` +
+      "How long: your file is kept to preserve a record of our exchanges; it is not deleted automatically. " +
       "Your rights: access, rectification, erasure, objection, and a complaint to the CNIL (French data protection authority). " +
       "Everything is detailed in our ",
     infoLien: "privacy policy",

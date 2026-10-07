@@ -48,9 +48,6 @@ export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
  */
 export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v3-2026-09-19";
 
-/** Durée de conservation annoncée dans la mention RGPD (candidatures). */
-export const COMMERCIAL_APPLICATION_RETENTION = "2 ans";
-
 // ── Options à choix (chips) ─────────────────────────────────────────────────
 
 export interface ChoiceOption {

@@ -475,23 +475,20 @@ export const env = createEnv({
     COMPANY_DPO_EMAIL: z.string().email().optional(),
     COMPANY_PHONE: z.string().optional(),
 
-    // Sprint 24 / D3 — RGPD retention-purge worker (cron daily 03:00 UTC).
+    // Sprint 24 / D3 — retention-purge worker (cron daily 03:00 UTC).
     // Toutes optionnelles (defaults dans le worker). Doit être ≥ 1 mois sinon
     // ignorée (anti-misconfig accidentel qui supprimerait toute la base).
-    RETENTION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
-    RETENTION_SUBS_ARCHIVE_MONTHS: z.coerce.number().int().min(1).optional(),
-    RETENTION_NEWSLETTER_UNSUB_MONTHS: z.coerce.number().int().min(1).optional(),
-    // Audit B5 P0-7 — extension purge content-gen / cost ledger / RUM.
+    // 🛑 2026-10-07 (Will : « coupe tous les effacements ») : le worker ne purge
+    // plus que des tables techniques. `RETENTION_LOGS_MONTHS`,
+    // `RETENTION_NEWSLETTER_UNSUB_MONTHS`, `RETENTION_COST_LEDGER_MONTHS`,
+    // `RETENTION_IMAGE_LOGS_MONTHS`, `RETENTION_CANDIDATURES_MONTHS` et
+    // `RETENTION_SUBS_ARCHIVE_MONTHS` sont retirées avec leurs purges.
     RETENTION_GENERATION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
-    RETENTION_COST_LEDGER_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_WEB_VITALS_MONTHS: z.coerce.number().int().min(1).optional(),
     // Tunnels d'acquisition. Défaut 12 mois côté worker — sous le plafond de
     // 13 mois de la CNIL pour la mesure d'audience, dont dépend l'absence de
     // bannière sur les pages de tunnel.
     RETENTION_FUNNEL_EVENTS_MONTHS: z.coerce.number().int().min(1).optional(),
-    // Candidatures : 24 mois, recommandation CNIL pour un candidat non
-    // retenu. La purge supprime AUSSI le CV et la photo sur le disque.
-    RETENTION_CANDIDATURES_MONTHS: z.coerce.number().int().min(1).optional(),
 
     // Content Generator V1 (Sprint 1 Day 1 AGT-B) — providers IA + KB ingest.
     // Toutes optional V1 : le BUILD continue sans elles ; seul le RUN (génération
@@ -555,9 +552,6 @@ export const env = createEnv({
     /// Default 999 = jamais auto-publish (review admin manuel). En prod recommandé
     /// 80 pour pipeline FR-only fluide, 999 pour gate humain strict.
     IMAGE_AUTO_PUBLISH_SCORE: z.coerce.number().int().min(0).max(100).optional(),
-    /// Rétention image_usage_logs en mois (worker `retention-purge-worker`).
-    /// Default 12 mois si non défini.
-    RETENTION_IMAGE_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
 
     // ────────────────────────────────────────────────────────────────
     // PII at-rest encryption — Méta-cert 2026-05-15 AGENT 12 P0 OWASP A02.
@@ -759,14 +753,9 @@ export const env = createEnv({
     COMPANY_EMAIL: process.env.COMPANY_EMAIL,
     COMPANY_DPO_EMAIL: process.env.COMPANY_DPO_EMAIL,
     COMPANY_PHONE: process.env.COMPANY_PHONE,
-    RETENTION_LOGS_MONTHS: process.env.RETENTION_LOGS_MONTHS,
-    RETENTION_SUBS_ARCHIVE_MONTHS: process.env.RETENTION_SUBS_ARCHIVE_MONTHS,
-    RETENTION_NEWSLETTER_UNSUB_MONTHS: process.env.RETENTION_NEWSLETTER_UNSUB_MONTHS,
     RETENTION_GENERATION_LOGS_MONTHS: process.env.RETENTION_GENERATION_LOGS_MONTHS,
-    RETENTION_COST_LEDGER_MONTHS: process.env.RETENTION_COST_LEDGER_MONTHS,
     RETENTION_WEB_VITALS_MONTHS: process.env.RETENTION_WEB_VITALS_MONTHS,
     RETENTION_FUNNEL_EVENTS_MONTHS: process.env.RETENTION_FUNNEL_EVENTS_MONTHS,
-    RETENTION_CANDIDATURES_MONTHS: process.env.RETENTION_CANDIDATURES_MONTHS,
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
@@ -780,7 +769,6 @@ export const env = createEnv({
     // Image Bank (Sprint M? — axionia-image-bank skill v1.0)
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     IMAGE_AUTO_PUBLISH_SCORE: process.env.IMAGE_AUTO_PUBLISH_SCORE,
-    RETENTION_IMAGE_LOGS_MONTHS: process.env.RETENTION_IMAGE_LOGS_MONTHS,
     // PII at-rest (Méta-cert 2026-05-15 AGENT 12 P0)
     PII_ENCRYPTION_KEY: process.env.PII_ENCRYPTION_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,

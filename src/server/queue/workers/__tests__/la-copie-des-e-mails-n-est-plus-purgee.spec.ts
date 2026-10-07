@@ -1,14 +1,11 @@
 /**
- * La COPIE des e-mails envoyés est purgée à 12 mois ; la ligne du journal
- * qu'elle illustre, elle, reste (preuve d'envoi, 5 ans) — 2026-09-27.
+ * La COPIE des e-mails envoyés n'est PLUS purgée (2026-10-07, Will : « coupe
+ * tous les effacements »). Elle était supprimée à 12 mois depuis le 2026-09-27.
  *
  * Par l'EFFET : la table des copies est une base en mémoire, les autres
  * tables du worker de purge sont des doublures muettes. On lance la vraie
- * passe de purge et on regarde ce qui RESTE.
- *
- * Témoins : une copie de 11 mois SURVIT (sinon « tout supprimer » passerait),
- * et une surcharge d'environnement invalide (`0`) ne vide pas la table — la
- * garde anti-misconfig de `readMonths` s'applique aussi ici.
+ * passe de purge et on regarde ce qui RESTE : tout, y compris une copie de
+ * 13 mois, et quelle que soit la variable d'environnement d'autrefois.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -51,6 +48,7 @@ vi.mock("@/server/careers/cv-storage", () => ({ deleteCv: vi.fn(async () => unde
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("../connection", () => ({ getBullConnectionOrThrow: () => ({}) }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
+vi.mock("@/server/newsletter/retention", () => ({ purgerOutboxCrm: vi.fn(async () => 0) }));
 
 import { executerPurgeRetention } from "../retention-purge-worker";
 
@@ -77,21 +75,21 @@ beforeEach(() => {
   etat.copies = copies;
 });
 
-describe("🔴 purge de rétention — la copie des e-mails vit 12 mois", () => {
-  it("les copies de plus de 12 mois disparaissent, les plus récentes restent", async () => {
+describe("🛑 purge de rétention — la copie des e-mails n'est plus supprimée", () => {
+  it("toutes les copies restent, même celles de plus de 12 mois", async () => {
     await executerPurgeRetention();
-    expect(copies.lignes.map((l) => l["emailLogId"])).toEqual(["recente", "du-jour"]);
+    expect(copies.lignes.map((l) => l["emailLogId"])).toEqual([
+      "vieille",
+      "limite",
+      "recente",
+      "du-jour",
+    ]);
   });
 
-  it("une surcharge d'environnement invalide ne vide pas la table (garde anti-misconfig)", async () => {
-    process.env["RETENTION_EMAIL_CONTENTS_MONTHS"] = "0";
-    await executerPurgeRetention();
-    expect(copies.lignes.map((l) => l["emailLogId"])).toEqual(["recente", "du-jour"]);
-  });
-
-  it("une surcharge valide est lue (24 mois : les quatre copies restent)", async () => {
-    process.env["RETENTION_EMAIL_CONTENTS_MONTHS"] = "24";
+  it("l'ancienne variable d'environnement ne réarme rien", async () => {
+    process.env["RETENTION_EMAIL_CONTENTS_MONTHS"] = "1";
     await executerPurgeRetention();
     expect(copies.lignes).toHaveLength(4);
+    delete process.env["RETENTION_EMAIL_CONTENTS_MONTHS"];
   });
 });

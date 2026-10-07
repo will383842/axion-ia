@@ -1574,8 +1574,11 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
 // ═════════════════════════════════════════════════════════════════════════════
 // CONSERVATION CODÉE DU DOSSIER CLIENT (chantier visio, PR 8 ; B1, ADR 0056)
 //
-// Planifiée chaque nuit par `retention-purge-worker.ts`, EXÉCUTÉE ici (seul
-// module qui pose le drapeau d'effacement). Les échéances sont calculées par
+// 🛑 Depuis le 2026-10-07 (Will : « coupe tous les effacements »), ces
+// fonctions ne sont PLUS planifiées : `retention-purge-worker.ts` ne les
+// appelle plus (garde `aucun-effacement-automatique-de-personnes.spec.ts`).
+// Elles restent ici, inchangées, sans appelant automatique (seul module qui
+// pose le drapeau d'effacement). Les échéances sont calculées par
 // `src/server/visio/conservation.ts` à partir de `CONSERVATION_VISIO`, les
 // durées que la notice publique écrit en toutes lettres.
 //

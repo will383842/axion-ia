@@ -247,12 +247,13 @@ describe("submitLeadApporteurAction", () => {
     }
   });
 
-  it("enregistre la version v2 du consentement, dans la ligne ET dans le registre de preuve", async () => {
+  it("enregistre la version v3 du consentement, dans la ligne ET dans le registre de preuve", async () => {
     // 2026-09-19 (B4) — le texte coché ne promet plus d'appel et ne dit plus
     // « jamais transmises » : la preuve doit pointer vers CE texte. Valeur
     // littérale, et non la constante : recopier la constante ne testerait rien.
     // (Le dossier complet, lui, enregistre sa propre version — pas celle-ci.)
-    const v2 = "lead-apporteur-facebook-v2-2026-09-19";
+    // v3 (2026-10-07) : la case ne promet plus « 24 mois après la clôture ».
+    const v2 = "lead-apporteur-facebook-v3-2026-10-07";
     await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
 
     const args = creer.mock.calls[0]?.[0] as CreateArgs;

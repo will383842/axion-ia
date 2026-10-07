@@ -1,6 +1,7 @@
-// ⚠️ PAS de `import "server-only"` : `supprimerVideosCandidature` est appelée
-// par la purge de rétention, qui tourne dans le WORKER (`tsx`). Gardé par
-// `tests/unit/ci/aucun-module-du-worker-nimporte-server-only.spec.ts`.
+// ⚠️ PAS de `import "server-only"` : `supprimerVideosCandidature` était appelée
+// par la purge de rétention, qui tourne dans le WORKER (`tsx`) — purge retirée
+// le 2026-10-07 (décision de Will : aucune candidature effacée automatiquement).
+// Le module reste importable hors Next (`aucun-module-du-worker-nimporte-server-only.spec.ts`).
 
 /**
  * VIDÉOS DÉPOSÉES PAR LE CANDIDAT — disque et cycle de vie (Will, 2026-09-28).
@@ -199,8 +200,9 @@ export async function relancerAnalysesEnAttente(applicationId: string): Promise<
 
 /**
  * Efface TOUTES les vidéos d'une candidature (dossier entier). Best-effort,
- * idempotent : appelée AVANT la suppression de la ligne, aux trois chemins
- * (suppression console, effacement RGPD, purge de rétention).
+ * idempotent : appelée AVANT la suppression de la ligne, aux deux chemins
+ * (suppression console, effacement RGPD). Il n'y a plus de purge de rétention
+ * des candidatures (décision de Will, 2026-10-07).
  */
 export async function supprimerVideosCandidature(applicationId: string): Promise<void> {
   try {

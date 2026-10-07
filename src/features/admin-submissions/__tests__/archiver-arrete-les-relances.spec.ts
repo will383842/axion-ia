@@ -274,7 +274,8 @@ describe("ce qui ne doit jamais céder", () => {
   it("l'horodatage est celui du GESTE, pas celui du démarrage du serveur", async () => {
     // La table `EFFETS` porte `new Date(0)` comme simple marqueur de présence.
     // Si ce marqueur partait tel quel en base, toute fiche archivée serait
-    // datée du 1er janvier 1970 — et la purge à 24 mois la ramasserait aussitôt.
+    // datée du 1er janvier 1970 — un mensonge sur la date du geste (la purge à
+    // 24 mois qui l'aurait ramassée aussitôt est retirée depuis le 2026-10-07).
     const avant = Date.now();
     await appliquerTransition("sub-1", "archiver", "admin-1");
     const ecrit = update.mock.calls[0]?.[0] as { data: { archivedAt: Date } };

@@ -66,7 +66,10 @@ describe("invitation — provenance indirecte (recommandation, autre)", () => {
     const t = texte(h);
     expect(t).toContain(IDENTITE_LEGALE.legalName);
     expect(t).toContain(IDENTITE_LEGALE.ville);
-    expect(t).toContain("24 mois");
+    // 2026-10-07 (Will) : plus de durée de suppression — la conservation dit
+    // ce qui se passe vraiment, comme la politique de confidentialité.
+    expect(t).toContain("il n'est pas supprimé automatiquement");
+    expect(t).not.toContain("24 mois");
     expect(t).toMatch(/accès.*rectification.*effacement.*opposition/);
     expect(t).toContain("CNIL");
     expect(h).toContain("/fr/politique-confidentialite");
@@ -86,7 +89,8 @@ describe("invitation — provenance indirecte (recommandation, autre)", () => {
     expect(t).not.toContain("Thank you for your interest");
     expect(t).toContain("We have your address from someone who recommends you.");
     expect(t).toContain("CNIL");
-    expect(t).toContain("24 months");
+    expect(t).toContain("it is not deleted automatically");
+    expect(t).not.toContain("24 months");
   });
 });
 

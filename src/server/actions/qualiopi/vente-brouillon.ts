@@ -8,7 +8,8 @@
  * téléphone) sont SUPPRIMÉS — la fiche Client est leur seul lieu de vie.
  *
  * Purge : `retentionUntil` posé à la création (défaut 90 j, env
- * VENTE_BROUILLON_RETENTION_DAYS), lu par le cron retention-purge. Le brouillon
+ * VENTE_BROUILLON_RETENTION_DAYS) ; le cron retention-purge ne le lit plus depuis
+ * le 2026-10-07 (Will : aucun effacement automatique). Le brouillon
  * CONVERTI est supprimé explicitement par le wizard à la création de la session.
  *
  * Brouillons PERSONNELS : toutes les lectures/écritures sont bornées à

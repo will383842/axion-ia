@@ -30,14 +30,18 @@ import { SOURCE_OPTIONS, STATUT_OPTIONS } from "./model";
  * v2 (2026-09-19, décision Will B4) : le texte ne promet plus de rappel
  * (l'échange de 15 minutes part sur invitation, aux seuls profils retenus) et
  * « jamais transmises » devient « jamais vendues ni cédées », la conservation
- * étant dite telle qu'elle s'applique (24 mois après la clôture du dossier).
+ * étant dite telle qu'elle s'applique.
+ *
+ * v3 (2026-10-07, décision Will) : la case ne promet plus « 24 mois après la
+ * clôture » — aucun dossier n'est plus supprimé automatiquement. Elle dit
+ * « conservées pour garder la trace de nos échanges ».
  * Texte : `FORMULAIRE.consent` de `content/recrutement/tunnel-facebook.ts`.
  *
  * Cette version n'est JAMAIS envoyée au CRM (le premier contact n'y part pas,
  * cf. `features/commercial-application/lead-actions.ts`) : la changer ne peut
  * donc pas déclencher le refus 422 que le CRM oppose à une version inconnue.
  */
-export const LEAD_APPORTEUR_CONSENT_VERSION = "lead-apporteur-facebook-v2-2026-09-19";
+export const LEAD_APPORTEUR_CONSENT_VERSION = "lead-apporteur-facebook-v3-2026-10-07";
 
 /** Étape portée par `Submission.details.etape` — distingue le premier contact
  *  du dossier complet dans la même file console. */

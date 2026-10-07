@@ -605,13 +605,19 @@ describe("verrous statiques", () => {
   const WORKER = "src/server/queue/workers/retention-purge-worker.ts";
   const MODULE = "src/server/newsletter/retention.ts";
 
-  it("le worker quotidien EXISTANT appelle les trois purges, chacune dans son propre `try`", () => {
+  it("🛑 le worker n'appelle PLUS les purges de la lettre et du guide (Will, 2026-10-07)", () => {
+    // « coupe tous les effacements » : les fonctions restent (testées ci-dessus),
+    // seul leur appel planifié est retiré. Commentaires retirés avant analyse.
+    const code = lire(WORKER)
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    expect(code).not.toMatch(/purgerDesinscrits\s*\(/);
+    expect(code).not.toMatch(/purgerLettreEtGuide\s*\(/);
+  });
+
+  it("le worker quotidien appelle la purge de la file CRM acquittée, dans son propre `try`", () => {
     const src = lire(WORKER);
-    for (const appel of [
-      "await purgerDesinscrits(",
-      "await purgerLettreEtGuide()",
-      "await purgerOutboxCrm()",
-    ]) {
+    for (const appel of ["await purgerOutboxCrm()"]) {
       const i = src.indexOf(appel);
       expect(i, appel).toBeGreaterThan(0);
       // Le `try {` le plus proche avant l'appel, sans `}` de fermeture entre les deux.
@@ -642,12 +648,12 @@ describe("verrous statiques", () => {
     expect(
       [...src.matchAll(/action: "([^"]+)"/g)].map((m) => m[1]).filter((a) => a !== "fin"),
     ).toEqual(["newsletter.purged"]);
-    const ligne = lire(WORKER)
-      .split(/\r?\n/)
-      .filter((l) => l.includes("[retention-purge][lettre]"));
-    expect(ligne).toHaveLength(1);
-    const bloc = lire(WORKER).slice(lire(WORKER).indexOf("[retention-purge][lettre]"));
-    expect(bloc.slice(0, bloc.indexOf(");"))).not.toMatch(/email/i);
+    // 2026-10-07 : le worker n'appelle plus la purge de la lettre, il n'en
+    // journalise donc plus rien — et sa ligne de bilan ne cite aucune adresse.
+    const worker = lire(WORKER);
+    expect(worker).not.toContain("[retention-purge][lettre]");
+    const bilan = worker.slice(worker.indexOf("`[retention-purge] "));
+    expect(bilan.slice(0, bilan.indexOf(");"))).not.toMatch(/email/i);
   });
 
   it("🔑 cliquet nominatif : `derniereDemandeFormulaireAt` n'est ÉCRITE que par la demande du formulaire", () => {
@@ -671,21 +677,15 @@ describe("verrous statiques", () => {
     expect(ecrivains).toEqual(["src/server/guide-ia/demande.ts", "src/server/guide-ia/demande.ts"]);
   });
 
-  it("la politique annonce les mêmes durées que le module", () => {
+  it("🛑 la politique n'annonce plus les durées du module — elles ne sont plus appliquées (2026-10-07)", () => {
     const legal = lire("src/content/legal.ts");
-    expect(legal).toContain("inscription jamais confirmée (ancien parcours), 30 jours");
-    expect(legal).toContain(
-      "demande du guide, 3 ans après votre dernière demande ou votre dernier clic sur le bouton de téléchargement",
-    );
-    expect(legal).toContain(
-      "inscription à la lettre, 3 ans après votre inscription, votre dernière demande du guide ou votre dernier clic dans une lettre",
-    );
-    expect(legal).toContain("adresse en échec de distribution définitif, 3 ans");
-    expect(legal).toContain(
+    expect(legal).not.toContain("inscription jamais confirmée (ancien parcours), 30 jours");
+    expect(legal).not.toContain("adresse en échec de distribution définitif, 3 ans");
+    expect(legal).not.toContain(
       "preuve de l'information ou de votre consentement, 5 ans après la fin de votre inscription",
     );
     expect(legal).toContain(
-      "après une désinscription, votre adresse est gardée 3 ans, puis seule une empreinte en est conservée, sans limite de durée",
+      "votre demande du guide, votre inscription à la lettre et la preuve de l'information ou de votre consentement sont conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement",
     );
   });
 });
