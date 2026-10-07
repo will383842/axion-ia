@@ -9728,6 +9728,9 @@ model JobApplication {
   /// portent le nom de la personne.
   events         JobApplicationEvent[]
   replies        JobApplicationReply[]
+  /// L3 (2026-10-07) — les réponses du candidat reçues par e-mail, relevées
+  /// dans la boîte Zoho Mail. Objet + court extrait chiffré, jamais le corps.
+  reponsesRecues JobApplicationInboundReply[]
   /// Vérification hebdomadaire des liens vers son travail (2026-09-28).
   liensVerifies  JobApplicationLink[]
   /// Vidéos déposées par le candidat (2026-09-28), analysées par l'antivirus.
@@ -9795,8 +9798,9 @@ model JobApplication {
 enum JobApplicationEventType {
   statut_change
   email_envoye
-  /// Réponse du candidat, rapatriée à la main depuis la boîte mail. Le produit
-  /// ne reçoit pas d'e-mail entrant : la consigner reste un geste humain.
+  /// Réponse du candidat : consignée à la main depuis la boîte mail, ou, depuis
+  /// le lot L3 (2026-10-07), posée par le relevé automatique de la boîte Zoho
+  /// Mail (`reponses-entrantes-candidature.ts`, auteur « Boîte mail »).
   email_recu
   appel
   note
@@ -9986,6 +9990,47 @@ model JobApplicationReply {
   @@index([applicationId, repliedAt])
   @@index([deliveryStatus])
   @@map("job_application_replies")
+}
+
+/// RÉPONSES REÇUES PAR E-MAIL D'UN CANDIDAT (lot L3, 2026-10-07).
+///
+/// Miroir de `SubmissionInboundReply` (apporteurs), pour le monde « emploi ».
+/// Tables SÉPARÉES par monde (`src/features/personne/fiche-personne.ts`) : un
+/// même message d'une personne présente dans les deux mondes est rattaché UNE
+/// fois dans chaque table, et chacune a son propre relevé et son propre curseur.
+///
+/// Ce qui est gardé : la date, l'objet, un extrait court CHIFFRÉ (≤ 300
+/// caractères, le résumé calculé par Zoho) et le drapeau « réponse
+/// automatique ». Jamais le corps entier, jamais une pièce jointe : le message
+/// reste dans Zoho (bouton « Ouvrir dans Zoho », décision de Will n° 11).
+///
+/// 🔴 AUCUN effacement automatique (ordre de Will, 2026-10-07) : aucune purge ne
+/// vise cette table. Elle ne disparaît qu'avec le dossier (effacement manuel,
+/// droit à l'oubli) — d'où la cascade.
+model JobApplicationInboundReply {
+  id                String         @id @default(cuid())
+  applicationId     String         @map("application_id") @db.Uuid
+  application       JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  /// Date de réception dans la boîte (heure Zoho).
+  receivedAt        DateTime       @map("received_at")
+  /// `hashEmailForLookup` de l'expéditeur — égale au `emailHash` du dossier.
+  fromEmailHash     String         @map("from_email_hash") @db.VarChar(64)
+  subject           String         @db.VarChar(500)
+  /// Extrait du corps (≤ 300 caractères), chiffré par `encryptPii`.
+  excerpt           String?        @db.Text
+  /// Identifiant du message DANS Zoho — clé d'idempotence du relevé.
+  zohoMessageId     String         @unique @map("zoho_message_id") @db.VarChar(64)
+  zohoFolderId      String?        @map("zoho_folder_id") @db.VarChar(64)
+  /// En-tête `Message-ID` du courriel, s'il a été lu.
+  internetMessageId String?        @map("internet_message_id") @db.VarChar(500)
+  /// Réponse automatique (absence, accusé) : gardée, sans effet (ni journal,
+  /// ni « à traiter », ni alerte).
+  auto              Boolean        @default(false)
+  createdAt         DateTime       @default(now()) @map("created_at")
+
+  @@index([applicationId, receivedAt])
+  @@index([fromEmailHash])
+  @@map("job_application_inbound_replies")
 }
 
 // ============================================================================

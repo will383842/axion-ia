@@ -13,6 +13,7 @@ import { ApplicationStatusForm } from "./ApplicationStatusForm";
 import { FriseCandidature } from "./FriseCandidature";
 import { ComposerReponse } from "./ComposerReponse";
 import { ConsignerAuJournal } from "./ConsignerAuJournal";
+import { ReponsesRecuesCandidat } from "./ReponsesRecuesCandidat";
 import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/timeline";
 import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
@@ -394,6 +395,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
+        {/* Lot L3 (2026-10-07) — les réponses du candidat relevées dans la boîte
+            Zoho Mail, avec « Ouvrir dans Zoho ». Rien tant qu'aucune n'est arrivée. */}
+        <ReponsesRecuesCandidat applicationId={a.id} role={acteur.role} />
         <FriseCandidature entrees={frise} accuse={accuse} />
       </AdminCard>
 

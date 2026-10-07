@@ -58,3 +58,12 @@ Les valeurs d'énumération et les termes métier qui ne s'expliquent pas d'eux-
 | `OrigineOuvertureDocument` | `navigateur`          | Ouverture du lien public d'une page partagée, déclenchée PROBABLEMENT par une personne (en-têtes `Sec-Fetch-*`, navigateur ordinaire). Heuristique, jamais une preuve de lecture.     | 0063 |
 | `OrigineOuvertureDocument` | `apercu_automatique`  | Ouverture par un analyseur de liens, un aperçu de messagerie ou un robot : tout ce qui n'est pas `navigateur`.                                                                        | 0063 |
 | **Lien public d'une page** | —                     | `https://axion-ia.com/document/<id>/<jeton>` : une page HTML « envoyée au client » ouverte sans compte. Jeton HMAC dérivé d'`AUTH_SECRET`, rien de stocké ; s'éteint par l'archivage. | 0063 |
+
+## Réponses reçues des candidats (lot L3, 2026-10-07)
+
+| Terme                         | Sens                                                                                                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Réponse reçue** (emploi)    | Ligne de `job_application_inbound_replies` : un e-mail d'un candidat relevé dans la boîte Zoho Mail après un message parti vers son dossier. Date, objet, extrait chiffré (≤ 300 car.), drapeau `auto`. Jamais le corps. |
+| **Réponse reçue** (apporteur) | Ligne de `submission_inbound_replies` (2026-09-27), relevé distinct. Une personne des deux mondes a une ligne dans CHAQUE table ; une seule alerte Telegram (celle des apporteurs).                                      |
+| `CANDIDAT_REPLIED`            | Catégorie d'alerte (salon 💼 Candidatures) d'une réponse humaine récente (< 24 h) d'un candidat emploi. Distincte de `APPORTEUR_REPLIED` : jamais d'alerte commune aux deux mondes.                                      |
+| `email_recu` (« Boîte mail ») | Événement du journal posé par le relevé pour une réponse humaine ; une réponse automatique (absence) est gardée sans événement.                                                                                          |
