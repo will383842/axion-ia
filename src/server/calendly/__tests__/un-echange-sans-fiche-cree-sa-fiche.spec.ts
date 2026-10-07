@@ -510,7 +510,7 @@ describe("lot de suite (07/10) : l'aperçu prévient AVANT l'envoi", () => {
   });
 });
 
-describe("relecture de #1349 (a1) : un dossier REFUSÉ n'est jamais rouvert par la proposition", () => {
+describe("relecture de la PR 1349 (a1) : un dossier REFUSÉ n'est jamais rouvert par la proposition", () => {
   it("Bienvenue déjà partie + dossier refusé : rien n'est proposé, « Dossier refusé le … »", async () => {
     await creer();
     await preparerIssueApporteur({
