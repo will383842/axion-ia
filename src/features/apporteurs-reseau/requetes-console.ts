@@ -117,6 +117,8 @@ export interface CommissionDeLApporteur {
   parrainage: boolean;
   creeAt: Date;
   verseeAt: Date | null;
+  /** Autofacture impossible faute de donnée : ce qui manque. */
+  autofactureAttenteMotif: string | null;
 }
 
 /** La preuve de signature pour l'écran : le texte archivé (~60 Ko) reste en base. */
@@ -171,6 +173,7 @@ export async function lireFicheApporteur(id: string) {
         parrainage: true,
         creeAt: true,
         verseeAt: true,
+        autofactureAttenteMotif: true,
       },
     }),
     prisma.apporteurReseau.findMany({

@@ -10,6 +10,8 @@ interface Ligne {
   autofactureNumero: string | null;
   autofactureEmiseAt: Date | null;
   avoirNumero: string | null;
+  autofactureAttenteMotif: string | null;
+  autofactureAttenteDepuis: Date | null;
   releveMois: string | null;
   verseeAt: Date | null;
   majAt: Date;
@@ -31,6 +33,14 @@ const etat = vi.hoisted(() => ({
   cumulCents: 0,
   piecesValides: true,
   maintenant: new Date(),
+  apporteurs: {} as Record<string, Record<string, unknown>>,
+  sentry: [] as string[],
+}));
+
+vi.mock("@/server/queue/lib/sentry-worker", () => ({
+  captureWorkerError: vi.fn((_a: string, _b: string, _c: unknown, err: Error) => {
+    etat.sentry.push(err.message);
+  }),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
@@ -112,6 +122,7 @@ vi.mock("@/lib/prisma", () => {
         adresse: "1 rue des Lilas, 69000 Lyon",
         regimeTva: a.where.id === "APP4" ? "assujetti" : "franchise_293b",
         numeroTva: a.where.id === "APP4" ? "FR00123456782" : null,
+        ...etat.apporteurs[a.where.id],
       })),
     },
     commissionApporteur: {
@@ -183,6 +194,8 @@ const ligne = (
   autofactureNumero: null,
   autofactureEmiseAt: null,
   avoirNumero: null,
+  autofactureAttenteMotif: null,
+  autofactureAttenteDepuis: null,
   releveMois: null,
   verseeAt: null,
   majAt: new Date("2026-10-01T00:00:00Z"),
@@ -206,6 +219,8 @@ beforeEach(() => {
   etat.cumulCents = 0;
   etat.piecesValides = true;
   etat.maintenant = MARDI;
+  etat.apporteurs = {};
+  etat.sentry = [];
 });
 
 describe("autofacture dès que la commission est due", () => {
@@ -492,5 +507,80 @@ describe("apporteur qui facture la TVA : on vire le TTC", () => {
     await facturerCommissionsDues(MARDI);
     const r = await marquerVerse("APP4", MARDI, "AXI-APP-2026-0001");
     expect(r).toMatchObject({ ok: true, totalCents: 30_000 });
+  });
+});
+
+describe("autofacture impossible faute de donnée : en attente, une seule alerte, reprise automatique", () => {
+  const MERCREDI = new Date("2026-10-07T09:00:00Z");
+
+  it("SIREN manquant : rien n'est facturé, la commission reste due et affiche ce qui manque, sans Sentry", async () => {
+    etat.apporteurs["APP1"] = { siren: null };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    const bilan = await facturerCommissionsDues(MARDI);
+    expect(bilan).toMatchObject({ autofactures: 0, ecartees: 1, erreurs: 0 });
+    const l = lignes()[0]!;
+    expect(l.statut).toBe("due");
+    expect(l.autofactureNumero).toBeNull();
+    expect(l.autofactureAttenteMotif).toBe("SIREN de l'apporteur");
+    expect(l.autofactureAttenteDepuis).toEqual(MARDI);
+    expect(etat.pdfs).toEqual([]);
+    expect(etat.envoyes).toEqual([]);
+    expect(etat.sentry).toEqual([]);
+  });
+
+  it("régime de TVA et adresse manquants : le motif les nomme tous les deux", async () => {
+    etat.apporteurs["APP1"] = { regimeTva: null, adresse: "  " };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[0]!.autofactureAttenteMotif).toBe(
+      "régime de TVA de l'apporteur, adresse de l'apporteur",
+    );
+  });
+
+  it("une seule alerte au premier blocage, pas une par passage horaire", async () => {
+    etat.apporteurs["APP1"] = { siren: null };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    await facturerCommissionsDues(new Date("2026-10-06T10:00:00Z"));
+    await facturerCommissionsDues(new Date("2026-10-06T11:00:00Z"));
+    const alertes = etat.alertes.filter((a) => a.jobId.includes("autofacture-attente"));
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]!.payload["message"]).toContain("SIREN de l'apporteur");
+    // La date du premier blocage n'est pas réécrite à chaque passage.
+    expect(lignes()[0]!.autofactureAttenteDepuis).toEqual(MARDI);
+    expect(etat.sentry).toEqual([]);
+  });
+
+  it("donnée complétée : le passage suivant facture tout seul et efface l'attente", async () => {
+    etat.apporteurs["APP1"] = { siren: null };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    etat.apporteurs["APP1"] = {};
+    etat.maintenant = MERCREDI;
+    const bilan = await facturerCommissionsDues(MERCREDI);
+    expect(bilan).toMatchObject({ autofactures: 1, commissions: 1 });
+    const l = lignes()[0]!;
+    expect(l.autofactureNumero).toBe("AXI-APP-2026-0001");
+    expect(l.autofactureEmiseAt).toEqual(MERCREDI);
+    expect(l.autofactureAttenteMotif).toBeNull();
+    expect(l.autofactureAttenteDepuis).toBeNull();
+    expect(etat.envoyes).toHaveLength(1);
+  });
+
+  it("une erreur technique (stockage) garde ses nouveaux essais et son alerte Sentry, sans attente affichée", async () => {
+    etat.stockage = "ko";
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[0]!.autofactureAttenteMotif).toBeNull();
+    expect(etat.sentry.length).toBeGreaterThan(0);
+  });
+
+  it("« Virement fait » sur un apporteur bloqué : refusé avec ce qui manque, rien n'est versé", async () => {
+    etat.apporteurs["APP1"] = { siren: null };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    const r = await marquerVerse("APP1", MARDI);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("SIREN de l'apporteur");
+    expect(lignes()[0]!.statut).toBe("due");
   });
 });

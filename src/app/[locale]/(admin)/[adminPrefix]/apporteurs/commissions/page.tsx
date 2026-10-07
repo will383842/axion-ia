@@ -242,7 +242,26 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     Avoir : <LienPdf numero={c.avoirNumero} base={base} />
                   </p>
                 ) : null}
-                {c.statut === "due" && !c.autofactureNumero ? (
+                {c.statut === "due" && !c.autofactureNumero && c.autofactureAttenteMotif ? (
+                  <p
+                    className="text-[length:var(--text-admin-sm)]"
+                    style={{ color: "var(--color-admin-warning)" }}
+                  >
+                    Autofacture en attente : il manque {c.autofactureAttenteMotif}
+                    {c.autofactureAttenteDepuis
+                      ? ` (depuis le ${dateFr(c.autofactureAttenteDepuis)})`
+                      : ""}
+                    . Complétez la{" "}
+                    <a
+                      href={`/fr/${adminPrefix}/apporteurs/${c.apporteurId}`}
+                      className="underline"
+                    >
+                      fiche de l&apos;apporteur
+                    </a>{" "}
+                    : elle partira d&apos;elle-même dans l&apos;heure.
+                  </p>
+                ) : null}
+                {c.statut === "due" && !c.autofactureNumero && !c.autofactureAttenteMotif ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
                     part pas, vérifiez l&apos;identité et le régime de TVA de l&apos;apporteur).

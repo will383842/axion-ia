@@ -454,6 +454,9 @@ export interface CommissionVue {
   autofactureNumero: string | null;
   /** Reprise : numéro de son avoir d'autofacture. */
   avoirNumero: string | null;
+  /** Autofacture impossible faute de donnée : ce qui manque, depuis quand. */
+  autofactureAttenteMotif: string | null;
+  autofactureAttenteDepuis: Date | null;
   verseeAt: Date | null;
   creeAt: Date;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
@@ -500,6 +503,8 @@ export async function lireCommissions(
     releveMois: l.releveMois,
     autofactureNumero: l.autofactureNumero,
     avoirNumero: l.avoirNumero,
+    autofactureAttenteMotif: l.autofactureAttenteMotif,
+    autofactureAttenteDepuis: l.autofactureAttenteDepuis,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
