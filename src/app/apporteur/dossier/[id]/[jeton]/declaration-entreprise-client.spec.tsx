@@ -24,13 +24,15 @@ afterEach(() => {
 });
 
 describe("DeclarationEntreprise", () => {
-  it("« Comment ça se passe » : contact de notre part, durée reçue de la page, commande commissionnée une fois payée", () => {
+  it("« Comment ça se passe » : contact de notre part, durée reçue de la page, commission due quand la prestation est réalisée ET entièrement payée", () => {
     const { container } = render(<DeclarationEntreprise id="i" jeton="j" protectionMois={6} />);
     const t = container.textContent ?? "";
     expect(t).toContain("Comment ça se passe");
     expect(t).toContain("nous prenons contact avec l'entreprise de votre part");
     expect(t).toContain("réservée 6 mois à compter de votre déclaration");
-    expect(t).toContain("une fois payée");
+    // 2026-10-07 (a1) : la commission naît de la prestation RÉALISÉE et ENTIÈREMENT payée.
+    expect(t).toContain("dès que la prestation est réalisée et entièrement payée");
+    expect(t).not.toContain("une fois payée");
     expect(t).not.toMatch(/\d+\s*(jours|heures)/);
   });
 

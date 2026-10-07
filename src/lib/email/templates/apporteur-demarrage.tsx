@@ -39,8 +39,8 @@ import type { Locale } from "../../../../prisma/generated/client";
 
 /** Délai de la confirmation réputée acquise (contrat, art. 3.2 — CONFIRMATION_TACITE_JOURS). */
 export const CONFIRMATION_TACITE_JOURS = 30;
-/** Délai de réponse à une contestation (contrat, art. 3.3). */
-const REPONSE_CONTESTATION_JOURS = 15;
+/** Délai de réponse à une contestation (contrat, art. 3.3 : « dans les trente jours »). */
+const REPONSE_CONTESTATION_JOURS = 30;
 
 // Le filet anti-localhost de `site-url.ts` : jamais un lien localhost dans un e-mail de prod.
 const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
@@ -163,9 +163,9 @@ export const COPY_DEMARRAGE = {
     ],
     commissionTitre: "Votre commission",
     parrainage: (pct: string, mois: number) =>
-      `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} de ses commissions pendant ${mois} mois à compter de sa signature.`,
+      `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} des commissions nées de ses commandes signées pendant les ${mois} mois qui suivent la signature de son contrat par Axion-IA.`,
     paiement:
-      "Elle vous est versée dès que le client a réglé l'intégralité de sa facture : nous établissons votre facture pour vous, puis nous faisons le virement.",
+      "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée : nous établissons votre facture pour vous, puis nous faisons le virement.",
     fiche:
       "Votre contrat signé des deux parties est en pièce jointe. La fiche « Comment ça marche » est à garder sous la main : ",
     ficheLien: "la fiche en PDF",
@@ -302,11 +302,11 @@ export const COPY_DEMARRAGE = {
       e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
     title: "Une commande vient d'être signée",
     preview:
-      "Votre commission sera versée dès que le client aura réglé l'intégralité de sa facture.",
+      "Votre commission sera versée dès que la prestation sera réalisée et entièrement payée.",
     texte: (e: string) =>
       `${e || "Une entreprise que vous nous avez présentée"} vient de signer une commande avec Axion-IA. Merci pour cette mise en relation.`,
     suite:
-      "Votre commission vous sera versée dès que le client aura réglé l'intégralité de sa facture ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail.",
+      "Votre commission vous sera versée dès que la prestation sera réalisée et que le client l'aura entièrement payée ; nous établissons alors votre facture en votre nom et nous vous l'envoyons par e-mail.",
   },
   releve: {
     subject: "Votre commission est facturée",
