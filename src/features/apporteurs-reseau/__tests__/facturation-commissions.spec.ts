@@ -953,7 +953,6 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
 });
 
 describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somme exacte", () => {
-
   // Témoin : sans suspension, le virement complet de la même autofacture.
   async function complet(f: () => ReturnType<typeof ligne>[]): Promise<number> {
     etat.lignes = f();
