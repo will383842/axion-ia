@@ -29,7 +29,7 @@ import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
-import { ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
+import { MENTION_BAREME_INDICATIF, ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
 import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -93,7 +93,7 @@ export const COPY_ISSUE_ECHANGE = {
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
         // JUR-T29 : envoyé AVANT la signature du contrat, le
         // barème de cet e-mail est indicatif ; le contrat d'apporteur fait foi.
-        "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
+        MENTION_BAREME_INDICATIF,
       ],
       commissionTitre: "Votre commission",
       versement: () =>
