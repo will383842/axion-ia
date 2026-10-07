@@ -141,6 +141,16 @@ export default async function CommissionsApporteursPage({ params, searchParams }
           </div>
         }
       />
+      {sp.retour ? (
+        <p role="status" className="text-[color:var(--color-admin-success)]">
+          {sp.retour.slice(0, 300)}
+        </p>
+      ) : null}
+      {sp.erreur ? (
+        <p role="alert" className="text-[color:var(--color-admin-danger)]">
+          {sp.erreur.slice(0, 300)}
+        </p>
+      ) : null}
 
       <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-4">
         <AdminStatCard

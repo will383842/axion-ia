@@ -36,6 +36,8 @@ const etat = vi.hoisted(() => ({
   piecesValides: true,
   maintenant: new Date(),
   apporteurs: {} as Record<string, Record<string, unknown>>,
+  colonneLitigeAbsente: false,
+  journal: [] as Array<Record<string, unknown>>,
   registre: ((siren: string) => ({ ok: true, entreprise: { siren, active: true } })) as (
     siren: string,
   ) => unknown,
@@ -104,6 +106,8 @@ function correspond(l: Record<string, Valeur>, where: Record<string, Valeur>): b
     if (cle === "OR") return (cond as Array<Record<string, Valeur>>).some((w) => correspond(l, w));
     const v = l[cle];
     if (cond === null) return v === null;
+    // Une date se compare par sa valeur, comme en base.
+    if (cond instanceof Date) return v instanceof Date && v.getTime() === cond.getTime();
     if (typeof cond === "object" && !(cond instanceof Date)) {
       const c = cond as Record<string, Valeur>;
       if ("in" in c) return (c["in"] as Valeur[]).includes(v);
@@ -136,6 +140,9 @@ vi.mock("@/lib/prisma", () => {
     commissionApporteur: {
       findMany: vi.fn(async (a: { where: Record<string, Valeur> }) =>
         lignes().filter((l) => correspond(l as never, a.where)),
+      ),
+      findUnique: vi.fn(
+        async (a: { where: { id: string } }) => lignes().find((l) => l.id === a.where.id) ?? null,
       ),
       count: vi.fn(
         async (a: { where: Record<string, Valeur> }) =>
@@ -179,8 +186,17 @@ vi.mock("@/lib/prisma", () => {
       ),
     },
     numeroEmis: { findMany: vi.fn(async () => []) },
-    // Colonne « litige » présente (contrat 2.3, art. 4.2 bis).
-    $queryRaw: vi.fn(async () => []),
+    // Colonne « litige » présente (contrat 2.3, art. 4.2 bis), sauf quand un test la retire.
+    $queryRaw: vi.fn(async () => {
+      if (etat.colonneLitigeAbsente) throw new Error('column "litige_depuis" does not exist');
+      return [];
+    }),
+    activityLog: {
+      create: vi.fn(async (a: { data: Record<string, unknown> }) => {
+        etat.journal.push(a.data);
+        return {};
+      }),
+    },
     $transaction: async (cb: (tx: unknown) => unknown) => cb(prisma),
   };
   return { prisma };
@@ -237,6 +253,8 @@ beforeEach(() => {
   etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
   oublierCacheRegistre();
   oublierLitigeDisponible();
+  etat.colonneLitigeAbsente = false;
+  etat.journal = [];
 });
 
 describe("autofacture dès que la commission est due", () => {
@@ -643,9 +661,11 @@ describe("contrat 2.3 (art. 4.2 bis) : commission suspendue pendant une contesta
     expect(lignes()[0]!.litigeDepuis).toEqual(MARDI);
     expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
     expect(lignes()[0]!.autofactureNumero).toBeNull();
-    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    // Sans numéro, le rattrapage de « Virement fait » ne facture pas non plus la commission suspendue.
+    await marquerVerse("APP1", MARDI);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
     expect(lignes()[0]!.statut).toBe("due");
-    expect(await leverSuspension("c1")).toEqual({ ok: true });
+    expect(await leverSuspension("c1", "admin-1")).toEqual({ ok: true });
     expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
   });
 
@@ -663,5 +683,47 @@ describe("contrat 2.3 (art. 4.2 bis) : commission suspendue pendant une contesta
     etat.lignes = [ligne("v1", "versee", 40_000), ligne("c2", "due", 10_000)];
     expect(await suspendreCommission("v1", "trop tard", MARDI)).toMatchObject({ ok: false });
     expect(await suspendreCommission("c2", "  ", MARDI)).toMatchObject({ ok: false });
+  });
+});
+
+describe("relecture de la PR 1359 (a1)", () => {
+  it("le refus de « Virement fait » vient bien de la SUSPENSION (par le numéro, comme la console)", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const sans = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
+    expect(sans).toMatchObject({ ok: true }); // témoin : sans suspension, le virement passe
+    etat.lignes = [ligne("c2", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    await suspendreCommission("c2", "contestation écrite", MARDI);
+    const r = await marquerVerse("APP1", MARDI, numero);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain(
+      "suspendue (contestation écrite du client",
+    );
+  });
+
+  it("colonne absente (worker avant la migration) : pas de filtre, et JAMAIS mémorisé", async () => {
+    const { litigeDisponible } = await import("../litige");
+    etat.colonneLitigeAbsente = true;
+    expect(await litigeDisponible()).toBe(false);
+    etat.colonneLitigeAbsente = false;
+    // La migration vient de passer : dès l'appel suivant, le filtre s'applique.
+    expect(await litigeDisponible()).toBe(true);
+  });
+
+  it("suspension et levée sont TRACÉES (qui, quand, motif) : rien ne disparaît", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await suspendreCommission("c1", "contestation du 06/10", MARDI, "admin-1");
+    await leverSuspension("c1", "admin-1", VENDREDI);
+    expect(etat.journal.map((j) => j["action"])).toEqual([
+      "commission_apporteur.suspendue",
+      "commission_apporteur.suspension_levee",
+    ]);
+    expect(etat.journal[1]).toMatchObject({
+      adminUserId: "admin-1",
+      targetId: "c1",
+      changes: { motif: "contestation du 06/10", suspendueDepuis: MARDI.toISOString() },
+    });
   });
 });

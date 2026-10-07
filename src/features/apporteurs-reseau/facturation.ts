@@ -538,7 +538,13 @@ export async function marquerVerse(
 
   if (!numero) {
     const sansPiece = await prisma.commissionApporteur.count({
-      where: { apporteurId, statut: "due", autofactureNumero: null, montantCents: { not: null } },
+      where: {
+        apporteurId,
+        statut: "due",
+        autofactureNumero: null,
+        montantCents: { not: null },
+        ...(await horsLitige()),
+      },
     });
     if (sansPiece > 0) {
       const f = await facturerApporteur(apporteurId, maintenant);
