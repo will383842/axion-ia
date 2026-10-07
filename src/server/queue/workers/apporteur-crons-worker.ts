@@ -13,6 +13,11 @@
  *     29/09 : plus le premier contact ni l'écran 1), et toute candidature à
  *     une offre commerciale, 15 minutes après sa réception
  *     (`features/commercial-application/invitation-auto.ts`).
+ *     Le même passage ARCHIVE (2026-10-07) les apporteurs dont le contrat est
+ *     contresigné ou l'issue « Non retenu » enregistrée, sur 7 jours glissants
+ *     (`features/commercial-application/archivage-auto-apporteurs.ts`) ; les
+ *     fiches plus anciennes relèvent du rattrapage manuel
+ *     (`pnpm rattrapage:archivage-apporteurs`).
  *   · `reseau-quotidien` (07:00 UTC, 2026-10-05) — démarrage manuel du réseau :
  *     confirmations réputées acquises, fins de protection, commissions,
  *     vigilance, « commande signée » (`features/apporteurs-reseau/passage-quotidien.ts`).
@@ -53,6 +58,7 @@ async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
   }
   if (type === "invitation-auto") {
     await passerInvitations();
+    await passerArchivage(job);
     return;
   }
   if (type === "reponses-entrantes") {
@@ -87,6 +93,34 @@ async function passerInvitations(): Promise<void> {
         (r.aReessayer > 0 ? `, ${r.aReessayer} à reprendre au passage suivant` : "") +
         ` — écartées : ${JSON.stringify(r.ecartees)}`,
     );
+  }
+}
+
+/** Fenêtre du passage automatique : le rattrapage manuel couvre l'avant. */
+const FENETRE_ARCHIVAGE_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Range les apporteurs arrivés au bout (contresigné, non retenu). Une panne ici
+ * ne fait PAS échouer le passage des invitations : elle se rapporte, et le
+ * passage suivant (5 minutes) réessaie — l'écriture est idempotente.
+ */
+async function passerArchivage(job: Job<ApporteurCronJobData>): Promise<void> {
+  try {
+    const { archiverApporteursTermines } =
+      await import("@/features/commercial-application/archivage-auto-apporteurs");
+    const r = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: new Date(Date.now() - FENETRE_ARCHIVAGE_MS),
+    });
+    if (r.archivees > 0) {
+      console.warn(
+        `[apporteur-crons] archivage automatique : ${r.archivees} fiche(s) archivée(s) ` +
+          `(contrats contresignés : ${r.personnesContresignees}, non retenus : ${r.personnesNonRetenues})`,
+      );
+    }
+  } catch (err) {
+    console.error("[apporteur-crons] archivage automatique en échec :", err);
+    captureWorkerError("apporteur-crons", APPORTEUR_CRONS_QUEUE_NAME, job, err);
   }
 }
 

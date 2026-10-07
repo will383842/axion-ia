@@ -1,6 +1,10 @@
 // Refonte admin mai 2026 — PR 6 — submissions V2.
 // Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — colonne "Réponse"
 // avec badges Sans réponse / Répondu (N) / Échec / Archivé.
+// 2026-10-07 (Will) — pour la liste des APPORTEURS seulement, « Réponse »
+// devient « Étape » (Candidat → Lien envoyé → … → Contrat contresigné), et les onglets
+// deviennent En cours / Archivés / Tous / Corbeille. Les autres listes ne
+// changent pas.
 
 import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
@@ -39,6 +43,20 @@ import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
 import { lireSuiviInvitationListe } from "@/features/commercial-application/invitation-apporteur";
+import {
+  lireDossiersApporteurListe,
+  lireMotifsSansLien,
+} from "@/features/commercial-application/etape-apporteur-liste";
+import {
+  etapeDuSuivi,
+  libelleEtapeSuivi,
+  lienEtapeSuivi,
+  precisionEtapeSuivi,
+  tonEtapeSuivi,
+  type DossierApporteurResume,
+  type MotifSansLien,
+} from "@/lib/commercial-application/etape-suivi-apporteur";
+import { ongletsListe } from "@/features/admin-submissions/onglets-liste";
 import {
   badgeSuiviInvitation,
   estBadgeDecision,
@@ -234,6 +252,31 @@ export async function SubmissionsV2({
     }
   }
 
+  // 2026-10-07 — la colonne « Étape » de la liste des apporteurs lit aussi leur
+  // dossier du réseau (contrat envoyé, signé, contresigné). Accessoire : si la
+  // lecture échoue, l'étape s'arrête à l'échange, la liste s'affiche quand même.
+  const listeApporteurs = perimetre === "apporteurs";
+  let dossiers = new Map<string, DossierApporteurResume>();
+  if (listeApporteurs && idsApporteurs.length > 0) {
+    try {
+      dossiers = await lireDossiersApporteurListe(idsApporteurs);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { ecran: "apporteurs", etape: "dossiers" } });
+    }
+  }
+  // Pourquoi le lien de réservation n'est pas parti (« Candidat — dossier à
+  // compléter »…), pour les seules lignes sans invitation. Accessoire aussi.
+  let motifs = new Map<string, MotifSansLien>();
+  const sansLien = idsApporteurs.filter((id) => !invitations.get(id)?.invitation);
+  if (listeApporteurs && sansLien.length > 0) {
+    try {
+      motifs = await lireMotifsSansLien(sansLien);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { ecran: "apporteurs", etape: "motifs" } });
+    }
+  }
+  const maintenant = new Date();
+
   // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
   // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
   // d'un onglet filtré ramènerait toutes les soumissions du site.
@@ -274,27 +317,14 @@ export async function SubmissionsV2({
 
   // Onglets Actifs / Archivés / Corbeille (fix P0-2 : les archivés et les
   // soft-deleted sont masqués par défaut ; chaque onglet force ses params).
-  const currentTab = deleted
-    ? "trash"
-    : includeArchived && searchParams["status"] === "archived"
-      ? "archived"
-      : "active";
+  // Apporteurs (2026-10-07) : En cours / Archivés / Tous / Corbeille.
   // `base` porte déjà la catégorie : chaque catégorie est une ROUTE (cf. la
-  // sidebar, où elles sont indentées sous « Messages »). Changer de vue ne
-  // peut donc plus ramener à « Tous », sans paramètre à recopier.
-  const tabOptions = [
-    { value: "active", label: "Actifs", href: base },
-    {
-      value: "archived",
-      label: "Archivés",
-      href: `${base}?includeArchived=true&status=archived`,
-    },
-    {
-      value: "trash",
-      label: "Corbeille",
-      href: `${base}?deleted=true`,
-    },
-  ];
+  // sidebar, où elles sont indentées sous « Messages »).
+  const { options: tabOptions, current: currentTab } = ongletsListe({
+    ...(perimetre ? { perimetre } : {}),
+    base,
+    searchParams,
+  });
 
   // Colonnes 2026-08-13 (demande Will) : l'état de réponse d'abord, puis
   // date / heure / CONTENU du message directement dans la liste, puis
@@ -311,35 +341,87 @@ export async function SubmissionsV2({
     const r = suivi ? badgeInvitation(suivi) : base;
     const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName, s.prenomSeul === true);
+    // 2026-10-07 — liste des apporteurs : l'ÉTAPE d'un mot, cliquable (le
+    // dossier du réseau s'il existe, sinon la fiche). Le bruit (accusé de
+    // réception, rappels, « Répondu (N) ») reste dans la fiche.
+    const ligneApporteur =
+      listeApporteurs && estApporteur({ unifiedType: s.unifiedType, subType: s.subType });
+    const donneesEtape = {
+      suivi: invitations.get(s.id) ?? null,
+      dossier: dossiers.get(s.id) ?? null,
+      sansSuite: s.sansSuiteAt !== null,
+      motifSansLien: motifs.get(s.id) ?? null,
+    };
+    const etape = ligneApporteur ? etapeDuSuivi(donneesEtape, maintenant) : null;
+    const celluleEtape = etape ? (
+      <span key="etape" className="flex flex-col gap-[var(--space-admin-1)]">
+        {/* relative z-[2] : au-dessus du lien étiré de la ligne cliquable. */}
+        <Link
+          href={lienEtapeSuivi(donneesEtape, {
+            fiche: lienDetail(s),
+            dossier: (id) => `/fr/${adminPrefix}/apporteurs/${id}`,
+          })}
+          className="relative z-[2] self-start"
+          title={dossiers.has(s.id) ? "Ouvrir le dossier apporteur" : "Ouvrir la fiche"}
+        >
+          <AdminBadge tone={tonEtapeSuivi(etape)}>{libelleEtapeSuivi(etape)}</AdminBadge>
+        </Link>
+        {s.pretASignerLe ? (
+          <AdminBadge tone="success" className="gap-1">
+            <FileSignature size={12} aria-hidden="true" className="shrink-0" />
+            Prêt à signer
+          </AdminBadge>
+        ) : null}
+        {/* « Candidat » : pourquoi le lien n'est pas parti, quand une donnée le
+            dit. Sinon, tant que l'échange n'a pas eu lieu, où en est le
+            formulaire (le dossier est-il complet ?). */}
+        {precisionEtapeSuivi(etape) ? (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {precisionEtapeSuivi(etape)}
+          </span>
+        ) : s.etape && (etape.type === "candidat" || etape.type === "lien-envoye") ? (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {LIBELLE_ETAPE[s.etape]}
+          </span>
+        ) : null}
+        {s.archivedAt ? (
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Archivé
+          </span>
+        ) : null}
+      </span>
+    ) : null;
     return {
       id: s.id,
       detailHref: lienDetail(s),
       cells: [
-        <span key="reply" className="flex flex-col gap-[var(--space-admin-1)]">
-          <AdminBadge tone={r.tone} className="gap-1">
-            <r.Icone size={12} aria-hidden="true" className="shrink-0" />
-            {r.label}
-          </AdminBadge>
-          {/* INT-T22 — une pastille À CÔTÉ du badge de réponse, pas à sa place :
+        celluleEtape ?? (
+          <span key="reply" className="flex flex-col gap-[var(--space-admin-1)]">
+            <AdminBadge tone={r.tone} className="gap-1">
+              <r.Icone size={12} aria-hidden="true" className="shrink-0" />
+              {r.label}
+            </AdminBadge>
+            {/* INT-T22 — une pastille À CÔTÉ du badge de réponse, pas à sa place :
               « Prêt à signer » ne dit rien de la réponse ni de l'invitation, il
               dit que le candidat est parti vers l'outil du contrat. */}
-          {s.pretASignerLe ? (
-            <AdminBadge tone="success" className="gap-1">
-              <FileSignature size={12} aria-hidden="true" className="shrink-0" />
-              Prêt à signer
-            </AdminBadge>
-          ) : null}
-          {/* Où en est la personne, et combien de formulaires elle a remplis.
+            {s.pretASignerLe ? (
+              <AdminBadge tone="success" className="gap-1">
+                <FileSignature size={12} aria-hidden="true" className="shrink-0" />
+                Prêt à signer
+              </AdminBadge>
+            ) : null}
+            {/* Où en est la personne, et combien de formulaires elle a remplis.
               Le second n'apparaît qu'au-delà de UN : « 1 ligne » sur toute la
               liste n'apprendrait rien et ferait du bruit sur chaque ligne. */}
-          {s.etape ? (
-            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              {LIBELLE_ETAPE[s.etape]}
-              {s.lignesDeLaPersonne > 1 ? ` · ${s.lignesDeLaPersonne} formulaires` : ""}
-            </span>
-          ) : null}
-          {accuse ? <MentionAccuse accuse={accuse} /> : null}
-        </span>,
+            {s.etape ? (
+              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {LIBELLE_ETAPE[s.etape]}
+                {s.lignesDeLaPersonne > 1 ? ` · ${s.lignesDeLaPersonne} formulaires` : ""}
+              </span>
+            ) : null}
+            {accuse ? <MentionAccuse accuse={accuse} /> : null}
+          </span>
+        ),
         formatDateFrShort(s.submittedAt),
         formatTimeFr(s.submittedAt),
         s.messageExtrait ? (
@@ -417,7 +499,7 @@ export async function SubmissionsV2({
         page={result.page}
         totalPages={result.totalPages}
         columnHeaders={[
-          "Réponse",
+          perimetre === "apporteurs" ? "Étape" : "Réponse",
           "Date",
           "Heure",
           "Message",

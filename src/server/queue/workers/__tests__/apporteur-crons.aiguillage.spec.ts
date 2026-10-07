@@ -15,6 +15,7 @@ const d = vi.hoisted(() => ({
   invitations: vi.fn(),
   facturation: vi.fn(),
   quotidien: vi.fn(),
+  archivage: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -37,6 +38,10 @@ vi.mock("@/features/commercial-application/reponses-entrantes-apporteur", () => 
 
 vi.mock("@/features/commercial-application/invitation-auto", () => ({
   passerInvitationsAuto: (...a: unknown[]) => d.invitations(...a),
+}));
+
+vi.mock("@/features/commercial-application/archivage-auto-apporteurs", () => ({
+  archiverApporteursTermines: (...a: unknown[]) => d.archivage(...a),
 }));
 
 vi.mock("@/features/apporteurs-reseau/passage-quotidien", () => ({
@@ -63,6 +68,42 @@ beforeEach(() => {
   d.quotidien.mockResolvedValue({ autofacturesEmises: 0, erreurs: 0 });
   d.facturation.mockClear();
   d.quotidien.mockClear();
+  d.archivage.mockReset();
+  d.archivage.mockResolvedValue({
+    archivees: 0,
+    laisseesOuvertes: 0,
+    personnesContresignees: 0,
+    personnesNonRetenues: 0,
+    ecrit: true,
+  });
+});
+
+describe("🔴 l'archivage automatique des apporteurs (2026-10-07)", () => {
+  it("le passage des invitations archive aussi, sur une fenêtre de 7 jours, en écrivant", async () => {
+    await processeur()({ name: "invitation-auto", data: { type: "invitation-auto" } });
+    expect(d.archivage).toHaveBeenCalledTimes(1);
+    const arg = d.archivage.mock.calls[0]![0] as { appliquer: boolean; depuis: Date };
+    expect(arg.appliquer).toBe(true);
+    const jours = (Date.now() - arg.depuis.getTime()) / (24 * 3600 * 1000);
+    expect(Math.round(jours)).toBe(7);
+  });
+
+  it("une panne de l'archivage ne fait pas échouer le passage des invitations", async () => {
+    d.archivage.mockRejectedValue(new Error("base lente"));
+    await expect(
+      processeur()({ name: "invitation-auto", data: { type: "invitation-auto" } }),
+    ).resolves.toBeUndefined();
+    expect(d.invitations).toHaveBeenCalled();
+  });
+
+  it("les autres passages n'archivent pas", async () => {
+    await processeur()({ name: "relance-invitation", data: { type: "relance-invitation" } });
+    await processeur()({ name: "reponses-entrantes", data: { type: "reponses-entrantes" } });
+    expect(d.archivage).not.toHaveBeenCalled();
+    // Les cas suivants comptent leurs appels sans remise à zéro.
+    d.reponses.mockClear();
+    d.relances.mockClear();
+  });
 });
 
 function processeur(): Processeur {

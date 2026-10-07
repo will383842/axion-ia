@@ -146,6 +146,11 @@ export interface SuiviInvitation {
   /** Échange apporteur rattaché à une de ses fiches : réservé (non annulé), annulé, ou rien. */
   readonly echange: "reserve" | "annule" | null;
   /**
+   * Début du dernier échange NON annulé (2026-10-07) : la colonne « Étape » y
+   * lit « Échange réservé » (à venir) ou « Échange fait » (passé). Absent : inconnu.
+   */
+  readonly echangeLe?: Date | null;
+  /**
    * Dernière réponse HUMAINE reçue de la personne par e-mail après son
    * invitation (2026-09-27). Absente ou `null` : aucune.
    */
