@@ -17,6 +17,8 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { jourParis } from "./autofacture-donnees";
+
 let disponible: number | null = null;
 const RELIRE_MS = 10 * 60 * 1000;
 
@@ -75,7 +77,8 @@ export async function marquerPrestationRealisee(
   maintenant: Date = new Date(),
   acteurId: string | null = null,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  if (Number.isNaN(realiseeLe.getTime()) || realiseeLe.getTime() > maintenant.getTime() + 60_000) {
+  // Des JOURS de Paris : la date du jour, saisie dans la console, est toujours admise.
+  if (Number.isNaN(realiseeLe.getTime()) || jourParis(realiseeLe) > jourParis(maintenant)) {
     return { ok: false, message: "Date de réalisation invalide (elle ne peut pas être future)." };
   }
   const r = await prisma.commissionApporteur.updateMany({
