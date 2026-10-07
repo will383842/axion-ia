@@ -1,0 +1,78 @@
+/**
+ * Le préremplissage de la réservation maison depuis la page vidéo (2026-10-07).
+ *
+ * Le jeton `?j=` de l'étape 1 retrouve le prénom et l'e-mail de la fiche : le même
+ * e-mail rattache la réservation. Tout ce qui n'est pas un lead vidéo valide rend
+ * `null` (formulaire vide), et rien ne lève.
+ */
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { findFirst } = vi.hoisted(() => ({ findFirst: vi.fn() }));
+vi.mock("@/lib/prisma", () => ({ prisma: { submission: { findFirst } } }));
+
+import { creerJeton } from "../jeton-lead";
+import { identiteDuJetonVsl, jetonVslValide } from "../identite-reservation-vsl";
+
+const LIGNE_VSL = {
+  contactName: "Léa",
+  contactEmail: "lea@exemple.fr",
+  details: { vsl: { etape: 2 } },
+};
+
+beforeEach(() => {
+  findFirst.mockReset();
+});
+
+describe("identiteDuJetonVsl", () => {
+  it("jeton valide d'un lead vidéo → prénom et e-mail de la fiche", async () => {
+    findFirst.mockResolvedValue(LIGNE_VSL);
+    const jeton = creerJeton({ lead: "lead-1", suspect: false });
+    expect(await identiteDuJetonVsl(jeton)).toEqual({ nom: "Léa", email: "lea@exemple.fr" });
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: "lead-1", deletedAt: null } }),
+    );
+  });
+
+  it("jeton absent, trafiqué ou expiré → null, sans lire la base", async () => {
+    const jeton = creerJeton({ lead: "lead-1", suspect: false });
+    const expire = creerJeton({ lead: "lead-1", suspect: false, maintenant: 0 });
+    for (const v of [undefined, "", ["a"], `${jeton}x`, "pas.unjeton", expire]) {
+      expect(await identiteDuJetonVsl(v)).toBeNull();
+    }
+    expect(findFirst).not.toHaveBeenCalled();
+    expect(jetonVslValide(jeton)).toBe(jeton);
+    expect(jetonVslValide(`${jeton}x`)).toBeNull();
+  });
+
+  it("aucune ligne (adresse déjà connue), ligne hors page vidéo, sans e-mail → null", async () => {
+    const jeton = creerJeton({ lead: "lead-1", suspect: false });
+    findFirst.mockResolvedValueOnce(null);
+    expect(await identiteDuJetonVsl(jeton)).toBeNull();
+    findFirst.mockResolvedValueOnce({ ...LIGNE_VSL, details: { candidature: {} } });
+    expect(await identiteDuJetonVsl(jeton)).toBeNull();
+    findFirst.mockResolvedValueOnce({ ...LIGNE_VSL, contactEmail: null });
+    expect(await identiteDuJetonVsl(jeton)).toBeNull();
+  });
+
+  it("base en panne → null, ne lève jamais", async () => {
+    findFirst.mockRejectedValue(new Error("db down"));
+    expect(await identiteDuJetonVsl(creerJeton({ lead: "lead-1", suspect: false }))).toBeNull();
+  });
+});
+
+describe("câblage de la page du formulaire", () => {
+  it("préremplit SEULEMENT l'échange apporteur, et une reprise de saisie l'emporte", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const src = readFileSync(
+      join(process.cwd(), "src/app/[locale]/appel/reserver/page.tsx"),
+      "utf8",
+    ).replace(/^\s*\/\/.*$/gm, " ");
+    expect(src).toMatch(
+      /!reprise && choix === "apporteur" \? await identiteDuJetonVsl\(sp\[PARAM_JETON_VSL\]\)/,
+    );
+    expect(src).toMatch(
+      /reprise\s*\?\s*\{ erreurs: reprise\.erreurs, valeurs: reprise\.valeurs \}/,
+    );
+  });
+});

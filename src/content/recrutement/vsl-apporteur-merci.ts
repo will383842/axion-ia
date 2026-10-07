@@ -1,4 +1,4 @@
-// Textes de la page de merci VSL apporteurs, lus par l'île Calendly (fichier séparé : voir `vsl-apporteur-client.ts`).
+// Textes de la page de merci VSL apporteurs (fichier séparé : voir `vsl-apporteur-client.ts`).
 
 /** Page de remerciement. */
 export const VSL_MERCI = {

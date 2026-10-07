@@ -5,19 +5,35 @@
 // 15 minutes (décision du plan 03 : « Calendly tout de suite après l'étape 2 »,
 // jamais après la seule étape 1).
 //
-// ── DYNAMIQUE, et c'est voulu ───────────────────────────────────────────────
-// Le lien Calendly vient de `CALENDLY_APPORTEUR_URL`, variable d'EXÉCUTION de
-// Coolify, absente au build GitHub Actions : une page statique figerait le lien
-// par défaut. `force-dynamic` + lecture de `env` au rendu. Volume faible, un
-// rendu serveur par visite est acceptable (le TTFB se surveille).
+// ── La réservation du SITE, plus la page Calendly (Will, 2026-10-07) ────────
+// « Le parcours apporteur doit avoir le même design que le parcours client. »
+// Les créneaux sont ceux de `/fr/appel/apporteur` — le MÊME composant
+// (`CalendlyInlineWidget` → `CalendlySlotPicker`, HTML rendu côté serveur, aucun
+// JavaScript), le même formulaire (`/fr/appel/reserver`) et la même page de fin
+// (`/fr/appel/confirme`). Plus aucun lien vers calendly.com sur cette page :
+//   · créneaux lisibles et réservation directe allumée → la grille, ici ;
+//   · sinon → un gros bouton « Choisir mon créneau » vers `/fr/appel/apporteur`,
+//     qui porte ses propres replis.
 //
-// ── Ce que la page donne, du plus sûr au plus riche ─────────────────────────
-//  1. un gros bouton « Choisir mon créneau » : un LIEN, qui marche sans
-//     JavaScript et sans consentement (navigation à l'initiative du visiteur) ;
-//  2. Calendly intégré, chargé au CLIC (ADR 0034) ;
-//  3. la ligne « vous recevez aussi le lien par e-mail » : le secours si la
-//     personne ferme la page avant de réserver ;
-//  4. le kit (le catalogue) pour découvrir ce qu'on recommandera.
+// ── Ce qui suit la personne jusqu'à la réservation ──────────────────────────
+//   · `depuis=vsl-apporteur` : le bouton, mesuré en `utm_content`
+//     (`apporteur:vsl-apporteur`, même forme que `apporteur:email-vsl-apporteur`
+//     des e-mails) ;
+//   · les UTM d'arrivée (adresse, sinon cookie) : recopiés dans chaque créneau,
+//     puis en champs cachés du formulaire → colonne « Provenance » de la fiche ;
+//   · le jeton `?j=` de l'étape 1 : recopié dans chaque créneau, il permet au
+//     formulaire de proposer le prénom et l'e-mail déjà donnés
+//     (`identite-reservation-vsl.ts`) — le même e-mail rattache la réservation à
+//     la fiche. Seul le jeton voyage, jamais l'adresse.
+// Le `Schedule` Meta et le `Call Booked` Plausible de la réservation partent du
+// serveur (`server/calendly/enrich.ts`) pour toute réservation d'échange
+// apporteur ; l'étape « Call Booking Viewed » de l'entonnoir reste tirée ici
+// (`VslMerciMesure`).
+//
+// ── DYNAMIQUE, et c'est voulu ───────────────────────────────────────────────
+// L'adresse Calendly du type (`CALENDLY_APPORTEUR_URL`) et le drapeau
+// `RESERVATION_DIRECTE_ACTIVE` sont des variables d'EXÉCUTION, absentes au build
+// GitHub Actions : une page statique les figerait. `force-dynamic`.
 //
 // ⛔ Aucun numéro de téléphone, aucun délai de réponse chiffré.
 // `noindex` : fin de tunnel, rien à indexer. Hérite du pixel Meta par son chemin
@@ -28,33 +44,37 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { BookOpen, MailCheck } from "lucide-react";
+import { BookOpen, CalendarCheck, MailCheck } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
-import { env } from "@/env";
-import { SITE_URL } from "@/lib/site-url";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
-import { avecCouleursAxion } from "@/components/booking/calendly-brand";
+import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
 import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShell";
-import { VslMerciCalendly } from "@/components/recrutement/VslMerciCalendly";
-import { VSL_MERCI, VSL_MERCI_PATH, VSL_SLUG } from "@/content/recrutement/vsl-apporteur";
-import {
-  liensKitApporteur,
-  estLienCalendlyValide,
-} from "@/lib/commercial-application/kit-apporteur";
+import { VslMerciMesure } from "@/components/recrutement/VslMerciMesure";
+import { VSL_MERCI, VSL_SLUG } from "@/content/recrutement/vsl-apporteur";
+import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
 import { UTM_COOKIE_NAME, deserializeUtmCookie } from "@/lib/utm";
-import { URL_CALENDLY_APPORTEUR_PAR_DEFAUT } from "@/server/calendly/type-rendez-vous";
+import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import {
-  avecUtmContent,
+  lienDuCalendrier,
   lireSuiviArrivee,
+  parametresDuChoix,
+  resoudreChoix,
+  utmContentDuChoix,
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
+import {
+  jetonVslValide,
+  PARAM_JETON_VSL,
+} from "@/features/commercial-application/identite-reservation-vsl";
 
 export const dynamic = "force-dynamic";
 
-/** Le « bouton d'origine » transmis à Calendly (`utm_content`) pour cette page. */
-const UTM_CONTENT_CALENDLY = "vsl-apporteur";
+/** Le rendez-vous réservé depuis cette page. */
+const CHOIX = "apporteur" as const;
+/** L'emplacement du bouton (`?depuis=`) : `utm_content` = `apporteur:vsl-apporteur`. */
+const DEPUIS_MERCI_VSL = "vsl-apporteur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -71,26 +91,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/** Lien Calendly de l'échange apporteur : la variable d'exécution si elle est valide, sinon le défaut. */
-function lienCalendlyApporteur(): string {
-  const configure = env.CALENDLY_APPORTEUR_URL?.trim();
-  return configure && estLienCalendlyValide(configure)
-    ? configure
-    : URL_CALENDLY_APPORTEUR_PAR_DEFAUT;
-}
-
-/** Adresse d'intégration : mêmes réglages que `CalendlyInlineWidget` (pas de bandeau natif, couleurs du site). */
-function adresseIntegree(url: string): string {
-  try {
-    const u = new URL(url);
-    u.searchParams.set("hide_event_type_details", "1");
-    // `hide_gdpr_banner` : notre propre écran de consentement (`CalendlyConsentGate`)
-    // informe AVANT le chargement ; le bandeau natif arriverait après les cookies.
-    u.searchParams.set("hide_gdpr_banner", "1");
-    return avecCouleursAxion(u.toString());
-  } catch {
-    return url;
-  }
+/** Le gros bouton « Choisir mon créneau » : un lien simple vers la page de réservation du site. */
+function BoutonCreneau({ href }: { href: string }) {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <a
+        href={href}
+        data-cta="vsl-merci-creneau"
+        className="bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep flex min-h-[64px] w-full items-center justify-center gap-2.5 rounded-full px-8 text-center text-lg font-bold tracking-tight transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto"
+      >
+        <CalendarCheck aria-hidden="true" className="h-5 w-5 shrink-0" />
+        {VSL_MERCI.cta}
+      </a>
+      <p className="text-fg-muted text-center text-sm">{VSL_MERCI.ctaMicro}</p>
+    </div>
+  );
 }
 
 export default async function Page({ params, searchParams }: Props) {
@@ -113,40 +128,51 @@ export default async function Page({ params, searchParams }: Props) {
     }
   }
 
-  const base = lienCalendlyApporteur();
-  const lien = avecUtmContent(base, UTM_CONTENT_CALENDLY, suivi);
-  const integre = avecUtmContent(adresseIntegree(base), UTM_CONTENT_CALENDLY, suivi);
+  // Le jeton n'est recopié que s'il est VALIDE : une adresse trafiquée ne se
+  // propage pas dans les liens de la page.
+  const jeton = jetonVslValide(sp[PARAM_JETON_VSL]);
+  const parametres =
+    parametresDuChoix(CHOIX, DEPUIS_MERCI_VSL, suivi) +
+    (jeton ? `&${PARAM_JETON_VSL}=${encodeURIComponent(jeton)}` : "");
+  const bouton = <BoutonCreneau href={lienDuCalendrier(locale, CHOIX, DEPUIS_MERCI_VSL, suivi)} />;
 
-  const trackingContext: {
-    pageUrl: string;
-    utmSource?: string;
-    utmCampaign?: string;
-    utmMedium?: string;
-    utmContent?: string;
-  } = {
-    pageUrl: `${SITE_URL}/${locale}${VSL_MERCI_PATH}`,
-    utmContent: UTM_CONTENT_CALENDLY,
-  };
-  if (suivi.utm_source) trackingContext.utmSource = suivi.utm_source;
-  if (suivi.utm_campaign) trackingContext.utmCampaign = suivi.utm_campaign;
-  if (suivi.utm_medium) trackingContext.utmMedium = suivi.utm_medium;
+  // La grille seulement si un créneau mène à NOTRE formulaire : drapeau éteint, les
+  // créneaux pointeraient chez Calendly — on renvoie alors à la page du site.
+  const resolu = reservationDirecteActive() ? await resoudreChoix(CHOIX) : null;
 
   const kit = liensKitApporteur("fr");
 
   return (
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
+      <VslMerciMesure landing={VSL_SLUG} />
       <Section tone="halo-warm" className="pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-14 lg:pb-14">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="display-editorial text-fg text-balance">{VSL_MERCI.title}</h1>
           <p className="text-fg-soft mt-4 mb-8 text-lg leading-relaxed">{VSL_MERCI.texte}</p>
+        </div>
 
-          <VslMerciCalendly
-            lien={lien}
-            integre={integre}
-            landing={VSL_SLUG}
-            trackingContext={trackingContext}
-          />
+        {resolu ? (
+          <div className="mx-auto max-w-4xl">
+            <h2 className="sr-only">Calendrier de réservation</h2>
+            <div className="bg-paper ring-border shadow-terracotta/10 rounded-3xl p-1.5 shadow-2xl ring-1">
+              <CalendlyInlineWidget
+                calendlyUrl={resolu.url}
+                isFr
+                height={720}
+                reservationDirecte
+                locale={locale}
+                utmContent={utmContentDuChoix(CHOIX, DEPUIS_MERCI_VSL)}
+                parametresDuChoix={parametres}
+                suivi={suivi}
+                repli={<div className="px-4 py-8">{bouton}</div>}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="mx-auto max-w-2xl">{bouton}</div>
+        )}
 
+        <div className="mx-auto max-w-2xl text-center">
           <p className="text-fg-soft bg-paper border-border mx-auto mt-8 inline-flex items-start gap-2.5 rounded-xl border px-4 py-3 text-left text-sm leading-relaxed">
             <MailCheck aria-hidden="true" className="text-sage mt-0.5 h-4 w-4 shrink-0" />
             <span>
