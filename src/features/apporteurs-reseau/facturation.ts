@@ -56,6 +56,7 @@ import {
 import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
+import { horsLitige, litigeDisponible } from "./litige";
 import { signalerErreurReseau } from "./signaler";
 
 export function jobIdEmailAutofacture(numero: string): string {
@@ -74,13 +75,17 @@ export function jobIdAlerteAttente(apporteurId: string, commissionId: string): s
 type Db = Pick<typeof prisma, "commissionApporteur">;
 
 /** Lignes à facturer : commissions dues pas encore facturées + reprises pas encore imputées. */
-function lireAFacturer(db: Db, apporteurId: string) {
+function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, null> = {}) {
   return db.commissionApporteur.findMany({
     where: {
       apporteurId,
       autofactureNumero: null,
       montantCents: { not: null },
-      OR: [{ statut: "due" }, { statut: "reprise", releveMois: null }],
+      // Une commission suspendue (contestation écrite du client, art. 4.2 bis) n'est pas facturée.
+      OR: [
+        { statut: "due", ...hors },
+        { statut: "reprise", releveMois: null },
+      ],
     },
     select: {
       id: true,
@@ -151,7 +156,8 @@ export async function facturerApporteur(
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
-  const avant = await lireAFacturer(prisma, apporteurId);
+  const hors = await horsLitige();
+  const avant = await lireAFacturer(prisma, apporteurId, hors);
   const dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
   const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
@@ -241,7 +247,7 @@ export async function facturerApporteur(
 
   await prisma.$transaction(
     async (tx) => {
-      const lues = await lireAFacturer(tx, apporteurId);
+      const lues = await lireAFacturer(tx, apporteurId, hors);
       const memes =
         lues.length === avant.length &&
         lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
@@ -483,7 +489,12 @@ export async function facturerCommissionsDues(
   const bilan: BilanFacturation = { autofactures: 0, commissions: 0, ecartees: 0, erreurs: 0 };
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
-    where: { statut: "due", autofactureNumero: null, montantCents: { not: null } },
+    where: {
+      statut: "due",
+      autofactureNumero: null,
+      montantCents: { not: null },
+      ...(await horsLitige()),
+    },
   });
   for (const x of g) {
     try {
@@ -552,6 +563,25 @@ export async function marquerVerse(
       },
       orderBy: { creeAt: "asc" },
     });
+
+  // Contestation écrite du client en cours sur une commission de ce virement : rien n'est versé.
+  if (await litigeDisponible()) {
+    const suspendues = await prisma.commissionApporteur.count({
+      where: {
+        apporteurId,
+        statut: "due",
+        autofactureNumero: numero ? numero : { not: null },
+        litigeDepuis: { not: null },
+      },
+    });
+    if (suspendues > 0) {
+      return {
+        ok: false,
+        message:
+          "Une commission de ce virement est suspendue (contestation écrite du client, art. 4.2 bis) : levez d'abord la suspension.",
+      };
+    }
+  }
 
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");

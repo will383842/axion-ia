@@ -15398,6 +15398,9 @@ model CommissionApporteur {
   /// (première détection). Effacé à l'émission de l'autofacture.
   autofactureAttenteMotif  String?                   @map("autofacture_attente_motif") @db.VarChar(200)
   autofactureAttenteDepuis DateTime?                 @map("autofacture_attente_depuis") @db.Timestamptz(3)
+  /// Contestation ÉCRITE du client en cours (contrat 2.3, art. 4.2 bis) : ni facturée ni versée.
+  litigeDepuis             DateTime?                 @map("litige_depuis") @db.Timestamptz(3)
+  litigeMotif              String?                   @map("litige_motif") @db.VarChar(300)
   verseeAt                 DateTime?                 @map("versee_at") @db.Timestamptz(3)
   creeAt                   DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
   majAt                    DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)

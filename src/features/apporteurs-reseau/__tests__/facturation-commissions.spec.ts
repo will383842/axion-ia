@@ -12,6 +12,8 @@ interface Ligne {
   avoirNumero: string | null;
   autofactureAttenteMotif: string | null;
   autofactureAttenteDepuis: Date | null;
+  litigeDepuis: Date | null;
+  litigeMotif: string | null;
   releveMois: string | null;
   verseeAt: Date | null;
   majAt: Date;
@@ -177,12 +179,15 @@ vi.mock("@/lib/prisma", () => {
       ),
     },
     numeroEmis: { findMany: vi.fn(async () => []) },
+    // Colonne « litige » présente (contrat 2.3, art. 4.2 bis).
+    $queryRaw: vi.fn(async () => []),
     $transaction: async (cb: (tx: unknown) => unknown) => cb(prisma),
   };
   return { prisma };
 });
 
 import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
+import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import { etatEcheances, objectifVirement } from "../autofacture-donnees";
 
 const MARDI = new Date("2026-10-06T09:00:00Z");
@@ -202,6 +207,8 @@ const ligne = (
   avoirNumero: null,
   autofactureAttenteMotif: null,
   autofactureAttenteDepuis: null,
+  litigeDepuis: null,
+  litigeMotif: null,
   releveMois: null,
   verseeAt: null,
   majAt: new Date("2026-10-01T00:00:00Z"),
@@ -229,6 +236,7 @@ beforeEach(() => {
   etat.sentry = [];
   etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
   oublierCacheRegistre();
+  oublierLitigeDisponible();
 });
 
 describe("autofacture dès que la commission est due", () => {
@@ -623,5 +631,37 @@ describe("autofacture impossible faute de donnée : en attente, une seule alerte
     expect(r).toMatchObject({ ok: false });
     expect((r as { message: string }).message).toContain("SIREN de l'apporteur");
     expect(lignes()[0]!.statut).toBe("due");
+  });
+});
+
+describe("contrat 2.3 (art. 4.2 bis) : commission suspendue pendant une contestation écrite", () => {
+  it("suspendue : ni autofacture ni virement ; levée : elle part au passage suivant", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    expect(
+      await suspendreCommission("c1", "e-mail du client du 06/10 : formation contestée", MARDI),
+    ).toEqual({ ok: true });
+    expect(lignes()[0]!.litigeDepuis).toEqual(MARDI);
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(lignes()[0]!.statut).toBe("due");
+    expect(await leverSuspension("c1")).toEqual({ ok: true });
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
+  });
+
+  it("déjà facturée puis contestée : « Virement fait » est refusé tant que la suspension dure", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    await suspendreCommission("c1", "contestation de la facture", MARDI);
+    const r = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("suspendue");
+    expect(lignes()[0]!.statut).toBe("due");
+  });
+
+  it("une commission versée ou reprise ne se suspend pas ; un motif est exigé", async () => {
+    etat.lignes = [ligne("v1", "versee", 40_000), ligne("c2", "due", 10_000)];
+    expect(await suspendreCommission("v1", "trop tard", MARDI)).toMatchObject({ ok: false });
+    expect(await suspendreCommission("c2", "  ", MARDI)).toMatchObject({ ok: false });
   });
 });

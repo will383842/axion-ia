@@ -11,7 +11,11 @@ import {
   QualifierForm,
   VerserForm,
 } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
-import { classerActiviteAction } from "@/features/apporteurs-reseau/actions-commissions";
+import {
+  classerActiviteAction,
+  leverSuspensionAction,
+  suspendreCommissionAction,
+} from "@/features/apporteurs-reseau/actions-commissions";
 import {
   COMMISSIONS_PAR_PAGE,
   compterCommissions,
@@ -266,6 +270,51 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
                     part pas, vérifiez l&apos;identité et le régime de TVA de l&apos;apporteur).
                   </p>
+                ) : null}
+                {c.litigeDepuis ? (
+                  <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                    <p
+                      className="text-[length:var(--text-admin-sm)]"
+                      style={{ color: "var(--color-admin-warning)" }}
+                    >
+                      Suspendue depuis le {dateFr(c.litigeDepuis)} : contestation écrite du client
+                      {c.litigeMotif ? ` (${c.litigeMotif})` : ""}. Ni facturée ni versée.
+                    </p>
+                    {peutPayer ? (
+                      <form action={leverSuspensionAction}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <button type="submit" className="admin-button-secondary">
+                          Lever la suspension
+                        </button>
+                      </form>
+                    ) : null}
+                  </div>
+                ) : peutPayer &&
+                  (c.statut === "due" ||
+                    c.statut === "a_qualifier" ||
+                    c.statut === "en_attente_vigilance") ? (
+                  <details className="text-[length:var(--text-admin-sm)]">
+                    <summary className="cursor-pointer">
+                      Le client conteste par écrit : suspendre
+                    </summary>
+                    <form
+                      action={suspendreCommissionAction}
+                      className="mt-[var(--space-admin-2)] flex flex-wrap items-end gap-[var(--space-admin-2)]"
+                    >
+                      <input type="hidden" name="id" value={c.id} />
+                      <input
+                        name="motif"
+                        className="admin-input"
+                        required
+                        maxLength={300}
+                        aria-label="Contestation du client"
+                        placeholder="Date et objet de la contestation écrite"
+                      />
+                      <button type="submit" className="admin-button-secondary">
+                        Suspendre la commission
+                      </button>
+                    </form>
+                  </details>
                 ) : null}
                 {c.palier ? (
                   <p className="text-[length:var(--text-admin-sm)]">

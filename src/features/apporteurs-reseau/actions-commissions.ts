@@ -16,6 +16,7 @@ import { peutEngager } from "@/server/auth/habilitations";
 
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
+import { leverSuspension, suspendreCommission } from "./litige";
 import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
 import { euros } from "./regles";
 
@@ -154,6 +155,37 @@ export async function classerActiviteAction(fd: FormData): Promise<void> {
     await classerActiviteCommission(id, texte(fd, "activite"));
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-classer" } });
+  }
+  revalidatePath(retour);
+  redirect(retour);
+}
+
+// ── Contestation écrite du client (contrat 2.3, art. 4.2 bis) ────────────
+// Formulaires sans JavaScript client : retour à la page des commissions.
+
+export async function suspendreCommissionAction(fd: FormData): Promise<void> {
+  const retour = adminPath("fr", "apporteurs/commissions");
+  const refus = await sessionArgent();
+  const id = texte(fd, "id");
+  if (refus || !UUID.test(id)) redirect(retour);
+  try {
+    await suspendreCommission(id, texte(fd, "motif"));
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-suspendre" } });
+  }
+  revalidatePath(retour);
+  redirect(retour);
+}
+
+export async function leverSuspensionAction(fd: FormData): Promise<void> {
+  const retour = adminPath("fr", "apporteurs/commissions");
+  const refus = await sessionArgent();
+  const id = texte(fd, "id");
+  if (refus || !UUID.test(id)) redirect(retour);
+  try {
+    await leverSuspension(id);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-lever" } });
   }
   revalidatePath(retour);
   redirect(retour);
