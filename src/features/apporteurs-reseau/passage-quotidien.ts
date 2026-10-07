@@ -26,7 +26,6 @@
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
 import { prisma } from "@/lib/prisma";
-import { idsRetires } from "./retrait";
 import { decryptPii } from "@/lib/pii-crypto";
 
 import {
@@ -698,11 +697,7 @@ async function etapeRappelsDossier(maintenant: Date, bilan: BilanPassageReseau):
     where: { statut: "dossier_en_cours", signeParApporteurAt: null },
     select: { id: true, prenom: true, email: true, versionLien: true, submissionId: true },
   });
-  // Une fiche RETIRÉE du réseau (2026-10-07) ne reçoit plus de rappel : son lien ne
-  // fonctionne plus, et le rappel en recalculerait un.
-  const retires = await idsRetires();
   for (const a of candidats) {
-    if (retires.has(a.id)) continue;
     const envoisLien = await prisma.emailLog.findMany({
       where: {
         template: "apporteur-dossier-lien",

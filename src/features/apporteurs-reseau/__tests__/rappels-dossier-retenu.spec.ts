@@ -37,9 +37,6 @@ vi.mock("../envois", () => ({
     return "envoye";
   }),
 }));
-// Retrait du réseau (2026-10-07) : personne n'est retiré dans ce scénario.
-const retraits = vi.hoisted(() => ({ ids: new Set<string>() }));
-vi.mock("../retrait", () => ({ idsRetires: async () => retraits.ids }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     presentationEntreprise: { findMany: vi.fn(async () => []) },
@@ -107,16 +104,6 @@ describe("rappels du dossier : le lien arrivé par l'e-mail « Retenu »", () =>
     expect(etat.envoyes.map((e) => (e.payload as { rappel: number }).rappel)).toEqual([1, 2]);
     expect(etat.envoyes.every((e) => e.entityType === "ApporteurReseau")).toBe(true);
     expect(String(etat.envoyes[0]!.jobId)).toContain("apporteur-dossier-rappel-A1-RET1-j3");
-  });
-
-  it("🔴 fiche RETIRÉE du réseau (2026-10-07) : plus aucun rappel, aucun lien recalculé", async () => {
-    retraits.ids = new Set(["A1"]);
-    try {
-      for (let j = 0; j <= 20; j += 1) await passerReseauApporteurs(jour(j));
-      expect(etat.envoyes).toHaveLength(0);
-    } finally {
-      retraits.ids = new Set();
-    }
   });
 
   it("rien avant J+3", async () => {
