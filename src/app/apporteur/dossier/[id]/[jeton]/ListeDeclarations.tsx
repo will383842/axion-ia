@@ -8,11 +8,20 @@ import {
 import { TEXTES_DECLARATION as T } from "./textes-declaration";
 
 const STYLE: Record<EtatDeclaration, string> = {
-  recue: "bg-sand text-fg",
-  bien_recue: "bg-sage-soft text-sage",
-  deja_connue: "bg-terracotta-soft text-terracotta-deep",
-  hors_champ: "bg-terracotta-soft text-terracotta-deep",
+  a_l_etude: "bg-sand text-fg",
+  reservee: "bg-sage-soft text-sage",
+  non_disponible: "bg-terracotta-soft text-terracotta-deep",
+  expiree: "bg-sand text-fg-soft",
 };
+
+/** « 05/04/2027 », heure de Paris. */
+const dateCourte = (d: Date) =>
+  d.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
 
 const date = (d: Date) =>
   d.toLocaleDateString("fr-FR", {
@@ -30,6 +39,8 @@ export function ListeDeclarations({
     denomination: string;
     recueAt: Date;
     etat: EtatDeclaration;
+    /** Fin de la réservation (réservée ou expirée). */
+    jusquAu: Date | null;
   }>;
 }) {
   return (
@@ -54,6 +65,7 @@ export function ListeDeclarations({
                 className={`${STYLE[d.etat]} shrink-0 rounded-full px-3 py-1 text-[14px] font-bold`}
               >
                 {LIBELLE_ETAT_DECLARATION[d.etat]}
+                {d.jusquAu ? ` ${T.jusquAu(dateCourte(d.jusquAu))}` : ""}
               </span>
             </li>
           ))}

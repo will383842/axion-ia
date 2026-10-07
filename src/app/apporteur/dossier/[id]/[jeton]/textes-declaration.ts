@@ -20,4 +20,15 @@ export const TEXTES_DECLARATION = {
   autre: "Déclarer une autre entreprise",
   listeTitre: "Vos déclarations",
   listeVide: "Aucune déclaration pour le moment.",
+  // 2026-10-07 (décision de Will) : ce qui se passe après la déclaration. Aucun délai
+  // de réponse promis. La durée vient de `PROTECTION_MOIS` (jamais écrite à la main).
+  commentTitre: "Comment ça se passe",
+  comment: (mois: number) =>
+    [
+      "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
+      `Elle vous est réservée ${mois} mois à compter de votre déclaration.`,
+      "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
+      "Toute commande signée pendant cette période vous est commissionnée, une fois payée.",
+    ] as const,
+  jusquAu: (date: string) => `jusqu'au ${date}`,
 } as const;
