@@ -171,6 +171,10 @@ import {
 } from "./apporteur-demarrage";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
+import {
+  ConventionEtMandatOpcoEmail,
+  conventionEtMandatOpcoSubject,
+} from "./convention-et-mandat-opco";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 import {
@@ -437,6 +441,10 @@ const TEMPLATES: TemplateMap = {
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
+  "convention-et-mandat-opco": {
+    subject: conventionEtMandatOpcoSubject,
+    component: ConventionEtMandatOpcoEmail,
+  },
   "piece-exemplaire-signe": {
     subject: pieceExemplaireSigneSubject,
     component: PieceExemplaireSigneEmail,

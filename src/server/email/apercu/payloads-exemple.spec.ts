@@ -72,7 +72,7 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 54 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 69 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
@@ -142,7 +142,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // sont tous facultatifs.
     // 🔴 2026-10-05 — RELEVÉ À 68 : `apporteur-declaration-recue`, l'alerte INTERNE
     // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
-    expect(tous.length).toBe(68);
+    // 🔴 2026-10-07 — RELEVÉ À 69 : `convention-et-mandat-opco` (INT-T77-A), le
+    // courriel unique convention + mandat OPCO. Ses champs requis sont déclarés
+    // dans `payloads-exemple.ts`.
+    expect(tous.length).toBe(69);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

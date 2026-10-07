@@ -657,6 +657,12 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   // Lot 1ter §2 — une lettre de mission suppose DEUX personnes. Le statut
   // `dirigeant` existe dans le registre des formateurs ; on ne devine pas par
   // comparaison de noms, ce qui serait faux au premier homonyme.
+  // INT-T77-A — le bouton du mandat suit le DOSSIER de financement, pas le type
+  // déclaré de la session.
+  const dossierOpcoOuvert =
+    (await prisma.dossierFinancement.count({
+      where: { trainingSessionId: id, type: { in: ["opco", "mixte"] }, statut: { not: "clos" } },
+    })) > 0;
   const formateurEstLeDirigeant =
     trainingSession.formateurPrincipalId !== null &&
     allTrainers.some(
@@ -1264,6 +1270,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               typeClient: clientType,
               statut: trainingSession.statut,
               formateurEstLeDirigeant,
+              dossierOpcoOuvert,
             }}
           />
 

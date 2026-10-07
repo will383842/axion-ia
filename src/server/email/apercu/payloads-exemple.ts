@@ -110,6 +110,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   joursAvantDebut: 7,
   joursOpposition: 30,
   joursRetard: 12,
+  // INT-T77-A — `convention-et-mandat-opco` : ses deux champs requis. Le lien du
+  // mandat et son numéro sont facultatifs (sans eux, le courriel ne parle que de
+  // la convention).
+  conventionUrl: "https://exemple.invalid/lien-de-demonstration",
+  numeroConvention: "AXI-DOC-2026-009",
+  mandatUrl: "https://exemple.invalid/lien-de-demonstration",
+  numeroMandat: "AXI-DOC-2026-010",
   leaderName: "Camille Dupont",
   // Ajouté le 2026-09-05 : `piece-exemplaire-signe` (lot A) déclarait ce champ
   // requis sans valeur d'exemple, et son aperçu s'affichait troué en silence.

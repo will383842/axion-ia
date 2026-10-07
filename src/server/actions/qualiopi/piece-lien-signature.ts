@@ -508,22 +508,69 @@ export async function envoyerLienSignatureParEmailAction(
   const emis = await emettreLienSignatureAction({ documentGenereId, partie });
   if ("error" in emis) return emis;
 
+  // 🔴 INT-T77-A — un seul courriel « convention + mandat OPCO ». Quand le
+  // client a, sur la même session, un mandat OPCO vivant que sa partie n'a pas
+  // encore signé, son lien part AVEC celui de la convention, au même signataire
+  // (identité relue en base, jamais d'un argument). Sans mandat, le courriel
+  // de la convention part seul, comme avant.
+  let mandat: { numero: string; url: string } | null = null;
+  const estConvention = piece.type === "convention" || piece.type === "convention_tripartite";
+  if (estConvention && partie === "client" && piece.sessionId !== null && piece.clientId !== null) {
+    const mandatVivant = await prisma.documentGenere.findFirst({
+      where: {
+        sessionId: piece.sessionId,
+        clientId: piece.clientId,
+        type: "mandat_opco",
+        annuleeAt: null,
+        signatures: { none: { partie: "client", revokedAt: null } },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, numero: true },
+    });
+    if (mandatVivant !== null) {
+      const emisMandat = await emettreLienSignatureAction({
+        documentGenereId: mandatVivant.id,
+        partie,
+      });
+      if ("error" in emisMandat) {
+        return {
+          error: `Le lien de la convention a été émis, mais celui du mandat OPCO n'a pas pu l'être : ${emisMandat.error} Rien n'est parti ; réessayez une fois ce point réglé.`,
+        };
+      }
+      mandat = { numero: mandatVivant.numero, url: emisMandat.data.url };
+    }
+  }
+
   let garePourValidation = false;
   try {
     const res = await enqueueEmail(
-      "convention-envoi",
+      mandat !== null ? "convention-et-mandat-opco" : "convention-envoi",
       resolution.identite.email,
       "fr",
+      mandat !== null
+        ? {
+            signataireNom: resolution.identite.nom,
+            clientNom: piece.client?.raisonSociale ?? "",
+            titreFormation: piece.session?.titreSession ?? "",
+            numeroConvention: piece.numero,
+            conventionUrl: emis.data.url,
+            numeroMandat: mandat.numero,
+            mandatUrl: mandat.url,
+            ...(messagePersonnalise ? { messagePersonnalise } : {}),
+          }
+        : {
+            signataireNom: resolution.identite.nom,
+            clientNom: piece.client?.raisonSociale ?? "",
+            numero: piece.numero,
+            titreFormation: piece.session?.titreSession ?? "",
+            signatureUrl: emis.data.url,
+            ...(messagePersonnalise ? { messagePersonnalise } : {}),
+          },
       {
-        signataireNom: resolution.identite.nom,
-        clientNom: piece.client?.raisonSociale ?? "",
-        numero: piece.numero,
-        titreFormation: piece.session?.titreSession ?? "",
-        signatureUrl: emis.data.url,
-        ...(messagePersonnalise ? { messagePersonnalise } : {}),
-      },
-      {
-        sujet: `Convention à signer — ${piece.numero}`,
+        sujet:
+          mandat !== null
+            ? `Convention et mandat OPCO à signer — ${piece.numero}`
+            : `Convention à signer — ${piece.numero}`,
         entityType: "DocumentGenere",
         entityId: documentGenereId,
         ...(piece.clientId ? { clientId: piece.clientId } : {}),
@@ -546,6 +593,7 @@ export async function envoyerLienSignatureParEmailAction(
     // destinataire l'est, pour prouver À QUI la pièce a été adressée.
     changes: {
       numero: piece.numero,
+      ...(mandat !== null ? { numeroMandat: mandat.numero } : {}),
       partie,
       destinataire: resolution.identite.email,
       garePourValidation,

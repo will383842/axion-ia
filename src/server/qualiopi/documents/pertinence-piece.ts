@@ -64,6 +64,14 @@ export interface ContexteSession {
    * personnes ; quand il n'y en a qu'une, la pièce n'a pas d'objet.
    */
   readonly formateurEstLeDirigeant?: boolean;
+  /**
+   * La session a-t-elle un dossier de financement OPCO ou mixte NON CLOS ?
+   *
+   * INT-T77-A. Le mandat OPCO se justifie par ce dossier — c'est lui que la
+   * génération du mandat exige — et non par le `financementType` de la session,
+   * qui peut dire autre chose (renseigné à la main, ou pas encore).
+   */
+  readonly dossierOpcoOuvert?: boolean;
 }
 
 /**
