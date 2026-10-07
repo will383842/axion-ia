@@ -54,6 +54,55 @@ export interface LigneARattacher {
   linkedJobApplicationId: string | null | undefined;
 }
 
+/**
+ * Les fiches apporteur (non supprimées) dont le NOM correspond à celui confirmé par
+ * Calendly — repli « même nom, autre adresse » (adresse relais Indeed). Lecture seule.
+ */
+export async function fichesApporteurAuNom(nom: string | null | undefined): Promise<string[]> {
+  if (motsDuNom(nom).length === 0) return [];
+  return fichesAuNomDans(await chargerFichesPourNoms(), nom);
+}
+
+export interface FichePourNom {
+  id: string;
+  nom: string | null;
+  email: string | null;
+}
+
+/**
+ * Les fiches apporteur lues UNE fois (bornées à `PLAFOND_LECTURE_NOMS`), déchiffrées : un
+ * passage qui compare plusieurs noms (le rattrapage) ne relit pas la table à chaque ligne.
+ */
+export async function chargerFichesPourNoms(): Promise<FichePourNom[]> {
+  const lignes = await prisma.submission.findMany({
+    where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+    orderBy: { submittedAt: "desc" },
+    take: PLAFOND_LECTURE_NOMS,
+    select: { id: true, details: true, contactName: true, contactEmail: true },
+  });
+  const clair = (v: string | null): string | null => {
+    if (!v) return null;
+    try {
+      return decryptPii(v);
+    } catch {
+      return null;
+    }
+  };
+  return lignes
+    .filter((l) => estApporteur(l.details))
+    .map((l) => ({ id: l.id, nom: clair(l.contactName), email: clair(l.contactEmail) }));
+}
+
+/** Les fiches de `liste` dont le nom correspond (vide si le nom ne suffit pas à chercher). */
+export function fichesAuNomDans(
+  liste: readonly FichePourNom[],
+  nom: string | null | undefined,
+): string[] {
+  const mots = motsDuNom(nom);
+  if (mots.length === 0) return [];
+  return liste.filter((f) => nomCorrespond(mots, f.nom, f.email)).map((f) => f.id);
+}
+
 export type IssueRattachement =
   | { rattache: true; submissionId: string; parNom?: true }
   | {
@@ -102,30 +151,9 @@ export async function rattacherEchangeApporteur(
   // fiche apporteur au nom correspondant : zéro ou plusieurs → on ne fait rien,
   // le sélecteur de la console les PROPOSE et un humain choisit.
   if (!cible) {
-    const mots = motsDuNom(ligne.inviteeName);
-    if (mots.length > 0) {
-      const lignes = await prisma.submission.findMany({
-        where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
-        orderBy: { submittedAt: "desc" },
-        take: PLAFOND_LECTURE_NOMS,
-        select: { id: true, details: true, contactName: true, contactEmail: true },
-      });
-      const clair = (v: string | null): string | null => {
-        if (!v) return null;
-        try {
-          return decryptPii(v);
-        } catch {
-          return null;
-        }
-      };
-      const trouvees = lignes.filter(
-        (l) =>
-          estApporteur(l.details) &&
-          nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
-      );
-      const seule = trouvees.length === 1 ? trouvees[0] : undefined;
-      if (seule) cible = { id: seule.id, parNom: true };
-    }
+    const trouvees = await fichesApporteurAuNom(ligne.inviteeName);
+    const seule = trouvees.length === 1 ? trouvees[0] : undefined;
+    if (seule) cible = { id: seule, parNom: true };
   }
   if (!cible) return { rattache: false, motif: "aucun_dossier_apporteur" };
 

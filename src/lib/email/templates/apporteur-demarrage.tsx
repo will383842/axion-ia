@@ -33,6 +33,7 @@ import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/conte
 import { PARRAINAGE_BPS, PARRAINAGE_MOIS, TAUX_BPS } from "@/features/apporteurs-reseau/regles";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import { SITE_URL as SITE_URL_BRUT } from "@/lib/site-url";
 import type { Locale } from "../../../../prisma/generated/client";
 
 /** Délai de la confirmation réputée acquise (contrat, art. 3.2 — CONFIRMATION_TACITE_JOURS). */
@@ -40,7 +41,8 @@ export const CONFIRMATION_TACITE_JOURS = 30;
 /** Délai de réponse à une contestation (contrat, art. 3.3). */
 const REPONSE_CONTESTATION_JOURS = 15;
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
+// Le filet anti-localhost de `site-url.ts` : jamais un lien localhost dans un e-mail de prod.
+const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
 const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;

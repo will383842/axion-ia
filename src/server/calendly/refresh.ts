@@ -26,6 +26,7 @@
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enrichCalendlyEvent } from "./enrich";
+import { rattraperFichesRendezVousApporteur } from "./fiche-rendez-vous-apporteur";
 import { isCalendlyApiConfigured } from "./api";
 
 /**
@@ -151,6 +152,19 @@ export async function refreshUpcomingCalendlyEvents(): Promise<RefreshOutcome> {
     } else {
       failures[res.reason] = (failures[res.reason] ?? 0) + 1;
     }
+  }
+
+  // Rattrapage (07/10) : les échanges apporteur rattachés à rien — y compris passés,
+  // hors de la fenêtre ci-dessus — reçoivent leur fiche candidat. Idempotent, sans
+  // e-mail ; un échec ne fait jamais échouer le sondage.
+  try {
+    await rattraperFichesRendezVousApporteur();
+  } catch (e) {
+    // Sans donnée personnelle : seul le message de l'erreur.
+    console.error(
+      "[calendly-refresh] rattrapage des fiches apporteur en échec :",
+      e instanceof Error ? e.message : String(e),
+    );
   }
 
   return { ok: true, examined: batch.length, updated, unchanged, failures, overflow };
