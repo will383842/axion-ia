@@ -824,6 +824,13 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
   });
 
+  it("date de réalisation du JOUR (posée à midi UTC) : admise même tôt le matin", async () => {
+    etat.lignes = [enAttente("c1")];
+    const matin = new Date(`${MARDI.toISOString().slice(0, 10)}T05:00:00Z`);
+    const jour = new Date(`${MARDI.toISOString().slice(0, 10)}T12:00:00.000Z`);
+    expect(await marquerPrestationRealisee("c1", jour, matin)).toEqual({ ok: true });
+  });
+
   it("date de réalisation dans le futur : refusée", async () => {
     etat.lignes = [enAttente("c1")];
     expect(

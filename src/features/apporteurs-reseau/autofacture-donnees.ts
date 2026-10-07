@@ -203,7 +203,7 @@ export const OBJECTIF_VIREMENT_JOURS_OUVRES = 2;
 export { ajouterJoursOuvres };
 
 /** « AAAA-MM-JJ » du jour de Paris. */
-function jourParis(d: Date): string {
+export function jourParis(d: Date): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Paris",
     year: "numeric",
