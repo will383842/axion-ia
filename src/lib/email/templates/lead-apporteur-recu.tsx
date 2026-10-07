@@ -65,13 +65,14 @@ interface Payload {
 const COPY = {
   fr: {
     title: "C'est noté",
-    preview: "Le catalogue de nos prestations, et votre dossier à compléter si vous le souhaitez.",
+    preview:
+      "Le catalogue de nos prestations, et votre candidature à compléter si vous le souhaitez.",
     body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le catalogue de ce que vous pourrez recommander. Si votre profil correspond, nous vous proposons un échange de 15 minutes pour faire connaissance. Aucun engagement : vous décidez après.",
-    titleDossier: "Votre dossier vous attend",
+    titleDossier: "Votre candidature vous attend",
     previewDossier:
-      "Le catalogue de nos prestations, et votre dossier à terminer : il reste quelques écrans.",
+      "Le catalogue de nos prestations, et votre candidature à terminer : il reste quelques écrans.",
     bodyDossier:
-      "Vous avez commencé votre dossier pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Il n'est pas encore arrivé : il vous reste quelques écrans.",
+      "Vous avez commencé votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Elle n'est pas encore arrivée : il vous reste quelques écrans.",
     titleAbandon: "Votre inscription n'est pas terminée",
     previewAbandon: "Il vous reste une étape pour terminer votre inscription.",
     bodyAbandon:
@@ -84,16 +85,16 @@ const COPY = {
     ctaEtape2: "Choisir mon créneau",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     dossier:
-      "Et pour que nous préparions notre échange à partir de votre situation, complétez votre dossier — trois minutes, sans CV, sans lettre de motivation. Vos coordonnées sont déjà remplies.",
+      "Et pour que nous préparions notre échange à partir de votre situation, complétez votre candidature — trois minutes, sans CV, sans lettre de motivation. Vos coordonnées sont déjà remplies.",
     spam: "Pensez à vérifier vos spams si vous n'avez pas de nouvelles : nos e-mails s'y égarent parfois.",
-    cta: "Compléter mon dossier",
+    cta: "Compléter ma candidature",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Noted",
     preview: "Our catalogue of services, and your file to complete if you like.",
     body: "You just left us your details to join Axion-IA's network of business introducers. Here is the catalogue of what you will be able to recommend. If your profile is a match, we will offer you a 15-minute call to get acquainted. No commitment: you decide afterwards.",
-    titleDossier: "Your file is waiting",
+    titleDossier: "Your application is waiting",
     previewDossier: "Our catalogue of services, and your file to finish: only a few screens left.",
     bodyDossier:
       "You started your file to join Axion-IA's network of business introducers. Thank you! It has not arrived yet: only a few screens are left.",
@@ -111,7 +112,7 @@ const COPY = {
     dossier:
       "And so we can prepare our conversation around your situation, complete your file — three minutes, no resume, no cover letter. Your details are already filled in.",
     spam: "Check your spam folder if you do not hear from us: our emails sometimes end up there.",
-    cta: "Complete my file",
+    cta: "Complete my application",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
