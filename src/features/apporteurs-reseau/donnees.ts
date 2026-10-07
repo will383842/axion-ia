@@ -25,6 +25,7 @@ import type {
 } from "../../../prisma/generated/client";
 
 import { alerterPieceVigilance } from "./alerte-vigilance";
+import { chiffrerContenuPiece } from "./pieces-chiffrement";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
@@ -431,7 +432,8 @@ export async function deposerPiece(
       });
       pieceId = p.id;
       await tx.pieceApporteurContenu.create({
-        data: { pieceId: p.id, octets: Buffer.from(octets) },
+        // Chiffrées au repos (07/10), comme l'IBAN : l'empreinte `sha256` reste celle du clair.
+        data: { pieceId: p.id, octets: chiffrerContenuPiece(octets) },
       });
     },
     { timeout: 15_000 },

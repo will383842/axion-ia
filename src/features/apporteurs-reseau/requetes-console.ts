@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { ApporteurReseauStatut } from "../../../prisma/generated/client";
 
+import { lireContenuPiece } from "./pieces-chiffrement";
 import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
@@ -236,6 +237,7 @@ export async function lireOctetsPiece(apporteurId: string, pieceId: string) {
   return {
     nomFichier: p.nomFichier,
     typeMime: p.typeMime,
-    octets: new Uint8Array(p.contenu.octets),
+    // Déchiffrée ici, seul point de lecture (aperçu console et antivirus à l'ouverture).
+    octets: lireContenuPiece(p.contenu.octets),
   };
 }

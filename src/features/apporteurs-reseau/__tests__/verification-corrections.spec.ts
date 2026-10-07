@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Vérification d'un dossier signé : refus définitif (pièces purgées), renvoi du contrat
@@ -10,6 +12,8 @@ const h = vi.hoisted(() => ({
   lireDossier: vi.fn(),
   purgerContenuPieces: vi.fn(),
   appUpdate: vi.fn(),
+  // Contresignature : réservation conditionnelle (07/10). `count` 1 = réservé, 0 = déjà fait.
+  appUpdateMany: vi.fn(async (_a?: unknown) => ({ count: 1 })),
   appFindUnique: vi.fn(),
   registre: vi.fn(),
 }));
@@ -40,10 +44,12 @@ vi.mock("../contrat-pdf", async () => {
     rendreContratPdf: (...a: unknown[]) => pdf.rendreContratPdf(...a),
   };
 });
+const r2 = vi.hoisted(() => ({ deleteFromR2: vi.fn(), upload: vi.fn() }));
 vi.mock("@/lib/r2-storage", () => ({
+  deleteFromR2: (...a: unknown[]) => r2.deleteFromR2(...a),
   getObjectBufferR2: vi.fn(),
   isR2Configured: () => true,
-  uploadToR2: vi.fn(),
+  uploadToR2: (...a: unknown[]) => r2.upload(...a),
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/lib/prisma", () => {
@@ -53,6 +59,7 @@ vi.mock("@/lib/prisma", () => {
       apporteurReseau: {
         findUnique: (...a: unknown[]) => h.appFindUnique(...a),
         update: (...a: unknown[]) => h.appUpdate(...a),
+        updateMany: (...a: unknown[]) => h.appUpdateMany(...a),
       },
       pieceApporteur: { update: vi.fn(), findMany: vi.fn().mockResolvedValue([]) },
       $transaction: async (f: (t: typeof tx) => unknown) => f(tx),
@@ -277,5 +284,103 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     expect(r).toMatchObject({ ok: false });
     expect((r as { message: string }).message).toContain("signer à nouveau");
     expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
+  });
+});
+
+describe("07/10 : la contresignature est réservée avant le PDF (double clic)", () => {
+  beforeEach(() => {
+    pdf.rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
+    pdf.texteDuContrat.mockReturnValue("CONTRAT");
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: {
+        nomTape: "Claire Martin",
+        signeAt: "2026-10-07T10:00:00.000Z",
+        texteSha256: createHash("sha256").update("CONTRAT").digest("hex"),
+        valeurs: { identite: "Claire MARTIN" },
+        version: "2.1",
+      },
+    });
+  });
+
+  it("second clic : « déjà contresigné », aucun PDF ni e-mail", async () => {
+    h.appUpdateMany.mockResolvedValueOnce({ count: 0 });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("déjà contresigné");
+    expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("la réservation est conditionnée au statut « à vérifier », et le PDF porte la version signée", async () => {
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    // Réservation DÉDIÉE et reprenable une fois expirée ; `signeParSocieteAt` n'y est pas posé.
+    const reservation = h.appUpdateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(reservation.where).toMatchObject({
+      id: ID,
+      statut: "a_verifier",
+      signeParSocieteAt: null,
+    });
+    expect(JSON.stringify(reservation.where.OR)).toContain("contresignatureReserveeJusqua");
+    expect(reservation.data).not.toHaveProperty("signeParSocieteAt");
+    expect(reservation.data.contresignatureReserveeJusqua).toBeInstanceOf(Date);
+    expect(pdf.rendreContratPdf.mock.calls[0]![0].version).toBe("2.1");
+  });
+
+  it("le PDF échoue : la réservation est levée, on pourra recliquer", async () => {
+    pdf.rendreContratPdf.mockRejectedValueOnce(new Error("rendu impossible"));
+    await expect(appliquerDecision(ID, "contresigner", null)).rejects.toThrow();
+    const levee = h.appUpdateMany.mock.calls.find(
+      (c) =>
+        (c[0] as { data: Record<string, unknown> }).data.contresignatureReserveeJusqua === null,
+    );
+    expect(levee).toBeTruthy();
+  });
+
+  it("écriture finale qui ne trouve rien : PDF orphelin retiré de R2, AUCUN e-mail", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 }) // réservation
+      .mockResolvedValueOnce({ count: 0 }); // écriture finale
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect(r2.deleteFromR2).toHaveBeenCalledTimes(1);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("cas A : l'écriture a réussi mais la réponse s'est perdue → on relit, rien n'est effacé", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 })
+      .mockRejectedValueOnce(new Error("connexion coupée après validation"));
+    const signatureLue = await h.appFindUnique();
+    h.appFindUnique
+      .mockResolvedValueOnce(signatureLue) // signature de l'apporteur
+      .mockImplementationOnce(async () => ({ contratSigneCle: r2.upload.mock.calls[0]![0] }));
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: true });
+    expect(r2.deleteFromR2).not.toHaveBeenCalled();
+  });
+
+  it("cas B : chaque tentative a sa propre clé R2 (aucune n'efface celle d'une autre)", async () => {
+    await appliquerDecision(ID, "contresigner", null);
+    await appliquerDecision(ID, "contresigner", null);
+    const cles = r2.upload.mock.calls.map((c) => c[0] as string);
+    expect(cles).toHaveLength(2);
+    expect(new Set(cles).size).toBe(2);
+  });
+
+  it("écriture finale qui lève : même chose, rien n'est envoyé", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 })
+      .mockRejectedValueOnce(new Error("base coupée"));
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: false });
+    expect(r2.deleteFromR2).toHaveBeenCalledTimes(1);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("l'effacement RGPD ne conserve qu'un contrat VRAIMENT contresigné (PDF référencé)", () => {
+    const src = readFileSync(resolve(__dirname, "../../../lib/rgpd-erase.ts"), "utf8");
+    expect(src).toContain("(a.signeParSocieteAt !== null && a.contratSigneCle !== null)");
   });
 });

@@ -2225,7 +2225,11 @@ export async function eraseReseauApporteurForEmail(
     where: { apporteurId: a.id },
     data: { nomFichier: ERASED_PLACEHOLDER, purgeeAt: new Date() },
   });
-  const conserver = a.signeParSocieteAt !== null || a._count.commissions > 0;
+  // Contresigné = date ET PDF signé référencé (posés ensemble, à la fin de la contresignature) :
+  // une contresignature interrompue ne fait jamais conserver un dossier. Un contrat résilié
+  // après contresignature reste conservé (obligation légale), d'où le PDF et non le statut.
+  const conserver =
+    (a.signeParSocieteAt !== null && a.contratSigneCle !== null) || a._count.commissions > 0;
   if (conserver) {
     await prisma.apporteurReseau.update({
       where: { id: a.id },

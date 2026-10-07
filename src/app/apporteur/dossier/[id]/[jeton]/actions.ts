@@ -253,7 +253,17 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
   }
 
   const octets = new Uint8Array(await fichier.arrayBuffer());
-  return deposerPiece(dossier.id, type, fichier.name || "piece", octets, expireAt);
+  // 07/10 : une panne côté serveur n'est plus présentée comme une coupure de connexion.
+  try {
+    return await deposerPiece(dossier.id, type, fichier.name || "piece", octets, expireAt);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { service: "apporteur-dossier", etape: "depot-piece" } });
+    return {
+      ok: false,
+      message:
+        "Votre document n'a pas pu être enregistré de notre côté. Réessayez dans quelques minutes ; s'il bloque encore, répondez à notre e-mail.",
+    };
+  }
 }
 
 // ── Étape 4 : signature ──────────────────────────────────────────────────

@@ -17,11 +17,11 @@
 
 import "server-only";
 
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import { getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
+import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { lireDossier, purgerContenuPieces } from "./donnees";
@@ -33,6 +33,7 @@ import {
   type GabaritApporteur,
 } from "./envois";
 import { urlDossier } from "./jeton";
+import { signalerErreurReseau } from "./signaler";
 import { lireEntrepriseParSiren } from "./annuaire";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, sirenValide, type TypePiece } from "./regles";
 
@@ -110,6 +111,8 @@ export async function piecesARetransmettre(apporteurId: string): Promise<string[
 // ── Décisions ────────────────────────────────────────────────────────────
 
 interface SignatureLue {
+  /** Version du contrat signé ; « 2 » pour les signatures d'avant son enregistrement. */
+  version: string;
   nomTape: string;
   signeAt: string;
   ipHash: string | null;
@@ -139,6 +142,7 @@ function lireSignature(json: unknown): SignatureLue | null {
   const liste = (x: unknown) =>
     Array.isArray(x) ? x.filter((y): y is string => typeof y === "string") : [];
   return {
+    version: chaine(j.version) ?? "2",
     nomTape: j.nomTape as string,
     signeAt: j.signeAt as string,
     ipHash: chaine(j.ipHash),
@@ -151,7 +155,9 @@ function lireSignature(json: unknown): SignatureLue | null {
   };
 }
 
-/** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
+/** Durée d'une réservation de contresignature : au-delà, un nouveau clic la reprend. */
+const RESERVATION_CONTRESIGNATURE_MS = 10 * 60 * 1000;
+
 /**
  * Ordre de Will (07/10) : aucun contrat contresigné sans SIREN valide et ACTIF au registre
  * (travail dissimulé, vigilance, solidarité financière, autofacture). Revérifié au moment de
@@ -172,6 +178,7 @@ export async function sirenAContresigner(siren: string | null): Promise<string |
   return null;
 }
 
+/** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
 export async function preparerDecision(
   apporteurId: string,
   decision: Decision,
@@ -295,31 +302,120 @@ export async function appliquerDecision(
     }
     if (!isR2Configured())
       return { ok: false, message: "Le stockage des documents n'est pas configuré." };
-    const pdf = await rendreContratPdf({
-      texte,
-      apporteur: {
-        nomTape: sig.nomTape,
-        signeAt: dateHeureParis(new Date(sig.signeAt)),
-        ipHash: sig.ipHash,
-        navigateur: sig.navigateur,
-        acceptations: sig.acceptations,
-        declarations: sig.declarations,
+    // Double clic, deux onglets : une seule contresignature. Le dossier est RÉSERVÉ par un champ
+    // DÉDIÉ, qui expire (un conteneur redémarré pendant le PDF ne bloque rien au-delà) ;
+    // `signeParSocieteAt` n'est posé qu'à la toute fin, avec le PDF référencé.
+    const jusqua = new Date(maintenant.getTime() + RESERVATION_CONTRESIGNATURE_MS);
+    const reserve = await prisma.apporteurReseau.updateMany({
+      where: {
+        id: apporteurId,
+        statut: "a_verifier",
+        signeParSocieteAt: null,
+        OR: [
+          { contresignatureReserveeJusqua: null },
+          { contresignatureReserveeJusqua: { lt: maintenant } },
+        ],
       },
-      societe: { nom: SIGNATAIRE_SOCIETE, signeAt: dateHeureParis(maintenant) },
+      data: { contresignatureReserveeJusqua: jusqua },
     });
+    if (reserve.count === 0) {
+      return {
+        ok: false,
+        message: "Ce contrat est déjà contresigné, ou sa contresignature est en cours.",
+      };
+    }
+    const liberer = async () => {
+      try {
+        await prisma.apporteurReseau.updateMany({
+          where: { id: apporteurId, contresignatureReserveeJusqua: jusqua },
+          data: { contresignatureReserveeJusqua: null },
+        });
+      } catch (err) {
+        // La réservation expire d'elle-même : jamais de blocage définitif.
+        signalerErreurReseau("contresignature : réservation non levée", err);
+      }
+    };
+    let pdf: Buffer;
+    try {
+      pdf = await rendreContratPdf({
+        version: sig.version,
+        texte,
+        apporteur: {
+          nomTape: sig.nomTape,
+          signeAt: dateHeureParis(new Date(sig.signeAt)),
+          ipHash: sig.ipHash,
+          navigateur: sig.navigateur,
+          acceptations: sig.acceptations,
+          declarations: sig.declarations,
+        },
+        societe: { nom: SIGNATAIRE_SOCIETE, signeAt: dateHeureParis(maintenant) },
+      });
+    } catch (err) {
+      await liberer();
+      throw err;
+    }
     const sha = createHash("sha256").update(pdf).digest("hex");
-    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}.pdf`;
-    await uploadToR2(cle, pdf, "application/pdf");
-    await prisma.apporteurReseau.update({
-      where: { id: apporteurId },
-      data: {
-        statut: "signe",
-        contratSigneCle: cle,
-        contratSigneSha256: sha,
-        signeParSocieteAt: maintenant,
-        dernierMessage: null,
-      },
-    });
+    // Clé PROPRE à cette tentative (suffixée par sa réservation) : une tentative n'efface
+    // jamais le PDF d'une autre.
+    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
+    try {
+      await uploadToR2(cle, pdf, "application/pdf");
+    } catch (err) {
+      await liberer();
+      throw err;
+    }
+    // Écriture finale CONDITIONNÉE à NOTRE réservation, et vérifiée : sans elle, le PDF déposé
+    // serait un orphelin jamais effacé (RGPD) — on le retire, et aucun e-mail ne part.
+    let ecrit = 0;
+    try {
+      const r = await prisma.apporteurReseau.updateMany({
+        where: { id: apporteurId, statut: "a_verifier", contresignatureReserveeJusqua: jusqua },
+        data: {
+          statut: "signe",
+          contratSigneCle: cle,
+          contratSigneSha256: sha,
+          signeParSocieteAt: maintenant,
+          contresignatureReserveeJusqua: null,
+          dernierMessage: null,
+        },
+      });
+      ecrit = r.count;
+    } catch (err) {
+      signalerErreurReseau("contresignature : écriture finale", err);
+    }
+    if (ecrit !== 1) {
+      // L'écriture a pu réussir sans que la réponse arrive (connexion coupée) : on RELIT la base,
+      // et l'on n'efface que si elle ne référence pas ce PDF.
+      let reference: string | null | undefined;
+      try {
+        const relu = await prisma.apporteurReseau.findUnique({
+          where: { id: apporteurId },
+          select: { contratSigneCle: true },
+        });
+        reference = relu?.contratSigneCle ?? null;
+      } catch (err) {
+        signalerErreurReseau("contresignature : relecture après écriture", err);
+        reference = undefined;
+      }
+      if (reference === cle) {
+        // Contresigné pour de bon : on poursuit comme si la réponse était arrivée.
+        ecrit = 1;
+      } else if (reference !== undefined) {
+        try {
+          await deleteFromR2(cle);
+        } catch (err) {
+          signalerErreurReseau("contresignature : PDF orphelin non retiré de R2", err);
+        }
+      }
+    }
+    if (ecrit !== 1) {
+      await liberer();
+      return {
+        ok: false,
+        message:
+          "La contresignature n'a pas pu être enregistrée : rien n'est parti. Réessayez dans un instant.",
+      };
+    }
     const r = await envoyer({
       ...prep.envoi,
       jobId: `apporteur-contrat-signe-${apporteurId}`,

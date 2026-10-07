@@ -32,6 +32,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
+import { CONTRAT_VERSION } from "./contrat-v2";
 import { envoyer } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -63,6 +64,8 @@ export interface SignatureApporteurJson {
   declarations: string[];
   /** SHA-256 du texte signé : celui que reconstruit `texteDuContrat(valeurs)`. */
   texteSha256: string;
+  /** Version du contrat signé (`CONTRAT_VERSION`). Absente des signatures d'avant le 07/10 (v2). */
+  version?: string;
   /** Les valeurs EXACTES passées à `texteDuContrat`. */
   valeurs: ValeursContrat;
   /**
@@ -136,6 +139,7 @@ export async function signerContrat(e: {
     acceptations,
     declarations,
     texteSha256: sha256,
+    version: CONTRAT_VERSION,
     valeurs,
     texte,
   };
