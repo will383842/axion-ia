@@ -59,7 +59,16 @@ function Champ({
   );
 }
 
-export function DeclarationEntreprise({ id, jeton }: { id: string; jeton: string }) {
+export function DeclarationEntreprise({
+  id,
+  jeton,
+  protectionMois,
+}: {
+  id: string;
+  jeton: string;
+  /** Durée de la réservation (`PROTECTION_MOIS`), passée par la page : jamais écrite ici. */
+  protectionMois: number;
+}) {
   const router = useRouter();
   const uid = useId();
   const [enCours, demarrer] = useTransition();
@@ -119,7 +128,15 @@ export function DeclarationEntreprise({ id, jeton }: { id: string; jeton: string
   return (
     <section className="bg-paper shadow-card mt-5 rounded-2xl p-4 sm:p-5" aria-busy={enCours}>
       <h2 className="font-serif text-[24px] leading-tight font-medium">{T.titre}</h2>
-      <p className="text-fg-soft mt-1 text-[16px]">{T.ligne}</p>
+      <div className="bg-sand mt-3 rounded-xl p-3 text-[15px] leading-relaxed">
+        <p className="font-bold">{T.commentTitre}</p>
+        <ul className="mt-1 grid gap-1">
+          {T.comment(protectionMois).map((l) => (
+            <li key={l}>• {l}</li>
+          ))}
+        </ul>
+      </div>
+      <p className="text-fg-soft mt-3 text-[16px]">{T.ligne}</p>
       <form onSubmit={envoyer} className="mt-4 grid gap-4">
         <fieldset className="grid gap-3">
           <legend className="text-[17px] font-bold">{T.entreprise}</legend>

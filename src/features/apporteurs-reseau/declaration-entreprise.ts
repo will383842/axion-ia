@@ -42,6 +42,8 @@ export interface DeclarationVue {
   denomination: string;
   recueAt: Date;
   etat: EtatDeclaration;
+  /** Fin de la réservation (réservée ou expirée), sinon `null`. */
+  jusquAu: Date | null;
 }
 
 /** Les déclarations d'UN apporteur (jamais celles des autres), de la plus récente. */
@@ -56,12 +58,20 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
       recueAt: true,
       statut: true,
       contactEnvoyeAt: true,
+      protegeeJusquAt: true,
     },
   });
   const out: DeclarationVue[] = [];
   for (const p of l) {
-    const etat = etatPourApporteur(p);
-    if (etat) out.push({ id: p.id, denomination: p.denomination, recueAt: p.recueAt, etat });
+    const e = etatPourApporteur(p);
+    if (e)
+      out.push({
+        id: p.id,
+        denomination: p.denomination,
+        recueAt: p.recueAt,
+        etat: e.etat,
+        jusquAu: e.jusquAu,
+      });
   }
   return out;
 }

@@ -9,7 +9,7 @@
 
 import { z } from "zod";
 
-import { sirenValide } from "./regles";
+import { finDeProtection, sirenValide } from "./regles";
 
 // Aucun plafond par apporteur : le contrat (art. 3.7) n'en connaît aucun, et nulle suspension ne
 // peut reposer sur le nombre de déclarations. Seule la limite par adresse IP hachée (anti-robot,
@@ -91,30 +91,47 @@ export function validerDeclaration(
   return { ok: false, message: r.error.issues[0]?.message ?? "Vérifiez les champs." };
 }
 
-/** L'état montré à l'apporteur : jamais d'autre information que la sienne. */
-export type EtatDeclaration = "recue" | "bien_recue" | "deja_connue" | "hors_champ";
+/**
+ * L'état montré à l'apporteur : jamais d'autre information que la sienne.
+ *
+ * 2026-10-07 (décision de Will) : un état EN CLAIR, avec la date de fin.
+ *   · « À l'étude » : déclaration reçue, pas encore traitée ;
+ *   · « Réservée jusqu'au … » : six mois À COMPTER DE LA DÉCLARATION (contrat 2.2,
+ *     art. 3.4) — la date enregistrée à la confirmation fait foi quand elle existe ;
+ *   · « Non disponible » : déjà présentée ou déjà connue, ou hors champ ;
+ *   · « Expirée » : période échue (ou attribution terminée), avec sa date de fin.
+ */
+export type EtatDeclaration = "a_l_etude" | "reservee" | "non_disponible" | "expiree";
 
 export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
-  recue: "Reçue",
-  bien_recue: "Bien reçue",
-  deja_connue: "Déjà connue",
-  hors_champ: "Hors champ",
+  a_l_etude: "À l'étude",
+  reservee: "Réservée",
+  non_disponible: "Non disponible",
+  expiree: "Expirée",
 };
 
-/** `null` pour un état qu'on ne montre pas (démentie, terminée). */
-export function etatPourApporteur(p: {
-  statut: string;
-  contactEnvoyeAt: Date | null;
-}): EtatDeclaration | null {
+/** `null` pour un état qu'on ne montre pas (démentie : un litige ne s'affiche pas). */
+export function etatPourApporteur(
+  p: {
+    statut: string;
+    contactEnvoyeAt: Date | null;
+    recueAt: Date;
+    protegeeJusquAt: Date | null;
+  },
+  maintenant: Date = new Date(),
+): { etat: EtatDeclaration; jusquAu: Date | null } | null {
+  const fin = p.protegeeJusquAt ?? finDeProtection(p.recueAt);
   switch (p.statut) {
     case "reservee":
-      return p.contactEnvoyeAt ? "bien_recue" : "recue";
+      if (!p.contactEnvoyeAt) return { etat: "a_l_etude", jusquAu: null };
+      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
     case "confirmee":
-      return "bien_recue";
+      return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
+    case "terminee":
+      return { etat: "expiree", jusquAu: fin };
     case "deja_connue":
-      return "deja_connue";
     case "hors_champ":
-      return "hors_champ";
+      return { etat: "non_disponible", jusquAu: null };
     default:
       return null;
   }

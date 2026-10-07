@@ -4,6 +4,7 @@ import {
   aujourdhuiParis,
   dateContactValide,
   etatPourApporteur,
+  LIBELLE_ETAT_DECLARATION,
   validerDeclaration,
 } from "../declaration-regles";
 
@@ -68,16 +69,58 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
     expect(Object.keys(regles).filter((k) => /MAX|PLAFOND|LIMITE/i.test(k))).toEqual([]);
   });
 
-  it("l'état montré à l'apporteur", () => {
-    expect(etatPourApporteur({ statut: "reservee", contactEnvoyeAt: null })).toBe("recue");
-    expect(etatPourApporteur({ statut: "reservee", contactEnvoyeAt: new Date() })).toBe(
-      "bien_recue",
-    );
-    expect(etatPourApporteur({ statut: "confirmee", contactEnvoyeAt: new Date() })).toBe(
-      "bien_recue",
-    );
-    expect(etatPourApporteur({ statut: "deja_connue", contactEnvoyeAt: null })).toBe("deja_connue");
-    expect(etatPourApporteur({ statut: "hors_champ", contactEnvoyeAt: null })).toBe("hors_champ");
-    expect(etatPourApporteur({ statut: "dementie", contactEnvoyeAt: null })).toBeNull();
+  // 2026-10-07 (décision de Will) : un état EN CLAIR, avec la date de fin.
+  it("l'état montré à l'apporteur : À l'étude, Réservée jusqu'au …, Non disponible, Expirée", () => {
+    const recueAt = new Date("2026-10-05T09:00:00Z");
+    const base = { recueAt, protegeeJusquAt: null as Date | null };
+    const le = new Date("2026-10-07T12:00:00Z");
+    // Pas encore traitée : à l'étude, sans date.
+    expect(etatPourApporteur({ ...base, statut: "reservee", contactEnvoyeAt: null }, le)).toEqual({
+      etat: "a_l_etude",
+      jusquAu: null,
+    });
+    // Contact envoyé : réservée 6 mois À COMPTER DE LA DÉCLARATION.
+    expect(etatPourApporteur({ ...base, statut: "reservee", contactEnvoyeAt: le }, le)).toEqual({
+      etat: "reservee",
+      jusquAu: new Date("2027-04-05T09:00:00Z"),
+    });
+    // Confirmée : la date de fin enregistrée fait foi.
+    const fin = new Date("2027-04-20T00:00:00Z");
+    expect(
+      etatPourApporteur(
+        { ...base, statut: "confirmee", contactEnvoyeAt: le, protegeeJusquAt: fin },
+        le,
+      ),
+    ).toEqual({ etat: "reservee", jusquAu: fin });
+    // Échue : expirée, avec sa date de fin.
+    expect(
+      etatPourApporteur(
+        { ...base, statut: "confirmee", contactEnvoyeAt: le, protegeeJusquAt: fin },
+        new Date("2027-05-01T00:00:00Z"),
+      ),
+    ).toEqual({ etat: "expiree", jusquAu: fin });
+    expect(
+      etatPourApporteur(
+        { ...base, statut: "terminee", contactEnvoyeAt: le, protegeeJusquAt: fin },
+        le,
+      ),
+    ).toEqual({ etat: "expiree", jusquAu: fin });
+    // Déjà connue, hors champ : non disponible.
+    for (const statut of ["deja_connue", "hors_champ"]) {
+      expect(etatPourApporteur({ ...base, statut, contactEnvoyeAt: null }, le)).toEqual({
+        etat: "non_disponible",
+        jusquAu: null,
+      });
+    }
+    // Démentie : non montrée (litige).
+    expect(
+      etatPourApporteur({ ...base, statut: "dementie", contactEnvoyeAt: null }, le),
+    ).toBeNull();
+    expect(LIBELLE_ETAT_DECLARATION).toEqual({
+      a_l_etude: "À l'étude",
+      reservee: "Réservée",
+      non_disponible: "Non disponible",
+      expiree: "Expirée",
+    });
   });
 });

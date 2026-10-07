@@ -6,6 +6,7 @@ import { AdminBadge, AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { ActionsPresentation } from "@/components/admin/apporteurs/entreprises/ActionsPresentation";
+import { ConfirmerAttribution } from "@/components/admin/apporteurs/entreprises/ConfirmerAttribution";
 import { NouvellePresentationForm } from "@/components/admin/apporteurs/entreprises/NouvellePresentationForm";
 import { ReponsePresentation } from "@/components/admin/apporteurs/entreprises/ReponsePresentation";
 import {
@@ -245,7 +246,8 @@ function Carte({
             <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">
               Actions
             </summary>
-            <div className="pt-[var(--space-admin-3)]">
+            <div className="flex flex-col gap-[var(--space-admin-3)] pt-[var(--space-admin-3)]">
+              {p.statut === "reservee" ? <ConfirmerAttribution id={p.id} /> : null}
               <ActionsPresentation
                 id={p.id}
                 peutConfirmer={p.statut === "reservee"}

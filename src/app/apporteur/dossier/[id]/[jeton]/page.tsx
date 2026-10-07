@@ -20,7 +20,12 @@ import { notFound } from "next/navigation";
 
 import { texteDuContrat } from "@/features/apporteurs-reseau/contrat-pdf";
 import { lireDossierParLien, vigilanceDemandeeA } from "@/features/apporteurs-reseau/donnees";
-import { AIDE_PIECE, LIBELLE_PIECE, PIECES_VIGILANCE } from "@/features/apporteurs-reseau/regles";
+import {
+  AIDE_PIECE,
+  LIBELLE_PIECE,
+  PIECES_VIGILANCE,
+  PROTECTION_MOIS,
+} from "@/features/apporteurs-reseau/regles";
 import {
   etatDeLaPage,
   libelleMotif,
@@ -104,7 +109,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
             </a>
           ) : null}
         </EcranEtat>
-        <DeclarationEntreprise id={dossier.id} jeton={jeton} />
+        <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
         <ListeDeclarations declarations={declarations} />
         {vigilance ? (
           <ul className="mt-5 grid gap-3">
