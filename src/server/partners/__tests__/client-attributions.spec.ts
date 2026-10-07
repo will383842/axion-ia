@@ -354,9 +354,11 @@ describe("REQ-INT-014 — le bandeau : les textes de la juriste, mot pour mot", 
   });
 });
 
-describe("REQ-INT-014 — le bandeau n'existe que pour un rôle qui crée un devis, jugé au serveur avant l'appel", () => {
-  it("REQ-INT-014 — TÉMOIN À DEUX FACES : super_admin, admin, responsable_qualite, secretaire et editor voient le bandeau ; reader, une session sans rôle ou un rôle inconnu : ni bandeau, ni appel", async () => {
-    for (const role of ["super_admin", "admin", "responsable_qualite", "secretaire", "editor"]) {
+describe("REQ-INT-014 — le bandeau n'existe que pour un rôle qui ouvre le dossier d'un apporteur, jugé au serveur avant l'appel", () => {
+  it("REQ-INT-014 — TÉMOIN À DEUX FACES : super_admin, admin, responsable_qualite et secretaire voient le bandeau ; editor, reader, une session sans rôle ou un rôle inconnu : ni bandeau, ni appel", async () => {
+    // Arbitrage de la coordination (issue Partners 754, 6032310061) : le bandeau porte le prénom et
+    // l'initiale d'un apporteur ; il suit la frontière du dossier d'un apporteur, que editor ne lit pas.
+    for (const role of ["super_admin", "admin", "responsable_qualite", "secretaire"]) {
       const r = reseau(() => json(ATTRIBUEE));
       const texte = await bandeauPourLeRole(role, SIREN, {
         fetch: r.fetch,
@@ -366,7 +368,7 @@ describe("REQ-INT-014 — le bandeau n'existe que pour un rôle qui crée un dev
       expect(texte, role).toContain("Paul D.");
       expect(r.appels, role).toHaveLength(1);
     }
-    for (const role of ["reader", null, undefined, "", "role_futur"]) {
+    for (const role of ["editor", "reader", null, undefined, "", "role_futur"]) {
       const r = reseau(() => json(ATTRIBUEE));
       const texte = await bandeauPourLeRole(role, SIREN, {
         fetch: r.fetch,

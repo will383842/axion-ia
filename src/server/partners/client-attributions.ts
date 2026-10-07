@@ -30,7 +30,7 @@
  */
 import { z } from "zod";
 
-import { peutEcrire } from "@/server/auth/habilitations";
+import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 
 import { urlPartners } from "./config";
 import { kidDe } from "./enveloppe";
@@ -263,8 +263,9 @@ export function texteDuBandeau(lecture: LectureAttribution): string | null {
 }
 
 /**
- * Le bandeau pour CE rôle (arbitrage de la coordination sur l'issue Partners 754) : seuls les rôles
- * qui peuvent créer un devis (`peutEcrire`) le voient. Le rôle est jugé AU SERVEUR, AVANT l'appel :
+ * Le bandeau pour CE rôle (arbitrage de la coordination sur l'issue Partners 754, 6032310061) : il
+ * porte le prénom et l'initiale d'un apporteur, et seuls les rôles qui ouvrent le dossier d'un
+ * apporteur (`peutOuvrirDossierApporteur`) le voient ; `reader` et `editor` non. Le rôle est jugé AU SERVEUR, AVANT l'appel :
  * pour un autre rôle, Partners n'est pas appelé, et aucun nom n'entre dans ce qui part au navigateur.
  */
 export async function bandeauPourLeRole(
@@ -272,6 +273,6 @@ export async function bandeauPourLeRole(
   siren: string | null,
   d: DependancesAttributions = {},
 ): Promise<string | null> {
-  if (!peutEcrire(role) || siren === null) return null;
+  if (!peutOuvrirDossierApporteur(role) || siren === null) return null;
   return texteDuBandeau(await lireAttributionPartners(siren, d));
 }
