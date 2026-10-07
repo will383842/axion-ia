@@ -82,6 +82,12 @@ export const TEXTES = {
   etapeAnnonce: (n: number, nom: string) => `Étape ${n} sur 4 : ${nom}`,
   fermer: "Vous pouvez fermer cette page.",
   // Lien invalide
+  // Le lien d'exemple de l'aperçu de la console (2026-10-07) : Will a cliqué le
+  // bouton de l'aperçu de « Retenu » et est tombé sur « Ce lien ne fonctionne plus ».
+  exemplePastille: "Aperçu",
+  exempleTitre: "Ceci est un lien d'exemple",
+  exempleLigne:
+    "Vous êtes dans l'aperçu de l'e-mail. Le lien personnel du dossier est créé au moment de l'envoi : c'est celui que recevra l'apporteur.",
   invalidePastille: "Lien invalide",
   invalideTitre: "Ce lien ne fonctionne plus",
   invalideLigne: "Écrivez-nous : nous vous renvoyons le bon.",

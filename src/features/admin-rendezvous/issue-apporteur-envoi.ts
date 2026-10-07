@@ -71,6 +71,8 @@ export type PreparationIssue =
       } | null;
       /** Pourquoi aucun e-mail ne partira, quand l'issue en prévoit un d'ordinaire. */
       sansEmail: string | null;
+      /** L'e-mail part SANS lien de dossier (dossier fermé) : à dire dans la console. */
+      alerteLien?: string;
     };
 
 /** « mardi 22 septembre », heure de Paris — la date dite au candidat absent. */
@@ -268,12 +270,14 @@ export async function preparerIssueApporteur(input: {
   // lien d'exemple). Le lien ne doit JAMAIS faire échouer l'envoi : en cas de panne,
   // l'e-mail part sans lui (l'apporteur recevra le lien à la main).
   let dossierUrl: string | null = null;
+  let alerteLien: string | null = null;
   if (gabarit === "apporteur-issue-retenu") {
     try {
       const dossier = await ouvrirDossierDepuisCandidature(fiche.id, {
         creer: input.ouvrirDossier === true,
       });
       if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
+      else if (dossier.ferme) alerteLien = dossier.message;
       else if (input.ouvrirDossier !== true) dossierUrl = urlDossierExemple();
     } catch (err) {
       Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "dossier-lien" } });
@@ -299,6 +303,7 @@ export async function preparerIssueApporteur(input: {
       payload,
     },
     sansEmail: null,
+    ...(alerteLien ? { alerteLien } : {}),
   };
 }
 
