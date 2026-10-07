@@ -351,6 +351,45 @@ describe("relecture de a1 (07/10)", () => {
   });
 });
 
+describe("création DEMANDÉE dans la console (cas « Krafft », 07/10)", () => {
+  const creerManuel = (email = "babak@exemple.fr", nom: string | null = "Krafft") =>
+    creerFicheDepuisRendezVous({
+      eventId: "evt_1",
+      email,
+      nom,
+      telephone: "+33600000000",
+      reponses: null,
+      manuel: { adminId: "adm_1" },
+    });
+
+  it("nom d'un seul mot : un humain a confirmé → la fiche est créée et rattachée, sans e-mail", async () => {
+    const r = await creerManuel();
+    expect(r).toMatchObject({ cree: true });
+    expect(db.submissions).toHaveLength(1);
+    expect(db.submissions[0]!["details"]).toMatchObject({
+      origine: "rendez-vous-apporteur",
+      saisiPar: "console",
+    });
+    expect(db.evenements[0]!["linkedSubmissionId"]).toBe(db.submissions[0]!["id"]);
+    expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("même nom, autre adresse : l'humain a cherché, la création passe", async () => {
+    db.submissions = [ficheApporteur("krafft_x@indeedemail.com", "Krafft")];
+    expect(await creerManuel()).toMatchObject({ cree: true });
+    expect(db.submissions).toHaveLength(2);
+  });
+
+  it("🔴 une fiche existe à la MÊME adresse : rien n'est créé NI rattaché d'office", async () => {
+    const f = ficheApporteur("babak@exemple.fr", "Babak Krafft");
+    db.submissions = [f];
+    const r = await creerManuel();
+    expect(r).toMatchObject({ cree: false, motif: "fiche_existante", submissionId: f["id"] });
+    expect(db.submissions).toHaveLength(1);
+    expect(db.evenements[0]!["linkedSubmissionId"]).toBeNull();
+  });
+});
+
 describe("rattrapage des rendez-vous déjà en base", () => {
   it("crée les fiches manquantes ; ignore annulés, effacés, non-apporteurs et adresses non confirmées", async () => {
     db.evenements = [

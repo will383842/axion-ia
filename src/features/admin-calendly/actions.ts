@@ -22,6 +22,12 @@ import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { besoinDuBrut, classerParNom, reponsesDuBrut } from "@/server/calendly/type-rendez-vous";
 import { peutVoirLesAppels } from "./acces";
+import { rechercherFichesRattachables } from "./fiches-rattachables";
+import { estRendezVousApporteur } from "@/server/calendly/appel-apporteur";
+import {
+  adresseConfirmee,
+  creerFicheDepuisRendezVous,
+} from "@/server/calendly/fiche-rendez-vous-apporteur";
 
 // 🔴 LA LISTE DE RÔLES A DÉMÉNAGÉ DANS `./acces.ts` (2026-08-27) — elle était
 // écrite ici, et la LECTURE des mêmes fiches n'était gardée par rien. Deux
@@ -283,4 +289,145 @@ export async function enrichCalendlyEventAction(
         ? "Aucun champ à mettre à jour : la fiche est déjà à jour."
         : `${res.updatedFields.length} champ(s) mis à jour : ${res.updatedFields.join(", ")}.`,
   };
+}
+
+// ============================================================
+// Rattacher un échange apporteur : recherche libre + création (2026-10-07)
+// ============================================================
+//
+// Cas « Krafft » : un échange réservé sous un nom d'un seul mot, avec une autre
+// adresse que la candidature. Le sélecteur ne retrouvait pas la fiche, et la
+// création automatique (#1346) s'abstient sur un nom d'un seul mot : Will restait
+// bloqué sur « Rattache-le d'abord ». Deux gestes, tous deux SANS e-mail.
+
+const rechercheSchema = z.object({
+  id: z.string().min(1).max(64),
+  q: z.string().trim().min(2).max(120),
+});
+
+export type RechercheFichesState =
+  | { ok: true; fiches: Array<{ id: string; libelle: string; intitule: string }> }
+  | { ok: false; error: string };
+
+export async function rechercherFichesRattachablesAction(
+  input: z.input<typeof rechercheSchema>,
+): Promise<RechercheFichesState> {
+  try {
+    await requireAdminWriteSession();
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "unauthorized" };
+  }
+  const parsed = rechercheSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Tapez au moins deux lettres." };
+  try {
+    const rdv = await prisma.calendlyEvent.findUnique({
+      where: { id: parsed.data.id },
+      select: { eventTypeName: true, typeRendezVous: true },
+    });
+    if (!rdv) return { ok: false, error: "Rendez-vous introuvable." };
+    const fiches = await rechercherFichesRattachables(
+      parsed.data.q,
+      estRendezVousApporteur({
+        eventTypeName: rdv.eventTypeName,
+        typeRendezVous: rdv.typeRendezVous,
+      }),
+    );
+    return {
+      ok: true,
+      fiches: fiches.map((f) => ({ id: f.id, libelle: f.libelle, intitule: f.intitule })),
+    };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "rechercherFichesRattachables" } });
+    return { ok: false, error: "La recherche a échoué. Réessayez dans un instant." };
+  }
+}
+
+const creationSchema = z.object({ id: z.string().min(1).max(64) });
+
+export type CreationFicheState =
+  | { ok: true; message: string; submissionId: string }
+  | { ok: false; error: string; submissionId?: string };
+
+export async function creerFicheDepuisRendezVousAction(
+  input: z.input<typeof creationSchema>,
+): Promise<CreationFicheState> {
+  let qui: { userId: string };
+  try {
+    qui = await requireAdminWriteSession();
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "unauthorized" };
+  }
+  const parsed = creationSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Identifiant invalide" };
+  try {
+    const rdv = await prisma.calendlyEvent.findUnique({
+      where: { id: parsed.data.id },
+      select: {
+        id: true,
+        eventTypeName: true,
+        typeRendezVous: true,
+        linkedSubmissionId: true,
+        linkedJobApplicationId: true,
+        inviteeName: true,
+        inviteePhone: true,
+        rawPayload: true,
+      },
+    });
+    if (!rdv) return { ok: false, error: "Rendez-vous introuvable." };
+    if (
+      !estRendezVousApporteur({
+        eventTypeName: rdv.eventTypeName,
+        typeRendezVous: rdv.typeRendezVous,
+      })
+    ) {
+      return { ok: false, error: "Ce rendez-vous n'est pas un échange apporteur." };
+    }
+    if (rdv.linkedSubmissionId || rdv.linkedJobApplicationId) {
+      return { ok: false, error: "Ce rendez-vous est déjà rattaché à une fiche." };
+    }
+    // 🔴 Seule l'adresse CONFIRMÉE par l'API Calendly crée une fiche (même règle que #1346).
+    const email = adresseConfirmee(rdv.rawPayload);
+    if (!email) {
+      return {
+        ok: false,
+        error:
+          "L'adresse n'est pas encore confirmée par Calendly : cliquez « Enrichir depuis Calendly », puis réessayez.",
+      };
+    }
+    const issue = await creerFicheDepuisRendezVous({
+      eventId: rdv.id,
+      email,
+      nom: rdv.inviteeName,
+      telephone: rdv.inviteePhone,
+      reponses: null,
+      manuel: { adminId: qui.userId },
+    });
+    revalidatePath(adminPath("fr", `contacts/appels/${rdv.id}`));
+    revalidatePath(adminPath("fr", "contacts/commercial"));
+    updateTag(INBOX_COUNTS_TAG);
+    if (issue.cree) {
+      return {
+        ok: true,
+        submissionId: issue.submissionId,
+        message: "Fiche apporteur créée et rattachée à ce rendez-vous. Aucun e-mail n'est parti.",
+      };
+    }
+    if (issue.motif === "fiche_existante") {
+      return {
+        ok: false,
+        ...(issue.submissionId ? { submissionId: issue.submissionId } : {}),
+        error:
+          "Une fiche apporteur existe déjà à cette adresse : choisissez-la dans la liste (groupe « Même adresse e-mail ») et enregistrez.",
+      };
+    }
+    if (issue.motif === "annule")
+      return { ok: false, error: "Ce rendez-vous est annulé : aucune fiche créée." };
+    if (issue.motif === "rattache_entre_temps") {
+      return { ok: false, error: "Le rendez-vous a été rattaché entre-temps : rechargez la page." };
+    }
+    return { ok: false, error: "Aucune fiche créée : adresse inutilisable." };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "creerFicheDepuisRendezVous" } });
+    return { ok: false, error: "La création a échoué. Réessayez dans un instant." };
+  }
 }

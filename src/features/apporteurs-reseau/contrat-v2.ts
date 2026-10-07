@@ -11,7 +11,9 @@
  * et doit d'abord être validée par Williams.
  */
 
-export const CONTRAT_VERSION = "2";
+// 2.1 (07/10/2026, décision de Will) : commission par produit et produits créés après la signature
+// (annexe 1, A1.7 ; renvois aux articles 4.1, 13.1 et 17). Nouvelle empreinte du texte signé.
+export const CONTRAT_VERSION = "2.1";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -336,7 +338,7 @@ SIREN.
 
 **4.1 — Grille.** La rémunération est exclusivement constituée de commissions, selon la **grille figurant
 en annexe 1** (version 2 du {{GRILLE_DATE}}), annexée au présent contrat et en
-faisant partie intégrante.
+faisant partie intégrante. Les produits créés après la signature relèvent de l'annexe 1, A1.7.
 
 Cette grille est **propre au présent contrat**. Elle est arrêtée palier par palier avant la génération du
 contrat. Elle peut différer,
@@ -822,7 +824,8 @@ facturation ayant pris fin, la facture est alors établie dans les conditions de
 ### Article 13 — Modification
 
 **13.1** Toute modification du présent contrat ou de la grille annexée fait l'objet d'un avenant soumis à
-la signature de l'Apporteur.
+la signature de l'Apporteur. La publication de la commission d'un produit créé après la signature (annexe 1,
+A1.7) n'est pas une modification du contrat.
 
 **13.2** Tant que l'Apporteur n'a pas signé un avenant, **les conditions de la version qu'il a signée
 continuent de s'appliquer** — à ses attributions en cours comme à ses déclarations nouvelles, ainsi qu'aux
@@ -888,7 +891,8 @@ documents de présentation ou d'un courrier électronique, **ni aucun support pu
 Société, notamment les pages de son site présentant les commissions,** n'a valeur contractuelle, **à
 l'exception des documents que le présent contrat désigne — autofactures, avoirs et décomptes, notifications de
 l'article 20, décisions relatives aux attributions et extraits du registre de l'article 3.5 —, qui font
-partie de l'exécution du contrat. La présente stipulation ne limite ni n'exclut le devoir d'information de
+partie de l'exécution du contrat, et de la grille de référence publiée, pour les seuls produits créés après la
+signature (annexe 1, A1.7). La présente stipulation ne limite ni n'exclut le devoir d'information de
 l'article 1112-1 du code civil.**
 
 ---
@@ -1107,16 +1111,28 @@ y compris pour une conférence. Les paliers susceptibles d'un tel financement po
 les tableaux A1.1 à A1.4 bis.
 **À la date de la présente version, aucun palier de la présente grille ne porte cette mention.**
 
-### A1.7 — Palier absent de la présente grille
+### A1.7 — Produits créés après la signature
 
-Lorsqu'une prestation est vendue à une entreprise attribuée et que son palier ne figure pas à la présente
-annexe parce qu'il a été créé après la signature, la commission correspondante est portée en attente
-**sous le libellé « prestation hors grille de commissions »**. **La situation est réglée dans les soixante
-jours de l'encaissement**, soit par un avenant (article 13), soit par la constatation écrite que ce palier
-n'est pas commissionné au titre du présent contrat, portée à la connaissance de l'Apporteur avec son motif.
-**À défaut de décision de la Société dans ce délai, la commission est due au taux ou au forfait que la
-grille publiée par la Société portait à la date de la vente.** Aucun taux n'est appliqué par défaut en
-dehors de ce cas.
+**Chaque palier figurant à la présente annexe conserve la commission que lui attribue le présent contrat
+tant que la Société le propose.**
+
+Lorsque la Société crée un produit après la signature du présent contrat (palier, prestation ou format,
+nouvelle formation comprise), **sa commission est celle que la grille de référence publiée par la Société
+lui attribue à la date de la vente**, sans avenant. La Société fixe la commission de chaque nouveau produit
+à sa création et la publie, datée, avant toute vente de ce produit ; elle la motive sur demande de
+l'Apporteur (article 1164 du code civil). **La commission ainsi publiée n'est jamais rétroactive** : une
+vente déjà réalisée conserve la commission publiée à la date de cette vente.
+
+Lorsqu'un tel produit est vendu à une entreprise attribuée sans qu'aucune commission n'ait été publiée à la
+date de la vente, la commission correspondante est portée en attente **sous le libellé « prestation hors
+grille de commissions »**. **La situation est réglée dans les soixante jours de l'encaissement**, soit par
+la publication de la commission de ce produit, soit par la constatation écrite que ce produit n'est pas
+commissionné, portée à la connaissance de l'Apporteur avec son motif. **À défaut de décision de la Société
+dans ce délai, la commission est due au taux ou au forfait que la grille publiée par la Société portait à
+la date de la vente.** Aucun taux n'est appliqué par défaut en dehors de ce cas.
+
+**Le retrait d'un produit de l'offre de la Société n'affecte ni les commissions acquises ni les
+attributions en cours.**
 
 ---
 

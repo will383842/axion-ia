@@ -41,6 +41,7 @@ import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import * as Sentry from "@sentry/nextjs";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { listerFichesRattachables } from "@/features/admin-calendly/fiches-rattachables";
+import { adresseConfirmee } from "@/server/calendly/fiche-rendez-vous-apporteur";
 // Dates affichées en FR (audit UX : ISO brut illisible pour Will). Seuls les
 // usages AFFICHÉS sont concernés — la `key` React et les valeurs passées en
 // `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
@@ -131,6 +132,18 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   } catch (err) {
     Sentry.captureException(err, { tags: { ecran: "fiche-appel", etape: "fiches-rattachables" } });
   }
+
+  // Échange apporteur rattaché à rien (2026-10-07, cas « Krafft ») : la console propose
+  // de créer la fiche, avec ce que l'API Calendly a CONFIRMÉ (jamais l'adresse saisie).
+  const emailConfirme = adresseConfirmee(event.rawPayload);
+  const creationFiche =
+    estAppelApporteur(event.eventTypeName) &&
+    !event.linkedSubmissionId &&
+    !event.linkedJobApplicationId &&
+    event.status !== "canceled" &&
+    emailConfirme
+      ? { nom: event.inviteeName, email: emailConfirme, telephone: event.inviteePhone }
+      : null;
 
   return (
     <>
@@ -271,6 +284,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               linkedSubmissionId: event.linkedSubmissionId,
             }}
             fichesRattachables={fichesRattachables}
+            creationFiche={creationFiche}
           />
         </div>
 
