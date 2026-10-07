@@ -38,7 +38,7 @@ import { motsDuNom, nomCorrespond } from "@/lib/calendly/nom-fiche";
 
 export { motsDuNom, nomCorrespond };
 
-export type GroupeFiche = "meme-personne" | "nom-probable" | "recentes" | "actuelle";
+export type GroupeFiche = "meme-personne" | "nom-probable" | "recentes" | "actuelle" | "recherche";
 
 export interface FicheRattachable {
   id: string;
@@ -56,6 +56,7 @@ const INTITULE_GROUPE: Record<GroupeFiche, string> = {
   "meme-personne": "Même adresse e-mail",
   "nom-probable": "Même nom, autre adresse (à vérifier)",
   recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
+  recherche: "Résultats de la recherche",
 };
 const PLAFOND_PAR_GROUPE = 25;
 const PLAFOND_NOM_PROBABLE = 5;
@@ -183,4 +184,80 @@ export async function listerFichesRattachables(rdv: {
     n += 1;
   }
   return fiches;
+}
+
+// ── RECHERCHE LIBRE (2026-10-07, cas « Krafft ») ──────────────────────────
+// Un échange réservé sous un nom d'un seul mot (« Krafft »), avec une autre
+// adresse que celle de la candidature : aucun groupe ci-dessus ne le retrouve
+// (pas de recherche par un seul mot, adresse différente, fiche hors des 25
+// récentes). Will restait bloqué sur « Rattache-le d'abord ». On cherche donc
+// dans TOUTES les fiches du même public, sur le nom, l'adresse et le téléphone,
+// un seul mot accepté. On PROPOSE ; rien n'est rattaché sans l'enregistrement.
+
+/** Combien de fiches on relit (et déchiffre) pour une recherche. */
+const PLAFOND_LECTURE_RECHERCHE = 3000;
+/** Combien de résultats on rend. */
+const PLAFOND_RESULTATS_RECHERCHE = 20;
+
+/** Minuscules, sans accents ni ponctuation superflue : « Élodie » → « elodie ». */
+export function normaliserRecherche(v: string): string {
+  return v.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+/**
+ * Une fiche correspond-elle à la recherche ? Chaque terme doit se trouver dans le
+ * nom, l'adresse ou le téléphone (chiffres seuls pour un terme de chiffres).
+ */
+export function ficheCorrespond(
+  termes: readonly string[],
+  f: { nom: string | null; email: string | null; telephone: string | null },
+): boolean {
+  if (termes.length === 0) return false;
+  const texte = normaliserRecherche(`${f.nom ?? ""} ${f.email ?? ""}`);
+  const chiffres = (f.telephone ?? "").replace(/\D/g, "");
+  return termes.every((t) => {
+    const tc = t.replace(/\D/g, "");
+    if (tc.length >= 4 && tc.length === t.replace(/[\s.+()-]/g, "").length) {
+      // Un numéro : comparé sur ses 9 derniers chiffres (0612… = +33612…).
+      return chiffres.includes(tc.slice(-9));
+    }
+    return texte.includes(t);
+  });
+}
+
+export async function rechercherFichesRattachables(
+  q: string,
+  estEchangeApporteur: boolean,
+): Promise<FicheRattachable[]> {
+  const termes = normaliserRecherche(q)
+    .split(" ")
+    .filter((t) => t.length >= 2);
+  if (termes.length === 0) return [];
+  const lignes = (await prisma.submission.findMany({
+    where: { deletedAt: null, ...(estEchangeApporteur ? FILTRE_APPORTEUR_PRISMA : {}) },
+    orderBy: { submittedAt: "desc" },
+    take: PLAFOND_LECTURE_RECHERCHE,
+    select: { ...SELECT_NOM, contactPhone: true },
+  })) as Array<Ligne & { contactEmail: string | null; contactPhone: string | null }>;
+  const resultats: FicheRattachable[] = [];
+  for (const l of lignes) {
+    if (resultats.length >= PLAFOND_RESULTATS_RECHERCHE) break;
+    if (estApporteur(l.details) !== estEchangeApporteur) continue;
+    const fiche = {
+      nom: dechiffrer(l.contactName),
+      email: dechiffrer(l.contactEmail),
+      telephone: dechiffrer(l.contactPhone),
+    };
+    if (!ficheCorrespond(termes, fiche)) continue;
+    // L'adresse dans le libellé : deux homonymes se distinguent, et c'est la donnée
+    // qui dit à Will qu'il tient la bonne personne (adresse relais Indeed, etc.).
+    const lib = [libelle(l), fiche.email].filter(Boolean).join(" · ");
+    resultats.push({
+      id: l.id,
+      libelle: lib,
+      groupe: "recherche",
+      intitule: INTITULE_GROUPE.recherche,
+    });
+  }
+  return resultats;
 }

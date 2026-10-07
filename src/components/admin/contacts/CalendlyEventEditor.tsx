@@ -4,7 +4,12 @@
 // Sprint Notif Infra 2026-05-26 / fix P1-6 audit 2026-05-27.
 
 import { useState, useTransition } from "react";
-import { updateCalendlyEventAction } from "@/features/admin-calendly/actions";
+import { useRouter } from "next/navigation";
+import {
+  creerFicheDepuisRendezVousAction,
+  rechercherFichesRattachablesAction,
+  updateCalendlyEventAction,
+} from "@/features/admin-calendly/actions";
 import { toParisLocalInput, fromParisLocalInput } from "@/lib/calendar-grid";
 
 /**
@@ -37,13 +42,63 @@ interface Props {
   readonly initial: Initial;
   /** Les fiches proposées au rattachement (vide = seule « Aucune fiche »). */
   readonly fichesRattachables?: ReadonlyArray<FicheRattachable>;
+  /**
+   * Échange apporteur rattaché à rien (2026-10-07) : ce que Calendly a CONFIRMÉ,
+   * montré avant de créer la fiche. `null` : pas de création proposée.
+   */
+  readonly creationFiche?: {
+    readonly nom: string | null;
+    readonly email: string;
+    readonly telephone: string | null;
+  } | null;
 }
 
 export function CalendlyEventEditor({
   id,
   initial,
   fichesRattachables = [],
+  creationFiche = null,
 }: Props): React.ReactElement {
+  const router = useRouter();
+  const [recherche, setRecherche] = useState("");
+  const [resultats, setResultats] = useState<ReadonlyArray<FicheRattachable>>([]);
+  const [infoRecherche, setInfoRecherche] = useState<string | null>(null);
+  const [confirmerCreation, setConfirmerCreation] = useState(false);
+  const [infoCreation, setInfoCreation] = useState<string | null>(null);
+  // Les résultats de recherche s'ajoutent à la liste, sans doublon.
+  const vus = new Set(fichesRattachables.map((f) => f.id));
+  const options = [...fichesRattachables, ...resultats.filter((f) => !vus.has(f.id))];
+
+  function chercher() {
+    setInfoRecherche(null);
+    startTransition(async () => {
+      const r = await rechercherFichesRattachablesAction({ id, q: recherche });
+      if (!r.ok) {
+        setInfoRecherche(r.error);
+        return;
+      }
+      setResultats(r.fiches);
+      setInfoRecherche(
+        r.fiches.length === 0
+          ? "Aucune fiche trouvée. Vous pouvez créer la fiche depuis ce rendez-vous."
+          : `${r.fiches.length} fiche(s) trouvée(s) : choisissez-la dans la liste, puis enregistrez.`,
+      );
+    });
+  }
+
+  function creer() {
+    setInfoCreation(null);
+    startTransition(async () => {
+      const r = await creerFicheDepuisRendezVousAction({ id });
+      setConfirmerCreation(false);
+      if (r.ok) {
+        setInfoCreation(r.message);
+        router.refresh();
+      } else {
+        setInfoCreation(r.error);
+      }
+    });
+  }
   const [state, setState] = useState({
     inviteeName: initial.inviteeName ?? "",
     inviteeEmail: initial.inviteeEmail ?? "",
@@ -206,9 +261,9 @@ export function CalendlyEventEditor({
             disabled={isPending}
           >
             <option value="">Aucune fiche</option>
-            {[...new Set(fichesRattachables.map((f) => f.intitule))].map((intitule) => (
+            {[...new Set(options.map((f) => f.intitule))].map((intitule) => (
               <optgroup key={intitule} label={intitule}>
-                {fichesRattachables
+                {options
                   .filter((f) => f.intitule === intitule)
                   .map((f) => (
                     <option key={f.id} value={f.id}>
@@ -218,6 +273,88 @@ export function CalendlyEventEditor({
               </optgroup>
             ))}
           </select>
+          {/* Recherche libre (2026-10-07, cas « Krafft ») : nom, prénom, adresse ou
+              téléphone, un seul mot accepté, sur TOUTES les fiches du même public. */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <input
+              type="search"
+              aria-label="Chercher une fiche"
+              className="admin-input min-w-0 flex-1"
+              placeholder="Chercher : nom, prénom, adresse e-mail ou téléphone"
+              value={recherche}
+              onChange={(e) => setRecherche(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (recherche.trim().length >= 2) chercher();
+                }
+              }}
+              maxLength={120}
+              disabled={isPending}
+            />
+            <button
+              type="button"
+              className="admin-button admin-button-secondary"
+              onClick={chercher}
+              disabled={isPending || recherche.trim().length < 2}
+            >
+              Chercher
+            </button>
+          </div>
+          {infoRecherche ? (
+            <p role="status" className="admin-help mt-1">
+              {infoRecherche}
+            </p>
+          ) : null}
+          {creationFiche && !state.linkedSubmissionId ? (
+            <div className="mt-3">
+              {confirmerCreation ? (
+                <div className="admin-alert" role="group" aria-label="Confirmer la création">
+                  <p>
+                    Créer une fiche apporteur avec ce que Calendly a confirmé — aucun e-mail ne part
+                    :
+                  </p>
+                  <ul className="mt-1 list-disc pl-5">
+                    <li>Nom : {creationFiche.nom || "—"}</li>
+                    <li>Adresse : {creationFiche.email}</li>
+                    <li>Téléphone : {creationFiche.telephone || "—"}</li>
+                  </ul>
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      type="button"
+                      className="admin-button"
+                      onClick={creer}
+                      disabled={isPending}
+                    >
+                      Confirmer la création
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-button admin-button-secondary"
+                      onClick={() => setConfirmerCreation(false)}
+                      disabled={isPending}
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="admin-button admin-button-secondary"
+                  onClick={() => setConfirmerCreation(true)}
+                  disabled={isPending}
+                >
+                  Créer la fiche apporteur depuis ce rendez-vous
+                </button>
+              )}
+            </div>
+          ) : null}
+          {infoCreation ? (
+            <p role="status" className="admin-help mt-1">
+              {infoCreation}
+            </p>
+          ) : null}
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="notes" className="admin-label">
