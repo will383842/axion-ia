@@ -30,3 +30,14 @@ describe("manquement ou fraude (art. 4.5 bis)", () => {
     expect(t).toContain("trente jours");
   });
 });
+
+describe("manquement : avis au parrain", () => {
+  it("un simple avis, sans les faits", async () => {
+    const r = await renderEmailTemplate("apporteur-manquement" as never, "fr", {
+      contactName: "Paul Martin",
+      parrain: true,
+    });
+    expect(r.subject).toBe("Une part de parrainage est retirée");
+    expect(r.text).not.toContain("Les faits sont les suivants");
+  });
+});

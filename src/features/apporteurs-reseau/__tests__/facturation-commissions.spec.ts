@@ -1118,3 +1118,28 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
     expect(lignes()[0]!.autofactureNumero).toBeNull();
   });
 });
+
+describe("ligne RETENUE pour manquement (art. 4.5 bis) dans une autofacture", () => {
+  it("le reste est versé par complément, la ligne retenue n'est jamais virée, l'avoir n'est pas redéduit", async () => {
+    etat.lignes = [ligne("a", "due", 10_000), ligne("b", "due", 30_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    const b = lignes().find((l) => l.id === "b")!;
+    b.statut = "retenue";
+    const avoirVerseLe = new Date("2026-10-06T08:00:00Z");
+    (etat.lignes as Ligne[]).push(
+      ligne("av", "reprise", -30_000, {
+        autofactureNumero: numero,
+        avoirNumero: "AXI-APP-2026-0099",
+        releveMois: "2026-10",
+        verseeAt: avoirVerseLe,
+      }),
+    );
+    const r = await marquerVerse("APP1", MARDI, numero);
+    expect(r).toMatchObject({ ok: true });
+    expect((r as { totalCents: number }).totalCents).toBeGreaterThan(0);
+    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
+    expect(lignes().find((l) => l.id === "b")!.statut).toBe("retenue");
+    expect(lignes().find((l) => l.id === "av")!.verseeAt).toEqual(avoirVerseLe);
+  });
+});

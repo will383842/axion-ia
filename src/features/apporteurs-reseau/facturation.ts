@@ -719,20 +719,26 @@ export interface VirementAFaire {
   emissionAt: Date;
 }
 
-/** Montants HT des lignes facturées et SUSPENDUES, par numéro d'autofacture. */
+/**
+ * Montants HT des lignes facturées et SUSPENDUES (contestation, art. 4.2 bis) ou RETENUES
+ * (manquement, art. 4.5 bis, neutralisées par un avoir déjà soldé), par numéro d'autofacture :
+ * elles sortent du virement, qui se calcule par complément (`aVirerPartielCents`).
+ */
 async function suspenduesParNumero(
   apporteurId?: string,
   numero?: string,
 ): Promise<Map<string, number[]>> {
   const out = new Map<string, number[]>();
-  if (!(await litigeDisponible())) return out;
+  const avecLitige = await litigeDisponible();
   const ls = await prisma.commissionApporteur.findMany({
     where: {
       ...(apporteurId ? { apporteurId } : {}),
-      statut: "due",
       autofactureNumero: numero ? numero : { not: null },
       montantCents: { not: null },
-      litigeDepuis: { not: null },
+      OR: [
+        { statut: "retenue" },
+        ...(avecLitige ? [{ statut: "due" as const, litigeDepuis: { not: null } }] : []),
+      ],
     },
     select: { autofactureNumero: true, montantCents: true },
   });

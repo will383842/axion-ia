@@ -530,6 +530,7 @@ export async function compterCommissions(): Promise<Record<StatutCommissionAppor
     versee: 0,
     reprise: 0,
     annulee: 0,
+    retenue: 0,
   };
   for (const x of g) out[x.statut] = x._count._all;
   return out;

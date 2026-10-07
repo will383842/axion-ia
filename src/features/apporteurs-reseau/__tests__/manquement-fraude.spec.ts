@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Contrat 2.3, art. 4.5 bis : un manquement ou une fraude prive l'affaire de toute commission ;
-// celles déjà versées sont reprises ; l'apporteur reçoit les faits et peut contester (30 jours).
+// celles déjà versées sont reprises ; celles facturées non versées sont RETENUES et neutralisées
+// par un avoir ; l'apporteur reçoit les faits et peut contester (30 jours) ; le parrain, un avis.
 
 interface Ligne {
   id: string;
@@ -12,34 +13,39 @@ interface Ligne {
   statut: string;
   montantCents: number | null;
   autofactureNumero: string | null;
-  litigeDepuis: Date | null;
-  litigeMotif: string | null;
+  autofactureEmiseAt: Date | null;
+  avoirNumero: string | null;
+  verseeAt: Date | null;
   palier: string | null;
 }
 
 const etat = vi.hoisted(() => ({
   lignes: [] as Ligne[],
   presentation: { id: "P1", apporteurId: "APP1", statut: "confirmee" } as Record<string, unknown>,
-  annulees: [] as string[],
   reprises: [] as Array<Record<string, unknown>>,
   envoyes: [] as Array<Record<string, unknown>>,
   journal: [] as Array<Record<string, unknown>>,
+  pdfs: [] as Array<Record<string, unknown>>,
 }));
 
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
-vi.mock("../litige", () => ({ litigeDisponible: async () => true }));
+vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
     return "envoye";
   }),
 }));
-vi.mock("../ajustement", () => ({
-  annulerCommission: vi.fn(async (id: string) => {
-    const l = etat.lignes.find((x) => x.id === id)!;
-    l.statut = "annulee";
-    etat.annulees.push(id);
-    return { ok: true };
+vi.mock("../commissions", () => ({
+  moisParis: () => "2026-10",
+  allouerNumerosAutofacture: vi.fn(async () => ["AXI-APP-2026-0099"]),
+  genererPdfAutofacture: vi.fn(async (e: Record<string, unknown>) => {
+    etat.pdfs.push(e);
+    return {
+      r2Key: `k/${String(e["numero"])}`,
+      filename: `${String(e["numero"])}.pdf`,
+      totalTtcCents: 0,
+    };
   }),
 }));
 vi.mock("../resiliation", () => ({
@@ -59,8 +65,25 @@ function correspond(l: Record<string, unknown>, where: Record<string, unknown>):
   });
 }
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const commissionApporteur = {
+    findMany: vi.fn(async (a: { where: Record<string, unknown> }) =>
+      etat.lignes.filter((l) => correspond(l as never, a.where)).map((l) => ({ ...l })),
+    ),
+    updateMany: vi.fn(
+      async (a: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
+        const ls = etat.lignes.filter((l) => correspond(l as never, a.where));
+        for (const l of ls) Object.assign(l, a.data);
+        return { count: ls.length };
+      },
+    ),
+    create: vi.fn(async (a: { data: Record<string, unknown> }) => {
+      const id = `rep-${etat.lignes.length + 1}`;
+      etat.lignes.push({ ...(a.data as unknown as Ligne), id, presentationId: null });
+      return { id };
+    }),
+  };
+  const prisma = {
     presentationEntreprise: {
       findUnique: vi.fn(async () => ({ ...etat.presentation })),
       updateMany: vi.fn(
@@ -71,33 +94,36 @@ vi.mock("@/lib/prisma", () => ({
         },
       ),
     },
-    commissionApporteur: {
-      findMany: vi.fn(async (a: { where: Record<string, unknown> }) =>
-        etat.lignes.filter((l) => correspond(l as never, a.where)).map((l) => ({ ...l })),
-      ),
-      updateMany: vi.fn(
-        async (a: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
-          const ls = etat.lignes.filter((l) => correspond(l as never, a.where));
-          for (const l of ls) Object.assign(l, a.data);
-          return { count: ls.length };
-        },
-      ),
-    },
+    commissionApporteur,
     apporteurReseau: {
-      findUnique: vi.fn(async () => ({ prenom: "Claire", email: "claire@exemple.fr" })),
+      findUnique: vi.fn(async (a: { where: { id: string } }) => ({
+        prenom: a.where.id === "APP2" ? "Paul" : "Claire",
+        email: `${a.where.id.toLowerCase()}@exemple.fr`,
+      })),
     },
     activityLog: {
+      findFirst: vi.fn(
+        async (a: { where: Record<string, unknown> }) =>
+          etat.journal.find((j) => correspond(j, a.where)) ?? null,
+      ),
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
-        etat.journal.push(a.data);
+        etat.journal.push({
+          ...a.data,
+          targetType: a.data["targetType"],
+          targetId: a.data["targetId"],
+        });
         return {};
       }),
     },
-  },
-}));
+    $transaction: async (cb: (tx: unknown) => unknown) => cb({ commissionApporteur }),
+  };
+  return { prisma };
+});
 
 import { constaterManquement } from "../manquement";
 
 const MAINTENANT = new Date("2026-10-08T09:00:00Z");
+const FAITS = "L'entreprise a versé une rétrocession à l'apporteur, non déclarée (art. 8.4).";
 const ligne = (id: string, statut: string, extra: Partial<Ligne> = {}): Ligne => ({
   id,
   apporteurId: "APP1",
@@ -107,97 +133,117 @@ const ligne = (id: string, statut: string, extra: Partial<Ligne> = {}): Ligne =>
   statut,
   montantCents: 40_000,
   autofactureNumero: null,
-  litigeDepuis: null,
-  litigeMotif: null,
+  autofactureEmiseAt: null,
+  avoirNumero: null,
+  verseeAt: null,
   palier: null,
   ...extra,
 });
+const part = (id: string, factureId: string, statut: string, extra: Partial<Ligne> = {}) =>
+  ligne(id, statut, {
+    apporteurId: "APP2",
+    parrainage: true,
+    presentationId: null,
+    factureId,
+    montantCents: 4_000,
+    ...extra,
+  });
+const constater = (faits = FAITS) =>
+  constaterManquement({ presentationId: "P1", faits, acteurId: "admin-1", maintenant: MAINTENANT });
 
 beforeEach(() => {
   etat.lignes = [];
   etat.presentation = { id: "P1", apporteurId: "APP1", statut: "confirmee" };
-  etat.annulees = [];
   etat.reprises = [];
   etat.envoyes = [];
   etat.journal = [];
+  etat.pdfs = [];
 });
 
 describe("manquement ou fraude (art. 4.5 bis)", () => {
   it("les faits sont obligatoires : sans eux, rien ne bouge", async () => {
     etat.lignes = [ligne("c1", "due")];
-    expect(
-      await constaterManquement({ presentationId: "P1", faits: "court", maintenant: MAINTENANT }),
-    ).toMatchObject({ ok: false });
+    expect(await constater("court")).toMatchObject({ ok: false });
     expect(etat.lignes[0]!.statut).toBe("due");
     expect(etat.envoyes).toHaveLength(0);
   });
 
-  it("non facturée = annulée ; facturée non versée = bloquée ; versée = reprise, parrain compris", async () => {
+  it("chaque ligne de l'affaire, PART DU PARRAIN COMPRISE, selon son état", async () => {
     etat.lignes = [
       ligne("a", "due"),
+      part("pa", "F-a", "due"),
       ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" }),
+      part("pb", "F-b", "due", { autofactureNumero: "AXI-APP-2026-0002" }),
       ligne("v", "versee"),
-      ligne("pv", "versee", {
-        apporteurId: "APP2",
-        presentationId: "P1",
-        parrainage: true,
-        factureId: "F-v",
-        montantCents: 4_000,
-      }),
+      part("pv", "F-v", "versee"),
     ];
-    const r = await constaterManquement({
-      presentationId: "P1",
-      faits: "L'entreprise a versé une rétrocession à l'apporteur, non déclarée (art. 8.4).",
-      acteurId: "admin-1",
-      maintenant: MAINTENANT,
+    const r = await constater();
+    expect(r).toMatchObject({ ok: true, bilan: { annulees: 2, retenues: 2, reprises: 2 } });
+    const st = (id: string) => etat.lignes.find((l) => l.id === id)!.statut;
+    expect([st("a"), st("pa")]).toEqual(["annulee", "annulee"]);
+    expect([st("b"), st("pb")]).toEqual(["retenue", "retenue"]);
+    expect(etat.reprises.map((x) => x["commissionId"])).toEqual(["v", "pv"]);
+  });
+
+  it("retenue : un AVOIR soldé, rattaché à l'autofacture, neutralise la ligne (jamais déduit ailleurs)", async () => {
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    await constater();
+    const avoir = etat.lignes.find((l) => l.statut === "reprise")!;
+    expect(avoir).toMatchObject({
+      montantCents: -40_000,
+      autofactureNumero: "AXI-APP-2026-0001",
+      avoirNumero: "AXI-APP-2026-0099",
+      palier: "reprise-de:b",
     });
-    expect(r).toMatchObject({ ok: true, bilan: { annulees: 1, bloquees: 1, reprises: 2 } });
-    expect(etat.annulees).toEqual(["a"]);
-    expect(etat.lignes.find((l) => l.id === "b")!.litigeDepuis).toEqual(MAINTENANT);
-    expect(etat.reprises.map((x) => [x["commissionId"], x["demandeeCents"]])).toEqual([
-      ["v", 40_000],
-      ["pv", 4_000],
-    ]);
+    expect(avoir.verseeAt).toEqual(MAINTENANT);
+    expect(etat.pdfs[0]).toMatchObject({
+      numero: "AXI-APP-2026-0099",
+      totalCents: 40_000,
+      avoir: { factureInitiale: "AXI-APP-2026-0001" },
+    });
+    // L'avoir est joint à la notification.
+    expect(etat.envoyes[0]).toMatchObject({
+      attachments: [{ filename: "AXI-APP-2026-0099.pdf" }],
+    });
+  });
+
+  it("présentation TERMINÉE : marquée démentie aussi (le passage quotidien n'y crée plus rien)", async () => {
+    etat.presentation = { id: "P1", apporteurId: "APP1", statut: "terminee" };
+    await constater();
     expect(etat.presentation["statut"]).toBe("dementie");
   });
 
-  it("l'apporteur reçoit les FAITS ; le geste est tracé au journal", async () => {
+  it("UNE notification avec les faits (clé stable) ; un second constat est refusé", async () => {
     etat.lignes = [ligne("a", "due")];
-    const faits = "L'entreprise déclare n'avoir jamais échangé avec l'apporteur (art. 3.7).";
-    await constaterManquement({
-      presentationId: "P1",
-      faits,
-      acteurId: "admin-1",
-      maintenant: MAINTENANT,
-    });
+    await constater();
     expect(etat.envoyes).toHaveLength(1);
     expect(etat.envoyes[0]).toMatchObject({
       gabarit: "apporteur-manquement",
-      destinataire: "claire@exemple.fr",
-      payload: { faits },
+      destinataire: "app1@exemple.fr",
+      payload: { faits: FAITS },
+      jobId: "apporteur-manquement-P1",
     });
-    expect(etat.journal[0]).toMatchObject({
-      adminUserId: "admin-1",
-      action: "presentation_entreprise.manquement",
-      targetId: "P1",
-      changes: { faits, statutAvant: "confirmee" },
-    });
+    expect(await constater()).toMatchObject({ ok: false });
+    expect(etat.envoyes).toHaveLength(1);
   });
 
-  it("une reprise déjà faite n'est pas refaite (montant restant seulement)", async () => {
-    etat.lignes = [
-      ligne("v", "versee"),
-      ligne("r", "reprise", {
-        montantCents: -40_000,
-        palier: "reprise-de:v",
-        presentationId: null,
-      }),
-    ];
-    const r = await constaterManquement({
-      presentationId: "P1",
-      faits: "Fraude constatée sur la déclaration.",
-      maintenant: MAINTENANT,
+  it("le parrain dont la part est retirée reçoit un simple avis, SANS les faits", async () => {
+    etat.lignes = [ligne("a", "due"), part("pa", "F-a", "due")];
+    await constater();
+    const auParrain = etat.envoyes.find((x) => x["destinataire"] === "app2@exemple.fr")!;
+    expect(auParrain["payload"]).toMatchObject({ parrain: true });
+    expect(auParrain["payload"]).not.toHaveProperty("faits");
+  });
+
+  it("le geste est tracé au journal (qui, faits, statut d'avant, bilan)", async () => {
+    etat.lignes = [ligne("a", "due")];
+    await constater();
+    expect(
+      etat.journal.find((j) => j["action"] === "presentation_entreprise.manquement"),
+    ).toMatchObject({
+      adminUserId: "admin-1",
+      targetId: "P1",
+      changes: { faits: FAITS, statutAvant: "confirmee", annulees: 1 },
     });
-    expect(r).toMatchObject({ ok: true, bilan: { reprises: 0 } });
   });
 });
