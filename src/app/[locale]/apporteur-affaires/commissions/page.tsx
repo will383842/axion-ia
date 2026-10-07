@@ -17,7 +17,12 @@ import { hasLocale } from "next-intl";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShell";
-import { dateDeLaLigne, grilleDeReference } from "@/features/apporteurs-reseau/grille-reference";
+import {
+  DATE_PUBLICATION_GRILLE,
+  depuisLeDeLaLigne,
+  grilleDeReference,
+} from "@/features/apporteurs-reseau/grille-reference";
+import historique from "@/features/apporteurs-reseau/grille-reference-historique.json";
 
 export const revalidate = 3600;
 
@@ -60,7 +65,9 @@ export default async function Page({ params }: Props) {
             votre contrat gardent la commission qui y figure.
           </p>
           <p className="text-fg-muted mt-3 text-sm">
-            Montants hors taxes. Une commission est due dans les conditions de votre contrat.
+            Montants hors taxes. Une commission est due dans les conditions de votre contrat. Grille
+            publiée le {dateFr(DATE_PUBLICATION_GRILLE)} ; chaque ligne indique depuis quand son
+            montant s&apos;applique.
           </p>
         </div>
       </Section>
@@ -75,9 +82,7 @@ export default async function Page({ params }: Props) {
               >
                 {t.titre}
               </h2>
-              <p className="text-fg-soft mt-1 text-sm">
-                {t.regle} <span className="text-fg-muted">Publié le {dateFr(t.publieLe)}.</span>
-              </p>
+              <p className="text-fg-soft mt-1 text-sm">{t.regle}</p>
               <div className="border-border bg-paper mt-3 overflow-x-auto rounded-2xl border">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-sand text-fg">
@@ -108,7 +113,10 @@ export default async function Page({ params }: Props) {
                           </td>
                         ))}
                         <td className="text-fg-muted px-3 py-2 whitespace-nowrap">
-                          {dateFr(dateDeLaLigne(t, l))}
+                          {(() => {
+                            const d = depuisLeDeLaLigne(t, l, historique);
+                            return d ? dateFr(d) : "—";
+                          })()}
                         </td>
                       </tr>
                     ))}

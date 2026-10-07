@@ -6,7 +6,17 @@
 import { describe, expect, it } from "vitest";
 
 import { CONTRAT_V2_MARKDOWN } from "../contrat-v2";
-import { dateDeLaLigne, grilleDeReference, type TableauGrille } from "../grille-reference";
+import {
+  cleDeLigne,
+  DATE_PUBLICATION_GRILLE,
+  depuisLeDeLaLigne,
+  grilleDeReference,
+  type EntreeHistorique,
+  type TableauGrille,
+} from "../grille-reference";
+import historiqueBrut from "../grille-reference-historique.json";
+
+const historique = historiqueBrut as Record<string, EntreeHistorique[]>;
 
 const norme = (v: string) =>
   v.replace(/\*\*/g, "").replace(/[  ]/g, " ").replace(/\s+/g, " ").trim();
@@ -52,14 +62,41 @@ describe("grille de référence ↔ annexe 1 du contrat", () => {
     expect(fausse.map((c) => c.map(norme))).not.toEqual(tableauDuContrat("A1.1"));
   });
 
-  it("les dates : AAAA-MM-JJ, jamais dans le futur ; un produit ajouté prend sa date", () => {
-    const aujourdhui = new Date().toISOString().slice(0, 10);
+  it("la date de publication : AAAA-MM-JJ, jamais antérieure au 2026-10-08 (A1.7)", () => {
+    expect(DATE_PUBLICATION_GRILLE).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(DATE_PUBLICATION_GRILLE >= "2026-10-08").toBe(true);
+  });
+
+  it("🔴 « Depuis le » : chaque ligne a un historique dont la DERNIÈRE entrée est la ligne actuelle", () => {
+    const cles = new Set<string>();
     for (const t of grille) {
-      expect(t.publieLe).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(t.publieLe <= aujourdhui).toBe(true);
+      for (const l of t.lignes) {
+        const k = cleDeLigne(t, l);
+        cles.add(k);
+        const h = historique[k];
+        expect(h, `historique manquant : ${k}`).toBeDefined();
+        // Un montant changé SANS nouvelle entrée datée → la dernière entrée ne colle plus.
+        expect(h!.at(-1)!.cellules, `montant changé sans nouvelle date : ${k}`).toEqual(l.cellules);
+        expect(depuisLeDeLaLigne(t, l, historique)).toBe(h!.at(-1)!.depuisLe);
+      }
     }
+    expect(Object.keys(historique).sort()).toEqual([...cles].sort());
+  });
+
+  it("l'historique : dates strictement croissantes, jamais avant la publication, contenu changé à chaque entrée", () => {
+    for (const [k, h] of Object.entries(historique)) {
+      expect(h[0]!.depuisLe >= DATE_PUBLICATION_GRILLE, k).toBe(true);
+      for (let i = 1; i < h.length; i++) {
+        expect(h[i]!.depuisLe > h[i - 1]!.depuisLe, k).toBe(true);
+        expect(h[i]!.cellules).not.toEqual(h[i - 1]!.cellules);
+      }
+    }
+  });
+
+  it("le test sait échouer : un montant modifié sans entrée datée n'a plus de « depuis le »", () => {
     const t = grille[0]!;
-    expect(dateDeLaLigne(t, { cellules: [], ajouteLe: "2099-01-01" })).toBe("2099-01-01");
-    expect(dateDeLaLigne(t, { cellules: [] })).toBe(t.publieLe);
+    const l = t.lignes[0]!;
+    const changee = { cellules: [...l.cellules.slice(0, 3), "300 €"] };
+    expect(depuisLeDeLaLigne(t, changee, historique)).toBeNull();
   });
 });

@@ -13,12 +13,13 @@
 // `la-grille-de-reference-est-celle-du-contrat.spec.ts` compare chaque ligne au texte signé :
 // une divergence rougit la CI.
 //
-// 📅 DATES : `publieLe` = date de la dernière modification du tableau dans le contrat,
-// relevée dans l'historique git (2026-10-07) :
-//   A1.1, A1.2, A1.3, A1.4, A1.5 → 2026-10-05 (ed37cfa2f, contrat v2) ;
-//   A1.4 bis (conférence)        → 2026-10-06 (e012a08fb).
-// Un produit AJOUTÉ plus tard porte son propre `ajouteLe` (AAAA-MM-JJ) : la date affichée
-// pour lui est la plus récente des deux.
+// 📅 DATES (relecture de a1, 2026-10-07) :
+//   · `DATE_PUBLICATION_GRILLE` = la date de mise en ligne de cette page (jour de la fusion).
+//     Elle n'est JAMAIS antidatée : A1.7 donne une portée en argent à cette date.
+//   · « Depuis le », par ligne = la date de la DERNIÈRE entrée de son historique
+//     (`grille-reference-historique.json`). Elle ne change qu'avec le contenu de la ligne : la
+//     garde exige que la dernière entrée soit identique à la ligne calculée, avec des dates
+//     strictement croissantes — changer un montant sans ajouter une entrée datée rougit.
 
 import {
   AUDIT_TIERS,
@@ -32,8 +33,6 @@ import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "./regles"
 export interface LigneGrille {
   /** Les cellules, dans l'ordre des colonnes du tableau. */
   readonly cellules: readonly string[];
-  /** Produit ajouté après la publication du tableau (AAAA-MM-JJ). */
-  readonly ajouteLe?: string;
 }
 
 export interface TableauGrille {
@@ -42,8 +41,20 @@ export interface TableauGrille {
   readonly regle: string;
   readonly colonnes: readonly string[];
   readonly lignes: readonly LigneGrille[];
-  /** Dernière modification du tableau (AAAA-MM-JJ). */
-  readonly publieLe: string;
+}
+
+/** Mise en ligne de la grille de référence (jour de la fusion, 2026-10-08). Jamais antidatée. */
+export const DATE_PUBLICATION_GRILLE = "2026-10-08";
+
+/** L'identité d'une ligne : son tableau et ses cellules SANS montant (libellé, durée). */
+export function cleDeLigne(t: Pick<TableauGrille, "cle" | "colonnes">, l: LigneGrille): string {
+  const descriptives = l.cellules.filter((_, i) => !/Prix|Commission/.test(t.colonnes[i] ?? ""));
+  return [t.cle, ...descriptives].join(" | ");
+}
+
+export interface EntreeHistorique {
+  readonly depuisLe: string;
+  readonly cellules: readonly string[];
 }
 
 /** « 1 900 € » (espaces simples, pour se comparer au texte du contrat). */
@@ -158,7 +169,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
         "Forfait par journée de formation vendue, au prix public, réduit au prorata en cas de remise. Prix par groupe de 2 à 15 participants.",
       colonnes: ["Formation", "Durée", "Prix public HT", "Commission"],
       lignes: formation,
-      publieLe: "2026-10-05",
     },
     {
       cle: "A1.2",
@@ -166,7 +176,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
       regle: `${unAUn} du montant hors taxes facturé.`,
       colonnes: ["Prestation", "Durée", "Prix public HT", "Commission"],
       lignes: accompagnement,
-      publieLe: "2026-10-05",
     },
     {
       cle: "A1.3",
@@ -174,7 +183,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
       regle: `${audit} du montant hors taxes facturé.`,
       colonnes: ["Palier", "Prix de référence HT", "Commission"],
       lignes: audits,
-      publieLe: "2026-10-05",
     },
     {
       cle: "A1.4",
@@ -182,7 +190,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
       regle: `${impl} du montant hors taxes facturé.`,
       colonnes: ["Palier", "Prix de référence HT", "Commission"],
       lignes: implementations,
-      publieLe: "2026-10-05",
     },
     {
       cle: "A1.4 bis",
@@ -192,7 +199,6 @@ export function grilleDeReference(): readonly TableauGrille[] {
       lignes: [
         { cellules: ["Conférence", `${euros(FORFAIT_CONFERENCE_CENTS / 100)} HT par conférence`] },
       ],
-      publieLe: "2026-10-06",
     },
     {
       cle: "A1.5",
@@ -205,12 +211,21 @@ export function grilleDeReference(): readonly TableauGrille[] {
         { cellules: ["Maintenance", "Aucune"] },
         { cellules: ["Intervention sur demande", "Aucune"] },
       ],
-      publieLe: "2026-10-05",
     },
   ];
 }
 
-/** La date à afficher pour une ligne : la plus récente entre le tableau et son ajout. */
-export function dateDeLaLigne(t: TableauGrille, l: LigneGrille): string {
-  return l.ajouteLe && l.ajouteLe > t.publieLe ? l.ajouteLe : t.publieLe;
+/**
+ * « Depuis le » d'une ligne : la date de la dernière entrée de son historique, SI cette entrée
+ * est identique à la ligne calculée ; sinon `null` (la garde rougit avant la mise en ligne).
+ */
+export function depuisLeDeLaLigne(
+  t: Pick<TableauGrille, "cle" | "colonnes">,
+  l: LigneGrille,
+  historique: Readonly<Record<string, readonly EntreeHistorique[]>>,
+): string | null {
+  const h = historique[cleDeLigne(t, l)];
+  const derniere = h?.[h.length - 1];
+  if (!derniere) return null;
+  return derniere.cellules.join("|") === l.cellules.join("|") ? derniere.depuisLe : null;
 }

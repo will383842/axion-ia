@@ -40,7 +40,8 @@ describe("page grille de référence", () => {
     ]) {
       expect(t).toContain(titre);
     }
-    expect(t).toMatch(/Publié le \d{2}\/\d{2}\/\d{4}/);
+    expect(t).toContain("Grille publiée le 08/10/2026");
+    expect(t).not.toContain("05/10/2026");
     expect(t).toContain("Coaching individuel");
     expect(t).toContain("Aucune");
     expect(t).not.toMatch(/parrain|qualiopi|jusqu'à/i);
