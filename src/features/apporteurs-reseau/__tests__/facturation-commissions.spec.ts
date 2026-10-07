@@ -528,6 +528,17 @@ describe("autofacture impossible faute de donnée : en attente, une seule alerte
     expect(etat.sentry).toEqual([]);
   });
 
+  it("07/10 : SIREN invalide (clé fausse) : aucune autofacture, aucun versement possible", async () => {
+    etat.apporteurs["APP1"] = { siren: "123456789" };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(lignes()[0]!.autofactureAttenteMotif).toBe("SIREN de l'apporteur");
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(lignes()[0]!.statut).toBe("due");
+    expect(etat.pdfs).toEqual([]);
+  });
+
   it("régime de TVA et adresse manquants : le motif les nomme tous les deux", async () => {
     etat.apporteurs["APP1"] = { regimeTva: null, adresse: "  " };
     etat.lignes = [ligne("c1", "due", 40_000)];

@@ -29,8 +29,8 @@ import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
 import { paragraphesLibres } from "./texte-libre-reseau";
-import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
-import { PARRAINAGE_BPS, PARRAINAGE_MOIS, TAUX_BPS } from "@/features/apporteurs-reseau/regles";
+import { ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
+import { PARRAINAGE_BPS, PARRAINAGE_MOIS } from "@/features/apporteurs-reseau/regles";
 import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import { SITE_URL as SITE_URL_BRUT } from "@/lib/site-url";
@@ -47,9 +47,6 @@ const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
 const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
 
-const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
-const PCT_INTEGRATION = getCommissionById("com-integration").percent ?? 0;
-const PCT_UN_A_UN = TAUX_BPS.un_a_un / 100;
 const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
@@ -156,12 +153,6 @@ export const COPY_DEMARRAGE = {
         `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
     commissionTitre: "Votre commission",
-    formation: (eur: number) =>
-      `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
-    audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
-    integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
-    unAUn: (pct: string) =>
-      `Accompagnement individuel et coaching (1-to-1) : ${pct} du montant HT de la facture.`,
     parrainage: (pct: string, mois: number) =>
       `Parrainage : si vous présentez une personne qui devient elle-même apporteur, vous touchez ${pct} de ses commissions pendant ${mois} mois à compter de sa signature.`,
     paiement:
@@ -248,7 +239,7 @@ export const COPY_DEMARRAGE = {
     ],
     ensuite:
       "Nous vérifions ensuite votre dossier et contresignons votre contrat : vous recevez alors votre exemplaire signé des deux parties.",
-    cta: "Compléter mon dossier",
+    cta: "Compléter mon dossier et signer mon contrat",
   },
   dossierRappel: {
     title: "Votre dossier vous attend",
@@ -318,6 +309,17 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  dossierRecu: {
+    // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
+    subject: "Votre dossier d'apporteur est bien reçu",
+    title: "Dossier bien reçu",
+    preview: "Votre dossier et votre contrat signé nous sont bien parvenus.",
+    texte: "Merci : votre dossier et votre contrat signé nous sont bien parvenus.",
+    suite:
+      "Nous vérifions votre dossier ; vous recevrez votre contrat contresigné par e-mail. Si un élément manque, nous vous le dirons par e-mail.",
+    lien: "Votre lien personnel reste disponible pour suivre votre dossier.",
+    cta: "Voir mon dossier",
   },
   virementFait: {
     // ⛔ Jamais de date d'arrivée sur le compte : elle dépend de la banque de l'apporteur.
@@ -420,10 +422,12 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
           </Text>
 
           <Text style={intertitre}>{t.commissionTitre}</Text>
-          <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
-          <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT))}</Text>
-          <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION))}</Text>
-          <Text style={puce}>• {t.unAUn(pourcent(PCT_UN_A_UN))}</Text>
+          {/* Le MÊME barème que « Retenu » et que le contrat v2 (`_bareme-apporteur`). */}
+          {lignesBareme().map((ligne) => (
+            <Text key={ligne} style={puce}>
+              • {ligne}
+            </Text>
+          ))}
           <Text style={puce}>• {t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
 
@@ -630,6 +634,7 @@ export function ApporteurDossierLienEmail({ locale, payload }: Props) {
           <Text style={emailStyles.paragraphStyle}>{t.ensuite}</Text>
         </>
       )}
+      <Text style={puce}>{ligneAPreparer()}</Text>
     </EmailLayout>
   );
 }
@@ -827,6 +832,35 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
   );
 }
 
+// ── Dossier bien reçu (à la signature de l'apporteur) ────────────────────
+
+export const apporteurDossierRecuSubject = (
+  _locale: Locale,
+  _payload?: Record<string, unknown>,
+): string => COPY_DEMARRAGE.dossierRecu.subject;
+
+export function ApporteurDossierRecuEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.dossierRecu;
+  const url = texteOuNull(p.dossierUrl);
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+      {url ? <Text style={emailStyles.paragraphStyle}>{t.lien}</Text> : null}
+    </EmailLayout>
+  );
+}
+
 // ── Virement fait (bouton « Virement fait » de la console) ───────────────
 
 export const apporteurVirementFaitSubject = (
@@ -946,9 +980,9 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
         `${t.presenterTitre}\n${t.presenter}\n${liste(t.champs)}`,
         t.prevenir,
         `${t.ensuiteTitre}\n1. ${e1}\n2. ${e2}\n3. ${e3(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}`,
-        `${t.commissionTitre}\n• ${t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}\n• ${t.audit(pourcent(PCT_AUDIT))}\n• ${t.integration(pourcent(PCT_INTEGRATION))}
-• ${t.unAUn(pourcent(PCT_UN_A_UN))}
-• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
+        `${t.commissionTitre}\n${lignesBareme()
+          .map((ligne) => `• ${ligne}`)
+          .join("\n")}\n• ${t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}`,
         t.paiement,
         "Votre contrat signé des deux parties est en pièce jointe.",
       ]);

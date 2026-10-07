@@ -167,6 +167,8 @@ import {
   apporteurReleveSubject,
   ApporteurReleveEmail,
   apporteurVirementFaitSubject,
+  apporteurDossierRecuSubject,
+  ApporteurDossierRecuEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
@@ -508,6 +510,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-dossier-a-verifier": {
     subject: apporteurDossierAVerifierSubject,
     component: ApporteurDossierAVerifierEmail,
+  },
+  "apporteur-dossier-recu": {
+    subject: apporteurDossierRecuSubject,
+    component: ApporteurDossierRecuEmail,
   },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,

@@ -33,7 +33,8 @@ import {
   type GabaritApporteur,
 } from "./envois";
 import { urlDossier } from "./jeton";
-import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, type TypePiece } from "./regles";
+import { lireEntrepriseParSiren } from "./annuaire";
+import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, sirenValide, type TypePiece } from "./regles";
 
 const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
   url ? { dossierUrl: url } : {};
@@ -151,6 +152,26 @@ function lireSignature(json: unknown): SignatureLue | null {
 }
 
 /** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
+/**
+ * Ordre de Will (07/10) : aucun contrat contresigné sans SIREN valide et ACTIF au registre
+ * (travail dissimulé, vigilance, solidarité financière, autofacture). Revérifié au moment de
+ * contresigner ; registre muet, entreprise cessée ou introuvable → refus, sans contournement :
+ * il suffit de recliquer quand le registre répond. Rend le message pour Williams, ou `null`.
+ */
+export async function sirenAContresigner(siren: string | null): Promise<string | null> {
+  if (!siren || !sirenValide(siren))
+    return "SIREN à vérifier : absent ou invalide. Demandez à l'apporteur de le corriger (étape 2 de son dossier).";
+  const r = await lireEntrepriseParSiren(siren);
+  if (!r.ok) {
+    return r.raison === "indisponible"
+      ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
+      : "SIREN à vérifier : introuvable au registre public. Le contrat ne peut pas être contresigné.";
+  }
+  if (!r.entreprise.active)
+    return "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
+  return null;
+}
+
 export async function preparerDecision(
   apporteurId: string,
   decision: Decision,
@@ -164,6 +185,8 @@ export async function preparerDecision(
   const base = { destinataire: d.email, entityType: "ApporteurReseau" as const, entityId: d.id };
   const mot = note?.trim() || null;
   if (decision === "contresigner") {
+    const blocage = await sirenAContresigner(d.siren);
+    if (blocage) return { ok: false, message: blocage };
     const nonConformes = d.pieces.filter((p) => p.statut !== "conforme" && p.type !== "rc_pro");
     if (nonConformes.length > 0) {
       return {

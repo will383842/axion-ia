@@ -162,6 +162,7 @@ export type EmailJobName =
   | "apporteur-dossier-a-completer"
   | "apporteur-dossier-refuse"
   | "apporteur-dossier-a-verifier"
+  | "apporteur-dossier-recu"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"

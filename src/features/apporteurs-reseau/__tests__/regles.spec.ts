@@ -213,3 +213,19 @@ describe("réseau d'apporteurs — règles du contrat v2", () => {
     ).toEqual([]);
   });
 });
+
+describe("07/10 (ordre de Will) : signature impossible sans SIREN valide", () => {
+  it("un SIREN de 9 chiffres à la clé fausse compte comme manquant", async () => {
+    const { manquesPourSigner } = await import("../regles");
+    const base = {
+      statutJuridique: "micro_entrepreneur",
+      regimeTva: "franchise_293b" as const,
+      numeroTva: null,
+      iban: "saisi",
+      piecesDeposees: ["identite", "rib"] as const,
+    };
+    expect(manquesPourSigner({ ...base, siren: "123456789" })).toContain("votre numéro SIREN");
+    expect(manquesPourSigner({ ...base, siren: null })).toContain("votre numéro SIREN");
+    expect(manquesPourSigner({ ...base, siren: "732829320" })).not.toContain("votre numéro SIREN");
+  });
+});
