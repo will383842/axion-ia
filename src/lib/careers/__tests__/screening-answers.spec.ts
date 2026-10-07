@@ -3,6 +3,7 @@ import {
   collectAnswers,
   labeledAnswers,
   missingRequired,
+  montantEnCentimes,
   normaliserMontant,
   parseScreeningQuestions,
   prixInvalides,
@@ -146,5 +147,39 @@ describe("réponse affichée en console (même lecture que Telegram)", () => {
     expect(valeurAffichee(prix, "200 à 300")).toBe("200 à 300");
     expect(valeurAffichee(materiel, "250")).toBe("250");
     expect(valeurAffichee(undefined, "250")).toBe("250");
+  });
+});
+
+describe("montantEnCentimes — le prix comparable, lu sans réécrire la base (L1)", () => {
+  it("convertit les saisies d'un montant, anciennes comprises", () => {
+    expect(montantEnCentimes("90")).toBe(9000);
+    expect(montantEnCentimes("250 €")).toBe(25000);
+    expect(montantEnCentimes("1 200 euros")).toBe(120000);
+    expect(montantEnCentimes("1 200")).toBe(120000);
+    expect(montantEnCentimes("49,90")).toBe(4990);
+    expect(montantEnCentimes("49,9")).toBe(4990);
+    expect(montantEnCentimes("12.5 EUR")).toBe(1250);
+  });
+
+  it("une fourchette, un texte ou une absence ne sont PAS un prix : « à préciser »", () => {
+    expect(montantEnCentimes("200 à 300")).toBeNull();
+    expect(montantEnCentimes("200-300 €")).toBeNull();
+    expect(montantEnCentimes("à partir de 90")).toBeNull();
+    expect(montantEnCentimes("250 € la demi-journée")).toBeNull();
+    expect(montantEnCentimes("")).toBeNull();
+    expect(montantEnCentimes(undefined)).toBeNull();
+    expect(montantEnCentimes(null)).toBeNull();
+  });
+});
+
+describe("non-régression L1 — valeurAffichee rend exactement ce qu'elle rendait (Telegram, fiche)", () => {
+  const prix = { id: "p", type: "price" as const };
+  it("mêmes sorties qu'avant l'ajout de montantEnCentimes", () => {
+    expect(valeurAffichee(prix, "90")).toBe("90 €");
+    expect(valeurAffichee(prix, "250 €")).toBe("250 €");
+    expect(valeurAffichee(prix, "1 200 euros")).toBe("1200 €");
+    expect(valeurAffichee(prix, "49,90")).toBe("49,90 €");
+    expect(valeurAffichee(prix, "200 à 300")).toBe("200 à 300");
+    expect(valeurAffichee({ id: "m" }, "1 200 euros")).toBe("1 200 euros");
   });
 });

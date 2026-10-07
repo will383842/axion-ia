@@ -283,7 +283,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         ) : null}
         {!montreVideo ? (
           <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
-            Aucune vidéo ni lien vers son travail. Demande-lui 2 ou 3 montages.
+            Aucune vidéo ni lien vers son travail. Vous pouvez lui demander 2 ou 3 montages.
           </p>
         ) : null}
         {liens.length > 0 ? (

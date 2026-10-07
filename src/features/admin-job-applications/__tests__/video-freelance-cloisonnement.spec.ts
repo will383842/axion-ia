@@ -8,6 +8,7 @@ const offerFindManyMock = vi.fn();
 const appFindManyMock = vi.fn();
 const countMock = vi.fn();
 const activityCreateMock = vi.fn();
+const videoFindManyMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -17,6 +18,7 @@ vi.mock("@/lib/prisma", () => ({
       count: (...a: unknown[]) => countMock(...a),
     },
     activityLog: { create: (...a: unknown[]) => activityCreateMock(...a) },
+    jobApplicationVideo: { findMany: (...a: unknown[]) => videoFindManyMock(...a) },
   },
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => `clair:${v}` }));
@@ -61,6 +63,9 @@ beforeEach(() => {
   countMock.mockResolvedValue(1);
   appFindManyMock.mockResolvedValue([LIGNE]);
   activityCreateMock.mockResolvedValue({});
+  videoFindManyMock.mockResolvedValue([
+    { id: "v1", applicationId: "a1", nomOriginal: "demo.mp4", taille: 1000 },
+  ]);
 });
 
 describe("listerCandidaturesVideoFreelance", () => {
@@ -84,11 +89,20 @@ describe("listerCandidaturesVideoFreelance", () => {
         expect(c?.nom, role).toBe("clair:Jean clair:Témoin");
         expect(c?.ville, role).toBe("Lyon");
         expect(c?.reponses.tarifs, role).toBe("250 € la demi-journée");
+        expect(
+          c?.videos.map((v) => v.id),
+          role,
+        ).toEqual(["v1"]);
       } else {
         refuses += 1;
         expect(c?.nom, role).toBeNull();
         expect(c?.ville, role).toBeNull();
         expect(c?.reponses, role).toEqual({});
+        // Ni prix ni vidéo : pas même le nombre de vidéos, ni les liens.
+        expect(c?.videos, role).toEqual([]);
+        expect(c?.liens, role).toEqual([]);
+        expect(res[0]?.questionsPrix, role).toEqual([]);
+        expect(res[0]?.questionTri, role).toBeNull();
       }
     }
     // Les deux branches ont réellement été parcourues.

@@ -102,6 +102,26 @@ export function normaliserMontant(brut: string): string | null {
   return v.replace(/[ \u00a0\u202f]/g, "");
 }
 
+/**
+ * Le montant en CENTIMES ENTIERS, pour comparer et trier (« 1 200 euros » →
+ * 120000, « 49,90 » → 4990), ou `null` quand la saisie n'est pas UN montant
+ * (« 200 à 300 », « à voir », vide) : la console l'affiche « à préciser ».
+ *
+ * 🔑 Conversion à la LECTURE seulement (plan « Candidatures unifiées », § 3.2) :
+ * `JobApplication.answers` n'est jamais réécrit. Les saisies libres d'avant le
+ * 26/09 restent telles quelles en base ; seules celles qui sont UN montant
+ * prennent place dans le tri. Même règle que `normaliserMontant` : ce qui est
+ * accepté au formulaire est exactement ce qui se trie.
+ */
+export function montantEnCentimes(brut: string | null | undefined): number | null {
+  if (!brut) return null;
+  const v = normaliserMontant(brut);
+  if (v === null) return null;
+  const [entier = "", decimales = ""] = v.split(/[.,]/);
+  const centimes = Number(entier) * 100 + Number(decimales.padEnd(2, "0") || "0");
+  return Number.isSafeInteger(centimes) ? centimes : null;
+}
+
 /** Questions `price` dont la réponse n'est pas UN montant. */
 export function prixInvalides(
   questions: ScreeningQuestion[],
