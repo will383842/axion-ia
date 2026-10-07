@@ -1287,6 +1287,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/numeros-emis-comportement.sql
+      # Candidatures unifiées L5 (2026-10-08) — liens privés de fichiers : l'effacement
+      # MANUEL d'un dossier après un téléchargement journalisé réussit (lien en
+      # cascade, journal des accès et fichier conservés) ; un lien retiré le reste.
+      # Chaque cas est ANNULÉ (ROLLBACK) : aucune ligne ne reste.
+      - name: Liens privés de fichiers — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci -v ON_ERROR_STOP=1 -f tests/sql/partages-comportement.sql
       # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
       # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
       # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,

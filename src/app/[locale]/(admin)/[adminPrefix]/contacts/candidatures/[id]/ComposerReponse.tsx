@@ -21,6 +21,7 @@
  * pris à l'endroit où il se produit.
  */
 
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -60,12 +61,46 @@ export interface LienInsertionComposeur {
   readonly url: string;
 }
 
+/**
+ * Un fichier proposé dans « Depuis ma bibliothèque » (Candidatures unifiées L5).
+ * Calculé côté SERVEUR (`fichiersPourComposeur`) : rien du stockage ne traverse.
+ */
+export interface FichierBibliothequeComposeur {
+  readonly id: string;
+  readonly titre: string;
+  readonly categorie: string;
+  readonly libelleCategorie: string;
+  readonly taille: number | null;
+  readonly tailleLisible: string | null;
+  readonly enAnalyse: boolean;
+}
+
+/** Un fichier choisi pour partir avec le message. */
+export interface FichierJoint {
+  readonly id: string;
+  readonly titre: string;
+  readonly categorie: string;
+  readonly taille: number | null;
+}
+
+// Le panneau « Joindre des fichiers » (et le déposeur qu'il contient) n'entre
+// pas dans le JavaScript de la fiche : il est chargé au clic [C3].
+const JoindreFichiers = dynamic(() => import("./JoindreFichiers"), {
+  ssr: false,
+  loading: () => <p className="admin-meta-small">Chargement…</p>,
+});
+
 interface Props {
   readonly applicationId: string;
   readonly prenom: string;
   readonly poste: string;
   /** Boutons « Insérer un lien » proposés à côté du corps du message. */
   readonly liensInsertion?: readonly LienInsertionComposeur[];
+  /**
+   * Fichiers à joindre (L5). `null` tant que la bibliothèque est ÉTEINTE : le
+   * bouton « Joindre des fichiers » n'existe alors pas.
+   */
+  readonly partages?: { readonly bibliotheque: ReadonlyArray<FichierBibliothequeComposeur> } | null;
 }
 
 /** Rendu de l'aperçu — mêmes fragments que l'e-mail, apparence de la console. */
@@ -100,6 +135,7 @@ export function ComposerReponse({
   prenom,
   poste,
   liensInsertion = [],
+  partages = null,
 }: Props): React.ReactElement {
   const router = useRouter();
   const [ouvert, setOuvert] = useState(false);
@@ -108,6 +144,8 @@ export function ComposerReponse({
   const [corps, setCorps] = useState("");
   const [note, setNote] = useState("");
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
+  const [fichiers, setFichiers] = useState<FichierJoint[]>([]);
+  const [panneauFichiers, setPanneauFichiers] = useState(false);
   const [, demarrer] = useTransition();
   const corpsRef = useRef<HTMLTextAreaElement>(null);
 
@@ -195,15 +233,20 @@ export function ComposerReponse({
         bodyMarkdown: corps,
         modele,
         ...(note.trim() ? { internalNote: note.trim() } : {}),
+        ...(fichiers.length > 0 ? { fichierIds: fichiers.map((f) => f.id) } : {}),
       }).then((r) => {
         if (r.ok) {
           setPhase({ nom: "en_file", replyId: r.replyId });
+          setFichiers([]);
+          setPanneauFichiers(false);
           router.refresh();
           return;
         }
         setPhase({
           nom: "echec",
-          message: LIBELLES_ERREUR_REPONSE[r.error] ?? `Échec (${r.error}).`,
+          message:
+            (LIBELLES_ERREUR_REPONSE[r.error] ?? `Échec (${r.error}).`) +
+            (r.detail ? ` ${r.detail}` : ""),
           ...(r.replyId ? { replyId: r.replyId } : {}),
         });
       });
@@ -327,6 +370,52 @@ export function ComposerReponse({
           </div>
         </div>
       </div>
+
+      {partages ? (
+        <div className="admin-field">
+          <span className="admin-label">Fichiers joints</span>
+          {fichiers.length > 0 ? (
+            <ul className="grid gap-[var(--space-admin-1)]">
+              {fichiers.map((f) => (
+                <li key={f.id} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                  <span>{f.titre}</span>
+                  <button
+                    type="button"
+                    className="admin-button-ghost admin-button-xs"
+                    onClick={() => setFichiers((l) => l.filter((x) => x.id !== f.id))}
+                    aria-label={`Retirer ${f.titre}`}
+                  >
+                    Retirer
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {panneauFichiers ? (
+            <JoindreFichiers
+              bibliotheque={partages.bibliotheque}
+              choisis={fichiers}
+              onChanger={setFichiers}
+              onFermer={() => setPanneauFichiers(false)}
+            />
+          ) : (
+            <div>
+              <button
+                type="button"
+                className="admin-button-secondary admin-button-tactile"
+                onClick={() => setPanneauFichiers(true)}
+              >
+                Joindre des fichiers
+              </button>
+            </div>
+          )}
+          <p className="admin-meta-small">
+            Les fichiers partent comme un lien personnel ajouté à la fin du message, jamais en pièce
+            jointe. Lien valable 30 jours (7 jours avec des rushs), à prolonger ou retirer depuis «
+            Fichiers envoyés ».
+          </p>
+        </div>
+      ) : null}
 
       <div className="admin-field">
         <label htmlFor="note" className="admin-label">

@@ -76,6 +76,7 @@ const TITLES: Record<NotificationCategory, string> = {
   COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   JOB_APPLICATIONS_STALE: "Candidatures oubliées",
+  FICHIERS_PARTAGES: "Fichiers envoyés à un candidat",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
   RGPD_REQUEST_SUBMITTED: "⚖️ Demande RGPD — délai 1 mois",
@@ -459,6 +460,27 @@ function formatBody(event: NotificationEvent): string {
           "Règle",
           "aucun statut n'a été changé et aucun message n'est parti — répondre reste un geste humain",
         ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "FICHIERS_PARTAGES": {
+      const p = event.payload;
+      return [
+        formatKV(
+          "Quoi",
+          p.kind === "rushs_telecharges"
+            ? "le candidat a commencé à télécharger les rushs de son essai"
+            : "un fichier a atteint 20 téléchargements : son bouton est retiré de la page (prolonger le lien le rouvre)",
+        ),
+        formatKV("Offre", p.offre),
+        formatKV("Fichier", p.fichier),
+        p.applicationId
+          ? formatKV(
+              "Fiche",
+              `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
+            )
+          : null,
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

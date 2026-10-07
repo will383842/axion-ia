@@ -89,6 +89,11 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   /(\/questionnaire\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   // Dossier en ligne d'un apporteur (2026-10-05) : `/apporteur/dossier/<uuid>/<jeton>`.
   /(\/apporteur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
+  // Lien privé d'envoi de fichiers à un candidat (Candidatures unifiées L5,
+  // 2026-10-08) : `/api/partage/<uuid>/<jeton>[/<fichierId>]`. Le jeton (HMAC
+  // base64url, 43 caractères) ouvre les fichiers ; l'identifiant du lien et celui
+  // du fichier restent lisibles.
+  /(\/api\/partage\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
 ];
 
 /** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */

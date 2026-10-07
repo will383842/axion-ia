@@ -959,6 +959,29 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Candidatures unifiées L5 (2026-10-08) — lien privé d'envoi de fichiers,
+      // `/api/partage/<id>/<jeton>[/<fichierId>]` : le jeton est dans l'adresse.
+      // Placée APRÈS `/:path*` : `no-referrer` l'emporte (sinon l'adresse partirait
+      // dans le Referer vers le stockage ou un lien externe). Mêmes valeurs que
+      // `ENTETES_PAGE_PARTAGE` (la route les pose aussi). Page sans script.
+      {
+        source: "/api/partage/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'none'",
+              "style-src 'unsafe-inline'",
+              "img-src 'self'",
+              "form-action 'none'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+            ].join("; "),
+          },
+        ],
+      },
     ];
   },
 };
