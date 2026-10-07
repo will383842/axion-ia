@@ -6,9 +6,11 @@
 // contrôles vivent dans `retrait.ts`.
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
+import { adminPath } from "@/lib/admin-path";
 import {
   remettreDansLeReseau,
   retirerDuReseau,
@@ -71,4 +73,47 @@ export async function supprimerDefinitivementAction(input: {
     (id, adminId) => supprimerDefinitivement(id, adminId, nomTape),
     "supprimer",
   );
+}
+
+// ── Versions FORMULAIRE (sans JavaScript côté navigateur, 2026-10-07) ──────
+// Le composant de la fiche est un composant SERVEUR : ses boutons sont des formulaires
+// HTML qui appellent ces actions, puis reviennent sur la fiche avec le message
+// (`?retrait=…` / `?retraitErreur=…`). Le cliquet de taille de la console était plein :
+// zéro octet de JavaScript ajouté. Mêmes gardes et même métier que ci-dessus.
+
+const champ = (fd: FormData, nom: string, max: number) => {
+  const v = fd.get(nom);
+  return typeof v === "string" ? v.slice(0, max) : "";
+};
+
+function retourFiche(apporteurId: string, r: Issue): never {
+  const id = UUID.test(apporteurId) ? apporteurId.toLowerCase() : "";
+  const cle = r.ok ? "retrait" : "retraitErreur";
+  redirect(`${adminPath("fr", `apporteurs/${id}`)}?${cle}=${encodeURIComponent(r.message)}`);
+}
+
+export async function retirerDuReseauFormAction(fd: FormData): Promise<void> {
+  const id = champ(fd, "apporteurId", 64);
+  retourFiche(id, await retirerDuReseauAction({ apporteurId: id }));
+}
+
+export async function remettreDansLeReseauFormAction(fd: FormData): Promise<void> {
+  const id = champ(fd, "apporteurId", 64);
+  retourFiche(id, await remettreDansLeReseauAction({ apporteurId: id }));
+}
+
+export async function supprimerDefinitivementFormAction(fd: FormData): Promise<void> {
+  const id = champ(fd, "apporteurId", 64);
+  if (fd.get("compris") !== "oui") {
+    retourFiche(id, {
+      ok: false,
+      message: "Cochez « Je comprends que la suppression est définitive ».",
+    });
+  }
+  const r = await supprimerDefinitivementAction({
+    apporteurId: id,
+    nomTape: champ(fd, "nomTape", 200),
+  });
+  if (!r.ok) retourFiche(id, r);
+  redirect(`${adminPath("fr", "apporteurs")}?retrait=${encodeURIComponent(r.message)}`);
 }

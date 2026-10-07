@@ -10,6 +10,12 @@ const h = vi.hoisted(() => ({
 }));
 vi.mock("@/auth", () => ({ auth: async () => h.session }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("next/navigation", () => ({
+  redirect: (url: string) => {
+    throw new Error(`REDIRECT:${url}`);
+  },
+}));
+vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/adm/${p}` }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("../retrait", () => ({
   retirerDuReseau: (...a: unknown[]) => h.retirer(...a),
@@ -18,6 +24,7 @@ vi.mock("../retrait", () => ({
 }));
 
 import {
+  supprimerDefinitivementFormAction,
   remettreDansLeReseauAction,
   retirerDuReseauAction,
   supprimerDefinitivementAction,
@@ -59,5 +66,41 @@ describe("garde serveur", () => {
     h.session = { user: { id: "adm-1", role: "admin" } };
     expect((await retirerDuReseauAction({ apporteurId: "pas-un-uuid" })).ok).toBe(false);
     expect(h.retirer).not.toHaveBeenCalled();
+  });
+});
+
+describe("versions formulaire (sans JavaScript)", () => {
+  const formulaire = (champs: Record<string, string>) => {
+    const fd = new FormData();
+    for (const [k, v] of Object.entries(champs)) fd.set(k, v);
+    return fd;
+  };
+
+  it("suppression sans la case « définitif » : refusée côté serveur, le métier n'est pas appelé", async () => {
+    h.session = { user: { id: "adm-1", role: "admin" } };
+    await expect(
+      supprimerDefinitivementFormAction(formulaire({ apporteurId: ID, nomTape: "Claire Durand" })),
+    ).rejects.toThrow(/REDIRECT:.*retraitErreur=/);
+    expect(h.supprimer).not.toHaveBeenCalled();
+  });
+
+  it("suppression réussie : retour à la LISTE (la fiche n'existe plus) avec le message", async () => {
+    h.session = { user: { id: "adm-1", role: "admin" } };
+    await expect(
+      supprimerDefinitivementFormAction(
+        formulaire({ apporteurId: ID, nomTape: "Claire Durand", compris: "oui" }),
+      ),
+    ).rejects.toThrow(/REDIRECT:\/fr\/adm\/apporteurs\?retrait=/);
+    expect(h.supprimer).toHaveBeenCalledWith(ID, "adm-1", "Claire Durand");
+  });
+
+  it("rôle non administrateur : refusé même par le formulaire", async () => {
+    h.session = { user: { id: "u", role: "editor" } };
+    await expect(
+      supprimerDefinitivementFormAction(
+        formulaire({ apporteurId: ID, nomTape: "Claire Durand", compris: "oui" }),
+      ),
+    ).rejects.toThrow(/retraitErreur=/);
+    expect(h.supprimer).not.toHaveBeenCalled();
   });
 });

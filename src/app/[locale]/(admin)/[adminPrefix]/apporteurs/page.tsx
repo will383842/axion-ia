@@ -74,6 +74,12 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
         description="Les apporteurs du réseau : leur dossier, leur contrat, les entreprises qu'ils présentent et leurs commissions."
         actions={<NouvelApporteurForm base={base} />}
       />
+      {/* Retour d'une suppression définitive (2026-10-07) : la fiche n'existe plus. */}
+      {sp.retrait ? (
+        <p role="status" className="admin-alert admin-alert-success">
+          {sp.retrait.slice(0, 400)}
+        </p>
+      ) : null}
       <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-4">
         <AdminStatCard label="Actifs" value={compte(["signe"])} href={`${base}?onglet=actifs`} />
         <AdminStatCard

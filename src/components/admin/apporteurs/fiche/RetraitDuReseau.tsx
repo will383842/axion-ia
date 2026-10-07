@@ -1,19 +1,17 @@
-"use client";
-// use-client: confirmations en deux temps et appels d'actions serveur (useTransition).
-
 // Retirer du réseau / Remettre / Supprimer définitivement (2026-10-07).
-// Composant À PART de `BlocsFiche.tsx` (une autre session y travaille). Les contrôles
-// sont refaits côté serveur (`features/apporteurs-reseau/retrait.ts`) : l'écran ne fait
-// que proposer.
-
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+//
+// Composant SERVEUR, sans JavaScript côté navigateur : des formulaires HTML qui appellent
+// les actions serveur (`actions-retrait.ts`), puis reviennent sur la fiche avec le message.
+// Le cliquet de taille de la console était plein ; les confirmations passent par des
+// blocs `<details>` et des champs `required`. Les contrôles sont refaits côté serveur
+// (`features/apporteurs-reseau/retrait.ts`) : l'écran ne fait que proposer.
+// Composant À PART de `BlocsFiche.tsx` (une autre session y travaille).
 
 import { AdminCard } from "@/components/admin/ui";
 import {
-  remettreDansLeReseauAction,
-  retirerDuReseauAction,
-  supprimerDefinitivementAction,
+  remettreDansLeReseauFormAction,
+  retirerDuReseauFormAction,
+  supprimerDefinitivementFormAction,
 } from "@/features/apporteurs-reseau/actions-retrait";
 
 interface Props {
@@ -25,12 +23,11 @@ interface Props {
   readonly retireLe: string | null;
   /** `null` : suppression permise ; sinon la raison pour laquelle elle ne l'est pas. */
   readonly refusSuppression: string | null;
-  /** Retour à la liste après une suppression. */
-  readonly listeHref: string;
+  /** Message de retour d'une action (`?retrait=` / `?retraitErreur=`). */
+  readonly retour?: { readonly ok: boolean; readonly message: string } | null;
 }
 
-const normaliser = (v: string) =>
-  v.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+const PETIT = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
 
 export function RetraitDuReseau({
   apporteurId,
@@ -38,116 +35,83 @@ export function RetraitDuReseau({
   signe,
   retireLe,
   refusSuppression,
-  listeHref,
+  retour,
 }: Props) {
-  const router = useRouter();
-  const [enCours, demarrer] = useTransition();
-  const [confirmerRetrait, setConfirmerRetrait] = useState(false);
-  const [nomTape, setNomTape] = useState("");
-  const [compris, setCompris] = useState(false);
-  const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
-
-  const lancer = (geste: () => Promise<{ ok: boolean; message: string }>, apres?: () => void) =>
-    demarrer(async () => {
-      const r = await geste();
-      setRetour(r);
-      if (r.ok) {
-        setConfirmerRetrait(false);
-        if (apres) apres();
-        else router.refresh();
-      }
-    });
-
-  const nomCorrect = normaliser(nomTape) !== "" && normaliser(nomTape) === normaliser(nomComplet);
-
   return (
     <AdminCard as="section">
       <h2 className="mb-[var(--space-admin-3)] font-semibold">Place dans le réseau</h2>
 
+      {retour ? (
+        <p
+          role={retour.ok ? "status" : "alert"}
+          className={`mb-[var(--space-admin-3)] ${retour.ok ? "admin-alert admin-alert-success" : "admin-alert admin-alert-error"}`}
+        >
+          {retour.message}
+        </p>
+      ) : null}
+
       {retireLe ? (
-        <div className="flex flex-col gap-[var(--space-admin-2)]">
+        <form
+          action={remettreDansLeReseauFormAction}
+          className="flex flex-col gap-[var(--space-admin-2)]"
+        >
+          <input type="hidden" name="apporteurId" value={apporteurId} />
           <p>
             Fiche <strong>retirée du réseau</strong> le {retireLe}. Le lien du dossier ne fonctionne
             plus. Rien n&apos;a été effacé.
           </p>
           <div>
-            <button
-              type="button"
-              className="admin-button-secondary"
-              disabled={enCours}
-              onClick={() => lancer(() => remettreDansLeReseauAction({ apporteurId }))}
-            >
+            <button type="submit" className="admin-button-secondary">
               Remettre dans le réseau
             </button>
           </div>
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Un nouveau lien de dossier est créé ; il n&apos;est pas envoyé.
-          </p>
-        </div>
-      ) : confirmerRetrait ? (
-        <div
-          className="flex flex-col gap-[var(--space-admin-2)]"
-          role="group"
-          aria-label="Confirmer le retrait"
-        >
-          <p>
-            La fiche sortira des listes (onglet « Retirés » pour la revoir) et le lien du dossier
-            sera désactivé. Rien n&apos;est effacé : contrat, pièces, commissions et autofactures
-            restent.
-          </p>
-          {signe ? (
-            <p className="admin-alert" role="note">
-              Le contrat prévoit une fin avec 30 jours de préavis (art. 11.1) ; retirer la fiche ne
-              résilie pas le contrat. Pour y mettre fin, utilisez{" "}
-              <a href="#resiliation" className="underline">
-                « Résilier le contrat »
-              </a>
-              . Les commissions dues restent dues.
-            </p>
-          ) : null}
-          <div className="flex flex-wrap gap-[var(--space-admin-2)]">
-            <button
-              type="button"
-              className="admin-button"
-              disabled={enCours}
-              onClick={() => lancer(() => retirerDuReseauAction({ apporteurId }))}
-            >
-              Confirmer le retrait
-            </button>
-            <button
-              type="button"
-              className="admin-button-secondary"
-              disabled={enCours}
-              onClick={() => setConfirmerRetrait(false)}
-            >
-              Annuler
-            </button>
-          </div>
-        </div>
+          <p className={PETIT}>Un nouveau lien de dossier est créé ; il n&apos;est pas envoyé.</p>
+        </form>
       ) : (
-        <div>
-          <button
-            type="button"
-            className="admin-button-secondary"
-            disabled={enCours}
-            onClick={() => setConfirmerRetrait(true)}
+        <details>
+          <summary className="cursor-pointer font-medium">Retirer du réseau</summary>
+          <form
+            action={retirerDuReseauFormAction}
+            className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
           >
-            Retirer du réseau
-          </button>
-        </div>
+            <input type="hidden" name="apporteurId" value={apporteurId} />
+            <p>
+              La fiche sortira des listes (onglet « Retirés » pour la revoir) et le lien du dossier
+              sera désactivé. Rien n&apos;est effacé : contrat, pièces, commissions et autofactures
+              restent.
+            </p>
+            {signe ? (
+              <p className="admin-alert" role="note">
+                Le contrat prévoit une fin avec 30 jours de préavis (art. 11.1) ; retirer la fiche
+                ne résilie pas le contrat. Pour y mettre fin, utilisez{" "}
+                <a href="#resiliation" className="underline">
+                  « Résilier le contrat »
+                </a>
+                . Les commissions dues restent dues.
+              </p>
+            ) : null}
+            <div>
+              <button type="submit" className="admin-button">
+                Confirmer le retrait
+              </button>
+            </div>
+          </form>
+        </details>
       )}
 
       <div className="mt-[var(--space-admin-4)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-3)]">
         {refusSuppression ? (
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Suppression définitive impossible — {refusSuppression}
-          </p>
+          <p className={PETIT}>Suppression définitive impossible — {refusSuppression}</p>
         ) : (
           <details>
             <summary className="cursor-pointer font-medium">
               Supprimer définitivement le dossier
             </summary>
-            <div className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]">
+            <form
+              action={supprimerDefinitivementFormAction}
+              className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+            >
+              <input type="hidden" name="apporteurId" value={apporteurId} />
               <p>
                 Le dossier d&apos;apporteur et ses pièces seront supprimés. La fiche candidat est
                 conservée. Cette action ne peut pas être annulée.
@@ -157,51 +121,26 @@ export function RetraitDuReseau({
                   Pour confirmer, tapez le nom : <strong>{nomComplet}</strong>
                 </span>
                 <input
+                  name="nomTape"
                   className="admin-input"
-                  value={nomTape}
-                  onChange={(e) => setNomTape(e.target.value)}
                   autoComplete="off"
                   maxLength={200}
-                  disabled={enCours}
+                  required
                 />
               </label>
               <label className="flex items-center gap-[var(--space-admin-2)]">
-                <input
-                  type="checkbox"
-                  checked={compris}
-                  onChange={(e) => setCompris(e.target.checked)}
-                  disabled={enCours}
-                />
+                <input type="checkbox" name="compris" value="oui" required />
                 Je comprends que la suppression est définitive.
               </label>
               <div>
-                <button
-                  type="button"
-                  className="admin-button"
-                  disabled={enCours || !nomCorrect || !compris}
-                  onClick={() =>
-                    lancer(
-                      () => supprimerDefinitivementAction({ apporteurId, nomTape }),
-                      () => router.push(listeHref),
-                    )
-                  }
-                >
+                <button type="submit" className="admin-button">
                   Supprimer définitivement
                 </button>
               </div>
-            </div>
+            </form>
           </details>
         )}
       </div>
-
-      {retour ? (
-        <p
-          role={retour.ok ? "status" : "alert"}
-          className={`mt-[var(--space-admin-3)] ${retour.ok ? "admin-alert admin-alert-success" : "admin-alert admin-alert-error"}`}
-        >
-          {retour.message}
-        </p>
-      ) : null}
     </AdminCard>
   );
 }

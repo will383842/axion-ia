@@ -29,7 +29,12 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
-  searchParams: Promise<{ retour?: string; erreur?: string }>;
+  searchParams: Promise<{
+    retour?: string;
+    erreur?: string;
+    retrait?: string;
+    retraitErreur?: string;
+  }>;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -71,7 +76,7 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
 
 export default async function FicheApporteurPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
-  const { retour, erreur } = await searchParams;
+  const { retour, erreur, retrait, retraitErreur } = await searchParams;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!UUID.test(id)) notFound();
@@ -330,7 +335,13 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         signe={d.statut === "signe"}
         retireLe={retireAt ? jour(retireAt) : null}
         refusSuppression={refusSuppr}
-        listeHref={base}
+        retour={
+          retrait
+            ? { ok: true, message: retrait.slice(0, 400) }
+            : retraitErreur
+              ? { ok: false, message: retraitErreur.slice(0, 400) }
+              : null
+        }
       />
 
       <AdminCard as="section">
