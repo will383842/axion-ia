@@ -137,10 +137,10 @@ describe("R4 — B1 invite à choisir, il ne dit pas « retenue »", () => {
     expect(t).not.toMatch(/retenue|retenu|sélectionn/i);
   });
 
-  it("propose le dossier en texte secondaire", async () => {
+  it("ne propose PAS le dossier : la suite se décide après l'appel (ordre de Will, 06/10)", async () => {
     const h = await html(B1);
-    expect(h).toContain(DOSSIER);
-    expect(texte(h)).toMatch(/compléter votre dossier/);
+    expect(h).not.toContain(DOSSIER);
+    expect(texte(h)).not.toMatch(/dossier/i);
   });
 });
 

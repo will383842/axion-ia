@@ -82,9 +82,6 @@ const COPY = {
     bodyEtape2:
       "Merci, votre inscription au réseau d'apporteurs d'affaires d'Axion-IA est bien enregistrée. Pour faire connaissance, choisissez dès maintenant le créneau qui vous convient pour un échange de 15 minutes en visio. Aucun engagement : vous décidez après.",
     ctaEtape2: "Choisir mon créneau",
-    dossierEtape2Avant: "Si vous le souhaitez, vous pouvez aussi ",
-    dossierEtape2Lien: "compléter votre dossier",
-    dossierEtape2Apres: " dès maintenant : sans CV, sans lettre de motivation.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     dossier:
       "Et pour que nous préparions notre échange à partir de votre situation, complétez votre dossier — trois minutes, sans CV, sans lettre de motivation. Vos coordonnées sont déjà remplies.",
@@ -110,9 +107,6 @@ const COPY = {
     bodyEtape2:
       "Thank you, your registration to Axion-IA's network of business introducers is saved. To get acquainted, pick the slot that suits you for a 15-minute video call. No commitment: you decide afterwards.",
     ctaEtape2: "Pick my slot",
-    dossierEtape2Avant: "If you wish, you can also ",
-    dossierEtape2Lien: "complete your file",
-    dossierEtape2Apres: " right now: no resume, no cover letter.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     dossier:
       "And so we can prepare our conversation around your situation, complete your file — three minutes, no resume, no cover letter. Your details are already filled in.",
@@ -197,17 +191,7 @@ export function LeadApporteurRecuEmail({
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       <Text style={emailStyles.paragraphStyle}>{corps}</Text>
       <BlocKitApporteur locale={locale} />
-      {abandon ? null : etape2 ? (
-        <Text style={emailStyles.paragraphStyle}>
-          {t.dossierEtape2Avant}
-          <a href={p.dossierUrl} style={{ color: emailStyles.COLORS.terracotta, fontWeight: 600 }}>
-            {t.dossierEtape2Lien}
-          </a>
-          {t.dossierEtape2Apres}
-        </Text>
-      ) : (
-        <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>
-      )}
+      {abandon || etape2 ? null : <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>}
       <Text style={emailStyles.paragraphStyle}>{t.spam}</Text>
       {p.submissionId ? (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
