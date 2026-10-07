@@ -417,6 +417,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
       "Format express demi-journée pour découvrir l'IA ou cadrer un cas d'usage métier précis.",
     descriptionEn: "Half-day express format to discover AI or frame a specific business use case.",
     audienceSizes: ["tpe", "pme"],
+    // Contrat 2.3, annexe 1 (A1.1) : 250 € la demi-journée (décision de Will, 07/10).
+    commissionId: "com-formation-4h",
   },
   {
     id: "intervention-essentielle",
@@ -677,6 +679,8 @@ export const UN_A_UN_RECURRING_TIER: PricingTier = {
   descriptionEn:
     "End-to-end AI evolution strategy: regular sessions and personal tools for your activity, to eliminate repetitive tasks and lighten mental load.",
   audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+  // Contrat 2.3, annexe 1 (A1.2) : coaching individuel « à partir de 790 € », 30 % (07/10).
+  commissionId: "com-un-a-un",
 };
 
 // ============================================================================
@@ -871,13 +875,25 @@ export function commissionFormation(jours: number): number {
 /**
  * Barème de commissions du réseau commercial Axion-IA. Décision Will 2026-06-08 :
  * formations = commission fixe par vente ; audit/implémentation = % de la
- * facture ; 1-to-1 = sur barème (montant non public). Affiché en clair sur les
+ * facture ; 1-to-1 = 30 % depuis le 2026-10-07 (contrat 2.3, annexe 1). Affiché en clair sur les
  * pages publiques /devenir-commercial-ia (transparence = conversion candidats).
  *
  * Formations : montant = `COMMISSION_FORMATION_PAR_JOURNEE_EUR` × nombre de
  * journées (cf. ci-dessus). Aucun montant de formation écrit en dur ici.
  */
 export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
+  {
+    // Contrat 2.3, annexe 1 (A1.1) : une demi-journée (4 heures) = la moitié du forfait
+    // journalier, 250 € (décision de Will, 07/10). Dérivé, jamais écrit en dur.
+    id: "com-formation-4h",
+    labelFr: "Formation 4 heures (demi-journée)",
+    labelEn: "4-hour training (half-day)",
+    kind: "flat",
+    flatEur: commissionFormation(0.5),
+    basisTierId: "intervention-4h",
+    descriptionFr: "Commission fixe pour chaque formation d'une demi-journée signée et payée.",
+    descriptionEn: "Flat commission for each half-day training signed and paid.",
+  },
   {
     id: "com-formation-1j",
     labelFr: "Formation 1 jour",
@@ -928,10 +944,16 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
     id: "com-un-a-un",
     labelFr: "Intervention 1-to-1 (dirigeant ou collaborateur)",
     labelEn: "1-on-1 session (executive or team member)",
-    kind: "scale",
+    // Contrat 2.3, annexe 1 (A1.2) : 30 % du montant hors taxes facturé (décision de Will,
+    // 07/10 : « aligne tout sur le contrat »). Avant : « sur barème », non publié — alors que
+    // le moteur de calcul (`regles.ts`, TAUX_BPS.un_a_un) et le contrat payaient déjà 30 %.
+    kind: "percent",
+    percent: 30,
     basisTierId: "intervention-dirigeants",
-    descriptionFr: "Commission sur barème, détaillée après candidature.",
-    descriptionEn: "Commission on scale, detailed after application.",
+    descriptionFr:
+      "30 % du montant hors taxes facturé pour chaque accompagnement individuel (dirigeant, collaborateur, coaching).",
+    descriptionEn:
+      "30% of the invoiced amount excluding VAT for each individual support (executive, team member, coaching).",
   },
   {
     id: "com-audit",
@@ -1018,16 +1040,9 @@ export interface BaremeIndefini {
  * publiée vers Partners : republier ensuite (`scripts/gates/grille-check.ts --publier`).
  */
 export const BAREMES_INDEFINIS: ReadonlyArray<BaremeIndefini> = [
-  { tierId: "intervention-4h", depuis: "2026-09-27", motif: "palier_sans_bareme" },
   { tierId: "intervention-sur-demande", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
-  { tierId: "intervention-dirigeants", depuis: "2026-09-27", motif: "bareme_non_publie" },
-  { tierId: "intervention-membre-equipe", depuis: "2026-09-27", motif: "bareme_non_publie" },
-  { tierId: "intervention-dirigeant-vision", depuis: "2026-09-27", motif: "bareme_non_publie" },
-  { tierId: "intervention-dirigeant-vision-2j", depuis: "2026-09-27", motif: "bareme_non_publie" },
-  { tierId: "intervention-membre-equipe-2j", depuis: "2026-09-27", motif: "bareme_non_publie" },
   { tierId: "maintenance-standard", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
   { tierId: "codage-web", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
-  { tierId: "un-a-un-recurrent", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
 ];
 
 /**

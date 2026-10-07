@@ -60,12 +60,13 @@ describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes",
     expect(r.montantCents).toBe(120_000);
   });
 
-  it("un_a_un est sur BARÈME (`scale`) → bloquée `a_qualifier`, jamais 0, jamais une exception", () => {
+  // 2026-10-07 (décision de Will, contrat 2.3, annexe 1 A1.2) : le 1-to-1 n'est plus « sur
+  // barème » — 30 % du HT, comme le moteur du réseau d'apporteurs et le contrat.
+  it("un_a_un → 30 % du HT (contrat 2.3)", () => {
     const r = resoudreCommission({ activite: "un_a_un", jours: null, montantHtCents: 400_000 });
-    expect(r.statut).toBe("bloquee");
-    expect(r.motifBlocage).toBe("a_qualifier");
-    expect(r.montantCents).toBeNull();
+    expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-un-a-un");
+    expect(r.montantCents).toBe(Math.round((30 * 400_000) / 100));
   });
 
   it("site_web n'a AUCUN barème dans la grille → bloquée, et le dit", () => {

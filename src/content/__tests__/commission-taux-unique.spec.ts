@@ -31,6 +31,8 @@ import {
  * affiché est celui du plancher, 3 journées.
  */
 const JOURNEES_PAR_ID: Readonly<Record<string, number>> = {
+  // La demi-journée (contrat 2.3, A1.1 : 250 €) suit le même taux journalier.
+  "com-formation-4h": 0.5,
   "com-formation-1j": 1,
   "com-formation-2j": 2,
   "com-formation-3j": 3,
