@@ -128,6 +128,11 @@ vi.mock("@/lib/prisma", () => {
         return { count: cibles.length };
       }),
     },
+    // Retrait du réseau (#1353) : personne n'est retiré dans ce scénario.
+    apporteurReseauRetrait: {
+      findUnique: vi.fn(async () => null),
+      findMany: vi.fn(async () => []),
+    },
     apporteurReseau: {
       findUnique: vi.fn(
         async (a: { where: { emailHash: string } }) =>

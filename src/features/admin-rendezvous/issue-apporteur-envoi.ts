@@ -31,6 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { lienReservation } from "@/features/commercial-application/relances-invitation-apporteur";
 import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
+import { retraitDe } from "@/features/apporteurs-reseau/retrait";
 import { urlDossier, urlDossierExemple } from "@/features/apporteurs-reseau/jeton";
 import {
   gabaritDeLIssue,
@@ -307,6 +308,15 @@ export async function preparerIssueApporteur(input: {
         creer: input.ouvrirDossier === true,
       });
       if (dossier.ok) {
+        // 🔴 Retiré du réseau (2026-10-07) : l'e-mail « Retenu » ne passe ni par envoyer() ni
+        // par preparerLien — il est refusé ICI, aperçu comme envoi, avec un message clair.
+        if (await retraitDe(dossier.apporteurId)) {
+          return {
+            ok: false,
+            message:
+              "Cet apporteur est retiré du réseau : remettez-le d'abord dans le réseau (fiche apporteur, « Remettre dans le réseau »).",
+          };
+        }
         dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
         dossierSigne = dossier.statut === "a_verifier" || dossier.statut === "signe";
         if (!dossierUrl && input.ouvrirDossier === true) return panne;

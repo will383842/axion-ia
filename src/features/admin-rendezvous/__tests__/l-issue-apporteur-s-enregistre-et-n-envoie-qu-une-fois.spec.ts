@@ -57,6 +57,11 @@ vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   })),
 }));
 vi.mock("@/features/apporteurs-reseau/verification", () => ({ envoyerLien: vi.fn() }));
+// Retrait du réseau (#1353) : personne n'est retiré, sauf dans le scénario dédié.
+const { retraitDe } = vi.hoisted(() => ({ retraitDe: vi.fn(async () => null as Date | null) }));
+vi.mock("@/features/apporteurs-reseau/retrait", () => ({
+  retraitDe: (...a: unknown[]) => retraitDe(...(a as [])),
+}));
 
 const enqueueEmail = vi.fn();
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => enqueueEmail(...a) }));
@@ -386,5 +391,26 @@ describe("garde-fous de la fiche", () => {
     );
     expect(r.etat).toBe("erreur");
     expect(enqueueEmail).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 « Retenu » pour un apporteur RETIRÉ du réseau (2026-10-07)", () => {
+  it("aperçu ET envoi refusés avec un message clair ; rien ne part, rien n'est écrit", async () => {
+    retraitDe.mockResolvedValue(new Date());
+    try {
+      const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+      expect(a).toMatchObject({ etat: "erreur" });
+      expect((a as { message: string }).message).toMatch(/retiré du réseau.*remettez-le/i);
+      const r = await enregistrerIssueApporteurAction(
+        INITIAL,
+        fd({ issue: "retenu", confirmer: "oui", noteSur20: "17", justification: "Réseau solide." }),
+      );
+      expect(r).toMatchObject({ etat: "erreur" });
+      expect((r as { message: string }).message).toMatch(/retiré du réseau/i);
+      expect(enqueueEmail).not.toHaveBeenCalled();
+      expect(upsert).not.toHaveBeenCalled();
+    } finally {
+      retraitDe.mockResolvedValue(null);
+    }
   });
 });
