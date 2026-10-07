@@ -42,6 +42,13 @@ import { MENTION_VERSION } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
 import { recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
+import {
+  ConditionSuspensiveEnAttenteError,
+  MESSAGE_REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONDITION_SUSPENSIVE,
+  blocageConditionSuspensive,
+  exigerConditionLevee,
+} from "@/server/qualiopi/financements/condition-suspensive-service";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -96,7 +103,8 @@ export type RefusSignature =
   | "nom_requis"
   | "nom_non_concordant"
   | "modules_invalides"
-  | "conflit_concurrent";
+  | "conflit_concurrent"
+  | typeof REFUS_CONDITION_SUSPENSIVE;
 
 export type ResultatSignature =
   | { ok: true; signatureId: string; selfHash: string }
@@ -268,6 +276,17 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
     };
   }
 
+  // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement.
+  // Premier refus, AVANT l'écriture de l'image sur R2 ; il est relu plus bas
+  // DANS la transaction d'insertion, qui est celle qui fait foi.
+  if ((await blocageConditionSuspensive(session.id)).bloque) {
+    return {
+      ok: false,
+      raison: REFUS_CONDITION_SUSPENSIVE,
+      message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
+    };
+  }
+
   // Symétrie avec l'émission des liens, qui exclut déjà abandons et exclus.
   // ⚠️ Cela n'invalide RIEN de ce qui a déjà été signé : ces heures ont été
   // réellement suivies et restent facturables (oubli O3). On empêche seulement
@@ -402,6 +421,8 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
     try {
       const cree = await prisma.$transaction(async (tx) => {
+        // 🔴 INT-T81-A — la garde se RELIT en base, dans la transaction de l'acte.
+        await exigerConditionLevee(session.id, tx);
         // 🔴 L'ordre de la chaîne est celui de l'INSERTION (`createdAt`), jamais
         // celui de `signeAt`.
         //
@@ -516,6 +537,14 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
 
       return { ok: true, signatureId: cree.id, selfHash: cree.selfHash };
     } catch (err) {
+      if (err instanceof ConditionSuspensiveEnAttenteError) {
+        await nettoyerImageOrpheline(image);
+        return {
+          ok: false,
+          raison: REFUS_CONDITION_SUSPENSIVE,
+          message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
+        };
+      }
       const conflit = err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
       if (!conflit) {
         await nettoyerImageOrpheline(image);

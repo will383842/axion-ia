@@ -37,6 +37,14 @@ let seq = 0;
 
 const enqueueEmail = vi.fn(async (..._a: unknown[]): Promise<unknown> => ({ enqueued: true }));
 
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: async () => ({ bloque: false }),
+  exigerConditionLevee: async () => undefined,
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {

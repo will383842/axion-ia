@@ -50,6 +50,10 @@ import { readFormationForDocs } from "@/server/qualiopi/formations/formation-sna
 import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presence/types";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import {
+  MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN,
+  blocageConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -397,6 +401,11 @@ export async function saveEmargementAction(input: {
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(v.sessionId);
   if (!verrou.ok) return verrou;
+  // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement,
+  // même à la main. Jugé ici, côté serveur, pas seulement à l'écran.
+  if ((await blocageConditionSuspensive(v.sessionId)).bloque) {
+    return { error: MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN };
+  }
 
   // Vérification session. `dateDebut` sert à invalider le cache des indicateurs
   // de la BONNE année (une session de décembre émargée en janvier invaliderait

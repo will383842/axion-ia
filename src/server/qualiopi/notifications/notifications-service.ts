@@ -37,6 +37,7 @@ import {
 } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
 import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { blocageConditionSuspensive } from "@/server/qualiopi/financements/condition-suspensive-service";
 import { aucuneHeureSuivie } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -227,6 +228,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     where: { id: enrollmentId },
     select: {
       id: true,
+      sessionId: true,
       trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
@@ -248,6 +250,16 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
   });
 
   if (!enrollment) return false;
+
+  // 🔴 INT-T81-A — condition suspensive OPCO en attente : la convocation ne part
+  // pas. `false` comme pour une inscription introuvable ; le cron la reprendra
+  // après l'accord, ou après une levée explicite.
+  if ((await blocageConditionSuspensive(enrollment.sessionId)).bloque) {
+    console.warn(
+      `[notifications] convocation retenue (inscription ${enrollmentId}) : condition suspensive OPCO en attente`,
+    );
+    return false;
+  }
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";

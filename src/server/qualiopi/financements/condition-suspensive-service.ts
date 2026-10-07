@@ -16,6 +16,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../../prisma/generated/client";
 
 import {
   debutDuJourDeParis,
@@ -213,4 +214,172 @@ export function evaluerLecture(
     [...lecture.evenements, ...evenementsEnPlus],
     maintenant,
   );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INT-T81-A — le BLOCAGE de la convocation et de l'émargement
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Tant que la condition d'une convention de la session est `en_attente`, ni la
+// convocation ni l'émargement n'ont lieu. Le jugement est ICI, côté serveur,
+// relu en base à chaque acte : l'écran n'est qu'un reflet.
+//
+// ÉCHEC FERMÉ : un état illisible, inconnu ou NULL, ou une lecture qui lève,
+// bloquent. Rien ne passe « faute de savoir ».
+//
+// LA LEVÉE n'est pas une transition de la clause : la condition reste
+// `en_attente`. C'est une ligne de journal (`activity_logs`), UNIQUE par
+// convention, écrite sous verrou de la ligne `documents_generes` : une seconde
+// levée est refusée, rien ne se réécrit. Pas de colonne, donc pas de migration.
+
+/** Action du journal qui EST la levée (la lecture du blocage la cherche par là). */
+export const ACTION_LEVEE_BLOCAGE = "qualiopi.convention.condition_suspensive.levee_blocage";
+
+/** Motifs de levée — FERMÉS : jamais un texte libre. */
+export const MOTIFS_LEVEE_BLOCAGE = ["renonciation_ecrite_client"] as const;
+export type MotifLeveeBlocage = (typeof MOTIFS_LEVEE_BLOCAGE)[number];
+
+/** Client Prisma ou transaction : la garde se relit dans la transaction de l'acte. */
+export type ClientLecture = Pick<Prisma.TransactionClient, "documentGenere" | "activityLog">;
+
+export type BlocageSession =
+  | { readonly bloque: false }
+  | {
+      readonly bloque: true;
+      readonly motif: "condition_en_attente" | "condition_illisible";
+      /** Numéros des conventions qui bloquent (aucune donnée de stagiaire). */
+      readonly numeros: readonly string[];
+    };
+
+/**
+ * La session est-elle bloquée ? Ne lève JAMAIS : une lecture qui échoue rend
+ * `condition_illisible` (échec fermé).
+ */
+export async function blocageConditionSuspensive(
+  sessionId: string,
+  client: ClientLecture = prisma,
+): Promise<BlocageSession> {
+  try {
+    const conventions = await client.documentGenere.findMany({
+      where: {
+        sessionId,
+        type: { in: ["convention", "convention_tripartite"] },
+        annuleeAt: null,
+        conditionSuspensiveOpco: true,
+      },
+      select: { id: true, numero: true, etatConditionSuspensive: true },
+    });
+    const ouvertes = conventions.filter(
+      (c) => c.etatConditionSuspensive !== "active" && c.etatConditionSuspensive !== "caduque",
+    );
+    if (ouvertes.length === 0) return { bloque: false };
+
+    const levees = await client.activityLog.findMany({
+      where: {
+        action: ACTION_LEVEE_BLOCAGE,
+        targetType: "DocumentGenere",
+        targetId: { in: ouvertes.map((c) => c.id) },
+      },
+      select: { targetId: true },
+    });
+    const leveesIds = new Set(levees.map((l) => l.targetId));
+    const bloquantes = ouvertes.filter((c) => !leveesIds.has(c.id));
+    if (bloquantes.length === 0) return { bloque: false };
+
+    const illisible = bloquantes.some((c) => c.etatConditionSuspensive !== "en_attente");
+    return {
+      bloque: true,
+      motif: illisible ? "condition_illisible" : "condition_en_attente",
+      numeros: bloquantes.map((c) => c.numero),
+    };
+  } catch {
+    return { bloque: true, motif: "condition_illisible", numeros: [] };
+  }
+}
+
+/** Refus NOMMÉ : ce que l'appelant reconnaît, jamais une erreur anonyme. */
+export const REFUS_CONDITION_SUSPENSIVE = "condition_suspensive_en_attente" as const;
+
+/**
+ * Message vu du STAGIAIRE ou du formateur (page publique, poste du formateur) :
+ * neutre, il ne dit rien de l'OPCO ni de la clause.
+ */
+export const MESSAGE_REFUS_CONDITION_SUSPENSIVE =
+  "L'émargement de cette session n'est pas encore ouvert. L'organisme reviendra vers vous.";
+
+/** Message vu de l'ADMINISTRATION (console) : il dit la cause et le remède. */
+export const MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN =
+  "La convention de cette session est sous condition suspensive : l'accord de l'OPCO n'est pas encore constaté. La convocation et l'émargement sont suspendus jusqu'à cet accord, ou jusqu'à une levée explicite par un administrateur.";
+
+export class ConditionSuspensiveEnAttenteError extends Error {
+  readonly code = REFUS_CONDITION_SUSPENSIVE;
+  constructor(readonly blocage: Extract<BlocageSession, { bloque: true }>) {
+    super(MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN);
+    this.name = "ConditionSuspensiveEnAttenteError";
+  }
+}
+
+/** Lève `ConditionSuspensiveEnAttenteError` si la session est bloquée. */
+export async function exigerConditionLevee(
+  sessionId: string,
+  client: ClientLecture = prisma,
+): Promise<void> {
+  const blocage = await blocageConditionSuspensive(sessionId, client);
+  if (blocage.bloque) throw new ConditionSuspensiveEnAttenteError(blocage);
+}
+
+export type ResultatLevee =
+  | { readonly ok: true }
+  | {
+      readonly ok: false;
+      readonly raison: "introuvable" | "pas_en_attente" | "deja_levee" | "journal_incoherent";
+    };
+
+/**
+ * Lève le blocage d'UNE convention, une seule fois, et le journalise dans la
+ * même transaction. Le rôle est jugé par l'ACTION, pas ici ; ce service refuse
+ * seulement ce que la base ne permet pas.
+ */
+export async function leverBlocage(params: {
+  documentId: string;
+  journal: LigneJournal;
+}): Promise<ResultatLevee> {
+  const j = params.journal as { action?: unknown; targetId?: unknown };
+  if (j.action !== ACTION_LEVEE_BLOCAGE || j.targetId !== params.documentId) {
+    return { ok: false, raison: "journal_incoherent" };
+  }
+  return prisma.$transaction(async (tx) => {
+    // Verrou de la ligne : deux levées simultanées se sérialisent, la seconde
+    // voit la première.
+    await tx.$queryRaw`SELECT id FROM documents_generes WHERE id = ${params.documentId}::uuid FOR UPDATE`;
+    const doc = await tx.documentGenere.findUnique({
+      where: { id: params.documentId },
+      select: {
+        type: true,
+        annuleeAt: true,
+        conditionSuspensiveOpco: true,
+        etatConditionSuspensive: true,
+      },
+    });
+    if (
+      !doc ||
+      (doc.type !== "convention" && doc.type !== "convention_tripartite") ||
+      !doc.conditionSuspensiveOpco
+    ) {
+      return { ok: false, raison: "introuvable" } as const;
+    }
+    if (doc.annuleeAt !== null || doc.etatConditionSuspensive !== "en_attente") {
+      return { ok: false, raison: "pas_en_attente" } as const;
+    }
+    const deja = await tx.activityLog.count({
+      where: {
+        action: ACTION_LEVEE_BLOCAGE,
+        targetType: "DocumentGenere",
+        targetId: params.documentId,
+      },
+    });
+    if (deja > 0) return { ok: false, raison: "deja_levee" } as const;
+    await tx.activityLog.create({ data: params.journal });
+    return { ok: true } as const;
+  });
 }
