@@ -2416,9 +2416,13 @@ async function handleReponsePostePourvu(): Promise<void> {
  * et doctrine dans `features/admin-job-applications/reponses-entrantes-candidature.ts`.
  * Relevé SÉPARÉ de celui des apporteurs (file `apporteur-crons`, inchangé).
  * Import PARESSEUX. Ne lève pas : un passage suspendu le dit lui-même.
+ * ÉTEINT PAR DÉFAUT : interrupteur `CANDIDATS_REPONSES_RECUES_ENABLED=true`
+ * dans l'environnement du worker pour l'allumer.
  */
 async function handleReponsesEntrantesCandidatures(): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  // ÉTEINT PAR DÉFAUT (paquet 2) : seule la valeur exacte "true" l'allume.
+  if (process.env["CANDIDATS_REPONSES_RECUES_ENABLED"] !== "true") return;
   try {
     const { passerReponsesEntrantesCandidats } =
       await import("@/features/admin-job-applications/reponses-entrantes-candidature");

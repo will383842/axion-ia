@@ -138,6 +138,7 @@ import {
   ATTENTE_AUTRE_RELEVE_MS,
   AUTEUR_RELEVE,
   CLE_CURSEUR,
+  INTERRUPTEUR,
   passerReponsesEntrantesCandidats,
   reinitialiserJournalConfig,
 } from "../reponses-entrantes-candidature";
@@ -216,10 +217,14 @@ beforeEach(() => {
   db.tableCandidatsAbsente = false;
   db.notify = vi.fn(async () => ({ ok: true }));
   reinitialiserJournalConfig();
+  // Le relevé est ÉTEINT par défaut (paquet 2) : allumé ici pour l'éprouver ;
+  // le cas « éteint » a son propre test plus bas.
+  process.env[INTERRUPTEUR] = "true";
   vi.spyOn(console, "warn").mockImplementation(() => {});
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 afterEach(() => {
+  delete process.env[INTERRUPTEUR];
   vi.restoreAllMocks();
 });
 
@@ -380,6 +385,22 @@ describe("ce qui n'est PAS rattaché", () => {
 });
 
 describe("inertie et curseur", () => {
+  it.each([undefined, "", "false", "1", "TRUE"])(
+    "🔴 ÉTEINT PAR DÉFAUT (interrupteur = %s) : rien lu, rien écrit, curseur intact",
+    async (valeur) => {
+      if (valeur === undefined) delete process.env[INTERRUPTEUR];
+      else process.env[INTERRUPTEUR] = valeur;
+      const client = clientDouble([message()]);
+      const r = await passerReponsesEntrantesCandidats({ client, maintenant: MAINTENANT });
+      expect(r.suspendu).toBe("eteint");
+      expect(client.listerMessagesRecus).not.toHaveBeenCalled();
+      expect(db.reponsesCandidats).toHaveLength(0);
+      expect(db.evenements).toHaveLength(0);
+      expect(db.notify).not.toHaveBeenCalled();
+      expect(db.settings.has(CLE_CURSEUR)).toBe(false);
+    },
+  );
+
   it("build `stub.invalid` : rien, sans un appel", async () => {
     const avant = process.env["DATABASE_URL"];
     process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";

@@ -49,6 +49,10 @@
 // mieux vaut deux alertes que zéro).
 //
 // ── Ce qui l'arrête, sans jamais lever ───────────────────────────────────
+//   · INTERRUPTEUR `CANDIDATS_REPONSES_RECUES_ENABLED` différent de "true"
+//     (ÉTEINT PAR DÉFAUT : absent = éteint ; lot du « paquet 2 », allumé par
+//     Will dans l'environnement du worker quand il le décide) : rien, sans un
+//     appel, curseur intact ;
 //   · variables Zoho absentes : rien, dit UNE fois par processus ;
 //   · build (`stub.invalid`) : rien, sans un appel ;
 //   · table absente (fenêtre app/worker après fusion) : rien, curseur intact ;
@@ -81,6 +85,15 @@ import {
 import { GABARIT_INVITATION } from "@/features/commercial-application/relance-invitation-etat";
 import { consignerEvenement } from "./journal";
 
+/**
+ * Interrupteur d'environnement du relevé. ÉTEINT si absent : seule la valeur
+ * exacte "true" l'allume (même convention que `STRIPE_ENABLED`, `CHATBOT_ENABLED`).
+ */
+export const INTERRUPTEUR = "CANDIDATS_REPONSES_RECUES_ENABLED";
+export function releveAllume(): boolean {
+  return process.env[INTERRUPTEUR] === "true";
+}
+
 /** Clé du curseur dans la table `settings` — distincte de celle des apporteurs. */
 export const CLE_CURSEUR = "candidatures.reponses-entrantes.curseur";
 /** Recouvrement de sécurité entre deux passages. */
@@ -97,7 +110,7 @@ const ENTITE_CANDIDATURE = "JobApplication";
 export const AUTEUR_RELEVE = "Boîte mail (relevé automatique)";
 
 export interface CompteRenduReponsesCandidats {
-  readonly suspendu?: "config-absente" | "build" | "table-absente" | "zoho-injoignable";
+  readonly suspendu?: "eteint" | "config-absente" | "build" | "table-absente" | "zoho-injoignable";
   readonly lus: number;
   /** Messages d'un candidat, arrivés après un envoi vers son dossier. */
   readonly reconnus: number;
@@ -325,6 +338,8 @@ export async function passerReponsesEntrantesCandidats(
   opts: { maintenant?: Date; client?: ClientZohoMail } = {},
 ): Promise<CompteRenduReponsesCandidats> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return vide("build");
+  // Éteint par défaut : ni Zoho, ni base, ni curseur.
+  if (!releveAllume()) return vide("eteint");
 
   let client = opts.client;
   if (!client) {
