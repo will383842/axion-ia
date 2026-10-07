@@ -15243,6 +15243,7 @@ model ApporteurReseau {
 /// ferait échouer, pendant la fenêtre app/worker (~50 min avant la migration), toutes les
 /// requêtes du worker qui lisent cette table sans liste de colonnes. Une ligne = retiré ;
 /// « Remettre dans le réseau » supprime la ligne (l'historique vit dans le journal d'audit).
+/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date et administrateur auteur ; aucune donnée de la personne
 model ApporteurReseauRetrait {
   apporteurId String   @id @map("apporteur_id") @db.Uuid
   retireAt    DateTime @default(now()) @map("retire_at") @db.Timestamptz(3)
