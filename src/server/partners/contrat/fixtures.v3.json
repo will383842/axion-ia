@@ -1,5 +1,5 @@
 {
-  "Source": "GÉNÉRÉE — ne pas éditer à la main. Producteur : axionia, scripts/partners/fixtures.ts (INT-T01b). Méthode : scénario écrit puis RELU dans la base de développement (localhost:5434) via les modèles Prisma réels, payloads construits par src/server/partners/payloads.ts, transaction ANNULÉE, sortie pseudonymisée. Aucune valeur n'est complétée : un champ absent fait échouer la génération (RM-03, REQ-QA-007). Contrat : contracts.v2.json, empreinte 9794afeb2a1f7af2228c5827559bd0b06acf7e9ea813a5d7c8a2d6bbdac5c039, schema_version 3. Régénérer : pnpm partners:fixtures — vérifier : pnpm partners:fixtures --verifier",
+  "Source": "GÉNÉRÉE — ne pas éditer à la main. Producteur : axionia, scripts/partners/fixtures.ts (INT-T01b). Méthode : scénario écrit puis RELU dans la base de développement (localhost:5434) via les modèles Prisma réels, payloads construits par src/server/partners/payloads.ts, transaction ANNULÉE, sortie pseudonymisée. Aucune valeur n'est complétée : un champ absent fait échouer la génération (RM-03, REQ-QA-007). Contrat : contracts.v2.json, empreinte e7a5e6d02af5eb84a49f35f82c6e7ab3dee365082b50e4a7ba0919941deebfd1, schema_version 3. Régénérer : pnpm partners:fixtures — vérifier : pnpm partners:fixtures --verifier",
   "schemaVersion": 3,
   "evenements": [
     {
