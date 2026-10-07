@@ -41,6 +41,7 @@ import type { DemandeReservation, FormatDemande } from "./reservation";
 import { reserverCreneau } from "./reservation";
 import { annulerRendezVous } from "./annulation";
 import { canalDuRendezVous } from "./canal";
+import { normaliserLibelle, type QuestionEventType } from "./questions";
 
 /** Ce qu'il faut savoir de l'ancien rendez-vous pour en fabriquer un nouveau. */
 export interface RendezVousSource {
@@ -97,6 +98,17 @@ export type ResultatReport =
   /** La ligne source n'a pas de quoi rejouer une réservation. */
   | { readonly ok: false; readonly raison: "donnees_incompletes"; readonly manque: string }
   /**
+   * Une question OBLIGATOIRE de l'event-type n'a pas de réponse dans l'ancien
+   * rendez-vous (pris avant que la question existe). RIEN n'a été envoyé à
+   * Calendly : l'ancien est INTACT. Le visiteur passe par la page Calendly de
+   * déplacement, qui pose la question — on n'invente jamais la réponse.
+   */
+  | {
+      readonly ok: false;
+      readonly raison: "reponses_manquantes";
+      readonly questions: readonly string[];
+    }
+  /**
    * Rendez-vous SUR PLACE (lieu `physical`) : la réservation directe ne sait
    * demander qu'un appel ou une visio, il ne se rejoue donc pas en ligne. Une
    * raison à part, pour que l'alerte dise la vraie cause — pas « données
@@ -118,10 +130,26 @@ export type ResultatReport =
 export function reponsesDuPayload(
   rawPayload: unknown,
 ): ReadonlyArray<{ question: string; reponse: string; position: number }> {
-  const racine = rawPayload as Record<string, unknown> | null;
-  const brut =
-    racine?.["questions_and_answers"] ??
-    (racine?.["payload"] as Record<string, unknown> | undefined)?.["questions_and_answers"];
+  // 🔴 CORRIGÉ le 2026-10-07 — « un déplacement renvoie les réponses déjà
+  // données ». Cette fonction ne lisait que `rawPayload.questions_and_answers`
+  // et `rawPayload.payload.questions_and_answers`. Or `enrich.ts` RÉÉCRIT la
+  // charge brute à chaque passage sous la forme
+  // `{ ..._clésPrivées, invitee, event, _refreshedAt }` : les réponses vivent
+  // dans `rawPayload.invitee.questions_and_answers` (là où les lit déjà
+  // `origine-rendez-vous.ts`). Le report repartait donc SANS AUCUNE réponse, et
+  // depuis que les event-types portent des questions OBLIGATOIRES, Calendly
+  // refusait la réservation de remplacement → `echec=refus`, à chaque fois.
+  //
+  // La forme enrichie passe EN PREMIER ; les anciennes formes restent lues.
+  const racine = objet(rawPayload);
+  const payload = objet(racine?.["payload"]);
+  const candidats = [
+    objet(racine?.["invitee"])?.["questions_and_answers"],
+    racine?.["questions_and_answers"],
+    payload?.["questions_and_answers"],
+    objet(payload?.["invitee"])?.["questions_and_answers"],
+  ].filter((c): c is unknown[] => Array.isArray(c));
+  const brut = candidats.find((c) => c.length > 0) ?? candidats[0];
   if (!Array.isArray(brut)) return [];
 
   const out: Array<{ question: string; reponse: string; position: number }> = [];
@@ -139,6 +167,79 @@ export function reponsesDuPayload(
   return out;
 }
 
+function objet(v: unknown): Record<string, unknown> | null {
+  return typeof v === "object" && v !== null && !Array.isArray(v)
+    ? (v as Record<string, unknown>)
+    : null;
+}
+
+/**
+ * Apparie les réponses de l'ANCIEN rendez-vous aux questions ACTUELLES de
+ * l'event-type de destination.
+ *
+ * 🔑 La position qui part chez Calendly est celle de la question dans
+ * l'event-type de DESTINATION (`questions.ts` : « c'est elle qu'attend l'API »),
+ * et le libellé repart tel que l'event-type le porte aujourd'hui. Recopier la
+ * position de l'ancien rendez-vous tiendrait tant que personne ne réordonne
+ * les questions chez Calendly — puis enverrait chaque réponse sur la mauvaise
+ * case.
+ *
+ * Appariement par libellé normalisé (casse, accents, ponctuation) : c'est le
+ * seul lien stable entre une réponse donnée hier et une question d'aujourd'hui.
+ *
+ * ## 🔴 LE FILET : une question obligatoire sans réponse
+ *
+ * Un rendez-vous pris AVANT l'ajout d'une question obligatoire n'a pas de
+ * réponse à lui donner. On ne la fabrique JAMAIS — une réponse inventée à
+ * « Comment nous avez-vous connu ? » fausserait le compteur d'origine des
+ * rendez-vous pour toujours, sans que rien ne la distingue d'une vraie. On
+ * rend la liste des questions manquantes : l'appelant n'envoie RIEN à Calendly
+ * (l'ancien rendez-vous reste intact) et renvoie le visiteur vers la page
+ * Calendly de déplacement, qui sait poser la question.
+ *
+ * Seule complétion admise : une question de type `phone_number`, remplie avec le
+ * numéro déjà en base — une donnée du visiteur, pas une invention.
+ *
+ * Une réponse à un choix qui n'existe plus (menu modifié depuis) est traitée
+ * comme absente : Calendly la refuserait de toute façon. Une réponse dont la
+ * question n'existe plus (ou est masquée, `QUESTIONS_MASQUEES`) ne repart pas,
+ * comme le formulaire direct ne l'envoie pas.
+ */
+export function alignerSurLesQuestions(
+  reponses: ReadonlyArray<{ question: string; reponse: string; position: number }>,
+  questions: readonly QuestionEventType[],
+  telephone: string | null,
+):
+  | { ok: true; reponses: Array<{ question: string; reponse: string; position: number }> }
+  | { ok: false; manquantes: string[] } {
+  const parLibelle = new Map<string, string>();
+  for (const r of reponses) {
+    const cle = normaliserLibelle(r.question);
+    if (!parLibelle.has(cle)) parLibelle.set(cle, r.reponse);
+  }
+
+  const out: Array<{ question: string; reponse: string; position: number }> = [];
+  const manquantes: string[] = [];
+  for (const q of questions) {
+    let valeur = parLibelle.get(normaliserLibelle(q.libelle)) ?? null;
+    if (
+      valeur !== null &&
+      q.type === "single_select" &&
+      !q.choix.includes(valeur) &&
+      !q.autreAutorise
+    ) {
+      valeur = null;
+    }
+    if (valeur === null && q.type === "phone_number" && telephone) valeur = telephone;
+    if (valeur === null) {
+      if (q.requise) manquantes.push(q.libelle);
+      continue;
+    }
+    out.push({ question: q.libelle, reponse: valeur, position: q.position });
+  }
+  return manquantes.length > 0 ? { ok: false, manquantes } : { ok: true, reponses: out };
+}
+
 /**
  * Reconstruit la demande à partir de la ligne existante.
  *
@@ -149,7 +250,17 @@ export function demandeDepuisLaSource(
   source: RendezVousSource,
   eventTypeUri: string,
   debut: Date,
-): { ok: true; demande: DemandeReservation } | { ok: false; manque: string } {
+  /**
+   * Les questions ACTUELLES de l'event-type de destination
+   * (`resoudreEventTypePourReservation`). Fournies, elles décident du libellé et
+   * de la position qui partent, et une obligatoire sans réponse arrête le report
+   * AVANT tout appel. Absentes : les réponses repartent telles qu'elles sont
+   * revenues (comportement d'avant le 2026-10-07).
+   */
+  questionsDestination?: readonly QuestionEventType[],
+):
+  | { ok: true; demande: DemandeReservation }
+  | { ok: false; manque: string; questionsManquantes?: readonly string[] } {
   if (!source.inviteeName) return { ok: false, manque: "le nom de l'invité" };
   if (!source.inviteeEmail) return { ok: false, manque: "l'adresse de l'invité" };
 
@@ -192,7 +303,19 @@ export function demandeDepuisLaSource(
     return { ok: false, manque: "le numéro à composer" };
   }
 
-  const reponses = reponsesDuPayload(source.rawPayload);
+  let reponses: ReadonlyArray<{ question: string; reponse: string; position: number }> =
+    reponsesDuPayload(source.rawPayload);
+  if (questionsDestination) {
+    const alignees = alignerSurLesQuestions(reponses, questionsDestination, telephone);
+    if (!alignees.ok) {
+      return {
+        ok: false,
+        manque: `une réponse obligatoire (${alignees.manquantes.join(" ; ")})`,
+        questionsManquantes: alignees.manquantes,
+      };
+    }
+    reponses = alignees.reponses;
+  }
 
   return {
     ok: true,
@@ -239,13 +362,28 @@ export async function reporterRendezVous(
    * motif `report`). Ne bloque jamais le report : une erreur est avalée.
    */
   journaliser?: (ancienEventUri: string, nouvelEventUri: string) => Promise<unknown>,
+  /** Les questions actuelles de l'event-type de destination — voir `demandeDepuisLaSource`. */
+  questionsDestination?: readonly QuestionEventType[],
 ): Promise<ResultatReport> {
   if (canalDuRendezVous(source.location, source.rawPayload) === "sur_place") {
     return { ok: false, raison: "sur_place" };
   }
-  const construite = demandeDepuisLaSource(source, eventTypeUri, nouveauDebut);
-  if (!construite.ok)
+  const construite = demandeDepuisLaSource(
+    source,
+    eventTypeUri,
+    nouveauDebut,
+    questionsDestination,
+  );
+  if (!construite.ok) {
+    if (construite.questionsManquantes) {
+      return {
+        ok: false,
+        raison: "reponses_manquantes",
+        questions: construite.questionsManquantes,
+      };
+    }
     return { ok: false, raison: "donnees_incompletes", manque: construite.manque };
+  }
 
   // ── ÉTAPE 1 : le NOUVEAU. L'ancien n'est pas touché. ──────────────────────
   const nouveau = await reserverCreneau(construite.demande);

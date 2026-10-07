@@ -201,7 +201,7 @@ export default async function ReporterPage({ params, searchParams }: Props) {
           </p>
         ) : null}
 
-        {echec ? <EchecPrecedent raison={echec} /> : null}
+        {echec ? <EchecPrecedent raison={echec} lienCalendly={rdv.rescheduleUrl} /> : null}
 
         {/* 🔑 UN FORMULAIRE, PAS UN LIEN. Un lien serait pré-chargeable, et un
             report est irréversible dans les deux sens. */}
@@ -254,7 +254,7 @@ export default async function ReporterPage({ params, searchParams }: Props) {
         n&apos;aurez rien d&apos;autre à saisir.
       </p>
 
-      {echec ? <EchecPrecedent raison={echec} /> : null}
+      {echec ? <EchecPrecedent raison={echec} lienCalendly={rdv.rescheduleUrl} /> : null}
 
       <div className="mt-6">
         {dispo.ok ? (
@@ -397,7 +397,44 @@ function DejaAnnule({ locale }: { locale: string }) {
  * s'est passé. Et le cas `silence` lui dit surtout ce qu'il ne doit PAS faire :
  * réessayer pourrait créer un second rendez-vous.
  */
-function EchecPrecedent({ raison }: { raison: string }) {
+function EchecPrecedent({ raison, lienCalendly }: { raison: string; lienCalendly: string | null }) {
+  // Une question obligatoire ajoutée après la réservation : on ne la remplit
+  // pas à la place du visiteur. La page Calendly de déplacement, elle, la pose.
+  if (raison === "questions") {
+    return (
+      <>
+        <RemonterAuMessage vers="echec-precedent" />
+        <div
+          id="echec-precedent"
+          role="alert"
+          className="border-terracotta bg-terracotta/5 text-fg mt-5 rounded-xl border px-4 py-3 text-sm"
+        >
+          Pour ce rendez-vous, une ou deux questions doivent être complétées avant de le déplacer.
+          Votre créneau actuel est intact.{" "}
+          {lienCalendly ? (
+            <a
+              href={lienCalendly}
+              data-cta="appel_reporter_lien_calendly"
+              className="text-terracotta-deep font-semibold underline underline-offset-2"
+            >
+              Déplacer depuis notre agenda en ligne
+            </a>
+          ) : (
+            <>
+              Écrivez-nous à{" "}
+              <a
+                href="mailto:contact@axion-ia.com"
+                className="text-terracotta-deep underline underline-offset-2"
+              >
+                contact@axion-ia.com
+              </a>{" "}
+              en indiquant le créneau souhaité : nous le déplaçons à la main.
+            </>
+          )}
+        </div>
+      </>
+    );
+  }
   const message =
     raison === "creneau_pris"
       ? "Ce créneau vient d'être pris par quelqu'un d'autre. Votre rendez-vous actuel est toujours valable — choisissez-en un autre."
