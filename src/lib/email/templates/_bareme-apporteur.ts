@@ -26,6 +26,13 @@ function pourcent(n: number, l: Langue): string {
   return l === "fr" ? `${String(n).replace(".", ",")} %` : `${n}%`;
 }
 
+/**
+ * AVANT la signature (« Retenu »), le barème est INDICATIF : le contrat fait foi (REQ-JUR-001).
+ * Après la signature (« contrat signé »), c'est celui du contrat : la mention n'y figure pas.
+ */
+export const MENTION_BAREME_INDICATIF =
+  "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.";
+
 /** Les lignes du barème, dans l'ordre de l'annexe 1 du contrat. */
 export function lignesBareme(l: Langue = "fr"): string[] {
   if (l === "en") {
