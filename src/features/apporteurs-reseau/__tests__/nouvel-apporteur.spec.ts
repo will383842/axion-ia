@@ -45,7 +45,7 @@ beforeEach(() => {
       id: SUB,
       details: apporteur,
       contactName: "Kraft Bastine",
-      contactEmail: "babakrafft@gmail.com",
+      contactEmail: "kraft.bastine@exemple.fr",
       contactPhone: "06 11 22 33 44",
       submittedAt: new Date("2026-10-07T13:00:00Z"),
     },
@@ -70,14 +70,14 @@ describe("recherche parmi les fiches de candidats apporteurs", () => {
       submissionId: SUB,
       prenom: "Kraft",
       nom: "Bastine",
-      email: "babakrafft@gmail.com",
+      email: "kraft.bastine@exemple.fr",
       telephone: "06 11 22 33 44",
     });
   });
 
   it("par téléphone (espaces ignorés) et par adresse", async () => {
     const t = await rechercherCandidatsApporteursAction("0611");
-    const e = await rechercherCandidatsApporteursAction("babakrafft");
+    const e = await rechercherCandidatsApporteursAction("kraft.bastine");
     expect(t.ok && t.candidats.length).toBe(1);
     expect(e.ok && e.candidats.length).toBe(1);
   });
@@ -91,7 +91,7 @@ describe("ouverture du dossier", () => {
   const saisie = {
     prenom: "Kraft",
     nom: "Bastine",
-    email: "babakrafft@gmail.com",
+    email: "kraft.bastine@exemple.fr",
     telephone: null,
   };
 
