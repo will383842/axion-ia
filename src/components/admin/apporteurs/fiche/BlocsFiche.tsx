@@ -248,6 +248,21 @@ export function NouvelApporteurForm({ base }: { base: string }) {
   const [existant, setExistant] = useState<{ apporteurId: string; message: string } | null>(null);
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
   const [enCours, demarrer] = useTransition();
+  const [, demarrerRecherche] = useTransition();
+  const minuterie = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const derniere = useRef(0);
+  function chercher(q: string) {
+    setRecherche(q);
+    if (minuterie.current) clearTimeout(minuterie.current);
+    const numero = ++derniere.current;
+    minuterie.current = setTimeout(() => {
+      demarrerRecherche(async () => {
+        const r = await rechercherCandidatsApporteursAction(q);
+        // Une réponse arrivée après une frappe plus récente est ignorée.
+        if (numero === derniere.current) setTrouves(r.ok ? r.candidats : []);
+      });
+    }, 300);
+  }
   if (!ouvert) {
     return (
       <button type="button" className="admin-button" onClick={() => setOuvert(true)}>
@@ -310,14 +325,7 @@ export function NouvelApporteurForm({ base }: { base: string }) {
           aria-label="Rechercher une fiche de candidat apporteur"
           placeholder="Rechercher une fiche candidat (nom, e-mail, téléphone)"
           value={recherche}
-          onChange={(e) => {
-            const q = e.target.value;
-            setRecherche(q);
-            demarrer(async () => {
-              const r = await rechercherCandidatsApporteursAction(q);
-              setTrouves(r.ok ? r.candidats : []);
-            });
-          }}
+          onChange={(e) => chercher(e.target.value)}
         />
       </div>
       {trouves.length > 0 && !fiche ? (
@@ -357,7 +365,11 @@ export function NouvelApporteurForm({ base }: { base: string }) {
             type={k === "email" ? "email" : "text"}
             required={k !== "telephone"}
             value={v[k]}
-            onChange={(e) => setV({ ...v, [k]: e.target.value })}
+            onChange={(e) => {
+              setV({ ...v, [k]: e.target.value });
+              // Adresse ou nom modifiés : ce n'est plus la fiche choisie, le lien est défait.
+              if (k === "email" || k === "nom" || k === "prenom") setFiche(null);
+            }}
           />
         ))}
       </div>

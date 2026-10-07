@@ -11,8 +11,10 @@ const h = vi.hoisted(() => ({
   envoyer: vi.fn(),
   lireDossier: vi.fn(),
   dernierLien: null as { createdAt: Date } | null,
-  candidatures: [] as Array<{ id: string; details: unknown }>,
-  dejaRelie: null as { id: string } | null,
+  candidatures: [] as Array<{ id: string; details: unknown; contactEmailHash?: string }>,
+  dejaRelie: null as { id: string; prenom?: string; nom?: string } | null,
+  doublon: null as { id: string } | null,
+  createEnErreur: false,
   cree: vi.fn(),
 }));
 
@@ -43,12 +45,22 @@ vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "emprein
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     emailLog: { findFirst: vi.fn(async () => h.dernierLien) },
-    submission: { findMany: vi.fn(async () => h.candidatures) },
+    // Le filtre d'adresse est appliqué pour de vrai (07/10 : fiche reliée si l'adresse concorde).
+    submission: {
+      findMany: vi.fn(async (a: { where: Record<string, unknown> }) =>
+        h.candidatures.filter(
+          (c) =>
+            (a.where["id"] === undefined || a.where["id"] === c.id) &&
+            (c.contactEmailHash ?? "empreinte") === a.where["contactEmailHash"],
+        ),
+      ),
+    },
     apporteurReseau: {
       findUnique: vi.fn(async (a: { where: Record<string, unknown> }) =>
-        "submissionId" in a.where ? h.dejaRelie : null,
+        "submissionId" in a.where ? h.dejaRelie : "emailHash" in a.where ? h.doublon : null,
       ),
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
+        if (h.createEnErreur) throw new Error("Unique constraint failed on emailHash");
         h.cree(a.data);
         return { id: "nouvel-apporteur" };
       }),
@@ -82,6 +94,8 @@ beforeEach(() => {
   h.dernierLien = null;
   h.candidatures = [];
   h.dejaRelie = null;
+  h.doublon = null;
+  h.createEnErreur = false;
 });
 
 describe("7) « Envoyer le lien du dossier »", () => {
@@ -132,6 +146,50 @@ describe("12) « Nouvel apporteur » : dossier relié à la fiche candidat de la
     const nav = readFileSync(resolve(__dirname, "../../../lib/admin-nav.ts"), "utf8");
     expect(nav).toContain('"Apporteurs (dossiers et contrats)"');
     expect(nav).not.toContain('label: "Apporteurs signés"');
+  });
+});
+
+describe("relecture du formulaire (a1)", () => {
+  const fiche = { unifiedType: "recrutement", subType: "candidature-commerciale" };
+  const avec = (submissionId: string) =>
+    ouvrirDossierManuel({
+      prenom: "Kraft",
+      nom: "Bastine",
+      email: "k@x.fr",
+      telephone: null,
+      submissionId,
+    });
+
+  it("1) fiche choisie dont l'adresse n'est PAS celle saisie : jamais reliée", async () => {
+    h.candidatures = [{ id: "sub-A", details: fiche, contactEmailHash: "autre-adresse" }];
+    expect(await avec("sub-A")).toMatchObject({ ok: true });
+    expect(h.cree.mock.calls[0]![0]).not.toHaveProperty("submissionId");
+  });
+
+  it("2) fiche choisie déjà reliée à un autre dossier : refus dit, aucun second dossier", async () => {
+    h.candidatures = [{ id: "sub-A", details: fiche }];
+    h.dejaRelie = { id: "app-B", prenom: "Paul", nom: "Martin" };
+    const r = await avec("sub-A");
+    expect(r).toMatchObject({ ok: false, dejaRelieA: "app-B" });
+    expect((r as { message: string }).message).toContain("déjà reliée au dossier de Paul Martin");
+    expect(h.cree).not.toHaveBeenCalled();
+  });
+
+  it("3) deux clics simultanés (unicité de l'adresse) : « dossier existant »", async () => {
+    h.createEnErreur = true;
+    h.doublon = null;
+    const create = vi.fn();
+    void create;
+    // Le premier appel ne voit pas le dossier, la création échoue, le second regard le trouve.
+    const prisma = (await import("@/lib/prisma")).prisma as unknown as {
+      apporteurReseau: { findUnique: ReturnType<typeof vi.fn> };
+    };
+    prisma.apporteurReseau.findUnique
+      .mockResolvedValueOnce(null) // dossier existant ?
+      .mockResolvedValueOnce({ id: "app-C" }); // après l'erreur d'unicité
+    expect(
+      await ouvrirDossierManuel({ prenom: "A", nom: "B", email: "k@x.fr", telephone: null }),
+    ).toEqual({ ok: true, apporteurId: "app-C", existait: true });
   });
 });
 

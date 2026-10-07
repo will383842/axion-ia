@@ -234,7 +234,15 @@ export async function ouvrirDossierManuelAction(input: {
     };
   }
   rafraichir();
-  return r.ok ? { ok: true, apporteurId: r.apporteurId } : r;
+  if (!r.ok && r.dejaRelieA) {
+    const { statut, dernierLienLe } = await etatDuDossier(r.dejaRelieA);
+    return {
+      ok: false,
+      message: r.message,
+      existant: { apporteurId: r.dejaRelieA, statut, dernierLienLe },
+    };
+  }
+  return r.ok ? { ok: true, apporteurId: r.apporteurId } : { ok: false, message: r.message };
 }
 
 export interface CandidatTrouve {

@@ -562,7 +562,10 @@ export async function ouvrirDossierManuel(e: {
   telephone: string | null;
   /** Fiche candidat choisie dans la recherche de « Nouvel apporteur » (07/10). */
   submissionId?: string | null;
-}): Promise<{ ok: true; apporteurId: string; existait?: true } | { ok: false; message: string }> {
+}): Promise<
+  | { ok: true; apporteurId: string; existait?: true }
+  | { ok: false; message: string; dejaRelieA?: string }
+> {
   const { encryptPii } = await import("@/lib/pii-crypto");
   const { hashEmailForLookup } = await import("@/lib/security/email-hash");
   const email = e.email.trim();
@@ -580,7 +583,9 @@ export async function ouvrirDossierManuel(e: {
     await import("@/lib/commercial-application/est-apporteur");
   const candidatures = await prisma.submission.findMany({
     where: {
-      ...(e.submissionId ? { id: e.submissionId } : { contactEmailHash: hash }),
+      // Fiche choisie : reliée SEULEMENT si son adresse est celle saisie (07/10, a1).
+      ...(e.submissionId ? { id: e.submissionId } : {}),
+      contactEmailHash: hash,
       deletedAt: null,
       ...FILTRE_APPORTEUR_PRISMA,
     },
@@ -590,24 +595,42 @@ export async function ouvrirDossierManuel(e: {
   });
   const trouvee = candidatures.find((c) => estApporteur(c.details));
   // Lien unique : une fiche déjà reliée à un autre dossier ne l'est pas une seconde fois.
-  const candidature =
-    trouvee &&
-    !(await prisma.apporteurReseau.findUnique({
-      where: { submissionId: trouvee.id },
+  const relie = trouvee
+    ? await prisma.apporteurReseau.findUnique({
+        where: { submissionId: trouvee.id },
+        select: { id: true, prenom: true, nom: true },
+      })
+    : null;
+  if (relie && e.submissionId) {
+    const qui = [decryptPii(relie.prenom), decryptPii(relie.nom)].filter(Boolean).join(" ");
+    return {
+      ok: false,
+      message: `Cette fiche est déjà reliée au dossier de ${qui || "un autre apporteur"}.`,
+      dejaRelieA: relie.id,
+    };
+  }
+  const candidature = trouvee && !relie ? trouvee : null;
+  let a: { id: string };
+  try {
+    a = await prisma.apporteurReseau.create({
+      data: {
+        ...(candidature ? { submissionId: candidature.id } : {}),
+        prenom: encryptPii(e.prenom.trim()),
+        nom: encryptPii(e.nom.trim()),
+        email: encryptPii(email),
+        emailHash: hash,
+        telephone: e.telephone?.trim() ? encryptPii(e.telephone.trim()) : null,
+      },
       select: { id: true },
-    }))
-      ? trouvee
-      : null;
-  const a = await prisma.apporteurReseau.create({
-    data: {
-      ...(candidature ? { submissionId: candidature.id } : {}),
-      prenom: encryptPii(e.prenom.trim()),
-      nom: encryptPii(e.nom.trim()),
-      email: encryptPii(email),
-      emailHash: hash,
-      telephone: e.telephone?.trim() ? encryptPii(e.telephone.trim()) : null,
-    },
-    select: { id: true },
-  });
+    });
+  } catch (err) {
+    // Deux clics, deux onglets : l'adresse vient d'être prise (unicité de `emailHash`).
+    const doublon = await prisma.apporteurReseau.findUnique({
+      where: { emailHash: hash },
+      select: { id: true },
+    });
+    if (doublon) return { ok: true, apporteurId: doublon.id, existait: true };
+    throw err;
+  }
   return { ok: true, apporteurId: a.id };
 }
