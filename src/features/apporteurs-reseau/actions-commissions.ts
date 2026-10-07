@@ -14,6 +14,7 @@ import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 
+import { annulerCommission, reduireCommission } from "./ajustement";
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
@@ -252,5 +253,42 @@ export async function annulerRealisationAction(fd: FormData): Promise<void> {
   revalidatePath(adminPath("fr", "apporteurs/commissions"));
   if (r.ok)
     versCommissions("retour", "Réalisation annulée : la commission est de nouveau en attente.");
+  versCommissions("erreur", r.message);
+}
+
+// ── Réduire ou annuler une commission pas encore facturée ─────────────────
+
+export async function ajusterCommissionAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  if (texte(fd, "confirmer") !== "oui")
+    versCommissions("erreur", "Cochez la confirmation avant de modifier la commission.");
+  const mode = texte(fd, "mode");
+  const motif = texte(fd, "motif");
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    if (mode === "annuler") {
+      r = await annulerCommission(id, motif, await acteur());
+    } else {
+      const montant = montantEnCentimes(texte(fd, "montant"));
+      r =
+        montant === null
+          ? { ok: false, message: "Indiquez le nouveau montant en euros, par exemple 150,50." }
+          : await reduireCommission(id, montant, motif, await acteur());
+    }
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-ajuster" } });
+    r = { ok: false, message: "La modification n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok)
+    versCommissions(
+      "retour",
+      mode === "annuler"
+        ? "Commission annulée : elle reste visible dans l'onglet « Annulées »."
+        : "Commission réduite : le nouveau montant sera facturé.",
+    );
   versCommissions("erreur", r.message);
 }

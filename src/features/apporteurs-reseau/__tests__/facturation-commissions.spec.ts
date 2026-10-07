@@ -223,6 +223,7 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
+import { annulerCommission, reduireCommission } from "../ajustement";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
   annulerRealisation,
@@ -1021,5 +1022,58 @@ describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somm
     lignes().find((l) => l.id === "b")!.prestationRealiseeAt = null;
     expect(await marquerVerse("APP1", MARDI, numero)).toMatchObject({ ok: true });
     expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
+  });
+});
+
+describe("réduire ou annuler une commission pas encore facturée (point 4)", () => {
+  const avecParrain = () => [
+    ligne("c1", "due", 40_000, { factureId: "F-1" }),
+    ligne("p1", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-1" }),
+  ];
+
+  it("réduire : nouveau montant facturé, part du parrain réduite dans la même proportion, tout est tracé", async () => {
+    etat.lignes = avecParrain();
+    expect(await reduireCommission("c1", 30_000, "prix conservé : 1 500 € HT", "admin-1")).toEqual({
+      ok: true,
+    });
+    expect(lignes().find((l) => l.id === "c1")!.montantCents).toBe(30_000);
+    expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(3_000);
+    expect(etat.journal.filter((j) => j["action"] === "commission_apporteur.reduite")).toHaveLength(
+      2,
+    );
+    expect(etat.journal[0]).toMatchObject({
+      adminUserId: "admin-1",
+      changes: { avantCents: 40_000, apresCents: 30_000, motif: "prix conservé : 1 500 € HT" },
+    });
+  });
+
+  it("réduire : refusé sans motif, à un montant supérieur ou nul, ou une fois facturée", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    expect(await reduireCommission("c1", 30_000, " ")).toMatchObject({ ok: false });
+    expect(await reduireCommission("c1", 40_000, "x")).toMatchObject({ ok: false });
+    expect(await reduireCommission("c1", 0, "x")).toMatchObject({ ok: false });
+    await facturerCommissionsDues(MARDI);
+    const r = await reduireCommission("c1", 30_000, "trop tard");
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("déjà facturée");
+  });
+
+  it("annuler : la ligne reste en base au statut « annulée », la part du parrain aussi, rien n'est facturé", async () => {
+    etat.lignes = avecParrain();
+    expect(await annulerCommission("c1", "commande annulée par le client", "admin-1")).toEqual({
+      ok: true,
+    });
+    expect(lignes().map((l) => l.statut)).toEqual(["annulee", "annulee"]);
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    expect(etat.journal.filter((j) => j["action"] === "commission_apporteur.annulee")).toHaveLength(
+      2,
+    );
+  });
+
+  it("annuler : refusé sur une commission versée (c'est une reprise) ou sans motif", async () => {
+    etat.lignes = [ligne("v1", "versee", 40_000), ligne("c2", "due", 10_000)];
+    expect(await annulerCommission("v1", "trop tard")).toMatchObject({ ok: false });
+    expect(await annulerCommission("c2", "")).toMatchObject({ ok: false });
+    expect(lignes()[1]!.statut).toBe("due");
   });
 });
