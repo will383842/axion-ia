@@ -304,7 +304,7 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
               defaultValue={etat.prixMax}
               inputMode="decimal"
               placeholder="ex. 100"
-              className="admin-input min-h-11 w-28 text-base sm:text-sm"
+              className="admin-input admin-input-w-sm admin-input-tactile min-h-11"
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -313,7 +313,7 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
               name="ville"
               defaultValue={etat.ville}
               placeholder="ex. Lyon"
-              className="admin-input min-h-11 w-40 text-base sm:text-sm"
+              className="admin-input admin-input-w-md admin-input-tactile min-h-11"
             />
           </label>
         </>
@@ -323,7 +323,7 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
         <select
           name="etape"
           defaultValue={etat.etape}
-          className="admin-input min-h-11 text-base sm:text-sm"
+          className="admin-input admin-input-tactile min-h-11"
         >
           <option value="">Tous les statuts</option>
           {STATUTS_CANDIDATURE.map((s) => (
@@ -333,13 +333,13 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
           ))}
         </select>
       </label>
-      <button type="submit" className="admin-button min-h-11">
+      <button type="submit" className="admin-button admin-button-tactile">
         Filtrer
       </button>
       {actif ? (
         <Link
           href={hrefAvec(chemin, etat, { prixMax: "", ville: "", etape: "" })}
-          className="admin-button-ghost inline-flex min-h-11 items-center"
+          className="admin-button-ghost admin-button-tactile"
         >
           Tout afficher
         </Link>

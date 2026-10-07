@@ -41,7 +41,7 @@ export function BoutonVideos({ nom, ficheHref, videos, liens }: BoutonVideosProp
       <button
         type="button"
         onClick={() => setOuvert(true)}
-        className="admin-button-ghost inline-flex min-h-11 items-center gap-2 whitespace-nowrap"
+        className="admin-button-ghost admin-button-tactile"
         aria-haspopup="dialog"
       >
         <span aria-hidden="true">▶</span> {libelleVideos(videos.length, liens.length)}

@@ -1083,6 +1083,14 @@
 .admin-input-right {
   text-align: right;
 }
+/* Champ saisi au doigt — 16 px sur téléphone (en dessous, iOS zoome la page
+   au focus), taille console au-delà. Remplace le `text-base sm:text-sm` posé à
+   côté de `.admin-input`, INERTE pour la même raison que les largeurs. */
+@media (max-width: 639.98px) {
+  .admin-input-tactile {
+    font-size: 16px;
+  }
+}
 
 /* Liste déroulante stylée — classe RÉFÉRENCÉE par 9 champs et jamais définie
    avant cette refonte (les selects concernés tombaient sur le rendu système). */
@@ -1364,6 +1372,18 @@
 .admin-button-block {
   width: 100%;
   align-self: stretch;
+}
+
+/* Cible tactile de 44 px (WCAG 2.2 §2.5.8) — remplace les `min-h-11` /
+   `min-w-11` posés à côté de `.admin-button*`, INERTES : la classe fixe déjà
+   `min-height`. `-carre` y ajoute la largeur, pour un bouton à pictogramme seul
+   (fermer « × »). Valent pour toutes les variantes de bouton. */
+.admin-button-tactile {
+  min-height: var(--target-admin-min-mobile);
+}
+.admin-button-tactile-carre {
+  min-height: var(--target-admin-min-mobile);
+  min-width: var(--target-admin-min-mobile);
 }
 
 /* État désactivé porté par un `<span>` (pas de pseudo-classe `:disabled`

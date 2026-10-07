@@ -45,10 +45,12 @@ export default function PanneauVideos({
         <button
           type="button"
           onClick={() => ref.current?.close()}
-          className="admin-button-ghost min-h-11 min-w-11 text-xl"
+          className="admin-button-ghost admin-button-tactile-carre"
           aria-label="Fermer"
         >
-          ×
+          <span aria-hidden="true" className="text-xl leading-none">
+            ×
+          </span>
         </button>
       </div>
 
@@ -88,7 +90,7 @@ export default function PanneauVideos({
       </div>
 
       <div className="flex justify-end border-t border-[color:var(--color-admin-border)] px-4 py-3">
-        <Link href={ficheHref} className="admin-button inline-flex min-h-11 items-center">
+        <Link href={ficheHref} className="admin-button admin-button-tactile">
           Ouvrir la fiche
         </Link>
       </div>
