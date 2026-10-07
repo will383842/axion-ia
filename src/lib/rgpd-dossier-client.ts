@@ -80,6 +80,14 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     modele: "DocumentProjetContenu",
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },
+  {
+    // Réseau d'apporteurs (2026-10-05) : la liste des pièces est rendue, pas leurs octets.
+    modele: "PieceApporteurContenu",
+    motif:
+      "le fichier d'une pièce de votre dossier d'apporteur (la liste des pièces est rendue " +
+      "ci-dessus ; la pièce d'identité est déjà supprimée après vérification) : copie sur " +
+      "demande à contact@axion-ia.com.",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */

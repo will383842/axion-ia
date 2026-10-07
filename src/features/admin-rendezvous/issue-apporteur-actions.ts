@@ -24,6 +24,7 @@ import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { appliquerTransition } from "@/features/admin-submissions/transitions";
+import { estRendezVousApporteur } from "@/server/calendly/appel-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 import {
   ISSUES_APPORTEUR,
@@ -119,6 +120,69 @@ function phraseEnvoi(r: ResultatEnvoiIssue | null): string {
   }
 }
 
+/**
+ * « Enregistrer SANS envoyer d'e-mail » (2026-10-05, demande de Will : ne pas écrire
+ * systématiquement à tout le monde). Même écriture du point que le chemin normal,
+ * mais AUCUN e-mail, et rien de ce qui en dépend :
+ *   · le dossier en ligne de l'apporteur n'est PAS ouvert (« Retenu ») ;
+ *   · les rappels ne sont pas retouchés ;
+ *   · la fiche n'est exigée nulle part : un rendez-vous non rattaché s'enregistre.
+ * « Non retenu » classe tout de même la fiche « Sans suite » si elle est rattachée :
+ * c'est ce qui arrête les relances automatiques, et cela n'écrit à personne.
+ */
+async function enregistrerSansEmail(
+  saisie: Parameters<typeof normaliserIssueApporteur>[0],
+  donnees: ReturnType<typeof normaliserIssueApporteur>,
+  qui: { id: string; email: string | null },
+): Promise<EtatIssueApporteur> {
+  const evt = await prisma.calendlyEvent.findUnique({
+    where: { id: saisie.calendlyEventId },
+    select: { id: true, eventTypeName: true, typeRendezVous: true, linkedSubmissionId: true },
+  });
+  if (!evt) return { etat: "erreur", message: "Rendez-vous introuvable." };
+  if (!estRendezVousApporteur(evt)) {
+    return { etat: "erreur", message: "Ce rendez-vous n'est pas un échange apporteur." };
+  }
+  try {
+    await prisma.rendezVousSuivi.upsert({
+      where: { calendlyEventId: evt.id },
+      create: { calendlyEventId: evt.id, ...donnees, suite: null, renseignePar: qui.email },
+      update: { ...donnees, suite: null, renseignePar: qui.email },
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "suivi-sans-email" } });
+    return { etat: "erreur", message: "L'enregistrement a échoué. Réessaie dans un instant." };
+  }
+  let classement = "";
+  if (classeSansSuite(saisie.issue) && evt.linkedSubmissionId) {
+    const t = await appliquerTransition(evt.linkedSubmissionId, "sans-suite", qui.id);
+    classement = t.ok
+      ? " Fiche classée « Sans suite »."
+      : " ⚠️ La fiche n'a pas pu être classée « Sans suite » : fais-le depuis ses gestes.";
+  }
+  try {
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: qui.id,
+        action: "rendez_vous.issue_apporteur",
+        targetType: evt.linkedSubmissionId ? "submission" : "calendly_event",
+        targetId: evt.linkedSubmissionId ?? evt.id,
+        changes: { calendlyEventId: evt.id, issue: saisie.issue, sansEmail: true },
+      },
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "journal" } });
+  }
+  revalidatePath(adminPath("fr", "rendez-vous"));
+  revalidatePath(adminPath("fr", `contacts/appels/${evt.id}`));
+  revalidatePath(adminPath("fr", "contacts/commercial"));
+  updateTag("admin:rendez-vous-a-faire");
+  return {
+    etat: "ok",
+    message: `Issue enregistrée : ${LIBELLE_ISSUE_APPORTEUR[saisie.issue]}. Aucun e-mail n'est parti.${classement}`,
+  };
+}
+
 export async function enregistrerIssueApporteurAction(
   _precedent: EtatIssueApporteur,
   fd: FormData,
@@ -126,12 +190,18 @@ export async function enregistrerIssueApporteurAction(
   const qui = await sessionEcriture();
   if (typeof qui === "string") return { etat: "erreur", message: qui };
 
+  // Le bouton « sans e-mail » porte l'issue sous un autre nom : le chemin normal ne la voit pas.
+  const veutSansEmail =
+    typeof fd.get("issueSansEmail") === "string" && fd.get("issueSansEmail") !== "";
+  if (veutSansEmail) fd.set("issue", String(fd.get("issueSansEmail")));
+
   const parsed = issueApporteurSchema.safeParse(lireFormulaireIssueApporteur(fd));
   if (!parsed.success) {
     return { etat: "erreur", message: parsed.error.issues[0]?.message ?? "Champs invalides." };
   }
   const saisie = parsed.data;
   const donnees = normaliserIssueApporteur(saisie);
+  if (veutSansEmail) return enregistrerSansEmail(saisie, donnees, qui);
 
   let prep;
   try {
@@ -139,6 +209,7 @@ export async function enregistrerIssueApporteurAction(
       calendlyEventId: saisie.calendlyEventId,
       issue: saisie.issue,
       motPersonnel: saisie.motPersonnel,
+      ouvrirDossier: true,
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "preparation" } });

@@ -268,19 +268,26 @@
       "running": false
     },
     {
+      "name": "Routes /apporteur/dossier (lien secret, noindex — dossier d'apporteur en ligne) — 25 KB cumulé",
+      "path": ".next/static/chunks/app/apporteur/**/page-*.js",
+      "limit": "25 KB",
+      "running": false
+    },
+    {
       "name": "SOMME des page chunks PUBLICS (hors /appel, hors console admin) — cliquet anti-croissance, PAS un budget par route",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/appel/**",
+        "!.next/static/chunks/app/apporteur/**",
         "!.next/static/chunks/app/**/[(]admin[)]/**"
       ],
-      "limit": "265 KB",
+      "limit": "280 KB",
       "running": false
     },
     {
       "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés)",
       "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
-      "limit": "487 KB",
+      "limit": "500 KB",
       "running": false
     },
     {

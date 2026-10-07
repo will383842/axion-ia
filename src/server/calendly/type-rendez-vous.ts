@@ -31,6 +31,13 @@ import { canonicalPath, listerTypesEvenementCalendly } from "@/server/calendly/a
 // Module pur, sans import : la règle « quelles réponses du formulaire » est la
 // sienne (téléphone écarté), partagée avec la console et le dossier client.
 import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
+import {
+  URL_CALENDLY_APPEL_PAR_DEFAUT,
+  URL_CALENDLY_APPORTEUR_ANCIEN_DEFAUT,
+  URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
+  URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
+  URL_CALENDLY_SALON_PAR_DEFAUT,
+} from "@/server/calendly/urls-par-defaut";
 
 /** Les cinq types — 🔑 MIROIR EXACT de l'enum Prisma `TypeRendezVous`. */
 export const TYPES_RENDEZ_VOUS = [
@@ -63,13 +70,15 @@ export function estTypeRendezVous(valeur: unknown): valeur is TypeRendezVous {
 // variables `NEXT_PUBLIC_*` (elles sont inlinées au build de l'application),
 // et un classement fiable ne doit pas dépendre d'une variable oubliée.
 
-/** Type « Discutons de votre projet IA » (bientôt « Échange projet »). */
-export const URL_CALENDLY_APPEL_PAR_DEFAUT = "https://calendly.com/axion-ia/premier-contact";
-/** Type « Diagnostic IA » — à créer chez Calendly (lot 5 du plan). */
-export const URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT = "https://calendly.com/axion-ia/diagnostic-ia";
-/** Type « Échange apporteur d'affaires » (15 min). */
-export const URL_CALENDLY_APPORTEUR_PAR_DEFAUT =
-  "https://calendly.com/axion-ia/echange-apporteur-affaires";
+// Les adresses par défaut vivent dans un module feuille (`urls-par-defaut.ts`) :
+// la table des types et les liens d'e-mail les lisent sans tirer ce module-ci.
+export {
+  URL_CALENDLY_APPEL_PAR_DEFAUT,
+  URL_CALENDLY_APPORTEUR_ANCIEN_DEFAUT,
+  URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
+  URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
+  URL_CALENDLY_SALON_PAR_DEFAUT,
+};
 
 function urlOuDefaut(valeur: string | undefined, defaut: string): string {
   const v = valeur?.trim();
@@ -96,6 +105,11 @@ export function urlsDeReservationConfigurees(): ReadonlyArray<{
     {
       url: urlOuDefaut(process.env.CALENDLY_APPORTEUR_URL, URL_CALENDLY_APPORTEUR_PAR_DEFAUT),
       type: "apporteur",
+    },
+    { url: URL_CALENDLY_APPORTEUR_ANCIEN_DEFAUT, type: "apporteur" },
+    {
+      url: urlOuDefaut(process.env.CALENDLY_SALON_URL, URL_CALENDLY_SALON_PAR_DEFAUT),
+      type: "salon",
     },
   ];
 }

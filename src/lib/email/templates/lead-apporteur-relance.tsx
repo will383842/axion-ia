@@ -6,6 +6,10 @@
 // pas apporteuse : c'est une démarche qu'elle a engagée, pas une activité
 // qu'on mesure.
 //
+// Variante `vsl` (2026-10-05) : relances A2 (J+2) et A3 (J+7) du tunnel avec
+// vidéo. La personne a validé l'étape 1 (prénom + e-mail), pas la suivante :
+// « il vous manque une étape ». Le bouton ramène à la page (lien de reprise).
+//
 // Famille B : pied de page complet, lien d'opposition obligatoire (lot 1b).
 //
 // 2026-09-19 — Le lien de réservation d'appel est RETIRÉ (il n'est plus envoyé
@@ -15,6 +19,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { VARIANTE_VSL_RELANCE } from "@/lib/commercial-application/vsl-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -23,6 +28,8 @@ interface Payload {
   dossierUrl: string;
   /** `j2` (premier rappel) ou `j7` (dernier). Autre valeur = premier. */
   etape?: string;
+  /** `vsl` : relance du tunnel avec vidéo (étape 2 manquante). */
+  variante?: string;
 }
 
 const COPY = {
@@ -34,6 +41,11 @@ const COPY = {
     j7: "Une semaine déjà depuis votre premier message. Nous ne relançons pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — votre premier contact reste enregistré et vous pourrez reprendre quand vous le souhaitez.",
     dossier:
       "Le dossier prend trois minutes, sans CV et sans lettre de motivation. Vos coordonnées sont déjà remplies.",
+    j2Vsl:
+      "Il y a deux jours, vous avez commencé votre inscription au réseau d'apporteurs d'affaires d'Axion-IA. Il vous manque une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
+    j7Vsl:
+      "Une semaine déjà depuis le début de votre inscription. Nous ne relançons pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — vos informations restent enregistrées et vous pourrez reprendre quand vous le souhaitez.",
+    ctaVsl: "Terminer mon inscription",
     cta: "Compléter mon dossier",
     refRow: (id: string) => `Référence : ${id}`,
   },
@@ -45,6 +57,11 @@ const COPY = {
     j7: "A week since your first message already. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your first contact stays on record and you can pick it up whenever you like.",
     dossier:
       "The file takes three minutes, no resume, no cover letter. Your details are already filled in.",
+    j2Vsl:
+      "Two days ago you started your registration to Axion-IA's network of business introducers. One step is missing: your phone number and one question. Your details are already saved, just pick up where you left off.",
+    j7Vsl:
+      "A week since you started your registration. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your details stay on record and you can pick it up whenever you like.",
+    ctaVsl: "Finish my registration",
     cta: "Complete my file",
     refRow: (id: string) => `Reference: ${id}`,
   },
@@ -65,19 +82,21 @@ export function LeadApporteurRelanceEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   const dernier = p.etape === "j7";
+  const vsl = p.variante === VARIANTE_VSL_RELANCE;
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
+  const corps = vsl ? (dernier ? t.j7Vsl : t.j2Vsl) : dernier ? t.j7 : t.j2;
   return (
     <EmailLayout
       famille="B"
       preview={t.preview}
       title={t.title(dernier)}
-      cta={{ label: t.cta, href: p.dossierUrl }}
+      cta={{ label: vsl ? t.ctaVsl : t.cta, href: p.dossierUrl }}
       locale={locale}
       sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{dernier ? t.j7 : t.j2}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>
+      <Text style={emailStyles.paragraphStyle}>{corps}</Text>
+      {vsl ? null : <Text style={emailStyles.paragraphStyle}>{t.dossier}</Text>}
       <BlocKitApporteur locale={locale} />
       {p.submissionId ? (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>

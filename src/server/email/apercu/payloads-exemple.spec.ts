@@ -137,7 +137,12 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // l'entreprise pour son remboursement OPCO (champs tous facultatifs), puis
     // `opco-suivi-entreprise` (lot A8), le dossier à déposer envoyé à
     // l'entreprise et ses relances.
-    expect(tous.length).toBe(66);
+    // 🔴 2026-10-05 — RELEVÉ À 67 : `apporteur-demarrage`, les e-mails du réseau
+    // d'apporteurs en démarrage manuel (UN fichier, onze noms de job). Ses champs
+    // sont tous facultatifs.
+    // 🔴 2026-10-05 — RELEVÉ À 68 : `apporteur-declaration-recue`, l'alerte INTERNE
+    // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(68);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

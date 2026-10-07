@@ -813,6 +813,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Logos et images des e-mails (`public/email/`) : publics, non sensibles. L'aperçu d'e-mail
+      // de la console les charge depuis une iframe `sandbox=""` (origine opaque), que la règle
+      // globale `same-origin` bloquerait (logo cassé). Placée APRÈS `/:path*` : la dernière gagne.
+      {
+        source: "/email/:path*",
+        headers: [{ key: "Cross-Origin-Resource-Policy", value: "cross-origin" }],
+      },
+      // Films des pages d'atterrissage (`public/videos/`, ex. VSL apporteurs) : nom de
+      // fichier VERSIONNÉ (`…-v1.mp4`), donc cache long et immuable (1 an). Un film refait
+      // prend un nouveau nom. Sans cette règle, Cloudflare revalide chaque lecture.
+      {
+        source: "/videos/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
       // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).
       //
@@ -878,6 +892,33 @@ const nextConfig: NextConfig = {
               `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
+      // Dossier en ligne d'un apporteur du réseau (2026-10-05) —
+      // `/apporteur/dossier/<id>/<jeton>`. Page racine EXCLUE du proxy, comme le
+      // questionnaire : même CSP stricte (aucun hôte tiers, formulaire vers
+      // elle-même), `same-origin` (pas de politique plus stricte : elle casserait
+      // les actions serveur, voir plus haut) et `noindex`. Le jeton est dans l'adresse.
+      {
+        source: "/apporteur/dossier/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob:",
               "font-src 'self'",
               "connect-src 'self'",
               "form-action 'self'",

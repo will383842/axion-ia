@@ -157,6 +157,18 @@ export type EmailJobName =
   | "apporteur-issue-absent"
   | "apporteur-issue-retenu"
   | "apporteur-issue-non-retenu"
+  // Réseau d'apporteurs, démarrage manuel (2026-10-05).
+  | "apporteur-dossier-lien"
+  | "apporteur-dossier-a-completer"
+  | "apporteur-dossier-refuse"
+  | "apporteur-dossier-a-verifier"
+  | "apporteur-contrat-signe"
+  | "apporteur-presentation-recue"
+  | "apporteur-presentation-refusee"
+  | "entreprise-prise-de-contact-apporteur"
+  | "apporteur-vigilance"
+  | "apporteur-commande-signee"
+  | "apporteur-releve"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"
@@ -179,6 +191,8 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise déclarée par formulaire.
+  | "apporteur-declaration-recue"
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE et
   // relances de dépôt / de réponse de l'OPCO, avec réponses en un clic à jeton.
   | "opco-suivi-entreprise";
@@ -224,7 +238,11 @@ export type ApporteurCronJobType =
   // 2026-09-27 — relevé des réponses des candidats dans la boîte Zoho Mail.
   | "reponses-entrantes"
   // 2026-09-28 — invitation automatique 15 minutes après la candidature.
-  | "invitation-auto";
+  | "invitation-auto"
+  // 2026-10-05 — démarrage manuel du réseau : protections, commissions, vigilance.
+  | "reseau-quotidien"
+  // 2026-10-06 — facturation des commissions dès qu'elles sont dues : toutes les heures.
+  | "reseau-facturation";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;

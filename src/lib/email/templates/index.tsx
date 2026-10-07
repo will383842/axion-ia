@@ -143,6 +143,30 @@ import {
   apporteurIssueNonRetenuSubject,
   ApporteurIssueNonRetenuEmail,
 } from "./apporteur-issue-echange";
+import {
+  apporteurDossierLienSubject,
+  ApporteurDossierLienEmail,
+  apporteurDossierACompleterSubject,
+  ApporteurDossierACompleterEmail,
+  apporteurDossierRefuseSubject,
+  ApporteurDossierRefuseEmail,
+  apporteurDossierAVerifierSubject,
+  ApporteurDossierAVerifierEmail,
+  apporteurContratSigneSubject,
+  ApporteurContratSigneEmail,
+  apporteurPresentationRecueSubject,
+  ApporteurPresentationRecueEmail,
+  apporteurPresentationRefuseeSubject,
+  ApporteurPresentationRefuseeEmail,
+  entrepriseConfirmationApporteurSubject,
+  EntrepriseConfirmationApporteurEmail,
+  apporteurVigilanceSubject,
+  ApporteurVigilanceEmail,
+  apporteurCommandeSigneeSubject,
+  ApporteurCommandeSigneeEmail,
+  apporteurReleveSubject,
+  ApporteurReleveEmail,
+} from "./apporteur-demarrage";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -163,6 +187,10 @@ import {
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
+import {
+  ApporteurDeclarationRecueEmail,
+  apporteurDeclarationRecueSubject,
+} from "./apporteur-declaration-recue";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -462,6 +490,51 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurIssueNonRetenuSubject,
     component: ApporteurIssueNonRetenuEmail,
   },
+  // Réseau d'apporteurs, démarrage manuel (2026-10-05) — dossier, contrat, présentations, commissions.
+  "apporteur-dossier-lien": {
+    subject: apporteurDossierLienSubject,
+    component: ApporteurDossierLienEmail,
+  },
+  "apporteur-dossier-a-completer": {
+    subject: apporteurDossierACompleterSubject,
+    component: ApporteurDossierACompleterEmail,
+  },
+  "apporteur-dossier-refuse": {
+    subject: apporteurDossierRefuseSubject,
+    component: ApporteurDossierRefuseEmail,
+  },
+  "apporteur-dossier-a-verifier": {
+    subject: apporteurDossierAVerifierSubject,
+    component: ApporteurDossierAVerifierEmail,
+  },
+  "apporteur-contrat-signe": {
+    subject: apporteurContratSigneSubject,
+    component: ApporteurContratSigneEmail,
+  },
+  "apporteur-presentation-recue": {
+    subject: apporteurPresentationRecueSubject,
+    component: ApporteurPresentationRecueEmail,
+  },
+  "apporteur-presentation-refusee": {
+    subject: apporteurPresentationRefuseeSubject,
+    component: ApporteurPresentationRefuseeEmail,
+  },
+  "entreprise-prise-de-contact-apporteur": {
+    subject: entrepriseConfirmationApporteurSubject,
+    component: EntrepriseConfirmationApporteurEmail,
+  },
+  "apporteur-vigilance": {
+    subject: apporteurVigilanceSubject,
+    component: ApporteurVigilanceEmail,
+  },
+  "apporteur-commande-signee": {
+    subject: apporteurCommandeSigneeSubject,
+    component: ApporteurCommandeSigneeEmail,
+  },
+  "apporteur-releve": {
+    subject: apporteurReleveSubject,
+    component: ApporteurReleveEmail,
+  },
   "vivier-information": {
     subject: vivierInformationSubject,
     component: VivierInformationEmail,
@@ -489,6 +562,12 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
+  },
+  // Apporteurs (2026-10-05) — alerte INTERNE : une entreprise vient d'être déclarée par le
+  // formulaire du lien personnel (`features/apporteurs-reseau/declaration-entreprise.ts`).
+  "apporteur-declaration-recue": {
+    subject: apporteurDeclarationRecueSubject,
+    component: ApporteurDeclarationRecueEmail,
   },
   // Lot OPCO A8 (2026-10-04) — dossier prêt à déposer envoyé à l'entreprise,
   // puis relances « dépôt fait ? » / « réponse de l'OPCO ? » (boutons à jeton).

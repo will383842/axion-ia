@@ -403,14 +403,14 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "lead-apporteur-recu": {
     categorie: "recrutement",
     quand:
-      "Premier contact déposé sur la landing Facebook (formulaire court) — ou 30 min après un dossier commencé et non fini",
+      "Premier contact déposé sur la landing Facebook (formulaire court) — ou 30 min après un dossier commencé et non fini — ou, sur la page vidéo : 30 min après l'étape 1 sans la suite (variante « abandon »), et tout de suite après l'étape 2 avec le bouton de réservation (variante « c'est noté »)",
     destinataire: "le candidat apporteur",
     source: "features/commercial-application/lead-actions.ts",
   },
   "lead-apporteur-relance": {
     categorie: "recrutement",
     quand:
-      "J+2 puis J+7 après le premier contact ou le début du dossier, si le dossier complet n'est pas arrivé",
+      "J+2 puis J+7 après le premier contact, le début du dossier ou l'étape 1 de la page vidéo, si le dossier complet n'est pas arrivé, que l'étape 2 n'est pas validée et qu'aucun échange n'est réservé",
     destinataire: "le candidat apporteur",
     source: "features/commercial-application/relances-lead-apporteur.ts",
   },
@@ -441,6 +441,76 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "Après l'échange apporteur : bouton « Retenu », aperçu puis confirmation — une fois par personne",
     destinataire: "le candidat apporteur retenu",
     source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
+  "apporteur-dossier-lien": {
+    categorie: "recrutement",
+    quand:
+      "Bouton « Envoyer le lien du dossier » de la fiche apporteur, après aperçu (le lien part aussi dans l'e-mail « Retenu »)",
+    destinataire: "l'apporteur retenu qui doit compléter son dossier",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-dossier-a-completer": {
+    categorie: "recrutement",
+    quand:
+      "Bouton « À compléter » de la vérification d'un dossier signé : pièces à retransmettre et note de Williams",
+    destinataire: "l'apporteur dont le dossier est incomplet",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-dossier-refuse": {
+    categorie: "recrutement",
+    quand: "Bouton « Non, définitif » de la vérification d'un dossier signé",
+    destinataire: "l'apporteur dont le dossier n'est pas retenu",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-dossier-a-verifier": {
+    categorie: "recrutement",
+    quand: "Dès qu'un apporteur signe son contrat en ligne",
+    destinataire: "Williams (alerte interne)",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-contrat-signe": {
+    categorie: "recrutement",
+    quand: "Bouton « Oui, contresigner » : le contrat signé des deux parties en pièce jointe",
+    destinataire: "l'apporteur dont le contrat vient d'être contresigné",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-recue": {
+    categorie: "recrutement",
+    quand: "Bouton « Bien reçu » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-presentation-refusee": {
+    categorie: "recrutement",
+    quand: "Bouton « Déjà connue » ou « Hors champ » d'une entreprise présentée, après aperçu",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "entreprise-prise-de-contact-apporteur": {
+    categorie: "recrutement",
+    quand: "Avec « Bien reçu » : la prise de contact de Williams, de la part de l'apporteur",
+    destinataire: "la personne présentée par un apporteur",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-vigilance": {
+    categorie: "recrutement",
+    quand:
+      "Tâche quotidienne : à l'approche de 5 000 € de commissions, puis avant chaque échéance de six mois de l'attestation",
+    destinataire: "l'apporteur qui doit transmettre son attestation URSSAF",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-commande-signee": {
+    categorie: "recrutement",
+    quand: "Tâche quotidienne : quand une entreprise protégée signe un devis",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-releve": {
+    categorie: "recrutement",
+    quand:
+      "Tâche horaire : dès qu'une commission devient due (client payé à 100 %), avec l'autofacture en pièce jointe",
+    destinataire: "l'apporteur dont la commission vient d'être facturée",
+    source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-issue-non-retenu": {
     categorie: "recrutement",
@@ -476,6 +546,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "Dossier OPCO prêt (convention signée, contact avec e-mail) : envoi du dossier à déposer, puis relances « dépôt fait ? » (J+3, J+7, J+12, J-5 de la date limite) et « réponse de l'OPCO ? » (J+10, J+20, J+30 du dépôt)",
     destinataire: "contact de l'entreprise cliente",
     source: "server/qualiopi/financements/suivi-entreprise/envoi.ts",
+  },
+  "apporteur-declaration-recue": {
+    categorie: "recrutement",
+    quand:
+      "Un apporteur au contrat signé déclare une entreprise par le formulaire de son lien personnel — aucune donnée sur la personne rencontrée",
+    destinataire: "Williams (alerte interne)",
+    source: "features/apporteurs-reseau/declaration-entreprise.ts",
   },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",

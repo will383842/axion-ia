@@ -54,6 +54,8 @@ import {
 } from "@/features/admin-rendezvous/type-rdv";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { BilanRendezVousVue } from "@/components/admin/contacts/BilanRendezVousVue";
+import { OrigineRendezVousVue } from "@/components/admin/contacts/OrigineRendezVousVue";
+import { lireOrigineRendezVous } from "@/features/admin-rendezvous/origine-rendez-vous-queries";
 import { lirePeriodeBilan, PERIODES_BILAN } from "@/features/admin-rendezvous/bilan-rendez-vous";
 import { lireBilanRendezVous } from "@/features/admin-rendezvous/bilan-rendez-vous-queries";
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
@@ -414,7 +416,10 @@ export default async function AppelsPage({
   // ── Vue « Ce que ça rapporte » ────────────────────────────────────────────
   if (vue === "rapport") {
     const jours = lirePeriodeBilan(sp["jours"]);
-    const bilan = await lireBilanRendezVous(jours);
+    const [bilan, origines] = await Promise.all([
+      lireBilanRendezVous(jours),
+      lireOrigineRendezVous(jours),
+    ]);
     return (
       <>
         {header}
@@ -431,6 +436,7 @@ export default async function AppelsPage({
           />
         </div>
         <BilanRendezVousVue bilan={bilan} jours={jours} />
+        <OrigineRendezVousVue bilan={origines} jours={jours} />
       </>
     );
   }

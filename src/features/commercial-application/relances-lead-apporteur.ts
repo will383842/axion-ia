@@ -38,6 +38,11 @@ import {
   DELAI_KIT_DOSSIER_COMMENCE_MS,
   VARIANTE_DOSSIER_COMMENCE,
 } from "@/lib/commercial-application/kit-apporteur";
+import {
+  VARIANTE_VSL_ABANDON,
+  VARIANTE_VSL_ETAPE2,
+  VARIANTE_VSL_RELANCE,
+} from "@/lib/commercial-application/vsl-apporteur";
 
 export const RELANCES_LEAD_APPORTEUR = [
   { etape: "j2", delaiMs: 2 * 24 * 60 * 60 * 1000 },
@@ -124,6 +129,115 @@ export async function planifierKitDossierCommence(input: PlanifierRelancesInput)
     {
       delayMs: DELAI_KIT_DOSSIER_COMMENCE_MS,
       jobId: jobIdKitDossierCommence(emailKey),
+      entityType: "Submission",
+      entityId: input.submissionId,
+    },
+  );
+  return res.enqueued;
+}
+
+/** Identifiant du message B1 « C'est noté » (étape 2 du tunnel vidéo) — un seul par adresse. */
+export function jobIdVslEtape2(emailKey: string): string {
+  return `lead-apporteur-vsl-etape2-${emailKey}`;
+}
+
+export interface PlanifierRelancesVslInput {
+  email: string;
+  prenom: string;
+  /** Lien de REPRISE (page vidéo + jeton de reprise) : le bouton de A1, A2 et A3. */
+  reprendreUrl: string;
+  submissionId: string;
+}
+
+/**
+ * Branche A du tunnel vidéo (03-MESSAGES §2) : la personne a validé l'étape 1
+ * (prénom + e-mail) et pas la suivante.
+ *   · A1 à +30 min — `lead-apporteur-recu`, variante `vsl-abandon` ;
+ *   · A2 à +2 j, A3 à +7 j — `lead-apporteur-relance`, variante `vsl`.
+ *
+ * Mêmes identifiants de tâche que le dossier commencé (`kit`, `j2`, `j7`) :
+ *   · `annulerRelancesLeadApporteur` les retire déjà tous (dossier complet,
+ *     invitation envoyée) ; l'étape 2 et la réservation s'appuient sur lui ;
+ *   · une adresse ne peut avoir QU'UNE série en attente, quel que soit le
+ *     parcours par lequel elle est entrée (R3, R5 : au plus un message par jour).
+ * Best-effort, comme les autres. Renvoie le nombre de tâches posées.
+ */
+export async function planifierRelancesVsl(input: PlanifierRelancesVslInput): Promise<number> {
+  const emailKey = hashEmailForLookup(input.email);
+  if (!emailKey) return 0;
+  let poses = 0;
+  const kit = await enqueueEmail(
+    "lead-apporteur-recu",
+    input.email,
+    "fr",
+    {
+      contactName: input.prenom,
+      dossierUrl: input.reprendreUrl,
+      variante: VARIANTE_VSL_ABANDON,
+      submissionId: input.submissionId,
+    },
+    {
+      delayMs: DELAI_KIT_DOSSIER_COMMENCE_MS,
+      jobId: jobIdKitDossierCommence(emailKey),
+      entityType: "Submission",
+      entityId: input.submissionId,
+    },
+  );
+  if (kit.enqueued) poses += 1;
+  for (const r of RELANCES_LEAD_APPORTEUR) {
+    const res = await enqueueEmail(
+      "lead-apporteur-relance",
+      input.email,
+      "fr",
+      {
+        contactName: input.prenom,
+        dossierUrl: input.reprendreUrl,
+        etape: r.etape,
+        variante: VARIANTE_VSL_RELANCE,
+        submissionId: input.submissionId,
+      },
+      {
+        delayMs: r.delaiMs,
+        jobId: jobIdRelance(r.etape, emailKey),
+        entityType: "Submission",
+        entityId: input.submissionId,
+      },
+    );
+    if (res.enqueued) poses += 1;
+  }
+  return poses;
+}
+
+export interface EnvoyerEtape2Input {
+  email: string;
+  prenom: string;
+  /** Bouton « Choisir mon créneau » : le lien Calendly, ou la page de remerciement à défaut. */
+  calendlyUrl: string;
+  dossierUrl: string;
+  submissionId: string;
+}
+
+/**
+ * B1 — « C'est noté » + bouton Calendly, IMMÉDIAT, une seule fois par adresse
+ * (le `jobId` dérivé du hash fait ignorer un second enfilage). Renvoie vrai si
+ * le message est parti en file.
+ */
+export async function envoyerEtape2Vsl(input: EnvoyerEtape2Input): Promise<boolean> {
+  const emailKey = hashEmailForLookup(input.email);
+  if (!emailKey) return false;
+  const res = await enqueueEmail(
+    "lead-apporteur-recu",
+    input.email,
+    "fr",
+    {
+      contactName: input.prenom,
+      calendlyUrl: input.calendlyUrl,
+      dossierUrl: input.dossierUrl,
+      variante: VARIANTE_VSL_ETAPE2,
+      submissionId: input.submissionId,
+    },
+    {
+      jobId: jobIdVslEtape2(emailKey),
       entityType: "Submission",
       entityId: input.submissionId,
     },

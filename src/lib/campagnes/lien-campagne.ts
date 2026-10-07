@@ -70,6 +70,12 @@ export const DESTINATIONS_CAMPAGNE = [
     aide: "4 champs, 30 secondes. La page faite pour un post social.",
   },
   {
+    id: "apporteur-affaires-video",
+    chemin: "/fr/apporteur-affaires/video",
+    libelle: "Apporteurs d'affaires (page vidéo)",
+    aide: "Formulaire en 2 étapes, puis choix du créneau (film en tête de page s'il est posé). La page faite pour la publicité Facebook et Instagram.",
+  },
+  {
     id: "devenir-commercial-ia",
     chemin: "/fr/devenir-commercial-ia",
     libelle: "Devenir apporteur (page longue)",

@@ -30,6 +30,7 @@ import { requeueContentGenJob } from "@/server/content-gen/recovery/backlog-reco
 // Audit UX 2026-08-01 — colonne « Titre » sur la liste des jobs (repli sûr
 // tant que le job n'a pas fini de générer, cf. docblock `extractJobTitle`).
 import { extractJobTitle } from "@/server/content-gen/shared/admin-labels";
+import { debutFenetreEchecsRecents } from "@/server/content-gen/shared/fenetre-echecs-recents";
 import { requireAdmin, requireSuperAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -365,7 +366,7 @@ export async function cancelJob(id: string): Promise<void> {
 
 /**
  * Sprint A-suite P6 — Item 2. Compte les jobs en état failed ou quarantined
- * non traités (liés à une campagne). Utilisé par le badge rouge sidebar.
+ * RÉCENTS (30 derniers jours). Utilisé par le badge rouge sidebar.
  */
 export async function getFailedJobsCount(): Promise<number> {
   // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde.
@@ -375,9 +376,16 @@ export async function getFailedJobsCount(): Promise<number> {
   // (bouton de suppression, échecs + quarantaines). Le badge excluait sans
   // raison les jobs hors campagne (RSS, enfilage direct) : il s'aligne sur le
   // périmètre du bouton qu'il annonce.
+  // 2026-10-07 (demande de Will : « fais le ménage ») — le badge comptait 1 363
+  // échecs dont 92 % dataient de juillet (quota OpenAI) : un rouge permanent qui
+  // cache les vrais incidents. Il ne compte plus que les échecs des
+  // FENETRE_ECHECS_RECENTS_JOURS derniers jours. RIEN n'est supprimé ni annulé :
+  // annuler un job creuse un trou définitif dans le plan (plan-order.spec.ts),
+  // et la liste complète des échecs reste consultable dans Génération de contenu.
   return prisma.contentGenJob.count({
     where: {
       status: { in: ["failed", "quarantined_critical", "quarantined_factcheck"] },
+      updatedAt: { gte: debutFenetreEchecsRecents() },
     },
   });
 }

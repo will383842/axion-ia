@@ -6,7 +6,6 @@
 import { useState, useTransition } from "react";
 import { updateCalendlyEventAction } from "@/features/admin-calendly/actions";
 import { toParisLocalInput, fromParisLocalInput } from "@/lib/calendar-grid";
-import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 
 /**
  * Une fiche proposée au rattachement — calculée côté serveur par
@@ -17,18 +16,9 @@ import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 interface FicheRattachable {
   readonly id: string;
   readonly libelle: string;
-  readonly groupe: "meme-personne" | "recentes" | "actuelle";
+  /** Le titre du groupe, calculé côté serveur (même ordre que la liste). */
+  readonly intitule: string;
 }
-
-// 🔑 La fenêtre est LUE, pas retapée. Le nombre de jours vit dans
-// `fiches-rattachables.ts`, qui s'en sert pour filtrer : écrit ici en dur, le
-// jour où on passerait à 60, le sélecteur annoncerait toujours 30 en proposant
-// des fiches de 45 jours — et rien ne rougirait.
-const INTITULE_GROUPE: Record<FicheRattachable["groupe"], string> = {
-  actuelle: "Fiche rattachée",
-  "meme-personne": "Même adresse e-mail",
-  recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
-};
 
 interface Initial {
   readonly inviteeName: string | null;
@@ -216,19 +206,17 @@ export function CalendlyEventEditor({
             disabled={isPending}
           >
             <option value="">Aucune fiche</option>
-            {(["actuelle", "meme-personne", "recentes"] as const).map((groupe) => {
-              const fiches = fichesRattachables.filter((f) => f.groupe === groupe);
-              if (fiches.length === 0) return null;
-              return (
-                <optgroup key={groupe} label={INTITULE_GROUPE[groupe]}>
-                  {fiches.map((f) => (
+            {[...new Set(fichesRattachables.map((f) => f.intitule))].map((intitule) => (
+              <optgroup key={intitule} label={intitule}>
+                {fichesRattachables
+                  .filter((f) => f.intitule === intitule)
+                  .map((f) => (
                     <option key={f.id} value={f.id}>
                       {f.libelle}
                     </option>
                   ))}
-                </optgroup>
-              );
-            })}
+              </optgroup>
+            ))}
           </select>
         </div>
         <div className="admin-field sm:col-span-2">

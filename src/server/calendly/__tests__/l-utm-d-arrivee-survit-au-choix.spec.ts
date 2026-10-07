@@ -143,18 +143,21 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
     expect(page).toContain("parametresDuRetour(depuis, suivi)");
     expect(page).toContain("parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}");
     expect(page).toContain("suivi={suivi}");
-    expect(page).toContain('/appel${choix ? `?${parametresDuChoix(choix, depuis, suivi)}` : ""}`');
+    // L'adresse de la page, pour l'attribution : celle du calendrier DU TYPE
+    // (`lienDuCalendrier`), qui recopie le choix, l'emplacement ET l'arrivée.
+    expect(page).toContain("lienDuCalendrier(locale, choix, depuis, suivi)");
   });
 
   it("/appel/reserver : retour au calendrier et champs cachés", () => {
     expect(reserver).toContain("const suivi = lireSuiviArrivee(sp)");
-    expect(reserver).toContain("parametresDuChoix(choix, depuis, suivi)");
+    expect(reserver).toContain("lienDuCalendrier(locale, choix, depuis, suivi)");
     expect(reserver).toContain("...suivi");
   });
 
   it("l'action relit l'arrivée des champs cachés pour ses renvois", () => {
     expect(actions).toContain("lireSuiviArrivee(");
     expect(actions).toContain("parametresDuChoix(choix, depuis, suivi)");
+    expect(actions).toContain("lienDuCalendrier(locale, choix, depuis, suivi)");
     // La provenance de la réservation directe se prend en BLOC.
     expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
   });

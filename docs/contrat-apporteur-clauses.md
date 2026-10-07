@@ -1,5 +1,9 @@
 # Contrat d'apporteur d'affaires — clauses
 
+> ⛔ **DOCUMENT PÉRIMÉ (2026-10-05).** Ce fichier n'est plus la référence : le contrat d'apporteur v2
+> validé par Williams le 2026-10-05 (`src/features/apporteurs-reseau/contrat-v2.ts`, articles 3, 4, 5 et
+> 12 notamment) le remplace. Les clauses ci-dessous ne doivent plus être reprises telles quelles.
+
 > **Statut du document.** Il n'existe aujourd'hui **aucun contrat d'apporteur** dans ce
 > dépôt : les autres documents le citent une quinzaine de fois, personne ne l'a rédigé.
 > Ce fichier commence à combler ce trou, en partant de la clause la plus urgente —

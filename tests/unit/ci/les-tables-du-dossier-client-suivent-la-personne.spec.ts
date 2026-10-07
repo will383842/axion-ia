@@ -36,6 +36,8 @@ import { MIGRATION_VISIO } from "../../../prisma/objets-sql-bruts";
 import { lire, lireModeles, RACINE, type ModeleLu } from "./sources-du-circuit-visio";
 
 const MODULE_EXPORT = "src/lib/rgpd-dossier-client.ts";
+// Le réseau d'apporteurs a son propre module d'export (il déchiffre ses champs, ce que le circuit de la parole interdit à `rgpd-dossier-client.ts`) : même export art. 15, deux fichiers.
+const MODULE_EXPORT_RESEAU = "src/lib/rgpd-reseau-apporteur.ts";
 const MODULE_EFFACEMENT = "src/lib/rgpd-erase.ts";
 const ROUTE_EXPORT = "src/app/api/gdpr-export/route.ts";
 
@@ -109,7 +111,10 @@ function fautes(
 describe("les tables du dossier client suivent la personne", () => {
   const creations = migrationDeCreation();
   const modeles = lireModeles();
-  const sources = { exporte: lire(MODULE_EXPORT), efface: lire(MODULE_EFFACEMENT) };
+  const sources = {
+    exporte: lire(MODULE_EXPORT) + lire(MODULE_EXPORT_RESEAU),
+    efface: lire(MODULE_EFFACEMENT),
+  };
 
   it("la garde regarde bien les tables du chantier (sinon elle serait verte pour rien)", () => {
     const vus = modeles.filter((m) => enPerimetre(m, creations)).map((m) => m.nom);

@@ -63,7 +63,9 @@ describe("Absent — « nous vous avons attendu »", () => {
     );
     expect(t).toContain("un imprévu arrive à tout le monde");
     expect(t).toContain("Choisir un nouveau créneau");
-    expect(r.html).toContain(CALENDLY);
+    // 2026-10-05 : le bouton mène à NOTRE page de réservation.
+    expect(r.html).toContain("/fr/appel/apporteur");
+    expect(r.html).not.toContain(CALENDLY);
     // Aucune relance automatique ensuite, et c'est dit.
     expect(t).toContain("nous ne vous relancerons pas");
   });
@@ -93,8 +95,15 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("numéro SIRET");
     expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
     expect(t).not.toContain("prochains jours");
-    expect(t).toContain("Votre espace apporteur personnel ouvrira d'ici un mois");
-    expect(t).toContain("répondez simplement à cet e-mail avec son nom et celui de votre contact");
+    // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne (démarrage à la main).
+    expect(t).not.toContain("d'ici un mois");
+    expect(t).toContain("Dès votre contrat signé, vous pourrez nous présenter des entreprises");
+    // 2026-10-06 : le dossier signé renvoie au formulaire du lien personnel : « par simple
+    // e-mail » ne disait que la moitié du chemin (et promettait un canal que l'espace ne garantit pas).
+    expect(t).toContain("par e-mail ou depuis votre lien personnel");
+    expect(t).not.toContain("par simple e-mail");
+    // (La consigne « répondez avec son nom et celui de votre contact » allait avec la date
+    // promise : elle est retirée avec elle ; la présentation par e-mail reste dite ci-dessus.)
     // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une
     // seule fois, pas deux.
     expect(t.match(/Une question \?/g)).toHaveLength(1);
@@ -113,7 +122,10 @@ describe("Retenu — bienvenue dans le réseau", () => {
     );
     expect(t).toContain(`Audit : ${audit} % du montant HT de la facture.`);
     expect(t).toContain(`Intégration : ${integration} % du montant HT de la facture.`);
-    expect(t).toContain(`attribuée pendant ${FENETRE_ATTRIBUTION_APPORTEUR_MOIS} mois`);
+    // Décision de Will (2026-10-05) : la durée d'attribution ne s'écrit PAS dans cet e-mail.
+    expect(t).toContain("réglé l'intégralité de sa facture.");
+    expect(t).not.toContain("attribuée");
+    expect(t).not.toContain("6 mois");
     // Témoin des valeurs décidées : si le SSOT bouge, ce test le dit.
     expect([
       COMMISSION_FORMATION_PAR_JOURNEE_EUR,

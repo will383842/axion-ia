@@ -13,6 +13,8 @@ const d = vi.hoisted(() => ({
   relances: vi.fn(),
   reponses: vi.fn(),
   invitations: vi.fn(),
+  facturation: vi.fn(),
+  quotidien: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -37,6 +39,11 @@ vi.mock("@/features/commercial-application/invitation-auto", () => ({
   passerInvitationsAuto: (...a: unknown[]) => d.invitations(...a),
 }));
 
+vi.mock("@/features/apporteurs-reseau/passage-quotidien", () => ({
+  passerFacturationApporteurs: (...a: unknown[]) => d.facturation(...a),
+  passerReseauApporteurs: (...a: unknown[]) => d.quotidien(...a),
+}));
+
 import { startApporteurCronsWorker } from "../apporteur-crons-worker";
 
 type Processeur = (job: Record<string, unknown>) => Promise<void>;
@@ -52,6 +59,10 @@ beforeEach(() => {
     erreurs: 0,
   });
   d.invitations.mockResolvedValue({ fichesCreees: 0, envoyees: 0, ecartees: {}, aReessayer: 0 });
+  d.facturation.mockResolvedValue({ autofacturesEmises: 0, erreurs: 0 });
+  d.quotidien.mockResolvedValue({ autofacturesEmises: 0, erreurs: 0 });
+  d.facturation.mockClear();
+  d.quotidien.mockClear();
 });
 
 function processeur(): Processeur {
@@ -99,5 +110,29 @@ describe("🔴 l'aiguillage de la file apporteur-crons", () => {
     expect(queues).toMatch(
       /type: "invitation-auto" as const,\s*pattern: PATTERN_INVITATION_AUTO,\s*jobId: "apporteur-invitation-auto-cron"/,
     );
+  });
+});
+
+describe("🔴 la facturation des commissions : job horaire distinct du quotidien", () => {
+  it("un job `reseau-facturation` lance la facturation, et PAS le passage quotidien", async () => {
+    await processeur()({ name: "reseau-facturation", data: { type: "reseau-facturation" } });
+    expect(d.facturation).toHaveBeenCalledTimes(1);
+    expect(d.quotidien).not.toHaveBeenCalled();
+    expect(d.relances).not.toHaveBeenCalled();
+  });
+
+  it("un job `reseau-quotidien` lance le passage quotidien, et PAS la facturation seule", async () => {
+    await processeur()({ name: "reseau-quotidien", data: { type: "reseau-quotidien" } });
+    expect(d.quotidien).toHaveBeenCalledTimes(1);
+    expect(d.facturation).not.toHaveBeenCalled();
+  });
+
+  it("le programme pose la facturation TOUTES LES HEURES (minute 10 UTC), jobId stable, à côté du quotidien", () => {
+    const queues = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    expect(queues).toMatch(/PATTERN_RESEAU_FACTURATION = "10 \* \* \* \*"/);
+    expect(queues).toMatch(
+      /type: "reseau-facturation" as const,\s*pattern: PATTERN_RESEAU_FACTURATION,\s*jobId: "apporteur-reseau-facturation-cron"/,
+    );
+    expect(queues).toMatch(/PATTERN_RESEAU_QUOTIDIEN = "0 7 \* \* \*"/);
   });
 });

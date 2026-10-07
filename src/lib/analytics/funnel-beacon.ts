@@ -53,6 +53,10 @@ export function funnelKeyFromPath(pathname: string | null | undefined): FunnelKe
   // Un `includes` nu ferait correspondre `/interventions/diagnostic-express`.
   // On exige donc un segment de chemin entier.
   const segments = pathname.split("/").filter((s) => s.length > 0);
+  // Tunnel apporteurs : `/apporteur-affaires` et tout ce qui est dessous
+  // (`/video`, `/merci`). Segment ENTIER : la page SEO
+  // `/apporteur-affaires-independant-…` n'est pas un tunnel payant.
+  if (segments.includes("apporteur-affaires")) return "apporteur";
   if (segments.includes("diagnostic")) return "diagnostic";
   if (segments.includes("simulateur")) return "simulateur";
   if (segments.includes("roi")) return "roi";

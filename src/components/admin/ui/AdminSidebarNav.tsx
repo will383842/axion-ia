@@ -71,6 +71,7 @@ import {
 } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 import { agregerBadges, type BadgeTone as BadgeToneRollup } from "./badge-rollup";
+import { badgeApporteurs, type ApporteursNavCountsProp } from "./badges-apporteurs";
 
 // Toutes les clés de pôles, tous groupes confondus (content_gen + qualiopi).
 // Les clés sont disjointes entre groupes → un seul Set<string> pilote l'état
@@ -206,6 +207,11 @@ interface AdminSidebarNavProps {
    * zéro. Zéro aussi pour un rôle qui ne voit pas les appels.
    */
   rendezVousAFaireCount?: number;
+  /**
+   * Pastilles du groupe « Apporteurs d'affaires » (2026-10-05) : présentations à traiter, pièces de
+   * vigilance déposées, relevés du mois à émettre. « Reste à faire », descend à zéro.
+   */
+  apporteursCounts?: ApporteursNavCountsProp;
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -247,6 +253,7 @@ export function AdminSidebarNav({
   qualiopiCounts,
   staleJobOffersCount = 0,
   rendezVousAFaireCount = 0,
+  apporteursCounts,
   userEmail,
   accountHref,
   logoutAction,
@@ -543,6 +550,9 @@ export function AdminSidebarNav({
     if (staleJobOffersCount > 0 && href === `${accountHref ?? ""}/offres-emploi`) {
       return { count: staleJobOffersCount, tone: "warn", label: "offres à republier" };
     }
+    // ── Apporteurs d'affaires (2026-10-05) ───────────────────────────────
+    const apporteurs = badgeApporteurs(href, accountHref ?? "", apporteursCounts);
+    if (apporteurs) return apporteurs;
     // ── Console Qualiopi (refonte phase 1, 2026-08-01) ───────────────────
     // Égalité EXACTE (même précaution que la boîte de réception) : sans elle,
     // « À traiter » capterait /qualiopi/a-traiter/* et « Alertes » capterait

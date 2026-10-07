@@ -84,7 +84,9 @@ describe("les deux étapes, les deux langues", () => {
 
   it.each(CAS)("%s %s : bouton de réservation, kit, désinscription, famille B", async (l, e) => {
     const r = await rendu(l, e);
-    expect(r.html).toContain(CALENDLY);
+    // 2026-10-05 : le bouton mène à NOTRE page de réservation.
+    expect(r.html).toContain("/fr/appel/apporteur");
+    expect(r.html).not.toContain(CALENDLY);
     expect(r.html).toMatch(l === "fr" ? /Réserver mon créneau/ : /Book my slot/);
     // Le kit : le catalogue seul depuis JUR-T44 (`kit-apporteur-sans-pdf.spec.ts`).
     expect(r.html).toMatch(/\/(fr|en)\/catalogue"/);

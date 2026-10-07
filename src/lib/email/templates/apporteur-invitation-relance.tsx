@@ -27,6 +27,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -147,7 +148,12 @@ export function ApporteurInvitationRelanceEmail({
       famille="B"
       preview={offre !== null ? t.previewOffre(dernier) : t.preview(dernier)}
       title={t.title(dernier)}
-      cta={{ label: t.cta, href: p.calendlyUrl }}
+      // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
+      // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).
+      cta={{
+        label: t.cta,
+        href: lienDeReservationDuSite(p.calendlyUrl, { depuis: "email-relance-apporteur" }),
+      }}
       locale={locale}
       sansReseauxSociaux
       // 2026-09-27 (Will) : signé du fondateur — bloc §6.1 du châssis, sans

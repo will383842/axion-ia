@@ -124,6 +124,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   try {
     fichesRattachables = await listerFichesRattachables({
       inviteeEmail: event.inviteeEmail,
+      inviteeName: event.inviteeName,
       linkedSubmissionId: event.linkedSubmissionId,
       estEchangeApporteur: estAppelApporteur(event.eventTypeName),
     });

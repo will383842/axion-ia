@@ -35,7 +35,9 @@ import { urlDuFormulaire } from "../formulaire-reservation";
 
 const PROJET = "https://calendly.com/axion-ia/premier-contact";
 const DIAG = "https://calendly.com/axion-ia/diagnostic-ia";
-const APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur-affaires";
+// Le défaut est le slug donné par Will le 2026-10-05 (`echange-apporteur`) ; l'ancien
+// (`…-affaires`) n'est gardé que pour le classement.
+const APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur";
 const SALON = "https://calendly.com/axion-ia/rencontre-salon-gofab";
 
 const URI_PROJET = "https://api.calendly.com/event_types/PROJET";
@@ -90,7 +92,12 @@ describe("le paramètre `rdv` désigne le choix, et seulement lui", () => {
     expect(typeDuChoix("projet")).toBe("echange_projet");
     expect(choixDuType("diagnostic")).toBe("diagnostic");
     expect(choixDuType("echange_projet")).toBe("projet");
-    expect(choixDuType("salon")).toBeNull();
+    // Depuis le 2026-10-05, l'apporteur et le salon suivent le même parcours.
+    expect(typeDuChoix("apporteur")).toBe("apporteur");
+    expect(typeDuChoix("salon")).toBe("salon");
+    expect(choixDuType("apporteur")).toBe("apporteur");
+    expect(choixDuType("salon")).toBe("salon");
+    expect(choixDuType("autre")).toBeNull();
   });
 
   it("chaque choix a sa propre URL Calendly — défauts réels, puis variables", () => {

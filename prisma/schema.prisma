@@ -3303,6 +3303,29 @@ model FunnelEvent {
   @@map("funnel_events")
 }
 
+/// Dépense publicitaire SAISIE À LA MAIN (tunnel apporteurs, 2026-10-06) : une
+/// ligne par versement relevé dans le Gestionnaire de publicités. Sert au seul
+/// tableau « Tunnel apporteurs » de la console (coût par marche, par apporteur
+/// actif). Aucune donnée personnelle. Montant en CENTIMES, jamais en flottant.
+/// rgpd: technique — montant, période et canal d'une dépense publicitaire ; aucune donnée personnelle
+model AcquisitionSpend {
+  id              String   @id @default(uuid()) @db.Uuid
+  /// Jour de la dépense (date seule, sans heure).
+  spentOn         DateTime @map("spent_on") @db.Date
+  /// `facebook` | `instagram` | `linkedin` | `autre` — liste fermée côté serveur.
+  canal           String   @db.VarChar(20)
+  /// Nom de la campagne (= `utm_campaign` du lien), facultatif.
+  campagne        String?  @db.VarChar(120)
+  montantCentimes Int      @map("montant_centimes")
+  note            String?  @db.VarChar(300)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  /// Adresse du compte console qui a saisi la ligne.
+  createdByEmail  String?  @map("created_by_email") @db.VarChar(255)
+
+  @@index([spentOn])
+  @@map("acquisition_spend")
+}
+
 /// Ledger de coût atomique par appel provider. Source de vérité cost cap.
 model CostLedger {
   id           String      @id @default(cuid())
@@ -15116,4 +15139,260 @@ model NumeroEmis {
   emisLe      DateTime @default(now()) @map("emis_le") @db.Timestamptz(6)
 
   @@map("numeros_emis")
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// RÉSEAU D'APPORTEURS — DÉMARRAGE MANUEL (2026-10-05)
+//
+// Provisoire : en attendant Axion Partners, la console du site recrute les
+// apporteurs (dossier en ligne, contrat signé puis contresigné), enregistre les
+// entreprises qu'ils présentent et calcule leurs commissions. Mêmes notions que
+// Partners (statut juridique en liste fermée, régime de TVA, pièces), pour que
+// la reprise par Partners soit un import et non une réécriture.
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Où en est le dossier d'un apporteur du réseau.
+enum ApporteurReseauStatut {
+  /// Lien envoyé : l'apporteur complète son dossier en ligne.
+  dossier_en_cours
+  /// L'apporteur a signé : Williams vérifie les pièces.
+  a_verifier
+  /// Williams a demandé un complément : le dossier est rouvert.
+  a_completer
+  /// Contresigné : le contrat est conclu.
+  signe
+  /// Williams ne donne pas suite (décision définitive).
+  refuse
+  /// Contrat terminé.
+  resilie
+
+  @@map("apporteur_reseau_statut")
+}
+
+/// Le régime de TVA déclaré, qui fixe la mention de l'autofacture.
+enum RegimeTvaApporteur {
+  franchise_293b
+  assujetti
+
+  @@map("regime_tva_apporteur")
+}
+
+/// Un apporteur du réseau (démarrage manuel). Nom, e-mail, téléphone et IBAN
+/// sont CHIFFRÉS (`encryptPii`) ; l'e-mail porte en plus son empreinte de recherche.
+/// rgpd: dossier-client
+model ApporteurReseau {
+  id                  String                   @id @default(uuid()) @db.Uuid
+  statut              ApporteurReseauStatut    @default(dossier_en_cours)
+  /// La candidature d'origine (`Submission`), si l'apporteur vient du tunnel.
+  submissionId        String?                  @unique @map("submission_id") @db.Uuid
+  prenom              String                   @db.Text
+  nom                 String                   @db.Text
+  email               String                   @db.Text
+  emailHash           String                   @unique @map("email_hash") @db.VarChar(64)
+  telephone           String?                  @db.Text
+  /// Identité de facturation, lue dans le registre public par le SIREN.
+  siren               String?                  @db.Char(9)
+  denomination        String?                  @db.VarChar(250)
+  adresse             String?                  @db.Text
+  codeNaf             String?                  @map("code_naf") @db.VarChar(8)
+  /// Liste fermée de Partners (`StatutJuridique`, PR #727) : micro_entrepreneur…
+  statutJuridique     String?                  @map("statut_juridique") @db.VarChar(40)
+  regimeTva           RegimeTvaApporteur?      @map("regime_tva")
+  numeroTva           String?                  @map("numero_tva") @db.VarChar(20)
+  iban                String?                  @db.Text
+  /// Les déclarations cochées par l'apporteur avant de signer (clé → date ISO).
+  declarations        Json?
+  /// Parrain dans le réseau (un seul niveau rémunéré, contrat art. 4.6).
+  parrainId           String?                  @map("parrain_id") @db.Uuid
+  parrain             ApporteurReseau?         @relation("ParrainageReseau", fields: [parrainId], references: [id], onDelete: Restrict)
+  filleuls            ApporteurReseau[]        @relation("ParrainageReseau")
+  /// Incrémenté pour révoquer les liens personnels déjà envoyés.
+  versionLien         Int                      @default(1) @map("version_lien")
+  /// Le contrat généré et signé par l'apporteur : clé R2 et empreinte SHA-256.
+  contratCle          String?                  @map("contrat_cle") @db.VarChar(300)
+  contratSha256       String?                  @map("contrat_sha256") @db.Char(64)
+  /// Preuve de la signature de l'apporteur : nom tapé, IP hachée, navigateur, cases.
+  signatureApporteur  Json?                    @map("signature_apporteur")
+  signeParApporteurAt DateTime?                @map("signe_par_apporteur_at") @db.Timestamptz(3)
+  /// Le contrat contresigné par la Société : il naît à cette date (contrat v2).
+  contratSigneCle     String?                  @map("contrat_signe_cle") @db.VarChar(300)
+  contratSigneSha256  String?                  @map("contrat_signe_sha256") @db.Char(64)
+  signeParSocieteAt   DateTime?                @map("signe_par_societe_at") @db.Timestamptz(3)
+  /// Dernier message de Williams (« à compléter » ou refus), tel qu'envoyé.
+  dernierMessage      String?                  @map("dernier_message") @db.Text
+  refuseAt            DateTime?                @map("refuse_at") @db.Timestamptz(3)
+  resilieAt           DateTime?                @map("resilie_at") @db.Timestamptz(3)
+  noteInterne         String?                  @map("note_interne") @db.Text
+  creeAt              DateTime                 @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt               DateTime                 @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  pieces        PieceApporteur[]
+  presentations PresentationEntreprise[]
+  commissions   CommissionApporteur[]
+
+  @@index([statut])
+  @@index([parrainId])
+  @@map("apporteurs_reseau")
+}
+
+enum TypePieceApporteur {
+  identite
+  rib
+  rc_pro
+  vigilance
+  immatriculation
+
+  @@map("type_piece_apporteur")
+}
+
+enum StatutPieceApporteur {
+  deposee
+  conforme
+  a_retransmettre
+
+  @@map("statut_piece_apporteur")
+}
+
+/// Une pièce déposée par l'apporteur. Les octets vivent à part (`PieceApporteurContenu`) ;
+/// ceux de la pièce d'identité sont SUPPRIMÉS dès qu'elle est jugée conforme
+/// (seule la date de vérification reste).
+/// rgpd: dossier-client
+model PieceApporteur {
+  id          String                 @id @default(uuid()) @db.Uuid
+  apporteurId String                 @map("apporteur_id") @db.Uuid
+  apporteur   ApporteurReseau        @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  type        TypePieceApporteur
+  statut      StatutPieceApporteur   @default(deposee)
+  /// Motif « à retransmettre » : illisible, perimee, mauvais_nom, incomplete, autre.
+  motif       String?                @db.VarChar(40)
+  nomFichier  String                 @map("nom_fichier") @db.VarChar(200)
+  typeMime    String                 @map("type_mime") @db.VarChar(80)
+  taille      Int
+  sha256      String                 @db.Char(64)
+  /// Validité (attestation de vigilance : 6 mois).
+  expireAt    DateTime?              @map("expire_at") @db.Timestamptz(3)
+  deposeeAt   DateTime               @default(now()) @map("deposee_at") @db.Timestamptz(3)
+  verifieeAt  DateTime?              @map("verifiee_at") @db.Timestamptz(3)
+  purgeeAt    DateTime?              @map("purgee_at") @db.Timestamptz(3)
+  /// Remplacée par un nouveau dépôt du même type.
+  remplaceeAt DateTime?              @map("remplacee_at") @db.Timestamptz(3)
+
+  contenu PieceApporteurContenu?
+
+  @@index([apporteurId, type])
+  @@map("pieces_apporteur")
+}
+
+/// Les octets d'une pièce d'apporteur, lus par la route de téléchargement de la console SEULE.
+/// rgpd: dossier-client
+model PieceApporteurContenu {
+  pieceId String         @id @map("piece_id") @db.Uuid
+  piece   PieceApporteur @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+  octets  Bytes
+
+  @@map("pieces_apporteur_contenus")
+}
+
+enum StatutPresentation {
+  /// Réservée à l'apporteur, en attente de la réponse de l'entreprise.
+  reservee
+  /// L'entreprise a répondu, ou 30 jours sans réponse : protection en cours.
+  confirmee
+  /// Déjà cliente ou destinataire d'un devis récent (contrat art. 3.3).
+  deja_connue
+  /// Organisme hors champ ou entreprise cessée (art. 3.3 bis).
+  hors_champ
+  /// L'entreprise a dit n'avoir eu aucun échange avec l'apporteur (art. 3.7).
+  dementie
+  /// Plus d'adresse valide, ou protection échue.
+  terminee
+
+  @@map("statut_presentation")
+}
+
+/// Une entreprise présentée par un apporteur. Coordonnées de la personne CHIFFRÉES.
+/// rgpd: dossier-client
+model PresentationEntreprise {
+  id                 String                @id @default(uuid()) @db.Uuid
+  apporteurId        String                @map("apporteur_id") @db.Uuid
+  apporteur          ApporteurReseau       @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  siren              String                @db.Char(9)
+  denomination       String                @db.VarChar(250)
+  personneNom        String                @map("personne_nom") @db.Text
+  personneFonction   String?               @map("personne_fonction") @db.VarChar(150)
+  personneEmail      String                @map("personne_email") @db.Text
+  /// Empreinte de recherche de l'e-mail de la personne (`hashEmailForLookup`) : sert à
+  /// l'export et à l'effacement RGPD de la personne présentée.
+  personneEmailHash  String?               @map("personne_email_hash") @db.VarChar(64)
+  personneTelephone  String?               @map("personne_telephone") @db.Text
+  besoin             String?               @db.Text
+  dateEchange        DateTime?             @map("date_echange") @db.Date
+  /// Horodatage de réception de l'e-mail de l'apporteur : il fait foi (art. 3.5).
+  recueAt            DateTime              @map("recue_at") @db.Timestamptz(3)
+  statut             StatutPresentation    @default(reservee)
+  /// Envoi de la prise de contact de Williams à la personne présentée.
+  contactEnvoyeAt    DateTime?             @map("contact_envoye_at") @db.Timestamptz(3)
+  /// Réponse de l'entreprise, ou confirmation réputée acquise (30 jours).
+  confirmeeAt        DateTime?             @map("confirmee_at") @db.Timestamptz(3)
+  confirmationTacite Boolean               @default(false) @map("confirmation_tacite")
+  /// Fin de la protection (confirmée + 6 mois), et prolongation unique (+ 3 mois).
+  protegeeJusquAt    DateTime?             @map("protegee_jusqu_at") @db.Timestamptz(3)
+  prolongeeAt        DateTime?             @map("prolongee_at") @db.Timestamptz(3)
+  motifProlongation  String?               @map("motif_prolongation") @db.VarChar(40)
+  note               String?               @db.Text
+  creeAt             DateTime              @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt              DateTime              @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  commissions CommissionApporteur[]
+
+  @@index([siren])
+  @@index([apporteurId])
+  @@index([statut])
+  @@index([personneEmailHash])
+  @@map("presentations_entreprise")
+}
+
+enum StatutCommissionApporteur {
+  /// Facture soldée, le palier reste à préciser (formation : type et durée).
+  a_qualifier
+  /// Montant arrêté, à porter au prochain relevé.
+  due
+  /// En attente des pièces de vigilance (seuil de 5 000 €).
+  en_attente_vigilance
+  /// Versée.
+  versee
+  /// Reprise après un remboursement (art. 4.5).
+  reprise
+
+  @@map("statut_commission_apporteur")
+}
+
+/// Une commission (ou une part de parrainage) née d'une facture soldée.
+/// rgpd: technique — montants, paliers et identifiants ; aucune donnée personnelle en clair
+model CommissionApporteur {
+  id                String                    @id @default(uuid()) @db.Uuid
+  apporteurId       String                    @map("apporteur_id") @db.Uuid
+  apporteur         ApporteurReseau           @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  presentationId    String?                   @map("presentation_id") @db.Uuid
+  presentation      PresentationEntreprise?   @relation(fields: [presentationId], references: [id], onDelete: Restrict)
+  factureId         String                    @map("facture_id") @db.Uuid
+  /// Vrai pour la part de parrainage (10 % de la commission du filleul, 6 mois).
+  parrainage        Boolean                   @default(false)
+  activite          String                    @db.VarChar(20)
+  /// Palier retenu (ex. « formation-generale-1j »), son prix public et le HT facturé.
+  palier            String?                   @db.VarChar(60)
+  prixPublicHtCents Int?                      @map("prix_public_ht_cents")
+  factureHtCents    Int                       @map("facture_ht_cents")
+  montantCents      Int?                      @map("montant_cents")
+  statut            StatutCommissionApporteur @default(a_qualifier)
+  /// Mois du relevé (AAAA-MM) et numéro d'autofacture une fois versée.
+  releveMois        String?                   @map("releve_mois") @db.Char(7)
+  autofactureNumero String?                   @map("autofacture_numero") @db.VarChar(40)
+  verseeAt          DateTime?                 @map("versee_at") @db.Timestamptz(3)
+  creeAt            DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt             DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@unique([factureId, apporteurId, parrainage])
+  @@index([apporteurId, statut])
+  @@map("commissions_apporteur")
 }

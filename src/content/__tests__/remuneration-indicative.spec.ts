@@ -345,8 +345,17 @@ const GABARITS_AVANT_SIGNATURE = [
   "lead-apporteur-recu.tsx", // formulaire court reçu (tunnel Facebook)
   "lead-apporteur-relance.tsx", // relances du formulaire court
 ] as const;
-/** Aucun gabarit apporteur n'est envoyé après la signature à ce jour. */
-const GABARITS_APRES_SIGNATURE: readonly string[] = [];
+/**
+ * Gabarits envoyés après la signature du contrat d'apporteur.
+ * `apporteur-demarrage.tsx` (démarrage manuel, 2026-10-05) : les e-mails d'avant signature
+ * (lien du dossier, pièces) ne citent aucun montant ; le seul barème cité l'est dans « contrat
+ * signé », envoyé une fois le contrat signé — il est alors celui du contrat, pas indicatif.
+ */
+const GABARITS_APRES_SIGNATURE: readonly string[] = [
+  "apporteur-demarrage.tsx",
+  // Alerte INTERNE (2026-10-05) : aucun barème, destinataire Williams.
+  "apporteur-declaration-recue.tsx",
+];
 const CITE_UN_MONTANT =
   /commission\s*\(|€|\d\s?%|\}\s?%|COMMISSION_FORMATION|getCommissionById|COMMERCIAL_COMMISSIONS/;
 const MENTION = /à\s+titre\s+indicatif/i;

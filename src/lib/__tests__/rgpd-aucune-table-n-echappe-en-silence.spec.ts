@@ -150,6 +150,15 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     statut: "traite",
     note: "SUPPRIMÉES (`effacerCibleParAdresses`), après le reste du dossier de la personne.",
   },
+  {
+    // Réseau d'apporteurs (2026-10-05) — l'adresse est CHIFFRÉE (`encryptPii`) et porte une
+    // empreinte de recherche ; `eraseReseauApporteurForEmail` efface l'apporteur, ou, si le
+    // contrat est contresigné ou des commissions existent, conserve l'identité (obligation
+    // légale) en supprimant pièces, téléphone et notes.
+    modele: "ApporteurReseau",
+    statut: "traite",
+    note: "effacement ou conservation légale motivée (`eraseReseauApporteurForEmail`).",
+  },
 
   // ── Comptes internes : ce ne sont pas des personnes concernées par la route
   //    publique d'exercice des droits, mais des accès de l'organisme. ─────────
