@@ -15,9 +15,10 @@
  * - Appelle `createDevisAction` puis redirige vers `/[basePath]/[id]`.
  */
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createDevisAction } from "@/server/actions/qualiopi/devis";
+import { createDevisAction, lireBandeauAttributionAction } from "@/server/actions/qualiopi/devis";
+import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -181,6 +182,25 @@ export function DevisForm({
   const [error, setError] = useState<string | null>(null);
 
   const [clientId, setClientId] = useState<string>(defaultClientId ?? "");
+  // INT-T07-A : le bandeau d'attribution d'Axion Partners du client choisi, décidé au serveur.
+  // L'état garde le client auquel le texte se rapporte : un texte d'un autre client ne s'affiche pas.
+  const [bandeau, setBandeau] = useState<{ clientId: string; texte: string | null } | null>(null);
+  useEffect(() => {
+    if (clientId === "") return;
+    let actif = true;
+    lireBandeauAttributionAction(clientId).then(
+      (texte) => {
+        if (actif) setBandeau({ clientId, texte });
+      },
+      () => {
+        if (actif) setBandeau({ clientId, texte: null });
+      },
+    );
+    return () => {
+      actif = false;
+    };
+  }, [clientId]);
+  const bandeauAffiche = bandeau !== null && bandeau.clientId === clientId ? bandeau.texte : null;
   const [lignes, setLignes] = useState<Ligne[]>([emptyLigne()]);
   const [financementSuggere, setFinancementSuggere] = useState<FinancementSuggere>("");
   // 🔴 L'ACTIVITÉ n'était pas demandée, et son absence cassait TROIS choses :
@@ -378,6 +398,7 @@ export function DevisForm({
               ))}
             </select>
           )}
+          <BandeauAttributionPartners texte={bandeauAffiche} />
         </div>
       </section>
 

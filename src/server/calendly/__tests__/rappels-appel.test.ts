@@ -6,9 +6,9 @@
 // de le rater, et chacune a son cas ci-dessous :
 //
 //   · il ne part PAS   → la personne oublie le rendez-vous ;
-//   · il part TROIS FOIS → la fenêtre (15 min) vaut trois fois la cadence
-//     (5 min), donc chaque rendez-vous est vu trois fois. Sans marqueur, trois
-//     rappels ;
+//   · il part PLUSIEURS FOIS → la fenêtre (15 min) vaut quinze fois la cadence
+//     (1 min), donc chaque rendez-vous est vu quinze fois. Sans marqueur,
+//     autant de rappels ;
 //   · il part À TORT → à un rendez-vous annulé, ou à une personne qui a demandé
 //     l'effacement de ses données.
 //
@@ -189,9 +189,9 @@ describe("ce qu'on ne rappelle JAMAIS", () => {
     expect(where["NOT"]).toEqual({ inviteeName: ERASED_PLACEHOLDER });
   });
 
-  it("cherche une fenêtre TROIS FOIS plus large que la cadence du cron", async () => {
-    // La passe tourne toutes les 5 min sur une fenêtre de 15 : un passage sauté
-    // est rattrapé par les deux suivants. Une fenêtre égale à la cadence perdrait
+  it("cherche une fenêtre bien plus large que la cadence du cron", async () => {
+    // La passe tourne toutes les minutes sur une fenêtre de 15 : un passage sauté
+    // est rattrapé par les suivants. Une fenêtre égale à la cadence perdrait
     // le rappel au premier hoquet — et personne ne le verrait.
     await envoyerRappelsH1(MAINTENANT);
     const where = (findMany.mock.calls[0]?.[0] as { where: { startTime: { gte: Date; lt: Date } } })
@@ -206,7 +206,7 @@ describe("le plafond ne tronque jamais en silence", () => {
   it("signale quand il a mordu", async () => {
     // Il ne protège pas d'un volume réel — il n'y a jamais 50 appels dans le même
     // quart d'heure. Il protège d'un emballement : si le marqueur cessait d'être
-    // posé, la passe rejouerait la même liste toutes les 5 minutes.
+    // posé, la passe rejouerait la même liste toutes les minutes.
     findMany.mockResolvedValue(Array.from({ length: 51 }, (_, i) => rdv({ id: `evt_${i}` })));
     const res = await envoyerRappelsH1(MAINTENANT);
     expect(res.plafondAtteint).toBe(true);

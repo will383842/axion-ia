@@ -58,6 +58,8 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
 } from "@/server/partners-sync/producteurs/devis";
+import { bandeauPourLeRole } from "@/server/partners/client-attributions";
+import { sirenDuClient } from "@/lib/siret";
 import {
   ACTIVITE_LABELS,
   normaliserLignesPourActivite,
@@ -179,6 +181,24 @@ const createDevisSchema = z.object({
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * INT-T07-A (REQ-INT-014) : le bandeau d'attribution d'Axion Partners pour le client choisi, AVANT
+ * l'envoi du devis (décision D3 de Williams). Le rôle est jugé ici, au serveur, avant tout appel :
+ * seul un rôle qui crée un devis reçoit le texte. Le SIREN est relu en base, jamais reçu du
+ * navigateur. Seul le TEXTE du bandeau sort : il n'entre ni dans le devis, ni dans un document, ni
+ * dans le journal. Une panne de Partners ne bloque jamais le devis (échec ouvert).
+ */
+export async function lireBandeauAttributionAction(clientId: string): Promise<string | null> {
+  const session = await requireAdminWrite();
+  if (!z.string().uuid().safeParse(clientId).success) return null;
+  const client = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: { siren: true, siret: true },
+  });
+  // Le SIREN se lit aussi dans le SIRET (règle unique `sirenDuClient`, lot A9).
+  return bandeauPourLeRole(session.role, client === null ? null : sirenDuClient(client));
+}
 
 /**
  * Crée un devis brouillon.

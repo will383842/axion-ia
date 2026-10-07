@@ -128,7 +128,7 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     // jusqu'a ce que quelqu'un s'en apercoive. Il declenche desormais LES TROIS
     // moments — confirmation, J-1, H-1.
     const passages = await envoyerMessagesAppel();
-    // On ne journalise QUE ce qui s'est passe. Une ligne toutes les 5 minutes
+    // On ne journalise QUE ce qui s'est passe. Une ligne toutes les minutes
     // annoncant « 0 message » noierait les logs et rendrait invisible la seule
     // qui compte.
     for (const res of passages) {

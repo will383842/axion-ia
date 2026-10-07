@@ -107,8 +107,12 @@ export function champDeLaPosition(position: number): string {
  */
 export const QUESTIONS_MASQUEES: readonly string[] = ["Ville de l'entreprise"];
 
-/** Compare deux libellés sans buter sur la casse, les accents ou la ponctuation. */
-function normaliserLibelle(s: string): string {
+/**
+ * Compare deux libellés sans buter sur la casse, les accents ou la ponctuation.
+ * Exportée pour le report (`report.ts`), qui apparie les réponses d'un ancien
+ * rendez-vous aux questions ACTUELLES de l'event-type.
+ */
+export function normaliserLibelle(s: string): string {
   return s
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")

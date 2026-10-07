@@ -57,6 +57,8 @@ import { rafraichirEffectifInseeFormAction } from "@/server/actions/qualiopi/cli
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
 import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
+import { BandeauAttributionPartners } from "@/components/admin/qualiopi/BandeauAttributionPartners";
+import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { AVERTISSEMENT_SIREN_CONTRAIRE, sirenContreditLeSiret, sirenDuClient } from "@/lib/siret";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -328,6 +330,9 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // dans le navigateur : la console est au bord de son cliquet de poids.
   // Lot A9 : le SIREN se lit aussi dans le SIRET (règle unique `sirenDuClient`).
   const sirenLu = estEntreprise ? sirenDuClient(client) : null;
+  // INT-T07-A : le bandeau d'attribution d'Axion Partners, décidé ICI, au serveur, pour le rôle déjà
+  // jugé par la garde : un rôle qui ne crée pas de devis n'appelle pas Partners et ne reçoit aucun nom.
+  const bandeauPartners = await bandeauPourLeRole(acces.role, sirenLu);
   const sirenContraire = estEntreprise && sirenContreditLeSiret(client);
   const sirenACompleter = estEntreprise && sirenLu === null;
   const annuaire: ResultatAnnuaire | null =
@@ -773,6 +778,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           {/* ── d. Devis ───────────────────────────────────────────────────────── */}
           <section className={sectionCls}>
             <SectionTitre titre="Devis" toutVoirHref={`${qBase}/devis`} />
+            <BandeauAttributionPartners texte={bandeauPartners} />
             {client.devis.length === 0 ? (
               <SectionVide message="Aucun devis." />
             ) : (

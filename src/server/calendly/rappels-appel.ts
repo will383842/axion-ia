@@ -30,8 +30,8 @@ import { notify } from "@/server/notifications";
  *
  * ## LA FENÊTRE, ET POURQUOI ELLE EST PLUS LARGE QUE LA CADENCE
  *
- * La passe tourne toutes les 5 minutes. Les fenêtres des rappels font 15
- * minutes — TROIS FOIS la cadence, délibérément : si un passage est sauté
+ * La passe tourne toutes les minutes. Les fenêtres des rappels font 15
+ * minutes — QUINZE FOIS la cadence, délibérément : si un passage est sauté
  * (worker redémarré, base lente, file saturée), les deux suivants rattrapent.
  * Une fenêtre égale à la cadence perdrait le rappel au premier hoquet, et
  * personne ne le verrait.
@@ -40,15 +40,15 @@ import { notify } from "@/server/notifications";
  * Pour un rappel, cette imprécision n'a aucun coût.
  *
  * ⚠️ **La confirmation n'a PAS de fenêtre** — elle part dès que la réservation
- * est vue, donc au prochain tick (≤ 5 min). Elle est bornée par le bas
+ * est vue, donc au prochain tick (≤ 1 min). Elle est bornée par le bas
  * seulement : `startTime > maintenant`, pour ne jamais confirmer un rendez-vous
  * déjà passé. C'est ce qui protège des lignes anciennes le jour où la colonne
  * est ajoutée à `NULL` sur toute la table.
  *
  * ## L'IDEMPOTENCE EST LA SEULE CHOSE QUI EMPÊCHE LA BOUCLE
  *
- * Avec une fenêtre de 15 minutes et une cadence de 5, chaque rendez-vous est vu
- * TROIS FOIS. Sans marqueur, il recevrait trois messages.
+ * Avec une fenêtre de 15 minutes et une cadence de 1, chaque rendez-vous est vu
+ * QUINZE FOIS. Sans marqueur, il recevrait quinze messages.
  *
  * 🔴 Les trois marqueurs sont **DISTINCTS**. Un marqueur unique pour trois
  * moments ferait taire les deux derniers : le premier envoi le poserait, et les
@@ -88,7 +88,7 @@ import type { MomentSalon } from "@/lib/email/templates/rdv-salon";
  * Il ne protège pas d'un volume réel — il n'y a jamais 50 appels dans le même
  * quart d'heure. Il protège d'un EMBALLEMENT : si un marqueur cessait d'être
  * posé (colonne perdue à une migration, erreur de requête), la passe rejouerait
- * la même liste toutes les 5 minutes. Le plafond borne les dégâts, et
+ * la même liste toutes les minutes. Le plafond borne les dégâts, et
  * `plafondAtteint` les rend visibles au lieu de les taire.
  */
 const MAX_PAR_PASSAGE = 50;
@@ -171,7 +171,7 @@ export const PASSAGES: readonly Passage[] = [
     avecDate: true,
   },
   {
-    // 24 h → 24 h 15. Même largeur que H-1 : trois fois la cadence.
+    // 24 h → 24 h 15. Même largeur que H-1 : quinze fois la cadence.
     moment: "j1",
     job: "appel-rappel-j1",
     destinataire: "client",
@@ -247,7 +247,7 @@ export const PASSAGES: readonly Passage[] = [
     avecDate: true,
   },
   {
-    // 48 h → 48 h 15. Même largeur que les autres rappels : trois fois la cadence.
+    // 48 h → 48 h 15. Même largeur que les autres rappels : quinze fois la cadence.
     moment: "j2",
     job: "rdv-salon-rappel-j2",
     destinataire: "salon",

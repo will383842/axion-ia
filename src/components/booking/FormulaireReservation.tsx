@@ -798,7 +798,7 @@ export function FormulaireReservation({
 
         {/* La dernière objection se lève ICI, sous le bouton — c'est le point
             exact où l'on hésite. Trois promesses, aucune qui ne soit tenue
-            ailleurs dans le code : l'e-mail part dans la minute
+            ailleurs dans le code : l'e-mail part en quelques minutes
             (`rappels-appel.ts`), il porte le lien d'annulation
             (`liens-rendez-vous.ts`), et rien n'est facturé. */}
         <p className="text-fg-soft flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[13px]">
