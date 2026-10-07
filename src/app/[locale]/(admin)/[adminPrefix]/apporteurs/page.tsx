@@ -24,7 +24,7 @@ interface PageProps {
 
 // Décision de Will (07/10) : un apporteur signé est un apporteur ACTIF (onglet par défaut) ;
 // « Dossier en cours » regroupe tout ce qui précède la contresignature. L'onglet « Retirés »
-// arrive avec #1353 (place réservée juste après « Dossier en cours »).
+// arrive avec la PR 1353 (place réservée juste après « Dossier en cours »).
 const ONGLETS = [
   { cle: "actifs", libelle: "Actifs", statuts: ["signe"] },
   {
