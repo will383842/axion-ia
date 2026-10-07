@@ -41,6 +41,9 @@ async function main(): Promise<void> {
     `${appliquer ? "fiches archivées              " : "fiches à archiver             "}: ${r.archivees}`,
   );
   console.log(`laissées ouvertes (désarchivées par Will) : ${r.laisseesOuvertes}`);
+  console.log(
+    `${appliquer ? "rouvertes (Non retenu → Retenu)" : "à rouvrir (Non retenu → Retenu)"}: ${r.desarchivees}`,
+  );
   if (!appliquer) {
     console.log("");
     console.log("Essai à blanc. Relancer avec --appliquer pour écrire.");

@@ -8,7 +8,10 @@
 //   · une fiche que Will a DÉSARCHIVÉE après un archivage automatique n'est
 //     jamais ré-archivée ;
 //   · l'essai à blanc n'écrit rien ;
-//   · la fenêtre (`depuis`) borne le passage automatique ; le rattrapage n'en a pas.
+//   · la fenêtre (`depuis`) borne le passage automatique ; le rattrapage n'en a pas ;
+//   · `details` est relu DANS la transaction : une écriture concurrente survit ;
+//   · un « Non retenu » corrigé en « Retenu » désarchive ce que le passage avait
+//     rangé — jamais ce que Will a rangé à la main, ni un contrat contresigné.
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -43,7 +46,22 @@ const db = vi.hoisted(() => ({
   evenements: [] as Evenement[],
   journal: [] as Array<Record<string, unknown>>,
   relancesAnnulees: [] as string[],
+  /** Appelé juste avant chaque transaction : simule une écriture concurrente. */
+  avantTransaction: null as null | (() => void),
 }));
+
+/** Ce que renvoie une lecture : une COPIE, comme une vraie base. */
+function copie<T extends { details: Record<string, unknown> }>(l: T): T {
+  return { ...l, details: { ...l.details } };
+}
+
+function correspond(l: Record<string, unknown>, where: Record<string, unknown>): boolean {
+  return Object.entries(where).every(([k, v]) => {
+    const actuel = l[k];
+    if (v instanceof Date) return actuel instanceof Date && actuel.getTime() === v.getTime();
+    return actuel === v;
+  });
+}
 
 function dansListe(v: unknown, cond: unknown): boolean {
   if (cond && typeof cond === "object" && "in" in (cond as Record<string, unknown>)) {
@@ -54,8 +72,12 @@ function dansListe(v: unknown, cond: unknown): boolean {
 
 vi.mock("@/lib/prisma", () => {
   const submission = {
+    findUnique: vi.fn(async ({ where }: { where: { id: string } }) => {
+      const l = db.lignes.find((x) => x.id === where.id);
+      return l ? copie(l) : null;
+    }),
     findMany: vi.fn(async ({ where }: { where: Record<string, unknown> }) => {
-      return db.lignes.filter((l) => {
+      return db.lignes.map(copie).filter((l) => {
         if (where["deletedAt"] === null && l.deletedAt !== null) return false;
         if (where["id"] && !dansListe(l.id, where["id"])) return false;
         const or = where["OR"] as Array<Record<string, unknown>> | undefined;
@@ -77,9 +99,7 @@ vi.mock("@/lib/prisma", () => {
         where: Record<string, unknown>;
         data: Record<string, unknown>;
       }) => {
-        const l = db.lignes.find(
-          (x) => x.id === where["id"] && x.archivedAt === null && x.deletedAt === null,
-        );
+        const l = db.lignes.find((x) => correspond(x, where));
         if (!l) return { count: 0 };
         Object.assign(l, data);
         return { count: 1 };
@@ -96,23 +116,47 @@ vi.mock("@/lib/prisma", () => {
     submission,
     activityLog,
     apporteurReseau: {
-      findMany: vi.fn(async ({ where }: { where: { signeParSocieteAt: { gte?: Date } } }) =>
-        db.dossiers.filter(
-          (d) =>
-            d.signeParSocieteAt !== null &&
-            (!where.signeParSocieteAt.gte || d.signeParSocieteAt >= where.signeParSocieteAt.gte),
-        ),
+      findMany: vi.fn(
+        async ({
+          where,
+        }: {
+          where: {
+            signeParSocieteAt: { gte?: Date };
+            OR?: Array<{ emailHash?: { in: string[] }; submissionId?: { in: string[] } }>;
+          };
+        }) =>
+          db.dossiers.filter(
+            (d) =>
+              d.signeParSocieteAt !== null &&
+              (!where.signeParSocieteAt.gte ||
+                d.signeParSocieteAt >= where.signeParSocieteAt.gte) &&
+              (!where.OR ||
+                where.OR.some(
+                  (c) =>
+                    (c.emailHash?.in ?? []).includes(d.emailHash) ||
+                    (c.submissionId?.in ?? []).includes(d.submissionId ?? ""),
+                )),
+          ),
       ),
     },
     rendezVousSuivi: {
-      findMany: vi.fn(async ({ where }: { where: { renseigneLe?: { gte: Date } } }) =>
-        db.evenements
-          .filter(
-            (e) =>
-              e.suivi?.decision === "non_retenu" &&
-              (!where.renseigneLe || e.suivi.renseigneLe >= where.renseigneLe.gte),
-          )
-          .map((e) => ({ calendlyEvent: { linkedSubmissionId: e.linkedSubmissionId } })),
+      findMany: vi.fn(
+        async ({
+          where,
+        }: {
+          where: { decision: string | { in: string[] }; renseigneLe?: { gte: Date } };
+        }) =>
+          db.evenements
+            .filter(
+              (e) =>
+                e.suivi !== null &&
+                dansListe(e.suivi.decision, where.decision) &&
+                (!where.renseigneLe || e.suivi.renseigneLe >= where.renseigneLe.gte),
+            )
+            .map((e) => ({
+              decision: e.suivi!.decision,
+              calendlyEvent: { linkedSubmissionId: e.linkedSubmissionId },
+            })),
       ),
     },
     calendlyEvent: {
@@ -122,9 +166,10 @@ vi.mock("@/lib/prisma", () => {
         ),
       ),
     },
-    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) =>
-      fn({ submission, activityLog }),
-    ),
+    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => {
+      db.avantTransaction?.();
+      return fn({ submission, activityLog });
+    }),
   };
   return { prisma };
 });
@@ -138,7 +183,10 @@ vi.mock("../relances-lead-apporteur", () => ({
 }));
 
 import { archiverApporteursTermines } from "../archivage-auto-apporteurs";
-import { MARQUE_ARCHIVAGE_AUTO } from "@/lib/commercial-application/etape-suivi-apporteur";
+import {
+  MARQUE_ARCHIVAGE_AUTO,
+  MARQUE_ARCHIVAGE_AUTO_MOTIF,
+} from "@/lib/commercial-application/etape-suivi-apporteur";
 
 const APPORTEUR = { unifiedType: "recrutement", subType: "candidature-commerciale" };
 const MAINTENANT = new Date("2026-10-07T12:00:00Z");
@@ -175,6 +223,7 @@ beforeEach(() => {
   db.evenements = [];
   db.journal = [];
   db.relancesAnnulees = [];
+  db.avantTransaction = null;
 });
 
 describe("contrat contresigné", () => {
@@ -285,6 +334,21 @@ describe("contrat contresigné", () => {
     expect(rattrapage.archivees).toBe(2);
   });
 
+  it("🔴 une écriture concurrente dans `details` (webhook, geste de Will) n'est pas perdue", async () => {
+    // Entre la lecture du début du passage et l'écriture du statut, un webhook
+    // Calendly ajoute une clé à la fiche.
+    db.avantTransaction = () => {
+      const l = db.lignes.find((x) => x.id === "dossier-complet")!;
+      l.details = { ...l.details, calendlyRecuAt: "2026-10-07T11:59:59Z" };
+    };
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    const l = db.lignes.find((x) => x.id === "dossier-complet")!;
+    expect(l.status).toBe("archived");
+    expect(l.details["calendlyRecuAt"]).toBe("2026-10-07T11:59:59Z");
+    expect(l.details[MARQUE_ARCHIVAGE_AUTO]).toBe(MAINTENANT.toISOString());
+    expect(l.details[MARQUE_ARCHIVAGE_AUTO_MOTIF]).toBe("contrat-contresigne");
+  });
+
   it("les relances encore en file de la personne sont retirées", async () => {
     await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
     expect(db.relancesAnnulees).toContain("dossier-complet@exemple.fr");
@@ -331,5 +395,126 @@ describe("issue « Non retenu »", () => {
       maintenant: MAINTENANT,
     });
     expect(r.archivees).toBe(0);
+  });
+});
+
+describe("retour en arrière : « Non retenu » corrigé en « Retenu »", () => {
+  const PLUS_TARD = new Date("2026-10-08T12:00:00Z");
+
+  it("🔴 désarchive ce que le passage avait rangé, au statut d'origine, et le trace", async () => {
+    db.lignes = [ligne("fiche", "h-cle"), ligne("premier", "h-cle", { status: "processed" })];
+    db.evenements = [echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS)];
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    expect(db.lignes.every((l) => l.status === "archived")).toBe(true);
+
+    // Will corrige : la dernière décision devient « Retenu ».
+    db.evenements.push(echange("e2", "fiche", "retenu", PLUS_TARD));
+    const r = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(r.desarchivees).toBe(2);
+    expect(r.archivees).toBe(0);
+    const statut = Object.fromEntries(db.lignes.map((l) => [l.id, l.status]));
+    expect(statut).toEqual({ fiche: "in_progress", premier: "processed" });
+    for (const l of db.lignes) {
+      expect(l.archivedAt).toBeNull();
+      expect(l.details[MARQUE_ARCHIVAGE_AUTO]).toBeUndefined();
+      expect(l.details[MARQUE_ARCHIVAGE_AUTO_MOTIF]).toBeUndefined();
+      expect(l.details["unifiedType"]).toBe("recrutement"); // rien d'effacé
+    }
+    const traces = db.journal.filter((j) => j["action"] === "submission.desarchivage_auto");
+    expect(traces).toHaveLength(2);
+    expect(traces[0]).toMatchObject({ adminUserId: null, targetType: "submission" });
+
+    // Rejouer ne fait rien de plus.
+    const encore = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(encore.desarchivees).toBe(0);
+    expect(encore.archivees).toBe(0);
+  });
+
+  it("l'essai à blanc compte le désarchivage, et n'écrit rien", async () => {
+    db.lignes = [ligne("fiche", "h-cle")];
+    db.evenements = [echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS)];
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    db.evenements.push(echange("e2", "fiche", "retenu", PLUS_TARD));
+    const r = await archiverApporteursTermines({
+      appliquer: false,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(r.desarchivees).toBe(1);
+    expect(db.lignes[0]!.status).toBe("archived");
+  });
+
+  it("🔑 une fiche archivée À LA MAIN par Will n'est jamais désarchivée", async () => {
+    db.lignes = [ligne("fiche", "h-cle", { status: "archived", archivedAt: IL_Y_A_UN_MOIS })];
+    db.evenements = [
+      echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS),
+      echange("e2", "fiche", "retenu", PLUS_TARD),
+    ];
+    const r = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(r.desarchivees).toBe(0);
+    expect(db.lignes[0]!.status).toBe("archived");
+  });
+
+  it("🔑 rouverte par Will puis RÉ-archivée à la main : l'ancienne marque ne suffit pas", async () => {
+    db.lignes = [ligne("fiche", "h-cle")];
+    db.evenements = [echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS)];
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    const l = db.lignes[0]!;
+    Object.assign(l, { status: "in_progress", archivedAt: null }); // « Désarchiver »
+    Object.assign(l, { status: "archived", archivedAt: new Date("2026-10-07T15:00:00Z") }); // « Archiver »
+    db.evenements.push(echange("e2", "fiche", "retenu", PLUS_TARD));
+    const r = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(r.desarchivees).toBe(0);
+    expect(l.status).toBe("archived");
+  });
+
+  it("🔑 une fiche archivée pour contrat contresigné n'est jamais désarchivée", async () => {
+    db.lignes = [ligne("fiche", "h-cle")];
+    db.dossiers = [
+      { id: "d", submissionId: "fiche", emailHash: "h-cle", signeParSocieteAt: MAINTENANT },
+    ];
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    db.evenements = [
+      echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS),
+      echange("e2", "fiche", "retenu", PLUS_TARD),
+    ];
+    const r = await archiverApporteursTermines({
+      appliquer: true,
+      depuis: null,
+      maintenant: PLUS_TARD,
+    });
+    expect(r.desarchivees).toBe(0);
+    expect(db.lignes[0]!.status).toBe("archived");
+  });
+
+  it("🔑 rangée pour « Non retenu » mais contrat contresigné depuis : reste archivée", async () => {
+    db.lignes = [ligne("fiche", "h-cle")];
+    db.evenements = [echange("e1", "fiche", "non_retenu", IL_Y_A_UN_MOIS)];
+    await archiverApporteursTermines({ appliquer: true, depuis: null, maintenant: MAINTENANT });
+    db.evenements.push(echange("e2", "fiche", "retenu", PLUS_TARD));
+    // Contresigné hors de la fenêtre du passage : il compte quand même.
+    db.dossiers = [
+      { id: "d", submissionId: "fiche", emailHash: "h-cle", signeParSocieteAt: IL_Y_A_UN_MOIS },
+    ];
+    const depuis = new Date(PLUS_TARD.getTime() - 7 * 24 * 3600 * 1000);
+    const r = await archiverApporteursTermines({ appliquer: true, depuis, maintenant: PLUS_TARD });
+    expect(r.desarchivees).toBe(0);
+    expect(db.lignes[0]!.status).toBe("archived");
   });
 });

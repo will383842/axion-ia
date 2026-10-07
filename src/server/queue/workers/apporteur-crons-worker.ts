@@ -118,6 +118,12 @@ async function passerArchivage(job: Job<ApporteurCronJobData>): Promise<void> {
           `(contrats contresignés : ${r.personnesContresignees}, non retenus : ${r.personnesNonRetenues})`,
       );
     }
+    if (r.desarchivees > 0) {
+      console.warn(
+        `[apporteur-crons] archivage automatique : ${r.desarchivees} fiche(s) rouverte(s) ` +
+          `(« Non retenu » corrigé en « Retenu »)`,
+      );
+    }
   } catch (err) {
     console.error("[apporteur-crons] archivage automatique en échec :", err);
     captureWorkerError("apporteur-crons", APPORTEUR_CRONS_QUEUE_NAME, job, err);

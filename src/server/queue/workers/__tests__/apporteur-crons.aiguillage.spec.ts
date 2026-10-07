@@ -72,6 +72,7 @@ beforeEach(() => {
   d.archivage.mockResolvedValue({
     archivees: 0,
     laisseesOuvertes: 0,
+    desarchivees: 0,
     personnesContresignees: 0,
     personnesNonRetenues: 0,
     ecrit: true,

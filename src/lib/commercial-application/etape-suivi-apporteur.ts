@@ -286,11 +286,20 @@ export function motifArchivageAuto(e: EtapeSuivi): MotifArchivageAuto | null {
 /**
  * La marque posée dans `details` par l'archivage automatique (date ISO).
  *
- * 🔑 Elle n'est JAMAIS retirée — « Désarchiver » la laisse en place. C'est elle
- * qui empêche le passage suivant de ré-archiver une fiche que Will a rouverte :
- * sans elle, le passage et Will se renverraient la fiche toutes les 5 minutes.
+ * 🔑 « Désarchiver » la laisse en place. C'est elle qui empêche le passage
+ * suivant de ré-archiver une fiche que Will a rouverte : sans elle, le passage
+ * et Will se renverraient la fiche toutes les 5 minutes.
+ *
+ * Seul le passage lui-même la retire : quand un « Non retenu » est corrigé en
+ * « Retenu », il défait SON archivage (voir `archivage-auto-apporteurs.ts`).
  */
 export const MARQUE_ARCHIVAGE_AUTO = "archivageAutoAt";
+
+/** Pourquoi le passage a rangé la ligne (`MotifArchivageAuto`). */
+export const MARQUE_ARCHIVAGE_AUTO_MOTIF = "archivageAutoMotif";
+
+/** Le statut de la ligne juste avant l'archivage automatique, pour le retour en arrière. */
+export const MARQUE_ARCHIVAGE_AUTO_STATUT = "archivageAutoStatutAvant";
 
 /**
  * Préfixe des identifiants de job des RAPPELS du lien du dossier
