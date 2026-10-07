@@ -71,7 +71,7 @@ export async function jugerPiece(
   });
   if (!p) return { ok: false, message: "Pièce introuvable." };
   if (verdict === "a_retransmettre" && !MOTIFS_A_RETRANSMETTRE.some((m) => m.valeur === motif)) {
-    return { ok: false, message: "Choisis un motif." };
+    return { ok: false, message: "Choisissez un motif." };
   }
   const maintenant = new Date();
   await prisma.$transaction(
@@ -166,12 +166,12 @@ const RESERVATION_CONTRESIGNATURE_MS = 10 * 60 * 1000;
  */
 export async function sirenAContresigner(siren: string | null): Promise<string | null> {
   if (!siren || !sirenValide(siren))
-    return "SIREN à vérifier : absent ou invalide. Demandez à l'apporteur de le corriger (étape 2 de son dossier).";
+    return "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.";
   const r = await lireEntrepriseParSiren(siren);
   if (!r.ok) {
     return r.raison === "indisponible"
       ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
-      : "SIREN à vérifier : introuvable au registre public. Le contrat ne peut pas être contresigné.";
+      : "SIREN à vérifier : introuvable au registre public, le contrat ne peut pas être contresigné. Une micro-entreprise toute neuve peut ne pas encore y être publiée : réessayez dans quelques jours.";
   }
   if (!r.entreprise.active)
     return "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
@@ -221,7 +221,7 @@ export async function preparerDecision(
     if (pieces.length === 0 && !mot) {
       return {
         ok: false,
-        message: "Indique ce qui manque : une pièce à retransmettre ou une note.",
+        message: "Indiquez ce qui manque : une pièce à retransmettre ou une note.",
       };
     }
     const nouvelleVersion = d.versionLien;
@@ -289,7 +289,7 @@ export async function appliquerDecision(
     if (!sig)
       return {
         ok: false,
-        message: "La signature de l'apporteur est illisible : demande-lui de signer à nouveau.",
+        message: "La signature de l'apporteur est illisible : demandez-lui de signer à nouveau.",
       };
     // Texte archivé à la signature (empreinte revérifiée) ; sinon, ancien dossier : on
     // reconstruit depuis le contrat courant et on compare.
@@ -518,6 +518,12 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
   if (!d) return { ok: false as const, message: "Apporteur introuvable." };
   if (d.statut === "refuse" || d.statut === "resilie")
     return { ok: false as const, message: "Ce dossier est fermé." };
+  // Un dossier signé (à vérifier ou contresigné) n'a plus de lien à compléter (07/10).
+  if (d.statut === "a_verifier" || d.statut === "signe")
+    return {
+      ok: false as const,
+      message: "Ce dossier est déjà signé : il n'y a plus de lien à lui envoyer.",
+    };
   const url = urlDossier(d.id, d.versionLien);
   if (!url)
     return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
@@ -535,12 +541,80 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
-  return { ok: true as const, envoi, url };
+  const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id);
+  return { ok: true as const, envoi, url, dejaEnvoyeLe };
 }
 
-export async function envoyerLien(apporteurId: string, mot: string | null, texte?: string) {
+/** « Nouvel apporteur » sur une adresse déjà connue : statut du dossier et dernier lien envoyé. */
+export async function etatDuDossier(
+  apporteurId: string,
+): Promise<{ statut: string; dernierLienLe: string | null }> {
+  const { LIBELLE_STATUT_APPORTEUR } = await import("./requetes-console");
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { statut: true },
+  });
+  return {
+    statut: a ? LIBELLE_STATUT_APPORTEUR[a.statut] : "inconnu",
+    dernierLienLe: await dernierLienEnvoyeLe(apporteurId),
+  };
+}
+
+/**
+ * Date du dernier lien envoyé (lien, rappel, ou « Retenu » qui porte le lien), « 6 octobre »,
+ * ou `null`. Sert à « déjà envoyé le … » (fiche) et à « Nouvel apporteur ».
+ */
+export async function dernierLienEnvoyeLe(apporteurId: string): Promise<string | null> {
+  const lie = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { submissionId: true },
+  });
+  const dernier = await prisma.emailLog.findFirst({
+    where: {
+      status: { in: ["pending", "sent"] },
+      OR: [
+        {
+          template: "apporteur-dossier-lien",
+          entityType: "ApporteurReseau",
+          entityId: apporteurId,
+        },
+        ...(lie?.submissionId
+          ? [
+              {
+                template: "apporteur-issue-retenu",
+                entityType: "Submission",
+                entityId: lie.submissionId,
+              },
+            ]
+          : []),
+      ],
+    },
+    select: { createdAt: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return dernier
+    ? dernier.createdAt.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        timeZone: "Europe/Paris",
+      })
+    : null;
+}
+
+export async function envoyerLien(
+  apporteurId: string,
+  mot: string | null,
+  texte?: string,
+  confirmerRenvoi = false,
+) {
   const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
+  if (prep.dejaEnvoyeLe && !confirmerRenvoi) {
+    return {
+      ok: false as const,
+      message: `Lien déjà envoyé le ${prep.dejaEnvoyeLe} : ouvrez l'aperçu et confirmez pour le renvoyer.`,
+    };
+  }
   const r = await envoyer({
     ...prep.envoi,
     jobId: `apporteur-dossier-lien-${apporteurId}-${Date.now()}`,
@@ -582,7 +656,12 @@ export async function ouvrirDossierManuel(e: {
   nom: string;
   email: string;
   telephone: string | null;
-}): Promise<{ ok: true; apporteurId: string } | { ok: false; message: string }> {
+  /** Fiche candidat choisie dans la recherche de « Nouvel apporteur » (07/10). */
+  submissionId?: string | null;
+}): Promise<
+  | { ok: true; apporteurId: string; existait?: true }
+  | { ok: false; message: string; dejaRelieA?: string }
+> {
   const { encryptPii } = await import("@/lib/pii-crypto");
   const { hashEmailForLookup } = await import("@/lib/security/email-hash");
   const email = e.email.trim();
@@ -593,16 +672,61 @@ export async function ouvrirDossierManuel(e: {
     where: { emailHash: hash },
     select: { id: true },
   });
-  if (existant) return { ok: true, apporteurId: existant.id };
-  const a = await prisma.apporteurReseau.create({
-    data: {
-      prenom: encryptPii(e.prenom.trim()),
-      nom: encryptPii(e.nom.trim()),
-      email: encryptPii(email),
-      emailHash: hash,
-      telephone: e.telephone?.trim() ? encryptPii(e.telephone.trim()) : null,
+  if (existant) return { ok: true, apporteurId: existant.id, existait: true };
+  // La fiche candidat choisie dans la recherche, sinon celle de la même adresse, s'il y en a une : le dossier y est relié
+  // (07/10), comme quand il naît de « Retenu ».
+  const { estApporteur, FILTRE_APPORTEUR_PRISMA } =
+    await import("@/lib/commercial-application/est-apporteur");
+  const candidatures = await prisma.submission.findMany({
+    where: {
+      // Fiche choisie : reliée SEULEMENT si son adresse est celle saisie (07/10, a1).
+      ...(e.submissionId ? { id: e.submissionId } : {}),
+      contactEmailHash: hash,
+      deletedAt: null,
+      ...FILTRE_APPORTEUR_PRISMA,
     },
-    select: { id: true },
+    orderBy: { submittedAt: "desc" },
+    take: 5,
+    select: { id: true, details: true },
   });
+  const trouvee = candidatures.find((c) => estApporteur(c.details));
+  // Lien unique : une fiche déjà reliée à un autre dossier ne l'est pas une seconde fois.
+  const relie = trouvee
+    ? await prisma.apporteurReseau.findUnique({
+        where: { submissionId: trouvee.id },
+        select: { id: true, prenom: true, nom: true },
+      })
+    : null;
+  if (relie && e.submissionId) {
+    const qui = [decryptPii(relie.prenom), decryptPii(relie.nom)].filter(Boolean).join(" ");
+    return {
+      ok: false,
+      message: `Cette fiche est déjà reliée au dossier de ${qui || "un autre apporteur"}.`,
+      dejaRelieA: relie.id,
+    };
+  }
+  const candidature = trouvee && !relie ? trouvee : null;
+  let a: { id: string };
+  try {
+    a = await prisma.apporteurReseau.create({
+      data: {
+        ...(candidature ? { submissionId: candidature.id } : {}),
+        prenom: encryptPii(e.prenom.trim()),
+        nom: encryptPii(e.nom.trim()),
+        email: encryptPii(email),
+        emailHash: hash,
+        telephone: e.telephone?.trim() ? encryptPii(e.telephone.trim()) : null,
+      },
+      select: { id: true },
+    });
+  } catch (err) {
+    // Deux clics, deux onglets : l'adresse vient d'être prise (unicité de `emailHash`).
+    const doublon = await prisma.apporteurReseau.findUnique({
+      where: { emailHash: hash },
+      select: { id: true },
+    });
+    if (doublon) return { ok: true, apporteurId: doublon.id, existait: true };
+    throw err;
+  }
   return { ok: true, apporteurId: a.id };
 }

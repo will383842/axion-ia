@@ -8,6 +8,7 @@ const h = vi.hoisted(() => ({
   signerAction: vi.fn(),
   deposerPieceAction: vi.fn(),
   enregistrerActiviteAction: vi.fn(),
+  enregistrerCoordonneesAction: vi.fn(),
   rechercherSirenAction: vi.fn(),
   refresh: vi.fn(),
 }));
@@ -17,6 +18,7 @@ vi.mock("./actions", () => ({
   signerAction: (...a: unknown[]) => h.signerAction(...a),
   deposerPieceAction: (...a: unknown[]) => h.deposerPieceAction(...a),
   enregistrerActiviteAction: (...a: unknown[]) => h.enregistrerActiviteAction(...a),
+  enregistrerCoordonneesAction: (...a: unknown[]) => h.enregistrerCoordonneesAction(...a),
   rechercherSirenAction: (...a: unknown[]) => h.rechercherSirenAction(...a),
 }));
 
@@ -151,9 +153,13 @@ describe("D2 / D18 : étape 1", () => {
 
   it("le nom saisi part avec l'enregistrement de l'étape 2", async () => {
     h.enregistrerActiviteAction.mockResolvedValue({ ok: true });
+    h.enregistrerCoordonneesAction.mockResolvedValue({ ok: true });
     rendre(dossier({ nom: "" }), 1);
     fireEvent.change(screen.getByLabelText(TEXTES.nom), { target: { value: "Ciccone" } });
     fireEvent.click(screen.getByRole("button", { name: TEXTES.continuer }));
+    // 07/10 : l'étape 1 enregistre d'abord le nom et le téléphone, puis passe à l'étape 2.
+    await waitFor(() => expect(h.enregistrerCoordonneesAction).toHaveBeenCalled());
+    await screen.findByLabelText(TEXTES.siren);
     // Étape 2 : SIREN déjà enregistré, statut et TVA remplis : « Continuer » est actif.
     const suite = await screen.findByRole("button", { name: TEXTES.continuer });
     await waitFor(() => expect((suite as HTMLButtonElement).disabled).toBe(false));

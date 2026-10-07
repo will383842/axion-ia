@@ -430,16 +430,16 @@ export function ApporteurContratSigneEmail({ locale, payload }: Props) {
           ))}
           <Text style={puce}>• {t.parrainage(pourcent(PCT_PARRAINAGE), PARRAINAGE_MOIS)}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.paiement}</Text>
-
-          <Text style={emailStyles.paragraphStyle}>
-            {t.fiche}
-            <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
-              {t.ficheLien}
-            </a>
-            .
-          </Text>
         </>
       )}
+      {/* Hors du texte réécrivable : la fiche reste jointe même quand Will réécrit le message. */}
+      <Text style={emailStyles.paragraphStyle}>
+        {t.fiche}
+        <a href={LIEN_FICHE} style={{ color: emailStyles.COLORS.terracotta }}>
+          {t.ficheLien}
+        </a>
+        .
+      </Text>
     </EmailLayout>
   );
 }

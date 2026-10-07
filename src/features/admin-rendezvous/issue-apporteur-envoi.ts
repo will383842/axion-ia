@@ -73,6 +73,11 @@ export type PreparationIssue =
       sansEmail: string | null;
       /** L'e-mail part SANS lien de dossier (dossier fermé) : à dire dans la console. */
       alerteLien?: string;
+      /**
+       * « Retenu » déjà parti SANS dossier (personne accueillie avant le 05/10) : la console
+       * propose « Ouvrir le dossier et envoyer le lien ».
+       */
+      proposerDossier?: true;
     };
 
 /** « mardi 22 septembre », heure de Paris — la date dite au candidat absent. */
@@ -257,11 +262,28 @@ export async function preparerIssueApporteur(input: {
 
   const deja = await dernierEnvoiIssue(gabarit, lignes);
   if (deja) {
-    return {
-      ...base,
-      envoi: null,
-      sansEmail: `Cet e-mail est déjà parti (ou attend validation) depuis le ${jourMoisParis(deja)} : il ne sera pas renvoyé.`,
-    };
+    const sansEmail = `Cet e-mail est déjà parti (ou attend validation) depuis le ${jourMoisParis(deja)} : il ne sera pas renvoyé.`;
+    // Bienvenue partie AVANT le démarrage du réseau (05/10) : aucun dossier en ligne. Rien
+    // ne repart, mais la console oriente Will vers le seul geste utile.
+    if (gabarit === "apporteur-issue-retenu") {
+      const dossier = await ouvrirDossierDepuisCandidature(fiche.id, { creer: false }).catch(
+        () => null,
+      );
+      // Dossier REFUSÉ : rien n'est proposé (un clic défairait le refus), on le dit.
+      if (dossier && !dossier.ok && "refuseLe" in dossier) {
+        const le = dossier.refuseLe ? ` le ${jourMoisParis(dossier.refuseLe)}` : "";
+        return { ...base, envoi: null, sansEmail: `${sansEmail} Dossier refusé${le}.` };
+      }
+      if (dossier && !dossier.ok && !dossier.ferme) {
+        return {
+          ...base,
+          envoi: null,
+          sansEmail: `${sansEmail} Aucun dossier en ligne n'a encore été ouvert pour cette personne : utilisez « Ouvrir le dossier et envoyer le lien ».`,
+          proposerDossier: true,
+        };
+      }
+    }
+    return { ...base, envoi: null, sansEmail };
   }
 
   // Démarrage manuel du réseau (2026-10-05) : « Retenu » met le lien personnel du dossier
@@ -271,16 +293,29 @@ export async function preparerIssueApporteur(input: {
   // l'e-mail part sans lui (l'apporteur recevra le lien à la main).
   let dossierUrl: string | null = null;
   let alerteLien: string | null = null;
+  let dossierSigne = false;
   if (gabarit === "apporteur-issue-retenu") {
+    // 07/10 (relecture de a1) : à l'envoi, une panne à l'ouverture du dossier n'est plus
+    // avalée. AUCUN e-mail ne part sans son lien : la console le dit, et l'on réessaie.
+    const panne = {
+      ok: false as const,
+      message:
+        "Le dossier en ligne n'a pas pu être ouvert : aucun e-mail n'est parti. Réessayez dans un instant.",
+    };
     try {
       const dossier = await ouvrirDossierDepuisCandidature(fiche.id, {
         creer: input.ouvrirDossier === true,
       });
-      if (dossier.ok) dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
-      else if (dossier.ferme) alerteLien = dossier.message;
+      if (dossier.ok) {
+        dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
+        dossierSigne = dossier.statut === "a_verifier" || dossier.statut === "signe";
+        if (!dossierUrl && input.ouvrirDossier === true) return panne;
+      } else if (dossier.ferme) alerteLien = dossier.message;
       else if (input.ouvrirDossier !== true) dossierUrl = urlDossierExemple();
+      else return panne;
     } catch (err) {
       Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "dossier-lien" } });
+      if (input.ouvrirDossier === true) return panne;
     }
   }
 
@@ -288,6 +323,8 @@ export async function preparerIssueApporteur(input: {
   const payload: Record<string, unknown> = {
     contactName: nom ?? "",
     ...(dossierUrl ? { dossierUrl } : {}),
+    // Dossier déjà signé : la Bienvenue ne dit plus « Première étape : complétez… ».
+    ...(dossierSigne ? { dossierSigne: true } : {}),
     ...(calendlyUrl ? { calendlyUrl } : {}),
     ...(gabarit === "apporteur-issue-absent" && evt.startTime
       ? { dateEchange: dateLongueParis(evt.startTime) }

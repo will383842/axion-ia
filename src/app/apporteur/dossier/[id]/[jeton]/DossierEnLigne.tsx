@@ -30,6 +30,7 @@ import {
 
 import {
   enregistrerActiviteAction,
+  enregistrerCoordonneesAction,
   rechercherSirenAction,
   signerAction,
   type ResultatRecherche,
@@ -165,6 +166,25 @@ export function DossierEnLigne({
     setEtape(n);
   }
 
+  // Étape 1 → 2 : nom et téléphone enregistrés tout de suite (« votre dossier reste enregistré »).
+  function enregistrerCoordonnees() {
+    setErreur(null);
+    const fd = new FormData();
+    fd.set("id", dossier.id);
+    fd.set("jeton", dossier.jeton);
+    fd.set("nom", nomSaisi);
+    fd.set("telephone", telephone);
+    demarrer(async () => {
+      try {
+        const r = await enregistrerCoordonneesAction(fd);
+        if (r.ok) aller(2);
+        else setErreur(r.message);
+      } catch {
+        setErreur(TEXTES.connexionPerdue);
+      }
+    });
+  }
+
   // ── Étape 2 : règles d'affichage ──
   const sirenNet = siren.replace(/\s+/g, "");
   const sirenDejaEnregistre = !!dossier.siren && sirenNet === dossier.siren;
@@ -186,6 +206,16 @@ export function DossierEnLigne({
     tva !== "" &&
     (tva !== "assujetti" || numeroTva.trim() !== "") &&
     (ibanNet ? ibanValide(ibanNet) : dossier.ibanSaisi);
+  const manquesEtape2 = [
+    ...(!sirenValide(sirenNet) || !(trouve || sirenDejaEnregistre || saisieManuelle)
+      ? [TEXTES.manqueSiren]
+      : []),
+    ...(denomination.trim() === "" || adresse.trim() === "" ? [TEXTES.manqueEntreprise] : []),
+    ...(statut === "" ? [TEXTES.manqueStatut] : []),
+    ...(tva === "" ? [TEXTES.manqueTva] : []),
+    ...(tva === "assujetti" && numeroTva.trim() === "" ? [TEXTES.manqueNumeroTva] : []),
+    ...(!(ibanNet ? ibanValide(ibanNet) : dossier.ibanSaisi) ? [TEXTES.manqueIban] : []),
+  ];
 
   function rechercher() {
     setErreur(null);
@@ -388,8 +418,8 @@ export function DossierEnLigne({
           <button
             type="button"
             className={`${boutonPrincipal} mt-5`}
-            disabled={dossier.nom.trim() === "" && nomSaisi.trim() === ""}
-            onClick={() => aller(2)}
+            disabled={enCours || (dossier.nom.trim() === "" && nomSaisi.trim() === "")}
+            onClick={enregistrerCoordonnees}
           >
             {TEXTES.continuer}
           </button>
@@ -608,6 +638,11 @@ export function DossierEnLigne({
           ) : null}
 
           <Erreur message={erreur} />
+          {!activiteComplete && !refus && manquesEtape2.length > 0 ? (
+            <p className="text-fg-soft mt-4 text-[15px]">
+              {TEXTES.ilManque} {manquesEtape2.join(", ")}.
+            </p>
+          ) : null}
           <div className="mt-5 flex gap-2">
             <button type="button" className={boutonSecondaire} onClick={() => aller(1)}>
               {TEXTES.retour}

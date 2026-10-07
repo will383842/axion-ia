@@ -219,7 +219,7 @@ export async function creerPresentation(
   const siren = s.siren.replace(/\s+/g, "");
   if (!sirenValide(siren)) return { ok: false, message: "Numéro SIREN invalide." };
   if (!s.personneNom.trim())
-    return { ok: false, message: "Indique le nom de la personne présentée." };
+    return { ok: false, message: "Indiquez le nom de la personne présentée." };
   if (!EMAIL.test(s.personneEmail.trim()))
     return { ok: false, message: "Adresse e-mail de la personne invalide." };
   if (
@@ -233,7 +233,7 @@ export async function creerPresentation(
     select: { statut: true },
   });
   if (!apporteur || apporteur.statut !== "signe") {
-    return { ok: false, message: "Choisis un apporteur dont le contrat est signé." };
+    return { ok: false, message: "Choisissez un apporteur dont le contrat est signé." };
   }
   let denomination = s.denomination.trim();
   if (!denomination) {
@@ -241,7 +241,7 @@ export async function creerPresentation(
     denomination = r.ok ? (r.entreprise.denomination ?? "") : "";
   }
   if (!denomination)
-    return { ok: false, message: "Indique le nom de l'entreprise (registre muet)." };
+    return { ok: false, message: "Indiquez le nom de l'entreprise (registre muet)." };
   const dateEchange =
     s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange)
       ? new Date(`${s.dateEchange}T00:00:00Z`)
@@ -691,7 +691,7 @@ export async function appliquerReponse(
       });
       return {
         ok: false,
-        message: `Le message à l'entreprise n'est pas parti (${r1}). Réessaie plus tard.`,
+        message: `Le message à l'entreprise n'est pas parti (${r1}). Réessayez plus tard.`,
       };
     }
     const r2 = await envoyer(versApporteur);

@@ -73,8 +73,16 @@ export async function ouvrirDossierDepuisCandidature(
   submissionId: string,
   options: { creer?: boolean } = {},
 ): Promise<
-  | { ok: true; apporteurId: string; versionLien: number; email: string; prenom: string }
-  | { ok: false; message: string; ferme?: true }
+  | {
+      ok: true;
+      apporteurId: string;
+      versionLien: number;
+      email: string;
+      prenom: string;
+      /** Où en est le dossier (un dossier déjà signé ne reçoit plus « complétez… »). */
+      statut: string;
+    }
+  | { ok: false; message: string; ferme?: true; refuseLe?: Date | null }
 > {
   const s = await prisma.submission.findUnique({
     where: { id: submissionId },
@@ -87,7 +95,7 @@ export async function ouvrirDossierDepuisCandidature(
     return { ok: false, message: "Cette candidature n'a pas d'adresse e-mail utilisable." };
   const existant = await prisma.apporteurReseau.findUnique({
     where: { emailHash },
-    select: { id: true, versionLien: true, prenom: true, statut: true },
+    select: { id: true, versionLien: true, prenom: true, statut: true, refuseAt: true },
   });
   if (existant && existant.statut === "refuse" && options.creer !== false) {
     // Dossier refusé puis « Retenu » plus tard : on le rouvre PROPREMENT. Le lien envoyé au
@@ -117,6 +125,7 @@ export async function ouvrirDossierDepuisCandidature(
       ok: true,
       apporteurId: existant.id,
       versionLien: rouvert.versionLien,
+      statut: "dossier_en_cours",
       email,
       prenom: decryptPii(existant.prenom) ?? "",
     };
@@ -128,14 +137,18 @@ export async function ouvrirDossierDepuisCandidature(
   // Refusé, en APERÇU (`creer: false`) : son ancien lien est mort, il ne sera rouvert
   // qu'à l'envoi — l'aperçu montre le lien d'exemple, pas l'ancien lien (404).
   if (existant && existant.statut === "refuse") {
-    return { ok: false, message: "Dossier refusé : il sera rouvert à l'envoi." };
+    return {
+      ok: false,
+      message: "Dossier refusé : il sera rouvert à l'envoi.",
+      refuseLe: existant.refuseAt ?? null,
+    };
   }
   if (existant && etatDeLaPage(existant.statut) === "neutre") {
     return {
       ok: false,
       ferme: true,
       message:
-        "Le dossier d'apporteur de cette personne est fermé (contrat résilié) : l'e-mail part sans lien de dossier. Rouvrez le dossier depuis sa fiche, puis envoyez-lui le lien.",
+        "Le dossier d'apporteur de cette personne est fermé (contrat résilié) : l'e-mail part sans lien de dossier. Un contrat résilié ne se rouvre pas depuis la console ; pour reprendre cette personne, écrivez-lui directement.",
     };
   }
   if (existant) {
@@ -143,6 +156,7 @@ export async function ouvrirDossierDepuisCandidature(
       ok: true,
       apporteurId: existant.id,
       versionLien: existant.versionLien,
+      statut: existant.statut,
       email,
       prenom: decryptPii(existant.prenom) ?? "",
     };
@@ -161,7 +175,14 @@ export async function ouvrirDossierDepuisCandidature(
     },
     select: { id: true, versionLien: true },
   });
-  return { ok: true, apporteurId: cree.id, versionLien: cree.versionLien, email, prenom };
+  return {
+    ok: true,
+    apporteurId: cree.id,
+    versionLien: cree.versionLien,
+    email,
+    prenom,
+    statut: "dossier_en_cours",
+  };
 }
 
 // ── Lecture du dossier par l'apporteur (lien personnel) ──────────────────
@@ -311,6 +332,24 @@ export interface SaisieActivite {
   regimeTva: RegimeTvaApporteur;
   numeroTva: string | null;
   iban: string | null;
+}
+
+/**
+ * Étape 1 (07/10) : nom (complété seulement s'il manquait) et téléphone enregistrés dès
+ * « Continuer » — la page promet que le dossier reste enregistré.
+ */
+export async function enregistrerCoordonnees(
+  apporteurId: string,
+  s: { nom?: string; telephone: string | null },
+): Promise<{ ok: true }> {
+  await prisma.apporteurReseau.update({
+    where: { id: apporteurId },
+    data: {
+      ...(s.nom ? { nom: encryptPii(s.nom) } : {}),
+      telephone: s.telephone ? encryptPii(s.telephone) : null,
+    },
+  });
+  return { ok: true };
 }
 
 export async function enregistrerActivite(

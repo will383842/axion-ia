@@ -17,6 +17,7 @@ import { useActionState, useState, useTransition } from "react";
 
 import {
   apercuIssueApporteurAction,
+  ouvrirDossierEtEnvoyerLienAction,
   enregistrerIssueApporteurAction,
   type ApercuIssueApporteur,
   type EtatIssueApporteur,
@@ -94,6 +95,17 @@ export function IssueEchangeApporteurForm({
   }
 
   const apercuPret = apercu?.etat === "apercu" && apercu.issue === choix ? apercu : null;
+  const [dossierEnCours, setDossierEnCours] = useState(false);
+  const [retourDossier, setRetourDossier] = useState<EtatIssueApporteur | null>(null);
+  async function ouvrirDossier() {
+    setDossierEnCours(true);
+    setRetourDossier(null);
+    try {
+      setRetourDossier(await ouvrirDossierEtEnvoyerLienAction({ calendlyEventId }));
+    } finally {
+      setDossierEnCours(false);
+    }
+  }
 
   return (
     <form action={action} className="flex flex-col gap-[var(--space-admin-3)]">
@@ -251,6 +263,11 @@ export function IssueEchangeApporteurForm({
         >
           {apercuPret.email ? (
             <>
+              {apercuPret.alerte ? (
+                <p role="alert" className="text-[color:var(--color-admin-danger)]">
+                  ⚠️ {apercuPret.alerte}
+                </p>
+              ) : null}
               <p className="text-[length:var(--text-admin-sm)]">
                 <span className="text-[color:var(--color-admin-fg-muted)]">À : </span>
                 {apercuPret.email.destinataire}
@@ -302,6 +319,16 @@ export function IssueEchangeApporteurForm({
                     ? "Enregistrement…"
                     : `Enregistrer sans e-mail : ${LIBELLE_ISSUE_APPORTEUR[apercuPret.issue].toLowerCase()}`}
                 </button>
+                {apercuPret.proposerDossier ? (
+                  <button
+                    type="button"
+                    className="admin-button-secondary"
+                    onClick={ouvrirDossier}
+                    disabled={occupe || dossierEnCours}
+                  >
+                    {dossierEnCours ? "Ouverture…" : "Ouvrir le dossier et envoyer le lien"}
+                  </button>
+                ) : null}
                 {apercuPret.issue === "absent" ? (
                   <button
                     type="button"
@@ -315,6 +342,18 @@ export function IssueEchangeApporteurForm({
               </div>
             </>
           )}
+          {retourDossier && retourDossier.etat !== "initial" ? (
+            <p
+              role={retourDossier.etat === "ok" ? "status" : "alert"}
+              className={
+                retourDossier.etat === "ok"
+                  ? "text-[color:var(--color-admin-success)]"
+                  : "text-[color:var(--color-admin-danger)]"
+              }
+            >
+              {retourDossier.message}
+            </p>
+          ) : null}
         </section>
       ) : null}
 

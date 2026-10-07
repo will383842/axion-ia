@@ -6,6 +6,7 @@ vi.mock("server-only", () => ({}));
 const h = vi.hoisted(() => ({
   lireDossierParLien: vi.fn(),
   enregistrerActivite: vi.fn(),
+  enregistrerCoordonnees: vi.fn(),
   lireEntrepriseParSiren: vi.fn(),
   checkRateLimit: vi.fn(),
 }));
@@ -14,6 +15,7 @@ vi.mock("@/features/apporteurs-reseau/donnees", () => ({
   TAILLE_MAX_PIECE: 10 * 1024 * 1024,
   deposerPiece: vi.fn(),
   enregistrerActivite: (...a: unknown[]) => h.enregistrerActivite(...a),
+  enregistrerCoordonnees: (...a: unknown[]) => h.enregistrerCoordonnees(...a),
   lireDossierParLien: (...a: unknown[]) => h.lireDossierParLien(...a),
 }));
 vi.mock("@/features/apporteurs-reseau/annuaire", () => ({
@@ -33,7 +35,7 @@ vi.mock("@/lib/rate-limit", () => ({
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
-import { enregistrerActiviteAction } from "./actions";
+import { enregistrerActiviteAction, enregistrerCoordonneesAction } from "./actions";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const JETON = "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCdE";
@@ -147,5 +149,31 @@ describe("D2 : nom d'un seul mot", () => {
     });
     await enregistrerActiviteAction(formulaire());
     expect(h.enregistrerActivite.mock.calls[0]![1]).not.toHaveProperty("nom");
+  });
+});
+
+describe("07/10 : l'étape 1 enregistre le nom et le téléphone tout de suite", () => {
+  it("téléphone et nom complété (dossier d'un seul mot) écrits dès « Continuer »", async () => {
+    h.lireDossierParLien.mockResolvedValue({ id: ID, statut: "dossier_en_cours", nom: "" });
+    h.enregistrerCoordonnees.mockResolvedValue({ ok: true });
+    const fd = new FormData();
+    fd.set("id", ID);
+    fd.set("jeton", JETON);
+    fd.set("nom", "Durand");
+    fd.set("telephone", "06 12 34 56 78");
+    expect(await enregistrerCoordonneesAction(fd)).toEqual({ ok: true });
+    expect(h.enregistrerCoordonnees).toHaveBeenCalledWith(ID, {
+      telephone: "06 12 34 56 78",
+      nom: "Durand",
+    });
+  });
+
+  it("téléphone invalide : refusé, rien n'est écrit", async () => {
+    const fd = new FormData();
+    fd.set("id", ID);
+    fd.set("jeton", JETON);
+    fd.set("telephone", "pas un numéro");
+    expect(await enregistrerCoordonneesAction(fd)).toMatchObject({ ok: false });
+    expect(h.enregistrerCoordonnees).not.toHaveBeenCalled();
   });
 });

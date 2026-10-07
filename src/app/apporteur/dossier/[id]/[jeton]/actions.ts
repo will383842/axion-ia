@@ -26,6 +26,7 @@ import {
   TAILLE_MAX_PIECE,
   deposerPiece,
   enregistrerActivite,
+  enregistrerCoordonnees,
   lireDossierParLien,
   type DossierVue,
 } from "@/features/apporteurs-reseau/donnees";
@@ -149,6 +150,23 @@ export async function rechercherSirenAction(
 }
 
 // ── Étapes 1 et 2 : téléphone et activité ────────────────────────────────
+
+/** Étape 1 : nom (s'il manquait) et téléphone, enregistrés dès « Continuer ». */
+export async function enregistrerCoordonneesAction(fd: FormData): Promise<Resultat> {
+  if (!(await debitAutorise("activite"))) return TROP;
+  const dossier = await dossierModifiableParLien(lien(fd.get("id")), lien(fd.get("jeton")));
+  if (!dossier) return NEUTRE;
+  const telephone = champ(fd, "telephone", 30);
+  if (telephone && !/^[0-9+().\s-]{6,30}$/.test(telephone)) {
+    return { ok: false, message: "Ce numéro de téléphone n'est pas valide." };
+  }
+  const nom = nomAjoutable(dossier.nom, champ(fd, "nom", 80));
+  if (!dossier.nom.trim() && !nom) return { ok: false, message: "Indiquez votre nom." };
+  return enregistrerCoordonnees(dossier.id, {
+    telephone: telephone || null,
+    ...(nom ? { nom } : {}),
+  });
+}
 
 export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat> {
   if (!(await debitAutorise("activite"))) return TROP;

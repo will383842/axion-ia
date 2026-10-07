@@ -20,6 +20,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
@@ -41,6 +42,8 @@ import {
   preparerIssueApporteur,
   type ResultatEnvoiIssue,
 } from "./issue-apporteur-envoi";
+import { ouvrirDossierDepuisCandidature } from "@/features/apporteurs-reseau/donnees";
+import { envoyerLien } from "@/features/apporteurs-reseau/verification";
 
 export type EtatIssueApporteur =
   { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
@@ -54,13 +57,18 @@ export type ApercuIssueApporteur =
       email: { sujet: string; html: string; destinataire: string } | null;
       /** Pourquoi aucun e-mail ne partira (deuxième absence, déjà envoyé…). */
       sansEmail: string | null;
+      /** L'e-mail partira SANS lien de dossier (dossier résilié) : dit AVANT l'envoi. */
+      alerte?: string;
+      /** Bienvenue déjà partie sans dossier : proposer « Ouvrir le dossier et envoyer le lien ». */
+      proposerDossier?: true;
     };
 
 async function sessionEcriture(): Promise<{ id: string; email: string | null } | string> {
   const session = await auth();
-  if (!session?.user?.id) return "Session expirée : reconnecte-toi.";
+  if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role;
-  if (!peutVoirLesAppels(role)) return "Ton rôle ne permet pas d'enregistrer l'issue d'un échange.";
+  if (!peutVoirLesAppels(role))
+    return "Votre rôle ne permet pas d'enregistrer l'issue d'un échange.";
   return { id: session.user.id, email: session.user.email ?? null };
 }
 
@@ -84,7 +92,15 @@ export async function apercuIssueApporteurAction(input: {
       motPersonnel: mot || null,
     });
     if (!prep.ok) return { etat: "erreur", message: prep.message };
-    if (!prep.envoi) return { etat: "apercu", issue, email: null, sansEmail: prep.sansEmail };
+    if (!prep.envoi) {
+      return {
+        etat: "apercu",
+        issue,
+        email: null,
+        sansEmail: prep.sansEmail,
+        ...(prep.proposerDossier ? { proposerDossier: true as const } : {}),
+      };
+    }
     const rendu = await renderEmailTemplate(
       prep.envoi.gabarit,
       prep.envoi.locale,
@@ -96,12 +112,13 @@ export async function apercuIssueApporteurAction(input: {
       issue,
       email: { sujet: rendu.subject, html: rendu.html, destinataire: prep.envoi.destinataire },
       sansEmail: null,
+      ...(prep.alerteLien ? { alerte: prep.alerteLien } : {}),
     };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "apercu" } });
     return {
       etat: "erreur",
-      message: "L'aperçu n'a pas pu être préparé. Réessaie dans un instant.",
+      message: "L'aperçu n'a pas pu être préparé. Réessayez dans un instant.",
     };
   }
 }
@@ -116,7 +133,7 @@ function phraseEnvoi(r: ResultatEnvoiIssue | null): string {
     case "retenu":
       return " ⚠️ L'e-mail n'est PAS parti : l'adresse est retenue (opposition ou adresse invalide).";
     case "file-indisponible":
-      return " ⚠️ L'e-mail n'est PAS parti : la file d'envoi ne répond pas. Réessaie dans un instant.";
+      return " ⚠️ L'e-mail n'est PAS parti : la file d'envoi ne répond pas. Réessayez dans un instant.";
   }
 }
 
@@ -151,14 +168,14 @@ async function enregistrerSansEmail(
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "suivi-sans-email" } });
-    return { etat: "erreur", message: "L'enregistrement a échoué. Réessaie dans un instant." };
+    return { etat: "erreur", message: "L'enregistrement a échoué. Réessayez dans un instant." };
   }
   let classement = "";
   if (classeSansSuite(saisie.issue) && evt.linkedSubmissionId) {
     const t = await appliquerTransition(evt.linkedSubmissionId, "sans-suite", qui.id);
     classement = t.ok
       ? " Fiche classée « Sans suite »."
-      : " ⚠️ La fiche n'a pas pu être classée « Sans suite » : fais-le depuis ses gestes.";
+      : " ⚠️ La fiche n'a pas pu être classée « Sans suite » : faites-le depuis ses gestes.";
   }
   try {
     await prisma.activityLog.create({
@@ -213,7 +230,7 @@ export async function enregistrerIssueApporteurAction(
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "preparation" } });
-    return { etat: "erreur", message: "L'enregistrement a échoué. Réessaie dans un instant." };
+    return { etat: "erreur", message: "L'enregistrement a échoué. Réessayez dans un instant." };
   }
   if (!prep.ok) return { etat: "erreur", message: prep.message };
 
@@ -221,7 +238,8 @@ export async function enregistrerIssueApporteurAction(
   if (prep.envoi && fd.get("confirmer") !== "oui") {
     return {
       etat: "erreur",
-      message: "Ouvre l'aperçu de l'e-mail et confirme l'envoi : rien ne part sans ta relecture.",
+      message:
+        "Ouvrez l'aperçu de l'e-mail et confirmez l'envoi : rien ne part sans votre relecture.",
     };
   }
 
@@ -238,7 +256,7 @@ export async function enregistrerIssueApporteurAction(
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "suivi" } });
-    return { etat: "erreur", message: "L'enregistrement a échoué. Réessaie dans un instant." };
+    return { etat: "erreur", message: "L'enregistrement a échoué. Réessayez dans un instant." };
   }
 
   // « Non retenu » : la fiche est classée « Sans suite » — archivée, marquée,
@@ -249,7 +267,7 @@ export async function enregistrerIssueApporteurAction(
     const t = await appliquerTransition(prep.fiche.id, "sans-suite", qui.id);
     classement = t.ok
       ? " Fiche classée « Sans suite »."
-      : " ⚠️ La fiche n'a pas pu être classée « Sans suite » : fais-le depuis ses gestes.";
+      : " ⚠️ La fiche n'a pas pu être classée « Sans suite » : faites-le depuis ses gestes.";
   }
   // « Retenu » : plus aucun « ton dossier t'attend ». Les rappels de
   // l'invitation, eux, sont déjà arrêtés par la réservation de l'échange.
@@ -299,4 +317,83 @@ export async function enregistrerIssueApporteurAction(
   const message = `${base}${classement}${phraseEnvoi(envoi)}${sansEmail}${alerte}`;
   const echecEnvoi = envoi?.statut === "retenu" || envoi?.statut === "file-indisponible";
   return echecEnvoi ? { etat: "erreur", message } : { etat: "ok", message };
+}
+
+/**
+ * « Ouvrir le dossier et envoyer le lien » (07/10) : pour une personne accueillie AVANT le
+ * démarrage du réseau, dont la Bienvenue est partie sans dossier. Ouvre le dossier en ligne
+ * (relié à sa fiche candidat) et envoie l'e-mail « lien du dossier ». Une seule fois : un
+ * dossier déjà ouvert renvoie vers la fiche apporteur, où le lien se renvoie sciemment.
+ */
+export async function ouvrirDossierEtEnvoyerLienAction(input: {
+  calendlyEventId: string;
+}): Promise<EtatIssueApporteur> {
+  const qui = await sessionEcriture();
+  if (typeof qui === "string") return { etat: "erreur", message: qui };
+  const evt = await prisma.calendlyEvent.findUnique({
+    where: { id: input.calendlyEventId },
+    select: { id: true, linkedSubmissionId: true },
+  });
+  if (!evt?.linkedSubmissionId) {
+    return { etat: "erreur", message: "Ce rendez-vous n'est rattaché à aucune fiche candidat." };
+  }
+  try {
+    const avant = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: false });
+    if (avant.ok) {
+      return {
+        etat: "erreur",
+        message:
+          "Un dossier en ligne existe déjà pour cette personne : renvoyez le lien depuis sa fiche apporteur.",
+      };
+    }
+    if (avant.ferme) return { etat: "erreur", message: avant.message };
+    if ("refuseLe" in avant) {
+      return {
+        etat: "erreur",
+        message: "Ce dossier a été refusé : il n'est pas rouvert depuis ce bouton.",
+      };
+    }
+    // La fiche est déjà reliée au dossier d'une autre adresse (« Nouvel apporteur ») : le dire.
+    const relie = await prisma.apporteurReseau.findUnique({
+      where: { submissionId: evt.linkedSubmissionId },
+      select: { prenom: true, nom: true },
+    });
+    if (relie) {
+      const nomRelie = [decryptPii(relie.prenom), decryptPii(relie.nom)].filter(Boolean).join(" ");
+      return {
+        etat: "erreur",
+        message: `Cette fiche est déjà reliée au dossier de ${nomRelie || "un autre apporteur"} : ouvrez-le depuis Apporteurs.`,
+      };
+    }
+    const dossier = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: true });
+    if (!dossier.ok) return { etat: "erreur", message: dossier.message };
+    const r = await envoyerLien(dossier.apporteurId, null);
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: qui.id,
+          action: "rendez_vous.dossier_ouvert_apres_bienvenue",
+          targetType: "submission",
+          targetId: evt.linkedSubmissionId,
+          changes: { calendlyEventId: evt.id, apporteurId: dossier.apporteurId },
+        },
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "issue-apporteur", step: "journal-dossier" },
+      });
+    }
+    revalidatePath(adminPath("fr", "rendez-vous"));
+    revalidatePath(adminPath("fr", `contacts/appels/${evt.id}`));
+    revalidatePath(adminPath("fr", `apporteurs/${dossier.apporteurId}`));
+    return r.ok
+      ? { etat: "ok", message: `Dossier ouvert. ${r.message}` }
+      : { etat: "erreur", message: `Dossier ouvert, mais le lien n'est pas parti : ${r.message}` };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "ouvrir-dossier" } });
+    return {
+      etat: "erreur",
+      message: "Le dossier n'a pas pu être ouvert. Réessayez dans un instant.",
+    };
+  }
 }

@@ -92,7 +92,7 @@ describe("Retenu — bienvenue dans le réseau", () => {
     );
     expect(t).toContain("versée dès que le client a réglé l'intégralité de sa facture");
     expect(t).toContain("sans objectif ni exclusivité");
-    expect(t).toContain("numéro SIRET");
+    expect(t).toContain("numéro SIREN");
     expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
     expect(t).not.toContain("prochains jours");
     // 2026-10-05 (Will) : plus aucune date promise pour l'espace en ligne (démarrage à la main).
