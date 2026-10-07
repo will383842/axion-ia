@@ -158,7 +158,6 @@ function lireSignature(json: unknown): SignatureLue | null {
 /** Durée d'une réservation de contresignature : au-delà, un nouveau clic la reprend. */
 const RESERVATION_CONTRESIGNATURE_MS = 10 * 60 * 1000;
 
-/** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
 /**
  * Ordre de Will (07/10) : aucun contrat contresigné sans SIREN valide et ACTIF au registre
  * (travail dissimulé, vigilance, solidarité financière, autofacture). Revérifié au moment de
@@ -179,6 +178,7 @@ export async function sirenAContresigner(siren: string | null): Promise<string |
   return null;
 }
 
+/** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
 export async function preparerDecision(
   apporteurId: string,
   decision: Decision,
@@ -355,7 +355,9 @@ export async function appliquerDecision(
       throw err;
     }
     const sha = createHash("sha256").update(pdf).digest("hex");
-    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}.pdf`;
+    // Clé PROPRE à cette tentative (suffixée par sa réservation) : une tentative n'efface
+    // jamais le PDF d'une autre.
+    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}.pdf`;
     try {
       await uploadToR2(cle, pdf, "application/pdf");
     } catch (err) {
@@ -382,11 +384,31 @@ export async function appliquerDecision(
       signalerErreurReseau("contresignature : écriture finale", err);
     }
     if (ecrit !== 1) {
+      // L'écriture a pu réussir sans que la réponse arrive (connexion coupée) : on RELIT la base,
+      // et l'on n'efface que si elle ne référence pas ce PDF.
+      let reference: string | null | undefined;
       try {
-        await deleteFromR2(cle);
+        const relu = await prisma.apporteurReseau.findUnique({
+          where: { id: apporteurId },
+          select: { contratSigneCle: true },
+        });
+        reference = relu?.contratSigneCle ?? null;
       } catch (err) {
-        signalerErreurReseau("contresignature : PDF orphelin non retiré de R2", err);
+        signalerErreurReseau("contresignature : relecture après écriture", err);
+        reference = undefined;
       }
+      if (reference === cle) {
+        // Contresigné pour de bon : on poursuit comme si la réponse était arrivée.
+        ecrit = 1;
+      } else if (reference !== undefined) {
+        try {
+          await deleteFromR2(cle);
+        } catch (err) {
+          signalerErreurReseau("contresignature : PDF orphelin non retiré de R2", err);
+        }
+      }
+    }
+    if (ecrit !== 1) {
       await liberer();
       return {
         ok: false,

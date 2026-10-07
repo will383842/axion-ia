@@ -13,7 +13,7 @@ const h = vi.hoisted(() => ({
   purgerContenuPieces: vi.fn(),
   appUpdate: vi.fn(),
   // Contresignature : réservation conditionnelle (07/10). `count` 1 = réservé, 0 = déjà fait.
-  appUpdateMany: vi.fn(async () => ({ count: 1 })),
+  appUpdateMany: vi.fn(async (_a?: unknown) => ({ count: 1 })),
   appFindUnique: vi.fn(),
   registre: vi.fn(),
 }));
@@ -44,12 +44,12 @@ vi.mock("../contrat-pdf", async () => {
     rendreContratPdf: (...a: unknown[]) => pdf.rendreContratPdf(...a),
   };
 });
-const r2 = vi.hoisted(() => ({ deleteFromR2: vi.fn() }));
+const r2 = vi.hoisted(() => ({ deleteFromR2: vi.fn(), upload: vi.fn() }));
 vi.mock("@/lib/r2-storage", () => ({
   deleteFromR2: (...a: unknown[]) => r2.deleteFromR2(...a),
   getObjectBufferR2: vi.fn(),
   isR2Configured: () => true,
-  uploadToR2: vi.fn(),
+  uploadToR2: (...a: unknown[]) => r2.upload(...a),
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string | null) => v }));
 vi.mock("@/lib/prisma", () => {
@@ -347,6 +347,27 @@ describe("07/10 : la contresignature est réservée avant le PDF (double clic)",
     expect(r).toMatchObject({ ok: false });
     expect(r2.deleteFromR2).toHaveBeenCalledTimes(1);
     expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("cas A : l'écriture a réussi mais la réponse s'est perdue → on relit, rien n'est effacé", async () => {
+    h.appUpdateMany
+      .mockResolvedValueOnce({ count: 1 })
+      .mockRejectedValueOnce(new Error("connexion coupée après validation"));
+    const signatureLue = await h.appFindUnique();
+    h.appFindUnique
+      .mockResolvedValueOnce(signatureLue) // signature de l'apporteur
+      .mockImplementationOnce(async () => ({ contratSigneCle: r2.upload.mock.calls[0]![0] }));
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: true });
+    expect(r2.deleteFromR2).not.toHaveBeenCalled();
+  });
+
+  it("cas B : chaque tentative a sa propre clé R2 (aucune n'efface celle d'une autre)", async () => {
+    await appliquerDecision(ID, "contresigner", null);
+    await appliquerDecision(ID, "contresigner", null);
+    const cles = r2.upload.mock.calls.map((c) => c[0] as string);
+    expect(cles).toHaveLength(2);
+    expect(new Set(cles).size).toBe(2);
   });
 
   it("écriture finale qui lève : même chose, rien n'est envoyé", async () => {
