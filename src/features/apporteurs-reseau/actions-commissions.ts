@@ -267,28 +267,29 @@ export async function ajusterCommissionAction(fd: FormData): Promise<void> {
     versCommissions("erreur", "Cochez la confirmation avant de modifier la commission.");
   const mode = texte(fd, "mode");
   const motif = texte(fd, "motif");
-  let r: { ok: true } | { ok: false; message: string };
+  let r: Awaited<ReturnType<typeof reduireCommission>>;
   try {
     if (mode === "annuler") {
       r = await annulerCommission(id, motif, await acteur());
     } else {
-      const montant = montantEnCentimes(texte(fd, "montant"));
+      // Le PRIX HT net conservé est saisi ; la commission est recalculée par la règle du contrat.
+      const prix = montantEnCentimes(texte(fd, "prix"));
       r =
-        montant === null
-          ? { ok: false, message: "Indiquez le nouveau montant en euros, par exemple 150,50." }
-          : await reduireCommission(id, montant, motif, await acteur());
+        prix === null
+          ? { ok: false, message: "Indiquez le prix HT net conservé en euros, par exemple 1500." }
+          : await reduireCommission(id, prix, motif, await acteur());
     }
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-ajuster" } });
     r = { ok: false, message: "La modification n'a pas pu être enregistrée. Réessayez." };
   }
   revalidatePath(adminPath("fr", "apporteurs/commissions"));
-  if (r.ok)
-    versCommissions(
-      "retour",
+  if (r.ok) {
+    const base =
       mode === "annuler"
         ? "Commission annulée : elle reste visible dans l'onglet « Annulées »."
-        : "Commission réduite : le nouveau montant sera facturé.",
-    );
-  versCommissions("erreur", r.message);
+        : `Commission recalculée : ${euros(r.montantCents ?? 0)}.`;
+    versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
+  }
+  versCommissions("erreur", (r as { message: string }).message);
 }

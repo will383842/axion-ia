@@ -135,6 +135,7 @@ const lignes = () => etat.lignes as Ligne[];
 vi.mock("@/lib/prisma", () => {
   const prisma = {
     apporteurReseau: {
+      update: vi.fn(async () => ({})),
       findUnique: vi.fn(async (a: { where: { id: string } }) => ({
         id: a.where.id,
         prenom: a.where.id === "APP2" ? "Paul" : "Jeanne",
@@ -150,6 +151,16 @@ vi.mock("@/lib/prisma", () => {
       })),
     },
     commissionApporteur: {
+      // Une reprise (art. 4.5) crée une ligne négative.
+      create: vi.fn(async (a: { data: Record<string, unknown> }) => {
+        const id = `rep-${lignes().length + 1}`;
+        (etat.lignes as Ligne[]).push({
+          ...ligne(id, "reprise", a.data["montantCents"] as number),
+          ...(a.data as Partial<Ligne>),
+          id,
+        });
+        return { id };
+      }),
       findMany: vi.fn(async (a: { where: Record<string, Valeur> }) =>
         lignes().filter((l) => correspond(l as never, a.where)),
       ),
@@ -1020,36 +1031,55 @@ describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somm
 });
 
 describe("réduire ou annuler une commission pas encore facturée (point 4)", () => {
-  const avecParrain = () => [
-    ligne("c1", "due", 40_000, { factureId: "F-1" }),
-    ligne("p1", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-1" }),
+  // Audit : 30 % du HT facturé (100 000 c). Part du parrain : 10 %, arrondi à l'inférieur.
+  const avecParrain = (part: Partial<Ligne> = {}) => [
+    ligne("c1", "due", 30_000, { factureId: "F-1" }),
+    ligne("p1", "due", 3_000, {
+      apporteurId: "APP2",
+      parrainage: true,
+      factureId: "F-1",
+      ...part,
+    }),
   ];
 
-  it("réduire : nouveau montant facturé, part du parrain réduite dans la même proportion, tout est tracé", async () => {
+  it("réduire : la commission est RECALCULÉE depuis le prix conservé, la part du parrain par sa règle", async () => {
     etat.lignes = avecParrain();
-    expect(await reduireCommission("c1", 30_000, "prix conservé : 1 500 € HT", "admin-1")).toEqual({
-      ok: true,
+    const r = await reduireCommission("c1", 80_005, "prix conservé : 800,05 € HT", "admin-1");
+    expect(r).toMatchObject({ ok: true, montantCents: 24_001 });
+    expect(lignes().find((l) => l.id === "c1")!).toMatchObject({
+      montantCents: 24_001,
+      factureHtCents: 80_005,
     });
-    expect(lignes().find((l) => l.id === "c1")!.montantCents).toBe(30_000);
-    expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(3_000);
-    expect(etat.journal.filter((j) => j["action"] === "commission_apporteur.reduite")).toHaveLength(
-      2,
-    );
+    expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(2_400); // 10 % arrondi inférieur
     expect(etat.journal[0]).toMatchObject({
       adminUserId: "admin-1",
-      changes: { avantCents: 40_000, apresCents: 30_000, motif: "prix conservé : 1 500 € HT" },
+      action: "commission_apporteur.reduite",
+      changes: { avantCents: 30_000, apresCents: 24_001, prixConserveHtCents: 80_005 },
     });
   });
 
-  it("réduire : refusé sans motif, à un montant supérieur ou nul, ou une fois facturée", async () => {
-    etat.lignes = [ligne("c1", "due", 40_000)];
-    expect(await reduireCommission("c1", 30_000, " ")).toMatchObject({ ok: false });
-    expect(await reduireCommission("c1", 40_000, "x")).toMatchObject({ ok: false });
+  it("réduire : refusé sans motif, à un prix supérieur ou nul, sur une part de parrain, ou une fois facturée", async () => {
+    etat.lignes = avecParrain();
+    expect(await reduireCommission("c1", 50_000, " ")).toMatchObject({ ok: false });
+    expect(await reduireCommission("c1", 100_000, "x")).toMatchObject({ ok: false });
     expect(await reduireCommission("c1", 0, "x")).toMatchObject({ ok: false });
+    expect(await reduireCommission("p1", 50_000, "x")).toMatchObject({ ok: false });
     await facturerCommissionsDues(MARDI);
-    const r = await reduireCommission("c1", 30_000, "trop tard");
-    expect(r).toMatchObject({ ok: false });
+    const r = await reduireCommission("c1", 50_000, "trop tard");
     expect((r as { message: string }).message).toContain("déjà facturée");
+  });
+
+  it("part du parrain déjà VERSÉE : reprise de la différence ; déjà FACTURÉE non versée : avertissement", async () => {
+    etat.lignes = avecParrain({ statut: "versee" });
+    const r1 = await reduireCommission("c1", 50_000, "prix conservé");
+    expect(r1).toMatchObject({ ok: true });
+    const reprise = lignes().find((l) => l.statut === "reprise");
+    expect(reprise?.montantCents).toBe(-1_500); // 3 000 → 1 500
+    etat.lignes = avecParrain({ autofactureNumero: "AXI-APP-2026-0009" });
+    const r2 = await reduireCommission("c1", 50_000, "prix conservé");
+    expect(r2).toMatchObject({ ok: true });
+    expect((r2 as { avertissement?: string }).avertissement).toContain("déjà facturée");
+    expect(lignes().find((l) => l.id === "p1")!.montantCents).toBe(3_000);
   });
 
   it("annuler : la ligne reste en base au statut « annulée », la part du parrain aussi, rien n'est facturé", async () => {
@@ -1069,5 +1099,22 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
     expect(await annulerCommission("v1", "trop tard")).toMatchObject({ ok: false });
     expect(await annulerCommission("c2", "")).toMatchObject({ ok: false });
     expect(lignes()[1]!.statut).toBe("due");
+  });
+
+  it("facturation : une ligne dont le montant a changé entre la lecture et l'écriture n'est pas facturée à l'ancien montant", async () => {
+    etat.lignes = [ligne("c1", "due", 30_000)];
+    const { prisma } = await import("@/lib/prisma");
+    const um = prisma.commissionApporteur.updateMany as unknown as {
+      getMockImplementation: () => (a: unknown) => unknown;
+      mockImplementationOnce: (f: (a: unknown) => unknown) => void;
+    };
+    const vraie = um.getMockImplementation();
+    // Réduction « concurrente » juste avant l'écriture de la facturation.
+    um.mockImplementationOnce((a) => {
+      lignes()[0]!.montantCents = 24_000;
+      return vraie(a);
+    });
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
   });
 });
