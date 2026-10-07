@@ -183,3 +183,71 @@ export async function rechercherTrancheEffectif(
     clearTimeout(minuterie);
   }
 }
+
+// ── DEBUT lecture par SIREN ────────────────────────────────────────────────
+/**
+ * Lecture des COMPLÉMENTS d'une unité légale, par son SIREN (INT-T78-A,
+ * arbitrage d'A02 : axion-apporteurs #782, 6035040482).
+ *
+ * Ce module reste NEUTRE. Il interroge le même service, rend le bloc
+ * `complements` tel que l'annuaire le publie, et ne décide de rien : le sens de
+ * ce bloc appartient à l'appelant.
+ *
+ * Règles du module : SIREN contrôlé par `checkSirenFormat` avant tout appel ;
+ * délai de `DELAI_ANNUAIRE_MS`, au-delà duquel la réponse est `indisponible` ;
+ * cache par SIREN de `DUREE_CACHE_ANNUAIRE_MS` (les seules réponses obtenues
+ * sont gardées, jamais une panne) ; aucune copie locale de l'annuaire ; ne lève
+ * JAMAIS.
+ *
+ * ⚠️ `indisponible` et `introuvable` ne veulent PAS dire « rien de publié » :
+ * l'appelant ne doit jamais les lire comme une absence de donnée.
+ */
+export type ResultatComplementsSiren =
+  | { readonly ok: true; readonly complements: unknown }
+  | { readonly ok: false; readonly motif: "indisponible" | "siren_invalide" | "introuvable" };
+
+const cacheComplements = new Map<string, { le: number; resultat: ResultatComplementsSiren }>();
+
+/** Vide le cache des compléments (tests). */
+export function viderCacheComplements(): void {
+  cacheComplements.clear();
+}
+
+export async function complementsParSiren(
+  siren: string,
+  options: { readonly fetch?: Fetch; readonly maintenant?: number } = {},
+): Promise<ResultatComplementsSiren> {
+  if (!checkSirenFormat(siren).ok) return { ok: false, motif: "siren_invalide" };
+  const maintenant = options.maintenant ?? Date.now();
+  const enCache = cacheComplements.get(siren);
+  if (enCache !== undefined && maintenant - enCache.le < DUREE_CACHE_ANNUAIRE_MS) {
+    return enCache.resultat;
+  }
+
+  const url = new URL(URL_ANNUAIRE);
+  url.searchParams.set("q", siren);
+  url.searchParams.set("per_page", "5");
+  const f: Fetch = options.fetch ?? ((u, init) => fetch(u, init));
+  const controleur = new AbortController();
+  const minuterie = setTimeout(() => controleur.abort(), DELAI_ANNUAIRE_MS);
+  try {
+    const reponse = await f(url.toString(), { signal: controleur.signal });
+    if (!reponse.ok) return { ok: false, motif: "indisponible" };
+    const corps = (await reponse.json()) as { results?: unknown };
+    const lignes = Array.isArray(corps.results)
+      ? (corps.results as Array<{ siren?: unknown; complements?: unknown }>)
+      : [];
+    // La recherche plein texte peut rendre une autre entreprise : même SIREN exigé.
+    const ligne = lignes.find((l) => l.siren === siren);
+    if (ligne === undefined) return { ok: false, motif: "introuvable" };
+    const resultat: ResultatComplementsSiren = { ok: true, complements: ligne.complements ?? null };
+    cacheComplements.set(siren, { le: maintenant, resultat });
+    return resultat;
+  } catch {
+    // Délai dépassé, réseau coupé, réponse illisible.
+    return { ok: false, motif: "indisponible" };
+  } finally {
+    clearTimeout(minuterie);
+  }
+}
+// ── FIN lecture par SIREN ──────────────────────────────────────────────────

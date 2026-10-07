@@ -34,6 +34,17 @@ import {
 } from "@/server/qualiopi/crm/effectif-insee";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
+  complementsParSiren,
+  type ResultatComplementsSiren,
+} from "@/features/dossier-client/recherche-entreprises";
+import {
+  confirmerIdccClient,
+  verifierIdccClient,
+  type BaseIdccClient,
+  type MotifNonVerifie,
+} from "@/server/qualiopi/financements/idcc-client";
+import { PREUVES_IDCC_DECLARATIVES } from "@/server/qualiopi/financements/idcc-controle";
+import {
   creerOuRetrouverClient,
   ErreurSirenDejaPris,
   exigerSirenLibre,
@@ -442,6 +453,122 @@ export async function rafraichirEffectifInseeAction(
   } catch {
     return { error: MESSAGE_RELEVE_EFFECTIF.indisponible };
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INT-T78-A — contrôle de l'IDCC d'une fiche (SIRET → IDCC)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MESSAGE_NON_VERIFIE: Record<MotifNonVerifie, string> = {
+  client_introuvable: "Client introuvable.",
+  particulier: "Un particulier n'a ni branche ni OPCO : rien à vérifier.",
+  siren_invalide:
+    "Le SIRET de la fiche ne donne pas un SIREN valide : corrigez-le sur la fiche, puis vérifiez.",
+  // Une panne n'est JAMAIS lue comme « aucun IDCC publié » : le contrôle reste
+  // tel qu'il était, et le message le dit.
+  annuaire_indisponible:
+    "Annuaire indisponible : le contrôle est inchangé. Réessayez dans un instant.",
+  annuaire_introuvable:
+    "L'annuaire ne connaît pas ce SIREN : le contrôle est inchangé. Vérifiez le SIRET de la fiche.",
+};
+
+/** Libellé du statut calculé — le POURQUOI, jamais le badge seul. */
+const MESSAGE_STATUT: Record<string, string> = {
+  non_renseigne: "Non renseigné : aucun IDCC saisi, et l'annuaire n'en publie aucun.",
+  probable: "À confirmer : l'annuaire et la fiche ne suffisent pas à trancher.",
+  concordant: "Concordant : l'annuaire et la table des OPCO s'accordent.",
+  anomalie: "En anomalie : l'annuaire, la fiche ou la table se contredisent.",
+  confirme: "Confirmé par une preuve déclarative.",
+};
+
+export interface ResultatVerificationIdccClient {
+  statut: string;
+  message: string;
+  /** IDCC publié quand rien n'est saisi : une PROPOSITION, jamais écrite comme saisie. */
+  idccPropose: string | null;
+}
+
+/**
+ * « Vérifier avec le SIREN » : lit l'annuaire public, recalcule le statut de
+ * l'IDCC de la fiche et le range. N'écrit JAMAIS `confirme`, JAMAIS l'IDCC
+ * publié comme saisie. Une panne de l'annuaire laisse tout inchangé.
+ */
+export async function verifierIdccClientAction(
+  clientId: string,
+): Promise<{ data: ResultatVerificationIdccClient } | { error: string }> {
+  const session = await requireAdminWrite();
+  if (!z.string().uuid().safeParse(clientId).success) return { error: "Client introuvable." };
+  const r = await verifierIdccClient(
+    prisma as unknown as BaseIdccClient,
+    (siren): Promise<ResultatComplementsSiren> => complementsParSiren(siren),
+    clientId,
+  );
+  if (!r.ok) return { error: MESSAGE_NON_VERIFIE[r.motif] };
+  if (r.change) {
+    await logQualiopiActivity({
+      action: "qualiopi.client.idcc.verifie",
+      targetType: "Client",
+      targetId: clientId,
+      // Des statuts seulement : ni IDCC, ni OPCO, ni réponse de l'annuaire.
+      changes: { statut: r.statut, cas: r.cas },
+      session,
+    });
+    revalidatePath(adminPath("fr", `qualiopi/clients/${clientId}`));
+  }
+  return {
+    data: {
+      statut: r.statut,
+      message: MESSAGE_STATUT[r.statut] ?? r.statut,
+      idccPropose: r.idccPropose,
+    },
+  };
+}
+
+const confirmerIdccSchema = z
+  .object({
+    clientId: z.string().uuid(),
+    /** Liste FERMÉE des preuves déclaratives : aucun fichier, aucun texte libre. */
+    type: z.enum(PREUVES_IDCC_DECLARATIVES),
+    /** OPCO de l'accord de prise en charge ; ignoré des autres preuves. */
+    opco: z.string().max(40).optional(),
+  })
+  .strict();
+
+/**
+ * « Confirmer l'IDCC » : preuve DÉCLARATIVE, auteur = l'administrateur connecté,
+ * date posée par le serveur. Confirme l'IDCC SAISI de la fiche, rien d'autre.
+ */
+export async function confirmerIdccClientAction(input: {
+  clientId: string;
+  type: (typeof PREUVES_IDCC_DECLARATIVES)[number];
+  opco?: string;
+}): Promise<{ data: { message: string } } | { error: string }> {
+  const session = await requireAdminWrite();
+  const parsed = confirmerIdccSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides." };
+  const r = await confirmerIdccClient(prisma as unknown as BaseIdccClient, {
+    clientId: parsed.data.clientId,
+    auteurId: session.userId,
+    type: parsed.data.type,
+    ...(parsed.data.opco !== undefined ? { opco: parsed.data.opco } : {}),
+  });
+  if (!r.ok) {
+    return {
+      error:
+        r.motif === "refusee"
+          ? `Confirmation refusée : ${r.message ?? "preuve illisible."}`
+          : MESSAGE_NON_VERIFIE[r.motif],
+    };
+  }
+  await logQualiopiActivity({
+    action: "qualiopi.client.idcc.confirme",
+    targetType: "Client",
+    targetId: parsed.data.clientId,
+    changes: { preuveType: parsed.data.type },
+    session,
+  });
+  revalidatePath(adminPath("fr", `qualiopi/clients/${parsed.data.clientId}`));
+  return { data: { message: MESSAGE_STATUT["confirme"]! } };
 }
 
 /**
