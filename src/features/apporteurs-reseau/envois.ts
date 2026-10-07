@@ -15,6 +15,8 @@ import { emailsQueue, enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
 import { signalerErreurReseau } from "./signaler";
+import { prisma } from "@/lib/prisma";
+import { GABARITS_ARGENT, retraitDe } from "./retrait";
 
 export type GabaritApporteur =
   | "apporteur-dossier-lien"
@@ -98,7 +100,41 @@ export async function apercu(
   };
 }
 
-export type ResultatEnvoi = "envoye" | "en-validation" | "retenu" | "indisponible";
+/**
+ * `fiche-retiree` (2026-10-07) : l'apporteur est retiré du réseau et l'e-mail n'est pas lié
+ * à l'argent — il ne part pas.
+ */
+export type ResultatEnvoi =
+  "envoye" | "en-validation" | "retenu" | "indisponible" | "fiche-retiree";
+
+/**
+ * Gabarits que reçoit l'APPORTEUR lui-même (et non une entreprise) : ce sont eux qui
+ * s'arrêtent quand il est retiré, sauf ceux liés à l'argent (`GABARITS_ARGENT`).
+ */
+const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
+  "apporteur-dossier-lien",
+  "apporteur-dossier-a-completer",
+  "apporteur-dossier-refuse",
+  "apporteur-dossier-a-verifier",
+  "apporteur-dossier-recu",
+  "apporteur-contrat-signe",
+  "apporteur-presentation-recue",
+  "apporteur-presentation-refusee",
+  "apporteur-vigilance",
+  "apporteur-commande-signee",
+  "apporteur-releve",
+  "apporteur-virement-fait",
+]);
+
+/** L'apporteur concerné par un envoi : l'entité elle-même, ou celui de la présentation. */
+async function apporteurDeLEnvoi(e: EnvoiApporteur): Promise<string | null> {
+  if (e.entityType === "ApporteurReseau") return e.entityId;
+  const pr = await prisma.presentationEntreprise.findUnique({
+    where: { id: e.entityId },
+    select: { apporteurId: true },
+  });
+  return pr?.apporteurId ?? null;
+}
 
 /**
  * Un job ÉCHOUÉ reste 30 jours dans Redis (`removeOnFail`) : son identifiant fixe ferait
@@ -119,6 +155,13 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
 
 export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
   try {
+    // 🔴 Retiré du réseau (2026-10-07) : seuls les e-mails liés à l'ARGENT lui parviennent
+    // encore (commande signée, relevé, vigilance, virement) ; ils pointent vers le mode
+    // restreint de sa page. Tous les autres s'arrêtent ICI, quel que soit l'appelant.
+    if (GABARITS_VERS_L_APPORTEUR.has(e.gabarit) && !GABARITS_ARGENT.has(e.gabarit)) {
+      const apporteurId = await apporteurDeLEnvoi(e);
+      if (apporteurId && (await retraitDe(apporteurId))) return "fiche-retiree";
+    }
     const jobId = e.jobId ? e.jobId.replace(/:/g, "-") : undefined;
     if (jobId) await retirerEnvoiEchoue(jobId);
     const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", e.payload, {

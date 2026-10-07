@@ -30,6 +30,7 @@ import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
+import { argentEnJeu, retraitDe } from "./retrait";
 
 const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
 let derniereAlerteAntivirus = 0;
@@ -197,6 +198,12 @@ export interface PieceVue {
 }
 
 export interface DossierVue {
+  /**
+   * Apporteur RETIRÉ du réseau avec de l'argent encore en jeu (2026-10-07) : la page ne
+   * propose que le dépôt des attestations de vigilance ; signature, déclarations et
+   * dossier sont refusés (page ET actions).
+   */
+  restreint?: true;
   id: string;
   statut: ApporteurReseauStatut;
   versionLien: number;
@@ -289,6 +296,15 @@ export async function lireDossierParLien(
     select: { versionLien: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
+  // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
+  // recalculé sur la version courante n'ouvre pas un dossier retiré… sauf s'il reste de
+  // l'ARGENT en jeu : la page s'ouvre alors en MODE RESTREINT (dépôt des attestations de
+  // vigilance seulement), pour qu'aucune commission ne soit confisquée de fait.
+  if (await retraitDe(id)) {
+    if (!(await argentEnJeu(id))) return null;
+    const vue = await lireDossier(id);
+    return vue ? { ...vue, restreint: true } : null;
+  }
   return lireDossier(id);
 }
 

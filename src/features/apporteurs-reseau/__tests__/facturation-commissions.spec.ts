@@ -22,6 +22,9 @@ interface Ligne {
   parrainage: boolean;
   prixPublicHtCents: number | null;
   factureHtCents: number;
+  factureId: string;
+  prestationRealiseeAt: Date | null;
+  prestationRealiseePar: string | null;
 }
 
 const etat = vi.hoisted(() => ({
@@ -37,6 +40,7 @@ const etat = vi.hoisted(() => ({
   maintenant: new Date(),
   apporteurs: {} as Record<string, Record<string, unknown>>,
   colonneLitigeAbsente: false,
+  sessions: {} as Record<string, { statut: string; dateFin: Date }>,
   journal: [] as Array<Record<string, unknown>>,
   registre: ((siren: string) => ({ ok: true, entreprise: { siren, active: true } })) as (
     siren: string,
@@ -191,6 +195,11 @@ vi.mock("@/lib/prisma", () => {
       if (etat.colonneLitigeAbsente) throw new Error('column "litige_depuis" does not exist');
       return [];
     }),
+    factureFormation: {
+      findMany: vi.fn(async () =>
+        Object.entries(etat.sessions).map(([id, session]) => ({ id, session })),
+      ),
+    },
     activityLog: {
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
         etat.journal.push(a.data);
@@ -204,6 +213,12 @@ vi.mock("@/lib/prisma", () => {
 
 import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
+import {
+  annulerRealisation,
+  marquerPrestationRealisee,
+  marquerRealiseesDepuisSessions,
+  oublierRealisationDisponible,
+} from "../realisation";
 import { etatEcheances, objectifVirement } from "../autofacture-donnees";
 
 const MARDI = new Date("2026-10-06T09:00:00Z");
@@ -233,6 +248,10 @@ const ligne = (
   parrainage: false,
   prixPublicHtCents: null,
   factureHtCents: 100_000,
+  factureId: `F-${id}`,
+  // Par défaut la prestation est réalisée (contrat 2.3, art. 4.2) ; les tests dédiés la retirent.
+  prestationRealiseeAt: new Date("2026-10-01T00:00:00Z"),
+  prestationRealiseePar: "console",
   ...surcharge,
 });
 const date = (d: Date) => d.toISOString().slice(0, 10);
@@ -255,6 +274,8 @@ beforeEach(() => {
   oublierLitigeDisponible();
   etat.colonneLitigeAbsente = false;
   etat.journal = [];
+  etat.sessions = {};
+  oublierRealisationDisponible();
 });
 
 describe("autofacture dès que la commission est due", () => {
@@ -724,6 +745,80 @@ describe("relecture de la PR 1359 (a1)", () => {
       adminUserId: "admin-1",
       targetId: "c1",
       changes: { motif: "contestation du 06/10", suspendueDepuis: MARDI.toISOString() },
+    });
+  });
+});
+
+describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé avant la réalisation", () => {
+  const enAttente = (id: string, montant = 40_000) =>
+    ligne(id, "due", montant, { prestationRealiseeAt: null, prestationRealiseePar: null });
+
+  it("passage horaire : une prestation non réalisée n'est pas facturée ; marquée réalisée, elle l'est", async () => {
+    etat.lignes = [enAttente("c1")];
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(
+      await marquerPrestationRealisee("c1", new Date("2026-10-05T12:00:00Z"), MARDI, "admin-1"),
+    ).toEqual({ ok: true });
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 1 });
+    expect(
+      etat.journal.some((j) => j["action"] === "commission_apporteur.prestation_realisee"),
+    ).toBe(true);
+  });
+
+  it("« Virement fait » SANS numéro : ne facture ni ne verse une prestation non réalisée", async () => {
+    etat.lignes = [enAttente("c1")];
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(lignes()[0]!.statut).toBe("due");
+  });
+
+  it("« Virement fait » AVEC numéro : refusé si une ligne de l'autofacture n'est pas réalisée", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    lignes()[0]!.prestationRealiseeAt = null; // donnée incohérente : le verrou tient quand même
+    const r = await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("En attente de réalisation");
+    expect(lignes()[0]!.statut).toBe("due");
+  });
+
+  it("colonne absente (worker avant la migration) : RIEN n'est facturé ni versé", async () => {
+    etat.colonneLitigeAbsente = true; // le simulateur refuse alors toute requête brute
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+  });
+
+  it("« Annuler » : possible tant que la commission n'est pas facturée, refusé ensuite", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000), ligne("c2", "due", 10_000)];
+    expect(await annulerRealisation("c2", "admin-1")).toEqual({ ok: true });
+    expect(lignes()[1]!.prestationRealiseeAt).toBeNull();
+    await facturerCommissionsDues(MARDI);
+    expect(await annulerRealisation("c1", "admin-1")).toMatchObject({ ok: false });
+  });
+
+  it("automatique : session de formation « réalisée » = prestation réalisée à la fin de la session", async () => {
+    etat.lignes = [enAttente("c1")];
+    const fin = new Date("2026-10-03T16:00:00Z");
+    etat.sessions = { "F-c1": { statut: "realisee", dateFin: fin } };
+    expect(await marquerRealiseesDepuisSessions()).toBe(1);
+    expect(lignes()[0]!).toMatchObject({
+      prestationRealiseeAt: fin,
+      prestationRealiseePar: "session-realisee",
+    });
+    // Une session encore planifiée ne rend rien « réalisé ».
+    etat.lignes = [enAttente("c2")];
+    etat.sessions = { "F-c2": { statut: "planifiee", dateFin: fin } };
+    expect(await marquerRealiseesDepuisSessions()).toBe(0);
+  });
+
+  it("date de réalisation dans le futur : refusée", async () => {
+    etat.lignes = [enAttente("c1")];
+    expect(
+      await marquerPrestationRealisee("c1", new Date("2027-01-01T00:00:00Z"), MARDI),
+    ).toMatchObject({
+      ok: false,
     });
   });
 });

@@ -459,6 +459,9 @@ export interface CommissionVue {
   /** Contestation écrite du client en cours (art. 4.2 bis) : depuis quand, et laquelle. */
   litigeDepuis: Date | null;
   litigeMotif: string | null;
+  /** Prestation réalisée (art. 4.2) : date et source ; `null` = en attente de réalisation. */
+  prestationRealiseeAt: Date | null;
+  prestationRealiseePar: string | null;
   autofactureAttenteDepuis: Date | null;
   verseeAt: Date | null;
   creeAt: Date;
@@ -509,6 +512,8 @@ export async function lireCommissions(
     autofactureAttenteMotif: l.autofactureAttenteMotif,
     litigeDepuis: l.litigeDepuis ?? null,
     litigeMotif: l.litigeMotif ?? null,
+    prestationRealiseeAt: l.prestationRealiseeAt ?? null,
+    prestationRealiseePar: l.prestationRealiseePar ?? null,
     autofactureAttenteDepuis: l.autofactureAttenteDepuis,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,

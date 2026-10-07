@@ -57,6 +57,7 @@ import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { horsLitige, litigeDisponible } from "./litige";
+import { MESSAGE_EN_ATTENTE_DE_REALISATION, realisationDisponible } from "./realisation";
 import { signalerErreurReseau } from "./signaler";
 
 export function jobIdEmailAutofacture(numero: string): string {
@@ -75,7 +76,7 @@ export function jobIdAlerteAttente(apporteurId: string, commissionId: string): s
 type Db = Pick<typeof prisma, "commissionApporteur">;
 
 /** Lignes à facturer : commissions dues pas encore facturées + reprises pas encore imputées. */
-function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, null> = {}) {
+function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown> = {}) {
   return db.commissionApporteur.findMany({
     where: {
       apporteurId,
@@ -156,7 +157,12 @@ export async function facturerApporteur(
   if (!apporteur) return { ok: false, message: "Apporteur introuvable." };
   const annee = Number(moisParis(maintenant).slice(0, 4));
 
-  const hors = await horsLitige();
+  // Règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé avant que la prestation soit
+  // réalisée. Sans la colonne (worker avant la migration), on ne sait pas : rien n'est facturé.
+  if (!(await realisationDisponible())) {
+    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
+  }
+  const hors = { ...(await horsLitige()), prestationRealiseeAt: { not: null } };
   const avant = await lireAFacturer(prisma, apporteurId, hors);
   const dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
@@ -487,9 +493,12 @@ export async function facturerCommissionsDues(
   maintenant: Date = new Date(),
 ): Promise<BilanFacturation> {
   const bilan: BilanFacturation = { autofactures: 0, commissions: 0, ecartees: 0, erreurs: 0 };
+  // Sans la colonne « prestation réalisée », on ne facture rien (contrat 2.3, art. 4.2).
+  if (!(await realisationDisponible())) return bilan;
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
+      prestationRealiseeAt: { not: null },
       statut: "due",
       autofactureNumero: null,
       montantCents: { not: null },
@@ -544,6 +553,7 @@ export async function marquerVerse(
         autofactureNumero: null,
         montantCents: { not: null },
         ...(await horsLitige()),
+        prestationRealiseeAt: { not: null },
       },
     });
     if (sansPiece > 0) {
@@ -569,6 +579,20 @@ export async function marquerVerse(
       },
       orderBy: { creeAt: "asc" },
     });
+
+  // Prestation pas encore réalisée sur une commission de ce virement : rien n'est versé (4.2).
+  if (!(await realisationDisponible())) {
+    return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
+  }
+  const nonRealisees = await prisma.commissionApporteur.count({
+    where: {
+      apporteurId,
+      statut: "due",
+      autofactureNumero: numero ? numero : { not: null },
+      prestationRealiseeAt: null,
+    },
+  });
+  if (nonRealisees > 0) return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
 
   // Contestation écrite du client en cours sur une commission de ce virement : rien n'est versé.
   if (await litigeDisponible()) {

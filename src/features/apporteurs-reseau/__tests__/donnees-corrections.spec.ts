@@ -20,6 +20,16 @@ const { signaler } = vi.hoisted(() => ({ signaler: vi.fn() }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => signaler(...a) }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "empreinte" }));
 
+// Retrait du réseau (2026-10-07).
+const { retraitDe, argentEnJeu } = vi.hoisted(() => ({
+  retraitDe: vi.fn(async () => null as Date | null),
+  argentEnJeu: vi.fn(async () => false),
+}));
+vi.mock("../retrait", () => ({
+  retraitDe: (...a: unknown[]) => retraitDe(...(a as [])),
+  argentEnJeu: (...a: unknown[]) => argentEnJeu(...(a as [])),
+}));
+
 const { p, tx } = vi.hoisted(() => {
   const p = {
     apporteurFindUnique: vi.fn(),
@@ -65,7 +75,12 @@ import {
   lireDossierParLien,
   ouvrirDossierDepuisCandidature,
 } from "../donnees";
-import { jetonDossierValide, lienDossierBienForme, urlDossierExemple } from "../jeton";
+import {
+  jetonDossier,
+  jetonDossierValide,
+  lienDossierBienForme,
+  urlDossierExemple,
+} from "../jeton";
 import { CLE_REGISTRE_INDISPONIBLE } from "../signature-regles";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
@@ -235,6 +250,51 @@ describe("D10 : registre muet, le dossier est marqué « à contrôler »", () =
     const d = p.apporteurUpdate.mock.calls[0]![0].data.declarations;
     expect(Object.keys(d).sort()).toEqual(["_registre_indisponible", "dec_1", "dec_2"]);
     expect(d[CLE_REGISTRE_INDISPONIBLE]).toBe("2026-10-05T08:00:00.000Z");
+  });
+});
+
+describe("retrait du réseau (2026-10-07)", () => {
+  it("🔴 un lien VALIDE, même recalculé sur la version courante, n'ouvre pas un dossier retiré", async () => {
+    const jeton = jetonDossier(ID, 3);
+    expect(jeton).not.toBeNull();
+    p.apporteurFindUnique.mockResolvedValue({ versionLien: 3 });
+    retraitDe.mockResolvedValueOnce(new Date());
+    expect(await lireDossierParLien(ID, jeton!)).toBeNull();
+    expect(retraitDe).toHaveBeenCalledWith(ID);
+  });
+
+  it("🔴 retiré AVEC de l'argent en jeu : la page s'ouvre en MODE RESTREINT (rien n'est confisqué)", async () => {
+    const jeton = jetonDossier(ID, 3);
+    // Une ligne COMPLÈTE : la même lecture sert au contrôle du lien et à la vue du dossier.
+    p.apporteurFindUnique.mockResolvedValue({
+      id: ID,
+      statut: "signe",
+      versionLien: 3,
+      prenom: "enc:Claire",
+      nom: "enc:Durand",
+      email: "enc:claire@exemple.fr",
+      telephone: null,
+      siren: null,
+      denomination: null,
+      adresse: null,
+      codeNaf: null,
+      statutJuridique: null,
+      regimeTva: null,
+      numeroTva: null,
+      iban: null,
+      declarations: null,
+      dernierMessage: null,
+      signeParApporteurAt: new Date(),
+      signeParSocieteAt: new Date(),
+      contratSigneCle: null,
+      pieces: [],
+    });
+    retraitDe.mockResolvedValueOnce(new Date());
+    argentEnJeu.mockResolvedValueOnce(true);
+    const vue = await lireDossierParLien(ID, jeton!);
+    expect(vue).not.toBeNull();
+    expect(vue!.restreint).toBe(true);
+    expect(argentEnJeu).toHaveBeenCalledWith(ID);
   });
 });
 

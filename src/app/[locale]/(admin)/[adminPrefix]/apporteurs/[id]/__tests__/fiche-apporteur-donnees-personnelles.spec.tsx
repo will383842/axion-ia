@@ -36,6 +36,15 @@ vi.mock("@/components/admin/apporteurs/fiche/FinDeVieEtVigilance", () => ({
   CumulVigilance: () => null,
   FinDeVie: () => null,
 }));
+// Retirer / supprimer (2026-10-07) : hors du sujet de ce test, simulés.
+vi.mock("@/components/admin/apporteurs/fiche/RetraitDuReseau", () => ({
+  RetraitDuReseau: () => null,
+}));
+vi.mock("@/features/apporteurs-reseau/retrait", () => ({
+  retraitDe: async () => null,
+  etatSuppression: async () => null,
+  refusSuppression: () => null,
+}));
 vi.mock("@/features/apporteurs-reseau/requetes-console", async () => {
   const fiche = {
     dossier: {

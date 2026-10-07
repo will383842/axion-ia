@@ -93,7 +93,10 @@ export async function signerContrat(e: {
   maintenant?: Date;
 }): Promise<ResultatSignature> {
   const dossier = await lireDossierParLien(e.apporteurId, e.jeton);
-  if (!dossier) return { ok: false, raison: "introuvable", message: INTROUVABLE };
+  // Mode restreint (retiré du réseau, 2026-10-07) : aucune signature.
+  if (!dossier || dossier.restreint) {
+    return { ok: false, raison: "introuvable", message: INTROUVABLE };
+  }
 
   const nomTape = e.nomTape.replace(/\s+/g, " ").trim().slice(0, 200);
   const declarations = casesConnues(e.declarations, CLES_DECLARATIONS);

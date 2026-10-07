@@ -17,11 +17,17 @@
 // suppression définitive de la corbeille.
 //
 // « Remettre à traiter » se défait d'un clic : aucune confirmation.
+//
+// 2026-10-07 (Will) — « Archiver » / « Désarchiver » ici aussi, comme sur la
+// ligne de la liste : la fiche est l'endroit où l'on constate qu'une personne
+// n'est plus « en cours ». Rien n'est effacé ; « Désarchiver » la rouvre.
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import {
+  archiveSubmissionAction,
+  unarchiveSubmissionAction,
   remettreATraiterAction,
   enregistrerOppositionDepuisFicheAction,
   reponduHorsCircuitAction,
@@ -54,6 +60,35 @@ export function GestesApporteur({ id, close, reponduAilleurs }: Props): React.Re
 
   return (
     <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+      {close ? (
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={() =>
+            poser(() => unarchiveSubmissionAction(id), "La fiche est de nouveau en cours.")
+          }
+          className="admin-button-ghost admin-button-sm"
+          title="La fiche revient dans la liste « En cours »"
+        >
+          Désarchiver
+        </button>
+      ) : (
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={() =>
+            poser(
+              () => archiveSubmissionAction(id),
+              "La fiche est archivée : elle reste visible dans « Archivés ».",
+            )
+          }
+          className="admin-button-ghost admin-button-sm"
+          title="Ranger la fiche : elle sort de la liste « En cours », rien n'est effacé"
+        >
+          Archiver
+        </button>
+      )}
+
       {close ? (
         <button
           type="button"

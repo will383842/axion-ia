@@ -15237,6 +15237,22 @@ model ApporteurReseau {
   @@map("apporteurs_reseau")
 }
 
+/// Apporteur RETIRÉ du réseau (2026-10-07) : la fiche sort des listes par défaut et son lien
+/// de dossier est désactivé ; rien d'autre ne bouge (contrat, pièces, commissions, journal).
+/// Table SÉPARÉE, sans relation déclarée, à dessein : une colonne sur `apporteurs_reseau`
+/// ferait échouer, pendant la fenêtre app/worker (~50 min avant la migration), toutes les
+/// requêtes du worker qui lisent cette table sans liste de colonnes. Une ligne = retiré ;
+/// « Remettre dans le réseau » supprime la ligne (l'historique vit dans le journal d'audit).
+/// rgpd: technique — état « retiré du réseau » d'un dossier : identifiant, date et administrateur auteur ; aucune donnée de la personne
+model ApporteurReseauRetrait {
+  apporteurId String   @id @map("apporteur_id") @db.Uuid
+  retireAt    DateTime @default(now()) @map("retire_at") @db.Timestamptz(3)
+  /// Identifiant de l'administrateur qui a retiré la fiche.
+  retirePar   String?  @map("retire_par") @db.VarChar(64)
+
+  @@map("apporteur_reseau_retrait")
+}
+
 enum TypePieceApporteur {
   identite
   rib
@@ -15401,6 +15417,10 @@ model CommissionApporteur {
   /// Contestation ÉCRITE du client en cours (contrat 2.3, art. 4.2 bis) : ni facturée ni versée.
   litigeDepuis             DateTime?                 @map("litige_depuis") @db.Timestamptz(3)
   litigeMotif              String?                   @map("litige_motif") @db.VarChar(300)
+  /// Prestation RÉALISÉE (contrat 2.3, art. 4.2) : rien n'est facturé ni versé avant. Source :
+  /// « console » (geste de Williams) ou « session-realisee » (session de formation terminée).
+  prestationRealiseeAt     DateTime?                 @map("prestation_realisee_at") @db.Timestamptz(3)
+  prestationRealiseePar    String?                   @map("prestation_realisee_par") @db.VarChar(40)
   verseeAt                 DateTime?                 @map("versee_at") @db.Timestamptz(3)
   creeAt                   DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
   majAt                    DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)

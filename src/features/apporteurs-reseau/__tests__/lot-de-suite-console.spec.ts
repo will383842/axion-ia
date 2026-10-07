@@ -5,6 +5,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Lot de suite du 07/10 (relecture de a1) : lien du dossier (déjà envoyé, dossier signé),
 // dossier « Nouvel apporteur » relié à sa fiche candidat, messages exacts et vouvoyés.
+// Retrait du réseau (#1353) : personne n'est retiré dans ces scénarios.
+vi.mock("../retrait", async (orig) => ({
+  ...(await orig<typeof import("../retrait")>()),
+  retraitDe: async () => null,
+  idsRetires: async () => new Set<string>(),
+  argentEnJeu: async () => false,
+}));
 vi.mock("server-only", () => ({}));
 
 const h = vi.hoisted(() => ({
