@@ -165,8 +165,18 @@ describe("A1 / A2 / A3 — « il vous manque une étape »", () => {
         <LeadApporteurRelanceEmail locale="fr" payload={{ dossierUrl: DOSSIER, etape: "j2" }} />,
       ),
     );
-    expect(t).toMatch(/Compléter mon dossier/);
+    // 2026-10-07 (D8) : « dossier » est réservé au dossier du CONTRAT ; l'ancien
+    // formulaire est une « candidature ».
+    expect(t).toMatch(/Compléter ma candidature/);
+    expect(t).not.toMatch(/Compléter mon dossier/);
     expect(t).not.toMatch(/Terminer mon inscription/);
+  });
+
+  it("D9 : la relance du tunnel vidéo a son titre et son pré-en-tête — pas « trois minutes, sans CV »", async () => {
+    const h = await html(A2);
+    expect(texte(h)).toMatch(/Votre inscription vous attend/);
+    expect(h).toMatch(/Il vous reste une étape/);
+    expect(texte(h)).not.toMatch(/Votre dossier vous attend|sans CV/);
   });
 });
 

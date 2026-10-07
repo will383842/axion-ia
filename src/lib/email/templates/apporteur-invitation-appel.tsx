@@ -124,7 +124,7 @@ const COPY = {
       "Nous y faisons connaissance, nous vous présentons concrètement le fonctionnement du réseau et nous répondons à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
     kitCandidature: "Pour préparer l'échange :",
     dossierCandidature:
-      "Il nous manque encore votre dossier : complétez-le avant l'échange — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
+      "Il nous manque encore votre candidature complète : complétez-la avant l'échange — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
     creneauCandidature:
       "Les créneaux sont limités : réservez le vôtre dès maintenant avec le bouton ci-dessous.",
     ctaCandidature: "Réserver mon créneau",
@@ -180,8 +180,8 @@ const COPY = {
     creneau:
       "Choisissez vous-même le moment qui vous arrange, en un clic, avec le bouton ci-dessous.",
     dossier:
-      "Si vous ne l'avez pas encore fait, vous pouvez aussi compléter votre dossier — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
-    dossierLien: "compléter mon dossier",
+      "Si vous ne l'avez pas encore fait, vous pouvez aussi compléter votre candidature — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
+    dossierLien: "compléter ma candidature",
     cta: "Choisir mon créneau",
   },
   en: {
@@ -248,7 +248,7 @@ const COPY = {
     creneau: "Pick the time that suits you, in one click, with the button below.",
     dossier:
       "If you have not done it yet, you can also complete your file — three minutes, no resume. Your details are already filled in: ",
-    dossierLien: "complete my file",
+    dossierLien: "complete my application",
     cta: "Pick my slot",
   },
 } as const;
