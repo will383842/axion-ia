@@ -51,7 +51,11 @@ export function raisonExtinction(env: Env = process.env): string | null {
   if (!bucket) return "le compartiment de la bibliothèque n'est pas encore réglé";
   if (!accountId || !cle || !secretCle) return "les accès au stockage en ligne manquent";
   if (!secret || secret.length < 32) return "la clé des liens privés n'est pas encore réglée";
-  const sauvegardes = [...COMPARTIMENTS_INTERDITS, valeur(env, "R2_BUCKET_NAME"), valeur(env, "R2_BUCKET_IMMUTABLE")];
+  const sauvegardes = [
+    ...COMPARTIMENTS_INTERDITS,
+    valeur(env, "R2_BUCKET_NAME"),
+    valeur(env, "R2_BUCKET_IMMUTABLE"),
+  ];
   if (sauvegardes.includes(bucket)) {
     return "le compartiment indiqué est celui des sauvegardes : il en faut un dédié";
   }
