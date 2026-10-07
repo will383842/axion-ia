@@ -310,7 +310,11 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         className="text-[length:var(--text-admin-sm)] font-semibold"
                         style={{ color: "var(--color-admin-warning)" }}
                       >
-                        En attente de réalisation : ni facturée ni versée.
+                        En attente de réalisation : ni facturée ni versée
+                        {c.prestationRealiseePar === "annulee-console"
+                          ? " (réalisation annulée à la main : plus de passage automatique)"
+                          : ""}
+                        .
                       </p>
                       {peutPayer ? (
                         <form

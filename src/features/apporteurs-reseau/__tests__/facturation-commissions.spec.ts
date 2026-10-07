@@ -40,7 +40,14 @@ const etat = vi.hoisted(() => ({
   maintenant: new Date(),
   apporteurs: {} as Record<string, Record<string, unknown>>,
   colonneLitigeAbsente: false,
-  sessions: {} as Record<string, { statut: string; dateFin: Date }>,
+  factures: {} as Record<
+    string,
+    {
+      devisId?: string | null;
+      session?: { statut: string; dateFin: Date } | null;
+      enrollment?: { statut: string; session: { statut: string; dateFin: Date } } | null;
+    }
+  >,
   journal: [] as Array<Record<string, unknown>>,
   registre: ((siren: string) => ({ ok: true, entreprise: { siren, active: true } })) as (
     siren: string,
@@ -116,6 +123,7 @@ function correspond(l: Record<string, Valeur>, where: Record<string, Valeur>): b
       const c = cond as Record<string, Valeur>;
       if ("in" in c) return (c["in"] as Valeur[]).includes(v);
       if ("not" in c) return c["not"] === null ? v !== null : v !== c["not"];
+      if ("gt" in c) return typeof v === "string" && v > String(c["gt"]);
       if ("startsWith" in c) return typeof v === "string" && v.startsWith(String(c["startsWith"]));
       return true;
     }
@@ -196,8 +204,11 @@ vi.mock("@/lib/prisma", () => {
       return [];
     }),
     factureFormation: {
-      findMany: vi.fn(async () =>
-        Object.entries(etat.sessions).map(([id, session]) => ({ id, session })),
+      // Respecte le `where` (par id ou par devis), comme la base.
+      findMany: vi.fn(async (a: { where: Record<string, Valeur> }) =>
+        Object.entries(etat.factures)
+          .map(([id, f]) => ({ id, devisId: null, session: null, enrollment: null, ...f }))
+          .filter((f) => correspond(f as never, a.where)),
       ),
     },
     activityLog: {
@@ -274,7 +285,7 @@ beforeEach(() => {
   oublierLitigeDisponible();
   etat.colonneLitigeAbsente = false;
   etat.journal = [];
-  etat.sessions = {};
+  etat.factures = {};
   oublierRealisationDisponible();
 });
 
@@ -801,16 +812,16 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
   it("automatique : session de formation « réalisée » = prestation réalisée à la fin de la session", async () => {
     etat.lignes = [enAttente("c1")];
     const fin = new Date("2026-10-03T16:00:00Z");
-    etat.sessions = { "F-c1": { statut: "realisee", dateFin: fin } };
-    expect(await marquerRealiseesDepuisSessions()).toBe(1);
+    etat.factures = { "F-c1": { session: { statut: "realisee", dateFin: fin } } };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(1);
     expect(lignes()[0]!).toMatchObject({
       prestationRealiseeAt: fin,
       prestationRealiseePar: "session-realisee",
     });
     // Une session encore planifiée ne rend rien « réalisé ».
     etat.lignes = [enAttente("c2")];
-    etat.sessions = { "F-c2": { statut: "planifiee", dateFin: fin } };
-    expect(await marquerRealiseesDepuisSessions()).toBe(0);
+    etat.factures = { "F-c2": { session: { statut: "planifiee", dateFin: fin } } };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
   });
 
   it("date de réalisation dans le futur : refusée", async () => {
@@ -820,5 +831,72 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
     ).toMatchObject({
       ok: false,
     });
+  });
+});
+
+describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réalisée » à tort", () => {
+  const enAttente = (id: string) =>
+    ligne(id, "due", 40_000, { prestationRealiseeAt: null, prestationRealiseePar: null });
+  const FIN = new Date("2026-10-03T16:00:00Z");
+  const realisee = { statut: "realisee", dateFin: FIN };
+
+  it("session annulée ou reportée : reste en attente", async () => {
+    for (const statut of ["annulee", "reportee"]) {
+      etat.lignes = [enAttente("c1")];
+      etat.factures = { "F-c1": { session: { statut, dateFin: FIN } } };
+      expect(await marquerRealiseesDepuisSessions(MARDI), statut).toBe(0);
+    }
+  });
+
+  it("session « réalisée » mais fin dans le futur : reste en attente", async () => {
+    etat.lignes = [enAttente("c1")];
+    etat.factures = {
+      "F-c1": { session: { statut: "realisee", dateFin: new Date("2026-12-01T00:00:00Z") } },
+    };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
+  });
+
+  it("inter-entreprises : participant du client en abandon ou exclu = en attente, présent = réalisée", async () => {
+    for (const [statut, attendu] of [
+      ["abandon", 0],
+      ["exclu", 0],
+      ["planifiee", 0],
+      ["presente", 1],
+    ] as const) {
+      etat.lignes = [enAttente("c1")];
+      etat.factures = { "F-c1": { session: realisee, enrollment: { statut, session: realisee } } };
+      expect(await marquerRealiseesDepuisSessions(MARDI), statut).toBe(attendu);
+    }
+  });
+
+  it("commande sur plusieurs sessions (même devis) : réalisée seulement quand TOUTES le sont, à la dernière fin", async () => {
+    etat.lignes = [enAttente("c1")];
+    const finB = new Date("2026-10-05T16:00:00Z");
+    etat.factures = {
+      "F-c1": { devisId: "D1", session: realisee },
+      "F-autre": { devisId: "D1", session: { statut: "planifiee", dateFin: finB } },
+    };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
+    etat.factures["F-autre"]!.session = { statut: "realisee", dateFin: finB };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(1);
+    expect(lignes()[0]!.prestationRealiseeAt).toEqual(finB);
+  });
+
+  it("« Annuler » à la main n'est PAS refait au passage horaire suivant, ni facturé", async () => {
+    etat.lignes = [enAttente("c1")];
+    etat.factures = { "F-c1": { session: realisee } };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(1);
+    expect(await annulerRealisation("c1", "admin-1")).toEqual({ ok: true });
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
+    expect(lignes()[0]!.prestationRealiseeAt).toBeNull();
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0 });
+    // Le bouton, lui, peut toujours la reposer.
+    expect(await marquerPrestationRealisee("c1", FIN, MARDI, "admin-1")).toEqual({ ok: true });
+  });
+
+  it("facture sans session ni inscription (audit, 1-to-1, intégration) : bouton seulement", async () => {
+    etat.lignes = [enAttente("c1")];
+    etat.factures = { "F-c1": {} };
+    expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
   });
 });

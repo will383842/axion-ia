@@ -227,7 +227,7 @@ async function passer(
     // vigilance libère (ci-dessous) le sont au passage horaire suivant.
     // Contrat 2.3 (art. 4.2) : une session de formation terminée rend la prestation « réalisée »,
     // juste avant l'autofacturation qui ne prend que les prestations réalisées.
-    ["realisation", async () => void (await marquerRealiseesDepuisSessions())],
+    ["realisation", async () => void (await marquerRealiseesDepuisSessions(maintenant))],
     ["autofacturation", () => etapeAutofacturation(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
     [

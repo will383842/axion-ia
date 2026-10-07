@@ -63,6 +63,9 @@ async function tracer(
   }
 }
 
+/** Réalisation annulée à la main : l'automatisme ne la refait jamais. */
+export const ANNULEE_A_LA_MAIN = "annulee-console";
+
 /** Statuts dont la prestation peut être marquée réalisée : tout ce qui n'est ni versé ni repris. */
 const MARQUABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 
@@ -114,7 +117,8 @@ export async function annulerRealisation(
       autofactureNumero: null,
       statut: { in: [...MARQUABLES] },
     },
-    data: { prestationRealiseeAt: null, prestationRealiseePar: null },
+    // Marqueur : l'automatisme ne la refera plus ; seul le bouton peut la reposer.
+    data: { prestationRealiseeAt: null, prestationRealiseePar: ANNULEE_A_LA_MAIN },
   });
   if (r.count !== 1) {
     return {
@@ -130,42 +134,95 @@ export async function annulerRealisation(
   return { ok: true };
 }
 
+/** Facture lue pour décider : sa session, ou l'inscription du participant du client présenté. */
+interface FactureLue {
+  id: string;
+  devisId: string | null;
+  session: { statut: string; dateFin: Date } | null;
+  enrollment: { statut: string; session: { statut: string; dateFin: Date } } | null;
+}
+
 /**
- * AUTOMATIQUE : une commission dont la facture est liée à une session de formation passée au
- * statut « réalisée » est marquée réalisée à la date de fin de la session. Idempotent.
+ * Date de fin si la facture est RÉALISÉE de façon sûre, sinon `null` (dans le doute, on attend) :
+ * en inter-entreprises, l'inscription du participant doit être « présente » et SA session
+ * réalisée ; sinon la session de la facture réalisée. Toujours une fin passée.
  */
-export async function marquerRealiseesDepuisSessions(): Promise<number> {
+function finSure(f: FactureLue, maintenant: Date): Date | null {
+  const s = f.enrollment
+    ? f.enrollment.statut === "presente"
+      ? f.enrollment.session
+      : null
+    : f.session;
+  if (!s || s.statut !== "realisee") return null;
+  return s.dateFin.getTime() <= maintenant.getTime() ? s.dateFin : null;
+}
+
+const SELECT_FACTURE = {
+  id: true,
+  devisId: true,
+  session: { select: { statut: true, dateFin: true } },
+  enrollment: { select: { statut: true, session: { select: { statut: true, dateFin: true } } } },
+} as const;
+
+/**
+ * AUTOMATIQUE : la commission est marquée réalisée quand TOUTE la commande l'est — toutes les
+ * factures du même devis (plusieurs sessions possibles), chacune réalisée de façon sûre — à la
+ * dernière date de fin. Une réalisation ANNULÉE à la main (`prestationRealiseePar =
+ * "annulee-console"`) n'est plus jamais refaite ici : seul le bouton peut la reposer.
+ * Parcourt TOUTES les commissions en attente par lots triés (pas de famine). Idempotent.
+ */
+export async function marquerRealiseesDepuisSessions(
+  maintenant: Date = new Date(),
+): Promise<number> {
   if (!(await realisationDisponible())) return 0;
-  const lignes = await prisma.commissionApporteur.findMany({
-    where: { prestationRealiseeAt: null, statut: { in: [...MARQUABLES] } },
-    select: { id: true, factureId: true },
-    take: 200,
-  });
-  if (lignes.length === 0) return 0;
-  const factures = await prisma.factureFormation.findMany({
-    where: { id: { in: [...new Set(lignes.map((l) => l.factureId))] } },
-    select: { id: true, session: { select: { statut: true, dateFin: true } } },
-  });
-  const finDe = new Map(
-    factures
-      .filter((f) => f.session?.statut === "realisee")
-      .map((f) => [f.id, f.session!.dateFin] as const),
-  );
   let n = 0;
-  for (const l of lignes) {
-    const fin = finDe.get(l.factureId);
-    if (!fin) continue;
-    const r = await prisma.commissionApporteur.updateMany({
-      where: { id: l.id, prestationRealiseeAt: null },
-      data: { prestationRealiseeAt: fin, prestationRealiseePar: "session-realisee" },
+  let apres: string | undefined;
+  for (;;) {
+    const lignes = await prisma.commissionApporteur.findMany({
+      where: {
+        prestationRealiseeAt: null,
+        prestationRealiseePar: null,
+        statut: { in: [...MARQUABLES] },
+        ...(apres ? { id: { gt: apres } } : {}),
+      },
+      select: { id: true, factureId: true },
+      orderBy: { id: "asc" },
+      take: 200,
     });
-    if (r.count === 1) {
-      n += 1;
-      await tracer("commission_apporteur.prestation_realisee", l.id, null, {
-        realiseeLe: fin.toISOString(),
-        source: "session-realisee",
+    if (lignes.length === 0) break;
+    apres = lignes[lignes.length - 1]!.id;
+    const cles: FactureLue[] = await prisma.factureFormation.findMany({
+      where: { id: { in: [...new Set(lignes.map((l) => l.factureId))] } },
+      select: SELECT_FACTURE,
+    });
+    const devis = [...new Set(cles.map((f) => f.devisId).filter((d): d is string => !!d))];
+    const soeurs: FactureLue[] = devis.length
+      ? await prisma.factureFormation.findMany({
+          where: { devisId: { in: devis } },
+          select: SELECT_FACTURE,
+        })
+      : [];
+    const parId = new Map(cles.map((f) => [f.id, f] as const));
+    for (const l of lignes) {
+      const f = parId.get(l.factureId);
+      if (!f) continue;
+      const commande = f.devisId ? soeurs.filter((x) => x.devisId === f.devisId) : [f];
+      const fins = (commande.length ? commande : [f]).map((x) => finSure(x, maintenant));
+      if (fins.some((x) => x === null)) continue;
+      const fin = new Date(Math.max(...fins.map((x) => x!.getTime())));
+      const r = await prisma.commissionApporteur.updateMany({
+        where: { id: l.id, prestationRealiseeAt: null, prestationRealiseePar: null },
+        data: { prestationRealiseeAt: fin, prestationRealiseePar: "session-realisee" },
       });
+      if (r.count === 1) {
+        n += 1;
+        await tracer("commission_apporteur.prestation_realisee", l.id, null, {
+          realiseeLe: fin.toISOString(),
+          source: "session-realisee",
+        });
+      }
     }
+    if (lignes.length < 200) break;
   }
   return n;
 }

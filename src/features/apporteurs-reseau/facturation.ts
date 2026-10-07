@@ -271,6 +271,8 @@ export async function facturerApporteur(
           id: { in: dues.map((c) => c.id) },
           statut: "due",
           autofactureNumero: null,
+          // Revérifié dans l'écriture même : réalisée, et pas suspendue entre-temps.
+          ...hors,
         },
         data: commun,
       });
