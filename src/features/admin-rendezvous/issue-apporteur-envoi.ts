@@ -269,6 +269,11 @@ export async function preparerIssueApporteur(input: {
       const dossier = await ouvrirDossierDepuisCandidature(fiche.id, { creer: false }).catch(
         () => null,
       );
+      // Dossier REFUSÉ : rien n'est proposé (un clic défairait le refus), on le dit.
+      if (dossier && !dossier.ok && "refuseLe" in dossier) {
+        const le = dossier.refuseLe ? ` le ${jourMoisParis(dossier.refuseLe)}` : "";
+        return { ...base, envoi: null, sansEmail: `${sansEmail} Dossier refusé${le}.` };
+      }
       if (dossier && !dossier.ok && !dossier.ferme) {
         return {
           ...base,

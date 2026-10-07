@@ -81,7 +81,7 @@ export async function ouvrirDossierDepuisCandidature(
       /** Où en est le dossier (un dossier déjà signé ne reçoit plus « complétez… »). */
       statut: string;
     }
-  | { ok: false; message: string; ferme?: true }
+  | { ok: false; message: string; ferme?: true; refuseLe?: Date | null }
 > {
   const s = await prisma.submission.findUnique({
     where: { id: submissionId },
@@ -94,7 +94,7 @@ export async function ouvrirDossierDepuisCandidature(
     return { ok: false, message: "Cette candidature n'a pas d'adresse e-mail utilisable." };
   const existant = await prisma.apporteurReseau.findUnique({
     where: { emailHash },
-    select: { id: true, versionLien: true, prenom: true, statut: true },
+    select: { id: true, versionLien: true, prenom: true, statut: true, refuseAt: true },
   });
   if (existant && existant.statut === "refuse" && options.creer !== false) {
     // Dossier refusé puis « Retenu » plus tard : on le rouvre PROPREMENT. Le lien envoyé au
@@ -136,7 +136,11 @@ export async function ouvrirDossierDepuisCandidature(
   // Refusé, en APERÇU (`creer: false`) : son ancien lien est mort, il ne sera rouvert
   // qu'à l'envoi — l'aperçu montre le lien d'exemple, pas l'ancien lien (404).
   if (existant && existant.statut === "refuse") {
-    return { ok: false, message: "Dossier refusé : il sera rouvert à l'envoi." };
+    return {
+      ok: false,
+      message: "Dossier refusé : il sera rouvert à l'envoi.",
+      refuseLe: existant.refuseAt ?? null,
+    };
   }
   if (existant && etatDeLaPage(existant.statut) === "neutre") {
     return {

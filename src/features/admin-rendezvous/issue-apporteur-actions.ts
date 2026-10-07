@@ -20,6 +20,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
@@ -346,6 +347,24 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
       };
     }
     if (avant.ferme) return { etat: "erreur", message: avant.message };
+    if ("refuseLe" in avant) {
+      return {
+        etat: "erreur",
+        message: "Ce dossier a été refusé : il n'est pas rouvert depuis ce bouton.",
+      };
+    }
+    // La fiche est déjà reliée au dossier d'une autre adresse (« Nouvel apporteur ») : le dire.
+    const relie = await prisma.apporteurReseau.findUnique({
+      where: { submissionId: evt.linkedSubmissionId },
+      select: { prenom: true, nom: true },
+    });
+    if (relie) {
+      const nomRelie = [decryptPii(relie.prenom), decryptPii(relie.nom)].filter(Boolean).join(" ");
+      return {
+        etat: "erreur",
+        message: `Cette fiche est déjà reliée au dossier de ${nomRelie || "un autre apporteur"} : ouvrez-le depuis Apporteurs.`,
+      };
+    }
     const dossier = await ouvrirDossierDepuisCandidature(evt.linkedSubmissionId, { creer: true });
     if (!dossier.ok) return { etat: "erreur", message: dossier.message };
     const r = await envoyerLien(dossier.apporteurId, null);

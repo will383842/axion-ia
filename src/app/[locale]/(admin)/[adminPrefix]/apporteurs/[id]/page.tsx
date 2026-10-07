@@ -120,7 +120,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
             Dossier signé : à vérifier
           </h2>
           <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
-            Vérifie chaque pièce, relis le contrat signé, puis choisis.
+            Vérifiez chaque pièce, relisez le contrat signé, puis choisissez.
           </p>
           <DecisionDossier apporteurId={d.id} />
         </AdminCard>

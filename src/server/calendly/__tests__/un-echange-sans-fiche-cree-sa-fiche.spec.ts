@@ -470,3 +470,25 @@ describe("lot de suite (07/10) : l'aperçu prévient AVANT l'envoi", () => {
     expect((a as { alerte?: string }).alerte).toContain("résilié");
   });
 });
+
+describe("relecture de #1349 (a1) : un dossier REFUSÉ n'est jamais rouvert par la proposition", () => {
+  it("Bienvenue déjà partie + dossier refusé : rien n'est proposé, « Dossier refusé le … »", async () => {
+    await creer();
+    await preparerIssueApporteur({
+      calendlyEventId: "evt_1",
+      issue: "retenu",
+      ouvrirDossier: true,
+    });
+    db.apporteurs[0]!["statut"] = "refuse";
+    db.apporteurs[0]!["refuseAt"] = new Date("2026-10-06T10:00:00Z");
+    db.dernierEnvoi = { createdAt: new Date("2026-10-05T09:00:00Z") };
+    const r = await preparerIssueApporteur({
+      calendlyEventId: "evt_1",
+      issue: "retenu",
+      ouvrirDossier: false,
+    });
+    expect(r).toMatchObject({ ok: true, envoi: null });
+    expect((r as { proposerDossier?: true }).proposerDossier).toBeUndefined();
+    expect((r as { sansEmail: string }).sansEmail).toContain("Dossier refusé le");
+  });
+});

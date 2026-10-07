@@ -445,13 +445,27 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
-  // Déjà envoyé (premier envoi ou rappel) : la console le dit, et un renvoi se confirme.
+  // Déjà envoyé (lien, rappel, ou « Retenu » qui porte le lien) : la console le dit, et un
+  // renvoi se confirme.
+  const lie = await prisma.apporteurReseau.findUnique({
+    where: { id: d.id },
+    select: { submissionId: true },
+  });
   const dernier = await prisma.emailLog.findFirst({
     where: {
-      template: "apporteur-dossier-lien",
-      entityType: "ApporteurReseau",
-      entityId: d.id,
       status: { in: ["pending", "sent"] },
+      OR: [
+        { template: "apporteur-dossier-lien", entityType: "ApporteurReseau", entityId: d.id },
+        ...(lie?.submissionId
+          ? [
+              {
+                template: "apporteur-issue-retenu",
+                entityType: "Submission",
+                entityId: lie.submissionId,
+              },
+            ]
+          : []),
+      ],
     },
     select: { createdAt: true },
     orderBy: { createdAt: "desc" },
