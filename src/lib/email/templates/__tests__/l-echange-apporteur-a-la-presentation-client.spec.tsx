@@ -67,7 +67,9 @@ describe("échange apporteur — la présentation des clients", () => {
     async (moment) => {
       const { html } = await rendre(moment, { lieu: LIEN_VISIO });
       expect(html).toMatch(
-        new RegExp(`<a[^>]+href="${LIEN_VISIO}"[^>]*class="ax-cta"|class="ax-cta"[^>]*href="${LIEN_VISIO}"`),
+        new RegExp(
+          `<a[^>]+href="${LIEN_VISIO}"[^>]*class="ax-cta"|class="ax-cta"[^>]*href="${LIEN_VISIO}"`,
+        ),
       );
       expect(texte(html)).toContain("Rejoindre la visioconférence");
     },
@@ -106,7 +108,9 @@ describe("échange apporteur — la présentation des clients", () => {
   );
 
   it("charge vide : ni « undefined », ni bouton, ni lien inventé", async () => {
-    const r = await renderEmailTemplate("apporteur-echange-confirme", "fr", { moment: "confirmation" });
+    const r = await renderEmailTemplate("apporteur-echange-confirme", "fr", {
+      moment: "confirmation",
+    });
     expect(r.html).not.toContain("undefined");
     expect(r.subject).not.toContain("undefined");
     expect(texte(r.html)).not.toContain("Rejoindre la visioconférence");

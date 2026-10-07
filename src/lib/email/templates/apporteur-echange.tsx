@@ -80,7 +80,8 @@ const COPY = {
     eyebrow: "Échange apporteur d'affaires",
     confirmation: {
       title: "C'est confirmé",
-      preview: "Votre échange est confirmé. Les liens pour déplacer ou annuler sont dans le message.",
+      preview:
+        "Votre échange est confirmé. Les liens pour déplacer ou annuler sont dans le message.",
       deroule:
         "Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions. Aucun engagement : vous décidez après.",
       puces: [
@@ -102,7 +103,8 @@ const COPY = {
       quand: (h: string) => "Petit rappel : nous nous parlons à " + h + " (heure de Paris).",
       signature: "À tout à l'heure,\nL'équipe Axion-IA",
     },
-    rienAPreparer: "Rien à préparer : vous posez vos questions, nous vous expliquons comment ça marche.",
+    rienAPreparer:
+      "Rien à préparer : vous posez vos questions, nous vous expliquons comment ça marche.",
     heureDefaut: "l'heure prévue",
     rejoindre: "Rejoindre la visioconférence",
     question: "Une question d'ici là ? Répondez simplement à cet e-mail.",

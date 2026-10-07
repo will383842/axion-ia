@@ -852,7 +852,15 @@ export function LigneLieu({
  * l'en-tête du fichier) — y glisser une troisième adresse ferait rougir
  * `familles-email.spec.tsx`, ce qui est le comportement voulu.
  */
-export function ActionsSecondaires({ p, c, encadre }: { p: PayloadAppel; c: Copie; encadre: boolean }) {
+export function ActionsSecondaires({
+  p,
+  c,
+  encadre,
+}: {
+  p: PayloadAppel;
+  c: Copie;
+  encadre: boolean;
+}) {
   if (!p.cancelUrl && !p.rescheduleUrl) return null;
   const corps = (
     <Text style={encadre ? texteSecondaire : { ...texteSecondaire, margin: "14px 0" }}>
