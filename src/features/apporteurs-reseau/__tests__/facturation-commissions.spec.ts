@@ -959,30 +959,58 @@ describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somm
     ligne("r", "reprise", -15_000),
   ];
 
-  it("A 100, B 300 suspendu, reprise −150 : la reprise attend B ; total versé = TTC de l'autofacture", async () => {
-    // Témoin : sans suspension, le virement complet.
-    etat.lignes = fixture();
+  // Témoin : sans suspension, le virement complet de la même autofacture.
+  async function complet(f: () => ReturnType<typeof ligne>[]): Promise<number> {
+    etat.lignes = f();
     await facturerCommissionsDues(MARDI);
-    const complet = await marquerVerse("APP1", MARDI, lignes()[0]!.autofactureNumero!);
-    expect(complet).toMatchObject({ ok: true });
-    const attendu = (complet as { totalCents: number }).totalCents;
+    const r = await marquerVerse("APP1", MARDI, lignes()[0]!.autofactureNumero!);
+    expect(r).toMatchObject({ ok: true });
+    return (r as { totalCents: number }).totalCents;
+  }
 
-    etat.lignes = fixture();
+  for (const [nom, a, b, rep] of [
+    ["A 100, B 300 suspendu, reprise −150", 10_000, 30_000, -15_000],
+    ["A 100, B 50 suspendu, reprise −120 (exemple de a1)", 10_000, 5_000, -12_000],
+  ] as const) {
+    it(`${nom} : partiel REFUSÉ (les reprises dépassent), puis virement complet exact après la levée`, async () => {
+      const f = () => [ligne("a", "due", a), ligne("b", "due", b), ligne("r", "reprise", rep)];
+      const attendu = await complet(f);
+      etat.lignes = f();
+      await facturerCommissionsDues(MARDI);
+      const numero = lignes()[0]!.autofactureNumero!;
+      expect(lignes().every((l) => l.autofactureNumero === numero)).toBe(true);
+      await suspendreCommission("b", "contestation écrite", MARDI);
+      const partiel = await marquerVerse("APP1", MARDI, numero);
+      expect(partiel).toMatchObject({ ok: false });
+      expect((partiel as { message: string }).message).toContain("Levez d'abord la suspension");
+      expect(lignes().find((l) => l.id === "a")!.statut).toBe("due");
+      expect(lignes().find((l) => l.id === "r")!.verseeAt).toBeNull();
+      await leverSuspension("b", "admin-1", VENDREDI);
+      const tout = await marquerVerse("APP1", VENDREDI, numero);
+      expect(tout).toMatchObject({ ok: true, totalCents: attendu });
+    });
+  }
+
+  it("A 300, B 100 suspendu, reprise −150 : partiel positif admis, reprise déduite, somme exacte", async () => {
+    const f = () => [
+      ligne("a", "due", 30_000),
+      ligne("b", "due", 10_000),
+      ligne("r", "reprise", -15_000),
+    ];
+    const attendu = await complet(f);
+    etat.lignes = f();
     await facturerCommissionsDues(MARDI);
     const numero = lignes()[0]!.autofactureNumero!;
-    expect(lignes().every((l) => l.autofactureNumero === numero)).toBe(true);
     await suspendreCommission("b", "contestation écrite", MARDI);
-    const partiel = await marquerVerse("APP1", MARDI, numero);
-    expect(partiel).toMatchObject({ ok: true });
-    const p1 = (partiel as { totalCents: number }).totalCents;
-    expect(p1).toBeGreaterThan(0); // jamais de virement négatif
-    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
-    expect(lignes().find((l) => l.id === "r")!.verseeAt).toBeNull(); // reprise pas encore déduite
-    await leverSuspension("b", "admin-1", VENDREDI);
-    const reste = await marquerVerse("APP1", VENDREDI, numero);
-    expect(reste).toMatchObject({ ok: true });
-    expect(p1 + (reste as { totalCents: number }).totalCents).toBe(attendu); // pas un euro de trop
+    const p1 = await marquerVerse("APP1", MARDI, numero);
+    expect(p1).toMatchObject({ ok: true });
+    expect((p1 as { totalCents: number }).totalCents).toBeGreaterThan(0);
     expect(lignes().find((l) => l.id === "r")!.verseeAt).not.toBeNull();
+    await leverSuspension("b", "admin-1", VENDREDI);
+    const p2 = await marquerVerse("APP1", VENDREDI, numero);
+    expect(
+      (p1 as { totalCents: number }).totalCents + (p2 as { totalCents: number }).totalCents,
+    ).toBe(attendu);
   });
 
   it("une ligne suspendue ET non réalisée ne bloque pas le reste du virement", async () => {

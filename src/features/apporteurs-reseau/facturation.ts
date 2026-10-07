@@ -634,14 +634,22 @@ export async function marquerVerse(
     parFacture.set(k, [...(parFacture.get(k) ?? []), c]);
   }
   let total = 0;
-  const differees = new Set<string>();
   for (const [k, lignes] of parFacture) {
     const p = aVirerPartielCents(apporteur.regimeTva, lignes, suspendues.get(k) ?? []);
+    if (!p.partielPossible) {
+      return {
+        ok: false,
+        message:
+          "Levez d'abord la suspension : les reprises dépassent les lignes à verser de cette autofacture.",
+      };
+    }
     total += p.totalCents;
-    if (!p.avecReprises) for (const c of lignes) if (c.statut === "reprise") differees.add(c.id);
   }
-  // Les reprises différées restent à déduire au versement des lignes suspendues.
-  const aVerser = avant.filter((c) => !differees.has(c.id));
+  // Jamais de virement nul ou négatif (il ferait marquer des reprises déduites sans paiement).
+  if (total <= 0) {
+    return { ok: false, message: "Rien à virer : le total de ce virement n'est pas positif." };
+  }
+  const aVerser = avant;
 
   await prisma.$transaction(
     async (tx) => {
@@ -779,11 +787,10 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
   }
   const suspendues = await suspenduesParNumero();
   for (const [numero, ls] of parNumero) {
-    m.get(numero)!.totalCents = aVirerPartielCents(
-      ls[0]!.apporteur.regimeTva,
-      ls,
-      suspendues.get(numero) ?? [],
-    ).totalCents;
+    const p = aVirerPartielCents(ls[0]!.apporteur.regimeTva, ls, suspendues.get(numero) ?? []);
+    // Rien à virer tant que la suspension dure (partiel refusé), ou total nul : pas affiché.
+    if (!p.partielPossible || p.totalCents <= 0) m.delete(numero);
+    else m.get(numero)!.totalCents = p.totalCents;
   }
   // Les plus anciennes d'abord : ce sont les premières à virer.
   return [...m.values()].sort((a, b) => a.emissionAt.getTime() - b.emissionAt.getTime());

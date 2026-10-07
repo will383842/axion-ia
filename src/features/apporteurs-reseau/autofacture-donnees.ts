@@ -199,9 +199,10 @@ export function aVirerTtcCents(
  * Versement PARTIEL d'une autofacture dont des lignes sont suspendues (contestation écrite du
  * client, art. 4.2 bis). Calculé PAR COMPLÉMENT, pour que la somme des versements retombe
  * exactement sur le TTC du PDF : TTC de toutes les lignes de l'autofacture, moins TTC des lignes
- * suspendues (ce sont elles qui partiront plus tard, à leur propre TTC). Les reprises imputées ne
- * sont déduites que si le résultat reste POSITIF ; sinon elles attendent les lignes suspendues
- * (jamais de virement négatif, jamais de reprise déduite deux fois ou pas du tout).
+ * suspendues (elles partiront plus tard, à leur propre TTC), moins les avoirs imputés. Le partiel
+ * n'est admis que s'il reste POSITIF : sinon les reprises dépasseraient ce qui resterait à verser
+ * (virement négatif, ou reprise jamais déduite) et on attend la levée (`partielPossible: false`).
+ * Une reprise sans numéro d'avoir compte dans la pièce elle-même, comme dans `aVirerTtcCents`.
  * Sans ligne suspendue, c'est exactement `aVirerTtcCents`.
  */
 export function aVirerPartielCents(
@@ -212,25 +213,25 @@ export function aVirerPartielCents(
     avoirNumero?: string | null;
   }>,
   suspenduesCents: readonly number[],
-): { totalCents: number; avecReprises: boolean } {
+): { totalCents: number; partielPossible: boolean } {
   if (suspenduesCents.length === 0) {
-    return { totalCents: aVirerTtcCents(regimeTva, lignes), avecReprises: true };
+    return { totalCents: aVirerTtcCents(regimeTva, lignes), partielPossible: true };
   }
-  const libres = lignes.filter((l) => l.statut !== "reprise").map((l) => l.montantCents ?? 0);
-  const base =
-    totalTtcPieceCents(regimeTva, [...libres, ...suspenduesCents]) -
-    totalTtcPieceCents(regimeTva, suspenduesCents);
-  const reprises = lignes.filter((l) => l.statut === "reprise");
+  const piece: number[] = [];
   const avoirs = new Map<string, number[]>();
-  for (const r of reprises) {
-    const k = r.avoirNumero ?? "";
-    avoirs.set(k, [...(avoirs.get(k) ?? []), Math.abs(r.montantCents ?? 0)]);
+  for (const l of lignes) {
+    const m = l.montantCents ?? 0;
+    if (l.statut === "reprise" && l.avoirNumero) {
+      avoirs.set(l.avoirNumero, [...(avoirs.get(l.avoirNumero) ?? []), Math.abs(m)]);
+    } else {
+      piece.push(m);
+    }
   }
-  let avec = base;
-  for (const a of avoirs.values()) avec -= totalTtcPieceCents(regimeTva, a);
-  return avec > 0 || reprises.length === 0
-    ? { totalCents: avec, avecReprises: true }
-    : { totalCents: base, avecReprises: false };
+  let total =
+    totalTtcPieceCents(regimeTva, [...piece, ...suspenduesCents]) -
+    totalTtcPieceCents(regimeTva, suspenduesCents);
+  for (const a of avoirs.values()) total -= totalTtcPieceCents(regimeTva, a);
+  return { totalCents: total, partielPossible: total > 0 };
 }
 
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
