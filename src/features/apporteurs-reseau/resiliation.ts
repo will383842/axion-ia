@@ -26,6 +26,7 @@ import { randomUUID } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
 
+import { jourParis } from "./autofacture-donnees";
 import { euros, ajouterMois } from "./regles";
 
 // ── Résiliation ──────────────────────────────────────────────────────────
@@ -127,7 +128,8 @@ export function verifierReprise(e: {
       ok: false,
       message: "Plus de vingt-quatre mois depuis l'annulation : reprise impossible (art. 4.5).",
     };
-  if (e.annulationLe.getTime() > e.maintenant.getTime() + 60_000)
+  // Des JOURS de Paris : la date du jour, saisie dans la console, est toujours admise.
+  if (jourParis(e.annulationLe) > jourParis(e.maintenant))
     return { ok: false, message: "La date d'annulation ne peut pas être dans le futur." };
   return { ok: true };
 }

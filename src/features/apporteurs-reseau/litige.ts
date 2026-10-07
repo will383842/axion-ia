@@ -113,16 +113,24 @@ export async function suspendreCommission(
     data: { litigeDepuis: maintenant, litigeMotif: m },
   });
   if (r.count === 1 && ligne && !ligne.parrainage) {
-    // La part du parrain naît de la MÊME facture : elle est suspendue avec elle (art. 4.6).
-    await prisma.commissionApporteur.updateMany({
+    // La part du parrain naît de la MÊME facture : elle est suspendue avec elle (art. 4.6), et le
+    // parrain est prévenu lui aussi (même e-mail : ni montant ni client).
+    const parts = await prisma.commissionApporteur.findMany({
       where: {
         factureId: ligne.factureId,
         parrainage: true,
         litigeDepuis: null,
         statut: { in: [...SUSPENDABLES] },
       },
-      data: { litigeDepuis: maintenant, litigeMotif: m },
+      select: { id: true, apporteurId: true },
     });
+    for (const p of parts) {
+      const rp = await prisma.commissionApporteur.updateMany({
+        where: { id: p.id, litigeDepuis: null, statut: { in: [...SUSPENDABLES] } },
+        data: { litigeDepuis: maintenant, litigeMotif: m },
+      });
+      if (rp.count === 1) await prevenir(p.apporteurId, p.id, "suspendue");
+    }
   }
   if (r.count !== 1) {
     return {
@@ -165,11 +173,18 @@ export async function leverSuspension(
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission n'est pas suspendue." };
   if (!avant.parrainage) {
-    // La part du parrain suspendue avec elle reprend aussi son cours.
-    await prisma.commissionApporteur.updateMany({
+    // La part du parrain suspendue avec elle reprend aussi son cours ; le parrain est prévenu.
+    const parts = await prisma.commissionApporteur.findMany({
       where: { factureId: avant.factureId, parrainage: true, litigeDepuis: depuis },
-      data: { litigeDepuis: null, litigeMotif: null },
+      select: { id: true, apporteurId: true },
     });
+    for (const p of parts) {
+      const rp = await prisma.commissionApporteur.updateMany({
+        where: { id: p.id, litigeDepuis: depuis },
+        data: { litigeDepuis: null, litigeMotif: null },
+      });
+      if (rp.count === 1) await prevenir(p.apporteurId, p.id, "levee");
+    }
   }
   await prevenir(avant.apporteurId, id, "levee");
   await tracer("commission_apporteur.suspension_levee", id, acteurId, {

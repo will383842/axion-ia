@@ -857,6 +857,15 @@ describe("suites de la suspension (contrat 2.3, art. 4.2 bis)", () => {
     expect(lignes().find((l) => l.id === "p2")!.litigeDepuis).toBeNull();
     await leverSuspension("c1", "admin-1", VENDREDI);
     expect(lignes().find((l) => l.id === "p1")!.litigeDepuis).toBeNull();
+    // Le parrain est prévenu lui aussi, de la suspension puis de son issue.
+    const auParrain = etat.envoyes.filter(
+      (x) =>
+        x["gabarit"] === "apporteur-commission-suspension" && x["destinataire"] === "app2@m.fr",
+    );
+    expect(auParrain.map((x) => (x["payload"] as { etat: string }).etat)).toEqual([
+      "suspendue",
+      "levee",
+    ]);
   });
 
   it("l'apporteur est PRÉVENU de la suspension, puis de son issue", async () => {
@@ -933,5 +942,49 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
     etat.lignes = [enAttente("c1")];
     etat.factures = { "F-c1": {} };
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
+  });
+});
+
+describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somme exacte", () => {
+  const fixture = () => [
+    ligne("a", "due", 10_000),
+    ligne("b", "due", 30_000),
+    ligne("r", "reprise", -15_000),
+  ];
+
+  it("A 100, B 300 suspendu, reprise −150 : la reprise attend B ; total versé = TTC de l'autofacture", async () => {
+    // Témoin : sans suspension, le virement complet.
+    etat.lignes = fixture();
+    await facturerCommissionsDues(MARDI);
+    const complet = await marquerVerse("APP1", MARDI, lignes()[0]!.autofactureNumero!);
+    expect(complet).toMatchObject({ ok: true });
+    const attendu = (complet as { totalCents: number }).totalCents;
+
+    etat.lignes = fixture();
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    expect(lignes().every((l) => l.autofactureNumero === numero)).toBe(true);
+    await suspendreCommission("b", "contestation écrite", MARDI);
+    const partiel = await marquerVerse("APP1", MARDI, numero);
+    expect(partiel).toMatchObject({ ok: true });
+    const p1 = (partiel as { totalCents: number }).totalCents;
+    expect(p1).toBeGreaterThan(0); // jamais de virement négatif
+    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
+    expect(lignes().find((l) => l.id === "r")!.verseeAt).toBeNull(); // reprise pas encore déduite
+    await leverSuspension("b", "admin-1", VENDREDI);
+    const reste = await marquerVerse("APP1", VENDREDI, numero);
+    expect(reste).toMatchObject({ ok: true });
+    expect(p1 + (reste as { totalCents: number }).totalCents).toBe(attendu); // pas un euro de trop
+    expect(lignes().find((l) => l.id === "r")!.verseeAt).not.toBeNull();
+  });
+
+  it("une ligne suspendue ET non réalisée ne bloque pas le reste du virement", async () => {
+    etat.lignes = [ligne("a", "due", 10_000), ligne("b", "due", 30_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    await suspendreCommission("b", "contestation écrite", MARDI);
+    lignes().find((l) => l.id === "b")!.prestationRealiseeAt = null;
+    expect(await marquerVerse("APP1", MARDI, numero)).toMatchObject({ ok: true });
+    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
   });
 });

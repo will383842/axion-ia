@@ -195,6 +195,44 @@ export function aVirerTtcCents(
   return total;
 }
 
+/**
+ * Versement PARTIEL d'une autofacture dont des lignes sont suspendues (contestation écrite du
+ * client, art. 4.2 bis). Calculé PAR COMPLÉMENT, pour que la somme des versements retombe
+ * exactement sur le TTC du PDF : TTC de toutes les lignes de l'autofacture, moins TTC des lignes
+ * suspendues (ce sont elles qui partiront plus tard, à leur propre TTC). Les reprises imputées ne
+ * sont déduites que si le résultat reste POSITIF ; sinon elles attendent les lignes suspendues
+ * (jamais de virement négatif, jamais de reprise déduite deux fois ou pas du tout).
+ * Sans ligne suspendue, c'est exactement `aVirerTtcCents`.
+ */
+export function aVirerPartielCents(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  lignes: ReadonlyArray<{
+    statut: string;
+    montantCents: number | null;
+    avoirNumero?: string | null;
+  }>,
+  suspenduesCents: readonly number[],
+): { totalCents: number; avecReprises: boolean } {
+  if (suspenduesCents.length === 0) {
+    return { totalCents: aVirerTtcCents(regimeTva, lignes), avecReprises: true };
+  }
+  const libres = lignes.filter((l) => l.statut !== "reprise").map((l) => l.montantCents ?? 0);
+  const base =
+    totalTtcPieceCents(regimeTva, [...libres, ...suspenduesCents]) -
+    totalTtcPieceCents(regimeTva, suspenduesCents);
+  const reprises = lignes.filter((l) => l.statut === "reprise");
+  const avoirs = new Map<string, number[]>();
+  for (const r of reprises) {
+    const k = r.avoirNumero ?? "";
+    avoirs.set(k, [...(avoirs.get(k) ?? []), Math.abs(r.montantCents ?? 0)]);
+  }
+  let avec = base;
+  for (const a of avoirs.values()) avec -= totalTtcPieceCents(regimeTva, a);
+  return avec > 0 || reprises.length === 0
+    ? { totalCents: avec, avecReprises: true }
+    : { totalCents: base, avecReprises: false };
+}
+
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
 export const ECHEANCE_JOURS = 30;
 /** OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission. */
@@ -203,7 +241,7 @@ export const OBJECTIF_VIREMENT_JOURS_OUVRES = 2;
 export { ajouterJoursOuvres };
 
 /** « AAAA-MM-JJ » du jour de Paris. */
-function jourParis(d: Date): string {
+export function jourParis(d: Date): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Paris",
     year: "numeric",
