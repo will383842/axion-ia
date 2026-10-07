@@ -200,8 +200,9 @@ catégorie ; il n'emporte aucune autre conséquence et n'est pas un manquement.
 
 **3.4 — Durée.** L'attribution est consentie pour **6 mois à compter de la déclaration**, c'est-à-dire
 de l'horodatage, par le serveur de la Société, de son enregistrement. Elle ne prend pas fin avant ce terme,
-sous réserve des articles 3.2 (fin faute d'adresse valide), 3.3, 3.3 bis et 3.7. À son terme, l'entreprise
-redevient librement déclarable, dans les conditions de l'article 3.4 bis.
+sous réserve des articles 3.2 (fin faute d'adresse valide), 3.3, 3.3 bis et 3.7. À son terme, prolongé le
+cas échéant dans les conditions de l'alinéa suivant, l'entreprise redevient librement déclarable, dans les
+conditions de l'article 3.4 bis.
 
 **L'attribution est prolongée de trois mois, une seule fois et sans démarche de l'Apporteur, lorsqu'au terme
 de la période l'une des conditions suivantes est remplie : (a) un devis émis par la Société à l'entreprise est
@@ -212,8 +213,9 @@ l'activité de l'Apporteur. Un devis est en cours tant qu'il n'est ni signé, ni
 de financement est en cours d'instruction tant que l'organisme financeur n'a pas statué. L'Apporteur est
 informé de la prolongation.
 
-*Exemple : une entreprise dont l'attribution expire le 30 juin, et avec laquelle la Société a eu un rendez-vous
-le 15 juin, reste attribuée jusqu'au 30 septembre ; une commande signée en août est commissionnée.*
+*Exemple : une entreprise déclarée le 30 décembre, dont l'attribution expire donc le 30 juin, et avec laquelle
+la Société a eu un rendez-vous le 15 juin, reste attribuée jusqu'au 30 septembre ; une commande signée en août
+est commissionnée.*
 
 **3.4 bis — Absence de reconduction.** L'attribution **ne se renouvelle pas** et ne fait l'objet d'aucune
 reconduction, tacite ou automatique. À son terme, elle s'éteint de plein droit. L'Apporteur ne peut pas

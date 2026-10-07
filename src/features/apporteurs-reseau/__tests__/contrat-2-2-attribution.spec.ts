@@ -38,6 +38,13 @@ describe("contrat 2.2 : déclaration et durée de l'attribution", () => {
     expect(texte).toContain("L'attribution est prolongée de trois mois, une seule fois");
     expect(texte).toContain("3.4 bis — Absence de reconduction");
     expect(texte).toContain("l'attribution correspondante s'éteint");
+    // Le terme tient compte de la prolongation, et l'exemple part de la déclaration.
+    expect(texte).toContain(
+      "À son terme, prolongé le cas échéant dans les conditions de l'alinéa suivant",
+    );
+    expect(texte).toContain(
+      "une entreprise déclarée le 30 décembre, dont l'attribution expire donc le 30 juin",
+    );
   });
 
   it("3.5 : la prise en charge par la Société court six mois depuis la prise en charge", () => {
