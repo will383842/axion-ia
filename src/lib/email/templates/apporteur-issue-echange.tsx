@@ -99,7 +99,7 @@ export const COPY_ISSUE_ECHANGE = {
       ],
       commissionTitre: "Votre commission",
       versement: () =>
-        "Elle vous est versée dès que le client a réglé l'intégralité de sa facture.",
+        "Elle vous est versée dès que la prestation est réalisée et que le client l'a entièrement payée.",
       statutTitre: "Votre statut",
       statut:
         "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIREN (une micro-entreprise, par exemple).",
@@ -164,13 +164,15 @@ export const COPY_ISSUE_ECHANGE = {
         "You earn a commission. The rates below are given as a guide: your introducer agreement prevails.",
       ],
       commissionTitre: "Your commission",
-      versement: () => "It is paid as soon as the client has settled their invoice in full.",
+      versement: () =>
+        "It is paid once the service has been delivered and the client has paid for it in full.",
       statutTitre: "Your status",
       statut:
         "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIREN number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
       contrat: "We will send you your introducer agreement to sign online.",
-      espace: "Once your agreement is signed, you can introduce companies to us by simple email.",
+      espace:
+        "Once your agreement is signed, you can introduce companies to us from your personal link, with the “Declare a company” form.",
       dossier:
         "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
       ctaDossier: "Complete my file and sign my contract",

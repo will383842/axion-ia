@@ -28,7 +28,7 @@ export const TEXTES_DECLARATION = {
       "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
       `Elle vous est réservée ${mois} mois à compter de votre déclaration.`,
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
-      "Toute commande signée pendant cette période vous est commissionnée, une fois payée.",
+      "Toute commande signée pendant cette période vous est commissionnée, dès que la prestation est réalisée et entièrement payée.",
     ] as const,
   jusquAu: (date: string) => `jusqu'au ${date}`,
 } as const;
