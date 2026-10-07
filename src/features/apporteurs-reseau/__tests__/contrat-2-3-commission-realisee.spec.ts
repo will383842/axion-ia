@@ -63,6 +63,24 @@ describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige"
     );
   });
 
+  it("12.4 : remboursement d'un solde négatif aligné sur la reprise à vingt-quatre mois", () => {
+    expect(texte).toContain(
+      "versées à l'Apporteur au cours des vingt-quatre mois précédant l'annulation",
+    );
+  });
+
+  it("5.4 et 6.1 : SIREN valide ET ACTIF (non cessé au répertoire SIRENE)", () => {
+    expect(texte).toContain(
+      "sans numéro SIREN valide **et actif** (entreprise non cessée au répertoire SIRENE)",
+    );
+    expect(texte).toContain(
+      "notamment lorsque l'entreprise de l'Apporteur est cessée au répertoire SIRENE",
+    );
+    expect(texte).toContain(
+      "c'est une condition de la signature du présent contrat, de sa contresignature par la Société et de tout versement",
+    );
+  });
+
   it("la case d'acceptation de l'article 4.5 dit ce qu'elle accepte", () => {
     const a45 = ACCEPTATIONS.find((a) => a.cle === "art_4_5")!.texte;
     expect(a45).toContain("prestation non réalisée");

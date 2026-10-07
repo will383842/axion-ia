@@ -576,7 +576,8 @@ de la Banque centrale européenne à son opération de refinancement la plus ré
 ainsi qu'à l'indemnité forfaitaire pour frais de recouvrement de 40 euros prévue à l'article D.441-5 du
 code de commerce.**
 
-**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide, régime de
+**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide **et actif**
+(entreprise non cessée au répertoire SIRENE), régime de
 taxe sur la valeur ajoutée déclaré (article 6.3) ni coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
 d'immatriculation prévus à l'article 6.2 conditionnent en outre le versement des sommes qui portent le cumul
 des sommes dues au titre du présent contrat au seuil fixé par l'article R.8222-1 du code du
@@ -585,7 +586,8 @@ pièce et aucun autre motif ne peuvent différer un versement ; en particulier n
 rattachement d'un encaissement, ni l'absence de palier à la grille ne peuvent le différer au-delà de
 soixante jours (annexe 1, A1.7).**
 
-Les sommes dont le versement est ainsi différé demeurent acquises à l'Apporteur. Elles ne sont
+Les sommes dont le versement est ainsi différé, notamment lorsque l'entreprise de l'Apporteur est cessée
+au répertoire SIRENE, demeurent acquises à l'Apporteur. Elles ne sont
 ni facturées ni versées avant la régularisation ; l'autofacture est alors établie et transmise, et la somme
 est versée dans les conditions de l'article 5.3, le délai indicatif de deux jours ouvrés et l'échéance de
 trente jours courant de la régularisation, sans montant minimum. La régularisation s'entend de la réception
@@ -621,7 +623,9 @@ ajustement que la reprise de l'article 4.5 ne peut réduire une commission.
 ### Article 6 — Obligations légales de l'Apporteur 
 
 **6.1** L'Apporteur exerce sous un statut régulièrement déclaré et demeure à jour de ses obligations
-sociales et fiscales.
+sociales et fiscales. **Il dispose d'un numéro SIREN valide et actif (entreprise non cessée au répertoire
+SIRENE) : c'est une condition de la signature du présent contrat, de sa contresignature par la Société et de
+tout versement (article 5.4).**
 
 **6.2** Lorsque le cumul des sommes dues au titre du présent contrat
 approche le seuil fixé par l'article R.8222-1 du code du travail pour l'application de l'article L.8222-1 — la Société appréciant par prudence ce
@@ -821,7 +825,7 @@ s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les
 À défaut de commissions à venir permettant cette imputation dans un délai de douze mois — que le contrat
 soit en cours ou terminé —, la Société peut en demander le remboursement par écrit, avec l'avoir
 d'autofacture et son décompte ; il est dû dans les trente jours de la demande, dans la limite des commissions
-qui ont été versées à l'Apporteur au cours des douze mois précédant l'annulation ou l'erreur à l'origine de
+qui ont été versées à l'Apporteur au cours des vingt-quatre mois précédant l'annulation ou l'erreur à l'origine de
 la reprise ou de l'avoir.
 
 Le solde négatif non recouvré est constaté en créance et n'emporte aucune autre conséquence.
