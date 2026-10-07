@@ -339,6 +339,11 @@ describe("leverBlocage", () => {
       const resultats = [a, b].map((r) => (r.ok ? "ok" : r.raison)).sort();
       expect(resultats).toEqual(["deja_levee", "ok"]);
       expect(journalEcrit).toHaveLength(1);
+      // Le verrou de ligne EST émis, une fois par levée, avant la relecture (note d'A02).
+      expect(queryRaw).toHaveBeenCalledTimes(2);
+      const sql = (queryRaw.mock.calls[0]![0] as readonly string[]).join("?");
+      expect(sql).toMatch(/FOR UPDATE/);
+      expect(sql).toMatch(/documents_generes/);
     } finally {
       (prisma as unknown as { $transaction: unknown }).$transaction = reel;
     }

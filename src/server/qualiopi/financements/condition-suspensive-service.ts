@@ -319,9 +319,7 @@ export async function blocageConditionSuspensive(
     // Ici, toute convention sous condition est `active`, `caduque` ou levée.
     const couvrante = conventions.some(
       (c) =>
-        !c.conditionSuspensiveOpco ||
-        c.etatConditionSuspensive === "active" ||
-        leveesIds.has(c.id),
+        !c.conditionSuspensiveOpco || c.etatConditionSuspensive === "active" || leveesIds.has(c.id),
     );
     if (couvrante) return { bloque: false };
     return { bloque: true, motif: "convention_caduque", numeros: caduques.map((c) => c.numero) };
@@ -357,9 +355,7 @@ export const MESSAGE_REFUS_CONVENTION_CADUQUE_ADMIN =
   "La convention de cette session est caduque : sa condition suspensive a défailli. Elle ne fonde ni convocation ni émargement ; une nouvelle convention est nécessaire.";
 
 /** Le message de console d'un blocage. */
-export function messageAdminDuBlocage(
-  blocage: Extract<BlocageSession, { bloque: true }>,
-): string {
+export function messageAdminDuBlocage(blocage: Extract<BlocageSession, { bloque: true }>): string {
   return blocage.motif === "convention_caduque"
     ? MESSAGE_REFUS_CONVENTION_CADUQUE_ADMIN
     : MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN;
