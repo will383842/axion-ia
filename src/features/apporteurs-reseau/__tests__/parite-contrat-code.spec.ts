@@ -19,7 +19,6 @@ import {
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
   PARRAINAGE_MOIS,
-  PEREMPTION_JOURS,
   PROTECTION_MOIS,
   TAUX_BPS,
 } from "../regles";
@@ -65,18 +64,14 @@ describe("parité contrat / code : les nombres clés sont les mêmes", () => {
       "ADRESSE_VALIDE_JOURS",
     );
   });
-  it("90 jours de péremption sans rendez-vous, devis ni commande (art. 3.4)", () => {
-    attendre(
-      "péremption, en jours",
-      lire("péremption", /délai de \*\*(\d+) jours à compter du premier échange/),
-      PEREMPTION_JOURS,
-      "PEREMPTION_JOURS",
-    );
+  it("contrat 2.2 : plus de péremption à 90 jours (art. 3.4)", () => {
+    expect(TEXTE).not.toMatch(/90 jours/);
+    expect(TEXTE).not.toMatch(/expire par anticipation/);
   });
-  it("6 mois de protection (art. 3.4)", () => {
+  it("6 mois de protection à compter de la DÉCLARATION (art. 3.4, contrat 2.2)", () => {
     attendre(
       "protection, en mois",
-      lire("protection", /consentie pour \*\*(\d+) mois\*\* à compter de sa confirmation/),
+      lire("protection", /consentie pour \*\*(\d+) mois à compter de la déclaration\*\*/),
       PROTECTION_MOIS,
       "PROTECTION_MOIS",
     );

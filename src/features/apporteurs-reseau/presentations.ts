@@ -741,7 +741,8 @@ export async function confirmerPresentation(
       statut: "confirmee",
       confirmeeAt,
       confirmationTacite: false,
-      protegeeJusquAt: finDeProtection(confirmeeAt),
+      // Contrat 2.2 (art. 3.4) : six mois depuis la déclaration, pas depuis la confirmation.
+      protegeeJusquAt: finDeProtection(p.recueAt),
     },
   });
   return r.count === 1

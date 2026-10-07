@@ -285,7 +285,7 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
   const seuil = ajouterJours(maintenant, -CONFIRMATION_TACITE_JOURS);
   const lignes = await prisma.presentationEntreprise.findMany({
     where: { statut: "reservee", contactEnvoyeAt: { not: null, lte: seuil } },
-    select: { id: true, contactEnvoyeAt: true },
+    select: { id: true, contactEnvoyeAt: true, recueAt: true },
   });
   if (lignes.length === 0) return;
   // Contrat art. 3.2 : le délai ne court pas tant que la prise de contact revient en erreur.
@@ -300,7 +300,8 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
         statut: "confirmee",
         confirmationTacite: true,
         confirmeeAt,
-        protegeeJusquAt: finDeProtection(confirmeeAt),
+        // Contrat 2.2 (art. 3.4) : six mois depuis la déclaration, pas depuis la confirmation.
+        protegeeJusquAt: finDeProtection(p.recueAt),
       },
     });
     bilan.confirmeesTacites += r.count;

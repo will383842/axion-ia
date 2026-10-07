@@ -73,7 +73,7 @@ vi.mock("@/lib/prisma", () => {
           if (a.where.statut !== "reservee" || !c || !c.lte) return [];
           const l = etat.ligne;
           return l.statut === "reservee" && l.contactEnvoyeAt && l.contactEnvoyeAt <= c.lte
-            ? [{ id: l.id, contactEnvoyeAt: l.contactEnvoyeAt }]
+            ? [{ id: l.id, contactEnvoyeAt: l.contactEnvoyeAt, recueAt: l.recueAt }]
             : [];
         },
       ),
@@ -155,14 +155,15 @@ describe("« Bien reçu » puis confirmation réputée acquise à 30 jours", () 
     expect(etat.ligne.statut).toBe("reservee");
   });
 
-  it("30 jours après « Bien reçu » : confirmée tacitement, date = contact + 30 jours, 6 mois de protection", async () => {
+  it("30 jours après « Bien reçu » : confirmée tacitement, date = contact + 30 jours, 6 mois depuis la déclaration", async () => {
     await appliquerReponse("P1", "bien_recu", opts, BIEN_RECU_LE);
     const bilan = await passerReseauApporteurs(new Date("2026-11-05T09:30:00Z"));
     expect(bilan.confirmeesTacites).toBe(1);
     expect(etat.ligne.statut).toBe("confirmee");
     expect(etat.ligne.confirmationTacite).toBe(true);
     expect(etat.ligne.confirmeeAt).toEqual(new Date("2026-11-04T09:00:00Z"));
-    expect(etat.ligne.protegeeJusquAt).toEqual(new Date("2027-05-04T09:00:00Z"));
+    // Contrat 2.2 (art. 3.4) : six mois à compter de la DÉCLARATION (recueAt du 04/10).
+    expect(etat.ligne.protegeeJusquAt).toEqual(new Date("2027-04-04T00:00:00Z"));
   });
 
   it("le passage de lendemain ne reconfirme pas une présentation déjà confirmée", async () => {

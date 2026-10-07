@@ -13,7 +13,10 @@
 
 // 2.1 (07/10/2026, décision de Will) : commission par produit et produits créés après la signature
 // (annexe 1, A1.7 ; renvois aux articles 4.1, 13.1 et 17). Nouvelle empreinte du texte signé.
-export const CONTRAT_VERSION = "2.1";
+// 2.2 (07/10/2026, décision de Will) : déclaration par le seul formulaire (3.2), attribution
+// définitive aussi sur confirmation écrite de la Société (3.2), 6 mois à compter de la DÉCLARATION
+// sans fin anticipée à 90 jours (3.4), prise en charge alignée (3.5). Nouvelle empreinte.
+export const CONTRAT_VERSION = "2.2";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -106,8 +109,8 @@ invoqué comme tel. L'Apporteur n'est tenu à aucune fréquence de connexion à 
 de réponse à un message de la Société, quelle qu'en soit la durée, n'emporte aucune conséquence.
 
 **2.8 — Période de démarrage.** Tant que l'espace en ligne n'est pas ouvert, aucune date d'ouverture
-n'étant promise, les déclarations de l'article 3.2 sont faites par courrier électronique ou par le formulaire
-du lien personnel ; les notifications de l'article 20, les autofactures et leurs décomptes (article 5) sont
+n'étant promise, les déclarations de l'article 3.2 sont faites par le seul formulaire du lien personnel ;
+les notifications de l'article 20, les autofactures et leurs décomptes (article 5) sont
 adressés par courrier électronique ; toute mention de l'espace en ligne s'entend de ces échanges.
 
 Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de
@@ -138,9 +141,11 @@ l'entreprise, au sens de l'article 4.0. Le SIRET de l'établissement visité est
 aucun effet. Une entreprise ne peut être attribuée qu'à un seul Apporteur, quel que soit le nombre de ses
 établissements.
 
-**3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, adressée
-par l'Apporteur par courrier électronique à l'adresse que lui indique la Société, ou au moyen du formulaire
-accessible depuis son lien personnel et, une fois l'espace en ligne ouvert, de celui qu'il contient. Elle n'est pas acquise du seul fait d'une démarche non déclarée.
+**3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, faite
+par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en
+ligne ouvert, de celui qu'il contient. **Une déclaration adressée par tout autre moyen, notamment par courrier
+électronique, est sans effet** : la Société invite alors l'Apporteur à utiliser le formulaire. Elle n'est pas
+acquise du seul fait d'une démarche non déclarée.
 
 La déclaration comporte l'identification de l'entreprise et son numéro SIREN, le **nom et la fonction de la
 personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de
@@ -153,8 +158,9 @@ indique que l'Apporteur lui a parlé de l'entreprise et le désigne par ses pré
 informé que ses prénom et nom sont ainsi communiqués à la personne qu'il déclare ; ses coordonnées ne lui sont
 pas communiquées.**
 
-L'attribution devient **définitive** dès que l'entreprise répond à la Société, prend rendez-vous avec elle ou
-échange avec elle, sans indiquer n'avoir eu aucun échange avec l'Apporteur. À défaut, elle est **réputée
+L'attribution devient **définitive** dès que la Société la confirme par écrit à l'Apporteur, ou dès que
+l'entreprise répond à la Société, prend rendez-vous avec elle ou échange avec elle, sans indiquer n'avoir eu
+aucun échange avec l'Apporteur. À défaut, elle est **réputée
 confirmée** à l'expiration d'un délai de **30 jours** à compter de la prise de contact
 (envoi du premier message de la Société), dès lors que ce message n'est pas retourné en erreur. **Tant que le message revient en
 erreur et que l'Apporteur n'a pas communiqué une adresse corrigée, ce délai ne court pas** ; à défaut d'adresse
@@ -192,17 +198,10 @@ une entreprise pour laquelle deux déclarations sont déjà en attente au sens d
 personne inscrite au registre d'opposition au démarchage tenu par la Société. Le refus est notifié avec sa
 catégorie ; il n'emporte aucune autre conséquence et n'est pas un manquement.
 
-**3.4 — Durée.** L'attribution est consentie pour **6 mois** à compter de sa confirmation.
-
-Elle expire par anticipation si, dans un délai de **90 jours à compter du premier échange de la
-Société avec l'entreprise déclarée**, aucun rendez-vous n'a été tenu, aucun devis
-n'a été émis et aucune commande n'a été signée. **Ce délai ne court pas tant que cet échange n'a pas eu
-lieu. Le premier échange s'entend de la première réponse de l'entreprise à la Société, quel qu'en
-soit le moyen ; l'envoi d'un message resté sans réponse, notamment la prise de contact de l'article 3.2,
-n'en tient pas lieu. L'attribution n'expire
-pas au titre du présent alinéa lorsque l'absence de rendez-vous, de devis et de commande est imputable à
-la Société ; seule la durée de l'alinéa 1 s'applique alors.** L'entreprise
-redevient ensuite librement déclarable par tout Apporteur.
+**3.4 — Durée.** L'attribution est consentie pour **6 mois à compter de la déclaration**, c'est-à-dire
+de l'horodatage, par le serveur de la Société, de son enregistrement. Elle ne prend pas fin avant ce terme,
+sous réserve des articles 3.2 (fin faute d'adresse valide), 3.3, 3.3 bis et 3.7. À son terme, l'entreprise
+redevient librement déclarable, dans les conditions de l'article 3.4 bis.
 
 **L'attribution est prolongée de trois mois, une seule fois et sans démarche de l'Apporteur, lorsqu'au terme
 de la période l'une des conditions suivantes est remplie : (a) un devis émis par la Société à l'entreprise est
@@ -252,11 +251,9 @@ en tout état de cause douze mois après son enregistrement.**
 
 **La prise en charge d'une entreprise par la Société ou ses préposés obéit aux mêmes bornes qu'une
 attribution**, la Société et l'ensemble de ses préposés comptant pour un seul occupant. Les articles 3.4 et
-3.4 bis lui sont applicables comme à une attribution : la durée de **6 mois** court de la date
-à laquelle la prise en charge devient définitive, au plus tard à l'expiration du délai de
-l'article 3.2 ; le délai de **90 jours** court de la prise en charge, et l'exception de l'article
-3.4 alinéa 2 tirée d'une absence imputable à la Société ne s'applique pas à la prise en charge ; la
-prolongation de l'article 3.4 alinéa 3 ne s'applique qu'une fois, dans les mêmes conditions ; la prise en
+3.4 bis lui sont applicables comme à une attribution : la durée de **6 mois** court de la prise en
+charge, c'est-à-dire de l'horodatage, par le serveur de la Société, de son enregistrement ; la
+prolongation de l'article 3.4 ne s'applique qu'une fois, dans les mêmes conditions ; la prise en
 charge ne fait l'objet d'aucune reconduction. **La Société ne prend pas en charge une entreprise pendant
 le délai de quinze jours ouvert à l'Apporteur en attente au premier rang.**
 
@@ -278,8 +275,7 @@ Les parties conviennent que l'horodatage attribué par le serveur de la Sociét�
 **jusqu'à preuve contraire** pour l'application du présent article, conformément à l'article 1356 du code
 civil, **quel que soit l'occupant de l'entreprise**. Cet horodatage est inscrit
 dans un registre horodaté tenu par la Société ; l'Apporteur peut en obtenir sur simple demande un extrait relatif
-à ses propres déclarations, qui ne révèle pas qui occupe l'entreprise. Une déclaration adressée par courrier
-électronique est horodatée à sa réception par le serveur de messagerie de la Société.
+à ses propres déclarations, qui ne révèle pas qui occupe l'entreprise.
 
 **3.6 — Groupes de sociétés.** Chaque personne morale dispose de son propre SIREN. L'attribution d'une
 filiale n'emporte aucun droit sur sa société mère ni sur les autres sociétés du groupe.
