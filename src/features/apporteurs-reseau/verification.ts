@@ -17,7 +17,7 @@
 
 import "server-only";
 
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -357,7 +357,7 @@ export async function appliquerDecision(
     const sha = createHash("sha256").update(pdf).digest("hex");
     // Clé PROPRE à cette tentative (suffixée par sa réservation) : une tentative n'efface
     // jamais le PDF d'une autre.
-    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}.pdf`;
+    const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}-${jusqua.getTime()}-${randomBytes(4).toString("hex")}.pdf`;
     try {
       await uploadToR2(cle, pdf, "application/pdf");
     } catch (err) {
