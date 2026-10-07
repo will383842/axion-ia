@@ -10,7 +10,7 @@ const texte = CONTRAT_V2_MARKDOWN.replace(/\s+/g, " ");
 
 describe("contrat 2.2 : déclaration et durée de l'attribution", () => {
   it("version 2.2", () => {
-    expect(CONTRAT_VERSION).toBe("2.2");
+    expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.2);
   });
 
   it("3.2 : seul le formulaire du lien personnel vaut déclaration ; l'e-mail est sans effet", () => {

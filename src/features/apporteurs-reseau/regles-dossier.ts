@@ -49,7 +49,7 @@ export const ACCEPTATIONS = [
   {
     cle: "art_4_5",
     texte:
-      "J'accepte l'article 4.5 (recalcul et reprise d'une commission en cas d'avoir ou de remboursement).",
+      "J'accepte l'article 4.5 (recalcul et reprise d'une commission : avoir, remboursement, geste commercial ou prestation non réalisée, pendant vingt-quatre mois).",
   },
   {
     cle: "art_5_2",

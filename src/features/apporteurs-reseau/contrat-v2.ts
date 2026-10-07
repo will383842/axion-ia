@@ -16,7 +16,10 @@
 // 2.2 (07/10/2026, décision de Will) : déclaration par le seul formulaire (3.2), attribution
 // définitive aussi sur confirmation écrite de la Société (3.2), 6 mois à compter de la DÉCLARATION
 // sans fin anticipée à 90 jours (3.4), prise en charge alignée (3.5). Nouvelle empreinte.
-export const CONTRAT_VERSION = "2.2";
+// 2.3 (07/10/2026, décision de Will) : commission due sur une prestation RÉALISÉE et encaissée,
+// reprise quelle que soit la cause (garde-fou contre la privation volontaire), suspension en
+// cas de contestation écrite du client, reprise sur 24 mois, fraude (3.7, 8.4), CPF constaté après.
+export const CONTRAT_VERSION = "2.3";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -368,9 +371,19 @@ l'accompagne, indique, pour chaque commande concernée, le prix public, le prix 
 conférence (annexe 1, A1.4 bis) n'est jamais réduit à raison d'une remise. Le pourcentage n'est pas
 concerné : il s'applique au montant hors taxes facturé.
 
-**4.2 — Fait générateur.** **La commission est acquise lorsque la Société a encaissé l'intégralité** du
-prix facturé au client au titre de la commande, tous payeurs confondus, y compris un opérateur de compétences ou
-tout autre financeur — jamais à la signature, jamais à l'émission de la facture.
+**4.2 — Fait générateur.** **La commission est acquise lorsque la prestation commandée a été réalisée et
+que la Société a encaissé l'intégralité** du prix facturé au client au titre de la commande, tous payeurs
+confondus, y compris un opérateur de compétences ou tout autre financeur — jamais à la signature, jamais à
+l'émission de la facture.
+
+**Lorsque la prestation n'est pas réalisée, en tout ou partie, quelle qu'en soit la cause, y compris du fait de
+la Société, la commission n'est pas due, ou n'est due qu'à proportion de la part réalisée et encaissée ; si
+elle a déjà été versée, la différence fait l'objet d'une reprise (article 4.5).**
+
+**4.2 bis — Contestation du client.** Tant qu'une contestation **écrite** du client portant sur la prestation
+ou sur sa facture est en cours, la commission correspondante est **suspendue** : elle n'est ni facturée ni
+versée. À l'issue de la contestation, elle est versée, ou fait l'objet d'une reprise, selon le prix finalement
+conservé par la Société. L'Apporteur est informé de la suspension et de son issue.
 
 **4.3 — Paiement partiel.** Aucune part de commission n'est due au titre d'un paiement partiel. La commission
 est facturée et versée dans les conditions de l'article 5, à compter de l'encaissement complet.
@@ -415,10 +428,11 @@ forfait ou sur le montant hors taxes net pour un pourcentage, et la différence 
 Lorsqu'un encaissement ayant donné lieu à
 commission est **annulé, rétracté ou restitué, quelle qu'en soit la cause** — remboursement au client,
 avoir imputé sur la facture, rejet ou révocation d'un prélèvement ou d'un virement, litige tranché en
-faveur du client, ou toute autre restitution des fonds — **à l'exclusion des restitutions décidées par la
-Société sans réclamation du client, et de celles résultant de l'inexécution par la Société de ses propres
-obligations, qui ne donnent lieu à aucune reprise** —, la commission correspondante fait l'objet d'une
-reprise. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
+faveur du client, ou toute autre restitution des fonds, **y compris une restitution consentie sans
+réclamation du client, à titre de geste commercial, ou résultant de l'inexécution par la Société de ses
+propres obligations** —, la commission correspondante fait l'objet d'une reprise. **Toutefois, une
+annulation, un remboursement ou un avoir consenti dans le seul but de priver l'Apporteur de sa commission est
+sans effet sur celle-ci** (article 1304-3 du code civil), comme la remise de l'article 4.1 bis. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
 l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention
 « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
 somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un
@@ -426,13 +440,20 @@ montant diminué d'une reprise.** L'avoir s'impute par compensation conventionne
 présent article ; le décompte qui accompagne l'autofacture de cette commission indique l'avoir imputé et la
 somme virée.
 
-La reprise ne peut intervenir que dans les douze mois suivant **la date de l'annulation** — et non celle
+La reprise ne peut intervenir que dans les vingt-quatre mois suivant **la date de l'annulation** — et non celle
 de l'encaissement d'origine, une annulation pouvant survenir longtemps après lui.
 
 Elle s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les commissions à venir. **À défaut de commissions à venir suffisantes,
 le solde négatif suit le régime de l'article 12.4**, que le contrat soit en cours ou terminé.
 
 > *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
+
+**4.5 bis — Déclaration non sincère, intérêt non déclaré, fraude.** Aucune commission n'est due au titre
+d'une affaire pour laquelle l'Apporteur a manqué à l'article 3.7 (déclaration non sincère) ou à
+l'article 8.4 (rémunération ou avantage reçu de l'entreprise, relation d'affaires ou d'intérêt non
+déclarée), ni en cas de fraude ; les commissions déjà versées au titre de cette affaire font l'objet d'une
+reprise dans les conditions de l'article 4.5. Le manquement est notifié à l'Apporteur avec les faits qui le
+fondent ; il peut le contester par écrit, et la Société y répond de façon motivée dans les trente jours.
 
 **4.6 — Parrainage.** L'Apporteur qui présente à la Société une personne devenant elle-même Apporteur
 perçoit **10 % des commissions du filleul nées de commandes signées dans les
@@ -555,16 +576,18 @@ de la Banque centrale européenne à son opération de refinancement la plus ré
 ainsi qu'à l'indemnité forfaitaire pour frais de recouvrement de 40 euros prévue à l'article D.441-5 du
 code de commerce.**
 
-**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide, régime de
+**5.4 — Conditions du versement.** Aucun versement ne peut intervenir sans numéro SIREN valide **et actif**
+(entreprise non cessée au répertoire SIRENE), régime de
 taxe sur la valeur ajoutée déclaré (article 6.3) ni coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
 d'immatriculation prévus à l'article 6.2 conditionnent en outre le versement des sommes qui portent le cumul
 des sommes dues au titre du présent contrat au seuil fixé par l'article R.8222-1 du code du
-travail, et au-delà. **Aucune autre pièce et aucun autre motif ne
-peuvent différer un versement ; en particulier ni un défaut de
+travail, et au-delà. **Hors la contestation écrite du client prévue à l'article 4.2 bis, aucune autre
+pièce et aucun autre motif ne peuvent différer un versement ; en particulier ni un défaut de
 rattachement d'un encaissement, ni l'absence de palier à la grille ne peuvent le différer au-delà de
 soixante jours (annexe 1, A1.7).**
 
-Les sommes dont le versement est ainsi différé demeurent acquises à l'Apporteur. Elles ne sont
+Les sommes dont le versement est ainsi différé, notamment lorsque l'entreprise de l'Apporteur est cessée
+au répertoire SIRENE, demeurent acquises à l'Apporteur. Elles ne sont
 ni facturées ni versées avant la régularisation ; l'autofacture est alors établie et transmise, et la somme
 est versée dans les conditions de l'article 5.3, le délai indicatif de deux jours ouvrés et l'échéance de
 trente jours courant de la régularisation, sans montant minimum. La régularisation s'entend de la réception
@@ -600,7 +623,9 @@ ajustement que la reprise de l'article 4.5 ne peut réduire une commission.
 ### Article 6 — Obligations légales de l'Apporteur 
 
 **6.1** L'Apporteur exerce sous un statut régulièrement déclaré et demeure à jour de ses obligations
-sociales et fiscales.
+sociales et fiscales. **Il dispose d'un numéro SIREN valide et actif (entreprise non cessée au répertoire
+SIRENE) : c'est une condition de la signature du présent contrat, de sa contresignature par la Société et de
+tout versement (article 5.4).**
 
 **6.2** Lorsque le cumul des sommes dues au titre du présent contrat
 approche le seuil fixé par l'article R.8222-1 du code du travail pour l'application de l'article L.8222-1 — la Société appréciant par prudence ce
@@ -693,7 +718,9 @@ Société.
 
 Aucune commission n'est due au titre d'une prestation **effectivement financée, en tout ou partie, par le
 compte personnel de formation**, quelle que soit l'origine du contact. Les paliers susceptibles d'un tel
-financement sont identifiés dans la grille annexée. Cette absence de commission est une règle du présent contrat et non de la loi.
+financement sont identifiés dans la grille annexée. Lorsque ce financement est constaté après le
+versement de la commission, celle-ci fait l'objet d'une reprise (article 4.5). Cette absence de commission
+est une règle du présent contrat et non de la loi.
 
 **8.2** Il ne se présente pas comme salarié, mandataire, agent ou représentant de la Société, n'utilise
 aucune adresse électronique ni aucun support laissant croire à un lien de cette nature, et ne fait aucune
@@ -798,7 +825,7 @@ s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les
 À défaut de commissions à venir permettant cette imputation dans un délai de douze mois — que le contrat
 soit en cours ou terminé —, la Société peut en demander le remboursement par écrit, avec l'avoir
 d'autofacture et son décompte ; il est dû dans les trente jours de la demande, dans la limite des commissions
-qui ont été versées à l'Apporteur au cours des douze mois précédant l'annulation ou l'erreur à l'origine de
+qui ont été versées à l'Apporteur au cours des vingt-quatre mois précédant l'annulation ou l'erreur à l'origine de
 la reprise ou de l'avoir.
 
 Le solde négatif non recouvré est constaté en créance et n'emporte aucune autre conséquence.
@@ -1106,7 +1133,8 @@ relèvent de A1.7.
 Conformément à l'article 8.1, **aucune commission n'est due au titre d'une prestation effectivement
 financée, en tout ou partie, par le compte personnel de formation**, quelle que soit l'origine du contact,
 y compris pour une conférence. Les paliers susceptibles d'un tel financement portent la mention « CPF » dans
-les tableaux A1.1 à A1.4 bis.
+les tableaux A1.1 à A1.4 bis. Un financement par le compte personnel de formation constaté après le
+versement de la commission donne lieu à sa reprise (article 4.5).
 **À la date de la présente version, aucun palier de la présente grille ne porte cette mention.**
 
 ### A1.7 — Produits créés après la signature
