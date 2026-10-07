@@ -81,3 +81,31 @@ Listes fermées en phase « expand » : la colonne enum `etat_ferme` est écrite
 | **Réponse reçue** (apporteur) | Ligne de `submission_inbound_replies` (2026-09-27), relevé distinct. Une personne des deux mondes a une ligne dans CHAQUE table ; une seule alerte Telegram (celle des apporteurs).                                      |
 | `CANDIDAT_REPLIED`            | Catégorie d'alerte (salon 💼 Candidatures) d'une réponse humaine récente (< 24 h) d'un candidat emploi. Distincte de `APPORTEUR_REPLIED` : jamais d'alerte commune aux deux mondes.                                      |
 | `email_recu` (« Boîte mail ») | Événement du journal posé par le relevé pour une réponse humaine ; une réponse automatique (absence) est gardée sans événement.                                                                                          |
+
+## Fichiers partagés et bibliothèque (ADR 0065)
+
+| Enum                      | Valeur           | Sens                                                                                                                                 | ADR  |
+| ------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---- |
+| `NatureFichierPartage`    | `fichier`        | Un fichier stocké dans R2 (compartiment dédié, préfixe `partages/`), déposé par morceaux.                                            | 0065 |
+| `NatureFichierPartage`    | `lien_externe`   | Un lien Drive / WeTransfer collé (https seulement) ; rien n'est stocké chez nous.                                                    | 0065 |
+| `OrigineFichierPartage`   | `equipe`         | Déposé depuis la console par l'équipe.                                                                                               | 0065 |
+| `OrigineFichierPartage`   | `personne`       | Renvoyé par un candidat depuis son lien personnel (L5b) ; toujours analysé, 4 Go au plus.                                            | 0065 |
+| `CategorieFichierPartage` | `lut`            | Une LUT d'étalonnage.                                                                                                                | 0065 |
+| `CategorieFichierPartage` | `video_exemple`  | Une vidéo d'exemple du rendu attendu.                                                                                                | 0065 |
+| `CategorieFichierPartage` | `rushs`          | Des rushs (souvent ceux d'un client) : lien de 7 jours et mention de confidentialité à l'envoi (L5).                                 | 0065 |
+| `CategorieFichierPartage` | `consignes`      | Des consignes de travail. Jamais proposées à un futur apporteur (ANTI-REQUALIFICATION, motif 10).                                    | 0065 |
+| `CategorieFichierPartage` | `musique`        | Une musique à utiliser.                                                                                                              | 0065 |
+| `CategorieFichierPartage` | `kit_apporteur`  | Le kit apporteur : un LIEN vers le kit déjà publié, jamais une copie. Seule catégorie, avec `presentation`, proposée à un apporteur. | 0065 |
+| `CategorieFichierPartage` | `presentation`   | Une présentation (réseau, offre).                                                                                                    | 0065 |
+| `CategorieFichierPartage` | `essai_rendu`    | Le montage d'essai renvoyé par un candidat (L5b) ; l'équipe ne le dépose pas.                                                        | 0065 |
+| `CategorieFichierPartage` | `autre`          | Tout le reste.                                                                                                                       | 0065 |
+| `EtatDepotFichier`        | `en_cours`       | Envoi par morceaux commencé, pas encore terminé : il reprend où il s'était arrêté.                                                   | 0065 |
+| `EtatDepotFichier`        | `disponible`     | Morceaux assemblés et taille revérifiée auprès du stockage.                                                                          | 0065 |
+| `EtatDepotFichier`        | `abandonne`      | Envoi arrêté (ou taille non conforme). La ligne reste ; R2 libère les morceaux d'un fichier jamais assemblé.                         | 0065 |
+| `AnalyseFichierPartage`   | `en_attente`     | Pas encore de verdict antivirus : jamais servi. Analyse relancée depuis l'application.                                               | 0065 |
+| `AnalyseFichierPartage`   | `sain`           | Verdict ClamAV : rien trouvé.                                                                                                        | 0065 |
+| `AnalyseFichierPartage`   | `infecte`        | Verdict ClamAV : signature trouvée. Archivé, jamais servi, jamais effacé automatiquement.                                            | 0065 |
+| `AnalyseFichierPartage`   | `hors_limite`    | Fichier de l'ÉQUIPE de plus de 200 Mo : non analysé (décision 7 de Will), affiché « Non analysé (déposé par vous) ».                 | 0065 |
+| `TypeAccesPartage`        | `page_ouverte`   | Journal des accès d'un lien privé (L5) : la page du lien a été ouverte.                                                              | 0065 |
+| `TypeAccesPartage`        | `telechargement` | Journal des accès d'un lien privé (L5) : un fichier a été téléchargé.                                                                | 0065 |
+| **Bibliothèque**          | —                | Les fichiers `dans_bibliotheque = true`, non archivés : `/<console>/contacts/candidatures/bibliotheque`. Archiver ≠ supprimer.       | 0065 |

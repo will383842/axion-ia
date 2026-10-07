@@ -18,11 +18,13 @@
 --
 -- ## Fenêtre app/worker (~50 min, le worker atterrit avant l'app qui migre)
 --
--- Le worker porte la tâche d'antivirus de ces fichiers. Pendant la fenêtre où
--- la table n'existe pas encore, la tâche s'arrête sans lever (erreur Prisma
--- P2021 interceptée) — et elle ne tourne de toute façon que si
--- `R2_PARTAGES_BUCKET_NAME` est posé. Aucun fichier ne peut exister avant que
--- l'app N serve la page de dépôt.
+-- Le worker ne lit NI n'écrit ces tables : l'antivirus est lancé depuis
+-- l'APPLICATION à la fin d'un dépôt (et relancé à l'ouverture de la
+-- bibliothèque), comme pour les vidéos des candidats — écart au plan accepté.
+-- Il ne tourne que si la bibliothèque est allumée (`R2_PARTAGES_BUCKET_NAME`
+-- et ses accès posés). Un fichier de l'ÉQUIPE de plus de 200 Mo n'est pas
+-- analysé (décision 7 de Will) : il naît `hors_limite`. Aucun fichier ne peut
+-- exister avant que l'app N serve la page de dépôt.
 --
 -- ## Aucun effacement automatique (ordre de Will, 07/10)
 --

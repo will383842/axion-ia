@@ -22,7 +22,7 @@
 //     « Candidature spontanée » contigus à l'écran), la date en second.
 
 import Link from "next/link";
-import { ArrowRight, Download, Gauge } from "lucide-react";
+import { ArrowRight, Download, FolderOpen, Gauge } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -218,6 +218,10 @@ export function ApplicationsV2({
           <div className="flex items-center gap-[var(--space-admin-3)]">
             <Link href={`${baseHref}/pilotage`} className="admin-button-ghost">
               <Gauge size={15} aria-hidden="true" /> Pilotage
+            </Link>
+            {/* Candidatures unifiées L4 — les fichiers à envoyer aux candidats. */}
+            <Link href={`${baseHref}/bibliotheque`} className="admin-button-ghost">
+              <FolderOpen size={15} aria-hidden="true" /> Bibliothèque
             </Link>
             {/* 🔑 L'export porte EXACTEMENT les filtres de l'écran. Un bouton
                 qui exporterait « tout » depuis une liste filtrée rendrait un

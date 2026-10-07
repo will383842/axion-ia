@@ -108,7 +108,9 @@ export const CATEGORIES_LIEN: ReadonlyArray<CategorieFichier> = CATEGORIES_FICHI
  * la présentation — une consigne envoyée à un apporteur est le motif 10 de
  * l'ANTI-REQUALIFICATION.
  */
-export function categoriesProposees(monde: "emploi" | "apporteur"): ReadonlyArray<CategorieFichier> {
+export function categoriesProposees(
+  monde: "emploi" | "apporteur",
+): ReadonlyArray<CategorieFichier> {
   if (monde === "apporteur") return ["kit_apporteur", "presentation"];
   return CATEGORIES_FICHIER.filter((c) => c !== "kit_apporteur" && c !== "essai_rendu");
 }
@@ -121,7 +123,6 @@ export function categoriesProposees(monde: "emploi" | "apporteur"): ReadonlyArra
  */
 export function nomAffichable(brut: string): string | null {
   const dernier = brut.split(/[/\\]/).pop() ?? "";
-  // eslint-disable-next-line no-control-regex
   const propre = dernier.replace(/[\u0000-\u001f\u007f]/g, "").trim();
   if (!propre) return null;
   return propre.slice(0, 255);
@@ -172,7 +173,6 @@ export function titreParDefaut(nom: string): string {
 export function lienExterneValide(brut: string): string | null {
   const s = brut.trim();
   if (s.length === 0 || s.length > 2000) return null;
-  // eslint-disable-next-line no-control-regex
   if (/[\s\u0000-\u001f\u007f]/.test(s)) return null;
   let u: URL;
   try {
