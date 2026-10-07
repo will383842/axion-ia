@@ -53,6 +53,8 @@ const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
 
 interface Payload {
+  /** Manquement (art. 4.5 bis) : les faits, tels que saisis dans la console. */
+  faits?: string;
   /** Suspension d'une commission (art. 4.2 bis) : « suspendue » puis « levee ». */
   etat?: string;
   /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
@@ -312,6 +314,19 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  manquement: {
+    // Contrat 2.3, art. 4.5 bis : notification avec les faits, contestation écrite, réponse
+    // motivée dans les trente jours.
+    subject: "Manquement constaté sur une de vos déclarations",
+    title: "Manquement constaté",
+    preview: "Les faits, leurs conséquences et la façon de contester.",
+    intro:
+      "Au sujet d'une entreprise que vous nous avez présentée, nous constatons un manquement à votre contrat (article 4.5 bis). Les faits sont les suivants :",
+    consequences:
+      "En conséquence, aucune commission n'est due au titre de cette affaire. Celles qui vous ont déjà été versées font l'objet d'une reprise, dans les conditions de l'article 4.5.",
+    contester:
+      "Vous pouvez contester ce constat par écrit, en répondant simplement à cet e-mail. Nous vous répondrons de façon motivée dans les trente jours.",
   },
   commissionSuspension: {
     // Contrat 2.3, art. 4.2 bis : l'apporteur est informé de la suspension et de son issue.
@@ -847,6 +862,33 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Manquement ou fraude (contrat 2.3, art. 4.5 bis) ─────────────────────
+
+export const apporteurManquementSubject = (): string => COPY_DEMARRAGE.manquement.subject;
+
+export function ApporteurManquementEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.manquement;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+        « {p.faits ?? ""} »
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.consequences}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.contester}</Text>
     </EmailLayout>
   );
 }

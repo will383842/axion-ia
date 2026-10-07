@@ -306,4 +306,6 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-virement-fait",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",
+  // Un manquement (art. 4.5 bis) entraîne des reprises : l'apporteur retiré en est informé.
+  "apporteur-manquement",
 ]);

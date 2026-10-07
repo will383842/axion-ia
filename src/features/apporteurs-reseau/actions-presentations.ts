@@ -16,8 +16,10 @@ import { adminPath } from "@/lib/admin-path";
 import { fromParisLocalInput } from "@/lib/calendar-grid";
 import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
+import { peutEngager } from "@/server/auth/habilitations";
 
 import { lireEntrepriseParSiren } from "./annuaire";
+import { constaterManquement } from "./manquement";
 import type { ApercuRendu, GabaritApporteur } from "./envois";
 import {
   apercuReponse,
@@ -231,6 +233,36 @@ export async function dementirPresentationAction(
   if (!r.ok) return { etat: "erreur", message: r.message };
   rafraichir();
   return { etat: "ok", message: "Notée comme démentie." };
+}
+
+/** « Manquement ou fraude » (art. 4.5 bis) : touche à l'argent, donc réservé à un administrateur. */
+export async function constaterManquementAction(
+  _prev: EtatAction,
+  fd: FormData,
+): Promise<EtatAction> {
+  const session = await auth();
+  if (!session?.user?.id) return { etat: "erreur", message: "Session expirée : reconnectez-vous." };
+  const role = (session.user as { role?: string }).role;
+  if (!peutEngager(role, "facturer"))
+    return { etat: "erreur", message: "Seul un administrateur peut constater un manquement." };
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) return { etat: "erreur", message: "Présentation inconnue." };
+  if (texte(fd, "confirmer") !== "oui")
+    return { etat: "erreur", message: "Cochez la confirmation avant d'enregistrer." };
+  try {
+    const r = await constaterManquement({
+      presentationId: id,
+      faits: texte(fd, "faits"),
+      acteurId: session.user.id,
+    });
+    if (!r.ok) return { etat: "erreur", message: r.message };
+    rafraichir();
+    revalidatePath(adminPath("fr", "apporteurs/commissions"));
+    return { etat: "ok", message: r.message };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-manquement" } });
+    return { etat: "erreur", message: "Le manquement n'a pas pu être enregistré. Réessayez." };
+  }
 }
 
 export async function noterPresentationAction(

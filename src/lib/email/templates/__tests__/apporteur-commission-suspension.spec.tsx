@@ -16,3 +16,17 @@ describe("commission suspendue, puis libérée (art. 4.2 bis)", () => {
     expect(l.subject).toBe("Votre commission reprend son cours");
   });
 });
+
+describe("manquement ou fraude (art. 4.5 bis)", () => {
+  it("donne les faits, les conséquences, et la contestation sous trente jours", async () => {
+    const r = await renderEmailTemplate("apporteur-manquement" as never, "fr", {
+      contactName: "Claire Martin",
+      faits: "L'entreprise déclare n'avoir jamais échangé avec vous.",
+    });
+    expect(r.subject).toBe("Manquement constaté sur une de vos déclarations");
+    const t = r.text.replace(/\s+/g, " ");
+    expect(t).toContain("L'entreprise déclare n'avoir jamais échangé avec vous.");
+    expect(t).toContain("article 4.5 bis");
+    expect(t).toContain("trente jours");
+  });
+});
