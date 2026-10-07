@@ -24,6 +24,11 @@ import {
   HeadObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  CreateMultipartUploadCommand,
+  UploadPartCommand,
+  ListPartsCommand,
+  CompleteMultipartUploadCommand,
+  AbortMultipartUploadCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { enTeteContentDisposition, type DispositionFichier } from "./content-disposition";
@@ -332,4 +337,179 @@ export async function getObjectBufferR2(key: string): Promise<Buffer | null> {
     // Absorbe les erreurs (404, réseau, permissions) — fail-soft intentionnel.
     return null;
   }
+}
+
+// ====================================================================
+// Envoi PAR MORCEAUX vers un compartiment désigné (Candidatures unifiées L4,
+// ADR 0065, 2026-10-07) — AJOUT SEUL, rien de ce qui précède ne change.
+// ====================================================================
+//
+// Les fonctions ci-dessus visent le compartiment GÉNÉRAL (`R2_BUCKET_NAME`).
+// La bibliothèque de fichiers partagés vit dans un compartiment DÉDIÉ, avec
+// éventuellement son propre jeton : ces fonctions reçoivent donc leur cible.
+// Le navigateur n'a aucun SDK : il envoie chaque morceau en `PUT` sur une URL
+// signée, et R2 rend l'`ETag` (CORS `ExposeHeaders: ETag`). Le serveur, lui,
+// ne fait jamais confiance aux ETag du navigateur : il relit `ListParts`.
+
+export interface CibleR2 {
+  readonly accountId: string;
+  readonly bucket: string;
+  readonly accessKeyId: string;
+  readonly secretAccessKey: string;
+}
+
+export interface MorceauR2 {
+  readonly numero: number;
+  readonly etag: string;
+  readonly taille: number;
+}
+
+const _clientsCibles = new Map<string, S3Client>();
+
+/** Un client par (compte, clé) — réutilise la connexion HTTPS. */
+export function clientR2Cible(cible: CibleR2): S3Client {
+  const cle = `${cible.accountId}:${cible.accessKeyId}`;
+  const existant = _clientsCibles.get(cle);
+  if (existant) return existant;
+  const client = new S3Client({
+    region: "auto",
+    endpoint: `https://${cible.accountId}.r2.cloudflarestorage.com`,
+    credentials: { accessKeyId: cible.accessKeyId, secretAccessKey: cible.secretAccessKey },
+    forcePathStyle: false,
+  });
+  _clientsCibles.set(cle, client);
+  return client;
+}
+
+/** Ouvre un envoi par morceaux ; rend son identifiant R2. */
+export async function ouvrirEnvoiMorceauxR2(
+  cible: CibleR2,
+  key: string,
+  contentType: string,
+): Promise<string> {
+  const r = await clientR2Cible(cible).send(
+    new CreateMultipartUploadCommand({ Bucket: cible.bucket, Key: key, ContentType: contentType }),
+  );
+  if (!r.UploadId) throw new Error("R2 n'a pas rendu d'identifiant d'envoi");
+  return r.UploadId;
+}
+
+/** URL signée d'envoi d'UN morceau (`PUT`, corps brut). */
+export async function signerMorceauR2(
+  cible: CibleR2,
+  key: string,
+  uploadId: string,
+  numero: number,
+  expiresInSeconds: number,
+): Promise<string> {
+  return getSignedUrl(
+    clientR2Cible(cible),
+    new UploadPartCommand({
+      Bucket: cible.bucket,
+      Key: key,
+      UploadId: uploadId,
+      PartNumber: numero,
+    }),
+    { expiresIn: expiresInSeconds },
+  );
+}
+
+/** Les morceaux déjà reçus par R2 (toutes les pages). */
+export async function listerMorceauxR2(
+  cible: CibleR2,
+  key: string,
+  uploadId: string,
+): Promise<MorceauR2[]> {
+  const out: MorceauR2[] = [];
+  let marqueur: string | undefined;
+  for (let page = 0; page < 20; page++) {
+    const r = await clientR2Cible(cible).send(
+      new ListPartsCommand({
+        Bucket: cible.bucket,
+        Key: key,
+        UploadId: uploadId,
+        ...(marqueur ? { PartNumberMarker: marqueur } : {}),
+      }),
+    );
+    for (const p of r.Parts ?? []) {
+      if (p.PartNumber && p.ETag) {
+        out.push({ numero: p.PartNumber, etag: p.ETag, taille: Number(p.Size ?? 0) });
+      }
+    }
+    if (!r.IsTruncated || !r.NextPartNumberMarker) break;
+    marqueur = String(r.NextPartNumberMarker);
+  }
+  return out;
+}
+
+/** Assemble les morceaux (ordre croissant). */
+export async function assemblerEnvoiR2(
+  cible: CibleR2,
+  key: string,
+  uploadId: string,
+  morceaux: ReadonlyArray<MorceauR2>,
+): Promise<void> {
+  const tries = [...morceaux].sort((a, b) => a.numero - b.numero);
+  await clientR2Cible(cible).send(
+    new CompleteMultipartUploadCommand({
+      Bucket: cible.bucket,
+      Key: key,
+      UploadId: uploadId,
+      MultipartUpload: { Parts: tries.map((m) => ({ PartNumber: m.numero, ETag: m.etag })) },
+    }),
+  );
+}
+
+/**
+ * Arrête un envoi non terminé : R2 libère les morceaux REÇUS d'un fichier qui
+ * n'a jamais existé en entier. N'efface aucun objet.
+ */
+export async function arreterEnvoiR2(cible: CibleR2, key: string, uploadId: string): Promise<void> {
+  await clientR2Cible(cible).send(
+    new AbortMultipartUploadCommand({ Bucket: cible.bucket, Key: key, UploadId: uploadId }),
+  );
+}
+
+/** Taille de l'objet assemblé, ou `null` s'il n'existe pas. */
+export async function tailleObjetR2(cible: CibleR2, key: string): Promise<number | null> {
+  try {
+    const r = await clientR2Cible(cible).send(
+      new HeadObjectCommand({ Bucket: cible.bucket, Key: key }),
+    );
+    return Number(r.ContentLength ?? 0);
+  } catch (err) {
+    if ((err as { $metadata?: { httpStatusCode?: number } })?.$metadata?.httpStatusCode === 404)
+      return null;
+    if ((err as { name?: string })?.name === "NotFound") return null;
+    throw err;
+  }
+}
+
+/** URL de lecture signée sur le compartiment désigné (nom ASCII, disposition signée). */
+export async function signerLectureR2(
+  cible: CibleR2,
+  key: string,
+  expiresInSeconds: number,
+  fichier: { nom: string; disposition: DispositionFichier },
+): Promise<string> {
+  return getSignedUrl(
+    clientR2Cible(cible),
+    new GetObjectCommand({
+      Bucket: cible.bucket,
+      Key: key,
+      ResponseContentDisposition: enTeteContentDisposition(fichier.disposition, fichier.nom),
+    }),
+    { expiresIn: expiresInSeconds },
+  );
+}
+
+/** Le flux d'un objet (antivirus) — sans rien poser sur le disque. */
+export async function fluxObjetR2(
+  cible: CibleR2,
+  key: string,
+): Promise<AsyncIterable<Uint8Array> | null> {
+  const r = await clientR2Cible(cible).send(
+    new GetObjectCommand({ Bucket: cible.bucket, Key: key }),
+  );
+  return (r.Body as AsyncIterable<Uint8Array> | undefined) ?? null;
 }
