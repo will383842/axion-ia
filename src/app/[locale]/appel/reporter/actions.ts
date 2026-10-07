@@ -95,8 +95,15 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
 
   // Le lien ancien → nouveau est journalisé pour le dossier client (chantier
   // visio, PR 4) : la rencontre du nouveau rendez-vous héritera de la fiche.
-  const r = await reporterRendezVous(rdv, et.uri, new Date(debutBrut), (ancien, nouveau) =>
-    journaliserReport(prisma, ancien, nouveau),
+  // 🔑 Les questions ACTUELLES du type de destination partent avec : elles
+  // fixent le libellé et la position des réponses reprises, et une question
+  // obligatoire sans réponse arrête le report AVANT tout appel (2026-10-07).
+  const r = await reporterRendezVous(
+    rdv,
+    et.uri,
+    new Date(debutBrut),
+    (ancien, nouveau) => journaliserReport(prisma, ancien, nouveau),
+    et.questions,
   );
 
   if (r.ok) {
@@ -198,6 +205,22 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
           `information manque — l'enrichissement a peut-etre echoue.`,
       );
       redirect(retour("&echec=refus"));
+      break;
+
+    case "reponses_manquantes":
+      // Rendez-vous pris avant l'ajout d'une question obligatoire : on n'invente
+      // pas la réponse. Rien n'est parti chez Calendly, l'ancien est INTACT ; la
+      // page propose le lien Calendly de déplacement, qui pose la question.
+      await prevenir(
+        "report_reponses_manquantes",
+        "warn",
+        rdv.id,
+        `Report en ligne impossible pour ${rdv.id} : question(s) obligatoire(s) sans ` +
+          `reponse dans l'ancien rendez-vous.\n\n${r.questions.join("\n")}\n\n` +
+          `Rien n'a ete envoye a Calendly, l'ancien rendez-vous est intact. Le visiteur ` +
+          `a ete renvoye vers le lien Calendly de deplacement.`,
+      );
+      redirect(retour("&echec=questions"));
       break;
 
     case "non_configure":
