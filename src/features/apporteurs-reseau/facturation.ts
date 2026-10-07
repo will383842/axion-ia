@@ -47,7 +47,6 @@ import {
 } from "./commissions";
 import {
   aVirerPartielCents,
-  aVirerTtcCents,
   dateFr,
   donneesManquantesAutofacture,
   echeancePaiement,
