@@ -27,7 +27,7 @@ import {
 
 /**
  * Nombre de journées facturées par format, lu depuis l'id de la commission.
- * `com-formation-3j` est un palier ouvert (« 3 jours et + ») : le montant
+ * `com-formation-3j` vaut 3 journées (contrat 2.3 : 500 € par journée, sans limite) : le montant
  * affiché est celui du plancher, 3 journées.
  */
 const JOURNEES_PAR_ID: Readonly<Record<string, number>> = {

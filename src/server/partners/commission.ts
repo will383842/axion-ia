@@ -21,7 +21,11 @@
  */
 import { createHash } from "node:crypto";
 
-import { COMMERCIAL_COMMISSIONS, type CommercialCommission } from "@/content/pricing";
+import {
+  COMMERCIAL_COMMISSIONS,
+  commissionFormation,
+  type CommercialCommission,
+} from "@/content/pricing";
 
 /** Les cinq valeurs de l'enum Prisma `ActiviteFacturation`. */
 export type ActiviteFacturation = "formation" | "un_a_un" | "audit" | "implementation" | "site_web";
@@ -100,9 +104,12 @@ function idPourActivite(activite: ActiviteFacturation, jours: number | null): st
     case "formation": {
       // Pas de journées = pas de palier. Aucun repli sur « 1 jour » : ce serait
       // inventer un palier, donc inventer un montant.
-      if (jours === null || !Number.isFinite(jours) || jours < 1) return null;
-      if (jours === 1) return "com-formation-1j";
-      if (jours === 2) return "com-formation-2j";
+      // Contrat 2.3, A1.1 (2026-10-07) : par DEMI-journée au moins (0,5 = 4 heures).
+      if (jours === null || !Number.isFinite(jours) || jours < 0.5 || (jours * 2) % 1 !== 0)
+        return null;
+      if (jours < 1) return "com-formation-4h";
+      if (jours < 2) return "com-formation-1j";
+      if (jours < 3) return "com-formation-2j";
       return "com-formation-3j";
     }
     case "un_a_un":
@@ -135,7 +142,8 @@ function bloquee(commissionId: string | null): ResolutionCommission {
  * Le verdict de commission d'une ligne.
  *
  * `flat` = `flatEur × 100` — UNE FOIS par commande portant le palier.
- * `percent` = `round(percent × montantHtCents / 100)`.
+ * `percent` = `floor(percent × montantHtCents / 100)`, comme le moteur.
+ * Formation = 500 € × journées (contrat 2.3, A1.1).
  * `scale`, ou barème introuvable → `bloquee` / `a_qualifier`.
  */
 export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
@@ -149,6 +157,21 @@ export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
     // La grille a bougé sous ce module : l'id qu'il vise n'existe plus. C'est un
     // blocage, pas une exception — l'événement doit partir et l'anomalie se voir.
     return bloquee(null);
+  }
+
+  // FORMATION — contrat 2.3, A1.1 (décision de Will, 2026-10-07) : 500 € PAR JOURNÉE vendue,
+  // sans limite (5 journées = 2 500 €), la demi-journée à 250 €. C'est la règle du moteur
+  // (`regles.ts`). A-2 reste vrai : le montant est le TAUX JOURNALIER × les journées, jamais un
+  // forfait de palier multiplié une seconde fois (2 jours = 1 000 €, pas 2 000 €).
+  if (e.activite === "formation" && e.jours !== null) {
+    return {
+      statut: "calculee",
+      commissionId: id,
+      montantCents: Math.round(commissionFormation(e.jours) * 100),
+      motifBlocage: null,
+      libelleCommission: entree.labelFr,
+      grilleVersion: GRILLE_VERSION,
+    };
   }
 
   if (entree.kind === "flat") {
@@ -169,7 +192,8 @@ export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
     return {
       statut: "calculee",
       commissionId: id,
-      montantCents: Math.round((entree.percent * e.montantHtCents) / 100),
+      // À l'inférieur, comme le moteur (`regles.ts`) : un centime n'est jamais arrondi au-dessus.
+      montantCents: Math.floor((entree.percent * e.montantHtCents) / 100),
       motifBlocage: null,
       libelleCommission: entree.labelFr,
       grilleVersion: GRILLE_VERSION,

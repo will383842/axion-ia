@@ -1,14 +1,14 @@
 {
   "version": 3,
-  "publieeAt": "2026-10-07T21:47:38.011Z",
-  "hash": "7c4a6fb9d2b02bd0b43cc86fb43f9f9c7271872d65bfef7930b922bfb350065f",
+  "publieeAt": "2026-10-07T23:14:30.975Z",
+  "hash": "4992e62e72e08ac302487b22f7492bd8cf06f8382c2761ee8d499b3bb65c2c98",
   "empreintesLignes": {
     "commissions": {
       "com-audit": "0bd2111c71900af3e908daf56462421bc0927c63b3a2c4cb0cd12a2b68e09348",
       "com-conference": "975363784a3595508d84fffa81daab285aaf4689f11cf50aa95fadcf93f77602",
       "com-formation-1j": "48eaff4061f849df836efef4610782fcb8eef50dad7f1e48fa8334f145e9eae6",
       "com-formation-2j": "bba1459d5bbde8c6b213145c743e78a1e95d574a1a224c25edef4e7cee8b8849",
-      "com-formation-3j": "8aa46cd2a33a4720c87c43a580f9524271fde14a841e4466ae885b93f3d3fd1d",
+      "com-formation-3j": "2c38c0b7705a231ccafc19fc3b74947d9eb0f0c74702fee4246c98490f0e1c29",
       "com-formation-4h": "f2ec1245e73d2697808711e907c811673f4ec285254df44af0873efd750e60cc",
       "com-integration": "0e69208e08207b20f19df433a4def65d0189af43a79c4e337097f68576e6de0a",
       "com-un-a-un": "30a3894c2490561d3659ac0a92fda989714f458e0bf46564bfbea027f83f3c95"
@@ -78,7 +78,7 @@
       },
       {
         "commissionId": "com-formation-3j",
-        "libelleFr": "Formation 3 jours et +",
+        "libelleFr": "Formation 3 jours",
         "kind": "flat",
         "montantCents": 150000,
         "tauxBps": null

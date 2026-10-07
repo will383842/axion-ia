@@ -86,7 +86,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
             : "AI trainings — flat commission per sale"}
         </h3>
       </div>
-      <div className="grid gap-5 sm:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {flats.map((c) => (
           <Link
             key={c.id}

@@ -147,7 +147,17 @@ describe("DM-03-A · cohérence de la grille (HYP-W6-BIS, REQ-DM-014)", () => {
     const sansDeclaration = {
       ...e,
       commissions: e.commissions.map((c) =>
-        c.id === "com-integration" ? { ...c, kind: "scale" as const, percent: undefined } : c,
+        c.id === "com-integration"
+          ? {
+              id: c.id,
+              labelFr: c.labelFr,
+              labelEn: c.labelEn,
+              kind: "scale" as const,
+              ...(c.basisTierId ? { basisTierId: c.basisTierId } : {}),
+              descriptionFr: c.descriptionFr,
+              descriptionEn: c.descriptionEn,
+            }
+          : c,
       ),
     };
     expect(codes(sansDeclaration)).toEqual(

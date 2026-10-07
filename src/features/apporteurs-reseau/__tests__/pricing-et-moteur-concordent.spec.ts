@@ -14,6 +14,7 @@ import {
   type FormationCategorie,
   type FormationDuree,
 } from "@/content/pricing";
+import { resoudreCommission } from "@/server/partners/commission";
 import { FORFAIT_CONFERENCE_CENTS, PALIERS_FORMATION, TAUX_BPS } from "../regles";
 
 const COMMISSION_PAR_DUREE: Record<string, string> = {
@@ -51,5 +52,27 @@ describe("pricing.ts ↔ moteur de calcul (regles.ts)", () => {
     expect(INTERVENTION_TIERS.find((t) => t.id === "intervention-4h")?.commissionId).toBe(
       "com-formation-4h",
     );
+  });
+
+  // Partners reçoit le montant de `resoudreCommission` : il doit être celui du moteur.
+  it("Partners (resoudreCommission) calcule comme le moteur : 500 € × journées, pourcentages à l'inférieur", () => {
+    const forfaitJour = PALIERS_FORMATION.find(
+      (p) => p.id === "formation-generale-1j",
+    )!.forfaitCents;
+    for (const jours of [0.5, 1, 2, 3, 5]) {
+      const r = resoudreCommission({ activite: "formation", jours, montantHtCents: 1 });
+      expect(r.statut, `${jours} j`).toBe("calculee");
+      expect(r.montantCents, `${jours} j`).toBe(forfaitJour * jours);
+    }
+    for (const [activite, bps] of [
+      ["un_a_un", TAUX_BPS.un_a_un],
+      ["audit", TAUX_BPS.audit],
+      ["implementation", TAUX_BPS.implementation],
+    ] as const) {
+      const ht = 333_333;
+      expect(resoudreCommission({ activite, jours: null, montantHtCents: ht }).montantCents).toBe(
+        Math.floor((ht * bps) / 10_000),
+      );
+    }
   });
 });

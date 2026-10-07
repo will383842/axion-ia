@@ -33,21 +33,35 @@ describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes",
     expect(r.montantCents).toBe(100_000); // 1 000 € — PAS 200 000
   });
 
-  it("🔴 A-2 — le palier « 3 jours et + » ne suit pas non plus la durée : 5 jours = le forfait du palier", () => {
+  // 2026-10-07 (décision de Will, contrat 2.3, A1.1) : 500 € PAR JOURNÉE, sans limite. Le
+  // forfait « 3 jours et + » à 1 500 € plafonnait à tort une formation de 5 jours.
+  it("contrat A1.1 — 500 € par journée, sans limite : 3 jours = 1 500 €, 5 jours = 2 500 €", () => {
     const trois = resoudreCommission({ activite: "formation", jours: 3, montantHtCents: 750_000 });
     const cinq = resoudreCommission({ activite: "formation", jours: 5, montantHtCents: 1_250_000 });
-
     expect(trois.commissionId).toBe("com-formation-3j");
     expect(cinq.commissionId).toBe("com-formation-3j");
-    expect(cinq.montantCents).toBe(trois.montantCents);
-    expect(cinq.montantCents).toBe(150_000); // 1 500 €
+    expect(trois.montantCents).toBe(150_000);
+    expect(cinq.montantCents).toBe(250_000);
+  });
+
+  it("contrat A1.1 — une demi-journée (jours = 0,5) : 250 €, palier com-formation-4h (plus « hors grille »)", () => {
+    const r = resoudreCommission({ activite: "formation", jours: 0.5, montantHtCents: 120_000 });
+    expect(r.statut).toBe("calculee");
+    expect(r.commissionId).toBe("com-formation-4h");
+    expect(r.montantCents).toBe(25_000);
+  });
+
+  it("un pourcentage s'arrondit À L'INFÉRIEUR, comme le moteur (regles.ts)", () => {
+    // 30 % de 333 333 = 99 999,9 → 99 999 (Math.floor), jamais 100 000.
+    const r = resoudreCommission({ activite: "audit", jours: null, montantHtCents: 333_333 });
+    expect(r.montantCents).toBe(99_999);
   });
 
   it("audit → 30 % du HT, arrondi", () => {
     const r = resoudreCommission({ activite: "audit", jours: null, montantHtCents: 333_333 });
     expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-audit");
-    expect(r.montantCents).toBe(Math.round((30 * 333_333) / 100));
+    expect(r.montantCents).toBe(Math.floor((30 * 333_333) / 100));
   });
 
   it("implementation → 15 % du HT", () => {
@@ -66,7 +80,7 @@ describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes",
     const r = resoudreCommission({ activite: "un_a_un", jours: null, montantHtCents: 400_000 });
     expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-un-a-un");
-    expect(r.montantCents).toBe(Math.round((30 * 400_000) / 100));
+    expect(r.montantCents).toBe(Math.floor((30 * 400_000) / 100));
   });
 
   it("site_web n'a AUCUN barème dans la grille → bloquée, et le dit", () => {

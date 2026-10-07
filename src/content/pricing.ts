@@ -920,14 +920,16 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
   },
   {
     id: "com-formation-3j",
-    labelFr: "Formation 3 jours et +",
-    labelEn: "3-day+ training",
+    // Contrat 2.3, A1.1 (2026-10-07) : 500 € par journée, SANS limite. Plus de « 3 jours et + » à
+    // 1 500 € (qui plafonnait une formation de 5 jours) : 3 jours = 1 500 €, et chaque journée en
+    // plus ajoute 500 € (5 jours = 2 500 €) — `resoudreCommission` et le moteur le calculent.
+    labelFr: "Formation 3 jours",
+    labelEn: "3-day training",
     kind: "flat",
     flatEur: commissionFormation(3),
     descriptionFr:
-      "Commission fixe pour chaque format long (3 jours ou plus) vendu — et au-delà de 3 journées, la commission suit.",
-    descriptionEn:
-      "Flat commission for each long format (3 days or more) sold — beyond 3 days, the commission follows.",
+      "500 € par journée vendue, sans limite : 3 journées = 1 500 €, 5 journées = 2 500 €.",
+    descriptionEn: "€500 per day sold, with no cap: 3 days = €1,500, 5 days = €2,500.",
   },
   {
     // INT-T53-A — la conférence, au forfait. Pas de `basisTierId` : le palier est sur devis, il
