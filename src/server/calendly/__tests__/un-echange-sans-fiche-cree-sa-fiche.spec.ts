@@ -102,8 +102,19 @@ vi.mock("@/lib/prisma", () => {
         async (a: { where: { id: string } }) =>
           db.evenements.find((l) => l["id"] === a.where.id) ?? null,
       ),
-      findMany: vi.fn(async (a: { where: Record<string, unknown> }) =>
-        db.evenements.filter((l) => evenementCorrespond(l, a.where)),
+      findMany: vi.fn(
+        async (a: {
+          where: Record<string, unknown>;
+          orderBy?: { capturedAt?: "asc" | "desc" };
+          take?: number;
+        }) => {
+          const r = db.evenements.filter((l) => evenementCorrespond(l, a.where));
+          if (a.orderBy?.capturedAt) {
+            const sens = a.orderBy.capturedAt === "desc" ? -1 : 1;
+            r.sort((x, y) => sens * (Number(x["capturedAt"]) - Number(y["capturedAt"])));
+          }
+          return a.take ? r.slice(0, a.take) : r;
+        },
       ),
       updateMany: vi.fn(async (a: { where: Record<string, unknown>; data: Ligne }) => {
         const cibles = db.evenements.filter((l) => evenementCorrespond(l, a.where));
@@ -131,7 +142,11 @@ vi.mock("@/lib/prisma", () => {
         return {};
       }),
     },
-    $queryRaw: vi.fn(async () => []),
+    // Prisma 5.22 : `$queryRaw` sur `pg_advisory_xact_lock` (qui rend `void`) LÈVE.
+    $queryRaw: vi.fn(async () => {
+      throw new Error("Failed to deserialize column of type 'void'");
+    }),
+    $executeRaw: vi.fn(async () => 1),
     $transaction: async (cb: (tx: unknown) => unknown) => cb(prisma),
   };
   return { prisma };
@@ -157,7 +172,14 @@ const evenement = (surcharge: Ligne = {}): Ligne => ({
   inviteePhone: "+33600000000",
   linkedSubmissionId: null,
   linkedJobApplicationId: null,
-  rawPayload: { invitee: { email: "kraft@exemple.fr" } },
+  capturedAt: new Date("2026-10-07T13:00:00Z"),
+  rawPayload: {
+    invitee: {
+      email: "kraft@exemple.fr",
+      name: "Kraft Bastine",
+      text_reminder_number: "+33600000000",
+    },
+  },
   ...surcharge,
 });
 const ficheApporteur = (email: string, nom: string): Ligne => ({
@@ -263,6 +285,63 @@ describe("suite de l'audit (07/10)", () => {
   });
 });
 
+describe("relecture de a1 (07/10)", () => {
+  it("le verrou passe par `$executeRaw` (le `$queryRaw` de Prisma 5.22 lève sur `void`)", async () => {
+    expect(await creer()).toMatchObject({ cree: true });
+    expect(db.submissions).toHaveLength(1);
+  });
+
+  it("nom d'un seul mot (relais Indeed possible) : aucune fiche, rattachement à la main", async () => {
+    const r = await creerFicheDepuisRendezVous({
+      eventId: "evt_1",
+      email: "kraft@exemple.fr",
+      nom: "Kraft",
+      telephone: null,
+      reponses: null,
+    });
+    expect(r).toMatchObject({ cree: false, motif: "nom_a_verifier" });
+    expect(db.submissions).toHaveLength(0);
+    expect(db.evenements[0]!["linkedSubmissionId"]).toBeNull();
+  });
+
+  it("rattrapage : nom et téléphone CONFIRMÉS par Calendly, jamais ceux de la ligne", async () => {
+    db.evenements = [
+      evenement({
+        inviteeName: "Nom Forgé",
+        inviteePhone: "+33999999999",
+        rawPayload: {
+          invitee: {
+            email: "kraft@exemple.fr",
+            name: "Kraft Bastine",
+            text_reminder_number: "+33611111111",
+          },
+        },
+      }),
+    ];
+    await rattraperFichesRendezVousApporteur();
+    expect(db.submissions[0]).toMatchObject({
+      contactName: "Kraft Bastine",
+      contactPhone: "+33611111111",
+    });
+  });
+
+  it("rattrapage : des lignes anciennes écartées ne bloquent pas une réservation récente", async () => {
+    const anciennes = Array.from({ length: 60 }, (_, i) =>
+      evenement({
+        id: `evt_vieux_${i}`,
+        inviteeEmail: `v${i}@x.fr`,
+        inviteeName: "Vieux",
+        capturedAt: new Date(Date.UTC(2026, 8, 1, 0, i)),
+        rawPayload: { invitee: { email: `v${i}@x.fr`, name: "Vieux" } },
+      }),
+    );
+    db.evenements = [...anciennes, evenement()];
+    const bilan = await rattraperFichesRendezVousApporteur();
+    expect(bilan.crees).toBe(1);
+    expect(db.evenements.find((e) => e["id"] === "evt_1")!["linkedSubmissionId"]).toBeTruthy();
+  });
+});
+
 describe("rattrapage des rendez-vous déjà en base", () => {
   it("crée les fiches manquantes ; ignore annulés, effacés, non-apporteurs et adresses non confirmées", async () => {
     db.evenements = [
@@ -280,13 +359,13 @@ describe("rattrapage des rendez-vous déjà en base", () => {
         eventTypeName: "Diagnostic 30 min",
         inviteeEmail: "client@x.fr",
         inviteeName: "Claire Client",
-        rawPayload: { invitee: { email: "client@x.fr" } },
+        rawPayload: { invitee: { email: "client@x.fr", name: "Claire Client" } },
       }),
       evenement({
         id: "evt_forge",
         inviteeEmail: "victime@x.fr",
         inviteeName: "Victor Forge",
-        rawPayload: { invitee: { email: "autre@x.fr" } },
+        rawPayload: { invitee: { email: "autre@x.fr", name: "Victor Forge" } },
       }),
     ];
     const bilan = await rattraperFichesRendezVousApporteur();

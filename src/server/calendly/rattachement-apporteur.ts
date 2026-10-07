@@ -59,8 +59,21 @@ export interface LigneARattacher {
  * Calendly — repli « même nom, autre adresse » (adresse relais Indeed). Lecture seule.
  */
 export async function fichesApporteurAuNom(nom: string | null | undefined): Promise<string[]> {
-  const mots = motsDuNom(nom);
-  if (mots.length === 0) return [];
+  if (motsDuNom(nom).length === 0) return [];
+  return fichesAuNomDans(await chargerFichesPourNoms(), nom);
+}
+
+export interface FichePourNom {
+  id: string;
+  nom: string | null;
+  email: string | null;
+}
+
+/**
+ * Les fiches apporteur lues UNE fois (bornées à `PLAFOND_LECTURE_NOMS`), déchiffrées : un
+ * passage qui compare plusieurs noms (le rattrapage) ne relit pas la table à chaque ligne.
+ */
+export async function chargerFichesPourNoms(): Promise<FichePourNom[]> {
   const lignes = await prisma.submission.findMany({
     where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
     orderBy: { submittedAt: "desc" },
@@ -76,11 +89,18 @@ export async function fichesApporteurAuNom(nom: string | null | undefined): Prom
     }
   };
   return lignes
-    .filter(
-      (l) =>
-        estApporteur(l.details) && nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
-    )
-    .map((l) => l.id);
+    .filter((l) => estApporteur(l.details))
+    .map((l) => ({ id: l.id, nom: clair(l.contactName), email: clair(l.contactEmail) }));
+}
+
+/** Les fiches de `liste` dont le nom correspond (vide si le nom ne suffit pas à chercher). */
+export function fichesAuNomDans(
+  liste: readonly FichePourNom[],
+  nom: string | null | undefined,
+): string[] {
+  const mots = motsDuNom(nom);
+  if (mots.length === 0) return [];
+  return liste.filter((f) => nomCorrespond(mots, f.nom, f.email)).map((f) => f.id);
 }
 
 export type IssueRattachement =

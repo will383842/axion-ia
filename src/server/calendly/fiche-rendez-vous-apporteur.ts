@@ -33,7 +33,12 @@ import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-applicat
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { LEAD_APPORTEUR_ETAPE } from "@/lib/commercial-application/lead-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
-import { fichesApporteurAuNom } from "./rattachement-apporteur";
+import { motsDuNom } from "@/lib/calendly/nom-fiche";
+import {
+  chargerFichesPourNoms,
+  fichesAuNomDans,
+  type FichePourNom,
+} from "./rattachement-apporteur";
 
 /** Valeur de `details.origine` des fiches nées d'une réservation. */
 export const ORIGINE_RENDEZ_VOUS_APPORTEUR = "rendez-vous-apporteur";
@@ -50,6 +55,7 @@ export type IssueFicheRendezVous =
         | "annule"
         | "fiche_existante"
         | "meme_nom_a_verifier"
+        | "nom_a_verifier"
         | "rattache_entre_temps";
       submissionId?: string;
     };
@@ -67,6 +73,8 @@ export async function creerFicheDepuisRendezVous(e: {
   telephone: string | null;
   /** Réponses aux questions Calendly, en texte. */
   reponses: string | null;
+  /** Fiches apporteur déjà chargées (rattrapage) : évite de relire la table à chaque ligne. */
+  fichesPourNoms?: readonly FichePourNom[];
 }): Promise<IssueFicheRendezVous> {
   const email = e.email.trim();
   const empreinte = hashEmailForLookup(email);
@@ -80,11 +88,21 @@ export async function creerFicheDepuisRendezVous(e: {
   });
   if (rdv?.status === "canceled") return { cree: false, motif: "annule" };
 
+  // Nom trop court pour être comparé (un seul mot, ou des mots de moins de 3 lettres) : le
+  // garde-fou « même nom » ne peut pas jouer, et un candidat Indeed (adresse relais) aurait
+  // alors une deuxième fiche. On ne crée rien : le rendez-vous se rattache à la main.
+  if (motsDuNom(e.nom).length === 0) {
+    console.warn("[fiche-rendez-vous] nom trop court pour comparer : rattachement à la main");
+    return { cree: false, motif: "nom_a_verifier" };
+  }
+
   const issue = await prisma.$transaction(
     async (tx) => {
       // Deux passes simultanées (webhook et sondage) pour la même personne : la
       // seconde attend la première, puis trouve sa fiche.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${`fiche-rdv:${empreinte}`}))`;
+      // `$executeRaw`, pas `$queryRaw` : la fonction rend `void`, que Prisma 5.22 ne sait pas
+      // désérialiser (« Failed to deserialize column of type 'void' »).
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`fiche-rdv:${empreinte}`}))`;
       const lignes = await tx.submission.findMany({
         where: { contactEmailHash: empreinte, deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
         orderBy: { submittedAt: "desc" },
@@ -95,7 +113,8 @@ export async function creerFicheDepuisRendezVous(e: {
       if (existante) return { cree: false as const, submissionId: existante.id };
       // L'adresse d'abord, le nom ensuite : même nom, AUTRE adresse (relais Indeed) →
       // on ne crée pas un doublon, un humain choisit dans le sélecteur.
-      if ((await fichesApporteurAuNom(e.nom)).length > 0) return null;
+      const fiches = e.fichesPourNoms ?? (await chargerFichesPourNoms());
+      if (fichesAuNomDans(fiches, e.nom).length > 0) return null;
 
       const nom = e.nom?.trim() ?? "";
       const telephone = e.telephone?.trim() ?? "";
@@ -158,13 +177,18 @@ export async function creerFicheDepuisRendezVous(e: {
   return issue;
 }
 
-/** L'adresse que l'API Calendly a confirmée (charge brute rafraîchie), ou `null`. */
-export function adresseConfirmee(rawPayload: unknown): string | null {
+/** Un champ de l'invité que l'API Calendly a CONFIRMÉ (charge brute rafraîchie), ou `null`. */
+function champConfirme(rawPayload: unknown, champ: string): string | null {
   if (!rawPayload || typeof rawPayload !== "object" || Array.isArray(rawPayload)) return null;
   const invitee = (rawPayload as Record<string, unknown>)["invitee"];
   if (!invitee || typeof invitee !== "object" || Array.isArray(invitee)) return null;
-  const email = (invitee as Record<string, unknown>)["email"];
-  return typeof email === "string" && email.trim() ? email.trim() : null;
+  const v = (invitee as Record<string, unknown>)[champ];
+  return typeof v === "string" && v.trim() ? v.trim() : null;
+}
+
+/** L'adresse que l'API Calendly a confirmée, ou `null`. */
+export function adresseConfirmee(rawPayload: unknown): string | null {
+  return champConfirme(rawPayload, "email");
 }
 
 export interface BilanRattrapage {
@@ -192,7 +216,9 @@ export async function rattraperFichesRendezVousApporteur(): Promise<BilanRattrap
       NOT: { inviteeName: ERASED_PLACEHOLDER },
       OR: [{ typeRendezVous: "apporteur" }, { eventTypeName: { contains: "pporteur" } }],
     },
-    orderBy: { capturedAt: "asc" },
+    // Les plus RÉCENTES d'abord : une ligne écartée à chaque passage (nom à vérifier, même
+    // nom ailleurs) ne bloque jamais les réservations qui arrivent après elle.
+    orderBy: { capturedAt: "desc" },
     take: RATTRAPAGE_PAR_PASSAGE,
     select: {
       id: true,
@@ -200,10 +226,11 @@ export async function rattraperFichesRendezVousApporteur(): Promise<BilanRattrap
       typeRendezVous: true,
       inviteeEmail: true,
       inviteeName: true,
-      inviteePhone: true,
       rawPayload: true,
     },
   });
+  // Les fiches apporteur, lues une seule fois pour tout le passage.
+  let fichesPourNoms: FichePourNom[] | null = null;
   for (const l of lignes) {
     bilan.examines += 1;
     const confirmee = adresseConfirmee(l.rawPayload);
@@ -216,12 +243,16 @@ export async function rattraperFichesRendezVousApporteur(): Promise<BilanRattrap
       continue;
     }
     try {
+      fichesPourNoms ??= await chargerFichesPourNoms();
+      // Nom et téléphone CONFIRMÉS par Calendly : jamais ceux de la ligne, que la route
+      // publique de capture peut avoir écrits.
       const r = await creerFicheDepuisRendezVous({
         eventId: l.id,
         email: confirmee,
-        nom: l.inviteeName,
-        telephone: l.inviteePhone,
+        nom: champConfirme(l.rawPayload, "name"),
+        telephone: champConfirme(l.rawPayload, "text_reminder_number"),
         reponses: null,
+        fichesPourNoms,
       });
       if (r.cree) bilan.crees += 1;
       else if (r.motif === "fiche_existante") bilan.rattaches += 1;
