@@ -134,6 +134,8 @@ export type EmailJobName =
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
   | "convention-envoi"
+  // INT-T77-A — la convention ET le mandat OPCO, un seul courriel, deux liens.
+  | "convention-et-mandat-opco"
   // 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ, remis au signataire (2026-09-05).
   // Il n'existait pas : une pièce contresignée ne déclenchait RIEN, et la
   // cliente d'AXI-DOC-2026-039 n'a jamais reçu sa convention signée.

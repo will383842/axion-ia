@@ -1747,7 +1747,10 @@ export function DocumentsSection({
           // sans OPCO, le mandat n'a pas d'objet. Pas de première émission
           // sur un dossier clos : le serveur la refuserait.
           const avecMandatOpco =
-            !fige && (contexte.financement === "opco" || contexte.financement === "mixte");
+            !fige &&
+            (contexte.dossierOpcoOuvert === true ||
+              contexte.financement === "opco" ||
+              contexte.financement === "mixte");
           const enAvant = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
           const posConventions = enAvant.findIndex((b) => b.type === "convention_tripartite");
           const attendues = avecMandatOpco

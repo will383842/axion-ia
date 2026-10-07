@@ -325,6 +325,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/actions/qualiopi/piece-lien-signature.ts",
   },
+  "convention-et-mandat-opco": {
+    categorie: "commerce",
+    quand: "Envoi de la convention et du mandat OPCO à signer — passe par la corbeille",
+    destinataire: "le client",
+    source: "server/actions/qualiopi/piece-lien-signature.ts",
+  },
   "piece-exemplaire-signe": {
     categorie: "commerce",
     quand: "Toutes les parties ont signé — remise automatique de l'exemplaire signé",

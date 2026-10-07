@@ -52,6 +52,8 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   // deux garages successifs sur un même envoi, c'est un envoi qui n'a pas lieu.
   "devis-envoi",
   "convention-envoi",
+  // INT-T77-A — même régime que la convention : il part au client, donc relu.
+  "convention-et-mandat-opco",
   "facture-envoi",
   // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
   "facture-pieces-remboursement-opco",
@@ -145,6 +147,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
+  "convention-et-mandat-opco": "Envoi de la convention et du mandat OPCO",
   "facture-envoi": "Envoi d'une facture",
   "facture-pieces-remboursement-opco":
     "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
