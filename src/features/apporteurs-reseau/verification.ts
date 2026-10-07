@@ -445,17 +445,43 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
-  // Déjà envoyé (lien, rappel, ou « Retenu » qui porte le lien) : la console le dit, et un
-  // renvoi se confirme.
+  const dejaEnvoyeLe = await dernierLienEnvoyeLe(d.id);
+  return { ok: true as const, envoi, url, dejaEnvoyeLe };
+}
+
+/** « Nouvel apporteur » sur une adresse déjà connue : statut du dossier et dernier lien envoyé. */
+export async function etatDuDossier(
+  apporteurId: string,
+): Promise<{ statut: string; dernierLienLe: string | null }> {
+  const { LIBELLE_STATUT_APPORTEUR } = await import("./requetes-console");
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { id: apporteurId },
+    select: { statut: true },
+  });
+  return {
+    statut: a ? LIBELLE_STATUT_APPORTEUR[a.statut] : "inconnu",
+    dernierLienLe: await dernierLienEnvoyeLe(apporteurId),
+  };
+}
+
+/**
+ * Date du dernier lien envoyé (lien, rappel, ou « Retenu » qui porte le lien), « 6 octobre »,
+ * ou `null`. Sert à « déjà envoyé le … » (fiche) et à « Nouvel apporteur ».
+ */
+export async function dernierLienEnvoyeLe(apporteurId: string): Promise<string | null> {
   const lie = await prisma.apporteurReseau.findUnique({
-    where: { id: d.id },
+    where: { id: apporteurId },
     select: { submissionId: true },
   });
   const dernier = await prisma.emailLog.findFirst({
     where: {
       status: { in: ["pending", "sent"] },
       OR: [
-        { template: "apporteur-dossier-lien", entityType: "ApporteurReseau", entityId: d.id },
+        {
+          template: "apporteur-dossier-lien",
+          entityType: "ApporteurReseau",
+          entityId: apporteurId,
+        },
         ...(lie?.submissionId
           ? [
               {
@@ -470,14 +496,13 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     select: { createdAt: true },
     orderBy: { createdAt: "desc" },
   });
-  const dejaEnvoyeLe = dernier
+  return dernier
     ? dernier.createdAt.toLocaleDateString("fr-FR", {
         day: "numeric",
         month: "long",
         timeZone: "Europe/Paris",
       })
     : null;
-  return { ok: true as const, envoi, url, dejaEnvoyeLe };
 }
 
 export async function envoyerLien(
@@ -535,7 +560,9 @@ export async function ouvrirDossierManuel(e: {
   nom: string;
   email: string;
   telephone: string | null;
-}): Promise<{ ok: true; apporteurId: string } | { ok: false; message: string }> {
+  /** Fiche candidat choisie dans la recherche de « Nouvel apporteur » (07/10). */
+  submissionId?: string | null;
+}): Promise<{ ok: true; apporteurId: string; existait?: true } | { ok: false; message: string }> {
   const { encryptPii } = await import("@/lib/pii-crypto");
   const { hashEmailForLookup } = await import("@/lib/security/email-hash");
   const email = e.email.trim();
@@ -546,13 +573,17 @@ export async function ouvrirDossierManuel(e: {
     where: { emailHash: hash },
     select: { id: true },
   });
-  if (existant) return { ok: true, apporteurId: existant.id };
-  // La fiche candidat apporteur de la même adresse, s'il y en a une : le dossier y est relié
+  if (existant) return { ok: true, apporteurId: existant.id, existait: true };
+  // La fiche candidat choisie dans la recherche, sinon celle de la même adresse, s'il y en a une : le dossier y est relié
   // (07/10), comme quand il naît de « Retenu ».
   const { estApporteur, FILTRE_APPORTEUR_PRISMA } =
     await import("@/lib/commercial-application/est-apporteur");
   const candidatures = await prisma.submission.findMany({
-    where: { contactEmailHash: hash, deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+    where: {
+      ...(e.submissionId ? { id: e.submissionId } : { contactEmailHash: hash }),
+      deletedAt: null,
+      ...FILTRE_APPORTEUR_PRISMA,
+    },
     orderBy: { submittedAt: "desc" },
     take: 5,
     select: { id: true, details: true },
