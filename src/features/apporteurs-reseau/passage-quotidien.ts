@@ -39,6 +39,7 @@ import {
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -186,7 +187,8 @@ type NomEtape =
   | "vigilance"
   | "alerte-pieces-vigilance"
   | "commande-signee"
-  | "rappels-dossier";
+  | "rappels-dossier"
+  | "chiffrement-pieces";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "autofacturation"];
 
@@ -230,6 +232,8 @@ async function passer(
     ],
     ["commande-signee", () => etapeCommandeSignee(maintenant, bilan)],
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
+    // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
+    ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

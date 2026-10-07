@@ -18,7 +18,7 @@ import { createHash } from "node:crypto";
 import React from "react";
 import { Document, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 
-import { CONTRAT_V2_MARKDOWN } from "./contrat-v2";
+import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "./contrat-v2";
 import { ACCEPTATIONS, DECLARATIONS, STATUTS_JURIDIQUES } from "./regles";
 
 export interface ValeursContrat {
@@ -246,10 +246,12 @@ function blocs(markdown: string): React.ReactNode[] {
 
 function Certificat({
   sha,
+  version,
   apporteur,
   societe,
 }: {
   sha: string;
+  version: string;
   apporteur: SignatureApporteur | null;
   societe: SignatureSociete | null;
 }) {
@@ -261,8 +263,8 @@ function Certificat({
     <View break>
       <Text style={s.certifTitre}>Certificat de signature électronique</Text>
       <Text style={s.p}>
-        Document : contrat d&apos;apporteur d&apos;affaires, version 2, et ses annexes. Empreinte
-        SHA-256 du texte signé :
+        Document : contrat d&apos;apporteur d&apos;affaires, version {version}, et ses annexes.
+        Empreinte SHA-256 du texte signé :
       </Text>
       <Text style={[s.p, s.gras]}>{sha}</Text>
       <View style={s.certif}>
@@ -307,6 +309,8 @@ function Certificat({
 
 export async function rendreContratPdf(entree: {
   texte: string;
+  /** Version du texte SIGNÉ (enregistrée dans la signature) ; par défaut, la version courante. */
+  version?: string;
   apporteur: SignatureApporteur | null;
   societe: SignatureSociete | null;
 }): Promise<Buffer> {
@@ -321,7 +325,12 @@ export async function rendreContratPdf(entree: {
     <Document title="Contrat d'apporteur d'affaires" author="AXION IA SAS" language="fr">
       <Page size="A4" style={s.page} wrap>
         {blocs(texte)}
-        <Certificat sha={sha} apporteur={apporteur} societe={societe} />
+        <Certificat
+          sha={sha}
+          version={entree.version ?? CONTRAT_VERSION}
+          apporteur={apporteur}
+          societe={societe}
+        />
         <View style={s.pied} fixed>
           <Text>Contrat d&apos;apporteur d&apos;affaires · AXION IA SAS</Text>
           <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />

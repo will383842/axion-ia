@@ -10,6 +10,8 @@ const h = vi.hoisted(() => ({
   lireDossier: vi.fn(),
   purgerContenuPieces: vi.fn(),
   appUpdate: vi.fn(),
+  // Contresignature : réservation conditionnelle (07/10). `count` 1 = réservé, 0 = déjà fait.
+  appUpdateMany: vi.fn(async () => ({ count: 1 })),
   appFindUnique: vi.fn(),
 }));
 
@@ -48,6 +50,7 @@ vi.mock("@/lib/prisma", () => {
       apporteurReseau: {
         findUnique: (...a: unknown[]) => h.appFindUnique(...a),
         update: (...a: unknown[]) => h.appUpdate(...a),
+        updateMany: (...a: unknown[]) => h.appUpdateMany(...a),
       },
       pieceApporteur: { update: vi.fn(), findMany: vi.fn().mockResolvedValue([]) },
       $transaction: async (f: (t: typeof tx) => unknown) => f(tx),
@@ -238,5 +241,46 @@ describe("B3 : la contresignature fabrique le PDF depuis le texte archivé à la
     expect(r).toMatchObject({ ok: false });
     expect((r as { message: string }).message).toContain("signer à nouveau");
     expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
+  });
+});
+
+describe("07/10 : la contresignature est réservée avant le PDF (double clic)", () => {
+  beforeEach(() => {
+    pdf.rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
+    pdf.texteDuContrat.mockReturnValue("CONTRAT");
+    h.appFindUnique.mockResolvedValue({
+      signatureApporteur: {
+        nomTape: "Claire Martin",
+        signeAt: "2026-10-07T10:00:00.000Z",
+        texteSha256: createHash("sha256").update("CONTRAT").digest("hex"),
+        valeurs: { identite: "Claire MARTIN" },
+        version: "2.1",
+      },
+    });
+  });
+
+  it("second clic : « déjà contresigné », aucun PDF ni e-mail", async () => {
+    h.appUpdateMany.mockResolvedValueOnce({ count: 0 });
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false, message: "Ce contrat est déjà contresigné." });
+    expect(pdf.rendreContratPdf).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("la réservation est conditionnée au statut « à vérifier », et le PDF porte la version signée", async () => {
+    expect(await appliquerDecision(ID, "contresigner", null)).toMatchObject({ ok: true });
+    expect(h.appUpdateMany.mock.calls[0]![0]).toMatchObject({
+      where: { id: ID, statut: "a_verifier", signeParSocieteAt: null },
+    });
+    expect(pdf.rendreContratPdf.mock.calls[0]![0].version).toBe("2.1");
+  });
+
+  it("le PDF échoue : la réservation est levée, on pourra recliquer", async () => {
+    pdf.rendreContratPdf.mockRejectedValueOnce(new Error("rendu impossible"));
+    await expect(appliquerDecision(ID, "contresigner", null)).rejects.toThrow();
+    const levee = h.appUpdateMany.mock.calls.find(
+      (c) => (c[0] as { data: Record<string, unknown> }).data.signeParSocieteAt === null,
+    );
+    expect(levee).toBeTruthy();
   });
 });

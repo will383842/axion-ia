@@ -11,6 +11,10 @@ vi.mock("@/server/careers/clamav", () => ({
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string | null) => (v === null ? null : `enc:${v}`),
   decryptPii: (v: string | null) => (v ? v.replace(/^enc:/, "") : null),
+  // Pièces chiffrées au repos (07/10) : une enveloppe reconnaissable, ici sans vraie clé.
+  ENTETE_OCTETS_V1: Buffer.from("AXB1"),
+  chiffrerOctetsPii: (b: Buffer) => Buffer.concat([Buffer.from("AXB1"), b]),
+  dechiffrerOctetsPii: (b: Buffer) => b.subarray(4),
 }));
 const { signaler } = vi.hoisted(() => ({ signaler: vi.fn() }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => signaler(...a) }));

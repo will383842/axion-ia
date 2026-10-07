@@ -109,6 +109,8 @@ export async function piecesARetransmettre(apporteurId: string): Promise<string[
 // ── Décisions ────────────────────────────────────────────────────────────
 
 interface SignatureLue {
+  /** Version du contrat signé ; « 2 » pour les signatures d'avant son enregistrement. */
+  version: string;
   nomTape: string;
   signeAt: string;
   ipHash: string | null;
@@ -138,6 +140,7 @@ function lireSignature(json: unknown): SignatureLue | null {
   const liste = (x: unknown) =>
     Array.isArray(x) ? x.filter((y): y is string => typeof y === "string") : [];
   return {
+    version: chaine(j.version) ?? "2",
     nomTape: j.nomTape as string,
     signeAt: j.signeAt as string,
     ipHash: chaine(j.ipHash),
@@ -272,28 +275,52 @@ export async function appliquerDecision(
     }
     if (!isR2Configured())
       return { ok: false, message: "Le stockage des documents n'est pas configuré." };
-    const pdf = await rendreContratPdf({
-      texte,
-      apporteur: {
-        nomTape: sig.nomTape,
-        signeAt: dateHeureParis(new Date(sig.signeAt)),
-        ipHash: sig.ipHash,
-        navigateur: sig.navigateur,
-        acceptations: sig.acceptations,
-        declarations: sig.declarations,
-      },
-      societe: { nom: SIGNATAIRE_SOCIETE, signeAt: dateHeureParis(maintenant) },
+    // Double clic, deux onglets : une seule contresignature. Le dossier est RÉSERVÉ (date de
+    // contresignature posée sous condition) avant de fabriquer le PDF ; le second clic ne trouve
+    // plus rien et ne fabrique pas un second PDF qui écraserait le premier sur R2.
+    const reserve = await prisma.apporteurReseau.updateMany({
+      where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: null },
+      data: { signeParSocieteAt: maintenant },
     });
+    if (reserve.count === 0) return { ok: false, message: "Ce contrat est déjà contresigné." };
+    const liberer = () =>
+      prisma.apporteurReseau.updateMany({
+        where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: maintenant },
+        data: { signeParSocieteAt: null },
+      });
+    let pdf: Buffer;
+    try {
+      pdf = await rendreContratPdf({
+        version: sig.version,
+        texte,
+        apporteur: {
+          nomTape: sig.nomTape,
+          signeAt: dateHeureParis(new Date(sig.signeAt)),
+          ipHash: sig.ipHash,
+          navigateur: sig.navigateur,
+          acceptations: sig.acceptations,
+          declarations: sig.declarations,
+        },
+        societe: { nom: SIGNATAIRE_SOCIETE, signeAt: dateHeureParis(maintenant) },
+      });
+    } catch (err) {
+      await liberer();
+      throw err;
+    }
     const sha = createHash("sha256").update(pdf).digest("hex");
     const cle = `apporteurs/${apporteurId}/contrat-v2-signe-${sig.texteSha256.slice(0, 8)}.pdf`;
-    await uploadToR2(cle, pdf, "application/pdf");
-    await prisma.apporteurReseau.update({
-      where: { id: apporteurId },
+    try {
+      await uploadToR2(cle, pdf, "application/pdf");
+    } catch (err) {
+      await liberer();
+      throw err;
+    }
+    await prisma.apporteurReseau.updateMany({
+      where: { id: apporteurId, statut: "a_verifier", signeParSocieteAt: maintenant },
       data: {
         statut: "signe",
         contratSigneCle: cle,
         contratSigneSha256: sha,
-        signeParSocieteAt: maintenant,
         dernierMessage: null,
       },
     });
