@@ -25,6 +25,12 @@
  * ou `null` en fin de famille). Un fait refusé ou illisible n'arrête pas la page : son identifiant
  * et le NOM de la faute sont rendus dans `refuses`, jamais une valeur ni une donnée de personne.
  *
+ * ── La marque « prêt à signer » est jugée par le producteur, pas par la requête de lister ────
+ * `lister` ne filtre PAS les candidatures sur la marque : il ne fait que désigner des fiches de la
+ * fenêtre. Ce qui part, et ce qui est refusé (corbeille, non-apporteur, sans suite) ou ignoré (pas
+ * de marque), est décidé par `emettreCandidatureRecue`, qui relit la fiche dans la transaction.
+ * Une requête ne peut donc faire partir aucune candidature que le chemin normal refuserait.
+ *
  * ── Authentification ─────────────────────────────────────────────────────────────────────────
  * Celle de la réconciliation : secret de relecture, « <horodatage>.<chemin>\n<corps> », fenêtre de
  * 300 s ; réponse signée « t.corps » avec le secret d'émission et `X-Axionia-Kid`. Débit borné,
