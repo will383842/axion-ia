@@ -75,6 +75,15 @@ export async function creerFicheDepuisRendezVous(e: {
   reponses: string | null;
   /** Fiches apporteur déjà chargées (rattrapage) : évite de relire la table à chaque ligne. */
   fichesPourNoms?: readonly FichePourNom[];
+  /**
+   * Création DEMANDÉE dans la console (2026-10-07, cas « Krafft ») : un humain a vu
+   * le nom, l'adresse et le téléphone confirmés par Calendly et a confirmé. Les
+   * gardes sur le NOM (un seul mot, homonyme) sont alors levées — c'est lui qui a
+   * cherché et n'a rien trouvé. La garde sur l'ADRESSE reste : une fiche à la même
+   * adresse n'est jamais doublée, et le rendez-vous n'y est PAS rattaché d'office
+   * (la console propose de la choisir).
+   */
+  manuel?: { readonly adminId: string };
 }): Promise<IssueFicheRendezVous> {
   const email = e.email.trim();
   const empreinte = hashEmailForLookup(email);
@@ -91,7 +100,7 @@ export async function creerFicheDepuisRendezVous(e: {
   // Nom trop court pour être comparé (un seul mot, ou des mots de moins de 3 lettres) : le
   // garde-fou « même nom » ne peut pas jouer, et un candidat Indeed (adresse relais) aurait
   // alors une deuxième fiche. On ne crée rien : le rendez-vous se rattache à la main.
-  if (motsDuNom(e.nom).length === 0) {
+  if (!e.manuel && motsDuNom(e.nom).length === 0) {
     console.warn("[fiche-rendez-vous] nom trop court pour comparer : rattachement à la main");
     return { cree: false, motif: "nom_a_verifier" };
   }
@@ -111,58 +120,20 @@ export async function creerFicheDepuisRendezVous(e: {
       });
       const existante = lignes.find((l) => estApporteur(l.details));
       if (existante) return { cree: false as const, submissionId: existante.id };
+      if (e.manuel) return creerLaFiche(tx);
       // L'adresse d'abord, le nom ensuite : même nom, AUTRE adresse (relais Indeed) →
       // on ne crée pas un doublon, un humain choisit dans le sélecteur.
       const fiches = e.fichesPourNoms ?? (await chargerFichesPourNoms());
       if (fichesAuNomDans(fiches, e.nom).length > 0) return null;
-
-      const nom = e.nom?.trim() ?? "";
-      const telephone = e.telephone?.trim() ?? "";
-      const reponses = e.reponses?.trim() ?? "";
-      const fiche = await tx.submission.create({
-        data: {
-          type: "contact",
-          locale: "fr",
-          companyName: "—",
-          contactName: encryptPii(nom),
-          contactEmail: encryptPii(email),
-          contactEmailHash: empreinte,
-          contactPhone: telephone ? encryptPii(telephone) : null,
-          source: "import",
-          details: {
-            unifiedType: "recrutement",
-            subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
-            // Comme la saisie manuelle et la fiche née d'une offre d'emploi : sans
-            // étape, la console la prendrait pour un dossier complet arrivé.
-            etape: LEAD_APPORTEUR_ETAPE,
-            origine: ORIGINE_RENDEZ_VOUS_APPORTEUR,
-            calendlyEventId: e.eventId,
-            ...(reponses ? { reponsesCalendly: reponses.slice(0, 4000) } : {}),
-            // 🔴 Le FAIT : la personne a réservé l'échange apporteur, sans formulaire.
-            consentement:
-              "réservation de l'échange apporteur (aucun formulaire rempli) — fiche créée automatiquement",
-            saisiPar: "automatique",
-            message:
-              "Échange réservé — fiche créée automatiquement à la réservation (aucun formulaire rempli).",
-          } as object,
-        },
-        select: { id: true },
-      });
-      await tx.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "submission.depuis_rendez_vous_apporteur",
-          targetType: "submission",
-          targetId: fiche.id,
-          changes: { calendlyEventId: e.eventId, contactEmailHash: empreinte },
-        },
-      });
-      return { cree: true as const, submissionId: fiche.id };
+      return creerLaFiche(tx);
     },
     { timeout: 15_000 },
   );
 
   if (issue === null) return { cree: false, motif: "meme_nom_a_verifier" };
+  // Manuel : une fiche existe à cette adresse → on ne rattache rien d'office.
+  if (e.manuel && !issue.cree)
+    return { cree: false, motif: "fiche_existante", submissionId: issue.submissionId };
 
   // Le rendez-vous n'est rattaché qu'à une ligne libre : un lien posé à la main gagne.
   const { count } = await prisma.calendlyEvent.updateMany({
@@ -175,6 +146,53 @@ export async function creerFicheDepuisRendezVous(e: {
     return { cree: false, motif: "rattache_entre_temps", submissionId: issue.submissionId };
   }
   return issue;
+
+  async function creerLaFiche(
+    tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
+  ): Promise<{ cree: true; submissionId: string }> {
+    const nom = e.nom?.trim() ?? "";
+    const telephone = e.telephone?.trim() ?? "";
+    const reponses = e.reponses?.trim() ?? "";
+    const fiche = await tx.submission.create({
+      data: {
+        type: "contact",
+        locale: "fr",
+        companyName: "—",
+        contactName: encryptPii(nom),
+        contactEmail: encryptPii(email),
+        contactEmailHash: empreinte,
+        contactPhone: telephone ? encryptPii(telephone) : null,
+        source: "import",
+        details: {
+          unifiedType: "recrutement",
+          subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+          // Comme la saisie manuelle et la fiche née d'une offre d'emploi : sans
+          // étape, la console la prendrait pour un dossier complet arrivé.
+          etape: LEAD_APPORTEUR_ETAPE,
+          origine: ORIGINE_RENDEZ_VOUS_APPORTEUR,
+          calendlyEventId: e.eventId,
+          ...(reponses ? { reponsesCalendly: reponses.slice(0, 4000) } : {}),
+          // 🔴 Le FAIT : la personne a réservé l'échange apporteur, sans formulaire.
+          consentement:
+            "réservation de l'échange apporteur (aucun formulaire rempli) — fiche créée automatiquement",
+          saisiPar: e.manuel ? "console" : "automatique",
+          message:
+            "Échange réservé — fiche créée automatiquement à la réservation (aucun formulaire rempli).",
+        } as object,
+      },
+      select: { id: true },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: e.manuel?.adminId ?? null,
+        action: "submission.depuis_rendez_vous_apporteur",
+        targetType: "submission",
+        targetId: fiche.id,
+        changes: { calendlyEventId: e.eventId, contactEmailHash: empreinte },
+      },
+    });
+    return { cree: true as const, submissionId: fiche.id };
+  }
 }
 
 /** Un champ de l'invité que l'API Calendly a CONFIRMÉ (charge brute rafraîchie), ou `null`. */

@@ -34,9 +34,15 @@ const etat = vi.hoisted(() => ({
   piecesValides: true,
   maintenant: new Date(),
   apporteurs: {} as Record<string, Record<string, unknown>>,
+  registre: ((siren: string) => ({ ok: true, entreprise: { siren, active: true } })) as (
+    siren: string,
+  ) => unknown,
   sentry: [] as string[],
 }));
 
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: vi.fn(async (siren: string) => etat.registre(siren)),
+}));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({
   captureWorkerError: vi.fn((_a: string, _b: string, _c: unknown, err: Error) => {
     etat.sentry.push(err.message);
@@ -176,7 +182,7 @@ vi.mock("@/lib/prisma", () => {
   return { prisma };
 });
 
-import { facturerCommissionsDues, marquerVerse } from "../facturation";
+import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
 import { etatEcheances, objectifVirement } from "../autofacture-donnees";
 
 const MARDI = new Date("2026-10-06T09:00:00Z");
@@ -221,6 +227,8 @@ beforeEach(() => {
   etat.maintenant = MARDI;
   etat.apporteurs = {};
   etat.sentry = [];
+  etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
+  oublierCacheRegistre();
 });
 
 describe("autofacture dès que la commission est due", () => {
@@ -526,6 +534,39 @@ describe("autofacture impossible faute de donnée : en attente, une seule alerte
     expect(etat.pdfs).toEqual([]);
     expect(etat.envoyes).toEqual([]);
     expect(etat.sentry).toEqual([]);
+  });
+
+  it("07/10 : SIREN invalide (clé fausse) : aucune autofacture, aucun versement possible", async () => {
+    etat.apporteurs["APP1"] = { siren: "123456789" };
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(lignes()[0]!.autofactureAttenteMotif).toBe("SIREN de l'apporteur");
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(lignes()[0]!.statut).toBe("due");
+    expect(etat.pdfs).toEqual([]);
+  });
+
+  it("07/10 : entreprise radiée au registre : en attente, UNE alerte, aucun versement", async () => {
+    etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: false } });
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await facturerCommissionsDues(MARDI);
+    await facturerCommissionsDues(new Date("2026-10-06T10:00:00Z"));
+    expect(lignes()[0]!.autofactureNumero).toBeNull();
+    expect(lignes()[0]!.autofactureAttenteMotif).toBe("entreprise radiée au registre public");
+    expect(etat.alertes.filter((a) => a.jobId.includes("autofacture-attente"))).toHaveLength(1);
+    expect(await marquerVerse("APP1", MARDI)).toMatchObject({ ok: false });
+    expect(etat.pdfs).toEqual([]);
+  });
+
+  it("07/10 : registre muet : rien n'est facturé ni marqué, aucun Sentry ; il répond, ça part", async () => {
+    etat.registre = () => ({ ok: false, raison: "indisponible" });
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    expect(await facturerCommissionsDues(MARDI)).toMatchObject({ autofactures: 0, erreurs: 0 });
+    expect(lignes()[0]!.autofactureAttenteMotif).toBeNull();
+    expect(etat.sentry).toEqual([]);
+    etat.registre = (siren: string) => ({ ok: true, entreprise: { siren, active: true } });
+    expect((await facturerCommissionsDues(MARDI)).autofactures).toBe(1);
   });
 
   it("régime de TVA et adresse manquants : le motif les nomme tous les deux", async () => {

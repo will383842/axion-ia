@@ -16,6 +16,7 @@ import {
   LIBELLE_PIECE,
   PIECES_POUR_SIGNER,
   estStatutJuridique,
+  sirenValide,
   type TypePiece,
 } from "./regles-dossier";
 
@@ -139,7 +140,8 @@ export function manquesPourSigner(d: {
   piecesDeposees: readonly TypePiece[];
 }): string[] {
   const m: string[] = [];
-  if (!d.siren) m.push("votre numéro SIREN");
+  // Ordre de Will (07/10) : jamais de contrat sans SIREN valide (risque porté par Axion-IA).
+  if (!d.siren || !sirenValide(d.siren)) m.push("votre numéro SIREN");
   if (!estStatutJuridique(d.statutJuridique)) m.push("votre statut");
   if (!d.regimeTva) m.push("votre régime de TVA");
   if (d.regimeTva === "assujetti" && !d.numeroTva) m.push("votre numéro de TVA");

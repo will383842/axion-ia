@@ -34,6 +34,7 @@ import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { CONTRAT_VERSION } from "./contrat-v2";
 import { envoyer } from "./envois";
+import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
   CLES_ACCEPTATIONS,
@@ -185,6 +186,24 @@ export async function signerContrat(e: {
       level: "warning",
       tags: { service: "apporteur-dossier", etape: "alerte-a-verifier", resultat: alerte },
     });
+  }
+  // « Dossier bien reçu » à l'apporteur, une fois par signature (même horodatage que l'alerte) :
+  // jamais bloquant, la signature est actée.
+  try {
+    const url = urlDossier(dossier.id, dossier.versionLien);
+    const accuse = await envoyer({
+      gabarit: "apporteur-dossier-recu",
+      destinataire: dossier.email,
+      payload: { contactName: dossier.prenom, ...(url ? { dossierUrl: url } : {}) },
+      entityType: "ApporteurReseau",
+      entityId: dossier.id,
+      jobId: `apporteur-dossier-recu-${dossier.id}-${maintenant.getTime()}`,
+    });
+    if (accuse !== "envoye") {
+      console.warn(`[apporteur-dossier] « dossier bien reçu » non parti (${accuse})`);
+    }
+  } catch (err) {
+    signalerErreurReseau("signature : e-mail « dossier bien reçu »", err);
   }
   return { ok: true, sha256 };
 }

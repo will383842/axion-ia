@@ -358,8 +358,25 @@ describe("dossier en ligne — signerContrat", () => {
     await signerContrat(entree);
     lireDossierParLien.mockResolvedValue(dossierComplet({ statut: "a_completer" }));
     await signerContrat({ ...entree, maintenant: new Date("2026-10-05T15:00:00Z") });
-    const cles = envoyer.mock.calls.map((c) => (c[0] as { jobId: string }).jobId);
+    const cles = envoyer.mock.calls
+      .map((c) => c[0] as { gabarit: string; jobId: string })
+      .filter((c) => c.gabarit === "apporteur-dossier-a-verifier")
+      .map((c) => c.jobId);
     expect(new Set(cles).size).toBe(2);
+  });
+
+  it("07/10 : l'apporteur reçoit « Dossier bien reçu », une fois par signature", async () => {
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+    await signerContrat(entree);
+    const accuses = envoyer.mock.calls
+      .map((c) => c[0] as Record<string, unknown>)
+      .filter((c) => c["gabarit"] === "apporteur-dossier-recu");
+    expect(accuses).toHaveLength(1);
+    expect(accuses[0]).toMatchObject({
+      destinataire: "e@exemple.fr",
+      jobId: `apporteur-dossier-recu-${ID}-${entree.maintenant.getTime()}`,
+      payload: { contactName: "Éloïse" },
+    });
   });
 
   it("D3 : alerte non partie → journal et Sentry, sans donnée personnelle ; signature conservée", async () => {

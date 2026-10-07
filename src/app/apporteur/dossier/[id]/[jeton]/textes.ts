@@ -45,6 +45,15 @@ export const TEXTES = {
   ibanRemplacer: "Laissez vide pour garder celui-ci.",
   ibanInvalide: "Cet IBAN n'est pas valide : vérifiez-le.",
   rechercherDabord: "Recherchez d'abord votre numéro SIREN.",
+  // Décision de Will (07/10) : dire COMMENT obtenir un SIREN, sans détail fiscal ni délai
+  // autre que « quelques jours ». La règle ne change pas : le SIREN reste obligatoire.
+  sansSirenTitre: "Pas encore de numéro SIREN ?",
+  sansSirenTexte:
+    "Pour recevoir vos commissions, il vous faut un numéro SIREN. Le plus simple : créer une micro-entreprise. C'est gratuit et cela se fait en ligne, en une vingtaine de minutes, sur le site officiel",
+  sansSirenLien: "formalites.entreprises.gouv.fr",
+  sansSirenUrl: "https://formalites.entreprises.gouv.fr",
+  sansSirenSuite:
+    "Vous recevez votre numéro SIREN sous quelques jours. Votre dossier reste enregistré : revenez avec votre numéro.",
   // Étape 3
   ajouter: "Ajouter",
   remplacer: "Remplacer",

@@ -15,6 +15,11 @@ const h = vi.hoisted(() => ({
   // Contresignature : réservation conditionnelle (07/10). `count` 1 = réservé, 0 = déjà fait.
   appUpdateMany: vi.fn(async () => ({ count: 1 })),
   appFindUnique: vi.fn(),
+  registre: vi.fn(),
+}));
+
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: (...a: unknown[]) => h.registre(...a),
 }));
 
 vi.mock("../envois", () => ({
@@ -73,6 +78,7 @@ function dossier(over: Record<string, unknown> = {}) {
     versionLien: 2,
     prenom: "Claire",
     email: "claire@exemple.fr",
+    siren: "732829320",
     pieces: [{ type: "identite", statut: "conforme" }],
     ...over,
   };
@@ -83,7 +89,40 @@ beforeEach(() => {
   h.envoyer.mockResolvedValue("envoye");
   h.lireDossier.mockResolvedValue(dossier());
   h.purgerContenuPieces.mockResolvedValue(2);
+  h.registre.mockResolvedValue({ ok: true, entreprise: { siren: "732829320", active: true } });
   vi.stubEnv("AUTH_SECRET", "secret-de-test");
+});
+
+describe("07/10 (ordre de Will) : aucune contresignature sans SIREN valide et ACTIF", () => {
+  it.each([
+    [null, "absent ou invalide"],
+    ["123456789", "absent ou invalide"],
+  ])("SIREN %s : refus, sans même interroger le registre", async (siren, motif) => {
+    h.lireDossier.mockResolvedValue(dossier({ siren }));
+    const r = await preparerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain(`SIREN à vérifier : ${motif}`);
+    expect(h.registre).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [{ ok: false, raison: "indisponible" }, "ne répond pas"],
+    [{ ok: false, raison: "introuvable" }, "introuvable"],
+    [{ ok: true, entreprise: { siren: "732829320", active: false } }, "cessée"],
+  ])("registre %j : refus avec un message clair, aucun envoi", async (rep, motif) => {
+    h.registre.mockResolvedValue(rep);
+    const r = await appliquerDecision(ID, "contresigner", null);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("SIREN à vérifier");
+    expect((r as { message: string }).message).toContain(motif);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("registre qui répond « actif » : la contresignature reste possible", async () => {
+    const r = await preparerDecision(ID, "contresigner", null);
+    expect(r.ok).toBe(true);
+    expect(h.registre).toHaveBeenCalledWith("732829320");
+  });
 });
 
 describe("refus définitif : identité ET RIB purgés", () => {

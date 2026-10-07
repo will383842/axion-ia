@@ -468,6 +468,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-dossier-recu": {
+    categorie: "recrutement",
+    quand: "Dès qu'un apporteur signe son contrat en ligne (une fois par signature)",
+    destinataire: "l'apporteur qui vient de signer",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-contrat-signe": {
     categorie: "recrutement",
     quand: "Bouton « Oui, contresigner » : le contrat signé des deux parties en pièce jointe",
