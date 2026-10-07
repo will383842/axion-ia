@@ -2,12 +2,15 @@
  * Conservation codée du dossier client et des enregistrements (B1, ADR 0056 ;
  * chantier visio, PR 8). Fonctions PURES : elles calculent des échéances, la
  * base est lue et effacée par `src/lib/rgpd-erase.ts` (seul module autorisé à
- * poser le drapeau d'effacement), planifié par `retention-purge-worker.ts`.
+ * poser le drapeau d'effacement).
  *
- * Les durées viennent de `CONSERVATION_VISIO` (`src/content/visio-annonce-textes.ts`),
- * celles-là mêmes que la notice écrit en toutes lettres. La garde
- * `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts` relit la
- * notice et compare : une durée annoncée sans purge, ou l'inverse, rougit.
+ * 🛑 Depuis le 2026-10-07 (Will : « coupe tous les effacements »), aucune tâche
+ * planifiée n'applique plus ces échéances : `retention-purge-worker.ts`
+ * n'appelle plus `seuilsDuJour` ni les purges de `rgpd-erase.ts`, et la notice
+ * n'annonce plus de suppression automatique du dossier (garde
+ * `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts`).
+ *
+ * Les durées viennent de `CONSERVATION_VISIO` (`src/content/visio-annonce-textes.ts`).
  *
  * ## Les ancres (LOTS-EXECUTION §5, PR 8)
  *

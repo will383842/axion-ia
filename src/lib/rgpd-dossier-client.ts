@@ -57,7 +57,7 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     motif:
       "la transcription d'une voix pas encore attribuée (Williams n'a pas encore confirmé " +
       "qu'elle est la vôtre) n'est pas rendue automatiquement : elle peut être celle d'une " +
-      "autre personne. Elle existe pendant 12 mois après le rendez-vous ; réponse manuelle " +
+      "autre personne. Elle est conservée ; réponse manuelle " +
       "sous un mois, après vérification de la voix (contact@axion-ia.com).",
   },
   {

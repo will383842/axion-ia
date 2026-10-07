@@ -11,6 +11,9 @@
  * Garde de forme, pas de rédaction.
  */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
@@ -55,23 +58,33 @@ describe("la politique dit vrai sur le guide et la lettre", () => {
     );
   });
 
-  // L6, relecture du 2026-09-25 — textes validés par Will, mot pour mot. « Dernier
-  // contact » disparaît : seules les actions de la personne comptent, et la
-  // politique les nomme (demande, clic, inscription). Mêmes durées que
-  // `src/server/newsletter/retention.ts`.
+  // 2026-10-07 (Will : « coupe tous les effacements ») — plus aucune durée de
+  // suppression : la lettre et le guide ne sont plus purgés par le worker
+  // (`retention-purge-worker.ts` n'appelle plus `purgerDesinscrits` ni
+  // `purgerLettreEtGuide`). Les durées de 3 ans, 5 ans et 30 jours qui étaient
+  // écrites ici, mot pour mot, sont retirées avec la purge.
   const CONSERVATION_FR =
-    "Conservation : demande du guide, 3 ans après votre dernière demande ou votre dernier clic sur le bouton de téléchargement ; inscription à la lettre, 3 ans après votre inscription, votre dernière demande du guide ou votre dernier clic dans une lettre, sauf désinscription avant ce terme ; après une désinscription, votre adresse est gardée 3 ans, puis seule une empreinte en est conservée, sans limite de durée, pour qu'aucun envoi ne vous parvienne ; adresse en échec de distribution définitif, 3 ans, pour ne plus y écrire ; preuve de l'information ou de votre consentement, 5 ans après la fin de votre inscription ; inscription jamais confirmée (ancien parcours), 30 jours.";
+    "Conservation : votre demande du guide, votre inscription à la lettre et la preuve de l'information ou de votre consentement sont conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement. Après une désinscription, votre adresse reste conservée pour qu'aucun envoi ne vous parvienne. Vous pouvez à tout moment en demander l'effacement.";
   const CONSERVATION_EN =
-    "Retention: guide request, 3 years after your last request or your last click on the download button; newsletter subscription, 3 years after you subscribed, last requested the guide or last clicked in a newsletter, unless you unsubscribe earlier; after an unsubscription, your address is kept for 3 years, then only a fingerprint of it is kept, with no time limit, so that nothing reaches you; address with a permanent delivery failure, 3 years, so that we no longer write to it; proof of information or of your consent, 5 years after your subscription ends; subscription never confirmed (former process), 30 days.";
+    "Retention: your guide request, your newsletter subscription and the proof of information or of your consent are kept to preserve a record of our exchanges; they are not deleted automatically. After an unsubscription, your address remains kept so that nothing reaches you. You may ask for them to be erased at any time.";
 
-  it("durées : le texte validé, mot pour mot (FR et EN)", () => {
+  it("conservation : aucune suppression automatique annoncée (FR et EN)", () => {
     const fr = section("fr", /^Guide IA entreprise/);
     expect(fr).toContain(CONSERVATION_FR);
-    expect(fr).not.toContain("dernier contact avec nous");
-    expect(fr).not.toContain("3 ans en liste d'opposition");
+    expect(fr).not.toMatch(/\b\d+ (?:ans|jours)\b/);
     const en = section("en", /^Enterprise AI guide/);
     expect(en).toContain(CONSERVATION_EN);
-    expect(en).not.toContain("last contact with us");
+    expect(en).not.toMatch(/\b\d+ (?:years|days)\b/);
+  });
+
+  it("les deux moitiés sont couplées : le worker n'appelle plus les purges de la lettre", () => {
+    const worker = readFileSync(
+      join(process.cwd(), "src/server/queue/workers/retention-purge-worker.ts"),
+      "utf8",
+    )
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    expect(worker).not.toMatch(/purgerDesinscrits\(|purgerLettreEtGuide\(/);
   });
 
   it("preuve : empreintes de l'adresse e-mail et de l'IP, rien en clair ; plus d'« empreinte non réversible »", () => {

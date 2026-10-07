@@ -65,8 +65,6 @@ INDEXNOW_KEY=${INDEXNOW_KEY}
 # BING_SITE_VERIFICATION=        # depuis bing.com/webmasters
 
 # ─────────── Defaults Sprint 24/D3 (overridable) ───────────
-RETENTION_LOGS_MONTHS=12
-RETENTION_SUBS_ARCHIVE_MONTHS=24
-RETENTION_NEWSLETTER_UNSUB_MONTHS=36
-RETENTION_BOOKINGS_CANCELLED_MONTHS=12
+# 2026-10-07 (Will) : plus aucune purge automatique de données de personnes —
+# les durées RETENTION_* correspondantes sont retirées.
 EOF

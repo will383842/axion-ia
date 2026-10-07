@@ -1,58 +1,44 @@
-// Worker BullMQ — purge RGPD quotidienne (Sprint 24 / D3 + audit B5 2026-05-15).
+// Worker BullMQ — purge quotidienne (Sprint 24 / D3 + audit B5 2026-05-15).
 //
-// Cron 03:00 UTC. Pour chaque table cible :
-//   - activity_logs : suppression hard si created_at > N mois (default 12).
-//   - submissions   : suppression hard si status='archived' ET updated_at > N mois (default 24).
-//   - newsletter_subscribers : suppression hard si status='unsubscribed' ET unsubscribed_at > N mois (default 36).
-//                              On ne conserve que email_hash dans activity_log
-//                              (handle propre RGPD art. 17 droit à l'oubli +
-//                              audit trail nominatif).
-//   - lettre et guide (lot L6, 2026-09-25) : `pending` jamais confirmés à 30 jours,
-//                              abonnés confirmés et demandes du guide sans contact
-//                              de la personne depuis 36 mois, rebonds à 36 mois,
-//                              preuves lettre/guide à 5 ans après la fin, agents
-//                              navigateur hachés, outbox CRM `sent` à 30 jours —
-//                              `src/server/newsletter/retention.ts`. Comptes seulement.
-//                              JAMAIS `email_oppositions` ; dans `consent_events`,
-//                              seules les références de la lettre et du guide.
-//   - generation_logs (audit B5 P0-7) : logs techniques content-gen — purge à N mois
-//                              (default 12). Ces logs sont append-only et lient les
-//                              prompts content-gen à un job_id non-PII. Pas d'export
-//                              RGPD utilisateur (cf. politique-confidentialite §
-//                              IA générative — logs techniques exclus art. 23 RGPD).
-//   - cost_ledger (audit B5 P0-7) : ledger atomique provider IA — purge à N mois
-//                              (default 24, alignée obligation comptable française).
-//                              Aucun PII (provider key + montant USD seulement).
-//   - web_vital_samples (audit B5 P0-7) : RUM agrégé Web Vitals — purge à N mois
-//                              (default 6). Pas de PII (sessionId anonyme client).
+// Cron 03:00 UTC.
 //
-// Variables env :
-//   RETENTION_LOGS_MONTHS=12
-//   RETENTION_SUBS_ARCHIVE_MONTHS=24
-//   RETENTION_NEWSLETTER_UNSUB_MONTHS=36
-//   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
-//   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
-//   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
-//   RETENTION_EMAIL_LOGS_MONTHS=60        (`D5-5-04` — meme duree que la piece)
-//   RETENTION_GDPR_TRACES_MONTHS=60       (`D5-5-05` — preuve qu'un droit a ete honore)
-//   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
-//   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
-//   RETENTION_EMAIL_CONTENTS_MONTHS=12    (copie des e-mails envoyes, 2026-09-27)
-//   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
-//   RETENTION_CANDIDATURES_MONTHS=24      (`D4` — candidatures NON RETENUES seulement)
-//   RETENTION_NEWSLETTER_PENDING_DAYS=30   (L6 — inscription jamais confirmée)
-//   RETENTION_NEWSLETTER_INACTIVE_MONTHS=36 (L6 — abonné sans contact)
-//   RETENTION_GUIDE_REQUESTS_MONTHS=36     (L6 — demande du guide sans contact)
-//   RETENTION_NEWSLETTER_BOUNCED_MONTHS=36 (L6 — adresse rejetée, après le rebond)
-//   RETENTION_LETTRE_PREUVES_MONTHS=60     (L6 — preuve lettre/guide, après la fin)
-//   RETENTION_CRM_OUTBOX_SENT_DAYS=30      (L6 — outbox CRM acquittée)
+// 🛑 DÉCISION DE WILL, 2026-10-07 : « coupe tous les effacements ». Ce worker
+// ne supprime PLUS AUCUNE donnée concernant une personne ou un échange. Il ne
+// garde que des purges purement TECHNIQUES, où ne figure ni personne ni
+// échange :
 //
-// ⚠️ `RETENTION_CANDIDATURES_MONTHS` ne s'applique PAS à tout le monde. Une
-// candidature en statut `hired` n'est JAMAIS purgée automatiquement : elle est
-// devenue une pièce du dossier du personnel, et son effacement est un geste
-// explicite (décision `D4` du 2026-09-03). Deux régimes, donc, et le registre
-// des traitements doit dire les deux — 24 mois pour les candidatures non
-// retenues, durée de la relation de travail pour les personnes recrutées.
+//   - generation_logs   : journaux techniques de la génération de contenus
+//                         (prompts éditoriaux, job_id) — 12 mois ;
+//   - web_vital_samples : mesures de performance du site (sessionId anonyme)
+//                         — 6 mois ;
+//   - funnel_events     : mesure d'audience des tunnels, collectée sans
+//                         bannière sous l'exemption CNIL, qui EXIGE une
+//                         rétention bornée — 12 mois ;
+//   - chat_semantic_cache, chat_action_idempotency : cache et clés
+//                         d'idempotence du chatbot — 12 mois ;
+//   - crm_sync_outbox   : lignes déjà acquittées (`sent`) par le CRM — 30 jours.
+//                         La donnée, elle, vit dans le CRM.
+//
+// Variables env (purges restantes) :
+//   RETENTION_GENERATION_LOGS_MONTHS=12
+//   RETENTION_WEB_VITALS_MONTHS=6
+//   RETENTION_FUNNEL_EVENTS_MONTHS=12
+//   RETENTION_CHAT_MONTHS=12              (cache sémantique et idempotence SEULEMENT)
+//   RETENTION_CRM_OUTBOX_SENT_DAYS=30
+//
+// Ce qui n'est PLUS supprimé automatiquement (code retiré, pas un drapeau) :
+// candidatures et CV, fiches et dossiers (`submissions`), journal d'activité
+// (`activity_logs`, traces RGPD comprises), rendez-vous Calendly, lettre
+// d'information et guide (désinscrits, inscriptions non confirmées, abonnés
+// inactifs, rebonds, demandes du guide, preuves), conversations et escalades
+// du chatbot, journal, copies et corbeille des e-mails, journal d'accès de la
+// prospection, brouillons de vente, registre des coûts, journaux de la banque
+// d'images, et le dossier client des visios (segments, versions, faits
+// rejetés, dossiers échus, preuves d'accord). Voir le bloc dédié du handler.
+//
+// L'effacement reste possible, mais comme un GESTE : console, droit à
+// l'effacement (`api/gdpr-erase`), suppression d'une candidature. Rien de cela
+// ne vit ici, et rien de cela n'est touché.
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
@@ -60,75 +46,15 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
-import { deleteCv } from "@/server/careers/cv-storage";
-import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
-import { lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
-import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
-import {
-  purgerDesinscrits,
-  purgerLettreEtGuide,
-  purgerOutboxCrm,
-} from "@/server/newsletter/retention";
-import {
-  purgerDossiersVisioEchus,
-  purgerPreuvesAccordEchues,
-  purgerSegmentsAnciens,
-  purgerVersionsComptesRendus,
-  viderFaitsRejetes,
-} from "@/lib/rgpd-erase";
-import { seuilsDuJour } from "@/server/visio/conservation";
+import { purgerOutboxCrm } from "@/server/newsletter/retention";
 import type { RetentionPurgeJobData } from "../types";
-import { figerRencontresAvantPurge } from "@/server/visio/figer-avant-purge";
 
 const DEFAULTS = {
-  logs: 12,
-  submissionsArchived: 24,
-  newsletterUnsub: 36,
   generationLogs: 12,
-  costLedger: 24,
   webVitals: 6,
-  imageLogs: 12,
   chat: 12,
   funnelEvents: 12,
-  candidatures: 24,
-  // Réservations d'appel (2026-08-31). 36 mois — valeur DÉRIVÉE de la notice
-  // publiée (`src/content/legal.ts` : « Demandes commerciales : 3 ans »), pas
-  // choisie ici. Si la notice change, cette valeur doit changer avec elle : le
-  // test `la-retention-des-appels-suit-la-notice.spec.ts` rougit sinon.
-  reservationsAppel: 36,
-  // Chaine d'envoi (audit 2026-08-16). 13 mois = norme CNIL de prospection.
-  // Voir le bloc commente dans le handler pour le raisonnement.
-  //
-  // 🔴 `D5-5-04` (2026-08-20) — le transactionnel valait 36 mois, soit DEUX ANS
-  // DE MOINS que la piece dont il est la preuve d'envoi. Une convocation est
-  // conservee `DOCUMENT_RETENTION_YEARS` = 5 ans ; passe 3 ans,
-  // `convocationEnvoyeeAt` continuait d'affirmer « envoyee » et plus rien ne le
-  // prouvait. C'est exactement ce qu'un auditeur demande a voir.
-  //
-  // 🔑 La valeur est DERIVEE de `DOCUMENT_RETENTION_YEARS`, jamais recopiee :
-  // deux durees qui doivent rester egales ne doivent exister qu'une fois.
-  emailLogsTransac: DOCUMENT_RETENTION_YEARS * 12,
-  emailLogsMarketing: 13,
-  emailOutbox: 36,
-  // Copie des e-mails envoyés (2026-09-27). 12 mois, et PAS la durée du journal
-  // (5 ans) : la PREUVE d'envoi est la ligne `email_logs`, qui reste. La copie
-  // porte le CONTENU — nom, formation, dates, montants — et ne sert qu'à relire
-  // un message récent. La garder cinq ans conserverait des données personnelles
-  // sans finalité qui le justifie.
-  emailContents: 12,
-  // 🔴 `D5-5-05` — voir le bloc « activity_logs » du handler.
-  tracesRgpd: DOCUMENT_RETENTION_YEARS * 12,
 } as const;
-
-/**
- * Prefixe des actions dont la trace PROUVE qu'un droit a ete honore.
- *
- * 🔑 Un prefixe, et pas une liste : une action `gdpr.*` ajoutee demain herite
- * de la protection sans que personne n'ait a y penser. Une enumeration se
- * serait desynchronisee au premier ajout — c'est la forme de defaut que cet
- * audit rencontre le plus souvent.
- */
-const PREFIXE_TRACE_RGPD = "gdpr." as const;
 
 function monthsAgo(months: number): Date {
   const d = new Date();
@@ -144,228 +70,67 @@ function readMonths(name: string, fallback: number): number {
   return parsed;
 }
 
-async function hashEmail(email: string): Promise<string> {
-  const data = new TextEncoder().encode(email.toLowerCase().trim());
-  const buf = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(buf))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 /**
  * Traitement d'une passe de purge — EXPORTÉ pour être testable.
  *
- * 🔴 2026-08-20. Ce worker supprime dans **vingt et une** tables de production
- * et n'était couvert par **aucun test** : la fonction vivait en littéral inline
- * dans `new Worker(...)`, donc hors de portée de toute suite. Un effacement de
- * masse dont personne ne peut rejouer la logique est la dernière chose qu'on
- * devrait laisser sans garde.
- *
- * L'extraction ne change RIEN au comportement : c'est le même corps, appelé au
- * même endroit.
+ * 🔴 2026-08-20. La fonction vivait en littéral inline dans `new Worker(...)`,
+ * donc hors de portée de toute suite. Elle est extraite pour qu'une garde
+ * puisse rejouer ce qu'elle demande à la base — c'est ce que font
+ * `aucun-effacement-automatique-de-personnes.spec.ts` et
+ * `les-candidatures-ne-sont-jamais-purgees.spec.ts`.
  */
 export async function executerPurgeRetention(): Promise<void> {
   const counts = {
-    logs: 0,
-    submissions: 0,
-    reservationsAppel: 0,
-    // Rencontres du dossier client figées avant la purge de leur rendez-vous.
-    rencontresFigees: 0,
-    newsletter: 0,
     generationLogs: 0,
-    costLedger: 0,
     webVitals: 0,
-    imageUsageLogs: 0,
-    imageDownloadLogs: 0,
-    chatConversations: 0,
-    chatEscalations: 0,
     chatSemanticCache: 0,
     chatIdempotency: 0,
     funnelEvents: 0,
-    candidatures: 0,
-    candidaturesFichiers: 0,
-    /**
-     * Dossiers de personnes RECRUTÉES qui auraient été effacés sans `D4`.
-     *
-     * 🔑 Sans ce compteur, l'exclusion serait invisible : un journal qui dit
-     * `candidatures=0` ne distingue pas « rien à purger » de « l'exclusion a
-     * disparu ». C'est ce chiffre qui rend la décision observable jour après
-     * jour, et c'est lui qu'on relira le jour où quelqu'un se demandera si la
-     * garde tient encore.
-     */
-    candidaturesRetenuesEpargnees: 0,
-    emailLogs: 0,
-    emailLogContents: 0,
-    emailOutbox: 0,
+    crmOutbox: 0,
   };
 
-  // 1) activity_logs ancients
+  // ── 🛑 AUCUN EFFACEMENT AUTOMATIQUE DE DONNÉES DE PERSONNES. DÉCISION DE WILL. ──
   //
-  // 🔴 `D5-5-05` (2026-08-20) — cette purge n'avait AUCUN filtre d'action, et
-  // emportait donc les traces `gdpr.erase.completed` / `gdpr.export.delivered`
-  // a 12 mois. Or `api/gdpr-erase/route.ts` declare en tete, noir sur blanc :
-  // « ActivityLog : conserve (immuable, art. 30 RGPD register) ». Deux
-  // affirmations contradictoires dans le meme depot — et c'est la purge qui
-  // gagnait, en silence.
+  // **Ordres explicites de Will** : 2026-10-07 « non je ne veux surtout pas
+  // d'effacement », puis « coupe tous les effacements » ; ils prolongent ceux
+  // du 29/09 (« strictement interdit de purger quoi que ce soit et de perdre
+  // des contacts ») et du 03/10 (« je veux tout qu'on garde et surtout pas
+  // qu'on efface quoi que ce soit »), et la décision prospection du 2026-08-20.
   //
-  // 🔑 Ce qu'on garde n'est pas le journal « pour le principe » : c'est LA
-  // PREUVE qu'une demande d'effacement a ete honoree. Elle ne doit pas mourir
-  // avant la fin du delai pendant lequel la reclamation peut naitre — d'ou le
-  // meme horizon que les pieces (`DOCUMENT_RETENTION_YEARS`).
+  // Les blocs qui vivaient ici ont été RETIRÉS — pas désactivés par un drapeau,
+  // retirés : `jobApplication` (et CV, photo, vidéos), `submission` archivées,
+  // `activityLog` (traces RGPD comprises), `calendlyEvent` (et le gel des
+  // rencontres qui le précédait), lettre et guide (`purgerDesinscrits`,
+  // `purgerLettreEtGuide`), `chatConversation`, `chatEscalation`, `emailLog`,
+  // `emailLogContent`, `emailOutbox`, `prospectionAccessLog`, `venteBrouillon`,
+  // `costLedger`, `imageUsageLog`, `imageDownloadLog`, et la purge du dossier
+  // client des visios (`executerPurgeVisio` : segments, versions de comptes
+  // rendus, faits rejetés, dossiers échus, preuves d'accord).
   //
-  // ⚠️ Ces traces ne portent PLUS l'e-mail en clair (meme correctif) : les
-  // conserver plus longtemps n'allonge donc pas la duree de vie d'une donnee
-  // directement identifiante.
-  const logsMonths = readMonths("RETENTION_LOGS_MONTHS", DEFAULTS.logs);
-  const logsResult = await prisma.activityLog.deleteMany({
-    where: {
-      createdAt: { lt: monthsAgo(logsMonths) },
-      NOT: { action: { startsWith: PREFIXE_TRACE_RGPD } },
-    },
-  });
-  counts.logs = logsResult.count;
+  // Les fonctions de `newsletter/retention.ts`, `lib/rgpd-erase.ts` et
+  // `visio/` qui faisaient ces purges ne sont pas supprimées : seul leur APPEL
+  // planifié l'est. Elles ne sont plus appelées par aucune tâche.
+  //
+  // Prospection (fiches entreprises, personnes, praticiens) : AUCUNE
+  // suppression automatique depuis le 2026-08-20 — garde
+  // `prospection-aucune-purge-automatique.spec.ts`.
+  //
+  // ⚠️ Gardes : `aucun-effacement-automatique-de-personnes.spec.ts` et
+  // `les-candidatures-ne-sont-jamais-purgees.spec.ts` échouent si l'une de ces
+  // suppressions réapparaît dans ce worker. Ne pas « réparer » la rétention ici
+  // sans un nouvel arbitrage explicite de Will.
 
-  // Les traces RGPD, elles, tombent a leur propre echeance.
-  const gdprMonths = readMonths("RETENTION_GDPR_TRACES_MONTHS", DEFAULTS.tracesRgpd);
-  const gdprResult = await prisma.activityLog.deleteMany({
-    where: {
-      createdAt: { lt: monthsAgo(gdprMonths) },
-      action: { startsWith: PREFIXE_TRACE_RGPD },
-    },
-  });
-  counts.logs += gdprResult.count;
-
-  // 2) submissions archivées anciennes
-  const subsMonths = readMonths("RETENTION_SUBS_ARCHIVE_MONTHS", DEFAULTS.submissionsArchived);
-  const archivedSubs = await prisma.submission.findMany({
-    where: { status: "archived", updatedAt: { lt: monthsAgo(subsMonths) } },
-    select: { id: true, contactEmail: true, type: true, details: true },
-  });
-  for (const s of archivedSubs) {
-    await prisma.$transaction(async (tx) => {
-      await tx.submission.delete({ where: { id: s.id } });
-      await tx.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "submission.purged",
-          targetType: "submission",
-          targetId: s.id,
-          changes: {
-            emailHash: await hashEmail(s.contactEmail),
-            type: s.type,
-            policy: "retention",
-            ageMonths: subsMonths,
-          },
-        },
-      });
-    });
-    // CV d'un candidat apporteur (2026-09-28) : fichier disque, hors de la ligne.
-    // Best-effort et idempotent ; ⚠️ le conteneur worker ne monte pas le volume
-    // des CV aujourd'hui — l'appel ne fait alors rien, comme pour les
-    // candidatures plus bas, et l'effacement console reste le chemin qui efface.
-    await deleteCv(lireCvCandidat(s.details)?.fichier?.storagePath);
-    counts.submissions++;
-  }
-
-  // 2 bis) réservations d'appel anciennes — `calendly_events`
-  //
-  // 🔴 CETTE TABLE N'ÉTAIT PURGÉE PAR RIEN (constat du 2026-08-31). Nom, e-mail,
-  // téléphone et réponses libres des prospects se conservaient sans limite, la
-  // plus ancienne ligne datant du 2026-07-01.
-  //
-  // 🔑 Ce n'est pas une durée choisie ici : `src/content/legal.ts` ANNONCE
-  // publiquement « Demandes commerciales : 3 ans » depuis toujours. Une durée
-  // publiée dans la notice art. 13 qu'aucun mécanisme n'applique est un écart
-  // entre ce qu'on dit aux personnes et ce qu'on fait — c'est lui qu'on ferme,
-  // pas un idéal qu'on invente. 36 mois, donc, et pas autre chose.
-  //
-  // ⚠️ NE PAS confondre avec la décision « prospection : conservation SANS
-  // LIMITE » du 2026-08-20 : celle-ci porte sur `ProspectionCompany` /
-  // `ProspectionPerson` / `ProspectionHealthPractitioner`, des fiches
-  // constituées, et elle reste intacte. Une réservation d'appel est une demande
-  // entrante d'une personne qui nous a écrit — autre finalité, autre régime.
-  //
-  // L'ancre est le dernier contact réel : `startTime` quand le rendez-vous a eu
-  // lieu, sinon la date de capture. Une ligne sans horaire (réservation jamais
-  // enrichie) retombe donc sur `capturedAt` au lieu d'échapper au filtre — le
-  // piège du `NULL` qui met une ligne hors de portée, déjà rencontré sur
-  // l'effacement RGPD de cette même table.
-  const rdvMonths = readMonths("RETENTION_CALENDLY_MONTHS", DEFAULTS.reservationsAppel);
-  const limiteRdv = monthsAgo(rdvMonths);
-  //
-  // 🔑 2026-09-29 (chantier visio, PR 4) — la RENCONTRE du dossier client née
-  // d'un rendez-vous survit à cette purge (lien `SetNull`), mais son statut,
-  // tant que Calendly vit, EST celui de Calendly. On le fige (avec l'issue du
-  // point) et on coupe le lien DANS LA MÊME TRANSACTION que la suppression :
-  // sans cela, la rencontre perdrait en silence « a eu lieu / absent ».
-  const ouRdv = {
-    OR: [{ startTime: { lt: limiteRdv } }, { startTime: null, capturedAt: { lt: limiteRdv } }],
-  };
-  const rdvPurges = await prisma.$transaction(async (tx) => {
-    counts.rencontresFigees = await figerRencontresAvantPurge(tx, ouRdv);
-    return tx.calendlyEvent.deleteMany({ where: ouRdv });
-  });
-  counts.reservationsAppel = rdvPurges.count;
-
-  // 3) newsletter_subscribers unsubscribed anciens — lot L6 (relecture du
-  // 2026-09-25) : la boucle qui vivait ici est déplacée dans
-  // `newsletter/retention.ts` (`purgerDesinscrits`), testée par l'effet. Même
-  // durée, même trace `newsletter.purged` ; en plus, l'EMPREINTE de l'adresse
-  // est posée en liste d'opposition AVANT la suppression (« puis seule une
-  // empreinte en est conservée, sans limite de durée »), et la fin de
-  // l'inscription est consignée au registre (les 5 ans de la preuve en partent).
-  //
-  // Chaque étape de la lettre a son propre `try` : une erreur (colonne pas
-  // encore migrée pendant la fenêtre app/worker, sel absent…) est remontée à
-  // Sentry et n'arrête pas le reste de la purge.
-  const newsMonths = readMonths("RETENTION_NEWSLETTER_UNSUB_MONTHS", DEFAULTS.newsletterUnsub);
+  // 1) crm_sync_outbox — lignes `sent` (acquittées par le CRM) à 30 jours ;
+  // jamais `pending`, `failed` ni `gave_up`. La donnée vit dans le CRM : la
+  // ligne n'est qu'une file d'envoi déjà vidée.
   try {
-    const desinscrits = await purgerDesinscrits(new Date(), newsMonths);
-    counts.newsletter = desinscrits.purges;
-    console.log(
-      `[retention-purge][desinscrits] purges=${desinscrits.purges} ` +
-        `empreintes=${desinscrits.empreintesGardees} reportes=${desinscrits.reportes}`,
-    );
-  } catch (err) {
-    console.error("[retention-purge][desinscrits] étape en échec, reprise demain.");
-    captureWorkerError("retention-purge", "retention-purge", undefined, err);
-  }
-
-  // 3 bis) lot L6 (2026-09-25) — lettre et guide : `pending` à 30 jours, abonnés
-  // confirmés et demandes du guide sans contact de la personne depuis 3 ans,
-  // rebonds à 3 ans, preuves de la lettre et du guide à 5 ans après la fin,
-  // agents navigateur hachés. Les durées sont celles que publie la politique de
-  // confidentialité ; la définition du « dernier contact » et ce qui n'est
-  // JAMAIS supprimé (`email_oppositions`, preuves des autres formulaires) sont
-  // écrits dans le module. Journal : comptes seuls.
-  try {
-    const lettre = await purgerLettreEtGuide();
-    console.log(
-      `[retention-purge][lettre] pending=${lettre.pendingPurges} ` +
-        `inactifs=${lettre.abonnesInactifsPurges} ` +
-        `gardesParDemandeRecente=${lettre.abonnesGardesParDemandeRecente} ` +
-        `rebonds=${lettre.rebondsPurges} ` +
-        `demandesGuide=${lettre.demandesGuidePurgees} ` +
-        `journauxEnvoi=${lettre.journauxEnvoiPurges} ` +
-        `preuves=${lettre.preuvesPurgees} agentsHaches=${lettre.agentsHaches}`,
-    );
-  } catch (err) {
-    console.error("[retention-purge] étape lettre et guide en échec, reprise demain.");
-    captureWorkerError("retention-purge", "retention-purge", undefined, err);
-  }
-
-  // 3 ter) lot L6 — `crm_sync_outbox` : la charge porte les données en clair.
-  // Lignes `sent` (acquittées par le CRM) à 30 jours ; jamais `pending`,
-  // `failed` ni `gave_up`.
-  try {
-    const outboxCrm = await purgerOutboxCrm();
-    console.log(`[retention-purge][crm-outbox] envoyees=${outboxCrm}`);
+    counts.crmOutbox = await purgerOutboxCrm();
   } catch (err) {
     console.error("[retention-purge][crm-outbox] étape en échec, reprise demain.");
     captureWorkerError("retention-purge", "retention-purge", undefined, err);
   }
 
-  // 5) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).
+  // 2) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).
   // GenerationLog.timestamp = createdAt — pas de updatedAt (table append-only).
   const genLogsMonths = readMonths("RETENTION_GENERATION_LOGS_MONTHS", DEFAULTS.generationLogs);
   const genLogsResult = await prisma.generationLog.deleteMany({
@@ -373,26 +138,15 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.generationLogs = genLogsResult.count;
 
-  // 6) cost_ledger ancien (atomique provider IA, audit B5 P0-7).
-  // Aucune PII, juste provider + model + tokens + costUsd. 24 mois alignés
-  // obligation comptable française (la table comptable principale reste
-  // les invoices Stripe — ce ledger est observabilité interne).
-  const costLedgerMonths = readMonths("RETENTION_COST_LEDGER_MONTHS", DEFAULTS.costLedger);
-  const costLedgerResult = await prisma.costLedger.deleteMany({
-    where: { timestamp: { lt: monthsAgo(costLedgerMonths) } },
-  });
-  counts.costLedger = costLedgerResult.count;
-
-  // 7) web_vital_samples anciens (RUM, audit B5 P0-7).
-  // sessionId est généré client (anonyme). userAgent peut être quasi-identifiant
-  // → purge agressive 6 mois par défaut (alignée pratique RUM industrielle).
+  // 3) web_vital_samples anciens (RUM, audit B5 P0-7). sessionId généré client
+  // (anonyme) — mesure de performance du site, aucune personne.
   const webVitalsMonths = readMonths("RETENTION_WEB_VITALS_MONTHS", DEFAULTS.webVitals);
   const webVitalsResult = await prisma.webVitalSample.deleteMany({
     where: { createdAt: { lt: monthsAgo(webVitalsMonths) } },
   });
   counts.webVitals = webVitalsResult.count;
 
-  // 7 bis) funnel_events (tunnels d'acquisition, 2026-08-12).
+  // 4) funnel_events (tunnels d'acquisition, 2026-08-12).
   // 🔴 Cette purge n'est PAS optionnelle. La table est collectée sans
   // bannière de consentement, sous l'exemption CNIL « mesure d'audience »,
   // et cette exemption exige une rétention bornée. La désactiver ne
@@ -405,96 +159,9 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.funnelEvents = funnelResult.count;
 
-  // 7 ter) job_applications (candidatures, 2026-08-13).
-  // 🔴 SEULE table à données personnelles qui n'avait AUCUNE purge, alors
-  // qu'elle en porte le plus : nom, e-mail, téléphone, ville, CV et photo.
-  // Les fichiers vivent hors base (volume disque) : supprimer la ligne sans
-  // eux laisserait les CV et les photos sur le disque indéfiniment — le
-  // pire des deux mondes, une base propre et un disque qui ne l'est pas.
-  // 24 mois : recommandation CNIL pour un candidat non retenu.
-  //
-  // 🛑 `D4` (2026-09-03) — LE DOSSIER D'UNE PERSONNE RECRUTÉE EST ÉPARGNÉ.
-  //
-  // Le filtre ne portait que sur la date de dépôt. Vingt-quatre mois après
-  // avoir postulé, le dossier d'un salarié TOUJOURS EN POSTE partait avec ceux
-  // des refusés — CV et photo compris, effacés du disque avant la ligne. Et
-  // personne n'aurait été prévenu : une passe quotidienne ne distingue pas ce
-  // qu'elle épargne de ce qu'elle n'a jamais vu.
-  //
-  // Décision du responsable de traitement : la candidature d'une personne
-  // entrée dans la société devient une pièce de son DOSSIER DU PERSONNEL. Elle
-  // se conserve le temps de la relation de travail, et sa suppression est un
-  // geste explicite — `deleteApplicationAction`, réservé au super-administrateur,
-  // qui purge déjà le CV et la photo avant la ligne.
-  //
-  // 🔑 Une EXCLUSION de statut, jamais une durée plus longue. Un second passage
-  // « les recrutés à dix ans » aurait l'air prudent et effacerait le dossier
-  // pendant la carrière de la personne. `les-dossiers-recrutes-ne-sont-jamais-purges.spec.ts`
-  // refuse explicitement cette forme-là.
-  //
-  // ⚠️ Les candidatures non retenues ne bougent pas : 24 mois, norme CNIL.
-  const candidaturesMois = readMonths("RETENTION_CANDIDATURES_MONTHS", DEFAULTS.candidatures);
-  const candidaturesPerimees = await prisma.jobApplication.findMany({
-    where: {
-      status: { notIn: ["hired"] },
-      submittedAt: { lt: monthsAgo(candidaturesMois) },
-    },
-    select: { id: true, cvStoragePath: true, photoStoragePath: true },
-  });
-
-  // OBSERVATION, jamais une purge : combien de dossiers l'exclusion a épargnés
-  // sur cette passe. Un `count`, donc aucune ligne rendue, aucune suppression
-  // possible — la garde `les-dossiers-recrutes-ne-sont-jamais-purges.spec.ts`
-  // n'inspecte que les lectures qui alimentent une suppression.
-  counts.candidaturesRetenuesEpargnees = await prisma.jobApplication.count({
-    where: { status: "hired", submittedAt: { lt: monthsAgo(candidaturesMois) } },
-  });
-
-  for (const c of candidaturesPerimees) {
-    // Fichiers d'abord : si la suppression disque échoue, la ligne reste et
-    // la purge repassera demain. L'inverse perdrait le chemin du fichier et
-    // le rendrait introuvable — donc ineffaçable.
-    try {
-      await deleteCv(c.cvStoragePath);
-      await deleteCv(c.photoStoragePath);
-      await supprimerVideosCandidature(c.id);
-      if (c.cvStoragePath) counts.candidaturesFichiers += 1;
-      if (c.photoStoragePath) counts.candidaturesFichiers += 1;
-    } catch (err) {
-      console.error(`[retention-purge] fichiers de la candidature ${c.id} :`, err);
-      continue;
-    }
-    await prisma.jobApplication.delete({ where: { id: c.id } });
-    counts.candidatures += 1;
-  }
-
-  // 8) image_usage_logs + image_download_logs (image-bank Sprint 7 V1).
-  // ip_hash SHA-256 + IP_HASH_SALT — non réversible mais quasi-identifiant
-  // longue durée. Purge 12 mois par défaut (RGPD art. 5.1.e minimisation).
-  const imageLogsMonths = readMonths("RETENTION_IMAGE_LOGS_MONTHS", DEFAULTS.imageLogs);
-  const imageUsageResult = await prisma.imageUsageLog.deleteMany({
-    where: { createdAt: { lt: monthsAgo(imageLogsMonths) } },
-  });
-  const imageDownloadResult = await prisma.imageDownloadLog.deleteMany({
-    where: { downloadedAt: { lt: monthsAgo(imageLogsMonths) } },
-  });
-  counts.imageUsageLogs = imageUsageResult.count;
-  counts.imageDownloadLogs = imageDownloadResult.count;
-
-  // 9) chat_* anciens (RGPD — chatbot). Le contenu (chat_messages.contenu,
-  // chat_conversations.{prospect_profile, resume, ip_hash}, chat_escalations.
-  // contact_email) est de la PII. Les chat_messages partent en CASCADE avec
-  // la conversation (FK ON DELETE CASCADE). Cache sémantique + clés
-  // d'idempotence = housekeeping non-PII.
+  // 5) chatbot — cache sémantique et clés d'idempotence SEULEMENT (ménage
+  // technique). Les conversations, messages et escalades ne sont plus purgés.
   const chatMonths = readMonths("RETENTION_CHAT_MONTHS", DEFAULTS.chat);
-  const chatConvResult = await prisma.chatConversation.deleteMany({
-    where: { updatedAt: { lt: monthsAgo(chatMonths) } },
-  });
-  counts.chatConversations = chatConvResult.count;
-  const chatEscResult = await prisma.chatEscalation.deleteMany({
-    where: { createdAt: { lt: monthsAgo(chatMonths) } },
-  });
-  counts.chatEscalations = chatEscResult.count;
   const chatCacheResult = await prisma.chatSemanticCache.deleteMany({
     where: { createdAt: { lt: monthsAgo(chatMonths) } },
   });
@@ -504,198 +171,17 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.chatIdempotency = chatIdemResult.count;
 
-  // ── 🛑 PROSPECTION — AUCUNE SUPPRESSION AUTOMATIQUE. DÉCISION DE WILL. ────
-  //
-  // **Ordre explicite de Will, 2026-08-20** : « je veux tout garder et ne jamais
-  // les supprimer […] j'effacerai manuellement quand je le souhaiterai, sans que
-  // tu me le rappelles. »
-  //
-  // Portée : `ProspectionCompany` (~4,29 M), `ProspectionPerson` (~1,32 M) et
-  // `ProspectionHealthPractitioner`. Les trois `deleteMany` qui vivaient ici ont
-  // été RETIRÉS — pas désactivés par un drapeau, retirés.
-  //
-  // ## Pourquoi retirer plutôt que laisser dormir
-  //
-  // Ils filtraient sur `retentionUntil`, colonne qu'aucun code de ce dépôt
-  // n'écrit : ils ne supprimaient donc rien AUJOURD'HUI. Mais les tables sont
-  // alimentées par Axion CRM Pro, un dépôt séparé. Le jour où le CRM se mettrait
-  // à renseigner cette colonne — ce qui est son rôle naturel — la suppression
-  // s'activerait toute seule, ici, sans que personne ne l'ait décidé. Un
-  // effacement de masse qui s'arme par un changement fait AILLEURS n'est pas un
-  // effacement décidé.
-  //
-  // ## Ce que cela signifie, et qui est assumé
-  //
-  // Conservation sans limite de données personnelles : non-conformité RGPD
-  // art. 5.1.e, opposable en contrôle. Le responsable de traitement l'a
-  // arbitrée en connaissance de cause. Ce commentaire est la trace de la
-  // décision — pas un rappel : **ne pas reproposer de purge, ne pas rétablir
-  // d'alerte sur ce sujet.**
-  //
-  // ⚠️ Garde : `prospection-aucune-purge-automatique.spec.ts` échoue si un
-  // `deleteMany` réapparaît sur l'un de ces trois modèles.
-  //
-  // ⚠️ Le journal d'accès (`ProspectionAccessLog`) reste purgé ci-dessous : ce
-  // n'est pas une fiche, c'est la trace technique de qui a consulté quoi, avec
-  // sa propre durée (12 mois). La décision de Will porte sur les FICHES.
-  const now = new Date();
-  const accessLogMonths = readMonths("RETENTION_PROSPECTION_ACCESS_MONTHS", 12);
-  const prospAccess = await prisma.prospectionAccessLog.deleteMany({
-    where: { createdAt: { lt: monthsAgo(accessLogMonths) } },
-  });
-
-  // Parcours vente — brouillons du wizard « Nouvelle vente » : le payload
-  // contient des PII (contact saisi avant création du Client). Les brouillons
-  // convertis sont supprimés dès la création de la SESSION (côté wizard) ; ici
-  // on ramasse les abandonnés. Jamais de purge des pièces émises (Devis,
-  // factures, DocumentGenere : obligation comptable).
-  //
-  // ⚠️ Hors décision Will du 2026-08-20 : ce sont des BROUILLONS abandonnés du
-  // tunnel de vente, pas des fiches de prospection. Et `retentionUntil` y est
-  // réellement écrit à la création (`vente-brouillon.ts`), donc cette purge-là
-  // fonctionne vraiment.
-  const venteBrouillons = await prisma.venteBrouillon.deleteMany({
-    where: { retentionUntil: { not: null, lt: now } },
-  });
-  console.log(`[retention-purge][vente] brouillons=${venteBrouillons.count}`);
   console.log(
-    `[retention-purge][prospection] fiches=CONSERVÉES (décision Will 2026-08-20) ` +
-      `accessLogs=${prospAccess.count}`,
-  );
-
-  // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────
-  //
-  // `email_logs` et `email_outbox` n'étaient dans AUCUNE purge, alors que
-  // ce worker en couvre vingt et une. Deux conséquences : une croissance
-  // non bornée de la table la plus écrite de la chaîne, et un `recipient`
-  // conservé en clair indéfiniment — alors que `SubmissionReply.toEmail`,
-  // qui porte la même donnée, est chiffré au repos. `email_outbox` est
-  // pire encore : son `payload` fige la charge utile complète, PII incluse.
-  //
-  // 🔴 DEUX DURÉES, ET L'ÉCART EST LE POINT ENTIER.
-  //
-  // Purger ce journal, c'est effacer la preuve qu'une convocation est
-  // partie — les indicateurs Qualiopi 4, 9, 11, 30 et 32 en dépendent. Une
-  // durée unique et courte détruirait la conformité ; une durée unique et
-  // longue laisserait des adresses de prospects en clair bien au-delà de
-  // ce que la CNIL admet. On sépare donc sur le seul axe qui compte :
-  //
-  //   - TRANSACTIONNEL (36 mois) — convocations, attestations, devis,
-  //     factures. Aligné sur le cycle de certification Qualiopi de 3 ans :
-  //     un audit de surveillance doit pouvoir remonter à l'origine du
-  //     cycle en cours.
-  //   - MARKETING (13 mois) — double opt-in newsletter. Aligné sur la
-  //     norme CNIL de conservation des données de prospection.
-  //
-  // ⚠️ `readMonths` refuse toute valeur < 1 : une variable d'environnement
-  // vidée par accident retombe sur la valeur par défaut au lieu de purger
-  // tout le journal. C'est la garde anti-misconfig déjà en place au-dessus.
-  const emailTransacMonths = readMonths("RETENTION_EMAIL_LOGS_MONTHS", DEFAULTS.emailLogsTransac);
-  const emailMarketingMonths = readMonths(
-    "RETENTION_EMAIL_LOGS_MARKETING_MONTHS",
-    DEFAULTS.emailLogsMarketing,
-  );
-  const emailLogsTransac = await prisma.emailLog.deleteMany({
-    where: { marketing: false, createdAt: { lt: monthsAgo(emailTransacMonths) } },
-  });
-  const emailLogsMarketing = await prisma.emailLog.deleteMany({
-    where: { marketing: true, createdAt: { lt: monthsAgo(emailMarketingMonths) } },
-  });
-  counts.emailLogs = emailLogsTransac.count + emailLogsMarketing.count;
-
-  // Copie des e-mails envoyés (2026-09-27) — la copie meurt à 12 mois ; la
-  // ligne du journal qu'elle illustre survit (preuve d'envoi). La cascade de la clé étrangère emporte déjà la copie d'une ligne
-  // purgée ; cette passe-ci emporte les copies des lignes qui RESTENT.
-  const contentsMonths = readMonths("RETENTION_EMAIL_CONTENTS_MONTHS", DEFAULTS.emailContents);
-  const contentsPurge = await prisma.emailLogContent.deleteMany({
-    where: { createdAt: { lt: monthsAgo(contentsMonths) } },
-  });
-  counts.emailLogContents = contentsPurge.count;
-
-  // Corbeille de validation : on ne purge QUE les états terminaux.
-  //
-  // 🔴 `a_valider` et `approuve` sont volontairement exclus, et ce n'est
-  // pas une précaution de confort : ce sont des e-mails qui attendent
-  // encore un geste humain. Les purger sur l'âge ferait disparaître en
-  // silence un message que quelqu'un doit approuver — le destinataire ne
-  // recevrait jamais rien, et personne ne saurait pourquoi. Une entrée qui
-  // moisit en `a_valider` est un problème d'exploitation à voir, pas un
-  // déchet à ramasser.
-  const outboxMonths = readMonths("RETENTION_EMAIL_OUTBOX_MONTHS", DEFAULTS.emailOutbox);
-  const outboxPurge = await prisma.emailOutbox.deleteMany({
-    where: {
-      statut: { in: ["envoye", "refuse"] },
-      createdAt: { lt: monthsAgo(outboxMonths) },
-    },
-  });
-  counts.emailOutbox = outboxPurge.count;
-
-  console.log(
-    `[retention-purge][email] logs=${counts.emailLogs} ` +
-      `(transac ${emailLogsTransac.count}/${emailTransacMonths}m + ` +
-      `marketing ${emailLogsMarketing.count}/${emailMarketingMonths}m) ` +
-      `copies=${counts.emailLogContents}/${contentsMonths}m ` +
-      `outbox=${counts.emailOutbox}/${outboxMonths}m`,
-  );
-
-  console.log(
-    `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
-      `reservationsAppel=${counts.reservationsAppel}/${rdvMonths}m ` +
-      `rencontresFigees=${counts.rencontresFigees} ` +
-      `newsletter=${counts.newsletter} ` +
-      `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
-      `webVitals=${counts.webVitals} ` +
-      `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
-      `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
+    `[retention-purge] generationLogs=${counts.generationLogs} ` +
+      `webVitals=${counts.webVitals} funnelEvents=${counts.funnelEvents} ` +
       `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
-      `funnelEvents=${counts.funnelEvents} ` +
-      `candidatures=${counts.candidatures} (${counts.candidaturesFichiers} fichiers) ` +
-      `recrutesEpargnes=${counts.candidaturesRetenuesEpargnees}`,
-  );
-}
-
-/**
- * Conservation codée du dossier client et des enregistrements (B1, ADR 0056).
- *
- * Planifiée ICI, exécutée par `src/lib/rgpd-erase.ts` (seul module qui pose le
- * drapeau d'effacement). Chaque durée vient de `CONSERVATION_VISIO`
- * (`src/content/visio-annonce-textes.ts`), celles que la notice publique écrit :
- * garde `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts`.
- *
- * Pas de variable `RETENTION_*` pour ces durées, à dessein : elles sont
- * PROMISES dans la notice, et une variable d'environnement permettrait de les
- * changer sans changer la notice.
- *
- * ⚠️ Le son lui-même (R2) n'est pas purgé ici : il part à la validation du
- * compte rendu et au plus tard à 30 jours, par le circuit (PR 6).
- */
-export async function executerPurgeVisio(maintenant: Date): Promise<void> {
-  const seuils = seuilsDuJour(maintenant);
-  const segments = await purgerSegmentsAnciens(seuils.segmentsAvant);
-  const versions = await purgerVersionsComptesRendus(seuils.versionsAvant);
-  const rejetes = await viderFaitsRejetes(seuils.faitsRejetesAvant);
-  const dossiers = await purgerDossiersVisioEchus(maintenant);
-  const preuves = await purgerPreuvesAccordEchues(maintenant);
-  console.log(
-    `[retention-purge][visio] segments=${segments.segments} ` +
-      `(${segments.transcriptions} transcriptions) versions=${versions.comptesRendus} ` +
-      `faitsRejetes=${rejetes.faits} dossiers=${dossiers.fiches} ` +
-      `orphelines=${dossiers.rencontresOrphelines} faits=${dossiers.faits} ` +
-      `comptesRendus=${dossiers.comptesRendus} preuves=${preuves.preuves} ` +
-      `annonces=${preuves.annonces}`,
+      `crmOutbox=${counts.crmOutbox} ` +
+      `donneesDePersonnes=CONSERVÉES (décision Will 2026-10-07)`,
   );
 }
 
 export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
-  // Dossier client et enregistrements des visios (chantier visio, PR 8 ; B1) :
-  // APRÈS la purge historique, dans le même passage quotidien. Une erreur ici
-  // ne défait rien de ce qui précède, et une erreur plus haut ne laisse pas
-  // passer la conservation visio en silence : le passage échoue, et se voit.
-  const traiter = async (): Promise<void> => {
-    await executerPurgeRetention();
-    await executerPurgeVisio(new Date());
-  };
-  const worker = new Worker<RetentionPurgeJobData>("retention-purge", traiter, {
+  const worker = new Worker<RetentionPurgeJobData>("retention-purge", executerPurgeRetention, {
     connection: getBullConnectionOrThrow(),
     concurrency: 1,
     lockDuration: 120_000,

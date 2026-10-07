@@ -17,8 +17,9 @@
 //   - web_vital_samples : RUM agrégé, sessionId anonyme client.
 //   - content_gen_jobs : pipeline interne, lié à templates éditoriaux.
 //
-// Ces tables sont purgées automatiquement par `retention-purge-worker.ts`
-// (durées dans `_AUDIT/DPA-REGISTER.md` + politique-confidentialite).
+// 2026-10-07 (Will : « coupe tous les effacements ») : `retention-purge-worker.ts`
+// ne purge plus que des tables techniques (generation_logs, web_vital_samples,
+// funnel_events, caches du chatbot, file CRM acquittée) ; cost_ledger est conservé.
 //
 // Le token est obtenu via POST /api/gdpr-export/request {email} qui envoie
 // le lien par email (cf. request/route.ts).
@@ -596,7 +597,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ...NOTICE_EXCLUSIONS_DOSSIER,
       ],
       excludedReason:
-        "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
+        "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence.",
       contactDpo: "contact@axion-ia.com",
     },
   });

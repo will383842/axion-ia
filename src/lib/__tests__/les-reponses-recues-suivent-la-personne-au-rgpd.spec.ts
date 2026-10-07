@@ -51,7 +51,7 @@ describe("🔴 minimisation et rétention — le schéma", () => {
     expect(modele).not.toBe("");
   });
 
-  it("il suit sa fiche : suppression EN CASCADE (purge 24 mois, effacement console)", () => {
+  it("il suit sa fiche : suppression EN CASCADE (effacement console ou RGPD)", () => {
     expect(modele).toMatch(
       /submission\s+Submission\s+@relation\(fields: \[submissionId\], references: \[id\], onDelete: Cascade\)/,
     );

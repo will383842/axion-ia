@@ -535,7 +535,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
         {screen === 0 ? (
           <p className="text-fg-muted mt-6 text-xs leading-relaxed">
             RGPD · UE — vos données ne servent qu’à l’étude de votre candidature et sont conservées
-            2 ans au maximum.
+            pour garder la trace de nos échanges.
           </p>
         ) : null}
       </form>

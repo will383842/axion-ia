@@ -10,9 +10,11 @@
  * l'invitation envoyée à une personne recommandée renvoie désormais vers cette
  * section : le lien ne peut pas pointer sur un texte absent.
  *
- * Même méthode que `la-notice-dit-vrai-sur-les-candidatures.spec.ts` : la durée
- * publiée est lue dans le texte ET dans les défauts de la purge, et les deux
- * doivent être égales. Garde de forme, pas de rédaction.
+ * Même méthode que `la-notice-dit-vrai-sur-les-candidatures.spec.ts`. Depuis le
+ * 2026-10-07 (Will : « je ne veux surtout pas d'effacement »), aucun dossier
+ * d'apporteur n'est supprimé automatiquement : la notice le dit, le worker ne
+ * supprime plus les fiches archivées, et les deux moitiés sont couplées. Garde
+ * de forme, pas de rédaction.
  */
 
 import { readFileSync } from "node:fs";
@@ -21,6 +23,8 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
+import { FORMULAIRE } from "../recrutement/tunnel-facebook";
+import { VSL_CONSENT_TEXTE } from "@/lib/commercial-application/vsl-apporteur";
 
 const WORKER = join(process.cwd(), "src/server/queue/workers/retention-purge-worker.ts");
 
@@ -32,10 +36,12 @@ function section(locale: "fr" | "en", titre: RegExp): string | undefined {
 const FR = () => section("fr", /^Réseau d'apporteurs d'affaires$/);
 const EN = () => section("en", /^Business introducer network$/);
 
-/** Durée réellement appliquée aux dossiers classés (status `archived`). */
-function dureeAppliquee(): number {
-  const m = /submissionsArchived:\s*(\d+)/.exec(readFileSync(WORKER, "utf8"));
-  return Number(m?.[1]);
+/** Le worker supprime-t-il des fiches (`submissions`) ? Commentaires retirés. */
+function workerSupprimeDesFiches(): boolean {
+  const code = readFileSync(WORKER, "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, (bloc) => bloc.replace(/[^\n]/g, ""))
+    .replace(/^[ \t]*\/\/.*$/gm, "");
+  return /\.submission\s*\.\s*delete/.test(code);
 }
 
 describe("la notice dit vrai sur le réseau d'apporteurs", () => {
@@ -44,11 +50,29 @@ describe("la notice dit vrai sur le réseau d'apporteurs", () => {
     expect(EN(), "section EN « Business introducer network » absente").toBeDefined();
   });
 
-  it("🔴 la durée publiée est EXACTEMENT celle que la purge applique aux dossiers classés", () => {
-    const mois = dureeAppliquee();
-    expect(mois, "`DEFAULTS.submissionsArchived` introuvable").toBeGreaterThan(0);
-    expect(FR()).toContain(`${mois} mois`);
-    expect(EN()).toContain(`${mois} months`);
+  it("🔴 aucune suppression automatique : la notice le dit, et le worker n'en fait pas", () => {
+    // Les deux moitiés sont COUPLÉES : rétablir la purge des fiches archivées
+    // sans changer la notice rougit, et inversement.
+    expect(
+      workerSupprimeDesFiches(),
+      "le worker supprime de nouveau des fiches : interdit par décision du " +
+        "responsable de traitement (2026-10-07), et la notice dit le contraire.",
+    ).toBe(false);
+    expect(FR()).not.toMatch(/suppression automatique/i);
+    expect(FR()).not.toMatch(/24 mois/);
+    expect(FR()).toMatch(/il n'est pas supprimé automatiquement/);
+    expect(EN()).not.toMatch(/automatic deletion/i);
+    expect(EN()).not.toMatch(/24 months/);
+    expect(EN()).toMatch(/it is not deleted automatically/);
+  });
+
+  it("🔴 les cases de consentement ne promettent plus de durée de suppression", () => {
+    // Le texte coché est une promesse faite à la personne : il dit la même
+    // chose que la notice (formulaire court et page vidéo).
+    for (const texte of [FORMULAIRE.consent, VSL_CONSENT_TEXTE]) {
+      expect(texte).not.toMatch(/\d+\s*mois/);
+      expect(texte).toMatch(/conservées pour garder la trace de nos échanges/);
+    }
   });
 
   it("annonce les relances automatiques à J+2 et J+7, et le kit à 30 minutes", () => {

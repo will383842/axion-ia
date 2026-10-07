@@ -2,8 +2,12 @@
  * DURÉES DE CONSERVATION DE LA LETTRE ET DU GUIDE (lot L6, 2026-09-25 ;
  * relecture du même jour).
  *
- * Appelé par la purge quotidienne existante (`retention-purge-worker.ts`,
- * 03:00 UTC) — aucun planificateur de plus. Chaque règle est celle que la
+ * 🛑 Depuis le 2026-10-07 (Will : « coupe tous les effacements »), la purge
+ * quotidienne (`retention-purge-worker.ts`) n'appelle PLUS `purgerLettreEtGuide`
+ * ni `purgerDesinscrits` : ces fonctions restent, testées, sans appelant
+ * planifié. Seule `purgerOutboxCrm` (file CRM déjà acquittée) est encore
+ * appelée. La politique de confidentialité n'annonce plus les durées
+ * ci-dessous. Chaque règle est celle que la
  * politique de confidentialité ANNONCE (`src/content/legal.ts`, section « Guide
  * IA entreprise et lettre d'information ») ; le registre art. 30 les reprend.
  *

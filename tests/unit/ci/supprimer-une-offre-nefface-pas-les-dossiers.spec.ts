@@ -5,9 +5,9 @@
  *
  * Will a décidé (D4) qu'un dossier de candidature ne se supprime **jamais tout
  * seul**, et la PR #952 a livré la moitié visible de cette décision : la purge
- * automatique épargne les candidatures `hired`
- * (`retention-purge-worker.ts`, `status: { notIn: ["hired"] }`), verrouillée par
- * `les-dossiers-recrutes-ne-sont-jamais-purges.spec.ts`.
+ * automatique épargnait les candidatures `hired`. Depuis le 2026-10-07 (Will :
+ * « je ne veux surtout pas d'effacement »), le worker ne supprime plus AUCUNE
+ * candidature — verrouillé par `les-candidatures-ne-sont-jamais-purgees.spec.ts`.
  *
  * L'autre moitié manquait. `JobApplication.offer` portait `onDelete: Cascade`,
  * et `deleteJobOfferAction` purgeait en plus les CV sur disque avant de

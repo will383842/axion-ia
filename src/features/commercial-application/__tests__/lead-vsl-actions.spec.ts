@@ -204,7 +204,7 @@ describe("étape 1 — capturerLeadVsl", () => {
     // Même échelle qu'aujourd'hui : un lead vidéo est un « premier contact ».
     expect(d["etape"]).toBe("premier-contact");
     expect(d["source"]).toBe("/apporteur-affaires/video");
-    expect(d["consentVersion"]).toBe("lead-apporteur-vsl-v3-2026-10-05");
+    expect(d["consentVersion"]).toBe("lead-apporteur-vsl-v4-2026-10-07");
     expect(d["vsl"]).toMatchObject({
       version: "vsl-v1",
       etapeAtteinte: 1,
@@ -235,11 +235,11 @@ describe("étape 1 — capturerLeadVsl", () => {
     expect(funnel).not.toHaveProperty("fbp");
   });
 
-  it("enregistre la preuve de consentement v3 — celle du texte de la case", async () => {
+  it("enregistre la preuve de consentement v4 — celle du texte de la case", async () => {
     await capturer();
     expect(consentement).toHaveBeenCalledTimes(1);
     expect(consentement.mock.calls[0]?.[0]).toMatchObject({
-      consentVersion: "lead-apporteur-vsl-v3-2026-10-05",
+      consentVersion: "lead-apporteur-vsl-v4-2026-10-07",
       action: "optin",
     });
   });

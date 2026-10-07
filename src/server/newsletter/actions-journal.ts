@@ -4,8 +4,8 @@
  * chaîne d'effacement (`effacer.ts` → `rgpd-erase`, CRM) pour trois chaînes.
  *
  * 🔴 Le préfixe `gdpr.` n'est pas cosmétique : la purge des journaux
- * (`retention-purge-worker.ts`) n'épargne à 12 mois QUE les actions `gdpr.*`
- * (conservées 5 ans, l'échéance des pièces). Voir `effacer.ts`.
+ * (`retention-purge-worker.ts`) n'épargnait à 12 mois QUE les actions `gdpr.*`.
+ * Depuis le 2026-10-07, plus aucun journal n'est purgé. Voir `effacer.ts`.
  */
 
 /** Effacement d'un abonné depuis la console (depuis le 2026-09-26). */

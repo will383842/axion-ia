@@ -103,7 +103,7 @@ describe("les échéances suivent leurs ancres", () => {
     expect(finConservationPreuve(d("2031-03-15"))).toEqual(d("2036-03-15"));
   });
 
-  it("🔴 la purge vise les DEUX formes de preuve, et elle est planifiée", () => {
+  it("🔴 la purge vise les DEUX formes de preuve — et elle n'est PLUS planifiée (Will, 2026-10-07)", () => {
     const erase = readFileSync(join(process.cwd(), "src/lib/rgpd-erase.ts"), "utf8");
     const debut = erase.indexOf("export async function purgerPreuvesAccordEchues(");
     expect(debut).toBeGreaterThan(0);
@@ -116,6 +116,8 @@ describe("les échéances suivent leurs ancres", () => {
       join(process.cwd(), "src/server/queue/workers/retention-purge-worker.ts"),
       "utf8",
     );
-    expect(worker).toMatch(/await purgerPreuvesAccordEchues\(maintenant\)/);
+    // « coupe tous les effacements » : la fonction reste, son appel planifié
+    // est retiré du worker.
+    expect(worker).not.toMatch(/purgerPreuvesAccordEchues\s*\(/);
   });
 });

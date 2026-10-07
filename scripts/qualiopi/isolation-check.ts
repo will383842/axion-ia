@@ -391,7 +391,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `resolveOffreEffectifFr`), et une alerte du circuit a un lien (`lienCible`).
   "src/server/visio/__tests__/le-catalogue-du-circuit-lit-les-regles-du-site.spec.ts",
   "src/server/visio/__tests__/une-alerte-du-circuit-mene-au-compte-rendu.spec.ts",
-  "src/server/queue/workers/retention-purge-worker.ts",
   // ── Worker d'import mensuel de la table SIRO (IDCC → OPCO), INT-T60-A :
   //    consommateur légitime du domaine (il remplit `idcc_opco`), arbitrage de
   //    la coordination Partners (issue 656, commentaire 5983099169).
@@ -411,7 +410,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/formateur/echeances-formateur.spec.ts",
   "src/server/formateur/etapes-formateur.spec.ts",
   "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
-  "src/server/queue/workers/__tests__/retention-preuve-envoi.spec.ts",
   // Compare le pied de page des e-mails aux SSOT dont il dérive — dont
   // `MENTION_NON_AGREMENT` et `NDA_NUMERO`. C'est le test qui empêche la
   // recopie : il ne peut pas vérifier la dérivation sans lire la source.

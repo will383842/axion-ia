@@ -14,24 +14,27 @@ export const VSL_MERCI_PATH = "/apporteur-affaires/video/merci";
 export const VSL_VERSION = "vsl-v1";
 
 /**
- * Version du texte de consentement du NOUVEAU parcours (v3).
+ * Version du texte de consentement du NOUVEAU parcours.
  *
- * 🔴 `LEAD_APPORTEUR_CONSENT_VERSION` (v2, formulaire court) n'est PAS touchée :
+ * 🔴 `LEAD_APPORTEUR_CONSENT_VERSION` (formulaire court) est une AUTRE version :
  * l'ancien formulaire garde son texte et sa preuve, verrouillés par
  * `le-formulaire-apporteur-ne-promet-aucun-appel.spec.tsx`. La preuve de
- * consentement ne vaut que par le texte réellement coché : la v3 est celle du
- * texte ci-dessous, qui dit explicitement qu'on peut écrire « même si je ne
- * termine pas » (relance d'abandon, base légale du lot 2).
+ * consentement ne vaut que par le texte réellement coché : la v3 disait
+ * explicitement qu'on peut écrire « même si je ne termine pas » (relance
+ * d'abandon, base légale du lot 2) ; la v4 (2026-10-07) garde cette phrase et
+ * retire la durée « 24 mois après la clôture » — plus aucune suppression
+ * automatique (décision de Will).
  */
-export const LEAD_APPORTEUR_VSL_CONSENT_VERSION = "lead-apporteur-vsl-v3-2026-10-05";
+export const LEAD_APPORTEUR_VSL_CONSENT_VERSION = "lead-apporteur-vsl-v4-2026-10-07";
 
 /**
  * Texte de la case de l'étape 1 (version `LEAD_APPORTEUR_VSL_CONSENT_VERSION`).
  * La page l'affiche telle quelle : toute modification change la version.
- * Vouvoiement ; la durée dit ce que la purge applique (24 mois après clôture).
+ * Vouvoiement. v4 (2026-10-07, décision Will) : plus de « 24 mois après la
+ * clôture » — aucun dossier n'est plus supprimé automatiquement.
  */
 export const VSL_CONSENT_TEXTE =
-  "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires, y compris si je ne termine pas mon inscription. Données conservées 24 mois après la clôture de mon dossier, jamais vendues ni cédées.";
+  "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires, y compris si je ne termine pas mon inscription. Données conservées pour garder la trace de nos échanges, jamais vendues ni cédées.";
 
 /** Question fermée de l'étape 2 : une réponse, un geste, obligatoire. */
 export const VSL_QUESTION = {

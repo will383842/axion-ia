@@ -481,16 +481,16 @@ export function VueEmails({
       </div>
 
       {/* 🔴 Dit à l'écran ce que ce journal garde et NE garde PAS. Avant le
-          27/09/2026, il ne gardait aucun contenu ; depuis, une copie de 12 mois.
+          27/09/2026, il ne gardait aucun contenu ; depuis, une copie (plus de purge depuis le 07/10).
           Sans cette phrase, on croirait pouvoir relire n'importe quel envoi —
           et on découvrirait le contraire le jour où on en a besoin. */}
       <p className="admin-alert admin-alert-info">
         <span>
           Ce journal enregistre <strong>qui</strong> a reçu <strong>quoi</strong> et{" "}
           <strong>quand</strong>. Cliquez un gabarit pour voir l&apos;e-mail{" "}
-          <strong>tel qu&apos;il est parti</strong> : la copie est conservée 12 mois depuis le
-          27/09/2026, liens personnels masqués ; les envois plus anciens n&apos;en ont pas. Les
-          e-mails soumis à validation avant envoi vivent, eux, dans{" "}
+          <strong>tel qu&apos;il est parti</strong> : la copie est conservée depuis le 27/09/2026,
+          liens personnels masqués ; les envois plus anciens n&apos;en ont pas. Les e-mails soumis à
+          validation avant envoi vivent, eux, dans{" "}
           <Link href={`/fr/${adminPrefix}/qualiopi/emails`} className="admin-link">
             E-mails à valider
           </Link>

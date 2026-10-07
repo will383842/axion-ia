@@ -47,11 +47,14 @@ const PROMESSE_D_APPEL =
   /rappel|(?:on|qu['’]on) (?:t|m)['’]appel|nous vous appel|appel\sde\snotre/i;
 
 describe("le formulaire court ne promet plus d'appel", () => {
-  it("la case de consentement : ni rappel, ni « jamais transmises », 24 mois après la clôture", () => {
+  it("la case de consentement : ni rappel, ni « jamais transmises », ni durée de suppression", () => {
     expect(FORMULAIRE.consent).not.toMatch(/rappel/i);
     expect(FORMULAIRE.consent).not.toMatch(/jamais transmises/i);
     expect(FORMULAIRE.consent).toMatch(/m'écrive au sujet du réseau d'apporteurs d'affaires/);
-    expect(FORMULAIRE.consent).toMatch(/24 mois après la clôture de mon dossier/);
+    // 2026-10-07 (Will) : aucun dossier n'est supprimé automatiquement — la case
+    // ne promet donc plus « 24 mois après la clôture ».
+    expect(FORMULAIRE.consent).not.toMatch(/\d+\s*mois/);
+    expect(FORMULAIRE.consent).toMatch(/conservées pour garder la trace de nos échanges/);
     expect(FORMULAIRE.consent).toMatch(/jamais vendues ni cédées/);
   });
 
@@ -101,6 +104,6 @@ describe("le formulaire court ne promet plus d'appel", () => {
   });
 
   it("nouvelle version du consentement : la preuve pointe vers le nouveau texte", () => {
-    expect(LEAD_APPORTEUR_CONSENT_VERSION).toBe("lead-apporteur-facebook-v2-2026-09-19");
+    expect(LEAD_APPORTEUR_CONSENT_VERSION).toBe("lead-apporteur-facebook-v3-2026-10-07");
   });
 });

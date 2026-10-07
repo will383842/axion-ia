@@ -99,9 +99,10 @@ export const FORMULAIRE = {
   // doit pointer vers le texte réellement coché. v2 (2026-09-19) : plus de
   // rappel promis, et « jamais transmises » devient « jamais vendues ni
   // cédées » (nos sous-traitants d'envoi et de notification les reçoivent :
-  // le texte doit dire vrai).
+  // le texte doit dire vrai). v3 (2026-10-07) : plus de durée promise — aucun
+  // dossier n'est supprimé automatiquement (décision de Will).
   consent:
-    "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires. Données conservées 24 mois après la clôture de mon dossier, jamais vendues ni cédées.",
+    "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires. Données conservées pour garder la trace de nos échanges, jamais vendues ni cédées.",
   bouton: "Recevoir le kit",
   // JUR-T44b : le document de présentation est retiré jusqu'à sa réécriture (JUR-T45).
   micro: "Un e-mail tout de suite, avec le catalogue de nos prestations.",

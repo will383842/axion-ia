@@ -1,19 +1,17 @@
 // @vitest-environment node
 /**
- * ⛔ La purge des 36 mois de `calendly_events` FIGE le statut de la rencontre
- * du dossier client AVANT de supprimer le rendez-vous, dans la même
- * transaction (principe PA-3 du plan).
+ * ⛔ `figerRencontresAvantPurge` FIGE le statut de la rencontre du dossier
+ * client avant la suppression d'un rendez-vous Calendly (principe PA-3 du plan).
  *
  * Tant que Calendly vit, le statut de la rencontre EST celui de Calendly
- * (colonne nulle, CHECK `rencontres_statut_fige_calendly`) : la purge
- * l'effacerait avec la ligne, et la rencontre de juillet 2023 perdrait « a
- * eu lieu » / « absent » en silence. On recopie donc l'issue du point (sinon
- * le statut Calendly) et on coupe le lien.
+ * (colonne nulle, CHECK `rencontres_statut_fige_calendly`) : une suppression
+ * l'effacerait avec la ligne. On recopie donc l'issue du point (sinon le
+ * statut Calendly) et on coupe le lien.
  *
- * Mutation qui fait rougir : retirer l'appel à `figerRencontresAvantPurge`
- * du worker → le test de lecture du code rougit ; retirer l'écriture de
- * `statut` dans la fonction → le premier test rougit.
- * Contre-témoin : une rencontre d'un rendez-vous NON purgé n'est pas touchée.
+ * 🛑 2026-10-07 (Will : « coupe tous les effacements ») : la purge des 36 mois
+ * de `calendly_events` est RETIRÉE du worker. La fonction reste (elle n'est
+ * plus appelée par aucune tâche planifiée) et ses tests aussi ; le dernier cas
+ * verrouille désormais l'ABSENCE de purge des rendez-vous dans le worker.
  */
 
 import { readFileSync } from "node:fs";
@@ -111,17 +109,15 @@ describe("⛔ la purge des 36 mois fige le statut avant de supprimer", () => {
     expect(statutFige("eu_lieu", "canceled")).toBe("tenu");
   });
 
-  it("le worker fige AVANT de supprimer, dans la même transaction (lecture du code)", () => {
+  it("🛑 le worker ne supprime plus les rendez-vous Calendly (lecture du code)", () => {
     const src = readFileSync(
       join(process.cwd(), "src/server/queue/workers/retention-purge-worker.ts"),
       "utf8",
-    );
-    const figer = src.indexOf("await figerRencontresAvantPurge(tx, ouRdv)");
-    const supprimer = src.indexOf("tx.calendlyEvent.deleteMany({ where: ouRdv })");
-    const transaction = src.lastIndexOf("prisma.$transaction(", figer);
-    expect(figer).toBeGreaterThan(-1);
-    expect(supprimer).toBeGreaterThan(figer);
-    expect(transaction).toBeGreaterThan(-1);
-    expect(transaction).toBeLessThan(figer);
+    )
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    expect(src).toContain("executerPurgeRetention");
+    expect(src).not.toMatch(/calendlyEvent\s*\.\s*delete/);
+    expect(src).not.toMatch(/figerRencontresAvantPurge\s*\(/);
   });
 });

@@ -105,11 +105,10 @@ const EFFETS: Readonly<Record<Transition, Effet>> = {
   },
   // Clore ET le dire. Même effet qu'archiver, plus une trace explicite.
   //
-  // ⚠️ La suppression automatique à 24 mois annoncée dans la politique de
-  // confidentialité s'applique par le MÊME chemin que l'archivage
-  // (`retention-purge-worker.ts`, `submissionsArchived: 24`). AUCUN nouveau
-  // code de purge n'est écrit ici : un second compte à rebours serait une
-  // seconde vérité sur la même donnée.
+  // ⚠️ Classer sans suite ne programme AUCUNE suppression : depuis la décision
+  // de Will du 2026-10-07, le worker de purge ne supprime plus les fiches
+  // archivées, et la politique de confidentialité le dit. N'écrire ici aucun
+  // compte à rebours — garde `les-candidatures-ne-sont-jamais-purgees.spec.ts`.
   "sans-suite": {
     donnees: { status: "archived", archivedAt: new Date(0), needsAttention: false },
     annuleLesRelances: true,

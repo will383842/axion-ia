@@ -33,11 +33,10 @@
  * plafond ; si une source l'atteint, le résultat le dit (`tronque`) et le
  * fichier téléchargé aussi (nom et en-tête) — jamais une troncature muette.
  *
- * Durée de vie des traces relues (purge des journaux,
- * `retention-purge-worker.ts`) :
- *   · `gdpr.*` (effacements console et public) : 5 ans, l'échéance des pièces ;
- *   · `newsletter.erased` (ancien nom, avant le 2026-09-26) et
- *     `newsletter.purged` : 12 mois, comme tout journal ordinaire.
+ * Durée de vie des traces relues : depuis le 2026-10-07 (Will : « coupe tous
+ * les effacements »), `retention-purge-worker.ts` ne purge PLUS les journaux —
+ * les traces `gdpr.*`, `newsletter.erased` et `newsletter.purged` sont toutes
+ * conservées. (Avant : 5 ans pour `gdpr.*`, 12 mois pour les autres.)
  *
  * ⚠️ Angles morts DÉCLARÉS de la liste de suppression :
  *   · les oppositions (`email_oppositions`) ne portent que l'empreinte HMAC,
