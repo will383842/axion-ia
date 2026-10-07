@@ -607,6 +607,7 @@ export async function lireSuiviInvitationListe(
   }
   const echangePar = new Map<string, "reserve" | "annule">();
   const echangesPar = new Map<string, EchangeAvecPoint[]>();
+  const echangeLePar = new Map<string, Date>();
   for (const ev of evenements) {
     if (!estAppelApporteur(ev.eventTypeName)) continue;
     const p = ev.linkedSubmissionId ? personneDe.get(ev.linkedSubmissionId) : undefined;
@@ -616,8 +617,12 @@ export async function lireSuiviInvitationListe(
       { debut: ev.startTime, annule: ev.status === "canceled", point: ev.suivi ?? null },
     ]);
     // Un échange non annulé l'emporte sur un échange annulé (reprise d'un créneau).
-    if (ev.status !== "canceled") echangePar.set(p, "reserve");
-    else if (!echangePar.has(p)) echangePar.set(p, "annule");
+    if (ev.status !== "canceled") {
+      echangePar.set(p, "reserve");
+      // 2026-10-07 — le DERNIER échange non annulé dit « réservé » ou « fait ».
+      const avant = echangeLePar.get(p);
+      if (ev.startTime && (!avant || ev.startTime > avant)) echangeLePar.set(p, ev.startTime);
+    } else if (!echangePar.has(p)) echangePar.set(p, "annule");
   }
 
   const reponsePar = new Map<string, Date>();
@@ -640,6 +645,7 @@ export async function lireSuiviInvitationListe(
       invitation,
       relances: (relancesPar.get(p) ?? []).sort((a, b) => a.getTime() - b.getTime()),
       echange,
+      ...(echangeLePar.has(p) ? { echangeLe: echangeLePar.get(p)! } : {}),
       reponse: reponsePar.get(p) ?? null,
       ...(decision ? { decision } : {}),
     });
