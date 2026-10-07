@@ -5,6 +5,9 @@
 // aucun e-mail ; le rattrapage des rendez-vous déjà en base ; et la chaîne
 // complète jusqu'à « Retenu », qui ouvre le dossier et met le VRAI lien.
 
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
@@ -135,6 +138,7 @@ vi.mock("@/lib/prisma", () => {
 });
 
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
+import { etapeDeLaLigne } from "@/lib/commercial-application/etape-apporteur";
 import {
   creerFicheDepuisRendezVous,
   rattraperFichesRendezVousApporteur,
@@ -231,6 +235,31 @@ describe("réservation d'un échange apporteur sans fiche", () => {
     expect(await creer()).toMatchObject({ cree: false, motif: "meme_nom_a_verifier" });
     expect(db.submissions).toHaveLength(1);
     expect(db.evenements[0]!["linkedSubmissionId"]).toBeNull();
+  });
+});
+
+describe("suite de l'audit (07/10)", () => {
+  it("la fiche porte l'étape « premier contact » : la console ne la prend pas pour un dossier complet", async () => {
+    await creer();
+    const d = db.submissions[0]!["details"] as Record<string, unknown>;
+    expect(d["etape"]).toBe("premier-contact");
+    expect(etapeDeLaLigne(d)).toBe("premier-contact");
+  });
+
+  it("une réservation déjà annulée au moment du traitement ne crée aucune fiche", async () => {
+    db.evenements[0]!["status"] = "canceled";
+    expect(await creer()).toMatchObject({ cree: false, motif: "annule" });
+    expect(db.submissions).toHaveLength(0);
+    expect(db.evenements[0]!["linkedSubmissionId"]).toBeNull();
+  });
+
+  it("le gabarit apporteur-demarrage lit l'adresse du site par le filet anti-localhost", () => {
+    const src = readFileSync(
+      resolve(__dirname, "../../../lib/email/templates/apporteur-demarrage.tsx"),
+      "utf8",
+    );
+    expect(src).not.toMatch(/process\.env\.NEXT_PUBLIC_SITE_URL/);
+    expect(src).toMatch(/from "@\/lib\/site-url"/);
   });
 });
 

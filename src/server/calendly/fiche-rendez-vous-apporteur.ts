@@ -31,6 +31,7 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import { LEAD_APPORTEUR_ETAPE } from "@/lib/commercial-application/lead-apporteur";
 import { estRendezVousApporteur } from "./appel-apporteur";
 import { fichesApporteurAuNom } from "./rattachement-apporteur";
 
@@ -44,7 +45,12 @@ export type IssueFicheRendezVous =
   | { cree: true; submissionId: string }
   | {
       cree: false;
-      motif: "sans_adresse" | "fiche_existante" | "meme_nom_a_verifier" | "rattache_entre_temps";
+      motif:
+        | "sans_adresse"
+        | "annule"
+        | "fiche_existante"
+        | "meme_nom_a_verifier"
+        | "rattache_entre_temps";
       submissionId?: string;
     };
 
@@ -66,10 +72,13 @@ export async function creerFicheDepuisRendezVous(e: {
   const empreinte = hashEmailForLookup(email);
   if (!email || !empreinte) return { cree: false, motif: "sans_adresse" };
 
-  // Même nom, autre adresse : on ne crée pas un doublon d'une fiche Indeed.
-  if ((await fichesApporteurAuNom(e.nom)).length > 0) {
-    return { cree: false, motif: "meme_nom_a_verifier" };
-  }
+  // Une réservation déjà annulée au moment du traitement ne crée rien (statut relu ici :
+  // l'enrichissement l'écrit avant d'appeler ce module).
+  const rdv = await prisma.calendlyEvent.findUnique({
+    where: { id: e.eventId },
+    select: { status: true },
+  });
+  if (rdv?.status === "canceled") return { cree: false, motif: "annule" };
 
   const issue = await prisma.$transaction(
     async (tx) => {
@@ -84,6 +93,9 @@ export async function creerFicheDepuisRendezVous(e: {
       });
       const existante = lignes.find((l) => estApporteur(l.details));
       if (existante) return { cree: false as const, submissionId: existante.id };
+      // L'adresse d'abord, le nom ensuite : même nom, AUTRE adresse (relais Indeed) →
+      // on ne crée pas un doublon, un humain choisit dans le sélecteur.
+      if ((await fichesApporteurAuNom(e.nom)).length > 0) return null;
 
       const nom = e.nom?.trim() ?? "";
       const telephone = e.telephone?.trim() ?? "";
@@ -101,6 +113,9 @@ export async function creerFicheDepuisRendezVous(e: {
           details: {
             unifiedType: "recrutement",
             subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+            // Comme la saisie manuelle et la fiche née d'une offre d'emploi : sans
+            // étape, la console la prendrait pour un dossier complet arrivé.
+            etape: LEAD_APPORTEUR_ETAPE,
             origine: ORIGINE_RENDEZ_VOUS_APPORTEUR,
             calendlyEventId: e.eventId,
             ...(reponses ? { reponsesCalendly: reponses.slice(0, 4000) } : {}),
@@ -127,6 +142,8 @@ export async function creerFicheDepuisRendezVous(e: {
     },
     { timeout: 15_000 },
   );
+
+  if (issue === null) return { cree: false, motif: "meme_nom_a_verifier" };
 
   // Le rendez-vous n'est rattaché qu'à une ligne libre : un lien posé à la main gagne.
   const { count } = await prisma.calendlyEvent.updateMany({
