@@ -29,8 +29,8 @@ import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { MENTION_BAREME_INDICATIF, ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
 import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
-import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -58,14 +58,6 @@ function texteOuNull(v: unknown): string | null {
   const s = typeof v === "string" ? v.trim() : "";
   return s === "" ? null : s;
 }
-
-/** « 30 % », « 30% » — la typographie de chaque langue. */
-function pourcent(n: number, l: Langue): string {
-  return l === "fr" ? `${n} %` : `${n}%`;
-}
-
-const PCT_AUDIT = getCommissionById("com-audit").percent ?? 0;
-const PCT_INTEGRATION = getCommissionById("com-integration").percent ?? 0;
 
 // ── Textes ───────────────────────────────────────────────────────────────
 
@@ -101,13 +93,9 @@ export const COPY_ISSUE_ECHANGE = {
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
         // JUR-T29 : envoyé AVANT la signature du contrat, le
         // barème de cet e-mail est indicatif ; le contrat d'apporteur fait foi.
-        "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
+        MENTION_BAREME_INDICATIF,
       ],
       commissionTitre: "Votre commission",
-      formation: (eur: number) =>
-        `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
-      audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
-      integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
       versement: () =>
         "Elle vous est versée dès que le client a réglé l'intégralité de sa facture.",
       statutTitre: "Votre statut",
@@ -123,7 +111,7 @@ export const COPY_ISSUE_ECHANGE = {
       // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
       dossier:
         "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
-      ctaDossier: "Compléter mon dossier",
+      ctaDossier: "Compléter mon dossier et signer mon contrat",
       kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
@@ -170,10 +158,6 @@ export const COPY_ISSUE_ECHANGE = {
         "You earn a commission. The rates below are given as a guide: your introducer agreement prevails.",
       ],
       commissionTitre: "Your commission",
-      formation: (eur: number) =>
-        `Training: €${eur} excl. VAT per training day at the public rate (reduced pro rata if a discount is granted to the client).`,
-      audit: (pct: string) => `Audit: ${pct} of the invoice amount excl. VAT.`,
-      integration: (pct: string) => `Integration: ${pct} of the invoice amount excl. VAT.`,
       versement: () => "It is paid as soon as the client has settled their invoice in full.",
       statutTitre: "Your status",
       statut:
@@ -183,7 +167,7 @@ export const COPY_ISSUE_ECHANGE = {
       espace: "Once your agreement is signed, you can introduce companies to us by simple email.",
       dossier:
         "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
-      ctaDossier: "Complete my file",
+      ctaDossier: "Complete my file and sign my contract",
       kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
@@ -292,9 +276,12 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       ))}
 
       <Text style={intertitre}>{t.commissionTitre}</Text>
-      <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
-      <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT, l))}</Text>
-      <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION, l))}</Text>
+      {/* Le MÊME barème que « contrat signé » et que le contrat v2 (`_bareme-apporteur`). */}
+      {lignesBareme(l).map((ligne) => (
+        <Text key={ligne} style={puce}>
+          • {ligne}
+        </Text>
+      ))}
       <Text style={emailStyles.paragraphStyle}>{t.versement()}</Text>
 
       <Text style={intertitre}>{t.statutTitre}</Text>
@@ -302,6 +289,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
 
       <Text style={intertitre}>{t.suiteTitre}</Text>
       <Text style={puce}>• {dossierUrl ? t.dossier : t.contrat}</Text>
+      {dossierUrl ? <Text style={puce}>{ligneAPreparer(l)}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />

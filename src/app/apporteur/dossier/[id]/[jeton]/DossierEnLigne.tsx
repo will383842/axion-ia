@@ -465,6 +465,24 @@ export function DossierEnLigne({
           {!trouve && !echec && !sirenDejaEnregistre ? (
             <p className="text-fg-soft mt-3 text-[15px]">{TEXTES.rechercherDabord}</p>
           ) : null}
+          {!trouve && !sirenDejaEnregistre ? (
+            <div className="bg-paper border-border mt-4 rounded-2xl border p-4 text-[16px]">
+              <p className="font-semibold">{TEXTES.sansSirenTitre}</p>
+              <p className="text-fg-soft mt-1">
+                {TEXTES.sansSirenTexte}{" "}
+                <a
+                  href={TEXTES.sansSirenUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  {TEXTES.sansSirenLien}
+                </a>
+                .
+              </p>
+              <p className="text-fg-soft mt-1">{TEXTES.sansSirenSuite}</p>
+            </div>
+          ) : null}
 
           {!refus && (trouve || saisieManuelle) ? (
             <div className="mt-4 grid gap-4">

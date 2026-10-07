@@ -336,6 +336,8 @@ describe("REQ-JUR-019 — les exceptions nommées ne couvrent que LEUR ligne", (
 const GABARITS = "src/lib/email/templates";
 const GABARITS_AVANT_SIGNATURE = [
   "_kit-apporteur.tsx", // le kit, joint aux e-mails du tunnel
+  // Barème commun (07/10) : servi AVANT la signature par « Retenu » — il porte la mention.
+  "_bareme-apporteur.ts",
   "apporteur-echange.tsx", // confirmation de l'échange de 15 minutes
   "apporteur-invitation-appel.tsx", // invitation à l'échange
   "apporteur-invitation-relance.tsx", // relance de l'invitation

@@ -53,6 +53,7 @@ import {
   libelleMois,
   objectifVirement,
 } from "./autofacture-donnees";
+import { lireEntrepriseParSiren, type ResultatRegistre } from "./annuaire";
 import { envoyer, envoyerConfirmationVirement, type ResultatEnvoi } from "./envois";
 import { etatVigilance, euros } from "./regles";
 import { signalerErreurReseau } from "./signaler";
@@ -328,6 +329,30 @@ export async function facturerApporteur(
   return { ok: true, numero, totalCents: aVirer, commissions: dues.length, envoi };
 }
 
+/** Le registre est relu au plus une fois par heure et par SIREN (passage horaire). */
+const CACHE_REGISTRE_MS = 60 * 60 * 1000;
+const cacheRegistre = new Map<string, { lu: number; r: ResultatRegistre }>();
+
+/** Pour les tests : oublie les lectures du registre déjà faites. */
+export function oublierCacheRegistre(): void {
+  cacheRegistre.clear();
+}
+
+async function etatAuRegistre(siren: string, maintenant: Date): Promise<ResultatRegistre> {
+  const c = cacheRegistre.get(siren);
+  if (c && maintenant.getTime() - c.lu < CACHE_REGISTRE_MS) return c.r;
+  let r: ResultatRegistre;
+  try {
+    r = await lireEntrepriseParSiren(siren);
+  } catch {
+    r = { ok: false, raison: "indisponible" };
+  }
+  // Une réponse muette n'est pas gardée : le passage suivant redemande.
+  if (r.ok || r.raison !== "indisponible")
+    cacheRegistre.set(siren, { lu: maintenant.getTime(), r });
+  return r;
+}
+
 /**
  * Fiche de l'apporteur incomplète pour l'autofacture : marque les commissions dues « en attente »
  * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
@@ -348,6 +373,16 @@ async function mettreEnAttenteSiIncomplet(
     siren: fiche.siren,
     adresse: decryptPii(fiche.adresse),
   });
+  // Fiche complète : l'entreprise doit encore être ACTIVE au registre (ordre de Will, 07/10).
+  // Registre muet : on ne marque rien et on ne signale rien, le passage suivant réessaie.
+  if (manques.length === 0 && fiche.siren) {
+    const r = await etatAuRegistre(fiche.siren, maintenant);
+    if (!r.ok && r.raison === "indisponible") {
+      return "Autofacture reportée : le registre public ne répond pas, nouvel essai au passage suivant.";
+    }
+    if (!r.ok) manques.push("SIREN introuvable au registre public");
+    else if (!r.entreprise.active) manques.push("entreprise radiée au registre public");
+  }
   if (manques.length === 0) return null;
   const motif = manques.join(", ");
   const dejaBloque = dues.some((d) => d.autofactureAttenteMotif);

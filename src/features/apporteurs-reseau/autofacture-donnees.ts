@@ -8,6 +8,7 @@
 
 import { ajouterJoursOuvres, estJourFerieFrance } from "@/lib/jours-ouvres";
 import { PALIERS_FORMATION } from "./regles";
+import { sirenValide } from "./regles-dossier";
 import type { AutofactureData } from "@/server/qualiopi/documents/templates/autofacture-honoraires";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { computeTotauxFacture, TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
@@ -285,7 +286,7 @@ export function donneesManquantesAutofacture(a: {
 }): string[] {
   const manques: string[] = [];
   if (!regimeHonorairesApporteur(a.regimeTva)) manques.push("régime de TVA de l'apporteur");
-  if (!a.siren?.trim()) manques.push("SIREN de l'apporteur");
+  if (!a.siren?.trim() || !sirenValide(a.siren)) manques.push("SIREN de l'apporteur");
   if (!a.adresse?.trim()) manques.push("adresse de l'apporteur");
   return manques;
 }
