@@ -456,6 +456,9 @@ export interface CommissionVue {
   avoirNumero: string | null;
   /** Autofacture impossible faute de donnée : ce qui manque, depuis quand. */
   autofactureAttenteMotif: string | null;
+  /** Contestation écrite du client en cours (art. 4.2 bis) : depuis quand, et laquelle. */
+  litigeDepuis: Date | null;
+  litigeMotif: string | null;
   autofactureAttenteDepuis: Date | null;
   verseeAt: Date | null;
   creeAt: Date;
@@ -504,6 +507,8 @@ export async function lireCommissions(
     autofactureNumero: l.autofactureNumero,
     avoirNumero: l.avoirNumero,
     autofactureAttenteMotif: l.autofactureAttenteMotif,
+    litigeDepuis: l.litigeDepuis ?? null,
+    litigeMotif: l.litigeMotif ?? null,
     autofactureAttenteDepuis: l.autofactureAttenteDepuis,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,

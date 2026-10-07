@@ -16,6 +16,7 @@ import { peutEngager } from "@/server/auth/habilitations";
 
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
+import { leverSuspension, suspendreCommission } from "./litige";
 import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
 import { euros } from "./regles";
 
@@ -157,4 +158,50 @@ export async function classerActiviteAction(fd: FormData): Promise<void> {
   }
   revalidatePath(retour);
   redirect(retour);
+}
+
+// ── Contestation écrite du client (contrat 2.3, art. 4.2 bis) ────────────
+// Formulaires sans JavaScript client : retour à la page des commissions.
+
+function versCommissions(cle: "retour" | "erreur", message: string): never {
+  redirect(`${adminPath("fr", "apporteurs/commissions")}?${cle}=${encodeURIComponent(message)}`);
+}
+
+async function acteur(): Promise<string | null> {
+  const session = await auth();
+  return session?.user?.id ?? null;
+}
+
+export async function suspendreCommissionAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    r = await suspendreCommission(id, texte(fd, "motif"), new Date(), await acteur());
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-suspendre" } });
+    r = { ok: false, message: "La suspension n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok) versCommissions("retour", "Commission suspendue : ni facturée ni versée.");
+  versCommissions("erreur", r.message);
+}
+
+export async function leverSuspensionAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    r = await leverSuspension(id, await acteur());
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-lever" } });
+    r = { ok: false, message: "La levée n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok) versCommissions("retour", "Suspension levée : la commission reprend son cours.");
+  versCommissions("erreur", r.message);
 }

@@ -194,6 +194,7 @@ export async function enregistrerReprise(e: {
           montantCents: -e.demandeeCents,
           statut: "reprise",
         },
+        select: { id: true },
       });
       const a = await tx.apporteurReseau.findUnique({
         where: { id: origine.apporteurId },

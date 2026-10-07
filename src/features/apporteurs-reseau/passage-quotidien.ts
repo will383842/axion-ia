@@ -557,6 +557,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
               montantCents: calc.montantCents,
               statut: v.statut,
             },
+            select: { id: true },
           });
           if (v.demander && (await demanderVigilance(p.apporteurId, "premiere")) !== "deja") {
             bilan.vigilancesDemandees += 1;
@@ -564,6 +565,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
         } else {
           await prisma.commissionApporteur.create({
             data: { ...base, apporteurId: p.apporteurId, statut: "a_qualifier" },
+            select: { id: true },
           });
         }
         bilan.commissionsCreees += 1;
@@ -593,6 +595,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
             montantCents: part,
             statut: v.statut,
           },
+          select: { id: true },
         });
         if (v.demander && (await demanderVigilance(parrainId, "premiere")) !== "deja") {
           bilan.vigilancesDemandees += 1;
@@ -600,6 +603,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       } else {
         await prisma.commissionApporteur.create({
           data: { ...base, apporteurId: parrainId, parrainage: true, statut: "a_qualifier" },
+          select: { id: true },
         });
       }
       bilan.partsParrainage += 1;
