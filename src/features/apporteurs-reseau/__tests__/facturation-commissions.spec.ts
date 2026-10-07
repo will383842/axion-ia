@@ -8,6 +8,8 @@ interface Ligne {
   statut: string;
   montantCents: number | null;
   autofactureNumero: string | null;
+  autofactureEmiseAt: Date | null;
+  avoirNumero: string | null;
   releveMois: string | null;
   verseeAt: Date | null;
   majAt: Date;
@@ -23,6 +25,7 @@ const etat = vi.hoisted(() => ({
   stockage: "ok" as "ok" | "ko",
   pdfs: [] as string[],
   envoyes: [] as Array<Record<string, unknown>>,
+  confirmations: [] as Array<Record<string, unknown>>,
   alertes: [] as Array<{ jobId: string; payload: Record<string, unknown> }>,
   jobIds: new Set<string>(),
   cumulCents: 0,
@@ -40,6 +43,10 @@ vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
     if (typeof e["jobId"] === "string") etat.jobIds.add(e["jobId"]);
+    return "envoye";
+  }),
+  envoyerConfirmationVirement: vi.fn(async (e: Record<string, unknown>) => {
+    etat.confirmations.push(e);
     return "envoye";
   }),
 }));
@@ -103,8 +110,8 @@ vi.mock("@/lib/prisma", () => {
         denomination: null,
         siren: "123456782",
         adresse: "1 rue des Lilas, 69000 Lyon",
-        regimeTva: "franchise_293b",
-        numeroTva: null,
+        regimeTva: a.where.id === "APP4" ? "assujetti" : "franchise_293b",
+        numeroTva: a.where.id === "APP4" ? "FR00123456782" : null,
       })),
     },
     commissionApporteur: {
@@ -174,6 +181,8 @@ const ligne = (
   statut,
   montantCents,
   autofactureNumero: null,
+  autofactureEmiseAt: null,
+  avoirNumero: null,
   releveMois: null,
   verseeAt: null,
   majAt: new Date("2026-10-01T00:00:00Z"),
@@ -191,6 +200,7 @@ beforeEach(() => {
   etat.stockage = "ok";
   etat.pdfs = [];
   etat.envoyes = [];
+  etat.confirmations = [];
   etat.alertes = [];
   etat.jobIds = new Set();
   etat.cumulCents = 0;
@@ -207,6 +217,7 @@ describe("autofacture dès que la commission est due", () => {
     expect(l.statut).toBe("due");
     expect(l.autofactureNumero).toBe("AXI-APP-2026-0001");
     expect(l.releveMois).toBe("2026-10");
+    expect(l.autofactureEmiseAt).toEqual(MARDI);
     expect(etat.pdfs).toEqual(["apporteurs/autofactures/APP1/AXI-APP-2026-0001.pdf"]);
     const mail = etat.envoyes[0]!;
     expect(mail["gabarit"]).toBe("apporteur-releve");
@@ -222,7 +233,9 @@ describe("autofacture dès que la commission est due", () => {
     etat.maintenant = VENDREDI;
     etat.lignes = [ligne("c1", "due", 40_000)];
     await facturerCommissionsDues(VENDREDI);
-    expect(date(etatEcheances(lignes()[0]!.majAt, VENDREDI).objectif)).toBe("2026-10-13");
+    expect(date(etatEcheances(lignes()[0]!.autofactureEmiseAt!, VENDREDI).objectif)).toBe(
+      "2026-10-13",
+    );
   });
 
   it("client payé la veille d'un férié (jeudi 24/12/2026) : l'objectif saute Noël et le week-end", async () => {
@@ -230,7 +243,9 @@ describe("autofacture dès que la commission est due", () => {
     etat.maintenant = veille;
     etat.lignes = [ligne("c1", "due", 40_000)];
     await facturerCommissionsDues(veille);
-    expect(date(etatEcheances(lignes()[0]!.majAt, veille).objectif)).toBe("2026-12-29");
+    expect(date(etatEcheances(lignes()[0]!.autofactureEmiseAt!, veille).objectif)).toBe(
+      "2026-12-29",
+    );
   });
 
   it("deux commissions dues dans la même passe : UNE autofacture, UN e-mail, UNE alerte", async () => {
@@ -264,7 +279,9 @@ describe("autofacture dès que la commission est due", () => {
     lignes()[0]!.statut = "due";
     await facturerCommissionsDues(VENDREDI);
     expect(lignes()[0]!.autofactureNumero).not.toBeNull();
-    expect(date(etatEcheances(lignes()[0]!.majAt, VENDREDI).objectif)).toBe("2026-10-13");
+    expect(date(etatEcheances(lignes()[0]!.autofactureEmiseAt!, VENDREDI).objectif)).toBe(
+      "2026-10-13",
+    );
   });
 
   it("rejeu de la passe : aucun doublon (ni numéro, ni e-mail, ni alerte, ni PDF)", async () => {
@@ -318,18 +335,34 @@ describe("autofacture dès que la commission est due", () => {
 });
 
 describe("reprises", () => {
-  it("une reprise est déduite de la prochaine autofacture du même apporteur, sous le même numéro", async () => {
+  it("une reprise donne un AVOIR numéroté dans la même série, joint à l'e-mail, déduit du virement", async () => {
     etat.lignes = [ligne("c1", "due", 40_000), ligne("r1", "reprise", -15_000)];
     await facturerCommissionsDues(MARDI);
     const [c, r] = lignes();
+    // Imputée à l'autofacture suivante, avec son propre numéro d'avoir.
     expect(r!.autofactureNumero).toBe(c!.autofactureNumero);
+    expect(c!.autofactureNumero).toBe("AXI-APP-2026-0001");
+    expect(r!.avoirNumero).toBe("AXI-APP-2026-0002");
     expect(r!.statut).toBe("reprise");
+    expect(etat.pdfs).toEqual([
+      "apporteurs/autofactures/APP1/AXI-APP-2026-0001.pdf",
+      "apporteurs/autofactures/APP1/AXI-APP-2026-0002.pdf",
+    ]);
+    expect(etat.envoyes[0]!["attachments"]).toHaveLength(2);
     expect((etat.envoyes[0]!["payload"] as Record<string, string>)["sommeVirement"]).toContain(
       "250",
     );
   });
 
-  it("le décompte e-mail présente la reprise comme un avoir imputé, avec renvoi à l'autofacture d'origine, et la somme virée", async () => {
+  it("la numérotation suivante tient compte des avoirs (aucun numéro réutilisé)", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000), ligne("r1", "reprise", -15_000)];
+    await facturerCommissionsDues(MARDI);
+    lignes().push(ligne("c2", "due", 20_000));
+    await facturerCommissionsDues(MARDI);
+    expect(lignes()[2]!.autofactureNumero).toBe("AXI-APP-2026-0003");
+  });
+
+  it("le décompte e-mail présente l'avoir numéroté, avec renvoi à l'autofacture d'origine, et la somme virée", async () => {
     etat.lignes = [
       ligne("c0", "versee", 30_000, {
         autofactureNumero: "AXI-APP-2026-0001",
@@ -341,7 +374,7 @@ describe("reprises", () => {
     await facturerCommissionsDues(MARDI);
     const p = etat.envoyes[0]!["payload"] as Record<string, unknown>;
     expect(p["avoirs"]).toEqual([
-      "Avoir imputé : 150 € (renvoi à l'autofacture AXI-APP-2026-0001, émise en septembre 2026)",
+      "Avoir n° AXI-APP-2026-0003 : 150 € hors taxes, déduit du virement (rectifie l'autofacture AXI-APP-2026-0001, émise en septembre 2026)",
     ]);
     expect(p["montant"]).toContain("400");
     expect(p["sommeVirement"]).toContain("250");
@@ -373,7 +406,7 @@ describe("reprises", () => {
 });
 
 describe("« Virement fait »", () => {
-  it("ne génère AUCUN PDF et n'envoie aucun e-mail : statut versée, date du virement", async () => {
+  it("ne génère AUCUN PDF : statut versée, date du virement, e-mail de confirmation à l'apporteur", async () => {
     etat.lignes = [ligne("c1", "due", 40_000)];
     await facturerCommissionsDues(MARDI);
     const pdfs = etat.pdfs.length;
@@ -385,6 +418,20 @@ describe("« Virement fait »", () => {
     expect(lignes()[0]!.verseeAt).toEqual(jeudi);
     expect(etat.pdfs).toHaveLength(pdfs);
     expect(etat.envoyes).toHaveLength(envois);
+    expect(etat.confirmations).toHaveLength(1);
+    expect(etat.confirmations[0]).toMatchObject({
+      apporteurId: "APP1",
+      destinataire: "app1@m.fr",
+      contactName: "Jeanne Martin",
+      numeros: ["AXI-APP-2026-0001"],
+      dateVirement: "8 octobre 2026",
+    });
+    expect(String(etat.confirmations[0]!["montant"])).toContain("400");
+  });
+
+  it("aucune confirmation quand il n'y a rien à confirmer", async () => {
+    expect((await marquerVerse("APP1", MARDI, "AXI-APP-2026-0001")).ok).toBe(false);
+    expect(etat.confirmations).toEqual([]);
   });
 
   it("la reprise imputée porte la même date de virement (DAS2)", async () => {
@@ -421,5 +468,29 @@ describe("« Virement fait »", () => {
     expect(etat.pdfs).toHaveLength(1);
     expect(lignes()[0]!.statut).toBe("versee");
     expect(lignes()[0]!.autofactureNumero).not.toBeNull();
+  });
+});
+
+describe("apporteur qui facture la TVA : on vire le TTC", () => {
+  it("l'alerte, la somme virée et « Virement fait » sont TVA comprise", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000, { apporteurId: "APP4" })];
+    const bilan = await facturerCommissionsDues(MARDI);
+    expect(bilan.autofactures).toBe(1);
+    expect(etat.alertes[0]!.payload["titre"]).toContain("480");
+    const p = etat.envoyes[0]!["payload"] as Record<string, string>;
+    expect(p["montant"]).toContain("400");
+    expect(p["sommeVirement"]).toContain("480");
+    const r = await marquerVerse("APP4", MARDI, "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: true, totalCents: 48_000 });
+  });
+
+  it("avec un avoir : TTC de l'autofacture moins TTC de l'avoir", async () => {
+    etat.lignes = [
+      ligne("c1", "due", 40_000, { apporteurId: "APP4" }),
+      ligne("r1", "reprise", -15_000, { apporteurId: "APP4" }),
+    ];
+    await facturerCommissionsDues(MARDI);
+    const r = await marquerVerse("APP4", MARDI, "AXI-APP-2026-0001");
+    expect(r).toMatchObject({ ok: true, totalCents: 30_000 });
   });
 });

@@ -234,8 +234,13 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     <p className="text-[length:var(--text-admin-sm)]">
                       Facturée : <LienPdf numero={c.autofactureNumero} base={base} />
                     </p>
-                    <Echeances emission={c.majAt} maintenant={maintenant} />
+                    <Echeances emission={c.emissionAt} maintenant={maintenant} />
                   </>
+                ) : null}
+                {c.statut === "reprise" && c.avoirNumero ? (
+                  <p className="text-[length:var(--text-admin-sm)]">
+                    Avoir : <LienPdf numero={c.avoirNumero} base={base} />
+                  </p>
                 ) : null}
                 {c.statut === "due" && !c.autofactureNumero ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">

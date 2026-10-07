@@ -166,6 +166,8 @@ import {
   ApporteurCommandeSigneeEmail,
   apporteurReleveSubject,
   ApporteurReleveEmail,
+  apporteurVirementFaitSubject,
+  ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
@@ -534,6 +536,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-releve": {
     subject: apporteurReleveSubject,
     component: ApporteurReleveEmail,
+  },
+  "apporteur-virement-fait": {
+    subject: apporteurVirementFaitSubject,
+    component: ApporteurVirementFaitEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

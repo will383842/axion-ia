@@ -17,7 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
 
-import { construireDonneesAutofacture } from "./autofacture-donnees";
+import { construireDonneesAutofacture, totalTtcPieceCents } from "./autofacture-donnees";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
@@ -452,10 +452,12 @@ export interface CommissionVue {
   statut: StatutCommissionApporteur;
   releveMois: string | null;
   autofactureNumero: string | null;
+  /** Reprise : numéro de son avoir d'autofacture. */
+  avoirNumero: string | null;
   verseeAt: Date | null;
   creeAt: Date;
-  /** Dernière écriture : pour une commission facturée non versée, c'est la date d'émission de l'autofacture. */
-  majAt: Date;
+  /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
+  emissionAt: Date;
 }
 
 /** Taille d'une page de la liste des commissions (précédent / suivant dans la console). */
@@ -497,9 +499,10 @@ export async function lireCommissions(
     statut: l.statut,
     releveMois: l.releveMois,
     autofactureNumero: l.autofactureNumero,
+    avoirNumero: l.avoirNumero,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
-    majAt: l.majAt,
+    emissionAt: l.autofactureEmiseAt ?? l.majAt,
   }));
 }
 
@@ -544,15 +547,29 @@ export function formaterAutofacture(annee: number, seq: number): string {
 
 /**
  * Prochain numéro `AXI-APP-AAAA-NNNN` : borne haute + 1 (jamais un comptage), en lisant
- * la table ET le registre des numéros émis s'il le connaît (lecture seule, tolérante).
+ * la table (autofactures ET avoirs : une seule série) et le registre des numéros émis s'il le
+ * connaît (lecture seule, tolérante).
  */
 export async function allouerNumeroAutofacture(annee: number): Promise<string> {
+  return (await allouerNumerosAutofacture(annee, 1))[0]!;
+}
+
+/** `n` numéros consécutifs de la série (l'autofacture puis ses avoirs, dans cet ordre). */
+export async function allouerNumerosAutofacture(annee: number, n: number): Promise<string[]> {
   const prefixe = `${PREFIXE_AUTOFACTURE}-${annee}-`;
-  const lignes = await prisma.commissionApporteur.findMany({
-    where: { autofactureNumero: { startsWith: prefixe } },
-    select: { autofactureNumero: true },
-    distinct: ["autofactureNumero"],
-  });
+  const [factures, avoirs] = await Promise.all([
+    prisma.commissionApporteur.findMany({
+      where: { autofactureNumero: { startsWith: prefixe } },
+      select: { autofactureNumero: true },
+      distinct: ["autofactureNumero"],
+    }),
+    prisma.commissionApporteur.findMany({
+      where: { avoirNumero: { startsWith: prefixe } },
+      select: { avoirNumero: true },
+      distinct: ["avoirNumero"],
+    }),
+  ]);
+  const lignes = [...factures.map((l) => l.autofactureNumero), ...avoirs.map((l) => l.avoirNumero)];
   let registre: Array<{ numero: string }> = [];
   try {
     registre = await prisma.numeroEmis.findMany({
@@ -563,31 +580,34 @@ export async function allouerNumeroAutofacture(annee: number): Promise<string> {
     registre = [];
   }
   let borne = 0;
-  for (const n of [...lignes.map((l) => l.autofactureNumero), ...registre.map((r) => r.numero)]) {
-    const s = n ? sequenceAutofacture(n, annee) : null;
+  for (const x of [...lignes, ...registre.map((r) => r.numero)]) {
+    const s = x ? sequenceAutofacture(x, annee) : null;
     if (s !== null && s > borne) borne = s;
   }
-  return formaterAutofacture(annee, borne + 1);
+  return Array.from({ length: n }, (_, i) => formaterAutofacture(annee, borne + 1 + i));
 }
 
 /**
- * Pour chaque reprise, l'autofacture d'ORIGINE (numéro et mois d'émission) : le renvoi de l'avoir
- * (art. 4.5). Clé = id de la ligne de reprise. ⚠️ Pas de jour exact : aucune colonne ne garde la
- * date d'émission une fois le virement fait (`majAt` bouge) ; `releveMois` garde le mois.
+ * Pour chaque reprise, l'autofacture d'ORIGINE (numéro, mois et jour d'émission) : le renvoi de
+ * l'avoir (art. 4.5). Clé = id de la ligne de reprise. Le jour vient de `autofactureEmiseAt`
+ * (absent pour les autofactures émises avant cette colonne : seul le mois est alors connu).
  */
 export async function originesDesReprises(
   reprises: ReadonlyArray<{ id: string; palier: string | null }>,
-): Promise<Map<string, { numero: string | null; mois: string | null }>> {
+): Promise<Map<string, { numero: string | null; mois: string | null; emission?: Date | null }>> {
   const origineDe = new Map<string, string>();
   for (const r of reprises) {
     if (r.palier?.startsWith(PREFIXE_PALIER_REPRISE))
       origineDe.set(r.id, r.palier.slice(PREFIXE_PALIER_REPRISE.length));
   }
-  const out = new Map<string, { numero: string | null; mois: string | null }>();
+  const out = new Map<
+    string,
+    { numero: string | null; mois: string | null; emission?: Date | null }
+  >();
   if (origineDe.size === 0) return out;
   const origines = await prisma.commissionApporteur.findMany({
     where: { id: { in: [...new Set(origineDe.values())] } },
-    select: { id: true, autofactureNumero: true, releveMois: true },
+    select: { id: true, autofactureNumero: true, releveMois: true, autofactureEmiseAt: true },
   });
   const parId = new Map(origines.map((o) => [o.id, o]));
   for (const [repriseId, origineId] of origineDe) {
@@ -595,6 +615,7 @@ export async function originesDesReprises(
     out.set(repriseId, {
       numero: o?.autofactureNumero ?? null,
       mois: o?.releveMois ?? null,
+      emission: o?.autofactureEmiseAt ?? null,
     });
   }
   return out;
@@ -613,7 +634,9 @@ export async function genererPdfAutofacture(e: {
   commissionIds: readonly string[];
   totalCents: number;
   maintenant?: Date;
-}): Promise<{ r2Key: string; filename: string } | null> {
+  /** AVOIR : `commissionIds` = les reprises, `totalCents` = leur total POSITIF. */
+  avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
+}): Promise<{ r2Key: string; filename: string; totalTtcCents: number } | null> {
   try {
     const [apporteur, commissions] = await Promise.all([
       prisma.apporteurReseau.findUnique({
@@ -677,6 +700,7 @@ export async function genererPdfAutofacture(e: {
       })),
       organisme: await getOrganismeIdentite(),
       totalAttenduCents: e.totalCents,
+      ...(e.avoir ? { avoir: e.avoir } : {}),
     });
     if (!construit.ok) throw new Error(`autofacture non établie : ${construit.motif}`);
     const { buffer } = await renderPdfToBuffer(
@@ -684,7 +708,14 @@ export async function genererPdfAutofacture(e: {
     );
     const r2Key = `apporteurs/autofactures/${e.apporteurId}/${e.numero}.pdf`;
     if ((await storeAndSignPdf(buffer, r2Key)) === null) throw new Error("R2 non configuré");
-    return { r2Key, filename: `${e.numero}.pdf` };
+    return {
+      r2Key,
+      filename: `${e.numero}.pdf`,
+      totalTtcCents: totalTtcPieceCents(
+        apporteur.regimeTva,
+        construit.data.lignes.map((l) => l.montantHtCents),
+      ),
+    };
   } catch (err) {
     console.error(`[reseau-apporteurs] autofacture ${e.numero} : PDF non généré :`, err);
     signalerErreurReseau("autofacture pdf", err);

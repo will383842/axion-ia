@@ -138,6 +138,12 @@ export interface AutofactureData {
   libelleIdentifiantFournisseur?: string;
   /** Référence du mandat de facturation, citée dans l'encart (ex. annexe 2 du contrat). */
   mandatReference?: string;
+  /**
+   * AVOIR d'autofacture (réseau d'apporteurs, art. 4.5) : même série de numéros, montants
+   * positifs, renvoi à la facture rectifiée. Sans échéance ni mentions de retard : un avoir
+   * ne se paie pas, il vient en déduction (`imputation`).
+   */
+  avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
   estCopie?: boolean;
   estSpecimen?: boolean;
   specimenMotif?: string;
@@ -151,14 +157,20 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
   const mentionRegimeTva = mentionTva(regimeTva);
   const mentions = mentionsAutofacture(sousTraitant.nom);
   const delaiJours = data.delaiContestationJours ?? DELAI_CONTESTATION_JOURS;
+  const avoir = data.avoir;
+  const piece = avoir ? "Cet avoir" : "Cette facture";
 
   return (
     <Document>
       <QualiopiPage
-        docTitle={mentions.titre}
+        docTitle={avoir ? `Avoir — ${mentions.titre}` : mentions.titre}
         docNumber={`N° ${data.numero}`}
         identite={identite}
-        eyebrow="Facture établie par mandat de facturation"
+        eyebrow={
+          avoir
+            ? "Avoir établi par mandat de facturation"
+            : "Facture établie par mandat de facturation"
+        }
         {...(data.estCopie === true ? { estCopie: true } : {})}
         {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
@@ -169,26 +181,41 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
           pièce n'a pas été écrite par celui qui la facture.
         */}
         <LegalCallout variant="legal" title={mentions.titre}>
-          <Text style={styles.legalLine}>{mentions.pourLeCompte}</Text>
+          <Text style={styles.legalLine}>
+            {avoir
+              ? mentions.pourLeCompte.replace(/^Facture établie/, "Avoir établi")
+              : mentions.pourLeCompte}
+          </Text>
           {data.mandatReference ? (
             <Text style={styles.legalLine}>{data.mandatReference}</Text>
           ) : null}
           <Text style={styles.legalLine}>
-            {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur la présente facture.`}
+            {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur ${avoir ? "le présent avoir" : "la présente facture"}.`}
           </Text>
           <Text style={styles.legalLine}>
-            {`Cette facture lui est transmise dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, elle est réputée acceptée. Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises.`}
+            {`${piece} lui est ${avoir ? "transmis" : "transmise"} dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, ${avoir ? "il est réputé accepté" : "elle est réputée acceptée"}. Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises.`}
           </Text>
         </LegalCallout>
 
         <DocSection title="Informations de facturation">
-          <FieldRow label="N° de facture" value={data.numero} required />
+          <FieldRow label={avoir ? "N° d'avoir" : "N° de facture"} value={data.numero} required />
           <FieldRow label="Date d'émission" value={data.dateEmission} required />
-          {data.datePrestation ? (
+          {avoir ? (
+            <FieldRow
+              label="Facture rectifiée"
+              value={`N° ${avoir.factureInitiale}${avoir.dateFactureInitiale ? ` du ${avoir.dateFactureInitiale}` : ""}`}
+              required
+            />
+          ) : null}
+          {data.datePrestation && !avoir ? (
             <FieldRow label="Date de la prestation" value={data.datePrestation} required />
           ) : null}
           <FieldRow label="Période des prestations" value={data.periodeLabel} required />
-          <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
+          {avoir ? (
+            <FieldRow label="Imputation" value={avoir.imputation} required />
+          ) : (
+            <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
+          )}
         </DocSection>
 
         {/*
@@ -237,7 +264,7 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
           ) : null}
         </DocSection>
 
-        <DocSection title="Détail des honoraires">
+        <DocSection title={avoir ? "Détail de l'avoir" : "Détail des honoraires"}>
           <DataTable
             columns={[
               { key: "designation", header: "Désignation", flex: 4 },
@@ -252,7 +279,7 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
 
         <View style={styles.totalsBlock}>
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total HT</Text>
+            <Text style={styles.totalLabel}>{avoir ? "Total HT de l'avoir" : "Total HT"}</Text>
             <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
           </View>
           {totaux.ventilation.map((v) => (
@@ -262,12 +289,15 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             </View>
           ))}
           <View style={styles.totalTtcRow}>
-            <Text style={styles.totalTtcLabel}>Total TTC</Text>
+            <Text style={styles.totalTtcLabel}>{avoir ? "Avoir TTC" : "Total TTC"}</Text>
             <Text style={styles.totalTtcValue}>{formatEurosFromCents(totaux.totalTtcCents)}</Text>
           </View>
         </View>
 
-        <LegalCallout variant="legal" title="Conditions de règlement et mentions légales">
+        <LegalCallout
+          variant="legal"
+          title={avoir ? "Mentions légales" : "Conditions de règlement et mentions légales"}
+        >
           {mentionRegimeTva ? <Text style={styles.legalLine}>{mentionRegimeTva}</Text> : null}
           {/*
             ⚠️ Ces trois mentions visent l'ACHETEUR — c'est-à-dire nous. Elles
@@ -276,9 +306,17 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             qu'elles nous sont défavorables aurait été un choix intéressé, et
             aurait rendu la pièce non conforme.
           */}
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+          {avoir ? (
+            <Text style={styles.legalLine}>
+              {`Le présent avoir ne donne lieu à aucun paiement : son montant est déduit du virement de l'autofacture qui l'accompagne (${avoir.imputation.replace(/^déduit du virement de l'autofacture /, "")}).`}
+            </Text>
+          ) : (
+            <>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+            </>
+          )}
         </LegalCallout>
       </QualiopiPage>
     </Document>

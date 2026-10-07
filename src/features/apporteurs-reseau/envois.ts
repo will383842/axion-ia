@@ -27,7 +27,8 @@ export type GabaritApporteur =
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
-  | "apporteur-releve";
+  | "apporteur-releve"
+  | "apporteur-virement-fait";
 
 export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-lien",
@@ -41,6 +42,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-vigilance",
   "apporteur-commande-signee",
   "apporteur-releve",
+  "apporteur-virement-fait",
 ];
 
 export interface EnvoiApporteur {
@@ -130,4 +132,45 @@ export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
     signalerErreurReseau(`envoi ${e.gabarit}`, err);
     return "indisponible";
   }
+}
+
+/**
+ * Clé d'idempotence de « Votre commission est virée » : une par lot d'autofactures
+ * virées ensemble. Triée, donc stable quel que soit l'ordre des numéros.
+ */
+export function jobIdVirementFait(numeros: readonly string[]): string {
+  return `apporteur-virement-fait-${[...numeros].sort().join("-")}`;
+}
+
+/**
+ * « Votre commission est virée » — envoyé à l'apporteur quand Williams clique
+ * « Virement fait » dans la console. Texte non modifiable ; aucune date d'arrivée promise.
+ */
+export async function envoyerConfirmationVirement(e: {
+  apporteurId: string;
+  destinataire: string;
+  contactName: string;
+  montant: string;
+  numeros: readonly string[];
+  dateVirement: string;
+}): Promise<ResultatEnvoi> {
+  const numeros =
+    e.numeros.length === 0
+      ? null
+      : e.numeros.length > 1
+        ? `n° ${e.numeros.join(", n° ")}`
+        : `n° ${e.numeros[0]}`;
+  return envoyer({
+    gabarit: "apporteur-virement-fait",
+    destinataire: e.destinataire,
+    entityType: "ApporteurReseau",
+    entityId: e.apporteurId,
+    jobId: jobIdVirementFait(e.numeros),
+    payload: {
+      contactName: e.contactName,
+      montant: e.montant,
+      ...(numeros ? { numeros } : {}),
+      dateVirement: e.dateVirement,
+    },
+  });
 }

@@ -85,6 +85,9 @@ interface Payload {
   avoirs?: string[];
   sommeVirement?: string;
   numeroAutofacture?: string;
+  /** Virement fait : « n° AXI-APP-2026-0003 » (ou « n° A, n° B ») et « 7 octobre 2026 ». */
+  numeros?: string;
+  dateVirement?: string;
   /** Interne : lien de la fiche de l'apporteur dans la console. */
   lienConsole?: string;
   /**
@@ -313,6 +316,17 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  virementFait: {
+    // ⛔ Jamais de date d'arrivée sur le compte : elle dépend de la banque de l'apporteur.
+    subject: "Votre commission est virée",
+    title: "Votre commission est virée",
+    preview: "Le virement de votre commission vient de partir.",
+    texte: (montant: string, numeros: string, date: string) =>
+      `Le virement${montant ? ` de ${montant}` : " de votre commission"}${numeros ? ` correspondant à votre facture ${numeros}` : ""} est parti${date ? ` le ${date}` : ""}.`,
+    suite:
+      "Selon les délais de votre banque, il apparaîtra sur votre compte dans les prochains jours. Si vous ne le voyez pas d'ici une semaine, répondez simplement à ce message.",
+    merci: "Merci pour votre confiance.",
   },
   interneAVerifier: {
     subject: (n: string) =>
@@ -807,6 +821,39 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Virement fait (bouton « Virement fait » de la console) ───────────────
+
+export const apporteurVirementFaitSubject = (
+  _locale: Locale,
+  _payload?: Record<string, unknown>,
+): string => COPY_DEMARRAGE.virementFait.subject;
+
+export function ApporteurVirementFaitEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.virementFait;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.texte(
+          texteOuNull(p.montant) ?? "",
+          texteOuNull(p.numeros) ?? "",
+          texteOuNull(p.dateVirement) ?? "",
+        )}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.merci}</Text>
     </EmailLayout>
   );
 }

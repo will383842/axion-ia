@@ -1,5 +1,5 @@
 /**
- * Réseau d'apporteurs — le PDF d'une autofacture, pour la console.
+ * Réseau d'apporteurs — le PDF d'une autofacture ou d'un avoir (même série), pour la console.
  *
  *   /apporteurs/commissions/autofacture?numero=AXI-APP-2026-0001
  *
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const numero = req.nextUrl.searchParams.get("numero") ?? "";
   if (!NUMERO.test(numero)) return new NextResponse("Numéro invalide.", { status: 400 });
   const ligne = await prisma.commissionApporteur.findFirst({
-    where: { autofactureNumero: numero },
+    where: { OR: [{ autofactureNumero: numero }, { avoirNumero: numero }] },
     select: { apporteurId: true },
   });
   if (!ligne) return new NextResponse("Autofacture introuvable.", { status: 404 });
