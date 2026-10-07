@@ -1156,11 +1156,15 @@ export async function bootRepeatableJobs(): Promise<void> {
       // ferme le créneau en 11 s et ne prévient personne — mesuré le 2026-08-26,
       // avec 13 min de décalage constatées sur le site.
       { type: "revalidate-slots", pattern: "*/2 * * * *", jobId: "calendly-slots-revalidate-cron" },
-      // Rappel H-1 : toutes les 5 min, ZERO requete Calendly (lecture en base
-      // seulement). La fenetre cherchee est de 15 min, soit TROIS fois cette
-      // cadence : un passage saute est rattrape par les deux suivants. Une
-      // fenetre egale a la cadence perdrait le rappel au premier hoquet.
-      { type: "rappel-h1", pattern: "*/5 * * * *", jobId: "calendly-rappel-h1-cron" },
+      // Messages de rendez-vous (confirmation, J-1, H-1) : TOUTES LES MINUTES,
+      // ZERO requete Calendly (lecture en base seulement). A la minute parce que
+      // la confirmation part dans ce passage : a */5, l'e-mail arrivait ~5 min
+      // apres la reservation (mesure 2026-10-06 : reservation 14:35, e-mail
+      // 14:40) alors que les pages promettent quelques minutes. La fenetre des
+      // rappels (15 min) est QUINZE fois cette cadence : un passage saute est
+      // rattrape par les suivants, et les marqueurs distincts empechent tout
+      // doublon d'e-mail.
+      { type: "rappel-h1", pattern: "* * * * *", jobId: "calendly-rappel-h1-cron" },
     ];
 
     // 🔴 Purge EXHAUSTIVE avant ré-enregistrement, et pas le

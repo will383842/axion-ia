@@ -177,7 +177,7 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       fin: dateOuNull(o["end_time"]),
       // 🔑 La MÊME dérivation que partout ailleurs. Écrire ici une seconde
       // façon de lire le format ferait diverger la page de l'e-mail que le
-      // visiteur reçoit dans la minute.
+      // visiteur reçoit en quelques minutes.
       format,
       lienReunion: typeof join === "string" && join.startsWith("http") ? join : null,
       adresse:
@@ -322,7 +322,7 @@ function Confirme({
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="Votre réservation est enregistrée."
-          sous="Nous n'avons pas pu afficher le détail ici. L'e-mail de confirmation, qui arrive dans la minute, fait foi : il porte la date, le format et le lien pour annuler ou déplacer."
+          sous="Nous n'avons pas pu afficher le détail ici. L'e-mail de confirmation, qui arrive en quelques minutes, fait foi : il porte la date, le format et le lien pour annuler ou déplacer."
         />
       )}
 
@@ -511,7 +511,7 @@ function CeQuiSePasseMaintenant({
       Picto: Mail,
       titre: "Notre e-mail de confirmation",
       corps:
-        "Il arrive dans la minute et récapitule tout, avec vos liens pour annuler ou déplacer.",
+        "Il arrive en quelques minutes et récapitule tout, avec vos liens pour annuler ou déplacer.",
     },
     {
       Picto: CalendarPlus,
