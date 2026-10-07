@@ -8,6 +8,11 @@ const envoyer = vi.fn();
 const uploadToR2 = vi.fn();
 const updateMany = vi.fn();
 const rendreContratPdf = vi.fn();
+const findUnique = vi.fn();
+const lireEntrepriseParSiren = vi.fn();
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: (...a: unknown[]) => lireEntrepriseParSiren(...a),
+}));
 
 const captureMessage = vi.fn();
 vi.mock("@sentry/nextjs", () => ({
@@ -21,7 +26,12 @@ vi.mock("../donnees", () => ({
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("@/lib/r2-storage", () => ({ uploadToR2: (...a: unknown[]) => uploadToR2(...a) }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { apporteurReseau: { updateMany: (...a: unknown[]) => updateMany(...a) } },
+  prisma: {
+    apporteurReseau: {
+      updateMany: (...a: unknown[]) => updateMany(...a),
+      findUnique: (...a: unknown[]) => findUnique(...a),
+    },
+  },
 }));
 vi.mock("../contrat-pdf", async () => {
   const { createHash } = await import("node:crypto");
@@ -262,6 +272,7 @@ describe("dossier en ligne — signerContrat", () => {
     uploadToR2.mockResolvedValue({ key: "k", etag: null, sizeBytes: 4 });
     updateMany.mockResolvedValue({ count: 1 });
     envoyer.mockResolvedValue("envoye");
+    findUnique.mockResolvedValue({ declarations: {} });
   });
 
   it("refuse un lien invalide sans rien écrire", async () => {
@@ -407,5 +418,59 @@ describe("dossier en ligne — signerContrat", () => {
     expect(await signerContrat(entree)).toMatchObject({ ok: false, raison: "refus" });
     expect(enregistrerDeclarations).not.toHaveBeenCalled();
     expect(envoyer).not.toHaveBeenCalled();
+  });
+});
+
+describe("SIREN à la signature (contrat 2.3, art. 5.4 et 6.1)", () => {
+  const entree = {
+    apporteurId: ID,
+    jeton: JETON,
+    nomTape: "eloise lefevre",
+    declarations: [...CLES_DECLARATIONS],
+    acceptations: [...CLES_ACCEPTATIONS],
+    ipHash: null,
+    userAgent: null,
+    maintenant: new Date("2026-10-08T09:00:00Z"),
+  };
+  const entreprise = (active: boolean) => ({
+    ok: true,
+    entreprise: { siren: "732829320", active, francaise: true, naf: "70.22Z" },
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    rendreContratPdf.mockResolvedValue(Buffer.from("%PDF"));
+    uploadToR2.mockResolvedValue({ key: "k", etag: null, sizeBytes: 4 });
+    updateMany.mockResolvedValue({ count: 1 });
+    envoyer.mockResolvedValue("envoye");
+    lireDossierParLien.mockResolvedValue(dossierComplet());
+  });
+
+  it("registre muet à l'étape 2, entreprise CESSÉE à la signature : refus, rien n'est signé", async () => {
+    findUnique.mockResolvedValue({ declarations: { _registre_indisponible: "2026-10-07" } });
+    lireEntrepriseParSiren.mockResolvedValue(entreprise(false));
+    const r = await signerContrat(entree);
+    expect(r).toMatchObject({ ok: false, raison: "refus" });
+    expect((r as { message: string }).message).toContain("n'est plus active");
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
+  it("registre muet à l'étape 2, ACTIVE à la signature : signé", async () => {
+    findUnique.mockResolvedValue({ declarations: { _registre_indisponible: "2026-10-07" } });
+    lireEntrepriseParSiren.mockResolvedValue(entreprise(true));
+    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+  });
+
+  it("registre ENCORE muet : signé (la contresignature restera bloquée)", async () => {
+    findUnique.mockResolvedValue({ declarations: { _registre_indisponible: "2026-10-07" } });
+    lireEntrepriseParSiren.mockResolvedValue({ ok: false, raison: "indisponible" });
+    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+  });
+
+  it("registre qui avait répondu à l'étape 2 : pas relu", async () => {
+    findUnique.mockResolvedValue({ declarations: {} });
+    expect(await signerContrat(entree)).toMatchObject({ ok: true });
+    expect(lireEntrepriseParSiren).not.toHaveBeenCalled();
   });
 });
