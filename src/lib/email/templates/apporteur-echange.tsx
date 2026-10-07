@@ -4,59 +4,54 @@
 // ── Le trou que ce gabarit ferme ──────────────────────────────────────────
 // Un CLIENT qui réserve un appel reçoit trois messages sur notre charte
 // (`appel-rappel.tsx`) : confirmation, J-1, H-1. Un candidat apporteur, lui,
-// ne recevait RIEN.
+// ne recevait RIEN : Calendly n'envoie qu'une INVITATION D'AGENDA (rappels et
+// suivis par e-mail coupés, aucun workflow — relevé le 2026-09-21). Aucun
+// doublon à craindre.
 //
-// 🔴 Et la raison écrite dans le code était FAUSSE. `rappels-appel.ts`
-// justifiait le silence par « Calendly envoie sa propre confirmation ».
-// Réglages relevés dans le compte le 2026-09-21, sur les DEUX event-types :
-//   · Invitation dans le calendrier .... activée
-//   · Rappels par e-mail ............... Off
-//   · Suivis par e-mail ................ Off
-//   · Workflows ........................ aucun
-// Calendly envoie donc une INVITATION D'AGENDA, pas une confirmation. Le
-// candidat ne recevait aucun e-mail de personne, et aucun rappel : quelqu'un
-// qui réservait pour dans cinq jours n'avait plus de nouvelles jusqu'au jour J.
+// ── 2026-10-07 — LA MÊME PRÉSENTATION QUE LES CLIENTS (décision de Will) ──
+// « Le parcours apporteur doit avoir le même design que le parcours client. »
+// Avant, ce gabarit rendait quatre paragraphes gris et renvoyait vers
+// l'invitation d'agenda pour décaler — alors que la file lui passait déjà nos
+// liens « déplacer » et « annuler » (`liensPourEmail`, `rappels-appel.ts`).
+// Il reprend désormais les BRIQUES du gabarit client, importées et non
+// recopiées (une seule vérité sur le canal, le lien et les liens de sortie) :
+//   · confirmation (famille B) : le récapitulatif encadré EN PREMIER, puis la
+//     salutation, « Ce qui se passe maintenant », déplacer/annuler en
+//     secondaire ;
+//   · J-1 et H-1 (famille C) : trois lignes, comme les clients ;
+//   · aux trois moments, un bouton « Rejoindre la visioconférence » dès que
+//     Calendly a créé le lien — sinon la phrase qui renvoie à l'invitation.
 //
-// ⚠️ Corollaire utile : rien n'est à désactiver côté Calendly avant de livrer
-// ces trois messages. Il n'y a AUCUN doublon à craindre.
+// Ce qui reste PROPRE au candidat : les mots (« votre échange », jamais
+// « appel de découverte » ni « prospect »), le surtitre, et l'absence du guide
+// IA entreprise (le candidat a son propre kit).
 //
-// ── Pourquoi un gabarit à part, et pas une variante du client ─────────────
-// Les e-mails clients disent « votre appel de découverte » et vouvoient. Les
-// réutiliser en levant simplement l'exclusion ferait dire au candidat qu'il est
-// un prospect — exactement le vocabulaire que le tunnel vient de retirer
-// (`le-tunnel-apporteur-ne-dit-jamais-agent-commercial`). Le CANAL, lui, est
-// mutualisé : `rappels-appel.ts` porte les trois horloges, l'idempotence et le
-// plafond pour les deux publics.
-//
-// Famille B, sans la rangée sociale : même arbitrage que les quatre autres
-// e-mails du réseau (§5.4 — le budget de liens cède sur la notoriété, jamais
-// sur l'action ni sur une mention exigée par la loi).
+// Famille B sans la rangée sociale : même arbitrage que les autres e-mails du
+// réseau (§5.4). Budget mesuré : logo, visio, déplacer, annuler, contact,
+// opposition — le bouton réemploie le lien de visio, déjà compté.
 //
 // Vouvoiement : comme tout ce que reçoit un candidat (Will, 2026-09-29).
 
-import { Link, Section, Text } from "@react-email/components";
+import { Button, Section, Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
+import {
+  ActionsSecondaires,
+  COMMUN,
+  LigneLieu,
+  RecapRendezVous,
+  estUnLienDeReunion,
+  formatDuRendezVous,
+  type PayloadAppel,
+} from "./appel-rappel";
 
 type Locale = "fr" | "en";
 
 /** Les trois moments, repris tels quels de la mécanique client. */
 export type MomentEchange = "confirmation" | "j1" | "h1";
 
-interface Payload {
-  /** Prénom, ou nom complet si c'est tout ce que Calendly a transmis. */
-  prenom?: string;
-  /** Heure de début, déjà formatée par l'appelant, en heure de Paris. */
-  heure?: string;
-  /** Date de début, formatée par l'appelant. Citée par la CONFIRMATION seule. */
-  date?: string;
-  /** Durée réelle, dérivée des deux bornes — jamais un chiffre écrit à la main. */
-  dureeMinutes?: number;
-  /** Le lien de la visioconférence, quand Calendly l'a déjà créé. */
-  lieu?: string;
-  moment?: MomentEchange;
-}
+type Payload = Partial<PayloadAppel> & { moment?: MomentEchange };
 
 const momentDe = (p: { moment?: MomentEchange }): MomentEchange => p.moment ?? "h1";
 
@@ -69,10 +64,8 @@ const texteOuNull = (v: unknown): string | null => {
 /**
  * « mardi 23 septembre à 11:30 », ou l'une des deux moitiés, ou rien.
  *
- * 🔴 CHAQUE MORCEAU EST FACULTATIF, ET LE RIEN EST UNE RÉPONSE. La charge
- * transite par une file : rien ne garantit que `date` et `heure` soient là au
- * rendu. L'interpolation naïve produit « le undefined à undefined » — le pire
- * des cas, parce qu'il ne lève pas : il part. Même règle que le gabarit client.
+ * 🔴 CHAQUE MORCEAU EST FACULTATIF, ET LE RIEN EST UNE RÉPONSE : l'interpolation
+ * naïve produit « le undefined à undefined », qui ne lève pas — il part.
  */
 function quandTexte(locale: Locale, p: Payload, avecDate: boolean): string | null {
   const date = avecDate ? texteOuNull(p.date) : null;
@@ -84,90 +77,66 @@ function quandTexte(locale: Locale, p: Payload, avecDate: boolean): string | nul
 
 const COPY = {
   fr: {
+    eyebrow: "Échange apporteur d'affaires",
     confirmation: {
-      title: "C'est noté, on se parle bientôt",
-      preview:
-        "Votre échange est confirmé. Le lien de connexion arrive avec l'invitation d'agenda.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Votre échange " +
-            duree +
-            " est confirmé, " +
-            quand +
-            ". Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions."
-          : "Votre échange " +
-            duree +
-            " est confirmé. Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions.",
-      apres: "Aucun engagement : vous décidez après.",
+      title: "C'est confirmé",
+      preview: "Votre échange est confirmé. Les liens pour déplacer ou annuler sont dans le message.",
+      deroule:
+        "Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions. Aucun engagement : vous décidez après.",
+      puces: [
+        "L'invitation d'agenda vous parvient séparément, par Calendly. C'est le même rendez-vous — vous n'avez rien à confirmer.",
+        "Nous vous écrivons la veille, puis une dernière fois une heure avant.",
+        "Rien à préparer de votre côté.",
+      ],
+      signature: "À très vite,\nL'équipe Axion-IA",
     },
     j1: {
-      title: "C'est demain",
-      preview: "Petit rappel : notre échange, c'est demain.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Rappel : notre échange " + duree + " a lieu demain, " + quand + "."
-          : "Rappel : notre échange " + duree + " a lieu demain.",
-      apres: null,
+      title: "Votre échange a lieu demain",
+      preview: "Rien à préparer. Un imprévu ? Le lien pour déplacer est dans le message.",
+      quand: (h: string) => "Petit rappel : nous nous parlons demain à " + h + " (heure de Paris).",
+      signature: "À demain,\nL'équipe Axion-IA",
     },
     h1: {
-      title: "Dans une heure",
-      preview: "Notre échange commence dans une heure.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Notre échange " + duree + " commence dans une heure, " + quand + "."
-          : "Notre échange " + duree + " commence dans une heure.",
-      apres: null,
+      title: "Votre échange a lieu dans une heure",
+      preview: "Rien à préparer de votre côté. Le lien de connexion est dans le message.",
+      quand: (h: string) => "Petit rappel : nous nous parlons à " + h + " (heure de Paris).",
+      signature: "À tout à l'heure,\nL'équipe Axion-IA",
     },
-    duree: (m?: number) =>
-      typeof m === "number" && m > 0 ? "de " + String(m) + " minutes" : "de 15 minutes",
-    lienTitre: "Le lien de connexion : ",
-    lienAbsent:
-      "Le lien de la visioconférence se trouve dans l'invitation d'agenda reçue à la réservation.",
-    replanifier:
-      "Besoin de décaler ? Vous pouvez replanifier ou annuler depuis l'invitation d'agenda.",
+    rienAPreparer: "Rien à préparer : vous posez vos questions, nous vous expliquons comment ça marche.",
+    heureDefaut: "l'heure prévue",
+    rejoindre: "Rejoindre la visioconférence",
     question: "Une question d'ici là ? Répondez simplement à cet e-mail.",
-    intro: (n: string | null) => (n ? "Bonjour " + n + "," : "Bonjour,"),
   },
   en: {
+    eyebrow: "Referral partner call",
     confirmation: {
-      title: "All set, talk soon",
-      preview: "Your call is confirmed. The joining link comes with the calendar invitation.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Your " +
-            duree +
-            " call is confirmed, " +
-            quand +
-            ". We get to know each other, explain simply how it works, and you ask anything you like."
-          : "Your " +
-            duree +
-            " call is confirmed. We get to know each other, explain simply how it works, and you ask anything you like.",
-      apres: "No commitment: you decide afterwards.",
+      title: "You're all set",
+      preview: "Your call is confirmed. Links to reschedule or cancel are inside.",
+      deroule:
+        "We get to know each other, explain simply how it works, and you ask anything you like. No commitment: you decide afterwards.",
+      puces: [
+        "Your calendar invitation arrives separately, from Calendly. Same meeting — nothing for you to confirm.",
+        "We write to you the day before, then once more an hour ahead.",
+        "Nothing to prepare on your side.",
+      ],
+      signature: "Talk soon,\nThe Axion-IA team",
     },
     j1: {
-      title: "It is tomorrow",
-      preview: "A quick reminder: our call is tomorrow.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Reminder: our " + duree + " call is tomorrow, " + quand + "."
-          : "Reminder: our " + duree + " call is tomorrow.",
-      apres: null,
+      title: "Your call is tomorrow",
+      preview: "Nothing to prepare. Something came up? Reschedule inside.",
+      quand: (h: string) => "A quick reminder: we talk tomorrow at " + h + " (Paris time).",
+      signature: "Talk tomorrow,\nThe Axion-IA team",
     },
     h1: {
-      title: "In one hour",
-      preview: "Our call starts in one hour.",
-      corps: (quand: string | null, duree: string) =>
-        quand
-          ? "Our " + duree + " call starts in one hour, " + quand + "."
-          : "Our " + duree + " call starts in one hour.",
-      apres: null,
+      title: "Your call is in one hour",
+      preview: "Nothing to prepare on your side. The joining link is inside.",
+      quand: (h: string) => "A quick reminder: we talk at " + h + " (Paris time).",
+      signature: "Talk soon,\nThe Axion-IA team",
     },
-    duree: (m?: number) => (typeof m === "number" && m > 0 ? String(m) + "-minute" : "15-minute"),
-    lienTitre: "The joining link: ",
-    lienAbsent: "The video link is in the calendar invitation you received when you booked.",
-    replanifier: "Need to move it? You can reschedule or cancel from the calendar invitation.",
+    rienAPreparer: "Nothing to prepare: you ask your questions, we explain how it works.",
+    heureDefaut: "the agreed time",
+    rejoindre: "Join the video call",
     question: "A question in the meantime? Just reply to this email.",
-    intro: (n: string | null) => (n ? "Hello " + n + "," : "Hello,"),
   },
 } as const;
 
@@ -175,8 +144,7 @@ const COPY = {
  * L'objet du message.
  *
  * 🔑 Composé SEULEMENT s'il y a de quoi composer : sans horaire, « Demain à
- * undefined » serait un objet parfaitement conforme à la borne de longueur, et
- * parfaitement faux. La garde ne mesure que sa taille.
+ * undefined » serait conforme à la borne de longueur, et faux.
  */
 export const apporteurEchangeSubject = (
   locale: Locale,
@@ -184,23 +152,56 @@ export const apporteurEchangeSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   const l: Locale = locale === "fr" ? "fr" : "en";
-  const c = COPY[l];
   const m = momentDe(p);
   const heure = texteOuNull(p.heure);
   if (l === "fr") {
     if (m === "confirmation") {
       const quand = quandTexte("fr", p, true);
-      return quand ? "Échange confirmé : " + quand : c.confirmation.title;
+      return quand ? "Échange confirmé : " + quand : "C'est noté, on se parle bientôt";
     }
-    if (m === "j1") return heure ? "Rappel : notre échange demain à " + heure : c.j1.title;
-    return heure ? "Notre échange dans une heure, à " + heure : c.h1.title;
+    if (m === "j1") return heure ? "Rappel : notre échange demain à " + heure : "C'est demain";
+    return heure ? "Notre échange dans une heure, à " + heure : "Dans une heure";
   }
   if (m === "confirmation") {
     const quand = quandTexte("en", p, true);
-    return quand ? "Call confirmed: " + quand : c.confirmation.title;
+    return quand ? "Call confirmed: " + quand : "All set, talk soon";
   }
-  if (m === "j1") return heure ? "Reminder: our call tomorrow at " + heure : c.j1.title;
-  return heure ? "Our call in one hour, at " + heure : c.h1.title;
+  if (m === "j1") return heure ? "Reminder: our call tomorrow at " + heure : "It is tomorrow";
+  return heure ? "Our call in one hour, at " + heure : "In one hour";
+};
+
+/**
+ * Le bouton « Rejoindre la visioconférence » — seulement quand le lien EXISTE.
+ *
+ * 🔴 Calendly crée la conférence de façon asynchrone : à la confirmation, le
+ * lien manque souvent. Pas de lien, pas de bouton — la ligne de lieu renvoie
+ * alors à l'invitation d'agenda, qui le portera.
+ */
+function BoutonRejoindre({ lien, label }: { lien: string | null; label: string }) {
+  if (!lien || !estUnLienDeReunion(lien)) return null;
+  return (
+    <Section style={{ textAlign: "center", margin: "6px 0 22px 0" }}>
+      <Button href={lien} style={emailStyles.ctaStyle} className="ax-cta">
+        {label} &nbsp;→
+      </Button>
+    </Section>
+  );
+}
+
+const titreBloc: React.CSSProperties = {
+  margin: "0 0 10px 0",
+  fontSize: "13px",
+  lineHeight: 1.4,
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  fontWeight: 700,
+  color: emailStyles.COLORS.textMuted,
+};
+const puceTexte: React.CSSProperties = {
+  fontSize: "15px",
+  lineHeight: 1.6,
+  color: emailStyles.COLORS.text,
+  margin: "0 0 8px 0",
 };
 
 export function ApporteurEchangeEmail({
@@ -213,46 +214,74 @@ export function ApporteurEchangeEmail({
   const p = payload as unknown as Payload;
   const l: Locale = locale === "fr" ? "fr" : "en";
   const c = COPY[l];
-  const bloc = c[momentDe(p)];
-  const duree = c.duree(p.dureeMinutes);
-  const quand = quandTexte(l, p, momentDe(p) === "confirmation");
-  const lien = texteOuNull(p.lieu);
-  const lienUtilisable = lien !== null && /^https?:\/\//i.test(lien);
+  const commun = COMMUN[l];
+  const m = momentDe(p);
+  // Une seule dérivation du canal pour tout le rendu (`le-rappel-nomme-le-bon-canal`).
+  const format = formatDuRendezVous(p);
+  const lien = format === "visio" ? texteOuNull(p.lieu) : null;
+  const prenom = texteOuNull(p.prenom) ?? "";
+  // Les briques client lisent une charge complète ; la nôtre peut être partielle,
+  // et chacune d'elles omet ce qui manque.
+  const pc = p as PayloadAppel;
 
-  return (
-    <EmailLayout
-      famille="B"
-      sansReseauxSociaux
-      locale={l}
-      title={bloc.title}
-      preview={bloc.preview}
-    >
-      <Text style={emailStyles.paragraphStyle}>{c.intro(texteOuNull(p.prenom))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{bloc.corps(quand, duree)}</Text>
-      {bloc.apres ? <Text style={emailStyles.paragraphStyle}>{bloc.apres}</Text> : null}
+  // ── Famille B — la confirmation ────────────────────────────────────────────
+  if (m === "confirmation") {
+    const t = c.confirmation;
+    return (
+      <EmailLayout
+        famille="B"
+        sansReseauxSociaux
+        locale={l}
+        eyebrow={c.eyebrow}
+        title={t.title}
+        preview={t.preview}
+      >
+        {/* Le récapitulatif EN PREMIER : c'est ce que le destinataire cherche, et
+            ce que les résumés des boîtes de réception affichent (§3.6). */}
+        <RecapRendezVous locale={l} p={pc} format={format} c={commun} />
+        <BoutonRejoindre lien={lien} label={c.rejoindre} />
 
-      {/*
-        🔴 LE LIEN N'EST PAS TOUJOURS LÀ. Calendly crée la conférence de façon
-        asynchrone, et elle peut ne jamais arriver — connexion agenda expirée,
-        quota, panne. On ne rend donc JAMAIS un lien vide : on renvoie vers
-        l'invitation d'agenda, qui le portera s'il finit par exister. Même
-        doctrine que `rappels-appel.ts`, qui alerte à H-1 sur ce cas précis.
-      */}
-      <Section>
         <Text style={emailStyles.paragraphStyle}>
-          {lienUtilisable ? (
-            <>
-              {c.lienTitre}
-              <Link href={lien}>{lien}</Link>
-            </>
-          ) : (
-            c.lienAbsent
-          )}
+          {commun.intro(prenom)}
+          <br />
+          {t.deroule}
         </Text>
-      </Section>
 
-      <Text style={emailStyles.paragraphStyle}>{c.replanifier}</Text>
-      <Text style={emailStyles.paragraphStyle}>{c.question}</Text>
+        <Section style={{ margin: "26px 0 0 0" }}>
+          <Text style={titreBloc}>{commun.maintenantTitre}</Text>
+          {t.puces.map((puce) => (
+            <Text key={puce} style={puceTexte}>
+              <span style={{ color: emailStyles.COLORS.terracotta, fontWeight: 700 }}>•</span>{" "}
+              {puce}
+            </Text>
+          ))}
+        </Section>
+
+        <ActionsSecondaires p={pc} c={commun} encadre />
+        <Text style={emailStyles.paragraphStyle}>{c.question}</Text>
+        <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>
+      </EmailLayout>
+    );
+  }
+
+  // ── Famille C — les rappels J-1 et H-1 : trois lignes, comme les clients ────
+  const t = c[m === "j1" ? "j1" : "h1"];
+  const heure = texteOuNull(p.heure) ?? c.heureDefaut;
+  return (
+    <EmailLayout famille="C" locale={l} title={t.title} preview={t.preview}>
+      <Text style={emailStyles.paragraphStyle}>{t.quand(heure)}</Text>
+      {lien && estUnLienDeReunion(lien) ? (
+        <BoutonRejoindre lien={lien} label={c.rejoindre} />
+      ) : (
+        <LigneLieu lieu={p.lieu} format={format} c={commun} />
+      )}
+      <Text style={emailStyles.paragraphStyle}>
+        {commun.intro(prenom)}
+        <br />
+        {c.rienAPreparer}
+      </Text>
+      <ActionsSecondaires p={pc} c={commun} encadre={false} />
+      <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>
     </EmailLayout>
   );
 }
