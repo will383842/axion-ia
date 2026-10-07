@@ -32,6 +32,13 @@ import { prisma } from "@/lib/prisma";
 import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
 import { tailleLisible } from "@/lib/careers/videos";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
+import { partagesActifs } from "@/server/partages/config";
+import {
+  compterLiensActifs,
+  fichiersPourComposeur,
+  lireFichiersEnvoyes,
+} from "@/server/partages/suivi";
+import { FichiersEnvoyes } from "./FichiersEnvoyes";
 
 export const dynamic = "force-dynamic";
 
@@ -79,7 +86,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
   // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
   const acteur = { role: (session.user as { role?: string }).role };
-  const [frise, entretiens, accuse, ficheApporteur] = await Promise.all([
+  // Candidatures unifiées L5 — fichiers envoyés par lien privé. Tant que la
+  // bibliothèque est ÉTEINTE, rien n'est lu et rien ne s'affiche (ni bloc, ni
+  // bouton « Joindre des fichiers »).
+  const partagesAllumes = partagesActifs();
+  const [frise, entretiens, accuse, ficheApporteur, partages] = await Promise.all([
     lireFrise(a.id, acteur),
     lireEntretiens(a.id, acteur),
     // L'accusé de réception automatique : parti, en échec, ou introuvable.
@@ -88,6 +99,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     // « Proposer le réseau d'apporteurs » (2026-09-28) : la fiche apporteur
     // déjà née de cette candidature, pour afficher le lien plutôt que le bouton.
     ficheApporteurDeLaCandidature(a.id),
+    partagesAllumes
+      ? Promise.all([
+          fichiersPourComposeur(),
+          lireFichiersEnvoyes(a.id),
+          compterLiensActifs(a.id),
+        ]).then(([bibliotheque, liens, actifs]) => ({ bibliotheque, liens, actifs }))
+      : Promise.resolve(null),
   ]);
   const questions = parseScreeningQuestions(offer?.screeningQuestions);
   const qParId = new Map(questions.map((q) => [q.id, q]));
@@ -392,6 +410,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             // bundle pour trois boutons. Même doctrine que `OPTIONS_STATUT`
             // dans `ApplicationsV2.tsx`.
             liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL)}
+            partages={partages ? { bibliotheque: partages.bibliotheque } : null}
           />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
@@ -400,6 +419,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         <ReponsesRecuesCandidat applicationId={a.id} role={acteur.role} />
         <FriseCandidature entrees={frise} accuse={accuse} />
       </AdminCard>
+
+      {partages ? (
+        <AdminCard>
+          <h3 className="admin-section-title">Fichiers envoyés</h3>
+          <FichiersEnvoyes liens={partages.liens} />
+        </AdminCard>
+      ) : null}
 
       {/* 2026-09-28 (Will) — proposer AUSSI le réseau d'apporteurs d'affaires
           indépendants à une personne qui a postulé à une offre salariée. La
@@ -429,6 +455,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           assignedTo={a.assignedTo}
           rejectionReason={a.rejectionReason}
           needsAttention={a.needsAttention}
+          liensActifs={partages?.actifs ?? 0}
         />
       </AdminCard>
     </AdminPageShell>

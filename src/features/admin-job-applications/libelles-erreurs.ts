@@ -42,6 +42,8 @@ export const LIBELLES_ERREUR_REPONSE: Record<string, string> = {
   deja_envoyee: "Cette réponse est déjà partie.",
   lien_complement_indisponible:
     "{lien_complement} impossible : l'offre de ce candidat ne pose aucune question.",
+  // L5 — le détail (quel fichier, pourquoi) est rendu à part par l'action.
+  fichiers_invalides: "Les fichiers joints ne peuvent pas partir.",
 };
 
 /** Consignation au journal — `journal-actions.ts`. */
