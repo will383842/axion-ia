@@ -187,6 +187,11 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const survenuLe = rebond.survenuLe ?? new Date();
   let rattache = false;
+  // Lot L2 — `true` si une réponse à un candidat a été marquée « rejetée ».
+  // Distinct de `rattache` (qui ne parle que du journal des envois) pour que la
+  // réponse rendue à ZeptoMail et le texte de l'alerte restent identiques
+  // quand aucun candidat n'est concerné.
+  let reponseCandidatRejetee = false;
 
   // ── Rattachement à l'envoi ────────────────────────────────────────────────
   //
@@ -256,6 +261,25 @@ export async function POST(req: NextRequest): Promise<Response> {
       // ZeptoMail finirait par désabonner.
     }
 
+    // Lot L2 « Candidatures unifiées » (2026-10-07) — la réponse écrite à un
+    // CANDIDAT depuis la console porte elle aussi son état, et la frise de la
+    // candidature affiche « rejetée par le serveur du destinataire » pour
+    // `bounced`. Jusqu'ici aucun code n'écrivait cette valeur : une réponse à
+    // une adresse morte restait « remise ».
+    //
+    // Bloc À PART, avec son propre filet : un échec ici ne doit rien retirer au
+    // rattachement ci-dessus (journal des envois, réponses aux demandes), ni
+    // l'inverse. Voir `rebondirReponseCandidature` plus bas.
+    try {
+      reponseCandidatRejetee = await rebondirReponseCandidature(
+        rebond.destinataire,
+        depuisRebond(survenuLe),
+        survenuLe,
+      );
+    } catch {
+      // Même doctrine que ci-dessus : jamais d'erreur rendue à ZeptoMail.
+    }
+
     // Lot L3 (2026-09-24) — le rebond se lit AUSSI sur l'abonné à la lettre :
     // dur → `bounced`, mou → compteur. Jusque-là, le statut « Rejeté » n'était
     // posé par aucun code. Fail-soft, hors du bloc ci-dessus : un échec du
@@ -279,7 +303,10 @@ export async function POST(req: NextRequest): Promise<Response> {
         `${rebond.sujet !== null ? ` (« ${rebond.sujet} »)` : ""}. ` +
         `Motif du serveur : ${rebond.motif ?? rebond.diagnostic ?? "non communiqué"}. ` +
         `${rattache ? "L'envoi correspondant est marqué « rebond »." : "Aucun envoi n'a pu être rattaché — le rebond est consigné ici."} ` +
-        `Tant que l'adresse n'est pas corrigée, cette personne ne recevra ni convocation, ni attestation.`,
+        `Tant que l'adresse n'est pas corrigée, cette personne ne recevra ni convocation, ni attestation.` +
+        (reponseCandidatRejetee
+          ? ` La dernière réponse envoyée à ce candidat est marquée « rejetée » sur sa candidature.`
+          : ""),
       cibleType: "EmailLog",
       // Dédoublonnage par ADRESSE : dix envois à une boîte morte produisent dix
       // rebonds, et une alerte par envoi rendrait la liste illisible pour un
@@ -289,4 +316,62 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   return Response.json({ ok: true, type: rebond.type, rattache });
+}
+
+/** Début de la fenêtre de rattachement — même calcul que le bloc principal. */
+function depuisRebond(survenuLe: Date): Date {
+  return new Date(survenuLe.getTime() - FENETRE_RATTACHEMENT_HEURES * 3600_000);
+}
+
+/**
+ * Lot L2 — marque « rejetée » la DERNIÈRE réponse envoyée à un candidat dont
+ * l'adresse vient de rebondir. Rend `true` si une réponse a changé d'état.
+ *
+ * ## Pourquoi l'empreinte, et pas `providerMessageId`
+ *
+ * `JobApplicationReply.toEmail` est chiffré à IV aléatoire : aucune égalité SQL
+ * n'y est possible. Et `providerMessageId` porte le `Message-ID` SMTP rendu par
+ * nodemailer, pas le `request_id` que ZeptoMail met dans le rebond : les deux
+ * ne se comparent pas. On passe donc, comme pour les demandes de contact, par
+ * l'empreinte de recherche (`JobApplication.emailHash`, même
+ * `hashEmailForLookup`) et la fenêtre de temps.
+ *
+ * ## Les trois règles
+ *
+ *  · Seule la DERNIÈRE réponse partie dans la fenêtre est candidate. Un `pending`
+ *    ou un `failed` n'a pas de `sentAt` et n'est jamais touché : marquer rejeté
+ *    ce qui n'est pas parti masquerait une panne d'envoi.
+ *  · Idempotent : si cette dernière réponse est DÉJÀ `bounced` (ZeptoMail
+ *    retente un webhook), on ne descend PAS à la réponse précédente — sinon un
+ *    simple renvoi du même rebond marquerait à tort un message plus ancien.
+ *  · Écriture gardée par `deliveryStatus: "sent"` : si l'état a changé entre la
+ *    lecture et l'écriture (renvoi manuel, par exemple), on n'écrase rien.
+ *
+ * Le journal de la candidature (en ajout seul) n'est pas touché : le plan
+ * (§ 4.2) ne prévoit que l'état de la réponse, que la frise lit déjà.
+ */
+async function rebondirReponseCandidature(
+  destinataire: string,
+  depuis: Date,
+  survenuLe: Date,
+): Promise<boolean> {
+  const empreinte = hashEmailForLookup(destinataire);
+  if (empreinte === null) return false;
+
+  const derniere = await prisma.jobApplicationReply.findFirst({
+    where: {
+      application: { emailHash: empreinte },
+      sentAt: { gte: depuis, lte: survenuLe },
+      deliveryStatus: { in: ["sent", "bounced"] },
+    },
+    orderBy: { sentAt: "desc" },
+    select: { id: true, deliveryStatus: true },
+  });
+  if (derniere === null || derniere.deliveryStatus !== "sent") return false;
+
+  const { count } = await prisma.jobApplicationReply.updateMany({
+    where: { id: derniere.id, deliveryStatus: "sent" },
+    data: { deliveryStatus: "bounced" },
+  });
+  return count > 0;
 }
