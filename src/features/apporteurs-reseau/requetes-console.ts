@@ -13,6 +13,7 @@ import { lireContenuPiece } from "./pieces-chiffrement";
 import { STATUTS_CUMUL, piecesVigilanceConformes } from "./commissions";
 import { lireDossier } from "./donnees";
 import { SEUIL_VIGILANCE_CENTS } from "./regles";
+import { idsRetires } from "./retrait";
 
 export const LIBELLE_STATUT_APPORTEUR: Readonly<Record<ApporteurReseauStatut, string>> = {
   dossier_en_cours: "Dossier en cours",
@@ -42,11 +43,18 @@ export const PAR_PAGE = 100;
 export async function compterApporteurs(): Promise<{
   parStatut: Partial<Record<ApporteurReseauStatut, number>>;
   commissionsDuesCents: number;
+  /** Apporteurs retirés du réseau (2026-10-07) : hors des compteurs par statut. */
+  retires: number;
 }> {
   if (process.env.DATABASE_URL?.includes("stub.invalid"))
-    return { parStatut: {}, commissionsDuesCents: 0 };
+    return { parStatut: {}, commissionsDuesCents: 0, retires: 0 };
+  const retires = await idsRetires();
   const [g, dues] = await Promise.all([
-    prisma.apporteurReseau.groupBy({ by: ["statut"], _count: { _all: true } }),
+    prisma.apporteurReseau.groupBy({
+      by: ["statut"],
+      ...(retires.size > 0 ? { where: { id: { notIn: [...retires] } } } : {}),
+      _count: { _all: true },
+    }),
     prisma.commissionApporteur.aggregate({
       where: { statut: { in: ["due", "en_attente_vigilance"] } },
       _sum: { montantCents: true },
@@ -55,16 +63,25 @@ export async function compterApporteurs(): Promise<{
   return {
     parStatut: Object.fromEntries(g.map((x) => [x.statut, x._count._all])),
     commissionsDuesCents: dues._sum.montantCents ?? 0,
+    retires: retires.size,
   };
 }
 
 export async function listerApporteurs(
-  o: { statuts?: readonly ApporteurReseauStatut[]; page?: number } = {},
+  o: { statuts?: readonly ApporteurReseauStatut[]; page?: number; retires?: boolean } = {},
 ): Promise<LigneApporteur[]> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
   const page = Math.max(1, Math.floor(o.page ?? 1));
+  // Les fiches retirées du réseau (2026-10-07) n'apparaissent QUE dans l'onglet « Retirés ».
+  const retires = [...(await idsRetires())];
+  const where = o.retires
+    ? { id: { in: retires } }
+    : {
+        ...(o.statuts ? { statut: { in: [...o.statuts] } } : {}),
+        ...(retires.length > 0 ? { id: { notIn: retires } } : {}),
+      };
   const lignes = await prisma.apporteurReseau.findMany({
-    ...(o.statuts ? { where: { statut: { in: [...o.statuts] } } } : {}),
+    where,
     orderBy: [{ creeAt: "desc" }, { id: "asc" }],
     take: PAR_PAGE,
     skip: (page - 1) * PAR_PAGE,

@@ -136,7 +136,7 @@ export function FinDeVie({
       ) : null}
 
       {signe ? (
-        <details>
+        <details id="resiliation">
           <summary className="cursor-pointer font-medium">Résilier le contrat</summary>
           <p className="my-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Les attributions en cours prennent fin (les commandes déjà signées restent couvertes),

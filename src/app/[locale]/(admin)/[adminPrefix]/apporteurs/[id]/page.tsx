@@ -9,6 +9,8 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
+import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
+import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import { CumulVigilance, FinDeVie } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
 import {
   PiecesVerification,
@@ -27,7 +29,12 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
-  searchParams: Promise<{ retour?: string; erreur?: string }>;
+  searchParams: Promise<{
+    retour?: string;
+    erreur?: string;
+    retrait?: string;
+    retraitErreur?: string;
+  }>;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -69,7 +76,7 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
 
 export default async function FicheApporteurPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
-  const { retour, erreur } = await searchParams;
+  const { retour, erreur, retrait, retraitErreur } = await searchParams;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   if (!UUID.test(id)) notFound();
@@ -78,6 +85,9 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const { dossier: d } = fiche;
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
+  // Retirer / supprimer (2026-10-07) : l'état se relit ici, les contrôles se refont au serveur.
+  const [retireAt, etatSuppr] = await Promise.all([retraitDe(d.id), etatSuppression(d.id)]);
+  const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
   const voitPii = peutOuvrirDossierApporteur(acces.role);
   const MASQUE = "Réservé aux rôles autorisés";
@@ -318,6 +328,21 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
             }))}
         />
       </div>
+
+      <RetraitDuReseau
+        apporteurId={d.id}
+        nomComplet={`${d.prenom} ${d.nom}`.trim()}
+        signe={d.statut === "signe"}
+        retireLe={retireAt ? jour(retireAt) : null}
+        refusSuppression={refusSuppr}
+        retour={
+          retrait
+            ? { ok: true, message: retrait.slice(0, 400) }
+            : retraitErreur
+              ? { ok: false, message: retraitErreur.slice(0, 400) }
+              : null
+        }
+      />
 
       <AdminCard as="section">
         <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">

@@ -37,6 +37,7 @@ import {
   ibanValide,
   jugerAdmission,
   sirenValide,
+  PIECES_VIGILANCE,
   VIGILANCE_VALIDITE_MOIS,
   type StatutJuridique,
   type TypePiece,
@@ -108,7 +109,8 @@ const TROP: Resultat = { ok: false, message: TEXTES.trop };
 
 async function dossierModifiableParLien(id: string, jeton: string): Promise<DossierVue | null> {
   const d = await lireDossierParLien(id, jeton);
-  return d && etatDeLaPage(d.statut) === "modifiable" ? d : null;
+  // Mode restreint (retiré du réseau) : rien n'est modifiable.
+  return d && !d.restreint && etatDeLaPage(d.statut) === "modifiable" ? d : null;
 }
 
 // ── Étape 2 : recherche du SIREN ─────────────────────────────────────────
@@ -247,7 +249,11 @@ export async function deposerPieceAction(fd: FormData): Promise<Resultat> {
   const dossier = await lireDossierParLien(lien(fd.get("id")), lien(fd.get("jeton")));
   if (!dossier) return NEUTRE;
   const type = champ(fd, "type", 30) as TypePiece;
-  if (!piecesDeposables(etatDeLaPage(dossier.statut)).includes(type)) return NEUTRE;
+  // Mode restreint (retiré du réseau, argent en jeu) : SEULES les attestations de vigilance.
+  const deposables = dossier.restreint
+    ? PIECES_VIGILANCE
+    : piecesDeposables(etatDeLaPage(dossier.statut));
+  if (!(deposables as readonly string[]).includes(type)) return NEUTRE;
 
   const fichier = fd.get("fichier");
   if (!(fichier instanceof File) || fichier.size === 0)

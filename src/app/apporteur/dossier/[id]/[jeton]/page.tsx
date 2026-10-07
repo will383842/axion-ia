@@ -72,6 +72,38 @@ export default async function DossierApporteurPage({ params }: PageProps) {
   }
   const dossier = await lireDossierParLien(id, jeton);
   if (!dossier) notFound();
+  // MODE RESTREINT (2026-10-07) : retiré du réseau, avec de l'argent encore en jeu. Seul le
+  // dépôt des attestations de vigilance reste ouvert — ni signature, ni déclaration, ni
+  // dossier (les actions le refusent aussi).
+  if (dossier.restreint) {
+    return (
+      <Coquille titre={TEXTES.bonjour(dossier.prenom)}>
+        <EcranEtat
+          pastilleTexte={TEXTES.restreintPastille}
+          titre={TEXTES.restreintTitre}
+          ligne={TEXTES.restreintLigne}
+        />
+        <ul className="mt-5 grid gap-3">
+          {PIECES_VIGILANCE.map((t) => {
+            const p = dossier.pieces.find((x) => x.type === t) ?? null;
+            return (
+              <DepotPiece
+                key={t}
+                id={dossier.id}
+                jeton={jeton}
+                type={t}
+                libelle={LIBELLE_PIECE[t]}
+                aide={AIDE_PIECE[t]}
+                piece={p ? { statut: p.statut, motif: p.motif, nomFichier: p.nomFichier } : null}
+                motifLibelle={p?.statut === "a_retransmettre" ? libelleMotif(p.motif) : null}
+                avecDate={t === "vigilance"}
+              />
+            );
+          })}
+        </ul>
+      </Coquille>
+    );
+  }
   const etat = etatDeLaPage(dossier.statut);
   if (etat === "neutre") notFound();
   const titre = TEXTES.bonjour(dossier.prenom);

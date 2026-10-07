@@ -101,6 +101,11 @@ export const TEXTES = {
   // Lien invalide
   // Le lien d'exemple de l'aperçu de la console (2026-10-07) : Will a cliqué le
   // bouton de l'aperçu de « Retenu » et est tombé sur « Ce lien ne fonctionne plus ».
+  // Fiche retirée du réseau, argent encore en jeu (2026-10-07).
+  restreintPastille: "Vos commissions",
+  restreintTitre: "Vos commissions restent dues",
+  restreintLigne:
+    "Votre fiche n'est plus active dans le réseau. Les commissions qui vous sont dues vous seront versées dans les conditions de votre contrat. Si l'on vous les demande, déposez ici vos attestations.",
   exemplePastille: "Aperçu",
   exempleTitre: "Ceci est un lien d'exemple",
   exempleLigne:

@@ -36,6 +36,7 @@ import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import { lireEntrepriseParSiren } from "./annuaire";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, sirenValide, type TypePiece } from "./regles";
+import { retraitDe } from "./retrait";
 
 const dossierUrlSi = (url: string | null): { dossierUrl?: string } =>
   url ? { dossierUrl: url } : {};
@@ -523,6 +524,13 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     return {
       ok: false as const,
       message: "Ce dossier est déjà signé : il n'y a plus de lien à lui envoyer.",
+    };
+  // Retiré du réseau (2026-10-07) : pas de lien de dossier (aperçu comme envoi).
+  if (await retraitDe(d.id))
+    return {
+      ok: false as const,
+      message:
+        "Cette fiche est retirée du réseau : son lien de dossier est désactivé. Remettez-la dans le réseau d'abord.",
     };
   const url = urlDossier(d.id, d.versionLien);
   if (!url)
