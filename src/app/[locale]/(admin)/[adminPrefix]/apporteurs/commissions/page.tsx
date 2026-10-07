@@ -389,6 +389,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                 ) : null}
                 {peutPayer &&
                 !c.autofactureNumero &&
+                !c.parrainage &&
                 (c.statut === "due" ||
                   c.statut === "a_qualifier" ||
                   c.statut === "en_attente_vigilance") ? (
@@ -401,15 +402,15 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       <input type="hidden" name="id" value={c.id} />
                       <label className="flex items-center gap-[var(--space-admin-2)]">
                         <input type="radio" name="mode" value="reduire" defaultChecked />
-                        Réduire à
+                        Prix HT net conservé
                         <input
-                          name="montant"
+                          name="prix"
                           inputMode="decimal"
-                          placeholder="150,50"
+                          placeholder="1500"
                           className="admin-input w-28"
-                          aria-label="Nouveau montant en euros"
+                          aria-label="Prix HT net conservé en euros"
                         />
-                        €
+                        € (la commission est recalculée par la règle du contrat)
                       </label>
                       <label className="flex items-center gap-[var(--space-admin-2)]">
                         <input type="radio" name="mode" value="annuler" />
