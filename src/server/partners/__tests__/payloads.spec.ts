@@ -371,12 +371,24 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
     }
   });
 
-  it("🔴 `jours` identifie le palier et n'est JAMAIS un multiplicateur", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+  it("🔴 A-2 : 2 journées = 1 000 € (500 € × 2), jamais un forfait de palier compté deux fois", () => {
+    // Le prix public de l'offre (1 900 €/jour) est la référence du prorata (art. 4.1 bis) ; la
+    // ligne est vendue au-dessus (2 500 €/jour) : commission pleine, 2 × 500 €.
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: new Map([["AXI-OFF-004", 1900]]),
+    });
     const ligne = p.lignes[0];
     expect(ligne?.jours).toBe(2);
     expect(ligne?.commissionId).toBe("com-formation-2j");
-    expect(ligne?.commission.montantCents).toBe(100_000); // le forfait du palier, UNE fois
+    expect(ligne?.commission.montantCents).toBe(100_000);
+  });
+
+  it("formation sans prix public de référence : bloquée « à qualifier » (aucun montant inventé)", () => {
+    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    expect(p.lignes[0]?.commission.statut).toBe("bloquee");
+    expect(p.lignes[0]?.commission.montantCents).toBeNull();
   });
 
   it("le montant HT de la ligne est celui du devis, pas un produit recalculé de travers", () => {

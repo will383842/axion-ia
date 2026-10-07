@@ -167,12 +167,23 @@ describe("REQ-INT-006 — la charge de devis.signe, calculée dans axionia", () 
     await emettreDevisSigne(tx, DEVIS_ID);
     const ligne = chargeEmise(outbox).lignes[0];
 
+    // Même verdict que la fonction pure, AVEC le prix de référence réellement émis (prorata de
+    // remise, art. 4.1 bis — 2026-10-08).
     expect(ligne?.commission).toEqual(
-      resoudreCommission({ activite: "formation", jours: 2, montantHtCents: 500_000 }),
+      resoudreCommission({
+        activite: "formation",
+        jours: 2,
+        montantHtCents: 500_000,
+        prixReferenceHtCents: ligne?.prixReferenceHtCents ?? null,
+      }),
     );
-    // La grille source, pas une copie : le forfait est celui de COMMERCIAL_COMMISSIONS.
-    const palier = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-formation-2j");
-    expect(ligne?.commission.montantCents).toBe((palier?.flatEur ?? Number.NaN) * 100);
+    // La fausse base de ce test ne porte AUCUN prix public d'offre : sans référence, le prorata
+    // de remise (art. 4.1 bis) est incalculable → bloquée, aucun montant inventé. Le calcul avec
+    // un prix public est verrouillé dans payloads.spec.ts et pricing-et-moteur-concordent.
+    expect(ligne?.prixReferenceHtCents).toBeNull();
+    expect(ligne?.commission.statut).toBe("bloquee");
+    expect(ligne?.commission.montantCents).toBeNull();
+
     expect(ligne?.commission.grilleVersion).toBe(versionDeLaGrille(COMMERCIAL_COMMISSIONS));
     expect(ligne?.commission.grilleVersion).toBe(GRILLE_VERSION);
   });

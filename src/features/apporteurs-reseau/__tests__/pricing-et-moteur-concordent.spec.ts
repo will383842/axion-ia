@@ -56,13 +56,21 @@ describe("pricing.ts ↔ moteur de calcul (regles.ts)", () => {
 
   // Partners reçoit le montant de `resoudreCommission` : il doit être celui du moteur.
   it("Partners (resoudreCommission) calcule comme le moteur : 500 € × journées, pourcentages à l'inférieur", () => {
-    const forfaitJour = PALIERS_FORMATION.find(
-      (p) => p.id === "formation-generale-1j",
-    )!.forfaitCents;
-    for (const jours of [0.5, 1, 2, 3, 5]) {
-      const r = resoudreCommission({ activite: "formation", jours, montantHtCents: 1 });
-      expect(r.statut, `${jours} j`).toBe("calculee");
-      expect(r.montantCents, `${jours} j`).toBe(forfaitJour * jours);
+    // Pour chaque palier du moteur : même montant au prix public, et même prorata de remise
+    // (art. 4.1 bis) — jamais un forfait plein pour une facture d'un centime.
+    for (const p of PALIERS_FORMATION) {
+      const jours = p.id.endsWith("4h") ? 0.5 : p.id.endsWith("2j") ? 2 : 1;
+      for (const ht of [1, Math.floor(p.prixCents * 0.8), p.prixCents, p.prixCents * 2]) {
+        const moteur =
+          ht >= p.prixCents ? p.forfaitCents : Math.floor((p.forfaitCents * ht) / p.prixCents);
+        const r = resoudreCommission({
+          activite: "formation",
+          jours,
+          montantHtCents: ht,
+          prixReferenceHtCents: p.prixCents,
+        });
+        expect(r.montantCents, `${p.id} à ${ht}`).toBe(moteur);
+      }
     }
     for (const [activite, bps] of [
       ["un_a_un", TAUX_BPS.un_a_un],

@@ -446,7 +446,7 @@ function ligneDevis(
     offreCode === null
       ? null
       : prixReferenceDeLaLigne(prixPublics.get(offreCode) ?? null, quantite);
-  const commission = resoudreCommission({ activite, jours, montantHtCents });
+  const commission = resoudreCommission({ activite, jours, montantHtCents, prixReferenceHtCents });
 
   return {
     designation,
