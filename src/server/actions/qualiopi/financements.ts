@@ -44,6 +44,7 @@ import {
   DOSSIER_STATUT_LIBELLES,
   refermerDossiersAMonter,
 } from "@/server/qualiopi/financements/dossier-financement";
+import { GenerationDossierRefuseeIdcc } from "@/server/qualiopi/financements/blocage-idcc";
 import {
   changementOuvreUnDossier,
   financementAdmetSubrogation,
@@ -347,6 +348,10 @@ export async function setFinancementSessionAction(input: {
   // enregistré. Faire échouer l'action parce que la vue de PILOTAGE n'a pas pu
   // s'ouvrir perdrait la donnée métier au profit de son tableau de bord.
   // L'échec est journalisé, et le bouton manuel reste le rattrapage.
+  // INT-T67-A : l'ouverture refusée faute d'IDCC confirmé n'est plus muette.
+  // Le financement reste enregistré (fail-soft), mais l'écran DIT pourquoi aucun
+  // dossier ne s'est ouvert et quoi faire.
+  let avertissementOuverture: string | undefined;
   if (changementOuvreUnDossier(avant?.financementType, fields.financementType)) {
     try {
       const dossier = await creerDossierDepuisSession(sessionId);
@@ -367,6 +372,9 @@ export async function setFinancementSessionAction(input: {
         session,
       });
     } catch (err) {
+      if (err instanceof GenerationDossierRefuseeIdcc) {
+        avertissementOuverture = `Financement enregistré, mais le dossier de financement n'a pas été ouvert. ${err.message}`;
+      }
       console.error("[financements] ouverture auto du dossier impossible", {
         sessionId,
         err: err instanceof Error ? err.message : String(err),
@@ -413,7 +421,9 @@ export async function setFinancementSessionAction(input: {
   // revue 5250421969) — engage l'organisme : il n'est pas touché, et on le DIT.
   // Fail-soft, comme l'ouverture : le financement saisi ne se perd jamais.
   let avertissement: string | undefined =
-    [avertissementRegime, avertissementCreances].filter(Boolean).join(" ") || undefined;
+    [avertissementOuverture, avertissementRegime, avertissementCreances]
+      .filter(Boolean)
+      .join(" ") || undefined;
   if (financementRefermeLesDossiers(fields.financementType)) {
     try {
       // Journalisé dossier par dossier, APRÈS chaque fermeture : si le suivant

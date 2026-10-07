@@ -26,3 +26,21 @@ describe("splitNomPrenom", () => {
     expect(splitNomPrenom("   ")).toEqual({ prenom: null, nom: null });
   });
 });
+
+describe("splitNomPrenom — fiche du tunnel vidéo", () => {
+  it("un seul mot + fiche vidéo : c'est un PRÉNOM, pas un nom", () => {
+    expect(splitNomPrenom("Nadia", true)).toEqual({
+      prenom: "Nadia",
+      nom: null,
+    });
+  });
+
+  it("sans fiche vidéo (ancien formulaire, dossier), rien ne change", () => {
+    expect(splitNomPrenom("Nadia", false)).toEqual({
+      prenom: null,
+      nom: "Nadia",
+    });
+    expect(splitNomPrenom("Nadia")).toEqual({ prenom: null, nom: "Nadia" });
+    expect(splitNomPrenom("Marie Dupont", false)).toEqual({ prenom: "Marie", nom: "Dupont" });
+  });
+});

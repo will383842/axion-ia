@@ -6,7 +6,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { dayKeyInParis } from "@/lib/calendar-grid";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { typeEffectif } from "@/server/calendly/type-effectif";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
+import { passeLeFiltre } from "./type-rdv";
 import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 import { finEffective, momentVisio } from "./visio";
 import { joursDeRetard } from "./point";
@@ -24,6 +26,8 @@ export interface RdvAFaireLePoint {
   contactName: string | null;
   contactEmail: string | null;
   entreprise: string | null;
+  /** Type du rendez-vous (lot L3) : colonne, sinon nom (`typeEffectif`). */
+  typeRendezVous: TypeRendezVous;
   /**
    * Jours écoulés depuis la fin quand le point attend depuis plus de 24 h,
    * sinon `null` (2026-09-28). La carte passe alors au rouge.
@@ -66,6 +70,7 @@ export async function listRendezVousAFaireLePoint(
       inviteeName: true,
       inviteeEmail: true,
       rawPayload: true,
+      typeRendezVous: true,
     },
   });
 
@@ -73,8 +78,8 @@ export async function listRendezVousAFaireLePoint(
     if (!e.startTime) return [];
     // Encore dans « À venir » : pas encore l'heure de faire le point.
     if (momentVisio(e.startTime, e.endTime, maintenant) !== "terminee") return [];
-    if (options.public === "apporteurs" && !estAppelApporteur(e.eventTypeName)) return [];
-    if (options.public === "clients" && estAppelApporteur(e.eventTypeName)) return [];
+    const typeRendezVous = typeEffectif(e);
+    if (!passeLeFiltre(typeRendezVous, options.public)) return [];
     return [
       {
         id: e.id,
@@ -85,6 +90,7 @@ export async function listRendezVousAFaireLePoint(
         contactName: e.inviteeName,
         contactEmail: e.inviteeEmail,
         entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
+        typeRendezVous,
         retardJours: joursDeRetard(finEffective(e.startTime, e.endTime), maintenant),
       },
     ];

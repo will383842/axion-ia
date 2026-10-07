@@ -23,6 +23,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import {
   genererConventionAction,
@@ -47,7 +48,17 @@ import {
   genererAutorisationCaptationAction,
   annulerDocumentAction,
   relancerRemiseExemplaireAction,
+  constaterConditionSuspensiveAction,
+  renoncerConditionSuspensiveAction,
 } from "@/server/actions/qualiopi/documents";
+import {
+  CLASSE_CHAMP,
+  CLASSE_TEXTE,
+  CONDITION_NON_POSEE,
+  ConditionSuspensiveOpcoChamps,
+  entreeConditionSuspensive,
+  type ValeurConditionSuspensiveOpco,
+} from "@/components/admin/qualiopi/ConditionSuspensiveOpcoChamps";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
@@ -85,6 +96,15 @@ import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+
+/**
+ * INT-T66-A — le bouton du mandat OPCO n'est utile qu'aux sessions financées par
+ * un OPCO : il est chargé à part, à l'affichage, pour ne pas alourdir la page de
+ * toutes les sessions (cliquet de poids de la console).
+ */
+const MandatOpcoButton = dynamic(() =>
+  import("@/components/admin/qualiopi/MandatOpcoButton").then((m) => m.MandatOpcoButton),
+);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -159,6 +179,17 @@ export interface DocumentGenereInfo {
    * ce que l'alerte `exemplaire_signe_non_transmis` réclame.
    */
   exemplaireSigneEnvoyeAt?: string | null;
+  /**
+   * INT-T65-A — la convention a été générée sous la condition suspensive de
+   * l'accord de l'OPCO. `null` / absent : convention sans condition.
+   */
+  conditionSuspensiveOpco?: {
+    etat: string;
+    /** « jj/mm/aaaa », jour de Paris. */
+    dateLimite: string;
+    /** Libellé du seuil, déjà formaté. */
+    seuil: string;
+  } | null;
 }
 
 /**
@@ -254,6 +285,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
   contrat_travail: "Contrat de travail (formateur salarié)",
   procedure_sous_traitance: "Procédure de sous-traitance (indicateur 27)",
+  mandat_opco: "Mandat OPCO",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -280,7 +312,7 @@ const MOTIF_RECTIFICATION_MIN = 10;
  * la page (et l'automatisation du navigateur avec), et son texte n'est ni
  * traduisible ni accessible.
  */
-function useMotifRectification(dejaGenereLe: string | undefined): {
+export function useMotifRectification(dejaGenereLe: string | undefined): {
   /** La pièce existe déjà → une régénération doit être motivée. */
   requis: boolean;
   ouvert: boolean;
@@ -939,17 +971,32 @@ function ConventionDocButton({
   sessionId,
   onDone,
   dejaGenereLe,
+  variante = "convention",
 }: {
   sessionId: string;
   onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton. */
   dejaGenereLe?: string | undefined;
+  /**
+   * INT-T65-A — les DEUX conventions portent la case de condition suspensive
+   * OPCO (une case par convention) ; seule la bipartite porte l'acompte.
+   */
+  variante?: "convention" | "convention_tripartite";
 }): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [acompte, setAcompte] = useState("");
+  const [condition, setCondition] = useState<ValeurConditionSuspensiveOpco>(CONDITION_NON_POSEE);
+  const label =
+    variante === "convention" ? "Convention de formation" : "Convention tripartite (OPCO)";
+  // Libellés LITTÉRAUX : les gestes du parcours citent « Générer : Convention
+  // de formation » (garde `les-gestes-citent-des-boutons-reels.spec.ts`).
+  const ariaGenerer =
+    variante === "convention"
+      ? "Générer : Convention de formation"
+      : "Générer : Convention tripartite (OPCO)";
   // 🔴 N4 — le patron que ce composant n'avait jamais reçu. Sans lui, toute
   // régénération sortait filigranée « COPIE », sans recours depuis l'écran.
   const rect = useMotifRectification(dejaGenereLe);
@@ -966,8 +1013,15 @@ function ConventionDocButton({
     setSuccess(null);
     // Validation locale AVANT l'action : « 150 » renverrait un « Données
     // invalides » générique — dire la borne ici, devant le champ fautif.
+    // INT-T65-A — case cochée : seuil ENTIER et date limite exigés ICI, devant
+    // le champ fautif, plutôt qu'un « Données invalides » générique.
+    const entree = entreeConditionSuspensive(condition);
+    if (entree !== undefined && "erreur" in entree) {
+      setError(entree.erreur);
+      return;
+    }
     let acomptePercent: number | undefined;
-    if (acompte.trim() !== "") {
+    if (variante === "convention" && acompte.trim() !== "") {
       const n = Number(acompte);
       if (!Number.isInteger(n) || n < 0 || n > 100) {
         setError(`Acompte : entier entre 0 et 100 (vide = ${ACOMPTE_DEFAUT_PERCENT} %).`);
@@ -976,18 +1030,28 @@ function ConventionDocButton({
       acomptePercent = n;
     }
     startTransition(async () => {
-      const result = await genererConventionAction({
-        sessionId,
-        ...(acomptePercent !== undefined ? { acomptePercent } : {}),
-        ...rect.argument,
-      });
+      const conditionSuspensiveOpco =
+        entree !== undefined ? { conditionSuspensiveOpco: entree } : {};
+      const result =
+        variante === "convention"
+          ? await genererConventionAction({
+              sessionId,
+              ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+              ...conditionSuspensiveOpco,
+              ...rect.argument,
+            })
+          : await genererConventionTripartiteAction({
+              sessionId,
+              ...conditionSuspensiveOpco,
+              ...rect.argument,
+            });
       if ("error" in result) {
         setError(result.error);
       } else {
-        const msg = `Convention de formation — n° ${result.data.numero} généré.`;
+        const msg = `${label} — n° ${result.data.numero} généré.`;
         setSuccess(msg);
         onDone({
-          libelle: "Convention de formation",
+          libelle: label,
           numero: result.data.numero,
           documentId: result.data.documentId,
         });
@@ -1003,23 +1067,30 @@ function ConventionDocButton({
           Il était en dessous, en petit : on ne lit pas un réglage après avoir
           cliqué. C'est une CLAUSE de la pièce que le client signe, pas une
           option d'affichage. */}
-      <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        <span>Acompte à la signature (%)</span>
-        <input
-          type="number"
-          inputMode="numeric"
-          min={0}
-          max={100}
-          step={1}
-          value={acompte}
-          onChange={(e) => setAcompte(e.target.value)}
-          disabled={isPending}
-          placeholder={String(ACOMPTE_DEFAUT_PERCENT)}
-          aria-label={`Acompte à la signature en pourcentage (vide = ${ACOMPTE_DEFAUT_PERCENT}, 0 = payable en totalité à réception de facture)`}
-          className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)] focus:ring-1 focus:ring-[color:var(--color-admin-accent)] focus:outline-none"
-        />
-        <span>vide ou 0 = totalité à réception de facture</span>
-      </label>
+      {variante === "convention" && (
+        <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          <span>Acompte à la signature (%)</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={100}
+            step={1}
+            value={acompte}
+            onChange={(e) => setAcompte(e.target.value)}
+            disabled={isPending}
+            placeholder={String(ACOMPTE_DEFAUT_PERCENT)}
+            aria-label={`Acompte à la signature en pourcentage (vide = ${ACOMPTE_DEFAUT_PERCENT}, 0 = payable en totalité à réception de facture)`}
+            className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)] focus:ring-1 focus:ring-[color:var(--color-admin-accent)] focus:outline-none"
+          />
+          <span>vide ou 0 = totalité à réception de facture</span>
+        </label>
+      )}
+      <ConditionSuspensiveOpcoChamps
+        onChange={setCondition}
+        disabled={isPending}
+        idPrefixe={`condition-opco-${variante}`}
+      />
       <button
         type="button"
         onClick={handleClick}
@@ -1027,19 +1098,19 @@ function ConventionDocButton({
         className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
         aria-label={
           dejaGenereLe
-            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
-            : "Générer : Convention de formation"
+            ? `Régénérer : ${label} (dernière génération le ${dejaGenereLe})`
+            : ariaGenerer
         }
       >
         {isPending
           ? "Génération…"
           : rect.ouvert
-            ? "Rectifier : Convention de formation"
+            ? `Rectifier : ${label}`
             : dejaGenereLe
-              ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
-              : "Convention de formation"}
+              ? `${label} · génération du ${dejaGenereLe} — régénérer`
+              : label}
       </button>
-      {rect.champ("Convention de formation")}
+      {rect.champ(label)}
       {rect.ouvert && (
         <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
           Annuler
@@ -1062,6 +1133,129 @@ function ConventionDocButton({
         </p>
       )}
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-composant : suivi d'une convention générée sous condition (INT-T65-A)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const LIBELLES_ETAT: Record<string, string> = {
+  en_attente: "En attente de l'accord de l'OPCO",
+  active: "Condition levée — convention active",
+  caduque: "Condition défaillie — convention caduque",
+};
+
+function ConditionSuspensiveOpcoSuivi({
+  documentId,
+  etat,
+  dateLimite,
+  seuil,
+}: {
+  documentId: string;
+  etat: string;
+  /** « jj/mm/aaaa » (jour de Paris). */
+  dateLimite: string;
+  /** Libellé du seuil, déjà formaté. */
+  seuil: string;
+}): React.ReactElement {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [message, setMessage] = useState<string | null>(null);
+  const [erreur, setErreur] = useState<string | null>(null);
+  const [renonciationOuverte, setRenonciationOuverte] = useState(false);
+  const [recueLe, setRecueLe] = useState("");
+
+  function constater() {
+    setErreur(null);
+    setMessage(null);
+    startTransition(async () => {
+      const r = await constaterConditionSuspensiveAction({ documentId });
+      if ("error" in r) setErreur(r.error);
+      else {
+        setMessage(r.data.message);
+        router.refresh();
+      }
+    });
+  }
+
+  function renoncer() {
+    setErreur(null);
+    setMessage(null);
+    if (recueLe === "") {
+      setErreur("Indiquez la date de la renonciation écrite de votre client.");
+      return;
+    }
+    startTransition(async () => {
+      const r = await renoncerConditionSuspensiveAction({ documentId, recueLe });
+      if ("error" in r) setErreur(r.error);
+      else {
+        setMessage(r.data.message);
+        setRenonciationOuverte(false);
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <span className={`mt-[var(--space-admin-1)] block ${CLASSE_TEXTE}`}>
+      <span className="block">
+        {`Sous condition suspensive OPCO — ${LIBELLES_ETAT[etat] ?? etat}. Seuil : ${seuil} ; date limite : ${dateLimite}.`}
+      </span>
+      {etat === "en_attente" && (
+        <span className="mt-[var(--space-admin-1)] flex flex-wrap items-center gap-[var(--space-admin-2)]">
+          <button
+            type="button"
+            className="admin-button-ghost"
+            disabled={isPending}
+            onClick={constater}
+          >
+            Constater l&apos;état de la condition
+          </button>
+          {renonciationOuverte ? (
+            <>
+              <label className="flex items-center gap-[var(--space-admin-1)]">
+                <span>Renonciation écrite reçue le</span>
+                <input
+                  type="date"
+                  value={recueLe}
+                  disabled={isPending}
+                  onChange={(e) => setRecueLe(e.target.value)}
+                  className={CLASSE_CHAMP}
+                />
+              </label>
+              <button
+                type="button"
+                className="admin-button-ghost"
+                disabled={isPending}
+                onClick={renoncer}
+              >
+                Enregistrer la renonciation
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="admin-button-ghost"
+              disabled={isPending}
+              onClick={() => setRenonciationOuverte(true)}
+            >
+              Votre client renonce à la condition
+            </button>
+          )}
+        </span>
+      )}
+      {erreur && (
+        <span role="alert" className="block text-[color:var(--color-admin-error)]">
+          {erreur}
+        </span>
+      )}
+      {message && (
+        <span role="status" className="block text-[color:var(--color-admin-success)]">
+          {message}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -1440,10 +1634,9 @@ export function DocumentsSection({
             {
               type: "convention_tripartite",
               el: (
-                <SessionDocButton
+                <ConventionDocButton
                   key="convention_tripartite"
-                  label="Convention tripartite (OPCO)"
-                  action={genererConventionTripartiteAction}
+                  variante="convention_tripartite"
                   sessionId={sessionId}
                   onDone={handleDone}
                   dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
@@ -1549,7 +1742,31 @@ export function DocumentsSection({
                   pieceMiseEnAvant(b.type, contexte),
               )
             : boutons;
-          const attendues = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          // Mandat OPCO (INT-T66-A) : à côté des conventions, et SEULEMENT sur
+          // une session OPCO ou mixte. Absent ailleurs — ni replié ni proposé :
+          // sans OPCO, le mandat n'a pas d'objet. Pas de première émission
+          // sur un dossier clos : le serveur la refuserait.
+          const avecMandatOpco =
+            !fige && (contexte.financement === "opco" || contexte.financement === "mixte");
+          const enAvant = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          const posConventions = enAvant.findIndex((b) => b.type === "convention_tripartite");
+          const attendues = avecMandatOpco
+            ? [
+                ...enAvant.slice(0, posConventions + 1),
+                {
+                  type: "mandat_opco",
+                  el: (
+                    <MandatOpcoButton
+                      key="mandat_opco"
+                      sessionId={sessionId}
+                      onDone={handleDone}
+                      dejaGenereLe={dernierSessionParType.get("mandat_opco")}
+                    />
+                  ),
+                },
+                ...enAvant.slice(posConventions + 1),
+              ]
+            : enAvant;
           const autres = proposables.filter((b) => !pieceMiseEnAvant(b.type, contexte));
 
           return (
@@ -1890,6 +2107,14 @@ export function DocumentsSection({
                             Remplacée par {doc.remplaceeParNumero}
                           </span>
                         )}
+                      {doc.conditionSuspensiveOpco != null && doc.annuleeAt == null && (
+                        <ConditionSuspensiveOpcoSuivi
+                          documentId={doc.id}
+                          etat={doc.conditionSuspensiveOpco.etat}
+                          dateLimite={doc.conditionSuspensiveOpco.dateLimite}
+                          seuil={doc.conditionSuspensiveOpco.seuil}
+                        />
+                      )}
                       {typeof doc.rectifieNumero === "string" && doc.rectifieNumero !== "" && (
                         <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                           Rectifie {doc.rectifieNumero}

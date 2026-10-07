@@ -135,6 +135,8 @@ const CODES_ATTENDUS: string[] = [
   "delai_facturation_opco",
   // Chantier OPCO A6 : dépôt de la demande de prise en charge à faire.
   "depot_opco_a_faire",
+  // INT-T65-A : convention sous condition suspensive OPCO.
+  "condition_suspensive_opco",
   // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO.
   "etat_fonds_perime",
   // Lot A4 — devis ou session OPCO à venir sans barème applicable (branche × taille).

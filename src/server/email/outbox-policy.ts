@@ -113,6 +113,12 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // Apporteurs (2026-10-05) : alerte INTERNE « une entreprise est déclarée ».
+  "apporteur-declaration-recue",
+  // Réseau d'apporteurs (2026-10-05) : l'alerte INTERNE « un dossier est signé » et
+  // la demande de l'attestation de vigilance, exigée par la loi au seuil de 5 000 €.
+  "apporteur-dossier-a-verifier",
+  "apporteur-vigilance",
 ] as const;
 
 /**
@@ -125,6 +131,17 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
  * que de passer pour un nom de code assumé.
  */
 export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
+  "apporteur-dossier-lien": "Apporteur : lien de son dossier en ligne",
+  "apporteur-dossier-a-completer": "Apporteur : dossier à compléter",
+  "apporteur-dossier-refuse": "Apporteur : dossier non retenu",
+  "apporteur-dossier-a-verifier": "Alerte interne : dossier apporteur à vérifier",
+  "apporteur-contrat-signe": "Apporteur : contrat contresigné",
+  "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
+  "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",
+  "entreprise-prise-de-contact-apporteur": "Prise de contact avec une entreprise présentée",
+  "apporteur-vigilance": "Apporteur : attestation URSSAF demandée",
+  "apporteur-commande-signee": "Apporteur : une commande signée",
+  "apporteur-releve": "Apporteur : commission facturée et autofacture",
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",
@@ -148,6 +165,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
+  "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,
   // globale ou par client, le retient en corbeille comme tout envoi non

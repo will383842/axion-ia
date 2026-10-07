@@ -1299,6 +1299,12 @@ jobs:
       # garde de dérive lue dans pg_trigger/pg_constraint. Chaque cas est ANNULÉ.
       - name: Documents du projet — SQL brut et comportement (Postgres réel)
         run: pnpm test:integration tests/integration/documents-projet
+      # INT-T65-A (2026-10-04) — condition suspensive OPCO (forme d'A02) : case
+      # cochée sans seuil, avec deux seuils ou sans date refusée ; 0 et 10 001
+      # points de base refusés ; une convention existante reste intacte ; aucun
+      # DEFAULT de seuil. Chaque cas est ANNULÉ : aucune ligne ne reste.
+      - name: Condition suspensive OPCO — CHECK (Postgres réel)
+        run: pnpm test:integration tests/integration/condition-suspensive
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy
@@ -1346,6 +1352,13 @@ jobs:
       # test ne laisse aucune ligne derrière lui (volumétrie juste en dessous).
       - name: File de sortie Axion Partners (Postgres réel)
         run: pnpm test:integration tests/integration/partners-sync
+
+      # Lot A9 (2026-10-04) — la migration `siren_deduit_du_siret` jouée telle
+      # quelle sur une table temporaire : elle ne recopie le SIREN que d'un SIRET
+      # valide (relecture A09 : `00000000000000` donnait `000000000`). Le témoin
+      # statique lit le fichier ; seul un vrai Postgres prouve ce qu'il écrit.
+      - name: SIREN déduit du SIRET (Postgres réel)
+        run: pnpm test:integration tests/integration/siren-deduit-du-siret
 
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #

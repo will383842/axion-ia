@@ -29,6 +29,7 @@ import "server-only";
 import { IMPRIMES } from "@/content/imprimes";
 import { SITE_URL } from "@/lib/site-url";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 
 export interface LienInsertion {
   readonly id: string;
@@ -85,7 +86,13 @@ export function lienCalendlyPourEmail(
   valide: (u: string) => boolean = estLienCalendlyValide,
 ): LienInsertion | null {
   if (!url || !valide(url)) return null;
-  return { id: "calendly-echange", label: "Réserver un échange", url };
+  // 2026-10-05 : le lien inséré mène à NOTRE page de réservation quand l'adresse est
+  // celle de l'échange apporteur ; toute autre adresse reste telle quelle.
+  return {
+    id: "calendly-echange",
+    label: "Réserver un échange",
+    url: lienDeReservationDuSite(url, { depuis: "email-composeur" }),
+  };
 }
 
 /** Les liens d'insertion complets, imprimés + Calendly (si configuré). */

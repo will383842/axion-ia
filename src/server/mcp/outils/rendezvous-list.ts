@@ -96,7 +96,11 @@ export const rendezVousList = definirOutil({
         jour: r.dayKey,
         statut: r.status,
         contact: visible ? r.contactName : null,
-        format: r.format,
+        // 🔒 Le contrat MCP est épinglé par le socle (`manifestSha`) : y ajouter
+        // `sur_place` ferait refuser l'adaptateur tant que le socle n'est pas
+        // ré-épinglé. Un rendez-vous sur place sort donc « inconnu » ici,
+        // jamais « telephone ». À faire évoluer avec le socle.
+        format: r.format === "sur_place" ? "inconnu" : r.format,
         notes: visible ? r.notes : null,
       })),
       meta: meta({

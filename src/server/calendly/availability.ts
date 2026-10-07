@@ -47,6 +47,7 @@
 
 import { CALENDLY_API_BASE } from "./api";
 import { lireLesQuestions, type QuestionEventType } from "./questions";
+import { lieuxDeLEvenement, type LieuxDeLEvenement } from "./lieux-evenement";
 
 /**
  * TTL du cache des créneaux, en secondes.
@@ -297,7 +298,7 @@ function isPublicCalendlyUrl(value: unknown): value is string {
 }
 
 /** Forme comparable d'une URL de prise de rendez-vous : origine + chemin, sans slash final. */
-function canonicalPath(value: string): string | null {
+export function canonicalPath(value: string): string | null {
   try {
     const u = new URL(value);
     return `${u.origin}${u.pathname.replace(/\/+$/, "")}`.toLowerCase();
@@ -373,25 +374,26 @@ function record(value: unknown): Record<string, unknown> | null {
 }
 
 /**
- * Retrouve l'URI d'API de l'event-type à partir de son URL publique.
+ * La liste des types d'événement ACTIFS du compte Calendly — la SEULE lecture de
+ * `/event_types` du dépôt (2026-10-04).
  *
- * L'URL publique (`NEXT_PUBLIC_CALENDLY_APPEL_URL`) est la seule chose que le
- * site connaisse ; l'API, elle, ne travaille qu'avec des URI. Deux appels, tous
- * deux mis en cache 24 h : ni le compte ni l'event-type ne changent d'un jour à
- * l'autre.
+ * Factorisée hors de `resolveEventTypeUri` pour que le classement des
+ * rendez-vous (`type-rendez-vous.ts`) relise la même liste, dans le même cache
+ * de 24 h, au lieu d'ouvrir un second appel — une seconde vérité pour un même
+ * fait. Deux appels, tous deux en cache : ni le compte ni ses types ne changent
+ * d'un jour à l'autre.
+ *
+ * `{ failure }` : l'API a refusé ou n'a pas répondu (l'échec ENTIER, avec le
+ * `required_scopes` d'un 403). `null` : réponse illisible.
  */
-async function resolveEventTypeUri(
-  schedulingUrl: string,
-): Promise<
-  { uri: string; dureeMinutes?: number; customQuestions: unknown } | { failure: GetErr } | null
+export async function listerTypesEvenementCalendly(): Promise<
+  { types: ReadonlyArray<Record<string, unknown>> } | { failure: GetErr } | null
 > {
   const me = await calendlyGet(
     `${CALENDLY_API_BASE}/users/me`,
     EVENT_TYPE_REVALIDATE_SECONDS,
     EVENT_TYPE_TAG,
   );
-  // On renvoie l'échec ENTIER, pas seulement sa catégorie : c'est ici que
-  // transitait le `required_scopes` d'un 403, jusqu'ici perdu en route.
   if (!me.ok) return { failure: me };
 
   const userUri = record(record(me.body)?.["resource"])?.["uri"];
@@ -406,29 +408,103 @@ async function resolveEventTypeUri(
 
   const collection = record(list.body)?.["collection"];
   if (!Array.isArray(collection)) return null;
+  return {
+    types: collection.map(record).filter((et): et is Record<string, unknown> => et !== null),
+  };
+}
+
+/**
+ * Retrouve l'URI d'API de l'event-type à partir de son URL publique.
+ *
+ * L'URL publique (`NEXT_PUBLIC_CALENDLY_APPEL_URL`) est la seule chose que le
+ * site connaisse ; l'API, elle, ne travaille qu'avec des URI. La liste vient de
+ * `listerTypesEvenementCalendly`, en cache 24 h.
+ */
+async function resolveEventTypeUri(schedulingUrl: string): Promise<
+  | {
+      uri: string;
+      dureeMinutes?: number;
+      customQuestions: unknown;
+      /** Les lieux de l'événement (`locations`), bruts — lus par `lieuxDeLEvenement`. */
+      locations: unknown;
+    }
+  | { failure: GetErr }
+  | null
+> {
+  // On renvoie l'échec ENTIER, pas seulement sa catégorie : c'est ici que
+  // transitait le `required_scopes` d'un 403, jusqu'ici perdu en route.
+  const liste = await listerTypesEvenementCalendly();
+  if (!liste || "failure" in liste) return liste;
 
   const wanted = canonicalPath(schedulingUrl);
-  for (const raw of collection) {
-    const et = record(raw);
-    if (!et) continue;
+  const trouve = trouverLeType(liste.types, schedulingUrl, wanted);
+  if (!trouve) return null;
+  const { et, uri } = trouve;
+  // La duree officielle de l event-type, telle que Calendly la connait. C est
+  // la SEULE source qui ne peut pas diverger de ce que le visiteur reservera.
+  const duree = et["duration"];
+  // Les questions posées au visiteur voyagent DANS cette même réponse. Les
+  // relire ici ne coûte donc aucun appel supplémentaire — et surtout, cela
+  // évite d'ouvrir une seconde résolution de l'event-type ailleurs dans le
+  // code, qui serait une deuxième vérité pour un seul fait.
+  return {
+    uri,
+    customQuestions: et["custom_questions"],
+    locations: et["locations"],
+    ...(typeof duree === "number" && duree > 0 ? { dureeMinutes: duree } : {}),
+  };
+}
+
+/**
+ * Le type d'événement que désigne une URL de réservation.
+ *
+ * 1. Le chemin complet (`https://calendly.com/<compte>/<slug>`) — la règle d'avant.
+ * 2. À défaut, le SLUG seul, quand l'URL est bien celle du compte propriétaire
+ *    (même premier segment). Les types « En privé » (liens secrets) peuvent
+ *    exposer une `scheduling_url` d'une autre forme que le lien partagé ; le slug,
+ *    lui, est celui que le lien porte. Un slug ne se confond pas : il est unique
+ *    par compte, et on exige que l'URL demandée soit sous le même compte que
+ *    l'adresse retournée.
+ *
+ * ⚠️ Ce second chemin n'a pas pu être éprouvé contre un type privé réel (pas de
+ * jeton local). Il ne fait que RATTRAPER un échec du premier : il ne peut pas
+ * changer la résolution d'un type qui se résolvait déjà.
+ */
+export function trouverLeType(
+  types: ReadonlyArray<Record<string, unknown>>,
+  schedulingUrl: string,
+  wanted: string | null = canonicalPath(schedulingUrl),
+): { et: Record<string, unknown>; uri: string } | null {
+  for (const et of types) {
     const uri = et["uri"];
     const sched = et["scheduling_url"];
     if (typeof uri !== "string" || typeof sched !== "string") continue;
-    if (canonicalPath(sched) !== wanted) continue;
-    // La duree officielle de l event-type, telle que Calendly la connait. C est
-    // la SEULE source qui ne peut pas diverger de ce que le visiteur reservera.
-    const duree = et["duration"];
-    // Les questions posées au visiteur voyagent DANS cette même réponse. Les
-    // relire ici ne coûte donc aucun appel supplémentaire — et surtout, cela
-    // évite d'ouvrir une seconde résolution de l'event-type ailleurs dans le
-    // code, qui serait une deuxième vérité pour un seul fait.
-    return {
-      uri,
-      customQuestions: et["custom_questions"],
-      ...(typeof duree === "number" && duree > 0 ? { dureeMinutes: duree } : {}),
-    };
+    if (canonicalPath(sched) === wanted) return { et, uri };
+  }
+  const demande = segmentsDuChemin(schedulingUrl);
+  if (!demande || demande.length < 2) return null;
+  const [compte, slug] = demande;
+  for (const et of types) {
+    const uri = et["uri"];
+    const sched = et["scheduling_url"];
+    if (typeof uri !== "string" || typeof sched !== "string") continue;
+    if (et["slug"] !== slug) continue;
+    const trouve = segmentsDuChemin(sched);
+    if (trouve && trouve[0] === compte) return { et, uri };
   }
   return null;
+}
+
+/** `https://calendly.com/axion-ia/echange-apporteur?x=1` → `["axion-ia", "echange-apporteur"]`. */
+function segmentsDuChemin(value: string): string[] | null {
+  try {
+    return new URL(value).pathname
+      .split("/")
+      .filter(Boolean)
+      .map((s) => s.toLowerCase());
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -733,6 +809,12 @@ export async function resoudreEventTypePourReservation(schedulingUrl: string): P
   readonly uri: string;
   readonly questions: readonly QuestionEventType[];
   readonly dureeMinutes?: number;
+  /**
+   * Les lieux que l'événement propose, quand Calendly les donne (`locations`).
+   * Absent = on ne sait pas : `formatsProposes` retombe alors sur la table des
+   * types (`types-reservables.ts`).
+   */
+  readonly lieux?: LieuxDeLEvenement;
 } | null> {
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return null;
   if (!isPublicCalendlyUrl(schedulingUrl)) return null;
@@ -758,9 +840,11 @@ export async function resoudreEventTypePourReservation(schedulingUrl: string): P
     return null;
   }
 
+  const lieux = lieuxDeLEvenement(resolved.locations);
   return {
     uri: resolved.uri,
     questions: lecture.questions,
     ...(resolved.dureeMinutes ? { dureeMinutes: resolved.dureeMinutes } : {}),
+    ...(lieux ? { lieux } : {}),
   };
 }

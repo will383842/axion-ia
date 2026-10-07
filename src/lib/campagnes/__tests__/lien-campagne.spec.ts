@@ -134,8 +134,23 @@ describe("les listes fermées", () => {
 
   it("chaque destination pointe une route existante du site, préfixe de langue compris", () => {
     for (const d of DESTINATIONS_CAMPAGNE) {
-      expect(d.chemin, `destination ${d.id}`).toMatch(/^\/fr\/[a-z0-9-]+$/);
+      expect(d.chemin, `destination ${d.id}`).toMatch(/^\/fr(?:\/[a-z0-9-]+)+$/);
     }
+  });
+
+  it("la page vidéo des apporteurs est une destination, sans « facebook » dans l'adresse", () => {
+    const d = DESTINATIONS_CAMPAGNE.find((x) => x.id === "apporteur-affaires-video");
+    expect(d?.chemin).toBe("/fr/apporteur-affaires/video");
+    const { url } = construireLienCampagne(ORIGINE, {
+      destination: "apporteur-affaires-video",
+      canal: "facebook",
+      campagne: "APPORTEURS-VSL-2026-10",
+      visuel: "A_1",
+    });
+    const u = new URL(url);
+    expect(u.pathname).toBe("/fr/apporteur-affaires/video");
+    expect(u.searchParams.get("utm_campaign")).toBe("apporteurs-vsl-2026-10");
+    expect(u.searchParams.get("utm_content")).toBe("a-1");
   });
 
   it("la destination du tunnel court porte la NOUVELLE URL, jamais l'ancienne", () => {

@@ -1,5 +1,22 @@
-// API Conversions Meta — envoi SERVEUR de l'événement `Lead` du tunnel Facebook
-// (2026-09-03).
+// API Conversions Meta — envoi SERVEUR des événements du tunnel Facebook
+// (`Lead` depuis le 2026-09-03 ; `Schedule` depuis le 2026-10-05, tunnel vidéo).
+//
+// ── 2026-10-05 : de `envoyerLeadMeta` à `envoyerEvenementMeta(nom, …)` ─────────
+// Le nom de l'événement était codé en dur à « Lead ». Le tunnel vidéo en a
+// besoin de deux, et volontairement de PEU (le budget de test ne permet pas à
+// Meta d'apprendre sur autre chose) :
+//   · `Lead`     à l'étape 1 (e-mail capté), `event_id` = `lead:<id de la ligne>` ;
+//   · `Schedule` à la réservation de l'échange, `event_id` = `schedule:<id de la
+//     réservation Calendly>`.
+// Le navigateur tire le même événement avec le même `eventID` : Meta les
+// dédoublonne. `envoyerLeadMeta` reste, comme enveloppe, pour l'ancien formulaire
+// (page merci : `event_id` = id de la candidature, inchangé).
+//
+// 🔴 LA RÈGLE DE REFUS SANS CONSENTEMENT N'A PAS BOUGÉ D'UNE VIRGULE. Pour un
+// événement déclenché PLUS TARD (une réservation, des heures après l'étape 1),
+// la réponse à la bannière n'est plus dans la requête : elle est lue sur la fiche
+// (`details.funnel.consentPub`, gardée avec sa date à l'étape 1) et passée ici
+// telle quelle. Sans réponse « accepted » tracée, rien ne part.
 //
 // ── Pourquoi un envoi serveur en plus du pixel ──────────────────────────────
 // Le pixel navigateur perd une part des conversions : bloqueurs, Safari ITP,
@@ -35,6 +52,40 @@ export const META_GRAPH_VERSION = "v21.0";
 /** Délai au-delà duquel on abandonne : une action serveur ne doit pas attendre Meta. */
 const DELAI_MS = 3000;
 
+/** Les seuls événements que le serveur envoie : peu, pour que Meta puisse apprendre. */
+export type NomEvenementMeta = "Lead" | "Schedule";
+
+/**
+ * Ce qu'il faut pour fabriquer un événement. `eventId` est l'identifiant COMPLET
+ * de dédoublonnage (ex. `lead:<id>`) : c'est exactement ce que le navigateur
+ * envoie en `eventID`.
+ *
+ * Tout ce qui n'est pas connu est OMIS (jamais une chaîne vide, jamais le hachage
+ * d'une chaîne vide) : à l'étape 1 il n'y a ni téléphone ni ville.
+ */
+export interface EvenementMetaInput {
+  eventId: string;
+  email: string;
+  telephone?: string | null;
+  prenom?: string | null;
+  ville?: string | null;
+  ip?: string | null;
+  userAgent?: string | null;
+  /** Cookie `_fbp` (n'existe qu'après consentement). */
+  fbp?: string | null;
+  /** `fbclid` de l'arrivée — devient `fbc` au format `fb.1.<ts>.<fbclid>`. */
+  fbclid?: string | null;
+  /**
+   * Heure d'ARRIVÉE du clic (celle où le `fbclid` a été vu), pour fabriquer un
+   * `fbc` correct. Sans elle, repli sur `at` — l'heure de l'événement, donc un
+   * `fbc` dont l'horodatage est faux et que Meta apparie moins bien.
+   */
+  fbcCreeLe?: Date | null;
+  sourceUrl: string;
+  /** Horodatage de l'événement. */
+  at: Date;
+}
+
 export interface LeadMetaInput {
   /** Identifiant de la Submission — sert d'`event_id` pour le dédoublonnage pixel/serveur. */
   submissionId: string;
@@ -57,16 +108,16 @@ export interface LeadMetaInput {
 
 /** Objet `data[0]` tel que Meta l'attend. Construit à part pour être testable. */
 export interface EvenementMeta {
-  event_name: "Lead";
+  event_name: NomEvenementMeta;
   event_time: number;
   event_id: string;
   event_source_url: string;
   action_source: "website";
   user_data: {
     em: string[];
-    ph: string[];
-    fn: string[];
-    ct: string[];
+    ph?: string[];
+    fn?: string[];
+    ct?: string[];
     client_ip_address?: string;
     client_user_agent?: string;
     fbp?: string;
@@ -108,42 +159,98 @@ export function normaliserTelephoneMeta(v: string): string | null {
 }
 
 /** Construit l'événement — PUR, sans réseau ni environnement. */
-export function construireEvenementLead(input: LeadMetaInput): EvenementMeta {
-  const tel = normaliserTelephoneMeta(input.telephone);
+export function construireEvenementMeta(
+  nom: NomEvenementMeta,
+  input: EvenementMetaInput,
+): EvenementMeta {
+  const tel = input.telephone ? normaliserTelephoneMeta(input.telephone) : null;
+  const prenom = input.prenom ? normaliserTexteMeta(input.prenom) : "";
+  const ville = input.ville ? normaliserTexteMeta(input.ville) : "";
   const userData: EvenementMeta["user_data"] = {
     em: [sha256(normaliserEmailMeta(input.email))],
-    ph: tel ? [sha256(tel)] : [],
-    fn: [sha256(normaliserTexteMeta(input.prenom))],
-    ct: [sha256(normaliserTexteMeta(input.ville))],
   };
+  // Un champ inconnu est OMIS : le hachage d'une chaîne vide est une valeur
+  // (toujours la même) que Meta tiendrait pour une donnée.
+  if (tel) userData.ph = [sha256(tel)];
+  if (prenom) userData.fn = [sha256(prenom)];
+  if (ville) userData.ct = [sha256(ville)];
   if (input.ip) userData.client_ip_address = input.ip;
   if (input.userAgent) userData.client_user_agent = input.userAgent;
   if (input.fbp) userData.fbp = input.fbp;
-  if (input.fbclid) userData.fbc = `fb.1.${input.at.getTime()}.${input.fbclid}`;
+  if (input.fbclid) {
+    const creeLe = input.fbcCreeLe ?? input.at;
+    userData.fbc = `fb.1.${creeLe.getTime()}.${input.fbclid}`;
+  }
 
   return {
-    event_name: "Lead",
+    event_name: nom,
     event_time: Math.floor(input.at.getTime() / 1000),
-    event_id: input.submissionId,
+    event_id: input.eventId,
     event_source_url: input.sourceUrl,
     action_source: "website",
     user_data: userData,
   };
 }
 
+/** `Lead` de l'ancien formulaire (page merci) — `event_id` = id de la candidature. */
+export function construireEvenementLead(input: LeadMetaInput): EvenementMeta {
+  return construireEvenementMeta("Lead", {
+    eventId: input.submissionId,
+    email: input.email,
+    telephone: input.telephone,
+    prenom: input.prenom,
+    ville: input.ville,
+    ip: input.ip,
+    userAgent: input.userAgent,
+    fbp: input.fbp ?? null,
+    fbclid: input.fbclid ?? null,
+    sourceUrl: input.sourceUrl,
+    at: input.at,
+  });
+}
+
 export type ResultatEnvoiMeta =
   | { envoye: true }
   | { envoye: false; motif: "non_configure" | "sans_consentement" | "refus" | "reseau" };
 
-export interface EnvoyerLeadMetaOptions {
+export interface EnvoyerEvenementMetaOptions {
   /** Réponse du visiteur à la bannière — seul `accepted` autorise l'envoi. */
   consentPub: "accepted" | "declined" | "unknown" | undefined;
   /** Injection pour les tests ; `globalThis.fetch` sinon. */
   fetchImpl?: typeof fetch;
 }
 
+export type EnvoyerLeadMetaOptions = EnvoyerEvenementMetaOptions;
+
 /**
- * Envoie l'événement `Lead` à Meta. Ne throw JAMAIS.
+ * Envoie l'événement `Lead` de l'ancien formulaire à Meta. Ne throw JAMAIS.
+ * Enveloppe de `envoyerEvenementMeta` : voir ci-dessous pour tout le contrat.
+ */
+export async function envoyerLeadMeta(
+  input: LeadMetaInput,
+  options: EnvoyerEvenementMetaOptions,
+): Promise<ResultatEnvoiMeta> {
+  return envoyerEvenementMeta(
+    "Lead",
+    {
+      eventId: input.submissionId,
+      email: input.email,
+      telephone: input.telephone,
+      prenom: input.prenom,
+      ville: input.ville,
+      ip: input.ip,
+      userAgent: input.userAgent,
+      fbp: input.fbp ?? null,
+      fbclid: input.fbclid ?? null,
+      sourceUrl: input.sourceUrl,
+      at: input.at,
+    },
+    options,
+  );
+}
+
+/**
+ * Envoie un événement (`Lead`, `Schedule`) à Meta. Ne throw JAMAIS.
  *
  * Trois variables d'environnement : `NEXT_PUBLIC_META_PIXEL_ID` (le même
  * identifiant que le pixel navigateur), `META_CAPI_ACCESS_TOKEN` (jeton
@@ -152,16 +259,17 @@ export interface EnvoyerLeadMetaOptions {
  * Gestionnaire, qui fait apparaître l'envoi dans l'onglet de test au lieu de
  * la production. À poser le temps de vérifier l'installation, puis à retirer.
  */
-export async function envoyerLeadMeta(
-  input: LeadMetaInput,
-  options: EnvoyerLeadMetaOptions,
+export async function envoyerEvenementMeta(
+  nom: NomEvenementMeta,
+  input: EvenementMetaInput,
+  options: EnvoyerEvenementMetaOptions,
 ): Promise<ResultatEnvoiMeta> {
   const pixelId = env.NEXT_PUBLIC_META_PIXEL_ID;
   const token = env.META_CAPI_ACCESS_TOKEN;
   if (!pixelId || !token) return { envoye: false, motif: "non_configure" };
   if (options.consentPub !== "accepted") return { envoye: false, motif: "sans_consentement" };
 
-  const corps: Record<string, unknown> = { data: [construireEvenementLead(input)] };
+  const corps: Record<string, unknown> = { data: [construireEvenementMeta(nom, input)] };
   const testCode = env.META_CAPI_TEST_EVENT_CODE;
   if (testCode) corps.test_event_code = testCode;
 

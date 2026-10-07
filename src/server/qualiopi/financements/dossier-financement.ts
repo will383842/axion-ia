@@ -22,6 +22,7 @@ import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
 import { planAccordEcrit } from "./accord-ecrit";
+import { employeursConcernes, exigerIdccConfirme } from "./blocage-idcc";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -40,6 +41,8 @@ import type { DossierFinancementStatut, Prisma } from "../../../../prisma/genera
 const SELECT_SESSION_PAYEURS = {
   id: true,
   clientId: true,
+  // INT-T67-A : le refus faute d'IDCC confirmé rappelle la date de début.
+  dateDebut: true,
   montantHtCents: true,
   financementType: true,
   opcoSubrogation: true,
@@ -565,6 +568,17 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
         : session.financementType === "mixte"
           ? "mixte"
           : "opco";
+
+  // 🔴 INT-T67-A — un dossier OPCO ou mixte ne se GÉNÈRE pas tant que l'IDCC de
+  // chaque employeur concerné n'est pas `confirme` (INT-T61-A). Le refus nomme
+  // les entreprises en cause. Placé APRÈS le retour du dossier existant : un
+  // dossier déjà généré reste intact, seule une nouvelle génération est bloquée.
+  // Contrôle par employeur en inter-entreprises (`Enrollment.clientId`).
+  await exigerIdccConfirme(prisma, {
+    typeDossier: type,
+    employeurs: employeursConcernes(session),
+    dateDebut: session.dateDebut ?? null,
+  });
 
   // Montant CALCULÉ (unité, durée, effectif, plafonds), jamais le tarif brut.
   const priseEnCharge = contexteDepuisSession(session).priseEnChargeMontantCents ?? 0;

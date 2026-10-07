@@ -11,6 +11,13 @@
 //   1. les fiches de la MÊME PERSONNE (même empreinte d'adresse) — le cas
 //      normal, et celui que le rattachement automatique couvre déjà pour un
 //      échange apporteur ;
+//   1 bis. les fiches apporteur dont le NOM correspond, quand l'adresse diffère
+//      (2026-10-05) : un candidat venu d'Indeed porte sur sa fiche une adresse
+//      RELAIS (`marienoelmafogangocxep_uuo@indeedemail.com`), alors qu'il
+//      réserve Calendly avec sa vraie adresse. Aucune empreinte ne correspond,
+//      et la fiche, vieille de plusieurs semaines, sort de la fenêtre des
+//      récentes : l'échange restait rattaché à rien et l'e-mail d'issue était
+//      bloqué. On PROPOSE ; on ne rattache jamais seul sur une ressemblance ;
 //   2. les fiches RÉCENTES du même public (apporteurs pour un échange
 //      apporteur, le reste pour un appel client) — pour la personne qui a
 //      réservé avec une autre adresse que celle de sa demande ;
@@ -27,19 +34,33 @@ import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-applicat
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
+import { motsDuNom, nomCorrespond } from "@/lib/calendly/nom-fiche";
 
-export type GroupeFiche = "meme-personne" | "recentes" | "actuelle";
+export { motsDuNom, nomCorrespond };
+
+export type GroupeFiche = "meme-personne" | "nom-probable" | "recentes" | "actuelle";
 
 export interface FicheRattachable {
   id: string;
   libelle: string;
   groupe: GroupeFiche;
+  /** Titre du groupe, affiché par le sélecteur (qui ne le recalcule pas : poids du bundle). */
+  intitule: string;
 }
 
 // Fenêtre des fiches « récentes » : déclarée dans un module PUR, parce que le
 // sélecteur qui l'annonce est un composant client (voir l'en-tête là-bas).
 export { JOURS_FICHES_RECENTES };
+const INTITULE_GROUPE: Record<GroupeFiche, string> = {
+  actuelle: "Fiche rattachée",
+  "meme-personne": "Même adresse e-mail",
+  "nom-probable": "Même nom, autre adresse (à vérifier)",
+  recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
+};
 const PLAFOND_PAR_GROUPE = 25;
+const PLAFOND_NOM_PROBABLE = 5;
+/** Combien de dossiers apporteur on relit (et déchiffre) pour chercher un nom. */
+const PLAFOND_LECTURE_NOMS = 600;
 
 const SELECT = {
   id: true,
@@ -48,6 +69,8 @@ const SELECT = {
   submittedAt: true,
   contactName: true,
 } as const;
+
+const SELECT_NOM = { ...SELECT, contactEmail: true } as const;
 
 interface Ligne {
   id: string;
@@ -81,6 +104,7 @@ function libelle(l: Ligne): string {
 
 export async function listerFichesRattachables(rdv: {
   inviteeEmail: string | null;
+  inviteeName?: string | null;
   linkedSubmissionId: string | null;
   estEchangeApporteur: boolean;
 }): Promise<FicheRattachable[]> {
@@ -94,7 +118,8 @@ export async function listerFichesRattachables(rdv: {
   }
 
   const depuis = new Date(Date.now() - JOURS_FICHES_RECENTES * 86_400_000);
-  const [memePersonne, recentes, actuelle] = await Promise.all([
+  const mots = rdv.estEchangeApporteur ? motsDuNom(rdv.inviteeName) : [];
+  const [memePersonne, recentes, actuelle, dossiersNommes] = await Promise.all([
     empreinte
       ? prisma.submission.findMany({
           where: { contactEmailHash: empreinte, deletedAt: null },
@@ -120,6 +145,15 @@ export async function listerFichesRattachables(rdv: {
     rdv.linkedSubmissionId
       ? prisma.submission.findUnique({ where: { id: rdv.linkedSubmissionId }, select: SELECT })
       : Promise.resolve(null),
+    // Seulement pour un échange apporteur dont le nom se cherche (deux mots).
+    mots.length > 0
+      ? prisma.submission.findMany({
+          where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+          orderBy: { submittedAt: "desc" },
+          take: PLAFOND_LECTURE_NOMS,
+          select: SELECT_NOM,
+        })
+      : Promise.resolve([] as Array<Ligne & { contactEmail: string | null }>),
   ]);
 
   const vus = new Set<string>();
@@ -127,11 +161,19 @@ export async function listerFichesRattachables(rdv: {
   const ajouter = (l: Ligne, groupe: GroupeFiche): void => {
     if (vus.has(l.id)) return;
     vus.add(l.id);
-    fiches.push({ id: l.id, libelle: libelle(l), groupe });
+    fiches.push({ id: l.id, libelle: libelle(l), groupe, intitule: INTITULE_GROUPE[groupe] });
   };
 
   if (actuelle) ajouter(actuelle as Ligne, "actuelle");
   for (const l of memePersonne as Ligne[]) ajouter(l, "meme-personne");
+  let probables = 0;
+  for (const l of dossiersNommes as Array<Ligne & { contactEmail: string | null }>) {
+    if (probables >= PLAFOND_NOM_PROBABLE) break;
+    if (vus.has(l.id) || !estApporteur(l.details)) continue;
+    if (!nomCorrespond(mots, dechiffrer(l.contactName), dechiffrer(l.contactEmail))) continue;
+    ajouter(l, "nom-probable");
+    probables += 1;
+  }
   let n = 0;
   for (const l of recentes as Ligne[]) {
     if (n >= PLAFOND_PAR_GROUPE) break;

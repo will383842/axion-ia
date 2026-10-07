@@ -13,6 +13,11 @@
  *     29/09 : plus le premier contact ni l'écran 1), et toute candidature à
  *     une offre commerciale, 15 minutes après sa réception
  *     (`features/commercial-application/invitation-auto.ts`).
+ *   · `reseau-quotidien` (07:00 UTC, 2026-10-05) — démarrage manuel du réseau :
+ *     confirmations réputées acquises, fins de protection, commissions,
+ *     vigilance, « commande signée » (`features/apporteurs-reseau/passage-quotidien.ts`).
+ *   · `reseau-facturation` (toutes les heures, minute 10 UTC, 2026-10-06) — seulement
+ *     « commissions » et « autofacturation » : l'apporteur est facturé dès que sa commission est due.
  *
  * Doctrine de log : on ne journalise que ce qui s'est passé. Un passage qui ne
  * trouve rien à faire se tait ; un passage suspendu (lien de réservation absent)
@@ -38,6 +43,14 @@ async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
       : job.name === "reponses-entrantes" || job.data?.type === "reponses-entrantes"
         ? "reponses-entrantes"
         : "relance-invitation";
+  if (job.name === "reseau-facturation" || job.data?.type === "reseau-facturation") {
+    await passerFacturation();
+    return;
+  }
+  if (job.name === "reseau-quotidien" || job.data?.type === "reseau-quotidien") {
+    await passerReseau();
+    return;
+  }
   if (type === "invitation-auto") {
     await passerInvitations();
     return;
@@ -74,6 +87,25 @@ async function passerInvitations(): Promise<void> {
         (r.aReessayer > 0 ? `, ${r.aReessayer} à reprendre au passage suivant` : "") +
         ` — écartées : ${JSON.stringify(r.ecartees)}`,
     );
+  }
+}
+
+async function passerReseau(): Promise<void> {
+  const { passerReseauApporteurs } = await import("@/features/apporteurs-reseau/passage-quotidien");
+  const r = await passerReseauApporteurs();
+  const { erreurs, ...faits } = r;
+  if (Object.values(faits).some((n) => n > 0) || erreurs > 0) {
+    console.warn(`[apporteur-crons] réseau quotidien : ${JSON.stringify(r)}`);
+  }
+}
+
+async function passerFacturation(): Promise<void> {
+  const { passerFacturationApporteurs } =
+    await import("@/features/apporteurs-reseau/passage-quotidien");
+  const r = await passerFacturationApporteurs();
+  const { erreurs, ...faits } = r;
+  if (Object.values(faits).some((n) => n > 0) || erreurs > 0) {
+    console.warn(`[apporteur-crons] réseau facturation : ${JSON.stringify(r)}`);
   }
 }
 

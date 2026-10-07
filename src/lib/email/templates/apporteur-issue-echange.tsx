@@ -29,8 +29,8 @@ import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
+import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR, getCommissionById } from "@/content/pricing";
-import { FENETRE_ATTRIBUTION_APPORTEUR_MOIS } from "@/lib/commercial-application/kit-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -38,6 +38,8 @@ interface Payload {
   contactName?: string;
   /** Absent seulement : le lien de réservation (`CALENDLY_APPORTEUR_URL`, validé à l'envoi). */
   calendlyUrl?: string;
+  /** Retenu seulement : le lien personnel du dossier en ligne (démarrage manuel, 2026-10-05). */
+  dossierUrl?: string;
   /** Absent seulement : « mardi 22 septembre », déjà formaté en heure de Paris. */
   dateEchange?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
@@ -106,8 +108,8 @@ export const COPY_ISSUE_ECHANGE = {
         `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
       audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
       integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
-      versement: (mois: number) =>
-        `Elle vous est versée dès que le client a réglé l'intégralité de sa facture. Chaque entreprise que vous nous présentez vous est attribuée pendant ${mois} mois.`,
+      versement: () =>
+        "Elle vous est versée dès que le client a réglé l'intégralité de sa facture.",
       statutTitre: "Votre statut",
       statut:
         "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIRET (une micro-entreprise, par exemple).",
@@ -115,8 +117,13 @@ export const COPY_ISSUE_ECHANGE = {
       // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
       // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
+      // 2026-10-05 (Will) : plus de date promise pour l'espace en ligne.
       espace:
-        "Votre espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, répondez simplement à cet e-mail avec son nom et celui de votre contact.",
+        "Dès votre contrat signé, vous pourrez nous présenter des entreprises par e-mail ou depuis votre lien personnel.",
+      // 2026-10-05 : quand la console ouvre le dossier en ligne, le lien part avec cet e-mail.
+      dossier:
+        "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
+      ctaDossier: "Compléter mon dossier",
       kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
@@ -167,15 +174,16 @@ export const COPY_ISSUE_ECHANGE = {
         `Training: €${eur} excl. VAT per training day at the public rate (reduced pro rata if a discount is granted to the client).`,
       audit: (pct: string) => `Audit: ${pct} of the invoice amount excl. VAT.`,
       integration: (pct: string) => `Integration: ${pct} of the invoice amount excl. VAT.`,
-      versement: (mois: number) =>
-        `It is paid as soon as the client has settled their invoice in full. Each company you introduce to us is attributed to you for ${mois} months.`,
+      versement: () => "It is paid as soon as the client has settled their invoice in full.",
       statutTitre: "Your status",
       statut:
         "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIRET number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
       contrat: "We will send you your introducer agreement to sign online.",
-      espace:
-        "Your personal introducer space will open within a month. Until then, to introduce a company, simply reply to this email with its name and your contact's name.",
+      espace: "Once your agreement is signed, you can introduce companies to us by simple email.",
+      dossier:
+        "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
+      ctaDossier: "Complete my file",
       kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
@@ -229,7 +237,16 @@ export function ApporteurIssueAbsentEmail({ locale, payload }: Props) {
       famille="B"
       preview={t.absent.preview}
       title={t.absent.title}
-      {...(calendlyUrl ? { cta: { label: t.absent.cta, href: calendlyUrl } } : {})}
+      {...(calendlyUrl
+        ? {
+            // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
+            // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).
+            cta: {
+              label: t.absent.cta,
+              href: lienDeReservationDuSite(calendlyUrl, { depuis: "email-issue-apporteur" }),
+            },
+          }
+        : {})}
       locale={locale}
       sansReseauxSociaux
       signature="fondateur-court"
@@ -252,6 +269,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
   const p = payload as Payload;
   const l = langue(locale);
   const t = COPY_ISSUE_ECHANGE[l].retenu;
+  const dossierUrl = texteOuNull(p.dossierUrl);
   return (
     <EmailLayout
       famille="B"
@@ -260,6 +278,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       locale={locale}
       sansReseauxSociaux
       signature="fondateur-court"
+      {...(dossierUrl ? { cta: { label: t.ctaDossier, href: dossierUrl }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{COPY_ISSUE_ECHANGE[l].bonjour(prenomDe(p))}</Text>
       <MotPersonnel p={p} />
@@ -276,15 +295,13 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={puce}>• {t.formation(COMMISSION_FORMATION_PAR_JOURNEE_EUR)}</Text>
       <Text style={puce}>• {t.audit(pourcent(PCT_AUDIT, l))}</Text>
       <Text style={puce}>• {t.integration(pourcent(PCT_INTEGRATION, l))}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        {t.versement(FENETRE_ATTRIBUTION_APPORTEUR_MOIS)}
-      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.versement()}</Text>
 
       <Text style={intertitre}>{t.statutTitre}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.statut}</Text>
 
       <Text style={intertitre}>{t.suiteTitre}</Text>
-      <Text style={puce}>• {t.contrat}</Text>
+      <Text style={puce}>• {dossierUrl ? t.dossier : t.contrat}</Text>
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />

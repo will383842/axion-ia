@@ -14,11 +14,16 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
-import { resoudreSiren } from "@/lib/siret";
+import {
+  AVERTISSEMENT_SIREN_CONTRAIRE,
+  resoudreSiren,
+  sirenContreditLeSiret,
+  sirenDuClient,
+} from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
+import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
@@ -279,7 +284,8 @@ export type ResultatCreationClient =
  * - Même SIREN qu'une fiche existante : refus, avec la fiche à ouvrir.
  * - Même adresse e-mail : refus, sauf motif de « créer quand même » journalisé.
  * - Numéro alloué séquentiellement : AXI-CLI-NNN (borne haute + 1, sans millésime).
- * - opcoIdentifie inféré via inferOpco (IDCC prioritaire, repli NAF) si absent.
+ * - opcoIdentifie inféré via inferOpcoDepuisTable (IDCC lu dans `idcc_opco`,
+ *   repli NAF) si absent.
  * - Statut initial : prospect.
  * - Le contact saisi devient la première personne de la fiche et son contact
  *   de facturation (`definirContactFacturation`, même transaction).
@@ -307,7 +313,8 @@ export async function createClientAction(
 
   // Inférer l'OPCO si non fourni manuellement. L'IDCC prime : c'est la
   // convention collective qui rattache légalement à un OPCO.
-  const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
+  const opcoIdentifie =
+    v.opcoIdentifie ?? (await inferOpcoDepuisTable(prisma, { idcc: v.idcc, naf: v.nafCode }));
   // Lot A7a : l'inférence pose AUSSI l'OPCO typé (une fiche neuve n'en a pas).
   // Une saisie en texte n'est pas une inférence : elle ne le pose pas.
   const opcoTypeInfere =
@@ -381,7 +388,8 @@ export async function createClientAction(
   // Lot OPCO A7d : effectif relevé à l'INSEE (borne basse de la tranche) si la
   // fiche a un SIREN. APRÈS la création, jamais sur son chemin : l'annuaire est
   // borné à 3 s, et une panne — ou toute exception — laisse la fiche telle quelle.
-  if (siren !== undefined) {
+  // Lot A9 : la même règle de lecture que la fiche (`sirenDuClient`).
+  if (sirenDuClient({ siren: siren ?? null, siret: v.siret ?? null }) !== null) {
     await releverEffectifInseeEtTracer(resultat.id, session).catch(() => null);
   }
 
@@ -443,7 +451,7 @@ export async function rafraichirEffectifInseeAction(
 export async function updateClientAction(
   // `z.input` : voir createClientAction (transform sur siretField).
   input: z.input<typeof updateClientSchema>,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; avertissement?: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateClientSchema.safeParse(input);
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
@@ -453,11 +461,23 @@ export async function updateClientAction(
   //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
   //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
   //  • SIREN seul            → comparé au SIRET déjà en base
+  //  • Lot A9 : SIRET transmis SANS SIREN (formulaire « Éditer ») et SIREN en
+  //    base qui le contredit → le SIREN en base est CONSERVÉ, avec un
+  //    avertissement ; jamais écrasé en silence par le SIRET.
   let sirenAEcrire: string | null | undefined;
+  let avertissement: string | undefined;
   if (typeof fields.siret === "string") {
     const r = resoudreSiren(fields.siret, fields.siren);
     if (!r.ok) return { error: r.message };
     sirenAEcrire = r.siren;
+    if (fields.siren === undefined && sirenAEcrire !== undefined) {
+      const enBase =
+        (await prisma.client.findUnique({ where: { id }, select: { siren: true } }))?.siren ?? null;
+      if (sirenContreditLeSiret({ siren: enBase, siret: fields.siret })) {
+        sirenAEcrire = undefined;
+        avertissement = AVERTISSEMENT_SIREN_CONTRAIRE;
+      }
+    }
   } else if (fields.siren !== undefined) {
     const enBase =
       fields.siret === null
@@ -548,7 +568,7 @@ export async function updateClientAction(
       actuel !== null &&
       (reinferenceDemandee || actuel.opcoIdentifie == null || actuel.opcoIdentifie.trim() === "")
     ) {
-      const infere = inferOpco({
+      const infere = await inferOpcoDepuisTable(prisma, {
         idcc: fields.idcc ?? actuel.idcc,
         naf: fields.nafCode ?? actuel.nafCode,
       });
@@ -682,7 +702,7 @@ export async function updateClientAction(
     session,
   });
 
-  return { data: { id } };
+  return { data: { id, ...(avertissement !== undefined ? { avertissement } : {}) } };
 }
 
 /**

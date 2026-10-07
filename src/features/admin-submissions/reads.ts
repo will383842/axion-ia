@@ -123,6 +123,11 @@ export interface SubmissionListItem {
   lignesDeLaPersonne: number;
   /** L'étape la plus avancée de la personne — `null` hors périmètre apporteurs. */
   etape: EtapeApporteur | null;
+  /**
+   * Fiche du tunnel vidéo : `contactName` ne porte QUE le prénom (le nom n'est
+   * pas demandé). La liste le range alors dans la colonne « Prénom ».
+   */
+  prenomSeul?: boolean;
 }
 
 export interface SubmissionListResult {
@@ -240,6 +245,7 @@ export async function listSubmissions(
       pretASignerLe,
       lignesDeLaPersonne: 1,
       etape: null,
+      prenomSeul: details?.["vsl"] !== undefined && details?.["vsl"] !== null,
     };
   };
 

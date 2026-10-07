@@ -10,7 +10,7 @@
 // ── La règle ──────────────────────────────────────────────────────────────
 // Juste après l'enrichissement Calendly (le moment où l'adresse de l'invité
 // devient connue), SI :
-//   · le type d'événement est un échange apporteur (`estAppelApporteur`) ;
+//   · le type d'événement est un échange apporteur (`estRendezVousApporteur`) ;
 //   · la ligne n'est rattachée à RIEN — ni demande (`linked_submission_id`), ni
 //     candidature emploi (`linked_job_application_id`) ;
 // ALORS on cherche, par l'empreinte de l'adresse, la demande NON SUPPRIMÉE la
@@ -29,18 +29,33 @@
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
-import { estAppelApporteur } from "./appel-apporteur";
+import { decryptPii } from "@/lib/pii-crypto";
+import { motsDuNom, nomCorrespond } from "@/lib/calendly/nom-fiche";
+import { estRendezVousApporteur } from "./appel-apporteur";
+
+/** Combien de dossiers apporteur on relit pour chercher un nom (repli). */
+const PLAFOND_LECTURE_NOMS = 600;
 
 export interface LigneARattacher {
   id: string;
   eventTypeName: string | null | undefined;
+  /**
+   * Le type classé (2026-10-04), quand l'appelant le connaît. Double verrou :
+   * classé « apporteur » OU nommé apporteur (`estRendezVousApporteur`).
+   */
+  typeRendezVous?: string | null | undefined;
   inviteeEmail: string | null | undefined;
+  /**
+   * Le nom CONFIRMÉ par l'API Calendly — jamais celui de la capture publique.
+   * Sert au repli « même nom, autre adresse » (adresse relais Indeed).
+   */
+  inviteeName?: string | null | undefined;
   linkedSubmissionId: string | null | undefined;
   linkedJobApplicationId: string | null | undefined;
 }
 
 export type IssueRattachement =
-  | { rattache: true; submissionId: string }
+  | { rattache: true; submissionId: string; parNom?: true }
   | {
       rattache: false;
       motif:
@@ -62,7 +77,7 @@ export type IssueRattachement =
 export async function rattacherEchangeApporteur(
   ligne: LigneARattacher,
 ): Promise<IssueRattachement> {
-  if (!estAppelApporteur(ligne.eventTypeName)) {
+  if (!estRendezVousApporteur(ligne)) {
     return { rattache: false, motif: "pas_un_echange_apporteur" };
   }
   if (ligne.linkedSubmissionId || ligne.linkedJobApplicationId) {
@@ -79,14 +94,47 @@ export async function rattacherEchangeApporteur(
   // Double contrôle EN MÉMOIRE : la clause JSON fait le tri en base, le
   // prédicat pur fait foi. Si les deux divergeaient un jour, on préfère ne rien
   // rattacher plutôt que rattacher un client à un échange apporteur.
-  if (!dossier || !estApporteur(dossier.details)) {
-    return { rattache: false, motif: "aucun_dossier_apporteur" };
+  let cible: { id: string; parNom: boolean } | null =
+    dossier && estApporteur(dossier.details) ? { id: dossier.id, parNom: false } : null;
+
+  // Repli : aucune fiche à cette ADRESSE. Un candidat Indeed porte une adresse
+  // relais et réserve avec la vraie. On ne rattache que s'il y a EXACTEMENT UNE
+  // fiche apporteur au nom correspondant : zéro ou plusieurs → on ne fait rien,
+  // le sélecteur de la console les PROPOSE et un humain choisit.
+  if (!cible) {
+    const mots = motsDuNom(ligne.inviteeName);
+    if (mots.length > 0) {
+      const lignes = await prisma.submission.findMany({
+        where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+        orderBy: { submittedAt: "desc" },
+        take: PLAFOND_LECTURE_NOMS,
+        select: { id: true, details: true, contactName: true, contactEmail: true },
+      });
+      const clair = (v: string | null): string | null => {
+        if (!v) return null;
+        try {
+          return decryptPii(v);
+        } catch {
+          return null;
+        }
+      };
+      const trouvees = lignes.filter(
+        (l) =>
+          estApporteur(l.details) &&
+          nomCorrespond(mots, clair(l.contactName), clair(l.contactEmail)),
+      );
+      const seule = trouvees.length === 1 ? trouvees[0] : undefined;
+      if (seule) cible = { id: seule.id, parNom: true };
+    }
   }
+  if (!cible) return { rattache: false, motif: "aucun_dossier_apporteur" };
 
   const { count } = await prisma.calendlyEvent.updateMany({
     where: { id: ligne.id, linkedSubmissionId: null, linkedJobApplicationId: null },
-    data: { linkedSubmissionId: dossier.id },
+    data: { linkedSubmissionId: cible.id },
   });
   if (count === 0) return { rattache: false, motif: "rattache_entre_temps" };
-  return { rattache: true, submissionId: dossier.id };
+  return cible.parNom
+    ? { rattache: true, submissionId: cible.id, parNom: true }
+    : { rattache: true, submissionId: cible.id };
 }

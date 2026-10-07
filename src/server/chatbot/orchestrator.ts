@@ -39,8 +39,11 @@ const llmBucket = new TokenBucket({ capacity: 20, refillPerSec: 5 });
 import { RERANK_TOP_N, RETRIEVAL_TOP_K } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 
-/** Lien RDV découverte (route FR connue). */
-const RDV_URL = "/fr/appel";
+/**
+ * Lien RDV (route FR connue) : l'écran du CHOIX, avec l'emplacement — le
+ * rendez-vous pris depuis le chatbot se lit ensuite dans `utm_content`.
+ */
+const RDV_URL = "/fr/appel?depuis=chatbot";
 
 /**
  * Détecte une question de financement (CPF, OPCO, subvention…). Axion-IA ne gère

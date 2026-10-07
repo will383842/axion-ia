@@ -149,6 +149,7 @@ export const TUNNELS_CONNUS: ReadonlyArray<{
   { cle: "diagnostic", libelle: "Page publicitaire", chemin: "/fr/diagnostic" },
   { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
   { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
+  { cle: "apporteur", libelle: "Recrutement d'apporteurs", chemin: "/fr/apporteur-affaires" },
 ];
 
 /** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */

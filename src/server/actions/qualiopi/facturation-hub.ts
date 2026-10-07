@@ -36,6 +36,7 @@ import {
   enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
+import { exigerIdccConfirme } from "@/server/qualiopi/financements/blocage-idcc";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
 // applique. Ne pas la recopier en dur ici — c'est ainsi que deux règles divergent.
 import {
@@ -525,6 +526,13 @@ export async function creerDossierFinancementAction(
         select: { raisonSociale: true },
       });
       if (!client) return { error: "Client introuvable." };
+      // 🔴 INT-T67-A — même règle que la génération depuis une session : un
+      // dossier OPCO ou mixte exige l'IDCC CONFIRMÉ de son entreprise.
+      await exigerIdccConfirme(prisma, {
+        typeDossier: input.type,
+        employeurs: [input.clientId],
+        dateDebut: null,
+      });
       const dossier = await prisma.dossierFinancement.create({
         data: {
           type: input.type,

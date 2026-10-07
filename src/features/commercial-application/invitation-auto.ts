@@ -30,6 +30,19 @@
 // personne avait DÉJÀ une fiche (premier contact, écran 1), c'est cette fiche
 // qui est invitée (29/09) — sans quoi le doublon la laissait sans invitation.
 //
+// ── Ajouté le 2026-10-05 : le FILET du tunnel vidéo (lot 4) ─────────────────
+// Une personne entrée par la page vidéo (`/apporteur-affaires/video`) voit le
+// choix du créneau juste après l'étape 2 (téléphone + question) et reçoit B1,
+// l'e-mail qui porte le bouton de réservation. L'invitation automatique devient
+// alors un FILET : seconde clause d'éligibilité, `details.vsl.etapeAtteinte >= 2`,
+// AUCUNE réservation (même annulée) et 24 h écoulées depuis l'étape 2 — la
+// personne a donné son numéro, n'a pas réservé : le message « votre candidature
+// est retenue, il reste à choisir le moment » a son sens.
+// La voie « dossier complet » à +15 min est INCHANGÉE (décision du 29/09) ; les
+// deux voies coexistent et partagent les mêmes gardes (une invitation par
+// personne, `invitationAuto` posé après chaque tentative définitive).
+// Une ligne « suspecte » (robot) n'est jamais invitée.
+//
 // Hors champ, volontairement :
 //   · la SAISIE MANUELLE de la console : elle a sa propre case « Envoyer
 //     l'invitation », c'est Will qui choisit ;
@@ -56,7 +69,10 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
+import { decryptPii } from "@/lib/pii-crypto";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
+import { VALIDITE_JETON_REPRISE_MS } from "@/lib/commercial-application/vsl-apporteur";
+import { lireVsl } from "./lead-vsl-details";
 import { FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
 import { ORIGINE_CANDIDATURE_OFFRE } from "@/lib/contact/accuse-attendu";
 import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
@@ -73,6 +89,19 @@ export const DELAI_INVITATION_AUTO_MS = 15 * 60_000;
  * inclus — les candidatures arrivées ce jour-là attendaient encore.
  */
 export const DEBUT_INVITATION_AUTO = new Date("2026-09-28T00:00:00+02:00");
+
+/**
+ * Délai entre l'étape 2 du tunnel vidéo et l'invitation « filet » : 24 h. Le
+ * visiteur a eu le temps de choisir son créneau (B1 + page de remerciement) ; ce
+ * n'est qu'ensuite qu'on lui écrit « il reste à choisir le moment ».
+ */
+export const DELAI_FILET_VSL_MS = 24 * 3600_000;
+
+/**
+ * Fenêtre de rattrapage du filet, comptée APRÈS le délai (même durée que la voie
+ * du dossier complet : 72 h) — passé ce temps, la fiche est laissée à la console.
+ */
+export const FENETRE_FILET_VSL_MS = 72 * 3600_000;
 
 /** Au-delà, une fiche non reprise est laissée à la console : on n'écrit pas « 15 minutes » trois jours après. */
 export const FENETRE_INVITATION_AUTO_MS = 72 * 3600_000;
@@ -113,6 +142,73 @@ export function ficheEligible(details: unknown): boolean {
   // premier contact et l'écran 1 portent `etape` ; la saisie manuelle et les
   // fiches importées n'ont pas cette source.
   return d["source"] === DOSSIER_COMPLET_PATH && d["etape"] === undefined;
+}
+
+/**
+ * Le FILET du tunnel vidéo : cette fiche est-elle à inviter ? Lecture
+ * défensive, pure. Vrai si l'étape 2 est atteinte depuis 24 h (et pas plus de
+ * 24 h + 72 h), la ligne n'est pas « suspecte » et n'a jamais été reprise.
+ * La condition « aucune réservation » vit en base : `aDejaReserve`.
+ */
+export function ficheEligibleFiletVsl(details: unknown, maintenant: Date): boolean {
+  const d =
+    details && typeof details === "object" && !Array.isArray(details)
+      ? (details as Record<string, unknown>)
+      : null;
+  if (!d || d["invitationAuto"] !== undefined) return false;
+  const vsl = lireVsl(details);
+  if (!vsl || vsl.etapeAtteinte !== 2 || vsl.suspect === true) return false;
+  const e2 = Date.parse(vsl.atteinte?.e2 ?? "");
+  if (!Number.isFinite(e2)) return false;
+  const age = maintenant.getTime() - e2;
+  return age >= DELAI_FILET_VSL_MS && age <= DELAI_FILET_VSL_MS + FENETRE_FILET_VSL_MS;
+}
+
+/**
+ * Une réservation d'échange apporteur existe-t-elle déjà pour cette personne —
+ * MÊME ANNULÉE ? Elle peut être rattachée à n'importe laquelle de ses lignes
+ * (`linkedSubmissionId`), ou n'être connue que par l'adresse de l'invité (le
+ * rattachement n'a pas encore eu lieu) ; dans ce second cas seul un type
+ * d'événement « apporteur » compte (un appel client n'est pas un échange
+ * apporteur). Lève si la base ne répond pas : l'appelant réessaie au passage
+ * suivant plutôt que d'inviter dans le doute.
+ */
+export async function aDejaReserve(fiche: {
+  id: string;
+  contactEmail: string;
+  contactEmailHash: string | null;
+}): Promise<boolean> {
+  const lignes = fiche.contactEmailHash
+    ? await prisma.submission.findMany({
+        where: { contactEmailHash: fiche.contactEmailHash },
+        select: { id: true },
+        take: 50,
+      })
+    : [];
+  const ids = [...new Set([fiche.id, ...lignes.map((l) => l.id)])];
+  let email: string | null = null;
+  try {
+    email = decryptPii(fiche.contactEmail)?.trim().toLowerCase() || null;
+  } catch {
+    email = null;
+  }
+  const reservation = await prisma.calendlyEvent.findFirst({
+    where: {
+      OR: [
+        { linkedSubmissionId: { in: ids } },
+        ...(email
+          ? [
+              {
+                inviteeEmail: email,
+                eventTypeName: { contains: "apporteur", mode: "insensitive" as const },
+              },
+            ]
+          : []),
+      ],
+    },
+    select: { id: true },
+  });
+  return reservation !== null;
 }
 
 type Issue = "envoyee" | "en-validation" | string;
@@ -317,6 +413,50 @@ export async function passerInvitationsAuto(
     } catch (err) {
       aReessayer++;
       Sentry.captureException(err, { tags: { action: "invitation-auto", step: "fiche" } });
+    }
+  }
+
+  // ── 3. FILET du tunnel vidéo : étape 2 atteinte, aucune réservation, 24 h. ──
+  // La requête est posée EN BASE sur l'étape 2 (sans elle, les premiers contacts
+  // de la fenêtre occuperaient les places du `take`). `submittedAt` est celui de
+  // l'étape 1, antérieur ou égal à l'étape 2 de 10 jours au plus (durée du lien
+  // de reprise) : la fenêtre en base est large, la fenêtre exacte se lit sur
+  // `details.vsl.atteinte.e2` (`ficheEligibleFiletVsl`).
+  const depuisFilet = new Date(
+    Math.max(
+      DEBUT_INVITATION_AUTO.getTime(),
+      maintenant.getTime() -
+        (DELAI_FILET_VSL_MS + FENETRE_FILET_VSL_MS + VALIDITE_JETON_REPRISE_MS),
+    ),
+  );
+  const fichesVsl = await prisma.submission.findMany({
+    where: {
+      AND: [
+        ...FILTRE_APPORTEUR_PRISMA.AND,
+        { details: { path: ["vsl", "etapeAtteinte"], equals: 2 } },
+      ],
+      submittedAt: { gte: depuisFilet, lte: new Date(maintenant.getTime() - DELAI_FILET_VSL_MS) },
+      deletedAt: null,
+      archivedAt: null,
+      status: { in: ["new", "in_progress"] },
+    },
+    select: { id: true, details: true, contactEmail: true, contactEmailHash: true },
+    orderBy: { submittedAt: "asc" },
+    take: MAX_PAR_PASSAGE * 2,
+  });
+  for (const f of fichesVsl) {
+    if (!ficheEligibleFiletVsl(f.details, maintenant)) continue;
+    try {
+      if (await aDejaReserve(f)) {
+        ecartees["filet-deja-reserve"] = (ecartees["filet-deja-reserve"] ?? 0) + 1;
+        continue;
+      }
+      const issue = await inviter(f.id, calendlyUrl);
+      if (issue === null) aReessayer++;
+      else compter(issue);
+    } catch (err) {
+      aReessayer++;
+      Sentry.captureException(err, { tags: { action: "invitation-auto", step: "filet-vsl" } });
     }
   }
 

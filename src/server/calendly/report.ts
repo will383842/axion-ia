@@ -55,6 +55,8 @@ export interface RendezVousSource {
   readonly utmSource: string | null;
   readonly utmMedium: string | null;
   readonly utmCampaign: string | null;
+  /** Le bouton d'origine (`diagnostic`, `projet:faq`…) — gardé au report (L2). */
+  readonly utmContent?: string | null;
 }
 
 export type ResultatReport =
@@ -93,7 +95,14 @@ export type ResultatReport =
     }
   | { readonly ok: false; readonly raison: "non_configure" }
   /** La ligne source n'a pas de quoi rejouer une réservation. */
-  | { readonly ok: false; readonly raison: "donnees_incompletes"; readonly manque: string };
+  | { readonly ok: false; readonly raison: "donnees_incompletes"; readonly manque: string }
+  /**
+   * Rendez-vous SUR PLACE (lieu `physical`) : la réservation directe ne sait
+   * demander qu'un appel ou une visio, il ne se rejoue donc pas en ligne. Une
+   * raison à part, pour que l'alerte dise la vraie cause — pas « données
+   * incomplètes », qui ferait chercher un enrichissement raté.
+   */
+  | { readonly ok: false; readonly raison: "sur_place" };
 
 /**
  * Relit les réponses aux questions depuis le contenu brut.
@@ -154,6 +163,14 @@ export function demandeDepuisLaSource(
     // change le format sans le dire est pire qu'un report qui échoue.
     return { ok: false, manque: "le format du rendez-vous (ni téléphone ni visio reconnu)" };
   }
+  if (format === "sur_place") {
+    // 🔑 Un rendez-vous SUR PLACE (lieu `physical`, une adresse) ne se rejoue
+    // pas par l'API : la réservation directe ne sait demander qu'un appel ou
+    // une visio. Le reporter en `telephone` — ce qui arrivait tant que
+    // `physical` était rangé parmi les téléphones — changerait le format sans
+    // le dire. On refuse, l'alerte part, le visiteur est invité à nous écrire.
+    return { ok: false, manque: "un format reportable en ligne (rendez-vous sur place)" };
+  }
 
   // 🔴 LE NUMÉRO SUIT LE REPORT, VISIO COMPRISE (2026-09-03).
   //
@@ -191,6 +208,7 @@ export function demandeDepuisLaSource(
       utmSource: source.utmSource,
       utmMedium: source.utmMedium,
       utmCampaign: source.utmCampaign,
+      utmContent: source.utmContent ?? null,
     },
   };
 }
@@ -222,6 +240,9 @@ export async function reporterRendezVous(
    */
   journaliser?: (ancienEventUri: string, nouvelEventUri: string) => Promise<unknown>,
 ): Promise<ResultatReport> {
+  if (canalDuRendezVous(source.location, source.rawPayload) === "sur_place") {
+    return { ok: false, raison: "sur_place" };
+  }
   const construite = demandeDepuisLaSource(source, eventTypeUri, nouveauDebut);
   if (!construite.ok)
     return { ok: false, raison: "donnees_incompletes", manque: construite.manque };

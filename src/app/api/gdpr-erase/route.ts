@@ -48,6 +48,7 @@ import {
   eraseDocumentRecipientsForEmail,
   eraseCoachingSignaturesForEmail,
   eraseCalendlyEventsForEmail,
+  eraseReseauApporteurForEmail,
   eraseReponsesEntrantesForEmail,
   effacerCibleParAdresses,
 } from "@/lib/rgpd-erase";
@@ -131,6 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     destinatairesResult,
     signaturesCoachingResult,
     appelsResult,
+    reseauApporteurResult,
     reponsesEntrantesResult,
     dossierClientResult,
   ] = await Promise.all([
@@ -211,6 +213,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseDocumentRecipientsForEmail(email),
     eraseCoachingSignaturesForEmail(email),
     eraseCalendlyEventsForEmail(email),
+    // Réseau d'apporteurs (2026-10-05) : l'apporteur et les personnes présentées.
+    eraseReseauApporteurForEmail(email),
     // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
     // relevées dans la boîte Zoho : objet et extrait de SES messages.
     eraseReponsesEntrantesForEmail(email),
@@ -265,6 +269,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         dossierClient: dossierClientResult,
+        reseauApporteur: { ...reseauApporteurResult },
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,

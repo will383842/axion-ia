@@ -45,6 +45,56 @@ import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
+import { estRendezVousApporteur } from "./appel-apporteur";
+import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
+import { majMessageVsl } from "@/features/commercial-application/lead-vsl-details";
+import { VSL_MERCI_PATH } from "@/lib/commercial-application/vsl-apporteur";
+import { envoyerScheduleApporteur } from "@/server/meta/schedule-apporteur";
+import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
+import {
+  besoinDesReponses,
+  reponsesDesQuestions,
+  classerRendezVous,
+  estColonneTypeRendezVousAbsente,
+  eventTypeUriDuBrut,
+  sansColonnesTypeRendezVous,
+  uriDeTypeValide,
+  utmDuTracking,
+  type TypeRendezVous,
+} from "./type-rendez-vous";
+
+/** Colonnes lues à chaque enrichissement, hors celles du lot « Types de rendez-vous ». */
+const SELECT_LIGNE = {
+  id: true,
+  eventUri: true,
+  inviteeUri: true,
+  inviteeName: true,
+  inviteeEmail: true,
+  inviteePhone: true,
+  startTime: true,
+  endTime: true,
+  location: true,
+  status: true,
+  eventTypeName: true,
+  eventTypeSlug: true,
+  cancelUrl: true,
+  rescheduleUrl: true,
+  rawPayload: true,
+  utmSource: true,
+  utmMedium: true,
+  utmCampaign: true,
+  // Lus pour le rattachement automatique d'un échange apporteur : on ne
+  // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
+  linkedSubmissionId: true,
+  linkedJobApplicationId: true,
+} as const;
+
+/**
+ * Colonnes ajoutées par le lot « Types de rendez-vous » (2026-10-04). Lues À
+ * PART : pendant la fenêtre app/worker, elles n'existent pas encore en base, et
+ * leur absence ne doit pas empêcher l'enrichissement du reste.
+ */
+const SELECT_TYPE_RDV = { typeRendezVous: true, eventTypeUri: true, utmContent: true } as const;
 
 export type EnrichOutcome =
   | {
@@ -102,34 +152,35 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     cancelUrl: string | null;
     rescheduleUrl: string | null;
     rawPayload: unknown;
+    utmSource: string | null;
+    utmMedium: string | null;
+    utmCampaign: string | null;
     linkedSubmissionId: string | null;
     linkedJobApplicationId: string | null;
+    typeRendezVous: TypeRendezVous | null;
+    eventTypeUri: string | null;
+    utmContent: string | null;
   } | null;
+  // Vrai pendant la fenêtre app/worker : la migration du lot « Types de
+  // rendez-vous » n'est pas passée, on n'écrit donc pas ses colonnes.
+  let colonnesTypeAbsentes = false;
   try {
-    row = await prisma.calendlyEvent.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        eventUri: true,
-        inviteeUri: true,
-        inviteeName: true,
-        inviteeEmail: true,
-        inviteePhone: true,
-        startTime: true,
-        endTime: true,
-        location: true,
-        status: true,
-        eventTypeName: true,
-        eventTypeSlug: true,
-        cancelUrl: true,
-        rescheduleUrl: true,
-        rawPayload: true,
-        // Lus pour le rattachement automatique d'un échange apporteur : on ne
-        // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
-        linkedSubmissionId: true,
-        linkedJobApplicationId: true,
-      },
-    });
+    try {
+      row = await prisma.calendlyEvent.findUnique({
+        where: { id: eventId },
+        select: { ...SELECT_LIGNE, ...SELECT_TYPE_RDV },
+      });
+    } catch (e) {
+      if (!estColonneTypeRendezVousAbsente(e)) throw e;
+      colonnesTypeAbsentes = true;
+      const sansType = await prisma.calendlyEvent.findUnique({
+        where: { id: eventId },
+        select: SELECT_LIGNE,
+      });
+      row = sansType
+        ? { ...sansType, typeRendezVous: null, eventTypeUri: null, utmContent: null }
+        : null;
+    }
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_read_failed" };
@@ -235,6 +286,38 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // lever : lire `d.raw.invitee` sans garde suffirait a violer ce contrat le
   // jour ou un appelant rendrait la forme courte.
   const brutFrais = d.raw;
+
+  // ── Le type du rendez-vous et sa provenance (2026-10-04) ─────────────────
+  //
+  // Reclassé à CHAQUE passage : l'URI du type n'est souvent connue qu'ici (la
+  // capture par l'iframe n'en porte aucune), et c'est elle qui fait foi — un
+  // type renommé dans Calendly garde son URI. Hors de `updatedFields`, comme la
+  // charge brute : ce sont des métadonnées, pas un changement de la fiche.
+  const eventTypeUriFrais =
+    uriDeTypeValide(brutFrais?.event?.["event_type"]) ??
+    row.eventTypeUri ??
+    eventTypeUriDuBrut(row.rawPayload);
+  const typeRendezVous = await classerRendezVous({
+    eventTypeUri: eventTypeUriFrais,
+    eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+  });
+  let callBookedAEmettre = false;
+  let scheduleMetaAEmettre = false;
+  const besoin = besoinDesReponses(brutFrais?.invitee?.["questions_and_answers"]);
+  const reponses = reponsesDesQuestions(brutFrais?.invitee?.["questions_and_answers"]);
+  const utm = utmDuTracking(brutFrais?.invitee);
+  if (!colonnesTypeAbsentes) {
+    if (eventTypeUriFrais && eventTypeUriFrais !== row.eventTypeUri) {
+      data["eventTypeUri"] = eventTypeUriFrais;
+    }
+    if (typeRendezVous !== row.typeRendezVous) data["typeRendezVous"] = typeRendezVous;
+    if (row.utmContent == null && utm.utmContent) data["utmContent"] = utm.utmContent;
+  }
+  // Les UTM de l'iframe priment : on ne complète que ce qui est vide.
+  if (row.utmSource == null && utm.utmSource) data["utmSource"] = utm.utmSource;
+  if (row.utmMedium == null && utm.utmMedium) data["utmMedium"] = utm.utmMedium;
+  if (row.utmCampaign == null && utm.utmCampaign) data["utmCampaign"] = utm.utmCampaign;
+
   if (
     brutFrais &&
     (Object.keys(brutFrais.invitee).length > 0 || Object.keys(brutFrais.event).length > 0)
@@ -245,6 +328,43 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
       event: brutFrais.event,
       _refreshedAt: new Date().toISOString(),
     } as never;
+    // ── `Call Booked` côté SERVEUR (lot 4 du tunnel vidéo, 2026-10-05) ───────
+    // Une réservation faite depuis le lien de l'e-mail (B1, invitation) n'est
+    // vue par AUCUN script du site : seul l'enrichissement la connaît de façon
+    // sûre. UNE fois par réservation — le marqueur `_callBookedServeur` vit dans
+    // les clés privées (préfixe `_`, préservées à chaque passage) — et JAMAIS
+    // pour une réservation que le NAVIGATEUR a déjà comptée : une ligne créée
+    // par la capture de l'iframe porte `_ipHash`, et l'événement navigateur
+    // `Call Booked` la couvre (sans cela Plausible compterait deux fois).
+    // Émis APRÈS l'écriture réussie : un échec d'écriture ne marque rien.
+    const echangeApporteurActif =
+      d.calendlyStatus === "active" &&
+      !d.noShow &&
+      estRendezVousApporteur({
+        eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+        typeRendezVous,
+      });
+    if (
+      echangeApporteurActif &&
+      ancienBrut["_ipHash"] === undefined &&
+      ancienBrut["_callBookedServeur"] === undefined
+    ) {
+      (data["rawPayload"] as Record<string, unknown>)["_callBookedServeur"] =
+        new Date().toISOString();
+      callBookedAEmettre = true;
+    }
+    // ── `Schedule` vers Meta (lot 5, 2026-10-05) ─────────────────────────────
+    // Même mécanique, même raison : l'enrichissement est le seul endroit qui
+    // connaisse la réservation de façon sûre. UNE tentative par réservation
+    // (marqueur `_scheduleMeta`, clé privée préservée) — et, à la différence de
+    // Plausible, AUSSI pour une réservation que le navigateur a tirée : Meta
+    // dédoublonne sur `event_id` (`schedule:<id de la réservation>`), et le tir
+    // navigateur se perd (bloqueurs, onglet fermé). Le consentement, lui, est lu
+    // sur la fiche (`envoyerScheduleApporteur`) : sans accord tracé, rien ne part.
+    if (echangeApporteurActif && ancienBrut["_scheduleMeta"] === undefined) {
+      (data["rawPayload"] as Record<string, unknown>)["_scheduleMeta"] = new Date().toISOString();
+      scheduleMetaAEmettre = true;
+    }
     // ⚠️ VOLONTAIREMENT ABSENT de `updatedFields`. Ce tableau annonce ce qui a
     // CHANGE pour la fiche — il alimente le journal et l'alerte. La charge brute
     // change a chaque passage, ne serait-ce que par son horodatage : l'y inscrire
@@ -253,10 +373,23 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   }
 
   try {
-    await prisma.calendlyEvent.update({
-      where: { id: eventId },
-      data: { ...data, enrichedAt: new Date() },
-    });
+    const ecriture = { ...data, enrichedAt: new Date() };
+    // `select` ÉTROIT : sans lui, Prisma relit toutes les colonnes, y compris
+    // celles qu'une migration pas encore passée n'a pas posées.
+    try {
+      await prisma.calendlyEvent.update({
+        where: { id: eventId },
+        data: ecriture,
+        select: { id: true },
+      });
+    } catch (e) {
+      if (!estColonneTypeRendezVousAbsente(e)) throw e;
+      await prisma.calendlyEvent.update({
+        where: { id: eventId },
+        data: sansColonnesTypeRendezVous(ecriture),
+        select: { id: true },
+      });
+    }
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_write_failed" };
@@ -292,16 +425,89 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   //
   // Best-effort strict : un rattachement raté laisse la fiche comme avant (le
   // sélecteur de la console reste là), il ne fait pas échouer l'enrichissement.
+  let ficheRattachee: string | null = row.linkedSubmissionId ?? null;
   try {
-    await rattacherEchangeApporteur({
+    const issueRattachement = await rattacherEchangeApporteur({
       id: eventId,
       eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      typeRendezVous,
       inviteeEmail,
+      inviteeName: d.inviteeName ?? null,
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,
     });
+    if (issueRattachement.rattache) {
+      ficheRattachee = issueRattachement.submissionId;
+      // Fiche née de la page vidéo : le message de la console dit la suite.
+      // Sans bloc `vsl`, la requête ne touche rien (autres parcours inchangés).
+      try {
+        await majMessageVsl(
+          issueRattachement.submissionId,
+          "Échange réservé (inscription depuis la page vidéo /apporteur-affaires/video) — téléphone et réponse donnés.",
+        );
+      } catch (e) {
+        Sentry.captureException(e, { tags: { service: "calendly-message-vsl" } });
+      }
+    }
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
+  }
+  // `Schedule` (Meta, serveur) : seulement si la réservation est rattachée à une
+  // fiche — c'est elle qui porte la réponse à la bannière, la source de la
+  // campagne et le `fbclid` horodaté. Fail-soft, borné à 3 s, ne lève jamais.
+  if (scheduleMetaAEmettre && ficheRattachee && inviteeEmail) {
+    try {
+      await envoyerScheduleApporteur({
+        calendlyEventId: eventId,
+        submissionId: ficheRattachee,
+        email: inviteeEmail,
+        nom: d.inviteeName ?? row.inviteeName,
+        telephone: d.inviteePhone ?? row.inviteePhone,
+      });
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-schedule-meta" } });
+    }
+  }
+
+  // `Call Booked` (serveur) : le libellé de campagne seulement, jamais une donnée
+  // personnelle (règle de `plausible-serveur.ts`). Fail-soft, borné à 1,5 s.
+  if (callBookedAEmettre) {
+    try {
+      await emettreEvenementPlausible({
+        nom: "Call Booked",
+        chemin: VSL_MERCI_PATH,
+        props: {
+          source: (data["utmSource"] as string | undefined) ?? row.utmSource ?? "direct",
+          origine: "serveur",
+        },
+      });
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-call-booked-serveur" } });
+    }
+  }
+
+  // ── Réservation d'un échange apporteur : les messages d'attente s'arrêtent ──
+  // (tunnel vidéo, règles R1/R2 de 03-MESSAGES-ET-DECISIONS) : une personne qui
+  // a RÉSERVÉ ne reçoit plus « votre inscription n'est pas terminée », ni les
+  // rappels J+2 / J+7. Fait ICI, avec l'adresse que Calendly CONFIRME, et pas au
+  // rattachement : il doit valoir même si la personne n'a aucune fiche, ou une
+  // fiche déjà rattachée à la main. Retire des tâches, n'en crée aucune ; une
+  // annulation ultérieure du créneau ne les rétablit pas. Best-effort strict.
+  if (
+    inviteeEmail &&
+    estRendezVousApporteur({
+      eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      typeRendezVous,
+    })
+  ) {
+    try {
+      await annulerRelancesLeadApporteur(
+        inviteeEmail,
+        "Envoi annulé : un échange apporteur a été réservé.",
+      );
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-annuler-relances-apporteur" } });
+    }
   }
   // Le nom et le type de RDV viennent de la ligne, complétés par ce que
   // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
@@ -338,7 +544,13 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
           fullName: inviteeName ?? null,
           phone: (data["inviteePhone"] as string | undefined) ?? row.inviteePhone ?? null,
         },
-        payload: { eventTypeName: eventName ?? row.eventTypeName, source: "api_poll" },
+        payload: {
+          eventTypeName: eventName ?? row.eventTypeName,
+          typeRendezVous,
+          besoin,
+          reponses,
+          source: "api_poll",
+        },
       });
     } catch (e) {
       Sentry.captureException(e);

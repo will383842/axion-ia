@@ -90,4 +90,21 @@ describe("🛑 bipartite et tripartite portent le même socle", () => {
         "l'a vu — les deux fichiers compilaient.",
     ).toEqual(sections(BIPARTITE));
   });
+
+  it("impriment la MÊME clause de condition suspensive OPCO, mot pour mot (INT-T65-A)", () => {
+    // La clause de la juriste vit dans chacun des deux gabarits (et non dans un
+    // module partagé) : c'est ce qui la place sous l'empreinte de CHAQUE
+    // gabarit signable. Le prix de ce choix est le jumeau oublié — d'où ici :
+    // le bloc source de la fonction doit être identique, caractère pour
+    // caractère, dans les deux fichiers.
+    const bloc = (f: string): string => {
+      const s = source(f);
+      const debut = s.indexOf("function ClauseConditionSuspensiveOpco(");
+      const fin = s.indexOf("\n}\n", debut);
+      expect(debut, `${f} : la clause est introuvable`).toBeGreaterThan(0);
+      return s.slice(debut, fin);
+    };
+    expect(bloc(BIPARTITE).length).toBeGreaterThan(1500);
+    expect(bloc(TRIPARTITE)).toBe(bloc(BIPARTITE));
+  });
 });

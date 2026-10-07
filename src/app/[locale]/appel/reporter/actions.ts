@@ -47,6 +47,7 @@ import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
 import { prevenir } from "@/server/calendly/alertes-reservation";
 import { creneauExploitable } from "@/server/calendly/formulaire-reservation";
+import { urlDeReprogrammation } from "@/server/calendly/choix-rendez-vous";
 
 export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
   const locale = String(fd.get(CHAMP_LOCALE_ANNULATION) ?? "fr");
@@ -78,13 +79,18 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
       utmSource: true,
       utmMedium: true,
       utmCampaign: true,
+      utmContent: true,
+      eventTypeUri: true,
+      typeRendezVous: true,
+      eventTypeName: true,
     },
   });
   if (!rdv || rdv.status === "canceled") redirect(base);
 
-  const et = await resoudreEventTypePourReservation(
-    process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
-  );
+  // 🔴 CORRIGÉ le 2026-10-04 (chantier « Types de rendez-vous », L2) : le report
+  // reprogrammait TOUJOURS sur le type appel — un diagnostic déplacé devenait un
+  // échange projet. Il garde désormais son type d'ORIGINE.
+  const et = await resoudreEventTypePourReservation(await urlDeReprogrammation(rdv));
   if (!et) redirect(retour("&echec=refus"));
 
   // Le lien ancien → nouveau est journalisé pour le dossier client (chantier
@@ -196,6 +202,23 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
 
     case "non_configure":
       redirect(retour("&echec=refus"));
+      break;
+
+    case "sur_place":
+      // La page n'offre pas de créneaux pour un rendez-vous sur place : arriver
+      // ici veut dire un formulaire resté ouvert ou rejoué. On dit la VRAIE
+      // raison, puis on renvoie vers la page, qui explique quoi faire.
+      await prevenir(
+        "report_sur_place",
+        "warn",
+        rdv.id,
+        `Rendez-vous sur place : report en ligne impossible (ligne ${rdv.id}).
+
+` +
+          `Le site ne sait reprogrammer qu'un appel ou une visio. Le visiteur ` +
+          `a ete invite a passer par le lien Calendly ou a nous ecrire.`,
+      );
+      redirect(base);
       break;
 
     case "refus":

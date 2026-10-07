@@ -16,6 +16,9 @@ describe("partieARelancer — statut en_attente (personne n'a signé)", () => {
     devis: "client",
     convention: "client",
     convention_tripartite: "client",
+    // Mandat OPCO (INT-T66-A) : l'entreprise signe par lien, puis l'organisme
+    // contresigne depuis la console — on relance le client.
+    mandat_opco: "client",
     // Contrat L.6353-3 : conclu avec un PARTICULIER — le circuit dit
     // `beneficiaire`, et l'action refuserait `client` (hors circuit).
     contrat: "beneficiaire",

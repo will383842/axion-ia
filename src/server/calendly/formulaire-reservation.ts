@@ -180,7 +180,19 @@ export interface OptionsValidation {
   readonly utmSource?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
+  /** Le bouton qui a mené ici (`diagnostic`, `projet:faq`…), voir `choix-rendez-vous.ts`. */
+  readonly utmContent?: string | null;
+  /**
+   * Les formats que CE type de rendez-vous propose (`formatsProposes`). Absent =
+   * visio ET téléphone, comme avant l'ouverture aux quatre types.
+   */
+  readonly formats?: readonly FormatDemande[] | undefined;
+  /** L'adresse du lieu quand le rendez-vous est sur place (lue chez Calendly). */
+  readonly adresseDuLieu?: string | null | undefined;
 }
+
+/** Les formats d'avant les quatre types : visio ET téléphone. */
+const FORMATS_PAR_DEFAUT: readonly FormatDemande[] = ["visio", "telephone"];
 
 /**
  * Valide la saisie et construit la demande.
@@ -236,10 +248,18 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
     erreurs[CHAMPS.email] = "Cet e-mail semble incomplet (exemple : prenom@entreprise.fr).";
 
   // -- Format
+  //
+  // 🔑 Les formats viennent du TYPE de rendez-vous (`formatsProposes`), jamais du
+  // formulaire : un `<input type="radio">` se réécrit en deux secondes. Un type à
+  // format UNIQUE (échange apporteur : visio ; salon : sur place) n'a rien à
+  // choisir — le format posté est ignoré, et c'est celui du type qui part chez
+  // Calendly. Un type à plusieurs formats refuse tout format hors de sa liste.
+  const autorises = o.formats && o.formats.length > 0 ? o.formats : FORMATS_PAR_DEFAUT;
   const formatBrut = lire(fd, CHAMPS.format);
-  valeurs[CHAMPS.format] = formatBrut;
+  const formatUnique = autorises.length === 1 ? (autorises[0] ?? null) : null;
+  valeurs[CHAMPS.format] = formatUnique ?? formatBrut;
   const format: FormatDemande | null =
-    formatBrut === "telephone" || formatBrut === "visio" ? formatBrut : null;
+    formatUnique ?? autorises.find((f) => f === formatBrut) ?? null;
   if (!format) erreurs[CHAMPS.format] = "Choisissez comment vous préférez échanger.";
 
   // -- Téléphone
@@ -349,6 +369,8 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       utmSource: o.utmSource ?? null,
       utmMedium: o.utmMedium ?? null,
       utmCampaign: o.utmCampaign ?? null,
+      utmContent: o.utmContent ?? null,
+      ...(format === "sur_place" && o.adresseDuLieu ? { adresseDuLieu: o.adresseDuLieu } : {}),
     },
   };
 }
@@ -403,6 +425,19 @@ export function reservationDirecteActive(): boolean {
  * un instant n'est pas une donnée personnelle. Rien de ce que le visiteur
  * saisira ensuite n'y passera — voir `reprise-formulaire.ts`.
  */
-export function urlDuFormulaire(locale: string, debutIso: string): string {
-  return `/${locale}/appel/reserver?debut=${encodeURIComponent(debutIso)}`;
+export function urlDuFormulaire(
+  locale: string,
+  debutIso: string,
+  parametresDuChoix?: string,
+): string {
+  // `parametresDuChoix` = `rdv=diagnostic&depuis=…` (chantier « Types de
+  // rendez-vous », L2) : le formulaire doit savoir QUEL type il réserve. Ni le
+  // choix ni l'emplacement ne sont des données personnelles.
+  const suite = parametresDuChoix ? `&${parametresDuChoix}` : "";
+  return `/${locale}/appel/reserver?debut=${encodeURIComponent(debutIso)}${suite}`;
 }
+
+/** Champ caché du formulaire qui porte le choix (`diagnostic` | `projet`). */
+export const CHAMP_RDV = "rdv";
+/** Champ caché du formulaire qui porte l'emplacement du bouton. */
+export const CHAMP_DEPUIS = "depuis";

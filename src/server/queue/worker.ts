@@ -76,6 +76,8 @@ import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { startVisioBalayageWorker } from "./workers/visio-balayage-worker";
 // Chantier visio (PR 6) — transcription et compte rendu par l'API OpenAI, file `visio`.
 import { startVisioWorker } from "./workers/visio-worker";
+// INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO), le 20 à 06:00 Paris.
+import { startOpcoSiroImportWorker } from "./workers/opco-siro-import-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -198,6 +200,10 @@ async function main() {
     // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et
     // aucun appel à OpenAI n'est émis. Charges de job : identifiants seulement.
     startVisioWorker(),
+    // INT-T60-A — import mensuel IDCC → OPCO. Toujours démarré : l'interrupteur
+    // `IDCC_OPCO_IMPORT_ENABLED` et l'absence de table (fenêtre app/worker) sont
+    // lus au passage, qui sort proprement.
+    startOpcoSiroImportWorker(),
   ];
 
   await bootRepeatableJobs();

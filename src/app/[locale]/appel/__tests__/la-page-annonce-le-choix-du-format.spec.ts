@@ -33,6 +33,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { DISCUTONS_MEET_SEUL } from "@/server/visio/visio-annonce";
+import { CHOIX_RENDEZ_VOUS, TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 
 const CHEMIN = "src/app/[locale]/appel/page.tsx";
 const source = readFileSync(join(process.cwd(), CHEMIN), "utf8");
@@ -108,11 +109,25 @@ describe("la page de réservation n'annonce pas un canal unique", () => {
     // mode d'emploi. Plus bas, elle serait lue après la réservation.
     const etapes = /Comment ça marche[\s\S]{0,1200}/.exec(code)?.[0] ?? "";
     expect(etapes, "le bloc des étapes est introuvable").not.toBe("");
+    // 🔁 2026-10-05 : les trois étapes viennent de la table des types
+    // (`types-reservables.ts`) — la page les range dans l'ordre, la PREMIÈRE
+    // étant celle qui annonce le format. La garde porte donc sur les deux :
+    // l'ordre de la page, et le texte de chaque type.
     expect(
-      etapes.toLowerCase().includes("visio"),
-      "le choix du format n'apparaît pas dans les premières étapes — annoncé " +
-        "plus bas, il serait annoncé trop tard",
+      /\[\s*config\.premiereEtape,\s*config\.deuxiemeEtape,\s*config\.troisiemeEtape/.test(etapes),
+      "la première étape de la liste n'est plus celle qui annonce le format — " +
+        "annoncé plus bas, il serait annoncé trop tard",
     ).toBe(true);
+    for (const choix of CHOIX_RENDEZ_VOUS) {
+      const t = TYPES_RESERVABLES[choix];
+      const annonce = t.premiereEtape.toLowerCase();
+      const attendu = t.formats.includes("visio")
+        ? "visio"
+        : t.formats.includes("sur_place")
+          ? "sur place"
+          : "téléphone";
+      expect(annonce, `${choix} : le format n'est pas annoncé à l'étape 1`).toContain(attendu);
+    }
   });
 
   it("🔑 la description structurée dit la même chose que la page", () => {

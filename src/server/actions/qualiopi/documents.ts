@@ -28,7 +28,10 @@
 "use server";
 
 import React from "react";
-import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  estInscriptionActive,
+  inscriptionsActives,
+} from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
   dureeReferenceHeures,
   minutesSuiviesPresence,
@@ -71,7 +74,23 @@ import {
   requireAdminWrite,
   requireHabilitation,
   logQualiopiActivity,
+  donneesJournalQualiopi,
 } from "@/server/actions/qualiopi/_guards";
+import {
+  estJourIso,
+  jourDeParis,
+  debutDuJourDeParis,
+  SEUIL_BPS_MAX,
+  SEUIL_BPS_MIN,
+  SEUIL_CENTS_MIN,
+  type SeuilConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive";
+import {
+  appliquerTransition,
+  changementsTransition,
+  evaluerLecture,
+  lireConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive-service";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
@@ -117,8 +136,18 @@ import {
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
-import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
+import {
+  creerTokenDocument,
+  revoquerTokensDocument,
+  TokenDocumentError,
+} from "@/server/qualiopi/documents/signature/token-document";
 import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
+import {
+  MandatOpcoPdf,
+  type MandatOpcoData,
+} from "@/server/qualiopi/documents/templates/mandat-opco";
+import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import { publicUrl } from "@/lib/public-url";
 import {
   assertDossierOuvert,
   assertDossierOuvertSiRegeneration,
@@ -180,10 +209,59 @@ const sessionIdSchema = z.object({
  * Absent → `ACOMPTE_DEFAUT_PERCENT` (0 depuis le 2026-09-05 : on ne réclame pas
  * par défaut de l'argent que personne n'a promis — cf. `acompte-defaut.ts`).
  */
+/**
+ * INT-T65-A — la condition suspensive OPCO, telle que l'écran l'envoie quand
+ * la case est cochée (forme d'A02). Absente = case non cochée.
+ *
+ * 🔴 AUCUN FLOTTANT ne passe : points de base OU centimes, ENTIERS, exactement
+ * un des deux (les mêmes bornes que les CHECK SQL, dites ici pour rendre un
+ * message plutôt qu'une erreur Postgres). La date limite est un JOUR civil de
+ * Paris (« YYYY-MM-DD »), jamais passé : une condition dont le délai est déjà
+ * écoulé serait caduque à la signature.
+ */
+const conditionSuspensiveOpcoSchema = z
+  .object({
+    seuilConditionBps: z.number().int().min(SEUIL_BPS_MIN).max(SEUIL_BPS_MAX).nullable(),
+    seuilConditionCents: z
+      .number()
+      .int()
+      .min(SEUIL_CENTS_MIN)
+      .max(Number.MAX_SAFE_INTEGER)
+      .nullable(),
+    dateLimite: z.string().refine(estJourIso, "Date limite invalide"),
+  })
+  .strict()
+  .refine((c) => (c.seuilConditionBps === null) !== (c.seuilConditionCents === null), {
+    message: "Un seul seuil : en pourcentage OU en euros",
+  });
+
+type ConditionSuspensiveOpcoEntree = z.infer<typeof conditionSuspensiveOpcoSchema>;
+
+/** Option des producteurs ; `{ erreur }` si la date limite est déjà passée. */
+function optionCondition(
+  c: ConditionSuspensiveOpcoEntree | undefined,
+): { seuil: SeuilConditionSuspensive; jourLimite: string } | undefined | { erreur: string } {
+  if (c === undefined) return undefined;
+  if (c.dateLimite < jourDeParis(new Date())) {
+    return { erreur: "La date limite de la condition suspensive est déjà passée." };
+  }
+  const seuil: SeuilConditionSuspensive =
+    c.seuilConditionBps !== null
+      ? { type: "pourcentage", bps: c.seuilConditionBps }
+      : { type: "montant", cents: c.seuilConditionCents as number };
+  return { seuil, jourLimite: c.dateLimite };
+}
+
 const genererConventionSchema = z.object({
   sessionId: z.string().uuid(),
   acomptePercent: z.number().int().min(0).max(100).optional(),
   rectificationMotif: rectificationMotifSchema,
+  conditionSuspensiveOpco: conditionSuspensiveOpcoSchema.optional(),
+});
+const genererConventionTripartiteSchema = z.object({
+  sessionId: z.string().uuid(),
+  rectificationMotif: rectificationMotifSchema,
+  conditionSuspensiveOpco: conditionSuspensiveOpcoSchema.optional(),
 });
 const enrollmentIdSchema = z.object({
   enrollmentId: z.string().uuid(),
@@ -202,6 +280,7 @@ export async function genererConventionAction(input: {
   sessionId: string;
   acomptePercent?: number;
   rectificationMotif?: string;
+  conditionSuspensiveOpco?: ConditionSuspensiveOpcoEntree;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
@@ -209,6 +288,8 @@ export async function genererConventionAction(input: {
   const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
+  const condition = optionCondition(parsed.data.conditionSuspensiveOpco);
+  if (condition !== undefined && "erreur" in condition) return { error: condition.erreur };
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
@@ -218,6 +299,7 @@ export async function genererConventionAction(input: {
   const resultat = await produireConvention(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+    ...(condition !== undefined ? { conditionSuspensiveOpco: condition } : {}),
   });
   if (!resultat.ok) return { error: resultat.motif };
   const doc = { id: resultat.documentId, numero: resultat.numero };
@@ -232,6 +314,9 @@ export async function genererConventionAction(input: {
       documentId: doc.id,
       numero: doc.numero,
       acomptePercent: acomptePercent ?? ACOMPTE_DEFAUT_PERCENT,
+      // INT-T65-A — la condition est une CLAUSE : seuil, date limite et base
+      // figée appartiennent au journal, comme l'acompte.
+      conditionSuspensiveOpco: resultat.details?.["conditionSuspensiveOpco"] ?? null,
     },
     session: adminSession,
   });
@@ -249,13 +334,16 @@ export async function genererConventionAction(input: {
 export async function genererConventionTripartiteAction(input: {
   sessionId: string;
   rectificationMotif?: string;
+  conditionSuspensiveOpco?: ConditionSuspensiveOpcoEntree;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
-  const parsed = sessionIdSchema.safeParse(input);
+  const parsed = genererConventionTripartiteSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  const condition = optionCondition(parsed.data.conditionSuspensiveOpco);
+  if (condition !== undefined && "erreur" in condition) return { error: condition.erreur };
   // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
@@ -264,6 +352,7 @@ export async function genererConventionTripartiteAction(input: {
   // worker S5) — ici : garde, validation, journal.
   const resultat = await produireConventionTripartite(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
+    ...(condition !== undefined ? { conditionSuspensiveOpco: condition } : {}),
   });
   if (!resultat.ok) return { error: resultat.motif };
   const doc = { id: resultat.documentId, numero: resultat.numero };
@@ -272,11 +361,167 @@ export async function genererConventionTripartiteAction(input: {
     action: "qualiopi.document.convention_tripartite.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      conditionSuspensiveOpco: resultat.details?.["conditionSuspensiveOpco"] ?? null,
+    },
     session: adminSession,
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2ter. INT-T65-A — condition suspensive OPCO : constat et renonciation
+// ─────────────────────────────────────────────────────────────────────────────
+
+const documentIdSchema = z.object({ documentId: z.string().uuid() }).strict();
+
+const LIBELLE_ETAT: Record<string, string> = {
+  en_attente: "en attente de l'accord de l'OPCO",
+  active: "active",
+  caduque: "caduque",
+};
+
+/**
+ * Constate l'état de la condition suspensive d'une convention, d'après les
+ * dossiers de financement (accord écrit et montant accordé, refus) et la date
+ * limite (fin du jour civil de Paris), et APPLIQUE la transition si elle est
+ * due : `en_attente → active` (accord ≥ seuil dans le délai) ou
+ * `en_attente → caduque` (refus, accord inférieur, délai dépassé).
+ *
+ * Journalisée dans la même transaction que l'écriture. Rien ne sort jamais
+ * d'`active` ni de `caduque` : un accord obtenu après la défaillance appelle
+ * une NOUVELLE convention, qui prend effet à sa propre date de signature.
+ */
+export async function constaterConditionSuspensiveAction(input: {
+  documentId: string;
+}): Promise<ActionResult<{ etat: string; message: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Action désactivée en mode build (stub)" };
+  const parsed = documentIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const lecture = await lireConditionSuspensive(parsed.data.documentId);
+  if (lecture === null) return { error: "Cette pièce ne porte pas de condition suspensive." };
+  if (lecture.document.annulee) return { error: "Cette convention est annulée au registre." };
+  if (lecture.document.etat !== "en_attente") {
+    return {
+      data: {
+        etat: lecture.document.etat,
+        message: `La condition est déjà ${LIBELLE_ETAT[lecture.document.etat]} : son état ne change plus.`,
+      },
+    };
+  }
+
+  const evaluation = evaluerLecture(lecture, new Date());
+  if (evaluation.etat === "en_attente") {
+    return {
+      data: {
+        etat: "en_attente",
+        message:
+          "Aucun accord écrit ni refus n'est saisi sur le dossier de financement, et la date limite n'est pas passée : la condition reste en attente.",
+      },
+    };
+  }
+
+  const journal = await donneesJournalQualiopi({
+    action: `qualiopi.convention.condition_suspensive.${evaluation.etat}`,
+    targetType: "DocumentGenere",
+    targetId: lecture.document.id,
+    changes: changementsTransition(lecture, evaluation),
+    session: adminSession,
+  });
+  const ecrit = await appliquerTransition({
+    documentId: lecture.document.id,
+    vers: evaluation.etat,
+    journal,
+  });
+  if (!ecrit) return { error: "L'état de la condition vient de changer : rechargez la page." };
+  return {
+    data: {
+      etat: evaluation.etat,
+      message:
+        evaluation.etat === "active"
+          ? "Condition accomplie : la convention produit ses effets à sa date de signature."
+          : "Condition défaillie : la convention est caduque. Un accord ultérieur appelle une nouvelle convention.",
+    },
+  };
+}
+
+const renonciationSchema = z
+  .object({
+    documentId: z.string().uuid(),
+    /** Jour (Paris) de la renonciation écrite du client, « YYYY-MM-DD ». */
+    recueLe: z.string().refine(estJourIso, "Date invalide"),
+  })
+  .strict();
+
+/**
+ * Enregistre la RENONCIATION écrite du client à la condition (C. civ. 1304-4),
+ * qu'il peut faire tant qu'elle n'est ni accomplie ni défaillie : la convention
+ * devient `active` et produit ses effets à sa DATE DE SIGNATURE.
+ *
+ * Refusée si un accord, un refus ou la date limite a déjà décidé avant la
+ * renonciation : on ne renonce pas à une condition défaillie.
+ */
+export async function renoncerConditionSuspensiveAction(input: {
+  documentId: string;
+  recueLe: string;
+}): Promise<ActionResult<{ etat: string; message: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Action désactivée en mode build (stub)" };
+  const parsed = renonciationSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const maintenant = new Date();
+  if (parsed.data.recueLe > jourDeParis(maintenant)) {
+    return { error: "La renonciation ne peut pas être datée dans le futur." };
+  }
+  const lecture = await lireConditionSuspensive(parsed.data.documentId);
+  if (lecture === null) return { error: "Cette pièce ne porte pas de condition suspensive." };
+  if (lecture.document.annulee) return { error: "Cette convention est annulée au registre." };
+  if (lecture.document.etat !== "en_attente") {
+    return { error: `La condition est déjà ${LIBELLE_ETAT[lecture.document.etat]}.` };
+  }
+
+  // La renonciation du jour J compte à 00:00 heure de Paris ; aujourd'hui, à
+  // l'instant présent (un événement « futur » ne serait pas lu).
+  const le =
+    parsed.data.recueLe === jourDeParis(maintenant)
+      ? maintenant
+      : debutDuJourDeParis(parsed.data.recueLe);
+  const evaluation = evaluerLecture(lecture, maintenant, [{ type: "renonciation", le }]);
+  if (evaluation.cause !== "renonciation") {
+    return {
+      error:
+        "La condition était déjà accomplie ou défaillie à cette date : la renonciation est sans objet. Utilisez « Constater ».",
+    };
+  }
+
+  const journal = await donneesJournalQualiopi({
+    action: "qualiopi.convention.condition_suspensive.renonciation",
+    targetType: "DocumentGenere",
+    targetId: lecture.document.id,
+    changes: changementsTransition(lecture, evaluation, {
+      renonciationRecueLe: parsed.data.recueLe,
+    }),
+    session: adminSession,
+  });
+  const ecrit = await appliquerTransition({
+    documentId: lecture.document.id,
+    vers: "active",
+    journal,
+  });
+  if (!ecrit) return { error: "L'état de la condition vient de changer : rechargez la page." };
+  return {
+    data: {
+      etat: "active",
+      message:
+        "Renonciation enregistrée : la convention produit ses effets à sa date de signature.",
+    },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -929,6 +1174,393 @@ export async function genererKitOpcoAction(input: {
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 9bis. Mandat OPCO (INT-T66-A)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Entrée du mandat OPCO.
+ *
+ * `.strict()` : une clé inconnue est REFUSÉE, pas ignorée. Le mandat engage
+ * l'entreprise ; rien de ce qu'il imprime ne vient du navigateur — seulement
+ * les deux références qui disent QUELLE action et QUEL mandant. Une clé en
+ * trop (un nom d'OPCO, une liste de stagiaires) est le signe d'un appelant qui
+ * croit pouvoir dicter le contenu : on le lui dit plutôt que de l'ignorer.
+ */
+const genererMandatOpcoSchema = z
+  .object({
+    sessionId: z.string().uuid(),
+    clientId: z.string().uuid(),
+    rectificationMotif: rectificationMotifSchema,
+  })
+  .strict();
+
+/**
+ * Ce qu'il est advenu du lien de signature du mandat.
+ *
+ * - `avec_convention` : une convention du même client et de la même session
+ *   est en circuit de signature ; le mandat rejoint CET envoi — même
+ *   signataire, même échéance, et la convention est nommée.
+ * - `seul` : aucune convention n'est en circuit ; le mandat part seul, et
+ *   l'écran le dit.
+ * - `non_emis` : la pièce est générée, mais le lien n'a pas pu être émis
+ *   (habilitation, adresse manquante…). Le motif est actionnable.
+ */
+export type EnvoiMandatOpco =
+  | {
+      mode: "avec_convention";
+      conventionNumero: string;
+      destinataire: string;
+      url: string;
+      expiresAt: Date;
+    }
+  | { mode: "seul"; destinataire: string; url: string; expiresAt: Date }
+  | { mode: "non_emis"; motif: string };
+
+/**
+ * Génère le mandat spécial de l'entreprise pour agir auprès de son OPCO, et
+ * émet son lien de signature « client ».
+ *
+ * Le texte du mandat est figé dans `templates/mandat-opco.tsx` (relu par la
+ * juriste) : ici on ne fait que le NOURRIR, depuis la base — la session, ses
+ * stagiaires rattachés à CE client, et le dossier de financement OPCO ou mixte.
+ *
+ * 🔴 Garde en tête, AVANT toute lecture : un appel non habilité n'apprend ni
+ * la raison sociale, ni l'OPCO, ni les noms des stagiaires.
+ *
+ * ## « Envoyé avec la convention »
+ *
+ * Si une convention (bipartite ou tripartite) du même client et de la même
+ * session attend la signature du client — lien vivant, pas encore signée —,
+ * le jeton du mandat est émis AU MÊME SIGNATAIRE, figé dans le jeton de la
+ * convention, avec la MÊME échéance : les deux pièces forment un seul envoi,
+ * que le client signe dans la même fenêtre. Sinon le mandat part seul, au
+ * contact de la fiche client, et l'action le dit.
+ *
+ * ⚠️ Aucun e-mail n'est mis en file ici : l'envoi passe par le panneau de
+ * signature de la pièce (« Envoyer par e-mail »), comme pour la convention.
+ */
+export async function genererMandatOpcoAction(input: {
+  sessionId: string;
+  clientId: string;
+  rectificationMotif?: string;
+}): Promise<ActionResult<{ documentId: string; numero: string; envoi: EnvoiMandatOpco }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = genererMandatOpcoSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId, clientId, rectificationMotif } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      clientId: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      formationSnapshot: true,
+      formation: { select: { dureeHeures: true } },
+      enrollments: {
+        where: { ...inscriptionsActives() },
+        select: {
+          clientId: true,
+          trainee: { select: { nom: true, prenom: true } },
+        },
+      },
+    },
+  });
+  if (!session) return { error: "Session introuvable" };
+
+  // Un stagiaire relève du client que porte son inscription (inter-entreprises),
+  // à défaut du client de la session.
+  const stagiairesDuClient = session.enrollments.filter(
+    (e) => (e.clientId ?? session.clientId) === clientId,
+  );
+  if (session.clientId !== clientId && stagiairesDuClient.length === 0) {
+    return { error: "Ce client n'est pas partie à cette session : aucun mandat à établir." };
+  }
+
+  // Le mandat désigne UN OPCO : sans dossier OPCO ou mixte ouvert, il n'a pas
+  // d'objet. Le dossier le plus récent est celui en instruction (jamais
+  // un dossier `clos`).
+  const dossier = await prisma.dossierFinancement.findFirst({
+    where: {
+      trainingSessionId: sessionId,
+      type: { in: ["opco", "mixte"] },
+      statut: { not: "clos" },
+      OR: [{ clientId }, { clientId: null }],
+    },
+    orderBy: { createdAt: "desc" },
+    select: { financeurNom: true },
+  });
+  if (dossier === null) {
+    return {
+      error:
+        "Aucun dossier de financement OPCO ou mixte n'est ouvert pour cette session : créez-le avant d'établir le mandat, qui doit nommer l'OPCO.",
+    };
+  }
+
+  const client = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: {
+      raisonSociale: true,
+      siret: true,
+      adresse: true,
+      contactNom: true,
+      contactEmail: true,
+      contactFonction: true,
+      opco: true,
+      opcoIdentifie: true,
+    },
+  });
+  if (!client) return { error: "Client introuvable" };
+
+  // Une convention du même client et de la même session en ATTENTE de la
+  // signature du client : lien vivant, et aucune signature client posée.
+  const maintenant = new Date();
+  const typesConvention: Array<"convention" | "convention_tripartite"> = [
+    "convention",
+    "convention_tripartite",
+  ];
+  const jetonConvention = await prisma.documentSignatureToken.findFirst({
+    where: {
+      partie: "client",
+      revokedAt: null,
+      usedAt: null,
+      expiresAt: { gt: maintenant },
+      documentGenere: {
+        sessionId,
+        clientId,
+        type: { in: typesConvention },
+        annuleeAt: null,
+        signatures: { none: { partie: "client", revokedAt: null } },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    select: {
+      signataireNom: true,
+      signataireEmail: true,
+      signataireQualite: true,
+      expiresAt: true,
+      documentGenere: { select: { numero: true } },
+    },
+  });
+  // Faute de convention en circuit, le mandat cite la dernière convention
+  // vivante de ce client sur cette session, s'il en existe une.
+  const derniereConvention =
+    jetonConvention === null
+      ? await prisma.documentGenere.findFirst({
+          where: { sessionId, clientId, type: { in: typesConvention }, annuleeAt: null },
+          orderBy: { createdAt: "desc" },
+          select: { numero: true },
+        })
+      : null;
+  const numeroConvention =
+    jetonConvention?.documentGenere.numero ?? derniereConvention?.numero ?? null;
+
+  const identite = await getOrganismeIdentite();
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const nomOpco = dossier.financeurNom?.trim() || nomOpcoDuClient(client);
+
+  const construire = (numero: string): MandatOpcoData => ({
+    numero,
+    entreprise: {
+      raisonSociale: client.raisonSociale,
+      siret: client.siret ?? "—",
+      adresse: client.adresse ?? "—",
+      // « — » : le gabarit imprime alors « Non renseigné », jamais un blanc.
+      representant: client.contactNom ?? "—",
+      qualiteRepresentant: client.contactFonction ?? "—",
+    },
+    opco: { nom: nomOpco },
+    action: {
+      intitule: session.titreSession,
+      dateDebut: formatDate(new Date(session.dateDebut)),
+      dateFin: formatDate(new Date(session.dateFin)),
+      dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
+      stagiaires: stagiairesDuClient.map((e) => `${e.trainee.prenom} ${e.trainee.nom}`.trim()),
+      ...(numeroConvention !== null ? { numeroConvention } : {}),
+    },
+    dateMandat: formatDateFr(maintenant),
+  });
+
+  const doc = await generateDocument({
+    type: "mandat_opco",
+    identite,
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
+    buildElement: (numero) =>
+      React.createElement(MandatOpcoPdf, { data: construire(numero), identite }),
+    refs: { sessionId, clientId },
+  });
+
+  const envoi = await emettreLienMandat({
+    documentGenereId: doc.id,
+    role: adminSession.role,
+    jetonConvention,
+    client,
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.mandat_opco.genere",
+    targetType: "TrainingSession",
+    targetId: sessionId,
+    // ⚠️ Le LIEN n'est jamais journalisé : il vaut signature.
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      clientId,
+      opco: nomOpco,
+      envoi: envoi.mode,
+      ...(envoi.mode === "avec_convention" ? { convention: envoi.conventionNumero } : {}),
+      ...(envoi.mode !== "non_emis" ? { destinataire: envoi.destinataire } : {}),
+    },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero, envoi } };
+}
+
+const listerClientsMandatOpcoSchema = z.object({ sessionId: z.string().uuid() }).strict();
+
+/**
+ * Les mandants possibles d'une session : le client de la session et, en
+ * inter-entreprises, les clients portés par les inscriptions actives.
+ *
+ * Sert au bouton « Générer le mandat OPCO » : l'écran de documents ne connaît
+ * que la session, et le mandat se rattache à UN client. La liste est relue
+ * côté serveur à la génération — elle n'est jamais crue.
+ */
+export async function listerClientsMandatOpcoAction(input: {
+  sessionId: string;
+}): Promise<ActionResult<Array<{ clientId: string; raisonSociale: string }>>> {
+  await requireAdminWrite();
+  if (isStub()) return { error: "Indisponible pendant le build" };
+
+  const parsed = listerClientsMandatOpcoSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: parsed.data.sessionId },
+    select: {
+      client: { select: { id: true, raisonSociale: true } },
+      enrollments: {
+        where: { ...inscriptionsActives(), clientId: { not: null } },
+        select: { client: { select: { id: true, raisonSociale: true } } },
+      },
+    },
+  });
+  if (!session) return { error: "Session introuvable" };
+
+  const parId = new Map<string, string>();
+  if (session.client) parId.set(session.client.id, session.client.raisonSociale);
+  for (const e of session.enrollments) {
+    if (e.client) parId.set(e.client.id, e.client.raisonSociale);
+  }
+  return {
+    data: [...parId].map(([clientId, raisonSociale]) => ({ clientId, raisonSociale })),
+  };
+}
+
+/**
+ * Émet le jeton « client » du mandat — dans l'envoi de la convention quand il
+ * y en a une en circuit, seul sinon.
+ *
+ * L'identité vient TOUJOURS de la base : du jeton de la convention (déjà figé
+ * par une émission authentifiée), ou de la fiche client. Jamais d'un argument.
+ */
+async function emettreLienMandat(args: {
+  documentGenereId: string;
+  role: string;
+  jetonConvention: {
+    signataireNom: string;
+    signataireEmail: string | null;
+    signataireQualite: string | null;
+    expiresAt: Date;
+    documentGenere: { numero: string };
+  } | null;
+  client: {
+    raisonSociale: string;
+    contactNom: string | null;
+    contactEmail: string | null;
+    contactFonction: string | null;
+  };
+}): Promise<EnvoiMandatOpco> {
+  // Même habilitation que l'envoi d'un lien par e-mail : adresser une pièce à
+  // signer engage l'organisme.
+  if (!peutEngager(args.role, "contresigner")) {
+    return {
+      mode: "non_emis",
+      motif: `Mandat généré, lien non émis. ${MOTIF_REFUS.contresigner}`,
+    };
+  }
+
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: args.documentGenereId },
+    select: { metadata: true, suppressionPrevueAt: true },
+  });
+  const meta = piece?.metadata;
+  const estSpecimen =
+    typeof meta === "object" && meta !== null && !Array.isArray(meta)
+      ? (meta as Record<string, unknown>)["specimen"] === true
+      : false;
+  if (piece === null || estSpecimen) {
+    return {
+      mode: "non_emis",
+      motif:
+        "Mandat généré en SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, puis régénérez le mandat.",
+    };
+  }
+
+  const jc = args.jetonConvention;
+  const avecConvention = jc !== null && (jc.signataireEmail ?? "").trim() !== "";
+  const signataire = avecConvention
+    ? { nom: jc.signataireNom, email: jc.signataireEmail ?? "", qualite: jc.signataireQualite }
+    : {
+        nom: args.client.contactNom?.trim() || args.client.raisonSociale,
+        email: args.client.contactEmail ?? "",
+        qualite: args.client.contactFonction,
+      };
+
+  try {
+    const { token, expiresAt } = await creerTokenDocument({
+      documentGenereId: args.documentGenereId,
+      partie: "client",
+      signataireNom: signataire.nom,
+      signataireEmail: signataire.email,
+      signataireQualite: signataire.qualite,
+      // Dans l'envoi de la convention : même échéance que son lien, pour que
+      // les deux pièces se signent dans la même fenêtre.
+      borneMetier: avecConvention ? jc.expiresAt : piece.suppressionPrevueAt,
+    });
+    const url = publicUrl(`/fr/portail/signer/${token}`).toString();
+    const destinataire = signataire.email.trim().toLowerCase();
+    return avecConvention
+      ? {
+          mode: "avec_convention",
+          conventionNumero: jc.documentGenere.numero,
+          destinataire,
+          url,
+          expiresAt,
+        }
+      : { mode: "seul", destinataire, url, expiresAt };
+  } catch (err) {
+    if (err instanceof TokenDocumentError) {
+      return { mode: "non_emis", motif: `Mandat généré, lien non émis. ${err.message}` };
+    }
+    Sentry.captureException(err, { tags: { action: "genererMandatOpcoAction" } });
+    return {
+      mode: "non_emis",
+      motif:
+        "Mandat généré, mais le lien de signature n'a pas pu être émis : émettez-le depuis le panneau de signature de la pièce.",
+    };
+  }
 }
 
 /**

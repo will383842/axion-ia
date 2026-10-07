@@ -636,8 +636,9 @@ describe("REQ-INT-012 — GET /api/partners/evenements?after_sequence=&limit=", 
     expect(r.headers.get("x-axionia-derniere-sequence")).toBe("3");
     expect(r.headers.get("x-axionia-suite")).toBe("1");
     const t = r.headers.get("x-axionia-timestamp");
+    // INT-T72-A : la forme CANONIQUE (`<t>.<after_sequence>.<limit>.<dernière>.<suite>.<corps>`).
     expect(r.headers.get("x-axionia-signature")).toBe(
-      createHmac("sha256", SECRET).update(`${t}.${corps}`).digest("hex"),
+      createHmac("sha256", SECRET).update(`${t}.1.2.3.1.${corps}`).digest("hex"),
     );
   });
 

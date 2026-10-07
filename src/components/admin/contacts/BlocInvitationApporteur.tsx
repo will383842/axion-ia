@@ -109,6 +109,10 @@ export async function BlocInvitationApporteur({
             <label htmlFor="calendlyUrl" className="admin-label">
               Lien Calendly de l&apos;échange (15 min)
             </label>
+            <p className="admin-help">
+              L&apos;e-mail envoie le même rendez-vous sur la page de réservation du site (
+              <code>/fr/appel/apporteur</code>) ; une autre adresse est envoyée telle quelle.
+            </p>
             <input
               id="calendlyUrl"
               name="calendlyUrl"

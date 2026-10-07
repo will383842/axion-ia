@@ -207,6 +207,22 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     canal: "maison",
     libelle: "autorisation de captation",
   },
+  // Mandat de l'entreprise pour déposer sa demande auprès de son OPCO
+  // (INT-T66-A). Canal MAISON, comme les conventions — décision de Williams
+  // du 2026-10-04 (et non DocuSeal) : la signature porte sur le PDF réel.
+  //
+  // 🔑 Deux parties, et l'OPCO n'en est PAS une : le mandat lie l'entreprise
+  // (mandant) à l'organisme (mandataire), l'OPCO n'en est que le destinataire.
+  // L'organisme signe EN DERNIER : il ACCEPTE le mandat qu'on lui donne
+  // (art. 1984 C. civ.), il ne le propose pas.
+  //
+  // ⚠️ Libellé au féminin (« procuration », synonyme légal du mandat à
+  // l'art. 1984) : la mention d'attestation écrit « la {libellé} n° … ».
+  mandat_opco: {
+    parties: ["client", "axionia"],
+    canal: "maison",
+    libelle: "procuration spéciale (mandat OPCO)",
+  },
   // 2026-08-10 (décision Will) : le circuit `protocole_afest` a été retiré avec
   // le module AFEST 1-to-1 (conseil hors Qualiopi). La valeur d'enum reste au
   // schéma Prisma ; `circuitPour("protocole_afest")` rend désormais `null` —

@@ -67,7 +67,22 @@ export type FunnelEvent =
   | "Candidature Completed"
   // ── Tunnel Facebook apporteurs d'affaires (2026-09-03) ───────────────────
   // Formulaire court de `/apporteur-affaires` envoyé (premier contact, avant le dossier).
-  | "Lead Apporteur Submitted";
+  | "Lead Apporteur Submitted"
+  // ── Tunnel apporteurs avec vidéo (2026-10-05) ────────────────────────────
+  // Progression de la vidéo (`step` = p25 | p50 | p75 | p95).
+  | "Video Progress"
+  // Un écran du formulaire en deux temps affiché (`step` = 1 | 2, `stepIndex`, `stepTotal`).
+  | "Lead Step Viewed"
+  // Étape 1 enregistrée (prénom + e-mail), avant le téléphone.
+  | "Lead Email Captured"
+  // Page de remerciement vue : le visiteur peut choisir son créneau.
+  | "Call Booking Viewed"
+  // Réservation confirmée — côté navigateur (Plausible seulement, pas de balise
+  // en base : la réservation fait foi côté serveur).
+  | "Call Booked"
+  // Réponse à la bannière (`step` = accepted | declined) : sans ce taux, on ne
+  // sait pas quelle part des visiteurs de la publicité le pixel peut voir.
+  | "Consent Banner Answered";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).

@@ -1,5 +1,14 @@
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import {
+  classerParNom,
+  bornerReponsesCrm,
+  BESOIN_MAX,
+  couperTexte,
+  estTypeRendezVous,
+  typePorteLesReponses,
+  type ChampsCrmRendezVous,
+} from "@/server/calendly/type-rendez-vous";
 
 import { enqueueCrmSyncEvent, newCrmEventId, type CrmOutboxWriter } from "./enqueue";
 import {
@@ -115,18 +124,61 @@ export async function syncFormSubmissionToCrm(
 /** Le nom du type d'événement Calendly, tel que chaque appelant le porte dans `payload`. */
 function lireNomTypeEvenement(payload: Record<string, unknown> | undefined): string | null {
   const nom = payload?.["eventTypeName"];
-  return typeof nom === "string" ? nom : null;
+  if (typeof nom === "string" && nom.trim()) return nom;
+  // Repli : l'iframe ne connaît parfois que le slug (avant enrichissement).
+  const slug = payload?.["eventTypeSlug"];
+  return typeof slug === "string" && slug.trim() ? slug : null;
+}
+
+/**
+ * Le payload d'un rendez-vous, mis au CONTRAT (chantier « Types de rendez-vous »,
+ * 2026-10-04) : `eventTypeName`, `typeRendezVous` et `besoin` sont TOUJOURS
+ * présents, quel que soit le chemin (sondage, iframe, enrichissement, console).
+ * Les autres clés passent telles quelles. Un type absent ou illisible est
+ * reclassé par le nom.
+ */
+export function payloadRendezVousAuContrat(
+  payload: Record<string, unknown> | undefined,
+): Record<string, unknown> & ChampsCrmRendezVous {
+  const nom = lireNomTypeEvenement(payload);
+  const brut = payload?.["typeRendezVous"];
+  const typeRendezVous = estTypeRendezVous(brut) ? brut : classerParNom(nom);
+  const besoin = payload?.["besoin"];
+  // Lot L5b : les réponses du questionnaire, BORNÉES ici quel que soit
+  // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
+  // projet). Pour tout autre type la clé est retirée, même fournie.
+  const { reponses: reponsesBrutes, ...reste } = payload ?? {};
+  return {
+    ...reste,
+    eventTypeName: nom ?? "Calendly",
+    typeRendezVous,
+    // Borné ici aussi, quel que soit l'appelant, et sans casser un emoji
+    // (relecture A09) : un JSON invalide = 422 = rendez-vous perdu pour le CRM.
+    besoin:
+      typeof besoin === "string" && besoin.trim() ? couperTexte(besoin.trim(), BESOIN_MAX) : null,
+    ...(typePorteLesReponses(typeRendezVous)
+      ? { reponses: bornerReponsesCrm(reponsesBrutes) }
+      : {}),
+  };
 }
 
 /** Un rendez-vous Calendly (pris, honoré, annulé, non honoré). */
 export async function syncCalendlyEventToCrm(
   input: BaseInput & { kind: "booked" | "completed" | "canceled" | "no_show" },
 ): Promise<void> {
+  const payload = payloadRendezVousAuContrat(input.payload);
+
   // Un échange avec un candidat apporteur n'est pas une interaction commerciale :
   // le pousser dans l'univers des ventes y ferait entrer un apporteur comme un
   // prospect (`server/calendly/appel-apporteur.ts`). Garde posée ICI, au point
-  // d'entrée unique, plutôt que chez chacun des quatre appelants.
-  if (estAppelApporteur(lireNomTypeEvenement(input.payload))) return;
+  // d'entrée unique, plutôt que chez chacun des appelants.
+  //
+  // 🔑 Depuis le 2026-10-04 elle lit le TYPE classé (URI d'abord), avec repli
+  // sur le nom. Le chemin iframe, qui ne portait que le slug, n'y échappait pas
+  // seulement par chance : « echange-apporteur-affaires » contient le mot-clé.
+  // Double verrou : le type OU le nom. Un futur slug « apporteur-salon-… »
+  // classé « salon » par l'URI ne doit pas fuir vers les ventes.
+  if (payload.typeRendezVous === "apporteur" || estAppelApporteur(payload.eventTypeName)) return;
 
   const map = {
     booked: "calendly_booked",
@@ -135,7 +187,7 @@ export async function syncCalendlyEventToCrm(
     no_show: "calendly_no_show",
   } as const;
 
-  await dispatch(map[input.kind], input, {});
+  await dispatch(map[input.kind], { ...input, payload }, {});
 }
 
 /**

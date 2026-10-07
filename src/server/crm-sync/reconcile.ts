@@ -32,7 +32,11 @@
 import { prisma } from "@/lib/prisma";
 
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
-import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
+import {
+  HORS_APPELS_APPORTEUR,
+  HORS_APPELS_APPORTEUR_PAR_NOM,
+} from "@/server/calendly/appel-apporteur";
+import { estColonneTypeRendezVousAbsente } from "@/server/calendly/type-rendez-vous";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 import { alertCrmSync } from "./alerts";
 import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
@@ -317,19 +321,33 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       universe: "business",
       since,
       until,
-      loadIds: (from, to) =>
-        prisma.calendlyEvent.findMany({
-          // Les échanges apporteur ne sont jamais émis (`syncCalendlyEventToCrm`) :
-          // les compter ici les ferait passer pour des émissions perdues.
-          where: {
-            capturedAt: { gte: from, lt: to },
-            inviteeEmail: { not: null },
-            ...HORS_APPELS_APPORTEUR,
-          },
-          select: { id: true },
-          orderBy: { capturedAt: "asc" },
-          take: MAX_SOURCES_PER_FAMILY,
-        }),
+      loadIds: async (from, to) => {
+        // Les échanges apporteur ne sont jamais émis (`syncCalendlyEventToCrm`) :
+        // les compter ici les ferait passer pour des émissions perdues.
+        // 🔑 `HORS_APPELS_APPORTEUR` est le complément EXACT de la garde CRM
+        // (classé apporteur OU nommé apporteur, 2026-10-04).
+        const lire = (
+          horsApporteur: typeof HORS_APPELS_APPORTEUR | typeof HORS_APPELS_APPORTEUR_PAR_NOM,
+        ) =>
+          prisma.calendlyEvent.findMany({
+            where: {
+              capturedAt: { gte: from, lt: to },
+              inviteeEmail: { not: null },
+              ...horsApporteur,
+            },
+            select: { id: true },
+            orderBy: { capturedAt: "asc" },
+            take: MAX_SOURCES_PER_FAMILY,
+          });
+        try {
+          return await lire(HORS_APPELS_APPORTEUR);
+        } catch (e) {
+          // Worker en avance sur la migration (~50 min, AGENTS.md) : la colonne
+          // du type n'existe pas encore — le nom seul, comme avant.
+          if (!estColonneTypeRendezVousAbsente(e)) throw e;
+          return lire(HORS_APPELS_APPORTEUR_PAR_NOM);
+        }
+      },
     }),
     await compareFamily({
       family: "newsletter_subscriber",

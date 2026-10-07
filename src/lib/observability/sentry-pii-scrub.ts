@@ -87,6 +87,8 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   // `MAGIC_TOKEN_RE` ; il permet de répondre à la place du client. L'identifiant
   // reste lisible (débogage), le jeton seul est masqué.
   /(\/questionnaire\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
+  // Dossier en ligne d'un apporteur (2026-10-05) : `/apporteur/dossier/<uuid>/<jeton>`.
+  /(\/apporteur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
 ];
 
 /** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */
@@ -112,6 +114,8 @@ function redactString(input: unknown): unknown {
  * la relecture sécurité sur la PR 1258) : le questionnaire de cadrage en ligne
  * (`/questionnaire/<id>/<jeton>`) et, par prudence, le chantier voisin des
  * documents du projet (`/document/…`).
+ * Et le dossier en ligne d'un apporteur (`/apporteur/dossier/…`, 2026-10-05) : son
+ * corps de requête porte l'IBAN, le téléphone et les pièces déposées.
  *
  * Le SDK serveur capture par défaut le CORPS des requêtes entrantes
  * (`event.request.data`, ~10 Ko) malgré `sendDefaultPii: false`. Sur ces
@@ -121,7 +125,7 @@ function redactString(input: unknown): unknown {
  * on SUPPRIME, sans chercher à reconnaître.
  */
 const ROUTE_A_REQUETE_SECRETE =
-  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document)(?:\/|$)/i;
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier)(?:\/|$)/i;
 
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);

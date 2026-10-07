@@ -154,7 +154,9 @@ export default async function AnnulerPage({ params, searchParams }: Props) {
                     ? "En visioconférence"
                     : format === "telephone"
                       ? "Par téléphone"
-                      : (rdv.eventTypeName ?? "Rendez-vous")}
+                      : format === "sur_place"
+                        ? `Sur place${rdv.location?.trim() ? ` — ${rdv.location.trim()}` : ""}`
+                        : (rdv.eventTypeName ?? "Rendez-vous")}
                 </dd>
               </div>
             </div>

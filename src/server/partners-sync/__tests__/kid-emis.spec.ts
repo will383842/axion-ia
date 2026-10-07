@@ -16,6 +16,13 @@ import contrat from "@/server/partners/contrat/contracts.v3.json";
 import { ENTETE_KID, kidDe } from "@/server/partners/enveloppe";
 
 import { envoyerLigne, type ClientRelais } from "../relais";
+import { repondreReconciliation } from "../reconciliation";
+import {
+  ENTETE_HORODATAGE_RELECTURE,
+  ENTETE_SIGNATURE_RELECTURE,
+  repondreRelecture,
+  signerCibleRelecture,
+} from "../relecture";
 
 const SECRET_A = "a".repeat(48);
 const SECRET_B = "b".repeat(48);
@@ -109,5 +116,94 @@ describe("REQ-SEC-028 — le webhook signé porte le kid de SA clé", () => {
     const apres = (await envoyerAvec(SECRET_B)).get(ENTETE_KID);
     expect(apres).toBe(kidDe(SECRET_B));
     expect(apres).not.toBe(avant);
+  });
+});
+
+/**
+ * INT-T72-A (REQ-QA-030) : les réponses SIGNÉES de la relecture et du rejeu portent, elles aussi, le
+ * kid de la clé qui les a signées. Partners (`verifierSignatureAxionia`) refuse une réponse sans kid
+ * (`kid_absent`) : sans lui, le canal réel de la réconciliation serait bloqué.
+ */
+describe("REQ-QA-030 — les réponses de relecture et de rejeu portent le kid de LEUR clé", () => {
+  const ENV = { ...process.env };
+  const SECRET_RELECTURE = "r".repeat(40);
+  const MAINTENANT_MS = Date.UTC(2026, 9, 5, 12, 0, 0);
+  const T = String(Math.floor(MAINTENANT_MS / 1000));
+  beforeEach(() => {
+    process.env.PARTNERS_SYNC_ENABLED = "true";
+    process.env.PARTNERS_RELECTURE_SECRET = SECRET_RELECTURE;
+    process.env.DATABASE_URL = "postgresql://test:test@localhost:5432/test";
+  });
+  afterEach(() => {
+    process.env = { ...ENV };
+  });
+
+  async function relectureAvec(secret: string): Promise<Response> {
+    process.env.PARTNERS_SYNC_SECRET = secret;
+    const cible = "/api/partners/evenements?after_sequence=0&limit=100";
+    return repondreRelecture(
+      new Request(`https://axion-ia.com${cible}`, {
+        headers: {
+          [ENTETE_HORODATAGE_RELECTURE]: T,
+          [ENTETE_SIGNATURE_RELECTURE]: signerCibleRelecture(SECRET_RELECTURE, T, cible),
+        },
+      }),
+      {
+        prisma: {
+          partnersSyncOutbox: { findMany: async () => [{ sequence: 1n, corps: '{"a":1}' }] },
+        },
+        maintenantMs: MAINTENANT_MS,
+      },
+    );
+  }
+
+  async function rejeuAvec(secret: string): Promise<Response> {
+    process.env.PARTNERS_SYNC_SECRET = secret;
+    const chemin = "/api/partners/reconciliation";
+    const corps = JSON.stringify({ eventIds: ["0a1b2c3d-0001-4000-8000-000000000001"] });
+    return repondreReconciliation(
+      new Request(`https://axion-ia.com${chemin}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          [ENTETE_HORODATAGE_RELECTURE]: T,
+          [ENTETE_SIGNATURE_RELECTURE]: signerCibleRelecture(
+            SECRET_RELECTURE,
+            T,
+            `${chemin}\n${corps}`,
+          ),
+        },
+        body: corps,
+      }),
+      {
+        prisma: { partnersSyncOutbox: { updateMany: async () => ({ count: 1 }) } },
+        maintenantMs: MAINTENANT_MS,
+        limiter: async () => ({ allowed: true }),
+        journal: () => undefined,
+      },
+    );
+  }
+
+  it("REQ-QA-030 : TÉMOIN — la réponse de RELECTURE porte X-Axionia-Kid = kidDe(secret d'émission)", async () => {
+    const r = await relectureAvec(SECRET_A);
+    expect(r.status).toBe(200);
+    expect(r.headers.get(ENTETE_KID)).toBe(kidDe(SECRET_A));
+    expect(r.headers.get("x-axionia-signature")).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("REQ-QA-030 : TÉMOIN — la réponse de REJEU porte X-Axionia-Kid = kidDe(secret d'émission)", async () => {
+    const r = await rejeuAvec(SECRET_A);
+    expect(r.status).toBe(200);
+    expect(r.headers.get(ENTETE_KID)).toBe(kidDe(SECRET_A));
+    expect(r.headers.get("x-axionia-signature")).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("REQ-QA-030 — TÉMOIN : après rotation, les deux réponses portent le kid de la NOUVELLE clé", async () => {
+    for (const repondre of [relectureAvec, rejeuAvec]) {
+      const avant = (await repondre(SECRET_A)).headers.get(ENTETE_KID);
+      const apres = (await repondre(SECRET_B)).headers.get(ENTETE_KID);
+      expect(apres).toBe(kidDe(SECRET_B));
+      expect(apres).not.toBe(avant);
+    }
   });
 });

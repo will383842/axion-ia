@@ -106,7 +106,7 @@ import { CalendarCheck, Clock, ShieldCheck, UserPlus, ArrowRight } from "lucide-
 
 import { CHAMPS, type Erreurs, type Valeurs } from "@/server/calendly/formulaire-reservation";
 import type { QuestionEventType } from "@/server/calendly/questions";
-import { MAX_INVITES } from "@/server/calendly/reservation";
+import { MAX_INVITES, type FormatDemande } from "@/server/calendly/reservation";
 
 /** Classes communes à tous les champs de saisie. Voir le PIÈGE `text-base`. */
 const CHAMP =
@@ -149,7 +149,41 @@ interface FormulaireReservationProps {
    * dans un champ caché, il n'a aucun moyen d'en changer depuis cette page.
    */
   readonly retourAuCalendrier?: string | undefined;
+  /**
+   * Champs cachés de CONTEXTE, recopiés tels quels (chantier « Types de
+   * rendez-vous », L2) : le choix `rdv` et l'emplacement `depuis`. L'action en
+   * déduit le type à réserver et le `utm_content` envoyé à Calendly.
+   */
+  readonly champsCaches?: Readonly<Record<string, string>> | undefined;
+  /**
+   * Les formats d'échange que CE type de rendez-vous propose (`formatsProposes`).
+   * Un seul : pas de choix, le format est annoncé. Absent : visio ET téléphone.
+   */
+  readonly formats?: readonly FormatDemande[] | undefined;
 }
+
+const FORMATS_PAR_DEFAUT: readonly FormatDemande[] = ["visio", "telephone"];
+
+/** Les textes de chaque format. Aucune promesse que le code ne tienne ailleurs. */
+const OPTIONS_DE_FORMAT: Readonly<
+  Record<FormatDemande, { valeur: FormatDemande; titre: string; detail: string }>
+> = {
+  visio: {
+    valeur: "visio",
+    titre: "En visioconférence",
+    detail: "Lien Google Meet envoyé avec la confirmation. Rien à installer.",
+  },
+  telephone: {
+    valeur: "telephone",
+    titre: "Par téléphone",
+    detail: "Nous vous appelons au numéro que vous indiquez.",
+  },
+  sur_place: {
+    valeur: "sur_place",
+    titre: "Sur place",
+    detail: "L'adresse figure dans votre confirmation.",
+  },
+};
 
 /**
  * Coupe le complément entre parenthèses d'un libellé de question.
@@ -267,6 +301,8 @@ export function FormulaireReservation({
   champLocale,
   champLeurre,
   retourAuCalendrier,
+  champsCaches,
+  formats,
 }: FormulaireReservationProps) {
   const v = (nom: string): string => valeurs[nom] ?? "";
   const e = (nom: string): string | undefined => erreurs[nom];
@@ -281,6 +317,13 @@ export function FormulaireReservation({
   // ferait réserver une visio à qui n'a rien choisi, et le champ passerait la
   // validation sans que personne n'ait décidé.
   const formatChoisi = v(CHAMPS.format);
+
+  // Les formats de CE type de rendez-vous, dans l'ordre reçu. Sans la propriété :
+  // visio ET téléphone, comme avant l'ouverture aux quatre types.
+  const formatsOffres = (formats ?? FORMATS_PAR_DEFAUT).flatMap((f) => {
+    const opt = OPTIONS_DE_FORMAT[f];
+    return opt ? [opt] : [];
+  });
 
   const nbErreurs = Object.keys(erreurs).length;
 
@@ -316,6 +359,9 @@ export function FormulaireReservation({
           visiteur ne peut pas retaper, et il ne doit jamais la perdre. */}
       <input type="hidden" name={CHAMPS.debut} value={debutIso} />
       <input type="hidden" name={champLocale} value={locale} />
+      {Object.entries(champsCaches ?? {}).map(([nom, valeur]) => (
+        <input key={nom} type="hidden" name={nom} value={valeur} />
+      ))}
 
       {/* LEURRE — un champ que rien n'invite à remplir, et qu'un robot remplit
           quand même. Même nom que sur `/contact`, pour la même raison.
@@ -471,57 +517,60 @@ export function FormulaireReservation({
       <div className="space-y-5">
         {/* FORMAT — deux blocs entiers cliquables. Le `<label>` enveloppe le
             bouton radio, donc toute la surface répond, pas seulement le rond. */}
-        <fieldset>
-          <legend className="text-fg mb-2 text-sm font-semibold">
-            Comment préférez-vous échanger&nbsp;?
-            <span className="text-terracotta-deep ml-1" aria-hidden="true">
-              *
-            </span>
-          </legend>
-          <Erreur id={`${CHAMPS.format}-erreur`} message={e(CHAMPS.format)} />
-          <div className="grid gap-2.5 sm:grid-cols-2">
-            {[
-              {
-                valeur: "visio",
-                titre: "En visioconférence",
-                detail: "Lien Google Meet envoyé avec la confirmation. Rien à installer.",
-              },
-              {
-                valeur: "telephone",
-                titre: "Par téléphone",
-                detail: "Nous vous appelons au numéro que vous indiquez.",
-              },
-            ].map((opt) => (
-              <label
-                key={opt.valeur}
-                // `has-[:checked]` donne l'état sélectionné SANS JavaScript, et
-                // `has-[:focus-visible]` rend le parcours au clavier visible sur
-                // le bloc entier plutôt que sur le rond seul.
-                //
-                // 🔑 L'état coché est marqué par des JETONS PLEINS et un anneau,
-                // pas par une opacité de 5 % qui ne se voyait pas sur ivoire.
-                className="border-border-strong bg-paper hover:border-fg/40 has-[:checked]:border-terracotta has-[:checked]:bg-terracotta-soft has-[:checked]:ring-terracotta has-[:focus-visible]:ring-terracotta flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition has-[:checked]:ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-offset-2"
-              >
-                <input
-                  id={`format-${opt.valeur}`}
-                  type="radio"
-                  name={CHAMPS.format}
-                  value={opt.valeur}
-                  defaultChecked={formatChoisi === opt.valeur}
-                  required
-                  aria-describedby={e(CHAMPS.format) ? `${CHAMPS.format}-erreur` : undefined}
-                  className="accent-terracotta mt-0.5 h-5 w-5 shrink-0"
-                />
-                <span>
-                  <span className="text-fg block text-[15px] font-semibold">{opt.titre}</span>
-                  <span className="text-fg-soft mt-0.5 block text-[13px] leading-snug">
-                    {opt.detail}
-                  </span>
-                </span>
-              </label>
-            ))}
+        {/* UN SEUL FORMAT POSSIBLE (échange apporteur : visio ; salon : sur place) :
+            rien à choisir, donc rien à cocher. On le DIT, et le serveur retient de
+            toute façon le format du type (`validerFormulaire`) — ce champ caché
+            n'est qu'un repère, pas une autorité. */}
+        {formatsOffres.length === 1 ? (
+          <div className="border-border-strong bg-sand rounded-xl border p-4">
+            <input type="hidden" name={CHAMPS.format} value={formatsOffres[0]?.valeur ?? ""} />
+            <p className="text-fg text-[15px] font-semibold">{formatsOffres[0]?.titre}</p>
+            <p className="text-fg-soft mt-0.5 text-[13px] leading-snug">
+              {formatsOffres[0]?.detail}
+            </p>
           </div>
-        </fieldset>
+        ) : (
+          <fieldset>
+            <legend className="text-fg mb-2 text-sm font-semibold">
+              Comment préférez-vous échanger&nbsp;?
+              <span className="text-terracotta-deep ml-1" aria-hidden="true">
+                *
+              </span>
+            </legend>
+            <Erreur id={`${CHAMPS.format}-erreur`} message={e(CHAMPS.format)} />
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {formatsOffres.map((opt) => (
+                <label
+                  key={opt.valeur}
+                  // `has-[:checked]` donne l'état sélectionné SANS JavaScript, et
+                  // `has-[:focus-visible]` rend le parcours au clavier visible sur
+                  // le bloc entier plutôt que sur le rond seul.
+                  //
+                  // 🔑 L'état coché est marqué par des JETONS PLEINS et un anneau,
+                  // pas par une opacité de 5 % qui ne se voyait pas sur ivoire.
+                  className="border-border-strong bg-paper hover:border-fg/40 has-[:checked]:border-terracotta has-[:checked]:bg-terracotta-soft has-[:checked]:ring-terracotta has-[:focus-visible]:ring-terracotta flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition has-[:checked]:ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-offset-2"
+                >
+                  <input
+                    id={`format-${opt.valeur}`}
+                    type="radio"
+                    name={CHAMPS.format}
+                    value={opt.valeur}
+                    defaultChecked={formatChoisi === opt.valeur}
+                    required
+                    aria-describedby={e(CHAMPS.format) ? `${CHAMPS.format}-erreur` : undefined}
+                    className="accent-terracotta mt-0.5 h-5 w-5 shrink-0"
+                  />
+                  <span>
+                    <span className="text-fg block text-[15px] font-semibold">{opt.titre}</span>
+                    <span className="text-fg-soft mt-0.5 block text-[13px] leading-snug">
+                      {opt.detail}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         {/* TÉLÉPHONE — OBLIGATOIRE, ET TOUJOURS VISIBLE (Will, 2026-09-03).
 
@@ -561,7 +610,11 @@ export function FormulaireReservation({
             nom={CHAMPS.telephone}
             label="Votre téléphone"
             requis
-            aide="Pour vous joindre en cas d'imprévu, et c'est le numéro que nous composerons si vous choisissez l'appel. Indicatif pays compris."
+            aide={
+              formatsOffres.some((f) => f.valeur === "telephone")
+                ? "Pour vous joindre en cas d'imprévu, et c'est le numéro que nous composerons si vous choisissez l'appel. Indicatif pays compris."
+                : "Pour vous joindre en cas d'imprévu. Indicatif pays compris."
+            }
             erreur={e(CHAMPS.telephone)}
           >
             <input

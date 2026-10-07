@@ -154,6 +154,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // existe encore (contrôle 3, cliquet des symboles). Il n'appelle rien : sans
   // ce chargement, une entrée morte dans la liste resterait verte pour toujours.
   "src/server/mcp/__tests__/harnais.spec.ts",
+  // Réseau d'apporteurs (2026-10-05) — l'autofacture de l'apporteur RÉUTILISE le gabarit PDF,
+  //    l'identité de l'organisme et la construction de pièce d'autofacturation des formateurs
+  //    (même pièce, vendeur et acheteur inversés) plutôt que d'en écrire une seconde. Nommés un par un.
+  "src/features/apporteurs-reseau/autofacture-donnees.ts",
+  "src/features/apporteurs-reseau/commissions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -387,6 +392,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/visio/__tests__/le-catalogue-du-circuit-lit-les-regles-du-site.spec.ts",
   "src/server/visio/__tests__/une-alerte-du-circuit-mene-au-compte-rendu.spec.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
+  // ── Worker d'import mensuel de la table SIRO (IDCC → OPCO), INT-T60-A :
+  //    consommateur légitime du domaine (il remplit `idcc_opco`), arbitrage de
+  //    la coordination Partners (issue 656, commentaire 5983099169).
+  "src/server/queue/workers/opco-siro-import-worker.ts",
+  "src/server/queue/workers/__tests__/opco-siro-import-worker.spec.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
   // ── Journal des e-mails (lot 3, 2026-09-02) : « Renvoyer » un échec est un
