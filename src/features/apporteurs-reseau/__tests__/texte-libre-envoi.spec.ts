@@ -41,11 +41,11 @@ beforeEach(() => {
 describe("Server Actions : le texte réécrit est validé puis transmis", () => {
   it("l'envoi du lien passe le texte à l'envoi", async () => {
     await envoyerLienAction({ apporteurId: ID, mot: null, texte: "Bonjour à vous.\n\nMerci." });
-    expect(envoyerLien).toHaveBeenCalledWith(ID, null, "Bonjour à vous.\n\nMerci.");
+    expect(envoyerLien).toHaveBeenCalledWith(ID, null, "Bonjour à vous.\n\nMerci.", false);
   });
   it("sans texte, l'envoi du lien part comme avant", async () => {
     await envoyerLienAction({ apporteurId: ID, mot: null });
-    expect(envoyerLien).toHaveBeenCalledWith(ID, null, undefined);
+    expect(envoyerLien).toHaveBeenCalledWith(ID, null, undefined, false);
   });
   it("la décision passe le texte à l'envoi", async () => {
     await appliquerDecisionAction({

@@ -40,6 +40,8 @@ interface Payload {
   calendlyUrl?: string;
   /** Retenu seulement : le lien personnel du dossier en ligne (démarrage manuel, 2026-10-05). */
   dossierUrl?: string;
+  /** Retenu seulement : le dossier est déjà signé (à vérifier ou contresigné). */
+  dossierSigne?: boolean;
   /** Absent seulement : « mardi 22 septembre », déjà formaté en heure de Paris. */
   dateEchange?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
@@ -100,7 +102,7 @@ export const COPY_ISSUE_ECHANGE = {
         "Elle vous est versée dès que le client a réglé l'intégralité de sa facture.",
       statutTitre: "Votre statut",
       statut:
-        "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIRET (une micro-entreprise, par exemple).",
+        "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIREN (une micro-entreprise, par exemple).",
       suiteTitre: "La suite",
       // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
       // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
@@ -112,6 +114,10 @@ export const COPY_ISSUE_ECHANGE = {
       dossier:
         "Première étape : complétez votre dossier et signez votre contrat en ligne avec le bouton ci-dessous (environ 10 minutes). Nous le contresignons ensuite, après vérification.",
       ctaDossier: "Compléter mon dossier et signer mon contrat",
+      // 07/10 : Bienvenue à un dossier DÉJÀ signé — plus de « Première étape : complétez… ».
+      dossierSigne:
+        "Votre dossier et votre contrat signé nous sont déjà parvenus : nous les vérifions, et vous recevrez votre contrat contresigné par e-mail.",
+      ctaDossierSigne: "Voir mon dossier",
       kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
@@ -161,13 +167,16 @@ export const COPY_ISSUE_ECHANGE = {
       versement: () => "It is paid as soon as the client has settled their invoice in full.",
       statutTitre: "Your status",
       statut:
-        "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIRET number (a micro-enterprise, for example).",
+        "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIREN number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
       contrat: "We will send you your introducer agreement to sign online.",
       espace: "Once your agreement is signed, you can introduce companies to us by simple email.",
       dossier:
         "First step: complete your file and sign your agreement online with the button below (about 10 minutes). We countersign it after review.",
       ctaDossier: "Complete my file and sign my contract",
+      dossierSigne:
+        "Your file and signed contract have already reached us: we are reviewing them, and you will receive your countersigned contract by email.",
+      ctaDossierSigne: "View my file",
       kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
@@ -254,6 +263,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
   const l = langue(locale);
   const t = COPY_ISSUE_ECHANGE[l].retenu;
   const dossierUrl = texteOuNull(p.dossierUrl);
+  const signe = p.dossierSigne === true;
   return (
     <EmailLayout
       famille="B"
@@ -262,7 +272,12 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       locale={locale}
       sansReseauxSociaux
       signature="fondateur-court"
-      {...(dossierUrl ? { cta: { label: t.ctaDossier, href: dossierUrl }, ctaSecret: true } : {})}
+      {...(dossierUrl
+        ? {
+            cta: { label: signe ? t.ctaDossierSigne : t.ctaDossier, href: dossierUrl },
+            ctaSecret: true,
+          }
+        : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{COPY_ISSUE_ECHANGE[l].bonjour(prenomDe(p))}</Text>
       <MotPersonnel p={p} />
@@ -288,8 +303,8 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{t.statut}</Text>
 
       <Text style={intertitre}>{t.suiteTitre}</Text>
-      <Text style={puce}>• {dossierUrl ? t.dossier : t.contrat}</Text>
-      {dossierUrl ? <Text style={puce}>{ligneAPreparer(l)}</Text> : null}
+      <Text style={puce}>• {signe ? t.dossierSigne : dossierUrl ? t.dossier : t.contrat}</Text>
+      {dossierUrl && !signe ? <Text style={puce}>{ligneAPreparer(l)}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />

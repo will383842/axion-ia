@@ -26,7 +26,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function sessionArgent(): Promise<string | null> {
   const session = await auth();
-  if (!session?.user?.id) return "Session expirée : reconnecte-toi.";
+  if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role;
   if (!peutEngager(role, "facturer")) return "Seul un administrateur peut toucher aux commissions.";
   return null;
@@ -55,7 +55,7 @@ export async function qualifierCommissionAction(
     return { etat: "ok", message: `Qualifiée : ${euros(r.montantCents)}.` };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-qualifier" } });
-    return { etat: "erreur", message: "Qualification impossible. Réessaie." };
+    return { etat: "erreur", message: "Qualification impossible. Réessayez." };
   }
 }
 
@@ -84,7 +84,7 @@ export async function marquerVerseAction(
     Sentry.captureException(err, { tags: { action: "apporteurs-commission-verser" } });
     return {
       etat: "erreur",
-      message: err instanceof Error ? err.message : "Confirmation impossible. Réessaie.",
+      message: err instanceof Error ? err.message : "Confirmation impossible. Réessayez.",
     };
   }
 }

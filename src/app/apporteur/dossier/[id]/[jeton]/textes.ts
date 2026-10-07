@@ -47,6 +47,14 @@ export const TEXTES = {
   rechercherDabord: "Recherchez d'abord votre numéro SIREN.",
   // Décision de Will (07/10) : dire COMMENT obtenir un SIREN, sans détail fiscal ni délai
   // autre que « quelques jours ». La règle ne change pas : le SIREN reste obligatoire.
+  // 07/10 : « Continuer » grisé → la liste de ce qui manque, dite en clair.
+  ilManque: "Pour continuer, il manque :",
+  manqueSiren: "votre numéro SIREN, recherché au registre",
+  manqueEntreprise: "le nom et l'adresse de votre entreprise",
+  manqueStatut: "votre statut",
+  manqueTva: "votre régime de TVA",
+  manqueNumeroTva: "votre numéro de TVA",
+  manqueIban: "un IBAN valide",
   sansSirenTitre: "Pas encore de numéro SIREN ?",
   sansSirenTexte:
     "Pour recevoir vos commissions, il vous faut un numéro SIREN. Le plus simple : créer une micro-entreprise. C'est gratuit et cela se fait en ligne, en une vingtaine de minutes, sur le site officiel",

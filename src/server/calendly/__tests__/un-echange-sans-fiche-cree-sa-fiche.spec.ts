@@ -11,6 +11,10 @@ import { resolve } from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
+vi.mock("@/auth", () => ({
+  auth: async () => ({ user: { id: "adm_1", email: "will@axion-ia.com", role: "admin" } }),
+}));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string | null) => v,
@@ -34,6 +38,8 @@ const db = {
   evenements: [] as Ligne[],
   apporteurs: [] as Ligne[],
   journal: [] as Ligne[],
+  dernierEnvoi: null as { createdAt: Date } | null,
+  creationEnPanne: false,
 };
 let compteur = 0;
 const uuid = () => `00000000-0000-4000-8000-${String(++compteur).padStart(12, "0")}`;
@@ -128,13 +134,14 @@ vi.mock("@/lib/prisma", () => {
           db.apporteurs.find((l) => l["emailHash"] === a.where.emailHash) ?? null,
       ),
       create: vi.fn(async (a: { data: Ligne }) => {
+        if (db.creationEnPanne) throw new Error("base injoignable");
         const l = { id: uuid(), versionLien: 1, statut: "dossier_en_cours", ...a.data };
         db.apporteurs.push(l);
         return { id: l["id"], versionLien: 1 };
       }),
     },
     rendezVousSuivi: { count: vi.fn(async () => 0) },
-    emailLog: { findFirst: vi.fn(async () => null) },
+    emailLog: { findFirst: vi.fn(async () => db.dernierEnvoi) },
     emailOutbox: { findFirst: vi.fn(async () => null) },
     activityLog: {
       create: vi.fn(async (a: { data: Ligne }) => {
@@ -198,6 +205,8 @@ beforeEach(() => {
   db.evenements = [evenement()];
   db.apporteurs = [];
   db.journal = [];
+  db.dernierEnvoi = null;
+  db.creationEnPanne = false;
   enqueueEmail.mockResolvedValue({ enqueued: true });
 });
 
@@ -396,5 +405,68 @@ describe("la chaîne complète jusqu'à « Retenu »", () => {
     const url = String(prep.envoi?.payload["dossierUrl"] ?? "");
     expect(url).toMatch(/\/apporteur\/dossier\/[0-9a-f-]{36}\/[A-Za-z0-9_-]{43}$/);
     expect(db.apporteurs).toHaveLength(1);
+  });
+});
+
+describe("lot de suite (07/10) : « Retenu »", () => {
+  const retenu = (ouvrirDossier: boolean) =>
+    preparerIssueApporteur({ calendlyEventId: "evt_1", issue: "retenu", ouvrirDossier });
+
+  it("panne à l'ouverture du dossier : AUCUN e-mail sans lien, échec visible", async () => {
+    await creer();
+    db.creationEnPanne = true;
+    const r = await retenu(true);
+    expect(r).toMatchObject({ ok: false });
+    expect((r as { message: string }).message).toContain("aucun e-mail n'est parti");
+  });
+
+  it("Bienvenue déjà partie SANS dossier : rien ne repart, la console propose d'ouvrir le dossier", async () => {
+    await creer();
+    db.dernierEnvoi = { createdAt: new Date("2026-09-28T09:00:00Z") };
+    const r = await retenu(false);
+    expect(r).toMatchObject({ ok: true, envoi: null, proposerDossier: true });
+    expect((r as { sansEmail: string }).sansEmail).toContain(
+      "Ouvrir le dossier et envoyer le lien",
+    );
+  });
+
+  it("Bienvenue déjà partie AVEC dossier : pas de proposition", async () => {
+    await creer();
+    await retenu(true);
+    db.dernierEnvoi = { createdAt: new Date("2026-10-07T09:00:00Z") };
+    const r = await retenu(false);
+    expect(r).toMatchObject({ ok: true, envoi: null });
+    expect((r as { proposerDossier?: true }).proposerDossier).toBeUndefined();
+  });
+
+  it("dossier déjà signé : la Bienvenue ne dit plus « Première étape : complétez… »", async () => {
+    await creer();
+    await retenu(true);
+    db.apporteurs[0]!["statut"] = "a_verifier";
+    const r = await retenu(true);
+    if (!r.ok || !r.envoi) throw new Error("préparation attendue");
+    expect(r.envoi.payload["dossierSigne"]).toBe(true);
+    const { renderEmailTemplate } = await import("@/lib/email/templates");
+    const rendu = await renderEmailTemplate("apporteur-issue-retenu", "fr", r.envoi.payload);
+    expect(rendu.text).not.toContain("Première étape");
+    expect(rendu.text).toContain("déjà parvenus");
+    expect(rendu.text).not.toContain("SIRET");
+  });
+});
+
+describe("lot de suite (07/10) : l'aperçu prévient AVANT l'envoi", () => {
+  it("dossier résilié : l'avertissement est DANS l'aperçu", async () => {
+    await creer();
+    await preparerIssueApporteur({
+      calendlyEventId: "evt_1",
+      issue: "retenu",
+      ouvrirDossier: true,
+    });
+    db.apporteurs[0]!["statut"] = "resilie";
+    const { apercuIssueApporteurAction } =
+      await import("@/features/admin-rendezvous/issue-apporteur-actions");
+    const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+    expect(a).toMatchObject({ etat: "apercu" });
+    expect((a as { alerte?: string }).alerte).toContain("résilié");
   });
 });

@@ -70,7 +70,7 @@ export async function jugerPiece(
   });
   if (!p) return { ok: false, message: "Pièce introuvable." };
   if (verdict === "a_retransmettre" && !MOTIFS_A_RETRANSMETTRE.some((m) => m.valeur === motif)) {
-    return { ok: false, message: "Choisis un motif." };
+    return { ok: false, message: "Choisissez un motif." };
   }
   const maintenant = new Date();
   await prisma.$transaction(
@@ -160,12 +160,12 @@ function lireSignature(json: unknown): SignatureLue | null {
  */
 export async function sirenAContresigner(siren: string | null): Promise<string | null> {
   if (!siren || !sirenValide(siren))
-    return "SIREN à vérifier : absent ou invalide. Demandez à l'apporteur de le corriger (étape 2 de son dossier).";
+    return "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.";
   const r = await lireEntrepriseParSiren(siren);
   if (!r.ok) {
     return r.raison === "indisponible"
       ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
-      : "SIREN à vérifier : introuvable au registre public. Le contrat ne peut pas être contresigné.";
+      : "SIREN à vérifier : introuvable au registre public, le contrat ne peut pas être contresigné. Une micro-entreprise toute neuve peut ne pas encore y être publiée : réessayez dans quelques jours.";
   }
   if (!r.entreprise.active)
     return "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
@@ -214,7 +214,7 @@ export async function preparerDecision(
     if (pieces.length === 0 && !mot) {
       return {
         ok: false,
-        message: "Indique ce qui manque : une pièce à retransmettre ou une note.",
+        message: "Indiquez ce qui manque : une pièce à retransmettre ou une note.",
       };
     }
     const nouvelleVersion = d.versionLien;
@@ -282,7 +282,7 @@ export async function appliquerDecision(
     if (!sig)
       return {
         ok: false,
-        message: "La signature de l'apporteur est illisible : demande-lui de signer à nouveau.",
+        message: "La signature de l'apporteur est illisible : demandez-lui de signer à nouveau.",
       };
     // Texte archivé à la signature (empreinte revérifiée) ; sinon, ancien dossier : on
     // reconstruit depuis le contrat courant et on compare.
@@ -422,6 +422,12 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
   if (!d) return { ok: false as const, message: "Apporteur introuvable." };
   if (d.statut === "refuse" || d.statut === "resilie")
     return { ok: false as const, message: "Ce dossier est fermé." };
+  // Un dossier signé (à vérifier ou contresigné) n'a plus de lien à compléter (07/10).
+  if (d.statut === "a_verifier" || d.statut === "signe")
+    return {
+      ok: false as const,
+      message: "Ce dossier est déjà signé : il n'y a plus de lien à lui envoyer.",
+    };
   const url = urlDossier(d.id, d.versionLien);
   if (!url)
     return { ok: false as const, message: "Impossible de fabriquer le lien (secret absent)." };
@@ -439,12 +445,41 @@ export async function preparerLien(apporteurId: string, mot: string | null, text
     entityType: "ApporteurReseau",
     entityId: d.id,
   };
-  return { ok: true as const, envoi, url };
+  // Déjà envoyé (premier envoi ou rappel) : la console le dit, et un renvoi se confirme.
+  const dernier = await prisma.emailLog.findFirst({
+    where: {
+      template: "apporteur-dossier-lien",
+      entityType: "ApporteurReseau",
+      entityId: d.id,
+      status: { in: ["pending", "sent"] },
+    },
+    select: { createdAt: true },
+    orderBy: { createdAt: "desc" },
+  });
+  const dejaEnvoyeLe = dernier
+    ? dernier.createdAt.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        timeZone: "Europe/Paris",
+      })
+    : null;
+  return { ok: true as const, envoi, url, dejaEnvoyeLe };
 }
 
-export async function envoyerLien(apporteurId: string, mot: string | null, texte?: string) {
+export async function envoyerLien(
+  apporteurId: string,
+  mot: string | null,
+  texte?: string,
+  confirmerRenvoi = false,
+) {
   const prep = await preparerLien(apporteurId, mot, texte);
   if (!prep.ok) return prep;
+  if (prep.dejaEnvoyeLe && !confirmerRenvoi) {
+    return {
+      ok: false as const,
+      message: `Lien déjà envoyé le ${prep.dejaEnvoyeLe} : ouvrez l'aperçu et confirmez pour le renvoyer.`,
+    };
+  }
   const r = await envoyer({
     ...prep.envoi,
     jobId: `apporteur-dossier-lien-${apporteurId}-${Date.now()}`,
@@ -498,8 +533,29 @@ export async function ouvrirDossierManuel(e: {
     select: { id: true },
   });
   if (existant) return { ok: true, apporteurId: existant.id };
+  // La fiche candidat apporteur de la même adresse, s'il y en a une : le dossier y est relié
+  // (07/10), comme quand il naît de « Retenu ».
+  const { estApporteur, FILTRE_APPORTEUR_PRISMA } =
+    await import("@/lib/commercial-application/est-apporteur");
+  const candidatures = await prisma.submission.findMany({
+    where: { contactEmailHash: hash, deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+    orderBy: { submittedAt: "desc" },
+    take: 5,
+    select: { id: true, details: true },
+  });
+  const trouvee = candidatures.find((c) => estApporteur(c.details));
+  // Lien unique : une fiche déjà reliée à un autre dossier ne l'est pas une seconde fois.
+  const candidature =
+    trouvee &&
+    !(await prisma.apporteurReseau.findUnique({
+      where: { submissionId: trouvee.id },
+      select: { id: true },
+    }))
+      ? trouvee
+      : null;
   const a = await prisma.apporteurReseau.create({
     data: {
+      ...(candidature ? { submissionId: candidature.id } : {}),
       prenom: encryptPii(e.prenom.trim()),
       nom: encryptPii(e.nom.trim()),
       email: encryptPii(email),

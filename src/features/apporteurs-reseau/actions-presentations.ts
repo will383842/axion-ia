@@ -41,9 +41,9 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function sessionEcriture(): Promise<string | null> {
   const session = await auth();
-  if (!session?.user?.id) return "Session expirée : reconnecte-toi.";
+  if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role;
-  if (!peutVoirLesAppels(role)) return "Ton rôle ne permet pas de gérer les apporteurs.";
+  if (!peutVoirLesAppels(role)) return "Votre rôle ne permet pas de gérer les apporteurs.";
   return null;
 }
 
@@ -89,10 +89,10 @@ export async function creerPresentationAction(
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
   const apporteurId = texte(fd, "apporteurId");
-  if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Choisis l'apporteur." };
+  if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Choisissez l'apporteur." };
   const recueAt = fromParisLocalInput(texte(fd, "recueAt"));
   if (!recueAt)
-    return { etat: "erreur", message: "Indique la date et l'heure de réception de l'e-mail." };
+    return { etat: "erreur", message: "Indiquez la date et l'heure de réception de l'e-mail." };
   try {
     const r = await creerPresentation({
       apporteurId,
@@ -111,7 +111,7 @@ export async function creerPresentationAction(
     return { etat: "ok", message: "Enregistrée : elle est dans « À traiter »." };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-presentation-creer" } });
-    return { etat: "erreur", message: "Enregistrement impossible. Réessaie." };
+    return { etat: "erreur", message: "Enregistrement impossible. Réessayez." };
   }
 }
 
@@ -174,7 +174,7 @@ export async function apercuReponseAction(s: SaisieReponse): Promise<ApercuRepon
     return r.ok ? { etat: "apercu", emails: r.emails } : { etat: "erreur", message: r.message };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-presentation-apercu" } });
-    return { etat: "erreur", message: "Aperçu impossible. Réessaie." };
+    return { etat: "erreur", message: "Aperçu impossible. Réessayez." };
   }
 }
 
@@ -193,7 +193,7 @@ export async function repondreAction(
     return r.ok ? { etat: "ok", message: r.message } : { etat: "erreur", message: r.message };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-presentation-repondre" } });
-    return { etat: "erreur", message: "Réponse impossible. Réessaie." };
+    return { etat: "erreur", message: "Réponse impossible. Réessayez." };
   }
 }
 
@@ -208,7 +208,7 @@ export async function confirmerPresentationAction(
   const id = texte(fd, "id");
   const jour = texte(fd, "confirmeeLe");
   if (!UUID.test(id) || !/^\d{4}-\d{2}-\d{2}$/.test(jour))
-    return { etat: "erreur", message: "Indique la date de la réponse." };
+    return { etat: "erreur", message: "Indiquez la date de la réponse." };
   // Midi, heure de Paris : la date saisie est un jour, pas un instant.
   const date = fromParisLocalInput(`${jour}T12:00`);
   if (!date) return { etat: "erreur", message: "Date invalide." };

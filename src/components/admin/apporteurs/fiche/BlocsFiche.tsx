@@ -21,20 +21,25 @@ import { ApercuEmail, MessageRetour, type EmailApercu } from "./ApercuEmail";
 export function EnvoiLienDossier({
   apporteurId,
   contratSigne = false,
+  lienPossible = true,
 }: {
   apporteurId: string;
   /** Vrai quand le contrat contresigné existe : propose de rejouer son e-mail. */
   contratSigne?: boolean;
+  /** Faux pour un dossier signé (à vérifier ou contresigné) : plus de lien à envoyer. */
+  lienPossible?: boolean;
 }) {
   const [mot, setMot] = useState("");
   const [email, setEmail] = useState<EmailApercu | null>(null);
+  // « Déjà envoyé le … » : affiché dans l'aperçu, et le bouton devient « Renvoyer quand même ».
+  const [dejaEnvoyeLe, setDejaEnvoyeLe] = useState<string | null>(null);
   // Texte principal réécrit (null = texte d'origine) ; appliqué à l'aperçu ET à l'envoi.
   const [texte, setTexte] = useState<string | null>(null);
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
   const [enCours, demarrer] = useTransition();
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">
-      {!email ? (
+      {!lienPossible ? null : !email ? (
         <>
           <input
             className="admin-input"
@@ -54,6 +59,7 @@ export function EnvoiLienDossier({
                   const r = await apercuLienAction({ apporteurId, mot });
                   if (r.ok) {
                     setTexte(null);
+                    setDejaEnvoyeLe(r.dejaEnvoyeLe ?? null);
                     setEmail(r.email);
                   } else setRetour(r);
                 })
@@ -64,35 +70,48 @@ export function EnvoiLienDossier({
           </div>
         </>
       ) : (
-        <ApercuEmail
-          email={email}
-          libelleEnvoyer="Envoyer le lien"
-          occupe={enCours}
-          onAnnuler={() => {
-            setEmail(null);
-            setTexte(null);
-          }}
-          texte={texte}
-          onActualiserTexte={(t) =>
-            demarrer(async () => {
-              const r = await apercuLienAction({ apporteurId, mot, texte: t });
-              if (r.ok) {
-                setTexte(t);
-                setEmail(r.email);
-              } else setRetour(r);
-            })
-          }
-          onEnvoyer={() =>
-            demarrer(async () => {
-              const r = await envoyerLienAction({ apporteurId, mot, texte });
-              setRetour(r);
-              if (r.ok) {
-                setEmail(null);
-                setTexte(null);
-              }
-            })
-          }
-        />
+        <>
+          {dejaEnvoyeLe ? (
+            <p role="alert" className="text-[color:var(--color-admin-warning)]">
+              ⚠️ Lien déjà envoyé le {dejaEnvoyeLe}. Confirmez seulement si vous voulez le renvoyer.
+            </p>
+          ) : null}
+          <ApercuEmail
+            email={email}
+            libelleEnvoyer={dejaEnvoyeLe ? "Renvoyer quand même" : "Envoyer le lien"}
+            occupe={enCours}
+            onAnnuler={() => {
+              setEmail(null);
+              setTexte(null);
+            }}
+            texte={texte}
+            onActualiserTexte={(t) =>
+              demarrer(async () => {
+                const r = await apercuLienAction({ apporteurId, mot, texte: t });
+                if (r.ok) {
+                  setTexte(t);
+                  setEmail(r.email);
+                } else setRetour(r);
+              })
+            }
+            onEnvoyer={() =>
+              demarrer(async () => {
+                const r = await envoyerLienAction({
+                  apporteurId,
+                  mot,
+                  texte,
+                  confirmerRenvoi: dejaEnvoyeLe !== null,
+                });
+                setRetour(r);
+                if (r.ok) {
+                  setEmail(null);
+                  setTexte(null);
+                  setDejaEnvoyeLe(null);
+                }
+              })
+            }
+          />
+        </>
       )}
       {contratSigne && !email ? (
         <div>

@@ -221,6 +221,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
               <EnvoiLienDossier
                 apporteurId={d.id}
                 contratSigne={d.statut === "signe" && fiche.aContratSigne}
+                lienPossible={d.statut !== "signe"}
               />
             </div>
           ) : null}

@@ -45,6 +45,19 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+// Le dossier en ligne s'ouvre normalement (07/10 : une panne n'envoie plus rien).
+vi.mock("@/features/apporteurs-reseau/donnees", () => ({
+  ouvrirDossierDepuisCandidature: vi.fn(async () => ({
+    ok: true,
+    apporteurId: "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b",
+    versionLien: 1,
+    email: "camille@exemple.fr",
+    prenom: "Camille",
+    statut: "dossier_en_cours",
+  })),
+}));
+vi.mock("@/features/apporteurs-reseau/verification", () => ({ envoyerLien: vi.fn() }));
+
 const enqueueEmail = vi.fn();
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => enqueueEmail(...a) }));
 const appliquerTransition = vi.fn();
@@ -153,7 +166,11 @@ describe("l'aperçu", () => {
     expect(renderEmailTemplate).toHaveBeenCalledWith(
       "apporteur-issue-retenu",
       "fr",
-      { contactName: "Camille Martin", motPersonnel: "Ravi de t'accueillir." },
+      expect.objectContaining({
+        contactName: "Camille Martin",
+        motPersonnel: "Ravi de t'accueillir.",
+        dossierUrl: expect.stringContaining("/apporteur/dossier/"),
+      }),
       { destinataire: "camille@exemple.fr" },
     );
     expect(upsert).not.toHaveBeenCalled();
@@ -218,7 +235,11 @@ describe("l'envoi confirmé", () => {
       "apporteur-issue-retenu",
       "camille@exemple.fr",
       "fr",
-      { contactName: "Camille Martin" },
+      // 07/10 : « Retenu » ne part jamais sans le lien de son dossier.
+      {
+        contactName: "Camille Martin",
+        dossierUrl: expect.stringContaining("/apporteur/dossier/"),
+      },
       { entityType: "Submission", entityId: "sub_1", jobId: "apporteur-issue-retenu-empreinte123" },
     );
     expect(annulerRelancesLeadApporteur).toHaveBeenCalledWith(

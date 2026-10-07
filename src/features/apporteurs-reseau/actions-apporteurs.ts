@@ -32,13 +32,14 @@ import { apercu, type ApercuRendu } from "./envois";
 import { refusRattachement, type IdentiteParrainage } from "./parrainage";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
-export type RetourApercu = { ok: true; email: ApercuRendu } | { ok: false; message: string };
+export type RetourApercu =
+  { ok: true; email: ApercuRendu; dejaEnvoyeLe?: string | null } | { ok: false; message: string };
 
 const ROLES = new Set(["super_admin", "admin"]);
 
 async function exigerAdmin(): Promise<string | null> {
   const session = await auth();
-  if (!session?.user?.id) return "Session expirée : reconnecte-toi.";
+  if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role ?? "";
   if (!ROLES.has(role)) return "Réservé aux administrateurs.";
   return null;
@@ -152,7 +153,7 @@ export async function apercuLienAction(input: {
   if (!texte.ok) return texte;
   const prep = await preparerLien(input.apporteurId, input.mot, texte.texte);
   if (!prep.ok) return prep;
-  return { ok: true, email: await apercu(prep.envoi) };
+  return { ok: true, email: await apercu(prep.envoi), dejaEnvoyeLe: prep.dejaEnvoyeLe };
 }
 
 export async function envoyerLienAction(input: {
@@ -160,13 +161,20 @@ export async function envoyerLienAction(input: {
   mot: string | null;
   /** Texte principal réécrit (facultatif). Jamais journalisé. */
   texte?: string | null;
+  /** Vrai quand Will a vu « déjà envoyé le … » dans l'aperçu et confirme le renvoi. */
+  confirmerRenvoi?: boolean;
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
   if (!UUID.test(input.apporteurId)) return { ok: false, message: "Apporteur inconnu." };
   const texte = validerTexteLibre(input.texte);
   if (!texte.ok) return texte;
-  const r = await envoyerLien(input.apporteurId, input.mot, texte.texte);
+  const r = await envoyerLien(
+    input.apporteurId,
+    input.mot,
+    texte.texte,
+    input.confirmerRenvoi === true,
+  );
   rafraichir(input.apporteurId);
   return r;
 }
