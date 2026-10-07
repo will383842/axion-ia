@@ -43,6 +43,7 @@ import {
   CHAMP_LEURRE,
   CHAMP_DEPUIS,
   CHAMP_RDV,
+  CHAMPS,
 } from "@/server/calendly/formulaire-reservation";
 import { soumettreLaReservation } from "./actions";
 import { signalerRepliPermanent } from "@/server/calendly/alertes-reservation";
@@ -58,6 +59,10 @@ import {
   PARAM_RDV,
 } from "@/server/calendly/choix-rendez-vous";
 import { formatsProposes } from "@/server/calendly/types-reservables";
+import {
+  identiteDuJetonVsl,
+  PARAM_JETON_VSL,
+} from "@/features/commercial-application/identite-reservation-vsl";
 
 /**
  * Rendu à chaque requête.
@@ -161,6 +166,13 @@ export default async function ReserverPage({ params, searchParams }: Props) {
 
   const reprise = await lireLaRepriseDuCreneau(debutBrut);
 
+  // Échange apporteur venu de la page vidéo (`?j=<jeton>`, 2026-10-07) : le prénom
+  // et l'e-mail de l'étape 1 sont proposés d'office. Le même e-mail rattache la
+  // réservation à la fiche. Une reprise (saisie déjà faite) l'emporte toujours ;
+  // un jeton faux ou expiré ne change rien au formulaire.
+  const prerempli =
+    !reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null;
+
   return (
     <div className="bg-canvas min-h-screen pt-6 pb-16 sm:pt-10">
       <Container>
@@ -230,7 +242,11 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             creneauLisible={creneauLisible(debut)}
             dureeMinutes={et.dureeMinutes ?? DUREE_DEFAUT}
             questions={et.questions}
-            {...(reprise ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs } : {})}
+            {...(reprise
+              ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs }
+              : prerempli
+                ? { valeurs: { [CHAMPS.nom]: prerempli.nom, [CHAMPS.email]: prerempli.email } }
+                : {})}
             replidUrl={avecUtmContent(
               resolu.url,
               choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,

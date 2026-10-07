@@ -48,6 +48,7 @@
 // cas se produit notamment AU BUILD, où le jeton est absent. Ne pas le retirer
 // en le croyant mort.
 
+import type { ReactNode } from "react";
 import { fetchAvailableSlots } from "@/server/calendly/availability";
 import { CalendlySlotPicker } from "./CalendlySlotPicker";
 import { avecUtmContent, type SuiviArrivee } from "@/server/calendly/choix-rendez-vous";
@@ -85,6 +86,13 @@ interface CalendlyInlineWidgetProps {
    * part chez Calendly : iframe, lien de secours, créneaux.
    */
   readonly suivi?: SuiviArrivee | undefined;
+  /**
+   * Ce qui remplace le pavé Calendly quand les créneaux sont illisibles (jeton
+   * absent, API en panne, agenda plein). Absent : le pavé de consentement, comme
+   * sur `/appel`. La page « C'est noté » des apporteurs (2026-10-07) y met un lien
+   * vers SA page de réservation du site : elle ne montre jamais calendly.com.
+   */
+  readonly repli?: ReactNode;
 }
 
 function buildCalendlyUrl(baseUrl: string, utmContent?: string, suivi?: SuiviArrivee): string {
@@ -114,6 +122,7 @@ export async function CalendlyInlineWidget({
   utmContent,
   parametresDuChoix,
   suivi,
+  repli,
 }: CalendlyInlineWidgetProps) {
   const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, utmContent, suivi) : null;
 
@@ -176,6 +185,8 @@ export async function CalendlyInlineWidget({
       </div>
     );
   }
+
+  if (repli !== undefined) return <div>{repli}</div>;
 
   return (
     <div>
