@@ -22,11 +22,17 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
+// Décision de Will (07/10) : un apporteur signé est un apporteur ACTIF (onglet par défaut) ;
+// « Dossier en cours » regroupe tout ce qui précède la contresignature. L'onglet « Retirés »
+// arrive avec la PR 1353 (place réservée juste après « Dossier en cours »).
 const ONGLETS = [
-  { cle: "a_verifier", libelle: "À vérifier", statuts: ["a_verifier"] },
-  { cle: "en_cours", libelle: "Dossiers en cours", statuts: ["dossier_en_cours", "a_completer"] },
-  { cle: "signes", libelle: "Signés", statuts: ["signe"] },
-  { cle: "fermes", libelle: "Fermés", statuts: ["refuse", "resilie"] },
+  { cle: "actifs", libelle: "Actifs", statuts: ["signe"] },
+  {
+    cle: "en_cours",
+    libelle: "Dossier en cours",
+    statuts: ["dossier_en_cours", "a_verifier", "a_completer"],
+  },
+  { cle: "fermes", libelle: "Refusés ou terminés", statuts: ["refuse", "resilie"] },
 ] as const;
 
 const fr = (d: Date) =>
@@ -46,7 +52,7 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
   const { parStatut, commissionsDuesCents } = await compterApporteurs();
   const compte = (statuts: readonly string[]) =>
     statuts.reduce((s, st) => s + (parStatut[st as keyof typeof parStatut] ?? 0), 0);
-  const ongletParDefaut = compte(["a_verifier"]) > 0 ? "a_verifier" : "signes";
+  const ongletParDefaut = "actifs";
   const onglet =
     ONGLETS.find((o) => o.cle === sp.onglet) ?? ONGLETS.find((o) => o.cle === ongletParDefaut)!;
   const total = compte(onglet.statuts);
@@ -62,17 +68,17 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
         actions={<NouvelApporteurForm base={base} />}
       />
       <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-4">
+        <AdminStatCard label="Actifs" value={compte(["signe"])} href={`${base}?onglet=actifs`} />
         <AdminStatCard
           label="À vérifier"
           value={compte(["a_verifier"])}
-          href={`${base}?onglet=a_verifier`}
-        />
-        <AdminStatCard
-          label="Dossiers en cours"
-          value={compte(["dossier_en_cours", "a_completer"])}
           href={`${base}?onglet=en_cours`}
         />
-        <AdminStatCard label="Signés" value={compte(["signe"])} href={`${base}?onglet=signes`} />
+        <AdminStatCard
+          label="Dossier en cours"
+          value={compte(["dossier_en_cours", "a_verifier", "a_completer"])}
+          href={`${base}?onglet=en_cours`}
+        />
         <AdminStatCard
           label="Commissions à verser"
           value={euros(commissionsDuesCents)}

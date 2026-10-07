@@ -348,8 +348,11 @@ describe("buildAdminNav SSOT", () => {
     expect(apporteurs?.group).toBe("apporteurs");
     expect(apporteurs?.href).toBe("/fr/p/contacts/commercial");
     expect(ADMIN_NAV_GROUP_LABELS.apporteurs).toBe("Apporteurs d'affaires");
-    // Les libellés nus, ambigus, ne reviennent pas.
-    for (const ambigu of ["Recrutement", "Apporteurs", "Candidatures"]) {
+    // Les libellés nus, ambigus, ne reviennent pas. « Apporteurs » est permis depuis le
+    // 07/10 (décision de Will) : la liste des apporteurs ACTIFS, dans le groupe « Apporteurs
+    // d'affaires », loin des « Candidatures emploi » qui ont leur propre groupe.
+    expect(items.find((it) => it.label === "Apporteurs")?.group).toBe("apporteurs");
+    for (const ambigu of ["Recrutement", "Candidatures"]) {
       expect(
         items.some((it) => it.label === ambigu),
         ambigu,

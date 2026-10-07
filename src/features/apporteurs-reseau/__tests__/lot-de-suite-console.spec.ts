@@ -142,10 +142,17 @@ describe("12) « Nouvel apporteur » : dossier relié à la fiche candidat de la
     expect(h.cree.mock.calls[0]![0]).not.toHaveProperty("submissionId");
   });
 
-  it("le menu ne dit plus « Apporteurs signés » seul", () => {
+  it("menu « Apporteurs » ; page : « Actifs » par défaut, puis « Dossier en cours »", () => {
     const nav = readFileSync(resolve(__dirname, "../../../lib/admin-nav.ts"), "utf8");
-    expect(nav).toContain('"Apporteurs (dossiers et contrats)"');
+    expect(nav).toContain('label: "Apporteurs",');
     expect(nav).not.toContain('label: "Apporteurs signés"');
+    const page = readFileSync(
+      resolve(__dirname, "../../../app/[locale]/(admin)/[adminPrefix]/apporteurs/page.tsx"),
+      "utf8",
+    );
+    expect(page).toContain('{ cle: "actifs", libelle: "Actifs", statuts: ["signe"] }');
+    expect(page).toContain('statuts: ["dossier_en_cours", "a_verifier", "a_completer"]');
+    expect(page).toContain('const ongletParDefaut = "actifs";');
   });
 });
 
