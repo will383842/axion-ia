@@ -149,6 +149,21 @@ describe("envoyerInvitationApporteur", () => {
     expect(payload).not.toHaveProperty("dossierUrl");
   });
 
+  it.each([
+    ["venue du tunnel vidéo", { vsl: { etapeAtteinte: 2 } }],
+    ["créée à la réservation d'un échange", { origine: "rendez-vous-apporteur" }],
+  ])(
+    "🔴 fiche %s : AUCUN lien vers l'ancien formulaire de candidature (2026-10-07)",
+    async (_cas, extra) => {
+      const details = { ...fiche().details, ...extra };
+      trouver.mockResolvedValue(fiche({ details }));
+      lister.mockResolvedValue([{ id: fiche().id, details }]);
+      await envoyer();
+      const payload = enfiler.mock.calls[0]?.[3] as Record<string, unknown>;
+      expect(payload).not.toHaveProperty("dossierUrl");
+    },
+  );
+
   it("refuse une fiche qui n'est pas du réseau d'apporteurs", async () => {
     trouver.mockResolvedValue(fiche({ details: { unifiedType: "contact" } }));
     expect(await envoyer()).toMatchObject({ ok: false, erreur: "pas-un-apporteur" });

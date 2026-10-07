@@ -54,6 +54,7 @@ import {
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { marqueDemarche, varianteObjet } from "@/lib/commercial-application/demarche-invitation";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
+import { lireVsl } from "./lead-vsl-details";
 import {
   phraseInvitation,
   type CodeIssueInvitation,
@@ -142,6 +143,30 @@ export function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean 
   return lignes.some((l) => {
     const d = lireDetails(l.details);
     return estApporteur(d) && d.etape === undefined;
+  });
+}
+
+/** Marque des fiches créées à la réservation d'un échange apporteur (PR #1346). */
+const ORIGINE_FICHE_RENDEZ_VOUS = "rendez-vous-apporteur";
+
+/**
+ * La personne vient-elle du tunnel vidéo, ou d'une réservation d'échange ?
+ *
+ * 🔴 2026-10-07 (test réel de Will) : l'invitation de ces personnes disait « Il
+ * nous manque encore votre dossier » avec un lien vers l'ANCIEN formulaire de
+ * candidature (`/devenir-commercial-ia/candidature`). Ce formulaire n'est pas leur
+ * parcours : elles ont donné leur prénom, leur e-mail et leur numéro sur la page
+ * vidéo, ou réservé directement. Aucune phrase ni aucun lien vers lui.
+ */
+export function sansFormulaireDeCandidature(lignes: Array<{ details: unknown }>): boolean {
+  return lignes.some((l) => {
+    if (lireVsl(l.details)) return true;
+    const d = l.details;
+    return (
+      !!d &&
+      typeof d === "object" &&
+      (d as Record<string, unknown>)["origine"] === ORIGINE_FICHE_RENDEZ_VOUS
+    );
   });
 }
 
@@ -350,9 +375,10 @@ export async function envoyerInvitationApporteur(input: {
     });
   }
 
-  const dossierUrl = dossierDejaArrive(lignes)
-    ? undefined
-    : `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`;
+  const dossierUrl =
+    dossierDejaArrive(lignes) || sansFormulaireDeCandidature(lignes)
+      ? undefined
+      : `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`;
 
   const envoi = await enqueueEmail(
     GABARIT_INVITATION_APPORTEUR,
