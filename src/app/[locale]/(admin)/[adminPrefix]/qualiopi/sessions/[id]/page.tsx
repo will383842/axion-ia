@@ -443,6 +443,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     preparationKit,
     parcours,
     verrou,
+    dossiersOpcoOuverts,
   ] = await Promise.all([
     // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
     // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
@@ -503,9 +504,16 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // Mémoïsé pour le rendu : le layout l'a déjà lu pour son bandeau, et il
     // rend « introuvable » s'il est nul — la page fait de même, sans repli.
     lireEtatVerrouFiche(id),
+    // INT-T77-A — le bouton du mandat suit le DOSSIER de financement OPCO ou
+    // mixte non clos, pas le type déclaré de la session. Lecture INDÉPENDANTE :
+    // elle part dans la première vague (garde `chargement-fiche-en-vagues`).
+    prisma.dossierFinancement.count({
+      where: { trainingSessionId: id, type: { in: ["opco", "mixte"] }, statut: { not: "clos" } },
+    }),
   ]);
 
   if (!trainingSession || verrou === null) notFound();
+  const dossierOpcoOuvert = dossiersOpcoOuverts > 0;
 
   const mentionTvaSession = mentionTva(regimeTva);
 
@@ -657,12 +665,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   // Lot 1ter §2 — une lettre de mission suppose DEUX personnes. Le statut
   // `dirigeant` existe dans le registre des formateurs ; on ne devine pas par
   // comparaison de noms, ce qui serait faux au premier homonyme.
-  // INT-T77-A — le bouton du mandat suit le DOSSIER de financement, pas le type
-  // déclaré de la session.
-  const dossierOpcoOuvert =
-    (await prisma.dossierFinancement.count({
-      where: { trainingSessionId: id, type: { in: ["opco", "mixte"] }, statut: { not: "clos" } },
-    })) > 0;
   const formateurEstLeDirigeant =
     trainingSession.formateurPrincipalId !== null &&
     allTrainers.some(

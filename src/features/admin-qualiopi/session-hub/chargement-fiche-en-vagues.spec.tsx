@@ -154,6 +154,7 @@ function installer() {
       exemplaireSigneEnvoyeAt: null,
     },
   ]);
+  m.dossiersOpco = lecture("dossiersOpco", () => 0);
   m.stagiaires = lecture("stagiaires", () => []);
   m.compteStagiaires = lecture("compteStagiaires", () => 0);
   m.signatures = lecture("signatures", () => []);
@@ -195,6 +196,8 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { findMany: (...a: unknown[]) => m.pieces!(...a) },
     documentSignature: { findMany: (...a: unknown[]) => m.signatures!(...a) },
     factureFormation: { findMany: (...a: unknown[]) => m.factures!(...a) },
+    // INT-T77-A — le bouton du mandat suit le dossier OPCO : lecture de la vague 1.
+    dossierFinancement: { count: (...a: unknown[]) => m.dossiersOpco!(...a) },
   },
 }));
 vi.mock("@/server/qualiopi/documents/signature/releve-queries", () => ({
@@ -343,6 +346,7 @@ const LECTURES = [
   "echeances",
   "conflits",
   "verrou",
+  "dossiersOpco",
 ] as const;
 
 async function rendre() {
