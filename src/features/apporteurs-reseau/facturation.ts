@@ -564,13 +564,19 @@ export async function marquerVerse(
     }
   }
 
+  // Seules les lignes SUSPENDUES (contestation écrite, art. 4.2 bis) restent à verser plus tard :
+  // les autres lignes de l'autofacture sont versées (art. 5.4).
+  const hors = await horsLitige();
   const lireAVerser = (db: Db) =>
     db.commissionApporteur.findMany({
       where: {
         apporteurId,
         montantCents: { not: null },
         autofactureNumero: numero ? numero : { not: null },
-        OR: [{ statut: "due" }, { statut: "reprise", verseeAt: null }],
+        OR: [
+          { statut: "due", ...hors },
+          { statut: "reprise", verseeAt: null },
+        ],
       },
       select: {
         id: true,
@@ -596,28 +602,27 @@ export async function marquerVerse(
   });
   if (nonRealisees > 0) return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
 
-  // Contestation écrite du client en cours sur une commission de ce virement : rien n'est versé.
-  if (await litigeDisponible()) {
-    const suspendues = await prisma.commissionApporteur.count({
-      where: {
-        apporteurId,
-        statut: "due",
-        autofactureNumero: numero ? numero : { not: null },
-        litigeDepuis: { not: null },
-      },
-    });
-    if (suspendues > 0) {
-      return {
-        ok: false,
-        message:
-          "Une commission de ce virement est suspendue (contestation écrite du client, art. 4.2 bis) : levez d'abord la suspension.",
-      };
-    }
-  }
-
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");
-  if (dues.length === 0) return { ok: false, message: "Aucun virement à confirmer." };
+  if (dues.length === 0) {
+    const suspendues = (await litigeDisponible())
+      ? await prisma.commissionApporteur.count({
+          where: {
+            apporteurId,
+            statut: "due",
+            autofactureNumero: numero ? numero : { not: null },
+            litigeDepuis: { not: null },
+          },
+        })
+      : 0;
+    return {
+      ok: false,
+      message:
+        suspendues > 0
+          ? "Commission suspendue (contestation écrite du client, art. 4.2 bis) : levez d'abord la suspension avant de confirmer ce virement."
+          : "Aucun virement à confirmer.",
+    };
+  }
   // TVA comprise pour un apporteur assujetti, calculée pièce par pièce comme sur les PDF.
   const parFacture = new Map<string, typeof avant>();
   for (const c of avant) {
@@ -693,11 +698,16 @@ export interface VirementAFaire {
 
 /** Les autofactures émises dont le virement n'est pas confirmé. */
 export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
+  // Une ligne suspendue (contestation écrite, art. 4.2 bis) n'est pas à virer tant qu'elle l'est.
+  const hors = await horsLitige();
   const lignes = await prisma.commissionApporteur.findMany({
     where: {
       autofactureNumero: { not: null },
       montantCents: { not: null },
-      OR: [{ statut: "due" }, { statut: "reprise", verseeAt: null }],
+      OR: [
+        { statut: "due", ...hors },
+        { statut: "reprise", verseeAt: null },
+      ],
     },
     select: {
       apporteurId: true,

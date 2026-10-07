@@ -834,6 +834,41 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
   });
 });
 
+describe("suites de la suspension (contrat 2.3, art. 4.2 bis)", () => {
+  it("« Virement fait » ne bloque QUE la ligne suspendue : les autres lignes de l'autofacture sont versées", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000), ligne("c2", "due", 10_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    expect(lignes()[1]!.autofactureNumero).toBe(numero);
+    await suspendreCommission("c2", "contestation écrite de la formation", MARDI);
+    expect(await marquerVerse("APP1", MARDI, numero)).toMatchObject({ ok: true });
+    expect(lignes().find((l) => l.id === "c1")!.statut).toBe("versee");
+    expect(lignes().find((l) => l.id === "c2")!.statut).toBe("due");
+  });
+
+  it("la part du PARRAIN, née de la même facture, est suspendue puis libérée avec elle", async () => {
+    etat.lignes = [
+      ligne("c1", "due", 40_000, { factureId: "F-1" }),
+      ligne("p1", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-1" }),
+      ligne("p2", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-2" }),
+    ];
+    await suspendreCommission("c1", "contestation écrite", MARDI);
+    expect(lignes().find((l) => l.id === "p1")!.litigeDepuis).toEqual(MARDI);
+    expect(lignes().find((l) => l.id === "p2")!.litigeDepuis).toBeNull();
+    await leverSuspension("c1", "admin-1", VENDREDI);
+    expect(lignes().find((l) => l.id === "p1")!.litigeDepuis).toBeNull();
+  });
+
+  it("l'apporteur est PRÉVENU de la suspension, puis de son issue", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await suspendreCommission("c1", "contestation écrite", MARDI, "admin-1");
+    await leverSuspension("c1", "admin-1", VENDREDI);
+    const e = etat.envoyes.filter((x) => x["gabarit"] === "apporteur-commission-suspension");
+    expect(e.map((x) => (x["payload"] as { etat: string }).etat)).toEqual(["suspendue", "levee"]);
+    expect(e[0]).toMatchObject({ destinataire: "app1@m.fr" });
+  });
+});
+
 describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réalisée » à tort", () => {
   const enAttente = (id: string) =>
     ligne(id, "due", 40_000, { prestationRealiseeAt: null, prestationRealiseePar: null });

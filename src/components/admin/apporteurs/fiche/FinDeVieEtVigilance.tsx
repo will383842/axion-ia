@@ -119,6 +119,10 @@ export function FinDeVie({
               />
             </label>
             <label className="flex flex-col gap-1">
+              Date de l&apos;annulation (remboursement ou avoir)
+              <input name="annulationLe" type="date" required className="admin-input" />
+            </label>
+            <label className="flex flex-col gap-1">
               Motif
               <input name="motif" required maxLength={500} className="admin-input" />
             </label>

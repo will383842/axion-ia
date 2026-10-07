@@ -99,8 +99,8 @@ export async function resilierApporteur(
 
 // ── Reprise ──────────────────────────────────────────────────────────────
 
-/** Art. 4.5 : la reprise ne peut intervenir que dans les douze mois suivant l'annulation. */
-export const DELAI_REPRISE_MOIS = 12;
+/** Art. 4.5 (contrat 2.3) : la reprise ne peut intervenir que dans les vingt-quatre mois suivant l'annulation. */
+export const DELAI_REPRISE_MOIS = 24;
 
 export function verifierReprise(e: {
   statutOrigine: string;
@@ -123,7 +123,12 @@ export function verifierReprise(e: {
       message: `La reprise ne peut dépasser ${euros(Math.max(0, restant))} (commission versée, moins les reprises déjà faites).`,
     };
   if (e.maintenant.getTime() > ajouterMois(e.annulationLe, DELAI_REPRISE_MOIS).getTime())
-    return { ok: false, message: "Plus de douze mois depuis l'annulation : reprise impossible." };
+    return {
+      ok: false,
+      message: "Plus de vingt-quatre mois depuis l'annulation : reprise impossible (art. 4.5).",
+    };
+  if (e.annulationLe.getTime() > e.maintenant.getTime() + 60_000)
+    return { ok: false, message: "La date d'annulation ne peut pas être dans le futur." };
   return { ok: true };
 }
 
