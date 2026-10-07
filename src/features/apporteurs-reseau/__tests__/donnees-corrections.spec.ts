@@ -20,6 +20,10 @@ const { signaler } = vi.hoisted(() => ({ signaler: vi.fn() }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => signaler(...a) }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "empreinte" }));
 
+// Retrait du réseau (2026-10-07).
+const { retraitDe } = vi.hoisted(() => ({ retraitDe: vi.fn(async () => null as Date | null) }));
+vi.mock("../retrait", () => ({ retraitDe: (...a: unknown[]) => retraitDe(...(a as [])) }));
+
 const { p, tx } = vi.hoisted(() => {
   const p = {
     apporteurFindUnique: vi.fn(),
@@ -65,7 +69,12 @@ import {
   lireDossierParLien,
   ouvrirDossierDepuisCandidature,
 } from "../donnees";
-import { jetonDossierValide, lienDossierBienForme, urlDossierExemple } from "../jeton";
+import {
+  jetonDossier,
+  jetonDossierValide,
+  lienDossierBienForme,
+  urlDossierExemple,
+} from "../jeton";
 import { CLE_REGISTRE_INDISPONIBLE } from "../signature-regles";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
@@ -235,6 +244,17 @@ describe("D10 : registre muet, le dossier est marqué « à contrôler »", () =
     const d = p.apporteurUpdate.mock.calls[0]![0].data.declarations;
     expect(Object.keys(d).sort()).toEqual(["_registre_indisponible", "dec_1", "dec_2"]);
     expect(d[CLE_REGISTRE_INDISPONIBLE]).toBe("2026-10-05T08:00:00.000Z");
+  });
+});
+
+describe("retrait du réseau (2026-10-07)", () => {
+  it("🔴 un lien VALIDE, même recalculé sur la version courante, n'ouvre pas un dossier retiré", async () => {
+    const jeton = jetonDossier(ID, 3);
+    expect(jeton).not.toBeNull();
+    p.apporteurFindUnique.mockResolvedValue({ versionLien: 3 });
+    retraitDe.mockResolvedValueOnce(new Date());
+    expect(await lireDossierParLien(ID, jeton!)).toBeNull();
+    expect(retraitDe).toHaveBeenCalledWith(ID);
   });
 });
 

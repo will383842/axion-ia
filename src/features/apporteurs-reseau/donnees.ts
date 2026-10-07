@@ -30,6 +30,7 @@ import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
+import { retraitDe } from "./retrait";
 
 const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
 let derniereAlerteAntivirus = 0;
@@ -289,6 +290,9 @@ export async function lireDossierParLien(
     select: { versionLien: true },
   });
   if (!a || !jetonDossierValide(id, a.versionLien, jeton)) return null;
+  // Retiré du réseau (2026-10-07) : page neutre, QUEL QUE SOIT le lien — même un lien
+  // recalculé sur la version courante n'ouvre pas un dossier retiré.
+  if (await retraitDe(id)) return null;
   return lireDossier(id);
 }
 

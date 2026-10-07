@@ -32,6 +32,8 @@ const ONGLETS = [
     libelle: "Dossier en cours",
     statuts: ["dossier_en_cours", "a_verifier", "a_completer"],
   },
+  // Retirés du réseau (2026-10-07) : tous statuts, et seulement eux.
+  { cle: "retires", libelle: "Retirés", statuts: [] },
   { cle: "fermes", libelle: "Refusés ou terminés", statuts: ["refuse", "resilie"] },
 ] as const;
 
@@ -49,16 +51,21 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/apporteurs`;
-  const { parStatut, commissionsDuesCents } = await compterApporteurs();
-  const compte = (statuts: readonly string[]) =>
+  const { parStatut, commissionsDuesCents, retires } = await compterApporteurs();
+  const compteStatuts = (statuts: readonly string[]) =>
     statuts.reduce((s, st) => s + (parStatut[st as keyof typeof parStatut] ?? 0), 0);
+  const compte = (statuts: readonly string[], cle?: string) =>
+    cle === "retires" ? retires : compteStatuts(statuts);
   const ongletParDefaut = "actifs";
   const onglet =
     ONGLETS.find((o) => o.cle === sp.onglet) ?? ONGLETS.find((o) => o.cle === ongletParDefaut)!;
-  const total = compte(onglet.statuts);
+  const total = compte(onglet.statuts, onglet.cle);
   const pages = Math.max(1, Math.ceil(total / PAR_PAGE));
   const page = Math.min(pages, Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1));
-  const lignes = await listerApporteurs({ statuts: onglet.statuts, page });
+  const lignes =
+    onglet.cle === "retires"
+      ? await listerApporteurs({ retires: true, page })
+      : await listerApporteurs({ statuts: onglet.statuts, page });
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
@@ -93,7 +100,7 @@ export default async function ApporteursPage({ params, searchParams }: PageProps
             aria-current={o.cle === onglet.cle ? "page" : undefined}
             className={o.cle === onglet.cle ? "admin-button" : "admin-button-secondary"}
           >
-            {o.libelle} ({compte(o.statuts)})
+            {o.libelle} ({compte(o.statuts, o.cle)})
           </Link>
         ))}
         <Link href={`${base}/entreprises`} className="admin-button-secondary">
