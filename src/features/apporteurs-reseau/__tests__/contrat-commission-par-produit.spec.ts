@@ -9,7 +9,8 @@ const texte = CONTRAT_V2_MARKDOWN.replace(/\s+/g, " ");
 
 describe("contrat 2.1 : commission par produit et produits nouveaux", () => {
   it("la version du texte signé change", () => {
-    expect(CONTRAT_VERSION).toBe("2.1");
+    // 2.1 a introduit A1.7 ; les versions suivantes le gardent (2.2 le 07/10).
+    expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.1);
   });
 
   it("A1.7 : produits listés, produits créés après la signature, non-rétroactivité, motivation", () => {

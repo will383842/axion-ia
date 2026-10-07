@@ -24,7 +24,7 @@ export * from "./regles-dossier";
 
 // ── Délais (contrat v2) ──────────────────────────────────────────────────
 
-/** Art. 3.4 : durée de la protection, à compter de la confirmation. */
+/** Art. 3.4 (contrat 2.2) : durée de la protection, à compter de la DÉCLARATION. */
 export const PROTECTION_MOIS = 6;
 /** Art. 3.4 al. 3 : prolongation unique et automatique. */
 export const PROLONGATION_MOIS = 3;
@@ -37,11 +37,6 @@ export const CONFIRMATION_TACITE_JOURS = 30;
  * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
  */
 export const ADRESSE_VALIDE_JOURS = 45;
-/**
- * Art. 3.4 al. 2 : sans rendez-vous, devis ni commande dans ce délai après la première réponse.
- * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
- */
-export const PEREMPTION_JOURS = 90;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
 export const PARRAINAGE_MOIS = 6;
@@ -154,9 +149,12 @@ export function manquesPourSigner(d: {
 
 // ── Protection d'une entreprise présentée ────────────────────────────────
 
-/** Fin de la protection à partir de la confirmation (art. 3.4 al. 1). */
-export function finDeProtection(confirmeeAt: Date): Date {
-  return ajouterMois(confirmeeAt, PROTECTION_MOIS);
+/**
+ * Fin de la protection (art. 3.4, contrat 2.2) : six mois à compter de la DÉCLARATION,
+ * c'est-à-dire de l'horodatage serveur de son enregistrement (`recueAt`), plus de la confirmation.
+ */
+export function finDeProtection(declareeAt: Date): Date {
+  return ajouterMois(declareeAt, PROTECTION_MOIS);
 }
 
 /** Date de la confirmation réputée acquise, si l'entreprise n'a pas répondu (art. 3.2). */

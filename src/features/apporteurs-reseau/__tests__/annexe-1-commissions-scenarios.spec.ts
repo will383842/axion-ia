@@ -10,7 +10,6 @@ import {
   ADRESSE_VALIDE_JOURS,
   PALIERS_FORMATION,
   FORFAIT_CONFERENCE_CENTS,
-  PEREMPTION_JOURS,
   calculerCommission,
   partParrainage,
 } from "../regles";
@@ -169,11 +168,11 @@ describe("commission seulement quand TOUTES les factures de la commande sont pay
 });
 
 describe("période de démarrage (art. 2.8) : délais opérés à la main, pas par le passage quotidien", () => {
-  it("ADRESSE_VALIDE_JOURS (45) et PEREMPTION_JOURS (90) restent des constantes de référence, appliquées manuellement", () => {
-    expect([ADRESSE_VALIDE_JOURS, PEREMPTION_JOURS]).toEqual([45, 90]);
+  it("ADRESSE_VALIDE_JOURS (45) reste une constante de référence, appliquée manuellement ; plus de péremption à 90 jours (contrat 2.2)", () => {
+    expect(ADRESSE_VALIDE_JOURS).toBe(45);
   });
   it.todo(
-    "automatiser la fin d'attribution sans adresse valide (45 j) et la péremption sans suite (90 j) à la sortie de la période de démarrage",
+    "automatiser la fin d'attribution sans adresse valide (45 j) à la sortie de la période de démarrage",
   );
 });
 
