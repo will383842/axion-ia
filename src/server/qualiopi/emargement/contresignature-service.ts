@@ -46,7 +46,9 @@ import {
   ConditionSuspensiveEnAttenteError,
   MESSAGE_REFUS_CONDITION_SUSPENSIVE,
   REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONVENTION_CADUQUE,
   blocageConditionSuspensive,
+  refusDuBlocage,
   exigerConditionLevee,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 
@@ -62,6 +64,7 @@ export type RefusContresignature =
   | "session_introuvable"
   | "session_close"
   | typeof REFUS_CONDITION_SUSPENSIVE
+  | typeof REFUS_CONVENTION_CADUQUE
   | "journee_non_declaree"
   | "formateur_introuvable"
   | "pas_encore_commence"
@@ -164,10 +167,11 @@ export async function contresignerDemiJournee(
 
   // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement, donc
   // pas de contresignature. Relu plus bas dans la transaction d'insertion.
-  if ((await blocageConditionSuspensive(session.id)).bloque) {
+  const blocage = await blocageConditionSuspensive(session.id);
+  if (blocage.bloque) {
     return {
       ok: false,
-      raison: REFUS_CONDITION_SUSPENSIVE,
+      raison: refusDuBlocage(blocage),
       message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
     };
   }
@@ -358,7 +362,7 @@ export async function contresignerDemiJournee(
         await nettoyerImageOrpheline(image);
         return {
           ok: false,
-          raison: REFUS_CONDITION_SUSPENSIVE,
+          raison: err.code,
           message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
         };
       }

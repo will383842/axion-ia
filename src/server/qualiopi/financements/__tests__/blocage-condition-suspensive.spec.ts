@@ -47,6 +47,7 @@ import {
   ACTION_LEVEE_BLOCAGE,
   ConditionSuspensiveEnAttenteError,
   REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONVENTION_CADUQUE,
   blocageConditionSuspensive,
   exigerConditionLevee,
   leverBlocage,
@@ -55,11 +56,17 @@ import {
 const SESSION = "5f1d7d4a-0a8e-4c55-9a43-6a4c6e2f9b11";
 const DOC = "0b6f0d55-6c1d-4d0e-9f73-0d2a1b7c3e44";
 
-const convention = (etat: string | null) => ({
+const convention = (
+  etat: string | null,
+  over: Partial<{ id: string; numero: string; conditionSuspensiveOpco: boolean }> = {},
+) => ({
   id: DOC,
   numero: "CONV-2026-0001",
+  conditionSuspensiveOpco: true,
   etatConditionSuspensive: etat,
+  ...over,
 });
+const AUTRE = "7c1f9a3e-2b44-4d6a-8e10-5a9d3c2b1f00";
 
 beforeEach(() => {
   for (const m of [findManyDocs, findManyLogs, findUniqueDoc, countLogs, createLog, queryRaw]) {
@@ -78,15 +85,20 @@ describe("blocageConditionSuspensive", () => {
     });
   });
 
-  it("n'interroge que les conventions de la session, non annulées, sous condition", async () => {
+  it("n'interroge que les conventions de la session, non annulées", async () => {
     findManyDocs.mockResolvedValue([]);
     await blocageConditionSuspensive(SESSION);
     expect(findManyDocs.mock.calls[0]![0].where).toEqual({
       sessionId: SESSION,
       type: { in: ["convention", "convention_tripartite"] },
       annuleeAt: null,
-      conditionSuspensiveOpco: true,
     });
+  });
+
+  it("une session sans convention sous condition n'est pas jugée", async () => {
+    findManyDocs.mockResolvedValue([convention(null, { conditionSuspensiveOpco: false })]);
+    expect(await blocageConditionSuspensive(SESSION)).toEqual({ bloque: false });
+    expect(findManyLogs).not.toHaveBeenCalled();
   });
 
   it("admet après accord (active) et ne bloque pas une session sans condition", async () => {
@@ -96,9 +108,60 @@ describe("blocageConditionSuspensive", () => {
     expect(await blocageConditionSuspensive(SESSION)).toEqual({ bloque: false });
   });
 
-  it("ne bloque pas une convention caduque (la condition a décidé : l'acceptance ne vise que `en_attente`)", async () => {
+  it("INT-T81-A règle (2) : la SEULE convention caduque BLOQUE, refus `convention_caduque`", async () => {
     findManyDocs.mockResolvedValue([convention("caduque")]);
+    expect(await blocageConditionSuspensive(SESSION)).toEqual({
+      bloque: true,
+      motif: "convention_caduque",
+      numeros: ["CONV-2026-0001"],
+    });
+  });
+
+  it("règle (2) : une caduque et une ACTIVE ⇒ la caduque est ignorée, session ouverte", async () => {
+    findManyDocs.mockResolvedValue([
+      convention("caduque"),
+      convention("active", { id: AUTRE, numero: "CONV-2026-0002" }),
+    ]);
     expect(await blocageConditionSuspensive(SESSION)).toEqual({ bloque: false });
+  });
+
+  it("règle (2) : une caduque et une convention SANS condition ⇒ session ouverte", async () => {
+    findManyDocs.mockResolvedValue([
+      convention("caduque"),
+      convention(null, { id: AUTRE, conditionSuspensiveOpco: false }),
+    ]);
+    expect(await blocageConditionSuspensive(SESSION)).toEqual({ bloque: false });
+  });
+
+  it("règle (2) : une caduque et une en attente NON levée ⇒ bloquée par l'attente", async () => {
+    findManyDocs.mockResolvedValue([
+      convention("caduque"),
+      convention("en_attente", { id: AUTRE, numero: "CONV-2026-0002" }),
+    ]);
+    expect(await blocageConditionSuspensive(SESSION)).toMatchObject({
+      bloque: true,
+      motif: "condition_en_attente",
+      numeros: ["CONV-2026-0002"],
+    });
+  });
+
+  it("règle (2) : une caduque et une en attente LEVÉE ⇒ ouverte", async () => {
+    findManyDocs.mockResolvedValue([
+      convention("caduque"),
+      convention("en_attente", { id: AUTRE, numero: "CONV-2026-0002" }),
+    ]);
+    findManyLogs.mockResolvedValue([{ targetId: AUTRE }]);
+    expect(await blocageConditionSuspensive(SESSION)).toEqual({ bloque: false });
+  });
+
+  it("une levée écrite avant la bascule en caduque ne couvre RIEN : pas d'état mixte", async () => {
+    // La convention a été levée (ligne au journal) PUIS est devenue caduque.
+    findManyDocs.mockResolvedValue([convention("caduque")]);
+    findManyLogs.mockResolvedValue([{ targetId: DOC }]);
+    expect(await blocageConditionSuspensive(SESSION)).toMatchObject({
+      bloque: true,
+      motif: "convention_caduque",
+    });
   });
 
   it("admet après une levée journalisée de CETTE convention", async () => {
@@ -143,6 +206,13 @@ describe("exigerConditionLevee — l'appel direct au service", () => {
     const err = await exigerConditionLevee(SESSION).catch((e: unknown) => e);
     expect(err).toBeInstanceOf(ConditionSuspensiveEnAttenteError);
     expect((err as ConditionSuspensiveEnAttenteError).code).toBe(REFUS_CONDITION_SUSPENSIVE);
+  });
+
+  it("la caducité a son refus NOMMÉ, distinct de celui de l'attente", async () => {
+    findManyDocs.mockResolvedValue([convention("caduque")]);
+    const err = await exigerConditionLevee(SESSION).catch((e: unknown) => e);
+    expect((err as ConditionSuspensiveEnAttenteError).code).toBe(REFUS_CONVENTION_CADUQUE);
+    expect((err as Error).message).toContain("caduque");
   });
 
   it("passe quand la session n'est pas bloquée", async () => {
@@ -238,5 +308,59 @@ describe("leverBlocage", () => {
       });
     }
     expect(queryRaw).not.toHaveBeenCalled();
+  });
+
+  it("DEUX levées concurrentes sur la même convention : une acceptée, l'autre `deja_levee`, UNE ligne au journal", async () => {
+    // Le verrou de ligne (`FOR UPDATE`) sérialise les transactions : on le
+    // reproduit par une file, et le journal est un état partagé.
+    const journalEcrit: unknown[] = [];
+    let queue: Promise<unknown> = Promise.resolve();
+    const verrou = <T>(fn: () => Promise<T>): Promise<T> => {
+      const r = queue.then(fn, fn);
+      queue = r.catch(() => undefined);
+      return r;
+    };
+    findUniqueDoc.mockResolvedValue(docEnAttente);
+    countLogs.mockImplementation(async () => journalEcrit.length);
+    createLog.mockImplementation(async (a: unknown) => {
+      await Promise.resolve();
+      journalEcrit.push(a);
+    });
+    const { prisma } = await import("@/lib/prisma");
+    const reel = prisma.$transaction;
+    (prisma as unknown as { $transaction: unknown }).$transaction = (
+      fn: (t: typeof tx) => Promise<unknown>,
+    ) => verrou(() => fn(tx));
+    try {
+      const [a, b] = await Promise.all([
+        leverBlocage({ documentId: DOC, journal: journal() }),
+        leverBlocage({ documentId: DOC, journal: journal() }),
+      ]);
+      const resultats = [a, b].map((r) => (r.ok ? "ok" : r.raison)).sort();
+      expect(resultats).toEqual(["deja_levee", "ok"]);
+      expect(journalEcrit).toHaveLength(1);
+    } finally {
+      (prisma as unknown as { $transaction: unknown }).$transaction = reel;
+    }
+  });
+
+  it("levée concurrente à une bascule en caduque : jamais d'état mixte, dans les DEUX ordres", async () => {
+    // Ordre 1 — la bascule passe d'abord : la levée relit `caduque` sous le verrou, REFUSÉE.
+    findUniqueDoc.mockResolvedValue({ ...docEnAttente, etatConditionSuspensive: "caduque" });
+    countLogs.mockResolvedValue(0);
+    expect(await leverBlocage({ documentId: DOC, journal: journal() })).toEqual({
+      ok: false,
+      raison: "pas_en_attente",
+    });
+    expect(createLog).not.toHaveBeenCalled();
+
+    // Ordre 2 — la levée passe d'abord, puis la bascule : la session reste BLOQUÉE
+    // (la levée ne couvre plus une convention caduque).
+    findManyDocs.mockResolvedValue([convention("caduque")]);
+    findManyLogs.mockResolvedValue([{ targetId: DOC }]);
+    expect(await blocageConditionSuspensive(SESSION)).toMatchObject({
+      bloque: true,
+      motif: "convention_caduque",
+    });
   });
 });

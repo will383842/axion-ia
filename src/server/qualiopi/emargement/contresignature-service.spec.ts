@@ -387,4 +387,11 @@ describe("contresignerDemiJournee — INT-T81-A : condition suspensive OPCO en a
     expect(mockStore).not.toHaveBeenCalled();
     expect(mockPrisma.emargementContresignature.create).not.toHaveBeenCalled();
   });
+
+  it("règle (2) de la juriste : la SEULE convention caduque refuse par `convention_caduque`", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "convention_caduque", numeros: ["C-1"] });
+    const r = await contresignerDemiJournee(entree());
+    expect(r).toMatchObject({ ok: false, raison: "convention_caduque" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
 });

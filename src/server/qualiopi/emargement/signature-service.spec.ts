@@ -964,6 +964,13 @@ describe("signerCreneau — INT-T81-A : condition suspensive OPCO en attente", (
     expect(mockPrisma.emargementSignature.create).not.toHaveBeenCalled();
   });
 
+  it("règle (2) de la juriste : la SEULE convention caduque refuse par `convention_caduque`", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "convention_caduque", numeros: ["C-1"] });
+    const r = await signerCreneau(entree);
+    expect(r).toMatchObject({ ok: false, raison: "convention_caduque" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+
   it("admis quand la condition est accomplie ou le blocage levé", async () => {
     const r = await signerCreneau(entree);
     expect(r.ok).toBe(true);

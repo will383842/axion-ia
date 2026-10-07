@@ -30,8 +30,8 @@ import {
 } from "@/server/qualiopi/emargement/token-service";
 import { inscriptionAttendSonLien } from "@/server/qualiopi/emargement/remise-lien";
 import {
-  MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN,
   blocageConditionSuspensive,
+  messageAdminDuBlocage,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 
 export interface EchecEnvoiLien {
@@ -114,9 +114,8 @@ export async function envoyerLiensPourSession(input: {
   const seulementSansLien = input.cible === "sans_lien_remis";
   // 🔴 INT-T81-A — condition suspensive OPCO en attente : aucun lien d'émargement
   // ne part (la signature serait refusée de toute façon, côté serveur).
-  if ((await blocageConditionSuspensive(input.sessionId)).bloque) {
-    return { ok: false, motif: MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN };
-  }
+  const blocage = await blocageConditionSuspensive(input.sessionId);
+  if (blocage.bloque) return { ok: false, motif: messageAdminDuBlocage(blocage) };
   const formation = await prisma.trainingSession.findUnique({
     where: { id: input.sessionId },
     select: {

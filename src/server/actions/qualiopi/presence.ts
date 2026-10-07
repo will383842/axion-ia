@@ -51,8 +51,8 @@ import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presen
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import {
-  MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN,
   blocageConditionSuspensive,
+  messageAdminDuBlocage,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -403,9 +403,8 @@ export async function saveEmargementAction(input: {
   if (!verrou.ok) return verrou;
   // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement,
   // même à la main. Jugé ici, côté serveur, pas seulement à l'écran.
-  if ((await blocageConditionSuspensive(v.sessionId)).bloque) {
-    return { error: MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN };
-  }
+  const blocage = await blocageConditionSuspensive(v.sessionId);
+  if (blocage.bloque) return { error: messageAdminDuBlocage(blocage) };
 
   // Vérification session. `dateDebut` sert à invalider le cache des indicateurs
   // de la BONNE année (une session de décembre émargée en janvier invaliderait

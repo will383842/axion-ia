@@ -78,8 +78,8 @@ import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/org
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
-  MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN,
   blocageConditionSuspensive,
+  messageAdminDuBlocage,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 import {
   chargerDossierPretADeposer,
@@ -820,9 +820,8 @@ export async function produireConvocation(
   if (!enrollment) return { ok: false, motif: "Inscription introuvable" };
 
   // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas de convocation.
-  if ((await blocageConditionSuspensive(enrollment.session.id)).bloque) {
-    return { ok: false, motif: MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN };
-  }
+  const blocage = await blocageConditionSuspensive(enrollment.session.id);
+  if (blocage.bloque) return { ok: false, motif: messageAdminDuBlocage(blocage) };
 
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;

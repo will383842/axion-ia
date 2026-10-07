@@ -46,7 +46,9 @@ import {
   ConditionSuspensiveEnAttenteError,
   MESSAGE_REFUS_CONDITION_SUSPENSIVE,
   REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONVENTION_CADUQUE,
   blocageConditionSuspensive,
+  refusDuBlocage,
   exigerConditionLevee,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 
@@ -104,7 +106,8 @@ export type RefusSignature =
   | "nom_non_concordant"
   | "modules_invalides"
   | "conflit_concurrent"
-  | typeof REFUS_CONDITION_SUSPENSIVE;
+  | typeof REFUS_CONDITION_SUSPENSIVE
+  | typeof REFUS_CONVENTION_CADUQUE;
 
 export type ResultatSignature =
   | { ok: true; signatureId: string; selfHash: string }
@@ -279,10 +282,11 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement.
   // Premier refus, AVANT l'écriture de l'image sur R2 ; il est relu plus bas
   // DANS la transaction d'insertion, qui est celle qui fait foi.
-  if ((await blocageConditionSuspensive(session.id)).bloque) {
+  const blocage = await blocageConditionSuspensive(session.id);
+  if (blocage.bloque) {
     return {
       ok: false,
-      raison: REFUS_CONDITION_SUSPENSIVE,
+      raison: refusDuBlocage(blocage),
       message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
     };
   }
@@ -541,7 +545,7 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
         await nettoyerImageOrpheline(image);
         return {
           ok: false,
-          raison: REFUS_CONDITION_SUSPENSIVE,
+          raison: err.code,
           message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
         };
       }

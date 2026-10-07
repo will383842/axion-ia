@@ -242,11 +242,13 @@ export type MotifLeveeBlocage = (typeof MOTIFS_LEVEE_BLOCAGE)[number];
 /** Client Prisma ou transaction : la garde se relit dans la transaction de l'acte. */
 export type ClientLecture = Pick<Prisma.TransactionClient, "documentGenere" | "activityLog">;
 
+export type MotifBlocage = "condition_en_attente" | "condition_illisible" | "convention_caduque";
+
 export type BlocageSession =
   | { readonly bloque: false }
   | {
       readonly bloque: true;
-      readonly motif: "condition_en_attente" | "condition_illisible";
+      readonly motif: MotifBlocage;
       /** Numéros des conventions qui bloquent (aucune donnée de stagiaire). */
       readonly numeros: readonly string[];
     };
@@ -254,6 +256,15 @@ export type BlocageSession =
 /**
  * La session est-elle bloquée ? Ne lève JAMAIS : une lecture qui échoue rend
  * `condition_illisible` (échec fermé).
+ *
+ * Deux règles de la juriste (axion-apporteurs #782, 6034164704, art. 1304-4) :
+ *   - une convention `en_attente` bloque, sauf levée journalisée ;
+ *   - une convention `caduque` ne fonde AUCUNE convocation ni émargement : elle
+ *     est IGNORÉE si une AUTRE convention non annulée et non caduque couvre la
+ *     session (sans condition, `active`, ou `en_attente` dont le blocage est
+ *     levé) ; sinon la session est BLOQUÉE (`convention_caduque`).
+ * Une levée ne vaut que pour une convention `en_attente` : sur une convention
+ * devenue caduque, elle ne couvre plus rien.
  */
 export async function blocageConditionSuspensive(
   sessionId: string,
@@ -265,40 +276,71 @@ export async function blocageConditionSuspensive(
         sessionId,
         type: { in: ["convention", "convention_tripartite"] },
         annuleeAt: null,
-        conditionSuspensiveOpco: true,
       },
-      select: { id: true, numero: true, etatConditionSuspensive: true },
+      select: {
+        id: true,
+        numero: true,
+        conditionSuspensiveOpco: true,
+        etatConditionSuspensive: true,
+      },
     });
-    const ouvertes = conventions.filter(
+    const sousCondition = conventions.filter((c) => c.conditionSuspensiveOpco);
+    if (sousCondition.length === 0) return { bloque: false };
+
+    // Ni accomplie ni défaillie : en attente, NULL ou inconnu (échec fermé).
+    const ouvertes = sousCondition.filter(
       (c) => c.etatConditionSuspensive !== "active" && c.etatConditionSuspensive !== "caduque",
     );
-    if (ouvertes.length === 0) return { bloque: false };
-
-    const levees = await client.activityLog.findMany({
-      where: {
-        action: ACTION_LEVEE_BLOCAGE,
-        targetType: "DocumentGenere",
-        targetId: { in: ouvertes.map((c) => c.id) },
-      },
-      select: { targetId: true },
-    });
-    const leveesIds = new Set(levees.map((l) => l.targetId));
+    let leveesIds = new Set<string | null>();
+    if (ouvertes.length > 0) {
+      const levees = await client.activityLog.findMany({
+        where: {
+          action: ACTION_LEVEE_BLOCAGE,
+          targetType: "DocumentGenere",
+          targetId: { in: ouvertes.map((c) => c.id) },
+        },
+        select: { targetId: true },
+      });
+      leveesIds = new Set(levees.map((l) => l.targetId));
+    }
     const bloquantes = ouvertes.filter((c) => !leveesIds.has(c.id));
-    if (bloquantes.length === 0) return { bloque: false };
+    if (bloquantes.length > 0) {
+      const illisible = bloquantes.some((c) => c.etatConditionSuspensive !== "en_attente");
+      return {
+        bloque: true,
+        motif: illisible ? "condition_illisible" : "condition_en_attente",
+        numeros: bloquantes.map((c) => c.numero),
+      };
+    }
 
-    const illisible = bloquantes.some((c) => c.etatConditionSuspensive !== "en_attente");
-    return {
-      bloque: true,
-      motif: illisible ? "condition_illisible" : "condition_en_attente",
-      numeros: bloquantes.map((c) => c.numero),
-    };
+    const caduques = sousCondition.filter((c) => c.etatConditionSuspensive === "caduque");
+    if (caduques.length === 0) return { bloque: false };
+
+    // Ici, toute convention sous condition est `active`, `caduque` ou levée.
+    const couvrante = conventions.some(
+      (c) =>
+        !c.conditionSuspensiveOpco ||
+        c.etatConditionSuspensive === "active" ||
+        leveesIds.has(c.id),
+    );
+    if (couvrante) return { bloque: false };
+    return { bloque: true, motif: "convention_caduque", numeros: caduques.map((c) => c.numero) };
   } catch {
     return { bloque: true, motif: "condition_illisible", numeros: [] };
   }
 }
 
-/** Refus NOMMÉ : ce que l'appelant reconnaît, jamais une erreur anonyme. */
+/** Refus NOMMÉS : ce que l'appelant reconnaît, jamais une erreur anonyme. */
 export const REFUS_CONDITION_SUSPENSIVE = "condition_suspensive_en_attente" as const;
+export const REFUS_CONVENTION_CADUQUE = "convention_caduque" as const;
+export type RefusBlocage = typeof REFUS_CONDITION_SUSPENSIVE | typeof REFUS_CONVENTION_CADUQUE;
+
+/** Le refus nommé d'un blocage : la caducité a le sien, tout le reste (attente, illisible) l'autre. */
+export function refusDuBlocage(blocage: Extract<BlocageSession, { bloque: true }>): RefusBlocage {
+  return blocage.motif === "convention_caduque"
+    ? REFUS_CONVENTION_CADUQUE
+    : REFUS_CONDITION_SUSPENSIVE;
+}
 
 /**
  * Message vu du STAGIAIRE ou du formateur (page publique, poste du formateur) :
@@ -311,11 +353,24 @@ export const MESSAGE_REFUS_CONDITION_SUSPENSIVE =
 export const MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN =
   "La convention de cette session est sous condition suspensive : l'accord de l'OPCO n'est pas encore constaté. La convocation et l'émargement sont suspendus jusqu'à cet accord, ou jusqu'à une levée explicite par un administrateur.";
 
+export const MESSAGE_REFUS_CONVENTION_CADUQUE_ADMIN =
+  "La convention de cette session est caduque : sa condition suspensive a défailli. Elle ne fonde ni convocation ni émargement ; une nouvelle convention est nécessaire.";
+
+/** Le message de console d'un blocage. */
+export function messageAdminDuBlocage(
+  blocage: Extract<BlocageSession, { bloque: true }>,
+): string {
+  return blocage.motif === "convention_caduque"
+    ? MESSAGE_REFUS_CONVENTION_CADUQUE_ADMIN
+    : MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN;
+}
+
 export class ConditionSuspensiveEnAttenteError extends Error {
-  readonly code = REFUS_CONDITION_SUSPENSIVE;
+  readonly code: RefusBlocage;
   constructor(readonly blocage: Extract<BlocageSession, { bloque: true }>) {
-    super(MESSAGE_REFUS_CONDITION_SUSPENSIVE_ADMIN);
+    super(messageAdminDuBlocage(blocage));
     this.name = "ConditionSuspensiveEnAttenteError";
+    this.code = refusDuBlocage(blocage);
   }
 }
 
