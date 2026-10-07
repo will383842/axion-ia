@@ -704,7 +704,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // commissions, en attendant Axion Partners.
     {
       href: `${base}/apporteurs`,
-      label: "Apporteurs (dossiers et contrats)",
+      label: "Apporteurs",
       icon: "Handshake",
       group: "apporteurs",
       navLevel: 0,
