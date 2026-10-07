@@ -78,6 +78,9 @@ export function urlDossier(apporteurId: string, versionLien: number): string | n
  * Lien D'EXEMPLE pour l'aperçu de la console (dossier pas encore ouvert) : même forme que
  * le vrai, mais ni l'identifiant ni le jeton ne sont valides (jamais de jeton fabriqué).
  */
+/** L'identifiant du lien d'exemple : la page du dossier le reconnaît et montre un écran d'aperçu. */
+export const ID_DOSSIER_EXEMPLE = "00000000-0000-4000-8000-000000000000";
+
 export function urlDossierExemple(): string {
-  return `${SITE_URL.replace(/\/+$/, "")}/apporteur/dossier/00000000-0000-4000-8000-000000000000/${"x".repeat(43)}`;
+  return `${SITE_URL.replace(/\/+$/, "")}/apporteur/dossier/${ID_DOSSIER_EXEMPLE}/${"x".repeat(43)}`;
 }

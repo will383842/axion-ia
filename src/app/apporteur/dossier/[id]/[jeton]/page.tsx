@@ -29,6 +29,7 @@ import {
 } from "@/features/apporteurs-reseau/signature";
 
 import { lireDeclarationsDe } from "@/features/apporteurs-reseau/declaration-entreprise";
+import { ID_DOSSIER_EXEMPLE } from "@/features/apporteurs-reseau/jeton";
 
 import { ContratLisible } from "./ContratLisible";
 import { Coquille, EcranEtat } from "./Coquille";
@@ -52,6 +53,18 @@ interface PageProps {
 
 export default async function DossierApporteurPage({ params }: PageProps) {
   const { id, jeton } = await params;
+  // Le lien d'EXEMPLE de l'aperçu de la console : un écran qui le dit, jamais un 404.
+  if (id.toLowerCase() === ID_DOSSIER_EXEMPLE) {
+    return (
+      <Coquille>
+        <EcranEtat
+          pastilleTexte={TEXTES.exemplePastille}
+          titre={TEXTES.exempleTitre}
+          ligne={TEXTES.exempleLigne}
+        />
+      </Coquille>
+    );
+  }
   const dossier = await lireDossierParLien(id, jeton);
   if (!dossier) notFound();
   const etat = etatDeLaPage(dossier.statut);
