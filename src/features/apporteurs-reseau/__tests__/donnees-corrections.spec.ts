@@ -274,7 +274,25 @@ describe("D17 : dossier refusé puis « Retenu » plus tard", () => {
       statut: "refuse",
     });
     const r = await ouvrirDossierDepuisCandidature("s1", { creer: false });
-    expect(r.ok).toBe(true);
+    // 2026-10-07 : l'ancien lien d'un dossier refusé est MORT (404). L'aperçu ne le
+    // montre plus : il retombe sur le lien d'exemple (`ferme` absent).
+    expect(r).toMatchObject({ ok: false });
+    expect(r).not.toHaveProperty("ferme");
+    expect(p.apporteurUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 dossier RÉSILIÉ : aucun lien (sa page répondrait 404), et la raison est dite", async () => {
+    p.apporteurFindUnique.mockResolvedValue({
+      id: ID,
+      versionLien: 4,
+      prenom: "enc:Claire",
+      statut: "resilie",
+    });
+    for (const creer of [true, false]) {
+      const r = await ouvrirDossierDepuisCandidature("s1", { creer });
+      expect(r).toMatchObject({ ok: false, ferme: true });
+      expect((r as { message: string }).message).toMatch(/résilié/);
+    }
     expect(p.apporteurUpdate).not.toHaveBeenCalled();
   });
 

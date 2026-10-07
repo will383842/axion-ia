@@ -28,7 +28,7 @@ import { alerterPieceVigilance } from "./alerte-vigilance";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
-import { CLE_REGISTRE_INDISPONIBLE, vigilanceDemandee } from "./signature-regles";
+import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 
 const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
 let derniereAlerteAntivirus = 0;
@@ -73,7 +73,7 @@ export async function ouvrirDossierDepuisCandidature(
   options: { creer?: boolean } = {},
 ): Promise<
   | { ok: true; apporteurId: string; versionLien: number; email: string; prenom: string }
-  | { ok: false; message: string }
+  | { ok: false; message: string; ferme?: true }
 > {
   const s = await prisma.submission.findUnique({
     where: { id: submissionId },
@@ -118,6 +118,23 @@ export async function ouvrirDossierDepuisCandidature(
       versionLien: rouvert.versionLien,
       email,
       prenom: decryptPii(existant.prenom) ?? "",
+    };
+  }
+  // 🔴 Un lien vers un dossier que la page refuse (résilié : `etatDeLaPage` → neutre →
+  // 404) ne doit JAMAIS partir (2026-10-07). Le rouvrir demanderait de défaire la
+  // signature d'un contrat terminé : c'est une décision humaine, pas un effet de bord
+  // de « Retenu ». L'e-mail part donc sans bouton, et la console le dit.
+  // Refusé, en APERÇU (`creer: false`) : son ancien lien est mort, il ne sera rouvert
+  // qu'à l'envoi — l'aperçu montre le lien d'exemple, pas l'ancien lien (404).
+  if (existant && existant.statut === "refuse") {
+    return { ok: false, message: "Dossier refusé : il sera rouvert à l'envoi." };
+  }
+  if (existant && etatDeLaPage(existant.statut) === "neutre") {
+    return {
+      ok: false,
+      ferme: true,
+      message:
+        "Le dossier d'apporteur de cette personne est fermé (contrat résilié) : l'e-mail part sans lien de dossier. Rouvrez le dossier depuis sa fiche, puis envoyez-lui le lien.",
     };
   }
   if (existant) {

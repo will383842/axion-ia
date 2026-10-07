@@ -295,7 +295,8 @@ export async function enregistrerIssueApporteurAction(
 
   const base = `Issue enregistrée : ${LIBELLE_ISSUE_APPORTEUR[saisie.issue]}.`;
   const sansEmail = prep.sansEmail ? ` ${prep.sansEmail}` : "";
-  const message = `${base}${classement}${phraseEnvoi(envoi)}${sansEmail}`;
+  const alerte = prep.alerteLien ? ` ⚠️ ${prep.alerteLien}` : "";
+  const message = `${base}${classement}${phraseEnvoi(envoi)}${sansEmail}${alerte}`;
   const echecEnvoi = envoi?.statut === "retenu" || envoi?.statut === "file-indisponible";
   return echecEnvoi ? { etat: "erreur", message } : { etat: "ok", message };
 }
