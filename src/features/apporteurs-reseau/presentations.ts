@@ -713,7 +713,7 @@ export async function appliquerReponse(
 
 // ── Actions manuelles ────────────────────────────────────────────────────
 
-/** « L'entreprise a répondu » : protection de 6 mois à compter de la date saisie. */
+/** « L'entreprise a répondu » : confirmée à la date saisie ; protection de 6 mois depuis la DÉCLARATION (2.2). */
 export async function confirmerPresentation(
   id: string,
   confirmeeAt: Date,

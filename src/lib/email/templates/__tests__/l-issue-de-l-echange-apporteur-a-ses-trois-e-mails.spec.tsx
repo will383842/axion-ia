@@ -100,7 +100,9 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("Dès votre contrat signé, vous pourrez nous présenter des entreprises");
     // 2026-10-06 : le dossier signé renvoie au formulaire du lien personnel : « par simple
     // e-mail » ne disait que la moitié du chemin (et promettait un canal que l'espace ne garantit pas).
-    expect(t).toContain("par e-mail ou depuis votre lien personnel");
+    // Contrat 2.2 (art. 3.2) : la déclaration passe par le seul formulaire du lien personnel.
+    expect(t).toContain("depuis votre lien personnel, avec le formulaire « Déclarer une entreprise »");
+    expect(t).not.toContain("par e-mail ou depuis");
     expect(t).not.toContain("par simple e-mail");
     // (La consigne « répondez avec son nom et celui de votre contact » allait avec la date
     // promise : elle est retirée avec elle ; la présentation par e-mail reste dite ci-dessus.)

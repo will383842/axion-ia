@@ -1,8 +1,9 @@
 // E-mails — le RÉSEAU D'APPORTEURS EN DÉMARRAGE MANUEL (2026-10-05).
 //
 // Tant que l'espace apporteur (Axion Partners) n'est pas ouvert, Will gère les
-// apporteurs signés depuis la console : les présentations arrivent par e-mail,
-// et la console envoie les réponses. Quatre messages, un seul fichier :
+// apporteurs signés depuis la console : les présentations arrivent par le formulaire
+// « Déclarer une entreprise » du lien personnel (contrat 2.2, art. 3.2), et la console
+// envoie les réponses. Quatre messages, un seul fichier :
 //   · `apporteur-contrat-signe`        — le contrat est signé : comment nous présenter une entreprise ;
 //   · `apporteur-presentation-recue`   — « bien reçu, elle vous est réservée » ;
 //   · `apporteur-presentation-refusee` — déjà connue / pas disponible / hors champ ;
@@ -150,7 +151,7 @@ export const COPY_DEMARRAGE = {
       "Nous vous répondons pour vous confirmer que c'est noté.",
       "L'entreprise vous est réservée : la date de votre déclaration fait foi.",
       (mois: number) =>
-        `Dès que nous avons pris contact avec l'entreprise de votre part, toutes ses commandes signées pendant ${mois} mois vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
+        `Une fois l'entreprise attribuée, toutes ses commandes signées pendant ${mois} mois à compter de votre déclaration vous sont commissionnées. Vous n'avez pas à suivre le client : nous nous en occupons.`,
     ],
     commissionTitre: "Votre commission",
     parrainage: (pct: string, mois: number) =>
@@ -174,7 +175,7 @@ export const COPY_DEMARRAGE = {
     confirmation: (personne: string | null) =>
       `Nous prenons contact avec ${personne ?? "la personne que vous avez rencontrée"} de votre part : nous lui indiquons que c'est vous qui nous avez parlé d'elle (votre prénom et votre nom, jamais vos coordonnées).`,
     protection: (mois: number, jours: number) =>
-      `Dès qu'elle nous répond, ou au plus tard ${jours} jours après notre message, toutes les commandes de l'entreprise signées pendant ${mois} mois vous sont commissionnées.`,
+      `Dès qu'elle nous répond, ou au plus tard ${jours} jours après notre message, l'entreprise vous est attribuée : toutes ses commandes signées pendant ${mois} mois à compter de votre déclaration vous sont commissionnées.`,
     relais: "Nous prenons le relais : vous n'avez rien d'autre à faire.",
   },
   presentationRefusee: {
