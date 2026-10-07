@@ -37,6 +37,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 
 import {
   allouerNumerosAutofacture,
+  verrouillerSerieAutofacture,
   cumulVigilanceCents,
   dejaEnvoye,
   demanderVigilance,
@@ -253,6 +254,8 @@ export async function facturerApporteur(
 
   await prisma.$transaction(
     async (tx) => {
+      // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
+      await verrouillerSerieAutofacture(tx, numeros);
       const lues = await lireAFacturer(tx, apporteurId, hors);
       const memes =
         lues.length === avant.length &&

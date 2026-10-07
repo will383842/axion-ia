@@ -26,10 +26,23 @@ const etat = vi.hoisted(() => ({
   envoyes: [] as Array<Record<string, unknown>>,
   journal: [] as Array<Record<string, unknown>>,
   pdfs: [] as Array<Record<string, unknown>>,
+  alertes: [] as Array<Record<string, unknown>>,
+  r2Present: true,
+  pdfEchoue: false,
 }));
 
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
+vi.mock("@/lib/destinataires-internes", () => ({
+  destinataireAlertesInternes: () => "alertes@exemple.fr",
+}));
+vi.mock("@/lib/r2-storage", () => ({ existsInR2: vi.fn(async () => etat.r2Present) }));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: vi.fn(async (_g: string, _d: string, _l: string, p: Record<string, unknown>) => {
+    etat.alertes.push(p);
+    return { enqueued: true };
+  }),
+}));
 vi.mock("../envois", () => ({
   envoyer: vi.fn(async (e: Record<string, unknown>) => {
     etat.envoyes.push(e);
@@ -37,9 +50,13 @@ vi.mock("../envois", () => ({
   }),
 }));
 vi.mock("../commissions", () => ({
+  ACTIVITE_NEUTRALISATION: "neutralisation",
+  dejaEnvoye: vi.fn(async () => false),
+  verrouillerSerieAutofacture: vi.fn(async () => undefined),
   moisParis: () => "2026-10",
   allouerNumerosAutofacture: vi.fn(async () => ["AXI-APP-2026-0099"]),
   genererPdfAutofacture: vi.fn(async (e: Record<string, unknown>) => {
+    if (etat.pdfEchoue) return null;
     etat.pdfs.push(e);
     return {
       r2Key: `k/${String(e["numero"])}`,
@@ -61,6 +78,8 @@ function correspond(l: Record<string, unknown>, where: Record<string, unknown>):
     const v = l[k];
     if (c === null) return v === null;
     if (typeof c === "object" && c !== null && "in" in c) return (c.in as unknown[]).includes(v);
+    if (typeof c === "object" && c !== null && "not" in c)
+      return c.not === null ? v !== null && v !== undefined : v !== c.not;
     return v === c;
   });
 }
@@ -76,6 +95,14 @@ vi.mock("@/lib/prisma", () => {
         for (const l of ls) Object.assign(l, a.data);
         return { count: ls.length };
       },
+    ),
+    count: vi.fn(
+      async (a: { where: { OR: Array<Record<string, { in: string[] }>> } }) =>
+        etat.lignes.filter((l) =>
+          a.where.OR.some((w) =>
+            Object.entries(w).some(([k, c]) => c.in.includes(String(l[k as keyof Ligne]))),
+          ),
+        ).length,
     ),
     create: vi.fn(async (a: { data: Record<string, unknown> }) => {
       const id = `rep-${etat.lignes.length + 1}`;
@@ -115,12 +142,17 @@ vi.mock("@/lib/prisma", () => {
         return {};
       }),
     },
-    $transaction: async (cb: (tx: unknown) => unknown) => cb({ commissionApporteur }),
+    $transaction: async (cb: (tx: unknown) => unknown) =>
+      cb({
+        commissionApporteur,
+        $executeRaw: vi.fn(async () => 0),
+        numeroEmis: { count: vi.fn(async () => 0) },
+      }),
   };
   return { prisma };
 });
 
-import { constaterManquement } from "../manquement";
+import { constaterManquement, regenererAvoirsSansPiece } from "../manquement";
 
 const MAINTENANT = new Date("2026-10-08T09:00:00Z");
 const FAITS = "L'entreprise a versé une rétrocession à l'apporteur, non déclarée (art. 8.4).";
@@ -158,6 +190,9 @@ beforeEach(() => {
   etat.envoyes = [];
   etat.journal = [];
   etat.pdfs = [];
+  etat.alertes = [];
+  etat.r2Present = true;
+  etat.pdfEchoue = false;
 });
 
 describe("manquement ou fraude (art. 4.5 bis)", () => {
@@ -245,5 +280,56 @@ describe("manquement ou fraude (art. 4.5 bis)", () => {
       targetId: "P1",
       changes: { faits: FAITS, statutAvant: "confirmee", annulees: 1 },
     });
+  });
+});
+
+describe("relecture de la PR 1371 (a1) : avoir de neutralisation", () => {
+  it("l'avoir porte la marque « neutralisation » (exclue de la DAS2)", async () => {
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    await constater();
+    expect(etat.lignes.find((l) => l.statut === "reprise")).toMatchObject({
+      activite: "neutralisation",
+    });
+  });
+
+  it("PDF en échec : la ligne est retenue, puis le passage horaire régénère la pièce et l'envoie", async () => {
+    etat.pdfEchoue = true;
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    const r = await constater();
+    expect((r as { message: string }).message).toContain("à régénérer");
+    // Encore en échec : une alerte à Williams.
+    etat.r2Present = false;
+    expect(await regenererAvoirsSansPiece(MAINTENANT)).toBe(0);
+    expect(etat.alertes.map((a) => a["code"])).toEqual(["apporteur_avoir_sans_piece"]);
+    // Le stockage répond : régénéré et envoyé avec la pièce.
+    etat.pdfEchoue = false;
+    expect(await regenererAvoirsSansPiece(MAINTENANT)).toBe(1);
+    const envoi = etat.envoyes.find((e) => (e["payload"] as { avoirSeul?: boolean }).avoirSeul);
+    expect(envoi).toMatchObject({
+      jobId: "apporteur-manquement-avoir-AXI-APP-2026-0099",
+      attachments: [{ filename: "AXI-APP-2026-0099.pdf" }],
+    });
+  });
+
+  it("reprise imputée sur une autofacture dont la seule ligne due est retenue : libérée pour réimputation", async () => {
+    etat.lignes = [
+      ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" }),
+      ligne("r", "reprise", {
+        presentationId: null,
+        factureId: "F-r",
+        montantCents: -10_000,
+        autofactureNumero: "AXI-APP-2026-0001",
+        avoirNumero: "AXI-APP-2026-0002",
+      }),
+    ];
+    await constater();
+    expect(etat.lignes.find((l) => l.id === "r")!).toMatchObject({
+      autofactureNumero: null,
+      avoirNumero: null,
+      verseeAt: null,
+    });
+    expect(etat.journal.some((j) => j["action"] === "commission_apporteur.reprise_liberee")).toBe(
+      true,
+    );
   });
 });

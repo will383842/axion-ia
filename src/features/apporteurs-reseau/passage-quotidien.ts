@@ -39,6 +39,7 @@ import {
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { regenererAvoirsSansPiece } from "./manquement";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
@@ -190,9 +191,15 @@ type NomEtape =
   | "commande-signee"
   | "rappels-dossier"
   | "chiffrement-pieces"
+  | "avoirs-sans-piece"
   | "realisation";
 
-const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "realisation", "autofacturation"];
+const ETAPES_FACTURATION: readonly NomEtape[] = [
+  "commissions",
+  "realisation",
+  "autofacturation",
+  "avoirs-sans-piece",
+];
 
 function bilanVide(): BilanPassageReseau {
   return {
@@ -239,6 +246,8 @@ async function passer(
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
     // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
     ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],
+    // Art. 4.5 bis : un avoir de neutralisation resté sans PDF est régénéré et envoyé.
+    ["avoirs-sans-piece", async () => void (await regenererAvoirsSansPiece(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

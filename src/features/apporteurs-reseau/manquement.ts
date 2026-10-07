@@ -21,11 +21,22 @@
 
 import { randomUUID } from "node:crypto";
 
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
+import { existsInR2 } from "@/lib/r2-storage";
+import { enqueueEmail } from "@/server/queue/queues";
 
 import { dateFr } from "./autofacture-donnees";
-import { allouerNumerosAutofacture, genererPdfAutofacture, moisParis } from "./commissions";
+import {
+  ACTIVITE_NEUTRALISATION,
+  allouerNumerosAutofacture,
+  dejaEnvoye,
+  genererPdfAutofacture,
+  moisParis,
+  verrouillerSerieAutofacture,
+} from "./commissions";
+import { aVirerPartielCents } from "./autofacture-donnees";
 import { envoyer } from "./envois";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
@@ -92,6 +103,7 @@ async function retenir(
     1,
   );
   const repriseId = await prisma.$transaction(async (tx) => {
+    await verrouillerSerieAutofacture(tx, [numeroAvoir!]);
     const r = await tx.commissionApporteur.updateMany({
       where: { id: l.id, statut: "due", autofactureNumero: l.autofactureNumero, verseeAt: null },
       data: { statut: "retenue" },
@@ -102,7 +114,8 @@ async function retenir(
         apporteurId: l.apporteurId,
         factureId: randomUUID(),
         parrainage: l.parrainage,
-        activite: "reprise",
+        // Marque propre : exclue de la DAS2 (la ligne retenue n'a jamais été versée).
+        activite: ACTIVITE_NEUTRALISATION,
         palier: `${PREFIXE_PALIER_REPRISE}${l.id}`,
         factureHtCents: 0,
         montantCents: -montant,
@@ -119,6 +132,7 @@ async function retenir(
     return rep.id;
   });
   if (!repriseId) return { ok: false };
+  await libererReprisesBloquees(l.autofactureNumero!, l.apporteurId);
   const pdf = await genererPdfAutofacture({
     apporteurId: l.apporteurId,
     numero: numeroAvoir!,
@@ -140,6 +154,47 @@ async function retenir(
     };
   }
   return { ok: true, avoir: { r2Key: pdf.r2Key, filename: pdf.filename } };
+}
+
+/**
+ * Cas de bord : une fois la ligne retenue, l'autofacture peut n'avoir plus assez de lignes libres
+ * pour absorber les reprises qui y étaient imputées sans être versées. Ces reprises ne seraient
+ * plus jamais déduites (créance perdue, art. 12.4) : elles sont LIBÉRÉES pour être réimputées sur
+ * la prochaine autofacture, et la libération est tracée.
+ */
+async function libererReprisesBloquees(numero: string, apporteurId: string): Promise<void> {
+  const lignes = await prisma.commissionApporteur.findMany({
+    where: { apporteurId, autofactureNumero: numero },
+    select: {
+      id: true,
+      statut: true,
+      montantCents: true,
+      avoirNumero: true,
+      verseeAt: true,
+      activite: true,
+    },
+  });
+  const libres = lignes.filter((x) => x.statut === "due");
+  const enAttente = lignes.filter(
+    (x) => x.statut === "reprise" && !x.verseeAt && x.activite !== ACTIVITE_NEUTRALISATION,
+  );
+  if (enAttente.length === 0) return;
+  const retenues = lignes.filter((x) => x.statut === "retenue").map((x) => x.montantCents ?? 0);
+  // Sans TVA connue ici : le contrôle porte sur le signe, identique HT ou TTC.
+  const p = aVirerPartielCents(null, [...libres, ...enAttente], retenues);
+  if (libres.length > 0 && p.partielPossible) return;
+  for (const r of enAttente) {
+    const u = await prisma.commissionApporteur.updateMany({
+      where: { id: r.id, statut: "reprise", verseeAt: null, autofactureNumero: numero },
+      data: { releveMois: null, autofactureNumero: null, avoirNumero: null },
+    });
+    if (u.count === 1)
+      await tracer("commission_apporteur.reprise_liberee", "commission_apporteur", r.id, null, {
+        autofacture: numero,
+        avoirSansEffet: r.avoirNumero,
+        motif: "Ligne retenue (art. 4.5 bis) : reprise réimputée sur la prochaine autofacture.",
+      });
+  }
 }
 
 async function reprendre(l: LigneAffaire, motif: string, maintenant: Date): Promise<boolean> {
@@ -325,4 +380,71 @@ export async function constaterManquement(e: {
     bilan,
     message: `Manquement notifié à l'apporteur : ${bilan.annulees} commission(s) annulée(s), ${bilan.retenues} retenue(s) avec avoir, ${bilan.reprises} reprise(s). Il peut contester par écrit : réponse motivée sous 30 jours.${suite}`,
   };
+}
+
+/**
+ * RATTRAPAGE (passage horaire) : un avoir de neutralisation dont le PDF n'a pas pu être établi
+ * (numéro écrit, pièce absente du stockage) est RÉGÉNÉRÉ, puis envoyé à l'apporteur. S'il échoue
+ * encore, Williams est alerté (une fois par numéro). Rend le nombre d'avoirs régénérés.
+ */
+export async function regenererAvoirsSansPiece(maintenant: Date = new Date()): Promise<number> {
+  const lignes = await prisma.commissionApporteur.findMany({
+    where: { statut: "reprise", activite: ACTIVITE_NEUTRALISATION, avoirNumero: { not: null } },
+    select: {
+      id: true,
+      apporteurId: true,
+      montantCents: true,
+      avoirNumero: true,
+      autofactureNumero: true,
+      presentationId: true,
+    },
+  });
+  let n = 0;
+  for (const l of lignes) {
+    const numero = l.avoirNumero!;
+    if (await existsInR2(`apporteurs/autofactures/${l.apporteurId}/${numero}.pdf`)) continue;
+    const pdf = await genererPdfAutofacture({
+      apporteurId: l.apporteurId,
+      numero,
+      periodeLibelle: `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
+      commissionIds: [l.id],
+      totalCents: Math.abs(l.montantCents ?? 0),
+      maintenant,
+      avoir: {
+        factureInitiale: l.autofactureNumero ?? "non retrouvée",
+        dateFactureInitiale: null,
+        imputation: `annule la ligne retenue de l'autofacture N° ${l.autofactureNumero ?? ""}`,
+      },
+    });
+    if (!pdf) {
+      const jobId = `apporteur-avoir-sans-piece-${numero}`;
+      if (!(await dejaEnvoye(jobId))) {
+        await enqueueEmail(
+          "qualiopi-alerte-interne",
+          destinataireAlertesInternes(),
+          "fr",
+          {
+            niveau: "important",
+            code: "apporteur_avoir_sans_piece",
+            titre: `Avoir ${numero} sans pièce`,
+            message: `L'avoir ${numero} (manquement, art. 4.5 bis) est enregistré mais son PDF ne peut toujours pas être établi (identité de facturation ou stockage). Nouvel essai à chaque passage horaire.`,
+            cibleType: "ApporteurReseau",
+            cibleId: l.apporteurId,
+            createdAt: maintenant.toLocaleDateString("fr-FR"),
+          },
+          { jobId, entityType: "ApporteurReseau", entityId: l.apporteurId },
+        );
+      }
+      continue;
+    }
+    n += 1;
+    await prevenir(
+      l.apporteurId,
+      l.presentationId ?? l.apporteurId,
+      { avoirSeul: true },
+      `apporteur-manquement-avoir-${numero}`,
+      [{ r2Key: pdf.r2Key, filename: pdf.filename }],
+    );
+  }
+  return n;
 }

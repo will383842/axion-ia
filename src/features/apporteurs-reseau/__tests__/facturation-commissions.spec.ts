@@ -208,7 +208,9 @@ vi.mock("@/lib/prisma", () => {
         etat.jobIds.has(a.where.jobId) ? 1 : 0,
       ),
     },
-    numeroEmis: { findMany: vi.fn(async () => []) },
+    numeroEmis: { findMany: vi.fn(async () => []), count: vi.fn(async () => 0) },
+    // Verrou consultatif de la série (pg_advisory_xact_lock) : sans effet dans le simulateur.
+    $executeRaw: vi.fn(async () => 0),
     // Colonne « litige » présente (contrat 2.3, art. 4.2 bis), sauf quand un test la retire.
     $queryRaw: vi.fn(async () => {
       if (etat.colonneLitigeAbsente) throw new Error('column "litige_depuis" does not exist');

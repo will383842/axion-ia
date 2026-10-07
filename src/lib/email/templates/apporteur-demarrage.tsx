@@ -57,6 +57,8 @@ interface Payload {
   faits?: string;
   /** Manquement : avis au PARRAIN dont la part est retirée (sans les faits). */
   parrain?: boolean;
+  /** Manquement : envoi de l'avoir de neutralisation seul (rattrapage de sa pièce). */
+  avoirSeul?: boolean;
   /** Suspension d'une commission (art. 4.2 bis) : « suspendue » puis « levee ». */
   etat?: string;
   /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
@@ -330,6 +332,9 @@ export const COPY_DEMARRAGE = {
     contester:
       "Vous pouvez contester ce constat par écrit, en répondant simplement à cet e-mail. Nous vous répondrons de façon motivée dans les trente jours.",
     subjectParrain: "Une part de parrainage est retirée",
+    subjectAvoir: "Votre avoir d'autofacture",
+    avoir:
+      "Vous trouverez ci-joint l'avoir d'autofacture annoncé dans notre précédent message, au sujet du manquement constaté (article 4.5 bis du contrat).",
     parrain:
       "Une affaire apportée par une personne que vous avez parrainée ne donne finalement lieu à aucune commission (article 4.5 bis du contrat). La part de parrainage qui en découlait est donc retirée ; si elle vous avait déjà été versée, elle fait l'objet d'une reprise, dans les conditions de l'article 4.5.",
   },
@@ -877,9 +882,11 @@ export const apporteurManquementSubject = (
   _locale: Locale,
   payload?: Record<string, unknown>,
 ): string =>
-  (payload as Payload | undefined)?.parrain
-    ? COPY_DEMARRAGE.manquement.subjectParrain
-    : COPY_DEMARRAGE.manquement.subject;
+  (payload as Payload | undefined)?.avoirSeul
+    ? COPY_DEMARRAGE.manquement.subjectAvoir
+    : (payload as Payload | undefined)?.parrain
+      ? COPY_DEMARRAGE.manquement.subjectParrain
+      : COPY_DEMARRAGE.manquement.subject;
 
 export function ApporteurManquementEmail({ locale, payload }: Props) {
   const p = payload as Payload;
@@ -893,16 +900,26 @@ export function ApporteurManquementEmail({ locale, payload }: Props) {
       sansReseauxSociaux
       signature="fondateur-court"
     >
-      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      {p.parrain ? <Text style={emailStyles.paragraphStyle}>{t.parrain}</Text> : null}
-      {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>}
-      {p.parrain ? null : (
-        <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
-          « {p.faits ?? ""} »
-        </Text>
+      {p.avoirSeul ? (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.avoir}</Text>
+        </>
+      ) : null}
+      {p.avoirSeul ? null : (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+          {p.parrain ? <Text style={emailStyles.paragraphStyle}>{t.parrain}</Text> : null}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>}
+          {p.parrain ? null : (
+            <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+              « {p.faits ?? ""} »
+            </Text>
+          )}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.consequences}</Text>}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.contester}</Text>}
+        </>
       )}
-      {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.consequences}</Text>}
-      {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.contester}</Text>}
     </EmailLayout>
   );
 }
