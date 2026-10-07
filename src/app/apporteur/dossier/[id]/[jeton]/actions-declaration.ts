@@ -57,7 +57,8 @@ const champ = (fd: FormData, nom: string, max: number) => {
 
 async function dossierSigneParLien(id: string, jeton: string) {
   const d = await lireDossierParLien(id, jeton);
-  return d && etatDeLaPage(d.statut) === "signe" ? d : null;
+  // Mode restreint (retiré du réseau) : aucune déclaration d'entreprise.
+  return d && !d.restreint && etatDeLaPage(d.statut) === "signe" ? d : null;
 }
 
 export async function rechercherEntrepriseDeclarationAction(

@@ -17,8 +17,12 @@ const p = vi.hoisted(() => ({
   apporteurFindUnique: vi.fn(),
   apporteurUpdate: vi.fn(),
   apporteurDelete: vi.fn(),
+  apporteurDeleteMany: vi.fn(),
   pieceDeleteMany: vi.fn(),
-  submissionDelete: vi.fn(),
+  submissionFindFirst: vi.fn(),
+  submissionEcriture: vi.fn(),
+  verrou: vi.fn(),
+  ordre: [] as string[],
   journal: vi.fn(),
 }));
 
@@ -32,13 +36,28 @@ vi.mock("@/lib/prisma", () => {
       deleteMany: p.retraitDeleteMany,
     },
     apporteurReseau: {
-      findUnique: p.apporteurFindUnique,
+      findUnique: (...a: unknown[]) => {
+        p.ordre.push("lecture");
+        return p.apporteurFindUnique(...a);
+      },
       update: p.apporteurUpdate,
       delete: p.apporteurDelete,
+      deleteMany: p.apporteurDeleteMany,
     },
     pieceApporteur: { deleteMany: p.pieceDeleteMany },
-    submission: { delete: p.submissionDelete },
+    // 🔴 La fiche CANDIDAT ne doit JAMAIS être écrite : toute écriture lève dans ce test.
+    submission: {
+      findFirst: p.submissionFindFirst,
+      delete: p.submissionEcriture,
+      deleteMany: p.submissionEcriture,
+      update: p.submissionEcriture,
+      updateMany: p.submissionEcriture,
+    },
     activityLog: { create: p.journal },
+    $queryRaw: (...a: unknown[]) => {
+      p.ordre.push("verrou");
+      return p.verrou(...a);
+    },
     $transaction: (f: (tx: unknown) => unknown) => f(client),
   };
   return { prisma: client };
@@ -61,6 +80,7 @@ const VIERGE: EtatSuppression = {
   commissions: 0,
   presentations: 0,
   filleuls: 0,
+  ficheCandidat: true,
 };
 
 function dossier(over: Partial<EtatSuppression> & { pieces?: number } = {}) {
@@ -85,7 +105,12 @@ function dossier(over: Partial<EtatSuppression> & { pieces?: number } = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  p.ordre.length = 0;
   p.apporteurUpdate.mockResolvedValue({ id: ID });
+  p.apporteurDeleteMany.mockResolvedValue({ count: 1 });
+  p.submissionFindFirst.mockResolvedValue({ id: "sub-1" });
+  p.submissionEcriture.mockRejectedValue(new Error("ÉCRITURE INTERDITE sur la fiche candidat"));
+  p.verrou.mockResolvedValue([]);
 });
 
 describe("refusSuppression", () => {
@@ -100,6 +125,7 @@ describe("refusSuppression", () => {
     ["avec une commission", { commissions: 1 }],
     ["avec une entreprise présentée", { presentations: 1 }],
     ["parrain d'un filleul", { filleuls: 1 }],
+    ["SANS fiche candidat (le contact serait perdu)", { ficheCandidat: false }],
   ])("%s : refusé, avec une phrase qui renvoie à « Retirer du réseau »", (_c, over) => {
     expect(refusSuppression({ ...VIERGE, ...over })).toMatch(/Retirer du réseau/);
   });
@@ -157,41 +183,75 @@ describe("remettre dans le réseau", () => {
 });
 
 describe("supprimer définitivement", () => {
-  it("dossier vierge, nom retapé : dossier et pièces supprimés, fiche candidat GARDÉE, journal", async () => {
+  it("dossier vierge, nom retapé : dossier et pièces supprimés, fiche candidat INTACTE, journal", async () => {
     p.apporteurFindUnique.mockResolvedValue(dossier());
     const r = await supprimerDefinitivement(ID, "adm-1", "  claire DURAND ");
     expect(r.ok).toBe(true);
     expect(p.pieceDeleteMany).toHaveBeenCalledWith({ where: { apporteurId: ID } });
-    expect(p.apporteurDelete).toHaveBeenCalledWith({ where: { id: ID }, select: { id: true } });
-    expect(p.submissionDelete).not.toHaveBeenCalled();
+    // La suppression est CONDITIONNÉE à l'absence de signature.
+    expect(p.apporteurDeleteMany.mock.calls[0]![0].where).toMatchObject({
+      id: ID,
+      signeParApporteurAt: null,
+      signeParSocieteAt: null,
+    });
+    // Toute écriture sur la fiche candidat aurait levé (voir le mock) : r.ok le prouve.
+    expect(p.submissionEcriture).not.toHaveBeenCalled();
     const j = p.journal.mock.calls[0]![0].data;
     expect(j).toMatchObject({ action: "apporteur.dossier_supprime_definitivement", targetId: ID });
     expect(JSON.stringify(j.changes)).not.toMatch(/Claire|Durand/);
     expect(j.changes).toMatchObject({ submissionId: "sub-1", piecesSupprimees: 2 });
   });
 
-  it("🔴 signé ENTRE l'affichage et le clic : le contrôle de la transaction refuse", async () => {
-    p.apporteurFindUnique.mockResolvedValue(dossier({ signeParApporteurAt: new Date() }));
-    const r = await supprimerDefinitivement(ID, "adm-1", "Claire Durand");
-    expect(r.ok).toBe(false);
-    expect(p.apporteurDelete).not.toHaveBeenCalled();
-    expect(p.pieceDeleteMany).not.toHaveBeenCalled();
+  it("🔴 la ligne est VERROUILLÉE (FOR UPDATE) AVANT d'être relue et contrôlée", async () => {
+    p.apporteurFindUnique.mockResolvedValue(dossier());
+    await supprimerDefinitivement(ID, "adm-1", "Claire Durand");
+    expect(p.ordre.slice(0, 2)).toEqual(["verrou", "lecture"]);
+    expect(String((p.verrou.mock.calls[0]![0] as string[]).join("?"))).toMatch(/FOR UPDATE/);
   });
 
-  it.each([{ commissions: 1 }, { presentations: 1 }, { filleuls: 1 }])(
-    "%o : refusé, rien n'est supprimé",
-    async (over) => {
-      p.apporteurFindUnique.mockResolvedValue(dossier(over));
-      expect((await supprimerDefinitivement(ID, "adm-1", "Claire Durand")).ok).toBe(false);
-      expect(p.apporteurDelete).not.toHaveBeenCalled();
-    },
-  );
+  it("🔴 signé ENTRE le contrôle et l'effacement : la suppression conditionnée ne touche rien → refus, pas de journal", async () => {
+    p.apporteurFindUnique.mockResolvedValue(dossier());
+    p.apporteurDeleteMany.mockResolvedValue({ count: 0 });
+    const r = await supprimerDefinitivement(ID, "adm-1", "Claire Durand");
+    expect(r).toMatchObject({ ok: false });
+    expect(r.message).toMatch(/vient de changer/);
+    expect(p.journal).not.toHaveBeenCalled();
+  });
+
+  it("🔴 SANS fiche candidat (dossier créé par « Nouvel apporteur ») : refus, rien n'est effacé", async () => {
+    p.apporteurFindUnique.mockResolvedValue({ ...dossier(), submissionId: null });
+    const r = await supprimerDefinitivement(ID, "adm-1", "Claire Durand");
+    expect(r).toMatchObject({ ok: false });
+    expect(r.message).toMatch(/perdre/);
+    expect(p.pieceDeleteMany).not.toHaveBeenCalled();
+    expect(p.apporteurDeleteMany).not.toHaveBeenCalled();
+  });
+
+  it("fiche candidat EFFACÉE (art. 17) : traitée comme absente, refus", async () => {
+    p.apporteurFindUnique.mockResolvedValue(dossier());
+    p.submissionFindFirst.mockResolvedValue(null);
+    expect((await supprimerDefinitivement(ID, "adm-1", "Claire Durand")).ok).toBe(false);
+    expect(p.submissionFindFirst.mock.calls[0]![0].where).toEqual({ id: "sub-1", deletedAt: null });
+    expect(p.apporteurDeleteMany).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { commissions: 1 },
+    { presentations: 1 },
+    { filleuls: 1 },
+    { signeParApporteurAt: new Date() },
+  ])("%o : refusé, rien n'est supprimé", async (over) => {
+    p.apporteurFindUnique.mockResolvedValue(dossier(over));
+    expect((await supprimerDefinitivement(ID, "adm-1", "Claire Durand")).ok).toBe(false);
+    expect(p.apporteurDeleteMany).not.toHaveBeenCalled();
+    expect(p.pieceDeleteMany).not.toHaveBeenCalled();
+  });
 
   it("nom mal retapé : rien n'est supprimé", async () => {
     p.apporteurFindUnique.mockResolvedValue(dossier());
     const r = await supprimerDefinitivement(ID, "adm-1", "Claire");
     expect(r).toMatchObject({ ok: false });
-    expect(p.apporteurDelete).not.toHaveBeenCalled();
+    expect(p.apporteurDeleteMany).not.toHaveBeenCalled();
   });
 });
 

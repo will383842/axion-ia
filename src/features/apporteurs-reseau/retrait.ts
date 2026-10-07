@@ -129,6 +129,12 @@ export interface EtatSuppression {
   readonly commissions: number;
   readonly presentations: number;
   readonly filleuls: number;
+  /**
+   * Une fiche CANDIDAT (non effacée) porte-t-elle le contact ? Un dossier créé par
+   * « Nouvel apporteur » sans fiche candidat est le SEUL endroit où vivent le nom,
+   * l'adresse et le téléphone : le supprimer perdrait le contact (règle de Will).
+   */
+  readonly ficheCandidat: boolean;
 }
 
 /** `null` si la suppression est permise ; sinon la phrase qui dit pourquoi elle ne l'est pas. */
@@ -145,6 +151,9 @@ export function refusSuppression(e: EtatSuppression): string | null {
   if (e.filleuls > 0) {
     return "Cet apporteur est le parrain d'autres apporteurs. Utilisez « Retirer du réseau ».";
   }
+  if (!e.ficheCandidat) {
+    return "Aucune fiche candidat ne conserve ce contact : le supprimer le ferait perdre. Utilisez « Retirer du réseau ».";
+  }
   return null;
 }
 
@@ -153,17 +162,41 @@ export function nomAConfirmer(v: string): string {
   return v.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-export async function etatSuppression(apporteurId: string): Promise<EtatSuppression | null> {
-  const a = await prisma.apporteurReseau.findUnique({
+type Lecteur = Pick<typeof prisma, "apporteurReseau" | "submission">;
+
+async function lireEtat(
+  db: Lecteur,
+  apporteurId: string,
+): Promise<
+  | (EtatSuppression & {
+      prenom: string;
+      nom: string;
+      emailHash: string;
+      submissionId: string | null;
+      pieces: number;
+    })
+  | null
+> {
+  const a = await db.apporteurReseau.findUnique({
     where: { id: apporteurId },
     select: {
       statut: true,
+      prenom: true,
+      nom: true,
+      emailHash: true,
+      submissionId: true,
       signeParApporteurAt: true,
       signeParSocieteAt: true,
-      _count: { select: { commissions: true, presentations: true, filleuls: true } },
+      _count: { select: { commissions: true, presentations: true, filleuls: true, pieces: true } },
     },
   });
   if (!a) return null;
+  const fiche = a.submissionId
+    ? await db.submission.findFirst({
+        where: { id: a.submissionId, deletedAt: null },
+        select: { id: true },
+      })
+    : null;
   return {
     statut: a.statut,
     signeParApporteurAt: a.signeParApporteurAt,
@@ -171,68 +204,104 @@ export async function etatSuppression(apporteurId: string): Promise<EtatSuppress
     commissions: a._count.commissions,
     presentations: a._count.presentations,
     filleuls: a._count.filleuls,
+    ficheCandidat: fiche !== null,
+    prenom: a.prenom,
+    nom: a.nom,
+    emailHash: a.emailHash,
+    submissionId: a.submissionId,
+    pieces: a._count.pieces,
   };
 }
+
+export async function etatSuppression(apporteurId: string): Promise<EtatSuppression | null> {
+  return lireEtat(prisma, apporteurId);
+}
+
+/** Levée pour annuler la transaction : la ligne a changé entre le contrôle et la suppression. */
+class DossierModifie extends Error {}
 
 export async function supprimerDefinitivement(
   apporteurId: string,
   adminId: string,
   nomTape: string,
 ): Promise<Issue> {
-  return prisma.$transaction(async (tx) => {
-    const a = await tx.apporteurReseau.findUnique({
-      where: { id: apporteurId },
-      select: {
-        id: true,
-        statut: true,
-        prenom: true,
-        nom: true,
-        emailHash: true,
-        submissionId: true,
-        signeParApporteurAt: true,
-        signeParSocieteAt: true,
-        _count: {
-          select: { commissions: true, presentations: true, filleuls: true, pieces: true },
+  try {
+    return await prisma.$transaction(async (tx) => {
+      // 🔴 VERROU sur la ligne AVANT tout contrôle : une signature qui arrive pendant la
+      // suppression attend la fin de la transaction (elle ne peut pas se glisser entre le
+      // contrôle et l'effacement).
+      await tx.$queryRaw`SELECT id FROM apporteurs_reseau WHERE id = ${apporteurId}::uuid FOR UPDATE`;
+      const a = await lireEtat(tx, apporteurId);
+      if (!a) return { ok: false, message: "Dossier introuvable." };
+      const refus = refusSuppression(a);
+      if (refus) return { ok: false, message: refus };
+      const attendu = nomAConfirmer(`${decryptPii(a.prenom) ?? ""} ${decryptPii(a.nom) ?? ""}`);
+      if (!attendu || nomAConfirmer(nomTape) !== attendu) {
+        return { ok: false, message: "Le nom tapé ne correspond pas : rien n'a été supprimé." };
+      }
+      // Le contenu des pièces suit en cascade ; la fiche candidat (`submissionId`) reste.
+      await tx.pieceApporteur.deleteMany({ where: { apporteurId } });
+      await tx.apporteurReseauRetrait.deleteMany({ where: { apporteurId } });
+      // Second filet : la suppression elle-même est CONDITIONNÉE à l'absence de signature.
+      const { count } = await tx.apporteurReseau.deleteMany({
+        where: {
+          id: apporteurId,
+          signeParApporteurAt: null,
+          signeParSocieteAt: null,
+          statut: { notIn: ["a_verifier", "signe", "resilie"] },
         },
-      },
+      });
+      if (count !== 1) throw new DossierModifie();
+      await tx.activityLog.create({
+        data: {
+          adminUserId: adminId,
+          action: "apporteur.dossier_supprime_definitivement",
+          targetType: "apporteur_reseau",
+          targetId: apporteurId,
+          // Aucune donnée personnelle en clair : l'empreinte et le lien vers la fiche candidat.
+          changes: {
+            statut: a.statut,
+            emailHash: a.emailHash,
+            submissionId: a.submissionId,
+            piecesSupprimees: a.pieces,
+          },
+        },
+      });
+      return {
+        ok: true,
+        message:
+          "Dossier d'apporteur et pièces supprimés définitivement. La fiche candidat est conservée.",
+      };
     });
-    if (!a) return { ok: false, message: "Dossier introuvable." };
-    const refus = refusSuppression({
-      statut: a.statut,
-      signeParApporteurAt: a.signeParApporteurAt,
-      signeParSocieteAt: a.signeParSocieteAt,
-      commissions: a._count.commissions,
-      presentations: a._count.presentations,
-      filleuls: a._count.filleuls,
-    });
-    if (refus) return { ok: false, message: refus };
-    const attendu = nomAConfirmer(`${decryptPii(a.prenom) ?? ""} ${decryptPii(a.nom) ?? ""}`);
-    if (!attendu || nomAConfirmer(nomTape) !== attendu) {
-      return { ok: false, message: "Le nom tapé ne correspond pas : rien n'a été supprimé." };
+  } catch (err) {
+    if (err instanceof DossierModifie) {
+      return {
+        ok: false,
+        message:
+          "Le dossier vient de changer (signature ?) : rien n'a été supprimé. Rechargez la page.",
+      };
     }
-    // Le contenu des pièces suit en cascade ; la fiche candidat (`submissionId`) reste.
-    await tx.pieceApporteur.deleteMany({ where: { apporteurId } });
-    await tx.apporteurReseauRetrait.deleteMany({ where: { apporteurId } });
-    await tx.apporteurReseau.delete({ where: { id: apporteurId }, select: { id: true } });
-    await tx.activityLog.create({
-      data: {
-        adminUserId: adminId,
-        action: "apporteur.dossier_supprime_definitivement",
-        targetType: "apporteur_reseau",
-        targetId: apporteurId,
-        // Aucune donnée personnelle en clair : l'empreinte et le lien vers la fiche candidat.
-        changes: {
-          statut: a.statut,
-          emailHash: a.emailHash,
-          submissionId: a.submissionId,
-          piecesSupprimees: a._count.pieces,
-        },
-      },
-    });
-    return {
-      ok: true,
-      message:
-        "Dossier d'apporteur et pièces supprimés définitivement. La fiche candidat est conservée.",
-    };
-  });
+    throw err;
+  }
 }
+
+/**
+ * De l'ARGENT est-il encore en jeu pour cet apporteur ? Commission à qualifier, due ou en
+ * attente des pièces de vigilance. Un apporteur retiré dans ce cas garde un MODE RESTREINT
+ * de sa page (dépôt des attestations de vigilance) et reçoit les e-mails liés à l'argent :
+ * sans cela, une commission en attente de vigilance serait confisquée de fait.
+ */
+export async function argentEnJeu(apporteurId: string): Promise<boolean> {
+  const n = await prisma.commissionApporteur.count({
+    where: { apporteurId, statut: { in: ["a_qualifier", "due", "en_attente_vigilance"] } },
+  });
+  return n > 0;
+}
+
+/** Gabarits liés à l'ARGENT : les seuls qui partent encore vers un apporteur retiré. */
+export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
+  "apporteur-vigilance",
+  "apporteur-commande-signee",
+  "apporteur-releve",
+  "apporteur-virement-fait",
+]);

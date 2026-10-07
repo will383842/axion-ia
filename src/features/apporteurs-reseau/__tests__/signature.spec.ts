@@ -273,6 +273,14 @@ describe("dossier en ligne — signerContrat", () => {
     expect(envoyer).not.toHaveBeenCalled();
   });
 
+  it("🔴 dossier en MODE RESTREINT (retiré du réseau) : aucune signature, rien n'est écrit", async () => {
+    lireDossierParLien.mockResolvedValue({ ...dossierComplet(), restreint: true });
+    const r = await signerContrat(entree);
+    expect(r).toMatchObject({ ok: false, raison: "introuvable" });
+    expect(uploadToR2).not.toHaveBeenCalled();
+    expect(updateMany).not.toHaveBeenCalled();
+  });
+
   it("refuse un dossier déjà à vérifier, une case manquante ou un mauvais nom", async () => {
     lireDossierParLien.mockResolvedValue(dossierComplet({ statut: "a_verifier" }));
     expect(await signerContrat(entree)).toMatchObject({ ok: false, raison: "refus" });

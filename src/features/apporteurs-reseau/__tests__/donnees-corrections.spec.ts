@@ -21,8 +21,14 @@ vi.mock("../signaler", () => ({ signalerErreurReseau: (...a: unknown[]) => signa
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "empreinte" }));
 
 // Retrait du réseau (2026-10-07).
-const { retraitDe } = vi.hoisted(() => ({ retraitDe: vi.fn(async () => null as Date | null) }));
-vi.mock("../retrait", () => ({ retraitDe: (...a: unknown[]) => retraitDe(...(a as [])) }));
+const { retraitDe, argentEnJeu } = vi.hoisted(() => ({
+  retraitDe: vi.fn(async () => null as Date | null),
+  argentEnJeu: vi.fn(async () => false),
+}));
+vi.mock("../retrait", () => ({
+  retraitDe: (...a: unknown[]) => retraitDe(...(a as [])),
+  argentEnJeu: (...a: unknown[]) => argentEnJeu(...(a as [])),
+}));
 
 const { p, tx } = vi.hoisted(() => {
   const p = {
@@ -255,6 +261,40 @@ describe("retrait du réseau (2026-10-07)", () => {
     retraitDe.mockResolvedValueOnce(new Date());
     expect(await lireDossierParLien(ID, jeton!)).toBeNull();
     expect(retraitDe).toHaveBeenCalledWith(ID);
+  });
+
+  it("🔴 retiré AVEC de l'argent en jeu : la page s'ouvre en MODE RESTREINT (rien n'est confisqué)", async () => {
+    const jeton = jetonDossier(ID, 3);
+    // Une ligne COMPLÈTE : la même lecture sert au contrôle du lien et à la vue du dossier.
+    p.apporteurFindUnique.mockResolvedValue({
+      id: ID,
+      statut: "signe",
+      versionLien: 3,
+      prenom: "enc:Claire",
+      nom: "enc:Durand",
+      email: "enc:claire@exemple.fr",
+      telephone: null,
+      siren: null,
+      denomination: null,
+      adresse: null,
+      codeNaf: null,
+      statutJuridique: null,
+      regimeTva: null,
+      numeroTva: null,
+      iban: null,
+      declarations: null,
+      dernierMessage: null,
+      signeParApporteurAt: new Date(),
+      signeParSocieteAt: new Date(),
+      contratSigneCle: null,
+      pieces: [],
+    });
+    retraitDe.mockResolvedValueOnce(new Date());
+    argentEnJeu.mockResolvedValueOnce(true);
+    const vue = await lireDossierParLien(ID, jeton!);
+    expect(vue).not.toBeNull();
+    expect(vue!.restreint).toBe(true);
+    expect(argentEnJeu).toHaveBeenCalledWith(ID);
   });
 });
 

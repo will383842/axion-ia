@@ -50,7 +50,8 @@ export async function GET(
   }
 
   const dossier = await lireDossierParLien(id, jeton);
-  if (!dossier) return introuvable();
+  // Mode restreint (retiré du réseau, 2026-10-07) : ni contrat ni dossier par ce lien.
+  if (!dossier || dossier.restreint) return introuvable();
 
   // Contrat signé des deux parties : l'apporteur peut le retélécharger depuis son lien.
   if (etatDeLaPage(dossier.statut) === "signe") {
