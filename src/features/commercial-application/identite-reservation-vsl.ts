@@ -23,6 +23,7 @@
 // Aucun `server-only` : appelé par la page du formulaire, et par les tests.
 
 import { prisma } from "@/lib/prisma";
+import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { verifierJeton } from "./jeton-lead";
 import { lireVsl } from "./lead-vsl-details";
 
@@ -59,9 +60,18 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
       select: { contactName: true, contactEmail: true, details: true },
     });
     if (!ligne || !lireVsl(ligne.details)) return null;
-    const email = typeof ligne.contactEmail === "string" ? ligne.contactEmail.trim() : "";
-    if (!email) return null;
-    const nom = typeof ligne.contactName === "string" ? ligne.contactName.trim() : "";
+    // 🔴 Le prénom et l'e-mail sont CHIFFRÉS en base (`enc:v1:`, `pii-crypto.ts`).
+    // Constat du 2026-10-07 sur le vrai site : sans ce déchiffrement, le
+    // formulaire proposait le texte chiffré. Une adresse qui ne se déchiffre pas
+    // (clé absente) rend `null` : un formulaire vide vaut mieux qu'un faux.
+    const email = decryptPii(
+      typeof ligne.contactEmail === "string" ? ligne.contactEmail : "",
+    ).trim();
+    if (!isDecryptedEmailUsable(email)) return null;
+    const nomClair = decryptPii(
+      typeof ligne.contactName === "string" ? ligne.contactName : "",
+    ).trim();
+    const nom = nomClair === PII_DECRYPT_PLACEHOLDER ? "" : nomClair;
     return { nom, email };
   } catch {
     return null;
