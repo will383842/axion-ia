@@ -441,4 +441,16 @@ describe("REQ-INT-006 — le prix public ferme des offres d'un devis, lu dans la
     } as unknown as Prisma.TransactionClient;
     expect((await prixPublicsDesOffres(tx, [])).size).toBe(0);
   });
+
+  it("REQ-INT-006 : TÉMOIN — canal fermé, aucune lecture et aucun prix (inertie, règle R2)", async () => {
+    process.env.PARTNERS_SYNC_ENABLED = "false";
+    const tx = {
+      offreSite: {
+        findMany: async () => {
+          throw new Error("lecture inattendue");
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    expect((await prixPublicsDesOffres(tx, ["ia-essentiel-2j"])).size).toBe(0);
+  });
 });

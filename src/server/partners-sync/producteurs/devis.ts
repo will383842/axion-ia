@@ -254,6 +254,7 @@ export async function prixPublicsDesOffres(
   tx: Prisma.TransactionClient,
   codes: readonly string[],
 ): Promise<Map<string, number | null>> {
+  if (!canalPartnersOuvert()) return new Map();
   const uniques = [...new Set(codes)];
   const prix = new Map<string, number | null>();
   if (uniques.length === 0) return prix;
