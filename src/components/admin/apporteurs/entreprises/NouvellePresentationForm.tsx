@@ -18,11 +18,8 @@ const CHAMP = "flex flex-col gap-1 text-[length:var(--text-admin-sm)]";
 
 export function NouvellePresentationForm({
   apporteurs,
-  maintenantLocal,
 }: {
   apporteurs: ReadonlyArray<{ id: string; nom: string }>;
-  /** Valeur par défaut du champ « reçu le », en heure de Paris. */
-  maintenantLocal: string;
 }) {
   const [etat, action, enCours] = useActionState(creerPresentationAction, INITIAL);
   const [siren, setSiren] = useState("");
@@ -62,16 +59,16 @@ export function NouvellePresentationForm({
             ))}
           </select>
         </label>
-        <label className={CHAMP}>
-          E-mail reçu le (fait foi)
-          <input
-            type="datetime-local"
-            name="recueAt"
-            required
-            defaultValue={maintenantLocal}
-            className="admin-input"
-          />
-        </label>
+        {/* Plus de date tapée (2026-10-07, art. 3.2 et 3.4) : une déclaration ne vaut que par le
+            formulaire de l'apporteur, et elle est horodatée par le serveur. Cette saisie n'est
+            qu'un RATTRAPAGE (formulaire rempli mais non enregistré), datée de maintenant. */}
+        <p
+          className={`${CHAMP} text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]`}
+        >
+          Rattrapage seulement : une déclaration faite par l&apos;apporteur avec son formulaire et
+          non enregistrée. Elle est datée de maintenant. Une entreprise reçue par e-mail ne compte
+          pas : invitez l&apos;apporteur à utiliser son formulaire.
+        </p>
         <div className={CHAMP}>
           <label htmlFor="np-siren">SIREN de l&apos;entreprise</label>
           <div className="flex gap-[var(--space-admin-2)]">
