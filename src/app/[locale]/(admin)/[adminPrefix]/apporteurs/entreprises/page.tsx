@@ -100,7 +100,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
         <AdminCard as="section">
           <details>
             <summary className="cursor-pointer font-semibold">
-              ➕ Rattrapage d'une déclaration (formulaire non enregistré)
+              ➕ Rattrapage d&apos;une déclaration (formulaire non enregistré)
             </summary>
             <div className="pt-[var(--space-admin-4)]">
               <NouvellePresentationForm apporteurs={apporteurs} />
