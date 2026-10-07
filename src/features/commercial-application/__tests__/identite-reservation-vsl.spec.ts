@@ -11,6 +11,7 @@ const { findFirst } = vi.hoisted(() => ({ findFirst: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: { submission: { findFirst } } }));
 
 import { creerJeton } from "../jeton-lead";
+import { encryptPii } from "@/lib/pii-crypto";
 import { identiteDuJetonVsl, jetonVslValide } from "../identite-reservation-vsl";
 
 const LIGNE_VSL = {
@@ -52,6 +53,34 @@ describe("identiteDuJetonVsl", () => {
     expect(await identiteDuJetonVsl(jeton)).toBeNull();
     findFirst.mockResolvedValueOnce({ ...LIGNE_VSL, contactEmail: null });
     expect(await identiteDuJetonVsl(jeton)).toBeNull();
+  });
+
+  it("🔴 prénom et e-mail CHIFFRÉS en base (cas réel du 2026-10-07) → proposés EN CLAIR", async () => {
+    vi.stubEnv("PII_ENCRYPTION_KEY", "a".repeat(64));
+    try {
+      findFirst.mockResolvedValue({
+        ...LIGNE_VSL,
+        contactName: encryptPii("Léa"),
+        contactEmail: encryptPii("lea@exemple.fr"),
+      });
+      const r = await identiteDuJetonVsl(creerJeton({ lead: "lead-1", suspect: false }));
+      expect(r).toEqual({ nom: "Léa", email: "lea@exemple.fr" });
+      expect(JSON.stringify(r)).not.toContain("enc:v1");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("chiffré mais clé absente → null, jamais le texte chiffré ni le marqueur", async () => {
+    vi.stubEnv("PII_ENCRYPTION_KEY", "a".repeat(64));
+    const chiffre = { ...LIGNE_VSL, contactEmail: encryptPii("lea@exemple.fr") };
+    vi.stubEnv("PII_ENCRYPTION_KEY", "");
+    try {
+      findFirst.mockResolvedValue(chiffre);
+      expect(await identiteDuJetonVsl(creerJeton({ lead: "lead-1", suspect: false }))).toBeNull();
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 
   it("base en panne → null, ne lève jamais", async () => {
