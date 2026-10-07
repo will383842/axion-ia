@@ -131,7 +131,7 @@ import { phraseConfirmationVisio } from "@/content/visio-annonce-textes";
  */
 export type MomentAppel = "confirmation" | "j1" | "h1";
 
-interface Payload {
+export interface PayloadAppel {
   /** Prénom, ou nom complet si c'est tout ce que Calendly a transmis. */
   prenom: string;
   /** Heure de début, déjà formatée par l'appelant, en heure de Paris. */
@@ -280,7 +280,7 @@ const texteOuNull = (v: unknown): string | null => {
  * là au moment du rendu. L'interpolation naïve produisait « le undefined à
  * undefined » — le pire des trois cas, parce qu'il ne lève pas : il part.
  */
-function quandTexte(locale: Locale, p: Payload): string | null {
+function quandTexte(locale: Locale, p: PayloadAppel): string | null {
   const date = texteOuNull(p.date);
   const heure = texteOuNull(p.heure);
   if (date && heure) return locale === "fr" ? `${date} à ${heure}` : `${date} at ${heure}`;
@@ -288,13 +288,13 @@ function quandTexte(locale: Locale, p: Payload): string | null {
 }
 
 /** « 45 minutes », ou rien : une durée absente ou nulle ne s'invente pas. */
-function dureeTexte(p: Payload): string | null {
+function dureeTexte(p: PayloadAppel): string | null {
   const d = p.dureeMinutes;
   return typeof d === "number" && Number.isFinite(d) && d > 0 ? `${d} minutes` : null;
 }
 
 export const appelRappelSubject = (locale: Locale, payload: Record<string, unknown>): string => {
-  const p = payload as unknown as Payload;
+  const p = payload as unknown as PayloadAppel;
   const m = momentDe(p);
   const quand = quandTexte(locale, p);
   const v = varianteDe(locale, p);
@@ -377,7 +377,7 @@ const GUIDE_AVANT_APPEL = {
 } as const;
 
 /** Ce qui ne dépend PAS du moment : lieu, attente, liens, signature. */
-const COMMUN = {
+export const COMMUN = {
   fr: {
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     // 🔑 Conditionnel au CANAL (2026-08-31). Le gabarit reçoit `lieu` — un
@@ -543,7 +543,7 @@ const COPY = {
  * finiraient par se contredire sur le cas tordu — et c'est le cas tordu qui
  * produit un e-mail absurde.
  */
-const estUnLienDeReunion = (valeur: string): boolean => /^https?:\/\//i.test(valeur);
+export const estUnLienDeReunion = (valeur: string): boolean => /^https?:\/\//i.test(valeur);
 
 /**
  * Le format à annoncer : celui que l'appelant a dérivé, sinon celui que la forme
@@ -553,7 +553,7 @@ const estUnLienDeReunion = (valeur: string): boolean => /^https?:\/\//i.test(val
  * que les charges d'e-mail transitent par une file et sont sérialisées. Une
  * valeur hors nomenclature retombe donc sur la déduction, jamais sur elle-même.
  */
-function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
+export function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
   if (
     p.format === "telephone" ||
     p.format === "visio" ||
@@ -678,7 +678,7 @@ type LigneRecap = { libelle: string; valeur: ReactNode; precision?: ReactNode };
  */
 function lignesRecap(
   locale: Locale,
-  p: Payload,
+  p: PayloadAppel,
   format: CanalRendezVous,
   c: Copie,
 ): readonly LigneRecap[] {
@@ -757,14 +757,14 @@ function lignesRecap(
  * Rend `null` quand il n'y a rien de sûr à afficher : un cadre vide dirait au
  * lecteur qu'une information a été perdue, ce qui est pire que son absence.
  */
-function RecapRendezVous({
+export function RecapRendezVous({
   locale,
   p,
   format,
   c,
 }: {
   locale: Locale;
-  p: Payload;
+  p: PayloadAppel;
   format: CanalRendezVous;
   c: Copie;
 }) {
@@ -800,7 +800,7 @@ function RecapRendezVous({
  * mise en page diffère, ce qui est le seul écart qu'on puisse tenir sans
  * risquer deux vérités sur le canal.
  */
-function LigneLieu({
+export function LigneLieu({
   lieu,
   format,
   c,
@@ -852,7 +852,15 @@ function LigneLieu({
  * l'en-tête du fichier) — y glisser une troisième adresse ferait rougir
  * `familles-email.spec.tsx`, ce qui est le comportement voulu.
  */
-function ActionsSecondaires({ p, c, encadre }: { p: Payload; c: Copie; encadre: boolean }) {
+export function ActionsSecondaires({
+  p,
+  c,
+  encadre,
+}: {
+  p: PayloadAppel;
+  c: Copie;
+  encadre: boolean;
+}) {
   if (!p.cancelUrl && !p.rescheduleUrl) return null;
   const corps = (
     <Text style={encadre ? texteSecondaire : { ...texteSecondaire, margin: "14px 0" }}>
@@ -899,7 +907,7 @@ function CeQuiSePasseMaintenant({
   c: Copie;
   locale: Locale;
   format: CanalRendezVous;
-  p: Payload;
+  p: PayloadAppel;
 }) {
   // Type connu : la troisième puce (« Rien à préparer… ») dit ce que le type
   // apporte — les réponses utiles pour un diagnostic, le service choisi pour un échange
@@ -950,7 +958,7 @@ export function AppelRappelEmail({
   locale: Locale;
   payload: Record<string, unknown>;
 }) {
-  const p = payload as unknown as Payload;
+  const p = payload as unknown as PayloadAppel;
   const c = COMMUN[locale];
   const m = momentDe(p);
   // 🔑 UNE SEULE dérivation du canal pour tout le rendu, quelle que soit la
