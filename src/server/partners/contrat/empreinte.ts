@@ -29,7 +29,7 @@ function racine(): string {
 
 /** Le chemin absolu de la copie du JSON Schema publié par Partners. */
 export function cheminContratPublie(): string {
-  return path.join(racine(), "contracts.v2.json");
+  return path.join(racine(), "contracts.v3.json");
 }
 
 /**
@@ -44,7 +44,7 @@ export function empreinteContratPublie(): string {
   const hash = ligne.slice(0, 64);
   if (!/^[0-9a-f]{64}$/.test(hash)) {
     throw new Error(
-      `[partners] contracts.sha256 illisible : « ${ligne} ». Attendu « <64 hex>  contracts.v2.json ».`,
+      `[partners] contracts.sha256 illisible : « ${ligne} ». Attendu « <64 hex>  contracts.v3.json ».`,
     );
   }
   return hash;

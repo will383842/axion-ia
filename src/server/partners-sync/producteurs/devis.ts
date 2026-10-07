@@ -31,17 +31,23 @@
  */
 import type { Prisma, PrismaClient } from "../../../../prisma/generated/client";
 import {
+  codesDesOffresDuDevis,
+  payloadDevisEmis,
   payloadDevisSigne,
   type ClientPourEvenement,
   type DevisPourEvenement,
   type PayloadDevisSigne,
 } from "@/server/partners/payloads";
 
+import { resolveOffrePriceEur } from "@/server/qualiopi/offres/pricing-resolver";
+
 import { canalPartnersOuvert } from "../config";
 import { ecrireEvenementPartners } from "../outbox";
 
 /** Le type d'événement, tel que le contrat le nomme. */
 export const DEVIS_SIGNE = "devis.signe";
+/** Contrat v3 : le devis ÉMIS, à son envoi (INT-T46-A). */
+export const DEVIS_EMIS = "devis.emis";
 
 /** Une charge refusée à la sortie : la faute est dans les données du devis, pas dans le réseau. */
 export class ChargeDevisSigneRefusee extends Error {
@@ -97,6 +103,7 @@ const SELECTION_DEVIS = {
   clientId: true,
   montantTotalHtCents: true,
   statut: true,
+  sentAt: true,
   acceptedAt: true,
   createdAt: true,
   updatedAt: true,
@@ -151,7 +158,8 @@ export async function emettreDevisSigne(
     throw new Error(`[partners-sync] devis.signe : client du devis ${devisId} introuvable.`);
   }
 
-  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client }));
+  const prixPublics = await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devis.lignes));
+  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client, prixPublics }));
   // `payloadDevisSigne` a déjà exigé `acceptedAt` : il est l'instant du fait.
   const signeLe = new Date(charge.signeLe);
 
@@ -160,6 +168,50 @@ export async function emettreDevisSigne(
     // La convention de clé de TOUS les faits (`scripts/partners/fixtures.ts`) : `<type>:<id>`.
     cleDeFait: `${DEVIS_SIGNE}:${devis.id}`,
     occurredAt: signeLe,
+    sujet: { devis_id: devis.id },
+    payload: { ...charge },
+  });
+}
+
+/**
+ * Émet `devis.emis` pour `devisId`, dans la transaction `tx` de l'ENVOI. C'est l'UNIQUE fonction
+ * d'émission de ce fait (REQ-INT-007, INT-T46-A).
+ *
+ * Rend l'`event_id`, ou `null` si le canal est fermé, ou si le devis relu n'a pas de date d'envoi.
+ * La clé du fait (`devis.emis:<id>`) le rend UNIQUE par devis : un renvoi ne réécrit rien, la
+ * première émission fait foi. Lève sur un devis ou un client introuvable : la transaction de l'envoi
+ * est annulée avec elle.
+ */
+export async function emettreDevisEmis(
+  tx: Prisma.TransactionClient,
+  devisId: string,
+): Promise<string | null> {
+  if (!canalPartnersOuvert()) return null;
+
+  const devis: DevisPourEvenement | null = await tx.devis.findUnique({
+    where: { id: devisId },
+    select: SELECTION_DEVIS,
+  });
+  if (devis === null) {
+    throw new Error(
+      `[partners-sync] devis.emis : devis ${devisId} introuvable dans la transaction.`,
+    );
+  }
+  if (devis.sentAt === null) return null;
+
+  const client: ClientPourEvenement | null = await tx.client.findUnique({
+    where: { id: devis.clientId },
+    select: SELECTION_CLIENT,
+  });
+  if (client === null) {
+    throw new Error(`[partners-sync] devis.emis : client du devis ${devisId} introuvable.`);
+  }
+
+  const charge = payloadDevisEmis({ devis, client });
+  return ecrireEvenementPartners(tx, {
+    type: DEVIS_EMIS,
+    cleDeFait: `${DEVIS_EMIS}:${devis.id}`,
+    occurredAt: new Date(charge.emisLe),
     sujet: { devis_id: devis.id },
     payload: { ...charge },
   });
@@ -190,4 +242,27 @@ export async function transactionDevisSigne<R>(
 ): Promise<R> {
   if (!canalPartnersOuvert()) return travail(client);
   return client.$transaction((tx) => travail(tx));
+}
+
+/**
+ * Le prix public FERME de chaque offre citée par les lignes d'un devis, lu dans la transaction
+ * du producteur : un code, une lecture (dédoublonnés), et `resolveOffrePriceEur`, la source qui
+ * pré-remplit le PU HT d'un devis. `null` pour une offre sur devis, sans prix ferme ou inconnue
+ * (arbitrage d'A02 : une absence n'est jamais un prix nul).
+ */
+export async function prixPublicsDesOffres(
+  tx: Prisma.TransactionClient,
+  codes: readonly string[],
+): Promise<Map<string, number | null>> {
+  if (!canalPartnersOuvert()) return new Map();
+  const uniques = [...new Set(codes)];
+  const prix = new Map<string, number | null>();
+  if (uniques.length === 0) return prix;
+  const offres = await tx.offreSite.findMany({
+    where: { code: { in: uniques } },
+    select: { code: true, tierId: true, gamme: true, dureeCode: true, tarifType: true },
+  });
+  for (const code of uniques) prix.set(code, null);
+  for (const o of offres) prix.set(o.code, resolveOffrePriceEur(o));
+  return prix;
 }

@@ -33,7 +33,8 @@ docs/kits
 # Règle générale : un fichier dont le CONTENU EXACT est la preuve ne se formate pas.
 src/server/partners/contrat/contracts.v2.json
 src/server/partners/contrat/contracts.sha256
-src/server/partners/contrat/fixtures.v2.json
+src/server/partners/contrat/contracts.v3.json
+src/server/partners/contrat/fixtures.v3.json
 # INT-T72-A : la chaîne canonique de la relecture et ses vecteurs, copiés À L'OCTET depuis Partners
 # (`packages/contracts/`), sous l'empreinte de `contracts.sha256`.
 src/server/partners/contrat/signature-relecture.ts

@@ -3,7 +3,7 @@
  * réduit aux mots-clés que `contracts.v2.json` emploie : le dépôt n'en embarque pas. Tout
  * mot-clé inconnu est une FAUTE, jamais un passe-droit.
  */
-import contrat from "@/server/partners/contrat/contracts.v2.json";
+import contrat from "@/server/partners/contrat/contracts.v3.json";
 
 type Schema = Record<string, unknown>;
 
@@ -22,13 +22,19 @@ const LUS = new Set([
   "pattern",
   "format",
   "minLength",
+  // Contrat v3 : un montant en centimes est borné à zéro (`centimes`, minimum 0).
+  "minimum",
   "$ref",
   "items",
+  // Contrat v3 : une page de relecture est bornée (`api_relecture_reponse`, maxItems 500).
+  "maxItems",
 ]);
 
 export const RACINE = contrat as unknown as Schema;
 
 export function resoudre(ref: string): Schema {
+  // Contrat v3 : une ligne de relecture est une enveloppe, désignée par la racine (`#`).
+  if (ref === "#") return RACINE;
   const [, nom] = /^#\/\$defs\/(.+)$/.exec(ref) ?? [];
   const cible = nom ? (RACINE["$defs"] as Record<string, Schema>)[nom] : undefined;
   if (!cible) throw new Error(`$ref introuvable : ${ref}`);
@@ -65,6 +71,12 @@ export function fautes(s: Schema, v: unknown, chemin = "$"): string[] {
     if (typeof s["pattern"] === "string" && !new RegExp(s["pattern"], "u").test(v)) {
       f.push(`${chemin} : ne suit pas ${s["pattern"]}`);
     }
+  }
+  if (typeof v === "number" && typeof s["minimum"] === "number" && v < s["minimum"]) {
+    f.push(`${chemin} : sous le minimum ${s["minimum"]}`);
+  }
+  if (Array.isArray(v) && typeof s["maxItems"] === "number" && v.length > s["maxItems"]) {
+    f.push(`${chemin} : plus de ${s["maxItems"]} éléments`);
   }
   if (Array.isArray(v) && s["items"]) {
     v.forEach((e, i) => f.push(...fautes(s["items"] as Schema, e, `${chemin}[${i}]`)));

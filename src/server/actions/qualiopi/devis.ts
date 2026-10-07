@@ -53,7 +53,11 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
+import {
+  emettreDevisEmis,
+  emettreDevisSigne,
+  transactionDevisSigne,
+} from "@/server/partners-sync/producteurs/devis";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import {
@@ -670,8 +674,11 @@ export async function sendDevisAction(
   const signatureCreee = signatureUrl !== null;
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
-  await prisma.$transaction([
-    prisma.devis.update({
+  // INT-T46-A : une transaction INTERACTIVE (et non plus un tableau), pour que le fait
+  // « devis émis » s'écrive dans la MÊME transaction que l'envoi. Canal fermé, l'émission rend
+  // null sans rien lire : les écritures restent atomiques, à l'identique.
+  await prisma.$transaction(async (tx) => {
+    await tx.devis.update({
       where: { id: idParsed.data },
       data: {
         statut: "envoye",
@@ -683,20 +690,18 @@ export async function sendDevisAction(
         // ne retrouverait rien à basculer.
         ...(documentGenereId !== null ? { documentGenereId } : {}),
       },
-    }),
-    prisma.client.update({
+    });
+    await tx.client.update({
       where: { id: devis.clientId },
       data: { statut: "devis_envoye" },
-    }),
+    });
     // Révision : l'ancienne version passe `expire` — jamais d'écrasement.
-    ...(devis.replacesDevisId !== null
-      ? [
-          prisma.devis.update({
-            where: { id: devis.replacesDevisId },
-            data: { statut: "expire" as const },
-          }),
-        ]
-      : []),
+    if (devis.replacesDevisId !== null) {
+      await tx.devis.update({
+        where: { id: devis.replacesDevisId },
+        data: { statut: "expire" as const },
+      });
+    }
     // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction.
     //
     // Sans cela, le client détiendrait deux liens vivants : l'ancien, sur un
@@ -707,18 +712,18 @@ export async function sendDevisAction(
     //
     // ⚠️ La révocation du jeton ne touche AUCUNE signature déjà apposée : elle
     // ferme le lien, elle n'efface pas une preuve.
-    ...(devis.replacesDevis?.documentGenereId != null
-      ? [
-          prisma.documentSignatureToken.updateMany({
-            where: { documentGenereId: devis.replacesDevis.documentGenereId, revokedAt: null },
-            data: {
-              revokedAt: new Date(),
-              revokedMotif: `Devis révisé — remplacé par ${devis.numero}`,
-            },
-          }),
-        ]
-      : []),
-  ]);
+    if (devis.replacesDevis?.documentGenereId != null) {
+      await tx.documentSignatureToken.updateMany({
+        where: { documentGenereId: devis.replacesDevis.documentGenereId, revokedAt: null },
+        data: {
+          revokedAt: new Date(),
+          revokedMotif: `Devis révisé — remplacé par ${devis.numero}`,
+        },
+      });
+    }
+    // INT-T46-A : « devis émis » vers Axion Partners, une fois par devis (clé devis.emis:<id>).
+    await emettreDevisEmis(tx, idParsed.data);
+  });
 
   // ── 4. Email au client (PDF joint + lien de signature) ──
   // Déclenché par le clic admin « Envoyer » — MANUEL, jamais un cron : conforme

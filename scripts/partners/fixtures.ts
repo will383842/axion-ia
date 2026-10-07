@@ -55,12 +55,15 @@ import {
   champsInterditsDuSujet,
   champsInterditsSelonFrontiere,
 } from "../../src/server/partners/frontiere";
+import { prixPublicsDesOffres } from "../../src/server/partners-sync/producteurs/devis";
 import {
+  codesDesOffresDuDevis,
   payloadAvoirEmis,
   payloadCandidatureRecue,
   payloadClientCree,
   payloadClientFusionne,
   payloadClientMisAJour,
+  payloadDevisEmis,
   payloadDevisSigne,
   payloadFactureAnnulee,
   payloadFactureEmise,
@@ -73,7 +76,7 @@ import {
 // Garde-fous
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v2.json");
+const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v3.json");
 
 /**
  * ⛔ La cible. Refuse tout ce qui n'est pas une base locale.
@@ -291,6 +294,8 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
       mentionTva: "TVA 20 % — régime assujetti",
       dateValidite: T("2026-03-16T00:00:00.000Z"),
       statut: "accepte",
+      // Contrat v3 : le devis a été ENVOYÉ avant d'être signé (fait « devis émis »).
+      sentAt: T("2026-02-10T10:00:00.000Z"),
       acceptedAt: T("2026-02-14T15:00:00.000Z"),
       createdAt: T("2026-02-01T15:00:00.000Z"),
       updatedAt: T("2026-02-14T15:00:00.000Z"),
@@ -519,7 +524,13 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
       cleDeFait: `devis.signe:${devisRelu.id}`,
       occurredAt: devisRelu.acceptedAt ?? devisRelu.updatedAt,
       sujet: { devis_id: devisRelu.id },
-      payload: { ...payloadDevisSigne({ devis: devisRelu, client: clientRelu }) },
+      payload: {
+        ...payloadDevisSigne({
+          devis: devisRelu,
+          client: clientRelu,
+          prixPublics: await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devisRelu.lignes)),
+        }),
+      },
       sequence: 3,
     },
     {
@@ -643,6 +654,14 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
         }),
       },
       sequence: 14,
+    },
+    {
+      type: "devis.emis",
+      cleDeFait: `devis.emis:${devisRelu.id}`,
+      occurredAt: devisRelu.sentAt ?? devisRelu.createdAt,
+      sujet: { devis_id: devisRelu.id },
+      payload: { ...payloadDevisEmis({ devis: devisRelu, client: clientRelu }) },
+      sequence: 15,
     },
   );
 

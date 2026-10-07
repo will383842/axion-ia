@@ -12,7 +12,7 @@ import { createHash, createHmac } from "node:crypto";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import contrat from "@/server/partners/contrat/contracts.v2.json";
+import contrat from "@/server/partners/contrat/contracts.v3.json";
 import { ENTETE_KID, kidDe } from "@/server/partners/enveloppe";
 
 import { envoyerLigne, type ClientRelais } from "../relais";

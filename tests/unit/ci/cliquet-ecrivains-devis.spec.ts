@@ -85,7 +85,7 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de « accepte » qui n'émet
     expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E3", 2]]);
   });
 
-  it("REQ-INT-007 : un statut non littéral est indécidable, donc refusé (E0)", () => {
+  it("REQ-INT-007 : un statut non littéral est indécidable, donc refusé (E0), pour chaque règle", () => {
     const b = un(
       [
         "async function f(id: string, statut: S) {",
@@ -93,7 +93,12 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de « accepte » qui n'émet
         "}",
       ].join("\n"),
     );
-    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E0", 2]]);
+    // `devis.statut` est gardé par deux règles depuis la v3 : `devis.signe` (accepte) et
+    // `devis.emis` (envoye) ; chacune juge l'écriture, comme les règles de la facturation.
+    expect(b.fautes.map((f) => [f.evenement, f.regle, f.ligne])).toEqual([
+      ["devis.signe", "E0", 2],
+      ["devis.emis", "E0", 2],
+    ]);
   });
 
   it("REQ-INT-007 : les formes détournées sont vues ({ set }, ternaire, étalement)", () => {

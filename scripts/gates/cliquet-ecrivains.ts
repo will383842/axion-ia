@@ -128,6 +128,15 @@ export const REGLES: readonly RegleEcrivain[] = [
     emission: "emettreDevisSigne",
     transactions: ["$transaction", "transactionDevisSigne"],
   },
+  // INT-T46-A : un devis posé `envoye` émet `devis.emis` (contrat v3), dans la transaction de l'envoi.
+  {
+    evenement: "devis.emis",
+    modele: "devis",
+    champ: "statut",
+    valeurs: ["envoye"],
+    emission: "emettreDevisEmis",
+    transactions: ["$transaction"],
+  },
   // INT-T05. Une pièce posée `emise` est une facture OU un avoir : c'est la ligne (`avoirDeId`)
   // qui décide, dans `emettreFaitFacture`. Une seule règle garde donc les deux faits.
   // Ne SONT PAS des faits, et la règle les laisse passer parce qu'ils ne posent pas `emise` :

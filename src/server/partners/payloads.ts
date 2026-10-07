@@ -93,6 +93,7 @@ export type FacturePourEvenement = Pick<
   | "regimeTva"
   | "subrogation"
   | "avoirDeId"
+  | "devisId"
   | "statut"
   | "emiseAt"
   | "echeanceAt"
@@ -131,6 +132,7 @@ export type DevisPourEvenement = Pick<
   | "clientId"
   | "montantTotalHtCents"
   | "statut"
+  | "sentAt"
   | "acceptedAt"
   | "createdAt"
   | "updatedAt"
@@ -344,6 +346,11 @@ export type LigneDevisEvenement = {
   jours: number | null;
   montantHtCents: number;
   offreCode: string | null;
+  /**
+   * Contrat v3 (#645, arbitrage d'A02) : le prix public de la LIGNE, en centimes, comparable à
+   * `montantHtCents` ; nul sans prix public ferme — une absence n'est jamais un prix nul.
+   */
+  prixReferenceHtCents: number | null;
   commissionId: string | null;
   commission: ResolutionCommission;
 };
@@ -359,6 +366,24 @@ export type PayloadDevisSigne = {
 };
 
 /**
+ * `prixReferenceHtCents` d'une ligne de devis signé (contrat v3, arbitrage d'A02) : le prix public
+ * de la LIGNE, comparable à son `montantHtCents`. Le prix public UNITAIRE, ferme, vient de
+ * `resolveOffrePriceEur` (la source qui pré-remplit le PU HT d'un devis) ; il est d'abord converti
+ * en centimes ENTIERS, puis multiplié par la quantité avec le MÊME arrondi que `montantHtCents` —
+ * aucun euro flottant ne traverse le calcul. `null` sans prix public ferme : une absence n'est
+ * jamais un prix nul. Sous le minimum du contrat (1 centime), `null` aussi, jamais 0.
+ */
+export function prixReferenceDeLaLigne(
+  prixPublicEur: number | null,
+  quantite: number,
+): number | null {
+  if (prixPublicEur === null) return null;
+  const prixUnitaireCents = Math.round(prixPublicEur * 100);
+  const ligne = Math.round(quantite * prixUnitaireCents);
+  return ligne >= 1 ? ligne : null;
+}
+
+/**
  * Une ligne de devis, LUE et vérifiée.
  *
  * `Devis.lignes` est une colonne `Json` : la base ne garantit rien de sa forme, et le
@@ -367,10 +392,27 @@ export type PayloadDevisSigne = {
  * serait faire disparaître une commission du payload sans que rien ne l'annonce, et le
  * total du devis ne le trahirait même pas puisqu'il est stocké à part.
  */
+/**
+ * Les codes d'offre cités par les lignes d'un devis, dédoublonnés, dans l'ordre : ce que le
+ * producteur relit dans la transaction pour leur prix public. Une ligne sans code n'en apporte
+ * aucun ; une colonne illisible n'en apporte aucun non plus (`ligneDevis` la refusera).
+ */
+export function codesDesOffresDuDevis(lignes: unknown): string[] {
+  if (!Array.isArray(lignes)) return [];
+  const codes: string[] = [];
+  for (const l of lignes) {
+    const code =
+      typeof l === "object" && l !== null ? (l as Record<string, unknown>)["offreCode"] : null;
+    if (typeof code === "string" && code.length > 0 && !codes.includes(code)) codes.push(code);
+  }
+  return codes;
+}
+
 function ligneDevis(
   brute: unknown,
   index: number,
   activite: ActiviteFacturation | null,
+  prixPublics: ReadonlyMap<string, number | null>,
 ): LigneDevisEvenement {
   const o = objet(brute, `Devis.lignes[${index}] : ligne de devis`);
   const designation = chaine(
@@ -400,6 +442,10 @@ function ligneDevis(
   // `quantite` admet des décimales (une demi-journée), et un produit non entier ne serait plus
   // un nombre de centimes — le contrat le refuserait, et Σ lignes ≠ total (INT-T04).
   const montantHtCents = Math.round(quantite * prixUnitaireHtCents);
+  const prixReferenceHtCents =
+    offreCode === null
+      ? null
+      : prixReferenceDeLaLigne(prixPublics.get(offreCode) ?? null, quantite);
   const commission = resoudreCommission({ activite, jours, montantHtCents });
 
   return {
@@ -408,17 +454,51 @@ function ligneDevis(
     jours,
     montantHtCents,
     offreCode,
+    prixReferenceHtCents,
     commissionId: commission.commissionId,
     commission,
   };
 }
 
-export function payloadDevisSigne({
+/**
+ * Contrat v3 (INT-T46-P, INT-T46-A) : le fait « devis émis », à l'ENVOI d'un devis (décision D2 de
+ * Williams, option A). Le SIREN est celui du client destinataire, nul s'il n'en a pas.
+ */
+export type PayloadDevisEmis = {
+  devisId: string;
+  numero: string;
+  clientId: string;
+  siren: string | null;
+  emisLe: string;
+};
+
+export function payloadDevisEmis({
   devis,
   client,
 }: {
   devis: DevisPourEvenement;
   client: ClientPourEvenement;
+}): PayloadDevisEmis {
+  // Sans date d'envoi, il n'y a pas de fait « émis » à raconter.
+  const emisLe = instant(devis.sentAt, "Devis.sentAt : un devis non envoyé");
+  return verifieLaFrontiere("devis.emis", {
+    devisId: devis.id,
+    numero: devis.numero,
+    clientId: client.id,
+    siren: client.siren ?? null,
+    emisLe,
+  });
+}
+
+export function payloadDevisSigne({
+  devis,
+  client,
+  prixPublics,
+}: {
+  devis: DevisPourEvenement;
+  client: ClientPourEvenement;
+  /** Le prix public ferme de chaque offre citée (`prixPublicsDesOffres`), lu par l'appelant. */
+  prixPublics: ReadonlyMap<string, number | null>;
 }): PayloadDevisSigne {
   // `devis.signe` n'est pas `devis.envoye`. Sans date d'acceptation, il n'y a pas de
   // fait à raconter — et l'`occurred_at` de l'enveloppe n'aurait rien à porter.
@@ -444,7 +524,7 @@ export function payloadDevisSigne({
     activite,
     montantTotalHtCents: devis.montantTotalHtCents,
     signeLe,
-    lignes: devis.lignes.map((brute, i) => ligneDevis(brute, i, activite)),
+    lignes: devis.lignes.map((brute, i) => ligneDevis(brute, i, activite, prixPublics)),
   });
 }
 
@@ -471,6 +551,8 @@ export type PayloadFactureEmise = {
   echeanceLe: string | null;
   echeanceFinanceurAt: string | null;
   payers: PayeurEvenement[];
+  /** Contrat v3 : le devis dont la facture procède, nul sinon (« entièrement facturé », DM-10-P). */
+  devisId: string | null;
 };
 
 function payers(liste: ReadonlyArray<PayeurPourEvenement>): PayeurEvenement[] {
@@ -523,6 +605,7 @@ export function payloadFactureEmise({
     echeanceLe: instantOuNul(facture.echeanceAt),
     echeanceFinanceurAt: instantOuNul(echeanceFinanceurAt),
     payers: payers(payeurs),
+    devisId: facture.devisId ?? null,
   });
 }
 

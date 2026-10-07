@@ -159,6 +159,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    (même pièce, vendeur et acheteur inversés) plutôt que d'en écrire une seconde. Nommés un par un.
   "src/features/apporteurs-reseau/autofacture-donnees.ts",
   "src/features/apporteurs-reseau/commissions.ts",
+  // Producteur partners-sync des événements de devis, INT-T46-A (arbitrage de la coordination
+  //    du 07/10) : il émet `devis.emis` et `devis.signe` vers Partners, et lit le prix public UNITAIRE
+  //    d'une ligne par `resolveOffrePriceEur`, la source qui pré-remplit le PU HT du devis, et rien d'autre.
+  "src/server/partners-sync/producteurs/devis.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

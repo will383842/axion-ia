@@ -167,6 +167,7 @@ const SELECTION_FACTURE = {
   regimeTva: true,
   subrogation: true,
   avoirDeId: true,
+  devisId: true,
   statut: true,
   emiseAt: true,
   echeanceAt: true,

@@ -20,7 +20,7 @@
  *   2. idem pour `contracts.sha256`
  *   3. `pnpm test src/server/partners` — la transcription et le registre disent le reste.
  */
-import contratPublie from "./contrat/contracts.v2.json";
+import contratPublie from "./contrat/contracts.v3.json";
 
 /**
  * Le JSON Schema publié, tel qu'il est sur le fil. Le type est resserré à la main sur
@@ -70,7 +70,8 @@ export type TypeEvenement =
   | "candidature.recue"
   | "financement.mis_a_jour"
   | "facture.annulee"
-  | "client.fusionne";
+  | "client.fusionne"
+  | "devis.emis";
 
 /** Les neuf champs de l'enveloppe, LUS dans la liste `required` du schéma publié. */
 export const CHAMPS_ENVELOPPE: readonly string[] = PUBLIE.required;

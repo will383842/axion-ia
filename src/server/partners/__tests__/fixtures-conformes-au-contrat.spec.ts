@@ -1,7 +1,7 @@
 /**
  * Chantier Axion Partners — INT-T27-A (REQ-INT-004, REQ-INT-032).
  *
- * LA SORTIE RÉELLE DU PRODUCTEUR, JUGÉE PAR LE CONTRAT PUBLIÉ. `fixtures.v2.json` est ce que
+ * LA SORTIE RÉELLE DU PRODUCTEUR, JUGÉE PAR LE CONTRAT PUBLIÉ. `fixtures.v3.json` est ce que
  * l'outbox écrit ; `contracts.v2.json` est ce que Partners accepte. Les tests voisins comparent
  * le producteur à des formes tapées ici, et c'est ainsi qu'un `amountHtCents` a traversé là où
  * le contrat fermé exige `montantHtCents` : chaque paiement aurait été refusé en 422.
@@ -12,7 +12,7 @@
  */
 import { describe, expect, it } from "vitest";
 
-import fixtures from "@/server/partners/contrat/fixtures.v2.json";
+import fixtures from "@/server/partners/contrat/fixtures.v3.json";
 import { finaliserCorps } from "@/server/partners-sync/outbox";
 
 import { fautes, RACINE, resoudre } from "./contrat-schema";
@@ -35,7 +35,7 @@ const EVENEMENTS = (
 );
 
 describe("REQ-INT-004, REQ-INT-032 — la sortie du producteur passe le contrat publié", () => {
-  it("chaque fixture, un par un, est conforme à contracts.v2.json", () => {
+  it("chaque fixture, un par un, est conforme à contracts.v3.json", () => {
     expect(EVENEMENTS.length).toBeGreaterThan(10);
     const rapport = EVENEMENTS.map((e) => [e["event_type"], fautes(RACINE, e)] as const).filter(
       ([, f]) => f.length > 0,
@@ -43,8 +43,10 @@ describe("REQ-INT-004, REQ-INT-032 — la sortie du producteur passe le contrat 
     expect(rapport).toEqual([]);
   });
 
-  it("les onze types du contrat sont exercés", () => {
-    expect(new Set(EVENEMENTS.map((e) => e["event_type"])).size).toBe(11);
+  it("les douze types du contrat v3 sont exercés, devis.emis compris", () => {
+    const types = new Set(EVENEMENTS.map((e) => e["event_type"]));
+    expect(types.size).toBe(12);
+    expect(types.has("devis.emis")).toBe(true);
   });
 
   it("TÉMOIN — le paiement qui porte `amountHtCents` (la faute trouvée en revue) est refusé", () => {
@@ -73,6 +75,6 @@ describe("REQ-INT-004, REQ-INT-032 — la sortie du producteur passe le contrat 
   });
 
   it("TÉMOIN — un mot-clé que le validateur ne lit pas le fait rougir, jamais passer", () => {
-    expect(fautes({ minimum: 0 }, 1)).toEqual(["$ : mot-clé non lu par ce validateur (minimum)"]);
+    expect(fautes({ maximum: 0 }, 1)).toEqual(["$ : mot-clé non lu par ce validateur (maximum)"]);
   });
 });

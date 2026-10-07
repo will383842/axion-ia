@@ -24,7 +24,7 @@ import {
   resoudreCommission,
   versionDeLaGrille,
 } from "@/server/partners/commission";
-import fixtures from "@/server/partners/contrat/fixtures.v2.json";
+import fixtures from "@/server/partners/contrat/fixtures.v3.json";
 import type { PayloadDevisSigne } from "@/server/partners/payloads";
 import { fautes, resoudre } from "@/server/partners/__tests__/contrat-schema";
 
@@ -35,6 +35,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
   verifierChargeDevisSigne,
+  prixPublicsDesOffres,
 } from "../producteurs/devis";
 
 const SCHEMA_CHARGE = resoudre("#/$defs/payload_devis_signe");
@@ -45,7 +46,7 @@ const CLIENT_ID = "7c000000-0000-4000-8000-000000000001";
 type Enregistrement = Record<string, unknown>;
 type LigneOutbox = { eventId: string; eventType: string; subjectRef: string; corps: string };
 
-/** Un faux client de transaction : les trois accès du producteur, rien d'autre. */
+/** Un faux client de transaction : les quatre accès du producteur, rien d'autre. */
 function fauxTx(devis: Enregistrement[]) {
   const outbox = new Map<string, LigneOutbox>();
   const lectures: string[] = [];
@@ -78,6 +79,13 @@ function fauxTx(devis: Enregistrement[]) {
       findUnique: async ({ where }: { where: { id: string } }) => {
         lectures.push(`client:${where.id}`);
         return where.id === CLIENT_ID ? client : null;
+      },
+    },
+    // Contrat v3 : le prix public des offres citées, lu dans la transaction (aucune offre connue ici).
+    offreSite: {
+      findMany: async () => {
+        lectures.push("offres:findMany");
+        return [];
       },
     },
     partnersSyncOutbox: {
@@ -377,5 +385,72 @@ describe("REQ-INT-007 — inertie : canal fermé, le comportement d'avant", () =
       await transactionDevisSigne(client, async (tx) => (String(tx) === "tx" ? "tx" : "?")),
     ).toBe("tx");
     expect(transaction).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("REQ-INT-006 — le prix public ferme des offres d'un devis, lu dans la transaction", () => {
+  it("REQ-INT-006 : TÉMOIN — chaque code lu une fois ; prix ferme, sur devis, offre inconnue", async () => {
+    const lus: unknown[] = [];
+    const tx = {
+      offreSite: {
+        findMany: async (q: unknown) => {
+          lus.push(q);
+          return [
+            {
+              code: "AXI-OFF-001",
+              tierId: null,
+              gamme: "generale",
+              dureeCode: "1j",
+              tarifType: "fixe",
+            },
+            {
+              code: "AXI-OFF-002",
+              tierId: null,
+              gamme: "generale",
+              dureeCode: "1j",
+              tarifType: "sur_devis",
+            },
+          ];
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    const prix = await prixPublicsDesOffres(tx, [
+      "AXI-OFF-001",
+      "AXI-OFF-002",
+      "AXI-OFF-001",
+      "AXI-OFF-999",
+    ]);
+    expect(lus).toStrictEqual([
+      {
+        where: { code: { in: ["AXI-OFF-001", "AXI-OFF-002", "AXI-OFF-999"] } },
+        select: { code: true, tierId: true, gamme: true, dureeCode: true, tarifType: true },
+      },
+    ]);
+    expect(prix.get("AXI-OFF-001")).toBe(1900);
+    expect(prix.get("AXI-OFF-002")).toBeNull();
+    expect(prix.get("AXI-OFF-999")).toBeNull();
+  });
+
+  it("REQ-INT-006 : sans aucun code, aucune lecture", async () => {
+    const tx = {
+      offreSite: {
+        findMany: async () => {
+          throw new Error("lecture inattendue");
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    expect((await prixPublicsDesOffres(tx, [])).size).toBe(0);
+  });
+
+  it("REQ-INT-006 : TÉMOIN — canal fermé, aucune lecture et aucun prix (inertie, règle R2)", async () => {
+    process.env.PARTNERS_SYNC_ENABLED = "false";
+    const tx = {
+      offreSite: {
+        findMany: async () => {
+          throw new Error("lecture inattendue");
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    expect((await prixPublicsDesOffres(tx, ["ia-essentiel-2j"])).size).toBe(0);
   });
 });

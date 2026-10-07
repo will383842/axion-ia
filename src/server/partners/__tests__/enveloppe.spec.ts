@@ -106,7 +106,7 @@ describe("REQ-INT-003 — l'enveloppe est celle du schéma publié", () => {
     // Le consommateur rend 422 sur tout `event_type` hors énumération. Émettre
     // serait fabriquer un `gave_up` : autant s'arrêter ici, bruyamment. (`candidature.recue`
     // servait de témoin en v1 ; il est au contrat depuis la v2, d'où un nom inventé.)
-    expect(() => enveloppe({ ...FAIT, type: "devis.refuse" as never })).toThrow(/contrat v2/i);
+    expect(() => enveloppe({ ...FAIT, type: "devis.refuse" as never })).toThrow(/contrat v3/i);
   });
 });
 
