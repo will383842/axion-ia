@@ -72,3 +72,12 @@ Listes fermées en phase « expand » : la colonne enum `etat_ferme` est écrite
 | `EtatLienCandidat`  | `vivant`       | Le lien répond (2xx/3xx, ou l'oEmbed de la plateforme confirme la vidéo).                                            | —   |
 | `EtatLienCandidat`  | `mort`         | 404/410, ou vidéo retirée selon l'oEmbed. `mort_depuis` garde la première date constatée.                            | —   |
 | `EtatLienCandidat`  | `inverifiable` | Connexion exigée, 403, 429, 5xx, délai dépassé : on ne sait pas. Une panne n'est jamais lue comme une mort.          | —   |
+
+## Réponses reçues des candidats (lot L3, 2026-10-07)
+
+| Terme                         | Sens                                                                                                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Réponse reçue** (emploi)    | Ligne de `job_application_inbound_replies` : un e-mail d'un candidat relevé dans la boîte Zoho Mail après un message parti vers son dossier. Date, objet, extrait chiffré (≤ 300 car.), drapeau `auto`. Jamais le corps. |
+| **Réponse reçue** (apporteur) | Ligne de `submission_inbound_replies` (2026-09-27), relevé distinct. Une personne des deux mondes a une ligne dans CHAQUE table ; une seule alerte Telegram (celle des apporteurs).                                      |
+| `CANDIDAT_REPLIED`            | Catégorie d'alerte (salon 💼 Candidatures) d'une réponse humaine récente (< 24 h) d'un candidat emploi. Distincte de `APPORTEUR_REPLIED` : jamais d'alerte commune aux deux mondes.                                      |
+| `email_recu` (« Boîte mail ») | Événement du journal posé par le relevé pour une réponse humaine ; une réponse automatique (absence) est gardée sans événement.                                                                                          |

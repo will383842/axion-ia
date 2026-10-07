@@ -127,6 +127,19 @@ export async function effacerCandidaturesPour(email: string): Promise<{
   let fichiersSupprimes = 0;
   let supprimees = 0;
 
+  // Lot L3 (2026-10-07) — les réponses reçues par e-mail (objet, extrait).
+  // La cascade les emporte avec chaque dossier ; on les efface AUSSI par
+  // l'empreinte de l'expéditeur, pour ne rien laisser derrière un dossier
+  // introuvable. Table absente (fenêtre de déploiement) : rien à effacer.
+  const empreinte = hashEmailForLookup(email);
+  if (empreinte !== null) {
+    try {
+      await prisma.jobApplicationInboundReply.deleteMany({ where: { fromEmailHash: empreinte } });
+    } catch {
+      // Table pas encore migrée : aucune ligne ne peut y exister.
+    }
+  }
+
   for (const c of candidatures) {
     for (const chemin of [c.cvStoragePath, c.photoStoragePath]) {
       if (chemin === null) continue;
@@ -194,6 +207,26 @@ export async function exporterCandidaturesPour(email: string): Promise<{
     },
   });
 
+  // Lot L3 (2026-10-07) — vos réponses par e-mail relevées dans notre boîte :
+  // ce que NOUS en gardons (date, objet, court extrait), jamais le message
+  // entier ni ses pièces jointes. Table absente : aucune.
+  let reponses: Array<{
+    applicationId: string;
+    receivedAt: Date;
+    subject: string;
+    excerpt: string | null;
+    auto: boolean;
+  }> = [];
+  try {
+    reponses = await prisma.jobApplicationInboundReply.findMany({
+      where: { applicationId: { in: lignes.map((l) => l.id) } },
+      orderBy: { receivedAt: "desc" },
+      select: { applicationId: true, receivedAt: true, subject: true, excerpt: true, auto: true },
+    });
+  } catch {
+    reponses = [];
+  }
+
   return {
     candidatures: lignes.map((l) => ({
       ...l,
@@ -201,6 +234,14 @@ export async function exporterCandidaturesPour(email: string): Promise<{
       lastName: decryptPii(l.lastName),
       email: decryptPii(l.email),
       phone: decryptPii(l.phone),
+      reponsesRecues: reponses
+        .filter((r) => r.applicationId === l.id)
+        .map((r) => ({
+          recueLe: r.receivedAt,
+          objet: r.subject,
+          extrait: r.excerpt ? decryptPii(r.excerpt) : null,
+          reponseAutomatique: r.auto,
+        })),
     })),
     tronque,
   };

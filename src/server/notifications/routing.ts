@@ -73,6 +73,7 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   ADMIN_REPLIED_TO_SUBMISSION: { channels: [], severity: "info" },
   // --- Réponse entrante d'un candidat apporteur (2026-09-27) ---
   APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
+  CANDIDAT_REPLIED: { channels: ["telegram"], severity: "info" },
 
   // --- Ops ---
   DEPLOY_SUCCESS: { channels: ["telegram"], severity: "info" },
@@ -176,6 +177,9 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   JOB_OFFERS_STALE: "candidatures",
   // Le rappel des dossiers oubliés vit avec les candidatures qu'il concerne.
   JOB_APPLICATIONS_STALE: "candidatures",
+  // La réponse d'un candidat emploi par e-mail (lot L3, 2026-10-07) : avec les
+  // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
+  CANDIDAT_REPLIED: "candidatures",
 
   // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
   // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce

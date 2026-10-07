@@ -101,6 +101,7 @@ const TITLES: Record<NotificationCategory, string> = {
   CALENDLY_INVITEE_RESCHEDULED: "Rendez-vous déplacé",
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
+  CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
   BACKUP_SUCCESS: "Sauvegarde réussie",
@@ -647,6 +648,28 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#reponses-recues`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CANDIDAT_REPLIED": {
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.contactName),
+        formatKV("Poste", p.offerTitle),
+        formatKV("Objet", p.subject),
+        formatKV(
+          "Reçu le",
+          new Date(p.receivedAt).toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+        ),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}#reponses-recues`,
         ),
       ]
         .filter((v): v is string => v !== null)
