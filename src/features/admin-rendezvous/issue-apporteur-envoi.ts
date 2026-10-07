@@ -25,6 +25,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { decryptPii } from "@/lib/pii-crypto";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -146,6 +147,28 @@ export async function dernierEnvoiIssue(
  */
 export function jobIdIssue(gabarit: GabaritIssueApporteur, cle: string): string {
   return `${gabarit}-${cle}`.replace(/:/g, "-");
+}
+
+/**
+ * Pourquoi « Retenu » est refusé pour cette personne, AVANT toute ouverture de dossier
+ * (2026-10-07) — ou `null`. Le dossier se retrouve par l'empreinte de l'adresse, comme
+ * `ouvrirDossierDepuisCandidature`.
+ */
+async function refusRetenu(email: string): Promise<string | null> {
+  const empreinte = hashEmailForLookup(email.trim());
+  if (!empreinte) return null;
+  const a = await prisma.apporteurReseau.findUnique({
+    where: { emailHash: empreinte },
+    select: { id: true, statut: true },
+  });
+  if (!a) return null;
+  if (await retraitDe(a.id)) {
+    return "Cet apporteur est retiré du réseau : remettez-le d'abord dans le réseau (fiche apporteur, « Remettre dans le réseau »).";
+  }
+  if (a.statut === "resilie") {
+    return "Le contrat de cet apporteur est résilié : aucun e-mail de bienvenue ne part sans lien de dossier. Décidez d'abord de la suite depuis sa fiche apporteur.";
+  }
+  return null;
 }
 
 export async function preparerIssueApporteur(input: {
@@ -293,9 +316,13 @@ export async function preparerIssueApporteur(input: {
   // lien d'exemple). Le lien ne doit JAMAIS faire échouer l'envoi : en cas de panne,
   // l'e-mail part sans lui (l'apporteur recevra le lien à la main).
   let dossierUrl: string | null = null;
-  let alerteLien: string | null = null;
   let dossierSigne = false;
   if (gabarit === "apporteur-issue-retenu") {
+    // 🔴 AVANT d'ouvrir le dossier (relecture de a1, 07/10) : ouvrir un dossier REFUSÉ le
+    // rouvre (nouveau lien). Un apporteur retiré, ou au contrat résilié, ne doit donc
+    // jamais atteindre cette ouverture — aperçu comme envoi.
+    const refus = await refusRetenu(email ?? "");
+    if (refus) return { ok: false, message: refus };
     // 07/10 (relecture de a1) : à l'envoi, une panne à l'ouverture du dossier n'est plus
     // avalée. AUCUN e-mail ne part sans son lien : la console le dit, et l'on réessaie.
     const panne = {
@@ -308,20 +335,13 @@ export async function preparerIssueApporteur(input: {
         creer: input.ouvrirDossier === true,
       });
       if (dossier.ok) {
-        // 🔴 Retiré du réseau (2026-10-07) : l'e-mail « Retenu » ne passe ni par envoyer() ni
-        // par preparerLien — il est refusé ICI, aperçu comme envoi, avec un message clair.
-        if (await retraitDe(dossier.apporteurId)) {
-          return {
-            ok: false,
-            message:
-              "Cet apporteur est retiré du réseau : remettez-le d'abord dans le réseau (fiche apporteur, « Remettre dans le réseau »).",
-          };
-        }
         dossierUrl = urlDossier(dossier.apporteurId, dossier.versionLien);
         dossierSigne = dossier.statut === "a_verifier" || dossier.statut === "signe";
         if (!dossierUrl && input.ouvrirDossier === true) return panne;
-      } else if (dossier.ferme) alerteLien = dossier.message;
-      else if (input.ouvrirDossier !== true) dossierUrl = urlDossierExemple();
+      } else if (dossier.ferme) {
+        // Dossier fermé (page « neutre ») : pas de Bienvenue SANS lien de dossier.
+        return { ok: false, message: dossier.message };
+      } else if (input.ouvrirDossier !== true) dossierUrl = urlDossierExemple();
       else return panne;
     } catch (err) {
       Sentry.captureException(err, { tags: { action: "issue-apporteur", step: "dossier-lien" } });
@@ -350,7 +370,6 @@ export async function preparerIssueApporteur(input: {
       payload,
     },
     sansEmail: null,
-    ...(alerteLien ? { alerteLien } : {}),
   };
 }
 
