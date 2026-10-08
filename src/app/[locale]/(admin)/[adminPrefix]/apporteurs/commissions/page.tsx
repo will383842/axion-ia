@@ -408,7 +408,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           name="prix"
                           inputMode="decimal"
                           placeholder="1500"
-                          className="admin-input w-28"
+                          className="admin-input"
                           aria-label="Prix HT net conservé en euros"
                         />
                         € (la commission est recalculée par la règle du contrat)
