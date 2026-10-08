@@ -36,6 +36,7 @@ import {
   relancerVigilance,
   statutApresVigilance,
 } from "./commissions";
+import { alerterDeclarationsSansReponse, annoncerAttribution } from "./attribution-annonce";
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
@@ -53,9 +54,11 @@ import {
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
   dateConfirmationTacite,
+  dateConfirmationTaciteSansContact,
   finDeProtection,
   motifDeProlongation,
   PARRAINAGE_MOIS,
+  PRISE_DE_CONTACT_JOURS,
   partParrainage,
   PROLONGATION_FAITS_RECENTS_JOURS,
   PROLONGATION_MOIS,
@@ -192,7 +195,8 @@ type NomEtape =
   | "rappels-dossier"
   | "chiffrement-pieces"
   | "realisation"
-  | "hors-grille";
+  | "hors-grille"
+  | "declarations-sans-reponse";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "realisation", "autofacturation"];
 
@@ -244,6 +248,11 @@ async function passer(
     // Annexe 1, A1.7 : une commission « à qualifier » se règle sous soixante jours ; Williams
     // est alerté dix jours avant, puis le jour du dépassement.
     ["hors-grille", async () => void (await alerterHorsGrille(maintenant))],
+    // Rappel INTERNE (non contractuel) : une déclaration sans réponse depuis 15 jours.
+    [
+      "declarations-sans-reponse",
+      async () => void (await alerterDeclarationsSansReponse(maintenant)),
+    ],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
@@ -301,9 +310,13 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
     where: { statut: "reservee", contactEnvoyeAt: { not: null, lte: seuil } },
     select: { id: true, contactEnvoyeAt: true, recueAt: true },
   });
-  if (lignes.length === 0) return;
+  // ⚠️ Pas de « return » si la liste est vide : les déclarations JAMAIS contactées (plus bas)
+  // doivent être examinées quand même.
   // Contrat art. 3.2 : le délai ne court pas tant que la prise de contact revient en erreur.
-  const rebonds = await idsPriseDeContactRebondie(lignes.map((l) => l.id));
+  const rebonds =
+    lignes.length > 0
+      ? await idsPriseDeContactRebondie(lignes.map((l) => l.id))
+      : new Set<string>();
   for (const p of lignes) {
     if (rebonds.has(p.id)) continue;
     const confirmeeAt = dateConfirmationTacite(p.contactEnvoyeAt!);
@@ -319,6 +332,35 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
       },
     });
     bilan.confirmeesTacites += r.count;
+    if (r.count === 1) await annoncerAttribution(p.id, "confirmee");
+  }
+
+  // Art. 3.2 : la Société prend contact dans les 30 jours de la déclaration ; À DÉFAUT, le délai
+  // de confirmation court à compter de l'expiration de ce délai. Une déclaration JAMAIS contactée
+  // est donc réputée confirmée 30 + 30 jours après sa réception (relecture de a1, 08/10 : elle
+  // restait « à l'étude » sans fin). Aucun message n'étant parti, aucun rebond à attendre.
+  const sansContact = await prisma.presentationEntreprise.findMany({
+    where: {
+      statut: "reservee",
+      contactEnvoyeAt: null,
+      recueAt: {
+        lte: ajouterJours(maintenant, -(PRISE_DE_CONTACT_JOURS + CONFIRMATION_TACITE_JOURS)),
+      },
+    },
+    select: { id: true, recueAt: true },
+  });
+  for (const p of sansContact) {
+    const r = await prisma.presentationEntreprise.updateMany({
+      where: { id: p.id, statut: "reservee", contactEnvoyeAt: null },
+      data: {
+        statut: "confirmee",
+        confirmationTacite: true,
+        confirmeeAt: dateConfirmationTaciteSansContact(p.recueAt),
+        protegeeJusquAt: finDeProtection(p.recueAt),
+      },
+    });
+    bilan.confirmeesTacites += r.count;
+    if (r.count === 1) await annoncerAttribution(p.id, "confirmee");
   }
 }
 
@@ -426,6 +468,7 @@ async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<
         },
       });
       bilan.prolongees += r.count;
+      if (r.count === 1) await annoncerAttribution(p.id, "prolongee");
     } else {
       const r = await prisma.presentationEntreprise.updateMany({
         where: { id: p.id, statut: "confirmee", protegeeJusquAt: terme },

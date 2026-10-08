@@ -33,6 +33,19 @@ export const PROLONGATION_FAITS_RECENTS_JOURS = 30;
 /** Art. 3.2 : confirmation réputée acquise, à compter du premier message de la Société. */
 export const CONFIRMATION_TACITE_JOURS = 30;
 /**
+ * Art. 3.2 : la Société prend contact avec la personne déclarée dans les 30 jours de
+ * l'enregistrement de la déclaration ; À DÉFAUT, le délai de confirmation court à compter de
+ * l'expiration de ce délai. Une déclaration jamais contactée est donc réputée confirmée
+ * 30 + 30 jours après sa réception (relecture de a1, 2026-10-08 : elle restait « à l'étude »).
+ */
+export const PRISE_DE_CONTACT_JOURS = 30;
+/**
+ * Rappel INTERNE (non contractuel) : une déclaration sans réponse de Williams depuis ce nombre
+ * de jours lui est signalée, et l'apporteur voit « En attente d'une réponse ». Ce n'est PAS un
+ * délai du contrat : aucun texte ne doit le présenter comme tel.
+ */
+export const RAPPEL_SANS_REPONSE_JOURS = 15;
+/**
  * Art. 3.2 : sans adresse valide dans ce délai après la déclaration, l'attribution prend fin.
  * Opéré manuellement pendant la période de démarrage (art. 2.8) : non appliqué par le passage quotidien.
  */
@@ -160,6 +173,14 @@ export function finDeProtection(declareeAt: Date): Date {
 /** Date de la confirmation réputée acquise, si l'entreprise n'a pas répondu (art. 3.2). */
 export function dateConfirmationTacite(contactEnvoyeAt: Date): Date {
   return ajouterJours(contactEnvoyeAt, CONFIRMATION_TACITE_JOURS);
+}
+
+/**
+ * Art. 3.2 : confirmation réputée acquise d'une déclaration que la Société n'a PAS contactée dans
+ * ses 30 jours : le délai de 30 jours court à compter de l'expiration du premier.
+ */
+export function dateConfirmationTaciteSansContact(recueAt: Date): Date {
+  return ajouterJours(recueAt, PRISE_DE_CONTACT_JOURS + CONFIRMATION_TACITE_JOURS);
 }
 
 export type MotifProlongation = "devis_en_cours" | "echange_recent" | "financement_en_cours";

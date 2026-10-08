@@ -37,6 +37,7 @@ import {
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { ajouterMois, finDeProtection, sirenValide } from "./regles";
+import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
 
@@ -744,9 +745,13 @@ export async function confirmerPresentation(
       protegeeJusquAt: finDeProtection(p.recueAt),
     },
   });
-  return r.count === 1
-    ? { ok: true }
-    : { ok: false, message: "Seule une présentation en attente peut être confirmée." };
+  if (r.count !== 1)
+    return { ok: false, message: "Seule une présentation en attente peut être confirmée." };
+  // Art. 3.2 : l'attribution devient définitive « dès que la Société la confirme par écrit à
+  // l'Apporteur » — cet e-mail EST cette confirmation écrite (relecture de a1, 08/10). Un échec
+  // d'envoi ne défait pas la confirmation : il est signalé.
+  await annoncerAttribution(id, "confirmee");
+  return { ok: true };
 }
 
 /** « L'entreprise dit ne pas connaître l'apporteur » (art. 3.7). */

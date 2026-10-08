@@ -30,19 +30,21 @@ import {
 } from "./verification";
 import { libererSiPiecesValides } from "./commissions";
 import { apercu, type ApercuRendu } from "./envois";
+import { peutEngager } from "@/server/auth/habilitations";
+
 import { refusRattachement, type IdentiteParrainage } from "./parrainage";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
 export type RetourApercu =
   { ok: true; email: ApercuRendu; dejaEnvoyeLe?: string | null } | { ok: false; message: string };
 
-const ROLES = new Set(["super_admin", "admin"]);
-
+// Relecture de a1 (08/10) : la règle « contresigner » des habilitations, pas une liste de rôles
+// écrite ici — un rôle ajouté ou retiré là-bas l'est aussi pour ces actions.
 async function exigerAdmin(): Promise<string | null> {
   const session = await auth();
   if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role ?? "";
-  if (!ROLES.has(role)) return "Réservé aux administrateurs.";
+  if (!peutEngager(role, "contresigner")) return "Réservé aux administrateurs.";
   return null;
 }
 

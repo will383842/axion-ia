@@ -35,7 +35,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: (dernier: boolean) =>
-      dernier ? "Dernier rappel, promis" : "Votre candidature vous attend",
+      dernier ? "Votre candidature d'apporteur : dernier rappel" : "Votre candidature vous attend",
     preview: "Trois minutes, sans CV — et nous préparons notre échange à partir de vos réponses.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     j2: "Il y a deux jours, vous nous avez laissé vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Votre candidature, elle, n'est pas encore arrivée — et c'est elle qui nous permet de préparer notre échange autour de votre situation plutôt que de partir de zéro.",
@@ -50,14 +50,14 @@ const COPY = {
     // 2026-10-07 (D9) : la relance du tunnel vidéo a son titre et son pré-en-tête.
     // « Trois minutes, sans CV… vos réponses » décrivait l'ancien formulaire.
     titleVsl: (dernier: boolean) =>
-      dernier ? "Dernier rappel, promis" : "Votre inscription vous attend",
+      dernier ? "Votre candidature d'apporteur : dernier rappel" : "Votre inscription vous attend",
     previewVsl: "Il vous reste une étape : votre numéro de téléphone et une question.",
     cta: "Compléter ma candidature",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: (dernier: boolean) =>
-      dernier ? "Last reminder, promise" : "Your application is waiting",
+      dernier ? "Your introducer application: last reminder" : "Your application is waiting",
     preview: "Three minutes, no resume — and we prepare our call from your answers.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     j2: "Two days ago you left us your details to join Axion-IA's network of business introducers. Your file has not arrived yet — and it is what lets us prepare our conversation around your situation instead of starting from scratch.",
@@ -70,7 +70,7 @@ const COPY = {
       "A week since you started your registration. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your details stay on record and you can pick it up whenever you like.",
     ctaVsl: "Finish my registration",
     titleVsl: (dernier: boolean) =>
-      dernier ? "Last reminder, promise" : "Your registration is waiting",
+      dernier ? "Your introducer application: last reminder" : "Your registration is waiting",
     previewVsl: "One step left: your phone number and one question.",
     cta: "Complete my application",
     refRow: (id: string) => `Reference: ${id}`,

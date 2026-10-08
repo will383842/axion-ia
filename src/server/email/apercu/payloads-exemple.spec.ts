@@ -142,7 +142,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // sont tous facultatifs.
     // 🔴 2026-10-05 — RELEVÉ À 68 : `apporteur-declaration-recue`, l'alerte INTERNE
     // « une entreprise est déclarée par un apporteur ». Ses champs sont tous facultatifs.
-    expect(tous.length).toBe(68);
+    // 🔴 2026-10-08 — RELEVÉ À 69 : `apporteur-attribution-confirmee`, l'e-mail à l'apporteur
+    // « attribution confirmée / protection prolongée » (contrat 2.3, art. 3.2 et 3.4). Ses
+    // champs sont tous facultatifs.
+    expect(tous.length).toBe(69);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

@@ -171,6 +171,7 @@ export type EmailJobName =
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
+  | "apporteur-attribution-confirmee"
   | "apporteur-releve"
   | "apporteur-virement-fait"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
