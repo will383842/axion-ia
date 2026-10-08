@@ -413,6 +413,7 @@ function ligneDevis(
   index: number,
   activite: ActiviteFacturation | null,
   prixPublics: ReadonlyMap<string, number | null>,
+  dureesOffres: ReadonlyMap<string, number | null>,
 ): LigneDevisEvenement {
   const o = objet(brute, `Devis.lignes[${index}] : ligne de devis`);
   const designation = chaine(
@@ -431,12 +432,14 @@ function ligneDevis(
   const offreCode =
     typeof offreCodeBrut === "string" && offreCodeBrut.length > 0 ? offreCodeBrut : null;
 
-  // 🔑 `jours` ne se lit pas : il N'EXISTE PAS en base. Le schéma décrit les lignes comme
-  // `{designation, quantite, prixUnitaireHtCents, offreCode?, offreTierId?}` — la
-  // quantité EST le nombre de journées pour une formation, et n'a aucun sens de durée
-  // pour les autres activités. REQ-DM-040 demande une dérivation « côté axionia » : la
-  // voici, explicite, plutôt qu'un champ qu'on aurait inventé au schéma.
-  const jours = activite === "formation" ? quantite : null;
+  // 🔑 `jours` ne se lit pas dans la ligne : il N'EXISTE PAS en base. Le devis catalogue porte
+  // « prix par GROUPE, Qté = 1 » (`resolveOffreDevisNoteFr`) : la QUANTITÉ compte des SESSIONS
+  // (groupes), jamais des journées. La durée d'une session vient de l'OFFRE de la ligne
+  // (`OffreSite.dureeCode` : 4h = 0,5, 1j = 1, 2j = 2, 3j = 3), comme le moteur du réseau
+  // (`qualifierCommission`, palier × quantité). 2026-10-08, relecture de a1 : « 2 jours, Qté 1 »
+  // donnait 500 € au lieu de 1 000 €. Durée inconnue → `null` → bloquée « à qualifier ».
+  const dureeSession = offreCode === null ? null : (dureesOffres.get(offreCode) ?? null);
+  const jours = activite === "formation" && dureeSession !== null ? dureeSession * quantite : null;
 
   // Arrondi ligne à ligne, À L'IDENTIQUE de `createDevisAction` qui a calculé le total stocké :
   // `quantite` admet des décimales (une demi-journée), et un produit non entier ne serait plus
@@ -494,11 +497,14 @@ export function payloadDevisSigne({
   devis,
   client,
   prixPublics,
+  dureesOffres = new Map(),
 }: {
   devis: DevisPourEvenement;
   client: ClientPourEvenement;
   /** Le prix public ferme de chaque offre citée (`prixPublicsDesOffres`), lu par l'appelant. */
   prixPublics: ReadonlyMap<string, number | null>;
+  /** La durée d'UNE session de chaque offre citée, en journées (`dureesDesOffres`). */
+  dureesOffres?: ReadonlyMap<string, number | null>;
 }): PayloadDevisSigne {
   // `devis.signe` n'est pas `devis.envoye`. Sans date d'acceptation, il n'y a pas de
   // fait à raconter — et l'`occurred_at` de l'enveloppe n'aurait rien à porter.
@@ -524,7 +530,9 @@ export function payloadDevisSigne({
     activite,
     montantTotalHtCents: devis.montantTotalHtCents,
     signeLe,
-    lignes: devis.lignes.map((brute, i) => ligneDevis(brute, i, activite, prixPublics)),
+    lignes: devis.lignes.map((brute, i) =>
+      ligneDevis(brute, i, activite, prixPublics, dureesOffres),
+    ),
   });
 }
 

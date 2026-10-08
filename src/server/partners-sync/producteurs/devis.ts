@@ -158,8 +158,12 @@ export async function emettreDevisSigne(
     throw new Error(`[partners-sync] devis.signe : client du devis ${devisId} introuvable.`);
   }
 
-  const prixPublics = await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devis.lignes));
-  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client, prixPublics }));
+  const codes = codesDesOffresDuDevis(devis.lignes);
+  const prixPublics = await prixPublicsDesOffres(tx, codes);
+  const dureesOffres = await dureesDesOffres(tx, codes);
+  const charge = verifierChargeDevisSigne(
+    payloadDevisSigne({ devis, client, prixPublics, dureesOffres }),
+  );
   // `payloadDevisSigne` a déjà exigé `acceptedAt` : il est l'instant du fait.
   const signeLe = new Date(charge.signeLe);
 
@@ -265,4 +269,35 @@ export async function prixPublicsDesOffres(
   for (const code of uniques) prix.set(code, null);
   for (const o of offres) prix.set(o.code, resolveOffrePriceEur(o));
   return prix;
+}
+
+/** Journées d'UNE session, par code de durée d'offre (catalogue V2). Inconnu → absent. */
+const JOURNEES_PAR_DUREE: Readonly<Record<string, number>> = {
+  "4h": 0.5,
+  "1j": 1,
+  "2j": 2,
+  "3j": 3,
+};
+
+/**
+ * La durée d'UNE session de chaque offre citée, en journées, lue sur `OffreSite.dureeCode` —
+ * la même source que le moteur du réseau (palier × quantité de sessions). `null` quand l'offre
+ * ne porte pas de durée : aucune durée n'est devinée, la commission part bloquée.
+ */
+export async function dureesDesOffres(
+  tx: Prisma.TransactionClient,
+  codes: readonly string[],
+): Promise<Map<string, number | null>> {
+  const durees = new Map<string, number | null>();
+  if (!canalPartnersOuvert()) return durees;
+  const uniques = [...new Set(codes)];
+  if (uniques.length === 0) return durees;
+  const offres = await tx.offreSite.findMany({
+    where: { code: { in: uniques } },
+    select: { code: true, dureeCode: true },
+  });
+  for (const code of uniques) durees.set(code, null);
+  for (const o of offres)
+    durees.set(o.code, o.dureeCode ? (JOURNEES_PAR_DUREE[o.dureeCode] ?? null) : null);
+  return durees;
 }

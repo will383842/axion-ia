@@ -81,11 +81,15 @@ function fauxTx(devis: Enregistrement[]) {
         return where.id === CLIENT_ID ? client : null;
       },
     },
-    // Contrat v3 : le prix public des offres citées, lu dans la transaction (aucune offre connue ici).
+    // Contrat v3 : l'offre citée, lue dans la transaction. Elle porte une durée (1 journée par
+    // session) mais AUCUN prix public ferme (ni palier ni gamme) : la référence du prorata est
+    // donc absente.
     offreSite: {
       findMany: async () => {
         lectures.push("offres:findMany");
-        return [];
+        return [
+          { code: "AXI-OFF-004", tierId: null, gamme: null, dureeCode: "1j", tarifType: null },
+        ];
       },
     },
     partnersSyncOutbox: {
