@@ -16,7 +16,7 @@ import { writeFileSync } from "node:fs";
 
 import { PrismaClient } from "../../prisma/generated/client";
 
-import { COLONNES, MOTIF_SQL, corrigerJson, corrigerTexte } from "./formules-erronees-regles";
+import { COLONNES, MOTIF_SQL, analyserTexte, corrigerJson } from "./formules-erronees-regles";
 
 interface Correction {
   table: string;
@@ -26,8 +26,15 @@ interface Correction {
   avant: unknown;
   apres: unknown;
   changements: string[];
+  /** Anciens montants laissés tels quels (contexte non sûr) : Will tranche. */
+  aRevoir: string[];
 }
 
+/**
+ * Les valeurs à corriger (corrections SÛRES) et celles qui portent un ancien montant « à revoir ».
+ * Une valeur « à revoir » sans aucune correction sûre est rendue avec `apres === avant` : elle
+ * est listée, jamais écrite.
+ */
 export async function calculerCorrections(prisma: PrismaClient): Promise<Correction[]> {
   const out: Correction[] = [];
   for (const { table, colonnes } of COLONNES) {
@@ -50,10 +57,10 @@ export async function calculerCorrections(prisma: PrismaClient): Promise<Correct
         const r = c.json
           ? corrigerJson(l.valeur)
           : (() => {
-              const t = corrigerTexte(String(l.valeur));
-              return { valeur: t.texte, changements: t.changements };
+              const t = analyserTexte(String(l.valeur));
+              return { valeur: t.texte, changements: t.changements, aRevoir: t.aRevoir };
             })();
-        if (r.changements.length === 0) continue;
+        if (r.changements.length === 0 && r.aRevoir.length === 0) continue;
         out.push({
           table,
           id: l.id,
@@ -62,6 +69,7 @@ export async function calculerCorrections(prisma: PrismaClient): Promise<Correct
           avant: l.valeur,
           apres: r.valeur,
           changements: [...new Set(r.changements)],
+          aRevoir: r.aRevoir,
         });
       }
     }
@@ -84,13 +92,22 @@ async function main(): Promise<void> {
   }
   const prisma = new PrismaClient();
   try {
-    const corrections = await calculerCorrections(prisma);
+    const toutes = await calculerCorrections(prisma);
+    // Seules les valeurs qui CHANGENT sont écrites ; les « à revoir » sont listées, jamais écrites.
+    const corrections = toutes.filter((c) => c.changements.length > 0);
+    for (const c of toutes.filter((x) => x.aRevoir.length > 0)) {
+      console.warn(`\n⚠ À REVOIR (non corrigé) — ${c.table} ${c.id} [${c.colonne}]`);
+      for (const phrase of c.aRevoir) console.warn(`  « ${phrase.slice(0, 300)} »`);
+    }
     for (const c of corrections) {
       console.warn(`\n— ${c.table} ${c.id} [${c.colonne}] (${c.changements.join(", ")})`);
       console.warn(`  AVANT : ${apercu(c.avant)}`);
       console.warn(`  APRÈS : ${apercu(c.apres)}`);
     }
-    console.warn(`\n[corriger] ${corrections.length} valeur(s) à corriger.`);
+    console.warn(
+      `\n[corriger] ${corrections.length} valeur(s) à corriger automatiquement ; ` +
+        `${toutes.filter((x) => x.aRevoir.length > 0).length} à REVOIR par Will (jamais écrites).`,
+    );
     if (!appliquer) {
       console.warn(
         "[corriger] ESSAI À BLANC : rien n'a été écrit. Ajoutez --appliquer --sauvegarde <f>.",
