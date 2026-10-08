@@ -18,6 +18,30 @@ import {
 } from "@/lib/commercial-application/lead-apporteur";
 
 describe("isRouteTunnelFacebook", () => {
+  // 2026-10-07 (relecture de a1) : une liste FERMÉE, plus un préfixe. La grille de référence
+  // des commissions vit sous /apporteur-affaires mais n'est PAS une page de campagne.
+  it("🔴 la grille de référence des commissions ne charge PAS le pixel", () => {
+    for (const p of [
+      "/fr/apporteur-affaires/commissions",
+      "/apporteur-affaires/commissions",
+      "/fr/apporteur-affaires/nouvelle-page",
+    ]) {
+      expect(isRouteTunnelFacebook(p), p).toBe(false);
+    }
+  });
+
+  it("les quatre pages du tunnel, et elles seules (barre finale tolérée)", () => {
+    for (const p of [
+      "/fr/apporteur-affaires",
+      "/fr/apporteur-affaires/merci",
+      "/fr/apporteur-affaires/video",
+      "/fr/apporteur-affaires/video/merci",
+      "/fr/apporteur-affaires/video/",
+    ]) {
+      expect(isRouteTunnelFacebook(p), p).toBe(true);
+    }
+  });
+
   it("reconnaît la landing et la page merci, avec préfixe de langue", () => {
     for (const p of [
       "/fr/apporteur-affaires",
