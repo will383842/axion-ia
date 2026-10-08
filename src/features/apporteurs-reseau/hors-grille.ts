@@ -30,7 +30,7 @@ import { litigeDisponible } from "./litige";
 import { ajouterJours, PALIERS_FORMATION } from "./regles";
 
 export const DELAI_HORS_GRILLE_JOURS = 60;
-export const PREAVIS_HORS_GRILLE_JOURS = 10;
+export const ALERTE_AVANT_ECHEANCE_JOURS = 10;
 const JOUR_MS = 86_400_000;
 
 /** Repère posé par Williams sur une formation dont le produit n'est pas dans la grille. */
@@ -59,7 +59,7 @@ export function etatHorsGrille(
     echeance,
     joursRestants,
     depassee: joursRestants <= 0,
-    bientot: joursRestants > 0 && joursRestants <= PREAVIS_HORS_GRILLE_JOURS,
+    bientot: joursRestants > 0 && joursRestants <= ALERTE_AVANT_ECHEANCE_JOURS,
   };
 }
 
