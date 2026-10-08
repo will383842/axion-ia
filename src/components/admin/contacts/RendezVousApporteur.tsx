@@ -27,6 +27,8 @@ import {
   issueDepuisSuivi,
   libellePointApporteur,
 } from "@/features/admin-rendezvous/issue-apporteur";
+import { peutEngager } from "@/server/auth/habilitations";
+
 import { IssueEchangeApporteurForm } from "./IssueEchangeApporteurForm";
 
 export async function RendezVousApporteur({
@@ -92,6 +94,7 @@ export async function RendezVousApporteur({
                 </p>
                 {issueOuverte ? (
                   <IssueEchangeApporteurForm
+                    peutRetenir={peutEngager(role, "contresigner")}
                     calendlyEventId={r.sourceRecordId}
                     initial={
                       point
