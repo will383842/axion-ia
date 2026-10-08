@@ -246,7 +246,7 @@ export function aVirerPartielCents(
 export function planCompensation(
   regimeTva: ApporteurPourAutofacture["regimeTva"],
   duesCents: readonly number[],
-  reprises: ReadonlyArray<{ id: string; montantCents: number | null }>,
+  reprises: ReadonlyArray<{ id: string; montantCents: number | null; scindable?: boolean }>,
 ): {
   imputees: string[];
   scinder: { id: string; imputeCents: number; resteCents: number } | null;
@@ -266,6 +266,8 @@ export function planCompensation(
       pris.push(m);
       continue;
     }
+    // Non scindable (avoir déjà émis) : elle attend une prochaine fois, entière.
+    if (r.scindable === false) continue;
     // Scission : la plus grande part qui garde l'avoir sous l'autofacture, HT comme TTC.
     let part = Math.min(m - 1, dues - cumul);
     while (part > 0 && totalTtcPieceCents(regimeTva, [...pris, part]) > plafondTtc) part -= 1;

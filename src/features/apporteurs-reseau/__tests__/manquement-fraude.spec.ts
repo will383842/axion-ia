@@ -28,6 +28,8 @@ const etat = vi.hoisted(() => ({
   pdfs: [] as Array<Record<string, unknown>>,
   alertes: [] as Array<Record<string, unknown>>,
   r2Present: true,
+  r2Panne: false,
+  appelsR2: 0,
   pdfEchoue: false,
 }));
 
@@ -36,7 +38,13 @@ vi.mock("../signaler", () => ({ signalerErreurReseau: vi.fn() }));
 vi.mock("@/lib/destinataires-internes", () => ({
   destinataireAlertesInternes: () => "alertes@exemple.fr",
 }));
-vi.mock("@/lib/r2-storage", () => ({ existsInR2: vi.fn(async () => etat.r2Present) }));
+vi.mock("@/lib/r2-storage", () => ({
+  existsInR2: vi.fn(async () => {
+    etat.appelsR2 += 1;
+    if (etat.r2Panne) throw new Error("R2 indisponible");
+    return etat.r2Present;
+  }),
+}));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn(async (_g: string, _d: string, _l: string, p: Record<string, unknown>) => {
     etat.alertes.push(p);
@@ -86,6 +94,10 @@ function correspond(l: Record<string, unknown>, where: Record<string, unknown>):
 
 vi.mock("@/lib/prisma", () => {
   const commissionApporteur = {
+    findUnique: vi.fn(async (a: { where: { id: string } }) => {
+      const l = etat.lignes.find((x) => x.id === a.where.id);
+      return l ? { ...l } : null;
+    }),
     findMany: vi.fn(async (a: { where: Record<string, unknown> }) =>
       etat.lignes.filter((l) => correspond(l as never, a.where)).map((l) => ({ ...l })),
     ),
@@ -129,6 +141,14 @@ vi.mock("@/lib/prisma", () => {
       })),
     },
     activityLog: {
+      findMany: vi.fn(async (a: { where: { action: string; targetId: { in: string[] } } }) =>
+        etat.journal
+          .filter(
+            (j) =>
+              j["action"] === a.where.action && a.where.targetId.in.includes(String(j["targetId"])),
+          )
+          .map((j) => ({ targetId: j["targetId"] })),
+      ),
       findFirst: vi.fn(
         async (a: { where: Record<string, unknown> }) =>
           etat.journal.find((j) => correspond(j, a.where)) ?? null,
@@ -192,6 +212,8 @@ beforeEach(() => {
   etat.pdfs = [];
   etat.alertes = [];
   etat.r2Present = true;
+  etat.r2Panne = false;
+  etat.appelsR2 = 0;
   etat.pdfEchoue = false;
 });
 
@@ -323,13 +345,38 @@ describe("relecture de la PR 1371 (a1) : avoir de neutralisation", () => {
       }),
     ];
     await constater();
+    // L'avoir déjà émis est GARDÉ : seule l'imputation est détachée.
     expect(etat.lignes.find((l) => l.id === "r")!).toMatchObject({
       autofactureNumero: null,
-      avoirNumero: null,
+      avoirNumero: "AXI-APP-2026-0002",
       verseeAt: null,
     });
     expect(etat.journal.some((j) => j["action"] === "commission_apporteur.reprise_liberee")).toBe(
       true,
     );
+  });
+});
+
+describe("relecture 3 de la PR 1371 (a1) : rattrapage des avoirs", () => {
+  it("un avoir établi à la retenue est confirmé : le passage horaire ne réinterroge pas le stockage", async () => {
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    await constater();
+    await regenererAvoirsSansPiece(MAINTENANT);
+    expect(etat.appelsR2).toBe(0);
+  });
+
+  it("une panne du stockage n'interrompt pas l'étape ; l'avoir régénéré garde ses dates d'origine", async () => {
+    etat.pdfEchoue = true;
+    const emis = new Date("2026-10-01T08:00:00Z");
+    etat.lignes = [ligne("b", "due", { autofactureNumero: "AXI-APP-2026-0001" })];
+    await constater();
+    etat.lignes.find((l) => l.statut === "reprise")!.autofactureEmiseAt = emis;
+    etat.r2Panne = true;
+    await expect(regenererAvoirsSansPiece(MAINTENANT)).resolves.toBe(0);
+    etat.r2Panne = false;
+    etat.r2Present = false;
+    etat.pdfEchoue = false;
+    expect(await regenererAvoirsSansPiece(MAINTENANT)).toBe(1);
+    expect(etat.pdfs.at(-1)).toMatchObject({ maintenant: emis });
   });
 });

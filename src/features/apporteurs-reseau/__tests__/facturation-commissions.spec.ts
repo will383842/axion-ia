@@ -1209,3 +1209,36 @@ describe("solde négatif (art. 12.4) : compensation avec pièces", () => {
     expect(lignes().find((x) => x.id === "d1")!.statut).toBe("due"); // à virer
   });
 });
+
+describe("reprise libérée après une retenue : réimputée SANS nouvel avoir", () => {
+  it("garde son numéro d'avoir, aucune nouvelle pièce, déduite du virement", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 40_000),
+      ligne("r1", "reprise", -10_000, { avoirNumero: "AXI-APP-2026-0002" }),
+    ];
+    const avant = etat.pdfs.length;
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    expect(etat.pdfs.length - avant).toBe(1); // l'autofacture seule
+    const r1 = lignes().find((l) => l.id === "r1")!;
+    expect(r1.avoirNumero).toBe("AXI-APP-2026-0002");
+    expect(r1.autofactureNumero).toBe((r as { numero: string }).numero);
+    expect(r1.releveMois).not.toBeNull();
+  });
+});
+
+describe("compensation (art. 12.4) et avoir déjà émis", () => {
+  it("une reprise dont l'avoir est déjà émis n'est jamais scindée : elle attend, entière", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 10_000),
+      ligne("rx", "reprise", -15_000, { avoirNumero: "AXI-APP-2026-0002" }),
+      ligne("r2", "reprise", -3_000),
+    ];
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    const rx = lignes().find((l) => l.id === "rx")!;
+    expect(rx).toMatchObject({ montantCents: -15_000, releveMois: null });
+    expect(lignes().find((l) => l.id === "r2")!.releveMois).not.toBeNull();
+    expect(lignes().filter((l) => l.statut === "reprise")).toHaveLength(2); // aucune scission
+  });
+});
