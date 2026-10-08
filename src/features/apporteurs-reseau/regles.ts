@@ -183,6 +183,18 @@ export function dateConfirmationTaciteSansContact(recueAt: Date): Date {
   return ajouterJours(recueAt, PRISE_DE_CONTACT_JOURS + CONFIRMATION_TACITE_JOURS);
 }
 
+/**
+ * Art. 3.2 + 2.8 (relecture de a1, 08/10) : un contact envoyé EN RETARD (après J+30) ne repousse
+ * pas l'échéance — le délai de confirmation court dès l'expiration des 30 jours de prise de
+ * contact. Échéance = la plus proche de « contact + 30 j » et « déclaration + 60 j ».
+ * Ex. : déclaration le 1/10, contact le 15/11 → confirmée le 30/11, pas le 15/12.
+ */
+export function dateConfirmationTaciteAvecContact(contactEnvoyeAt: Date, recueAt: Date): Date {
+  const parContact = dateConfirmationTacite(contactEnvoyeAt);
+  const plafond = dateConfirmationTaciteSansContact(recueAt);
+  return parContact.getTime() <= plafond.getTime() ? parContact : plafond;
+}
+
 export type MotifProlongation = "devis_en_cours" | "echange_recent" | "financement_en_cours";
 
 /**

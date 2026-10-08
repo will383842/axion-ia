@@ -53,7 +53,7 @@ import {
   calculerCommission,
   commandeCouverte,
   CONFIRMATION_TACITE_JOURS,
-  dateConfirmationTacite,
+  dateConfirmationTaciteAvecContact,
   dateConfirmationTaciteSansContact,
   finDeProtection,
   motifDeProlongation,
@@ -306,8 +306,18 @@ async function etapeAutofacturation(maintenant: Date, bilan: BilanPassageReseau)
 
 async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageReseau): Promise<void> {
   const seuil = ajouterJours(maintenant, -CONFIRMATION_TACITE_JOURS);
+  const seuilDeclaration = ajouterJours(
+    maintenant,
+    -(PRISE_DE_CONTACT_JOURS + CONFIRMATION_TACITE_JOURS),
+  );
+  // Contact envoyé il y a 30 jours OU déclaration reçue il y a 60 jours : un contact en retard
+  // ne repousse pas l'échéance (art. 3.2 et 2.8 ; `dateConfirmationTaciteAvecContact`).
   const lignes = await prisma.presentationEntreprise.findMany({
-    where: { statut: "reservee", contactEnvoyeAt: { not: null, lte: seuil } },
+    where: {
+      statut: "reservee",
+      contactEnvoyeAt: { not: null },
+      OR: [{ contactEnvoyeAt: { lte: seuil } }, { recueAt: { lte: seuilDeclaration } }],
+    },
     select: { id: true, contactEnvoyeAt: true, recueAt: true },
   });
   // ⚠️ Pas de « return » si la liste est vide : les déclarations JAMAIS contactées (plus bas)
@@ -319,7 +329,7 @@ async function etapeConfirmationTacite(maintenant: Date, bilan: BilanPassageRese
       : new Set<string>();
   for (const p of lignes) {
     if (rebonds.has(p.id)) continue;
-    const confirmeeAt = dateConfirmationTacite(p.contactEnvoyeAt!);
+    const confirmeeAt = dateConfirmationTaciteAvecContact(p.contactEnvoyeAt!, p.recueAt);
     if (confirmeeAt.getTime() > maintenant.getTime()) continue;
     const r = await prisma.presentationEntreprise.updateMany({
       where: { id: p.id, statut: "reservee" },
