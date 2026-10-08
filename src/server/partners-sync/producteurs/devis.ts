@@ -259,6 +259,7 @@ export async function prixPublicsDesOffres(
   tx: Prisma.TransactionClient,
   codes: readonly string[],
 ): Promise<Map<string, number | null>> {
+  if (!canalPartnersOuvert()) return new Map();
   return (await offresDuDevis(tx, codes)).prixPublics;
 }
 
@@ -283,9 +284,9 @@ export async function offresDuDevis(
   prixPublics: Map<string, number | null>;
   dureesOffres: Map<string, number | null>;
 }> {
+  if (!canalPartnersOuvert()) return { prixPublics: new Map(), dureesOffres: new Map() };
   const prixPublics = new Map<string, number | null>();
   const dureesOffres = new Map<string, number | null>();
-  if (!canalPartnersOuvert()) return { prixPublics, dureesOffres };
   const uniques = [...new Set(codes)];
   if (uniques.length === 0) return { prixPublics, dureesOffres };
   const offres = await tx.offreSite.findMany({
