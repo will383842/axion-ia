@@ -10007,6 +10007,8 @@ model JobApplicationReply {
 /// 🔴 AUCUN effacement automatique (ordre de Will, 2026-10-07) : aucune purge ne
 /// vise cette table. Elle ne disparaît qu'avec le dossier (effacement manuel,
 /// droit à l'oubli) — d'où la cascade.
+///
+/// rgpd: dossier-client — rendu et effacé avec la candidature (`src/server/careers/candidature-rgpd.ts`, appelé par les routes gdpr-export et gdpr-erase).
 model JobApplicationInboundReply {
   id                String         @id @default(cuid())
   applicationId     String         @map("application_id") @db.Uuid

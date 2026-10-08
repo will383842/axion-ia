@@ -1569,6 +1569,14 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "les octets d'une pièce de `DocumentProjet` : même règle que la pièce (supprimés avant " +
       "elle par la purge du pilote).",
   },
+  {
+    // Candidatures, lot L3 (2026-10-08).
+    modele: "JobApplicationInboundReply",
+    motif:
+      "réponse par e-mail d'un candidat : effacée avec sa candidature par " +
+      "`effacerCandidaturesPour` (`candidature-rgpd.ts`, appelé par la même route), " +
+      "par la cascade du dossier ET par l'empreinte de l'adresse.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
