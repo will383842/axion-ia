@@ -142,11 +142,27 @@ describe("DM-03-A · cohérence de la grille (HYP-W6-BIS, REQ-DM-014)", () => {
       expect.arrayContaining(["commission_inconnue:impl-poc", "basis_incoherent:com-integration"]),
     );
     const e = reelles();
+    // Depuis le 07/10, plus aucune commission n'est « sur barème » (le 1-to-1 est à 30 %) : le
+    // témoin en FABRIQUE une, sans déclaration, et doit voir ses paliers signalés.
     const sansDeclaration = {
       ...e,
-      baremesIndefinis: e.baremesIndefinis.filter((b) => b.tierId !== "intervention-dirigeants"),
+      commissions: e.commissions.map((c) =>
+        c.id === "com-integration"
+          ? {
+              id: c.id,
+              labelFr: c.labelFr,
+              labelEn: c.labelEn,
+              kind: "scale" as const,
+              ...(c.basisTierId ? { basisTierId: c.basisTierId } : {}),
+              descriptionFr: c.descriptionFr,
+              descriptionEn: c.descriptionEn,
+            }
+          : c,
+      ),
     };
-    expect(codes(sansDeclaration)).toEqual(["sans_taux_non_declare:intervention-dirigeants"]);
+    expect(codes(sansDeclaration)).toEqual(
+      expect.arrayContaining(["sans_taux_non_declare:impl-poc"]),
+    );
   });
 
   it("TÉMOIN — basisTierId et commissionId qui divergent : rouge", () => {

@@ -1,0 +1,194 @@
+{
+  "A1.1 | Formation générale | 4 heures": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation générale", "4 heures", "1 200 €", "250 €"]
+    }
+  ],
+  "A1.1 | Formation générale | 1 jour": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation générale", "1 jour", "1 900 €", "500 €"]
+    }
+  ],
+  "A1.1 | Formation générale | 2 jours": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation générale", "2 jours", "3 600 €", "1 000 €"]
+    }
+  ],
+  "A1.1 | Formation par métier | 1 jour": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation par métier", "1 jour", "1 900 €", "500 €"]
+    }
+  ],
+  "A1.1 | Formation par métier | 2 jours": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation par métier", "2 jours", "3 600 €", "1 000 €"]
+    }
+  ],
+  "A1.1 | Formation par secteur | 1 jour": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation par secteur", "1 jour", "2 200 €", "500 €"]
+    }
+  ],
+  "A1.1 | Formation par secteur | 2 jours": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Formation par secteur", "2 jours", "3 900 €", "1 000 €"]
+    }
+  ],
+  "A1.2 | Accompagnement dirigeant | 1 jour": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Accompagnement dirigeant", "1 jour", "1 390 €", "30 %"]
+    }
+  ],
+  "A1.2 | Accompagnement dirigeant | 2 jours": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Accompagnement dirigeant", "2 jours", "2 590 €", "30 %"]
+    }
+  ],
+  "A1.2 | Accompagnement collaborateur | 1 jour": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Accompagnement collaborateur", "1 jour", "990 €", "30 %"]
+    }
+  ],
+  "A1.2 | Accompagnement collaborateur | 2 jours": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Accompagnement collaborateur", "2 jours", "1 830 €", "30 %"]
+    }
+  ],
+  "A1.2 | Coaching individuel | à la séance": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Coaching individuel", "à la séance", "à partir de 790 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit sur place": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit sur place", "à partir de 1 190 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit sur place — sur site": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit sur place — sur site", "à partir de 1 190 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit ciblé": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit ciblé", "à partir de 1 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit ciblé — solo": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit ciblé — solo", "à partir de 1 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit ciblé — standard": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit ciblé — standard", "à partir de 2 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit ciblé — avancé": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit ciblé — avancé", "à partir de 3 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit stratégique PME": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit stratégique PME", "à partir de 1 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit stratégique PME — 20 à 50 salariés": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit stratégique PME — 20 à 50 salariés", "à partir de 4 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit stratégique PME — 50 à 250 salariés": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit stratégique PME — 50 à 250 salariés", "à partir de 9 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit stratégique ETI": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit stratégique ETI", "à partir de 1 900 €", "30 %"]
+    }
+  ],
+  "A1.3 | Audit stratégique ETI — base": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Audit stratégique ETI — base", "à partir de 1 900 €", "30 %"]
+    }
+  ],
+  "A1.4 | Pilote IA": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Pilote IA", "990 € à 4 900 €", "15 %"]
+    }
+  ],
+  "A1.4 | Mission PME": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Mission PME", "sur devis", "15 %"]
+    }
+  ],
+  "A1.4 | Mission ETI": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Mission ETI", "sur devis", "15 %"]
+    }
+  ],
+  "A1.4 | Grand programme": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Grand programme", "sur devis", "15 %"]
+    }
+  ],
+  "A1.4 | IA custom d'entreprise (4 à 12 semaines)": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["IA custom d'entreprise (4 à 12 semaines)", "sur devis", "15 %"]
+    }
+  ],
+  "A1.4 bis | Conférence": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Conférence", "500 € HT par conférence"]
+    }
+  ],
+  "A1.5 | Développement web": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Développement web", "Aucune"]
+    }
+  ],
+  "A1.5 | Maintenance": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Maintenance", "Aucune"]
+    }
+  ],
+  "A1.5 | Intervention sur demande": [
+    {
+      "depuisLe": "2026-10-08",
+      "cellules": ["Intervention sur demande", "Aucune"]
+    }
+  ]
+}

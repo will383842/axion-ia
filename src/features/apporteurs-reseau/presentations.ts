@@ -207,7 +207,8 @@ export interface SaisiePresentation {
   besoin: string | null;
   /** « AAAA-MM-JJ », facultatif. */
   dateEchange: string | null;
-  recueAt: Date;
+  /** IGNORÉ depuis le 2026-10-07 : la déclaration est horodatée par le serveur (art. 3.4). */
+  recueAt?: Date;
 }
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -222,12 +223,10 @@ export async function creerPresentation(
     return { ok: false, message: "Indiquez le nom de la personne présentée." };
   if (!EMAIL.test(s.personneEmail.trim()))
     return { ok: false, message: "Adresse e-mail de la personne invalide." };
-  if (
-    Number.isNaN(s.recueAt.getTime()) ||
-    s.recueAt.getTime() > maintenant.getTime() + 5 * 60_000
-  ) {
-    return { ok: false, message: "Date de réception de l'e-mail invalide (dans le futur ?)." };
-  }
+  // Contrat 2.3, art. 3.2 et 3.4 (2026-10-07) : une déclaration ne vaut que par le formulaire,
+  // et sa durée court de l'HORODATAGE PAR LE SERVEUR. La saisie console n'est qu'un rattrapage :
+  // elle est horodatée maintenant, jamais à une date tapée (pas d'antidatage).
+  const recueAt = maintenant;
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: s.apporteurId },
     select: { statut: true },
@@ -261,7 +260,7 @@ export async function creerPresentation(
         : null,
       besoin: s.besoin?.trim() || null,
       dateEchange,
-      recueAt: s.recueAt,
+      recueAt,
     },
     select: { id: true },
   });
