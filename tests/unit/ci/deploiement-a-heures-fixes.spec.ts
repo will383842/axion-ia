@@ -60,7 +60,7 @@ describe("🕛 mise en ligne à heures fixes", () => {
     expect(b).toContain("if: needs.precheck.outputs.go == 'true'");
   });
 
-  it("le seed content-gen ne part qu'après un VRAI déploiement (créneau sauté = success)", () => {
+  it("le seed éditorial ne part qu'après un VRAI déploiement (créneau sauté = success)", () => {
     const seed = readFileSync(
       join(process.cwd(), ".github", "workflows", "content-gen-seed.yml"),
       "utf8",

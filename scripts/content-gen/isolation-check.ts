@@ -344,6 +344,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
   // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
   /^tests\/unit\/ci\/gate-mobile-et-inp\.spec\.ts$/,
+  // Exception ajoutée 2026-10-08 — mise en ligne à heures fixes. Le test ouvre en
+  // lecture `.github/workflows/content-gen-seed.yml` pour vérifier que le seed ne
+  // part qu'après un vrai déploiement. Même nature que l'exception ci-dessus :
+  // un chemin irréductible lu en assertion, aucun import.
+  /^tests\/unit\/ci\/deploiement-a-heures-fixes\.spec\.ts$/,
   // Exception ajoutée 2026-09-01 — garde « use server » (mêmes raisons que les
   // deux ci-dessus).
   //
