@@ -231,7 +231,12 @@ export default async function BibliothequePage({ params, searchParams }: PagePro
 
       {archives ? null : (
         <AdminCard className="mb-[var(--space-admin-5)]">
-          <OuvrirDepot />
+          <OuvrirDepot>
+            <p className="admin-meta-small">
+              Jusqu&apos;à 20 Go par fichier, envoyé directement au stockage en ligne. Un envoi
+              coupé reprend où il s&apos;était arrêté.
+            </p>
+          </OuvrirDepot>
         </AdminCard>
       )}
 
