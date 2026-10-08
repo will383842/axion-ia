@@ -41,3 +41,16 @@ describe("manquement : avis au parrain", () => {
     expect(r.text).not.toContain("Les faits sont les suivants");
   });
 });
+
+describe("produit non commissionné (A1.7)", () => {
+  it("porte la décision et son motif", async () => {
+    const r = await renderEmailTemplate("apporteur-non-commissionne" as never, "fr", {
+      contactName: "Claire Martin",
+      motifNonCommissionne: "Atelier interne, hors offre.",
+    });
+    expect(r.subject).toBe("Une prestation n'est pas commissionnée");
+    const t = r.text.replace(/\s+/g, " ");
+    expect(t).toContain("Atelier interne, hors offre.");
+    expect(t).toContain("A1.7");
+  });
+});

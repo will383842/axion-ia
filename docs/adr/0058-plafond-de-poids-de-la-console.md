@@ -1,6 +1,6 @@
 # ADR 0058 — Plafond de poids de la console pendant le chantier visio
 
-- **Statut** : **PROPOSÉ**. Rédigé maintenant, avant le premier écran, pour que la règle soit connue avant d'être utile. Tout relèvement du plafond est une **décision de Will**.
+- **Statut** : **ACCEPTÉ** le 2026-10-08 (relèvement à 560 KB, voir « Décision de Will du 08/10/2026 » en fin de document). Initialement PROPOSÉ. Rédigé maintenant, avant le premier écran, pour que la règle soit connue avant d'être utile. Tout relèvement du plafond est une **décision de Will**.
 - **Date** : 2026-09-29
 - **Auteur** : Will + Claude (chantier « enregistrement des visios »)
 - **Référence** : ADR 0049 (budgets public et console séparés) ; `package.json` (bucket « CONSOLE ADMIN », 470 KB) ; `.github/workflows/ci.yml` (étape « Poids du bundle », bloquante) ; `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts` ; ADR 0053.
@@ -31,3 +31,13 @@ L'étape « Poids du bundle » de Gate B est **bloquante** : un dépassement fer
 ## Ce que cet ADR ne décide pas
 
 Le budget des Web Vitals publics, qui n'est pas touché. Le seuil du shell, qu'on ne relève que sur une mesure.
+
+## Décision de Will du 08/10/2026 — plafond relevé à 560 KB
+
+Le 08/10/2026, la console pesait environ 499,5 à 499,8 KB pour un plafond de 500 KB, mesuré sur les runs verts de Gate B. Une PR du chantier « candidatures unifiées » (paquet 2) le dépassait déjà de 1,28 KB (501,28 KB), et d'autres écrans des chantiers apporteurs et candidatures sont prévus.
+
+Williams a tranché, par écrit dans la session de coordination : « relève la limite tant que nécessaire ». Le plafond du bucket « SOMME des page chunks de la CONSOLE ADMIN » passe de **500 KB à 560 KB** (+ 12 %).
+
+- **Ce qui ne change pas** : le budget public (Web Vitals, AGENTS.md) et le seuil du shell partagé ne sont pas touchés. Le contrôle reste **bloquant**.
+- **Règle maintenue** : chaque PR qui ajoute de la console continue de relever, dans sa description, la ligne « CONSOLE ADMIN » avant et après. Les écrans restent en composants serveur par défaut.
+- **Prochain relèvement** : à décider de nouveau par Williams, chiffres à l'appui, quand la marge restante passera sous 10 KB.

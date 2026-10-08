@@ -40,6 +40,7 @@ import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { regenererAvoirsSansPiece } from "./manquement";
+import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
@@ -192,7 +193,8 @@ type NomEtape =
   | "rappels-dossier"
   | "chiffrement-pieces"
   | "avoirs-sans-piece"
-  | "realisation";
+  | "realisation"
+  | "hors-grille";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -248,6 +250,9 @@ async function passer(
     ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],
     // Art. 4.5 bis : un avoir de neutralisation resté sans PDF est régénéré et envoyé.
     ["avoirs-sans-piece", async () => void (await regenererAvoirsSansPiece(maintenant))],
+    // Annexe 1, A1.7 : une commission « à qualifier » se règle sous soixante jours ; Williams
+    // est alerté dix jours avant, puis le jour du dépassement.
+    ["hors-grille", async () => void (await alerterHorsGrille(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
