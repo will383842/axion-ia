@@ -339,8 +339,8 @@ export default async function RegionPage({ params }: Props) {
                 href: "/formations" as const,
                 label: isFr ? "Formation IA" : "AI training",
                 detail: isFr
-                  ? `Sur site · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} · groupes de 2 à 15`
-                  : `On-site · from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} · groups of 2 to 15`,
+                  ? `Sur site · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} · groupes de 2 à 15`
+                  : `On-site · from ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} · groups of 2 to 15`,
               },
               {
                 serviceId: "unAUn",

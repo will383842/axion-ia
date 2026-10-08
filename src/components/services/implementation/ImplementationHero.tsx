@@ -28,7 +28,7 @@ export interface ImplementationHeroProps {
 export function ImplementationHero({ isFr, villeContext }: ImplementationHeroProps): ReactNode {
   const loc: "fr" | "en" = isFr ? "fr" : "en";
   const startupAmount = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!,
     loc,
     { compact: true },
   );

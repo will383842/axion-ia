@@ -1,7 +1,7 @@
 // Server Component — schéma visuel du hero /contact.
 // Stack de 3 mini-cards illustrant les 3 canaux d'entrée Axion-IA :
 // (1) message direct sous 48 h ouvrées (lead), (2) intervention via
-// l'Essentielle, (3) audit cadré. Pattern hérité de BlogHeroSchema —
+// la formation d’une journée, (3) audit cadré. Pattern hérité de BlogHeroSchema —
 // stack vertical, terracotta accent, première card en avant.
 //
 // Doctrine : zéro fond (transparent), accent terracotta cohérent avec
@@ -23,7 +23,7 @@ export function ContactHeroSchema({
   ariaLabel,
   className,
 }: ContactHeroSchemaProps): ReactNode {
-  const essentielleAmount = getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!;
+  const formationJourAmount = getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!;
   const channels = isFr
     ? [
         {
@@ -36,7 +36,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Intervention",
-          title: `Formation collective · ${formatAmount(essentielleAmount, "fr", { compact: true })}`,
+          title: `Formation collective · ${formatAmount(formationJourAmount, "fr", { compact: true })}`,
           detail: "Diagnostic 90 min + plan d'action.",
           lead: false,
         },
@@ -59,7 +59,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Session",
-          title: `The Essential · ${formatAmount(essentielleAmount, "en", { compact: true })}`,
+          title: `Group training · ${formatAmount(formationJourAmount, "en", { compact: true })}`,
           detail: "90-min diagnostic + action plan.",
           lead: false,
         },

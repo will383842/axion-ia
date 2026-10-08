@@ -49,10 +49,7 @@ export interface VilleServiceDetailSectionProps {
 // `formatTierPrice` (et non `formatAmount(amount)`) pour rendre « À partir
 // de 1 190 € » comme partout ailleurs sur les audits.
 const auditFlashTier = getTierById(AUDIT_TIERS, "audit-flash");
-const interventionEssentielleAmount = getTierById(
-  INTERVENTION_TIERS,
-  "intervention-essentielle",
-).priceFlat!;
+const formationJourAmount = getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!;
 const unAUnAmount = getEntryTier(UN_A_UN_TIERS).priceFlat!;
 
 const SERVICE_META = {
@@ -73,8 +70,8 @@ const SERVICE_META = {
     labelEn: "AI sessions",
     eyebrowFr: "Interventions IA en entreprise",
     eyebrowEn: "Corporate AI sessions",
-    ctaFr: `Voir le calendrier · ${formatAmount(interventionEssentielleAmount, "fr", { compact: true })}`,
-    ctaEn: `View the calendar · ${formatAmount(interventionEssentielleAmount, "en", { compact: true })}`,
+    ctaFr: `Voir le calendrier · ${formatAmount(formationJourAmount, "fr", { compact: true })}`,
+    ctaEn: `View the calendar · ${formatAmount(formationJourAmount, "en", { compact: true })}`,
   },
   implementation: {
     accent: "sage" as const,

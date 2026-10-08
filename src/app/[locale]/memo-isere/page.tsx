@@ -269,11 +269,13 @@ interface LigneCommission {
 }
 
 const CATALOGUE_COMMISSIONS: readonly LigneCommission[] = [
-  { nom: "Essentielle", detail: "1 journée · découverte de l’IA appliquée", jours: 1 },
-  { nom: "Gagner du temps", detail: "1 journée · automatiser les tâches répétitives", jours: 1 },
-  { nom: "Intervention Claude", detail: "1 journée · 100 % dédiée à Claude", jours: 1 },
+  // 2026-10-08 : les noms des anciennes formules (prix erronés, supprimées) sont remplacés par
+  // ceux du catalogue (/formations).
+  { nom: "Formation générale", detail: "1 journée · l’IA appliquée au quotidien", jours: 1 },
+  { nom: "Formation par métier", detail: "1 journée · l’IA pour un métier précis", jours: 1 },
+  { nom: "Formation par secteur", detail: "1 journée · l’IA pour votre secteur", jours: 1 },
   { nom: "Conférence", detail: "1 journée plénière · grands effectifs", jours: 1 },
-  { nom: "Approfondie", detail: "2 journées consécutives · ancrage durable", jours: 2 },
+  { nom: "Formation de 2 jours", detail: "2 journées consécutives · ancrage durable", jours: 2 },
   {
     nom: "Programme sur mesure",
     detail: "3 journées et plus · multi-sites, multi-équipes",
@@ -294,18 +296,18 @@ interface ScenarioMois {
 const SCENARIOS_MOIS: readonly ScenarioMois[] = [
   {
     titre: "Un premier mois",
-    detail: "Deux Essentielles vendues à deux PME de votre entourage.",
+    detail: "Deux formations d’une journée vendues à deux PME de votre entourage.",
     jours: 2,
   },
   {
     titre: "Un mois de croisière",
-    detail: "Une Essentielle et deux Approfondies : trois clients, cinq journées.",
+    detail: "Une formation d’une journée et deux de 2 jours : trois clients, cinq journées.",
     jours: 5,
   },
   {
     titre: "Une ETI dans votre portefeuille",
     detail:
-      "40 salariés à former, ça se découpe en 3 groupes de 15 maximum. Trois Approfondies chez UN seul client.",
+      "40 salariés à former, ça se découpe en 3 groupes de 15 maximum. Trois formations de 2 jours chez UN seul client.",
     jours: 6,
     fort: true,
   },
@@ -626,7 +628,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation d'une journée — ${commission(1)} pour vous. Une formation de 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
@@ -1489,7 +1491,7 @@ export default async function MemoIserePage({ params }: Props) {
                   accent: "plum" as const,
                   Icon: LineChart,
                   title: "Vous touchez à chaque vente",
-                  description: `À titre indicatif, ${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une Approfondie de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
+                  description: `À titre indicatif, ${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une formation de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
                   stat: { figure: commission(1), label: "par journée vendue, à titre indicatif" },
                 },
               ].map((c, i) => (

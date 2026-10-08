@@ -23,7 +23,7 @@ import {
   buildCollectionPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -113,8 +113,8 @@ export default async function BlogCompanySizePage({ params }: Props) {
           </Cta>
           <Cta href="/audit" variant="outline" size="lg">
             {isFr
-              ? `Demander un audit Flash · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-              : `Request a Flash audit · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
+              ? `Demander un audit sur place · dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`
+              : `Request an on-site audit · from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`}
           </Cta>
         </div>
       </Section>

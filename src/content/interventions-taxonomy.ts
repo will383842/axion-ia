@@ -248,12 +248,8 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
 // ============================================================================
 
 const FOUR_H_PRICE = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
-const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!;
-const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
-const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
 const DIRIGEANT_VISION_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision");
 const MEMBRE_EQUIPE_TIER = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe");
-const CLAUDE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-claude").priceFlat!;
 
 export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // -------------------------------------------------------------------------
@@ -292,102 +288,17 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
 
   // -------------------------------------------------------------------------
   // FAMILLE : Collectives / Palier 1 jour
+  // 🔴 2026-10-08 (décision de Will) : « Essentielle », « Gagner du temps » et « Intervention
+  // Claude » (2 450 / 2 650 €) étaient des formules à PRIX ERRONÉS, supprimées. Les formations
+  // d'un jour et de deux jours sont celles du catalogue (/formations, FORMATION_PRICE_MATRIX).
   // -------------------------------------------------------------------------
-  {
-    slug: "essentielle",
-    family: "collectives",
-    duration: "1-jour",
-    pathFr: "/interventions/essentielle",
-    pathEn: "/interventions/essential",
-    labelFr: "Essentielle",
-    labelEn: "Essential",
-    taglineFr:
-      "Découverte IA en 1 journée — vos équipes repartent avec des automatisations testées sur leurs propres outils.",
-    taglineEn: "1-day AI discovery — your teams leave with automations tested on their own tools.",
-    priceFr: `À partir de ${formatAmount(ESSENTIELLE_PRICE, "fr")}`,
-    priceEn: `Starting at ${formatAmount(ESSENTIELLE_PRICE, "en")}`,
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    audienceFr: "PME · ETI · grands groupes",
-    audienceEn: "Small · mid-market · enterprise",
-    accent: "terracotta",
-    badgeFr: "Offre phare",
-    badgeEn: "Flagship",
-  },
-  {
-    slug: "gagner-du-temps",
-    family: "collectives",
-    duration: "1-jour",
-    pathFr: "/interventions/gagner-du-temps",
-    pathEn: "/interventions/save-time",
-    labelFr: "Gagner du temps",
-    labelEn: "Save time",
-    taglineFr:
-      "Automatiser vos tâches répétitives à l'IA — gain mesurable dès le retour au bureau, plusieurs heures par personne et par semaine.",
-    taglineEn:
-      "Automate your recurring tasks with AI — measurable gain from day one back, hours per person every week.",
-    priceFr: `À partir de ${formatAmount(TEMPS_TIER.priceFlat!, "fr")}`,
-    priceEn: `Starting at ${formatAmount(TEMPS_TIER.priceFlat!, "en")}`,
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    audienceFr: "Équipes opérationnelles · PME, ETI, grands groupes",
-    audienceEn: "Operational teams · small to mid-market",
-    accent: "terracotta",
-    badgeFr: "Productivité",
-    badgeEn: "Productivity",
-  },
-  {
-    // Will (audit /interventions 2026-05-12) — Bookable direct calendrier.
-    // 2026-06-02 — prix dérivé de la SSOT pricing.ts (`intervention-claude`,
-    // 990 € HT depuis 2026-05-24) au lieu d'un 690 € hardcodé devenu obsolète.
-    slug: "intervention-claude",
-    family: "collectives",
-    duration: "1-jour",
-    pathFr: "/interventions/intervention-claude",
-    pathEn: "/interventions/intervention-claude",
-    labelFr: "Intervention Claude",
-    labelEn: "Claude intervention",
-    taglineFr:
-      "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Jusqu'à 30 personnes (tarif dégressif), vos équipes ressortent autonomes sur l'outil de pointe IA.",
-    taglineEn:
-      "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Up to 15 people (scaling price), your teams leave autonomous on the cutting-edge AI tool.",
-    priceFr: `À partir de ${formatAmount(CLAUDE_PRICE, "fr")}`,
-    priceEn: `Starting at ${formatAmount(CLAUDE_PRICE, "en")}`,
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    audienceFr: "Équipes qui veulent maîtriser Claude en profondeur",
-    audienceEn: "Teams that want to master Claude in depth",
-    accent: "claude",
-    badgeFr: "Outil · Claude",
-    badgeEn: "Tool · Claude",
-  },
   // Note : la Conférence a sa propre famille « conference » depuis Sprint 14.10.7 —
   // déplacée plus bas dans la section dédiée.
 
   // -------------------------------------------------------------------------
   // FAMILLE : Collectives / Palier 2 jours
+  // 🔴 2026-10-08 : « Approfondie » (3 250 €), prix erroné, supprimée (voir plus haut).
   // -------------------------------------------------------------------------
-  {
-    slug: "approfondie",
-    family: "collectives",
-    duration: "2-jours",
-    pathFr: "/interventions/approfondie",
-    pathEn: "/interventions/deep-dive",
-    labelFr: "Approfondie",
-    labelEn: "Deep dive",
-    taglineFr:
-      "Approfondissement IA sur 2 journées consécutives — équipes IA-fluentes à la sortie, même grille d'effectif qu'Essentielle.",
-    taglineEn: "2-day AI deep dive — your teams leave AI-fluent, same headcount grid as Essential.",
-    priceFr: `À partir de ${formatAmount(APPROFONDIE_PRICE, "fr")}`,
-    priceEn: `Starting at ${formatAmount(APPROFONDIE_PRICE, "en")}`,
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    audienceFr: "Équipes opérationnelles · PME, ETI, grands groupes",
-    audienceEn: "Operational teams · small to mid-market",
-    accent: "terracotta",
-    badgeFr: "Équipes · 2 jours",
-    badgeEn: "Teams · 2 days",
-  },
 
   // -------------------------------------------------------------------------
   // FAMILLE : Dirigeants (liste plate, pas de paliers durée)
