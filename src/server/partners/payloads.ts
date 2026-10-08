@@ -497,14 +497,17 @@ export function payloadDevisSigne({
   devis,
   client,
   prixPublics,
-  dureesOffres = new Map(),
+  dureesOffres,
 }: {
   devis: DevisPourEvenement;
   client: ClientPourEvenement;
   /** Le prix public ferme de chaque offre citée (`prixPublicsDesOffres`), lu par l'appelant. */
   prixPublics: ReadonlyMap<string, number | null>;
-  /** La durée d'UNE session de chaque offre citée, en journées (`dureesDesOffres`). */
-  dureesOffres?: ReadonlyMap<string, number | null>;
+  /**
+   * La durée d'UNE session de chaque offre citée, en journées (`offresDuDevis`). OBLIGATOIRE :
+   * sans elle, aucune formation ne serait calculée — la compilation protège tout appelant.
+   */
+  dureesOffres: ReadonlyMap<string, number | null>;
 }): PayloadDevisSigne {
   // `devis.signe` n'est pas `devis.envoye`. Sans date d'acceptation, il n'y a pas de
   // fait à raconter — et l'`occurred_at` de l'enveloppe n'aurait rien à porter.

@@ -331,6 +331,7 @@ describe("REQ-INT-032 — `paiement.rembourse` couvre les DEUX formes, et six mo
 
 /** Aucun prix public connu : chaque ligne part sans prix de référence. */
 const SANS_PRIX: ReadonlyMap<string, number | null> = new Map();
+const SANS_DUREE: ReadonlyMap<string, number | null> = new Map();
 
 describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   const devis = {
@@ -356,7 +357,12 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   };
 
   it("porte par ligne les quatre champs de REQ-INT-006 et ceux de REQ-DM-040", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
     const ligne = p.lignes[0];
 
     expect(ligne).toBeDefined();
@@ -389,7 +395,12 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   });
 
   it("formation sans prix public de référence : bloquée « à qualifier » (aucun montant inventé)", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
     expect(p.lignes[0]?.commission.statut).toBe("bloquee");
     expect(p.lignes[0]?.commission.montantCents).toBeNull();
   });
@@ -473,6 +484,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
         devis,
         client: clientEntreprise,
         prixPublics: new Map([["AXI-OFF-004", 1900]]),
+        dureesOffres: SANS_DUREE,
       });
       expect(r.lignes[0]?.jours).toBeNull();
       expect(r.lignes[0]?.commission.statut).toBe("bloquee");
@@ -480,7 +492,12 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   });
 
   it("le montant HT de la ligne est celui du devis, pas un produit recalculé de travers", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
     expect(p.lignes[0]?.montantHtCents).toBe(500_000); // 2 × 250 000
     expect(p.montantTotalHtCents).toBe(500_000);
   });
@@ -495,6 +512,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       devis: siteWeb,
       client: clientEntreprise,
       prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
     });
     expect(p.lignes).toHaveLength(1);
     expect(p.lignes[0]?.commission.statut).toBe("bloquee");
@@ -507,6 +525,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
         devis: { ...devis, acceptedAt: null },
         client: clientEntreprise,
         prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
       }),
     ).toThrow(/sign/i);
   });
@@ -519,6 +538,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
         devis: { ...devis, lignes: [{ designation: "???" }] as never },
         client: clientEntreprise,
         prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
       }),
     ).toThrow(/ligne/i);
   });
@@ -528,6 +548,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       devis,
       client: clientEntreprise,
       prixPublics: new Map([["AXI-OFF-004", 1900]]),
+      dureesOffres: SANS_DUREE,
     });
     expect(p.lignes[0]?.prixReferenceHtCents).toBe(380_000); // 2 × 190 000
   });
@@ -538,19 +559,28 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       lignes: [{ designation: "Atelier", quantite: 1, prixUnitaireHtCents: 100_000 }],
     };
     expect(
-      payloadDevisSigne({ devis: sansOffre, client: clientEntreprise, prixPublics: new Map() })
-        .lignes[0]?.prixReferenceHtCents,
+      payloadDevisSigne({
+        devis: sansOffre,
+        client: clientEntreprise,
+        prixPublics: new Map(),
+        dureesOffres: SANS_DUREE,
+      }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
     expect(
       payloadDevisSigne({
         devis,
         client: clientEntreprise,
         prixPublics: new Map([["AXI-OFF-004", null]]),
+        dureesOffres: SANS_DUREE,
       }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
     expect(
-      payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX }).lignes[0]
-        ?.prixReferenceHtCents,
+      payloadDevisSigne({
+        devis,
+        client: clientEntreprise,
+        prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
+      }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
   });
 
