@@ -66,9 +66,13 @@ describe("resolveOffrePriceEur — refus de tout montant NON ferme", () => {
     expect(resolveOffrePriceEur(legacy("impl-poc"))).toBeNull();
   });
 
-  it("tier à paliers d'effectif : `priceFlat` n'est que le prix d'ENTRÉE", () => {
-    expect(resolveOffrePriceEur(legacy("intervention-essentielle"))).toBeNull();
-    expect(resolveOffrePriceEur(legacy("intervention-claude"))).toBeNull();
+  // 2026-10-08 : les anciennes formules à paliers d'effectif (Essentielle, Claude) sont
+  // supprimées ; leur ancienne fiche se résout vers la formation de la matrice, prix FERME par
+  // groupe (2 à 15) — jamais l'ancien prix erroné.
+  it("ancienne fiche de formule erronée : le prix ferme de la matrice", () => {
+    expect(resolveOffrePriceEur(legacy("intervention-essentielle"))).toBe(1900);
+    expect(resolveOffrePriceEur(legacy("intervention-claude"))).toBe(1900);
+    expect(resolveOffrePriceEur(legacy("intervention-approfondie"))).toBe(3600);
   });
 
   it("tier `isFromPrice` (audits) : un plancher n'est pas un prix ferme", () => {

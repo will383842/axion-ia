@@ -18,7 +18,11 @@ import {
   parseDuree,
   type OfferVertical,
 } from "@/content/offers-catalog";
-import { INTERVENTION_TIERS, AUDIT_TIERS, getTierById } from "@/content/pricing";
+import {
+  FORMATION_PRICE_MATRIX,
+  AUDIT_TIERS,
+  getTierById,
+} from "@/content/pricing";
 import { isKnownFrUrl } from "@/lib/offer-url";
 
 describe("T-33 catalogue — complétude & URL", () => {
@@ -50,20 +54,13 @@ describe("T-33 catalogue — prix = SSOT (0 hardcodé)", () => {
     expect(offer.prixFlat).toBe(tier.priceFlat); // 1190 (SSOT)
   });
 
-  it("intervention-essentielle : prixMin/prixMax dérivés des sous-tiers réels", () => {
-    const offer = getOfferById("intervention-essentielle")!;
-    const tier = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
-    const subPrices = (tier.subTiers ?? []).map((s) => s.priceFlat);
-    expect(offer.prixMin).toBe(Math.min(tier.priceFlat!, ...subPrices));
-    expect(offer.prixMax).toBe(Math.max(...subPrices));
-  });
-
-  it("intervention-claude : sujet=claude + prix sous-tiers SSOT", () => {
-    const offer = getOfferById("intervention-claude")!;
-    const tier = getTierById(INTERVENTION_TIERS, "intervention-claude");
-    expect(offer.sujet).toBe("claude");
-    expect(offer.prixMin).toBe(tier.priceFlat); // entrée = plus petit sous-tier
-    expect(offer.prixMax).toBe(Math.max(...(tier.subTiers ?? []).map((s) => s.priceFlat)));
+  // 2026-10-08 : les anciennes formules à prix erronés (Essentielle, Claude…) sont supprimées ;
+  // les formations du catalogue portent le prix de la matrice.
+  it("formation-generale-1j : prix de FORMATION_PRICE_MATRIX, ni 2 450 ni 2 650 €", () => {
+    const offer = getOfferById("formation-generale-1j")!;
+    expect(offer.prixFlat ?? offer.prixMin).toBe(FORMATION_PRICE_MATRIX.generale["1j"]);
+    expect(getOfferById("intervention-essentielle")).toBeUndefined();
+    expect(getOfferById("intervention-claude")).toBeUndefined();
   });
 });
 
@@ -81,8 +78,8 @@ describe("T-33 catalogue — inversion ETI assumée (D-ETI-PRIX 🔒)", () => {
 });
 
 describe("T-33 catalogue — dérivation facettes (échantillon 5 verticales)", () => {
-  it("formation collective : intervention-claude → effectif 2-15, 1 jour, présentiel", () => {
-    const o = getOfferById("intervention-claude")!;
+  it("formation collective : formation-generale-1j → effectif 2-15, 1 jour, présentiel", () => {
+    const o = getOfferById("formation-generale-1j")!;
     expect(o.vertical).toBe<OfferVertical>("formation");
     expect(o.effectifMin).toBe(2);
     // 2026-08-13 — 30 → 15 : l'effectif des collectives est harmonisé sur

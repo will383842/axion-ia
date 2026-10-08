@@ -314,86 +314,103 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
 //     (cf. INTERVENTION_FEES_NOTE).
 // ============================================================================
 
-/**
- * Sous-tiers Essentielle (1 jour) — refonte tarifaire Will 2026-06-03.
- *
- * Nouveaux brackets canoniques : 2 paliers identiques pour tous les formats
- * collectifs (Essentielle, Gagner du temps, Intervention Claude, Approfondie) :
- *   2 à 15 personnes  : 2 450 € HT (prix d'entrée)
- *
- * IDs `essentielle-standard` (2-15) / `essentielle-complete` (16-30) conservés
- * pour compat avec le shortId du BookingCalendar (`standard` / `complete`) et
- * les URLs `?tier=`. Le palier `intimiste` (3e bracket) est supprimé.
- */
-// 🔴 Palier « Grand groupe · 16 à 30 » SUPPRIMÉ le 2026-08-13 (décision Will :
-// « non, pas de 2 à 30 personnes »). C'était une donnée MORTE de la génération
-// « interventions » (aucune page ne la rendait — vérifié en prod), mais tant
-// qu'elle vivait ici, elle finissait rebranchée : c'est ce mécanisme qui a fait
-// annoncer 2 450 € aux moteurs IA via llms-full.txt. L'offre réelle est la
-// FORMATION_PRICE_MATRIX (2 à 15 participants) ; au-delà de 15 → Conférence,
-// sur devis. Ne PAS réintroduire de palier d'effectif ici sans décision Will.
-export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
-  {
-    id: "essentielle-standard",
-    labelFr: "Petit groupe",
-    labelEn: "Small group",
-    rangeFr: "2 à 15 personnes",
-    rangeEn: "2 to 15 people",
-    priceFlat: 2450,
-    isFeatured: true,
-  },
-];
+// ============================================================================
+// FORMATIONS — matrice de prix, SOURCE UNIQUE (déplacée ici le 2026-10-08 : les paliers de
+// formation ci-dessous en sont GÉNÉRÉS, il faut qu'elle soit déclarée avant eux).
+// ============================================================================
 
 /**
- * Sous-tiers Approfondie (2 jours) — refonte tarifaire Will 2026-06-03.
- * Mêmes 2 brackets que les autres formats collectifs :
- *   2 à 15 personnes  : 3 250 € HT
+ * Gammes historiques (axe thématique de l'ancien catalogue V2). Conservé car
+ * la colonne `OffreSite.gamme` (DB) et les défauts visuels/outils
+ * (catalog-v2-facts.ts) le référencent encore pour les fiches archivées.
  */
-export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
-  {
-    id: "approfondie-standard",
-    labelFr: "Petit groupe",
-    labelEn: "Small group",
-    rangeFr: "2 à 15 personnes",
-    rangeEn: "2 to 15 people",
-    priceFlat: 3250,
-    isFeatured: true,
-  },
-];
+export type FormationGamme = "ia-standard" | "agents-automatisations" | "claude";
+
+/** Catégories du catalogue (refonte 2026-07-19) — axe principal de navigation. */
+export type FormationCategorie = "generale" | "metier" | "secteur";
+
+/** Durées catalogue (axe durée). `sur-mesure` = devis, hors matrice. */
+export type FormationDuree = "4h" | "1j" | "2j" | "3j";
+
+/** Tranche d'effectif unique : prix par groupe, jusqu'à 15 participants. */
+export type FormationBracket = "2-15";
 
 /**
- * Sous-tiers Gagner du temps (1 jour) — refonte tarifaire Will 2026-06-03.
- * Format passé d'un prix unique à 2 paliers (mêmes brackets que les autres).
- *   2 à 15 personnes  : 2 450 € HT
+ * Matrice prix HT par groupe. `catégorie → durée → prix €`.
+ * Une case absente = combinaison non proposée (ex. métier en 4h).
  */
-export const TEMPS_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
-  {
-    id: "temps-standard",
-    labelFr: "Petit groupe",
-    labelEn: "Small group",
-    rangeFr: "2 à 15 personnes",
-    rangeEn: "2 to 15 people",
-    priceFlat: 2450,
-    isFeatured: true,
-  },
-];
+export const FORMATION_PRICE_MATRIX: Record<
+  FormationCategorie,
+  Partial<Record<FormationDuree, number>>
+> = {
+  generale: { "4h": 1200, "1j": 1900, "2j": 3600 },
+  metier: { "1j": 1900, "2j": 3600 },
+  secteur: { "1j": 2200, "2j": 3900 },
+};
 
 /**
- * Sous-tiers Intervention Claude (1 jour) — refonte tarifaire Will 2026-06-03.
- * Format passé d'un prix unique (2-8 pers) à 2 paliers jusqu'à 15 personnes.
- *   2 à 15 personnes  : 2 650 € HT
+ * 🔴 2026-10-08 (décision de Will) : les anciennes formules « Essentielle » 2 450 €,
+ * « Gagner du temps » 2 450 €, « Approfondie » 3 250 € et « Intervention Claude » 2 650 €
+ * étaient des PRIX ERRONÉS. Elles sont SUPPRIMÉES. Le seul prix de formation valable est celui
+ * de `FORMATION_PRICE_MATRIX` (les pages /fr/formations, /fr/formations/ia-pour-les-equipes et
+ * /fr/formations/secteurs l'affichent). Les paliers de formation sont désormais GÉNÉRÉS depuis
+ * la matrice : aucun prix écrit à la main, aucun nom de formule inventé. Les URL des anciennes
+ * formules restent en 301 vers /formations (`next.config.ts`, `legacy-redirects.ts`).
  */
-export const CLAUDE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
-  {
-    id: "claude-standard",
-    labelFr: "Petit groupe",
-    labelEn: "Small group",
-    rangeFr: "2 à 15 personnes",
-    rangeEn: "2 to 15 people",
-    priceFlat: 2650,
-    isFeatured: true,
-  },
-];
+const LIBELLE_CATEGORIE: Record<FormationCategorie, { fr: string; en: string }> = {
+  generale: { fr: "Formation générale", en: "General training" },
+  metier: { fr: "Formation par métier", en: "Training by job" },
+  secteur: { fr: "Formation par secteur", en: "Training by sector" },
+};
+const LIBELLE_DUREE: Record<"1j" | "2j", { fr: string; en: string }> = {
+  "1j": { fr: "1 jour", en: "1 day" },
+  "2j": { fr: "2 jours", en: "2 days" },
+};
+
+/** Les paliers de formation d'un jour et de deux jours, tirés de la matrice. */
+function paliersFormationDepuisMatrice(): PricingTier[] {
+  const out: PricingTier[] = [];
+  for (const categorie of ["generale", "metier", "secteur"] as const) {
+    for (const duree of ["1j", "2j"] as const) {
+      const prix = FORMATION_PRICE_MATRIX[categorie][duree];
+      if (prix === undefined) continue;
+      const c = LIBELLE_CATEGORIE[categorie];
+      const d = LIBELLE_DUREE[duree];
+      out.push({
+        id: `formation-${categorie}-${duree}`,
+        labelFr: `${c.fr} · ${d.fr}`,
+        labelEn: `${c.en} · ${d.en}`,
+        priceFlat: prix,
+        durationFr: d.fr,
+        durationEn: d.en,
+        groupSizeFr: "2 à 15 personnes",
+        groupSizeEn: "2 to 15 people",
+        descriptionFr: `${c.fr}, ${d.fr} sur site, prix par groupe de 2 à 15 participants.`,
+        descriptionEn: `${c.en}, ${d.en} on site, price per group of 2 to 15 participants.`,
+        commissionId: duree === "1j" ? "com-formation-1j" : "com-formation-2j",
+      });
+    }
+  }
+  return out;
+}
+
+/**
+ * Anciens identifiants de formules erronées → palier de la matrice qui les remplace.
+ * Sert à RÉSOUDRE (jamais à afficher l'ancien) ce qui circule encore : jetons
+ * `{{price:intervention-essentielle}}` dans des textes déjà générés et stockés en base,
+ * `tierId` des anciennes fiches Qualiopi, liens `?tier=`. Une durée d'un jour → la formation
+ * générale d'un jour ; deux jours → celle de deux jours.
+ */
+export const ANCIENS_IDS_FORMATION: Readonly<Record<string, string>> = {
+  "intervention-essentielle": "formation-generale-1j",
+  "intervention-temps": "formation-generale-1j",
+  "intervention-claude": "formation-generale-1j",
+  "intervention-approfondie": "formation-generale-2j",
+  "essentielle-standard": "formation-generale-1j",
+  "temps-standard": "formation-generale-1j",
+  "claude-standard": "formation-generale-1j",
+  "approfondie-standard": "formation-generale-2j",
+};
 
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
@@ -408,7 +425,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-4h",
     labelFr: "Formation 4 heures",
     labelEn: "4-hour training",
-    priceFlat: 1200,
+    // Lu dans la matrice (2026-10-08) : jamais écrit à la main.
+    priceFlat: FORMATION_PRICE_MATRIX.generale["4h"] ?? 0,
     durationFr: "Demi-journée (4 h)",
     durationEn: "Half-day (4 h)",
     groupSizeFr: "2 à 15 personnes",
@@ -420,56 +438,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Contrat 2.3, annexe 1 (A1.1) : 250 € la demi-journée (décision de Will, 07/10).
     commissionId: "com-formation-4h",
   },
-  {
-    id: "intervention-essentielle",
-    commissionId: "com-formation-1j",
-    labelFr: "Essentielle",
-    labelEn: "Essential",
-    // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (2 450 €).
-    priceFlat: 2450,
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    subTiers: ESSENTIELLE_SUB_TIERS,
-    descriptionFr: "Format de découverte de l'IA opérationnelle en une journée sur site.",
-    descriptionEn: "Discovery format for operational AI in a single on-site day.",
-  },
-  {
-    id: "intervention-temps",
-    commissionId: "com-formation-1j",
-    labelFr: "Gagner du temps",
-    labelEn: "Save Time",
-    // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 450 €),
-    // effectif élargi à 30 personnes.
-    priceFlat: 2450,
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    subTiers: TEMPS_SUB_TIERS,
-    descriptionFr:
-      "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches récurrentes et intégration dans le flux de travail quotidien.",
-    descriptionEn:
-      "One day to save time concretely: AI automations on recurring tasks integrated into the daily workflow.",
-    audienceSizes: ["tpe", "pme", "eti"],
-  },
-  {
-    id: "intervention-approfondie",
-    commissionId: "com-formation-2j",
-    labelFr: "Approfondie",
-    labelEn: "Deep dive",
-    // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (3 250 €).
-    priceFlat: 3250,
-    durationFr: "2 jours",
-    durationEn: "2 days",
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    subTiers: APPROFONDIE_SUB_TIERS,
-    descriptionFr:
-      "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (2-15 / 16-30 personnes).",
-    descriptionEn: "Two-day AI deep dive — same headcount grid as Essential (2-15 / 16-30 people).",
-  },
+  // Formations d'un et deux jours : GÉNÉRÉES depuis FORMATION_PRICE_MATRIX (2026-10-08).
+  ...paliersFormationDepuisMatrice(),
   {
     id: "intervention-conference",
     // INT-T53-A — commission au forfait (décision de Williams du 2026-10-01, voir
@@ -529,27 +499,6 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     descriptionEn:
       "1-on-1 day with a key team member to upskill on their own real cases (operational AI, business automations).",
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
-  },
-  {
-    // Will (audit /interventions 2026-05-12) — passage de Sur devis à prix
-    // fixe pour groupe 2 à 8 personnes. Bookable direct calendrier.
-    // 2026-05-24 (Will) : alignement à 990 € HT (parité avec Gagner du
-    // temps / Dirigeants, journée flagship 1-to-many sur Claude).
-    id: "intervention-claude",
-    commissionId: "com-formation-1j",
-    labelFr: "Intervention Claude",
-    labelEn: "Claude intervention",
-    // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 650 €),
-    // effectif élargi à 30 personnes.
-    priceFlat: 2650,
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupSizeFr: "2 à 15 personnes",
-    groupSizeEn: "2 to 15 people",
-    subTiers: CLAUDE_SUB_TIERS,
-    descriptionFr: "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code.",
-    descriptionEn: "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code.",
-    audienceSizes: ["tpe", "pme"],
   },
   {
     // Will 2026-06-03 — 1-to-1 dirigeant « Vision IA stratégique », prix fixe.
@@ -900,7 +849,7 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
     labelEn: "1-day training",
     kind: "flat",
     flatEur: commissionFormation(1),
-    basisTierId: "intervention-essentielle",
+    basisTierId: "formation-generale-1j",
     descriptionFr:
       "Commission fixe pour chaque formation collective d'une journée signée et payée — même taux à la journée que les formats longs.",
     descriptionEn:
@@ -912,9 +861,9 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
     labelEn: "2-day training",
     kind: "flat",
     flatEur: commissionFormation(2),
-    basisTierId: "intervention-approfondie",
+    basisTierId: "formation-generale-2j",
     descriptionFr:
-      "Commission fixe pour chaque formation approfondie de deux jours vendue — deux journées, donc deux fois la commission.",
+      "Commission fixe pour chaque formation de deux jours vendue — deux journées, donc deux fois la commission.",
     descriptionEn:
       "Flat commission for each two-day deep-dive training sold — two days, so twice the commission.",
   },
@@ -1261,7 +1210,8 @@ export function getFromLabel(
  * un id manquant indique une erreur de migration et doit casser tôt.
  */
 export function getTierById<T extends PricingTier>(tiers: ReadonlyArray<T>, id: string): T {
-  const tier = tiers.find((t) => t.id === id);
+  const cible = ANCIENS_IDS_FORMATION[id] ?? id;
+  const tier = tiers.find((t) => t.id === cible);
   if (!tier) {
     throw new Error(`[pricing] tier introuvable : "${id}"`);
   }
@@ -1354,35 +1304,6 @@ export const PRICING = {
 // gamme (IA/Claude) et des tranches 16-30 / 2-12. Intra-entreprise, hors frais
 // de déplacement. Source : `Downloads/Titres_Formations_Axion-IA.md`.
 // ============================================================================
-
-/**
- * Gammes historiques (axe thématique de l'ancien catalogue V2). Conservé car
- * la colonne `OffreSite.gamme` (DB) et les défauts visuels/outils
- * (catalog-v2-facts.ts) le référencent encore pour les fiches archivées.
- */
-export type FormationGamme = "ia-standard" | "agents-automatisations" | "claude";
-
-/** Catégories du catalogue (refonte 2026-07-19) — axe principal de navigation. */
-export type FormationCategorie = "generale" | "metier" | "secteur";
-
-/** Durées catalogue (axe durée). `sur-mesure` = devis, hors matrice. */
-export type FormationDuree = "4h" | "1j" | "2j" | "3j";
-
-/** Tranche d'effectif unique : prix par groupe, jusqu'à 15 participants. */
-export type FormationBracket = "2-15";
-
-/**
- * Matrice prix HT par groupe. `catégorie → durée → prix €`.
- * Une case absente = combinaison non proposée (ex. métier en 4h).
- */
-export const FORMATION_PRICE_MATRIX: Record<
-  FormationCategorie,
-  Partial<Record<FormationDuree, number>>
-> = {
-  generale: { "4h": 1200, "1j": 1900, "2j": 3600 },
-  metier: { "1j": 1900, "2j": 3600 },
-  secteur: { "1j": 2200, "2j": 3900 },
-};
 
 /** Prix HT (€) d'une case, ou `undefined` si la combinaison n'existe pas. */
 export function getFormationPrice(

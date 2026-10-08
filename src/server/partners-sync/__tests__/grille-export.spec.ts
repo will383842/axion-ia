@@ -99,10 +99,10 @@ describe("DM-03-A · cohérence de la grille (HYP-W6-BIS, REQ-DM-014)", () => {
 
   it("TÉMOIN — retirer son commissionId à un palier réel à taux : rouge", () => {
     const { commissionId: _retire, ...sans } = reelles().paliers.find(
-      (p) => p.tier.id === "intervention-temps",
+      (p) => p.tier.id === "formation-metier-1j",
     )!.tier;
-    expect(codes(avecPalier("intervention-temps", () => sans))).toEqual([
-      "palier_absent:intervention-temps",
+    expect(codes(avecPalier("formation-metier-1j", () => sans))).toEqual([
+      "palier_absent:formation-metier-1j",
     ]);
   });
 
@@ -209,7 +209,7 @@ describe("DM-03-A · argent : centimes HT et points de base, entiers (REQ-DM-014
     expect(ligne?.montantCents).toBeNull();
     // Et les paliers qui la visaient BLOQUENT au lieu de porter un montant faux.
     expect(
-      construireContenuGrille(avec).paliers.find((p) => p.tierId === "intervention-essentielle")
+      construireContenuGrille(avec).paliers.find((p) => p.tierId === "formation-generale-1j")
         ?.statut,
     ).toBe("bareme_indefini");
   });

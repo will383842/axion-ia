@@ -101,10 +101,6 @@ export function enumToSlug(value: PrismaInterventionType): InterventionSlug {
 
 import {
   INTERVENTION_TIERS,
-  ESSENTIELLE_SUB_TIERS,
-  APPROFONDIE_SUB_TIERS,
-  TEMPS_SUB_TIERS,
-  CLAUDE_SUB_TIERS,
   AUDIT_TIERS,
   type FormationDuree,
   type FormationGamme,
@@ -141,41 +137,20 @@ const FORMATION_BOOKING: Partial<Record<string, { gamme: FormationGamme; duree: 
  * un slug absent retombe sur `{ cents: null }` côté getInterventionPriceCents.
  */
 const SLUG_TO_TIER_ID: Partial<Record<InterventionSlug, string>> = {
-  essentielle: "intervention-essentielle",
-  approfondie: "intervention-approfondie",
+  // Anciennes formules erronées (supprimées le 2026-10-08) : le slug survit dans les
+  // réservations passées ; il se résout vers le palier de la matrice qui le remplace.
+  essentielle: "formation-generale-1j",
+  approfondie: "formation-generale-2j",
   conference: "intervention-conference",
   dirigeants: "intervention-dirigeants",
-  "gagner-du-temps": "intervention-temps",
-  "intervention-claude": "intervention-claude",
+  "gagner-du-temps": "formation-generale-1j",
+  "intervention-claude": "formation-generale-1j",
   // Audit Flash terrain — mappe vers le tier audit-flash, sous-tier audit-flash-onsite.
   "audit-flash-onsite": "audit-flash",
   // Will (audit /interventions 2026-05-12) — formation 4 h sur le tier
   // `intervention-4h` (690 € flat depuis 2026-06-03, cf. pricing.ts).
   "demarrage-ia-express": "intervention-4h",
 };
-
-/**
- * Brackets participantsCount pour Essentielle/Approfondie (sub-tiers).
- * Renvoie l'id du sub-tier matchant ou null si hors brackets.
- */
-function bracketSubTierId(slug: InterventionSlug, participantsCount: number): string | null {
-  // Will 2026-06-03 — 2 paliers canoniques (2-15 / 16-30) partagés par les 4
-  // formats collectifs : Essentielle, Approfondie, Gagner du temps, Claude.
-  const subTiers =
-    slug === "essentielle"
-      ? ESSENTIELLE_SUB_TIERS
-      : slug === "approfondie"
-        ? APPROFONDIE_SUB_TIERS
-        : slug === "gagner-du-temps"
-          ? TEMPS_SUB_TIERS
-          : slug === "intervention-claude"
-            ? CLAUDE_SUB_TIERS
-            : null;
-  if (!subTiers) return null;
-  if (participantsCount >= 2 && participantsCount <= 15) return subTiers[0]?.id ?? null;
-  if (participantsCount >= 16 && participantsCount <= 30) return subTiers[1]?.id ?? null;
-  return null;
-}
 
 /**
  * Derive le prix payé en cents pour une intervention donnée + nombre
@@ -212,14 +187,13 @@ export function getInterventionPriceCents(
   if (!tier) return { cents: null, tierLabel: null };
   if (tier.onQuote) return { cents: null, tierLabel: tier.labelFr };
 
-  // Brackets sub-tier (Essentielle / Approfondie)
-  const subTierId = bracketSubTierId(slug, participantsCount);
-  if (subTierId && tier.subTiers) {
-    const sub = tier.subTiers.find((s) => s.id === subTierId);
-    if (sub) return { cents: sub.priceFlat * 100, tierLabel: sub.labelFr };
+  // Effectif : les formations de la matrice valent pour 2 à 15 participants ; au-delà,
+  // aucun prix n'est inventé (sur devis).
+  if (tier.id.startsWith("formation-") && (participantsCount < 2 || participantsCount > 15)) {
+    return { cents: null, tierLabel: tier.labelFr };
   }
 
-  // Prix flat (Gagner du temps, Dirigeants, fallback)
+  // Prix flat (formations de la matrice, Dirigeants, repli)
   if (typeof tier.priceFlat === "number") {
     return { cents: tier.priceFlat * 100, tierLabel: tier.labelFr };
   }

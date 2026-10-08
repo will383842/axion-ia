@@ -12,6 +12,7 @@ import {
   UN_A_UN_RECURRING_TIER,
   formatAmount,
   formatPrice,
+  ANCIENS_IDS_FORMATION,
   getFormationBrackets,
   getFormationEntryPrice,
   type FormationCategorie,
@@ -28,7 +29,10 @@ const ALL_TIERS: ReadonlyArray<PricingTier> = [
 
 /** Tier pricing.ts pour un `tierId`, ou `null` si introuvable (offre orpheline). */
 export function findPricingTier(tierId: string): PricingTier | null {
-  return ALL_TIERS.find((t) => t.id === tierId) ?? null;
+  // Les anciennes fiches portent encore un `tierId` de formule erronée (supprimée le
+  // 2026-10-08) : il se résout vers le palier de la matrice, jamais vers l'ancien prix.
+  const cible = ANCIENS_IDS_FORMATION[tierId] ?? tierId;
+  return ALL_TIERS.find((t) => t.id === cible) ?? null;
 }
 
 /**

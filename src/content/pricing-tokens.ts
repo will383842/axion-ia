@@ -15,7 +15,7 @@
 //   {{price:audit-flash|onsite}}       → split distance/sur site
 //   {{price:audit-cible|range}}        → « 1 900 € → 3 900 € HT »
 //   {{price:audit-cible|from}}         → « À partir de 1 900 € HT »
-//   {{price:intervention-temps|entry}} → montant d'entrée brut formaté
+//   {{price:formation-generale-1j|entry}} → montant d'entrée brut formaté
 //   {{price:audit-flash|full}}         → équivalent au mode par défaut
 //
 // `<tierId>` accepte tout id de tier OU de sous-tier présent dans pricing.ts.
@@ -26,6 +26,7 @@
 import type { Locale } from "@/i18n/routing";
 import { fmtNumber } from "@/lib/intl";
 import {
+  ANCIENS_IDS_FORMATION,
   MAINTENANCE_TIERS,
   PRICING_CATEGORIES,
   UN_A_UN_RECURRING_TIER,
@@ -113,6 +114,12 @@ export const PRICE_TOKEN_REGISTRY: ReadonlyMap<string, RegistryEntry> = (() => {
         if (!map.has(sub.id)) map.set(sub.id, { kind: "subTier", subTier: sub });
       }
     }
+  }
+  // Anciennes formules erronées (supprimées le 2026-10-08) : leurs jetons, déjà stockés dans
+  // des textes générés, se résolvent vers le palier de la matrice — jamais vers l'ancien prix.
+  for (const [ancien, nouveau] of Object.entries(ANCIENS_IDS_FORMATION)) {
+    const entree = map.get(nouveau);
+    if (entree && !map.has(ancien)) map.set(ancien, entree);
   }
   return map;
 })();

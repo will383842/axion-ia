@@ -42,7 +42,12 @@ describe("T-39 prix", () => {
 
   it("KNOWN_PRICES contient les prix réels de pricing.ts", () => {
     expect(KNOWN_PRICES.has(1190)).toBe(true);
-    expect(KNOWN_PRICES.has(2450)).toBe(true);
+    expect(KNOWN_PRICES.has(1900)).toBe(true);
+    // 2026-10-08 : les prix erronés des anciennes formules ne sont plus « connus » — le
+    // chatbot qui les citerait serait arrêté par la garde de sortie.
+    expect(KNOWN_PRICES.has(2450)).toBe(false);
+    expect(KNOWN_PRICES.has(2650)).toBe(false);
+    expect(KNOWN_PRICES.has(3250)).toBe(false);
     expect(KNOWN_PRICES.has(1200)).toBe(true);
     expect(KNOWN_PRICES.has(790)).toBe(true);
     expect(KNOWN_PRICES.has(1234)).toBe(false);
@@ -86,7 +91,7 @@ describe("T-39 URL", () => {
 describe("T-39 combiné", () => {
   it("réponse 100 % groundée → ok", () => {
     const r = verifyOutput(
-      "L'audit ciblé (2 450 € HT, 1 journée) : voir /fr/audit/cible pour les détails.",
+      "La formation générale d'une journée (1 900 € HT) : voir /fr/formations pour les détails.",
     );
     expect(r.ok).toBe(true);
   });

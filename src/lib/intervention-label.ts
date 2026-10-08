@@ -16,12 +16,14 @@ const LABEL_BY_SLUG: ReadonlyMap<string, string> = new Map(
 
 // Anciennes offres — historiques, absentes du booking-catalog V2.
 const LEGACY_LABELS: Readonly<Record<string, string>> = {
-  essentielle: "Formation Essentielle",
-  approfondie: "Formation Approfondie",
+  // 2026-10-08 : les anciennes formules (prix erronés, supprimées) se lisent désormais par
+  // leur durée, comme au catalogue — la réservation passée garde son slug, pas son nom.
+  essentielle: "Formation d'une journée",
+  approfondie: "Formation de deux jours",
   conference: "Conférence",
   dirigeants: "Journée dirigeant",
-  "gagner-du-temps": "Gagner du temps avec l'IA",
-  "intervention-claude": "Intervention 100 % Claude",
+  "gagner-du-temps": "Formation d'une journée",
+  "intervention-claude": "Formation d'une journée",
   "demarrage-ia-express": "Démarrage IA Express",
 };
 

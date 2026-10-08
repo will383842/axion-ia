@@ -52,11 +52,11 @@ describe("T-36 repli — tri sur sous-tiers réels (inversion ETI)", () => {
 });
 
 describe("T-36 repli — élargissement ±25 %", () => {
-  it("formation 2200-2400 € (rien pile dedans) → élargit et trouve l'essentielle (2450)", () => {
-    // 2400 * 1.25 = 3000 → intervention-essentielle (2450) entre.
-    const r = repli({ vertical: "formation", prixMin: 2200, prixMax: 2400 });
+  it("formation 2300-2400 € (rien pile dedans) → élargit et trouve la formation par secteur (2200)", () => {
+    // 2300 * 0.75 = 1725 → formation-secteur-1j (2 200 €, matrice) entre.
+    const r = repli({ vertical: "formation", prixMin: 2300, prixMax: 2400 });
     expect(r.strategy).toBe("widened-price");
-    expect(r.offres.map((o) => o.id)).toContain("intervention-essentielle");
+    expect(r.offres.map((o) => o.id)).toContain("formation-secteur-1j");
   });
 });
 
