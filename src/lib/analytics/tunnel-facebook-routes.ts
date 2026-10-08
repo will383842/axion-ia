@@ -17,20 +17,28 @@
 // `MetaPixel`, `CookieConsent` (texte de la bannière) et `MerciLeadMeta`
 // lisent tous cette fonction : on ne peut pas en changer un sans voir les autres.
 
-/** Segments concernés, sans préfixe de langue. `/apporteur-affaires` couvre
- *  `/apporteur-affaires/merci`.
+/**
+ * Les pages du tunnel, sans préfixe de langue — LISTE FERMÉE (2026-10-07, relecture de a1).
  *
- *  ⚠️ 2026-09-04 : l'URL publique est passée de `/facebook` à
- *  `/apporteur-affaires`. `/facebook` n'est PLUS servi (301 vers la nouvelle
- *  URL, `next.config.ts` + `legacy-redirects.ts`) et n'a donc plus à figurer
- *  ici : une redirection ne rend aucune page, il n'y a rien à y charger. */
-const TUNNEL_FACEBOOK_SEGMENTS = ["/apporteur-affaires"] as const;
+ * Avant, le préfixe `/apporteur-affaires` couvrait tout ce qui commençait par lui. La grille
+ * de référence des commissions (`/apporteur-affaires/commissions`), un document pour les
+ * apporteurs et non une page de campagne, aurait chargé le pixel — et rendu fausse la
+ * politique cookies, qui ne le nomme que sur ces quatre pages. Toute nouvelle page du tunnel
+ * s'ajoute ICI, explicitement, avec la phrase de `preferences-cookies`.
+ *
+ * ⚠️ 2026-09-04 : `/facebook` n'est PLUS servi (301 vers `/apporteur-affaires`, `next.config.ts`
+ * + `legacy-redirects.ts`) et n'a donc rien à faire ici.
+ */
+const TUNNEL_FACEBOOK_PAGES: ReadonlySet<string> = new Set([
+  "/apporteur-affaires",
+  "/apporteur-affaires/merci",
+  "/apporteur-affaires/video",
+  "/apporteur-affaires/video/merci",
+]);
 
-/** True si le chemin appartient au tunnel Facebook (landing ou page merci). */
+/** True si le chemin est une page du tunnel Facebook (landing ou page merci). */
 export function isRouteTunnelFacebook(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
-  const sansLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "");
-  return TUNNEL_FACEBOOK_SEGMENTS.some(
-    (segment) => sansLocale === segment || sansLocale.startsWith(`${segment}/`),
-  );
+  const sansLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "").replace(/\/+$/, "");
+  return TUNNEL_FACEBOOK_PAGES.has(sansLocale);
 }

@@ -90,9 +90,6 @@ export async function creerPresentationAction(
   if (refus) return { etat: "erreur", message: refus };
   const apporteurId = texte(fd, "apporteurId");
   if (!UUID.test(apporteurId)) return { etat: "erreur", message: "Choisissez l'apporteur." };
-  const recueAt = fromParisLocalInput(texte(fd, "recueAt"));
-  if (!recueAt)
-    return { etat: "erreur", message: "Indiquez la date et l'heure de réception de l'e-mail." };
   try {
     const r = await creerPresentation({
       apporteurId,
@@ -104,7 +101,7 @@ export async function creerPresentationAction(
       personneTelephone: texte(fd, "personneTelephone") || null,
       besoin: texte(fd, "besoin") || null,
       dateEchange: texte(fd, "dateEchange") || null,
-      recueAt,
+      // Pas de date de réception : la déclaration est horodatée par le serveur (art. 3.4).
     });
     if (!r.ok) return { etat: "erreur", message: r.message };
     rafraichir();
