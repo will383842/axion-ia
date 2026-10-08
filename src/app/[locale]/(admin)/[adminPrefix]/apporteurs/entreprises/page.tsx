@@ -8,7 +8,12 @@ import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { ActionsPresentation } from "@/components/admin/apporteurs/entreprises/ActionsPresentation";
 import { ConfirmerAttribution } from "@/components/admin/apporteurs/entreprises/ConfirmerAttribution";
 import { NouvellePresentationForm } from "@/components/admin/apporteurs/entreprises/NouvellePresentationForm";
+import { PrestationFiche } from "@/components/admin/apporteurs/entreprises/PrestationFiche";
 import { ReponsePresentation } from "@/components/admin/apporteurs/entreprises/ReponsePresentation";
+import {
+  lireCommissionsDesPresentations,
+  type CommissionDeLaPresentation,
+} from "@/features/apporteurs-reseau/prestation-presentation";
 import {
   compterParOnglet,
   dateCourte,
@@ -23,7 +28,7 @@ import {
 import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporteurs-reseau/regles";
 import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
-import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
+import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 import { coordonneesAffichables } from "@/features/apporteurs-reseau/coordonnees-presentees";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +80,14 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     lirePresentations(onglet),
     lireApporteursSignes(),
   ]);
+  const commissions = await lireCommissionsDesPresentations(lignes.map((p) => p.id));
+  const peutMarquer = peutEngager(acces.role, "facturer");
+  const retourPrestation =
+    typeof sp.prestation === "string"
+      ? { ok: true, message: sp.prestation }
+      : typeof sp.prestationErreur === "string"
+        ? { ok: false, message: sp.prestationErreur }
+        : null;
   const signalements = new Map(
     await Promise.all(
       lignes
@@ -112,6 +125,19 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
         </AdminCard>
       ) : null}
 
+      {retourPrestation ? (
+        <p
+          role={retourPrestation.ok ? "status" : "alert"}
+          className={
+            retourPrestation.ok
+              ? "admin-alert admin-alert-success"
+              : "admin-alert admin-alert-error"
+          }
+        >
+          {retourPrestation.message.slice(0, 300)}
+        </p>
+      ) : null}
+
       <AdminFilterTabs
         current={onglet}
         options={ONGLETS.map((o) => ({
@@ -134,6 +160,9 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
               peutEcrire={acces.peutEcrire}
               voitPii={voitPii}
               aujourdhui={dayKeyInParis(maintenant)}
+              commissions={commissions.get(p.id) ?? []}
+              peutMarquer={peutMarquer}
+              onglet={onglet}
             />
           ))}
         </div>
@@ -148,6 +177,9 @@ function Carte({
   peutEcrire,
   voitPii,
   aujourdhui,
+  commissions,
+  peutMarquer,
+  onglet,
 }: {
   p: PresentationVue;
   signalements: string[];
@@ -155,6 +187,9 @@ function Carte({
   /** Les coordonnées des personnes présentées sont réservées aux rôles autorisés. */
   voitPii: boolean;
   aujourdhui: string;
+  commissions: ReadonlyArray<CommissionDeLaPresentation>;
+  peutMarquer: boolean;
+  onglet: string;
 }) {
   const statut = p.aTraiter
     ? { libelle: "À traiter", ton: "warning" as const }
@@ -236,6 +271,13 @@ function Carte({
             )}
           </div>
         ) : null}
+
+        <PrestationFiche
+          commissions={commissions}
+          peutMarquer={peutMarquer}
+          onglet={onglet}
+          aujourdhui={aujourdhui}
+        />
 
         {peutEcrire && p.aTraiter ? (
           <ReponsePresentation id={p.id} nomFamilleSuggere={nomFamilleDe(p.personneNom)} />

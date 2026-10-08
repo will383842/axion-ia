@@ -30,6 +30,11 @@ import { enqueueEmail } from "@/server/queue/queues";
 
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
+import {
+  etatPrestation,
+  lireCommissionsDesPresentations,
+  type EtatPrestation,
+} from "./prestation-presentation";
 
 export type ResultatDeclaration = { ok: true } | { ok: false; message: string };
 
@@ -44,6 +49,11 @@ export interface DeclarationVue {
   etat: EtatDeclaration;
   /** Fin de la réservation (réservée ou expirée), sinon `null`. */
   jusquAu: Date | null;
+  /**
+   * La prestation commandée (contrat 2.3, art. 4.2) : « en attente de réalisation » tant
+   * qu'elle n'est pas marquée réalisée, puis « réalisée ». `null` : aucune commande encore.
+   */
+  prestation: EtatPrestation;
 }
 
 /** Les déclarations d'UN apporteur (jamais celles des autres), de la plus récente. */
@@ -61,6 +71,7 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
       protegeeJusquAt: true,
     },
   });
+  const commissions = await lireCommissionsDesPresentations(l.map((p) => p.id));
   const out: DeclarationVue[] = [];
   for (const p of l) {
     const e = etatPourApporteur(p);
@@ -71,6 +82,7 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
         recueAt: p.recueAt,
         etat: e.etat,
         jusquAu: e.jusquAu,
+        prestation: etatPrestation(commissions.get(p.id) ?? []),
       });
   }
   return out;
