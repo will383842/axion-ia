@@ -2,7 +2,8 @@
 // SEULEMENT le montant et le nom de formule erronés, ne suppriment rien, et sont idempotentes.
 import { describe, expect, it } from "vitest";
 
-import { FORMATION_PRICE_MATRIX, formatAmount } from "@/content/pricing";
+import { FORMATION_PRICE_MATRIX } from "@/content/pricing";
+import { fmtNumber } from "@/lib/intl";
 
 import {
   contientFormuleErronee,
@@ -10,8 +11,9 @@ import {
   corrigerTexte,
 } from "../../../scripts/tarifs/formules-erronees-regles";
 
-const UN_JOUR = formatAmount(FORMATION_PRICE_MATRIX.generale["1j"]!, "fr");
-const DEUX_JOURS = formatAmount(FORMATION_PRICE_MATRIX.generale["2j"]!, "fr");
+const UN_JOUR = `${fmtNumber(FORMATION_PRICE_MATRIX.generale["1j"]!, "fr")} €`;
+const UN_JOUR_EN = `€${fmtNumber(FORMATION_PRICE_MATRIX.generale["1j"]!, "en")}`;
+const DEUX_JOURS = `${fmtNumber(FORMATION_PRICE_MATRIX.generale["2j"]!, "fr")} €`;
 
 describe("corrigerTexte", () => {
   it.each([
@@ -41,7 +43,9 @@ describe("corrigerTexte", () => {
   });
 
   it("idempotent : un texte corrigé ne change plus", () => {
-    const une = corrigerTexte("Essentielle à 2 450 € puis Approfondie à 3 250 €.").texte;
+    const une = corrigerTexte(
+      "La formule Essentielle à 2 450 € puis la formule Approfondie à 3 250 €.",
+    ).texte;
     expect(corrigerTexte(une)).toEqual({ texte: une, changements: [] });
     expect(contientFormuleErronee(une)).toBe(false);
   });
@@ -65,5 +69,41 @@ describe("corrigerJson", () => {
       faqs: [{ q: "Prix de la formation d'une journée ?", a: `${UN_JOUR} la journée.` }],
     });
     expect(r.changements.length).toBeGreaterThan(0);
+  });
+});
+
+// Relecture de a1 (08/10) : jamais un mot ni un montant hors contexte.
+describe("hors contexte : rien ne bouge", () => {
+  it.each([
+    "Une Analyse Approfondie des données révèle trois gisements.",
+    "Notre démarche Essentielle : écouter avant de proposer.",
+    "Un loyer de 2 450 € par mois pour ces bureaux.",
+    "Budget marketing annuel : 3 250 €.",
+  ])("%s", (t) => {
+    expect(corrigerTexte(t)).toEqual({ texte: t, changements: [] });
+    expect(contientFormuleErronee(t)).toBe(false);
+  });
+});
+
+describe("en contexte : le nom et le montant", () => {
+  it("« Essentielle (1 jour) »", () => {
+    expect(corrigerTexte("Essentielle (1 jour) pour 2 à 15 personnes.").texte).toBe(
+      "formation d'une journée (1 jour) pour 2 à 15 personnes.",
+    );
+  });
+  it("« « Approfondie » » entre guillemets", () => {
+    expect(corrigerTexte("Le format « Approfondie » dure deux jours.").texte).toBe(
+      "Le format de deux jours dure deux jours.",
+    );
+  });
+  it("montant en ANGLAIS repéré et corrigé (« €2,450 »)", () => {
+    expect(corrigerTexte("One training day costs €2,450 per group.").texte).toBe(
+      `One training day costs ${UN_JOUR_EN} per group.`,
+    );
+  });
+  it("« 2 450 € » dans une phrase de formation : corrigé", () => {
+    expect(corrigerTexte("La journée de formation est à 2 450 € HT.").texte).toBe(
+      `La journée de formation est à ${UN_JOUR} HT.`,
+    );
   });
 });
