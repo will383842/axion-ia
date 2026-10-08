@@ -100,6 +100,13 @@ const nextConfig: NextConfig = {
   // décompresse + re-compresse en brotli). Le passage à false économise
   // ~5-8 % CPU avg 24h selon AGENT 7 §7.11 P1-3.
   compress: false,
+  // 2026-10-08 — vérification des types SORTIE de `next build` au déploiement seulement
+  // (`SKIP_NEXT_TYPECHECK=true`, posé par deploy-coolify.yml) : elle y coûtait 2 min sur le
+  // chemin critique. Elle n'est PAS supprimée : le job `typecheck` du même workflow la refait EN
+  // PARALLÈLE (`pnpm typecheck`, même tsc strict) et la mise en ligne l'attend (`deploy` a
+  // `needs: [build, typecheck]`), donc une erreur de types bloque toujours la mise en ligne.
+  // Partout ailleurs (dev, Gate B, Gate C), le build garde sa vérification.
+  typescript: { ignoreBuildErrors: process.env.SKIP_NEXT_TYPECHECK === "true" },
   // P-508 — explicite (déjà default false en Next 16, mais clarté config).
   productionBrowserSourceMaps: false,
   // P-302 — build artifact léger pour Docker Hetzner standalone.
