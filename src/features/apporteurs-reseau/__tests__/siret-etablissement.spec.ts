@@ -124,10 +124,14 @@ describe("contrat et autofacture : SIRET et adresse de l'établissement, jamais 
     denomination: "DELPHINE EXEMPLE",
   };
 
-  it("première page : « SIREN … — SIRET de l'établissement … » et l'adresse de l'établissement", () => {
-    const t = texteDuContrat(valeursDuContrat(dossier, new Date("2026-10-08T10:00:00Z")));
-    expect(t).toContain(`${SIREN} — SIRET de l'établissement ${SIRET}`);
-    expect(t).toContain("8 rue du Domicile 69003 Lyon");
+  it("première page (contrat 2.4) : SIREN, SIRET de l'établissement, « dont l'établissement est situé »", () => {
+    const t = texteDuContrat(valeursDuContrat(dossier, new Date("2026-10-08T10:00:00Z"))).replace(
+      /\s+/g,
+      " ",
+    );
+    expect(t).toContain(
+      `immatriculé sous le numéro SIREN ${SIREN}, SIRET de l'établissement ${SIRET}, dont l'établissement est situé 8 rue du Domicile 69003 Lyon, ci-après`,
+    );
   });
 
   it("NAF 46.19B : ni « agent commercial » ni code NAF dans le contrat", () => {
@@ -140,8 +144,11 @@ describe("contrat et autofacture : SIRET et adresse de l'établissement, jamais 
     const sans = texteDuContrat(
       valeursDuContrat({ ...dossier, siret: null }, new Date("2026-10-08T10:00:00Z")),
     );
-    expect(sans).not.toContain(`${SIREN} — SIRET`);
-    expect(sans).toContain(`immatriculé sous le numéro ${SIREN},`);
+    const net = sans.replace(/\s+/g, " ");
+    expect(net).toContain(
+      `immatriculé sous le numéro SIREN ${SIREN}, dont l'adresse est 8 rue du Domicile 69003 Lyon, ci-après`,
+    );
+    expect(net).not.toContain(`${SIREN}, SIRET`);
   });
 
   it("autofacture : SIRET de l'établissement, libellé « SIRET », jamais « agent commercial »", () => {

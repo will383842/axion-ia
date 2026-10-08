@@ -114,9 +114,13 @@ function Progression({ etape }: { etape: number }) {
 
 // ── Le parcours ──────────────────────────────────────────────────────────
 
-/** SIREN (9 chiffres, clé de Luhn) ou SIRET (14 chiffres, clé de Luhn). */
-function identifiantValide(net: string): boolean {
-  return net.length === 14 ? checkSiretFormat(net).ok : sirenValide(net);
+/**
+ * Contrat 2.4 : un SIRET (14 chiffres, clé de Luhn). Un dossier DÉJÀ saisi avec un SIREN seul
+ * reste valide tant que ce SIREN n'est pas changé (aucune régression).
+ */
+function identifiantValide(net: string, sirenSeulDejaSaisi: string | null): boolean {
+  if (net.length === 14) return checkSiretFormat(net).ok;
+  return !!sirenSeulDejaSaisi && net === sirenSeulDejaSaisi && sirenValide(net);
 }
 
 export function DossierEnLigne({
@@ -195,7 +199,8 @@ export function DossierEnLigne({
   // ── Étape 2 : règles d'affichage ──
   const sirenNet = siren.replace(/\s+/g, "");
   // Un SIREN (9 chiffres) ou le SIRET de l'établissement (14), pour plusieurs activités.
-  const identifiantOk = identifiantValide(sirenNet);
+  const sirenSeulDejaSaisi = dossier.siret ? null : dossier.siren;
+  const identifiantOk = identifiantValide(sirenNet, sirenSeulDejaSaisi);
   const sirenDejaEnregistre =
     !!dossier.siren &&
     (sirenNet === (dossier.siret ?? dossier.siren) || sirenNet === dossier.siren);
@@ -480,7 +485,7 @@ export function DossierEnLigne({
               {TEXTES.aideSiret}
             </p>
             {sirenNet.length === 9 && !identifiantOk ? (
-              <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.sirenInvalide}</p>
+              <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.siretAttendu}</p>
             ) : null}
             {sirenNet.length === 14 && !identifiantOk ? (
               <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.siretInvalide}</p>

@@ -19,7 +19,11 @@
 // 2.3 (07/10/2026, décision de Will) : commission due sur une prestation RÉALISÉE et encaissée,
 // reprise quelle que soit la cause (garde-fou contre la privation volontaire), suspension en
 // cas de contestation écrite du client, reprise sur 24 mois, fraude (3.7, 8.4), CPF constaté après.
-export const CONTRAT_VERSION = "2.3";
+// 2.4 (08/10/2026, décision de Will) : identification par le SIRET de l'établissement (première
+// page : « dont l'établissement est situé »), article 22 bis « Communication et image de marque »
+// (droit d'usage encadré de la marque), article 22 assoupli en conséquence ; 22 et 22 bis dans les
+// manquements (11.2), 22 bis dans la garantie (8.5), 22 bis.4 dans la survie (21). Nouvelle empreinte.
+export const CONTRAT_VERSION = "2.4";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -32,8 +36,8 @@ M. Williams Jullin, en qualité de Président, ci-après « **la Société** »,
 
 **et**
 
-**{{APPORTEUR_IDENTITE}}**, {{APPORTEUR_STATUT}}, immatriculé sous le numéro {{APPORTEUR_SIREN}}, dont
-le siège est {{APPORTEUR_SIEGE}}, ci-après « **l'Apporteur** »,
+**{{APPORTEUR_IDENTITE}}**, {{APPORTEUR_STATUT}}, immatriculé sous le numéro SIREN {{APPORTEUR_SIREN}},
+{{APPORTEUR_ETABLISSEMENT}}, ci-après « **l'Apporteur** »,
 
 **il a été convenu ce qui suit.**
 
@@ -738,7 +742,7 @@ d'intérêt le liant à une entreprise qu'il déclare.
 
 **8.5** L'Apporteur répond seul des dommages qu'il cause à l'occasion de son activité. Il indemnise la
 Société du préjudice **qu'elle établit avoir subi**, et la garantit contre toute réclamation d'un tiers,
-résultant d'un manquement de sa part aux articles 6, 8, 9 ou 22 ou d'un fait qui lui est imputable.
+résultant d'un manquement de sa part aux articles 6, 8, 9, 22 ou 22 bis ou d'un fait qui lui est imputable.
 **Cette garantie ne joue pas dans la mesure où le dommage procède d'un fait de la Société ; elle exclut les
 amendes administratives et pénales et est plafonnée au montant des commissions versées à l'Apporteur au
 cours des vingt-quatre mois précédant la réclamation, sauf dol ou faute lourde. La Société informe l'Apporteur de toute réclamation
@@ -784,7 +788,7 @@ conditions de l'article 12.3. Les déclarations en attente et les attributions p
 du contrat sont traitées selon l'article 12.1.
 
 **11.2** En cas d'inexécution par l'Apporteur de ses obligations au titre des articles 3.7, 6.1, 6.3, 6.5,
-6.6, 7, 8 ou 9,
+6.6, 7, 8, 9, 22 ou 22 bis,
 la Société peut résilier le contrat sans préavis, par écrit et par décision motivée, après mise en demeure
 d'y remédier restée sans effet pendant quinze jours. La mise en demeure n'est pas requise lorsque
 l'inexécution est irrémédiable. Il en va de même en cas de déclaration inexacte au titre de l'article 23.
@@ -954,8 +958,8 @@ l'émission.**
 
 ### Article 21 — Survie
 
-Les articles 3.3, 3.5, 4, 5, 6.3, 6.5, 6.6, 7, 8.5, 9, 12, 14, 17, 18, 19, 20, 22 et 23, ainsi que les
-annexes 1 et 2, survivent au terme du contrat, chacun pour la durée nécessaire à son objet.
+Les articles 3.3, 3.5, 4, 5, 6.3, 6.5, 6.6, 7, 8.5, 9, 12, 14, 17, 18, 19, 20, 22, 22 bis.4 et 23, ainsi
+que les annexes 1 et 2, survivent au terme du contrat, chacun pour la durée nécessaire à son objet.
 
 ---
 
@@ -963,14 +967,45 @@ annexes 1 et 2, survivent au terme du contrat, chacun pour la durée nécessaire
 
 La Société remet à l'Apporteur des documents de présentation de ses prestations. L'Apporteur peut les
 transmettre **en l'état, sans aucune modification**, à seule fin d'identifier la Société auprès d'une
-entreprise et de lui communiquer les coordonnées de celle-ci. **Aucun droit d'usage de la dénomination, du
-logo ou de la charte de la Société ne lui est concédé : il ne peut les reproduire sur aucun support, aucune
-signature électronique, aucun profil, page ou compte en ligne, aucune carte, aucun document lui
-appartenant, ni les faire figurer dans son intitulé professionnel.** Il ne dépose ni marque, ni nom de
+entreprise et de lui communiquer les coordonnées de celle-ci. **Sauf dans les conditions de l'article
+22 bis, aucun droit d'usage de la dénomination, du logo ou de la charte de la Société ne lui est concédé :
+il ne peut les reproduire sur aucun support, aucune signature électronique, aucun profil, page ou compte en
+ligne, aucune carte, aucun document lui appartenant, ni les faire figurer dans son intitulé
+professionnel.** Il ne dépose ni marque, ni nom de
 domaine, ni dénomination reprenant tout ou partie du nom de la Société, et ne crée aucun compte sur un
 service en ligne portant ce nom. Les documents de présentation restent la propriété de la
 Société ; aucun droit sur son nom, son logo ou ses contenus n'est cédé. À la fin du contrat, il cesse tout
 usage et détruit ou restitue les documents en sa possession.
+
+---
+
+### Article 22 bis — Communication et image de marque
+
+**22 bis.1 — Communication autorisée.** L'Apporteur peut faire connaître les prestations de la Société par
+tout moyen de communication (vidéos, formats courts, publications sur les réseaux sociaux, visuels,
+publicités, supports imprimés), à condition de respecter la charte de marque remise par la Société
+(couleurs, typographies, logos, ton et règles de présentation) et les articles 8.2 et 8.3.
+
+**22 bis.2 — Usage de la marque.** Pour ces seules communications, la Société concède à l'Apporteur un
+droit d'usage personnel, non exclusif, gratuit et révocable de sa dénomination et de son logo, dans les
+formes prévues par la charte, pour la durée du contrat. Ce droit ne s'étend ni à la modification du logo,
+ni au dépôt d'une marque ou d'un nom de domaine, ni à la création d'un compte ou d'une page au nom de la
+Société (article 22).
+
+**22 bis.3 — Qualité et transparence.** Chaque communication est soignée et conforme à l'image de la
+Société. L'Apporteur s'y présente comme apporteur d'affaires indépendant, jamais comme salarié ou
+représentant de la Société. Il n'y annonce aucun prix, remise, délai, résultat ou financement (article
+8.3), et ne fait aucune affirmation inexacte sur la Société ou ses prestations.
+
+**22 bis.4 — Contrôle de la Société.** La Société peut à tout moment demander la modification ou le
+retrait d'une communication qu'elle juge non conforme à sa charte ou à son image ; l'Apporteur s'exécute
+dans les quarante-huit heures, sans indemnité. Elle peut aussi suspendre ou retirer pour l'avenir, par
+simple écrit, le droit d'usage de l'article 22 bis.2 ; l'Apporteur cesse alors toute communication
+mentionnant la Société.
+
+**22 bis.5 — Pratiques interdites.** Restent interdits en toutes circonstances l'achat de mots-clés ou de
+référencement reprenant le nom de la Société, les envois de messages en masse ou automatisés non
+sollicités, et toute communication relative au compte personnel de formation.
 
 ---
 

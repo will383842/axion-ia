@@ -189,6 +189,10 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
     if (!c.ok) return { ok: false, message: TEXTES.siretInvalide };
     siret = c.value;
   }
+  // Contrat 2.4 : on ne demande plus que le SIRET. Un SIREN seul n'est admis que s'il est DÉJÀ
+  // celui du dossier (saisi avant ce changement) : aucune régression pour ces dossiers.
+  if (!siret && !(dossier.siren && !dossier.siret && saisie === dossier.siren))
+    return { ok: false, message: TEXTES.siretAttendu };
   const siren = siret ? sirenDuSiret(siret) : saisie;
   if (!sirenValide(siren)) return { ok: false, message: TEXTES.sirenInvalide };
 

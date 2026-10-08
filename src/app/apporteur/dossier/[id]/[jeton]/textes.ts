@@ -23,9 +23,11 @@ export const TEXTES = {
   lectureSeule: "Une erreur ? Écrivez-nous :",
   nomManquant: "Indiquez votre nom de famille : il figure sur votre contrat.",
   // Étape 2
-  siren: "Numéro SIREN (9 chiffres) ou SIRET (14 chiffres)",
+  // Contrat 2.4 (décision de Will, 08/10) : on ne demande plus que le SIRET ; le SIREN en est déduit.
+  siren: "Numéro SIRET",
   aideSiret:
-    "Si vous avez plusieurs activités, indiquez le SIRET de celle sous laquelle vous apportez des affaires.",
+    "14 chiffres, sur votre avis de situation INSEE ou annuaire-entreprises.data.gouv.fr. Si vous avez plusieurs activités, indiquez le SIRET de celle sous laquelle vous apportez des affaires.",
+  siretAttendu: "Indiquez le numéro SIRET (14 chiffres) de votre établissement.",
   rechercher: "Rechercher",
   recherche: "Recherche…",
   trouve: "Trouvé",
@@ -47,12 +49,12 @@ export const TEXTES = {
   ibanEnregistre: (masque: string) => `Enregistré : ${masque}`,
   ibanRemplacer: "Laissez vide pour garder celui-ci.",
   ibanInvalide: "Cet IBAN n'est pas valide : vérifiez-le.",
-  rechercherDabord: "Recherchez d'abord votre numéro SIREN.",
+  rechercherDabord: "Recherchez d'abord votre numéro SIRET.",
   // Décision de Will (07/10) : dire COMMENT obtenir un SIREN, sans détail fiscal ni délai
   // autre que « quelques jours ». La règle ne change pas : le SIREN reste obligatoire.
   // 07/10 : « Continuer » grisé → la liste de ce qui manque, dite en clair.
   ilManque: "Pour continuer, il manque :",
-  manqueSiren: "votre numéro SIREN, recherché au registre",
+  manqueSiren: "votre numéro SIRET, recherché au registre",
   manqueEntreprise: "le nom et l'adresse de votre entreprise",
   manqueStatut: "votre statut",
   manqueTva: "votre régime de TVA",

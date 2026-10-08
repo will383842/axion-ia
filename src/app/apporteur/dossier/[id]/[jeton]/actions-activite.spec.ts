@@ -41,6 +41,14 @@ import { luhnValid } from "@/lib/siret";
 import { enregistrerActiviteAction, enregistrerCoordonneesAction } from "./actions";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
+// Contrat 2.4 : le dossier demande le SIRET. Un SIRET valide (clé de Luhn) de l'unité 732829320.
+const SIRET_TEST = (() => {
+  for (let i = 0; i < 100000; i++) {
+    const c = `732829320${String(i).padStart(5, "0")}`;
+    if (luhnValid(c)) return c;
+  }
+  throw new Error("aucun SIRET de test");
+})();
 const JETON = "AbCdEfGhIjKlMnOpQrStUvWxYz0123456789_-AbCdE";
 
 function formulaire(extra: Record<string, string> = {}): FormData {
@@ -48,7 +56,7 @@ function formulaire(extra: Record<string, string> = {}): FormData {
   const base: Record<string, string> = {
     id: ID,
     jeton: JETON,
-    siren: "732829320",
+    siren: SIRET_TEST,
     denomination: "Ma société",
     adresse: "1 rue des Alpes 38000 Grenoble",
     statutJuridique: "micro_entrepreneur",
@@ -182,12 +190,7 @@ describe("07/10 : l'étape 1 enregistre le nom et le téléphone tout de suite",
 });
 
 describe("étape 2 : SIRET de l'établissement (plusieurs activités, 2026-10-08)", () => {
-  // SIRET valide (clé de Luhn) de l'unité légale 732829320.
-  let SIRET = "";
-  for (let i = 0; i < 100000 && !SIRET; i++) {
-    const c = `732829320${String(i).padStart(5, "0")}`;
-    if (luhnValid(c)) SIRET = c;
-  }
+  const SIRET = SIRET_TEST;
   const ETAB_OK = {
     ok: true,
     entreprise: {
@@ -227,9 +230,23 @@ describe("étape 2 : SIRET de l'établissement (plusieurs activités, 2026-10-08
     expect(r).toMatchObject({ ok: false, message: expect.stringContaining("SIRET") });
   });
 
-  it("un SIREN seul : comportement inchangé, aucun SIRET", async () => {
+  it("contrat 2.4 : un dossier NEUF qui saisit un SIREN seul est refusé (le SIRET est demandé)", async () => {
+    const r = await enregistrerActiviteAction(formulaire({ siren: "732829320" }));
+    expect(r).toMatchObject({ ok: false, message: expect.stringContaining("SIRET") });
+    expect(h.enregistrerActivite).not.toHaveBeenCalled();
+  });
+
+  it("dossier DÉJÀ saisi avec un SIREN seul : il reste valide, aucun SIRET (pas de régression)", async () => {
+    h.lireDossierParLien.mockResolvedValue({
+      id: ID,
+      statut: "dossier_en_cours",
+      nom: "Durand",
+      ibanSaisi: false,
+      siren: "732829320",
+      siret: null,
+    });
     h.lireEntrepriseParSiren.mockResolvedValue(REGISTRE_OK);
-    await enregistrerActiviteAction(formulaire());
+    await enregistrerActiviteAction(formulaire({ siren: "732829320" }));
     expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
       siren: "732829320",
       siret: null,
