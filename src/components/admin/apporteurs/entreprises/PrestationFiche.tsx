@@ -9,10 +9,11 @@ import {
   marquerRealiseeFicheAction,
 } from "@/features/apporteurs-reseau/actions-prestation-fiche";
 import type { CommissionDeLaPresentation } from "@/features/apporteurs-reseau/prestation-presentation";
+import { MARQUABLES as MARQUABLES_DOMAINE } from "@/features/apporteurs-reseau/realisation";
 import { euros } from "@/features/apporteurs-reseau/regles";
 
-/** Les statuts où la réalisation se marque ou s'annule (miroir de `realisation.ts`). */
-const MARQUABLES = new Set(["a_qualifier", "due", "en_attente_vigilance"]);
+/** Les statuts où la réalisation se marque ou s'annule : la liste du domaine, jamais une copie. */
+const MARQUABLES: ReadonlySet<string> = new Set(MARQUABLES_DOMAINE);
 
 const PETIT = "text-[length:var(--text-admin-sm)]";
 
