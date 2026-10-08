@@ -6,6 +6,8 @@ const appFindUnique = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
+    apporteurReseauSiret: { findUnique: async () => null },
     apporteurReseau: { findUnique: (...a: unknown[]) => appFindUnique(...a) },
     presentationEntreprise: { findMany: (...a: unknown[]) => presFindMany(...a) },
     pieceApporteur: { findMany: vi.fn().mockResolvedValue([]) },

@@ -40,13 +40,21 @@ export async function siretsDe(ids: readonly string[]): Promise<Map<string, stri
   }
 }
 
-/** Enregistre (ou retire, `null`) le SIRET : appelé à l'étape « activité » du dossier. */
-export async function enregistrerSiret(apporteurId: string, siret: string | null): Promise<void> {
+/**
+ * Enregistre (ou retire, `null`) le SIRET : appelé à l'étape « activité » du dossier, DANS la
+ * transaction qui écrit le SIREN (`db`), pour qu'un nouveau SIREN ne reste jamais à côté d'un
+ * ancien SIRET.
+ */
+export async function enregistrerSiret(
+  apporteurId: string,
+  siret: string | null,
+  db: Pick<typeof prisma, "apporteurReseauSiret"> = prisma,
+): Promise<void> {
   if (siret === null) {
-    await prisma.apporteurReseauSiret.deleteMany({ where: { apporteurId } });
+    await db.apporteurReseauSiret.deleteMany({ where: { apporteurId } });
     return;
   }
-  await prisma.apporteurReseauSiret.upsert({
+  await db.apporteurReseauSiret.upsert({
     where: { apporteurId },
     create: { apporteurId, siret },
     update: { siret },

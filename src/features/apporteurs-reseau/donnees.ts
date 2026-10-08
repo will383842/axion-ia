@@ -400,28 +400,34 @@ export async function enregistrerActivite(
     if (s.registreIndisponible) declarations[CLE_REGISTRE_INDISPONIBLE] = new Date().toISOString();
     else delete declarations[CLE_REGISTRE_INDISPONIBLE];
   }
-  await prisma.apporteurReseau.update({
-    where: { id: apporteurId },
-    data: {
-      ...(declarations ? { declarations } : {}),
-      ...(s.nom ? { nom: encryptPii(s.nom) } : {}),
-      ...(s.telephone !== undefined
-        ? { telephone: s.telephone ? encryptPii(s.telephone) : null }
-        : {}),
-      siren: s.siren,
-      denomination: s.denomination.slice(0, 250),
-      adresse: s.adresse,
-      codeNaf: s.codeNaf,
-      statutJuridique: s.statutJuridique,
-      regimeTva: s.regimeTva,
-      numeroTva:
-        s.regimeTva === "assujetti" ? (s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase() : null,
-      ...(s.iban ? { iban: encryptPii(s.iban.replace(/\s+/g, "").toUpperCase()) } : {}),
-    },
+  // SIREN et SIRET dans UNE transaction : un nouveau SIREN ne reste jamais à côté d'un ancien
+  // SIRET (2026-10-08).
+  await prisma.$transaction(async (tx) => {
+    await tx.apporteurReseau.update({
+      where: { id: apporteurId },
+      data: {
+        ...(declarations ? { declarations } : {}),
+        ...(s.nom ? { nom: encryptPii(s.nom) } : {}),
+        ...(s.telephone !== undefined
+          ? { telephone: s.telephone ? encryptPii(s.telephone) : null }
+          : {}),
+        siren: s.siren,
+        denomination: s.denomination.slice(0, 250),
+        adresse: s.adresse,
+        codeNaf: s.codeNaf,
+        statutJuridique: s.statutJuridique,
+        regimeTva: s.regimeTva,
+        numeroTva:
+          s.regimeTva === "assujetti"
+            ? (s.numeroTva ?? "").replace(/\s+/g, "").toUpperCase()
+            : null,
+        ...(s.iban ? { iban: encryptPii(s.iban.replace(/\s+/g, "").toUpperCase()) } : {}),
+      },
+    });
+    // SIRET de l'établissement : posé, remplacé, ou retiré si l'apporteur revient au seul SIREN.
+    // `undefined` (ancien appelant) : rien n'y touche.
+    if (s.siret !== undefined) await enregistrerSiret(apporteurId, s.siret, tx);
   });
-  // SIRET de l'établissement (2026-10-08) : posé, remplacé, ou retiré si l'apporteur revient au
-  // seul SIREN. `undefined` (ancien appelant) : rien n'y touche.
-  if (s.siret !== undefined) await enregistrerSiret(apporteurId, s.siret);
   return { ok: true };
 }
 

@@ -20,6 +20,8 @@ const h = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
+    apporteurReseauSiret: { findUnique: async () => null },
     apporteurReseau: {
       findUnique: (...a: unknown[]) => h.appFindUnique(...a),
       update: (...a: unknown[]) => h.appUpdate(...a),
