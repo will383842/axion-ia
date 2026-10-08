@@ -2,6 +2,12 @@
 /**
  * V-04 P6 2026-05-22 — Pre-compression statique build-time (Brotli 11 + Gzip 9).
  *
+ * ⛔ DÉSACTIVÉE PAR DÉFAUT DEPUIS LE 2026-10-08 (`PRECOMPRESS_STATIC=true` pour la rallumer).
+ * Tout ce qui suit décrit l'intention d'origine, qui n'est PLUS vraie en production : aucun Caddy
+ * n'est devant le site (Traefik de Coolify → Next `compress: false`), personne ne sert les `.br` /
+ * `.gz`, et c'est Cloudflare qui compresse vers les visiteurs. Elle coûtait 21,6 min par mise en
+ * ligne. Voir `src/server/compression/precompression-activee.ts`.
+ *
  * Compresse les assets statiques `.next/static/**` et `.next/standalone/.next/static/**`
  * en variantes `.br` (Brotli qualité 11, ratio maximum) et `.gz` (Gzip 9). Caddy 2
  * peut servir ces fichiers pré-compressés via la directive `file_server { precompressed br gzip }`

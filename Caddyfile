@@ -1,5 +1,11 @@
 # Caddyfile production Axion-IA — patch D2 cert 2026-05-08.
 #
+# ⛔ 2026-10-08 : CE FICHIER N'EST PAS SUR LE CHEMIN DU SITE. En production, axion-ia.com passe par
+# Traefik (proxy Coolify) jusqu'au serveur Next (`compress: false`) ; c'est Cloudflare qui
+# compresse. Le seul Caddy du VPS est celui de l'audit (`axion-audit-caddy`). Les mentions
+# ci-dessous (compression, `precompressed`) décrivent une architecture qui n'est plus en place ;
+# la précompression du build est désactivée (scripts/precompress-static.ts). Gardé pour mémoire.
+#
 # Reverse-proxy en frontal de Next 16 standalone (port 3000) avec :
 #   - TLS auto via Let's Encrypt (zero config)
 #   - HTTP/3 (QUIC) auto-activé

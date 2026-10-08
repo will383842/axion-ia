@@ -132,6 +132,12 @@ ENV BULLMQ_DISABLED=true
 ARG BUILD_SSG_VILLES_INDEXABLE_ONLY
 ENV BUILD_SSG_VILLES_INDEXABLE_ONLY=${BUILD_SSG_VILLES_INDEXABLE_ONLY:-false}
 
+# 2026-10-08 — `next build` sans sa vérification des types, au DÉPLOIEMENT seulement : le job
+# `typecheck` de deploy-coolify.yml la refait en parallèle et bloque la mise en ligne en cas
+# d'erreur (voir next.config.ts). Défaut `false` : tout autre build garde la vérification.
+ARG SKIP_NEXT_TYPECHECK
+ENV SKIP_NEXT_TYPECHECK=${SKIP_NEXT_TYPECHECK:-false}
+
 # 🔴 Audit certification 2026-07-26 (F32) — drapeaux de visibilité OF.
 #
 # Ces deux drapeaux sont lus par des pages en SSG (`revalidate = 3600`), donc
