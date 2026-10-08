@@ -17,6 +17,7 @@ import { peutEngager } from "@/server/auth/habilitations";
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
+import { annulerRealisation, marquerPrestationRealisee } from "./realisation";
 import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
 import { euros } from "./regles";
 
@@ -203,5 +204,47 @@ export async function leverSuspensionAction(fd: FormData): Promise<void> {
   }
   revalidatePath(adminPath("fr", "apporteurs/commissions"));
   if (r.ok) versCommissions("retour", "Suspension levée : la commission reprend son cours.");
+  versCommissions("erreur", r.message);
+}
+
+// ── Prestation réalisée (contrat 2.3, art. 4.2) ──────────────────────────
+
+export async function marquerRealiseeAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  const jour = texte(fd, "realiseeLe");
+  const realiseeLe = /^\d{4}-\d{2}-\d{2}$/.test(jour)
+    ? new Date(`${jour}T12:00:00.000Z`)
+    : new Date(NaN);
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    r = await marquerPrestationRealisee(id, realiseeLe, new Date(), await acteur());
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-realisee" } });
+    r = { ok: false, message: "La réalisation n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok)
+    versCommissions("retour", "Prestation marquée réalisée : la commission peut être facturée.");
+  versCommissions("erreur", r.message);
+}
+
+export async function annulerRealisationAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    r = await annulerRealisation(id, await acteur());
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-realisation-annulee" } });
+    r = { ok: false, message: "L'annulation n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok)
+    versCommissions("retour", "Réalisation annulée : la commission est de nouveau en attente.");
   versCommissions("erreur", r.message);
 }

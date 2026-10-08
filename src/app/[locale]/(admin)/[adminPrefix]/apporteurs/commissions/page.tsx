@@ -12,8 +12,10 @@ import {
   VerserForm,
 } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
 import {
+  annulerRealisationAction,
   classerActiviteAction,
   leverSuspensionAction,
+  marquerRealiseeAction,
   suspendreCommissionAction,
 } from "@/features/apporteurs-reseau/actions-commissions";
 import {
@@ -280,6 +282,63 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
                     part pas, vérifiez l&apos;identité et le régime de TVA de l&apos;apporteur).
                   </p>
+                ) : null}
+                {c.statut === "due" ||
+                c.statut === "a_qualifier" ||
+                c.statut === "en_attente_vigilance" ? (
+                  c.prestationRealiseeAt ? (
+                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                      <p className="text-[length:var(--text-admin-sm)]">
+                        Prestation réalisée le {dateFr(c.prestationRealiseeAt)}
+                        {c.prestationRealiseePar === "session-realisee"
+                          ? " (session de formation terminée)"
+                          : ""}
+                        .
+                      </p>
+                      {peutPayer && !c.autofactureNumero ? (
+                        <form action={annulerRealisationAction}>
+                          <input type="hidden" name="id" value={c.id} />
+                          <button type="submit" className="admin-button-secondary">
+                            Annuler
+                          </button>
+                        </form>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap items-end gap-[var(--space-admin-2)]">
+                      <p
+                        className="text-[length:var(--text-admin-sm)] font-semibold"
+                        style={{ color: "var(--color-admin-warning)" }}
+                      >
+                        En attente de réalisation : ni facturée ni versée
+                        {c.prestationRealiseePar === "annulee-console"
+                          ? " (réalisation annulée à la main : plus de passage automatique)"
+                          : ""}
+                        .
+                      </p>
+                      {peutPayer ? (
+                        <form
+                          action={marquerRealiseeAction}
+                          className="flex flex-wrap items-end gap-[var(--space-admin-2)]"
+                        >
+                          <input type="hidden" name="id" value={c.id} />
+                          <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
+                            Réalisée le
+                            <input
+                              type="date"
+                              name="realiseeLe"
+                              required
+                              className="admin-input"
+                              defaultValue={maintenant.toISOString().slice(0, 10)}
+                            />
+                          </label>
+                          <button type="submit" className="admin-button">
+                            Marquer la prestation réalisée
+                          </button>
+                        </form>
+                      ) : null}
+                    </div>
+                  )
                 ) : null}
                 {c.litigeDepuis ? (
                   <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">

@@ -40,6 +40,7 @@ import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
+import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { urlDossier } from "./jeton";
@@ -188,9 +189,10 @@ type NomEtape =
   | "alerte-pieces-vigilance"
   | "commande-signee"
   | "rappels-dossier"
-  | "chiffrement-pieces";
+  | "chiffrement-pieces"
+  | "realisation";
 
-const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "autofacturation"];
+const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "realisation", "autofacturation"];
 
 function bilanVide(): BilanPassageReseau {
   return {
@@ -223,6 +225,9 @@ async function passer(
     ["commissions", () => etapeCommissions(maintenant, bilan)],
     // Les commissions devenues dues (ci-dessus) sont facturées dans la foulée, puis celles que la
     // vigilance libère (ci-dessous) le sont au passage horaire suivant.
+    // Contrat 2.3 (art. 4.2) : une session de formation terminée rend la prestation « réalisée »,
+    // juste avant l'autofacturation qui ne prend que les prestations réalisées.
+    ["realisation", async () => void (await marquerRealiseesDepuisSessions(maintenant))],
     ["autofacturation", () => etapeAutofacturation(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
     [
