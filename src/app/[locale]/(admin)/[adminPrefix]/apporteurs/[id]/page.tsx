@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
+import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
@@ -163,6 +164,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           <Ligne libelle="Adresse" valeur={voitPii ? d.adresse : MASQUE} />
           <Ligne libelle="Statut" valeur={statut} />
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
+          {/* Correction du nom (2026-10-08) : tant que le contrat n'est pas signé ; droit
+              « contresigner » et contrat signé revérifiés côté serveur. */}
+          {voitPii && !d.signeParApporteurAt ? (
+            <CorrigerNom apporteurId={d.id} prenom={d.prenom} nom={d.nom} />
+          ) : null}
           {CLE_REGISTRE_INDISPONIBLE in d.declarations ? (
             <Ligne
               libelle="À contrôler"
