@@ -56,7 +56,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de PME et ETI de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
-          "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
+          "La formation d'une journée (2 à 15 personnes par groupe) est conçue pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
           "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de PME et ETI et de grands groupes dunkerquois.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
@@ -91,13 +91,13 @@ export const DUNKERQUE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 j) ou Gagner du temps (1 j)",
+            price: "Formation d'une journée",
             detail:
-              "Le format Essentielle (1 jour, 2 à 15 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
+              "La formation générale (1 jour, 2 à 15 personnes) pour le groupe entier, ou la formation par métier (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 j) ou Dirigeant (1 j)",
+            price: "Formation de deux jours ou Dirigeant (1 j)",
             detail:
               "Deux journées consécutives pour ancrer les usages en profondeur dans les équipes, ou un format Dirigeant en huis-clos pour le comité de direction d'une ETI du bassin dunkerquois.",
           },
@@ -111,11 +111,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Dunkerque ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps et Dirigeant sur une journée, et le format Approfondie sur deux journées consécutives. Le format Conférence est calé selon votre événement. Pour un programme multi-formats, le rythme est défini ensemble au cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, le format Dirigeant sur une journée, et les formations générale, par métier ou par secteur sur une ou deux journées consécutives. Le format Conférence est calé selon votre événement. Pour un programme multi-formats, le rythme est défini ensemble au cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir à Dunkerque ?",
-            a: "La Formation 4 heures, les formats Essentielle et journée accueillent jusqu'à 30 collaborateurs en interaction. Au-delà, le format Conférence, avec une plénière suivie d'ateliers en sous-groupes, est plus adapté aux grandes audiences du bassin dunkerquois.",
+            a: "La Formation 4 heures et la formation d'une journée accueillent de 2 à 15 personnes par groupe, en interaction. Au-delà, nous formons plusieurs groupes successifs ; pour les grandes audiences du bassin dunkerquois, le format Conférence, avec une plénière suivie d'ateliers en sous-groupes, est plus adapté.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",
@@ -142,7 +142,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de PME et ETI de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
-          "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
+          "La formation d'une journée (2 à 15 personnes par groupe) est conçue pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
           "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de PME et ETI et de grands groupes dunkerquois.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
@@ -177,13 +177,13 @@ export const DUNKERQUE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 j) ou Gagner du temps (1 j)",
+            price: "Formation d'une journée",
             detail:
-              "Le format Essentielle (1 jour, 2 à 15 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
+              "La formation générale (1 jour, 2 à 15 personnes) pour le groupe entier, ou la formation par métier (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 j) ou Dirigeant (1 j)",
+            price: "Formation de deux jours ou Dirigeant (1 j)",
             detail:
               "Deux journées consécutives pour ancrer les usages en profondeur dans les équipes, ou un format Dirigeant en huis-clos pour le comité de direction d'une ETI du bassin dunkerquois.",
           },
@@ -197,11 +197,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Dunkerque ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps et Dirigeant sur une journée, et le format Approfondie sur deux journées consécutives. Le format Conférence est calé selon votre événement. Pour un programme multi-formats, le rythme est défini ensemble au cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, le format Dirigeant sur une journée, et les formations générale, par métier ou par secteur sur une ou deux journées consécutives. Le format Conférence est calé selon votre événement. Pour un programme multi-formats, le rythme est défini ensemble au cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir à Dunkerque ?",
-            a: "La Formation 4 heures, les formats Essentielle et journée accueillent jusqu'à 30 collaborateurs en interaction. Au-delà, le format Conférence, avec une plénière suivie d'ateliers en sous-groupes, est plus adapté aux grandes audiences du bassin dunkerquois.",
+            a: "La Formation 4 heures et la formation d'une journée accueillent de 2 à 15 personnes par groupe, en interaction. Au-delà, nous formons plusieurs groupes successifs ; pour les grandes audiences du bassin dunkerquois, le format Conférence, avec une plénière suivie d'ateliers en sous-groupes, est plus adapté.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",

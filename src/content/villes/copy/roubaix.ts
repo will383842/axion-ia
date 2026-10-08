@@ -79,7 +79,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu (4 heures, journée Essentielle, Gagner du temps, Approfondie 2 jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
+              "Selon le format retenu (4 heures, formation d'une journée ou de deux jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
           },
           {
             step: "Outils installés et debrief",
@@ -90,13 +90,13 @@ export const ROUBAIX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée",
             detail:
               "Une journée pour le groupe entier (2 à 15 personnes) ou pour un département ciblé — commercial, ADV, logistique, qualité — héritier de la distribution roubaisienne, avec outils installés sur chaque poste.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
               "Deux journées pour aller plus loin avec les équipes RetailTech, textile (CETI/Union) ou distribution, ou format Conférence en plénière pour de grandes audiences. Conférence sur devis.",
           },
@@ -110,11 +110,11 @@ export const ROUBAIX_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Roubaix ?",
-            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -169,7 +169,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu (4 heures, journée Essentielle, Gagner du temps, Approfondie 2 jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
+              "Selon le format retenu (4 heures, formation d'une journée ou de deux jours), alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers participatifs adaptés à votre métier.",
           },
           {
             step: "Outils installés et debrief",
@@ -180,13 +180,13 @@ export const ROUBAIX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée",
             detail:
               "Une journée pour le groupe entier (2 à 15 personnes) ou pour un département ciblé — commercial, ADV, logistique, qualité — héritier de la distribution roubaisienne, avec outils installés sur chaque poste.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
               "Deux journées pour aller plus loin avec les équipes RetailTech, textile (CETI/Union) ou distribution, ou format Conférence en plénière pour de grandes audiences. Conférence sur devis.",
           },
@@ -200,11 +200,11 @@ export const ROUBAIX_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Roubaix ?",
-            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures se tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeant tiennent sur une journée. Le rythme exact est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes en interaction. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",

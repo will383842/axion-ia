@@ -55,7 +55,7 @@ export const NANTERRE_COPY: VilleCopy = {
         whyHere: [
           "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
           "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
-          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
+          "Le format quatre heures et la formation d'une journée conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
           "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
           "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
           "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
@@ -90,13 +90,13 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 15 personnes)",
+            price: "Formation d'une journée (2 à 15 personnes)",
             detail:
-              "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
+              "La formation générale pour poser les bases sur un groupe, ou la formation par métier pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
           },
           {
             sizeLabel: "ETI",
-            price: "Format Approfondie (2 jours) ou Dirigeants (1 jour)",
+            price: "Formation de deux jours ou Dirigeants (1 jour)",
             detail:
               "Deux journées consécutives pour aller au fond des cas d'usage d'un département, ou un huis-clos comité de direction pour cadrer la trajectoire IA d'un siège du bassin Nanterre/La Défense Ouest.",
           },
@@ -110,11 +110,11 @@ export const NANTERRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Nanterre ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -141,7 +141,7 @@ export const NANTERRE_COPY: VilleCopy = {
         whyHere: [
           "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
           "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
-          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
+          "Le format quatre heures et la formation d'une journée conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
           "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
           "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
           "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
@@ -176,13 +176,13 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 15 personnes)",
+            price: "Formation d'une journée (2 à 15 personnes)",
             detail:
-              "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
+              "La formation générale pour poser les bases sur un groupe, ou la formation par métier pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
           },
           {
             sizeLabel: "ETI",
-            price: "Format Approfondie (2 jours) ou Dirigeants (1 jour)",
+            price: "Formation de deux jours ou Dirigeants (1 jour)",
             detail:
               "Deux journées consécutives pour aller au fond des cas d'usage d'un département, ou un huis-clos comité de direction pour cadrer la trajectoire IA d'un siège du bassin Nanterre/La Défense Ouest.",
           },
@@ -196,11 +196,11 @@ export const NANTERRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Nanterre ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle et Gagner du temps sur une journée, le format Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeants se déroulent sur une journée. Un programme multi-formats est cadré ensemble en amont.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",

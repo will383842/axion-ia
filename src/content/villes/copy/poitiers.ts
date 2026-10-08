@@ -53,14 +53,14 @@ export const POITIERS_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Poitiers se déroulent sur site, dans vos locaux du centre roman, du Téléport au Futuroscope ou d'une commune de la Vienne. Le principe est simple : vos collaborateurs ne repartent pas avec un classeur de slides, mais avec des outils IA installés et configurés sur leur poste, prêts pour leur travail réel dès le lendemain matin. Nous calibrons chaque session sur votre métier — assurance, services tertiaires, numérique, tourisme, relation client externalisée — et sur vos vrais documents. Les formats vont de la Formation 4 heures à l'accompagnement Approfondie sur deux jours, en passant par un cadrage Dirigeant en huis-clos pour les comités de direction poitevins.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Poitiers se déroulent sur site, dans vos locaux du centre roman, du Téléport au Futuroscope ou d'une commune de la Vienne. Le principe est simple : vos collaborateurs ne repartent pas avec un classeur de slides, mais avec des outils IA installés et configurés sur leur poste, prêts pour leur travail réel dès le lendemain matin. Nous calibrons chaque session sur votre métier — assurance, services tertiaires, numérique, tourisme, relation client externalisée — et sur vos vrais documents. Les formats vont de la Formation 4 heures à la formation de deux jours, en passant par un cadrage Dirigeant en huis-clos pour les comités de direction poitevins.",
         whyHere: [
           "Poitiers concentre la première filière française de relation client externalisée sur le Téléport du Futuroscope (Armatis, Arvato Services, CCA International, Carglass, Chronopost, Groupama, LaSer Contact) : des sessions calibrées sur la rédaction de réponses, la qualification de demandes et la synthèse de dossiers parlent directement à ces équipes.",
           "Le bassin d'assurance et de mutuelles (MAAF, MACIF à proximité immédiate) et le fort pôle tertiaire de la Vienne génèrent un quotidien de gestion de dossiers, de courriers et de comptes rendus où l'IA bien dosée fait gagner du temps sans bouleverser l'organisation.",
           "Toute l'aire poitevine est couverte en présentiel : centre historique de Poitiers, Téléport et parc du Futuroscope, Saint-Benoît, et l'ensemble des communes de la Vienne, le long de l'A10.",
           "Le tissu numérique, edtech et créatif local — dans le sillage de l'une des plus anciennes universités de France, de la Technopole Grand Poitiers et d'acteurs comme Libellud ou Novamex/L'Arbre Vert — réclame des ateliers concrets sur la production de contenu, la recherche et l'automatisation de tâches répétitives.",
           "Le vocabulaire et les démos sont ajustés à votre secteur dominant : assurance, services, numérique, tourisme ou recherche. Aucune session générique recyclée d'un autre client.",
-          "Les formats s'adaptent à la taille de vos équipes : une Formation 4 heures pour un petit groupe, une journée Essentielle pour un service entier, une Conférence pour une plénière, ou un cadrage Dirigeant pour la direction.",
+          "Les formats s'adaptent à la taille de vos équipes : une Formation 4 heures pour un petit groupe, une formation d'une journée pour un service entier, une Conférence pour une plénière, ou un cadrage Dirigeant pour la direction.",
         ],
         methodology: [
           {
@@ -81,7 +81,7 @@ export const POITIERS_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu, alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers où chaque participant met les mains sur les outils pour son propre cas d'usage. La part de pratique augmente avec la durée du format : la Formation 4 heures vise un premier déclic opérationnel, tandis que l'Approfondie sur deux jours laisse le temps d'ancrer des routines de travail durables.",
+              "Selon le format retenu, alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers où chaque participant met les mains sur les outils pour son propre cas d'usage. La part de pratique augmente avec la durée du format : la Formation 4 heures vise un premier déclic opérationnel, tandis que la formation de deux jours laisse le temps d'ancrer des routines de travail durables.",
           },
           {
             step: "Outils installés et debrief",
@@ -92,31 +92,31 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée (2 à 15 personnes)",
             detail:
-              "La journée Essentielle pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée Gagner du temps pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
+              "La journée de formation générale ou par secteur pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée par métier pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence (sur devis)",
+            price: "Formation de deux jours ou Conférence (sur devis)",
             detail:
-              "Le format Approfondie sur deux jours consécutifs pour ancrer durablement les usages dans une équipe ; la Conférence pour une grande plénière d'entreprise, par exemple chez un opérateur de relation client du Futuroscope.",
+              "La formation de deux jours consécutifs pour ancrer durablement les usages dans une équipe ; la Conférence pour une grande plénière d'entreprise, par exemple chez un opérateur de relation client du Futuroscope.",
           },
           {
             sizeLabel: "Grande entreprise",
             price: "Dirigeant · 1 jour et combinaisons multi-formats",
             detail:
-              "Le format Dirigeant pour un cadrage stratégique en huis-clos d'un comité de direction poitevin, combinable avec une cascade de journées Essentielle ou Approfondie pour les équipes des grands employeurs de l'aire poitevine, du CHU aux groupes de relation client du Futuroscope. L'objectif : aligner la direction sur une trajectoire IA réaliste avant de déployer la formation au reste des équipes.",
+              "Le format Dirigeant pour un cadrage stratégique en huis-clos d'un comité de direction poitevin, combinable avec une cascade de formations d'une ou deux journées pour les équipes des grands employeurs de l'aire poitevine, du CHU aux groupes de relation client du Futuroscope. L'objectif : aligner la direction sur une trajectoire IA réaliste avant de déployer la formation au reste des équipes.",
           },
         ],
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Poitiers ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étend sur deux journées consécutives. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formations générale, par métier ou par secteur se déroulent sur une ou deux journées consécutives, et le format Dirigeant sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -139,14 +139,14 @@ export const POITIERS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. Les outils sont opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Tarifs publics — Formation 4 heures à {{price:intervention-4h|flat}}, autres formats sur devis HT selon durée et effectif — sans abonnement caché ni dépendance à un éditeur. Vocabulaire et démos ajustés à votre secteur poitevin, jamais une session générique recyclée.",
       },
       en: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Poitiers se déroulent sur site, dans vos locaux du centre roman, du Téléport au Futuroscope ou d'une commune de la Vienne. Le principe est simple : vos collaborateurs ne repartent pas avec un classeur de slides, mais avec des outils IA installés et configurés sur leur poste, prêts pour leur travail réel dès le lendemain matin. Nous calibrons chaque session sur votre métier — assurance, services tertiaires, numérique, tourisme, relation client externalisée — et sur vos vrais documents. Les formats vont de la Formation 4 heures à l'accompagnement Approfondie sur deux jours, en passant par un cadrage Dirigeant en huis-clos pour les comités de direction poitevins.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Poitiers se déroulent sur site, dans vos locaux du centre roman, du Téléport au Futuroscope ou d'une commune de la Vienne. Le principe est simple : vos collaborateurs ne repartent pas avec un classeur de slides, mais avec des outils IA installés et configurés sur leur poste, prêts pour leur travail réel dès le lendemain matin. Nous calibrons chaque session sur votre métier — assurance, services tertiaires, numérique, tourisme, relation client externalisée — et sur vos vrais documents. Les formats vont de la Formation 4 heures à la formation de deux jours, en passant par un cadrage Dirigeant en huis-clos pour les comités de direction poitevins.",
         whyHere: [
           "Poitiers concentre la première filière française de relation client externalisée sur le Téléport du Futuroscope (Armatis, Arvato Services, CCA International, Carglass, Chronopost, Groupama, LaSer Contact) : des sessions calibrées sur la rédaction de réponses, la qualification de demandes et la synthèse de dossiers parlent directement à ces équipes.",
           "Le bassin d'assurance et de mutuelles (MAAF, MACIF à proximité immédiate) et le fort pôle tertiaire de la Vienne génèrent un quotidien de gestion de dossiers, de courriers et de comptes rendus où l'IA bien dosée fait gagner du temps sans bouleverser l'organisation.",
           "Toute l'aire poitevine est couverte en présentiel : centre historique de Poitiers, Téléport et parc du Futuroscope, Saint-Benoît, et l'ensemble des communes de la Vienne, le long de l'A10.",
           "Le tissu numérique, edtech et créatif local — dans le sillage de l'une des plus anciennes universités de France, de la Technopole Grand Poitiers et d'acteurs comme Libellud ou Novamex/L'Arbre Vert — réclame des ateliers concrets sur la production de contenu, la recherche et l'automatisation de tâches répétitives.",
           "Le vocabulaire et les démos sont ajustés à votre secteur dominant : assurance, services, numérique, tourisme ou recherche. Aucune session générique recyclée d'un autre client.",
-          "Les formats s'adaptent à la taille de vos équipes : une Formation 4 heures pour un petit groupe, une journée Essentielle pour un service entier, une Conférence pour une plénière, ou un cadrage Dirigeant pour la direction.",
+          "Les formats s'adaptent à la taille de vos équipes : une Formation 4 heures pour un petit groupe, une formation d'une journée pour un service entier, une Conférence pour une plénière, ou un cadrage Dirigeant pour la direction.",
         ],
         methodology: [
           {
@@ -167,7 +167,7 @@ export const POITIERS_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu, alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers où chaque participant met les mains sur les outils pour son propre cas d'usage. La part de pratique augmente avec la durée du format : la Formation 4 heures vise un premier déclic opérationnel, tandis que l'Approfondie sur deux jours laisse le temps d'ancrer des routines de travail durables.",
+              "Selon le format retenu, alternance de théorie courte et de démos longues sur vos données, suivies d'ateliers où chaque participant met les mains sur les outils pour son propre cas d'usage. La part de pratique augmente avec la durée du format : la Formation 4 heures vise un premier déclic opérationnel, tandis que la formation de deux jours laisse le temps d'ancrer des routines de travail durables.",
           },
           {
             step: "Outils installés et debrief",
@@ -178,31 +178,31 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée (2 à 15 personnes)",
             detail:
-              "La journée Essentielle pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée Gagner du temps pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
+              "La journée de formation générale ou par secteur pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée par métier pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence (sur devis)",
+            price: "Formation de deux jours ou Conférence (sur devis)",
             detail:
-              "Le format Approfondie sur deux jours consécutifs pour ancrer durablement les usages dans une équipe ; la Conférence pour une grande plénière d'entreprise, par exemple chez un opérateur de relation client du Futuroscope.",
+              "La formation de deux jours consécutifs pour ancrer durablement les usages dans une équipe ; la Conférence pour une grande plénière d'entreprise, par exemple chez un opérateur de relation client du Futuroscope.",
           },
           {
             sizeLabel: "Grande entreprise",
             price: "Dirigeant · 1 jour et combinaisons multi-formats",
             detail:
-              "Le format Dirigeant pour un cadrage stratégique en huis-clos d'un comité de direction poitevin, combinable avec une cascade de journées Essentielle ou Approfondie pour les équipes des grands employeurs de l'aire poitevine, du CHU aux groupes de relation client du Futuroscope. L'objectif : aligner la direction sur une trajectoire IA réaliste avant de déployer la formation au reste des équipes.",
+              "Le format Dirigeant pour un cadrage stratégique en huis-clos d'un comité de direction poitevin, combinable avec une cascade de formations d'une ou deux journées pour les équipes des grands employeurs de l'aire poitevine, du CHU aux groupes de relation client du Futuroscope. L'objectif : aligner la direction sur une trajectoire IA réaliste avant de déployer la formation au reste des équipes.",
           },
         ],
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Poitiers ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étend sur deux journées consécutives. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formations générale, par métier ou par secteur se déroulent sur une ou deux journées consécutives, et le format Dirigeant sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
