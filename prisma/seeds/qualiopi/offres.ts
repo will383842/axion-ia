@@ -18,6 +18,11 @@ import type {
 import { getSkeletonByTier } from "../../../src/content/formations";
 
 interface OffreSeed {
+  /**
+   * Code FIXE de la fiche (2026-10-08). Il était alloué par la position dans la liste : retirer
+   * une entrée renumérotait toutes les suivantes d'une base neuve. Écrit en dur, il ne bouge plus.
+   */
+  code: string;
   tierId: string;
   titreFr: string;
   slug: string;
@@ -37,7 +42,13 @@ interface OffreSeed {
  * Champs NON dérivés du squelette (titre OF, slug, format pédagogique, type de
  * tarif, promesse, nb de modules, angle). La DURÉE, le PUBLIC VISÉ et les
  * MODALITÉS viennent du SSOT squelette (`src/content/formations`) — édition en
- * un seul endroit. Ordre = code AXI-OFF-001 → 011.
+ * un seul endroit.
+ *
+ * 🔴 2026-10-08 (décision de Will) : les fiches « Essentielle » (AXI-OFF-002), « Gagner du temps »
+ * (003), « Approfondie » (004) et « Intervention Claude » (008) — formules à PRIX ERRONÉS — sont
+ * RETIRÉES. Le serveur rejoue ce seed à chaque démarrage (`seedQualiopiReferenceData`) et
+ * recréait toute fiche effacée en base : les retirer d'ici est ce qui les empêche de revenir.
+ * Leurs codes ne sont jamais réattribués.
  */
 type OffreSeedBase = Omit<
   OffreSeed,
@@ -46,6 +57,7 @@ type OffreSeedBase = Omit<
 
 const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
   {
+    code: "AXI-OFF-001",
     tierId: "intervention-4h",
     titreFr: "Formation 4 heures",
     slug: "demarrage-ia-express",
@@ -58,41 +70,7 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "decouverte_pratique",
   },
   {
-    tierId: "intervention-essentielle",
-    titreFr: "Essentielle",
-    slug: "essentielle",
-    formatPedagogique: "collectif_1jour",
-    tarifType: "a_partir_de",
-    promessePrincipaleFr: "Maîtriser les usages IA opérationnels en une journée sur site.",
-    nbModulesMin: 3,
-    nbModulesMax: 5,
-    anglePedagogiqueFr: "pratique_immersive",
-  },
-  {
-    tierId: "intervention-temps",
-    titreFr: "Gagner du temps",
-    slug: "gagner-du-temps",
-    formatPedagogique: "collectif_1jour",
-    tarifType: "a_partir_de",
-    promessePrincipaleFr:
-      "Automatiser les tâches récurrentes et intégrer l'IA au flux de travail quotidien.",
-    nbModulesMin: 3,
-    nbModulesMax: 5,
-    anglePedagogiqueFr: "productivite_metier",
-  },
-  {
-    tierId: "intervention-approfondie",
-    titreFr: "Approfondie",
-    slug: "approfondie",
-    formatPedagogique: "collectif_2jours",
-    tarifType: "a_partir_de",
-    promessePrincipaleFr:
-      "Deux journées pour ancrer durablement les pratiques IA dans les métiers.",
-    nbModulesMin: 4,
-    nbModulesMax: 6,
-    anglePedagogiqueFr: "approfondissement",
-  },
-  {
+    code: "AXI-OFF-005",
     tierId: "intervention-conference",
     titreFr: "Conférence",
     slug: "conference",
@@ -109,6 +87,7 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     // est désactivée en prod par la migration 20260611170000 (actif=false). On garde
     // l'entrée pour préserver la numérotation séquentielle AXI-OFF-NNN (les seeds ne
     // tournent qu'en dev/fresh ; la prod est gérée par la migration + la console).
+    code: "AXI-OFF-006",
     tierId: "intervention-dirigeants",
     titreFr: "Dirigeants",
     slug: "dirigeants",
@@ -120,6 +99,7 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "strategique_executif",
   },
   {
+    code: "AXI-OFF-007",
     tierId: "intervention-membre-equipe",
     titreFr: "Membre d'équipe",
     slug: "membre-equipe",
@@ -131,17 +111,7 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "montee_competence",
   },
   {
-    tierId: "intervention-claude",
-    titreFr: "Intervention Claude",
-    slug: "intervention-claude",
-    formatPedagogique: "collectif_1jour",
-    tarifType: "a_partir_de",
-    promessePrincipaleFr: "Une journée 100 % dédiée à Claude (Anthropic) : Chat, Cowork, Code.",
-    nbModulesMin: 3,
-    nbModulesMax: 5,
-    anglePedagogiqueFr: "outil_claude",
-  },
-  {
+    code: "AXI-OFF-009",
     tierId: "intervention-dirigeant-vision",
     titreFr: "Vision IA stratégique",
     slug: "vision-ia-strategique",
@@ -154,6 +124,7 @@ const OFFRES_SEED_BASE: ReadonlyArray<OffreSeedBase> = [
     anglePedagogiqueFr: "vision_strategique",
   },
   {
+    code: "AXI-OFF-010",
     tierId: "intervention-sur-demande",
     titreFr: "Sur demande",
     slug: "sur-demande",
@@ -188,20 +159,13 @@ export const OFFRES_SEED: ReadonlyArray<OffreSeed> = OFFRES_SEED_BASE.map((base)
   ...dureesDuSquelette(base.tierId),
 }));
 
-function offreCode(index: number): string {
-  return `AXI-OFF-${String(index + 1).padStart(3, "0")}`;
-}
-
 /** Seed idempotent : crée les offres manquantes (par tierId), préserve l'existant. */
 export async function seedOffresSite(
   prisma: Prisma.TransactionClient | PrismaClient,
 ): Promise<void> {
   let created = 0;
   let kept = 0;
-  let index = 0;
   for (const o of OFFRES_SEED) {
-    const code = offreCode(index);
-    index += 1;
     const existing = await prisma.offreSite.findUnique({ where: { tierId: o.tierId } });
     if (existing) {
       kept += 1;
@@ -209,7 +173,7 @@ export async function seedOffresSite(
     }
     await prisma.offreSite.create({
       data: {
-        code,
+        code: o.code,
         tierId: o.tierId,
         titreFr: o.titreFr,
         slug: o.slug,

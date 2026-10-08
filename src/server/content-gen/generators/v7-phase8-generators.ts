@@ -17,11 +17,11 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { runV7Phase8Pipeline, type V7Phase8GeneratorConfig } from "./v7-phase8-shared";
 import { INTERVENTION_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
-// Prix d'entrée Essentielle dérivé de la SSOT (pricing.ts) pour les CTA — évite
+// Prix de la formation d'une journée (FORMATION_PRICE_MATRIX) dérivé de la SSOT (pricing.ts) pour les CTA — évite
 // tout montant en dur. (Avant : « 490 € » en dur, faux : 490 = Audit Flash, et
-// l'Essentielle vaut le prix ci-dessous.)
-const ESSENTIELLE_CTA_PRICE = formatAmount(
-  getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+// la formation d'une journée vaut le prix ci-dessous.)
+const FORMATION_JOUR_CTA_PRICE = formatAmount(
+  getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!,
   "fr",
   { compact: true },
 );
@@ -76,7 +76,7 @@ const PAIN_POINT_SOLUTION_CONFIG = buildConfig(
 Story arc : présente un pain point métier concret (avec data sectorielle),
 puis la solution IA pas-à-pas. Cas concret anonymisé recommandé. FAQ × 8.`,
   "/formations",
-  `Réserver une formation · ${ESSENTIELLE_CTA_PRICE}`,
+  `Réserver une formation · ${FORMATION_JOUR_CTA_PRICE}`,
 );
 
 const VS_COMPARATOR_CONFIG = buildConfig(
@@ -137,7 +137,7 @@ intervention Axion-IA en alternative pro.`,
   // redirections (301 vers la variante préfixée, puis 308 vers `/formations`).
   // On recommande directement la destination finale.
   "/formations",
-  `Faire faire par Axion-IA · ${ESSENTIELLE_CTA_PRICE}`,
+  `Faire faire par Axion-IA · ${FORMATION_JOUR_CTA_PRICE}`,
 );
 
 const BEST_FOR_X_IN_Y_CONFIG = buildConfig(

@@ -144,7 +144,7 @@ export default async function MethodologyPage({ params }: Props) {
     // dérivé de pricing.ts pour rester aligné si Will fait évoluer la grille.
     estimatedCost: {
       currency: "EUR",
-      value: String(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat),
+      value: String(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat),
     },
     steps: isFr
       ? [

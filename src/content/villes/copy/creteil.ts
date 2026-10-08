@@ -57,7 +57,7 @@ export const CRETEIL_COPY: VilleCopy = {
           "Créteil, préfecture du Val-de-Marne (93 397 habitants en 2023), concentre des organisations à fort potentiel IA : le CHU Henri-Mondor (≈1 000 lits), l'UPEC (plus de 30 000 étudiants) et l'Académie de Créteil, deuxième de France avec 950 000 élèves.",
           "Le tissu dominant — santé humaine et action sociale, administration publique — génère des volumes documentaires et administratifs importants, terrain concret pour des cas d'usage IA appliqués métier par métier.",
           "Toutes les zones d'activité sont couvertes en présentiel : Petites-Haies (ouverte en 1970), quartier d'affaires de L'Échat près du CHU, pôle Créteil Soleil et parc Europarc, ainsi que vos bureaux directement.",
-          "Le format collectif convient aux structures cristoliennes de quelques personnes jusqu'à une trentaine de collaborateurs : PME de services, cabinets juridiques et médicaux, équipes administratives.",
+          "Le format collectif convient aux structures cristoliennes de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : PME de services, cabinets juridiques et médicaux, équipes administratives.",
           "Le format Conférence s'adresse aux grandes plénières d'entreprise et d'établissement public ; le format Dirigeant permet un cadrage stratégique en huis-clos pour un comité de direction.",
           "Vocabulaire et exemples ajustés à votre secteur dominant — santé, public, enseignement, juridique, commerce — pour que chaque participant reconnaisse ses propres dossiers dans les démonstrations.",
           "Créteil est desservie par 4 stations de la ligne 8 du métro (L'Échat, Université, Préfecture, Pointe du Lac) et par les RER A et D, ce qui facilite la venue des formateurs comme le regroupement d'équipes réparties sur plusieurs sites du bassin.",
@@ -97,15 +97,15 @@ export const CRETEIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Formation Essentielle ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée",
             detail:
-              "La formation Essentielle sur une journée (de 2 à 15 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+              "La formation générale sur une journée (de 2 à 15 participants, {{price:formation-generale-1j|flat}}) pour l'équipe entière, ou une journée par métier pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
           },
           {
             sizeLabel: "ETI",
-            price: "Formation Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
-              "La formation Approfondie sur deux journées ({{price:intervention-approfondie|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
+              "La formation générale sur deux journées ({{price:formation-generale-2j|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -117,11 +117,11 @@ export const CRETEIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Créteil ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps, Conférence et Dirigeant se déroulent sur une journée, et la formation Approfondie sur deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, la Conférence et le format Dirigeant se déroulent sur une journée, et les formations générale, par métier ou par secteur sur une ou deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
-            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+            a: "La Formation 4 heures et la formation d'une journée réunissent de 2 à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",
@@ -153,7 +153,7 @@ export const CRETEIL_COPY: VilleCopy = {
           "Créteil, préfecture du Val-de-Marne (93 397 habitants en 2023), concentre des organisations à fort potentiel IA : le CHU Henri-Mondor (≈1 000 lits), l'UPEC (plus de 30 000 étudiants) et l'Académie de Créteil, deuxième de France avec 950 000 élèves.",
           "Le tissu dominant — santé humaine et action sociale, administration publique — génère des volumes documentaires et administratifs importants, terrain concret pour des cas d'usage IA appliqués métier par métier.",
           "Toutes les zones d'activité sont couvertes en présentiel : Petites-Haies (ouverte en 1970), quartier d'affaires de L'Échat près du CHU, pôle Créteil Soleil et parc Europarc, ainsi que vos bureaux directement.",
-          "Le format collectif convient aux structures cristoliennes de quelques personnes jusqu'à une trentaine de collaborateurs : PME de services, cabinets juridiques et médicaux, équipes administratives.",
+          "Le format collectif convient aux structures cristoliennes de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : PME de services, cabinets juridiques et médicaux, équipes administratives.",
           "Le format Conférence s'adresse aux grandes plénières d'entreprise et d'établissement public ; le format Dirigeant permet un cadrage stratégique en huis-clos pour un comité de direction.",
           "Vocabulaire et exemples ajustés à votre secteur dominant — santé, public, enseignement, juridique, commerce — pour que chaque participant reconnaisse ses propres dossiers dans les démonstrations.",
           "Créteil est desservie par 4 stations de la ligne 8 du métro (L'Échat, Université, Préfecture, Pointe du Lac) et par les RER A et D, ce qui facilite la venue des formateurs comme le regroupement d'équipes réparties sur plusieurs sites du bassin.",
@@ -193,15 +193,15 @@ export const CRETEIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Formation Essentielle ou Gagner du temps (1 jour)",
+            price: "Formation d'une journée",
             detail:
-              "La formation Essentielle sur une journée (de 2 à 15 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+              "La formation générale sur une journée (de 2 à 15 participants, {{price:formation-generale-1j|flat}}) pour l'équipe entière, ou une journée par métier pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
           },
           {
             sizeLabel: "ETI",
-            price: "Formation Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
-              "La formation Approfondie sur deux journées ({{price:intervention-approfondie|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
+              "La formation générale sur deux journées ({{price:formation-generale-2j|flat}}) pour ancrer durablement les usages, ou le format Conférence (sur devis) en plénière pour de grandes audiences, par exemple un établissement public du Val-de-Marne.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -213,11 +213,11 @@ export const CRETEIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA en entreprise à Créteil ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formats Essentielle, Gagner du temps, Conférence et Dirigeant se déroulent sur une journée, et la formation Approfondie sur deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, la Conférence et le format Dirigeant se déroulent sur une journée, et les formations générale, par métier ou par secteur sur une ou deux journées consécutives. Pour un programme combinant plusieurs formats, le rythme est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
-            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+            a: "La Formation 4 heures et la formation d'une journée réunissent de 2 à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",

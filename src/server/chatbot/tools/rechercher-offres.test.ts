@@ -20,10 +20,12 @@ const ctx = { tenantId: "axion-ia" };
 
 describe("T-35 filterOffers — fourchette de prix", () => {
   it("retourne les formations dont la fourchette chevauche [prixMin, prixMax]", () => {
-    const res = filterOffers({ vertical: "formation", prixMin: 2400, prixMax: 2700 });
+    const res = filterOffers({ vertical: "formation", prixMin: 2000, prixMax: 2300 });
     const ids = res.map((o) => o.id);
-    // intervention-essentielle (2450) et intervention-temps (2450) chevauchent.
-    expect(ids).toContain("intervention-essentielle");
+    // formation-secteur-1j (2 200 €, matrice) chevauche ; 2026-10-08 : plus aucune formule à
+    // prix erroné (2 450 / 2 650 / 3 250 €) dans le catalogue.
+    expect(ids).toContain("formation-secteur-1j");
+    expect(ids).not.toContain("intervention-essentielle");
     // intervention-4h (1200) hors fourchette.
     expect(ids).not.toContain("intervention-4h");
   });
@@ -42,19 +44,17 @@ describe("T-35 filterOffers — fourchette de prix", () => {
 });
 
 describe("T-35 filterOffers — combinaison multi-facettes", () => {
-  it("« 1 jour, 8 pers, sujet claude » → Intervention Claude", () => {
-    const res = filterOffers({
-      vertical: "formation",
-      dureeMaxJours: 1,
-      effectif: 8,
-      sujet: "claude",
-    });
-    expect(res.map((o) => o.id)).toEqual(["intervention-claude"]);
+  it("« 1 jour, 8 pers » → les formations d'une journée de la matrice", () => {
+    const res = filterOffers({ vertical: "formation", dureeMaxJours: 1, effectif: 8 });
+    const ids = res.map((o) => o.id);
+    expect(ids).toContain("formation-generale-1j");
+    expect(ids).not.toContain("formation-generale-2j");
+    expect(ids).not.toContain("intervention-claude");
   });
 
   it("effectif hors bornes exclut l'offre (50 pers > 30 max)", () => {
     const res = filterOffers({ vertical: "formation", effectif: 50 });
-    expect(res.map((o) => o.id)).not.toContain("intervention-essentielle");
+    expect(res.map((o) => o.id)).not.toContain("formation-generale-1j");
   });
 
   it("filtre format présentiel", () => {

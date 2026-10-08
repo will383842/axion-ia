@@ -8,8 +8,15 @@ import {
 
 describe("findPricingTier", () => {
   it("trouve un tier intervention réel", () => {
-    expect(findPricingTier("intervention-essentielle")?.id).toBe("intervention-essentielle");
+    expect(findPricingTier("formation-generale-1j")?.id).toBe("formation-generale-1j");
     expect(findPricingTier("intervention-dirigeants")?.id).toBe("intervention-dirigeants");
+  });
+  // 2026-10-08 : une ancienne fiche (formule à prix erroné, supprimée) se résout vers le palier
+  // de la matrice qui la remplace — jamais « Tarif indisponible », jamais l'ancien prix.
+  it("un ancien tierId de formule erronée se résout vers la matrice", () => {
+    expect(findPricingTier("intervention-essentielle")?.id).toBe("formation-generale-1j");
+    expect(findPricingTier("intervention-claude")?.id).toBe("formation-generale-1j");
+    expect(findPricingTier("intervention-approfondie")?.id).toBe("formation-generale-2j");
   });
   it("renvoie null pour un tierId inexistant", () => {
     expect(findPricingTier("tier-fantome")).toBeNull();
@@ -21,9 +28,12 @@ describe("deriveTarifType", () => {
     const tier = findPricingTier("intervention-dirigeants")!;
     expect(deriveTarifType(tier)).toBe("fixe");
   });
-  it("a_partir_de pour un format à sous-tiers (essentielle)", () => {
-    const tier = findPricingTier("intervention-essentielle")!;
+  it("a_partir_de pour un format à sous-tiers (audit sur place)", () => {
+    const tier = findPricingTier("audit-flash")!;
     expect(deriveTarifType(tier)).toBe("a_partir_de");
+  });
+  it("fixe pour une formation de la matrice (prix par groupe)", () => {
+    expect(deriveTarifType(findPricingTier("formation-generale-1j")!)).toBe("fixe");
   });
   it("sur_devis pour un format onQuote (conférence)", () => {
     const tier = findPricingTier("intervention-conference")!;

@@ -55,7 +55,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
-          "Le format Essentielle (1 jour, 2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
+          "La formation d'une journée (2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
           "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
           "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
           "Le tissu vitriot mêle 5 500 établissements actifs et plusieurs ZAC en mutation, notamment autour de l'arrivée de la ligne 15 Sud aux Ardoines : la diversité des profils — du commerce de proximité à la chimie régulée — justifie un calibrage métier session par session.",
@@ -92,13 +92,13 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           {
             sizeLabel: "PME",
             price:
-              "Essentielle ({{price:intervention-essentielle|flat}}, 1 j, 2-30) ou Gagner du temps (1 j)",
+              "Formation d'une journée ({{price:formation-generale-1j|flat}}, 2 à 15 personnes)",
             detail:
               "Pour les PME productives et de services des ZAC Les Ardoines, du Port-à-l'Anglais et de Rouget de Lisle : une journée complète pour outiller le groupe, ou un focus sur un département (qualité, commercial, bureau d'études).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 j) ou Conférence (sur devis)",
+            price: "Formation de deux jours ou Conférence (sur devis)",
             detail:
               "Pour les ETI industrielles et de R&D de Seine-Amont : deux journées consécutives pour une montée en compétences solide, ou une plénière de sensibilisation pour une large audience selon votre objectif.",
           },
@@ -112,11 +112,11 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Vitry-sur-Seine ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, l'Essentielle et le format Gagner du temps sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site ?",
-            a: "La Formation 4 heures comme l'Essentielle accueillent jusqu'à 15 participants. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 participants par groupe. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",
@@ -143,7 +143,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
-          "Le format Essentielle (1 jour, 2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
+          "La formation d'une journée (2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
           "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
           "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
           "Le tissu vitriot mêle 5 500 établissements actifs et plusieurs ZAC en mutation, notamment autour de l'arrivée de la ligne 15 Sud aux Ardoines : la diversité des profils — du commerce de proximité à la chimie régulée — justifie un calibrage métier session par session.",
@@ -180,13 +180,13 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           {
             sizeLabel: "PME",
             price:
-              "Essentielle ({{price:intervention-essentielle|flat}}, 1 j, 2-30) ou Gagner du temps (1 j)",
+              "Formation d'une journée ({{price:formation-generale-1j|flat}}, 2 à 15 personnes)",
             detail:
               "Pour les PME productives et de services des ZAC Les Ardoines, du Port-à-l'Anglais et de Rouget de Lisle : une journée complète pour outiller le groupe, ou un focus sur un département (qualité, commercial, bureau d'études).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 j) ou Conférence (sur devis)",
+            price: "Formation de deux jours ou Conférence (sur devis)",
             detail:
               "Pour les ETI industrielles et de R&D de Seine-Amont : deux journées consécutives pour une montée en compétences solide, ou une plénière de sensibilisation pour une large audience selon votre objectif.",
           },
@@ -200,11 +200,11 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Vitry-sur-Seine ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, l'Essentielle et le format Gagner du temps sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée, les formations générale, par métier et par secteur sur une journée ou sur deux journées consécutives. La Conférence et le format Dirigeant se déroulent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site ?",
-            a: "La Formation 4 heures comme l'Essentielle accueillent jusqu'à 15 participants. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 participants par groupe. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est plus adapté aux grandes audiences des acteurs industriels et de R&D de Vitry-sur-Seine.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",

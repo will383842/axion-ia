@@ -53,12 +53,12 @@ export const AVIGNON_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; la formation d'une journée, la formation de deux jours, la Conférence et le format Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
         whyHere: [
           "Avignon, cité des Papes classée UNESCO, concentre un tissu de PME et ETI du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
           "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
-          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
+          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de PME et ETI du Vaucluse.",
           "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
         ],
@@ -81,7 +81,7 @@ export const AVIGNON_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu — 4 heures, journée Essentielle, Gagner du temps, ou deux jours Approfondie — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
+              "Selon le format retenu — 4 heures, formation d'une journée ou formation de deux jours — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
           },
           {
             step: "Outils installés et debrief",
@@ -92,15 +92,15 @@ export const AVIGNON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps",
+            price: "Formation d'une journée",
             detail:
-              "La journée Essentielle (2 à 15 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+              "Une journée de formation générale (2 à 15 personnes) pour former un groupe entier, ou une journée par métier pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
-              "Le format Approfondie sur deux journées pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
+              "La formation de deux jours pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -112,11 +112,11 @@ export const AVIGNON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Avignon ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étale sur deux journées. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formations générale, par métier ou par secteur se déroulent sur une ou deux journées, et le format Dirigeant sur une journée. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",
@@ -139,12 +139,12 @@ export const AVIGNON_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de votre réservation. En cas de problème technique de notre fait, la session est reportée avec compensation. Nous visons des outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est prévue. Le vocabulaire et les exemples sont ajustés à votre métier à Avignon — tourisme, hôtellerie, spectacle, agroalimentaire ou commerce — sans session générique recyclée. Tarifs publics annoncés à l'avance, sans devis opaque.",
       },
       en: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; la formation d'une journée, la formation de deux jours, la Conférence et le format Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
         whyHere: [
           "Avignon, cité des Papes classée UNESCO, concentre un tissu de PME et ETI du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
           "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
-          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
+          "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à plusieurs dizaines de collaborateurs, par groupes de 2 à 15 personnes : hôtels, compagnies, cabinets, commerces et PME de terroir.",
           "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de PME et ETI du Vaucluse.",
           "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
         ],
@@ -167,7 +167,7 @@ export const AVIGNON_COPY: VilleCopy = {
           {
             step: "Session pédagogique",
             detail:
-              "Selon le format retenu — 4 heures, journée Essentielle, Gagner du temps, ou deux jours Approfondie — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
+              "Selon le format retenu — 4 heures, formation d'une journée ou formation de deux jours — alternance de théorie courte et de démonstrations longues sur vos données, suivies d'ateliers pratiques adaptés à votre métier à Avignon.",
           },
           {
             step: "Outils installés et debrief",
@@ -178,15 +178,15 @@ export const AVIGNON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps",
+            price: "Formation d'une journée",
             detail:
-              "La journée Essentielle (2 à 15 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+              "Une journée de formation générale (2 à 15 personnes) pour former un groupe entier, ou une journée par métier pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
-              "Le format Approfondie sur deux journées pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
+              "La formation de deux jours pour aller plus loin avec plusieurs équipes, ou le format Conférence (sur devis) pour une plénière à destination de grandes audiences sur un site structurant du Vaucluse.",
           },
           {
             sizeLabel: "Grande entreprise",
@@ -198,11 +198,11 @@ export const AVIGNON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation IA Axion-IA à Avignon ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formats Essentielle, Gagner du temps et Dirigeant se déroulent sur une journée. Le format Approfondie s'étale sur deux journées. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée. Les formations générale, par métier ou par secteur se déroulent sur une ou deux journées, et le format Dirigeant sur une journée. La Conférence est calée selon votre événement. Le rythme exact est défini ensemble lors du cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 personnes par groupe. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",

@@ -18,7 +18,7 @@ const auditFlash = getTierById(AUDIT_TIERS, "audit-flash");
 const auditCible = getTierById(AUDIT_TIERS, "audit-cible");
 const auditPme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
 const auditEti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
-const interventionEssentielle = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
+const formationJour = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
 
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
@@ -183,11 +183,11 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
     id: "starting-price",
     fr: {
       label: "Prix d'entrée",
-      value: `${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })} · ${interventionEssentielle.durationFr ?? "1 journée"}`,
+      value: `${formatAmount(formationJour.priceFlat!, "fr", { compact: true })} · ${formationJour.durationFr ?? "1 journée"}`,
     },
     en: {
       label: "Starting price",
-      value: `${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })} · ${interventionEssentielle.durationEn ?? "1 day"}`,
+      value: `${formatAmount(formationJour.priceFlat!, "en", { compact: true })} · ${formationJour.durationEn ?? "1 day"}`,
     },
   },
   {

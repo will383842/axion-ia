@@ -57,7 +57,8 @@ describe("T-34 offer-url — zéro lien mort", () => {
 
   it("couvre les 5+ verticales", () => {
     expect(resolveOfferUrl("audit-cible")).toBe("/fr/audit/cible");
-    expect(resolveOfferUrl("intervention-claude")).toBe("/fr/formations");
+    expect(resolveOfferUrl("formation-generale-1j")).toBe("/fr/formations");
+    expect(resolveOfferUrl("formation-secteur-2j")).toBe("/fr/formations/secteurs");
     expect(resolveOfferUrl("impl-ia-custom")).toBe("/fr/implementation/ia-custom");
     expect(resolveOfferUrl("codage-web")).toBe("/fr/sites-web-augmentes");
     expect(resolveOfferUrl("un-a-un-recurrent")).toBe("/fr/un-a-un");

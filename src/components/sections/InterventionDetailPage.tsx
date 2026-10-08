@@ -51,13 +51,11 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 // de demande. On garde le formulaire pour les formats Sur devis (config sans
 // priceFlatEur) où un cadrage commercial est indispensable.
 const CALENDAR_SUPPORTED_FORMAT_SLUGS: ReadonlySet<string> = new Set([
-  "essentielle",
-  "approfondie",
+  // 2026-10-08 : essentielle, approfondie, gagner-du-temps et intervention-claude retirés
+  // (formules à prix erronés, supprimées ; aucune configuration de page ne les porte plus).
   "conference",
   "audit-flash-onsite",
-  "gagner-du-temps",
   "demarrage-ia-express",
-  "intervention-claude",
 ]);
 
 export function InterventionDetailPage({ slug, locale }: Props): ReactNode {

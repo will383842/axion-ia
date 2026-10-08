@@ -67,33 +67,19 @@ describe("squelette — cohérence interne", () => {
   });
 });
 
-describe("squelette — couverture des 5 formations marketing (InterventionSlug)", () => {
-  // Les 5 slugs de interventions.ts:InterventionSlug doivent avoir un squelette.
-  for (const slug of [
-    "essentielle",
-    "approfondie",
-    "dirigeants",
-    "gagner-du-temps",
-    "intervention-claude",
-  ]) {
-    it(`"${slug}" a un squelette`, () => {
-      expect(getSkeletonBySlug(slug), slug).toBeDefined();
+describe("squelette — les anciennes formules à prix erronés n'existent plus (2026-10-08)", () => {
+  for (const slug of ["essentielle", "approfondie", "gagner-du-temps", "intervention-claude"]) {
+    it(`"${slug}" n'a plus de squelette`, () => {
+      expect(getSkeletonBySlug(slug), slug).toBeUndefined();
     });
   }
+  it("dirigeants garde le sien", () => expect(getSkeletonBySlug("dirigeants")).toBeDefined());
 });
 
 describe("squelette — garde-fous ISO figés (décision 2026-06-11 : 1 jour = PT7H)", () => {
-  it("essentielle = PT7H", () => expect(formationDurationIso("essentielle")).toBe("PT7H"));
-  it("gagner-du-temps = PT7H", () => expect(formationDurationIso("gagner-du-temps")).toBe("PT7H"));
-  it("intervention-claude = PT7H", () =>
-    expect(formationDurationIso("intervention-claude")).toBe("PT7H"));
-  // 2 jours = 14 h de formation (charge de travail), pas « P2D » = 48 h.
-  it("approfondie = PT14H", () => expect(formationDurationIso("approfondie")).toBe("PT14H"));
   it("demarrage-ia-express = PT4H", () =>
     expect(formationDurationIso("demarrage-ia-express")).toBe("PT4H"));
   it("days cohérents", () => {
-    expect(formationDurationDays("essentielle")).toBe(1);
-    expect(formationDurationDays("approfondie")).toBe(2);
     expect(formationDurationDays("demarrage-ia-express")).toBe(0.5);
   });
 });

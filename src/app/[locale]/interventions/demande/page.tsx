@@ -48,6 +48,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+const ANCIENS_OBJETS: Readonly<Record<string, { fr: string; en: string }>> = {
+  essentielle: { fr: "formation d'une journée", en: "one-day training" },
+  "gagner-du-temps": { fr: "formation d'une journée", en: "one-day training" },
+  "intervention-claude": { fr: "formation d'une journée", en: "one-day training" },
+  approfondie: { fr: "formation de deux jours", en: "two-day training" },
+};
+
 function buildDefaultDescription(objet: string | undefined, isFr: boolean): string {
   if (!objet) return "";
   const entry = INTERVENTION_FORMATS.find((f) => f.slug === objet);
@@ -56,6 +63,25 @@ function buildDefaultDescription(objet: string | undefined, isFr: boolean): stri
     return isFr
       ? `Bonjour,\n\nJe souhaite plus d'informations sur l'intervention « ${label} ».\n\nMon contexte (taille d'équipe, secteur, niveau IA actuel, dates envisagées) :\n\n`
       : `Hello,\n\nI'd like more info on the « ${label} » session.\n\nMy context (team size, sector, current AI level, target dates):\n\n`;
+  }
+  // Anciennes formules à prix erronés (supprimées le 2026-10-08) : leur nom n'est plus repris.
+  const ancienne = ANCIENS_OBJETS[objet];
+  if (ancienne) {
+    return isFr
+      ? `Bonjour,
+
+Je souhaite plus d'informations sur une ${ancienne.fr}.
+
+Mon contexte (taille d'équipe, secteur, niveau IA actuel, dates envisagées) :
+
+`
+      : `Hello,
+
+I'd like more info on a ${ancienne.en}.
+
+My context (team size, sector, current AI level, target dates):
+
+`;
   }
   const objetLabel = objet.replace(/-/g, " ");
   return isFr

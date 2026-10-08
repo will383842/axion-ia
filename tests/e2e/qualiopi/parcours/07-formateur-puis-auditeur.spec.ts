@@ -144,14 +144,14 @@ const FORMATION_DEMO = "AXI-FOR-DEMO-001";
  * Slug de la formation de démonstration (demo.ts:425).
  *
  * 🔑 Il n'appartient à AUCUNE prestation du catalogue (vérifié le 2026-08-23 :
- * zéro occurrence de `demo-ia-operationnelle-essentielle` dans `src/`), et le
+ * zéro occurrence de `demo-ia-operationnelle-1-journee` dans `src/`), et le
  * seed n'écrit aucun `InterventionDocument`.
  * `resolveInterventionSlugForFormation` rend donc `null` (kit-formation.ts:45-55)
  * et l'écran « Tout pour animer » bascule sur son encart fail-visible. Ce n'est
  * pas une panne : c'est l'état RÉEL du dossier de démonstration, et le test
  * l'exige explicitement plus bas.
  */
-const FORMATION_DEMO_SLUG = "demo-ia-operationnelle-essentielle";
+const FORMATION_DEMO_SLUG = "demo-ia-operationnelle-1-journee";
 
 /** Numéro de l'attestation du dossier de démonstration (demo.ts:352). */
 const ATTESTATION_DEMO = "AXI-ATT-DEMO-001";

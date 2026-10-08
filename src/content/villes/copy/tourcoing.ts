@@ -90,13 +90,13 @@ export const TOURCOING_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps (1 journée)",
+            price: "Formation d'une journée",
             detail:
               "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 15 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
               "Pour les acteurs e-commerce et VAD du bassin (héritiers du modèle La Redoute / Showroomprivé) : deux jours pour aller au fond des cas d'usage, ou plénière en Conférence pour une grande audience.",
           },
@@ -110,11 +110,11 @@ export const TOURCOING_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation Axion-IA à Tourcoing ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formats Essentielle et Gagner du temps se déroulent sur une journée complète ; le format Approfondie sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formations générale, par métier ou par secteur se déroulent sur une journée complète ou sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -176,13 +176,13 @@ export const TOURCOING_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "PME",
-            price: "Essentielle ou Gagner du temps (1 journée)",
+            price: "Formation d'une journée",
             detail:
               "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 15 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
           },
           {
             sizeLabel: "ETI",
-            price: "Approfondie (2 jours) ou Conférence",
+            price: "Formation de deux jours ou Conférence",
             detail:
               "Pour les acteurs e-commerce et VAD du bassin (héritiers du modèle La Redoute / Showroomprivé) : deux jours pour aller au fond des cas d'usage, ou plénière en Conférence pour une grande audience.",
           },
@@ -196,11 +196,11 @@ export const TOURCOING_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une formation Axion-IA à Tourcoing ?",
-            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formats Essentielle et Gagner du temps se déroulent sur une journée complète ; le format Approfondie sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
+            a: "Cela dépend du format. La Formation 4 heures tient sur une demi-journée ; les formations générale, par métier ou par secteur se déroulent sur une journée complète ou sur deux journées consécutives. La Conférence se cale sur une plénière. Pour un programme combinant plusieurs formats, le rythme est défini ensemble au cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme la formation d'une journée accueillent de 2 à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",

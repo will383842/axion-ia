@@ -54,15 +54,18 @@ const OFFER_FR_PATH: Readonly<Record<string, string>> = {
   // de page dédiée → elles pointent vers le hub /formations (route vivante ; les
   // anciennes URL /interventions/* sont 301 → /formations via next.config.ts).
   "intervention-4h": "/formations",
-  "intervention-essentielle": "/formations",
-  "intervention-temps": "/formations",
-  "intervention-approfondie": "/formations",
+  // Paliers de la matrice (2026-10-08 — remplacent les formules erronées supprimées).
+  "formation-generale-1j": "/formations",
+  "formation-generale-2j": "/formations",
+  "formation-metier-1j": "/formations/metiers",
+  "formation-metier-2j": "/formations/metiers",
+  "formation-secteur-1j": "/formations/secteurs",
+  "formation-secteur-2j": "/formations/secteurs",
   "intervention-conference": "/formations",
   "intervention-dirigeants": "/interventions/dirigeants",
   // Membre d'équipe (990 €) : pas de page /interventions/membre-equipe → hub 1-to-1 (D-MEMBRE-EQUIPE 🔒).
   "intervention-membre-equipe": "/un-a-un",
   "intervention-membre-equipe-2j": "/un-a-un",
-  "intervention-claude": "/formations",
   "intervention-dirigeant-vision": "/interventions/dirigeant-vision-strategique",
   "intervention-dirigeant-vision-2j": "/interventions/dirigeant-vision-strategique",
   // Sur demande : pas de page propre → demande de devis.

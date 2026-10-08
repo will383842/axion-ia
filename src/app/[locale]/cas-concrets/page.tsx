@@ -269,8 +269,8 @@ export default async function CaseStudiesListing({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — PME industrielle, ETI retail, grand compte bancaire — parce que la méthode Axion-IA s'adapte à chaque échelle, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
-              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — industrial SME, retail mid-cap, large banking account — because the Axion-IA method adapts to each scale, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
+              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — PME industrielle, ETI retail, grand compte bancaire — parce que la méthode Axion-IA s'adapte à chaque échelle, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} pour vérifier.`
+              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — industrial SME, retail mid-cap, large banking account — because the Axion-IA method adapts to each scale, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} to validate.`}
           </p>
         </Container>
       </Section>
@@ -318,8 +318,8 @@ export default async function CaseStudiesListing({ params }: Props) {
                       (impl-poc), paliers supérieurs sur devis. Aligner les bornes
                       dans pricing.ts les propage ici automatiquement. */}
                   {isFr
-                    ? `Le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits à partir de ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "fr", { compact: true })}, implémentations à partir de ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "fr", { compact: true })}. ROI documenté à chaque palier.`
-                    : `Group format ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits from ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "en", { compact: true })}, implementations from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "en", { compact: true })}. Documented ROI at every tier.`}
+                    ? `Le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })}, audits à partir de ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "fr", { compact: true })}, implémentations à partir de ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "fr", { compact: true })}. ROI documenté à chaque palier.`
+                    : `Group format ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })}, audits from ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "en", { compact: true })}, implementations from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "en", { compact: true })}. Documented ROI at every tier.`}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -369,8 +369,8 @@ export default async function CaseStudiesListing({ params }: Props) {
         title={isFr ? "Devenez le prochain cas concret" : "Become the next case study"}
         description={
           isFr
-            ? `Démarrez par une formation collective ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour identifier vos quick-wins.`
-            : `Start with a group training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to identify your quick-wins.`
+            ? `Démarrez par une formation collective ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} pour identifier vos quick-wins.`
+            : `Start with a group training ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} to identify your quick-wins.`
         }
         cta={
           <Cta href="/formations" size="lg">
