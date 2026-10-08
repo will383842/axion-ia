@@ -69,7 +69,8 @@ async function tracer(
 export const ANNULEE_A_LA_MAIN = "annulee-console";
 
 /** Statuts dont la prestation peut être marquée réalisée : tout ce qui n'est ni versé ni repris. */
-const MARQUABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
+/** Les statuts où la réalisation se marque ou s'annule (lus aussi par la fiche de l'entreprise). */
+export const MARQUABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 
 export async function marquerPrestationRealisee(
   id: string,

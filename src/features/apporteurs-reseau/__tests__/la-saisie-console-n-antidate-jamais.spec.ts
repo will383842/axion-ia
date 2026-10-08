@@ -4,7 +4,7 @@
 // la date est celle de l'enregistrement, quelle que soit la date transmise.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const h = vi.hoisted(() => ({ create: vi.fn(), apporteur: vi.fn() }));
+const h = vi.hoisted(() => ({ create: vi.fn(), apporteur: vi.fn(), siennes: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/pii-crypto", () => ({ encryptPii: (v: string) => v, decryptPii: (v: string) => v }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "h" }));
@@ -13,7 +13,10 @@ vi.mock("../rebonds", () => ({ idsPriseDeContactRebondie: vi.fn(async () => new 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     apporteurReseau: { findUnique: (...a: unknown[]) => h.apporteur(...a) },
-    presentationEntreprise: { create: (...a: unknown[]) => h.create(...a) },
+    presentationEntreprise: {
+      create: (...a: unknown[]) => h.create(...a),
+      findMany: (...a: unknown[]) => h.siennes(...a),
+    },
   },
 }));
 
@@ -36,6 +39,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.apporteur.mockResolvedValue({ statut: "signe" });
   h.create.mockResolvedValue({ id: "p1" });
+  h.siennes.mockResolvedValue([]);
 });
 
 describe("saisie console d'une déclaration", () => {
@@ -51,5 +55,33 @@ describe("saisie console d'une déclaration", () => {
   it("sans date transmise : l'heure du serveur aussi", async () => {
     await creerPresentation({ ...SAISIE } as never, MAINTENANT);
     expect(h.create.mock.calls[0]![0].data.recueAt).toEqual(MAINTENANT);
+  });
+});
+
+describe("saisie console — doublon (même contrôle que le formulaire)", () => {
+  it("🔴 une présentation encore RÉSERVÉE du même apporteur pour ce SIREN : refusée, rien créé", async () => {
+    h.siennes.mockResolvedValue([{ statut: "reservee", protegeeJusquAt: null }]);
+    const r = await creerPresentation({ ...SAISIE } as never, MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(h.create).not.toHaveBeenCalled();
+    expect(h.siennes.mock.calls[0]![0].where).toMatchObject({
+      apporteurId: SAISIE.apporteurId,
+      siren: SAISIE.siren,
+    });
+  });
+
+  it("protégée et NON échue : refusée", async () => {
+    h.siennes.mockResolvedValue([
+      { statut: "confirmee", protegeeJusquAt: new Date("2027-01-01T00:00:00Z") },
+    ]);
+    expect((await creerPresentation({ ...SAISIE } as never, MAINTENANT)).ok).toBe(false);
+  });
+
+  it("protection ÉCHUE : la nouvelle présentation est enregistrée", async () => {
+    h.siennes.mockResolvedValue([
+      { statut: "confirmee", protegeeJusquAt: new Date("2026-09-01T00:00:00Z") },
+    ]);
+    expect((await creerPresentation({ ...SAISIE } as never, MAINTENANT)).ok).toBe(true);
+    expect(h.create).toHaveBeenCalledOnce();
   });
 });

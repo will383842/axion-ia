@@ -52,6 +52,7 @@ import { typeEffectif } from "@/server/calendly/type-effectif";
 import { besoinDuBrut } from "@/server/calendly/type-rendez-vous";
 import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 import { libelleEmplacement } from "@/features/admin-rendezvous/bilan-rendez-vous";
+import { peutEngager } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -238,6 +239,10 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
                 e-mails, avec aperçu avant envoi. */}
             {estAppelApporteur(event.eventTypeName) ? (
               <IssueEchangeApporteurForm
+                peutRetenir={peutEngager(
+                  (session?.user as { role?: string } | undefined)?.role,
+                  "contresigner",
+                )}
                 calendlyEventId={event.id}
                 initial={
                   suivi

@@ -88,6 +88,7 @@ import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircui
 // nommé hors du préfixe « lire… », que la garde « rôle avant lecture » compte
 // comme une lecture du dossier (`la-lecture-est-gardee-comme-l-ecriture`).
 import { lireMessageDeRetour as messageScelle } from "@/features/dossier-client/message-de-retour";
+import { peutEngager } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -199,10 +200,13 @@ function CarteRdv({
   r,
   maintenant,
   dossier,
+  peutRetenir,
 }: {
   r: RdvAVenir;
   maintenant: Date;
   dossier: DossierCarte | null;
+  /** Administrateur : « Retenu » et l'ouverture du dossier (relecture de a1, 08/10). */
+  peutRetenir: boolean;
 }) {
   const debut = r.startTime as Date;
   // Type classé (colonne, sinon nom ; double verrou apporteur), lot L3.
@@ -353,6 +357,7 @@ function CarteRdv({
               à revoir, non retenu…) et ses e-mails, avec aperçu avant envoi. */}
           {apporteur ? (
             <IssueEchangeApporteurForm
+              peutRetenir={peutRetenir}
               calendlyEventId={r.sourceRecordId}
               initial={
                 r.suivi
@@ -402,7 +407,15 @@ function CarteRdv({
  * Un rendez-vous passé, en attente de son point. Le formulaire est sur la
  * carte : faire le point ne doit pas demander d'ouvrir la fiche.
  */
-function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible: boolean }) {
+function CartePoint({
+  r,
+  dossierVisible,
+  peutRetenir,
+}: {
+  r: RdvAFaireLePoint;
+  dossierVisible: boolean;
+  peutRetenir: boolean;
+}) {
   const quand = `${formatDateFrShort(r.dayKey)} à ${timeInParis(r.debut)}`;
   // La page publique de réservation d'appel, et PAS le lien de report Calendly
   // de l'invité : ce dernier vise un rendez-vous déjà passé, que Calendly peut
@@ -445,7 +458,7 @@ function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible
         </p>
       </div>
       {r.typeRendezVous === "apporteur" ? (
-        <IssueEchangeApporteurForm calendlyEventId={r.id} />
+        <IssueEchangeApporteurForm calendlyEventId={r.id} peutRetenir={peutRetenir} />
       ) : (
         <>
           {/* Chantier visio (PR 4) : le point complet — rangement, projet,
@@ -512,6 +525,7 @@ export default async function RendezVousPage({
 
   // 🔴 Le rôle est consulté AVANT toute lecture du dossier client (A2).
   const voitDossier = peutVoirLesEchanges(acces.role);
+  const peutRetenir = peutEngager(acces.role, "contresigner");
   const sp = await searchParams;
   const publicRdv = lireFiltreType(sp["type"], sp["public"]);
   const vueDemandee = sp["vue"];
@@ -636,6 +650,7 @@ export default async function RendezVousPage({
         <EtatDuCircuitVue rdvBase={base} />
       ) : vue === "point" ? (
         <VuePoint
+          peutRetenir={peutRetenir}
           aFaire={aFaire}
           maintenant={maintenant}
           dossierVisible={voitDossier}
@@ -661,6 +676,7 @@ export default async function RendezVousPage({
             <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-3)]">
               {cartes.map((r) => (
                 <CarteRdv
+                  peutRetenir={peutRetenir}
                   key={r.key}
                   r={r}
                   maintenant={maintenant}
@@ -688,10 +704,12 @@ async function VuePoint({
   maintenant,
   dossierVisible,
   erreur,
+  peutRetenir,
 }: {
   aFaire: RdvAFaireLePoint[];
   maintenant: Date;
   dossierVisible: boolean;
+  peutRetenir: boolean;
   /** Refus scellé d'« Après l'appel » (`actions-rencontres.ts`, N1). */
   erreur: string | null;
 }): Promise<React.ReactElement> {
@@ -726,7 +744,12 @@ async function VuePoint({
       ) : (
         <ul className="flex flex-col gap-[var(--space-admin-3)]">
           {aFaire.map((r) => (
-            <CartePoint key={r.id} r={r} dossierVisible={dossierVisible} />
+            <CartePoint
+              key={r.id}
+              r={r}
+              dossierVisible={dossierVisible}
+              peutRetenir={peutRetenir}
+            />
           ))}
         </ul>
       )}

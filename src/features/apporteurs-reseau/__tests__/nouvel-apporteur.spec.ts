@@ -82,6 +82,32 @@ describe("recherche parmi les fiches de candidats apporteurs", () => {
     expect(e.ok && e.candidats.length).toBe(1);
   });
 
+  it("par téléphone saisi à l'international (+33) : retrouve « 06 11 22 33 44 »", async () => {
+    const r = await rechercherCandidatsApporteursAction("+33 6 11 22");
+    expect(r.ok && r.candidats.map((c) => c.submissionId)).toEqual([SUB]);
+  });
+
+  it("au-delà de 600 fiches : la recherche lit les paquets suivants (relecture de a1, 08/10)", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    const autre = (i: number) => ({
+      id: `00000000-0000-4000-8000-${String(i).padStart(12, "0")}`,
+      details: apporteur,
+      contactName: `Personne ${i}`,
+      contactEmail: `p${i}@exemple.fr`,
+      contactPhone: null,
+      submittedAt: new Date("2026-01-01T00:00:00Z"),
+    });
+    const paquet1 = Array.from({ length: 500 }, (_, i) => autre(i));
+    const paquet2 = Array.from({ length: 500 }, (_, i) => autre(500 + i));
+    vi.mocked(prisma.submission.findMany)
+      .mockResolvedValueOnce(paquet1 as never)
+      .mockResolvedValueOnce(paquet2 as never)
+      .mockResolvedValueOnce([h.fiches[0]] as never);
+    const r = await rechercherCandidatsApporteursAction("kraft");
+    expect(r.ok && r.candidats.map((c) => c.submissionId)).toEqual([SUB]);
+    expect(prisma.submission.findMany).toHaveBeenCalledTimes(3);
+  });
+
   it("une recherche d'un caractère ne lit rien", async () => {
     expect(await rechercherCandidatsApporteursAction("k")).toEqual({ ok: true, candidats: [] });
   });

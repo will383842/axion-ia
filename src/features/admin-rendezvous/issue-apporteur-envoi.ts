@@ -240,7 +240,7 @@ export async function preparerIssueApporteur(input: {
   if (!gabarit) {
     const sansEmail =
       input.issue === "absent"
-        ? "Deuxième absence : aucun nouveau créneau n'est proposé. Tu peux classer la personne « Non retenu »."
+        ? "Deuxième absence : aucun nouveau créneau n'est proposé. Vous pouvez classer la personne « Non retenu »."
         : null;
     return { ...base, envoi: null, sansEmail };
   }

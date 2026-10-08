@@ -10,6 +10,7 @@
  * Prisma seul (pas d'`@/auth`, pas de rendu) : fail-soft, chaque compteur retombe à 0.
  */
 
+import { idsRetires } from "@/features/apporteurs-reseau/retrait";
 import { prisma } from "@/lib/prisma";
 
 export interface ApporteursNavCounts {
@@ -28,6 +29,9 @@ export async function compterApporteursNav(
   _maintenant: Date = new Date(),
 ): Promise<ApporteursNavCounts> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return APPORTEURS_NAV_VIDES;
+  // Les pièces d'un apporteur RETIRÉ du réseau ne comptent pas dans la pastille (relecture de
+  // a1, 08/10) : elles restent consultables sur sa fiche, onglet « Retirés ».
+  const retires = await idsRetires().catch(() => new Set<string>());
   const [presentations, pieces, virements] = await Promise.all([
     prisma.presentationEntreprise
       .count({ where: { statut: "reservee", contactEnvoyeAt: null } })
@@ -39,6 +43,7 @@ export async function compterApporteursNav(
           statut: "deposee",
           remplaceeAt: null,
           purgeeAt: null,
+          ...(retires.size > 0 ? { apporteurId: { notIn: [...retires] } } : {}),
         },
       })
       .catch(() => 0),

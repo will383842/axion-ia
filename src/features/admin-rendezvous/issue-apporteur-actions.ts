@@ -24,6 +24,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
+import { peutEngager } from "@/server/auth/habilitations";
 import { appliquerTransition } from "@/features/admin-submissions/transitions";
 import { estRendezVousApporteur } from "@/server/calendly/appel-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
@@ -63,14 +64,29 @@ export type ApercuIssueApporteur =
       proposerDossier?: true;
     };
 
-async function sessionEcriture(): Promise<{ id: string; email: string | null } | string> {
+async function sessionEcriture(): Promise<
+  { id: string; email: string | null; role: string | undefined } | string
+> {
   const session = await auth();
   if (!session?.user?.id) return "Session expirée : reconnectez-vous.";
   const role = (session.user as { role?: string }).role;
   if (!peutVoirLesAppels(role))
     return "Votre rôle ne permet pas d'enregistrer l'issue d'un échange.";
-  return { id: session.user.id, email: session.user.email ?? null };
+  return { id: session.user.id, email: session.user.email ?? null, role };
 }
+
+/**
+ * « Retenu » et « Ouvrir le dossier » (relecture de a1, 2026-10-08) : ces gestes ouvrent un
+ * dossier d'apporteur — contrat, pièces, données personnelles — et engagent l'organisme. Ils sont
+ * réservés à l'ADMINISTRATEUR (même niveau que la contresignature), contrôlés ICI ; l'écran ne
+ * fait que masquer les boutons (même test : `peutEngager(role, "contresigner")`). Fonction NON
+ * exportée : dans un fichier « use server », un export deviendrait une action appelable.
+ */
+function peutRetenirUnApporteur(role: string | null | undefined): boolean {
+  return peutEngager(role, "contresigner");
+}
+const REFUS_RETENIR =
+  "« Retenu » et l'ouverture du dossier sont réservés à l'administrateur : ils ouvrent un contrat.";
 
 /** L'aperçu de l'e-mail que partira — rien n'est écrit, rien n'est envoyé. */
 export async function apercuIssueApporteurAction(input: {
@@ -84,6 +100,8 @@ export async function apercuIssueApporteurAction(input: {
     return { etat: "erreur", message: "Issue inconnue." };
   }
   const issue = input.issue as IssueApporteur;
+  if (issue === "retenu" && !peutRetenirUnApporteur(qui.role))
+    return { etat: "erreur", message: REFUS_RETENIR };
   const mot = (input.motPersonnel ?? "").trim().slice(0, MOT_PERSONNEL_MAX);
   try {
     const prep = await preparerIssueApporteur({
@@ -217,6 +235,8 @@ export async function enregistrerIssueApporteurAction(
     return { etat: "erreur", message: parsed.error.issues[0]?.message ?? "Champs invalides." };
   }
   const saisie = parsed.data;
+  if (saisie.issue === "retenu" && !peutRetenirUnApporteur(qui.role))
+    return { etat: "erreur", message: REFUS_RETENIR };
   const donnees = normaliserIssueApporteur(saisie);
   if (veutSansEmail) return enregistrerSansEmail(saisie, donnees, qui);
 
@@ -330,6 +350,7 @@ export async function ouvrirDossierEtEnvoyerLienAction(input: {
 }): Promise<EtatIssueApporteur> {
   const qui = await sessionEcriture();
   if (typeof qui === "string") return { etat: "erreur", message: qui };
+  if (!peutRetenirUnApporteur(qui.role)) return { etat: "erreur", message: REFUS_RETENIR };
   const evt = await prisma.calendlyEvent.findUnique({
     where: { id: input.calendlyEventId },
     select: { id: true, linkedSubmissionId: true },

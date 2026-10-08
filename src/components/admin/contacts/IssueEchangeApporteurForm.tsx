@@ -32,6 +32,11 @@ import {
 
 export interface IssueEchangeApporteurFormProps {
   readonly calendlyEventId: string;
+  /**
+   * Administrateur : « Retenu » et « Ouvrir le dossier » ouvrent un contrat (relecture de a1,
+   * 2026-10-08). Faux par défaut : le bouton est MASQUÉ ; le serveur refuse de toute façon.
+   */
+  readonly peutRetenir?: boolean;
   readonly initial?: {
     readonly issue: IssueApporteur | null;
     readonly noteSur20: number | null;
@@ -64,6 +69,7 @@ const CHAMP = "flex flex-col gap-1 text-[length:var(--text-admin-sm)]";
 export function IssueEchangeApporteurForm({
   calendlyEventId,
   initial = null,
+  peutRetenir = false,
 }: IssueEchangeApporteurFormProps): React.ReactElement {
   const [etat, action, enCours] = useActionState(enregistrerIssueApporteurAction, ETAT_INITIAL);
   const [choix, setChoix] = useState<IssueApporteur | null>(initial?.issue ?? null);
@@ -123,7 +129,7 @@ export function IssueEchangeApporteurForm({
         aria-label="Issue de l'échange"
         className="flex flex-wrap gap-[var(--space-admin-2)]"
       >
-        {ISSUES_APPORTEUR.map((i) =>
+        {ISSUES_APPORTEUR.filter((i) => peutRetenir || i !== "retenu").map((i) =>
           i === "reporte" ? (
             // « Reporté » ENVOIE au clic : le bouton porte la valeur.
             <button
@@ -152,6 +158,11 @@ export function IssueEchangeApporteurForm({
           ),
         )}
       </div>
+      {peutRetenir ? null : (
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          « Retenu » ouvre un contrat : il est réservé à l&apos;administrateur.
+        </p>
+      )}
 
       {choix && echangeTenu(choix) ? (
         <div className="flex flex-wrap gap-[var(--space-admin-3)]">
@@ -319,7 +330,7 @@ export function IssueEchangeApporteurForm({
                     ? "Enregistrement…"
                     : `Enregistrer sans e-mail : ${LIBELLE_ISSUE_APPORTEUR[apercuPret.issue].toLowerCase()}`}
                 </button>
-                {apercuPret.proposerDossier ? (
+                {apercuPret.proposerDossier && peutRetenir ? (
                   <button
                     type="button"
                     className="admin-button-secondary"

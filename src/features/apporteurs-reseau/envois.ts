@@ -41,7 +41,8 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-lien",
   "apporteur-dossier-a-completer",
   "apporteur-dossier-refuse",
-  "apporteur-dossier-a-verifier",
+  // « apporteur-dossier-a-verifier » n'y est PAS (relecture de a1, 08/10) : c'est l'alerte
+  // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
@@ -123,7 +124,8 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-dossier-lien",
   "apporteur-dossier-a-completer",
   "apporteur-dossier-refuse",
-  "apporteur-dossier-a-verifier",
+  // « apporteur-dossier-a-verifier » n'y est PAS (relecture de a1, 08/10) : c'est l'alerte
+  // INTERNE envoyée à Williams, pas un e-mail à l'apporteur — elle ne se coupe jamais.
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",

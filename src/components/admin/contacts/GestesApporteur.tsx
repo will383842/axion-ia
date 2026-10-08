@@ -125,7 +125,7 @@ export function GestesApporteur({ id, close, reponduAilleurs }: Props): React.Re
             )
           }
           className="admin-button-ghost admin-button-sm"
-          title="Tu as répondu depuis Gmail, au téléphone ou de vive voix"
+          title="Vous avez répondu depuis Gmail, au téléphone ou de vive voix"
         >
           J&apos;ai répondu ailleurs
         </button>
