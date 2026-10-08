@@ -231,9 +231,23 @@ curl -sI https://axion-ia.com/fr | grep -i x-axion-build-sha
 La cause est structurelle (SSG de 17 629 routes), pas imputable à une PR : #947 était du
 code serveur, 29 fichiers, aucune route nouvelle.
 
+### 🕛 Depuis le 2026-10-08 : mise en ligne À HEURES FIXES (décision de Will)
+
+**Une fusion sur `main` ne déclenche plus de déploiement.** Le workflow tourne à
+**12 h, 17 h et 22 h, heure de Paris** (crons UTC doublés été/hiver, filtrés par le job
+`precheck`, qui saute aussi le créneau si la prod sert déjà le dernier commit), ou à la
+demande : `gh workflow run deploy-coolify.yml` (seulement quand Will le demande).
+
+Conséquences : **on fusionne à toute heure, sans réserver de créneau** — plus aucune
+fusion ne tue un build. Tout ce qui précède sur la famine et les créneaux de fusion
+décrit l'ancien régime (déclencheur `push`) ; la durée du build (~50 min) et la
+fenêtre app/worker restent vraies **à partir du lancement du créneau**. Pour savoir
+quand un code atterrit : au prochain créneau, + ~55 min. Verrouillé par
+`tests/unit/ci/deploiement-a-heures-fixes.spec.ts`.
+
 ### Pipeline complet
 
-1. `git push main` → workflow `.github/workflows/deploy-coolify.yml`
+1. Créneau (12 h / 17 h / 22 h) ou `gh workflow run deploy-coolify.yml` → workflow `.github/workflows/deploy-coolify.yml` (avant le 2026-10-08 : `git push main`)
 2. **Job `build`** (⚠️ **47-56 min mesurés**, pas ~25 — voir ci-dessus) :
    - Free disk space agressif (~75 GB free)
    - `docker build axionia/Dockerfile` avec build-args stubs

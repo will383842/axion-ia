@@ -41,26 +41,28 @@ name: Build & Deploy · GHCR + Coolify (axion-ia.com)
 # Manual trigger : workflow_dispatch (Actions tab → Run workflow).
 
 on:
-  # Sprint 14.10.7 fix Will (2026-05-12) : le trigger `workflow_run` ne
-  # se déclenchait jamais (0/50 derniers runs étaient en event=workflow_run).
-  # Cause probable : bug GitHub Actions où workflow_run reste silencieusement
-  # inactif quand le workflow file est ajouté après création du repo. On
-  # bascule donc sur un trigger `push: branches:[main]` direct — les hooks
-  # pre-push exécutent déjà tests + lint + typecheck, donc la garantie de
-  # qualité est conservée.
-  push:
-    branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - "_AUDIT/**"
-      - ".gitignore"
-      - ".github/workflows/coolify-diagnose.yml"
-      - ".github/workflows/coolify-zombie-cleanup.yml"
-      - ".claude/**"
-      # Extension Meet (chantier visio, PR 5) : chargée à la main sur le poste
-      # de Will, jamais servie par le site. Elle ne justifie aucune mise en ligne.
-      - "extensions/**"
+  # 2026-10-08 (décision de Will) — MISE EN LIGNE À HEURES FIXES : 12 h, 17 h et
+  # 22 h, heure de Paris. Une fusion sur `main` ne déclenche PLUS rien.
+  # Avant : chaque fusion lançait son propre build de ~50 min, et une fusion
+  # pendant un build en vol l'annulait (`cancel-in-progress`) : fusions au
+  # compte-gouttes, des heures perdues à attendre un créneau (« famine »).
+  # Désormais on fusionne à toute heure, et chaque créneau emporte TOUT ce qui
+  # est sur `main`. Le job `precheck` ne laisse passer que le bon créneau
+  # (GitHub ne connaît que l'UTC : les deux jeux de crons couvrent l'heure
+  # d'été et l'heure d'hiver) et saute si la prod sert déjà le dernier commit.
+  # Mise en ligne d'urgence, à la demande de Will :
+  #   gh workflow run deploy-coolify.yml
+  # (toujours exécutée, sans contrôle d'heure ni de commit).
+  # ⛔ NE PAS remettre `push: branches: [main]` sans l'accord de Will.
+  schedule:
+    # Heure d'été (UTC+2) : 12 h, 17 h, 22 h à Paris.
+    - cron: "7 10 * * *"
+    - cron: "7 15 * * *"
+    - cron: "7 20 * * *"
+    # Heure d'hiver (UTC+1) : 12 h, 17 h, 22 h à Paris.
+    - cron: "7 11 * * *"
+    - cron: "7 16 * * *"
+    - cron: "7 21 * * *"
   workflow_dispatch:
     inputs:
       skip_deploy:
@@ -92,12 +94,59 @@ permissions:
 
 jobs:
   # ───────────────────────────────────────────────────────────────────────
+  # Créneau de mise en ligne (2026-10-08) : un run planifié ne passe que s'il
+  # vient du jeu de crons de la saison en cours (été ou hiver) ET si la prod
+  # ne sert pas déjà le dernier commit de `main`. Un lancement manuel
+  # (workflow_dispatch) passe toujours.
+  # ───────────────────────────────────────────────────────────────────────
+  precheck:
+    name: Créneau de mise en ligne
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      go: ${{ steps.creneau.outputs.go }}
+    steps:
+      - name: Bon créneau et quelque chose de nouveau ?
+        id: creneau
+        env:
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -u
+          if [ "${EVENT}" != "schedule" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          # Le cron déclencheur (et non l'heure d'exécution, que GitHub peut
+          # retarder) dit à quel jeu il appartient.
+          heure_utc=$(echo "${CRON}" | awk '{print $2}')
+          decalage=$(TZ=Europe/Paris date +%z)
+          case "${decalage}:${heure_utc}" in
+            +0200:10|+0200:15|+0200:20|+0100:11|+0100:16|+0100:21) ;;
+            *)
+              echo "::notice::Cron « ${CRON} » hors saison (Paris ${decalage}) : rien à faire."
+              echo "go=false" >> "$GITHUB_OUTPUT"; exit 0 ;;
+          esac
+          prod=$(curl -fsSI --max-time 20 https://axion-ia.com/fr | tr -d '\r' \
+            | awk -F': ' 'tolower($1)=="x-axion-build-sha" {print $2}' || true)
+          if [ -n "${prod}" ]; then
+            case "${SHA}" in
+              "${prod}"*)
+                echo "::notice::La prod sert déjà ${prod} : rien de nouveau à mettre en ligne."
+                echo "go=false" >> "$GITHUB_OUTPUT"; exit 0 ;;
+            esac
+          fi
+          echo "go=true" >> "$GITHUB_OUTPUT"
+
+  # ───────────────────────────────────────────────────────────────────────
   # Build image Docker sur GitHub Actions + push GHCR.
   # Sprint recovery 2026-05-16 : externalise le build hors du VPS CPX42
   # qui saturait à 117 GB peak disque sur SSG 17 629 routes.
   # ───────────────────────────────────────────────────────────────────────
   build:
     name: Build & push image to GHCR
+    needs: precheck
+    if: needs.precheck.outputs.go == 'true'
     # Concurrence build-only : un push plus récent annule ce build obsolète
     # (cf. bloc « concurrence SCINDÉE » en tête de fichier). cancel-in-progress
     # TRUE est SÛR ici — le build ne touche jamais Coolify.
@@ -1206,7 +1255,9 @@ jobs:
   notify:
     name: Telegram — résultat du déploiement
     needs: [build, deploy]
-    if: always()
+    # Un créneau sans rien de nouveau saute le build : ce n'est pas un échec,
+    # aucune notification (sinon une fausse alarme jusqu'à 3 fois par jour).
+    if: always() && needs.build.result != 'skipped'
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
