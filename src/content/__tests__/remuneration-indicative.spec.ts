@@ -357,6 +357,9 @@ const GABARITS_APRES_SIGNATURE: readonly string[] = [
   "apporteur-demarrage.tsx",
   // Alerte INTERNE (2026-10-05) : aucun barème, destinataire Williams.
   "apporteur-declaration-recue.tsx",
+  // 2026-10-08 : l'attribution confirmée / la protection prolongée — envoyé à un apporteur
+  // SIGNÉ ; aucun barème ni montant.
+  "apporteur-attribution-confirmee.tsx",
 ];
 const CITE_UN_MONTANT =
   /commission\s*\(|€|\d\s?%|\}\s?%|COMMISSION_FORMATION|getCommissionById|COMMERCIAL_COMMISSIONS/;

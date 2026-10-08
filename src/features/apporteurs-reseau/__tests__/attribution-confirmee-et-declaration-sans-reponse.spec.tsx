@@ -53,7 +53,7 @@ describe("l'e-mail « attribution confirmée / protection prolongée »", () => 
       entreprise: "Danone",
       finProtection: "8 juillet 2027",
       variante: "prolongee",
-      motif: "devis_en_cours",
+      motifTexte: "Un devis est en cours avec elle",
     };
     expect(apporteurAttributionConfirmeeSubject("fr", p)).toBe("Danone : protection prolongée");
     const html = await rendu(p);

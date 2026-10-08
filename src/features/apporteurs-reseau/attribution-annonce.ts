@@ -30,6 +30,17 @@ import { signalerErreurReseau } from "./signaler";
 
 export type VarianteAnnonce = "confirmee" | "prolongee";
 
+/**
+ * Le motif de prolongation (art. 3.4), en clair pour l'apporteur. Le dossier « de financement »
+ * est dit neutrement : les textes aux apporteurs n'évoquent le financement que sous condition
+ * de certification (garde de vocabulaire).
+ */
+const MOTIF_EN_CLAIR: Readonly<Record<string, string>> = {
+  devis_en_cours: "Un devis est en cours avec elle",
+  echange_recent: "Nous avons échangé récemment avec elle",
+  financement_en_cours: "Un dossier est en cours pour elle",
+};
+
 export function jobIdAnnonceAttribution(presentationId: string, variante: VarianteAnnonce): string {
   return `apporteur-attribution-${variante}-${presentationId}`;
 }
@@ -79,7 +90,9 @@ export async function annoncerAttribution(
         entreprise: p.denomination,
         finProtection: dateEnClair(p.protegeeJusquAt),
         variante,
-        ...(variante === "prolongee" && p.motifProlongation ? { motif: p.motifProlongation } : {}),
+        ...(variante === "prolongee" && p.motifProlongation
+          ? { motifTexte: MOTIF_EN_CLAIR[p.motifProlongation] ?? "" }
+          : {}),
       },
       entityType: "PresentationEntreprise",
       entityId: p.id,

@@ -22,9 +22,6 @@ import type { Locale } from "../../../../prisma/generated/client";
 
 export type VarianteAttribution = "confirmee" | "prolongee";
 
-/** Motif de prolongation (art. 3.4), tel que le passage quotidien l'enregistre. */
-export type MotifProlongationEmail = "devis_en_cours" | "echange_recent" | "financement_en_cours";
-
 interface Payload {
   /** « Claire Durand » : seul le prénom est dit. */
   contactName?: string;
@@ -33,7 +30,11 @@ interface Payload {
   /** Fin de la protection, déjà formatée en heure de Paris : « 8 avril 2027 ». */
   finProtection?: string;
   variante?: VarianteAttribution;
-  motif?: MotifProlongationEmail;
+  /**
+   * Prolongée seulement : le motif DÉJÀ RÉDIGÉ par l'appelant (« Un devis est en cours avec
+   * elle »), cf. `features/apporteurs-reseau/attribution-annonce.ts`.
+   */
+  motifTexte?: string;
 }
 
 interface Props {
@@ -60,11 +61,6 @@ export const COPY_ATTRIBUTION = {
     texte: (e: string, motif: string) =>
       `La protection de ${e || "l'entreprise que vous nous avez présentée"} arrivait à son terme. ${motif} : elle est prolongée une fois, de trois mois.`,
   },
-  motifs: {
-    devis_en_cours: "Un devis est en cours avec elle",
-    echange_recent: "Nous avons échangé récemment avec elle",
-    financement_en_cours: "Un dossier de financement est en cours pour elle",
-  } as Record<MotifProlongationEmail, string>,
   motifParDefaut: "Un échange est en cours avec elle",
   fin: (d: string) => (d ? `Fin de la protection : ${d}.` : ""),
   commission:
@@ -91,10 +87,7 @@ export function ApporteurAttributionConfirmeeEmail({ locale, payload }: Props) {
   const prenom = texte(p.contactName).split(/\s+/)[0] ?? "";
   const corps =
     v === "prolongee"
-      ? COPY_ATTRIBUTION.prolongee.texte(
-          e,
-          (p.motif && COPY_ATTRIBUTION.motifs[p.motif]) || COPY_ATTRIBUTION.motifParDefaut,
-        )
+      ? COPY_ATTRIBUTION.prolongee.texte(e, texte(p.motifTexte) || COPY_ATTRIBUTION.motifParDefaut)
       : COPY_ATTRIBUTION.confirmee.texte(e);
   const fin = COPY_ATTRIBUTION.fin(texte(p.finProtection));
   return (
