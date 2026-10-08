@@ -173,6 +173,8 @@ import {
   apporteurNonCommissionneSubject,
   ApporteurNonCommissionneEmail,
   ApporteurCommissionSuspensionEmail,
+  apporteurManquementSubject,
+  ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
@@ -526,6 +528,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-commission-suspension": {
     subject: apporteurCommissionSuspensionSubject,
     component: ApporteurCommissionSuspensionEmail,
+  },
+  "apporteur-manquement": {
+    subject: apporteurManquementSubject,
+    component: ApporteurManquementEmail,
   },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,

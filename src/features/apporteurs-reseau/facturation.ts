@@ -37,6 +37,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 
 import {
   allouerNumerosAutofacture,
+  verrouillerSerieAutofacture,
   cumulVigilanceCents,
   dejaEnvoye,
   demanderVigilance,
@@ -47,6 +48,7 @@ import {
 } from "./commissions";
 import {
   aVirerPartielCents,
+  totalTtcPieceCents,
   dateFr,
   donneesManquantesAutofacture,
   echeancePaiement,
@@ -94,6 +96,9 @@ function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown
       montantCents: true,
       palier: true,
       autofactureAttenteMotif: true,
+      // Reprise libérée après une retenue (art. 4.5 bis) : son avoir est DÉJÀ émis, elle est
+      // réimputée sans nouvel avoir.
+      avoirNumero: true,
     },
     orderBy: { creeAt: "asc" },
   });
@@ -200,7 +205,9 @@ export async function facturerApporteur(
   const attente = await mettreEnAttenteSiIncomplet(apporteurId, dues, maintenant);
   if (attente) return { ok: false, message: attente };
 
-  const reprisesAvant = avant.filter((c) => c.statut === "reprise");
+  const reprisesAvant = avant.filter((c) => c.statut === "reprise" && !c.avoirNumero);
+  // Avoirs déjà émis (reprise libérée) : imputés ici sous LEUR numéro, aucune nouvelle pièce.
+  const dejaEmises = avant.filter((c) => c.statut === "reprise" && !!c.avoirNumero);
   const origines: Origines = reprisesAvant.length
     ? await originesDesReprises(reprisesAvant)
     : new Map();
@@ -253,6 +260,8 @@ export async function facturerApporteur(
 
   await prisma.$transaction(
     async (tx) => {
+      // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
+      await verrouillerSerieAutofacture(tx, numeros);
       const lues = await lireAFacturer(tx, apporteurId, hors);
       const memes =
         lues.length === avant.length &&
@@ -291,6 +300,13 @@ export async function facturerApporteur(
         });
         reprises += r.count;
       }
+      for (const c of dejaEmises) {
+        const r = await tx.commissionApporteur.updateMany({
+          where: { id: c.id, statut: "reprise", releveMois: null, avoirNumero: c.avoirNumero },
+          data: commun,
+        });
+        reprises += r.count;
+      }
       if (dues2.count + reprises !== avant.length)
         throw new Error("Les commissions ont changé pendant la facturation : réessai.");
     },
@@ -309,7 +325,29 @@ export async function facturerApporteur(
     return `Avoir n° ${a.numero} : ${euros(a.montant)} hors taxes, déduit du virement${renvoi}`;
   });
   // La somme virée est TVA comprise pour un apporteur assujetti : elle se lit sur les pièces.
-  const aVirer = pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0);
+  // Un avoir déjà émis compte pour son propre TTC (même calcul que sa pièce).
+  const parAvoir = new Map<string, number[]>();
+  for (const c of dejaEmises)
+    parAvoir.set(c.avoirNumero!, [
+      ...(parAvoir.get(c.avoirNumero!) ?? []),
+      Math.abs(c.montantCents ?? 0),
+    ]);
+  const regimeTva =
+    dejaEmises.length > 0
+      ? ((
+          await prisma.apporteurReseau.findUnique({
+            where: { id: apporteurId },
+            select: { regimeTva: true },
+          })
+        )?.regimeTva ?? null)
+      : null;
+  const dejaTtc = [...parAvoir.values()].reduce((s, m) => s + totalTtcPieceCents(regimeTva, m), 0);
+  for (const [n, m] of parAvoir)
+    avoirs.push(
+      `Avoir n° ${n} (déjà émis) : ${euros(m.reduce((s, x) => s + x, 0))} hors taxes, déduit de ce virement`,
+    );
+  const aVirer =
+    pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0) - dejaTtc;
   const montrerSomme = avoirs.length > 0 || aVirer !== brut;
   let envoi: ResultatEnvoi = "indisponible";
   try {
@@ -719,20 +757,26 @@ export interface VirementAFaire {
   emissionAt: Date;
 }
 
-/** Montants HT des lignes facturées et SUSPENDUES, par numéro d'autofacture. */
+/**
+ * Montants HT des lignes facturées et SUSPENDUES (contestation, art. 4.2 bis) ou RETENUES
+ * (manquement, art. 4.5 bis, neutralisées par un avoir déjà soldé), par numéro d'autofacture :
+ * elles sortent du virement, qui se calcule par complément (`aVirerPartielCents`).
+ */
 async function suspenduesParNumero(
   apporteurId?: string,
   numero?: string,
 ): Promise<Map<string, number[]>> {
   const out = new Map<string, number[]>();
-  if (!(await litigeDisponible())) return out;
+  const avecLitige = await litigeDisponible();
   const ls = await prisma.commissionApporteur.findMany({
     where: {
       ...(apporteurId ? { apporteurId } : {}),
-      statut: "due",
       autofactureNumero: numero ? numero : { not: null },
       montantCents: { not: null },
-      litigeDepuis: { not: null },
+      OR: [
+        { statut: "retenue" },
+        ...(avecLitige ? [{ statut: "due" as const, litigeDepuis: { not: null } }] : []),
+      ],
     },
     select: { autofactureNumero: true, montantCents: true },
   });

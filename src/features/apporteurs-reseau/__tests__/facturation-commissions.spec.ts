@@ -208,7 +208,9 @@ vi.mock("@/lib/prisma", () => {
         etat.jobIds.has(a.where.jobId) ? 1 : 0,
       ),
     },
-    numeroEmis: { findMany: vi.fn(async () => []) },
+    numeroEmis: { findMany: vi.fn(async () => []), count: vi.fn(async () => 0) },
+    // Verrou consultatif de la série (pg_advisory_xact_lock) : sans effet dans le simulateur.
+    $executeRaw: vi.fn(async () => 0),
     // Colonne « litige » présente (contrat 2.3, art. 4.2 bis), sauf quand un test la retire.
     $queryRaw: vi.fn(async () => {
       if (etat.colonneLitigeAbsente) throw new Error('column "litige_depuis" does not exist');
@@ -233,7 +235,12 @@ vi.mock("@/lib/prisma", () => {
   return { prisma };
 });
 
-import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
+import {
+  facturerApporteur,
+  facturerCommissionsDues,
+  marquerVerse,
+  oublierCacheRegistre,
+} from "../facturation";
 import { annulerCommission, reduireCommission } from "../ajustement";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
@@ -1116,5 +1123,47 @@ describe("réduire ou annuler une commission pas encore facturée (point 4)", ()
     });
     await facturerCommissionsDues(MARDI);
     expect(lignes()[0]!.autofactureNumero).toBeNull();
+  });
+});
+
+describe("ligne RETENUE pour manquement (art. 4.5 bis) dans une autofacture", () => {
+  it("le reste est versé par complément, la ligne retenue n'est jamais virée, l'avoir n'est pas redéduit", async () => {
+    etat.lignes = [ligne("a", "due", 10_000), ligne("b", "due", 30_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    const b = lignes().find((l) => l.id === "b")!;
+    b.statut = "retenue";
+    const avoirVerseLe = new Date("2026-10-06T08:00:00Z");
+    (etat.lignes as Ligne[]).push(
+      ligne("av", "reprise", -30_000, {
+        autofactureNumero: numero,
+        avoirNumero: "AXI-APP-2026-0099",
+        releveMois: "2026-10",
+        verseeAt: avoirVerseLe,
+      }),
+    );
+    const r = await marquerVerse("APP1", MARDI, numero);
+    expect(r).toMatchObject({ ok: true });
+    expect((r as { totalCents: number }).totalCents).toBeGreaterThan(0);
+    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
+    expect(lignes().find((l) => l.id === "b")!.statut).toBe("retenue");
+    expect(lignes().find((l) => l.id === "av")!.verseeAt).toEqual(avoirVerseLe);
+  });
+});
+
+describe("reprise libérée après une retenue : réimputée SANS nouvel avoir", () => {
+  it("garde son numéro d'avoir, aucune nouvelle pièce, déduite du virement", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 40_000),
+      ligne("r1", "reprise", -10_000, { avoirNumero: "AXI-APP-2026-0002" }),
+    ];
+    const avant = etat.pdfs.length;
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    expect(etat.pdfs.length - avant).toBe(1); // l'autofacture seule
+    const r1 = lignes().find((l) => l.id === "r1")!;
+    expect(r1.avoirNumero).toBe("AXI-APP-2026-0002");
+    expect(r1.autofactureNumero).toBe((r as { numero: string }).numero);
+    expect(r1.releveMois).not.toBeNull();
   });
 });

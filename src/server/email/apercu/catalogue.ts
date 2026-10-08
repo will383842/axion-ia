@@ -468,6 +468,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-manquement": {
+    categorie: "recrutement",
+    quand:
+      "Fiche de l'entreprise présentée : « Manquement ou fraude » avec les faits (contrat, art. 4.5 bis)",
+    destinataire: "l'apporteur qui a déclaré l'entreprise",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:

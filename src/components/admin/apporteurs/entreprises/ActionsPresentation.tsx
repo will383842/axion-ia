@@ -5,6 +5,7 @@ import { useActionState } from "react";
 
 import {
   confirmerPresentationAction,
+  constaterManquementAction,
   dementirPresentationAction,
   noterPresentationAction,
   type EtatAction,
@@ -45,6 +46,7 @@ export function ActionsPresentation({
   const [eC, confirmer, cEnCours] = useActionState(confirmerPresentationAction, INITIAL);
   const [eD, dementir, dEnCours] = useActionState(dementirPresentationAction, INITIAL);
   const [eN, noter, nEnCours] = useActionState(noterPresentationAction, INITIAL);
+  const [eM, manquement, mEnCours] = useActionState(constaterManquementAction, INITIAL);
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
@@ -82,6 +84,43 @@ export function ActionsPresentation({
           <Retour etat={eD} />
         </form>
       ) : null}
+
+      <details>
+        <summary className="cursor-pointer">Manquement ou fraude (art. 4.5 bis)</summary>
+        <form
+          action={manquement}
+          className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+        >
+          <input type="hidden" name="id" value={id} />
+          <p className="text-[color:var(--color-admin-fg-muted)]">
+            Déclaration non sincère, intérêt non déclaré ou fraude : aucune commission n&apos;est
+            due sur cette affaire. Non facturées : annulées. Facturées non versées : bloquées.
+            Versées : reprises. L&apos;apporteur reçoit les faits ci-dessous et peut contester par
+            écrit (réponse motivée sous 30 jours).
+          </p>
+          <label className="flex flex-col gap-1">
+            Les faits (envoyés à l&apos;apporteur)
+            <textarea
+              name="faits"
+              rows={3}
+              required
+              minLength={10}
+              maxLength={1500}
+              className="admin-input"
+            />
+          </label>
+          <label className="inline-flex items-center gap-[var(--space-admin-2)]">
+            <input type="checkbox" name="confirmer" value="oui" required />
+            Je confirme : rien n&apos;est supprimé, tout est tracé au journal.
+          </label>
+          <div>
+            <button type="submit" className="admin-button-secondary" disabled={mEnCours}>
+              Constater le manquement
+            </button>
+          </div>
+          <Retour etat={eM} />
+        </form>
+      </details>
 
       <form action={noter} className="flex flex-wrap items-end gap-[var(--space-admin-2)]">
         <input type="hidden" name="id" value={id} />

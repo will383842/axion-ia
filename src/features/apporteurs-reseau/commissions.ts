@@ -534,6 +534,7 @@ export async function compterCommissions(): Promise<Record<StatutCommissionAppor
     versee: 0,
     reprise: 0,
     annulee: 0,
+    retenue: 0,
   };
   for (const x of g) out[x.statut] = x._count._all;
   return out;
@@ -572,6 +573,34 @@ export function formaterAutofacture(annee: number, seq: number): string {
  */
 export async function allouerNumeroAutofacture(annee: number): Promise<string> {
   return (await allouerNumerosAutofacture(annee, 1))[0]!;
+}
+
+/** Activité de la ligne d'AVOIR qui neutralise une commission retenue (art. 4.5 bis). */
+export const ACTIVITE_NEUTRALISATION = "neutralisation";
+
+/**
+ * Série des autofactures et avoirs : verrou consultatif de TRANSACTION, puis contrôle que les
+ * numéros alloués sont encore libres (lignes et registre). À appeler dans la transaction qui
+ * ÉCRIT les numéros : deux émissions concurrentes ne peuvent plus prendre le même numéro, et
+ * rien n'est réservé à l'avance (une pièce qui échoue ne laisse pas de trou dans la série).
+ */
+export async function verrouillerSerieAutofacture(
+  tx: Pick<typeof prisma, "$executeRaw" | "commissionApporteur" | "numeroEmis">,
+  numeros: readonly string[],
+): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('serie-autofacture-apporteur'))`;
+  const pris = await tx.commissionApporteur.count({
+    where: {
+      OR: [{ autofactureNumero: { in: [...numeros] } }, { avoirNumero: { in: [...numeros] } }],
+    },
+  });
+  let registre = 0;
+  try {
+    registre = await tx.numeroEmis.count({ where: { numero: { in: [...numeros] } } });
+  } catch {
+    registre = 0;
+  }
+  if (pris + registre > 0) throw new Error("Numéro d'autofacture déjà émis : nouvel essai.");
 }
 
 /** `n` numéros consécutifs de la série (l'autofacture puis ses avoirs, dans cet ordre). */
@@ -786,8 +815,17 @@ export async function exportDas2(annee: number): Promise<string> {
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
-      // Les reprises imputées à un relevé viennent en déduction du versé de l'année.
-      OR: [{ statut: "versee" }, { statut: "reprise", releveMois: { not: null } }],
+      // Les reprises imputées à un relevé viennent en déduction du versé de l'année. L'avoir qui
+      // NEUTRALISE une ligne retenue (art. 4.5 bis) n'en est pas une : la ligne n'a jamais été
+      // versée, il n'y a rien à déduire.
+      OR: [
+        { statut: "versee" },
+        {
+          statut: "reprise",
+          releveMois: { not: null },
+          NOT: { activite: ACTIVITE_NEUTRALISATION },
+        },
+      ],
       verseeAt: {
         gte: new Date(Date.UTC(annee, 0, 1) - 3_600_000),
         lt: new Date(Date.UTC(annee + 1, 0, 1) - 3_600_000),

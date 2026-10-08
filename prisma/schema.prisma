@@ -15384,6 +15384,9 @@ enum StatutCommissionApporteur {
   /// Annulée avant facturation (commande annulée, prestation non réalisée, démentie, fraude).
   /// La ligne reste en base ; le geste est tracé au journal.
   annulee
+  /// Facturée, puis RETENUE pour manquement ou fraude (art. 4.5 bis) : neutralisée par un avoir
+  /// rattaché à son autofacture ; jamais virée, hors des compteurs à virer.
+  retenue
 
   @@map("statut_commission_apporteur")
 }

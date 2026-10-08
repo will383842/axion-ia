@@ -53,6 +53,12 @@ const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
 
 interface Payload {
+  /** Manquement (art. 4.5 bis) : les faits, tels que saisis dans la console. */
+  faits?: string;
+  /** Manquement : avis au PARRAIN dont la part est retirée (sans les faits). */
+  parrain?: boolean;
+  /** Manquement : envoi de l'avoir de neutralisation seul (rattrapage de sa pièce). */
+  avoirSeul?: boolean;
   /** Suspension d'une commission (art. 4.2 bis) : « suspendue » puis « levee ». */
   etat?: string;
   /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
@@ -314,6 +320,25 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  manquement: {
+    // Contrat 2.3, art. 4.5 bis : notification avec les faits, contestation écrite, réponse
+    // motivée dans les trente jours.
+    subject: "Manquement constaté sur votre déclaration",
+    title: "Manquement constaté",
+    preview: "Les faits, leurs conséquences et la façon de contester.",
+    intro:
+      "Au sujet d'une entreprise que vous nous avez présentée, nous constatons un manquement à votre contrat (article 4.5 bis). Les faits sont les suivants :",
+    consequences:
+      "En conséquence, aucune commission n'est due au titre de cette affaire. Celles qui vous ont déjà été versées font l'objet d'une reprise, dans les conditions de l'article 4.5.",
+    contester:
+      "Vous pouvez contester ce constat par écrit, en répondant simplement à cet e-mail. Nous vous répondrons de façon motivée dans les trente jours.",
+    subjectParrain: "Une part de parrainage est retirée",
+    subjectAvoir: "Votre avoir d'autofacture",
+    avoir:
+      "Vous trouverez ci-joint l'avoir d'autofacture annoncé dans notre précédent message, au sujet du manquement constaté (article 4.5 bis du contrat).",
+    parrain:
+      "Une affaire apportée par une personne que vous avez parrainée ne donne finalement lieu à aucune commission (article 4.5 bis du contrat). La part de parrainage qui en découlait est donc retirée ; si elle vous avait déjà été versée, elle fait l'objet d'une reprise, dans les conditions de l'article 4.5.",
   },
   nonCommissionne: {
     // Annexe 1, A1.7 : constatation écrite, avec son motif, portée à la connaissance de l'apporteur.
@@ -859,6 +884,54 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Manquement ou fraude (contrat 2.3, art. 4.5 bis) ─────────────────────
+
+export const apporteurManquementSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  (payload as Payload | undefined)?.avoirSeul
+    ? COPY_DEMARRAGE.manquement.subjectAvoir
+    : (payload as Payload | undefined)?.parrain
+      ? COPY_DEMARRAGE.manquement.subjectParrain
+      : COPY_DEMARRAGE.manquement.subject;
+
+export function ApporteurManquementEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.manquement;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={p.parrain ? t.subjectParrain : t.preview}
+      title={p.parrain ? "Part de parrainage retirée" : t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      {p.avoirSeul ? (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.avoir}</Text>
+        </>
+      ) : null}
+      {p.avoirSeul ? null : (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+          {p.parrain ? <Text style={emailStyles.paragraphStyle}>{t.parrain}</Text> : null}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>}
+          {p.parrain ? null : (
+            <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+              « {p.faits ?? ""} »
+            </Text>
+          )}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.consequences}</Text>}
+          {p.parrain ? null : <Text style={emailStyles.paragraphStyle}>{t.contester}</Text>}
+        </>
+      )}
     </EmailLayout>
   );
 }

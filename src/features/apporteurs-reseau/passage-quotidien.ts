@@ -39,6 +39,7 @@ import {
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
@@ -191,10 +192,16 @@ type NomEtape =
   | "commande-signee"
   | "rappels-dossier"
   | "chiffrement-pieces"
+  | "avoirs-sans-piece"
   | "realisation"
   | "hors-grille";
 
-const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "realisation", "autofacturation"];
+const ETAPES_FACTURATION: readonly NomEtape[] = [
+  "commissions",
+  "realisation",
+  "autofacturation",
+  "avoirs-sans-piece",
+];
 
 function bilanVide(): BilanPassageReseau {
   return {
@@ -241,6 +248,8 @@ async function passer(
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
     // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
     ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],
+    // Art. 4.5 bis : un avoir de neutralisation resté sans PDF est régénéré et envoyé.
+    ["avoirs-sans-piece", async () => void (await regenererAvoirsSansPiece(maintenant))],
     // Annexe 1, A1.7 : une commission « à qualifier » se règle sous soixante jours ; Williams
     // est alerté dix jours avant, puis le jour du dépassement.
     ["hors-grille", async () => void (await alerterHorsGrille(maintenant))],

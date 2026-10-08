@@ -17,6 +17,31 @@ describe("commission suspendue, puis libérée (art. 4.2 bis)", () => {
   });
 });
 
+describe("manquement ou fraude (art. 4.5 bis)", () => {
+  it("donne les faits, les conséquences, et la contestation sous trente jours", async () => {
+    const r = await renderEmailTemplate("apporteur-manquement" as never, "fr", {
+      contactName: "Claire Martin",
+      faits: "L'entreprise déclare n'avoir jamais échangé avec vous.",
+    });
+    expect(r.subject).toBe("Manquement constaté sur votre déclaration");
+    const t = r.text.replace(/\s+/g, " ");
+    expect(t).toContain("L'entreprise déclare n'avoir jamais échangé avec vous.");
+    expect(t).toContain("article 4.5 bis");
+    expect(t).toContain("trente jours");
+  });
+});
+
+describe("manquement : avis au parrain", () => {
+  it("un simple avis, sans les faits", async () => {
+    const r = await renderEmailTemplate("apporteur-manquement" as never, "fr", {
+      contactName: "Paul Martin",
+      parrain: true,
+    });
+    expect(r.subject).toBe("Une part de parrainage est retirée");
+    expect(r.text).not.toContain("Les faits sont les suivants");
+  });
+});
+
 describe("produit non commissionné (A1.7)", () => {
   it("porte la décision et son motif", async () => {
     const r = await renderEmailTemplate("apporteur-non-commissionne" as never, "fr", {

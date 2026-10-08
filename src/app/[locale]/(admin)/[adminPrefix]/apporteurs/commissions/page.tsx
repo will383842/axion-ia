@@ -58,6 +58,7 @@ const ONGLETS: ReadonlyArray<{ cle: StatutCommissionApporteur; libelle: string }
   { cle: "versee", libelle: "Versées" },
   { cle: "reprise", libelle: "Reprises" },
   { cle: "annulee", libelle: "Annulées" },
+  { cle: "retenue", libelle: "Retenues (manquement)" },
 ];
 
 const ACTIVITE: Record<string, string> = {

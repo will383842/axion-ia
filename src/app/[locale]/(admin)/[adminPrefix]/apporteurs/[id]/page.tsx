@@ -64,6 +64,7 @@ const LIBELLE_COMMISSION: Record<string, string> = {
   versee: "Versée",
   reprise: "Reprise",
   annulee: "Annulée",
+  retenue: "Retenue (manquement, avoir émis)",
 };
 
 function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }) {
