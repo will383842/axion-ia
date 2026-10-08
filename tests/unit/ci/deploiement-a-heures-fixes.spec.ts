@@ -41,7 +41,7 @@ describe("🕛 mise en ligne à heures fixes", () => {
     expect(on).toMatch(/^\s{2}workflow_dispatch:/m);
     const crons = [...on.matchAll(/cron:\s*"([^"]+)"/g)].map((m) => m[1]);
     expect(crons.sort()).toEqual(
-      ["0 10 * * *", "0 11 * * *", "0 15 * * *", "0 16 * * *", "0 20 * * *", "0 21 * * *"].sort(),
+      ["7 10 * * *", "7 11 * * *", "7 15 * * *", "7 16 * * *", "7 20 * * *", "7 21 * * *"].sort(),
     );
   });
 
@@ -58,6 +58,16 @@ describe("🕛 mise en ligne à heures fixes", () => {
     const b = job("build");
     expect(b).toMatch(/\n\s+needs: precheck\n/);
     expect(b).toContain("if: needs.precheck.outputs.go == 'true'");
+  });
+
+  it("le seed content-gen ne part qu'après un VRAI déploiement (créneau sauté = success)", () => {
+    const seed = readFileSync(
+      join(process.cwd(), ".github", "workflows", "content-gen-seed.yml"),
+      "utf8",
+    );
+    expect(seed).toContain('select(.name == "Trigger Coolify deploy")');
+    expect(seed).toContain("if: needs.porte.outputs.lancer == 'true'");
+    expect(seed).not.toContain("github.event.workflow_run.conclusion == 'success'");
   });
 
   it("aucune notification quand le créneau n'a rien à mettre en ligne", () => {

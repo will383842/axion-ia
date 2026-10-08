@@ -41,16 +41,52 @@ on:
 
 permissions:
   contents: read
+  # Requis par le job `porte` : lire la conclusion du job `deploy` amont.
+  actions: read
 
 jobs:
+  # 2026-10-08 — depuis la mise en ligne à heures fixes, un créneau SANS rien de
+  # nouveau finit en `success` (precheck vert, build/deploy sautés). La condition
+  # `workflow_run.conclusion == 'success'` lançait donc le seed jusqu'à 6 fois par
+  # jour sans aucun déploiement. Même porte que `image-bank-seed.yml` : on lit la
+  # conclusion du JOB « Trigger Coolify deploy », pas celle du workflow.
+  porte:
+    name: Le job deploy a-t-il reussi ?
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      lancer: ${{ steps.verdict.outputs.lancer }}
+    steps:
+      - name: Resoudre la conclusion du job `deploy`
+        id: verdict
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENEMENT: ${{ github.event_name }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENEMENT" = "workflow_dispatch" ]; then
+            echo "Declenchement manuel — on lance."
+            echo "lancer=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          # ⚠️ `name:` EXACT du job dans deploy-coolify.yml.
+          JOBS_URL="repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100"
+          FILTRE='.jobs[] | select(.name == "Trigger Coolify deploy") | .conclusion'
+          CONCLUSION=$(gh api "$JOBS_URL" --jq "$FILTRE" | head -1)
+          echo "Conclusion du job deploy : '${CONCLUSION:-<introuvable>}'"
+          if [ "$CONCLUSION" = "success" ]; then
+            echo "lancer=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Pas de deploiement dans ce run — seed saute (ce n'est pas une erreur)."
+            echo "lancer=false" >> "$GITHUB_OUTPUT"
+          fi
+
   seed:
     name: Seed content-gen (providers + keywords + templates)
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+    needs: porte
+    if: needs.porte.outputs.lancer == 'true'
 
     steps:
       - name: Checkout

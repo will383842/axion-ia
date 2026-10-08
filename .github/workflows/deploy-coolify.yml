@@ -56,13 +56,13 @@ on:
   # ⛔ NE PAS remettre `push: branches: [main]` sans l'accord de Will.
   schedule:
     # Heure d'été (UTC+2) : 12 h, 17 h, 22 h à Paris.
-    - cron: "0 10 * * *"
-    - cron: "0 15 * * *"
-    - cron: "0 20 * * *"
+    - cron: "7 10 * * *"
+    - cron: "7 15 * * *"
+    - cron: "7 20 * * *"
     # Heure d'hiver (UTC+1) : 12 h, 17 h, 22 h à Paris.
-    - cron: "0 11 * * *"
-    - cron: "0 16 * * *"
-    - cron: "0 21 * * *"
+    - cron: "7 11 * * *"
+    - cron: "7 16 * * *"
+    - cron: "7 21 * * *"
   workflow_dispatch:
     inputs:
       skip_deploy:
