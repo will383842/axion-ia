@@ -15237,6 +15237,18 @@ model ApporteurReseau {
   @@map("apporteurs_reseau")
 }
 
+/// SIRET de l'établissement sous lequel l'apporteur apporte des affaires (2026-10-08) : plusieurs
+/// activités = un SIREN, plusieurs SIRET. Table séparée sans clé étrangère (fenêtre app/worker),
+/// comme `ApporteurReseauRetrait`. Absente = on ne connaît que le SIREN (comportement d'avant).
+/// rgpd: dossier-client
+model ApporteurReseauSiret {
+  apporteurId String   @id @map("apporteur_id") @db.Uuid
+  siret       String   @db.Char(14)
+  majAt       DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("apporteur_reseau_siret")
+}
+
 /// Apporteur RETIRÉ du réseau (2026-10-07) : la fiche sort des listes par défaut et son lien
 /// de dossier est désactivé ; rien d'autre ne bouge (contrat, pièces, commissions, journal).
 /// Table SÉPARÉE, sans relation déclarée, à dessein : une colonne sur `apporteurs_reseau`

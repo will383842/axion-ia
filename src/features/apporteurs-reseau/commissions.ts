@@ -19,6 +19,7 @@ import type { StatutCommissionApporteur } from "../../../prisma/generated/client
 
 import { construireDonneesAutofacture, totalTtcPieceCents } from "./autofacture-donnees";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
+import { siretDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -737,6 +738,7 @@ export async function genererPdfAutofacture(e: {
         nom: [decryptPii(apporteur.prenom), decryptPii(apporteur.nom)].filter(Boolean).join(" "),
         denomination: apporteur.denomination,
         siren: apporteur.siren,
+        siret: await siretDe(e.apporteurId),
         adresse: decryptPii(apporteur.adresse),
         regimeTva: apporteur.regimeTva,
         numeroTva: apporteur.numeroTva,

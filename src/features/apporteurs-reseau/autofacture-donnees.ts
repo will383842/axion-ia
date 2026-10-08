@@ -45,6 +45,8 @@ export interface ApporteurPourAutofacture {
   readonly nom: string;
   readonly denomination: string | null;
   readonly siren: string | null;
+  /** SIRET de l'établissement (plusieurs activités), sinon `null` : on imprime le SIREN. */
+  readonly siret?: string | null;
   readonly adresse: string | null;
   readonly regimeTva: "franchise_293b" | "assujetti" | null;
   readonly numeroTva: string | null;
@@ -428,7 +430,7 @@ export function construireDonneesAutofacture(e: {
       periodeLabel: e.periodeLibelle,
       sousTraitant: {
         nom: e.apporteur.denomination?.trim() || e.apporteur.nom,
-        siret: siren,
+        siret: e.apporteur.siret ?? siren,
         numeroTvaIntracom: e.apporteur.numeroTva,
         adresseProfessionnelle: adresse,
         email: e.apporteur.email,
@@ -437,7 +439,7 @@ export function construireDonneesAutofacture(e: {
       lignes,
       regimeHonoraires: regime,
       delaiContestationJours: DELAI_CONTESTATION_APPORTEUR_JOURS,
-      libelleIdentifiantFournisseur: "SIREN",
+      libelleIdentifiantFournisseur: e.apporteur.siret ? "SIRET" : "SIREN",
       mandatReference: REFERENCE_MANDAT_APPORTEUR,
       ...(e.avoir ? { avoir: e.avoir } : {}),
     },

@@ -23,12 +23,15 @@ export const TEXTES = {
   lectureSeule: "Une erreur ? Écrivez-nous :",
   nomManquant: "Indiquez votre nom de famille : il figure sur votre contrat.",
   // Étape 2
-  siren: "Numéro SIREN (9 chiffres)",
+  siren: "Numéro SIREN (9 chiffres) ou SIRET (14 chiffres)",
+  aideSiret:
+    "Si vous avez plusieurs activités, indiquez le SIRET de celle sous laquelle vous apportez des affaires.",
   rechercher: "Rechercher",
   recherche: "Recherche…",
   trouve: "Trouvé",
   active: "active",
   sirenInvalide: "Ce numéro SIREN n'est pas valide : vérifiez les 9 chiffres.",
+  siretInvalide: "Ce numéro SIRET n'est pas valide : vérifiez les 14 chiffres.",
   introuvable: "Entreprise introuvable dans le registre : indiquez-la ci-dessous.",
   indisponible: "Le registre ne répond pas : indiquez votre entreprise ci-dessous.",
   diffusionPartielle: "Vos coordonnées ne sont pas publiques : indiquez-les ci-dessous.",

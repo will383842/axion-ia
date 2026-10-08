@@ -234,6 +234,8 @@ export function valeursDuContrat(
     nom: string;
     statutJuridique: string | null;
     siren: string | null;
+    /** SIRET de l'établissement ; l'adresse est alors celle de l'établissement. */
+    siret?: string | null;
     adresse: string | null;
   },
   le: Date,
@@ -243,6 +245,7 @@ export function valeursDuContrat(
     identite: identite || A_COMPLETER,
     statutJuridique: d.statutJuridique ?? A_COMPLETER,
     siren: d.siren ?? A_COMPLETER,
+    ...(d.siret ? { siret: d.siret } : {}),
     siege: d.adresse?.trim() || A_COMPLETER,
     qualite: d.statutJuridique ? qualite(d.statutJuridique) : A_COMPLETER,
     grilleDate: dateFrancaise(le),

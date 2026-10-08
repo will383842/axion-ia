@@ -62,6 +62,13 @@ vi.mock("@/lib/prisma", () => ({
       create: (...a: unknown[]) => p.apporteurCreate(...a),
     },
     submission: { findUnique: (...a: unknown[]) => p.submissionFindUnique(...a) },
+    // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
+    apporteurReseauSiret: {
+      findUnique: async () => null,
+      findMany: async () => [],
+      upsert: async () => ({}),
+      deleteMany: async () => ({ count: 0 }),
+    },
     $transaction: async (f: (t: typeof tx) => unknown) => f(tx),
   },
 }));

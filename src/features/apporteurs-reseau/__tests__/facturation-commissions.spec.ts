@@ -136,6 +136,8 @@ const lignes = () => etat.lignes as Ligne[];
 
 vi.mock("@/lib/prisma", () => {
   const prisma = {
+    // SIRET de l'établissement (2026-10-08) : aucun dans ces scénarios.
+    apporteurReseauSiret: { findUnique: vi.fn(async () => null) },
     apporteurReseau: {
       update: vi.fn(async () => ({})),
       findUnique: vi.fn(async (a: { where: { id: string } }) => ({

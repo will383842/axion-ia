@@ -177,6 +177,7 @@ export default async function DossierApporteurPage({ params }: PageProps) {
     email: dossier.email,
     telephone: dossier.telephone,
     siren: dossier.siren,
+    siret: dossier.siret ?? null,
     denomination: dossier.denomination,
     adresse: dossier.adresse,
     statutJuridique: dossier.statutJuridique,

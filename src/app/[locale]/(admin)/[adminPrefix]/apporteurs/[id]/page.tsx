@@ -18,6 +18,7 @@ import {
   SoldeNegatifFiche,
 } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
 import { lireSoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
+import { siretDe } from "@/features/apporteurs-reseau/siret-apporteur";
 import {
   PiecesVerification,
   type PieceAffichee,
@@ -94,10 +95,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
   // Retirer / supprimer (2026-10-07) : l'état se relit ici, les contrôles se refont au serveur.
-  const [retireAt, etatSuppr, solde] = await Promise.all([
+  const [retireAt, etatSuppr, solde, siret] = await Promise.all([
     retraitDe(d.id),
     etatSuppression(d.id),
     lireSoldeNegatif(d.id),
+    siretDe(d.id),
   ]);
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
@@ -160,6 +162,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           <Ligne libelle="E-mail" valeur={voitPii ? d.email : MASQUE} />
           <Ligne libelle="Téléphone" valeur={voitPii ? d.telephone : MASQUE} />
           <Ligne libelle="SIREN" valeur={d.siren} />
+          {siret ? <Ligne libelle="SIRET de l'établissement" valeur={siret} /> : null}
           <Ligne libelle="Entreprise" valeur={d.denomination} />
           <Ligne libelle="Adresse" valeur={voitPii ? d.adresse : MASQUE} />
           <Ligne libelle="Statut" valeur={statut} />

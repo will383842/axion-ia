@@ -1569,6 +1569,14 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "les octets d'une pièce de `DocumentProjet` : même règle que la pièce (supprimés avant " +
       "elle par la purge du pilote).",
   },
+  {
+    // 2026-10-08 — SIRET de l'établissement d'un apporteur : comme son SIREN (gardé sur la fiche).
+    modele: "ApporteurReseauSiret",
+    motif:
+      "identifiant professionnel de l'établissement sous lequel vous avez apporté des affaires : " +
+      "il figure sur les autofactures émises en votre nom, que la loi impose de conserver " +
+      "(art. L.123-22 du code de commerce, art. 17(3)(b) RGPD). Il est rendu par l'export.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════

@@ -25,6 +25,8 @@ export interface ValeursContrat {
   identite: string;
   statutJuridique: string;
   siren: string;
+  /** SIRET de l'établissement (plusieurs activités) ; absent des signatures d'avant le 08/10. */
+  siret?: string;
   siege: string;
   qualite: string;
   grilleDate: string;
@@ -61,7 +63,9 @@ export function texteDuContrat(v: ValeursContrat): string {
   const table: Record<string, string> = {
     APPORTEUR_IDENTITE: v.identite,
     APPORTEUR_STATUT: libelleStatut(v.statutJuridique),
-    APPORTEUR_SIREN: v.siren,
+    // Avec un SIRET : « 123456789 — SIRET de l'établissement 12345678900012 ». Ni libellé
+    // d'activité ni code NAF : l'Apporteur reste l'Apporteur (art. 1.4, contrat d'apport d'affaires).
+    APPORTEUR_SIREN: v.siret ? `${v.siren} — SIRET de l'établissement ${v.siret}` : v.siren,
     APPORTEUR_SIEGE: v.siege,
     APPORTEUR_QUALITE: v.qualite,
     GRILLE_DATE: v.grilleDate,

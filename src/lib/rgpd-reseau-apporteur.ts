@@ -36,6 +36,8 @@ export interface ExportReseauApporteur {
     /** Note interne de la Société sur son dossier : c'est une donnée le concernant (art. 15). */
     readonly noteInterne: string | null;
     readonly siren: string | null;
+    /** SIRET de l'établissement (plusieurs activités), sinon `null`. */
+    readonly siret: string | null;
     readonly entreprise: string | null;
     readonly adresse: string | null;
     readonly statut: string;
@@ -182,6 +184,13 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
             avoir: c.avoirNumero,
           })),
           siren: a.siren,
+          siret:
+            (
+              await prisma.apporteurReseauSiret.findUnique({
+                where: { apporteurId: a.id },
+                select: { siret: true },
+              })
+            )?.siret ?? null,
           entreprise: a.denomination,
           adresse: a.adresse,
           statut: a.statut,
