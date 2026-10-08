@@ -1289,7 +1289,10 @@ jobs:
   # signalé en warning. Le run suivant fonctionnera.
   notify:
     name: Telegram — résultat du déploiement
-    needs: [build, deploy]
+    # `typecheck` (2026-10-08) : s'il échoue, `deploy` est « skipped » ; sans lui ici, ce skipped
+    # passait pour un succès et l'annonce disait « déploiement réussi » alors que rien n'était en
+    # ligne. Son résultat compte donc comme celui du build.
+    needs: [build, typecheck, deploy]
     # Un créneau sans rien de nouveau saute le build : ce n'est pas un échec,
     # aucune notification (sinon une fausse alarme jusqu'à 3 fois par jour).
     if: always() && needs.build.result != 'skipped'
@@ -1303,6 +1306,7 @@ jobs:
         env:
           REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
           BUILD_RESULT: ${{ needs.build.result }}
+          TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
         run: |
           set -u
@@ -1316,17 +1320,25 @@ jobs:
           # déploiera à sa place. Mesuré : Sentry AXION-IA-R, 31 « Échec
           # déploiement » en 14 jours, tous des runs annulés — zéro vrai échec.
           # Une alarme qui sonne à chaque fusion rapprochée finit ignorée.
-          if [ "${BUILD_RESULT}" = "cancelled" ] || [ "${DEPLOY_RESULT}" = "cancelled" ]; then
+          if [ "${BUILD_RESULT}" = "cancelled" ] || [ "${TYPECHECK_RESULT}" = "cancelled" ] || [ "${DEPLOY_RESULT}" = "cancelled" ]; then
             echo "::notice::Run annulé (remplacé par un run plus récent) — aucune notification."
             exit 0
           fi
 
           # Succès = build ET deploy OK. `skipped` (workflow_dispatch avec
           # skip_deploy) n'est pas un échec et ne doit pas déclencher d'alarme.
-          if [ "${BUILD_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
+          # `typecheck` doit réussir : en échec, `deploy` est « skipped » et rien n'est en ligne.
+          if [ "${BUILD_RESULT}" = "success" ] && [ "${TYPECHECK_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
             success=true
           else
             success=false
+          fi
+          # Le message dit pourquoi : le service ne lit que build et deploy, la vérification des
+          # types est rapportée avec deploy. ⚠️ Le service refuse un champ de plus de 40 caractères
+          # (deploy-notify/route.ts) : libellé court.
+          deployLabel="${DEPLOY_RESULT}"
+          if [ "${TYPECHECK_RESULT}" != "success" ]; then
+            deployLabel="${DEPLOY_RESULT} (types : ${TYPECHECK_RESULT})"
           fi
 
           subject=$(git log -1 --pretty=%s 2>/dev/null || echo "")
@@ -1337,7 +1349,7 @@ jobs:
             --arg actor "${GITHUB_ACTOR}" \
             --arg subject "${subject}" \
             --arg buildResult "${BUILD_RESULT}" \
-            --arg deployResult "${DEPLOY_RESULT}" \
+            --arg deployResult "${deployLabel}" \
             --arg runUrl "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
             '{success:$success,sha:$sha,branch:$branch,actor:$actor,subject:$subject,buildResult:$buildResult,deployResult:$deployResult,runUrl:$runUrl}')
 
