@@ -16,7 +16,12 @@ import { GRILLE_VERSION, resoudreCommission, versionDeLaGrille } from "../commis
 
 describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes", () => {
   it("formation 1 jour → forfait du palier 1 j", () => {
-    const r = resoudreCommission({ activite: "formation", jours: 1, montantHtCents: 250_000 });
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 1,
+      montantHtCents: 250_000,
+      prixReferenceHtCents: 190_000,
+    });
     expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-formation-1j");
     expect(r.montantCents).toBe(50_000); // 500 € × 100
@@ -27,27 +32,117 @@ describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes",
     // doublait la commission sur tous les paliers pluri-journées. Le palier 2 j porte
     // DÉJÀ le forfait des deux journées (1 000 € dans la grille publiée) : le
     // multiplier une seconde fois par 2 rendrait 2 000 €.
-    const r = resoudreCommission({ activite: "formation", jours: 2, montantHtCents: 500_000 });
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 2,
+      montantHtCents: 500_000,
+      prixReferenceHtCents: 360_000,
+    });
     expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-formation-2j");
     expect(r.montantCents).toBe(100_000); // 1 000 € — PAS 200 000
   });
 
-  it("🔴 A-2 — le palier « 3 jours et + » ne suit pas non plus la durée : 5 jours = le forfait du palier", () => {
-    const trois = resoudreCommission({ activite: "formation", jours: 3, montantHtCents: 750_000 });
-    const cinq = resoudreCommission({ activite: "formation", jours: 5, montantHtCents: 1_250_000 });
-
+  // 2026-10-07 (décision de Will, contrat 2.3, A1.1) : 500 € PAR JOURNÉE, sans limite. Le
+  // forfait « 3 jours et + » à 1 500 € plafonnait à tort une formation de 5 jours.
+  it("contrat A1.1 — 500 € par journée, sans limite : 3 jours = 1 500 €, 5 jours = 2 500 €", () => {
+    const trois = resoudreCommission({
+      activite: "formation",
+      jours: 3,
+      montantHtCents: 750_000,
+      prixReferenceHtCents: 570_000,
+    });
+    const cinq = resoudreCommission({
+      activite: "formation",
+      jours: 5,
+      montantHtCents: 1_250_000,
+      prixReferenceHtCents: 950_000,
+    });
     expect(trois.commissionId).toBe("com-formation-3j");
     expect(cinq.commissionId).toBe("com-formation-3j");
-    expect(cinq.montantCents).toBe(trois.montantCents);
-    expect(cinq.montantCents).toBe(150_000); // 1 500 €
+    expect(trois.montantCents).toBe(150_000);
+    expect(cinq.montantCents).toBe(250_000);
+  });
+
+  it("contrat A1.1 — une demi-journée (jours = 0,5) : 250 €, palier com-formation-4h (plus « hors grille »)", () => {
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 0.5,
+      montantHtCents: 120_000,
+      prixReferenceHtCents: 120_000,
+    });
+    expect(r.statut).toBe("calculee");
+    expect(r.commissionId).toBe("com-formation-4h");
+    expect(r.montantCents).toBe(25_000);
+  });
+
+  // 2026-10-08 (relecture de a1) : le prorata de remise de l'art. 4.1 bis, comme le moteur.
+  it("contrat 4.1 bis — remise : 1 jour vendu 1 520 € HT au lieu de 1 900 € → 400 €, pas 500 €", () => {
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 1,
+      montantHtCents: 152_000,
+      prixReferenceHtCents: 190_000,
+    });
+    expect(r.montantCents).toBe(40_000);
+  });
+
+  it("4 h facturées 100 € (prix public 1 200 €) → 20,83 €, jamais plus que la facture", () => {
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 0.5,
+      montantHtCents: 10_000,
+      prixReferenceHtCents: 120_000,
+    });
+    expect(r.montantCents).toBe(2_083);
+    expect(r.montantCents!).toBeLessThanOrEqual(10_000);
+  });
+
+  it("vendue AU-DESSUS du prix public : plafonnée au forfait", () => {
+    const r = resoudreCommission({
+      activite: "formation",
+      jours: 1,
+      montantHtCents: 250_000,
+      prixReferenceHtCents: 190_000,
+    });
+    expect(r.montantCents).toBe(50_000);
+  });
+
+  it("sans prix public de référence : aucun montant inventé → bloquée « à qualifier »", () => {
+    const r = resoudreCommission({ activite: "formation", jours: 1, montantHtCents: 190_000 });
+    expect(r.statut).toBe("bloquee");
+    expect(r.montantCents).toBeNull();
+  });
+
+  it("le libellé dit les journées réellement comptées : 4 jours → « Formation — 4 journées », 1,5 → « 1,5 journée »", () => {
+    const quatre = resoudreCommission({
+      activite: "formation",
+      jours: 4,
+      montantHtCents: 760_000,
+      prixReferenceHtCents: 760_000,
+    });
+    expect(quatre.montantCents).toBe(200_000);
+    expect(quatre.libelleCommission).toBe("Formation — 4 journées (500 € par journée)");
+    const unEtDemi = resoudreCommission({
+      activite: "formation",
+      jours: 1.5,
+      montantHtCents: 1,
+      prixReferenceHtCents: 1,
+    });
+    expect(unEtDemi.libelleCommission).toBe("Formation — 1,5 journée (500 € par journée)");
+  });
+
+  it("un pourcentage s'arrondit À L'INFÉRIEUR, comme le moteur (regles.ts)", () => {
+    // 30 % de 333 333 = 99 999,9 → 99 999 (Math.floor), jamais 100 000.
+    const r = resoudreCommission({ activite: "audit", jours: null, montantHtCents: 333_333 });
+    expect(r.montantCents).toBe(99_999);
   });
 
   it("audit → 30 % du HT, arrondi", () => {
     const r = resoudreCommission({ activite: "audit", jours: null, montantHtCents: 333_333 });
     expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-audit");
-    expect(r.montantCents).toBe(Math.round((30 * 333_333) / 100));
+    expect(r.montantCents).toBe(Math.floor((30 * 333_333) / 100));
   });
 
   it("implementation → 15 % du HT", () => {
@@ -60,12 +155,13 @@ describe("REQ-DM-015 — les cinq valeurs d'ActiviteFacturation sont couvertes",
     expect(r.montantCents).toBe(120_000);
   });
 
-  it("un_a_un est sur BARÈME (`scale`) → bloquée `a_qualifier`, jamais 0, jamais une exception", () => {
+  // 2026-10-07 (décision de Will, contrat 2.3, annexe 1 A1.2) : le 1-to-1 n'est plus « sur
+  // barème » — 30 % du HT, comme le moteur du réseau d'apporteurs et le contrat.
+  it("un_a_un → 30 % du HT (contrat 2.3)", () => {
     const r = resoudreCommission({ activite: "un_a_un", jours: null, montantHtCents: 400_000 });
-    expect(r.statut).toBe("bloquee");
-    expect(r.motifBlocage).toBe("a_qualifier");
-    expect(r.montantCents).toBeNull();
+    expect(r.statut).toBe("calculee");
     expect(r.commissionId).toBe("com-un-a-un");
+    expect(r.montantCents).toBe(Math.floor((30 * 400_000) / 100));
   });
 
   it("site_web n'a AUCUN barème dans la grille → bloquée, et le dit", () => {

@@ -21,7 +21,11 @@
  */
 import { createHash } from "node:crypto";
 
-import { COMMERCIAL_COMMISSIONS, type CommercialCommission } from "@/content/pricing";
+import {
+  COMMERCIAL_COMMISSIONS,
+  commissionFormation,
+  type CommercialCommission,
+} from "@/content/pricing";
 
 /** Les cinq valeurs de l'enum Prisma `ActiviteFacturation`. */
 export type ActiviteFacturation = "formation" | "un_a_un" | "audit" | "implementation" | "site_web";
@@ -29,9 +33,18 @@ export type ActiviteFacturation = "formation" | "un_a_un" | "audit" | "implement
 export type EntreeCommission = {
   /** Nullable : une ligne de devis peut ne porter aucune activité (`Devis.activite?`). */
   readonly activite: ActiviteFacturation | null;
-  /** Le nombre de journées. IDENTIFIE le palier — n'est JAMAIS un multiplicateur. */
+  /**
+   * Le nombre de journées. Formation (contrat 2.3, A1.1) : 500 € PAR JOURNÉE — c'est le taux
+   * journalier qui est multiplié, jamais le forfait d'un palier (A-2 : 2 jours = 1 000 €).
+   */
   readonly jours: number | null;
   readonly montantHtCents: number;
+  /**
+   * Prix PUBLIC de référence de la ligne, en centimes HT (`prixReferenceDeLaLigne`). Formation :
+   * il porte le prorata de remise de l'art. 4.1 bis, comme le moteur. Absent : la commission
+   * d'une formation n'est pas calculée (aucun montant inventé), elle est bloquée « à qualifier ».
+   */
+  readonly prixReferenceHtCents?: number | null;
 };
 
 export type ResolutionCommission = {
@@ -91,18 +104,21 @@ export const GRILLE_VERSION = versionDeLaGrille(COMMERCIAL_COMMISSIONS);
  * L'id de commission qui vise une activité, et pour une formation le palier que
  * `jours` identifie.
  *
- * Les trois paliers de formation sont ceux de la grille (`com-formation-1j`, `-2j`,
- * `-3j`), et la borne « 3 et + » est celle que la grille elle-même écrit dans son
- * libellé : « Formation 3 jours et + ».
+ * Formation : l'id RANGE la ligne dans une famille de la grille (`-4h` sous 1 jour, `-1j`
+ * sous 2, `-2j` sous 3, `-3j` au-delà) ; le MONTANT et le LIBELLÉ suivent les journées
+ * réellement vendues (« Formation — 4 journées (500 € par journée) »), jamais la famille.
  */
 function idPourActivite(activite: ActiviteFacturation, jours: number | null): string | null {
   switch (activite) {
     case "formation": {
       // Pas de journées = pas de palier. Aucun repli sur « 1 jour » : ce serait
       // inventer un palier, donc inventer un montant.
-      if (jours === null || !Number.isFinite(jours) || jours < 1) return null;
-      if (jours === 1) return "com-formation-1j";
-      if (jours === 2) return "com-formation-2j";
+      // Contrat 2.3, A1.1 (2026-10-07) : par DEMI-journée au moins (0,5 = 4 heures).
+      if (jours === null || !Number.isFinite(jours) || jours < 0.5 || (jours * 2) % 1 !== 0)
+        return null;
+      if (jours < 1) return "com-formation-4h";
+      if (jours < 2) return "com-formation-1j";
+      if (jours < 3) return "com-formation-2j";
       return "com-formation-3j";
     }
     case "un_a_un":
@@ -120,6 +136,13 @@ function idPourActivite(activite: ActiviteFacturation, jours: number | null): st
   }
 }
 
+/** « Formation — 4 journées (500 € par journée) », « … — 1,5 journée … » : le libellé dit le compte. */
+function libelleFormation(jours: number): string {
+  const n = jours.toLocaleString("fr-FR");
+  const mot = jours >= 2 ? "journées" : "journée";
+  return `Formation — ${n} ${mot} (${commissionFormation(1)} € par journée)`;
+}
+
 function bloquee(commissionId: string | null): ResolutionCommission {
   return {
     statut: "bloquee",
@@ -135,7 +158,8 @@ function bloquee(commissionId: string | null): ResolutionCommission {
  * Le verdict de commission d'une ligne.
  *
  * `flat` = `flatEur × 100` — UNE FOIS par commande portant le palier.
- * `percent` = `round(percent × montantHtCents / 100)`.
+ * `percent` = `floor(percent × montantHtCents / 100)`, comme le moteur.
+ * Formation = 500 € × journées (contrat 2.3, A1.1).
  * `scale`, ou barème introuvable → `bloquee` / `a_qualifier`.
  */
 export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
@@ -149,6 +173,28 @@ export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
     // La grille a bougé sous ce module : l'id qu'il vise n'existe plus. C'est un
     // blocage, pas une exception — l'événement doit partir et l'anomalie se voir.
     return bloquee(null);
+  }
+
+  // FORMATION — contrat 2.3, A1.1 (décision de Will, 2026-10-07) : 500 € PAR JOURNÉE vendue,
+  // sans limite (5 journées = 2 500 €), la demi-journée à 250 €. C'est la règle du moteur
+  // (`regles.ts`). A-2 reste vrai : le montant est le TAUX JOURNALIER × les journées, jamais un
+  // forfait de palier multiplié une seconde fois (2 jours = 1 000 €, pas 2 000 €).
+  if (e.activite === "formation" && e.jours !== null) {
+    // Prorata de remise (art. 4.1 bis), À L'IDENTIQUE du moteur (`regles.ts`) : au prix public
+    // ou plus cher → le forfait ; moins cher → forfait × prix facturé ÷ prix public, arrondi
+    // à l'inférieur. Jamais au-delà du forfait, jamais au-delà de la facture.
+    const reference = e.prixReferenceHtCents ?? null;
+    if (reference === null || !(reference > 0)) return bloquee(id);
+    const forfaitCents = Math.round(commissionFormation(e.jours) * 100);
+    const ht = Math.max(0, e.montantHtCents);
+    return {
+      statut: "calculee",
+      commissionId: id,
+      montantCents: ht >= reference ? forfaitCents : Math.floor((forfaitCents * ht) / reference),
+      motifBlocage: null,
+      libelleCommission: libelleFormation(e.jours),
+      grilleVersion: GRILLE_VERSION,
+    };
   }
 
   if (entree.kind === "flat") {
@@ -169,7 +215,8 @@ export function resoudreCommission(e: EntreeCommission): ResolutionCommission {
     return {
       statut: "calculee",
       commissionId: id,
-      montantCents: Math.round((entree.percent * e.montantHtCents) / 100),
+      // À l'inférieur, comme le moteur (`regles.ts`) : un centime n'est jamais arrondi au-dessus.
+      montantCents: Math.floor((entree.percent * e.montantHtCents) / 100),
       motifBlocage: null,
       libelleCommission: entree.labelFr,
       grilleVersion: GRILLE_VERSION,
