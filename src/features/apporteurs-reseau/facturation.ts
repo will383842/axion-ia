@@ -30,6 +30,8 @@
  * Idempotent : toute écriture est conditionnelle, e-mail et alerte ont une clé « une fois ».
  */
 
+import { randomUUID } from "node:crypto";
+
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -48,6 +50,7 @@ import {
 } from "./commissions";
 import {
   aVirerPartielCents,
+  planCompensation,
   totalTtcPieceCents,
   dateFr,
   donneesManquantesAutofacture,
@@ -76,6 +79,62 @@ export function jobIdAlerteAttente(apporteurId: string, commissionId: string): s
 }
 
 type Db = Pick<typeof prisma, "commissionApporteur">;
+
+/**
+ * Scission d'une reprise pour la compensation (art. 12.4) : la ligne garde la part imputée, une
+ * nouvelle ligne porte le reste, en attente. Les deux gardent la référence d'origine (`palier`
+ * « reprise-de:… ») ; rien n'est supprimé. Rend `false` si la reprise a changé entre-temps.
+ */
+async function scinderReprise(s: {
+  id: string;
+  imputeCents: number;
+  resteCents: number;
+}): Promise<boolean> {
+  return prisma.$transaction(async (tx) => {
+    const o = await tx.commissionApporteur.findUnique({
+      where: { id: s.id },
+      select: {
+        apporteurId: true,
+        presentationId: true,
+        parrainage: true,
+        palier: true,
+        statut: true,
+        releveMois: true,
+        montantCents: true,
+        creeAt: true,
+      },
+    });
+    if (
+      !o ||
+      o.statut !== "reprise" ||
+      o.releveMois !== null ||
+      Math.abs(o.montantCents ?? 0) !== s.imputeCents + s.resteCents
+    )
+      return false;
+    const u = await tx.commissionApporteur.updateMany({
+      where: { id: s.id, statut: "reprise", releveMois: null, montantCents: o.montantCents },
+      data: { montantCents: -s.imputeCents },
+    });
+    if (u.count !== 1) return false;
+    await tx.commissionApporteur.create({
+      data: {
+        apporteurId: o.apporteurId,
+        presentationId: o.presentationId,
+        factureId: randomUUID(),
+        parrainage: o.parrainage,
+        activite: "reprise",
+        palier: o.palier,
+        factureHtCents: 0,
+        montantCents: -s.resteCents,
+        statut: "reprise",
+        // Date d'ORIGINE de la reprise : les délais de l'art. 12.4 ne repartent pas à zéro.
+        creeAt: o.creeAt,
+      },
+      select: { id: true },
+    });
+    return true;
+  });
+}
 
 /** Lignes à facturer : commissions dues pas encore facturées + reprises pas encore imputées. */
 function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown> = {}) {
@@ -168,16 +227,67 @@ export async function facturerApporteur(
     return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
   }
   const hors = { ...(await horsLitige()), prestationRealiseeAt: { not: null } };
-  const avant = await lireAFacturer(prisma, apporteurId, hors);
-  const dues = avant.filter((c) => c.statut === "due");
+  let avant = await lireAFacturer(prisma, apporteurId, hors);
+  let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
   const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
+  // facturées, les reprises imputées à hauteur exacte (la dernière scindée), le reste attend.
+  let compensation = false;
   if (total <= 0) {
-    return {
-      ok: false,
-      message: "Solde nul après déduction des reprises : reporté à la prochaine autofacture.",
-    };
+    const regime =
+      (
+        await prisma.apporteurReseau.findUnique({
+          where: { id: apporteurId },
+          select: { regimeTva: true },
+        })
+      )?.regimeTva ?? null;
+    const originesCompensation = await originesDesReprises(
+      avant.filter((c) => c.statut === "reprise" && !c.avoirNumero),
+    );
+    const plan = planCompensation(
+      regime,
+      dues.map((d) => d.montantCents ?? 0),
+      // Un avoir déjà émis (reprise libérée) n'est jamais scindé, et passe en premier ; les autres
+      // sont regroupés comme leurs pièces (une par autofacture d'origine).
+      [
+        ...avant.filter((c) => c.statut === "reprise" && !!c.avoirNumero),
+        ...avant.filter((c) => c.statut === "reprise" && !c.avoirNumero),
+      ].map((c) => ({
+        ...c,
+        scindable: !c.avoirNumero,
+        piece: c.avoirNumero
+          ? `avoir:${c.avoirNumero}`
+          : (originesCompensation.get(c.id)?.numero ?? `?${c.id}`),
+      })),
+    );
+    if (plan && "bloque" in plan) {
+      return {
+        ok: false,
+        message:
+          "Un avoir déjà émis dépasse les commissions dues : il sera imputé entier sur une prochaine autofacture ; rien n'est versé d'ici là (art. 12.4).",
+      };
+    }
+    if (!plan) {
+      return {
+        ok: false,
+        message: "Solde nul après déduction des reprises : reporté à la prochaine autofacture.",
+      };
+    }
+    if (plan.scinder && !(await scinderReprise(plan.scinder))) {
+      return { ok: false, message: "Les reprises ont changé pendant la compensation : réessai." };
+    }
+    const garder = new Set([
+      ...dues.map((d) => d.id),
+      ...plan.imputees,
+      ...(plan.scinder ? [plan.scinder.id] : []),
+    ]);
+    avant = (await lireAFacturer(prisma, apporteurId, hors)).filter((c) => garder.has(c.id));
+    dues = avant.filter((c) => c.statut === "due");
+    if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
+    compensation = true;
   }
+  const idsAvant = new Set(avant.map((c) => c.id));
 
   // Vigilance REVÉRIFIÉE à l'émission : une attestation périmée depuis que les commissions sont
   // devenues dues ne doit pas laisser partir une facture au-delà du seuil (art. 5.4 et 6.2).
@@ -258,11 +368,51 @@ export async function facturerApporteur(
     };
   }
 
+  // La somme virée est TVA comprise pour un apporteur assujetti : elle se lit sur les pièces.
+  // Un avoir déjà émis compte pour son propre TTC (même calcul que sa pièce).
+  const parAvoir = new Map<string, number[]>();
+  for (const c of dejaEmises)
+    parAvoir.set(c.avoirNumero!, [
+      ...(parAvoir.get(c.avoirNumero!) ?? []),
+      Math.abs(c.montantCents ?? 0),
+    ]);
+  const regimeTva =
+    dejaEmises.length > 0
+      ? ((
+          await prisma.apporteurReseau.findUnique({
+            where: { id: apporteurId },
+            select: { regimeTva: true },
+          })
+        )?.regimeTva ?? null)
+      : null;
+  const dejaTtc = [...parAvoir.values()].reduce((s, m) => s + totalTtcPieceCents(regimeTva, m), 0);
+  const aVirer =
+    pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0) - dejaTtc;
+  // Jamais de net négatif (il ferait perdre de l'argent) : la compensation l'empêche ; s'il
+  // arrivait quand même, rien n'est émis et le passage suivant recommence.
+  if (aVirer < 0) {
+    signalerErreurReseau(
+      "autofacture : net négatif après arrondi",
+      new Error(`apporteur ${apporteurId} : ${aVirer} centimes`),
+    );
+    return {
+      ok: false,
+      message: "Net négatif après arrondi : rien n'est émis, nouvel essai au prochain passage.",
+    };
+  }
+  // Compensation intégrale (art. 12.4) : rien à virer. Les dues sont réglées par compensation et
+  // les reprises imputées soldées DANS LA TRANSACTION D'ÉMISSION (jamais une autofacture à net
+  // nul restée « due ») ; le relevé le dit (autofacture, avoir, net).
+  const compense = compensation && aVirer === 0;
+  const solde = compense ? { verseeAt: maintenant } : {};
+
   await prisma.$transaction(
     async (tx) => {
       // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
       await verrouillerSerieAutofacture(tx, numeros);
-      const lues = await lireAFacturer(tx, apporteurId, hors);
+      // Seules les lignes retenues plus haut (une compensation n'impute pas tout) ; une ligne
+      // apparue entre-temps attend le passage suivant.
+      const lues = (await lireAFacturer(tx, apporteurId, hors)).filter((c) => idsAvant.has(c.id));
       const memes =
         lues.length === avant.length &&
         lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
@@ -288,7 +438,7 @@ export async function facturerApporteur(
             montantCents: c.montantCents,
             ...hors,
           },
-          data: commun,
+          data: compense ? { ...commun, statut: "versee", ...solde } : commun,
         });
         dues2.count += r.count;
       }
@@ -296,14 +446,14 @@ export async function facturerApporteur(
       for (const a of avoirsPdf) {
         const r = await tx.commissionApporteur.updateMany({
           where: { id: { in: a.lignes.map((c) => c.id) }, statut: "reprise", releveMois: null },
-          data: { ...commun, avoirNumero: a.numero },
+          data: { ...commun, avoirNumero: a.numero, ...solde },
         });
         reprises += r.count;
       }
       for (const c of dejaEmises) {
         const r = await tx.commissionApporteur.updateMany({
           where: { id: c.id, statut: "reprise", releveMois: null, avoirNumero: c.avoirNumero },
-          data: commun,
+          data: { ...commun, ...solde },
         });
         reprises += r.count;
       }
@@ -324,30 +474,10 @@ export async function facturerApporteur(
     const renvoi = a.origine ? ` (rectifie l'autofacture ${a.origine}${quand})` : "";
     return `Avoir n° ${a.numero} : ${euros(a.montant)} hors taxes, déduit du virement${renvoi}`;
   });
-  // La somme virée est TVA comprise pour un apporteur assujetti : elle se lit sur les pièces.
-  // Un avoir déjà émis compte pour son propre TTC (même calcul que sa pièce).
-  const parAvoir = new Map<string, number[]>();
-  for (const c of dejaEmises)
-    parAvoir.set(c.avoirNumero!, [
-      ...(parAvoir.get(c.avoirNumero!) ?? []),
-      Math.abs(c.montantCents ?? 0),
-    ]);
-  const regimeTva =
-    dejaEmises.length > 0
-      ? ((
-          await prisma.apporteurReseau.findUnique({
-            where: { id: apporteurId },
-            select: { regimeTva: true },
-          })
-        )?.regimeTva ?? null)
-      : null;
-  const dejaTtc = [...parAvoir.values()].reduce((s, m) => s + totalTtcPieceCents(regimeTva, m), 0);
   for (const [n, m] of parAvoir)
     avoirs.push(
       `Avoir n° ${n} (déjà émis) : ${euros(m.reduce((s, x) => s + x, 0))} hors taxes, déduit de ce virement`,
     );
-  const aVirer =
-    pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0) - dejaTtc;
   const montrerSomme = avoirs.length > 0 || aVirer !== brut;
   let envoi: ResultatEnvoi = "indisponible";
   try {
@@ -358,9 +488,10 @@ export async function facturerApporteur(
         contactName: nom,
         montant: euros(brut),
         numeroAutofacture: numero,
-        echeance: dateFr(echeancePaiement(maintenant)),
+        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant)) }),
         ...(avoirs.length > 0 ? { avoirs } : {}),
         ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
+        ...(compense ? { compense: true } : {}),
       },
       entityType: "ApporteurReseau",
       entityId: apporteurId,
@@ -381,7 +512,8 @@ export async function facturerApporteur(
     );
   }
   try {
-    await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
+    if (!compense)
+      await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
   }

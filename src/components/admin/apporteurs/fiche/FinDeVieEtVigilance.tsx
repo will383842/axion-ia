@@ -8,6 +8,7 @@ import {
   resilierApporteurAction,
 } from "@/features/apporteurs-reseau/actions-commissions";
 import { euros } from "@/features/apporteurs-reseau/regles";
+import type { SoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
 
 export interface VigilanceFiche {
   cumulCents: number;
@@ -164,6 +165,32 @@ export function FinDeVie({
           </form>
         </details>
       ) : null}
+    </AdminCard>
+  );
+}
+
+/** Art. 12.4 : solde négatif de l'apporteur, et remboursement demandable après douze mois. */
+export function SoldeNegatifFiche({ s }: { s: SoldeNegatif }) {
+  const date = (d: Date) => d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  return (
+    <AdminCard as="section">
+      <h2 className="mb-[var(--space-admin-2)] font-semibold">Solde négatif (art. 12.4)</h2>
+      <p className="mb-[var(--space-admin-2)]">
+        <strong>{euros(s.soldeCents)}</strong> de reprises à imputer, depuis le {date(s.depuis)}. Il
+        s&apos;impute de lui-même, par compensation, sur les prochaines commissions.
+      </p>
+      {s.remboursementDemandable ? (
+        <p className="font-semibold" style={{ color: "var(--color-admin-warning)" }}>
+          Plus de douze mois sans imputation : vous pouvez en demander le remboursement par écrit,
+          avec l&apos;avoir et son décompte, dans la limite de {euros(s.demandableCents)} (plafond :{" "}
+          {euros(s.plafondCents)} versés dans les 24 mois précédant la reprise). Rien n&apos;est
+          envoyé automatiquement.
+        </p>
+      ) : (
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Remboursement demandable à partir de douze mois sans imputation.
+        </p>
+      )}
     </AdminCard>
   );
 }

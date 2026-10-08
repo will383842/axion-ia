@@ -18,6 +18,8 @@ interface Ligne {
   verseeAt: Date | null;
   majAt: Date;
   activite: string;
+  /** Date de création (reprise : repère des délais de l'art. 12.4). */
+  creeAt?: Date;
   palier: string | null;
   parrainage: boolean;
   prixPublicHtCents: number | null;
@@ -488,12 +490,21 @@ describe("reprises", () => {
     expect(p["sommeVirement"]).toBeUndefined();
   });
 
-  it("reprise plus grosse que les commissions dues : pas d'autofacture, la reprise reste à imputer", async () => {
+  it("reprise plus grosse que les dues : COMPENSATION (art. 12.4) — autofacture, avoir scindé, net 0 réglé d'office", async () => {
     etat.lignes = [ligne("c1", "due", 10_000), ligne("r1", "reprise", -15_000)];
     const bilan = await facturerCommissionsDues(MARDI);
-    expect(bilan.autofactures).toBe(0);
-    expect(lignes()[1]!.autofactureNumero).toBeNull();
-    expect(lignes()[1]!.releveMois).toBeNull();
+    expect(bilan.autofactures).toBe(1);
+    const r1 = lignes().find((l) => l.id === "r1")!;
+    expect(r1.montantCents).toBe(-10_000); // part imputée
+    expect(r1.releveMois).not.toBeNull();
+    const reste = lignes().find((l) => l.statut === "reprise" && l.id !== "r1")!;
+    expect(reste).toMatchObject({ montantCents: -5_000, releveMois: null, palier: r1.palier });
+    // Rien à virer : dues réglées par compensation, avoir soldé.
+    expect(lignes().find((l) => l.id === "c1")!.statut).toBe("versee");
+    expect(r1.verseeAt).not.toBeNull();
+    const releve = etat.envoyes.find((e) => e["gabarit"] === "apporteur-releve")!;
+    expect(releve["payload"]).toMatchObject({ compense: true });
+    expect(releve["attachments"] as unknown[]).toHaveLength(2); // autofacture + avoir
   });
 
   it("une reprise déjà imputée n'est pas déduite deux fois", async () => {
@@ -1151,6 +1162,56 @@ describe("ligne RETENUE pour manquement (art. 4.5 bis) dans une autofacture", ()
   });
 });
 
+describe("solde négatif (art. 12.4) : compensation avec pièces", () => {
+  it("deux reprises plus grosses que trois dues : la plus ancienne entière, la suivante scindée, le reste attend", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 10_000),
+      ligne("d2", "due", 5_000),
+      ligne("d3", "due", 3_000),
+      ligne("r1", "reprise", -12_000),
+      ligne("r2", "reprise", -20_000),
+    ];
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    const l = (id: string) => lignes().find((x) => x.id === id)!;
+    expect(l("r1")).toMatchObject({ montantCents: -12_000 });
+    expect(l("r2")).toMatchObject({ montantCents: -6_000 });
+    expect(l("r1").releveMois).not.toBeNull();
+    expect(l("r2").releveMois).not.toBeNull();
+    const reste = lignes().filter((x) => x.statut === "reprise" && x.releveMois === null);
+    expect(reste.map((x) => x.montantCents)).toEqual([-14_000]);
+    expect(reste[0]!.palier).toBe(l("r2").palier); // même référence d'origine
+    expect(["d1", "d2", "d3"].map((id) => l(id).statut)).toEqual(["versee", "versee", "versee"]);
+    // Rien ne se perd : 32 000 de reprises = 18 000 imputés + 14 000 en attente.
+    const toutes = lignes().filter((x) => x.statut === "reprise");
+    expect(toutes.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-32_000);
+  });
+
+  it("assujetti à la TVA : l'avoir ne dépasse jamais l'autofacture en TTC (arrondi), rien n'est perdu", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d2", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d3", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("r1", "reprise", -20_000, { apporteurId: "APP4" }),
+    ];
+    const r = await facturerApporteur("APP4", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    const net = (r as { totalCents: number }).totalCents;
+    expect(net).toBeGreaterThanOrEqual(0); // jamais négatif
+    expect(net).toBeLessThanOrEqual(1); // au plus le centime d'arrondi, laissé au virement
+    const reprises = lignes().filter((x) => x.statut === "reprise");
+    expect(reprises.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-20_000);
+  });
+
+  it("reprises plus petites que les dues : rien ne change (déduction habituelle)", async () => {
+    etat.lignes = [ligne("d1", "due", 40_000), ligne("r1", "reprise", -15_000)];
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    expect(lignes().filter((x) => x.statut === "reprise")).toHaveLength(1);
+    expect(lignes().find((x) => x.id === "d1")!.statut).toBe("due"); // à virer
+  });
+});
+
 describe("reprise libérée après une retenue : réimputée SANS nouvel avoir", () => {
   it("garde son numéro d'avoir, aucune nouvelle pièce, déduite du virement", async () => {
     etat.lignes = [
@@ -1165,5 +1226,53 @@ describe("reprise libérée après une retenue : réimputée SANS nouvel avoir",
     expect(r1.avoirNumero).toBe("AXI-APP-2026-0002");
     expect(r1.autofactureNumero).toBe((r as { numero: string }).numero);
     expect(r1.releveMois).not.toBeNull();
+  });
+});
+
+describe("compensation (art. 12.4) et avoir déjà émis", () => {
+  it("avoir déjà émis de 1 000 € en attente, 300 € dus : RIEN n'est versé, l'avoir n'est pas scindé", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 30_000),
+      ligne("rx", "reprise", -100_000, { avoirNumero: "AXI-APP-2026-0002" }),
+    ];
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: false });
+    expect(lignes().find((l) => l.id === "d1")!).toMatchObject({
+      statut: "due",
+      autofactureNumero: null,
+    });
+    expect(lignes().find((l) => l.id === "rx")!).toMatchObject({
+      montantCents: -100_000,
+      releveMois: null,
+    });
+    expect(lignes().filter((l) => l.statut === "reprise")).toHaveLength(1);
+  });
+
+  it("la ligne de reste d'une scission garde la date d'ORIGINE de la reprise (délais de 12 et 24 mois)", async () => {
+    const origine = new Date("2026-03-01T10:00:00Z");
+    etat.lignes = [
+      ligne("d1", "due", 10_000),
+      ligne("r1", "reprise", -15_000, { creeAt: origine }),
+    ];
+    await facturerApporteur("APP1", MARDI);
+    const reste = lignes().find((l) => l.statut === "reprise" && l.id !== "r1")!;
+    expect(reste.creeAt).toEqual(origine);
+  });
+
+  it("assujetti, reprises de DEUX autofactures d'origine : plafond TTC pièce par pièce, net jamais négatif", async () => {
+    etat.lignes = [
+      ligne("v1", "versee", 9_999, { apporteurId: "APP4", autofactureNumero: "AXI-APP-2026-0010" }),
+      ligne("v2", "versee", 9_999, { apporteurId: "APP4", autofactureNumero: "AXI-APP-2026-0011" }),
+      ligne("d1", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d2", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d3", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("r1", "reprise", -5_001, { apporteurId: "APP4", palier: "reprise-de:v1" }),
+      ligne("r2", "reprise", -8_003, { apporteurId: "APP4", palier: "reprise-de:v2" }),
+    ];
+    const r = await facturerApporteur("APP4", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    expect((r as { totalCents: number }).totalCents).toBeGreaterThanOrEqual(0);
+    const reprises = lignes().filter((x) => x.statut === "reprise");
+    expect(reprises.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-13_004);
   });
 });

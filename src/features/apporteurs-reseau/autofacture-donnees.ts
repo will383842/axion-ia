@@ -234,6 +234,66 @@ export function aVirerPartielCents(
   return { totalCents: total, partielPossible: total > 0 };
 }
 
+/**
+ * COMPENSATION (contrat 2.3, art. 12.4 ; art. 1348-2 du code civil) quand les reprises en attente
+ * DÉPASSENT les commissions dues : on facture les dues et on n'impute des reprises (les plus
+ * anciennes d'abord) qu'à hauteur de ce qui est dû. La dernière reprise est SCINDÉE : une part
+ * imputée maintenant, le reste en attente (même référence d'origine sur les deux lignes).
+ * Le TTC de l'avoir ne dépasse jamais celui de l'autofacture : pour un apporteur assujetti, la part
+ * imputée est ajustée au centime près, et l'éventuel centime restant part au virement.
+ * Rend `null` si rien n'est à compenser (les reprises ne dépassent pas les dues).
+ */
+export function planCompensation(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  duesCents: readonly number[],
+  reprises: ReadonlyArray<{
+    id: string;
+    montantCents: number | null;
+    /** `false` : avoir déjà émis, jamais scindé (imputé entier, ou bloque). */
+    scindable?: boolean;
+    /** Pièce d'avoir à laquelle la reprise appartiendra (TTC arrondi pièce par pièce). */
+    piece?: string;
+  }>,
+):
+  | { imputees: string[]; scinder: { id: string; imputeCents: number; resteCents: number } | null }
+  | { bloque: true }
+  | null {
+  const dues = duesCents.reduce((s, m) => s + m, 0);
+  const total = reprises.reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
+  if (dues <= 0 || total <= dues) return null;
+  const plafondTtc = totalTtcPieceCents(regimeTva, [...duesCents]);
+  // TTC des avoirs : arrondi PIÈCE PAR PIÈCE, comme les PDF (jamais un centime perdu).
+  const ttcAvoirs = (items: ReadonlyArray<{ piece: string; m: number }>) => {
+    const parPiece = new Map<string, number[]>();
+    for (const x of items) parPiece.set(x.piece, [...(parPiece.get(x.piece) ?? []), x.m]);
+    return [...parPiece.values()].reduce((s, ms) => s + totalTtcPieceCents(regimeTva, ms), 0);
+  };
+  const imputees: string[] = [];
+  const pris: Array<{ piece: string; m: number }> = [];
+  for (const r of reprises) {
+    const m = Math.abs(r.montantCents ?? 0);
+    if (m <= 0) continue;
+    const piece = r.piece ?? r.id;
+    const cumul = pris.reduce((s, x) => s + x.m, 0);
+    if (cumul + m <= dues && ttcAvoirs([...pris, { piece, m }]) <= plafondTtc) {
+      imputees.push(r.id);
+      pris.push({ piece, m });
+      continue;
+    }
+    // Avoir déjà émis qui ne tient pas entier : on ne le scinde pas, et on ne verse pas les dues
+    // en le laissant de côté (ce serait payer alors qu'un solde négatif reste dû).
+    if (r.scindable === false) return { bloque: true };
+    // Scission : la plus grande part qui garde les avoirs sous l'autofacture, HT comme TTC.
+    let part = Math.min(m - 1, dues - cumul);
+    while (part > 0 && ttcAvoirs([...pris, { piece, m: part }]) > plafondTtc) part -= 1;
+    return {
+      imputees,
+      scinder: part > 0 ? { id: r.id, imputeCents: part, resteCents: m - part } : null,
+    };
+  }
+  return { imputees, scinder: null };
+}
+
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
 export const ECHEANCE_JOURS = 30;
 /** OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission. */

@@ -11,7 +11,12 @@ import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/f
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
-import { CumulVigilance, FinDeVie } from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
+import {
+  CumulVigilance,
+  FinDeVie,
+  SoldeNegatifFiche,
+} from "@/components/admin/apporteurs/fiche/FinDeVieEtVigilance";
+import { lireSoldeNegatif } from "@/features/apporteurs-reseau/solde-negatif";
 import {
   PiecesVerification,
   type PieceAffichee,
@@ -88,7 +93,11 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
   // Retirer / supprimer (2026-10-07) : l'état se relit ici, les contrôles se refont au serveur.
-  const [retireAt, etatSuppr] = await Promise.all([retraitDe(d.id), etatSuppression(d.id)]);
+  const [retireAt, etatSuppr, solde] = await Promise.all([
+    retraitDe(d.id),
+    etatSuppression(d.id),
+    lireSoldeNegatif(d.id),
+  ]);
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
   const voitPii = peutOuvrirDossierApporteur(acces.role);
@@ -316,6 +325,7 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
 
       <div className="grid gap-[var(--space-admin-4)] lg:grid-cols-2">
         <CumulVigilance v={fiche.vigilance} />
+        {solde ? <SoldeNegatifFiche s={solde} /> : null}
         <FinDeVie
           apporteurId={d.id}
           signe={d.statut === "signe"}
