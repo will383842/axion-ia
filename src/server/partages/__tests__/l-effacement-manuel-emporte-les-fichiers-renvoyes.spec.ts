@@ -1,0 +1,141 @@
+// @vitest-environment node
+
+/**
+ * L'EFFACEMENT MANUEL D'UN DOSSIER EMPORTE LES FICHIERS QUE LE CANDIDAT A RENVOYÉS (L5b).
+ *
+ * Le fichier renvoyé par un candidat (`origine = personne`) est rattaché à son
+ * lien SANS clé étrangère : la cascade de l'effacement du dossier ne l'atteint
+ * pas. Sans ce geste, son montage survivrait — orphelin — à l'effacement
+ * demandé par la personne ou décidé par Will.
+ *
+ * Ce n'est PAS une purge automatique : seuls les deux chemins d'effacement
+ * MANUEL l'appellent (suppression console, demande art. 17).
+ *
+ *  - objet du stockage effacé, PUIS ligne supprimée sous le drapeau
+ *    d'effacement (le seul qui lève le trigger AXP01) ;
+ *  - un envoi en cours est arrêté dans le stockage ;
+ *  - stockage injoignable → la ligne RESTE (l'objet resterait sinon introuvable) ;
+ *  - les fichiers envoyés PAR L'ÉQUIPE ne sont pas touchés ;
+ *  - bibliothèque éteinte → rien.
+ */
+
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { etat, r2 } = vi.hoisted(() => ({
+  etat: {
+    lignes: [] as Array<Record<string, unknown>>,
+    supprimees: [] as string[],
+    drapeau: 0,
+    whereFichiers: null as unknown,
+  },
+  r2: {
+    supprimerObjetCibleR2: vi.fn(async () => undefined),
+    arreterEnvoiR2: vi.fn(async () => undefined),
+  },
+}));
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    lienPartage: {
+      findMany: async () => [{ id: "lien-1" }, { id: "lien-2" }],
+    },
+    fichierPartage: {
+      findMany: async (a: { where: unknown }) => {
+        etat.whereFichiers = a.where;
+        return etat.lignes;
+      },
+    },
+  },
+}));
+vi.mock("@/lib/r2-storage", () => r2);
+vi.mock("@/lib/rgpd-erase", () => ({
+  executerSousDrapeauEffacement: async (_c: unknown, fn: (tx: unknown) => Promise<unknown>) => {
+    etat.drapeau++;
+    return fn({
+      fichierPartage: {
+        deleteMany: async (a: { where: { id: { in: string[] } } }) => {
+          etat.supprimees.push(...a.where.id.in);
+          return { count: a.where.id.in.length };
+        },
+      },
+    });
+  },
+}));
+
+import { effacerFichiersRenvoyesCandidature } from "../effacement-candidat";
+
+const APP = "22222222-2222-4222-8222-222222222222";
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  etat.lignes = [
+    { id: "f-ok", r2Cle: "partages/f-ok/v.mp4", r2UploadId: null, etatDepot: "disponible" },
+    { id: "f-cours", r2Cle: "partages/f-cours/v.mp4", r2UploadId: "up-1", etatDepot: "en_cours" },
+  ];
+  etat.supprimees = [];
+  etat.drapeau = 0;
+  Object.assign(process.env, {
+    R2_ACCOUNT_ID: "compte",
+    R2_PARTAGES_BUCKET_NAME: "axion-ia-partages",
+    R2_PARTAGES_ACCESS_KEY_ID: "cle",
+    R2_PARTAGES_SECRET_ACCESS_KEY: "secret-cle",
+    PARTAGES_SECRET: "x".repeat(32),
+  });
+});
+
+describe("effacerFichiersRenvoyesCandidature", () => {
+  it("efface les objets puis les lignes, sous le drapeau d'effacement, fichiers de la personne seulement", async () => {
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.whereFichiers).toEqual({
+      origine: "personne",
+      lienDepotId: { in: ["lien-1", "lien-2"] },
+    });
+    expect(r2.arreterEnvoiR2).toHaveBeenCalledWith(
+      expect.anything(),
+      "partages/f-cours/v.mp4",
+      "up-1",
+    );
+    expect(r2.supprimerObjetCibleR2).toHaveBeenCalledTimes(2);
+    expect(etat.drapeau).toBe(1);
+    expect(etat.supprimees.sort()).toEqual(["f-cours", "f-ok"]);
+    expect(r).toEqual({ effaces: 2, conserves: 0 });
+  });
+
+  it("stockage injoignable → la ligne reste (l'objet resterait sinon introuvable)", async () => {
+    r2.supprimerObjetCibleR2.mockImplementationOnce(async () => {
+      throw new Error("R2 injoignable");
+    });
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.supprimees).toEqual(["f-cours"]);
+    expect(r).toEqual({ effaces: 1, conserves: 1 });
+  });
+
+  it("aucun fichier renvoyé → aucune transaction", async () => {
+    etat.lignes = [];
+    await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.drapeau).toBe(0);
+  });
+
+  it("bibliothèque éteinte → rien", async () => {
+    delete process.env["R2_PARTAGES_BUCKET_NAME"];
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(r).toEqual({ effaces: 0, conserves: 0 });
+    expect(r2.supprimerObjetCibleR2).not.toHaveBeenCalled();
+  });
+});
+
+describe("les deux chemins d'effacement MANUEL l'appellent, AVANT la suppression du dossier", () => {
+  const lire = (p: string) => readFileSync(path.join(process.cwd(), p), "utf8");
+
+  it.each([
+    ["suppression console", "src/features/admin-job-applications/actions.ts"],
+    ["demande art. 17", "src/server/careers/candidature-rgpd.ts"],
+  ])("%s", (_n, fichier) => {
+    const src = lire(fichier);
+    const appel = src.indexOf("await effacerFichiersRenvoyesCandidature(");
+    expect(appel).toBeGreaterThan(0);
+    expect(src.indexOf("prisma.jobApplication.delete(", appel)).toBeGreaterThan(appel);
+  });
+});

@@ -82,3 +82,24 @@ export function configPartages(env: Env = process.env): ConfigPartages | null {
 export function partagesActifs(env: Env = process.env): boolean {
   return configPartages(env) !== null;
 }
+
+/**
+ * L'origine EXACTE d'où le stockage sert les fichiers de la bibliothèque —
+ * pour la directive `media-src` de la console (lecteur vidéo d'un essai rendu,
+ * L5b [I1]), au plus juste : jamais de joker. `null` tant que la bibliothèque
+ * est éteinte, ou si le compte n'a pas une forme attendue.
+ *
+ * Le client S3 adresse un compartiment au nom « DNS » en sous-domaine
+ * (`https://<compartiment>.<compte>.r2.cloudflarestorage.com`), sinon par le
+ * chemin (`https://<compte>.r2.cloudflarestorage.com/<compartiment>`).
+ */
+export function origineStockagePartages(env: Env = process.env): string | null {
+  const c = configPartages(env);
+  if (!c) return null;
+  const compte = c.accountId.toLowerCase();
+  if (!/^[a-z0-9]{1,64}$/.test(compte)) return null;
+  if (/^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/.test(c.bucket)) {
+    return `https://${c.bucket}.${compte}.r2.cloudflarestorage.com`;
+  }
+  return `https://${compte}.r2.cloudflarestorage.com`;
+}

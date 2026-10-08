@@ -98,9 +98,18 @@ export const PHRASE_SUIVI =
  * Le paragraphe ajouté à la fin du message : un LIEN, jamais une pièce jointe.
  * Markdown léger (`[libellé](adresse)`), rendu par le gabarit e-mail existant.
  */
-export function paragrapheFichiers(adresse: string, expireLe: Date): string {
+export function paragrapheFichiers(
+  adresse: string,
+  expireLe: Date,
+  opts: { readonly depotAutorise?: boolean } = {},
+): string {
   return (
     `**Fichiers à télécharger (jusqu'au ${dateCourte(expireLe)})** : ` +
-    `[ouvrir la page de téléchargement](${adresse})\n\n${PHRASE_SUIVI}`
+    `[ouvrir la page de téléchargement](${adresse})\n\n${PHRASE_SUIVI}` +
+    (opts.depotAutorise ? `\n\n${PHRASE_DEPOT}` : "")
   );
 }
+
+/** L5b — ajouté au message quand l'équipe autorise le candidat à renvoyer sa version. */
+export const PHRASE_DEPOT =
+  "Votre montage est prêt ? Vous pourrez aussi déposer votre version sur cette même page (une vidéo ou une archive ZIP, 4 Go au plus).";

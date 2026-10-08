@@ -39,6 +39,8 @@ export interface LienPrepare {
   readonly categories: ReadonlyArray<string>;
   /** Paragraphe ajouté à la fin du message (Markdown léger). */
   readonly paragraphe: string;
+  /** L5b — la personne peut-elle déposer sa version par ce lien ? (coché par l'équipe) */
+  readonly depotAutorise?: boolean;
 }
 
 export interface FichierCandidat {
@@ -101,7 +103,7 @@ export type Preparation =
 /** Vérifie les fichiers et prépare le lien. N'écrit rien. */
 export async function preparerLienFichiers(
   fichierIds: ReadonlyArray<string>,
-  opts: { maintenant?: Date; env?: Env } = {},
+  opts: { maintenant?: Date; env?: Env; depotAutorise?: boolean } = {},
 ): Promise<Preparation> {
   const env = opts.env ?? process.env;
   if (configPartages(env) === null) {
@@ -139,7 +141,10 @@ export async function preparerLienFichiers(
       expireLe,
       fichierIds: ids,
       categories: v.categories,
-      paragraphe: paragrapheFichiers(adresse, expireLe),
+      depotAutorise: opts.depotAutorise === true,
+      paragraphe: paragrapheFichiers(adresse, expireLe, {
+        depotAutorise: opts.depotAutorise === true,
+      }),
     },
   };
 }
@@ -165,6 +170,7 @@ export async function creerLienPartage(
       applicationId: d.applicationId,
       reponseId: d.reponseId,
       expireLe: d.lien.expireLe,
+      depotAutorise: d.lien.depotAutorise === true,
       creeParId: d.auteur.userId,
       creeParNom: d.auteur.nom.slice(0, 200) || "Équipe",
       fichiers: { create: d.lien.fichierIds.map((fichierId) => ({ fichierId })) },

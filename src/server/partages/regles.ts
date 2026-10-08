@@ -17,6 +17,13 @@ export const TAILLE_MAX_EQUIPE_OCTETS = 20 * GIO;
 /** Un fichier renvoyé par un candidat (L5b) : 4 Gio, limite de l'antivirus (décision 4). */
 export const TAILLE_MAX_PERSONNE_OCTETS = 4 * GIO;
 
+/**
+ * Ce qu'un candidat peut DÉPOSER par son lien (L5b) : 4 Go tels qu'il les lit
+ * (4 000 000 000 octets, unités décimales comme `tailleLisible`), donc un
+ * fichier affiché « 4,1 Go » est refusé. Sous le plafond de la base (4 Gio).
+ */
+export const TAILLE_MAX_DEPOT_PERSONNE_OCTETS = 4_000_000_000;
+
 /** Au-delà, un fichier de l'ÉQUIPE n'est pas analysé (décision 7) — `hors_limite`. */
 export const SEUIL_ANTIVIRUS_EQUIPE_OCTETS = 200 * MIO;
 
@@ -193,6 +200,130 @@ export function tailleLisible(octets: number): string {
   if (octets >= 1e6) return `${f(octets / 1e6, octets >= 1e8 ? 0 : 1)} Mo`;
   if (octets >= 1e3) return `${f(octets / 1e3, 0)} ko`;
   return `${octets} octets`;
+}
+
+// ── Fichier renvoyé par un candidat (L5b) ──────────────────────────────────
+
+/**
+ * Familles de fichiers qu'un candidat peut renvoyer, reconnues à leurs
+ * PREMIERS OCTETS (jamais au type annoncé par le navigateur) :
+ *   - `isobmff` : MP4, M4V, MOV (`ftyp`, ou un vieil atome QuickTime, aux octets 4 à 7) ;
+ *   - `ebml`    : WebM, MKV (1A 45 DF A3) ;
+ *   - `avi`     : RIFF….AVI ;
+ *   - `zip`     : archive ZIP (PK 03 04).
+ */
+export type FamilleFichierRendu = "isobmff" | "ebml" | "avi" | "zip";
+
+/** Extensions acceptées, leur famille et le type servi (choisi par le SERVEUR). */
+export const EXTENSIONS_RENDU: Readonly<
+  Record<string, { readonly famille: FamilleFichierRendu; readonly mime: string }>
+> = {
+  mp4: { famille: "isobmff", mime: "video/mp4" },
+  m4v: { famille: "isobmff", mime: "video/mp4" },
+  mov: { famille: "isobmff", mime: "video/quicktime" },
+  webm: { famille: "ebml", mime: "video/webm" },
+  mkv: { famille: "ebml", mime: "video/x-matroska" },
+  avi: { famille: "avi", mime: "video/x-msvideo" },
+  zip: { famille: "zip", mime: "application/zip" },
+};
+
+/** Octets lus pour reconnaître un fichier. */
+export const OCTETS_SIGNATURE = 16;
+
+const ATOMES_ISOBMFF = new Set(["ftyp", "moov", "mdat", "wide", "free", "skip", "pnot"]);
+
+function ascii(o: Uint8Array, debut: number, fin: number): string {
+  let s = "";
+  for (let i = debut; i < fin && i < o.length; i++) s += String.fromCharCode(o[i]!);
+  return s;
+}
+
+/** La famille reconnue aux premiers octets, ou `null`. Pure. */
+export function familleSignature(o: Uint8Array): FamilleFichierRendu | null {
+  if (o.length >= 4 && o[0] === 0x1a && o[1] === 0x45 && o[2] === 0xdf && o[3] === 0xa3) {
+    return "ebml";
+  }
+  if (o.length >= 4 && o[0] === 0x50 && o[1] === 0x4b && o[2] === 0x03 && o[3] === 0x04) {
+    return "zip";
+  }
+  if (o.length >= 12 && ascii(o, 0, 4) === "RIFF" && ascii(o, 8, 12) === "AVI ") return "avi";
+  if (o.length >= 8 && ATOMES_ISOBMFF.has(ascii(o, 4, 8))) return "isobmff";
+  return null;
+}
+
+/** L'extension acceptée d'un nom de fichier, ou `null`. */
+export function extensionRendu(nom: string): {
+  readonly extension: string;
+  readonly famille: FamilleFichierRendu;
+  readonly mime: string;
+} | null {
+  const point = nom.lastIndexOf(".");
+  if (point < 0) return null;
+  const extension = nom.slice(point + 1).toLowerCase();
+  const e = Object.prototype.hasOwnProperty.call(EXTENSIONS_RENDU, extension)
+    ? EXTENSIONS_RENDU[extension]
+    : undefined;
+  return e ? { extension, ...e } : null;
+}
+
+/** Les premiers octets sont-ils ceux qu'annonce l'extension ? */
+export function signatureConforme(nom: string, octets: Uint8Array | null): boolean {
+  const e = extensionRendu(nom);
+  return !!e && !!octets && familleSignature(octets) === e.famille;
+}
+
+/** Une vidéo (lisible dans la console), par opposition à une archive. */
+export function estVideoRendue(nom: string | null): boolean {
+  const e = nom ? extensionRendu(nom) : null;
+  return !!e && e.famille !== "zip";
+}
+
+export const MSG_TROP_GROS_PERSONNE =
+  "Ce fichier dépasse 4 Go : il ne peut pas être déposé ici. Écrivez-nous pour convenir d'un autre moyen.";
+export const MSG_FORMAT_PERSONNE =
+  "Seuls une vidéo (MP4, MOV, M4V, WebM, MKV ou AVI) ou une archive ZIP peuvent être déposées.";
+export const MSG_SIGNATURE_PERSONNE =
+  "Ce fichier ne ressemble pas à une vidéo ni à une archive ZIP : vérifiez qu'il s'agit du bon fichier.";
+
+export interface DemandeDepotPersonne {
+  readonly nom: string;
+  readonly taille: number;
+  /** Les premiers octets du fichier, lus par le navigateur (revérifiés à la fin dans le stockage). */
+  readonly entete: Uint8Array | null;
+}
+
+/**
+ * Contrôles purs d'un dépôt de candidat, AVANT le premier morceau : nom,
+ * taille (4 Go au plus), extension acceptée, premiers octets conformes. Le
+ * type servi vient de l'extension, jamais du navigateur.
+ */
+export function verifierDemandeDepotPersonne(d: DemandeDepotPersonne):
+  | {
+      ok: true;
+      nom: string;
+      titre: string;
+      taille: number;
+      typeMime: string;
+    }
+  | { ok: false; erreur: string } {
+  const nom = nomAffichable(d.nom ?? "");
+  if (!nom) return { ok: false, erreur: "Le nom du fichier est vide." };
+  if (!Number.isSafeInteger(d.taille) || d.taille < 1) {
+    return { ok: false, erreur: "Ce fichier est vide." };
+  }
+  if (d.taille > TAILLE_MAX_DEPOT_PERSONNE_OCTETS) {
+    return { ok: false, erreur: MSG_TROP_GROS_PERSONNE };
+  }
+  const e = extensionRendu(nom);
+  if (!e) return { ok: false, erreur: MSG_FORMAT_PERSONNE };
+  if (!signatureConforme(nom, d.entete)) return { ok: false, erreur: MSG_SIGNATURE_PERSONNE };
+  return {
+    ok: true,
+    nom,
+    titre: titreParDefaut(nom) || nom.slice(0, 200),
+    taille: d.taille,
+    typeMime: e.mime,
+  };
 }
 
 // ── Morceaux reçus ─────────────────────────────────────────────────────────

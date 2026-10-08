@@ -59,6 +59,20 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
 // Les titres ne portent plus d'emoji : depuis le 2026-08-09 l'iconographie vient
 // du THÈME ci-dessus, seule source. Un `📰` dans le titre en plus du `📰` du
 // thème donnait « 📰 PRESSE · 🟢 📰 Demande presse » — illisible.
+/** Ce que dit l'alerte d'un fichier partagé (L5, L5b) — jamais de nom ni d'adresse. */
+const QUOI_FICHIERS_PARTAGES: Record<
+  Extract<NotificationEvent, { category: "FICHIERS_PARTAGES" }>["payload"]["kind"],
+  string
+> = {
+  rushs_telecharges: "le candidat a commencé à télécharger les rushs de son essai",
+  plafond_atteint:
+    "un fichier a atteint 20 téléchargements : son bouton est retiré de la page (prolonger le lien le rouvre)",
+  essai_rendu:
+    "Un candidat a rendu son essai. Il apparaîtra dans sa fiche après l'analyse antivirus.",
+  analyse_en_retard:
+    "un fichier renvoyé par un candidat attend l'antivirus depuis plus d'une heure : il reste invisible tant qu'il n'est pas analysé (vérifier le conteneur antivirus)",
+};
+
 const TITLES: Record<NotificationCategory, string> = {
   CONTACT_FORM_SUBMITTED: "Nouveau message contact",
   AUDIT_REQUEST_SUBMITTED: "Nouvelle demande d'audit IA",
@@ -467,12 +481,7 @@ function formatBody(event: NotificationEvent): string {
     case "FICHIERS_PARTAGES": {
       const p = event.payload;
       return [
-        formatKV(
-          "Quoi",
-          p.kind === "rushs_telecharges"
-            ? "le candidat a commencé à télécharger les rushs de son essai"
-            : "un fichier a atteint 20 téléchargements : son bouton est retiré de la page (prolonger le lien le rouvre)",
-        ),
+        formatKV("Quoi", QUOI_FICHIERS_PARTAGES[p.kind]),
         formatKV("Offre", p.offre),
         formatKV("Fichier", p.fichier),
         p.applicationId

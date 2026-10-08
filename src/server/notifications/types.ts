@@ -225,9 +225,11 @@ export type NotificationEvent =
       // de 20 téléchargements atteint pour un fichier. 🔴 AUCUNE IDENTITÉ : ni nom,
       // ni adresse, ni lien (le jeton ouvrirait les fichiers). L'intitulé de
       // l'offre, le titre du fichier et l'adresse de la fiche suffisent.
+      // L5b : « essai_rendu » (un candidat a renvoyé sa version par son lien) et
+      // « analyse_en_retard » (son fichier attend l'antivirus depuis plus d'une heure).
       category: "FICHIERS_PARTAGES";
       payload: {
-        kind: "rushs_telecharges" | "plafond_atteint";
+        kind: "rushs_telecharges" | "plafond_atteint" | "essai_rendu" | "analyse_en_retard";
         offre: string;
         fichier: string;
         applicationId: string | null;

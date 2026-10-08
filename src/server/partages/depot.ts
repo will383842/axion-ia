@@ -34,6 +34,7 @@ import { prisma } from "@/lib/prisma";
 import {
   arreterEnvoiR2,
   assemblerEnvoiR2,
+  debutObjetR2,
   fluxObjetR2,
   listerMorceauxR2,
   ouvrirEnvoiMorceauxR2,
@@ -50,6 +51,7 @@ import {
   CATEGORIES_LIEN,
   DUREE_SIGNATURE_MORCEAU_S,
   MORCEAUX_PAR_SIGNATURE,
+  OCTETS_SIGNATURE,
   SEUIL_ANTIVIRUS_EQUIPE_OCTETS,
   TAILLE_MAX_EQUIPE_OCTETS,
   TAILLE_MORCEAU_OCTETS,
@@ -60,10 +62,13 @@ import {
   nomAffichable,
   morceauHorsTaille,
   nombreMorceaux,
+  signatureConforme,
   tailleMorceau,
   titreParDefaut,
   typeMimeSur,
+  verifierDemandeDepotPersonne,
   type CategorieFichier,
+  type DemandeDepotPersonne,
 } from "./regles";
 
 export type Resultat<T> =
@@ -195,6 +200,65 @@ export async function commencerDepot(
   });
 }
 
+// ── Commencer : un fichier RENVOYÉ PAR UN CANDIDAT (L5b) ─────────────────────
+
+/** Ce que dit la ligne d'un fichier renvoyé par un candidat : sans nom de personne. */
+export const DEPOSE_PAR_PERSONNE = "Le candidat, par son lien";
+
+/**
+ * Ouvre l'envoi d'un fichier renvoyé par un candidat depuis son lien privé.
+ * L'appelant (`depot-public.ts`) a déjà vérifié le jeton et que le lien
+ * autorise le dépôt. Tout refus (plus de 4 Gio, format, premiers octets)
+ * tombe AVANT le stockage et avant toute écriture.
+ *
+ * La ligne naît `personne`, « essai rendu », hors bibliothèque, rattachée au
+ * lien (`lien_depot_id`) et TOUJOURS « en attente » d'analyse : un fichier venu
+ * de l'extérieur n'est jamais montré sans verdict de l'antivirus.
+ */
+export async function commencerDepotPersonne(
+  d: DemandeDepotPersonne,
+  lienId: string,
+): Promise<Resultat<DepotCommence>> {
+  const c = cible();
+  if (!c.ok) return c;
+  const v = verifierDemandeDepotPersonne(d);
+  if (!v.ok) return refus(v.erreur);
+
+  const id = randomUUID();
+  const cle = cleR2Fichier(id, v.nom);
+  let uploadId: string;
+  try {
+    uploadId = await ouvrirEnvoiMorceauxR2(c.valeur, cle, v.typeMime);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { action: "commencerDepotPersonne" } });
+    return refus(MSG_STOCKAGE);
+  }
+  await prisma.fichierPartage.create({
+    data: {
+      id,
+      titre: v.titre,
+      nature: "fichier",
+      origine: "personne",
+      categorie: "essai_rendu",
+      dansBibliotheque: false,
+      nomFichier: v.nom,
+      tailleOctets: BigInt(v.taille),
+      typeMime: v.typeMime,
+      r2Cle: cle,
+      r2UploadId: uploadId,
+      etatDepot: "en_cours",
+      analyse: "en_attente",
+      deposeParNom: DEPOSE_PAR_PERSONNE,
+      lienDepotId: lienId,
+    },
+  });
+  return reussite({
+    fichierId: id,
+    tailleMorceau: TAILLE_MORCEAU_OCTETS,
+    nombreMorceaux: nombreMorceaux(v.taille),
+  });
+}
+
 // ── Lire une ligne en cours ─────────────────────────────────────────────────
 
 interface LigneEnCours {
@@ -202,6 +266,8 @@ interface LigneEnCours {
   cle: string;
   uploadId: string;
   taille: number;
+  origine: "equipe" | "personne";
+  nomFichier: string | null;
 }
 
 async function ligneEnCours(fichierId: string): Promise<Resultat<LigneEnCours>> {
@@ -214,6 +280,8 @@ async function ligneEnCours(fichierId: string): Promise<Resultat<LigneEnCours>> 
       r2Cle: true,
       r2UploadId: true,
       tailleOctets: true,
+      origine: true,
+      nomFichier: true,
     },
   });
   if (!f || f.nature !== "fichier") return refus(MSG_INTROUVABLE);
@@ -225,6 +293,8 @@ async function ligneEnCours(fichierId: string): Promise<Resultat<LigneEnCours>> 
     cle: f.r2Cle,
     uploadId: f.r2UploadId,
     taille: Number(f.tailleOctets),
+    origine: f.origine === "personne" ? "personne" : "equipe",
+    nomFichier: f.nomFichier ?? null,
   });
 }
 
@@ -346,6 +416,28 @@ export async function terminerDepot(fichierId: string): Promise<Resultat<{ fichi
     return refus(
       "Le fichier reçu n'a pas la taille annoncée : l'envoi est arrêté. Recommencez-le.",
     );
+  }
+
+  // L5b — un fichier renvoyé par un candidat : le serveur relit ses PREMIERS
+  // OCTETS dans le stockage (le navigateur peut mentir sur ce qu'il a envoyé).
+  // Ni vidéo ni ZIP → l'envoi est arrêté, jamais servi (l'objet n'est pas effacé).
+  if (l.valeur.origine === "personne") {
+    let debut: Uint8Array | null;
+    try {
+      debut = await debutObjetR2(c.valeur, cle, OCTETS_SIGNATURE);
+    } catch (e) {
+      Sentry.captureException(e, { tags: { action: "terminerDepot.signature" } });
+      return refus(MSG_STOCKAGE);
+    }
+    if (!l.valeur.nomFichier || !signatureConforme(l.valeur.nomFichier, debut)) {
+      await prisma.fichierPartage.update({
+        where: { id: fichierId },
+        data: { etatDepot: "abandonne" },
+      });
+      return refus(
+        "Ce fichier n'est ni une vidéo ni une archive ZIP : l'envoi est arrêté. Vérifiez le fichier choisi.",
+      );
+    }
   }
 
   await prisma.fichierPartage.update({
@@ -633,6 +725,29 @@ export async function adresseTelechargement(
 
 // ── Antivirus (lancé depuis l'application) ──────────────────────────────────
 
+/** Au-delà, un fichier de candidat toujours sans verdict déclenche une alerte [I18]. */
+export const ATTENTE_ANALYSE_ALERTE_MS = 60 * 60 * 1000;
+
+async function alerterAnalyseEnRetard(fichierId: string): Promise<void> {
+  try {
+    const { notify } = await import("@/server/notifications");
+    await notify({
+      category: "FICHIERS_PARTAGES",
+      payload: {
+        kind: "analyse_en_retard",
+        offre: "—",
+        fichier: "Essai rendu",
+        applicationId: null,
+      },
+      severity: "warn",
+      dedupKey: `partages:analyse-en-retard:${fichierId}`,
+      dedupTtlSec: 7 * 24 * 3600,
+    } as never);
+  } catch (e) {
+    console.warn("[partages] alerte non envoyée :", (e as Error).message);
+  }
+}
+
 /** Analyses en cours dans CE processus — un fichier n'est jamais analysé deux fois en même temps. */
 const analysesEnCours = new Set<string>();
 
@@ -650,10 +765,27 @@ export async function analyserFichierPartage(fichierId: string): Promise<void> {
     if (!c.ok) return;
     const f = await prisma.fichierPartage.findUnique({
       where: { id: fichierId },
-      select: { id: true, etatDepot: true, analyse: true, r2Cle: true, tailleOctets: true },
+      select: {
+        id: true,
+        origine: true,
+        etatDepot: true,
+        analyse: true,
+        r2Cle: true,
+        tailleOctets: true,
+        disponibleLe: true,
+      },
     });
     if (!f || f.etatDepot !== "disponible" || f.analyse !== "en_attente" || !f.r2Cle) return;
-    if (f.tailleOctets !== null && Number(f.tailleOctets) > SEUIL_ANTIVIRUS_EQUIPE_OCTETS) return;
+    // Décision 7 : au-delà de 200 Mo, seul un fichier de l'ÉQUIPE échappe à
+    // l'analyse. Un fichier venu d'un candidat (L5b, 4 Go au plus) est TOUJOURS
+    // analysé — `StreamMaxLength` de clamd doit le permettre (réglage ops).
+    if (
+      f.origine !== "personne" &&
+      f.tailleOctets !== null &&
+      Number(f.tailleOctets) > SEUIL_ANTIVIRUS_EQUIPE_OCTETS
+    ) {
+      return;
+    }
     const flux = await fluxObjetR2(c.valeur, f.r2Cle);
     if (!flux) return;
     const verdict = await analyserFlux(flux);
@@ -661,6 +793,15 @@ export async function analyserFichierPartage(fichierId: string): Promise<void> {
       console.warn(
         `[partages] antivirus indisponible pour ${f.id} : ${verdict.raison} — reprise plus tard`,
       );
+      // [I18] Un fichier de candidat qui attend l'antivirus depuis plus d'une
+      // heure reste invisible : Will est prévenu (une fois par fichier).
+      if (
+        f.origine === "personne" &&
+        f.disponibleLe &&
+        Date.now() - f.disponibleLe.getTime() > ATTENTE_ANALYSE_ALERTE_MS
+      ) {
+        await alerterAnalyseEnRetard(f.id);
+      }
       return;
     }
     const maintenant = new Date();

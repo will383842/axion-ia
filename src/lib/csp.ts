@@ -18,6 +18,8 @@
 
 import { headers } from "next/headers";
 
+import { origineStockagePartages } from "@/server/partages/config";
+
 const STATIC_ASSETS_RE = /\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2?|js|css|map)$/;
 
 /**
@@ -246,11 +248,18 @@ export function buildCspHeader({
   const stripeConnect = stripeActif ? " https://api.stripe.com" : "";
   const stripeFrame = stripeActif ? " https://checkout.stripe.com" : "";
 
+  // Candidatures unifiées L5b [I1] — lecteur vidéo de la console : l'essai rendu
+  // par un candidat se lit depuis le compartiment de la bibliothèque, par une
+  // adresse signée courte. Origine EXACTE (jamais de joker), et rien tant que
+  // la bibliothèque est éteinte (la directive retombe alors sur `default-src`).
+  const mediaPartages = origineStockagePartages();
+
   return [
     "default-src 'self'",
     scriptSrc,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
+    mediaPartages ? `media-src 'self' ${mediaPartages}` : "",
     "font-src 'self' data: https://fonts.gstatic.com",
     `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://snap.licdn.com https://px.ads.linkedin.com https://www.facebook.com https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
     // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
