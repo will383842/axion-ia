@@ -536,7 +536,8 @@ jobs:
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
         # dépasser le timeout Gate B, et `indexnow-ping.ts` ne doit JAMAIS tourner
         # en CI (il pingue les moteurs de recherche). La compression .br est
-        # refaite au vrai build de déploiement (Dockerfile / GH Actions deploy).
+        # DÉSACTIVÉE partout depuis le 2026-10-08 (aucun proxy ne la sert ; voir
+        # src/server/compression/precompression-activee.ts).
         # Le Gate B ne valide QUE la compilation du build. (Fix 2026-05-29.)
         #
         # NODE_OPTIONS : le webpack compile du SSG (~18k pages) dépassait le heap
