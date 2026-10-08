@@ -39,6 +39,7 @@ import {
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
 import { marquerRealiseesDepuisSessions } from "./realisation";
 import { commandesSoldees } from "./commandes";
@@ -190,7 +191,8 @@ type NomEtape =
   | "commande-signee"
   | "rappels-dossier"
   | "chiffrement-pieces"
-  | "realisation";
+  | "realisation"
+  | "hors-grille";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = ["commissions", "realisation", "autofacturation"];
 
@@ -239,6 +241,9 @@ async function passer(
     ["rappels-dossier", () => etapeRappelsDossier(maintenant, bilan)],
     // Rattrapage (07/10) : les pièces déposées avant le chiffrement au repos sont chiffrées.
     ["chiffrement-pieces", async () => void (await chiffrerPiecesEnClair())],
+    // Annexe 1, A1.7 : une commission « à qualifier » se règle sous soixante jours ; Williams
+    // est alerté dix jours avant, puis le jour du dépassement.
+    ["hors-grille", async () => void (await alerterHorsGrille(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;

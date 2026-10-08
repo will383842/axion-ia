@@ -13,12 +13,20 @@ import {
 } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
 import {
   ajusterCommissionAction,
+  constaterNonCommissionneAction,
+  marquerHorsGrilleAction,
   annulerRealisationAction,
   classerActiviteAction,
   leverSuspensionAction,
   marquerRealiseeAction,
   suspendreCommissionAction,
 } from "@/features/apporteurs-reseau/actions-commissions";
+import {
+  etatHorsGrille,
+  LIBELLE_HORS_GRILLE,
+  libelleAQualifier,
+  PALIER_HORS_GRILLE,
+} from "@/features/apporteurs-reseau/hors-grille";
 import {
   COMMISSIONS_PAR_PAGE,
   compterCommissions,
@@ -440,8 +448,70 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   <p className="text-[length:var(--text-admin-sm)]">
                     {c.palier === PALIER_CONFERENCE
                       ? "Conférence"
-                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier)}
+                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                        (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
+                ) : null}
+                {c.statut === "a_qualifier" && !c.parrainage
+                  ? (() => {
+                      const e = etatHorsGrille(c.encaisseeAt, maintenant);
+                      return (
+                        <p
+                          className="text-[length:var(--text-admin-sm)] font-semibold"
+                          style={{
+                            color: e.depassee
+                              ? "var(--color-admin-destructive)"
+                              : "var(--color-admin-warning)",
+                          }}
+                        >
+                          {libelleAQualifier(c)} :{" "}
+                          {e.depassee
+                            ? `délai de 60 jours après l'encaissement dépassé depuis le ${dateFr(e.echeance)} — à défaut de décision, elle est due au taux de la grille publiée à la date de la vente, une fois la prestation réalisée et payée (A1.7, art. 4.2).`
+                            : `à régler avant le ${dateFr(e.echeance)} (60 jours après l'encaissement, A1.7).`}
+                        </p>
+                      );
+                    })()
+                  : null}
+                {c.statut === "a_qualifier" &&
+                !c.parrainage &&
+                c.activite === "formation" &&
+                peutPayer ? (
+                  c.palier === PALIER_HORS_GRILLE ? (
+                    <details className="text-[length:var(--text-admin-sm)]">
+                      <summary className="cursor-pointer">Produit non commissionné (A1.7)</summary>
+                      <form
+                        action={constaterNonCommissionneAction}
+                        className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+                      >
+                        <input type="hidden" name="id" value={c.id} />
+                        <input
+                          name="motif"
+                          required
+                          minLength={10}
+                          maxLength={500}
+                          className="admin-input"
+                          aria-label="Motif"
+                          placeholder="Motif (communiqué à l'apporteur)"
+                        />
+                        <label className="flex items-center gap-[var(--space-admin-2)]">
+                          <input type="checkbox" name="confirmer" value="oui" required />
+                          Je confirme : l&apos;apporteur reçoit la décision et son motif.
+                        </label>
+                        <div>
+                          <button type="submit" className="admin-button-secondary">
+                            Constater non commissionné
+                          </button>
+                        </div>
+                      </form>
+                    </details>
+                  ) : (
+                    <form action={marquerHorsGrilleAction}>
+                      <input type="hidden" name="id" value={c.id} />
+                      <button type="submit" className="admin-button-secondary">
+                        Produit hors grille (A1.7)
+                      </button>
+                    </form>
+                  )
                 ) : null}
                 {c.statut === "a_qualifier" &&
                 !c.parrainage &&

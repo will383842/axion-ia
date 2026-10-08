@@ -65,6 +65,8 @@ interface Payload {
   personnePresentee?: string;
   /** Refus seulement. */
   motif?: MotifRefus;
+  /** A1.7 : motif de la constatation « produit non commissionné ». */
+  motifNonCommissionne?: string;
   /** Lien du dossier seulement : 1 = rappel J+3, 2 = rappel J+7 (absent = premier envoi). */
   rappel?: number;
   /** Confirmation seulement : « Monsieur » / « Madame », et le nom de famille. */
@@ -312,6 +314,16 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  nonCommissionne: {
+    // Annexe 1, A1.7 : constatation écrite, avec son motif, portée à la connaissance de l'apporteur.
+    subject: "Une prestation n'est pas commissionnée",
+    title: "Prestation non commissionnée",
+    preview: "La décision et son motif.",
+    texte:
+      "Une entreprise que vous nous avez présentée a commandé un produit créé après la signature de votre contrat, qui ne figure pas dans votre grille de commissions. Comme le prévoit votre contrat (annexe 1, A1.7), nous avons décidé que ce produit n'est pas commissionné, pour le motif suivant :",
+    suite:
+      "Cette décision ne concerne que ce produit : vos autres commissions et vos attributions en cours ne changent pas.",
   },
   commissionSuspension: {
     // Contrat 2.3, art. 4.2 bis : l'apporteur est informé de la suspension et de son issue.
@@ -847,6 +859,32 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Produit non commissionné (annexe 1, A1.7) ────────────────────────────
+
+export const apporteurNonCommissionneSubject = (): string => COPY_DEMARRAGE.nonCommissionne.subject;
+
+export function ApporteurNonCommissionneEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.nonCommissionne;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+        « {texteOuNull(p.motifNonCommissionne) ?? ""} »
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
     </EmailLayout>
   );
 }

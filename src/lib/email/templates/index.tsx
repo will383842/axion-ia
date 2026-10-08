@@ -170,6 +170,8 @@ import {
   apporteurDossierRecuSubject,
   ApporteurDossierRecuEmail,
   apporteurCommissionSuspensionSubject,
+  apporteurNonCommissionneSubject,
+  ApporteurNonCommissionneEmail,
   ApporteurCommissionSuspensionEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
@@ -516,6 +518,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-dossier-recu": {
     subject: apporteurDossierRecuSubject,
     component: ApporteurDossierRecuEmail,
+  },
+  "apporteur-non-commissionne": {
+    subject: apporteurNonCommissionneSubject,
+    component: ApporteurNonCommissionneEmail,
   },
   "apporteur-commission-suspension": {
     subject: apporteurCommissionSuspensionSubject,

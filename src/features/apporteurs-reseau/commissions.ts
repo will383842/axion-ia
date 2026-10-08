@@ -465,6 +465,8 @@ export interface CommissionVue {
   autofactureAttenteDepuis: Date | null;
   verseeAt: Date | null;
   creeAt: Date;
+  /** Encaissement (paiement soldant la facture), repli : création de la ligne. */
+  encaisseeAt: Date;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
   emissionAt: Date;
 }
@@ -489,9 +491,10 @@ export async function lireCommissions(
   });
   const factures = await prisma.factureFormation.findMany({
     where: { id: { in: [...new Set(lignes.map((l) => l.factureId))] } },
-    select: { id: true, numero: true },
+    select: { id: true, numero: true, paidAt: true },
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
+  const paye = new Map(factures.map((f) => [f.id, f.paidAt]));
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
@@ -517,6 +520,7 @@ export async function lireCommissions(
     autofactureAttenteDepuis: l.autofactureAttenteDepuis,
     verseeAt: l.verseeAt,
     creeAt: l.creeAt,
+    encaisseeAt: paye.get(l.factureId) ?? l.creeAt,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
   }));
 }
