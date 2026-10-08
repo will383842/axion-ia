@@ -18,11 +18,7 @@ import {
   parseDuree,
   type OfferVertical,
 } from "@/content/offers-catalog";
-import {
-  FORMATION_PRICE_MATRIX,
-  AUDIT_TIERS,
-  getTierById,
-} from "@/content/pricing";
+import { FORMATION_PRICE_MATRIX, AUDIT_TIERS, getTierById } from "@/content/pricing";
 import { isKnownFrUrl } from "@/lib/offer-url";
 
 describe("T-33 catalogue — complétude & URL", () => {
