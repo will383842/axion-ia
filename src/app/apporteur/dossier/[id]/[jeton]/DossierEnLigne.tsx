@@ -50,6 +50,8 @@ export interface DossierPublic {
   email: string;
   telephone: string | null;
   siren: string | null;
+  /** SIRET de l'établissement (plusieurs activités), sinon `null`. */
+  siret: string | null;
   denomination: string | null;
   adresse: string | null;
   statutJuridique: string | null;

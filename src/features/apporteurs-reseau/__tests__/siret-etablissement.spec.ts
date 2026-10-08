@@ -181,8 +181,8 @@ describe("contrat et autofacture : SIRET et adresse de l'établissement, jamais 
       organisme: {} as never,
       totalAttenduCents: 30_000,
     });
-    expect(r.ok).toBe(true);
-    const data = (r as { data: Record<string, unknown> }).data;
+    if (!r.ok) throw new Error(`autofacture refusée : ${r.motif}`);
+    const data = r.data as unknown as Record<string, unknown>;
     expect(data["sousTraitant"]).toMatchObject({
       siret: SIRET,
       adresseProfessionnelle: "8 rue du Domicile 69003 Lyon",
