@@ -532,6 +532,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a présenté l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-attribution-confirmee": {
+    categorie: "recrutement",
+    quand:
+      "Quand une attribution devient définitive (console, ou confirmation réputée acquise au passage quotidien) et quand la protection est prolongée de trois mois",
+    destinataire: "l'apporteur qui a présenté l'entreprise",
+    source: "features/apporteurs-reseau/attribution-annonce.ts",
+  },
   "apporteur-releve": {
     categorie: "recrutement",
     quand:

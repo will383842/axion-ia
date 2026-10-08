@@ -9,7 +9,7 @@
 
 import { z } from "zod";
 
-import { finDeProtection, sirenValide } from "./regles";
+import { finDeProtection, RAPPEL_SANS_REPONSE_JOURS, sirenValide } from "./regles";
 
 // Aucun plafond par apporteur : le contrat (art. 3.7) n'en connaît aucun, et nulle suspension ne
 // peut reposer sur le nombre de déclarations. Seule la limite par adresse IP hachée (anti-robot,
@@ -101,10 +101,14 @@ export function validerDeclaration(
  *   · « Non disponible » : déjà présentée ou déjà connue, ou hors champ ;
  *   · « Expirée » : période échue (ou attribution terminée), avec sa date de fin.
  */
-export type EtatDeclaration = "a_l_etude" | "reservee" | "non_disponible" | "expiree";
+export type EtatDeclaration =
+  "a_l_etude" | "sans_reponse" | "reservee" | "non_disponible" | "expiree";
 
 export const LIBELLE_ETAT_DECLARATION: Record<EtatDeclaration, string> = {
   a_l_etude: "À l'étude",
+  // Après RAPPEL_SANS_REPONSE_JOURS sans réponse (relecture de a1, 08/10). Délai de GESTION, pas
+  // du contrat : le libellé ne cite aucun délai.
+  sans_reponse: "En attente d'une réponse — nous revenons vers vous",
   reservee: "Réservée",
   non_disponible: "Non disponible",
   expiree: "Expirée",
@@ -123,7 +127,13 @@ export function etatPourApporteur(
   const fin = p.protegeeJusquAt ?? finDeProtection(p.recueAt);
   switch (p.statut) {
     case "reservee":
-      if (!p.contactEnvoyeAt) return { etat: "a_l_etude", jusquAu: null };
+      if (!p.contactEnvoyeAt) {
+        const attente = maintenant.getTime() - p.recueAt.getTime();
+        return {
+          etat: attente >= RAPPEL_SANS_REPONSE_JOURS * 86_400_000 ? "sans_reponse" : "a_l_etude",
+          jusquAu: null,
+        };
+      }
       return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };
     case "confirmee":
       return { etat: fin.getTime() < maintenant.getTime() ? "expiree" : "reservee", jusquAu: fin };

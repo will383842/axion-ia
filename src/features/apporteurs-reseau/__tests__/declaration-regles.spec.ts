@@ -118,6 +118,7 @@ describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
     ).toBeNull();
     expect(LIBELLE_ETAT_DECLARATION).toEqual({
       a_l_etude: "À l'étude",
+      sans_reponse: "En attente d'une réponse — nous revenons vers vous",
       reservee: "Réservée",
       non_disponible: "Non disponible",
       expiree: "Expirée",

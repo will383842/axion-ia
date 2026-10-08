@@ -67,9 +67,34 @@ vi.mock("@/lib/prisma", () => {
       // Étape (a) : `contactEnvoyeAt: { not: null, lte: seuil }` ; le reste rend vide.
       findMany: vi.fn(
         async (a: {
-          where: { statut?: unknown; contactEnvoyeAt?: { not?: null; lte?: Date } };
+          where: {
+            statut?: unknown;
+            contactEnvoyeAt?: { not?: null; lte?: Date } | null;
+            recueAt?: { lte?: Date };
+          };
         }) => {
+          // Contact envoyé : `contactEnvoyeAt: { not: null }` + OR [contact ≤ seuil, reçue ≤ seuil].
+          const ou = (a.where as { OR?: Array<Record<string, { lte?: Date }>> }).OR;
+          if (a.where.statut === "reservee" && ou) {
+            const l = etat.ligne;
+            if (l.statut !== "reservee" || !l.contactEnvoyeAt) return [];
+            const ok = ou.some(
+              (o) =>
+                (o.contactEnvoyeAt?.lte && l.contactEnvoyeAt! <= o.contactEnvoyeAt.lte) ||
+                (o.recueAt?.lte && l.recueAt <= o.recueAt.lte),
+            );
+            return ok ? [{ id: l.id, contactEnvoyeAt: l.contactEnvoyeAt, recueAt: l.recueAt }] : [];
+          }
           const c = a.where.contactEnvoyeAt;
+          // Art. 3.2 (2026-10-08) : déclarations JAMAIS contactées, reçues avant le seuil.
+          if (a.where.statut === "reservee" && c === null && a.where.recueAt?.lte) {
+            const l = etat.ligne;
+            return l.statut === "reservee" &&
+              l.contactEnvoyeAt === null &&
+              l.recueAt <= a.where.recueAt.lte
+              ? [{ id: l.id, recueAt: l.recueAt, denomination: l.denomination }]
+              : [];
+          }
           if (a.where.statut !== "reservee" || !c || !c.lte) return [];
           const l = etat.ligne;
           return l.statut === "reservee" && l.contactEnvoyeAt && l.contactEnvoyeAt <= c.lte
@@ -142,10 +167,26 @@ describe("« Bien reçu » puis confirmation réputée acquise à 30 jours", () 
     expect(etat.envoyes).toHaveLength(2);
   });
 
-  it("une déclaration du formulaire (reservee, sans contact) n'est jamais confirmée tacitement", async () => {
-    const bilan = await passerReseauApporteurs(new Date("2027-03-01T08:00:00Z"));
+  // 🔴 2026-10-08 (relecture de a1) : ce test disait « jamais confirmée tacitement ». Le contrat
+  // 2.3 dit l'inverse : art. 3.2, « la Société prend contact avec la personne déclarée dans les
+  // 30 jours de l'enregistrement de la déclaration ; à défaut, le délai de confirmation ci-dessus
+  // court à compter de l'expiration de ce délai » ; art. 2.8, ces délais « ne sont ni suspendus
+  // ni prorogés » par la période de démarrage, et le retard de la Société « ne prive l'Apporteur
+  // d'aucun droit ». Une déclaration jamais contactée est donc réputée confirmée à J+60.
+  it("déclaration jamais contactée : pas encore confirmée à J+59", async () => {
+    // recueAt = 04/10/2026 00:00 → J+59 = 02/12/2026.
+    const bilan = await passerReseauApporteurs(new Date("2026-12-02T08:00:00Z"));
     expect(bilan.confirmeesTacites).toBe(0);
     expect(etat.ligne.statut).toBe("reservee");
+  });
+
+  it("déclaration jamais contactée : réputée confirmée à J+60 (art. 3.2 et 2.8)", async () => {
+    const bilan = await passerReseauApporteurs(new Date("2026-12-03T08:00:00Z"));
+    expect(bilan.confirmeesTacites).toBe(1);
+    expect(etat.ligne.statut).toBe("confirmee");
+    expect(etat.ligne.confirmationTacite).toBe(true);
+    expect(etat.ligne.confirmeeAt).toEqual(new Date("2026-12-03T00:00:00Z"));
+    expect(etat.ligne.protegeeJusquAt).toEqual(new Date("2027-04-04T00:00:00Z"));
   });
 
   it("29 jours après « Bien reçu » : pas encore confirmée", async () => {
@@ -187,5 +228,16 @@ describe("« Bien reçu » puis confirmation réputée acquise à 30 jours", () 
     const bilan = await passerReseauApporteurs(new Date("2026-11-05T09:30:00Z"));
     expect(bilan.confirmeesTacites).toBe(1);
     expect(etat.ligne.statut).toBe("confirmee");
+  });
+
+  // Relecture de a1 (08/10) : un contact EN RETARD ne repousse pas l'échéance (art. 3.2, 2.8).
+  it("contact envoyé à J+45 : confirmée à J+60 de la déclaration, pas à contact + 30", async () => {
+    // recueAt = 04/10/2026 → contact le 18/11 (J+45) → échéance 03/12 (J+60), pas le 18/12.
+    etat.ligne.contactEnvoyeAt = new Date("2026-11-18T00:00:00Z");
+    const avant = await passerReseauApporteurs(new Date("2026-12-02T08:00:00Z"));
+    expect(avant.confirmeesTacites).toBe(0);
+    const bilan = await passerReseauApporteurs(new Date("2026-12-03T08:00:00Z"));
+    expect(bilan.confirmeesTacites).toBe(1);
+    expect(etat.ligne.confirmeeAt).toEqual(new Date("2026-12-03T00:00:00Z"));
   });
 });

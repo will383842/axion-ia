@@ -177,6 +177,10 @@ import {
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import {
+  apporteurAttributionConfirmeeSubject,
+  ApporteurAttributionConfirmeeEmail,
+} from "./apporteur-attribution-confirmee";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -556,6 +560,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-commande-signee": {
     subject: apporteurCommandeSigneeSubject,
     component: ApporteurCommandeSigneeEmail,
+  },
+  "apporteur-attribution-confirmee": {
+    subject: apporteurAttributionConfirmeeSubject,
+    component: ApporteurAttributionConfirmeeEmail,
   },
   "apporteur-releve": {
     subject: apporteurReleveSubject,
