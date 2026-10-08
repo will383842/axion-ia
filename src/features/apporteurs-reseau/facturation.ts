@@ -262,6 +262,7 @@ export async function facturerApporteur(
       })),
     );
     if (plan && "bloque" in plan) {
+      await signalerSoldeNegatif(apporteurId, dues, avant, maintenant);
       return {
         ok: false,
         message:
@@ -549,6 +550,70 @@ async function etatAuRegistre(siren: string, maintenant: Date): Promise<Resultat
  * (motif + date du PREMIER blocage, jamais réécrite) et alerte une seule fois. Renvoie le message
  * à afficher, ou `null` quand rien ne manque.
  */
+/** Motif posé sur les dues bloquées par un avoir déjà émis trop gros (art. 12.4). */
+export const PREFIXE_MOTIF_SOLDE_NEGATIF = "solde négatif :";
+
+/**
+ * Art. 12.4 : un avoir déjà émis dépasse les commissions dues, rien n'est émis. Les dues portent
+ * « solde négatif : un avoir de N € reste à compenser » (visible dans la console Commissions), et
+ * Williams reçoit UNE alerte par avoir. Le motif s'efface à l'émission suivante.
+ */
+async function signalerSoldeNegatif(
+  apporteurId: string,
+  dues: ReadonlyArray<{ id: string }>,
+  avant: ReadonlyArray<{ statut: string; avoirNumero: string | null; montantCents: number | null }>,
+  maintenant: Date,
+): Promise<void> {
+  try {
+    const parAvoir = new Map<string, number>();
+    for (const c of avant)
+      if (c.statut === "reprise" && c.avoirNumero)
+        parAvoir.set(
+          c.avoirNumero,
+          (parAvoir.get(c.avoirNumero) ?? 0) + Math.abs(c.montantCents ?? 0),
+        );
+    const [numero, montant] = [...parAvoir.entries()].sort((a, b) => b[1] - a[1])[0] ?? ["", 0];
+    const motif = `${PREFIXE_MOTIF_SOLDE_NEGATIF} un avoir de ${euros(montant)} reste à compenser`;
+    const ids = dues.map((d) => d.id);
+    const base = { id: { in: ids }, statut: "due" as const, autofactureNumero: null };
+    await prisma.commissionApporteur.updateMany({
+      where: { ...base, autofactureAttenteMotif: null },
+      data: { autofactureAttenteMotif: motif, autofactureAttenteDepuis: maintenant },
+    });
+    await prisma.commissionApporteur.updateMany({
+      where: { ...base, autofactureAttenteMotif: { not: motif } },
+      data: { autofactureAttenteMotif: motif },
+    });
+    const jobId = `apporteur-solde-negatif-${apporteurId}-${numero}`;
+    if (await dejaEnvoye(jobId)) return;
+    const fiche = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { prenom: true, nom: true },
+    });
+    const nom =
+      [decryptPii(fiche?.prenom ?? null), decryptPii(fiche?.nom ?? null)]
+        .filter(Boolean)
+        .join(" ") || "un apporteur";
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_solde_negatif",
+        titre: `Solde négatif : ${nom}`,
+        message: `L'avoir ${numero} de ${euros(montant)} (déjà émis) dépasse les commissions dues de ${nom} : rien n'est facturé ni versé tant qu'il n'est pas compensé (art. 12.4). Les commissions restent dues ; l'autofacture partira d'elle-même quand elles le couvriront.`,
+        cibleType: "ApporteurReseau",
+        cibleId: apporteurId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "ApporteurReseau", entityId: apporteurId },
+    );
+  } catch (err) {
+    signalerErreurReseau("solde négatif : signalement", err);
+  }
+}
+
 async function mettreEnAttenteSiIncomplet(
   apporteurId: string,
   dues: ReadonlyArray<{ id: string; autofactureAttenteMotif: string | null }>,

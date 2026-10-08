@@ -32,7 +32,10 @@ import {
   compterCommissions,
   lireCommissions,
 } from "@/features/apporteurs-reseau/commissions";
-import { lireVirementsAFaire } from "@/features/apporteurs-reseau/facturation";
+import {
+  lireVirementsAFaire,
+  PREFIXE_MOTIF_SOLDE_NEGATIF,
+} from "@/features/apporteurs-reseau/facturation";
 import { dateFr, etatEcheances } from "@/features/apporteurs-reseau/autofacture-donnees";
 import {
   euros,
@@ -274,7 +277,9 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     className="text-[length:var(--text-admin-sm)]"
                     style={{ color: "var(--color-admin-warning)" }}
                   >
-                    Autofacture en attente : il manque {c.autofactureAttenteMotif}
+                    {c.autofactureAttenteMotif.startsWith(PREFIXE_MOTIF_SOLDE_NEGATIF)
+                      ? `Autofacture en attente — ${c.autofactureAttenteMotif} (art. 12.4) : elle partira quand les commissions dues le couvriront`
+                      : `Autofacture en attente : il manque ${c.autofactureAttenteMotif}`}
                     {c.autofactureAttenteDepuis
                       ? ` (depuis le ${dateFr(c.autofactureAttenteDepuis)})`
                       : ""}

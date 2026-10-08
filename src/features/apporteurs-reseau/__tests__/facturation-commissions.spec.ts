@@ -1248,6 +1248,22 @@ describe("compensation (art. 12.4) et avoir déjà émis", () => {
     expect(lignes().filter((l) => l.statut === "reprise")).toHaveLength(1);
   });
 
+  it("ce blocage est SIGNALÉ : motif « solde négatif » sur la ligne, une seule alerte à Williams", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 30_000),
+      ligne("rx", "reprise", -100_000, { avoirNumero: "AXI-APP-2026-0002" }),
+    ];
+    await facturerApporteur("APP1", MARDI);
+    await facturerApporteur("APP1", MARDI);
+    const motif = lignes().find((l) => l.id === "d1")!.autofactureAttenteMotif ?? "";
+    expect(motif).toContain("solde négatif : un avoir de");
+    expect(motif).toContain("reste à compenser");
+    const alertes = etat.alertes.filter(
+      (x) => (x["payload"] as Record<string, unknown>)["code"] === "apporteur_solde_negatif",
+    );
+    expect(alertes).toHaveLength(1);
+  });
+
   it("la ligne de reste d'une scission garde la date d'ORIGINE de la reprise (délais de 12 et 24 mois)", async () => {
     const origine = new Date("2026-03-01T10:00:00Z");
     etat.lignes = [
