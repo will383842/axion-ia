@@ -35,6 +35,11 @@ vi.mock("@/components/admin/apporteurs/fiche/DecisionDossier", () => ({
 vi.mock("@/components/admin/apporteurs/fiche/FinDeVieEtVigilance", () => ({
   CumulVigilance: () => null,
   FinDeVie: () => null,
+  SoldeNegatifFiche: () => null,
+}));
+// Solde négatif (art. 12.4) : hors du sujet de ce test, simulé.
+vi.mock("@/features/apporteurs-reseau/solde-negatif", () => ({
+  lireSoldeNegatif: async () => null,
 }));
 // Retirer / supprimer (2026-10-07) : hors du sujet de ce test, simulés.
 vi.mock("@/components/admin/apporteurs/fiche/RetraitDuReseau", () => ({

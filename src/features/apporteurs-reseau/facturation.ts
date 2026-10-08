@@ -30,6 +30,8 @@
  * Idempotent : toute écriture est conditionnelle, e-mail et alerte ont une clé « une fois ».
  */
 
+import { randomUUID } from "node:crypto";
+
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -48,6 +50,7 @@ import {
 } from "./commissions";
 import {
   aVirerPartielCents,
+  planCompensation,
   dateFr,
   donneesManquantesAutofacture,
   echeancePaiement,
@@ -75,6 +78,59 @@ export function jobIdAlerteAttente(apporteurId: string, commissionId: string): s
 }
 
 type Db = Pick<typeof prisma, "commissionApporteur">;
+
+/**
+ * Scission d'une reprise pour la compensation (art. 12.4) : la ligne garde la part imputée, une
+ * nouvelle ligne porte le reste, en attente. Les deux gardent la référence d'origine (`palier`
+ * « reprise-de:… ») ; rien n'est supprimé. Rend `false` si la reprise a changé entre-temps.
+ */
+async function scinderReprise(s: {
+  id: string;
+  imputeCents: number;
+  resteCents: number;
+}): Promise<boolean> {
+  return prisma.$transaction(async (tx) => {
+    const o = await tx.commissionApporteur.findUnique({
+      where: { id: s.id },
+      select: {
+        apporteurId: true,
+        presentationId: true,
+        parrainage: true,
+        palier: true,
+        statut: true,
+        releveMois: true,
+        montantCents: true,
+      },
+    });
+    if (
+      !o ||
+      o.statut !== "reprise" ||
+      o.releveMois !== null ||
+      Math.abs(o.montantCents ?? 0) !== s.imputeCents + s.resteCents
+    )
+      return false;
+    const u = await tx.commissionApporteur.updateMany({
+      where: { id: s.id, statut: "reprise", releveMois: null, montantCents: o.montantCents },
+      data: { montantCents: -s.imputeCents },
+    });
+    if (u.count !== 1) return false;
+    await tx.commissionApporteur.create({
+      data: {
+        apporteurId: o.apporteurId,
+        presentationId: o.presentationId,
+        factureId: randomUUID(),
+        parrainage: o.parrainage,
+        activite: "reprise",
+        palier: o.palier,
+        factureHtCents: 0,
+        montantCents: -s.resteCents,
+        statut: "reprise",
+      },
+      select: { id: true },
+    });
+    return true;
+  });
+}
 
 /** Lignes à facturer : commissions dues pas encore facturées + reprises pas encore imputées. */
 function lireAFacturer(db: Db, apporteurId: string, hors: Record<string, unknown> = {}) {
@@ -164,16 +220,46 @@ export async function facturerApporteur(
     return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
   }
   const hors = { ...(await horsLitige()), prestationRealiseeAt: { not: null } };
-  const avant = await lireAFacturer(prisma, apporteurId, hors);
-  const dues = avant.filter((c) => c.statut === "due");
+  let avant = await lireAFacturer(prisma, apporteurId, hors);
+  let dues = avant.filter((c) => c.statut === "due");
   if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
   const total = avant.reduce((s, c) => s + (c.montantCents ?? 0), 0);
+  // Art. 12.4 : les reprises dépassent les dues → COMPENSATION avec pièces. Les dues sont
+  // facturées, les reprises imputées à hauteur exacte (la dernière scindée), le reste attend.
+  let compensation = false;
   if (total <= 0) {
-    return {
-      ok: false,
-      message: "Solde nul après déduction des reprises : reporté à la prochaine autofacture.",
-    };
+    const regime =
+      (
+        await prisma.apporteurReseau.findUnique({
+          where: { id: apporteurId },
+          select: { regimeTva: true },
+        })
+      )?.regimeTva ?? null;
+    const plan = planCompensation(
+      regime,
+      dues.map((d) => d.montantCents ?? 0),
+      avant.filter((c) => c.statut === "reprise"),
+    );
+    if (!plan) {
+      return {
+        ok: false,
+        message: "Solde nul après déduction des reprises : reporté à la prochaine autofacture.",
+      };
+    }
+    if (plan.scinder && !(await scinderReprise(plan.scinder))) {
+      return { ok: false, message: "Les reprises ont changé pendant la compensation : réessai." };
+    }
+    const garder = new Set([
+      ...dues.map((d) => d.id),
+      ...plan.imputees,
+      ...(plan.scinder ? [plan.scinder.id] : []),
+    ]);
+    avant = (await lireAFacturer(prisma, apporteurId, hors)).filter((c) => garder.has(c.id));
+    dues = avant.filter((c) => c.statut === "due");
+    if (dues.length === 0) return { ok: false, message: "Aucune commission due à facturer." };
+    compensation = true;
   }
+  const idsAvant = new Set(avant.map((c) => c.id));
 
   // Vigilance REVÉRIFIÉE à l'émission : une attestation périmée depuis que les commissions sont
   // devenues dues ne doit pas laisser partir une facture au-delà du seuil (art. 5.4 et 6.2).
@@ -256,7 +342,9 @@ export async function facturerApporteur(
     async (tx) => {
       // Numéros contrôlés SOUS VERROU dans la transaction qui les écrit (jamais deux fois le même).
       await verrouillerSerieAutofacture(tx, numeros);
-      const lues = await lireAFacturer(tx, apporteurId, hors);
+      // Seules les lignes retenues plus haut (une compensation n'impute pas tout) ; une ligne
+      // apparue entre-temps attend le passage suivant.
+      const lues = (await lireAFacturer(tx, apporteurId, hors)).filter((c) => idsAvant.has(c.id));
       const memes =
         lues.length === avant.length &&
         lues.every((c, i) => c.id === avant[i]!.id && c.montantCents === avant[i]!.montantCents);
@@ -314,6 +402,25 @@ export async function facturerApporteur(
   // La somme virée est TVA comprise pour un apporteur assujetti : elle se lit sur les pièces.
   const aVirer = pdf.totalTtcCents - avoirsPdf.reduce((s, a) => s + (a.pdf?.totalTtcCents ?? 0), 0);
   const montrerSomme = avoirs.length > 0 || aVirer !== brut;
+  // Compensation intégrale (art. 12.4) : rien à virer. Les dues sont réglées par compensation et
+  // les reprises imputées soldées, d'office ; le relevé le dit (autofacture, avoir, net).
+  const compense = compensation && aVirer <= 0;
+  if (compense) {
+    await prisma.$transaction(async (tx) => {
+      await tx.commissionApporteur.updateMany({
+        where: { id: { in: dues.map((d) => d.id) }, statut: "due", autofactureNumero: numero },
+        data: { statut: "versee", verseeAt: maintenant },
+      });
+      await tx.commissionApporteur.updateMany({
+        where: {
+          id: { in: avant.filter((c) => c.statut === "reprise").map((c) => c.id) },
+          statut: "reprise",
+          verseeAt: null,
+        },
+        data: { verseeAt: maintenant },
+      });
+    });
+  }
   let envoi: ResultatEnvoi = "indisponible";
   try {
     envoi = await envoyer({
@@ -323,9 +430,10 @@ export async function facturerApporteur(
         contactName: nom,
         montant: euros(brut),
         numeroAutofacture: numero,
-        echeance: dateFr(echeancePaiement(maintenant)),
+        ...(compense ? {} : { echeance: dateFr(echeancePaiement(maintenant)) }),
         ...(avoirs.length > 0 ? { avoirs } : {}),
-        ...(montrerSomme ? { sommeVirement: euros(aVirer) } : {}),
+        ...(montrerSomme ? { sommeVirement: euros(Math.max(0, aVirer)) } : {}),
+        ...(compense ? { compense: true } : {}),
       },
       entityType: "ApporteurReseau",
       entityId: apporteurId,
@@ -346,7 +454,8 @@ export async function facturerApporteur(
     );
   }
   try {
-    await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
+    if (!compense)
+      await alerterAVirer({ apporteurId, nom, numero, totalCents: aVirer, emission: maintenant });
   } catch (err) {
     signalerErreurReseau("autofacture : alerte interne", err);
   }

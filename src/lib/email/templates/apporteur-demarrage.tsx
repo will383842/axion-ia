@@ -92,6 +92,8 @@ interface Payload {
   /** Commission facturée avec reprise : lignes « avoir imputé » et somme réellement virée. */
   avoirs?: string[];
   sommeVirement?: string;
+  /** Relevé : compensation intégrale par les reprises (art. 12.4), rien à virer. */
+  compense?: boolean;
   numeroAutofacture?: string;
   /** Virement fait : « n° AXI-APP-2026-0003 » (ou « n° A, n° B ») et « 7 octobre 2026 ». */
   numeros?: string;
@@ -316,6 +318,9 @@ export const COPY_DEMARRAGE = {
       `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
     echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
     somme: (s: string) => `Somme virée : ${s}.`,
+    compense: (montant: string) =>
+      `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Les reprises en cours sur votre compte (article 4.5) s'imputent sur cette commission par compensation (article 12.4 de votre contrat) : l'avoir correspondant est joint.`,
+    net: "Net : 0,00 €, rien à virer. Le solde des reprises qui n'ont pas encore été imputées s'imputera sur vos prochaines commissions.",
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
   },
@@ -853,7 +858,11 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.montant) ?? "")}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {p.compense
+          ? t.compense(texteOuNull(p.montant) ?? "")
+          : t.texte(texteOuNull(p.montant) ?? "")}
+      </Text>
       {Array.isArray(p.avoirs)
         ? p.avoirs.map((a) => (
             <Text key={a} style={emailStyles.paragraphStyle}>
@@ -861,7 +870,9 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
             </Text>
           ))
         : null}
-      {texteOuNull(p.sommeVirement) ? (
+      {p.compense ? (
+        <Text style={emailStyles.paragraphStyle}>{t.net}</Text>
+      ) : texteOuNull(p.sommeVirement) ? (
         <Text style={emailStyles.paragraphStyle}>
           {t.somme(texteOuNull(p.sommeVirement) ?? "")}
         </Text>
