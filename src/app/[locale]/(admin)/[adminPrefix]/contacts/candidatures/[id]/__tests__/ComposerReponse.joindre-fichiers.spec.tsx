@@ -45,4 +45,9 @@ describe("ComposerReponse — joindre des fichiers", () => {
     expect(screen.getByRole("button", { name: "Joindre des fichiers" })).toBeTruthy();
     expect(screen.getByText(/jamais en\s+pièce jointe/)).toBeTruthy();
   });
+
+  it("L5b : sans fichier joint, aucune case « déposer sa version » (pas de lien, pas de dépôt)", () => {
+    ouvrir({ bibliotheque: [] });
+    expect(screen.queryByRole("checkbox", { name: /déposer sa version/ })).toBeNull();
+  });
 });

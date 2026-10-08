@@ -519,6 +519,37 @@ export async function signerLectureR2(
   );
 }
 
+/**
+ * Les `n` PREMIERS octets d'un objet (lecture partielle `Range`) — signature
+ * d'un fichier renvoyé par un candidat (Candidatures unifiées L5b). `null` si
+ * l'objet est vide ou absent du corps de réponse.
+ */
+export async function debutObjetR2(
+  cible: CibleR2,
+  key: string,
+  n: number,
+): Promise<Uint8Array | null> {
+  const r = await clientR2Cible(cible).send(
+    new GetObjectCommand({
+      Bucket: cible.bucket,
+      Key: key,
+      Range: `bytes=0-${Math.max(0, n - 1)}`,
+    }),
+  );
+  const corps = r.Body as { transformToByteArray?: () => Promise<Uint8Array> } | undefined;
+  if (!corps?.transformToByteArray) return null;
+  const octets = await corps.transformToByteArray();
+  return octets.length > 0 ? octets.slice(0, n) : null;
+}
+
+/**
+ * Supprime UN objet du compartiment désigné — effacement MANUEL d'un dossier
+ * candidat seulement (fichier qu'il a renvoyé, L5b, art. 17). Jamais une purge.
+ */
+export async function supprimerObjetCibleR2(cible: CibleR2, key: string): Promise<void> {
+  await clientR2Cible(cible).send(new DeleteObjectCommand({ Bucket: cible.bucket, Key: key }));
+}
+
 /** Le flux d'un objet (antivirus) — sans rien poser sur le disque. */
 export async function fluxObjetR2(
   cible: CibleR2,

@@ -77,6 +77,11 @@ const schemaReponse = z.object({
    * UN lien privé dans le corps du message, jamais en pièce jointe.
    */
   fichierIds: z.array(z.string().uuid()).max(FICHIERS_PAR_LIEN_MAX).default([]),
+  /**
+   * L5b — le candidat pourra déposer sa version par ce même lien (case cochée
+   * par l'équipe). Sans fichier joint, il n'y a pas de lien : sans effet.
+   */
+  depotAutorise: z.boolean().default(false),
 });
 
 export type EtatReponse =
@@ -129,7 +134,7 @@ export async function repondreAuCandidatAction(
   // transaction de la réponse, par `ecrireEtEnfilerReponse`.
   let lienFichiers: LienPrepare | undefined;
   if (data.fichierIds.length > 0) {
-    const p = await preparerLienFichiers(data.fichierIds);
+    const p = await preparerLienFichiers(data.fichierIds, { depotAutorise: data.depotAutorise });
     if (!p.ok) return { ok: false, error: "fichiers_invalides", detail: p.erreur };
     lienFichiers = p.lien;
   }

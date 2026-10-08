@@ -17,8 +17,10 @@ import "server-only";
  */
 
 import { prisma } from "@/lib/prisma";
+import { signerLectureR2 } from "@/lib/r2-storage";
 
 import { configPartages } from "./config";
+import { estVideoRendue } from "./regles";
 import {
   MOTIF_RETRAIT,
   PLAFOND_TELECHARGEMENTS,
@@ -43,6 +45,38 @@ export interface FichierEnvoye {
   readonly plafondAtteint: boolean;
 }
 
+/**
+ * L5b — un fichier RENVOYÉ par le candidat par son lien. Rien de lui n'est
+ * montré avant le verdict de l'antivirus : ni nom, ni taille, ni adresse.
+ */
+export type FichierRecu =
+  | {
+      readonly etat: "pret";
+      readonly id: string;
+      readonly nomFichier: string;
+      readonly tailleOctets: number;
+      readonly recuLe: Date;
+      readonly video: boolean;
+      /** Adresse signée COURTE (lecture dans la page, ou téléchargement d'un ZIP). */
+      readonly url: string | null;
+    }
+  | { readonly etat: "en_analyse"; readonly id: string }
+  | { readonly etat: "bloque"; readonly id: string };
+
+/** Durée de l'adresse signée du lecteur de la fiche : de quoi regarder l'essai, pas plus. */
+export const DUREE_LECTURE_FICHE_S = 30 * 60;
+
+/** L'état affichable d'un fichier reçu (pur). */
+export function etatFichierRecu(f: {
+  etatDepot: string;
+  analyse: string | null;
+}): "pret" | "en_analyse" | "bloque" | null {
+  if (f.etatDepot !== "disponible") return null;
+  if (f.analyse === "sain") return "pret";
+  if (f.analyse === "infecte") return "bloque";
+  return "en_analyse";
+}
+
 export interface LienEnvoye {
   readonly id: string;
   readonly creeLe: Date;
@@ -54,6 +88,10 @@ export interface LienEnvoye {
   readonly ouvertLe: Date | null;
   readonly apercuSeulement: boolean;
   readonly fichiers: ReadonlyArray<FichierEnvoye>;
+  /** L5b — « Déposer votre version » proposé par ce lien. */
+  readonly depotAutorise: boolean;
+  /** L5b — ce que le candidat a renvoyé par ce lien. */
+  readonly recus: ReadonlyArray<FichierRecu>;
 }
 
 /** Plafond d'affichage : au-delà, la fiche le dit. */
@@ -71,6 +109,7 @@ export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEn
       creeParNom: true,
       expireLe: true,
       revoqueLe: true,
+      depotAutorise: true,
       fichiers: {
         select: {
           fichier: {
@@ -93,6 +132,7 @@ export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEn
     orderBy: { survenuLe: "asc" },
     select: { lienId: true, fichierId: true, type: true, origine: true, survenuLe: true },
   });
+  const recusParLien = await lireFichiersRecus(liens.map((l) => l.id));
   const maintenant = new Date();
   return liens.map((l) => {
     const siens = acces.filter((a) => a.lienId === l.id);
@@ -109,6 +149,8 @@ export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEn
       etat: etatLien(l, maintenant),
       ouvertLe,
       apercuSeulement: ouvertLe === null && ouvertures.length > 0,
+      depotAutorise: l.depotAutorise,
+      recus: recusParLien.get(l.id) ?? [],
       fichiers: l.fichiers.map(({ fichier: f }) => {
         const dl = siens.filter((a) => a.type === "telechargement" && a.fichierId === f.id);
         const telechargeLe = dl.find((a) => a.origine === "navigateur")?.survenuLe ?? null;
@@ -128,6 +170,73 @@ export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEn
       }),
     };
   });
+}
+
+/**
+ * L5b — les fichiers renvoyés par le candidat, par lien. Seuls ceux dont
+ * l'envoi est TERMINÉ comptent ; un fichier sain reçoit une adresse signée
+ * courte (lecture « inline » d'une vidéo, téléchargement d'un ZIP), calculée
+ * ici côté serveur : la fiche n'ajoute aucun JavaScript.
+ */
+async function lireFichiersRecus(
+  lienIds: ReadonlyArray<string>,
+): Promise<Map<string, FichierRecu[]>> {
+  const out = new Map<string, FichierRecu[]>();
+  const c = configPartages();
+  if (!c || lienIds.length === 0) return out;
+  const lignes = await prisma.fichierPartage.findMany({
+    where: { lienDepotId: { in: [...lienIds] }, origine: "personne", etatDepot: "disponible" },
+    orderBy: { creeLe: "asc" },
+    select: {
+      id: true,
+      lienDepotId: true,
+      nomFichier: true,
+      tailleOctets: true,
+      etatDepot: true,
+      analyse: true,
+      r2Cle: true,
+      disponibleLe: true,
+      creeLe: true,
+    },
+  });
+  const cible = {
+    accountId: c.accountId,
+    bucket: c.bucket,
+    accessKeyId: c.accessKeyId,
+    secretAccessKey: c.secretAccessKey,
+  };
+  for (const f of lignes) {
+    const etat = etatFichierRecu(f);
+    if (!etat || !f.lienDepotId) continue;
+    let recu: FichierRecu;
+    if (etat === "pret" && f.nomFichier && f.r2Cle && f.tailleOctets !== null) {
+      const video = estVideoRendue(f.nomFichier);
+      let url: string | null = null;
+      try {
+        url = await signerLectureR2(cible, f.r2Cle, DUREE_LECTURE_FICHE_S, {
+          nom: f.nomFichier,
+          disposition: video ? "inline" : "attachment",
+        });
+      } catch {
+        url = null;
+      }
+      recu = {
+        etat: "pret",
+        id: f.id,
+        nomFichier: f.nomFichier,
+        tailleOctets: Number(f.tailleOctets),
+        recuLe: f.disponibleLe ?? f.creeLe,
+        video,
+        url,
+      };
+    } else {
+      recu = { etat: etat === "bloque" ? "bloque" : "en_analyse", id: f.id };
+    }
+    const liste = out.get(f.lienDepotId) ?? [];
+    liste.push(recu);
+    out.set(f.lienDepotId, liste);
+  }
+  return out;
 }
 
 /** Combien de liens encore actifs pour ce dossier (proposition de retrait [I5]). */

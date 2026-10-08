@@ -12,7 +12,7 @@ import { AdminBadge } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { DUREE_LIEN_JOURS, DUREE_LIEN_RUSHS_JOURS, porteDesRushs } from "@/server/partages/liens";
 import { LIBELLE_CATEGORIE, tailleLisible, type CategorieFichier } from "@/server/partages/regles";
-import type { LienEnvoye } from "@/server/partages/suivi";
+import type { FichierRecu, LienEnvoye } from "@/server/partages/suivi";
 
 import { GestesLien } from "./GestesLien";
 
@@ -22,6 +22,68 @@ const TON_ETAT = { actif: "success", expire: "neutral", retire: "neutral" } as c
 function quand(d: Date | null, apercu: boolean): string {
   if (d) return formatDateFrShort(d);
   return apercu ? "aperçu automatique seulement" : "pas encore";
+}
+
+/**
+ * L5b — « Fichier reçu » : ce que le candidat a renvoyé par son lien. HTML
+ * SERVEUR seulement (aucun composant client) : un `<video>` natif sur une
+ * adresse signée courte, chargé au clic (`preload="none"`). Avant le verdict de
+ * l'antivirus, rien du fichier n'est montré — ni nom, ni lecteur.
+ */
+function FichiersRecus({ recus }: { recus: ReadonlyArray<FichierRecu> }) {
+  return (
+    <div className="mt-[var(--space-admin-3)] grid gap-[var(--space-admin-3)]">
+      {recus.map((f) => {
+        if (f.etat === "en_analyse") {
+          return (
+            <p key={f.id} className="admin-meta-small">
+              Fichier reçu : analyse antivirus en cours. Il apparaîtra ici une fois vérifié.
+            </p>
+          );
+        }
+        if (f.etat === "bloque") {
+          return (
+            <p key={f.id} className="admin-meta-small">
+              Fichier reçu bloqué par l&apos;antivirus : il n&apos;est pas affiché.
+            </p>
+          );
+        }
+        return (
+          <div key={f.id} className="grid gap-[var(--space-admin-2)]">
+            <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+              <AdminBadge tone="success">Fichier reçu</AdminBadge>
+              <span className="admin-meta-small">
+                le {formatDateFrShort(f.recuLe)} · {f.nomFichier} · {tailleLisible(f.tailleOctets)}
+              </span>
+            </div>
+            {f.url === null ? (
+              <p className="admin-meta-small">
+                Le stockage ne répond pas pour le moment : rechargez la page dans quelques minutes.
+              </p>
+            ) : f.video ? (
+              <video
+                src={f.url}
+                controls
+                playsInline
+                preload="none"
+                className="w-full max-w-[640px] rounded-lg bg-black"
+              >
+                <a href={f.url}>Ouvrir la vidéo</a>
+              </video>
+            ) : (
+              <a
+                href={f.url}
+                className="admin-button-secondary admin-button-tactile w-fit"
+                rel="noreferrer"
+              >
+                Télécharger l&apos;archive
+              </a>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export function FichiersEnvoyes({ liens }: { liens: ReadonlyArray<LienEnvoye> }) {
@@ -49,6 +111,7 @@ export function FichiersEnvoyes({ liens }: { liens: ReadonlyArray<LienEnvoye> })
                   : ` · jusqu'au ${formatDateFrShort(l.expireLe)}`}
                 {" · page ouverte : "}
                 {quand(l.ouvertLe, l.apercuSeulement)}
+                {l.depotAutorise ? " · dépôt de sa version autorisé" : ""}
               </span>
             </div>
             <div className="admin-table-wrapper">
@@ -85,6 +148,7 @@ export function FichiersEnvoyes({ liens }: { liens: ReadonlyArray<LienEnvoye> })
                 </tbody>
               </table>
             </div>
+            {l.recus.length > 0 ? <FichiersRecus recus={l.recus} /> : null}
             <div className="mt-[var(--space-admin-2)]">
               <GestesLien
                 lienId={l.id}
