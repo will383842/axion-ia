@@ -31,6 +31,7 @@ import {
 import { libererSiPiecesValides } from "./commissions";
 import { apercu, type ApercuRendu } from "./envois";
 import { refusRattachement, type IdentiteParrainage } from "./parrainage";
+import { chiffresTelephone } from "./telephone";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
 export type RetourApercu =
@@ -245,6 +246,10 @@ export async function ouvrirDossierManuelAction(input: {
   return r.ok ? { ok: true, apporteurId: r.apporteurId } : { ok: false, message: r.message };
 }
 
+const TAILLE_PAQUET = 500;
+/** Garde-fou : 40 paquets = 20 000 fiches, bien au-delà du volume réel. */
+const PAQUETS_MAX = 40;
+
 export interface CandidatTrouve {
   submissionId: string;
   prenom: string;
@@ -271,21 +276,11 @@ export async function rechercherCandidatsApporteursAction(
       .replace(/\s+/g, "");
   const q = norm(recherche.slice(0, 80));
   if (q.length < 2) return { ok: true, candidats: [] };
+  // Un numéro se cherche par ses CHIFFRES, quel que soit le format saisi ou stocké
+  // (« 06 12 34 56 78 », « 0612345678 », « +33 6 12 34 56 78 ») — relecture de a1, 08/10.
+  const qTel = chiffresTelephone(recherche);
   const { estApporteur, FILTRE_APPORTEUR_PRISMA } =
     await import("@/lib/commercial-application/est-apporteur");
-  const lignes = await prisma.submission.findMany({
-    where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
-    orderBy: { submittedAt: "desc" },
-    take: 600,
-    select: {
-      id: true,
-      details: true,
-      contactName: true,
-      contactEmail: true,
-      contactPhone: true,
-      submittedAt: true,
-    },
-  });
   const clair = (v: string | null) => {
     try {
       return (v ? decryptPii(v) : null) ?? "";
@@ -294,22 +289,46 @@ export async function rechercherCandidatsApporteursAction(
     }
   };
   const candidats: CandidatTrouve[] = [];
-  for (const l of lignes) {
-    if (!estApporteur(l.details)) continue;
-    const nomComplet = clair(l.contactName);
-    const email = clair(l.contactEmail);
-    const telephone = clair(l.contactPhone);
-    if (![nomComplet, email, telephone].some((x) => norm(x).includes(q))) continue;
-    const [prenom = "", ...reste] = nomComplet.trim().split(/\s+/);
-    candidats.push({
-      submissionId: l.id,
-      prenom,
-      nom: reste.join(" "),
-      email,
-      telephone,
-      recueLe: l.submittedAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
+  // Les champs sont CHIFFRÉS : la base ne peut pas filtrer. On parcourt donc TOUTES les fiches,
+  // par paquets (plus de plafond à 600, relecture de a1), jusqu'à 10 résultats.
+  let curseur: string | undefined;
+  for (let paquet = 0; paquet < PAQUETS_MAX && candidats.length < 10; paquet++) {
+    const lignes = await prisma.submission.findMany({
+      where: { deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+      orderBy: [{ submittedAt: "desc" }, { id: "desc" }],
+      take: TAILLE_PAQUET,
+      ...(curseur ? { skip: 1, cursor: { id: curseur } } : {}),
+      select: {
+        id: true,
+        details: true,
+        contactName: true,
+        contactEmail: true,
+        contactPhone: true,
+        submittedAt: true,
+      },
     });
-    if (candidats.length >= 10) break;
+    if (lignes.length === 0) break;
+    curseur = lignes[lignes.length - 1]!.id;
+    for (const l of lignes) {
+      if (!estApporteur(l.details)) continue;
+      const nomComplet = clair(l.contactName);
+      const email = clair(l.contactEmail);
+      const telephone = clair(l.contactPhone);
+      const parTexte = [nomComplet, email, telephone].some((x) => norm(x).includes(q));
+      const parTel = qTel.length >= 4 && chiffresTelephone(telephone).includes(qTel);
+      if (!parTexte && !parTel) continue;
+      const [prenom = "", ...reste] = nomComplet.trim().split(/\s+/);
+      candidats.push({
+        submissionId: l.id,
+        prenom,
+        nom: reste.join(" "),
+        email,
+        telephone,
+        recueLe: l.submittedAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
+      });
+      if (candidats.length >= 10) break;
+    }
+    if (lignes.length < TAILLE_PAQUET) break;
   }
   return { ok: true, candidats };
 }
