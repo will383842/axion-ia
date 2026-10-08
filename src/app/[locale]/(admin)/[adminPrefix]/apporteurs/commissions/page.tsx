@@ -23,6 +23,7 @@ import {
 } from "@/features/apporteurs-reseau/actions-commissions";
 import {
   etatHorsGrille,
+  LIBELLE_HORS_GRILLE,
   libelleAQualifier,
   PALIER_HORS_GRILLE,
 } from "@/features/apporteurs-reseau/hors-grille";
@@ -447,7 +448,8 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   <p className="text-[length:var(--text-admin-sm)]">
                     {c.palier === PALIER_CONFERENCE
                       ? "Conférence"
-                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ?? c.palier)}
+                      : (PALIERS_FORMATION.find((p) => p.id === c.palier)?.libelle ??
+                        (c.palier === PALIER_HORS_GRILLE ? LIBELLE_HORS_GRILLE : c.palier))}
                   </p>
                 ) : null}
                 {c.statut === "a_qualifier" && !c.parrainage
