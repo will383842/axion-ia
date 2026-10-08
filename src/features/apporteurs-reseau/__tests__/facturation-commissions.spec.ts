@@ -235,7 +235,12 @@ vi.mock("@/lib/prisma", () => {
   return { prisma };
 });
 
-import { facturerCommissionsDues, marquerVerse, oublierCacheRegistre } from "../facturation";
+import {
+  facturerApporteur,
+  facturerCommissionsDues,
+  marquerVerse,
+  oublierCacheRegistre,
+} from "../facturation";
 import { annulerCommission, reduireCommission } from "../ajustement";
 import { leverSuspension, oublierLitigeDisponible, suspendreCommission } from "../litige";
 import {
@@ -1143,5 +1148,22 @@ describe("ligne RETENUE pour manquement (art. 4.5 bis) dans une autofacture", ()
     expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
     expect(lignes().find((l) => l.id === "b")!.statut).toBe("retenue");
     expect(lignes().find((l) => l.id === "av")!.verseeAt).toEqual(avoirVerseLe);
+  });
+});
+
+describe("reprise libérée après une retenue : réimputée SANS nouvel avoir", () => {
+  it("garde son numéro d'avoir, aucune nouvelle pièce, déduite du virement", async () => {
+    etat.lignes = [
+      ligne("d1", "due", 40_000),
+      ligne("r1", "reprise", -10_000, { avoirNumero: "AXI-APP-2026-0002" }),
+    ];
+    const avant = etat.pdfs.length;
+    const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: true });
+    expect(etat.pdfs.length - avant).toBe(1); // l'autofacture seule
+    const r1 = lignes().find((l) => l.id === "r1")!;
+    expect(r1.avoirNumero).toBe("AXI-APP-2026-0002");
+    expect(r1.autofactureNumero).toBe((r as { numero: string }).numero);
+    expect(r1.releveMois).not.toBeNull();
   });
 });
