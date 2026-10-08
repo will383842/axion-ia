@@ -45,6 +45,8 @@ export function ListeDeclarations({
     jusquAu: Date | null;
     /** La prestation commandée : en attente de réalisation, réalisée, ou rien encore. */
     prestation: EtatPrestation;
+    /** A1.7 : commission en attente de qualification « hors grille ». */
+    horsGrille?: boolean;
   }>;
 }) {
   return (
@@ -71,6 +73,7 @@ export function ListeDeclarations({
                       : T.prestationEnAttente}
                   </p>
                 ) : null}
+                {d.horsGrille ? <p className="text-fg-soft text-[15px]">{T.horsGrille}</p> : null}
               </div>
               <span
                 className={`${STYLE[d.etat]} shrink-0 rounded-full px-3 py-1 text-[14px] font-bold`}

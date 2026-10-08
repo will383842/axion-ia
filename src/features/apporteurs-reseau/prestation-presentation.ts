@@ -14,6 +14,8 @@ export interface CommissionDeLaPresentation {
   prestationRealiseeAt: Date | null;
   /** Numéro d'autofacture : posé, la réalisation ne s'annule plus (on enregistre une reprise). */
   autofactureNumero: string | null;
+  /** Palier choisi ; « hors-grille » : Williams a constaté un produit hors grille (A1.7). */
+  palier: string | null;
 }
 
 /** Ce que l'apporteur lit : rien (pas encore de commande), en attente, ou réalisée. */
@@ -38,6 +40,23 @@ export function etatPrestation(
 }
 
 /**
+ * Annexe 1, A1.7 : une commission « à qualifier » dont Williams a constaté que le produit est HORS
+ * GRILLE. L'apporteur le voit : la Société publie sa commission, ou constate par écrit qu'elle
+ * n'est pas commissionnée, dans les soixante jours de l'encaissement.
+ */
+/**
+ * Le repère « hors grille » (miroir de `PALIER_HORS_GRILLE` de `hors-grille.ts`, recopié pour ne
+ * pas tirer la file d'e-mails dans cette lecture ; l'égalité est verrouillée par un test).
+ */
+export const REPERE_HORS_GRILLE = "hors-grille";
+
+export function horsGrilleEnCours(
+  commissions: ReadonlyArray<Pick<CommissionDeLaPresentation, "statut" | "palier">>,
+): boolean {
+  return commissions.some((c) => c.statut === "a_qualifier" && c.palier === REPERE_HORS_GRILLE);
+}
+
+/**
  * Les commissions (hors parrainage) de chaque présentation citée. Colonne de réalisation pas
  * encore posée (fenêtre de déploiement) → carte vide : la fiche n'affiche rien plutôt que de
  * tomber.
@@ -57,6 +76,7 @@ export async function lireCommissionsDesPresentations(
       statut: true,
       prestationRealiseeAt: true,
       autofactureNumero: true,
+      palier: true,
     },
   });
   for (const c of l) {
@@ -68,6 +88,7 @@ export async function lireCommissionsDesPresentations(
       statut: c.statut,
       prestationRealiseeAt: c.prestationRealiseeAt,
       autofactureNumero: c.autofactureNumero,
+      palier: c.palier,
     });
     out.set(c.presentationId, liste);
   }

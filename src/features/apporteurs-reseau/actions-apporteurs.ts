@@ -280,7 +280,7 @@ export async function rechercherCandidatsApporteursAction(
   if (q.length < 2) return { ok: true, candidats: [] };
   // Un numéro se cherche par ses CHIFFRES, quel que soit le format saisi ou stocké
   // (« 06 12 34 56 78 », « 0612345678 », « +33 6 12 34 56 78 ») — relecture de a1, 08/10.
-  const qTel = chiffresTelephone(recherche);
+  const qTel = chiffresTelephone(recherche.slice(0, 80));
   const { estApporteur, FILTRE_APPORTEUR_PRISMA } =
     await import("@/lib/commercial-application/est-apporteur");
   const clair = (v: string | null) => {
