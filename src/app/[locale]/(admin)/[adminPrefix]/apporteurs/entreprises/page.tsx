@@ -21,7 +21,7 @@ import {
   type PresentationVue,
 } from "@/features/apporteurs-reseau/presentations";
 import { LIBELLE_PROLONGATION, type MotifProlongation } from "@/features/apporteurs-reseau/regles";
-import { dayKeyInParis, toParisLocalInput } from "@/lib/calendar-grid";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 import { coordonneesAffichables } from "@/features/apporteurs-reseau/coordonnees-presentees";
@@ -93,20 +93,17 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     <div className="flex flex-col gap-[var(--space-admin-5)]">
       <AdminPageHeader
         title="Entreprises présentées"
-        description="Les entreprises présentées par les apporteurs, par e-mail ou par leur formulaire."
+        description="Les entreprises déclarées par les apporteurs avec leur formulaire."
       />
 
       {acces.peutEcrire ? (
         <AdminCard as="section">
           <details>
             <summary className="cursor-pointer font-semibold">
-              ➕ Nouvelle entreprise présentée
+              ➕ Rattrapage d&apos;une déclaration (formulaire non enregistré)
             </summary>
             <div className="pt-[var(--space-admin-4)]">
-              <NouvellePresentationForm
-                apporteurs={apporteurs}
-                maintenantLocal={toParisLocalInput(maintenant)}
-              />
+              <NouvellePresentationForm apporteurs={apporteurs} />
             </div>
           </details>
         </AdminCard>
