@@ -31,12 +31,15 @@ import { SITE_URL } from "@/lib/site-url";
 import type { Prisma } from "../../../prisma/generated/client";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
+import { lireEntrepriseParSiren } from "./annuaire";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
+import { jugerAdmission, LIBELLE_REFUS_ADMISSION } from "./regles";
 import { CONTRAT_VERSION } from "./contrat-v2";
 import { envoyer } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
 import {
+  CLE_REGISTRE_INDISPONIBLE,
   CLES_ACCEPTATIONS,
   CLES_DECLARATIONS,
   LIBELLE_REFUS_SIGNATURE,
@@ -112,6 +115,28 @@ export async function signerContrat(e: {
   });
   if (!verdict.ok)
     return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE[verdict.refus] };
+
+  // Contrat 2.3 (art. 5.4 et 6.1) : SIREN valide et ACTIF. Si le registre public n'avait pas
+  // répondu à l'étape 2, il est RELU ici : une entreprise cessée (ou hors champ) ne signe pas.
+  // Encore muet : on signe, et la contresignature reste bloquée tant que le registre ne confirme
+  // pas (`sirenAContresigner`). Rien de la saisie n'est réécrit : le texte signé reste celui lu.
+  if (dossier.siren) {
+    const lu = await prisma.apporteurReseau.findUnique({
+      where: { id: dossier.id },
+      select: { declarations: true },
+    });
+    const marque = (lu?.declarations as Record<string, unknown> | null)?.[
+      CLE_REGISTRE_INDISPONIBLE
+    ];
+    if (marque) {
+      const r = await lireEntrepriseParSiren(dossier.siren);
+      if (r.ok) {
+        const admission = jugerAdmission(r.entreprise);
+        if (!admission.ok)
+          return { ok: false, raison: "refus", message: LIBELLE_REFUS_ADMISSION[admission.motif] };
+      }
+    }
+  }
 
   const maintenant = e.maintenant ?? new Date();
   const valeurs = valeursDuContrat(dossier, maintenant);
