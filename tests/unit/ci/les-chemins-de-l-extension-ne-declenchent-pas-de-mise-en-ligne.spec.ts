@@ -23,24 +23,23 @@ import { describe, expect, it } from "vitest";
 const RACINE = process.cwd();
 const WORKFLOW = readFileSync(join(RACINE, ".github", "workflows", "deploy-coolify.yml"), "utf8");
 
-function pathsIgnore(): string[] {
-  const bloc =
-    /push:\s*\n\s*branches:[^\n]*\n\s*paths-ignore:\s*\n((?:\s*(?:#[^\n]*|- [^\n]+)\n)+)/.exec(
-      WORKFLOW,
-    );
-  if (!bloc?.[1]) return [];
-  return [...bloc[1].matchAll(/- "([^"]+)"/g)].map((m) => m[1] ?? "");
+// 2026-10-08 : la mise en ligne n'est plus déclenchée par une fusion (`push`),
+// mais à heures fixes (`schedule`) ou à la demande (`workflow_dispatch`) — cf.
+// `deploiement-a-heures-fixes.spec.ts`. Une retouche de `extensions/**` ne
+// coûte donc plus jamais un déploiement à elle seule : il n'y a plus de
+// `paths-ignore` à tenir.
+function bloqueOn(): string {
+  return /\non:\s*\n((?:[ \t]+[^\n]*\n|\s*\n)+)/.exec(WORKFLOW)?.[1] ?? "";
 }
 
 describe("⛔ les chemins de l'extension ne déclenchent pas de mise en ligne", () => {
-  it("paths-ignore contient extensions/**", () => {
-    expect(pathsIgnore()).toContain("extensions/**");
+  it("aucune fusion ne déclenche de mise en ligne (pas de déclencheur push)", () => {
+    expect(bloqueOn()).not.toMatch(/^\s{2}push:/m);
   });
 
-  it("contre-témoin : le code du site n'est pas ignoré", () => {
-    const ignores = pathsIgnore();
-    expect(ignores.length).toBeGreaterThan(3);
-    for (const p of ignores) expect(p.startsWith("src")).toBe(false);
+  it("contre-témoin : le site se déploie toujours (créneaux et lancement manuel)", () => {
+    expect(bloqueOn()).toMatch(/^\s{2}schedule:/m);
+    expect(bloqueOn()).toMatch(/^\s{2}workflow_dispatch:/m);
   });
 
   it("la concurrence scindée du déploiement est inchangée", () => {
