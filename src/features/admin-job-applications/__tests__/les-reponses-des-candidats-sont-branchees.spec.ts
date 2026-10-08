@@ -49,7 +49,7 @@ describe("le programme du worker", () => {
     expect(corps.slice(0, 300)).toMatch(/stub\.invalid/);
   });
 
-  it("🔴 le passage est ÉTEINT PAR DÉFAUT : il sort avant tout import sans l'interrupteur à \"true\"", () => {
+  it('🔴 le passage est ÉTEINT PAR DÉFAUT : il sort avant tout import sans l\'interrupteur à "true"', () => {
     const corps = worker.slice(
       worker.indexOf("async function handleReponsesEntrantesCandidatures"),
     );
