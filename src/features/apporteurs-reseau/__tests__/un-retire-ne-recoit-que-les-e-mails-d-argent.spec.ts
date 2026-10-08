@@ -85,3 +85,13 @@ describe("apporteur dans le réseau (contre-témoin)", () => {
     expect(await envoi("apporteur-dossier-lien")).toBe("envoye");
   });
 });
+
+describe("alerte INTERNE « dossier à vérifier » (relecture de a1, 08/10)", () => {
+  it("part même si l'apporteur est retiré : elle va à Williams, pas à l'apporteur", async () => {
+    h.retraitDe.mockResolvedValue(new Date());
+    const r = await envoi("apporteur-dossier-a-verifier", { destinataire: "alertes@axion-ia.com" });
+    expect(r).not.toBe("fiche-retiree");
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
+  });
+});
+
