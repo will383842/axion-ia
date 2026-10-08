@@ -327,7 +327,7 @@ export const COPY_DEMARRAGE = {
   manquement: {
     // Contrat 2.3, art. 4.5 bis : notification avec les faits, contestation écrite, réponse
     // motivée dans les trente jours.
-    subject: "Manquement constaté sur une de vos déclarations",
+    subject: "Manquement constaté sur votre déclaration",
     title: "Manquement constaté",
     preview: "Les faits, leurs conséquences et la façon de contester.",
     intro:
