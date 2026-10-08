@@ -12,6 +12,7 @@ import {
   VerserForm,
 } from "@/components/admin/apporteurs/commissions/FormulairesCommission";
 import {
+  ajusterCommissionAction,
   annulerRealisationAction,
   classerActiviteAction,
   leverSuspensionAction,
@@ -48,6 +49,7 @@ const ONGLETS: ReadonlyArray<{ cle: StatutCommissionApporteur; libelle: string }
   { cle: "en_attente_vigilance", libelle: "Attente vigilance" },
   { cle: "versee", libelle: "Versées" },
   { cle: "reprise", libelle: "Reprises" },
+  { cle: "annulee", libelle: "Annulées" },
 ];
 
 const ACTIVITE: Record<string, string> = {
@@ -382,6 +384,55 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       <button type="submit" className="admin-button-secondary">
                         Suspendre la commission
                       </button>
+                    </form>
+                  </details>
+                ) : null}
+                {peutPayer &&
+                !c.autofactureNumero &&
+                !c.parrainage &&
+                (c.statut === "due" ||
+                  c.statut === "a_qualifier" ||
+                  c.statut === "en_attente_vigilance") ? (
+                  <details className="text-[length:var(--text-admin-sm)]">
+                    <summary className="cursor-pointer">Réduire ou annuler</summary>
+                    <form
+                      action={ajusterCommissionAction}
+                      className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+                    >
+                      <input type="hidden" name="id" value={c.id} />
+                      <label className="flex items-center gap-[var(--space-admin-2)]">
+                        <input type="radio" name="mode" value="reduire" defaultChecked />
+                        Prix HT net conservé
+                        <input
+                          name="prix"
+                          inputMode="decimal"
+                          placeholder="1500"
+                          className="admin-input"
+                          aria-label="Prix HT net conservé en euros"
+                        />
+                        € (la commission est recalculée par la règle du contrat)
+                      </label>
+                      <label className="flex items-center gap-[var(--space-admin-2)]">
+                        <input type="radio" name="mode" value="annuler" />
+                        Annuler la commission (commande annulée, prestation non réalisée, démentie)
+                      </label>
+                      <input
+                        name="motif"
+                        required
+                        maxLength={300}
+                        className="admin-input"
+                        aria-label="Motif"
+                        placeholder="Motif (prix conservé, annulation, démenti…)"
+                      />
+                      <label className="flex items-center gap-[var(--space-admin-2)]">
+                        <input type="checkbox" name="confirmer" value="oui" required />
+                        Je confirme : tracé au journal, la ligne reste conservée.
+                      </label>
+                      <div>
+                        <button type="submit" className="admin-button-secondary">
+                          Enregistrer
+                        </button>
+                      </div>
                     </form>
                   </details>
                 ) : null}

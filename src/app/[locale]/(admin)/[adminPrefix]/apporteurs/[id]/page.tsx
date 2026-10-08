@@ -63,6 +63,7 @@ const LIBELLE_COMMISSION: Record<string, string> = {
   en_attente_vigilance: "En attente des pièces URSSAF",
   versee: "Versée",
   reprise: "Reprise",
+  annulee: "Annulée",
 };
 
 function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }) {

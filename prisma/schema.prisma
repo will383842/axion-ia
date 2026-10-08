@@ -15381,6 +15381,9 @@ enum StatutCommissionApporteur {
   versee
   /// Reprise après un remboursement (art. 4.5).
   reprise
+  /// Annulée avant facturation (commande annulée, prestation non réalisée, démentie, fraude).
+  /// La ligne reste en base ; le geste est tracé au journal.
+  annulee
 
   @@map("statut_commission_apporteur")
 }

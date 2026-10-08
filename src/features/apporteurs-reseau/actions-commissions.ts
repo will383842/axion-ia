@@ -14,6 +14,7 @@ import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 
+import { annulerCommission, reduireCommission } from "./ajustement";
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
@@ -253,4 +254,42 @@ export async function annulerRealisationAction(fd: FormData): Promise<void> {
   if (r.ok)
     versCommissions("retour", "Réalisation annulée : la commission est de nouveau en attente.");
   versCommissions("erreur", r.message);
+}
+
+// ── Réduire ou annuler une commission pas encore facturée ─────────────────
+
+export async function ajusterCommissionAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  if (texte(fd, "confirmer") !== "oui")
+    versCommissions("erreur", "Cochez la confirmation avant de modifier la commission.");
+  const mode = texte(fd, "mode");
+  const motif = texte(fd, "motif");
+  let r: Awaited<ReturnType<typeof reduireCommission>>;
+  try {
+    if (mode === "annuler") {
+      r = await annulerCommission(id, motif, await acteur());
+    } else {
+      // Le PRIX HT net conservé est saisi ; la commission est recalculée par la règle du contrat.
+      const prix = montantEnCentimes(texte(fd, "prix"));
+      r =
+        prix === null
+          ? { ok: false, message: "Indiquez le prix HT net conservé en euros, par exemple 1500." }
+          : await reduireCommission(id, prix, motif, await acteur());
+    }
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-ajuster" } });
+    r = { ok: false, message: "La modification n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok) {
+    const base =
+      mode === "annuler"
+        ? "Commission annulée : elle reste visible dans l'onglet « Annulées »."
+        : `Commission recalculée : ${euros(r.montantCents ?? 0)}.`;
+    versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
+  }
+  versCommissions("erreur", (r as { message: string }).message);
 }

@@ -266,16 +266,23 @@ export async function facturerApporteur(
         autofactureAttenteMotif: null,
         autofactureAttenteDepuis: null,
       };
-      const dues2 = await tx.commissionApporteur.updateMany({
-        where: {
-          id: { in: dues.map((c) => c.id) },
-          statut: "due",
-          autofactureNumero: null,
-          // Revérifié dans l'écriture même : réalisée, et pas suspendue entre-temps.
-          ...hors,
-        },
-        data: commun,
-      });
+      // Ligne par ligne, au MONTANT lu : une réduction, une suspension ou une annulation faite
+      // pendant la facturation fait échouer l'écriture (réessai), jamais une autofacture à
+      // l'ancien montant. Réalisée et non suspendue revérifiées dans l'écriture même.
+      const dues2 = { count: 0 };
+      for (const c of dues) {
+        const r = await tx.commissionApporteur.updateMany({
+          where: {
+            id: c.id,
+            statut: "due",
+            autofactureNumero: null,
+            montantCents: c.montantCents,
+            ...hors,
+          },
+          data: commun,
+        });
+        dues2.count += r.count;
+      }
       let reprises = 0;
       for (const a of avoirsPdf) {
         const r = await tx.commissionApporteur.updateMany({
