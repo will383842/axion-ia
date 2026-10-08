@@ -205,6 +205,16 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
             libelle="Contresigné"
             valeur={d.signeParSocieteAt ? jourHeure(d.signeParSocieteAt) : null}
           />
+          {/* Relecture de a1 (08/10) : la version du texte RÉELLEMENT signé par cet apporteur,
+              lue dans sa signature archivée — pas la dernière version publiée. */}
+          <Ligne
+            libelle="Version signée"
+            valeur={
+              typeof fiche.signature?.["version"] === "string"
+                ? `Contrat ${fiche.signature["version"]}`
+                : null
+            }
+          />
           <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
             {voitPii && fiche.aContratApporteur ? (
               <a
