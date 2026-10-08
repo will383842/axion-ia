@@ -18,6 +18,8 @@ interface Ligne {
   verseeAt: Date | null;
   majAt: Date;
   activite: string;
+  /** Date de création (reprise : repère des délais de l'art. 12.4). */
+  creeAt?: Date;
   palier: string | null;
   parrainage: boolean;
   prixPublicHtCents: number | null;
@@ -1228,17 +1230,49 @@ describe("reprise libérée après une retenue : réimputée SANS nouvel avoir",
 });
 
 describe("compensation (art. 12.4) et avoir déjà émis", () => {
-  it("une reprise dont l'avoir est déjà émis n'est jamais scindée : elle attend, entière", async () => {
+  it("avoir déjà émis de 1 000 € en attente, 300 € dus : RIEN n'est versé, l'avoir n'est pas scindé", async () => {
     etat.lignes = [
-      ligne("d1", "due", 10_000),
-      ligne("rx", "reprise", -15_000, { avoirNumero: "AXI-APP-2026-0002" }),
-      ligne("r2", "reprise", -3_000),
+      ligne("d1", "due", 30_000),
+      ligne("rx", "reprise", -100_000, { avoirNumero: "AXI-APP-2026-0002" }),
     ];
     const r = await facturerApporteur("APP1", MARDI);
+    expect(r).toMatchObject({ ok: false });
+    expect(lignes().find((l) => l.id === "d1")!).toMatchObject({
+      statut: "due",
+      autofactureNumero: null,
+    });
+    expect(lignes().find((l) => l.id === "rx")!).toMatchObject({
+      montantCents: -100_000,
+      releveMois: null,
+    });
+    expect(lignes().filter((l) => l.statut === "reprise")).toHaveLength(1);
+  });
+
+  it("la ligne de reste d'une scission garde la date d'ORIGINE de la reprise (délais de 12 et 24 mois)", async () => {
+    const origine = new Date("2026-03-01T10:00:00Z");
+    etat.lignes = [
+      ligne("d1", "due", 10_000),
+      ligne("r1", "reprise", -15_000, { creeAt: origine }),
+    ];
+    await facturerApporteur("APP1", MARDI);
+    const reste = lignes().find((l) => l.statut === "reprise" && l.id !== "r1")!;
+    expect(reste.creeAt).toEqual(origine);
+  });
+
+  it("assujetti, reprises de DEUX autofactures d'origine : plafond TTC pièce par pièce, net jamais négatif", async () => {
+    etat.lignes = [
+      ligne("v1", "versee", 9_999, { apporteurId: "APP4", autofactureNumero: "AXI-APP-2026-0010" }),
+      ligne("v2", "versee", 9_999, { apporteurId: "APP4", autofactureNumero: "AXI-APP-2026-0011" }),
+      ligne("d1", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d2", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("d3", "due", 3_333, { apporteurId: "APP4" }),
+      ligne("r1", "reprise", -5_001, { apporteurId: "APP4", palier: "reprise-de:v1" }),
+      ligne("r2", "reprise", -8_003, { apporteurId: "APP4", palier: "reprise-de:v2" }),
+    ];
+    const r = await facturerApporteur("APP4", MARDI);
     expect(r).toMatchObject({ ok: true });
-    const rx = lignes().find((l) => l.id === "rx")!;
-    expect(rx).toMatchObject({ montantCents: -15_000, releveMois: null });
-    expect(lignes().find((l) => l.id === "r2")!.releveMois).not.toBeNull();
-    expect(lignes().filter((l) => l.statut === "reprise")).toHaveLength(2); // aucune scission
+    expect((r as { totalCents: number }).totalCents).toBeGreaterThanOrEqual(0);
+    const reprises = lignes().filter((x) => x.statut === "reprise");
+    expect(reprises.reduce((s, x) => s + (x.montantCents ?? 0), 0)).toBe(-13_004);
   });
 });

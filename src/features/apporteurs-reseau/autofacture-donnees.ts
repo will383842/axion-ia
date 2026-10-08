@@ -246,31 +246,46 @@ export function aVirerPartielCents(
 export function planCompensation(
   regimeTva: ApporteurPourAutofacture["regimeTva"],
   duesCents: readonly number[],
-  reprises: ReadonlyArray<{ id: string; montantCents: number | null; scindable?: boolean }>,
-): {
-  imputees: string[];
-  scinder: { id: string; imputeCents: number; resteCents: number } | null;
-} | null {
+  reprises: ReadonlyArray<{
+    id: string;
+    montantCents: number | null;
+    /** `false` : avoir déjà émis, jamais scindé (imputé entier, ou bloque). */
+    scindable?: boolean;
+    /** Pièce d'avoir à laquelle la reprise appartiendra (TTC arrondi pièce par pièce). */
+    piece?: string;
+  }>,
+):
+  | { imputees: string[]; scinder: { id: string; imputeCents: number; resteCents: number } | null }
+  | { bloque: true }
+  | null {
   const dues = duesCents.reduce((s, m) => s + m, 0);
   const total = reprises.reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
   if (dues <= 0 || total <= dues) return null;
   const plafondTtc = totalTtcPieceCents(regimeTva, [...duesCents]);
+  // TTC des avoirs : arrondi PIÈCE PAR PIÈCE, comme les PDF (jamais un centime perdu).
+  const ttcAvoirs = (items: ReadonlyArray<{ piece: string; m: number }>) => {
+    const parPiece = new Map<string, number[]>();
+    for (const x of items) parPiece.set(x.piece, [...(parPiece.get(x.piece) ?? []), x.m]);
+    return [...parPiece.values()].reduce((s, ms) => s + totalTtcPieceCents(regimeTva, ms), 0);
+  };
   const imputees: string[] = [];
-  const pris: number[] = [];
+  const pris: Array<{ piece: string; m: number }> = [];
   for (const r of reprises) {
     const m = Math.abs(r.montantCents ?? 0);
     if (m <= 0) continue;
-    const cumul = pris.reduce((s, x) => s + x, 0);
-    if (cumul + m <= dues && totalTtcPieceCents(regimeTva, [...pris, m]) <= plafondTtc) {
+    const piece = r.piece ?? r.id;
+    const cumul = pris.reduce((s, x) => s + x.m, 0);
+    if (cumul + m <= dues && ttcAvoirs([...pris, { piece, m }]) <= plafondTtc) {
       imputees.push(r.id);
-      pris.push(m);
+      pris.push({ piece, m });
       continue;
     }
-    // Non scindable (avoir déjà émis) : elle attend une prochaine fois, entière.
-    if (r.scindable === false) continue;
-    // Scission : la plus grande part qui garde l'avoir sous l'autofacture, HT comme TTC.
+    // Avoir déjà émis qui ne tient pas entier : on ne le scinde pas, et on ne verse pas les dues
+    // en le laissant de côté (ce serait payer alors qu'un solde négatif reste dû).
+    if (r.scindable === false) return { bloque: true };
+    // Scission : la plus grande part qui garde les avoirs sous l'autofacture, HT comme TTC.
     let part = Math.min(m - 1, dues - cumul);
-    while (part > 0 && totalTtcPieceCents(regimeTva, [...pris, part]) > plafondTtc) part -= 1;
+    while (part > 0 && ttcAvoirs([...pris, { piece, m: part }]) > plafondTtc) part -= 1;
     return {
       imputees,
       scinder: part > 0 ? { id: r.id, imputeCents: part, resteCents: m - part } : null,
