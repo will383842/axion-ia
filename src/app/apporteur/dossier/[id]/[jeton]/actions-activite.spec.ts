@@ -20,6 +20,7 @@ vi.mock("@/features/apporteurs-reseau/donnees", () => ({
 }));
 vi.mock("@/features/apporteurs-reseau/annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => h.lireEntrepriseParSiren(...a),
+  lireRegistre: (...a: unknown[]) => h.lireEntrepriseParSiren(...a),
 }));
 vi.mock("@/features/apporteurs-reseau/signature", async () => {
   const regles = await import("@/features/apporteurs-reseau/signature-regles");
@@ -34,6 +35,8 @@ vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: (...a: unknown[]) => h.checkRateLimit(...a),
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+
+import { luhnValid } from "@/lib/siret";
 
 import { enregistrerActiviteAction, enregistrerCoordonneesAction } from "./actions";
 
@@ -175,5 +178,61 @@ describe("07/10 : l'étape 1 enregistre le nom et le téléphone tout de suite",
     fd.set("telephone", "pas un numéro");
     expect(await enregistrerCoordonneesAction(fd)).toMatchObject({ ok: false });
     expect(h.enregistrerCoordonnees).not.toHaveBeenCalled();
+  });
+});
+
+describe("étape 2 : SIRET de l'établissement (plusieurs activités, 2026-10-08)", () => {
+  // SIRET valide (clé de Luhn) de l'unité légale 732829320.
+  let SIRET = "";
+  for (let i = 0; i < 100000 && !SIRET; i++) {
+    const c = `732829320${String(i).padStart(5, "0")}`;
+    if (luhnValid(c)) SIRET = c;
+  }
+  const ETAB_OK = {
+    ok: true,
+    entreprise: {
+      ...REGISTRE_OK.entreprise,
+      siret: SIRET,
+      adresse: "8 rue du Domicile 69003 Lyon",
+      naf: "46.19B",
+    },
+  };
+
+  it("un SIRET : SIREN déduit, établissement lu, ADRESSE ET NAF DE L'ÉTABLISSEMENT enregistrés", async () => {
+    h.lireEntrepriseParSiren.mockResolvedValue(ETAB_OK);
+    const r = await enregistrerActiviteAction(formulaire({ siren: SIRET }));
+    expect(r).toMatchObject({ ok: true });
+    expect(h.lireEntrepriseParSiren).toHaveBeenCalledWith(SIRET);
+    expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
+      siren: "732829320",
+      siret: SIRET,
+      adresse: "8 rue du Domicile 69003 Lyon",
+      codeNaf: "46.19B",
+    });
+  });
+
+  it("établissement FERMÉ : refusé, rien n'est enregistré", async () => {
+    h.lireEntrepriseParSiren.mockResolvedValue({
+      ok: true,
+      entreprise: { ...ETAB_OK.entreprise, active: false },
+    });
+    const r = await enregistrerActiviteAction(formulaire({ siren: SIRET }));
+    expect(r).toMatchObject({ ok: false });
+    expect(h.enregistrerActivite).not.toHaveBeenCalled();
+  });
+
+  it("SIRET mal formé (clé fausse) : refusé avec le bon message", async () => {
+    const faux = `${SIRET.slice(0, 13)}${(Number(SIRET[13]) + 1) % 10}`;
+    const r = await enregistrerActiviteAction(formulaire({ siren: faux }));
+    expect(r).toMatchObject({ ok: false, message: expect.stringContaining("SIRET") });
+  });
+
+  it("un SIREN seul : comportement inchangé, aucun SIRET", async () => {
+    h.lireEntrepriseParSiren.mockResolvedValue(REGISTRE_OK);
+    await enregistrerActiviteAction(formulaire());
+    expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
+      siren: "732829320",
+      siret: null,
+    });
   });
 });

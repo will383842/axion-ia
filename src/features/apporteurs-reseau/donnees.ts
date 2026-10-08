@@ -29,6 +29,7 @@ import { chiffrerContenuPiece } from "./pieces-chiffrement";
 import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
+import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
 
@@ -212,6 +213,8 @@ export interface DossierVue {
   email: string;
   telephone: string | null;
   siren: string | null;
+  /** SIRET de l'établissement (plusieurs activités), sinon `null`. */
+  siret: string | null;
   denomination: string | null;
   adresse: string | null;
   codeNaf: string | null;
@@ -264,6 +267,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     email: decryptPii(a.email) ?? "",
     telephone: decryptPii(a.telephone),
     siren: a.siren,
+    siret: await siretDe(a.id),
     denomination: a.denomination,
     adresse: a.adresse,
     codeNaf: a.codeNaf,
@@ -341,6 +345,8 @@ export interface SaisieActivite {
   /** Le registre n'a pas répondu : l'admission n'a pas été jugée (à contrôler en console). */
   registreIndisponible?: boolean;
   siren: string;
+  /** SIRET de l'établissement (plusieurs activités), ou `null` : seul le SIREN est connu. */
+  siret?: string | null;
   denomination: string;
   adresse: string;
   codeNaf: string | null;
@@ -413,6 +419,9 @@ export async function enregistrerActivite(
       ...(s.iban ? { iban: encryptPii(s.iban.replace(/\s+/g, "").toUpperCase()) } : {}),
     },
   });
+  // SIRET de l'établissement (2026-10-08) : posé, remplacé, ou retiré si l'apporteur revient au
+  // seul SIREN. `undefined` (ancien appelant) : rien n'y touche.
+  if (s.siret !== undefined) await enregistrerSiret(apporteurId, s.siret);
   return { ok: true };
 }
 

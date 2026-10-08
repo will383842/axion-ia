@@ -34,7 +34,7 @@ import {
 } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
-import { lireEntrepriseParSiren } from "./annuaire";
+import { lireEntrepriseParSiren, lireRegistre } from "./annuaire";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, sirenValide, type TypePiece } from "./regles";
 import { retraitDe } from "./retrait";
 
@@ -165,17 +165,23 @@ const RESERVATION_CONTRESIGNATURE_MS = 10 * 60 * 1000;
  * contresigner ; registre muet, entreprise cessée ou introuvable → refus, sans contournement :
  * il suffit de recliquer quand le registre répond. Rend le message pour Williams, ou `null`.
  */
-export async function sirenAContresigner(siren: string | null): Promise<string | null> {
+export async function sirenAContresigner(
+  siren: string | null,
+  siret: string | null = null,
+): Promise<string | null> {
   if (!siren || !sirenValide(siren))
     return "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.";
-  const r = await lireEntrepriseParSiren(siren);
+  // Avec un SIRET (plusieurs activités) : c'est l'ÉTABLISSEMENT qui doit être actif.
+  const r = siret ? await lireRegistre(siret) : await lireEntrepriseParSiren(siren);
   if (!r.ok) {
     return r.raison === "indisponible"
       ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
       : "SIREN à vérifier : introuvable au registre public, le contrat ne peut pas être contresigné. Une micro-entreprise toute neuve peut ne pas encore y être publiée : réessayez dans quelques jours.";
   }
   if (!r.entreprise.active)
-    return "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
+    return siret
+      ? "SIRET à vérifier : l'entreprise ou cet établissement est fermé au registre public. Le contrat ne peut pas être contresigné."
+      : "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
   return null;
 }
 
@@ -193,7 +199,7 @@ export async function preparerDecision(
   const base = { destinataire: d.email, entityType: "ApporteurReseau" as const, entityId: d.id };
   const mot = note?.trim() || null;
   if (decision === "contresigner") {
-    const blocage = await sirenAContresigner(d.siren);
+    const blocage = await sirenAContresigner(d.siren, d.siret);
     if (blocage) return { ok: false, message: blocage };
     const nonConformes = d.pieces.filter((p) => p.statut !== "conforme" && p.type !== "rc_pro");
     if (nonConformes.length > 0) {

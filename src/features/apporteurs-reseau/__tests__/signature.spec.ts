@@ -12,6 +12,7 @@ const findUnique = vi.fn();
 const lireEntrepriseParSiren = vi.fn();
 vi.mock("../annuaire", () => ({
   lireEntrepriseParSiren: (...a: unknown[]) => lireEntrepriseParSiren(...a),
+  lireRegistre: (...a: unknown[]) => lireEntrepriseParSiren(...a),
 }));
 
 const captureMessage = vi.fn();

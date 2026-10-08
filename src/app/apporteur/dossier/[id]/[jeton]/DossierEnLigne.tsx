@@ -9,6 +9,8 @@
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
+import { checkSiretFormat } from "@/lib/siret";
+
 import {
   ACCEPTATIONS,
   AIDE_PIECE,
@@ -112,6 +114,11 @@ function Progression({ etape }: { etape: number }) {
 
 // ── Le parcours ──────────────────────────────────────────────────────────
 
+/** SIREN (9 chiffres, clé de Luhn) ou SIRET (14 chiffres, clé de Luhn). */
+function identifiantValide(net: string): boolean {
+  return net.length === 14 ? checkSiretFormat(net).ok : sirenValide(net);
+}
+
 export function DossierEnLigne({
   dossier,
   etapeInitiale,
@@ -136,7 +143,7 @@ export function DossierEnLigne({
   const [nomSaisi, setNomSaisi] = useState("");
   const [telephone, setTelephone] = useState(dossier.telephone ?? "");
   // Étape 2
-  const [siren, setSiren] = useState(dossier.siren ?? "");
+  const [siren, setSiren] = useState(dossier.siret ?? dossier.siren ?? "");
   const [recherche, setRecherche] = useState<ResultatRecherche | null>(null);
   const [denomination, setDenomination] = useState(dossier.denomination ?? "");
   const [adresse, setAdresse] = useState(dossier.adresse ?? "");
@@ -187,8 +194,15 @@ export function DossierEnLigne({
 
   // ── Étape 2 : règles d'affichage ──
   const sirenNet = siren.replace(/\s+/g, "");
-  const sirenDejaEnregistre = !!dossier.siren && sirenNet === dossier.siren;
-  const trouve = recherche?.ok && recherche.entreprise.siren === sirenNet ? recherche : null;
+  // Un SIREN (9 chiffres) ou le SIRET de l'établissement (14), pour plusieurs activités.
+  const identifiantOk = identifiantValide(sirenNet);
+  const sirenDejaEnregistre =
+    !!dossier.siren &&
+    (sirenNet === (dossier.siret ?? dossier.siren) || sirenNet === dossier.siren);
+  const trouve =
+    recherche?.ok && (recherche.entreprise.siret ?? recherche.entreprise.siren) === sirenNet
+      ? recherche
+      : null;
   const echec = recherche && !recherche.ok ? recherche : null;
   const refus = trouve?.refus ?? null;
   const saisieManuelle =
@@ -197,7 +211,7 @@ export function DossierEnLigne({
     (sirenDejaEnregistre && !trouve && !echec);
   const ibanNet = iban.replace(/\s+/g, "");
   const activiteComplete =
-    sirenValide(sirenNet) &&
+    identifiantOk &&
     (!!trouve || sirenDejaEnregistre || !!saisieManuelle) &&
     !refus &&
     denomination.trim() !== "" &&
@@ -207,7 +221,7 @@ export function DossierEnLigne({
     (tva !== "assujetti" || numeroTva.trim() !== "") &&
     (ibanNet ? ibanValide(ibanNet) : dossier.ibanSaisi);
   const manquesEtape2 = [
-    ...(!sirenValide(sirenNet) || !(trouve || sirenDejaEnregistre || saisieManuelle)
+    ...(!identifiantOk || !(trouve || sirenDejaEnregistre || saisieManuelle)
       ? [TEXTES.manqueSiren]
       : []),
     ...(denomination.trim() === "" || adresse.trim() === "" ? [TEXTES.manqueEntreprise] : []),
@@ -444,7 +458,8 @@ export function DossierEnLigne({
                 id={`${uid}-siren`}
                 inputMode="numeric"
                 autoComplete="off"
-                maxLength={11}
+                maxLength={18}
+                aria-describedby={`${uid}-siren-aide`}
                 value={siren}
                 onChange={(e) => {
                   setSiren(e.target.value);
@@ -455,14 +470,20 @@ export function DossierEnLigne({
               <button
                 type="button"
                 onClick={rechercher}
-                disabled={enCours || !sirenValide(sirenNet)}
+                disabled={enCours || !identifiantOk}
                 className="bg-fg disabled:bg-sand-deep disabled:text-fg-soft min-h-[52px] shrink-0 rounded-xl px-4 text-[16px] font-bold text-white"
               >
                 {enCours && !trouve ? TEXTES.recherche : TEXTES.rechercher}
               </button>
             </div>
-            {sirenNet.length === 9 && !sirenValide(sirenNet) ? (
+            <p id={`${uid}-siren-aide`} className="text-fg-soft mt-1 text-[15px]">
+              {TEXTES.aideSiret}
+            </p>
+            {sirenNet.length === 9 && !identifiantOk ? (
               <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.sirenInvalide}</p>
+            ) : null}
+            {sirenNet.length === 14 && !identifiantOk ? (
+              <p className="text-error mt-1 text-[15px] font-semibold">{TEXTES.siretInvalide}</p>
             ) : null}
           </div>
 

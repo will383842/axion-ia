@@ -31,7 +31,7 @@ import { SITE_URL } from "@/lib/site-url";
 import type { Prisma } from "../../../prisma/generated/client";
 
 import { empreinte, rendreContratPdf, texteDuContrat, type ValeursContrat } from "./contrat-pdf";
-import { lireEntrepriseParSiren } from "./annuaire";
+import { lireRegistre } from "./annuaire";
 import { enregistrerDeclarations, lireDossierParLien } from "./donnees";
 import { jugerAdmission, LIBELLE_REFUS_ADMISSION } from "./regles";
 import { CONTRAT_VERSION } from "./contrat-v2";
@@ -129,7 +129,7 @@ export async function signerContrat(e: {
       CLE_REGISTRE_INDISPONIBLE
     ];
     if (marque) {
-      const r = await lireEntrepriseParSiren(dossier.siren);
+      const r = await lireRegistre(dossier.siret ?? dossier.siren);
       if (r.ok) {
         const admission = jugerAdmission(r.entreprise);
         if (!admission.ok)

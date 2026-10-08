@@ -21,7 +21,8 @@ import * as Sentry from "@sentry/nextjs";
 import { getClientIp, getClientUserAgent } from "@/lib/client-ip";
 import { checkRateLimit, type RateLimitConfig } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
-import { lireEntrepriseParSiren } from "@/features/apporteurs-reseau/annuaire";
+import { lireRegistre } from "@/features/apporteurs-reseau/annuaire";
+import { checkSiretFormat, sirenDuSiret } from "@/lib/siret";
 import {
   TAILLE_MAX_PIECE,
   deposerPiece,
@@ -58,6 +59,8 @@ export type ResultatRecherche =
       ok: true;
       entreprise: {
         siren: string;
+        /** Recherche par SIRET (2026-10-08) : l'établissement trouvé. */
+        siret?: string;
         denomination: string | null;
         adresse: string | null;
         naf: string | null;
@@ -125,7 +128,8 @@ export async function rechercherSirenAction(
   if (!(await dossierModifiableParLien(lien(id), lien(jeton)))) {
     return { ok: false, raison: "erreur", message: TEXTES.invalideTitre };
   }
-  const r = await lireEntrepriseParSiren(String(siren).slice(0, 20));
+  // Un SIREN (9 chiffres) ou le SIRET de l'établissement (14 chiffres, plusieurs activités).
+  const r = await lireRegistre(String(siren).slice(0, 20));
   if (!r.ok) {
     const message =
       r.raison === "siren_invalide"
@@ -141,6 +145,7 @@ export async function rechercherSirenAction(
     ok: true,
     entreprise: {
       siren: e.siren,
+      ...(e.siret ? { siret: e.siret } : {}),
       denomination: e.denomination,
       adresse: e.adresse,
       naf: e.naf,
@@ -175,7 +180,16 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   const dossier = await dossierModifiableParLien(lien(fd.get("id")), lien(fd.get("jeton")));
   if (!dossier) return NEUTRE;
 
-  const siren = champ(fd, "siren", 20).replace(/\s+/g, "");
+  // Un SIREN (9 chiffres) OU le SIRET de l'établissement (14 chiffres) : plusieurs activités =
+  // un SIREN, plusieurs SIRET (2026-10-08). Le SIREN se déduit du SIRET. Sans SIRET, rien ne change.
+  const saisie = champ(fd, "siren", 20).replace(/\s+/g, "");
+  let siret: string | null = null;
+  if (saisie.length === 14) {
+    const c = checkSiretFormat(saisie);
+    if (!c.ok) return { ok: false, message: TEXTES.siretInvalide };
+    siret = c.value;
+  }
+  const siren = siret ? sirenDuSiret(siret) : saisie;
   if (!sirenValide(siren)) return { ok: false, message: TEXTES.sirenInvalide };
 
   // Le registre est relu ICI : la dénomination, l'adresse et le code NAF publics
@@ -186,7 +200,8 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   // Registre muet (panne, 429 persistant, entreprise introuvable) : on garde la saisie
   // manuelle, mais le dossier est MARQUÉ « à contrôler » dans la console (jamais en silence).
   let registreIndisponible = false;
-  const registre = await lireEntrepriseParSiren(siren);
+  // Avec un SIRET : l'ÉTABLISSEMENT doit être actif, et son adresse et son NAF sont retenus.
+  const registre = await lireRegistre(siret ?? siren);
   if (registre.ok) {
     const admission = jugerAdmission(registre.entreprise);
     if (!admission.ok) return { ok: false, message: LIBELLE_REFUS_ADMISSION[admission.motif] };
@@ -225,6 +240,7 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
     ...(nom ? { nom } : {}),
     registreIndisponible,
     siren,
+    siret,
     denomination,
     adresse,
     codeNaf,
