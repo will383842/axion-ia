@@ -13,10 +13,13 @@
  *         Essentielle », majuscule de tête admise, guillemets « » avec ou sans espaces
  *         insécables ; « l'Essentielle » ; « Essentielle (1 jour) » ; idem Approfondie et
  *         Gagner du temps ; « Intervention Claude ») — « Une Analyse Approfondie » reste intacte ;
- *       · un MONTANT seulement si SA phrase nomme une formule (Essentielle, Approfondie,
- *         Intervention Claude, Gagner du temps — avec majuscule) ou parle de « formation » /
- *         « training ». « Loyer de 3 250 € » ou « Prix : 2 450 € HT » seul ne sont PAS corrigés :
- *         ils sont rendus « à revoir », et Will tranche sur l'essai à blanc.
+ *       · un MONTANT seulement s'il est COLLÉ à un nom de formule en contexte (même phrase, au
+ *         plus `PROXIMITE` caractères entre les deux) : « formule Essentielle à 2 450 € ».
+ *         Tout le reste — « Loyer de 3 250 € », « Prix : 2 450 € HT » seul, « Une formation IA
+ *         coûte 2 450 € chez les concurrents », « Une Analyse Approfondie du budget : 2 450 € » —
+ *         est rendu « à revoir », et Will tranche sur l'essai à blanc.
+ *   - Une phrase s'arrête aux « . ! ? », aux sauts de ligne et aux balises de bloc (`</p>`,
+ *     `<br>`, `</li>`…) : elle ne déborde jamais d'un paragraphe sur l'autre.
  *   - Un nombre plus long n'est jamais touché : « €2,450,000 », « 12 450 € », « 2 450 000 € ».
  * Aucun texte n'est supprimé ; la correction est IDEMPOTENTE.
  */
@@ -68,10 +71,6 @@ const MONTANTS: ReadonlyArray<{ motif: RegExp; fr: boolean; un: boolean }> = [
     un: false,
   },
 ];
-
-/** Une phrase qui parle SANS AMBIGUÏTÉ d'une formation : nom de formule (avec majuscule) ou « formation ». */
-const CONTEXTE_SUR =
-  /Essentielle|Approfondie|Intervention Claude|Gagner du temps|\b[Ff]ormations?\b|\b[Tt]raining\b|\b(?:[Ff]ormule|[Ff]ormat|[Oo]ffre) (?:d'une journée|de deux jours)/;
 
 /** [motif, remplacement, libellé du changement] — appliqués dans cet ordre, avant les montants. */
 const REGLES: ReadonlyArray<readonly [RegExp, string, string]> = [
@@ -137,16 +136,35 @@ const REGLES: ReadonlyArray<readonly [RegExp, string, string]> = [
   [/\bIntervention Claude\b/g, "formation d'une journée", "nom"],
 ];
 
-/** La phrase qui contient la position `i` : bornée par « . ! ? » suivis d'un blanc, ou un saut de ligne. */
-function phraseAutour(t: string, i: number): string {
-  const fin = /[.!?](?=\s|$)|\n/g;
+/**
+ * Les bornes de la phrase qui contient la position `i` : « . ! ? » suivis d'un blanc, saut de
+ * ligne, ou balise de bloc (`</p>`, `<br>`, `</li>`, `</h2>`, `</div>`, `</td>`…) — une phrase ne
+ * déborde jamais d'un paragraphe sur l'autre (relecture de a1, 08/10).
+ */
+function bornesPhrase(t: string, i: number): [number, number] {
+  const fin = /[.!?](?=\s|$)|\n|<\/(?:p|li|h[1-6]|div|td|tr|blockquote)>|<br\s*\/?>/gi;
   let debut = 0;
   let m: RegExpExecArray | null;
   while ((m = fin.exec(t)) !== null) {
-    if (m.index >= i) return t.slice(debut, m.index + 1);
-    debut = m.index + 1;
+    if (m.index >= i) return [debut, m.index + m[0].length];
+    debut = m.index + m[0].length;
   }
-  return t.slice(debut);
+  return [debut, t.length];
+}
+
+/** Un nom de formule « collé » au montant : au plus tant de caractères entre les deux. */
+const PROXIMITE = 60;
+
+/** Les positions des NOMS DE FORMULE EN CONTEXTE (règles « nom ») dans le texte d'origine. */
+function positionsDesNoms(t: string): Array<[number, number]> {
+  const out: Array<[number, number]> = [];
+  for (const [motif, , libelle] of REGLES) {
+    if (libelle !== "nom") continue;
+    for (const m of t.matchAll(new RegExp(motif.source, motif.flags))) {
+      out.push([m.index, m.index + m[0].length]);
+    }
+  }
+  return out;
 }
 
 export interface Analyse {
@@ -160,27 +178,58 @@ export interface Analyse {
 
 /** Analyse UN texte : corrige le sûr, rend le reste « à revoir ». */
 export function analyserTexte(texte: string): Analyse {
-  let t = texte;
   const changements: string[] = [];
+  const aRevoir: string[] = [];
+  // 1) Les MONTANTS, lus sur le texte D'ORIGINE (positions des noms comprises).
+  const noms = positionsDesNoms(texte);
+  const trouves: Array<{ debut: number; fin: number; remplacement: string; un: boolean }> = [];
+  for (const { motif, fr, un } of MONTANTS) {
+    for (const m of texte.matchAll(new RegExp(motif.source, motif.flags))) {
+      const debut = m.index;
+      const fin = debut + m[0].length;
+      if (trouves.some((x) => debut < x.fin && fin > x.debut)) continue; // chevauchement
+      trouves.push({
+        debut,
+        fin,
+        un,
+        remplacement: fr ? (un ? UN_JOUR : DEUX_JOURS) : un ? UN_JOUR_EN : DEUX_JOURS_EN,
+      });
+    }
+  }
+  trouves.sort((a, b) => a.debut - b.debut);
+  let t = "";
+  let curseur = 0;
+  for (const x of trouves) {
+    const [pd, pf] = bornesPhrase(texte, x.debut);
+    // SÛR seulement si un nom de formule en contexte est COLLÉ au montant, dans la même phrase.
+    const colle = noms.some(
+      ([a, b]) =>
+        a >= pd &&
+        b <= pf &&
+        ((b <= x.debut && x.debut - b <= PROXIMITE) || (a >= x.fin && a - x.fin <= PROXIMITE)),
+    );
+    t += texte.slice(curseur, x.debut);
+    if (colle) {
+      t += x.remplacement;
+      changements.push(x.un ? "montant 1 jour" : "montant 2 jours");
+    } else {
+      t += texte.slice(x.debut, x.fin);
+      aRevoir.push(
+        texte
+          .slice(pd, pf)
+          .replace(/<[^>]+>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
+      );
+    }
+    curseur = x.fin;
+  }
+  t += texte.slice(curseur);
+  // 2) Les jetons et les NOMS en contexte.
   for (const [motif, remplacement, libelle] of REGLES) {
     const avant = t;
     t = t.replace(motif, remplacement);
     if (t !== avant) changements.push(libelle);
-  }
-  const aRevoir: string[] = [];
-  for (const { motif, fr, un } of MONTANTS) {
-    t = t.replace(motif, (montant: string, ...args: unknown[]) => {
-      const pos = args[args.length - 2] as number;
-      // `t` est le texte AVANT ce remplacement (noms déjà corrigés : « formation d'une journée »
-      // compte comme contexte sûr).
-      const phrase = phraseAutour(t, pos);
-      if (CONTEXTE_SUR.test(phrase)) {
-        changements.push(un ? "montant 1 jour" : "montant 2 jours");
-        return fr ? (un ? UN_JOUR : DEUX_JOURS) : un ? UN_JOUR_EN : DEUX_JOURS_EN;
-      }
-      aRevoir.push(phrase.replace(/\s+/g, " ").trim());
-      return montant;
-    });
   }
   return { texte: t, changements, aRevoir };
 }
