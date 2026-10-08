@@ -15,6 +15,7 @@ import { adminPath } from "@/lib/admin-path";
 import { peutEngager } from "@/server/auth/habilitations";
 
 import { annulerCommission, reduireCommission } from "./ajustement";
+import { constaterNonCommissionne, marquerHorsGrille } from "./hors-grille";
 import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
@@ -292,4 +293,47 @@ export async function ajusterCommissionAction(fd: FormData): Promise<void> {
     versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
   }
   versCommissions("erreur", (r as { message: string }).message);
+}
+
+// ── Prestation hors grille (annexe 1, A1.7) ──────────────────────────────
+
+export async function marquerHorsGrilleAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  const r = await marquerHorsGrille(id, await acteur());
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok)
+    versCommissions(
+      "retour",
+      "Marquée hors grille : publiez sa commission (palier) ou constatez qu'elle n'est pas commissionnée, sous 60 jours.",
+    );
+  versCommissions("erreur", r.message);
+}
+
+export async function constaterNonCommissionneAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  if (texte(fd, "confirmer") !== "oui")
+    versCommissions(
+      "erreur",
+      "Cochez la confirmation : l'apporteur reçoit la décision et son motif.",
+    );
+  let r: { ok: true } | { ok: false; message: string };
+  try {
+    r = await constaterNonCommissionne(id, texte(fd, "motif"), await acteur());
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-non-commissionne" } });
+    r = { ok: false, message: "La décision n'a pas pu être enregistrée. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok)
+    versCommissions(
+      "retour",
+      "Constaté non commissionné : l'apporteur a reçu la décision et son motif.",
+    );
+  versCommissions("erreur", r.message);
 }

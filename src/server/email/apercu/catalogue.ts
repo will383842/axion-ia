@@ -475,6 +475,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-non-commissionne": {
+    categorie: "recrutement",
+    quand:
+      "Console Commissions : « Produit non commissionné » sur une prestation hors grille (annexe 1, A1.7)",
+    destinataire: "l'apporteur de la commande",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-commission-suspension": {
     categorie: "recrutement",
     quand:
