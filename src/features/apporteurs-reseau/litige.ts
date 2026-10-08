@@ -41,6 +41,36 @@ export async function horsLitige(): Promise<{ litigeDepuis: null } | Record<stri
   return (await litigeDisponible()) ? { litigeDepuis: null } : {};
 }
 
+/** E-mail à l'apporteur (suspension, puis issue) : une fois par événement, jamais bloquant. */
+async function prevenir(
+  apporteurId: string,
+  commissionId: string,
+  etat: "suspendue" | "levee",
+): Promise<void> {
+  try {
+    const [{ decryptPii }, { envoyer }] = await Promise.all([
+      import("@/lib/pii-crypto"),
+      import("./envois"),
+    ]);
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { prenom: true, email: true },
+    });
+    const destinataire = a ? (decryptPii(a.email) ?? "") : "";
+    if (!destinataire) return;
+    await envoyer({
+      gabarit: "apporteur-commission-suspension",
+      destinataire,
+      payload: { contactName: decryptPii(a!.prenom) ?? "", etat },
+      entityType: "ApporteurReseau",
+      entityId: apporteurId,
+      jobId: `apporteur-commission-suspension-${commissionId}-${etat}-${Date.now()}`,
+    });
+  } catch {
+    // Prévenir ne doit jamais faire échouer le geste.
+  }
+}
+
 /** Statuts qu'une contestation peut suspendre : tout ce qui n'est pas encore versé ni repris. */
 const SUSPENDABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
 
@@ -74,10 +104,34 @@ export async function suspendreCommission(
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const m = motif.trim().slice(0, 300);
   if (!m) return { ok: false, message: "Indiquez la contestation du client (date, objet)." };
+  const ligne = await prisma.commissionApporteur.findUnique({
+    where: { id },
+    select: { factureId: true, parrainage: true, apporteurId: true },
+  });
   const r = await prisma.commissionApporteur.updateMany({
     where: { id, litigeDepuis: null, statut: { in: [...SUSPENDABLES] } },
     data: { litigeDepuis: maintenant, litigeMotif: m },
   });
+  if (r.count === 1 && ligne && !ligne.parrainage) {
+    // La part du parrain naît de la MÊME facture : elle est suspendue avec elle (art. 4.6), et le
+    // parrain est prévenu lui aussi (même e-mail : ni montant ni client).
+    const parts = await prisma.commissionApporteur.findMany({
+      where: {
+        factureId: ligne.factureId,
+        parrainage: true,
+        litigeDepuis: null,
+        statut: { in: [...SUSPENDABLES] },
+      },
+      select: { id: true, apporteurId: true },
+    });
+    for (const p of parts) {
+      const rp = await prisma.commissionApporteur.updateMany({
+        where: { id: p.id, litigeDepuis: null, statut: { in: [...SUSPENDABLES] } },
+        data: { litigeDepuis: maintenant, litigeMotif: m },
+      });
+      if (rp.count === 1) await prevenir(p.apporteurId, p.id, "suspendue");
+    }
+  }
   if (r.count !== 1) {
     return {
       ok: false,
@@ -88,6 +142,8 @@ export async function suspendreCommission(
     depuis: maintenant.toISOString(),
     motif: m,
   });
+  // (a) L'apporteur est PRÉVENU de la suspension (art. 4.2 bis) ; jamais bloquant.
+  if (ligne) await prevenir(ligne.apporteurId, id, "suspendue");
   return { ok: true };
 }
 
@@ -100,7 +156,13 @@ export async function leverSuspension(
   // dans le circuit : rien ne disparaît sans trace.
   const avant = await prisma.commissionApporteur.findUnique({
     where: { id },
-    select: { litigeDepuis: true, litigeMotif: true },
+    select: {
+      litigeDepuis: true,
+      litigeMotif: true,
+      factureId: true,
+      parrainage: true,
+      apporteurId: true,
+    },
   });
   if (!avant?.litigeDepuis) return { ok: false, message: "Cette commission n'est pas suspendue." };
   const depuis = new Date(avant.litigeDepuis.getTime());
@@ -110,6 +172,21 @@ export async function leverSuspension(
     data: { litigeDepuis: null, litigeMotif: null },
   });
   if (r.count !== 1) return { ok: false, message: "Cette commission n'est pas suspendue." };
+  if (!avant.parrainage) {
+    // La part du parrain suspendue avec elle reprend aussi son cours ; le parrain est prévenu.
+    const parts = await prisma.commissionApporteur.findMany({
+      where: { factureId: avant.factureId, parrainage: true, litigeDepuis: depuis },
+      select: { id: true, apporteurId: true },
+    });
+    for (const p of parts) {
+      const rp = await prisma.commissionApporteur.updateMany({
+        where: { id: p.id, litigeDepuis: depuis },
+        data: { litigeDepuis: null, litigeMotif: null },
+      });
+      if (rp.count === 1) await prevenir(p.apporteurId, p.id, "levee");
+    }
+  }
+  await prevenir(avant.apporteurId, id, "levee");
   await tracer("commission_apporteur.suspension_levee", id, acteurId, {
     suspendueDepuis: depuis.toISOString(),
     leveeLe: maintenant.toISOString(),

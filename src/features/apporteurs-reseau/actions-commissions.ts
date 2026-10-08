@@ -130,6 +130,11 @@ export async function enregistrerRepriseAction(fd: FormData): Promise<void> {
     versFiche(apporteurId, "erreur", "Indiquez un montant en euros, par exemple 150,50.");
   if (texte(fd, "confirmer") !== "oui")
     versFiche(apporteurId, "erreur", "Cochez la confirmation avant d'enregistrer la reprise.");
+  // La VRAIE date de l'annulation (remboursement, avoir) : c'est d'elle que court le délai de 24 mois.
+  const jour = texte(fd, "annulationLe");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(jour))
+    versFiche(apporteurId, "erreur", "Indiquez la date de l'annulation (remboursement ou avoir).");
+  const annulationLe = new Date(`${jour}T12:00:00.000Z`);
   let r: Awaited<ReturnType<typeof enregistrerReprise>>;
   try {
     r = await enregistrerReprise({
@@ -137,6 +142,7 @@ export async function enregistrerRepriseAction(fd: FormData): Promise<void> {
       apporteurId,
       demandeeCents: montant!,
       motif: texte(fd, "motif"),
+      annulationLe,
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-reprise" } });

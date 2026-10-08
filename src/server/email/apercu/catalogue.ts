@@ -468,6 +468,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-commission-suspension": {
+    categorie: "recrutement",
+    quand:
+      "Console Commissions : « suspendre » (contestation écrite du client) puis « Lever la suspension »",
+    destinataire: "l'apporteur dont la commission est suspendue, puis libérée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-dossier-recu": {
     categorie: "recrutement",
     quand: "Dès qu'un apporteur signe son contrat en ligne (une fois par signature)",

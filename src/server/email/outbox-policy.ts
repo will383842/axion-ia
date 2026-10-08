@@ -136,6 +136,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-dossier-refuse": "Apporteur : dossier non retenu",
   "apporteur-dossier-a-verifier": "Alerte interne : dossier apporteur à vérifier",
   "apporteur-dossier-recu": "Apporteur : dossier bien reçu (à sa signature)",
+  "apporteur-commission-suspension":
+    "Apporteur : commission suspendue, puis libérée (contestation du client)",
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",

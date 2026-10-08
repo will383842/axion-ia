@@ -46,7 +46,7 @@ import {
   piecesVigilanceValides,
 } from "./commissions";
 import {
-  aVirerTtcCents,
+  aVirerPartielCents,
   dateFr,
   donneesManquantesAutofacture,
   echeancePaiement,
@@ -564,13 +564,19 @@ export async function marquerVerse(
     }
   }
 
+  // Seules les lignes SUSPENDUES (contestation écrite, art. 4.2 bis) restent à verser plus tard :
+  // les autres lignes de l'autofacture sont versées (art. 5.4).
+  const hors = await horsLitige();
   const lireAVerser = (db: Db) =>
     db.commissionApporteur.findMany({
       where: {
         apporteurId,
         montantCents: { not: null },
         autofactureNumero: numero ? numero : { not: null },
-        OR: [{ statut: "due" }, { statut: "reprise", verseeAt: null }],
+        OR: [
+          { statut: "due", ...hors },
+          { statut: "reprise", verseeAt: null },
+        ],
       },
       select: {
         id: true,
@@ -592,42 +598,57 @@ export async function marquerVerse(
       statut: "due",
       autofactureNumero: numero ? numero : { not: null },
       prestationRealiseeAt: null,
+      ...hors,
     },
   });
   if (nonRealisees > 0) return { ok: false, message: MESSAGE_EN_ATTENTE_DE_REALISATION };
 
-  // Contestation écrite du client en cours sur une commission de ce virement : rien n'est versé.
-  if (await litigeDisponible()) {
-    const suspendues = await prisma.commissionApporteur.count({
-      where: {
-        apporteurId,
-        statut: "due",
-        autofactureNumero: numero ? numero : { not: null },
-        litigeDepuis: { not: null },
-      },
-    });
-    if (suspendues > 0) {
-      return {
-        ok: false,
-        message:
-          "Une commission de ce virement est suspendue (contestation écrite du client, art. 4.2 bis) : levez d'abord la suspension.",
-      };
-    }
-  }
-
   const avant = await lireAVerser(prisma);
   const dues = avant.filter((c) => c.statut === "due");
-  if (dues.length === 0) return { ok: false, message: "Aucun virement à confirmer." };
-  // TVA comprise pour un apporteur assujetti, calculée pièce par pièce comme sur les PDF.
+  if (dues.length === 0) {
+    const suspendues = (await litigeDisponible())
+      ? await prisma.commissionApporteur.count({
+          where: {
+            apporteurId,
+            statut: "due",
+            autofactureNumero: numero ? numero : { not: null },
+            litigeDepuis: { not: null },
+          },
+        })
+      : 0;
+    return {
+      ok: false,
+      message:
+        suspendues > 0
+          ? "Commission suspendue (contestation écrite du client, art. 4.2 bis) : levez d'abord la suspension avant de confirmer ce virement."
+          : "Aucun virement à confirmer.",
+    };
+  }
+  // TVA comprise pour un apporteur assujetti, calculée pièce par pièce comme sur les PDF ; une
+  // autofacture dont des lignes sont suspendues est versée PAR COMPLÉMENT (`aVirerPartielCents`).
+  const suspendues = await suspenduesParNumero(apporteurId, numero);
   const parFacture = new Map<string, typeof avant>();
   for (const c of avant) {
     const k = c.autofactureNumero ?? "";
     parFacture.set(k, [...(parFacture.get(k) ?? []), c]);
   }
-  const total = [...parFacture.values()].reduce(
-    (s, lignes) => s + aVirerTtcCents(apporteur.regimeTva, lignes),
-    0,
-  );
+  let total = 0;
+  for (const [k, lignes] of parFacture) {
+    const p = aVirerPartielCents(apporteur.regimeTva, lignes, suspendues.get(k) ?? []);
+    if (!p.partielPossible) {
+      return {
+        ok: false,
+        message:
+          "Levez d'abord la suspension : les reprises dépassent les lignes à verser de cette autofacture.",
+      };
+    }
+    total += p.totalCents;
+  }
+  // Jamais de virement nul ou négatif (il ferait marquer des reprises déduites sans paiement).
+  if (total <= 0) {
+    return { ok: false, message: "Rien à virer : le total de ce virement n'est pas positif." };
+  }
+  const aVerser = avant;
 
   await prisma.$transaction(
     async (tx) => {
@@ -643,19 +664,19 @@ export async function marquerVerse(
       });
       const r = await tx.commissionApporteur.updateMany({
         where: {
-          id: { in: avant.filter((c) => c.statut === "reprise").map((c) => c.id) },
+          id: { in: aVerser.filter((c) => c.statut === "reprise").map((c) => c.id) },
           statut: "reprise",
           verseeAt: null,
         },
         data: { verseeAt: maintenant },
       });
-      if (v.count + r.count !== avant.length)
+      if (v.count + r.count !== aVerser.length)
         throw new Error("Les commissions ont changé pendant la confirmation : recommence.");
     },
     { timeout: 15_000 },
   );
   const numeros = [
-    ...new Set(avant.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
+    ...new Set(aVerser.map((c) => c.autofactureNumero).filter((n): n is string => !!n)),
   ];
   // E-mail de confirmation à l'apporteur, une seule fois par virement : jamais bloquant.
   try {
@@ -691,13 +712,42 @@ export interface VirementAFaire {
   emissionAt: Date;
 }
 
+/** Montants HT des lignes facturées et SUSPENDUES, par numéro d'autofacture. */
+async function suspenduesParNumero(
+  apporteurId?: string,
+  numero?: string,
+): Promise<Map<string, number[]>> {
+  const out = new Map<string, number[]>();
+  if (!(await litigeDisponible())) return out;
+  const ls = await prisma.commissionApporteur.findMany({
+    where: {
+      ...(apporteurId ? { apporteurId } : {}),
+      statut: "due",
+      autofactureNumero: numero ? numero : { not: null },
+      montantCents: { not: null },
+      litigeDepuis: { not: null },
+    },
+    select: { autofactureNumero: true, montantCents: true },
+  });
+  for (const l of ls) {
+    const k = l.autofactureNumero ?? "";
+    out.set(k, [...(out.get(k) ?? []), l.montantCents ?? 0]);
+  }
+  return out;
+}
+
 /** Les autofactures émises dont le virement n'est pas confirmé. */
 export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
+  // Une ligne suspendue (contestation écrite, art. 4.2 bis) n'est pas à virer tant qu'elle l'est.
+  const hors = await horsLitige();
   const lignes = await prisma.commissionApporteur.findMany({
     where: {
       autofactureNumero: { not: null },
       montantCents: { not: null },
-      OR: [{ statut: "due" }, { statut: "reprise", verseeAt: null }],
+      OR: [
+        { statut: "due", ...hors },
+        { statut: "reprise", verseeAt: null },
+      ],
     },
     select: {
       apporteurId: true,
@@ -734,8 +784,12 @@ export async function lireVirementsAFaire(): Promise<VirementAFaire[]> {
       if (emission.getTime() < cur.emissionAt.getTime()) cur.emissionAt = emission;
     }
   }
+  const suspendues = await suspenduesParNumero();
   for (const [numero, ls] of parNumero) {
-    m.get(numero)!.totalCents = aVirerTtcCents(ls[0]!.apporteur.regimeTva, ls);
+    const p = aVirerPartielCents(ls[0]!.apporteur.regimeTva, ls, suspendues.get(numero) ?? []);
+    // Rien à virer tant que la suspension dure (partiel refusé), ou total nul : pas affiché.
+    if (!p.partielPossible || p.totalCents <= 0) m.delete(numero);
+    else m.get(numero)!.totalCents = p.totalCents;
   }
   // Les plus anciennes d'abord : ce sont les premières à virer.
   return [...m.values()].sort((a, b) => a.emissionAt.getTime() - b.emissionAt.getTime());

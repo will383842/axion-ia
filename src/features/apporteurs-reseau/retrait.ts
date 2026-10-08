@@ -304,4 +304,6 @@ export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-commande-signee",
   "apporteur-releve",
   "apporteur-virement-fait",
+  // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
+  "apporteur-commission-suspension",
 ]);

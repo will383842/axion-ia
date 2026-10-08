@@ -53,6 +53,8 @@ const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 export type MotifRefus = "deja-connue" | "pas-disponible" | "hors-champ";
 
 interface Payload {
+  /** Suspension d'une commission (art. 4.2 bis) : « suspendue » puis « levee ». */
+  etat?: string;
   /** Nom de l'apporteur (ou de la personne présentée) : seul le premier mot est dit, sauf `civilite`. */
   contactName?: string;
   /** Entreprise présentée, telle que saisie. */
@@ -310,6 +312,22 @@ export const COPY_DEMARRAGE = {
     somme: (s: string) => `Somme virée : ${s}.`,
     facture: (n: string) =>
       `Votre facture${n ? ` n° ${n}` : ""} est établie en votre nom par Axion-IA (mandat d'autofacturation, annexe 2 de votre contrat). Vous disposez de trente jours pour la contester ; à défaut, elle est réputée acceptée.`,
+  },
+  commissionSuspension: {
+    // Contrat 2.3, art. 4.2 bis : l'apporteur est informé de la suspension et de son issue.
+    // ⛔ Aucun délai promis ; aucun nom de client ni montant (le décompte suivra).
+    subjectSuspendue: "Une de vos commissions est suspendue",
+    subjectLevee: "Votre commission reprend son cours",
+    titleSuspendue: "Commission suspendue",
+    titleLevee: "Commission libérée",
+    previewSuspendue: "Le client conteste par écrit la prestation ou sa facture.",
+    previewLevee: "La contestation du client est close.",
+    suspendue:
+      "Le client d'une entreprise que vous nous avez présentée conteste par écrit la prestation ou sa facture. Comme le prévoit votre contrat (article 4.2 bis), la commission correspondante est suspendue pendant cette contestation : elle n'est ni facturée ni versée.",
+    suspendueSuite:
+      "Elle vous reste attachée. Nous vous écrirons dès l'issue de la contestation : la commission sera alors versée, ou ajustée selon le prix finalement conservé.",
+    levee:
+      "La contestation du client est close : votre commission reprend son cours. Elle vous sera facturée et versée dans les conditions habituelles ; si le prix conservé a changé, le décompte vous l'indiquera.",
   },
   dossierRecu: {
     // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
@@ -829,6 +847,36 @@ export function ApporteurReleveEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>
         {t.facture(texteOuNull(p.numeroAutofacture) ?? "")}
       </Text>
+    </EmailLayout>
+  );
+}
+
+// ── Commission suspendue, puis libérée (contrat 2.3, art. 4.2 bis) ──────
+
+export const apporteurCommissionSuspensionSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  (payload as Payload | undefined)?.etat === "levee"
+    ? COPY_DEMARRAGE.commissionSuspension.subjectLevee
+    : COPY_DEMARRAGE.commissionSuspension.subjectSuspendue;
+
+export function ApporteurCommissionSuspensionEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commissionSuspension;
+  const levee = p.etat === "levee";
+  return (
+    <EmailLayout
+      famille="B"
+      preview={levee ? t.previewLevee : t.previewSuspendue}
+      title={levee ? t.titleLevee : t.titleSuspendue}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{levee ? t.levee : t.suspendue}</Text>
+      {levee ? null : <Text style={emailStyles.paragraphStyle}>{t.suspendueSuite}</Text>}
     </EmailLayout>
   );
 }

@@ -195,6 +195,45 @@ export function aVirerTtcCents(
   return total;
 }
 
+/**
+ * Versement PARTIEL d'une autofacture dont des lignes sont suspendues (contestation écrite du
+ * client, art. 4.2 bis). Calculé PAR COMPLÉMENT, pour que la somme des versements retombe
+ * exactement sur le TTC du PDF : TTC de toutes les lignes de l'autofacture, moins TTC des lignes
+ * suspendues (elles partiront plus tard, à leur propre TTC), moins les avoirs imputés. Le partiel
+ * n'est admis que s'il reste POSITIF : sinon les reprises dépasseraient ce qui resterait à verser
+ * (virement négatif, ou reprise jamais déduite) et on attend la levée (`partielPossible: false`).
+ * Une reprise sans numéro d'avoir compte dans la pièce elle-même, comme dans `aVirerTtcCents`.
+ * Sans ligne suspendue, c'est exactement `aVirerTtcCents`.
+ */
+export function aVirerPartielCents(
+  regimeTva: ApporteurPourAutofacture["regimeTva"],
+  lignes: ReadonlyArray<{
+    statut: string;
+    montantCents: number | null;
+    avoirNumero?: string | null;
+  }>,
+  suspenduesCents: readonly number[],
+): { totalCents: number; partielPossible: boolean } {
+  if (suspenduesCents.length === 0) {
+    return { totalCents: aVirerTtcCents(regimeTva, lignes), partielPossible: true };
+  }
+  const piece: number[] = [];
+  const avoirs = new Map<string, number[]>();
+  for (const l of lignes) {
+    const m = l.montantCents ?? 0;
+    if (l.statut === "reprise" && l.avoirNumero) {
+      avoirs.set(l.avoirNumero, [...(avoirs.get(l.avoirNumero) ?? []), Math.abs(m)]);
+    } else {
+      piece.push(m);
+    }
+  }
+  let total =
+    totalTtcPieceCents(regimeTva, [...piece, ...suspenduesCents]) -
+    totalTtcPieceCents(regimeTva, suspenduesCents);
+  for (const a of avoirs.values()) total -= totalTtcPieceCents(regimeTva, a);
+  return { totalCents: total, partielPossible: total > 0 };
+}
+
 /** Échéance FERME de paiement : trente jours calendaires à compter de l'émission de l'autofacture. */
 export const ECHEANCE_JOURS = 30;
 /** OBJECTIF (sans pénalité ni frais) : virement sous deux jours ouvrés après l'émission. */

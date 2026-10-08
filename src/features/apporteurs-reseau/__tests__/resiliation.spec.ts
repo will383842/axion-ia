@@ -162,13 +162,30 @@ describe("reprise (art. 4.5 et 12.4)", () => {
     expect(verifierReprise({ ...ok, demandeeCents: -5 }).ok).toBe(false);
     expect(verifierReprise({ ...ok, statutOrigine: "due" }).ok).toBe(false);
   });
-  it("refusée plus de douze mois après l'annulation", () => {
+  it("contrat 2.3 (art. 4.5) : possible pendant VINGT-QUATRE mois après l'annulation, refusée au-delà", () => {
+    // Treize mois : refusée sous l'ancien délai de douze mois, acceptée désormais.
+    expect(verifierReprise({ ...ok, annulationLe: new Date("2025-09-01T00:00:00Z") }).ok).toBe(
+      true,
+    );
+    const tard = verifierReprise({ ...ok, annulationLe: new Date("2024-09-01T00:00:00Z") });
+    expect(tard).toMatchObject({ ok: false });
+    expect((tard as { message: string }).message).toContain("vingt-quatre mois");
+  });
+
+  it("la date du JOUR (saisie dans la console, posée à midi UTC) est admise, même à 8 h", () => {
     expect(
       verifierReprise({
         ...ok,
-        annulationLe: new Date("2025-09-01T00:00:00Z"),
+        annulationLe: new Date("2026-10-05T12:00:00.000Z"),
+        maintenant: new Date("2026-10-05T06:00:00Z"),
       }).ok,
-    ).toBe(false);
+    ).toBe(true);
+  });
+
+  it("la date d'annulation ne peut pas être dans le futur", () => {
+    expect(verifierReprise({ ...ok, annulationLe: new Date("2027-06-01T00:00:00Z") }).ok).toBe(
+      false,
+    );
   });
 
   it("enregistrée : ligne négative de statut reprise, ligne d'origine intacte, motif tracé", async () => {

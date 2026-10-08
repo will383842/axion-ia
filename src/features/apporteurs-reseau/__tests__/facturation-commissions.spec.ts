@@ -841,6 +841,50 @@ describe("règle ferme (contrat 2.3, art. 4.2) : rien n'est facturé ni versé a
   });
 });
 
+describe("suites de la suspension (contrat 2.3, art. 4.2 bis)", () => {
+  it("« Virement fait » ne bloque QUE la ligne suspendue : les autres lignes de l'autofacture sont versées", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000), ligne("c2", "due", 10_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    expect(lignes()[1]!.autofactureNumero).toBe(numero);
+    await suspendreCommission("c2", "contestation écrite de la formation", MARDI);
+    expect(await marquerVerse("APP1", MARDI, numero)).toMatchObject({ ok: true });
+    expect(lignes().find((l) => l.id === "c1")!.statut).toBe("versee");
+    expect(lignes().find((l) => l.id === "c2")!.statut).toBe("due");
+  });
+
+  it("la part du PARRAIN, née de la même facture, est suspendue puis libérée avec elle", async () => {
+    etat.lignes = [
+      ligne("c1", "due", 40_000, { factureId: "F-1" }),
+      ligne("p1", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-1" }),
+      ligne("p2", "due", 4_000, { apporteurId: "APP2", parrainage: true, factureId: "F-2" }),
+    ];
+    await suspendreCommission("c1", "contestation écrite", MARDI);
+    expect(lignes().find((l) => l.id === "p1")!.litigeDepuis).toEqual(MARDI);
+    expect(lignes().find((l) => l.id === "p2")!.litigeDepuis).toBeNull();
+    await leverSuspension("c1", "admin-1", VENDREDI);
+    expect(lignes().find((l) => l.id === "p1")!.litigeDepuis).toBeNull();
+    // Le parrain est prévenu lui aussi, de la suspension puis de son issue.
+    const auParrain = etat.envoyes.filter(
+      (x) =>
+        x["gabarit"] === "apporteur-commission-suspension" && x["destinataire"] === "app2@m.fr",
+    );
+    expect(auParrain.map((x) => (x["payload"] as { etat: string }).etat)).toEqual([
+      "suspendue",
+      "levee",
+    ]);
+  });
+
+  it("l'apporteur est PRÉVENU de la suspension, puis de son issue", async () => {
+    etat.lignes = [ligne("c1", "due", 40_000)];
+    await suspendreCommission("c1", "contestation écrite", MARDI, "admin-1");
+    await leverSuspension("c1", "admin-1", VENDREDI);
+    const e = etat.envoyes.filter((x) => x["gabarit"] === "apporteur-commission-suspension");
+    expect(e.map((x) => (x["payload"] as { etat: string }).etat)).toEqual(["suspendue", "levee"]);
+    expect(e[0]).toMatchObject({ destinataire: "app1@m.fr" });
+  });
+});
+
 describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réalisée » à tort", () => {
   const enAttente = (id: string) =>
     ligne(id, "due", 40_000, { prestationRealiseeAt: null, prestationRealiseePar: null });
@@ -905,5 +949,71 @@ describe("relecture de la PR 1365 (a1) : l'automatisme ne marque jamais « réal
     etat.lignes = [enAttente("c1")];
     etat.factures = { "F-c1": {} };
     expect(await marquerRealiseesDepuisSessions(MARDI)).toBe(0);
+  });
+});
+
+describe("relecture de la PR 1368 (a1) : versement partiel jamais négatif, somme exacte", () => {
+  // Témoin : sans suspension, le virement complet de la même autofacture.
+  async function complet(f: () => ReturnType<typeof ligne>[]): Promise<number> {
+    etat.lignes = f();
+    await facturerCommissionsDues(MARDI);
+    const r = await marquerVerse("APP1", MARDI, lignes()[0]!.autofactureNumero!);
+    expect(r).toMatchObject({ ok: true });
+    return (r as { totalCents: number }).totalCents;
+  }
+
+  for (const [nom, a, b, rep] of [
+    ["A 100, B 300 suspendu, reprise −150", 10_000, 30_000, -15_000],
+    ["A 100, B 50 suspendu, reprise −120 (exemple de a1)", 10_000, 5_000, -12_000],
+  ] as const) {
+    it(`${nom} : partiel REFUSÉ (les reprises dépassent), puis virement complet exact après la levée`, async () => {
+      const f = () => [ligne("a", "due", a), ligne("b", "due", b), ligne("r", "reprise", rep)];
+      const attendu = await complet(f);
+      etat.lignes = f();
+      await facturerCommissionsDues(MARDI);
+      const numero = lignes()[0]!.autofactureNumero!;
+      expect(lignes().every((l) => l.autofactureNumero === numero)).toBe(true);
+      await suspendreCommission("b", "contestation écrite", MARDI);
+      const partiel = await marquerVerse("APP1", MARDI, numero);
+      expect(partiel).toMatchObject({ ok: false });
+      expect((partiel as { message: string }).message).toContain("Levez d'abord la suspension");
+      expect(lignes().find((l) => l.id === "a")!.statut).toBe("due");
+      expect(lignes().find((l) => l.id === "r")!.verseeAt).toBeNull();
+      await leverSuspension("b", "admin-1", VENDREDI);
+      const tout = await marquerVerse("APP1", VENDREDI, numero);
+      expect(tout).toMatchObject({ ok: true, totalCents: attendu });
+    });
+  }
+
+  it("A 300, B 100 suspendu, reprise −150 : partiel positif admis, reprise déduite, somme exacte", async () => {
+    const f = () => [
+      ligne("a", "due", 30_000),
+      ligne("b", "due", 10_000),
+      ligne("r", "reprise", -15_000),
+    ];
+    const attendu = await complet(f);
+    etat.lignes = f();
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    await suspendreCommission("b", "contestation écrite", MARDI);
+    const p1 = await marquerVerse("APP1", MARDI, numero);
+    expect(p1).toMatchObject({ ok: true });
+    expect((p1 as { totalCents: number }).totalCents).toBeGreaterThan(0);
+    expect(lignes().find((l) => l.id === "r")!.verseeAt).not.toBeNull();
+    await leverSuspension("b", "admin-1", VENDREDI);
+    const p2 = await marquerVerse("APP1", VENDREDI, numero);
+    expect(
+      (p1 as { totalCents: number }).totalCents + (p2 as { totalCents: number }).totalCents,
+    ).toBe(attendu);
+  });
+
+  it("une ligne suspendue ET non réalisée ne bloque pas le reste du virement", async () => {
+    etat.lignes = [ligne("a", "due", 10_000), ligne("b", "due", 30_000)];
+    await facturerCommissionsDues(MARDI);
+    const numero = lignes()[0]!.autofactureNumero!;
+    await suspendreCommission("b", "contestation écrite", MARDI);
+    lignes().find((l) => l.id === "b")!.prestationRealiseeAt = null;
+    expect(await marquerVerse("APP1", MARDI, numero)).toMatchObject({ ok: true });
+    expect(lignes().find((l) => l.id === "a")!.statut).toBe("versee");
   });
 });
