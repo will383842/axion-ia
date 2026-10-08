@@ -199,7 +199,7 @@ export async function preparerDecision(
   const base = { destinataire: d.email, entityType: "ApporteurReseau" as const, entityId: d.id };
   const mot = note?.trim() || null;
   if (decision === "contresigner") {
-    const blocage = await sirenAContresigner(d.siren, d.siret);
+    const blocage = await sirenAContresigner(d.siren, d.siret ?? null);
     if (blocage) return { ok: false, message: blocage };
     const nonConformes = d.pieces.filter((p) => p.statut !== "conforme" && p.type !== "rc_pro");
     if (nonConformes.length > 0) {

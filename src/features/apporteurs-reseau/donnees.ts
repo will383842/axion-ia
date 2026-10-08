@@ -213,8 +213,8 @@ export interface DossierVue {
   email: string;
   telephone: string | null;
   siren: string | null;
-  /** SIRET de l'établissement (plusieurs activités), sinon `null`. */
-  siret: string | null;
+  /** SIRET de l'établissement (plusieurs activités), sinon `null` (absent : pas encore lu). */
+  siret?: string | null;
   denomination: string | null;
   adresse: string | null;
   codeNaf: string | null;

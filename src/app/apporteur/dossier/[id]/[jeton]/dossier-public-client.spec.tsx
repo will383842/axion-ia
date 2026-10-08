@@ -43,6 +43,7 @@ function dossier(over: Partial<DossierPublic> = {}): DossierPublic {
     email: "e@exemple.fr",
     telephone: null,
     siren: "732829320",
+    siret: null,
     denomination: "Ma société",
     adresse: "1 rue des Alpes",
     statutJuridique: "micro_entrepreneur",
