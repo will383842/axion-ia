@@ -311,7 +311,14 @@ jobs:
           # Validé par la Gate C (Docker smoke) sur la PR avant tout merge.
           # Revert = `cache-from: type=gha` + retirer la ligne `cache-to`.
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/axion-ia:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/axion-ia:buildcache,mode=max
+          # 🔴 2026-10-08 : `mode=max` → `mode=min`. Mesuré (run 37736377320) : l'export du
+          # cache prenait 622 s (10,4 min), car `mode=max` pousse AUSSI les couches du stage
+          # `builder` (le `.next` de plusieurs Go), alors qu'elles ne sont JAMAIS réutilisées
+          # (`COPY . .` les invalide à chaque commit). Les seules couches reprises du cache
+          # étaient deux `apk add` ; `pnpm install` était refait (17 s). `mode=min` n'exporte
+          # que les couches de l'image finale, déjà poussées : le cache reste utile, sans le
+          # coût. Revert : remettre `mode=max`.
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/axion-ia:buildcache,mode=min
           # Désactive le provenance attestation (génère 50 MB extra de
           # metadata SLSA inutile pour notre cas).
           provenance: false

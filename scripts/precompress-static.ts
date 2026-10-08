@@ -34,6 +34,8 @@ import path from "node:path";
 import { brotliCompress, gzip, constants as zlibConstants } from "node:zlib";
 import { promisify } from "node:util";
 
+import { precompressionActivee } from "../src/server/compression/precompression-activee";
+
 const brotliAsync = promisify(brotliCompress);
 const gzipAsync = promisify(gzip);
 
@@ -153,6 +155,14 @@ async function compressOne(file: string, stats: Stats): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  // Désactivée par défaut (2026-10-08) : 21,6 min par mise en ligne pour des fichiers que rien ne
+  // sert en production. Voir `src/server/compression/precompression-activee.ts`.
+  if (!precompressionActivee()) {
+    console.log(
+      "[precompress-static] désactivée (PRECOMPRESS_STATIC≠true) : aucun proxy ne sert les .br/.gz, Cloudflare compresse.",
+    );
+    return;
+  }
   const startedAt = Date.now();
   const files: string[] = [];
   for (const dir of TARGET_DIRS) {
