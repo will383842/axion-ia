@@ -94,4 +94,3 @@ describe("alerte INTERNE « dossier à vérifier » (relecture de a1, 08/10)", (
     expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
   });
 });
-
