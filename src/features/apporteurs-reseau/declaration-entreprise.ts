@@ -32,6 +32,7 @@ import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./d
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 import {
   etatPrestation,
+  horsGrilleEnCours,
   lireCommissionsDesPresentations,
   type EtatPrestation,
 } from "./prestation-presentation";
@@ -54,6 +55,8 @@ export interface DeclarationVue {
    * qu'elle n'est pas marquée réalisée, puis « réalisée ». `null` : aucune commande encore.
    */
   prestation: EtatPrestation;
+  /** A1.7 : une commission de cette entreprise attend sa qualification « hors grille ». */
+  horsGrille: boolean;
 }
 
 /** Les déclarations d'UN apporteur (jamais celles des autres), de la plus récente. */
@@ -83,6 +86,7 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
         etat: e.etat,
         jusquAu: e.jusquAu,
         prestation: etatPrestation(commissions.get(p.id) ?? []),
+        horsGrille: horsGrilleEnCours(commissions.get(p.id) ?? []),
       });
   }
   return out;

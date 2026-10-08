@@ -34,4 +34,7 @@ export const TEXTES_DECLARATION = {
   // Contrat 2.3, art. 4.2 : la commission naît de la prestation RÉALISÉE et entièrement payée.
   prestationEnAttente: "Prestation commandée, en attente de réalisation",
   prestationRealisee: (date: string) => `Prestation réalisée le ${date}`,
+  // Annexe 1, A1.7 : produit hors grille, qualifié dans les soixante jours de l'encaissement.
+  horsGrille:
+    "Prestation hors grille de commissions : sa commission vous est indiquée par écrit dans les soixante jours de l'encaissement.",
 } as const;
