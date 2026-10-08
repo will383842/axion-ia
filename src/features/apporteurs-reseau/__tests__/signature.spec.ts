@@ -334,6 +334,9 @@ describe("dossier en ligne — signerContrat", () => {
     expect(arg.data.statut).toBe("a_verifier");
     expect(arg.data.contratSha256).toBe(sha);
     const s = arg.data.signatureApporteur;
+    // Contrat 2.4 : la signature porte la version COURANTE (celle du texte affiché et du PDF).
+    expect(s.version).toBe("2.4");
+    expect(rendreContratPdf.mock.calls[0]![0]).not.toHaveProperty("version");
     expect(s.texteSha256).toBe(sha);
     // B3 : le texte exact signé est archivé (sa SHA-256 = l'empreinte signée).
     expect(s.texte).toBe(rendreContratPdf.mock.calls[0]![0].texte);

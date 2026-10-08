@@ -63,9 +63,13 @@ export function texteDuContrat(v: ValeursContrat): string {
   const table: Record<string, string> = {
     APPORTEUR_IDENTITE: v.identite,
     APPORTEUR_STATUT: libelleStatut(v.statutJuridique),
-    // Avec un SIRET : « 123456789 — SIRET de l'établissement 12345678900012 ». Ni libellé
-    // d'activité ni code NAF : l'Apporteur reste l'Apporteur (art. 1.4, contrat d'apport d'affaires).
-    APPORTEUR_SIREN: v.siret ? `${v.siren} — SIRET de l'établissement ${v.siret}` : v.siren,
+    APPORTEUR_SIREN: v.siren,
+    // Contrat 2.4 : avec un SIRET, « SIRET de l'établissement …, dont l'établissement est situé … » ;
+    // sans SIRET, « dont l'adresse est … ». Ni libellé d'activité ni code NAF : l'Apporteur reste
+    // l'Apporteur (art. 1.4, contrat d'apport d'affaires).
+    APPORTEUR_ETABLISSEMENT: v.siret
+      ? `SIRET de l'établissement ${v.siret}, dont l'établissement est situé ${v.siege}`
+      : `dont l'adresse est ${v.siege}`,
     APPORTEUR_SIEGE: v.siege,
     APPORTEUR_QUALITE: v.qualite,
     GRILLE_DATE: v.grilleDate,

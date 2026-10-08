@@ -10,7 +10,7 @@ const texte = CONTRAT_V2_MARKDOWN.replace(/\s+/g, " ");
 
 describe("contrat 2.3 : commission sur prestation réalisée, reprise et litige", () => {
   it("version 2.3", () => {
-    expect(CONTRAT_VERSION).toBe("2.3");
+    expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.3);
   });
 
   it("4.2 : réalisée ET encaissée ; non réalisée, même du fait de la Société : pas due, réduite ou reprise", () => {
