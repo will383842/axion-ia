@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaire à état local (saisie, envoi en cours, message de retour).
 
 // Fiche apporteur : « Corriger le nom » (prénom et nom), tant que le contrat n'est pas signé.
 // Le contrôle du droit et du contrat signé est refait côté serveur (`corrigerNomAction`).
