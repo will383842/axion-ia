@@ -379,8 +379,12 @@ const DEMO = {
   QUESTIONNAIRE_SAT_2: "DEMO-QST-SAT-002-TOKEN-STABLE-AXION",
   QUESTIONNAIRE_POS_1: "DEMO-QST-POS-001-TOKEN-STABLE-AXION",
   QUESTIONNAIRE_POS_2: "DEMO-QST-POS-002-TOKEN-STABLE-AXION",
-  /** tierId de l'offre « Essentielle » à laquelle se rattache la formation démo */
-  OFFRE_TIER_ID: "intervention-essentielle",
+  /**
+   * tierId de l'offre de DÉMONSTRATION à laquelle se rattache la formation démo. 2026-10-08 :
+   * n'est plus « intervention-essentielle » (formule à prix erroné, supprimée) ; la démo crée sa
+   * propre offre si elle manque (bloc 1 de `seedDemo`).
+   */
+  OFFRE_TIER_ID: "demo-formation-1j",
   /** Formateur salarié co-animateur (T17 · off.21) */
   TRAINER_EMAIL: "formateur.demo@demo.axion-ia.invalid",
   /** Clés SiteSetting référent handicap (T17 · off.26) */
@@ -425,7 +429,7 @@ export function buildDemoData(): DemoData {
     numero: DEMO.DEVIS,
     lignes: [
       {
-        designation: "[DEMO] Formation IA opérationnelle – Essentielle (7 h) × 8 stagiaires",
+        designation: "[DEMO] Formation IA opérationnelle – 1 journée (7 h) × 8 stagiaires",
         quantite: 1,
         prixUnitaireHtCents: 290000,
         offreTierId: DEMO.OFFRE_TIER_ID,
@@ -443,8 +447,8 @@ export function buildDemoData(): DemoData {
   // --- Formation ---------------------------------------------------------------
   const formation: FormationDemo = {
     numero: DEMO.FORMATION,
-    titre: "[DEMO] Formation IA Opérationnelle — Essentielle",
-    slug: "demo-ia-operationnelle-essentielle",
+    titre: "[DEMO] Formation IA Opérationnelle — 1 journée",
+    slug: "demo-ia-operationnelle-1-journee",
     offreTierId: DEMO.OFFRE_TIER_ID,
     dureeHeures: 7,
     modalite: "presentiel",
@@ -1177,8 +1181,8 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       create: {
         code: "AXI-OFF-DEMO-001",
         tierId: data.formation.offreTierId,
-        titreFr: "[DEMO] Essentielle",
-        slug: "demo-essentielle",
+        titreFr: "[DEMO] Formation d'une journée",
+        slug: "demo-formation-1j",
         categorie: "intervention",
         formatPedagogique: "collectif_1jour",
         publicViseFr: "[DEMO] Équipes découvrant l'IA opérationnelle.",
@@ -1749,11 +1753,9 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
   // est VOULUE, décidée le 2026-06-11 (migration
   // `20260611170000_deactivate_orphan_dirigeants_offre`).
   //
-  // ⚠️ On cible par `tierId`, JAMAIS par code `AXI-OFF-NNN` : `offreCode()` alloue
-  // par index de tableau (offres.ts:191-193) et `seedOffresSite` ne met jamais à
-  // jour une ligne existante (:205-209). Retirer une entrée du milieu décale donc
-  // tous les codes suivants d'une base fraîche, sans renuméroter les bases déjà
-  // semées — `AXI-OFF-010` ne désigne pas la même offre partout.
+  // ⚠️ On cible par `tierId`. (Avant le 2026-10-08, le code `AXI-OFF-NNN` était alloué par
+  // position dans la liste du seed ; il est désormais écrit en dur dans `offres.ts`, mais le
+  // `tierId` reste la clé de recherche de `seedOffresSite`.)
   //
   // Ce bloc ne s'exécute QUE dans `qualiopi:seed-demo`, jamais en production :
   // la production ne sème pas.

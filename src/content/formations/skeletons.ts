@@ -77,88 +77,10 @@ export const FORMATION_DURATIONS: Record<FormationDurationId, FormationDurationC
 };
 
 // ============================================================================
-// Programmes pédagogiques — migrés 1:1 depuis interventions.ts (essentielle,
-// dirigeants). Les 3 autres (approfondie / gagner-du-temps / intervention-claude)
-// = slots `undefined` (Will rédigera). Le `logisticsNote` reste ajouté par le
-// consommateur (interventions.ts) pour ne pas dupliquer LOGISTICS_NOTE_*.
+// Programmes pédagogiques. 2026-10-08 : les squelettes des anciennes formules à prix erronés
+// (essentielle, gagner-du-temps, approfondie, intervention-claude) et le programme
+// « Essentielle » sont supprimés avec leurs fiches (décision de Will).
 // ============================================================================
-
-const ESSENTIELLE_PROGRAMME: FormationProgramme = {
-  titleFr: "Déroulement de la journée",
-  titleEn: "Day-by-day breakdown",
-  introFr:
-    "Programme type d'une journée de formation collective (9 h – 17 h). Identique pour toutes les entreprises : des ressources pédagogiques standardisées remises en fin de journée pour être réutilisées dès le lendemain.",
-  introEn:
-    "Standard programme for the group training day (9 a.m. – 5 p.m.). Identical for every company: standardised learning takeaways shared at end of day, ready to reuse the next morning.",
-  days: [
-    {
-      items: [
-        {
-          time: "9 h 00",
-          timeEn: "9:00",
-          titleFr: "Accueil + tour de table + objectifs",
-          titleEn: "Welcome + round table + objectives",
-        },
-        {
-          time: "9 h 30",
-          timeEn: "9:30",
-          titleFr: "Découverte des outils IA principaux",
-          titleEn: "Discovery of the main AI tools",
-          descFr:
-            "ChatGPT, Claude, Copilot, Gemini : à quoi ils servent vraiment et quand les choisir.",
-          descEn: "ChatGPT, Claude, Copilot, Gemini: what they really do and when to pick each.",
-        },
-        { time: "10 h 30", timeEn: "10:30", titleFr: "Pause café", titleEn: "Coffee break" },
-        {
-          time: "10 h 45",
-          timeEn: "10:45",
-          titleFr: "Atelier 1 — Rédaction & communication assistées",
-          titleEn: "Workshop 1 — AI-assisted writing & communication",
-          descFr: "Mails, comptes-rendus, supports : prompts efficaces, garde-fous.",
-          descEn: "Emails, minutes, decks: effective prompts, guardrails.",
-        },
-        {
-          time: "12 h 00",
-          timeEn: "12:00",
-          titleFr: "Pause déjeuner (12 h – 14 h)",
-          titleEn: "Lunch break (12:00 – 14:00)",
-        },
-        {
-          time: "14 h 00",
-          timeEn: "14:00",
-          titleFr: "Atelier 2 — Recherche, analyse & synthèse",
-          titleEn: "Workshop 2 — Research, analysis & synthesis",
-          descFr: "Veille, extraction, traitement de documents et de données.",
-          descEn: "Watch, extraction, document and data processing.",
-        },
-        { time: "15 h 00", timeEn: "15:00", titleFr: "Pause café", titleEn: "Coffee break" },
-        {
-          time: "15 h 15",
-          timeEn: "15:15",
-          titleFr: "Atelier 3 — Idées d'usages sur leurs outils",
-          titleEn: "Workshop 3 — Automation ideas on their own tools",
-          descFr:
-            "Repérer les tâches répétitives et imaginer comment l'IA peut faire gagner du temps.",
-          descEn: "Spotting repetitive tasks and imagining where AI saves time.",
-        },
-        {
-          time: "16 h 30",
-          timeEn: "16:30",
-          titleFr: "Récap des usages + ressources fournies",
-          titleEn: "Use-case recap + takeaways shared",
-          descFr: "Référentiel des outils, prompts types, cas d'usage par métier.",
-          descEn: "Tool reference sheet, prompt templates, use cases by role.",
-        },
-        {
-          time: "17 h 00",
-          timeEn: "17:00",
-          titleFr: "Q&A ouverte + clôture",
-          titleEn: "Open Q&A + close",
-        },
-      ],
-    },
-  ],
-};
 
 const DIRIGEANTS_PROGRAMME: FormationProgramme = {
   titleFr: "Déroulement de la journée",
@@ -251,52 +173,6 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     modalites: PRESENTIEL_DISTANCIEL,
   },
   {
-    id: "essentielle",
-    tierId: "intervention-essentielle",
-    slugFr: "essentielle",
-    slugEn: "essential",
-    family: "collectives",
-    collectiveDuration: "1-jour",
-    duration: "1-jour",
-    hoursMin: 6,
-    hoursMax: 8,
-    summaryDurationFr: "1 journée sur site (9 h – 17 h)",
-    summaryDurationEn: "1 day on site (9 a.m. – 5 p.m.)",
-    publicViseFr: "Équipes de 2 à 15 personnes découvrant l'IA opérationnelle.",
-    modalites: TOUTES_MODALITES,
-    programme: ESSENTIELLE_PROGRAMME,
-  },
-  {
-    id: "gagner-du-temps",
-    tierId: "intervention-temps",
-    slugFr: "gagner-du-temps",
-    slugEn: "save-time",
-    family: "collectives",
-    collectiveDuration: "1-jour",
-    duration: "1-jour",
-    hoursMin: 6,
-    hoursMax: 8,
-    summaryDurationFr: "1 journée sur site",
-    summaryDurationEn: "1 day on site",
-    publicViseFr: "Équipes opérationnelles souhaitant automatiser leurs tâches récurrentes.",
-    modalites: TOUTES_MODALITES,
-  },
-  {
-    id: "approfondie",
-    tierId: "intervention-approfondie",
-    slugFr: "approfondie",
-    slugEn: "deep-dive",
-    family: "collectives",
-    collectiveDuration: "2-jours",
-    duration: "2-jours",
-    hoursMin: 12,
-    hoursMax: 14,
-    summaryDurationFr: "2 jours consécutifs sur site",
-    summaryDurationEn: "2 consecutive days on site",
-    publicViseFr: "Équipes de 2 à 15 personnes visant un ancrage durable des pratiques IA.",
-    modalites: TOUTES_MODALITES,
-  },
-  {
     id: "conference",
     tierId: "intervention-conference",
     slugFr: "conference",
@@ -338,21 +214,6 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     summaryDurationEn: "1 day on site",
     publicViseFr: "Collaborateur clé en accompagnement individuel (1-to-1).",
     modalites: PRESENTIEL_DISTANCIEL,
-  },
-  {
-    id: "intervention-claude",
-    tierId: "intervention-claude",
-    slugFr: "intervention-claude",
-    slugEn: "intervention-claude",
-    family: "collectives",
-    collectiveDuration: "1-jour",
-    duration: "1-jour",
-    hoursMin: 6,
-    hoursMax: 8,
-    summaryDurationFr: "1 journée sur site",
-    summaryDurationEn: "1 day on site",
-    publicViseFr: "Équipes de 2 à 15 personnes outillées sur Claude (Anthropic).",
-    modalites: TOUTES_MODALITES,
   },
   {
     id: "dirigeant-vision-strategique",
