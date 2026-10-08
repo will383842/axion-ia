@@ -234,6 +234,20 @@ export async function creerPresentation(
   if (!apporteur || apporteur.statut !== "signe") {
     return { ok: false, message: "Choisissez un apporteur dont le contrat est signé." };
   }
+  // Doublon (relecture de a1, 2026-10-08) : même contrôle que le formulaire de l'apporteur
+  // (`declarerEntreprise`). Une entreprise que CET apporteur a déjà présentée et qui occupe encore
+  // son SIREN (réservée, ou protégée et non échue) n'est pas enregistrée une seconde fois — la
+  // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
+  const siennes = await prisma.presentationEntreprise.findMany({
+    where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
+    select: { statut: true, protegeeJusquAt: true },
+  });
+  if (siennes.some((p) => presentationOccupe(p, maintenant))) {
+    return {
+      ok: false,
+      message: "Cet apporteur a déjà présenté cette entreprise : elle est encore en cours.",
+    };
+  }
   let denomination = s.denomination.trim();
   if (!denomination) {
     const r = await lireEntrepriseParSiren(siren);
