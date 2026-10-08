@@ -164,6 +164,7 @@ export type EmailJobName =
   | "apporteur-dossier-a-verifier"
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
+  | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
   | "apporteur-presentation-refusee"
