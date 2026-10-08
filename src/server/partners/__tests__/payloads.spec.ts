@@ -13,6 +13,7 @@
  * générés — une colonne supprimée dans `schema.prisma` casse la COMPILATION de ce
  * fichier, elle ne le laisse pas passer au vert sur une forme périmée.
  */
+import { calculerCommission, PALIERS_FORMATION } from "@/features/apporteurs-reseau/regles";
 import { describe, expect, it } from "vitest";
 
 import { champsInterditsSelonFrontiere } from "../frontiere";
@@ -330,6 +331,7 @@ describe("REQ-INT-032 — `paiement.rembourse` couvre les DEUX formes, et six mo
 
 /** Aucun prix public connu : chaque ligne part sans prix de référence. */
 const SANS_PRIX: ReadonlyMap<string, number | null> = new Map();
+const SANS_DUREE: ReadonlyMap<string, number | null> = new Map();
 
 describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   const devis = {
@@ -355,7 +357,12 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
   };
 
   it("porte par ligne les quatre champs de REQ-INT-006 et ceux de REQ-DM-040", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
     const ligne = p.lignes[0];
 
     expect(ligne).toBeDefined();
@@ -371,16 +378,126 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
     }
   });
 
-  it("🔴 `jours` identifie le palier et n'est JAMAIS un multiplicateur", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+  it("🔴 A-2 : 2 journées = 1 000 € (500 € × 2), jamais un forfait de palier compté deux fois", () => {
+    // Le prix public de l'offre (1 900 €/jour) est la référence du prorata (art. 4.1 bis) ; la
+    // ligne est vendue au-dessus (2 500 €/jour) : commission pleine, 2 × 500 €.
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: new Map([["AXI-OFF-004", 1900]]),
+      // L'offre dure 1 journée ; la ligne en vend 2 sessions.
+      dureesOffres: new Map([["AXI-OFF-004", 1]]),
+    });
     const ligne = p.lignes[0];
     expect(ligne?.jours).toBe(2);
     expect(ligne?.commissionId).toBe("com-formation-2j");
-    expect(ligne?.commission.montantCents).toBe(100_000); // le forfait du palier, UNE fois
+    expect(ligne?.commission.montantCents).toBe(100_000);
+  });
+
+  it("formation sans prix public de référence : bloquée « à qualifier » (aucun montant inventé)", () => {
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
+    expect(p.lignes[0]?.commission.statut).toBe("bloquee");
+    expect(p.lignes[0]?.commission.montantCents).toBeNull();
+  });
+
+  // 2026-10-08 (relecture de a1) : un devis catalogue porte « prix par GROUPE, Qté = 1 » ; la
+  // quantité compte des SESSIONS et la durée vient de l'offre. Comparé au MOTEUR du réseau.
+  describe("ligne de devis CATALOGUE : durée de l'offre × sessions, comme le moteur", () => {
+    const cas = [
+      { nom: "formation 2 jours, Qté 1", palier: "formation-generale-2j", duree: 2, qte: 1 },
+      { nom: "formation 4 heures, Qté 1", palier: "formation-generale-4h", duree: 0.5, qte: 1 },
+      { nom: "formation 2 jours, Qté 2", palier: "formation-generale-2j", duree: 2, qte: 2 },
+    ] as const;
+    for (const c of cas) {
+      it(c.nom, () => {
+        const p = PALIERS_FORMATION.find((x) => x.id === c.palier)!;
+        const ligneCatalogue = {
+          ...devis,
+          montantTotalHtCents: c.qte * p.prixCents,
+          lignes: [
+            {
+              designation: c.nom,
+              quantite: c.qte,
+              prixUnitaireHtCents: p.prixCents,
+              offreCode: "AXI-OFF-CAT",
+            },
+          ],
+        };
+        const r = payloadDevisSigne({
+          devis: ligneCatalogue,
+          client: clientEntreprise,
+          prixPublics: new Map([["AXI-OFF-CAT", p.prixCents / 100]]),
+          dureesOffres: new Map([["AXI-OFF-CAT", c.duree]]),
+        });
+        const moteur = calculerCommission({
+          activite: "formation",
+          factureHtCents: c.qte * p.prixCents,
+          palier: c.palier,
+          quantite: c.qte,
+        });
+        expect(moteur.statut).toBe("calculee");
+        expect(r.lignes[0]?.jours).toBe(c.duree * c.qte);
+        expect(r.lignes[0]?.commission.montantCents).toBe(
+          moteur.statut === "calculee" ? moteur.montantCents : Number.NaN,
+        );
+      });
+    }
+
+    it("remise sur une ligne catalogue : même prorata que le moteur", () => {
+      const p = PALIERS_FORMATION.find((x) => x.id === "formation-generale-1j")!;
+      const ht = Math.floor(p.prixCents * 0.8);
+      const r = payloadDevisSigne({
+        devis: {
+          ...devis,
+          montantTotalHtCents: ht,
+          lignes: [
+            {
+              designation: "1 j remisé",
+              quantite: 1,
+              prixUnitaireHtCents: ht,
+              offreCode: "AXI-OFF-CAT",
+            },
+          ],
+        },
+        client: clientEntreprise,
+        prixPublics: new Map([["AXI-OFF-CAT", p.prixCents / 100]]),
+        dureesOffres: new Map([["AXI-OFF-CAT", 1]]),
+      });
+      const moteur = calculerCommission({
+        activite: "formation",
+        factureHtCents: ht,
+        palier: p.id,
+        quantite: 1,
+      });
+      expect(r.lignes[0]?.commission.montantCents).toBe(
+        moteur.statut === "calculee" ? moteur.montantCents : Number.NaN,
+      );
+    });
+
+    it("offre SANS durée connue : bloquée « à qualifier », jamais la quantité prise pour des journées", () => {
+      const r = payloadDevisSigne({
+        devis,
+        client: clientEntreprise,
+        prixPublics: new Map([["AXI-OFF-004", 1900]]),
+        dureesOffres: SANS_DUREE,
+      });
+      expect(r.lignes[0]?.jours).toBeNull();
+      expect(r.lignes[0]?.commission.statut).toBe("bloquee");
+    });
   });
 
   it("le montant HT de la ligne est celui du devis, pas un produit recalculé de travers", () => {
-    const p = payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX });
+    const p = payloadDevisSigne({
+      devis,
+      client: clientEntreprise,
+      prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
+    });
     expect(p.lignes[0]?.montantHtCents).toBe(500_000); // 2 × 250 000
     expect(p.montantTotalHtCents).toBe(500_000);
   });
@@ -395,6 +512,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       devis: siteWeb,
       client: clientEntreprise,
       prixPublics: SANS_PRIX,
+      dureesOffres: SANS_DUREE,
     });
     expect(p.lignes).toHaveLength(1);
     expect(p.lignes[0]?.commission.statut).toBe("bloquee");
@@ -407,6 +525,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
         devis: { ...devis, acceptedAt: null },
         client: clientEntreprise,
         prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
       }),
     ).toThrow(/sign/i);
   });
@@ -419,6 +538,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
         devis: { ...devis, lignes: [{ designation: "???" }] as never },
         client: clientEntreprise,
         prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
       }),
     ).toThrow(/ligne/i);
   });
@@ -428,6 +548,7 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       devis,
       client: clientEntreprise,
       prixPublics: new Map([["AXI-OFF-004", 1900]]),
+      dureesOffres: SANS_DUREE,
     });
     expect(p.lignes[0]?.prixReferenceHtCents).toBe(380_000); // 2 × 190 000
   });
@@ -438,19 +559,28 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
       lignes: [{ designation: "Atelier", quantite: 1, prixUnitaireHtCents: 100_000 }],
     };
     expect(
-      payloadDevisSigne({ devis: sansOffre, client: clientEntreprise, prixPublics: new Map() })
-        .lignes[0]?.prixReferenceHtCents,
+      payloadDevisSigne({
+        devis: sansOffre,
+        client: clientEntreprise,
+        prixPublics: new Map(),
+        dureesOffres: SANS_DUREE,
+      }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
     expect(
       payloadDevisSigne({
         devis,
         client: clientEntreprise,
         prixPublics: new Map([["AXI-OFF-004", null]]),
+        dureesOffres: SANS_DUREE,
       }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
     expect(
-      payloadDevisSigne({ devis, client: clientEntreprise, prixPublics: SANS_PRIX }).lignes[0]
-        ?.prixReferenceHtCents,
+      payloadDevisSigne({
+        devis,
+        client: clientEntreprise,
+        prixPublics: SANS_PRIX,
+        dureesOffres: SANS_DUREE,
+      }).lignes[0]?.prixReferenceHtCents,
     ).toBeNull();
   });
 

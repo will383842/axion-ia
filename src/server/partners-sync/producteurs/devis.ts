@@ -158,8 +158,13 @@ export async function emettreDevisSigne(
     throw new Error(`[partners-sync] devis.signe : client du devis ${devisId} introuvable.`);
   }
 
-  const prixPublics = await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devis.lignes));
-  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client, prixPublics }));
+  const { prixPublics, dureesOffres } = await offresDuDevis(
+    tx,
+    codesDesOffresDuDevis(devis.lignes),
+  );
+  const charge = verifierChargeDevisSigne(
+    payloadDevisSigne({ devis, client, prixPublics, dureesOffres }),
+  );
   // `payloadDevisSigne` a déjà exigé `acceptedAt` : il est l'instant du fait.
   const signeLe = new Date(charge.signeLe);
 
@@ -255,14 +260,46 @@ export async function prixPublicsDesOffres(
   codes: readonly string[],
 ): Promise<Map<string, number | null>> {
   if (!canalPartnersOuvert()) return new Map();
+  return (await offresDuDevis(tx, codes)).prixPublics;
+}
+
+/** Journées d'UNE session, par code de durée d'offre (catalogue V2). Inconnu → absent. */
+const JOURNEES_PAR_DUREE: Readonly<Record<string, number>> = {
+  "4h": 0.5,
+  "1j": 1,
+  "2j": 2,
+  "3j": 3,
+};
+
+/**
+ * UNE lecture des offres citées par un devis : leur prix public ferme (`resolveOffrePriceEur`)
+ * ET la durée d'UNE session en journées (`OffreSite.dureeCode`), la même source que le moteur
+ * du réseau (palier × quantité de sessions). Une offre absente, sans prix ferme ou sans durée
+ * donne `null` : rien n'est deviné, la commission part bloquée.
+ */
+export async function offresDuDevis(
+  tx: Prisma.TransactionClient,
+  codes: readonly string[],
+): Promise<{
+  prixPublics: Map<string, number | null>;
+  dureesOffres: Map<string, number | null>;
+}> {
+  if (!canalPartnersOuvert()) return { prixPublics: new Map(), dureesOffres: new Map() };
+  const prixPublics = new Map<string, number | null>();
+  const dureesOffres = new Map<string, number | null>();
   const uniques = [...new Set(codes)];
-  const prix = new Map<string, number | null>();
-  if (uniques.length === 0) return prix;
+  if (uniques.length === 0) return { prixPublics, dureesOffres };
   const offres = await tx.offreSite.findMany({
     where: { code: { in: uniques } },
     select: { code: true, tierId: true, gamme: true, dureeCode: true, tarifType: true },
   });
-  for (const code of uniques) prix.set(code, null);
-  for (const o of offres) prix.set(o.code, resolveOffrePriceEur(o));
-  return prix;
+  for (const code of uniques) {
+    prixPublics.set(code, null);
+    dureesOffres.set(code, null);
+  }
+  for (const o of offres) {
+    prixPublics.set(o.code, resolveOffrePriceEur(o));
+    dureesOffres.set(o.code, o.dureeCode ? (JOURNEES_PAR_DUREE[o.dureeCode] ?? null) : null);
+  }
+  return { prixPublics, dureesOffres };
 }

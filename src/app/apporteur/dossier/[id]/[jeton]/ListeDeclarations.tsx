@@ -1,5 +1,6 @@
 // Les déclarations de l'apporteur (siennes seulement), avec leur état. Composant SERVEUR.
 
+import type { EtatPrestation } from "@/features/apporteurs-reseau/prestation-presentation";
 import {
   LIBELLE_ETAT_DECLARATION,
   type EtatDeclaration,
@@ -41,6 +42,8 @@ export function ListeDeclarations({
     etat: EtatDeclaration;
     /** Fin de la réservation (réservée ou expirée). */
     jusquAu: Date | null;
+    /** La prestation commandée : en attente de réalisation, réalisée, ou rien encore. */
+    prestation: EtatPrestation;
   }>;
 }) {
   return (
@@ -60,6 +63,13 @@ export function ListeDeclarations({
               <div className="min-w-0">
                 <p className="truncate text-[17px] font-bold">{d.denomination}</p>
                 <p className="text-fg-soft text-[15px]">{date(d.recueAt)}</p>
+                {d.prestation ? (
+                  <p className="text-fg-soft text-[15px]">
+                    {d.prestation.etat === "realisee"
+                      ? T.prestationRealisee(date(d.prestation.le))
+                      : T.prestationEnAttente}
+                  </p>
+                ) : null}
               </div>
               <span
                 className={`${STYLE[d.etat]} shrink-0 rounded-full px-3 py-1 text-[14px] font-bold`}

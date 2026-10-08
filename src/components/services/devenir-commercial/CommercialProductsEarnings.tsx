@@ -63,6 +63,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
 
   const audit = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-audit");
   const integration = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-integration");
+  const unAUn = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-un-a-un");
 
   return (
     <Section
@@ -85,7 +86,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
             : "AI trainings — flat commission per sale"}
         </h3>
       </div>
-      <div className="grid gap-5 sm:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {flats.map((c) => (
           <Link
             key={c.id}
@@ -235,11 +236,14 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
               className="text-fg-muted group-hover:text-mocha-rich h-4 w-4"
             />
           </span>
+          {/* 30 % depuis le 2026-10-07 (contrat 2.3, annexe 1) : lu dans la grille, jamais écrit ici. */}
           <span className="text-mocha-rich mt-2 font-mono text-2xl font-semibold">
-            {isFr ? "Sur barème" : "On scale"}
+            {unAUn?.percent != null ? `${unAUn.percent} %` : "—"}
           </span>
           <span className="text-fg-soft mt-3 text-sm leading-snug">
-            {isFr ? "Détaillé après votre candidature." : "Detailed after your application."}
+            {isFr
+              ? "Du montant hors taxes facturé, à titre indicatif (dirigeant, collaborateur, coaching)."
+              : "Of the invoiced amount excluding VAT, as an indication (executive, team member, coaching)."}
           </span>
         </Link>
       </div>

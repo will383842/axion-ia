@@ -31,4 +31,7 @@ export const TEXTES_DECLARATION = {
       "Toute commande signée pendant cette période vous est commissionnée, dès que la prestation est réalisée et entièrement payée.",
     ] as const,
   jusquAu: (date: string) => `jusqu'au ${date}`,
+  // Contrat 2.3, art. 4.2 : la commission naît de la prestation RÉALISÉE et entièrement payée.
+  prestationEnAttente: "Prestation commandée, en attente de réalisation",
+  prestationRealisee: (date: string) => `Prestation réalisée le ${date}`,
 } as const;

@@ -23,7 +23,7 @@ describe("manquement ou fraude (art. 4.5 bis)", () => {
       contactName: "Claire Martin",
       faits: "L'entreprise déclare n'avoir jamais échangé avec vous.",
     });
-    expect(r.subject).toBe("Manquement constaté sur une de vos déclarations");
+    expect(r.subject).toBe("Manquement constaté sur votre déclaration");
     const t = r.text.replace(/\s+/g, " ");
     expect(t).toContain("L'entreprise déclare n'avoir jamais échangé avec vous.");
     expect(t).toContain("article 4.5 bis");

@@ -55,7 +55,7 @@ import {
   champsInterditsDuSujet,
   champsInterditsSelonFrontiere,
 } from "../../src/server/partners/frontiere";
-import { prixPublicsDesOffres } from "../../src/server/partners-sync/producteurs/devis";
+import { offresDuDevis } from "../../src/server/partners-sync/producteurs/devis";
 import {
   codesDesOffresDuDevis,
   payloadAvoirEmis,
@@ -528,7 +528,7 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
         ...payloadDevisSigne({
           devis: devisRelu,
           client: clientRelu,
-          prixPublics: await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devisRelu.lignes)),
+          ...(await offresDuDevis(tx, codesDesOffresDuDevis(devisRelu.lignes))),
         }),
       },
       sequence: 3,
