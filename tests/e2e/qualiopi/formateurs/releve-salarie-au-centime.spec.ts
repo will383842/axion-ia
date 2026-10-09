@@ -3,7 +3,7 @@
 //
 // Le chantier « formateurs freelance » ajoute un statut et ses règles ; il ne
 // doit RIEN changer à ce qu'un salarié touche. Ce spec fige, sur le scénario
-// de `fixtures/formateurs/remuneration-salarie.ts`, les montants que le calcul
+// de `./remuneration-salarie.ts`, les montants que le calcul
 // de `main` produisait le jour où le banc a été posé (2026-10-09) :
 //
 //   · les lignes du mois (`construireLignesPrestation`, l'appel même du run
@@ -17,6 +17,10 @@
 // 🔑 Un montant qui bouge ici n'est pas forcément faux — mais il doit être
 // DÉCIDÉ, et ce test le fait voir. Le changer demande de dire pourquoi dans la
 // PR qui le change.
+//
+// 📁 Rangé sous `tests/e2e/qualiopi/` et non `tests/e2e/formateurs/` : il
+// importe le domaine Qualiopi, que `pnpm qualiopi:isolation-check` cantonne à
+// ses zones dédiées. Le tag `@formateurs` le garde dans le banc.
 //
 // Calcul PUR : aucune base, aucun serveur. Le banc l'exécute quand même sous
 // Gate B, avec les autres specs `@formateurs`.
@@ -41,7 +45,7 @@ import {
   REGLES_BANC,
   SALARIE_BANC,
   trimestreDuSalarie,
-} from "../fixtures/formateurs/remuneration-salarie";
+} from "./remuneration-salarie";
 
 function calculerLeMois(): { lignes: LigneAPersister[]; anomalies: Anomalie[] } {
   const lignes: LigneAPersister[] = [];
