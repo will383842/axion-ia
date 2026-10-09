@@ -283,7 +283,7 @@ export default async function JobOfferDetailPage({
     offreFreelance?.salaryVisible &&
     offreFreelance.salaryPeriod === "DAY" &&
     offreFreelance.salaryMin != null
-      ? `${offreFreelance.salaryMin} € par journée de formation`
+      ? `${offreFreelance.salaryMin} € par journée de formation réalisée`
       : null;
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
   const eligibleCountries = normalizeApplicantCountries(offer.applicantCountries);

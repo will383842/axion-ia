@@ -16,6 +16,7 @@ import type { EmailJobName } from "@/server/queue/types";
 
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
+import { urlDossier } from "./jeton";
 import { GABARITS_ARGENT, retraitDe } from "./retrait";
 
 export type GabaritApporteur =
@@ -26,6 +27,7 @@ export type GabaritApporteur =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
@@ -47,6 +49,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
@@ -131,6 +134,7 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-dossier-recu",
   "apporteur-commission-suspension",
   "apporteur-manquement",
+  "apporteur-commission-avoir-client",
   "apporteur-non-commissionne",
   "apporteur-contrat-signe",
   "apporteur-presentation-recue",
@@ -172,6 +176,37 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
   }
 }
 
+/**
+ * « Ouvrir mon espace » (décision de Will, 2026-10-09) : chaque e-mail adressé à l'apporteur
+ * porte son lien personnel, que le gabarit de base affiche en bas de la carte. Le dernier
+ * e-mail reçu suffit donc à retrouver son espace. Jamais pour un dossier refusé ou résilié
+ * (le lien mène à une page neutre ; vérifié sur la FICHE, pas seulement sur le gabarit) ni
+ * pour un apporteur RETIRÉ du réseau (relecture sécurité, a1 :
+ * le retrait change la version du lien pour le couper — on ne le recalcule pas) ;
+ * fail-soft : sans lien, l'e-mail part tel quel.
+ */
+async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
+  if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
+    return e.payload;
+  }
+  if (typeof e.payload.lienEspace === "string") return e.payload;
+  try {
+    const apporteurId = await apporteurDeLEnvoi(e);
+    if (!apporteurId || (await retraitDe(apporteurId))) return e.payload;
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
+    });
+    if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
+      return e.payload;
+    }
+    const lien = urlDossier(apporteurId, a.versionLien);
+    return lien ? { ...e.payload, lienEspace: lien } : e.payload;
+  } catch {
+    return e.payload;
+  }
+}
+
 export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
   try {
     // 🔴 Retiré du réseau (2026-10-07) : seuls les e-mails liés à l'ARGENT lui parviennent
@@ -183,7 +218,8 @@ export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
     }
     const jobId = e.jobId ? e.jobId.replace(/:/g, "-") : undefined;
     if (jobId) await retirerEnvoiEchoue(jobId);
-    const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", e.payload, {
+    const payload = await avecLienEspace(e);
+    const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", payload, {
       entityType: e.entityType,
       entityId: e.entityId,
       ...(jobId ? { jobId } : {}),

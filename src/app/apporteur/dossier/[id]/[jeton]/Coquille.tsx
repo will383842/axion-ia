@@ -17,7 +17,17 @@ export function Coquille({ titre, children }: { titre?: string; children: React.
           ) : null}
         </div>
       </header>
-      <main className="mx-auto w-full max-w-xl px-4 pt-5 pb-16 sm:px-6">{children}</main>
+      <main className="mx-auto w-full max-w-xl px-4 pt-5 pb-16 sm:px-6">
+        {children}
+        {/* Retrouver son espace en un geste (décision de Will, 2026-10-09) : seulement sur les
+            pages PERSONNELLES (avec un titre), jamais sur un écran neutre ou réservé. */}
+        {titre ? (
+          <p className="text-fg-muted border-border mt-10 border-t pt-4 text-[14px]">
+            Astuce : ajoutez cette page à vos favoris, ou à l&apos;écran d&apos;accueil de votre
+            téléphone, pour retrouver votre espace en un geste.
+          </p>
+        ) : null}
+      </main>
     </>
   );
 }

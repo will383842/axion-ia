@@ -140,6 +140,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-commission-suspension":
     "Apporteur : commission suspendue, puis libérée (contestation du client)",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",
+  "apporteur-commission-avoir-client":
+    "Apporteur : commission facturée annulée par un avoir, après l'avoir du client (art. 4.5)",
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",

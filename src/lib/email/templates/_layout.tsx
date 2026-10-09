@@ -126,6 +126,13 @@ export function setReviewStats(stats: ReviewStats): void {
  */
 export interface DonneesRenduEmail {
   readonly oppositionHref: string | null;
+  /**
+   * « Ouvrir mon espace » sous un e-mail adressé à un APPORTEUR (décision de Will, 2026-10-09) :
+   * son lien personnel (`payload.lienEspace`, posé par `envoyer()` des apporteurs). Il porte le
+   * jeton : jamais recopié en clair, et jamais dans une variable de module (même raison que
+   * le lien d'opposition).
+   */
+  readonly lienEspace: string | null;
 }
 const RENDU_EN_COURS = new AsyncLocalStorage<DonneesRenduEmail>();
 export function avecDonneesRendu<T>(
@@ -796,7 +803,9 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
-  const oppositionHref = RENDU_EN_COURS.getStore()?.oppositionHref ?? null;
+  const donneesRendu = RENDU_EN_COURS.getStore();
+  const oppositionHref = donneesRendu?.oppositionHref ?? null;
+  const lienEspace = donneesRendu?.lienEspace ?? null;
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
@@ -906,6 +915,27 @@ export function EmailLayout({
                     {cta.href}
                   </Text>
                 )}
+              </Section>
+            )}
+            {lienEspace && cta?.href !== lienEspace && (
+              <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
+                <Link
+                  href={lienEspace}
+                  style={{
+                    display: "inline-block",
+                    border: `2px solid ${C.orange}`,
+                    borderRadius: "10px",
+                    padding: "10px 18px",
+                    color: C.orangeDeep,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Ouvrir mon espace d&apos;apporteur
+                </Link>
+                <Text style={{ margin: "8px 0 0 0", fontSize: "13px", color: C.muted }}>
+                  Ce lien vous est personnel : ne transférez pas cet e-mail.
+                </Text>
               </Section>
             )}
             {bandeau && (afficherLockupQualiopi || showReviews) && (
