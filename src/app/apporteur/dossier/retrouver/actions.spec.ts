@@ -19,6 +19,9 @@ vi.mock("@/features/apporteurs-reseau/jeton", () => ({
 }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: (...a: unknown[]) => h.limite(...a) }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
+vi.mock("@/lib/pii-crypto", () => ({
+  decryptPii: (v: string | null) => (v ? v.replace(/^chiffre:/, "") : null),
+}));
 vi.mock("@/lib/security/email-hash", () => ({
   hashEmailForLookup: (e: string) => (e ? `h:${e}` : null),
 }));
@@ -50,7 +53,13 @@ describe("la réponse est toujours la même", () => {
   });
 
   it("apporteur signé : le même message, et son lien part", async () => {
-    h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut: "signe", versionLien: 3 });
+    h.fiche.mockResolvedValue({
+      id: ID,
+      prenom: "Claire",
+      statut: "signe",
+      versionLien: 3,
+      email: "chiffre:claire.enregistree@exemple.fr",
+    });
     expect(await demande({ email: " Claire@Exemple.fr " })).toEqual({
       envoye: true,
       message: MESSAGE_RETROUVER,
@@ -60,7 +69,8 @@ describe("la réponse est toujours la même", () => {
     );
     expect(h.envoyer).toHaveBeenCalledWith({
       gabarit: "apporteur-lien-espace",
-      destinataire: "claire@exemple.fr",
+      // l'adresse ENREGISTRÉE, pas celle saisie
+      destinataire: "claire.enregistree@exemple.fr",
       payload: { prenom: "Claire", lien: `https://axion-ia.com/apporteur/dossier/${ID}/jeton-v3` },
       entityType: "ApporteurReseau",
       entityId: ID,
@@ -70,7 +80,7 @@ describe("la réponse est toujours la même", () => {
   it.each(["dossier_en_cours", "a_completer", "a_verifier"])(
     "dossier « %s » : le lien part",
     async (statut) => {
-      h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut, versionLien: 1 });
+      h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut, versionLien: 1, email: "chiffre:c@exemple.fr" });
       await demande({ email: "claire@exemple.fr" });
       expect(h.envoyer).toHaveBeenCalledTimes(1);
     },
@@ -79,11 +89,19 @@ describe("la réponse est toujours la même", () => {
   it.each(["refuse", "resilie"])(
     "dossier « %s » : le même message, rien ne part",
     async (statut) => {
-      h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut, versionLien: 1 });
+      h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut, versionLien: 1, email: "chiffre:c@exemple.fr" });
       expect((await demande({ email: "claire@exemple.fr" })).message).toBe(MESSAGE_RETROUVER);
       expect(h.envoyer).not.toHaveBeenCalled();
     },
   );
+});
+
+describe("adresse enregistrée", () => {
+  it("adresse enregistrée illisible : rien ne part, le même message", async () => {
+    h.fiche.mockResolvedValue({ id: ID, prenom: "Claire", statut: "signe", versionLien: 1, email: "" });
+    expect((await demande({ email: "claire@exemple.fr" })).message).toBe(MESSAGE_RETROUVER);
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
 });
 
 describe("abus", () => {

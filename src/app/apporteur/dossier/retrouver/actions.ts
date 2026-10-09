@@ -16,6 +16,7 @@ import { envoyer } from "@/features/apporteurs-reseau/envois";
 import { urlDossier } from "@/features/apporteurs-reseau/jeton";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature-regles";
 import { getClientIp } from "@/lib/client-ip";
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -53,14 +54,17 @@ export async function demanderLienEspace(
 
   const fiche = await prisma.apporteurReseau.findUnique({
     where: { emailHash: empreinte },
-    select: { id: true, prenom: true, statut: true, versionLien: true },
+    select: { id: true, prenom: true, statut: true, versionLien: true, email: true },
   });
   if (fiche && etatDeLaPage(fiche.statut) !== "neutre") {
     const lien = urlDossier(fiche.id, fiche.versionLien);
-    if (lien) {
+    // Relecture sécurité (a1) : l'envoi part à l'adresse ENREGISTRÉE sur la fiche, jamais à
+    // celle tapée dans le formulaire (même empreinte ne vaut pas même adresse).
+    const enregistree = decryptPii(fiche.email)?.trim() ?? "";
+    if (lien && enregistree) {
       await envoyer({
         gabarit: "apporteur-lien-espace",
-        destinataire: email,
+        destinataire: enregistree,
         payload: { prenom: fiche.prenom, lien },
         entityType: "ApporteurReseau",
         entityId: fiche.id,
