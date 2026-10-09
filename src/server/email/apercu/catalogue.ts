@@ -473,7 +473,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Passage horaire : la facture du client est annulée par un avoir alors que la commission était facturée et pas versée (art. 4.5)",
     destinataire: "l'apporteur (et le parrain dont la part est annulée)",
-    source: "features/apporteurs-reseau/avoir-client.ts",
+    source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-manquement": {
     categorie: "recrutement",

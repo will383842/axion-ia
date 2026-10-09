@@ -375,7 +375,7 @@ export const COPY_DEMARRAGE = {
     // Art. 4.5 : la facture du client a été annulée par un avoir ALORS QUE la commission était
     // déjà facturée (pas encore versée) : elle est neutralisée par un avoir d'autofacture, joint.
     // ⛔ Aucun nom de client ni délai promis ; ce n'est PAS un manquement (pas de « faits »).
-    subject: "Une de vos commissions est annulée (avoir joint)",
+    subject: "Commission annulée : avoir joint",
     title: "Commission annulée",
     preview: "La facture du client a été annulée par un avoir.",
     texte:
