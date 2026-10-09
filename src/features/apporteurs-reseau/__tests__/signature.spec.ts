@@ -43,6 +43,7 @@ vi.mock("../contrat-pdf", async () => {
   };
 });
 
+import { CONTRAT_VERSION } from "../contrat-v2";
 import { APPROCHE_VIGILANCE_CENTS } from "../regles";
 import {
   CLES_ACCEPTATIONS,
@@ -335,7 +336,7 @@ describe("dossier en ligne — signerContrat", () => {
     expect(arg.data.contratSha256).toBe(sha);
     const s = arg.data.signatureApporteur;
     // Contrat 2.4 : la signature porte la version COURANTE (celle du texte affiché et du PDF).
-    expect(s.version).toBe("2.4");
+    expect(s.version).toBe(CONTRAT_VERSION);
     expect(rendreContratPdf.mock.calls[0]![0]).not.toHaveProperty("version");
     expect(s.texteSha256).toBe(sha);
     // B3 : le texte exact signé est archivé (sa SHA-256 = l'empreinte signée).

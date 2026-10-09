@@ -72,18 +72,15 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("D8 : une coupure réseau ne vide rien", () => {
-  it("signature : message « Connexion perdue », cases et nom tapé conservés", async () => {
+  it("signature : message « Connexion perdue », les deux cases restent cochées", async () => {
     h.signerAction.mockRejectedValue(new Error("Failed to fetch"));
     rendre(dossier(), 4);
     for (const c of screen.getAllByRole("checkbox")) fireEvent.click(c);
-    const nom = screen.getByLabelText(TEXTES.nomTape) as HTMLInputElement;
-    fireEvent.change(nom, { target: { value: "Éloïse Lefèvre" } });
     fireEvent.click(screen.getByRole("button", { name: TEXTES.signer }));
     expect(await screen.findByText(TEXTES.connexionPerdue)).toBeTruthy();
     expect(TEXTES.connexionPerdue).toContain("vos réponses sont conservées sur cet écran");
-    expect(nom.value).toBe("Éloïse Lefèvre");
     const cochees = screen.getAllByRole("checkbox").filter((c) => (c as HTMLInputElement).checked);
-    expect(cochees).toHaveLength(CLES_DECLARATIONS.length + CLES_ACCEPTATIONS.length);
+    expect(cochees).toHaveLength(2);
     // Toujours à l'étape 4, bouton de nouveau utilisable pour réessayer.
     await waitFor(() =>
       expect(
@@ -182,5 +179,109 @@ describe("D19 : changement d'étape annoncé et focalisé", () => {
     expect(titre.getAttribute("tabindex")).toBe("-1");
     await waitFor(() => expect(document.activeElement).toBe(titre));
     expect(screen.getByRole("status").textContent).toBe(TEXTES.etapeAnnonce(4, "Votre contrat"));
+  });
+});
+
+describe("contrat 2.5 : deux cases, nom affiché, PDF dans un nouvel onglet", () => {
+  it("deux cases seulement ; le bouton attend les deux ; le serveur reçoit les 10 engagements un par un", async () => {
+    h.signerAction.mockResolvedValue({ ok: true });
+    rendre(dossier(), 4);
+    const cases = screen.getAllByRole("checkbox");
+    expect(cases).toHaveLength(2);
+    // Le mandat de facturation et la clause des tribunaux restent écrits en clair sous la case.
+    expect(document.body.textContent).toContain(
+      "Je donne mandat à Axion-IA d'établir mes factures",
+    );
+    expect(document.body.textContent).toContain(
+      "tribunaux du siège d'Axion-IA sont seuls compétents",
+    );
+    const signer = screen.getByRole("button", { name: TEXTES.signer }) as HTMLButtonElement;
+    expect(signer.disabled).toBe(true);
+    expect(screen.getByText(TEXTES.cochezLesDeuxCases)).toBeTruthy();
+    fireEvent.click(cases[0]!);
+    expect(signer.disabled).toBe(true);
+    fireEvent.click(cases[1]!);
+    expect(signer.disabled).toBe(false);
+    fireEvent.click(signer);
+    await waitFor(() => expect(h.signerAction).toHaveBeenCalled());
+    const fd = h.signerAction.mock.calls[0]![0] as FormData;
+    expect(fd.getAll("declarations")).toEqual([...CLES_DECLARATIONS]);
+    expect(fd.getAll("acceptations")).toEqual([...CLES_ACCEPTATIONS]);
+    // Le nom n'est plus tapé : celui du dossier part dans la preuve.
+    expect(fd.get("nomTape")).toBe("Éloïse Lefèvre");
+  });
+
+  it("décocher une case la décoche en entier (pas d'acceptation partielle)", () => {
+    rendre(dossier(), 4);
+    const [certifie] = screen.getAllByRole("checkbox") as HTMLInputElement[];
+    fireEvent.click(certifie!);
+    expect(certifie!.checked).toBe(true);
+    fireEvent.click(certifie!);
+    expect(certifie!.checked).toBe(false);
+  });
+
+  it("le nom du signataire est affiché ; pour une société, « pour le compte de » sa dénomination", () => {
+    rendre(dossier({ statutJuridique: "sas", denomination: "ACME" }), 4);
+    expect(screen.getByText("Éloïse Lefèvre")).toBeTruthy();
+    expect(screen.getByText(TEXTES.pourLeCompteDe("ACME"))).toBeTruthy();
+    expect(screen.queryByRole("textbox")).toBeNull();
+    cleanup();
+    rendre(dossier(), 4);
+    expect(screen.queryByText(TEXTES.pourLeCompteDe("Ma société"))).toBeNull();
+  });
+
+  it("le PDF du contrat s'ouvre dans un nouvel onglet", () => {
+    rendre(dossier(), 4);
+    const lien = screen.getByRole("link", { name: new RegExp(TEXTES.telecharger) });
+    expect(lien.getAttribute("target")).toBe("_blank");
+    expect(lien.getAttribute("rel")).toContain("noopener");
+  });
+});
+
+describe("aperçu du fichier envoyé", () => {
+  it("photo : une vignette apparaît après l'envoi ; PDF : un lien « Voir » dans un nouvel onglet", async () => {
+    URL.createObjectURL = vi.fn(() => "blob:apercu");
+    URL.revokeObjectURL = vi.fn();
+    h.deposerPieceAction.mockResolvedValue({ ok: true });
+    const piece = { statut: "deposee" as const, motif: null, nomFichier: "cni.png" };
+    const { rerender } = render(
+      <ul>
+        <DepotPiece
+          id={ID}
+          jeton={"j".repeat(43)}
+          type="identite"
+          libelle="Pièce d'identité"
+          aide=""
+          piece={null}
+          motifLibelle={null}
+        />
+      </ul>,
+    );
+    fireEvent.change(screen.getByLabelText("Pièce d'identité : choisir un fichier"), {
+      target: { files: [new File(["x"], "cni.png", { type: "image/png" })] },
+    });
+    await waitFor(() => expect(h.refresh).toHaveBeenCalled());
+    rerender(
+      <ul>
+        <DepotPiece
+          id={ID}
+          jeton={"j".repeat(43)}
+          type="identite"
+          libelle="Pièce d'identité"
+          aide=""
+          piece={piece}
+          motifLibelle={null}
+        />
+      </ul>,
+    );
+    const img = screen.getByAltText(TEXTES.apercuDe("Pièce d'identité")) as HTMLImageElement;
+    expect(img.getAttribute("src")).toBe("blob:apercu");
+
+    fireEvent.change(screen.getByLabelText("Pièce d'identité : choisir un fichier"), {
+      target: { files: [new File(["%PDF"], "cni.pdf", { type: "application/pdf" })] },
+    });
+    const lien = await screen.findByRole("link", { name: TEXTES.voirLePdf });
+    expect(lien.getAttribute("target")).toBe("_blank");
+    expect(URL.revokeObjectURL).toHaveBeenCalled();
   });
 });

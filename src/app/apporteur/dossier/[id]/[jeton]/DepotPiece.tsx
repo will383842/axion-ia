@@ -5,8 +5,10 @@
 // motif) et deux façons de l'envoyer — une photo prise sur le moment (`capture`, qui
 // ouvre l'appareil photo du téléphone) ou un fichier PDF / image déjà enregistré.
 // L'attestation de vigilance demande en plus sa date de délivrance (validité 6 mois).
+// Le fichier envoyé s'affiche aussitôt (vignette de la photo, ou lien vers le PDF) : l'aperçu
+// est fait dans le navigateur, depuis le fichier choisi ; rien de plus ne repart au serveur.
 
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { deposerPieceAction } from "./actions";
@@ -47,6 +49,9 @@ export function DepotPiece({
   const [enCours, demarrer] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
   const [date, setDate] = useState("");
+  const [apercu, setApercu] = useState<{ url: string; image: boolean } | null>(null);
+  // L'adresse locale de l'aperçu est libérée quand on la remplace ou qu'on quitte l'étape.
+  useEffect(() => () => (apercu ? URL.revokeObjectURL(apercu.url) : undefined), [apercu]);
   const aujourdhui = new Date().toISOString().slice(0, 10);
 
   const aRenvoyer = piece?.statut === "a_retransmettre";
@@ -67,8 +72,9 @@ export function DepotPiece({
     demarrer(async () => {
       try {
         const r = await deposerPieceAction(fd);
-        if (r.ok) router.refresh();
-        else setErreur(r.message);
+        if (!r.ok) return setErreur(r.message);
+        setApercu({ url: URL.createObjectURL(fichier), image: fichier.type.startsWith("image/") });
+        router.refresh();
       } catch {
         // Coupure réseau : le message reste sur l'écran, le choix de la date aussi.
         setErreur(TEXTES.connexionPerdue);
@@ -104,6 +110,25 @@ export function DepotPiece({
       ) : null}
       {presente ? (
         <p className="text-fg-soft mt-1 truncate text-[14px]">{piece.nomFichier}</p>
+      ) : null}
+      {presente && apercu ? (
+        apercu.image ? (
+          // eslint-disable-next-line @next/next/no-img-element -- aperçu local (blob:), pas d'optimisation possible
+          <img
+            src={apercu.url}
+            alt={TEXTES.apercuDe(libelle)}
+            className="border-border mt-2 max-h-48 w-auto rounded-xl border object-contain"
+          />
+        ) : (
+          <a
+            href={apercu.url}
+            target="_blank"
+            rel="noopener"
+            className="text-terracotta-deep mt-2 inline-flex min-h-[44px] items-center text-[16px] font-bold underline underline-offset-4"
+          >
+            {TEXTES.voirLePdf}
+          </a>
+        )
       ) : null}
 
       {avecDate ? (

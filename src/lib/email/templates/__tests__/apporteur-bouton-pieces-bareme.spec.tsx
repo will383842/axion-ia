@@ -37,7 +37,7 @@ describe("bouton et liste « à préparer »", () => {
     async (g, p) => {
       const t = await texte(g, p);
       expect(t).toContain("Compléter mon dossier et signer mon contrat");
-      expect(t).toContain("numéro SIREN");
+      expect(t).toContain("numéro SIRET");
       expect(t).toContain("IBAN");
       for (const piece of [...PIECES_POUR_SIGNER, ...PIECES_FACULTATIVES]) {
         expect(t.toLowerCase()).toContain(LIBELLE_PIECE[piece].toLowerCase());

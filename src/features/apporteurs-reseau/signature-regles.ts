@@ -171,7 +171,7 @@ export const LIBELLE_REFUS_SIGNATURE: Readonly<Record<RefusSignature, string>> =
   non_modifiable: "Ce dossier ne peut plus être signé depuis ce lien.",
   incomplet: "Votre dossier n'est pas encore complet.",
   cases: "Cochez toutes les cases avant de signer.",
-  nom: "Tapez votre prénom et votre nom, tels qu'ils figurent sur votre dossier.",
+  nom: "Le nom du signataire ne correspond pas au dossier : écrivez-nous avant de signer.",
 };
 
 export function verifierAvantSignature(e: {
@@ -216,11 +216,14 @@ export function dateHeureParis(d: Date): string {
   return `${dateFrancaise(d)} à ${heure} (heure de Paris)`;
 }
 
+/** Société (SAS, SARL…) et non entrepreneur individuel. */
+export function estSociete(statut: string): boolean {
+  return statut !== "micro_entrepreneur" && statut !== "entrepreneur_individuel";
+}
+
 /** La qualité au sens de l'art. 14 (copie de `qualiteDuStatut`, module pur). */
 function qualite(statut: string): string {
-  return statut === "micro_entrepreneur" || statut === "entrepreneur_individuel"
-    ? "entrepreneur individuel"
-    : "société commerciale";
+  return estSociete(statut) ? "société commerciale" : "entrepreneur individuel";
 }
 
 /**
@@ -237,11 +240,16 @@ export function valeursDuContrat(
     /** SIRET de l'établissement ; l'adresse est alors celle de l'établissement. */
     siret?: string | null;
     adresse: string | null;
+    /** Dénomination au registre ; ne sert que pour une société (contrat 2.5). */
+    denomination?: string | null;
   },
   le: Date,
 ): ValeursContrat {
   const identite = `${d.prenom.trim()} ${d.nom.trim().toLocaleUpperCase("fr-FR")}`.trim();
+  const denomination =
+    d.statutJuridique && estSociete(d.statutJuridique) ? d.denomination?.trim() || null : null;
   return {
+    ...(denomination ? { denomination } : {}),
     identite: identite || A_COMPLETER,
     statutJuridique: d.statutJuridique ?? A_COMPLETER,
     siren: d.siren ?? A_COMPLETER,

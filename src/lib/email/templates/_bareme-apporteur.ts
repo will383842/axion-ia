@@ -68,5 +68,5 @@ export function ligneAPreparer(l: Langue = "fr"): string {
     ...PIECES_POUR_SIGNER.map((p) => enMinuscule(LIBELLE_PIECE[p])),
     ...PIECES_FACULTATIVES.map((p) => `${enMinuscule(LIBELLE_PIECE[p])} (facultative)`),
   ];
-  return `À préparer : votre numéro SIREN, votre IBAN, et à déposer : ${pieces.join(", ")}. Environ 10 minutes, vous pouvez reprendre plus tard.`;
+  return `À préparer : votre numéro SIRET, votre IBAN, et à déposer : ${pieces.join(", ")}. Environ 10 minutes, vous pouvez reprendre plus tard.`;
 }

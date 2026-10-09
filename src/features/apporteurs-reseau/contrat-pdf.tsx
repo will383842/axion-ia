@@ -30,6 +30,8 @@ export interface ValeursContrat {
   siege: string;
   qualite: string;
   grilleDate: string;
+  /** Contrat 2.5 : dénomination d'un Apporteur société, « représentée par » `identite`. */
+  denomination?: string;
 }
 
 export interface SignatureApporteur {
@@ -62,6 +64,13 @@ export function qualiteDuStatut(valeur: string): string {
 export function texteDuContrat(v: ValeursContrat): string {
   const table: Record<string, string> = {
     APPORTEUR_IDENTITE: v.identite,
+    // Contrat 2.5 : une société signe par la personne physique qui la représente (identite).
+    APPORTEUR_PARTIE: v.denomination ?? v.identite,
+    APPORTEUR_IMMATRICULE: v.denomination ? "immatriculée" : "immatriculé",
+    APPORTEUR_REPRESENTANT: v.denomination ? `, représentée par ${v.identite}` : "",
+    APPORTEUR_SIGNATAIRE: v.denomination
+      ? `${v.denomination}, représentée par ${v.identite}`
+      : v.identite,
     APPORTEUR_STATUT: libelleStatut(v.statutJuridique),
     APPORTEUR_SIREN: v.siren,
     // Contrat 2.4 : avec un SIRET, « SIRET de l'établissement …, dont l'établissement est situé … » ;
@@ -252,6 +261,11 @@ function blocs(markdown: string): React.ReactNode[] {
   return out;
 }
 
+/** Depuis le contrat 2.5, la signature tient en deux cases (avant : une case par engagement). */
+export function deuxCases(version: string): boolean {
+  return Number(version) >= 2.5;
+}
+
 function Certificat({
   sha,
   version,
@@ -286,12 +300,42 @@ function Certificat({
               Adresse IP (empreinte) : {apporteur.ipHash ?? "non relevée"} · Navigateur :{" "}
               {apporteur.navigateur ?? "non relevé"}
             </Text>
-            <Text style={[s.p, { marginTop: 5 }]}>Cases cochées avant la signature :</Text>
-            {[...apporteur.declarations, ...apporteur.acceptations].map((c) => (
-              <Text key={c} style={s.petit}>
-                · {libelle(c)}
-              </Text>
-            ))}
+            {deuxCases(version) ? (
+              // Contrat 2.5 : deux cases ont été cochées, chacune listant ses engagements. Le
+              // certificat le dit tel quel (une preuve inexacte se conteste) et groupe par case.
+              <>
+                <Text style={[s.p, { marginTop: 5 }]}>
+                  Engagements acceptés (2 cases cochées, chacune listant ses engagements) :
+                </Text>
+                {(
+                  [
+                    ["Case 1 — « Je certifie que : »", apporteur.declarations],
+                    [
+                      "Case 2 — « J'ai lu le contrat et je l'accepte, en particulier : »",
+                      apporteur.acceptations,
+                    ],
+                  ] as const
+                ).map(([titre, cles]) => (
+                  <React.Fragment key={titre}>
+                    <Text style={[s.petit, s.gras, { marginTop: 3 }]}>{titre}</Text>
+                    {cles.map((c) => (
+                      <Text key={c} style={s.petit}>
+                        · {libelle(c)}
+                      </Text>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <>
+                <Text style={[s.p, { marginTop: 5 }]}>Cases cochées avant la signature :</Text>
+                {[...apporteur.declarations, ...apporteur.acceptations].map((c) => (
+                  <Text key={c} style={s.petit}>
+                    · {libelle(c)}
+                  </Text>
+                ))}
+              </>
+            )}
           </>
         ) : (
           <Text style={s.petit}>Pas encore signé.</Text>

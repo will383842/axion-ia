@@ -246,7 +246,7 @@ export const COPY_DEMARRAGE = {
       "Voici votre lien personnel pour compléter votre dossier d'apporteur d'affaires et signer votre contrat en ligne. Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
     etapes: [
       "vos coordonnées, déjà remplies ;",
-      "votre numéro SIREN : nous retrouvons le reste dans le registre officiel ;",
+      "votre numéro SIRET : nous retrouvons le reste dans le registre officiel ;",
       "votre pièce d'identité et votre RIB, en photo ou en PDF ;",
       "la lecture de votre contrat, puis votre signature.",
     ],

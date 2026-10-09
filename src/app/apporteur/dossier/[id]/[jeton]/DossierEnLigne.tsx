@@ -1,5 +1,5 @@
 "use client";
-// use-client: parcours en 4 étapes (état local, recherche SIREN, cases et nom tapé avant signature).
+// use-client: parcours en 4 étapes (état local, recherche SIRET, deux cases avant signature).
 
 // Le DOSSIER EN LIGNE de l'apporteur, en 4 étapes : Vous · Votre activité · Vos
 // documents · Votre contrat. Mobile d'abord (320-414 px), champs à 16 px et plus,
@@ -24,7 +24,11 @@ import {
   type TypePiece,
 } from "@/features/apporteurs-reseau/regles-dossier";
 import {
+  CLES_ACCEPTATIONS,
+  CLES_DECLARATIONS,
   casesCompletes,
+  casesConnues,
+  estSociete,
   libelleMotif,
   manquesDuDossier,
   nomTapeCorrespond,
@@ -160,7 +164,6 @@ export function DossierEnLigne({
   // Étape 4
   const [declarations, setDeclarations] = useState<string[]>([]);
   const [acceptations, setAcceptations] = useState<string[]>([]);
-  const [nomTape, setNomTape] = useState("");
 
   // Changement d'étape : on remonte en haut du parcours (pas au premier affichage).
   const premierAffichage = useRef(true);
@@ -287,18 +290,27 @@ export function DossierEnLigne({
   const manques = manquesDuDossier(dossier);
   const pieceDe = (t: TypePiece) => dossier.pieces.find((p) => p.type === t) ?? null;
   const aRenvoyer = dossier.pieces.filter((p) => p.statut === "a_retransmettre");
-  const attendu = `${dossier.prenom} ${dossier.nom}`.trim();
+  // Contrat 2.5 : le nom du signataire n'est plus tapé (une faute de frappe bloquait le bouton
+  // sans rien dire) ; il est affiché, et c'est lui qui part comme « nom tapé » dans la preuve.
+  const signataire = `${dossier.prenom.trim()} ${dossier.nom.trim()}`.trim();
+  const pourLeCompteDe =
+    dossier.statutJuridique && estSociete(dossier.statutJuridique)
+      ? dossier.denomination?.trim() || null
+      : null;
+  const certifie =
+    casesConnues(declarations, CLES_DECLARATIONS).length === CLES_DECLARATIONS.length;
+  const accepte = casesConnues(acceptations, CLES_ACCEPTATIONS).length === CLES_ACCEPTATIONS.length;
   const peutSigner =
     manques.length === 0 &&
     casesCompletes(declarations, acceptations) &&
-    nomTapeCorrespond(nomTape, dossier.prenom, dossier.nom);
+    nomTapeCorrespond(signataire, dossier.prenom, dossier.nom);
 
   function signer() {
     setErreur(null);
     const fd = new FormData();
     fd.set("id", dossier.id);
     fd.set("jeton", dossier.jeton);
-    fd.set("nomTape", nomTape);
+    fd.set("nomTape", signataire);
     declarations.forEach((c) => fd.append("declarations", c));
     acceptations.forEach((c) => fd.append("acceptations", c));
     demarrer(async () => {
@@ -307,14 +319,16 @@ export function DossierEnLigne({
         if (r.ok) setSigne(true);
         else setErreur(r.message);
       } catch {
-        // Cases cochées et nom tapé restent à l'écran.
+        // Les deux cases restent cochées à l'écran.
         setErreur(TEXTES.connexionPerdue);
       }
     });
   }
 
-  const basculer = (liste: string[], set: (v: string[]) => void, cle: string) =>
-    set(liste.includes(cle) ? liste.filter((c) => c !== cle) : [...liste, cle]);
+  // Une case coche (ou décoche) d'un coup TOUTES les déclarations ou TOUTES les acceptations :
+  // le serveur et le certificat de signature les reçoivent toujours une par une.
+  const toutBasculer = (toutes: boolean, set: (v: string[]) => void, cles: readonly string[]) =>
+    set(toutes ? [] : [...cles]);
 
   if (signe) {
     return (
@@ -759,6 +773,8 @@ export function DossierEnLigne({
           </div>
           <a
             href={urlPdf}
+            target="_blank"
+            rel="noopener"
             className="text-terracotta-deep mt-3 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
           >
             ↓ {TEXTES.telecharger}
@@ -766,45 +782,51 @@ export function DossierEnLigne({
 
           {(
             [
-              [TEXTES.declarationsTitre, DECLARATIONS, declarations, setDeclarations],
-              [TEXTES.acceptationsTitre, ACCEPTATIONS, acceptations, setAcceptations],
+              [TEXTES.caseCertifie, DECLARATIONS, certifie, setDeclarations, CLES_DECLARATIONS],
+              [TEXTES.caseAccepte, ACCEPTATIONS, accepte, setAcceptations, CLES_ACCEPTATIONS],
             ] as const
-          ).map(([titre, liste, cochees, set]) => (
-            <fieldset key={titre} className={`${carte} mt-4`}>
-              <legend className="float-left mb-2 w-full text-[18px] font-bold">{titre}</legend>
-              <div className="clear-both grid gap-2">
-                {liste.map((c) => (
-                  <label
-                    key={c.cle}
-                    className="hover:bg-sand flex min-h-[48px] cursor-pointer items-start gap-3 rounded-xl p-2 text-[16px] leading-snug"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={cochees.includes(c.cle)}
-                      onChange={() => basculer(cochees, set, c.cle)}
-                      className="accent-terracotta mt-0.5 h-6 w-6 shrink-0"
-                    />
-                    <span>{c.texte}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
+          ).map(([titre, liste, coche, set, cles]) => (
+            <label
+              key={titre}
+              className={`${carte} hover:bg-sand mt-4 flex cursor-pointer items-start gap-3`}
+            >
+              <input
+                type="checkbox"
+                checked={coche}
+                onChange={() => toutBasculer(coche, set, cles)}
+                className="accent-terracotta mt-1 h-6 w-6 shrink-0"
+              />
+              <span className="text-[16px] leading-snug">
+                <span className="block text-[18px] font-bold">{titre}</span>
+                <ul className="text-fg-soft mt-1 grid gap-1">
+                  {liste.map((c) => (
+                    <li key={c.cle}>· {c.texte}</li>
+                  ))}
+                </ul>
+              </span>
+            </label>
           ))}
 
           <div className={`${carte} mt-4`}>
-            <label htmlFor={`${uid}-nom`} className="block text-[18px] font-bold">
-              {TEXTES.nomTape}
-            </label>
-            <p className="text-fg-soft mt-0.5 text-[15px]">{TEXTES.nomTapeAide(attendu)}</p>
-            <input
-              id={`${uid}-nom`}
-              autoComplete="name"
-              value={nomTape}
-              onChange={(e) => setNomTape(e.target.value)}
-              className={champ}
-            />
+            <p className="text-fg-soft text-[15px]">{TEXTES.signataireTitre}</p>
+            <p className="mt-0.5 text-[20px] font-bold">{signataire}</p>
+            {pourLeCompteDe ? (
+              <p className="text-[16px]">{TEXTES.pourLeCompteDe(pourLeCompteDe)}</p>
+            ) : null}
+            <p className="text-fg-soft mt-2 text-[15px]">
+              {TEXTES.signatairePasVous}{" "}
+              <a
+                href={`mailto:${ADRESSE_CONTACT}`}
+                className="text-terracotta-deep underline underline-offset-4"
+              >
+                {ADRESSE_CONTACT}
+              </a>
+            </p>
           </div>
 
+          {manques.length === 0 && !(certifie && accepte) ? (
+            <p className="text-fg-soft mt-4 text-[15px]">{TEXTES.cochezLesDeuxCases}</p>
+          ) : null}
           {manques.length > 0 ? (
             <Erreur message={`${TEXTES.manque} ${manques.join(", ")}.`} />
           ) : null}
