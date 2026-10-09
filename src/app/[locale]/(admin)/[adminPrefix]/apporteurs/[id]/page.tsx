@@ -12,6 +12,14 @@ import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
+import { dateFr } from "@/features/apporteurs-reseau/autofacture-donnees";
+import {
+  enPreavis,
+  lireResiliation,
+  preavisEchu,
+  preavisJours,
+  versionDuContrat,
+} from "@/features/apporteurs-reseau/preavis";
 import {
   CumulVigilance,
   FinDeVie,
@@ -95,12 +103,31 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
   const base = `/fr/${adminPrefix}/apporteurs`;
   const aVerifier = d.statut === "a_verifier";
   // Retirer / supprimer (2026-10-07) : l'état se relit ici, les contrôles se refont au serveur.
-  const [retireAt, etatSuppr, solde, siret] = await Promise.all([
+  const [retireAt, etatSuppr, solde, siret, resiliation] = await Promise.all([
     retraitDe(d.id),
     etatSuppression(d.id),
     lireSoldeNegatif(d.id),
     siretDe(d.id),
+    lireResiliation(d.id),
   ]);
+  // Contrat 2.7, art. 11.1 : résiliation en cours de préavis, et préavis d'une résiliation par la
+  // Société notifiée aujourd'hui (selon la version signée et l'ancienneté).
+  const maintenant = new Date();
+  const preavis = enPreavis(resiliation)
+    ? {
+        par: resiliation.par,
+        notifieeLe: dateFr(resiliation.notifieeAt),
+        finLe: dateFr(resiliation.finAt),
+        preavisJours: resiliation.preavisJours,
+        echu: preavisEchu(resiliation.finAt, maintenant),
+      }
+    : null;
+  const preavisSociete = preavisJours({
+    par: "societe",
+    version: versionDuContrat(fiche.signature),
+    priseEffet: d.signeParSocieteAt,
+    notifieeLe: maintenant,
+  });
   const refusSuppr = etatSuppr ? refusSuppression(etatSuppr) : "Dossier introuvable.";
   // Un compte de consultation (`reader`) ne lit pas les données personnelles de l'apporteur.
   const voitPii = peutOuvrirDossierApporteur(acces.role);
@@ -348,6 +375,8 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
         <FinDeVie
           apporteurId={d.id}
           signe={d.statut === "signe"}
+          preavis={preavis}
+          preavisSociete={preavisSociete}
           retour={retour?.slice(0, 400)}
           erreur={erreur?.slice(0, 400)}
           versees={fiche.commissions

@@ -15316,6 +15316,29 @@ model ApporteurReseauRetrait {
   @@map("apporteur_reseau_retrait")
 }
 
+/// Contrat 2.7 (art. 11.1) : résiliation NOTIFIÉE, avec son préavis. Le contrat continue jusqu'à
+/// `finAt` (déclarations et commissions normales) ; le passage quotidien applique alors la fin, avec
+/// les effets de « Résilier ». `annuleeAt` : résiliation annulée avant la date. `par` : « societe »,
+/// « apporteur » ou « manquement » (11.2, fin immédiate ; le motif va à la note interne de la fiche
+/// et à l'e-mail, jamais ici). Table séparée, sans clé étrangère (fenêtre app/worker), comme
+/// `ApporteurReseauRetrait`.
+/// rgpd: technique — dates, durée du préavis et auteur (partie, identifiant d'administrateur) d'une résiliation de contrat ; aucune donnée de la personne
+model ApporteurReseauResiliation {
+  apporteurId  String    @id @map("apporteur_id") @db.Uuid
+  par          String    @db.VarChar(20)
+  notifieeAt   DateTime  @map("notifiee_at") @db.Timestamptz(3)
+  preavisJours Int       @map("preavis_jours")
+  finAt        DateTime  @map("fin_at") @db.Timestamptz(3)
+  /// Identifiant de l'administrateur qui a notifié la résiliation.
+  notifieePar  String?   @map("notifiee_par") @db.VarChar(64)
+  annuleeAt    DateTime? @map("annulee_at") @db.Timestamptz(3)
+  appliqueeAt  DateTime? @map("appliquee_at") @db.Timestamptz(3)
+  majAt        DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([finAt])
+  @@map("apporteur_reseau_resiliation")
+}
+
 enum TypePieceApporteur {
   identite
   rib
