@@ -74,12 +74,12 @@ describe("à qui revient la commande d'un établissement", () => {
   const paul = {
     nom: "Paul",
     recueAt: new Date("2026-10-01"),
-    etablissement: { siret: GRENOBLE, entreprise: false },
+    etablissement: { siret: GRENOBLE, entreprise: false, exclus: [] as string[] },
   };
   const marie = {
     nom: "Marie",
     recueAt: new Date("2026-10-02"),
-    etablissement: { siret: LYON, entreprise: true },
+    etablissement: { siret: LYON, entreprise: true, exclus: [] as string[], etendue: true },
   };
 
   it("Grenoble commande : Paul (son établissement), même si Marie a l'extension à toute l'entreprise", () => {

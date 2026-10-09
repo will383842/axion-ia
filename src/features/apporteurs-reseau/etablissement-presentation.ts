@@ -60,8 +60,8 @@ export function memePerimetre(a: Etablissement, b: Etablissement): boolean {
  * celui porté par le devis, sinon celui de la fiche client. Jamais le payeur (REQ-ARG-005).
  */
 export function siretDeLaCommande(e: {
-  devisSiret?: string | null;
-  clientSiret?: string | null;
+  devisSiret?: string | null | undefined;
+  clientSiret?: string | null | undefined;
 }): string | null {
   return siretNet(e.devisSiret) ?? siretNet(e.clientSiret);
 }
