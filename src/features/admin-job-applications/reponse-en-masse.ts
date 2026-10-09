@@ -14,19 +14,18 @@
  * permet à ses règles d'être éprouvées sans base — et au composant client de
  * l'importer sans tirer le serveur dans le paquet du navigateur.
  *
- * ── ⛔ CE GESTE N'EXISTE QUE DU CÔTÉ EMPLOI ───────────────────────────────
+ * ── CE MODULE PORTE LE CÔTÉ EMPLOI ─────────────────────────────────────
  * Il porte sur `JobApplication`, jamais sur `Submission`. Écrire d'un seul
- * geste à N apporteurs d'affaires — même une information neutre — fabrique la
- * pièce qu'un contrôle cherche : une communication descendante, uniforme et
- * périodique, adressée à un réseau d'indépendants. C'est la matière même du
- * faisceau de requalification (`docs/partners/ANTI-REQUALIFICATION.md`), et la
- * fiche personne s'interdit déjà, pour la même raison, tout statut, toute file
- * et toute alerte communs aux deux mondes.
+ * geste, en TEXTE LIBRE, à N apporteurs d'affaires fabriquerait la pièce qu'un
+ * contrôle cherche : une communication descendante, uniforme, adressée à un
+ * réseau d'indépendants (anti-requalification). Le côté réseau a donc son
+ * propre geste, RÉDUIT AUX MODÈLES relus et personnalisé pour chacun
+ * (décision du chantier « candidatures unifiées », L6b) :
+ * `admin-submissions/reponse-en-masse-apporteurs.ts`.
  *
  * Un postulant à une offre d'emploi, lui, est dans une relation de candidature
  * assumée : lui répondre en même temps qu'à quinze autres candidats de la même
- * offre est le geste normal d'un recrutement, et le seul reproche qu'on
- * pourrait lui faire serait de ne pas répondre du tout.
+ * offre est le geste normal d'un recrutement.
  *
  * 🔑 Le plafond n'est PAS redéfini ici. C'est `PLAFOND_EN_MASSE`, celui du
  * geste de statut groupé — un seul nombre à retenir. Sa raison d'être — « au
@@ -73,13 +72,53 @@ export type MotifEcart =
   /** Rendu du gabarit ou écriture en base en échec. Rien n'a été écrit. */
   | "ecriture_impossible"
   /** Sélectionné, puis disparu entre le clic et l'envoi. */
-  | "dossier_introuvable";
+  | "dossier_introuvable"
+  // ── L6b : EXCLUSIONS — la personne ne doit pas recevoir d'envoi groupé ──
+  /** Opposée aux sollicitations (`email_oppositions`). */
+  | "opposee"
+  /** Classée sans suite (réseau d'apporteurs). */
+  | "sans_suite"
+  /** Candidature « Non retenue » (`rejected`). */
+  | "non_retenue"
+  /** Candidature « Retirée » par la personne (`withdrawn`). */
+  | "retiree";
 
 export interface EcartPrepare {
   readonly id: string;
   readonly motif: MotifEcart;
   /** Les variables restées sans valeur, pour que l'écran puisse les nommer. */
   readonly variables: readonly string[];
+  /**
+   * L6b — le nom court (« Sarah L. ») pour que le récapitulatif NOMME l'exclu.
+   * `null` si illisible : l'écran retombe sur l'identifiant.
+   */
+  readonly nom?: string | null;
+}
+
+/**
+ * L6b — pourquoi une candidature est EXCLUE d'un envoi groupé, ou `null`.
+ *
+ * Une personne opposée ne reçoit rien d'un envoi groupé ; une candidature
+ * « Non retenue » ou « Retirée » est close — un message groupé qui lui
+ * parviendrait (« voici les fichiers de l'essai ») contredirait la décision.
+ * Un message à l'une d'elles reste possible depuis SA fiche, un par un.
+ */
+export function motifExclusionEmploi(d: {
+  readonly statut: string;
+  readonly opposee: boolean;
+}): Extract<MotifEcart, "opposee" | "non_retenue" | "retiree"> | null {
+  if (d.opposee) return "opposee";
+  if (d.statut === "rejected") return "non_retenue";
+  if (d.statut === "withdrawn") return "retiree";
+  return null;
+}
+
+/** « Sarah L. » — prénom et initiale, ou `null` sans prénom. */
+export function nomCourt(prenom: string | null, nom: string | null): string | null {
+  const p = prenom?.trim();
+  if (!p) return null;
+  const initiale = nom?.trim().charAt(0);
+  return initiale ? `${p} ${initiale.toUpperCase()}.` : p;
 }
 
 export interface PreparationEnMasse {

@@ -37,6 +37,8 @@ import {
 } from "@/server/careers/reponse-poste-pourvu";
 import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
 import { ApplicationsV2 } from "./_v2/ApplicationsV2";
+import { partagesActifs } from "@/server/partages/config";
+import { fichiersPourComposeur } from "@/server/partages/suivi";
 
 export const dynamic = "force-dynamic";
 
@@ -130,8 +132,19 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       .catch(() => 0),
   ]);
 
+  // L6b — les fichiers à joindre à une réponse groupée (bibliothèque allumée
+  // seulement). Accessoire : une lecture qui échoue retire la section.
+  const fichiersEnMasse = partagesActifs()
+    ? await fichiersPourComposeur()
+        .then((l) =>
+          l.map((f) => ({ id: f.id, titre: f.titre, libelleCategorie: f.libelleCategorie })),
+        )
+        .catch(() => null)
+    : null;
+
   return (
     <ApplicationsV2
+      fichiersEnMasse={fichiersEnMasse}
       reponseAuto={{
         active: autoActive,
         enAttente: autoEnAttente,

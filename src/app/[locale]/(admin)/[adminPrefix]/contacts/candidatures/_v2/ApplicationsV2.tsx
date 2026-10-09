@@ -129,6 +129,8 @@ interface Props {
     ageMinJours: number;
     basculer: (formData: FormData) => Promise<void>;
   } | null;
+  /** L6b — fichiers à joindre à la réponse groupée ; `null` : bibliothèque éteinte. */
+  fichiersEnMasse?: ReadonlyArray<{ id: string; titre: string; libelleCategorie: string }> | null;
 }
 
 export function ApplicationsV2({
@@ -142,6 +144,7 @@ export function ApplicationsV2({
   balayageTronque = false,
   plusAncienJamaisRepondu = null,
   reponseAuto = null,
+  fichiersEnMasse = null,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -383,6 +386,7 @@ export function ApplicationsV2({
           motifs={OPTIONS_MOTIF}
           plafond={PLAFOND_EN_MASSE}
           modeles={OPTIONS_MODELE}
+          fichiers={fichiersEnMasse}
         >
           <AdminTable
             columns={columns}

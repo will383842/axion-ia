@@ -6,9 +6,14 @@
 //    ça ne se rattrape pas. Les garde-fous propres à ce risque méritent d'être
 //    lisibles ensemble.
 //
-// ⛔ CE GESTE N'EXISTE QUE DU CÔTÉ EMPLOI. Le pourquoi est écrit en tête de
-//    `reponse-en-masse.ts` : un envoi groupé à des apporteurs d'affaires
-//    fabrique une pièce du faisceau de requalification.
+// ⚠️ CE MODULE NE PORTE QUE LE CÔTÉ EMPLOI. Le côté réseau d'apporteurs a son
+//    propre geste, réduit aux modèles (décision du chantier « candidatures
+//    unifiées », L6b) : `admin-submissions/actions-reponse-en-masse-apporteurs.ts`.
+//
+// L6b — les mêmes fichiers peuvent partir avec le message : chaque personne
+//    reçoit SON propre lien privé (un lien par réponse, jamais un lien commun
+//    qui ferait voir à l'une les téléchargements de l'autre). Les personnes
+//    opposées, « Non retenue » et « Retirée » sont EXCLUES et nommées.
 
 "use server";
 
@@ -21,12 +26,17 @@ import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
+import { estOpposee } from "@/server/email/opposition";
+import { preparerLienFichiers } from "@/server/partages/attacher-a-une-reponse";
+import { FICHIERS_PAR_LIEN_MAX } from "@/server/partages/liens";
 import { MODELES_REPONSE_IDS, remplirModele } from "@/content/recrutement/modeles-reponse";
 
 import { PLAFOND_EN_MASSE } from "./en-masse";
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { lienComplement } from "@/features/job-application/complement";
 import {
+  motifExclusionEmploi,
+  nomCourt,
   preparerEnvois,
   type EcartPrepare,
   type EtatReponseEnMasse,
@@ -57,6 +67,8 @@ const schema = z.object({
   subject: z.string().min(2).max(120),
   bodyMarkdown: z.string().min(1).max(50_000),
   modele: z.enum(MODELES_REPONSE_IDS).default("libre"),
+  /** L6b — les MÊMES fichiers pour tous ; un lien privé PAR personne. */
+  fichierIds: z.array(z.string().uuid()).max(FICHIERS_PAR_LIEN_MAX).default([]),
 });
 
 /**
@@ -108,6 +120,7 @@ export async function repondreEnMasseAction(
     subject: formData.get("subject"),
     bodyMarkdown: formData.get("bodyMarkdown"),
     modele: formData.get("modele") ?? undefined,
+    fichierIds: formData.getAll("fichierIds").map(String),
   });
   if (!parsed.success) {
     // Le cas le plus fréquent est « aucune case cochée » : le dire, plutôt que
@@ -129,10 +142,31 @@ export async function repondreEnMasseAction(
       status: true,
       offerTitleSnap: true,
       firstName: true,
+      lastName: true,
       offer: { select: { id: true, screeningQuestions: true } },
     },
   });
   if (dossiers.length === 0) return { ok: false, error: "Aucune candidature trouvée." };
+
+  // L6b — les EXCLUS d'abord, nommés : opposés, « Non retenue », « Retirée ».
+  // Lus AVANT toute préparation : rien n'est écrit ni signé pour eux.
+  const exclus: EcartPrepare[] = [];
+  const retenus: typeof dossiers = [];
+  for (const d of dossiers) {
+    const adresse = clair(d.email);
+    const motif = motifExclusionEmploi({
+      statut: d.status,
+      opposee: adresse ? await estOpposee(adresse) : false,
+    });
+    if (motif) {
+      exclus.push({
+        id: d.id,
+        motif,
+        variables: [],
+        nom: nomCourt(clair(d.firstName), clair(d.lastName)),
+      });
+    } else retenus.push(d);
+  }
 
   // Le prénom est CHIFFRÉ en base. On le déchiffre ici, dans le processus web
   // qui a la clé, et uniquement pour le substituer : il ne repart pas en base.
@@ -141,7 +175,7 @@ export async function repondreEnMasseAction(
   const avecLien = `${parsed.data.subject}
 ${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
   const destinataires: DestinatairePrepare[] = await Promise.all(
-    dossiers.map(async (d) => ({
+    retenus.map(async (d) => ({
       id: d.id,
       prenom: prenomLisible(d.firstName),
       poste: d.offerTitleSnap,
@@ -156,7 +190,7 @@ ${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
   );
 
   const parId = new Map(dossiers.map((d) => [d.id, d]));
-  const details: EcartPrepare[] = [...ecartes];
+  const details: EcartPrepare[] = [...exclus, ...ecartes];
 
   // Sélectionné puis disparu entre le clic et l'envoi. Sans cette ligne, l'écran
   // dirait « 47 envoyées » sur une sélection de 50 et laisserait chercher les
@@ -167,14 +201,29 @@ ${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
   let envoyees = 0;
   let echouees = 0;
 
-  for (const envoi of envois) {
+  for (const [rang, envoi] of envois.entries()) {
     const dossier = parId.get(envoi.id);
     if (!dossier) continue;
+
+    // L6b — UN lien par personne, préparé juste avant SON envoi. Un refus au
+    // premier (fichier archivé, fonction éteinte) arrête tout avant le moindre
+    // envoi : les mêmes fichiers seraient refusés pour chacun.
+    let lienFichiers;
+    if (parsed.data.fichierIds.length > 0) {
+      const p = await preparerLienFichiers(parsed.data.fichierIds);
+      if (!p.ok) {
+        if (rang === 0) return { ok: false, error: p.erreur };
+        details.push({ id: envoi.id, motif: "ecriture_impossible", variables: [] });
+        continue;
+      }
+      lienFichiers = p.lien;
+    }
 
     const issue = await ecrireEtEnfilerReponse(dossier, acteur, {
       subject: envoi.objet,
       bodyMarkdown: envoi.corps,
       modele: parsed.data.modele,
+      ...(lienFichiers ? { lienFichiers } : {}),
     });
 
     if (!issue.ecrit) {
@@ -204,6 +253,11 @@ ${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
     echouees,
     details,
   };
+}
+
+/** Valeur en clair, ou `null` si absente ou indéchiffrable. */
+function clair(chiffre: string | null): string | null {
+  return prenomLisible(chiffre);
 }
 
 /** Prénom en clair, ou `null` si absent ou indéchiffrable. */

@@ -28,7 +28,7 @@ export const MOTS_INTERDITS_APPORTEUR: ReadonlyArray<RegExp> = [
   /\bagent commercial\b/i,
   /\bhiérarchie\b/i,
   /\bretenue?s?\b/i,
-  /\bsélection/i,
+  /\bprocessus de sélection/i,
   /\bshortlist/i,
   /\bconsignes?\b/i,
   /\bCV\b/,

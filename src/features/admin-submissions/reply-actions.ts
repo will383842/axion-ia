@@ -23,18 +23,13 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition, marquerPretASigner, type ResultatPretASigner } from "./transitions";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { enregistrerOppositionPourAdresse, estOpposee } from "@/server/email/opposition";
-import {
-  corpsAvecFichiers,
-  creerLienPartage,
-  preparerLienFichiers,
-  type LienPrepare,
-} from "@/server/partages/attacher-a-une-reponse";
+import { preparerLienFichiers, type LienPrepare } from "@/server/partages/attacher-a-une-reponse";
+import { ecrireEtEnfilerReponseSubmission } from "./envoyer-reponse";
 import { FICHIERS_PAR_LIEN_MAX } from "@/server/partages/liens";
 import { MODELES_REPONSE_APPORTEUR_IDS } from "@/content/apporteurs/modeles-reponse";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
@@ -125,80 +120,17 @@ export async function replyToSubmissionAction(
     if (!p.ok) return { ok: false, error: "fichiers_refuses", detail: p.erreur };
     lienFichiers = p.lien;
   }
-  const corps = corpsAvecFichiers(data.bodyMarkdown, lienFichiers);
 
-  // 1. Pre-render template HTML + plain text via @react-email/render.
-  let rendered: { subject: string; html: string; text: string };
-  try {
-    rendered = await renderEmailTemplate("submission-reply", submission.locale, {
-      subject: data.subject,
-      bodyMarkdown: corps,
-    });
-  } catch (e) {
-    Sentry.captureException(e);
-    return { ok: false, error: "render_failed" };
-  }
-
-  // 2. Create SubmissionReply + update Submission cache cols en transaction.
-  const replyId = await prisma
-    .$transaction(async (tx) => {
-      const reply = await tx.submissionReply.create({
-        data: {
-          submissionId: submission.id,
-          repliedByUserId: session.userId,
-          repliedByName: session.name,
-          toEmail: submission.contactEmail,
-          subject: data.subject,
-          bodyHtml: rendered.html,
-          bodyText: rendered.text,
-          deliveryStatus: "pending",
-          ...(data.internalNote ? { internalNote: data.internalNote } : {}),
-          templateUsed: apporteur && data.modele ? `apporteur:${data.modele}` : data.template,
-        },
-      });
-
-      if (lienFichiers) {
-        await creerLienPartage(tx, {
-          lien: lienFichiers,
-          submissionId: submission.id,
-          reponseId: reply.id,
-          auteur: { userId: session.userId, nom: session.name },
-        });
-      }
-
-      await tx.submission.update({
-        where: { id: submission.id },
-        data: {
-          replyCount: { increment: 1 },
-          needsAttention: false,
-          ...(submission.status === "new" ? { status: "in_progress" as const } : {}),
-        },
-      });
-
-      return reply.id;
-    })
-    .catch((e) => {
-      Sentry.captureException(e);
-      return null;
-    });
-
-  if (!replyId) return { ok: false, error: "db_failed" };
-
-  // 3. Enqueue email (le worker re-déchiffre l'adresse depuis la DB → PAS de PII
-  //    dans le payload de queue). Si l'enqueue échoue (queue indisponible), on
-  //    marque la reply `failed` (rejouable) et on remonte l'échec à l'admin
-  //    (plus de faux succès pendant que la reply reste `pending` éternellement).
-  let enqueued = false;
-  try {
-    const res = await enqueueEmail("submission-reply", "", submission.locale, {
-      replyId,
-      subject: data.subject,
-      submissionId: submission.id,
-    });
-    enqueued = res.enqueued;
-  } catch (e) {
-    Sentry.captureException(e);
-  }
+  // 1-3. Rendu, écriture (réponse + lien + compteurs) en transaction, mise en
+  //      file. Chemin UNIQUE, partagé avec l'envoi groupé aux futurs apporteurs
+  //      (L6b) : une copie dériverait sur ce qui ne se voit pas à l'écran.
+  const issue = await ecrireEtEnfilerReponseSubmission(submission, session, {
+    subject: data.subject,
+    bodyMarkdown: data.bodyMarkdown,
+    templateUsed: apporteur && data.modele ? `apporteur:${data.modele}` : data.template,
+    ...(data.internalNote ? { internalNote: data.internalNote } : {}),
+    ...(lienFichiers ? { lienFichiers } : {}),
+  });
 
   revalidatePath(adminPath("fr", "contacts/messages"));
   revalidatePath(adminPath("fr", `contacts/messages/${submission.id}`));
@@ -207,19 +139,9 @@ export async function replyToSubmissionAction(
   updateTag("admin:contacts-unread");
   updateTag(INBOX_COUNTS_TAG);
 
-  if (!enqueued) {
-    await prisma.submissionReply
-      .update({
-        where: { id: replyId },
-        data: {
-          deliveryStatus: "failed",
-          failedAt: new Date(),
-          errorMsg: "enqueue_failed (file d'envoi indisponible)",
-        },
-      })
-      .catch((e) => Sentry.captureException(e));
-    return { ok: false, error: "enqueue_failed", replyId };
-  }
+  if (!issue.ecrit) return { ok: false, error: issue.error };
+  if (!issue.enfile) return { ok: false, error: "enqueue_failed", replyId: issue.replyId };
+  const replyId = issue.replyId;
 
   // ── REPONDRE ARRETE LES RELANCES EN ATTENTE ────────────────────────────
   // Demande de Will, mot pour mot : « je voudrais pouvoir repondre manuellement

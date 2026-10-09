@@ -18,7 +18,11 @@ import { useActionState } from "react";
 import { changerStatutEnMasseAction } from "@/features/admin-job-applications/actions-en-masse";
 import type { EtatEnMasse } from "@/features/admin-job-applications/en-masse";
 
-import { ComposeurEnMasse, type ModeleProposable } from "./ComposeurEnMasse";
+import {
+  ComposeurEnMasse,
+  type FichierProposable,
+  type ModeleProposable,
+} from "./ComposeurEnMasse";
 
 /**
  * Une option de menu, reduite a ce qu'un `<option>` a besoin de savoir.
@@ -71,6 +75,8 @@ interface Props {
    * vocabulaire ne traverse pas la frontiere client.
    */
   modeles: readonly ModeleProposable[];
+  /** L6b — fichiers de la bibliothèque à joindre ; `null` : bibliothèque éteinte. */
+  fichiers?: ReadonlyArray<FichierProposable> | null;
 }
 
 export function FormulaireEnMasse({
@@ -79,6 +85,7 @@ export function FormulaireEnMasse({
   motifs,
   plafond,
   modeles,
+  fichiers = null,
 }: Props): React.ReactElement {
   const [etat, action, enCours] = useActionState(changerStatutEnMasseAction, INITIAL);
 
@@ -151,7 +158,7 @@ export function FormulaireEnMasse({
           les cases cochées de la table sans que celle-ci soit rendue deux fois.
           Son bouton porte `formAction`, qui impose une autre action que celle
           du formulaire. */}
-      <ComposeurEnMasse modeles={modeles} plafond={plafond} />
+      <ComposeurEnMasse modeles={modeles} plafond={plafond} fichiers={fichiers} />
     </form>
   );
 }

@@ -69,14 +69,30 @@ const PHRASE_MOTIF: Record<MotifEcart, string> = {
   destinataire_injoignable: "adresse absente ou illisible",
   ecriture_impossible: "échec technique — rien n'a été écrit",
   dossier_introuvable: "dossier disparu depuis la sélection",
+  opposee: "exclue : s'est opposée aux sollicitations",
+  sans_suite: "exclue : classée sans suite",
+  non_retenue: "exclue : candidature non retenue",
+  retiree: "exclue : candidature retirée",
 };
+
+/** Un fichier de la bibliothèque proposable à l'envoi groupé (L6b), réduit côté serveur. */
+export interface FichierProposable {
+  readonly id: string;
+  readonly titre: string;
+  readonly libelleCategorie: string;
+}
 
 interface Props {
   readonly modeles: readonly ModeleProposable[];
   readonly plafond: number;
+  /**
+   * L6b — fichiers à joindre ; `null` tant que la bibliothèque est éteinte (rien
+   * ne s'affiche). Chaque destinataire reçoit SON propre lien privé.
+   */
+  readonly fichiers?: ReadonlyArray<FichierProposable> | null;
 }
 
-export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElement {
+export function ComposeurEnMasse({ modeles, plafond, fichiers = null }: Props): React.ReactElement {
   const [etat, action, enCours] = useActionState(repondreEnMasseAction, INITIAL);
   const [objet, setObjet] = useState("");
   const [corps, setCorps] = useState("");
@@ -143,7 +159,10 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
    * lecture, pas une synchronisation.
    */
   const [confirmePour, setConfirmePour] = useState<string | null>(null);
-  const empreinteActuelle = `${nbSelectionnes}|${choisi}|${objet}|${corps}`;
+  // L6b — les fichiers cochés entrent dans l'empreinte : changer ce qui part
+  // demande de reconfirmer, comme changer le texte.
+  const [joints, setJoints] = useState<ReadonlyArray<string>>([]);
+  const empreinteActuelle = `${nbSelectionnes}|${choisi}|${objet}|${corps}|${joints.join(",")}`;
   const confirme = confirmePour === empreinteActuelle;
 
   function choisirModele(id: string): void {
@@ -287,6 +306,44 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
           />
         </div>
 
+        {fichiers ? (
+          <fieldset className="admin-field">
+            <legend className="admin-label">Joindre les mêmes fichiers</legend>
+            {fichiers.length === 0 ? (
+              <p className="admin-meta-small">La bibliothèque n’a aucun fichier à proposer.</p>
+            ) : (
+              <ul className="grid gap-[var(--space-admin-2)]">
+                {fichiers.map((f) => (
+                  <li key={f.id}>
+                    <label className="admin-checkbox">
+                      <input
+                        type="checkbox"
+                        name="fichierIds"
+                        value={f.id}
+                        checked={joints.includes(f.id)}
+                        onChange={(e) => {
+                          setJoints((l) =>
+                            e.target.checked ? [...l, f.id] : l.filter((x) => x !== f.id),
+                          );
+                          setRetouche(true);
+                        }}
+                      />
+                      <span>
+                        {f.titre} <span className="admin-meta-small">· {f.libelleCategorie}</span>
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="admin-meta-small">
+              Chaque personne reçoit <strong>son propre lien</strong> privé, ajouté à la fin de son
+              message. Les personnes opposées, non retenues ou retirées sont exclues et nommées dans
+              le compte rendu.
+            </p>
+          </fieldset>
+        ) : null}
+
         {/* 🔑 CONFIRMATION EXPLICITE, DISTINCTE DU BOUTON D'ENVOI.
             Le bouton seul ne suffit pas : un recruteur qui l'atteint au clavier
             ou à la souris peut ne jamais avoir relu le nombre au-dessus. Cette
@@ -378,10 +435,12 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
               <ul className="mt-[var(--space-admin-2)]">
                 {etat.details.map((d) => (
                   <li key={d.id} className="admin-meta-small">
-                    {/* L'identifiant PLUTÔT que le nom : le compte rendu ne doit
-                        pas remettre à l'écran l'identité de gens à qui on n'a
-                        justement rien envoyé. Il suffit à retrouver la fiche. */}
-                    <code>{d.id.slice(0, 8)}</code> — {PHRASE_MOTIF[d.motif]}
+                    {/* L6b — le récapitulatif NOMME l'exclu (« Sarah L. »,
+                        prénom et initiale seulement) : Will doit savoir à qui
+                        écrire à la main. Sans nom lisible, l'identifiant suffit
+                        à retrouver la fiche. */}
+                    {d.nom ? <strong>{d.nom}</strong> : <code>{d.id.slice(0, 8)}</code>} —{" "}
+                    {PHRASE_MOTIF[d.motif]}
                     {d.variables.length > 0 ? ` (${d.variables.join(", ")})` : ""}
                   </li>
                 ))}
