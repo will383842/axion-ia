@@ -54,7 +54,9 @@ export function CommandeAAttribuer({
         <input type="hidden" name="factureId" value={factureId} />
         <input type="hidden" name="presentationId" value="aucune" />
         {/* Art. 3.1 : « aucun apporteur » est motivé ; le motif part au(x) candidat(s) écarté(s). */}
+        <label htmlFor={`motif-aucun-${factureId}`}>Motif (envoyé à l&apos;apporteur)</label>
         <input
+          id={`motif-aucun-${factureId}`}
           name="motif"
           required
           minLength={10}
