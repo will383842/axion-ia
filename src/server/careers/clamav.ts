@@ -13,6 +13,22 @@
  * « indisponible » (antivirus absent, délai, réponse illisible) N'EN EST PAS UN :
  * la vidéo reste en analyse et n'est JAMAIS montrée sans verdict. Une panne de
  * l'antivirus lue comme « sain » serait exactement la porte qu'il doit fermer.
+ *
+ * 🔒 DÉPASSEMENT DE LIMITE = « INDISPONIBLE » (relecture sécurité, 2026-10-08).
+ * Par défaut, clamd n'analyse qu'un DÉBUT de fichier trop gros et répond
+ * `stream: OK` — un « sain » qui n'a pas tout lu. Réglage EXIGÉ côté serveur
+ * (`clamd.conf` du conteneur `axion-clamav`), pour les fichiers des candidats
+ * jusqu'à 4 Go (ADR 0065) :
+ *
+ *     AlertExceedsMax yes      # un dépassement est SIGNALÉ, jamais tu
+ *     StreamMaxLength 4100M    # ≥ 4 Go : le flux INSTREAM entier est accepté
+ *     MaxScanSize     4100M    # ≥ 4 Go
+ *     MaxFileSize     4100M    # ≥ 4 Go
+ *
+ * Avec `AlertExceedsMax yes`, clamd répond `stream: Heuristics.Limits.Exceeded… FOUND` :
+ * ce n'est PAS un virus trouvé, c'est une analyse incomplète → « indisponible »
+ * (le fichier reste en attente, jamais servi). Un flux plus long que
+ * `StreamMaxLength` rend `INSTREAM size limit exceeded. ERROR` → « indisponible » aussi.
  */
 
 import { createReadStream } from "node:fs";
@@ -32,6 +48,13 @@ export function lireReponseClamd(brut: string): VerdictAntivirus {
   const r = brut.replace(/\0/g, "").trim();
   if (/^stream: OK$/.test(r)) return { issue: "sain" };
   const trouve = /^stream: (.+) FOUND$/.exec(r);
+  // `AlertExceedsMax` : une limite dépassée n'est pas un verdict — analyse incomplète.
+  if (trouve && /^Heuristics\.Limits\.Exceeded\b/.test(trouve[1]!)) {
+    return {
+      issue: "indisponible",
+      raison: `limite de l'antivirus dépassée : ${trouve[1]!.slice(0, 150)}`,
+    };
+  }
   if (trouve) return { issue: "infecte", signature: trouve[1]!.slice(0, 200) };
   return { issue: "indisponible", raison: r ? r.slice(0, 200) : "réponse vide" };
 }

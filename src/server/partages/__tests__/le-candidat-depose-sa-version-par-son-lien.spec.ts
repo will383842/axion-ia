@@ -63,9 +63,29 @@ let moteur: string[];
 let requetes: number;
 let notifications: Array<{ category: string; payload: Record<string, unknown> }>;
 let limiteAtteinte: boolean;
+let verrous: string[];
+
+/** Un verrou par lien, comme `pg_advisory_xact_lock` : les sections se suivent. */
+function verrouEnMemoire(): DepsDepot["sousVerrouLien"] {
+  const files = new Map<string, Promise<unknown>>();
+  return (lienId, fn) => {
+    verrous.push(lienId);
+    const avant = files.get(lienId) ?? Promise.resolve();
+    const suite = avant.then(() => fn(deps().db));
+    files.set(
+      lienId,
+      suite.catch(() => undefined),
+    );
+    return suite;
+  };
+}
 
 function deps(extra: Partial<DepsDepot> = {}): DepsDepot {
   return {
+    sousVerrouLien: async (lienId, fn) => {
+      verrous.push(lienId);
+      return fn(deps().db);
+    },
     db: {
       lienPartage: {
         findUnique: async () => {
@@ -154,6 +174,7 @@ beforeEach(() => {
   requetes = 0;
   notifications = [];
   limiteAtteinte = false;
+  verrous = [];
 });
 
 describe("la page de téléchargement", () => {
@@ -275,6 +296,50 @@ describe("les actions publiques de dépôt", () => {
     });
     expect(r.statut).toBe(409);
     expect(moteur).toEqual([]);
+  });
+
+  it("commencer : le compte et l'ouverture se font SOUS le verrou du lien", async () => {
+    const r = await appel({
+      etape: "commencer",
+      nom: "montage.zip",
+      taille: 1000,
+      entete: ENTETE_ZIP.toString("base64"),
+    });
+    expect(r.statut).toBe(200);
+    expect(verrous).toEqual([LIEN]);
+  });
+
+  it("commencer : deux envois simultanés au 10e fichier → un seul passe (pas de course)", async () => {
+    // F_SIEN + 8 autres = 9 : il reste UNE place.
+    for (let i = 0; i < DEPOTS_PAR_LIEN_MAX - 2; i++) {
+      fichiers.set(`f-${i}`, { lienDepotId: LIEN, origine: "personne" });
+    }
+    let n = 0;
+    const d = deps({ sousVerrouLien: verrouEnMemoire() });
+    const lent: DepsDepot = {
+      ...d,
+      moteur: {
+        ...d.moteur,
+        commencer: async (_dem, lienId) => {
+          await new Promise((ok) => setTimeout(ok, 5));
+          fichiers.set(`nouveau-${n++}`, { lienDepotId: lienId, origine: "personne" });
+          return { ok: true, valeur: { fichierId: F_SIEN, tailleMorceau: 64, nombreMorceaux: 1 } };
+        },
+      },
+    };
+    const corps = {
+      etape: "commencer",
+      nom: "montage.zip",
+      taille: 1000,
+      entete: ENTETE_ZIP.toString("base64"),
+    };
+    const issues = await Promise.all(
+      [1, 2].map(() => traiterDepot({ id: LIEN, jeton: JETON, contentType: JSON_CT, corps }, lent)),
+    );
+    expect(issues.map((x) => x.statut).sort()).toEqual([200, 409]);
+    expect([...fichiers.values()].filter((f) => f.lienDepotId === LIEN)).toHaveLength(
+      DEPOTS_PAR_LIEN_MAX,
+    );
   });
 
   it("signer / reprendre / terminer un fichier de CE lien : accepté", async () => {

@@ -81,6 +81,14 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },
   {
+    // Candidatures, lot L5b (relecture sécurité, 2026-10-08) : lus par `candidature-rgpd.ts`.
+    modele: "FichierPartage",
+    motif:
+      "les fichiers que vous nous avez renvoyés par votre lien privé (nom, date, taille) sont " +
+      "listés dans la partie « candidatures » de cet export ; une copie se demande à " +
+      "contact@axion-ia.com. Les fichiers déposés par l'équipe ne portent rien sur vous.",
+  },
+  {
     // Candidatures, lot L3 (2026-10-08) : lues par `candidature-rgpd.ts`.
     modele: "JobApplicationInboundReply",
     motif:

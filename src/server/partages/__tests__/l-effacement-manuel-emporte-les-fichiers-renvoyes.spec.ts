@@ -14,9 +14,12 @@
  *  - objet du stockage effacé, PUIS ligne supprimée sous le drapeau
  *    d'effacement (le seul qui lève le trigger AXP01) ;
  *  - un envoi en cours est arrêté dans le stockage ;
- *  - stockage injoignable → la ligne RESTE (l'objet resterait sinon introuvable) ;
+ *  - stockage injoignable → la ligne RESTE (l'objet resterait sinon introuvable),
+ *    et l'effacement est déclaré INCOMPLET (`ok: false`) : l'appelant ne
+ *    supprime pas le dossier (relecture sécurité, 2026-10-08) ;
  *  - les fichiers envoyés PAR L'ÉQUIPE ne sont pas touchés ;
- *  - bibliothèque éteinte → rien.
+ *  - bibliothèque éteinte : sans fichier renvoyé, rien ; AVEC des fichiers
+ *    renvoyés, refus — ils ne peuvent pas être effacés du stockage.
  */
 
 import { readFileSync } from "node:fs";
@@ -64,7 +67,10 @@ vi.mock("@/lib/rgpd-erase", () => ({
   },
 }));
 
-import { effacerFichiersRenvoyesCandidature } from "../effacement-candidat";
+import {
+  MSG_FICHIERS_NON_EFFACES,
+  effacerFichiersRenvoyesCandidature,
+} from "../effacement-candidat";
 
 const APP = "22222222-2222-4222-8222-222222222222";
 
@@ -100,16 +106,25 @@ describe("effacerFichiersRenvoyesCandidature", () => {
     expect(r2.supprimerObjetCibleR2).toHaveBeenCalledTimes(2);
     expect(etat.drapeau).toBe(1);
     expect(etat.supprimees.sort()).toEqual(["f-cours", "f-ok"]);
-    expect(r).toEqual({ effaces: 2, conserves: 0 });
+    expect(r).toEqual({ ok: true, effaces: 2, conserves: 0 });
   });
 
-  it("stockage injoignable → la ligne reste (l'objet resterait sinon introuvable)", async () => {
+  it("stockage injoignable → la ligne reste, et l'effacement est déclaré incomplet", async () => {
     r2.supprimerObjetCibleR2.mockImplementationOnce(async () => {
       throw new Error("R2 injoignable");
     });
     const r = await effacerFichiersRenvoyesCandidature(APP);
     expect(etat.supprimees).toEqual(["f-cours"]);
-    expect(r).toEqual({ effaces: 1, conserves: 1 });
+    expect(r).toEqual({ ok: false, effaces: 1, conserves: 1, erreur: MSG_FICHIERS_NON_EFFACES });
+  });
+
+  it("un envoi en cours qui ne s'arrête pas dans le stockage → conservé, effacement incomplet", async () => {
+    r2.arreterEnvoiR2.mockImplementationOnce(async () => {
+      throw new Error("R2 injoignable");
+    });
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.supprimees).toEqual(["f-ok"]);
+    expect(r.ok).toBe(false);
   });
 
   it("aucun fichier renvoyé → aucune transaction", async () => {
@@ -118,11 +133,25 @@ describe("effacerFichiersRenvoyesCandidature", () => {
     expect(etat.drapeau).toBe(0);
   });
 
-  it("bibliothèque éteinte → rien", async () => {
+  it("bibliothèque éteinte AVEC des fichiers renvoyés → refus, rien n'est effacé", async () => {
     delete process.env["R2_PARTAGES_BUCKET_NAME"];
     const r = await effacerFichiersRenvoyesCandidature(APP);
-    expect(r).toEqual({ effaces: 0, conserves: 0 });
+    expect(r).toEqual({ ok: false, effaces: 0, conserves: 2, erreur: MSG_FICHIERS_NON_EFFACES });
     expect(r2.supprimerObjetCibleR2).not.toHaveBeenCalled();
+    expect(etat.drapeau).toBe(0);
+  });
+
+  it("bibliothèque éteinte, aucun fichier renvoyé → rien à faire, effacement possible", async () => {
+    delete process.env["R2_PARTAGES_BUCKET_NAME"];
+    etat.lignes = [];
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(r).toEqual({ ok: true, effaces: 0, conserves: 0 });
+  });
+
+  it("le message dit ce qui se passe, sans jamais annoncer « effacé »", () => {
+    expect(MSG_FICHIERS_NON_EFFACES).toBe(
+      "Les fichiers renvoyés par le candidat n'ont pas pu être effacés du stockage ; réessayez.",
+    );
   });
 });
 

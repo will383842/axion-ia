@@ -71,13 +71,17 @@ function FichiersRecus({ recus }: { recus: ReadonlyArray<FichierRecu> }) {
                 <a href={f.url}>Ouvrir la vidéo</a>
               </video>
             ) : (
-              <a
-                href={f.url}
-                className="admin-button-secondary admin-button-tactile w-fit"
-                rel="noreferrer"
-              >
-                Télécharger l&apos;archive
-              </a>
+              // Le `<div>` borne la largeur : `w-fit` posé sur le lien serait
+              // neutralisé par `.admin-button-*` (admin-design-tokens.test.ts).
+              <div>
+                <a
+                  href={f.url}
+                  className="admin-button-secondary admin-button-tactile"
+                  rel="noreferrer"
+                >
+                  Télécharger l&apos;archive
+                </a>
+              </div>
             )}
           </div>
         );

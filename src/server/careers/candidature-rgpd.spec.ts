@@ -33,6 +33,11 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/careers/cv-storage", () => ({
   deleteCv: (c: string) => supprimerFichier(c),
 }));
+// L5b — les fichiers renvoyés par le lien : couverts par
+// `src/server/partages/__tests__/le-dossier-reste-si-ses-fichiers-renvoyes-restent.spec.ts`.
+vi.mock("@/server/partages/effacement-candidat", () => ({
+  effacerFichiersRenvoyesCandidature: async () => ({ ok: true, effaces: 0, conserves: 0 }),
+}));
 
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";

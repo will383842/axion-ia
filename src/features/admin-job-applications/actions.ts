@@ -574,10 +574,15 @@ export async function deleteApplicationAction(
   });
   if (!a) return { ok: false, error: "Candidature introuvable." };
 
+  // L5b — les fichiers renvoyés par son lien, EN PREMIER : sans clé étrangère,
+  // ils deviendraient introuvables une fois le dossier supprimé. Si leur
+  // effacement échoue, le dossier est GARDÉ, rien d'autre n'est entamé, et
+  // l'erreur le dit (relecture sécurité, 2026-10-08).
+  const fichiers = await effacerFichiersRenvoyesCandidature(id);
+  if (!fichiers.ok) return { ok: false, error: fichiers.erreur };
   await deleteCv(a.cvStoragePath); // purge CV AVANT le delete
   await deleteCv(a.photoStoragePath); // purge photo AVANT le delete (RGPD)
   await supprimerVideosCandidature(id); // vidéos déposées (2026-09-28), même règle
-  await effacerFichiersRenvoyesCandidature(id); // L5b — fichiers renvoyés par son lien, même règle
   await prisma.jobApplication.delete({ where: { id } });
   await prisma.activityLog.create({
     data: {

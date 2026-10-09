@@ -18,6 +18,14 @@
  * rien ne permet de retrouver. La ligne ne se supprime que sous le drapeau
  * d'effacement posé par `rgpd-erase.ts` (trigger AXP01).
  *
+ * 🔴 UN EFFACEMENT INCOMPLET SE DIT (relecture sécurité, 2026-10-08). Si un seul
+ * fichier renvoyé n'a pas pu être effacé — stockage injoignable, ou
+ * bibliothèque éteinte alors que des fichiers renvoyés existent — la fonction
+ * rend `ok: false` avec `MSG_FICHIERS_NON_EFFACES`. Les appelants NE
+ * SUPPRIMENT PAS le dossier (sinon les fichiers deviendraient introuvables) et
+ * n'annoncent jamais « effacé » : la console affiche l'erreur, la demande
+ * art. 17 compte la candidature comme conservée.
+ *
  * Les fichiers envoyés PAR L'ÉQUIPE ne sont pas des données de la personne : ils
  * restent dans la bibliothèque.
  *
@@ -31,40 +39,56 @@ import { executerSousDrapeauEffacement } from "@/lib/rgpd-erase";
 
 import { configPartages } from "./config";
 
+export const MSG_FICHIERS_NON_EFFACES =
+  "Les fichiers renvoyés par le candidat n'ont pas pu être effacés du stockage ; réessayez.";
+
+export type IssueEffacementFichiers =
+  | { readonly ok: true; readonly effaces: number; readonly conserves: 0 }
+  | {
+      readonly ok: false;
+      readonly effaces: number;
+      readonly conserves: number;
+      readonly erreur: string;
+    };
+
 export async function effacerFichiersRenvoyesCandidature(
   applicationId: string,
-): Promise<{ effaces: number; conserves: number }> {
+): Promise<IssueEffacementFichiers> {
+  const rien = { ok: true, effaces: 0, conserves: 0 } as const;
+  // Les fichiers renvoyés se cherchent MÊME bibliothèque éteinte : s'il en
+  // existe, le dossier ne doit pas être supprimé sans eux.
+  const liens = await prisma.lienPartage.findMany({
+    where: { applicationId },
+    select: { id: true },
+  });
+  if (liens.length === 0) return rien;
+  const fichiers = await prisma.fichierPartage.findMany({
+    where: { origine: "personne", lienDepotId: { in: liens.map((l) => l.id) } },
+    select: { id: true, r2Cle: true, r2UploadId: true, etatDepot: true },
+  });
+  if (fichiers.length === 0) return rien;
+
   const c = configPartages();
-  if (!c) return { effaces: 0, conserves: 0 };
+  if (!c) {
+    return { ok: false, effaces: 0, conserves: fichiers.length, erreur: MSG_FICHIERS_NON_EFFACES };
+  }
   const cible = {
     accountId: c.accountId,
     bucket: c.bucket,
     accessKeyId: c.accessKeyId,
     secretAccessKey: c.secretAccessKey,
   };
-  const liens = await prisma.lienPartage.findMany({
-    where: { applicationId },
-    select: { id: true },
-  });
-  if (liens.length === 0) return { effaces: 0, conserves: 0 };
-  const fichiers = await prisma.fichierPartage.findMany({
-    where: { origine: "personne", lienDepotId: { in: liens.map((l) => l.id) } },
-    select: { id: true, r2Cle: true, r2UploadId: true, etatDepot: true },
-  });
-  if (fichiers.length === 0) return { effaces: 0, conserves: 0 };
 
   const effacables: string[] = [];
   for (const f of fichiers) {
-    if (f.etatDepot === "en_cours" && f.r2Cle && f.r2UploadId) {
-      // Un envoi non terminé : R2 libère les morceaux déjà reçus.
-      await arreterEnvoiR2(cible, f.r2Cle, f.r2UploadId).catch(() => undefined);
-    }
-    if (f.r2Cle) {
-      try {
-        await supprimerObjetCibleR2(cible, f.r2Cle);
-      } catch {
-        continue; // stockage injoignable : la ligne reste, l'objet reste retrouvable
+    try {
+      if (f.etatDepot === "en_cours" && f.r2Cle && f.r2UploadId) {
+        // Un envoi non terminé : R2 libère les morceaux déjà reçus.
+        await arreterEnvoiR2(cible, f.r2Cle, f.r2UploadId);
       }
+      if (f.r2Cle) await supprimerObjetCibleR2(cible, f.r2Cle);
+    } catch {
+      continue; // stockage injoignable : la ligne reste, l'objet reste retrouvable
     }
     effacables.push(f.id);
   }
@@ -73,5 +97,9 @@ export async function effacerFichiersRenvoyesCandidature(
       tx.fichierPartage.deleteMany({ where: { id: { in: effacables } } }),
     );
   }
-  return { effaces: effacables.length, conserves: fichiers.length - effacables.length };
+  const conserves = fichiers.length - effacables.length;
+  if (conserves > 0) {
+    return { ok: false, effaces: effacables.length, conserves, erreur: MSG_FICHIERS_NON_EFFACES };
+  }
+  return { ok: true, effaces: effacables.length, conserves: 0 };
 }

@@ -121,12 +121,19 @@ export async function trouverCandidatures(email: string): Promise<{
  */
 export async function effacerCandidaturesPour(email: string): Promise<{
   readonly supprimees: number;
+  /**
+   * Candidatures GARDÉES parce que les fichiers renvoyés par la personne n'ont
+   * pas pu être effacés du stockage (L5b). Jamais comptées dans `supprimees` :
+   * la route les signale, elle ne les annonce pas effacées.
+   */
+  readonly conservees: number;
   readonly fichiersSupprimes: number;
   readonly tronque: boolean;
 }> {
   const { candidatures, tronque } = await trouverCandidatures(email);
   let fichiersSupprimes = 0;
   let supprimees = 0;
+  let conservees = 0;
 
   // Lot L3 (2026-10-07) — les réponses reçues par e-mail (objet, extrait).
   // La cascade les emporte avec chaque dossier ; on les efface AUSSI par
@@ -142,6 +149,15 @@ export async function effacerCandidaturesPour(email: string): Promise<{
   }
 
   for (const c of candidatures) {
+    // L5b — les fichiers qu'elle a renvoyés par son lien, EN PREMIER (sans clé
+    // étrangère : la cascade ne les atteint pas, et ils deviendraient
+    // introuvables). Effacement incomplet → la candidature est GARDÉE, rien
+    // d'autre n'est entamé, et elle est comptée comme conservée.
+    const fichiersRenvoyes = await effacerFichiersRenvoyesCandidature(c.id);
+    if (!fichiersRenvoyes.ok) {
+      conservees += 1;
+      continue;
+    }
     for (const chemin of [c.cvStoragePath, c.photoStoragePath]) {
       if (chemin === null) continue;
       try {
@@ -155,14 +171,11 @@ export async function effacerCandidaturesPour(email: string): Promise<{
     }
     // Vidéos déposées (2026-09-28) : le dossier entier, avant la ligne.
     await supprimerVideosCandidature(c.id);
-    // L5b — les fichiers qu'elle a renvoyés par son lien (sans clé étrangère :
-    // la cascade ne les atteint pas), AVANT la ligne.
-    await effacerFichiersRenvoyesCandidature(c.id);
     await prisma.jobApplication.delete({ where: { id: c.id } });
     supprimees += 1;
   }
 
-  return { supprimees, fichiersSupprimes, tronque };
+  return { supprimees, conservees, fichiersSupprimes, tronque };
 }
 
 /**
@@ -231,6 +244,49 @@ export async function exporterCandidaturesPour(email: string): Promise<{
     reponses = [];
   }
 
+  // L5b (relecture sécurité, 2026-10-08) — les fichiers que la personne a
+  // RENVOYÉS par son lien privé : nom, date, taille. Ni les octets (des Go de
+  // vidéo), ni la clé du stockage ; une copie se demande. Table absente : aucun.
+  let fichiersRenvoyes: Array<{
+    applicationId: string;
+    nom: string | null;
+    recuLe: Date;
+    tailleOctets: number | null;
+  }> = [];
+  try {
+    const liens = await prisma.lienPartage.findMany({
+      where: { applicationId: { in: lignes.map((l) => l.id) } },
+      select: { id: true, applicationId: true },
+    });
+    const dossierDuLien = new Map(liens.map((x) => [x.id, x.applicationId]));
+    if (liens.length > 0) {
+      const fichiers = await prisma.fichierPartage.findMany({
+        where: { origine: "personne", lienDepotId: { in: liens.map((x) => x.id) } },
+        select: {
+          lienDepotId: true,
+          nomFichier: true,
+          tailleOctets: true,
+          creeLe: true,
+          disponibleLe: true,
+        },
+      });
+      fichiersRenvoyes = fichiers.flatMap((f) => {
+        const applicationId = f.lienDepotId ? dossierDuLien.get(f.lienDepotId) : undefined;
+        if (!applicationId) return [];
+        return [
+          {
+            applicationId,
+            nom: f.nomFichier,
+            recuLe: f.disponibleLe ?? f.creeLe,
+            tailleOctets: f.tailleOctets === null ? null : Number(f.tailleOctets),
+          },
+        ];
+      });
+    }
+  } catch {
+    fichiersRenvoyes = [];
+  }
+
   return {
     candidatures: lignes.map((l) => ({
       ...l,
@@ -245,6 +301,14 @@ export async function exporterCandidaturesPour(email: string): Promise<{
           objet: r.subject,
           extrait: r.excerpt ? decryptPii(r.excerpt) : null,
           reponseAutomatique: r.auto,
+        })),
+      fichiersRenvoyes: fichiersRenvoyes
+        .filter((f) => f.applicationId === l.id)
+        .map((f) => ({
+          nom: f.nom,
+          recuLe: f.recuLe,
+          tailleOctets: f.tailleOctets,
+          copie: "copie sur demande à contact@axion-ia.com",
         })),
     })),
     tronque,
