@@ -23,7 +23,11 @@
 // page : « dont l'établissement est situé »), article 22 bis « Communication et image de marque »
 // (droit d'usage encadré de la marque), article 22 assoupli en conséquence ; 22 et 22 bis dans les
 // manquements (11.2), 22 bis dans la garantie (8.5), 22 bis.4 dans la survie (21). Nouvelle empreinte.
-export const CONTRAT_VERSION = "2.4";
+// 2.5 (09/10/2026, décision de Will) : la signature tient en deux cases (« je certifie » et
+// « j'accepte le contrat », qui énumère les articles 3.7, 4.5, 5.2, 7, 12 et 14) ; les mentions
+// « case d'acceptation distincte » sont retirées. Un Apporteur société est désigné par sa
+// dénomination, « représentée par » la personne physique qui signe.
+export const CONTRAT_VERSION = "2.5";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -36,8 +40,8 @@ M. Williams Jullin, en qualité de Président, ci-après « **la Société** »,
 
 **et**
 
-**{{APPORTEUR_IDENTITE}}**, {{APPORTEUR_STATUT}}, immatriculé sous le numéro SIREN {{APPORTEUR_SIREN}},
-{{APPORTEUR_ETABLISSEMENT}}, ci-après « **l'Apporteur** »,
+**{{APPORTEUR_PARTIE}}**, {{APPORTEUR_STATUT}}, {{APPORTEUR_IMMATRICULE}} sous le numéro SIREN {{APPORTEUR_SIREN}},
+{{APPORTEUR_ETABLISSEMENT}}{{APPORTEUR_REPRESENTANT}}, ci-après « **l'Apporteur** »,
 
 **il a été convenu ce qui suit.**
 
@@ -320,8 +324,6 @@ et sur l'accès de l'Apporteur à son espace.** Elle ne peut excéder quinze jou
 notification ; à l'expiration de ce délai elle est levée de plein droit, la Société demeurant libre de
 résilier dans les conditions de l'article 11.
 
-> *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
-
 **3.8 — Accès.** L'accès à l'espace en ligne et au formulaire de déclaration est personnel.
 L'Apporteur conserve son lien personnel et ses moyens d'accès et ne les communique à aucun tiers. **Toute
 déclaration enregistrée au moyen de son lien personnel ou de ses moyens d'accès est réputée émaner de lui**, sauf signalement immédiat d'un usage qu'il n'a
@@ -450,8 +452,6 @@ de l'encaissement d'origine, une annulation pouvant survenir longtemps après lu
 Elle s'impute par compensation conventionnelle (article 1348-2 du code civil) sur les commissions à venir. **À défaut de commissions à venir suffisantes,
 le solde négatif suit le régime de l'article 12.4**, que le contrat soit en cours ou terminé.
 
-> *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
-
 **4.5 bis — Déclaration non sincère, intérêt non déclaré, fraude.** Aucune commission n'est due au titre
 d'une affaire pour laquelle l'Apporteur a manqué à l'article 3.7 (déclaration non sincère) ou à
 l'article 8.4 (rémunération ou avantage reçu de l'entreprise, relation d'affaires ou d'intérêt non
@@ -559,8 +559,6 @@ la contestation du calcul de la commission qu'elle porte obéit à l'article 5.5
 impôts, ou de la disposition qui lui succède dans le code des impositions sur les biens et services (CIBS) à compter de son entrée en vigueur. Il est donné PAR l'Apporteur À la Société, aux seules fins d'établir des factures en son nom ; il
 n'emporte aucun pouvoir de l'Apporteur de représenter la Société, ni aucun mandat de la Société à
 l'Apporteur (article 1.2).**
-
-> *Cette clause fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
 
 **5.3 — Paiement.** La Société verse la commission par virement. **La date d'échéance de chaque
 autofacture est le trentième jour suivant son émission, laquelle a lieu le jour de l'encaissement intégral
@@ -710,8 +708,6 @@ conservés cinq ans après la fin du contrat ; les autofactures, leurs décompte
 prévue à l'article 13 du règlement est accessible depuis la politique de confidentialité du site de la
 Société.
 
-> *Cet article fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
-
 ---
 
 ### Article 8 — Interdictions 
@@ -845,8 +841,6 @@ facturation ayant pris fin, la facture est alors établie dans les conditions de
 
 > *Aucune commission acquise, ni aucune commission afférente à une commande signée avant la fin du contrat,
 > n'est perdue du fait de la résiliation, quelle qu'en soit la cause.*
-
-> *Cet article fait l'objet d'une case d'acceptation distincte dans le parcours de signature.*
 
 ---
 
@@ -1043,7 +1037,7 @@ du contrat et cinq ans après sa fin ; un exemplaire de chacun est adressé à l
 
 Le présent contrat est rédigé en langue française, seule version faisant foi.
 
-**La Société** — M. Williams Jullin · **L'Apporteur** — {{APPORTEUR_IDENTITE}}
+**La Société** — M. Williams Jullin · **L'Apporteur** — {{APPORTEUR_SIGNATAIRE}}
 
 ---
 

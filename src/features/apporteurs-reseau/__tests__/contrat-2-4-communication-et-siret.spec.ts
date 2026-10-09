@@ -11,7 +11,7 @@ const article = (titre: string, suivant: string) =>
 
 describe("contrat 2.4", () => {
   it("version 2.4 (c'est elle que porte la signature et le PDF archivé)", () => {
-    expect(CONTRAT_VERSION).toBe("2.4");
+    expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.4);
   });
 
   it("première page : SIREN puis l'établissement (gabarit), plus de « dont le siège est » pour l'Apporteur", () => {

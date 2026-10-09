@@ -30,6 +30,8 @@ export interface ValeursContrat {
   siege: string;
   qualite: string;
   grilleDate: string;
+  /** Contrat 2.5 : dénomination d'un Apporteur société, « représentée par » `identite`. */
+  denomination?: string;
 }
 
 export interface SignatureApporteur {
@@ -62,6 +64,13 @@ export function qualiteDuStatut(valeur: string): string {
 export function texteDuContrat(v: ValeursContrat): string {
   const table: Record<string, string> = {
     APPORTEUR_IDENTITE: v.identite,
+    // Contrat 2.5 : une société signe par la personne physique qui la représente (identite).
+    APPORTEUR_PARTIE: v.denomination ?? v.identite,
+    APPORTEUR_IMMATRICULE: v.denomination ? "immatriculée" : "immatriculé",
+    APPORTEUR_REPRESENTANT: v.denomination ? `, représentée par ${v.identite}` : "",
+    APPORTEUR_SIGNATAIRE: v.denomination
+      ? `${v.denomination}, représentée par ${v.identite}`
+      : v.identite,
     APPORTEUR_STATUT: libelleStatut(v.statutJuridique),
     APPORTEUR_SIREN: v.siren,
     // Contrat 2.4 : avec un SIRET, « SIRET de l'établissement …, dont l'établissement est situé … » ;

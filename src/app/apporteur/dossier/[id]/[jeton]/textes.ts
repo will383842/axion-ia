@@ -80,10 +80,14 @@ export const TEXTES = {
   // Étape 4
   contratTitre: "Votre contrat, rempli",
   telecharger: "Télécharger en PDF",
-  declarationsTitre: "Vous déclarez",
-  acceptationsTitre: "Vous acceptez",
-  nomTape: "Tapez votre prénom et votre nom",
-  nomTapeAide: (attendu: string) => `Comme sur votre dossier : ${attendu}`,
+  apercuDe: (piece: string) => `Aperçu : ${piece}`,
+  voirLePdf: "Voir le fichier envoyé (PDF)",
+  caseCertifie: "Je certifie que :",
+  caseAccepte: "J'ai lu le contrat et je l'accepte, en particulier :",
+  cochezLesDeuxCases: "Cochez les deux cases pour pouvoir signer.",
+  signataireTitre: "Vous signez en tant que",
+  pourLeCompteDe: (societe: string) => `pour le compte de ${societe}`,
+  signatairePasVous: "Ce nom est faux ? Écrivez-nous avant de signer :",
   signer: "Signer mon contrat",
   signature: "Signature…",
   // A compléter
