@@ -15316,6 +15316,74 @@ model ApporteurReseauRetrait {
   @@map("apporteur_reseau_retrait")
 }
 
+/// Contrat 2.7 (art. 11.1) : résiliation NOTIFIÉE, avec son préavis. Le contrat continue jusqu'à
+/// `finAt` (déclarations et commissions normales) ; le passage quotidien applique alors la fin, avec
+/// les effets de « Résilier ». `annuleeAt` : résiliation annulée avant la date. `par` : « societe »,
+/// « apporteur » ou « manquement » (11.2, fin immédiate ; le motif va à la note interne de la fiche
+/// et à l'e-mail, jamais ici). Table séparée, sans clé étrangère (fenêtre app/worker), comme
+/// `ApporteurReseauRetrait`.
+/// rgpd: technique — dates, durée du préavis et auteur (partie, identifiant d'administrateur) d'une résiliation de contrat ; aucune donnée de la personne
+model ApporteurReseauResiliation {
+  apporteurId  String    @id @map("apporteur_id") @db.Uuid
+  par          String    @db.VarChar(20)
+  notifieeAt   DateTime  @map("notifiee_at") @db.Timestamptz(3)
+  preavisJours Int       @map("preavis_jours")
+  finAt        DateTime  @map("fin_at") @db.Timestamptz(3)
+  /// Identifiant de l'administrateur qui a notifié la résiliation.
+  notifieePar  String?   @map("notifiee_par") @db.VarChar(64)
+  annuleeAt    DateTime? @map("annulee_at") @db.Timestamptz(3)
+  appliqueeAt  DateTime? @map("appliquee_at") @db.Timestamptz(3)
+  majAt        DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([finAt])
+  @@map("apporteur_reseau_resiliation")
+}
+
+/// Contrat 2.7 (art. 3.6) : commande PARTAGÉE avec d'autres établissements. La commission de la
+/// ligne est la commission de la commande entière (`montantAvantCents`) × participants de
+/// l'établissement attribué ÷ participants de la commande, arrondie au centime supérieur. Nombres
+/// arrêtés par Williams d'après la liste d'inscription. Absente = commande entière (comportement
+/// d'avant). Table séparée, sans clé étrangère (fenêtre app/worker).
+/// rgpd: technique — nombres de participants d'une commande, montants et administrateur auteur (identifiant seul) ; aucun nom, e-mail ni téléphone
+model CommissionProrata {
+  commissionId              String   @id @map("commission_id") @db.Uuid
+  participantsEtablissement Int      @map("participants_etablissement")
+  participantsCommande      Int      @map("participants_commande")
+  /// Commission de la commande entière, avant prorata.
+  montantAvantCents         Int      @map("montant_avant_cents")
+  majPar                    String?  @map("maj_par") @db.VarChar(64)
+  majAt                     DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("commission_prorata")
+}
+
+/// Contrat 2.7 (art. 14) : QUALITÉ de l'apporteur, déclarée au dossier en ligne. Société : adresse
+/// du siège et fonction de la personne qui signe (président, gérant…). Entrepreneur individuel :
+/// immatriculé au registre du commerce et des sociétés ou non. Absente = texte d'avant la 2.7.
+/// Table séparée, sans clé étrangère (fenêtre app/worker), comme `ApporteurReseauSiret`.
+/// rgpd: dossier-client
+model ApporteurReseauQualite {
+  apporteurId        String   @id @map("apporteur_id") @db.Uuid
+  siegeAdresse       String?  @map("siege_adresse") @db.VarChar(400)
+  fonctionSignataire String?  @map("fonction_signataire") @db.VarChar(100)
+  immatriculeRcs     Boolean? @map("immatricule_rcs")
+  majAt              DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("apporteur_reseau_qualite")
+}
+
+/// Contrat 2.7 (art. 3.2 et 3.7) : la personne qui a RENCONTRÉ l'entreprise pour le compte de
+/// l'apporteur (un associé, un salarié), quand ce n'est pas lui. Facultative : absente = l'apporteur
+/// lui-même. Nom CHIFFRÉ (`encryptPii`). Table séparée, sans clé étrangère (fenêtre app/worker).
+/// rgpd: dossier-client
+model PresentationRencontre {
+  presentationId String   @id @map("presentation_id") @db.Uuid
+  personne       String   @db.Text
+  majAt          DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("presentation_rencontre")
+}
+
 enum TypePieceApporteur {
   identite
   rib

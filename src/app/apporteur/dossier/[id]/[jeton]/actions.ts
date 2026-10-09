@@ -49,6 +49,12 @@ import {
   piecesDeposables,
   signerContrat,
 } from "@/features/apporteurs-reseau/signature";
+import { estSociete } from "@/features/apporteurs-reseau/signature-regles";
+import {
+  FONCTION_MAX,
+  SIEGE_MAX,
+  type QualiteApporteur,
+} from "@/features/apporteurs-reseau/qualite-apporteur";
 
 import { TEXTES } from "./textes";
 
@@ -223,6 +229,10 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   const statutJuridique = champ(fd, "statutJuridique", 40);
   if (!estStatutJuridique(statutJuridique))
     return { ok: false, message: "Choisissez votre statut." };
+  // Contrat 2.7, art. 14 : la qualité. Société → siège et fonction du signataire ; entrepreneur
+  // individuel → immatriculé au RCS ou non.
+  const qualite = qualiteDuFormulaire(fd, statutJuridique);
+  if (!qualite.ok) return { ok: false, message: qualite.message };
   const tva = champ(fd, "regimeTva", 20);
   if (tva !== "assujetti" && tva !== "franchise_293b")
     return { ok: false, message: "Dites-nous si vous facturez la TVA." };
@@ -252,7 +262,37 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
     regimeTva: tva,
     numeroTva: tva === "assujetti" ? champ(fd, "numeroTva", 30) : null,
     iban: iban || null,
+    qualite: qualite.valeur,
   });
+}
+
+/** Les champs de l'art. 14, obligatoires selon le statut. */
+function qualiteDuFormulaire(
+  fd: FormData,
+  statutJuridique: string,
+): { ok: true; valeur: QualiteApporteur } | { ok: false; message: string } {
+  if (estSociete(statutJuridique)) {
+    const siegeAdresse = champ(fd, "siegeAdresse", SIEGE_MAX);
+    const fonctionSignataire = champ(fd, "fonctionSignataire", FONCTION_MAX);
+    if (siegeAdresse.length < 5)
+      return { ok: false, message: "Indiquez l'adresse du siège de votre société." };
+    if (fonctionSignataire.length < 2)
+      return {
+        ok: false,
+        message: "Indiquez votre fonction dans la société (président, gérant…).",
+      };
+    return { ok: true, valeur: { siegeAdresse, fonctionSignataire, immatriculeRcs: null } };
+  }
+  const rcs = champ(fd, "immatriculeRcs", 3);
+  if (rcs !== "oui" && rcs !== "non")
+    return {
+      ok: false,
+      message: "Dites-nous si vous êtes immatriculé au registre du commerce et des sociétés.",
+    };
+  return {
+    ok: true,
+    valeur: { siegeAdresse: null, fonctionSignataire: null, immatriculeRcs: rcs === "oui" },
+  };
 }
 
 // ── Étape 3 et dossier signé : dépôt d'une pièce ─────────────────────────

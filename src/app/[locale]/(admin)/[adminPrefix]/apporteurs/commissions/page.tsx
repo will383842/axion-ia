@@ -14,6 +14,7 @@ import {
 import {
   ajusterCommissionAction,
   constaterNonCommissionneAction,
+  fixerProrataAction,
   marquerHorsGrilleAction,
   annulerRealisationAction,
   classerActiviteAction,
@@ -45,6 +46,7 @@ import {
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
 import { lireCommandesAAttribuer } from "@/features/apporteurs-reseau/commandes-a-attribuer";
+import { libelleProrata } from "@/features/apporteurs-reseau/prorata";
 import { relanceAttributionDue } from "@/features/apporteurs-reseau/etablissement-presentation";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
@@ -487,6 +489,62 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       <div>
                         <button type="submit" className="admin-button-secondary">
                           Enregistrer
+                        </button>
+                      </div>
+                    </form>
+                  </details>
+                ) : null}
+                {libelleProrata(c.prorata) ? (
+                  <p className="text-[length:var(--text-admin-sm)]">
+                    Commande partagée : {libelleProrata(c.prorata)} (art. 3.6)
+                  </p>
+                ) : null}
+                {peutPayer &&
+                !c.autofactureNumero &&
+                !c.parrainage &&
+                c.montantCents !== null &&
+                (c.statut === "due" ||
+                  c.statut === "a_qualifier" ||
+                  c.statut === "en_attente_vigilance") ? (
+                  <details className="text-[length:var(--text-admin-sm)]">
+                    <summary className="cursor-pointer">
+                      Commande partagée avec d&apos;autres établissements (art. 3.6)
+                    </summary>
+                    <form
+                      action={fixerProrataAction}
+                      className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-2)]"
+                    >
+                      <input type="hidden" name="id" value={c.id} />
+                      <p>
+                        D&apos;après la liste d&apos;inscription. Vide = commande entière. La
+                        commission devient : commission × stagiaires de l&apos;établissement
+                        attribué ÷ stagiaires de la commande, au centime supérieur.
+                      </p>
+                      <label className="flex items-center gap-[var(--space-admin-2)]">
+                        Stagiaires de l&apos;établissement attribué
+                        <input
+                          name="participantsEtablissement"
+                          type="number"
+                          min={1}
+                          required
+                          defaultValue={c.prorata?.participantsEtablissement}
+                          className="admin-input"
+                        />
+                      </label>
+                      <label className="flex items-center gap-[var(--space-admin-2)]">
+                        Stagiaires de la commande
+                        <input
+                          name="participantsCommande"
+                          type="number"
+                          min={1}
+                          required
+                          defaultValue={c.prorata?.participantsCommande}
+                          className="admin-input"
+                        />
+                      </label>
+                      <div>
+                        <button type="submit" className="admin-button-secondary">
+                          Appliquer le prorata
                         </button>
                       </div>
                     </form>

@@ -140,6 +140,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-commission-suspension":
     "Apporteur : commission suspendue, puis libérée (contestation du client)",
   "apporteur-manquement": "Apporteur : manquement ou fraude notifié avec les faits (art. 4.5 bis)",
+  "apporteur-resiliation":
+    "Apporteur : résiliation notifiée avec la date de fin (préavis, art. 11.1), fin pour manquement (11.2) ou annulation",
   "apporteur-contrat-signe": "Apporteur : contrat contresigné",
   "apporteur-presentation-recue": "Apporteur : entreprise bien reçue",
   "apporteur-presentation-refusee": "Apporteur : entreprise non réservée",

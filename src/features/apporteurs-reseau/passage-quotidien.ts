@@ -54,6 +54,7 @@ import {
   siretDeLaCommande,
   type Etablissement,
 } from "./etablissement-presentation";
+import { appliquerFinsDePreavis } from "./preavis";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
@@ -240,7 +241,8 @@ type NomEtape =
   | "realisation"
   | "hors-grille"
   | "declarations-sans-reponse"
-  | "commandes-a-attribuer";
+  | "commandes-a-attribuer"
+  | "fin-de-preavis";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -275,6 +277,9 @@ async function passer(
 ): Promise<BilanPassageReseau> {
   const bilan = bilanVide();
   const etapes: Array<[NomEtape, () => Promise<void>]> = [
+    // Contrat 2.7 (art. 11.1) : une résiliation notifiée prend effet à la fin de son préavis, avec
+    // les effets de « Résilier » (art. 12), avant tout le reste du passage.
+    ["fin-de-preavis", async () => void (await appliquerFinsDePreavis(maintenant))],
     ["confirmation-tacite", () => etapeConfirmationTacite(maintenant, bilan)],
     ["terme", () => etapeTerme(maintenant, bilan)],
     ["commissions", () => etapeCommissions(maintenant, bilan)],

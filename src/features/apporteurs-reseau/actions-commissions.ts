@@ -20,7 +20,14 @@ import { classerActiviteCommission, qualifierCommission } from "./commissions";
 import { marquerVerse } from "./facturation";
 import { leverSuspension, suspendreCommission } from "./litige";
 import { annulerRealisation, marquerPrestationRealisee } from "./realisation";
-import { enregistrerReprise, montantEnCentimes, resilierApporteur } from "./resiliation";
+import {
+  annulerResiliation,
+  notifierResiliation,
+  resilierPourManquement,
+  type PartieQuiResilie,
+} from "./preavis";
+import { fixerProrata } from "./prorata";
+import { enregistrerReprise, montantEnCentimes } from "./resiliation";
 import { euros } from "./regles";
 
 export type EtatActionCommission =
@@ -101,6 +108,11 @@ function versFiche(apporteurId: string, cle: "retour" | "erreur", message: strin
   redirect(`${adminPath("fr", `apporteurs/${apporteurId}`)}?${cle}=${encodeURIComponent(message)}`);
 }
 
+/**
+ * Art. 11.1 (contrat 2.7) : la résiliation est NOTIFIÉE ; le contrat prend fin à l'issue du préavis
+ * (30, 60 ou 90 jours quand la Société résilie, selon l'ancienneté et la version ; 30 jours quand
+ * l'apporteur résilie). La fin est appliquée par le passage quotidien.
+ */
 export async function resilierApporteurAction(fd: FormData): Promise<void> {
   const apporteurId = texte(fd, "apporteurId");
   if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs"));
@@ -108,11 +120,62 @@ export async function resilierApporteurAction(fd: FormData): Promise<void> {
   if (refus) versFiche(apporteurId, "erreur", refus);
   if (texte(fd, "confirmer") !== "oui")
     versFiche(apporteurId, "erreur", "Cochez la confirmation avant de résilier.");
-  let r: Awaited<ReturnType<typeof resilierApporteur>>;
+  const par = texte(fd, "par");
+  if (par !== "societe" && par !== "apporteur")
+    versFiche(apporteurId, "erreur", "Indiquez qui résilie : Axion-IA ou l'apporteur.");
+  let r: Awaited<ReturnType<typeof notifierResiliation>>;
   try {
-    r = await resilierApporteur(apporteurId);
+    const session = await auth();
+    r = await notifierResiliation({
+      apporteurId,
+      par: par as PartieQuiResilie,
+      auteur: session?.user?.id ?? null,
+    });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apporteurs-resilier" } });
+    return versFiche(apporteurId, "erreur", "Résiliation impossible. Réessayez.");
+  }
+  revalidatePath(adminPath("fr", "apporteurs"));
+  versFiche(apporteurId, r.ok ? "retour" : "erreur", r.message);
+}
+
+/** Annule une résiliation notifiée, avant la date de fin. */
+export async function annulerResiliationAction(fd: FormData): Promise<void> {
+  const apporteurId = texte(fd, "apporteurId");
+  if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs"));
+  const refus = await sessionArgent();
+  if (refus) versFiche(apporteurId, "erreur", refus);
+  if (texte(fd, "confirmer") !== "oui")
+    versFiche(apporteurId, "erreur", "Cochez la confirmation avant d'annuler la résiliation.");
+  let r: Awaited<ReturnType<typeof annulerResiliation>>;
+  try {
+    r = await annulerResiliation({ apporteurId });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-annuler-resiliation" } });
+    return versFiche(apporteurId, "erreur", "Annulation impossible. Réessayez.");
+  }
+  revalidatePath(adminPath("fr", "apporteurs"));
+  versFiche(apporteurId, r.ok ? "retour" : "erreur", r.message);
+}
+
+/** Art. 11.2 : fin IMMÉDIATE pour manquement, par décision motivée. */
+export async function resilierPourManquementAction(fd: FormData): Promise<void> {
+  const apporteurId = texte(fd, "apporteurId");
+  if (!UUID.test(apporteurId)) redirect(adminPath("fr", "apporteurs"));
+  const refus = await sessionArgent();
+  if (refus) versFiche(apporteurId, "erreur", refus);
+  if (texte(fd, "confirmer") !== "oui")
+    versFiche(apporteurId, "erreur", "Cochez la confirmation avant de résilier.");
+  let r: Awaited<ReturnType<typeof resilierPourManquement>>;
+  try {
+    const session = await auth();
+    r = await resilierPourManquement({
+      apporteurId,
+      motif: texte(fd, "motif"),
+      auteur: session?.user?.id ?? null,
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-resilier-manquement" } });
     return versFiche(apporteurId, "erreur", "Résiliation impossible. Réessayez.");
   }
   revalidatePath(adminPath("fr", "apporteurs"));
@@ -290,6 +353,39 @@ export async function ajusterCommissionAction(fd: FormData): Promise<void> {
       mode === "annuler"
         ? "Commission annulée : elle reste visible dans l'onglet « Annulées »."
         : `Commission recalculée : ${euros(r.montantCents ?? 0)}.`;
+    versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
+  }
+  versCommissions("erreur", (r as { message: string }).message);
+}
+
+// ── Commande partagée : prorata des participants (contrat 2.7, art. 3.6) ──
+
+export async function fixerProrataAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  const nombre = (cle: string) => {
+    const v = texte(fd, cle);
+    return /^\d{1,5}$/.test(v) ? Number(v) : Number.NaN;
+  };
+  let r: Awaited<ReturnType<typeof fixerProrata>>;
+  try {
+    r = await fixerProrata(
+      id,
+      {
+        participantsEtablissement: nombre("participantsEtablissement"),
+        participantsCommande: nombre("participantsCommande"),
+      },
+      await acteur(),
+    );
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-prorata" } });
+    r = { ok: false, message: "Le prorata n'a pas pu être enregistré. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok) {
+    const base = `Prorata enregistré (art. 3.6) : commission de ${euros(r.montantCents)}.`;
     versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
   }
   versCommissions("erreur", (r as { message: string }).message);

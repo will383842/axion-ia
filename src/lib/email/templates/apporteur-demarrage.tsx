@@ -74,6 +74,16 @@ interface Payload {
   motif?: MotifRefus;
   /** A1.7 : motif de la constatation « produit non commissionné ». */
   motifNonCommissionne?: string;
+  /**
+   * Résiliation (contrat 2.7, art. 11) : qui résilie (« societe », « apporteur »), fin immédiate
+   * pour « manquement » (art. 11.2) ou résiliation « annulee » ; dates déjà formatées, préavis en
+   * jours, motif du manquement tel que saisi dans la console.
+   */
+  cas?: string;
+  dateNotification?: string;
+  dateFin?: string;
+  preavisJours?: number;
+  motifResiliation?: string;
   /** Lien du dossier seulement : 1 = rappel J+3, 2 = rappel J+7 (absent = premier envoi). */
   rappel?: number;
   /** Confirmation seulement : « Monsieur » / « Madame », et le nom de famille. */
@@ -81,6 +91,8 @@ interface Payload {
   nomFamille?: string;
   /** Confirmation seulement : prénom et nom de l'apporteur (art. 3.2 : ils sont communiqués). */
   nomApporteur?: string;
+  /** Confirmation seulement : la personne qui a rencontré l'entreprise pour l'apporteur (2.7). */
+  personneRencontre?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
   motPersonnel?: string;
   /** Lien personnel du dossier en ligne. */
@@ -222,8 +234,11 @@ export const COPY_DEMARRAGE = {
       "Quelques mots sur Axion-IA, et la possibilité d'en parler 30 minutes si le sujet vous intéresse.",
     bonjour: (civ: string | null, nom: string | null, prenom: string) =>
       civ && nom ? `Bonjour ${civ} ${nom},` : bonjour(prenom),
-    presentation: (a: string, e: string | null) =>
-      `${a || "Une personne de notre réseau"} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
+    // Contrat 2.7 (art. 3.2) : quand l'apporteur a été représenté (associé, salarié), la personne
+    // rencontrée est nommée ; sans elle, le texte est exactement celui d'avant. Jamais un mot sur
+    // une vérification de l'apporteur.
+    presentation: (a: string, e: string | null, r?: string | null) =>
+      `${a || "Une personne de notre réseau"}${r ? `, qui a échangé avec vous par l'intermédiaire de ${r},` : ""} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
     quiSommesNous:
       "Je dirige Axion-IA, un cabinet qui aide les entreprises à tirer parti de l'IA : former les équipes, repérer ce qui peut être automatisé, puis le mettre en place, de bout en bout.",
     proposition:
@@ -360,6 +375,28 @@ export const COPY_DEMARRAGE = {
       "Vous trouverez ci-joint l'avoir d'autofacture annoncé dans notre précédent message, au sujet du manquement constaté (article 4.5 bis du contrat).",
     parrain:
       "Une affaire apportée par une personne que vous avez parrainée ne donne finalement lieu à aucune commission (article 4.5 bis du contrat). La part de parrainage qui en découlait est donc retirée ; si elle vous avait déjà été versée, elle fait l'objet d'une reprise, dans les conditions de l'article 4.5.",
+  },
+  resiliation: {
+    // Contrat 2.7, art. 11.1 (préavis), 11.1 bis (le contrat continue), 11.2 (manquement), 12.
+    subject: "Résiliation de votre contrat d'apporteur",
+    subjectAnnulee: "Votre contrat d'apporteur d'affaires continue",
+    title: "Résiliation de votre contrat",
+    preview: "La date de fin de votre contrat, et ce qui continue d'ici là.",
+    societe: (jours: number, fin: string) =>
+      `Nous vous informons que nous résilions votre contrat d'apporteur d'affaires, avec un préavis de ${jours} jours (article 11.1 du contrat). Votre contrat prend fin le ${fin}.`,
+    apporteur: (notifiee: string, fin: string) =>
+      `Nous avons bien reçu, le ${notifiee}, la résiliation de votre contrat d'apporteur d'affaires. Le préavis est de trente jours (article 11.1 du contrat) : votre contrat prend fin le ${fin}.`,
+    pendant:
+      "D'ici là, le contrat continue de produire ses effets : vous pouvez nous présenter de nouvelles entreprises, et vos commissions sont calculées, facturées et versées comme d'habitude.",
+    apres:
+      "Après cette date, les commandes signées avant la fin du contrat restent commissionnées, et les commissions acquises vous sont facturées et versées comme les autres (article 12 du contrat).",
+    manquement: (fin: string) =>
+      `Nous résilions votre contrat d'apporteur d'affaires sans préavis, en application de l'article 11.2 du contrat. Votre contrat prend fin le ${fin}. Notre décision est motivée par les faits suivants :`,
+    manquementSuite:
+      "Les commissions déjà acquises sont traitées dans les conditions de l'article 12 du contrat. Vous pouvez contester cette décision par écrit, en répondant simplement à cet e-mail.",
+    annulee: (notifiee: string) =>
+      `La résiliation de votre contrat d'apporteur d'affaires qui vous avait été notifiée le ${notifiee} est annulée. Votre contrat continue, sans aucun changement.`,
+    questions: "Pour toute question, il vous suffit de répondre à cet e-mail.",
   },
   nonCommissionne: {
     // Annexe 1, A1.7 : constatation écrite, avec son motif, portée à la connaissance de l'apporteur.
@@ -645,7 +682,11 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
       ) : (
         <>
           <Text style={emailStyles.paragraphStyle}>
-            {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
+            {t.presentation(
+              nomApporteur,
+              texteOuNull(p.entreprise),
+              texteOuNull(p.personneRencontre),
+            )}
           </Text>
           <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
@@ -995,6 +1036,62 @@ export function ApporteurManquementEmail({ locale, payload }: Props) {
   );
 }
 
+// ── Résiliation (contrat 2.7, art. 11) ───────────────────────────────────
+
+export const apporteurResiliationSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  (payload as Payload | undefined)?.cas === "annulee"
+    ? COPY_DEMARRAGE.resiliation.subjectAnnulee
+    : COPY_DEMARRAGE.resiliation.subject;
+
+/** Les paragraphes de l'e-mail de résiliation, selon le cas (aussi pour la version texte). */
+export function paragraphesResiliation(p: Payload): string[] {
+  const t = COPY_DEMARRAGE.resiliation;
+  const fin = texteOuNull(p.dateFin) ?? "";
+  const notifiee = texteOuNull(p.dateNotification) ?? "";
+  switch (p.cas) {
+    case "annulee":
+      return [t.annulee(notifiee), t.questions];
+    case "manquement":
+      return [t.manquement(fin), `« ${texteOuNull(p.motifResiliation) ?? ""} »`, t.manquementSuite];
+    case "apporteur":
+      return [t.apporteur(notifiee, fin), t.pendant, t.apres, t.questions];
+    default:
+      return [t.societe(p.preavisJours ?? 30, fin), t.pendant, t.apres, t.questions];
+  }
+}
+
+export function ApporteurResiliationEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.resiliation;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={p.cas === "annulee" ? t.subjectAnnulee : t.preview}
+      title={p.cas === "annulee" ? t.subjectAnnulee : t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      {paragraphesResiliation(p).map((x, i) => (
+        <Text
+          key={i}
+          style={
+            p.cas === "manquement" && i === 1
+              ? { ...emailStyles.paragraphStyle, fontStyle: "italic" }
+              : emailStyles.paragraphStyle
+          }
+        >
+          {x}
+        </Text>
+      ))}
+    </EmailLayout>
+  );
+}
+
 // ── Produit non commissionné (annexe 1, A1.7) ────────────────────────────
 
 export const apporteurNonCommissionneSubject = (): string => COPY_DEMARRAGE.nonCommissionne.subject;
@@ -1229,7 +1326,11 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
     case "entreprise-prise-de-contact-apporteur": {
       const t = COPY_DEMARRAGE.confirmation;
       return avecMot([
-        t.presentation(texteOuNull(p.nomApporteur) ?? "", texteOuNull(p.entreprise)),
+        t.presentation(
+          texteOuNull(p.nomApporteur) ?? "",
+          texteOuNull(p.entreprise),
+          texteOuNull(p.personneRencontre),
+        ),
         t.quiSommesNous,
         t.proposition,
       ]);

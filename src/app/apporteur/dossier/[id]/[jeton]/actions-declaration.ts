@@ -87,6 +87,7 @@ export async function declarerEntrepriseAction(fd: FormData): Promise<ResultatDe
       personneEmail: champ(fd, "personneEmail", 254),
       personneTelephone: champ(fd, "personneTelephone", 30),
       dateContact: champ(fd, "dateContact", 10),
+      personneRencontre: champ(fd, "personneRencontre", 150),
     });
   } catch (e) {
     // Contexte MINIMAL : le nom de l'erreur seul, jamais une valeur saisie.

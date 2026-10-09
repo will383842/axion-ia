@@ -39,6 +39,15 @@ export interface CommissionPourAutofacture {
   readonly origineNumero?: string | null;
   /** « AAAA-MM » du mois d'émission de l'autofacture d'origine. */
   readonly origineMois?: string | null;
+  /**
+   * Art. 4.0 (contrat 2.7) : jour de l'encaissement INTÉGRAL de la commande (dernier paiement de
+   * ses factures) et jour de la réalisation de la prestation. Leur plus tardif est le jour
+   * d'acquisition, date de la prestation de l'autofacture. Absents : voir `datePrestationAutofacture`.
+   */
+  readonly encaisseeAt?: Date | null;
+  readonly prestationRealiseeAt?: Date | null;
+  /** Art. 3.6 (contrat 2.7) : commande partagée, commissionnée au prorata des participants. */
+  readonly prorata?: { participantsEtablissement: number; participantsCommande: number } | null;
 }
 
 export interface ApporteurPourAutofacture {
@@ -94,6 +103,79 @@ export function designationAvoir(c: CommissionPourAutofacture): string {
   return `Autofacturation — avoir (reprise, art. 4.5)${renvoi}`;
 }
 
+/**
+ * Jour d'ACQUISITION d'une commission (art. 4.0 du contrat 2.7) : le plus tardif du jour de
+ * l'encaissement intégral et du jour de la réalisation de la prestation, en jours de Paris.
+ * `null` si l'une des deux dates manque : on ne devine jamais une date de pièce comptable.
+ */
+export function jourAcquisition(c: {
+  encaisseeAt?: Date | null;
+  prestationRealiseeAt?: Date | null;
+}): Date | null {
+  if (!c.encaisseeAt || !c.prestationRealiseeAt) return null;
+  return jourParis(c.prestationRealiseeAt) > jourParis(c.encaisseeAt)
+    ? c.prestationRealiseeAt
+    : c.encaisseeAt;
+}
+
+/**
+ * Encaissement INTÉGRAL d'une commande : le paiement de sa DERNIÈRE facture payée (hors avoirs,
+ * brouillons et annulées, comme `commandesSoldees`). `null` si une facture n'a pas de date de
+ * paiement : la commande n'est alors pas datable.
+ */
+export function encaissementIntegral(
+  factures: ReadonlyArray<{ statut: string; avoirDeId: string | null; paidAt: Date | null }>,
+): Date | null {
+  const actives = factures.filter(
+    (f) => f.avoirDeId === null && f.statut !== "brouillon" && f.statut !== "annulee",
+  );
+  if (actives.length === 0 || actives.some((f) => !f.paidAt)) return null;
+  return actives.reduce(
+    (max, f) => (f.paidAt!.getTime() > max.getTime() ? f.paidAt! : max),
+    actives[0]!.paidAt!,
+  );
+}
+
+/** Lignes qui portent une commission sur la pièce (mêmes règles que `lignesAutofacture`). */
+function commissionsFacturees(
+  commissions: readonly CommissionPourAutofacture[],
+): CommissionPourAutofacture[] {
+  return commissions.filter(
+    (c) => c.montantCents !== null && c.montantCents !== 0 && c.statut !== "reprise",
+  );
+}
+
+/**
+ * « Date de la prestation » de l'autofacture (art. 4.7 et 5.1 du contrat 2.7) : le jour
+ * d'acquisition des commissions facturées ; plusieurs jours → « du … au … » (chaque ligne porte
+ * alors le sien). S'il manque une date à une ligne, la pièce n'invente rien : elle garde la date
+ * d'avant (jour d'émission ramené au jour ouvré, jamais plus tôt que l'acquisition réelle) et
+ * `manquantes` liste les lignes en cause, pour le signalement.
+ */
+export function datePrestationAutofacture(
+  commissions: readonly CommissionPourAutofacture[],
+  dateEmission: Date,
+): { libelle: string; manquantes: string[] } {
+  const lignes = commissionsFacturees(commissions);
+  const manquantes = lignes.filter((c) => !jourAcquisition(c)).map((c) => c.id);
+  if (lignes.length === 0 || manquantes.length > 0)
+    return { libelle: dateFr(dateEncaissementRetenue(dateEmission)), manquantes };
+  const jours = [
+    ...new Map(
+      lignes.map((c) => {
+        const j = jourAcquisition(c)!;
+        return [jourParis(j), j] as const;
+      }),
+    ).entries(),
+  ].sort(([a], [b]) => a.localeCompare(b));
+  const premier = jours[0]![1];
+  const dernier = jours[jours.length - 1]![1];
+  return {
+    libelle: jours.length === 1 ? dateFr(premier) : `du ${dateFr(premier)} au ${dateFr(dernier)}`,
+    manquantes: [],
+  };
+}
+
 export function designationCommission(c: CommissionPourAutofacture): string {
   if (c.statut === "reprise") return designationAvoir(c);
   // Art. 4.6 : aucun montant par filleul. Ni prix facturé, ni prix public, ni palier du filleul.
@@ -144,10 +226,21 @@ export function lignesAutofacture(
 ): LigneHonoraires[] {
   return commissions
     .filter((c) => c.montantCents !== null && c.montantCents !== 0)
-    .map((c) => ({
-      designation: designationCommission(c),
-      montantHtCents: c.montantCents ?? 0,
-    }));
+    .map((c) => {
+      // Art. 5.1 : le décompte indique le jour d'acquisition de chaque commande (jamais sur la
+      // ligne de parrainage, qui ne dit rien de la commande du filleul, ni sur un avoir).
+      const jour = c.parrainage || c.statut === "reprise" ? null : jourAcquisition(c);
+      // Art. 3.6 : la part retenue d'une commande partagée se lit sur la pièce.
+      const p = c.parrainage || c.statut === "reprise" ? null : c.prorata;
+      const prorata =
+        p && p.participantsEtablissement !== p.participantsCommande
+          ? ` — commande partagée : ${p.participantsEtablissement}/${p.participantsCommande} des participants (art. 3.6)`
+          : "";
+      return {
+        designation: `${designationCommission(c)}${prorata}${jour ? ` — acquise le ${dateFr(jour)}` : ""}`,
+        montantHtCents: c.montantCents ?? 0,
+      };
+    });
 }
 
 export function totalHtCents(lignes: readonly LigneHonoraires[]): number {
@@ -404,7 +497,7 @@ export function construireDonneesAutofacture(e: {
   totalAttenduCents: number;
   /** AVOIR : les `commissions` sont les reprises, `totalAttenduCents` leur total POSITIF. */
   avoir?: { factureInitiale: string; dateFactureInitiale: string | null; imputation: string };
-}): { ok: true; data: AutofactureData } | { ok: false; motif: string } {
+}): { ok: true; data: AutofactureData; datesManquantes: string[] } | { ok: false; motif: string } {
   const regime = regimeHonorairesApporteur(e.apporteur.regimeTva);
   if (!regime) return { ok: false, motif: "régime de TVA de l'apporteur non renseigné" };
   const siren = e.apporteur.siren?.trim();
@@ -418,13 +511,18 @@ export function construireDonneesAutofacture(e: {
   const limite = new Date(
     e.dateEmission.getTime() + DELAI_CONTESTATION_APPORTEUR_JOURS * 86_400_000,
   );
+  const prestation = e.avoir
+    ? { libelle: dateFr(dateEncaissementRetenue(e.dateEmission)), manquantes: [] }
+    : datePrestationAutofacture(e.commissions, e.dateEmission);
   return {
     ok: true,
+    datesManquantes: prestation.manquantes,
     data: {
       numero: e.numero,
       dateEmission: dateFr(e.dateEmission),
-      // L'autofacture est datée du jour d'établissement ; la date de prestation est l'encaissement retenu.
-      datePrestation: dateFr(dateEncaissementRetenue(e.dateEmission)),
+      // L'autofacture est datée du jour d'établissement ; la date de prestation est le jour
+      // d'acquisition (art. 4.0 et 4.7 du contrat 2.7). Un avoir ne l'imprime pas (gabarit).
+      datePrestation: prestation.libelle,
       dateEcheance: dateFr(echeancePaiement(e.dateEmission)),
       contestationAvant: dateFr(limite),
       periodeLabel: e.periodeLibelle,

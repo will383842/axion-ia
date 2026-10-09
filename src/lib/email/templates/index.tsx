@@ -177,6 +177,8 @@ import {
   ApporteurCommissionSuspensionEmail,
   apporteurManquementSubject,
   ApporteurManquementEmail,
+  apporteurResiliationSubject,
+  ApporteurResiliationEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
@@ -539,6 +541,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-manquement": {
     subject: apporteurManquementSubject,
     component: ApporteurManquementEmail,
+  },
+  "apporteur-resiliation": {
+    subject: apporteurResiliationSubject,
+    component: ApporteurResiliationEmail,
   },
   "apporteur-contrat-signe": {
     subject: apporteurContratSigneSubject,

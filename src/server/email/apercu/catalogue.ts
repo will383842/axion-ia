@@ -475,6 +475,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui a déclaré l'entreprise",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-resiliation": {
+    categorie: "recrutement",
+    quand:
+      "Fiche de l'apporteur : « Notifier la résiliation » (préavis, art. 11.1), « Résilier pour manquement » (art. 11.2) ou « Annuler la résiliation »",
+    destinataire: "l'apporteur dont le contrat est résilié",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-non-commissionne": {
     categorie: "recrutement",
     quand:

@@ -59,6 +59,10 @@ export interface DossierPublic {
   denomination: string | null;
   adresse: string | null;
   statutJuridique: string | null;
+  /** Contrat 2.7, art. 14 : siège et fonction du signataire (société), immatriculation au RCS. */
+  siegeAdresse?: string | null;
+  fonctionSignataire?: string | null;
+  immatriculeRcs?: boolean | null;
   regimeTva: "franchise_293b" | "assujetti" | null;
   numeroTva: string | null;
   ibanMasque: string | null;
@@ -158,6 +162,11 @@ export function DossierEnLigne({
   const [denomination, setDenomination] = useState(dossier.denomination ?? "");
   const [adresse, setAdresse] = useState(dossier.adresse ?? "");
   const [statut, setStatut] = useState(dossier.statutJuridique ?? "");
+  const [siege, setSiege] = useState(dossier.siegeAdresse ?? "");
+  const [fonction, setFonction] = useState(dossier.fonctionSignataire ?? "");
+  const [rcs, setRcs] = useState<"" | "oui" | "non">(
+    dossier.immatriculeRcs == null ? "" : dossier.immatriculeRcs ? "oui" : "non",
+  );
   const [tva, setTva] = useState<"" | "franchise_293b" | "assujetti">(dossier.regimeTva ?? "");
   const [numeroTva, setNumeroTva] = useState(dossier.numeroTva ?? "");
   const [iban, setIban] = useState("");
@@ -220,6 +229,12 @@ export function DossierEnLigne({
     (echec && (echec.raison === "introuvable" || echec.raison === "indisponible")) ||
     (sirenDejaEnregistre && !trouve && !echec);
   const ibanNet = iban.replace(/\s+/g, "");
+  // Contrat 2.7, art. 14 : société → siège et fonction du signataire ; entrepreneur individuel →
+  // immatriculé au RCS ou non.
+  const societe = statut !== "" && estSociete(statut);
+  const qualiteOk = societe
+    ? siege.trim().length >= 5 && fonction.trim().length >= 2
+    : statut === "" || rcs !== "";
   const activiteComplete =
     identifiantOk &&
     (!!trouve || sirenDejaEnregistre || !!saisieManuelle) &&
@@ -227,6 +242,7 @@ export function DossierEnLigne({
     denomination.trim() !== "" &&
     adresse.trim() !== "" &&
     statut !== "" &&
+    qualiteOk &&
     tva !== "" &&
     (tva !== "assujetti" || numeroTva.trim() !== "") &&
     (ibanNet ? ibanValide(ibanNet) : dossier.ibanSaisi);
@@ -236,6 +252,9 @@ export function DossierEnLigne({
       : []),
     ...(denomination.trim() === "" || adresse.trim() === "" ? [TEXTES.manqueEntreprise] : []),
     ...(statut === "" ? [TEXTES.manqueStatut] : []),
+    ...(statut !== "" && societe && siege.trim().length < 5 ? [TEXTES.manqueSiege] : []),
+    ...(statut !== "" && societe && fonction.trim().length < 2 ? [TEXTES.manqueFonction] : []),
+    ...(statut !== "" && !societe && rcs === "" ? [TEXTES.manqueRcs] : []),
     ...(tva === "" ? [TEXTES.manqueTva] : []),
     ...(tva === "assujetti" && numeroTva.trim() === "" ? [TEXTES.manqueNumeroTva] : []),
     ...(!(ibanNet ? ibanValide(ibanNet) : dossier.ibanSaisi) ? [TEXTES.manqueIban] : []),
@@ -270,6 +289,12 @@ export function DossierEnLigne({
     fd.set("denomination", denomination);
     fd.set("adresse", adresse);
     fd.set("statutJuridique", statut);
+    if (societe) {
+      fd.set("siegeAdresse", siege);
+      fd.set("fonctionSignataire", fonction);
+    } else {
+      fd.set("immatriculeRcs", rcs);
+    }
     fd.set("regimeTva", tva);
     fd.set("numeroTva", numeroTva);
     fd.set("iban", ibanNet);
@@ -614,6 +639,75 @@ export function DossierEnLigne({
                   ))}
                 </select>
               </div>
+              {societe ? (
+                <>
+                  <div>
+                    <label htmlFor={`${uid}-siege`} className={etiquette}>
+                      {TEXTES.siege}
+                    </label>
+                    <p id={`${uid}-siege-aide`} className="text-fg-soft text-[14px]">
+                      {TEXTES.siegeAide}
+                    </p>
+                    <textarea
+                      id={`${uid}-siege`}
+                      rows={2}
+                      maxLength={400}
+                      aria-describedby={`${uid}-siege-aide`}
+                      value={siege}
+                      onChange={(e) => setSiege(e.target.value)}
+                      className={`${champ} py-3`}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor={`${uid}-fonction`} className={etiquette}>
+                      {TEXTES.fonction}
+                    </label>
+                    <p id={`${uid}-fonction-aide`} className="text-fg-soft text-[14px]">
+                      {TEXTES.fonctionAide}
+                    </p>
+                    <input
+                      id={`${uid}-fonction`}
+                      maxLength={100}
+                      autoComplete="organization-title"
+                      aria-describedby={`${uid}-fonction-aide`}
+                      value={fonction}
+                      onChange={(e) => setFonction(e.target.value)}
+                      className={champ}
+                    />
+                  </div>
+                </>
+              ) : statut !== "" ? (
+                <fieldset>
+                  <legend className={etiquette}>{TEXTES.rcs}</legend>
+                  <div className="mt-1 grid grid-cols-2 gap-2">
+                    {(
+                      [
+                        ["oui", TEXTES.rcsOui],
+                        ["non", TEXTES.rcsNon],
+                      ] as const
+                    ).map(([v, l]) => (
+                      <label
+                        key={v}
+                        className={`flex min-h-[52px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 px-3 text-[16px] font-semibold ${
+                          rcs === v
+                            ? "border-terracotta bg-terracotta-soft text-terracotta-deep"
+                            : "border-border bg-paper"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`${uid}-rcs`}
+                          value={v}
+                          checked={rcs === v}
+                          onChange={() => setRcs(v)}
+                          className="accent-terracotta h-5 w-5"
+                        />
+                        {l}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ) : null}
               <fieldset>
                 <legend className={etiquette}>{TEXTES.tva}</legend>
                 <div className="mt-1 grid grid-cols-2 gap-2">

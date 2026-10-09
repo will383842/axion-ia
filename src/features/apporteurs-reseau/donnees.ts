@@ -30,6 +30,7 @@ import { jetonDossierValide, lienDossierBienForme } from "./jeton";
 import { estStatutJuridique, ibanValide, PIECES_VIGILANCE, type TypePiece } from "./regles";
 import { signalerErreurReseau } from "./signaler";
 import { enregistrerSiret, siretDe } from "./siret-apporteur";
+import { enregistrerQualite, lireQualite, type QualiteApporteur } from "./qualite-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
 
@@ -219,6 +220,10 @@ export interface DossierVue {
   adresse: string | null;
   codeNaf: string | null;
   statutJuridique: string | null;
+  /** Contrat 2.7, art. 14 (absents : pas encore lus, ou pas encore déclarés). */
+  siegeAdresse?: string | null;
+  fonctionSignataire?: string | null;
+  immatriculeRcs?: boolean | null;
   regimeTva: RegimeTvaApporteur | null;
   numeroTva: string | null;
   ibanMasque: string | null;
@@ -258,6 +263,7 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
   });
   if (!a) return null;
   const iban = decryptPii(a.iban);
+  const qualite = await lireQualite(a.id);
   return {
     id: a.id,
     statut: a.statut,
@@ -272,6 +278,9 @@ export async function lireDossier(apporteurId: string): Promise<DossierVue | nul
     adresse: a.adresse,
     codeNaf: a.codeNaf,
     statutJuridique: a.statutJuridique,
+    siegeAdresse: qualite?.siegeAdresse ?? null,
+    fonctionSignataire: qualite?.fonctionSignataire ?? null,
+    immatriculeRcs: qualite?.immatriculeRcs ?? null,
     regimeTva: a.regimeTva,
     numeroTva: a.numeroTva,
     ibanMasque: masquerIban(iban),
@@ -354,6 +363,8 @@ export interface SaisieActivite {
   regimeTva: RegimeTvaApporteur;
   numeroTva: string | null;
   iban: string | null;
+  /** Contrat 2.7, art. 14 : absent (ancien appelant) = rien n'y touche. */
+  qualite?: QualiteApporteur;
 }
 
 /**
@@ -428,6 +439,9 @@ export async function enregistrerActivite(
     // `undefined` (ancien appelant) : rien n'y touche.
     if (s.siret !== undefined) await enregistrerSiret(apporteurId, s.siret, tx);
   });
+  // Hors transaction : table séparée (fenêtre app/worker) ; absente, le contrat garde le texte
+  // d'avant la 2.7, et le dossier n'est jamais bloqué pour autant.
+  if (s.qualite) await enregistrerQualite(apporteurId, s.qualite);
   return { ok: true };
 }
 

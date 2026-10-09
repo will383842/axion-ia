@@ -43,6 +43,7 @@ import {
   type GabaritApporteur,
   type ResultatEnvoi,
 } from "./envois";
+import { lirePersonnesRencontrees } from "./personne-rencontre";
 import { idsPriseDeContactRebondie } from "./rebonds";
 import { ajouterMois, finDeProtection } from "./regles";
 import { annoncerAttribution } from "./attribution-annonce";
@@ -558,6 +559,8 @@ interface DonneesEnvoi {
     recueAt: Date;
     personneNom: string;
     personneEmail: string;
+    /** Art. 3.2 (contrat 2.7) : la personne qui a rencontré l'entreprise, si ce n'est pas l'apporteur. */
+    personneRencontre?: string | null;
   };
   apporteur: { id: string; prenom: string; nom: string; email: string };
 }
@@ -597,6 +600,9 @@ export function construireEnvoisReponse(
             contactName: d.presentation.personneNom,
             nomApporteur,
             entreprise: d.presentation.denomination,
+            ...(d.presentation.personneRencontre?.trim()
+              ? { personneRencontre: d.presentation.personneRencontre.trim() }
+              : {}),
           },
           o.textes?.["entreprise-prise-de-contact-apporteur"],
         ),
@@ -645,6 +651,7 @@ async function chargerDonneesEnvoi(
     include: { apporteur: { select: { id: true, prenom: true, nom: true, email: true } } },
   });
   if (!p) return null;
+  const rencontre = (await lirePersonnesRencontrees([p.id])).get(p.id) ?? null;
   return {
     statut: p.statut,
     contactEnvoyeAt: p.contactEnvoyeAt,
@@ -654,6 +661,7 @@ async function chargerDonneesEnvoi(
       recueAt: p.recueAt,
       personneNom: decryptPii(p.personneNom) ?? "",
       personneEmail: decryptPii(p.personneEmail) ?? "",
+      personneRencontre: rencontre,
     },
     apporteur: {
       id: p.apporteur.id,

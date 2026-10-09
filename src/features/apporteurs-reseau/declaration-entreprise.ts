@@ -31,6 +31,8 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
+import { enregistrerPersonneRencontre } from "./personne-rencontre";
+import { libelleProrata, lireProratas } from "./prorata";
 import {
   etatPrestation,
   horsGrilleEnCours,
@@ -58,6 +60,8 @@ export interface DeclarationVue {
   prestation: EtatPrestation;
   /** A1.7 : une commission de cette entreprise attend sa qualification « hors grille ». */
   horsGrille: boolean;
+  /** Art. 3.6 : commande partagée, « 4/10 des participants » ; `null` = commande entière. */
+  prorata: string | null;
 }
 
 /** Les déclarations d'UN apporteur (jamais celles des autres), de la plus récente. */
@@ -76,6 +80,16 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
     },
   });
   const commissions = await lireCommissionsDesPresentations(l.map((p) => p.id));
+  const proratas = await lireProratas(
+    [...commissions.values()].flatMap((cs) => cs.map((c) => c.id)),
+  );
+  // Plusieurs commandes partagées pour une même entreprise : chacune est dite.
+  const prorataDe = (id: string): string | null => {
+    const ls = (commissions.get(id) ?? [])
+      .map((c) => libelleProrata(proratas.get(c.id)))
+      .filter((x): x is string => x !== null);
+    return ls.length ? ls.join(", ") : null;
+  };
   const out: DeclarationVue[] = [];
   for (const p of l) {
     const e = etatPourApporteur(p);
@@ -88,6 +102,7 @@ export async function lireDeclarationsDe(apporteurId: string): Promise<Declarati
         jusquAu: e.jusquAu,
         prestation: etatPrestation(commissions.get(p.id) ?? []),
         horsGrille: horsGrilleEnCours(commissions.get(p.id) ?? []),
+        prorata: prorataDe(p.id),
       });
   }
   return out;
@@ -144,6 +159,8 @@ export async function declarerEntreprise(
     maintenant,
   );
   if (!r.ok) return { ok: false, message: MESSAGE_NEUTRE };
+  // Art. 3.2 : la personne qui a rencontré l'entreprise, si ce n'est pas l'apporteur.
+  if (d.personneRencontre) await enregistrerPersonneRencontre(r.id, d.personneRencontre);
 
   await prevenirWilliams(r.id, d.denomination, nomComplet(apporteur.prenom, apporteur.nom));
   return { ok: true };
