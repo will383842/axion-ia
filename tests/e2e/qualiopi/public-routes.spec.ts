@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { test, expect } from "@playwright/test";
 import { auditerPage } from "./_harness/audit-page";
+import { AVIS_CLIENTS_AFFICHES } from "../../../src/content/preuves-sociales";
 
 // Lecture fs plutôt qu'`import ... from "*.json"` : la configuration ESM du dépôt
 // exige un `import attribute` que Playwright ne fournit pas au chargement des specs.
@@ -54,9 +55,16 @@ const ROUTES_SI_CERTIFIE = new Set([
   "/fr/financement-opco-france-travail",
 ]);
 const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
-const routes = certificationRevendicable
-  ? toutesLesRoutes
-  : toutesLesRoutes.filter((r) => !ROUTES_SI_CERTIFIE.has(r));
+/**
+ * Pages d'avis : éteintes le 2026-10-09 (message de la DGCCRF, décision de
+ * Will) par `AVIS_CLIENTS_AFFICHES` (src/content/preuves-sociales.ts) — elles
+ * rendent alors un 404 VOULU. Même règle que ci-dessus : on suit
+ * l'interrupteur, pour que leur couverture revienne avec lui.
+ */
+const ROUTES_SI_AVIS = new Set(["/fr/avis", "/fr/avis/deposer"]);
+const routes = toutesLesRoutes
+  .filter((r) => certificationRevendicable || !ROUTES_SI_CERTIFIE.has(r))
+  .filter((r) => AVIS_CLIENTS_AFFICHES || !ROUTES_SI_AVIS.has(r));
 
 /**
  * Routes dont le COÛT D'AUDIT dépasse le budget commun — mesuré, pas supposé.
