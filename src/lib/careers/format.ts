@@ -136,7 +136,9 @@ export function salaryLabel(o: SalaryFields, isFr: boolean): string | null {
   if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
   if (!o.salaryVisible) return null;
   if (o.salaryMin == null && o.salaryMax == null) return null;
-  const k = (n: number) => `${Math.round(n / 1000)}k`;
+  // Sous 1 000, le montant s'écrit en entier : un tarif journalier de 350 €
+  // devenait « 0k » (offre formateur freelance, 2026-10-09).
+  const k = (n: number) => (n < 1000 ? String(n) : `${Math.round(n / 1000)}k`);
   const per =
     o.salaryPeriod === "YEAR"
       ? isFr
@@ -146,7 +148,11 @@ export function salaryLabel(o: SalaryFields, isFr: boolean): string | null {
         ? isFr
           ? "/mois"
           : "/mo"
-        : "/h";
+        : o.salaryPeriod === "DAY"
+          ? isFr
+            ? "/jour"
+            : "/day"
+          : "/h";
   const range =
     o.salaryMin != null && o.salaryMax != null
       ? `${k(o.salaryMin)}–${k(o.salaryMax)}`
