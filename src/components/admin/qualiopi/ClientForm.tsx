@@ -220,6 +220,7 @@ export function ClientForm({
                 commande (et l&apos;apporteur commissionné) qui en dépend.
               </p>
               <fieldset className="flex flex-col gap-1 text-[length:var(--text-admin-xs)]">
+                <legend className="sr-only">Immatriculation de l&apos;établissement</legend>
                 {(
                   [
                     ["immatricule", "Établissement immatriculé (SIRET)"],
@@ -227,9 +228,15 @@ export function ClientForm({
                     ["sans_siret", "Sans SIRET (association non immatriculée…)"],
                   ] as const
                 ).map(([v, libelle]) => (
-                  <label key={v} className="flex items-center gap-[var(--space-admin-2)]">
+                  // Zone de clic ≥ 24 × 24 px (WCAG 2.5.8, règle axe « target-size ») : le bouton
+                  // radio natif ne fait que ~13 px.
+                  <label
+                    key={v}
+                    className="flex min-h-[24px] cursor-pointer items-center gap-[var(--space-admin-2)]"
+                  >
                     <input
                       type="radio"
+                      className="h-[24px] w-[24px] shrink-0 cursor-pointer"
                       name="c-regime-siret"
                       checked={regimeSiret === v}
                       onChange={() => setRegimeSiret(v)}
