@@ -163,7 +163,9 @@ import {
   apporteurVigilanceSubject,
   ApporteurVigilanceEmail,
   apporteurCommandeSigneeSubject,
+  apporteurCommandeNonAttribueeSubject,
   ApporteurCommandeSigneeEmail,
+  ApporteurCommandeNonAttribueeEmail,
   apporteurReleveSubject,
   ApporteurReleveEmail,
   apporteurVirementFaitSubject,
@@ -563,6 +565,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-vigilance": {
     subject: apporteurVigilanceSubject,
     component: ApporteurVigilanceEmail,
+  },
+  "apporteur-commande-non-attribuee": {
+    subject: apporteurCommandeNonAttribueeSubject,
+    component: ApporteurCommandeNonAttribueeEmail,
   },
   "apporteur-commande-signee": {
     subject: apporteurCommandeSigneeSubject,

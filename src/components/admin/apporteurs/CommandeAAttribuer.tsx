@@ -1,0 +1,77 @@
+"use client";
+// use-client: choix de l'attribution d'une commande, avec retour sans recharger.
+
+// « Commandes à attribuer » (contrat 2.6, art. 3.1) : Williams choisit à quelle attribution
+// revient la commande, ou « aucun apporteur ». Une seule décision par commande.
+
+import { useActionState, useState } from "react";
+
+import { deciderAttributionAction } from "@/features/apporteurs-reseau/actions-etablissement";
+import type { EtatAction } from "@/features/apporteurs-reseau/actions-presentations";
+
+const INITIAL: EtatAction = { etat: "initial" };
+
+export function CommandeAAttribuer({
+  factureId,
+  candidats,
+}: {
+  factureId: string;
+  candidats: ReadonlyArray<{ presentationId: string; apporteur: string; perimetre: string }>;
+}) {
+  const [etat, decider, enCours] = useActionState(deciderAttributionAction, INITIAL);
+  const [motif, setMotif] = useState("");
+  if (etat.etat === "ok")
+    return (
+      <p
+        role="status"
+        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+      >
+        {etat.message}
+      </p>
+    );
+  return (
+    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+      {/* Le motif (facultatif ici) part aux candidats écartés ; à défaut, un motif exact selon
+          le cas est écrit pour eux (sans SIRET, autre établissement, déclaration antérieure). */}
+      <input
+        aria-label="Motif pour les candidats écartés (facultatif)"
+        placeholder="Motif pour les candidats écartés (facultatif)"
+        className="admin-input"
+        value={motif}
+        onChange={(e) => setMotif(e.target.value)}
+      />
+      {candidats.map((c) => (
+        <form key={c.presentationId} action={decider}>
+          <input type="hidden" name="factureId" value={factureId} />
+          <input type="hidden" name="presentationId" value={c.presentationId} />
+          <input type="hidden" name="motif" value={motif} />
+          <button type="submit" className="admin-button-secondary" disabled={enCours}>
+            Attribuer à {c.apporteur} ({c.perimetre})
+          </button>
+        </form>
+      ))}
+      <form action={decider} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+        <input type="hidden" name="factureId" value={factureId} />
+        <input type="hidden" name="presentationId" value="aucune" />
+        {/* Art. 3.1 : « aucun apporteur » est motivé ; le motif part au(x) candidat(s) écarté(s). */}
+        <label htmlFor={`motif-aucun-${factureId}`}>Motif (envoyé à l&apos;apporteur)</label>
+        <input
+          id={`motif-aucun-${factureId}`}
+          name="motif"
+          required
+          minLength={10}
+          placeholder="Motif (envoyé à l'apporteur)"
+          className="admin-input"
+        />
+        <button type="submit" className="admin-button-secondary" disabled={enCours}>
+          Aucun apporteur
+        </button>
+      </form>
+      {etat.etat === "erreur" ? (
+        <span role="alert" className="text-[color:var(--color-admin-destructive)]">
+          {etat.message}
+        </span>
+      ) : null}
+    </div>
+  );
+}

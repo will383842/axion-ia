@@ -25,8 +25,10 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { enqueueEmail } from "@/server/queue/queues";
 
 import {
   demanderVigilance,
@@ -40,6 +42,18 @@ import { alerterDeclarationsSansReponse, annoncerAttribution } from "./attributi
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import {
+  AVANT_2_6,
+  attributaireDeLaCommande,
+  lireAAttribuerEnAttente,
+  lireDecisionsAAttribuer,
+  lireEtablissements,
+  relanceAttributionDue,
+  lireSiretsDevis,
+  ouvrirAAttribuer,
+  siretDeLaCommande,
+  type Etablissement,
+} from "./etablissement-presentation";
 import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
@@ -167,6 +181,33 @@ export function presentationQuiCouvre<T extends PresentationProtegee>(
   return couvrantes[0] ?? null;
 }
 
+/**
+ * Contrat 2.6 : la présentation à qui revient la commande de l'établissement `siret` (source
+ * unique : `siretDeLaCommande`). Les couvrantes à la date de la commande, puis la règle par
+ * établissement (`attributaireDeLaCommande`). « À attribuer » : jamais de perte silencieuse. Pur.
+ */
+export function presentationPourEtablissement<T extends PresentationProtegee>(
+  candidates: readonly T[],
+  etablissements: ReadonlyMap<string, Etablissement>,
+  signeeAt: Date,
+  siret: string | null,
+): { presentation: T } | { aAttribuer: true; candidats: T[] } | null {
+  const couvrantes = candidates
+    .filter((p) =>
+      commandeCouverte({
+        signeeAt,
+        recueAt: p.recueAt,
+        confirmee: p.confirmeeAt !== null,
+        protegeeJusquAt: p.protegeeJusquAt,
+      }),
+    )
+    .map((p) => ({ p, recueAt: p.recueAt, etablissement: etablissements.get(p.id) ?? AVANT_2_6 }));
+  const r = attributaireDeLaCommande(couvrantes, siret);
+  if (!r) return null;
+  if ("aAttribuer" in r) return { aAttribuer: true, candidats: r.candidats.map((c) => c.p) };
+  return { presentation: r.presentation.p };
+}
+
 /** La commande tombe-t-elle dans les 6 mois du parrainage (contrat art. 4.6) ? */
 export function dansFenetreParrainage(filleulSigneAt: Date, commandeSigneeAt: Date): boolean {
   const t = commandeSigneeAt.getTime();
@@ -200,7 +241,8 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "realisation"
   | "hors-grille"
-  | "declarations-sans-reponse";
+  | "declarations-sans-reponse"
+  | "commandes-a-attribuer";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -268,6 +310,9 @@ async function passer(
       "declarations-sans-reponse",
       async () => void (await alerterDeclarationsSansReponse(maintenant)),
     ],
+    // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
+    // puis à J+15 (délai dépassé).
+    ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
@@ -506,6 +551,64 @@ async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<
 
 // (c) ─────────────────────────────────────────────────────────────────────
 
+/** Relances internes des commandes à attribuer : J+10, puis J+15 (une fois chacune). */
+async function relancerAAttribuer(maintenant: Date): Promise<void> {
+  for (const c of await lireAAttribuerEnAttente()) {
+    const due = relanceAttributionDue(c.creeAt, maintenant);
+    if (!due) continue;
+    const jobId = `apporteur-commande-a-attribuer-${c.factureId}-j${due}`;
+    if (await dejaEnvoye(jobId)) continue;
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: due === 15 ? "critique" : "important",
+        code: "apporteur_commande_a_attribuer_relance",
+        titre:
+          due === 15
+            ? "Commande à attribuer : délai de 15 jours DÉPASSÉ"
+            : "Commande à attribuer : plus que 5 jours",
+        message: `Une commande payée de l'entreprise SIREN ${c.siren} attend votre choix d'attribution depuis ${due} jours (contrat 2.6, art. 3.1 : 15 jours de l'encaissement). Console › Apporteurs › Commissions › Commandes à attribuer.`,
+        cibleType: "FactureFormation",
+        cibleId: c.factureId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "FactureFormation", entityId: c.factureId },
+    );
+  }
+}
+
+/**
+ * Contrat 2.6 (relecture de a1) : une commande soldée dont l'établissement ne correspond à aucune
+ * attribution exacte (SIRET absent, autre établissement, siège qui paie pour l'agence) passe « À
+ * ATTRIBUER » : Williams est alerté UNE fois et choisit dans la console (art. 3.1 : sous 15 jours
+ * de l'encaissement ; la commission reste due et le délai de paiement court de l'attribution).
+ */
+async function alerterAAttribuer(factureId: string, siren: string, maintenant: Date) {
+  const jobId = `apporteur-commande-a-attribuer-${factureId}`;
+  try {
+    if (await dejaEnvoye(jobId)) return;
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_commande_a_attribuer",
+        titre: "Commande payée à attribuer à un apporteur (sous 15 jours)",
+        message: `Une commande payée de l'entreprise SIREN ${siren} ne correspond exactement à aucun établissement attribué (SIRET absent, autre établissement, ou siège qui paie pour une agence). Choisissez l'apporteur, ou « aucun », dans la console (Apporteurs › Commissions › Commandes à attribuer) dans les 15 jours de l'encaissement (contrat 2.6, art. 3.1).`,
+        cibleType: "FactureFormation",
+        cibleId: factureId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "FactureFormation", entityId: factureId },
+    );
+  } catch (err) {
+    signalerErreurReseau("alerte commande à attribuer", err);
+  }
+}
+
 /** Présentations qui ont été protégées : confirmées, ou terminées après une protection. */
 async function lirePresentationsProtegees() {
   return prisma.presentationEntreprise.findMany({
@@ -543,6 +646,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const presentations = await lirePresentationsProtegees();
   if (presentations.length === 0) return;
   const index = parSiren(presentations);
+  const etablissements = await lireEtablissements(presentations.map((p) => p.id));
   const payees = await prisma.factureFormation.findMany({
     where: { statut: "payee", avoirDeId: null, client: { siren: { in: [...index.keys()] } } },
     select: { id: true, devisId: true },
@@ -567,7 +671,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       montantHtCents: true,
       emiseAt: true,
       devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
-      client: { select: { siren: true } },
+      client: { select: { siren: true, siret: true } },
     },
   });
   const avoirsLignes = await prisma.factureFormation.findMany({
@@ -588,6 +692,12 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   }
   const commandes = commandesSoldees([...lignes, ...avoirsLignes], totauxDevis);
   if (commandes.length === 0) return;
+  // Contrat 2.6 : le SIRET de l'établissement qui commande (devis, sinon fiche client) et les
+  // décisions de Williams sur les commandes « à attribuer ».
+  const siretsDevis = await lireSiretsDevis([
+    ...new Set(lignes.map((l) => l.devisId).filter((d): d is string => !!d)),
+  ]);
+  const decisions = await lireDecisionsAAttribuer(commandes.map((c) => c.factureCleId));
   const existantes = await prisma.commissionApporteur.findMany({
     where: { factureId: { in: commandes.flatMap((c) => c.factureIds) } },
     select: { factureId: true, apporteurId: true, parrainage: true },
@@ -606,8 +716,39 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
-    const p = presentationQuiCouvre(index.get(siren) ?? [], signeeAt);
-    if (!p) continue;
+    const siret = siretDeLaCommande({
+      devisSiret: f.devisId ? siretsDevis.get(f.devisId) : null,
+      clientSiret: f.client?.siret,
+    });
+    const qui = presentationPourEtablissement(
+      index.get(siren) ?? [],
+      etablissements,
+      signeeAt,
+      siret,
+    );
+    if (!qui) continue;
+    let p: (typeof presentations)[number];
+    if ("aAttribuer" in qui) {
+      // Jamais de perte silencieuse : la commande attend le choix de Williams.
+      const d = decisions.get(commande.factureCleId);
+      if (!d) {
+        await ouvrirAAttribuer({
+          factureId: commande.factureCleId,
+          siren,
+          siret,
+          candidats: qui.candidats.map((c) => c.id),
+        });
+        await alerterAAttribuer(commande.factureCleId, siren, maintenant);
+        continue;
+      }
+      const choisie = d.presentationId
+        ? qui.candidats.find((c) => c.id === d.presentationId)
+        : null;
+      if (!d.decidee || d.aucune || !choisie) continue;
+      p = choisie;
+    } else {
+      p = qui.presentation;
+    }
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
       factureHtCents: commande.totalHtCents,
@@ -742,11 +883,21 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
       },
       client: { siren: { in: [...index.keys()] } },
     },
-    select: { id: true, acceptedAt: true, client: { select: { siren: true } } },
+    select: { id: true, acceptedAt: true, client: { select: { siren: true, siret: true } } },
   });
+  const etablissements = await lireEtablissements(presentations.map((p) => p.id));
+  const siretsDevis = await lireSiretsDevis(devis.map((d) => d.id));
   for (const d of devis) {
-    const p = presentationQuiCouvre(index.get(d.client.siren ?? "") ?? [], d.acceptedAt!);
-    if (!p) continue;
+    // MÊME source que la facture (relecture de a1) : `siretDeLaCommande`.
+    const qui = presentationPourEtablissement(
+      index.get(d.client.siren ?? "") ?? [],
+      etablissements,
+      d.acceptedAt!,
+      siretDeLaCommande({ devisSiret: siretsDevis.get(d.id), clientSiret: d.client.siret }),
+    );
+    // À attribuer : l'annonce attend le choix de Williams (aucune donnée ne part à l'aveugle).
+    if (!qui || "aAttribuer" in qui) continue;
+    const p = qui.presentation;
     const jobId = `apporteur-commande-signee-${d.id}-${p.apporteurId}`;
     if (await dejaEnvoye(jobId)) continue;
     const r = await envoyer({

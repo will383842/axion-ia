@@ -533,6 +533,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur qui doit transmettre son attestation URSSAF",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-commande-non-attribuee": {
+    categorie: "recrutement",
+    quand:
+      "Console › Commissions › Commandes à attribuer : la commande va à un autre établissement, ou à aucun apporteur (art. 3.1)",
+    destinataire: "l'apporteur candidat écarté",
+    source: "features/apporteurs-reseau/notification-attribution.ts",
+  },
   "apporteur-commande-signee": {
     categorie: "recrutement",
     quand: "Tâche quotidienne : quand une entreprise protégée signe un devis",

@@ -350,6 +350,15 @@ async function creerClient(page: Page, type: TypeClient, marqueur: string): Prom
 
   await page.locator("#c-raison").fill(marqueur);
 
+  // Contrat d'apporteur 2.6 (#1399) : une entreprise naît « Établissement immatriculé »,
+  // et le SIRET y devient OBLIGATOIRE (ClientForm.tsx `siretExige`, garde serveur
+  // `siretObligatoire`). Ce parcours n'est pas celui du SIRET : on choisit « Sans SIRET »,
+  // qui rend la même fiche qu'avant (ni SIRET ni SIREN). Un SIRET fixe aurait été refusé
+  // dès le rejeu CI (même SIREN = refus), d'où ce choix plutôt qu'un SIRET saisi.
+  if (type === "entreprise") {
+    await page.getByRole("radio", { name: /^Sans SIRET\b/ }).check();
+  }
+
   // « Créer le client » exactement : pendant l'action le bouton devient
   // « Création… » (ClientForm.tsx:325), et un motif non ancré matcherait les
   // deux états.

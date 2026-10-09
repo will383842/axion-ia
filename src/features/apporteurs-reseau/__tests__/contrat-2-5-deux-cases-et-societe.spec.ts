@@ -30,7 +30,7 @@ const net = (t: string) => t.replace(/\s+/g, " ");
 
 describe("contrat 2.5", () => {
   it("version 2.5 ; plus aucune mention « case d'acceptation distincte »", () => {
-    expect(CONTRAT_VERSION).toBe("2.5");
+    expect(Number(CONTRAT_VERSION)).toBeGreaterThanOrEqual(2.5);
     expect(CONTRAT_V2_MARKDOWN).not.toMatch(/case d'acceptation distincte/);
   });
 

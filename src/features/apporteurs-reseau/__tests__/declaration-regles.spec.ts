@@ -10,7 +10,7 @@ import {
 
 const MAINTENANT = new Date("2026-10-05T10:00:00Z");
 const BONNE = {
-  siren: "732 829 320",
+  siret: "732 829 320 00074",
   denomination: "Boulangerie Martin",
   personneNom: "Claire Durand",
   personneFonction: "Gérante",
@@ -20,15 +20,15 @@ const BONNE = {
 };
 
 describe("déclaration d'entreprise — règles pures (art. 3.2)", () => {
-  it("accepte une déclaration complète et nettoie le SIREN", () => {
+  it("accepte une déclaration complète et nettoie le SIRET (contrat 2.6)", () => {
     const r = validerDeclaration(BONNE, MAINTENANT);
     expect(r.ok).toBe(true);
-    if (r.ok) expect(r.valeur.siren).toBe("732829320");
+    if (r.ok) expect(r.valeur.siret).toBe("73282932000074");
   });
 
   it.each([
-    ["siren", "123456789"],
-    ["siren", "12345"],
+    ["siret", "73282932000075"],
+    ["siret", "732829320"],
     ["denomination", ""],
     ["personneNom", " "],
     ["personneFonction", ""],
