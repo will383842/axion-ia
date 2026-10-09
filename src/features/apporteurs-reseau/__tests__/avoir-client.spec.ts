@@ -104,6 +104,8 @@ const ligne = (over: Record<string, unknown> = {}) => ({
   autofactureNumero: null,
   autofactureEmiseAt: null,
   verseeAt: null,
+  // Ligne créée avant les avoirs des jeux d'essai (qui la réduisent donc tous).
+  creeAt: new Date("2026-01-01T00:00:00Z"),
   ...over,
 });
 const facture: F = {
@@ -309,5 +311,29 @@ describe("dettes de a1 sur #1398", () => {
     expect(d.reprise).toHaveBeenCalledWith(
       expect.objectContaining({ commissionId: "parrain", demandeeCents: 10 }),
     );
+  });
+});
+
+describe("relecture de a1 sur #1402 : base = prix de la ligne à sa création", () => {
+  it("vieil avoir déjà déduit à la création (234 €, 70 €), nouvel avoir de 100 € → 30 € repris", async () => {
+    const ancien = avoir(-100, { id: "A0", emiseAt: new Date("2025-12-01T00:00:00Z") });
+    d.factures = [facture, ancien, avoir(-100, { id: "A1" })];
+    d.lignes = [
+      ligne({
+        statut: "versee",
+        autofactureNumero: "AXI-APP-2026-0001",
+        verseeAt: LE,
+        factureHtCents: 23_400,
+        montantCents: 7_020,
+      }),
+    ];
+    d.factures = [
+      { ...facture, montantHtCents: 33_400 },
+      { ...ancien, montantHtCents: -10_000 },
+      avoir(-10_000, { id: "A1" }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    // 30 % de 134 € = 40,20 € : 70,20 − 40,20 = 30 € repris.
+    expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 3_000 }));
   });
 });
