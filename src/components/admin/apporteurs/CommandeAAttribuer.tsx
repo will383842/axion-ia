@@ -39,9 +39,17 @@ export function CommandeAAttribuer({
           </button>
         </form>
       ))}
-      <form action={decider}>
+      <form action={decider} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
         <input type="hidden" name="factureId" value={factureId} />
         <input type="hidden" name="presentationId" value="aucune" />
+        {/* Art. 3.1 : « aucun apporteur » est motivé ; le motif part au(x) candidat(s) écarté(s). */}
+        <input
+          name="motif"
+          required
+          minLength={10}
+          placeholder="Motif (envoyé à l'apporteur)"
+          className="admin-input"
+        />
         <button type="submit" className="admin-button-secondary" disabled={enCours}>
           Aucun apporteur
         </button>

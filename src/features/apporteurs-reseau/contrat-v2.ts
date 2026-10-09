@@ -169,7 +169,9 @@ numéro SIRET figure sur le devis ou la commande, à défaut sur la fiche du cli
 Lorsque la commande ne peut être rattachée à une attribution, faute de numéro SIRET ou faute de correspondance,
 la Société procède elle-même au rattachement dans les **quinze jours** de l'encaissement intégral. La commission
 qui en résulte reste due ; le délai de paiement de l'article 5.3 court à compter de ce rattachement, et ce délai
-ne prive l'Apporteur d'aucun droit.
+ne prive l'Apporteur d'aucun droit. Lorsque la Société constate qu'aucune attribution ne correspond à la
+commande, ou qu'elle revient à une autre attribution, elle en informe l'Apporteur concerné par écrit et motive
+sa décision ; il peut la contester par écrit, et la Société y répond de façon motivée dans les trente jours.
 
 **3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, faite
 par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en

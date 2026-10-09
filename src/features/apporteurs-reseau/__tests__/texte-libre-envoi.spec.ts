@@ -13,6 +13,7 @@ vi.mock("../etablissement-presentation", async (orig) => {
       new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
     lireSiretsDevis: async () => new Map(),
     lireDecisionsAAttribuer: async () => new Map(),
+    lireAAttribuerEnAttente: async () => [],
     ouvrirAAttribuer: vi.fn(async () => true),
     enregistrerEtablissement: vi.fn(async () => undefined),
   };

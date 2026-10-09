@@ -45,8 +45,10 @@ import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
 import {
   AVANT_2_6,
   attributaireDeLaCommande,
+  lireAAttribuerEnAttente,
   lireDecisionsAAttribuer,
   lireEtablissements,
+  relanceAttributionDue,
   lireSiretsDevis,
   ouvrirAAttribuer,
   siretDeLaCommande,
@@ -237,7 +239,8 @@ type NomEtape =
   | "avoirs-sans-piece"
   | "realisation"
   | "hors-grille"
-  | "declarations-sans-reponse";
+  | "declarations-sans-reponse"
+  | "commandes-a-attribuer";
 
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
@@ -301,6 +304,9 @@ async function passer(
       "declarations-sans-reponse",
       async () => void (await alerterDeclarationsSansReponse(maintenant)),
     ],
+    // Contrat 2.6 (art. 3.1, relecture de a1) : une commande à attribuer est relancée à J+10,
+    // puis à J+15 (délai dépassé).
+    ["commandes-a-attribuer", async () => void (await relancerAAttribuer(maintenant))],
   ];
   for (const [nom, etape] of etapes) {
     if (seulement && !seulement.includes(nom)) continue;
@@ -538,6 +544,34 @@ async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<
 }
 
 // (c) ─────────────────────────────────────────────────────────────────────
+
+/** Relances internes des commandes à attribuer : J+10, puis J+15 (une fois chacune). */
+async function relancerAAttribuer(maintenant: Date): Promise<void> {
+  for (const c of await lireAAttribuerEnAttente()) {
+    const due = relanceAttributionDue(c.creeAt, maintenant);
+    if (!due) continue;
+    const jobId = `apporteur-commande-a-attribuer-${c.factureId}-j${due}`;
+    if (await dejaEnvoye(jobId)) continue;
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: due === 15 ? "critique" : "important",
+        code: "apporteur_commande_a_attribuer_relance",
+        titre:
+          due === 15
+            ? "Commande à attribuer : délai de 15 jours DÉPASSÉ"
+            : "Commande à attribuer : plus que 5 jours",
+        message: `Une commande payée de l'entreprise SIREN ${c.siren} attend votre choix d'attribution depuis ${due} jours (contrat 2.6, art. 3.1 : 15 jours de l'encaissement). Console › Apporteurs › Commissions › Commandes à attribuer.`,
+        cibleType: "FactureFormation",
+        cibleId: c.factureId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "FactureFormation", entityId: c.factureId },
+    );
+  }
+}
 
 /**
  * Contrat 2.6 (relecture de a1) : une commande soldée dont l'établissement ne correspond à aucune

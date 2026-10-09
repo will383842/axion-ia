@@ -301,6 +301,20 @@ export const COPY_DEMARRAGE = {
       "Vos commissions restent acquises : seul leur versement attend ces documents. Vous continuez à nous présenter des entreprises normalement.",
     cta: "Déposer mes documents",
   },
+  commandeNonAttribuee: {
+    // Contrat 2.6, art. 3.1 (relecture de a1) : une commande qui ne lui est pas attribuée est
+    // notifiée à l'apporteur, MOTIVÉE, contestable. ⛔ Jamais l'identité d'un autre apporteur.
+    subject: (e: string) =>
+      e
+        ? `Une commande de ${e} ne vous est pas attribuée`
+        : "Une commande ne vous est pas attribuée",
+    title: "Commande non attribuée",
+    preview: "Notre décision, son motif, et comment la contester.",
+    texte: (e: string) =>
+      `${e || "Une entreprise que vous nous avez présentée"} a passé une commande qui ne correspond pas à l'établissement qui vous est attribué. Comme le prévoit votre contrat (article 3.1), nous avons examiné son rattachement : elle ne vous est pas attribuée, pour le motif suivant :`,
+    suite:
+      "Vous pouvez contester cette décision en répondant simplement à cet e-mail : nous vous répondrons de façon motivée dans les trente jours.",
+  },
   commandeSignee: {
     subject: (e: string) =>
       e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
@@ -817,6 +831,38 @@ export function ApporteurVigilanceEmail({ locale, payload }: Props) {
         </Text>
       ))}
       <Text style={emailStyles.paragraphStyle}>{t.rassurer}</Text>
+    </EmailLayout>
+  );
+}
+
+// ── Commande non attribuée (contrat 2.6, art. 3.1) ─────────────────────
+
+export const apporteurCommandeNonAttribueeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.commandeNonAttribuee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
+
+export function ApporteurCommandeNonAttribueeEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commandeNonAttribuee;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.entreprise) ?? "")}</Text>
+      <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+        « {texteOuNull(p.motif) ?? ""} »
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
     </EmailLayout>
   );
 }

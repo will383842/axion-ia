@@ -12,6 +12,7 @@ import {
   attributaireDeLaCommande,
   couvreToutLEntreprise,
   memePerimetre,
+  relanceAttributionDue,
   signeAvant26,
   siretDeLaCommande,
   siretValide,
@@ -129,5 +130,36 @@ describe("point 4 (a1) : un contrat signé avant la 2.6 garde toute l'entreprise
     expect(signeAvant26({ version: "2.5" })).toBe(true);
     expect(signeAvant26({ version: "2.6" })).toBe(false);
     expect(signeAvant26(null)).toBe(false);
+  });
+});
+
+describe("relecture 2 de a1", () => {
+  it("défaut 1 : une EXTENSION ne couvre jamais d'elle-même une commande sans SIRET", () => {
+    const etendue = {
+      recueAt: new Date("2026-10-02"),
+      etablissement: { siret: LYON, entreprise: true, exclus: [], etendue: true },
+    };
+    expect(attributaireDeLaCommande([etendue], null)).toEqual({
+      aAttribuer: true,
+      candidats: [etendue],
+    });
+    // Signé avant la 2.6 (toute l'entreprise sans extension) ou d'avant la 2.6 : comme avant.
+    const ancien = {
+      recueAt: new Date("2026-09-01"),
+      etablissement: { siret: LYON, entreprise: true, exclus: [], etendue: false },
+    };
+    expect(attributaireDeLaCommande([ancien], null)).toEqual({ presentation: ancien });
+  });
+
+  it("défaut 2 : le contrat prévoit la décision motivée et la contestation", () => {
+    expect(net).toContain("elle en informe l'Apporteur concerné par écrit et motive sa décision");
+    expect(net).toContain("il peut la contester par écrit");
+  });
+
+  it("défaut 3 : relance à J+10, retard à J+15", () => {
+    const ouverte = new Date("2026-10-01T10:00:00Z");
+    expect(relanceAttributionDue(ouverte, new Date("2026-10-10T10:00:00Z"))).toBeNull();
+    expect(relanceAttributionDue(ouverte, new Date("2026-10-11T10:00:00Z"))).toBe(10);
+    expect(relanceAttributionDue(ouverte, new Date("2026-10-16T10:00:00Z"))).toBe(15);
   });
 });

@@ -45,6 +45,7 @@ import {
 } from "@/features/apporteurs-reseau/regles";
 import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
 import { lireCommandesAAttribuer } from "@/features/apporteurs-reseau/commandes-a-attribuer";
+import { relanceAttributionDue } from "@/features/apporteurs-reseau/etablissement-presentation";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
 import type { StatutCommissionApporteur } from "../../../../../../../prisma/generated/client";
@@ -201,7 +202,12 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                   {c.numero ? ` · facture ${c.numero}` : ""}
                   {c.montantHtCents !== null ? ` (${euros(c.montantHtCents)} HT)` : ""} ·{" "}
                   {c.siret ? `établissement qui commande : ${c.siret}` : "sans SIRET"} · à décider
-                  avant le {dateFr(new Date(c.creeAt.getTime() + 15 * 86_400_000))}
+                  avant le {dateFr(new Date(c.creeAt.getTime() + 15 * 86_400_000))}{" "}
+                  {relanceAttributionDue(c.creeAt, new Date()) === 15 ? (
+                    <AdminBadge tone="warning">En retard</AdminBadge>
+                  ) : relanceAttributionDue(c.creeAt, new Date()) === 10 ? (
+                    <AdminBadge tone="warning">Moins de 5 jours</AdminBadge>
+                  ) : null}
                 </p>
                 {peutPayer ? (
                   <CommandeAAttribuer factureId={c.factureId} candidats={c.candidats} />

@@ -15,6 +15,8 @@ const d = vi.hoisted(() => ({
     exclus: [],
     etendueAt: null,
   },
+  clients: [] as Array<{ id: string; siret: string | null }>,
+  facturesClient: 0,
 }));
 
 vi.mock("@/lib/prisma", () => {
@@ -31,7 +33,9 @@ vi.mock("@/lib/prisma", () => {
         findMany: vi.fn(async () => []),
       },
       presentationEtablissement: { findMany: vi.fn(async () => [d.etab]) },
-      client: { findMany: vi.fn(async () => []) },
+      client: { findMany: vi.fn(async () => d.clients) },
+      factureFormation: { count: vi.fn(async () => d.facturesClient) },
+      devis: { count: vi.fn(async () => 0), findMany: vi.fn(async () => []) },
       $transaction: async (f: (t: typeof tx) => unknown) => f(tx),
     },
   };
@@ -42,11 +46,16 @@ import { deciderAttribution, etendreALEntreprise } from "../etablissement-presen
 beforeEach(() => {
   vi.clearAllMocks();
   d.ligne = { candidats: ["p1", "p2"], decideeAt: null };
+  d.clients = [];
+  d.facturesClient = 0;
 });
 
 describe("décision « à attribuer »", () => {
   it("une candidate : écrite une fois, tracée", async () => {
-    expect(await deciderAttribution("f1", "p2", "admin")).toEqual({ ok: true });
+    expect(await deciderAttribution("f1", "p2", "admin")).toMatchObject({
+      ok: true,
+      ecartes: ["p1"],
+    });
     expect(d.maj).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { factureId: "f1", decideeAt: null },
@@ -55,14 +64,27 @@ describe("décision « à attribuer »", () => {
     );
     expect(d.trace).toHaveBeenCalledTimes(1);
   });
-  it("« aucun apporteur » : aucune = vrai", async () => {
-    await deciderAttribution("f1", null, "admin");
+  it("relecture 2, défaut 2 : « aucun apporteur » SANS motif est refusé", async () => {
+    expect((await deciderAttribution("f1", null, "admin")).ok).toBe(false);
+    expect(d.maj).not.toHaveBeenCalled();
+  });
+
+  it("« aucun apporteur » motivé : aucune = vrai ; tous les candidats sont écartés", async () => {
+    const r = await deciderAttribution(
+      "f1",
+      null,
+      "admin",
+      new Date(),
+      "Commande du siège de Paris, non déclarée.",
+    );
+    expect(r).toMatchObject({ ok: true, ecartes: ["p1", "p2"] });
     expect(d.maj).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({ presentationId: null, aucune: true }),
       }),
     );
   });
+
   it("une présentation NON candidate est refusée ; une commande déjà décidée aussi", async () => {
     expect((await deciderAttribution("f1", "p9", "admin")).ok).toBe(false);
     d.ligne = { candidats: ["p1"], decideeAt: new Date() };
@@ -78,5 +100,16 @@ describe("extension à toute l'entreprise (réserve a)", () => {
   });
   it("réussie : exclusions rendues (aucune ici)", async () => {
     expect(await etendreALEntreprise("p1", "admin")).toEqual({ ok: true, exclusions: [] });
+  });
+});
+
+describe("relecture 2, défaut 1 : une fiche client SANS SIRET déjà facturée est signalée", () => {
+  it("elle figure dans l'aperçu, mais jamais dans les SIRET exclus (ce n'est pas un SIRET)", async () => {
+    d.clients = [{ id: "c1", siret: null }];
+    d.facturesClient = 1;
+    const r = await etendreALEntreprise("p1", "admin");
+    expect(r).toMatchObject({ ok: true, exclusions: [{ siret: "fiche sans SIRET" }] });
+    const ecrit = (d.maj.mock.calls[0] as unknown as [{ data: { exclus: string[] } }])[0];
+    expect(ecrit.data.exclus).toEqual([]);
   });
 });

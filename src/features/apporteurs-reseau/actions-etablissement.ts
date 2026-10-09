@@ -10,6 +10,7 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
+import { notifierDecisionAttribution } from "./notification-attribution";
 import {
   deciderAttribution,
   etendreALEntreprise,
@@ -66,16 +67,23 @@ export async function deciderAttributionAction(
   const presentationId = brut === "aucune" ? null : brut;
   if (presentationId !== null && !UUID.test(presentationId))
     return { etat: "erreur", message: "Choisissez l'attribution." };
+  const motif = String(fd.get("motif") ?? "");
   try {
-    const r = await deciderAttribution(facture, presentationId, a.id);
+    const r = await deciderAttribution(facture, presentationId, a.id, new Date(), motif);
     if (!r.ok) return { etat: "erreur", message: r.message };
+    await notifierDecisionAttribution({
+      factureId: facture,
+      choisie: presentationId,
+      ecartes: r.ecartes,
+      motif: r.motif,
+    });
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
     return {
       etat: "ok",
       message:
         presentationId === null
-          ? "Aucun apporteur : aucune commission ne naîtra de cette commande."
-          : "Attribuée : la commission naît au prochain passage (dans l'heure).",
+          ? "Aucun apporteur : aucune commission ne naîtra de cette commande. Le(s) candidat(s) écarté(s) en sont informés avec le motif."
+          : "Attribuée : la commission naît au prochain passage (dans l'heure) ; l'apporteur est prévenu.",
     };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "decider-attribution" } });

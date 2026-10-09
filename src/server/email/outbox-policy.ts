@@ -146,6 +146,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "entreprise-prise-de-contact-apporteur": "Prise de contact avec une entreprise présentée",
   "apporteur-vigilance": "Apporteur : attestation URSSAF demandée",
   "apporteur-commande-signee": "Apporteur : une commande signée",
+  "apporteur-commande-non-attribuee":
+    "Apporteur : une commande ne lui est pas attribuée (motif, contestation ; art. 3.1)",
   "apporteur-attribution-confirmee": "Apporteur : attribution confirmée ou protection prolongée",
   "apporteur-releve": "Apporteur : commission facturée et autofacture",
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",

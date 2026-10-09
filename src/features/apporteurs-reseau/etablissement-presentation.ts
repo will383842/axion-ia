@@ -94,9 +94,10 @@ export function attributaireDeLaCommande<T extends Candidate>(
     (p) =>
       couvreToutLEntreprise(p.etablissement) &&
       !(siret && p.etablissement.exclus.includes(siret)) &&
-      // Une attribution d'avant la 2.6 couvre tout ; une extension, tout sauf ses exclus. Sans
-      // SIRET, seule une attribution d'avant la 2.6 (ou étendue sans exclusion) est sûre.
-      (siret !== null || p.etablissement.exclus.length === 0),
+      // Une attribution d'avant la 2.6 (ou d'un contrat signé avant) couvre tout. Une EXTENSION
+      // ne couvre jamais d'elle-même une commande sans SIRET (relecture de a1) : on ne sait pas
+      // quel établissement commande, ni s'il était déjà connu — elle passe « à attribuer ».
+      !(siret === null && p.etablissement.etendue),
   );
   if (toute) return { presentation: toute };
   if (parAnciennete.length > 0) return { aAttribuer: true, candidats: parAnciennete };
@@ -170,6 +171,9 @@ export async function enregistrerEtablissement(
 
 const STATUTS_FACTURE_EMISE = ["emise", "partiellement_payee", "en_retard", "payee"] as const;
 
+/** Libellé d'une fiche client connue sans SIRET (jamais un vrai SIRET : jamais stocké dans `exclus`). */
+export const FICHE_SANS_SIRET = "fiche sans SIRET";
+
 export interface Exclusion {
   siret: string;
   raison: string;
@@ -191,13 +195,14 @@ export async function exclusionsDeLExtension(
   });
   if (!p) return null;
   const exclusions = new Map<string, string>();
+  // Toutes les fiches du SIREN, AVEC ou SANS SIRET (relecture de a1) : une fiche sans SIRET déjà
+  // connue est signalée ; ses commandes sans SIRET passent « à attribuer » (jamais automatiques).
   const clients = await prisma.client.findMany({
-    where: { siren: p.siren, siret: { not: null } },
+    where: { siren: p.siren },
     select: { id: true, siret: true },
   });
   for (const c of clients) {
-    const siret = siretNet(c.siret);
-    if (!siret) continue;
+    const siret = siretNet(c.siret) ?? FICHE_SANS_SIRET;
     const [factures, devisRecents, devisSignes] = await Promise.all([
       prisma.factureFormation.count({
         where: {
@@ -277,7 +282,11 @@ export async function etendreALEntreprise(
   const fait = await prisma.$transaction(async (tx) => {
     const u = await tx.presentationEtablissement.updateMany({
       where: { presentationId, entreprise: false },
-      data: { entreprise: true, etendueAt: maintenant, exclus: exclusions.map((z) => z.siret) },
+      data: {
+        entreprise: true,
+        etendueAt: maintenant,
+        exclus: exclusions.map((z) => z.siret).filter((x) => siretNet(x) !== null),
+      },
     });
     if (u.count !== 1) return false;
     await tx.activityLog.create({
@@ -358,12 +367,19 @@ export async function ouvrirAAttribuer(e: {
  * Williams attribue la commande à l'une des présentations candidates, ou à aucune. Écriture
  * conditionnelle (une seule décision) et trace dans la même transaction.
  */
+export const MOTIF_MIN = 10;
+
 export async function deciderAttribution(
   factureId: string,
   presentationId: string | null,
   acteurId: string | null,
   maintenant: Date = new Date(),
-): Promise<{ ok: true } | { ok: false; message: string }> {
+  motifBrut = "",
+): Promise<{ ok: true; ecartes: string[]; motif: string } | { ok: false; message: string }> {
+  const motif = motifBrut.trim().slice(0, 1000);
+  // Art. 3.1 (relecture de a1) : « aucune attribution » est motivée et notifiée.
+  if (presentationId === null && motif.length < MOTIF_MIN)
+    return { ok: false, message: "Motivez la décision « aucun apporteur » (art. 3.1)." };
   const l = await prisma.commandeAAttribuer.findUnique({
     where: { factureId },
     select: { candidats: true, decideeAt: true },
@@ -389,10 +405,39 @@ export async function deciderAttribution(
         action: "commande.attribuee_a_la_main",
         targetType: "facture_formation",
         targetId: factureId,
-        changes: { presentationId, aucune: presentationId === null } as object,
+        changes: { presentationId, aucune: presentationId === null, motif } as object,
       },
     });
     return true;
   });
-  return fait ? { ok: true } : { ok: false, message: "La commande a changé : rechargez la page." };
+  if (!fait) return { ok: false, message: "La commande a changé : rechargez la page." };
+  return { ok: true, ecartes: l.candidats.filter((c) => c !== presentationId), motif };
+}
+
+/** Délai de rattachement manuel (contrat 2.6, art. 3.1) et relance interne. */
+export const DELAI_ATTRIBUTION_JOURS = 15;
+export const RELANCE_ATTRIBUTION_JOURS = 10;
+
+/** La relance due pour une commande à attribuer ouverte le `creeAt` : J+15, sinon J+10, ou rien. */
+export function relanceAttributionDue(creeAt: Date, maintenant: Date): 10 | 15 | null {
+  const jours = (maintenant.getTime() - creeAt.getTime()) / 86_400_000;
+  if (jours >= DELAI_ATTRIBUTION_JOURS) return 15;
+  if (jours >= RELANCE_ATTRIBUTION_JOURS) return 10;
+  return null;
+}
+
+/** Les commandes encore à attribuer (passage : relances J+10 et J+15). */
+export async function lireAAttribuerEnAttente(): Promise<
+  Array<{ factureId: string; siren: string; creeAt: Date }>
+> {
+  try {
+    return await prisma.commandeAAttribuer.findMany({
+      where: { decideeAt: null },
+      select: { factureId: true, siren: true, creeAt: true },
+      take: 500,
+    });
+  } catch (err) {
+    if (tableAbsente(err)) return [];
+    throw err;
+  }
 }
