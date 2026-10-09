@@ -468,6 +468,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "Williams (alerte interne)",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-commission-avoir-client": {
+    categorie: "recrutement",
+    quand:
+      "Passage horaire : la facture du client est annulée par un avoir alors que la commission était facturée et pas versée (art. 4.5)",
+    destinataire: "l'apporteur (et le parrain dont la part est annulée)",
+    source: "features/apporteurs-reseau/avoir-client.ts",
+  },
   "apporteur-manquement": {
     categorie: "recrutement",
     quand:

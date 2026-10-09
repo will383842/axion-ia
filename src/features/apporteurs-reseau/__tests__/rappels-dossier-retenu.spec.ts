@@ -12,6 +12,8 @@ const etat = vi.hoisted(() => ({
   dejaPartis: new Set<string>(),
 }));
 
+// Étape « avoirs-clients » (art. 4.5) : testée à part (avoir-client.spec.ts).
+vi.mock("../avoir-client", () => ({ reprendreApresAvoirsClients: vi.fn(async () => ({})) }));
 vi.mock("server-only", () => ({}));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({

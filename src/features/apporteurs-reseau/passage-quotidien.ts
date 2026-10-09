@@ -40,6 +40,7 @@ import { alerterDeclarationsSansReponse, annoncerAttribution } from "./attributi
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import { reprendreApresAvoirsClients } from "./avoir-client";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
@@ -189,6 +190,7 @@ type NomEtape =
   | "confirmation-tacite"
   | "terme"
   | "commissions"
+  | "avoirs-clients"
   | "autofacturation"
   | "vigilance"
   | "alerte-pieces-vigilance"
@@ -203,6 +205,7 @@ type NomEtape =
 const ETAPES_FACTURATION: readonly NomEtape[] = [
   "commissions",
   "realisation",
+  "avoirs-clients",
   "autofacturation",
   "avoirs-sans-piece",
 ];
@@ -241,6 +244,9 @@ async function passer(
     // Contrat 2.3 (art. 4.2) : une session de formation terminée rend la prestation « réalisée »,
     // juste avant l'autofacturation qui ne prend que les prestations réalisées.
     ["realisation", async () => void (await marquerRealiseesDepuisSessions(maintenant))],
+    // Art. 4.5 (essai réel du 09/10) : une facture client annulée ou réduite par un avoir réduit,
+    // annule, retient ou reprend la commission, AVANT que l'autofacturation ne la facture.
+    ["avoirs-clients", async () => void (await reprendreApresAvoirsClients(maintenant))],
     ["autofacturation", () => etapeAutofacturation(maintenant, bilan)],
     ["vigilance", () => etapeVigilance(maintenant, bilan)],
     [

@@ -53,7 +53,7 @@ export interface BilanManquement {
   avertissements: string[];
 }
 
-interface LigneAffaire {
+export interface LigneAffaire {
   id: string;
   apporteurId: string;
   statut: string;
@@ -63,7 +63,7 @@ interface LigneAffaire {
   parrainage: boolean;
 }
 
-type Piece = { r2Key: string; filename: string };
+export type Piece = { r2Key: string; filename: string };
 
 async function tracer(
   action: string,
@@ -92,10 +92,15 @@ async function tracer(
  * autofacture. L'avoir est une ligne de reprise rattachée à l'autofacture et déjà SOLDÉE (elle
  * n'est jamais déduite ailleurs) ; le virement du reste se calcule par complément.
  */
-async function retenir(
+/**
+ * Une commission FACTURÉE pas encore versée est RETENUE et NEUTRALISÉE par un avoir numéroté
+ * (art. 4.5). Sert au manquement (4.5 bis) et à l'avoir du client (`avoir-client.ts`).
+ */
+export async function retenir(
   l: LigneAffaire,
   motif: string,
   maintenant: Date,
+  periodeLibelle = `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
 ): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string }> {
   const montant = l.montantCents ?? 0;
   const [numeroAvoir] = await allouerNumerosAutofacture(
@@ -136,7 +141,7 @@ async function retenir(
   const pdf = await genererPdfAutofacture({
     apporteurId: l.apporteurId,
     numero: numeroAvoir!,
-    periodeLibelle: `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
+    periodeLibelle,
     commissionIds: [repriseId],
     totalCents: montant,
     maintenant,
