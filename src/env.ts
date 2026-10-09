@@ -395,8 +395,8 @@ export const env = createEnv({
     // distinct des sauvegardes. TOUTES facultatives : tant que le compartiment
     // ou `PARTAGES_SECRET` manque, la bibliothèque est ÉTEINTE (la console le
     // dit) — `src/server/partages/config.ts`. Ne casse pas `SKIP_ENV_VALIDATION`.
-    // Les clés d'accès dédiées sont recommandées (jeton R2 limité à ce seul
-    // compartiment) ; à défaut, `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY`.
+    // Les clés d'accès dédiées (jeton R2 limité à ce seul compartiment) sont
+    // OBLIGATOIRES : jamais de repli sur `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY`.
     R2_PARTAGES_BUCKET_NAME: z.string().optional(),
     R2_PARTAGES_ACCESS_KEY_ID: z.string().optional(),
     R2_PARTAGES_SECRET_ACCESS_KEY: z.string().optional(),

@@ -10,7 +10,9 @@
  *   - `R2_ACCOUNT_ID`                  — le compte Cloudflare (déjà posé) ;
  *   - `R2_PARTAGES_BUCKET_NAME`        — le compartiment DÉDIÉ (ex. `axion-ia-partages`) ;
  *   - `R2_PARTAGES_ACCESS_KEY_ID` + `R2_PARTAGES_SECRET_ACCESS_KEY` — un jeton
- *     limité à ce compartiment (recommandé) ; à défaut, les clés R2 générales ;
+ *     limité à ce compartiment, OBLIGATOIRE. Les clés R2 générales
+ *     (`R2_ACCESS_KEY_ID`/`R2_SECRET_ACCESS_KEY`, qui ouvrent les sauvegardes)
+ *     ne servent JAMAIS de repli (relecture sécurité, 2026-10-08) ;
  *   - `PARTAGES_SECRET`                — 32 caractères au moins (liens privés, L5).
  *
  * ⛔ Le compartiment des sauvegardes est REFUSÉ, même configuré par erreur :
@@ -44,12 +46,14 @@ function valeur(env: Env, cle: string): string | null {
 export function raisonExtinction(env: Env = process.env): string | null {
   const accountId = valeur(env, "R2_ACCOUNT_ID");
   const bucket = valeur(env, "R2_PARTAGES_BUCKET_NAME");
-  const cle = valeur(env, "R2_PARTAGES_ACCESS_KEY_ID") ?? valeur(env, "R2_ACCESS_KEY_ID");
-  const secretCle =
-    valeur(env, "R2_PARTAGES_SECRET_ACCESS_KEY") ?? valeur(env, "R2_SECRET_ACCESS_KEY");
+  const cle = valeur(env, "R2_PARTAGES_ACCESS_KEY_ID");
+  const secretCle = valeur(env, "R2_PARTAGES_SECRET_ACCESS_KEY");
   const secret = valeur(env, "PARTAGES_SECRET");
   if (!bucket) return "le compartiment de la bibliothèque n'est pas encore réglé";
-  if (!accountId || !cle || !secretCle) return "les accès au stockage en ligne manquent";
+  if (!cle || !secretCle) {
+    return "le jeton dédié au compartiment de la bibliothèque n'est pas encore réglé";
+  }
+  if (!accountId) return "les accès au stockage en ligne manquent";
   if (!secret || secret.length < 32) return "la clé des liens privés n'est pas encore réglée";
   const sauvegardes = [
     ...COMPARTIMENTS_INTERDITS,
@@ -68,9 +72,8 @@ export function configPartages(env: Env = process.env): ConfigPartages | null {
   return {
     accountId: valeur(env, "R2_ACCOUNT_ID")!,
     bucket: valeur(env, "R2_PARTAGES_BUCKET_NAME")!,
-    accessKeyId: (valeur(env, "R2_PARTAGES_ACCESS_KEY_ID") ?? valeur(env, "R2_ACCESS_KEY_ID"))!,
-    secretAccessKey: (valeur(env, "R2_PARTAGES_SECRET_ACCESS_KEY") ??
-      valeur(env, "R2_SECRET_ACCESS_KEY"))!,
+    accessKeyId: valeur(env, "R2_PARTAGES_ACCESS_KEY_ID")!,
+    secretAccessKey: valeur(env, "R2_PARTAGES_SECRET_ACCESS_KEY")!,
     secret: valeur(env, "PARTAGES_SECRET")!,
   };
 }

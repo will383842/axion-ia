@@ -394,14 +394,29 @@ export async function ouvrirEnvoiMorceauxR2(
   return r.UploadId;
 }
 
-/** URL signée d'envoi d'UN morceau (`PUT`, corps brut). */
+/** Plus gros morceau qu'accepte un envoi S3/R2 (5 Gio). */
+const TAILLE_MAX_MORCEAU_R2 = 5 * 1024 ** 3;
+
+/**
+ * URL signée d'envoi d'UN morceau (`PUT`, corps brut).
+ *
+ * 🔒 La signature porte la longueur EXACTE du morceau (`content-length` dans
+ * `X-Amz-SignedHeaders`) : R2 refuse un `PUT` d'une autre longueur. Sans elle,
+ * une adresse signée laisserait pousser n'importe quel volume sur un numéro de
+ * morceau (relecture sécurité, 2026-10-08, ADR 0065). Une taille invalide est
+ * refusée avant toute signature.
+ */
 export async function signerMorceauR2(
   cible: CibleR2,
   key: string,
   uploadId: string,
   numero: number,
+  taille: number,
   expiresInSeconds: number,
 ): Promise<string> {
+  if (!Number.isSafeInteger(taille) || taille < 1 || taille > TAILLE_MAX_MORCEAU_R2) {
+    throw new Error(`taille de morceau invalide : ${taille}`);
+  }
   return getSignedUrl(
     clientR2Cible(cible),
     new UploadPartCommand({
@@ -409,8 +424,9 @@ export async function signerMorceauR2(
       Key: key,
       UploadId: uploadId,
       PartNumber: numero,
+      ContentLength: taille,
     }),
-    { expiresIn: expiresInSeconds },
+    { expiresIn: expiresInSeconds, signableHeaders: new Set(["content-length"]) },
   );
 }
 
