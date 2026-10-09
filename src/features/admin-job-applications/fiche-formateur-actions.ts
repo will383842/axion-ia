@@ -174,16 +174,6 @@ export async function creerFicheFormateurDepuisCandidatureAction(
     };
   }
 
-  const statut = statutFormateurDepuisOffre(indices) ?? statutChoisi ?? null;
-  if (statut === null) {
-    return {
-      ok: false,
-      erreur: "statut-a-choisir",
-      message:
-        "Rien n'indique s'il s'agit d'un formateur salarié ou sous-traitant : choisissez le statut de la fiche.",
-    };
-  }
-
   let prenom: string;
   let nom: string;
   let email: string;
@@ -230,6 +220,17 @@ export async function creerFicheFormateurDepuisCandidatureAction(
       rattachee: true,
       trainerId: existante.id,
       lien: lienFiche(existante.id),
+    };
+  }
+
+  // Après le rattachement : une fiche qui existe déjà porte son propre statut.
+  const statut = statutFormateurDepuisOffre(indices) ?? statutChoisi ?? null;
+  if (statut === null) {
+    return {
+      ok: false,
+      erreur: "statut-a-choisir",
+      message:
+        "Rien n'indique s'il s'agit d'un formateur salarié ou sous-traitant : choisissez le statut de la fiche.",
     };
   }
 
