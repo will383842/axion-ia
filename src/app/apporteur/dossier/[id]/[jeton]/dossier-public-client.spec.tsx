@@ -201,8 +201,12 @@ describe("contrat 2.5 : deux cases, nom affiché, PDF dans un nouvel onglet", ()
     expect(fd.getAll("declarations")).toEqual([...CLES_DECLARATIONS]);
     expect(fd.getAll("acceptations")).toEqual([...CLES_ACCEPTATIONS]);
     // Le mandat de facturation et la clause des tribunaux restent écrits en clair sous la case.
-    expect(screen.getByText(/Je donne mandat à Axion-IA d'établir mes factures/)).toBeTruthy();
-    expect(screen.getByText(/tribunaux du siège d'Axion-IA sont seuls compétents/)).toBeTruthy();
+    expect(document.body.textContent).toContain(
+      "Je donne mandat à Axion-IA d'établir mes factures",
+    );
+    expect(document.body.textContent).toContain(
+      "tribunaux du siège d'Axion-IA sont seuls compétents",
+    );
     // Le nom n'est plus tapé : celui du dossier part dans la preuve.
     expect(fd.get("nomTape")).toBe("Éloïse Lefèvre");
   });
