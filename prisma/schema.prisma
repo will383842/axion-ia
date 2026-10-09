@@ -15372,6 +15372,18 @@ model ApporteurReseauQualite {
   @@map("apporteur_reseau_qualite")
 }
 
+/// Contrat 2.7 (art. 3.2 et 3.7) : la personne qui a RENCONTRÉ l'entreprise pour le compte de
+/// l'apporteur (un associé, un salarié), quand ce n'est pas lui. Facultative : absente = l'apporteur
+/// lui-même. Nom CHIFFRÉ (`encryptPii`). Table séparée, sans clé étrangère (fenêtre app/worker).
+/// rgpd: dossier-client
+model PresentationRencontre {
+  presentationId String   @id @map("presentation_id") @db.Uuid
+  personne       String   @db.Text
+  majAt          DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("presentation_rencontre")
+}
+
 enum TypePieceApporteur {
   identite
   rib

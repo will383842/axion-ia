@@ -185,6 +185,13 @@ export function DeclarationEntreprise({
             type="date"
             max={aujourdhui}
           />
+          <Champ
+            uid={uid}
+            nom="personneRencontre"
+            libelle={T.rencontre}
+            longueur={150}
+            required={false}
+          />
         </fieldset>
         {erreur ? (
           <p

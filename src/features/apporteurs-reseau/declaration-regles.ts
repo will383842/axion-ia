@@ -69,6 +69,12 @@ export function schemaDeclaration(maintenant: Date) {
         (v) => dateContactValide(v, maintenant),
         "Indiquez la date du contact (pas dans le futur).",
       ),
+    // Contrat 2.7 (art. 3.2, 3.7) : FACULTATIF, la personne qui a rencontré l'entreprise pour le
+    // compte de l'apporteur (associé, salarié). Vide = l'apporteur lui-même.
+    personneRencontre: z
+      .string()
+      .trim()
+      .max(150, "Le nom de la personne qui a rencontré l'entreprise est trop long."),
   });
 }
 
@@ -88,6 +94,7 @@ export function validerDeclaration(
     "personneEmail",
     "personneTelephone",
     "dateContact",
+    "personneRencontre",
   ]) {
     const v = brut[k];
     entree[k] = typeof v === "string" ? v : "";

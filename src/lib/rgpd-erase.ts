@@ -2291,5 +2291,20 @@ export async function eraseReseauApporteurForEmail(
   } catch {
     // Table pas encore migrée (fenêtre app/worker) : rien à effacer.
   }
+  // Contrat 2.7 (art. 3.2) : le nom de la personne qui a rencontré l'entreprise pour l'apporteur
+  // (associé, salarié) suit sa fiche : remplacé, la ligne reste (aucune suppression).
+  try {
+    const siennes = await prisma.presentationEntreprise.findMany({
+      where: { apporteurId: a.id },
+      select: { id: true },
+    });
+    if (siennes.length)
+      await prisma.presentationRencontre.updateMany({
+        where: { presentationId: { in: siennes.map((p) => p.id) } },
+        data: { personne: ERASED_PLACEHOLDER },
+      });
+  } catch {
+    // Table pas encore migrée (fenêtre app/worker) : rien à effacer.
+  }
   return { apporteur: "efface", presentationsAnonymisees: presentations.count };
 }

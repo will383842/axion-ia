@@ -72,6 +72,8 @@ export interface ExportReseauApporteur {
       readonly entreprise: string;
       readonly presenteeLe: Date;
       readonly statut: string;
+      /** Contrat 2.7 (art. 3.2) : la personne qui a rencontré l'entreprise pour l'apporteur. */
+      readonly rencontreePar: string | null;
     }>;
   };
   readonly presenteePar: ReadonlyArray<{
@@ -163,9 +165,25 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
   const siennes = a
     ? await prisma.presentationEntreprise.findMany({
         where: { apporteurId: a.id },
-        select: { denomination: true, recueAt: true, statut: true },
+        select: { id: true, denomination: true, recueAt: true, statut: true },
       })
     : [];
+  // Contrat 2.7 (art. 3.2) : la personne qui a rencontré l'entreprise pour l'apporteur (nom chiffré).
+  const rencontres = new Map<string, string>();
+  if (siennes.length) {
+    try {
+      const ls = await prisma.presentationRencontre.findMany({
+        where: { presentationId: { in: siennes.map((p) => p.id) } },
+        select: { presentationId: true, personne: true },
+      });
+      for (const l of ls) {
+        const nom = decryptPii(l.personne);
+        if (nom) rencontres.set(l.presentationId, nom);
+      }
+    } catch {
+      // Table pas encore migrée (fenêtre app/worker) : rien à rendre.
+    }
+  }
   return {
     apporteur: a
       ? {
@@ -220,6 +238,7 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
             entreprise: p.denomination,
             presenteeLe: p.recueAt,
             statut: p.statut,
+            rencontreePar: rencontres.get(p.id) ?? null,
           })),
         }
       : null,

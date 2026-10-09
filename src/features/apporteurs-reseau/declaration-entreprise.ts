@@ -31,6 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
 import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
+import { enregistrerPersonneRencontre } from "./personne-rencontre";
 import { libelleProrata, lireProratas } from "./prorata";
 import {
   etatPrestation,
@@ -158,6 +159,8 @@ export async function declarerEntreprise(
     maintenant,
   );
   if (!r.ok) return { ok: false, message: MESSAGE_NEUTRE };
+  // Art. 3.2 : la personne qui a rencontré l'entreprise, si ce n'est pas l'apporteur.
+  if (d.personneRencontre) await enregistrerPersonneRencontre(r.id, d.personneRencontre);
 
   await prevenirWilliams(r.id, d.denomination, nomComplet(apporteur.prenom, apporteur.nom));
   return { ok: true };

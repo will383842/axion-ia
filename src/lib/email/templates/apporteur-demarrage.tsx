@@ -91,6 +91,8 @@ interface Payload {
   nomFamille?: string;
   /** Confirmation seulement : prénom et nom de l'apporteur (art. 3.2 : ils sont communiqués). */
   nomApporteur?: string;
+  /** Confirmation seulement : la personne qui a rencontré l'entreprise pour l'apporteur (2.7). */
+  personneRencontre?: string;
   /** Quelques mots de Will, ajoutés en haut du message. Facultatif. */
   motPersonnel?: string;
   /** Lien personnel du dossier en ligne. */
@@ -232,8 +234,11 @@ export const COPY_DEMARRAGE = {
       "Quelques mots sur Axion-IA, et la possibilité d'en parler 30 minutes si le sujet vous intéresse.",
     bonjour: (civ: string | null, nom: string | null, prenom: string) =>
       civ && nom ? `Bonjour ${civ} ${nom},` : bonjour(prenom),
-    presentation: (a: string, e: string | null) =>
-      `${a || "Une personne de notre réseau"} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
+    // Contrat 2.7 (art. 3.2) : quand l'apporteur a été représenté (associé, salarié), la personne
+    // rencontrée est nommée ; sans elle, le texte est exactement celui d'avant. Jamais un mot sur
+    // une vérification de l'apporteur.
+    presentation: (a: string, e: string | null, r?: string | null) =>
+      `${a || "Une personne de notre réseau"}${r ? `, qui a échangé avec vous par l'intermédiaire de ${r},` : ""} m'a parlé de votre intérêt pour l'intelligence artificielle${e ? ` chez ${e}` : ""}, et je me permets de vous écrire pour me présenter.`,
     quiSommesNous:
       "Je dirige Axion-IA, un cabinet qui aide les entreprises à tirer parti de l'IA : former les équipes, repérer ce qui peut être automatisé, puis le mettre en place, de bout en bout.",
     proposition:
@@ -677,7 +682,11 @@ export function EntrepriseConfirmationApporteurEmail({ locale, payload }: Props)
       ) : (
         <>
           <Text style={emailStyles.paragraphStyle}>
-            {t.presentation(nomApporteur, texteOuNull(p.entreprise))}
+            {t.presentation(
+              nomApporteur,
+              texteOuNull(p.entreprise),
+              texteOuNull(p.personneRencontre),
+            )}
           </Text>
           <Text style={emailStyles.paragraphStyle}>{t.quiSommesNous}</Text>
           <Text style={emailStyles.paragraphStyle}>{t.proposition}</Text>
@@ -1317,7 +1326,11 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
     case "entreprise-prise-de-contact-apporteur": {
       const t = COPY_DEMARRAGE.confirmation;
       return avecMot([
-        t.presentation(texteOuNull(p.nomApporteur) ?? "", texteOuNull(p.entreprise)),
+        t.presentation(
+          texteOuNull(p.nomApporteur) ?? "",
+          texteOuNull(p.entreprise),
+          texteOuNull(p.personneRencontre),
+        ),
         t.quiSommesNous,
         t.proposition,
       ]);

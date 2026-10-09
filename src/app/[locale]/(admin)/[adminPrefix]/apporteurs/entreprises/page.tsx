@@ -31,6 +31,7 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager, peutOuvrirDossierApporteur } from "@/server/auth/habilitations";
 import { coordonneesAffichables } from "@/features/apporteurs-reseau/coordonnees-presentees";
+import { lirePersonnesRencontrees } from "@/features/apporteurs-reseau/personne-rencontre";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +83,10 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
     lireApporteursSignes(),
   ]);
   const commissions = await lireCommissionsDesPresentations(lignes.map((p) => p.id));
+  // Contrat 2.7 (art. 3.2) : la personne qui a rencontré l'entreprise pour l'apporteur.
+  const rencontres = voitPii
+    ? await lirePersonnesRencontrees(lignes.map((p) => p.id))
+    : new Map<string, string>();
   const peutMarquer = peutEngager(acces.role, "facturer");
   const retourPrestation =
     typeof sp.prestation === "string"
@@ -161,6 +166,7 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
               voitPii={voitPii}
               aujourdhui={dayKeyInParis(maintenant)}
               commissions={commissions.get(p.id) ?? []}
+              rencontre={rencontres.get(p.id) ?? null}
               peutMarquer={peutMarquer}
               onglet={onglet}
             />
@@ -178,6 +184,7 @@ function Carte({
   voitPii,
   aujourdhui,
   commissions,
+  rencontre,
   peutMarquer,
   onglet,
 }: {
@@ -188,6 +195,8 @@ function Carte({
   voitPii: boolean;
   aujourdhui: string;
   commissions: ReadonlyArray<CommissionDeLaPresentation>;
+  /** Art. 3.2 : la personne qui a rencontré l'entreprise, si ce n'est pas l'apporteur. */
+  rencontre: string | null;
   peutMarquer: boolean;
   onglet: string;
 }) {
@@ -217,6 +226,12 @@ function Carte({
           </dd>
           <dt className="text-[color:var(--color-admin-fg-muted)]">✉️</dt>
           <dd>{coordonneesAffichables(p, voitPii)}</dd>
+          {rencontre ? (
+            <>
+              <dt className="text-[color:var(--color-admin-fg-muted)]">🤝</dt>
+              <dd>Rencontrée par {rencontre} (pour l&apos;apporteur)</dd>
+            </>
+          ) : null}
           {p.besoin ? (
             <>
               <dt className="text-[color:var(--color-admin-fg-muted)]">🎯</dt>
