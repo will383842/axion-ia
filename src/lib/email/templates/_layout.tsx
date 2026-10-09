@@ -80,7 +80,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
 // SSOT du pied de page légal — module PUR, valeurs figées au Kbis. Remplace les
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
@@ -108,16 +108,22 @@ export function setReviewStats(stats: ReviewStats): void {
 }
 
 /**
- * Lien « Ne plus recevoir de sollicitations commerciales » du destinataire
- * courant — audit e-mails 2026-09-02, lot 1b. Posé par `renderEmailTemplate`
- * quand il connaît le destinataire, lu par le pied de page des familles B, C
- * et D. Même mécanisme que les statistiques d'avis : un contexte de rendu, pour
- * ne pas faire porter 44 gabarits par une prop qu'aucun d'eux ne décide.
+ * Données PROPRES À UN RENDU — le lien « Ne plus recevoir de sollicitations commerciales »
+ * du destinataire courant (audit e-mails 2026-09-02, lot 1b).
+ *
+ * 🔴 2026-10-09 (relecture sécurité, a1) : ce lien vivait dans une variable de MODULE posée
+ * par `renderEmailTemplate` avant plusieurs `await` (statistiques d'avis, rendu HTML, rendu
+ * texte). Le worker rend deux e-mails à la fois (`concurrency: 2`) : l'e-mail de A pouvait
+ * partir avec le lien de B, dont le jeton porte l'ADRESSE en clair (base64url) — fuite de
+ * l'adresse, et opposition possible au nom de B. Désormais un CONTEXTE React créé PAR RENDU,
+ * posé autour du gabarit par `renderEmailTemplate` et lu ici : aucun rendu ne voit celui d'un
+ * autre. ⛔ Ne jamais remettre une donnée propre au destinataire dans une variable de module.
+ * Sans fournisseur (aperçus, tests de gabarit seul) : aucun lien.
  */
-let CURRENT_OPPOSITION_HREF: string | null = null;
-export function setOppositionHref(href: string | null): void {
-  CURRENT_OPPOSITION_HREF = href;
+export interface DonneesRenduEmail {
+  readonly oppositionHref: string | null;
 }
+export const ContexteRenduEmail = createContext<DonneesRenduEmail>({ oppositionHref: null });
 
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -780,6 +786,7 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
+  const { oppositionHref } = useContext(ContexteRenduEmail);
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
@@ -1087,11 +1094,11 @@ export function EmailLayout({
                   destinataire est connu du rendu, pas du gabarit. Portée écrite
                   dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
                   qui clique garde sa convocation, un client garde sa facture. */}
-              {famille !== "A" && !unsubscribeHref && CURRENT_OPPOSITION_HREF && (
+              {famille !== "A" && !unsubscribeHref && oppositionHref && (
                 <>
                   <br />
                   <Link
-                    href={CURRENT_OPPOSITION_HREF}
+                    href={oppositionHref}
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
                     {t.opposition}
