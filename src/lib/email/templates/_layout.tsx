@@ -119,6 +119,18 @@ export function setOppositionHref(href: string | null): void {
   CURRENT_OPPOSITION_HREF = href;
 }
 
+/**
+ * « Ouvrir mon espace » sous chaque e-mail adressé à un APPORTEUR (décision de Will,
+ * 2026-10-09) : le dernier e-mail reçu suffit à retrouver son espace. Posé par
+ * `renderEmailTemplate` depuis `payload.lienEspace` (ajouté par `envoyer()` des apporteurs) ;
+ * même mécanisme que le lien d'opposition, pour ne pas faire porter la prop à chaque gabarit.
+ * L'URL porte le jeton : jamais recopiée en clair.
+ */
+let CURRENT_LIEN_ESPACE: string | null = null;
+export function setLienEspace(href: string | null): void {
+  CURRENT_LIEN_ESPACE = href;
+}
+
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
@@ -889,6 +901,27 @@ export function EmailLayout({
                     {cta.href}
                   </Text>
                 )}
+              </Section>
+            )}
+            {CURRENT_LIEN_ESPACE && cta?.href !== CURRENT_LIEN_ESPACE && (
+              <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
+                <Link
+                  href={CURRENT_LIEN_ESPACE}
+                  style={{
+                    display: "inline-block",
+                    border: `2px solid ${C.orange}`,
+                    borderRadius: "10px",
+                    padding: "10px 18px",
+                    color: C.orangeDeep,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Ouvrir mon espace d&apos;apporteur
+                </Link>
+                <Text style={{ margin: "8px 0 0 0", fontSize: "13px", color: C.muted }}>
+                  Ce lien vous est personnel : ne transférez pas cet e-mail.
+                </Text>
               </Section>
             )}
             {bandeau && (afficherLockupQualiopi || showReviews) && (

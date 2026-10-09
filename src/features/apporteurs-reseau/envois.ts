@@ -16,6 +16,7 @@ import type { EmailJobName } from "@/server/queue/types";
 
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
+import { urlDossier } from "./jeton";
 import { GABARITS_ARGENT, retraitDe } from "./retrait";
 
 export type GabaritApporteur =
@@ -167,6 +168,31 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
   }
 }
 
+/**
+ * « Ouvrir mon espace » (décision de Will, 2026-10-09) : chaque e-mail adressé à l'apporteur
+ * porte son lien personnel, que le gabarit de base affiche en bas de la carte. Le dernier
+ * e-mail reçu suffit donc à retrouver son espace. Jamais pour un dossier refusé (le lien
+ * mène à une page neutre) ; fail-soft : sans lien, l'e-mail part tel quel.
+ */
+async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
+  if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
+    return e.payload;
+  }
+  if (typeof e.payload.lienEspace === "string") return e.payload;
+  try {
+    const apporteurId = await apporteurDeLEnvoi(e);
+    if (!apporteurId) return e.payload;
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { versionLien: true },
+    });
+    const lien = a ? urlDossier(apporteurId, a.versionLien) : null;
+    return lien ? { ...e.payload, lienEspace: lien } : e.payload;
+  } catch {
+    return e.payload;
+  }
+}
+
 export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
   try {
     // 🔴 Retiré du réseau (2026-10-07) : seuls les e-mails liés à l'ARGENT lui parviennent
@@ -178,7 +204,8 @@ export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
     }
     const jobId = e.jobId ? e.jobId.replace(/:/g, "-") : undefined;
     if (jobId) await retirerEnvoiEchoue(jobId);
-    const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", e.payload, {
+    const payload = await avecLienEspace(e);
+    const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", payload, {
       entityType: e.entityType,
       entityId: e.entityId,
       ...(jobId ? { jobId } : {}),

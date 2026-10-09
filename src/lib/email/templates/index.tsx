@@ -4,7 +4,7 @@
 // `renderEmailTemplate(name, locale, payload)` retourne { subject, html, text }.
 
 import { render } from "@react-email/render";
-import { setOppositionHref, type FamilleEmail } from "./_layout";
+import { setLienEspace, setOppositionHref, type FamilleEmail } from "./_layout";
 import { urlOpposition } from "@/server/email/opposition-jeton";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
@@ -663,6 +663,12 @@ export async function renderEmailTemplate(
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
   setOppositionHref(contexte.destinataire ? urlOpposition(contexte.destinataire) : null);
+  // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
+  setLienEspace(
+    name.startsWith("apporteur-") && typeof payload.lienEspace === "string"
+      ? payload.lienEspace
+      : null,
+  );
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
   // de tous les templates, sans changer chaque template. On pose la valeur AVANT
   // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
