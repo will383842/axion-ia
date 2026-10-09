@@ -64,6 +64,7 @@ import {
   type MotifOubli,
 } from "@/content/recrutement/oubli";
 import { STATUTS_OUVERTS } from "@/content/recrutement/statuts";
+import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
 
 /**
@@ -138,6 +139,9 @@ export async function listerDossiersEnSommeil(
       lastActivityAt: true,
       firstName: true,
       lastName: true,
+      offer: {
+        select: { slug: true, titleFr: true, employmentType: true, secondaryEmploymentType: true },
+      },
     },
   });
 
@@ -146,6 +150,10 @@ export async function listerDossiersEnSommeil(
   const dossiers: DossierEnSommeil[] = [];
 
   for (const l of lignes) {
+    // Formateur FREELANCE (lot U2) : un vivier de sous-traitants, pas un
+    // recrutement en attente — hors de l'écran et de l'alerte. Écarté ici et non
+    // en SQL : la requête borne, elle ne décide pas.
+    if (estCandidatureFormateurFreelance(l)) continue;
     const motif = motifDOubli(l, maintenant);
     if (motif === null) continue;
     parMotif[motif] += 1;
