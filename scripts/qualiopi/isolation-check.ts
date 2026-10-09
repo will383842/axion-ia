@@ -163,6 +163,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    du 07/10) : il émet `devis.emis` et `devis.signe` vers Partners, et lit le prix public UNITAIRE
   //    d'une ligne par `resolveOffrePriceEur`, la source qui pré-remplit le PU HT du devis, et rien d'autre.
   "src/server/partners-sync/producteurs/devis.ts",
+  // Passerelle « Recrutée → fiche formateur » (L10, paquet 4a des candidatures unifiées) : la fiche
+  //    candidature crée la fiche formateur par `createTrainerAction`, l'action EXISTANTE, plutôt que
+  //    d'écrire une seconde création de `Trainer` hors du domaine. Elle n'importe que cette action.
+  "src/features/admin-job-applications/fiche-formateur-actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
