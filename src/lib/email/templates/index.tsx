@@ -4,7 +4,8 @@
 // `renderEmailTemplate(name, locale, payload)` retourne { subject, html, text }.
 
 import { render } from "@react-email/render";
-import { ContexteRenduEmail, type FamilleEmail } from "./_layout";
+import { type FamilleEmail } from "./_layout";
+import { avecDonneesRendu } from "./rendu-contexte";
 import { urlOpposition } from "@/server/email/opposition-jeton";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
@@ -662,24 +663,23 @@ export async function renderEmailTemplate(
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
-  // Données propres à CE rendu (lien d'opposition du destinataire) : un contexte React créé
-  // ici, jamais une variable de module — deux rendus peuvent s'entrelacer (`await`).
+  // Données propres à CE rendu (lien d'opposition du destinataire) : un stockage ouvert pour
+  // ce seul appel (AsyncLocalStorage), jamais une variable de module — deux rendus peuvent
+  // s'entrelacer (`await`) dans le worker.
   const donnees = {
     oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
   };
-  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
-  // de tous les templates, sans changer chaque template. On pose la valeur AVANT
-  // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
-  const reviewStats = await getPublishedReviewStats();
-  const element = (
-    <ContexteRenduEmail.Provider value={donnees}>
-      <Component locale={locale} payload={payload} />
-    </ContexteRenduEmail.Provider>
-  );
-  setReviewStats(reviewStats);
-  const html = await render(element, { pretty: false });
-  setReviewStats(reviewStats);
-  const text = await render(element, { plainText: true });
-  const famille = familleDuHtml(html);
-  return { subject, html, text, famille };
+  return avecDonneesRendu(donnees, async () => {
+    // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
+    // de tous les templates, sans changer chaque template (identiques pour tous les
+    // destinataires : aucune donnée personnelle).
+    const reviewStats = await getPublishedReviewStats();
+    const element = <Component locale={locale} payload={payload} />;
+    setReviewStats(reviewStats);
+    const html = await render(element, { pretty: false });
+    setReviewStats(reviewStats);
+    const text = await render(element, { plainText: true });
+    const famille = familleDuHtml(html);
+    return { subject, html, text, famille };
+  });
 }
