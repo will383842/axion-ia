@@ -19,6 +19,7 @@ import type { StatutCommissionApporteur } from "../../../prisma/generated/client
 
 import {
   construireDonneesAutofacture,
+  encaissementIntegral,
   totalTtcPieceCents,
   type ApporteurPourAutofacture,
 } from "./autofacture-donnees";
@@ -689,6 +690,34 @@ export async function originesDesReprises(
 }
 
 /**
+ * Encaissement INTÉGRAL de la commande de chaque facture-clé (art. 4.0) : le dernier paiement des
+ * factures du même devis (une facture sans devis est sa propre commande). `null` = non datable.
+ */
+export async function encaissementsIntegraux(
+  factureIds: readonly string[],
+): Promise<Map<string, Date | null>> {
+  const out = new Map<string, Date | null>();
+  const ids = [...new Set(factureIds)];
+  if (ids.length === 0) return out;
+  const cles = await prisma.factureFormation.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, devisId: true, statut: true, avoirDeId: true, paidAt: true },
+  });
+  const devisIds = [...new Set(cles.map((f) => f.devisId).filter((d): d is string => !!d))];
+  const duDevis = devisIds.length
+    ? await prisma.factureFormation.findMany({
+        where: { devisId: { in: devisIds } },
+        select: { devisId: true, statut: true, avoirDeId: true, paidAt: true },
+      })
+    : [];
+  for (const f of cles) {
+    const membres = f.devisId ? duDevis.filter((x) => x.devisId === f.devisId) : [f];
+    out.set(f.id, encaissementIntegral(membres));
+  }
+  return out;
+}
+
+/**
  * Génère le PDF de l'autofacture (gabarit des formateurs, vendeur = l'apporteur), le dépose
  * sur R2 et rend sa clé. Rend `null` (log + Sentry) à la moindre difficulté : l'appelant
  * n'enregistre alors AUCUNE facturation.
@@ -730,12 +759,22 @@ export async function genererPdfAutofacture(e: {
           prixPublicHtCents: true,
           factureHtCents: true,
           statut: true,
+          factureId: true,
+          prestationRealiseeAt: true,
         },
         orderBy: { creeAt: "asc" },
       }),
     ]);
     if (!apporteur) throw new Error("apporteur introuvable");
     const origines = await originesDesReprises(commissions);
+    // Art. 4.0 (contrat 2.7) : jour d'acquisition = plus tardif de l'encaissement intégral et de la
+    // réalisation. Seules les autofactures émises à partir d'ici le portent : les PDF déjà émis
+    // sont stockés (R2) et ne sont jamais régénérés.
+    const encaissements = e.avoir
+      ? new Map<string, Date | null>()
+      : await encaissementsIntegraux(
+          commissions.filter((l) => l.statut !== "reprise").map((l) => l.factureId),
+        );
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -765,12 +804,24 @@ export async function genererPdfAutofacture(e: {
         ...l,
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
+        encaisseeAt: encaissements.get(l.factureId) ?? null,
       })),
       organisme: await getOrganismeIdentite(),
       totalAttenduCents: e.totalCents,
       ...(e.avoir ? { avoir: e.avoir } : {}),
     });
     if (!construit.ok) throw new Error(`autofacture non établie : ${construit.motif}`);
+    if (construit.datesManquantes.length > 0) {
+      // Comportement sûr : la pièce garde le jour d'émission (jamais plus tôt que l'acquisition)
+      // et l'écart est signalé, pour une correction à la main si besoin.
+      console.warn(
+        `[reseau-apporteurs] autofacture ${e.numero} : jour d'acquisition inconnu (encaissement ou réalisation) pour ${construit.datesManquantes.join(", ")} ; date de la prestation = jour d'émission.`,
+      );
+      signalerErreurReseau(
+        "autofacture : jour d'acquisition inconnu",
+        new Error(`${e.numero} : ${construit.datesManquantes.join(", ")}`),
+      );
+    }
     const { buffer } = await renderPdfToBuffer(
       React.createElement(AutofactureHonorairesPdf, { data: construit.data }),
     );
