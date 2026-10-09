@@ -72,13 +72,13 @@ interface PageCopy {
     intro?: string;
     levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
   };
-  /** Optionnel — 3 avis représentatifs distincts (rendus par ProductPageTemplate). */
+  /** Optionnel — VRAIS témoignages uniquement (nominatifs, accord écrit). Aucun
+   * aujourd'hui : les citations inventées ont été supprimées le 2026-10-09. */
   testimonials?: ReadonlyArray<{
     id: string;
     quote: string;
     author: string;
     role: string;
-    /** Portrait Unsplash réutilisé (crédit photographe obligatoire). */
     avatar?: string;
     photographer?: string;
     photographerUrl?: string;
@@ -310,7 +310,6 @@ function makeFr(args: {
   maturityIntro?: string;
   ctaBlockTitle?: string;
   ctaBlockDescription?: string;
-  testimonials?: PageCopy["testimonials"];
   why?: PageCopy["why"];
 }): PageCopy {
   return {
@@ -403,7 +402,6 @@ function makeFr(args: {
         },
       ],
     },
-    ...(args.testimonials ? { testimonials: args.testimonials } : {}),
     ...(args.why ? { why: args.why } : {}),
     metaSeo: {
       title: `${args.title} · Implémentation IA · Axion-IA`,
