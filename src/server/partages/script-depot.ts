@@ -13,7 +13,10 @@
  *      → envoi des morceaux de 64 Mio en `PUT` direct vers le stockage, trois à la
  *      fois, chaque morceau retenté trois fois → `terminer` ;
  *   3. une coupure : « Envoyer » une seconde fois appelle `reprendre`, et seuls
- *      les morceaux manquants repartent.
+ *      les morceaux manquants repartent. Si la reprise échoue (réseau, 429,
+ *      5xx), l'envoi est gardé pour le clic suivant ; seul un refus du serveur
+ *      (400/404 : envoi introuvable ou terminé) en ouvre un nouveau, et le
+ *      serveur plafonne les envois par lien (`DEPOTS_PAR_LIEN_MAX`).
  *
  * Aucun cookie (`credentials: "omit"`), aucun référent (`no-referrer`) : le jeton
  * du lien ne quitte jamais l'adresse de la page.
@@ -65,10 +68,15 @@ export const SCRIPT_DEPOT = String.raw`(function () {
       credentials: "omit",
       cache: "no-store",
       referrerPolicy: "no-referrer"
-    }).then(function (r) { return r.json(); }, function () {
-      return { ok: false, erreur: "La connexion a été interrompue." };
-    }).then(null, function () {
-      return { ok: false, erreur: "Le service ne répond pas pour le moment." };
+    }).then(function (r) {
+      return r.json().then(function (j) {
+        if (j && typeof j === "object") j.statut = r.status;
+        return j;
+      }, function () {
+        return { ok: false, statut: r.status, erreur: "Le service ne répond pas pour le moment." };
+      });
+    }, function () {
+      return { ok: false, statut: 0, erreur: "La connexion a été interrompue." };
     });
   }
   function exiger(r) {
@@ -95,7 +103,14 @@ export const SCRIPT_DEPOT = String.raw`(function () {
     if (!courant || courant.fichier !== fichier) return commencer(fichier);
     var id = courant.id;
     return appeler({ etape: "reprendre", fichierId: id }).then(function (r) {
-      if (!r || !r.ok) { courant = null; return commencer(fichier); }
+      if (!r || !r.ok) {
+        // Le serveur dit que cet envoi ne se reprend plus (introuvable, terminé,
+        // expiré) : on en ouvre UN nouveau — le serveur en borne le nombre par lien.
+        if (r && (r.statut === 400 || r.statut === 404)) { courant = null; return commencer(fichier); }
+        // Coupure, trop de demandes, panne passagère : l'envoi en cours est
+        // GARDÉ, le prochain clic le reprend. Jamais un nouvel envoi par échec.
+        exiger(r);
+      }
       return { id: id, tailleMorceau: r.tailleMorceau, n: r.nombreMorceaux, recus: r.recus || [] };
     });
   }

@@ -183,6 +183,99 @@ describe("le script de dépôt", () => {
     expect(puts.map((p) => [p.url, p.corps])).toEqual([["https://r2/2", 4]]);
   });
 
+  /**
+   * 🔴 Relecture 2026-10-09 : une reprise qui ÉCHOUE ne doit pas ouvrir un
+   * nouvel envoi à chaque fois. Coupure réseau, « trop de demandes » ou panne
+   * passagère : l'envoi en cours est GARDÉ, et le clic suivant le reprend. Seul
+   * un refus du serveur (envoi introuvable, terminé, expiré) en ouvre UN
+   * nouveau — et le serveur en borne le nombre par lien.
+   */
+  async function coupureAuMorceau2(): Promise<{
+    form: HTMLFormElement;
+    etat: HTMLElement;
+    surReprendre: { reponse: (() => Promise<Response>) | null };
+  }> {
+    const { form, champ, etat } = monter();
+    choisir(
+      champ,
+      new File([new Uint8Array([0, 0, 0, 0x20, 0x66, 0x74, 0x79, 0x70, 1, 2])], "v.mp4"),
+    );
+    const fetchOrigine = globalThis.fetch as unknown as (
+      u: string,
+      i: RequestInit,
+    ) => Promise<Response>;
+    const surReprendre: { reponse: (() => Promise<Response>) | null } = { reponse: null };
+    let panne = true;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (u: string, i: RequestInit) => {
+        if (i.method === "PUT" && u.endsWith("/2") && panne) {
+          appels.push({ url: u, methode: "PUT", corps: (i.body as Blob).size });
+          return new Response(null, { status: 500 });
+        }
+        if (i.method === "POST" && surReprendre.reponse) {
+          const corps = JSON.parse(String(i.body)) as { etape: string };
+          if (corps.etape === "reprendre") {
+            appels.push({ url: u, methode: "POST", corps });
+            return surReprendre.reponse();
+          }
+        }
+        return fetchOrigine(u, i);
+      }),
+    );
+    form.dispatchEvent(new Event("submit", { cancelable: true }));
+    await attendreFin(etat, /Cliquez à nouveau/);
+    panne = false;
+    appels = [];
+    return { form, etat, surReprendre };
+  }
+  const etapesPost = () =>
+    appels.filter((a) => a.methode === "POST").map((a) => (a.corps as { etape: string }).etape);
+  const json = (statut: number, corps: unknown) => async () =>
+    new Response(JSON.stringify(corps), {
+      status: statut,
+      headers: { "Content-Type": "application/json" },
+    });
+
+  it.each([
+    [
+      "coupure réseau",
+      async (): Promise<Response> => {
+        throw new TypeError("Failed to fetch");
+      },
+    ],
+    ["trop de demandes (429)", json(429, { ok: false, erreur: "Trop de demandes." })],
+    ["panne passagère (503)", json(503, { ok: false, erreur: "Indisponible." })],
+  ])(
+    "reprise en échec (%s) → aucun nouvel envoi ; le clic suivant reprend le même",
+    async (_l, reponse) => {
+      const { form, etat, surReprendre } = await coupureAuMorceau2();
+      surReprendre.reponse = reponse;
+      for (let essai = 0; essai < 3; essai++) {
+        etat.textContent = "";
+        form.dispatchEvent(new Event("submit", { cancelable: true }));
+        await attendreFin(etat, /Cliquez à nouveau/);
+      }
+      expect(etapesPost()).toEqual(["reprendre", "reprendre", "reprendre"]);
+
+      // La panne passe : on reprend LE MÊME envoi, seul le morceau 2 repart.
+      surReprendre.reponse = null;
+      appels = [];
+      form.dispatchEvent(new Event("submit", { cancelable: true }));
+      await attendreFin(etat, /bien arrivé/);
+      expect(etapesPost()).toEqual(["reprendre", "signer", "terminer"]);
+      expect(appels.filter((a) => a.methode === "PUT").map((p) => p.url)).toEqual(["https://r2/2"]);
+    },
+  );
+
+  it("le serveur dit l'envoi introuvable (404) → UN nouvel envoi, pas davantage", async () => {
+    const { form, etat, surReprendre } = await coupureAuMorceau2();
+    surReprendre.reponse = json(404, { ok: false, erreur: "Cet envoi est introuvable." });
+    form.dispatchEvent(new Event("submit", { cancelable: true }));
+    await attendreFin(etat, /bien arrivé/);
+    expect(etapesPost()).toEqual(["reprendre", "commencer", "signer", "terminer"]);
+  });
+
   it("chaque morceau a sa taille exacte (le dernier est plus court)", async () => {
     const { form, champ, etat } = monter();
     choisir(champ, new File([new Uint8Array([0x50, 0x4b, 3, 4, 5, 6, 7, 8, 9, 10])], "v.zip"));
