@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 // Contrat 2.7 (09/10/2026) : lot 1 de l'analyse juridique du 09/10 (quinze corrections) et
-// décisions de Will (conservation des données par critères, préavis progressif). Un test par
+// décisions de Will (conservation des données par critères, préavis progressif, prorata de 3.6). Un test par
 // correction, vérifié sur le texte : présence de la formule nouvelle, absence de l'ancienne.
 
 import { deuxCases } from "../contrat-pdf";
@@ -216,5 +216,17 @@ describe("contrat 2.7 — décisions de Will du 09/10", () => {
 
   it("C. aucun plafond de responsabilité de la Société n'est ajouté", () => {
     expect(net).not.toMatch(/responsabilité de la Société est (plafonnée|limitée)/);
+  });
+
+  it("D. 3.6 : une commande partagée avec d'autres établissements est commissionnée au prorata des participants", () => {
+    const a3 = article("3");
+    const debut = a3.indexOf("3.6 — Groupes de sociétés.");
+    const a36 = a3.slice(debut, a3.indexOf("3.7 — Sincérité", debut));
+    expect(a36).toContain(
+      "la commission est calculée sur la seule part du prix qui correspond aux participants de l'établissement attribué, au prorata de leur nombre sur le nombre total de participants à la commande, et arrondie au centime supérieur.",
+    );
+    expect(a36).toContain(
+      "Ces nombres sont arrêtés par la Société d'après la liste d'inscription à la prestation.",
+    );
   });
 });

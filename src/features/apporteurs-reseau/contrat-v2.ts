@@ -35,6 +35,8 @@
 // nommée, suspension du parrainage bornée, un seul régime d'échéance, anti-corruption 8.6,
 // facture électronique 5.1 bis, résidence fiscale, recodification 13.4…), conservation des
 // données des personnes présentées par critères (7.2), préavis progressif de la Société (11.1).
+// 3.6 (décision de Will du 09/10, 20 h) : une commande partagée avec d'autres établissements est
+// commissionnée au prorata des participants de l'établissement attribué.
 // La version figure désormais dans le texte signé (titre). Les contrats signés avant la 2.7
 // restent régis par leur version tant qu'un avenant n'est pas signé (art. 13.2).
 export const CONTRAT_VERSION = "2.7";
@@ -332,6 +334,12 @@ au profit du personnel de l'établissement attribué. **Le rattachement est déc
 tracé ; l'Apporteur peut le demander en justifiant que la prestation est commandée au profit de ce
 personnel, et la décision lui est notifiée avec son motif.** Aucune autre société du groupe n'est rattachée
 d'office à l'attribution, et aucun autre rattachement n'ouvre droit à commission.
+
+**Lorsqu'une commande ouvrant droit à commission au titre de l'établissement attribué profite aussi au
+personnel d'autres établissements, la commission est calculée sur la seule part du prix qui correspond aux
+participants de l'établissement attribué, au prorata de leur nombre sur le nombre total de participants à
+la commande, et arrondie au centime supérieur. Ces nombres sont arrêtés par la Société d'après la liste
+d'inscription à la prestation.**
 
 **3.7 — Sincérité de la déclaration.** L'Apporteur ne déclare que des entreprises dont il a effectivement
 rencontré ou joint un représentant, lui-même ou par la personne agissant pour son compte que la déclaration

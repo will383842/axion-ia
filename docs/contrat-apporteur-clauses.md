@@ -12,7 +12,10 @@
 >   l'établissement déclaré ; l'établissement qui commande est celui au profit duquel la prestation
 >   est commandée (puis SIRET du devis, puis fiche client) ; 3.6 (groupes) ne rattache plus une autre
 >   société du groupe d'office, seulement une commande passée au profit du personnel de
->   l'établissement attribué ; 12.1 parle d'établissements.
+>   l'établissement attribué ; une commande qui profite aussi à d'autres établissements est
+>   commissionnée **au prorata des participants** de l'établissement attribué (décision de Will du
+>   09/10 : 4 participants de Grenoble sur 10 → 4/10 de la commission, arrondie au centime supérieur ;
+>   nombres arrêtés par la Société d'après la liste d'inscription) ; 12.1 parle d'établissements.
 > - **Personne qui a rencontré le client** (3.2, 3.7) : nommée dans la déclaration quand ce n'est pas
 >   l'Apporteur ; son nom peut être communiqué au prospect.
 > - **Un seul régime de paiement** : jour d'acquisition = le plus tardif de l'encaissement intégral et de
