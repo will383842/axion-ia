@@ -23,6 +23,7 @@ import {
   totalTtcPieceCents,
   type ApporteurPourAutofacture,
 } from "./autofacture-donnees";
+import { lireProratas, type Prorata } from "./prorata";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
@@ -488,6 +489,8 @@ export interface CommissionVue {
   encaisseeAt: Date;
   /** Date d'émission de l'autofacture (`autofactureEmiseAt`, repli sur la dernière écriture). */
   emissionAt: Date;
+  /** Art. 3.6 : commande partagée, commissionnée au prorata des participants ; `null` = entière. */
+  prorata: Prorata | null;
 }
 
 /** Taille d'une page de la liste des commissions (précédent / suivant dans la console). */
@@ -514,6 +517,7 @@ export async function lireCommissions(
   });
   const numero = new Map(factures.map((f) => [f.id, f.numero]));
   const paye = new Map(factures.map((f) => [f.id, f.paidAt]));
+  const proratas = await lireProratas(lignes.map((l) => l.id));
   return lignes.map((l) => ({
     id: l.id,
     apporteurId: l.apporteurId,
@@ -541,6 +545,7 @@ export async function lireCommissions(
     creeAt: l.creeAt,
     encaisseeAt: paye.get(l.factureId) ?? l.creeAt,
     emissionAt: l.autofactureEmiseAt ?? l.majAt,
+    prorata: proratas.get(l.id) ?? null,
   }));
 }
 
@@ -775,6 +780,7 @@ export async function genererPdfAutofacture(e: {
       : await encaissementsIntegraux(
           commissions.filter((l) => l.statut !== "reprise").map((l) => l.factureId),
         );
+    const proratas = e.avoir ? new Map() : await lireProratas(commissions.map((l) => l.id));
     const [
       { getOrganismeIdentite },
       { renderPdfToBuffer, storeAndSignPdf },
@@ -805,6 +811,7 @@ export async function genererPdfAutofacture(e: {
         origineNumero: origines.get(l.id)?.numero ?? null,
         origineMois: origines.get(l.id)?.mois ?? null,
         encaisseeAt: encaissements.get(l.factureId) ?? null,
+        prorata: proratas.get(l.id) ?? null,
       })),
       organisme: await getOrganismeIdentite(),
       totalAttenduCents: e.totalCents,

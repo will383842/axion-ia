@@ -46,6 +46,8 @@ export interface CommissionPourAutofacture {
    */
   readonly encaisseeAt?: Date | null;
   readonly prestationRealiseeAt?: Date | null;
+  /** Art. 3.6 (contrat 2.7) : commande partagée, commissionnée au prorata des participants. */
+  readonly prorata?: { participantsEtablissement: number; participantsCommande: number } | null;
 }
 
 export interface ApporteurPourAutofacture {
@@ -228,8 +230,14 @@ export function lignesAutofacture(
       // Art. 5.1 : le décompte indique le jour d'acquisition de chaque commande (jamais sur la
       // ligne de parrainage, qui ne dit rien de la commande du filleul, ni sur un avoir).
       const jour = c.parrainage || c.statut === "reprise" ? null : jourAcquisition(c);
+      // Art. 3.6 : la part retenue d'une commande partagée se lit sur la pièce.
+      const p = c.parrainage || c.statut === "reprise" ? null : c.prorata;
+      const prorata =
+        p && p.participantsEtablissement !== p.participantsCommande
+          ? ` — commande partagée : ${p.participantsEtablissement}/${p.participantsCommande} des participants (art. 3.6)`
+          : "";
       return {
-        designation: `${designationCommission(c)}${jour ? ` — acquise le ${dateFr(jour)}` : ""}`,
+        designation: `${designationCommission(c)}${prorata}${jour ? ` — acquise le ${dateFr(jour)}` : ""}`,
         montantHtCents: c.montantCents ?? 0,
       };
     });

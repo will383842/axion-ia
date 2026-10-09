@@ -47,6 +47,8 @@ export function ListeDeclarations({
     prestation: EtatPrestation;
     /** A1.7 : commission en attente de qualification « hors grille ». */
     horsGrille?: boolean;
+    /** Art. 3.6 : commande partagée, « 4/10 des participants ». */
+    prorata?: string | null;
   }>;
 }) {
   return (
@@ -74,6 +76,9 @@ export function ListeDeclarations({
                   </p>
                 ) : null}
                 {d.horsGrille ? <p className="text-fg-soft text-[15px]">{T.horsGrille}</p> : null}
+                {d.prorata ? (
+                  <p className="text-fg-soft text-[15px]">{T.prorata(d.prorata)}</p>
+                ) : null}
               </div>
               <span
                 className={`${STYLE[d.etat]} shrink-0 rounded-full px-3 py-1 text-[14px] font-bold`}

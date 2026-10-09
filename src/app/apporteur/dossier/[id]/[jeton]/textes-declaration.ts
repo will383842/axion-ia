@@ -38,4 +38,7 @@ export const TEXTES_DECLARATION = {
   // Annexe 1, A1.7 : produit hors grille, qualifié dans les soixante jours de l'encaissement.
   horsGrille:
     "Prestation hors grille de commissions : sa commission vous est indiquée par écrit dans les soixante jours de l'encaissement.",
+  // Contrat 2.7, art. 3.6 : commande partagée avec d'autres établissements.
+  prorata: (part: string) =>
+    `Commande partagée avec d'autres établissements : commission calculée sur ${part} (article 3.6 du contrat).`,
 } as const;

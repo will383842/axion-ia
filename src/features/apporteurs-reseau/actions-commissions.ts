@@ -26,6 +26,7 @@ import {
   resilierPourManquement,
   type PartieQuiResilie,
 } from "./preavis";
+import { fixerProrata } from "./prorata";
 import { enregistrerReprise, montantEnCentimes } from "./resiliation";
 import { euros } from "./regles";
 
@@ -352,6 +353,39 @@ export async function ajusterCommissionAction(fd: FormData): Promise<void> {
       mode === "annuler"
         ? "Commission annulée : elle reste visible dans l'onglet « Annulées »."
         : `Commission recalculée : ${euros(r.montantCents ?? 0)}.`;
+    versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
+  }
+  versCommissions("erreur", (r as { message: string }).message);
+}
+
+// ── Commande partagée : prorata des participants (contrat 2.7, art. 3.6) ──
+
+export async function fixerProrataAction(fd: FormData): Promise<void> {
+  const refus = await sessionArgent();
+  if (refus) versCommissions("erreur", refus);
+  const id = texte(fd, "id");
+  if (!UUID.test(id)) versCommissions("erreur", "Commission inconnue.");
+  const nombre = (cle: string) => {
+    const v = texte(fd, cle);
+    return /^\d{1,5}$/.test(v) ? Number(v) : Number.NaN;
+  };
+  let r: Awaited<ReturnType<typeof fixerProrata>>;
+  try {
+    r = await fixerProrata(
+      id,
+      {
+        participantsEtablissement: nombre("participantsEtablissement"),
+        participantsCommande: nombre("participantsCommande"),
+      },
+      await acteur(),
+    );
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apporteurs-commission-prorata" } });
+    r = { ok: false, message: "Le prorata n'a pas pu être enregistré. Réessayez." };
+  }
+  revalidatePath(adminPath("fr", "apporteurs/commissions"));
+  if (r.ok) {
+    const base = `Prorata enregistré (art. 3.6) : commission de ${euros(r.montantCents)}.`;
     versCommissions("retour", r.avertissement ? `${base} ⚠️ ${r.avertissement}` : base);
   }
   versCommissions("erreur", (r as { message: string }).message);
