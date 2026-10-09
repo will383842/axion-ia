@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Candidatures · Console Axion-IA (maquette v2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Jetons copiés tels quels de src/app/admin.css (console réelle)
+   ============================================================ */
+:root{
+  --color-admin-bg:#f1ede3; --color-admin-paper:#ffffff; --color-admin-paper-alt:#faf8f3;
+  --color-admin-surface-hover:#f0e9da; --color-admin-surface-sunken:#f4f1ea;
+  --color-admin-border:#e5ddc8; --color-admin-border-strong:#c8bda0;
+  --color-admin-fg:#1a1815; --color-admin-fg-soft:#524b41; --color-admin-fg-muted:#5a4f44; --color-admin-fg-disabled:#a89e8d;
+  --color-admin-success:#2f7d3a; --color-admin-success-soft:#e6f1e2; --color-admin-success-fg:#1a4720;
+  --color-admin-warning:#a8651b; --color-admin-warning-soft:#fbeed4; --color-admin-warning-fg:#5c3408;
+  --color-admin-destructive:#b13a2b; --color-admin-destructive-soft:#f7e1dd; --color-admin-destructive-fg:#6a1c10;
+  --color-admin-terracotta:#c24a1b; --color-admin-accent:#c24a1b; --color-admin-accent-strong:#9e3a12; --color-admin-accent-fg:#fff;
+  --color-admin-accent-track:color-mix(in srgb,#c24a1b 14%,transparent);
+  --color-admin-ring:color-mix(in srgb,#c24a1b 45%,transparent);
+  --color-admin-info:#1a4dd9; --color-admin-info-soft:#e8efff;
+  --color-admin-neutral:#6b6155; --color-admin-neutral-soft:#ede8db;
+  --color-admin-rail-bg:#2a2520; --color-admin-rail-bg-elevated:#332d27; --color-admin-rail-border:#3d362e;
+  --color-admin-rail-fg:#f5f0e7; --color-admin-rail-fg-soft:#dcd3c5; --color-admin-rail-fg-muted:#ada291;
+  --color-admin-rail-hover:rgb(255 255 255/.06); --color-admin-rail-active-bg:rgb(237 124 77/.18); --color-admin-rail-active-fg:#fdf5ee;
+  --color-admin-rail-accent:#f3936a; --color-admin-rail-on-bright:#241f1a;
+  --color-admin-rail-badge-danger:#d13438; --color-admin-rail-badge-warn:#f5a623; --color-admin-rail-avatar-bg:#ed7c4d;
+  --space-admin-1:2px; --space-admin-2:4px; --space-admin-3:6px; --space-admin-4:8px; --space-admin-5:12px;
+  --space-admin-6:16px; --space-admin-7:24px; --space-admin-8:32px; --space-admin-card:24px;
+  --text-admin-xs:12px; --text-admin-sm:13px; --text-admin-md:14px; --text-admin-base:16px; --text-admin-lg:18px; --text-admin-xl:22px; --text-admin-2xl:26px;
+  --lh-admin-tight:1.4; --lh-admin-body:1.55;
+  --radius-admin-sm:4px; --radius-admin-md:10px; --radius-admin-lg:12px; --radius-admin-xl:16px; --radius-admin-pill:999px;
+  --shadow-admin-1:0 1px 2px rgb(0 0 0/.04),0 4px 12px rgb(0 0 0/.06);
+  --shadow-admin-2:0 2px 6px rgb(0 0 0/.05),0 8px 18px rgb(0 0 0/.07);
+  --shadow-admin-3:0 6px 16px rgb(0 0 0/.08),0 3px 6px rgb(0 0 0/.05);
+  --shadow-admin-4:0 16px 32px rgb(0 0 0/.12),0 6px 12px rgb(0 0 0/.07);
+  --control-admin-h-sm:30px; --control-admin-h-md:36px; --control-admin-px:12px; --ring-admin-width:3px;
+  --duration-admin-fast:80ms; --easing-admin:cubic-bezier(.4,0,.2,1);
+  --admin-topbar-h:49px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:var(--text-admin-md);line-height:var(--lh-admin-body);color:var(--color-admin-fg);background:var(--color-admin-bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+svg.i14{width:14px;height:14px}
+
+/* ---------- Barre du haut (AdminTopbar) ---------- */
+.topbar{position:sticky;top:0;z-index:10;height:var(--admin-topbar-h);border-bottom:1px solid var(--color-admin-border);background:color-mix(in srgb,#fff 95%,transparent);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 var(--space-admin-5)}
+.topbar .r{display:flex;align-items:center;gap:var(--space-admin-3)}
+.kbd{border:1px solid var(--color-admin-border);border-radius:var(--radius-admin-sm);padding:3px 8px;font-size:var(--text-admin-xs);font-weight:500;color:var(--color-admin-fg-soft);background:#fff}
+.icobtn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;background:transparent;border-radius:var(--radius-admin-md);color:var(--color-admin-fg-soft)}
+.icobtn .dot{position:absolute;top:1px;right:1px;min-width:16px;height:16px;border-radius:999px;background:var(--color-admin-destructive);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.user{display:flex;align-items:center;gap:6px;font-size:var(--text-admin-sm);color:var(--color-admin-fg)}
+.burger{display:none}
+
+/* ---------- Rail (AdminSidebarNav) ---------- */
+.shell{display:grid;grid-template-columns:320px 1fr}
+.rail{position:sticky;top:var(--admin-topbar-h);height:calc(100svh - var(--admin-topbar-h));display:flex;flex-direction:column;background:var(--color-admin-rail-bg);color:var(--color-admin-rail-fg);border-right:1px solid var(--color-admin-rail-border);-webkit-font-smoothing:antialiased;letter-spacing:.005em}
+.rail-head{display:flex;align-items:center;gap:var(--space-admin-4);padding:var(--space-admin-5);border-bottom:1px solid var(--color-admin-rail-border)}
+.logo{width:30px;height:30px;border-radius:var(--radius-admin-md);background:var(--color-admin-rail-accent);color:var(--color-admin-rail-on-bright);font-weight:700;font-size:16px;display:grid;place-items:center;box-shadow:var(--shadow-admin-2)}
+.brand{display:flex;flex-direction:column;line-height:1}
+.brand b{font-size:var(--text-admin-md);font-weight:700;letter-spacing:-.01em}
+.brand small{margin-top:3px;font-size:var(--text-admin-xs);font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--color-admin-rail-fg-muted)}
+.rail-head .collapse{margin-left:auto;color:var(--color-admin-rail-fg-muted)}
+.rail-search{padding:var(--space-admin-5) var(--space-admin-5) var(--space-admin-3);position:relative}
+.rail-search svg{position:absolute;left:calc(var(--space-admin-5) + 8px);top:calc(50% + 3px);transform:translateY(-50%);color:var(--color-admin-rail-fg-muted)}
+.rail-search input{width:100%;border:1px solid var(--color-admin-rail-border);background:var(--color-admin-rail-bg-elevated);border-radius:var(--radius-admin-md);padding:6px 8px 6px 26px;font-size:var(--text-admin-sm);color:var(--color-admin-rail-fg)}
+.rail-search input::placeholder{color:var(--color-admin-rail-fg-muted)}
+.rail nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 var(--space-admin-4) var(--space-admin-4);scrollbar-width:thin;scrollbar-color:var(--color-admin-rail-border) transparent}
+.today{padding:0 var(--space-admin-3) var(--space-admin-2);font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--color-admin-rail-fg-muted);margin:0}
+.pin{display:flex;align-items:center;gap:var(--space-admin-4);margin-bottom:var(--space-admin-3);padding:var(--space-admin-3);border-radius:var(--radius-admin-md);box-shadow:inset 0 0 0 1px var(--color-admin-rail-border);text-decoration:none;color:var(--color-admin-rail-fg);font-size:14px;font-weight:500}
+.pin svg{width:18px;height:18px;opacity:.8}
+.pin span{flex:1}
+.rb{border-radius:999px;padding:1px 6px;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums}
+.rb.w{background:var(--color-admin-rail-badge-warn);color:var(--color-admin-rail-on-bright)}
+.rb.d{background:var(--color-admin-rail-badge-danger);color:#fff}
+.grp{padding-bottom:var(--space-admin-2)}
+.grp>button{width:100%;display:flex;align-items:center;gap:var(--space-admin-4);min-height:36px;padding:var(--space-admin-3);border:0;border-radius:var(--radius-admin-md);background:transparent;color:var(--color-admin-rail-accent);font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-align:left}
+.grp>button:hover{background:var(--color-admin-rail-hover)}
+.grp.act>button{background:var(--color-admin-rail-active-bg)}
+.grp>button .end{margin-left:auto;display:flex;align-items:center;gap:var(--space-admin-2)}
+.grp>button .chev{color:var(--color-admin-rail-fg-muted);transition:transform 80ms}
+.grp.open>button .chev{transform:rotate(90deg)}
+.grp ul{display:none;list-style:none;margin:2px 0 0 calc(var(--space-admin-3) + 9px);padding:0 0 0 var(--space-admin-3);border-left:1px solid var(--color-admin-rail-border);flex-direction:column;gap:2px}
+.grp.open ul{display:flex}
+.grp li a{position:relative;display:flex;align-items:center;gap:var(--space-admin-4);min-height:30px;padding:var(--space-admin-2) var(--space-admin-3);border-radius:var(--radius-admin-md);text-decoration:none;font-size:var(--text-admin-md);font-weight:500;color:var(--color-admin-rail-fg-soft)}
+.grp li a.l1{padding-left:calc(var(--space-admin-3) + 13px);color:var(--color-admin-rail-fg-muted)}
+.grp li a svg{color:var(--color-admin-rail-fg-muted)}
+.grp li a:hover{background:var(--color-admin-rail-hover);color:var(--color-admin-rail-fg)}
+.grp li a.on{background:var(--color-admin-rail-active-bg);color:var(--color-admin-rail-active-fg)}
+.grp li a.on svg{color:var(--color-admin-rail-accent)}
+.grp li a.on::before{content:"";position:absolute;left:-1px;top:50%;transform:translateY(-50%);width:2px;height:16px;border-radius:999px;background:var(--color-admin-rail-accent)}
+.grp li a .rb{margin-left:auto}
+.rail-foot{border-top:1px solid var(--color-admin-rail-border);background:var(--color-admin-rail-bg-elevated);padding:var(--space-admin-4);display:flex;align-items:center;gap:var(--space-admin-4)}
+.av{width:28px;height:28px;border-radius:999px;background:var(--color-admin-rail-avatar-bg);color:var(--color-admin-rail-on-bright);font-size:10px;font-weight:700;display:grid;place-items:center;flex-shrink:0}
+.who{display:flex;flex-direction:column;line-height:1.3;min-width:0;flex:1;padding:var(--space-admin-2)}
+.who b{font-size:var(--text-admin-sm);font-weight:500;color:var(--color-admin-rail-fg)}
+.who small{font-size:var(--text-admin-xs);color:var(--color-admin-rail-fg-muted)}
+
+/* ---------- Page (AdminPageShell + AdminPageHeader) ---------- */
+main{min-width:0;padding:var(--space-admin-7) var(--space-admin-8) 96px}
+.screen{display:none}.screen.on{display:block}
+.narrow{max-width:1400px;margin:0 auto}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-admin-6);border-bottom:1px solid var(--color-admin-border);margin-bottom:var(--space-admin-7);padding-bottom:var(--space-admin-6)}
+.ph h1{margin:0;font-size:var(--text-admin-xl);font-weight:700;letter-spacing:-.01em;line-height:var(--lh-admin-tight)}
+.ph p{margin:var(--space-admin-2) 0 0;font-size:var(--text-admin-base);color:var(--color-admin-fg-soft)}
+.ph .act{display:flex;gap:var(--space-admin-3);flex-wrap:wrap}
+
+/* ---------- Briques .admin-* (copie de admin.css) ---------- */
+.admin-card{padding:var(--space-admin-card);background:var(--color-admin-paper);border:1px solid var(--color-admin-border);border-radius:var(--radius-admin-xl);box-shadow:var(--shadow-admin-1)}
+.admin-card + .admin-card{margin-top:var(--space-admin-6)}
+.admin-section-title{font-size:15px;font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.admin-section-title .admin-meta-small{font-weight:400;margin-left:auto}
+.admin-card-label{font-size:var(--text-admin-xs);font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--color-admin-fg-muted);margin:0}
+.admin-meta-small{font-size:12px;color:var(--color-admin-fg-muted)}
+.admin-link{color:var(--color-admin-accent-strong);font-weight:500;text-decoration:none;cursor:pointer}
+.admin-link:hover{color:var(--color-admin-terracotta);text-decoration:underline;text-underline-offset:2px}
+.admin-alert{display:flex;align-items:center;gap:var(--space-admin-4);font-size:var(--text-admin-sm);line-height:var(--lh-admin-body);margin:0 0 var(--space-admin-4);padding:10px 12px;border-radius:var(--radius-admin-md);flex-wrap:wrap}
+.admin-alert-error{color:var(--color-admin-destructive-fg);background:var(--color-admin-destructive-soft);border:1px solid var(--color-admin-destructive)}
+.admin-alert-warning{color:var(--color-admin-warning-fg);background:var(--color-admin-warning-soft);border:1px solid var(--color-admin-warning)}
+.admin-alert-info{color:var(--color-admin-fg);background:var(--color-admin-info-soft);border:1px solid var(--color-admin-info)}
+.admin-alert .admin-link{color:inherit;text-decoration:underline}
+.admin-button,.admin-button-secondary,.admin-button-ghost{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-admin-4);font-size:var(--text-admin-sm);font-weight:600;line-height:var(--lh-admin-tight);white-space:nowrap;cursor:pointer;text-decoration:none;border-radius:var(--radius-admin-md);transition:background-color 80ms,border-color 80ms}
+.admin-button{min-height:var(--control-admin-h-md);padding:0 var(--space-admin-6);background-color:var(--color-admin-accent);background-image:linear-gradient(180deg,color-mix(in srgb,white 14%,transparent),transparent 55%);color:#fff;border:1px solid transparent;box-shadow:var(--shadow-admin-1)}
+.admin-button:hover{background-color:#a83d17}
+.admin-button-secondary{min-height:var(--control-admin-h-md);padding:0 var(--space-admin-6);border:1px solid var(--color-admin-border-strong);background:var(--color-admin-paper);color:var(--color-admin-fg)}
+.admin-button-secondary:hover{background:var(--color-admin-surface-hover);border-color:var(--color-admin-fg-disabled)}
+.admin-button-ghost{gap:var(--space-admin-3);min-height:var(--control-admin-h-sm);padding:0 var(--space-admin-5);border:1px solid color-mix(in srgb,var(--color-admin-accent) 22%,transparent);background:var(--color-admin-accent-track);color:var(--color-admin-accent-strong)}
+.admin-button-ghost:hover{background:color-mix(in srgb,var(--color-admin-terracotta) 22%,transparent);border-color:color-mix(in srgb,var(--color-admin-accent) 55%,transparent)}
+.admin-button-sm{min-height:var(--control-admin-h-sm);padding-inline:var(--space-admin-5)}
+:is(.admin-button,.admin-button-secondary,.admin-button-ghost,.admin-input,.admin-select):focus-visible{outline:none;box-shadow:0 0 0 var(--ring-admin-width) var(--color-admin-ring)}
+.admin-label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.admin-input,.admin-select{width:100%;height:var(--control-admin-h-md);padding:0 var(--control-admin-px);border:1px solid var(--color-admin-border-strong);border-radius:var(--radius-admin-md);font-size:var(--text-admin-md);background-color:var(--color-admin-paper);color:var(--color-admin-fg)}
+.admin-select{appearance:none;padding-right:32px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a4f44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+textarea.admin-input{height:auto;padding:8px var(--control-admin-px);line-height:var(--lh-admin-body)}
+.admin-input::placeholder{color:var(--color-admin-fg-disabled)}
+.admin-filters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:16px}
+.admin-filters-actions{display:flex;gap:12px;align-items:center}
+.cbx{width:16px;height:16px;accent-color:var(--color-admin-accent);margin:0;cursor:pointer}
+.admin-table-wrapper{padding:0;overflow-x:auto}
+.admin-table{width:100%;border-collapse:collapse;font-size:var(--text-admin-sm);font-variant-numeric:tabular-nums}
+.admin-table th,.admin-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--color-admin-border);vertical-align:middle}
+.admin-table th{background:var(--color-admin-surface-sunken);font-weight:600;font-size:var(--text-admin-xs);text-transform:uppercase;letter-spacing:.05em;color:var(--color-admin-fg-muted);white-space:nowrap}
+.admin-table tbody tr{transition:background-color 80ms}
+.admin-table tbody tr:hover{background:var(--color-admin-surface-hover)}
+.admin-table tbody tr:last-child td{border-bottom:0}
+.admin-table .r{text-align:right}
+.admin-table tbody tr[data-open]{cursor:pointer}
+.admin-table tr.sel{background:var(--color-admin-paper-alt)}
+.th-sort{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.th-sort.on{color:var(--color-admin-accent-strong)}
+.admin-badge{display:inline-flex;align-items:center;gap:var(--space-admin-2);padding:3px 10px;border-radius:var(--radius-admin-pill);font-size:var(--text-admin-xs);font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.b-info{background:var(--color-admin-info-soft);color:var(--color-admin-info)}
+.b-neutral{background:var(--color-admin-neutral-soft);color:var(--color-admin-neutral)}
+.b-warning{background:var(--color-admin-warning-soft);color:var(--color-admin-warning-fg)}
+.b-success{background:var(--color-admin-success-soft);color:var(--color-admin-success-fg)}
+/* AdminFilterTabs */
+.ftabs{display:inline-flex;max-width:100%;align-items:center;gap:var(--space-admin-1);overflow-x:auto;border-radius:var(--radius-admin-lg);border:1px solid var(--color-admin-border);background:var(--color-admin-surface-sunken);padding:var(--space-admin-2);margin-bottom:var(--space-admin-6)}
+.ftabs button{display:inline-flex;flex-shrink:0;align-items:center;gap:var(--space-admin-3);border:0;border-radius:var(--radius-admin-md);padding:var(--space-admin-3) var(--space-admin-5);font-size:var(--text-admin-sm);font-weight:500;white-space:nowrap;min-height:24px;background:transparent;color:var(--color-admin-fg-soft);cursor:pointer}
+.ftabs button:hover{background:var(--color-admin-paper-alt);color:var(--color-admin-fg)}
+.ftabs button[aria-selected="true"]{background:var(--color-admin-paper);color:var(--color-admin-fg);box-shadow:var(--shadow-admin-1)}
+.ftabs .n{display:inline-flex;min-width:18px;justify-content:center;border-radius:999px;padding:0 var(--space-admin-3);font-size:var(--text-admin-xs);font-weight:600;background:var(--color-admin-neutral-soft);color:var(--color-admin-neutral)}
+.ftabs button[aria-selected="true"] .n{background:var(--color-admin-accent);color:#fff}
+/* AdminStatCard */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-admin-6);margin-top:var(--space-admin-6)}
+.stat{display:flex;flex-direction:column;gap:var(--space-admin-2);border-radius:var(--radius-admin-xl);border:1px solid var(--color-admin-border);background:var(--color-admin-paper);padding:var(--space-admin-6);box-shadow:var(--shadow-admin-1)}
+.stat .lb{display:flex;align-items:center;gap:var(--space-admin-3);font-size:var(--text-admin-sm);font-weight:500;color:var(--color-admin-fg-soft)}
+.stat .lb i{width:6px;height:6px;border-radius:999px;background:var(--color-admin-accent)}
+.stat .v{font-size:var(--text-admin-2xl);font-weight:600;letter-spacing:-.02em}
+.stat .m{font-size:var(--text-admin-xs);color:var(--color-admin-fg-muted)}
+/* AdminBulkActions */
+.bulk{position:fixed;left:0;right:0;bottom:0;z-index:10;display:none;align-items:center;justify-content:space-between;gap:var(--space-admin-5);padding:var(--space-admin-4) var(--space-admin-6);border-top:1px solid var(--color-admin-border-strong);background:var(--color-admin-paper);box-shadow:var(--shadow-admin-3);font-size:var(--text-admin-sm);flex-wrap:wrap}
+.bulk.on{display:flex}
+.bulk .acts{display:flex;gap:var(--space-admin-3);flex-wrap:wrap}
+/* Liste libellé / valeur de la fiche réelle (grid 10rem 1fr) */
+dl.idt{display:grid;grid-template-columns:10rem 1fr;row-gap:8px;margin:0;font-size:14px}
+dl.idt dt{font-weight:500}
+dl.idt dd{margin:0}
+/* Frise (FriseCandidature) */
+ol.frise{list-style:none;margin:0;padding:0}
+ol.frise>li{border-left:2px solid var(--color-admin-border);padding:0 0 var(--space-admin-6) var(--space-admin-5);position:relative}
+ol.frise>li:last-child{padding-bottom:0}
+ol.frise .hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px var(--space-admin-3)}
+ol.frise .t{font-size:var(--text-admin-sm);font-weight:600}
+ol.frise p{margin:4px 0 0;font-size:var(--text-admin-sm)}
+ol.frise li.in{border-left-color:var(--color-admin-info)}
+ol.frise li.out{border-left-color:var(--color-admin-accent)}
+.files{margin-top:var(--space-admin-3);border:1px solid var(--color-admin-border);border-radius:var(--radius-admin-md);overflow:hidden}
+.files>div{display:flex;align-items:center;gap:var(--space-admin-4);padding:8px 12px;font-size:var(--text-admin-sm);background:var(--color-admin-paper-alt)}
+.files>div + div{border-top:1px solid var(--color-admin-border)}
+.files>div .admin-badge{margin-left:auto}
+/* Lecteur vidéo natif simulé */
+.videos{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-admin-6);margin-bottom:var(--space-admin-6)}
+.videos>div{width:170px}
+.videos>div.wide{width:360px}
+.vbox{aspect-ratio:9/16;background:#000;border-radius:var(--radius-admin-md);position:relative;overflow:hidden;color:#fff}
+.vbox.h{aspect-ratio:16/9}
+.vbox .pl{position:absolute;inset:0;margin:auto;width:48px;height:48px;border-radius:999px;border:0;background:rgb(255 255 255/.9);color:#000;display:grid;place-items:center;cursor:pointer}
+.vbox .pl svg{fill:currentColor;stroke:none;margin-left:3px}
+.vbox .ctl{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(transparent,rgb(0 0 0/.6));font-size:11px;display:flex;align-items:center;gap:8px}
+.vbox .ctl i{flex:1;height:3px;border-radius:3px;background:rgb(255 255 255/.35);position:relative}
+.vbox .ctl i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:30%;background:#fff;border-radius:3px}
+.vcap{font-size:var(--text-admin-sm);font-weight:500;margin-top:6px}
+.vcell{display:inline-flex;align-items:center;gap:6px}
+/* Panneaux (même carte) */
+.veil{position:fixed;inset:0;background:rgb(0 0 0/.35);z-index:40;display:none}
+.veil.on{display:block}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);z-index:50;display:flex;flex-direction:column;background:var(--color-admin-paper);border-left:1px solid var(--color-admin-border);box-shadow:var(--shadow-admin-4);transform:translateX(105%);transition:transform 160ms var(--easing-admin)}
+.drawer.on{transform:none}
+.drawer header{display:flex;align-items:center;gap:var(--space-admin-4);padding:var(--space-admin-6) var(--space-admin-card);border-bottom:1px solid var(--color-admin-border)}
+.drawer header h2{margin:0;font-size:var(--text-admin-lg);font-weight:600;flex:1}
+.drawer .body{flex:1;overflow-y:auto;padding:var(--space-admin-card)}
+.drawer footer{display:flex;justify-content:flex-end;gap:var(--space-admin-3);padding:var(--space-admin-6) var(--space-admin-card);border-top:1px solid var(--color-admin-border);background:var(--color-admin-paper-alt)}
+.field{margin-bottom:var(--space-admin-6)}
+.prog{height:6px;border-radius:999px;background:var(--color-admin-accent-track);overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;width:0;background:var(--color-admin-accent);transition:width .2s linear}
+.lib label{display:flex;align-items:center;gap:var(--space-admin-4);padding:10px 12px;font-size:var(--text-admin-sm);cursor:pointer}
+.lib label + label{border-top:1px solid var(--color-admin-border)}
+.lib label:hover{background:var(--color-admin-surface-hover)}
+.row{display:flex;gap:var(--space-admin-3);flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-admin-6)}
+.mt{margin-top:var(--space-admin-6)}
+.recip{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--space-admin-6)}
+
+/* Sélecteur d'écran de la maquette (n'existe pas dans la console) */
+.mq{position:fixed;right:16px;bottom:16px;z-index:30;display:flex;gap:4px;align-items:center;padding:4px;border-radius:var(--radius-admin-lg);border:1px dashed var(--color-admin-border-strong);background:rgb(255 255 255/.92);box-shadow:var(--shadow-admin-2);font-size:11px;color:var(--color-admin-fg-muted)}
+.mq button{border:0;background:transparent;border-radius:var(--radius-admin-md);padding:4px 8px;font-size:11px;font-weight:600;color:var(--color-admin-fg-soft);cursor:pointer}
+.mq button.on{background:var(--color-admin-fg);color:#fff}
+body.bulk-open .mq{bottom:72px}
+
+/* ---------- Téléphone (< lg) ---------- */
+@media (max-width:1023px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:fixed;top:0;left:0;z-index:60;width:320px;height:100svh;transform:translateX(-100%);transition:transform 160ms}
+  .rail.open{transform:none}
+  .burger{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--color-admin-border);border-radius:var(--radius-admin-md);background:#fff;color:var(--color-admin-fg-muted);box-shadow:var(--shadow-admin-2)}
+  .topbar{height:60px}
+  .rail{top:0}
+  main{padding:var(--space-admin-7) var(--space-admin-6) 96px}
+  .user span{display:none}
+  .ph{flex-direction:column;gap:var(--space-admin-3)}
+  .grid2{grid-template-columns:1fr}
+  dl.idt{grid-template-columns:8rem 1fr}
+  .videos>div{width:calc(50% - 8px)}
+  .videos>div.wide{width:100%}
+  .mq{left:16px;right:16px;justify-content:center;flex-wrap:wrap}
+  .files>div{flex-wrap:wrap}
+  .files>div b{word-break:break-all}
+  .files>div .admin-badge{margin-left:0;white-space:normal}
+  .admin-badge{white-space:normal}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="calclock" viewBox="0 0 24 24"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5M16 2v4M8 2v4M3 10h5"/><circle cx="16" cy="16" r="6"/><path d="M16 14v2l1 1"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><path d="M10 12h11M10 18h11M10 6h11M4 10h2M4 6h1v4M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></symbol>
+  <symbol id="calrange" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M3 10h18M8 2v4M17 14h-6M13 18H7M7 14h.01M17 18h.01"/></symbol>
+  <symbol id="scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="m16 16-1.9-1.9"/></symbol>
+  <symbol id="inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="hand" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8"/></symbol>
+  <symbol id="userplus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></symbol>
+  <symbol id="usersearch" viewBox="0 0 24 24"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="grad" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+  <symbol id="wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></symbol>
+  <symbol id="folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="ext" viewBox="0 0 24 24"><path d="M7 7h10v10M7 17 17 7"/></symbol>
+  <symbol id="dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="clip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+  <symbol id="logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="panel" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18M16 15l-3-3 3-3"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="m16 6 4 14M12 6v14M8 8v12M4 4v16"/></symbol>
+  <symbol id="fileuser" viewBox="0 0 24 24"><path d="M14 2v4a2 2 0 0 0 2 2h4M15 18a3 3 0 1 0-6 0"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><circle cx="12" cy="13" r="2"/></symbol>
+  <symbol id="building" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18ZM6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/></symbol>
+  <symbol id="coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18M7 6h1v4"/></symbol>
+  <symbol id="megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3h12v6M6 14h12v8H6z"/></symbol>
+  <symbol id="pen" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="spark" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></symbol>
+  <symbol id="funnel" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></symbol>
+  <symbol id="layout" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+  <symbol id="news" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/></symbol>
+  <symbol id="bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></symbol>
+  <symbol id="image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+</svg>
+
+<header class="topbar">
+  <button class="burger" id="burger" aria-label="Ouvrir la navigation"><svg class="i"><use href="#menu"/></svg></button>
+  <span></span>
+  <div class="r">
+    <span class="kbd">Ctrl K</span>
+    <button class="icobtn" aria-label="Notifications"><svg class="i"><use href="#bell"/></svg><span class="dot">1</span></button>
+    <span class="user"><svg class="i i14"><use href="#user"/></svg><span>admin@exemple.fr</span></span>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="rail" id="rail" aria-label="Navigation admin">
+    <div class="rail-head">
+      <span class="logo">A</span>
+      <span class="brand"><b>Axion-IA</b><small>Console admin</small></span>
+      <svg class="i collapse"><use href="#panel"/></svg>
+    </div>
+    <div class="rail-search"><svg class="i i14"><use href="#search"/></svg><input type="search" placeholder="Filtrer la navigation…" aria-label="Filtrer la navigation admin"></div>
+    <nav aria-label="Sections admin">
+      <p class="today">Aujourd'hui</p>
+      <a class="pin" href="#"><svg class="i"><use href="#calclock"/></svg><span>Rendez-vous</span><b class="rb w">7</b></a>
+      <a class="pin" href="#"><svg class="i"><use href="#cal"/></svg><span>Agenda</span></a>
+      <a class="pin" href="#"><svg class="i"><use href="#list"/></svg><span>À traiter</span></a>
+      <a class="pin" href="#"><svg class="i"><use href="#calrange"/></svg><span>Console éditoriale</span></a>
+      <a class="pin" href="#"><svg class="i"><use href="#scan"/></svg><span>Prospection</span><svg class="i i14" style="opacity:.6"><use href="#ext"/></svg></a>
+
+      <div class="grp"><button><svg class="i i14"><use href="#inbox"/></svg>Contacts &amp; demandes<span class="end"><b class="rb d">86</b><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp" id="g-app"><button><svg class="i i14"><use href="#hand"/></svg>Apporteurs d'affaires<span class="end"><b class="rb w">6</b><svg class="i chev"><use href="#chev"/></svg></span></button>
+        <ul>
+          <li><a href="#" data-go="futurs" data-nav="futurs"><svg class="i"><use href="#usersearch"/></svg>Futurs apporteurs<b class="rb w">6</b></a></li>
+          <li><a href="#"><svg class="i"><use href="#hand"/></svg>Apporteurs signés</a></li>
+          <li><a href="#"><svg class="i"><use href="#building"/></svg>Entreprises présentées</a></li>
+          <li><a href="#"><svg class="i"><use href="#coins"/></svg>Commissions apporteurs</a></li>
+          <li><a href="#"><svg class="i"><use href="#megaphone"/></svg>Provenance des annonces</a></li>
+          <li><a href="#"><svg class="i"><use href="#link"/></svg>Liens de campagne</a></li>
+        </ul>
+      </div>
+      <div class="grp open act" id="g-cand"><button><svg class="i i14"><use href="#userplus"/></svg>Candidatures<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button>
+        <ul>
+          <li><a href="#" class="on" data-go="liste" data-nav="liste"><svg class="i"><use href="#userplus"/></svg>Candidatures<b class="rb d">17</b></a></li>
+          <li><a href="#" class="l1"><svg class="i i14"><use href="#fileuser"/></svg>Offres d'emploi<b class="rb w">42</b></a></li>
+          <li><a href="#" class="l1"><svg class="i i14"><use href="#folder"/></svg>Bibliothèque de fichiers</a></li>
+        </ul>
+      </div>
+      <div class="grp"><button><svg class="i i14"><use href="#mail"/></svg>E-mails<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#grad"/></svg>Formations &amp; prestations<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#heart"/></svg>Coaching 1-to-1<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#wallet"/></svg>Finances<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#printer"/></svg>Imprimés &amp; QR<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#pen"/></svg>Contenu du site<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#spark"/></svg>Génération de contenu<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#funnel"/></svg>Tunnels<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#layout"/></svg>Planification<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#news"/></svg>Salle de presse<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#bot"/></svg>Chatbot<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#image"/></svg>Banque d'images<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#file"/></svg>Documents<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#shield"/></svg>Société &amp; conformité<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#users"/></svg>Équipe<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+      <div class="grp"><button><svg class="i i14"><use href="#wrench"/></svg>Technique<span class="end"><svg class="i chev"><use href="#chev"/></svg></span></button></div>
+    </nav>
+    <div class="rail-foot">
+      <span class="av">AD</span>
+      <span class="who"><b>admin@exemple.fr</b><small>Administrateur</small></span>
+      <svg class="i" style="color:var(--color-admin-rail-fg-muted)"><use href="#logout"/></svg>
+    </div>
+  </aside>
+
+  <main>
+
+  <!-- ================= 1 · CANDIDATURES (liste) ================= -->
+  <section class="screen on" id="s-liste">
+    <header class="ph">
+      <div><h1>Candidatures</h1><p>145 candidatures · 17 à traiter</p></div>
+      <div class="act"><a class="admin-button-ghost" href="#"><svg class="i i14"><use href="#dl"/></svg>Exporter</a></div>
+    </header>
+
+    <p class="admin-alert admin-alert-error">Le plus ancien dossier sans réponse attend depuis <b>9 j</b> — Formateur IA. <a class="admin-link">Ouvrir le dossier</a></p>
+
+    <div class="ftabs" role="tablist" aria-label="Type de candidature">
+      <button role="tab" data-type="monteurs" aria-selected="true">Monteurs &amp; vidéastes <span class="n">41</span></button>
+      <button role="tab" data-type="formateurs" aria-selected="false">Formateurs <span class="n">12</span></button>
+      <button role="tab" data-type="autres" aria-selected="false">Autres offres <span class="n">88</span></button>
+      <button role="tab" data-type="spontanees" aria-selected="false">Spontanées <span class="n">0</span></button>
+      <button role="tab" data-type="formulaire" aria-selected="false">Par le formulaire de contact <span class="n">4</span></button>
+    </div>
+
+    <div id="pane-monteurs">
+      <div class="admin-card" style="margin-bottom:var(--space-admin-5)">
+        <div class="admin-filters-grid">
+          <div><label class="admin-label" for="f-offre">Offre</label><select id="f-offre" class="admin-select"><option>Monteur vidéo à distance (29)</option><option>Vidéaste tournage (12)</option></select></div>
+          <div><label class="admin-label" for="f-etape">Statut</label><select id="f-etape" class="admin-select"><option value="">Tous</option><option>Nouvelle</option><option>À l'étude</option><option>Échange prévu</option><option>Retenue</option><option>Non retenue</option></select></div>
+          <div><label class="admin-label" for="f-q">Nom ou adresse</label><input id="f-q" class="admin-input" placeholder="dupont, @exemple.fr…"></div>
+          <div><label class="admin-label" for="f-at">À traiter</label><select id="f-at" class="admin-select"><option>Toutes</option><option>À traiter seulement</option></select></div>
+        </div>
+        <div class="admin-filters-actions"><button class="admin-button-ghost" id="apply">Appliquer</button><button class="admin-button-secondary admin-button-sm" id="reset">Réinitialiser</button></div>
+      </div>
+      <p class="admin-meta-small" style="margin:0 0 var(--space-admin-4)" id="sortinfo">Triée par prix vertical, du moins cher au plus cher.</p>
+
+      <div class="admin-card admin-table-wrapper">
+        <table class="admin-table" id="tbl">
+          <thead><tr>
+            <th style="width:40px"><input type="checkbox" class="cbx" id="all" aria-label="Tout cocher"></th>
+            <th>Date</th><th>Candidat</th><th>Ville</th>
+            <th class="r" aria-sort="ascending"><button class="th-sort on" id="sv">Prix vertical <span>↑</span></button></th>
+            <th class="r"><button class="th-sort" id="sh">Prix horizontal <span></span></button></th>
+            <th>Vidéos</th><th>Statut</th><th><span style="position:absolute;left:-9999px">Actions</span></th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <p class="admin-meta-small" id="empty" style="text-align:center;padding:32px;margin:0" hidden>Personne avec ce statut. <a class="admin-link" id="reset2">Voir tous les statuts</a></p>
+      </div>
+    </div>
+
+    <div id="pane-vide" hidden>
+      <div class="admin-card" style="text-align:center;padding:48px 24px">
+        <p class="admin-section-title" style="justify-content:center">Aucune candidature spontanée pour l'instant.</p>
+        <a class="admin-button-ghost" href="#">Voir la page de candidature spontanée <svg class="i i14"><use href="#arrow"/></svg></a>
+      </div>
+    </div>
+    <div id="pane-autre" hidden>
+      <div class="admin-card" style="text-align:center;padding:48px 24px">
+        <p class="admin-meta-small" style="margin:0">Même filtre, même tableau ; seules les colonnes propres à ce type changent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2 · FICHE MONTEUR ================= -->
+  <section class="screen" id="s-monteur"><div class="narrow">
+    <header class="ph">
+      <div><h1>Sarah L.</h1><p>Candidature · Monteur vidéo à distance · 02/10/2026</p></div>
+      <div class="act">
+        <button class="admin-button" data-compose="one"><svg class="i i14"><use href="#mail"/></svg>Répondre</button>
+        <a class="admin-button-ghost" href="#" data-go="liste">← Liste</a>
+      </div>
+    </header>
+
+    <div class="admin-card">
+      <dl class="idt">
+        <dt>Statut</dt><dd><span class="admin-badge b-warning">Échange prévu</span> <span class="admin-meta-small">· essai envoyé le 05/10</span></dd>
+        <dt>Email</dt><dd>sarah.l@exemple.fr</dd>
+        <dt>Téléphone</dt><dd>06 00 00 00 00</dd>
+        <dt>Ville</dt><dd>Bordeaux</dd>
+        <dt>Logiciels</dt><dd>Premiere Pro, After Effects</dd>
+        <dt>Délai</dt><dd>48 h par vidéo</dd>
+      </dl>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="lb"><i></i>Prix vertical</span><span class="v">25 €</span><span class="m">par vidéo · 3e moins cher sur 29</span></div>
+      <div class="stat"><span class="lb"><i style="background:var(--color-admin-neutral)"></i>Prix horizontal</span><span class="v">55 €</span><span class="m">par vidéo</span></div>
+      <div class="stat"><span class="lb"><i style="background:var(--color-admin-info)"></i>Vidéos reçues</span><span class="v">3</span><span class="m">2 verticales · 1 horizontale</span></div>
+    </div>
+
+    <div class="admin-card mt">
+      <h3 class="admin-section-title">Ses vidéos</h3>
+      <div class="videos">
+        <div><div class="vbox"><button class="pl" aria-label="Lire"><svg class="i"><use href="#play"/></svg></button><div class="ctl">0:00<i></i>0:42</div></div><p class="vcap">Boulangerie — reel</p></div>
+        <div><div class="vbox"><button class="pl" aria-label="Lire"><svg class="i"><use href="#play"/></svg></button><div class="ctl">0:00<i></i>1:10</div></div><p class="vcap">Garage — avant / après</p></div>
+        <div class="wide"><div class="vbox h"><button class="pl" aria-label="Lire"><svg class="i"><use href="#play"/></svg></button><div class="ctl">0:00<i></i>2:05</div></div><p class="vcap">Interview client</p></div>
+      </div>
+      <div class="files">
+        <div><svg class="i i14"><use href="#link"/></svg><a class="admin-link">youtube.com/@sarah-montage</a><span class="admin-badge b-success">vérifié le 06/10</span></div>
+        <div><svg class="i i14"><use href="#link"/></svg><a class="admin-link">vimeo.com/sarahl</a><span class="admin-badge b-neutral">lien mort depuis le 05/10</span></div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <h3 class="admin-section-title">Échanges <span class="admin-meta-small"><a class="admin-link">Ajouter une note</a> · <a class="admin-link">Noter un appel</a></span></h3>
+      <ol class="frise">
+        <li class="in"><div class="hd"><span class="t">Reçu</span><span class="admin-meta-small">aujourd'hui 09:14</span><span class="admin-badge b-info">lu automatiquement</span></div>
+          <p>Bien reçu les rushs, je vous envoie une première version jeudi.</p></li>
+        <li class="out"><div class="hd"><span class="t">Envoyé · Essai projet A</span><span class="admin-meta-small">05/10 17:02 · remis · lien ouvert le 05/10</span></div>
+          <p>Voici les fichiers pour l'essai, format vertical.</p>
+          <div class="files">
+            <div><svg class="i i14"><use href="#clip"/></svg><b>Rushs-projet-A.zip</b><span class="admin-meta-small">4,2 Go</span><span class="admin-badge b-success">téléchargé le 06/10</span></div>
+            <div><svg class="i i14"><use href="#clip"/></svg><b>LUT-Axion.cube</b><span class="admin-meta-small">2 Mo</span><span class="admin-badge b-neutral">pas encore téléchargé</span></div>
+          </div></li>
+        <li><div class="hd"><span class="t">Note</span><span class="admin-meta-small">04/10</span></div><p>Bon rythme, sous-titres soignés.</p></li>
+        <li class="in"><div class="hd"><span class="t">Reçu</span><span class="admin-meta-small">03/10 10:12</span><span class="admin-badge b-info">lu automatiquement</span></div><p>Je suis disponible dès lundi pour un essai.</p></li>
+        <li class="out"><div class="hd"><span class="t">Envoyé · Accusé de réception automatique</span><span class="admin-meta-small">02/10 18:40 · remis</span></div></li>
+      </ol>
+    </div>
+
+    <div class="admin-card admin-table-wrapper" style="padding:0">
+      <h3 class="admin-section-title" style="padding:var(--space-admin-card) var(--space-admin-card) 0">Fichiers envoyés</h3>
+      <table class="admin-table">
+        <thead><tr><th>Fichier</th><th>Taille</th><th>Envoyé le</th><th>Ouvert</th><th>Téléchargé</th></tr></thead>
+        <tbody>
+          <tr><td>Rushs-projet-A.zip</td><td>4,2 Go</td><td>05/10/2026</td><td>05/10</td><td><span class="admin-badge b-success">06/10</span></td></tr>
+          <tr><td>LUT-Axion.cube</td><td>2 Mo</td><td>05/10/2026</td><td>05/10</td><td><span class="admin-badge b-neutral">pas encore</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3 class="admin-section-title">Suivi</h3>
+      <div class="grid2">
+        <div><label class="admin-label" for="st1">Statut</label><select id="st1" class="admin-select"><option>Nouvelle</option><option>À l'étude</option><option selected>Échange prévu</option><option>Proposition faite</option><option>Retenue</option><option>Non retenue</option><option>Archivée</option></select></div>
+        <div><label class="admin-label" for="mo1">Motif (si non retenue)</label><select id="mo1" class="admin-select"><option>—</option></select></div>
+      </div>
+      <div class="field mt"><label class="admin-label" for="no1">Note interne</label><textarea id="no1" class="admin-input" rows="2"></textarea></div>
+      <div class="row"><button class="admin-button">Enregistrer</button><button class="admin-button-ghost">Proposer le réseau d'apporteurs</button></div>
+    </div>
+  </div></section>
+
+  <!-- ================= 4a · FUTURS APPORTEURS (liste séparée) ================= -->
+  <section class="screen" id="s-futurs">
+    <header class="ph">
+      <div><h1>Futurs apporteurs</h1><p>58 personnes · 6 attendent notre réponse</p></div>
+      <div class="act"><a class="admin-button-ghost" href="#"><svg class="i i14"><use href="#dl"/></svg>Exporter</a></div>
+    </header>
+    <p class="admin-alert admin-alert-warning">Notre plus ancienne réponse en attente : <b>3 j</b>. <a class="admin-link" data-go="apporteur">Ouvrir</a></p>
+
+    <div class="admin-card" style="margin-bottom:var(--space-admin-5)">
+      <div class="admin-filters-grid">
+        <div><label class="admin-label" for="a-etape">Étape</label><select id="a-etape" class="admin-select"><option>Toutes</option><option>Premier contact</option><option>Invitation envoyée</option><option>Échange prévu</option><option>Échange fait</option><option>Prêt à signer</option><option>Sans suite</option></select></div>
+        <div><label class="admin-label" for="a-orig">Origine</label><select id="a-orig" class="admin-select"><option>Toutes</option><option>Facebook</option><option>Indeed</option><option>Leboncoin</option><option>Site</option></select></div>
+        <div><label class="admin-label" for="a-q">Nom ou adresse</label><input id="a-q" class="admin-input" placeholder="dupont, @exemple.fr…"></div>
+        <div><label class="admin-label" for="a-at">À traiter</label><select id="a-at" class="admin-select"><option>Toutes</option></select></div>
+      </div>
+      <div class="admin-filters-actions"><button class="admin-button-ghost">Appliquer</button><button class="admin-button-secondary admin-button-sm">Réinitialiser</button></div>
+    </div>
+    <p class="admin-meta-small" style="margin:0 0 var(--space-admin-4)">Triée par date, la plus récente d'abord.</p>
+
+    <div class="admin-card admin-table-wrapper">
+      <table class="admin-table" id="tblApp">
+        <thead><tr><th style="width:40px"><input type="checkbox" class="cbx" aria-label="Tout cocher"></th><th>Date</th><th>Nom</th><th>Zone</th><th>Dossier</th><th>Étape</th><th>Dernier échange</th><th></th></tr></thead>
+        <tbody>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Nadine R."></td><td>29/09/2026</td><td>Nadine R.</td><td>Grenoble</td><td>Complet</td><td><span class="admin-badge b-warning">Échange prévu</span><div class="admin-meta-small">09/10 · 10 h</div></td><td>↙ reçu le 06/10</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Marc V."></td><td>27/09/2026</td><td>Marc V.</td><td>Annecy</td><td>Complet</td><td><span class="admin-badge b-warning">Échange fait</span><div class="admin-meta-small">On poursuit</div></td><td>↗ envoyé le 03/10</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Patrick L."></td><td>26/09/2026</td><td>Patrick L.</td><td>Chambéry</td><td>Commencé</td><td><span class="admin-badge b-neutral">Invitation envoyée</span><div class="admin-meta-small">Rappel 2 le 04/10</div></td><td>↗ rappel le 04/10</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Hélène G."></td><td>22/09/2026</td><td>Hélène G.</td><td>Valence</td><td>Complet</td><td><span class="admin-badge b-success">Prêt à signer</span></td><td>↗ envoyé le 02/10</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Sylvie B."></td><td>04/10/2026</td><td>Sylvie B. <span class="admin-meta-small">· à traiter</span></td><td>Lyon</td><td>Premier contact</td><td><span class="admin-badge b-info">Premier contact</span></td><td>—</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+          <tr data-open="apporteur"><td><input type="checkbox" class="cbx appcb" aria-label="Cocher Gérard T."></td><td>18/09/2026</td><td>Gérard T.</td><td>Vienne</td><td>Complet</td><td><span class="admin-badge b-neutral">Sans suite</span><div class="admin-meta-small">classé le 30/09</div></td><td>↗ envoyé le 30/09</td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 4b · FICHE FUTUR APPORTEUR ================= -->
+  <section class="screen" id="s-apporteur"><div class="narrow">
+    <header class="ph">
+      <div><h1>Nadine R.</h1><p>Futur apporteur · premier contact le 29/09/2026</p></div>
+      <div class="act">
+        <button class="admin-button" data-compose="one-app"><svg class="i i14"><use href="#mail"/></svg>Répondre</button>
+        <a class="admin-button-ghost" href="#" data-go="futurs">← Liste</a>
+      </div>
+    </header>
+
+    <div class="admin-card">
+      <dl class="idt">
+        <dt>Étape</dt><dd><span class="admin-badge b-warning">Échange prévu</span> <span class="admin-meta-small">· jeudi 09/10 à 10 h</span></dd>
+        <dt>Email</dt><dd>nadine.r@exemple.fr</dd>
+        <dt>Téléphone</dt><dd>06 00 00 00 00</dd>
+        <dt>Zone</dt><dd>Grenoble · Isère, Savoie</dd>
+        <dt>Origine</dt><dd>Facebook</dd>
+        <dt>CV</dt><dd class="row"><span>CV-Nadine-R.pdf</span><button class="admin-button-ghost">Lire ici</button><button class="admin-button-secondary admin-button-sm"><svg class="i i14"><use href="#dl"/></svg>Télécharger</button></dd>
+      </dl>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="lb"><i style="background:var(--color-admin-success)"></i>Dossier</span><span class="v">Complet</span><span class="m">4 formulaires sur 4</span></div>
+      <div class="stat"><span class="lb"><i></i>Son réseau</span><span class="v">Artisans</span><span class="m">BTP, commerces de proximité</span></div>
+      <div class="stat"><span class="lb"><i style="background:var(--color-admin-info)"></i>Activité</span><span class="v">Indépendante</span><span class="m">immobilier d'entreprise</span></div>
+    </div>
+
+    <div class="admin-card mt">
+      <h3 class="admin-section-title">Échanges <span class="admin-meta-small"><a class="admin-link">Ajouter une note</a> · <a class="admin-link">Noter un appel</a></span></h3>
+      <ol class="frise">
+        <li class="in"><div class="hd"><span class="t">Reçu</span><span class="admin-meta-small">06/10 08:31</span><span class="admin-badge b-info">lu automatiquement</span></div><p>Parfait pour jeudi, à bientôt.</p></li>
+        <li><div class="hd"><span class="t">Échange de 15 minutes réservé</span><span class="admin-meta-small">05/10 · pour le 09/10 à 10 h</span></div></li>
+        <li class="out"><div class="hd"><span class="t">Envoyé · Rappel automatique</span><span class="admin-meta-small">04/10 · remis</span></div></li>
+        <li class="out"><div class="hd"><span class="t">Envoyé · Présentation du réseau</span><span class="admin-meta-small">01/10 · remis · lien ouvert le 02/10</span></div>
+          <div class="files">
+            <div><svg class="i i14"><use href="#clip"/></svg><b>Kit-apporteur.pdf</b><span class="admin-badge b-success">téléchargé le 02/10</span></div>
+            <div><svg class="i i14"><use href="#clip"/></svg><b>Presentation-reseau.pdf</b><span class="admin-badge b-neutral">pas encore téléchargé</span></div>
+          </div></li>
+      </ol>
+    </div>
+
+    <div class="admin-card admin-table-wrapper" style="padding:0">
+      <h3 class="admin-section-title" style="padding:var(--space-admin-card) var(--space-admin-card) 0">Fichiers envoyés</h3>
+      <table class="admin-table">
+        <thead><tr><th>Fichier</th><th>Envoyé le</th><th>Ouvert</th><th>Téléchargé</th></tr></thead>
+        <tbody>
+          <tr><td>Kit-apporteur.pdf</td><td>01/10/2026</td><td>02/10</td><td><span class="admin-badge b-success">02/10</span></td></tr>
+          <tr><td>Presentation-reseau.pdf</td><td>01/10/2026</td><td>02/10</td><td><span class="admin-badge b-neutral">pas encore</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3 class="admin-section-title">Suivi</h3>
+      <div class="grid2">
+        <div><label class="admin-label" for="ap1">Après l'échange</label><select id="ap1" class="admin-select"><option>—</option><option>On poursuit</option><option>À revoir</option><option>Sans suite</option></select></div>
+        <div><label class="admin-label" for="ap2">Note interne</label><input id="ap2" class="admin-input"></div>
+      </div>
+      <div class="row mt"><button class="admin-button">Enregistrer</button><button class="admin-button-ghost">Prêt à signer</button><button class="admin-button-secondary admin-button-sm">Archiver</button></div>
+    </div>
+  </div></section>
+
+  </main>
+</div>
+
+<!-- Barre d'actions groupées (AdminBulkActions) -->
+<div class="bulk" id="bulk" role="toolbar" aria-label="Actions sur la sélection">
+  <span><strong id="nsel">0</strong> sélectionné<span id="pl"></span></span>
+  <div class="acts" id="bulkActs"></div>
+</div>
+
+<!-- Panneaux -->
+<div class="veil" id="veil"></div>
+<aside class="drawer" id="d-videos" aria-label="Vidéos" aria-hidden="true">
+  <header><h2 id="dv-name">Sarah L.</h2><button class="admin-button-ghost" data-close aria-label="Fermer"><svg class="i i14"><use href="#x"/></svg></button></header>
+  <div class="body">
+    <div class="videos" id="dv-list"></div>
+    <p class="admin-meta-small" id="dv-meta"></p>
+  </div>
+  <footer><a class="admin-button-secondary" href="#" data-go="monteur" data-close>Ouvrir la fiche</a><button class="admin-button" data-compose="one">Répondre</button></footer>
+</aside>
+
+<aside class="drawer" id="d-compose" aria-label="Répondre" aria-hidden="true">
+  <header><h2>Répondre</h2><button class="admin-button-ghost" data-close aria-label="Fermer"><svg class="i i14"><use href="#x"/></svg></button></header>
+  <div class="body">
+    <div class="recip" id="recips"></div>
+    <div class="field"><label class="admin-label" for="tpl">Modèle</label><select id="tpl" class="admin-select"></select></div>
+    <div class="field"><label class="admin-label" for="obj">Objet</label><input id="obj" class="admin-input"></div>
+    <div class="field"><label class="admin-label" for="msgt">Message</label><textarea id="msgt" class="admin-input" rows="7"></textarea></div>
+    <div class="field">
+      <span class="admin-label">Joindre des fichiers</span>
+      <div class="row">
+        <button class="admin-button-secondary admin-button-sm" id="srcPc"><svg class="i i14"><use href="#monitor"/></svg>Depuis mon ordinateur</button>
+        <button class="admin-button-secondary admin-button-sm" id="srcLib"><svg class="i i14"><use href="#folder"/></svg>Depuis la bibliothèque</button>
+      </div>
+      <div class="files" id="upBox" hidden>
+        <div style="display:block">
+          <div class="row"><svg class="i i14"><use href="#clip"/></svg><b>Rushs-projet-B.zip</b><span class="admin-meta-small" id="upTxt" style="margin-left:auto">0 Go sur 3,8 Go</span></div>
+          <div class="prog"><i id="upBar"></i></div>
+        </div>
+      </div>
+      <div class="files lib" id="libBox" hidden>
+        <div data-monde="emploi" style="display:block;padding:0;background:#fff">
+          <label><input type="checkbox" class="cbx" checked>LUT-Axion.cube <span class="admin-meta-small" style="margin-left:auto">LUT</span></label>
+          <label><input type="checkbox" class="cbx">Exemple-vertical.mp4 <span class="admin-meta-small" style="margin-left:auto">Vidéo d'exemple</span></label>
+          <label><input type="checkbox" class="cbx" checked>Consignes-montage.pdf <span class="admin-meta-small" style="margin-left:auto">Consignes</span></label>
+        </div>
+        <div data-monde="apporteur" style="display:block;padding:0;background:#fff" hidden>
+          <label><input type="checkbox" class="cbx" checked>Kit-apporteur.pdf <span class="admin-meta-small" style="margin-left:auto">Kit</span></label>
+          <label><input type="checkbox" class="cbx">Presentation-reseau.pdf <span class="admin-meta-small" style="margin-left:auto">Présentation</span></label>
+        </div>
+      </div>
+      <p class="admin-meta-small row" style="margin:8px 0 0;gap:6px"><svg class="i i14"><use href="#lock"/></svg>Envoyé par lien privé, valable 30 jours.</p>
+    </div>
+  </div>
+  <footer><button class="admin-button-secondary" data-close>Annuler</button><button class="admin-button" id="send">Envoyer</button></footer>
+</aside>
+
+<div class="mq" aria-label="Écrans de la maquette">Maquette
+  <button data-go="liste" class="on">1 Liste</button><button data-go="monteur">2 Fiche</button><button data-go="composeur">3 Répondre</button><button data-go="futurs">4a Apporteurs</button><button data-go="apporteur">4b Fiche</button>
+</div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var data=[
+    {n:"Léa M.",d:"04/10/2026",c:"Lyon",v:15,h:40,vid:2,s:"Nouvelle",at:1},
+    {n:"Karim B.",d:"30/09/2026",c:"Nantes",v:20,h:45,vid:3,s:"À l'étude"},
+    {n:"Sarah L.",d:"02/10/2026",c:"Bordeaux",v:25,h:55,vid:3,s:"Échange prévu"},
+    {n:"Thomas G.",d:"05/10/2026",c:"Lille",v:30,h:60,vid:0,s:"Nouvelle",at:1},
+    {n:"Inès R.",d:"26/09/2026",c:"Paris",v:35,h:70,vid:3,s:"Retenue"},
+    {n:"Yanis H.",d:"28/09/2026",c:"Marseille",v:40,h:80,vid:1,s:"À l'étude"},
+    {n:"Camille D.",d:"27/09/2026",c:"Grenoble",v:45,h:75,vid:2,s:"Échange prévu"},
+    {n:"Julien P.",d:"21/09/2026",c:"Toulouse",v:55,h:90,vid:3,s:"Non retenue"},
+    {n:"Manon T.",d:"06/10/2026",c:"Rennes",v:65,h:110,vid:2,s:"Nouvelle",at:1},
+    {n:"Hugo F.",d:"01/10/2026",c:"Annecy",v:80,h:140,vid:3,s:"À l'étude"},
+    {n:"Nina C.",d:"03/10/2026",c:"Metz",v:null,h:null,vid:1,s:"Nouvelle"}
+  ];
+  /* Étapes « emploi » : table exhaustive libellé -> ton */
+  var TON={"Nouvelle":"b-info","À l'étude":"b-neutral","Échange prévu":"b-warning","Proposition faite":"b-warning","Retenue":"b-success","Non retenue":"b-neutral","Retirée":"b-neutral","Archivée":"b-neutral"};
+  var key="v",dir=1,step="",q="",world="emploi";
+  function eur(x){return x==null?'<span class="admin-meta-small">à préciser</span>':x+" €"}
+  function render(){
+    var rows=data.filter(function(d){return(!step||d.s===step)&&(!q||(d.n+" "+d.c).toLowerCase().indexOf(q)>-1)})
+      .sort(function(a,b){var x=a[key],y=b[key];if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return(x-y)*dir});
+    $("#rows").innerHTML=rows.map(function(d){var i=data.indexOf(d);
+      var vid=d.vid?'<button class="admin-button-ghost" data-vid="'+i+'"><svg class="i i14"><use href="#play"/></svg>'+d.vid+' vidéo'+(d.vid>1?'s':'')+'</button>':'<span class="admin-meta-small">aucune</span>';
+      return '<tr data-i="'+i+'" data-open="monteur"><td><input type="checkbox" class="cbx rowcb" aria-label="Cocher '+d.n+'"></td><td>'+d.d+'</td><td>'+d.n+(d.at?' <span class="admin-meta-small">· à traiter</span>':'')+'</td><td>'+d.c+'</td><td class="r"><b>'+eur(d.v)+'</b></td><td class="r">'+eur(d.h)+'</td><td>'+vid+'</td><td><span class="admin-badge '+TON[d.s]+'">'+d.s+'</span></td><td><a class="admin-button-ghost">Détail <svg class="i i14"><use href="#arrow"/></svg></a></td></tr>';
+    }).join("");
+    $("#tbl").hidden=!rows.length; $("#empty").hidden=!!rows.length;
+    $("#sortinfo").textContent="Triée par prix "+(key==="v"?"vertical":"horizontal")+(dir>0?", du moins cher au plus cher.":", du plus cher au moins cher.")+" Prix non lisible en dernier.";
+    bulk();
+  }
+  function sortBy(k){ if(key===k)dir=-dir; else {key=k;dir=1}
+    [["v","#sv"],["h","#sh"]].forEach(function(p){var b=$(p[1]);b.classList.toggle("on",p[0]===key);$("span",b).textContent=p[0]===key?(dir>0?"↑":"↓"):"";b.parentNode.setAttribute("aria-sort",p[0]===key?(dir>0?"ascending":"descending"):"none")});
+    render(); }
+  $("#sv").onclick=function(e){e.stopPropagation();sortBy("v")};
+  $("#sh").onclick=function(e){e.stopPropagation();sortBy("h")};
+  $("#apply").onclick=function(){step=$("#f-etape").value;q=$("#f-q").value.trim().toLowerCase();render()};
+  function reset(){$("#f-etape").value="";$("#f-q").value="";step="";q="";render()}
+  $("#reset").onclick=reset; $("#reset2").onclick=reset;
+  $("#f-etape").onchange=function(){step=this.value;render()};
+  $("#f-q").oninput=function(){q=this.value.trim().toLowerCase();render()};
+
+  /* Sélection + barre groupée, par monde */
+  function bulk(){
+    var sel=world==="emploi"?$$(".rowcb:checked"):$$(".appcb:checked"), n=sel.length;
+    $("#bulk").classList.toggle("on",n>0); document.body.classList.toggle("bulk-open",n>0);
+    $("#nsel").textContent=n; $("#pl").textContent=n>1?"s":"";
+    $("#bulkActs").innerHTML=world==="emploi"
+      ?'<button class="admin-button" data-compose="multi">Répondre à plusieurs</button><select class="admin-select" style="width:auto" aria-label="Changer le statut"><option>Changer le statut…</option><option>À l\'étude</option><option>Échange prévu</option><option>Retenue</option><option>Non retenue</option><option>Archivée</option></select><button class="admin-button-ghost" data-clear>Désélectionner</button>'
+      :'<button class="admin-button" data-compose="multi-app">Répondre avec un modèle</button><button class="admin-button-secondary">Classer sans suite</button><button class="admin-button-secondary">Archiver</button><button class="admin-button-ghost" data-clear>Désélectionner</button>';
+    $$("#rows tr, #tblApp tbody tr").forEach(function(tr){var c=$("input",tr);tr.classList.toggle("sel",c&&c.checked)});
+  }
+  $("#all").onchange=function(){var v=this.checked;$$(".rowcb").forEach(function(c){c.checked=v});bulk()};
+  $("#tblApp thead input").onchange=function(){var v=this.checked;$$(".appcb").forEach(function(c){c.checked=v});bulk()};
+  document.addEventListener("change",function(e){if(e.target.matches(".rowcb,.appcb"))bulk()});
+
+  /* Navigation entre écrans */
+  function go(id){
+    if(id==="composeur"){go("monteur");openCompose(["Sarah L."],false);mq("composeur");return}
+    closeAll();
+    $$(".screen").forEach(function(s){s.classList.toggle("on",s.id==="s-"+id)});
+    world=(id==="futurs"||id==="apporteur")?"apporteur":"emploi";
+    $$(".rowcb,.appcb,#all,#tblApp thead input").forEach(function(c){c.checked=false}); bulk();
+    var nav=world==="apporteur"?"futurs":"liste";
+    $$(".rail [data-nav]").forEach(function(a){a.classList.toggle("on",a.dataset.nav===nav)});
+    $("#g-app").classList.toggle("open",nav==="futurs");$("#g-app").classList.toggle("act",nav==="futurs");
+    $("#g-cand").classList.toggle("open",nav==="liste");$("#g-cand").classList.toggle("act",nav==="liste");
+    $("#rail").classList.remove("open");
+    mq(id); window.scrollTo(0,0);
+  }
+  function mq(id){$$(".mq button").forEach(function(b){b.classList.toggle("on",b.dataset.go===id)})}
+
+  document.addEventListener("click",function(e){
+    var t=e.target;
+    if(t.closest("input,select,label,textarea"))return;
+    var v=t.closest("[data-vid]"); if(v){openVideos(data[+v.dataset.vid]);return}
+    var c=t.closest("[data-compose]"); if(c){var m=c.dataset.compose;
+      if(m==="multi")openCompose($$(".rowcb:checked").map(function(x){return data[+x.closest("tr").dataset.i].n}),false);
+      else if(m==="multi-app")openCompose($$(".appcb:checked").map(function(x){return x.getAttribute("aria-label").replace("Cocher ","")}),true);
+      else openCompose(m==="one-app"?["Nadine R."]:["Sarah L."],m==="one-app"); return}
+    if(t.closest("[data-clear]")){$$(".rowcb,.appcb").forEach(function(x){x.checked=false});bulk();return}
+    var g=t.closest("[data-go]"); if(g){e.preventDefault();go(g.dataset.go);return}
+    if(t.closest("[data-close]")){closeAll();return}
+    var o=t.closest("tr[data-open]"); if(o){go(o.dataset.open);return}
+    var gb=t.closest(".grp>button"); if(gb){gb.parentNode.classList.toggle("open");return}
+    var tab=t.closest(".ftabs button"); if(tab){
+      $$(".ftabs button").forEach(function(x){x.setAttribute("aria-selected",x===tab)});
+      var ty=tab.dataset.type; $("#pane-monteurs").hidden=ty!=="monteurs"; $("#pane-vide").hidden=ty!=="spontanees"; $("#pane-autre").hidden=ty==="monteurs"||ty==="spontanees"; return}
+    var pl=t.closest(".pl"); if(pl){pl.style.display="none";var bar=pl.parentNode.querySelector(".ctl i");if(bar)bar.style.setProperty("opacity","1");return}
+  });
+  $("#veil").onclick=closeAll;
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
+  $("#burger").onclick=function(){$("#rail").classList.toggle("open")};
+
+  function openDrawer(d){$("#veil").classList.add("on");d.classList.add("on");d.setAttribute("aria-hidden","false")}
+  function closeAll(){$("#veil").classList.remove("on");$$(".drawer").forEach(function(d){d.classList.remove("on");d.setAttribute("aria-hidden","true")})}
+  function openVideos(d){
+    $("#dv-name").textContent=d.n;
+    var t=["0:42","1:10","2:05"];
+    $("#dv-list").innerHTML=t.slice(0,d.vid).map(function(x,i){return '<div><div class="vbox"><button class="pl" aria-label="Lire"><svg class="i"><use href="#play"/></svg></button><div class="ctl">0:00<i></i>'+x+'</div></div><p class="vcap">Vidéo '+(i+1)+'</p></div>'}).join("");
+    $("#dv-meta").textContent="Prix vertical "+(d.v==null?"à préciser":d.v+" €")+" · horizontal "+(d.h==null?"à préciser":d.h+" €")+" · "+d.c;
+    openDrawer($("#d-videos"));
+  }
+  var T_EMPLOI=["Envoyer un essai","Proposer un échange","Demander une précision","Message libre","Ne pas donner suite"];
+  var T_APP=["Proposer un échange","Mettre le kit à disposition","Accueil","Sans suite, avec nos remerciements"];
+  function openCompose(names,app){
+    closeAll(); var multi=names.length>1;
+    $("#recips").innerHTML=names.map(function(n){return '<span class="admin-badge b-neutral">'+n+'</span>'}).join("")+(multi?'<span class="admin-meta-small">· un e-mail chacun</span>':'');
+    $("#tpl").innerHTML=(app?T_APP:T_EMPLOI).map(function(x){return "<option>"+x+"</option>"}).join("");
+    $("#obj").value=app?(multi?"Faisons connaissance":"Notre échange de jeudi"):(multi?"Votre candidature":"Essai de montage — projet B");
+    $("#msgt").value=app
+      ?(multi?"Bonjour {prénom},\n\nMerci pour votre intérêt pour le réseau. Je vous propose un échange de 15 minutes.\n\nBien à vous,\nWill":"Bonjour Nadine,\n\nÀ jeudi 10 h pour notre échange de 15 minutes.\n\nBien à vous,\nWill")
+      :(multi?"Bonjour {prénom},\n\nMerci pour vos vidéos. Je reviens vers vous très vite.\n\nBien à vous,\nWill":"Bonjour Sarah,\n\nMerci pour votre première version. Voici les fichiers du projet B, format vertical.\n\nBien à vous,\nWill");
+    /* Bibliothèque filtrée par monde ; pas de dépôt libre côté apporteurs */
+    $("#srcPc").hidden=app; $("#upBox").hidden=true; $("#libBox").hidden=true;
+    $('#libBox [data-monde="emploi"]').hidden=app; $('#libBox [data-monde="apporteur"]').hidden=!app;
+    openDrawer($("#d-compose"));
+  }
+  var timer;
+  $("#srcPc").onclick=function(){$("#upBox").hidden=false;clearInterval(timer);var p=0;
+    timer=setInterval(function(){p=Math.min(100,p+4);$("#upBar").style.width=p+"%";
+      $("#upTxt").textContent=p<100?(3.8*p/100).toFixed(1).replace(".",",")+" Go sur 3,8 Go":"3,8 Go · prêt";
+      if(p>=100)clearInterval(timer)},150)};
+  $("#srcLib").onclick=function(){$("#libBox").hidden=!$("#libBox").hidden};
+  $("#send").onclick=function(){var b=this;b.textContent="Envoyé";setTimeout(function(){b.textContent="Envoyer";closeAll()},800)};
+
+  render();
+})();
+</script>
+</body>
+</html>
