@@ -13,16 +13,21 @@
  */
 
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
-import type { IndicesPosteCandidature } from "./formateur-freelance";
+import {
+  estCandidatureFormateurFreelance,
+  type IndicesPosteCandidature,
+} from "./formateur-freelance";
 
 /**
  * La mention que porte une fiche née sans numéro de déclaration d'activité.
  *
- * 🔴 Règle de Will : AUCUN formateur externe actif sans ce numéro. Une
- * candidature ne le porte jamais — le formulaire ne le demande pas — donc la
- * fiche née d'une candidature naît INACTIVE, et cette phrase dit pourquoi.
+ * 🔴 Règle de Will : AUCUN formateur externe actif sans ce numéro. La fiche
+ * née d'une candidature n'en porte pas de vérifié, donc elle naît INACTIVE, et
+ * cette phrase dit ce qui reste à faire : le confirmer par une pièce du
+ * dossier — un numéro déclaratif ne suffit pas.
  */
-export const MENTION_NDA_A_DEMANDER = "Numéro de déclaration à demander";
+export const MENTION_NDA_A_DEMANDER =
+  "Numéro de déclaration d'activité à confirmer dans le dossier";
 
 /**
  * L'état qui ouvre la passerelle : « Recrutée » (`hired`). C'est le seul où la
@@ -46,33 +51,56 @@ export function estOffreFormateur(
   return /\bformat(eur|rice)s?\b/i.test(offerTitleSnap ?? "");
 }
 
-export function peutCreerFicheFormateur(c: {
-  status: JobApplicationStatus;
-  offerSlug: string | null | undefined;
-  offerTitleSnap: string | null | undefined;
-}): boolean {
-  return (
-    c.status === STATUT_OUVRANT_LA_FICHE_FORMATEUR &&
-    estOffreFormateur(c.offerSlug, c.offerTitleSnap)
-  );
+/** Candidature de formateur, freelance ou salarié. */
+export function estCandidatureFormateur(c: IndicesPosteCandidature): boolean {
+  return estOffreFormateur(c.offerSlug, c.offerTitleSnap) || estCandidatureFormateurFreelance(c);
 }
 
 /**
- * Statut de la fiche, lu sur le contrat de l'offre : une offre en freelance
- * (`CONTRACTOR`, en type principal ou second) recrute un SOUS-TRAITANT ; toute
- * autre, un salarié. Le statut se corrige ensuite sur la fiche.
+ * La passerelle s'ouvre-t-elle ?
+ *
+ * Une candidature de formateur FREELANCE l'ouvre à toute étape : on ne
+ * « recrute » pas un sous-traitant, on référence un prestataire, et sa fiche
+ * (inactive) précède la vérification du dossier. Toute autre candidature de
+ * formateur attend « Recrutée ».
+ */
+export function peutCreerFicheFormateur(
+  c: {
+    status: JobApplicationStatus;
+    offerSlug: string | null | undefined;
+    offerTitleSnap: string | null | undefined;
+  } & Partial<Pick<IndicesPosteCandidature, "employmentType" | "secondaryEmploymentType">>,
+): boolean {
+  const indices: IndicesPosteCandidature = {
+    offerSlug: c.offerSlug,
+    offerTitleSnap: c.offerTitleSnap,
+    employmentType: c.employmentType,
+    secondaryEmploymentType: c.secondaryEmploymentType,
+  };
+  if (estCandidatureFormateurFreelance(indices)) return true;
+  return c.status === STATUT_OUVRANT_LA_FICHE_FORMATEUR && estCandidatureFormateur(indices);
+}
+
+/** Types schema.org qui disent un contrat de travail SALARIÉ. */
+const TYPES_SALARIES: readonly string[] = ["FULL_TIME", "PART_TIME", "TEMPORARY"];
+
+/**
+ * Statut de la fiche, ou `null` quand rien ne permet de le dire.
+ *
+ * 🔴 JAMAIS `salarie` PAR DÉFAUT : une spontanée « Formateur IA indépendant »
+ * en serait devenue un salarié. L'ordre :
+ *   1. candidature de formateur FREELANCE → `sous_traitant` (même une offre
+ *      étiquetée freelance mais saisie FULL_TIME) ;
+ *   2. offre salariée EXPLICITE (FULL_TIME, PART_TIME, TEMPORARY) → `salarie` ;
+ *   3. tout le reste (spontanée sans indice, offre supprimée, type inconnu)
+ *      → `null` : l'administrateur choisit dans le bouton.
  */
 export function statutFormateurDepuisOffre(
   c: IndicesPosteCandidature,
 ): "salarie" | "sous_traitant" | null {
-  return c.employmentType === "CONTRACTOR" || c.secondaryEmploymentType === "CONTRACTOR"
-    ? "sous_traitant"
-    : "salarie";
-}
-
-// Échafaudage U3 (premier commit, tests rouges).
-export function estCandidatureFormateur(c: IndicesPosteCandidature): boolean {
-  return estOffreFormateur(c.offerSlug, c.offerTitleSnap);
+  if (estCandidatureFormateurFreelance(c)) return "sous_traitant";
+  if (c.employmentType && TYPES_SALARIES.includes(c.employmentType)) return "salarie";
+  return null;
 }
 
 /**
