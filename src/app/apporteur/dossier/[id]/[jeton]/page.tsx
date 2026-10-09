@@ -152,6 +152,13 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         >
           Voir la grille de référence des commissions →
         </a>
+        {/* Les pièces prêtes à l'emploi pour parler d'Axion-IA (art. 22 bis, 2026-10-09). */}
+        <a
+          href={`/apporteur/dossier/${dossier.id}/${jeton}/outils`}
+          className="text-terracotta-deep mt-1 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+        >
+          Mes outils de communication : bannière, visuels, textes, logo →
+        </a>
         {vigilance ? (
           <ul className="mt-5 grid gap-3">
             {PIECES_VIGILANCE.map((t) => {
