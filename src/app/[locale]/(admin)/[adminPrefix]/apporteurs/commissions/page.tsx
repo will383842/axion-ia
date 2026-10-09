@@ -528,7 +528,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           min={1}
                           required
                           defaultValue={c.prorata?.participantsEtablissement}
-                          className="admin-input w-24"
+                          className="admin-input"
                         />
                       </label>
                       <label className="flex items-center gap-[var(--space-admin-2)]">
@@ -539,7 +539,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                           min={1}
                           required
                           defaultValue={c.prorata?.participantsCommande}
-                          className="admin-input w-24"
+                          className="admin-input"
                         />
                       </label>
                       <div>

@@ -29,11 +29,11 @@ import { signalerErreurReseau } from "./signaler";
 
 export type PartieQuiResilie = "societe" | "apporteur";
 
-export const PREAVIS_APPORTEUR_JOURS = 30;
+export const JOURS_PREAVIS_APPORTEUR = 30;
 /** Préavis de la Société par année d'ancienneté (contrat 2.7) : 1re, 2e, 3e et suivantes. */
-export const PREAVIS_SOCIETE_JOURS = [30, 60, 90] as const;
+export const JOURS_PREAVIS_SOCIETE = [30, 60, 90] as const;
 /** Préavis de toutes les versions antérieures à la 2.7, quelle que soit la partie. */
-export const PREAVIS_AVANT_27_JOURS = 30;
+export const JOURS_PREAVIS_AVANT_27 = 30;
 /** Motif d'une résiliation pour manquement (art. 11.2) : une décision motivée, pas un mot. */
 export const MOTIF_MANQUEMENT_MIN = 10;
 
@@ -62,13 +62,13 @@ export function preavisJours(e: {
   priseEffet: Date | null;
   notifieeLe: Date;
 }): number {
-  if (e.par === "apporteur") return PREAVIS_APPORTEUR_JOURS;
-  if (!preavisProgressif(e.version)) return PREAVIS_AVANT_27_JOURS;
-  if (!e.priseEffet) return PREAVIS_SOCIETE_JOURS[0];
+  if (e.par === "apporteur") return JOURS_PREAVIS_APPORTEUR;
+  if (!preavisProgressif(e.version)) return JOURS_PREAVIS_AVANT_27;
+  if (!e.priseEffet) return JOURS_PREAVIS_SOCIETE[0];
   const t = e.notifieeLe.getTime();
-  if (t < ajouterMois(e.priseEffet, 12).getTime()) return PREAVIS_SOCIETE_JOURS[0];
-  if (t < ajouterMois(e.priseEffet, 24).getTime()) return PREAVIS_SOCIETE_JOURS[1];
-  return PREAVIS_SOCIETE_JOURS[2];
+  if (t < ajouterMois(e.priseEffet, 12).getTime()) return JOURS_PREAVIS_SOCIETE[0];
+  if (t < ajouterMois(e.priseEffet, 24).getTime()) return JOURS_PREAVIS_SOCIETE[1];
+  return JOURS_PREAVIS_SOCIETE[2];
 }
 
 /** Fin du contrat : jour de Paris de la notification + préavis (rendue à midi UTC). */
