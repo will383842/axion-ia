@@ -22,7 +22,7 @@
 //     « Candidature spontanée » contigus à l'écran), la date en second.
 
 import Link from "next/link";
-import { ArrowRight, Download, FolderOpen, Gauge } from "lucide-react";
+import { ArrowRight, Download, FolderOpen } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -33,7 +33,14 @@ import {
   AdminButton,
   AdminEtatBooleen,
   AdminPagination,
+  AdminFilterTabs,
 } from "@/components/admin/ui";
+import { PastilleEtape } from "@/components/admin/etapes/PastilleEtape";
+import { etapeEmploi } from "@/features/etapes/etapes";
+import {
+  ONGLETS_CANDIDATURES,
+  type OngletCandidatures,
+} from "@/features/admin-job-applications/onglets-candidatures";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type {
   JobApplicationListItem,
@@ -129,6 +136,21 @@ interface Props {
     ageMinJours: number;
     basculer: (formData: FormData) => Promise<void>;
   } | null;
+  /**
+   * L8b — les onglets de la maquette v2 (Monteurs & vidéastes, Formateurs,
+   * Autres offres, Spontanées, Par le formulaire de contact), leur volume, et
+   * les chemins de l'onglet « formulaire » (une autre liste) et du panneau
+   * Monteurs (rendu par la page, composant serveur).
+   */
+  onglets?: {
+    courant: OngletCandidatures;
+    compte: Partial<Record<OngletCandidatures, number>>;
+    hrefFormulaire: string;
+  } | null;
+  /** L8b — le panneau des prix (onglet Monteurs), rendu par la page. */
+  panneauMonteurs?: React.ReactNode;
+  /** L8b — les puces d'étapes de l'onglet : statut, volume. */
+  puces?: ReadonlyArray<{ statut: string; compte: number }> | null;
   /** L6b — fichiers à joindre à la réponse groupée ; `null` : bibliothèque éteinte. */
   fichiersEnMasse?: ReadonlyArray<{ id: string; titre: string; libelleCategorie: string }> | null;
 }
@@ -145,9 +167,33 @@ export function ApplicationsV2({
   plusAncienJamaisRepondu = null,
   reponseAuto = null,
   fichiersEnMasse = null,
+  onglets = null,
+  panneauMonteurs = null,
+  puces = null,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
+  const vue = onglets?.courant ?? null;
+  /** Un lien de la liste qui garde l'onglet et les filtres en cours. */
+  const lienListe = (change: Record<string, string | null>): string => {
+    const q = new URLSearchParams();
+    for (const [k, v] of Object.entries({
+      vue,
+      offerId: sp["offerId"] ?? null,
+      status: sp["status"] ?? null,
+      attention: sp["attention"] ?? null,
+      q: sp["q"] ?? null,
+      tri: sp["tri"] ?? null,
+      ...change,
+    })) {
+      if (v && v !== "all") q.set(k, v);
+    }
+    const qs = q.toString();
+    return qs ? `${baseHref}?${qs}` : baseHref;
+  };
+  const ongletCourant = onglets
+    ? ONGLETS_CANDIDATURES.find((o) => o.id === onglets.courant)
+    : undefined;
   const offreActive = offerId ? offres.find((o) => o.id === offerId) : undefined;
   const totalOffres = offres.reduce((n, o) => n + o.count, 0);
 
@@ -193,8 +239,12 @@ export function ApplicationsV2({
         </>
       ),
     },
-    { key: "email", header: "Email", cell: (a) => a.contactEmail ?? MASQUE },
+    // L8b — colonnes de la maquette v2 : Ville et Origine (dérivée de la
+    // provenance), l'étape en pastille. L'adresse et la présence du CV se
+    // lisent sur la fiche (ligne cliquable).
+    { key: "ville", header: "Ville", cell: (a) => a.ville ?? MASQUE },
     { key: "offer", header: "Offre", cell: (a) => a.offerTitleSnap },
+    { key: "origine", header: "Origine", cell: (a) => a.origine ?? MASQUE },
     {
       key: "cv",
       header: "CV",
@@ -204,12 +254,13 @@ export function ApplicationsV2({
     },
     {
       key: "status",
-      header: "Statut",
-      cell: (a) => (
-        <AdminBadge tone={STATUS_TONE[a.status] ?? "neutral"}>
-          {STATUS_LABELS[a.status] ?? a.status}
-        </AdminBadge>
-      ),
+      header: "Étape",
+      cell: (a) =>
+        a.status in STATUS_LABELS ? (
+          <PastilleEtape etape={etapeEmploi(a.status)} />
+        ) : (
+          <AdminBadge tone={STATUS_TONE[a.status] ?? "neutral"}>{a.status}</AdminBadge>
+        ),
     },
   ];
   return (
@@ -219,9 +270,6 @@ export function ApplicationsV2({
         description={`${total} candidature${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
         actions={
           <div className="flex items-center gap-[var(--space-admin-3)]">
-            <Link href={`${baseHref}/pilotage`} className="admin-button-ghost">
-              <Gauge size={15} aria-hidden="true" /> Pilotage
-            </Link>
             {/* Candidatures unifiées L4 — les fichiers à envoyer aux candidats. */}
             <Link href={`${baseHref}/bibliotheque`} className="admin-button-ghost">
               <FolderOpen size={15} aria-hidden="true" /> Bibliothèque
@@ -234,7 +282,7 @@ export function ApplicationsV2({
               href={`/api/admin/candidatures/export?${exportQuery}`}
               className="admin-button-ghost"
             >
-              <Download size={15} aria-hidden="true" /> Export CSV
+              <Download size={15} aria-hidden="true" /> Exporter
             </a>
           </div>
         }
@@ -276,155 +324,258 @@ export function ApplicationsV2({
         </form>
       ) : null}
 
-      <AdminCard className="mb-[var(--space-admin-5)]">
-        <form className="admin-filters">
-          <div className="admin-filters-grid">
-            <div className="admin-field">
-              <label htmlFor="offerId" className="admin-label">
-                Offre
-              </label>
-              {/* 🔴 REMPLACE l'onglet « Monteur vidéo » (une offre sur 34).
+      {/* L8b — LES ONGLETS DE LA MAQUETTE v2. Dérivés de l'offre (son
+          adresse), jamais stockés. « Par le formulaire de contact » mène à la
+          liste des messages « recrutement » du formulaire /contact. */}
+      {onglets ? (
+        <AdminFilterTabs
+          className="mb-[var(--space-admin-5)]"
+          current={onglets.courant}
+          options={ONGLETS_CANDIDATURES.map((o) => ({
+            value: o.id,
+            label: o.libelle,
+            href: o.id === "formulaire" ? onglets.hrefFormulaire : `${baseHref}?vue=${o.id}`,
+            ...(typeof onglets.compte[o.id] === "number" ? { count: onglets.compte[o.id] } : {}),
+          }))}
+        />
+      ) : null}
+
+      {onglets?.courant === "monteurs" && !offerId && panneauMonteurs ? (
+        panneauMonteurs
+      ) : (
+        <>
+          <AdminCard className="mb-[var(--space-admin-5)]">
+            <form className="admin-filters">
+              {vue ? <input type="hidden" name="vue" value={vue} /> : null}
+              <div className="admin-filters-grid">
+                <div className="admin-field">
+                  <label htmlFor="offerId" className="admin-label">
+                    Offre
+                  </label>
+                  {/* 🔴 REMPLACE l'onglet « Monteur vidéo » (une offre sur 34).
                   « Qui a postulé à Rédacteur web ? » est la question que cet
                   écran doit savoir répondre pour CHACUNE des 34, pas pour une
                   seule figée au code. Alimenté par les offres qui ont
                   RÉELLEMENT des candidatures (`getOffresAvecCandidatures`) :
                   aucune option qui rendrait zéro ligne. */}
-              <select
-                id="offerId"
-                name="offerId"
-                defaultValue={offerId ?? ""}
-                className="admin-input"
-              >
-                <option value="">Toutes les offres ({totalOffres})</option>
-                {offres.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.label} ({o.count})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="admin-field">
-              <label htmlFor="status" className="admin-label">
-                Statut
-              </label>
-              <select
-                id="status"
-                name="status"
-                defaultValue={sp["status"] ?? "all"}
-                className="admin-input"
-              >
-                <option value="all">Tous</option>
-                {Object.entries(STATUS_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="admin-field">
-              <label htmlFor="q" className="admin-label">
-                Nom ou adresse
-              </label>
-              {/* 🔴 `type="search"` et non `text` : le navigateur y offre la
+                  <select
+                    id="offerId"
+                    name="offerId"
+                    defaultValue={offerId ?? ""}
+                    className="admin-input"
+                  >
+                    <option value="">Toutes les offres ({totalOffres})</option>
+                    {offres.map((o) => (
+                      <option key={o.id} value={o.id}>
+                        {o.label} ({o.count})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-field">
+                  <label htmlFor="status" className="admin-label">
+                    Statut
+                  </label>
+                  <select
+                    id="status"
+                    name="status"
+                    defaultValue={sp["status"] ?? "all"}
+                    className="admin-input"
+                  >
+                    <option value="all">Tous</option>
+                    {Object.entries(STATUS_LABELS).map(([k, v]) => (
+                      <option key={k} value={k}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-field">
+                  <label htmlFor="q" className="admin-label">
+                    Nom ou adresse
+                  </label>
+                  {/* 🔴 `type="search"` et non `text` : le navigateur y offre la
                   croix d'effacement, et un champ de recherche qu'on ne sait pas
                   vider se contourne en éditant l'URL. */}
-              <input
-                id="q"
-                name="q"
-                type="search"
-                defaultValue={sp["q"] ?? ""}
-                placeholder="dupont, @exemple.fr…"
-                className="admin-input"
+                  <input
+                    id="q"
+                    name="q"
+                    type="search"
+                    defaultValue={sp["q"] ?? ""}
+                    placeholder="dupont, @exemple.fr…"
+                    className="admin-input"
+                  />
+                </div>
+                <div className="admin-field">
+                  <label htmlFor="attention" className="admin-label">
+                    À traiter
+                  </label>
+                  <select
+                    id="attention"
+                    name="attention"
+                    defaultValue={sp["attention"] ?? ""}
+                    className="admin-input"
+                  >
+                    <option value="">Toutes</option>
+                    <option value="1">À traiter seulement</option>
+                  </select>
+                </div>
+              </div>
+              <div className="admin-filters-actions">
+                <button type="submit" className="admin-button-ghost">
+                  Appliquer
+                </button>
+                <Link
+                  href={vue ? `${baseHref}?vue=${vue}` : baseHref}
+                  className="admin-button-secondary"
+                >
+                  Réinitialiser
+                </Link>
+              </div>
+            </form>
+          </AdminCard>
+
+          {/* L8b — puces d'étapes de l'onglet : un clic filtre l'étape. */}
+          {puces && puces.length > 0 ? (
+            <AdminFilterTabs
+              className="mb-[var(--space-admin-4)]"
+              label="Étape"
+              current={sp["status"] ?? "all"}
+              options={[
+                {
+                  value: "all",
+                  label: "Toutes",
+                  href: lienListe({ status: null, page: null }),
+                  count: puces.reduce((n, p) => n + p.compte, 0),
+                },
+                ...puces.map((p) => ({
+                  value: p.statut,
+                  label: STATUS_LABELS[p.statut]
+                    ? etapeEmploi(p.statut as never).libelle
+                    : p.statut,
+                  href: lienListe({ status: p.statut, page: null }),
+                  count: p.compte,
+                })),
+              ]}
+            />
+          ) : null}
+
+          {onglets ? (
+            <p className="admin-meta-small mb-[var(--space-admin-4)]">
+              {sp["tri"] === "ancien"
+                ? "Triée de la plus ancienne à la plus récente. "
+                : "Triée par date, la plus récente d’abord. "}
+              <Link
+                href={lienListe({ tri: sp["tri"] === "ancien" ? null : "ancien", page: null })}
+                className="admin-link"
+              >
+                {sp["tri"] === "ancien" ? "Plus récentes d’abord" : "Plus anciennes d’abord"}
+              </Link>
+            </p>
+          ) : null}
+
+          {!onglets && !offerId && !sp["q"] ? (
+            <p className="admin-meta-small mb-[var(--space-admin-4)]">
+              Triée par offre — {offres.length} offre{offres.length > 1 ? "s" : ""} concernée
+              {offres.length > 1 ? "s" : ""}.
+            </p>
+          ) : null}
+
+          {balayageTronque ? (
+            <p className="admin-alert admin-alert-warning mb-[var(--space-admin-4)]" role="status">
+              La recherche n’a examiné que les candidatures les plus récentes : des dossiers plus
+              anciens n’ont PAS été parcourus. Restreindre par offre ou par statut pour remonter
+              plus loin.
+            </p>
+          ) : null}
+
+          {items.length === 0 ? (
+            ongletCourant && !sp["q"] && !sp["status"] && !offerId && sp["attention"] !== "1" ? (
+              // L8b — onglet vide : une phrase et un geste (maquette).
+              <AdminEmptyState
+                title={ongletCourant.vide}
+                primaryAction={
+                  ongletCourant.id === "spontanees" ? (
+                    <Link
+                      href="/fr/carrieres/candidature-spontanee"
+                      className="admin-button-secondary"
+                    >
+                      Voir la page de candidature spontanée
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/fr/${adminPrefix}/offres-emploi`}
+                      className="admin-button-secondary"
+                    >
+                      Voir les offres publiées
+                    </Link>
+                  )
+                }
               />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="attention" className="admin-label">
-                À traiter
-              </label>
-              <select
-                id="attention"
-                name="attention"
-                defaultValue={sp["attention"] ?? ""}
-                className="admin-input"
-              >
-                <option value="">Toutes</option>
-                <option value="1">À traiter seulement</option>
-              </select>
-            </div>
-          </div>
-          <div className="admin-filters-actions">
-            <button type="submit" className="admin-button-ghost">
-              Appliquer
-            </button>
-            <Link href={baseHref} className="admin-button-secondary">
-              Réinitialiser
-            </Link>
-          </div>
-        </form>
-      </AdminCard>
+            ) : (
+              <AdminEmptyState
+                title="Aucune candidature avec ces filtres."
+                primaryAction={
+                  <Link
+                    href={vue ? `${baseHref}?vue=${vue}` : baseHref}
+                    className="admin-button-secondary"
+                  >
+                    Retirer les filtres
+                  </Link>
+                }
+              />
+            )
+          ) : (
+            <FormulaireEnMasse
+              statuts={OPTIONS_STATUT}
+              motifs={OPTIONS_MOTIF}
+              plafond={PLAFOND_EN_MASSE}
+              modeles={OPTIONS_MODELE}
+              fichiers={fichiersEnMasse}
+            >
+              <AdminTable
+                columns={columns}
+                rows={items}
+                getRowId={(a) => a.id}
+                caption="Liste des candidatures"
+                // L8b — la ligne entière ouvre la fiche (maquette).
+                rowHref={(a) => `/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
+                rowAction={(a) => (
+                  <AdminButton
+                    href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
+                    variant="ghost"
+                    size="sm"
+                    iconAfter={ArrowRight}
+                  >
+                    Détail
+                  </AdminButton>
+                )}
+              />
+            </FormulaireEnMasse>
+          )}
 
-      {!offerId && !sp["q"] ? (
-        <p className="admin-meta-small mb-[var(--space-admin-4)]">
-          Triée par offre — {offres.length} offre{offres.length > 1 ? "s" : ""} concernée
-          {offres.length > 1 ? "s" : ""}.
-        </p>
-      ) : null}
-
-      {balayageTronque ? (
-        <p className="admin-alert admin-alert-warning mb-[var(--space-admin-4)]" role="status">
-          La recherche n’a examiné que les candidatures les plus récentes : des dossiers plus
-          anciens n’ont PAS été parcourus. Restreindre par offre ou par statut pour remonter plus
-          loin.
-        </p>
-      ) : null}
-
-      {items.length === 0 ? (
-        <AdminEmptyState title="Aucune candidature." />
-      ) : (
-        <FormulaireEnMasse
-          statuts={OPTIONS_STATUT}
-          motifs={OPTIONS_MOTIF}
-          plafond={PLAFOND_EN_MASSE}
-          modeles={OPTIONS_MODELE}
-          fichiers={fichiersEnMasse}
-        >
-          <AdminTable
-            columns={columns}
-            rows={items}
-            getRowId={(a) => a.id}
-            caption="Liste des candidatures"
-            rowAction={(a) => (
-              <AdminButton
-                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
-                variant="ghost"
-                size="sm"
-                iconAfter={ArrowRight}
-              >
-                Détail
-              </AdminButton>
-            )}
-          />
-        </FormulaireEnMasse>
-      )}
-
-      {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
+          {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
           nulle part à l'écran : au-delà de la première, les lignes
           n'étaient atteignables qu'en éditant l'URL. Les filtres en cours
           sont reportés dans les liens — sinon changer de page les
           effacerait, et on repartirait d'une autre liste. */}
-      <AdminPagination
-        page={page}
-        totalPages={totalPages}
-        baseHref={baseHref}
-        preservedParams={{
-          status: sp["status"],
-          offerId: sp["offerId"],
-          attention: sp["attention"],
-          // Sans lui, passer à la page 2 d'une recherche repartait de la liste
-          // complète — la page 2 ne parlait plus du même ensemble que la page 1.
-          q: sp["q"],
-        }}
-      />
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            baseHref={baseHref}
+            preservedParams={{
+              status: sp["status"],
+              offerId: sp["offerId"],
+              attention: sp["attention"],
+              // Sans lui, passer à la page 2 d'une recherche repartait de la liste
+              // complète — la page 2 ne parlait plus du même ensemble que la page 1.
+              q: sp["q"],
+              ...(vue ? { vue } : {}),
+              ...(sp["tri"] ? { tri: sp["tri"] } : {}),
+            }}
+          />
+        </>
+      )}
     </AdminPageShell>
   );
 }
