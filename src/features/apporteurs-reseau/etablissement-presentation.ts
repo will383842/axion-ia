@@ -375,14 +375,17 @@ export async function deciderAttribution(
   acteurId: string | null,
   maintenant: Date = new Date(),
   motifBrut = "",
-): Promise<{ ok: true; ecartes: string[]; motif: string } | { ok: false; message: string }> {
+): Promise<
+  | { ok: true; ecartes: string[]; motif: string; siretCommande: string | null }
+  | { ok: false; message: string }
+> {
   const motif = motifBrut.trim().slice(0, 1000);
   // Art. 3.1 (relecture de a1) : « aucune attribution » est motivée et notifiée.
   if (presentationId === null && motif.length < MOTIF_MIN)
     return { ok: false, message: "Motivez la décision « aucun apporteur » (art. 3.1)." };
   const l = await prisma.commandeAAttribuer.findUnique({
     where: { factureId },
-    select: { candidats: true, decideeAt: true },
+    select: { candidats: true, decideeAt: true, siret: true },
   });
   if (!l) return { ok: false, message: "Commande introuvable." };
   if (l.decideeAt) return { ok: false, message: "Cette commande est déjà attribuée." };
@@ -411,7 +414,12 @@ export async function deciderAttribution(
     return true;
   });
   if (!fait) return { ok: false, message: "La commande a changé : rechargez la page." };
-  return { ok: true, ecartes: l.candidats.filter((c) => c !== presentationId), motif };
+  return {
+    ok: true,
+    ecartes: l.candidats.filter((c) => c !== presentationId),
+    motif,
+    siretCommande: l.siret,
+  };
 }
 
 /** Délai de rattachement manuel (contrat 2.6, art. 3.1) et relance interne. */

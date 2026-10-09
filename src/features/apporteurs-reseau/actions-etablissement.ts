@@ -76,6 +76,7 @@ export async function deciderAttributionAction(
       choisie: presentationId,
       ecartes: r.ecartes,
       motif: r.motif,
+      siretCommande: r.siretCommande,
     });
     revalidatePath(adminPath("fr", "apporteurs/commissions"));
     return {

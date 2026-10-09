@@ -4,7 +4,7 @@
 // « Commandes à attribuer » (contrat 2.6, art. 3.1) : Williams choisit à quelle attribution
 // revient la commande, ou « aucun apporteur ». Une seule décision par commande.
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 import { deciderAttributionAction } from "@/features/apporteurs-reseau/actions-etablissement";
 import type { EtatAction } from "@/features/apporteurs-reseau/actions-presentations";
@@ -19,6 +19,7 @@ export function CommandeAAttribuer({
   candidats: ReadonlyArray<{ presentationId: string; apporteur: string; perimetre: string }>;
 }) {
   const [etat, decider, enCours] = useActionState(deciderAttributionAction, INITIAL);
+  const [motif, setMotif] = useState("");
   if (etat.etat === "ok")
     return (
       <p
@@ -30,10 +31,20 @@ export function CommandeAAttribuer({
     );
   return (
     <div className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+      {/* Le motif (facultatif ici) part aux candidats écartés ; à défaut, un motif exact selon
+          le cas est écrit pour eux (sans SIRET, autre établissement, déclaration antérieure). */}
+      <input
+        aria-label="Motif pour les candidats écartés (facultatif)"
+        placeholder="Motif pour les candidats écartés (facultatif)"
+        className="admin-input"
+        value={motif}
+        onChange={(e) => setMotif(e.target.value)}
+      />
       {candidats.map((c) => (
         <form key={c.presentationId} action={decider}>
           <input type="hidden" name="factureId" value={factureId} />
           <input type="hidden" name="presentationId" value={c.presentationId} />
+          <input type="hidden" name="motif" value={motif} />
           <button type="submit" className="admin-button-secondary" disabled={enCours}>
             Attribuer à {c.apporteur} ({c.perimetre})
           </button>
