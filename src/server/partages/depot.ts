@@ -58,7 +58,9 @@ import {
   lienExterneValide,
   morceauxDejaRecus,
   nomAffichable,
+  morceauHorsTaille,
   nombreMorceaux,
+  tailleMorceau,
   titreParDefaut,
   typeMimeSur,
   type CategorieFichier,
@@ -259,6 +261,7 @@ export async function signerMorceaux(
           l.valeur.cle,
           l.valeur.uploadId,
           numero,
+          tailleMorceau(l.valeur.taille, numero),
           DUREE_SIGNATURE_MORCEAU_S,
         ),
       });
@@ -320,6 +323,8 @@ export async function terminerDepot(fichierId: string): Promise<Resultat<{ fichi
   let reelle: number | null;
   try {
     const parts = await listerMorceauxR2(c.valeur, cle, uploadId);
+    const horsTaille = morceauHorsTaille(taille, parts);
+    if (horsTaille !== null) return arreterMorceauHorsTaille(c.valeur, l.valeur, horsTaille);
     const defaut = defautMorceaux(taille, parts);
     if (defaut) return refus(`L'envoi n'est pas complet : ${defaut}. Reprenez-le.`);
     await assemblerEnvoiR2(c.valeur, cle, uploadId, parts);
@@ -349,6 +354,34 @@ export async function terminerDepot(fichierId: string): Promise<Resultat<{ fichi
   });
   void analyserFichierPartage(fichierId);
   return reussite({ fichierId });
+}
+
+/**
+ * Un morceau reçu n'a pas la taille attendue : chaque adresse étant signée à
+ * la longueur exacte, c'est une anomalie, pas un incident de réseau. L'envoi
+ * est ARRÊTÉ dans R2 et la ligne passe `abandonne` — elle reste en base,
+ * rien n'est supprimé (relecture sécurité, 2026-10-08).
+ */
+async function arreterMorceauHorsTaille(
+  c: CibleR2,
+  l: LigneEnCours,
+  numero: number,
+): Promise<Resultat<{ fichierId: string }>> {
+  try {
+    await arreterEnvoiR2(c, l.cle, l.uploadId);
+  } catch (e) {
+    // R2 nettoie de toute façon les envois jamais terminés (règle du compartiment).
+    Sentry.captureException(e, { tags: { action: "terminerDepot.horsTaille" } });
+  }
+  await prisma.fichierPartage.update({
+    where: { id: l.id },
+    data: { etatDepot: "abandonne" },
+  });
+  Sentry.captureMessage("[partages] morceau reçu de mauvaise taille : envoi arrêté", {
+    level: "warning",
+    tags: { fichierId: l.id, morceau: String(numero) },
+  });
+  return refus("Un morceau reçu n'a pas la taille attendue : l'envoi est arrêté. Recommencez-le.");
 }
 
 // ── Abandonner ──────────────────────────────────────────────────────────────

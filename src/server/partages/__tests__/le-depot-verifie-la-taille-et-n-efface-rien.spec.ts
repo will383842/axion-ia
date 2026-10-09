@@ -135,6 +135,22 @@ describe("commencer", () => {
     const ok = await signerMorceaux(id, [1, 2]);
     expect(ok.ok && ok.valeur.map((m) => m.numero)).toEqual([1, 2]);
   });
+
+  it("signe chaque morceau à SA taille exacte, le dernier compris (relecture sécurité)", async () => {
+    const taille = 2 * TAILLE_MORCEAU_OCTETS + 7;
+    const id = await depot(taille);
+    expect((await signerMorceaux(id, [1, 3])).ok).toBe(true);
+    const cle = `partages/${id}/Rushs-projet-B.zip`;
+    expect(r2.signerMorceauR2).toHaveBeenCalledWith(
+      expect.anything(),
+      cle,
+      "upload-1",
+      1,
+      TAILLE_MORCEAU_OCTETS,
+      3600,
+    );
+    expect(r2.signerMorceauR2).toHaveBeenCalledWith(expect.anything(), cle, "upload-1", 3, 7, 3600);
+  });
 });
 
 describe("terminer : la taille est revérifiée auprès du stockage", () => {
@@ -157,6 +173,27 @@ describe("terminer : la taille est revérifiée auprès du stockage", () => {
     expect(r.ok).toBe(false);
     expect(r2.assemblerEnvoiR2).not.toHaveBeenCalled();
     expect(lignes.get(id)?.etatDepot).toBe("en_cours");
+  });
+
+  it("un morceau reçu de mauvaise taille → envoi arrêté dans R2, ligne `abandonne`, rien d'effacé", async () => {
+    const taille = 2 * TAILLE_MORCEAU_OCTETS;
+    const id = await depot(taille);
+    const parts = morceauxComplets(taille);
+    r2.listerMorceauxR2.mockResolvedValue([
+      parts[0],
+      { ...parts[1], taille: parts[1]!.taille + 1 },
+    ]);
+    const r = await terminerDepot(id);
+    expect(r.ok).toBe(false);
+    expect(r2.assemblerEnvoiR2).not.toHaveBeenCalled();
+    expect(r2.arreterEnvoiR2).toHaveBeenCalledWith(
+      expect.anything(),
+      `partages/${id}/Rushs-projet-B.zip`,
+      "upload-1",
+    );
+    expect(lignes.get(id)?.etatDepot).toBe("abandonne");
+    expect(lignes.has(id)).toBe(true);
+    expect(appels.filter((a) => a.startsWith("delete"))).toEqual([]);
   });
 
   it("taille assemblée différente de l'annonce → arrêté, jamais disponible", async () => {

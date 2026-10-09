@@ -227,6 +227,23 @@ export function defautMorceaux(taille: number, recus: ReadonlyArray<MorceauRecu>
   return null;
 }
 
+/**
+ * Le premier morceau REÇU dont la taille n'est pas celle attendue, ou `null`.
+ * Chaque adresse d'envoi est signée à la longueur exacte du morceau : un tel
+ * écart n'arrive pas par accident, et l'envoi s'arrête (relecture sécurité).
+ */
+export function morceauHorsTaille(
+  taille: number,
+  recus: ReadonlyArray<MorceauRecu>,
+): number | null {
+  const n = nombreMorceaux(taille);
+  const fautif = recus
+    .filter((m) => m.numero >= 1 && m.numero <= n && m.taille !== tailleMorceau(taille, m.numero))
+    .map((m) => m.numero)
+    .sort((a, b) => a - b)[0];
+  return fautif ?? null;
+}
+
 /** Les numéros de morceaux déjà reçus et justes (reprise d'un envoi interrompu). */
 export function morceauxDejaRecus(taille: number, recus: ReadonlyArray<MorceauRecu>): number[] {
   const n = nombreMorceaux(taille);

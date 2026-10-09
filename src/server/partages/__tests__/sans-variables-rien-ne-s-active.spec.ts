@@ -113,6 +113,25 @@ describe("sans variables d'environnement, rien ne s'active", () => {
     expect(partagesActifs({ ...COMPLET, PARTAGES_SECRET: "trop-court" })).toBe(false);
   });
 
+  it("les clés R2 GÉNÉRALES ne servent jamais de repli : il faut le jeton dédié (relecture sécurité)", () => {
+    const sansJeton: Record<string, string> = {
+      ...COMPLET,
+      R2_ACCESS_KEY_ID: "cle-generale",
+      R2_SECRET_ACCESS_KEY: "secret-general",
+    };
+    delete sansJeton.R2_PARTAGES_ACCESS_KEY_ID;
+    delete sansJeton.R2_PARTAGES_SECRET_ACCESS_KEY;
+    expect(partagesActifs(sansJeton)).toBe(false);
+    expect(raisonExtinction(sansJeton)).toBe(
+      "le jeton dédié au compartiment de la bibliothèque n'est pas encore réglé",
+    );
+    const moitie = { ...sansJeton, R2_PARTAGES_ACCESS_KEY_ID: "cle" };
+    expect(partagesActifs(moitie)).toBe(false);
+    expect(configPartages({ ...COMPLET, R2_ACCESS_KEY_ID: "cle-generale" })?.accessKeyId).toBe(
+      "cle",
+    );
+  });
+
   it("aucune fonction du dépôt ne touche la base ni le stockage", async () => {
     const resultats = await Promise.all([
       commencerDepot({ nom: "a.cube", taille: 10, categorie: "lut" }, AUTEUR),
