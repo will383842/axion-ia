@@ -485,6 +485,7 @@ export function JobOfferForm({ initial }: Props) {
           >
             <option value="YEAR">/ an</option>
             <option value="MONTH">/ mois</option>
+            <option value="DAY">/ jour</option>
             <option value="HOUR">/ heure</option>
           </select>
         </div>
