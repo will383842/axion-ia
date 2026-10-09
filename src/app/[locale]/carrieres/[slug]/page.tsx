@@ -35,10 +35,16 @@ import {
   applicantCountryLabel,
   contractTypeLabel,
   normalizeApplicantCountries,
+  salaryLabel,
 } from "@/lib/careers/format";
+import {
+  SLUG_OFFRE_FORMATEUR_FREELANCE,
+  porteEncadreFreelance,
+} from "@/lib/careers/formateur-freelance";
 import {
   getJobOfferBySlug,
   isJobOfferIndexable,
+  isOfferOpen,
   listIndexableJobOfferSlugs,
   listSuggestedOffers,
 } from "@/lib/careers/job-offers";
@@ -59,28 +65,6 @@ function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">
   if (o.filledAt) return true;
   if (o.validThrough && o.validThrough.getTime() < Date.now()) return true;
   return false;
-}
-
-function salaryLabel(o: JobOffer, isFr: boolean): string | null {
-  if (o.isCommission) return isFr ? "Commission déplafonnée" : "Uncapped commission";
-  if (!o.salaryVisible) return null; // masqué → on n'affiche RIEN (jamais de mention vague, directive UE 2023/970)
-  if (o.salaryMin == null && o.salaryMax == null) return null;
-  const k = (n: number) => `${Math.round(n / 1000)}k`;
-  const per =
-    o.salaryPeriod === "YEAR"
-      ? isFr
-        ? "/an"
-        : "/yr"
-      : o.salaryPeriod === "MONTH"
-        ? isFr
-          ? "/mois"
-          : "/mo"
-        : "/h";
-  const range =
-    o.salaryMin != null && o.salaryMax != null
-      ? `${k(o.salaryMin)}–${k(o.salaryMax)}`
-      : k((o.salaryMin ?? o.salaryMax) as number);
-  return `${range} ${o.salaryCurrency} ${per}`;
 }
 
 // FAQ par offre (AEO / AI Overviews) : questions/réponses FACTUELLES dérivées des
@@ -287,6 +271,20 @@ export default async function JobOfferDetailPage({
 
   const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
   const suggested = await listSuggestedOffers(offer, 4);
+  // Encadré « formateur indépendant » (demande Will 2026-10-09) : seulement sur
+  // les offres de formateur salarié, et seulement si l'offre freelance est
+  // ouverte — un lien vers une offre fermée mènerait à un 404.
+  const offreFreelance = porteEncadreFreelance(offer.slug)
+    ? await getJobOfferBySlug(SLUG_OFFRE_FORMATEUR_FREELANCE)
+    : null;
+  const montreEncadreFreelance = Boolean(offreFreelance && isOfferOpen(offreFreelance));
+  // Le tarif vient de l'offre elle-même : le changer en console suffit.
+  const tarifFreelance =
+    offreFreelance?.salaryVisible &&
+    offreFreelance.salaryPeriod === "DAY" &&
+    offreFreelance.salaryMin != null
+      ? `${offreFreelance.salaryMin} € par journée de formation`
+      : null;
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
   const eligibleCountries = normalizeApplicantCountries(offer.applicantCountries);
   const jobCities = Array.isArray(offer.jobLocations)
@@ -507,6 +505,28 @@ export default async function JobOfferDetailPage({
                   <div className="mt-3">
                     <Cta href={applyHref} track="career-apply-aside">
                       {isFr ? "Postuler maintenant" : "Apply now"}
+                    </Cta>
+                  </div>
+                </div>
+              ) : null}
+
+              {montreEncadreFreelance && isFr ? (
+                <div className="border-terracotta/30 rounded-2xl border bg-white p-5">
+                  <h2 className="font-serif text-lg font-semibold">
+                    Vous êtes formateur indépendant ?
+                  </h2>
+                  <p className="text-fg-soft mt-2 text-sm">
+                    Nous privilégions la collaboration avec des formateurs freelances confirmés
+                    {tarifFreelance ? ` : ${tarifFreelance}` : ""}, avec des missions qui suivent la
+                    satisfaction de nos clients.
+                  </p>
+                  <div className="mt-3">
+                    <Cta
+                      href={`/carrieres/${SLUG_OFFRE_FORMATEUR_FREELANCE}`}
+                      track="career-trainer-freelance"
+                      variant="outline"
+                    >
+                      Découvrir l&apos;offre freelance
                     </Cta>
                   </div>
                 </div>
