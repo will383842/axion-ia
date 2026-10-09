@@ -56,7 +56,10 @@ export default async function OutilsCommunicationPage({ params }: PageProps) {
         copiez-les, sans rien retoucher. La mention « apporteur d&apos;affaires indépendant » y
         figure déjà.
       </p>
-      <OutilsCommunication nomComplet={nomComplet} />
+      <OutilsCommunication
+        nomComplet={nomComplet}
+        lienCharte={`/apporteur/dossier/${dossier.id}/${jeton}/charte`}
+      />
       <a
         href={`/apporteur/dossier/${dossier.id}/${jeton}`}
         className="text-terracotta-deep mt-8 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
