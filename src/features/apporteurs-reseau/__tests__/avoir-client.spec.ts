@@ -18,6 +18,7 @@ const d = vi.hoisted(() => ({
   factures: [] as F[],
   lignes: [] as Array<Record<string, unknown>>,
   reprisesDeja: [] as Array<{ montantCents: number }>,
+  filleulHorsGroupe: null as null | Record<string, unknown>,
   annuler: vi.fn(async () => ({ ok: true })),
   reduire: vi.fn(async () => ({ ok: true })),
   retenir: vi.fn(async () => ({
@@ -60,6 +61,7 @@ vi.mock("@/lib/prisma", () => ({
         "palier" in where ? d.reprisesDeja : d.lignes,
       ),
       updateMany: (...a: unknown[]) => d.maj(...(a as [])),
+      findFirst: vi.fn(async () => d.filleulHorsGroupe),
     },
     activityLog: { create: vi.fn(async () => ({})) },
     apporteurReseau: {
@@ -129,6 +131,7 @@ beforeEach(() => {
   d.factures = [facture, avoir(-334)];
   d.lignes = [ligne()];
   d.reprisesDeja = [];
+  d.filleulHorsGroupe = null;
 });
 
 describe("pas encore facturée : réduite ou annulée", () => {
@@ -276,5 +279,35 @@ describe("sans avoir", () => {
     d.factures = [facture];
     const b = await reprendreApresAvoirsClients(LE);
     expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+  });
+});
+
+describe("dettes de a1 sur #1398", () => {
+  const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
+
+  it("(a) un avoir de PLUS de 24 mois ne donne lieu à aucune reprise, même à côté d'un récent", async () => {
+    const vieux = avoir(-100, { id: "A0", emiseAt: new Date("2024-01-01T00:00:00Z") });
+    d.factures = [facture, vieux];
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).not.toHaveBeenCalled();
+    // Un avoir récent s'y ajoute : seule SA part est reprise (30 % de 1 € = 0,30 €).
+    d.factures = [facture, vieux, avoir(-100, { id: "A1" })];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(
+      expect.objectContaining({ demandeeCents: 30, annulationLe: DATE_AVOIR }),
+    );
+  });
+
+  it("(b) filleul déjà annulé : la part VERSÉE du parrain est recalculée sur le filleul d'origine", async () => {
+    d.factures = [facture, avoir(-334)];
+    d.lignes = [
+      ligne({ id: "parrain", parrainage: true, apporteurId: "p1", montantCents: 10, ...versee }),
+    ];
+    d.filleulHorsGroupe = ligne({ id: "filleul", statut: "annulee" });
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reprise).toHaveBeenCalledWith(
+      expect.objectContaining({ commissionId: "parrain", demandeeCents: 10 }),
+    );
   });
 });
