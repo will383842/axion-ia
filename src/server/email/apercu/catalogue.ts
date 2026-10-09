@@ -552,6 +552,14 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'apporteur dont la commission vient d'être virée",
     source: "features/apporteurs-reseau/envois.ts",
   },
+  "apporteur-lien-espace": {
+    categorie: "recrutement",
+    quand: "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail",
+    destinataire: "l'apporteur du réseau qui a demandé son lien",
+    // L'action de la page appelle `envoyer()`, qui pose le job : comme les autres gabarits
+    // apporteur, l'appelant réel de `enqueueEmail` est `envois.ts`.
+    source: "features/apporteurs-reseau/envois.ts",
+  },
   "apporteur-issue-non-retenu": {
     categorie: "recrutement",
     quand:
