@@ -15,7 +15,7 @@
  * `prisma/objets-sql-bruts.ts` (liée à la migration visio).
  */
 
-export const MIGRATION_PARTAGES = "20261008040000_fichiers_partages";
+export const MIGRATION_PARTAGES = "20261009100100_fichiers_partages";
 
 export const TABLES_PARTAGES = [
   "fichiers_partages",
