@@ -2,7 +2,7 @@
 //
 // Le contrat 2.3 (annexe 1, A1.7) renvoie, pour un produit créé APRÈS la signature, à « la
 // grille de référence publiée par la Société ». Cette grille, c'est ici — et la page publique
-// `/fr/apporteur-affaires/commissions` la rend.
+// `/apporteur/dossier/<id>/<jeton>/commissions` la rend, sous le lien personnel de l'apporteur (réservée aux apporteurs depuis le 2026-10-09 ; l'ancienne adresse publique n'affiche plus qu'un message sobre, sans chiffre).
 //
 // 🔑 AUCUN CHIFFRE ÉCRIT À LA MAIN. Les montants viennent des MÊMES sources que le moteur
 // qui calcule les commissions :
