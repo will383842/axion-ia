@@ -34,7 +34,8 @@ import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitat
 import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
-import { ReponsesRecuesApporteur } from "@/components/admin/contacts/ReponsesRecuesApporteur";
+import { FilEchanges } from "@/components/admin/echanges/FilEchanges";
+import { lireFilApporteur } from "@/features/echanges/lire-fil";
 
 interface Props {
   adminPrefix: string;
@@ -115,6 +116,12 @@ export async function SubmissionDetailContent({
       Sentry.captureException(err, { tags: { ecran: "fiche-message", etape: "bibliotheque" } });
     }
   }
+
+  const filApporteur = estContactApporteur
+    ? await lireFilApporteur(submission.id, {
+        role: (session.user as { role?: string | null }).role,
+      })
+    : null;
 
   const clientExistant =
     !estContactApporteur && submission.contactEmail
@@ -252,9 +259,16 @@ export async function SubmissionDetailContent({
             role={(session.user as { role?: string | null }).role}
           />
         ) : null}
-        {/* Ce que la personne a répondu à l'invitation, par e-mail (2026-09-27).
-            Rien tant qu'aucune réponse n'est arrivée. */}
-        {estContactApporteur ? <ReponsesRecuesApporteur submissionId={submission.id} /> : null}
+        {/* L7 — UN seul fil « Échanges » : invitations et rappels, réponses
+            envoyées (avec leurs fichiers), réponses reçues, échange réservé et
+            son suivi. Remplace les blocs « Réponses reçues » et « Réponses
+            envoyées » de la fiche apporteur. */}
+        {filApporteur ? (
+          <section className="admin-card admin-card-wide">
+            <h2 className="admin-h2">Échanges</h2>
+            <FilEchanges faits={filApporteur} />
+          </section>
+        ) : null}
         {/* Les deux gestes de la fiche. Ils vivent SOUS l'invitation et sous
             l'échange : c'est l'ordre dans lequel les décisions se prennent —
             on invite, la personne réserve, puis on classe ou on enregistre
@@ -388,7 +402,7 @@ export async function SubmissionDetailContent({
           />
         </div>
         {accuse ? <BlocAccuse accuse={accuse} /> : null}
-        <ReplyHistory submissionId={submission.id} />
+        {estContactApporteur ? null : <ReplyHistory submissionId={submission.id} />}
         <details className="admin-card admin-card-wide">
           <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">
             Informations techniques (données brutes, IP, navigateur)

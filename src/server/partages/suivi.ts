@@ -79,6 +79,8 @@ export function etatFichierRecu(f: {
 
 export interface LienEnvoye {
   readonly id: string;
+  /** La réponse qui a porté le lien (L7 : le fil accroche les fichiers à ce message). */
+  readonly reponseId: string | null;
   readonly creeLe: Date;
   readonly creeParNom: string;
   readonly expireLe: Date;
@@ -98,13 +100,25 @@ export interface LienEnvoye {
 export const LIENS_AFFICHES_MAX = 50;
 
 export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEnvoye[]> {
+  return lireLiens({ applicationId });
+}
+
+/** L7 — les liens envoyés à un futur apporteur (rattachés à SA fiche). */
+export async function lireFichiersEnvoyesFiche(submissionId: string): Promise<LienEnvoye[]> {
+  return lireLiens({ submissionId });
+}
+
+async function lireLiens(
+  where: { applicationId: string } | { submissionId: string },
+): Promise<LienEnvoye[]> {
   if (configPartages() === null) return [];
   const liens = await prisma.lienPartage.findMany({
-    where: { applicationId },
+    where,
     orderBy: { creeLe: "desc" },
     take: LIENS_AFFICHES_MAX,
     select: {
       id: true,
+      reponseId: true,
       creeLe: true,
       creeParNom: true,
       expireLe: true,
@@ -142,6 +156,7 @@ export async function lireFichiersEnvoyes(applicationId: string): Promise<LienEn
     const ouvertLe = ouvertures.find((a) => a.origine === "navigateur")?.survenuLe ?? null;
     return {
       id: l.id,
+      reponseId: l.reponseId,
       creeLe: l.creeLe,
       creeParNom: l.creeParNom,
       expireLe: l.expireLe,

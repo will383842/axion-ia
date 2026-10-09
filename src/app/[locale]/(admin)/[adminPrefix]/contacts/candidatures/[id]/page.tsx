@@ -11,9 +11,9 @@ import { getApplicationDetailAction } from "@/features/admin-job-applications/ac
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
 import { FriseCandidature } from "./FriseCandidature";
+import { lireFilEmploi } from "@/features/echanges/lire-fil";
 import { ComposerReponse } from "./ComposerReponse";
 import { ConsignerAuJournal } from "./ConsignerAuJournal";
-import { ReponsesRecuesCandidat } from "./ReponsesRecuesCandidat";
 import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/timeline";
 import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
@@ -99,8 +99,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // bibliothèque est ÉTEINTE, rien n'est lu et rien ne s'affiche (ni bloc, ni
   // bouton « Joindre des fichiers »).
   const partagesAllumes = partagesActifs();
-  const [frise, entretiens, accuse, ficheApporteur, partages] = await Promise.all([
+  const [frise, fil, entretiens, accuse, ficheApporteur, partages] = await Promise.all([
     lireFrise(a.id, acteur),
+    // L7 — le fil « Échanges » : journal, réponses reçues (L3), liens et
+    // fichiers (L5/L5b), en une seule liste dans l'ordre des faits.
+    lireFilEmploi(a.id, acteur),
     lireEntretiens(a.id, acteur),
     // L'accusé de réception automatique : parti, en échec, ou introuvable.
     // Même prédicat que la frise — il lit l'adresse du candidat.
@@ -444,7 +447,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
       </AdminCard>
 
       <AdminCard>
-        <h3 className="admin-section-title">Historique</h3>
+        <h3 className="admin-section-title">Échanges</h3>
         <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-3)]">
           <ComposerReponse
             applicationId={a.id}
@@ -462,10 +465,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
-        {/* Lot L3 (2026-10-07) — les réponses du candidat relevées dans la boîte
-            Zoho Mail, avec « Ouvrir dans Zoho ». Rien tant qu'aucune n'est arrivée. */}
-        <ReponsesRecuesCandidat applicationId={a.id} role={acteur.role} />
-        <FriseCandidature entrees={frise} accuse={accuse} />
+        {/* L7 — UN seul fil : les réponses reçues (L3, « Ouvrir dans Zoho »),
+            les messages envoyés avec leurs fichiers, les notes et appels. */}
+        <FriseCandidature entrees={frise} faits={fil} accuse={accuse} />
       </AdminCard>
 
       {partages ? (

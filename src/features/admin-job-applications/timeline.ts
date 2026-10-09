@@ -51,6 +51,10 @@ export interface EntreeFrise {
    * frise doit continuer de dire qu'un message est parti ce jour-là.
    */
   readonly livraison: LivraisonReponse | null;
+  /** L7 — la réponse envoyée que l'événement cite (fichiers accrochés au fil). */
+  readonly replyId?: string | null;
+  /** L7 — posé par le relevé L3 : la réponse reçue a sa propre ligne dans le fil. */
+  readonly reponseRecueId?: string | null;
 }
 
 /**
@@ -110,7 +114,16 @@ export async function lireFrise(
     summary: e.summary,
     body: e.body,
     livraison: e.replyId ? (livraisons.get(e.replyId) ?? null) : null,
+    replyId: e.replyId,
+    reponseRecueId: reponseRecueIdDe(e.meta),
   }));
+}
+
+/** `meta.reponseRecueId` lu défensivement (JSON libre). */
+function reponseRecueIdDe(meta: unknown): string | null {
+  if (!meta || typeof meta !== "object" || Array.isArray(meta)) return null;
+  const v = (meta as Record<string, unknown>)["reponseRecueId"];
+  return typeof v === "string" ? v : null;
 }
 
 /**

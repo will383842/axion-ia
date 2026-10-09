@@ -25,35 +25,57 @@
  * une réponse, et la frise le rappelle. Cf. `accuse-reception.ts`.
  */
 
-import { AdminBadge } from "@/components/admin/ui";
-import { LIBELLE_EVENEMENT, LIBELLE_LIVRAISON } from "@/features/admin-job-applications/timeline";
+import { LIBELLE_EVENEMENT } from "@/features/admin-job-applications/timeline";
 import type { EntreeFrise } from "@/features/admin-job-applications/timeline";
 import type { AccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { LigneAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
-import { TON_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
+import { FilEchanges } from "@/components/admin/echanges/FilEchanges";
+import { faitsEmploi, type FaitFil } from "@/features/echanges/fil";
 
 /**
- * Ton du badge de livraison d'une réponse — ceux de l'écran « E-mails envoyés ».
- * Le vert ne vaut que pour une remise CONFIRMÉE.
+ * L7 (Candidatures unifiées) — la frise RENDRA DÉSORMAIS DES LIGNES DU FIL :
+ * bulles « Reçu » à gauche, « Envoyé » à droite, notes au centre
+ * (`components/admin/echanges/FilEchanges.tsx`). La page lui passe le fil
+ * complet (`lireFilEmploi` : journal, réponses reçues L3, liens et fichiers
+ * L5/L5b) ; sans `faits`, elle le dérive du seul journal.
  */
-const TON_LIVRAISON: Readonly<Record<string, "success" | "warning" | "destructive" | "neutral">> =
-  TON_STATUT_EMAIL;
-
-const DATE_FR = new Intl.DateTimeFormat("fr-FR", {
-  timeZone: "Europe/Paris",
-  dateStyle: "medium",
-  timeStyle: "short",
-});
-
 export function FriseCandidature({
   entrees,
   accuse = null,
+  faits,
 }: {
   entrees: ReadonlyArray<EntreeFrise>;
   /** `null` = rôle sans accès au dossier : rien n'est dit, pas même l'absence. */
   accuse?: AccuseReception | null;
+  /** Le fil complet, lu par la page. */
+  faits?: ReadonlyArray<FaitFil>;
 }): React.ReactElement {
-  if (entrees.length === 0 && accuse === null) {
+  const fil =
+    faits ??
+    faitsEmploi({
+      evenements: entrees.map((e) => ({
+        id: e.id,
+        type: e.type,
+        libelle: LIBELLE_EVENEMENT[e.type],
+        occurredAt: e.occurredAt,
+        authorName: e.authorName,
+        summary: e.summary,
+        body: e.body,
+        replyId: e.replyId ?? null,
+        reponseRecueId: e.reponseRecueId ?? null,
+        livraison: e.livraison
+          ? {
+              statut: e.livraison.statut,
+              erreur: e.livraison.erreur,
+              reessais: e.livraison.reessais,
+            }
+          : null,
+      })),
+      recues: [],
+      liens: [],
+    });
+
+  if (fil.length === 0 && accuse === null) {
     return (
       <p className="admin-meta-small">
         Rien n’a encore été consigné. Une réponse, un appel ou une note apparaîtront ici, dans
@@ -62,64 +84,11 @@ export function FriseCandidature({
     );
   }
 
-  if (entrees.length === 0 && accuse !== null) {
-    return (
-      <>
-        <p className="admin-meta-small">
-          Aucune réponse, aucun appel ni aucune note n’a encore été consigné.
-        </p>
-        <ol className="m-0 mt-[var(--space-admin-3)] list-none p-0">
-          <LigneAccuse accuse={accuse} />
-        </ol>
-      </>
-    );
-  }
-
   return (
-    <ol className="m-0 list-none p-0">
-      {entrees.map((e) => (
-        <li
-          key={e.id}
-          className="border-border-subtle border-l-2 pb-[var(--space-admin-4)] pl-[var(--space-admin-4)] last:pb-0"
-        >
-          <div className="flex flex-wrap items-baseline gap-x-[var(--space-admin-3)]">
-            <span className="text-[length:var(--text-admin-sm)] font-semibold">
-              {LIBELLE_EVENEMENT[e.type]}
-            </span>
-            <span className="admin-meta-small">
-              {DATE_FR.format(e.occurredAt)} · {e.authorName}
-            </span>
-            {e.livraison ? (
-              <AdminBadge tone={TON_LIVRAISON[e.livraison.statut] ?? "neutral"}>
-                {LIBELLE_LIVRAISON[e.livraison.statut]}
-                {e.livraison.reessais > 0 ? ` · ${e.livraison.reessais} réessai(s)` : ""}
-              </AdminBadge>
-            ) : null}
-          </div>
-
-          <p className="text-[length:var(--text-admin-sm)]">{e.summary}</p>
-
-          {/* 🔴 L'erreur d'envoi est affichée EN ENTIER, pas résumée. C'est elle
-              qui distingue « clé de chiffrement absente » de « boîte pleine » —
-              deux pannes qui n'appellent pas le même geste, et qu'un libellé
-              générique rendrait indiscernables. */}
-          {e.livraison?.erreur ? (
-            <p role="alert" className="admin-alert admin-alert-error">
-              {e.livraison.erreur}
-            </p>
-          ) : null}
-
-          {e.body && e.body !== e.summary ? (
-            <details className="mt-[var(--space-admin-2)]">
-              <summary className="admin-meta-small cursor-pointer">Voir le détail</summary>
-              <p className="admin-meta-small mt-[var(--space-admin-2)] whitespace-pre-wrap">
-                {e.body}
-              </p>
-            </details>
-          ) : null}
-        </li>
-      ))}
-      {accuse !== null ? <LigneAccuse accuse={accuse} /> : null}
-    </ol>
+    <FilEchanges
+      faits={fil}
+      vide="Aucune réponse, aucun appel ni aucune note n’a encore été consigné."
+      pied={accuse !== null ? <LigneAccuse accuse={accuse} /> : null}
+    />
   );
 }
