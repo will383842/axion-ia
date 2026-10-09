@@ -135,6 +135,8 @@ export default async function DossierApporteurPage({ params }: PageProps) {
           {dossier.aContratSigne ? (
             <a
               href={`/apporteur/dossier/${dossier.id}/${jeton}/contrat?dl=1`}
+              target="_blank"
+              rel="noopener"
               className="text-terracotta-deep mt-4 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
             >
               ↓ {TEXTES.telechargerSigne}
@@ -143,6 +145,13 @@ export default async function DossierApporteurPage({ params }: PageProps) {
         </EcranEtat>
         <DeclarationEntreprise id={dossier.id} jeton={jeton} protectionMois={PROTECTION_MOIS} />
         <ListeDeclarations declarations={declarations} />
+        {/* La grille de référence des commissions, réservée aux apporteurs (2026-10-09). */}
+        <a
+          href={`/apporteur/dossier/${dossier.id}/${jeton}/commissions`}
+          className="text-terracotta-deep mt-5 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+        >
+          Voir la grille de référence des commissions →
+        </a>
         {vigilance ? (
           <ul className="mt-5 grid gap-3">
             {PIECES_VIGILANCE.map((t) => {
