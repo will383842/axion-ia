@@ -18,12 +18,7 @@ import {
 } from "./regles";
 
 export type StatutDossier =
-  | "dossier_en_cours"
-  | "a_verifier"
-  | "a_completer"
-  | "signe"
-  | "refuse"
-  | "resilie";
+  "dossier_en_cours" | "a_verifier" | "a_completer" | "signe" | "refuse" | "resilie";
 
 // ── États de la page ─────────────────────────────────────────────────────
 
