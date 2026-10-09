@@ -127,6 +127,54 @@ describe("effacerFichiersRenvoyesCandidature", () => {
     expect(r.ok).toBe(false);
   });
 
+  // 🔴 VETO relecture 2026-10-09 : un envoi déjà abandonné ou expiré chez R2
+  // répond `NoSuchUpload` (ou 404). Rien n'est plus à effacer côté stockage :
+  // c'est un succès, sinon l'effacement art. 17 du dossier serait bloqué
+  // POUR TOUJOURS.
+  const erreurR2 = (name: string, statut?: number) =>
+    Object.assign(new Error(name), {
+      name,
+      Code: name,
+      ...(statut === undefined ? {} : { $metadata: { httpStatusCode: statut } }),
+    });
+
+  it.each([
+    ["NoSuchUpload", erreurR2("NoSuchUpload", 404)],
+    ["NoSuchUpload sans statut", erreurR2("NoSuchUpload")],
+    ["404 sans nom connu", erreurR2("UnknownError", 404)],
+  ])("envoi déjà abandonné chez R2 (%s) → effacement réussi", async (_l, err) => {
+    r2.arreterEnvoiR2.mockImplementationOnce(async () => {
+      throw err;
+    });
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.supprimees.sort()).toEqual(["f-cours", "f-ok"]);
+    expect(r).toEqual({ ok: true, effaces: 2, conserves: 0 });
+  });
+
+  it.each([
+    ["NoSuchKey", erreurR2("NoSuchKey", 404)],
+    ["NotFound", erreurR2("NotFound")],
+  ])("objet déjà absent du stockage (%s) → effacement réussi", async (_l, err) => {
+    r2.supprimerObjetCibleR2.mockImplementationOnce(async () => {
+      throw err;
+    });
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(r).toEqual({ ok: true, effaces: 2, conserves: 0 });
+  });
+
+  it.each([
+    ["réseau", new Error("getaddrinfo ENOTFOUND")],
+    ["5xx", erreurR2("InternalError", 503)],
+    ["accès refusé", erreurR2("AccessDenied", 403)],
+  ])("vrai échec du stockage (%s) → le dossier est gardé", async (_l, err) => {
+    r2.arreterEnvoiR2.mockImplementationOnce(async () => {
+      throw err;
+    });
+    const r = await effacerFichiersRenvoyesCandidature(APP);
+    expect(etat.supprimees).toEqual(["f-ok"]);
+    expect(r).toEqual({ ok: false, effaces: 1, conserves: 1, erreur: MSG_FICHIERS_NON_EFFACES });
+  });
+
   it("aucun fichier renvoyé → aucune transaction", async () => {
     etat.lignes = [];
     await effacerFichiersRenvoyesCandidature(APP);

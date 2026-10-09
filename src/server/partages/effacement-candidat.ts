@@ -13,9 +13,10 @@
  * demande d'effacement de la personne (`candidature-rgpd.ts`). Aucune tâche
  * automatique.
  *
- * Ordre : l'objet d'abord, la ligne ensuite. Si le stockage ne répond pas, la
- * LIGNE RESTE (avec sa clé) : supprimer la ligne laisserait un objet que plus
- * rien ne permet de retrouver. La ligne ne se supprime que sous le drapeau
+ * Ordre : l'objet d'abord, la ligne ensuite. Un objet ou un envoi DÉJÀ absent
+ * du stockage (`NoSuchUpload`, `NoSuchKey`, 404) compte comme effacé. Si le
+ * stockage ne répond pas, la LIGNE RESTE (avec sa clé) : supprimer la ligne
+ * laisserait un objet que plus rien ne permet de retrouver. La ligne ne se supprime que sous le drapeau
  * d'effacement posé par `rgpd-erase.ts` (trigger AXP01).
  *
  * 🔴 UN EFFACEMENT INCOMPLET SE DIT (relecture sécurité, 2026-10-08). Si un seul
@@ -84,9 +85,9 @@ export async function effacerFichiersRenvoyesCandidature(
     try {
       if (f.etatDepot === "en_cours" && f.r2Cle && f.r2UploadId) {
         // Un envoi non terminé : R2 libère les morceaux déjà reçus.
-        await arreterEnvoiR2(cible, f.r2Cle, f.r2UploadId);
+        await sansErreurSiDejaParti(arreterEnvoiR2(cible, f.r2Cle, f.r2UploadId));
       }
-      if (f.r2Cle) await supprimerObjetCibleR2(cible, f.r2Cle);
+      if (f.r2Cle) await sansErreurSiDejaParti(supprimerObjetCibleR2(cible, f.r2Cle));
     } catch {
       continue; // stockage injoignable : la ligne reste, l'objet reste retrouvable
     }
@@ -102,4 +103,30 @@ export async function effacerFichiersRenvoyesCandidature(
     return { ok: false, effaces: effacables.length, conserves, erreur: MSG_FICHIERS_NON_EFFACES };
   }
   return { ok: true, effaces: effacables.length, conserves: 0 };
+}
+
+/**
+ * 🔴 VETO relecture 2026-10-09 : « déjà parti » est un SUCCÈS. Un envoi déjà
+ * abandonné ou expiré chez R2 répond `NoSuchUpload`, un objet absent
+ * `NoSuchKey` / `NotFound` — ou un 404 nu. Il n'y a alors plus rien à effacer
+ * côté stockage ; compter ce cas comme un échec bloquerait POUR TOUJOURS
+ * l'effacement art. 17 du dossier. Seuls les vrais échecs (réseau, 5xx, accès
+ * refusé…) remontent et gardent le dossier.
+ */
+const DEJA_PARTI = new Set(["NoSuchUpload", "NoSuchKey", "NotFound"]);
+
+export function estDejaPartiDuStockage(err: unknown): boolean {
+  if (!err || typeof err !== "object") return false;
+  const e = err as { name?: unknown; Code?: unknown; $metadata?: { httpStatusCode?: unknown } };
+  if (typeof e.name === "string" && DEJA_PARTI.has(e.name)) return true;
+  if (typeof e.Code === "string" && DEJA_PARTI.has(e.Code)) return true;
+  return e.$metadata?.httpStatusCode === 404;
+}
+
+async function sansErreurSiDejaParti(p: Promise<void>): Promise<void> {
+  try {
+    await p;
+  } catch (err) {
+    if (!estDejaPartiDuStockage(err)) throw err;
+  }
 }
