@@ -531,7 +531,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Console › Commissions › Commandes à attribuer : la commande va à un autre établissement, ou à aucun apporteur (art. 3.1)",
     destinataire: "l'apporteur candidat écarté",
-    source: "features/apporteurs-reseau/actions-etablissement.ts",
+    source: "features/apporteurs-reseau/notification-attribution.ts",
   },
   "apporteur-commande-signee": {
     categorie: "recrutement",
@@ -557,6 +557,14 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     categorie: "recrutement",
     quand: "Console : bouton « Virement fait » sur une autofacture",
     destinataire: "l'apporteur dont la commission vient d'être virée",
+    source: "features/apporteurs-reseau/envois.ts",
+  },
+  "apporteur-lien-espace": {
+    categorie: "recrutement",
+    quand: "Page « Retrouver mon espace » : l'apporteur tape son adresse e-mail",
+    destinataire: "l'apporteur du réseau qui a demandé son lien",
+    // L'action de la page appelle `envoyer()`, qui pose le job : comme les autres gabarits
+    // apporteur, l'appelant réel de `enqueueEmail` est `envois.ts`.
     source: "features/apporteurs-reseau/envois.ts",
   },
   "apporteur-issue-non-retenu": {

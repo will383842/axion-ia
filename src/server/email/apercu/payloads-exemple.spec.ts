@@ -145,7 +145,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-10-08 — RELEVÉ À 69 : `apporteur-attribution-confirmee`, l'e-mail à l'apporteur
     // « attribution confirmée / protection prolongée » (contrat 2.3, art. 3.2 et 3.4). Ses
     // champs sont tous facultatifs.
-    expect(tous.length).toBe(69);
+    // 🔴 2026-10-09 — RELEVÉ À 70 : `apporteur-lien-espace`, le lien de l'espace renvoyé à
+    // l'apporteur depuis « Retrouver mon espace ». Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(70);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

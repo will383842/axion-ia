@@ -15253,6 +15253,7 @@ model ApporteurReseauSiret {
 /// à toute l'entreprise, décidée par Williams seul (art. 3.1). Table séparée sans clé étrangère
 /// (fenêtre app/worker), comme `ApporteurReseauSiret`. Absente = présentation d'avant la 2.6, qui
 /// couvre toute l'entreprise (comportement d'avant).
+/// rgpd: technique — SIRET de l'établissement présenté, portée et dates ; aucun nom, e-mail ni téléphone (la personne présentée est dans `presentations_entreprise`, traitée par l'export et l'effacement)
 model PresentationEtablissement {
   presentationId String    @id @map("presentation_id") @db.Uuid
   siret          String    @db.Char(14)
@@ -15272,6 +15273,7 @@ model PresentationEtablissement {
 /// exacte (SIRET absent, autre SIRET, siège qui paie pour l'agence) n'est JAMAIS perdue en
 /// silence : elle attend le choix de Williams (art. 3.1 ; 15 jours de l'encaissement).
 /// `presentationId` = l'attribution choisie ; `aucune` = aucun apporteur. Sans clé étrangère.
+/// rgpd: technique — identifiants de facture, SIREN/SIRET de l'entreprise cliente, présentations candidates, dates et administrateur auteur (identifiant seul) ; aucun nom, e-mail ni téléphone
 model CommandeAAttribuer {
   factureId      String    @id @map("facture_id") @db.Uuid
   siren          String    @db.Char(9)
@@ -15289,6 +15291,7 @@ model CommandeAAttribuer {
 
 /// Contrat 2.6 : le SIRET de l'établissement qui COMMANDE, porté par le devis (facultatif). Il
 /// passe avant celui de la fiche client. Table séparée (fenêtre app/worker), sans clé étrangère.
+/// rgpd: technique — SIRET de l'établissement qui commande, porté par un devis ; aucun nom, e-mail ni téléphone
 model DevisEtablissement {
   devisId String   @id @map("devis_id") @db.Uuid
   siret   String   @db.Char(14)
