@@ -261,6 +261,11 @@ function blocs(markdown: string): React.ReactNode[] {
   return out;
 }
 
+/** Depuis le contrat 2.5, la signature tient en deux cases (avant : une case par engagement). */
+export function deuxCases(version: string): boolean {
+  return Number(version) >= 2.5;
+}
+
 function Certificat({
   sha,
   version,
@@ -295,12 +300,42 @@ function Certificat({
               Adresse IP (empreinte) : {apporteur.ipHash ?? "non relevée"} · Navigateur :{" "}
               {apporteur.navigateur ?? "non relevé"}
             </Text>
-            <Text style={[s.p, { marginTop: 5 }]}>Cases cochées avant la signature :</Text>
-            {[...apporteur.declarations, ...apporteur.acceptations].map((c) => (
-              <Text key={c} style={s.petit}>
-                · {libelle(c)}
-              </Text>
-            ))}
+            {deuxCases(version) ? (
+              // Contrat 2.5 : deux cases ont été cochées, chacune listant ses engagements. Le
+              // certificat le dit tel quel (une preuve inexacte se conteste) et groupe par case.
+              <>
+                <Text style={[s.p, { marginTop: 5 }]}>
+                  Engagements acceptés (2 cases cochées, chacune listant ses engagements) :
+                </Text>
+                {(
+                  [
+                    ["Case 1 — « Je certifie que : »", apporteur.declarations],
+                    [
+                      "Case 2 — « J'ai lu le contrat et je l'accepte, en particulier : »",
+                      apporteur.acceptations,
+                    ],
+                  ] as const
+                ).map(([titre, cles]) => (
+                  <React.Fragment key={titre}>
+                    <Text style={[s.petit, s.gras, { marginTop: 3 }]}>{titre}</Text>
+                    {cles.map((c) => (
+                      <Text key={c} style={s.petit}>
+                        · {libelle(c)}
+                      </Text>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <>
+                <Text style={[s.p, { marginTop: 5 }]}>Cases cochées avant la signature :</Text>
+                {[...apporteur.declarations, ...apporteur.acceptations].map((c) => (
+                  <Text key={c} style={s.petit}>
+                    · {libelle(c)}
+                  </Text>
+                ))}
+              </>
+            )}
           </>
         ) : (
           <Text style={s.petit}>Pas encore signé.</Text>

@@ -16,7 +16,7 @@ describe("contrat 2.4", () => {
 
   it("première page : SIREN puis l'établissement (gabarit), plus de « dont le siège est » pour l'Apporteur", () => {
     expect(T).toContain(
-      "immatriculé sous le numéro SIREN {{APPORTEUR_SIREN}}, {{APPORTEUR_ETABLISSEMENT}}, ci-après « **l'Apporteur** »",
+      "{{APPORTEUR_IMMATRICULE}} sous le numéro SIREN {{APPORTEUR_SIREN}}, {{APPORTEUR_ETABLISSEMENT}}{{APPORTEUR_REPRESENTANT}}, ci-après « **l'Apporteur** »",
     );
     expect(T).not.toContain("{{APPORTEUR_SIEGE}}");
   });

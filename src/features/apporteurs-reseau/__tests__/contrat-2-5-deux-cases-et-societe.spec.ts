@@ -8,7 +8,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 import { CONTRAT_V2_MARKDOWN, CONTRAT_VERSION } from "../contrat-v2";
-import { texteDuContrat } from "../contrat-pdf";
+import { deuxCases, texteDuContrat } from "../contrat-pdf";
 import { ACCEPTATIONS, DECLARATIONS } from "../regles-dossier";
 import {
   CLES_ACCEPTATIONS,
@@ -72,5 +72,12 @@ describe("contrat 2.5", () => {
     expect(ACCEPTATIONS.find((a) => a.cle === "art_5_2")!.texte).toContain(
       "Je donne mandat à Axion-IA d'établir mes factures",
     );
+  });
+
+  it("certificat : « 2 cases » à partir de la 2.5 seulement ; une signature 2.4 garde « Cases cochées »", () => {
+    expect(deuxCases("2.5")).toBe(true);
+    expect(deuxCases(CONTRAT_VERSION)).toBe(true);
+    expect(deuxCases("2.4")).toBe(false);
+    expect(deuxCases("2.3")).toBe(false);
   });
 });
