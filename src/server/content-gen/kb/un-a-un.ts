@@ -12,10 +12,9 @@
  */
 
 import type { KbFact } from "./audits";
-import { sansFaitsIssusDesAvis } from "@/content/preuves-sociales";
 export type { KbFact };
 
-export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
+export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Format et structure ──────────────────────────────────────────────────
   {
     id: "ua-001",
@@ -97,8 +96,8 @@ export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Le coaching régulier 1-to-1 Axion-IA (contrat de 6, 12 ou 24 mois) vise la mise en production d'un premier cas d'usage IA dans l'organisation du dirigeant accompagné.",
     source: "Axion-IA — Bilan programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
@@ -487,27 +486,12 @@ export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
   },
   // ── Résultats sur l'organisation ──────────────────────────────────────────
   {
-    id: "ua-050",
-    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
-    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
-    // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
-    text: "Les dirigeants accompagnés en 1-to-1 par Axion-IA évaluent le programme à 4,93/5 en moyenne — la note la plus élevée parmi les cinq lignes de prestation. Les avis sont publiés nominativement (prénom, initiale, fonction, entreprise) sur axion-ia.com/avis.",
-    source: "Axion-IA — Étude impact économique programme Un-à-un 2026",
-    sourceUrl: "https://axion-ia.com/un-a-un",
-    // La date de vérification ne peut pas précéder la période de collecte des avis.
-    verifiedAt: "2026-07-06",
-    verticales: ["un_a_un"],
-    confidence: 0.81,
-  },
-  {
     id: "ua-051",
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "L'adoption de l'IA par le dirigeant produit un effet d'entraînement sur son comité de direction : le coaching 1-to-1 prévoit explicitement la transmission des pratiques aux managers de niveau N-1.",
     source: "Axion-IA — Étude d'impact programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
@@ -565,27 +549,12 @@ export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
   },
   // ── Indicateurs qualité coaching ─────────────────────────────────────────
   {
-    id: "ua-057",
-    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
-    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
-    // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
-    text: "Les programmes de coaching 1-to-1 Axion-IA recueillent la note moyenne la plus élevée du catalogue : 4,93/5 sur 15 avis clients vérifiés, publiés individuellement sur axion-ia.com/avis.",
-    source: "Axion-IA — Bilan satisfaction programme Un-à-un 2026",
-    sourceUrl: "https://axion-ia.com/un-a-un",
-    // La date de vérification ne peut pas précéder la période de collecte des avis.
-    verifiedAt: "2026-07-06",
-    verticales: ["un_a_un"],
-    confidence: 0.87,
-  },
-  {
     id: "ua-058",
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Le programme 1-to-1 Axion-IA vise l'autonomie du dirigeant sur un socle d'outils IA utilisés de façon hebdomadaire dans son travail quotidien.",
     source: "Axion-IA — Mesure d'impact pré/post programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
@@ -611,4 +580,4 @@ export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
     verticales: ["un_a_un"],
     confidence: 0.93,
   },
-]);
+];

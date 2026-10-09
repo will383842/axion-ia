@@ -532,8 +532,8 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Un chatbot IA connecté au CRM qualifie automatiquement les leads sur cinq dimensions (budget, autorité, besoin, calendrier, taille), allégeant d'autant la qualification initiale des prospects entrants par les commerciaux.",
     source: "Axion-IA — Étude de cas chatbot + CRM lead qualification 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
@@ -575,8 +575,8 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Cloudflare protège les sites web livrés par Axion-IA contre les attaques DDoS, les bots malveillants et le scraping non autorisé : la couche WAF et le rate limiting sont configurés par défaut pour préserver la disponibilité en cas de pic de trafic.",
     source: "Axion-IA — Architecture hébergement et sécurité 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
