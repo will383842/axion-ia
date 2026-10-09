@@ -125,3 +125,33 @@ describe("le lien de l'espace accompagne les e-mails à l'apporteur", () => {
     expect(payloadEnvoye()).toEqual({ prenom: "Claire" });
   });
 });
+
+describe("un lienEspace fourni par l'appelant n'est jamais repris (relecture de #1408)", () => {
+  const PIRATE = "https://pirate.example/x";
+  const avecPirate = { payload: { prenom: "Claire", lienEspace: PIRATE } };
+
+  it("fiche normale : le lien CALCULÉ écrase celui du payload", async () => {
+    expect(await envoi("apporteur-releve", avecPirate)).toBe("envoye");
+    expect(payloadEnvoye()).toEqual({ prenom: "Claire", lienEspace: LIEN });
+    expect(h.urlDossier).toHaveBeenCalledWith(ID, 2);
+  });
+
+  it("apporteur RETIRÉ : aucune clé lienEspace", async () => {
+    h.retraitDe.mockResolvedValue(new Date());
+    expect(await envoi("apporteur-releve", avecPirate)).toBe("envoye");
+    expect(payloadEnvoye()).toEqual({ prenom: "Claire" });
+    expect(payloadEnvoye()).not.toHaveProperty("lienEspace");
+  });
+
+  it("fiche résiliée : aucune clé lienEspace", async () => {
+    h.apporteur.mockResolvedValue({
+      versionLien: 2,
+      statut: "resilie",
+      refuseAt: null,
+      resilieAt: new Date(),
+    });
+    expect(await envoi("apporteur-releve", avecPirate)).toBe("envoye");
+    expect(payloadEnvoye()).toEqual({ prenom: "Claire" });
+    expect(payloadEnvoye()).not.toHaveProperty("lienEspace");
+  });
+});

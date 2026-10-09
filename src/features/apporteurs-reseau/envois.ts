@@ -183,27 +183,28 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
  * (le lien mène à une page neutre ; vérifié sur la FICHE, pas seulement sur le gabarit) ni
  * pour un apporteur RETIRÉ du réseau (relecture sécurité, a1 :
  * le retrait change la version du lien pour le couper — on ne le recalcule pas) ;
- * fail-soft : sans lien, l'e-mail part tel quel.
+ * fail-soft : sans lien, l'e-mail part tel quel. Le lien est TOUJOURS recalculé ici : un
+ * `lienEspace` reçu dans le payload est retiré ou écrasé, jamais repris (relecture de #1408).
  */
 async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
+  const { lienEspace: _ignore, ...sansLien } = e.payload;
   if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
-    return e.payload;
+    return sansLien;
   }
-  if (typeof e.payload.lienEspace === "string") return e.payload;
   try {
     const apporteurId = await apporteurDeLEnvoi(e);
-    if (!apporteurId || (await retraitDe(apporteurId))) return e.payload;
+    if (!apporteurId || (await retraitDe(apporteurId))) return sansLien;
     const a = await prisma.apporteurReseau.findUnique({
       where: { id: apporteurId },
       select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
     });
     if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
-      return e.payload;
+      return sansLien;
     }
     const lien = urlDossier(apporteurId, a.versionLien);
-    return lien ? { ...e.payload, lienEspace: lien } : e.payload;
+    return lien ? { ...sansLien, lienEspace: lien } : sansLien;
   } catch {
-    return e.payload;
+    return sansLien;
   }
 }
 
