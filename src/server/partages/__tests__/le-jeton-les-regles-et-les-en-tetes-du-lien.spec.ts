@@ -14,7 +14,14 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { adresseLien, cheminLien, jetonLien, jetonLienValide } from "../jeton";
+import {
+  adresseLien,
+  adresseMasqueeLien,
+  cheminLien,
+  devoilerLienPrive,
+  jetonLien,
+  jetonLienValide,
+} from "../jeton";
 import {
   DUREE_URL_SIGNEE_GROS_S,
   DUREE_URL_SIGNEE_S,
@@ -139,5 +146,43 @@ describe("les en-têtes et les pages", () => {
     );
     const head = route.slice(route.indexOf("export async function HEAD"));
     expect(head).not.toMatch(/telechargerFichierLien|depsParDefaut/);
+  });
+});
+
+describe("🔒 l'adresse masquée : le jeton n'est remis qu'au moment de l'envoi", () => {
+  const AUTRE = "99999999-9999-4999-8999-999999999999";
+  const masquee = () => adresseMasqueeLien(ID, ENV)!;
+
+  it("l'adresse stockée ne porte pas le jeton", () => {
+    expect(masquee()).toBe(`https://axion-ia.com/api/partage/${ID}/lien-prive-de-telechargement`);
+    expect(masquee()).not.toContain(jetonLien(ID, ENV)!);
+    expect(adresseMasqueeLien("pas-un-uuid", ENV)).toBeNull();
+  });
+
+  it("à l'envoi, le marqueur de CE lien est remplacé par le vrai jeton, partout", () => {
+    const r = devoilerLienPrive(
+      { html: `<a href="${masquee()}">${masquee()}</a>`, text: `Ouvrir : ${masquee()}` },
+      ID,
+      ENV,
+    );
+    if (!r.ok) throw new Error(r.raison);
+    const vraie = adresseLien(ID, ENV)!;
+    expect(r.html).toBe(`<a href="${vraie}">${vraie}</a>`);
+    expect(r.text).toBe(`Ouvrir : ${vraie}`);
+    expect(r.html + r.text).not.toContain("lien-prive-de-telechargement");
+  });
+
+  it("sans marqueur, le corps part tel quel", () => {
+    expect(devoilerLienPrive({ html: "<p>x</p>", text: "x" }, null, {})).toEqual({
+      ok: true,
+      html: "<p>x</p>",
+      text: "x",
+    });
+  });
+
+  it("sans clé, ou pour le lien d'une AUTRE réponse, rien ne part avec le marqueur", () => {
+    expect(devoilerLienPrive({ html: masquee(), text: "" }, ID, {}).ok).toBe(false);
+    expect(devoilerLienPrive({ html: masquee(), text: "" }, null, ENV).ok).toBe(false);
+    expect(devoilerLienPrive({ html: "", text: masquee() }, AUTRE, ENV).ok).toBe(false);
   });
 });

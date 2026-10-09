@@ -23,7 +23,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../prisma/generated/client";
 
 import { configPartages } from "./config";
-import { adresseLien } from "./jeton";
+import { adresseMasqueeLien, jetonLien } from "./jeton";
 import { FICHIERS_PAR_LIEN_MAX, expirationLien, paragrapheFichiers } from "./liens";
 import { categoriesProposees } from "./regles";
 
@@ -32,6 +32,7 @@ type Env = Readonly<Record<string, string | undefined>>;
 /** Un lien prêt à partir avec une réponse. */
 export interface LienPrepare {
   readonly lienId: string;
+  /** Adresse MASQUÉE (sans jeton) : c'est elle qui est écrite en base. */
   readonly adresse: string;
   readonly expireLe: Date;
   readonly fichierIds: ReadonlyArray<string>;
@@ -122,8 +123,13 @@ export async function preparerLienFichiers(
   if (!v.ok) return v;
 
   const lienId = randomUUID();
-  const adresse = adresseLien(lienId, env);
-  if (!adresse) return { ok: false, erreur: "L'envoi de fichiers n'est pas encore activé." };
+  // 🔒 L'adresse écrite dans le message (donc en base) est MASQUÉE : le vrai
+  // jeton n'est remis qu'à l'envoi, par le worker (`devoilerLienPrive`). On
+  // vérifie seulement ici qu'un jeton PEUT être fabriqué.
+  const adresse = adresseMasqueeLien(lienId, env);
+  if (!adresse || jetonLien(lienId, env) === null) {
+    return { ok: false, erreur: "L'envoi de fichiers n'est pas encore activé." };
+  }
   const expireLe = expirationLien(v.categories, opts.maintenant ?? new Date());
   return {
     ok: true,
