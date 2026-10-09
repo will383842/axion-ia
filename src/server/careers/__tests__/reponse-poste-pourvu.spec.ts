@@ -97,6 +97,12 @@ describe("critereEligible — ce qui protège un dossier", () => {
     expect(texte).toContain("vidéaste");
   });
 
+  it("🔴 exclut l'offre « Formateur IA freelance », par slug ET par intitulé", () => {
+    const texte = JSON.stringify(critereEligible(MAINTENANT));
+    expect(texte).toContain("formateur-ia-freelance");
+    expect(texte).toContain("formateur ia freelance");
+  });
+
   it("🔴 exclut les COMMERCIAUX — catégorie `commercial` et intitulés commerciaux (tunnel apporteur)", () => {
     const w = critereEligible(MAINTENANT);
     const texte = JSON.stringify(w);
