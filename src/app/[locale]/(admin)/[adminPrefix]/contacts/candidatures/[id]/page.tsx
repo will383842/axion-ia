@@ -34,7 +34,20 @@ import { adminPath } from "@/lib/admin-path";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { env } from "@/env";
-import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
+import {
+  montantEnCentimes,
+  parseScreeningQuestions,
+  valeurAffichee,
+} from "@/lib/careers/screening-answers";
+import { questionsDePrix } from "@/features/admin-job-applications/video-freelance";
+import {
+  libelleRang,
+  montrerBlocVideos,
+  prochainGeste,
+  rangDuPrix,
+} from "@/features/admin-job-applications/fiche-blocs";
+import { BarreEtapes } from "@/components/admin/etapes/BarreEtapes";
+import { BARRE_EMPLOI, etapeEmploi } from "@/features/etapes/etapes";
 import { extraireLiensVideo, montreDuTravail, sourcesDeLiens } from "@/lib/careers/liens-video";
 import { prisma } from "@/lib/prisma";
 import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
@@ -211,19 +224,81 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     (peutEngager(acteur.role, "contresigner") &&
       peutCreerFicheFormateur({ status: a.status, ...indicesPoste }));
 
+  // ── L8c — LA FICHE EN BLOCS (maquette v2) ─────────────────────────────
+  // En-tête (prochain geste, barre d'étapes) · 1 Identité · 2 Ses prix / Ses
+  // réponses · 3 Vidéos et liens · 4 Échanges · 5 Fichiers envoyés · 6 Décision.
+  const etape = etapeEmploi(a.status);
+  const aRepondu = frise.some((e) => e.type === "email_envoye");
+  const geste = prochainGeste(a.status, aRepondu);
+  const prixQuestions = questionsDePrix(questions).filter((q) => a.answers[q.id]);
+  const autresReponses =
+    prixQuestions.length > 0 && a.offerId
+      ? await prisma.jobApplication
+          .findMany({
+            where: { offerId: a.offerId, id: { not: a.id } },
+            select: { answers: true },
+            take: 1000,
+          })
+          .catch(() => [])
+      : [];
+  const tuilesPrix = prixQuestions.map((q) => {
+    const montant = montantEnCentimes(a.answers[q.id]);
+    const autres = autresReponses
+      .map((r) => {
+        const v =
+          r.answers && typeof r.answers === "object" && !Array.isArray(r.answers)
+            ? (r.answers as Record<string, unknown>)[q.id]
+            : null;
+        return typeof v === "string" ? montantEnCentimes(v) : null;
+      })
+      .filter((x): x is number => x !== null);
+    return {
+      id: q.id,
+      libelle: q.court ?? q.labelFr ?? q.id,
+      valeur: valeurAffichee(q, a.answers[q.id] ?? ""),
+      rang: montant === null ? null : libelleRang(rangDuPrix(montant, autres)),
+    };
+  });
+  const autresQuestions = Object.keys(a.answers).filter(
+    (qid) => !prixQuestions.some((q) => q.id === qid),
+  );
+  const blocVideos = montrerBlocVideos({
+    offreVideo: formulaireCourt,
+    videos: videos.length,
+    liens: liens.length,
+  });
+  let n = 0;
+  const numero = (): number => ++n;
+
   return (
     <AdminPageShell>
       <AdminPageHeader
         title={`${a.civility ? `${a.civility} ` : ""}${a.firstName} ${a.lastName}`}
         description={`Candidature · ${a.offerTitleSnap} · ${formatDateFrShort(a.submittedAt)}`}
         actions={
-          <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">
-            ← Liste
-          </Link>
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            <a href="#echanges" className="admin-button">
+              Répondre
+            </a>
+            <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">
+              ← Liste
+            </Link>
+          </div>
         }
       />
 
+      {/* En-tête : où en est la personne, et le geste attendu. */}
       <AdminCard>
+        <BarreEtapes etapes={BARRE_EMPLOI} etape={etape} />
+        {geste ? (
+          <p className="admin-meta-small">
+            Prochain geste : <strong>{geste}</strong>
+          </p>
+        ) : null}
+      </AdminCard>
+
+      <AdminCard>
+        <h3 className="admin-section-title">{numero()} · Identité</h3>
         <dl className="grid grid-cols-[10rem_1fr] gap-y-2 text-sm">
           <dt className="font-medium">Email</dt>
           <dd>{a.email}</dd>
@@ -284,12 +359,26 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
-              <Link
-                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/cv`}
-                className="admin-link"
-              >
-                Télécharger {a.cvOriginalName ?? ""}
-              </Link>
+              <>
+                {/* L8c — « Lire ici » : un PDF s'ouvre dans le navigateur
+                    (`?lire=1`), sans téléchargement ; tout autre format reste
+                    un téléchargement. */}
+                <a
+                  href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/cv?lire=1`}
+                  target="_blank"
+                  rel="noopener"
+                  className="admin-link admin-fil-lien"
+                >
+                  Lire ici
+                </a>
+                {" · "}
+                <Link
+                  href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/cv`}
+                  className="admin-link admin-fil-lien"
+                >
+                  Télécharger {a.cvOriginalName ?? ""}
+                </Link>
+              </>
             ) : (
               <DeposerCv applicationId={a.id} />
             )}
@@ -313,141 +402,134 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         </dl>
       </AdminCard>
 
-      {a.motivation ? (
+      {tuilesPrix.length > 0 || autresQuestions.length > 0 || a.motivation ? (
         <AdminCard>
-          <h3 className="admin-section-title">Petit mot du candidat</h3>
-          <p className="text-sm whitespace-pre-wrap">{a.motivation}</p>
-        </AdminCard>
-      ) : null}
-
-      <AdminCard>
-        <h3 className="admin-section-title">Ses vidéos</h3>
-        {videos.length > 0 ? (
-          <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
-            {videos.map((v) => (
-              <div key={v.id}>
-                <p className="text-sm font-medium">
-                  {v.nomOriginal}{" "}
-                  <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
-                  {v.statut === "analyse" ? (
-                    <AdminBadge tone="warning">analyse antivirus en cours</AdminBadge>
-                  ) : v.statut === "rejetee" ? (
-                    <AdminBadge tone="destructive">
-                      refusée — {v.motifRejet ?? "motif inconnu"}
-                    </AdminBadge>
-                  ) : null}
-                </p>
-                {v.statut === "disponible" ? (
-                  <video
-                    controls
-                    preload="metadata"
-                    src={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/video/${v.id}`}
-                    style={{ width: "100%", maxWidth: 360, maxHeight: 480, background: "black" }}
-                  />
-                ) : null}
-              </div>
-            ))}
-          </div>
-        ) : null}
-        {!montreVideo ? (
-          <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
-            Aucune vidéo ni lien vers son travail. Vous pouvez lui demander 2 ou 3 montages.
-          </p>
-        ) : null}
-        {liens.length > 0 ? (
-          <ul className="space-y-2 text-sm">
-            {liens.map((l) => (
-              <li key={l.url}>
-                <AdminBadge tone="neutral">{l.plateforme}</AdminBadge>{" "}
-                <a
-                  href={l.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="admin-link"
-                  style={{ wordBreak: "break-all" }}
-                >
-                  {l.url}
-                </a>{" "}
-                <span className="admin-meta-small">· {l.source}</span>
-                {(() => {
-                  const e = etats.get(l.url.slice(0, 2000));
-                  if (!e) return null;
-                  if (e.etat === "mort")
-                    return (
-                      <>
-                        {" "}
-                        <AdminBadge tone="destructive">
-                          lien mort depuis le {formatDateFrShort(e.mortDepuis ?? e.verifieLe)}
-                        </AdminBadge>
-                      </>
-                    );
-                  if (e.etat === "vivant")
-                    return (
-                      <span className="admin-meta-small">
-                        {" "}
-                        · vérifié le {formatDateFrShort(e.verifieLe)}
-                      </span>
-                    );
-                  return null;
-                })()}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </AdminCard>
-
-      {Object.keys(a.answers).length > 0 ? (
-        <AdminCard>
-          <h3 className="admin-section-title">Réponses aux questions</h3>
-          <dl className="space-y-3 text-sm">
-            {/* Dans l'ordre des QUESTIONS, pas dans celui de la base : Postgres
+          <h3 className="admin-section-title">
+            {numero()} · {tuilesPrix.length > 0 ? "Ses prix" : "Ses réponses"}
+          </h3>
+          {tuilesPrix.length > 0 ? (
+            <div className="admin-tuiles">
+              {tuilesPrix.map((t) => (
+                <div key={t.id} className="admin-tuile">
+                  <span className="admin-tuile-libelle">{t.libelle}</span>
+                  <span className="admin-tuile-valeur">{t.valeur}</span>
+                  {t.rang ? <span className="admin-meta-small">{t.rang}</span> : null}
+                </div>
+              ))}
+            </div>
+          ) : null}
+          {a.motivation ? (
+            <>
+              <h4 className="admin-meta-small">Petit mot du candidat</h4>
+              <p className="text-sm whitespace-pre-wrap">{a.motivation}</p>
+            </>
+          ) : null}
+          {autresQuestions.length > 0 ? (
+            <dl className="space-y-3 text-sm">
+              {/* Dans l'ordre des QUESTIONS, pas dans celui de la base : Postgres
                 range les clés d'un JSONB à sa façon (mesuré le 2026-09-26 : les
                 prix sortaient mélangés au matériel et aux liens). Une réponse à
                 une question retirée depuis garde sa place, à la fin. */}
-            {[
-              ...Object.keys(qLabels).filter((qid) => qid in a.answers),
-              ...Object.keys(a.answers).filter((qid) => !(qid in qLabels)),
-            ]
-              .map((qid) => [qid, a.answers[qid]] as const)
-              .map(([qid, val]) => (
-                <Fragment key={qid}>
-                  <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
-                  <dd className="text-fg-muted whitespace-pre-wrap">
-                    {val ? valeurAffichee(qParId.get(qid), val) : val}
-                  </dd>
-                </Fragment>
-              ))}
-          </dl>
+              {[
+                ...Object.keys(qLabels).filter((qid) => autresQuestions.includes(qid)),
+                ...autresQuestions.filter((qid) => !(qid in qLabels)),
+              ]
+                .map((qid) => [qid, a.answers[qid]] as const)
+                .map(([qid, val]) => (
+                  <Fragment key={qid}>
+                    <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
+                    <dd className="text-fg-muted whitespace-pre-wrap">
+                      {val ? valeurAffichee(qParId.get(qid), val) : val}
+                    </dd>
+                  </Fragment>
+                ))}
+            </dl>
+          ) : null}
         </AdminCard>
       ) : null}
 
-      {/* Lot 1 — LA FRISE, avant le formulaire de suivi.
-          Ce qu'on veut savoir en ouvrant un dossier n'est pas « quel est son
-          statut » mais « où en est-on avec cette personne ». L'histoire d'abord,
-          la décision ensuite. */}
-      {/* Les entretiens AVANT l'historique : c'est ce qui est en cours, et
-          c'est le geste qu'on vient poser. La frise raconte, elle attend. */}
-      <AdminCard>
-        <h3 className="admin-section-title">Entretiens</h3>
-        <Entretiens
-          applicationId={a.id}
-          entretiens={entretiens.map((e) => ({
-            id: e.id,
-            round: e.round,
-            mode: e.mode,
-            state: e.state,
-            scheduledAt: e.scheduledAt.toISOString(),
-            heldAt: e.heldAt?.toISOString() ?? null,
-            location: e.location,
-            conductedByName: e.conductedByName,
-            debrief: e.debrief,
-            outcome: e.outcome,
-          }))}
-        />
-      </AdminCard>
+      {blocVideos ? (
+        <AdminCard>
+          <h3 className="admin-section-title">{numero()} · Vidéos et liens</h3>
+          {videos.length > 0 ? (
+            <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
+              {videos.map((v) => (
+                <div key={v.id}>
+                  <p className="text-sm font-medium">
+                    {v.nomOriginal}{" "}
+                    <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
+                    {v.statut === "analyse" ? (
+                      <AdminBadge tone="warning">analyse antivirus en cours</AdminBadge>
+                    ) : v.statut === "rejetee" ? (
+                      <AdminBadge tone="destructive">
+                        refusée — {v.motifRejet ?? "motif inconnu"}
+                      </AdminBadge>
+                    ) : null}
+                  </p>
+                  {v.statut === "disponible" ? (
+                    <video
+                      controls
+                      preload="metadata"
+                      src={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/video/${v.id}`}
+                      style={{ width: "100%", maxWidth: 360, maxHeight: 480, background: "black" }}
+                    />
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : null}
+          {!montreVideo ? (
+            <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
+              Aucune vidéo ni lien vers son travail. Vous pouvez lui demander 2 ou 3 montages.
+            </p>
+          ) : null}
+          {liens.length > 0 ? (
+            <ul className="space-y-2 text-sm">
+              {liens.map((l) => (
+                <li key={l.url}>
+                  <AdminBadge tone="neutral">{l.plateforme}</AdminBadge>{" "}
+                  <a
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="admin-link"
+                    style={{ wordBreak: "break-all" }}
+                  >
+                    {l.url}
+                  </a>{" "}
+                  <span className="admin-meta-small">· {l.source}</span>
+                  {(() => {
+                    const e = etats.get(l.url.slice(0, 2000));
+                    if (!e) return null;
+                    if (e.etat === "mort")
+                      return (
+                        <>
+                          {" "}
+                          <AdminBadge tone="destructive">
+                            lien mort depuis le {formatDateFrShort(e.mortDepuis ?? e.verifieLe)}
+                          </AdminBadge>
+                        </>
+                      );
+                    if (e.etat === "vivant")
+                      return (
+                        <span className="admin-meta-small">
+                          {" "}
+                          · vérifié le {formatDateFrShort(e.verifieLe)}
+                        </span>
+                      );
+                    return null;
+                  })()}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </AdminCard>
+      ) : null}
 
       <AdminCard>
-        <h3 className="admin-section-title">Échanges</h3>
+        <h3 id="echanges" className="admin-section-title">
+          {numero()} · Échanges
+        </h3>
         <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-3)]">
           <ComposerReponse
             applicationId={a.id}
@@ -470,12 +552,46 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         <FriseCandidature entrees={frise} faits={fil} accuse={accuse} />
       </AdminCard>
 
+      {entretiens.length > 0 || a.status === "interview" ? (
+        <AdminCard>
+          <h3 className="admin-section-title">Entretiens</h3>
+          <Entretiens
+            applicationId={a.id}
+            entretiens={entretiens.map((e) => ({
+              id: e.id,
+              round: e.round,
+              mode: e.mode,
+              state: e.state,
+              scheduledAt: e.scheduledAt.toISOString(),
+              heldAt: e.heldAt?.toISOString() ?? null,
+              location: e.location,
+              conductedByName: e.conductedByName,
+              debrief: e.debrief,
+              outcome: e.outcome,
+            }))}
+          />
+        </AdminCard>
+      ) : null}
+
       {partages ? (
         <AdminCard>
-          <h3 className="admin-section-title">Fichiers envoyés</h3>
+          <h3 className="admin-section-title">{numero()} · Fichiers envoyés</h3>
           <FichiersEnvoyes liens={partages.liens} />
         </AdminCard>
       ) : null}
+
+      <AdminCard>
+        <h3 className="admin-section-title">{numero()} · Décision</h3>
+        <ApplicationStatusForm
+          id={a.id}
+          status={a.status}
+          internalNotes={a.internalNotes}
+          assignedTo={a.assignedTo}
+          rejectionReason={a.rejectionReason}
+          needsAttention={a.needsAttention}
+          liensActifs={partages?.actifs ?? 0}
+        />
+      </AdminCard>
 
       {/* 2026-09-28 (Will) — proposer AUSSI le réseau d'apporteurs d'affaires
           indépendants à une personne qui a postulé à une offre salariée. La
@@ -515,19 +631,6 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           />
         </AdminCard>
       ) : null}
-
-      <AdminCard>
-        <h3 className="admin-section-title">Suivi</h3>
-        <ApplicationStatusForm
-          id={a.id}
-          status={a.status}
-          internalNotes={a.internalNotes}
-          assignedTo={a.assignedTo}
-          rejectionReason={a.rejectionReason}
-          needsAttention={a.needsAttention}
-          liensActifs={partages?.actifs ?? 0}
-        />
-      </AdminCard>
     </AdminPageShell>
   );
 }

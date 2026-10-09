@@ -107,13 +107,6 @@ const EXCEPTIONS: ReadonlyArray<{ chemin: string; raison: string }> = [
     raison: "Ce test lui-même : il vérifie la valeur produite, donc il la cite.",
   },
   {
-    chemin: "app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/cv/route.ts",
-    raison:
-      "Le CV d'un candidat n'est pas une pièce du dossier de formation : il ne se " +
-      "consulte pas dans un parcours d'audit, il s'archive au dossier de recrutement. " +
-      "À rebasculer si un écran de lecture de candidature voit le jour.",
-  },
-  {
     chemin: "features/dossier-client/documents/formats.ts",
     raison:
       "Documents du projet (ADR 0063) : fichiers DÉPOSÉS par l'administrateur, " +

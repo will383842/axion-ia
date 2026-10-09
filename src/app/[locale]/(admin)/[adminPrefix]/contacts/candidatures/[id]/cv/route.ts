@@ -7,12 +7,13 @@ import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { getClientIp } from "@/lib/client-ip";
+import { entetesCv } from "@/lib/careers/cv-en-ligne";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
@@ -64,16 +65,13 @@ export async function GET(
     } catch {
       // silence volontaire : cf. ci-dessus
     }
-    return new NextResponse(new Uint8Array(buf), {
-      headers: {
-        // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré
-        // par le client à l'upload (anti rendu HTML/inline).
-        "Content-Type": "application/octet-stream",
-        "X-Content-Type-Options": "nosniff",
-        "Content-Disposition": `attachment; filename="${safeName}"`,
-        "Cache-Control": "private, no-store",
-      },
-    });
+    // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré
+    // par le client à l'upload (anti rendu HTML/inline). L8c — « Lire ici »
+    // (`?lire=1`) ouvre un VRAI PDF (signature lue dans les octets) dans le
+    // navigateur ; tout autre fichier reste un téléchargement neutre.
+    const octets = new Uint8Array(buf);
+    const lire = new URL(req.url).searchParams.get("lire") === "1";
+    return new NextResponse(octets, { headers: entetesCv(safeName, lire, octets) });
   } catch {
     return new NextResponse("File unavailable", { status: 404 });
   }

@@ -3124,3 +3124,36 @@ a.admin-card-inline {
     font-weight: 600;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * .admin-tuiles — les tuiles « Ses prix » de la fiche emploi (Candidatures
+ * unifiées L8c, maquette v2) : le libellé, le montant en grand, le rang parmi
+ * les autres candidats de l'offre. Dans `@layer components`, comme le fil.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .admin-tuiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-admin-5);
+    margin-bottom: var(--space-admin-5);
+  }
+  .admin-tuile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-admin-2);
+    padding: var(--space-admin-5);
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-lg);
+    background-color: var(--color-admin-paper-alt);
+  }
+  .admin-tuile-libelle {
+    font-size: var(--text-admin-sm);
+    font-weight: 500;
+    color: var(--color-admin-fg-soft);
+  }
+  .admin-tuile-valeur {
+    font-size: var(--text-admin-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
