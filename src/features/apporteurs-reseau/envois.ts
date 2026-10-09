@@ -35,7 +35,8 @@ export type GabaritApporteur =
   | "apporteur-commande-signee"
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
-  | "apporteur-virement-fait";
+  | "apporteur-virement-fait"
+  | "apporteur-lien-espace";
 
 export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-dossier-lien",
@@ -56,6 +57,7 @@ export const GABARITS_APPORTEUR: readonly GabaritApporteur[] = [
   "apporteur-attribution-confirmee",
   "apporteur-releve",
   "apporteur-virement-fait",
+  "apporteur-lien-espace",
 ];
 
 export interface EnvoiApporteur {
@@ -138,6 +140,9 @@ const GABARITS_VERS_L_APPORTEUR: ReadonlySet<string> = new Set([
   "apporteur-attribution-confirmee",
   "apporteur-releve",
   "apporteur-virement-fait",
+  // « apporteur-lien-espace » n'y est PAS (2026-10-09) : envoyé à SA demande depuis
+  // « Retrouver mon espace », qui décide lui-même qui le reçoit (fiche retirée comprise,
+  // pour qu'elle puisse encore déposer ses attestations).
 ]);
 
 /** L'apporteur concerné par un envoi : l'entité elle-même, ou celui de la présentation. */
