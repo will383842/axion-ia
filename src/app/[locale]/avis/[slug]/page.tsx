@@ -38,6 +38,7 @@ import { reviewAuthorName } from "@/lib/reviews/display";
 import { getServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { clientSectorLabel } from "@/content/sectors";
 import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -85,6 +86,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AvisDetailPage({ params }: Props) {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) notFound();
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

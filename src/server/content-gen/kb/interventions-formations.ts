@@ -13,9 +13,10 @@
 
 import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { KbFact } from "./audits";
+import { sansFaitsIssusDesAvis } from "@/content/preuves-sociales";
 export type { KbFact };
 
-export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
+export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesAvis([
   // ── Formats de formation ────────────────────────────────────────────────
   {
     id: "form-001",
@@ -753,4 +754,4 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     verticales: ["interventions_formations"],
     confidence: 0.88,
   },
-];
+]);

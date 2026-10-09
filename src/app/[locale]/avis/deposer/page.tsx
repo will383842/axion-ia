@@ -21,6 +21,7 @@ import { Link } from "@/i18n/navigation";
 import { ReviewSubmissionForm } from "@/components/forms/ReviewSubmissionForm";
 import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -42,6 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DeposerAvisPage({ params }: Props) {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) notFound();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

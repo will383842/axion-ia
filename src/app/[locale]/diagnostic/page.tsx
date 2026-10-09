@@ -50,6 +50,7 @@ import { reviewAuthorName, reviewMetaLine } from "@/lib/reviews/display";
 import { clientSectorLabel } from "@/content/sectors";
 import { getAggregateRating, getPublishedReviews, getSectorFacets } from "@/server/reviews/queries";
 import { VSL_CONTENT, VSL_VIDEO } from "@/content/lp/diagnostic";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -130,11 +131,15 @@ export default async function DiagnosticLandingPage({ params }: Props) {
   // 🔴 Une panne de base ne doit JAMAIS casser cette page : c'est une page
   // publicitaire, payée au clic. Sans ce repli, une base injoignable rendrait
   // un 500 au visiteur — la preuve sociale disparaît, le tunnel survit.
-  const [aggregate, reviewsResult, sectorFacets] = await Promise.all([
-    getAggregateRating().catch(() => null),
-    getPublishedReviews({ sort: "featured", pageSize: 6 }).catch(() => null),
-    getSectorFacets().catch(() => []),
-  ]);
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le
+  // 2026-10-09 : aucune lecture, donc bande, avis et secteurs masqués.
+  const [aggregate, reviewsResult, sectorFacets] = AVIS_CLIENTS_AFFICHES
+    ? await Promise.all([
+        getAggregateRating().catch(() => null),
+        getPublishedReviews({ sort: "featured", pageSize: 6 }).catch(() => null),
+        getSectorFacets().catch(() => []),
+      ])
+    : ([null, null, []] as const);
   const reviews = reviewsResult?.items ?? [];
   const showBand = aggregate !== null && aggregate.reviewCount >= MIN_REVIEWS_FOR_BAND;
 

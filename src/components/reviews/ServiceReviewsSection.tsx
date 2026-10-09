@@ -12,6 +12,7 @@ import { ReviewCard } from "./ReviewCard";
 import { StarRating } from "./StarRating";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { getServiceLine } from "@/lib/reviews/service-lines";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 import type { ServiceSector } from "../../../prisma/generated/client";
 
 export async function ServiceReviewsSection({
@@ -25,6 +26,9 @@ export async function ServiceReviewsSection({
   title?: string;
   titleEm?: string;
 }) {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — éteint le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) return null;
+
   const [{ items }, agg] = await Promise.all([
     getPublishedReviews({ serviceLine, pageSize: 3, sort: "featured" }),
     getAggregateRating({ serviceLine }),

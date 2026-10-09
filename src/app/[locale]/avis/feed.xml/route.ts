@@ -6,6 +6,7 @@ import { hasLocale } from "next-intl";
 import { SITE_URL } from "@/lib/seo";
 import { getPublishedReviews } from "@/server/reviews/queries";
 import { reviewAuthorName } from "@/lib/reviews/display";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,6 +25,8 @@ interface RouteContext {
 }
 
 export async function GET(_req: Request, { params }: RouteContext): Promise<Response> {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) return new Response("Not found", { status: 404 });
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     return new Response("Unknown locale", { status: 404 });

@@ -11,6 +11,7 @@ import { MetricsRow } from "./MetricsRow";
 import { FaqBlock } from "./FaqBlock";
 import { CtaBlock } from "./CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface DayScheduleItem {
   time: string;
@@ -249,7 +250,8 @@ export function ProductPageTemplate({
       </Section>
 
       {/* Section testimonials — D6 Proof. Optionnelle. paper white. */}
-      {copy.testimonials && copy.testimonials.length > 0 ? (
+      {/* Éteinte avec les avis (src/content/preuves-sociales.ts, 2026-10-09). */}
+      {AVIS_CLIENTS_AFFICHES && copy.testimonials && copy.testimonials.length > 0 ? (
         <TestimonialsSection
           isFr={isFr}
           items={copy.testimonials}
