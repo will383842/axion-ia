@@ -441,6 +441,9 @@ export function construireDonneesAutofacture(e: {
       delaiContestationJours: DELAI_CONTESTATION_APPORTEUR_JOURS,
       libelleIdentifiantFournisseur: e.apporteur.siret ? "SIRET" : "SIREN",
       mandatReference: REFERENCE_MANDAT_APPORTEUR,
+      // Annexe 2.5 du contrat (analyse du 09/10) : dénonciation avec un préavis de trente jours.
+      mandatFin:
+        "Le mandat de facturation peut être dénoncé par écrit avec un préavis de trente jours (annexe 2 du contrat), sans effet rétroactif sur les factures déjà émises.",
       ...(e.avoir ? { avoir: e.avoir } : {}),
     },
   };

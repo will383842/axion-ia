@@ -156,7 +156,10 @@ export async function lireSiretsDevis(ids: readonly string[]): Promise<Map<strin
 /** Le contrat signé est-il antérieur à la 2.6 (il garde alors toute l'entreprise, art. 13) ? */
 export function signeAvant26(signature: unknown): boolean {
   const v = (signature as { version?: unknown } | null)?.version;
-  return typeof v === "string" && Number(v) > 0 && Number(v) < 2.6;
+  if (typeof v !== "string") return false;
+  // Comparaison par composante (« 2.10 » est après « 2.6 »).
+  const [maj = 0, min = 0] = v.split(".").map((x) => Number.parseInt(x, 10) || 0);
+  return maj > 0 && (maj < 2 || (maj === 2 && min < 6));
 }
 
 /** Écrit le SIRET d'une présentation, DANS la transaction qui la crée (`db`). */
