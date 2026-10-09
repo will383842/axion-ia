@@ -134,7 +134,7 @@ describe("les libellés", () => {
     );
     expect(
       libellePointApporteur({ issue: "eu_lieu", decision: "retenu", renseigneLe: le }, rdv),
-    ).toBe("Retenu le 28/09");
+    ).toBe("On poursuit (28/09)");
     expect(
       libellePointApporteur({ issue: "eu_lieu", decision: "a_revoir", renseigneLe: le }, rdv),
     ).toBe("À revoir");

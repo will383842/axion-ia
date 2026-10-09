@@ -219,13 +219,16 @@ export function ApplicationsV2({
       key: "select",
       header: "",
       cell: (a) => (
-        <input
-          type="checkbox"
-          name="ids"
-          value={a.id}
-          className="admin-checkbox"
-          aria-label={`Sélectionner la candidature de ${a.contactName ?? "candidat"}`}
-        />
+        // `relative z-[2]` : au-dessus du lien étiré de la ligne cliquable (L8b).
+        <span className="relative z-[2]">
+          <input
+            type="checkbox"
+            name="ids"
+            value={a.id}
+            className="admin-checkbox"
+            aria-label={`Sélectionner la candidature de ${a.contactName ?? "candidat"}`}
+          />
+        </span>
       ),
     },
     { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },

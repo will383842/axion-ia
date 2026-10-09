@@ -188,7 +188,7 @@ describe("l'onglet « Passés »", () => {
     const apporteurs = await listRendezVousPasses({ maintenant: MAINTENANT, public: "apporteurs" });
     expect(apporteurs.map((r) => r.sourceRecordId)).toEqual(["apporteur"]);
     expect(apporteurs[0]?.suivi && libelleDuPoint(apporteurs[0].suivi)).toBe(
-      "A eu lieu · Non retenu",
+      "A eu lieu · Sans suite",
     );
 
     const clients = await listRendezVousPasses({ maintenant: MAINTENANT, public: "clients" });

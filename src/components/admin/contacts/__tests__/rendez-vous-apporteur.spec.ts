@@ -109,7 +109,7 @@ describe("RendezVousApporteur", () => {
     ]);
     const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "admin" });
     const texte = rendreEnTexte(rendu);
-    expect(texte).toContain("Retenu le 22/09");
+    expect(texte).toContain("On poursuit (22/09)");
     expect(texte).toContain("16/20");
 
     const formulaires = trouver(rendu, IssueEchangeApporteurForm);

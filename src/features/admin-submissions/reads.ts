@@ -39,6 +39,7 @@ import {
   etapeLaPlusAvancee,
   type EtapeApporteur,
 } from "@/lib/commercial-application/etape-apporteur";
+import { connuPar, zoneDeLaFiche } from "@/lib/commercial-application/liste-reseau";
 import { decryptPii } from "@/lib/pii-crypto";
 
 import {
@@ -128,6 +129,10 @@ export interface SubmissionListItem {
    * pas demandé). La liste le range alors dans la colonne « Prénom ».
    */
   prenomSeul?: boolean;
+  /** L8d — ville et zones déclarées (dossier apporteur), sinon `null`. */
+  zone?: string | null;
+  /** L8d — « Nous a connus par… » (canal déclaré ou source de l'annonce). */
+  connuPar?: string | null;
 }
 
 export interface SubmissionListResult {
@@ -246,6 +251,8 @@ export async function listSubmissions(
       lignesDeLaPersonne: 1,
       etape: null,
       prenomSeul: details?.["vsl"] !== undefined && details?.["vsl"] !== null,
+      zone: zoneDeLaFiche(details),
+      connuPar: connuPar(details),
     };
   };
 

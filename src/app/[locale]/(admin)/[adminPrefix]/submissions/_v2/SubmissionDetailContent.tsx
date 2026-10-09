@@ -20,6 +20,7 @@ import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ComposerReponseApporteur } from "@/components/admin/contacts/ComposerReponseApporteur";
 import { estOpposee } from "@/server/email/opposition";
+import { connuPar, zoneDeLaFiche } from "@/lib/commercial-application/liste-reseau";
 import { fichiersPourComposeur } from "@/server/partages/suivi";
 import { partagesActifs } from "@/server/partages/config";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
@@ -185,8 +186,14 @@ export async function SubmissionDetailContent({
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={`${typeLabel} · ${titreSociete}`}
-        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · langue ${submission.locale.toUpperCase()}`}
+        // L8d — un futur apporteur est une PERSONNE, pas une « demande
+        // Recrutement » : son nom en titre, sans la langue (jargon retiré).
+        title={estContactApporteur ? submission.contactName : `${typeLabel} · ${titreSociete}`}
+        description={
+          estContactApporteur
+            ? `Futur apporteur · premier contact le ${formatDateFrShort(submission.submittedAt)}`
+            : `Reçue le ${formatDateFrShort(submission.submittedAt)} · langue ${submission.locale.toUpperCase()}`
+        }
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
             {backLabel}
@@ -388,6 +395,19 @@ export async function SubmissionDetailContent({
                 <DD>{submission.contactRole}</DD>
               </>
             )}
+            {/* L8d — la zone et « Nous a connus par », comme la maquette. */}
+            {estContactApporteur && zoneDeLaFiche(details) ? (
+              <>
+                <DT>Zone</DT>
+                <DD>{zoneDeLaFiche(details)}</DD>
+              </>
+            ) : null}
+            {estContactApporteur && connuPar(details) ? (
+              <>
+                <DT>Nous a connus par</DT>
+                <DD>{connuPar(details)}</DD>
+              </>
+            ) : null}
           </dl>
         </div>
         <div className="admin-card admin-card-wide">

@@ -37,12 +37,16 @@ export type IssueApporteur = (typeof ISSUES_APPORTEUR)[number];
 export const DECISIONS_APPORTEUR = ["retenu", "a_revoir", "non_retenu"] as const;
 export type DecisionApporteur = (typeof DECISIONS_APPORTEUR)[number];
 
+// L8d (Candidatures unifiées, 2026-10-09) — dit dans le vocabulaire du réseau,
+// comme la maquette v2 : « On poursuit / À revoir / Sans suite ». Les CLÉS
+// (`retenu`, `non_retenu`) restent celles de la base ; seuls les mots affichés
+// changent — un futur apporteur n'est ni « retenu » ni « non retenu ».
 export const LIBELLE_ISSUE_APPORTEUR: Readonly<Record<IssueApporteur, string>> = {
   absent: "Absent",
   reporte: "Reporté",
-  retenu: "Retenu",
+  retenu: "On poursuit",
   a_revoir: "À revoir",
-  non_retenu: "Non retenu",
+  non_retenu: "Sans suite",
 };
 
 /**
@@ -208,8 +212,8 @@ export interface PointApporteur {
 export function libellePointApporteur(p: PointApporteur, debutRdv: Date | null): string {
   const issue = issueDepuisSuivi(p.issue, p.decision);
   if (issue === "absent") return debutRdv ? `Absent le ${jourMoisParis(debutRdv)}` : "Absent";
-  if (issue === "retenu") return `Retenu le ${jourMoisParis(p.renseigneLe)}`;
-  if (issue === "non_retenu") return `Non retenu le ${jourMoisParis(p.renseigneLe)}`;
+  if (issue === "retenu") return `On poursuit (${jourMoisParis(p.renseigneLe)})`;
+  if (issue === "non_retenu") return `Sans suite (${jourMoisParis(p.renseigneLe)})`;
   if (issue === "a_revoir") return "À revoir";
   if (issue === "reporte") return "Reporté";
   return "A eu lieu";

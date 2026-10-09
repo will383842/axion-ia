@@ -5,6 +5,7 @@
 // CV reçus par l'annonce Indeed). Même volume hors web-root (/var/data/cv),
 // mêmes rôles, même trace d'accès, jamais d'URL publique.
 
+import { entetesCv } from "@/lib/careers/cv-en-ligne";
 import { resolve, sep } from "node:path";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -19,7 +20,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
@@ -59,14 +60,11 @@ export async function GET(
     } catch {
       // silence volontaire : un journal indisponible ne prive pas de la pièce
     }
-    return new NextResponse(new Uint8Array(buf), {
-      headers: {
-        "Content-Type": "application/octet-stream",
-        "X-Content-Type-Options": "nosniff",
-        "Content-Disposition": `attachment; filename="${safeName}"`,
-        "Cache-Control": "private, no-store",
-      },
-    });
+    // L8d — « Lire ici » (`?lire=1`) : un VRAI PDF s'ouvre dans le navigateur,
+    // tout autre fichier reste un téléchargement neutre (`cv-en-ligne.ts`).
+    const octets = new Uint8Array(buf);
+    const lire = new URL(req.url).searchParams.get("lire") === "1";
+    return new NextResponse(octets, { headers: entetesCv(safeName, lire, octets) });
   } catch {
     return new NextResponse("File unavailable", { status: 404 });
   }

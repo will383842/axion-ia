@@ -115,3 +115,12 @@ describe("etapeApporteur", () => {
     });
   });
 });
+
+describe("L8d — l'issue de l'échange se dit dans le vocabulaire du réseau", () => {
+  it("aucun mot de recrutement dans les boutons de l'issue", async () => {
+    const { LIBELLE_ISSUE_APPORTEUR } = await import("@/features/admin-rendezvous/issue-apporteur");
+    expect(LIBELLE_ISSUE_APPORTEUR.retenu).toBe("On poursuit");
+    expect(LIBELLE_ISSUE_APPORTEUR.non_retenu).toBe("Sans suite");
+    expect(motsInterditsApporteur(Object.values(LIBELLE_ISSUE_APPORTEUR).join(" "))).toEqual([]);
+  });
+});

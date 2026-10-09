@@ -63,7 +63,9 @@ export async function RendezVousApporteur({
 
   return (
     <div className="admin-card admin-card-wide" id="rendez-vous">
-      <h2 className="admin-h2">Échange réservé</h2>
+      {/* L8d — le bloc « Après l'échange » de la maquette v2 : l'échange
+          réservé, et l'issue à donner (On poursuit / À revoir / Sans suite). */}
+      <h2 className="admin-h2">Après l&apos;échange</h2>
       {rdvs.length === 0 ? (
         <p className="admin-help">
           Aucun rendez-vous rattaché à ce dossier. Un échange réservé avec la même adresse e-mail
