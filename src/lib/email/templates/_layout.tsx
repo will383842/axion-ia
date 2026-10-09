@@ -80,6 +80,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
 // SSOT du pied de page légal — module PUR, valeurs figées au Kbis. Remplace les
@@ -108,15 +109,30 @@ export function setReviewStats(stats: ReviewStats): void {
 }
 
 /**
- * Lien « Ne plus recevoir de sollicitations commerciales » du destinataire
- * courant — audit e-mails 2026-09-02, lot 1b. Posé par `renderEmailTemplate`
- * quand il connaît le destinataire, lu par le pied de page des familles B, C
- * et D. Même mécanisme que les statistiques d'avis : un contexte de rendu, pour
- * ne pas faire porter 44 gabarits par une prop qu'aucun d'eux ne décide.
+ * Données PROPRES À UN RENDU — le lien « Ne plus recevoir de sollicitations commerciales »
+ * du destinataire courant (audit e-mails 2026-09-02, lot 1b).
+ *
+ * 🔴 2026-10-09 (relecture sécurité, a1) : ce lien vivait dans une variable de MODULE posée
+ * par `renderEmailTemplate` avant plusieurs `await` (statistiques d'avis, rendu HTML, rendu
+ * texte). Le worker rend deux e-mails à la fois (`concurrency: 2`) : l'e-mail de A pouvait
+ * partir avec le lien de B, dont le jeton porte l'ADRESSE en clair (base64url) — fuite de
+ * l'adresse, et opposition possible au nom de B. Désormais un `AsyncLocalStorage` : chaque
+ * rendu porte SES données (`avecDonneesRendu`, posé par `renderEmailTemplate` autour des deux
+ * `render`), lues ici par `getStore()` — le contexte asynchrone suit chaque rendu à travers
+ * ses `await`, aucun rendu ne voit celui d'un autre. Pas un React Context : `createContext`
+ * est interdit dans le graphe RSC (cf. `CURRENT_REVIEW_STATS` ci-dessus — build cassé).
+ * ⛔ Ne jamais remettre une donnée propre au destinataire dans une variable de module.
+ * Hors rendu (aperçus, tests de gabarit seul) : aucun lien.
  */
-let CURRENT_OPPOSITION_HREF: string | null = null;
-export function setOppositionHref(href: string | null): void {
-  CURRENT_OPPOSITION_HREF = href;
+export interface DonneesRenduEmail {
+  readonly oppositionHref: string | null;
+}
+const RENDU_EN_COURS = new AsyncLocalStorage<DonneesRenduEmail>();
+export function avecDonneesRendu<T>(
+  donnees: DonneesRenduEmail,
+  rendu: () => Promise<T>,
+): Promise<T> {
+  return RENDU_EN_COURS.run(donnees, rendu);
 }
 
 const BRAND = "Axion-IA";
@@ -780,6 +796,7 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
+  const oppositionHref = RENDU_EN_COURS.getStore()?.oppositionHref ?? null;
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
@@ -1087,11 +1104,11 @@ export function EmailLayout({
                   destinataire est connu du rendu, pas du gabarit. Portée écrite
                   dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
                   qui clique garde sa convocation, un client garde sa facture. */}
-              {famille !== "A" && !unsubscribeHref && CURRENT_OPPOSITION_HREF && (
+              {famille !== "A" && !unsubscribeHref && oppositionHref && (
                 <>
                   <br />
                   <Link
-                    href={CURRENT_OPPOSITION_HREF}
+                    href={oppositionHref}
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
                     {t.opposition}
