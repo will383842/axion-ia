@@ -654,11 +654,10 @@ function formatBody(event: NotificationEvent): string {
         .join("\n");
     }
     case "CANDIDAT_REPLIED": {
+      // Ni nom ni objet (relecture 2026-10-09) : le poste et le lien, c'est tout.
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
         formatKV("Poste", p.offerTitle),
-        formatKV("Objet", p.subject),
         formatKV(
           "Reçu le",
           new Date(p.receivedAt).toLocaleString("fr-FR", {

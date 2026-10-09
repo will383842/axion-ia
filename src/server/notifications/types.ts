@@ -494,15 +494,13 @@ export type NotificationEvent =
   // === Réponse reçue d'un candidat EMPLOI (lot L3, 2026-10-07) ===
   // Relevée dans la boîte Zoho Mail par le passage
   // `formation-crons.reponses-entrantes-candidatures` — monde « emploi », distinct
-  // de `APPORTEUR_REPLIED` (jamais d'alerte commune aux deux mondes). Ni adresse
-  // ni extrait : le nom, le poste, l'objet, et le lien vers la fiche.
+  // de `APPORTEUR_REPLIED` (jamais d'alerte commune aux deux mondes). Ni nom,
+  // ni objet, ni adresse, ni extrait : le poste et le lien vers la fiche.
   | {
       category: "CANDIDAT_REPLIED";
       payload: {
         applicationId: string;
-        contactName: string;
         offerTitle: string;
-        subject: string;
         /** ISO 8601. */
         receivedAt: string;
       };

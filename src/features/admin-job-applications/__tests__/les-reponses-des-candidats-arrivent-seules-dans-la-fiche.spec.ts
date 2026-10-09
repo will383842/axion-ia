@@ -261,7 +261,9 @@ describe("une réponse de candidat arrive seule dans sa fiche", () => {
       occurredAt: RECU,
       body: null,
     });
-    expect(String(db.evenements[0]!["summary"])).toContain("Re: Votre candidature");
+    // Résumé neutre : le journal est en clair, l'objet n'y est jamais recopié.
+    expect(db.evenements[0]!["summary"]).toBe("Réponse reçue par e-mail");
+    expect(JSON.stringify(db.evenements[0])).not.toContain("Re: Votre candidature");
     expect(JSON.stringify(db.evenements[0])).not.toContain("première version");
 
     expect(db.candidatures[0]!["needsAttention"]).toBe(true);
@@ -272,13 +274,19 @@ describe("une réponse de candidat arrive seule dans sa fiche", () => {
       category: "CANDIDAT_REPLIED",
       payload: {
         applicationId: "cand-a",
-        contactName: "Sarah L.",
         offerTitle: "Monteur vidéo freelance",
-        subject: "Re: Votre candidature",
       },
     });
-    // Ni adresse, ni extrait dans l'alerte.
+    // 🔴 VETO relecture 2026-10-09 : ni nom, ni objet, ni adresse, ni extrait
+    // dans l'alerte Telegram — le poste et le lien vers la fiche, rien d'autre.
     const alerte = JSON.stringify(db.notify.mock.calls[0]);
+    expect(Object.keys(db.notify.mock.calls[0]![0].payload).sort()).toEqual([
+      "applicationId",
+      "offerTitle",
+      "receivedAt",
+    ]);
+    expect(alerte).not.toContain("Sarah");
+    expect(alerte).not.toContain("Re: Votre candidature");
     expect(alerte).not.toContain("sarah@exemple.fr");
     expect(alerte).not.toContain("première version");
   });

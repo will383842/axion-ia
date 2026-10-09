@@ -63,7 +63,7 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : ni `server-only`, ni `@/env`.
 
 import { prisma } from "@/lib/prisma";
-import { decryptPii, encryptPii } from "@/lib/pii-crypto";
+import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import {
@@ -173,8 +173,6 @@ async function ecrireCurseur(depuis: Date): Promise<void> {
 interface Dossier {
   id: string;
   emailHash: string | null;
-  firstName: string;
-  lastName: string;
   offerTitleSnap: string;
 }
 
@@ -205,7 +203,7 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
 
   const dossiers = (await prisma.jobApplication.findMany({
     where: { emailHash: { in: [...parEmpreinte.keys()] } },
-    select: { id: true, emailHash: true, firstName: true, lastName: true, offerTitleSnap: true },
+    select: { id: true, emailHash: true, offerTitleSnap: true },
   })) as Dossier[];
   if (dossiers.length === 0) return [];
   const ids = dossiers.map((d) => d.id);
@@ -300,27 +298,17 @@ async function dejaVusParLAutreReleve(ids: readonly string[]): Promise<Set<strin
   }
 }
 
-function nomLisible(d: Dossier): string {
-  const lire = (v: string) => {
-    try {
-      return decryptPii(v) ?? "";
-    } catch {
-      return "";
-    }
-  };
-  return `${lire(d.firstName)} ${lire(d.lastName)}`.trim();
-}
-
-async function notifier(r: RattachementCandidat, objet: string): Promise<boolean> {
+// VETO relecture 2026-10-09 : Telegram n'est pas un lieu où une donnée
+// nominative de candidat a sa place. L'alerte porte le poste et le lien vers
+// la fiche ; ni le nom (déchiffré), ni l'objet de l'e-mail.
+async function notifier(r: RattachementCandidat): Promise<boolean> {
   try {
     const { notify } = await import("@/server/notifications");
     await notify({
       category: "CANDIDAT_REPLIED",
       payload: {
         applicationId: r.dossier.id,
-        contactName: nomLisible(r.dossier) || "(nom illisible)",
         offerTitle: r.dossier.offerTitleSnap,
-        subject: objet,
         receivedAt: r.message.receivedAt.toISOString(),
       },
     });
@@ -456,9 +444,9 @@ export async function passerReponsesEntrantesCandidats(
               authorId: null,
               authorName: AUTEUR_RELEVE,
               occurredAt: m.receivedAt,
-              summary: `Réponse reçue par e-mail — « ${objet} »`,
-              // Pas d'extrait ici : le journal est en clair, l'extrait reste
-              // chiffré dans sa table (bloc « Réponses reçues par e-mail »).
+              // Résumé neutre : le journal est en clair, ni l'objet ni
+              // l'extrait n'y sont recopiés (bloc « Réponses reçues par e-mail »).
+              summary: "Réponse reçue par e-mail",
               body: null,
               meta: { source: "zoho", reponseRecueId: ligne.id, zohoMessageId: m.messageId },
             },
@@ -492,7 +480,7 @@ export async function passerReponsesEntrantesCandidats(
       enregistrees.humaines += 1;
       // UNE alerte : celle du relevé apporteurs quand il a rattaché ce message.
       if (recent && !vusAilleurs.has(m.messageId)) {
-        if (await notifier(r, objet)) alertes += 1;
+        if (await notifier(r)) alertes += 1;
       }
     }
   }

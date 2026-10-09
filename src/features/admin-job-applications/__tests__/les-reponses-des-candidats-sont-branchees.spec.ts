@@ -68,24 +68,25 @@ describe("l'alerte `CANDIDAT_REPLIED`", () => {
     expect(getRouting("CANDIDAT_REPLIED").channels).toEqual(["telegram"]);
   });
 
-  it("dit le nom, le poste, l'objet et le lien vers la fiche", () => {
+  it("🔴 ne dit QUE le poste et le lien vers la fiche — ni nom ni objet (relecture 2026-10-09)", () => {
     const { text: texte } = formatNotificationPlain(
       {
         category: "CANDIDAT_REPLIED",
         payload: {
           applicationId: "cand-a",
-          contactName: "Sarah L.",
           offerTitle: "Monteur vidéo freelance",
-          subject: "Re: Votre candidature",
           receivedAt: "2026-10-07T09:14:00.000Z",
-        },
+          // Un appelant ancien qui passerait encore ces champs ne doit rien faire fuiter.
+          ...({ contactName: "Sarah L.", subject: "Re: Votre candidature" } as object),
+        } as never,
       },
       "info",
     );
-    expect(texte).toContain("Sarah L.");
     expect(texte).toContain("Monteur vidéo freelance");
-    expect(texte).toContain("Re: Votre candidature");
     expect(texte).toMatch(/contacts\/candidatures\/cand-a#reponses-recues/);
+    expect(texte).not.toContain("Sarah");
+    expect(texte).not.toContain("Re: Votre candidature");
+    expect(texte).not.toMatch(/Candidat\s*:|Objet\s*:/);
   });
 });
 
