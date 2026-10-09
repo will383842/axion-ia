@@ -32,6 +32,12 @@ import { creerFicheApporteurDepuisCandidature } from "@/features/admin-job-appli
 import { envoyerInvitationApporteur } from "@/features/commercial-application/invitation-apporteur";
 import { lienReservationAuto } from "@/features/commercial-application/invitation-auto";
 import { consignerEvenement } from "@/features/admin-job-applications/journal";
+import {
+  MOTS_FORMATEUR,
+  SLUG_OFFRE_FORMATEUR_FREELANCE,
+  SLUGS_OFFRES_FORMATEUR_SALARIE,
+  estCandidatureFormateurFreelance,
+} from "@/lib/careers/formateur-freelance";
 
 /**
  * Seules les candidatures reçues À PARTIR de cette date sont concernées : les
@@ -49,6 +55,28 @@ export type IssueProposition =
   | { readonly fiche: "creee"; readonly submissionId: string }
   | { readonly fiche: "impossible"; readonly raison: string };
 
+/**
+ * Candidat FORMATEUR, salarié comme freelance (lot U2, 2026-10-09) : jamais de
+ * proposition du réseau d'apporteurs. Une offre de formateur se reconnaît à son
+ * slug (offres connues, ou préfixe `formateur-`), un intitulé spontané au mot
+ * « formateur|formatrice » — « Formateur commercial » compris.
+ */
+function estCandidatFormateur(c: {
+  offerTitleSnap?: string | null;
+  offer?: { slug?: string | null; titleFr?: string | null } | null;
+}): boolean {
+  if (estCandidatureFormateurFreelance(c)) return true;
+  const slug = c.offer?.slug ?? "";
+  if (slug === SLUG_OFFRE_FORMATEUR_FREELANCE || SLUGS_OFFRES_FORMATEUR_SALARIE.includes(slug)) {
+    return true;
+  }
+  if (/^format(eur|rice)\b/.test(slug)) return true;
+  return [c.offerTitleSnap, c.offer?.titleFr].some((t) => {
+    const v = (t ?? "").toLowerCase();
+    return MOTS_FORMATEUR.some((m) => v.includes(m));
+  });
+}
+
 /** Le lien de réservation est-il posé ? Sans lui, on ne promet rien. */
 export function propositionPossible(): boolean {
   return lienReservationAuto() !== null;
@@ -64,6 +92,14 @@ export async function preparerProposition(
   cas: "poste-pourvu" | "spontanee-commerciale",
 ): Promise<IssueProposition> {
   if (!propositionPossible()) return { fiche: "impossible", raison: "lien-calendly-absent" };
+  const [candidature] = await prisma.jobApplication.findMany({
+    where: { id: applicationId },
+    take: 1,
+    select: { offerTitleSnap: true, offer: { select: { slug: true, titleFr: true } } },
+  });
+  if (candidature && estCandidatFormateur(candidature)) {
+    return { fiche: "impossible", raison: "candidat-formateur" };
+  }
   const r = await creerFicheApporteurDepuisCandidature({
     applicationId,
     acteurId: null,
@@ -137,6 +173,13 @@ export async function proposerAuxSpontaneesCommerciales(
       OR: MOTS_COMMERCIAUX.map((m) => ({
         offerTitleSnap: { contains: m, mode: "insensitive" as const },
       })),
+      // « Formateur commercial » : jamais proposé (lot U2) — l'écarter ici évite
+      // qu'il revienne occuper la fenêtre à chaque passage.
+      NOT: {
+        OR: MOTS_FORMATEUR.map((m) => ({
+          offerTitleSnap: { contains: m, mode: "insensitive" as const },
+        })),
+      },
     },
     select: { id: true },
     orderBy: { submittedAt: "asc" },
