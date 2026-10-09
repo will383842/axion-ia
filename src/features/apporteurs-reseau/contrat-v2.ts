@@ -30,9 +30,16 @@
 // 2.6 (09/10/2026, décision de Will) : l'attribution porte sur l'ÉTABLISSEMENT déclaré (SIRET),
 // commissionné sur ses seules commandes ; la Société peut, à sa seule discrétion et sur demande,
 // l'étendre à toute l'entreprise (SIREN). L'antériorité (3.3) se juge par établissement.
-export const CONTRAT_VERSION = "2.6";
+// 2.7 (09/10/2026, analyse juridique du 09/10, lot 1, et décisions de Will) : quinze corrections
+// ciblées (établissement partout où l'attribution joue, personne qui a rencontré le client
+// nommée, suspension du parrainage bornée, un seul régime d'échéance, anti-corruption 8.6,
+// facture électronique 5.1 bis, résidence fiscale, recodification 13.4…), conservation des
+// données des personnes présentées par critères (7.2), préavis progressif de la Société (11.1).
+// La version figure désormais dans le texte signé (titre). Les contrats signés avant la 2.7
+// restent régis par leur version tant qu'un avenant n'est pas signé (art. 13.2).
+export const CONTRAT_VERSION = "2.7";
 
-export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
+export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires — version ${CONTRAT_VERSION}
 
 **Entre les soussignés :**
 
@@ -127,12 +134,10 @@ n'étant promise, les déclarations de l'article 3.2 sont faites par le seul for
 les notifications de l'article 20, les autofactures et leurs décomptes (article 5) sont
 adressés par courrier électronique ; toute mention de l'espace en ligne s'entend de ces échanges.
 
-Les délais qui courent de plein droit (articles 3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de
-paiement ne sont ni suspendus ni prorogés par la présente période. **Elle ne reporte aucun délai de
-paiement (article 5.3 ; article L.441-10 du code de commerce) et ne suspend aucune pénalité de retard.
-L'encaissement, au sens de l'article 4.0, s'entend du jour où la somme est créditée sur le compte bancaire de
-la Société, quel que soit le moyen de paiement du client (virement, carte bancaire, opérateur de compétences
-ou autre financeur).**
+Les délais qui courent de plein droit (articles 3.1, y compris le délai de quinze jours de rattachement,
+3.2, 3.4, 3.5, 3.7 et 5.1 à 5.5) et les échéances de paiement ne sont ni suspendus ni prorogés par la
+présente période. **Elle ne reporte aucun délai de paiement (article 5.3 ; article L.441-10 du code de
+commerce) et ne suspend aucune pénalité de retard. L'encaissement s'entend au sens de l'article 4.0.**
 Les opérations que le contrat confie à la Société (enregistrement des déclarations, refus, informations,
 autofactures, décomptes, réponses) sont effectuées manuellement ; elles le sont dans les délais que le contrat
 fixe et, à défaut, dans un délai raisonnable. Le retard de la Société dans l'une de ces opérations ne prive
@@ -162,14 +167,17 @@ son refus n'a pas à être motivé. L'extension suit le sort de l'attribution qu
 prolongation, fin).
 
 Dans le présent contrat, l'**entreprise attribuée** s'entend de l'établissement attribué ou, en cas
-d'extension, de l'ensemble des établissements qu'elle couvre. L'établissement qui commande est celui dont le
-numéro SIRET figure sur le devis ou la commande, à défaut sur la fiche du client. L'extension n'emporte pas un
-établissement que la Société connaît déjà au sens de l'article 3.3, apprécié établissement par établissement.
+d'extension, de l'ensemble des établissements qu'elle couvre. **Aux articles 3.2 à 3.5 et 3.7, l'entreprise
+déclarée s'entend de l'établissement déclaré.** L'établissement qui commande est celui au profit duquel la
+prestation est commandée ; à défaut de pouvoir le déterminer, celui dont le numéro SIRET figure sur le devis
+ou la commande, puis celui qui figure sur la fiche du client. L'extension n'emporte pas un établissement que
+la Société connaît déjà au sens de l'article 3.3, apprécié établissement par établissement.
 
 Lorsque la commande ne peut être rattachée à une attribution, faute de numéro SIRET ou faute de correspondance,
 la Société procède elle-même au rattachement dans les **quinze jours** de l'encaissement intégral. La commission
-qui en résulte reste due ; le délai de paiement de l'article 5.3 court à compter de ce rattachement, et ce délai
-ne prive l'Apporteur d'aucun droit. Lorsque la Société constate qu'aucune attribution ne correspond à la
+qui en résulte reste due ; l'autofacture est alors établie le jour du rattachement ou, s'il est plus
+tardif, le jour où la commission devient acquise (article 5.1), et
+l'échéance de l'article 5.3 court de son émission ; ce délai ne prive l'Apporteur d'aucun droit. Lorsque la Société constate qu'aucune attribution ne correspond à la
 commande, ou qu'elle revient à une autre attribution, elle en informe l'Apporteur concerné par écrit et motive
 sa décision ; il peut la contester par écrit, et la Société y répond de façon motivée dans les trente jours.
 
@@ -182,13 +190,16 @@ acquise du seul fait d'une démarche non déclarée.
 La déclaration comporte l'identification de l'entreprise et le **numéro SIRET de l'établissement** visité, le **nom et la fonction de la
 personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de
 téléphone, et la **date du contact**, laquelle n'est recueillie qu'aux seules fins des articles 3.4 bis et 3.7 et ne fait l'objet
-d'aucune exploitation statistique.
+d'aucune exploitation statistique. Elle comporte aussi le **nom de la personne qui a rencontré ou joint ce
+représentant** lorsque ce n'est pas l'Apporteur lui-même mais une personne agissant pour son compte
+(article 2.6) ; à défaut d'une telle indication, cette personne est l'Apporteur.
 
 L'attribution est d'abord **provisoire**. Après l'enregistrement de la déclaration, la Société **prend contact**
 avec la personne déclarée, notamment par courrier électronique, pour lui présenter ses services. **Ce message
 indique que l'Apporteur lui a parlé de l'entreprise et le désigne par ses prénom et nom : l'Apporteur est
 informé que ses prénom et nom sont ainsi communiqués à la personne qu'il déclare ; ses coordonnées ne lui sont
-pas communiquées.**
+pas communiquées. Lorsque la déclaration nomme une personne agissant pour son compte, ce message peut aussi
+indiquer le nom de cette personne ; l'Apporteur l'en informe avant de la nommer.**
 
 L'attribution devient **définitive** dès que la Société la confirme par écrit à l'Apporteur, ou dès que
 l'entreprise répond à la Société, prend rendez-vous avec elle ou échange avec elle, sans indiquer n'avoir eu
@@ -260,7 +271,7 @@ date figure à la déclaration.
 
 **3.5 — Entreprise déjà prise, concours entre Apporteurs.** Une entreprise peut être déjà prise **par un
 autre apporteur ou par la Société ou ses préposés**, les préposés de la Société s'entendant des personnes
-qu'elle emploie, et non des préposés de l'Apporteur mentionnés à l'article 2. **L'effet pour l'Apporteur
+qu'elle emploie, et non des préposés de l'Apporteur mentionnés à l'article 2.6. **L'effet pour l'Apporteur
 est le même quel que soit l'occupant, et la Société ne révèle jamais qui occupe une entreprise donnée.**
 Lorsque deux Apporteurs déclarent la même entreprise, ou lorsqu'une déclaration et une prise en charge par
 la Société ou ses préposés portent sur la même entreprise, l'entreprise revient à celui dont la
@@ -311,19 +322,20 @@ civil, **quel que soit l'occupant de l'entreprise**. Cet horodatage est inscrit
 dans un registre horodaté tenu par la Société ; l'Apporteur peut en obtenir sur simple demande un extrait relatif
 à ses propres déclarations, qui ne révèle pas qui occupe l'entreprise.
 
-**3.6 — Groupes de sociétés.** Chaque personne morale dispose de son propre SIREN. L'attribution d'une
-filiale n'emporte aucun droit sur sa société mère ni sur les autres sociétés du groupe.
+**3.6 — Groupes de sociétés.** Chaque personne morale dispose de son propre SIREN. L'attribution d'un
+établissement n'emporte aucun droit sur la société mère de l'entreprise ni sur les autres sociétés du
+groupe.
 
-Lorsqu'une commande est passée par une société distincte de celle qui a été déclarée, l'affaire est
-rattachée à l'attribution existante dès lors que l'une des deux sociétés contrôle l'autre au sens de
-l'article L.233-3 du code de commerce, ou que les deux sont contrôlées par une même personne, **ce lien de
-contrôle devant exister à la date de la déclaration et être établi par les données publiques disponibles à
-cette date ; un lien né postérieurement n'ouvre aucun droit. Le rattachement est décidé par la Société,
-motivé et tracé ; l'Apporteur peut le demander en justifiant du lien de contrôle, et la décision lui est
-notifiée avec son motif.** Aucun autre rattachement n'ouvre droit à commission.
+Lorsqu'une commande est passée par une société distincte de celle qui a été déclarée, notamment une autre
+société du même groupe, elle n'est rattachée à l'attribution existante que si la prestation est commandée
+au profit du personnel de l'établissement attribué. **Le rattachement est décidé par la Société, motivé et
+tracé ; l'Apporteur peut le demander en justifiant que la prestation est commandée au profit de ce
+personnel, et la décision lui est notifiée avec son motif.** Aucune autre société du groupe n'est rattachée
+d'office à l'attribution, et aucun autre rattachement n'ouvre droit à commission.
 
 **3.7 — Sincérité de la déclaration.** L'Apporteur ne déclare que des entreprises dont il a effectivement
-rencontré ou joint un représentant.
+rencontré ou joint un représentant, lui-même ou par la personne agissant pour son compte que la déclaration
+nomme (article 3.2).
 
 Lorsque le représentant de l'entreprise déclarée indique expressément n'avoir eu aucun échange avec
 l'Apporteur, l'attribution correspondante s'éteint et l'entreprise redevient librement déclarable. Vaut une telle
@@ -361,7 +373,8 @@ effectif des fonds sur un compte bancaire de la Société, quel que soit le moye
 (virement, carte bancaire, opérateur de compétences ou autre financeur) ; la date de l'encaissement est celle
 du jour où la somme est créditée sur ce compte ; *prix facturé* s'entend du prix de la commande,
 net des avoirs ; *commission acquise* s'entend de la commission dont le fait générateur de l'article 4.2 est
-réalisé ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro
+réalisé ; le *jour d'acquisition* de la commission est le plus tardif du jour de l'encaissement intégral et
+du jour de la réalisation de la prestation ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro
 SIREN ; *établissement* s'entend de l'établissement de l'entreprise identifié par son numéro SIRET.
 
 **4.1 — Grille.** La rémunération est exclusivement constituée de commissions, selon la **grille figurant
@@ -405,12 +418,16 @@ l'émission de la facture.
 
 **Lorsque la prestation n'est pas réalisée, en tout ou partie, quelle qu'en soit la cause, y compris du fait de
 la Société, la commission n'est pas due, ou n'est due qu'à proportion de la part réalisée et encaissée ; si
-elle a déjà été versée, la différence fait l'objet d'une reprise (article 4.5).**
+elle a déjà été versée, la différence fait l'objet d'une reprise (article 4.5), sauf lorsque l'inexécution
+procède d'une faute lourde ou dolosive de la Société.**
 
 **4.2 bis — Contestation du client.** Tant qu'une contestation **écrite** du client portant sur la prestation
 ou sur sa facture est en cours, la commission correspondante est **suspendue** : elle n'est ni facturée ni
 versée. À l'issue de la contestation, elle est versée, ou fait l'objet d'une reprise, selon le prix finalement
-conservé par la Société. L'Apporteur est informé de la suspension et de son issue.
+conservé par la Société. L'Apporteur est informé de la suspension et de son issue. **La suspension ne
+peut excéder douze mois à compter de la réception de la contestation : à l'expiration de ce délai, la
+commission est facturée et versée, sans préjudice d'une reprise ultérieure dans les conditions de
+l'article 4.5 si la contestation aboutit à une restitution au client.**
 
 **4.3 — Paiement partiel.** Aucune part de commission n'est due au titre d'un paiement partiel. La commission
 est facturée et versée dans les conditions de l'article 5, à compter de l'encaissement complet.
@@ -459,7 +476,9 @@ faveur du client, ou toute autre restitution des fonds, **y compris une restitut
 réclamation du client, à titre de geste commercial, ou résultant de l'inexécution par la Société de ses
 propres obligations** —, la commission correspondante fait l'objet d'une reprise. **Toutefois, une
 annulation, un remboursement ou un avoir consenti dans le seul but de priver l'Apporteur de sa commission est
-sans effet sur celle-ci** (article 1304-3 du code civil), comme la remise de l'article 4.1 bis. **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
+sans effet sur celle-ci** (article 1304-3 du code civil), comme la remise de l'article 4.1 bis. **Aucune
+reprise n'a lieu non plus lorsque l'annulation, le remboursement ou l'avoir procède d'une faute lourde ou
+dolosive de la Société.** **La reprise est constatée par un avoir d'autofacture**, établi au nom et pour le compte de
 l'Apporteur (annexe 2) dès que la Société constate l'annulation : il porte la mention
 « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et date) et indique la commission corrigée, la taxe sur la valeur ajoutée correspondante et la
 somme reprise. **L'autofacture d'origine n'est jamais modifiée, et aucune autofacture n'est émise pour un
@@ -476,7 +495,7 @@ le solde négatif suit le régime de l'article 12.4**, que le contrat soit en co
 **4.5 bis — Déclaration non sincère, intérêt non déclaré, fraude.** Aucune commission n'est due au titre
 d'une affaire pour laquelle l'Apporteur a manqué à l'article 3.7 (déclaration non sincère) ou à
 l'article 8.4 (rémunération ou avantage reçu de l'entreprise, relation d'affaires ou d'intérêt non
-déclarée), ni en cas de fraude ; les commissions déjà versées au titre de cette affaire font l'objet d'une
+déclarée) ou à l'article 8.6 (corruption), ni en cas de fraude ; les commissions déjà versées au titre de cette affaire font l'objet d'une
 reprise dans les conditions de l'article 4.5. Le manquement est notifié à l'Apporteur avec les faits qui le
 fondent ; il peut le contester par écrit, et la Société y répond de façon motivée dans les trente jours.
 
@@ -490,7 +509,7 @@ l'Apporteur et à cette personne.
 
 Cette somme est versée par la Société et **n'est jamais prélevée sur la rémunération du filleul**. Elle est
 facturée et versée dans les conditions de l'article 5, le jour où la commission du filleul dont elle procède
-devient acquise tenant lieu de jour d'encaissement. **L'autofacture de cette somme, son décompte et l'avoir
+devient acquise tenant lieu de jour d'acquisition. **L'autofacture de cette somme, son décompte et l'avoir
 qui en reprendrait une partie (article 4.5) la portent sur une ligne unique libellée « Parrainage
 (article 4.6) » : ils n'indiquent ni l'identité du filleul, ni aucune commande, ni le prix, la commission ou
 toute autre somme du filleul.** Lorsque les commissions de plusieurs filleuls deviennent acquises le même
@@ -506,7 +525,9 @@ ou un même compte bancaire.
 
 **Lorsque l'identité de numéro SIREN, d'adresse électronique, de numéro de téléphone ou de compte bancaire
 apparaît en cours de contrat, le versement des sommes de parrainage est suspendu le temps d'une
-vérification, dans les conditions de l'article 3.7 ; les sommes déjà acquises demeurent dues.**
+vérification, notifiée au parrain ; la suspension ne peut excéder quinze jours à compter de sa
+notification, et à l'expiration de ce délai elle est levée de plein droit. Les sommes déjà acquises
+demeurent dues.**
 
 **Le parrainage n'emporte aucune fonction d'encadrement, d'animation, de formation ni de suivi. Le parrain
 ne dispose d'aucun pouvoir à l'égard du filleul et n'est tenu d'aucune obligation envers lui ni envers la
@@ -543,28 +564,35 @@ changement et sans indication du motif.
 **4.7 — Taxe sur la valeur ajoutée.** Les commissions sont exprimées hors taxes. Lorsque l'Apporteur est
 assujetti à la taxe sur la valeur ajoutée, la taxe au taux en vigueur (20 % à la date de la présente version)
 s'ajoute à la commission et figure sur la facture ; lorsqu'il bénéficie de la franchise en base, la facture
-porte la mention « TVA non applicable, article 293 B du CGI » ou, à compter de l'entrée en vigueur du code des impositions sur les biens et services (CIBS), la mention correspondante de ce code. Les commissions sont facturées selon le
+porte la mention « TVA non applicable, article 293 B du CGI » ou, lorsque les dispositions du code des impositions sur les biens et services relatives à la taxe sur la valeur ajoutée s'appliqueront, la mention correspondante de ces dispositions. Les commissions sont facturées selon le
 régime que l'Apporteur a déclaré (article 6.3) à la date d'établissement de l'autofacture. L'autofacture
-porte la date de son établissement comme date d'émission et la date de l'encaissement intégral comme date de
-la prestation ; l'exigibilité de la taxe suit le régime déclaré par l'Apporteur, y compris, le cas échéant,
+porte la date de son établissement comme date d'émission et le jour d'acquisition de la commission
+(article 4.0) comme date de la prestation ; l'exigibilité de la taxe suit le régime déclaré par l'Apporteur, y compris, le cas échéant,
 son option pour le paiement de la taxe d'après les débits, que la facture mentionne.
 
 ---
 
 ### Article 5 — Facturation et paiement 
 
-**5.1 — Autofacture.** Le jour de l'encaissement intégral qui rend une commission acquise (article 4.2) — ou,
-si le crédit intervient un jour non ouvré ou n'est constaté que plus tard, le premier jour ouvré où la Société
-le constate —, la Société établit, au nom et pour le compte de l'Apporteur (article 5.2 et annexe 2),
+**5.1 — Autofacture.** Le jour d'acquisition d'une commission (article 4.0) — ou, si ce jour n'est pas
+ouvré ou si l'encaissement intégral ou la réalisation de la prestation n'est constaté que plus tard, le
+premier jour ouvré où la Société constate que la commission est acquise —, la Société établit, au nom et pour le compte de l'Apporteur (article 5.2 et annexe 2),
 l'autofacture correspondante et la lui transmet par courrier électronique, forme sous laquelle l'Apporteur
-accepte de la recevoir. Une autofacture est établie pour chaque encaissement intégral ; lorsque plusieurs
+accepte de la recevoir. Une autofacture est établie pour chaque commission acquise ; lorsque plusieurs
 commissions de l'Apporteur, y compris les sommes de parrainage de l'article 4.6, deviennent acquises le même
 jour, une seule autofacture est établie pour l'ensemble. Elle est accompagnée d'un décompte indiquant, pour
-chaque commande, le prix facturé, le prix public, la commission et la date de l'encaissement intégral, ainsi
+chaque commande, le prix facturé, le prix public, la commission et le jour d'acquisition, ainsi
 que, le cas échéant, l'avoir imputé (article 4.5) et la somme virée ; les sommes de parrainage y figurent dans
 les conditions de l'article 4.6. **L'autofacture est émise pour le montant intégral de la commission : elle
 n'est jamais diminuée d'une reprise. Toute commission acquise est facturée et versée, quel que soit son
 montant : aucun montant minimum n'est appliqué.**
+
+**5.1 bis — Facture électronique.** Les autofactures, factures complémentaires et avoirs d'autofacture
+peuvent être émis et transmis par l'intermédiaire d'une plateforme agréée par l'administration fiscale,
+notamment lorsque la réglementation de la facturation électronique l'exige. La Société en adresse dans tous
+les cas une copie à l'Apporteur par courrier électronique ; les délais que le contrat fait courir de la
+transmission d'une facture ou d'un avoir courent de l'envoi de ce courrier électronique. **Un défaut
+d'acheminement par la plateforme ne diffère aucun versement.**
 
 **5.2 — Mandat de facturation.** L'Apporteur donne mandat à la Société d'établir en son nom et pour son
 compte les autofactures de l'article 5.1, ainsi que les factures complémentaires et les avoirs des
@@ -577,19 +605,19 @@ erreur matérielle ou preuve contraire. Cette acceptation porte sur la forme et 
 la contestation du calcul de la commission qu'elle porte obéit à l'article 5.5.**
 
 **Ce mandat est exclusivement un mandat de facturation au sens de l'article 289, I, 2 du code général des
-impôts, ou de la disposition qui lui succède dans le code des impositions sur les biens et services (CIBS) à compter de son entrée en vigueur. Il est donné PAR l'Apporteur À la Société, aux seules fins d'établir des factures en son nom ; il
+impôts, ou de la disposition qui lui succède parmi les dispositions du code des impositions sur les biens et services relatives à la taxe sur la valeur ajoutée. Il est donné PAR l'Apporteur À la Société, aux seules fins d'établir des factures en son nom ; il
 n'emporte aucun pouvoir de l'Apporteur de représenter la Société, ni aucun mandat de la Société à
 l'Apporteur (article 1.2).**
 
 **5.3 — Paiement.** La Société verse la commission par virement. **La date d'échéance de chaque
-autofacture est le trentième jour suivant son émission, laquelle a lieu le jour de l'encaissement intégral
-(article 5.1) ; elle n'en connaît pas d'autre et figure sur l'autofacture, avec les conditions de pénalité du
+autofacture est le trentième jour suivant son émission, laquelle a lieu dans les conditions de
+l'article 5.1 ; elle n'en connaît pas d'autre et figure sur l'autofacture, avec les conditions de pénalité du
 présent article.** Ce délai ne court jamais de la signature de la commande ni de l'émission de la facture au
 client ; le retour en erreur de la transmission (article 20) ne le modifie pas. Une facture complémentaire
 (articles 5.6 et 5.7) a la même échéance, comptée de son émission.
 
 **Délai indicatif.** La Société s'efforce de verser la commission dans les deux jours ouvrés (du lundi au
-vendredi, hors jours fériés en France métropolitaine) suivant l'encaissement intégral. **Ce délai n'est pas une
+vendredi, hors jours fériés en France métropolitaine) suivant l'émission de l'autofacture. **Ce délai n'est pas une
 échéance et ne constitue pas un engagement de la Société : un virement effectué après lui, mais au plus tard à
 l'échéance de trente jours, ne donne lieu à aucun frais, aucune pénalité et aucune indemnité.** Aucun montant
 minimum ne s'applique, y compris après la fin du contrat. **Tout retard de versement au-delà de l'échéance
@@ -604,10 +632,12 @@ code de commerce.**
 taxe sur la valeur ajoutée déclaré (article 6.3) ni coordonnées bancaires au nom de l'Apporteur. L'attestation de vigilance et l'extrait
 d'immatriculation prévus à l'article 6.2 conditionnent en outre le versement des sommes qui portent le cumul
 des sommes dues au titre du présent contrat au seuil fixé par l'article R.8222-1 du code du
-travail, et au-delà. **Hors la contestation écrite du client prévue à l'article 4.2 bis, aucune autre
-pièce et aucun autre motif ne peuvent différer un versement ; en particulier ni un défaut de
-rattachement d'un encaissement, ni l'absence de palier à la grille ne peuvent le différer au-delà de
-soixante jours (annexe 1, A1.7).**
+travail, et au-delà. **Un versement ne peut être différé que dans les cas suivants, limitativement
+énumérés : (a) l'absence des informations et pièces du présent article ; (b) la contestation écrite du
+client, dans les conditions et la limite de douze mois de l'article 4.2 bis ; (c) le rattachement de la
+commande à une attribution, dans la limite de quinze jours de l'article 3.1 ; (d) l'absence de palier à la
+grille, dans la limite de soixante jours de l'annexe 1, A1.7 ; (e) la vérification d'un lien de parrainage,
+dans la limite de quinze jours de l'article 4.6. Aucun autre motif ne peut différer un versement.**
 
 Les sommes dont le versement est ainsi différé, notamment lorsque l'entreprise de l'Apporteur est cessée
 au répertoire SIRENE, demeurent acquises à l'Apporteur. Elles ne sont
@@ -615,7 +645,7 @@ ni facturées ni versées avant la régularisation ; l'autofacture est alors ét
 est versée dans les conditions de l'article 5.3, le délai indicatif de deux jours ouvrés et l'échéance de
 trente jours courant de la régularisation, sans montant minimum. La régularisation s'entend de la réception
 par la Société de la dernière pièce ou information manquante ; l'autofacture porte alors la date de la
-régularisation comme date d'émission et mentionne la date de l'encaissement intégral comme date de la
+régularisation comme date d'émission et mentionne le jour d'acquisition de la commission comme date de la
 prestation. Le motif du blocage lui est
 indiqué par courrier électronique ou dans son espace.
 
@@ -665,7 +695,15 @@ particulier sa dénomination, sa forme juridique, son numéro SIREN, **son régi
 ajoutée** et ses coordonnées bancaires. Il informe la Société de tout changement les affectant dans les
 quinze jours. Il supporte les conséquences d'une information inexacte ou non actualisée, notamment le
 rappel de taxe, les majorations, pénalités et frais que la Société établit avoir supportés de ce fait,
-ainsi que les sommes versées sur des coordonnées bancaires erronées qu'il a déclarées.
+ainsi que les sommes versées sur des coordonnées bancaires erronées qu'il a déclarées. **L'Apporteur assujetti
+à la taxe sur la valeur ajoutée s'inscrit à l'annuaire de la facturation électronique dès que la
+réglementation le prévoit pour lui, et y tient ses informations à jour.**
+
+**L'Apporteur a déclaré, à la signature, avoir sa résidence fiscale en France. Si cette déclaration est ou
+devient inexacte, la retenue à la source prévue à l'article 182 B du code général des impôts, lorsqu'elle
+est due sur les sommes versées au titre du présent contrat, est supportée par l'Apporteur, et la Société
+peut l'imputer sur ces sommes. L'Apporteur déclare qu'il préviendra la Société dans les quinze jours s'il
+change de pays de résidence fiscale.**
 
 **6.4** L'Apporteur répond seul des dommages qu'il cause dans l'exercice de son activité (article 8.5).
 Il est libre de souscrire une assurance de responsabilité civile professionnelle et d'en remettre l'attestation
@@ -697,10 +735,12 @@ les conditions de l'article 14 du règlement (UE) 2016/679, au plus tard à la p
 4, dans la limite des durées de conservation qu'elle porte à la connaissance de la personne ; elle l'informe
 de son droit de s'opposer à tout moment à la prospection. La Société conserve en outre ces données dans son
 outil de gestion de la relation client, à des fins de prospection et de gestion de sa relation commerciale
-avec l'entreprise, aussi longtemps qu'elle poursuit cette activité, sans échéance fixée à l'avance. La
-personne concernée peut à tout moment s'opposer à la prospection et demander l'effacement de ses données ;
-la Société les met à jour ou les efface dès qu'elle apprend qu'elles ne sont plus exactes, notamment
-lorsque la personne n'exerce plus la fonction pour laquelle elles ont été recueillies. L'Apporteur en
+avec l'entreprise, tant que ces données restent exactes et que la personne exerce la fonction pour
+laquelle elles ont été recueillies, et jusqu'à son opposition ou sa demande d'effacement ; elles ne sont
+pas supprimées automatiquement. La personne concernée peut à tout moment s'opposer à la prospection et
+demander l'effacement de ses données ; la Société les met à jour ou les efface dès qu'elle apprend qu'elles
+ne sont plus exactes, notamment lorsque la personne n'exerce plus la fonction pour laquelle elles ont été
+recueillies. L'Apporteur en
 informe la personne lorsqu'il recueille ses coordonnées.
 
 **7.3** L'Apporteur ne collecte ni ne transmet aucune donnée relevant de l'article 9 du même règlement.
@@ -766,6 +806,13 @@ cours des vingt-quatre mois précédant la réclamation, sauf dol ou faute lourd
 dans les trente jours de sa réception, lui communique les pièces et le met en mesure de participer à sa
 défense ; aucune transaction conclue sans son accord écrit ne lui est opposable.**
 
+**8.6 — Probité.** À l'occasion du présent contrat, l'Apporteur ne propose, ne promet ni n'accorde,
+directement ou par personne interposée, aucun avantage indu, en argent ou en nature, à quiconque —
+notamment à un représentant d'une entreprise déclarée, à un agent public ou à un financeur — en vue
+d'obtenir une commande, une décision ou un financement ; il ne sollicite ni n'accepte aucun avantage de
+cette nature. Les marques de courtoisie d'usage et de faible valeur ne sont pas visées. Le manquement au
+présent article relève des articles 4.5 bis et 11.2.
+
 ---
 
 ### Article 9 — Confidentialité 
@@ -794,7 +841,10 @@ objet et donnant naissance à une attribution bornée et non reconductible (arti
 ### Article 11 — Résiliation 
 
 **11.1** Chaque partie peut résilier le contrat à tout moment, par écrit et sans avoir à motiver sa
-décision, moyennant un préavis de **30 jours.
+décision, moyennant un préavis. **Le préavis est de trente jours lorsque l'Apporteur résilie. Lorsque la
+Société résilie, il est de trente jours pendant la première année du contrat, de soixante jours pendant la
+deuxième année et de quatre-vingt-dix jours à compter de la troisième année, ces années courant de la prise d'effet du contrat
+(article 10) et l'ancienneté s'appréciant à la date de la notification de la résiliation.
 Ce préavis est stipulé en considération de la durée prévisible de la relation et sans préjudice de l'article L.442-1, II du code de commerce.
 Les parties n'ayant pas entendu conclure un contrat d'agence commerciale (article 1.4), les articles L.134-11 et suivants du même code ne s'appliquent pas.** Il n'est pas dû en cas de résiliation fondée
 sur l'article 11.2 ni en cas de force majeure.
@@ -804,8 +854,8 @@ nouvelles entreprises, et les commandes signées pendant le préavis ouvrent dro
 conditions de l'article 12.3. Les déclarations en attente et les attributions provisoires à la date de fin
 du contrat sont traitées selon l'article 12.1.
 
-**11.2** En cas d'inexécution par l'Apporteur de ses obligations au titre des articles 3.7, 6.1, 6.3, 6.5,
-6.6, 7, 8, 9, 22 ou 22 bis,
+**11.2** En cas d'inexécution par l'Apporteur de ses obligations au titre des articles 2.6, 3.7, 3.8, 6.1,
+6.3, 6.5, 6.6, 7, 8, 9, 22 ou 22 bis,
 la Société peut résilier le contrat sans préavis, par écrit et par décision motivée, après mise en demeure
 d'y remédier restée sans effet pendant quinze jours. La mise en demeure n'est pas requise lorsque
 l'inexécution est irrémédiable. Il en va de même en cas de déclaration inexacte au titre de l'article 23.
@@ -823,7 +873,7 @@ et de** la réparation du préjudice causé par l'inexécution d'une obligation 
 
 **12.1** Les attributions provisoires et les déclarations en attente sont annulées à la date de fin du
 contrat ; cette annulation est sans effet sur les commandes déjà signées, qui demeurent commissionnées selon
-l'article 12.3. Les attributions définitives non converties prennent fin ; les entreprises correspondantes
+l'article 12.3. Les attributions définitives non converties prennent fin ; les établissements correspondants
 redeviennent librement déclarables, sans préjudice de ces mêmes commandes.
 
 **12.2** **Les autofactures émises avant la fin du contrat restent payables à leur échéance. Les commissions
@@ -832,7 +882,9 @@ articles 5.1 et 5.3, sans montant minimum, sous la seule réserve de l'article 5
 
 **12.3** Les commandes signées avant la fin du contrat, ou pendant le préavis, continuent d'ouvrir droit à
 commission, y compris lorsque l'attribution n'était pas encore confirmée à cette date, sauf annulation ou
-extinction de l'attribution au titre des articles 3.3 ou 3.7. Cette commission devient acquise dans les
+extinction de l'attribution au titre des articles 3.3 ou 3.7. **Lorsque cette annulation ou cette extinction
+intervient après la confirmation de l'attribution, les commandes signées avant elle restent commissionnées
+selon les règles du présent contrat.** Cette commission devient acquise dans les
 conditions de l'article 4.2 et est facturée et versée dans les conditions des articles 5.1 et 5.3 (article
 4.3), quelle que soit la date de l'encaissement complet. La Société établit les autofactures et, le cas échéant, les avoirs, selon
 les articles 4.5 et 5, jusqu'à extinction complète de ces droits. L'Apporteur reçoit par courrier
@@ -882,7 +934,9 @@ relation aux conditions antérieures, il lui appartient de résilier le contrat 
 
 **13.4** Les modifications imposées par la loi ou par un acte réglementaire, notamment les mentions de
 facturation et les seuils ou taux légaux, s'appliquent de plein droit à compter de leur entrée en vigueur,
-sans avenant, dans la seule mesure où elles l'exigent.
+sans avenant, dans la seule mesure où elles l'exigent. **Tout renvoi du présent contrat à un texte légal ou
+réglementaire vise aussi le texte qui, à la suite d'une recodification ou d'une renumérotation, le
+remplace.**
 
 ---
 
@@ -896,13 +950,14 @@ DE COMMERÇANT. À DÉFAUT, LES RÈGLES DE COMPÉTENCE DE DROIT COMMUN S'APPLIQU
 stipulée sous réserve des juridictions spécialisées désignées par la loi pour les litiges relevant des
 articles L.442-1 et suivants du code de commerce (article L.442-4, III et article D.442-3).
 
-**Les parties reconnaissent que la présente clause a fait l'objet, dans le parcours de signature
-électronique, d'une acceptation distincte et spécialement signalée, conservée dans le fichier de preuve
-(article 48 du code de procédure civile : spécification très apparente). L'Apporteur déclare contracter en
-la qualité suivante : {{APPORTEUR_QUALITE}}.**
+**Les parties reconnaissent que la présente clause est spécifiée de façon très apparente (article 48 du
+code de procédure civile) : elle est rédigée en capitales et figure, avec son objet, parmi les engagements
+énumérés par la case « J'ai lu le contrat et je l'accepte » que l'Apporteur coche au moment de la signature
+électronique, ce que conserve le fichier de preuve. L'Apporteur déclare contracter en la qualité
+suivante : {{APPORTEUR_QUALITE}}.**
 
-> *Cette clause a été portée à la connaissance de l'Apporteur et acceptée par lui de manière spécifique,
-> par une case distincte au moment de la signature électronique (article 48 du code de procédure civile).*
+> *Cette clause a été portée à la connaissance de l'Apporteur de façon très apparente et acceptée par lui au
+> moment de la signature électronique (article 48 du code de procédure civile).*
 
 ---
 
@@ -973,8 +1028,8 @@ l'émission.**
 
 ### Article 21 — Survie
 
-Les articles 3.3, 3.5, 4, 5, 6.3, 6.5, 6.6, 7, 8.5, 9, 12, 14, 17, 18, 19, 20, 22, 22 bis.4 et 23, ainsi
-que les annexes 1 et 2, survivent au terme du contrat, chacun pour la durée nécessaire à son objet.
+Les articles 2.6, 3.1, 3.3, 3.5, 3.6, 3.7, 4, 5, 6.2, 6.3, 6.5, 6.6, 7, 8.1 alinéa 2, 8.5, 8.6, 9, 12,
+13.2, 14, 15, 16, 17, 18, 19, 20, 22, 22 bis.4 et 23, ainsi que les annexes 1 et 2, survivent au terme du contrat, chacun pour la durée nécessaire à son objet.
 
 ---
 
@@ -999,7 +1054,9 @@ usage et détruit ou restitue les documents en sa possession.
 **22 bis.1 — Communication autorisée.** L'Apporteur peut faire connaître les prestations de la Société par
 tout moyen de communication (vidéos, formats courts, publications sur les réseaux sociaux, visuels,
 publicités, supports imprimés), à condition de respecter la charte de marque remise par la Société
-(couleurs, typographies, logos, ton et règles de présentation) et les articles 8.2 et 8.3.
+(couleurs, typographies, logos, ton et règles de présentation) et les articles 8.2 et 8.3. **Chaque version
+de la charte est datée ; celle qui s'applique à une communication est la dernière version remise à
+l'Apporteur avant sa publication.**
 
 **22 bis.2 — Usage de la marque.** Pour ces seules communications, la Société concède à l'Apporteur un
 droit d'usage personnel, non exclusif, gratuit et révocable de sa dénomination et de son logo, dans les
@@ -1010,7 +1067,13 @@ Société (article 22).
 **22 bis.3 — Qualité et transparence.** Chaque communication est soignée et conforme à l'image de la
 Société. L'Apporteur s'y présente comme apporteur d'affaires indépendant, jamais comme salarié ou
 représentant de la Société. Il n'y annonce aucun prix, remise, délai, résultat ou financement (article
-8.3), et ne fait aucune affirmation inexacte sur la Société ou ses prestations.
+8.3), et ne fait aucune affirmation inexacte sur la Société ou ses prestations. **Il ne se prévaut de la
+certification Qualiopi de la Société, ni d'aucune autre certification, habilitation ou qualité de celle-ci,
+que dans les termes exacts qu'elle lui fournit : la publicité relative à ses formations ne doit comporter
+aucune mention de nature à induire en erreur, notamment sur sa situation au regard de sa certification
+(article L.6352-13 du code du travail).** Il n'utilise l'image, le nom ou la voix d'un tiers qu'avec
+l'autorisation de celui-ci ; les visuels que la Société lui remet pour ces communications peuvent être
+utilisés tels quels, la Société faisant son affaire des autorisations qu'ils requièrent.
 
 **22 bis.4 — Contrôle de la Société.** La Société peut à tout moment demander la modification ou le
 retrait d'une communication qu'elle juge non conforme à sa charte ou à son image ; l'Apporteur s'exécute
@@ -1062,18 +1125,18 @@ Le présent contrat est rédigé en langue française, seule version faisant foi
 
 ---
 
-## Annexe 1 — Grille de commissions du présent contrat, version 2 
+## Annexe 1 — Grille de commissions du présent contrat, version 2 du {{GRILLE_DATE}}
 
 ### A1.1 — Formations collectives
 
 *Une journée vendue est une journée de formation facturée et non annulée ; une demi-journée est une
-formation de quatre heures. Les prix publics du tableau sont ceux de la date de la version ; le prix public
-retenu pour une commande est celui de l'article 4.1 bis.*
+formation de quatre heures. Les prix publics du tableau sont ceux que la Société publiait au {{GRILLE_DATE}},
+date de la présente grille ; le prix public retenu pour une commande est celui de l'article 4.1 bis.*
 
-*Forfait de 500 € HT par journée de formation vendue, au prix public, réduit au prorata en cas de remise
-(article 4.1 bis). La commission suit le nombre de journées de la commande : chaque palier porte sa propre
-durée (une demi-journée, une journée, deux jours) et, lorsqu'une même commande porte plusieurs sessions d'un
-même palier, la commission est due pour chacune d'elles. Prix par groupe de 2 à 15 participants.*
+*Forfait de 500 € HT par journée de formation vendue, soit 250 € HT pour une demi-journée : c'est le
+montant que la colonne « Commission » porte pour chaque palier. Il est dû pour chaque session de ce palier
+figurant à la commande, et réduit au prorata en cas de remise (article 4.1 bis). Prix par groupe de 2 à
+15 participants.*
 
 *Exemple : une formation générale d'un jour vendue 1 520 € HT au lieu de 1 900 € (remise de 20 %) donne une
 commission de 500 € × 1 520 ÷ 1 900 = 400 €. Vendue au prix public ou plus cher, elle donne 500 €.*
@@ -1104,29 +1167,19 @@ donnent 5 × 500 € = 2 500 € ; vendues 8 550 € HT (remise de 10 %), elles 
 | Accompagnement collaborateur | 2 jours | 1 830 € | 30 % |
 | Coaching individuel | à la séance | à partir de 790 € | 30 % |
 
-### A1.3 — Audits (11 paliers)
+### A1.3 — Audits
 
-*Grille publiée : **30 % du montant hors taxes facturé**.*
+*Grille publiée : **30 % du montant hors taxes facturé**, pour tous les audits de la Société (audit sur
+place, audit ciblé, audit stratégique PME, audit stratégique ETI, et chacune de leurs formules).*
 
 | Palier | Prix de référence HT | Commission du présent contrat |
 | --- | --- | --- |
-| Audit sur place | à partir de 1 190 € | 30 % |
-| Audit sur place — sur site | à partir de 1 190 € | 30 % |
-| Audit ciblé | à partir de 1 900 € | 30 % |
-| Audit ciblé — solo | à partir de 1 900 € | 30 % |
-| Audit ciblé — standard | à partir de 2 900 € | 30 % |
-| Audit ciblé — avancé | à partir de 3 900 € | 30 % |
-| Audit stratégique PME | à partir de 1 900 € | 30 % |
-| Audit stratégique PME — 20 à 50 salariés | à partir de 4 900 € | 30 % |
-| Audit stratégique PME — 50 à 250 salariés | à partir de 9 900 € | 30 % |
-| Audit stratégique ETI | à partir de 1 900 € | 30 % |
-| Audit stratégique ETI — base | à partir de 1 900 € | 30 % |
+| Tous les audits | à partir de 1 190 € | 30 % |
 
 ### A1.4 — Implémentations (5 paliers)
 
 *Grille publiée : **15 % du montant hors taxes facturé**. Les quatre derniers paliers
-étant vendus sur devis, seul le pourcentage y est applicable ; c'est aussi là que se règle la dégressivité,
-en portant un taux plus bas sur les grands programmes.*
+étant vendus sur devis, seul le pourcentage y est applicable.*
 
 | Palier | Prix de référence HT | Commission du présent contrat |
 | --- | --- | --- |
@@ -1218,16 +1271,16 @@ attributions en cours.**
 complémentaires et avoirs afférents aux commissions et aux sommes de parrainage dues au titre du présent
 contrat. Il accepte, par la signature du contrat, de les recevoir sous forme électronique et que chacun de ces
 documents soit soumis à la procédure d'acceptation de l'article 2.4. **Ce mandat est exclusivement un mandat de
-facturation au sens de l'article 289, I, 2 du code général des impôts, ou de la disposition qui lui succède dans le code des impositions sur les biens et services (CIBS) à compter de son entrée en vigueur. Il est donné PAR l'Apporteur À la
+facturation au sens de l'article 289, I, 2 du code général des impôts, ou de la disposition qui lui succède parmi les dispositions du code des impositions sur les biens et services relatives à la taxe sur la valeur ajoutée. Il est donné PAR l'Apporteur À la
 Société, aux seules fins d'établir des factures en son nom ; il n'emporte aucun pouvoir de l'Apporteur de
 représenter la Société, ni aucun mandat de la Société à l'Apporteur (article 1.2).**
 
-**2.1 bis** Chaque autofacture est établie le jour de l'encaissement intégral qui rend la commission acquise
-ou, à défaut, le premier jour ouvré où la Société le constate (article 5.1) ; elle porte son jour d'établissement
-comme date d'émission et la date de l'encaissement intégral comme date de la prestation, est numérotée selon
+**2.1 bis** Chaque autofacture est établie dans les conditions de l'article 5.1 : le jour d'acquisition de la
+commission ou, à défaut, le premier jour ouvré où la Société constate qu'elle est acquise ; elle porte son jour
+d'établissement comme date d'émission et le jour d'acquisition comme date de la prestation, est numérotée selon
 une séquence chronologique unique et continue, sans rupture, propre à l'Apporteur, et est transmise le même
 jour à l'Apporteur par courrier électronique avec un décompte (commande, prix facturé, prix public,
-commission, date de l'encaissement). Une autofacture est établie pour chaque encaissement intégral ; lorsque
+commission, jour d'acquisition). Une autofacture est établie pour chaque commission acquise ; lorsque
 plusieurs commissions de l'Apporteur deviennent acquises le même jour, une seule autofacture les regroupe.
 Elle n'est jamais diminuée d'une reprise : celle-ci est constatée par un avoir d'autofacture, de même
 séquence, qui porte la mention « Autofacturation — avoir », fait référence à l'autofacture d'origine (numéro et
@@ -1240,8 +1293,9 @@ au titre de l'article 242 nonies A de l'annexe II du code général des impôts,
 le numéro d'ordre, la date d'émission et la date de la prestation, la désignation de la prestation (mise en
 relation, commande concernée), la quantité et le prix unitaire hors taxes, les numéros SIREN des deux parties et, lorsque l'Apporteur est assujetti, les
 numéros de taxe sur la valeur ajoutée des deux parties, ainsi que le taux et le montant de la taxe ou la
-mention « TVA non applicable, article 293 B du CGI » ou, à compter de l'entrée en vigueur du code des impositions sur les biens et services (CIBS), la mention correspondante de ce code,
-la mention « Option pour le paiement de la taxe d'après les débits » lorsque l'Apporteur y a opté, la mention « **Autofacturation** » (14° du même article), et
+mention « TVA non applicable, article 293 B du CGI » ou, lorsque les dispositions du code des impositions sur les biens et services relatives à la taxe sur la valeur ajoutée s'appliqueront, la mention correspondante de ces dispositions,
+la mention « Option pour le paiement de la taxe d'après les débits » lorsque l'Apporteur y a opté, la mention « **Autofacturation** » (14° du même article),
+la catégorie de l'opération : « prestation de services », et
 l'identification complète des deux parties. Ces mentions figurent sur chaque facture, quel que soit le délai
 effectif de paiement.
 
