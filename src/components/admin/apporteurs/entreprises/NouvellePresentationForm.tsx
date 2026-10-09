@@ -24,6 +24,9 @@ export function NouvellePresentationForm({
   const [etat, action, enCours] = useActionState(creerPresentationAction, INITIAL);
   const [siren, setSiren] = useState("");
   const [denomination, setDenomination] = useState("");
+  // Le nom tapé à la main n'est jamais écrasé ; celui du registre suit le numéro (un nom resté
+  // d'une recherche précédente déclarait une entreprise sous le nom d'une autre).
+  const [nomTapeALaMain, setNomTapeALaMain] = useState(false);
   const [verif, setVerif] = useState<VerificationSiren | null>(null);
   const [verifEnCours, lancer] = useTransition();
 
@@ -31,7 +34,7 @@ export function NouvellePresentationForm({
     lancer(async () => {
       const r = await verifierSirenAction(siren);
       setVerif(r);
-      if (r.etat === "ok" && r.denomination && !denomination) setDenomination(r.denomination);
+      if (r.etat === "ok" && r.denomination && !nomTapeALaMain) setDenomination(r.denomination);
     });
   }
 
@@ -81,6 +84,7 @@ export function NouvellePresentationForm({
               onChange={(e) => {
                 setSiren(e.target.value);
                 setVerif(null);
+                if (!nomTapeALaMain) setDenomination("");
               }}
               className="admin-input flex-1"
             />
@@ -99,7 +103,10 @@ export function NouvellePresentationForm({
           <input
             name="denomination"
             value={denomination}
-            onChange={(e) => setDenomination(e.target.value)}
+            onChange={(e) => {
+              setDenomination(e.target.value);
+              setNomTapeALaMain(e.target.value.trim() !== "");
+            }}
             className="admin-input"
             placeholder="Rempli par le registre"
           />
