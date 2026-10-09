@@ -96,7 +96,10 @@ export function lienCalendlyPourEmail(
 }
 
 /** Les liens d'insertion complets, imprimés + Calendly (si configuré). */
-export function liensInsertionComposeur(calendlyUrl: string | undefined): readonly LienInsertion[] {
+export function liensInsertionComposeur(
+  calendlyUrl: string | undefined,
+  _options: { candidatureFormateur?: boolean } = {},
+): readonly LienInsertion[] {
   const calendly = lienCalendlyPourEmail(calendlyUrl);
   return calendly ? [...liensImprimesPourEmail(), calendly] : liensImprimesPourEmail();
 }

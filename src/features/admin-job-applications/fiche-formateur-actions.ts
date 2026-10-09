@@ -165,10 +165,13 @@ export async function creerFicheFormateurDepuisCandidatureAction(
     };
   }
 
-  const statut = statutFormateurDepuisOffre(
-    candidature.offer?.employmentType,
-    candidature.offer?.secondaryEmploymentType,
-  );
+  const statut =
+    statutFormateurDepuisOffre({
+      offerSlug: candidature.offer?.slug,
+      offerTitleSnap: candidature.offerTitleSnap,
+      employmentType: candidature.offer?.employmentType,
+      secondaryEmploymentType: candidature.offer?.secondaryEmploymentType,
+    }) ?? "salarie";
   // Le CV reste où il est (volume privé, route authentifiée de la candidature) :
   // la fiche pointe vers lui, comme `cvUrl` pointe ailleurs vers la route de
   // conservation d'un document versé.

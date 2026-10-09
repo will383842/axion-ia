@@ -13,6 +13,7 @@
  */
 
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
+import type { IndicesPosteCandidature } from "./formateur-freelance";
 
 /**
  * La mention que porte une fiche née sans numéro de déclaration d'activité.
@@ -62,12 +63,16 @@ export function peutCreerFicheFormateur(c: {
  * autre, un salarié. Le statut se corrige ensuite sur la fiche.
  */
 export function statutFormateurDepuisOffre(
-  employmentType: string | null | undefined,
-  secondaryEmploymentType: string | null | undefined,
-): "salarie" | "sous_traitant" {
-  return employmentType === "CONTRACTOR" || secondaryEmploymentType === "CONTRACTOR"
+  c: IndicesPosteCandidature,
+): "salarie" | "sous_traitant" | null {
+  return c.employmentType === "CONTRACTOR" || c.secondaryEmploymentType === "CONTRACTOR"
     ? "sous_traitant"
     : "salarie";
+}
+
+// Échafaudage U3 (premier commit, tests rouges).
+export function estCandidatureFormateur(c: IndicesPosteCandidature): boolean {
+  return estOffreFormateur(c.offerSlug, c.offerTitleSnap);
 }
 
 /**

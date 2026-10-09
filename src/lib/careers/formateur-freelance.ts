@@ -20,3 +20,16 @@ export const SLUGS_OFFRES_FORMATEUR_SALARIE: readonly string[] = [
 export function porteEncadreFreelance(slug: string): boolean {
   return SLUGS_OFFRES_FORMATEUR_SALARIE.includes(slug);
 }
+
+/** Ce qu'une candidature dit de son poste — offre éventuelle et intitulé figé. */
+export interface IndicesPosteCandidature {
+  offerSlug: string | null | undefined;
+  offerTitleSnap: string | null | undefined;
+  employmentType: string | null | undefined;
+  secondaryEmploymentType: string | null | undefined;
+}
+
+// Échafaudage U6 (premier commit, tests rouges) : la règle arrive au commit suivant.
+export function estCandidatureFormateurFreelance(_c: IndicesPosteCandidature): boolean {
+  return false;
+}
