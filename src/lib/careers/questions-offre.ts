@@ -68,19 +68,42 @@ export function lireQuestions(texte: string): LectureQuestions {
 }
 
 /**
- * Le texte à enregistrer. Liste vide → `""` : le champ vide, comme quand on
- * effaçait le JSON à la main (l'action n'écrit alors rien).
+ * Le texte à enregistrer. Liste vide → `[]`, et non `""` (relecture
+ * 2026-10-09) : un champ vide n'écrit rien (l'action l'ignore), si bien que
+ * supprimer la dernière question laissait les anciennes en base. `[]` dit
+ * « aucune question » et s'enregistre. L'éditeur n'écrit qu'à un geste : une
+ * offre sans questions qu'on n'y touche pas garde son champ vide.
  */
 export function ecrireQuestions(questions: readonly QuestionStockee[]): string {
-  return questions.length === 0 ? "" : JSON.stringify(questions);
+  return JSON.stringify(questions);
 }
 
-/** Un identifiant libre, stable, lisible : `q1`, `q2`… le premier non pris. */
-export function nouvelIdentifiant(questions: readonly QuestionStockee[]): string {
+/**
+ * Un identifiant NEUF, jamais réutilisé (relecture 2026-10-09). Les réponses
+ * reçues sont indexées par identifiant : l'ancien `q1`, `q2`… « premier non
+ * pris » réattribuait celui d'une question supprimée à la suivante, et ses
+ * réponses se seraient rattachées à la mauvaise question. Ici : `q` + instant
+ * en base 36 + suffixe aléatoire, en écartant tout identifiant déjà présent.
+ * Les identifiants existants ne sont jamais touchés.
+ */
+export function nouvelIdentifiant(
+  questions: readonly QuestionStockee[],
+  alea: () => string = suffixeAleatoire,
+): string {
   const pris = new Set(questions.map((q) => q.id));
-  let n = questions.length + 1;
-  while (pris.has(`q${n}`)) n += 1;
-  return `q${n}`;
+  const instant = Date.now().toString(36);
+  let id = `q${instant}${alea()}`;
+  while (pris.has(id)) id = `q${instant}${alea()}`;
+  return id;
+}
+
+function suffixeAleatoire(): string {
+  const c = globalThis.crypto;
+  if (c?.getRandomValues) {
+    const o = c.getRandomValues(new Uint8Array(4));
+    return Array.from(o, (b) => b.toString(36).padStart(2, "0")).join("");
+  }
+  return Math.random().toString(36).slice(2, 10);
 }
 
 export function ajouterQuestion(questions: readonly QuestionStockee[]): QuestionStockee[] {

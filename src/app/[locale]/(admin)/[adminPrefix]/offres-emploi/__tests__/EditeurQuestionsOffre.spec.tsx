@@ -31,7 +31,9 @@ describe("EditeurQuestionsOffre", () => {
     const { onChange, rerender } = monter("");
     fireEvent.click(screen.getByRole("button", { name: "Ajouter une question" }));
     let v = dernier(onChange);
-    expect(JSON.parse(v)).toEqual([{ id: "q1", labelFr: "", required: false }]);
+    const [ajoutee] = JSON.parse(v) as Array<{ id: string }>;
+    const id = ajoutee!.id;
+    expect(JSON.parse(v)).toEqual([{ id, labelFr: "", required: false }]);
 
     rerender(<EditeurQuestionsOffre valeur={v} onChange={onChange} />);
     fireEvent.change(screen.getByLabelText("Libellé de la question 1"), {
@@ -46,7 +48,7 @@ describe("EditeurQuestionsOffre", () => {
     rerender(<EditeurQuestionsOffre valeur={v} onChange={onChange} />);
     fireEvent.click(screen.getByLabelText("Question 1 obligatoire"));
     expect(JSON.parse(dernier(onChange))).toEqual([
-      { id: "q1", labelFr: "Votre prix journée", required: true, type: "price" },
+      { id, labelFr: "Votre prix journée", required: true, type: "price" },
     ]);
   });
 
@@ -56,6 +58,12 @@ describe("EditeurQuestionsOffre", () => {
     expect(dernier(onChange)).toBe('[{"id":"b","labelFr":"B"},{"id":"a","labelFr":"A"}]');
     fireEvent.click(screen.getByRole("button", { name: "Supprimer la question 1" }));
     expect(dernier(onChange)).toBe('[{"id":"b","labelFr":"B"}]');
+  });
+
+  it("🔴 supprimer la dernière question enregistre « aucune question » (`[]`)", () => {
+    const { onChange } = monter('[{"id":"a","labelFr":"A"}]');
+    fireEvent.click(screen.getByRole("button", { name: "Supprimer la question 1" }));
+    expect(dernier(onChange)).toBe("[]");
   });
 
   it("les clés qu'il ne montre pas sont signalées comme conservées", () => {

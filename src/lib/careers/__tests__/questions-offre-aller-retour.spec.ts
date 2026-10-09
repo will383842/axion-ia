@@ -105,7 +105,7 @@ describe("aller-retour : le JSON produit est IDENTIQUE à l'ancien", () => {
     q = modifierQuestion(q, 0, { champ: "required", valeur: true });
     const texte = ecrireQuestions(q);
     expect(JSON.parse(texte)).toEqual([
-      { id: "q1", labelFr: "Votre prix journée", required: true, type: "price" },
+      { id: q[0]!.id, labelFr: "Votre prix journée", required: true, type: "price" },
     ]);
     expect(parseScreeningQuestions(JSON.parse(texte))).toHaveLength(1);
   });
@@ -118,9 +118,33 @@ describe("gestes de l'éditeur", () => {
     { id: "c", labelFr: "C" },
   ];
 
-  it("ajouter : un identifiant libre, jamais un doublon", () => {
+  it("ajouter : un identifiant libre, jamais un doublon, les existants intacts", () => {
     const q = ajouterQuestion([{ id: "q2", labelFr: "x" }]);
-    expect(q.map((x) => x.id)).toEqual(["q2", "q3"]);
+    expect(q).toHaveLength(2);
+    expect(q[0]).toEqual({ id: "q2", labelFr: "x" });
+    expect(q[1]!.id).not.toBe("q2");
+    expect(q[1]!.id).toMatch(/^q[a-z0-9]+$/);
+  });
+
+  // 🔴 Relecture 2026-10-09 : les réponses reçues sont indexées par identifiant.
+  // Un identifiant de question supprimée réattribué à la suivante rattacherait
+  // ces réponses à la MAUVAISE question. Un identifiant n'est JAMAIS réutilisé.
+  it("🔴 l'identifiant d'une question supprimée n'est jamais réattribué", () => {
+    const deux = ajouterQuestion(ajouterQuestion([]));
+    const supprimee = deux[1]!.id;
+    const apres = ajouterQuestion(supprimerQuestion(deux, 1));
+    expect(apres.map((x) => x.id)).not.toContain(supprimee);
+
+    // Même scénario sur des identifiants posés à la main (q1, q2, q3).
+    const anciens: QuestionStockee[] = [{ id: "q1" }, { id: "q2" }, { id: "q3" }];
+    const ajoutee = ajouterQuestion(supprimerQuestion(anciens, 2)).at(-1)!;
+    expect(["q1", "q2", "q3"]).not.toContain(ajoutee.id);
+  });
+
+  it("🔴 cent ajouts → cent identifiants distincts", () => {
+    let q: QuestionStockee[] = [];
+    for (let i = 0; i < 100; i++) q = ajouterQuestion(q);
+    expect(new Set(q.map((x) => x.id)).size).toBe(100);
   });
 
   it("supprimer et réordonner", () => {
@@ -139,9 +163,13 @@ describe("gestes de l'éditeur", () => {
     ).toEqual({ id: "a", required: false });
   });
 
-  it("liste vide → champ vide, comme un JSON effacé à la main", () => {
-    expect(ecrireQuestions([])).toBe("");
+  // 🔴 Relecture 2026-10-09 : « aucune question » doit pouvoir s'enregistrer.
+  // Un champ vide n'écrit rien (l'action l'ignore) ; `[]` s'écrit, et se lit.
+  it("liste vide → `[]`, qui s'enregistre et que le formulaire public lit", () => {
+    expect(ecrireQuestions([])).toBe("[]");
+    expect(lireQuestions("[]")).toEqual({ ok: true, questions: [] });
     expect(lireQuestions("")).toEqual({ ok: true, questions: [] });
+    expect(parseScreeningQuestions(JSON.parse(ecrireQuestions([])))).toEqual([]);
   });
 
   it("refuse d'ouvrir ce qu'il ne comprendrait qu'en le perdant", () => {
