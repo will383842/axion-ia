@@ -131,20 +131,6 @@ export const TOULOUSE_COPY: VilleCopy = {
               "Pour les divisions et filiales des grands groupes toulousains (Airbus, Thales Alenia Space, Continental) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su adapter sa méthode à notre contexte aéronautique — contraintes de documentation, cycles de certification. Le livrable est chiffré et actionnable, sans jargon superflu. On a pu prioriser trois chantiers IA concrets.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI sous-traitante aéronautique Tier 2, bassin toulousain",
-          },
-          {
-            quote:
-              "Démos sur nos vraies données de capteurs et nos rapports d'anomalie. Pas de théorie, du concret dès la première journée. Le plan d'action a été présenté à notre comité de direction sans modification.",
-            role: "CTO",
-            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Toulouse ?",
@@ -229,20 +215,6 @@ export const TOULOUSE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For divisions and subsidiaries of Toulouse large groups (Airbus, Thales Alenia Space, Continental) framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA adapted its method to our aeronautical context — documentation constraints, certification cycles. The deliverable is costed and actionable, jargon-free. We were able to prioritise three concrete AI initiatives.",
-            role: "Head of Operations",
-            companyProfile: "Tier 2 aerospace sub-contractor, greater Toulouse basin",
-          },
-          {
-            quote:
-              "Demos on our real sensor data and anomaly reports. No theory, concrete output from day one. The action plan was presented to our executive committee without modification.",
-            role: "CTO",
-            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
           },
         ],
         faq: [
@@ -334,20 +306,6 @@ export const TOULOUSE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands groupes toulousains : roadshow multi-sites (Toulouse + Blagnac + Colomiers), séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à nos ingénieurs : démos sur nos vraies données de documentation technique, outils installés en fin de session. Le lendemain, plusieurs collaborateurs utilisaient déjà Claude sur leurs rapports d'anomalie.",
-            role: "Responsable R&D",
-            companyProfile: "PME sous-traitante aéronautique Tier 2, Toulouse",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en quelques heures sur la feuille de route IA de notre division. Un cadrage opérationnel qu'aucun grand cabinet n'avait su livrer aussi rapidement.",
-            role: "Directeur général",
-            companyProfile: "ETI IT & numérique, Labège-Innopole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Toulouse ?",
@@ -432,20 +390,6 @@ export const TOULOUSE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Toulouse large groups: multi-site roadshows (Toulouse + Blagnac + Colomiers), exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly adapted to our engineers: demos on our real technical documentation data, tools installed by end of session. The next day, several team members were already using Claude on their anomaly reports.",
-            role: "Head of R&D",
-            companyProfile: "Tier 2 aerospace sub-contractor, Toulouse",
-          },
-          {
-            quote:
-              "The executive session aligned us within hours on our division's AI roadmap. Operational framing no large firm had been able to deliver that quickly.",
-            role: "CEO",
-            companyProfile: "IT & digital mid-cap, Labège-Innopole",
           },
         ],
         faq: [
@@ -537,20 +481,6 @@ export const TOULOUSE_COPY: VilleCopy = {
               "Programmes pour grands groupes toulousains : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA sur plusieurs sites du bassin.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation génération de rapports de conformité livrée comme promis. ROI réel mesuré : plusieurs équivalents temps plein libérés sur les tâches de documentation. Aucun lock-in, nos ingénieurs ont la main sur les modèles.",
-            role: "Directeur qualité",
-            companyProfile: "ETI sous-traitante aéronautique, bassin toulousain",
-          },
-          {
-            quote:
-              "Kick-off intense sur site à Labège, puis itérations à distance très efficaces. Notre équipe a intégré le pipeline IA sans friction dans nos outils existants. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Toulouse ?",
@@ -635,20 +565,6 @@ export const TOULOUSE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for Toulouse large groups: cascaded use cases, centralised AI governance, dedicated Axion-IA team across multiple basin sites.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Compliance report generation implementation delivered as promised. Real ROI measured: several FTEs freed on documentation tasks. No lock-in, our engineers control the models.",
-            role: "Quality Director",
-            companyProfile: "Aerospace sub-contractor mid-cap, greater Toulouse basin",
-          },
-          {
-            quote:
-              "Intense on-site kick-off at Labège, then highly efficient remote iterations. Our team integrated the AI pipeline into existing tools without friction. Internal ambassadors take over autonomously.",
-            role: "CTO",
-            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
           },
         ],
         faq: [
@@ -739,20 +655,6 @@ export const TOULOUSE_COPY: VilleCopy = {
               "Pour directeurs de divisions et cadres de direction des grands groupes toulousains (Airbus, Thales Alenia Space, Continental, CNES). Format confidentiel haut niveau, agenda adapté aux contraintes de direction opérationnelle. Frais en sus.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "En tant qu'ingénieur en chef dans l'aérospatiale, j'avais besoin d'un accompagnement discret et technique sur l'IA — pas une formation généraliste. Le coaching 1-to-1 a travaillé directement sur mes vrais documents de programme. En quelques séances, j'intègre l'IA dans mes revues de conception et mes rapports d'anomalie.",
-            role: "Ingénieur en chef",
-            companyProfile: "ETI sous-traitante aéronautique Tier 1, bassin toulousain",
-          },
-          {
-            quote:
-              "Format idéal pour un fondateur technique toujours entre deux réunions programme. Les séances à distance calées sur mon agenda ont transformé ma façon de rédiger des specs et de qualifier nos fournisseurs. ROI immédiat dès la première séance.",
-            role: "CTO fondateur",
-            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Toulouse ?",
@@ -837,20 +739,6 @@ export const TOULOUSE_COPY: VilleCopy = {
             price: "Large accounts programme — on quote",
             detail:
               "For division directors and senior executives at Toulouse large groups (Airbus, Thales Alenia Space, Continental, CNES). Confidential senior format, schedule adapted to operational leadership constraints. Expenses billed separately.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "As a chief engineer in aerospace, I needed discreet, technical AI coaching — not generic training. The 1-to-1 coaching worked directly on my real programme documents. Within a few sessions, I integrate AI into my design reviews and anomaly reports.",
-            role: "Chief Engineer",
-            companyProfile: "Tier 1 aerospace sub-contractor mid-cap, greater Toulouse basin",
-          },
-          {
-            quote:
-              "Ideal format for a technical founder always between two programme meetings. Remote sessions fitted around my agenda transformed how I write specs and qualify suppliers. Immediate ROI from the first session.",
-            role: "CTO Founder",
-            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
           },
         ],
         faq: [

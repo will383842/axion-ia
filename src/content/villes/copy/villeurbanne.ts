@@ -170,20 +170,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
               "Pour les grands groupes dont le siège ou un site majeur est implanté à Villeurbanne (FORVIA MATERI'ACT, TVH Consulting, présences campus Doua).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel ancré dans notre réalité R&D et ingénierie. Le rapport chiffré nous a permis de prioriser nos chantiers IA pour le conseil scientifique en quelques semaines.",
-            role: "Directeur R&D",
-            companyProfile: "PME deep tech, campus LyonTech-La Doua Villeurbanne",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données ERP réelles. Le livrable a permis d'aligner la direction et les équipes IT sur notre feuille de route IA pour les 18 prochains mois.",
-            role: "DSI",
-            companyProfile: "ETI intégration logicielle, quartier Gratte-Ciel Villeurbanne",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Villeurbanne ?",
@@ -268,20 +254,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large groups with HQ or a major site in Villeurbanne (FORVIA MATERI'ACT, TVH Consulting, campus Doua presences).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit grounded in our R&D and engineering reality. The costed report let us prioritise AI initiatives for our scientific board within a few weeks.",
-            role: "R&D Director",
-            companyProfile: "Deep tech SME, LyonTech-La Doua campus Villeurbanne",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real ERP data. The deliverable aligned leadership and IT teams on our AI roadmap for the next 18 months.",
-            role: "CIO",
-            companyProfile: "Software integration mid-cap, Gratte-Ciel district Villeurbanne",
           },
         ],
         faq: [
@@ -373,20 +345,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands comptes villeurbannais — roadshow multi-sites Métropole, séminaires CODIR + cascade équipes R&D ou ateliers industriels.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a collé parfaitement aux profils ingénieurs de notre équipe. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des spécifications.",
-            role: "Responsable technique",
-            companyProfile: "PME IT, campus LyonTech-La Doua Villeurbanne",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés rapidement sur notre stratégie IA. Le consultant connaissait nos contraintes sectorielles industrielles et R&D — aucune slide générique, des cas concrets sur nos données.",
-            role: "Directrice générale",
-            companyProfile: "ETI matériaux, Villeurbanne",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Villeurbanne ?",
@@ -471,20 +429,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Villeurbanne large accounts — multi-site Métropole roadshows, exec committee seminars + R&D team or industrial workshop cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our engineering team profiles. They left with tools configured for their real technical documents. By the next day, several were already using them to write specifications.",
-            role: "Technical Lead",
-            companyProfile: "IT SME, LyonTech-La Doua campus Villeurbanne",
-          },
-          {
-            quote:
-              "The executive session quickly aligned us on our AI strategy. The consultant knew our industrial and R&D constraints — no generic slides, concrete cases on our real data.",
-            role: "CEO",
-            companyProfile: "Materials mid-cap, Villeurbanne",
           },
         ],
         faq: [
@@ -576,20 +520,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes villeurbannais ou Métropole de Lyon : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation d'un agent documentation technique livré comme promis. ROI mesuré dès les premières semaines : nos ingénieurs passent maintenant moins de temps sur les comptes-rendus et plus sur l'analyse produit.",
-            role: "Directeur technique",
-            companyProfile: "PME IT, quartier Gratte-Ciel Villeurbanne",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le campus Doua et le bureau Gratte-Ciel. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "Responsable innovation",
-            companyProfile: "ETI R&D, campus LyonTech-La Doua Villeurbanne",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Villeurbanne ?",
@@ -674,20 +604,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Villeurbanne or Métropole de Lyon large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical documentation agent implementation delivered as promised. ROI measured within the first weeks: our engineers now spend less time on write-ups and more on product analysis.",
-            role: "CTO",
-            companyProfile: "IT SME, Gratte-Ciel district Villeurbanne",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between campus Doua and the Gratte-Ciel office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "Innovation Manager",
-            companyProfile: "R&D mid-cap, LyonTech-La Doua campus Villeurbanne",
           },
         ],
         faq: [
@@ -779,20 +695,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
               "Pour les C-level de grands groupes villeurbannais ou Métropole — programme entièrement personnalisé, accord de confidentialité renforcé, sessions sur site ou hybrides selon agenda.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'accompagnement 1-to-1 a transformé ma façon de travailler en quelques semaines. Je suis passé de 'je vois l'IA de loin' à 'je l'utilise chaque jour sur mes projets de recherche'. Axion-IA a compris mes contraintes de chercheur dès la première session.",
-            role: "Chercheur-entrepreneur",
-            companyProfile: "Spin-off deep tech, campus LyonTech-La Doua Villeurbanne",
-          },
-          {
-            quote:
-              "Format idéal pour un dirigeant avec un agenda chargé. Sessions planifiées à mon rythme, travail sur mes vrais dossiers. En quelques mois, j'ai une vision claire et des pratiques ancrées.",
-            role: "Directeur général",
-            companyProfile: "PME IT, Villeurbanne",
-          },
-        ],
         faq: [
           {
             q: "En quoi consiste l'accompagnement 1-to-1 Axion-IA à Villeurbanne ?",
@@ -877,20 +779,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             price: "Bespoke C-level programme",
             detail:
               "For C-level at Villeurbanne or Métropole large accounts — fully personalised programme, enhanced Strict confidentiality, on-site or hybrid sessions per schedule.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching transformed my way of working within a few weeks. I went from 'I see AI from afar' to 'I use it every day on my research projects'. Axion-IA understood my researcher constraints from the very first session.",
-            role: "Researcher-entrepreneur",
-            companyProfile: "Deep tech spin-off, LyonTech-La Doua campus Villeurbanne",
-          },
-          {
-            quote:
-              "Ideal format for an executive with a packed agenda. Sessions planned at my pace, working on my real files. Within a few months I have clear vision and anchored practices.",
-            role: "CEO",
-            companyProfile: "IT SME, Villeurbanne",
           },
         ],
         faq: [

@@ -141,20 +141,6 @@ export const ANGERS_COPY: VilleCopy = {
               "Pour les grandes entreprises et sièges régionaux (Scania, Eviden/Atos, Thales, Cointreau) souhaitant gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a cadré nos cas d'usage IA en filière végétale avec une précision qu'aucun cabinet généraliste ne nous avait proposée. Livrable actionnable, démos sur nos vraies données de R&D. On a priorisé nos chantiers pour le comité de direction dès la restitution.",
-            role: "Directeur Général",
-            companyProfile: "ETI filière végétale, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Méthode pragmatique et sans jargon. Le plan d'action chiffré nous a convaincus d'industrialiser l'IA sur nos lignes de production bien plus vite que prévu. ROI identifié significatif dès les 12 premiers mois.",
-            role: "Directeur Industriel",
-            companyProfile: "PME industrielle sous-traitante, Maine-et-Loire",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Angers ?",
@@ -239,20 +225,6 @@ export const ANGERS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and regional HQs (Scania, Eviden/Atos, Thales, Cointreau) seeking centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA framed our AI use cases in the plant industry with a precision no generalist firm had offered us. Actionable deliverable, demos on our real R&D data. We prioritized our initiatives for the executive committee right at the read-out.",
-            role: "CEO",
-            companyProfile: "Plant-industry mid-cap, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Pragmatic method, no jargon. The costed action plan convinced us to industrialize AI on our production lines much faster than expected. Significant ROI identified within the first 12 months.",
-            role: "Industrial Director",
-            companyProfile: "Industrial subcontractor SME, Maine-et-Loire",
           },
         ],
         faq: [
@@ -344,20 +316,6 @@ export const ANGERS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands sites angevins (Scania, Eviden/Atos, Thales, Cointreau) : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour notre équipe R&D filière végétale : démos concrètes sur nos vrais documents techniques. Nos ingénieurs utilisaient les outils installés dès le lendemain matin sur leurs rapports d'expérimentation.",
-            role: "Directrice R&D",
-            companyProfile: "ETI filière végétale, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Session Dirigeants remarquable. En une journée, notre CODIR a défini sa feuille de route IA pour les 18 prochains mois. Pragmatisme et exemples issus de l'industrie angevine — pas de théorie abstraite.",
-            role: "Président",
-            companyProfile: "ETI industrielle, Maine-et-Loire",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Angers ?",
@@ -442,20 +400,6 @@ export const ANGERS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for major Angers sites (Scania, Eviden/Atos, Thales, Cointreau): multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training perfectly adapted to our plant-industry R&D team: concrete demos on our real technical documents. Our engineers were using the installed tools from the very next morning on their experimental reports.",
-            role: "R&D Director",
-            companyProfile: "Plant-industry mid-cap, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Outstanding Executives session. In a single day, our exec committee defined its AI roadmap for the next 18 months. Pragmatic approach with examples from Angers industry — no abstract theory.",
-            role: "President",
-            companyProfile: "Industrial mid-cap, Maine-et-Loire",
           },
         ],
         faq: [
@@ -547,20 +491,6 @@ export const ANGERS_COPY: VilleCopy = {
               "Programmes annuels pour les grands sites angevins (Scania, Eviden/Atos, Thales, Cointreau) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation d'un outil de classification automatique de rapports de semenciers livrée comme promis. ROI réel mesuré dès les six premiers mois : réduction significative du temps de traitement documentaire pour nos équipes R&D. Aucun lock-in, on maîtrise totalement les modèles.",
-            role: "DSI",
-            companyProfile: "ETI filière végétale, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre site industriel : kick-off intense sur site, puis itérations à distance fluides. L'intégration dans notre ERP existant s'est faite sans rupture de production. Nos ambassadeurs internes tiennent le système de façon autonome.",
-            role: "Directeur des Opérations",
-            companyProfile: "PME industrielle sous-traitante, Maine-et-Loire",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Angers ?",
@@ -645,20 +575,6 @@ export const ANGERS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for major Angers sites (Scania, Eviden/Atos, Thales, Cointreau): cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automatic classification tool for seed company reports delivered as promised. Real ROI measured within the first six months: significant reduction in document processing time for our R&D teams. No lock-in, we fully control the models.",
-            role: "CIO",
-            companyProfile: "Plant-industry mid-cap, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our industrial site: intense on-site kick-off, then smooth remote iterations. ERP integration was done with zero production disruption. Internal ambassadors run the system autonomously.",
-            role: "Operations Director",
-            companyProfile: "Industrial subcontractor SME, Maine-et-Loire",
           },
         ],
         faq: [
@@ -749,20 +665,6 @@ export const ANGERS_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et managers des grands sites angevins (Scania, Eviden/Atos, Thales, Cointreau) pour des besoins d'acculturation IA individualisés.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment l'IA pouvait accélérer mes rapports R&D en filière végétale. On a travaillé directement sur mes fichiers de recherche dès la première séance. Résultat immédiatement actionnable.",
-            role: "Directrice R&D",
-            companyProfile: "PME filière végétale, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Format parfait pour un fondateur de startup : séances courtes, focalisées sur mon produit numérique, zéro théorie inutile. J'ai pu poser mes questions les plus pointues sans filtre et construire ma roadmap IA en quelques semaines.",
-            role: "Co-fondateur",
-            companyProfile: "Startup French Tech Angers, Angers Technopole",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Angers ?",
@@ -847,20 +749,6 @@ export const ANGERS_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers at major Angers sites (Scania, Eviden/Atos, Thales, Cointreau) requiring individualised AI acculturation.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me understand concretely how AI could accelerate my plant R&D reports. We worked directly on my research files from the first session. Immediately actionable result.",
-            role: "R&D Director",
-            companyProfile: "Plant-industry SME, Angers Loire Métropole",
-          },
-          {
-            quote:
-              "Perfect format for a startup founder: short sessions, focused on my digital product, zero useless theory. I could ask my sharpest questions without filter and build my AI roadmap within a few weeks.",
-            role: "Co-founder",
-            companyProfile: "French Tech Angers startup, Angers Technopole",
           },
         ],
         faq: [

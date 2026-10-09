@@ -133,20 +133,6 @@ export const GRENOBLE_COPY: VilleCopy = {
               "Pour les directions IA des grands groupes grenoblois (STMicroelectronics, Schneider Electric, Atos) souhaitant structurer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit a cerné en quelques jours des automatisations que nos ingénieurs n'avaient pas identifiées en interne. Le livrable est chiffré, actionnable et sans jargon. On est passé directement à l'implémentation.",
-            role: "Directeur R&D",
-            companyProfile: "PME électronique embarquée, bassin Meylan-Inovallée",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données de production plutôt que des slides théoriques. La restitution a permis de prioriser nos chantiers IA pour notre comité de direction — de façon très concrète.",
-            role: "Directrice des opérations",
-            companyProfile: "ETI équipementier industriel, agglomération grenobloise",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Grenoble ?",
@@ -231,20 +217,6 @@ export const GRENOBLE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For AI leadership at Grenoble large groups (STMicroelectronics, Schneider Electric, Atos) structuring centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The audit pinpointed automations our engineers had not identified internally within days. The deliverable is costed, actionable and jargon-free. We moved straight to implementation.",
-            role: "R&D Director",
-            companyProfile: "Embedded electronics SME, Meylan-Inovallée basin",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data rather than theoretical slides. The read-out helped prioritise our AI initiatives for the executive committee — very concretely.",
-            role: "Head of Operations",
-            companyProfile: "Mid-cap industrial equipment manufacturer, Grenoble area",
           },
         ],
         faq: [
@@ -335,20 +307,6 @@ export const GRENOBLE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands groupes grenoblois : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour nos ingénieurs : les démos sur nos propres specs techniques ont fait mouche. Le lendemain, plusieurs collègues utilisaient déjà Claude dans leur flux de travail quotidien.",
-            role: "Responsable ingénierie",
-            companyProfile: "PME spécialisée en systèmes embarqués, Inovallée Meylan",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en quelques heures sur la trajectoire IA à adopter dans notre contexte industriel. Pragmatique, sans jargon, orienté action.",
-            role: "PDG",
-            companyProfile: "ETI équipementier deep-tech, bassin grenoblois",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Grenoble ?",
@@ -433,20 +391,6 @@ export const GRENOBLE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Grenoble large groups: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training perfectly calibrated for our engineers: demos on our own technical specs hit the mark. The next day, several colleagues were already using Claude in their daily workflow.",
-            role: "Engineering Manager",
-            companyProfile: "Embedded systems SME, Inovallée Meylan",
-          },
-          {
-            quote:
-              "The executive talk aligned us within hours on the AI trajectory for our industrial context. Pragmatic, jargon-free, action-oriented.",
-            role: "CEO",
-            companyProfile: "Deep-tech equipment mid-cap, Grenoble basin",
           },
         ],
         faq: [
@@ -537,20 +481,6 @@ export const GRENOBLE_COPY: VilleCopy = {
               "Programmes annuels pour les grands groupes grenoblois : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation traitement de rapports d'analyse livrée dans les temps et dans le budget. ROI mesuré : plusieurs jours-ingénieur libérés chaque mois sur des tâches de compilation. Nos chercheurs ont gardé la main, aucune boîte noire.",
-            role: "Directeur scientifique",
-            companyProfile: "Spin-off deeptech issue de la Presqu'île scientifique grenobloise",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre organisation distribuée : kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs IA internes ont pris le relais de façon pleinement autonome.",
-            role: "DSI",
-            companyProfile: "ETI éditeur logiciel industriel, bassin grenoblois",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Grenoble ?",
@@ -635,20 +565,6 @@ export const GRENOBLE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Grenoble large groups: cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Analysis report processing implementation delivered on time and on budget. Measured ROI: several engineer-days freed each month from compilation tasks. Our researchers stayed in control, no black box.",
-            role: "Scientific Director",
-            companyProfile: "Deep-tech spin-off from the Grenoble Science Peninsula",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our distributed organisation: intense on-site kick-off, then smooth remote iterations. Our internal AI ambassadors took over in a fully autonomous way.",
-            role: "CIO",
-            companyProfile: "Industrial software editor mid-cap, Grenoble basin",
           },
         ],
         faq: [
@@ -740,20 +656,6 @@ export const GRENOBLE_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants et experts de grands groupes grenoblois (STMicroelectronics, Schneider Electric, Atos) cherchant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'explorer l'IA appliquée à l'analyse de rapports ESRF et à la gestion documentaire de ma spin-off. En une journée avec un consultant dédié, on a travaillé sur mes vraies données. J'ai un plan clair et des outils en production dès le lendemain.",
-            role: "Directeur scientifique",
-            companyProfile: "Spin-off deeptech, Presqu'île scientifique de Grenoble",
-          },
-          {
-            quote:
-              "Format coaching individuel parfait pour un directeur R&D : niveau technique sans concession, démos sur nos spécifications semi-conducteurs. J'ai pu explorer des cas sensibles sans exposer nos brevets. Plan d'action remis en main propre.",
-            role: "Directeur R&D",
-            companyProfile: "PME électronique embarquée, bassin Meylan-Inovallée",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Grenoble ?",
@@ -834,20 +736,6 @@ export const GRENOBLE_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers and experts at Grenoble large groups (STMicroelectronics, Schneider Electric, Atos) seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to explore AI applied to ESRF report analysis and documentary management for my spin-off. In one day with a dedicated consultant, we worked on my real data. I have a clear plan and tools in production from the next day.",
-            role: "Scientific Director",
-            companyProfile: "Deep-tech spin-off, Grenoble Science Peninsula",
-          },
-          {
-            quote:
-              "Perfect individual coaching format for an R&D director: uncompromising technical level, demos on our semiconductor specifications. I could explore sensitive cases without exposing our patents. Action plan handed over face to face.",
-            role: "R&D Director",
-            companyProfile: "Embedded electronics SME, Meylan-Inovallée basin",
           },
         ],
         faq: [

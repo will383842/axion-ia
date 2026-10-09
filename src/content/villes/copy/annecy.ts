@@ -138,20 +138,6 @@ export const ANNECY_COPY: VilleCopy = {
               "Pour les sites majeurs de grands groupes implantés dans le bassin (Schneider Electric, Amer Sports, Groupe SEB) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su cadrer nos enjeux IA en partant de nos véritables contraintes industrielles — traçabilité, MES, ERP propriétaire. Le livrable est chiffré et directement exploitable par notre direction technique.",
-            role: "Directeur technique",
-            companyProfile: "PME mécanique de précision, Vallée de l'Arve",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données réelles de contrôle qualité. On a priorisé trois chantiers IA pour notre comité de direction avec un ROI estimé solide. Aucun jargon, aucun lock-in.",
-            role: "Directrice générale",
-            companyProfile: "ETI équipementier outdoor, bassin annécien",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Annecy ?",
@@ -236,20 +222,6 @@ export const ANNECY_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For major sites of large groups based in the basin (Schneider Electric, Amer Sports, Groupe SEB) framing centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA framed our AI challenges starting from our real industrial constraints — traceability, MES, proprietary ERP. The deliverable is costed and directly usable by our technical management.",
-            role: "Technical Director",
-            companyProfile: "Precision engineering SME, Vallée de l'Arve",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real quality control data. We prioritized three AI initiatives for our board with a solid estimated ROI. No jargon, no lock-in.",
-            role: "CEO",
-            companyProfile: "Outdoor equipment mid-cap, Annecy basin",
           },
         ],
         faq: [
@@ -341,20 +313,6 @@ export const ANNECY_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites industriels majeurs : roadshow multi-sites bassin annécien, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Session parfaitement adaptée à notre contexte outdoor : les démos sur nos fiches techniques et nos emails clients ont rendu l'IA immédiatement concrète. Nos ingénieurs utilisent déjà les outils installés sur leurs projets réels.",
-            role: "Responsable R&D",
-            companyProfile: "PME équipementier outdoor, Annecy-le-Vieux",
-          },
-          {
-            quote:
-              "Le format Dirigeants nous a alignés en quelques heures sur notre stratégie IA. Concret, ancré dans nos réalités industrielles, aucun jargon. On repart avec un cap clair.",
-            role: "PDG",
-            companyProfile: "ETI mécanique de précision, bassin annécien",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Annecy ?",
@@ -439,20 +397,6 @@ export const ANNECY_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for major industrial sites: multi-site Annecy basin roadshow, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Session perfectly adapted to our outdoor context: demos on our technical sheets and client emails made AI immediately concrete. Our engineers are already using the installed tools on their real projects.",
-            role: "Head of R&D",
-            companyProfile: "Outdoor equipment SME, Annecy-le-Vieux",
-          },
-          {
-            quote:
-              "The Executives format aligned us in a few hours on our AI strategy. Concrete, grounded in our industrial realities, no jargon. We left with a clear direction.",
-            role: "CEO",
-            companyProfile: "Precision engineering mid-cap, Annecy basin",
           },
         ],
         faq: [
@@ -544,20 +488,6 @@ export const ANNECY_COPY: VilleCopy = {
               "Programmes annuels pour les sites industriels majeurs du bassin : cas d'usage cascadés, gouvernance IA centralisée, équipe Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation contrôle qualité assisté IA livrée selon le SOW. ROI mesuré : réduction significative des taux de non-conformité et temps de traitement rapports divisé. Nos équipes qualité sont autonomes, aucun lock-in.",
-            role: "Directeur industriel",
-            companyProfile: "PME sous-traitant mécanique, Vallée de l'Arve",
-          },
-          {
-            quote:
-              "Méthode hybride efficace : kick-off intense sur site bassin annécien, puis itérations à distance bien rythmées. Notre DSI n'a jamais été perdu. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "DG",
-            companyProfile: "ETI services B2B, Grand Annecy",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Annecy ?",
@@ -642,20 +572,6 @@ export const ANNECY_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for major industrial basin sites: cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "AI-assisted quality control implementation delivered as per the SOW. Measured ROI: significant reduction in non-conformity rates and report processing time divided. Our quality teams are autonomous, no lock-in.",
-            role: "Industrial Director",
-            companyProfile: "Precision engineering SME, Vallée de l'Arve",
-          },
-          {
-            quote:
-              "Efficient hybrid method: intense on-site kick-off in the Annecy basin, then well-paced remote iterations. Our CIO was never lost. Internal ambassadors take over autonomously.",
-            role: "CEO",
-            companyProfile: "B2B services mid-cap, Grand Annecy",
           },
         ],
         faq: [
@@ -746,20 +662,6 @@ export const ANNECY_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et managers des grands sites du bassin (Salomon, Schneider Electric, Tefal/SEB à Rumilly) pour des besoins d'acculturation IA individualisés.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment l'IA pouvait m'aider sur la documentation technique de nos pièces de précision. On a travaillé sur mes vrais fichiers CAO et fiches produit. Résultat opérationnel en quelques séances.",
-            role: "Dirigeant",
-            companyProfile: "PME mécanique de précision, Vallée de l'Arve – Haute-Savoie",
-          },
-          {
-            quote:
-              "Format parfait pour un dirigeant de PME outdoor avec un agenda chargé : séances courtes, 100 % centrées sur mes enjeux commerciaux à l'international. J'ai intégré l'IA dans ma prospection B2B en quelques semaines.",
-            role: "Directeur commercial",
-            companyProfile: "PME équipements outdoor, bassin annécien",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Annecy ?",
@@ -844,20 +746,6 @@ export const ANNECY_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers at major basin sites (Salomon, Schneider Electric, Tefal/SEB in Rumilly) requiring individualised AI acculturation.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me understand concretely how AI could help with our precision parts technical documentation. We worked on my real CAD files and product sheets. Operational result within a few sessions.",
-            role: "Business Owner",
-            companyProfile: "Precision mechanics SME, Arve Valley – Haute-Savoie",
-          },
-          {
-            quote:
-              "Perfect format for an outdoor SME executive with a busy schedule: short sessions, 100% centred on my international B2B challenges. I integrated AI into my prospecting within a few weeks.",
-            role: "Sales Director",
-            companyProfile: "Outdoor equipment SME, Annecy basin",
           },
         ],
         faq: [

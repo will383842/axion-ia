@@ -141,20 +141,6 @@ export const LILLE_COPY: VilleCopy = {
               "Pour les sièges grands comptes (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) souhaitant gouverner une initiative IA centralisée à l'échelle groupe.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a cartographié en une journée ce que notre équipe IT tâtonnait à définir depuis des mois. Le livrable chiffré ROI/complexité nous a permis de prioriser nos chantiers IA et de convaincre notre comité de direction en une semaine.",
-            role: "Directeur des opérations",
-            companyProfile: "PME e-commerce, métropole lilloise, 80 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données supply chain. Le plan d'action est concret et exécutable sans dépendance externe. On a lancé le premier chantier dans le mois qui a suivi.",
-            role: "DSI",
-            companyProfile: "ETI logistique, Villeneuve-d'Ascq, 400 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Lille ?",
@@ -239,20 +225,6 @@ export const LILLE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large-group HQs (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) aiming to govern a group-wide centralized AI initiative.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA mapped in a single day what our IT team had been trying to define for months. The costed ROI/complexity deliverable let us prioritize our AI initiatives and convince our board within a week.",
-            role: "Head of Operations",
-            companyProfile: "E-commerce SME, Lille metropolitan area, 80 staff",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real supply chain data. The action plan is concrete and executable without external dependency. We launched our first initiative in the month following the read-out.",
-            role: "CIO",
-            companyProfile: "Logistics mid-cap, Villeneuve-d'Ascq, 400 staff",
           },
         ],
         faq: [
@@ -344,20 +316,6 @@ export const LILLE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges lillois (Decathlon, Auchan, La Redoute, OVHcloud) : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée sur notre activité e-commerce. Nos équipes merchandising et marketing sont reparties avec leurs outils IA configurés. Le lendemain, plusieurs utilisaient déjà l'IA pour rédiger des fiches produits et répondre aux avis clients.",
-            role: "Responsable digital",
-            companyProfile: "PME e-commerce, Roubaix, 60 collaborateurs",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre stratégie IA. Le format a été adapté aux réalités de la supply chain et du retail omnicanal. Très au-dessus de ce qu'on avait eu avec des cabinets généralistes.",
-            role: "Directeur général",
-            companyProfile: "ETI distribution, Euralille, 1 200 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Lille ?",
@@ -442,20 +400,6 @@ export const LILLE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Lille HQs (Decathlon, Auchan, La Redoute, OVHcloud): multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated to our e-commerce activity. Our merchandising and marketing teams left with their AI tools configured. The next day, several were already using AI to write product sheets and reply to customer reviews.",
-            role: "Head of Digital",
-            companyProfile: "E-commerce SME, Roubaix, 60 staff",
-          },
-          {
-            quote:
-              "The executives talk aligned us in a single day on our AI strategy. The format was adapted to supply chain and omnichannel retail realities. Far above what we had from generalist consultants.",
-            role: "CEO",
-            companyProfile: "Distribution mid-cap, Euralille, 1,200 staff",
           },
         ],
         faq: [
@@ -547,20 +491,6 @@ export const LILLE_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes lillois (Decathlon, Auchan, La Redoute, OVHcloud) : cas d'usage cascadés à l'échelle groupe, gouvernance IA centralisée, équipe Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation génération automatique de fiches produits livrée comme prévu. ROI mesuré : temps rédaction divisé par quatre, gain annuel net significatif sur notre équipe contenu. Aucun lock-in, on a la main sur les modèles.",
-            role: "Directrice e-commerce",
-            companyProfile: "ETI retail, Roubaix, 500 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour une ETI de notre taille : kick-off intense sur site Lille, puis itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes ont pris le relais de façon autonome.",
-            role: "DSI",
-            companyProfile: "ETI logistique, Villeneuve-d'Ascq, 800 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Lille ?",
@@ -645,20 +575,6 @@ export const LILLE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Lille large accounts (Decathlon, Auchan, La Redoute, OVHcloud): group-wide cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automatic product sheet generation delivered as planned. Measured ROI: writing time reduced fourfold, significant net annual gain on our content team. No lock-in, we control our models.",
-            role: "Head of E-commerce",
-            companyProfile: "Retail mid-cap, Roubaix, 500 staff",
-          },
-          {
-            quote:
-              "Perfect hybrid method for a mid-cap our size: intense on-site Lille kick-off, then remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors took over autonomously.",
-            role: "CIO",
-            companyProfile: "Logistics mid-cap, Villeneuve-d'Ascq, 800 staff",
           },
         ],
         faq: [
@@ -750,20 +666,6 @@ export const LILLE_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants des sièges grands groupes lillois (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) souhaitant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'explorer l'IA appliquée à notre catalogue e-commerce et à la personnalisation de nos offres. En une journée avec un consultant dédié, on a travaillé sur nos vraies données. Je suis reparti avec des outils opérationnels et un plan clair pour mon équipe produit.",
-            role: "Directrice e-commerce",
-            companyProfile: "PME e-commerce, Roubaix, 60 collaborateurs",
-          },
-          {
-            quote:
-              "Format coaching individuel parfait pour un directeur supply chain en ETI : confidentialité totale sur nos données logistiques, niveau adapté à mon expertise, démos sur notre vrai WMS. Plan d'action remis en fin de journée.",
-            role: "Directeur supply chain",
-            companyProfile: "ETI logistique, Villeneuve-d'Ascq, 400 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Lille ?",
@@ -844,20 +746,6 @@ export const LILLE_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers at Lille large-group HQs (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to explore AI applied to our e-commerce catalogue and offer personalisation. In one day with a dedicated consultant, we worked on our real data. I left with operational tools and a clear plan for my product team.",
-            role: "Head of E-commerce",
-            companyProfile: "E-commerce SME, Roubaix, 60 staff",
-          },
-          {
-            quote:
-              "Perfect individual coaching format for a supply chain director at a mid-cap: total confidentiality on our logistics data, level adapted to my expertise, demos on our real WMS. Action plan handed over at day's end.",
-            role: "Supply Chain Director",
-            companyProfile: "Logistics mid-cap, Villeneuve-d'Ascq, 400 staff",
           },
         ],
         faq: [

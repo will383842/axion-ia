@@ -134,20 +134,6 @@ export const NICE_COPY: VilleCopy = {
               "Pour les centres R&D Amadeus, IBM, SAP et les sièges régionaux souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a livré en quelques journées ce qu'une mission de conseil classique nous aurait proposé en plusieurs mois. Le rapport chiffré a permis de prioriser deux chantiers IA dès le trimestre suivant.",
-            role: "Directeur général",
-            companyProfile: "PME services B2B, Nice centre, 45 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données. Le livrable a convaincu notre CODIR en une seule présentation. On a pu démarrer l'implémentation sans attendre.",
-            role: "Directrice de la transformation digitale",
-            companyProfile: "ETI hôtelière Côte d'Azur, 3 établissements",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nice ?",
@@ -232,20 +218,6 @@ export const NICE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For Amadeus, IBM, SAP R&D centres and regional HQs framing centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered in a few days what a traditional consulting mission would have taken months for. The costed report let us prioritize two AI initiatives in the following quarter.",
-            role: "CEO",
-            companyProfile: "B2B services SME, Nice centre, 45 staff",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real data. The deliverable convinced our executive committee in a single presentation. We could start implementation right away.",
-            role: "Head of Digital Transformation",
-            companyProfile: "Côte d'Azur hospitality mid-cap, 3 properties",
           },
         ],
         faq: [
@@ -336,20 +308,6 @@ export const NICE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges régionaux et centres R&D Sophia/Nice : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à nos équipes hôtelières. Chaque collaborateur est reparti avec ses outils installés et configurés. Dès le lendemain, une partie significative les utilisaient sur leur travail réel.",
-            role: "DRH",
-            companyProfile: "Groupe hôtelier indépendant Côte d'Azur, 4 établissements",
-          },
-          {
-            quote:
-              "Session bilingue animée à Sophia Antipolis pour nos équipes IT internationales. La qualité des démos sur nos vraies données a été décisive. Le cadrage a été précis et sans jargon inutile.",
-            role: "Head of Engineering",
-            companyProfile: "ETI tech Sophia Antipolis, équipe internationale",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nice ?",
@@ -434,20 +392,6 @@ export const NICE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for regional HQs and Sophia/Nice R&D centres: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly adapted to our hotel teams. Each staff member left with their tools installed and configured. The next day, a significant share were already using them on real work.",
-            role: "Head of HR",
-            companyProfile: "Independent Côte d'Azur hotel group, 4 properties",
-          },
-          {
-            quote:
-              "Bilingual session run at Sophia Antipolis for our international IT teams. The quality of demos on our real data was decisive. Framing was precise and jargon-free.",
-            role: "Head of Engineering",
-            companyProfile: "Sophia Antipolis tech mid-cap, international team",
           },
         ],
         faq: [
@@ -538,20 +482,6 @@ export const NICE_COPY: VilleCopy = {
               "Programmes annuels pour les centres R&D Sophia et les sièges régionaux : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation dossiers administratifs livrée comme promis. ROI mesuré à 6 mois : plusieurs équivalents temps plein libérés sur les tâches récurrentes. Aucun lock-in, on a la main sur les modèles.",
-            role: "DAF",
-            companyProfile: "ETI santé Côte d'Azur, 3 sites, 180 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode hybride efficace : kick-off intense sur site à Sophia, puis itérations à distance avec points quotidiens courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes assurent le suivi de façon autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up IT Sophia Antipolis, équipe 55 personnes",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nice ?",
@@ -636,20 +566,6 @@ export const NICE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Sophia R&D centres and regional HQs: cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Administrative file automation delivered as promised. ROI measured at 6 months: several FTEs freed on recurring tasks. No lock-in, we control our models.",
-            role: "CFO",
-            companyProfile: "Côte d'Azur health mid-cap, 3 sites, 180 staff",
-          },
-          {
-            quote:
-              "Efficient hybrid method: intense on-site kick-off at Sophia, then remote iterations with short daily check-ins. Our IT team was never lost. Internal ambassadors handle follow-up autonomously.",
-            role: "CTO",
-            companyProfile: "Sophia Antipolis IT scale-up, 55-person team",
           },
         ],
         faq: [
@@ -740,20 +656,6 @@ export const NICE_COPY: VilleCopy = {
               "Coaching IA confidentiel pour C-levels et directeurs de centres R&D Sophia (Amadeus, IBM, SAP) ou sièges régionaux souhaitant un accompagnement de haut niveau, discret et sans format groupe.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Trois séances suffisent à transformer ma façon de préparer mes CODIR. Je génère mes synthèses de dossiers en quelques minutes au lieu d'une demi-journée. Le coaching sur mes vrais fichiers a fait toute la différence.",
-            role: "Directeur général",
-            companyProfile: "ETI hôtelière indépendante Côte d'Azur, 5 établissements",
-          },
-          {
-            quote:
-              "Format parfait pour un CTO toujours en déplacement. Séances à distance caleées sur mon agenda, travail direct sur nos pipelines data internes. Résultat : j'ai embarqué mon équipe sur deux cas IA en production dès le mois suivant.",
-            role: "CTO",
-            companyProfile: "Scale-up tech Sophia Antipolis, équipe R&D internationale",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce qui différencie le coaching 1-to-1 d'une formation de groupe à Nice ?",
@@ -838,20 +740,6 @@ export const NICE_COPY: VilleCopy = {
             price: "Executive programme — custom quote",
             detail:
               "Confidential AI coaching for C-levels and Sophia R&D directors (Amadeus, IBM, SAP) or regional HQs wanting high-level, discrete, non-group support.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Three sessions were enough to transform how I prepare my executive committee meetings. I generate file summaries in minutes instead of half a day. Working on my real files made all the difference.",
-            role: "Managing Director",
-            companyProfile: "Independent Côte d'Azur hospitality mid-cap, 5 properties",
-          },
-          {
-            quote:
-              "Perfect format for a CTO always on the move. Remote sessions fitted around my agenda, working directly on our internal data pipelines. Result: I brought my team on board for two AI use cases in production the following month.",
-            role: "CTO",
-            companyProfile: "Sophia Antipolis tech scale-up, international R&D team",
           },
         ],
         faq: [

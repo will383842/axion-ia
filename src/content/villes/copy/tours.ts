@@ -135,20 +135,6 @@ export const TOURS_COPY: VilleCopy = {
               "Pour les sites de grands groupes (STMicroelectronics, SKF, Michelin, Hutchinson) souhaitant cadrer une gouvernance IA centralisée à l'échelle du site ou de la division.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su cadrer nos enjeux industriels dès le kick-off — vocabulaire technique, connaissance des contraintes ERP et GMAO. Le livrable est chiffré, actionnable, sans jargon. On a pu prioriser nos chantiers IA devant notre comité de direction.",
-            role: "Directeur industriel",
-            companyProfile: "ETI équipementier automobile, Tours Métropole",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données plutôt que des slides. On a découvert des gains IA sur des tâches qu'on ne pensait pas automatisables — rédaction de rapports techniques et qualification de leads entrants.",
-            role: "DG",
-            companyProfile: "PME services B2B, Tours centre",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Tours ?",
@@ -233,20 +219,6 @@ export const TOURS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large-group sites (STMicroelectronics, SKF, Michelin, Hutchinson) framing centralised AI governance at site or division level.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA framed our industrial challenges from the very first kick-off — technical vocabulary, knowledge of ERP and CMMS constraints. The deliverable is costed, actionable, jargon-free. We were able to prioritise our AI initiatives in front of our executive committee.",
-            role: "Industrial Director",
-            companyProfile: "Automotive supplier mid-cap, Tours Métropole",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real data rather than slides. We discovered AI gains on tasks we thought were impossible to automate — technical report writing and inbound lead qualification.",
-            role: "CEO",
-            companyProfile: "B2B services SME, Tours city centre",
           },
         ],
         faq: [
@@ -337,20 +309,6 @@ export const TOURS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites de grands groupes à Tours : roadshow multi-ateliers, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Session parfaitement calibrée à notre activité industrielle : les démos portaient sur nos vrais bons de commande et nos fiches techniques. Le lendemain, nos commerciaux et méthodes utilisaient déjà les outils installés.",
-            role: "DRH",
-            companyProfile: "PME équipementier industriel, Tours Métropole",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en une journée sur la vision IA de l'entreprise. Vocabulaire accessible, pas de jargon tech, exemples concrets tirés de nos process. Résultat : plan IA approuvé en CODIR la semaine suivante.",
-            role: "PDG",
-            companyProfile: "ETI énergie / smart grids, Tours",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Tours ?",
@@ -435,20 +393,6 @@ export const TOURS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large-group Tours sites: multi-workshop roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Session perfectly calibrated to our industrial activity: demos used our real purchase orders and technical datasheets. The next day, our sales and methods teams were already using the installed tools.",
-            role: "Head of HR",
-            companyProfile: "Industrial supplier SME, Tours Métropole",
-          },
-          {
-            quote:
-              "The executive session aligned us in one day on the company's AI vision. Accessible vocabulary, no tech jargon, concrete examples from our own processes. Result: AI plan approved at executive committee the following week.",
-            role: "CEO",
-            companyProfile: "Energy / smart grids mid-cap, Tours",
           },
         ],
         faq: [
@@ -539,20 +483,6 @@ export const TOURS_COPY: VilleCopy = {
               "Programmes pour les sites de grands groupes (STMicro, SKF, Michelin, Hutchinson) : cas d'usage cascadés par département, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture de documentation technique + gestion de non-conformités livrée comme prévu. ROI réel mesuré : plusieurs équivalents temps plein libérés sur les tâches de saisie et de tri. Nos équipes méthodes sont autonomes, on a la main sur les modèles.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI industrielle, Tours Métropole",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre PME : kick-off intense sur site avec nos vraies données, puis itérations à distance rapides. Notre équipe a pris le relais en toute autonomie dès le go-live.",
-            role: "Fondateur",
-            companyProfile: "Scale-up B2B SaaS, Mame Tours",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Tours ?",
@@ -637,20 +567,6 @@ export const TOURS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for large-group sites (STMicro, SKF, Michelin, Hutchinson): cascaded use cases by department, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical documentation reading + non-conformity management implementation delivered as planned. Real ROI measured: several FTEs freed on data entry and sorting tasks. Our methods teams are autonomous, we control our models.",
-            role: "Head of Operations",
-            companyProfile: "Industrial mid-cap, Tours Métropole",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our SME: intense on-site kick-off with our real data, then fast remote iterations. Our team took over autonomously from go-live.",
-            role: "Founder",
-            companyProfile: "B2B SaaS scale-up, Mame Tours",
           },
         ],
         faq: [
@@ -741,20 +657,6 @@ export const TOURS_COPY: VilleCopy = {
               "Pour cadres dirigeants et directeurs de sites des grands groupes tourangeaux (STMicroelectronics, SKF, Michelin, Hutchinson). Format confidentiel haut niveau, agenda adapté aux contraintes de direction de site industriel. Frais en sus.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "En tant que responsable de production dans une ETI industrielle, j'avais besoin d'un accompagnement ancré sur mes vraies contraintes ERP et GMAO. Le coaching 1-to-1 a travaillé directement sur mes données réelles. En quelques séances, j'intègre l'IA dans mes process qualité et ma gestion de non-conformités.",
-            role: "Responsable de production",
-            companyProfile: "ETI équipementier automobile, Tours Métropole",
-          },
-          {
-            quote:
-              "Format parfait pour un dirigeant de PME avec un agenda chargé. Les séances à distance calées sur mon emploi du temps m'ont permis de monter en compétence IA sur mes vrais dossiers commerciaux. ROI mesurable dès la deuxième séance.",
-            role: "DG",
-            companyProfile: "PME services B2B, Tours centre",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Tours ?",
@@ -839,20 +741,6 @@ export const TOURS_COPY: VilleCopy = {
             price: "Large accounts programme — on quote",
             detail:
               "For senior executives and site directors at Tours large-group sites (STMicroelectronics, SKF, Michelin, Hutchinson). Confidential senior format, schedule adapted to industrial site leadership constraints. Expenses billed separately.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "As a production manager at an industrial mid-cap, I needed coaching grounded in my real ERP and CMMS constraints. The 1-to-1 coaching worked directly on my actual data. Within a few sessions, I integrate AI into my quality processes and non-conformance management.",
-            role: "Production Manager",
-            companyProfile: "Automotive supplier mid-cap, Tours Métropole",
-          },
-          {
-            quote:
-              "Perfect format for an SME director with a full agenda. Remote sessions fitted around my schedule let me build AI skills on my real commercial files. Measurable ROI from the second session.",
-            role: "CEO",
-            companyProfile: "B2B services SME, Tours city centre",
           },
         ],
         faq: [

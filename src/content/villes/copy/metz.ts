@@ -137,20 +137,6 @@ export const METZ_COPY: VilleCopy = {
               "Pour grandes entreprises implantées dans l'Eurométropole — Stellantis Trémery, ArcelorMittal Florange, Amazon Augny, grands sièges bancaires régionaux.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel rigoureux, chiffré et actionnable, tenant compte des contraintes de notre environnement industriel. On a pu présenter le plan au comité de direction dès les semaines suivantes.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie automobile, Eurométropole de Metz",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes. Le livrable a permis de prioriser nos chantiers IA avec un ROI chiffré pour chaque cas d'usage identifié.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME services financiers, Metz Technopôle",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA Ã  Metz ?",
@@ -235,20 +221,6 @@ export const METZ_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises with major Eurométropole sites — Stellantis Trémery, ArcelorMittal Florange, Amazon Augny, large regional banking HQs.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a rigorous, costed and actionable audit accounting for our industrial environment constraints. We presented the plan to the executive committee within the following weeks.",
-            role: "CEO",
-            companyProfile: "Automotive industry mid-cap, Eurométropole de Metz",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal data rather than slides. The deliverable helped prioritize our AI initiatives with a costed ROI for each identified use case.",
-            role: "Head of Transformation",
-            companyProfile: "Financial services SME, Metz Technopôle",
           },
         ],
         faq: [
@@ -339,20 +311,6 @@ export const METZ_COPY: VilleCopy = {
               "Combinaisons sur-mesure — roadshow multi-sites Eurométropole, séminaires CODIR + cascade équipes terrain ou ateliers industriels.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a collé aux attentes de nos équipes opérationnelles. Repartis avec leurs outils configurés sur leurs vrais cas d'usage. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus.",
-            role: "Directeur des opérations",
-            companyProfile: "PME services, Technopôle Metz 2000",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles et la réalité transfrontalière de notre activité.",
-            role: "DG",
-            companyProfile: "ETI banque & finance, Eurométropole de Metz",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA Ã  Metz ?",
@@ -437,20 +395,6 @@ export const METZ_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Metz HQs — multi-site Eurométropole roadshows, exec committee seminars + field team cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format matched our operational teams' expectations. They left with tools configured for their real use cases. By the next day, several were already using them to write reports.",
-            role: "Operations Director",
-            companyProfile: "Services SME, Technopôle Metz 2000",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our sector constraints and the cross-border reality of our business.",
-            role: "CEO",
-            companyProfile: "Banking and finance mid-cap, Eurométropole de Metz",
           },
         ],
         faq: [
@@ -541,20 +485,6 @@ export const METZ_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Eurométropole : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation documentation qualité livrée dans les délais. ROI mesuré dès les premiers mois : nos équipes passent moins de temps sur les rapports et plus sur l'amélioration process. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur industriel",
-            companyProfile: "ETI automobile, Eurométropole de Metz",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le Technopôle et nos sites de production. Kick-off intense sur site, puis itérations fluides Ã  distance. Nos ambassadeurs internes sont autonomes.",
-            role: "CTO",
-            companyProfile: "PME logiciels industriels, Technopôle Metz 2000",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA Ã  Metz ?",
@@ -639,20 +569,6 @@ export const METZ_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Eurométropole large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Quality documentation automation implementation delivered on time. ROI measured within the first months: our teams spend less time on reports and more on process improvement. No lock-in, we control our deployment.",
-            role: "Industrial Director",
-            companyProfile: "Automotive mid-cap, Eurométropole de Metz",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the Technopôle and our production sites. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Industrial software SME, Technopôle Metz 2000",
           },
         ],
         faq: [
@@ -743,20 +659,6 @@ export const METZ_COPY: VilleCopy = {
               "Pour les membres de CODIR et executives de grands groupes implantés Ã  Metz (Stellantis, groupes bancaires BPCE) souhaitant un accompagnement confidentiel et sur mesure.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching individuel m'a permis de passer de 'je comprends l'IA en théorie' Ã  'je l'utilise chaque jour sur mes vrais dossiers'. En quelques séances, j'ai gagné un temps considérable sur mes tâches répétitives.",
-            role: "Directeur général",
-            companyProfile: "PME conseil, centre-ville Metz",
-          },
-          {
-            quote:
-              "Le format 1-to-1 était essentiel pour moi : je pouvais aborder mes enjeux stratégiques transfrontaliers sans contrainte de confidentialité. Le consultant connaissait les réalités du tissu B2B lorrain.",
-            role: "Directrice de développement",
-            companyProfile: "PME services, Technopôle Metz 2000",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching individuel diffère-t-il d'une intervention collective Ã  Metz ?",
@@ -841,20 +743,6 @@ export const METZ_COPY: VilleCopy = {
             price: "Custom-quote programme",
             detail:
               "For COMEX members and executives of large groups based in Metz (Stellantis, BPCE banking groups) seeking confidential, bespoke coaching.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The individual coaching helped me go from 'I understand AI in theory' to 'I use it every day on my real files'. Within a few sessions, I saved considerable time on repetitive tasks.",
-            role: "CEO",
-            companyProfile: "Consulting micro-business, Metz city centre",
-          },
-          {
-            quote:
-              "The 1-to-1 format was essential for me: I could address my cross-border strategic challenges without confidentiality constraints. The consultant understood the Lorraine B2B reality.",
-            role: "Business Development Director",
-            companyProfile: "Services SME, Technopôle Metz 2000",
           },
         ],
         faq: [

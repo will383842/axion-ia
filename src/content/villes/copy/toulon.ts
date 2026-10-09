@@ -130,20 +130,6 @@ export const TOULON_COPY: VilleCopy = {
               "Pour les grands comptes de la défense maritime et de l'ingénierie navale souhaitant cadrer une gouvernance IA centralisée sur plusieurs sites.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a compris immédiatement les contraintes de confidentialité liées à notre activité. Le livrable est chiffré, actionnable, sans jargon. Nous avons pu prioriser nos chantiers IA avec le comité de direction en toute confiance.",
-            role: "Directeur général",
-            companyProfile: "ETI ingénierie navale, agglomération toulonnaise",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données plutôt que des slides théoriques. Le consultant a adapté son vocabulaire à nos métiers maritimes. Le plan d'action est directement opérationnel.",
-            role: "Responsable innovation",
-            companyProfile: "PME économie maritime, Pôle Mer Méditerranée",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Toulon ?",
@@ -228,20 +214,6 @@ export const TOULON_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For maritime-defence and naval-engineering large accounts framing centralised AI governance across multiple sites.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA immediately grasped the confidentiality constraints tied to our activity. The deliverable is costed, actionable, jargon-free. We could prioritise our AI initiatives with the executive committee with full confidence.",
-            role: "CEO",
-            companyProfile: "Naval engineering mid-cap, Toulon agglomeration",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real data rather than theoretical slides. The consultant adapted vocabulary to our maritime trades. The action plan is directly operational.",
-            role: "Head of Innovation",
-            companyProfile: "Maritime economy SME, Pôle Mer Méditerranée",
           },
         ],
         faq: [
@@ -332,20 +304,6 @@ export const TOULON_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands comptes toulonnais : roadshow multi-sites, séminaires CODIR + cascade équipes, tenant compte des contraintes de sécurité spécifiques.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à notre réalité métier. Les démos utilisaient nos propres documents techniques. Le lendemain, nos équipes utilisaient déjà les outils IA sur leurs tâches quotidiennes.",
-            role: "Directeur des opérations",
-            companyProfile: "PME ingénierie maritime, Toulon",
-          },
-          {
-            quote:
-              "Session dirigeants très opérationnelle. Le consultant a directement cerné les enjeux IA de notre secteur. Nous avons démarré notre feuille de route IA le mois suivant.",
-            role: "Présidente",
-            companyProfile: "ETI services aux entreprises, agglomération TPM",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Toulon ?",
@@ -430,20 +388,6 @@ export const TOULON_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Toulon large accounts: multi-site roadshows, exec committee + cascade team seminars, allowing for specific security constraints.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly adapted to our business reality. Demos used our own technical documents. The next day our teams were already using the AI tools on their daily tasks.",
-            role: "Operations Director",
-            companyProfile: "Maritime engineering SME, Toulon",
-          },
-          {
-            quote:
-              "Very operational executive session. The consultant immediately grasped the AI stakes in our sector. We launched our AI roadmap the following month.",
-            role: "President",
-            companyProfile: "Professional services mid-cap, TPM agglomeration",
           },
         ],
         faq: [
@@ -534,20 +478,6 @@ export const TOULON_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes toulonnais : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie, infra souveraine si requis.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture de cahiers des charges techniques livrée comme promis. ROI réel mesuré : équivalents temps plein libérés sur la qualification d'appels d'offres. Aucun lock-in, on a la main sur les modèles.",
-            role: "Directeur technique",
-            companyProfile: "ETI sous-traitant défense maritime, Toulon",
-          },
-          {
-            quote:
-              "Méthode hybride impeccable : kick-off intense sur site à Toulon, puis itérations à distance bien rythmées. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes sont pleinement autonomes.",
-            role: "DSI",
-            companyProfile: "PME ingénierie navale, agglomération TPM",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Toulon ?",
@@ -632,20 +562,6 @@ export const TOULON_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Toulon large accounts: cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode, sovereign infra if required.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical specification reading implementation delivered as promised. Real ROI measured: FTEs freed on tender qualification. No lock-in, we control our models.",
-            role: "Technical Director",
-            companyProfile: "Maritime defence sub-contractor mid-cap, Toulon",
-          },
-          {
-            quote:
-              "Flawless hybrid method: intense on-site kick-off in Toulon, then well-paced remote iterations. Our IT team was never lost. Internal ambassadors are fully autonomous.",
-            role: "CIO",
-            companyProfile: "Naval engineering SME, TPM agglomeration",
           },
         ],
         faq: [
@@ -736,20 +652,6 @@ export const TOULON_COPY: VilleCopy = {
               "Accompagnement de cadres dirigeants et managers d'un grand compte (Naval Group, Thales, Marine nationale rattachée, acteurs Pôle Mer) — programme coordonné avec la DRH ou la direction innovation, facturation grand compte. Sur devis.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais fait une formation collective qui ne correspondait pas à mon rythme. Avec le coaching 1-to-1, chaque séance partait de mes vrais dossiers — cahiers des charges techniques, appels d'offres. En quelques séances, j'ai intégré l'IA dans mes process quotidiens de façon durable.",
-            role: "Responsable R&D",
-            companyProfile: "PME sous-traitant Pôle Mer Méditerranée, Toulon",
-          },
-          {
-            quote:
-              "Format idéal pour un dirigeant avec un agenda contraint. Séances à distance efficaces, ancrées sur mes enjeux de gestion et de développement commercial dans le Var. J'aurais perdu trois fois plus de temps dans un programme collectif.",
-            role: "Directrice générale",
-            companyProfile: "PME conseil en management, agglomération TPM",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Toulon ?",
@@ -834,20 +736,6 @@ export const TOULON_COPY: VilleCopy = {
             price: "Bespoke large account programme",
             detail:
               "Coaching for senior managers and executives at a large account (Naval Group, Thales, Marine nationale, Pôle Mer players) — programme coordinated with HR or innovation leadership, large account invoicing. On quote.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I had done a group training that didn't match my pace. With 1-to-1 coaching, each session started from my real files — technical specs, tenders. Within a few sessions I had embedded AI into my daily processes in a lasting way.",
-            role: "Head of R&D",
-            companyProfile: "Pôle Mer Méditerranée sub-contractor SME, Toulon",
-          },
-          {
-            quote:
-              "Ideal format for an executive with a constrained schedule. Efficient remote sessions, anchored to my management and business development challenges in the Var. I would have lost three times as much time in a group programme.",
-            role: "Managing Director",
-            companyProfile: "Management consultancy micro-business, TPM agglomeration",
           },
         ],
         faq: [

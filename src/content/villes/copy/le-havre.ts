@@ -138,20 +138,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
               "Pour les sièges ou sites majeurs grands-comptes de la ZIP (TotalEnergies, Safran Nacelles, Sidel, Renault, CMA CGM) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a identifié des automatisations concrètes dans nos processus documentaires portuaires que nous n'aurions pas trouvées seuls. Le livrable est chiffré, actionnable, sans jargon technique. Nous avons pu prioriser nos chantiers IA avec notre direction.",
-            role: "Directeur des opérations",
-            companyProfile: "PME logistique portuaire, bassin Le Havre, 80 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vrais documents industriels plutôt que des slides génériques. Le plan d'action a directement nourri notre comité de direction sur la maintenance prédictive.",
-            role: "Responsable transformation digitale",
-            companyProfile: "ETI industrie lourde, Zone Industrialo-Portuaire du Havre",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA au Havre ?",
@@ -236,20 +222,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For ZIP large-account HQs or major sites (TotalEnergies, Safran Nacelles, Sidel, Renault, CMA CGM) framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA identified concrete automations in our port document processes that we would not have found alone. The deliverable is costed, actionable, jargon-free. We were able to prioritise our AI initiatives with our leadership.",
-            role: "Head of Operations",
-            companyProfile: "Port logistics SME, Le Havre basin, 80 staff",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real industrial documents rather than generic slides. The action plan directly fed our executive committee on predictive maintenance.",
-            role: "Digital Transformation Manager",
-            companyProfile: "Heavy industry mid-cap, Le Havre Port Industrial Zone",
           },
         ],
         faq: [
@@ -341,20 +313,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grandes entreprises de la ZIP : roadshow multi-sites, séminaires CODIR + cascade équipes opérationnelles.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Format Équipes parfaitement calibré pour notre service logistique : nos collaborateurs repartent avec des outils IA installés sur leurs postes et des automatisations concrètes pour le traitement de leurs documents quotidiens. Le lendemain, ils les utilisaient déjà.",
-            role: "Responsable logistique",
-            companyProfile: "PME transport et logistique portuaire, Le Havre, 60 collaborateurs",
-          },
-          {
-            quote:
-              "La session dirigeants nous a permis d'aligner notre comité de direction sur les priorités IA en quelques heures. Pragmatique, ancré dans nos réalités industrielles havraises, sans discours théorique.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie et services, bassin Seine Estuaire",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA au Havre ?",
@@ -439,20 +397,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for ZIP large enterprises: multi-site roadshows, exec committee + operational team cascade seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Teams format perfectly calibrated for our logistics department: our staff left with AI tools installed on their workstations and concrete automations for their daily document processing. The next day, they were already using them.",
-            role: "Head of Logistics",
-            companyProfile: "Port logistics and transport SME, Le Havre, 60 staff",
-          },
-          {
-            quote:
-              "The executive session aligned our leadership committee on AI priorities within hours. Pragmatic, grounded in our Le Havre industrial realities, no theoretical discourse.",
-            role: "General Manager",
-            companyProfile: "Industry and services mid-cap, Seine Estuaire basin",
           },
         ],
         faq: [
@@ -544,20 +488,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
               "Programmes annuels pour les grands comptes havrais (TotalEnergies, Safran, Renault, CMA CGM, Sidel) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation documentaire livrée comme promis. ROI mesuré dès les premiers mois : notre équipe ADV a récupéré du temps sur le traitement des bons de livraison et des CMR. Aucun lock-in, on a la main sur les modèles.",
-            role: "Directeur administratif et financier",
-            companyProfile: "ETI logistique portuaire, bassin Le Havre, 350 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode hybride adaptée à nos contraintes industrielles : kick-off sur site, puis itérations à distance. Notre équipe maintenance utilise maintenant les alertes prédictives au quotidien. Les ambassadeurs internes ont pris le relais de façon autonome.",
-            role: "Directeur technique",
-            companyProfile: "Site industriel ZIP Le Havre, grande entreprise",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA au Havre ?",
@@ -642,20 +572,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Le Havre large accounts (TotalEnergies, Safran, Renault, CMA CGM, Sidel): cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Document automation implementation delivered as promised. ROI measured from the first months: our customer service team recovered time on delivery note and CMR processing. No lock-in, we control our models.",
-            role: "CFO",
-            companyProfile: "Port logistics mid-cap, Le Havre basin, 350 staff",
-          },
-          {
-            quote:
-              "Hybrid method adapted to our industrial constraints: on-site kick-off, then remote iterations. Our maintenance team now uses predictive alerts daily. Internal ambassadors took over autonomously.",
-            role: "Technical Director",
-            companyProfile: "ZIP Le Havre industrial site, large enterprise",
           },
         ],
         faq: [
@@ -747,20 +663,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants et experts de grands groupes havrais (TotalEnergies, Safran, Renault, CMA CGM, Sidel) souhaitant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'explorer l'IA sur mes propres documents de transport maritime — CMR, manifestes, offres de fret. En une journée avec un consultant dédié, on a testé sur mes vraies données. Je suis reparti avec des outils opérationnels et un plan clair.",
-            role: "Directeur des opérations",
-            companyProfile: "PME logistique portuaire, Le Havre, 60 collaborateurs",
-          },
-          {
-            quote:
-              "Format idéal pour un directeur technique en ETI industrielle : confidentialité totale sur nos process, niveau adapté, démos sur nos propres rapports de maintenance. Plan d'action remis en main propre.",
-            role: "Directeur technique",
-            companyProfile: "ETI industrie lourde, Zone Industrialo-Portuaire du Havre",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA au Havre ?",
@@ -841,20 +743,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers and experts at Le Havre large groups (TotalEnergies, Safran, Renault, CMA CGM, Sidel) seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to explore AI on my own maritime transport documents — CMR, manifests, freight offers. In one day with a dedicated consultant, we tested on my real data. I left with operational tools and a clear plan.",
-            role: "Head of Operations",
-            companyProfile: "Port logistics SME, Le Havre, 60 staff",
-          },
-          {
-            quote:
-              "Ideal format for a technical director at an industrial mid-cap: total confidentiality on our processes, adapted level, demos on our own maintenance reports. Action plan handed over face to face.",
-            role: "Technical Director",
-            companyProfile: "Heavy industry mid-cap, Le Havre Port Industrial Zone",
           },
         ],
         faq: [

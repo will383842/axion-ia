@@ -134,20 +134,6 @@ export const ORLEANS_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes implantés dans l'agglomération (John Deere France Ormes, Servier Gidy, Shiseido Europe Ormes) ou les opérateurs publics (BRGM, INRAE).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel sur nos processus qualité. Le rapport est chiffré, actionnable, et intègre nos contraintes BPF dès la première page. On a pu le présenter au comité de direction sans retraitement.",
-            role: "Directeur qualité & réglementaire",
-            companyProfile: "ETI pharmaceutique CDMO, Saint-Jean-de-Braye",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données de formulation réelles plutôt que des slides génériques. Le livrable nous a aidés à prioriser nos chantiers IA avec un ROI chiffré par cas d'usage.",
-            role: "Responsable innovation",
-            companyProfile: "PME cosmétique, Orléans Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Orléans ?",
@@ -232,20 +218,6 @@ export const ORLEANS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups with HQs or major sites in the agglomération (John Deere France Ormes, Servier Gidy, Shiseido Europe Ormes) or public operators (BRGM, INRAE).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit on our quality processes. The report is costed, actionable, and integrates our GMP constraints from page one. We presented it to the board with no rework needed.",
-            role: "Quality & Regulatory Director",
-            companyProfile: "Pharmaceutical CDMO mid-cap, Saint-Jean-de-Braye",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real formulation data rather than generic slides. The deliverable helped us prioritise our AI initiatives with a costed ROI per use case.",
-            role: "Head of Innovation",
-            companyProfile: "Cosmetics SME, Orléans Métropole",
           },
         ],
         faq: [
@@ -336,20 +308,6 @@ export const ORLEANS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges orléanais — roadshow multi-sites agglomération, séminaires CODIR + cascade équipes laboratoires ou production.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "La formation collective a parfaitement collé aux attentes de nos équipes réglementaires. Ils sont repartis avec leurs outils configurés sur leurs vrais dossiers. Dès le lendemain, plusieurs rédigeaient leurs rapports deux fois plus vite.",
-            role: "Responsable affaires réglementaires",
-            companyProfile: "PME pharmaceutique, Saint-Jean-de-Braye",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos spécificités cosmétiques — pas de session générique, des cas concrets qui parlaient à nos équipes de formulation.",
-            role: "Directeur général",
-            companyProfile: "ETI cosmétique, Orléans Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Orléans ?",
@@ -434,20 +392,6 @@ export const ORLEANS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Orléans HQs — multi-site agglomération roadshows, exec committee seminars + lab or production team cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our regulatory team's needs. They left with tools configured for their real dossiers. By the next day, several were drafting reports twice as fast.",
-            role: "Head of Regulatory Affairs",
-            companyProfile: "Pharmaceutical SME, Saint-Jean-de-Braye",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our cosmetics specificities — no generic session, concrete cases that resonated with our formulation teams.",
-            role: "CEO",
-            companyProfile: "Cosmetics mid-cap, Orléans Métropole",
           },
         ],
         faq: [
@@ -538,20 +482,6 @@ export const ORLEANS_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes de l'agglomération orléanaise : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation documentation réglementaire livrée comme promis. ROI mesuré dès les premiers mois : nos équipes qualité passent moins de temps sur la rédaction et plus sur l'analyse. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur opérations",
-            companyProfile: "ETI CDMO pharmaceutique, Orléans Métropole",
-          },
-          {
-            quote:
-              "Mode hybride parfait pour notre équipe R&D dispersée entre le labo et les bureaux. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "Directeur R&D",
-            companyProfile: "PME cosmétique, Orléans Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Orléans ?",
@@ -636,20 +566,6 @@ export const ORLEANS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for large Orléans agglomération accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Regulatory documentation automation implementation delivered as promised. ROI measured within the first months: our quality teams spend less time on drafting and more on analysis. No lock-in, we control our deployment.",
-            role: "Operations Director",
-            companyProfile: "Pharmaceutical CDMO mid-cap, Orléans Métropole",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our R&D team split between the lab and the offices. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "R&D Director",
-            companyProfile: "Cosmetics SME, Orléans Métropole",
           },
         ],
         faq: [
@@ -740,20 +656,6 @@ export const ORLEANS_COPY: VilleCopy = {
               "Accompagnement individuel de cadres dirigeants ou experts clés de grandes entreprises orléanaises (John Deere, Shiseido, BRGM, opérateurs publics).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'accompagnement 1-to-1 m'a permis de comprendre concrètement ce que l'IA peut faire pour notre activité cosmétique — pas de discours générique, des cas de formulation et de documentation réglementaire directement applicables.",
-            role: "PDG",
-            companyProfile: "PME cosmétique Cosmetic Valley, Orléans",
-          },
-          {
-            quote:
-              "Je gère maintenant mes rapports de recherche et mes revues bibliographiques avec des outils IA configurés sur mes propres bases de données. L'accompagnement individuel a été déterminant pour franchir ce palier.",
-            role: "Ingénieur de recherche senior",
-            companyProfile: "Organisme public de recherche, Orléans-La Source",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse l'accompagnement individuel 1-to-1 Axion-IA à Orléans ?",
@@ -838,20 +740,6 @@ export const ORLEANS_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior executives or key experts at large Orléans companies (John Deere, Shiseido, BRGM, public operators).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me understand concretely what AI can do for our cosmetics activity — no generic talk, formulation and regulatory documentation cases directly applicable.",
-            role: "CEO",
-            companyProfile: "Cosmetic Valley SME, Orléans",
-          },
-          {
-            quote:
-              "I now manage my research reports and literature reviews with AI tools configured on my own databases. The individual coaching was decisive in crossing that threshold.",
-            role: "Senior Research Engineer",
-            companyProfile: "Public research organisation, Orléans-La Source",
           },
         ],
         faq: [

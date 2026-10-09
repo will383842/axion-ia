@@ -134,20 +134,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
               "Pour les grands groupes et sièges implantés à Boulogne-Billancourt — Renault Group, TF1 Group, Boursorama — souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel structuré et chiffré. Le rapport identifiait des cas d'usage concrets pour nos équipes médias. On a pu présenter le plan au comité de direction dès la semaine suivante.",
-            role: "Directeur de la transformation digitale",
-            companyProfile: "PME audiovisuel, Quai du Point-du-Jour Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes plutôt que des slides. Le livrable a permis de prioriser nos chantiers IA avec un ROI chiffré pour chaque cas d'usage.",
-            role: "Directrice innovation",
-            companyProfile: "ETI services B2B, quartier Trapèze Boulogne-Billancourt",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Boulogne-Billancourt ?",
@@ -232,20 +218,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large groups and HQs in Boulogne-Billancourt — Renault Group, TF1 Group, Boursorama — framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a structured, costed operational audit. The report identified concrete use cases for our media teams. We were able to present the plan to the board the very next week.",
-            role: "Head of Digital Transformation",
-            companyProfile: "Audiovisual SME, Quai du Point-du-Jour Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal data rather than slides. The deliverable helped prioritise our AI initiatives with a costed ROI for each use case.",
-            role: "Head of Innovation",
-            companyProfile: "B2B services mid-cap, Trapèze district Boulogne-Billancourt",
           },
         ],
         faq: [
@@ -336,20 +308,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges boulonnais — roadshow multi-sites, séminaires CODIR + cascade équipes, sessions thématiques audiovisuel/automobile/finance.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes créa. Ils sont repartis avec leurs outils configurés sur leurs vrais briefs. Dès le lendemain, plusieurs les utilisaient pour rédiger des notes de synthèse et préparer leurs pitchs.",
-            role: "Directeur de la création",
-            companyProfile: "Agence communication, Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait les enjeux de notre secteur — pas de session générique, des cas concrets qui parlaient directement à nos équipes.",
-            role: "DG",
-            companyProfile: "ETI services B2B, quartier Trapèze Boulogne-Billancourt",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Boulogne-Billancourt ?",
@@ -434,20 +392,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Boulogne HQs — multi-site roadshows, exec committee seminars + field team or creative team cascade, themed automotive/media/finance sessions.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our creative team's needs. They left with tools configured for their real briefs. By the next day, several were already using them to draft summaries and prepare pitches.",
-            role: "Creative Director",
-            companyProfile: "Communications agency, Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our sector challenges — no generic session, concrete cases that resonated directly with our teams.",
-            role: "CEO",
-            companyProfile: "B2B services mid-cap, Trapèze district Boulogne-Billancourt",
           },
         ],
         faq: [
@@ -538,20 +482,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes boulonnais : cas d'usage cascadés multi-équipes ou multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation de notre outil de veille et génération de contenus livrée dans les délais. ROI mesuré dès les premiers mois : nos équipes rédaction gagnent un temps significatif par publication. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur des opérations digitales",
-            companyProfile: "PME médias, Quai du Point-du-Jour Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le Trapèze et plusieurs sites clients. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "ETI services B2B, quartier Trapèze Boulogne-Billancourt",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Boulogne-Billancourt ?",
@@ -636,20 +566,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Boulogne large accounts: cascaded multi-team or multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Our monitoring and content generation tool implementation was delivered on time. ROI measured within the first months: our editorial teams save significant time per publication. No lock-in, we control our deployment.",
-            role: "Head of Digital Operations",
-            companyProfile: "Media SME, Quai du Point-du-Jour Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between Trapèze and multiple client sites. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "B2B services mid-cap, Trapèze district Boulogne-Billancourt",
           },
         ],
         faq: [
@@ -740,20 +656,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
               "Pour les dirigeants et décideurs des grands groupes boulonnais — tarif sur devis, format et rythme entièrement sur mesure selon votre agenda et vos objectifs.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Trois sessions suffisaient pour que j'utilise l'IA tous les jours dans ma pratique de consultant. Le format 1-to-1 m'a permis de rester sur mes vrais cas, sans perdre de temps sur des fonctionnalités inutiles pour moi.",
-            role: "Directeur associé",
-            companyProfile: "Cabinet de conseil indépendant, Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Accompagnement personnalisé très efficace. Je suis parti de zéro sur les outils IA et en quelques séances j'ai pu piloter notre chantier de transformation avec une vraie vision des possibles.",
-            role: "Directrice générale",
-            companyProfile: "PME services B2B, proche couronne Paris ouest",
-          },
-        ],
         faq: [
           {
             q: "En quoi le format 1-to-1 diffère-t-il d'une intervention de groupe ?",
@@ -838,20 +740,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
             price: "Bespoke executive programme",
             detail:
               "For executives and decision-makers at Boulogne large groups — quoted on request, format and pace entirely bespoke to your schedule and objectives.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Three sessions were enough for me to use AI every day in my consulting practice. The 1-to-1 format kept me on my real cases without wasting time on features I didn't need.",
-            role: "Partner",
-            companyProfile: "Independent consulting firm, Boulogne-Billancourt",
-          },
-          {
-            quote:
-              "Very effective personalised coaching. I started from zero on AI tools and within a few sessions I was able to drive our transformation project with a real understanding of what's possible.",
-            role: "CEO",
-            companyProfile: "B2B services SME, western Paris inner ring",
           },
         ],
         faq: [

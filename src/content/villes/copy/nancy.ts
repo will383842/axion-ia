@@ -136,20 +136,6 @@ export const NANCY_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes implantés dans le bassin nancéien — Saint-Gobain PAM, EDF direction régionale, CHRU de Nancy et organismes de recherche public.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a livré un audit opérationnel ciblé sur nos processus de production. Le rapport est chiffré, actionnable, compréhensible par nos équipes terrain. On a pu prioriser nos chantiers IA dès la semaine suivante.",
-            role: "Directeur industriel",
-            companyProfile: "ETI industrie, bassin lorrain Nancy",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes réelles plutôt que des slides génériques. Le livrable nous a permis de présenter un plan IA crédible à notre direction régionale.",
-            role: "Responsable innovation",
-            companyProfile: "PME services B2B, centre-ville Nancy",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nancy ?",
@@ -234,20 +220,6 @@ export const NANCY_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups in the Nancy basin — Saint-Gobain PAM, EDF regional division, CHRU de Nancy and public research bodies.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a targeted operational audit on our production processes. The report is costed, actionable, understandable by our field teams. We could prioritise our AI initiatives the following week.",
-            role: "Industrial Director",
-            companyProfile: "Industrial mid-cap, Lorraine basin Nancy",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our actual internal data rather than generic slides. The deliverable let us present a credible AI plan to our regional leadership.",
-            role: "Innovation Manager",
-            companyProfile: "B2B services SME, Nancy city centre",
           },
         ],
         faq: [
@@ -338,20 +310,6 @@ export const NANCY_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grandes structures nancéiennes — roadshow multi-sites Grand Nancy, séminaires CODIR + cascade équipes terrain, laboratoires ou ateliers industriels.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles de recherche. Dès le lendemain, plusieurs rédigeaient des comptes-rendus d'expériences avec l'IA.",
-            role: "Directrice R&D",
-            companyProfile: "PME recherche appliquée, Brabois Nancy",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles — pas de session générique, des cas concrets qui parlaient à nos équipes industrielles.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie, bassin lorrain Nancy",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nancy ?",
@@ -436,20 +394,6 @@ export const NANCY_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large Nancy organisations — multi-site Grand Nancy roadshows, exec committee seminars + field team, lab or industrial workshop cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-day format matched our R&D team's needs. They left with tools configured for their real research protocols. By the next day, several were already writing up experiment summaries with AI.",
-            role: "R&D Director",
-            companyProfile: "Applied research SME, Brabois Nancy",
-          },
-          {
-            quote:
-              "The executive session aligned us within a day on our AI trajectory. The consultant knew our sector constraints — no generic session, concrete cases that resonated with our industrial teams.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Lorraine basin Nancy",
           },
         ],
         faq: [
@@ -540,20 +484,6 @@ export const NANCY_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Nancy : Saint-Gobain PAM, EDF direction régionale, CHRU — cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation rapports documentaires médicaux livrée comme promis. ROI mesuré dès les premiers mois : nos équipes passent moins de temps sur l'administratif et plus sur le soin. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directrice qualité",
-            companyProfile: "Organisation de santé, Technopôle Brabois Nancy",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le labo et les bureaux du centre-ville. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME deeptech, campus Artem Nancy",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nancy ?",
@@ -638,20 +568,6 @@ export const NANCY_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Nancy large accounts: Saint-Gobain PAM, EDF regional division, CHRU — cascaded multi-site use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Medical document automation implementation delivered as promised. ROI measured within the first months: our teams spend less time on admin and more on care. No lock-in, we control our deployment.",
-            role: "Quality Director",
-            companyProfile: "Health organisation, Brabois Technopole Nancy",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the lab and the city-centre offices. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Deeptech SME, Artem campus Nancy",
           },
         ],
         faq: [
@@ -742,20 +658,6 @@ export const NANCY_COPY: VilleCopy = {
               "Accompagnement individuels multiples pour équipes dirigeantes de grands comptes nancéiens (Saint-Gobain PAM, EDF, CHRU) — programme cohérent multi-profils sur plusieurs mois.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'accompagnement individuel m'a permis de passer de « je sais que l'IA existe » à « je l'utilise chaque jour sur mes vrais dossiers médicaux ». Pace parfaite, zéro jugement, résultats concrets dès la deuxième séance.",
-            role: "Médecin-chercheur",
-            companyProfile: "CHRU Nancy, Technopôle Brabois",
-          },
-          {
-            quote:
-              "En tant que dirigeant d'ETI industrielle, je n'avais pas envie d'apprendre devant mes équipes. Le format 1-to-1 m'a permis de tester, rater, recommencer en toute confiance. Je suis maintenant celui qui montre l'exemple.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie, bassin lorrain Nancy",
-          },
-        ],
         faq: [
           {
             q: "Combien de séances faut-il pour maîtriser l'IA opérationnelle à Nancy ?",
@@ -840,20 +742,6 @@ export const NANCY_COPY: VilleCopy = {
             price: "Custom programme on quote",
             detail:
               "Multiple individual coaching sessions for executive teams of Nancy large accounts (Saint-Gobain PAM, EDF, CHRU) — coherent multi-profile programme over several months.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The individual coaching took me from 'I know AI exists' to 'I use it every day on my real medical files'. Perfect pace, zero judgement, concrete results from the second session.",
-            role: "Clinician-researcher",
-            companyProfile: "CHRU Nancy, Brabois Technopole",
-          },
-          {
-            quote:
-              "As an industrial mid-cap CEO, I didn't want to learn in front of my teams. The 1-to-1 format let me test, fail, try again in full confidence. I'm now the one setting the example.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Lorraine basin Nancy",
           },
         ],
         faq: [

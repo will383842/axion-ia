@@ -136,20 +136,6 @@ export const BORDEAUX_COPY: VilleCopy = {
               "Pour les grands sites industriels (Dassault Mérignac, Thales Le Haillan, Cdiscount Bassins à Flot) souhaitant cadrer une gouvernance IA centralisée multi-sites.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a cartographié nos processus de documentation technique en quelques journées et chiffré un ROI très concret sur nos cycles de révision de dossiers. Le livrable est opérationnel, pas théorique.",
-            role: "Directeur des opérations",
-            companyProfile: "PME sous-traitante aéronautique, Mérignac",
-          },
-          {
-            quote:
-              "On avait une intuition que l'IA pouvait simplifier notre gestion des commandes export. L'audit a confirmé trois cas à forte valeur et écarté deux fausses pistes. On a gagné du temps et de la clarté.",
-            role: "Directeur général",
-            companyProfile: "Négociant en vins, Bordeaux intra-muros",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Bordeaux ?",
@@ -234,20 +220,6 @@ export const BORDEAUX_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For major industrial sites (Dassault Mérignac, Thales Le Haillan, Cdiscount Bassins à Flot) framing centralised multi-site AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA mapped our technical documentation processes within a few days and quantified very concrete ROI on our dossier revision cycles. The deliverable is operational, not theoretical.",
-            role: "Head of Operations",
-            companyProfile: "Aerospace sub-contractor SME, Mérignac",
-          },
-          {
-            quote:
-              "We had an intuition that AI could simplify our export order management. The audit confirmed three high-value cases and ruled out two dead ends. We saved time and gained clarity.",
-            role: "Managing Director",
-            companyProfile: "Wine merchant, central Bordeaux",
           },
         ],
         faq: [
@@ -338,20 +310,6 @@ export const BORDEAUX_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands sites bordelais : roadshow multi-sites Métropole, séminaires CODIR + cascade équipes sur plusieurs journées.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée : nos ingénieurs méthodes et nos acheteurs sont repartis avec leurs outils IA configurés. Le lendemain, plusieurs l'utilisaient déjà pour rédiger des fiches de non-conformité.",
-            role: "Responsable excellence opérationnelle",
-            companyProfile: "PME sous-traitante aéronautique, Mérignac",
-          },
-          {
-            quote:
-              "La session a été adaptée à notre réalité viti-vinicole : emails export, fiches de dégustation, dossiers douaniers. Nos commerciaux ont tout de suite compris la valeur. Très loin d'une formation générique.",
-            role: "Directeur commercial",
-            companyProfile: "Négociant en vins, Bordeaux",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Bordeaux ?",
@@ -436,20 +394,6 @@ export const BORDEAUX_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for major Bordeaux sites: multi-site Métropole roadshows, exec committee seminars + cascade team sessions over several days.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated: our methods engineers and buyers left with their AI tools configured. The next day, several were already using them to write non-conformity reports.",
-            role: "Operational Excellence Manager",
-            companyProfile: "Aerospace sub-contractor SME, Mérignac",
-          },
-          {
-            quote:
-              "The session was adapted to our wine-trade reality: export emails, tasting notes, customs dossiers. Our sales team immediately understood the value. Very far from a generic training.",
-            role: "Sales Director",
-            companyProfile: "Wine merchant, Bordeaux",
           },
         ],
         faq: [
@@ -540,20 +484,6 @@ export const BORDEAUX_COPY: VilleCopy = {
               "Programmes annuels pour grands sites bordelais : cas d'usage cascadés multi-sites Métropole, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation génération automatique de rapports techniques livrée comme prévu. ROI réel mesuré : nos ingénieurs méthodes consacrent désormais ce temps à des tâches à plus forte valeur. Aucun lock-in, on maîtrise nos modèles.",
-            role: "Directeur technique",
-            companyProfile: "ETI sous-traitante aéronautique, Mérignac",
-          },
-          {
-            quote:
-              "Nos fiches techniques export en 5 langues étaient produites manuellement. Axion-IA a mis en place un agent de génération multilingue en quelques semaines. Cadence doublée, erreurs de traduction quasi nulles.",
-            role: "Directrice export",
-            companyProfile: "Négociant en vins, Bordeaux",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Bordeaux ?",
@@ -638,20 +568,6 @@ export const BORDEAUX_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for major Bordeaux sites: cascaded use cases across Métropole sites, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automatic technical report generation implemented as planned. Real ROI measured: our methods engineers now dedicate that time to higher-value tasks. No lock-in, we control our models.",
-            role: "Technical Director",
-            companyProfile: "Aerospace sub-contractor mid-cap, Mérignac",
-          },
-          {
-            quote:
-              "Our export technical sheets in 5 languages were produced manually. Axion-IA deployed a multilingual generation agent within a few weeks. Output doubled, translation errors near zero.",
-            role: "Export Director",
-            companyProfile: "Wine merchant, Bordeaux",
           },
         ],
         faq: [
@@ -742,20 +658,6 @@ export const BORDEAUX_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et managers des grands groupes bordelais (Dassault, Thales, Safran, ArianeGroup) pour des besoins d'acculturation IA individualisés.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment utiliser l'IA pour qualifier nos appels d'offres aéronautiques. On a travaillé sur nos vrais dossiers techniques dès la première séance. Gain de temps immédiat sur mes process.",
-            role: "Directeur des ventes",
-            companyProfile: "PME sous-traitant aéronautique, Mérignac – Gironde",
-          },
-          {
-            quote:
-              "Format idéal pour un négociant en vins avec un agenda serré : séances courtes, focalisées sur mes enjeux export et ma communication digitale. L'IA est maintenant intégrée dans ma prospection internationale.",
-            role: "Directeur général",
-            companyProfile: "PME négoce viticole, Bordeaux Métropole",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Bordeaux ?",
@@ -840,20 +742,6 @@ export const BORDEAUX_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers at major Bordeaux groups (Dassault, Thales, Safran, ArianeGroup) requiring individualised AI acculturation.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me understand concretely how to use AI for qualifying our aerospace RFPs. We worked on our real technical dossiers from the first session. Immediate time saving on my processes.",
-            role: "Sales Director",
-            companyProfile: "Aerospace subcontractor SME, Mérignac – Gironde",
-          },
-          {
-            quote:
-              "Ideal format for a wine merchant with a tight schedule: short sessions focused on my export challenges and digital communication. AI is now integrated into my international prospecting.",
-            role: "Managing Director",
-            companyProfile: "Wine trade SME, Bordeaux Métropole",
           },
         ],
         faq: [

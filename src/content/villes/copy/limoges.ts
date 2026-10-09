@@ -163,20 +163,6 @@ export const LIMOGES_COPY: VilleCopy = {
               "Pour les grandes entreprises dont le siège ou un site majeur est implanté à Limoges, notamment les directions IA et transformation de Legrand.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel en quelques semaines. Le rapport est chiffré, actionnable, sans jargon. Nos responsables de production ont pu prioriser les chantiers IA dès la restitution.",
-            role: "Directeur industriel",
-            companyProfile: "ETI industrie, bassin de Limoges",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données de production — pas des slides génériques. Le livrable a convaincu notre direction de lancer les deux premiers projets IA avec un ROI chiffré.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME services, ESTER Technopole Limoges",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Limoges ?",
@@ -261,20 +247,6 @@ export const LIMOGES_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises with HQ or a major site in Limoges, particularly Legrand's AI and transformation divisions.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit within a few weeks. The report is costed, actionable, jargon-free. Our production managers were able to prioritize AI initiatives right after the read-out.",
-            role: "Industrial Director",
-            companyProfile: "Industrial mid-cap, Limoges basin",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data — not generic slides. The deliverable convinced our leadership to launch the first two AI projects with a costed ROI.",
-            role: "Head of Transformation",
-            companyProfile: "Services SME, ESTER Technopole Limoges",
           },
         ],
         faq: [
@@ -366,20 +338,6 @@ export const LIMOGES_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites majeurs limougeauds — roadshow multi-sites bassin, séminaires CODIR + cascade équipes terrain ou ateliers de production.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes production. Ils sont repartis avec leurs outils configurés sur leurs vrais process. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus qualité.",
-            role: "Responsable production",
-            companyProfile: "PME céramique, ESTER Technopole Limoges",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles limogeaudes — pas de session générique, des cas concrets qui parlaient à nos équipes.",
-            role: "DG",
-            companyProfile: "ETI industrie, bassin de Limoges",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Limoges ?",
@@ -464,20 +422,6 @@ export const LIMOGES_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Limoges major sites — multi-site basin roadshows, exec committee seminars + production floor or workshop cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-day format perfectly matched our production team's needs. They left with tools configured for their real processes. By the next day, several were already using them to write quality reports.",
-            role: "Production Manager",
-            companyProfile: "Ceramics SME, ESTER Technopole Limoges",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our Limoges sector constraints — no generic session, concrete cases that resonated with our teams.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Limoges basin",
           },
         ],
         faq: [
@@ -569,20 +513,6 @@ export const LIMOGES_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes limougeauds : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie. Pertinent pour les directions Legrand.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation rapports qualité livrée comme promis. ROI mesuré dès les premiers mois : nos techniciens passent maintenant moins de temps sur les rapports et plus sur l'amélioration produit. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur industriel",
-            companyProfile: "ETI industrie, bassin de Limoges",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe entre l'atelier et le bureau. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME céramique technique, ESTER Technopole Limoges",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Limoges ?",
@@ -667,20 +597,6 @@ export const LIMOGES_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Limoges large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode. Relevant for Legrand directorates.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Quality report automation implementation delivered as promised. ROI measured within the first months: our technicians now spend less time on reports and more on product improvement. No lock-in, we control our deployment.",
-            role: "Industrial Director",
-            companyProfile: "Industrial mid-cap, Limoges basin",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team between the workshop and the office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Technical ceramics SME, ESTER Technopole Limoges",
           },
         ],
         faq: [
@@ -772,20 +688,6 @@ export const LIMOGES_COPY: VilleCopy = {
               "Pour dirigeants et executives de grands groupes (Legrand) souhaitant un programme de coaching IA confidentiel et sur mesure.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching individuel m'a permis de comprendre concrètement comment l'IA pouvait s'appliquer à notre manufacture. Les séances sont ancrées dans notre réalité, pas dans des cas théoriques. J'ai pu présenter un plan d'action crédible à mon conseil d'administration.",
-            role: "Directeur général",
-            companyProfile: "Manufacture porcelaine, Limoges",
-          },
-          {
-            quote:
-              "Format idéal pour un agenda de dirigeant : flexible, confidentiel, 100 % sur mes enjeux réels. En quelques séances, j'ai une vision claire de ce que l'IA peut apporter à ma filière et comment le piloter.",
-            role: "Directeur de site",
-            companyProfile: "ETI industrie, bassin de Limoges",
-          },
-        ],
         faq: [
           {
             q: "Combien de séances sont nécessaires pour un coaching IA à Limoges ?",
@@ -870,20 +772,6 @@ export const LIMOGES_COPY: VilleCopy = {
             price: "Executive programme",
             detail:
               "For large group executives and leaders (Legrand) wanting a confidential, bespoke AI coaching programme.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Individual coaching helped me understand concretely how AI could apply to our manufacture. Sessions are grounded in our reality, not theoretical cases. I was able to present a credible action plan to my board.",
-            role: "CEO",
-            companyProfile: "Porcelain manufacturer, Limoges",
-          },
-          {
-            quote:
-              "Ideal format for an executive schedule: flexible, confidential, 100% on my real challenges. In a few sessions, I have a clear vision of what AI can bring to my industry and how to steer it.",
-            role: "Site Director",
-            companyProfile: "Industrial mid-cap, Limoges basin",
           },
         ],
         faq: [

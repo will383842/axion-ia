@@ -162,20 +162,6 @@ export const ROUEN_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes implantés dans la Métropole (Renault Cléon, Safran Nacelles, Janssen-Cilag, Matmut, HAROPA Port).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel avec un rapport chiffré, actionnable, sans jargon. On a pu présenter le plan au conseil de direction dès la semaine suivante et prioriser nos chantiers IA avec confiance.",
-            role: "Directeur général",
-            companyProfile: "ETI logistique, Métropole Rouen Normandie",
-          },
-          {
-            quote:
-              "Démos sur nos données réelles plutôt que des slides génériques. Le livrable a permis d'identifier trois cas d'usage à ROI immédiat dans notre chaîne de traitement, avec une roadmap réaliste.",
-            role: "Directrice transformation digitale",
-            companyProfile: "PME industrie, Technopôle du Madrillet",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Rouen ?",
@@ -260,20 +246,6 @@ export const ROUEN_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups implanted in the Métropole (Renault Cléon, Safran Nacelles, Janssen-Cilag, Matmut, HAROPA Port).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit with a costed, actionable, jargon-free report. We presented the plan to the board the very next week and prioritised our AI initiatives with confidence.",
-            role: "CEO",
-            companyProfile: "Logistics mid-cap, Métropole Rouen Normandie",
-          },
-          {
-            quote:
-              "Demos on our real data rather than generic slides. The deliverable identified three immediate-ROI use cases in our processing chain, with a realistic roadmap.",
-            role: "Head of Digital Transformation",
-            companyProfile: "Industrial SME, Technopôle du Madrillet",
           },
         ],
         faq: [
@@ -364,20 +336,6 @@ export const ROUEN_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges rouennais — roadshow multi-sites Métropole, séminaires CODIR + cascade équipes terrain ou ateliers.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes opérations. Ils sont repartis avec leurs outils configurés sur leurs vrais processus logistiques. Dès le lendemain, plusieurs les utilisaient pour traiter la documentation de transit.",
-            role: "Directeur opérations",
-            companyProfile: "PME logistique, axe Seine Rouen",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles normandes — pas de session générique, des cas concrets qui parlaient à nos équipes industrielles.",
-            role: "DG",
-            companyProfile: "ETI industrie, Métropole Rouen Normandie",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Rouen ?",
@@ -462,20 +420,6 @@ export const ROUEN_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Rouen HQs — multi-site Métropole roadshows, exec committee seminars + field team or workshop cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our operations team's needs. They left with tools configured for their real logistics processes. By the next day, several were already using them to handle transit documentation.",
-            role: "Operations Director",
-            companyProfile: "Logistics SME, Seine axis Rouen",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our Norman sector constraints — no generic session, concrete cases that resonated with our industrial teams.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Métropole Rouen Normandie",
           },
         ],
         faq: [
@@ -566,20 +510,6 @@ export const ROUEN_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Métropole Rouen : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation documentation transit livrée comme promis. ROI mesuré dès les premiers mois : nos équipes passent maintenant moins de temps sur les documents et plus sur la relation client. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur logistique",
-            companyProfile: "ETI transport & logistique, Métropole Rouen",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe entre le labo et le bureau. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME numérique, Technopôle du Madrillet",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Rouen ?",
@@ -664,20 +594,6 @@ export const ROUEN_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Métropole Rouen large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Transit documentation automation implementation delivered as promised. ROI measured within the first months: our teams now spend less time on documents and more on client relations. No lock-in, we control our deployment.",
-            role: "Logistics Director",
-            companyProfile: "Transport & logistics mid-cap, Métropole Rouen",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team between the lab and the office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Digital SME, Technopôle du Madrillet",
           },
         ],
         faq: [
@@ -768,20 +684,6 @@ export const ROUEN_COPY: VilleCopy = {
               "Accompagnement de plusieurs dirigeants ou cadres supérieurs d'un même groupe implanté dans la Métropole — format confidentiel, séances individuelles distinctes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Trois sessions 1-to-1 ont changé ma façon de traiter les rapports d'activité. Je gagne plusieurs heures par semaine sur des tâches que je faisais manuellement depuis des années. Le coach connaissait parfaitement les contraintes de mon secteur.",
-            role: "Directeur commercial",
-            companyProfile: "ETI assurance, Rouen",
-          },
-          {
-            quote:
-              "Format complètement adapté à mon rythme de dirigeant. On a travaillé sur mes vrais dossiers, pas sur des exemples bidons. Résultat opérationnel dès la première session.",
-            role: "PDG",
-            companyProfile: "PME logistique, Métropole Rouen Normandie",
-          },
-        ],
         faq: [
           {
             q: "Combien de sessions faut-il pour progresser en IA à Rouen ?",
@@ -866,20 +768,6 @@ export const ROUEN_COPY: VilleCopy = {
             price: "Senior executive programme",
             detail:
               "Coaching of several executives or senior managers from the same group implanted in the Métropole — confidential format, separate individual sessions.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Three 1-to-1 sessions changed how I handle activity reports. I save several hours per week on tasks I had been doing manually for years. The coach knew our sector constraints perfectly.",
-            role: "Sales Director",
-            companyProfile: "Insurance mid-cap, Rouen",
-          },
-          {
-            quote:
-              "Format perfectly adapted to my executive pace. We worked on my real files, not dummy examples. Operational result from the very first session.",
-            role: "CEO",
-            companyProfile: "Logistics SME, Métropole Rouen Normandie",
           },
         ],
         faq: [
