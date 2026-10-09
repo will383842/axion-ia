@@ -80,7 +80,8 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { createContext, useContext, type ReactNode } from "react";
+import { AsyncLocalStorage } from "node:async_hooks";
+import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
 // SSOT du pied de page légal — module PUR, valeurs figées au Kbis. Remplace les
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
@@ -115,15 +116,24 @@ export function setReviewStats(stats: ReviewStats): void {
  * par `renderEmailTemplate` avant plusieurs `await` (statistiques d'avis, rendu HTML, rendu
  * texte). Le worker rend deux e-mails à la fois (`concurrency: 2`) : l'e-mail de A pouvait
  * partir avec le lien de B, dont le jeton porte l'ADRESSE en clair (base64url) — fuite de
- * l'adresse, et opposition possible au nom de B. Désormais un CONTEXTE React créé PAR RENDU,
- * posé autour du gabarit par `renderEmailTemplate` et lu ici : aucun rendu ne voit celui d'un
- * autre. ⛔ Ne jamais remettre une donnée propre au destinataire dans une variable de module.
- * Sans fournisseur (aperçus, tests de gabarit seul) : aucun lien.
+ * l'adresse, et opposition possible au nom de B. Désormais un `AsyncLocalStorage` : chaque
+ * rendu porte SES données (`avecDonneesRendu`, posé par `renderEmailTemplate` autour des deux
+ * `render`), lues ici par `getStore()` — le contexte asynchrone suit chaque rendu à travers
+ * ses `await`, aucun rendu ne voit celui d'un autre. Pas un React Context : `createContext`
+ * est interdit dans le graphe RSC (cf. `CURRENT_REVIEW_STATS` ci-dessus — build cassé).
+ * ⛔ Ne jamais remettre une donnée propre au destinataire dans une variable de module.
+ * Hors rendu (aperçus, tests de gabarit seul) : aucun lien.
  */
 export interface DonneesRenduEmail {
   readonly oppositionHref: string | null;
 }
-export const ContexteRenduEmail = createContext<DonneesRenduEmail>({ oppositionHref: null });
+const RENDU_EN_COURS = new AsyncLocalStorage<DonneesRenduEmail>();
+export function avecDonneesRendu<T>(
+  donnees: DonneesRenduEmail,
+  rendu: () => Promise<T>,
+): Promise<T> {
+  return RENDU_EN_COURS.run(donnees, rendu);
+}
 
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -786,7 +796,7 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
-  const { oppositionHref } = useContext(ContexteRenduEmail);
+  const oppositionHref = RENDU_EN_COURS.getStore()?.oppositionHref ?? null;
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
