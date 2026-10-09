@@ -209,7 +209,10 @@ describe("buildAdminNav SSOT", () => {
     // des Imprimés, dérivé de IMPRIMES — document INTERNE, téléchargeable par
     // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
     // +1 État des fonds OPCO (lot OPCO A5, 2026-10-04) : 169 + 1 = 170.
-    expect(items.length).toBe(174);
+    // L8e (Candidatures unifiées, 2026-10-09) : −2 « Monteurs & vidéastes »
+    // et « Suivi des candidatures » (devenus onglet / bandeau de la liste,
+    // adresses redirigées), +1 « Bibliothèque de fichiers ». 174 − 2 + 1 = 173.
+    expect(items.length).toBe(173);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -338,26 +341,27 @@ describe("buildAdminNav SSOT", () => {
   // dans la boîte de réception — apporteurs et candidatures emploi — ont
   // chacun leur groupe, parce que « Apporteurs » et « Candidatures » côte à
   // côte se lisaient l'un pour l'autre. Les URLs, elles, n'ont pas bougé.
+  // 🔑 L8e (Candidatures unifiées, 2026-10-09, maquette v2 validée par Will) :
+  // les deux groupes s'appellent « Réseau d'apporteurs » et « Candidatures ».
+  // Le libellé nu « Candidatures » REVIENT, et ce n'est plus ambigu : il vit
+  // dans son groupe, et l'autre monde s'appelle « Futurs apporteurs », jamais
+  // « candidats ». Les URLs n'ont toujours pas bougé.
   it("apporteurs et candidatures emploi ont chacun leur groupe, sous leurs URLs d'origine", () => {
     const items = buildAdminNav("p");
-    const candidatures = items.find((it) => it.label === "Candidatures emploi");
+    const candidatures = items.find((it) => it.label === "Candidatures");
     expect(candidatures?.group).toBe("recrutement");
     expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
-    expect(ADMIN_NAV_GROUP_LABELS.recrutement).toBe("Recrutement salariés");
-    const apporteurs = items.find((it) => it.label === "Candidats apporteurs");
+    expect(ADMIN_NAV_GROUP_LABELS.recrutement).toBe("Candidatures");
+    const apporteurs = items.find((it) => it.label === "Futurs apporteurs");
     expect(apporteurs?.group).toBe("apporteurs");
     expect(apporteurs?.href).toBe("/fr/p/contacts/commercial");
-    expect(ADMIN_NAV_GROUP_LABELS.apporteurs).toBe("Apporteurs d'affaires");
-    // Les libellés nus, ambigus, ne reviennent pas. « Apporteurs » est permis depuis le
-    // 07/10 (décision de Will) : la liste des apporteurs ACTIFS, dans le groupe « Apporteurs
-    // d'affaires », loin des « Candidatures emploi » qui ont leur propre groupe.
-    expect(items.find((it) => it.label === "Apporteurs")?.group).toBe("apporteurs");
-    for (const ambigu of ["Recrutement", "Candidatures"]) {
-      expect(
-        items.some((it) => it.label === ambigu),
-        ambigu,
-      ).toBe(false);
+    expect(ADMIN_NAV_GROUP_LABELS.apporteurs).toBe("Réseau d'apporteurs");
+    expect(items.find((it) => it.label === "Apporteurs signés")?.group).toBe("apporteurs");
+    // Aucun mot de recrutement côté réseau, aucun libellé « Recrutement » nu.
+    for (const it of items.filter((x) => x.group === "apporteurs")) {
+      expect(it.label, it.label).not.toMatch(/candidat|recrut/i);
     }
+    expect(items.some((it) => it.label === "Recrutement")).toBe(false);
   });
 
   // ── Refonte « Boîte de réception » 2026-07-29 ───────────────────────────
@@ -444,13 +448,26 @@ describe("buildAdminNav SSOT", () => {
       }
     });
 
-    it("les vues de Candidatures sont indentées sous « Candidatures emploi »", () => {
+    it("le groupe Candidatures suit la maquette v2 : Candidatures · Bibliothèque · Offres publiées", () => {
       const recrutement = items.filter((it) => it.group === "recrutement" && it.parent == null);
       expect(recrutement.map((it) => [it.label, it.navLevel ?? 0])).toEqual([
-        ["Candidatures emploi", 0],
-        ["Monteurs & vidéastes", 1],
-        ["Suivi des candidatures", 1],
-        ["Offres d'emploi", 1],
+        ["Candidatures", 0],
+        ["Bibliothèque de fichiers", 1],
+        ["Offres publiées", 1],
+      ]);
+    });
+
+    it("le groupe Réseau d'apporteurs suit la maquette v2", () => {
+      const reseau = items.filter((it) => it.group === "apporteurs" && it.parent == null);
+      expect(reseau.map((it) => it.label)).toEqual([
+        "Futurs apporteurs",
+        "Apporteurs signés",
+        "Entreprises présentées",
+        "Commissions",
+        "Annonces",
+        "Liens de campagne",
+        // La trame imprimable de l'échange (sous-onglet dérivé des Imprimés).
+        "Trame d'échange",
       ]);
     });
 
@@ -603,13 +620,12 @@ describe("menu rangé, sans écrans vides (2026-09-19)", () => {
     // Libellés du 2026-09-28 (« Apporteurs » → « Candidats apporteurs »,
     // « Suivi des candidatures emploi » → « Suivi des candidatures », rangé
     // sous « Candidatures emploi » dans « Recrutement salariés »).
-    expect(parLibelle("Candidats apporteurs")?.href).toBe(`${base}/contacts/commercial`);
-    expect(parLibelle("Suivi des candidatures")?.href).toBe(
-      `${base}/contacts/candidatures/pilotage`,
-    );
+    expect(parLibelle("Futurs apporteurs")?.href).toBe(`${base}/contacts/commercial`);
+    // L8e — « Suivi des candidatures » a quitté le menu ; son adresse redirige.
+    expect(parLibelle("Suivi des candidatures")).toBeUndefined();
     expect(parLibelle("Demandes clients")?.href).toBe(`${base}/contacts/clients`);
     expect(parLibelle("Tunnel diagnostic & simulateur")?.href).toBe(`${base}/tunnels/prospects`);
-    expect(parLibelle("Provenance des annonces")?.href).toBe(`${base}/annonces`);
+    expect(parLibelle("Annonces")?.href).toBe(`${base}/annonces`);
     const reseau = parLibelle("Réseau de partenaires");
     expect(reseau?.href).toBe(`${base}/qualiopi/partenariats`);
     expect(reseau?.group).toBe("qualiopi");
@@ -636,7 +652,8 @@ describe("menu rangé, sans écrans vides (2026-09-19)", () => {
   });
 
   it("les offres d'emploi sont rangées sous Candidatures, plus dans Contenu", () => {
-    const offres = parLibelle("Offres d'emploi");
+    // L8e — « Offres publiées » (maquette v2), même adresse.
+    const offres = parLibelle("Offres publiées");
     // Groupe « Recrutement salariés » depuis le 2026-09-28, indentée sous
     // « Candidatures emploi » qui y est au niveau 0.
     expect(offres?.group).toBe("recrutement");
@@ -840,8 +857,9 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/contacts/autres",
   "/contacts/commercial",
   "/contacts/candidatures",
-  "/contacts/candidatures/video",
-  "/contacts/candidatures/pilotage",
+  // L8e (2026-10-09) : `/contacts/candidatures/video` et `/pilotage` quittent
+  // le menu (redirigés vers la liste) ; la bibliothèque de fichiers y entre.
+  "/contacts/candidatures/bibliotheque",
   "/offres-emploi",
   "/tunnels",
   "/tunnels/prospects",
@@ -1012,8 +1030,8 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
   it("les groupes suivent l'ordre d'usage demandé", () => {
     expect(ADMIN_NAV_GROUP_ORDER.map((g) => ADMIN_NAV_GROUP_LABELS[g])).toEqual([
       "Contacts & demandes",
-      "Apporteurs d'affaires",
-      "Recrutement salariés",
+      "Réseau d'apporteurs",
+      "Candidatures",
       "E-mails",
       "Formations & prestations",
       "Coaching 1-to-1",
@@ -1049,8 +1067,8 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
   it("chaque renommage du menu garde son URL", () => {
     const renommages: ReadonlyArray<[string, string]> = [
       ["Toutes les réservations (Calendly)", "/contacts/appels"],
-      ["Candidats apporteurs", "/contacts/commercial"],
-      ["Candidatures emploi", "/contacts/candidatures"],
+      ["Futurs apporteurs", "/contacts/commercial"],
+      ["Candidatures", "/contacts/candidatures"],
       ["Pilotage", "/planning/hub"],
       ["Occupation", "/planning/timeline"],
       ["Affaires en cours", "/planning/pipeline"],
