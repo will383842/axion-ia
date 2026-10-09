@@ -37,6 +37,7 @@ import { notify } from "@/server/notifications";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
+import { familleHorsClients } from "@/server/calendly/appel-apporteur";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import {
   canalDuRendezVous,
@@ -420,7 +421,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // ci-dessous, qui attend elle aussi l'enrichissement : si celui-ci ne rendait
   // jamais la main, ni l'événement CRM ni l'alerte ne partiraient. Il est borné
   // à 5 secondes et ne lève pas.
-  if (notifyEmail) {
+  //
+  // 🔴 8 ter. UN ÉCHANGE FORMATEUR NE SORT PAS D'ICI (lot F-CAL-1, 2026-10-09).
+  // Ni au CRM des ventes, ni en alerte : un formateur indépendant n'est pas un
+  // prospect, et cette route est publique — un POST forgé avec un slug
+  // « formateur » ne doit rien déclencher hors de la ligne enregistrée. Le slug
+  // ET le nom relu après enrichissement sont lus : l'un ou l'autre suffit.
+  // Apporteur d'abord : un nom qui porte les deux mots garde le comportement
+  // apporteur (pas de CRM — garde centrale —, mais l'alerte part).
+  const familles = [
+    familleHorsClients({ typeRendezVous, eventTypeName: nomType }),
+    familleHorsClients({ eventTypeName: parsed.data.eventTypeSlug }),
+  ];
+  const echangeFormateur = !familles.includes("apporteur") && familles.includes("formateur");
+  if (notifyEmail && !echangeFormateur) {
     await syncCalendlyEventToCrm({
       kind: "booked",
       subjectRef: `site:calendly_event:${event.id}`,
@@ -450,34 +464,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // 9. Notif Telegram via hub
-  await notify({
-    category: "CALENDLY_INVITEE_CREATED",
-    payload: {
-      eventUri: event.id,
-      inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
-      inviteeName: notifyName ?? "(non communiqué)",
-      eventStartTime: notifyStart ?? "(voir mail Calendly)",
-      eventName: parsed.data.eventTypeSlug,
-      // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
-      typeRendezVous,
-      ...(besoin ? { besoin } : {}),
-      // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
-      ...(format === "inconnu" ? {} : { format }),
-      ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
-      ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
-      ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
-      ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
-    },
-    // 🔴 La clé était `event.id` — l'identifiant de la ligne qu'on VIENT de
-    // créer, donc neuf à chaque appel. Elle ne pouvait rien dédoublonner : la
-    // route pouvait émettre autant d'alertes que de lignes fabriquées.
-    // Dérivée du FAIT désormais : la réservation identifiée par son URI
-    // d'invité quand Calendly la fournit, sinon par le triplet
-    // adresse + type + jour. Deux signalements du même rendez-vous n'émettent
-    // qu'une alerte, quel que soit le nombre de lignes créées.
-    dedupKey: dedupKeyDuFait(inviteeUri, notifyEmail, parsed.data.eventTypeSlug),
-  });
+  // 9. Notif Telegram via hub — jamais pour un échange formateur (8 ter).
+  if (!echangeFormateur) {
+    await notify({
+      category: "CALENDLY_INVITEE_CREATED",
+      payload: {
+        eventUri: event.id,
+        inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
+        inviteeName: notifyName ?? "(non communiqué)",
+        eventStartTime: notifyStart ?? "(voir mail Calendly)",
+        eventName: parsed.data.eventTypeSlug,
+        // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
+        typeRendezVous,
+        ...(besoin ? { besoin } : {}),
+        // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
+        ...(format === "inconnu" ? {} : { format }),
+        ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
+        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
+        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+        ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+      },
+      // 🔴 La clé était `event.id` — l'identifiant de la ligne qu'on VIENT de
+      // créer, donc neuf à chaque appel. Elle ne pouvait rien dédoublonner : la
+      // route pouvait émettre autant d'alertes que de lignes fabriquées.
+      // Dérivée du FAIT désormais : la réservation identifiée par son URI
+      // d'invité quand Calendly la fournit, sinon par le triplet
+      // adresse + type + jour. Deux signalements du même rendez-vous n'émettent
+      // qu'une alerte, quel que soit le nombre de lignes créées.
+      dedupKey: dedupKeyDuFait(inviteeUri, notifyEmail, parsed.data.eventTypeSlug),
+    });
+  }
 
   // 10. Couleur du format dans l'agenda Google — best-effort, jamais bloquant.
   //     Même raisonnement qu'en `discover.ts` : Calendly met quelques secondes

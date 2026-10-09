@@ -1,5 +1,5 @@
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { estEchangeHorsClients } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
   bornerReponsesCrm,
@@ -178,7 +178,18 @@ export async function syncCalendlyEventToCrm(
   // seulement par chance : « echange-apporteur-affaires » contient le mot-clé.
   // Double verrou : le type OU le nom. Un futur slug « apporteur-salon-… »
   // classé « salon » par l'URI ne doit pas fuir vers les ventes.
-  if (payload.typeRendezVous === "apporteur" || estAppelApporteur(payload.eventTypeName)) return;
+  //
+  // 🔑 2026-10-09 (lot F-CAL-1) : un échange avec un formateur indépendant n'est
+  // pas plus un prospect — même garde, par le prédicat commun « hors clients »
+  // (apporteur OU formateur, `server/calendly/echange-formateur.ts`).
+  if (
+    estEchangeHorsClients({
+      typeRendezVous: payload.typeRendezVous,
+      eventTypeName: payload.eventTypeName,
+    })
+  ) {
+    return;
+  }
 
   const map = {
     booked: "calendly_booked",

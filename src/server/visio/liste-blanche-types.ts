@@ -22,7 +22,8 @@
  * passe, « Ne pas confondre : discutons… » ne passe pas.
  *
  * Trois refus, quel que soit le nom :
- *   · un échange apporteur (`estAppelApporteur`) ;
+ *   · un échange apporteur OU formateur (`estEchangeHorsClientsParNom`, lot
+ *     F-CAL-1 du 2026-10-09 : un formateur indépendant n'est pas un client) ;
  *   · un rendez-vous rattaché à une candidature (`linkedJobApplicationId`) :
  *     c'est un entretien, jamais un rendez-vous client ;
  *   · un nom vide.
@@ -43,7 +44,7 @@
  * Module PUR : aucun accès à la base, utilisable par le worker.
  */
 
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { estEchangeHorsClientsParNom } from "@/server/calendly/appel-apporteur";
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 
 /**
@@ -81,7 +82,7 @@ export function normaliserNomDeType(nom: string): string {
 /** Ce type d'événement Calendly entre-t-il au dossier client ? */
 export function estTypeDuDossier(nomDuType: string | null | undefined): boolean {
   if (!nomDuType || nomDuType.trim() === "") return false;
-  if (estAppelApporteur(nomDuType)) return false;
+  if (estEchangeHorsClientsParNom(nomDuType)) return false;
   const n = normaliserNomDeType(nomDuType);
   return TYPES_CALENDLY_DU_DOSSIER.some((debut) => n.startsWith(debut));
 }
@@ -102,9 +103,9 @@ export function estRendezVousDuDossier(ev: RendezVousCalendlyAClasser): boolean 
   if (ev.linkedJobApplicationId) return false;
   const type = ev.typeRendezVous;
   if (type && type !== "autre") {
-    // Le type décide. Garde de sûreté : un nom d'échange apporteur ne passe
-    // jamais, quel que soit le type écrit.
-    if (ev.eventTypeName && estAppelApporteur(ev.eventTypeName)) return false;
+    // Le type décide. Garde de sûreté : un nom d'échange apporteur ou formateur
+    // ne passe jamais, quel que soit le type écrit.
+    if (ev.eventTypeName && estEchangeHorsClientsParNom(ev.eventTypeName)) return false;
     return TYPES_RENDEZ_VOUS_DU_DOSSIER.includes(type);
   }
   return estTypeDuDossier(ev.eventTypeName);

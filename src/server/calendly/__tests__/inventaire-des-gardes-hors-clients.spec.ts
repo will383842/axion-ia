@@ -3,7 +3,8 @@
  *
  * Toute exclusion des familles CLIENT (e-mails « appel de découverte »), du CRM
  * des ventes, du dossier client et de la visio enregistrée passe par
- * `estEchangeHorsClients(ParNom)` / `HORS_ECHANGES_HORS_CLIENTS(_PAR_NOM)` —
+ * `estEchangeHorsClients(ParNom)` / `familleHorsClients` /
+ * `HORS_ECHANGES_HORS_CLIENTS(_PAR_NOM)` —
  * apporteur OU formateur. Les prédicats « apporteur » seuls ne servent plus
  * qu'à SÉLECTIONNER les apporteurs (fiche, rattachement, invitation, classement).
  *
@@ -95,7 +96,9 @@ describe("⛔ inventaire des gardes hors clients", () => {
 
   it("les exclusions client / CRM / dossier / visio lisent toutes le prédicat commun", () => {
     expect(
-      porteurs(/\b(estEchangeHorsClients(ParNom)?|HORS_ECHANGES_HORS_CLIENTS(_PAR_NOM)?)\b/),
+      porteurs(
+        /\b(estEchangeHorsClients(ParNom)?|familleHorsClients|HORS_ECHANGES_HORS_CLIENTS(_PAR_NOM)?)\b/,
+      ),
     ).toEqual(BASCULES);
   });
 

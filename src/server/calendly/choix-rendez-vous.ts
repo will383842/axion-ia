@@ -30,6 +30,7 @@
 // Module NEUTRE (ni `server-only`, ni Next) : testable sans framework.
 
 import { canonicalPath, listerTypesEvenementCalendly } from "@/server/calendly/availability";
+import { estEchangeFormateurParNom } from "@/server/calendly/echange-formateur";
 import {
   classerParNom,
   estTypeRendezVous,
@@ -317,6 +318,11 @@ export async function urlDeReprogrammation(rdv: RendezVousAReprogrammer): Promis
     ? rdv.typeRendezVous
     : classerParNom(rdv.eventTypeName);
   if (type === "diagnostic") return resoudreAvec("diagnostic", table).url;
+  // L'échange formateur est classé `autre` (pas de valeur d'enum, lot F-CAL-1) :
+  // seul son nom le reconnaît. Sans ce cas, il serait reprogrammé sur le type appel.
+  if (type === "autre" && estEchangeFormateurParNom(rdv.eventTypeName)) {
+    return urlConfigureeDuChoix("formateur");
+  }
   // Apporteur, salon : leur propre adresse. Avant le 2026-10-05, un salon retombait
   // ici sur le type appel — ce que seul l'écran « sur place » du report masquait.
   const choix = choixDuTypeRendezVous(type);

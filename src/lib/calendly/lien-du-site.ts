@@ -31,7 +31,7 @@
 
 import { SITE_URL } from "@/lib/site-url";
 import {
-  CHOIX_RENDEZ_VOUS,
+  TOUS_LES_CHOIX,
   TYPES_RESERVABLES,
   urlConfigureeDuChoix,
   type ChoixRendezVous,
@@ -52,7 +52,7 @@ function cheminCanonique(valeur: string): string | null {
 const PARAMS_GARDES = ["utm_source", "utm_medium", "utm_campaign"] as const;
 
 /**
- * Quel rendez-vous désigne cette adresse Calendly ? `null` si aucun des quatre.
+ * Quel rendez-vous désigne cette adresse Calendly ? `null` si aucun des cinq.
  *
  * Compare au CHEMIN configuré de chaque type (variable d'environnement, sinon
  * défaut) — la même règle de comparaison que le classement des rendez-vous.
@@ -61,7 +61,7 @@ const PARAMS_GARDES = ["utm_source", "utm_medium", "utm_campaign"] as const;
 export function choixDeLUrlCalendly(url: string): ChoixRendezVous | null {
   const chemin = cheminCanonique(url);
   if (!chemin) return null;
-  for (const choix of CHOIX_RENDEZ_VOUS) {
+  for (const choix of TOUS_LES_CHOIX) {
     if (cheminCanonique(urlConfigureeDuChoix(choix)) === chemin) return choix;
   }
   if (cheminCanonique(URL_CALENDLY_APPORTEUR_ANCIEN_DEFAUT) === chemin) return "apporteur";
