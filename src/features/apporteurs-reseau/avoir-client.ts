@@ -53,6 +53,7 @@ const CHAMPS_LIGNE = {
   autofactureNumero: true,
   autofactureEmiseAt: true,
   verseeAt: true,
+  creeAt: true,
 } as const;
 
 /** Les avoirs de moins de 24 mois (art. 4.5 : la reprise court de la date de CHAQUE annulation). */
@@ -224,6 +225,7 @@ export async function reprendreApresAvoirsClients(
       autofactureNumero: true,
       autofactureEmiseAt: true,
       verseeAt: true,
+      creeAt: true,
     },
   });
   if (lignes.length === 0) return bilan;
@@ -235,14 +237,13 @@ export async function reprendreApresAvoirsClients(
     try {
       const lu = await facturesDeLaCommande(factureId);
       if (!lu) continue;
-      const { brutCents, netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
+      const { netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
       if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
       const net = Math.max(0, netCents);
       // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
       // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
       // plus ancien ne profite jamais du délai d'un avoir récent.
       const recents = avoirsDansLeDelai(actifs as FactureLue[], maintenant);
-      const netRecent = Math.max(0, brutCents + recents.reduce((x, a) => x + a.montantHtCents, 0));
       const annulationLe = dateDeLAnnulation(recents) ?? maintenant;
       const motif = `Art. 4.5 : facture du client annulée ou réduite par un avoir (prix net ${(net / 100).toFixed(2).replace(".", ",")} € HT).`;
 
@@ -301,10 +302,18 @@ export async function reprendreApresAvoirsClients(
           continue;
         }
 
-        if (recents.length === 0) continue; // aucun avoir dans le délai : rien à reprendre
+        // Relecture de a1 : la base est le prix de la LIGNE à sa création (`factureHtCents`, déjà net
+        // des avoirs d'alors) ; seuls les avoirs émis APRÈS elle, et de moins de 24 mois, la réduisent.
+        const apres = recents.filter((a) => (a.emiseAt ?? a.createdAt ?? new Date(0)) > l.creeAt);
+        if (apres.length === 0) continue; // aucun avoir dans le délai depuis la ligne : rien à reprendre
+        const netLigne = Math.max(
+          0,
+          l.factureHtCents + apres.reduce((x, a) => x + a.montantHtCents, 0),
+        );
+        const annulationLigne = dateDeLAnnulation(apres) ?? annulationLe;
         const cible = cibleApresAvoir(
           { ...l, montantCents: montant },
-          netRecent,
+          netLigne,
           l.parrainage && filleul
             ? { ...filleul, montantCents: filleul.montantCents ?? 0 }
             : undefined,
@@ -325,7 +334,7 @@ export async function reprendreApresAvoirsClients(
             },
             motif,
             maintenant,
-            `annulation après l'avoir du client au ${dateFr(annulationLe)} (art. 4.5)`,
+            `annulation après l'avoir du client au ${dateFr(annulationLigne)} (art. 4.5)`,
           );
           if (r.ok && r.numero) {
             bilan.retenues += 1;
@@ -349,7 +358,7 @@ export async function reprendreApresAvoirsClients(
             apporteurId: l.apporteurId,
             demandeeCents: aReprendre,
             motif,
-            annulationLe,
+            annulationLe: annulationLigne,
             maintenant,
           });
           if (r.ok) bilan.reprises += 1;
