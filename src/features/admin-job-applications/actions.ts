@@ -311,6 +311,8 @@ export interface JobApplicationDetail {
   /** Quand la décision a été prise. Distinct d'`updatedAt`, que toute note bouge. */
   decidedAt: Date | null;
   hiredAt: Date | null;
+  /** Fiche formateur née de ce dossier (L10), ou `null`. */
+  trainerId: string | null;
   needsAttention: boolean;
   locale: Locale;
   submittedAt: Date;
@@ -386,6 +388,7 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     rejectionReason: a.rejectionReason,
     decidedAt: a.decidedAt,
     hiredAt: a.hiredAt,
+    trainerId: a.trainerId,
     needsAttention: a.needsAttention,
     locale: a.locale,
     submittedAt: a.submittedAt,

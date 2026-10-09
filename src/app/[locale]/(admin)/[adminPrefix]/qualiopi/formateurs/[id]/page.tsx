@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
+import { mentionActivationFormateur } from "@/lib/careers/fiche-formateur";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import {
   getTrainerConformite,
@@ -370,6 +371,14 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           ← Retour aux formateurs
         </Link>
       </div>
+
+      {/* L10 — une fiche née d'une candidature n'a pas de numéro de déclaration
+          d'activité : elle reste inactive, et la mention dit ce qui manque. */}
+      {mentionActivationFormateur(trainer) ? (
+        <p className="admin-alert admin-alert-warning mb-[var(--space-admin-5)]">
+          {mentionActivationFormateur(trainer)} — fiche inactive.
+        </p>
+      ) : null}
 
       <div className="admin-card mb-[var(--space-admin-5)]">
         <p className="admin-meta">Activité (calculée automatiquement)</p>

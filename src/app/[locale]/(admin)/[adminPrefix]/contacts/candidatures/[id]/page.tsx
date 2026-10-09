@@ -18,6 +18,8 @@ import { lireAccuseReception } from "@/features/admin-job-applications/accuse-re
 import { Entretiens } from "./Entretiens";
 import { DeposerCv } from "./DeposerCv";
 import { ProposerReseauApporteurs } from "./ProposerReseauApporteurs";
+import { CreerFicheFormateur } from "./CreerFicheFormateur";
+import { mentionActivationFormateur, peutCreerFicheFormateur } from "@/lib/careers/fiche-formateur";
 import { ficheApporteurDeLaCandidature } from "@/features/admin-job-applications/proposer-reseau";
 import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
 import { adminPath } from "@/lib/admin-path";
@@ -142,6 +144,24 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     })
     .catch(() => []);
   const montreVideo = liens.some(montreDuTravail) || videos.some((v) => v.statut === "disponible");
+
+  // L10 — « Retenue → fiche formateur ». La carte n'apparaît que si la
+  // passerelle s'ouvre (recrutée, offre de formateur) ou si la fiche existe.
+  const formateurLie = a.trainerId
+    ? await prisma.trainer
+        .findUnique({
+          where: { id: a.trainerId },
+          select: { id: true, actif: true, sousTraitantNda: true },
+        })
+        .catch(() => null)
+    : null;
+  const montrerFicheFormateur =
+    formateurLie !== null ||
+    peutCreerFicheFormateur({
+      status: a.status,
+      offerSlug: offer?.slug,
+      offerTitleSnap: a.offerTitleSnap,
+    });
 
   return (
     <AdminPageShell>
@@ -415,6 +435,23 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           lienCalendlyConfigure={estLienCalendlyValide(env.CALENDLY_APPORTEUR_URL ?? "")}
         />
       </AdminCard>
+
+      {montrerFicheFormateur ? (
+        <AdminCard>
+          <h3 className="admin-section-title">Fiche formateur</h3>
+          <CreerFicheFormateur
+            applicationId={a.id}
+            ficheExistante={
+              formateurLie
+                ? {
+                    lien: adminPath("fr", `qualiopi/formateurs/${formateurLie.id}`),
+                    mention: mentionActivationFormateur(formateurLie),
+                  }
+                : null
+            }
+          />
+        </AdminCard>
+      ) : null}
 
       <AdminCard>
         <h3 className="admin-section-title">Suivi</h3>
