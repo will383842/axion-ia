@@ -59,6 +59,12 @@ describe("salaryLabel — directive UE 2023/970 (jamais de mention vague)", () =
     expect(salaryLabel({ ...base, salaryVisible: false }, true)).toBeNull();
   });
 
+  it("tarif journalier : montant entier, « /jour » (offre formateur freelance)", () => {
+    const jour = { ...base, salaryMin: 350, salaryMax: null, salaryPeriod: "DAY" } as const;
+    expect(salaryLabel(jour, true)).toBe("350 EUR /jour");
+    expect(salaryLabel(jour, false)).toBe("350 EUR /day");
+  });
+
   it("null si aucune borne", () => {
     expect(salaryLabel({ ...base, salaryMin: null, salaryMax: null }, true)).toBeNull();
   });
