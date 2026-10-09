@@ -7,6 +7,13 @@ export default function DossierIntrouvable() {
   return (
     <Coquille>
       <EcranInvalide />
+      {/* Lien perdu ou périmé : renvoyer le bon, sans rien dire du cas (2026-10-09). */}
+      <a
+        href="/apporteur/dossier/retrouver"
+        className="text-terracotta-deep mt-6 inline-flex min-h-[48px] items-center gap-2 text-[17px] font-bold underline underline-offset-4"
+      >
+        Vous êtes apporteur du réseau ? Recevoir le lien de mon espace →
+      </a>
     </Coquille>
   );
 }

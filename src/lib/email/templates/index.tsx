@@ -177,6 +177,7 @@ import {
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
@@ -572,6 +573,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-virement-fait": {
     subject: apporteurVirementFaitSubject,
     component: ApporteurVirementFaitEmail,
+  },
+  "apporteur-lien-espace": {
+    subject: apporteurLienEspaceSubject,
+    component: ApporteurLienEspaceEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,
