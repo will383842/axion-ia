@@ -15660,7 +15660,7 @@ enum TypeAccesPartage {
 }
 
 /// Un fichier partagé : métadonnées seulement, les octets sont dans R2.
-/// rgpd: technique — fichiers de travail déposés par l'équipe (LUT, rushs, consignes) ; aucune donnée de candidat en L4. Les fichiers renvoyés par une personne (L5b) suivront son dossier.
+/// rgpd: dossier-client — les fichiers RENVOYÉS par un candidat (`origine = personne`, L5b) sont listés par l'export art. 15 et effacés avec sa candidature (`src/server/careers/candidature-rgpd.ts`, `src/server/partages/effacement-candidat.ts`) ; ceux de l'équipe (LUT, rushs, consignes) ne portent rien sur une personne.
 model FichierPartage {
   id               String                  @id @default(uuid()) @db.Uuid
   titre            String                  @db.VarChar(200)

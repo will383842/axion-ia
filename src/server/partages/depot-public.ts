@@ -63,6 +63,15 @@ export interface MoteurDepot {
 
 export interface DepsDepot {
   readonly db: Db;
+  /**
+   * Exécute `fn` sous un verrou propre au lien (`pg_advisory_xact_lock`, dans
+   * une transaction) : le compte des fichiers du lien et l'ouverture d'un
+   * nouvel envoi ne peuvent pas se croiser entre deux appels simultanés.
+   */
+  readonly sousVerrouLien: <T>(
+    lienId: string,
+    fn: (db: Pick<Db, "fichierPartage">) => Promise<T>,
+  ) => Promise<T>;
   readonly env: Env;
   readonly maintenant: () => Date;
   readonly limiter: (cle: string) => Promise<{ allowed: boolean }>;
@@ -87,13 +96,30 @@ export async function depsDepotParDefaut(): Promise<DepsDepot> {
   ]);
   return {
     db: prisma as unknown as Db,
+    // 🔒 Relecture sécurité (2026-10-08) : le plafond de fichiers par lien se
+    // compte SOUS un verrou consultatif propre au lien. L'ouverture de l'envoi
+    // (appel au stockage, puis création de la ligne) se fait pendant que le
+    // verrou est tenu ; il n'est rendu qu'à la fin de la transaction, une fois
+    // la ligne écrite — le suivant la compte. Délai élargi : l'appel au
+    // stockage tient dans la section.
+    sousVerrouLien: (lienId, fn) =>
+      prisma.$transaction(
+        async (tx) => {
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`partages:depot:${lienId}`}))`;
+          return fn(tx as unknown as Pick<Db, "fichierPartage">);
+        },
+        { maxWait: 10_000, timeout: 30_000 },
+      ),
     env: process.env,
     maintenant: () => new Date(),
+    // 🔒 Redis en panne → REFUS (relecture sécurité, 2026-10-08) : cette route
+    // publique ouvre des envois vers le stockage ; la laisser sans limite le
+    // temps d'une panne serait une porte ouverte.
     limiter: (cle) =>
       checkRateLimit(cle, {
         limit: APPELS_DEPOT_PAR_QUART_D_HEURE,
         windowSec: 15 * 60,
-        surPanne: "laisser-passer",
+        surPanne: "refuser",
       }),
     notifier: async (a) => {
       try {
@@ -260,16 +286,20 @@ export async function traiterDepot(
       // Taille, format et premiers octets : refusés AVANT le premier morceau.
       const v = verifierDemandeDepotPersonne(demande);
       if (!v.ok) return refus(400, v.erreur);
-      const deja = await deps.db.fichierPartage.count({ where: { lienDepotId: lien.id } });
-      if (deja >= DEPOTS_PAR_LIEN_MAX) {
-        return refus(
-          409,
-          "Plusieurs fichiers ont déjà été envoyés par ce lien. Pour en envoyer un autre, écrivez-nous : contact@axion-ia.com.",
-        );
-      }
-      const r = await deps.moteur.commencer(demande, lien.id);
-      if (!r.ok) return refus(400, r.erreur);
-      return { statut: 200, json: { ok: true, ...r.valeur } };
+      // Compte ET ouverture sous le verrou du lien : deux envois simultanés
+      // au dixième fichier ne passent pas tous les deux.
+      return deps.sousVerrouLien(lien.id, async (db) => {
+        const deja = await db.fichierPartage.count({ where: { lienDepotId: lien.id } });
+        if (deja >= DEPOTS_PAR_LIEN_MAX) {
+          return refus(
+            409,
+            "Plusieurs fichiers ont déjà été envoyés par ce lien. Pour en envoyer un autre, écrivez-nous : contact@axion-ia.com.",
+          );
+        }
+        const r = await deps.moteur.commencer(demande, lien.id);
+        if (!r.ok) return refus(400, r.erreur);
+        return { statut: 200, json: { ok: true, ...r.valeur } };
+      });
     }
     case "signer": {
       const id = await fichierDuLien(c["fichierId"], lien, deps);

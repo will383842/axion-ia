@@ -26,8 +26,11 @@ vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
     return annuler(...a);
   },
 }));
+const candidatures = vi.hoisted(() => ({
+  resultat: { supprimees: 0, conservees: 0, tronque: false },
+}));
 vi.mock("@/server/careers/candidature-rgpd", () => ({
-  effacerCandidaturesPour: async () => ({ supprimees: 0, tronque: false }),
+  effacerCandidaturesPour: async () => candidatures.resultat,
 }));
 vi.mock("@/features/podcast-request/rgpd", () => ({
   effacerDemandesPodcastPour: async () => ({ supprimees: 0, tronque: false }),
@@ -104,6 +107,7 @@ function requete(entetes: Record<string, string> = {}): NextRequest {
 }
 
 beforeEach(() => {
+  candidatures.resultat = { supprimees: 0, conservees: 0, tronque: false };
   ordre.length = 0;
   annuler.mockReset().mockResolvedValue(3);
   journal.create.mockReset().mockResolvedValue({});
@@ -160,5 +164,31 @@ describe("POST /api/gdpr-erase — l'IP de la preuve d'effacement", () => {
       .map((c) => (c[0] as { data: { action: string; ipAddress: string | null } }).data)
       .find((dd) => dd.action === "gdpr.erase.completed");
     expect(trace?.ipAddress).toBe("198.51.100.23");
+  });
+});
+
+describe("POST /api/gdpr-erase — candidatures conservées (L5b, relecture sécurité 2026-10-08)", () => {
+  it("🔴 une candidature gardée faute d'avoir pu effacer ses fichiers renvoyés est SIGNALÉE, jamais annoncée effacée", async () => {
+    candidatures.resultat = { supprimees: 1, conservees: 2, tronque: false };
+    const res = await POST(requete());
+    expect(res.status).toBe(200);
+    const corps = (await res.json()) as {
+      summary: Record<string, unknown>;
+      notice: { explanation: string };
+    };
+    expect(corps.summary["candidaturesSupprimees"]).toBe(1);
+    expect(corps.summary["candidaturesConservees"]).toBe(2);
+    expect(String(corps.summary["avertissementCandidatures"])).toMatch(
+      /n'ont pas pu être effacés du stockage/,
+    );
+    expect(corps.notice.explanation).toMatch(/^2 candidature\(s\) conservée\(s\)/);
+    expect(corps.notice.explanation).not.toMatch(/^Vos données identifiantes ont été effacées/);
+  });
+
+  it("témoin : rien de conservé → aucun avertissement", async () => {
+    const res = await POST(requete());
+    const corps = (await res.json()) as { summary: Record<string, unknown> };
+    expect(corps.summary["candidaturesConservees"]).toBe(0);
+    expect(corps.summary["avertissementCandidatures"]).toBeUndefined();
   });
 });

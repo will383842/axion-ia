@@ -51,7 +51,12 @@ vi.mock("@/lib/r2-storage", () => r2);
 vi.mock("@/server/careers/clamav", () => clamav);
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
 
-import { analyserFichierPartage, commencerDepotPersonne, terminerDepot } from "../depot";
+import {
+  analyserFichierPartage,
+  commencerDepotPersonne,
+  signerMorceaux,
+  terminerDepot,
+} from "../depot";
 import { TAILLE_MORCEAU_OCTETS, tailleMorceau } from "../regles";
 
 const LIEN = "11111111-1111-4111-8111-111111111111";
@@ -171,5 +176,32 @@ describe("antivirus : un fichier de candidat est TOUJOURS analysé", () => {
     clamav.analyserFlux.mockResolvedValue({ issue: "indisponible", raison: "connexion refusée" });
     await analyserFichierPartage(id);
     expect(lignes.get(id)?.analyse).toBe("en_attente");
+  });
+});
+
+describe("dépôt public : chaque morceau à sa taille (relecture sécurité, 2026-10-08)", () => {
+  it("chaque morceau d'un fichier de candidat est signé à SA taille exacte", async () => {
+    const taille = 2 * TAILLE_MORCEAU_OCTETS + 11;
+    const id = await commencer(taille);
+    const r = await signerMorceaux(id, [1, 2, 3]);
+    expect(r.ok).toBe(true);
+    const tailles = r2.signerMorceauR2.mock.calls.map((c) => (c as unknown[])[4]);
+    expect(tailles).toEqual([TAILLE_MORCEAU_OCTETS, TAILLE_MORCEAU_OCTETS, 11]);
+  });
+
+  it("terminer : un morceau de mauvaise taille → envoi arrêté dans R2, `abandonne`, ligne gardée", async () => {
+    const taille = TAILLE_MORCEAU_OCTETS + 11;
+    const id = await commencer(taille);
+    const parts = morceauxComplets(taille);
+    r2.listerMorceauxR2.mockResolvedValue([parts[0], { ...parts[1]!, taille: 4 * MIO }]);
+    const r = await terminerDepot(id);
+    expect(r.ok).toBe(false);
+    expect(r2.arreterEnvoiR2).toHaveBeenCalledWith(
+      expect.anything(),
+      `partages/${id}/Ma-version.mp4`,
+      "upload-1",
+    );
+    expect(r2.assemblerEnvoiR2).not.toHaveBeenCalled();
+    expect(lignes.get(id)).toMatchObject({ origine: "personne", etatDepot: "abandonne" });
   });
 });
