@@ -4,7 +4,7 @@
 // `renderEmailTemplate(name, locale, payload)` retourne { subject, html, text }.
 
 import { render } from "@react-email/render";
-import { setOppositionHref, type FamilleEmail } from "./_layout";
+import { ContexteRenduEmail, type FamilleEmail } from "./_layout";
 import { urlOpposition } from "@/server/email/opposition-jeton";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
@@ -662,12 +662,20 @@ export async function renderEmailTemplate(
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
-  setOppositionHref(contexte.destinataire ? urlOpposition(contexte.destinataire) : null);
+  // Données propres à CE rendu (lien d'opposition du destinataire) : un contexte React créé
+  // ici, jamais une variable de module — deux rendus peuvent s'entrelacer (`await`).
+  const donnees = {
+    oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
+  };
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
   // de tous les templates, sans changer chaque template. On pose la valeur AVANT
   // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
   const reviewStats = await getPublishedReviewStats();
-  const element = <Component locale={locale} payload={payload} />;
+  const element = (
+    <ContexteRenduEmail.Provider value={donnees}>
+      <Component locale={locale} payload={payload} />
+    </ContexteRenduEmail.Provider>
+  );
   setReviewStats(reviewStats);
   const html = await render(element, { pretty: false });
   setReviewStats(reviewStats);
