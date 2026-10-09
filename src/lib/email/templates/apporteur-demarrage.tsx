@@ -385,6 +385,18 @@ export const COPY_DEMARRAGE = {
     levee:
       "La contestation du client est close : votre commission reprend son cours. Elle vous sera facturée et versée dans les conditions habituelles ; si le prix conservé a changé, le décompte vous l'indiquera.",
   },
+  commissionAvoirClient: {
+    // Art. 4.5 : la facture du client a été annulée par un avoir ALORS QUE la commission était
+    // déjà facturée (pas encore versée) : elle est neutralisée par un avoir d'autofacture, joint.
+    // ⛔ Aucun nom de client ni délai promis ; ce n'est PAS un manquement (pas de « faits »).
+    subject: "Commission annulée : avoir joint",
+    title: "Commission annulée",
+    preview: "La facture du client a été annulée par un avoir.",
+    texte:
+      "La facture d'une commande sur laquelle vous étiez commissionné a été annulée par un avoir. Comme le prévoit votre contrat (article 4.5), la somme correspondante, déjà facturée mais pas encore versée, est annulée : vous trouverez ci-joint l'avoir d'autofacture qui la neutralise.",
+    suite:
+      "Cela ne change rien à vos autres commissions. Si vous avez une question, répondez simplement à cet e-mail.",
+  },
   dossierRecu: {
     // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
     subject: "Votre dossier d'apporteur est bien reçu",
@@ -1045,6 +1057,32 @@ export function ApporteurCommissionSuspensionEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{levee ? t.levee : t.suspendue}</Text>
       {levee ? null : <Text style={emailStyles.paragraphStyle}>{t.suspendueSuite}</Text>}
+    </EmailLayout>
+  );
+}
+
+// ── Commission annulée après l'avoir du client (art. 4.5) ───────────────
+
+export const apporteurCommissionAvoirClientSubject = (
+  _locale: Locale,
+  _payload?: Record<string, unknown>,
+): string => COPY_DEMARRAGE.commissionAvoirClient.subject;
+
+export function ApporteurCommissionAvoirClientEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commissionAvoirClient;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
     </EmailLayout>
   );
 }

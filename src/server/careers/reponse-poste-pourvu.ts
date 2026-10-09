@@ -54,6 +54,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { ecrireEtEnfilerReponse } from "@/features/admin-job-applications/envoyer-reponse";
 import { VIDEO_FREELANCE_OFFER_SLUGS } from "@/lib/careers/video-editor-offer";
+import { SLUG_OFFRE_FORMATEUR_FREELANCE } from "@/lib/careers/formateur-freelance";
 import {
   DEBUT_PROPOSITION_RESEAU,
   envoyerProposition,
@@ -68,11 +69,17 @@ const FENETRE = 300;
 /** Signature dans le journal et la réponse — aucune personne n'a cliqué. */
 export const AUTEUR = "Réponse automatique (poste pourvu)";
 
-/** Offres exclues : le recrutement vidéo est en cours. */
+/**
+ * Offres exclues : le recrutement vidéo est en cours ; et l'offre « Formateur
+ * IA freelance » (Will, 2026-10-09) — une mission de sous-traitance n'est
+ * jamais « pourvue », et un formateur ne doit pas recevoir l'invitation au
+ * réseau d'apporteurs qui suit ce message.
+ */
 const SLUGS_EXCLUS = [
   ...VIDEO_FREELANCE_OFFER_SLUGS,
   "monteur-video-motion",
   "videaste-content-creator",
+  SLUG_OFFRE_FORMATEUR_FREELANCE,
 ];
 
 export const OBJET = "Votre candidature — {poste}";
@@ -120,8 +127,15 @@ export function posteCourt(titre: string | null | undefined): string | null {
 /** Catégorie d'offre dont les candidats basculent dans le tunnel apporteur. */
 export const CATEGORIE_TUNNEL = "commercial" as const;
 
-/** Intitulés exclus : vidéo (recrutement en cours) et commercial (tunnel apporteur). */
-const INTITULES_EXCLUS = ["monteur vid", "vidéaste", "commercial", "business dev", "apporteur"];
+/** Intitulés exclus : vidéo (recrutement en cours), commercial (tunnel apporteur), formateur freelance. */
+const INTITULES_EXCLUS = [
+  "monteur vid",
+  "vidéaste",
+  "commercial",
+  "business dev",
+  "apporteur",
+  "formateur ia freelance",
+];
 
 /**
  * Le filtre d'éligibilité — une seule définition, lue par le passage ET l'écran.
