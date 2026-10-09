@@ -41,9 +41,6 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "127.0.0.1" }));
 vi.mock("next/cache", () => ({ revalidatePath: () => {}, revalidateTag: () => {} }));
 vi.mock("@/lib/indexnow", () => ({ pingIndexNow: async () => {} }));
-vi.mock("@/server/content-gen/indexing/enqueue", () => ({
-  enqueueGoogleIndexingForUrls: async () => {},
-}));
 
 import { ecrireQuestions } from "@/lib/careers/questions-offre";
 
