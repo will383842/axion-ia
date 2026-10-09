@@ -83,7 +83,7 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 import { ecrireEtEnfilerReponse } from "@/features/admin-job-applications/envoyer-reponse";
 
 import { preparerLienFichiers, verifierFichiersJoignables } from "../attacher-a-une-reponse";
-import { jetonLienValide } from "../jeton";
+import { jetonLien } from "../jeton";
 
 const ENV = {
   R2_ACCOUNT_ID: "compte",
@@ -158,12 +158,12 @@ describe("le lien préparé", () => {
     if (!sans.ok) throw new Error(sans.erreur);
     expect(sans.lien.expireLe.toISOString()).toBe("2026-11-07T10:00:00.000Z");
 
-    const m = /https:\/\/axion-ia\.com\/api\/partage\/([0-9a-f-]{36})\/([A-Za-z0-9_-]{43})/.exec(
-      sans.lien.paragraphe,
+    // L'adresse du paragraphe est MASQUÉE : le jeton n'est remis qu'à l'envoi.
+    expect(sans.lien.adresse).toBe(
+      `https://axion-ia.com/api/partage/${sans.lien.lienId}/lien-prive-de-telechargement`,
     );
-    expect(m).not.toBeNull();
-    expect(m![1]).toBe(sans.lien.lienId);
-    expect(jetonLienValide(m![1]!, m![2]!, ENV)).toBe(true);
+    expect(sans.lien.paragraphe).toContain(sans.lien.adresse);
+    expect(sans.lien.paragraphe).not.toContain(jetonLien(sans.lien.lienId, ENV)!);
     expect(sans.lien.paragraphe).toContain("Fichiers à télécharger (jusqu'au 07/11/2026)");
     expect(sans.lien.paragraphe).toContain(
       "Ce lien est personnel ; nous voyons quand les fichiers sont téléchargés.",
@@ -205,5 +205,27 @@ describe("la réponse et son lien partent ensemble", () => {
     // Rien qui ressemble à une pièce jointe, ni dans le rendu, ni dans la file.
     expect(JSON.stringify(etat.rendus)).not.toMatch(/attachment|piece_?jointe/i);
     expect(JSON.stringify(etat.files)).not.toMatch(/attachment|piece_?jointe/i);
+  });
+
+  it("🔒 le jeton du lien n'est jamais stocké (réponse, journal, file) : seule l'adresse masquée l'est", async () => {
+    Object.assign(process.env, ENV);
+    const r = await preparerLienFichiers([F2], { maintenant: MAINTENANT, env: ENV });
+    if (!r.ok) throw new Error(r.erreur);
+    await ecrireEtEnfilerReponse(
+      { id: "app-1", email: "chiffre", locale: "fr", status: "reviewing", offerTitleSnap: null },
+      { userId: null, nom: "Will" },
+      { subject: "Votre essai", bodyMarkdown: "Bonjour,", modele: "libre", lienFichiers: r.lien },
+    );
+    const jeton = jetonLien(r.lien.lienId, ENV)!;
+    expect(jeton).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    const ecrit = JSON.stringify({ creations: etat.creations, files: etat.files });
+    expect(ecrit).not.toContain(jeton);
+
+    const reponse = etat.creations.find((c) => c.modele === "reponse")!.data;
+    const evenement = etat.creations.find((c) => c.modele === "evenement")!.data;
+    const masquee = `/api/partage/${r.lien.lienId}/lien-prive-de-telechargement`;
+    expect(String(reponse.bodyHtml)).toContain(masquee);
+    expect(String(reponse.bodyText)).toContain(masquee);
+    expect(String(evenement.body)).toContain(masquee);
   });
 });

@@ -22,6 +22,8 @@ import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
+// Module léger (`node:crypto` seulement) : sûr sur le trajet du worker.
+import { devoilerLienPrive } from "@/server/partages/jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
@@ -560,12 +562,37 @@ async function handleCandidatureReponse(payload: Record<string, unknown>): Promi
     return;
   }
 
+  // 🔒 Lien privé (Candidatures unifiées L5) : la base ne porte que l'adresse
+  // MASQUÉE. Le vrai jeton n'est remis qu'ici, au moment de l'envoi, et
+  // seulement pour le lien de CETTE réponse. Impossible (PARTAGES_SECRET absent
+  // du worker, lien d'une autre réponse) → échec marqué, rien ne part avec le
+  // marqueur, et pas de `throw` : réessayer ne fabriquerait pas la clé.
+  const lien = await prisma.lienPartage.findFirst({
+    where: { reponseId: reponse.id },
+    select: { id: true },
+  });
+  const corps = devoilerLienPrive(
+    { html: reponse.bodyHtml, text: reponse.bodyText },
+    lien?.id ?? null,
+  );
+  if (!corps.ok) {
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: `lien privé : ${corps.raison}`,
+      },
+    });
+    return;
+  }
+
   try {
     const resultat = await sendEmail({
       to,
       subject: reponse.subject,
-      html: reponse.bodyHtml,
-      text: reponse.bodyText,
+      html: corps.html,
+      text: corps.text,
       replyTo,
     });
     await prisma.jobApplicationReply.update({
