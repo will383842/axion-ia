@@ -12,7 +12,10 @@ vi.mock("@/features/apporteurs-reseau/declaration-entreprise", () => ({
   declarerEntreprise: (...a: unknown[]) => declarerEntreprise(...a),
   MESSAGE_NEUTRE: "neutre",
 }));
-vi.mock("@/features/apporteurs-reseau/annuaire", () => ({ lireEntrepriseParSiren: vi.fn() }));
+vi.mock("@/features/apporteurs-reseau/annuaire", () => ({
+  lireEntrepriseParSiren: vi.fn(),
+  lireEtablissementParSiret: vi.fn(),
+}));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.9" }));
 vi.mock("@/lib/security/ip-hash", () => ({ hashIp: () => "hash" }));
 vi.mock("@/lib/rate-limit", () => ({
@@ -29,7 +32,7 @@ function formulaire(): FormData {
   const fd = new FormData();
   fd.set("id", ID);
   fd.set("jeton", JETON);
-  fd.set("siren", "732829320");
+  fd.set("siret", "73282932000074");
   fd.set("personneNom", "Claire Durand");
   return fd;
 }

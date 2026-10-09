@@ -4,6 +4,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const authMock = vi.fn();
+// Contrat 2.6 : présentations d'avant la 2.6 (toute l'entreprise) ; écriture du SIRET simulée.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));

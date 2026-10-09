@@ -3,6 +3,16 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 // Contrat 2.2 (art. 3.4) : une présentation confirmée À LA MAIN (réponse de l'entreprise,
 // rendez-vous, « Confirmer l'attribution maintenant ») est protégée six mois à compter de la
 // DÉCLARATION, comme la confirmation tacite — jamais à compter de la confirmation.
+// Contrat 2.6 : présentations d'avant la 2.6 (toute l'entreprise) ; écriture du SIRET simulée.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("server-only", () => ({}));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({

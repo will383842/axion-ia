@@ -25,8 +25,10 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : aucun `server-only` ici ni dans ce que ce
 // module importe (verrouillé par `le-worker-n-importe-pas-server-only.spec.ts`).
 
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { enqueueEmail } from "@/server/queue/queues";
 
 import {
   demanderVigilance,
@@ -40,6 +42,12 @@ import { alerterDeclarationsSansReponse, annoncerAttribution } from "./attributi
 import { envoyer } from "./envois";
 import { facturerCommissionsDues } from "./facturation";
 import { alerterPiecesVigilanceDeposees } from "./alerte-vigilance";
+import {
+  AVANT_2_6,
+  attributaireDeLaCommande,
+  lireEtablissements,
+  type Etablissement,
+} from "./etablissement-presentation";
 import { regenererAvoirsSansPiece } from "./manquement";
 import { alerterHorsGrille } from "./hors-grille";
 import { chiffrerPiecesEnClair } from "./pieces-chiffrement";
@@ -164,6 +172,42 @@ export function presentationQuiCouvre<T extends PresentationProtegee>(
   );
   couvrantes.sort((a, b) => a.recueAt.getTime() - b.recueAt.getTime());
   return couvrantes[0] ?? null;
+}
+
+/**
+ * Contrat 2.6 : la présentation à qui revient la commande de l'établissement `siret` (celui de
+ * la facture ou du devis). Les couvrantes à la date de la commande, puis la règle par
+ * établissement (`attributaireDeLaCommande`). Pur.
+ */
+export function presentationPourEtablissement<T extends PresentationProtegee>(
+  candidates: readonly T[],
+  etablissements: ReadonlyMap<string, Etablissement>,
+  signeeAt: Date,
+  siret: string | null,
+): { presentation: T } | { siretManquant: true } | null {
+  const couvrantes = candidates
+    .filter((p) =>
+      commandeCouverte({
+        signeeAt,
+        recueAt: p.recueAt,
+        confirmee: p.confirmeeAt !== null,
+        protegeeJusquAt: p.protegeeJusquAt,
+      }),
+    )
+    .map((p) => ({ p, recueAt: p.recueAt, etablissement: etablissements.get(p.id) ?? AVANT_2_6 }));
+  const r = attributaireDeLaCommande(couvrantes, siret);
+  if (!r) return null;
+  if ("siretManquant" in r) return r;
+  return { presentation: r.presentation.p };
+}
+
+/** Le SIRET d'une pièce, chiffres seuls, ou `null`. */
+function siretDe(...valeurs: Array<string | null | undefined>): string | null {
+  for (const v of valeurs) {
+    const n = (v ?? "").replace(/\s+/g, "");
+    if (/^\d{14}$/.test(n)) return n;
+  }
+  return null;
 }
 
 /** La commande tombe-t-elle dans les 6 mois du parrainage (contrat art. 4.6) ? */
@@ -500,6 +544,35 @@ async function etapeTerme(maintenant: Date, bilan: BilanPassageReseau): Promise<
 
 // (c) ─────────────────────────────────────────────────────────────────────
 
+/**
+ * Contrat 2.6 : une facture payée d'une entreprise dont seuls des ÉTABLISSEMENTS sont attribués,
+ * mais qui ne porte aucun SIRET (fiche client sans SIRET). Aucune commission n'est créée : Williams
+ * est alerté UNE fois pour compléter le SIRET de la fiche ; le passage suivant crée la commission.
+ */
+async function alerterSiretManquant(factureId: string, siren: string, maintenant: Date) {
+  const jobId = `apporteur-siret-manquant-${factureId}`;
+  try {
+    if (await dejaEnvoye(jobId)) return;
+    await enqueueEmail(
+      "qualiopi-alerte-interne",
+      destinataireAlertesInternes(),
+      "fr",
+      {
+        niveau: "important",
+        code: "apporteur_facture_sans_siret",
+        titre: "Facture payée sans SIRET : commission d'apporteur en attente",
+        message: `Une facture payée de l'entreprise SIREN ${siren} ne porte aucun SIRET, alors que l'attribution d'apporteur porte sur un établissement (contrat 2.6, art. 3.1). Aucune commission n'est créée : complétez le SIRET de la fiche client (Formations & prestations › Clients). La commission naîtra au passage suivant, au bon établissement.`,
+        cibleType: "FactureFormation",
+        cibleId: factureId,
+        createdAt: maintenant.toLocaleDateString("fr-FR"),
+      },
+      { jobId, entityType: "FactureFormation", entityId: factureId },
+    );
+  } catch (err) {
+    signalerErreurReseau("alerte SIRET manquant", err);
+  }
+}
+
 /** Présentations qui ont été protégées : confirmées, ou terminées après une protection. */
 async function lirePresentationsProtegees() {
   return prisma.presentationEntreprise.findMany({
@@ -537,6 +610,7 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
   const presentations = await lirePresentationsProtegees();
   if (presentations.length === 0) return;
   const index = parSiren(presentations);
+  const etablissements = await lireEtablissements(presentations.map((p) => p.id));
   const payees = await prisma.factureFormation.findMany({
     where: { statut: "payee", avoirDeId: null, client: { siren: { in: [...index.keys()] } } },
     select: { id: true, devisId: true },
@@ -561,7 +635,8 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
       montantHtCents: true,
       emiseAt: true,
       devis: { select: { acceptedAt: true, montantTotalHtCents: true } },
-      client: { select: { siren: true } },
+      destinataireSiret: true,
+      client: { select: { siren: true, siret: true } },
     },
   });
   const avoirsLignes = await prisma.factureFormation.findMany({
@@ -600,8 +675,18 @@ async function etapeCommissions(maintenant: Date, bilan: BilanPassageReseau): Pr
     const signeeAt = dateDeCommande(f);
     const siren = f.client?.siren;
     if (!signeeAt || !siren) continue;
-    const p = presentationQuiCouvre(index.get(siren) ?? [], signeeAt);
-    if (!p) continue;
+    const qui = presentationPourEtablissement(
+      index.get(siren) ?? [],
+      etablissements,
+      signeeAt,
+      siretDe(f.destinataireSiret, f.client?.siret),
+    );
+    if (!qui) continue;
+    if ("siretManquant" in qui) {
+      await alerterSiretManquant(f.id, siren, maintenant);
+      continue;
+    }
+    const p = qui.presentation;
     const calc = calculerCommission({
       activite: (f.activite ?? null) as ActiviteCommission | null,
       factureHtCents: commande.totalHtCents,
@@ -736,11 +821,19 @@ async function etapeCommandeSignee(maintenant: Date, bilan: BilanPassageReseau):
       },
       client: { siren: { in: [...index.keys()] } },
     },
-    select: { id: true, acceptedAt: true, client: { select: { siren: true } } },
+    select: { id: true, acceptedAt: true, client: { select: { siren: true, siret: true } } },
   });
+  const etablissements = await lireEtablissements(presentations.map((p) => p.id));
   for (const d of devis) {
-    const p = presentationQuiCouvre(index.get(d.client.siren ?? "") ?? [], d.acceptedAt!);
-    if (!p) continue;
+    const qui = presentationPourEtablissement(
+      index.get(d.client.siren ?? "") ?? [],
+      etablissements,
+      d.acceptedAt!,
+      siretDe(d.client.siret),
+    );
+    // Sans SIRET : l'annonce attend que la fiche client soit complétée (aucune donnée ne part).
+    if (!qui || "siretManquant" in qui) continue;
+    const p = qui.presentation;
     const jobId = `apporteur-commande-signee-${d.id}-${p.apporteurId}`;
     if (await dejaEnvoye(jobId)) continue;
     const r = await envoyer({

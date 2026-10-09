@@ -1,5 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+// Contrat 2.6 : présentations existantes d'avant la 2.6 (toute l'entreprise) ; écriture du SIRET simulée.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("server-only", () => ({}));
 const findUnique = vi.fn();
 const count = vi.fn();
@@ -34,7 +44,7 @@ import { MESSAGE_DEJA, MESSAGE_NEUTRE, declarerEntreprise } from "../declaration
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
 const MAINTENANT = new Date("2026-10-05T10:00:00Z");
 const BONNE = {
-  siren: "732829320",
+  siret: "73282932000074",
   denomination: "Boulangerie Martin",
   personneNom: "Claire Durand",
   personneFonction: "Gérante",
@@ -59,7 +69,7 @@ describe("declarerEntreprise", () => {
     const saisie = creerPresentation.mock.calls[0]![0];
     expect(saisie).toMatchObject({
       apporteurId: ID,
-      siren: "732829320",
+      siret: "73282932000074",
       personneFonction: "Gérante",
       dateEchange: "2026-10-01",
       recueAt: MAINTENANT,

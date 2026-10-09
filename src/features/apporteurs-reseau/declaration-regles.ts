@@ -3,13 +3,18 @@
  *
  * Règles PURES (aucun accès base, aucun `server-only`) : le même schéma sert la validation
  * côté serveur et les tests. Champs obligatoires de l'article 3.2 : identification de
- * l'entreprise, SIREN, nom ET fonction de la personne rencontrée, son e-mail ET son
+ * l'entreprise, SIRET de l'établissement, nom ET fonction de la personne rencontrée, son e-mail ET son
  * téléphone, et la date du contact (jamais dans le futur).
  */
 
 import { z } from "zod";
 
-import { finDeProtection, RAPPEL_SANS_REPONSE_JOURS, sirenValide } from "./regles";
+import { luhnValid } from "@/lib/siret";
+
+import { finDeProtection, RAPPEL_SANS_REPONSE_JOURS } from "./regles";
+
+/** 14 chiffres et clé de Luhn (module pur, lisible par le navigateur). */
+const siretValide = (s: string): boolean => /^\d{14}$/.test(s) && luhnValid(s);
 
 // Aucun plafond par apporteur : le contrat (art. 3.7) n'en connaît aucun, et nulle suspension ne
 // peut reposer sur le nombre de déclarations. Seule la limite par adresse IP hachée (anti-robot,
@@ -37,10 +42,11 @@ const texte = (min: number, max: number, message: string) =>
 
 export function schemaDeclaration(maintenant: Date) {
   return z.object({
-    siren: z
+    // Contrat 2.6 : le SIRET de l'établissement visité (le SIREN en est déduit).
+    siret: z
       .string()
       .transform((v) => v.replace(/\s+/g, ""))
-      .refine(sirenValide, "Ce numéro SIREN n'est pas valide : vérifiez les 9 chiffres."),
+      .refine(siretValide, "Ce numéro SIRET n'est pas valide : vérifiez les 14 chiffres."),
     denomination: texte(2, 250, "Indiquez le nom de l'entreprise."),
     personneNom: texte(2, 150, "Indiquez le nom de la personne rencontrée."),
     personneFonction: texte(2, 150, "Indiquez sa fonction."),
@@ -75,7 +81,7 @@ export function validerDeclaration(
 ): { ok: true; valeur: DeclarationValide } | { ok: false; message: string } {
   const entree: Record<string, string> = {};
   for (const k of [
-    "siren",
+    "siret",
     "denomination",
     "personneNom",
     "personneFonction",

@@ -9,6 +9,15 @@ const etat = vi.hoisted(() => ({
   crees: [] as Array<Record<string, unknown>>,
 }));
 
+// Contrat 2.6 : présentations d'avant la 2.6 (sans établissement), elles couvrent l'entreprise.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+  };
+});
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("../envois", () => ({ envoyer: vi.fn(async () => "envoye") }));

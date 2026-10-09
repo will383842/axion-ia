@@ -16,13 +16,13 @@ import * as Sentry from "@sentry/nextjs";
 import { getClientIp } from "@/lib/client-ip";
 import { checkRateLimit, type RateLimitConfig } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
-import { lireEntrepriseParSiren } from "@/features/apporteurs-reseau/annuaire";
+import { lireEtablissementParSiret } from "@/features/apporteurs-reseau/annuaire";
 import { lireDossierParLien } from "@/features/apporteurs-reseau/donnees";
 import {
   declarerEntreprise,
   MESSAGE_NEUTRE,
 } from "@/features/apporteurs-reseau/declaration-entreprise";
-import { sirenValide } from "@/features/apporteurs-reseau/regles";
+import { siretValide } from "@/features/apporteurs-reseau/etablissement-presentation";
 import { etatDeLaPage } from "@/features/apporteurs-reseau/signature";
 
 import { TEXTES } from "./textes";
@@ -64,13 +64,13 @@ async function dossierSigneParLien(id: string, jeton: string) {
 export async function rechercherEntrepriseDeclarationAction(
   id: string,
   jeton: string,
-  siren: string,
+  siret: string,
 ): Promise<ResultatRechercheDeclaration> {
   if (!(await debitAutorise("recherche"))) return { ok: false };
   if (!(await dossierSigneParLien(lien(id), lien(jeton)))) return { ok: false };
-  const s = String(siren).replace(/\s+/g, "").slice(0, 20);
-  if (!sirenValide(s)) return { ok: false };
-  const r = await lireEntrepriseParSiren(s);
+  const s = String(siret).replace(/\s+/g, "").slice(0, 20);
+  if (!siretValide(s)) return { ok: false };
+  const r = await lireEtablissementParSiret(s);
   return r.ok ? { ok: true, denomination: r.entreprise.denomination } : { ok: false };
 }
 
@@ -80,7 +80,7 @@ export async function declarerEntrepriseAction(fd: FormData): Promise<ResultatDe
   if (!dossier) return { ok: false, message: MESSAGE_NEUTRE };
   try {
     return await declarerEntreprise(dossier.id, {
-      siren: champ(fd, "siren", 20),
+      siret: champ(fd, "siret", 20),
       denomination: champ(fd, "denomination", 250),
       personneNom: champ(fd, "personneNom", 150),
       personneFonction: champ(fd, "personneFonction", 150),

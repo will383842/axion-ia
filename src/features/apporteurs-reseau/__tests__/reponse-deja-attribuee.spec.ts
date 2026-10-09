@@ -6,13 +6,26 @@ const etat = vi.hoisted(() => ({
   envoyes: [] as Array<Record<string, unknown>>,
 }));
 
+// Contrat 2.6 : présentations existantes d'avant la 2.6 (toute l'entreprise) ; écriture du SIRET simulée.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: (v: unknown) => v,
   encryptPii: (v: unknown) => v,
 }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: (v: string) => v }));
-vi.mock("../annuaire", () => ({ lireEntrepriseParSiren: vi.fn() }));
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: vi.fn(),
+  lireEtablissementParSiret: vi.fn(),
+}));
 vi.mock("../envois", () => ({
   apercu: vi.fn(async (e: Record<string, unknown>) => ({ ...e, sujet: "s", html: "" })),
   avecTexteLibre: (p: Record<string, unknown>) => p,

@@ -26,6 +26,16 @@ const etat = vi.hoisted(() => ({
   rebond: null as "hard" | "soft" | null,
 }));
 
+// Contrat 2.6 : présentations d'avant la 2.6 (sans établissement), elles couvrent l'entreprise.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("server-only", () => ({}));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({
@@ -33,7 +43,10 @@ vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: unknown) => v,
 }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: (v: string) => v }));
-vi.mock("../annuaire", () => ({ lireEntrepriseParSiren: vi.fn() }));
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: vi.fn(),
+  lireEtablissementParSiret: vi.fn(),
+}));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));
 vi.mock("../alerte-vigilance", () => ({ alerterPiecesVigilanceDeposees: vi.fn(async () => 0) }));
 vi.mock("../commissions", () => ({

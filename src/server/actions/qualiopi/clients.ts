@@ -159,8 +159,23 @@ const createClientSchema = z
      * SIREN, qui reste refusé.
      */
     motifCreationForcee: z.string().max(300).optional(),
+    /**
+     * Contrat d'apporteur 2.6 (09/10/2026) : le formulaire de la console exige le SIRET d'une
+     * entreprise française (la commission suit l'établissement). Les autres portes d'entrée
+     * (synchronisation, devis) ne l'envoient pas : le passage des commissions alerte alors.
+     */
+    siretObligatoire: z.boolean().optional(),
   })
-  .superRefine(refuserChampsEntreprisePourParticulier);
+  .superRefine(refuserChampsEntreprisePourParticulier)
+  .superRefine((v, ctx) => {
+    if (v.siretObligatoire && v.type !== "particulier" && !v.siret)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["siret"],
+        message:
+          "Indiquez le SIRET de l'établissement (14 chiffres), ou cochez « Client hors de France ».",
+      });
+  });
 
 const updateClientSchema = z
   .object({

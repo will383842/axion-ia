@@ -7,6 +7,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { ActionsPresentation } from "@/components/admin/apporteurs/entreprises/ActionsPresentation";
 import { ConfirmerAttribution } from "@/components/admin/apporteurs/entreprises/ConfirmerAttribution";
+import { EtendreALEntreprise } from "@/components/admin/apporteurs/entreprises/EtendreALEntreprise";
 import { NouvellePresentationForm } from "@/components/admin/apporteurs/entreprises/NouvellePresentationForm";
 import { PrestationFiche } from "@/components/admin/apporteurs/entreprises/PrestationFiche";
 import { ReponsePresentation } from "@/components/admin/apporteurs/entreprises/ReponsePresentation";
@@ -96,7 +97,9 @@ export default async function EntreprisesPresenteesPage({ params, searchParams }
           async (p) =>
             [
               p.id,
-              (await lireSignalements(p.siren, maintenant, p.id)).map(libelleSignalement),
+              (await lireSignalements(p.siren, maintenant, p.id, p.etablissement)).map(
+                libelleSignalement,
+              ),
             ] as const,
         ),
     ),
@@ -247,6 +250,17 @@ function Carte({
               </dd>
             </>
           ) : null}
+          <>
+            {/* Contrat 2.6 (art. 3.1) : l'attribution porte sur l'établissement déclaré. */}
+            <dt className="text-[color:var(--color-admin-fg-muted)]">🏢</dt>
+            <dd>
+              {p.etablissement.siret === null
+                ? "Toute l'entreprise (déclaration d'avant le contrat 2.6)"
+                : p.etablissement.entreprise
+                  ? `Toute l'entreprise (étendue ; établissement déclaré : SIRET ${p.etablissement.siret})`
+                  : `Établissement SIRET ${p.etablissement.siret}`}
+            </dd>
+          </>
           {p.statut === "reservee" && p.contactEnvoyeAt ? (
             <>
               <dt className="text-[color:var(--color-admin-fg-muted)]">📨</dt>
@@ -258,7 +272,7 @@ function Carte({
         {p.aTraiter ? (
           <div className="flex flex-wrap gap-[var(--space-admin-2)]">
             {signalements.length === 0 ? (
-              <AdminBadge tone="success">Rien de connu sur ce SIREN</AdminBadge>
+              <AdminBadge tone="success">Rien de connu sur cet établissement</AdminBadge>
             ) : (
               signalements.map((s) => (
                 <AdminBadge key={s} tone="warning">
@@ -287,6 +301,11 @@ function Carte({
             </summary>
             <div className="flex flex-col gap-[var(--space-admin-3)] pt-[var(--space-admin-3)]">
               {p.statut === "reservee" ? <ConfirmerAttribution id={p.id} /> : null}
+              {(p.statut === "reservee" || p.statut === "confirmee") &&
+              p.etablissement.siret !== null &&
+              !p.etablissement.entreprise ? (
+                <EtendreALEntreprise id={p.id} />
+              ) : null}
               <ActionsPresentation
                 id={p.id}
                 peutConfirmer={p.statut === "reservee"}

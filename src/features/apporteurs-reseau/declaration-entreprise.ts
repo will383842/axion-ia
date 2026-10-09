@@ -29,6 +29,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import { etatPourApporteur, validerDeclaration, type EtatDeclaration } from "./declaration-regles";
+import { lireEtablissements, memePerimetre } from "./etablissement-presentation";
 import { creerPresentation, nomComplet, presentationOccupe } from "./presentations";
 import {
   etatPrestation,
@@ -40,7 +41,7 @@ import {
 export type ResultatDeclaration = { ok: true } | { ok: false; message: string };
 
 export const MESSAGE_NEUTRE = "Cette déclaration n'a pas pu être enregistrée.";
-export const MESSAGE_DEJA = "Vous avez déjà déclaré cette entreprise.";
+export const MESSAGE_DEJA = "Vous avez déjà déclaré cet établissement.";
 
 /** Une déclaration de l'apporteur, telle qu'il la voit. */
 export interface DeclarationVue {
@@ -110,19 +111,27 @@ export async function declarerEntreprise(
   // Aucun plafond par apporteur (contrat art. 3.7 : « aucun seuil ») ; la limite par adresse IP
   // hachée, anti-robot, vit côté route.
 
-  // Doublon de l'apporteur lui-même : la déclaration occupe déjà ce SIREN.
+  // Doublon de l'apporteur lui-même : il a déjà déclaré CET établissement (contrat 2.6), ou une
+  // déclaration couvre toute l'entreprise. Un autre établissement de l'entreprise se déclare.
   const siennes = await prisma.presentationEntreprise.findMany({
-    where: { apporteurId, siren: d.siren, statut: { in: ["reservee", "confirmee"] } },
-    select: { statut: true, protegeeJusquAt: true },
+    where: { apporteurId, siren: d.siret.slice(0, 9), statut: { in: ["reservee", "confirmee"] } },
+    select: { id: true, statut: true, protegeeJusquAt: true },
   });
-  if (siennes.some((p) => presentationOccupe(p, maintenant))) {
+  const etabs = await lireEtablissements(siennes.map((p) => p.id));
+  if (
+    siennes.some(
+      (p) =>
+        presentationOccupe(p, maintenant) &&
+        memePerimetre({ siret: d.siret, entreprise: false }, etabs.get(p.id)!),
+    )
+  ) {
     return { ok: false, message: MESSAGE_DEJA };
   }
 
   const r = await creerPresentation(
     {
       apporteurId,
-      siren: d.siren,
+      siret: d.siret,
       denomination: d.denomination,
       personneNom: d.personneNom,
       personneFonction: d.personneFonction,
