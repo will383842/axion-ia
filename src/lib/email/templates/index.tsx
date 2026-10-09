@@ -677,6 +677,11 @@ export async function renderEmailTemplate(
   // asynchrone créé ici, jamais par une variable de module — deux rendus s'entrelacent (`await`).
   const donnees = {
     oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
+    // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
+    lienEspace:
+      name.startsWith("apporteur-") && typeof payload.lienEspace === "string"
+        ? payload.lienEspace
+        : null,
   };
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance de tous les
   // templates, sans changer chaque template. Variable de module re-posée avant chaque `render` :
