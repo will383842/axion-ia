@@ -77,7 +77,9 @@ test.describe("recrutement — la console a de la matière à montrer", () => {
   test("la liste des candidatures est peuplée, paginée et lisible", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
 
-    await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
+    // L8b : sans `?vue=`, la liste s'ouvre sur « Monteurs & vidéastes », vide en
+    // recette ; le socle pose ses candidatures sur des offres « Autres offres ».
+    await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures?vue=autres`, NAVIGATION);
 
     // 🔑 Le sous-titre porte le compte réel. On exige un nombre à deux chiffres
     // au moins : sur une base vide il afficherait « 0 candidature », et tous les
@@ -120,7 +122,9 @@ test.describe("recrutement — la console a de la matière à montrer", () => {
   test("une photo HEIC est proposée au téléchargement, jamais rendue cassée", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
 
-    await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
+    // L8b : sans `?vue=`, la liste s'ouvre sur « Monteurs & vidéastes », vide en
+    // recette ; le socle pose ses candidatures sur des offres « Autres offres ».
+    await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures?vue=autres`, NAVIGATION);
 
     // On ouvre les fiches jusqu'à en trouver une qui porte une photo. Le socle
     // en pose trois sur soixante, toutes au format iPhone : aucun navigateur
