@@ -552,26 +552,26 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         <FriseCandidature entrees={frise} faits={fil} accuse={accuse} />
       </AdminCard>
 
-      {entretiens.length > 0 || a.status === "interview" ? (
-        <AdminCard>
-          <h3 className="admin-section-title">Entretiens</h3>
-          <Entretiens
-            applicationId={a.id}
-            entretiens={entretiens.map((e) => ({
-              id: e.id,
-              round: e.round,
-              mode: e.mode,
-              state: e.state,
-              scheduledAt: e.scheduledAt.toISOString(),
-              heldAt: e.heldAt?.toISOString() ?? null,
-              location: e.location,
-              conductedByName: e.conductedByName,
-              debrief: e.debrief,
-              outcome: e.outcome,
-            }))}
-          />
-        </AdminCard>
-      ) : null}
+      {/* Toujours là, même sans entretien : « Planifier un entretien » doit
+          rester possible depuis toute fiche (parcours recrutement-entretiens). */}
+      <AdminCard>
+        <h3 className="admin-section-title">Entretiens</h3>
+        <Entretiens
+          applicationId={a.id}
+          entretiens={entretiens.map((e) => ({
+            id: e.id,
+            round: e.round,
+            mode: e.mode,
+            state: e.state,
+            scheduledAt: e.scheduledAt.toISOString(),
+            heldAt: e.heldAt?.toISOString() ?? null,
+            location: e.location,
+            conductedByName: e.conductedByName,
+            debrief: e.debrief,
+            outcome: e.outcome,
+          }))}
+        />
+      </AdminCard>
 
       {partages ? (
         <AdminCard>

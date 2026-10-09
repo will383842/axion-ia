@@ -38,7 +38,8 @@ test.describe("recrutement — le journal du candidat", () => {
     // La DERNIÈRE fiche : aucun autre scénario n'y écrit. Voir `ouvrirUneFiche`.
     await ouvrirUneFicheCandidature(page, "derniere");
 
-    await expect(page.getByRole("heading", { name: /historique/i })).toBeVisible();
+    // L8c : le bloc « Historique » s'appelle « 4 · Échanges » (maquette v2).
+    await expect(page.getByRole("heading", { name: /^\d+ · échanges$/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /répondre au candidat/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /consigner un fait/i })).toBeVisible();
 
