@@ -31,12 +31,41 @@ import {
 } from "./ajustement";
 import { dateFr } from "./autofacture-donnees";
 import { netDeLaCommande, type FactureDeCommande } from "./commandes";
+import { ajouterMois } from "./regles";
 import { envoyer } from "./envois";
 import { retenir, type Piece } from "./manquement";
 import { enregistrerReprise, PREFIXE_PALIER_REPRISE } from "./resiliation";
 import { signalerErreurReseau } from "./signaler";
 
 const MODIFIABLES = ["a_qualifier", "due", "en_attente_vigilance"] as const;
+
+const CHAMPS_LIGNE = {
+  id: true,
+  apporteurId: true,
+  factureId: true,
+  parrainage: true,
+  statut: true,
+  activite: true,
+  palier: true,
+  prixPublicHtCents: true,
+  factureHtCents: true,
+  montantCents: true,
+  autofactureNumero: true,
+  autofactureEmiseAt: true,
+  verseeAt: true,
+} as const;
+
+/** Les avoirs de moins de 24 mois (art. 4.5 : la reprise court de la date de CHAQUE annulation). */
+export function avoirsDansLeDelai<T extends { emiseAt: Date | null; createdAt?: Date | null }>(
+  avoirs: readonly T[],
+  maintenant: Date,
+): T[] {
+  const borne = ajouterMois(maintenant, -24).getTime();
+  return avoirs.filter((a) => {
+    const t = (a.emiseAt ?? a.createdAt ?? null)?.getTime();
+    return typeof t === "number" && t >= borne;
+  });
+}
 const estModifiable = (s: string) => (MODIFIABLES as readonly string[]).includes(s);
 
 export interface BilanAvoirsClients {
@@ -206,15 +235,29 @@ export async function reprendreApresAvoirsClients(
     try {
       const lu = await facturesDeLaCommande(factureId);
       if (!lu) continue;
-      const { netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
+      const { brutCents, netCents, avoirs: actifs } = netDeLaCommande(lu.membres, lu.avoirs);
       if (actifs.length === 0) continue; // avoir brouillon ou annulé : sans effet
       const net = Math.max(0, netCents);
-      const annulationLe = dateDeLAnnulation(actifs as FactureLue[]) ?? maintenant;
+      // Dette a1 (a) : le délai de 24 mois de l'art. 4.5 s'apprécie AVOIR PAR AVOIR. Pour une ligne
+      // déjà facturée (retenue, reprise), seuls comptent les avoirs de moins de 24 mois ; un avoir
+      // plus ancien ne profite jamais du délai d'un avoir récent.
+      const recents = avoirsDansLeDelai(actifs as FactureLue[], maintenant);
+      const netRecent = Math.max(0, brutCents + recents.reduce((x, a) => x + a.montantHtCents, 0));
+      const annulationLe = dateDeLAnnulation(recents) ?? maintenant;
       const motif = `Art. 4.5 : facture du client annulée ou réduite par un avoir (prix net ${(net / 100).toFixed(2).replace(".", ",")} € HT).`;
 
       // Le FILLEUL d'abord : s'il n'est pas encore facturé, `ajustement.ts` porte la part du parrain
       // (réduction, annulation ou reprise) — elle n'est alors jamais reprise une seconde fois ici.
-      const filleul = groupe.find((l) => !l.parrainage) ?? null;
+      // Dette a1 (b) : le filleul déjà annulé ou retenu n'est plus dans `groupe` ; sa ligne
+      // d'origine sert quand même au calcul de la part du parrain (10 % du filleul recalculé).
+      const filleul =
+        groupe.find((l) => !l.parrainage) ??
+        (groupe.some((l) => l.parrainage)
+          ? await prisma.commissionApporteur.findFirst({
+              where: { factureId, parrainage: false },
+              select: CHAMPS_LIGNE,
+            })
+          : null);
       const parrainParAjustement =
         !!filleul && !filleul.autofactureNumero && estModifiable(filleul.statut);
       const ordre = [...groupe].sort((a, b) => Number(a.parrainage) - Number(b.parrainage));
@@ -258,9 +301,10 @@ export async function reprendreApresAvoirsClients(
           continue;
         }
 
+        if (recents.length === 0) continue; // aucun avoir dans le délai : rien à reprendre
         const cible = cibleApresAvoir(
           { ...l, montantCents: montant },
-          net,
+          netRecent,
           l.parrainage && filleul
             ? { ...filleul, montantCents: filleul.montantCents ?? 0 }
             : undefined,
