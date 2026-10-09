@@ -517,11 +517,11 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                       <input type="hidden" name="id" value={c.id} />
                       <p>
                         D&apos;après la liste d&apos;inscription. Vide = commande entière. La
-                        commission devient : commission × participants de l&apos;établissement
-                        attribué ÷ participants de la commande, au centime supérieur.
+                        commission devient : commission × stagiaires de l&apos;établissement
+                        attribué ÷ stagiaires de la commande, au centime supérieur.
                       </p>
                       <label className="flex items-center gap-[var(--space-admin-2)]">
-                        Participants de l&apos;établissement attribué
+                        Stagiaires de l&apos;établissement attribué
                         <input
                           name="participantsEtablissement"
                           type="number"
@@ -532,7 +532,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                         />
                       </label>
                       <label className="flex items-center gap-[var(--space-admin-2)]">
-                        Participants de la commande
+                        Stagiaires de la commande
                         <input
                           name="participantsCommande"
                           type="number"
