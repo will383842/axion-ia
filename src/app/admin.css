@@ -3078,3 +3078,49 @@ a.admin-card-inline {
     min-height: var(--target-admin-min-mobile);
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * .admin-etapes — la barre d'étapes d'une fiche, et la pastille d'une liste
+ * (Candidatures unifiées L8a). Sur téléphone, la barre DÉFILE (comme les
+ * tableaux de la console) : elle ne se replie jamais en colonne.
+ * Dans `@layer components`, comme le fil.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .admin-pastille-etape {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-admin-1);
+  }
+  .admin-etapes {
+    display: flex;
+    gap: var(--space-admin-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .admin-etapes-pas {
+    flex-shrink: 0;
+    padding: var(--space-admin-2) var(--space-admin-5);
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-pill);
+    background-color: var(--color-admin-paper);
+    color: var(--color-admin-fg-muted);
+    font-size: var(--text-admin-xs);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .admin-etapes-faite {
+    background-color: var(--color-admin-success-soft);
+    border-color: transparent;
+    color: var(--color-admin-success-fg);
+  }
+  .admin-etapes-courante {
+    background-color: var(--color-admin-accent);
+    border-color: transparent;
+    color: var(--color-admin-accent-fg);
+    font-weight: 600;
+  }
+}
