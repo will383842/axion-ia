@@ -163,20 +163,6 @@ export const MONTREUIL_COPY: VilleCopy = {
               "Pour les grandes entreprises dont les sièges ou sites majeurs sont implantés à Montreuil — Ubisoft, AFD, BNP Paribas Personal Finance, Capgemini.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel concis et chiffré. Le plan d'action était présentable au comité de direction dès la semaine suivante, avec des cas d'usage concrets ancrés dans nos workflows réels.",
-            role: "Directeur général",
-            companyProfile: "ETI numérique, Bas-Montreuil",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes plutôt que des slides génériques. Le livrable nous a permis de prioriser nos chantiers IA avec un ROI chiffré pour chaque cas — exactement ce que le board attendait.",
-            role: "Directrice transformation digitale",
-            companyProfile: "PME conseil IT, Montreuil",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Montreuil ?",
@@ -261,20 +247,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises with HQs or major sites in Montreuil — Ubisoft, AFD, BNP Paribas Personal Finance, Capgemini.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a concise and costed operational audit. The action plan was boardroom-ready the very next week, with concrete use cases anchored in our real workflows.",
-            role: "CEO",
-            companyProfile: "Digital mid-cap, Bas-Montreuil",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal data rather than generic slides. The deliverable let us prioritise our AI initiatives with a costed ROI for each use case — exactly what the board was expecting.",
-            role: "Head of Digital Transformation",
-            companyProfile: "IT consulting SME, Montreuil",
           },
         ],
         faq: [
@@ -365,20 +337,6 @@ export const MONTREUIL_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands sièges montreuillois — roadshow multi-services, séminaires CODIR + cascade équipes terrain ou développeurs.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe créative. Ils sont repartis avec leurs outils configurés sur leurs vrais projets. Dès le lendemain, plusieurs les utilisaient pour rédiger des briefs et des game design documents.",
-            role: "Head of Production",
-            companyProfile: "Studio jeu vidéo, Bas-Montreuil",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes de conformité financière — pas de session générique, des cas concrets qui parlaient à nos équipes.",
-            role: "Directrice des opérations",
-            companyProfile: "ETI services financiers, Montreuil",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Montreuil ?",
@@ -463,20 +421,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large Montreuil HQs — multi-department roadshows, exec committee seminars + field team or developer cascades.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-day format perfectly matched our creative team's needs. They left with tools configured for their real projects. By the next day, several were already using them to draft briefs and game design documents.",
-            role: "Head of Production",
-            companyProfile: "Gaming studio, Bas-Montreuil",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our financial compliance constraints — no generic session, concrete cases that resonated with our teams.",
-            role: "Chief Operating Officer",
-            companyProfile: "Financial services mid-cap, Montreuil",
           },
         ],
         faq: [
@@ -567,20 +511,6 @@ export const MONTREUIL_COPY: VilleCopy = {
               "Programmes pour grands comptes montreuillois : cas d'usage cascadés multi-services, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation traitement dossiers livrée comme promis. ROI mesuré dès les premiers mois : nos équipes passent maintenant moins de temps sur les tâches répétitives et plus sur la valeur ajoutée. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur des systèmes d'information",
-            companyProfile: "ETI services financiers, Montreuil",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe créative : kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome sur leurs outils IA depuis le go-live.",
-            role: "Lead Producer",
-            companyProfile: "Studio numérique, Bas-Montreuil",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Montreuil ?",
@@ -665,20 +595,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for Montreuil large accounts: cascaded multi-department use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Case-processing automation implementation delivered as promised. ROI measured within the first months: our teams now spend less time on repetitive tasks and more on added value. No lock-in, we control our deployment.",
-            role: "CIO",
-            companyProfile: "Financial services mid-cap, Montreuil",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our creative team: intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously on their AI tools since go-live.",
-            role: "Lead Producer",
-            companyProfile: "Digital studio, Bas-Montreuil",
           },
         ],
         faq: [
@@ -769,20 +685,6 @@ export const MONTREUIL_COPY: VilleCopy = {
               "Programme individuel pour dirigeants de grands groupes implantés à Montreuil — rythme, profondeur et confidentialité adaptés à vos enjeux.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format 1-to-1 m'a permis d'aller directement sur mes vrais sujets sans perdre de temps sur ce qui ne me concerne pas. Après quelques sessions, j'utilise l'IA quotidiennement sur mes décisions opérationnelles.",
-            role: "Directeur général",
-            companyProfile: "PME numérique, Montreuil",
-          },
-          {
-            quote:
-              "Je cherchais un accompagnement individuel sans jargon, adapté à mes enjeux financiers réels. Axion-IA a exactement rempli ce besoin — confidentialité totale, cas concrets, outils opérationnels dès la première session.",
-            role: "Directrice financière",
-            companyProfile: "ETI services, Bas-Montreuil",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que l'accompagnement 1-to-1 Axion-IA à Montreuil ?",
@@ -867,20 +769,6 @@ export const MONTREUIL_COPY: VilleCopy = {
             price: "Custom 1-to-1 programme",
             detail:
               "Individual programme for large-group executives in Montreuil — pace, depth and confidentiality adapted to your challenges.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 format let me go straight to my real subjects without wasting time on what doesn't apply to me. After a few sessions, I use AI daily on my operational decisions.",
-            role: "CEO",
-            companyProfile: "Digital SME, Montreuil",
-          },
-          {
-            quote:
-              "I was looking for individual support without jargon, adapted to my real financial challenges. Axion-IA met exactly that need — full confidentiality, concrete cases, operational tools from the very first session.",
-            role: "CFO",
-            companyProfile: "Services mid-cap, Bas-Montreuil",
           },
         ],
         faq: [

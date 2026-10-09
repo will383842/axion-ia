@@ -138,20 +138,6 @@ export const LE_MANS_COPY: VilleCopy = {
               "Pour les sièges Novaxis (MMA/Covéa) et les sites industriels grands-comptes souhaitant cadrer une gouvernance IA centralisée sur plusieurs entités.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré une cartographie précise de nos workflows sinistres automatisables. Le rapport est chiffré, actionnable, sans jargon technique. On a pu présenter le plan à notre comité de direction la semaine suivante.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI assurance mutualiste, Le Mans",
-          },
-          {
-            quote:
-              "Méthode très pragmatique, démos sur nos vraies données de production plutôt que des slides théoriques. Le livrable nous a permis de prioriser trois cas d'usage IA pour l'année et de les budgéter précisément.",
-            role: "Responsable transformation digitale",
-            companyProfile: "PME industrie automobile, bassin manceau",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA au Mans ?",
@@ -236,20 +222,6 @@ export const LE_MANS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For Novaxis HQs (MMA/Covéa) and large industrial sites framing centralised AI governance across multiple entities.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a precise map of our automatable claims workflows. The report is costed, actionable, jargon-free. We presented the plan to our executive committee the following week.",
-            role: "Head of Operations",
-            companyProfile: "Mutual insurance mid-cap, Le Mans",
-          },
-          {
-            quote:
-              "Very pragmatic method, demos on our real production data rather than theoretical slides. The deliverable let us prioritise three AI use cases for the year and budget them precisely.",
-            role: "Digital Transformation Manager",
-            companyProfile: "Automotive manufacturing SME, Le Mans basin",
           },
         ],
         faq: [
@@ -340,20 +312,6 @@ export const LE_MANS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges Novaxis et les sites industriels grands-comptes : roadshows multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à notre équipe de gestion : nos collaborateurs sont repartis avec leurs outils IA installés et configurés sur leurs propres dossiers sinistres. Taux d'adoption très fort dès la semaine suivante.",
-            role: "Responsable formation",
-            companyProfile: "ETI assurance, Le Mans",
-          },
-          {
-            quote:
-              "Session dirigeants très efficace : en une journée, tout le comité de direction était aligné sur les cas d'usage IA prioritaires pour notre site industriel. Le vocabulaire était parfaitement adapté à notre réalité automobile.",
-            role: "Directeur de site",
-            companyProfile: "PME équipementier automobile, bassin manceau",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA au Mans ?",
@@ -438,20 +396,6 @@ export const LE_MANS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Novaxis HQs and large industrial sites: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly tailored to our management team: our staff left with their AI tools installed and configured on their own claims files. Very strong adoption rate from the following week.",
-            role: "Training Manager",
-            companyProfile: "Insurance mid-cap, Le Mans",
-          },
-          {
-            quote:
-              "Very effective executive session: in a day, the entire executive committee was aligned on priority AI use cases for our industrial site. The vocabulary was perfectly adapted to our automotive reality.",
-            role: "Site Director",
-            companyProfile: "Automotive parts SME, Le Mans basin",
           },
         ],
         faq: [
@@ -542,20 +486,6 @@ export const LE_MANS_COPY: VilleCopy = {
               "Programmes pluriannuels pour grands comptes manceaux (sièges Novaxis, sites industriels) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation qualification sinistres livrée comme promis. ROI réel mesuré : nombre d'équivalents temps plein libérés sur le traitement de masse, gain annuel net significatif. Documentation runbook complète, nos équipes sont totalement autonomes.",
-            role: "Directeur des systèmes d'information",
-            companyProfile: "ETI assurance mutualiste, Le Mans",
-          },
-          {
-            quote:
-              "Méthode hybride idéale : kick-off intense sur site, puis itérations à distance avec points courts. Notre équipe industrielle n'a jamais été perdue dans le jargon. Le déploiement est en production sur notre ligne qualité.",
-            role: "Responsable technique",
-            companyProfile: "PME équipementier automobile, bassin manceau",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA au Mans ?",
@@ -640,20 +570,6 @@ export const LE_MANS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Multi-year programs for Le Mans large accounts (Novaxis HQs, industrial sites): cascaded use cases, centralised AI governance, dedicated Axion-IA team.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Claim qualification implementation delivered as promised. Real ROI measured: FTEs freed on bulk processing, significant net annual gain. Complete runbook documentation, our teams are fully autonomous.",
-            role: "Head of IT",
-            companyProfile: "Mutual insurance mid-cap, Le Mans",
-          },
-          {
-            quote:
-              "Ideal hybrid method: intense on-site kick-off, then remote iterations with short check-ins. Our industrial team was never lost in jargon. The deployment is live on our quality line.",
-            role: "Technical Manager",
-            companyProfile: "Automotive parts SME, Le Mans basin",
           },
         ],
         faq: [
@@ -745,20 +661,6 @@ export const LE_MANS_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants des sièges Novaxis (MMA/Covéa) et sites industriels grands-comptes souhaitant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'explorer l'IA sur mes propres dossiers sinistres et contrats assurance. En une journée avec un consultant dédié, on a travaillé sur mes vraies données. Résultat : des outils opérationnels le soir même et un plan clair pour mon équipe.",
-            role: "Responsable gestion",
-            companyProfile: "ETI assurance mutualiste, Le Mans",
-          },
-          {
-            quote:
-              "Format coaching individuel parfait pour un responsable technique automobile : confidentialité totale sur nos données de production, niveau adapté, démos sur nos vrais bons de commande et fiches qualité.",
-            role: "Responsable technique",
-            companyProfile: "PME équipementier automobile, bassin manceau",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA au Mans ?",
@@ -839,20 +741,6 @@ export const LE_MANS_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers at Novaxis HQs (MMA/Covéa) and large industrial sites seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to explore AI on my own insurance claims and contract files. In one day with a dedicated consultant, we worked on my real data. Result: operational tools the same evening and a clear plan for my team.",
-            role: "Claims Manager",
-            companyProfile: "Mutual insurance mid-cap, Le Mans",
-          },
-          {
-            quote:
-              "Perfect individual coaching format for an automotive technical manager: total confidentiality on our production data, adapted level, demos on our real purchase orders and quality sheets.",
-            role: "Technical Manager",
-            companyProfile: "Automotive parts SME, Le Mans basin",
           },
         ],
         faq: [

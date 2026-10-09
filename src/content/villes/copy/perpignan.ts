@@ -165,20 +165,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
               "Pour les grands groupes implantés à Perpignan — direction transformation Cémoi, Saint-Charles International, Centre Hospitalier de Perpignan et organismes publics de la Métropole.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel chiffré et actionnable. Le rapport intégrait la complexité de nos flux transfrontaliers France-Espagne — on a pu présenter le plan au board dès la semaine suivante.",
-            role: "Directeur général",
-            companyProfile: "ETI négoce agroalimentaire, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Méthode rigoureuse, démos sur nos données de gestion d'énergie plutôt que des slides théoriques. Le livrable a permis de prioriser nos chantiers IA avec un ROI chiffré pour le comité de direction.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME énergies renouvelables, Tecnosud Perpignan",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Perpignan ?",
@@ -263,20 +249,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large groups based in Perpignan — Cémoi transformation leadership, Saint-Charles International, Centre Hospitalier de Perpignan and Métropole public bodies.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a costed, actionable operational audit. The report accounted for the complexity of our France-Spain cross-border flows — we presented the plan to the board the very next week.",
-            role: "CEO",
-            companyProfile: "Agri-food trading mid-cap, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Rigorous method, demos on our energy management data rather than theoretical slides. The deliverable helped prioritize our AI initiatives with a costed ROI for the executive committee.",
-            role: "Head of Transformation",
-            companyProfile: "Renewables SME, Tecnosud Perpignan",
           },
         ],
         faq: [
@@ -367,20 +339,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grandes structures perpignanaises — roadshow multi-sites Métropole, séminaires CODIR + cascade équipes terrain ou entrepôts.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes commerciales. Ils repartent avec des outils configurés sur leurs vrais flux de commandes. Dès le lendemain, plusieurs les utilisaient pour rédiger des offres clients.",
-            role: "Directeur commercial",
-            companyProfile: "PME négoce fruits-légumes, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en une journée sur notre stratégie IA dans le contexte transfrontalier France-Espagne. Cas concrets adaptés à nos enjeux — pas un générique copié-collé.",
-            role: "DG",
-            companyProfile: "ETI logistique, Perpignan Méditerranée Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Perpignan ?",
@@ -465,20 +423,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Perpignan large structures — multi-site Métropole roadshows, exec committee seminars + field team or warehouse cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our sales team's needs. They left with tools configured for their real order flows. By the next day, several were already using them to draft client proposals.",
-            role: "Sales Director",
-            companyProfile: "Fruit-vegetable trading SME, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "The executive session aligned us within a day on our AI strategy in the France-Spain cross-border context. Concrete cases adapted to our challenges — not a copy-paste generic.",
-            role: "CEO",
-            companyProfile: "Logistics mid-cap, Perpignan Méditerranée Métropole",
           },
         ],
         faq: [
@@ -569,20 +513,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Métropole : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation traçabilité livrée comme promis. ROI mesuré dès les premiers mois : nos équipes qualité passent moins de temps sur la saisie et plus sur le contrôle. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI négoce fruits-légumes, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe terrain Tecnosud et nos administratifs. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME énergies renouvelables, Tecnosud Perpignan",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Perpignan ?",
@@ -667,20 +597,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Métropole large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Traceability automation implementation delivered as promised. ROI measured within the first months: our quality teams now spend less time on data entry and more on controls. No lock-in, we control our deployment.",
-            role: "Operations Director",
-            companyProfile: "Fruit-vegetable trading mid-cap, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our Tecnosud field team and admin staff. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Renewables SME, Tecnosud Perpignan",
           },
         ],
         faq: [
@@ -771,20 +687,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
               "Accompagnement individuel pour membres de CODIR ou directeurs de grandes structures implantées dans la Métropole de Perpignan.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le programme 1-to-1 m'a permis de passer de zéro à opérationnel sur l'IA en quelques séances. Les exemples étaient calés sur ma réalité de négoce transfrontalier — rien de générique.",
-            role: "Dirigeant indépendant",
-            companyProfile: "PME négoce fruits-légumes, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Accompagnement discret, efficace, totalement adapté à mon rythme et à mon secteur viticole. Je repars avec des outils configurés sur mes propres données domaine.",
-            role: "Gérant",
-            companyProfile: "Domaine viticole AOP Roussillon, Perpignan Méditerranée Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de séances sont nécessaires pour être opérationnel sur l'IA à Perpignan ?",
@@ -869,20 +771,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
             price: "Custom programme",
             detail:
               "Individual coaching for executive committee members or directors at large structures based in Perpignan Métropole.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 programme took me from zero to operational on AI in a few sessions. The examples were calibrated to my cross-border trading reality — nothing generic.",
-            role: "Independent executive",
-            companyProfile: "Fruit-vegetable trading micro-business, Saint-Charles Perpignan",
-          },
-          {
-            quote:
-              "Discreet, effective coaching, entirely adapted to my pace and my wine sector. I leave each session with tools configured on my own estate data.",
-            role: "Manager",
-            companyProfile: "AOP Roussillon wine estate, Perpignan Méditerranée Métropole",
           },
         ],
         faq: [

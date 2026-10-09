@@ -83,6 +83,7 @@ import {
 import { AsyncLocalStorage } from "node:async_hooks";
 import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
+import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // SSOT du pied de page légal — module PUR, valeurs figées au Kbis. Remplace les
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
@@ -222,7 +223,9 @@ function avecUtm(url: string, famille: FamilleEmail, content: string, campagne?:
   return `${url}${sep}${params.join("&")}`;
 }
 
-const REVIEW_URL = `${BASE_URL}/fr/avis`;
+// Le bloc « Déposer un avis » mène au FORMULAIRE, toujours ouvert — jamais au hub
+// /avis, qui rend 404 tant qu'aucun avis n'est publié (règle automatique).
+const REVIEW_URL = `${BASE_URL}/fr/avis/deposer`;
 const APPEL_URL = `${BASE_URL}/fr/appel?depuis=email`;
 const SITE_URL_PARTAGE = `${BASE_URL}/fr`;
 
@@ -701,7 +704,7 @@ const TXT = {
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
     tagline: "Cabinet IA pour entreprises — PME, ETI et grands groupes",
-    reviewsWord: "avis clients vérifiés",
+    reviewsWord: "avis clients",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
     soupape:
@@ -751,7 +754,7 @@ const TXT = {
   },
   en: {
     tagline: "AI consultancy for mid-market and enterprise",
-    reviewsWord: "verified client reviews",
+    reviewsWord: "client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
     soupape: "A question? Just reply to this email — it reaches us directly, and a human reads it.",
@@ -811,7 +814,7 @@ export function EmailLayout({
 
   const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
-  const showReviews = rs.count >= 5 && rs.avg > 0;
+  const showReviews = rs.count >= AGGREGATE_MIN_COUNT && rs.avg > 0;
   // 🔴 2026-08-19 — `trust` est un booléen de MISE EN PAGE (« ce gabarit affiche
   // un bandeau de confiance »), pas un drapeau de certification. Le lockup
   // « Organisme de formation certifié Qualiopi » partirait donc quoi qu'il
@@ -838,7 +841,10 @@ export function EmailLayout({
   const signatureCourte = signature === "fondateur-court";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
-  const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
+  // Étoiles = moyenne RÉELLE arrondie (jamais cinq étoiles posées d'office).
+  const pleines = Math.min(5, Math.max(0, Math.round(rs.avg)));
+  const etoiles = "★".repeat(pleines) + "☆".repeat(5 - pleines);
+  const reviewLine = `${etoiles}  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
 
   return (
     <Html lang={locale}>

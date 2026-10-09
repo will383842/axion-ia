@@ -141,20 +141,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
               "Pour les directions IA des grands groupes implantés à Clermont-Ferrand souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su adapter son audit à la réalité de notre secteur : cahiers des charges donneurs d'ordres, gammes techniques, contrôle qualité. Le livrable est chiffré, actionnable, et nos chefs de projet l'ont pris en main immédiatement.",
-            role: "Directeur général",
-            companyProfile: "PME sous-traitante industrielle, bassin clermontois",
-          },
-          {
-            quote:
-              "La méthode démo-sur-vos-données nous a convaincus là où des slides théoriques auraient échoué. Le ROI identifié en traitement documentaire agroalimentaire a justifié la mission en quelques heures.",
-            role: "Directrice administratives et financière",
-            companyProfile: "ETI agroalimentaire, Puy-de-Dôme",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Clermont-Ferrand ?",
@@ -239,20 +225,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For AI leadership at large groups headquartered in Clermont-Ferrand framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA adapted its audit to our sector reality: customer tender documents, technical specs, quality control. The deliverable is costed, actionable, and our project managers picked it up immediately.",
-            role: "CEO",
-            companyProfile: "Industrial sub-contracting SME, Clermont basin",
-          },
-          {
-            quote:
-              "The demo-on-your-data approach convinced us where theoretical slides would have failed. The ROI identified for agri-food document processing justified the mission within hours.",
-            role: "CFO",
-            companyProfile: "Agri-food mid-cap, Puy-de-Dôme",
           },
         ],
         faq: [
@@ -344,20 +316,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands groupes clermontois : roadshow multi-sites industriels, séminaire CODIR + cascade équipes terrain.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour nos ingénieurs : les démos sur nos gammes techniques et nos rapports qualité ont transformé des sceptiques en utilisateurs quotidiens. Le lendemain, l'adoption était concrète.",
-            role: "Directeur des opérations",
-            companyProfile: "PME équipementière automobile, bassin clermontois",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en une journée sur notre trajectoire IA. Données agro réelles utilisées pendant les démos — pertinence immédiate pour notre métier.",
-            role: "Directrice générale",
-            companyProfile: "ETI agroalimentaire Auvergne, Puy-de-Dôme",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Clermont-Ferrand ?",
@@ -442,20 +400,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Clermont large groups: multi-site industrial roadshows, exec committee + field-team cascade seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated for our engineers: demos on our technical specs and quality reports turned sceptics into daily users. The next day, adoption was real.",
-            role: "Operations Director",
-            companyProfile: "Automotive parts SME, Clermont basin",
-          },
-          {
-            quote:
-              "The executives session aligned us in a day on our AI trajectory. Real agri-food data used during demos — immediately relevant to our business.",
-            role: "CEO",
-            companyProfile: "Auvergne agri-food mid-cap, Puy-de-Dôme",
           },
         ],
         faq: [
@@ -547,20 +491,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes clermontois : cas d'usage cascadés sur plusieurs sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture automatisée de cahiers des charges livrée comme promis. ROI réel mesuré : nos ingénieurs bureau d'études gagnent plusieurs heures par semaine sur la lecture de PPAP clients. Aucun lock-in, les modèles sont sur notre infra.",
-            role: "Directeur technique",
-            companyProfile: "PME équipementière sous-traitante, bassin clermontois",
-          },
-          {
-            quote:
-              "Méthode hybride idéale pour une ETI multi-sites : kick-off intense à Clermont-Ferrand, puis itérations à distance courtes et efficaces. Nos ambassadeurs internes sont autonomes. Mission terminée dans les délais du SOW.",
-            role: "DSI",
-            companyProfile: "ETI agroalimentaire Auvergne, siège Puy-de-Dôme",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Clermont-Ferrand ?",
@@ -645,20 +575,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Clermont large accounts: cascaded use cases across multiple sites, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automated tender-document reading delivered as promised. Real ROI measured: our R&D engineers save several hours per week on customer PPAP reading. No lock-in, models are on our infra.",
-            role: "Technical Director",
-            companyProfile: "Automotive sub-contracting SME, Clermont basin",
-          },
-          {
-            quote:
-              "Perfect hybrid method for a multi-site mid-cap: intense on-site kick-off in Clermont-Ferrand, then short and efficient remote iterations. Our internal ambassadors are autonomous. Mission closed on SOW schedule.",
-            role: "CIO",
-            companyProfile: "Auvergne agri-food mid-cap, Puy-de-Dôme HQ",
           },
         ],
         faq: [
@@ -750,20 +666,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
               "Coaching individuel pour cadres dirigeants et experts de grands groupes clermontois (Michelin, Limagrain, Safran…) souhaitant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin de comprendre l'IA en lien avec mes propres contraintes de sous-traitant Michelin — cahiers des charges, PPAP, traçabilité. En une journée, le consultant a utilisé mes vrais documents. J'ai appris dix fois plus qu'en deux jours de formation collective.",
-            role: "Directeur général",
-            companyProfile: "PME sous-traitante automobile, bassin clermontois",
-          },
-          {
-            quote:
-              "Format idéal pour un directeur technique en ETI : pas de nivellement par le bas, pas de sujets déjà connus. Le consultant a ajusté le niveau en temps réel. Je suis reparti avec un plan d'action concret pour mon équipe R&D.",
-            role: "Directeur technique",
-            companyProfile: "ETI équipementière industrielle, agglomération Clermont-Ferrand",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Clermont-Ferrand ?",
@@ -844,20 +746,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers and experts at Clermont large groups (Michelin, Limagrain, Safran…) seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to understand AI in relation to my own Michelin sub-contracting constraints — tender documents, PPAP, traceability. In one day, the consultant used my real documents. I learned ten times more than in two days of group training.",
-            role: "CEO",
-            companyProfile: "Automotive sub-contracting micro-business, Clermont basin",
-          },
-          {
-            quote:
-              "Perfect format for a technical director at a mid-cap: no levelling down, no already-known topics. The consultant adjusted the level in real time. I left with a concrete action plan for my R&D team.",
-            role: "Technical Director",
-            companyProfile: "Industrial equipment mid-cap, Clermont-Ferrand area",
           },
         ],
         faq: [

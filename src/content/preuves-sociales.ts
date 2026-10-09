@@ -1,45 +1,34 @@
-// ─── PREUVES SOCIALES — interrupteurs uniques (2026-10-09) ─────────────────
-// Le bandeau de logos clients et les avis clients ont été ÉTEINTS le 2026-10-09
-// après un message de la DGCCRF (décision de Will). Tout le code reste en place :
-// composants, pages /avis, cartes, notes, données structurées. Rien n'est cassé,
-// tout est seulement masqué tant que l'interrupteur est sur `false`.
+// ─── PREUVES SOCIALES — règles d'affichage (2026-10-09) ─────────────────────
+// Le bandeau de logos clients et les avis clients ont été retirés le 2026-10-09
+// après un message de la DGCCRF (décision de Will). Les deux ne reviennent pas
+// de la même façon.
 //
-// Pour RALLUMER, quand il y aura de vrais clients :
-// - logos : remplir `CLIENT_LOGOS` (src/content/home-data.ts) avec des clients
-//   réels ayant donné leur accord écrit, déposer leurs SVG dans
-//   `public/logos/clients/`, puis passer `LOGOS_CLIENTS_AFFICHES` à `true` ;
-// - avis : republier les avis réels dans la console (statut « publié »), puis
-//   passer `AVIS_CLIENTS_AFFICHES` à `true`. Les pages /avis, les blocs d'avis
-//   des pages service, la note de l'accueil et les témoignages des pages
-//   « implémentation » reviennent d'eux-mêmes.
+// LOGOS — interrupteur MANUEL, ci-dessous. Une marque ne s'affiche qu'avec
+// l'accord écrit du client, jamais automatiquement. Pour rallumer : remplir
+// `CLIENT_LOGOS` (src/content/home-data.ts) avec des clients réels ayant donné
+// leur accord écrit, déposer leurs SVG dans `public/logos/clients/`, puis passer
+// `LOGOS_CLIENTS_AFFICHES` à `true` — sur décision de Will uniquement.
 //
-// ⚠️ Ne repasser à `true` que sur décision de Will.
+// AVIS — règle AUTOMATIQUE, plus d'interrupteur. Les avis s'affichent d'eux-mêmes
+// dès qu'au moins un avis `status = published` existe en base (validé par Will
+// dans la console) : helper unique `avisPublies()` / `statsAvisPublies()`
+// (src/server/reviews/presence.ts, cache 5 min).
+// - 0 avis publié : RIEN. Pages /avis (hub, facettes, détail) et flux RSS en 404,
+//   sitemap-avis absent de sitemap-index, pas de bloc, pas de lien de pied de
+//   page, pas de ligne d'avis dans les e-mails.
+// - 1 à 4 avis : les avis s'affichent, SANS note globale ni AggregateRating.
+// - 5 avis ou plus (`AGGREGATE_MIN_COUNT`, src/lib/reviews/config.ts) : note
+//   globale, étoiles et AggregateRating JSON-LD.
+// Tout revient sans redéploiement : les pages sont dynamiques ou en ISR, et un
+// 404 rendu en ISR est régénéré au bout de son `revalidate`.
+//
+// DÉPÔT — /avis/deposer reste TOUJOURS ouvert (200), même avec 0 avis publié :
+// c'est par ce formulaire qu'arrivent les nouveaux avis.
+//
+// ⛔ Les témoignages écrits en dur (pages implémentation, pages villes,
+// `SocialProof`) et les faits du savoir tirés des anciens avis ont été SUPPRIMÉS,
+// pas éteints : aucun réglage ne peut les rallumer. Seuls de vrais avis publiés
+// servent de preuve sociale.
 
 /** Bandeau de logos clients (accueil, villes, régions, pages service, fiches). */
 export const LOGOS_CLIENTS_AFFICHES = false;
-
-/** Avis clients : pages /avis, blocs d'avis, notes, étoiles, témoignages. */
-export const AVIS_CLIENTS_AFFICHES = false;
-
-/**
- * Faits du savoir (articles générés + robot de discussion) qui citent les avis
- * clients (notes moyennes, « 77 avis vérifiés »…). Retirés tant que
- * `AVIS_CLIENTS_AFFICHES` est éteint ; ils reviennent avec lui. ⚠️ Les chiffres
- * de ces faits datent de juillet 2026 : les recalculer avant de rallumer.
- */
-const FAITS_ISSUS_DES_AVIS: ReadonlySet<string> = new Set([
-  "impl-061",
-  "impl-069",
-  "form-018",
-  "form-076",
-  "form-077",
-  "form-078",
-  "ua-050",
-  "ua-057",
-]);
-
-export function sansFaitsIssusDesAvis<T extends { readonly id: string }>(
-  faits: readonly T[],
-): readonly T[] {
-  return AVIS_CLIENTS_AFFICHES ? faits : faits.filter((f) => !FAITS_ISSUS_DES_AVIS.has(f.id));
-}

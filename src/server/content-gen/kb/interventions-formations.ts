@@ -13,10 +13,9 @@
 
 import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { KbFact } from "./audits";
-import { sansFaitsIssusDesAvis } from "@/content/preuves-sociales";
 export type { KbFact };
 
-export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesAvis([
+export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Formats de formation ────────────────────────────────────────────────
   {
     id: "form-001",
@@ -166,25 +165,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
-  {
-    id: "form-018",
-    // 🔴 Audit certification 2026-07-26 (F55). Le texte annonçait « 4,8/5 …
-    // sur la base des évaluations 2024-2025 » en citant un « Bilan qualité
-    // formations 2025 » qui n'existe pas. Les seules données de satisfaction
-    // réelles sont les 77 avis clients publiés, collectés du 20/06 au
-    // 06/07/2026 — pas 2024-2025, et ce sont des avis clients, pas des
-    // questionnaires post-formation. Chiffre recalculé sur la base réelle :
-    // 17 avis « interventions_formations », moyenne 4,88/5.
-    // Un fait de grounding alimente les articles générés ET le chatbot public :
-    // une allégation invérifiable y devient auto-publiée.
-    text: "Les prestations de formation Axion-IA recueillent une note moyenne de 4,88/5 sur 17 avis clients vérifiés, publiés et consultables individuellement sur axion-ia.com/avis (collecte du 20 juin au 6 juillet 2026).",
-    source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    // La date de vérification ne peut pas précéder la période de collecte citée.
-    verifiedAt: "2026-07-26",
-    verticales: ["interventions_formations"],
-    confidence: 0.88,
-  },
   // ── Secteurs cibles ──────────────────────────────────────────────────────
   {
     id: "form-019",
@@ -201,8 +181,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Les interventions ponctuelles (conférences, keynotes, tables rondes) constituent un format court adapté à la sensibilisation des COMEX et instances dirigeantes, en amont d'un programme de formation structuré.",
     source: "Axion-IA — Reporting activité 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
@@ -629,8 +609,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Chaque formation Axion-IA est précédée d'un questionnaire de positionnement envoyé aux participants, permettant d'adapter le contenu pédagogique au niveau réel et aux cas d'usage propres à l'équipe (indicateur Qualiopi 8).",
     source: "Axion-IA — Méthode pédagogique v2.0",
     sourceUrl: "https://axion-ia.com/interventions-formations",
@@ -690,48 +670,6 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
   },
   // ── Résultats terrain Axion-IA ────────────────────────────────────────────
   {
-    id: "form-076",
-    // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
-    // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
-    // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
-    text: "Les bénéficiaires des programmes de formation Axion-IA évaluent la prestation à 4,88/5 en moyenne. Les retours détaillés, publiés avec le secteur et la ville de chaque client, sont consultables sur axion-ia.com/avis." /* price-exempt: économie réalisée par le client, pas un tarif Axion */,
-    source: "Axion-IA — Étude impact économique formations 2026",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
-    verticales: ["interventions_formations"],
-    confidence: 0.82,
-  },
-  {
-    id: "form-077",
-    // 🔄 Audit KB 2026-08-11 : ce fait dupliquait la stat de form-018
-    // (4,88/5 sur 17 avis). Réécrit sur un angle différent à partir des mêmes
-    // données réelles : le corpus complet des 77 avis, toutes prestations
-    // confondues, et sa fenêtre de collecte. Aucun chiffre nouveau.
-    text: "Toutes prestations confondues, Axion-IA totalise 77 avis clients vérifiés collectés du 20 juin au 6 juillet 2026, pour une note moyenne de 4,88/5. Chaque avis est publié individuellement avec le secteur et la ville du client sur axion-ia.com/avis.",
-    source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-08-11",
-    verticales: ["interventions_formations"],
-    confidence: 0.87,
-  },
-  {
-    id: "form-078",
-    // 🔴 F55 — « 82 % des responsables formation ont renouvelé dans les 12 mois »
-    // ne repose sur AUCUNE donnée : aucune table ne suit le renouvellement, et
-    // la source citée n'existe pas. Un certificateur qui demande ce chiffre au
-    // titre de l'indicateur 2 ne trouvera rien. Remplacé par ce qui est
-    // réellement mesurable et publié.
-    text: "Sur les 77 avis clients vérifiés d'Axion-IA, 68 attribuent la note maximale de 5/5 et 9 la note de 4/5 — aucune note inférieure à 4. Le détail par prestation et par ville est public sur axion-ia.com/avis.",
-    source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
-    sourceUrl: "https://axion-ia.com/interventions-formations",
-    // La date de vérification ne peut pas précéder la période de collecte citée.
-    verifiedAt: "2026-07-06",
-    verticales: ["interventions_formations"],
-    confidence: 0.88,
-  },
-  {
     id: "form-079",
     text: "Les simulations IA (chatbot formateur, scénarios de jeu de rôle automatisés avec LLM) sont adoptées par 22 % des grandes entreprises françaises pour la formation à la négociation commerciale et à la gestion de conflits RH en 2025.",
     source: "Markess by exægis — Étude IA et formation professionnelle 2025",
@@ -745,8 +683,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
     // 🔴 Audit certification 2026-07-26 (F55). Auto-déclaration de résultat non
     // adossée : ni source vérifiable, ni donnée en base. Ces faits alimentent le
     // grounding des articles générés ET le chatbot public — l'allégation y devient
-    // auto-publiée. Réécrit sur la SEULE base mesurable : les 77 avis clients
-    // publiés (20/06 → 06/07/2026), vérifiables un par un sur axion-ia.com/avis.
+    // auto-publiée. Réécrit en énoncé qualitatif, sans chiffre de résultat ni
+    // référence aux avis clients (retirés le 2026-10-09).
     text: "Axion-IA forme également les équipes commerciales à la prospection IA augmentée : utilisation de LinkedIn Sales Navigator assisté par IA, génération de messages personnalisés à grande échelle et qualification automatique des leads.",
     source: "Axion-IA — Programme formation commerciaux IA 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
@@ -754,4 +692,4 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = sansFaitsIssusDesA
     verticales: ["interventions_formations"],
     confidence: 0.88,
   },
-]);
+];

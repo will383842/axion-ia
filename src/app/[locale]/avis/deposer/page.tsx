@@ -5,7 +5,8 @@
  * admin ne l'a pas validé en console. Full server component ; seul le formulaire
  * (`ReviewSubmissionForm`) est un client component (note, upload, Turnstile).
  *
- * JSON-LD : WebPage (publisher Organization + speakable). Lien retour vers /avis.
+ * JSON-LD : WebPage (publisher Organization + speakable). Lien retour vers /avis
+ * seulement s'il existe au moins un avis publié. Page TOUJOURS ouverte (200).
  */
 
 import type { Metadata } from "next";
@@ -17,17 +18,18 @@ import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { avisPublies } from "@/server/reviews/presence";
 import { Link } from "@/i18n/navigation";
 import { ReviewSubmissionForm } from "@/components/forms/ReviewSubmissionForm";
 import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
-export const revalidate = 86400;
+// 1 h (et non 24 h) : les liens vers /avis suivent la présence d'avis publiés.
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -43,11 +45,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DeposerAvisPage({ params }: Props) {
-  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
-  if (!AVIS_CLIENTS_AFFICHES) notFound();
+  // ⛔ Toujours ouvert, même avec 0 avis publié : c'est par ce formulaire
+  // qu'arrivent les nouveaux avis (src/content/preuves-sociales.ts).
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  // Les liens vers le hub /avis ne s'affichent que s'il existe (≥ 1 avis publié).
+  const hubAvisOuvert = await avisPublies();
 
   const webPageJsonLd = buildWebPageJsonLd({
     locale,
@@ -89,7 +93,7 @@ export default async function DeposerAvisPage({ params }: Props) {
       >
         <Breadcrumbs
           items={[
-            { href: "/avis", label: "Avis clients" },
+            ...(hubAvisOuvert ? [{ href: "/avis", label: "Avis clients" }] : []),
             { href: "/avis/deposer", label: "Déposer un avis" },
           ]}
         />
@@ -115,11 +119,17 @@ export default async function DeposerAvisPage({ params }: Props) {
               ))}
             </ol>
             <p className="text-fg-muted text-sm">
-              Nous publions les avis positifs comme négatifs. Voir{" "}
-              <Link href="/avis" className="text-primary underline">
-                tous les avis clients
-              </Link>
-              .
+              Nous publions les avis positifs comme négatifs.
+              {hubAvisOuvert ? (
+                <>
+                  {" "}
+                  Voir{" "}
+                  <Link href="/avis" className="text-primary underline">
+                    tous les avis clients
+                  </Link>
+                  .
+                </>
+              ) : null}
             </p>
             <ReviewQrCta context="form" />
           </aside>

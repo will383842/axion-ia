@@ -136,20 +136,6 @@ export const DIJON_COPY: VilleCopy = {
               "Pour les sièges régionaux et groupes implantés à Dijon (URGO, Amora, SEB bassin) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit sur place a été déclencheur : en une journée, nous avons identifié trois workflows automatisables dans notre gestion administrative. Le livrable était chiffré, pas théorique. On a pu prioriser sans hésiter.",
-            role: "Directrice générale",
-            companyProfile: "Cabinet conseil, Dijon métropole, PME",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données de production. Le plan d'action a convaincu notre comité de direction en une réunion — ce qu'aucun consultant traditionnel n'avait réussi à faire.",
-            role: "Directeur industriel",
-            companyProfile: "ETI agroalimentaire, Côte-d'Or",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Dijon ?",
@@ -234,20 +220,6 @@ export const DIJON_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For regional HQs and groups based in Dijon (URGO, Amora, SEB basin) framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The Sur place audit was a trigger: in one day we identified three automatable workflows in our admin management. The deliverable was costed, not theoretical. We could prioritise without hesitation.",
-            role: "Managing Director",
-            companyProfile: "Consulting firm, Dijon metropolitan area, SME",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data. The action plan convinced our executive committee in one meeting — something no traditional consultant had managed.",
-            role: "Industrial Director",
-            companyProfile: "Agri-food mid-cap, Côte-d'Or",
           },
         ],
         faq: [
@@ -342,20 +314,6 @@ export const DIJON_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges et grands comptes dijonnais : roadshow multi-sites Côte-d'Or, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective très bien adaptée à notre équipe commerciale : démos sur nos vrais emails et fiches client. Le lendemain, les commerciaux utilisaient Claude pour qualifier leurs leads. Résultat visible immédiatement.",
-            role: "Directeur commercial",
-            companyProfile: "PME agroalimentaire, Dijon métropole",
-          },
-          {
-            quote:
-              "La session dirigeants a aligné notre CODIR en une journée sur notre roadmap IA. Les exemples utilisés venaient de notre secteur bourguignon, pas de cas génériques. C'est ce qui a fait la différence.",
-            role: "Présidente",
-            companyProfile: "ETI services B2B, Côte-d'Or",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Dijon ?",
@@ -440,20 +398,6 @@ export const DIJON_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Dijon HQs and large accounts: Côte-d'Or multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training very well adapted to our sales team: demos on our real emails and client sheets. The next day, sales reps were using Claude to qualify their leads. Immediately visible result.",
-            role: "Sales Director",
-            companyProfile: "Agri-food SME, Dijon metropolitan area",
-          },
-          {
-            quote:
-              "The executive session aligned our board in one day on our AI roadmap. The examples came from our Burgundy sector, not generic cases. That made all the difference.",
-            role: "President",
-            companyProfile: "B2B services mid-cap, Côte-d'Or",
           },
         ],
         faq: [
@@ -548,20 +492,6 @@ export const DIJON_COPY: VilleCopy = {
               "Programmes annuels pour les grands comptes dijonnais : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation traçabilité + génération de fiches produit livrée comme prévu. Le ROI mesuré à 6 mois dépassait la prédiction du SOW. Nos équipes qualité ont pris le relais sans aide extérieure.",
-            role: "Directrice qualité",
-            companyProfile: "ETI agroalimentaire, Côte-d'Or",
-          },
-          {
-            quote:
-              "Kick-off intense sur site à Dijon, puis itérations à distance très efficaces. Notre équipe IT n'a jamais été perdue. Le runbook documenté permet de maintenir la solution en autonomie totale.",
-            role: "Responsable SI",
-            companyProfile: "PME santé-pharma, Dijon métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Dijon ?",
@@ -646,20 +576,6 @@ export const DIJON_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Dijon large accounts: cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Traceability + product sheet generation implementation delivered as planned. The ROI measured at 6 months exceeded the SOW prediction. Our quality teams took over without external help.",
-            role: "Quality Director",
-            companyProfile: "Agri-food mid-cap, Côte-d'Or",
-          },
-          {
-            quote:
-              "Intense on-site kick-off in Dijon, then very efficient remote iterations. Our IT team was never lost. The documented runbook allows fully autonomous maintenance.",
-            role: "IT Manager",
-            companyProfile: "Pharma-healthcare SME, Dijon metropolitan area",
           },
         ],
         faq: [
@@ -751,20 +667,6 @@ export const DIJON_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants de grands groupes implantés à Dijon (URGO, Amora, SEB bassin) souhaitant une montée en compétences IA confidentielle.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'explorer l'IA appliquée à la rédaction de fiches cuvées et au scoring de mes parcelles. En une journée avec un consultant dédié, on a testé sur mes vraies données. Résultat : j'ai un plan concret et des outils opérationnels pour ma prochaine vendange.",
-            role: "Propriétaire-récoltant",
-            companyProfile: "Domaine viticole AOC Côte de Nuits, Bourgogne",
-          },
-          {
-            quote:
-              "Format coaching individuel idéal pour un directeur qualité en ETI pharma : confidentialité totale, niveau technique adapté, démos sur nos propres spécifications produit. Je suis reparti avec des outils installés et un plan d'action pour mon équipe.",
-            role: "Directrice qualité",
-            companyProfile: "ETI santé-pharma, Dijon métropole",
-          },
-        ],
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Dijon ?",
@@ -845,20 +747,6 @@ export const DIJON_COPY: VilleCopy = {
             price: "On request",
             detail:
               "Individual coaching for senior managers at large groups based in Dijon (URGO, Amora, SEB basin) seeking confidential AI skills development.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed to explore AI applied to writing cuvée sheets and scoring my plots. In one day with a dedicated consultant, we tested on my real data. Result: I have a concrete plan and operational tools for my next harvest.",
-            role: "Owner-producer",
-            companyProfile: "AOC wine estate, Côte de Nuits, Burgundy",
-          },
-          {
-            quote:
-              "Ideal individual coaching format for a quality director at a pharma mid-cap: total confidentiality, adapted technical level, demos on our own product specifications. I left with tools installed and an action plan for my team.",
-            role: "Quality Director",
-            companyProfile: "Healthcare-pharma mid-cap, Dijon metropolitan area",
           },
         ],
         faq: [

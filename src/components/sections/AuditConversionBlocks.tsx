@@ -3,10 +3,12 @@
 //
 //   - TrustBadges       : 4 réassurances institutionnelles sous le hero
 //   - WhyAxionIA        : 5 différenciants vs cabinets concurrents
-//   - SocialProof       : témoignages + métriques + bandeau logos placeholder
 //   - SignatureCard     : carte fondateur (Will) — légitimité humaine
 //   - AuditFaqSection   : FAQ accordion utilisant content/audit.ts.faqs
 //   - BeyondAuditBlock  : bandeau d'upsell vers Module 3 Implémentation
+//
+// `SocialProof` (témoignages et métriques inventés) SUPPRIMÉ le 2026-10-09
+// (DGCCRF) — il n'était plus monté nulle part.
 //
 // Doctrine v3 respectée (terracotta + serif italique + halo-warm/sand/mocha).
 
@@ -24,11 +26,8 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
-import { TestimonialCard } from "@/components/marketing/TestimonialCard";
-import { Stat } from "@/components/marketing/Stat";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { cn } from "@/lib/utils";
 
 // =============================================================================
@@ -203,187 +202,6 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
           );
         })}
       </ul>
-    </Section>
-  );
-}
-
-// =============================================================================
-// 3) SocialProof — métriques + témoignages + bandeau logos
-//
-// V1 affiche des PLACEHOLDERS structurés :
-//   - Métriques crédibles dès le lancement (« +30 % productivité moyenne
-//     observée sur les missions IA opérationnelles » — chiffres marché
-//     défendables, à remplacer par vos métriques internes au fil du temps).
-//   - Témoignages anonymisés (rôle + secteur + taille) pour rester
-//     juridiquement OK avant signature des autorisations clients.
-//   - Logos en placeholder texte stylé, à remplacer par fichiers SVG une
-//     fois autorisations en main.
-// =============================================================================
-
-interface SocialProofProps {
-  isFr: boolean;
-  /** Si false, masque la section témoignages (ex. lancement avant 1er client). */
-  showTestimonials?: boolean;
-}
-
-export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps): ReactNode {
-  const metrics = isFr
-    ? [
-        {
-          number: "+30",
-          suffix: "%",
-          label: "Productivité moyenne observée sur missions IA opérationnelles",
-        },
-        {
-          number: "−25",
-          suffix: "%",
-          label: "Dépenses opérationnelles ciblées en moyenne par audit",
-        },
-        { number: "48", suffix: "h", label: "Délai de réponse au devis ouvré" },
-        { number: "100", suffix: "%", label: "Audits livrés dans le périmètre annoncé" },
-      ]
-    : [
-        {
-          number: "+30",
-          suffix: "%",
-          label: "Average productivity gain on operational AI engagements",
-        },
-        { number: "−25", suffix: "%", label: "Average operational spending targeted per audit" },
-        { number: "48", suffix: "h", label: "Quote turnaround on business hours" },
-        { number: "100", suffix: "%", label: "Audits delivered within announced scope" },
-      ];
-
-  const testimonials = isFr
-    ? [
-        {
-          quote:
-            "Nous avons lancé un diagnostic flash sans grand espoir. En 1 journée, Axion-IA nous a livré 5 quick-wins concrets. Trois mois plus tard, on a libéré 8 heures par semaine sur l'équipe administrative.",
-          author: "Direction générale",
-          role: "DG",
-          company: "Cabinet conseil · 25 collaborateurs · France",
-        },
-        {
-          quote:
-            "Le rapport Axion-IA est calibré sur notre taille et la profondeur du déploiement — de 30 pages à plusieurs centaines selon le périmètre. Le nôtre était structuré par phases d'échéancier, avec un plan chiffré jusqu'à la dernière tâche. On est ensuite libres de déployer les chantiers prioritaires à notre rythme, avec ou sans Axion-IA. Notre CODIR a validé en une session.",
-          author: "Directeur des opérations",
-          role: "COO",
-          company: "PME industrielle · 80 collaborateurs · Belgique",
-        },
-        {
-          quote:
-            "Ce qui nous a convaincu : pas de prix opaque, pas de framework abstrait. Axion-IA cartographie ce que VOUS faites, identifie ce que l'IA peut automatiser chez VOUS. Pragmatique.",
-          author: "Responsable transformation",
-          role: "Head of Transformation",
-          company: "Groupe distribution · 250+ · Suisse",
-        },
-      ]
-    : [
-        {
-          quote:
-            "We tried the flash diagnosis without much hope. In half a day, Axion-IA delivered 5 concrete quick-wins. Three months later, we freed up 8 hours a week on our admin team.",
-          author: "Managing Director",
-          role: "MD",
-          company: "Consulting firm · 25 staff · France",
-        },
-        {
-          quote:
-            "The Axion-IA report is calibrated to our size and deployment depth — from 30 pages to several hundred depending on scope. Ours was structured by phase timelines, with a costed action plan down to the last task. We're then free to roll out the priority workstreams at our pace, with or without Axion-IA. Our leadership signed off in a single session.",
-          author: "Director of Operations",
-          role: "COO",
-          company: "Industrial SMB · 80 staff · Belgium",
-        },
-        {
-          quote:
-            "What sold us: no opaque pricing, no abstract framework. Axion-IA maps what YOU do, identifies what AI can automate FOR YOU. Pragmatic.",
-          author: "Head of Transformation",
-          role: "Head of Transformation",
-          company: "Retail group · 250+ · Switzerland",
-        },
-      ];
-
-  const logos = ["Conseil", "Industrie", "Distribution", "Finance", "Santé", "Hôtellerie"];
-
-  // Schema.org Review JSON-LD — alimente les rich snippets Google.
-  // En l'absence de notes étoilées explicites côté témoignages, on émet
-  // juste les Reviews textuelles (pas d'aggregateRating tant que pas
-  // d'auditData chiffrée vérifiable).
-  const reviewJsonLd = showTestimonials
-    ? {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        name: "Axion-IA · Audit IA",
-        review: testimonials.map((t) => ({
-          "@type": "Review",
-          reviewBody: t.quote,
-          author: {
-            "@type": "Person",
-            name: t.author,
-            jobTitle: t.role,
-          },
-        })),
-      }
-    : null;
-
-  return (
-    <Section
-      tone="sand"
-      eyebrow={isFr ? "Ils nous ont confié leur audit" : "They trusted us with their audit"}
-      title={isFr ? "Des résultats concrets," : "Concrete results,"}
-      titleEm={isFr ? "des dirigeants qui parlent" : "leaders who speak"}
-      description={
-        isFr
-          ? "Métriques observées sur nos missions, témoignages anonymisés (autorisations clients en cours)."
-          : "Observed metrics across our engagements, anonymised testimonials (client authorisations in progress)."
-      }
-      contentClassName="lg:px-6 xl:px-10"
-    >
-      {/* Métriques — 4 stats */}
-      <div className="border-terracotta/15 bg-paper shadow-subtle mb-12 grid gap-8 rounded-2xl border-2 p-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
-        {metrics.map((m) => (
-          <Stat
-            key={m.label}
-            number={m.number}
-            suffix={m.suffix}
-            label={m.label}
-            variant="terracotta"
-          />
-        ))}
-      </div>
-
-      {/* Bandeau logos placeholder — secteurs en attendant les vrais logos */}
-      <div className="mb-14">
-        <p className="text-fg-muted mb-5 text-center text-[11px] font-bold tracking-[0.18em] uppercase">
-          {isFr ? "Secteurs déjà accompagnés" : "Sectors already supported"}
-        </p>
-        <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:gap-x-12">
-          {logos.map((s) => (
-            <li
-              key={s}
-              className="text-fg-soft border-border-strong border-b-2 pb-1 text-sm font-bold tracking-wide"
-            >
-              {s}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Témoignages — 3 pull-quotes */}
-      {showTestimonials ? (
-        <>
-          <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
-            {testimonials.map((t, i) => (
-              <TestimonialCard
-                key={i}
-                quote={t.quote}
-                author={t.author}
-                role={t.role}
-                company={t.company}
-              />
-            ))}
-          </div>
-          {reviewJsonLd ? <JsonLd data={reviewJsonLd} /> : null}
-        </>
-      ) : null}
     </Section>
   );
 }

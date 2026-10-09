@@ -73,7 +73,6 @@ const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/carrieres/page.tsx": 163,
   "src/app/[locale]/methodologie/page.tsx": 163,
   "src/app/[locale]/actualites/page.tsx": 161,
-  "src/app/[locale]/avis/page.tsx": 161,
 
   // ── Amorçage du périmètre `src/content/**`, 2026-08-27 ───────────────────
   //

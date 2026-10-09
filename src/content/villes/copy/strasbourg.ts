@@ -143,20 +143,6 @@ export const STRASBOURG_COPY: VilleCopy = {
               "Pour les grandes organisations strasbourgeoises (Crédit Mutuel Alliance Fédérale, ARTE, institutions européennes, hôpitaux universitaires) cadrant une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Notre contexte biotech nécessitait une approche rigoureuse sur la souveraineté des données cliniques. Axion-IA a livré un audit complet, chiffré, opérationnel, avec des démos sur nos vrais documents R&D. Le plan d'action est en cours d'exécution.",
-            role: "Directrice R&D",
-            companyProfile: "PME biotech, Parc d'Innovation d'Illkirch",
-          },
-          {
-            quote:
-              "Notre organisation est bilingue FR/DE et soumise à des contraintes réglementaires spécifiques. Axion-IA a su adapter la méthodologie d'audit à notre réalité transfrontalière. Livrable concret, sans jargon, présenté directement à notre comité de direction.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI industrielle, Eurométropole de Strasbourg",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Strasbourg ?",
@@ -241,20 +227,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large Strasbourg organisations (Crédit Mutuel Alliance Fédérale, ARTE, European institutions, university hospitals) framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Our biotech context required a rigorous approach to clinical data sovereignty. Axion-IA delivered a complete, costed, operational audit with demos on our real R&D documents. The action plan is being executed.",
-            role: "R&D Director",
-            companyProfile: "Biotech SME, Illkirch Innovation Park",
-          },
-          {
-            quote:
-              "Our organisation is FR/DE bilingual and subject to specific regulatory constraints. Axion-IA adapted the audit methodology to our cross-border reality. Concrete, jargon-free deliverable presented directly to our executive committee.",
-            role: "Head of Operations",
-            companyProfile: "Industrial mid-cap, Strasbourg Eurométropole",
           },
         ],
         faq: [
@@ -346,20 +318,6 @@ export const STRASBOURG_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands groupes et institutions strasbourgeoises : roadshow multi-sites (Strasbourg + Frankfurt + Basel pour les structures transfrontalières), séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) était parfaitement adapté à notre double culture FR/DE. Les démos sur nos vrais documents R&D ont immédiatement convaincu même les collaborateurs les plus sceptiques. Autonomie réelle le lendemain.",
-            role: "Responsable formation",
-            companyProfile: "PME biotech, Parc d'Innovation d'Illkirch",
-          },
-          {
-            quote:
-              "Session dirigeants très efficace pour aligner notre comité de direction franco-allemand sur la trajectoire IA. Axion-IA a su adapter son vocabulaire aux spécificités d'un groupe industriel transfrontalier. Décision prise en une journée.",
-            role: "Président-Directeur Général",
-            companyProfile: "ETI équipements électriques, Eurométropole de Strasbourg",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Strasbourg ?",
@@ -444,20 +402,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large Strasbourg groups and institutions: multi-site roadshows (Strasbourg + Frankfurt + Basel for cross-border structures), exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format was perfectly suited to our FR/DE dual culture. Demos on our real R&D documents immediately convinced even the most sceptical staff. Real autonomy the next day.",
-            role: "Training Manager",
-            companyProfile: "Biotech SME, Illkirch Innovation Park",
-          },
-          {
-            quote:
-              "Very effective executive session to align our Franco-German executive committee on the AI trajectory. Axion-IA adapted its vocabulary to the specifics of a cross-border industrial group. Decision made in one day.",
-            role: "Chief Executive Officer",
-            companyProfile: "Electrical equipment mid-cap, Strasbourg Eurométropole",
           },
         ],
         faq: [
@@ -549,20 +493,6 @@ export const STRASBOURG_COPY: VilleCopy = {
               "Programmes annuels pour grands groupes et institutions strasbourgeoises : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA. Adaptable aux contraintes transfrontalières.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'implémentation de notre système de veille réglementaire IA a transformé notre capacité R&D. Axion-IA a géré nos contraintes de données cliniques avec le même sérieux qu'un acteur santé. ROI mesuré après quelques mois de production : conforme à la prédiction du SOW.",
-            role: "Directeur scientifique",
-            companyProfile: "ETI biotech, Parc d'Innovation d'Illkirch",
-          },
-          {
-            quote:
-              "Notre contexte franco-allemand nécessitait une implémentation réellement multilingue FR/DE et conforme RGPD/DSGVO. Axion-IA a livré exactement ça : notre équipe alsacienne et notre équipe de Kehl utilisent le même outil dans leur langue.",
-            role: "DSI",
-            companyProfile: "PME industrielle, Eurodistrict Strasbourg-Ortenau",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Strasbourg ?",
@@ -647,20 +577,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for large Strasbourg groups and institutions: cascaded use cases, centralised AI governance, dedicated Axion-IA team. Adaptable to cross-border constraints.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The implementation of our AI regulatory watch system transformed our R&D capacity. Axion-IA handled our clinical data constraints with the same rigour as a health sector specialist. ROI measured after a few months of production: in line with SOW prediction.",
-            role: "Chief Scientific Officer",
-            companyProfile: "Biotech mid-cap, Illkirch Innovation Park",
-          },
-          {
-            quote:
-              "Our Franco-German context required a genuinely multilingual FR/DE implementation compliant with both GDPR and DSGVO. Axion-IA delivered exactly that: our Alsatian and Kehl teams use the same tool in their language.",
-            role: "CIO",
-            companyProfile: "Industrial SME, Strasbourg-Ortenau Eurodistrict",
           },
         ],
         faq: [
@@ -751,20 +667,6 @@ export const STRASBOURG_COPY: VilleCopy = {
               "Pour cadres des institutions européennes (Parlement, Conseil de l'Europe, CEDH), grandes organisations (Crédit Mutuel, ARTE, Hager Group) et sites de grands groupes pharma (Eli Lilly, Actavis). Format confidentiel haut niveau, agenda adapté aux contraintes institutionnelles. Frais en sus.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "En tant que cadre d'une institution européenne, j'avais besoin d'un accompagnement discret et rigoureux sur l'IA — sans exposer mes dossiers à un groupe. Le coaching 1-to-1 en français et en allemand a parfaitement correspondu à ma réalité bilingue et à mes contraintes de confidentialité.",
-            role: "Directeur de département",
-            companyProfile: "Institution européenne, Presqu'île de Strasbourg",
-          },
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis d'intégrer l'IA dans mes workflows R&D biotech sans risque pour nos données cliniques. Chaque séance partait de nos vrais protocoles. En quelques sessions, mon équipe a suivi naturellement.",
-            role: "Directeur R&D",
-            companyProfile: "PME biotech, Parc d'Innovation d'Illkirch",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Strasbourg ?",
@@ -849,20 +751,6 @@ export const STRASBOURG_COPY: VilleCopy = {
             price: "Large accounts and institutions programme — on quote",
             detail:
               "For European institution officials (Parliament, Council of Europe, ECHR), large organisations (Crédit Mutuel, ARTE, Hager Group) and large pharma sites (Eli Lilly, Actavis). Confidential senior format, schedule adapted to institutional constraints. Expenses billed separately.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "As a senior official at a European institution, I needed discreet, rigorous AI coaching — without exposing my files to a group. The 1-to-1 coaching in French and German perfectly matched my bilingual reality and confidentiality constraints.",
-            role: "Department Director",
-            companyProfile: "European institution, Strasbourg Presqu'île",
-          },
-          {
-            quote:
-              "The 1-to-1 coaching allowed me to integrate AI into my biotech R&D workflows without risk to our clinical data. Each session started from our real protocols. Within a few sessions, my team followed naturally.",
-            role: "R&D Director",
-            companyProfile: "Biotech SME, Illkirch Innovation Park",
           },
         ],
         faq: [

@@ -132,20 +132,6 @@ export const AMIENS_COPY: VilleCopy = {
               "Pour les sites industriels majeurs (P&G, Valeo, Nestlé Purina) et leurs directions IA souhaitant cadrer une gouvernance centralisée sur le bassin Somme.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit a mis le doigt sur trois processus que nous n'aurions jamais ciblés seuls. Le livrable est chiffré, actionnable, sans jargon industriel inutile. Nous avons priorisé nos chantiers IA pour le prochain budget.",
-            role: "Directeur des opérations",
-            companyProfile: "PME équipement industriel, zone nord Amiens",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos directement sur nos données de production. Le ROI identifié à 12 mois a convaincu notre direction générale de lancer l'implémentation dès le trimestre suivant.",
-            role: "Responsable amélioration continue",
-            companyProfile: "ETI manufacturière, Amiens Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Amiens ?",
@@ -230,20 +216,6 @@ export const AMIENS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For major industrial sites (P&G, Valeo, Nestlé Purina) and their AI leadership framing centralised AI governance across the Somme basin.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The audit identified three processes we would never have targeted on our own. The deliverable is costed, actionable, free of unnecessary jargon. We prioritised our AI projects for the next budget cycle.",
-            role: "Operations Director",
-            companyProfile: "Industrial equipment SME, northern Amiens",
-          },
-          {
-            quote:
-              "Pragmatic method, demos directly on our production data. The identified 12-month ROI convinced our general management to launch implementation in the following quarter.",
-            role: "Continuous Improvement Manager",
-            companyProfile: "Manufacturing mid-cap, Amiens Métropole",
           },
         ],
         faq: [
@@ -334,20 +306,6 @@ export const AMIENS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands sites industriels amiénois : roadshow multi-sites, séminaires CODIR + cascade équipes terrain.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour notre équipe logistique. Nos collaborateurs sont repartis avec leurs outils IA opérationnels le jour même. Deux semaines plus tard, la moitié les utilisait au quotidien sur leurs tâches réelles.",
-            role: "Responsable logistique",
-            companyProfile: "PME transport & logistique, bassin amiénois",
-          },
-          {
-            quote:
-              "La session dirigeants a aligné notre CODIR en une journée sur la trajectoire IA. Le format condensé, les démos sur nos propres données — aucun consultant traditionnel n'avait su cadrer aussi vite.",
-            role: "Directeur général",
-            companyProfile: "ETI industrielle, Amiens Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Amiens ?",
@@ -432,20 +390,6 @@ export const AMIENS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large Amiens industrial sites: multi-site roadshows, exec committee + cascade field team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated for our logistics team. Staff left with operational AI tools the same day. Two weeks later, half were using them daily on real tasks.",
-            role: "Logistics Manager",
-            companyProfile: "Transport & logistics SME, Amiens basin",
-          },
-          {
-            quote:
-              "The executive session aligned our CODIR in one day on the AI trajectory. Condensed format, demos on our own data — no traditional consultant had managed to frame this fast.",
-            role: "Chief Executive Officer",
-            companyProfile: "Industrial mid-cap, Amiens Métropole",
           },
         ],
         faq: [
@@ -536,20 +480,6 @@ export const AMIENS_COPY: VilleCopy = {
               "Programmes annuels pour grands sites industriels amiénois (P&G, Valeo, Nestlé Purina) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture automatique de bons de commande livrée comme promis. ROI mesuré à 6 mois : équivalents temps plein libérés sur la saisie administrative, 0 erreur de transcription. Nos équipes ont repris la main dès le premier mois.",
-            role: "Directeur administratif et financier",
-            companyProfile: "ETI sous-traitant industriel, bassin amiénois",
-          },
-          {
-            quote:
-              "Méthode hybride efficace : kick-off intense sur site, puis itérations distantes bien cadrées. Notre DSI n'a jamais été perdu. Les ambassadeurs internes ont pris le relais de façon autonome après la recette.",
-            role: "Responsable SI",
-            companyProfile: "PME services industriels, Amiens Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Amiens ?",
@@ -634,20 +564,6 @@ export const AMIENS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for large Amiens industrial sites (P&G, Valeo, Nestlé Purina): cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automatic purchase order reading implementation delivered as promised. ROI measured at 6 months: FTEs freed on administrative input, zero transcription errors. Our teams took over from the first month.",
-            role: "Chief Financial Officer",
-            companyProfile: "Industrial sub-contracting mid-cap, Amiens basin",
-          },
-          {
-            quote:
-              "Effective hybrid method: intense on-site kick-off, then well-structured remote iterations. Our IT manager was never lost. Internal ambassadors took over autonomously after acceptance testing.",
-            role: "IT Manager",
-            companyProfile: "Industrial services SME, Amiens Métropole",
           },
         ],
         faq: [
@@ -738,20 +654,6 @@ export const AMIENS_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et managers des grands sites amiénois (P&G, Valeo, Nestlé Purina) pour des besoins d'acculturation IA individualisés.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis d'identifier concrètement comment l'IA pouvait m'aider sur la gestion documentaire fournisseurs. On a travaillé sur mes vrais fichiers dès la première séance. Résultat concret en quelques semaines.",
-            role: "Directeur des achats",
-            companyProfile: "PME sous-traitant industriel, zone nord Amiens",
-          },
-          {
-            quote:
-              "Format idéal pour un dirigeant sans DSI : les séances sont courtes, focalisées sur mon contexte, et j'ai pu poser toutes mes questions sans filtre. L'autonomie acquise vaut bien plus que la formation.",
-            role: "Gérant",
-            companyProfile: "PME services aux entreprises, Amiens centre",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances 1-to-1 à Amiens ?",
@@ -836,20 +738,6 @@ export const AMIENS_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers at major Amiens sites (P&G, Valeo, Nestlé Purina) requiring individualised AI acculturation.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me identify concretely how AI could help with supplier document management. We worked on my real files from the first session. Concrete results within a few weeks.",
-            role: "Procurement Director",
-            companyProfile: "Industrial subcontractor SME, northern Amiens",
-          },
-          {
-            quote:
-              "Ideal format for a CEO with no IT manager: short sessions, focused on my context, and I could ask every question without filter. The autonomy gained is worth far more than the training.",
-            role: "Managing Director",
-            companyProfile: "Micro-business B2B services, Amiens city centre",
           },
         ],
         faq: [

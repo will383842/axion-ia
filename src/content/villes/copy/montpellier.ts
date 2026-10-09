@@ -137,20 +137,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
               "Pour les sites majeurs (Dell France, IBM Montpellier, Sanofi R&D) souhaitant cadrer une gouvernance IA centralisée sur leur implantation montpelliéraine.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su adapter son audit aux contraintes de nos données de santé et aux exigences HDS. Le livrable est chiffré, actionnable, sans jargon. Nous avons lancé l'implémentation très rapidement.",
-            role: "Directeur général",
-            companyProfile: "PME dispositifs médicaux, Parc Euromédecine",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données de production — pas de slides théoriques. Le livrable a permis de prioriser nos chantiers IA pour le comité de direction et de convaincre notre maison-mère.",
-            role: "Directrice R&D",
-            companyProfile: "ETI pharmaceutique, Montpellier",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Montpellier ?",
@@ -235,20 +221,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For major sites (Dell France, IBM Montpellier, Sanofi R&D) framing centralized AI governance for their Montpellier establishment.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA adapted the audit to our health data constraints and HDS requirements. The deliverable is costed, actionable, jargon-free. We launched implementation very quickly.",
-            role: "CEO",
-            companyProfile: "Medical device SME, Parc Euromédecine",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data — no theoretical slides. The deliverable helped prioritize our AI initiatives and convinced our parent company.",
-            role: "Head of R&D",
-            companyProfile: "Pharmaceutical mid-cap, Montpellier",
           },
         ],
         faq: [
@@ -340,20 +312,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les implantations montpelliéraines (Dell, IBM, Sanofi) : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour notre équipe R&D : vocabulaire médical respecté, démos sur nos propres documents. Le lendemain, nos collaborateurs utilisaient déjà l'IA sur leurs rédactions réglementaires.",
-            role: "Directeur R&D",
-            companyProfile: "PME dispositifs médicaux, Euromédecine",
-          },
-          {
-            quote:
-              "La session Dirigeants nous a alignés en quelques heures sur la trajectoire IA de notre studio. Format dense, pragmatique, ancrée dans nos réalités jeux vidéo — pas de généralités.",
-            role: "Directeur de studio",
-            companyProfile: "Studio jeux vidéo indépendant, Montpellier",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Montpellier ?",
@@ -438,20 +396,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Montpellier establishments (Dell, IBM, Sanofi): multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated for our R&D team: medical vocabulary respected, demos on our own documents. The next day, our staff were already using AI on their regulatory write-ups.",
-            role: "Head of R&D",
-            companyProfile: "Medical device SME, Euromédecine",
-          },
-          {
-            quote:
-              "The executives session aligned us within hours on our studio's AI trajectory. Dense, pragmatic, rooted in our video-game realities — no generalities.",
-            role: "Studio Director",
-            companyProfile: "Independent video-game studio, Montpellier",
           },
         ],
         faq: [
@@ -543,20 +487,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
               "Programmes annuels pour les implantations montpelliéraines de grande taille (Dell, IBM, Sanofi) : cas cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation analyse de résultats d'essais livrée comme promis. ROI réel mesuré : temps de rédaction réglementaire divisé par trois, équivalents temps plein libérés sur les tâches de synthèse. Aucun lock-in, nous avons la main sur les modèles.",
-            role: "DSI",
-            companyProfile: "ETI pharmaceutique, Montpellier",
-          },
-          {
-            quote:
-              "Méthode hybride efficace : kick-off intense sur site, puis itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up IT, Cap Omega Montpellier",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Montpellier ?",
@@ -641,20 +571,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for large Montpellier establishments (Dell, IBM, Sanofi): cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Clinical trial result analysis implementation delivered as promised. Real ROI measured: regulatory writing time cut by three, FTEs freed from synthesis tasks. No lock-in, we control our models.",
-            role: "CIO",
-            companyProfile: "Pharmaceutical mid-cap, Montpellier",
-          },
-          {
-            quote:
-              "Efficient hybrid method: intense on-site kick-off, then remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors take over autonomously.",
-            role: "CTO",
-            companyProfile: "IT scale-up, Cap Omega Montpellier",
           },
         ],
         faq: [
@@ -746,20 +662,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
               "Coaching de la cellule IA ou des profils pilotes d'un grand groupe implanté à Montpellier, avant déploiement large en cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de configurer l'IA sur mes vrais dossiers de dispositifs médicaux en quelques séances. Vocabulaire médical respecté, cas HDS intégrés. Je suis autonome sur mes rédactions réglementaires.",
-            role: "Directeur médical",
-            companyProfile: "PME dispositifs médicaux, Euromédecine Montpellier",
-          },
-          {
-            quote:
-              "En tant que studio director, j'avais besoin d'un coaching calé sur la production jeux vidéo — pas un cours générique. Axion-IA a travaillé directement sur notre pipeline contenu Ubisoft-like. Résultat immédiat.",
-            role: "Directeur de studio",
-            companyProfile: "Studio jeux vidéo indépendant, Montpellier",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Montpellier ?",
@@ -844,20 +746,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Coaching of the AI cell or pilot profiles of a large group based in Montpellier, before broad team cascade rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me configure AI on my real medical device files within a few sessions. Medical vocabulary respected, HDS cases integrated. I am autonomous on my regulatory writing.",
-            role: "Medical Director",
-            companyProfile: "Medical device SME, Euromédecine Montpellier",
-          },
-          {
-            quote:
-              "As a studio director, I needed coaching aligned with video-game production — not a generic course. Axion-IA worked directly on our Ubisoft-like content pipeline. Immediate results.",
-            role: "Studio Director",
-            companyProfile: "Independent video-game studio, Montpellier",
           },
         ],
         faq: [

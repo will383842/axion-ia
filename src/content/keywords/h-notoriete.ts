@@ -45,7 +45,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
       h1: "Ce que les entreprises disent d'Axion-IA — Avis et retours terrain",
       metaTitle: "Axion-IA avis clients 2026 — Retours terrain vérifiés",
       metaDescription:
-        "Découvrez les avis de PME, ETI et grandes entreprises sur Axion-IA : résultats obtenus, délais, qualité d'accompagnement. Témoignages vérifiés.",
+        "Découvrez les avis de PME, ETI et grandes entreprises sur Axion-IA : résultats obtenus, délais, qualité d'accompagnement.",
       h2Variants: [
         "Pourquoi nos clients recommandent Axion-IA",
         "Ce qui différencie Axion-IA selon ses clients",

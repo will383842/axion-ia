@@ -204,9 +204,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Équipe Axion-IA — proof social cas clients IA",
         nameEn: "Axion-IA team — case studies social proof",
         altFr:
-          "Équipe Axion-IA en session de cadrage cas client IA — cabinet IA opérationnel français accompagnant PME, ETI et grandes entreprises avec preuves chiffrées et témoignages vérifiés.",
+          "Équipe Axion-IA en session de cadrage cas client IA — cabinet IA opérationnel français accompagnant PME, ETI et grandes entreprises avec des résultats documentés.",
         altEn:
-          "Axion-IA team in client case scoping session — French operational AI consultancy supporting SMEs, mid-caps and large enterprises with quantified proofs and verified testimonials.",
+          "Axion-IA team in client case scoping session — French operational AI consultancy supporting SMEs, mid-caps and large enterprises with documented results.",
         width: 1961,
         height: 802,
         representativeOfPage: true,
@@ -216,9 +216,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Williams — Fondateur Axion-IA et garant des cas clients",
         nameEn: "Williams — Axion-IA founder, guarantor of client case studies",
         altFr:
-          "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA — ROI mesuré, témoignages vérifiés.",
+          "Portrait de Williams, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA.",
         altEn:
-          "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
+          "Portrait of Williams, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA.",
         width: 800,
         height: 1000,
       },

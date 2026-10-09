@@ -75,7 +75,6 @@ import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildFaqJsonLd, buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export const revalidate = 3600;
 
@@ -585,7 +584,7 @@ export default async function MemoIserePage({ params }: Props) {
   if (!isFr) notFound(); // page presse locale FR-only (EN 301 → FR au runtime)
   const certifie = isQualiopiCertificationObtenue();
 
-  // Avis réels — priorité Isère (45 des 77 avis publiés). On fait REMONTER les
+  // Avis réels publiés — priorité Isère. On fait REMONTER les
   // avis « entreprise » (raison sociale renseignée) : la page vise PME, ETI et
   // grands groupes — un avis de DSI de groupe vend mieux le produit qu'un avis
   // d'indépendant (retour Will 2026-08-12). Stub-aware : au build GH Actions la
@@ -610,8 +609,9 @@ export default async function MemoIserePage({ params }: Props) {
     }))
     .sort((a, b) => b.score - a.score || b.r.rating - a.r.rating);
   const reviewsPick = scored.map((x) => x.r).slice(0, 6);
-  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
-  const reviews = AVIS_CLIENTS_AFFICHES && reviewsPick.length >= 3 ? reviewsPick : [];
+  // Règle automatique (src/content/preuves-sociales.ts) : seuls les avis publiés
+  // sont lus ; sans eux, la liste est vide et le bloc disparaît.
+  const reviews = reviewsPick.length >= 3 ? reviewsPick : [];
   const { total: totalAll } = await getPublishedReviews({ pageSize: 1 });
 
   const villesPhares = [
@@ -896,17 +896,13 @@ export default async function MemoIserePage({ params }: Props) {
                   Vous, vous êtes payé à la journée vendue. 💶
                 </span>
               </h2>
-              {/* Le compte d'avis n'apparaît que s'il y a des avis réels affichés :
-                  plus de « 4,9/5 » de repli (avis éteints le 2026-10-09). */}
-              <dl
-                className={`grid gap-3 sm:gap-4 ${AVIS_CLIENTS_AFFICHES && totalAll > 0 ? "grid-cols-3" : "grid-cols-2"}`}
-              >
+              {/* Le compte d'avis n'apparaît que s'il y a des avis publiés :
+                  aucun chiffre de repli. */}
+              <dl className={`grid gap-3 sm:gap-4 ${totalAll > 0 ? "grid-cols-3" : "grid-cols-2"}`}>
                 {[
                   { v: commission(1), l: "par journée vendue, à titre indicatif" },
                   { v: String(MEMO_ZONE_CLUSTERS.length), l: "territoires couverts" },
-                  ...(AVIS_CLIENTS_AFFICHES && totalAll > 0
-                    ? [{ v: `${totalAll} avis`, l: "clients conquis" }]
-                    : []),
+                  ...(totalAll > 0 ? [{ v: `${totalAll} avis`, l: "clients conquis" }] : []),
                 ].map((s) => (
                   <div key={s.l}>
                     <dt className="sr-only">{s.l}</dt>

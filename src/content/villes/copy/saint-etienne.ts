@@ -139,20 +139,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
               "Pour les sièges grands-comptes stéphanois (Casino, Aubert & Duval) souhaitant cadrer une gouvernance IA centralisée multi-sites.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a cerné en un jour nos vrais points de friction : traitement des bons de commande fournisseurs et comptes-rendus de réunion bureau d'études. Le livrable était chiffré, sans jargon, actionnable dès la semaine suivante.",
-            role: "Directeur général",
-            companyProfile: "PME mécanique de précision, Saint-Étienne Métropole",
-          },
-          {
-            quote:
-              "Méthode directe : démos sur nos vrais documents, pas de présentation PowerPoint générique. On a compris en une journée ce que l'IA pouvait faire pour nous — et ce qu'elle ne pouvait pas faire. C'est ce pragmatisme qu'on attendait.",
-            role: "DRH",
-            companyProfile: "ETI textile médical, Loire",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Saint-Étienne ?",
@@ -237,20 +223,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For Saint-Étienne large-corporate HQs (Casino, Aubert & Duval) framing centralized multi-site AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA identified our real pain points in a day: supplier purchase order processing and engineering meeting minutes. The deliverable was costed, jargon-free, actionable the following week.",
-            role: "CEO",
-            companyProfile: "Precision mechanics SME, Saint-Étienne Métropole",
-          },
-          {
-            quote:
-              "Direct method: demos on our real documents, no generic PowerPoint. We understood in a day what AI could do for us — and what it couldn't. That pragmatism was exactly what we needed.",
-            role: "Head of HR",
-            companyProfile: "Medical textile mid-cap, Loire",
           },
         ],
         faq: [
@@ -342,20 +314,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges stéphanois : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à notre contexte industriel : les équipes bureau d'études ont découvert comment l'IA pouvait traiter leurs plans techniques et comptes-rendus. Le lendemain, les outils tournaient en autonomie.",
-            role: "Responsable bureau d'études",
-            companyProfile: "PME sous-traitant mécanique, Loire",
-          },
-          {
-            quote:
-              "La session Dirigeants nous a alignés en quelques heures sur ce que l'IA peut concrètement apporter à notre groupe dans la distribution. Concret, sans promesses exagérées.",
-            role: "Directeur général adjoint",
-            companyProfile: "ETI distribution, Saint-Étienne Métropole",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Saint-Étienne ?",
@@ -440,20 +398,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Saint-Étienne HQs: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training perfectly suited to our industrial context: the engineering teams discovered how AI could handle their technical documents and meeting minutes. Next day, the tools were running autonomously.",
-            role: "Head of Engineering",
-            companyProfile: "Mechanical subcontractor SME, Loire",
-          },
-          {
-            quote:
-              "The Executives session aligned us within hours on what AI can concretely bring to our distribution group. Concrete, no overpromising.",
-            role: "Deputy CEO",
-            companyProfile: "Distribution mid-cap, Saint-Étienne Métropole",
           },
         ],
         faq: [
@@ -545,20 +489,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
               "Programmes annuels pour les sièges stéphanois : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'IA lit nos bons de commande fournisseurs et génère les fiches de réception automatiquement. ROI mesuré en quelques mois : équivalent d'un poste administratif libéré sur les tâches saisie. Le runbook est clair, nos équipes sont autonomes.",
-            role: "DAF",
-            companyProfile: "PME métallurgie / sous-traitance, Loire",
-          },
-          {
-            quote:
-              "Kick-off intense sur deux jours dans nos ateliers, puis itérations à distance parfaitement cadrées. Nos ambassadeurs internes ont pris le relais sans difficulté. C'est ce qu'on voulait : pas de dépendance au cabinet.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI textile médical, Saint-Étienne",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Saint-Étienne ?",
@@ -643,20 +573,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Saint-Étienne HQs: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The AI reads our supplier purchase orders and auto-generates receipt records. ROI measured within months: equivalent of one admin FTE freed from data entry. Runbook is clear, our teams are autonomous.",
-            role: "CFO",
-            companyProfile: "Metallurgy / subcontracting SME, Loire",
-          },
-          {
-            quote:
-              "Intense two-day kick-off at our workshops, then perfectly-framed remote iterations. Our internal ambassadors took over without difficulty. That's what we wanted: no dependency on the consultancy.",
-            role: "Head of Operations",
-            companyProfile: "Medical textile mid-cap, Saint-Étienne",
           },
         ],
         faq: [
@@ -748,20 +664,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
               "Coaching des profils pilotes d'un grand groupe siège stéphanois (Casino, Aubert & Duval) avant déploiement large.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de maîtriser l'IA sur mes vrais dossiers de mécanique de précision en quelques séances. Plans techniques, bons de commande, fiches qualité — tout y est passé. Je suis autonome.",
-            role: "Directeur technique",
-            companyProfile: "PME mécanique de précision, Loire",
-          },
-          {
-            quote:
-              "En tant que designer à la Cité du Design, j'avais besoin d'un coaching sur la génération de briefs créatifs et la veille tendance. Le 1-to-1 a tout adapté à mon métier. Résultat immédiat sur mes livrables clients.",
-            role: "Designer senior",
-            companyProfile: "Agence design, Saint-Étienne Cité du Design",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Saint-Étienne ?",
@@ -846,20 +748,6 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Coaching of pilot profiles at a major Saint-Étienne HQ group (Casino, Aubert & Duval) before broad rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me master AI on my real precision mechanics files within a few sessions. Technical drawings, purchase orders, quality records — all covered. I am fully autonomous.",
-            role: "Technical Director",
-            companyProfile: "Precision mechanics SME, Loire",
-          },
-          {
-            quote:
-              "As a designer at Cité du Design, I needed coaching on creative brief generation and trend monitoring. The 1-to-1 adapted everything to my profession. Immediate results on my client deliverables.",
-            role: "Senior Designer",
-            companyProfile: "Design agency, Saint-Étienne Cité du Design",
           },
         ],
         faq: [

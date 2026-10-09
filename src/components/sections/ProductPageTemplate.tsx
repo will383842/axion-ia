@@ -11,7 +11,6 @@ import { MetricsRow } from "./MetricsRow";
 import { FaqBlock } from "./FaqBlock";
 import { CtaBlock } from "./CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface DayScheduleItem {
   time: string;
@@ -249,9 +248,11 @@ export function ProductPageTemplate({
         />
       </Section>
 
-      {/* Section testimonials — D6 Proof. Optionnelle. paper white. */}
-      {/* Éteinte avec les avis (src/content/preuves-sociales.ts, 2026-10-09). */}
-      {AVIS_CLIENTS_AFFICHES && copy.testimonials && copy.testimonials.length > 0 ? (
+      {/* Section testimonials — D6 Proof. Optionnelle. paper white.
+          Aucune page ne la renseigne : les témoignages inventés ont été supprimés
+          le 2026-10-09 (DGCCRF). Ne la remplir qu'avec de VRAIS témoignages,
+          nominatifs et autorisés par écrit. */}
+      {copy.testimonials && copy.testimonials.length > 0 ? (
         <TestimonialsSection
           isFr={isFr}
           items={copy.testimonials}
@@ -373,6 +374,8 @@ function ReserveBigCta({
 
 // 3 testimonials cards éditoriales — D6 Proof. Server Component pure.
 // Renders only when copy.testimonials is non-empty (silent otherwise).
+// Aucune note en étoiles : un témoignage n'est pas un avis noté (plus de
+// « 5 étoiles sur 5 » posé d'office sur chaque citation).
 function TestimonialsSection({
   isFr,
   items,
@@ -397,24 +400,7 @@ function TestimonialsSection({
             key={t.id}
             className="bg-bg border-border hover:border-terracotta/40 hover:shadow-card flex flex-col rounded-2xl border p-6 transition-all sm:p-7"
           >
-            <div
-              className="text-terracotta flex gap-0.5"
-              role="img"
-              aria-label={isFr ? "Note : 5 étoiles sur 5" : "Rating: 5 out of 5 stars"}
-            >
-              {Array.from({ length: 5 }).map((_, i) => (
-                <svg
-                  key={i}
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-4 w-4"
-                >
-                  <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z" />
-                </svg>
-              ))}
-            </div>
-            <blockquote className="text-fg mt-4 flex-1 text-[15px] leading-relaxed">
+            <blockquote className="text-fg flex-1 text-[15px] leading-relaxed">
               «&nbsp;{t.quote}&nbsp;»
             </blockquote>
             <figcaption className="border-border mt-6 flex items-center gap-3 border-t pt-4">

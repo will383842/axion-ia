@@ -21,7 +21,6 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { test, expect } from "@playwright/test";
 import { auditerPage } from "./_harness/audit-page";
-import { AVIS_CLIENTS_AFFICHES } from "../../../src/content/preuves-sociales";
 
 // Lecture fs plutôt qu'`import ... from "*.json"` : la configuration ESM du dépôt
 // exige un `import attribute` que Playwright ne fournit pas au chargement des specs.
@@ -56,15 +55,21 @@ const ROUTES_SI_CERTIFIE = new Set([
 ]);
 const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
 /**
- * Pages d'avis : éteintes le 2026-10-09 (message de la DGCCRF, décision de
- * Will) par `AVIS_CLIENTS_AFFICHES` (src/content/preuves-sociales.ts) — elles
- * rendent alors un 404 VOULU. Même règle que ci-dessus : on suit
- * l'interrupteur, pour que leur couverture revienne avec lui.
+ * Pages d'avis — règle AUTOMATIQUE (src/content/preuves-sociales.ts, 2026-10-09).
+ *
+ * - `/fr/avis/deposer` (le formulaire de DÉPÔT) est ouvert EN PERMANENCE, même
+ *   sans aucun avis publié : c'est par lui qu'arrivent les nouveaux avis. Il
+ *   reste donc dans la liste SANS condition, et doit rendre 200.
+ * - `/fr/avis` (le hub d'AFFICHAGE) rend un 404 VOULU tant qu'aucun avis n'est
+ *   publié en base. La base e2e de la CI n'en contient pas : la route est
+ *   retirée de la liste. Pour auditer une base qui en a (la production dès le
+ *   premier avis publié), poser `E2E_AVIS_PUBLIES=true`.
  */
-const ROUTES_SI_AVIS = new Set(["/fr/avis", "/fr/avis/deposer"]);
+const ROUTES_SI_AVIS_PUBLIES = new Set(["/fr/avis"]);
+const avisPublies = process.env["E2E_AVIS_PUBLIES"] === "true";
 const routes = toutesLesRoutes
   .filter((r) => certificationRevendicable || !ROUTES_SI_CERTIFIE.has(r))
-  .filter((r) => AVIS_CLIENTS_AFFICHES || !ROUTES_SI_AVIS.has(r));
+  .filter((r) => avisPublies || !ROUTES_SI_AVIS_PUBLIES.has(r));
 
 /**
  * Routes dont le COÛT D'AUDIT dépasse le budget commun — mesuré, pas supposé.

@@ -134,20 +134,6 @@ export const REIMS_COPY: VilleCopy = {
               "Pour les filiales grands groupes (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a identifié trois chantiers IA concrets sur nos processus export que nous n'avions pas vus nous-mêmes. Le livrable est chiffré, sans jargon, directement présentable au comité de direction.",
-            role: "Directeur commercial export",
-            companyProfile: "Maison de Champagne familiale, Grand Reims, 80 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode pragmatique : démos sur nos vraies données de traçabilité plutôt que des exemples génériques. Le plan d'action nous a permis de prioriser nos investissements IA pour l'exercice suivant.",
-            role: "Directrice des opérations",
-            companyProfile: "ETI agroalimentaire bassin Champagne, 320 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Reims ?",
@@ -232,20 +218,6 @@ export const REIMS_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large-group subsidiaries (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) framing centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA identified three concrete AI initiatives on our export processes that we hadn't seen ourselves. The deliverable is costed, jargon-free, directly presentable to the executive committee.",
-            role: "Head of Export Sales",
-            companyProfile: "Family-owned Champagne house, Grand Reims, 80 staff",
-          },
-          {
-            quote:
-              "Pragmatic method: demos on our real traceability data rather than generic examples. The action plan helped us prioritize our AI investments for the following fiscal year.",
-            role: "Head of Operations",
-            companyProfile: "Agri-food mid-cap, Champagne basin, 320 staff",
           },
         ],
         faq: [
@@ -336,20 +308,6 @@ export const REIMS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les directions régionales ou sièges Reims des grands groupes : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement adaptée à notre équipe export : vocabulaire Champagne, démos sur nos propres fiches techniques et emails clients. Le lendemain, plusieurs collaborateurs utilisaient déjà les outils installés sur leur travail réel.",
-            role: "Responsable export",
-            companyProfile: "Maison de Champagne indépendante, Reims, 45 collaborateurs",
-          },
-          {
-            quote:
-              "La session dirigeants nous a permis d'aligner notre CODIR sur notre trajectoire IA en quelques heures. Approche pragmatique, exemples concrets sur nos données bioéconomie — rien de générique.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie bioéconomie, bassin Reims, 280 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Reims ?",
@@ -434,20 +392,6 @@ export const REIMS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large-group regional HQs in Reims: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly suited to our export team: Champagne vocabulary, demos on our own technical sheets and client emails. The next day, several staff were already using the installed tools on real work.",
-            role: "Head of Export",
-            companyProfile: "Independent Champagne house, Reims, 45 staff",
-          },
-          {
-            quote:
-              "The executive session aligned our leadership committee on our AI trajectory in a few hours. Pragmatic approach, concrete examples on our bioeconomy data — nothing generic.",
-            role: "CEO",
-            companyProfile: "Bioeconomy industrial mid-cap, Reims basin, 280 staff",
           },
         ],
         faq: [
@@ -538,20 +482,6 @@ export const REIMS_COPY: VilleCopy = {
               "Programmes annuels pour les grandes maisons de Champagne (LVMH/MHCS, Vranken-Pommery) ou les groupes industriels : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation traduction automatique fiches export livrée comme promis. ROI réel mesuré : plusieurs heures gagnées par semaine sur la génération de documents multilingues, sans aucune erreur de conformité AOC Champagne.",
-            role: "Responsable marketing & export",
-            companyProfile: "Maison de Champagne, Reims, 110 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite : kick-off intense sur site à Reims, itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "DSI",
-            companyProfile: "ETI industrie bioéconomie bassin Reims, 350 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Reims ?",
@@ -636,20 +566,6 @@ export const REIMS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for major Champagne houses (LVMH/MHCS, Vranken-Pommery) or industrial groups: cascaded use cases, centralized AI governance, dedicated Axion-IA team.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automatic translation of export sheets implemented as promised. Real ROI measured: several hours gained per week on multilingual document generation, with zero AOC Champagne compliance error.",
-            role: "Head of Marketing & Export",
-            companyProfile: "Champagne house, Reims, 110 staff",
-          },
-          {
-            quote:
-              "Perfect hybrid method: intense on-site kick-off in Reims, remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors take over autonomously.",
-            role: "CIO",
-            companyProfile: "Bioeconomy industrial mid-cap, Reims basin, 350 staff",
           },
         ],
         faq: [
@@ -741,20 +657,6 @@ export const REIMS_COPY: VilleCopy = {
               "Coaching des profils pilotes d'un grand groupe (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) avant déploiement large.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de maîtriser la traduction automatique de nos fiches export Champagne en quelques séances. Adapté à nos contraintes AOC, multilingue, confidentialité des recettes. Je suis autonome.",
-            role: "Directeur commercial export",
-            companyProfile: "Maison de Champagne familiale, Reims, 60 collaborateurs",
-          },
-          {
-            quote:
-              "En tant que directrice R&D dans la bioéconomie, mes cas étaient très spécifiques. Le coaching 1-to-1 a travaillé sur mes vrais rapports qualité et données de process dès la première séance. Résultat mesurable immédiatement.",
-            role: "Directrice R&D",
-            companyProfile: "ETI bioéconomie, bassin Pomacle-Bazancourt",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Reims ?",
@@ -839,20 +741,6 @@ export const REIMS_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Coaching of pilot profiles at a major group (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) before broad rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me master automatic translation of our Champagne export sheets within a few sessions. Adapted to our AOC constraints, multilingual, recipe confidentiality preserved. I am autonomous.",
-            role: "Head of Export Sales",
-            companyProfile: "Family Champagne house, Reims, 60 staff",
-          },
-          {
-            quote:
-              "As R&D Director in bioeconomy, my cases were very specific. The 1-to-1 coaching worked on my real quality reports and process data from the first session. Measurable result immediately.",
-            role: "R&D Director",
-            companyProfile: "Bioeconomy mid-cap, Pomacle-Bazancourt basin",
           },
         ],
         faq: [

@@ -10,9 +10,9 @@ import { Section } from "@/components/layout/Section";
 import { Link } from "@/i18n/navigation";
 import { ReviewCard } from "./ReviewCard";
 import { StarRating } from "./StarRating";
-import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
+import { avisPourVitrine } from "@/server/reviews/vitrine";
 import { getServiceLine } from "@/lib/reviews/service-lines";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { FACET_MIN_COUNT } from "@/lib/reviews/config";
 import type { ServiceSector } from "../../../prisma/generated/client";
 
 export async function ServiceReviewsSection({
@@ -26,25 +26,24 @@ export async function ServiceReviewsSection({
   title?: string;
   titleEm?: string;
 }) {
-  // Interrupteur unique (src/content/preuves-sociales.ts) — éteint le 2026-10-09.
-  if (!AVIS_CLIENTS_AFFICHES) return null;
-
-  const [{ items }, agg] = await Promise.all([
-    getPublishedReviews({ serviceLine, pageSize: 3, sort: "featured" }),
-    getAggregateRating({ serviceLine }),
-  ]);
+  // Règle automatique (src/content/preuves-sociales.ts) : rien sans avis publié
+  // pour ce service ; note globale seulement à partir de 5 avis.
+  const { items, agg } = await avisPourVitrine({
+    scope: { serviceLine },
+    pageSize: Math.max(3, FACET_MIN_COUNT),
+  });
   if (items.length === 0) return null;
 
-  const svc = getServiceLine(serviceLine);
+  // La facette /avis/service/[…] n'existe qu'à partir de FACET_MIN_COUNT avis
+  // (sinon 404) : en dessous, le lien mène au hub /avis.
+  const svc = items.length >= FACET_MIN_COUNT ? getServiceLine(serviceLine) : undefined;
 
   return (
     <Section eyebrow={eyebrow} title={title} titleEm={titleEm} tone="sand">
       {agg ? (
         <div className="mb-6 flex items-center gap-3">
           <StarRating value={agg.ratingValue} size={20} showValue />
-          <span className="text-fg-muted text-sm">
-            {agg.reviewCount} avis vérifié{agg.reviewCount > 1 ? "s" : ""}
-          </span>
+          <span className="text-fg-muted text-sm">{agg.reviewCount} avis clients</span>
         </div>
       ) : null}
       <ul className="grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">

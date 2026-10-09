@@ -163,20 +163,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes implantés dans le bassin Seine–La Défense–Val-d'Oise avec des sites opérationnels ou logistiques à Argenteuil.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a livré un audit opérationnel concret sur notre activité BTP. Le rapport chiffre précisément le temps gagnable sur nos devis et le suivi sous-traitants. On a pu prioriser nos chantiers IA en une seule restitution.",
-            role: "Directeur général",
-            companyProfile: "PME construction, Val-d'Oise",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vrais devis et emails fournisseurs. Le livrable a permis de présenter un plan IA au comité de direction avec un ROI chiffré pour chaque cas d'usage.",
-            role: "Directrice administrative",
-            companyProfile: "PME services aux entreprises, bassin argentin",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Argenteuil ?",
@@ -261,20 +247,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups with operational or logistics sites in the Seine–La Défense–Val-d'Oise basin.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a concrete operational audit on our construction activity. The report precisely quantifies the time savings on quoting and subcontractor follow-up. We prioritised our AI workstreams in a single read-out.",
-            role: "CEO",
-            companyProfile: "Construction SME, Val-d'Oise",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real quotes and supplier emails. The deliverable allowed us to present an AI plan to the executive committee with a costed ROI for each use case.",
-            role: "Administrative Director",
-            companyProfile: "Business services SME, Argenteuil basin",
           },
         ],
         faq: [
@@ -365,20 +337,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grandes entreprises du bassin — roadshow multi-sites Grand Paris, séminaires CODIR + cascade équipes terrain.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe commerciale. Ils sont repartis avec ChatGPT et Claude configurés sur leurs vrais emails clients. Dès le lendemain, les devis sortaient deux fois plus vite.",
-            role: "Directeur commercial",
-            companyProfile: "PME BTP, Val-d'Oise",
-          },
-          {
-            quote:
-              "La session Dirigeants nous a alignés en une journée sur notre stratégie IA. Le consultant connaissait les enjeux du commerce de gros — pas de discours générique, des cas concrets qui parlaient à nos équipes.",
-            role: "PDG",
-            companyProfile: "PME distribution, bassin argentin",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Argenteuil ?",
@@ -463,20 +421,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Grand Paris basin large enterprises — multi-site roadshows, exec committee seminars + field team cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-day format perfectly matched our sales team's needs. They left with ChatGPT and Claude configured on their real client emails. By the next day, quotes were coming out twice as fast.",
-            role: "Sales Director",
-            companyProfile: "Construction SME, Val-d'Oise",
-          },
-          {
-            quote:
-              "The Executives session aligned us within a day on our AI strategy. The consultant knew the wholesale trade's challenges — no generic talk, concrete cases that resonated with our teams.",
-            role: "CEO",
-            companyProfile: "Distribution SME, Argenteuil basin",
           },
         ],
         faq: [
@@ -567,20 +511,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes du bassin : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation devis et suivi chantiers livrée comme promis. ROI mesuré dès les premiers mois : nos conducteurs de travaux passent maintenant moins de temps sur les rapports et plus sur la coordination terrain.",
-            role: "Directeur travaux",
-            companyProfile: "PME construction, bassin argentin",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le siège et les sites clients. Kick-off intense sur place, puis itérations à distance fluides. Nos ambassadeurs internes sont totalement autonomes.",
-            role: "Directrice des opérations",
-            companyProfile: "PME services aux entreprises, Val-d'Oise",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Argenteuil ?",
@@ -665,20 +595,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for basin large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Quote and site tracking automation implementation delivered as promised. ROI measured within the first months: our site managers now spend less time on reports and more on field coordination.",
-            role: "Works Director",
-            companyProfile: "Construction SME, Argenteuil basin",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the HQ and client sites. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate fully autonomously.",
-            role: "Operations Director",
-            companyProfile: "Business services SME, Val-d'Oise",
           },
         ],
         faq: [
@@ -769,20 +685,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
               "Programme personnalisé pour les dirigeants de grands groupes ayant des sites dans le bassin argentin — format intensive ou étalé selon les contraintes agenda.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'un accompagnement sur mesure, pas d'une formation collective. En deux sessions, j'ai configuré l'IA sur mes vrais devis BTP et mes emails de suivi chantier. Gain de temps immédiat.",
-            role: "Artisan entrepreneur",
-            companyProfile: "PME bâtiment, Val-d'Oise",
-          },
-          {
-            quote:
-              "Format parfait pour un dirigeant avec peu de temps. Les sessions sont ciblées sur mes vrais enjeux, pas sur des slides génériques. J'ai pu ensuite déployer les pratiques dans toute mon équipe.",
-            role: "Directeur général",
-            companyProfile: "PME services, bassin argentin",
-          },
-        ],
         faq: [
           {
             q: "En quoi l'accompagnement individuel diffère-t-il d'une intervention collective ?",
@@ -867,20 +769,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             price: "Custom quote — executive programme",
             detail:
               "Personalised programme for large group executives with sites in the Argenteuil basin — intensive or staggered format depending on schedule constraints.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed tailored coaching, not a group training. In two sessions, I had AI configured on my real construction quotes and site follow-up emails. Immediate time saving.",
-            role: "Independent craftsman",
-            companyProfile: "Micro-business construction, Val-d'Oise",
-          },
-          {
-            quote:
-              "Perfect format for a time-poor executive. Sessions are focused on my real challenges, not generic slides. I was then able to roll out the practices across my whole team.",
-            role: "CEO",
-            companyProfile: "Services SME, Argenteuil basin",
           },
         ],
         faq: [
