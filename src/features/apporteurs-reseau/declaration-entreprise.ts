@@ -122,7 +122,7 @@ export async function declarerEntreprise(
     siennes.some(
       (p) =>
         presentationOccupe(p, maintenant) &&
-        memePerimetre({ siret: d.siret, entreprise: false }, etabs.get(p.id)!),
+        memePerimetre({ siret: d.siret, entreprise: false, exclus: [] }, etabs.get(p.id)!),
     )
   ) {
     return { ok: false, message: MESSAGE_DEJA };

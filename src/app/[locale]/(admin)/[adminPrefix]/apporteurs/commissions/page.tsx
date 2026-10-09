@@ -43,6 +43,8 @@ import {
   PALIER_CONFERENCE,
   PALIERS_FORMATION,
 } from "@/features/apporteurs-reseau/regles";
+import { CommandeAAttribuer } from "@/components/admin/apporteurs/CommandeAAttribuer";
+import { lireCommandesAAttribuer } from "@/features/apporteurs-reseau/commandes-a-attribuer";
 import { peutEngager } from "@/server/auth/habilitations";
 import { gardePage } from "@/server/auth/garde-page";
 import type { StatutCommissionApporteur } from "../../../../../../../prisma/generated/client";
@@ -128,6 +130,7 @@ export default async function CommissionsApporteursPage({ params, searchParams }
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   const peutPayer = peutEngager(acces.role, "facturer");
+  const aAttribuer = await lireCommandesAAttribuer();
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/apporteurs/commissions`;
   const maintenant = new Date();
@@ -182,6 +185,32 @@ export default async function CommissionsApporteursPage({ params, searchParams }
         />
         <AdminStatCard label="Versées" value={comptes.versee} href={`${base}?statut=versee`} />
       </div>
+
+      {aAttribuer.length > 0 ? (
+        // Contrat 2.6 (art. 3.1) : une commande sans attribution exacte n'est jamais perdue en
+        // silence ; elle attend ce choix, sous 15 jours de l'encaissement.
+        <AdminCard as="section">
+          <h2 className="mb-[var(--space-admin-3)] font-semibold">
+            🏢 Commandes à attribuer ({aAttribuer.length})
+          </h2>
+          <ul className="flex flex-col gap-[var(--space-admin-3)]">
+            {aAttribuer.map((c) => (
+              <li key={c.factureId} className="flex flex-col gap-[var(--space-admin-2)]">
+                <p>
+                  <strong>{c.denomination}</strong>
+                  {c.numero ? ` · facture ${c.numero}` : ""}
+                  {c.montantHtCents !== null ? ` (${euros(c.montantHtCents)} HT)` : ""} ·{" "}
+                  {c.siret ? `établissement qui commande : ${c.siret}` : "sans SIRET"} · à décider
+                  avant le {dateFr(new Date(c.creeAt.getTime() + 15 * 86_400_000))}
+                </p>
+                {peutPayer ? (
+                  <CommandeAAttribuer factureId={c.factureId} candidats={c.candidats} />
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </AdminCard>
+      ) : null}
 
       <AdminCard as="section">
         <h2 className="mb-[var(--space-admin-3)] font-semibold">💶 Virements à faire</h2>

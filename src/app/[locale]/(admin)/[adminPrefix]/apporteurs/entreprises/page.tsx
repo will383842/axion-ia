@@ -256,9 +256,11 @@ function Carte({
             <dd>
               {p.etablissement.siret === null
                 ? "Toute l'entreprise (déclaration d'avant le contrat 2.6)"
-                : p.etablissement.entreprise
-                  ? `Toute l'entreprise (étendue ; établissement déclaré : SIRET ${p.etablissement.siret})`
-                  : `Établissement SIRET ${p.etablissement.siret}`}
+                : p.etablissement.entreprise && p.etablissement.etendue
+                  ? `Toute l'entreprise (étendue ; établissement déclaré : SIRET ${p.etablissement.siret}${p.etablissement.exclus.length ? ` ; exclus : ${p.etablissement.exclus.join(", ")}` : ""})`
+                  : p.etablissement.entreprise
+                    ? `Toute l'entreprise (contrat signé avant la 2.6 ; établissement visité : SIRET ${p.etablissement.siret})`
+                    : `Établissement SIRET ${p.etablissement.siret}`}
             </dd>
           </>
           {p.statut === "reservee" && p.contactEnvoyeAt ? (

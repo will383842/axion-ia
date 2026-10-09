@@ -30,6 +30,8 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
+import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
 export const dynamic = "force-dynamic";
 
@@ -223,6 +225,14 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       />
 
       <BandeauEtatFonds bandeau={bandeauFonds} />
+
+      {/* Contrat d'apporteur 2.6 : l'établissement qui commande (attribution par SIRET). */}
+      <section className="mb-[var(--space-admin-6)]">
+        <SiretEtablissementDevis
+          devisId={devis.id}
+          siret={(await lireSiretsDevis([devis.id])).get(devis.id) ?? null}
+        />
+      </section>
 
       {/* ── Fiche de statut ─────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">

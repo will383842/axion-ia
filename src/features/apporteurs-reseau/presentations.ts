@@ -30,6 +30,7 @@ import {
   enregistrerEtablissement,
   lireEtablissements,
   memePerimetre,
+  signeAvant26,
   siretValide,
   type Etablissement,
 } from "./etablissement-presentation";
@@ -87,7 +88,7 @@ export async function lireSignalements(
   maintenant: Date,
   saufId?: string,
   /** Contrat 2.6 : l'établissement visé ; absent = toute l'entreprise (comportement d'avant). */
-  etablissement: Etablissement = { siret: null, entreprise: false },
+  etablissement: Etablissement = { siret: null, entreprise: false, exclus: [] },
 ): Promise<Signalement[]> {
   const out: Signalement[] = [];
   const [presentations, tousClients] = await Promise.all([
@@ -251,7 +252,7 @@ export async function creerPresentation(
   const recueAt = maintenant;
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: s.apporteurId },
-    select: { statut: true },
+    select: { statut: true, signatureApporteur: true },
   });
   if (!apporteur || apporteur.statut !== "signe") {
     return { ok: false, message: "Choisissez un apporteur dont le contrat est signé." };
@@ -266,7 +267,10 @@ export async function creerPresentation(
   });
   // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
   const etabs = await lireEtablissements(siennes.map((p) => p.id));
-  const moi: Etablissement = { siret, entreprise: false };
+  // Relecture de a1 (art. 13) : un apporteur au contrat signé AVANT la 2.6 garde l'entreprise
+  // entière — la règle d'établissement ne lui est pas opposable sans avenant.
+  const entiere = signeAvant26(apporteur.signatureApporteur);
+  const moi: Etablissement = { siret, entreprise: entiere, exclus: [] };
   if (
     siennes.some((p) => presentationOccupe(p, maintenant) && memePerimetre(moi, etabs.get(p.id)!))
   ) {
@@ -306,7 +310,7 @@ export async function creerPresentation(
       },
       select: { id: true },
     });
-    await enregistrerEtablissement(c.id, siret, tx);
+    await enregistrerEtablissement(c.id, siret, entiere, tx);
     return c;
   });
   return { ok: true, id: cree.id };
@@ -401,7 +405,7 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     note: p.note,
     aTraiter: estATraiter(p),
     adresseACorriger: rebonds.has(p.id),
-    etablissement: etabs.get(p.id) ?? { siret: null, entreprise: false },
+    etablissement: etabs.get(p.id) ?? { siret: null, entreprise: false, exclus: [] },
   }));
 }
 

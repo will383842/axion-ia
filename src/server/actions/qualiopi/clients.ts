@@ -173,7 +173,7 @@ const createClientSchema = z
         code: z.ZodIssueCode.custom,
         path: ["siret"],
         message:
-          "Indiquez le SIRET de l'établissement (14 chiffres), ou cochez « Client hors de France ».",
+          "Indiquez le SIRET de l'établissement (14 chiffres), ou choisissez « Hors de France » ou « Sans SIRET ».",
       });
   });
 

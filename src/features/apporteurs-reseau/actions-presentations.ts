@@ -74,7 +74,7 @@ export async function verifierSirenAction(brut: string): Promise<VerificationSir
   const siren = siret.slice(0, 9);
   const [registre, signalements] = await Promise.all([
     lireEtablissementParSiret(siret),
-    lireSignalements(siren, new Date(), undefined, { siret, entreprise: false }),
+    lireSignalements(siren, new Date(), undefined, { siret, entreprise: false, exclus: [] }),
   ]);
   return {
     etat: "ok",

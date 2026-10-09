@@ -163,7 +163,13 @@ prolongation, fin).
 
 Dans le présent contrat, l'**entreprise attribuée** s'entend de l'établissement attribué ou, en cas
 d'extension, de l'ensemble des établissements qu'elle couvre. L'établissement qui commande est celui dont le
-numéro SIRET figure sur la commande ou sur la facture.
+numéro SIRET figure sur le devis ou la commande, à défaut sur la fiche du client. L'extension n'emporte pas un
+établissement que la Société connaît déjà au sens de l'article 3.3, apprécié établissement par établissement.
+
+Lorsque la commande ne peut être rattachée à une attribution, faute de numéro SIRET ou faute de correspondance,
+la Société procède elle-même au rattachement dans les **quinze jours** de l'encaissement intégral. La commission
+qui en résulte reste due ; le délai de paiement de l'article 5.3 court à compter de ce rattachement, et ce délai
+ne prive l'Apporteur d'aucun droit.
 
 **3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, faite
 par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en

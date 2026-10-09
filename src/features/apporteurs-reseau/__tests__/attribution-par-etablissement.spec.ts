@@ -12,6 +12,8 @@ import {
   attributaireDeLaCommande,
   couvreToutLEntreprise,
   memePerimetre,
+  signeAvant26,
+  siretDeLaCommande,
   siretValide,
 } from "../etablissement-presentation";
 
@@ -31,6 +33,15 @@ describe("contrat 2.6", () => {
     expect(net).not.toContain("quel que soit le nombre de ses établissements");
   });
 
+  it("relecture de a1 : le rattachement manuel sous 15 jours ne fait rien perdre à l'apporteur", () => {
+    expect(net).toContain("dans les **quinze jours** de l'encaissement intégral");
+    expect(net).toContain("La commission qui en résulte reste due");
+    expect(net).toContain(
+      "le délai de paiement de l'article 5.3 court à compter de ce rattachement",
+    );
+    expect(net).toContain("apprécié établissement par établissement");
+  });
+
   it("art. 3.2 : la déclaration porte le SIRET ; art. 3.3 : l'antériorité se juge par établissement", () => {
     expect(net).toContain("le **numéro SIRET de l'établissement** visité");
     expect(net).toContain(
@@ -43,8 +54,8 @@ describe("contrat 2.6", () => {
 });
 
 describe("le périmètre d'une attribution", () => {
-  const g = { siret: GRENOBLE, entreprise: false };
-  const l = { siret: LYON, entreprise: false };
+  const g = { siret: GRENOBLE, entreprise: false, exclus: [] };
+  const l = { siret: LYON, entreprise: false, exclus: [] };
   it("deux établissements différents ne se disputent rien ; le même, oui", () => {
     expect(siretValide(GRENOBLE) && siretValide(LYON)).toBe(true);
     expect(memePerimetre(g, l)).toBe(false);
@@ -52,9 +63,9 @@ describe("le périmètre d'une attribution", () => {
   });
   it("une attribution d'avant la 2.6, ou étendue, couvre toute l'entreprise", () => {
     expect(couvreToutLEntreprise(AVANT_2_6)).toBe(true);
-    expect(couvreToutLEntreprise({ siret: GRENOBLE, entreprise: true })).toBe(true);
+    expect(couvreToutLEntreprise({ siret: GRENOBLE, entreprise: true, exclus: [] })).toBe(true);
     expect(memePerimetre(AVANT_2_6, l)).toBe(true);
-    expect(memePerimetre({ siret: GRENOBLE, entreprise: true }, l)).toBe(true);
+    expect(memePerimetre({ siret: GRENOBLE, entreprise: true, exclus: [] }, l)).toBe(true);
   });
 });
 
@@ -78,14 +89,45 @@ describe("à qui revient la commande d'un établissement", () => {
       presentation: marie,
     });
   });
-  it("sans extension, un autre établissement que celui de Paul : personne", () => {
-    expect(attributaireDeLaCommande([paul], LYON)).toBeNull();
+  it("point 1 (a1) : autre établissement que celui de Paul → « à attribuer », jamais perdue en silence", () => {
+    expect(attributaireDeLaCommande([paul], LYON)).toEqual({ aAttribuer: true, candidats: [paul] });
   });
-  it("facture SANS SIRET et seules des attributions d'établissement : « SIRET manquant », rien n'est créé", () => {
-    expect(attributaireDeLaCommande([paul], null)).toEqual({ siretManquant: true });
+  it("point 1 (a1) : facture SANS SIRET, seules des attributions d'établissement → « à attribuer »", () => {
+    expect(attributaireDeLaCommande([paul], null)).toEqual({ aAttribuer: true, candidats: [paul] });
+  });
+  it("aucune présentation sur ce SIREN : rien", () => {
+    expect(attributaireDeLaCommande([], LYON)).toBeNull();
+  });
+  it("point 3 (a1) : un établissement EXCLU de l'extension n'est pas emporté → « à attribuer »", () => {
+    const etendue = {
+      recueAt: new Date("2026-10-02"),
+      etablissement: { siret: LYON, entreprise: true, exclus: ["73282932000090"] },
+    };
+    expect(attributaireDeLaCommande([etendue], "73282932000090")).toEqual({
+      aAttribuer: true,
+      candidats: [etendue],
+    });
+    expect(attributaireDeLaCommande([etendue], GRENOBLE)).toEqual({ presentation: etendue });
   });
   it("facture sans SIRET mais attribution d'avant la 2.6 : elle couvre l'entreprise, comme avant", () => {
     const ancienne = { recueAt: new Date("2026-09-01"), etablissement: AVANT_2_6 };
     expect(attributaireDeLaCommande([ancienne], null)).toEqual({ presentation: ancienne });
+  });
+});
+
+describe("point 2 (a1) : une seule source du SIRET de la commande, jamais le payeur", () => {
+  it("le devis d'abord, puis la fiche client", () => {
+    expect(siretDeLaCommande({ devisSiret: GRENOBLE, clientSiret: LYON })).toBe(GRENOBLE);
+    expect(siretDeLaCommande({ devisSiret: null, clientSiret: "732 829 320 00041" })).toBe(LYON);
+    expect(siretDeLaCommande({})).toBeNull();
+  });
+});
+
+describe("point 4 (a1) : un contrat signé avant la 2.6 garde toute l'entreprise (art. 13)", () => {
+  it("version signée < 2.6 : oui ; 2.6 et plus, ou inconnue : non", () => {
+    expect(signeAvant26({ version: "2.4" })).toBe(true);
+    expect(signeAvant26({ version: "2.5" })).toBe(true);
+    expect(signeAvant26({ version: "2.6" })).toBe(false);
+    expect(signeAvant26(null)).toBe(false);
   });
 });
