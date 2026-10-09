@@ -13,18 +13,27 @@
 // ajouté là-bas.
 //
 // ── Les règles ────────────────────────────────────────────────────────────
-//   · seule une candidature RECRUTÉE à une offre de FORMATEUR ouvre la
-//     passerelle (`peutCreerFicheFormateur`) ;
-//   · la fiche naît INACTIVE : une candidature ne porte jamais de numéro de
-//     déclaration d'activité, et aucun formateur externe n'est actif sans lui.
-//     La fiche affiche « Numéro de déclaration à demander » tant qu'il manque ;
+//   · une candidature de formateur FREELANCE ouvre la passerelle à toute étape,
+//     et l'action n'écrit AUCUN statut de recrutement ; toute autre candidature
+//     de formateur attend « Recrutée » (`peutCreerFicheFormateur`) ;
+//   · le statut de la fiche n'est JAMAIS deviné : freelance → sous-traitant,
+//     offre salariée explicite → salarié, sinon l'administrateur choisit
+//     (`statut-a-choisir`) ;
+//   · la fiche naît INACTIVE (`actif` n'accepte que `false`) : aucun numéro de
+//     déclaration vérifié, et aucun formateur externe n'est actif sans lui.
+//     La fiche affiche la mention tant qu'il manque ;
+//   · sous-traitant : `cvUrl` reste VIDE. Le CV de candidature n'est pas une
+//     pièce vérifiée du dossier (ind. 21) ;
+//   · ANTI-DOUBLON : une fiche existe déjà à la même adresse (citext unique) →
+//     la candidature lui est RATTACHÉE, rien n'est créé ;
 //   · IDEMPOTENCE : `JobApplication.trainerId` posé = la fiche existe, un second
 //     clic l'ouvre et ne crée rien. Le lien s'écrit `where trainerId: null` :
 //     deux clics simultanés ne s'écrasent pas, et le second bute de toute façon
 //     sur l'unicité de l'adresse du formateur ;
-//   · garde : les rôles qui OUVRENT un dossier candidat (`requireAdminWrite` de
-//     la zone recrutement) — on ne recopie pas l'identité d'un dossier qu'on n'a
-//     pas le droit de lire.
+//   · garde : ouvrir le dossier candidat (`requireAdminWrite` de la zone
+//     recrutement) ET engager l'organisme (`peutEngager(role, "contresigner")`,
+//     la même garde que la retenue d'un apporteur) — référencer un intervenant
+//     revient à la direction.
 //
 // 🔴 Aucune donnée personnelle en clair dans le journal d'activité : les
 // identifiants suffisent à retrouver la personne.
@@ -46,6 +55,8 @@ import {
   statutFormateurDepuisOffre,
 } from "@/lib/careers/fiche-formateur";
 
+import { peutEngager } from "@/server/auth/habilitations";
+
 import { requireAdminWrite } from "./session";
 import { consignerEvenement } from "./journal";
 
@@ -57,6 +68,8 @@ export type EtatFicheFormateur =
       lien: string;
       /** La fiche existait déjà pour cette candidature : rien n'a été créé. */
       deja?: true;
+      /** Une fiche existait à la même adresse : la candidature lui a été rattachée. */
+      rattachee?: true;
       /** « Numéro de déclaration à demander » tant que la fiche est inactive sans numéro. */
       mention?: string;
     }
@@ -67,12 +80,19 @@ export type EtatFicheFormateur =
         | "champs-invalides"
         | "introuvable"
         | "non-eligible"
+        | "statut-a-choisir"
         | "illisible"
         | "echec";
       message: string;
     };
 
-const schema = z.object({ applicationId: z.string().uuid() });
+const schema = z.object({
+  applicationId: z.string().uuid(),
+  /** Choix explicite de l'administrateur, lu SEULEMENT quand l'offre ne dit rien. */
+  statut: z.enum(["salarie", "sous_traitant"]).optional(),
+  /** La fiche naît inactive : aucune autre valeur n'est acceptée. */
+  actif: z.literal(false).optional(),
+});
 
 function lienFiche(id: string): string {
   return adminPath("fr", `qualiopi/formateurs/${id}`);
@@ -96,12 +116,19 @@ export async function creerFicheFormateurDepuisCandidatureAction(
   } catch {
     return { ok: false, erreur: "non-autorise", message: "Session absente ou rôle insuffisant." };
   }
+  if (!peutEngager(acteur.role, "contresigner")) {
+    return {
+      ok: false,
+      erreur: "non-autorise",
+      message: "Créer une fiche formateur est réservé à la direction.",
+    };
+  }
 
   const parsed = schema.safeParse(payload);
   if (!parsed.success) {
     return { ok: false, erreur: "champs-invalides", message: "Demande incomplète." };
   }
-  const { applicationId } = parsed.data;
+  const { applicationId, statut: statutChoisi } = parsed.data;
 
   const candidature = await prisma.jobApplication.findUnique({
     where: { id: applicationId },
@@ -132,18 +159,28 @@ export async function creerFicheFormateurDepuisCandidatureAction(
     };
   }
 
-  if (
-    !peutCreerFicheFormateur({
-      status: candidature.status,
-      offerSlug: candidature.offer?.slug,
-      offerTitleSnap: candidature.offerTitleSnap,
-    })
-  ) {
+  const indices = {
+    offerSlug: candidature.offer?.slug,
+    offerTitleSnap: candidature.offerTitleSnap,
+    employmentType: candidature.offer?.employmentType,
+    secondaryEmploymentType: candidature.offer?.secondaryEmploymentType,
+  };
+  if (!peutCreerFicheFormateur({ status: candidature.status, ...indices })) {
     return {
       ok: false,
       erreur: "non-eligible",
       message:
-        "La fiche formateur se crée depuis une candidature « Recrutée » à une offre de formateur.",
+        "La fiche formateur se crée depuis une candidature de formateur freelance, ou « Recrutée » à une offre de formateur.",
+    };
+  }
+
+  const statut = statutFormateurDepuisOffre(indices) ?? statutChoisi ?? null;
+  if (statut === null) {
+    return {
+      ok: false,
+      erreur: "statut-a-choisir",
+      message:
+        "Rien n'indique s'il s'agit d'un formateur salarié ou sous-traitant : choisissez le statut de la fiche.",
     };
   }
 
@@ -165,29 +202,55 @@ export async function creerFicheFormateurDepuisCandidatureAction(
     };
   }
 
-  const statut =
-    statutFormateurDepuisOffre({
-      offerSlug: candidature.offer?.slug,
-      offerTitleSnap: candidature.offerTitleSnap,
-      employmentType: candidature.offer?.employmentType,
-      secondaryEmploymentType: candidature.offer?.secondaryEmploymentType,
-    }) ?? "salarie";
+  // ── ANTI-DOUBLON : une fiche à la même adresse (citext, unique) → rattacher.
+  const existante = await prisma.trainer.findUnique({ where: { email }, select: { id: true } });
+  if (existante) {
+    await prisma.jobApplication.updateMany({
+      where: { id: candidature.id, trainerId: null },
+      data: { trainerId: existante.id },
+    });
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: acteur.userId,
+          action: "careers.candidature.fiche_formateur_rattachee",
+          targetType: "JobApplication",
+          targetId: candidature.id,
+          changes: { trainerId: existante.id },
+        },
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "creerFicheFormateurDepuisCandidature", step: "journal-activite" },
+      });
+    }
+    revalidatePath(adminPath("fr", `contacts/candidatures/${candidature.id}`));
+    return {
+      ok: true,
+      rattachee: true,
+      trainerId: existante.id,
+      lien: lienFiche(existante.id),
+    };
+  }
+
   // Le CV reste où il est (volume privé, route authentifiée de la candidature) :
-  // la fiche pointe vers lui, comme `cvUrl` pointe ailleurs vers la route de
-  // conservation d'un document versé.
-  const cvUrl = candidature.cvStoragePath
-    ? new URL(
-        adminPath("fr", `contacts/candidatures/${candidature.id}/cv`),
-        env.NEXT_PUBLIC_SITE_URL,
-      ).toString()
-    : undefined;
+  // la fiche d'un SALARIÉ pointe vers lui. Celle d'un SOUS-TRAITANT, jamais :
+  // l'indicateur 21 ne compte qu'une pièce vérifiée du dossier, et un CV de
+  // candidature n'en est pas une.
+  const cvUrl =
+    statut === "salarie" && candidature.cvStoragePath
+      ? new URL(
+          adminPath("fr", `contacts/candidatures/${candidature.id}/cv`),
+          env.NEXT_PUBLIC_SITE_URL,
+        ).toString()
+      : undefined;
 
   const creation = await createTrainerAction({
     nom,
     prenom,
     email,
     statut,
-    // Aucun numéro de déclaration dans une candidature : la fiche naît inactive.
+    // Aucun numéro de déclaration vérifié : la fiche naît inactive.
     actif: false,
     ...(telephone ? { telephone: telephone.slice(0, 40) } : {}),
     ...(cvUrl ? { cvUrl } : {}),

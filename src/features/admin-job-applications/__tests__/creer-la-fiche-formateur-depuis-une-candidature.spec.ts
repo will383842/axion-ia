@@ -9,8 +9,14 @@
 //     mention « numéro de déclaration à demander » se lit ;
 //   · `JobApplication.trainerId` est rempli ; un second clic ne crée rien et
 //     renvoie vers la fiche existante ;
-//   · seule une candidature RECRUTÉE à une offre de FORMATEUR ouvre la passerelle ;
+//   · seule une candidature RECRUTÉE à une offre de FORMATEUR SALARIÉ ouvre la
+//     passerelle (le freelance : cf. `fiche-formateur-freelance.spec.ts`) ;
 //   · un rôle qui n'ouvre pas le dossier candidat n'écrit rien ;
+//
+// U6 (chantier « formateurs freelance ») a changé quatre règles que ce fichier
+// figeait : geste réservé à la direction (la session est `admin`), aucun
+// `cvUrl` pour un sous-traitant, mention « à confirmer dans le dossier », et
+// un freelance n'attend plus « Recrutée ».
 //   · le geste est tracé au journal d'activité et dans la frise.
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -46,6 +52,7 @@ vi.mock("@/lib/prisma", () => ({
     },
     jobApplicationEvent: { create: (a: unknown) => evenement(a) },
     activityLog: { create: (a: unknown) => journalConsole(a) },
+    trainer: { findUnique: async () => null },
   },
 }));
 vi.mock("@/server/actions/qualiopi/trainers", () => ({
@@ -74,7 +81,7 @@ beforeEach(() => {
     phone: "chiffre(06 12 34 56 78)",
     cvStoragePath: "cv/abc.pdf",
   };
-  session = { user: { id: "admin-1", role: "secretaire", name: "Sophie" } };
+  session = { user: { id: "admin-1", role: "admin", name: "Sophie" } };
   creerFormateur.mockResolvedValue({ data: { id: TRAINER_ID } });
 });
 
@@ -88,7 +95,7 @@ describe("creerFicheFormateurDepuisCandidatureAction", () => {
     expect(r).toMatchObject({ ok: true, trainerId: TRAINER_ID });
     if (r.ok) {
       expect(r.lien).toMatch(new RegExp(`/qualiopi/formateurs/${TRAINER_ID}$`));
-      expect(r.mention).toBe("Numéro de déclaration à demander");
+      expect(r.mention).toBe("Numéro de déclaration d'activité à confirmer dans le dossier");
     }
     expect(creerFormateur).toHaveBeenCalledTimes(1);
     const a = argumentsCreation();
@@ -100,9 +107,8 @@ describe("creerFicheFormateurDepuisCandidatureAction", () => {
       statut: "sous_traitant",
       actif: false,
     });
-    expect(a["cvUrl"]).toMatch(
-      new RegExp(`^https://axion-ia\\.com/fr/[^/]+/contacts/candidatures/${APP_ID}/cv$`),
-    );
+    // Sous-traitant : le CV de candidature n'est pas une pièce vérifiée (ind. 21).
+    expect(a).not.toHaveProperty("cvUrl");
     expect(a).not.toHaveProperty("sousTraitantNda");
   });
 
@@ -140,7 +146,15 @@ describe("creerFicheFormateurDepuisCandidatureAction", () => {
   });
 
   it("refuse une candidature non recrutée, ou à une offre qui n'est pas de formateur", async () => {
-    candidature = { ...candidature, status: "interview" };
+    candidature = {
+      ...candidature,
+      status: "interview",
+      offer: {
+        slug: "formateur-ia-sedentaire",
+        employmentType: "FULL_TIME",
+        secondaryEmploymentType: null,
+      },
+    };
     const r1 = await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
     expect(r1).toMatchObject({ ok: false, erreur: "non-eligible" });
 
@@ -209,7 +223,7 @@ describe("règles pures de la passerelle", () => {
 
   it("la mention se lit tant que la fiche est inactive et sans numéro", () => {
     expect(mentionActivationFormateur({ actif: false, sousTraitantNda: null })).toBe(
-      "Numéro de déclaration à demander",
+      "Numéro de déclaration d'activité à confirmer dans le dossier",
     );
     expect(mentionActivationFormateur({ actif: false, sousTraitantNda: "84380000000" })).toBeNull();
     expect(mentionActivationFormateur({ actif: true, sousTraitantNda: null })).toBeNull();
