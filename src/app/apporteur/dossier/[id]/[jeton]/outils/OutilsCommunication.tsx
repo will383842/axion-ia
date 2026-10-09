@@ -130,7 +130,14 @@ function Texte({
   );
 }
 
-export function OutilsCommunication({ nomComplet }: { nomComplet: string }) {
+export function OutilsCommunication({
+  nomComplet,
+  lienCharte,
+}: {
+  nomComplet: string;
+  /** La charte de marque, servie derrière le lien personnel (jamais publique). */
+  lienCharte: string;
+}) {
   const [ressources, setRessources] = useState<Ressources | null>(null);
   const [erreur, setErreur] = useState(false);
   const [accord, setAccord] = useState<Accord>("m");
@@ -218,7 +225,7 @@ export function OutilsCommunication({ nomComplet }: { nomComplet: string }) {
     <div className="mt-6 grid gap-8">
       {/* La charte de marque (contrat, art. 22 bis) : les règles d'abord, les pièces ensuite. */}
       <a
-        href="/documents/apporteurs/charte-de-marque/index.html"
+        href={lienCharte}
         target="_blank"
         rel="noopener"
         className="border-border bg-paper flex min-h-[48px] items-center justify-between gap-3 rounded-2xl border p-4 font-semibold"
