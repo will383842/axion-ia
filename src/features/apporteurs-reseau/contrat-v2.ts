@@ -27,7 +27,10 @@
 // « j'accepte le contrat », qui énumère les articles 3.7, 4.5, 5.2, 7, 12 et 14) ; les mentions
 // « case d'acceptation distincte » sont retirées. Un Apporteur société est désigné par sa
 // dénomination, « représentée par » la personne physique qui signe.
-export const CONTRAT_VERSION = "2.5";
+// 2.6 (09/10/2026, décision de Will) : l'attribution porte sur l'ÉTABLISSEMENT déclaré (SIRET),
+// commissionné sur ses seules commandes ; la Société peut, à sa seule discrétion et sur demande,
+// l'étendre à toute l'entreprise (SIREN). L'antériorité (3.3) se juge par établissement.
+export const CONTRAT_VERSION = "2.6";
 
 export const CONTRAT_V2_MARKDOWN = `## Contrat d'apporteur d'affaires
 
@@ -147,10 +150,20 @@ reprises avec leur date d'origine.
 
 ### Article 3 — Déclaration des entreprises et attribution 
 
-**3.1 — Clé d'attribution.** L'attribution est établie sur le **numéro SIREN** (9 chiffres) de
-l'entreprise, au sens de l'article 4.0. Le SIRET de l'établissement visité est enregistré à titre d'information et n'emporte
-aucun effet. Une entreprise ne peut être attribuée qu'à un seul Apporteur, quel que soit le nombre de ses
-établissements.
+**3.1 — Clé d'attribution.** L'attribution porte sur l'**établissement déclaré**, identifié par son
+**numéro SIRET** (14 chiffres) : l'Apporteur n'est commissionné que sur les commandes de cet établissement.
+Un établissement ne peut être attribué qu'à un seul Apporteur ; plusieurs établissements d'une même entreprise
+peuvent être attribués à des Apporteurs différents.
+
+À la demande de l'Apporteur, notamment lorsqu'il a rencontré la direction de l'entreprise, la Société peut,
+**à sa seule discrétion** et par écrit, étendre l'attribution à l'ensemble des établissements de l'entreprise
+(numéro SIREN) qui ne sont pas déjà attribués à un autre Apporteur. Elle n'est jamais tenue de le faire, et
+son refus n'a pas à être motivé. L'extension suit le sort de l'attribution qu'elle étend (durée,
+prolongation, fin).
+
+Dans le présent contrat, l'**entreprise attribuée** s'entend de l'établissement attribué ou, en cas
+d'extension, de l'ensemble des établissements qu'elle couvre. L'établissement qui commande est celui dont le
+numéro SIRET figure sur la commande ou sur la facture.
 
 **3.2 — Naissance de l'attribution.** L'attribution naît de la **déclaration** de l'entreprise, faite
 par l'Apporteur **au moyen du seul formulaire** accessible depuis son lien personnel et, une fois l'espace en
@@ -158,7 +171,7 @@ ligne ouvert, de celui qu'il contient. **Une déclaration adressée par tout aut
 électronique, est sans effet** : la Société invite alors l'Apporteur à utiliser le formulaire. Elle n'est pas
 acquise du seul fait d'une démarche non déclarée.
 
-La déclaration comporte l'identification de l'entreprise et son numéro SIREN, le **nom et la fonction de la
+La déclaration comporte l'identification de l'entreprise et le **numéro SIRET de l'établissement** visité, le **nom et la fonction de la
 personne rencontrée**, un **moyen direct de la joindre**, à savoir son adresse électronique et son numéro de
 téléphone, et la **date du contact**, laquelle n'est recueillie qu'aux seules fins des articles 3.4 bis et 3.7 et ne fait l'objet
 d'aucune exploitation statistique.
@@ -186,12 +199,12 @@ courrier électronique, dès qu'elle le constate, afin qu'il puisse communiquer 
 conséquences attachées au silence de l'entreprise.** La confirmation réputée acquise ne fait naître aucune
 commission : la commission ne naît que dans les conditions de l'article 4.
 
-**3.3 — Antériorité de la Société.** Aucune attribution ne peut porter sur une entreprise que la Société
-connaît déjà à la date de la déclaration, c'est-à-dire **cliente au titre d'une prestation facturée au
+**3.3 — Antériorité de la Société.** Aucune attribution ne peut porter sur un établissement que la Société
+connaît déjà à la date de la déclaration, c'est-à-dire **client au titre d'une prestation facturée au
 cours des vingt-quatre derniers mois, destinataire d'un devis de moins de six mois, ou ayant signé un devis
 qui n'a été ni entièrement facturé, ni annulé, quelle que soit sa date**. La Société enregistre
-la déclaration ; lorsqu'elle constate, sur les données dont elle dispose, que l'entreprise lui est déjà connue
-au sens du présent alinéa ou est déjà attribuée à un autre Apporteur, elle refuse la déclaration par une
+la déclaration ; lorsqu'elle constate, sur les données dont elle dispose, que l'établissement lui est déjà connu
+au sens du présent alinéa ou est déjà attribué à un autre Apporteur, elle refuse la déclaration par une
 décision motivée adressée à l'Apporteur, sans lui révéler l'identité de l'occupant (article 3.5). À défaut,
 l'attribution est provisoire jusqu'à sa confirmation (article 3.2). **Lorsque l'antériorité est établie après
 l'enregistrement de la déclaration et avant la confirmation de l'attribution, celle-ci est annulée,
@@ -341,7 +354,7 @@ effectif des fonds sur un compte bancaire de la Société, quel que soit le moye
 du jour où la somme est créditée sur ce compte ; *prix facturé* s'entend du prix de la commande,
 net des avoirs ; *commission acquise* s'entend de la commission dont le fait générateur de l'article 4.2 est
 réalisé ; *entreprise* s'entend de la personne morale ou de l'entrepreneur individuel titulaire du numéro
-SIREN.
+SIREN ; *établissement* s'entend de l'établissement de l'entreprise identifié par son numéro SIRET.
 
 **4.1 — Grille.** La rémunération est exclusivement constituée de commissions, selon la **grille figurant
 en annexe 1** (version 2 du {{GRILLE_DATE}}), annexée au présent contrat et en

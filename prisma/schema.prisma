@@ -15249,6 +15249,22 @@ model ApporteurReseauSiret {
   @@map("apporteur_reseau_siret")
 }
 
+/// Contrat 2.6 (2026-10-09) : l'ÉTABLISSEMENT déclaré d'une présentation (SIRET), et son extension
+/// à toute l'entreprise, décidée par Williams seul (art. 3.1). Table séparée sans clé étrangère
+/// (fenêtre app/worker), comme `ApporteurReseauSiret`. Absente = présentation d'avant la 2.6, qui
+/// couvre toute l'entreprise (comportement d'avant).
+model PresentationEtablissement {
+  presentationId String    @id @map("presentation_id") @db.Uuid
+  siret          String    @db.Char(14)
+  /// Étendue à toute l'entreprise (SIREN) par Williams (art. 3.1, à sa seule discrétion).
+  entreprise     Boolean   @default(false)
+  etendueAt      DateTime? @map("etendue_at") @db.Timestamptz(3)
+  majAt          DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([siret])
+  @@map("presentation_etablissement")
+}
+
 /// Apporteur RETIRÉ du réseau (2026-10-07) : la fiche sort des listes par défaut et son lien
 /// de dossier est désactivé ; rien d'autre ne bouge (contrat, pièces, commissions, journal).
 /// Table SÉPARÉE, sans relation déclarée, à dessein : une colonne sur `apporteurs_reseau`
