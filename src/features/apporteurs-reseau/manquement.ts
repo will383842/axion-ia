@@ -53,7 +53,7 @@ export interface BilanManquement {
   avertissements: string[];
 }
 
-interface LigneAffaire {
+export interface LigneAffaire {
   id: string;
   apporteurId: string;
   statut: string;
@@ -63,7 +63,7 @@ interface LigneAffaire {
   parrainage: boolean;
 }
 
-type Piece = { r2Key: string; filename: string };
+export type Piece = { r2Key: string; filename: string };
 
 async function tracer(
   action: string,
@@ -92,23 +92,29 @@ async function tracer(
  * autofacture. L'avoir est une ligne de reprise rattachée à l'autofacture et déjà SOLDÉE (elle
  * n'est jamais déduite ailleurs) ; le virement du reste se calcule par complément.
  */
-async function retenir(
+/**
+ * Une commission FACTURÉE pas encore versée est RETENUE et NEUTRALISÉE par un avoir numéroté
+ * (art. 4.5). Sert au manquement (4.5 bis) et à l'avoir du client (`avoir-client.ts`).
+ */
+export async function retenir(
   l: LigneAffaire,
   motif: string,
   maintenant: Date,
-): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string }> {
+  periodeLibelle = `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
+): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string; numero?: string }> {
   const montant = l.montantCents ?? 0;
-  const [numeroAvoir] = await allouerNumerosAutofacture(
-    Number(moisParis(maintenant).slice(0, 4)),
-    1,
-  );
+  // Relecture de a1 (09/10) : le numéro de l'avoir est pris DANS la transaction gagnante, après le
+  // verrou de la série et la prise de la ligne — un passage concurrent perdant n'en réserve aucun.
+  let numeroAvoir: string | undefined;
   const repriseId = await prisma.$transaction(async (tx) => {
-    await verrouillerSerieAutofacture(tx, [numeroAvoir!]);
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('serie-autofacture-apporteur'))`;
     const r = await tx.commissionApporteur.updateMany({
       where: { id: l.id, statut: "due", autofactureNumero: l.autofactureNumero, verseeAt: null },
       data: { statut: "retenue" },
     });
     if (r.count !== 1) return null;
+    [numeroAvoir] = await allouerNumerosAutofacture(Number(moisParis(maintenant).slice(0, 4)), 1);
+    await verrouillerSerieAutofacture(tx, [numeroAvoir!]);
     const rep = await tx.commissionApporteur.create({
       data: {
         apporteurId: l.apporteurId,
@@ -136,7 +142,7 @@ async function retenir(
   const pdf = await genererPdfAutofacture({
     apporteurId: l.apporteurId,
     numero: numeroAvoir!,
-    periodeLibelle: `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
+    periodeLibelle,
     commissionIds: [repriseId],
     totalCents: montant,
     maintenant,
@@ -150,11 +156,12 @@ async function retenir(
     signalerErreurReseau("manquement : avoir de neutralisation non établi", new Error(numeroAvoir));
     return {
       ok: true,
+      numero: numeroAvoir!,
       avertissement: `L'avoir ${numeroAvoir} est enregistré mais son PDF n'a pas pu être établi : à régénérer.`,
     };
   }
   await tracer(PIECE_VERIFIEE, "commission_apporteur", repriseId, null, { avoir: numeroAvoir });
-  return { ok: true, avoir: { r2Key: pdf.r2Key, filename: pdf.filename } };
+  return { ok: true, numero: numeroAvoir!, avoir: { r2Key: pdf.r2Key, filename: pdf.filename } };
 }
 
 /**

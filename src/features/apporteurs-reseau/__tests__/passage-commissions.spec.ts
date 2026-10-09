@@ -22,6 +22,8 @@ vi.mock("../etablissement-presentation", async (orig) => {
     ouvrirAAttribuer: vi.fn(async () => true),
   };
 });
+// Étape « avoirs-clients » (art. 4.5) : testée à part (avoir-client.spec.ts).
+vi.mock("../avoir-client", () => ({ reprendreApresAvoirsClients: vi.fn(async () => ({})) }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("../envois", () => ({ envoyer: vi.fn(async () => "envoye") }));
