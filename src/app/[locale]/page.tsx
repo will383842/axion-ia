@@ -12,7 +12,6 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
-import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { orgAggregateJsonLd } from "@/server/reviews/jsonld";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { HomeReviewsCarousel } from "@/components/home/HomeReviewsCarousel";
@@ -51,8 +50,7 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
-import { avisPublies } from "@/server/reviews/presence";
-import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
+import { avisPourVitrine } from "@/server/reviews/vitrine";
 
 // ISR 1h — ramené de 86400s (24h) à 3600s le 2026-08-10.
 //
@@ -60,7 +58,7 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // Or le build tourne sur GH Actions avec `DATABASE_URL=stub.invalid` (ADR 0026),
 // donc la page est FIGÉE À ZÉRO AVIS au moment du build. Avec un ISR de 24h,
 // l'accueil affichait « Nos premiers avis clients arrivent » pendant 24h APRÈS
-// CHAQUE DÉPLOIEMENT, alors que /fr/avis (dynamique) servait bien les 77 avis.
+// CHAQUE DÉPLOIEMENT, alors que /fr/avis (dynamique) servait bien les avis publiés.
 // Constaté en prod le 2026-08-10 : `x-nextjs-cache: HIT`, `Age: 73960` (20h33)
 // sur un déploiement de la veille → bloc avis vide, note agrégée absente.
 //
@@ -119,21 +117,14 @@ export default async function Home({ params }: HomeProps) {
 
   // Avis clients RÉELS (customer_reviews) pour la section témoignages de la home —
   // remplace les anciennes citations fabriquées (CASE_STUDIES + photos Unsplash +
-  // note « 4,9/5 » factice). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
+  // note factice écrite en dur). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
   // ré-active honnêtement l'AggregateRating JSON-LD (gaté ≥ 5 avis publiés).
   // Règle automatique (src/content/preuves-sociales.ts) : la section n'existe que
   // s'il y a au moins un avis publié ; la note globale (étoiles + JSON-LD) qu'à
   // partir de AGGREGATE_MIN_COUNT (5). ISR 1 h : revient seule au premier avis.
-  const [homeReviews, homeReviewsAggBrut] = (await avisPublies())
-    ? await Promise.all([
-        getPublishedReviews({ sort: "featured", pageSize: 9 }),
-        getAggregateRating({}),
-      ])
-    : ([{ items: [] }, null] as const);
-  const homeReviewsAgg =
-    homeReviewsAggBrut && homeReviewsAggBrut.reviewCount >= AGGREGATE_MIN_COUNT
-      ? homeReviewsAggBrut
-      : null;
+  const { items: homeReviewItems, agg: homeReviewsAgg } = await avisPourVitrine({
+    pageSize: 9,
+  });
   const homeReviewsOrgAgg = orgAggregateJsonLd(homeReviewsAgg);
 
   // Badge sous le bandeau logos : nombre d'avis « top » affiché en dynamique.
@@ -1392,7 +1383,7 @@ export default async function Home({ params }: HomeProps) {
       {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
           Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
           identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
-      {homeReviews.items.length > 0 ? (
+      {homeReviewItems.length > 0 ? (
         <section
           id="testimonials"
           aria-labelledby="testimonials-heading"
@@ -1449,7 +1440,7 @@ export default async function Home({ params }: HomeProps) {
               </div>
             </FadeInOnView>
             <HomeReviewsCarousel>
-              {homeReviews.items.map((r) => (
+              {homeReviewItems.map((r) => (
                 <ReviewCard key={r.id} review={r} className="h-full" />
               ))}
             </HomeReviewsCarousel>

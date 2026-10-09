@@ -37,7 +37,7 @@ import { RelatedReviews } from "@/components/reviews/RelatedReviews";
 import { reviewAuthorName } from "@/lib/reviews/display";
 import { getServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { clientSectorLabel } from "@/content/sectors";
-import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { AGGREGATE_MIN_COUNT, FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
@@ -119,13 +119,14 @@ export default async function AvisDetailPage({ params }: Props) {
     svc ? ` pour ${svc.labelFr.toLowerCase()}` : ""
   }${cityLabel ? `, à ${cityLabel}` : ""}. « ${takeaway} »`;
 
-  // Phrase « en contexte » : le scope le plus pertinent ayant ≥ 2 avis.
+  // Phrase « en contexte » : le scope le plus pertinent ayant au moins
+  // AGGREGATE_MIN_COUNT (5) avis — pas de note moyenne en dessous.
   const contextPhrase =
-    svc && serviceAgg && serviceAgg.reviewCount >= 2
+    svc && serviceAgg && serviceAgg.reviewCount >= AGGREGATE_MIN_COUNT
       ? `Axion-IA est noté ${fmtNote(serviceAgg.ratingValue)}/5 sur ${serviceAgg.reviewCount} avis pour ${svc.labelFr.toLowerCase()}.`
-      : sectorLabel && sectorAgg && sectorAgg.reviewCount >= 2
+      : sectorLabel && sectorAgg && sectorAgg.reviewCount >= AGGREGATE_MIN_COUNT
         ? `Dans le secteur ${sectorLabel.toLowerCase()}, Axion-IA affiche ${fmtNote(sectorAgg.ratingValue)}/5 sur ${sectorAgg.reviewCount} avis clients.`
-        : cityLabel && cityAgg && cityAgg.reviewCount >= 2
+        : cityLabel && cityAgg && cityAgg.reviewCount >= AGGREGATE_MIN_COUNT
           ? `À ${cityLabel}, Axion-IA affiche ${fmtNote(cityAgg.ratingValue)}/5 sur ${cityAgg.reviewCount} avis clients.`
           : null;
 

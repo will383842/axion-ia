@@ -362,7 +362,7 @@ export default async function FormationsHub({ params }: Props) {
           // 2026-08-12 (décision Will). C'était une statistique invérifiable,
           // affichée dès l'accroche, et elle s'affichait dans les deux branches
           // — y compris hors flag Qualiopi. Le site publie par ailleurs de vrais
-          // avis clients vérifiés : c'est ce qui doit porter la réassurance, pas
+          // avis clients, publiés après modération : c'est ce qui doit porter la réassurance, pas
           // un chiffre rond que personne ne peut recouper.
           // « 100 % pratique » est CONSERVÉ : il décrit le format de la session
           // (aucune théorie, on travaille sur les outils du client), pas un

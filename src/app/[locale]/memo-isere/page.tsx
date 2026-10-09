@@ -584,7 +584,7 @@ export default async function MemoIserePage({ params }: Props) {
   if (!isFr) notFound(); // page presse locale FR-only (EN 301 → FR au runtime)
   const certifie = isQualiopiCertificationObtenue();
 
-  // Avis réels — priorité Isère (45 des 77 avis publiés). On fait REMONTER les
+  // Avis réels publiés — priorité Isère. On fait REMONTER les
   // avis « entreprise » (raison sociale renseignée) : la page vise PME, ETI et
   // grands groupes — un avis de DSI de groupe vend mieux le produit qu'un avis
   // d'indépendant (retour Will 2026-08-12). Stub-aware : au build GH Actions la

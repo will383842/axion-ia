@@ -61,7 +61,7 @@ export async function GET(_req: Request, { params }: RouteContext): Promise<Resp
   <channel>
     <title>Avis clients Axion-IA</title>
     <link>${SITE_URL}/${locale}/avis</link>
-    <description>Retours d'expérience clients vérifiés sur les services IA d'Axion-IA.</description>
+    <description>Retours d'expérience clients sur les services IA d'Axion-IA.</description>
     <language>${locale}</language>
 ${items}
   </channel>

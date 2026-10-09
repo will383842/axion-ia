@@ -12,7 +12,7 @@
 // décision commerciale possible.
 //
 // Depuis le 2026-08-14, la page porte AUSSI des preuves sociales — mais lues
-// en base au rendu (note agrégée, avis vérifiés, comptes par secteur), jamais
+// en base au rendu (note agrégée, avis publiés, comptes par secteur), jamais
 // posées dans la copie où elles mentiraient dès le prochain avis. Ce fichier
 // ne contient QUE le texte statique.
 

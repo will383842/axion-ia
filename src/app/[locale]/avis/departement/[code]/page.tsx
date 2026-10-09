@@ -12,7 +12,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
-import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { FACET_MIN_COUNT, noteGlobaleAffichable } from "@/lib/reviews/config";
 import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/avis/departement/${code}`,
     title: `Avis clients Axion-IA — département ${code}`,
-    description: `Retours d'expérience vérifiés de clients Axion-IA dans le département ${code}.`,
+    description: `Retours d'expérience de clients Axion-IA dans le département ${code}.`,
     alternates: { fr: `/avis/departement/${code}`, en: `/avis/departement/${code}` },
   });
 }
@@ -48,10 +48,12 @@ export default async function AvisDepartementFacetPage({ params }: Props) {
   if (!isDeptCode(code)) notFound();
   setRequestLocale(locale);
 
-  const [reviews, agg] = await Promise.all([
+  const [reviews, aggBrut] = await Promise.all([
     getPublishedReviews({ departmentCode: code, pageSize: 48 }),
     getAggregateRating({ departmentCode: code }),
   ]);
+  // Note de la facette seulement à partir de 5 avis (règle de preuves-sociales.ts).
+  const agg = noteGlobaleAffichable(aggBrut);
   if (reviews.total < FACET_MIN_COUNT) notFound();
 
   const label = `Département ${code}`;
@@ -63,7 +65,7 @@ export default async function AvisDepartementFacetPage({ params }: Props) {
           locale,
           path: `/avis/departement/${code}`,
           name: `Avis clients Axion-IA — ${label}`,
-          description: `Avis clients vérifiés d'Axion-IA dans le ${label.toLowerCase()}.`,
+          description: `Avis clients d'Axion-IA dans le ${label.toLowerCase()}.`,
         })}
       />
       <FacetReviewsPage
@@ -74,8 +76,8 @@ export default async function AvisDepartementFacetPage({ params }: Props) {
         answerQuestion={`Axion-IA a-t-il de bons avis dans le ${label.toLowerCase()} ?`}
         answerText={
           agg
-            ? `Dans le ${label.toLowerCase()}, Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis vérifiés.`
-            : `Retrouvez les avis vérifiés des clients d'Axion-IA dans le ${label.toLowerCase()}.`
+            ? `Dans le ${label.toLowerCase()}, Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients.`
+            : `Retrouvez les avis des clients d'Axion-IA dans le ${label.toLowerCase()}.`
         }
         breadcrumbLabel={label}
         breadcrumbHref={`/avis/departement/${code}`}

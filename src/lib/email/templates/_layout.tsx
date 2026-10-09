@@ -832,7 +832,10 @@ export function EmailLayout({
   const signatureCourte = signature === "fondateur-court";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
-  const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
+  // Étoiles = moyenne RÉELLE arrondie (jamais cinq étoiles posées d'office).
+  const pleines = Math.min(5, Math.max(0, Math.round(rs.avg)));
+  const etoiles = "★".repeat(pleines) + "☆".repeat(5 - pleines);
+  const reviewLine = `${etoiles}  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
 
   return (
     <Html lang={locale}>

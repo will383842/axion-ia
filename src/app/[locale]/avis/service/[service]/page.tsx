@@ -14,7 +14,7 @@ import { buildProductMetadata, buildCollectionPageJsonLd, SITE_URL } from "@/lib
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { serviceAggregateJsonLd } from "@/server/reviews/jsonld";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
-import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { FACET_MIN_COUNT, noteGlobaleAffichable } from "@/lib/reviews/config";
 import { isServiceLine, getServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { avisPublies } from "@/server/reviews/presence";
 
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/avis/service/${service}`,
     title: `Avis clients — ${label} · Axion-IA`,
-    description: `Retours d'expérience vérifiés de clients Axion-IA sur nos prestations « ${label} ».`,
+    description: `Retours d'expérience de clients Axion-IA sur nos prestations « ${label} ».`,
     alternates: { fr: `/avis/service/${service}`, en: `/avis/service/${service}` },
   });
 }
@@ -47,10 +47,12 @@ export default async function AvisServiceFacetPage({ params }: Props) {
   if (!isServiceLine(service)) notFound();
   setRequestLocale(locale);
 
-  const [reviews, agg] = await Promise.all([
+  const [reviews, aggBrut] = await Promise.all([
     getPublishedReviews({ serviceLine: service, pageSize: 48, sort: "rating_desc" }),
     getAggregateRating({ serviceLine: service }),
   ]);
+  // Note de la facette seulement à partir de 5 avis (règle de preuves-sociales.ts).
+  const agg = noteGlobaleAffichable(aggBrut);
   if (reviews.total < FACET_MIN_COUNT) notFound();
 
   const svc = getServiceLine(service)!;
@@ -69,7 +71,7 @@ export default async function AvisServiceFacetPage({ params }: Props) {
           locale,
           path: `/avis/service/${service}`,
           name: `Avis clients — ${label}`,
-          description: `Avis clients vérifiés sur le service ${label} d'Axion-IA.`,
+          description: `Avis clients sur le service ${label} d'Axion-IA.`,
         })}
       />
       {serviceJsonLd ? <JsonLd data={serviceJsonLd} /> : null}
@@ -81,8 +83,8 @@ export default async function AvisServiceFacetPage({ params }: Props) {
         answerQuestion={`Que pensent les clients du service ${label} d'Axion-IA ?`}
         answerText={
           agg
-            ? `Le service « ${label} » d'Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients vérifiés.`
-            : `Retrouvez les retours d'expérience vérifiés des clients d'Axion-IA sur le service « ${label} ».`
+            ? `Le service « ${label} » d'Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients.`
+            : `Retrouvez les retours d'expérience des clients d'Axion-IA sur le service « ${label} ».`
         }
         breadcrumbLabel={label}
         breadcrumbHref={`/avis/service/${service}`}

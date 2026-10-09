@@ -12,7 +12,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
-import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { FACET_MIN_COUNT, noteGlobaleAffichable } from "@/lib/reviews/config";
 import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/avis/ville/${ville}`,
     title: `Avis clients Axion-IA à ${name}`,
-    description: `Retours d'expérience vérifiés de clients Axion-IA à ${name} : audit, formation, implémentation et accompagnement IA.`,
+    description: `Retours d'expérience de clients Axion-IA à ${name} : audit, formation, implémentation et accompagnement IA.`,
     alternates: { fr: `/avis/ville/${ville}`, en: `/avis/ville/${ville}` },
   });
 }
@@ -50,10 +50,12 @@ export default async function AvisVilleFacetPage({ params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  const [reviews, agg] = await Promise.all([
+  const [reviews, aggBrut] = await Promise.all([
     getPublishedReviews({ citySlug: ville, pageSize: 48 }),
     getAggregateRating({ citySlug: ville }),
   ]);
+  // Note de la facette seulement à partir de 5 avis (règle de preuves-sociales.ts).
+  const agg = noteGlobaleAffichable(aggBrut);
   if (reviews.total < FACET_MIN_COUNT) notFound();
 
   const name = reviews.items[0]?.cityName ?? prettify(ville);
@@ -65,7 +67,7 @@ export default async function AvisVilleFacetPage({ params }: Props) {
           locale,
           path: `/avis/ville/${ville}`,
           name: `Avis clients Axion-IA à ${name}`,
-          description: `Avis clients vérifiés d'Axion-IA à ${name}.`,
+          description: `Avis clients d'Axion-IA à ${name}.`,
         })}
       />
       <FacetReviewsPage
@@ -76,8 +78,8 @@ export default async function AvisVilleFacetPage({ params }: Props) {
         answerQuestion={`Axion-IA a-t-il de bons avis à ${name} ?`}
         answerText={
           agg
-            ? `Les clients d'Axion-IA à ${name} attribuent une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis vérifiés.`
-            : `Retrouvez les avis vérifiés des clients d'Axion-IA à ${name}.`
+            ? `Les clients d'Axion-IA à ${name} attribuent une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients.`
+            : `Retrouvez les avis des clients d'Axion-IA à ${name}.`
         }
         breadcrumbLabel={name}
         breadcrumbHref={`/avis/ville/${ville}`}
