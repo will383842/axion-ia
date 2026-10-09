@@ -2281,5 +2281,15 @@ export async function eraseReseauApporteurForEmail(
       versionLien: { increment: 1 },
     },
   });
+  // Contrat 2.7 (art. 14) : la qualité déclarée suit la fiche (mise à jour, jamais une
+  // suppression de ligne). Table absente (fenêtre app/worker) : rien à effacer.
+  try {
+    await prisma.apporteurReseauQualite.updateMany({
+      where: { apporteurId: a.id },
+      data: { siegeAdresse: null, fonctionSignataire: null, immatriculeRcs: null },
+    });
+  } catch {
+    // Table pas encore migrée (fenêtre app/worker) : rien à effacer.
+  }
   return { apporteur: "efface", presentationsAnonymisees: presentations.count };
 }

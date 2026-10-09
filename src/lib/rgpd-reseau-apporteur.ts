@@ -38,6 +38,12 @@ export interface ExportReseauApporteur {
     readonly siren: string | null;
     /** SIRET de l'établissement (plusieurs activités), sinon `null`. */
     readonly siret: string | null;
+    /** Contrat 2.7, art. 14 : siège et fonction du signataire (société), RCS (entrepreneur). */
+    readonly qualite: {
+      readonly siegeAdresse: string | null;
+      readonly fonctionSignataire: string | null;
+      readonly immatriculeRcs: boolean | null;
+    } | null;
     readonly entreprise: string | null;
     readonly adresse: string | null;
     readonly statut: string;
@@ -191,6 +197,18 @@ export async function exporterReseauApporteurPour(email: string): Promise<Export
                 select: { siret: true },
               })
             )?.siret ?? null,
+          // Contrat 2.7, art. 14 : siège, fonction du signataire, immatriculation au RCS.
+          qualite:
+            (await (async () => {
+              try {
+                return await prisma.apporteurReseauQualite.findUnique({
+                  where: { apporteurId: a.id },
+                  select: { siegeAdresse: true, fonctionSignataire: true, immatriculeRcs: true },
+                });
+              } catch {
+                return null; // table pas encore migrée (fenêtre app/worker)
+              }
+            })()) ?? null,
           entreprise: a.denomination,
           adresse: a.adresse,
           statut: a.statut,

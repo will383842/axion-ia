@@ -223,14 +223,33 @@ export function estSociete(statut: string): boolean {
 
 /**
  * La qualité au sens de l'art. 14 (copie de `qualiteDuStatut`, module pur). Contrat 2.7 : un
- * entrepreneur individuel est commerçant ou non selon son immatriculation au RCS (le dossier ne le
- * dit pas) ; une société est nommée, avec la personne qui la représente.
+ * entrepreneur individuel est commerçant ou non selon son immatriculation au RCS ; une société est
+ * nommée, avec son siège et la personne qui la représente, en sa fonction. Ce que le dossier ne dit
+ * pas (dossiers d'avant ces champs) garde la formule générale.
  */
-function qualite(statut: string, denomination: string | null, identite: string): string {
-  if (!estSociete(statut))
+function qualite(
+  statut: string,
+  denomination: string | null,
+  identite: string,
+  q: {
+    siegeAdresse?: string | null;
+    fonctionSignataire?: string | null;
+    immatriculeRcs?: boolean | null;
+  },
+): string {
+  if (!estSociete(statut)) {
+    if (q.immatriculeRcs === true)
+      return "entrepreneur individuel commerçant, immatriculé au registre du commerce et des sociétés";
+    if (q.immatriculeRcs === false)
+      return "entrepreneur individuel non commerçant, non immatriculé au registre du commerce et des sociétés";
     return "entrepreneur individuel commerçant s'il est immatriculé au registre du commerce et des sociétés, entrepreneur individuel non commerçant dans le cas contraire";
+  }
   const nom = denomination ? `société commerciale ${denomination}` : "société commerciale";
-  return `${nom}, représentée par ${identite}, qui déclare avoir le pouvoir de l'engager`;
+  const siege = q.siegeAdresse?.trim() ? `, dont le siège est situé ${q.siegeAdresse.trim()}` : "";
+  const fonction = q.fonctionSignataire?.trim()
+    ? `, en qualité de ${q.fonctionSignataire.trim()}`
+    : "";
+  return `${nom}${siege}, représentée par ${identite}${fonction}, qui déclare avoir le pouvoir de l'engager`;
 }
 
 /**
@@ -249,6 +268,10 @@ export function valeursDuContrat(
     adresse: string | null;
     /** Dénomination au registre ; ne sert que pour une société (contrat 2.5). */
     denomination?: string | null;
+    /** Contrat 2.7, art. 14 : siège et fonction du signataire (société), RCS (entrepreneur). */
+    siegeAdresse?: string | null;
+    fonctionSignataire?: string | null;
+    immatriculeRcs?: boolean | null;
   },
   le: Date,
 ): ValeursContrat {
@@ -263,7 +286,7 @@ export function valeursDuContrat(
     ...(d.siret ? { siret: d.siret } : {}),
     siege: d.adresse?.trim() || A_COMPLETER,
     qualite: d.statutJuridique
-      ? qualite(d.statutJuridique, denomination, identite || A_COMPLETER)
+      ? qualite(d.statutJuridique, denomination, identite || A_COMPLETER, d)
       : A_COMPLETER,
     grilleDate: dateFrancaise(le),
   };

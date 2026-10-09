@@ -1,7 +1,7 @@
 // Dossier public, côté navigateur : la coupure réseau ne perd pas la saisie (D8), le nom
 // d'un seul mot se complète à l'étape 1 (D2), « Écrivez-nous » a une adresse (D18), l'étape
 // est annoncée et reçoit le focus (D19).
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
@@ -47,6 +47,8 @@ function dossier(over: Partial<DossierPublic> = {}): DossierPublic {
     denomination: "Ma société",
     adresse: "1 rue des Alpes",
     statutJuridique: "micro_entrepreneur",
+    // Contrat 2.7, art. 14 : l'entrepreneur individuel a dit s'il est immatriculé au RCS.
+    immatriculeRcs: false,
     regimeTva: "franchise_293b",
     numeroTva: null,
     ibanMasque: "FR76 •••• •••• 0189",
@@ -165,6 +167,42 @@ describe("D2 / D18 : étape 1", () => {
     await waitFor(() => expect(h.enregistrerActiviteAction).toHaveBeenCalled());
     const fd = h.enregistrerActiviteAction.mock.calls[0]![0] as FormData;
     expect(fd.get("nom")).toBe("Ciccone");
+  });
+});
+
+describe("contrat 2.7, art. 14 : la qualité au dossier", () => {
+  it("entrepreneur individuel sans réponse sur le RCS : « Continuer » attend, et le dit", () => {
+    rendre(dossier({ immatriculeRcs: null }), 2);
+    expect(screen.getByRole("group", { name: TEXTES.rcs })).toBeTruthy();
+    expect(
+      (screen.getByRole("button", { name: TEXTES.continuer }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    expect(screen.getByText(new RegExp(TEXTES.manqueRcs))).toBeTruthy();
+    fireEvent.click(
+      within(screen.getByRole("group", { name: TEXTES.rcs })).getByLabelText(TEXTES.rcsOui),
+    );
+    expect(
+      (screen.getByRole("button", { name: TEXTES.continuer }) as HTMLButtonElement).disabled,
+    ).toBe(false);
+  });
+
+  it("société : adresse du siège et fonction du signataire demandées, puis envoyées", async () => {
+    h.enregistrerActiviteAction.mockResolvedValue({ ok: true });
+    rendre(dossier({ statutJuridique: "sas", immatriculeRcs: null }), 2);
+    expect(screen.queryByRole("group", { name: TEXTES.rcs })).toBeNull();
+    const suite = screen.getByRole("button", { name: TEXTES.continuer }) as HTMLButtonElement;
+    expect(suite.disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText(TEXTES.siege), {
+      target: { value: "3 place Grenette, 38000 Grenoble" },
+    });
+    fireEvent.change(screen.getByLabelText(TEXTES.fonction), { target: { value: "Président" } });
+    expect(suite.disabled).toBe(false);
+    fireEvent.click(suite);
+    await waitFor(() => expect(h.enregistrerActiviteAction).toHaveBeenCalled());
+    const fd = h.enregistrerActiviteAction.mock.calls[0]![0] as FormData;
+    expect(fd.get("siegeAdresse")).toBe("3 place Grenette, 38000 Grenoble");
+    expect(fd.get("fonctionSignataire")).toBe("Président");
+    expect(fd.get("immatriculeRcs")).toBeNull();
   });
 });
 

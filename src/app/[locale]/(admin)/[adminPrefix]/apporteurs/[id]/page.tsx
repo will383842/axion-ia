@@ -193,6 +193,19 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           <Ligne libelle="Entreprise" valeur={d.denomination} />
           <Ligne libelle="Adresse" valeur={voitPii ? d.adresse : MASQUE} />
           <Ligne libelle="Statut" valeur={statut} />
+          {/* Contrat 2.7, art. 14 : la qualité déclarée au dossier. */}
+          {d.siegeAdresse ? (
+            <Ligne libelle="Adresse du siège" valeur={voitPii ? d.siegeAdresse : MASQUE} />
+          ) : null}
+          {d.fonctionSignataire ? (
+            <Ligne libelle="Fonction du signataire" valeur={d.fonctionSignataire} />
+          ) : null}
+          {d.immatriculeRcs != null ? (
+            <Ligne
+              libelle="Immatriculé au RCS"
+              valeur={d.immatriculeRcs ? "Oui (commerçant)" : "Non (non commerçant)"}
+            />
+          ) : null}
           <Ligne libelle="Code NAF" valeur={d.codeNaf} />
           {/* Correction du nom (2026-10-08) : tant que le contrat n'est pas signé ; droit
               « contresigner » et contrat signé revérifiés côté serveur. */}

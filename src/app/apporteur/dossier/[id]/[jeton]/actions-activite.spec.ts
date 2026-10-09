@@ -60,6 +60,8 @@ function formulaire(extra: Record<string, string> = {}): FormData {
     denomination: "Ma société",
     adresse: "1 rue des Alpes 38000 Grenoble",
     statutJuridique: "micro_entrepreneur",
+    // Contrat 2.7, art. 14 : un entrepreneur individuel dit s'il est immatriculé au RCS.
+    immatriculeRcs: "non",
     regimeTva: "franchise_293b",
     iban: "FR7630006000011234567890189",
     ...extra,
@@ -250,6 +252,53 @@ describe("étape 2 : SIRET de l'établissement (plusieurs activités, 2026-10-08
     expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
       siren: "732829320",
       siret: null,
+    });
+  });
+});
+
+describe("contrat 2.7, art. 14 : la qualité de l'apporteur", () => {
+  beforeEach(() => {
+    h.lireEntrepriseParSiren.mockResolvedValue(REGISTRE_OK);
+    h.enregistrerActivite.mockResolvedValue({ ok: true });
+  });
+
+  it("entrepreneur individuel : la question du RCS est obligatoire, la réponse est enregistrée", async () => {
+    const fd = formulaire();
+    fd.delete("immatriculeRcs");
+    const r = await enregistrerActiviteAction(fd);
+    expect(r).toEqual({
+      ok: false,
+      message: "Dites-nous si vous êtes immatriculé au registre du commerce et des sociétés.",
+    });
+    expect(h.enregistrerActivite).not.toHaveBeenCalled();
+    await enregistrerActiviteAction(formulaire({ immatriculeRcs: "oui" }));
+    expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
+      qualite: { immatriculeRcs: true, siegeAdresse: null, fonctionSignataire: null },
+    });
+  });
+
+  it("société : adresse du siège et fonction du signataire obligatoires", async () => {
+    const r1 = await enregistrerActiviteAction(
+      formulaire({ statutJuridique: "sas", fonctionSignataire: "Président" }),
+    );
+    expect(r1).toEqual({ ok: false, message: "Indiquez l'adresse du siège de votre société." });
+    const r2 = await enregistrerActiviteAction(
+      formulaire({ statutJuridique: "sas", siegeAdresse: "3 place Grenette, 38000 Grenoble" }),
+    );
+    expect(r2.ok).toBe(false);
+    await enregistrerActiviteAction(
+      formulaire({
+        statutJuridique: "sas",
+        siegeAdresse: "3 place Grenette, 38000 Grenoble",
+        fonctionSignataire: "Président",
+      }),
+    );
+    expect(h.enregistrerActivite.mock.calls[0]![1]).toMatchObject({
+      qualite: {
+        siegeAdresse: "3 place Grenette, 38000 Grenoble",
+        fonctionSignataire: "Président",
+        immatriculeRcs: null,
+      },
     });
   });
 });

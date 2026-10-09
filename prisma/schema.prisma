@@ -15357,6 +15357,21 @@ model CommissionProrata {
   @@map("commission_prorata")
 }
 
+/// Contrat 2.7 (art. 14) : QUALITÉ de l'apporteur, déclarée au dossier en ligne. Société : adresse
+/// du siège et fonction de la personne qui signe (président, gérant…). Entrepreneur individuel :
+/// immatriculé au registre du commerce et des sociétés ou non. Absente = texte d'avant la 2.7.
+/// Table séparée, sans clé étrangère (fenêtre app/worker), comme `ApporteurReseauSiret`.
+/// rgpd: dossier-client
+model ApporteurReseauQualite {
+  apporteurId        String   @id @map("apporteur_id") @db.Uuid
+  siegeAdresse       String?  @map("siege_adresse") @db.VarChar(400)
+  fonctionSignataire String?  @map("fonction_signataire") @db.VarChar(100)
+  immatriculeRcs     Boolean? @map("immatricule_rcs")
+  majAt              DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("apporteur_reseau_qualite")
+}
+
 enum TypePieceApporteur {
   identite
   rib
