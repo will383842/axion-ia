@@ -10,6 +10,8 @@ const d = vi.hoisted(() => ({
   facturer: vi.fn(async () => ({ autofactures: 2, commissions: 3, ecartees: 0, erreurs: 0 })),
 }));
 
+// Étape « avoirs-clients » (art. 4.5) : testée à part (avoir-client.spec.ts).
+vi.mock("../avoir-client", () => ({ reprendreApresAvoirsClients: vi.fn(async () => ({})) }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: unknown) => v }));
 vi.mock("../jeton", () => ({ urlDossier: () => null }));

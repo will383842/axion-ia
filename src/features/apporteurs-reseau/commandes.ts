@@ -32,6 +32,28 @@ export interface CommandeSoldee {
 const STATUTS_SANS_EFFET = new Set(["brouillon", "annulee"]);
 
 /**
+ * Le prix HT NET d'une commande (ses factures + leurs avoirs, montants négatifs), brouillons et
+ * pièces annulées écartés. SOURCE UNIQUE (RM-01) : `commandesSoldees` et la reprise après avoir
+ * du client (`avoir-client.ts`) la lisent toutes deux. `avoirs` : ceux qui ont effet.
+ */
+export function netDeLaCommande(
+  membres: readonly FactureDeCommande[],
+  toutes: readonly FactureDeCommande[] = membres,
+): { brutCents: number; netCents: number; avoirs: FactureDeCommande[] } {
+  const actifs = membres.filter((f) => !STATUTS_SANS_EFFET.has(f.statut) && f.avoirDeId === null);
+  const ids = new Set(actifs.map((f) => f.id));
+  const avoirs = toutes.filter(
+    (f) => !STATUTS_SANS_EFFET.has(f.statut) && f.avoirDeId !== null && ids.has(f.avoirDeId),
+  );
+  const brut = actifs.reduce((s, f) => s + f.montantHtCents, 0);
+  return {
+    brutCents: brut,
+    netCents: brut + avoirs.reduce((s, a) => s + a.montantHtCents, 0),
+    avoirs,
+  };
+}
+
+/**
  * Les commandes intégralement payées parmi `factures` (factures ET avoirs, tous statuts).
  * Une commande dont le total net est nul ou négatif (tout remboursé) n'est pas rendue.
  */
@@ -61,10 +83,7 @@ export function commandesSoldees(
     const totalDevis = devisId ? totauxDevis?.get(devisId) : undefined;
     if (totalDevis !== undefined && membres.reduce((s, f) => s + f.montantHtCents, 0) < totalDevis)
       continue;
-    const ids = new Set(membres.map((f) => f.id));
-    const net =
-      membres.reduce((s, f) => s + f.montantHtCents, 0) +
-      avoirs.filter((a) => ids.has(a.avoirDeId!)).reduce((s, a) => s + a.montantHtCents, 0);
+    const net = netDeLaCommande(membres, avoirs).netCents;
     if (net <= 0) continue;
     const triees = [...membres].sort(
       (a, b) =>

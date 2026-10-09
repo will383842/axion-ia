@@ -185,8 +185,31 @@ export async function enregistrerReprise(e: {
   });
   if (!verdict.ok) return verdict;
   const motif = e.motif.trim().slice(0, 500);
-  await prisma.$transaction(
+  const refusTardif = await prisma.$transaction(
     async (tx) => {
+      // Relecture de a1 (09/10) : deux passages concurrents (ou un clic et un passage) ne reprennent
+      // pas deux fois. Verrou par commission d'origine, puis RELECTURE des reprises sous le verrou.
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`reprise:${origine.id}`}))`;
+      const sousVerrou = await tx.commissionApporteur.findMany({
+        where: {
+          apporteurId: origine.apporteurId,
+          palier: `${PREFIXE_PALIER_REPRISE}${origine.id}`,
+        },
+        select: { montantCents: true },
+      });
+      const dejaSousVerrou = sousVerrou.reduce((s, r) => s + Math.abs(r.montantCents ?? 0), 0);
+      if (dejaSousVerrou !== reprisesDejaCents) {
+        const v = verifierReprise({
+          statutOrigine: origine.statut,
+          montantOrigineCents: origine.montantCents,
+          reprisesDejaCents: dejaSousVerrou,
+          demandeeCents: e.demandeeCents,
+          motif: e.motif,
+          annulationLe: e.annulationLe ?? maintenant,
+          maintenant,
+        });
+        if (!v.ok) return v;
+      }
       // `factureId` n'a pas de clé étrangère : la ligne de reprise porte son propre identifiant, la
       // ligne d'origine est conservée telle quelle (art. 4.5) et la contrainte d'unicité est tenue.
       await tx.commissionApporteur.create({
@@ -212,9 +235,11 @@ export async function enregistrerReprise(e: {
         where: { id: origine.apporteurId },
         data: { noteInterne: [a?.noteInterne, ligne].filter(Boolean).join("\n").slice(0, 5000) },
       });
+      return null;
     },
     { timeout: 15_000 },
   );
+  if (refusTardif) return refusTardif;
   return {
     ok: true,
     message: `Reprise de ${euros(e.demandeeCents)} enregistrée : elle sera déduite de la prochaine autofacture de cet apporteur.`,
