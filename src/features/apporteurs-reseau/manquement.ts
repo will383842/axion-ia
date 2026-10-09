@@ -101,19 +101,20 @@ export async function retenir(
   motif: string,
   maintenant: Date,
   periodeLibelle = `annulation pour manquement au ${dateFr(maintenant)} (art. 4.5 bis)`,
-): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string }> {
+): Promise<{ ok: boolean; avoir?: Piece; avertissement?: string; numero?: string }> {
   const montant = l.montantCents ?? 0;
-  const [numeroAvoir] = await allouerNumerosAutofacture(
-    Number(moisParis(maintenant).slice(0, 4)),
-    1,
-  );
+  // Relecture de a1 (09/10) : le numéro de l'avoir est pris DANS la transaction gagnante, après le
+  // verrou de la série et la prise de la ligne — un passage concurrent perdant n'en réserve aucun.
+  let numeroAvoir: string | undefined;
   const repriseId = await prisma.$transaction(async (tx) => {
-    await verrouillerSerieAutofacture(tx, [numeroAvoir!]);
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('serie-autofacture-apporteur'))`;
     const r = await tx.commissionApporteur.updateMany({
       where: { id: l.id, statut: "due", autofactureNumero: l.autofactureNumero, verseeAt: null },
       data: { statut: "retenue" },
     });
     if (r.count !== 1) return null;
+    [numeroAvoir] = await allouerNumerosAutofacture(Number(moisParis(maintenant).slice(0, 4)), 1);
+    await verrouillerSerieAutofacture(tx, [numeroAvoir!]);
     const rep = await tx.commissionApporteur.create({
       data: {
         apporteurId: l.apporteurId,
@@ -155,11 +156,12 @@ export async function retenir(
     signalerErreurReseau("manquement : avoir de neutralisation non établi", new Error(numeroAvoir));
     return {
       ok: true,
+      numero: numeroAvoir!,
       avertissement: `L'avoir ${numeroAvoir} est enregistré mais son PDF n'a pas pu être établi : à régénérer.`,
     };
   }
   await tracer(PIECE_VERIFIEE, "commission_apporteur", repriseId, null, { avoir: numeroAvoir });
-  return { ok: true, avoir: { r2Key: pdf.r2Key, filename: pdf.filename } };
+  return { ok: true, numero: numeroAvoir!, avoir: { r2Key: pdf.r2Key, filename: pdf.filename } };
 }
 
 /**

@@ -50,6 +50,7 @@ vi.mock("@/lib/prisma", () => {
       deleteMany: vi.fn(),
       updateMany: vi.fn(),
     },
+    $executeRaw: vi.fn(async () => 0),
     $transaction: async (cb: (tx: unknown) => unknown) => cb(prisma),
   };
   return { prisma };
@@ -236,5 +237,32 @@ describe("reprise (art. 4.5 et 12.4)", () => {
     });
     expect(r.ok).toBe(false);
     expect(etat.creees).toEqual([]);
+  });
+
+  it("relecture de a1 : sous VERROU, une reprise écrite entre-temps par un passage concurrent est relue", async () => {
+    etat.origine = {
+      id: "C1",
+      apporteurId: "APP1",
+      presentationId: "P1",
+      statut: "versee",
+      parrainage: false,
+      montantCents: 40_000,
+      autofactureNumero: "AXI-APP-2026-0003",
+    };
+    // Lecture d'avant le verrou : rien de repris ; relue sous le verrou : 30 000 déjà repris.
+    vi.mocked(prisma.commissionApporteur.findMany)
+      .mockResolvedValueOnce([] as never)
+      .mockResolvedValueOnce([{ montantCents: -30_000 }] as never);
+    const r = await enregistrerReprise({
+      commissionId: "C1",
+      demandeeCents: 15_000,
+      motif: "Avoir sur facture",
+      maintenant: MAINTENANT,
+    });
+    expect(r.ok).toBe(false);
+    expect(etat.creees).toEqual([]);
+    expect(
+      (prisma as unknown as { $executeRaw: ReturnType<typeof vi.fn> }).$executeRaw,
+    ).toHaveBeenCalled();
   });
 });

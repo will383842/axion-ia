@@ -379,7 +379,7 @@ export const COPY_DEMARRAGE = {
     title: "Commission annulée",
     preview: "La facture du client a été annulée par un avoir.",
     texte:
-      "La facture d'un client que vous nous avez présenté a été annulée par un avoir. Comme le prévoit votre contrat (article 4.5), la commission correspondante, déjà facturée mais pas encore versée, est annulée : vous trouverez ci-joint l'avoir d'autofacture qui la neutralise.",
+      "La facture d'une commande sur laquelle vous étiez commissionné a été annulée par un avoir. Comme le prévoit votre contrat (article 4.5), la somme correspondante, déjà facturée mais pas encore versée, est annulée : vous trouverez ci-joint l'avoir d'autofacture qui la neutralise.",
     suite:
       "Cela ne change rien à vos autres commissions. Si vous avez une question, répondez simplement à cet e-mail.",
   },

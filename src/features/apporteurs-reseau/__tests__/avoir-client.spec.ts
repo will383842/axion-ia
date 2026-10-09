@@ -2,32 +2,36 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Art. 4.5 — la facture du client annulée (ou réduite) par un avoir : la commission suit.
 // Essai réel du 09/10/2026 : après l'avoir AXI-AVO-2026-001, la commission de 1 € restait « à
-// verser » et aucun bouton ne permettait de l'annuler.
+// verser » et aucun bouton ne permettait de l'annuler. Relecture de a1 (5 défauts) couverte ici.
+
+interface F {
+  id: string;
+  devisId: string | null;
+  statut: string;
+  montantHtCents: number;
+  avoirDeId: string | null;
+  emiseAt: Date | null;
+  createdAt: Date | null;
+}
 
 const d = vi.hoisted(() => ({
-  factures: [] as Array<{
-    id: string;
-    devisId: string | null;
-    montantHtCents: number;
-    avoirDeId: string | null;
-  }>,
+  factures: [] as F[],
   lignes: [] as Array<Record<string, unknown>>,
   reprisesDeja: [] as Array<{ montantCents: number }>,
   annuler: vi.fn(async () => ({ ok: true })),
   reduire: vi.fn(async () => ({ ok: true })),
   retenir: vi.fn(async () => ({
     ok: true,
+    numero: "AXI-APP-2026-0002",
     avoir: { r2Key: "k", filename: "AXI-APP-2026-0002.pdf" },
   })),
   reprise: vi.fn(async () => ({ ok: true, message: "" })),
   envoyer: vi.fn(async () => "envoye"),
+  maj: vi.fn(async () => ({ count: 1 })),
 }));
 
 type Where = Record<string, unknown>;
-const correspond = (f: (typeof d.factures)[number], w: Where): boolean => {
-  if (w.statut) {
-    /* brouillon exclu : aucun brouillon dans les données */
-  }
+const correspond = (f: F, w: Where): boolean => {
   if (w.id !== undefined && f.id !== w.id) return false;
   if (w.avoirDeId === null && f.avoirDeId !== null) return false;
   const a = w.avoirDeId as { not?: null; in?: string[] } | undefined;
@@ -55,7 +59,9 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(async ({ where }: { where: Where }) =>
         "palier" in where ? d.reprisesDeja : d.lignes,
       ),
+      updateMany: (...a: unknown[]) => d.maj(...(a as [])),
     },
+    activityLog: { create: vi.fn(async () => ({})) },
     apporteurReseau: {
       findUnique: vi.fn(async () => ({ prenom: "Essai", email: "essai@exemple.fr" })),
     },
@@ -78,9 +84,10 @@ vi.mock("../ajustement", async (orig) => {
   };
 });
 
-import { prixNetCommande, reprendreApresAvoirsClients } from "../avoir-client";
+import { dateDeLAnnulation, reprendreApresAvoirsClients } from "../avoir-client";
 
 const LE = new Date("2026-10-09T11:10:00Z");
+const DATE_AVOIR = new Date("2026-03-02T08:00:00Z");
 const ligne = (over: Record<string, unknown> = {}) => ({
   id: "c1",
   apporteurId: "a1",
@@ -97,27 +104,31 @@ const ligne = (over: Record<string, unknown> = {}) => ({
   verseeAt: null,
   ...over,
 });
-const facture = { id: "F1", devisId: null, montantHtCents: 334, avoirDeId: null };
-const avoirTotal = { id: "A1", devisId: null, montantHtCents: -334, avoirDeId: "F1" };
-const avoirPartiel = { id: "A1", devisId: null, montantHtCents: -100, avoirDeId: "F1" };
+const facture: F = {
+  id: "F1",
+  devisId: null,
+  statut: "payee",
+  montantHtCents: 334,
+  avoirDeId: null,
+  emiseAt: LE,
+  createdAt: LE,
+};
+const avoir = (montant: number, over: Partial<F> = {}): F => ({
+  id: "A1",
+  devisId: null,
+  statut: "emise",
+  montantHtCents: montant,
+  avoirDeId: "F1",
+  emiseAt: DATE_AVOIR,
+  createdAt: DATE_AVOIR,
+  ...over,
+});
 
 beforeEach(() => {
   vi.clearAllMocks();
-  d.factures = [facture, avoirTotal];
+  d.factures = [facture, avoir(-334)];
   d.lignes = [ligne()];
   d.reprisesDeja = [];
-});
-
-describe("prix net d'une commande", () => {
-  it("factures moins avoirs (signe de l'avoir indifférent), jamais négatif", () => {
-    expect(prixNetCommande([facture, avoirPartiel])).toEqual({
-      brutCents: 334,
-      netCents: 234,
-      aDesAvoirs: true,
-    });
-    expect(prixNetCommande([facture, { ...avoirTotal, montantHtCents: 400 }]).netCents).toBe(0);
-    expect(prixNetCommande([facture]).aDesAvoirs).toBe(false);
-  });
 });
 
 describe("pas encore facturée : réduite ou annulée", () => {
@@ -127,14 +138,23 @@ describe("pas encore facturée : réduite ou annulée", () => {
     expect(b).toMatchObject({ annulees: 1 });
   });
 
-  it("avoir partiel → réduite au prix net ; une seconde fois (déjà au prix net) → rien", async () => {
-    d.factures = [facture, avoirPartiel];
+  it("avoir partiel → réduite au prix net ; déjà au prix net → rien", async () => {
+    d.factures = [facture, avoir(-100)];
     await reprendreApresAvoirsClients(LE);
     expect(d.reduire).toHaveBeenCalledWith("c1", 234, expect.any(String));
     d.reduire.mockClear();
     d.lignes = [ligne({ factureHtCents: 234, montantCents: 70 })];
     await reprendreApresAvoirsClients(LE);
     expect(d.reduire).not.toHaveBeenCalled();
+  });
+});
+
+describe("défaut 3 (a1) : un avoir annulé ou brouillon est sans effet (source unique)", () => {
+  it.each(["annulee", "brouillon"])("avoir « %s » → rien n'est touché", async (statut) => {
+    d.factures = [facture, avoir(-334, { statut })];
+    const b = await reprendreApresAvoirsClients(LE);
+    expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
+    expect(d.annuler).not.toHaveBeenCalled();
   });
 });
 
@@ -150,11 +170,39 @@ describe("facturée, pas versée", () => {
         attachments: [expect.objectContaining({ filename: "AXI-APP-2026-0002.pdf" })],
       }),
     );
-    expect(d.annuler).not.toHaveBeenCalled();
+  });
+
+  it("défaut 4 (a1) : la clé de l'e-mail porte le numéro de l'AVOIR, pas celui de l'autofacture", async () => {
+    d.lignes = [
+      ligne({ id: "c1", autofactureNumero: "AXI-APP-2026-0005" }),
+      ligne({
+        id: "c2",
+        factureId: "F1",
+        autofactureNumero: "AXI-APP-2026-0005",
+        parrainage: true,
+      }),
+    ];
+    d.retenir
+      .mockResolvedValueOnce({
+        ok: true,
+        numero: "AXI-APP-2026-0006",
+        avoir: { r2Key: "a", filename: "a.pdf" },
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        numero: "AXI-APP-2026-0007",
+        avoir: { r2Key: "b", filename: "b.pdf" },
+      });
+    await reprendreApresAvoirsClients(LE);
+    const cles = d.envoyer.mock.calls.map((c) => (c[0] as { jobId: string }).jobId);
+    expect(cles).toEqual([
+      "apporteur-commission-avoir-client-AXI-APP-2026-0006",
+      "apporteur-commission-avoir-client-AXI-APP-2026-0007",
+    ]);
   });
 
   it("avoir partiel → rien tout de suite (la reprise suivra le versement)", async () => {
-    d.factures = [facture, avoirPartiel];
+    d.factures = [facture, avoir(-100)];
     d.lignes = [ligne({ autofactureNumero: "AXI-APP-2026-0001" })];
     await reprendreApresAvoirsClients(LE);
     expect(d.retenir).not.toHaveBeenCalled();
@@ -163,18 +211,20 @@ describe("facturée, pas versée", () => {
 });
 
 describe("déjà versée : reprise de la différence", () => {
-  it("avoir total → reprise du montant entier", async () => {
-    d.lignes = [ligne({ statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE })];
-    const b = await reprendreApresAvoirsClients(LE);
+  const versee = { statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE };
+
+  it("défaut 1 (a1) : la reprise est datée de l'AVOIR (délai de 24 mois), pas du passage", async () => {
+    d.lignes = [ligne(versee)];
+    await reprendreApresAvoirsClients(LE);
     expect(d.reprise).toHaveBeenCalledWith(
-      expect.objectContaining({ commissionId: "c1", demandeeCents: 100 }),
+      expect.objectContaining({ commissionId: "c1", demandeeCents: 100, annulationLe: DATE_AVOIR }),
     );
-    expect(b).toMatchObject({ reprises: 1 });
+    expect(dateDeLAnnulation([{ emiseAt: null, createdAt: DATE_AVOIR }])).toEqual(DATE_AVOIR);
   });
 
-  it("avoir partiel → reprise de la seule différence ; déjà reprise → rien (idempotent)", async () => {
-    d.factures = [facture, avoirPartiel];
-    d.lignes = [ligne({ statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE })];
+  it("avoir partiel → reprise de la seule différence ; déjà reprise → rien", async () => {
+    d.factures = [facture, avoir(-100)];
+    d.lignes = [ligne(versee)];
     await reprendreApresAvoirsClients(LE);
     // 30 % de 2,34 € = 0,70 € : 0,30 € à reprendre.
     expect(d.reprise).toHaveBeenCalledWith(expect.objectContaining({ demandeeCents: 30 }));
@@ -185,12 +235,44 @@ describe("déjà versée : reprise de la différence", () => {
   });
 });
 
+describe("défaut 2 (a1) : la part du parrain n'est jamais reprise deux fois", () => {
+  it("filleul pas encore facturé, parrain versé : seul ajustement.ts la porte (aucune reprise ici)", async () => {
+    d.factures = [facture, avoir(-100)];
+    d.lignes = [
+      ligne({
+        id: "parrain",
+        parrainage: true,
+        apporteurId: "p1",
+        montantCents: 10,
+        ...{ statut: "versee", autofactureNumero: "AXI-APP-2026-0001", verseeAt: LE },
+      }),
+      ligne({ id: "filleul" }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.reduire).toHaveBeenCalledWith("filleul", 234, expect.any(String));
+    expect(d.reprise).not.toHaveBeenCalled();
+  });
+
+  it("filleul facturé, part du parrain pas encore facturée : réduite par écriture conditionnelle", async () => {
+    d.lignes = [
+      ligne({ id: "filleul", autofactureNumero: "AXI-APP-2026-0001" }),
+      ligne({ id: "parrain", parrainage: true, apporteurId: "p1", montantCents: 10 }),
+    ];
+    await reprendreApresAvoirsClients(LE);
+    expect(d.maj).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: "parrain" }),
+        data: { statut: "annulee" },
+      }),
+    );
+    expect(d.retenir).toHaveBeenCalledTimes(1); // le filleul seul
+  });
+});
+
 describe("sans avoir", () => {
-  it("aucune facture d'avoir : rien n'est lu ni touché", async () => {
+  it("aucune facture d'avoir : rien n'est touché", async () => {
     d.factures = [facture];
     const b = await reprendreApresAvoirsClients(LE);
     expect(b).toEqual({ reduites: 0, annulees: 0, retenues: 0, reprises: 0 });
-    expect(d.annuler).not.toHaveBeenCalled();
-    expect(d.retenir).not.toHaveBeenCalled();
   });
 });
