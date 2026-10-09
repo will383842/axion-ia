@@ -12,6 +12,9 @@
  *
  * Cycle : `envoi` (morceaux) → `analyse` (antivirus) → `disponible` | `rejetee`.
  * Une vidéo n'est lisible en console qu'en `disponible` : jamais sans verdict.
+ *
+ * L12 — toute écriture d'état passe par `etatVideo()`, qui pose `statut` (texte,
+ * toujours lu) ET `etatFerme` (liste fermée Postgres) : phase « expand ».
  */
 
 import { mkdir, open, rename, rm, stat, unlink } from "node:fs/promises";
@@ -24,6 +27,7 @@ import { getCvStorageBasePath } from "@/server/careers/cv-storage";
 import { analyserFichier } from "@/server/careers/clamav";
 import { consignerEvenement } from "@/features/admin-job-applications/journal";
 import { formatReel, tailleLisible, VIDEO_MORCEAU_OCTETS } from "@/lib/careers/videos";
+import { etatVideo } from "@/lib/careers/etats-candidat";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -99,14 +103,17 @@ export async function finaliserVideo(video: {
     await unlink(enCours).catch(() => {});
     await prisma.jobApplicationVideo.update({
       where: { id: video.id },
-      data: { statut: "rejetee", motifRejet: "Ce fichier n'est pas une vidéo MP4, MOV ou WebM." },
+      data: {
+        ...etatVideo("rejetee"),
+        motifRejet: "Ce fichier n'est pas une vidéo MP4, MOV ou WebM.",
+      },
     });
     return { ok: false, raison: "format" };
   }
   await rename(enCours, final);
   await prisma.jobApplicationVideo.update({
     where: { id: video.id },
-    data: { statut: "analyse", mime },
+    data: { ...etatVideo("analyse"), mime },
   });
   void analyserVideo(video.id);
   return { ok: true };
@@ -140,7 +147,7 @@ export async function analyserVideo(videoId: string): Promise<void> {
       await prisma.jobApplicationVideo.update({
         where: { id: v.id },
         data: {
-          statut: "rejetee",
+          ...etatVideo("rejetee"),
           analyseLe: new Date(),
           motifRejet: `Refusée par l'antivirus (${verdict.signature}).`,
         },
@@ -154,7 +161,7 @@ export async function analyserVideo(videoId: string): Promise<void> {
     await prisma.$transaction(async (tx) => {
       await tx.jobApplicationVideo.update({
         where: { id: v.id },
-        data: { statut: "disponible", analyseLe: new Date() },
+        data: { ...etatVideo("disponible"), analyseLe: new Date() },
       });
       await tx.jobApplication.update({
         where: { id: v.applicationId },

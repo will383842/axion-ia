@@ -58,3 +58,17 @@ Les valeurs d'énumération et les termes métier qui ne s'expliquent pas d'eux-
 | `OrigineOuvertureDocument` | `navigateur`          | Ouverture du lien public d'une page partagée, déclenchée PROBABLEMENT par une personne (en-têtes `Sec-Fetch-*`, navigateur ordinaire). Heuristique, jamais une preuve de lecture.     | 0063 |
 | `OrigineOuvertureDocument` | `apercu_automatique`  | Ouverture par un analyseur de liens, un aperçu de messagerie ou un robot : tout ce qui n'est pas `navigateur`.                                                                        | 0063 |
 | **Lien public d'une page** | —                     | `https://axion-ia.com/document/<id>/<jeton>` : une page HTML « envoyée au client » ouverte sans compte. Jeton HMAC dérivé d'`AUTH_SECRET`, rien de stocké ; s'éteint par l'archivage. | 0063 |
+
+## Candidatures — états des vidéos et des liens (paquet 4a, L12)
+
+Listes fermées en phase « expand » : la colonne enum `etat_ferme` est écrite **en même temps** que l'ancienne colonne texte (`statut` pour les vidéos, `etat` pour les liens), qui reste lue. `NULL` = ligne écrite avant la migration et dont le texte n'était pas dans la liste (faute de frappe historique) — à repérer par `WHERE etat_ferme IS NULL`.
+
+| Enum                | Valeur         | Sens                                                                                                                 | ADR |
+| ------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------- | --- |
+| `EtatVideoCandidat` | `envoi`        | Vidéo déposée par le candidat, morceaux en cours de réception. Ménagée au bout d'une heure si l'envoi est abandonné. | —   |
+| `EtatVideoCandidat` | `analyse`      | Fichier complet, format réel vérifié, en attente du verdict de l'antivirus. Jamais montré en console.                | —   |
+| `EtatVideoCandidat` | `disponible`   | Verdict de l'antivirus : sain. Seul état lisible en console.                                                         | —   |
+| `EtatVideoCandidat` | `rejetee`      | Format réel refusé ou fichier infecté ; le fichier est effacé, la ligne garde le motif.                              | —   |
+| `EtatLienCandidat`  | `vivant`       | Le lien répond (2xx/3xx, ou l'oEmbed de la plateforme confirme la vidéo).                                            | —   |
+| `EtatLienCandidat`  | `mort`         | 404/410, ou vidéo retirée selon l'oEmbed. `mort_depuis` garde la première date constatée.                            | —   |
+| `EtatLienCandidat`  | `inverifiable` | Connexion exigée, 403, 429, 5xx, délai dépassé : on ne sait pas. Une panne n'est jamais lue comme une mort.          | —   |

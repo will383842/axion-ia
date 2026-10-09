@@ -17,6 +17,7 @@ import {
 import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
 
 import { candidatureDuJeton } from "./_autorisation";
+import { etatVideo } from "@/lib/careers/etats-candidat";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       nomOriginal: nomAffichable(nom),
       taille,
       mime: "inconnu",
-      statut: "envoi",
+      ...etatVideo("envoi"),
     },
     select: { id: true },
   });

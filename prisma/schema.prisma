@@ -9834,17 +9834,19 @@ enum JobApplicationEventType {
 /// Supprimées avec la candidature (cascade + effacement disque aux trois
 /// chemins : suppression console, effacement RGPD, purge de rétention).
 model JobApplicationVideo {
-  id            String         @id @default(uuid()) @db.Uuid
-  applicationId String         @map("application_id") @db.Uuid
-  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  nomOriginal   String         @map("nom_original") @db.VarChar(255)
+  id            String             @id @default(uuid()) @db.Uuid
+  applicationId String             @map("application_id") @db.Uuid
+  application   JobApplication     @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  nomOriginal   String             @map("nom_original") @db.VarChar(255)
   taille        Int
-  octetsRecus   Int            @default(0) @map("octets_recus")
-  mime          String         @db.VarChar(80)
-  statut        String         @db.VarChar(20)
-  motifRejet    String?        @map("motif_rejet") @db.VarChar(300)
-  analyseLe     DateTime?      @map("analyse_le")
-  createdAt     DateTime       @default(now()) @map("created_at")
+  octetsRecus   Int                @default(0) @map("octets_recus")
+  mime          String             @db.VarChar(80)
+  statut        String             @db.VarChar(20)
+  /// L12 — miroir en liste fermée de `statut` (NULL = ligne non rattrapée).
+  etatFerme     EtatVideoCandidat? @map("etat_ferme")
+  motifRejet    String?            @map("motif_rejet") @db.VarChar(300)
+  analyseLe     DateTime?          @map("analyse_le")
+  createdAt     DateTime           @default(now()) @map("created_at")
 
   @@index([applicationId])
   @@index([statut])
@@ -9864,20 +9866,43 @@ model JobApplicationVideo {
 /// plateforme) | `inverifiable` (connexion exigée, 403, 429, 5xx, délai). Une
 /// panne passagère n'est JAMAIS lue comme une mort.
 model JobApplicationLink {
-  id            String         @id @default(uuid()) @db.Uuid
-  applicationId String         @map("application_id") @db.Uuid
-  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  url           String         @db.VarChar(2000)
-  etat          String         @db.VarChar(20)
-  httpStatus    Int?           @map("http_status")
-  verifieLe     DateTime       @map("verifie_le")
+  id            String            @id @default(uuid()) @db.Uuid
+  applicationId String            @map("application_id") @db.Uuid
+  application   JobApplication    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  url           String            @db.VarChar(2000)
+  etat          String            @db.VarChar(20)
+  /// L12 — miroir en liste fermée de `etat` (NULL = ligne non rattrapée).
+  etatFerme     EtatLienCandidat? @map("etat_ferme")
+  httpStatus    Int?              @map("http_status")
+  verifieLe     DateTime          @map("verifie_le")
   /// Première vérification qui l'a trouvé mort ; remis à NULL s'il revit.
-  mortDepuis    DateTime?      @map("mort_depuis")
-  createdAt     DateTime       @default(now()) @map("created_at")
+  mortDepuis    DateTime?         @map("mort_depuis")
+  createdAt     DateTime          @default(now()) @map("created_at")
 
   @@unique([applicationId, url])
   @@index([etat])
   @@map("job_application_links")
+}
+
+/// L12 (paquet 4a, chantier « candidatures unifiées ») — l'état d'une vidéo
+/// déposée, en LISTE FERMÉE. Valeurs = celles qu'écrit le code
+/// (`server/careers/videos-candidat.ts`, `api/candidature/video/route.ts`).
+/// Phase « expand » : la colonne `statut` (texte) reste écrite et LUE ;
+/// `etatFerme` est écrite en même temps, par `etatVideo()`.
+enum EtatVideoCandidat {
+  envoi
+  analyse
+  disponible
+  rejetee
+}
+
+/// L12 — l'état d'un lien vers le travail d'un candidat, en LISTE FERMÉE.
+/// Valeurs = `EtatLien` (`lib/careers/liens-video.ts`). Phase « expand » : la
+/// colonne `etat` (texte) reste écrite et LUE ; `etatFerme` suit, par `etatLien()`.
+enum EtatLienCandidat {
+  vivant
+  mort
+  inverifiable
 }
 
 model JobApplicationEvent {

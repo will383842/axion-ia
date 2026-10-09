@@ -28,6 +28,7 @@ import {
   urlOembed,
   type EtatLien,
 } from "@/lib/careers/liens-video";
+import { etatLien } from "@/lib/careers/etats-candidat";
 
 export const PLAFOND_LIENS = 600;
 const DELAI_MS = 10_000;
@@ -62,6 +63,53 @@ export async function etatDuLien(
   const oembed = urlOembed(url);
   const statut = await appeler(oembed ?? url);
   return { etat: etatDepuisStatut(statut, oembed !== null), statut };
+}
+
+type CleLien = { applicationId_url: { applicationId: string; url: string } };
+type CreationLien = {
+  applicationId: string;
+  url: string;
+  etat: EtatLien;
+  etatFerme?: EtatLien;
+  httpStatus: number | null;
+  verifieLe: Date;
+  mortDepuis: Date | null;
+};
+type MiseAJourLien = Partial<Omit<CreationLien, "applicationId" | "url">>;
+
+/** Retire la colonne enum d'une écriture (repli de la fenêtre app/worker). */
+function sansEtatFerme<T extends { etatFerme?: unknown }>(v: T): Omit<T, "etatFerme"> {
+  const { etatFerme: _ignore, ...reste } = v;
+  return reste;
+}
+
+/**
+ * L12 — écrit l'état d'un lien, colonne texte ET colonne enum (`etat_ferme`).
+ *
+ * 🔴 FENÊTRE APP/WORKER (AGENTS.md) : ce module tourne dans le WORKER, rebâti
+ * depuis les sources en quelques minutes, alors que la migration qui crée
+ * `etat_ferme` est jouée par l'entrypoint de l'APP, ~50 min plus tard. Pendant
+ * cette fenêtre, écrire — ou même RELIRE, ce que fait un `upsert` sans
+ * `select` — la nouvelle colonne lève P2022 (« colonne absente »). Le passage
+ * du lundi retombe alors sur l'écriture texte seule, comme avant L12 ; le
+ * rattrapage SQL de la migration comblera la colonne enum ensuite.
+ */
+async function ecrireEtatDuLien(
+  cle: CleLien,
+  create: CreationLien,
+  update: MiseAJourLien,
+): Promise<void> {
+  try {
+    await prisma.jobApplicationLink.upsert({ where: cle, create, update, select: { id: true } });
+  } catch (e) {
+    if ((e as { code?: string }).code !== "P2022") throw e;
+    await prisma.jobApplicationLink.upsert({
+      where: cle,
+      create: sansEtatFerme(create),
+      update: sansEtatFerme(update),
+      select: { id: true },
+    });
+  }
 }
 
 export interface BilanLiens {
@@ -127,22 +175,20 @@ export async function surveillerLiens(
         select: { mortDepuis: true },
       });
       const mortDepuis = etat === "mort" ? (avant?.mortDepuis ?? maintenant) : null;
-      await prisma.jobApplicationLink.upsert({
-        where: cle,
-        create: {
-          applicationId: c.id,
-          url,
-          etat,
-          httpStatus: statut,
-          verifieLe: maintenant,
-          mortDepuis,
-        },
-        // « Invérifiable » ne remet PAS à zéro une mort constatée : on ne sait pas.
-        update:
-          etat === "inverifiable"
-            ? { verifieLe: maintenant, httpStatus: statut }
-            : { etat, httpStatus: statut, verifieLe: maintenant, mortDepuis },
-      });
+      const create = {
+        applicationId: c.id,
+        url,
+        ...etatLien(etat),
+        httpStatus: statut,
+        verifieLe: maintenant,
+        mortDepuis,
+      };
+      // « Invérifiable » ne remet PAS à zéro une mort constatée : on ne sait pas.
+      const update =
+        etat === "inverifiable"
+          ? { verifieLe: maintenant, httpStatus: statut }
+          : { ...etatLien(etat), httpStatus: statut, verifieLe: maintenant, mortDepuis };
+      await ecrireEtatDuLien(cle, create, update);
     }
   }
   return { abstenu: false, verifies, morts, inverifiables };

@@ -9,16 +9,20 @@ const racine = mkdtempSync(join(tmpdir(), "videos-"));
 process.env.CV_STORAGE_PATH = racine;
 
 const lignes = new Map<string, Record<string, unknown>>();
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+let trouvee: Record<string, unknown> | null = null;
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
     jobApplicationVideo: {
       update: async (a: { where: { id: string }; data: Record<string, unknown> }) => {
         lignes.set(a.where.id, { ...(lignes.get(a.where.id) ?? {}), ...a.data });
       },
-      findUnique: async () => null,
+      findUnique: async () => trouvee,
     },
-  },
-}));
+    jobApplication: { update: async () => ({}) },
+    $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn(prisma),
+  };
+  return { prisma };
+});
 const analyser = vi.fn();
 vi.mock("@/server/careers/clamav", () => ({
   analyserFichier: (...a: unknown[]) => analyser(...a),
@@ -30,6 +34,7 @@ import {
   cheminVideo,
   dossierVideos,
   ecrireMorceau,
+  analyserVideo,
   finaliserVideo,
   supprimerVideosCandidature,
 } from "../videos-candidat";
@@ -45,6 +50,7 @@ const mp4 = (taille: number) => {
 
 beforeEach(() => {
   lignes.clear();
+  trouvee = null;
   rmSync(join(racine, "videos"), { recursive: true, force: true });
 });
 afterAll(() => rmSync(racine, { recursive: true, force: true }));
@@ -97,7 +103,11 @@ describe("fin d'envoi", () => {
     ).toEqual({
       ok: true,
     });
-    expect(lignes.get(VID)).toMatchObject({ statut: "analyse", mime: "video/mp4" });
+    expect(lignes.get(VID)).toMatchObject({
+      statut: "analyse",
+      etatFerme: "analyse",
+      mime: "video/mp4",
+    });
     expect(existsSync(cheminVideo(APP, VID))).toBe(true);
   });
 
@@ -116,7 +126,7 @@ describe("fin d'envoi", () => {
         octetsRecus: faux.length,
       }),
     ).toEqual({ ok: false, raison: "format" });
-    expect(lignes.get(VID)).toMatchObject({ statut: "rejetee" });
+    expect(lignes.get(VID)).toMatchObject({ statut: "rejetee", etatFerme: "rejetee" });
     expect(existsSync(`${cheminVideo(APP, VID)}.part`)).toBe(false);
   });
 
@@ -127,6 +137,30 @@ describe("fin d'envoi", () => {
       ok: false,
       raison: "incomplet",
     });
+  });
+});
+
+describe("L12 — verdict de l'antivirus : les deux colonnes d'état bougent ensemble", () => {
+  const enAnalyse = () => ({
+    id: VID,
+    applicationId: APP,
+    statut: "analyse",
+    nomOriginal: "demo.mp4",
+    taille: 100,
+  });
+
+  it("sain → disponible, en texte ET en liste fermée", async () => {
+    trouvee = enAnalyse();
+    analyser.mockResolvedValue({ issue: "sain" });
+    await analyserVideo(VID);
+    expect(lignes.get(VID)).toMatchObject({ statut: "disponible", etatFerme: "disponible" });
+  });
+
+  it("infecté → rejetee, en texte ET en liste fermée", async () => {
+    trouvee = enAnalyse();
+    analyser.mockResolvedValue({ issue: "infecte", signature: "Eicar-Test" });
+    await analyserVideo(VID);
+    expect(lignes.get(VID)).toMatchObject({ statut: "rejetee", etatFerme: "rejetee" });
   });
 });
 
