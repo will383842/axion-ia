@@ -194,7 +194,9 @@ describe("facturée, pas versée", () => {
         avoir: { r2Key: "b", filename: "b.pdf" },
       });
     await reprendreApresAvoirsClients(LE);
-    const cles = d.envoyer.mock.calls.map((c) => (c[0] as { jobId: string }).jobId);
+    const cles = (d.envoyer.mock.calls as unknown as Array<[{ jobId: string }]>).map(
+      (c) => c[0].jobId,
+    );
     expect(cles).toEqual([
       "apporteur-commission-avoir-client-AXI-APP-2026-0006",
       "apporteur-commission-avoir-client-AXI-APP-2026-0007",
