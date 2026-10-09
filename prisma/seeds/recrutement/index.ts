@@ -307,6 +307,12 @@ const OFFRES: readonly OffreDemo[] = [
   },
 ];
 
+/**
+ * Les offres d'exemple, lues aussi par le test d'aller-retour de l'éditeur de
+ * questions de la console (L13) : leurs questions sont les fixtures du dépôt.
+ */
+export const OFFRES_DEMO_RECRUTEMENT = OFFRES;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Les candidatures
 // ─────────────────────────────────────────────────────────────────────────────

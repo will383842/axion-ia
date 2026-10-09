@@ -2,6 +2,7 @@
 // use-client: useActionState bind upsertJobOfferAction + auto-slug + éditeur Tiptap.
 
 import { useActionState, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   upsertJobOfferAction,
   type UpsertJobOfferState,
@@ -11,6 +12,13 @@ import { slugify } from "@/lib/slug";
 import { CAREER_CATEGORIES } from "@/content/careers/categories";
 
 const init: UpsertJobOfferState = { ok: false, error: "" };
+
+// L13 — l'éditeur des questions est chargé À LA DEMANDE : il ne pèse pas sur le
+// chunk du formulaire (plafond de poids de la console, ADR 0058).
+const EditeurQuestionsOffre = dynamic(
+  () => import("./EditeurQuestionsOffre").then((m) => m.EditeurQuestionsOffre),
+  { loading: () => <p className="admin-help">Chargement de l&apos;éditeur des questions…</p> },
+);
 
 export interface JobOfferFormInitial {
   id: string;
@@ -64,6 +72,9 @@ export function JobOfferForm({ initial }: Props) {
   const [state, formAction, pending] = useActionState(upsertJobOfferAction, init);
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
+  // L13 — le texte du champ `screeningQuestions`, partagé par l'éditeur et le
+  // mode avancé : un seul état, deux façons de l'écrire.
+  const [questions, setQuestions] = useState(initial?.screeningQuestions ?? "");
 
   function maybeAutoSlug(title: string) {
     if (!slugTouched && title) setSlug(slugify(title).slice(0, 180));
@@ -563,22 +574,32 @@ export function JobOfferForm({ initial }: Props) {
         </div>
       </div>
 
-      <h3 className="admin-section-title">Questions &amp; avantages (JSON)</h3>
-      <div className="admin-field">
-        <label htmlFor="screeningQuestions" className="admin-label">
-          Questions de l&apos;offre — JSON : [
-          {`{ "id":"q1","labelFr":"…","labelEn":"…","required":true }`}]
-        </label>
-        <textarea
-          id="screeningQuestions"
-          name="screeningQuestions"
-          rows={3}
-          defaultValue={initial?.screeningQuestions ?? ""}
-          className="admin-input admin-textarea"
-          disabled={pending}
-          placeholder='[{"id":"q1","labelFr":"Pourquoi nous ?","labelEn":"Why us?","required":true}]'
-        />
-      </div>
+      <h3 className="admin-section-title">Questions de l&apos;offre</h3>
+      <p className="admin-help">
+        Les questions posées au candidat dans le formulaire de candidature, dans cet ordre.
+      </p>
+      <EditeurQuestionsOffre valeur={questions} onChange={setQuestions} disabled={pending} />
+      <details className="admin-details">
+        <summary className="admin-details-summary">Mode avancé (JSON)</summary>
+        <div className="admin-field">
+          <label htmlFor="screeningQuestions" className="admin-label">
+            Questions de l&apos;offre — JSON : [
+            {`{ "id":"q1","labelFr":"…","labelEn":"…","required":true }`}]
+          </label>
+          <textarea
+            id="screeningQuestions"
+            name="screeningQuestions"
+            rows={6}
+            value={questions}
+            onChange={(e) => setQuestions(e.target.value)}
+            className="admin-input admin-textarea"
+            disabled={pending}
+            placeholder='[{"id":"q1","labelFr":"Pourquoi nous ?","labelEn":"Why us?","required":true}]'
+          />
+        </div>
+      </details>
+
+      <h3 className="admin-section-title">Avantages &amp; zone d&apos;emploi (JSON)</h3>
       <div className="admin-field">
         <label htmlFor="perks" className="admin-label">
           Avantages — JSON : [{`{ "labelFr":"Télétravail","labelEn":"Remote","icon":"🏡" }`}]
