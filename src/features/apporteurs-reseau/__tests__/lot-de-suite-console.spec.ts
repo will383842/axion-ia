@@ -149,10 +149,13 @@ describe("12) « Nouvel apporteur » : dossier relié à la fiche candidat de la
     expect(h.cree.mock.calls[0]![0]).not.toHaveProperty("submissionId");
   });
 
-  it("menu « Apporteurs » ; page : « Actifs » par défaut, puis « Dossier en cours »", () => {
+  // ⚠️ L8e (Candidatures unifiées, 2026-10-09) : le menu suit la maquette v2
+  // et la consigne du paquet 3 — « Apporteurs signés » dans le groupe « Réseau
+  // d'apporteurs ». Cette garde exigeait « Apporteurs » (lot de suite du
+  // 07/10) : arbitrage signalé à Will dans la PR du paquet 3.
+  it("menu « Apporteurs signés » ; page : « Actifs » par défaut, puis « Dossier en cours »", () => {
     const nav = readFileSync(resolve(__dirname, "../../../lib/admin-nav.ts"), "utf8");
-    expect(nav).toContain('label: "Apporteurs",');
-    expect(nav).not.toContain('label: "Apporteurs signés"');
+    expect(nav).toContain('label: "Apporteurs signés",');
     const page = readFileSync(
       resolve(__dirname, "../../../app/[locale]/(admin)/[adminPrefix]/apporteurs/page.tsx"),
       "utf8",
