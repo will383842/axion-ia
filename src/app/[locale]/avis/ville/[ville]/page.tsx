@@ -13,7 +13,7 @@ import { buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
 import { FACET_MIN_COUNT } from "@/lib/reviews/config";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
   params: Promise<{ locale: string; ville: string }>;
@@ -42,8 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AvisVilleFacetPage({ params }: Props) {
-  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
-  if (!AVIS_CLIENTS_AFFICHES) notFound();
+  // Règle automatique (src/content/preuves-sociales.ts) : 404 tant qu'aucun avis
+  // n'est publié. Le 404 est mis en cache ISR (revalidate) puis régénéré : la
+  // page revient seule au premier avis publié, sans redéploiement.
+  if (!(await avisPublies())) notFound();
   const { locale, ville } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

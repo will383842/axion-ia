@@ -39,7 +39,7 @@ import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitema
 // index↔route garantie (cf. filtre customSitemaps dans GET).
 import { listRecentNewsEntries } from "@/app/sitemap-news.xml/route";
 import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPublies } from "@/server/reviews/presence";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -295,12 +295,16 @@ export async function GET(): Promise<Response> {
     evergreenEmittableCount = 0;
   }
 
+  // Règle automatique des avis (src/content/preuves-sociales.ts) : sitemap-avis
+  // listé dès qu'au moins un avis est publié. Le helper ne lève jamais.
+  const avisEnLigne = await avisPublies();
+
   const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
     if (path === "/sitemap-presse.xml") return presseEmittableCount > 0;
-    // Avis éteints (src/content/preuves-sociales.ts, 2026-10-09) → /avis/* en 404.
-    if (path === "/sitemap-avis.xml") return AVIS_CLIENTS_AFFICHES;
+    // 0 avis publié → /avis/* en 404 → pas de sitemap-avis.
+    if (path === "/sitemap-avis.xml") return avisEnLigne;
     if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
     if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le

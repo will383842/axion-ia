@@ -57,7 +57,7 @@ import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
 import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { isServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { isClientSectorSlug, clientSectorLabel, getClientSector } from "@/content/sectors";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -175,8 +175,10 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 }
 
 export default async function AvisHubPage({ params, searchParams }: Props) {
-  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
-  if (!AVIS_CLIENTS_AFFICHES) notFound();
+  // Règle automatique (src/content/preuves-sociales.ts) : 404 tant qu'aucun avis
+  // n'est publié. Le 404 est mis en cache ISR (revalidate) puis régénéré : la
+  // page revient seule au premier avis publié, sans redéploiement.
+  if (!(await avisPublies())) notFound();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

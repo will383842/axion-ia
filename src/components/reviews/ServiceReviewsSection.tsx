@@ -12,7 +12,8 @@ import { ReviewCard } from "./ReviewCard";
 import { StarRating } from "./StarRating";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { getServiceLine } from "@/lib/reviews/service-lines";
-import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPublies } from "@/server/reviews/presence";
+import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 import type { ServiceSector } from "../../../prisma/generated/client";
 
 export async function ServiceReviewsSection({
@@ -26,8 +27,8 @@ export async function ServiceReviewsSection({
   title?: string;
   titleEm?: string;
 }) {
-  // Interrupteur unique (src/content/preuves-sociales.ts) — éteint le 2026-10-09.
-  if (!AVIS_CLIENTS_AFFICHES) return null;
+  // Règle automatique (src/content/preuves-sociales.ts) : rien sans avis publié.
+  if (!(await avisPublies())) return null;
 
   const [{ items }, agg] = await Promise.all([
     getPublishedReviews({ serviceLine, pageSize: 3, sort: "featured" }),
@@ -39,12 +40,11 @@ export async function ServiceReviewsSection({
 
   return (
     <Section eyebrow={eyebrow} title={title} titleEm={titleEm} tone="sand">
-      {agg ? (
+      {/* Note globale seulement à partir de AGGREGATE_MIN_COUNT (5) avis. */}
+      {agg && agg.reviewCount >= AGGREGATE_MIN_COUNT ? (
         <div className="mb-6 flex items-center gap-3">
           <StarRating value={agg.ratingValue} size={20} showValue />
-          <span className="text-fg-muted text-sm">
-            {agg.reviewCount} avis vérifié{agg.reviewCount > 1 ? "s" : ""}
-          </span>
+          <span className="text-fg-muted text-sm">{agg.reviewCount} avis clients</span>
         </div>
       ) : null}
       <ul className="grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">

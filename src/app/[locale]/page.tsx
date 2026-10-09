@@ -50,7 +50,9 @@ import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
-import { AVIS_CLIENTS_AFFICHES, LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPublies } from "@/server/reviews/presence";
+import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 
 // ISR 1h — ramené de 86400s (24h) à 3600s le 2026-08-10.
 //
@@ -119,19 +121,25 @@ export default async function Home({ params }: HomeProps) {
   // remplace les anciennes citations fabriquées (CASE_STUDIES + photos Unsplash +
   // note « 4,9/5 » factice). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
   // ré-active honnêtement l'AggregateRating JSON-LD (gaté ≥ 5 avis publiés).
-  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le
-  // 2026-10-09 : aucune lecture, aucune note, aucune donnée structurée.
-  const [homeReviews, homeReviewsAgg] = AVIS_CLIENTS_AFFICHES
+  // Règle automatique (src/content/preuves-sociales.ts) : la section n'existe que
+  // s'il y a au moins un avis publié ; la note globale (étoiles + JSON-LD) qu'à
+  // partir de AGGREGATE_MIN_COUNT (5). ISR 1 h : revient seule au premier avis.
+  const [homeReviews, homeReviewsAggBrut] = (await avisPublies())
     ? await Promise.all([
         getPublishedReviews({ sort: "featured", pageSize: 9 }),
         getAggregateRating({}),
       ])
     : ([{ items: [] }, null] as const);
+  const homeReviewsAgg =
+    homeReviewsAggBrut && homeReviewsAggBrut.reviewCount >= AGGREGATE_MIN_COUNT
+      ? homeReviewsAggBrut
+      : null;
   const homeReviewsOrgAgg = orgAggregateJsonLd(homeReviewsAgg);
 
   // Badge sous le bandeau logos : nombre d'avis « top » affiché en dynamique.
   // On ne retient que les 4★ et 5★ pour que le badge « Excellent » reste
   // honnête à mesure que de nouveaux avis arrivent (demande Will 2026-07-10).
+  // Même seuil de 5 avis que la note globale.
   const homeTopReviewCount = homeReviewsAgg
     ? homeReviewsAgg.breakdown[4] + homeReviewsAgg.breakdown[5]
     : null;
@@ -1384,7 +1392,7 @@ export default async function Home({ params }: HomeProps) {
       {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
           Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
           identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
-      {AVIS_CLIENTS_AFFICHES ? (
+      {homeReviews.items.length > 0 ? (
         <section
           id="testimonials"
           aria-labelledby="testimonials-heading"
@@ -1433,31 +1441,18 @@ export default async function Home({ params }: HomeProps) {
                         / 5
                       </span>
                       {isFr
-                        ? ` — sur ${homeReviewsAgg.reviewCount} avis clients vérifiés`
-                        : ` — based on ${homeReviewsAgg.reviewCount} verified reviews`}
+                        ? ` — sur ${homeReviewsAgg.reviewCount} avis clients`
+                        : ` — based on ${homeReviewsAgg.reviewCount} client reviews`}
                     </p>
                   </div>
                 ) : null}
               </div>
             </FadeInOnView>
-            {homeReviews.items.length > 0 ? (
-              <HomeReviewsCarousel>
-                {homeReviews.items.map((r) => (
-                  <ReviewCard key={r.id} review={r} className="h-full" />
-                ))}
-              </HomeReviewsCarousel>
-            ) : (
-              <div className="border-border mx-auto max-w-xl rounded-2xl border border-dashed p-8 text-center">
-                <p className="text-fg-soft">
-                  {isFr
-                    ? "Nos premiers avis clients arrivent. "
-                    : "Our first customer reviews are coming. "}
-                  <Link href="/avis/deposer" className="text-terracotta font-semibold underline">
-                    {isFr ? "Soyez le premier à témoigner" : "Be the first to leave a review"}
-                  </Link>
-                </p>
-              </div>
-            )}
+            <HomeReviewsCarousel>
+              {homeReviews.items.map((r) => (
+                <ReviewCard key={r.id} review={r} className="h-full" />
+              ))}
+            </HomeReviewsCarousel>
             {/* Lien vers le hub des avis clients */}
             <p className="text-fg-muted mt-12 text-center text-sm">
               <Link
