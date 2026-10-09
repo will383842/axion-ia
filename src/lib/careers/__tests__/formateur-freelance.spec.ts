@@ -16,6 +16,6 @@ describe("encadré « formateur indépendant » (demande Will 2026-10-09)", () =
   // La passerelle « Recrutée → fiche formateur » (#1393) reconnaît une offre de
   // formateur à son slug `formateur-…` : un autre préfixe la priverait du bouton.
   it("l'offre freelance garde un slug « formateur-… »", () => {
-    expect(SLUG_OFFRE_FORMATEUR_FREELANCE).toMatch(/^format(eur|rice)/);
+    expect(SLUG_OFFRE_FORMATEUR_FREELANCE).toMatch(/^format(eur|rice)\b/);
   });
 });
