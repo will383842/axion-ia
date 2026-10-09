@@ -1,4 +1,4 @@
-// La GRILLE DE RÉFÉRENCE publiée (page /fr/apporteur-affaires/commissions) est, ligne à ligne,
+// La GRILLE DE RÉFÉRENCE publiée (réservée aux apporteurs : /apporteur/dossier/<id>/<jeton>/commissions) est, ligne à ligne,
 // celle de l'annexe 1 du contrat en vigueur (2026-10-07, décision de Will). Les tableaux A1.1 à
 // A1.5 du texte signé sont relus ici ; chaque ligne doit avoir les MÊMES cellules (libellé, durée,
 // prix, commission) que la grille calculée depuis regles.ts et pricing.ts. Une divergence — un

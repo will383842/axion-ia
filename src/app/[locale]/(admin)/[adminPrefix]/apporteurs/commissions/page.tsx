@@ -293,7 +293,14 @@ export default async function CommissionsApporteursPage({ params, searchParams }
                     : elle partira d&apos;elle-même dans l&apos;heure.
                   </p>
                 ) : null}
-                {c.statut === "due" && !c.autofactureNumero && !c.autofactureAttenteMotif ? (
+                {/* Essai réel du 09/10 : « part dans l'heure » s'affichait à côté de « En attente de
+                    réalisation : ni facturée ni versée ». Rien ne part avant la réalisation, ni
+                    pendant une contestation : la phrase ne vaut qu'après. */}
+                {c.statut === "due" &&
+                !c.autofactureNumero &&
+                !c.autofactureAttenteMotif &&
+                c.prestationRealiseeAt &&
+                !c.litigeDepuis ? (
                   <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     Autofacture à émettre : elle part automatiquement dans l&apos;heure (si elle ne
                     part pas, vérifiez l&apos;identité et le régime de TVA de l&apos;apporteur).
