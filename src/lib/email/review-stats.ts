@@ -5,6 +5,7 @@
 // `{ count: 0, avg: 0 }` → le bandeau masque la ligne avis (pas de faux chiffre).
 
 import { prisma } from "@/lib/prisma";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export interface ReviewStats {
   count: number;
@@ -17,6 +18,9 @@ const TTL_MS = 15 * 60 * 1000;
 let cache: { at: number; data: ReviewStats } | null = null;
 
 export async function getPublishedReviewStats(): Promise<ReviewStats> {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le
+  // 2026-10-09 : aucune note dans le pied des e-mails.
+  if (!AVIS_CLIENTS_AFFICHES) return FALLBACK;
   if (cache && Date.now() - cache.at < TTL_MS) return cache.data;
   try {
     const r = await prisma.customerReview.aggregate({

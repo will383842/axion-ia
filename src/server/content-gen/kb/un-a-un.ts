@@ -12,9 +12,10 @@
  */
 
 import type { KbFact } from "./audits";
+import { sansFaitsIssusDesAvis } from "@/content/preuves-sociales";
 export type { KbFact };
 
-export const KB_UN_A_UN: readonly KbFact[] = [
+export const KB_UN_A_UN: readonly KbFact[] = sansFaitsIssusDesAvis([
   // ── Format et structure ──────────────────────────────────────────────────
   {
     id: "ua-001",
@@ -610,4 +611,4 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     verticales: ["un_a_un"],
     confidence: 0.93,
   },
-];
+]);

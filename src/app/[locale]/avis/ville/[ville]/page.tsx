@@ -13,6 +13,7 @@ import { buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
 import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string; ville: string }>;
@@ -41,6 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AvisVilleFacetPage({ params }: Props) {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) notFound();
   const { locale, ville } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

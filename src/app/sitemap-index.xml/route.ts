@@ -39,6 +39,7 @@ import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitema
 // index↔route garantie (cf. filtre customSitemaps dans GET).
 import { listRecentNewsEntries } from "@/app/sitemap-news.xml/route";
 import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -298,6 +299,8 @@ export async function GET(): Promise<Response> {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
     if (path === "/sitemap-presse.xml") return presseEmittableCount > 0;
+    // Avis éteints (src/content/preuves-sociales.ts, 2026-10-09) → /avis/* en 404.
+    if (path === "/sitemap-avis.xml") return AVIS_CLIENTS_AFFICHES;
     if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
     if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le

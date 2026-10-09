@@ -7,6 +7,7 @@ import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export async function Footer() {
   const t = await getTranslations();
@@ -63,7 +64,10 @@ export async function Footer() {
     // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
     // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
     // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
-    { href: "/avis", label: isFr ? "Avis clients" : "Client reviews" },
+    // Masqué tant que les avis sont éteints (src/content/preuves-sociales.ts).
+    ...(AVIS_CLIENTS_AFFICHES
+      ? [{ href: "/avis", label: isFr ? "Avis clients" : "Client reviews" }]
+      : []),
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },

@@ -16,6 +16,7 @@ import { serviceAggregateJsonLd } from "@/server/reviews/jsonld";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
 import { FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { isServiceLine, getServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 interface Props {
   params: Promise<{ locale: string; service: string }>;
@@ -37,6 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AvisServiceFacetPage({ params }: Props) {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) notFound();
   const { locale, service } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   if (!isServiceLine(service)) notFound();

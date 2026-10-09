@@ -12,9 +12,10 @@
  */
 
 import type { KbFact } from "./audits";
+import { sansFaitsIssusDesAvis } from "@/content/preuves-sociales";
 export type { KbFact };
 
-export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
+export const KB_IMPLEMENTATIONS: readonly KbFact[] = sansFaitsIssusDesAvis([
   // ── Offre Axion-IA implémentations ───────────────────────────────────────
   {
     id: "impl-001",
@@ -790,4 +791,4 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     verticales: ["implementations"],
     confidence: 0.94,
   },
-];
+]);

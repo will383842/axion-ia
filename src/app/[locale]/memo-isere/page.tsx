@@ -75,6 +75,7 @@ import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildFaqJsonLd, buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export const revalidate = 3600;
 
@@ -609,7 +610,8 @@ export default async function MemoIserePage({ params }: Props) {
     }))
     .sort((a, b) => b.score - a.score || b.r.rating - a.r.rating);
   const reviewsPick = scored.map((x) => x.r).slice(0, 6);
-  const reviews = reviewsPick.length >= 3 ? reviewsPick : [];
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  const reviews = AVIS_CLIENTS_AFFICHES && reviewsPick.length >= 3 ? reviewsPick : [];
   const { total: totalAll } = await getPublishedReviews({ pageSize: 1 });
 
   const villesPhares = [
@@ -894,11 +896,17 @@ export default async function MemoIserePage({ params }: Props) {
                   Vous, vous êtes payé à la journée vendue. 💶
                 </span>
               </h2>
-              <dl className="grid grid-cols-3 gap-3 sm:gap-4">
+              {/* Le compte d'avis n'apparaît que s'il y a des avis réels affichés :
+                  plus de « 4,9/5 » de repli (avis éteints le 2026-10-09). */}
+              <dl
+                className={`grid gap-3 sm:gap-4 ${AVIS_CLIENTS_AFFICHES && totalAll > 0 ? "grid-cols-3" : "grid-cols-2"}`}
+              >
                 {[
                   { v: commission(1), l: "par journée vendue, à titre indicatif" },
                   { v: String(MEMO_ZONE_CLUSTERS.length), l: "territoires couverts" },
-                  { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
+                  ...(AVIS_CLIENTS_AFFICHES && totalAll > 0
+                    ? [{ v: `${totalAll} avis`, l: "clients conquis" }]
+                    : []),
                 ].map((s) => (
                   <div key={s.l}>
                     <dt className="sr-only">{s.l}</dt>

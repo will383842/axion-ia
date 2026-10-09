@@ -18,6 +18,7 @@ import {
 import { FACET_MIN_COUNT } from "@/lib/reviews/config";
 import { isServiceLine } from "@/lib/reviews/service-lines";
 import { isClientSectorSlug } from "@/content/sectors";
+import { AVIS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,6 +40,8 @@ function urlNode(loc: string, lastmod: string, priority: string, imageLoc?: stri
 }
 
 export async function GET(): Promise<Response> {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — avis éteints le 2026-10-09.
+  if (!AVIS_CLIENTS_AFFICHES) return new Response("Not found", { status: 404 });
   let reviews: Array<{ slug: string; updatedAt: Date; photoUrl: string | null }> = [];
   let serviceFacets: { key: string; count: number }[] = [];
   let cityFacets: { key: string; count: number }[] = [];

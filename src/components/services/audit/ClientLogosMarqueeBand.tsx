@@ -13,12 +13,16 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { CLIENT_LOGOS } from "@/content/home-data";
+import { LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 
 export interface ClientLogosMarqueeBandProps {
   readonly isFr: boolean;
 }
 
 export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): ReactNode {
+  // Interrupteur unique (src/content/preuves-sociales.ts) — éteint le 2026-10-09.
+  if (!LOGOS_CLIENTS_AFFICHES || CLIENT_LOGOS.length === 0) return null;
+
   // Track dupliqué (items + items) pour une boucle sans saut visible.
   const tracks = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
 
