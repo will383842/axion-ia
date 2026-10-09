@@ -18,6 +18,10 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { lireFichePersonne } from "@/features/personne/fiche-personne";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
+import { ComposerReponseApporteur } from "@/components/admin/contacts/ComposerReponseApporteur";
+import { estOpposee } from "@/server/email/opposition";
+import { fichiersPourComposeur } from "@/server/partages/suivi";
+import { partagesActifs } from "@/server/partages/config";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
 import { BlocAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 import { lireAccuseMessage } from "@/features/admin-submissions/accuse-reception";
@@ -97,6 +101,21 @@ export async function SubmissionDetailContent({
   //    société » vide à quelqu'un qui RECOMMANDE Axion-IA. Au pire, une fiche
   //    client et un devis créés pour un apporteur. La recherche du client
   //    n'est donc même pas faite : son seul usage est ce bouton.
+  // L6 — le composeur unique, côté réseau : kit et présentation à joindre,
+  // SAUF si la personne s'est opposée (rien ne lui est proposé, et l'action le
+  // refuse de toute façon). Information accessoire : si la lecture échoue, le
+  // composeur s'ouvre sans fichiers plutôt que de faire tomber la fiche.
+  let bibliothequeApporteur: Awaited<ReturnType<typeof fichiersPourComposeur>> | null = null;
+  if (estContactApporteur && submission.contactEmail && partagesActifs()) {
+    try {
+      bibliothequeApporteur = (await estOpposee(submission.contactEmail))
+        ? null
+        : await fichiersPourComposeur("apporteur");
+    } catch (err) {
+      Sentry.captureException(err, { tags: { ecran: "fiche-message", etape: "bibliotheque" } });
+    }
+  }
+
   const clientExistant =
     !estContactApporteur && submission.contactEmail
       ? await findClientByEmail(submission.contactEmail)
@@ -196,12 +215,23 @@ export async function SubmissionDetailContent({
                 Convertir en client
               </a>
             )}
-            <ReplyComposer
-              submissionId={submission.id}
-              contactName={submission.contactName}
-              contactEmail={submission.contactEmail}
-              defaultSubject={`Re: votre demande ${typeLabel}`}
-            />
+            {/* L6 — un futur apporteur a le composeur unique (modèles du
+                réseau, kit et présentation) ; un message client garde
+                l'ancien composeur. */}
+            {estContactApporteur ? (
+              <ComposerReponseApporteur
+                submissionId={submission.id}
+                prenom={submission.contactName?.trim().split(/\s+/)[0] ?? null}
+                bibliotheque={bibliothequeApporteur}
+              />
+            ) : (
+              <ReplyComposer
+                submissionId={submission.id}
+                contactName={submission.contactName}
+                contactEmail={submission.contactEmail}
+                defaultSubject={`Re: votre demande ${typeLabel}`}
+              />
+            )}
           </div>
         }
       />

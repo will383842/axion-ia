@@ -28,7 +28,15 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition, marquerPretASigner, type ResultatPretASigner } from "./transitions";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
-import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
+import { enregistrerOppositionPourAdresse, estOpposee } from "@/server/email/opposition";
+import {
+  corpsAvecFichiers,
+  creerLienPartage,
+  preparerLienFichiers,
+  type LienPrepare,
+} from "@/server/partages/attacher-a-une-reponse";
+import { FICHIERS_PAR_LIEN_MAX } from "@/server/partages/liens";
+import { MODELES_REPONSE_APPORTEUR_IDS } from "@/content/apporteurs/modeles-reponse";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
 async function requireAdminWriteSession() {
@@ -54,13 +62,21 @@ const replySchema = z.object({
     .enum(["default", "audit_followup", "intervention_followup", "custom"])
     .default("default"),
   internalNote: z.string().max(2000).optional(),
+  /**
+   * L6 (Candidatures unifiées) — fichiers de la bibliothèque, SEULEMENT pour un
+   * futur apporteur (kit, présentation) : ils partent comme UN lien privé dans
+   * le corps du message, jamais en pièce jointe. Un message client n'en a pas.
+   */
+  fichierIds: z.array(z.string().uuid()).max(FICHIERS_PAR_LIEN_MAX).default([]),
+  /** Le modèle apporteur de départ (composeur unique), tracé dans `templateUsed`. */
+  modele: z.enum(MODELES_REPONSE_APPORTEUR_IDS).optional(),
 });
 
 export type ReplyToSubmissionState =
   | { ok: true; replyId: string }
   // replyId présent si la reply a été persistée mais l'envoi a échoué (enqueue KO)
   // → l'admin peut la réessayer via retryFailedReplyAction.
-  | { ok: false; error: string; replyId?: string };
+  | { ok: false; error: string; replyId?: string; detail?: string };
 
 export async function replyToSubmissionAction(
   input: z.input<typeof replySchema>,
@@ -90,16 +106,33 @@ export async function replyToSubmissionAction(
   // 0. Pré-vol : déchiffrer + valider l'adresse DANS le process web (qui a la
   //    clé). Si l'adresse est illisible (clé absente → placeholder) ou invalide,
   //    on échoue AVANT de créer une reply orpheline, avec une erreur claire.
-  if (!isDecryptedEmailUsable(decryptPii(submission.contactEmail))) {
+  const adresse = decryptPii(submission.contactEmail);
+  if (!isDecryptedEmailUsable(adresse)) {
     return { ok: false, error: "invalid_recipient" };
   }
+
+  // 0 bis. L6 — les fichiers joints. Seulement sur un dossier apporteur, jamais
+  //    à une personne opposée (ses liens sont d'ailleurs retirés à l'opposition),
+  //    et seulement le kit et la présentation (`monde: "apporteur"`). Le lien
+  //    est PRÉPARÉ ici (l'e-mail a besoin du texte final) et ÉCRIT dans la
+  //    transaction de la réponse.
+  const apporteur = estApporteur(submission.details);
+  let lienFichiers: LienPrepare | undefined;
+  if (data.fichierIds.length > 0) {
+    if (!apporteur) return { ok: false, error: "fichiers_reserves_apporteur" };
+    if (await estOpposee(adresse)) return { ok: false, error: "opposee" };
+    const p = await preparerLienFichiers(data.fichierIds, { monde: "apporteur" });
+    if (!p.ok) return { ok: false, error: "fichiers_refuses", detail: p.erreur };
+    lienFichiers = p.lien;
+  }
+  const corps = corpsAvecFichiers(data.bodyMarkdown, lienFichiers);
 
   // 1. Pre-render template HTML + plain text via @react-email/render.
   let rendered: { subject: string; html: string; text: string };
   try {
     rendered = await renderEmailTemplate("submission-reply", submission.locale, {
       subject: data.subject,
-      bodyMarkdown: data.bodyMarkdown,
+      bodyMarkdown: corps,
     });
   } catch (e) {
     Sentry.captureException(e);
@@ -120,9 +153,18 @@ export async function replyToSubmissionAction(
           bodyText: rendered.text,
           deliveryStatus: "pending",
           ...(data.internalNote ? { internalNote: data.internalNote } : {}),
-          templateUsed: data.template,
+          templateUsed: apporteur && data.modele ? `apporteur:${data.modele}` : data.template,
         },
       });
+
+      if (lienFichiers) {
+        await creerLienPartage(tx, {
+          lien: lienFichiers,
+          submissionId: submission.id,
+          reponseId: reply.id,
+          auteur: { userId: session.userId, nom: session.name },
+        });
+      }
 
       await tx.submission.update({
         where: { id: submission.id },
@@ -209,8 +251,8 @@ export async function replyToSubmissionAction(
   // Best-effort a partir d'ici : un retrait qui echoue ne transforme pas une
   // reponse PARTIE en echec — sinon Will recommence, et la personne recoit deux
   // fois la meme reponse. C'est exactement le doublon qu'on evite.
-  if (estApporteur(submission.details)) {
-    const adresseClaire = decryptPii(submission.contactEmail);
+  if (apporteur) {
+    const adresseClaire = adresse;
     if (adresseClaire) {
       try {
         await annulerRelancesLeadApporteur(

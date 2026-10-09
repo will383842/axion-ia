@@ -78,6 +78,8 @@ export function retraitPropose(statut: string): boolean {
 export const MOTIF_RETRAIT = {
   manuel: "retiré depuis la fiche",
   decision: "candidature non retenue ou retirée",
+  /** L6 — la personne s'est opposée aux sollicitations : ses liens se ferment d'eux-mêmes. */
+  opposition: "opposition enregistrée",
 } as const;
 
 /** « 14/10/2026 », heure de Paris. */

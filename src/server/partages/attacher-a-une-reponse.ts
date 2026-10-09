@@ -67,13 +67,17 @@ export type Verification =
 export function verifierFichiersJoignables(
   ids: ReadonlyArray<string>,
   lignes: ReadonlyArray<FichierCandidat>,
+  monde: "emploi" | "apporteur" = "emploi",
 ): Verification {
   const uniques = [...new Set(ids.map((i) => i.toLowerCase()))];
   if (uniques.length === 0) return { ok: false, erreur: "Aucun fichier choisi." };
   if (uniques.length > FICHIERS_PAR_LIEN_MAX) {
     return { ok: false, erreur: `${FICHIERS_PAR_LIEN_MAX} fichiers au plus par message.` };
   }
-  const permises = categoriesProposees("emploi") as ReadonlyArray<string>;
+  // L6 — côté réseau d'apporteurs, seuls le kit et la présentation (D8) : une
+  // consigne ou une LUT envoyée à un futur apporteur est le motif 10 de
+  // l'anti-requalification.
+  const permises = categoriesProposees(monde) as ReadonlyArray<string>;
   const parId = new Map(lignes.map((l) => [l.id.toLowerCase(), l]));
   const categories: string[] = [];
   for (const id of uniques) {
@@ -81,7 +85,7 @@ export function verifierFichiersJoignables(
     if (!f) return { ok: false, erreur: "Un des fichiers choisis est introuvable." };
     if (f.archiveLe !== null) return { ok: false, erreur: "Un des fichiers choisis est archivé." };
     if (!permises.includes(f.categorie)) {
-      return { ok: false, erreur: "Un des fichiers choisis ne s'envoie pas à un candidat." };
+      return { ok: false, erreur: "Un des fichiers choisis ne s'envoie pas à cette personne." };
     }
     if (f.nature === "fichier") {
       if (f.etatDepot !== "disponible") {
@@ -103,7 +107,13 @@ export type Preparation =
 /** Vérifie les fichiers et prépare le lien. N'écrit rien. */
 export async function preparerLienFichiers(
   fichierIds: ReadonlyArray<string>,
-  opts: { maintenant?: Date; env?: Env; depotAutorise?: boolean } = {},
+  opts: {
+    maintenant?: Date;
+    env?: Env;
+    depotAutorise?: boolean;
+    /** Le monde de la personne (L6) : décide des catégories qui se joignent. */
+    monde?: "emploi" | "apporteur";
+  } = {},
 ): Promise<Preparation> {
   const env = opts.env ?? process.env;
   if (configPartages(env) === null) {
@@ -121,7 +131,8 @@ export async function preparerLienFichiers(
       archiveLe: true,
     },
   })) as FichierCandidat[];
-  const v = verifierFichiersJoignables(ids, lignes);
+  const monde = opts.monde ?? "emploi";
+  const v = verifierFichiersJoignables(ids, lignes, monde);
   if (!v.ok) return v;
 
   const lienId = randomUUID();
@@ -141,9 +152,10 @@ export async function preparerLienFichiers(
       expireLe,
       fichierIds: ids,
       categories: v.categories,
-      depotAutorise: opts.depotAutorise === true,
+      // Le dépôt d'une version (L5b) n'existe que pour un candidat.
+      depotAutorise: monde === "emploi" && opts.depotAutorise === true,
       paragraphe: paragrapheFichiers(adresse, expireLe, {
-        depotAutorise: opts.depotAutorise === true,
+        depotAutorise: monde === "emploi" && opts.depotAutorise === true,
       }),
     },
   };
@@ -159,15 +171,20 @@ export async function creerLienPartage(
   tx: Pick<Prisma.TransactionClient, "lienPartage">,
   d: {
     readonly lien: LienPrepare;
-    readonly applicationId: string;
     readonly reponseId: string;
     readonly auteur: { readonly userId: string | null; readonly nom: string };
-  },
+  } & (
+    | { readonly applicationId: string; readonly submissionId?: undefined }
+    // L6 — un lien envoyé à un futur apporteur est rattaché à SA fiche.
+    | { readonly submissionId: string; readonly applicationId?: undefined }
+  ),
 ): Promise<void> {
   await tx.lienPartage.create({
     data: {
       id: d.lien.lienId,
-      applicationId: d.applicationId,
+      ...(d.applicationId !== undefined
+        ? { applicationId: d.applicationId }
+        : { submissionId: d.submissionId }),
       reponseId: d.reponseId,
       expireLe: d.lien.expireLe,
       depotAutorise: d.lien.depotAutorise === true,

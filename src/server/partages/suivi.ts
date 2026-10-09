@@ -302,8 +302,12 @@ export async function retirerLiensCandidature(
   return r.count;
 }
 
-/** Ce que « Depuis ma bibliothèque » propose : fichiers joignables du monde « emploi ». */
-export async function fichiersPourComposeur(): Promise<
+/**
+ * Ce que « Depuis ma bibliothèque » propose : fichiers joignables du monde de
+ * la personne — tout sauf le kit côté emploi, le kit et la présentation SEULS
+ * côté réseau d'apporteurs (L6).
+ */
+export async function fichiersPourComposeur(monde: "emploi" | "apporteur" = "emploi"): Promise<
   Array<{
     id: string;
     titre: string;
@@ -317,7 +321,7 @@ export async function fichiersPourComposeur(): Promise<
   if (configPartages() === null) return [];
   const { listerBibliotheque } = await import("./depot");
   const { LIBELLE_CATEGORIE, categoriesProposees, tailleLisible } = await import("./regles");
-  const permises = categoriesProposees("emploi") as ReadonlyArray<string>;
+  const permises = categoriesProposees(monde) as ReadonlyArray<string>;
   const { fichiers } = await listerBibliotheque({ archives: false });
   return fichiers
     .filter(

@@ -229,3 +229,18 @@ describe("la réponse et son lien partent ensemble", () => {
     expect(String(evenement.body)).toContain(masquee);
   });
 });
+
+describe("L6 — côté futur apporteur, seuls le kit et la présentation se joignent", () => {
+  it("kit et présentation : oui ; LUT, consignes, rushs : non", () => {
+    for (const ok of ["kit_apporteur", "presentation"]) {
+      expect(verifierFichiersJoignables([F2], [ligne(F2, { categorie: ok })], "apporteur").ok).toBe(
+        true,
+      );
+    }
+    for (const non of ["lut", "consignes", "rushs", "video_exemple", "essai_rendu"]) {
+      expect(
+        verifierFichiersJoignables([F2], [ligne(F2, { categorie: non })], "apporteur").ok,
+      ).toBe(false);
+    }
+  });
+});
