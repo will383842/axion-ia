@@ -188,6 +188,13 @@ describe("contrat 2.5 : deux cases, nom affiché, PDF dans un nouvel onglet", ()
     rendre(dossier(), 4);
     const cases = screen.getAllByRole("checkbox");
     expect(cases).toHaveLength(2);
+    // Le mandat de facturation et la clause des tribunaux restent écrits en clair sous la case.
+    expect(document.body.textContent).toContain(
+      "Je donne mandat à Axion-IA d'établir mes factures",
+    );
+    expect(document.body.textContent).toContain(
+      "tribunaux du siège d'Axion-IA sont seuls compétents",
+    );
     const signer = screen.getByRole("button", { name: TEXTES.signer }) as HTMLButtonElement;
     expect(signer.disabled).toBe(true);
     expect(screen.getByText(TEXTES.cochezLesDeuxCases)).toBeTruthy();
@@ -200,13 +207,6 @@ describe("contrat 2.5 : deux cases, nom affiché, PDF dans un nouvel onglet", ()
     const fd = h.signerAction.mock.calls[0]![0] as FormData;
     expect(fd.getAll("declarations")).toEqual([...CLES_DECLARATIONS]);
     expect(fd.getAll("acceptations")).toEqual([...CLES_ACCEPTATIONS]);
-    // Le mandat de facturation et la clause des tribunaux restent écrits en clair sous la case.
-    expect(document.body.textContent).toContain(
-      "Je donne mandat à Axion-IA d'établir mes factures",
-    );
-    expect(document.body.textContent).toContain(
-      "tribunaux du siège d'Axion-IA sont seuls compétents",
-    );
     // Le nom n'est plus tapé : celui du dossier part dans la preuve.
     expect(fd.get("nomTape")).toBe("Éloïse Lefèvre");
   });
