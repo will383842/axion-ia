@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=860">
+<meta name="robots" content="noindex, nofollow">
+<title>Charte de marque — apporteurs d'affaires Axion-IA</title>
+<style>
+
+  @font-face { font-family: 'Fraunces'; src: url('/documents/apporteurs/outils/polices/fraunces-latin-var.woff2') format('woff2'); font-weight: 300 900; font-style: normal; }
+  @font-face { font-family: 'Fraunces'; src: url('/documents/apporteurs/outils/polices/fraunces-latin-var-italic.woff2') format('woff2'); font-weight: 300 900; font-style: italic; }
+  @font-face { font-family: 'Manrope'; src: url('/documents/apporteurs/outils/polices/manrope-latin-var.woff2') format('woff2'); font-weight: 200 800; font-style: normal; }
+  @page { size: A4; margin: 0; }
+  :root {
+    --encre: #241d15; --titre: #1c150e; --gris: #6b6153;
+    --terra: #c24a1b; --terra-fonce: #8c3010; --terra-doux: #f7ebe2; --terra-teinte: #ecd9c9;
+    --ivoire: #f6f1e8; --bord: #eee2d2; --bleu: #1a4dd9;
+    --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Manrope', -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--encre); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; background: var(--ivoire); }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── Couverture ─────────────────────────────────────────── */
+
+  /* ── Pages intérieures ──────────────────────────────────── */
+  .entete { position: absolute; left: 18mm; right: 18mm; top: 14mm; display: flex; justify-content: space-between; align-items: center; font-size: 8.5pt; color: var(--gris); letter-spacing: 0.08em; text-transform: uppercase; }
+  .entete .num { color: var(--terra); font-weight: 700; }
+  .titre { position: absolute; left: 18mm; top: 26mm; right: 18mm; }
+  .titre .n { font-family: var(--sans); font-size: 10pt; letter-spacing: 0.2em; color: var(--terra); font-weight: 700; margin-left: 2mm; }
+  .titre .n::after { content: ""; display: inline-block; width: 14mm; height: 1.2px; background: var(--terra); vertical-align: middle; margin-left: 3mm; }
+  .titre h2 { font-family: var(--serif); font-size: 32pt; color: var(--titre); margin: 2mm 0 0 2mm; font-weight: 600; }
+  .titre p { margin: 3mm 0 0 2mm; font-size: 11pt; color: var(--gris); max-width: 140mm; }
+  .zone { position: absolute; left: 18mm; right: 18mm; }
+  .carte { background: #fff; border: 1px solid var(--bord); border-radius: 5mm; box-shadow: 0 2px 10px rgba(36,29,21,0.05); }
+  .etiquette { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gris); }
+
+  /* Logo : versions */
+  .versions { top: 66mm; display: grid; grid-template-columns: 1.6fr 1fr; gap: 5mm; }
+  .v { height: 52mm; display: flex; align-items: center; justify-content: center; border-radius: 5mm; position: relative; }
+  .v img { max-width: 78%; max-height: 70%; }
+  .v .etiquette { position: absolute; left: 5mm; bottom: 4mm; }
+  .v.clair { background: #fff; border: 1px solid var(--bord); }
+  .v.ivoire { background: var(--ivoire); border: 1px dashed var(--terra-teinte); }
+  .v.terra { background: var(--terra); }
+  .v.terra .etiquette { color: rgba(255,255,255,0.85); }
+  .v.sombre { background: #1c150e; }
+  .v.sombre .etiquette { color: rgba(255,255,255,0.7); }
+  .carre { width: 30mm; height: 30mm; border-radius: 7mm; background: #fff; border: 1px solid var(--bord); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(36,29,21,0.06); margin-bottom: 5mm; }
+  .carre img { width: 86%; max-width: none; max-height: none; }
+  .pastille { background: #fff; border-radius: 30mm; padding: 1.5mm 4mm; width: 78%; display: flex; justify-content: center; }
+  .pastille img { max-width: 100%; max-height: none; }
+
+  /* Zone de protection */
+  .protection { top: 178mm; display: grid; grid-template-columns: 1fr 1.25fr; gap: 6mm; align-items: center; }
+  .schema { height: 46mm; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--bord); border-radius: 5mm; }
+  .schema .cadre { position: relative; padding: 7mm; border: 1.2px dashed var(--terra); border-radius: 3mm; background: repeating-linear-gradient(45deg, var(--terra-doux) 0 2mm, #fff 2mm 4mm); }
+  .schema .cadre img { width: 48mm; display: block; background: #fff; border-radius: 12mm; }
+  .schema .cote { position: absolute; top: 1mm; left: 50%; transform: translateX(-50%); font-family: var(--serif); font-size: 9pt; color: var(--terra); font-style: italic; }
+  .regle { font-family: var(--serif); font-size: 15pt; line-height: 1.35; color: var(--titre); }
+  .regle small { display: block; font-family: var(--sans); font-size: 9.5pt; color: var(--gris); margin-top: 2mm; line-height: 1.45; }
+
+  /* Interdits */
+  .interdits { top: 232mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; }
+  .i { height: 40mm; border-radius: 4mm; background: #fff; border: 1px solid var(--bord); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .i img { width: 78%; }
+  .i .x { position: absolute; top: 2.5mm; right: 2.5mm; width: 6.5mm; height: 6.5mm; border-radius: 50%; background: var(--terra-fonce); color: #fff; font: 700 9pt/6.5mm var(--sans); text-align: center; }
+  .i .etiquette { position: absolute; left: 0; right: 0; bottom: 2.5mm; text-align: center; }
+  .etire img { width: 60%; transform: scaleX(1.4) scaleY(0.75); }
+  .recolore img { filter: hue-rotate(160deg) saturate(1.6); }
+  .ombre img { filter: drop-shadow(3mm 3mm 1.5mm rgba(0,0,0,0.55)); }
+  .fond img { width: 70%; }
+  .fond { background: repeating-linear-gradient(135deg, #3fa34d 0 6mm, #f1c40f 6mm 12mm); }
+
+  /* ── Couleurs ─────────────────────────────────────────────── */
+  .nuancier { top: 62mm; display: grid; grid-template-columns: 1.5fr 1fr 1fr; grid-template-rows: 62mm 40mm; gap: 4mm; }
+  .nu { border-radius: 5mm; padding: 5mm; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; }
+  .nu.grand { grid-row: span 2; }
+  .nu b { font-family: var(--serif); font-size: 15pt; font-weight: 600; }
+  .nu span { font-size: 8.5pt; letter-spacing: 0.04em; opacity: 0.92; margin-top: 1mm; }
+  .nu.clair { color: var(--encre); border: 1px solid var(--bord); }
+  .proportion { top: 176mm; }
+  .barre { display: flex; height: 9mm; border-radius: 3mm; overflow: hidden; border: 1px solid var(--bord); }
+  .barre div { height: 100%; }
+  .legende { display: flex; justify-content: space-between; font-size: 8.5pt; color: var(--gris); margin-top: 2mm; }
+  .note-bleu { top: 205mm; display: flex; gap: 5mm; align-items: center; }
+  .note-bleu .pastille-b { width: 16mm; height: 16mm; border-radius: 50%; background: var(--bleu); flex: none; }
+  .note-bleu p { margin: 0; font-family: var(--serif); font-size: 13pt; color: var(--titre); line-height: 1.35; }
+  .note-bleu small { display: block; font-family: var(--sans); font-size: 9pt; color: var(--gris); margin-top: 1mm; }
+  .jamais { top: 236mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+  .jamais div { height: 26mm; border-radius: 4mm; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8.5pt; color: #fff; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .jamais div::after { content: "✕"; position: absolute; top: 2mm; right: 3mm; font-size: 10pt; }
+
+  /* ── Typographies et ton ─────────────────────────────────── */
+  .typos { top: 60mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .typo { background: #fff; border: 1px solid var(--bord); border-radius: 5mm; padding: 6mm; height: 66mm; position: relative; }
+  .typo .aa { font-size: 54pt; line-height: 1; color: var(--titre); }
+  .typo .nom { font-size: 11pt; font-weight: 600; margin-top: 3mm; color: var(--titre); }
+  .typo .usage { font-size: 9pt; color: var(--gris); margin-top: 1mm; }
+  .typo .ex { position: absolute; left: 6mm; right: 6mm; bottom: 5mm; font-size: 9.5pt; color: var(--encre); border-top: 1px solid var(--bord); padding-top: 2.5mm; }
+  .ton { top: 140mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .t { background: #fff; border: 1px solid var(--bord); border-radius: 5mm; padding: 5mm 6mm; height: 48mm; }
+  .t .ic { width: 9mm; height: 9mm; border-radius: 50%; background: var(--terra-doux); color: var(--terra); font: 700 11pt/9mm var(--serif); text-align: center; }
+  .t h3 { font-family: var(--serif); font-size: 14pt; margin: 3mm 0 1.5mm; color: var(--titre); font-weight: 600; }
+  .t p { margin: 0; font-size: 9.5pt; color: var(--gris); line-height: 1.45; }
+
+  /* ── À faire / à ne pas faire ─────────────────────────────── */
+  .paires { top: 58mm; display: grid; grid-template-rows: repeat(4, 50mm); gap: 4mm; }
+  .paire { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .cas { border-radius: 4mm; padding: 4.5mm 5mm; position: relative; font-size: 9.5pt; line-height: 1.45; }
+  .cas .tag { font-size: 7.5pt; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; }
+  .cas .quoi { font-size: 8pt; color: var(--gris); margin-top: 0.5mm; }
+  .cas q { display: block; margin-top: 3mm; font-family: var(--serif); font-size: 11pt; color: var(--titre); quotes: "« " " »"; }
+  .oui { background: #fff; border: 1.5px solid #3f8a5a; }
+  .oui .tag { color: #2f7148; }
+  .non { background: #fbefe9; border: 1.5px solid var(--terra-fonce); }
+  .non .tag { color: var(--terra-fonce); }
+  .non q { text-decoration: line-through; text-decoration-color: rgba(140,48,16,0.55); }
+
+  /* ── Mention et interdits ─────────────────────────────────── */
+  .mention { top: 60mm; background: var(--terra); color: #fff; border-radius: 6mm; padding: 9mm 9mm 8mm; }
+  .mention .etiquette { color: rgba(255,255,255,0.8); }
+  .mention .phrase { font-family: var(--serif); font-size: 21pt; line-height: 1.25; margin-top: 3mm; }
+  .mention small { display: block; margin-top: 4mm; font-size: 9pt; opacity: 0.9; line-height: 1.45; }
+  .interdits2 { top: 128mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+  .int { background: #fff; border: 1px solid var(--bord); border-radius: 5mm; padding: 5mm; height: 62mm; }
+  .int .x2 { width: 10mm; height: 10mm; border-radius: 50%; background: var(--terra-fonce); color: #fff; font: 700 12pt/10mm var(--sans); text-align: center; }
+  .int h3 { font-family: var(--serif); font-size: 13pt; margin: 3.5mm 0 1.5mm; color: var(--titre); font-weight: 600; line-height: 1.2; }
+  .int p { margin: 0; font-size: 9pt; color: var(--gris); line-height: 1.45; }
+  .controle { top: 200mm; display: grid; grid-template-columns: 1.2fr 1fr; gap: 5mm; }
+  .controle .carte { padding: 6mm; }
+  .controle h3 { font-family: var(--serif); font-size: 14pt; margin: 0 0 2mm; color: var(--titre); font-weight: 600; }
+  .controle p { margin: 0; font-size: 9.5pt; color: var(--gris); line-height: 1.5; }
+  .grand48 { font-family: var(--serif); font-size: 44pt; color: var(--terra); line-height: 1; font-weight: 600; }
+
+  /* ── v2 : habillage éditorial ─────────────────────────────── */
+  h1, h2, h3, .regle, .nu b, .t h3, .cas q, .mention .phrase { font-variation-settings: 'opsz' 96, 'SOFT' 50; letter-spacing: -0.01em; }
+
+  /* Couverture v2 */
+
+  /* Typographies v2 */
+  .typo .aa { font-size: 64pt; }
+  .typo .graisses { display: flex; gap: 4mm; margin-top: 2mm; font-size: 10pt; color: var(--gris); }
+  .couv { background: #16120f; color: #f3ede4; }
+  .couv .bloc { position: absolute; inset: 0; overflow: hidden; }
+  .couv .bloc::before { content: ""; position: absolute; left: -20%; right: -20%; top: -10%; height: 75%; background: radial-gradient(60% 60% at 50% 35%, rgba(224,112,64,0.75) 0%, rgba(198,90,46,0.22) 50%, transparent 80%); }
+  .couv .bloc::after { content: ""; position: absolute; left: 50%; bottom: -70mm; width: 150mm; height: 150mm; transform: translateX(-50%); border-radius: 50%; background: rgba(180,81,42,0.12); filter: blur(30px); }
+  .couv .lignes { position: absolute; left: 22mm; right: 22mm; top: 0; bottom: 0; border-left: 1px solid rgba(243,237,228,0.07); border-right: 1px solid rgba(243,237,228,0.07); }
+  .couv .logo2 { position: absolute; left: 22mm; top: 22mm; background: #fff; border-radius: 30mm; padding: 3mm 7mm; box-shadow: 0 10px 30px -10px rgba(224,112,64,0.55); z-index: 1; }
+  .couv .logo2 img { height: 13mm; display: block; }
+  .couv .kicker2 { position: absolute; left: 22mm; top: 92mm; color: #e07040; font-size: 9pt; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; z-index: 1; }
+  .couv .kicker2::before { content: ""; display: inline-block; width: 12mm; height: 1px; background: #e07040; vertical-align: middle; margin-right: 4mm; }
+  .couv .titre-couv { position: absolute; left: 22mm; right: 22mm; top: 102mm; margin: 0; color: #f3ede4; font-family: var(--serif); font-weight: 500; font-size: 84pt; line-height: 0.9; letter-spacing: -0.03em; z-index: 1; }
+  .couv .titre-couv em { font-style: italic; font-weight: 300; color: #e07040; }
+  .couv .accroche { position: absolute; left: 22mm; right: 50mm; top: 172mm; color: #b8ada0; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 15pt; line-height: 1.35; z-index: 1; }
+  .couv .sommaire { position: absolute; left: 22mm; right: 22mm; top: 206mm; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; z-index: 1; }
+  .couv .sommaire div { background: #1f1a16; border: 1px solid #2a2420; border-radius: 4mm; padding: 4mm 3.5mm; height: 38mm; }
+  .couv .sommaire b { display: block; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 24pt; color: #e07040; line-height: 1; }
+  .couv .sommaire span { display: block; margin-top: 3mm; font-size: 9.5pt; font-weight: 600; color: #f3ede4; }
+  .couv .sommaire small { display: block; margin-top: 1mm; font-size: 7.5pt; color: #9a8f83; line-height: 1.35; }
+  .couv .bas2 { position: absolute; left: 22mm; right: 22mm; bottom: 16mm; display: flex; justify-content: space-between; font-size: 8pt; color: #9a8f83; letter-spacing: 0.06em; border-top: 1px solid #2a2420; padding-top: 4mm; z-index: 1; }
+  .couv .anneau { position: absolute; border-radius: 50%; border: 1px solid rgba(224,112,64,0.35); z-index: 0; }
+  .couv .a1 { width: 170mm; height: 170mm; right: -70mm; top: 20mm; }
+  .couv .a2 { width: 120mm; height: 120mm; right: -45mm; top: 45mm; border-color: rgba(224,112,64,0.22); }
+  .couv .a3 { width: 70mm; height: 70mm; right: -20mm; top: 70mm; background: radial-gradient(circle, rgba(224,112,64,0.35), transparent 70%); border-color: rgba(224,112,64,0.5); }
+  .couv .barre-accent { position: absolute; left: 22mm; top: 162mm; width: 28mm; height: 2.2mm; border-radius: 2mm; background: #e07040; box-shadow: 0 0 18px rgba(224,112,64,0.7); z-index: 1; }
+
+  /* Lecture à l'écran (la page publiée) : les feuilles A4 empilées, un mot pour le PDF. */
+  @media screen {
+    body { background: #e9e4dc; padding: 24px 0; }
+    .page { margin: 0 auto 24px; box-shadow: 0 10px 30px -12px rgba(36,29,21,0.35); }
+    .bandeau-ecran { max-width: 210mm; margin: 0 auto 18px; font: 500 15px/1.5 'Manrope', sans-serif; color: #241d15; }
+  }
+  @media print { .bandeau-ecran { display: none; } }
+  .pied { position: absolute; left: 18mm; right: 18mm; bottom: 10mm; font-size: 7.5pt; color: var(--gris); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<p class="bandeau-ecran">Charte de marque des apporteurs d'affaires du réseau Axion-IA (contrat, article 22 bis). Pour l'enregistrer en PDF : menu Imprimer, puis « Enregistrer au format PDF ».</p>
+
+<!-- PAGE 1 — COUVERTURE -->
+<section class="page couv">
+  <div class="bloc">
+    <div class="lignes"></div>
+    <div class="anneau a1"></div><div class="anneau a2"></div><div class="anneau a3"></div>
+    <div class="barre-accent"></div>
+    <div class="logo2"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt="Axion-IA"></div>
+    <div class="kicker2">Réseau d'apporteurs d'affaires</div>
+    <h1 class="titre-couv">Charte<br><em>de marque</em></h1>
+    <div class="accroche">Parler d'Axion-IA avec la même exigence que nous : soigné, sobre, juste.</div>
+  </div>
+  <div class="sommaire">
+    <div><b>01</b><span>Le logo</span><small>Versions, espace, interdits</small></div>
+    <div><b>02</b><span>Les couleurs</span><small>Codes et proportions</small></div>
+    <div><b>03</b><span>Écriture et ton</span><small>Polices, voix</small></div>
+    <div><b>04</b><span>À faire, à éviter</span><small>Exemples concrets</small></div>
+    <div><b>05</b><span>Les règles</span><small>Mention et interdits</small></div>
+  </div>
+  <div class="bas2"><span>Contrat d'apporteur — article 22 bis</span><span>Version du 9 octobre 2026</span></div>
+</section>
+
+<!-- PAGE 2 — LE LOGO -->
+<section class="page">
+  <div class="entete"><span>Charte de marque · Axion-IA</span><span class="num">01 — Le logo</span></div>
+  <div class="titre">
+    <div class="n">01</div>
+    <h2>Le logo</h2>
+    <p>Toujours le fichier fourni, jamais redessiné : une version couleur, une version blanche.</p>
+  </div>
+
+  <div class="zone versions">
+    <div class="v clair"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="etiquette">Pastille · fond clair</span></div>
+    <div class="v ivoire"><div class="carre"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""></div><span class="etiquette">Format carré</span></div>
+    <div class="v terra"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="etiquette">Sur terracotta</span></div>
+    <div class="v sombre"><img src="/images/axion-ia-logo-vectoriel-blanc-fond-sombre.svg" alt=""><span class="etiquette">Version blanche · fond sombre</span></div>
+  </div>
+
+  <div class="zone protection">
+    <div class="schema"><div class="cadre"><span class="cote">x</span><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""></div></div>
+    <div class="regle">Laissez respirer le logo.
+      <small>Autour de la pastille, gardez un espace libre au moins égal à la hauteur du « x » d'Axion : ni texte, ni image, ni bord de page. Taille minimale : 30 mm de large à l'impression, 120 pixels à l'écran.</small>
+    </div>
+  </div>
+
+  <div class="zone interdits">
+    <div class="i etire"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="x">✕</span><span class="etiquette">Déformer</span></div>
+    <div class="i recolore"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="x">✕</span><span class="etiquette">Recolorer</span></div>
+    <div class="i ombre"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="x">✕</span><span class="etiquette">Ombres, effets</span></div>
+    <div class="i fond"><img src="/images/axion-ia-logo-vectoriel-couleur.svg" alt=""><span class="x">✕</span><span class="etiquette" style="color:#fff">Fond chargé</span></div>
+  </div>
+
+  <div class="pied"><span>Logo à télécharger dans « Mes outils de communication » : SVG (impression) et PNG (écrans, réseaux).</span><span>2 / 6</span></div>
+</section>
+
+<!-- PAGE 3 — LES COULEURS -->
+<section class="page">
+  <div class="entete"><span>Charte de marque · Axion-IA</span><span class="num">02 — Les couleurs</span></div>
+  <div class="titre"><div class="n">02</div><h2>Les couleurs</h2><p>Un terracotta chaud sur un fond ivoire. Rien d'autre.</p></div>
+  <div class="zone nuancier">
+    <div class="nu grand" style="background:var(--terra)"><b>Terracotta</b><span>#C24A1B · couleur principale</span></div>
+    <div class="nu" style="background:var(--terra-fonce)"><b>Terracotta foncé</b><span>#8C3010</span></div>
+    <div class="nu" style="background:var(--encre)"><b>Encre</b><span>#241D15 · texte</span></div>
+    <div class="nu clair" style="background:var(--ivoire)"><b>Ivoire</b><span>#F6F1E8 · fond</span></div>
+    <div class="nu clair" style="background:var(--terra-doux)"><b>Halo</b><span>#F7EBE2 · encadrés</span></div>
+  </div>
+  <div class="zone proportion">
+    <div class="etiquette" style="margin-bottom:2mm">Les bonnes proportions</div>
+    <div class="barre"><div style="width:60%;background:var(--ivoire)"></div><div style="width:20%;background:var(--encre)"></div><div style="width:15%;background:var(--terra)"></div><div style="width:5%;background:var(--terra-fonce)"></div></div>
+    <div class="legende"><span>Fond ivoire ou blanc · 60 %</span><span>Texte · 20 %</span><span>Terracotta · 15 %</span><span>Accent · 5 %</span></div>
+  </div>
+  <div class="zone note-bleu"><div class="pastille-b"></div><p>Le bleu ne sert qu'aux liens.<small>#1A4DD9 — jamais en fond, jamais en titre, jamais sur le logo.</small></p></div>
+  <div class="zone jamais">
+    <div style="background:linear-gradient(135deg,#7b2ff7,#f107a3)">Dégradés vifs</div>
+    <div style="background:#00b050">Vert, jaune, néon</div>
+    <div style="background:#111;color:#ffd400">Fond noir et jaune</div>
+  </div>
+  <div class="pied"><span>Sur un écran, les codes s'utilisent tels quels ; à l'impression, demandez l'équivalent à votre imprimeur.</span><span>3 / 6</span></div>
+</section>
+
+<!-- PAGE 4 — TYPOGRAPHIES ET TON -->
+<section class="page">
+  <div class="entete"><span>Charte de marque · Axion-IA</span><span class="num">03 — Écriture et ton</span></div>
+  <div class="titre"><div class="n">03</div><h2>Écriture et ton</h2><p>Les deux polices du site, une seule voix : sobre, claire, vouvoyée. Si elles manquent dans votre outil : Georgia et Arial.</p></div>
+  <div class="zone typos">
+    <div class="typo"><div class="aa" style="font-family:var(--serif)">Aa</div><div class="nom" style="font-family:var(--serif)">Fraunces</div><div class="usage">Titres et phrases d'accroche</div><div class="graisses" style="font-family:var(--serif)"><span style="font-weight:300;font-style:italic">Light italique</span><span style="font-weight:500">Medium</span><span style="font-weight:600">Semibold</span></div><div class="ex" style="font-family:var(--serif);font-size:12pt">L'IA appliquée à vos vrais dossiers.</div></div>
+    <div class="typo"><div class="aa" style="font-family:var(--sans)">Aa</div><div class="nom">Manrope</div><div class="usage">Texte courant, boutons, légendes</div><div class="graisses"><span style="font-weight:400">Regular</span><span style="font-weight:600">Semibold</span></div><div class="ex">Une journée sur site, pour un groupe de 2 à 15 personnes.</div></div>
+  </div>
+  <div class="zone ton">
+    <div class="t"><div class="ic">1</div><h3>Vous, toujours</h3><p>On vouvoie chaque lecteur, dans chaque message, même sur les réseaux sociaux.</p></div>
+    <div class="t"><div class="ic">2</div><h3>Sobre et exact</h3><p>Pas de superlatifs, pas d'emoji en rafale, pas de majuscules criées. Rien d'inexact sur Axion-IA ou ses prestations.</p></div>
+    <div class="t"><div class="ic">3</div><h3>Aucun prix, aucune promesse</h3><p>Ni prix, ni remise, ni délai, ni résultat, ni financement (articles 8.3 et 22 bis.3). Pour un chiffre, on renvoie vers Axion-IA.</p></div>
+    <div class="t"><div class="ic">4</div><h3>Vous parlez en votre nom</h3><p>Vous êtes apporteur d'affaires indépendant : jamais salarié, jamais représentant d'Axion-IA.</p></div>
+  </div>
+  <div class="pied"><span>Article 22 bis.3 du contrat : chaque communication est soignée et conforme à l'image de la Société.</span><span>4 / 6</span></div>
+</section>
+
+<!-- PAGE 5 — À FAIRE / À NE PAS FAIRE -->
+<section class="page">
+  <div class="entete"><span>Charte de marque · Axion-IA</span><span class="num">04 — À faire, à éviter</span></div>
+  <div class="titre"><div class="n">04</div><h2>À faire, à éviter</h2></div>
+  <div class="zone paires">
+    <div class="paire">
+      <div class="cas oui"><div class="tag">✓ À faire</div><div class="quoi">Publication sur un réseau social</div><q>J'accompagne des dirigeants qui veulent mettre l'IA au travail dans leur équipe. Je suis apporteur d'affaires indépendant pour Axion-IA : si le sujet vous intéresse, écrivez-moi.</q></div>
+      <div class="cas non"><div class="tag">✕ À éviter</div><div class="quoi">Prix, financement, promesse</div><q>Formation IA à 1 900 €, financée à 100 % par votre OPCO, résultats garantis en 15 jours !</q></div>
+    </div>
+    <div class="paire">
+      <div class="cas oui"><div class="tag">✓ À faire</div><div class="quoi">Votre présentation</div><q>Marie Dupont — apporteuse d'affaires indépendante, réseau Axion-IA</q></div>
+      <div class="cas non"><div class="tag">✕ À éviter</div><div class="quoi">Titre trompeur</div><q>Marie Dupont — Responsable commerciale Axion-IA</q></div>
+    </div>
+    <div class="paire">
+      <div class="cas oui"><div class="tag">✓ À faire</div><div class="quoi">Un message à une personne que vous connaissez</div><q>Bonjour Paul, suite à notre échange de mardi, je vous mets en relation avec Axion-IA pour votre projet de formation.</q></div>
+      <div class="cas non"><div class="tag">✕ À éviter</div><div class="quoi">Envoi en masse ou automatisé</div><q>500 messages identiques envoyés à une liste achetée.</q></div>
+    </div>
+    <div class="paire">
+      <div class="cas oui"><div class="tag">✓ À faire</div><div class="quoi">Un visuel</div><q>Le logo du pack, sur fond ivoire ou blanc, avec de l'espace autour.</q></div>
+      <div class="cas non"><div class="tag">✕ À éviter</div><div class="quoi">Logo modifié, page au nom d'Axion-IA</div><q>Un logo recoloré, ou une page « Axion-IA Lyon » créée par vous.</q></div>
+    </div>
+  </div>
+  <div class="pied"><span>En cas de doute, envoyez votre projet à Axion-IA avant de le publier.</span><span>5 / 6</span></div>
+</section>
+
+<!-- PAGE 6 — MENTION OBLIGATOIRE ET INTERDITS -->
+<section class="page">
+  <div class="entete"><span>Charte de marque · Axion-IA</span><span class="num">05 — Les règles</span></div>
+  <div class="titre"><div class="n">05</div><h2>Les règles</h2></div>
+  <div class="zone mention">
+    <div class="etiquette">Mention obligatoire, sur chaque communication</div>
+    <div class="phrase">« Apporteur d'affaires indépendant — réseau Axion-IA »</div>
+    <small>Dans une publication, une vidéo, une signature d'e-mail ou un support imprimé. Jamais « salarié », « représentant » ou « commercial d'Axion-IA ».</small>
+  </div>
+  <div class="zone interdits2">
+    <div class="int"><div class="x2">✕</div><h3>Acheter le mot-clé « Axion-IA »</h3><p>Aucun achat de mot-clé ni de référencement reprenant le nom de la Société.</p></div>
+    <div class="int"><div class="x2">✕</div><h3>Envois en masse ou automatisés</h3><p>Aucun message non sollicité envoyé en nombre ou par un robot.</p></div>
+    <div class="int"><div class="x2">✕</div><h3>Le compte personnel de formation</h3><p>Aucune communication relative au CPF.</p></div>
+  </div>
+  <div class="zone controle">
+    <div class="carte"><h3>Le droit d'usage du logo</h3><p>Personnel, gratuit, révocable, pour la durée du contrat et pour ces seules communications. Il ne permet ni de modifier le logo, ni de déposer une marque ou un nom de domaine, ni de créer un compte ou une page au nom d'Axion-IA.</p></div>
+    <div class="carte" style="text-align:center"><div class="grand48">48 h</div><p style="margin-top:2mm">pour modifier ou retirer une communication jugée non conforme, à la demande d'Axion-IA.</p></div>
+  </div>
+  <div class="pied"><span>Contrat d'apporteur, article 22 bis (22 bis.2, 22 bis.4 et 22 bis.5).</span><span>6 / 6</span></div>
+</section>
+
+</body>
+</html>

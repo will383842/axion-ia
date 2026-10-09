@@ -78,5 +78,6 @@ describe("pour un apporteur signé", () => {
     expect(t).toContain("Apporteuse d'affaires indépendante");
     expect(t).toContain("Marie Dupont");
     expect(html).toContain(`/apporteur/dossier/${ID}/jeton-valide`);
+    expect(html).toContain("/documents/apporteurs/charte-de-marque/index.html");
   });
 });
