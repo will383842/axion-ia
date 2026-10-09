@@ -176,8 +176,9 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
 /**
  * « Ouvrir mon espace » (décision de Will, 2026-10-09) : chaque e-mail adressé à l'apporteur
  * porte son lien personnel, que le gabarit de base affiche en bas de la carte. Le dernier
- * e-mail reçu suffit donc à retrouver son espace. Jamais pour un dossier refusé (le lien
- * mène à une page neutre) ni pour un apporteur RETIRÉ du réseau (relecture sécurité, a1 :
+ * e-mail reçu suffit donc à retrouver son espace. Jamais pour un dossier refusé ou résilié
+ * (le lien mène à une page neutre ; vérifié sur la FICHE, pas seulement sur le gabarit) ni
+ * pour un apporteur RETIRÉ du réseau (relecture sécurité, a1 :
  * le retrait change la version du lien pour le couper — on ne le recalcule pas) ;
  * fail-soft : sans lien, l'e-mail part tel quel.
  */
@@ -191,9 +192,12 @@ async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown
     if (!apporteurId || (await retraitDe(apporteurId))) return e.payload;
     const a = await prisma.apporteurReseau.findUnique({
       where: { id: apporteurId },
-      select: { versionLien: true },
+      select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
     });
-    const lien = a ? urlDossier(apporteurId, a.versionLien) : null;
+    if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
+      return e.payload;
+    }
+    const lien = urlDossier(apporteurId, a.versionLien);
     return lien ? { ...e.payload, lienEspace: lien } : e.payload;
   } catch {
     return e.payload;

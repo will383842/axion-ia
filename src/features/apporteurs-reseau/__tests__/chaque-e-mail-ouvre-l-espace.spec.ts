@@ -48,7 +48,12 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.retraitDe.mockResolvedValue(null);
   h.enqueueEmail.mockResolvedValue({ enqueued: true });
-  h.apporteur.mockResolvedValue({ versionLien: 2 });
+  h.apporteur.mockResolvedValue({
+    versionLien: 2,
+    statut: "signe",
+    refuseAt: null,
+    resilieAt: null,
+  });
   h.urlDossier.mockReturnValue(LIEN);
 });
 
@@ -77,6 +82,27 @@ describe("le lien de l'espace accompagne les e-mails à l'apporteur", () => {
     await envoi("apporteur-dossier-refuse");
     expect(payloadEnvoye()).toEqual({ prenom: "Claire" });
   });
+
+  it.each([
+    ["statut refuse", { statut: "refuse" }],
+    ["statut resilie", { statut: "resilie" }],
+    ["refuseAt posé", { refuseAt: new Date() }],
+    ["resilieAt posé", { resilieAt: new Date() }],
+  ] as const)(
+    "fiche refusée ou résiliée (%s) : jamais, vérifié sur la FICHE et pas sur le gabarit",
+    async (_cas, fiche) => {
+      h.apporteur.mockResolvedValue({
+        versionLien: 2,
+        statut: "signe",
+        refuseAt: null,
+        resilieAt: null,
+        ...fiche,
+      });
+      expect(await envoi("apporteur-releve")).toBe("envoye");
+      expect(payloadEnvoye()).toEqual({ prenom: "Claire" });
+      expect(h.urlDossier).not.toHaveBeenCalled();
+    },
+  );
 
   it("alerte interne à Williams : jamais", async () => {
     await envoi("apporteur-dossier-a-verifier");
