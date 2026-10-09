@@ -531,7 +531,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Console › Commissions › Commandes à attribuer : la commande va à un autre établissement, ou à aucun apporteur (art. 3.1)",
     destinataire: "l'apporteur candidat écarté",
-    source: "features/apporteurs-reseau/actions-etablissement.ts",
+    source: "features/apporteurs-reseau/notification-attribution.ts",
   },
   "apporteur-commande-signee": {
     categorie: "recrutement",
