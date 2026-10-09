@@ -48,7 +48,8 @@ export const TEXTES = {
   iban: "IBAN (pour vos commissions)",
   ibanEnregistre: (masque: string) => `Enregistré : ${masque}`,
   ibanRemplacer: "Laissez vide pour garder celui-ci.",
-  ibanInvalide: "Cet IBAN n'est pas valide : vérifiez-le.",
+  ibanInvalide:
+    "Cet IBAN n'est pas valide, ou n'est pas celui d'un compte de la zone SEPA (Europe), où nous versons les commissions : vérifiez-le.",
   rechercherDabord: "Recherchez d'abord votre numéro SIRET.",
   // Décision de Will (07/10) : dire COMMENT obtenir un SIREN, sans détail fiscal ni délai
   // autre que « quelques jours ». La règle ne change pas : le SIREN reste obligatoire.
@@ -62,11 +63,16 @@ export const TEXTES = {
   manqueIban: "un IBAN valide",
   sansSirenTitre: "Pas encore de numéro SIREN ?",
   sansSirenTexte:
-    "Pour recevoir vos commissions, il vous faut un numéro SIREN. Le plus simple : créer une micro-entreprise. C'est gratuit et cela se fait en ligne, en une vingtaine de minutes, sur le site officiel",
+    "Si vous résidez en France : pour recevoir vos commissions, il vous faut un numéro SIREN. Le plus simple : créer une micro-entreprise. C'est gratuit et cela se fait en ligne, en une vingtaine de minutes, sur le site officiel",
   sansSirenLien: "formalites.entreprises.gouv.fr",
   sansSirenUrl: "https://formalites.entreprises.gouv.fr",
   sansSirenSuite:
     "Vous recevez votre numéro SIREN sous quelques jours. Votre dossier reste enregistré : revenez avec votre numéro.",
+  // Décision de Will (09/10/2026) : le contrat d'apporteur est réservé à la France. Un résident
+  // étranger n'est pas refusé sèchement : il est prévenu, et peut écrire (contrat à part plus tard).
+  horsFranceTitre: "Vous résidez hors de France ?",
+  horsFranceTexte:
+    "Ce contrat est réservé aux personnes qui résident fiscalement en France et y exercent sous un numéro SIRET actif. Créer une micro-entreprise en France ne suffit pas si vous résidez à l'étranger. Écrivez-nous : nous vous répondrons si nous ouvrons le réseau à votre pays.",
   // Étape 3
   ajouter: "Ajouter",
   remplacer: "Remplacer",

@@ -46,7 +46,8 @@ const REPONSE_CONTESTATION_JOURS = 30;
 const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
 const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
-const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
+// Analyse du 09/10 (point 19) : l'e-mail au prospect renvoie à SA section, pas à celle des candidats.
+const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#personnes-presentees-par-un-apporteur`;
 
 const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 
@@ -230,6 +231,7 @@ export const COPY_DEMARRAGE = {
     info: (responsable: string, adresse: string) =>
       `Vos coordonnées nous ont été transmises par la personne citée plus haut. Qui les traite : ${responsable}, ${adresse}. ` +
       "Pourquoi : vous présenter nos services et suivre notre relation avec la personne qui nous a mis en relation. " +
+      "Sur quelle base : notre intérêt légitime à présenter nos services aux professionnels (RGPD, art. 6.1.f). " +
       "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",

@@ -553,6 +553,13 @@ export function DossierEnLigne({
                 .
               </p>
               <p className="text-fg-soft mt-1">{TEXTES.sansSirenSuite}</p>
+              <p className="mt-3 font-semibold">{TEXTES.horsFranceTitre}</p>
+              <p className="text-fg-soft mt-1">
+                {TEXTES.horsFranceTexte}{" "}
+                <a href={`mailto:${ADRESSE_CONTACT}`} className="underline">
+                  {ADRESSE_CONTACT}
+                </a>
+              </p>
             </div>
           ) : null}
 

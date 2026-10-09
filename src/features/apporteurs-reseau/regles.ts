@@ -10,6 +10,7 @@
  * et les tâches de fond.
  */
 
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
 
 import {
@@ -108,7 +109,8 @@ export function normaliserNaf(naf: string | null | undefined): string | null {
   return `${s.slice(0, 2)}.${s.slice(2)}`;
 }
 
-export type RefusAdmission = "siren_inactif" | "siren_etranger" | "profession_exclue";
+export type RefusAdmission =
+  "siren_inactif" | "siren_etranger" | "profession_exclue" | "siren_de_la_societe";
 
 /**
  * Ce que le registre dit de l'entreprise de l'apporteur suffit-il à l'admettre ?
@@ -119,7 +121,11 @@ export function jugerAdmission(e: {
   active: boolean;
   francaise: boolean;
   naf: string | null;
+  siren?: string | null;
 }): { ok: true; aRevoir: boolean } | { ok: false; motif: RefusAdmission } {
+  // Analyse du 09/10 (point 3) : un contrat d'apporteur ne se conclut jamais avec AXION IA elle-même.
+  if (e.siren && e.siren.replace(/\s+/g, "") === IDENTITE_LEGALE.siren)
+    return { ok: false, motif: "siren_de_la_societe" };
   if (!e.francaise) return { ok: false, motif: "siren_etranger" };
   if (!e.active) return { ok: false, motif: "siren_inactif" };
   const naf = normaliserNaf(e.naf);
@@ -136,6 +142,8 @@ export const LIBELLE_REFUS_ADMISSION: Readonly<Record<RefusAdmission, string>> =
     "Le réseau est ouvert aux activités immatriculées en France. Ce numéro ne correspond pas à une entreprise française.",
   profession_exclue:
     "Les règles de votre profession interdisent de percevoir une commission pour un apport de clientèle : nous ne pouvons pas vous proposer ce contrat.",
+  siren_de_la_societe:
+    "Ce numéro est celui d'Axion-IA : indiquez le numéro SIRET de votre propre activité.",
 };
 
 /** Ce qui manque encore pour pouvoir signer. */

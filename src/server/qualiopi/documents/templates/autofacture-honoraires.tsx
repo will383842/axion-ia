@@ -139,6 +139,11 @@ export interface AutofactureData {
   /** Référence du mandat de facturation, citée dans l'encart (ex. annexe 2 du contrat). */
   mandatReference?: string;
   /**
+   * Comment le mandat prend fin, tel que le dit le contrat (défaut : « révocable à tout moment »).
+   * Réseau d'apporteurs : préavis de trente jours (annexe 2.5) — le PDF ne doit pas le contredire.
+   */
+  mandatFin?: string;
+  /**
    * AVOIR d'autofacture (réseau d'apporteurs, art. 4.5) : même série de numéros, montants
    * positifs, renvoi à la facture rectifiée. Sans échéance ni mentions de retard : un avoir
    * ne se paie pas, il vient en déduction (`imputation`).
@@ -193,7 +198,7 @@ export function AutofactureHonorairesPdf({ data }: { data: AutofactureData }): R
             {`Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas échéant, de la TVA mentionnée sur ${avoir ? "le présent avoir" : "la présente facture"}.`}
           </Text>
           <Text style={styles.legalLine}>
-            {`${piece} lui est ${avoir ? "transmis" : "transmise"} dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, ${avoir ? "il est réputé accepté" : "elle est réputée acceptée"}. Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises.`}
+            {`${piece} lui est ${avoir ? "transmis" : "transmise"} dès son émission. Il dispose de ${delaiJours} jours pour en contester le contenu, soit jusqu'au ${data.contestationAvant} inclus ; à défaut, ${avoir ? "il est réputé accepté" : "elle est réputée acceptée"}. ${data.mandatFin ?? "Le mandat de facturation est révocable à tout moment par écrit, sans effet rétroactif sur les factures déjà émises."} Catégorie de l'opération : prestation de services.`}
           </Text>
         </LegalCallout>
 
