@@ -234,12 +234,24 @@ describe("dossier en ligne — valeurs du contrat", () => {
       statutJuridique: "micro_entrepreneur",
       siren: "732829320",
       siege: "1 rue des Alpes 38000 Grenoble",
-      qualite: "entrepreneur individuel",
+      // Contrat 2.7 (point 1) : commerçant ou non selon l'immatriculation au RCS.
+      qualite:
+        "entrepreneur individuel commerçant s'il est immatriculé au registre du commerce et des sociétés, entrepreneur individuel non commerçant dans le cas contraire",
       grilleDate: "5 octobre 2026",
     });
     expect(
       valeursDuContrat(dossierComplet({ statutJuridique: "sas" }) as never, new Date()).qualite,
-    ).toBe("société commerciale");
+    ).toBe(
+      "société commerciale, représentée par Éloïse LEFÈVRE, qui déclare avoir le pouvoir de l'engager",
+    );
+    expect(
+      valeursDuContrat(
+        dossierComplet({ statutJuridique: "sas", denomination: "ALPES CONSEIL" }) as never,
+        new Date(),
+      ).qualite,
+    ).toBe(
+      "société commerciale ALPES CONSEIL, représentée par Éloïse LEFÈVRE, qui déclare avoir le pouvoir de l'engager",
+    );
   });
 
   it("clé R2 et navigateur résumé", () => {
