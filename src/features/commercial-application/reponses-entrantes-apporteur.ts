@@ -34,6 +34,9 @@
 //     courant : elle répond à « il vous manque une étape ». Ce message-là n'est
 //     pas enregistré (le relevé ne garde que les réponses à une invitation), il
 //     arrête seulement les relances. Une réponse automatique n'arrête rien.
+//     🔑 L'annulation est INJECTÉE par le worker (`annulerRelances`) : la file
+//     d'e-mails tire `next-auth`, et ce module doit rester hors de Next (garde
+//     `email-worker.opposition.graphe-worker.spec.ts`).
 //
 // ── Réponse automatique ───────────────────────────────────────────────────
 // Enregistrée, marquée `auto`, et elle n'arrête RIEN : un « je suis absent »
@@ -64,7 +67,9 @@ import {
   type MessageZoho,
 } from "@/server/zoho-mail/client";
 import { GABARIT_INVITATION } from "./relance-invitation-etat";
-import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
+
+/** Retire les relances d'attente d'une adresse (`annulerRelancesLeadApporteur`). */
+export type AnnulerRelances = (email: string, motif: string) => Promise<unknown>;
 
 /** Motif écrit au journal des envois pour chaque relance retirée. */
 export const MOTIF_ANNULATION_REPONSE = "Envoi annulé : la personne a répondu par e-mail.";
@@ -240,9 +245,13 @@ async function rattacher(
  * Best-effort : un retrait raté n'interrompt pas le relevé (la relance repart
  * au pire une fois, comme avant), et ne fait pas reculer le curseur.
  */
-async function arreterRelancesAttente(adresse: string): Promise<void> {
+async function arreterRelancesAttente(
+  annuler: AnnulerRelances | undefined,
+  adresse: string,
+): Promise<void> {
+  if (!annuler) return;
   try {
-    await annulerRelancesLeadApporteur(adresse, MOTIF_ANNULATION_REPONSE);
+    await annuler(adresse, MOTIF_ANNULATION_REPONSE);
   } catch (e) {
     console.warn(
       "[reponses-entrantes] relances d'attente non retirées :",
@@ -281,7 +290,7 @@ async function notifier(r: Rattachement, auto: boolean, objet: string): Promise<
 }
 
 export async function passerReponsesEntrantes(
-  opts: { maintenant?: Date; client?: ClientZohoMail } = {},
+  opts: { maintenant?: Date; client?: ClientZohoMail; annulerRelances?: AnnulerRelances } = {},
 ): Promise<CompteRenduReponses> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return vide("build");
 
@@ -406,7 +415,7 @@ export async function passerReponsesEntrantes(
       }
       if (!auto) {
         const adresse = adresseExpediteur(m.fromAddress);
-        if (adresse) await arreterRelancesAttente(adresse);
+        if (adresse) await arreterRelancesAttente(opts.annulerRelances, adresse);
       }
       await notifier(r, auto, objet);
     }
@@ -416,7 +425,7 @@ export async function passerReponsesEntrantes(
   // page vidéo qui répond à « il vous manque une étape ») : rien n'est
   // enregistré, mais une réponse humaine arrête ses relances d'attente. Les
   // en-têtes décident d'une réponse automatique, comme plus haut.
-  for (const h of horsInvitation) {
+  for (const h of opts.annulerRelances ? horsInvitation : []) {
     let entetes: Entetes | null = null;
     try {
       entetes = await client.lireEntetes(h.message.folderId, h.message.messageId);
@@ -424,7 +433,7 @@ export async function passerReponsesEntrantes(
       entetes = null;
     }
     if (estReponseAutomatique({ entetes, objet: objetEnregistre(h.message.subject) })) continue;
-    await arreterRelancesAttente(h.adresse);
+    await arreterRelancesAttente(opts.annulerRelances, h.adresse);
   }
 
   // Le curseur n'avance que sur un passage SANS erreur : un message raté est

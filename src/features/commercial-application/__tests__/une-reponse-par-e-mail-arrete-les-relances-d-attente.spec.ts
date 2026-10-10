@@ -49,9 +49,6 @@ vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: (v: string | null) => v,
 }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn(async () => ({ ok: true })) }));
-vi.mock("../relances-lead-apporteur", () => ({
-  annulerRelancesLeadApporteur: (...a: unknown[]) => db.annuler(...a),
-}));
 
 import { MOTIF_ANNULATION_REPONSE, passerReponsesEntrantes } from "../reponses-entrantes-apporteur";
 import { GABARIT_INVITATION_APPORTEUR } from "../invitation-apporteur";
@@ -106,7 +103,11 @@ beforeEach(() => {
 
 describe("R6 — une réponse par e-mail arrête les relances d'attente", () => {
   it("🔴 un lead de la page vidéo, pas encore invité, répond : ses relances A1/A2/A3 sont annulées", async () => {
-    await passerReponsesEntrantes({ client: client([message()]), maintenant: MAINTENANT });
+    await passerReponsesEntrantes({
+      annulerRelances: (...a) => db.annuler(...a),
+      client: client([message()]),
+      maintenant: MAINTENANT,
+    });
     expect(db.annuler).toHaveBeenCalledTimes(1);
     expect(db.annuler).toHaveBeenCalledWith("camille@exemple.fr", MOTIF_ANNULATION_REPONSE);
     expect(MOTIF_ANNULATION_REPONSE).toBe("Envoi annulé : la personne a répondu par e-mail.");
@@ -125,13 +126,18 @@ describe("R6 — une réponse par e-mail arrête les relances d'attente", () => 
         sentAt: new Date("2026-10-08T12:00:00Z"),
       },
     ];
-    await passerReponsesEntrantes({ client: client([message()]), maintenant: MAINTENANT });
+    await passerReponsesEntrantes({
+      annulerRelances: (...a) => db.annuler(...a),
+      client: client([message()]),
+      maintenant: MAINTENANT,
+    });
     expect(db.entrantes).toHaveLength(1);
     expect(db.annuler).toHaveBeenCalledWith("camille@exemple.fr", MOTIF_ANNULATION_REPONSE);
   });
 
   it("une réponse AUTOMATIQUE (absence) n'arrête rien", async () => {
     await passerReponsesEntrantes({
+      annulerRelances: (...a) => db.annuler(...a),
       client: client([message()], { "m-1": AUTO }),
       maintenant: MAINTENANT,
     });
@@ -140,6 +146,7 @@ describe("R6 — une réponse par e-mail arrête les relances d'attente", () => 
 
   it("un message ANTÉRIEUR à la fiche n'est pas une réponse : il n'arrête rien", async () => {
     await passerReponsesEntrantes({
+      annulerRelances: (...a) => db.annuler(...a),
       client: client([message({ receivedAt: new Date("2026-10-07T09:00:00Z") })]),
       maintenant: MAINTENANT,
     });
@@ -149,6 +156,17 @@ describe("R6 — une réponse par e-mail arrête les relances d'attente", () => 
   it("un expéditeur inconnu ou une fiche qui n'est pas apporteur n'arrête rien", async () => {
     db.submissions = [leadVideo({ details: { unifiedType: "contact" } })];
     const c = client([message(), message({ messageId: "m-2", fromAddress: "x@ailleurs.fr" })]);
+    await passerReponsesEntrantes({
+      annulerRelances: (...a) => db.annuler(...a),
+      client: c,
+      maintenant: MAINTENANT,
+    });
+    expect(db.annuler).not.toHaveBeenCalled();
+    expect(c.lireEntetes).not.toHaveBeenCalled();
+  });
+
+  it("sans annulation injectée (appel hors worker), rien n'est retiré ni lu en plus", async () => {
+    const c = client([message()]);
     await passerReponsesEntrantes({ client: c, maintenant: MAINTENANT });
     expect(db.annuler).not.toHaveBeenCalled();
     expect(c.lireEntetes).not.toHaveBeenCalled();
