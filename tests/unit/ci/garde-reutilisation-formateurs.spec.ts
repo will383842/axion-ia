@@ -69,7 +69,7 @@ const REGLES: ReadonlyArray<Regle> = [
     id: "hmac",
     motif: /\bcreateHmac\b/g,
     message: () =>
-      "réutilisez la fabrique de liens signés (src/features/apporteurs-reseau/jeton.ts ou son module commun) au lieu de recréer une signature `createHmac`",
+      "réutilisez la fabrique de liens signés (src/lib/security/lien-signe.ts) au lieu de recréer une signature `createHmac`",
   },
   {
     id: "registre",
@@ -209,7 +209,7 @@ describe("⛔ formateurs indépendants : ne rien recréer (ADR 0066, lot X3)", (
 
   it("témoin : chaque détecteur reconnaît l'original dans son module de référence", () => {
     const references: ReadonlyArray<[string, string]> = [
-      ["hmac", "src/features/apporteurs-reseau/jeton.ts"],
+      ["hmac", "src/lib/security/lien-signe.ts"],
       ["registre", "src/features/apporteurs-reseau/annuaire.ts"],
       ["queue", "src/server/queue/queues.ts"],
       ["fonction", "src/features/apporteurs-reseau/regles-dossier.ts"],
@@ -290,7 +290,7 @@ describe("test du test : une violation fait échouer la fonction de contrôle", 
       "import-apporteurs",
     ]);
     for (const f of fautes) expect(f).toMatch(/réutilisez .+ au lieu d/);
-    expect(fautes[0]).toContain("src/features/apporteurs-reseau/jeton.ts");
+    expect(fautes[0]).toContain("src/lib/security/lien-signe.ts");
     expect(fautes[1]).toContain("src/features/apporteurs-reseau/annuaire.ts");
     expect(fautes[11]).toContain("src/lib/pii-crypto.ts");
     expect(fautes[12]).toContain("src/app/formateur/dossier/page.tsx:1");

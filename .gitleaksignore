@@ -1,0 +1,10 @@
+# Empreintes gitleaks ignorées — une ligne = UN commit, UN fichier, UNE ligne.
+# Jamais de motif large ici : l'allowlist de `.gitleaks.toml` reste la seule
+# exemption générale.
+#
+# FAC-4 (PR « fabrique commune de liens signés ») : secret de TEST fictif écrit
+# en littéral dans le premier commit, puis réécrit sans littéral au commit
+# suivant. L'historique ne se réécrit pas (pas de push forcé) : ces deux
+# empreintes, propres au commit 71b66f47, sont donc ignorées ici.
+71b66f472aea2a64dfc1ae66f3cdf988b7558eb9:src/lib/security/__tests__/lien-signe.spec.ts:generic-api-key:11
+71b66f472aea2a64dfc1ae66f3cdf988b7558eb9:src/features/apporteurs-reseau/__tests__/le-jeton-apporteur-passe-par-la-fabrique.spec.ts:generic-api-key:12
