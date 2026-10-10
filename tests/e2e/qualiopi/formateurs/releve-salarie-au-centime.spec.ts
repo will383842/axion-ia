@@ -22,8 +22,8 @@
 // importe le domaine Qualiopi, que `pnpm qualiopi:isolation-check` cantonne à
 // ses zones dédiées. Le tag `@formateurs` le garde dans le banc.
 //
-// Calcul PUR : aucune base, aucun serveur. Le banc l'exécute quand même sous
-// Gate B, avec les autres specs `@formateurs`.
+// Calcul PUR : aucune base, aucun serveur. Le banc l'exécute quand même dans
+// son job (`banc-formateurs.yml`), avec les autres specs `@formateurs`.
 
 import { expect, test } from "@playwright/test";
 

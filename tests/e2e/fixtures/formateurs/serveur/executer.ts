@@ -14,7 +14,10 @@
 //     est coupé ;
 //   · son environnement, posé par `execution.ts` : clé de signature et jeton
 //     Calendly FICTIFS, synchro CRM ouverte (l'outbox s'écrit ; rien n'est émis,
-//     `BULLMQ_DISABLED` et l'absence d'URL CRM l'interdisent).
+//     l'absence d'URL CRM l'interdit).
+// La file d'e-mails, elle, est RÉELLE dans le job `banc-formateurs` (Redis du
+// job, worker en tâche de fond, puits SMTP local) : `enfiler-email` passe par
+// `enqueueEmail`, exactement comme un envoi du site.
 // L'horloge n'est jamais truquée : un passage planifié reçoit son `maintenant`
 // en paramètre, comme son code le prévoit déjà.
 //
@@ -28,6 +31,9 @@ import type { NextRequest } from "next/server";
 // eslint-disable-next-line no-restricted-imports
 import { POST as recevoirWebhookCalendly } from "@/app/api/calendly/webhook/route";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
+import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
+import { enqueueEmail } from "@/server/queue/queues";
+import type { EmailJobName } from "@/server/queue/types";
 
 import { corpsInviteeCreated } from "../calendly-simule";
 import { MARQUEUR_RESULTAT, type EntreeBanc } from "../protocole";
@@ -82,6 +88,18 @@ async function executer(entree: EntreeBanc): Promise<unknown> {
     } finally {
       reseau.restaurer();
     }
+  }
+
+  if (entree.action === "enfiler-email") {
+    // Le jeu d'exemple des aperçus rend tous les gabarits (noms fictifs, liens
+    // `exemple.invalid`) : aucune donnée réelle ne part, même vers le puits.
+    return enqueueEmail(
+      entree.gabarit as EmailJobName,
+      entree.destinataire,
+      "fr",
+      { ...PAYLOAD_EXEMPLE },
+      entree.delaiMs ? { delayMs: entree.delaiMs } : undefined,
+    );
   }
 
   const reseau = installerReseauSimule([apiCalendlySimulee(entree.rendezVous)]);

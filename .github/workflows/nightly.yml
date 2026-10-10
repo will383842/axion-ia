@@ -354,6 +354,14 @@ jobs:
           path: _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/
           retention-days: 14
 
+  # Lot X1-bis (2026-10-10) — le banc du chantier « formateurs freelance » :
+  # file BullMQ allumée, worker, puits SMTP. Le même job que sur les PR du
+  # chantier, appelé tel quel : une seule définition, deux déclencheurs.
+  banc-formateurs:
+    name: Banc formateurs
+    if: ${{ vars.NIGHTLY_BANC_FORMATEURS_ENABLED != 'false' }}
+    uses: ./.github/workflows/banc-formateurs.yml
+
   notify-failure:
     name: Notify nightly failure
     runs-on: ubuntu-latest
@@ -369,6 +377,7 @@ jobs:
         backup-drill,
         lighthouse-history,
         qualiopi-chaine-complete,
+        banc-formateurs,
       ]
     if: failure()
     steps:
