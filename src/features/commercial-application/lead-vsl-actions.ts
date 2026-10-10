@@ -30,9 +30,14 @@
 //   1. verrou court Redis par empreinte d'adresse (double clic, réseau lent) ;
 //   2. recherche des lignes apporteur vivantes de la même empreinte :
 //        · une ligne qui N'EST PAS un lead vidéo (ancien formulaire, dossier
-//          commencé ou complet, saisie manuelle) : on ne crée RIEN, on ne
-//          rétrograde RIEN, on répond exactement comme un succès — avec un jeton
-//          qui ne mène à aucune ligne (voir `jeton-lead.ts`) ;
+//          commencé ou complet, saisie manuelle, fiche archivée) : la personne
+//          est « DÉJÀ CONNUE ». On ne crée RIEN, on ne rétrograde RIEN, aucun
+//          e-mail ne lui part ; on répond exactement comme un succès, avec un
+//          jeton qui désigne sa fiche la plus récente — et, depuis le 2026-10-10,
+//          on y AJOUTE une trace bornée (`details.retoursVsl`) : le retour par la
+//          publicité, puis à l'étape 2 son téléphone (chiffré, jamais à la place
+//          du téléphone de la fiche) et une notification à l'équipe. Avant, rien
+//          n'était gardé et Will n'en savait rien (`deja-connu-vsl.ts`) ;
 //        · un lead vidéo existant : on le réutilise (même identifiant, jeton
 //          rafraîchi), sans nouvel e-mail ;
 //        · sinon on crée ;
@@ -102,7 +107,15 @@ import {
   type CapturerLeadVslParsed,
 } from "@/lib/commercial-application/vsl-schemas";
 import { creerJeton, verifierJeton } from "./jeton-lead";
-import { avancerVslEtape2, lireVsl, majVslCible } from "./lead-vsl-details";
+import {
+  ajouterRetourVsl,
+  avancerVslEtape2,
+  completerRetourVsl,
+  lireVsl,
+  majVslCible,
+  type RetourVsl,
+} from "./lead-vsl-details";
+import { ligneDejaConnue, lignesDeLaPersonne, qualifier, type Existant } from "./deja-connu-vsl";
 import {
   annulerRelancesLeadApporteur,
   envoyerEtape2Vsl,
@@ -151,13 +164,6 @@ function safeHashIp(ip: string | null | undefined): string | null {
   }
 }
 
-/** Un identifiant qui a la forme d'un UUID v4, déduit de l'empreinte d'adresse. */
-function idSansLigne(emailKey: string | null): string {
-  if (!emailKey || emailKey.length < 32) return randomUUID();
-  const h = emailKey;
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-4${h.slice(13, 16)}-8${h.slice(17, 20)}-${h.slice(20, 32)}`;
-}
-
 function fusionnerUtm(cookie: UtmParams, query: string | undefined): UtmParams {
   const depuisQuery = query ? parseUtmFromUrl(query) : {};
   return { ...depuisQuery, ...cookie };
@@ -167,39 +173,6 @@ function fusionnerUtm(cookie: UtmParams, query: string | undefined): UtmParams {
 function lienReservation(): string | null {
   const url = process.env["CALENDLY_APPORTEUR_URL"]?.trim();
   return url && estLienCalendlyValide(url) ? url : null;
-}
-
-interface LigneApporteur {
-  id: string;
-  details: unknown;
-}
-
-/** Les lignes apporteur VIVANTES (hors corbeille) d'une même personne, par empreinte. */
-async function lignesDeLaPersonne(emailKey: string): Promise<LigneApporteur[]> {
-  return prisma.submission.findMany({
-    where: {
-      contactEmailHash: emailKey,
-      type: SubmissionType.contact,
-      deletedAt: null,
-      AND: [{ details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE } }],
-    },
-    select: { id: true, details: true },
-    orderBy: { submittedAt: "desc" },
-    take: 20,
-  });
-}
-
-/** Ce que l'adresse a déjà chez nous : rien, un lead vidéo, ou autre chose (ancien parcours, dossier). */
-type Existant =
-  { genre: "aucun" } | { genre: "autre" } | { genre: "lead-vsl"; id: string; suspect: boolean };
-
-function qualifier(lignes: LigneApporteur[]): Existant {
-  if (lignes.length === 0) return { genre: "aucun" };
-  // R3 : une ligne qui n'est pas un lead vidéo (ancien formulaire, dossier
-  // commencé ou complet, saisie manuelle) PRIME — on ne rétrograde jamais.
-  if (lignes.some((l) => !lireVsl(l.details))) return { genre: "autre" };
-  const l = lignes[0] as LigneApporteur;
-  return { genre: "lead-vsl", id: l.id, suspect: lireVsl(l.details)?.suspect === true };
 }
 
 const attendre = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
@@ -228,8 +201,18 @@ async function rendreVerrou(emailKey: string): Promise<void> {
 function reponseJeton(
   leadId: string,
   suspect: boolean,
+  maintenant?: number,
 ): { ok: true; jeton: string; leadId: string } {
-  return { ok: true, jeton: creerJeton({ lead: leadId, suspect }), leadId };
+  return {
+    ok: true,
+    jeton: creerJeton({ lead: leadId, suspect, ...(maintenant ? { maintenant } : {}) }),
+    leadId,
+  };
+}
+
+/** Délai minimal d'étape 1 : l'heure d'affichage vient du NAVIGATEUR (jamais fiable). */
+function etape1TropRapide(renderedAt: number, maintenant: number): boolean {
+  return renderedAt > maintenant + 5_000 || maintenant - renderedAt < DELAI_MIN_ETAPE1_MS;
 }
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -279,9 +262,9 @@ export async function capturerLeadVsl(
 
     try {
       if (existant.genre === "autre") {
-        // Déjà connue (ancien parcours, dossier…) : aucun écrit, aucun e-mail, et
-        // une réponse indiscernable d'un succès.
-        return reponseJeton(idSansLigne(emailKey), false);
+        // Déjà connue (ancien parcours, dossier…) : aucune création, aucun
+        // e-mail, une réponse indiscernable d'un succès — et une trace bornée.
+        return await retourDejaConnu(d, existant.id, maintenant);
       }
 
       if (existant.genre === "lead-vsl") {
@@ -313,6 +296,43 @@ export async function capturerLeadVsl(
   }
 }
 
+/**
+ * Étape 1 d'une personne DÉJÀ CONNUE : une trace `retoursVsl` sur sa fiche la
+ * plus récente (date, campagne et annonce d'arrivée, réponse à la bannière), et
+ * RIEN d'autre — ni étape, ni statut, ni nom, ni archivage, ni e-mail, ni Meta
+ * serveur. Le jeton désigne cette fiche ; son heure d'émission est celle de la
+ * trace, c'est elle que l'étape 2 complète.
+ */
+async function retourDejaConnu(
+  d: CapturerLeadVslParsed,
+  ficheId: string,
+  maintenant: number,
+): Promise<{ ok: true; jeton: string; leadId: string }> {
+  // Un robot pressé ne laisse aucune trace, mais reçoit la même réponse.
+  if (etape1TropRapide(d.ctx.renderedAt, maintenant)) {
+    return reponseJeton(ficheId, true, maintenant);
+  }
+  try {
+    const c = await cookies();
+    const utm = fusionnerUtm(readUtmCookie(c.get(UTM_COOKIE_NAME)?.value), d.ctx.query);
+    const utmTrace: NonNullable<RetourVsl["utm"]> = {
+      ...(utm.utm_source ? { source: utm.utm_source } : {}),
+      ...(utm.utm_medium ? { medium: utm.utm_medium } : {}),
+      ...(utm.utm_campaign ? { campaign: utm.utm_campaign } : {}),
+      ...(utm.utm_content ? { content: utm.utm_content } : {}),
+    };
+    await ajouterRetourVsl(ficheId, {
+      le: new Date(maintenant).toISOString(),
+      etape: 1,
+      ...(Object.keys(utmTrace).length > 0 ? { utm: utmTrace } : {}),
+      ...(typeof d.consentPub === "boolean" ? { consentPub: d.consentPub } : {}),
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "capturerLeadVsl", step: "retour-connu" } });
+  }
+  return reponseJeton(ficheId, false, maintenant);
+}
+
 async function creerLead(
   d: CapturerLeadVslParsed,
   emailKey: string,
@@ -329,8 +349,7 @@ async function creerLead(
 
   // Délai minimal : l'heure d'affichage est celle du NAVIGATEUR (jamais fiable) —
   // elle sert à écarter les robots pressés, pas à autoriser quoi que ce soit.
-  const renderedAt = d.ctx.renderedAt;
-  const suspect = renderedAt > maintenant + 5_000 || maintenant - renderedAt < DELAI_MIN_ETAPE1_MS;
+  const suspect = etape1TropRapide(d.ctx.renderedAt, maintenant);
 
   // fbclid : la VALEUR n'est gardée qu'avec le consentement publicitaire (le
   // navigateur ne la garde lui-même qu'avec) ; sans lui, seule sa présence l'est.
@@ -500,6 +519,31 @@ export async function completerLeadVsl(
   if (!jeton) return { ok: false, error: "jeton" };
 
   try {
+    // Personne déjà connue (ancien parcours…) : on complète la trace de son
+    // retour, rien d'autre — même réponse qu'un succès.
+    const connue = await ligneDejaConnue(jeton);
+    if (connue) {
+      const maintenant = Date.now();
+      const suspect = jeton.suspect || maintenant - jeton.iat < DELAI_MIN_ETAPE2_MS;
+      const issue = await completerRetourVsl({
+        id: connue.id,
+        le: new Date(jeton.iat).toISOString(),
+        telephoneChiffre: encryptPii(d.telephone) ?? null,
+        reponseId: d.reponseId,
+        suspect,
+        maintenant: new Date(maintenant),
+      });
+      if (issue === "complete" && !suspect) {
+        await suiteRetourDejaConnu({
+          ficheId: connue.id,
+          telephone: d.telephone,
+          reponseId: d.reponseId,
+          maintenant,
+        });
+      }
+      return { ok: true, merciUrl: urlMerci(connue.id, suspect) };
+    }
+
     const ligne = await prisma.submission.findFirst({
       where: { id: jeton.lead, deletedAt: null },
       select: {
@@ -509,7 +553,7 @@ export async function completerLeadVsl(
         details: true,
       },
     });
-    // Aucune ligne derrière le jeton (adresse déjà connue, robot, ligne effacée)
+    // Aucune ligne derrière le jeton (robot, ligne effacée)
     // ou ligne qui n'est pas un lead vidéo : même réponse qu'un succès, rien
     // d'écrit — c'est ce qui empêche de découvrir qu'une adresse existe.
     if (!ligne || !lireVsl(ligne.details)) {
@@ -673,5 +717,92 @@ async function suiteEtape2(a: {
   } catch (err) {
     console.error("[lead-vsl] récap interne a échoué:", err);
     Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "email-recap" } });
+  }
+}
+
+/**
+ * Étape 2 d'une personne DÉJÀ CONNUE revenue par la publicité : UNE notification
+ * à l'équipe (par fiche et par jour) et le récapitulatif interne, avec le lien de
+ * la fiche existante. AUCUN e-mail à la personne (R3), aucun événement Meta
+ * serveur. Best-effort : chaque geste isolé.
+ */
+async function suiteRetourDejaConnu(a: {
+  ficheId: string;
+  telephone: string;
+  reponseId: string;
+  maintenant: number;
+}): Promise<void> {
+  let prenom = "";
+  let email = "";
+  let details: unknown = null;
+  try {
+    const fiche = await prisma.submission.findFirst({
+      where: { id: a.ficheId, deletedAt: null },
+      select: { contactName: true, contactEmail: true, details: true },
+    });
+    if (!fiche) return;
+    prenom = decryptPii(fiche.contactName) ?? "";
+    email = decryptPii(fiche.contactEmail) ?? "";
+    details = fiche.details;
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "connu-lecture" } });
+  }
+  const consoleUrl = `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${a.ficheId}`;
+  const DEJA_CONNU = "Déjà connu(e) : revenu(e) par la publicité";
+  const dernier = details
+    ? (
+        (details as { retoursVsl?: unknown }).retoursVsl as
+          Array<{ utm?: { campaign?: string; content?: string } }> | undefined
+      )?.at?.(-1)
+    : undefined;
+  const campagne = [dernier?.utm?.campaign, dernier?.utm?.content].filter(Boolean).join(" · ");
+
+  try {
+    await notify({
+      category: "COMMERCIAL_APPLICATION_RECEIVED",
+      payload: {
+        submissionId: a.ficheId,
+        contactName: `${prenom || "(prénom illisible)"} — ${DEJA_CONNU}`,
+        contactEmail: email,
+        contactPhone: a.telephone,
+        ville: "— voir la fiche existante",
+        zone: "—",
+        b2bYears: "à qualifier (déjà connu(e))",
+        availability: "—",
+        usesAi: false,
+        locale: "fr",
+      },
+      dedupKey: `retour-vsl:${a.ficheId}:${new Date(a.maintenant).toISOString().slice(0, 10)}`,
+      dedupTtlSec: 86_400,
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "connu-notify" } });
+  }
+
+  try {
+    await enqueueEmail("candidature-commercial-recap", destinataireCandidatures(), "fr", {
+      prenom,
+      nom: "",
+      ville: "",
+      rows: [
+        { label: "Déjà connu(e)", value: "revenu(e) par la publicité" },
+        {
+          label: "Étape",
+          value: "Inscription refaite depuis la page vidéo — fiche existante gardée telle quelle",
+        },
+        { label: "Prénom (fiche)", value: prenom },
+        { label: "Email (fiche)", value: email },
+        { label: "Téléphone donné à l'étape 2", value: a.telephone },
+        { label: "Dirigeants connus", value: libelleReponseVsl(a.reponseId) },
+        ...(campagne ? [{ label: "Campagne", value: campagne }] : []),
+        { label: "Fiche existante", value: consoleUrl },
+      ],
+      experiences: [],
+      pitch: "",
+      submissionId: a.ficheId,
+      consoleUrl,
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "connu-recap" } });
   }
 }

@@ -68,6 +68,8 @@ import {
   jetonVslValide,
   PARAM_JETON_VSL,
 } from "@/features/commercial-application/identite-reservation-vsl";
+import { verifierJeton } from "@/features/commercial-application/jeton-lead";
+import { ligneDejaConnue } from "@/features/commercial-application/deja-connu-vsl";
 
 export const dynamic = "force-dynamic";
 
@@ -131,6 +133,11 @@ export default async function Page({ params, searchParams }: Props) {
   // Le jeton n'est recopié que s'il est VALIDE : une adresse trafiquée ne se
   // propage pas dans les liens de la page.
   const jeton = jetonVslValide(sp[PARAM_JETON_VSL]);
+  // Personne DÉJÀ CONNUE (ancien parcours) revenue par la publicité : aucun e-mail
+  // ne lui part, la page n'en promet donc aucun. Le calendrier reste affiché, sans
+  // préremplissage (`identite-reservation-vsl.ts` ne lit pas sa fiche).
+  const contenuJeton = jeton ? verifierJeton(jeton) : null;
+  const dejaConnue = contenuJeton ? (await ligneDejaConnue(contenuJeton)) !== null : false;
   const parametres =
     parametresDuChoix(CHOIX, DEPUIS_MERCI_VSL, suivi) +
     (jeton ? `&${PARAM_JETON_VSL}=${encodeURIComponent(jeton)}` : "");
@@ -148,7 +155,9 @@ export default async function Page({ params, searchParams }: Props) {
       <Section tone="halo-warm" className="pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-14 lg:pb-14">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="display-editorial text-fg text-balance">{VSL_MERCI.title}</h1>
-          <p className="text-fg-soft mt-4 mb-8 text-lg leading-relaxed">{VSL_MERCI.texte}</p>
+          <p className="text-fg-soft mt-4 mb-8 text-lg leading-relaxed">
+            {dejaConnue ? VSL_MERCI.texteDejaConnu : VSL_MERCI.texte}
+          </p>
         </div>
 
         {resolu ? (
@@ -172,14 +181,16 @@ export default async function Page({ params, searchParams }: Props) {
           <div className="mx-auto max-w-2xl">{bouton}</div>
         )}
 
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-fg-soft bg-paper border-border mx-auto mt-8 inline-flex items-start gap-2.5 rounded-xl border px-4 py-3 text-left text-sm leading-relaxed">
-            <MailCheck aria-hidden="true" className="text-sage mt-0.5 h-4 w-4 shrink-0" />
-            <span>
-              {VSL_MERCI.email} {VSL_MERCI.aucunCreneau}
-            </span>
-          </p>
-        </div>
+        {dejaConnue ? null : (
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-fg-soft bg-paper border-border mx-auto mt-8 inline-flex items-start gap-2.5 rounded-xl border px-4 py-3 text-left text-sm leading-relaxed">
+              <MailCheck aria-hidden="true" className="text-sage mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                {VSL_MERCI.email} {VSL_MERCI.aucunCreneau}
+              </span>
+            </p>
+          </div>
+        )}
       </Section>
 
       {/* Le kit : découvrir ce qu'on recommandera. Secondaire : l'action est le créneau. */}

@@ -7,8 +7,14 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { findFirst } = vi.hoisted(() => ({ findFirst: vi.fn() }));
+const { findFirst, connue } = vi.hoisted(() => ({
+  findFirst: vi.fn(),
+  connue: { ids: new Set<string>() },
+}));
 vi.mock("@/lib/prisma", () => ({ prisma: { submission: { findFirst } } }));
+vi.mock("../deja-connu-vsl", () => ({
+  ligneDejaConnue: async (j: { lead: string }) => (connue.ids.has(j.lead) ? { id: j.lead } : null),
+}));
 
 import { creerJeton } from "../jeton-lead";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -22,6 +28,7 @@ const LIGNE_VSL = {
 
 beforeEach(() => {
   findFirst.mockReset();
+  connue.ids = new Set();
 });
 
 describe("identiteDuJetonVsl", () => {
@@ -103,5 +110,15 @@ describe("câblage de la page du formulaire", () => {
     expect(src).toMatch(
       /reprise\s*\?\s*\{ erreurs: reprise\.erreurs, valeurs: reprise\.valeurs \}/,
     );
+  });
+
+  it("🔒 P2 — personne DÉJÀ CONNUE : aucun préremplissage, sa fiche n'est pas lue", async () => {
+    // Quiconque a tapé son adresse à l'étape 1 détient un jeton vers sa fiche.
+    connue.ids = new Set(["fiche-connue"]);
+    findFirst.mockResolvedValue(LIGNE_VSL);
+    expect(
+      await identiteDuJetonVsl(creerJeton({ lead: "fiche-connue", suspect: false })),
+    ).toBeNull();
+    expect(findFirst).not.toHaveBeenCalled();
   });
 });

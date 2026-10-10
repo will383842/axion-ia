@@ -38,6 +38,10 @@ const avancer = vi.fn<(...a: unknown[]) => Promise<"avance" | "deja" | "introuva
   async () => "avance",
 );
 const majCible = vi.fn(async (..._a: unknown[]) => undefined);
+const ajouterRetour = vi.fn(async (..._a: unknown[]) => undefined);
+const completerRetour = vi.fn<(...a: unknown[]) => Promise<"complete" | "deja" | "introuvable">>(
+  async () => "complete",
+);
 const envoyerMeta = vi.fn(async (..._a: unknown[]) => ({ envoye: true as const }));
 const verrou = vi.fn<(...a: unknown[]) => Promise<string | null>>(async () => "OK");
 const verrouRendu = vi.fn(async (..._a: unknown[]) => 1);
@@ -118,6 +122,8 @@ vi.mock("../lead-vsl-details", async (importOriginal) => {
     ...reel,
     avancerVslEtape2: (...a: unknown[]) => avancer(...a),
     majVslCible: (...a: unknown[]) => majCible(...a),
+    ajouterRetourVsl: (...a: unknown[]) => ajouterRetour(...a),
+    completerRetourVsl: (...a: unknown[]) => completerRetour(...a),
   };
 });
 
@@ -177,6 +183,9 @@ beforeEach(() => {
   avancer.mockReset();
   avancer.mockResolvedValue("avance");
   majCible.mockClear();
+  ajouterRetour.mockClear();
+  completerRetour.mockReset();
+  completerRetour.mockResolvedValue("complete");
   envoyerMeta.mockClear();
   verrou.mockReset();
   verrou.mockResolvedValue("OK");
@@ -317,16 +326,18 @@ describe("étape 1 — capturerLeadVsl", () => {
     expect(majCible).not.toHaveBeenCalled();
   });
 
-  it("R3 : la réponse pour une adresse connue est indiscernable d'une vraie (même forme, aucun identifiant réel)", async () => {
+  it("R3 : la réponse pour une adresse connue est indiscernable d'une vraie (même forme, aucun drapeau)", async () => {
     const neuve = await capturer({ email: "neuve@example.com" });
-    lignesExistantes = [{ id: "ligne-reelle-secrete", details: { subType: "x" } }];
+    const ID_CONNUE = "22222222-2222-4222-8222-222222222222";
+    lignesExistantes = [{ id: ID_CONNUE, details: { subType: "x" } }];
     const connue = await capturer({ email: "connue@example.com" });
     if (!neuve.ok || !connue.ok) throw new Error("attendu : succès");
-    // Même forme d'identifiant (UUID), et jamais celui de la ligne existante.
+    // Même forme d'identifiant (UUID). Depuis le 2026-10-10 (P2), c'est celui de
+    // la fiche RÉELLE : l'`eventID` du `Lead` navigateur ne s'invente plus.
     const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
     expect(neuve.leadId).toMatch(UUID);
     expect(connue.leadId).toMatch(UUID);
-    expect(connue.leadId).not.toBe("ligne-reelle-secrete");
+    expect(connue.leadId).toBe(ID_CONNUE);
     expect(Object.keys(neuve).sort()).toEqual(Object.keys(connue).sort());
     // Le jeton ne porte AUCUN drapeau qui trahirait « adresse connue ».
     const corps = Buffer.from(connue.jeton.split(".")[0] as string, "base64url").toString();
@@ -783,5 +794,171 @@ describe("Lead vers Meta à l'étape 1 (lot 5)", () => {
     envoyerMeta.mockRejectedValueOnce(new Error("meta indisponible"));
     const r = await capturer();
     expect(r.ok).toBe(true);
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// P2 (2026-10-10) — une personne DÉJÀ CONNUE revient par la publicité
+// ───────────────────────────────────────────────────────────────────────────
+
+const ID_FICHE = "33333333-3333-4333-8333-333333333333";
+const ANCIENNE = { id: ID_FICHE, details: { subType: "candidature-commerciale", etape: "1" } };
+
+describe("P2 — déjà connu(e) : étape 1", () => {
+  it("garde une trace BORNÉE sur la fiche la plus récente — et rien d'autre", async () => {
+    cookieUtm = serializeUtmCookie({
+      utm_source: "facebook",
+      utm_medium: "paid",
+      utm_campaign: "apporteurs-vsl-2026-10",
+      utm_content: "annonce-42",
+    });
+    lignesExistantes = [ANCIENNE, { id: "plus-ancienne", details: { subType: "x" } }];
+    const r = await capturer();
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.leadId).toBe(ID_FICHE);
+    expect(ajouterRetour).toHaveBeenCalledTimes(1);
+    expect(ajouterRetour.mock.calls[0]?.[0]).toBe(ID_FICHE);
+    expect(ajouterRetour.mock.calls[0]?.[1]).toEqual({
+      le: "2026-10-05T10:00:00.000Z",
+      etape: 1,
+      utm: {
+        source: "facebook",
+        medium: "paid",
+        campaign: "apporteurs-vsl-2026-10",
+        content: "annonce-42",
+      },
+      consentPub: true,
+    });
+    // Ni création, ni écriture de l'étape, ni e-mail, ni notification, ni Meta.
+    expect(creer).not.toHaveBeenCalled();
+    expect(majCible).not.toHaveBeenCalled();
+    expect(enfiler).not.toHaveBeenCalled();
+    expect(notifier).not.toHaveBeenCalled();
+    expect(envoyerMeta).not.toHaveBeenCalled();
+    // Le jeton désigne la fiche, et son heure est celle de la trace.
+    const j = verifierJeton(r.jeton);
+    expect(j?.lead).toBe(ID_FICHE);
+    expect(new Date(j?.iat ?? 0).toISOString()).toBe("2026-10-05T10:00:00.000Z");
+  });
+
+  it("un robot pressé ne laisse aucune trace, mais reçoit la même forme de réponse", async () => {
+    lignesExistantes = [ANCIENNE];
+    const r = await capturer({}, { renderedAt: MAINTENANT - 500 });
+    expect(r.ok).toBe(true);
+    expect(ajouterRetour).not.toHaveBeenCalled();
+  });
+});
+
+describe("P2 — déjà connu(e) : étape 2", () => {
+  /** La fiche existante telle que la lit `ligneDejaConnue` puis la notification. */
+  function ficheConnue() {
+    return {
+      id: ID_FICHE,
+      contactEmailHash: "hnadiaexamplecom",
+      contactName: "enc:Nadia",
+      contactEmail: "enc:nadia@example.com",
+      details: {
+        subType: "candidature-commerciale",
+        retoursVsl: [{ le: "2026-10-05T10:00:00.000Z", etape: 1, utm: { content: "annonce-42" } }],
+      },
+    };
+  }
+
+  it("complète la trace (téléphone CHIFFRÉ), prévient l'équipe une fois, n'écrit RIEN à la personne", async () => {
+    lignesExistantes = [ANCIENNE];
+    ligneParId = ficheConnue();
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_FICHE, maintenant: MAINTENANT }));
+    expect(r.ok).toBe(true);
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.merciUrl).toMatch(/^\/apporteur-affaires\/video\/merci\?j=/);
+    expect(completerRetour).toHaveBeenCalledTimes(1);
+    expect(completerRetour.mock.calls[0]?.[0]).toMatchObject({
+      id: ID_FICHE,
+      le: "2026-10-05T10:00:00.000Z",
+      telephoneChiffre: "enc:06 12 34 56 78",
+      reponseId: "5-20",
+      suspect: false,
+    });
+    // Le lead vidéo n'avance pas : la fiche existante garde son étape et son téléphone.
+    expect(avancer).not.toHaveBeenCalled();
+    // UNE notification, dédoublonnée par fiche et par jour.
+    expect(notifier).toHaveBeenCalledTimes(1);
+    const n = notifier.mock.calls[0]?.[0] as {
+      dedupKey: string;
+      payload: { contactName: string; submissionId: string };
+    };
+    expect(n.dedupKey).toBe(`retour-vsl:${ID_FICHE}:2026-10-05`);
+    expect(n.payload.submissionId).toBe(ID_FICHE);
+    expect(n.payload.contactName).toContain("Déjà connu(e) : revenu(e) par la publicité");
+    // Le récapitulatif interne SEULEMENT : aucun e-mail vers la personne.
+    const envois = jobsPoses();
+    expect(envois.map((e) => e.gabarit)).toEqual(["candidature-commercial-recap"]);
+    expect(envois[0]?.a).toBe("contact@axion-ia.com");
+    const lignes = (envois[0]?.payload["rows"] as Array<{ label: string; value: string }>) ?? [];
+    expect(lignes).toContainEqual({ label: "Déjà connu(e)", value: "revenu(e) par la publicité" });
+    expect(lignes.find((l) => l.label === "Fiche existante")?.value).toBe(
+      `https://axion-ia.com/fr/console/contacts/commercial/${ID_FICHE}`,
+    );
+    // Aucune relance annulée ni posée, aucun Meta serveur.
+    expect(retirer).not.toHaveBeenCalled();
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("double validation : la trace est déjà complète → aucune seconde notification", async () => {
+    lignesExistantes = [ANCIENNE];
+    ligneParId = ficheConnue();
+    completerRetour.mockResolvedValue("deja");
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_FICHE, maintenant: MAINTENANT }));
+    expect(r.ok).toBe(true);
+    expect(notifier).not.toHaveBeenCalled();
+    expect(enfiler).not.toHaveBeenCalled();
+  });
+
+  it("🔒 (e) quelqu'un qui tape l'adresse d'autrui ne lit RIEN et n'écrase RIEN", async () => {
+    // L'intrus a validé l'étape 1 avec l'adresse de Nadia : il a reçu un jeton.
+    lignesExistantes = [ANCIENNE];
+    const r1 = await capturer({ prenom: "Intrus", email: "nadia@example.com" });
+    if (!r1.ok) throw new Error("attendu : succès");
+    // Rien de la fiche ne lui est rendu : ni prénom, ni téléphone, ni étape.
+    expect(JSON.stringify(r1)).not.toMatch(/Nadia|enc:|06 |premier-contact/);
+    // Seule écriture : UNE entrée ajoutée, qui ne porte pas même le prénom tapé.
+    expect(ajouterRetour).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(ajouterRetour.mock.calls[0])).not.toContain("Intrus");
+
+    // Étape 2 : il pose SON téléphone. Il est rangé (chiffré) dans la trace, jamais
+    // à la place du téléphone de la fiche ; la réponse ne dit rien de plus.
+    ligneParId = ficheConnue();
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r2 = await completer(r1.jeton, { telephone: "07 00 00 00 00" });
+    if (!r2.ok) throw new Error("attendu : succès");
+    expect(Object.keys(r2).sort()).toEqual(["merciUrl", "ok"]);
+    expect(JSON.stringify(r2)).not.toMatch(/Nadia|nadia@|enc:/);
+    expect(avancer).not.toHaveBeenCalled(); // ni `contact_phone`, ni étape
+    expect(creer).not.toHaveBeenCalled();
+    expect(completerRetour.mock.calls[0]?.[0]).toMatchObject({
+      telephoneChiffre: "enc:07 00 00 00 00",
+    });
+    // Aucun e-mail ne part vers l'adresse tapée.
+    expect(jobsPoses().every((j) => j.a !== "nadia@example.com")).toBe(true);
+  });
+
+  it("un jeton de REPRISE (lien d'e-mail) ne mène jamais au parcours « déjà connu »", async () => {
+    lignesExistantes = [ANCIENNE];
+    ligneParId = ficheConnue();
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_FICHE, genre: "reprise", maintenant: MAINTENANT }));
+    expect(completerRetour).not.toHaveBeenCalled();
+    expect(notifier).not.toHaveBeenCalled();
+  });
+
+  it("validée trop vite : trace marquée suspecte, aucune notification", async () => {
+    lignesExistantes = [ANCIENNE];
+    ligneParId = ficheConnue();
+    vi.setSystemTime(MAINTENANT + 500);
+    await completer(creerJeton({ lead: ID_FICHE, maintenant: MAINTENANT }));
+    expect(completerRetour.mock.calls[0]?.[0]).toMatchObject({ suspect: true });
+    expect(notifier).not.toHaveBeenCalled();
   });
 });
