@@ -1762,6 +1762,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "ShieldCheck",
       group: "societe",
     },
+    { href: `${base}/conformite-rgpd`, label: "Conformité RGPD", icon: "Shield", group: "societe" },
     // ── Coaching 1-to-1 (séances de conseil remplies par les formateurs) ──
     {
       href: `${base}/coaching`,

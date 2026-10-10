@@ -209,7 +209,8 @@ describe("buildAdminNav SSOT", () => {
     // des Imprimés, dérivé de IMPRIMES — document INTERNE, téléchargeable par
     // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
     // +1 État des fonds OPCO (lot OPCO A5, 2026-10-04) : 169 + 1 = 170.
-    expect(items.length).toBe(175);
+    // +1 Conformité RGPD (2026-10-10, groupe Société & conformité).
+    expect(items.length).toBe(176);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -943,6 +944,7 @@ const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
   "/societe/commercial",
   "/societe/audit-methode",
   "/societe/rgpd-securite",
+  "/conformite-rgpd",
   "/coaching",
   "/coaching/seances",
   "/image-bank",
