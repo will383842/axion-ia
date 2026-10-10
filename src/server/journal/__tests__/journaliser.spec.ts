@@ -21,6 +21,11 @@ import { filtrerChangesJournal, journaliser } from "@/server/journal/journaliser
 const SESSION = { userId: "admin-uuid-1", role: "admin" as const };
 const NDA = "11755555555";
 const PIECE = "X4RTBPFW4";
+const TRAINER_ID = "0b6f1c3e-2d4a-4f8b-9c1d-5e6f7a8b9c0d";
+const IBAN = "FR7630006000011234567890189";
+const IBAN_ESPACES = "FR76 3000 6000 0112 3456 7890 189";
+const EMAIL = "x@exemple.invalid";
+const TEL = "+33 6 00 00 00 00";
 
 function txFactice() {
   const create = vi.fn().mockResolvedValue({});
@@ -94,13 +99,125 @@ describe("filtre du journal — à toute profondeur", () => {
   });
 });
 
+describe("filtre du journal — une valeur reconnaissable sous une clé d'empreinte", () => {
+  it("🔴 un IBAN (avec ou sans espaces), un e-mail ou un téléphone sous une clé d'empreinte est masqué", () => {
+    const sortie = filtrerChangesJournal({
+      ibanMasque: IBAN,
+      ibanFin4: IBAN_ESPACES,
+      emailHash: EMAIL,
+      telephoneEmpreinte: TEL,
+      avant: { contactEmailSha256: [EMAIL] },
+    });
+    const texte = JSON.stringify(sortie);
+    for (const clair of [IBAN, "3000 6000 0112", EMAIL, "6 00 00 00 00", "exemple.invalid"]) {
+      expect(texte).not.toContain(clair);
+    }
+  });
+
+  it("une vraie empreinte ou une valeur déjà masquée reste lisible", () => {
+    const entree = {
+      emailHash: "ab12cdef34567890ab12cdef34567890ab12cdef34567890ab12cdef34567890",
+      ibanMasque: "FR76 **** **** **** **** **** 189",
+      ibanFin4: "0189",
+    };
+    expect(filtrerChangesJournal(entree)).toEqual(entree);
+  });
+});
+
+describe("filtre du journal — clés au pluriel", () => {
+  it("🔴 e-mails, téléphones, adresses et coordonnées bancaires au pluriel sont masqués, tableaux compris", () => {
+    const sortie = filtrerChangesJournal({
+      emails: [EMAIL, "y@exemple.invalid"],
+      telephones: ["0600000000"],
+      adresses: [{ ligne: "1 rue de l'Exemple", ville: "Lyon" }],
+      ibans: [IBAN_ESPACES.toLowerCase()],
+      bics: ["AGRIFRPP882"],
+      contacts: { mails: [EMAIL], portables: ["0700000000"] },
+    });
+    const texte = JSON.stringify(sortie);
+    for (const clair of [
+      "exemple.invalid",
+      "0600000000",
+      "rue de",
+      "Lyon",
+      "3000 6000",
+      "AGRIFRPP",
+      "0700000000",
+    ]) {
+      expect(texte).not.toContain(clair);
+    }
+  });
+
+  it("🔴 numéros de pièce et de déclaration au pluriel deviennent `{ modifie: true }`", () => {
+    const sortie = filtrerChangesJournal({
+      numerosPiece: [PIECE],
+      passeports: [PIECE],
+      ndas: [NDA],
+      declarationsActivite: [{ numero: NDA }],
+    });
+    expect(sortie).toEqual({
+      numerosPiece: { modifie: true },
+      passeports: { modifie: true },
+      ndas: { modifie: true },
+      declarationsActivite: { modifie: true },
+    });
+  });
+});
+
+describe("filtre du journal — numéro de déclaration", () => {
+  it("🔴 `numero` + `declaration` suffit, sans le mot « activité »", () => {
+    const sortie = filtrerChangesJournal({
+      numeroDeclaration: NDA,
+      declaration: { numero: NDA },
+    });
+    expect(sortie).toEqual({
+      numeroDeclaration: { modifie: true },
+      declaration: { numero: NDA },
+    });
+  });
+});
+
+describe("filtre du journal — forme reconnue sous une clé neutre", () => {
+  it("🔴 un e-mail ou un IBAN dans un texte libre est masqué", () => {
+    const sortie = filtrerChangesJournal({
+      contact: `écrire à ${EMAIL}`,
+      note: `virement sur ${IBAN_ESPACES}`,
+    }) as Record<string, string>;
+    expect(sortie["contact"]).not.toContain(EMAIL);
+    expect(sortie["contact"]).toContain("écrire à");
+    expect(sortie["note"]).not.toContain("3000 6000 0112");
+  });
+});
+
+describe("journaliser — identifiant de cible", () => {
+  it("🔴 un `targetId` qui n'est pas un UUID est refusé avant toute écriture", async () => {
+    const { tx, create } = txFactice();
+    await expect(
+      journaliser(
+        tx,
+        { action: "qualiopi.test", targetId: "t-1", session: SESSION },
+        { exiger: true },
+      ),
+    ).rejects.toThrow(/UUID/);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("sans `exiger`, il est écarté sans écrire : rend `false`", async () => {
+    const { tx, create } = txFactice();
+    await expect(
+      journaliser(tx, { action: "qualiopi.test", targetId: "t-1", session: SESSION }),
+    ).resolves.toBe(false);
+    expect(create).not.toHaveBeenCalled();
+  });
+});
+
 describe("journaliser — écrit dans la transaction passée", () => {
   it("🔴 l'entrée est écrite par `tx`, jamais par le client global", async () => {
     const { tx, create } = txFactice();
     const ecrit = await journaliser(tx, {
       action: "qualiopi.trainer.activation",
       targetType: "Trainer",
-      targetId: "t-1",
+      targetId: TRAINER_ID,
       changes: { nda: NDA },
       session: SESSION,
     });
@@ -112,7 +229,7 @@ describe("journaliser — écrit dans la transaction passée", () => {
       adminUserId: "admin-uuid-1",
       action: "qualiopi.trainer.activation",
       targetType: "Trainer",
-      targetId: "t-1",
+      targetId: TRAINER_ID,
       changes: { nda: { modifie: true } },
     });
   });
