@@ -46,7 +46,10 @@ describe("rappel J+3", () => {
     expect(t).toContain(
       "Bonjour Camille, votre candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio.",
     );
-    expect(t).toContain("Les créneaux sont limités : réservez le vôtre en un clic");
+    expect(t).toContain(
+      "de 15 minutes en visio. Réservez le vôtre en un clic avec le bouton ci-dessous.",
+    );
+    expect(t).not.toMatch(/limité/i);
     expect(t).not.toContain("Dernier rappel");
   });
 
