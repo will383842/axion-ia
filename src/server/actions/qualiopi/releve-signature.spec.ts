@@ -99,7 +99,7 @@ describe("🔴 signature du formateur", () => {
       sessionFormateurs: [],
     });
     const res = await signerReleveFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_membre" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
@@ -123,7 +123,7 @@ describe("🔴 signature du formateur", () => {
       sessionId: null,
     });
     const res = await signerReleveFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_membre" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
   });
 
   it("refuse une entrée mal formée sans jamais atteindre le service", async () => {

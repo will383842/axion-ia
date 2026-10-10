@@ -53,6 +53,11 @@ import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-dis
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** La seule réponse « introuvable » de la route — inconnue ou pas la sienne. */
+function introuvable(): NextResponse {
+  return NextResponse.json({ error: "not_found" }, { status: 404 });
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -84,10 +89,11 @@ export async function GET(
     },
   });
 
-  // ⚠️ Une pièce d'un autre type répond 404 et non 403 : le formateur n'a pas à
-  // apprendre qu'un identifiant existe s'il désigne autre chose que sa lettre.
+  // ⚠️ Une pièce d'un autre type, ou la lettre d'un AUTRE formateur, répond
+  // exactement comme un identifiant inconnu : 404, même corps. Le formateur n'a
+  // pas à apprendre qu'un identifiant existe s'il ne désigne pas SA lettre.
   if (piece === null || piece.type !== "lettre_mission") {
-    return NextResponse.json({ error: "not_found" }, { status: 404 });
+    return introuvable();
   }
 
   const mandataire = await estMandataireDeLaLettre(
@@ -95,7 +101,7 @@ export async function GET(
     formateur.trainerId,
   );
   if (!mandataire) {
-    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+    return introuvable();
   }
 
   const nomFichier = nomFichierDocument({
