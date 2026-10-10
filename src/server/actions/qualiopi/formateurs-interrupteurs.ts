@@ -1,0 +1,217 @@
+// Interrupteurs du chantier « formateurs freelance » — Server Actions (lot S0-ter).
+//
+// UNE action par clé, sur le calque de `basculerReponsePostePourvuAction` :
+// habilitation par clé, préalables relus côté serveur DANS la transaction,
+// ligne de journal dans la MÊME transaction que l'écriture. Couper (revenir à
+// la position sûre) est toujours permis à qui est habilité.
+//
+// L'interprétation des valeurs vit dans
+// `server/qualiopi/formateurs-independants/interrupteurs.ts` — seul lecteur.
+
+"use server";
+
+import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { adminPath } from "@/lib/admin-path";
+import {
+  INTERRUPTEURS,
+  PREFIXE_CLES_FORMATEURS,
+  cleSetting,
+  estDateDePassage,
+  estPositionSure,
+  etatsDepuisLignes,
+  prealablesManquants,
+  valeurJson,
+  type CleInterrupteur,
+  type Habilitation,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs";
+
+export type EtatBascule = { ok: true; message: string } | { ok: false; error: string };
+
+const ROLES_PAR_HABILITATION: Readonly<Record<Habilitation, ReadonlyArray<string>>> = {
+  technique: ["super_admin", "admin"],
+  // Acte `valider_texte_email` : absent de la matrice SSOT à ce jour, donc
+  // réservé au seul `super_admin`.
+  valider_texte_email: ["super_admin"],
+};
+
+const REFUS_HABILITATION: Readonly<Record<Habilitation, string>> = {
+  technique: "Cet interrupteur est réservé à la direction (administrateur).",
+  valider_texte_email: "Valider les textes des e-mails est réservé à la direction (super-admin).",
+};
+
+/** La valeur demandée par le formulaire, ou un message d'erreur. */
+function valeurDemandee(
+  cle: CleInterrupteur,
+  formData: FormData,
+): { ok: true; valeur: unknown } | { ok: false; error: string } {
+  const sorte = INTERRUPTEURS[cle].sorte;
+  if (sorte === "garde_niveau") {
+    const v = formData.get("valeur");
+    return v === "refuser" || v === "avertir"
+      ? { ok: true, valeur: v }
+      : { ok: false, error: "Choisissez « refuser » ou « avertir »." };
+  }
+  if (sorte === "date") {
+    const d = formData.get("date");
+    if (d === null || d === "") return { ok: true, valeur: null };
+    return estDateDePassage(d)
+      ? { ok: true, valeur: d }
+      : { ok: false, error: "La date de passage doit tomber le 1er du mois (AAAA-MM-01)." };
+  }
+  const a = formData.get("actif");
+  return a === "1" || a === "0"
+    ? { ok: true, valeur: a === "1" }
+    : { ok: false, error: "Valeur invalide." };
+}
+
+async function basculer(cle: CleInterrupteur, formData: FormData): Promise<EtatBascule> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Session expirée." };
+  const role = (session.user as { role?: string }).role;
+  const habilitation = INTERRUPTEURS[cle].habilitation;
+  if (role == null || !ROLES_PAR_HABILITATION[habilitation].includes(role)) {
+    return { ok: false, error: REFUS_HABILITATION[habilitation] };
+  }
+  const demande = valeurDemandee(cle, formData);
+  if (!demande.ok) return demande;
+  const valeur = demande.valeur;
+  const userId = session.user.id;
+  const coupe = estPositionSure(cle, valeur);
+
+  const manques = await prisma.$transaction(async (tx) => {
+    const lignes = await tx.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    const etats = etatsDepuisLignes(lignes);
+    const manquants = prealablesManquants(cle, valeur, etats);
+    if (manquants.length > 0) return manquants;
+    const avant = etats[cle];
+    await tx.setting.upsert({
+      where: { key: cleSetting(cle) },
+      create: {
+        key: cleSetting(cle),
+        value: valeurJson(cle, valeur) as never,
+        description: `Formateurs freelance › Interrupteurs — ${INTERRUPTEURS[cle].libelle}`,
+        updatedBy: userId,
+      },
+      update: { value: valeurJson(cle, valeur) as never, updatedBy: userId },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: coupe ? "formateurs.interrupteur_coupe" : "formateurs.interrupteur_allume",
+        targetType: "setting",
+        targetId: cleSetting(cle),
+        changes: { cle: cleSetting(cle), avant, apres: valeur } as never,
+      },
+    });
+    return [];
+  });
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: coupe ? "Coupé." : "Enregistré." };
+}
+
+export async function basculerFormateursTextesValidesAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("textes_valides", formData);
+}
+export async function basculerFormateursEchangeOuvertAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("echange_ouvert", formData);
+}
+export async function basculerFormateursInvitationAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("invitation_auto", formData);
+}
+export async function basculerFormateursDossierEnLigneAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("dossier_en_ligne", formData);
+}
+export async function basculerFormateursRelancesAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("relances_auto", formData);
+}
+export async function basculerFormateursPiecesCronAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("pieces_cron", formData);
+}
+export async function basculerFormateursControleRegistrePeriodiqueAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("controle_registre_periodique", formData);
+}
+export async function basculerFormateursContratAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("contrat_auto", formData);
+}
+export async function basculerFormateursGardeActivationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("garde_activation", formData);
+}
+export async function basculerFormateursActivationAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("activation_auto", formData);
+}
+export async function basculerFormateursGardeMissionAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("garde_mission", formData);
+}
+export async function basculerFormateursLettreAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("lettre_auto", formData);
+}
+export async function basculerFormateursChoixSuivantsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("choix_suivants", formData);
+}
+export async function basculerFormateursPassagePaiementAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("passage_paiement", formData);
+}
+export async function basculerFormateursCommunesGeoCronAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("communes_geo_cron", formData);
+}
+export async function basculerFormateursProchesBlocAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculer("proches_bloc", formData);
+}

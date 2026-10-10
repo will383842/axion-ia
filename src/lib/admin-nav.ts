@@ -1288,6 +1288,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       tier: "advanced",
       parent: `${base}/qualiopi/formateurs`,
     },
+    // Formateurs freelance › Interrupteurs (lot S0-ter) : seul écran où se
+    // changent les clés `formateurs.*` — l'éditeur générique les refuse.
+    {
+      href: `${base}/qualiopi/formateurs/interrupteurs`,
+      label: "Interrupteurs formateurs",
+      icon: "Settings2",
+      group: "qualiopi",
+      subGroup: "intervenants",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formateurs`,
+    },
     // 🔴 2026-09-23 — « Cockpit financier » a QUITTÉ cette position : son bloc
     // vit désormais en fin du groupe Finances, juste après « Alertes
     // financement (sessions) » (chercher plus bas dans ce fichier). Motif :
