@@ -285,7 +285,7 @@ async function connexionParLeFormulaire(
 }
 
 /** Clé de `localStorage` où `CookieConsent` inscrit la décision. */
-const CLE_CONSENTEMENT = "axion-cookie-consent-v1";
+const CLE_CONSENTEMENT = "axion-cookie-consent-v2";
 
 /**
  * Écarte la bannière de consentement en REFUSANT les cookies non essentiels.

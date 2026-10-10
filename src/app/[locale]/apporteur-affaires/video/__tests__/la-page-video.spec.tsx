@@ -133,7 +133,7 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     const h = await rendre();
     const ancres = h.match(/href="\/apporteur-affaires\/video#candidater"/g) ?? [];
     expect(ancres.length).toBeGreaterThanOrEqual(3); // héro, milieu, bouton collant (mobile + bureau)
-    expect(texte(h)).toContain("Je candidate (2 minutes)");
+    expect(texte(h)).toContain("Devenir apporteur");
     // Chaque bouton vers le formulaire garde le MÊME libellé : un seul geste attendu.
     const boutons = [...h.matchAll(/<a [^>]*data-cta="(vsl-[^"]*)"[^>]*>(.*?)<\/a>/g)]
       .filter((m) => /^vsl-(vsl-|sticky)/.test(m[1] ?? ""))
@@ -143,7 +143,30 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
           .trim(),
       );
     expect(boutons.length).toBeGreaterThanOrEqual(3);
-    expect(new Set(boutons)).toEqual(new Set(["Je candidate (2 minutes)"]));
+    expect(new Set(boutons)).toEqual(new Set(["Devenir apporteur"]));
+  });
+
+  it("vocabulaire du 10/10 : ni « candidat… » ni « inscri… » dans ce que lit le visiteur", async () => {
+    film.present = false;
+    const t = texte(await rendre());
+    expect(t).not.toMatch(/candidat|inscri/i);
+    // Témoins : les nouveaux mots sont bien servis.
+    expect(t).toContain("Devenir apporteur en 2 minutes");
+    expect(t).toContain("2 minutes · sans engagement");
+    expect(t).toContain("Que se passe-t-il après ma demande ?");
+    expect(t).toContain("Vos données sont utilisées pour traiter votre demande.");
+    // La ligne « Aucun frais d'entrée… » reste, une seule fois.
+    expect(t.match(/Aucun frais d'entrée · Aucun quota · Aucun gain garanti/g)).toHaveLength(1);
+  });
+
+  it("la cible idéale en premier dans « pour qui », l'espace personnel dans les preuves", async () => {
+    const t = texte(await rendre());
+    const premiere =
+      "Vous apportez déjà des affaires : l'IA complète ce que vous recommandez, sans exclusivité";
+    expect(t).toContain(premiere);
+    expect(t.indexOf(premiere)).toBeLessThan(t.indexOf("Vous avez des contacts"));
+    expect(t).toContain("Votre lien personnel");
+    expect(t).not.toMatch(/tableau des commissions/i);
   });
 
   it("aucun mot interdit, aucun téléphone ; la somme vit UNIQUEMENT dans le bloc commission et la FAQ, via pricing.ts", async () => {
@@ -163,7 +186,7 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(texte(h1)).not.toMatch(/€|gagn|commission/i);
     const hero = h.slice(h.indexOf("<h1"), h.indexOf('aria-labelledby="vsl-commission"'));
     expect(texte(hero)).not.toMatch(/€|gagn|commission/i);
-    const tete = t.slice(0, t.indexOf("Je candidate"));
+    const tete = t.slice(0, t.indexOf("Devenir apporteur"));
     expect(tete).not.toMatch(/€|gagn/);
 
     // Le montant n'apparaît que dans le bloc et dans la FAQ.
@@ -192,7 +215,7 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(t).toContain("Aucun gain garanti");
     expect(t).not.toMatch(/revenu complémentaire|sans effort/i);
     // Après le héro (donc après le premier bouton), avant les pastilles « pour qui ».
-    expect(t.indexOf("Votre commission")).toBeGreaterThan(t.indexOf("Je candidate"));
+    expect(t.indexOf("Votre commission")).toBeGreaterThan(t.indexOf("Devenir apporteur"));
     expect(t.indexOf("Votre commission")).toBeLessThan(t.indexOf("Vous avez des contacts"));
   });
 
@@ -217,6 +240,16 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     const tailles = [...sansFaq.matchAll(/text-\[(\d+)px\]/g)].map((m) => Number(m[1]));
     // Plus aucune note de page sous 14 px (les 13 px d'avant sont montés à 14-15 px).
     expect(tailles.filter((n) => n < 14)).toEqual([]);
+  });
+
+  it("mobile 360 px (2026-10-10) : chaque bouton tient sur UNE ligne, la case de consentement fait 24 px", async () => {
+    const h = await rendre();
+    const boutons = [...h.matchAll(/<(?:a|button) [^>]*data-cta="(vsl-[^"]*)"[^>]*>/g)];
+    expect(boutons.length).toBeGreaterThanOrEqual(4); // héro, milieu, collant, « Continuer »
+    for (const b of boutons) expect(b[0], b[1]).toContain("whitespace-nowrap");
+    const caseConsent = h.match(/<input[^>]*id="vsl-consent"[^>]*>/)?.[0] ?? "";
+    expect(caseConsent).toMatch(/\bh-6\b/);
+    expect(caseConsent).toMatch(/\bw-6\b/);
   });
 
   it("une colonne, pas d'image avant le formulaire (le LCP est le titre) ni de lien vers le site", async () => {

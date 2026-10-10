@@ -213,7 +213,7 @@ describe("étape 1 — capturerLeadVsl", () => {
     // Même échelle qu'aujourd'hui : un lead vidéo est un « premier contact ».
     expect(d["etape"]).toBe("premier-contact");
     expect(d["source"]).toBe("/apporteur-affaires/video");
-    expect(d["consentVersion"]).toBe("lead-apporteur-vsl-v4-2026-10-07");
+    expect(d["consentVersion"]).toBe("lead-apporteur-vsl-v5-2026-10-10");
     expect(d["vsl"]).toMatchObject({
       version: "vsl-v1",
       etapeAtteinte: 1,
@@ -248,7 +248,7 @@ describe("étape 1 — capturerLeadVsl", () => {
     await capturer();
     expect(consentement).toHaveBeenCalledTimes(1);
     expect(consentement.mock.calls[0]?.[0]).toMatchObject({
-      consentVersion: "lead-apporteur-vsl-v4-2026-10-07",
+      consentVersion: "lead-apporteur-vsl-v5-2026-10-10",
       action: "optin",
     });
   });

@@ -354,7 +354,7 @@ describe("étape 2", () => {
     await allerEtape2();
     remplirEtape2();
     fireEvent.click(screen.getByRole("button", { name: /Envoyer et choisir mon créneau/ }));
-    expect(await screen.findByText(/inscription a expiré/)).toBeTruthy();
+    expect(await screen.findByText(/demande a expiré/)).toBeTruthy();
     expect(screen.getByRole("heading", { name: /Parlons de vous/ })).toBeTruthy();
     expect(push).not.toHaveBeenCalled();
   });

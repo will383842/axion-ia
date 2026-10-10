@@ -17,8 +17,10 @@ import type { ReponseNombreDirigeants } from "@/features/commercial-application/
 import type { EtatVsl } from "@/lib/recrutement/vsl-etat";
 import type { ErreursEtape2 } from "@/lib/recrutement/vsl-validation";
 
+// Une seule ligne à 360 px (« Envoyer et choisir mon créneau → » passait sur deux) :
+// `whitespace-nowrap`, 15 px et marge réduite sous `sm`, 16 px au-delà.
 const BOUTON_TERRACOTTA =
-  "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep shadow-none";
+  "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep shadow-none whitespace-nowrap px-3 text-[15px] sm:px-6 sm:text-base";
 
 interface VslEtape2Props {
   formRef: React.RefObject<HTMLFormElement | null>;
@@ -114,11 +116,11 @@ export function VslEtape2({
         {envoi ? "Envoi…" : `${f2.bouton} →`}
       </PrimaryButton>
       <p className="text-fg-soft mt-3 text-center text-[14px]">{f2.micro}</p>
-      <p className="mt-2 text-center">
+      <p className="mt-1 text-center">
         <button
           type="button"
           onClick={onRetour}
-          className="text-terracotta-deep text-[14px] underline underline-offset-2"
+          className="text-terracotta-deep inline-flex min-h-11 items-center px-2 text-[14px] underline underline-offset-2"
         >
           {f2.retour}
         </button>

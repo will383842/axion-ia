@@ -136,7 +136,7 @@ export function StickyMobileCta({
             onClick={auClic}
             {...(track ? { "data-cta": track } : {})}
             {...(visible ? {} : { tabIndex: -1 })}
-            className={`${teinte} flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
+            className={`${teinte} flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-4 py-3.5 text-sm font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:px-6`}
           >
             {label}
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -160,7 +160,7 @@ export function StickyMobileCta({
           onClick={auClic}
           {...(track ? { "data-cta": `${track}-desktop` } : {})}
           {...(visible ? {} : { tabIndex: -1 })}
-          className={`${teinte} inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
+          className={`${teinte} inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight whitespace-nowrap shadow-[0_12px_28px_-8px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
             visible ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >

@@ -57,7 +57,7 @@ export function TunnelFacebookShell({
             </span>
             <span className="text-terracotta italic">IA</span>
           </span>
-          <span className="text-fg-muted text-xs font-semibold tracking-[0.12em] uppercase sm:text-sm">
+          <span className="text-fg-muted text-[14px] font-semibold tracking-[0.12em] uppercase">
             {sousTitre}
           </span>
         </div>
@@ -67,24 +67,25 @@ export function TunnelFacebookShell({
 
       {/* Pied légal minimal. */}
       <footer className="border-border bg-paper border-t py-6">
-        <div className="text-fg-muted mx-auto flex max-w-6xl flex-col gap-2 px-4 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="text-fg-muted mx-auto flex max-w-6xl flex-col gap-2 px-4 text-[14px] sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>{PIED.ligne}</p>
-          <nav aria-label="Informations légales" className="flex flex-wrap gap-x-4 gap-y-1">
+          {/* Liens à 44 px de haut au téléphone : on les touche au pouce. */}
+          <nav aria-label="Informations légales" className="flex flex-wrap gap-x-4 sm:gap-y-1">
             <Link
               href={ROUTES.legalNotice as never}
-              className="hover:text-fg underline-offset-2 hover:underline"
+              className="hover:text-fg inline-flex min-h-11 items-center underline-offset-2 hover:underline sm:min-h-0"
             >
               Mentions légales
             </Link>
             <Link
               href={ROUTES.privacy as never}
-              className="hover:text-fg underline-offset-2 hover:underline"
+              className="hover:text-fg inline-flex min-h-11 items-center underline-offset-2 hover:underline sm:min-h-0"
             >
               Confidentialité
             </Link>
             <Link
               href={ROUTES.cookies as never}
-              className="hover:text-fg underline-offset-2 hover:underline"
+              className="hover:text-fg inline-flex min-h-11 items-center underline-offset-2 hover:underline sm:min-h-0"
             >
               Cookies
             </Link>

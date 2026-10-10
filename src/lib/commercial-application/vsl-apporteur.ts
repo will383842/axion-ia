@@ -23,18 +23,21 @@ export const VSL_VERSION = "vsl-v1";
  * explicitement qu'on peut écrire « même si je ne termine pas » (relance
  * d'abandon, base légale du lot 2) ; la v4 (2026-10-07) garde cette phrase et
  * retire la durée « 24 mois après la clôture » — plus aucune suppression
- * automatique (décision de Will).
+ * automatique (décision de Will) ; la v5 (2026-10-10) dit « ma demande » au lieu
+ * de « mon inscription » (vocabulaire du tunnel vidéo, décision de Will) — même
+ * portée, mots changés, donc nouvelle version.
  */
-export const LEAD_APPORTEUR_VSL_CONSENT_VERSION = "lead-apporteur-vsl-v4-2026-10-07";
+export const LEAD_APPORTEUR_VSL_CONSENT_VERSION = "lead-apporteur-vsl-v5-2026-10-10";
 
 /**
  * Texte de la case de l'étape 1 (version `LEAD_APPORTEUR_VSL_CONSENT_VERSION`).
  * La page l'affiche telle quelle : toute modification change la version.
  * Vouvoiement. v4 (2026-10-07, décision Will) : plus de « 24 mois après la
- * clôture » — aucun dossier n'est plus supprimé automatiquement.
+ * clôture » — aucun dossier n'est plus supprimé automatiquement. v5 (2026-10-10) :
+ * « ma demande » au lieu de « mon inscription ».
  */
 export const VSL_CONSENT_TEXTE =
-  "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires, y compris si je ne termine pas mon inscription. Données conservées pour garder la trace de nos échanges, jamais vendues ni cédées.";
+  "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires, y compris si je ne termine pas ma demande. Données conservées pour garder la trace de nos échanges, jamais vendues ni cédées.";
 
 /** Question fermée de l'étape 2 : une réponse, un geste, obligatoire. */
 export const VSL_QUESTION = {
@@ -63,7 +66,7 @@ export function libelleReponseVsl(id: string | undefined): string {
  * Variantes du gabarit `lead-apporteur-recu` (pas de nouveau gabarit : un
  * gabarit de plus coûte six points d'enregistrement) et du gabarit
  * `lead-apporteur-relance`.
- *   · A1 `vsl-abandon` : « Votre inscription n'est pas terminée » (T0 + 30 min) ;
+ *   · A1 `vsl-abandon` : « Votre demande n'est pas terminée » (T0 + 30 min) ;
  *   · B1 `vsl-etape2`  : « C'est noté » + bouton Calendly (étape 2, immédiat) ;
  *   · A2/A3 : relances J+2 / J+7 avec `variante: "vsl"` (« il vous manque une étape »).
  */

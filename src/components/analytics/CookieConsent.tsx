@@ -11,7 +11,7 @@
 //    consent requis (avis CNIL 2022 sur les analytics anonymisés).
 //  - Microsoft Clarity (US, cookies persistants) est GATÉ sur consent :
 //    le composant `Clarity` ne charge le script qu'après `accepted`.
-//  - Stockage : `localStorage.axion-cookie-consent-v1` = "accepted" | "declined"
+//  - Stockage : `localStorage.axion-cookie-consent-v2` = "accepted" | "declined"
 //    + timestamp pour expiration CNIL 13 mois, avec repli cookie first-party.
 //
 // Hook `useAnalyticsConsent()` implémenté via `useSyncExternalStore` (pattern
@@ -47,8 +47,14 @@ import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import { Link } from "@/i18n/navigation";
 import { trackFunnel } from "@/lib/tracking";
 
-export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v1";
-const ANALYTICS_CONSENT_TS_KEY = "axion-cookie-consent-v1:ts";
+// 🔴 v2 (2026-10-10, RGPD). La v1 a été posée par un bandeau qui ne nommait QUE
+// Microsoft Clarity ; le pixel Meta est arrivé le 2026-09-03 (PR 963) sans changer
+// la clé, si bien qu'un « accepté » donné pour Clarity valait consentement Meta.
+// Un consentement ne vaut que pour ce qui était annoncé : la v1 n'est plus JAMAIS
+// lue (ni « accepté » ni « refusé »), tout le monde revoit le bandeau une fois.
+// Toute nouvelle finalité ajoutée au bandeau impose de passer en v3.
+export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v2";
+const ANALYTICS_CONSENT_TS_KEY = "axion-cookie-consent-v2:ts";
 const ANALYTICS_CONSENT_EXPIRY_MS = 13 * 30 * 24 * 60 * 60 * 1000; // 13 mois CNIL
 const CONSENT_CHANGE_EVENT = "axion-consent-changed";
 

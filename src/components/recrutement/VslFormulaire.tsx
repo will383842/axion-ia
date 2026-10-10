@@ -96,8 +96,10 @@ interface VslFormulaireProps {
 /** Hauteur MINIMALE commune aux deux étapes : passer de l'une à l'autre ne déplace rien. */
 const HAUTEUR_MIN = "min-h-[34rem] sm:min-h-[31rem]";
 
+// Une seule ligne à 360 px (« Envoyer et choisir mon créneau → » passait sur deux) :
+// `whitespace-nowrap`, 15 px et marge réduite sous `sm`, 16 px au-delà.
 const BOUTON_TERRACOTTA =
-  "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep shadow-none";
+  "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep shadow-none whitespace-nowrap px-3 text-[15px] sm:px-6 sm:text-base";
 
 const MESSAGES_SERVEUR = {
   invalid: VSL_ERREURS.invalide,
@@ -371,6 +373,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
           </div>
 
           <div className="mt-5">
+            {/* Toute la ligne est cliquable (le texte compris), case de 24 px. */}
             <label className="flex cursor-pointer gap-3">
               <input
                 id="vsl-consent"
@@ -380,7 +383,7 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
                 onChange={(e) => set({ consent: e.target.checked })}
                 aria-invalid={erreurs1.consent ? true : undefined}
                 aria-describedby={erreurs1.consent ? "vsl-consent-erreur" : undefined}
-                className="accent-terracotta mt-1 h-5 w-5 shrink-0"
+                className="accent-terracotta mt-0.5 h-6 w-6 shrink-0"
               />
               <span className="text-fg-soft text-sm leading-relaxed">{f1.consent}</span>
             </label>
