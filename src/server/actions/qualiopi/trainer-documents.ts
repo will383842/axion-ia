@@ -20,6 +20,12 @@ import {
   requireHabilitation,
 } from "@/server/actions/qualiopi/_guards";
 import { motifPieceNonProbante } from "@/server/qualiopi/trainers/piece-competence";
+import {
+  echeanceCalculee,
+  estPieceArchivee,
+  estPieceGardee,
+  MARQUE_ARCHIVE,
+} from "@/server/qualiopi/formateurs-independants/gardes";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -77,6 +83,24 @@ export async function createTrainerDocumentAction(
     }
   }
 
+  // 🔴 Lot S1 (ADR 0066) — les pièces que lit la garde d'activation (vigilance
+  // URSSAF, avis SIRENE) ont une échéance CALCULÉE : émission + durée légale.
+  // Une échéance saisie librement (« valable jusqu'en 2099 ») faisait vivre une
+  // attestation pour toujours. Sans date d'émission, ou avec une date future,
+  // la pièce ne prouve rien : elle est refusée dès la saisie.
+  let dateExpiration = v.dateExpiration;
+  if (estPieceGardee(v.type)) {
+    if (v.dateEmission === undefined) {
+      return {
+        error: "La date d'émission de cette pièce est obligatoire : son échéance en dépend.",
+      };
+    }
+    if (v.dateEmission.getTime() > Date.now()) {
+      return { error: "La date d'émission ne peut pas être dans le futur." };
+    }
+    dateExpiration = echeanceCalculee(v.type, v.dateEmission) ?? undefined;
+  }
+
   let id: string;
   try {
     const created = await prisma.trainerDocument.create({
@@ -86,7 +110,7 @@ export async function createTrainerDocumentAction(
         numeroPiece: v.numeroPiece ?? null,
         fichierUrl: v.fichierUrl !== undefined && v.fichierUrl !== "" ? v.fichierUrl : null,
         dateEmission: v.dateEmission ?? null,
-        dateExpiration: v.dateExpiration ?? null,
+        dateExpiration: dateExpiration ?? null,
         notes: v.notes ?? null,
       },
       select: { id: true },
@@ -139,17 +163,62 @@ export async function validateTrainerDocumentAction(
   // définition de « fichier présent » que la couverture et les pièces imprimées.
   // Seul le motif `sans_fichier` bloque : une pièce expirée reste authentique et
   // se valide, elle ne couvre simplement rien (l'écran le signale).
+  let echeanceRecalculee: Date | null | undefined;
   if (statutValidation === "valide") {
-    let piece: { type: string; fichierUrl: string | null; dateExpiration: Date | null } | null;
+    let piece: {
+      type: string;
+      fichierUrl: string | null;
+      dateEmission?: Date | null;
+      dateExpiration: Date | null;
+      rejetMotif?: string | null;
+    } | null;
     try {
       piece = await prisma.trainerDocument.findUnique({
         where: { id },
-        select: { type: true, fichierUrl: true, dateExpiration: true },
+        select: {
+          type: true,
+          fichierUrl: true,
+          dateEmission: true,
+          dateExpiration: true,
+          rejetMotif: true,
+        },
       });
     } catch {
       return { error: "Erreur lors de la validation de la pièce." };
     }
     if (piece === null) return { error: "Pièce introuvable." };
+    if (estPieceArchivee(piece.rejetMotif)) {
+      return { error: "Cette pièce est archivée : elle ne peut plus être validée." };
+    }
+
+    // 🔴 Lot S1 (ADR 0066) — QUATRE YEUX sur les pièces que lit la garde
+    // d'activation : celui qui a saisi la pièce ne la valide pas lui-même
+    // (sauf `super_admin`). Le créateur est lu dans le journal de création ;
+    // introuvable, il est réputé être le validateur — garde FERMÉE.
+    if (estPieceGardee(piece.type)) {
+      if (session.role !== "super_admin") {
+        let createur: string | null = null;
+        try {
+          const trace = await prisma.activityLog.findFirst({
+            where: { action: "qualiopi.trainer_document.create", targetId: id },
+            orderBy: { createdAt: "asc" },
+            select: { adminUserId: true },
+          });
+          createur = trace?.adminUserId ?? null;
+        } catch {
+          createur = null;
+        }
+        if (createur === null || createur === session.userId) {
+          return {
+            error:
+              "Validation refusée : une attestation de vigilance ou un avis SIRENE est validé par une autre personne que celle qui l'a enregistré.",
+          };
+        }
+      }
+      // L'échéance est RECALCULÉE à la validation : une pièce saisie avant ce
+      // lot avec une date libre ne la garde pas.
+      echeanceRecalculee = echeanceCalculee(piece.type, piece.dateEmission ?? null);
+    }
     if (
       motifPieceNonProbante({ ...piece, statutValidation: "valide" }, new Date()) === "sans_fichier"
     ) {
@@ -170,6 +239,7 @@ export async function validateTrainerDocumentAction(
         valideAt: statutValidation === "valide" ? new Date() : null,
         valideParUserId: statutValidation === "valide" ? session.userId : null,
         rejetMotif: statutValidation === "rejete" ? (rejetMotif ?? null) : null,
+        ...(echeanceRecalculee !== undefined ? { dateExpiration: echeanceRecalculee } : {}),
       },
     });
   } catch {
@@ -190,24 +260,16 @@ export async function validateTrainerDocumentAction(
 const deleteSchema = z.object({ id: uuid });
 
 /**
- * Supprime une piece formateur (diplome, CV, attestation).
+ * ARCHIVE une pièce formateur (diplôme, CV, attestation) — lot S1, ADR 0066.
  *
- * ⚠️ Le commentaire precedent disait « l'historique reste dans ActivityLog ».
- * C'est trompeur : ActivityLog conserve la trace de L'ACTE, pas la PIECE. Apres
- * cet appel, le fichier reste orphelin dans le storage mais son pointeur, son
- * hash de scellement et son statut de validation sont perdus — la preuve des
- * indicateurs 21/22 devient inexploitable devant un auditeur.
+ * 🔴 C'était un `delete` : le pointeur du fichier, son hash de scellement et son
+ * statut de validation disparaissaient, et la preuve des indicateurs 21/22 avec
+ * eux. La pièce est désormais CONSERVÉE, passée au statut `rejete` avec un
+ * motif marqué {@link MARQUE_ARCHIVE} : elle ne compte plus pour aucune
+ * conformité ni pour la garde d'activation, et elle reste lisible.
  *
- * D'ou `requireAdminDelete` (super_admin STRICT) et non `requireAdminWrite`
- * (qui autorise le role `editor`). `TrainerDocument` n'a ni `deletedAt` ni
- * `archivedAt` : il n'y a pas de corbeille, la garde est la seule protection.
- *
- * ⚠️ CE QUI RESTE A FAIRE, et que cette garde ne couvre PAS : `changes` n'est
- * pas alimente ici, donc rien ne permet de reconstituer la piece supprimee. Un
- * `findUnique` avant le `delete`, verse dans `changes`, protegerait tous les
- * roles y compris `super_admin` (le seul compte existant a ce jour). Non fait
- * dans ce lot : c'est un changement de comportement qui demande de reprendre
- * les mocks Prisma des specs concernees. A traiter avec le soft-delete.
+ * `requireAdminDelete` (super_admin STRICT) est conservé : retirer une pièce du
+ * dossier reste un geste réservé, même réversible en base.
  */
 export async function deleteTrainerDocumentAction(
   input: z.infer<typeof deleteSchema>,
@@ -217,16 +279,24 @@ export async function deleteTrainerDocumentAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
 
+  const le = new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
   try {
-    await prisma.trainerDocument.delete({ where: { id } });
+    await prisma.trainerDocument.update({
+      where: { id },
+      data: {
+        statutValidation: "rejete",
+        rejetMotif: `${MARQUE_ARCHIVE} Pièce retirée du dossier le ${le}.`,
+      },
+    });
   } catch {
-    return { error: "Erreur lors de la suppression de la pièce." };
+    return { error: "Erreur lors de l'archivage de la pièce." };
   }
 
   await logQualiopiActivity({
-    action: "qualiopi.trainer_document.delete",
+    action: "qualiopi.trainer_document.archive",
     targetType: "TrainerDocument",
     targetId: id,
+    changes: { archivee: true },
     session,
   });
 

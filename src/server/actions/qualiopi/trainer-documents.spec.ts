@@ -229,15 +229,20 @@ describe("validateTrainerDocumentAction", () => {
 });
 
 describe("deleteTrainerDocumentAction", () => {
-  it("supprime la pièce", async () => {
+  // Lot S1 (ADR 0066) : ce n'est plus une suppression mais un ARCHIVAGE — la
+  // pièce reste, au statut `rejete` et marquée. Cf.
+  // `trainer-documents-pieces-gardees.spec.ts`.
+  it("archive la pièce au lieu de l'effacer", async () => {
     const r = await deleteTrainerDocumentAction({ id: DOC_ID });
     expect(r).toEqual({ data: { id: DOC_ID } });
-    expect(mockDelete).toHaveBeenCalledWith({ where: { id: DOC_ID } });
+    expect(mockDelete).not.toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
   });
 
   it("refuse un id non UUID", async () => {
     const r = await deleteTrainerDocumentAction({ id: "abc" });
     expect(r).toEqual({ error: "Données invalides" });
     expect(mockDelete).not.toHaveBeenCalled();
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
