@@ -16,6 +16,7 @@ const d = vi.hoisted(() => ({
   facturation: vi.fn(),
   quotidien: vi.fn(),
   archivage: vi.fn(),
+  annuler: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -34,6 +35,10 @@ vi.mock("@/features/commercial-application/relances-invitation-apporteur", () =>
 }));
 vi.mock("@/features/commercial-application/reponses-entrantes-apporteur", () => ({
   passerReponsesEntrantes: (...a: unknown[]) => d.reponses(...a),
+}));
+
+vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
+  annulerRelancesLeadApporteur: d.annuler,
 }));
 
 vi.mock("@/features/commercial-application/invitation-auto", () => ({
@@ -116,6 +121,8 @@ describe("🔴 l'aiguillage de la file apporteur-crons", () => {
   it("un job `reponses-entrantes` relève les réponses, et ne lance PAS les rappels", async () => {
     await processeur()({ name: "reponses-entrantes", data: { type: "reponses-entrantes" } });
     expect(d.reponses).toHaveBeenCalledTimes(1);
+    // R6 (2026-10-10) : le relevé reçoit de quoi arrêter les relances du premier contact.
+    expect(d.reponses.mock.calls[0]![0]).toEqual({ arreterRelances: d.annuler });
     expect(d.relances).not.toHaveBeenCalled();
   });
 

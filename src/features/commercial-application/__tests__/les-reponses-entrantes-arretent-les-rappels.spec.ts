@@ -29,6 +29,7 @@ const db = vi.hoisted(() => ({
   enqueue: null as unknown as ReturnType<typeof vi.fn>,
   verdict: null as unknown as ReturnType<typeof vi.fn>,
   notify: null as unknown as ReturnType<typeof vi.fn>,
+  annuler: null as unknown as ReturnType<typeof vi.fn>,
 }));
 
 function correspond(ligne: Ligne, where: Record<string, unknown> | undefined): boolean {
@@ -236,6 +237,7 @@ beforeEach(() => {
   db.enqueue = vi.fn(async () => ({ enqueued: true }));
   db.verdict = vi.fn(async () => ({ retenu: false }));
   db.notify = vi.fn(async () => ({ ok: true }));
+  db.annuler = vi.fn(async () => 0);
   process.env["CALENDLY_APPORTEUR_URL"] = CALENDLY;
   reinitialiserJournalConfig();
   vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -422,6 +424,109 @@ describe("🔴 ce qu'une réponse change aux rappels", () => {
     // « Renvoyer quand même » deux jours plus tard : nouvelle invitation, nouveau compte.
     db.emailLogs.push(invitation({ id: "inv-2", createdAt: passage(2), sentAt: passage(2) }));
     expect(await motifRetenueRelanceInvitation("ligne-a")).toBeNull();
+  });
+});
+
+describe("🔴 R6 — une réponse arrête aussi les relances du premier contact (A1, A2, A3)", () => {
+  const MOTIF = "Envoi annulé : la personne a répondu par e-mail.";
+
+  /** Un lead du tunnel vidéo : aucune invitation, seulement A1 parti. */
+  function leadVideoAvecA1(): void {
+    db.submissions = [
+      ligne({
+        details: {
+          unifiedType: "recrutement",
+          subType: "candidature-commerciale",
+          vsl: { etapeAtteinte: 1 },
+        },
+      }),
+    ];
+    db.emailLogs = [
+      {
+        id: "a1",
+        template: "lead-apporteur-recu",
+        entityType: "Submission",
+        entityId: "ligne-a",
+        status: "sent",
+        createdAt: new Date("2026-09-27T20:00:00Z"),
+        sentAt: new Date("2026-09-27T20:00:00Z"),
+      },
+    ];
+  }
+
+  it("une réponse HUMAINE d'une personne invitée retire ses relances de premier contact", async () => {
+    await passerReponsesEntrantes({
+      client: clientDouble([message()]),
+      maintenant: MAINTENANT,
+      arreterRelances: db.annuler,
+    });
+    expect(db.annuler).toHaveBeenCalledTimes(1);
+    expect(db.annuler).toHaveBeenCalledWith("camille@exemple.fr", MOTIF);
+  });
+
+  it("une réponse AUTOMATIQUE d'une personne invitée ne retire rien", async () => {
+    const m = message();
+    await passerReponsesEntrantes({
+      client: clientDouble([m], { [m.messageId]: AUTOMATIQUE }),
+      maintenant: MAINTENANT,
+      arreterRelances: db.annuler,
+    });
+    expect(db.annuler).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un lead vidéo JAMAIS invité qui répond à A1 : ses relances A2/A3 sont retirées", async () => {
+    leadVideoAvecA1();
+    const r = await passerReponsesEntrantes({
+      client: clientDouble([message()]),
+      maintenant: MAINTENANT,
+      arreterRelances: db.annuler,
+    });
+    expect(db.annuler).toHaveBeenCalledWith("camille@exemple.fr", MOTIF);
+    // Le relevé des réponses reste celui des invitations : rien d'enregistré, Will
+    // n'est pas notifié pour autant.
+    expect(r.reconnus).toBe(0);
+    expect(db.entrantes).toHaveLength(0);
+    expect(db.notify).not.toHaveBeenCalled();
+  });
+
+  it("un lead vidéo : un « je suis absent » ne retire rien", async () => {
+    leadVideoAvecA1();
+    const m = message();
+    await passerReponsesEntrantes({
+      client: clientDouble([m], { [m.messageId]: AUTOMATIQUE }),
+      maintenant: MAINTENANT,
+      arreterRelances: db.annuler,
+    });
+    expect(db.annuler).not.toHaveBeenCalled();
+  });
+
+  it("un message ANTÉRIEUR à tout message de premier contact ne retire rien", async () => {
+    leadVideoAvecA1();
+    const m = message({ receivedAt: new Date("2026-09-27T19:00:00Z") });
+    await passerReponsesEntrantes({
+      client: clientDouble([m]),
+      maintenant: MAINTENANT,
+      arreterRelances: db.annuler,
+    });
+    expect(db.annuler).not.toHaveBeenCalled();
+  });
+
+  it("sans fonction d'arrêt injectée, le relevé passe sans rien retirer", async () => {
+    leadVideoAvecA1();
+    const r = await passerReponsesEntrantes({
+      client: clientDouble([message()]),
+      maintenant: MAINTENANT,
+    });
+    expect(r.erreurs).toBe(0);
+    expect(db.annuler).not.toHaveBeenCalled();
+  });
+
+  it("un expéditeur inconnu ne retire rien, et ses en-têtes ne sont pas lus", async () => {
+    leadVideoAvecA1();
+    const client = clientDouble([message({ fromAddress: "quelquun@ailleurs.fr" })]);
+    await passerReponsesEntrantes({ client, maintenant: MAINTENANT, arreterRelances: db.annuler });
+    expect(db.annuler).not.toHaveBeenCalled();
+    expect(client.lireEntetes).not.toHaveBeenCalled();
   });
 });
 

@@ -152,7 +152,10 @@ async function passerFacturation(): Promise<void> {
 async function passerReponses(): Promise<void> {
   const { passerReponsesEntrantes } =
     await import("@/features/commercial-application/reponses-entrantes-apporteur");
-  const r = await passerReponsesEntrantes();
+  // R6 : une réponse arrête aussi les relances du premier contact (A1, A2, A3).
+  const { annulerRelancesLeadApporteur } =
+    await import("@/features/commercial-application/relances-lead-apporteur");
+  const r = await passerReponsesEntrantes({ arreterRelances: annulerRelancesLeadApporteur });
   if (r.suspendu) return; // déjà dit par le passage lui-même (une fois, pour la config)
   const { humaines, automatiques } = r.enregistrees;
   if (humaines + automatiques > 0 || r.erreurs > 0) {

@@ -25,7 +25,15 @@
 //   · les rappels : `lireEtatsRelance` compte une réponse humaine comme une
 //     réponse (motif `repondu`) — au passage quotidien ET au filet du départ ;
 //   · la liste : badge « A répondu le JJ/MM » (`badgeSuiviInvitation`) ;
-//   · la fiche : bloc « Réponses reçues par e-mail ».
+//   · la fiche : bloc « Réponses reçues par e-mail » ;
+//   · les relances du PREMIER CONTACT (2026-10-10, R6) : kit / A1, A2, A3
+//     (« votre inscription vous attend »), retirées de la file par
+//     `annulerRelancesLeadApporteur` (injectée par le worker, voir
+//     `ArreterRelances`) — comme le fait une réponse envoyée depuis
+//     la console (`reply-actions.ts`). Une personne du tunnel vidéo n'a reçu
+//     AUCUNE invitation : sa réponse à A1 ne s'enregistre pas (le relevé reste
+//     celui des invitations), mais elle arrête quand même ses relances dès
+//     qu'elle répond APRÈS un de nos messages de premier contact.
 //
 // ── Réponse automatique ───────────────────────────────────────────────────
 // Enregistrée, marquée `auto`, et elle n'arrête RIEN : un « je suis absent »
@@ -56,6 +64,15 @@ import {
   type MessageZoho,
 } from "@/server/zoho-mail/client";
 import { GABARIT_INVITATION } from "./relance-invitation-etat";
+
+/** Motif écrit sur les envois en attente retirés par une réponse entrante. */
+export const MOTIF_ANNULATION_REPONSE = "Envoi annulé : la personne a répondu par e-mail.";
+
+/**
+ * Les messages du PREMIER CONTACT (accusé / kit / A1, puis A2-A3) : une réponse
+ * arrivée après l'un d'eux arrête les relances encore en attente.
+ */
+const GABARITS_PREMIER_CONTACT = ["lead-apporteur-recu", "lead-apporteur-relance"] as const;
 
 /** Clé du curseur dans la table `settings`. */
 export const CLE_CURSEUR = "apporteurs.reponses-entrantes.curseur";
@@ -139,28 +156,47 @@ interface Rattachement {
   readonly message: MessageZoho;
   readonly empreinte: string;
   readonly fiche: LigneFiche;
+  /** L'adresse de l'expéditeur, en clair — pour retirer ses relances. */
+  readonly adresse: string;
+}
+
+interface Restant {
+  readonly message: MessageZoho;
+  readonly empreinte: string;
+  readonly adresse: string;
+}
+
+/** Une réponse à un message de premier contact, sans invitation derrière. */
+interface ReponsePremierContact {
+  readonly message: MessageZoho;
+  readonly adresse: string;
 }
 
 /**
  * Les messages d'une personne invitée, arrivés après son invitation, chacun
  * rattaché à la fiche de la DERNIÈRE invitation partie avant lui.
  */
-async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement[]> {
+async function rattacher(
+  messages: readonly MessageZoho[],
+): Promise<{ rattachements: Rattachement[]; premierContact: ReponsePremierContact[] }> {
   const parEmpreinte = new Map<string, MessageZoho[]>();
+  const adresseDe = new Map<MessageZoho, string>();
   for (const m of messages) {
     const adresse = adresseExpediteur(m.fromAddress);
     const empreinte = adresse ? hashEmailForLookup(adresse) : null;
-    if (!empreinte) continue;
+    if (!empreinte || !adresse) continue;
+    adresseDe.set(m, adresse);
     parEmpreinte.set(empreinte, [...(parEmpreinte.get(empreinte) ?? []), m]);
   }
-  if (parEmpreinte.size === 0) return [];
+  const rien = { rattachements: [], premierContact: [] };
+  if (parEmpreinte.size === 0) return rien;
 
   const fiches = (await prisma.submission.findMany({
     where: { contactEmailHash: { in: [...parEmpreinte.keys()] }, deletedAt: null },
     select: { id: true, contactEmailHash: true, contactName: true, details: true },
   })) as LigneFiche[];
   const ficheParId = new Map(fiches.map((f) => [f.id, f]));
-  if (fiches.length === 0) return [];
+  if (fiches.length === 0) return rien;
 
   const invitations = await prisma.emailLog.findMany({
     where: {
@@ -173,6 +209,7 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
   });
 
   const sortie: Rattachement[] = [];
+  const restants: Restant[] = [];
   for (const [empreinte, liste] of parEmpreinte) {
     const invits = invitations
       .map((i) => ({ fiche: i.entityId ? ficheParId.get(i.entityId) : undefined, i }))
@@ -182,15 +219,81 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
       )
       .map((x) => ({ fiche: x.fiche, le: (x.i.sentAt ?? x.i.createdAt).getTime() }))
       .sort((a, b) => b.le - a.le);
-    if (invits.length === 0) continue;
     for (const m of liste) {
       // 🔑 Partie AVANT le message : un message antérieur à l'invitation n'y
       // répond pas (premier contact, question d'avant) — il n'arrête rien.
       const invit = invits.find((x) => x.le < m.receivedAt.getTime());
-      if (invit) sortie.push({ message: m, empreinte, fiche: invit.fiche });
+      if (invit) {
+        sortie.push({ message: m, empreinte, fiche: invit.fiche, adresse: adresseDe.get(m)! });
+      } else if (fiches.some((f) => f.contactEmailHash === empreinte && estApporteur(f.details))) {
+        restants.push({ message: m, empreinte, adresse: adresseDe.get(m)! });
+      }
     }
   }
+  return {
+    rattachements: sortie,
+    premierContact: await reponsesPremierContact(
+      restants,
+      fiches.filter((f) => estApporteur(f.details)),
+    ),
+  };
+}
+
+/**
+ * Parmi des messages d'une personne apporteur SANS invitation partie avant eux,
+ * ceux qui suivent un message de premier contact parti vers l'une de SES fiches.
+ */
+async function reponsesPremierContact(
+  restants: readonly Restant[],
+  fiches: readonly LigneFiche[],
+): Promise<ReponsePremierContact[]> {
+  if (restants.length === 0) return [];
+  const envois = await prisma.emailLog.findMany({
+    where: {
+      template: { in: [...GABARITS_PREMIER_CONTACT] },
+      entityType: "Submission",
+      entityId: { in: fiches.map((f) => f.id) },
+      status: "sent",
+    },
+    select: { entityId: true, createdAt: true, sentAt: true },
+  });
+  const empreinteDe = new Map(fiches.map((f) => [f.id, f.contactEmailHash]));
+  const sortie: ReponsePremierContact[] = [];
+  for (const r of restants) {
+    const avant = envois.some(
+      (e) =>
+        !!e.entityId &&
+        empreinteDe.get(e.entityId) === r.empreinte &&
+        (e.sentAt ?? e.createdAt).getTime() < r.message.receivedAt.getTime(),
+    );
+    if (avant) sortie.push({ message: r.message, adresse: r.adresse });
+  }
   return sortie;
+}
+
+/**
+ * Retire les relances de premier contact d'une adresse (`annulerRelancesLeadApporteur`).
+ *
+ * INJECTÉE par le worker (`apporteur-crons-worker.ts`) plutôt qu'importée ici :
+ * le module des relances tire la file BullMQ, dont le graphe touche à Next — et ce
+ * relevé doit rester chargeable hors de Next (garde
+ * `email-worker.opposition.graphe-worker.spec.ts`). Absente : rien n'est retiré.
+ */
+export type ArreterRelances = (adresse: string, motif: string) => Promise<unknown>;
+
+async function arreterRelancesPremierContact(
+  arreter: ArreterRelances | undefined,
+  adresse: string,
+): Promise<void> {
+  if (!arreter) return;
+  try {
+    await arreter(adresse, MOTIF_ANNULATION_REPONSE);
+  } catch (e) {
+    console.warn(
+      "[reponses-entrantes] relances de premier contact non retirées :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
 }
 
 async function notifier(r: Rattachement, auto: boolean, objet: string): Promise<void> {
@@ -223,7 +326,7 @@ async function notifier(r: Rattachement, auto: boolean, objet: string): Promise<
 }
 
 export async function passerReponsesEntrantes(
-  opts: { maintenant?: Date; client?: ClientZohoMail } = {},
+  opts: { maintenant?: Date; client?: ClientZohoMail; arreterRelances?: ArreterRelances } = {},
 ): Promise<CompteRenduReponses> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return vide("build");
 
@@ -261,7 +364,7 @@ export async function passerReponsesEntrantes(
     return vide("zoho-injoignable");
   }
 
-  const rattachements = await rattacher(liste.messages);
+  const { rattachements, premierContact } = await rattacher(liste.messages);
   let dejaConnues = 0;
   let erreurs = 0;
   const enregistrees = { humaines: 0, automatiques: 0 };
@@ -346,8 +449,23 @@ export async function passerReponsesEntrantes(
           );
         }
       }
+      if (!auto) await arreterRelancesPremierContact(opts.arreterRelances, r.adresse);
       await notifier(r, auto, objet);
     }
+  }
+
+  // Réponse à un message de premier contact (tunnel vidéo : A1, A2…), sans
+  // invitation derrière : rien à enregistrer, mais ses relances s'arrêtent —
+  // sauf réponse automatique (un « je suis absent » ne répond pas).
+  for (const p of premierContact) {
+    let entetes: Entetes | null = null;
+    try {
+      entetes = await client.lireEntetes(p.message.folderId, p.message.messageId);
+    } catch {
+      entetes = null;
+    }
+    if (estReponseAutomatique({ entetes, objet: objetEnregistre(p.message.subject) })) continue;
+    await arreterRelancesPremierContact(opts.arreterRelances, p.adresse);
   }
 
   // Le curseur n'avance que sur un passage SANS erreur : un message raté est
