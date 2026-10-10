@@ -43,15 +43,18 @@ export function jetonVslValide(valeur: unknown): string | null {
   return verifierJeton(valeur) ? valeur : null;
 }
 
-/** Nom et e-mail à proposer dans le formulaire de réservation. */
+/** Nom, e-mail et téléphone à proposer dans le formulaire de réservation. */
 export interface IdentiteReservationVsl {
   readonly nom: string;
   readonly email: string;
+  /** Donné à l'étape 2 ; absent tant qu'il ne l'est pas (le champ reste vide et modifiable). */
+  readonly telephone?: string;
 }
 
 /**
- * Le prénom et l'e-mail donnés à l'étape 1 de la page vidéo, retrouvés par le
- * jeton. `null` dès que quelque chose manque — jamais d'exception.
+ * Le prénom et l'e-mail donnés à l'étape 1 de la page vidéo, et le téléphone de
+ * l'étape 2 s'il est déjà sur la fiche, retrouvés par le jeton. `null` dès que
+ * quelque chose manque — jamais d'exception.
  */
 export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReservationVsl | null> {
   const brut = jetonVslValide(valeur);
@@ -62,7 +65,7 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
   try {
     const ligne = await prisma.submission.findFirst({
       where: { id: jeton.lead, deletedAt: null },
-      select: { contactName: true, contactEmail: true, details: true },
+      select: { contactName: true, contactEmail: true, contactPhone: true, details: true },
     });
     if (!ligne || !lireVsl(ligne.details)) return null;
     // 🔴 Le prénom et l'e-mail sont CHIFFRÉS en base (`enc:v1:`, `pii-crypto.ts`).
@@ -77,7 +80,18 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
       typeof ligne.contactName === "string" ? ligne.contactName : "",
     ).trim();
     const nom = nomClair === PII_DECRYPT_PLACEHOLDER ? "" : nomClair;
-    return { nom, email };
+    // Le téléphone est chiffré lui aussi. Illisible (clé absente) ou vide : on ne le
+    // propose pas, sans pour autant perdre le prénom et l'e-mail.
+    let telephone = "";
+    try {
+      telephone = decryptPii(
+        typeof ligne.contactPhone === "string" ? ligne.contactPhone : "",
+      ).trim();
+    } catch {
+      telephone = "";
+    }
+    if (telephone === PII_DECRYPT_PLACEHOLDER || telephone.startsWith("enc:")) telephone = "";
+    return telephone ? { nom, email, telephone } : { nom, email };
   } catch {
     return null;
   }

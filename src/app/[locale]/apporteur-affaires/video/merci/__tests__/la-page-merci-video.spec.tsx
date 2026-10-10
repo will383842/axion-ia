@@ -218,8 +218,10 @@ describe("la page de merci des apporteurs — réservation du site", () => {
 
   it("porte la ligne e-mail de secours, le kit, et aucun numéro de téléphone ni délai chiffré", async () => {
     const t = texte(await rendre());
-    expect(t).toContain("Vous recevez aussi le lien par e-mail");
-    expect(t).toContain("Répondez à l'e-mail de confirmation");
+    // B1 part 15 min après le formulaire, et SEULEMENT sans réservation : la page
+    // ne promet plus un e-mail « tout de suite ».
+    expect(t).toContain("Si vous ne réservez pas maintenant, le lien vous est envoyé par e-mail");
+    expect(t).toContain("Répondez à notre e-mail");
     expect(t).toContain("Le catalogue des prestations");
     expect(t).toMatch(/15 minutes/);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
@@ -238,7 +240,7 @@ describe("la page de merci des apporteurs — réservation du site", () => {
       // Un lead ordinaire garde le texte d'origine.
       const t2 = texte(await rendre({ j: creerJeton({ lead: "lead-1", suspect: false }) }));
       expect(t2).toContain("Choisissez maintenant le créneau de 15 minutes qui vous convient.");
-      expect(t2).toContain("Vous recevez aussi le lien par e-mail");
+      expect(t2).toContain("le lien vous est envoyé par e-mail");
     } finally {
       connue.ids = new Set();
     }

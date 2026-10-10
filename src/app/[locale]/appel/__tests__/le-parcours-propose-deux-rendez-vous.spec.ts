@@ -72,7 +72,10 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
   it("le widget et la capture reçoivent l'URL RÉSOLUE et le bouton", () => {
     expect(page).toContain("calendlyUrl={resolu.url}");
     expect(page).toContain("utmContent={utmContent}");
-    expect(page).toContain("parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}");
+    // Le jeton apporteur (?j=, page vidéo) s'ajoute APRÈS les paramètres du choix :
+    // l'arrivée reste portée par `parametresDuChoix(choix, depuis, suivi)`.
+    expect(page).toContain("parametresDuChoix(choix, depuis, suivi) +");
+    expect(page).toContain("parametresDuChoix={parametresCreneau}");
     expect(page).toMatch(/<CalendlyEventCapture calendlyUrl=\{resolu\.url\}/);
     expect(page).toContain("trackingContext.utmContent = utmContentDuChoix(choix, depuis)");
   });

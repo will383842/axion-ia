@@ -40,6 +40,10 @@ import {
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
 import { configDuChoix, estUnChoixPublic } from "@/server/calendly/types-reservables";
+import {
+  jetonVslValide,
+  PARAM_JETON_VSL,
+} from "@/features/commercial-application/identite-reservation-vsl";
 
 /**
  * 15 minutes — la fraîcheur des CRÉNEAUX, pas celle du texte. Aligné sur
@@ -154,6 +158,12 @@ export default async function AppelPage({ params, searchParams }: Props) {
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
   // lien du parcours — sans quoi le premier clic effaçait l'attribution.
   const suivi = lireSuiviArrivee(sp);
+  // Échange apporteur ouvert depuis l'e-mail « C'est noté » (`?j=<jeton>`) : le
+  // jeton, s'il est VALIDE, est recopié dans chaque créneau pour que le formulaire
+  // de réservation reconnaisse la personne (comme la page merci). Faux, expiré ou
+  // sur un autre type de rendez-vous : ignoré, jamais recopié.
+  const jetonApporteur =
+    choix === "apporteur" ? (jetonVslValide(sp[PARAM_JETON_VSL]) ?? undefined) : undefined;
   // Une seule lecture de la liste des types (en cache 24 h) pour les deux.
   const resolus = await resoudreLesDeuxChoix();
   // Les deux types privés (apporteur, salon) ne sont pas dans `resolus` : ils se
@@ -230,6 +240,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
             resolu={resolu}
             depuis={depuis}
             suivi={suivi}
+            jeton={jetonApporteur}
             locale={locale}
             isFr={isFr}
             trackingContext={trackingContext}
@@ -446,6 +457,7 @@ function Calendrier({
   resolu,
   depuis,
   suivi,
+  jeton,
   locale,
   isFr,
   trackingContext,
@@ -454,6 +466,8 @@ function Calendrier({
   resolu: ChoixResolu;
   depuis: string | null;
   suivi: SuiviArrivee;
+  /** Jeton de l'étape 1 de la page vidéo, déjà vérifié ; absent sinon. */
+  jeton?: string | undefined;
   locale: string;
   isFr: boolean;
   trackingContext: {
@@ -469,6 +483,9 @@ function Calendrier({
   const duree = libelleDuree(resolu);
   const utmContent = utmContentDuChoix(choix, depuis);
   const retour = parametresDuRetour(depuis, suivi);
+  const parametresCreneau =
+    parametresDuChoix(choix, depuis, suivi) +
+    (jeton ? `&${PARAM_JETON_VSL}=${encodeURIComponent(jeton)}` : "");
   const retourAuChoix = retour ? `/${locale}/appel?${retour}` : `/${locale}/appel`;
   return (
     <>
@@ -614,7 +631,7 @@ function Calendrier({
                   reservationDirecte={reservationDirecteActive()}
                   locale={locale}
                   utmContent={utmContent}
-                  parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}
+                  parametresDuChoix={parametresCreneau}
                   suivi={suivi}
                 />
               </div>

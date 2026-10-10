@@ -85,6 +85,12 @@ export const DELAI_MIN_ETAPE1_MS = 3_000;
 /** Même garde à l'étape 2, comptée depuis l'émission du jeton (téléphone + 1 tap). */
 export const DELAI_MIN_ETAPE2_MS = 2_000;
 
+/**
+ * Délai de « C'est noté » (B1) après l'étape 2 : 15 minutes. Il ne part que si la
+ * personne n'a pas réservé entre-temps (la réservation retire le job).
+ */
+export const DELAI_ETAPE2_VSL_MS = 15 * 60 * 1000;
+
 /** Validité du jeton de la visite : 24 h. */
 export const VALIDITE_JETON_MS = 24 * 3_600_000;
 

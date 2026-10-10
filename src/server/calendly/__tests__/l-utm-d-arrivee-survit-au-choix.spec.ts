@@ -141,7 +141,10 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
     expect(page).toContain("const suivi = lireSuiviArrivee(sp)");
     expect(page).toContain("parametresDuChoix(choix, depuis, suivi)");
     expect(page).toContain("parametresDuRetour(depuis, suivi)");
-    expect(page).toContain("parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}");
+    // Le jeton apporteur (?j=, page vidéo) s'ajoute APRÈS les paramètres du choix :
+    // l'arrivée reste portée par `parametresDuChoix(choix, depuis, suivi)`.
+    expect(page).toContain("parametresDuChoix(choix, depuis, suivi) +");
+    expect(page).toContain("parametresDuChoix={parametresCreneau}");
     expect(page).toContain("suivi={suivi}");
     // L'adresse de la page, pour l'attribution : celle du calendrier DU TYPE
     // (`lienDuCalendrier`), qui recopie le choix, l'emplacement ET l'arrivée.

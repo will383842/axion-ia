@@ -11,8 +11,9 @@ export const VSL_MERCI = {
   texteDejaConnu: "Choisissez votre créneau ci-dessous.",
   cta: "Choisir mon créneau",
   ctaMicro: "Un échange de 15 minutes. Aucun engagement.",
-  email: "Vous recevez aussi le lien par e-mail. Pensez à regarder vos courriers indésirables.",
-  aucunCreneau: "Aucun créneau ne vous convient ? Répondez à l'e-mail de confirmation.",
+  email:
+    "Si vous ne réservez pas maintenant, le lien vous est envoyé par e-mail un peu plus tard. Pensez à regarder vos courriers indésirables.",
+  aucunCreneau: "Aucun créneau ne vous convient ? Répondez à notre e-mail.",
   kitTitre: "En attendant, découvrez ce que vous pourrez recommander",
   kitCatalogue: "Le catalogue des prestations",
   description: "Choisissez votre créneau de 15 minutes.",

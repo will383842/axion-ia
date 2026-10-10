@@ -167,7 +167,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   const reprise = await lireLaRepriseDuCreneau(debutBrut);
 
   // Échange apporteur venu de la page vidéo (`?j=<jeton>`, 2026-10-07) : le prénom
-  // et l'e-mail de l'étape 1 sont proposés d'office. Le même e-mail rattache la
+  // et l'e-mail de l'étape 1 (et le téléphone de l'étape 2) sont proposés d'office. Le même e-mail rattache la
   // réservation à la fiche. Une reprise (saisie déjà faite) l'emporte toujours ;
   // un jeton faux ou expiré ne change rien au formulaire.
   const prerempli =
@@ -245,7 +245,14 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             {...(reprise
               ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs }
               : prerempli
-                ? { valeurs: { [CHAMPS.nom]: prerempli.nom, [CHAMPS.email]: prerempli.email } }
+                ? {
+                    valeurs: {
+                      [CHAMPS.nom]: prerempli.nom,
+                      [CHAMPS.email]: prerempli.email,
+                      // Le téléphone de l'étape 2, s'il est sur la fiche ; modifiable.
+                      ...(prerempli.telephone ? { [CHAMPS.telephone]: prerempli.telephone } : {}),
+                    },
+                  }
                 : {})}
             replidUrl={avecUtmContent(
               resolu.url,
