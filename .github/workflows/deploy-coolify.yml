@@ -95,7 +95,8 @@ permissions:
 jobs:
   # ───────────────────────────────────────────────────────────────────────
   # Créneau de mise en ligne (2026-10-08) : un run planifié ne passe que s'il
-  # vient du jeu de crons de la saison en cours (été ou hiver) ET si la prod
+  # vient du jeu de crons de la saison en cours (été ou hiver), s'il ne part
+  # pas plus de 90 min après l'heure de son cron (créneau rejoué), ET si la prod
   # ne sert pas déjà le dernier commit de `main`. Un lancement manuel
   # (workflow_dispatch) passe toujours.
   # ───────────────────────────────────────────────────────────────────────
@@ -120,6 +121,22 @@ jobs:
           # Le cron déclencheur (et non l'heure d'exécution, que GitHub peut
           # retarder) dit à quel jeu il appartient.
           heure_utc=$(echo "${CRON}" | awk '{print $2}')
+          minute_utc=$(echo "${CRON}" | awk '{print $1}')
+          # 2026-10-10 — un créneau REJOUÉ trop tard est refusé. GitHub a lancé
+          # le cron « 7 20 » à 23:58 UTC le 09/10 : 3 h 51 après son heure, soit
+          # une mise en ligne en pleine nuit que personne n'attendait. On compare
+          # l'heure RÉELLE d'exécution à l'heure du cron (aujourd'hui, ou hier si
+          # le run a franchi minuit UTC) ; au-delà de 90 min, rien à faire.
+          maintenant=$(date -u +%s)
+          prevu=$(date -u -d "$(date -u +%F) ${heure_utc}:${minute_utc}:00" +%s)
+          if [ "${prevu}" -gt "${maintenant}" ]; then
+            prevu=$((prevu - 86400))
+          fi
+          retard=$(( (maintenant - prevu) / 60 ))
+          if [ "${retard}" -gt 90 ]; then
+            echo "::notice::Cron « ${CRON} » exécuté à $(date -u +%H:%M) UTC, ${retard} min après son heure prévue (max 90) : créneau rejoué trop tard, rien à faire. Mise en ligne au prochain créneau, ou à la demande (gh workflow run deploy-coolify.yml)."
+            echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
           decalage=$(TZ=Europe/Paris date +%z)
           case "${decalage}:${heure_utc}" in
             +0200:10|+0200:15|+0200:20|+0100:11|+0100:16|+0100:21) ;;
