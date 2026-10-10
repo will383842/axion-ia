@@ -16,8 +16,8 @@
 -- modèle quand une requête n'a pas de `select` : tant que cette migration n'est
 -- pas passée (c'est l'entrypoint de l'APP qui migre), un worker déjà reconstruit
 -- échouerait sur `trainers`, `job_offers`, `job_applications`,
--- `missions_formateur`, `session_formateurs`, `trainer_documents` et
--- `document_signature_tokens` (« column … does not exist »). Voir la PR.
+-- `missions_formateur`, `session_formateurs` et `trainer_documents`
+-- (« column … does not exist »). Voir la PR.
 --
 -- Objets SQL bruts (CHECK, triggers, index partiels) : partie 4, chacun déclaré
 -- dans `src/server/qualiopi/formateurs-independants/socle-objets-sql.ts` et
@@ -69,13 +69,6 @@ CREATE TYPE "verdict_registre" AS ENUM ('vert', 'orange', 'rouge');
 
 -- CreateEnum
 CREATE TYPE "resultat_preuve_vigilance" AS ENUM ('valide', 'invalide', 'a_controler');
-
--- AlterTable
-ALTER TABLE "document_signature_tokens" ADD COLUMN     "code_envoye_at" TIMESTAMP(3),
-ADD COLUMN     "code_essais" INTEGER NOT NULL DEFAULT 0,
-ADD COLUMN     "code_expire_at" TIMESTAMP(3),
-ADD COLUMN     "code_sha256" CHAR(64),
-ADD COLUMN     "code_valide_at" TIMESTAMP(3);
 
 -- AlterTable
 ALTER TABLE "job_applications" ADD COLUMN     "cloture_sans_suite_at" TIMESTAMP(3),
@@ -381,14 +374,6 @@ ALTER TABLE "missions_formateur" ADD CONSTRAINT "missions_formateur_blocage_cohe
 -- ── trainer_documents ───────────────────────────────────────────────────────
 ALTER TABLE "trainer_documents" ADD CONSTRAINT "trainer_documents_archive_coherent" CHECK (
   ("archive_par_id" IS NULL AND "archive_motif" IS NULL) OR "archive_at" IS NOT NULL
-);
-
--- ── document_signature_tokens ───────────────────────────────────────────────
-ALTER TABLE "document_signature_tokens" ADD CONSTRAINT "document_signature_tokens_code_coherent" CHECK (
-  "code_essais" >= 0
-  AND ("code_sha256" IS NULL OR "code_sha256" ~ '^[0-9a-f]{64}$')
-  AND ("code_sha256" IS NOT NULL
-       OR ("code_envoye_at" IS NULL AND "code_expire_at" IS NULL AND "code_valide_at" IS NULL))
 );
 
 -- ── trainer_document_contenus ───────────────────────────────────────────────

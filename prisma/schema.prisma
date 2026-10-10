@@ -7517,14 +7517,6 @@ model DocumentSignatureToken {
   createdIpHash String?  @map("created_ip_hash") @db.Char(64)
   createdAt     DateTime @default(now()) @map("created_at")
 
-  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) — signature avec CODE reçu par e-mail (ADR 0066 étape 7) ──
-  /// SHA-256 du code, jamais le clair. CHECK `document_signature_tokens_code_coherent`.
-  codeSha256   String?   @map("code_sha256") @db.Char(64)
-  codeEnvoyeAt DateTime? @map("code_envoye_at")
-  codeExpireAt DateTime? @map("code_expire_at")
-  codeEssais   Int       @default(0) @map("code_essais")
-  codeValideAt DateTime? @map("code_valide_at")
-
   /// ⚠️ L'index unique `document_signature_token_actif` est PARTIEL
   /// (`WHERE revoked_at IS NULL`) : créé en SQL brut, Prisma ne sait pas
   /// l'exprimer. Un seul jeton vivant par (pièce, partie).

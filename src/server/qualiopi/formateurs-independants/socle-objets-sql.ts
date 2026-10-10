@@ -34,7 +34,6 @@ export const TABLES_ETENDUES_SOCLE = [
   "trainers",
   "missions_formateur",
   "trainer_documents",
-  "document_signature_tokens",
 ] as const;
 
 type TableSocle = (typeof TABLES_CREEES_SOCLE)[number] | (typeof TABLES_ETENDUES_SOCLE)[number];
@@ -51,7 +50,6 @@ export interface ObjetSqlSocle {
 const T = "trainers";
 const M = "missions_formateur";
 const D = "trainer_documents";
-const S = "document_signature_tokens";
 const V = "verifications_registre_sous_traitance";
 const P = "preuves_vigilance";
 const C = "trainer_document_contenus";
@@ -140,13 +138,6 @@ export const OBJETS_SQL_SOCLE_FORMATEURS: ReadonlyArray<ObjetSqlSocle> = [
     type: "check",
     table: D,
     role: "Un auteur ou un motif d'archivage implique un archivage daté.",
-  },
-  // ── document_signature_tokens ─────────────────────────────────────────────
-  {
-    nom: "document_signature_tokens_code_coherent",
-    type: "check",
-    table: S,
-    role: "Code de signature : SHA-256 hexadécimal ; essais ≥ 0 ; envoi, échéance et validation datés avec le code.",
   },
   // ── verifications_registre_sous_traitance (ajout seul) ────────────────────
   {
