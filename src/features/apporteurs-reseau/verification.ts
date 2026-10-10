@@ -35,7 +35,8 @@ import {
 } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
-import { lireEntrepriseParSiren, lireRegistre } from "./annuaire";
+import { lireEntrepriseParSiren, lireRegistre, type ResultatRegistre } from "./annuaire";
+import { verdictNomRegistre } from "./nom-registre";
 import { LIBELLE_PIECE, MOTIFS_A_RETRANSMETTRE, sirenValide, type TypePiece } from "./regles";
 import { retraitDe } from "./retrait";
 
@@ -170,23 +171,44 @@ export async function sirenAContresigner(
   siren: string | null,
   siret: string | null = null,
 ): Promise<string | null> {
+  return (await controleRegistre(siren, siret)).blocage;
+}
+
+/** Le contrôle ci-dessus, avec la réponse du registre (relue pour comparer le nom, 10/10). */
+async function controleRegistre(
+  siren: string | null,
+  siret: string | null,
+): Promise<{ blocage: string | null; registre: ResultatRegistre | null }> {
+  const bloque = (blocage: string) => ({ blocage, registre: null });
   if (!siren || !sirenValide(siren))
-    return "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.";
+    return bloque(
+      "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.",
+    );
   if (siren === IDENTITE_LEGALE.siren)
-    return "SIREN à vérifier : c'est celui d'Axion-IA. Un contrat d'apporteur ne se contresigne pas avec la Société elle-même : cliquez « À compléter » pour demander le numéro de l'apporteur.";
+    return bloque(
+      "SIREN à vérifier : c'est celui d'Axion-IA. Un contrat d'apporteur ne se contresigne pas avec la Société elle-même : cliquez « À compléter » pour demander le numéro de l'apporteur.",
+    );
   // Avec un SIRET (plusieurs activités) : c'est l'ÉTABLISSEMENT qui doit être actif.
   const r = siret ? await lireRegistre(siret) : await lireEntrepriseParSiren(siren);
   if (!r.ok) {
-    return r.raison === "indisponible"
-      ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
-      : "SIREN à vérifier : introuvable au registre public, le contrat ne peut pas être contresigné. Une micro-entreprise toute neuve peut ne pas encore y être publiée : réessayez dans quelques jours.";
+    return bloque(
+      r.raison === "indisponible"
+        ? "SIREN à vérifier : le registre public ne répond pas pour l'instant. Réessayez dans quelques minutes."
+        : "SIREN à vérifier : introuvable au registre public, le contrat ne peut pas être contresigné. Une micro-entreprise toute neuve peut ne pas encore y être publiée : réessayez dans quelques jours.",
+    );
   }
   if (!r.entreprise.active)
-    return siret
-      ? "SIRET à vérifier : l'entreprise ou cet établissement est fermé au registre public. Le contrat ne peut pas être contresigné."
-      : "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.";
-  return null;
+    return bloque(
+      siret
+        ? "SIRET à vérifier : l'entreprise ou cet établissement est fermé au registre public. Le contrat ne peut pas être contresigné."
+        : "SIREN à vérifier : l'entreprise est cessée au registre public. Le contrat ne peut pas être contresigné.",
+    );
+  return { blocage: null, registre: r };
 }
+
+/** Message de refus quand l'écart de nom n'a pas été confirmé (case non cochée). */
+export const NOM_A_CONFIRMER =
+  "Le nom du contrat ne correspond à personne dans le registre : cochez « J'ai vérifié : cette personne a bien le droit d'engager cette entreprise » avant de contresigner.";
 
 /** L'e-mail que la décision fera partir, prêt pour l'aperçu puis l'envoi. */
 export async function preparerDecision(
@@ -194,7 +216,15 @@ export async function preparerDecision(
   decision: Decision,
   note: string | null,
   texte?: string,
-): Promise<{ ok: true; envoi: EnvoiApporteur } | { ok: false; message: string }> {
+): Promise<
+  | {
+      ok: true;
+      envoi: EnvoiApporteur;
+      /** Contresignature : le nom du contrat ne correspond à personne au registre (10/10). */
+      alerteNom?: string;
+    }
+  | { ok: false; message: string }
+> {
   const d = await lireDossier(apporteurId);
   if (!d) return { ok: false, message: "Apporteur introuvable." };
   if (d.statut !== "a_verifier")
@@ -202,8 +232,10 @@ export async function preparerDecision(
   const base = { destinataire: d.email, entityType: "ApporteurReseau" as const, entityId: d.id };
   const mot = note?.trim() || null;
   if (decision === "contresigner") {
-    const blocage = await sirenAContresigner(d.siren, d.siret ?? null);
+    const { blocage, registre } = await controleRegistre(d.siren, d.siret ?? null);
     if (blocage) return { ok: false, message: blocage };
+    // Le nom appartient-il à l'entreprise ? Une ALERTE, jamais un blocage (décision de Will, 10/10).
+    const nom = verdictNomRegistre({ prenom: d.prenom, nom: d.nom }, registre);
     const nonConformes = d.pieces.filter((p) => p.statut !== "conforme" && p.type !== "rc_pro");
     if (nonConformes.length > 0) {
       return {
@@ -215,6 +247,7 @@ export async function preparerDecision(
     const gabarit: GabaritApporteur = "apporteur-contrat-signe";
     return {
       ok: true,
+      ...(nom.niveau === "alerte" ? { alerteNom: nom.message } : {}),
       envoi: {
         ...base,
         gabarit,
@@ -273,24 +306,35 @@ export async function apercuDecision(
 ) {
   const prep = await preparerDecision(apporteurId, decision, note, texte);
   if (!prep.ok) return prep;
-  return { ok: true as const, email: await apercu(prep.envoi) };
+  return {
+    ok: true as const,
+    email: await apercu(prep.envoi),
+    ...(prep.alerteNom ? { alerteNom: prep.alerteNom } : {}),
+  };
 }
 
 /**
  * Applique la décision : écrit, puis envoie. La contresignature rend et stocke le
  * contrat signé des deux parties avant d'écrire quoi que ce soit.
+ *
+ * Nom qui ne correspond pas au registre (10/10) : la contresignature exige `nomVerifie`
+ * (la case cochée par Williams, revérifiée ici sur une relecture du registre) et la trace
+ * au journal d'activité.
  */
 export async function appliquerDecision(
   apporteurId: string,
   decision: Decision,
   note: string | null,
   texte?: string,
+  confirmation: { nomVerifie?: boolean; acteurId?: string | null } = {},
 ): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
   const prep = await preparerDecision(apporteurId, decision, note, texte);
   if (!prep.ok) return prep;
   const maintenant = new Date();
 
   if (decision === "contresigner") {
+    if (prep.alerteNom && confirmation.nomVerifie !== true)
+      return { ok: false, message: NOM_A_CONFIRMER };
     const a = await prisma.apporteurReseau.findUnique({
       where: { id: apporteurId },
       select: { signatureApporteur: true, contratSha256: true },
@@ -425,6 +469,23 @@ export async function appliquerDecision(
         message:
           "La contresignature n'a pas pu être enregistrée : rien n'est parti. Réessayez dans un instant.",
       };
+    }
+    if (prep.alerteNom) {
+      try {
+        await prisma.activityLog.create({
+          data: {
+            adminUserId: confirmation.acteurId ?? null,
+            action: "apporteur_reseau.nom_registre_confirme",
+            targetType: "apporteur_reseau",
+            targetId: apporteurId,
+            // Aucun nom ici : le verdict et la confirmation suffisent à la trace.
+            changes: { resultat: "ne_correspond_pas", confirme: true },
+          },
+        });
+      } catch (err) {
+        // La trace ne fait jamais échouer une contresignature déjà enregistrée.
+        signalerErreurReseau("contresignature : trace de la vérification du nom", err);
+      }
     }
     const r = await envoyer({
       ...prep.envoi,

@@ -40,6 +40,24 @@ export interface EntrepriseRegistre {
   diffusionPartielle: boolean;
   /** Lu par SIRET (2026-10-08) : l'établissement ; adresse, NAF et état sont les SIENS. */
   siret?: string;
+  /**
+   * Les personnes physiques rattachées (10/10) : titulaire d'une entreprise individuelle,
+   * dirigeants d'une société. Vide si le registre n'en nomme aucune (diffusion partielle).
+   */
+  personnes?: PersonneRegistre[];
+  /** Nombre de dirigeants qui sont des SOCIÉTÉS (une holding présidente), sans nom de personne. */
+  dirigeantsSocietes?: number;
+}
+
+/** Une personne physique rattachée à l'entreprise au registre. */
+export interface PersonneRegistre {
+  /** Nom de famille ; avec `enBloc`, le libellé complet « PRÉNOMS NOM » du titulaire. */
+  nom: string;
+  prenoms: string;
+  /** « Gérant », « Président »… ; `null` si le registre ne la donne pas. */
+  qualite: string | null;
+  /** Nom et prénoms non séparés par le registre (titulaire lu dans `nom_complet`). */
+  enBloc?: boolean;
 }
 
 export type ResultatRegistre =
@@ -70,6 +88,48 @@ export function statutDepuisNature(
 
 function texte(v: unknown): string | null {
   return typeof v === "string" && v.trim() !== "" && !/NON-DIFFUSIBLE/i.test(v) ? v.trim() : null;
+}
+
+/**
+ * Les personnes rattachées, lues dans la réponse du registre (10/10). Forme publiée par
+ * recherche-entreprises : `dirigeants: [{ type_dirigeant: "personne physique", nom, prenoms,
+ * qualite } | { type_dirigeant: "personne morale", siren, denomination, qualite }]`. Chaque
+ * champ peut manquer : on ne garde que ce qui est lisible.
+ *
+ * Entrepreneur individuel sans dirigeant publié : le titulaire est lu dans `nom_complet`
+ * (« MARIE DUPONT »), en un seul libellé. En diffusion partielle, il vaut « [NON-DIFFUSIBLE] »
+ * ou manque : aucune personne, donc « vérification impossible », jamais une alerte.
+ */
+export function personnesDuRegistre(
+  res: Record<string, unknown>,
+  entrepreneurIndividuel: boolean,
+): { personnes: PersonneRegistre[]; dirigeantsSocietes: number } {
+  const dirigeants = Array.isArray(res.dirigeants) ? (res.dirigeants as unknown[]) : [];
+  const personnes: PersonneRegistre[] = [];
+  let dirigeantsSocietes = 0;
+  for (const brut of dirigeants) {
+    if (!brut || typeof brut !== "object") continue;
+    const x = brut as Record<string, unknown>;
+    const type = typeof x.type_dirigeant === "string" ? x.type_dirigeant.toLowerCase() : "";
+    const nom = texte(x.nom);
+    if (type.includes("morale") || (!nom && texte(x.denomination))) {
+      dirigeantsSocietes++;
+      continue;
+    }
+    if (!nom) continue;
+    personnes.push({ nom, prenoms: texte(x.prenoms) ?? "", qualite: texte(x.qualite) });
+  }
+  if (personnes.length === 0 && entrepreneurIndividuel) {
+    const titulaire = texte(res.nom_complet);
+    if (titulaire)
+      personnes.push({
+        nom: titulaire,
+        prenoms: "",
+        qualite: "entrepreneur individuel",
+        enBloc: true,
+      });
+  }
+  return { personnes, dirigeantsSocietes };
 }
 
 /** Lit l'entreprise d'un SIREN. Injectable (`fetch`) pour les tests. */
@@ -123,6 +183,7 @@ export async function lireEntrepriseParSiren(
           complements.est_entrepreneur_individuel === true,
         ),
         diffusionPartielle: denomination === null || adresse === null,
+        ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
       },
     };
   } catch {
@@ -193,6 +254,7 @@ export async function lireEtablissementParSiret(
           complements.est_entrepreneur_individuel === true,
         ),
         diffusionPartielle: denomination === null || adresse === null,
+        ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
       },
     };
   } catch {

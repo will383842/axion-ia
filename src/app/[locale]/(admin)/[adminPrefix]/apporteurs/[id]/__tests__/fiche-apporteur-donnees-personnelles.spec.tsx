@@ -32,6 +32,11 @@ vi.mock("@/components/admin/apporteurs/fiche/BlocsFiche", () => ({
 vi.mock("@/components/admin/apporteurs/fiche/DecisionDossier", () => ({
   DecisionDossier: () => null,
 }));
+// Nom comparé au registre (10/10) : relit le registre, hors du sujet de ce test.
+vi.mock("@/components/admin/apporteurs/fiche/NomEtEntreprise", () => ({
+  NomEtEntreprise: () => null,
+  NomEtEntrepriseEnCours: () => null,
+}));
 vi.mock("@/components/admin/apporteurs/fiche/FinDeVieEtVigilance", () => ({
   CumulVigilance: () => null,
   FinDeVie: () => null,

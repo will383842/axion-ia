@@ -5,7 +5,7 @@
 // Will peut RÉÉCRIRE le texte principal (« Modifier le texte ») : l'aperçu se rafraîchit
 // avec le rendu exact, et l'envoi utilise ce texte.
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 /** Même borne que le serveur (`TEXTE_LIBRE_MAX`, `lib/email/templates/texte-libre-reseau`). */
 const TEXTE_MAX = 4000;
@@ -120,6 +120,8 @@ export function ApercuEmail({
   onAnnuler,
   texte = null,
   onActualiserTexte,
+  avantEnvoi,
+  envoiBloque = false,
 }: {
   email: EmailApercu;
   libelleEnvoyer: string;
@@ -130,6 +132,10 @@ export function ApercuEmail({
   texte?: string | null;
   /** Fourni = le texte est modifiable ; rend l'aperçu avec le texte donné. */
   onActualiserTexte?: (texte: string | null) => void;
+  /** Affiché juste au-dessus du bouton d'envoi (une alerte, une case à cocher). */
+  avantEnvoi?: ReactNode;
+  /** Bouton d'envoi désactivé (case pas encore cochée) ; le serveur revérifie. */
+  envoiBloque?: boolean;
 }) {
   return (
     <section
@@ -158,8 +164,14 @@ export function ApercuEmail({
           onActualiser={onActualiserTexte}
         />
       ) : null}
+      {avantEnvoi}
       <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-        <button type="button" className="admin-button" disabled={occupe} onClick={onEnvoyer}>
+        <button
+          type="button"
+          className="admin-button"
+          disabled={occupe || envoiBloque}
+          onClick={onEnvoyer}
+        >
           {occupe ? "Envoi…" : libelleEnvoyer}
         </button>
         <button

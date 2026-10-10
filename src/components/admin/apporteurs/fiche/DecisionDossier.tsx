@@ -27,7 +27,17 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
   // Texte principal réécrit (null = texte d'origine) ; appliqué à l'aperçu ET à l'envoi.
   const [texte, setTexte] = useState<string | null>(null);
   const [retour, setRetour] = useState<{ ok: boolean; message: string } | null>(null);
+  // Contresignature (10/10) : nom absent du registre → alerte + case à cocher, jamais un blocage.
+  const [alerteNom, setAlerteNom] = useState<string | null>(null);
+  const [nomVerifie, setNomVerifie] = useState(false);
   const [enCours, demarrer] = useTransition();
+  const fermer = () => {
+    setEmail(null);
+    setChoix(null);
+    setTexte(null);
+    setAlerteNom(null);
+    setNomVerifie(false);
+  };
 
   const preparer = (d: Decision) =>
     demarrer(async () => {
@@ -37,6 +47,8 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
         setChoix(d);
         setTexte(null);
         setEmail(r.email);
+        setAlerteNom(r.alerteNom ?? null);
+        setNomVerifie(false);
       } else {
         setRetour(r);
       }
@@ -49,6 +61,7 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
       if (r.ok) {
         setTexte(t);
         setEmail(r.email);
+        setAlerteNom(r.alerteNom ?? null);
       } else {
         setRetour(r);
       }
@@ -56,13 +69,15 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
   const confirmer = () =>
     demarrer(async () => {
       if (!choix) return;
-      const r = await appliquerDecisionAction({ apporteurId, decision: choix, note, texte });
+      const r = await appliquerDecisionAction({
+        apporteurId,
+        decision: choix,
+        note,
+        texte,
+        nomVerifie,
+      });
       setRetour(r);
-      if (r.ok) {
-        setEmail(null);
-        setChoix(null);
-        setTexte(null);
-      }
+      if (r.ok) fermer();
     });
 
   return (
@@ -115,11 +130,30 @@ export function DecisionDossier({ apporteurId }: { apporteurId: string }) {
           onEnvoyer={confirmer}
           texte={texte}
           onActualiserTexte={actualiser}
-          onAnnuler={() => {
-            setEmail(null);
-            setChoix(null);
-            setTexte(null);
-          }}
+          onAnnuler={fermer}
+          envoiBloque={choix === "contresigner" && alerteNom !== null && !nomVerifie}
+          avantEnvoi={
+            choix === "contresigner" && alerteNom ? (
+              <div
+                role="alert"
+                className="flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger-border)] bg-[color:var(--color-admin-danger-bg)] p-[var(--space-admin-3)] text-[color:var(--color-admin-danger-fg)]"
+              >
+                <p className="font-semibold">⚠️ {alerteNom}</p>
+                <label className="flex items-start gap-[var(--space-admin-2)]">
+                  <input
+                    type="checkbox"
+                    checked={nomVerifie}
+                    onChange={(e) => setNomVerifie(e.target.checked)}
+                    disabled={enCours}
+                  />
+                  <span>
+                    J&apos;ai vérifié : cette personne a bien le droit d&apos;engager cette
+                    entreprise
+                  </span>
+                </label>
+              </div>
+            ) : null
+          }
         />
       )}
       <MessageRetour retour={retour} />
