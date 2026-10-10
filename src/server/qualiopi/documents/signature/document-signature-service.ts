@@ -37,6 +37,7 @@
  * Node runtime (Prisma + R2). Stub-aware pour le build SSG.
  */
 
+import { REFUS_PIECE_INTROUVABLE } from "./refus-piece-introuvable";
 import { randomUUID } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { Prisma } from "../../../../../prisma/generated/client";
@@ -213,7 +214,7 @@ function estStub(): boolean {
 }
 
 const MESSAGES: Record<RefusSignatureDocument, string> = {
-  piece_introuvable: "Pièce introuvable.",
+  piece_introuvable: REFUS_PIECE_INTROUVABLE.message,
   piece_specimen:
     "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, régénérez la pièce, puis faites-la signer.",
   piece_non_scellee:
@@ -645,8 +646,9 @@ const TYPES_SIGNES_PAR_TITULAIRE_SANS_SESSION: ReadonlySet<string> = new Set([
 /**
  * Verdict de la garde d'autorisation.
  *
- * `masque` : le porteur n'a AUCUN lien avec la pièce, et la réponse doit être
- * celle d'un identifiant inconnu (`piece_introuvable`) — sinon le refus
+ * `masque` : le porteur n'a AUCUN lien avec la pièce — ou c'est un formateur,
+ * dont tout refus est masqué — et la réponse doit être celle d'un identifiant
+ * inconnu (`REFUS_PIECE_INTROUVABLE`) — sinon le refus
  * confirmerait l'existence d'une lettre-cadre ou d'un contrat de travail
  * nominatif à quiconque devine son identifiant.
  */
@@ -673,9 +675,14 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
       ctx.trainerId === porteur.trainerId;
     if (!titulaire) return "masque";
   }
+  // 🔴 Côté formateur, TOUT refus d'autorisation est masqué : la session d'un
+  // autre, une partie qu'il ne tient pas — il ne doit jamais lire autre chose que
+  // la réponse d'un identifiant inconnu (`REFUS_PIECE_INTROUVABLE`).
+  const refusDuPorteur: VerdictPorteur =
+    porteur.type === "formateur_authentifie" ? "masque" : "non_autorise";
   if (porteur.type === "formateur_authentifie" || porteur.type === "organisme_authentifie") {
     if (!PARTIES_PAR_CANAL_AUTHENTIFIE[porteur.type].includes(porteur.partie)) {
-      return "non_autorise";
+      return refusDuPorteur;
     }
   }
   if (porteur.type !== "formateur_authentifie") return "autorise";
@@ -700,7 +707,7 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
         RoleFormateur | undefined) ?? null,
   }).estMembre
     ? "autorise"
-    : "non_autorise";
+    : refusDuPorteur;
 }
 
 /**
@@ -722,7 +729,7 @@ export async function signerDocument(
   const provider = providerDuPorteur(porteur);
 
   const ctx = await lirePiece(input.documentGenereId, partie);
-  if (ctx === null) return refus("piece_introuvable");
+  if (ctx === null) return { ...REFUS_PIECE_INTROUVABLE };
 
   // ── 1. GARDE D'AUTORISATION — avant toute autre vérification métier ──
   const verdict = porteurAutorise(ctx, porteur);
@@ -732,7 +739,7 @@ export async function signerDocument(
       extra: { documentGenereId: input.documentGenereId, typePorteur: porteur.type },
     });
     // `masque` : réponse STRICTEMENT identique à celle d'un identifiant inconnu.
-    return refus(verdict === "masque" ? "piece_introuvable" : "porteur_non_autorise");
+    return verdict === "masque" ? { ...REFUS_PIECE_INTROUVABLE } : refus("porteur_non_autorise");
   }
 
   // Canal A — la garde d'autorisation est le JETON lui-même, et elle est en

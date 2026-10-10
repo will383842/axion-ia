@@ -288,17 +288,19 @@ describe("🔴 L0b — pièce SANS session ancrée au formateur (lettre-cadre, c
     mockPrisma.documentGenere.findUnique.mockResolvedValue(lettreCadreDe(TRAINER));
     attendRefus(
       await signerDocument(entree({ porteur: { ...PORTEUR_FORMATEUR, partie: "axionia" } })),
-      "porteur_non_autorise",
+      // L0b : tout refus d'un formateur répond « introuvable » (REFUS_PIECE_INTROUVABLE).
+      "piece_introuvable",
     );
   });
 
   it("pièce AVEC session : comportement inchangé — l'ancre trainerId n'ouvre rien", async () => {
     // Lettre de mission de session ancrée sur B, mais B n'anime pas la session :
-    // seule l'appartenance à la session décide, et le refus reste `porteur_non_autorise`.
+    // seule l'appartenance à la session décide. Le refus répond « introuvable »
+    // depuis L0b : la session d'un autre ne se distingue pas d'une pièce inventée.
     mockPrisma.documentGenere.findUnique.mockResolvedValue(
       piece({ type: "lettre_mission", trainerId: TRAINER_B }),
     );
-    attendRefus(await signerDocument(entree({ porteur: porteurB })), "porteur_non_autorise");
+    attendRefus(await signerDocument(entree({ porteur: porteurB })), "piece_introuvable");
 
     vi.clearAllMocks();
     mockPrisma.documentGenere.findUnique.mockResolvedValue(piece({ type: "lettre_mission" }));
@@ -319,7 +321,8 @@ describe("🔴 autorisation du porteur", () => {
           },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 
@@ -350,7 +353,8 @@ describe("🔴 autorisation du porteur", () => {
           },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 
@@ -385,7 +389,8 @@ describe("🔴 autorisation du porteur", () => {
         },
       }),
     );
-    attendRefus(await signerDocument(entree()), "porteur_non_autorise");
+    // L0b : refus d'un formateur ≡ identifiant inconnu.
+    attendRefus(await signerDocument(entree()), "piece_introuvable");
   });
 
   it("🔴 un formateur ne peut PAS signer au titre du CLIENT", async () => {
@@ -399,7 +404,8 @@ describe("🔴 autorisation du porteur", () => {
           porteur: { type: "formateur_authentifie", trainerId: TRAINER, partie: "client" },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 
