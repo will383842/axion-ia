@@ -47,7 +47,8 @@ export const VSL_HERO = {
   cta: "Devenir apporteur",
   /** Petite ligne SOUS chaque bouton de la page : la durée n'est plus dans le libellé. */
   ctaDuree: "2 minutes · sans engagement",
-  micro: "Aucun frais d'entrée · Aucun quota · Aucun gain garanti",
+  // 2026-10-10 (ordre de Will) : JAMAIS « Aucun gain garanti », nulle part.
+  micro: "Aucun frais d'entrée · Aucun quota · Sans exclusivité",
   videoLabel: "Regardez comment ça marche",
 } as const;
 
@@ -141,7 +142,7 @@ export const VSL_ETAPES: readonly { readonly titre: string; readonly texte: stri
 export const VSL_PAS_CA: readonly string[] = [
   "Pas de frais d'entrée",
   "Pas de quota, pas d'exclusivité",
-  "Pas de gain garanti : la commission dépend des entreprises que vous présentez",
+  "Pas de promesse : la commission dépend des entreprises que vous présentez",
   "Un contrat écrit, des conditions que vous lisez avant de signer",
 ];
 
