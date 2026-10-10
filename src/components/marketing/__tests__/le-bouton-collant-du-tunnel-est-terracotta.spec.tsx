@@ -33,7 +33,7 @@ function classes(el: HTMLElement): string {
 describe("StickyMobileCta — couleur terracotta", () => {
   it("n'a AUCUNE classe bleue ni primaire, et porte les jetons terracotta du site", () => {
     const { container } = render(
-      <StickyMobileCta href="#x" label="Je candidate" couleur="terracotta" />,
+      <StickyMobileCta href="#x" label="Devenir apporteur" couleur="terracotta" />,
     );
     const c = classes(container);
     expect(c).not.toMatch(/blue|bg-primary|text-primary|hover:bg-primary|ring-primary|indigo|sky/i);
@@ -88,7 +88,7 @@ describe("StickyMobileCta — masqué tant que le formulaire est visible", () =>
     return render(
       <StickyMobileCta
         href="#x"
-        label="Je candidate"
+        label="Devenir apporteur"
         couleur="terracotta"
         masquerQuandVisible="vsl-formulaire"
       />,

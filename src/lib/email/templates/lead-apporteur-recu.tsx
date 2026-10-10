@@ -73,15 +73,17 @@ const COPY = {
       "Le catalogue de nos prestations, et votre candidature à terminer : il reste quelques écrans.",
     bodyDossier:
       "Vous avez commencé votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Elle n'est pas encore arrivée : il vous reste quelques écrans.",
-    titleAbandon: "Votre inscription n'est pas terminée",
-    previewAbandon: "Il vous reste une étape pour terminer votre inscription.",
+    // 2026-10-10 (décision de Will) — « votre demande » dans tout le tunnel vidéo :
+    // ni « candidature » ni « inscription », la cible apporte déjà des affaires.
+    titleAbandon: "Votre demande n'est pas terminée",
+    previewAbandon: "Il vous reste une étape pour terminer votre demande.",
     bodyAbandon:
-      "Vous avez commencé votre inscription au réseau d'apporteurs d'affaires d'Axion-IA, et il ne vous reste qu'une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
-    ctaAbandon: "Terminer mon inscription",
+      "Vous avez commencé votre demande pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA, et il ne vous reste qu'une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
+    ctaAbandon: "Terminer ma demande",
     titleEtape2: "C'est noté",
     previewEtape2: "Choisissez le créneau qui vous convient pour un échange de 15 minutes.",
     bodyEtape2:
-      "Merci, votre inscription au réseau d'apporteurs d'affaires d'Axion-IA est bien enregistrée. Pour faire connaissance, choisissez dès maintenant le créneau qui vous convient pour un échange de 15 minutes en visio. Aucun engagement : vous décidez après.",
+      "Merci, votre demande pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA est bien enregistrée. Pour faire connaissance, choisissez dès maintenant le créneau qui vous convient pour un échange de 15 minutes en visio. Aucun engagement : vous décidez après.",
     ctaEtape2: "Choisir mon créneau",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     dossier:
@@ -98,15 +100,15 @@ const COPY = {
     previewDossier: "Our catalogue of services, and your file to finish: only a few screens left.",
     bodyDossier:
       "You started your file to join Axion-IA's network of business introducers. Thank you! It has not arrived yet: only a few screens are left.",
-    titleAbandon: "Your registration is not finished",
-    previewAbandon: "One step left to finish your registration.",
+    titleAbandon: "Your request is not finished",
+    previewAbandon: "One step left to finish your request.",
     bodyAbandon:
-      "You started your registration to Axion-IA's network of business introducers, and only one step is left: your phone number and one question. Your details are already saved, just pick up where you left off.",
-    ctaAbandon: "Finish my registration",
+      "You started your request to join Axion-IA's network of business introducers, and only one step is left: your phone number and one question. Your details are already saved, just pick up where you left off.",
+    ctaAbandon: "Finish my request",
     titleEtape2: "Noted",
     previewEtape2: "Pick the slot that suits you for a 15-minute call.",
     bodyEtape2:
-      "Thank you, your registration to Axion-IA's network of business introducers is saved. To get acquainted, pick the slot that suits you for a 15-minute video call. No commitment: you decide afterwards.",
+      "Thank you, your request to join Axion-IA's network of business introducers is saved. To get acquainted, pick the slot that suits you for a 15-minute video call. No commitment: you decide afterwards.",
     ctaEtape2: "Pick my slot",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     dossier:

@@ -12,11 +12,15 @@ export { VSL_MERCI_PATH };
 /** Dimension d'analyse de la page (propriété `landing` des événements). */
 export const VSL_SLUG = "vsl-apporteur-v1";
 
-/** Ancre du formulaire — tous les boutons de la page y mènent. */
+/**
+ * Ancre du formulaire — tous les boutons de la page y mènent. 🔴 Identifiant
+ * TECHNIQUE d'URL, jamais lu par le visiteur : il reste `candidater` pour ne
+ * casser aucun lien déjà publié (annonces, e-mails de reprise).
+ */
 export const VSL_ANCRE = "candidater";
 
 export const VSL_FORMULAIRE = {
-  titre: "Candidater en 2 minutes",
+  titre: "Devenir apporteur en 2 minutes",
   etape1: {
     eyebrow: "Étape 1 sur 2",
     titre: "Parlons de vous",
@@ -26,9 +30,9 @@ export const VSL_FORMULAIRE = {
     email: "E-mail",
     emailAide: "Pour vous envoyer la confirmation.",
     bouton: "Continuer",
-    // Texte versionné, porté par la capture (v3) : `VSL_CONSENT_TEXTE`.
+    // Texte versionné, porté par la capture (v5) : `VSL_CONSENT_TEXTE`.
     consent: VSL_CONSENT_TEXTE,
-    legal: "Vos données sont utilisées pour traiter votre candidature.",
+    legal: "Vos données sont utilisées pour traiter votre demande.",
     legalLien: "Politique de confidentialité",
   },
   etape2: {
@@ -56,7 +60,7 @@ export const VSL_ERREURS = {
   reponse: "Choisissez la réponse qui s'en approche le plus.",
   invalide: "Une information semble incorrecte. Vérifiez vos réponses et réessayez.",
   rate: "Trop de tentatives pour le moment. Réessayez dans quelques minutes.",
-  jeton: "Votre inscription a expiré. Reprenez l'étape 1 : ce sera très rapide.",
+  jeton: "Votre demande a expiré. Reprenez l'étape 1 : ce sera très rapide.",
   inconnue: "Une erreur est survenue. Réessayez ou écrivez-nous à contact@axion-ia.com.",
   perime: "Le site vient d'être mis à jour. Rechargez la page et renvoyez le formulaire.",
 } as const;

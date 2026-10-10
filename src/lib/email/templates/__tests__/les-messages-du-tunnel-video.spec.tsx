@@ -95,9 +95,9 @@ const TOUS: Array<[string, React.ReactElement]> = [
 ];
 
 describe("objets", () => {
-  it("A1 « Votre inscription n'est pas terminée » ; B1 « C'est noté »", () => {
+  it("A1 « Votre demande n'est pas terminée » ; B1 « C'est noté »", () => {
     expect(leadApporteurRecuSubject("fr", { variante: VARIANTE_VSL_ABANDON })).toBe(
-      "Votre inscription n'est pas terminée",
+      "Votre demande n'est pas terminée",
     );
     expect(leadApporteurRecuSubject("fr", { variante: VARIANTE_VSL_ETAPE2 })).toBe("C'est noté");
   });
@@ -149,7 +149,7 @@ describe("A1 / A2 / A3 — « il vous manque une étape »", () => {
   it("A1 ramène à la page par le lien de reprise", async () => {
     const h = await html(A1);
     expect(h).toContain(REPRISE);
-    expect(texte(h)).toMatch(/Terminer mon inscription/);
+    expect(texte(h)).toMatch(/Terminer ma demande/);
     expect(texte(h)).toMatch(/une étape/);
   });
 
@@ -157,7 +157,7 @@ describe("A1 / A2 / A3 — « il vous manque une étape »", () => {
     expect(texte(await html(A2))).toMatch(/Il vous manque une étape/);
     const t3 = texte(await html(A3));
     expect(t3).toMatch(/dernier rappel/i);
-    expect(t3).toMatch(/Terminer mon inscription/);
+    expect(t3).toMatch(/Terminer ma demande/);
   });
 
   it("l'ancienne relance (sans variante) garde son texte et son bouton", async () => {
@@ -170,28 +170,28 @@ describe("A1 / A2 / A3 — « il vous manque une étape »", () => {
     // formulaire est une « candidature ».
     expect(t).toMatch(/Compléter ma candidature/);
     expect(t).not.toMatch(/Compléter mon dossier/);
-    expect(t).not.toMatch(/Terminer mon inscription/);
+    expect(t).not.toMatch(/Terminer ma demande/);
   });
 
   it("D9 : la relance du tunnel vidéo a son titre et son pré-en-tête — pas « trois minutes, sans CV »", async () => {
     const h = await html(A2);
-    expect(texte(h)).toMatch(/Votre inscription vous attend/);
+    expect(texte(h)).toMatch(/Votre demande vous attend/);
     expect(h).toMatch(/Il vous reste une étape/);
     expect(texte(h)).not.toMatch(/Votre dossier vous attend|sans CV/);
   });
 
-  it("2026-10-10 : l'OBJET de la relance vidéo suit son titre — « inscription », pas « candidature »", () => {
+  it("2026-10-10 : l'OBJET de la relance vidéo suit son titre — « votre demande », pas « candidature »", () => {
     const a2 = leadApporteurRelanceSubject("fr", { etape: "j2", variante: VARIANTE_VSL_RELANCE });
-    expect(a2).toBe("Votre inscription vous attend");
+    expect(a2).toBe("Votre demande vous attend");
     const a3 = leadApporteurRelanceSubject("fr", { etape: "j7", variante: VARIANTE_VSL_RELANCE });
-    expect(a3).toBe("Votre inscription : dernier rappel");
+    expect(a3).toBe("Votre demande : dernier rappel");
     for (const o of [a2, a3]) expect(o.length).toBeLessThanOrEqual(OBJET_MAX);
     // L'ancien formulaire garde son objet.
     expect(leadApporteurRelanceSubject("fr", { etape: "j2" })).toBe(
       "Votre candidature vous attend",
     );
     expect(leadApporteurRelanceSubject("en", { etape: "j2", variante: VARIANTE_VSL_RELANCE })).toBe(
-      "Your registration is waiting",
+      "Your request is waiting",
     );
   });
 });
@@ -218,6 +218,33 @@ describe("R7 / R8 — vocabulaire et promesses", () => {
       expect(h).toMatch(/\/fr\/catalogue"/);
     },
   );
+});
+
+describe("2026-10-10 — vocabulaire « votre demande » (décision de Will)", () => {
+  it.each(TOUS)(
+    "%s : ni « candidat… » ni « inscri… » (objet, pré-en-tête, titre, corps)",
+    async (_n, el) => {
+      const t = texte(await html(el));
+      const fin = t.indexOf("Le bouton ne fonctionne pas");
+      // Le pied légal du châssis (lien de désinscription) est hors du message.
+      const lu = t.slice(0, fin < 0 ? undefined : fin);
+      expect(lu).toMatch(/Bonjour/); // témoin : on lit bien le message
+      expect(lu).not.toMatch(/candidat|inscri/i);
+    },
+  );
+
+  it("les objets des variantes vidéo ne disent ni « candidature » ni « inscription », et tiennent en 45 caractères", () => {
+    const objets = [
+      leadApporteurRecuSubject("fr", { variante: VARIANTE_VSL_ABANDON }),
+      leadApporteurRecuSubject("fr", { variante: VARIANTE_VSL_ETAPE2 }),
+      leadApporteurRelanceSubject("fr", { etape: "j2", variante: VARIANTE_VSL_RELANCE }),
+      leadApporteurRelanceSubject("fr", { etape: "j7", variante: VARIANTE_VSL_RELANCE }),
+    ];
+    for (const o of objets) {
+      expect(o).not.toMatch(/candidat|inscri/i);
+      expect(o.length).toBeLessThanOrEqual(45);
+    }
+  });
 });
 
 describe("budget de liens de la famille B", () => {

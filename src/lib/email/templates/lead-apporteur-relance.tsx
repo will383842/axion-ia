@@ -43,16 +43,18 @@ const COPY = {
     dossier:
       "La candidature prend trois minutes, sans CV et sans lettre de motivation. Vos coordonnées sont déjà remplies.",
     j2Vsl:
-      "Il y a deux jours, vous avez commencé votre inscription au réseau d'apporteurs d'affaires d'Axion-IA. Il vous manque une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
+      "Il y a deux jours, vous avez commencé votre demande pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Il vous manque une étape : votre numéro de téléphone et une question. Vos informations sont déjà enregistrées, il suffit de reprendre là où vous vous êtes arrêté.",
     j7Vsl:
-      "Une semaine déjà depuis le début de votre inscription. Nous ne relançons pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — vos informations restent enregistrées et vous pourrez reprendre quand vous le souhaitez.",
-    ctaVsl: "Terminer mon inscription",
+      "Une semaine déjà depuis le début de votre demande. Nous ne relançons pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — vos informations restent enregistrées et vous pourrez reprendre quand vous le souhaitez.",
+    ctaVsl: "Terminer ma demande",
     // 2026-10-07 (D9) : la relance du tunnel vidéo a son titre et son pré-en-tête.
     // « Trois minutes, sans CV… vos réponses » décrivait l'ancien formulaire.
-    // 2026-10-10 — le dernier rappel dit aussi « inscription », et tient dans les
-    // 45 caractères d'un objet (« Votre candidature d'apporteur : … » en faisait 46).
+    // 2026-10-10 — le dernier rappel tient dans les 45 caractères d'un objet
+    // (« Votre candidature d'apporteur : … » en faisait 46).
+    // 2026-10-10 (décision de Will) — « votre demande », ni « candidature » ni
+    // « inscription » : la cible apporte déjà des affaires, elle ne postule pas.
     titleVsl: (dernier: boolean) =>
-      dernier ? "Votre inscription : dernier rappel" : "Votre inscription vous attend",
+      dernier ? "Votre demande : dernier rappel" : "Votre demande vous attend",
     previewVsl: "Il vous reste une étape : votre numéro de téléphone et une question.",
     cta: "Compléter ma candidature",
     refRow: (id: string) => `Référence : ${id}`,
@@ -67,12 +69,12 @@ const COPY = {
     dossier:
       "The file takes three minutes, no resume, no cover letter. Your details are already filled in.",
     j2Vsl:
-      "Two days ago you started your registration to Axion-IA's network of business introducers. One step is missing: your phone number and one question. Your details are already saved, just pick up where you left off.",
+      "Two days ago you started your request to join Axion-IA's network of business introducers. One step is missing: your phone number and one question. Your details are already saved, just pick up where you left off.",
     j7Vsl:
-      "A week since you started your registration. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your details stay on record and you can pick it up whenever you like.",
-    ctaVsl: "Finish my registration",
+      "A week since you started your request. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your details stay on record and you can pick it up whenever you like.",
+    ctaVsl: "Finish my request",
     titleVsl: (dernier: boolean) =>
-      dernier ? "Your registration: last reminder" : "Your registration is waiting",
+      dernier ? "Your request: last reminder" : "Your request is waiting",
     previewVsl: "One step left: your phone number and one question.",
     cta: "Complete my application",
     refRow: (id: string) => `Reference: ${id}`,
@@ -82,7 +84,7 @@ const COPY = {
 export const leadApporteurRelanceSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const dernier = p.etape === "j7";
   const t = COPY[locale === "fr" ? "fr" : "en"];
-  // 2026-10-10 — la variante vidéo a son objet : « inscription », pas « candidature »
+  // 2026-10-10 — la variante vidéo a son objet : « votre demande », pas « candidature »
   // (le titre l'avait déjà depuis le 07/10, l'objet était resté sur l'ancien).
   return p.variante === VARIANTE_VSL_RELANCE ? t.titleVsl(dernier) : t.title(dernier);
 };

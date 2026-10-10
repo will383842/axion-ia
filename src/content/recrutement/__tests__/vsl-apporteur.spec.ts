@@ -22,7 +22,10 @@ function chaines(valeur: unknown, acc: string[] = []): string[] {
 }
 
 const TOUT_LE_TEXTE = [
-  ...chaines(Object.values(contenu).filter((v) => typeof v !== "function")),
+  // `VSL_ANCRE` (« candidater ») est un identifiant d'URL, jamais lu : on l'écarte.
+  ...chaines(
+    Object.values(contenu).filter((v) => typeof v !== "function" && v !== contenu.VSL_ANCRE),
+  ),
   // La FAQ prend une somme en paramètre : on la lit avec un montant factice.
   ...chaines(faqVsl("MONTANT")),
   // Le bloc commission prend, lui aussi, sa somme en paramètre.
@@ -30,7 +33,7 @@ const TOUT_LE_TEXTE = [
   contenu.VSL_FORMULAIRE.annonceEtape(1),
 ]
   .join("\n")
-  .replace(VSL_CONSENT_TEXTE, ""); // texte versionné v3 : validé par la PR capture
+  .replace(VSL_CONSENT_TEXTE, ""); // texte versionné (v5) : sa propre garde
 
 describe("le texte de la page VSL apporteurs", () => {
   it("témoin : on lit bien un texte conséquent", () => {
@@ -47,8 +50,20 @@ describe("le texte de la page VSL apporteurs", () => {
     ["poste", /\bposte\b/i],
     ["revenu / salaire à gagner", /revenu|gagner de l'argent|liberté financière|sans effort/i],
     ["facebook dans le texte", /facebook/i],
+    // 2026-10-10 (décision de Will) : « Devenir apporteur », « votre demande ».
+    ["candidature / candidater", /candidat/i],
+    ["inscription / s'inscrire", /inscri/i],
   ])("aucun mot interdit : %s", (_nom, motif) => {
     expect(TOUT_LE_TEXTE).not.toMatch(motif);
+  });
+
+  it("le texte de la case de consentement (v5) ne dit ni « candidature » ni « inscription »", () => {
+    expect(VSL_CONSENT_TEXTE).not.toMatch(/candidat|inscri/i);
+    expect(VSL_CONSENT_TEXTE).toContain("si je ne termine pas ma demande");
+  });
+
+  it("l'ancre technique `#candidater` est gardée : aucun lien déjà publié ne casse", () => {
+    expect(contenu.VSL_ANCRE).toBe("candidater");
   });
 
   it("aucun numéro de téléphone", () => {

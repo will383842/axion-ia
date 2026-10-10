@@ -42,7 +42,11 @@ export const VSL_HERO = {
   h1Em: "Présentez-les. Nous nous occupons du reste.",
   sousTitre:
     "Axion-IA forme les équipes des entreprises à l'IA. Vous recommandez, nous nous occupons de la vente, de la facturation et de la formation.",
-  cta: "Je candidate (2 minutes)",
+  // 2026-10-10 (décision de Will) : la cible apporte DÉJÀ des affaires, elle ne
+  // « candidate » pas. Jamais « candidature », « inscription » dans le tunnel vidéo.
+  cta: "Devenir apporteur",
+  /** Petite ligne SOUS chaque bouton de la page : la durée n'est plus dans le libellé. */
+  ctaDuree: "2 minutes · sans engagement",
   micro: "Aucun frais d'entrée · Aucun quota · Aucun gain garanti",
   videoLabel: "Regardez comment ça marche",
 } as const;
@@ -103,8 +107,13 @@ export function commissionVsl(montant: string): {
   };
 }
 
-/** Les trois pastilles « pour qui ». */
+/**
+ * Les pastilles « pour qui ». La PREMIÈRE parle à la cible idéale (décision de
+ * Will du 10/10) : quelqu'un qui apporte déjà des affaires (consultant, courtier,
+ * indépendant avec un portefeuille de dirigeants).
+ */
 export const VSL_POUR_QUI: readonly string[] = [
+  "Vous apportez déjà des affaires : l'IA complète ce que vous recommandez, sans exclusivité",
   "Vous avez des contacts de dirigeants de PME",
   "Vous gardez votre activité",
   "Aucune négociation, aucune explication technique à fournir",
@@ -149,6 +158,18 @@ export const VSL_PREUVES = {
   echange: {
     titre: "Un échange de 15 minutes avant tout engagement",
   },
+  /**
+   * L'espace de l'apporteur (`src/app/apporteur/dossier/[id]/[jeton]/`) : après
+   * signature, il porte « Déclarer une entreprise » (`DeclarationEntreprise`) et
+   * « Vos déclarations » avec l'état de chacune (`ListeDeclarations` : à l'étude,
+   * réservée, prestation réalisée…). 🔴 Rien de plus : pas de « tableau des
+   * commissions », pas de durée de saisie promise.
+   */
+  espace: {
+    titre: "Votre espace personnel",
+    texte:
+      "Une fois le contrat signé, vous y présentez chaque entreprise et suivez où elle en est.",
+  },
 } as const;
 
 /**
@@ -191,7 +212,7 @@ export function faqVsl(commissionParJournee: string): readonly {
     },
     {
       id: "apres",
-      question: "Que se passe-t-il après ma candidature ?",
+      question: "Que se passe-t-il après ma demande ?",
       answer:
         "Vous recevez un e-mail de confirmation, puis vous choisissez un créneau de 15 minutes. Si nous poursuivons ensemble, vous complétez un dossier en ligne, puis un contrat vous est proposé.",
     },

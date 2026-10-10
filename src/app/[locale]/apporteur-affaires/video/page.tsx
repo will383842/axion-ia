@@ -22,7 +22,8 @@
 //
 // 🔴 Aucun montant en grand, aucun Qualiopi, aucun parrainage, aucun téléphone ;
 //    la seule somme vient de `pricing.ts` et reste dans la FAQ (voir le contenu).
-// 🔴 « Je candidate » : jamais « recrutement », « poste », « commercial », « vendre ».
+// 🔴 « Devenir apporteur » (2026-10-10) : jamais « candidature », « inscription »,
+//    « recrutement », « poste », « commercial », « vendre ».
 // 🔴 RYTHME VERTICAL : chaque `<Section>` porte un `lg:py-*` EXPLICITE (le défaut
 //    de `Section.tsx` est `lg:py-36`, `twMerge` ne le remplace que sur le même variant).
 //
@@ -163,13 +164,14 @@ export default async function Page({ params }: Props) {
             />
           ) : null}
 
-          <div className="mt-8 flex flex-col items-center gap-3">
+          <div className="mt-8 flex flex-col items-center gap-2">
             <VslCta
               href={ANCRE}
               label={VSL_HERO.cta}
               placement={film ? "sous-video" : "hero"}
               landing={VSL_SLUG}
             />
+            <p className="text-mocha-fg text-[15px] font-semibold">{VSL_HERO.ctaDuree}</p>
             <p className="text-mocha-fg-muted text-[15px] font-medium">{VSL_HERO.micro}</p>
           </div>
         </div>
@@ -208,7 +210,7 @@ export default async function Page({ params }: Props) {
         </section>
       ) : null}
 
-      {/* 2 ── Pour qui : trois pastilles. */}
+      {/* 2 ── Pour qui : quatre pastilles, la cible idéale en premier. */}
       <Section className="py-10 sm:py-12 lg:py-14">
         <div className="mx-auto max-w-xl">
           <ul className="space-y-3" role="list">
@@ -267,15 +269,16 @@ export default async function Page({ params }: Props) {
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col items-center gap-2">
             <VslCta href={ANCRE} label={VSL_HERO.cta} placement="milieu" landing={VSL_SLUG} />
+            <p className="text-fg-soft text-[15px] font-medium">{VSL_HERO.ctaDuree}</p>
           </div>
         </div>
       </Section>
 
       {/* 5 ── Preuves honnêtes : ce qui existe réellement, aucune statistique. */}
       <Section tone="sand" className="py-10 sm:py-12 lg:py-14">
-        <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
           <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.catalogue.titre}</p>
             <p className="mt-3 text-[15px]">
@@ -295,6 +298,10 @@ export default async function Page({ params }: Props) {
           </div>
           <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.echange.titre}</p>
+          </div>
+          <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
+            <p className="text-fg font-semibold">{VSL_PREUVES.espace.titre}</p>
+            <p className="text-fg-soft mt-2 text-[15px]">{VSL_PREUVES.espace.texte}</p>
           </div>
         </div>
       </Section>
@@ -322,9 +329,10 @@ export default async function Page({ params }: Props) {
         className="py-10 sm:py-12 lg:py-14"
       />
 
+      {/* Libellé SANS « → » : le bouton dessine déjà sa flèche (il en portait deux). */}
       <StickyMobileCta
         href={ANCRE}
-        label={`${VSL_HERO.cta} →`}
+        label={VSL_HERO.cta}
         track="vsl-sticky-cta"
         couleur="terracotta"
         masquerQuandVisible="vsl-formulaire"
