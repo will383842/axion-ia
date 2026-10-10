@@ -29,14 +29,10 @@
 
 "use server";
 
-import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
-import { headers } from "next/headers";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
-import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import {
@@ -47,6 +43,9 @@ import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/r
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
+import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 /**
  * 🔴 Les parties attendues viennent du SSOT, jamais d'une liste locale. Une
@@ -74,22 +73,6 @@ const entreeSchema = z.object({
   imageDataUrl: z.string().max(3_000_000).optional(),
 });
 
-/** Empreintes de contexte, hors tuple haché donc effaçables (RGPD art. 17). */
-async function contexteRequete(): Promise<{
-  ipHash: string | null;
-  userAgentSha256: string | null;
-}> {
-  const entetes = await headers();
-  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
-  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
-  const ipBrute = ipVisiteurOuNull(entetes);
-  const ua = entetes.get("user-agent");
-  return {
-    ipHash: hashIp(ipBrute),
-    userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
-  };
-}
-
 /**
  * Traduit une panne de stockage en refus exploitable.
  *
@@ -107,60 +90,8 @@ function refusStockage(err: SignatureStockageError): ResultatSignatureContratTra
   };
 }
 
-/**
- * 🔴 LE CONTRAT SIGNÉ REMPLIT LE CASIER DU DOSSIER — sans quoi la conformité
- * resterait rouge sur une pièce parfaitement signée.
- *
- * `REQUIS_SALARIE` (trainers/conformite.ts) exige un `TrainerDocument` de type
- * `contrat_travail` pour qu'un salarié soit conforme. Ce casier se remplissait
- * jusqu'ici par DÉPÔT MANUEL d'un fichier. Depuis que l'organisme produit et
- * fait signer le contrat lui-même, laisser le casier vide obligerait à
- * retélécharger le PDF pour le redéposer à côté — et le premier oubli laisserait
- * un salarié « non conforme » avec son contrat signé au registre.
- *
- * ⚠️ FAIL-SOFT, et c'est délibéré : la signature est DÉJÀ écrite et scellée
- * quand on arrive ici. Faire échouer l'action sur le classement dirait au
- * signataire que sa signature n'a pas été prise, ce qui serait faux — et il
- * signerait deux fois.
- *
- * ⚠️ IDEMPOTENT par le numéro de pièce : les deux parties signent, la seconde
- * déclenche `signee`, et une réexécution ne doit pas créer un second casier.
- */
-async function classerContratAuDossier(
-  trainerId: string,
-  numero: string,
-  documentGenereId: string,
-): Promise<void> {
-  try {
-    const existant = await prisma.trainerDocument.findFirst({
-      where: { trainerId, type: "contrat_travail", numeroPiece: numero },
-      select: { id: true },
-    });
-    if (existant !== null) return;
-    await prisma.trainerDocument.create({
-      data: {
-        trainerId,
-        type: "contrat_travail",
-        numeroPiece: numero,
-        // La route de l'espace du salarié : c'est elle qui rend l'exemplaire
-        // SIGNÉ une fois la pièce complète, et elle vérifie la titularité.
-        fichierUrl: `/api/formateur/contrat-travail/${documentGenereId}`,
-        dateEmission: new Date(),
-        // 🔑 `valide` sans réserve : la pièce est produite par l'organisme,
-        // numérotée, hashée et signée des deux parties. La mettre « en attente »
-        // demanderait de valider ce qu'on vient soi-même d'émettre.
-        //
-        // ⚠️ AUCUNE `dateExpiration` : un contrat de travail n'expire pas. Un CDD
-        // a un TERME, mais ce terme n'est pas l'échéance d'une pièce à
-        // renouveler — l'y porter ferait lever une alerte « pièce périmée » le
-        // jour où le contrat prend normalement fin.
-        statutValidation: "valide",
-      },
-    });
-  } catch (err) {
-    console.warn("[contrat-travail] classement au dossier impossible (fail-soft)", err);
-  }
-}
+// 🔑 Le classement du contrat signé au casier du dossier (`REQUIS_SALARIE`)
+// vit désormais dans l'après-signature commun (S6a) : `apres-signature.ts`.
 
 /**
  * 🔴 La MÊME réponse que le service et que les deux autres actions formateur
@@ -233,9 +164,14 @@ export async function signerContratTravailFormateurAction(input: {
       // doit pas se distinguer d'un identifiant inconnu.
       return res.raison === "porteur_non_autorise" ? { ...CONTRAT_INTROUVABLE } : res;
     }
-    if (res.statutSignature === "signee") {
-      await classerContratAuDossier(formateur.trainerId, piece.numero, donnees.documentGenereId);
-    }
+    await apresSignature({
+      documentGenereId: donnees.documentGenereId,
+      type: "contrat_travail",
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: "formateur",
+      acteur: { type: "signataire" },
+    });
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);
@@ -262,7 +198,7 @@ export async function signerContratTravailEmployeurAction(input: {
   imageDataUrl?: string;
 }): Promise<ResultatSignatureContratTravail> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
+  if (!peutSignerPourOrganisme(session.role)) {
     return {
       ok: false,
       raison: "role_insuffisant",
@@ -300,9 +236,14 @@ export async function signerContratTravailEmployeurAction(input: {
     });
     if (!res.ok) return res;
 
-    if (res.statutSignature === "signee" && piece.trainerId !== null) {
-      await classerContratAuDossier(piece.trainerId, piece.numero, donnees.documentGenereId);
-    }
+    await apresSignature({
+      documentGenereId: donnees.documentGenereId,
+      type: "contrat_travail",
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: "axionia",
+      acteur: { type: "administrateur", session },
+    });
 
     await logQualiopiActivity({
       action: "qualiopi.document.contrat_travail.signe_employeur",

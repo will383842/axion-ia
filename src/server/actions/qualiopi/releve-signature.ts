@@ -31,13 +31,9 @@
 
 "use server";
 
-import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
-import { headers } from "next/headers";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -49,6 +45,8 @@ import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/r
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 /**
  * 🔴 Les parties attendues viennent du SSOT, jamais d'une liste locale.
@@ -78,22 +76,6 @@ const entreeSchema = z.object({
   methode: z.enum(["trace", "papier_scanne", "confirmation_accessible"]),
   imageDataUrl: z.string().max(3_000_000).optional(),
 });
-
-/** Empreintes de contexte, hors tuple haché donc effaçables (RGPD art. 17). */
-async function contexteRequete(): Promise<{
-  ipHash: string | null;
-  userAgentSha256: string | null;
-}> {
-  const entetes = await headers();
-  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
-  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
-  const ipBrute = ipVisiteurOuNull(entetes);
-  const ua = entetes.get("user-agent");
-  return {
-    ipHash: hashIp(ipBrute),
-    userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
-  };
-}
 
 /**
  * Traduit une panne de stockage en refus exploitable.
@@ -211,7 +193,7 @@ export async function viserReleveResponsablePedagogiqueAction(input: {
   imageDataUrl?: string;
 }): Promise<ResultatSignatureReleve> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
+  if (!peutSignerPourOrganisme(session.role)) {
     return {
       ok: false,
       raison: "role_insuffisant",

@@ -32,6 +32,17 @@ interface Payload {
   libellePiece: string;
   /** Noms des signataires, dans l'ordre où ils ont signé. */
   signataires?: readonly string[];
+  /**
+   * Empreinte SHA-256 COMPLÈTE de la pièce scellée (S6a, k). Imprimée en
+   * entier : une empreinte tronquée ne prouve rien.
+   */
+  empreinte?: string;
+  /**
+   * Copie PARTIELLE (S6a) : le signataire reçoit la pièce portant SA
+   * signature, d'autres parties doivent encore signer. Le texte ne doit
+   * jamais laisser croire que l'accord est conclu.
+   */
+  partielle?: boolean;
 }
 
 function field(p: Partial<Payload>, key: "numero" | "libellePiece", fallback: string): string {
@@ -61,6 +72,13 @@ const COPY = {
       "Ce document fait foi de l'accord conclu entre nous : conservez-le, il vous sera demandé en cas de contrôle de votre financeur.",
     qui: (noms: string) => `Signataires : ${noms}.`,
     ref: (n: string) => `Référence du document : ${n}`,
+    empreinte: (e: string) => `Empreinte SHA-256 du document signé : ${e}`,
+    titlePartielle: "Copie de votre signature",
+    bodyPartielle: (libelle: string) =>
+      `Votre signature sur ${libelle} est bien enregistrée. Vous trouverez en pièce jointe une copie du document portant votre signature.`,
+    previewPartielle: "Votre signature est enregistrée — l'exemplaire complet suivra.",
+    conserverPartielle:
+      "D'autres parties doivent encore signer : cette copie n'est pas l'exemplaire final. Celui-ci vous sera adressé dès que toutes les signatures seront réunies.",
     questions:
       "Pour toute question sur cette pièce ou sur la suite du parcours, répondez simplement à cet email.",
     close: "Bien cordialement,\nL'équipe Axion-IA",
@@ -75,6 +93,13 @@ const COPY = {
       "This document evidences the agreement between us: please keep it, your funding body may ask for it.",
     qui: (noms: string) => `Signatories: ${noms}.`,
     ref: (n: string) => `Document reference: ${n}`,
+    empreinte: (e: string) => `SHA-256 fingerprint of the signed document: ${e}`,
+    titlePartielle: "Copy of your signature",
+    bodyPartielle: (libelle: string) =>
+      `Your signature on ${libelle} has been recorded. Please find attached a copy of the document bearing your signature.`,
+    previewPartielle: "Your signature is recorded — the complete copy will follow.",
+    conserverPartielle:
+      "Other parties still have to sign: this copy is not the final document. It will be sent to you once all signatures are collected.",
     questions:
       "For any question about this document or the next steps, simply reply to this email.",
     close: "Best regards,\nThe Axion-IA team",
@@ -87,6 +112,11 @@ export const pieceExemplaireSigneSubject = (
 ): string => {
   const p = payload as Partial<Payload>;
   const numero = field(p, "numero", "");
+  if (p.partielle === true) {
+    return locale === "fr"
+      ? objetCompose("Copie de votre signature —", numero)
+      : objetCompose("Copy of your signature —", numero);
+  }
   // Le NUMÉRO plutôt que l'intitulé : c'est une pièce d'archive, et c'est par
   // son numéro qu'on la retrouve — dans la boîte du client comme au registre.
   if (locale === "fr") return objetCompose("Votre exemplaire signé —", numero);
@@ -103,14 +133,24 @@ export function PieceExemplaireSigneEmail({
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
   const noms = listeSignataires(p);
+  const partielle = p.partielle === true;
+  const libelle = field(p, "libellePiece", locale === "fr" ? "la pièce" : "the document");
+  const empreinte = typeof p.empreinte === "string" ? p.empreinte.trim() : "";
 
   return (
-    <EmailLayout famille="A" locale={locale} title={t.title} preview={t.preview}>
+    <EmailLayout
+      famille="A"
+      locale={locale}
+      title={partielle ? t.titlePartielle : t.title}
+      preview={partielle ? t.previewPartielle : t.preview}
+    >
       <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.body(field(p, "libellePiece", locale === "fr" ? "la pièce" : "the document"))}
+        {partielle ? t.bodyPartielle(libelle) : t.body(libelle)}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.conserver}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {partielle ? t.conserverPartielle : t.conserver}
+      </Text>
       {noms !== "" && (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
           {t.qui(noms)}
@@ -119,6 +159,17 @@ export function PieceExemplaireSigneEmail({
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.ref(field(p, "numero", ""))}
       </Text>
+      {empreinte !== "" && (
+        <Text
+          style={{
+            ...emailStyles.paragraphStyle,
+            color: emailStyles.COLORS.textMuted,
+            wordBreak: "break-all",
+          }}
+        >
+          {t.empreinte(empreinte)}
+        </Text>
+      )}
       <Text style={emailStyles.paragraphStyle}>{t.questions}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.close.split("\n").map((line, i) => (
