@@ -1,6 +1,6 @@
 // 2026-09-27 (Will) — l'invitation d'une personne qui a POSTULÉ lui dit que sa
 // candidature est retenue (pas « merci pour votre intérêt »), change d'objet d'un
-// candidat à l'autre et dit que les créneaux sont limités — sans dates fixes :
+// candidat à l'autre et invite à réserver — sans dates fixes ni rareté (2026-10-10) :
 // le Calendly suit les disponibilités de Will. Une saisie manuelle garde le
 // texte d'origine.
 
@@ -40,12 +40,13 @@ describe("invitation d'un candidat", () => {
     expect(html).not.toMatch(/entretien/i);
   });
 
-  it("dit que les créneaux sont limités, sans annoncer de dates fixes", async () => {
+  it("invite à réserver sans rareté ni dates fixes", async () => {
     const { html } = await renderEmailTemplate("apporteur-invitation-appel", "fr", {
       ...BASE,
       candidature: true,
     });
-    expect(html).toMatch(/Les créneaux sont limités/);
+    expect(html).toMatch(/Réservez le vôtre dès maintenant avec le bouton ci-dessous\./);
+    expect(html).not.toMatch(/limité/i);
     expect(html).not.toMatch(/septembre|octobre/);
   });
 

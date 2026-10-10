@@ -53,7 +53,7 @@ export const COPY_RELANCE_INVITATION = {
         ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
         : "Votre candidature est retenue : il ne reste qu'à choisir le moment de notre échange de 15 minutes.",
     j3: (n: string) =>
-      `${n ? `Bonjour ${n}, votre` : "Bonjour, votre"} candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio. Les créneaux sont limités : réservez le vôtre en un clic avec le bouton ci-dessous.`,
+      `${n ? `Bonjour ${n}, votre` : "Bonjour, votre"} candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio. Réservez le vôtre en un clic avec le bouton ci-dessous.`,
     j7: (n: string) =>
       `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message à ce sujet : votre candidature est toujours retenue, et l'échange de 15 minutes en visio reste ouvert si vous souhaitez découvrir le réseau. Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus.`,
     kit: "Pour rappel, de quoi préparer l'échange :",
@@ -85,7 +85,7 @@ export const COPY_RELANCE_INVITATION = {
         ? "Our last message on the subject: the 15-minute video call remains open."
         : "Your application has been selected: all that is left is to pick the time of our 15-minute call.",
     j3: (n: string) =>
-      `${n ? `Hello ${n}, your` : "Hello, your"} application to Axion-IA's business introducer network has been selected, and all that is left is to choose the time of our 15-minute video call. Slots are limited: book yours in one click with the button below.`,
+      `${n ? `Hello ${n}, your` : "Hello, your"} application to Axion-IA's business introducer network has been selected, and all that is left is to choose the time of our 15-minute video call. Book yours in one click with the button below.`,
     j7: (n: string) =>
       `${n ? `Hello ${n}, this` : "Hello, this"} is our last message on the subject: your application is still selected, and the 15-minute video call remains open if you would like to discover the network. If now is not the right time, no problem: without a booking from you, we will not remind you again.`,
     kit: "As a reminder, to prepare for the call:",
