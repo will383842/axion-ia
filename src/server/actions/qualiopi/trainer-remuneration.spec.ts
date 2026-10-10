@@ -14,7 +14,8 @@ const mockLog = vi.fn();
 const mockRun = vi.fn();
 
 const tx = {
-  trainerStatement: { update: vi.fn() },
+  $executeRawUnsafe: vi.fn(),
+  trainerStatement: { updateMany: vi.fn() },
   trainerFeeLine: { updateMany: vi.fn() },
   trainerCompensationRule: { updateMany: vi.fn(), create: vi.fn() },
 };
@@ -67,6 +68,9 @@ const TRAINER = "22222222-2222-4222-8222-222222222222";
 function releve(over: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     id: ID,
+    trainerId: TRAINER,
+    periodeYear: 2026,
+    periodeMonth: 6,
     statut: "facture_recue",
     totalTtcCents: 108_000,
     numeroFacture: "F-001",
@@ -75,6 +79,7 @@ function releve(over: Record<string, unknown> = {}): Record<string, unknown> {
     // Forme RÉELLE de la ligne : Prisma rend `null`, jamais `undefined`. Une
     // fixture qui omet un champ fait mesurer aux tests une forme qui n'existe
     // pas en base.
+    autofactureAt: null,
     contesteeAt: null,
     contestationMotif: null,
     ...over,
@@ -86,7 +91,8 @@ beforeEach(() => {
   mockRequireAdminWrite.mockResolvedValue({ userId: "u1", role: "admin" });
   mockLog.mockResolvedValue(undefined);
   mockTransaction.mockImplementation(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx));
-  tx.trainerStatement.update.mockResolvedValue({});
+  tx.$executeRawUnsafe.mockResolvedValue(0);
+  tx.trainerStatement.updateMany.mockResolvedValue({ count: 1 });
   tx.trainerFeeLine.updateMany.mockResolvedValue({ count: 0 });
   tx.trainerCompensationRule.updateMany.mockResolvedValue({ count: 0 });
   tx.trainerCompensationRule.create.mockResolvedValue({ id: "r-new" });
@@ -186,7 +192,7 @@ describe("transitionStatementAction — gate « facture conforme »", () => {
       referenceVirement: "VIR-42",
     });
     expect(res).toEqual({ data: { id: ID, statut: "paye" } });
-    const data = tx.trainerStatement.update.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    const data = tx.trainerStatement.updateMany.mock.calls[0]?.[0]?.data as Record<string, unknown>;
     expect(data.statut).toBe("paye");
     expect(data.payeAt).toBeInstanceOf(Date);
     expect(data.moyenPaiement).toBe("virement");
@@ -277,7 +283,10 @@ describe("transitionStatementAction — gate « facture conforme »", () => {
       montantFactureTtcEuros: 1200,
     });
 
-    const data = tx.trainerStatement.update.mock.calls.at(-1)?.[0]?.data as Record<string, unknown>;
+    const data = tx.trainerStatement.updateMany.mock.calls.at(-1)?.[0]?.data as Record<
+      string,
+      unknown
+    >;
     const echeance = data["echeanceAt"] as Date;
     expect(echeance, "aucune échéance posée — le relevé sort du pilotage").toBeInstanceOf(Date);
     const jours = Math.round((echeance.getTime() - new Date("2026-07-01").getTime()) / 86_400_000);
@@ -297,7 +306,7 @@ describe("transitionStatementAction — gel et dégel des lignes", () => {
       where: { statementId: ID, statut: "calcule" },
       data: { statut: "valide" },
     });
-    const data = tx.trainerStatement.update.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    const data = tx.trainerStatement.updateMany.mock.calls[0]?.[0]?.data as Record<string, unknown>;
     // 🔴 `admin-uuid`, PAS `u1` : depuis D3 (2026-09-05) cette action passe par
     // `requireHabilitation("remunerer_formateur")` et non plus par
     // `requireAdminWrite` — qui autorisait `editor` à déclarer un relevé payé.
@@ -343,7 +352,7 @@ describe("transitionStatementAction — gel et dégel des lignes", () => {
       dateFacture: "2026-07-01",
       montantFactureTtcEuros: 1_080.5,
     });
-    expect(tx.trainerStatement.update).toHaveBeenCalledWith(
+    expect(tx.trainerStatement.updateMany).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({ montantFactureTtcCents: 108_050 }),
       }),
@@ -353,7 +362,7 @@ describe("transitionStatementAction — gel et dégel des lignes", () => {
   it("le statut n'est jamais écrit sans passer par la matrice", async () => {
     mockStatementFindUnique.mockResolvedValue(releve({ statut: "brouillon" }));
     await transitionStatementAction({ id: ID, to: "valide" }); // brouillon → valide interdit
-    expect(tx.trainerStatement.update).not.toHaveBeenCalled();
+    expect(tx.trainerStatement.updateMany).not.toHaveBeenCalled();
   });
 });
 

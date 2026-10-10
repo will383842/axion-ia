@@ -475,9 +475,23 @@ async function emettreSousVerrou(
   // ⚠️ `autofactureTransmiseAt` et `contestationAvantAt` NE SONT PAS POSÉS ICI.
   // Le délai court depuis la transmission ; l'écrire à l'émission le ferait
   // courir sur une pièce que personne n'a reçue.
+  //
+  // 🔴 ASSEMBLAGE S3 — ÉCRITURE CONDITIONNELLE. Le verrou de série sérialise les
+  // émetteurs entre eux, pas avec `transitionStatementAction` ni avec le run :
+  // entre la lecture et ici (rendu du PDF compris), le relevé a pu redescendre
+  // en `a_valider` — et le run en réécrire le total. On n'écrit que sur le
+  // relevé tel qu'on l'a contrôlé : toujours `valide`, toujours sans facture,
+  // même total TTC.
+  let ecrites: number;
   try {
-    await prisma.trainerStatement.update({
-      where: { id: releve.id },
+    ({ count: ecrites } = await prisma.trainerStatement.updateMany({
+      where: {
+        id: releve.id,
+        statut: releve.statut,
+        numeroFacture: null,
+        autofactureAt: null,
+        totalTtcCents: releve.totalTtcCents,
+      },
       data: {
         statut: "facture_recue",
         numeroFacture: numero,
@@ -490,13 +504,22 @@ async function emettreSousVerrou(
         // facture de septembre pour un rattrapage d'août.
         autofactureDocumentId: doc.id,
       },
-    });
+    }));
   } catch (cause) {
     return {
       error: "Erreur lors de l'enregistrement de la facture sur le relevé.",
       code: "technique",
       etape: "ecriture",
       cause,
+    };
+  }
+  if (ecrites !== 1) {
+    // Le numéro n'est pas consommé (la série se lit sur `numeroFacture`) ; le
+    // PDF rendu reste orphelin, rattaché à aucun relevé et jamais transmis.
+    return {
+      error:
+        "Le relevé a changé pendant l'émission (statut ou montant) : aucune facture n'a été enregistrée. Rechargez le relevé avant de réessayer.",
+      code: "ineligible",
     };
   }
 

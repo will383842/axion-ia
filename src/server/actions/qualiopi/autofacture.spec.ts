@@ -38,6 +38,12 @@ vi.mock("@/lib/prisma", () => ({
     trainerStatement: {
       findUnique: (...a: unknown[]) => mockStatementFindUnique(...a),
       update: (...a: unknown[]) => mockStatementUpdate(...a),
+      // ASSEMBLAGE S3 — émission et contestation écrivent conditionnellement
+      // (`updateMany`) : même journal d'écritures, une ligne touchée.
+      updateMany: async (...a: unknown[]) => {
+        const r = (await mockStatementUpdate(...a)) as { count?: number } | undefined;
+        return { count: r?.count ?? 1 };
+      },
       findMany: (...a: unknown[]) => mockStatementFindMany(...a),
     },
     documentGenere: {
@@ -349,6 +355,26 @@ describe("contesterAutofactureAction", () => {
     );
     const res = await contesterAutofactureAction({ statementId: ID, motif: "x" });
     expect("error" in res && res.error).toMatch(/déjà enregistrée/i);
+  });
+
+  it("ASSEMBLAGE S3 — écrit seulement si aucune contestation n'est déjà posée", async () => {
+    mockStatementFindUnique.mockResolvedValue(
+      releve({ autofactureAt: new Date("2026-09-01T00:00:00.000Z") }),
+    );
+    await contesterAutofactureAction({ statementId: ID, motif: "écart d'heures" });
+    const where = mockStatementUpdate.mock.calls.at(-1)?.[0]?.where as Record<string, unknown>;
+    expect(where).toMatchObject({ id: ID, contesteeAt: null });
+  });
+
+  it("ASSEMBLAGE S3 — deux contestations simultanées : la seconde n'écrase pas la première", async () => {
+    // Les deux ont lu `contesteeAt: null` ; la première a écrit entre-temps.
+    mockStatementFindUnique.mockResolvedValue(
+      releve({ autofactureAt: new Date("2026-09-01T00:00:00.000Z") }),
+    );
+    mockStatementUpdate.mockResolvedValueOnce({ count: 0 });
+    const res = await contesterAutofactureAction({ statementId: ID, motif: "second motif" });
+    expect("error" in res && res.error).toMatch(/a changé/i);
+    expect(mockLog).not.toHaveBeenCalled();
   });
 
   it("exige un motif", async () => {
