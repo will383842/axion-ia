@@ -897,6 +897,8 @@ describe("P2 — déjà connu(e) : étape 2", () => {
     expect(envois[0]?.a).toBe("contact@axion-ia.com");
     const lignes = (envois[0]?.payload["rows"] as Array<{ label: string; value: string }>) ?? [];
     expect(lignes).toContainEqual({ label: "Déjà connu(e)", value: "revenu(e) par la publicité" });
+    // L'annonce citée est celle de CE retour (désigné par l'heure du jeton).
+    expect(lignes.find((l) => l.label === "Campagne")?.value).toBe("annonce-42");
     expect(lignes.find((l) => l.label === "Fiche existante")?.value).toBe(
       `https://axion-ia.com/fr/console/contacts/commercial/${ID_FICHE}`,
     );

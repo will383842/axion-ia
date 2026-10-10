@@ -112,6 +112,7 @@ import {
   ajouterRetourVsl,
   avancerVslEtape2,
   completerRetourVsl,
+  lireRetoursVsl,
   lireVsl,
   majVslCible,
   type RetourVsl,
@@ -527,9 +528,10 @@ export async function completerLeadVsl(
     if (connue) {
       const maintenant = Date.now();
       const suspect = jeton.suspect || maintenant - jeton.iat < DELAI_MIN_ETAPE2_MS;
+      const le = new Date(jeton.iat).toISOString();
       const issue = await completerRetourVsl({
         id: connue.id,
-        le: new Date(jeton.iat).toISOString(),
+        le,
         telephoneChiffre: encryptPii(d.telephone) ?? null,
         reponseId: d.reponseId,
         suspect,
@@ -538,6 +540,7 @@ export async function completerLeadVsl(
       if (issue === "complete" && !suspect) {
         await suiteRetourDejaConnu({
           ficheId: connue.id,
+          le,
           telephone: d.telephone,
           reponseId: d.reponseId,
           maintenant,
@@ -773,6 +776,8 @@ async function suiteEtape2(a: {
  */
 async function suiteRetourDejaConnu(a: {
   ficheId: string;
+  /** Heure de l'étape 1 : désigne l'entrée `retoursVsl` de CE retour. */
+  le: string;
   telephone: string;
   reponseId: string;
   maintenant: number;
@@ -794,13 +799,8 @@ async function suiteRetourDejaConnu(a: {
   }
   const consoleUrl = `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${a.ficheId}`;
   const DEJA_CONNU = "Déjà connu(e) : revenu(e) par la publicité";
-  const dernier = details
-    ? (
-        (details as { retoursVsl?: unknown }).retoursVsl as
-          Array<{ utm?: { campaign?: string; content?: string } }> | undefined
-      )?.at?.(-1)
-    : undefined;
-  const campagne = [dernier?.utm?.campaign, dernier?.utm?.content].filter(Boolean).join(" · ");
+  const retour = lireRetoursVsl(details).find((r) => r.le === a.le);
+  const campagne = [retour?.utm?.campaign, retour?.utm?.content].filter(Boolean).join(" · ");
 
   try {
     await notify({
