@@ -1472,6 +1472,13 @@ jobs:
       - name: SIREN déduit du SIRET (Postgres réel)
         run: pnpm test:integration tests/integration/siren-deduit-du-siret
 
+      # S0-ter (2026-10-10) — allumer / couper un interrupteur formateurs écrit
+      # le réglage ET sa ligne de journal sur la vraie base. Un faux client
+      # acceptait une clé texte dans `activity_logs.target_id` (uuid) : en prod,
+      # Postgres refusait et la page cassait. Transaction ANNULÉE : rien ne reste.
+      - name: Interrupteurs formateurs — allumer et couper (Postgres réel)
+        run: pnpm test:integration tests/integration/formateurs-interrupteurs
+
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #
       # 🔴 Pourquoi ici, et pas dans un job à part : Gate D est le SEUL endroit

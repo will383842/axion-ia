@@ -457,6 +457,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    module PUR : l'import ne tire aucun runtime, seulement une donnée.
   "tests/unit/qualiopi/le-ppt-projete-nest-jamais-genere.spec.ts",
   "tests/unit/ci/origine-de-prod-jamais-en-repli.spec.ts",
+  // ── Interrupteurs formateurs sur Postgres réel (S0-ter, 2026-10-10). Le test
+  //    appelle la Server Action TELLE QUELLE contre la vraie base : c'est ce
+  //    qui a manqué quand une clé texte partait dans `activity_logs.target_id`
+  //    (uuid). Il vit sous `tests/integration/`, seul dossier que lit
+  //    `vitest.integration.config.ts` — pas sous `tests/qualiopi/`.
+  "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
