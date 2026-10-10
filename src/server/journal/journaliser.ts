@@ -13,6 +13,14 @@
  * - **`exiger: true`** : l'échec est LEVÉ. Pour l'activation d'un formateur et
  *   tout acte qui touche à l'argent : sans trace, pas d'acte.
  *
+ * ⚠️ **La tolérance ne vaut que HORS transaction interactive.** Dans un
+ * `prisma.$transaction(async (tx) => …)`, une requête refusée par Postgres
+ * annule la transaction entière : avaler l'erreur ne sauve pas l'acte, la
+ * requête suivante échoue (« current transaction is aborted »). En transaction,
+ * appeler `journaliser` avec `exiger: true`, ou avec des données déjà validées.
+ * Les refus que ce module sait détecter (`targetId` qui n'est pas un UUID) sont
+ * levés AVANT toute requête : ils ne touchent jamais la transaction.
+ *
  * Les `changes:` passent TOUJOURS par `filtrerChangesJournal`.
  *
  * ⚠️ Ce module n'importe ni `next/headers` ni le client global : le worker
@@ -21,7 +29,7 @@
  * `_guards` qualiopi le lit dans les en-têtes, un acte du worker n'en a pas.
  */
 
-import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibles";
+import { masquerDonneesSensibles, natureDeLaCle } from "@/lib/security/masquage-donnees-sensibles";
 
 export interface EntreeJournal {
   /** Action canonique ex. "qualiopi.trainer.activation". */
@@ -69,6 +77,18 @@ export const MODIFIE = Object.freeze({ modifie: true as const });
 
 const PROFONDEUR_MAX = 12;
 
+/**
+ * Formes d'un mot de clé : le mot lui-même et, au pluriel (`s`, `x`, `es`),
+ * son singulier. `emails`, `telephones`, `ibans` ou `ndas` se lisent comme leur
+ * singulier ; un mot de trois lettres (`nos`, `fax`) reste tel quel.
+ */
+function formesDuMot(mot: string): string[] {
+  if (mot.length <= 3 || !/[sx]$/.test(mot)) return [mot];
+  const formes = [mot, mot.slice(0, -1)];
+  if (mot.endsWith("es")) formes.push(mot.slice(0, -2));
+  return formes;
+}
+
 function motsDeLaCle(cle: string): Set<string> {
   return new Set(
     cle
@@ -77,17 +97,26 @@ function motsDeLaCle(cle: string): Set<string> {
       .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
       .toLowerCase()
       .split(/[^a-z0-9]+/)
-      .filter((m) => m.length > 0),
+      .filter((m) => m.length > 0)
+      .flatMap(formesDuMot),
   );
 }
 
+/** Nature de la clé, pluriels compris (`emails` → personnel, `emailHashes` → empreinte). */
+function natureJournal(cle: string): ReturnType<typeof natureDeLaCle> {
+  return natureDeLaCle([...motsDeLaCle(cle)].join("_"));
+}
+
+/** Clé de même nature que le masquage existant reconnaît au singulier. */
+const CLE_SINGULIERE = { bancaire: "iban", personnel: "email" } as const;
+
 const MOTS_NUMERO = ["numero", "num", "no", "number"];
-const MOTS_PIECE = ["piece", "pieces"];
+const MOTS_PIECE = ["piece"];
 
 /**
  * Vrai si la clé désigne un numéro de pièce d'identité ou un numéro de
- * déclaration d'activité. La clé est découpée en MOTS : `pieceId`, `pieces`
- * ou `agenda` restent lisibles.
+ * déclaration d'activité, pluriels compris. La clé est découpée en MOTS :
+ * `pieceId`, `pieces` ou `agenda` restent lisibles.
  */
 export function estCleIdentifiante(cle: string): boolean {
   const mots = motsDeLaCle(cle);
@@ -96,23 +125,71 @@ export function estCleIdentifiante(cle: string): boolean {
   if (a(MOTS_PIECE) && a([...MOTS_NUMERO, "identite"])) return true;
   if (mots.has("identite") && a(MOTS_NUMERO)) return true;
   if (mots.has("nda")) return true;
-  if (mots.has("declaration") && mots.has("activite")) return true;
+  if (mots.has("declaration") && (mots.has("activite") || a(MOTS_NUMERO))) return true;
   return false;
 }
 
-function remplacer(valeur: unknown, profondeur: number, vus: WeakSet<object>): unknown {
+/** Une adresse e-mail, où qu'elle soit dans le texte. */
+const EMAIL_RE = /[^\s@<>"'(),;:]+@[^\s@<>"'(),;:]+\.[a-z]{2,}/gi;
+/** Forme d'un IBAN (avec ou sans espaces), majuscules — même règle que le masquage existant. */
+const IBAN_RE = /\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]{4}){2,7}(?:\s?[A-Z0-9]{1,4})?\b/;
+/** Un numéro de téléphone : la valeur ENTIÈRE, de 9 à 15 chiffres. */
+const TELEPHONE_RE = /^\+?[\d\s.\-()]{9,}$/;
+
+function aFormeDeTelephone(texte: string): boolean {
+  const chiffres = texte.replace(/\D/g, "").length;
+  return TELEPHONE_RE.test(texte.trim()) && chiffres >= 9 && chiffres <= 15;
+}
+
+/**
+ * Valeur rangée sous une clé d'EMPREINTE : elle reste telle quelle si c'est
+ * bien une empreinte, et elle est masquée si elle a la forme d'un IBAN, d'un
+ * e-mail ou d'un téléphone — le nom de la clé ne garantit pas son contenu.
+ */
+function texteSousEmpreinte(texte: string): unknown {
+  if (IBAN_RE.test(texte)) return masquerDonneesSensibles({ iban: texte }).iban;
+  if (new RegExp(EMAIL_RE.source, "i").test(texte) || aFormeDeTelephone(texte)) {
+    return { masque: true };
+  }
+  return texte;
+}
+
+function remplacer(
+  valeur: unknown,
+  profondeur: number,
+  vus: WeakSet<object>,
+  empreinte: boolean,
+): unknown {
+  if (typeof valeur === "string") {
+    return empreinte ? texteSousEmpreinte(valeur) : valeur.replace(EMAIL_RE, "[e-mail masqué]");
+  }
   if (valeur === null || typeof valeur !== "object" || valeur instanceof Date) return valeur;
   if (vus.has(valeur)) return "[circulaire]";
   if (profondeur >= PROFONDEUR_MAX) return "[profondeur]";
   vus.add(valeur);
   try {
-    if (Array.isArray(valeur)) return valeur.map((v) => remplacer(v, profondeur + 1, vus));
+    if (Array.isArray(valeur)) {
+      return valeur.map((v) => remplacer(v, profondeur + 1, vus, empreinte));
+    }
     const sortie: Record<string, unknown> = {};
     for (const [cle, v] of Object.entries(valeur as Record<string, unknown>)) {
       // Un booléen ou un null ne dit rien de la personne (`numeroPieceVerifie: true`).
       const neutre = v === null || v === undefined || typeof v === "boolean";
-      sortie[cle] =
-        !neutre && estCleIdentifiante(cle) ? { ...MODIFIE } : remplacer(v, profondeur + 1, vus);
+      if (!neutre && estCleIdentifiante(cle)) {
+        sortie[cle] = { ...MODIFIE };
+        continue;
+      }
+      const nature = empreinte ? "empreinte" : natureJournal(cle);
+      if (nature === "bancaire" || nature === "personnel") {
+        if (natureDeLaCle(cle) === null) {
+          // Pluriel (`emails`, `ibans`) : le masquage existant ne lit que le
+          // singulier — on lui présente la valeur sous une clé de même nature.
+          const cleSinguliere = CLE_SINGULIERE[nature];
+          sortie[cle] = masquerDonneesSensibles({ [cleSinguliere]: v })[cleSinguliere];
+          continue;
+        }
+      }
+      sortie[cle] = remplacer(v, profondeur + 1, vus, nature === "empreinte");
     }
     return sortie;
   } finally {
@@ -123,22 +200,38 @@ function remplacer(valeur: unknown, profondeur: number, vus: WeakSet<object>): u
 /**
  * Filtre des `changes:` du journal, à toute profondeur (objets et tableaux) :
  *
- * - numéro de pièce d'identité, numéro de déclaration d'activité →
+ * - numéro de pièce d'identité, numéro de déclaration (d'activité) →
  *   `{ modifie: true }` ;
  * - IBAN, BIC, RIB, e-mail, téléphone, adresse → masquage existant
- *   (`masquerDonneesSensibles`, réutilisé et non recopié).
+ *   (`masquerDonneesSensibles`, réutilisé et non recopié), clés au pluriel
+ *   comprises ;
+ * - sous une clé d'empreinte (`emailHash`, `ibanMasque`…), une valeur qui a la
+ *   forme d'un IBAN, d'un e-mail ou d'un téléphone est masquée quand même ;
+ * - ailleurs, une adresse e-mail dans un texte libre est remplacée (l'IBAN dans
+ *   un texte l'est déjà par le masquage existant).
  *
  * Ne modifie jamais l'objet reçu.
  */
 export function filtrerChangesJournal(changes: unknown): unknown {
-  return masquerDonneesSensibles(remplacer(changes ?? null, 0, new WeakSet()));
+  return masquerDonneesSensibles(remplacer(changes ?? null, 0, new WeakSet(), false));
 }
 
-/** Les données d'une entrée de journal, SANS l'écrire. */
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Les données d'une entrée de journal, SANS l'écrire.
+ *
+ * Lève si `targetId` n'est pas un UUID (colonne `@db.Uuid`) : le refus a lieu
+ * ici, avant toute requête, plutôt que dans Postgres — où il annulerait la
+ * transaction de l'appelant.
+ */
 export function donneesJournal(
   entree: EntreeJournal,
   contexte?: ContexteJournal | null,
 ): DonneesJournal {
+  if (entree.targetId != null && !UUID_RE.test(entree.targetId)) {
+    throw new TypeError("Journal : `targetId` doit être un UUID.");
+  }
   return {
     adminUserId: entree.session?.userId ?? null,
     action: entree.action.slice(0, 120),
