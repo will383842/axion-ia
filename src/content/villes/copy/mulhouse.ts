@@ -170,20 +170,6 @@ export const MULHOUSE_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes implantés dans le bassin mulhousien (Stellantis Île Napoléon, Wärtsilä, Sew-Usocome) ou dont les flux traversent le trinational.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit Axion-IA nous a permis de prioriser trois chantiers IA concrets en quelques semaines. Le livrable chiffré est directement présentable au conseil de groupe, avec une vision claire des cas prioritaires dans notre environnement industriel transfrontalier.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie, bassin mulhousien",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données de production réelles. Les consultants connaissaient nos contraintes spécifiques automobile — pas de présentation générique. On est repartis avec un plan d'action applicable dès le trimestre suivant.",
-            role: "Directeur industriel",
-            companyProfile: "PME équipementier automobile, Haut-Rhin",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Mulhouse ?",
@@ -268,20 +254,6 @@ export const MULHOUSE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups based in the Mulhouse basin (Stellantis Île Napoléon, Wärtsilä, Sew-Usocome) or whose data flows cross the tri-national zone.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The Axion-IA audit let us prioritise three concrete AI initiatives within a few weeks. The costed deliverable is directly presentable to the group board, with a clear view of priority cases in our cross-border industrial environment.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Mulhouse basin",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data. The consultants understood our specific automotive constraints — no generic presentation. We left with an action plan applicable from the very next quarter.",
-            role: "Industrial Director",
-            companyProfile: "Automotive equipment supplier SME, Haut-Rhin",
           },
         ],
         faq: [
@@ -372,20 +344,6 @@ export const MULHOUSE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges mulhousiens — roadshow multi-sites bassin Haut-Rhin, séminaires CODIR + cascade équipes terrain, ateliers usine ou laboratoires.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement répondu aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais documents techniques. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus et analyser des plans.",
-            role: "Directeur technique",
-            companyProfile: "PME bureau d'études, bassin mulhousien",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes automobiles et transfrontalières — une session concrète, pas de slides génériques.",
-            role: "DG",
-            companyProfile: "ETI équipementier automobile, Haut-Rhin",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Mulhouse ?",
@@ -470,20 +428,6 @@ export const MULHOUSE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Mulhouse HQs — multi-site Haut-Rhin basin roadshows, exec committee seminars + shop floor or lab cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format (one-day) perfectly met our engineers' expectations. They left with tools configured for their real technical documents. By the next day, several were already using them to write reports and analyse technical plans.",
-            role: "Technical Director",
-            companyProfile: "Engineering firm SME, Mulhouse basin",
-          },
-          {
-            quote:
-              "The executive session aligned us within a day on our AI trajectory. The consultant understood our automotive and cross-border constraints — a concrete session, no generic slides.",
-            role: "CEO",
-            companyProfile: "Automotive equipment supplier mid-cap, Haut-Rhin",
           },
         ],
         faq: [
@@ -574,20 +518,6 @@ export const MULHOUSE_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes du bassin mulhousien : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie, intégration dimension transfrontalière.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation rapports qualité livrée comme promis. ROI mesuré dès les premiers mois : nos ingénieurs passent moins de temps sur les rapports administratifs et plus sur l'amélioration des processus. Aucun lock-in, on contrôle notre déploiement.",
-            role: "Directeur qualité",
-            companyProfile: "ETI équipementier automobile, bassin mulhousien",
-          },
-          {
-            quote:
-              "Mode hybride parfait pour notre équipe entre l'atelier et le bureau. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome depuis la fin de mission.",
-            role: "CTO",
-            companyProfile: "PME ingénierie industrielle, Mulhouse",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Mulhouse ?",
@@ -672,20 +602,6 @@ export const MULHOUSE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Mulhouse basin large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode, cross-border dimension integrated.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Quality report automation implementation delivered as promised. ROI measured within the first months: our engineers now spend less time on administrative reports and more on process improvement. No lock-in, we control our deployment.",
-            role: "Quality Director",
-            companyProfile: "Automotive equipment supplier mid-cap, Mulhouse basin",
-          },
-          {
-            quote:
-              "Perfect hybrid mode for our team split between the workshop and the office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors have been operating autonomously since the end of the mission.",
-            role: "CTO",
-            companyProfile: "Industrial engineering SME, Mulhouse",
           },
         ],
         faq: [
@@ -776,20 +692,6 @@ export const MULHOUSE_COPY: VilleCopy = {
               "Accompagnement de dirigeants de grandes entreprises ou de comités de direction complets — intégration de la dimension transfrontalière et des enjeux de gouvernance IA groupe.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le programme 1-to-1 m'a permis de sortir du bruit ambiant sur l'IA et de définir une stratégie claire pour mon entreprise industrielle. Chaque séance était directement applicable à mes enjeux spécifiques.",
-            role: "Président-directeur général",
-            companyProfile: "PME industrie, bassin mulhousien",
-          },
-          {
-            quote:
-              "Format hybride parfait pour mon agenda chargé entre Mulhouse et Bâle. J'ai structuré ma feuille de route IA en quelques semaines, avec un accompagnement qui connaissait les réalités de l'industrie transfrontalière.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI groupe franco-suisse, Haut-Rhin",
-          },
-        ],
         faq: [
           {
             q: "Quelle est la durée d'un programme 1-to-1 Axion-IA à Mulhouse ?",
@@ -874,20 +776,6 @@ export const MULHOUSE_COPY: VilleCopy = {
             price: "Programme on quote",
             detail:
               "Coaching for large enterprise executives or full executive committees — integration of the cross-border dimension and group AI governance challenges.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 programme let me cut through the AI noise and define a clear strategy for my industrial company. Each session was directly applicable to my specific challenges.",
-            role: "Chairman & CEO",
-            companyProfile: "Industrial SME, Mulhouse basin",
-          },
-          {
-            quote:
-              "Perfect hybrid format for my busy schedule between Mulhouse and Basel. I structured my AI roadmap in a few weeks, with coaching that understood the realities of cross-border industry.",
-            role: "Director of Operations",
-            companyProfile: "Franco-Swiss group mid-cap, Haut-Rhin",
           },
         ],
         faq: [

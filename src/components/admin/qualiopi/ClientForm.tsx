@@ -18,6 +18,9 @@ import { FichesProches } from "@/components/admin/qualiopi/FichesProches";
 
 type ClientType = "entreprise" | "particulier";
 
+export const MESSAGE_SIRET_OBLIGATOIRE =
+  "Indiquez le SIRET de l'établissement (14 chiffres), ou choisissez « Hors de France » ou « Sans SIRET ».";
+
 /** Valeurs de pré-remplissage (conversion d'une demande de contact en client). */
 export interface ClientFormInitialValues {
   type?: ClientType;
@@ -58,6 +61,12 @@ export function ClientForm({
   const [raisonSociale, setRaisonSociale] = useState(iv.raisonSociale ?? "");
   const [siret, setSiret] = useState("");
   const [siren, setSiren] = useState("");
+  // Contrat d'apporteur 2.6 (09/10/2026) : la commission suit l'ÉTABLISSEMENT (SIRET). Le SIRET est
+  // donc obligatoire pour une entreprise française ; seul un client hors de France s'en passe.
+  // Relecture de a1 : trois cas, pas une case « hors de France » qu'une association devrait cocher.
+  const [regimeSiret, setRegimeSiret] = useState<"immatricule" | "hors_france" | "sans_siret">(
+    "immatricule",
+  );
   const [ville, setVille] = useState("");
   const [codePostal, setCodePostal] = useState("");
   // « Créer quand même » : n'apparaît que si le serveur l'a demandé (même
@@ -87,9 +96,15 @@ export function ClientForm({
   const siretCheck = siretSaisi === "" ? null : checkSiretFormat(siretSaisi);
   const siretErreur = siretCheck !== null && !siretCheck.ok ? siretCheck.message : null;
 
+  const siretExige = !isParticulier && regimeSiret === "immatricule";
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (siretExige && siret.trim() === "") {
+      setError(MESSAGE_SIRET_OBLIGATOIRE);
+      return;
+    }
     startTransition(async () => {
       const result = await createClientAction({
         type,
@@ -108,6 +123,7 @@ export function ClientForm({
         ...(source ? { source } : {}),
         // Champs entreprise uniquement
         ...(!isParticulier && siret ? { siret } : {}),
+        ...(siretExige ? { siretObligatoire: true } : {}),
         ...(!isParticulier && siren.trim() ? { siren: siren.trim() } : {}),
         ...(!isParticulier && nafCode ? { nafCode } : {}),
         ...(!isParticulier && taille ? { taille: taille as CompanySize } : {}),
@@ -200,9 +216,36 @@ export function ClientForm({
                 id="c-siret-hint"
                 className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
-                Facultatif. Laissez vide si inconnu, ou si le client est hors France — le SIRET est
-                un identifiant français.
+                Obligatoire pour une entreprise française : c&apos;est l&apos;établissement qui
+                commande (et l&apos;apporteur commissionné) qui en dépend.
               </p>
+              <fieldset className="flex flex-col gap-1 text-[length:var(--text-admin-xs)]">
+                <legend className="sr-only">Immatriculation de l&apos;établissement</legend>
+                {(
+                  [
+                    ["immatricule", "Établissement immatriculé (SIRET)"],
+                    ["hors_france", "Hors de France"],
+                    ["sans_siret", "Sans SIRET (association non immatriculée…)"],
+                  ] as const
+                ).map(([v, libelle]) => (
+                  // Zone de clic ≥ 24 × 24 px (WCAG 2.5.8, règle axe « target-size ») : le bouton
+                  // radio natif ne fait que ~13 px.
+                  <label
+                    key={v}
+                    className="flex min-h-[24px] cursor-pointer items-center gap-[var(--space-admin-2)]"
+                  >
+                    <input
+                      type="radio"
+                      className="h-[24px] w-[24px] shrink-0 cursor-pointer"
+                      name="c-regime-siret"
+                      checked={regimeSiret === v}
+                      onChange={() => setRegimeSiret(v)}
+                      disabled={isPending}
+                    />
+                    {libelle}
+                  </label>
+                ))}
+              </fieldset>
               {siretErreur !== null ? (
                 <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">
                   {siretErreur}

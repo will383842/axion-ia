@@ -5,10 +5,27 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({ create: vi.fn(), apporteur: vi.fn(), siennes: vi.fn() }));
+// Contrat 2.6 : présentations existantes d'avant la 2.6 (toute l'entreprise) ; écriture du SIRET simulée.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    lireSiretsDevis: async () => new Map(),
+    lireDecisionsAAttribuer: async () => new Map(),
+    lireAAttribuerEnAttente: async () => [],
+    ouvrirAAttribuer: vi.fn(async () => true),
+    enregistrerEtablissement: vi.fn(async () => undefined),
+  };
+});
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/pii-crypto", () => ({ encryptPii: (v: string) => v, decryptPii: (v: string) => v }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "h" }));
-vi.mock("../annuaire", () => ({ lireEntrepriseParSiren: vi.fn() }));
+vi.mock("../annuaire", () => ({
+  lireEntrepriseParSiren: vi.fn(),
+  lireEtablissementParSiret: vi.fn(),
+}));
 vi.mock("../rebonds", () => ({ idsPriseDeContactRebondie: vi.fn(async () => new Set()) }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -17,6 +34,8 @@ vi.mock("@/lib/prisma", () => ({
       create: (...a: unknown[]) => h.create(...a),
       findMany: (...a: unknown[]) => h.siennes(...a),
     },
+    $transaction: async (f: (t: unknown) => unknown) =>
+      f({ presentationEntreprise: { create: (...a: unknown[]) => h.create(...a) } }),
   },
 }));
 
@@ -25,7 +44,7 @@ import { creerPresentation } from "../presentations";
 const MAINTENANT = new Date("2026-10-08T09:00:00Z");
 const SAISIE = {
   apporteurId: "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b",
-  siren: "732829320",
+  siret: "73282932000074",
   denomination: "Danone",
   personneNom: "Claire Durand",
   personneFonction: "DG",
@@ -66,7 +85,7 @@ describe("saisie console — doublon (même contrôle que le formulaire)", () =>
     expect(h.create).not.toHaveBeenCalled();
     expect(h.siennes.mock.calls[0]![0].where).toMatchObject({
       apporteurId: SAISIE.apporteurId,
-      siren: SAISIE.siren,
+      siren: SAISIE.siret.slice(0, 9),
     });
   });
 

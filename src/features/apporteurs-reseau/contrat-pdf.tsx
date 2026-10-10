@@ -263,7 +263,9 @@ function blocs(markdown: string): React.ReactNode[] {
 
 /** Depuis le contrat 2.5, la signature tient en deux cases (avant : une case par engagement). */
 export function deuxCases(version: string): boolean {
-  return Number(version) >= 2.5;
+  // Comparaison PAR COMPOSANTE (analyse du 09/10) : « 2.10 » est après « 2.5 », pas « 2.1 ».
+  const [maj = 0, min = 0] = version.split(".").map((x) => Number.parseInt(x, 10) || 0);
+  return maj > 2 || (maj === 2 && min >= 5);
 }
 
 function Certificat({

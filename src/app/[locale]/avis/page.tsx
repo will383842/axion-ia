@@ -54,9 +54,10 @@ import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ReviewFilters as ReviewFiltersBar } from "@/components/reviews/ReviewFilters";
 import { RatingBreakdown } from "@/components/reviews/RatingBreakdown";
 import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
-import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { REVIEWS_PAGE_SIZE, FACET_MIN_COUNT, noteGlobaleAffichable } from "@/lib/reviews/config";
 import { isServiceLine, serviceLineLabel } from "@/lib/reviews/service-lines";
 import { isClientSectorSlug, clientSectorLabel, getClientSector } from "@/content/sectors";
+import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -82,7 +83,7 @@ const FAQ_ITEMS = [
     id: "note-globale",
     question: "Comment est calculée la note globale ?",
     answer:
-      "La note globale est la moyenne des notes de tous les avis publiés, sur une échelle de 1 à 5. Elle n'est affichée en donnée structurée qu'à partir de 5 avis vérifiés.",
+      "La note globale est la moyenne des notes de tous les avis publiés, sur une échelle de 1 à 5. Elle n'est affichée en donnée structurée qu'à partir de 5 avis publiés.",
   },
   {
     id: "deposer",
@@ -161,9 +162,9 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const meta = await buildProductMetadata({
     locale,
     path: "/avis",
-    title: "Avis clients Axion-IA · Retours d'expérience vérifiés",
+    title: "Avis clients Axion-IA · Retours d'expérience",
     description:
-      "Découvrez les avis clients vérifiés d'Axion-IA : retours d'expérience réels sur nos audits, formations, implémentations et accompagnements IA, partout en France.",
+      "Découvrez les avis clients d'Axion-IA : retours d'expérience réels sur nos audits, formations, implémentations et accompagnements IA, partout en France.",
     alternates: { fr: "/avis", en: "/avis" },
   });
   // Faceted-nav : les combinaisons de filtres sont noindex + canonical vers /avis.
@@ -174,21 +175,29 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 }
 
 export default async function AvisHubPage({ params, searchParams }: Props) {
+  // Règle automatique (src/content/preuves-sociales.ts) : 404 tant qu'aucun avis
+  // n'est publié. Le 404 est mis en cache ISR (revalidate) puis régénéré : la
+  // page revient seule au premier avis publié, sans redéploiement.
+  if (!(await avisPublies())) notFound();
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const sp = await searchParams;
   const { filters } = toFilters(sp);
 
-  const [reviews, agg, serviceFacets, sectorFacets, cityFacets, deptFacets] = await Promise.all([
-    getPublishedReviews(filters),
-    getAggregateRating(),
-    getServiceFacets(),
-    getSectorFacets(),
-    getCityFacets(),
-    getDepartmentFacets(),
-  ]);
+  const [reviews, aggBrut, serviceFacets, sectorFacets, cityFacets, deptFacets] = await Promise.all(
+    [
+      getPublishedReviews(filters),
+      getAggregateRating(),
+      getServiceFacets(),
+      getSectorFacets(),
+      getCityFacets(),
+      getDepartmentFacets(),
+    ],
+  );
 
+  // Note globale seulement à partir de 5 avis publiés (preuves-sociales.ts).
+  const agg = noteGlobaleAffichable(aggBrut);
   const totalPages = Math.max(1, Math.ceil(reviews.total / reviews.pageSize));
   const orgAgg = orgAggregateJsonLd(agg);
 
@@ -197,7 +206,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
     path: "/avis",
     name: "Avis clients Axion-IA",
     description:
-      "Retours d'expérience clients vérifiés sur les services IA d'Axion-IA (audit, formation, implémentation, accompagnement, sites web augmentés).",
+      "Retours d'expérience clients sur les services IA d'Axion-IA (audit, formation, implémentation, accompagnement, sites web augmentés).",
     dateModified: SITE_EDITORIAL_DATE,
   });
 
@@ -267,7 +276,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
         titleEm="Axion-IA"
         titleAs="h1"
         tone="halo-warm"
-        description="Des retours d'expérience réels et vérifiés sur nos interventions IA — audits, formations, implémentations et accompagnements, partout en France."
+        description="Des retours d'expérience réels sur nos interventions IA — audits, formations, implémentations et accompagnements, partout en France."
         media={heroMedia}
       >
         <Breadcrumbs items={[{ href: "/avis", label: "Avis clients" }]} />
@@ -275,10 +284,10 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
           <AnswerCard
             question="Axion-IA a-t-il de bons avis clients ?"
             locale="fr"
-            {...(agg ? { sourceLabel: `Moyenne sur ${agg.reviewCount} avis vérifiés` } : {})}
+            {...(agg ? { sourceLabel: `Moyenne sur ${agg.reviewCount} avis publiés` } : {})}
           >
             {agg
-              ? `Axion-IA affiche une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients vérifiés. Chaque avis est contrôlé manuellement avant publication ; les avis positifs comme négatifs sont publiés.`
+              ? `Axion-IA affiche une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients publiés. Chaque avis est contrôlé manuellement avant publication ; les avis positifs comme négatifs sont publiés.`
               : "Axion-IA publie les avis de ses clients après vérification manuelle de leur authenticité. Les avis positifs comme négatifs sont publiés, conformément à la réglementation."}
           </AnswerCard>
         </div>
@@ -296,7 +305,7 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
           {[
             {
               icon: BadgeCheck,
-              t: "Avis 100 % vérifiés",
+              t: "Avis modérés avant publication",
               d: "Chaque avis est contrôlé manuellement (authenticité, cohérence) avant publication.",
             },
             {

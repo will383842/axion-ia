@@ -6,7 +6,8 @@ export const TEXTES_DECLARATION = {
   ligne: "Tous les champs sont nécessaires.",
   entreprise: "L'entreprise",
   personne: "La personne rencontrée",
-  siren: "Numéro SIREN (9 chiffres)",
+  // Contrat 2.6 : l'attribution porte sur l'établissement visité.
+  siret: "Numéro SIRET de l'établissement visité (14 chiffres)",
   denomination: "Nom de l'entreprise",
   nom: "Prénom et nom",
   fonction: "Fonction",
@@ -26,7 +27,7 @@ export const TEXTES_DECLARATION = {
   comment: (mois: number) =>
     [
       "Après votre déclaration, nous prenons contact avec l'entreprise de votre part.",
-      `Elle vous est réservée ${mois} mois à compter de votre déclaration.`,
+      `Cet établissement vous est réservé ${mois} mois à compter de votre déclaration. Si vous avez rencontré la direction de l'entreprise, écrivez-nous : nous pouvons étendre votre réservation à toute l'entreprise.`,
       "Si elle a déjà été présentée ou nous est déjà connue, nous vous le disons.",
       "Toute commande signée pendant cette période vous est commissionnée, dès que la prestation est réalisée et entièrement payée.",
     ] as const,

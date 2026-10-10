@@ -7,6 +7,7 @@ import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
+import { avisPublies } from "@/server/reviews/presence";
 
 export async function Footer() {
   const t = await getTranslations();
@@ -17,6 +18,9 @@ export async function Footer() {
   // Découplé le 2026-07-25 (audit F13) : la visibilité des pages OF ne vaut plus
   // attestation de certification — cette mention exige la certification RÉELLE.
   const ofPublic = isQualiopiCertificationObtenue();
+  // Lien « Avis clients » : présent dès qu'au moins un avis est publié (règle
+  // automatique, src/content/preuves-sociales.ts ; compte en cache 5 min).
+  const avisEnLigne = await avisPublies();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
   // `src/content/services.ts`, dans l'ordre canonique + Tarifs en clôture.
@@ -63,7 +67,8 @@ export async function Footer() {
     // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
     // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
     // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
-    { href: "/avis", label: isFr ? "Avis clients" : "Client reviews" },
+    // Absent tant qu'aucun avis n'est publié (le hub rend alors 404).
+    ...(avisEnLigne ? [{ href: "/avis", label: isFr ? "Avis clients" : "Client reviews" }] : []),
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },

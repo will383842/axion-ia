@@ -145,20 +145,6 @@ export const NANTES_COPY: VilleCopy = {
               "Pour les sites grands-comptes (Airbus Bouguenais, Capgemini, BNP siège régional) souhaitant cadrer une gouvernance IA centralisée sur leur périmètre nantais.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a livré un audit chiffré, actionnable, en quelques semaines là où nos DSI estimaient des mois de cadrage. Le livrable a permis de prioriser trois chantiers IA concrets dès le trimestre suivant.",
-            role: "Directeur général",
-            companyProfile: "ETI industrielle, métropole nantaise",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données de production. Le plan d'action a convaincu le comité de direction sans jargon — c'est rare dans notre secteur.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME agroalimentaire, Loire-Atlantique",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nantes ?",
@@ -243,20 +229,6 @@ export const NANTES_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For major-site large accounts (Airbus Bouguenais, Capgemini, BNP regional HQ) framing centralised AI governance across their Nantes footprint.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered a costed, actionable audit in a few weeks where our IT leadership estimated months of framing. The deliverable let us prioritise three concrete AI initiatives in the following quarter.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Nantes metropolis",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real production data. The action plan convinced the executive committee without jargon — rare in our sector.",
-            role: "Head of Transformation",
-            companyProfile: "Agri-food SME, Loire-Atlantique",
           },
         ],
         faq: [
@@ -351,20 +323,6 @@ export const NANTES_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour grands sites nantais (Airbus, Capgemini, BNP) : roadshow multi-sites, séminaire CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée pour notre secteur industriel : nos équipes sont reparties avec leurs outils IA installés et configurés sur leurs postes de travail. Le lendemain, une partie significative les utilisaient déjà sur leurs vrais dossiers.",
-            role: "DRH",
-            companyProfile: "ETI industrielle, métropole nantaise",
-          },
-          {
-            quote:
-              "La session dirigeants nous a alignés en quelques heures sur notre trajectoire IA. Format dense, pragmatique, aucun remplissage. Exactement ce qu'on attendait pour cadrer notre comité de direction.",
-            role: "PDG",
-            companyProfile: "PME numérique, Île de Nantes",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nantes ?",
@@ -449,20 +407,6 @@ export const NANTES_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for major Nantes sites (Airbus, Capgemini, BNP): multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training perfectly calibrated for our industrial sector: our teams left with their AI tools installed and configured on their workstations. The next day, a significant share were already using them on real files.",
-            role: "Head of HR",
-            companyProfile: "Industrial mid-cap, Nantes metropolis",
-          },
-          {
-            quote:
-              "The executive session aligned us within hours on our AI trajectory. Dense, pragmatic format, no filler. Exactly what we needed to frame our executive committee.",
-            role: "CEO",
-            companyProfile: "Digital SME, Île de Nantes",
           },
         ],
         faq: [
@@ -557,20 +501,6 @@ export const NANTES_COPY: VilleCopy = {
               "Programmes pour grands sites nantais (Airbus, Capgemini, BNP) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture de bons de commande livrée comme promis. ROI réel mesuré : plusieurs équivalents temps plein libérés sur les tâches admin. Aucun lock-in, nos équipes ont la main sur les modèles.",
-            role: "DAF",
-            companyProfile: "ETI industrielle, métropole nantaise",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite : kick-off dense sur site, puis itérations à distance avec points courts. Notre équipe technique n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up numérique, Île de Nantes",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nantes ?",
@@ -655,20 +585,6 @@ export const NANTES_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for major Nantes sites (Airbus, Capgemini, BNP): cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Purchase order reading implementation delivered as promised. Real ROI measured: several FTEs freed on admin tasks. No lock-in, our teams control the models.",
-            role: "CFO",
-            companyProfile: "Industrial mid-cap, Nantes metropolis",
-          },
-          {
-            quote:
-              "Perfect hybrid method: intense on-site kick-off, then remote iterations with short check-ins. Our technical team was never lost. Internal ambassadors take over autonomously.",
-            role: "CTO",
-            companyProfile: "Digital scale-up, Île de Nantes",
           },
         ],
         faq: [
@@ -760,20 +676,6 @@ export const NANTES_COPY: VilleCopy = {
               "Coaching de la cellule IA ou des profils pilotes d'un grand groupe implanté à Nantes (Airbus, Capgemini), avant déploiement large en cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de maîtriser l'IA sur mes vrais dossiers industriels en quelques séances. Les cas aéronautique et qualité étaient intégrés dès le premier échange. Je suis autonome sur mes analyses et comptes-rendus.",
-            role: "Ingénieur qualité",
-            companyProfile: "ETI sous-traitant aéronautique, Bouguenais",
-          },
-          {
-            quote:
-              "En tant que DG d'une PME agroalimentaire, je n'avais pas le temps pour une formation collective. Le coaching 1-to-1 calé sur mes vrais enjeux (traçabilité, emails clients, reporting) a été immédiatement rentable.",
-            role: "Directeur général",
-            companyProfile: "PME agroalimentaire, Loire-Atlantique",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Nantes ?",
@@ -858,20 +760,6 @@ export const NANTES_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Coaching of the AI cell or pilot profiles of a large group based in Nantes (Airbus, Capgemini), before broad team cascade rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me master AI on my real industrial files within a few sessions. Aeronautics and quality cases were integrated from the first exchange. I am autonomous on my analyses and meeting minutes.",
-            role: "Quality Engineer",
-            companyProfile: "Aeronautics subcontractor mid-cap, Bouguenais",
-          },
-          {
-            quote:
-              "As CEO of an agri-food SME, I had no time for group training. The 1-to-1 coaching aligned with my real challenges (traceability, client emails, reporting) was immediately profitable.",
-            role: "CEO",
-            companyProfile: "Agri-food SME, Loire-Atlantique",
           },
         ],
         faq: [

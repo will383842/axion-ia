@@ -80,8 +80,10 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
+import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // SSOT du pied de page légal — module PUR, valeurs figées au Kbis. Remplace les
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
@@ -108,15 +110,37 @@ export function setReviewStats(stats: ReviewStats): void {
 }
 
 /**
- * Lien « Ne plus recevoir de sollicitations commerciales » du destinataire
- * courant — audit e-mails 2026-09-02, lot 1b. Posé par `renderEmailTemplate`
- * quand il connaît le destinataire, lu par le pied de page des familles B, C
- * et D. Même mécanisme que les statistiques d'avis : un contexte de rendu, pour
- * ne pas faire porter 44 gabarits par une prop qu'aucun d'eux ne décide.
+ * Données PROPRES À UN RENDU — le lien « Ne plus recevoir de sollicitations commerciales »
+ * du destinataire courant (audit e-mails 2026-09-02, lot 1b).
+ *
+ * 🔴 2026-10-09 (relecture sécurité, a1) : ce lien vivait dans une variable de MODULE posée
+ * par `renderEmailTemplate` avant plusieurs `await` (statistiques d'avis, rendu HTML, rendu
+ * texte). Le worker rend deux e-mails à la fois (`concurrency: 2`) : l'e-mail de A pouvait
+ * partir avec le lien de B, dont le jeton porte l'ADRESSE en clair (base64url) — fuite de
+ * l'adresse, et opposition possible au nom de B. Désormais un `AsyncLocalStorage` : chaque
+ * rendu porte SES données (`avecDonneesRendu`, posé par `renderEmailTemplate` autour des deux
+ * `render`), lues ici par `getStore()` — le contexte asynchrone suit chaque rendu à travers
+ * ses `await`, aucun rendu ne voit celui d'un autre. Pas un React Context : `createContext`
+ * est interdit dans le graphe RSC (cf. `CURRENT_REVIEW_STATS` ci-dessus — build cassé).
+ * ⛔ Ne jamais remettre une donnée propre au destinataire dans une variable de module.
+ * Hors rendu (aperçus, tests de gabarit seul) : aucun lien.
  */
-let CURRENT_OPPOSITION_HREF: string | null = null;
-export function setOppositionHref(href: string | null): void {
-  CURRENT_OPPOSITION_HREF = href;
+export interface DonneesRenduEmail {
+  readonly oppositionHref: string | null;
+  /**
+   * « Ouvrir mon espace » sous un e-mail adressé à un APPORTEUR (décision de Will, 2026-10-09) :
+   * son lien personnel (`payload.lienEspace`, posé par `envoyer()` des apporteurs). Il porte le
+   * jeton : jamais recopié en clair, et jamais dans une variable de module (même raison que
+   * le lien d'opposition).
+   */
+  readonly lienEspace: string | null;
+}
+const RENDU_EN_COURS = new AsyncLocalStorage<DonneesRenduEmail>();
+export function avecDonneesRendu<T>(
+  donnees: DonneesRenduEmail,
+  rendu: () => Promise<T>,
+): Promise<T> {
+  return RENDU_EN_COURS.run(donnees, rendu);
 }
 
 const BRAND = "Axion-IA";
@@ -199,7 +223,9 @@ function avecUtm(url: string, famille: FamilleEmail, content: string, campagne?:
   return `${url}${sep}${params.join("&")}`;
 }
 
-const REVIEW_URL = `${BASE_URL}/fr/avis`;
+// Le bloc « Déposer un avis » mène au FORMULAIRE, toujours ouvert — jamais au hub
+// /avis, qui rend 404 tant qu'aucun avis n'est publié (règle automatique).
+const REVIEW_URL = `${BASE_URL}/fr/avis/deposer`;
 const APPEL_URL = `${BASE_URL}/fr/appel?depuis=email`;
 const SITE_URL_PARTAGE = `${BASE_URL}/fr`;
 
@@ -678,7 +704,7 @@ const TXT = {
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
     tagline: "Cabinet IA pour entreprises — PME, ETI et grands groupes",
-    reviewsWord: "avis clients vérifiés",
+    reviewsWord: "avis clients",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
     soupape:
@@ -728,7 +754,7 @@ const TXT = {
   },
   en: {
     tagline: "AI consultancy for mid-market and enterprise",
-    reviewsWord: "verified client reviews",
+    reviewsWord: "client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
     soupape: "A question? Just reply to this email — it reaches us directly, and a human reads it.",
@@ -780,12 +806,15 @@ export function EmailLayout({
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
+  const donneesRendu = RENDU_EN_COURS.getStore();
+  const oppositionHref = donneesRendu?.oppositionHref ?? null;
+  const lienEspace = donneesRendu?.lienEspace ?? null;
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
   const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
-  const showReviews = rs.count >= 5 && rs.avg > 0;
+  const showReviews = rs.count >= AGGREGATE_MIN_COUNT && rs.avg > 0;
   // 🔴 2026-08-19 — `trust` est un booléen de MISE EN PAGE (« ce gabarit affiche
   // un bandeau de confiance »), pas un drapeau de certification. Le lockup
   // « Organisme de formation certifié Qualiopi » partirait donc quoi qu'il
@@ -812,7 +841,10 @@ export function EmailLayout({
   const signatureCourte = signature === "fondateur-court";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
-  const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
+  // Étoiles = moyenne RÉELLE arrondie (jamais cinq étoiles posées d'office).
+  const pleines = Math.min(5, Math.max(0, Math.round(rs.avg)));
+  const etoiles = "★".repeat(pleines) + "☆".repeat(5 - pleines);
+  const reviewLine = `${etoiles}  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
 
   return (
     <Html lang={locale}>
@@ -889,6 +921,27 @@ export function EmailLayout({
                     {cta.href}
                   </Text>
                 )}
+              </Section>
+            )}
+            {lienEspace && cta?.href !== lienEspace && (
+              <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
+                <Link
+                  href={lienEspace}
+                  style={{
+                    display: "inline-block",
+                    border: `2px solid ${C.orange}`,
+                    borderRadius: "10px",
+                    padding: "10px 18px",
+                    color: C.orangeDeep,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Ouvrir mon espace d&apos;apporteur
+                </Link>
+                <Text style={{ margin: "8px 0 0 0", fontSize: "13px", color: C.muted }}>
+                  Ce lien vous est personnel : ne transférez pas cet e-mail.
+                </Text>
               </Section>
             )}
             {bandeau && (afficherLockupQualiopi || showReviews) && (
@@ -1087,11 +1140,11 @@ export function EmailLayout({
                   destinataire est connu du rendu, pas du gabarit. Portée écrite
                   dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
                   qui clique garde sa convocation, un client garde sa facture. */}
-              {famille !== "A" && !unsubscribeHref && CURRENT_OPPOSITION_HREF && (
+              {famille !== "A" && !unsubscribeHref && oppositionHref && (
                 <>
                   <br />
                   <Link
-                    href={CURRENT_OPPOSITION_HREF}
+                    href={oppositionHref}
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
                     {t.opposition}

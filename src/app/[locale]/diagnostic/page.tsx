@@ -50,6 +50,8 @@ import { reviewAuthorName, reviewMetaLine } from "@/lib/reviews/display";
 import { clientSectorLabel } from "@/content/sectors";
 import { getAggregateRating, getPublishedReviews, getSectorFacets } from "@/server/reviews/queries";
 import { VSL_CONTENT, VSL_VIDEO } from "@/content/lp/diagnostic";
+import { avisPublies } from "@/server/reviews/presence";
+import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -58,7 +60,7 @@ interface Props {
 const SIMULATOR_HREF = "/simulateur";
 
 /** En dessous, une note agrégée est du bruit ; même seuil que le hub /avis. */
-const MIN_REVIEWS_FOR_BAND = 5;
+const MIN_REVIEWS_FOR_BAND = AGGREGATE_MIN_COUNT;
 
 export const revalidate = 3600;
 
@@ -130,11 +132,15 @@ export default async function DiagnosticLandingPage({ params }: Props) {
   // 🔴 Une panne de base ne doit JAMAIS casser cette page : c'est une page
   // publicitaire, payée au clic. Sans ce repli, une base injoignable rendrait
   // un 500 au visiteur — la preuve sociale disparaît, le tunnel survit.
-  const [aggregate, reviewsResult, sectorFacets] = await Promise.all([
-    getAggregateRating().catch(() => null),
-    getPublishedReviews({ sort: "featured", pageSize: 6 }).catch(() => null),
-    getSectorFacets().catch(() => []),
-  ]);
+  // Règle automatique (src/content/preuves-sociales.ts) : 0 avis publié → aucune
+  // lecture, donc bande, avis et secteurs masqués. ISR 1 h : revient seule.
+  const [aggregate, reviewsResult, sectorFacets] = (await avisPublies())
+    ? await Promise.all([
+        getAggregateRating().catch(() => null),
+        getPublishedReviews({ sort: "featured", pageSize: 6 }).catch(() => null),
+        getSectorFacets().catch(() => []),
+      ])
+    : ([null, null, []] as const);
   const reviews = reviewsResult?.items ?? [];
   const showBand = aggregate !== null && aggregate.reviewCount >= MIN_REVIEWS_FOR_BAND;
 
@@ -155,7 +161,7 @@ export default async function DiagnosticLandingPage({ params }: Props) {
             <StarRating value={aggregate.ratingValue} size={15} />
             <span>
               {aggregate.ratingValue.toLocaleString("fr-FR")} / 5 ·{" "}
-              {aggregate.reviewCount.toLocaleString("fr-FR")} avis clients vérifiés
+              {aggregate.reviewCount.toLocaleString("fr-FR")} avis clients
             </span>
           </p>
         ) : null}
@@ -310,7 +316,7 @@ export default async function DiagnosticLandingPage({ params }: Props) {
         </section>
 
         {/* ── Témoignages ───────────────────────────────────────────────── */}
-        {/* Six avis clients réels — déposés, modérés, vérifiés — lus en base.
+        {/* Six avis clients réels — déposés, modérés — lus en base.
             🔴 AUCUN lien vers /avis : sur une page de tunnel, chaque sortie
             latérale est un visiteur perdu. Les cartes sont donc muettes, sans
             le lien étiré de `ReviewCard`. Bloc entier masqué si vide (build
@@ -321,7 +327,7 @@ export default async function DiagnosticLandingPage({ params }: Props) {
             {showBand ? (
               <p className="text-mocha-fg-muted mt-3 text-center text-[13.5px]">
                 {aggregate.ratingValue.toLocaleString("fr-FR")} / 5 sur{" "}
-                {aggregate.reviewCount.toLocaleString("fr-FR")} avis vérifiés
+                {aggregate.reviewCount.toLocaleString("fr-FR")} avis clients
               </p>
             ) : null}
             <ul role="list" className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">

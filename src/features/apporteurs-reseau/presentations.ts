@@ -25,7 +25,15 @@ import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import type { StatutPresentation } from "../../../prisma/generated/client";
 
-import { lireEntrepriseParSiren } from "./annuaire";
+import { lireEtablissementParSiret } from "./annuaire";
+import {
+  enregistrerEtablissement,
+  lireEtablissements,
+  memePerimetre,
+  signeAvant26,
+  siretValide,
+  type Etablissement,
+} from "./etablissement-presentation";
 import {
   apercu,
   avecTexteLibre,
@@ -36,7 +44,7 @@ import {
   type ResultatEnvoi,
 } from "./envois";
 import { idsPriseDeContactRebondie } from "./rebonds";
-import { ajouterMois, finDeProtection, sirenValide } from "./regles";
+import { ajouterMois, finDeProtection } from "./regles";
 import { annoncerAttribution } from "./attribution-annonce";
 
 // ── Signalements avant de répondre ───────────────────────────────────────
@@ -79,9 +87,11 @@ export async function lireSignalements(
   siren: string,
   maintenant: Date,
   saufId?: string,
+  /** Contrat 2.6 : l'établissement visé ; absent = toute l'entreprise (comportement d'avant). */
+  etablissement: Etablissement = { siret: null, entreprise: false, exclus: [] },
 ): Promise<Signalement[]> {
   const out: Signalement[] = [];
-  const [presentations, clients] = await Promise.all([
+  const [presentations, tousClients] = await Promise.all([
     prisma.presentationEntreprise.findMany({
       where: {
         siren,
@@ -89,15 +99,24 @@ export async function lireSignalements(
         ...(saufId ? { id: { not: saufId } } : {}),
       },
       select: {
+        id: true,
         statut: true,
         protegeeJusquAt: true,
         apporteur: { select: { prenom: true, nom: true } },
       },
     }),
-    prisma.client.findMany({ where: { siren }, select: { id: true } }),
+    prisma.client.findMany({ where: { siren }, select: { id: true, siret: true } }),
   ]);
+  const etabs = await lireEtablissements(presentations.map((p) => p.id));
+  // Art. 3.3 (2.6) : l'antériorité se juge par établissement. Une fiche client SANS SIRET compte
+  // (on ne sait pas quel établissement elle désigne) : l'indication reste prudente.
+  const clients =
+    etablissement.siret && !etablissement.entreprise
+      ? tousClients.filter((c) => !c.siret || c.siret.replace(/\s+/g, "") === etablissement.siret)
+      : tousClients;
   for (const p of presentations) {
     if (!presentationOccupe(p, maintenant)) continue;
+    if (!memePerimetre(etablissement, etabs.get(p.id)!)) continue;
     out.push({
       type: "deja_presentee",
       apporteur: nomComplet(p.apporteur.prenom, p.apporteur.nom),
@@ -199,7 +218,8 @@ export function nomFamilleDe(nom: string): string {
 
 export interface SaisiePresentation {
   apporteurId: string;
-  siren: string;
+  /** Contrat 2.6 : le SIRET de l'établissement visité (14 chiffres) ; le SIREN en est déduit. */
+  siret: string;
   denomination: string;
   personneNom: string;
   personneFonction: string | null;
@@ -218,8 +238,10 @@ export async function creerPresentation(
   s: SaisiePresentation,
   maintenant: Date = new Date(),
 ): Promise<{ ok: true; id: string } | { ok: false; message: string }> {
-  const siren = s.siren.replace(/\s+/g, "");
-  if (!sirenValide(siren)) return { ok: false, message: "Numéro SIREN invalide." };
+  const siret = s.siret.replace(/\s+/g, "");
+  if (!siretValide(siret))
+    return { ok: false, message: "Numéro SIRET invalide : vérifiez les 14 chiffres." };
+  const siren = siret.slice(0, 9);
   if (!s.personneNom.trim())
     return { ok: false, message: "Indiquez le nom de la personne présentée." };
   if (!EMAIL.test(s.personneEmail.trim()))
@@ -230,7 +252,7 @@ export async function creerPresentation(
   const recueAt = maintenant;
   const apporteur = await prisma.apporteurReseau.findUnique({
     where: { id: s.apporteurId },
-    select: { statut: true },
+    select: { statut: true, signatureApporteur: true },
   });
   if (!apporteur || apporteur.statut !== "signe") {
     return { ok: false, message: "Choisissez un apporteur dont le contrat est signé." };
@@ -241,9 +263,17 @@ export async function creerPresentation(
   // saisie console ne doit pas ouvrir une seconde réservation de 30 jours.
   const siennes = await prisma.presentationEntreprise.findMany({
     where: { apporteurId: s.apporteurId, siren, statut: { in: ["reservee", "confirmee"] } },
-    select: { statut: true, protegeeJusquAt: true },
+    select: { id: true, statut: true, protegeeJusquAt: true },
   });
-  if (siennes.some((p) => presentationOccupe(p, maintenant))) {
+  // Contrat 2.6 : par établissement — un AUTRE établissement de la même entreprise se déclare.
+  const etabs = await lireEtablissements(siennes.map((p) => p.id));
+  // Relecture de a1 (art. 13) : un apporteur au contrat signé AVANT la 2.6 garde l'entreprise
+  // entière — la règle d'établissement ne lui est pas opposable sans avenant.
+  const entiere = signeAvant26(apporteur.signatureApporteur);
+  const moi: Etablissement = { siret, entreprise: entiere, exclus: [] };
+  if (
+    siennes.some((p) => presentationOccupe(p, maintenant) && memePerimetre(moi, etabs.get(p.id)!))
+  ) {
     return {
       ok: false,
       message: "Cet apporteur a déjà présenté cette entreprise : elle est encore en cours.",
@@ -251,7 +281,7 @@ export async function creerPresentation(
   }
   let denomination = s.denomination.trim();
   if (!denomination) {
-    const r = await lireEntrepriseParSiren(siren);
+    const r = await lireEtablissementParSiret(siret);
     denomination = r.ok ? (r.entreprise.denomination ?? "") : "";
   }
   if (!denomination)
@@ -260,24 +290,28 @@ export async function creerPresentation(
     s.dateEchange && /^\d{4}-\d{2}-\d{2}$/.test(s.dateEchange)
       ? new Date(`${s.dateEchange}T00:00:00Z`)
       : null;
-  const cree = await prisma.presentationEntreprise.create({
-    data: {
-      apporteurId: s.apporteurId,
-      siren,
-      denomination: denomination.slice(0, 250),
-      personneNom: encryptPii(s.personneNom.trim()),
-      personneFonction: s.personneFonction?.trim().slice(0, 150) || null,
-      personneEmail: encryptPii(s.personneEmail.trim()),
-      // Empreinte de recherche : export et effacement RGPD de la personne présentée.
-      personneEmailHash: hashEmailForLookup(s.personneEmail.trim()) || null,
-      personneTelephone: s.personneTelephone?.trim()
-        ? encryptPii(s.personneTelephone.trim())
-        : null,
-      besoin: s.besoin?.trim() || null,
-      dateEchange,
-      recueAt,
-    },
-    select: { id: true },
+  const cree = await prisma.$transaction(async (tx) => {
+    const c = await tx.presentationEntreprise.create({
+      data: {
+        apporteurId: s.apporteurId,
+        siren,
+        denomination: denomination.slice(0, 250),
+        personneNom: encryptPii(s.personneNom.trim()),
+        personneFonction: s.personneFonction?.trim().slice(0, 150) || null,
+        personneEmail: encryptPii(s.personneEmail.trim()),
+        // Empreinte de recherche : export et effacement RGPD de la personne présentée.
+        personneEmailHash: hashEmailForLookup(s.personneEmail.trim()) || null,
+        personneTelephone: s.personneTelephone?.trim()
+          ? encryptPii(s.personneTelephone.trim())
+          : null,
+        besoin: s.besoin?.trim() || null,
+        dateEchange,
+        recueAt,
+      },
+      select: { id: true },
+    });
+    await enregistrerEtablissement(c.id, siret, entiere, tx);
+    return c;
   });
   return { ok: true, id: cree.id };
 }
@@ -310,6 +344,8 @@ export interface PresentationVue {
   aTraiter: boolean;
   /** La prise de contact est revenue en erreur définitive : adresse à corriger, le délai ne court pas. */
   adresseACorriger: boolean;
+  /** Contrat 2.6 : l'établissement déclaré, et son extension éventuelle à toute l'entreprise. */
+  etablissement: Etablissement;
 }
 
 export function estATraiter(p: {
@@ -345,6 +381,7 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
   const rebonds = await idsPriseDeContactRebondie(
     lignes.filter((p) => p.statut === "reservee" && p.contactEnvoyeAt).map((p) => p.id),
   );
+  const etabs = await lireEtablissements(lignes.map((p) => p.id));
   return lignes.map((p) => ({
     id: p.id,
     apporteurId: p.apporteurId,
@@ -368,6 +405,7 @@ export async function lirePresentations(onglet: OngletPresentations): Promise<Pr
     note: p.note,
     aTraiter: estATraiter(p),
     adresseACorriger: rebonds.has(p.id),
+    etablissement: etabs.get(p.id) ?? { siret: null, entreprise: false, exclus: [] },
   }));
 }
 
@@ -470,7 +508,7 @@ async function refusBienRecu(
     select: { siren: true, apporteurId: true, recueAt: true },
   });
   if (!p) return null;
-  const autres = await db.presentationEntreprise.findMany({
+  const tous = await db.presentationEntreprise.findMany({
     where: {
       siren: p.siren,
       id: { not: presentationId },
@@ -478,6 +516,7 @@ async function refusBienRecu(
       statut: { in: ["reservee", "confirmee"] },
     },
     select: {
+      id: true,
       apporteurId: true,
       statut: true,
       contactEnvoyeAt: true,
@@ -486,6 +525,10 @@ async function refusBienRecu(
     },
     take: 20,
   });
+  // Contrat 2.6 : seuls comptent ceux qui visent le même périmètre (même établissement, ou
+  // toute l'entreprise) ; un autre établissement de la même entreprise ne bloque rien.
+  const etabs = await lireEtablissements([presentationId, ...tous.map((a) => a.id)]);
+  const autres = tous.filter((a) => memePerimetre(etabs.get(presentationId)!, etabs.get(a.id)!));
   if (dejaAttribueeAUnAutre(autres, p.apporteurId)) return MESSAGE_DEJA_ATTRIBUEE;
   if (
     existeDeclarationPlusAncienne(

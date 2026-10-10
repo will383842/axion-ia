@@ -29,7 +29,7 @@ describe("DeclarationEntreprise", () => {
     const t = container.textContent ?? "";
     expect(t).toContain("Comment ça se passe");
     expect(t).toContain("nous prenons contact avec l'entreprise de votre part");
-    expect(t).toContain("réservée 6 mois à compter de votre déclaration");
+    expect(t).toContain("réservé 6 mois à compter de votre déclaration");
     // 2026-10-07 (a1) : la commission naît de la prestation RÉALISÉE et ENTIÈREMENT payée.
     expect(t).toContain("dès que la prestation est réalisée et entièrement payée");
     expect(t).not.toContain("une fois payée");
@@ -39,12 +39,12 @@ describe("DeclarationEntreprise", () => {
   it("coupure réseau : message « connexion perdue », saisie conservée", async () => {
     h.declarer.mockRejectedValue(new Error("Failed to fetch"));
     const { container } = render(<DeclarationEntreprise id="i" jeton="j" protectionMois={6} />);
-    const siren = container.querySelector('input[name="siren"]') as HTMLInputElement;
-    fireEvent.change(siren, { target: { value: "732829320" } });
+    const siren = container.querySelector('input[name="siret"]') as HTMLInputElement;
+    fireEvent.change(siren, { target: { value: "73282932000074" } });
     const form = container.querySelector("form") as HTMLFormElement;
     fireEvent.submit(form);
     expect(await screen.findByText(TEXTES.connexionPerdue)).toBeTruthy();
-    await waitFor(() => expect(siren.value).toBe("732829320"));
+    await waitFor(() => expect(siren.value).toBe("73282932000074"));
   });
 
   it("date du contact : plafond en heure de Paris (1er janvier 00 h 30 à Paris = 31/12 en UTC)", () => {

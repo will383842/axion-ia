@@ -302,12 +302,16 @@ export async function argentEnJeu(apporteurId: string): Promise<boolean> {
 export const GABARITS_ARGENT: ReadonlySet<string> = new Set([
   "apporteur-vigilance",
   "apporteur-commande-signee",
+  // Contrat 2.6 : une commande non attribuée touche une commission attendue.
+  "apporteur-commande-non-attribuee",
   "apporteur-releve",
   "apporteur-virement-fait",
   // Une commission suspendue puis libérée reste de l'argent dû : l'apporteur retiré est prévenu.
   "apporteur-commission-suspension",
   // Un manquement (art. 4.5 bis) entraîne des reprises : l'apporteur retiré en est informé.
   "apporteur-manquement",
+  // Une commission facturée annulée après l'avoir du client (art. 4.5) : de l'argent.
+  "apporteur-commission-avoir-client",
   // A1.7 : la constatation qu'un produit n'est pas commissionné concerne de l'argent attendu.
   "apporteur-non-commissionne",
 ]);

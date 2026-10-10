@@ -55,6 +55,13 @@ import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { ecrireEtEnfilerReponse } from "@/features/admin-job-applications/envoyer-reponse";
 import { VIDEO_FREELANCE_OFFER_SLUGS } from "@/lib/careers/video-editor-offer";
 import {
+  EMPLOI_CONTRACTOR,
+  MOTS_FORMATEUR,
+  MOTS_FREELANCE,
+  SLUG_OFFRE_FORMATEUR_FREELANCE,
+  estCandidatureFormateurFreelance,
+} from "@/lib/careers/formateur-freelance";
+import {
   DEBUT_PROPOSITION_RESEAU,
   envoyerProposition,
   preparerProposition,
@@ -68,11 +75,17 @@ const FENETRE = 300;
 /** Signature dans le journal et la réponse — aucune personne n'a cliqué. */
 export const AUTEUR = "Réponse automatique (poste pourvu)";
 
-/** Offres exclues : le recrutement vidéo est en cours. */
+/**
+ * Offres exclues : le recrutement vidéo est en cours ; et l'offre « Formateur
+ * IA freelance » (Will, 2026-10-09) — une mission de sous-traitance n'est
+ * jamais « pourvue », et un formateur ne doit pas recevoir l'invitation au
+ * réseau d'apporteurs qui suit ce message.
+ */
 const SLUGS_EXCLUS = [
   ...VIDEO_FREELANCE_OFFER_SLUGS,
   "monteur-video-motion",
   "videaste-content-creator",
+  SLUG_OFFRE_FORMATEUR_FREELANCE,
 ];
 
 export const OBJET = "Votre candidature — {poste}";
@@ -120,8 +133,62 @@ export function posteCourt(titre: string | null | undefined): string | null {
 /** Catégorie d'offre dont les candidats basculent dans le tunnel apporteur. */
 export const CATEGORIE_TUNNEL = "commercial" as const;
 
-/** Intitulés exclus : vidéo (recrutement en cours) et commercial (tunnel apporteur). */
-const INTITULES_EXCLUS = ["monteur vid", "vidéaste", "commercial", "business dev", "apporteur"];
+/** Intitulés exclus : vidéo (recrutement en cours), commercial (tunnel apporteur), formateur freelance. */
+const INTITULES_EXCLUS = [
+  "monteur vid",
+  "vidéaste",
+  "commercial",
+  "business dev",
+  "apporteur",
+  "formateur ia freelance",
+];
+
+/**
+ * Formateur FREELANCE (lot U2) : la règle de `estCandidatureFormateurFreelance`,
+ * écrite en Prisma à partir des MÊMES listes de mots. Une candidature spontanée
+ * « Formateur IA indépendant », une copie de l'offre freelance, une offre de
+ * formateur en CONTRACTOR sortent du passage ; le prédicat lui-même rejoue la
+ * règle sur chaque dossier du lot (filet si les deux écritures divergeaient).
+ */
+function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
+  const contient = (m: string) => ({ contains: m, mode: "insensitive" as const });
+  const paires = MOTS_FORMATEUR.flatMap((f) => MOTS_FREELANCE.map((l) => [f, l] as const));
+  return [
+    ...paires.map(([f, l]) => ({
+      NOT: { AND: [{ offerTitleSnap: contient(f) }, { offerTitleSnap: contient(l) }] },
+    })),
+    {
+      OR: [
+        { offer: null },
+        {
+          NOT: {
+            offer: {
+              OR: [
+                ...paires.map(([f, l]) => ({
+                  AND: [{ titleFr: contient(f) }, { titleFr: contient(l) }],
+                })),
+                ...paires.map(([f, l]) => ({
+                  AND: [{ slug: contient(f) }, { slug: contient(l) }],
+                })),
+                {
+                  AND: [
+                    { OR: MOTS_FORMATEUR.map((f) => ({ titleFr: contient(f) })) },
+                    {
+                      OR: [
+                        { employmentType: EMPLOI_CONTRACTOR },
+                        { secondaryEmploymentType: EMPLOI_CONTRACTOR },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  ];
+}
 
 /**
  * Le filtre d'éligibilité — une seule définition, lue par le passage ET l'écran.
@@ -148,6 +215,7 @@ export function critereEligible(
       ...INTITULES_EXCLUS.map((t) => ({
         offerTitleSnap: { not: { contains: t }, mode: "insensitive" as const },
       })),
+      ...exclusionFormateurFreelance(),
     ],
   };
 }
@@ -219,6 +287,9 @@ export async function passerReponsePostePourvu(
       offerTitleSnap: true,
       firstName: true,
       submittedAt: true,
+      offer: {
+        select: { slug: true, titleFr: true, employmentType: true, secondaryEmploymentType: true },
+      },
     },
   });
 
@@ -227,6 +298,11 @@ export async function passerReponsePostePourvu(
   let echouees = 0;
   for (const c of lot) {
     if (envoyees + echouees >= PAR_PASSAGE) break;
+    // Une mission de formateur indépendant n'est jamais « pourvue » (lot U2).
+    if (estCandidatureFormateurFreelance(c)) {
+      ecartees += 1;
+      continue;
+    }
     const prenom = prenomLisible(c.firstName);
     const poste = posteCourt(c.offerTitleSnap);
     if (!prenom || !poste) {

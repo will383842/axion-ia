@@ -13,10 +13,43 @@
  */
 
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
-import {
-  estCandidatureFormateurFreelance,
-  type IndicesPosteCandidature,
-} from "./formateur-freelance";
+import { estCandidatureFormateurFreelance } from "./formateur-freelance";
+
+/**
+ * Ce qu'une candidature dit de son poste : l'intitulé FIGÉ, et l'offre
+ * IMBRIQUÉE si elle existe encore — la forme exacte que lit le prédicat U2
+ * (`estCandidatureFormateurFreelance`). Sélection Prisma :
+ * `offer: { select: { slug, titleFr, employmentType, secondaryEmploymentType } }`.
+ *
+ * 🔴 Jamais une forme PLATE (`offerSlug`, `employmentType`…) : le prédicat la
+ * lirait comme une candidature sans offre, et les règles « slug freelance » et
+ * « CONTRACTOR » cesseraient de compter sans aucune erreur.
+ */
+export interface PosteCandidature {
+  readonly offerTitleSnap: string | null | undefined;
+  readonly offer:
+    | {
+        readonly slug?: string | null;
+        readonly titleFr?: string | null;
+        readonly employmentType?: string | null;
+        readonly secondaryEmploymentType?: string | null;
+      }
+    | null
+    | undefined;
+}
+
+/**
+ * L'entrée du prédicat U2, reconstruite clé par clé : un objet plus large
+ * (candidature complète, identité comprise) ne le traverse pas, et
+ * `offerTitleSnap` est toujours PRÉSENT — c'est lui qui fait lire l'entrée
+ * comme une candidature et non comme une offre.
+ */
+function estFreelance(c: PosteCandidature): boolean {
+  return estCandidatureFormateurFreelance({
+    offerTitleSnap: c.offerTitleSnap ?? null,
+    offer: c.offer ?? null,
+  });
+}
 
 /**
  * La mention que porte une fiche née sans numéro de déclaration d'activité.
@@ -52,8 +85,8 @@ export function estOffreFormateur(
 }
 
 /** Candidature de formateur, freelance ou salarié. */
-export function estCandidatureFormateur(c: IndicesPosteCandidature): boolean {
-  return estOffreFormateur(c.offerSlug, c.offerTitleSnap) || estCandidatureFormateurFreelance(c);
+export function estCandidatureFormateur(c: PosteCandidature): boolean {
+  return estOffreFormateur(c.offer?.slug, c.offerTitleSnap) || estFreelance(c);
 }
 
 /**
@@ -65,20 +98,10 @@ export function estCandidatureFormateur(c: IndicesPosteCandidature): boolean {
  * formateur attend « Recrutée ».
  */
 export function peutCreerFicheFormateur(
-  c: {
-    status: JobApplicationStatus;
-    offerSlug: string | null | undefined;
-    offerTitleSnap: string | null | undefined;
-  } & Partial<Pick<IndicesPosteCandidature, "employmentType" | "secondaryEmploymentType">>,
+  c: PosteCandidature & { readonly status: JobApplicationStatus },
 ): boolean {
-  const indices: IndicesPosteCandidature = {
-    offerSlug: c.offerSlug,
-    offerTitleSnap: c.offerTitleSnap,
-    employmentType: c.employmentType,
-    secondaryEmploymentType: c.secondaryEmploymentType,
-  };
-  if (estCandidatureFormateurFreelance(indices)) return true;
-  return c.status === STATUT_OUVRANT_LA_FICHE_FORMATEUR && estCandidatureFormateur(indices);
+  if (estFreelance(c)) return true;
+  return c.status === STATUT_OUVRANT_LA_FICHE_FORMATEUR && estCandidatureFormateur(c);
 }
 
 /** Types schema.org qui disent un contrat de travail SALARIÉ. */
@@ -96,10 +119,11 @@ const TYPES_SALARIES: readonly string[] = ["FULL_TIME", "PART_TIME", "TEMPORARY"
  *      → `null` : l'administrateur choisit dans le bouton.
  */
 export function statutFormateurDepuisOffre(
-  c: IndicesPosteCandidature,
+  c: PosteCandidature,
 ): "salarie" | "sous_traitant" | null {
-  if (estCandidatureFormateurFreelance(c)) return "sous_traitant";
-  if (c.employmentType && TYPES_SALARIES.includes(c.employmentType)) return "salarie";
+  if (estFreelance(c)) return "sous_traitant";
+  const type = c.offer?.employmentType;
+  if (type && TYPES_SALARIES.includes(type)) return "salarie";
   return null;
 }
 

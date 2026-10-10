@@ -136,20 +136,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
               "Pour les sites de grands groupes implantés dans le bassin (aérospatial, énergie, microélectronique) cherchant à cadrer une gouvernance IA centralisée multi-entités.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a livré ce que nous cherchions depuis des mois : un livrable chiffré, ancré dans nos process réels d'ingénierie, sans jargon. Le plan d'action a été présenté à notre comité de direction en une seule session.",
-            role: "Directeur Général",
-            companyProfile: "PME d'ingénierie aérospatiale, bassin de Marignane",
-          },
-          {
-            quote:
-              "Méthode très pragmatique, démos sur nos vrais documents techniques plutôt que des slides génériques. On a pu prioriser nos cas IA en toute connaissance de cause.",
-            role: "Directrice des opérations",
-            companyProfile: "ETI conseil et services B2B, Technopôle Arbois Aix-en-Provence",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Aix-en-Provence ?",
@@ -234,21 +220,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large-group sites in the basin (aerospace, energy, microelectronics) framing centralized multi-entity AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered what we had been looking for months: a costed deliverable, grounded in our real engineering processes, jargon-free. The action plan was presented to our executive committee in a single session.",
-            role: "CEO",
-            companyProfile: "Aerospace engineering SME, Marignane basin",
-          },
-          {
-            quote:
-              "Very pragmatic method, demos on our real technical documents rather than generic slides. We were able to prioritise our AI use cases with full confidence.",
-            role: "Head of Operations",
-            companyProfile:
-              "B2B consulting and services mid-cap, Arbois Technopole Aix-en-Provence",
           },
         ],
         faq: [
@@ -339,20 +310,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les grands sites du bassin : roadshow multi-sites Marignane-Rousset-Aix, séminaires CODIR + cascade équipes ingénierie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée à nos métiers d'ingénierie. Nos collaborateurs sont repartis avec leurs outils configurés sur nos vrais types de documents. L'adoption a été rapide.",
-            role: "Responsable RH",
-            companyProfile: "PME sous-traitante aérospatiale, bassin de Marignane",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur la trajectoire IA du groupe. Axion-IA a su adapter le discours à notre contexte énergétique sans jargon superflu.",
-            role: "Directeur Général",
-            companyProfile: "ETI énergie & services industriels, Technopôle Arbois",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Aix-en-Provence ?",
@@ -437,20 +394,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large basin sites: multi-site roadshows Marignane-Rousset-Aix, exec committee + engineering team cascade seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group training perfectly calibrated to our engineering roles. Our staff left with tools configured on our real document types. Adoption was fast.",
-            role: "HR Manager",
-            companyProfile: "Aerospace subcontracting SME, Marignane basin",
-          },
-          {
-            quote:
-              "The executive talk aligned the whole group on AI trajectory in a single day. Axion-IA adapted the pitch to our energy context without superfluous jargon.",
-            role: "CEO",
-            companyProfile: "Energy and industrial services mid-cap, Arbois Technopole",
           },
         ],
         faq: [
@@ -541,20 +484,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
               "Programmes pour grands sites du bassin (aérospatial, énergie, microélectronique) : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation traitement de documentation technique livrée conformément au SOW. ROI réel mesuré au-delà de la prédiction : temps libéré sur la rédaction de rapports, gain annuel net significatif pour nos équipes d'ingénierie.",
-            role: "Directeur technique",
-            companyProfile: "ETI sous-traitante industrielle, bassin de Marignane",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre organisation multi-sites bassin Aix-Marseille. Kick-off sur site intense, puis itérations à distance efficaces. Les ambassadeurs internes ont pris le relais sans dépendance vis-à-vis d'Axion-IA.",
-            role: "DSI",
-            companyProfile: "Groupe de services B2B, siège Technopôle Arbois Aix-en-Provence",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA dans le bassin Aix-Marseille ?",
@@ -639,21 +568,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for large basin sites (aerospace, energy, microelectronics): cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical documentation processing implementation delivered per SOW. Real ROI measured beyond prediction: time freed on report writing, significant net annual gain for our engineering teams.",
-            role: "Technical Director",
-            companyProfile: "Industrial subcontracting mid-cap, Marignane basin",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our multi-site Aix-Marseille organisation. Intense on-site kick-off, then efficient remote iterations. Internal ambassadors took over with no dependency on Axion-IA.",
-            role: "CIO",
-            companyProfile:
-              "B2B services group, headquartered at Arbois Technopole Aix-en-Provence",
           },
         ],
         faq: [
@@ -744,20 +658,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et membres CODIR des grands groupes du bassin (Airbus Helicopters, CEA Cadarache, STMicroelectronics) souhaitant un accompagnement individualisé.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de passer de zéro à opérationnel sur l'IA en quelques séances. On a travaillé directement sur mes dossiers techniques, pas sur des cas fictifs. J'aurais perdu des mois à tâtonner seul.",
-            role: "Directeur général",
-            companyProfile: "PME d'ingénierie aérospatiale, bassin de Marignane",
-          },
-          {
-            quote:
-              "Format idéal pour un agenda de DG : séances courtes, 100 % focalisées sur mon contexte business. Axion-IA a su adapter le discours au contexte industriel de notre site du Technopôle Arbois.",
-            role: "Directrice générale",
-            companyProfile: "ETI conseil et services B2B, Technopôle Arbois Aix-en-Provence",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Aix-en-Provence ?",
@@ -842,21 +742,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers and board members at large-group basin sites (Airbus Helicopters, CEA Cadarache, STMicroelectronics) seeking individualised support.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching took me from zero to operational on AI in a few sessions. We worked directly on my technical files, not fictional examples. I would have wasted months figuring it out alone.",
-            role: "CEO",
-            companyProfile: "Aerospace engineering SME, Marignane basin",
-          },
-          {
-            quote:
-              "Ideal format for a CEO schedule: short sessions, 100% focused on my business context. Axion-IA adapted the approach to our industrial setting at Arbois Technopole.",
-            role: "Managing Director",
-            companyProfile:
-              "B2B consulting and services mid-cap, Arbois Technopole Aix-en-Provence",
           },
         ],
         faq: [

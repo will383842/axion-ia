@@ -10,6 +10,17 @@
 export const AGGREGATE_MIN_COUNT = 5;
 
 /**
+ * Note globale (étoiles, moyenne, AggregateRating) affichable ? Seulement à partir
+ * de AGGREGATE_MIN_COUNT avis publiés dans la portée ; en dessous → `null`, et les
+ * avis s'affichent sans note. Règle unique pour toutes les pages (2026-10-09).
+ */
+export function noteGlobaleAffichable<T extends { reviewCount: number }>(
+  agg: T | null | undefined,
+): T | null {
+  return agg && agg.reviewCount >= AGGREGATE_MIN_COUNT ? agg : null;
+}
+
+/**
  * Nombre minimum d'avis publiés pour qu'une page facette (ville / secteur /
  * service / département) soit rendue + indexée. En-dessous → `notFound()` :
  * évite les pages thin / doorway (crawl budget préservé).

@@ -37,6 +37,7 @@ import { chromium } from "playwright";
 
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { CLIENT_LOGOS } from "@/content/home-data";
+import { LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
 import { getPageImages } from "@/lib/seo/page-images";
 import { formatAmount, getFormationPrice } from "@/content/pricing";
 import type { FormationCategorie, FormationDuree } from "@/content/pricing";
@@ -56,7 +57,6 @@ const QR = {
   formations: "https://axion-ia.com/formations",
   appel: "https://axion-ia.com/appel",
   catalogue: "https://axion-ia.com/catalogue",
-  avis: "https://axion-ia.com/avis",
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -484,7 +484,6 @@ interface Actifs {
   qrFormations: string;
   qrAppel: string;
   qrCatalogue: string;
-  qrAvis: string;
   portrait: string;
   portraitAlt: string;
 }
@@ -1441,15 +1440,18 @@ function pageTarifs(a: Actifs): string {
         <div class="coord">axion-ia.com/appel · contact@axion-ia.com<br>Grenoble · Auvergne-Rhône-Alpes</div>
       </div>
       <div class="cq"><img src="${a.qrAppel}" alt=""><span>Réserver<br>un appel</span></div>
-      <div class="cq"><img src="${a.qrAvis}" alt=""><span>Leurs retours<br>en vidéo</span></div>
     </div>
 
-    <div class="confiance">
+    ${
+      LOGOS_CLIENTS_AFFICHES && a.logos.length > 0
+        ? `<div class="confiance">
       <h3>Ils nous font confiance</h3>
       <div class="logos">
         ${a.logos.map((l) => `<img src="${l.src}" alt="${echapper(l.nom)}">`).join("")}
       </div>
-    </div>
+    </div>`
+        : ""
+    }
 
     <div class="mentions">
       <b>Organisme de formation certifié Qualiopi.</b> ${echapper(QUALIOPI_MENTION)}<br>
@@ -1587,7 +1589,6 @@ async function main() {
     qrFormations: await qr(QR.formations),
     qrAppel: await qr(QR.appel),
     qrCatalogue: await qr(QR.catalogue),
-    qrAvis: await qr(QR.avis),
     portrait: await portrait.src,
     portraitAlt: portrait.alt,
   };

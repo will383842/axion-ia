@@ -5,8 +5,7 @@
 # sans rien apporter.
 #
 #   fonts/   ← copie de public/fonts/{Fraunces,Manrope,Inconsolata}-*.ttf
-#   logos/   ← copie de public/logos/clients/*.svg
-#              + portrait-williams-jullin.jpg, copie de
+#   logos/   ← portrait-williams-jullin.jpg, copie de
 #                public/illustrations/home-founder-william.jpg
 #
 # Pour RECONSTRUIRE le dossier de travail après un clone, depuis la racine :
@@ -15,8 +14,7 @@
 #   cp public/fonts/{Fraunces-Bold,Fraunces-Regular,Fraunces-Italic,\
 #      Manrope-Regular,Manrope-Medium,Manrope-Bold,\
 #      Inconsolata-Bold,Inconsolata-Regular}.ttf _PRESSE/communique-memorial/fonts/
-#   cp public/logos/clients/{leclerc,intermarche,renault,axa,la-poste,point-p,\
-#      krys,generali,volkswagen,jardiland,intersport,ecf}.svg _PRESSE/communique-memorial/logos/
+#   (plus de logos clients depuis le 2026-10-09 : bloc retiré du communiqué)
 #   cp public/illustrations/home-founder-william.jpg \
 #      _PRESSE/communique-memorial/logos/portrait-williams-jullin.jpg
 #

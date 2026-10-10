@@ -140,20 +140,6 @@ export const PARIS_COPY: VilleCopy = {
               "Pour les sièges grands-comptes La Défense souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré ce que les Big Four nous chiffraient en plusieurs semaines. Le rapport est chiffré, actionnable, sans jargon. On a démarré l'implémentation très rapidement.",
-            role: "DG",
-            companyProfile: "Cabinet d'expertise comptable, 9e arrondissement",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos vraies données plutôt que des slides théoriques. Le livrable a permis de prioriser nos chantiers IA pour le comité de direction.",
-            role: "Directrice de la transformation",
-            companyProfile: "ETI conseil, 8e arrondissement",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Paris ?",
@@ -237,20 +223,6 @@ export const PARIS_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Extended Mid-cap Strategic audit",
             detail: "For La Défense large-corporate HQs framing centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered what the Big Four were quoting over several weeks. The report is costed, actionable, jargon-free. We started implementation very quickly.",
-            role: "CEO",
-            companyProfile: "Accounting firm, 9th arrondissement",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our real data rather than theoretical slides. The deliverable helped prioritize our AI initiatives for the executive committee.",
-            role: "Head of Transformation",
-            companyProfile: "Mid-cap consulting, 8th arrondissement",
           },
         ],
         faq: [
@@ -341,20 +313,6 @@ export const PARIS_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges parisiens : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calibrée : nos collaborateurs sont repartis avec leurs outils IA installés et configurés. Le lendemain, une partie significative les utilisaient déjà sur leur travail réel.",
-            role: "DRH",
-            companyProfile: "Cabinet conseil parisien, 8e arrondissement",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en quelques heures sur la trajectoire IA. Aucun consultant traditionnel n'avait su cadrer aussi vite avec autant de pragmatisme.",
-            role: "Président",
-            companyProfile: "ETI familiale, siège La Défense",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Paris ?",
@@ -439,20 +397,6 @@ export const PARIS_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Paris HQs: multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated: our staff left with their AI tools installed and configured. The next day, a significant share were already using them on real work.",
-            role: "Head of HR",
-            companyProfile: "Paris consulting firm, 8th arrondissement",
-          },
-          {
-            quote:
-              "The executive talk aligned us within hours on the AI trajectory. No traditional consultant had been able to frame this fast with so much pragmatism.",
-            role: "President",
-            companyProfile: "Family-owned mid-cap, La Défense HQ",
           },
         ],
         faq: [
@@ -543,20 +487,6 @@ export const PARIS_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes parisiens : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation lecture factures + comptes-rendus livrée comme promis. ROI réel mesuré : équivalents temps plein libérés sur les tâches admin, gain annuel net significatif. Aucun lock-in, on a la main sur les modèles.",
-            role: "DAF",
-            companyProfile: "ETI conseil parisien, 9e arrondissement",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite : kick-off intense sur site, puis itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up SaaS Sentier, 11e arrondissement",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Paris ?",
@@ -641,20 +571,6 @@ export const PARIS_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Paris large accounts: cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Invoice reading + meeting minutes implementation delivered as promised. Real ROI measured: FTEs freed on admin tasks, significant net annual gain. No lock-in, we control our models.",
-            role: "CFO",
-            companyProfile: "Paris mid-cap consulting, 9th arrondissement",
-          },
-          {
-            quote:
-              "Perfect hybrid method: intense on-site kick-off, then remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors take over autonomously.",
-            role: "CTO",
-            companyProfile: "Sentier SaaS scale-up, 11th arrondissement",
           },
         ],
         faq: [
@@ -745,20 +661,6 @@ export const PARIS_COPY: VilleCopy = {
               "Pour les DG, CDO ou Chief AI Officers de grands groupes parisiens (La Défense, 8e) souhaitant un accompagnement personnalisé en parallèle d'un programme IA interne.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "On a travaillé sur mes vrais emails clients et mes devis. En deux sessions, j'avais un workflow IA opérationnel. Rien à voir avec les formations génériques que j'avais essayées avant.",
-            role: "Dirigeant",
-            companyProfile: "PME conseil, 8e arrondissement",
-          },
-          {
-            quote:
-              "Session en visio, très dense, on est allé directement sur mes cas business. J'ai appris plus en trois heures qu'en plusieurs semaines de tuto en ligne.",
-            role: "DG",
-            companyProfile: "Startup B2B SaaS, Sentier",
-          },
-        ],
         faq: [
           {
             q: "Les sessions se déroulent-elles en présentiel ou en visio ?",
@@ -843,20 +745,6 @@ export const PARIS_COPY: VilleCopy = {
             price: "Large enterprise bespoke package",
             detail:
               "For CEOs, CDOs or Chief AI Officers at Paris large groups (La Défense, 8th) seeking personalised coaching alongside an internal AI programme.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "We worked on my real client emails and quotes. Within two sessions I had an operational AI workflow. Nothing like the generic training courses I had tried before.",
-            role: "Managing Director",
-            companyProfile: "Consulting SME, 8th arrondissement",
-          },
-          {
-            quote:
-              "Video session, very dense, we went straight to my business cases. I learned more in three hours than in several weeks of online tutorials.",
-            role: "CEO",
-            companyProfile: "B2B SaaS startup, Sentier",
           },
         ],
         faq: [

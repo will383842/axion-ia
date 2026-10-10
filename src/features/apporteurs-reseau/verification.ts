@@ -19,6 +19,7 @@ import "server-only";
 
 import { createHash, randomBytes } from "node:crypto";
 
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2, getObjectBufferR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
@@ -171,6 +172,8 @@ export async function sirenAContresigner(
 ): Promise<string | null> {
   if (!siren || !sirenValide(siren))
     return "SIREN à vérifier : absent ou invalide. Cliquez d'abord « À compléter » (avec une note qui demande le bon numéro) : l'apporteur le corrige à l'étape 2 de son dossier, puis signe à nouveau.";
+  if (siren === IDENTITE_LEGALE.siren)
+    return "SIREN à vérifier : c'est celui d'Axion-IA. Un contrat d'apporteur ne se contresigne pas avec la Société elle-même : cliquez « À compléter » pour demander le numéro de l'apporteur.";
   // Avec un SIRET (plusieurs activités) : c'est l'ÉTABLISSEMENT qui doit être actif.
   const r = siret ? await lireRegistre(siret) : await lireEntrepriseParSiren(siren);
   if (!r.ok) {

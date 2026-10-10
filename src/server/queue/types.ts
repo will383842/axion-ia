@@ -165,6 +165,7 @@ export type EmailJobName =
   | "apporteur-dossier-recu"
   | "apporteur-commission-suspension"
   | "apporteur-manquement"
+  | "apporteur-commission-avoir-client"
   | "apporteur-non-commissionne"
   | "apporteur-contrat-signe"
   | "apporteur-presentation-recue"
@@ -172,9 +173,11 @@ export type EmailJobName =
   | "entreprise-prise-de-contact-apporteur"
   | "apporteur-vigilance"
   | "apporteur-commande-signee"
+  | "apporteur-commande-non-attribuee"
   | "apporteur-attribution-confirmee"
   | "apporteur-releve"
   | "apporteur-virement-fait"
+  | "apporteur-lien-espace"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"

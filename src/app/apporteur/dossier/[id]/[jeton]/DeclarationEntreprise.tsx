@@ -2,7 +2,7 @@
 // use-client: formulaire de déclaration d'entreprise (saisie, validation côté serveur,
 // confirmation à l'écran sans quitter la page).
 
-// Le formulaire de l'article 3.2 du contrat : l'entreprise (nom, SIREN), la personne
+// Le formulaire de l'article 3.2 du contrat : l'entreprise (nom, SIRET de l'établissement), la personne
 // rencontrée (nom, fonction, e‑mail, téléphone) et la date du contact. Toute la validation
 // fait foi côté serveur ; ici on aide seulement (types de champs, date plafonnée à
 // aujourd'hui, nom prérempli depuis le registre). Rien n'est envoyé à l'entreprise.
@@ -81,9 +81,9 @@ export function DeclarationEntreprise({
     new Date(),
   );
 
-  async function completerNom(siren: string) {
-    const s = siren.replace(/\s+/g, "");
-    if (!/^\d{9}$/.test(s) || denomination) return;
+  async function completerNom(siret: string) {
+    const s = siret.replace(/\s+/g, "");
+    if (!/^\d{14}$/.test(s) || denomination) return;
     const r = await rechercherEntrepriseDeclarationAction(id, jeton, s);
     if (r.ok && r.denomination) setDenomination((d) => d || r.denomination || "");
   }
@@ -142,8 +142,8 @@ export function DeclarationEntreprise({
           <legend className="text-[17px] font-bold">{T.entreprise}</legend>
           <Champ
             uid={uid}
-            nom="siren"
-            libelle={T.siren}
+            nom="siret"
+            libelle={T.siret}
             longueur={20}
             mode="numeric"
             onBlur={(e) => void completerNom(e.target.value)}

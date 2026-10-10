@@ -18,7 +18,8 @@ import { validerTexteLibre } from "@/lib/email/templates/texte-libre-reseau";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { peutEngager } from "@/server/auth/habilitations";
 
-import { lireEntrepriseParSiren } from "./annuaire";
+import { lireEtablissementParSiret } from "./annuaire";
+import { siretValide } from "./etablissement-presentation";
 import { constaterManquement } from "./manquement";
 import type { ApercuRendu, GabaritApporteur } from "./envois";
 import {
@@ -34,7 +35,6 @@ import {
   type Civilite,
   type ReponsePresentation,
 } from "./presentations";
-import { sirenValide } from "./regles";
 
 export type EtatAction =
   { etat: "initial" } | { etat: "ok"; message: string } | { etat: "erreur"; message: string };
@@ -67,12 +67,14 @@ export type VerificationSiren =
 export async function verifierSirenAction(brut: string): Promise<VerificationSiren> {
   const refus = await sessionEcriture();
   if (refus) return { etat: "erreur", message: refus };
-  const siren = brut.replace(/\s+/g, "");
-  if (!sirenValide(siren))
-    return { etat: "erreur", message: "Numéro SIREN invalide (9 chiffres)." };
+  // Contrat 2.6 : le SIRET de l'établissement visité (le SIREN en est déduit).
+  const siret = brut.replace(/\s+/g, "");
+  if (!siretValide(siret))
+    return { etat: "erreur", message: "Numéro SIRET invalide (14 chiffres)." };
+  const siren = siret.slice(0, 9);
   const [registre, signalements] = await Promise.all([
-    lireEntrepriseParSiren(siren),
-    lireSignalements(siren, new Date()),
+    lireEtablissementParSiret(siret),
+    lireSignalements(siren, new Date(), undefined, { siret, entreprise: false, exclus: [] }),
   ]);
   return {
     etat: "ok",
@@ -95,7 +97,7 @@ export async function creerPresentationAction(
   try {
     const r = await creerPresentation({
       apporteurId,
-      siren: texte(fd, "siren"),
+      siret: texte(fd, "siret"),
       denomination: texte(fd, "denomination"),
       personneNom: texte(fd, "personneNom"),
       personneFonction: texte(fd, "personneFonction") || null,

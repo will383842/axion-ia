@@ -141,20 +141,6 @@ export const BREST_COPY: VilleCopy = {
               "Pour les sites brestois des grands groupes défense/maritime (Naval Group, Thales Underwater) souhaitant cadrer une gouvernance IA maîtrisée sur périmètre confidentiel.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a su adapter sa méthode à nos contraintes de confidentialité défense. Le livrable identifie des cas concrets sur notre chaîne documentaire — résultat chiffré, actionnable, sans jargon.",
-            role: "Directeur de programme",
-            companyProfile: "PME sous-traitance navale, Brest Métropole",
-          },
-          {
-            quote:
-              "Notre défi était d'automatiser le traitement de volumes de données terrain sans compromettre la souveraineté. L'audit Axion-IA nous a fourni un plan d'action réaliste avec priorisation ROI/complexité.",
-            role: "Responsable R&D",
-            companyProfile: "ETI sciences de la mer, Technopôle Brest-Iroise",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Brest ?",
@@ -239,20 +225,6 @@ export const BREST_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For Brest sites of large defence/maritime groups (Naval Group, Thales Underwater) framing controlled AI governance over a confidential perimeter.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA adapted its method to our defence confidentiality constraints. The deliverable identifies concrete cases on our document chain — costed, actionable, jargon-free.",
-            role: "Programme Director",
-            companyProfile: "Naval sub-contracting SME, Brest Métropole",
-          },
-          {
-            quote:
-              "Our challenge was to automate field data processing volumes without compromising sovereignty. The Axion-IA audit gave us a realistic action plan with ROI/complexity prioritisation.",
-            role: "R&D Manager",
-            companyProfile: "Marine science mid-cap, Technopôle Brest-Iroise",
           },
         ],
         faq: [
@@ -344,20 +316,6 @@ export const BREST_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites brestois des grands groupes défense/maritime : cascade direction + équipes techniques, roadshow multi-entités.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Session calibrée sur nos vrais documents techniques. Nos ingénieurs sont repartis avec Claude configuré sur leurs cahiers des charges. Le lendemain, plusieurs utilisaient déjà l'outil sur des rapports réels.",
-            role: "Chef de programme",
-            companyProfile: "ETI sous-traitance navale, Brest Métropole",
-          },
-          {
-            quote:
-              "Format Dirigeants parfaitement adapté à notre comité de direction. En une journée, nous avons aligné notre vision IA et défini notre programme de déploiement pour les 12 prochains mois.",
-            role: "Directrice générale",
-            companyProfile: "PME services maritimes, Brest",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Brest ?",
@@ -442,20 +400,6 @@ export const BREST_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Brest sites of large defence/maritime groups: leadership + technical team cascade, multi-entity roadshow.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Session calibrated on our real technical documents. Our engineers left with Claude configured on their specifications. The next day, several were already using the tool on real reports.",
-            role: "Programme Lead",
-            companyProfile: "Naval sub-contracting mid-cap, Brest Métropole",
-          },
-          {
-            quote:
-              "Executives format perfectly suited to our executive committee. In one day we aligned our AI vision and defined our deployment programme for the next 12 months.",
-            role: "General Manager",
-            companyProfile: "Maritime services SME, Brest",
           },
         ],
         faq: [
@@ -547,20 +491,6 @@ export const BREST_COPY: VilleCopy = {
               "Programmes pour sites brestois des grands groupes : cas d'usage cascadés, gouvernance IA, déploiement on-premise si contrainte confidentialité, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Déploiement gestion documentaire technique livré comme promis. ROI mesuré : plusieurs équivalents temps plein libérés sur la rédaction de rapports MCO. Les ambassadeurs internes ont pris le relais de façon autonome.",
-            role: "DAF",
-            companyProfile: "ETI sous-traitance navale, Brest Métropole",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour nos contraintes de confidentialité : kick-off intense sur site, modèles déployés on-premise, itérations à distance maîtrisées. Notre équipe IT a gardé la main sur tout.",
-            role: "DSI",
-            companyProfile: "PME ingénierie maritime, Technopôle Brest-Iroise",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Brest ?",
@@ -645,20 +575,6 @@ export const BREST_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for Brest sites of large groups: cascaded use cases, AI governance, on-premise deployment if confidentiality required, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical document management deployment delivered as promised. Measured ROI: several FTEs freed from MCO report writing. Internal ambassadors took over autonomously.",
-            role: "CFO",
-            companyProfile: "Naval sub-contracting mid-cap, Brest Métropole",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our confidentiality constraints: intense on-site kick-off, on-premise model deployment, controlled remote iterations. Our IT team kept full control.",
-            role: "CIO",
-            companyProfile: "Maritime engineering SME, Technopôle Brest-Iroise",
           },
         ],
         faq: [
@@ -749,20 +665,6 @@ export const BREST_COPY: VilleCopy = {
               "Coaching de cadres dirigeants et managers des grands groupes brestois (Naval Group, Thales Underwater Systems, IFREMER) pour des besoins d'acculturation IA individualisés.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de comprendre comment utiliser l'IA pour accélérer mon traitement de données océanographiques. On a travaillé sur mes vrais jeux de données dès la première séance. Les gains sur ma productivité ont été immédiats.",
-            role: "Chef de projet R&D",
-            companyProfile: "PME ingénierie marine, Technopôle Brest-Iroise",
-          },
-          {
-            quote:
-              "Format idéal pour un dirigeant de PME brestoise sans DSI : séances courtes, 100 % focalisées sur mon contexte et mes enjeux réels. L'IA est maintenant intégrée dans ma gestion commerciale et mon reporting.",
-            role: "Gérant",
-            companyProfile: "PME services aux entreprises, Brest Métropole",
-          },
-        ],
         faq: [
           {
             q: "Quel est le format des séances de coaching 1-to-1 à Brest ?",
@@ -847,20 +749,6 @@ export const BREST_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Executive coaching for senior managers at major Brest groups (Naval Group, Thales Underwater Systems, IFREMER) requiring individualised AI acculturation.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching helped me understand how to use AI to speed up my oceanographic data processing. We worked on my real datasets from the first session. Productivity gains were immediate.",
-            role: "R&D Project Manager",
-            companyProfile: "Marine engineering SME, Technopôle Brest-Iroise",
-          },
-          {
-            quote:
-              "Ideal format for a Brest SME owner with no IT manager: short sessions, 100% focused on my context and real challenges. AI is now integrated into my commercial management and reporting.",
-            role: "Managing Director",
-            companyProfile: "B2B services SME, Brest Métropole",
           },
         ],
         faq: [

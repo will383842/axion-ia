@@ -12,6 +12,21 @@ const etat = vi.hoisted(() => ({
   dejaPartis: new Set<string>(),
 }));
 
+// Contrat 2.6 : présentations d'avant la 2.6 (sans établissement), elles couvrent l'entreprise.
+vi.mock("../etablissement-presentation", async (orig) => {
+  const vrai = await orig<typeof import("../etablissement-presentation")>();
+  return {
+    ...vrai,
+    lireEtablissements: async (ids: readonly string[]) =>
+      new Map(ids.map((id) => [id, vrai.AVANT_2_6] as const)),
+    lireSiretsDevis: async () => new Map(),
+    lireDecisionsAAttribuer: async () => new Map(),
+    lireAAttribuerEnAttente: async () => [],
+    ouvrirAAttribuer: vi.fn(async () => true),
+  };
+});
+// Étape « avoirs-clients » (art. 4.5) : testée à part (avoir-client.spec.ts).
+vi.mock("../avoir-client", () => ({ reprendreApresAvoirsClients: vi.fn(async () => ({})) }));
 vi.mock("server-only", () => ({}));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({

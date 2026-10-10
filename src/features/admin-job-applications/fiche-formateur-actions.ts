@@ -137,7 +137,9 @@ export async function creerFicheFormateurDepuisCandidatureAction(
       status: true,
       trainerId: true,
       offerTitleSnap: true,
-      offer: { select: { slug: true, employmentType: true, secondaryEmploymentType: true } },
+      offer: {
+        select: { slug: true, titleFr: true, employmentType: true, secondaryEmploymentType: true },
+      },
       firstName: true,
       lastName: true,
       email: true,
@@ -159,13 +161,9 @@ export async function creerFicheFormateurDepuisCandidatureAction(
     };
   }
 
-  const indices = {
-    offerSlug: candidature.offer?.slug,
-    offerTitleSnap: candidature.offerTitleSnap,
-    employmentType: candidature.offer?.employmentType,
-    secondaryEmploymentType: candidature.offer?.secondaryEmploymentType,
-  };
-  if (!peutCreerFicheFormateur({ status: candidature.status, ...indices })) {
+  // La forme du prédicat U2 : offre IMBRIQUÉE (cf. `PosteCandidature`).
+  const poste = { offerTitleSnap: candidature.offerTitleSnap, offer: candidature.offer };
+  if (!peutCreerFicheFormateur({ status: candidature.status, ...poste })) {
     return {
       ok: false,
       erreur: "non-eligible",
@@ -224,7 +222,7 @@ export async function creerFicheFormateurDepuisCandidatureAction(
   }
 
   // Après le rattachement : une fiche qui existe déjà porte son propre statut.
-  const statut = statutFormateurDepuisOffre(indices) ?? statutChoisi ?? null;
+  const statut = statutFormateurDepuisOffre(poste) ?? statutChoisi ?? null;
   if (statut === null) {
     return {
       ok: false,

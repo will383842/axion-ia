@@ -346,6 +346,9 @@ const GABARITS_AVANT_SIGNATURE = [
   "candidature-commercial-recap.tsx", // récapitulatif de la candidature
   "lead-apporteur-recu.tsx", // formulaire court reçu (tunnel Facebook)
   "lead-apporteur-relance.tsx", // relances du formulaire court
+  // « Retrouver mon espace » (2026-10-09) : peut partir AVANT la signature (dossier en cours) ;
+  // aucun montant cité.
+  "apporteur-lien-espace.tsx",
 ] as const;
 /**
  * Gabarits envoyés après la signature du contrat d'apporteur.

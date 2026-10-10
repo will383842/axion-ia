@@ -258,7 +258,8 @@ export function VilleServiceDetailSection({
           fabriqués (non consentis, non vérifiables → risque E-E-A-T/DGCCRF).
           Remplacés par le vrai système d'avis clients modérés : /avis (+ facettes
           par ville /avis/ville/[ville] et par service /avis/service/[service]).
-          Le champ `copy.testimonials` des fichiers villes n'est plus rendu. */}
+          Le champ `copy.testimonials` a été SUPPRIMÉ des fichiers villes et de
+          leur type le 2026-10-09 : aucune donnée fausse ne peut revenir. */}
 
       {/* GUARANTEES — engagement contractuel */}
       {copy.guarantees ? (

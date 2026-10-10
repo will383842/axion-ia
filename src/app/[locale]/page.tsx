@@ -12,7 +12,6 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
-import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { orgAggregateJsonLd } from "@/server/reviews/jsonld";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { HomeReviewsCarousel } from "@/components/home/HomeReviewsCarousel";
@@ -50,6 +49,8 @@ import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { LOGOS_CLIENTS_AFFICHES } from "@/content/preuves-sociales";
+import { avisPourVitrine } from "@/server/reviews/vitrine";
 
 // ISR 1h — ramené de 86400s (24h) à 3600s le 2026-08-10.
 //
@@ -57,7 +58,7 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 // Or le build tourne sur GH Actions avec `DATABASE_URL=stub.invalid` (ADR 0026),
 // donc la page est FIGÉE À ZÉRO AVIS au moment du build. Avec un ISR de 24h,
 // l'accueil affichait « Nos premiers avis clients arrivent » pendant 24h APRÈS
-// CHAQUE DÉPLOIEMENT, alors que /fr/avis (dynamique) servait bien les 77 avis.
+// CHAQUE DÉPLOIEMENT, alors que /fr/avis (dynamique) servait bien les avis publiés.
 // Constaté en prod le 2026-08-10 : `x-nextjs-cache: HIT`, `Age: 73960` (20h33)
 // sur un déploiement de la veille → bloc avis vide, note agrégée absente.
 //
@@ -116,17 +117,20 @@ export default async function Home({ params }: HomeProps) {
 
   // Avis clients RÉELS (customer_reviews) pour la section témoignages de la home —
   // remplace les anciennes citations fabriquées (CASE_STUDIES + photos Unsplash +
-  // note « 4,9/5 » factice). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
+  // note factice écrite en dur). `featured` d'abord, puis récents. `homeReviewsOrgAgg`
   // ré-active honnêtement l'AggregateRating JSON-LD (gaté ≥ 5 avis publiés).
-  const [homeReviews, homeReviewsAgg] = await Promise.all([
-    getPublishedReviews({ sort: "featured", pageSize: 9 }),
-    getAggregateRating({}),
-  ]);
+  // Règle automatique (src/content/preuves-sociales.ts) : la section n'existe que
+  // s'il y a au moins un avis publié ; la note globale (étoiles + JSON-LD) qu'à
+  // partir de AGGREGATE_MIN_COUNT (5). ISR 1 h : revient seule au premier avis.
+  const { items: homeReviewItems, agg: homeReviewsAgg } = await avisPourVitrine({
+    pageSize: 9,
+  });
   const homeReviewsOrgAgg = orgAggregateJsonLd(homeReviewsAgg);
 
   // Badge sous le bandeau logos : nombre d'avis « top » affiché en dynamique.
   // On ne retient que les 4★ et 5★ pour que le badge « Excellent » reste
   // honnête à mesure que de nouveaux avis arrivent (demande Will 2026-07-10).
+  // Même seuil de 5 avis que la note globale.
   const homeTopReviewCount = homeReviewsAgg
     ? homeReviewsAgg.breakdown[4] + homeReviewsAgg.breakdown[5]
     : null;
@@ -564,13 +568,15 @@ export default async function Home({ params }: HomeProps) {
           suivi du badge « Excellent ★★★★★ {N} avis » avec le nombre d'avis
           dynamique (note ≥ 4★). Pleine largeur (fades latéraux) → pas de
           Container ici. */}
-      <section
-        id="clients"
-        aria-label={isFr ? "Nos clients" : "Our clients"}
-        className="bg-bg border-border border-t border-b py-12 sm:py-16"
-      >
-        <ClientLogosStrip isFr={isFr} reviewCount={homeTopReviewCount} />
-      </section>
+      {LOGOS_CLIENTS_AFFICHES ? (
+        <section
+          id="clients"
+          aria-label={isFr ? "Nos clients" : "Our clients"}
+          className="bg-bg border-border border-t border-b py-12 sm:py-16"
+        >
+          <ClientLogosStrip isFr={isFr} reviewCount={homeTopReviewCount} />
+        </section>
+      ) : null}
 
       {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS — full-bleed ─────────────
           Hors Container pour aller bord-à-bord sans cadre blanc latéral. */}
@@ -1377,91 +1383,80 @@ export default async function Home({ params }: HomeProps) {
       {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
           Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
           identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
-      <section
-        id="testimonials"
-        aria-labelledby="testimonials-heading"
-        className="bg-paper py-24 sm:py-28 lg:py-36"
-      >
-        <Container>
-          <FadeInOnView>
-            <div className="mx-auto mb-16 max-w-3xl text-center">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("testimonialsEyebrow")}
-              </p>
-              <h2
-                id="testimonials-heading"
-                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
-              >
-                {t("testimonialsTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta"
-                  style={{ fontFamily: "var(--font-serif)" }}
+      {homeReviewItems.length > 0 ? (
+        <section
+          id="testimonials"
+          aria-labelledby="testimonials-heading"
+          className="bg-paper py-24 sm:py-28 lg:py-36"
+        >
+          <Container>
+            <FadeInOnView>
+              <div className="mx-auto mb-16 max-w-3xl text-center">
+                <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  {t("testimonialsEyebrow")}
+                </p>
+                <h2
+                  id="testimonials-heading"
+                  className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
                 >
-                  {t("testimonialsTitleEm")}
-                </span>
-                {t("testimonialsTitlePart2")}
-              </h2>
-              {/* Note moyenne RÉELLE, dérivée des avis publiés (customer_reviews). */}
-              {homeReviewsAgg ? (
-                <div className="mt-7 inline-flex flex-col items-center gap-2">
-                  <div
-                    role="img"
-                    aria-label={`${homeReviewsAgg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })} sur 5`}
-                    className="flex items-center gap-1"
+                  {t("testimonialsTitlePart1")}{" "}
+                  <span
+                    className="italic-editorial text-terracotta"
+                    style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    {[0, 1, 2, 3, 4].map((i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${i < Math.round(homeReviewsAgg.ratingValue) ? "text-terracotta fill-current" : "text-border"}`}
-                        aria-hidden="true"
-                      />
-                    ))}
+                    {t("testimonialsTitleEm")}
+                  </span>
+                  {t("testimonialsTitlePart2")}
+                </h2>
+                {/* Note moyenne RÉELLE, dérivée des avis publiés (customer_reviews). */}
+                {homeReviewsAgg ? (
+                  <div className="mt-7 inline-flex flex-col items-center gap-2">
+                    <div
+                      role="img"
+                      aria-label={`${homeReviewsAgg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })} sur 5`}
+                      className="flex items-center gap-1"
+                    >
+                      {[0, 1, 2, 3, 4].map((i) => (
+                        <Star
+                          key={i}
+                          className={`h-5 w-5 ${i < Math.round(homeReviewsAgg.ratingValue) ? "text-terracotta fill-current" : "text-border"}`}
+                          aria-hidden="true"
+                        />
+                      ))}
+                    </div>
+                    <p className="text-fg-soft text-sm">
+                      <span className="text-fg font-bold">
+                        {homeReviewsAgg.ratingValue.toLocaleString("fr-FR", {
+                          minimumFractionDigits: 1,
+                        })}{" "}
+                        / 5
+                      </span>
+                      {isFr
+                        ? ` — sur ${homeReviewsAgg.reviewCount} avis clients`
+                        : ` — based on ${homeReviewsAgg.reviewCount} client reviews`}
+                    </p>
                   </div>
-                  <p className="text-fg-soft text-sm">
-                    <span className="text-fg font-bold">
-                      {homeReviewsAgg.ratingValue.toLocaleString("fr-FR", {
-                        minimumFractionDigits: 1,
-                      })}{" "}
-                      / 5
-                    </span>
-                    {isFr
-                      ? ` — sur ${homeReviewsAgg.reviewCount} avis clients vérifiés`
-                      : ` — based on ${homeReviewsAgg.reviewCount} verified reviews`}
-                  </p>
-                </div>
-              ) : null}
-            </div>
-          </FadeInOnView>
-          {homeReviews.items.length > 0 ? (
+                ) : null}
+              </div>
+            </FadeInOnView>
             <HomeReviewsCarousel>
-              {homeReviews.items.map((r) => (
+              {homeReviewItems.map((r) => (
                 <ReviewCard key={r.id} review={r} className="h-full" />
               ))}
             </HomeReviewsCarousel>
-          ) : (
-            <div className="border-border mx-auto max-w-xl rounded-2xl border border-dashed p-8 text-center">
-              <p className="text-fg-soft">
-                {isFr
-                  ? "Nos premiers avis clients arrivent. "
-                  : "Our first customer reviews are coming. "}
-                <Link href="/avis/deposer" className="text-terracotta font-semibold underline">
-                  {isFr ? "Soyez le premier à témoigner" : "Be the first to leave a review"}
-                </Link>
-              </p>
-            </div>
-          )}
-          {/* Lien vers le hub des avis clients */}
-          <p className="text-fg-muted mt-12 text-center text-sm">
-            <Link
-              href="/avis"
-              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
-            >
-              {isFr ? "Voir tous les avis clients" : "See all customer reviews"}
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </Link>
-          </p>
-        </Container>
-      </section>
+            {/* Lien vers le hub des avis clients */}
+            <p className="text-fg-muted mt-12 text-center text-sm">
+              <Link
+                href="/avis"
+                className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+              >
+                {isFr ? "Voir tous les avis clients" : "See all customer reviews"}
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+            </p>
+          </Container>
+        </section>
+      ) : null}
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section id="faq" aria-labelledby="faq-heading" className="bg-bg py-24 sm:py-28 lg:py-36">

@@ -1,8 +1,8 @@
 # Index centralisé des Architecture Decision Records (ADRs)
 
-**Date d'index** : 2026-09-30 (régénéré ; première version 2026-05-22)
+**Date d'index** : 2026-10-10 (mis à jour ; première version 2026-05-22)
 **Référence** : Sprint Final P1-11 — `_AUDIT/AUDIT-FINAL-PROD-READY-2026-05-22/`
-**Source de vérité** : `docs/adr/` (63 fichiers ADR, 0001 → 0060)
+**Source de vérité** : `docs/adr/` (69 fichiers ADR, 0001 → 0067 ; 0065 réservé par une PR ouverte)
 **Statut global** : ✅ Aucun ADR référencé manquant en filesystem au 2026-05-22
 
 ---
@@ -15,9 +15,9 @@ Tous les ADRs canoniques résident dans `docs/adr/` (singulier — historique du
 
 ---
 
-## Inventaire 63 ADRs (0001 → 0060)
+## Inventaire 69 ADRs (0001 → 0067)
 
-> Régénéré le 2026-09-30 depuis `docs/adr/` (ADR 0060). ⚠️ Les numéros 0034, 0036 et 0050 portent chacun DEUX ADR distincts (collision historique, conservée telle quelle : un numéro publié ne se réattribue pas).
+> Régénéré le 2026-09-30 depuis `docs/adr/` (ADR 0060) ; complété le 2026-10-10 (0061 → 0064, 0066, 0067). Le numéro 0065 est pris par une PR ouverte du chantier candidatures et sera indexé par elle. ⚠️ Les numéros 0034, 0036 et 0050 portent chacun DEUX ADR distincts (collision historique, conservée telle quelle : un numéro publié ne se réattribue pas).
 
 | #    | Slug                                                                        | Titre                                                                                                  | Statut                                                       | Date       | Fichier                                                                                                                                                                                  |
 | ---- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,6 +84,12 @@ Tous les ADRs canoniques résident dans `docs/adr/` (singulier — historique du
 | 0058 | `plafond-de-poids-de-la-console`                                            | Plafond de poids de la console pendant le chantier visio                                               | **PROPOSÉ**. Rédigé maintenant, avant le premier écran, pour | 2026-09-29 | [`docs/adr/0058-plafond-de-poids-de-la-console.md`](../adr/0058-plafond-de-poids-de-la-console.md)                                                                                       |
 | 0059 | `registre-des-numeros-emis`                                                 | Registre append-only des numéros émis (`numeros_emis`)                                                 | proposé                                                      | 2026-09-30 | [`docs/adr/0059-registre-des-numeros-emis.md`](../adr/0059-registre-des-numeros-emis.md)                                                                                                 |
 | 0060 | `verrou-du-dossier-de-session-et-reouverture-motivee`                       | Verrou du dossier de session et réouverture motivée, visible par l'auditeur                            | proposé                                                      | 2026-09-30 | [`docs/adr/0060-verrou-du-dossier-de-session-et-reouverture-motivee.md`](../adr/0060-verrou-du-dossier-de-session-et-reouverture-motivee.md)                                             |
+| 0061 | `rencontre-de-test-sans-fiche-pour-le-pilote`                               | Rencontre de test sans fiche pour le pilote (chemin « nouveau prospect »)                              | proposé                                                      | 2026-09-30 | [`docs/adr/0061-rencontre-de-test-sans-fiche-pour-le-pilote.md`](../adr/0061-rencontre-de-test-sans-fiche-pour-le-pilote.md)                                                             |
+| 0062 | `questionnaire-de-cadrage-en-ligne`                                         | Questionnaire de cadrage en ligne : lien HMAC sans stockage, envoi définitif unique                    | proposé                                                      | 2026-10-01 | [`docs/adr/0062-questionnaire-de-cadrage-en-ligne.md`](../adr/0062-questionnaire-de-cadrage-en-ligne.md)                                                                                 |
+| 0063 | `documents-du-projet-dans-le-dossier-client`                                | Documents du projet dans le dossier client, stockés en base                                            | proposé                                                      | 2026-10-01 | [`docs/adr/0063-documents-du-projet-dans-le-dossier-client.md`](../adr/0063-documents-du-projet-dans-le-dossier-client.md)                                                               |
+| 0064 | `cliquet-public-releve-pour-la-page-apporteur-video`                        | Cliquet des pages publiques relevé de 265 à 280 KB pour la page apporteur avec vidéo                   | **ACCEPTÉ**                                                  | 2026-10-05 | [`docs/adr/0064-cliquet-public-releve-pour-la-page-apporteur-video.md`](../adr/0064-cliquet-public-releve-pour-la-page-apporteur-video.md)                                               |
+| 0066 | `parcours-formateur-independant`                                            | Parcours du formateur indépendant : de la candidature au virement                                      | **ACCEPTÉ** (v2)                                             | 2026-10-10 | [`docs/adr/0066-parcours-formateur-independant.md`](../adr/0066-parcours-formateur-independant.md)                                                                                       |
+| 0067 | `une-fiche-formateur-par-relation`                                          | Une fiche formateur par relation : unicité de l'e-mail limitée aux fiches ouvertes                     | **ACCEPTÉ**                                                  | 2026-10-10 | [`docs/adr/0067-une-fiche-formateur-par-relation.md`](../adr/0067-une-fiche-formateur-par-relation.md)                                                                                   |
 
 ---
 
@@ -157,6 +163,7 @@ Chaque ADR doit contenir :
 | **Qualiopi — preuve et dossier de session** | 0035, 0043, 0059, 0060                         |
 | **AI Act**                                  | 0024                                           |
 | **Image bank**                              | 0027                                           |
+| **Formateurs indépendants**                 | 0066, 0067                                     |
 
 ---
 

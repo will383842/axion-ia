@@ -15274,6 +15274,57 @@ model ApporteurReseauSiret {
   @@map("apporteur_reseau_siret")
 }
 
+/// Contrat 2.6 (2026-10-09) : l'ÉTABLISSEMENT déclaré d'une présentation (SIRET), et son extension
+/// à toute l'entreprise, décidée par Williams seul (art. 3.1). Table séparée sans clé étrangère
+/// (fenêtre app/worker), comme `ApporteurReseauSiret`. Absente = présentation d'avant la 2.6, qui
+/// couvre toute l'entreprise (comportement d'avant).
+/// rgpd: technique — SIRET de l'établissement présenté, portée et dates ; aucun nom, e-mail ni téléphone (la personne présentée est dans `presentations_entreprise`, traitée par l'export et l'effacement)
+model PresentationEtablissement {
+  presentationId String    @id @map("presentation_id") @db.Uuid
+  siret          String    @db.Char(14)
+  /// Étendue à toute l'entreprise (SIREN) par Williams (art. 3.1, à sa seule discrétion), ou
+  /// apporteur au contrat signé AVANT la 2.6 (il garde l'entreprise entière, art. 13).
+  entreprise     Boolean   @default(false)
+  etendueAt      DateTime? @map("etendue_at") @db.Timestamptz(3)
+  /// Établissements EXCLUS de l'extension (art. 3.3 jugé établissement par établissement).
+  exclus         String[]  @default([])
+  majAt          DateTime  @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@index([siret])
+  @@map("presentation_etablissement")
+}
+
+/// Contrat 2.6 : une commande soldée dont l'établissement ne correspond à aucune attribution
+/// exacte (SIRET absent, autre SIRET, siège qui paie pour l'agence) n'est JAMAIS perdue en
+/// silence : elle attend le choix de Williams (art. 3.1 ; 15 jours de l'encaissement).
+/// `presentationId` = l'attribution choisie ; `aucune` = aucun apporteur. Sans clé étrangère.
+/// rgpd: technique — identifiants de facture, SIREN/SIRET de l'entreprise cliente, présentations candidates, dates et administrateur auteur (identifiant seul) ; aucun nom, e-mail ni téléphone
+model CommandeAAttribuer {
+  factureId      String    @id @map("facture_id") @db.Uuid
+  siren          String    @db.Char(9)
+  siret          String?   @db.Char(14)
+  /// Présentations candidates à la date de la commande (même SIREN).
+  candidats      String[]  @default([])
+  creeAt         DateTime  @default(now()) @map("cree_at") @db.Timestamptz(3)
+  presentationId String?   @map("presentation_id") @db.Uuid
+  aucune         Boolean   @default(false)
+  decideeAt      DateTime? @map("decidee_at") @db.Timestamptz(3)
+  decideePar     String?   @map("decidee_par") @db.Uuid
+
+  @@map("commande_a_attribuer")
+}
+
+/// Contrat 2.6 : le SIRET de l'établissement qui COMMANDE, porté par le devis (facultatif). Il
+/// passe avant celui de la fiche client. Table séparée (fenêtre app/worker), sans clé étrangère.
+/// rgpd: technique — SIRET de l'établissement qui commande, porté par un devis ; aucun nom, e-mail ni téléphone
+model DevisEtablissement {
+  devisId String   @id @map("devis_id") @db.Uuid
+  siret   String   @db.Char(14)
+  majAt   DateTime @default(now()) @updatedAt @map("maj_at") @db.Timestamptz(3)
+
+  @@map("devis_etablissement")
+}
+
 /// Apporteur RETIRÉ du réseau (2026-10-07) : la fiche sort des listes par défaut et son lien
 /// de dossier est désactivé ; rien d'autre ne bouge (contrat, pièces, commissions, journal).
 /// Table SÉPARÉE, sans relation déclarée, à dessein : une colonne sur `apporteurs_reseau`

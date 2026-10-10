@@ -17,9 +17,13 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import type { StatutCommissionApporteur } from "../../../prisma/generated/client";
 
-import { construireDonneesAutofacture, totalTtcPieceCents } from "./autofacture-donnees";
+import {
+  construireDonneesAutofacture,
+  totalTtcPieceCents,
+  type ApporteurPourAutofacture,
+} from "./autofacture-donnees";
 import { PREFIXE_PALIER_REPRISE } from "./resiliation";
-import { siretDe } from "./siret-apporteur";
+import { siretDe, siretsDe } from "./siret-apporteur";
 import { envoyer, type ResultatEnvoi } from "./envois";
 import { urlDossier } from "./jeton";
 import { signalerErreurReseau } from "./signaler";
@@ -31,6 +35,8 @@ import {
   PALIERS_FORMATION,
   PARRAINAGE_BPS,
 } from "./regles";
+
+type RegimeApporteur = ApporteurPourAutofacture["regimeTva"];
 
 // ── Vigilance ────────────────────────────────────────────────────────────
 
@@ -177,7 +183,18 @@ export async function cumulVigilanceCents(apporteurId: string, saufId?: string):
     },
     _sum: { montantCents: true },
   });
-  return r._sum.montantCents ?? 0;
+  const ht = r._sum.montantCents ?? 0;
+  // Art. 6.2 (analyse du 09/10) : la Société apprécie le cumul TOUTES TAXES COMPRISES, par
+  // prudence. Un apporteur en franchise : TTC = HT. Régime illisible : le HT (comportement d'avant).
+  try {
+    const a = await prisma.apporteurReseau.findUnique({
+      where: { id: apporteurId },
+      select: { regimeTva: true },
+    });
+    return totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [ht]);
+  } catch {
+    return ht;
+  }
 }
 
 /** Un e-mail de la journée est-il déjà parti (ou en route) sous ce `jobId` ? */
@@ -788,11 +805,16 @@ export function centimesCsv(c: number): string {
 export interface LigneDas2 {
   denomination: string | null;
   siren: string | null;
+  /** SIRET de l'établissement de l'apporteur, s'il est connu. */
+  siret?: string | null;
   nom: string;
   adresse: string | null;
   totalCents: number;
   lignes: number;
 }
+
+/** Seuil de déclaration DAS 2 par bénéficiaire et par an (sommes versées depuis 2024). */
+export const SEUIL_DAS2_CENTS = 240_000;
 
 export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): string {
   const entete = [
@@ -800,12 +822,25 @@ export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): 
     "beneficiaire",
     "denomination",
     "siren",
+    "siret",
     "adresse",
     "montant_verse_eur",
     "nombre_commissions",
+    "a_declarer_seuil_2400",
   ];
   const corps = lignes.map((l) =>
-    [annee, l.nom, l.denomination, l.siren, l.adresse, centimesCsv(l.totalCents), l.lignes]
+    [
+      annee,
+      l.nom,
+      l.denomination,
+      l.siren,
+      l.siret ?? null,
+      l.adresse,
+      centimesCsv(l.totalCents),
+      l.lignes,
+      // Seuil DAS 2 : 2 400 € par an et par bénéficiaire (BOFiP ACTU-2024-00154).
+      l.totalCents > SEUIL_DAS2_CENTS ? "oui" : "non",
+    ]
       .map(champCsv)
       .join(";"),
   );
@@ -838,17 +873,30 @@ export async function exportDas2(annee: number): Promise<string> {
   });
   const apporteurs = await prisma.apporteurReseau.findMany({
     where: { id: { in: g.map((x) => x.apporteurId) } },
-    select: { id: true, prenom: true, nom: true, denomination: true, siren: true, adresse: true },
+    select: {
+      id: true,
+      prenom: true,
+      nom: true,
+      denomination: true,
+      siren: true,
+      adresse: true,
+      regimeTva: true,
+    },
   });
   const parId = new Map(apporteurs.map((a) => [a.id, a]));
+  const sirets = await siretsDe(apporteurs.map((a) => a.id)).catch(() => new Map<string, string>());
   const lignes: LigneDas2[] = g.map((x) => {
     const a = parId.get(x.apporteurId);
     return {
       denomination: a?.denomination ?? null,
       siren: a?.siren ?? null,
       nom: a ? [decryptPii(a.prenom), decryptPii(a.nom)].filter(Boolean).join(" ") : "",
+      siret: a ? (sirets.get(a.id) ?? null) : null,
       adresse: a?.adresse ?? null,
-      totalCents: x._sum.montantCents ?? 0,
+      // La DAS 2 se déclare TVA comprise (analyse du 09/10) : TTC pour un apporteur assujetti.
+      totalCents: totalTtcPieceCents((a?.regimeTva ?? null) as RegimeApporteur, [
+        x._sum.montantCents ?? 0,
+      ]),
       lignes: x._count._all,
     };
   });

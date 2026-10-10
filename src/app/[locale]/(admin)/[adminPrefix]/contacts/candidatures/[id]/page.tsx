@@ -152,12 +152,18 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   const montreVideo = liens.some(montreDuTravail) || videos.some((v) => v.statut === "disponible");
 
   // Ce que la candidature dit de son poste : l'offre si elle existe encore,
-  // sinon l'intitulé figé (spontanée, offre supprimée).
+  // sinon l'intitulé figé (spontanée, offre supprimée). Forme du prédicat U2 :
+  // offre IMBRIQUÉE (cf. `PosteCandidature`).
   const indicesPoste = {
-    offerSlug: offer?.slug,
     offerTitleSnap: a.offerTitleSnap,
-    employmentType: offer?.employmentType,
-    secondaryEmploymentType: offer?.secondaryEmploymentType,
+    offer: offer
+      ? {
+          slug: offer.slug,
+          titleFr: offer.titleFr,
+          employmentType: offer.employmentType,
+          secondaryEmploymentType: offer.secondaryEmploymentType,
+        }
+      : null,
   };
   // U3 — une candidature de FORMATEUR (freelance ou salarié) ne reçoit ni le
   // lien de l'échange apporteur, ni la proposition du réseau d'apporteurs.

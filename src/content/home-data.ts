@@ -36,83 +36,17 @@ export interface VideoTestimonial {
 }
 
 // ─── LOGOS CLIENTS ─────────────────────────────────────────────────────────
-// 17 marques pour lesquelles Will (CEO Axion-IA) a obtenu l'accord écrit
-// d'affichage en tant que clients. 8 logos officiels Wikimedia + 9 wordmarks
-// textuels en attente des SVG officiels de chaque marque (à remplacer un par
-// un dans `public/logos/clients/` quand fournis).
+// VIDE depuis le 2026-10-09 : les 16 marques affichées jusque-là ont été
+// retirées après un message de la DGCCRF (décision de Will), avec leurs SVG.
+// L'ancienne liste reste lisible dans l'historique git de ce fichier.
 //
-// Width/height = dimensions du viewBox SVG (anti-CLS). Tous sont sous
-// `public/logos/clients/{slug}.svg`.
-// Toutes les hauteurs normalisées à 60 px (référence commune) pour que
-// max-h-9 CSS contraigne tous les logos au même facteur d'échelle 0.6×.
-// Les widths reflètent les proportions visuelles réelles de chaque marque.
-export const CLIENT_LOGOS: ClientLogo[] = [
-  { slug: "leclerc", name: "E.Leclerc", src: "/logos/clients/leclerc.svg", width: 200, height: 60 },
-  {
-    slug: "intermarche",
-    name: "Intermarché",
-    src: "/logos/clients/intermarche.svg",
-    width: 160,
-    height: 60,
-  },
-  { slug: "point-p", name: "Point P", src: "/logos/clients/point-p.svg", width: 180, height: 60 },
-  { slug: "gedimat", name: "Gedimat", src: "/logos/clients/gedimat.svg", width: 180, height: 60 },
-  { slug: "renault", name: "Renault", src: "/logos/clients/renault.svg", width: 180, height: 60 },
-  {
-    slug: "volkswagen",
-    name: "Volkswagen",
-    src: "/logos/clients/volkswagen.svg",
-    width: 60,
-    height: 60,
-  },
-  {
-    slug: "ad-auto",
-    name: "AD Auto Distribution",
-    src: "/logos/clients/ad-auto.svg",
-    width: 180,
-    height: 60,
-  },
-  { slug: "axa", name: "AXA", src: "/logos/clients/axa.svg", width: 80, height: 60 },
-  {
-    slug: "generali",
-    name: "Generali",
-    src: "/logos/clients/generali.svg",
-    width: 200,
-    height: 60,
-  },
-  { slug: "iad", name: "IAD", src: "/logos/clients/iad.svg", width: 140, height: 60 },
-  { slug: "safti", name: "SAFTI", src: "/logos/clients/safti.svg", width: 180, height: 60 },
-  {
-    slug: "pharmacie-lafayette",
-    name: "Pharmacie Lafayette",
-    src: "/logos/clients/pharmacie-lafayette.svg",
-    width: 200,
-    height: 60,
-  },
-  { slug: "ecf", name: "ECF", src: "/logos/clients/ecf.svg", width: 140, height: 60 },
-  { slug: "krys", name: "Krys", src: "/logos/clients/krys.svg", width: 160, height: 60 },
-  {
-    slug: "jardiland",
-    name: "Jardiland",
-    src: "/logos/clients/jardiland.svg",
-    width: 180,
-    height: 60,
-  },
-  {
-    slug: "la-poste",
-    name: "La Poste",
-    src: "/logos/clients/la-poste.svg",
-    width: 180,
-    height: 60,
-  },
-  {
-    slug: "intersport",
-    name: "Intersport",
-    src: "/logos/clients/intersport.svg",
-    width: 200,
-    height: 60,
-  },
-];
+// Pour remettre un logo : un client RÉEL ayant donné son accord écrit, son SVG
+// dans `public/logos/clients/{slug}.svg`, une entrée ci-dessous, puis allumer
+// `LOGOS_CLIENTS_AFFICHES` (src/content/preuves-sociales.ts).
+// Width/height = dimensions du viewBox SVG (anti-CLS) ; hauteur de référence
+// 60 px pour que tous les logos soient réduits au même facteur.
+// Exemple : { slug: "acme", name: "Acme", src: "/logos/clients/acme.svg", width: 180, height: 60 },
+export const CLIENT_LOGOS: ClientLogo[] = [];
 
 // ─── VIDÉOS TÉMOIGNAGES ────────────────────────────────────────────────────
 // Section conditionnelle (blueprint §10) : si tableau vide → section masquée

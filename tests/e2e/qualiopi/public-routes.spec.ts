@@ -54,9 +54,22 @@ const ROUTES_SI_CERTIFIE = new Set([
   "/fr/financement-opco-france-travail",
 ]);
 const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
-const routes = certificationRevendicable
-  ? toutesLesRoutes
-  : toutesLesRoutes.filter((r) => !ROUTES_SI_CERTIFIE.has(r));
+/**
+ * Pages d'avis — règle AUTOMATIQUE (src/content/preuves-sociales.ts, 2026-10-09).
+ *
+ * - `/fr/avis/deposer` (le formulaire de DÉPÔT) est ouvert EN PERMANENCE, même
+ *   sans aucun avis publié : c'est par lui qu'arrivent les nouveaux avis. Il
+ *   reste donc dans la liste SANS condition, et doit rendre 200.
+ * - `/fr/avis` (le hub d'AFFICHAGE) rend un 404 VOULU tant qu'aucun avis n'est
+ *   publié en base. La base e2e de la CI n'en contient pas : la route est
+ *   retirée de la liste. Pour auditer une base qui en a (la production dès le
+ *   premier avis publié), poser `E2E_AVIS_PUBLIES=true`.
+ */
+const ROUTES_SI_AVIS_PUBLIES = new Set(["/fr/avis"]);
+const avisPublies = process.env["E2E_AVIS_PUBLIES"] === "true";
+const routes = toutesLesRoutes
+  .filter((r) => certificationRevendicable || !ROUTES_SI_CERTIFIE.has(r))
+  .filter((r) => avisPublies || !ROUTES_SI_AVIS_PUBLIES.has(r));
 
 /**
  * Routes dont le COÛT D'AUDIT dépasse le budget commun — mesuré, pas supposé.

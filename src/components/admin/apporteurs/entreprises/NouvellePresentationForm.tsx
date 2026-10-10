@@ -1,5 +1,5 @@
 "use client";
-// use-client: vérification du SIREN à la demande (registre + signalements), saisie contrôlée.
+// use-client: vérification du SIRET à la demande (registre + signalements), saisie contrôlée.
 
 // « Nouvelle entreprise présentée » : saisie à la réception de l'e-mail de l'apporteur.
 // Les signalements (déjà présentée, déjà cliente) ne sont qu'une indication.
@@ -73,11 +73,12 @@ export function NouvellePresentationForm({
           pas : invitez l&apos;apporteur à utiliser son formulaire.
         </p>
         <div className={CHAMP}>
-          <label htmlFor="np-siren">SIREN de l&apos;entreprise</label>
+          {/* Contrat 2.6 : le SIRET de l'établissement visité (le SIREN en est déduit). */}
+          <label htmlFor="np-siren">SIRET de l&apos;établissement visité</label>
           <div className="flex gap-[var(--space-admin-2)]">
             <input
               id="np-siren"
-              name="siren"
+              name="siret"
               required
               inputMode="numeric"
               value={siren}

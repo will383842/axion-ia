@@ -4,7 +4,7 @@
 // `renderEmailTemplate(name, locale, payload)` retourne { subject, html, text }.
 
 import { render } from "@react-email/render";
-import { setOppositionHref, type FamilleEmail } from "./_layout";
+import { avecDonneesRendu, type FamilleEmail } from "./_layout";
 import { urlOpposition } from "@/server/email/opposition-jeton";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
@@ -163,20 +163,25 @@ import {
   apporteurVigilanceSubject,
   ApporteurVigilanceEmail,
   apporteurCommandeSigneeSubject,
+  apporteurCommandeNonAttribueeSubject,
   ApporteurCommandeSigneeEmail,
+  ApporteurCommandeNonAttribueeEmail,
   apporteurReleveSubject,
   ApporteurReleveEmail,
   apporteurVirementFaitSubject,
   apporteurDossierRecuSubject,
   ApporteurDossierRecuEmail,
   apporteurCommissionSuspensionSubject,
+  apporteurCommissionAvoirClientSubject,
   apporteurNonCommissionneSubject,
   ApporteurNonCommissionneEmail,
   ApporteurCommissionSuspensionEmail,
+  ApporteurCommissionAvoirClientEmail,
   apporteurManquementSubject,
   ApporteurManquementEmail,
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
+import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
 import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
@@ -533,6 +538,10 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurCommissionSuspensionSubject,
     component: ApporteurCommissionSuspensionEmail,
   },
+  "apporteur-commission-avoir-client": {
+    subject: apporteurCommissionAvoirClientSubject,
+    component: ApporteurCommissionAvoirClientEmail,
+  },
   "apporteur-manquement": {
     subject: apporteurManquementSubject,
     component: ApporteurManquementEmail,
@@ -557,6 +566,10 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurVigilanceSubject,
     component: ApporteurVigilanceEmail,
   },
+  "apporteur-commande-non-attribuee": {
+    subject: apporteurCommandeNonAttribueeSubject,
+    component: ApporteurCommandeNonAttribueeEmail,
+  },
   "apporteur-commande-signee": {
     subject: apporteurCommandeSigneeSubject,
     component: ApporteurCommandeSigneeEmail,
@@ -572,6 +585,10 @@ const TEMPLATES: TemplateMap = {
   "apporteur-virement-fait": {
     subject: apporteurVirementFaitSubject,
     component: ApporteurVirementFaitEmail,
+  },
+  "apporteur-lien-espace": {
+    subject: apporteurLienEspaceSubject,
+    component: ApporteurLienEspaceEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,
@@ -662,16 +679,29 @@ export async function renderEmailTemplate(
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
-  setOppositionHref(contexte.destinataire ? urlOpposition(contexte.destinataire) : null);
-  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
-  // de tous les templates, sans changer chaque template. On pose la valeur AVANT
-  // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
+  // Données propres à CE rendu (lien d'opposition du destinataire) : portées par un contexte
+  // asynchrone créé ici, jamais par une variable de module — deux rendus s'entrelacent (`await`).
+  const donnees = {
+    oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
+    // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
+    lienEspace:
+      name.startsWith("apporteur-") && typeof payload.lienEspace === "string"
+        ? payload.lienEspace
+        : null,
+  };
+  // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance de tous les
+  // templates, sans changer chaque template. Variable de module re-posée avant chaque `render` :
+  // deux rendus PEUVENT s'entrelacer, mais la valeur est la même pour tous les destinataires
+  // (statistiques publiques) — un entrelacement n'y change rien.
   const reviewStats = await getPublishedReviewStats();
   const element = <Component locale={locale} payload={payload} />;
-  setReviewStats(reviewStats);
-  const html = await render(element, { pretty: false });
-  setReviewStats(reviewStats);
-  const text = await render(element, { plainText: true });
+  const { html, text } = await avecDonneesRendu(donnees, async () => {
+    setReviewStats(reviewStats);
+    const html = await render(element, { pretty: false });
+    setReviewStats(reviewStats);
+    const text = await render(element, { plainText: true });
+    return { html, text };
+  });
   const famille = familleDuHtml(html);
   return { subject, html, text, famille };
 }

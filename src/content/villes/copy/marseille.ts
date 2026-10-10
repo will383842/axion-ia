@@ -129,20 +129,6 @@ export const MARSEILLE_COPY: VilleCopy = {
               "Pour les grands comptes présents à Marseille (filiales shipping, opérateurs portuaires, groupe services) souhaitant structurer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA a compris notre métier sans que nous ayons eu à former des consultants pendant des semaines. Le livrable est chiffré, actionnable, sans jargon. On a priorisé nos chantiers IA en quelques jours.",
-            role: "Directeur général",
-            companyProfile: "ETI transitaire, Quartier de la Joliette",
-          },
-          {
-            quote:
-              "La démo sur nos vraies données de connaissements a convaincu notre CODIR en quelques minutes. On ne parlait plus de théorie mais de notre activité réelle. Le plan d'action est en cours.",
-            role: "Directrice des opérations",
-            companyProfile: "PME logistique multimodale, zone Euroméditerranée",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Marseille ?",
@@ -227,20 +213,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large accounts present in Marseille (shipping subsidiaries, port operators, service groups) framing centralized AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA understood our business without us spending weeks training consultants. The deliverable is costed, actionable, jargon-free. We prioritized our AI projects within days.",
-            role: "CEO",
-            companyProfile: "Mid-cap freight forwarder, Joliette district",
-          },
-          {
-            quote:
-              "The demo on our real bill-of-lading data convinced our executive committee in minutes. We were talking about our actual business, not theory. The action plan is underway.",
-            role: "Head of Operations",
-            companyProfile: "Multimodal logistics SME, Euroméditerranée zone",
           },
         ],
         faq: [
@@ -332,20 +304,6 @@ export const MARSEILLE_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges marseillais : roadshow multi-sites, séminaire CODIR + cascade équipes, intra-entreprise multi-jours.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement calée sur notre métier logistique : nos chargés d'exploitation sont repartis avec leurs outils IA configurés pour traiter nos documents d'escale. Adoption immédiate.",
-            role: "Directeur d'exploitation",
-            companyProfile: "PME opérateur portuaire, Joliette",
-          },
-          {
-            quote:
-              "La session Dirigeants nous a alignés en une journée sur notre stratégie IA. Pragmatisme rare : les démos étaient faites avec nos propres contrats de fret. Décision validée en CODIR le lendemain.",
-            role: "Présidente",
-            companyProfile: "ETI services maritimes, Vieux-Port",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Marseille ?",
@@ -430,20 +388,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Marseille HQs: multi-site roadshows, exec committee + cascade team seminars, multi-day in-house programs.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly calibrated to our logistics business: our operations staff left with AI tools configured to process our port call documents. Immediate adoption.",
-            role: "Head of Operations",
-            companyProfile: "SME port operator, Joliette",
-          },
-          {
-            quote:
-              "The Executives session aligned us in one day on our AI strategy. Rare pragmatism: demos were done with our own freight contracts. Decision validated at the executive committee the next day.",
-            role: "President",
-            companyProfile: "Maritime services mid-cap, Vieux-Port",
           },
         ],
         faq: [
@@ -535,20 +479,6 @@ export const MARSEILLE_COPY: VilleCopy = {
               "Programmes pour grands comptes marseillais : cas d'usage cascadés multi-directions, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation traitement automatique des connaissements livrée comme promis. ROI mesuré dès les premiers mois : plusieurs postes libérés sur la saisie documentaire. Nos équipes douane ont la main sur le modèle.",
-            role: "DAF",
-            companyProfile: "ETI transport maritime, Joliette",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite : kick-off intense sur site à Marseille, puis itérations à distance sans nous perdre. Nos ambassadeurs internes sont autonomes depuis le go-live. Aucune dépendance créée.",
-            role: "Responsable SI",
-            companyProfile: "PME logistique multimodale, Euroméditerranée",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Marseille ?",
@@ -633,20 +563,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Programs for Marseille large accounts: multi-directorate cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Automated bill-of-lading processing implementation delivered as promised. ROI measured from the first months: several positions freed from document entry. Our customs teams control the model.",
-            role: "CFO",
-            companyProfile: "Maritime transport mid-cap, Joliette",
-          },
-          {
-            quote:
-              "Perfect hybrid method: intense on-site kick-off in Marseille, then remote iterations without losing us. Our internal ambassadors have been autonomous since go-live. No dependency created.",
-            role: "IT Manager",
-            companyProfile: "Multimodal logistics SME, Euroméditerranée",
           },
         ],
         faq: [
@@ -738,20 +654,6 @@ export const MARSEILLE_COPY: VilleCopy = {
               "Coaching IA pour les directeurs et cadres dirigeants de grands groupes présents à Marseille (filiales CMA CGM-orbite, opérateurs GPMM, groupes services). Format multi-bénéficiaires ou cascade CODIR → N-1 disponible.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "En quelques sessions, j'ai complètement changé ma façon de préparer mes négociations commerciales export. L'accompagnement était calé sur mes contrats réels, pas sur des exemples génériques. Gain de temps mesurable dès la deuxième semaine.",
-            role: "Directeur commercial",
-            companyProfile: "PME transitaire internationale, Joliette",
-          },
-          {
-            quote:
-              "Je ne savais pas par où commencer avec l'IA. Le coaching 1-to-1 m'a permis d'identifier mes trois cas prioritaires et de les mettre en production moi-même. La méthode est transmissible — j'ai pu former deux de mes managers ensuite.",
-            role: "Présidente",
-            companyProfile: "ETI services portuaires, Euroméditerranée",
-          },
-        ],
         faq: [
           {
             q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Marseille ?",
@@ -836,20 +738,6 @@ export const MARSEILLE_COPY: VilleCopy = {
             price: "Key accounts programme on quote",
             detail:
               "AI coaching for directors and executives of large groups present in Marseille (CMA CGM-orbit subsidiaries, GPMM operators, service groups). Multi-beneficiary or CODIR → N-1 cascade format available.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "In a few sessions I completely changed how I prepare my export commercial negotiations. The coaching was calibrated to my real contracts, not generic examples. Measurable time savings from the second week.",
-            role: "Commercial Director",
-            companyProfile: "International freight forwarding SME, Joliette",
-          },
-          {
-            quote:
-              "I didn't know where to start with AI. The 1-to-1 coaching helped me identify my three priority cases and put them into production myself. The method is transmissible — I was able to train two of my managers afterwards.",
-            role: "President",
-            companyProfile: "Port services mid-cap, Euroméditerranée",
           },
         ],
         faq: [

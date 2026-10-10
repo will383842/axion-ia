@@ -46,7 +46,8 @@ const REPONSE_CONTESTATION_JOURS = 30;
 const SITE_URL = SITE_URL_BRUT.replace(/\/+$/, "");
 const LIEN_FICHE = `${SITE_URL}/documents/apporteurs/comment-ca-marche.pdf`;
 const LIEN_RENDEZ_VOUS = `${SITE_URL}/fr/appel?depuis=email-apporteur`;
-const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#reseau-d-apporteurs-d-affaires`;
+// Analyse du 09/10 (point 19) : l'e-mail au prospect renvoie à SA section, pas à celle des candidats.
+const LIEN_POLITIQUE = `${SITE_URL}/fr/politique-confidentialite#personnes-presentees-par-un-apporteur`;
 
 const PCT_PARRAINAGE = PARRAINAGE_BPS / 100;
 
@@ -230,6 +231,7 @@ export const COPY_DEMARRAGE = {
     info: (responsable: string, adresse: string) =>
       `Vos coordonnées nous ont été transmises par la personne citée plus haut. Qui les traite : ${responsable}, ${adresse}. ` +
       "Pourquoi : vous présenter nos services et suivre notre relation avec la personne qui nous a mis en relation. " +
+      "Sur quelle base : notre intérêt légitime à présenter nos services aux professionnels (RGPD, art. 6.1.f). " +
       "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",
@@ -301,6 +303,20 @@ export const COPY_DEMARRAGE = {
       "Vos commissions restent acquises : seul leur versement attend ces documents. Vous continuez à nous présenter des entreprises normalement.",
     cta: "Déposer mes documents",
   },
+  commandeNonAttribuee: {
+    // Contrat 2.6, art. 3.1 (relecture de a1) : une commande qui ne lui est pas attribuée est
+    // notifiée à l'apporteur, MOTIVÉE, contestable. ⛔ Jamais l'identité d'un autre apporteur.
+    subject: (e: string) =>
+      e
+        ? `Une commande de ${e} ne vous est pas attribuée`
+        : "Une commande ne vous est pas attribuée",
+    title: "Commande non attribuée",
+    preview: "Notre décision, son motif, et comment la contester.",
+    texte: (e: string) =>
+      `${e || "Une entreprise que vous nous avez présentée"} a passé une commande qui ne correspond pas à l'établissement qui vous est attribué. Comme le prévoit votre contrat (article 3.1), nous avons examiné son rattachement : elle ne vous est pas attribuée, pour le motif suivant :`,
+    suite:
+      "Vous pouvez contester cette décision en répondant simplement à cet e-mail : nous vous répondrons de façon motivée dans les trente jours.",
+  },
   commandeSignee: {
     subject: (e: string) =>
       e ? `Bonne nouvelle : ${e} a signé` : "Bonne nouvelle : une commande signée",
@@ -370,6 +386,18 @@ export const COPY_DEMARRAGE = {
       "Elle vous reste attachée. Nous vous écrirons dès l'issue de la contestation : la commission sera alors versée, ou ajustée selon le prix finalement conservé.",
     levee:
       "La contestation du client est close : votre commission reprend son cours. Elle vous sera facturée et versée dans les conditions habituelles ; si le prix conservé a changé, le décompte vous l'indiquera.",
+  },
+  commissionAvoirClient: {
+    // Art. 4.5 : la facture du client a été annulée par un avoir ALORS QUE la commission était
+    // déjà facturée (pas encore versée) : elle est neutralisée par un avoir d'autofacture, joint.
+    // ⛔ Aucun nom de client ni délai promis ; ce n'est PAS un manquement (pas de « faits »).
+    subject: "Commission annulée : avoir joint",
+    title: "Commission annulée",
+    preview: "La facture du client a été annulée par un avoir.",
+    texte:
+      "La facture d'une commande sur laquelle vous étiez commissionné a été annulée par un avoir. Comme le prévoit votre contrat (article 4.5), la somme correspondante, déjà facturée mais pas encore versée, est annulée : vous trouverez ci-joint l'avoir d'autofacture qui la neutralise.",
+    suite:
+      "Cela ne change rien à vos autres commissions. Si vous avez une question, répondez simplement à cet e-mail.",
   },
   dossierRecu: {
     // ⛔ Aucun délai promis : la vérification dépend des pièces reçues.
@@ -821,6 +849,38 @@ export function ApporteurVigilanceEmail({ locale, payload }: Props) {
   );
 }
 
+// ── Commande non attribuée (contrat 2.6, art. 3.1) ─────────────────────
+
+export const apporteurCommandeNonAttribueeSubject = (
+  _locale: Locale,
+  payload?: Record<string, unknown>,
+): string =>
+  COPY_DEMARRAGE.commandeNonAttribuee.subject(
+    texteOuNull((payload as Payload | undefined)?.entreprise) ?? "",
+  );
+
+export function ApporteurCommandeNonAttribueeEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commandeNonAttribuee;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.entreprise) ?? "")}</Text>
+      <Text style={{ ...emailStyles.paragraphStyle, fontStyle: "italic" }}>
+        « {texteOuNull(p.motif) ?? ""} »
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
+    </EmailLayout>
+  );
+}
+
 // ── Commande signée ──────────────────────────────────────────────────────
 
 export const apporteurCommandeSigneeSubject = (
@@ -999,6 +1059,32 @@ export function ApporteurCommissionSuspensionEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
       <Text style={emailStyles.paragraphStyle}>{levee ? t.levee : t.suspendue}</Text>
       {levee ? null : <Text style={emailStyles.paragraphStyle}>{t.suspendueSuite}</Text>}
+    </EmailLayout>
+  );
+}
+
+// ── Commission annulée après l'avoir du client (art. 4.5) ───────────────
+
+export const apporteurCommissionAvoirClientSubject = (
+  _locale: Locale,
+  _payload?: Record<string, unknown>,
+): string => COPY_DEMARRAGE.commissionAvoirClient.subject;
+
+export function ApporteurCommissionAvoirClientEmail({ locale, payload }: Props) {
+  const p = payload as Payload;
+  const t = COPY_DEMARRAGE.commissionAvoirClient;
+  return (
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale === "fr" ? "fr" : "en"}
+      sansReseauxSociaux
+      signature="fondateur-court"
+    >
+      <Text style={emailStyles.paragraphStyle}>{bonjour(prenomDe(p))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.texte}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>
     </EmailLayout>
   );
 }

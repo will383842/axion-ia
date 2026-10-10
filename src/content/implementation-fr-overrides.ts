@@ -1,6 +1,7 @@
 // AUTO-GÉNÉRÉ 2026-06-02 — contenu FR DISTINCT + PUNCHY par sous-page /implementation.
-// + avatars d'avis (réutilisation des 6 portraits Unsplash du hub, matchés par
-// genre, distincts par page ; crédits photographes obligatoires CGU Unsplash §6).
+// Les « témoignages » qui y figuraient (citations inventées + portraits Unsplash)
+// ont été SUPPRIMÉS le 2026-10-09 (DGCCRF) : seuls de vrais avis publiés, lus en
+// base, peuvent servir de preuve sociale.
 // FR uniquement (EN non live, 301→FR).
 import type { ImplementationSlug } from "./implementation";
 
@@ -12,15 +13,6 @@ export interface ImplementationFrOverride {
   maturityIntro: string;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
-  testimonials: ReadonlyArray<{
-    id: string;
-    quote: string;
-    author: string;
-    role: string;
-    avatar: string;
-    photographer: string;
-    photographerUrl: string;
-  }>;
   why: {
     title: string;
     titleEm: string;
@@ -128,38 +120,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un besoin IA complexe que les outils standard ne couvrent pas ?",
     ctaBlockDescription:
       "Parlons de votre architecture, de vos données et de vos contraintes de sécurité. Nous concevons une IA sur-mesure, intégrée à votre SI et dont vous gardez la maîtrise complète.",
-    testimonials: [
-      {
-        id: "ia-custom-1",
-        quote:
-          "Les solutions sur étagère plafonnaient sur notre vocabulaire réglementaire. Un modèle fine-tuné sur nos propres dossiers a enfin donné des réponses exploitables par les équipes métier, sans les reformuler à chaque fois.",
-        author: "Bertrand A.",
-        role: "Directeur de l'innovation, groupe d'assurance, grand compte",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "ia-custom-2",
-        quote:
-          "L'hébergement en cloud privé était une condition absolue pour notre direction juridique. Maîtriser toute la chaîne d'indexation, jusqu'au choix de la vector DB, a levé les réticences internes sur la traçabilité.",
-        author: "Nadia K.",
-        role: "DSI, laboratoire pharmaceutique, ETI",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "ia-custom-3",
-        quote:
-          "Ce qui a fait la différence, c'est la partie MLOps et l'équipe dédiée : le système ne s'est pas dégradé après la mise en production, il a été suivi et réentraîné au fil de nos évolutions métier.",
-        author: "Olivier P.",
-        role: "Responsable data, énergéticien, grand compte",
-        avatar: "/images/reviews/avis-impl-thomas.webp",
-        photographer: "Joseph Gonzalez",
-        photographerUrl: "https://unsplash.com/@miracletwentyone",
-      },
-    ],
     why: {
       title: "Quand les outils standard ne suffisent plus, on passe au",
       titleEm: "sur-mesure",
@@ -278,38 +238,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un assistant conversationnel qui répond juste, sur vos sources ?",
     ctaBlockDescription:
       "Parlons de vos demandes récurrentes (SAV, helpdesk, qualification de leads) et des canaux à couvrir. Vous repartez avec un périmètre clair pour un premier assistant fiable et monitoré.",
-    testimonials: [
-      {
-        id: "chatbot-1",
-        quote:
-          "Le chatbot relié à notre base d'articles traite seul la majorité des demandes de niveau 1 et passe la main proprement dès que le sujet sort de son périmètre. Nos agents se concentrent enfin sur les cas complexes.",
-        author: "Camille V.",
-        role: "Responsable support client, éditeur de logiciel SaaS, ETI",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "chatbot-2",
-        quote:
-          "Sur notre site et notre app, l'assistant répond aux questions courantes sur les commandes et les retours, avec un renvoi vers la fiche concernée. Les clients obtiennent une réponse immédiate sans attendre un agent.",
-        author: "Yann L.",
-        role: "DSI, e-commerçant mode, PME",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "chatbot-3",
-        quote:
-          "L'assistant guide les usagers vers la bonne démarche et reformule en langage clair des informations parfois arides. Quand la question dépasse son cadre, il oriente vers le bon service plutôt que de tenter une réponse approximative.",
-        author: "Inès F.",
-        role: "Directrice de la relation usagers, collectivité",
-        avatar: "/images/reviews/avis-impl-nadia.webp",
-        photographer: "Christina @ wocintechchat.com",
-        photographerUrl: "https://unsplash.com/@wocintechchat",
-      },
-    ],
     why: {
       title: "Vos clients attendent une réponse,",
       titleEm: "pas une file d'attente",
@@ -427,38 +355,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Quel processus vous coûte le plus d'heures aujourd'hui ?",
     ctaBlockDescription:
       "Décrivez-nous un flux répétitif — relances, validations, devis, reporting, onboarding — et nous identifions ensemble les étapes automatisables, leurs seuils de contrôle et le temps qu'elles vous feraient gagner.",
-    testimonials: [
-      {
-        id: "processus-1",
-        quote:
-          "Nos relances de factures et nos rappels de paiement partent désormais tout seuls au bon moment, et chaque échéance suit son propre chemin de relance. L'équipe compta a récupéré ses fins de mois.",
-        author: "Claire M.",
-        role: "DAF, cabinet d'expertise comptable, PME",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "processus-2",
-        quote:
-          "L'enchaînement réception de commande, planification de tournée et confirmation client se déroule sans qu'on rouvre trois logiciels. Les exceptions remontent toutes seules à la bonne personne.",
-        author: "Damien R.",
-        role: "Directeur des opérations, transporteur-logisticien, ETI",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "processus-3",
-        quote:
-          "Le parcours devis-validation-facturation est enchaîné de bout en bout, avec les bons niveaux d'approbation selon le montant. On a arrêté de perdre des dossiers entre deux boîtes mail.",
-        author: "Awa S.",
-        role: "Responsable ADV, agroalimentaire, ETI",
-        avatar: "/images/reviews/avis-impl-nadia.webp",
-        photographer: "Christina @ wocintechchat.com",
-        photographerUrl: "https://unsplash.com/@wocintechchat",
-      },
-    ],
     why: {
       title: "Vos relances et factures ne devraient plus",
       titleEm: "vous échapper",
@@ -577,38 +473,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Transformons vos documents en données exploitables",
     ctaBlockDescription:
       "Emails, PDF, contrats, factures : on construit le pipeline qui les convertit en JSON propre et validé, prêt à alimenter vos outils et vos cas IA. Parlons de vos sources de données et du schéma cible.",
-    testimonials: [
-      {
-        id: "structuration-1",
-        quote:
-          "Nos données clients et dossiers étaient éparpillées entre messagerie, tableurs et actes scannés. Disposer enfin d'un référentiel normalisé et vérifié nous a permis d'arrêter de bricoler avant chaque projet.",
-        author: "Pierre-Yves G.",
-        role: "Associé, cabinet juridique, PME",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "structuration-2",
-        quote:
-          "Avant, chaque équipe avait sa propre façon de nommer et ranger l'information. Le schéma de données unifié qu'on a posé ensemble sert maintenant de base commune à tout ce qu'on construit.",
-        author: "Leïla B.",
-        role: "Responsable back-office, courtier en assurance, PME",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "structuration-3",
-        quote:
-          "On voulait lancer des projets d'IA, mais nos données n'étaient pas exploitables. Mettre le modèle data au carré en amont a tout débloqué pour la suite.",
-        author: "Hugo C.",
-        role: "Directeur technique, foncière immobilière, ETI",
-        avatar: "/images/reviews/avis-impl-thomas.webp",
-        photographer: "Joseph Gonzalez",
-        photographerUrl: "https://unsplash.com/@miracletwentyone",
-      },
-    ],
     why: {
       title: "Vos données dorment dans des fichiers",
       titleEm: "impossibles à exploiter",
@@ -728,38 +592,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Votre CRM/ERP contient déjà la matière, exploitons-la",
     ctaBlockDescription:
       "Scoring de leads, enrichissement de fiches, prévisions de ventes et comptes-rendus automatiques : nous greffons l'IA sur votre Salesforce, HubSpot, Sage, Cegid ou Dynamics sans migration. Parlons de votre premier cas d'usage.",
-    testimonials: [
-      {
-        id: "crm-erp-1",
-        quote:
-          "L'enrichissement s'est branché sur notre HubSpot sans rien changer pour les commerciaux : le secteur et l'effectif sont déjà renseignés à l'arrivée du lead, et l'équipe perd moins de temps à se documenter avant un appel.",
-        author: "Sandrine T.",
-        role: "Directrice commerciale, négoce BtoB, ETI",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "crm-erp-2",
-        quote:
-          "Le scoring s'appuie sur notre vrai historique Dynamics et pas sur une recette toute faite. On priorise les comptes qui ont réellement une chance d'aboutir, et les prévisions collent enfin à ce que vit le terrain.",
-        author: "Mehdi O.",
-        role: "DSI, fabricant d'équipements industriels, ETI",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "crm-erp-3",
-        quote:
-          "Les comptes-rendus de visite se génèrent à partir des notes saisies dans l'outil, et une alerte nous prévient quand un client habituel ralentit ses commandes. On réagit avant de perdre le compte, sans avoir changé de CRM.",
-        author: "Florence J.",
-        role: "Responsable CRM, distribution spécialisée, grand compte",
-        avatar: "/images/reviews/avis-impl-nadia.webp",
-        photographer: "Christina @ wocintechchat.com",
-        photographerUrl: "https://unsplash.com/@wocintechchat",
-      },
-    ],
     why: {
       title: "Votre CRM/ERP dort sur une mine de",
       titleEm: "données inexploitées",
@@ -877,38 +709,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Faites travailler l'IA sur vos documents",
     ctaBlockDescription:
       "Génération de devis et contrats, lecture automatique des pièces entrantes, recherche dans vos archives : décrivons ensemble vos documents et le flux à automatiser en priorité.",
-    testimonials: [
-      {
-        id: "documents-1",
-        quote:
-          "Nos PV de chantier et nos comptes-rendus de réunion sont désormais générés depuis nos modèles, avec le bon cadre contractuel. La rédaction qui mobilisait une demi-journée se fait en quelques minutes, et nos conducteurs de travaux se concentrent sur le terrain.",
-        author: "Antoine W.",
-        role: "Directeur de travaux, groupe BTP, ETI",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "documents-2",
-        quote:
-          "Les courriers et comptes-rendus entrants sont lus, rattachés au bon dossier patient et routés vers le bon pôle automatiquement. Plus de pile à trier le matin, et rien ne se perd entre les services.",
-        author: "Rachida E.",
-        role: "Responsable qualité, clinique privée, ETI",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "documents-3",
-        quote:
-          "Retrouver la bonne clause dans nos milliers de dossiers archivés relevait du casse-tête. La recherche sémantique nous donne le passage exact et le document source, ce qui nous permet de vérifier avant de répondre.",
-        author: "Vincent H.",
-        role: "Responsable conformité, banque de détail, grand compte",
-        avatar: "/images/reviews/avis-impl-thomas.webp",
-        photographer: "Joseph Gonzalez",
-        photographerUrl: "https://unsplash.com/@miracletwentyone",
-      },
-    ],
     why: {
       title: "Vos documents ne devraient plus être un",
       titleEm: "goulot d'étranglement",
@@ -1026,38 +826,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Un agent qui agit, pas seulement qui répond",
     ctaBlockDescription:
       "Décrivez-nous une tâche multi-étapes de votre quotidien — prospection, support, veille ou opérations — et nous vous dirons si un agent IA peut la prendre en charge, avec quels garde-fous et dans quel ordre de déploiement.",
-    testimonials: [
-      {
-        id: "agents-1",
-        quote:
-          "Notre agent de veille concurrentielle décide seul quelles sources approfondir, recoupe les signaux et nous remet une note d'analyse exploitable. On débat des conclusions au lieu d'éplucher les pages nous-mêmes.",
-        author: "Julie N.",
-        role: "Directrice associée, cabinet de conseil / ESN, ETI",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "agents-2",
-        quote:
-          "L'agent traite le premier niveau de nos demandes candidats : il va chercher l'info dans nos outils, tranche les cas simples et n'escalade que ce qui mérite un humain. Le journal des actions nous a rassurés avant la mise en production.",
-        author: "Karim Z.",
-        role: "Responsable recrutement, cabinet RH, PME",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "agents-3",
-        quote:
-          "Pour le suivi éditorial, plusieurs agents se répartissent la collecte des sujets, la vérification et l'alerte. Chacun garde son périmètre et on reconstitue facilement qui a fait quoi quand un point demande validation.",
-        author: "Élodie Q.",
-        role: "Rédactrice en chef, groupe de presse, PME",
-        avatar: "/images/reviews/avis-impl-nadia.webp",
-        photographer: "Christina @ wocintechchat.com",
-        photographerUrl: "https://unsplash.com/@wocintechchat",
-      },
-    ],
     why: {
       title: "Un agent qui agit,",
       titleEm: "pas qui attend",
@@ -1175,38 +943,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Branchez l'IA sur vos outils, sans changer vos habitudes",
     ctaBlockDescription:
       "Slack, Teams, Notion, Airtable, Google Workspace, mail ou APIs internes : on construit les connecteurs qui relient l'IA à votre SI existant, avec contrats d'API documentés, gestion des rate limits, suivi des coûts et code livré chez vous. Parlons de votre stack et des flux à raccorder.",
-    testimonials: [
-      {
-        id: "integrations-1",
-        quote:
-          "L'IA répond directement dans notre Slack et va chercher l'info dans Notion et nos APIs internes. Personne ne change d'outil, et le réflexe est venu tout seul.",
-        author: "Thomas X.",
-        role: "DSI, groupe industriel, grand compte",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "integrations-2",
-        quote:
-          "La liaison avec Google Workspace et notre messagerie tourne sans accroc : les rate limits sont gérés proprement, on n'a jamais subi de blocage côté fournisseur.",
-        author: "Sofia M.",
-        role: "CTO, fintech, scale-up",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "integrations-3",
-        quote:
-          "Ce que je retiens, c'est de voir où l'IA est sollicitée, connecteur par connecteur, entre Teams et nos outils internes. Je peux arbitrer en connaissance de cause.",
-        author: "Renaud D.",
-        role: "Responsable IT, enseigne de retail, ETI",
-        avatar: "/images/reviews/avis-impl-thomas.webp",
-        photographer: "Joseph Gonzalez",
-        photographerUrl: "https://unsplash.com/@miracletwentyone",
-      },
-    ],
     why: {
       title: "Reliez l'IA à vos outils, sans",
       titleEm: "tout chambouler",
@@ -1324,38 +1060,6 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
     ctaBlockTitle: "Vous avez déjà n8n, Make, Zapier, Bubble ou Airtable ?",
     ctaBlockDescription:
       "Montrez-nous vos scénarios existants : nous vous dirons honnêtement où l'IA se greffe proprement dans votre no-code et où le code custom serait un meilleur choix.",
-    testimonials: [
-      {
-        id: "no-code-1",
-        quote:
-          "On voulait tester l'IA sans réécrire nos scénarios Make. Axion-IA a branché le tri et le résumé des demandes dessus en quelques jours, et nous a dit franchement à partir de quel volume il faudrait passer en code custom.",
-        author: "Manon B.",
-        role: "Directrice, agence marketing, PME",
-        avatar: "/images/reviews/avis-impl-catherine.webp",
-        photographer: "Michael Dam",
-        photographerUrl: "https://unsplash.com/@michaeldam",
-      },
-      {
-        id: "no-code-2",
-        quote:
-          "Notre base Airtable est le coeur de notre suivi bénévoles et dons. Ils ont greffé la qualification IA directement dessus, proprement documentée, sans nous enfermer ni nous forcer à migrer.",
-        author: "Cédric L.",
-        role: "Responsable des opérations, association d'intérêt général",
-        avatar: "/images/reviews/avis-impl-marc.webp",
-        photographer: "Jurica Koletić",
-        photographerUrl: "https://unsplash.com/@juricakoletic",
-      },
-      {
-        id: "no-code-3",
-        quote:
-          "Ils ont posé la vraie question dès le départ : no-code ou sur-mesure. Pour cette première brique, la greffe sur nos outils actuels suffisait, et ils ont prévu la sortie au cas où on grandirait.",
-        author: "Aurélie P.",
-        role: "Gérante, organisme de formation, PME",
-        avatar: "/images/reviews/avis-impl-nadia.webp",
-        photographer: "Christina @ wocintechchat.com",
-        photographerUrl: "https://unsplash.com/@wocintechchat",
-      },
-    ],
     why: {
       title: "Gardez vos outils. On y branche",
       titleEm: "l'intelligence",

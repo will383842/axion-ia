@@ -214,7 +214,7 @@ describe("règles pures de la passerelle", () => {
   });
 
   it("seule une candidature recrutée ouvre la passerelle", () => {
-    const base = { offerSlug: "formateur-ia-itinerant", offerTitleSnap: "Formateur IA" };
+    const base = { offerTitleSnap: "Formateur IA", offer: { slug: "formateur-ia-itinerant" } };
     expect(peutCreerFicheFormateur({ ...base, status: "hired" })).toBe(true);
     for (const s of ["new", "offer", "rejected", "archived"] as const) {
       expect(peutCreerFicheFormateur({ ...base, status: s })).toBe(false);

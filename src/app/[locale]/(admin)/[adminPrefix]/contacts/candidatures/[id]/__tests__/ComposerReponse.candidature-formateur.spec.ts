@@ -28,27 +28,26 @@ describe("composeur d'une candidature de formateur", () => {
 
   it("freelance comme salarié sont des candidatures de formateur", () => {
     expect(
-      estCandidatureFormateur({
-        offerSlug: null,
-        offerTitleSnap: "Formateur IA indépendant",
-        employmentType: null,
-        secondaryEmploymentType: null,
-      }),
+      estCandidatureFormateur({ offerTitleSnap: "Formateur IA indépendant", offer: null }),
     ).toBe(true);
     expect(
       estCandidatureFormateur({
-        offerSlug: "formateur-ia-sedentaire",
         offerTitleSnap: "Formateur IA (F/H)",
-        employmentType: "FULL_TIME",
-        secondaryEmploymentType: null,
+        offer: {
+          slug: "formateur-ia-sedentaire",
+          employmentType: "FULL_TIME",
+          secondaryEmploymentType: null,
+        },
       }),
     ).toBe(true);
     expect(
       estCandidatureFormateur({
-        offerSlug: "commercial-ia",
         offerTitleSnap: "Commercial IA",
-        employmentType: "FULL_TIME",
-        secondaryEmploymentType: null,
+        offer: {
+          slug: "commercial-ia",
+          employmentType: "FULL_TIME",
+          secondaryEmploymentType: null,
+        },
       }),
     ).toBe(false);
   });

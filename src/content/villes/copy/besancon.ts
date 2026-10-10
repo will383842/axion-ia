@@ -160,20 +160,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes dont les sièges ou sites majeurs sont implantés dans le Grand Besançon (Maty, Yema) ou le bassin Doubs (Stellantis Sochaux ~80 km).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel adapté à nos contraintes microtechniques. Le rapport est chiffré, actionnable, sans jargon. On a pu présenter le plan au conseil de direction dès la semaine suivante.",
-            role: "Directeur général",
-            companyProfile: "ETI microtechniques, technopôle TEMIS Besançon",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données techniques internes plutôt que des slides. Le livrable a permis de prioriser nos chantiers IA avec un ROI chiffré pour chaque cas d'usage.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME dispositifs médicaux, TEMIS Santé Besançon",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Besançon ?",
@@ -258,20 +244,6 @@ export const BESANCON_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups with HQs or major sites in Grand Besançon (Maty, Yema) or the Doubs basin (Stellantis Sochaux ~80 km).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit tailored to our precision-tech constraints. The report is costed, actionable, jargon-free. We were able to present the plan to the board the very next week.",
-            role: "CEO",
-            companyProfile: "Precision-tech mid-cap, TEMIS technopole Besançon",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal technical data rather than slides. The deliverable helped prioritize our AI initiatives with a costed ROI for each use case.",
-            role: "Head of Transformation",
-            companyProfile: "Medical devices SME, TEMIS Santé Besançon",
           },
         ],
         faq: [
@@ -362,20 +334,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges ou grandes implantations bisontines — roadshow multi-sites Grand Besançon, séminaires CODIR + cascade équipes terrain ou laboratoires.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos ingénieurs de précision. Ils sont repartis avec leurs outils configurés sur leurs vrais workflows de documentation technique. Dès le lendemain, plusieurs les utilisaient en production.",
-            role: "Directeur R&D",
-            companyProfile: "PME microtechniques, TEMIS Innovation Besançon",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles médicales — pas de session générique, des cas concrets qui parlaient à nos équipes.",
-            role: "DG",
-            companyProfile: "ETI dispositifs médicaux, TEMIS Santé Besançon",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Besançon ?",
@@ -460,20 +418,6 @@ export const BESANCON_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Besançon HQs or large sites — multi-site Grand Besançon roadshows, exec committee seminars + field team or lab cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-day format perfectly matched our precision engineers' needs. They left with tools configured for their real technical documentation workflows. By the next day, several were already using them in production.",
-            role: "R&D Director",
-            companyProfile: "Precision-tech SME, TEMIS Innovation Besançon",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our medical sector constraints — no generic session, concrete cases that resonated with our teams.",
-            role: "CEO",
-            companyProfile: "Medical devices mid-cap, TEMIS Santé Besançon",
           },
         ],
         faq: [
@@ -564,20 +508,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Grand Besançon : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation documentation technique livrée comme promis. ROI mesuré dès les premiers mois : nos ingénieurs passent maintenant moins de temps sur les rapports et plus sur l'amélioration produit. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur industriel",
-            companyProfile: "ETI microtechniques, TEMIS Innovation Besançon",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe répartie entre le laboratoire TEMIS Santé et les bureaux du centre. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME dispositifs médicaux, TEMIS Santé Besançon",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Besançon ?",
@@ -662,20 +592,6 @@ export const BESANCON_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Grand Besançon large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Technical documentation automation implementation delivered as promised. ROI measured within the first months: our engineers now spend less time on reports and more on product improvement. No lock-in, we control our deployment.",
-            role: "Industrial Director",
-            companyProfile: "Precision-tech mid-cap, TEMIS Innovation Besançon",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the TEMIS Santé lab and the city-centre offices. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Medical devices SME, TEMIS Santé Besançon",
           },
         ],
         faq: [
@@ -766,20 +682,6 @@ export const BESANCON_COPY: VilleCopy = {
               "Accompagnement individuel pour cadres dirigeants de grandes organisations bisontines ou régionales — programme sur mesure multi-sessions.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'accompagnement individuel m'a permis de construire une vraie vision IA pour mon entreprise, adaptée à nos contraintes microtechniques. Je suis maintenant capable d'évaluer les outils IA et de piloter notre transformation en interne.",
-            role: "Directeur général",
-            companyProfile: "PME microtechniques, Grand Besançon",
-          },
-          {
-            quote:
-              "Sessions pratiques, sur mes vrais documents, avec un consultant qui comprenait mes contraintes médicales. J'ai gagné en autonomie et en clarté sur ce que l'IA peut vraiment apporter à notre activité.",
-            role: "Directeur médical",
-            companyProfile: "Structure médicale, TEMIS Santé Besançon",
-          },
-        ],
         faq: [
           {
             q: "Combien de sessions comprend un accompagnement individuel à Besançon ?",
@@ -864,20 +766,6 @@ export const BESANCON_COPY: VilleCopy = {
             price: "Custom programme",
             detail:
               "Individual coaching for senior executives of large Besançon or regional organisations — bespoke multi-session programme.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The one-to-one coaching helped me build a genuine AI vision for my company, adapted to our precision-tech constraints. I can now evaluate AI tools and drive our transformation internally.",
-            role: "CEO",
-            companyProfile: "Precision-tech SME, Grand Besançon",
-          },
-          {
-            quote:
-              "Practical sessions, on my real documents, with a consultant who understood my medical constraints. I gained autonomy and clarity on what AI can truly bring to our activity.",
-            role: "Medical Director",
-            companyProfile: "Medical structure, TEMIS Santé Besançon",
           },
         ],
         faq: [

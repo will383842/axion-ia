@@ -22,7 +22,7 @@ afterEach(cleanup);
 function rendre() {
   render(<NouvellePresentationForm apporteurs={[{ id: "a1", nom: "ESSAI" }]} />);
   return {
-    siren: screen.getByLabelText(/SIREN de l'entreprise/) as HTMLInputElement,
+    siren: screen.getByLabelText(/SIRET de l'établissement visité/) as HTMLInputElement,
     nom: screen.getByPlaceholderText("Rempli par le registre") as HTMLInputElement,
     verifier: screen.getByRole("button", { name: "Vérifier" }),
   };
@@ -32,11 +32,11 @@ describe("rattrapage : le nom de l'entreprise suit le numéro", () => {
   it("un second numéro vérifié remplace le nom trouvé pour le premier", async () => {
     const f = rendre();
     h.verifier.mockResolvedValueOnce(ok("INVEST SUN"));
-    fireEvent.change(f.siren, { target: { value: "901434837" } });
+    fireEvent.change(f.siren, { target: { value: "90143483700018" } });
     fireEvent.click(f.verifier);
     await waitFor(() => expect(f.nom.value).toBe("INVEST SUN"));
 
-    fireEvent.change(f.siren, { target: { value: "108018631" } });
+    fireEvent.change(f.siren, { target: { value: "10801863100011" } });
     expect(f.nom.value).toBe("");
     h.verifier.mockResolvedValueOnce(ok("AXION IA"));
     fireEvent.click(f.verifier);
@@ -46,7 +46,7 @@ describe("rattrapage : le nom de l'entreprise suit le numéro", () => {
   it("un nom tapé à la main n'est jamais écrasé", async () => {
     const f = rendre();
     fireEvent.change(f.nom, { target: { value: "Mon nom à moi" } });
-    fireEvent.change(f.siren, { target: { value: "108018631" } });
+    fireEvent.change(f.siren, { target: { value: "10801863100011" } });
     expect(f.nom.value).toBe("Mon nom à moi");
     h.verifier.mockResolvedValueOnce(ok("AXION IA"));
     fireEvent.click(f.verifier);

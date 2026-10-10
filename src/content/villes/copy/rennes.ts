@@ -144,20 +144,6 @@ export const RENNES_COPY: VilleCopy = {
               "Pour les sites grands comptes rennais (Canon CRF, Orange Innovation, Stellantis / Safran) souhaitant cadrer une gouvernance IA centralisée multi-sites.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit Axion-IA a mis le doigt sur trois cas d'automatisation que nos équipes n'avaient pas identifiés. Le livrable chiffré nous a permis d'arbitrer rapidement et de démarrer l'implémentation avec un plan clair.",
-            role: "Directeur général",
-            companyProfile: "PME numérique, Rennes Atalante Beaulieu",
-          },
-          {
-            quote:
-              "Méthode terrain et pragmatique : démos sur nos vrais documents de production, pas de présentation générique. Le ROI identifié sur nos processus de contrôle qualité agroalimentaire est concret et mesurable.",
-            role: "Directrice industrielle",
-            companyProfile: "ETI agroalimentaire, bassin rennais",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Rennes ?",
@@ -242,20 +228,6 @@ export const RENNES_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For Rennes large-account sites (Canon CRF, Orange Innovation, Stellantis / Safran) framing centralized multi-site AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA pinpointed three automation use cases our teams had not identified. The costed deliverable let us arbitrate quickly and start implementation with a clear plan.",
-            role: "CEO",
-            companyProfile: "Digital SME, Rennes Atalante Beaulieu",
-          },
-          {
-            quote:
-              "Field-oriented and pragmatic approach: demos on our real production documents, no generic presentation. The identified ROI on our agri-food quality control processes is concrete and measurable.",
-            role: "Industrial Director",
-            companyProfile: "Agri-food mid-cap, Rennes basin",
           },
         ],
         faq: [
@@ -347,20 +319,6 @@ export const RENNES_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites grands comptes du bassin (Orange Innovation, Stellantis / Safran) : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Formation collective parfaitement ciblée sur notre secteur : nos développeurs et chefs de projet sont repartis avec leurs outils IA installés et testés sur de vrais fichiers. Productivité mesurée dès la semaine suivante.",
-            role: "Directeur des opérations",
-            companyProfile: "ETI numérique, Rennes Atalante Beaulieu",
-          },
-          {
-            quote:
-              "La session Dirigeants nous a alignés en quelques heures sur notre stratégie IA agroalimentaire. Aucun cabinet généraliste n'avait su cadrer aussi vite avec une connaissance aussi précise de nos contraintes métier.",
-            role: "Président-directeur général",
-            companyProfile: "ETI agroalimentaire, filière Valorial, bassin rennais",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Rennes ?",
@@ -445,20 +403,6 @@ export const RENNES_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for large-account Rennes basin sites (Orange Innovation, Stellantis / Safran): multi-site roadshows, exec committee + cascade team seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Group format perfectly targeted at our sector: our developers and project managers left with their AI tools installed and tested on real files. Productivity gains measured from the following week.",
-            role: "Head of Operations",
-            companyProfile: "Digital mid-cap, Rennes Atalante Beaulieu",
-          },
-          {
-            quote:
-              "The Executives session aligned us within hours on our agri-food AI strategy. No generalist consultancy had been able to frame this fast with such precise knowledge of our business constraints.",
-            role: "CEO",
-            companyProfile: "Agri-food mid-cap, Valorial sector, Rennes basin",
           },
         ],
         faq: [
@@ -550,20 +494,6 @@ export const RENNES_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes rennais (Orange Innovation, Canon CRF, Stellantis / Safran) : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation agents support + génération de documentation technique livrée comme promis. ROI réel mesuré : temps de traitement divisé par trois, documentation toujours à jour, équipe autonome. Aucun lock-in, on maîtrise nos modèles.",
-            role: "CTO",
-            companyProfile: "Scale-up SaaS, French Tech Rennes Saint-Malo",
-          },
-          {
-            quote:
-              "Méthode hybride efficace sur notre site industriel : kick-off intense, itérations à distance, recette sur site. Nos opérateurs qualité utilisent l'outil au quotidien. La courbe d'apprentissage a été très courte grâce aux ambassadeurs formés en fin de mission.",
-            role: "Responsable industrialisation",
-            companyProfile: "ETI industrielle, Pôle La Janais, bassin rennais",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Rennes ?",
@@ -648,20 +578,6 @@ export const RENNES_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Rennes large accounts (Orange Innovation, Canon CRF, Stellantis / Safran): cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Support agents + technical documentation generation delivered as promised. Real ROI measured: processing time cut by three, documentation always up to date, autonomous team. No lock-in, we control our models.",
-            role: "CTO",
-            companyProfile: "SaaS scale-up, French Tech Rennes Saint-Malo",
-          },
-          {
-            quote:
-              "Effective hybrid method at our industrial site: intense kick-off, remote iterations, on-site acceptance. Our quality operators use the tool daily. The learning curve was very short thanks to the ambassadors trained at mission end.",
-            role: "Industrialization Manager",
-            companyProfile: "Industrial mid-cap, La Janais Pôle, Rennes basin",
           },
         ],
         faq: [
@@ -753,20 +669,6 @@ export const RENNES_COPY: VilleCopy = {
               "Coaching des profils pilotes d'un grand groupe implanté à Rennes (Orange Innovation, Stellantis/Safran) avant déploiement large.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de maîtriser les agents IA sur nos cas de documentation technique Atalante en quelques séances. Niveau de complexité ajusté à ma réalité de CTO. Je suis pleinement autonome.",
-            role: "CTO",
-            companyProfile: "Scale-up SaaS, French Tech Rennes Saint-Malo",
-          },
-          {
-            quote:
-              "En tant que directrice qualité dans l'agroalimentaire, mes cas étaient très spécifiques (IFS Food, traçabilité). Le coaching 1-to-1 a travaillé sur mes vrais documents dès la première séance. Résultat immédiat et mesurable.",
-            role: "Directrice qualité",
-            companyProfile: "ETI agroalimentaire, filière Valorial, bassin rennais",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Rennes ?",
@@ -851,20 +753,6 @@ export const RENNES_COPY: VilleCopy = {
             price: "On quote",
             detail:
               "Coaching of pilot profiles at a major Rennes-based group (Orange Innovation, Stellantis/Safran) before broad rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me master AI agents on our Atalante technical documentation cases within a few sessions. Complexity level adjusted to my CTO reality. Fully autonomous.",
-            role: "CTO",
-            companyProfile: "SaaS scale-up, French Tech Rennes Saint-Malo",
-          },
-          {
-            quote:
-              "As quality director in agri-food, my cases were very specific (IFS Food, traceability). The 1-to-1 coaching worked on my real documents from the first session. Immediate and measurable result.",
-            role: "Quality Director",
-            companyProfile: "Agri-food mid-cap, Valorial sector, Rennes basin",
           },
         ],
         faq: [

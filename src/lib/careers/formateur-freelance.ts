@@ -3,8 +3,9 @@
  *
  * Demande Will 2026-10-09 : sur les deux offres de formateur salarié, un encadré
  * invite les formateurs indépendants vers l'offre freelance, que l'on privilégie.
- * L'offre elle-même vit en base (console › Offres d'emploi) ; ce module ne fait
- * que nommer les slugs, pour que la page et son test les partagent.
+ * L'offre elle-même vit en base (console › Offres d'emploi) ; ce module nomme
+ * les slugs, pour que la page et son test les partagent, et porte le prédicat
+ * `estCandidatureFormateurFreelance` (lot U2).
  *
  * Module PUR (aucun import serveur).
  */
@@ -21,40 +22,72 @@ export function porteEncadreFreelance(slug: string): boolean {
   return SLUGS_OFFRES_FORMATEUR_SALARIE.includes(slug);
 }
 
-/** Ce qu'une candidature dit de son poste — offre éventuelle et intitulé figé. */
-export interface IndicesPosteCandidature {
-  offerSlug: string | null | undefined;
-  offerTitleSnap: string | null | undefined;
-  employmentType: string | null | undefined;
-  secondaryEmploymentType: string | null | undefined;
+/**
+ * Mots qui, ensemble, disent « formateur indépendant » dans un intitulé.
+ * Exportés pour que les filtres SQL (`reponse-poste-pourvu.ts`) écrivent la
+ * même règle que le prédicat : ILIKE ne replie pas les accents, d'où les deux
+ * graphies d'« indépendant ».
+ */
+export const MOTS_FORMATEUR = ["formateur", "formatrice"] as const;
+export const MOTS_FREELANCE = ["freelance", "indépendant", "independant"] as const;
+
+/** Type schema.org d'une offre de sous-traitance. */
+export const EMPLOI_CONTRACTOR = "CONTRACTOR";
+
+type OffreLue = {
+  readonly slug?: string | null;
+  readonly titleFr?: string | null;
+  readonly employmentType?: string | null;
+  readonly secondaryEmploymentType?: string | null;
+};
+type CandidatureLue = {
+  readonly offerTitleSnap?: string | null;
+  readonly offer?: OffreLue | null;
+};
+
+function plie(v: string | null | undefined): string {
+  return (v ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 
-/** Le poste est celui d'un formateur ou d'une formatrice (slug ou intitulé figé). */
-const RE_FORMATEUR = /\bformat(eur|rice)s?\b/i;
-/** L'intitulé dit l'exercice indépendant. Sans `\b` initial : « é » n'est pas un mot pour `\b`. */
-const RE_INDEPENDANT = /freelance|ind[ée]pendante?s?\b/i;
+const contientUn = (texte: string, mots: readonly string[]) =>
+  mots.some((m) => texte.includes(plie(m)));
 
 /**
- * Candidature de formateur FREELANCE (U2/U6, chantier « formateurs freelance »).
- *
- * Vrai si l'un des trois indices le dit :
- *   1. l'offre est l'offre freelance (`formateur-ia-freelance`), quel que soit
- *      le type de contrat saisi sur elle ;
- *   2. l'intitulé figé nomme un formateur ET l'exercice indépendant
- *      (« Formateur IA indépendant », « Formatrice freelance ») — c'est le seul
- *      indice d'une candidature spontanée, et il survit à la suppression de
- *      l'offre ;
- *   3. une offre de formateur en `CONTRACTOR` (type principal ou second).
- *
- * 🔑 Règle UNIQUE : la fiche formateur (U6) et tout autre lot qui doit
- * distinguer le freelance la lisent ici, jamais une copie.
+ * LE prédicat « candidature de formateur FREELANCE » (lot U2, 2026-10-09) —
+ * reçoit une candidature, une offre ou un simple intitulé. Vrai si :
+ *  · l'offre est `formateur-ia-freelance` ;
+ *  · un intitulé (figé sur la candidature, ou celui de l'offre) ou le slug dit
+ *    « formateur|formatrice » ET « freelance|indépendant » — candidature
+ *    spontanée, copie de l'offre ;
+ *  · l'offre est une offre de formateur déclarée CONTRACTOR.
+ * « Formateur IA en entreprise (itinérant) » (salarié) et « travail
+ * indépendant » (sans le mot formateur) restent dehors.
  */
-export function estCandidatureFormateurFreelance(c: IndicesPosteCandidature): boolean {
-  if (c.offerSlug === SLUG_OFFRE_FORMATEUR_FREELANCE) return true;
-  const titre = c.offerTitleSnap ?? "";
-  const formateur =
-    RE_FORMATEUR.test(titre) || (c.offerSlug != null && /^format(eur|rice)\b/.test(c.offerSlug));
+export function estCandidatureFormateurFreelance(
+  entree: string | CandidatureLue | OffreLue | null | undefined,
+): boolean {
+  if (!entree) return false;
+  if (typeof entree === "string") {
+    const t = plie(entree);
+    return contientUn(t, MOTS_FORMATEUR) && contientUn(t, MOTS_FREELANCE);
+  }
+  const offre: OffreLue | null | undefined =
+    "offerTitleSnap" in entree || "offer" in entree
+      ? (entree as CandidatureLue).offer
+      : (entree as OffreLue);
+  if (offre?.slug === SLUG_OFFRE_FORMATEUR_FREELANCE) return true;
+  const textes = [
+    (entree as CandidatureLue).offerTitleSnap,
+    offre?.titleFr,
+    offre?.slug?.replace(/-/g, " "),
+  ].map(plie);
+  const formateur = textes.some((t) => contientUn(t, MOTS_FORMATEUR));
   if (!formateur) return false;
-  if (RE_INDEPENDANT.test(titre)) return true;
-  return c.employmentType === "CONTRACTOR" || c.secondaryEmploymentType === "CONTRACTOR";
+  if (textes.some((t) => contientUn(t, MOTS_FORMATEUR) && contientUn(t, MOTS_FREELANCE))) {
+    return true;
+  }
+  return (
+    offre?.employmentType === EMPLOI_CONTRACTOR ||
+    offre?.secondaryEmploymentType === EMPLOI_CONTRACTOR
+  );
 }

@@ -164,20 +164,6 @@ export const CAEN_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes dont les sites majeurs sont implantés dans le bassin Caen la Mer (NXP Semiconductors Colombelles, Robert Bosch Mondeville, Renault Trucks Blainville-sur-Orne).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel en quelques semaines. Le rapport est chiffré, actionnable, sans jargon. On a pu présenter le plan au comité de direction dès la semaine suivante.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie électronique, bassin Caen la Mer",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes plutôt que des slides. Le livrable a permis de prioriser nos chantiers IA pour le comité de pilotage, avec un ROI chiffré pour chaque cas.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME services numériques, EffiScience Caen",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Caen ?",
@@ -262,20 +248,6 @@ export const CAEN_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups with major sites across the Caen la Mer area (NXP Semiconductors Colombelles, Robert Bosch Mondeville, Renault Trucks Blainville-sur-Orne).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit within a few weeks. The report is costed, actionable, jargon-free. We were able to present the plan to the board the very next week.",
-            role: "CEO",
-            companyProfile: "Electronics industrial mid-cap, Caen la Mer area",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal data rather than slides. The deliverable helped prioritize our AI initiatives with a costed ROI for each use case.",
-            role: "Head of Transformation",
-            companyProfile: "Digital services SME, EffiScience Caen",
           },
         ],
         faq: [
@@ -366,20 +338,6 @@ export const CAEN_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sites du bassin — roadshow multi-sites Caen la Mer, séminaires CODIR + cascade équipes terrain ou laboratoires.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos ingénieurs. Ils sont repartis avec leurs outils configurés sur leurs vrais process de test. Dès le lendemain, plusieurs les utilisaient pour rédiger des rapports d'analyse.",
-            role: "Directeur R&D",
-            companyProfile: "PME électronique, technopôle EffiScience Caen",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles industrielles — pas de session générique, des cas concrets qui parlaient à nos équipes.",
-            role: "DG",
-            companyProfile: "ETI équipementier automobile, bassin Caen la Mer",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Caen ?",
@@ -464,20 +422,6 @@ export const CAEN_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for basin sites — multi-site Caen la Mer roadshows, exec committee seminars + field team or lab cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our engineers' needs. They left with tools configured for their real test processes. By the next day, several were already using them to write up analysis reports.",
-            role: "R&D Director",
-            companyProfile: "Electronics SME, EffiScience technopole Caen",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our industrial sector constraints — no generic session, concrete cases that resonated with our teams.",
-            role: "CEO",
-            companyProfile: "Automotive equipment mid-cap, Caen la Mer area",
           },
         ],
         faq: [
@@ -568,20 +512,6 @@ export const CAEN_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes bassin Caen la Mer : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation rapports qualité électronique livrée comme promis. ROI mesuré dès les premiers mois : nos ingénieurs passent maintenant moins de temps sur les rapports et plus sur l'amélioration process. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur industriel",
-            companyProfile: "ETI électronique, bassin Caen la Mer",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe entre le site industriel et le bureau. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME services numériques, EffiScience Caen",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Caen ?",
@@ -666,20 +596,6 @@ export const CAEN_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Caen la Mer large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Electronics quality report automation implementation delivered as promised. ROI measured within the first months: our engineers now spend less time on reports and more on process improvement. No lock-in, we control our deployment.",
-            role: "Industrial Director",
-            companyProfile: "Electronics mid-cap, Caen la Mer area",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the industrial site and the office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Digital services SME, EffiScience Caen",
           },
         ],
         faq: [
@@ -770,20 +686,6 @@ export const CAEN_COPY: VilleCopy = {
               "Accompagnement de plusieurs dirigeants ou experts clés en parallèle, avec coordination et bilan consolidé pour les grands comptes du bassin Caen la Mer.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching individuel m'a permis de comprendre concrètement comment intégrer l'IA dans mon travail quotidien. Chaque séance débouchait sur un outil ou un prompt que j'utilisais dès le lendemain.",
-            role: "Directeur de recherche",
-            companyProfile: "Laboratoire UCN / ENSICAEN, Caen",
-          },
-          {
-            quote:
-              "J'ai pu progresser à mon rythme sans exposer mes projets en session collective. Le consultant a construit un programme 100% adapté à mes contraintes sectorielles.",
-            role: "Directrice générale",
-            companyProfile: "PME industrie équine, bassin Caen la Mer",
-          },
-        ],
         faq: [
           {
             q: "Combien de séances faut-il pour progresser concrètement ?",
@@ -868,20 +770,6 @@ export const CAEN_COPY: VilleCopy = {
             price: "Programme on quote",
             detail:
               "Support for several executives or key experts in parallel, with coordination and consolidated review for large accounts across the Caen la Mer area.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The individual coaching let me understand concretely how to integrate AI into my daily work. Each session produced a tool or prompt I was using the very next day.",
-            role: "Research Director",
-            companyProfile: "UCN / ENSICAEN laboratory, Caen",
-          },
-          {
-            quote:
-              "I was able to progress at my own pace without exposing my projects in a group session. The consultant built a programme 100% adapted to my sector constraints.",
-            role: "CEO",
-            companyProfile: "Equine industry SME, Caen la Mer area",
           },
         ],
         faq: [

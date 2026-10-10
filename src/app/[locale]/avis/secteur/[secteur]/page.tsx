@@ -12,8 +12,9 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildCollectionPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, getAggregateRating } from "@/server/reviews/queries";
 import { FacetReviewsPage } from "@/components/reviews/FacetReviewsPage";
-import { FACET_MIN_COUNT } from "@/lib/reviews/config";
+import { FACET_MIN_COUNT, noteGlobaleAffichable } from "@/lib/reviews/config";
 import { isClientSectorSlug, clientSectorLabel } from "@/content/sectors";
+import { avisPublies } from "@/server/reviews/presence";
 
 interface Props {
   params: Promise<{ locale: string; secteur: string }>;
@@ -29,21 +30,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/avis/secteur/${secteur}`,
     title: `Avis clients Axion-IA — secteur ${label}`,
-    description: `Retours d'expérience vérifiés de clients Axion-IA dans le secteur ${label}.`,
+    description: `Retours d'expérience de clients Axion-IA dans le secteur ${label}.`,
     alternates: { fr: `/avis/secteur/${secteur}`, en: `/avis/secteur/${secteur}` },
   });
 }
 
 export default async function AvisSecteurFacetPage({ params }: Props) {
+  // Règle automatique (src/content/preuves-sociales.ts) : 404 tant qu'aucun avis
+  // n'est publié. Le 404 est mis en cache ISR (revalidate) puis régénéré : la
+  // page revient seule au premier avis publié, sans redéploiement.
+  if (!(await avisPublies())) notFound();
   const { locale, secteur } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   if (!isClientSectorSlug(secteur)) notFound();
   setRequestLocale(locale);
 
-  const [reviews, agg] = await Promise.all([
+  const [reviews, aggBrut] = await Promise.all([
     getPublishedReviews({ clientSector: secteur, pageSize: 48 }),
     getAggregateRating({ clientSector: secteur }),
   ]);
+  // Note de la facette seulement à partir de 5 avis (règle de preuves-sociales.ts).
+  const agg = noteGlobaleAffichable(aggBrut);
   if (reviews.total < FACET_MIN_COUNT) notFound();
 
   const label = clientSectorLabel(secteur);
@@ -55,7 +62,7 @@ export default async function AvisSecteurFacetPage({ params }: Props) {
           locale,
           path: `/avis/secteur/${secteur}`,
           name: `Avis clients Axion-IA — secteur ${label}`,
-          description: `Avis clients vérifiés d'Axion-IA dans le secteur ${label}.`,
+          description: `Avis clients d'Axion-IA dans le secteur ${label}.`,
         })}
       />
       <FacetReviewsPage
@@ -66,8 +73,8 @@ export default async function AvisSecteurFacetPage({ params }: Props) {
         answerQuestion={`Axion-IA a-t-il de bons avis dans le secteur ${label} ?`}
         answerText={
           agg
-            ? `Dans le secteur ${label}, Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis vérifiés.`
-            : `Retrouvez les avis vérifiés des clients d'Axion-IA dans le secteur ${label}.`
+            ? `Dans le secteur ${label}, Axion-IA obtient une note moyenne de ${agg.ratingValue.toLocaleString("fr-FR", { minimumFractionDigits: 1 })}/5 sur ${agg.reviewCount} avis clients.`
+            : `Retrouvez les avis des clients d'Axion-IA dans le secteur ${label}.`
         }
         breadcrumbLabel={label}
         breadcrumbHref={`/avis/secteur/${secteur}`}

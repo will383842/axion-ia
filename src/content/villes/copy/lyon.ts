@@ -136,20 +136,6 @@ export const LYON_COPY: VilleCopy = {
               "Pour les grandes entreprises et groupes dont les sièges ou sites majeurs sont implantés dans la Métropole (Sanofi Gerland, bioMérieux, Groupe SEB Écully, Renault Trucks Saint-Priest).",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA nous a livré un audit opérationnel en quelques semaines. Le rapport est chiffré, actionnable, sans jargon. On a pu présenter le plan au conseil de direction dès la semaine suivante.",
-            role: "Directeur général",
-            companyProfile: "ETI industrie, Métropole de Lyon",
-          },
-          {
-            quote:
-              "Méthode pragmatique, démos sur nos données internes plutôt que des slides. Le livrable a permis de prioriser nos chantiers IA pour le comité de direction, avec un ROI chiffré pour chaque cas.",
-            role: "Directrice de la transformation",
-            companyProfile: "PME conseil, Part-Dieu Lyon",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Lyon ?",
@@ -234,20 +220,6 @@ export const LYON_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For large enterprises and groups with HQs or major sites in the Métropole (Sanofi Gerland, bioMérieux, Groupe SEB Écully, Renault Trucks Saint-Priest).",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Axion-IA delivered an operational audit within a few weeks. The report is costed, actionable, jargon-free. We were able to present the plan to the board the very next week.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Métropole de Lyon",
-          },
-          {
-            quote:
-              "Pragmatic method, demos on our internal data rather than slides. The deliverable helped prioritize our AI initiatives with a costed ROI for each use case.",
-            role: "Head of Transformation",
-            companyProfile: "Consulting SME, Part-Dieu Lyon",
           },
         ],
         faq: [
@@ -338,20 +310,6 @@ export const LYON_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour les sièges lyonnais — roadshow multi-sites Métropole, séminaires CODIR + cascade équipes terrain ou laboratoires.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le format collectif (1 journée) a parfaitement collé aux attentes de nos équipes R&D. Ils sont repartis avec leurs outils configurés sur leurs vrais protocoles. Dès le lendemain, plusieurs les utilisaient pour rédiger des comptes-rendus d'expériences.",
-            role: "Directeur R&D",
-            companyProfile: "PME biotech, Gerland Lyon",
-          },
-          {
-            quote:
-              "La conférence dirigeants nous a alignés en une journée sur notre trajectoire IA. Le consultant connaissait nos contraintes sectorielles industrielles — pas de session générique, des cas concrets qui parlaient à nos équipes.",
-            role: "DG",
-            companyProfile: "ETI industrie, Vallée de la Chimie",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Lyon ?",
@@ -436,20 +394,6 @@ export const LYON_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for Lyon HQs — multi-site Métropole roadshows, exec committee seminars + field team or lab cascade.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group format perfectly matched our R&D team's needs. They left with tools configured for their real protocols. By the next day, several were already using them to write up experimental reports.",
-            role: "R&D Director",
-            companyProfile: "Biotech SME, Gerland Lyon",
-          },
-          {
-            quote:
-              "The executive talk aligned us within a day on our AI trajectory. The consultant knew our industrial sector constraints — no generic session, concrete cases that resonated with our teams.",
-            role: "CEO",
-            companyProfile: "Industrial mid-cap, Vallée de la Chimie",
           },
         ],
         faq: [
@@ -540,20 +484,6 @@ export const LYON_COPY: VilleCopy = {
               "Programmes annuels pour grands comptes Métropole de Lyon : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Implémentation automatisation rapports qualité livrée comme promis. ROI mesuré dès les premiers mois : nos ingénieurs passent maintenant moins de temps sur les rapports et plus sur l'amélioration produit. Aucun lock-in, on maîtrise notre déploiement.",
-            role: "Directeur industriel",
-            companyProfile: "ETI équipementier, Métropole de Lyon",
-          },
-          {
-            quote:
-              "Méthode hybride parfaite pour notre équipe dispersée entre le labo Gerland et le bureau Part-Dieu. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont opérationnels de façon autonome.",
-            role: "CTO",
-            companyProfile: "PME biotech, Gerland Lyon",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Lyon ?",
@@ -638,20 +568,6 @@ export const LYON_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for Métropole de Lyon large accounts: cascaded multi-site use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "Quality report automation implementation delivered as promised. ROI measured within the first months: our engineers now spend less time on reports and more on product improvement. No lock-in, we control our deployment.",
-            role: "Industrial Director",
-            companyProfile: "Equipment supplier mid-cap, Métropole de Lyon",
-          },
-          {
-            quote:
-              "Perfect hybrid method for our team split between the Gerland lab and the Part-Dieu office. Intense on-site kick-off, then smooth remote iterations. Our internal ambassadors operate autonomously.",
-            role: "CTO",
-            companyProfile: "Biotech SME, Gerland Lyon",
           },
         ],
         faq: [
@@ -742,20 +658,6 @@ export const LYON_COPY: VilleCopy = {
               "Pour dirigeants de grandes entreprises et groupes implantés dans la Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Format confidentiel haut niveau, agenda adapté aux contraintes de direction générale.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "J'avais besoin d'un espace confidentiel pour travailler sur ma posture de dirigeant face à l'IA, sans que ça sorte de ma direction générale. Les sessions 1-to-1 m'ont permis de clarifier ma stratégie et de reprendre le leadership sur le sujet en interne.",
-            role: "Directeur général",
-            companyProfile: "PME services B2B, Part-Dieu Lyon",
-          },
-          {
-            quote:
-              "En tant que dirigeant d'une ETI dans la Vallée de la Chimie, je n'avais pas le temps d'une formation collective. Le coaching individuel a ciblé exactement mes cas : reporting qualité, relation clients grands comptes, préparation de CA. Résultats mesurables dès les premières sessions.",
-            role: "PDG",
-            companyProfile: "ETI industrie chimique, Vallée de la Chimie",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective Axion-IA ?",
@@ -840,20 +742,6 @@ export const LYON_COPY: VilleCopy = {
             price: "Large accounts programme — on quote",
             detail:
               "For large enterprise and group executives in the Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Confidential senior format, schedule adapted to executive constraints.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "I needed a confidential space to work on my leadership stance towards AI, without it leaking from my executive committee. The 1-to-1 sessions helped me clarify my strategy and regain leadership on the topic internally.",
-            role: "CEO",
-            companyProfile: "B2B services SME, Part-Dieu Lyon",
-          },
-          {
-            quote:
-              "As the head of a mid-cap in the Vallée de la Chimie, I had no time for group training. The individual coaching targeted exactly my cases: quality reporting, key account client relations, board preparation. Measurable results from the first sessions.",
-            role: "Chairman & CEO",
-            companyProfile: "Industrial chemical mid-cap, Vallée de la Chimie",
           },
         ],
         faq: [

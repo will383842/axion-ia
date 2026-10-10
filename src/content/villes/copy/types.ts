@@ -41,20 +41,6 @@ export interface VilleServicesContext {
 }
 
 /**
- * Témoignage local pour preuve sociale spécifique à la ville × service.
- * Anonymisé (pas de nom entreprise complet) pour respecter la convention
- * Axion-IA (cf. `src/content/case-studies.ts`).
- */
-export interface VilleTestimonial {
-  /** Quote 30-80 mots. */
-  quote: string;
-  /** Rôle anonymisé (ex "Directeur général"). */
-  role: string;
-  /** Profil entreprise anonymisé (ex "ETI conseil 9e arrondissement, 250 collab"). */
-  companyProfile: string;
-}
-
-/**
  * Copie longue d'un service à la ville — pour la page ville × service
  * dédiée (`/audit/[ville]`, `/interventions/[ville]`, `/implementation/[ville]`).
  *
@@ -91,11 +77,6 @@ export interface VilleServiceCopyLocale {
     price: string; // "1 190 € HT" / "1 900 - 3 900 € HT" / "Sur devis"
     detail: string; // 1 phrase contextuelle
   }>;
-  /**
-   * Témoignages clients locaux anonymisés (1-3 par service × ville).
-   * Pivot social proof : "ETI conseil 9e arrondissement, 250 collab" + quote.
-   */
-  testimonials?: ReadonlyArray<VilleTestimonial>;
   /**
    * FAQ spécifique au service à la ville (4-8 Q/R). Speakable JSON-LD.
    * Sujets : tarifs locaux, délai démarrage, formats, RGPD, garanties,

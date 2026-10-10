@@ -250,6 +250,13 @@ export default async function ApporteurAffairesPage({ params }: Props) {
       answer:
         "Aucun. L'activité est ouverte à tout indépendant en capacité de facturer, sans limite d'âge. Les commerciaux à la retraite y sont particulièrement bien placés : le carnet d'adresses est constitué et le rythme est libre. L'effet d'une activité indépendante sur une pension dépend en revanche de la situation personnelle et doit être vérifié auprès de la caisse de retraite.",
     },
+    {
+      // Décision de Will (09/10/2026) : le contrat d'apporteur est réservé à la France.
+      id: "etranger",
+      question: "Peut-on être apporteur d'affaires depuis l'étranger ?",
+      answer:
+        "Pas pour l'instant. Le réseau d'apporteurs d'Axion-IA est réservé aux personnes qui résident fiscalement en France et y exercent sous un numéro SIRET actif. Créer une micro-entreprise en France ne suffit pas si l'on réside à l'étranger.",
+    },
   ];
 
   // JUR-T29 : aucun bloc JSON-LD ne porte de valeur de commission. La réponse

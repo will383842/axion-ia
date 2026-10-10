@@ -82,20 +82,6 @@ const AUDIT_FR: VilleServiceCopyLocale = {
         "Pour les grandes entreprises et groupes ayant des sites opérationnels, des entrepôts ou des directions à Saint-Denis ou dans l'intercommunalité Plaine Commune.",
     },
   ],
-  testimonials: [
-    {
-      quote:
-        "Axion-IA a livré un audit opérationnel concret sur notre activité logistique. Le rapport chiffre précisément le temps gagnable sur le traitement des bons de livraison et la qualification des expéditions. On a pu prioriser nos chantiers IA en une seule restitution.",
-      role: "Directeur des opérations",
-      companyProfile: "PME logistique, Plaine Saint-Denis",
-    },
-    {
-      quote:
-        "Méthode pragmatique, démos sur nos vrais scripts et contrats de production. Le livrable a permis de présenter un plan IA au comité de direction avec un ROI chiffré pour chaque cas d'usage audiovisuel.",
-      role: "Directrice de production",
-      companyProfile: "Société de production, Plaine Saint-Denis",
-    },
-  ],
   faq: [
     {
       q: "Combien de temps dure un audit IA Axion-IA à Saint-Denis ?",
@@ -182,20 +168,6 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
       price: "Format personnalisé multi-formats",
       detail:
         "Combinaisons sur-mesure pour les grands comptes de la Plaine — roadshow multi-sites, séminaires CODIR + cascade équipes terrain ou entrepôts.",
-    },
-  ],
-  testimonials: [
-    {
-      quote:
-        "Le format collectif (1 journée) a parfaitement collé aux attentes de notre équipe logistique. Ils sont repartis avec leurs outils configurés sur les vrais bons de livraison. Dès le lendemain, le traitement des anomalies de stock prenait deux fois moins de temps.",
-      role: "Responsable entrepôt",
-      companyProfile: "PME logistique, Plaine Saint-Denis",
-    },
-    {
-      quote:
-        "La session Dirigeants nous a alignés en une journée sur notre stratégie IA. Le consultant connaissait les enjeux de la production audiovisuelle — pas de discours générique, des cas concrets qui parlaient à notre équipe.",
-      role: "Directeur de production",
-      companyProfile: "Société audiovisuelle, Plaine Saint-Denis",
     },
   ],
   faq: [
@@ -286,20 +258,6 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
         "Programmes annuels pour grands comptes de la Plaine Saint-Denis : cas d'usage cascadés multi-sites, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
     },
   ],
-  testimonials: [
-    {
-      quote:
-        "Implémentation automatisation flux logistiques livrée comme promis. ROI mesuré dès les premiers mois : nos équipes passent maintenant moins de temps sur le traitement des bons de livraison et plus sur la valeur ajoutée terrain.",
-      role: "Directeur logistique",
-      companyProfile: "PME distribution, Plaine Saint-Denis",
-    },
-    {
-      quote:
-        "Méthode hybride parfaite pour notre équipe de production dispersée entre le studio et les tournages en région. Kick-off intense sur site, puis itérations à distance fluides. Nos ambassadeurs internes sont totalement autonomes.",
-      role: "Producteur exécutif",
-      companyProfile: "Société de production audiovisuelle, Plaine Saint-Denis",
-    },
-  ],
   faq: [
     {
       q: "Combien de temps dure une implémentation Axion-IA à Saint-Denis ?",
@@ -386,20 +344,6 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
       price: "Sur devis — programme dirigeants",
       detail:
         "Programme personnalisé pour les dirigeants de grands groupes ayant des sites dans la Plaine Saint-Denis — format intensive ou étalé selon les contraintes agenda.",
-    },
-  ],
-  testimonials: [
-    {
-      quote:
-        "J'avais besoin d'un accompagnement sur mesure, pas d'une formation collective. En deux sessions, j'ai configuré l'IA sur mes vrais bons de livraison et mes emails fournisseurs. Gain de temps immédiat sur l'administratif logistique.",
-      role: "Gérant",
-      companyProfile: "PME logistique, Plaine Saint-Denis",
-    },
-    {
-      quote:
-        "Format parfait pour un producteur avec un emploi du temps chargé. Les sessions sont ciblées sur mes vrais enjeux de production, pas sur des slides génériques. J'ai pu ensuite déployer les pratiques dans toute mon équipe.",
-      role: "Producteur exécutif",
-      companyProfile: "Société audiovisuelle, Saint-Denis",
     },
   ],
   faq: [

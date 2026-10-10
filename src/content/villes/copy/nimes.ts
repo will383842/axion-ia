@@ -131,20 +131,6 @@ export const NIMES_COPY: VilleCopy = {
               "Pour les directions IA de grands groupes implantés dans le Gard (BRL, Royal Canin, CHU) souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'audit était ancré dans nos réalités nîmoises dès le kick-off : nos données, nos devis BTP, notre façon de travailler. Le livrable chiffré nous a permis de présenter un business case solide à notre direction.",
-            role: "Directeur général",
-            companyProfile: "PME BTP, Nîmes Ouest, ~80 collaborateurs",
-          },
-          {
-            quote:
-              "Méthode rigoureuse, démos sur nos vraies données de facturation et de gestion de stock. On est repartis avec un plan d'action clair, sans jargon et sans dépendance envers Axion-IA.",
-            role: "Responsable opérations",
-            companyProfile: "ETI distribution agroalimentaire, bassin nîmois, ~300 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nîmes ?",
@@ -229,20 +215,6 @@ export const NIMES_COPY: VilleCopy = {
             price: "Extended Mid-cap Strategic audit",
             detail:
               "For AI leadership at large groups in the Gard (BRL, Royal Canin, CHU) framing centralised AI governance.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The audit was grounded in our Nîmes realities from kick-off: our data, our construction quotes, our way of working. The costed deliverable let us build a solid business case for our leadership.",
-            role: "CEO",
-            companyProfile: "Construction SME, Nîmes West, ~80 staff",
-          },
-          {
-            quote:
-              "Rigorous method, demos on our real invoicing and stock-management data. We left with a clear action plan, jargon-free and with no dependency on Axion-IA.",
-            role: "Operations Manager",
-            companyProfile: "Agri-food distribution mid-cap, Nîmes basin, ~300 staff",
           },
         ],
         faq: [
@@ -334,20 +306,6 @@ export const NIMES_COPY: VilleCopy = {
               "Combinaisons sur-mesure pour BRL, Royal Canin ou CHU Carémeau : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "La formation en groupe était adaptée à notre activité BTP nîmoise dès la préparation. Le lendemain, nos conducteurs de travaux utilisaient déjà les outils IA pour leurs comptes-rendus de chantier.",
-            role: "Gérant",
-            companyProfile: "PME BTP, Nîmes, ~40 collaborateurs",
-          },
-          {
-            quote:
-              "Format Dirigeants parfait pour cadrer notre stratégie IA en quelques heures. Axion-IA a su adapter le discours à notre réalité d'ETI gardoise, sans jargon et avec des exemples concrets de notre secteur.",
-            role: "Président directeur général",
-            companyProfile: "ETI services aux entreprises, bassin nîmois, ~500 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une intervention Axion-IA à Nîmes ?",
@@ -432,20 +390,6 @@ export const NIMES_COPY: VilleCopy = {
             price: "Custom multi-format program",
             detail:
               "Custom combinations for BRL, Royal Canin or CHU Carémeau: multi-site roadshows, executive + team cascade seminars.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The group training session was adapted to our Nîmes construction activity from preparation onwards. The next day, our site managers were already using AI tools for their site meeting minutes.",
-            role: "Managing Director",
-            companyProfile: "Construction SME, Nîmes, ~40 staff",
-          },
-          {
-            quote:
-              "The Executives format was perfect for framing our AI strategy in a few hours. Axion-IA adapted the discourse to our Gard mid-cap reality, jargon-free with concrete examples from our sector.",
-            role: "Chairman and CEO",
-            companyProfile: "Business services mid-cap, Nîmes basin, ~500 staff",
           },
         ],
         faq: [
@@ -537,20 +481,6 @@ export const NIMES_COPY: VilleCopy = {
               "Programmes annuels pour grands groupes du Gard (BRL, Royal Canin, CHU Carémeau) : cas d'usage cascadés, gouvernance IA centralisée, équipe Axion-IA dédiée en mode régie.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "L'implémentation de la lecture automatique de nos bons de commande et factures fournisseurs a libéré plusieurs équivalents temps plein sur des tâches admin. ROI réel mesuré conforme au SOW. Aucun lock-in, on a la main sur les modèles.",
-            role: "DAF",
-            companyProfile: "ETI négoce matériaux, bassin nîmois, ~400 collaborateurs",
-          },
-          {
-            quote:
-              "Kick-off intense sur site, puis itérations à distance avec des points courts et efficaces. Notre équipe IT n'a jamais été perdue dans la méthode. Les ambassadeurs internes sont totalement autonomes depuis le go-live.",
-            role: "DSI",
-            companyProfile: "PME ingénierie et services, Nîmes, ~120 collaborateurs",
-          },
-        ],
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nîmes ?",
@@ -635,20 +565,6 @@ export const NIMES_COPY: VilleCopy = {
             price: "Multi-deployment large program",
             detail:
               "Annual programs for major Gard groups (BRL, Royal Canin, CHU Carémeau): cascaded use cases, centralised AI governance, dedicated Axion-IA team in retainer mode.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The automatic reading of our purchase orders and supplier invoices freed several FTEs from admin tasks. Real ROI measured in line with the SOW. No lock-in, we control our models.",
-            role: "CFO",
-            companyProfile: "Building materials distribution mid-cap, Nîmes basin, ~400 staff",
-          },
-          {
-            quote:
-              "Intense on-site kick-off, then remote iterations with short, efficient check-ins. Our IT team was never lost in the method. Internal ambassadors have been fully autonomous since go-live.",
-            role: "CIO",
-            companyProfile: "Engineering and services SME, Nîmes, ~120 staff",
           },
         ],
         faq: [
@@ -740,20 +656,6 @@ export const NIMES_COPY: VilleCopy = {
               "Coaching des profils pilotes d'un grand groupe implanté dans le Gard avant déploiement large.",
           },
         ],
-        testimonials: [
-          {
-            quote:
-              "Le coaching 1-to-1 m'a permis de mettre l'IA au service de mes devis et comptes-rendus de chantier en quelques séances. Ancré dans le BTP nîmois, pas générique. Je suis autonome sur tous mes documents.",
-            role: "Gérant",
-            companyProfile: "PME BTP, Nîmes, ~35 collaborateurs",
-          },
-          {
-            quote:
-              "En tant que responsable logistique, j'avais des besoins très précis sur la gestion documentaire fournisseurs. Le coaching 1-to-1 a travaillé sur mes vrais bons de commande dès la première séance. Résultat immédiat.",
-            role: "Responsable logistique",
-            companyProfile: "ETI négoce distribution, bassin nîmois",
-          },
-        ],
         faq: [
           {
             q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Nîmes ?",
@@ -837,20 +739,6 @@ export const NIMES_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "On quote",
             detail: "Coaching of pilot profiles at a major Gard-based group before broad rollout.",
-          },
-        ],
-        testimonials: [
-          {
-            quote:
-              "The 1-to-1 coaching let me apply AI to my construction quotes and site meeting minutes within a few sessions. Rooted in Nîmes construction reality, not generic. I am autonomous on all my documents.",
-            role: "Managing Director",
-            companyProfile: "Construction SME, Nîmes, ~35 staff",
-          },
-          {
-            quote:
-              "As a logistics manager, I had very specific needs around supplier document management. The 1-to-1 coaching worked on my real purchase orders from the first session. Immediate result.",
-            role: "Logistics Manager",
-            companyProfile: "Distribution mid-cap, Nîmes basin",
           },
         ],
         faq: [
