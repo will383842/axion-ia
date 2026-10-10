@@ -11,8 +11,9 @@ import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
+import { prisma } from "@/lib/prisma";
 import { isR2Configured } from "@/lib/r2-storage";
-import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
+import { journaliser } from "@/server/journal/journaliser";
 
 import { peutImporterRegistre } from "./regles";
 import { lireRegistreJson } from "./schema";
@@ -51,18 +52,17 @@ export async function importerRegistre(formData: FormData): Promise<ResultatImpo
     return { ok: false, erreur: "L'enregistrement a échoué. Réessayez dans un instant." };
   }
 
-  await ecrireJournalActivite(
-    { adminUserId: user.id },
-    {
-      action: "conformite.registre.importe",
-      targetType: "RegistreRgpd",
-      changes: {
-        traitements: v.registre.traitements.length,
-        ecarts: v.registre.traitements.reduce((n, t) => n + t.ecarts.length, 0),
-        octets: fichier.size,
-      },
+  await journaliser(prisma, {
+    action: "conformite.registre.importe",
+    targetType: "RegistreRgpd",
+    targetId: null,
+    session: { userId: user.id },
+    changes: {
+      traitements: v.registre.traitements.length,
+      ecarts: v.registre.traitements.reduce((n, t) => n + t.ecarts.length, 0),
+      octets: fichier.size,
     },
-  );
+  });
   return { ok: true, traitements: v.registre.traitements.length };
 }
 

@@ -367,6 +367,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    exceptions — c'est un module mal rangé.
   "src/server/editorial/plan-production-pdf.spec.tsx",
   "src/server/editorial/plan-production-pdf.tsx",
+  // ── Registre RGPD en PDF (console Conformité RGPD, 2026-10-10) : même
+  //    plomberie seulement — jetons, polices, nettoyage d'espaces. DEUXIÈME
+  //    emprunteur : le prochain déplace la plomberie vers une zone neutre.
+  "src/features/conformite-rgpd/registre-pdf.tsx",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
   // ── Liste de suppression (audit e-mails 2026-09-02) : un envoi retenu

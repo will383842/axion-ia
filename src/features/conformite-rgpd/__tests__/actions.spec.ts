@@ -21,8 +21,9 @@ vi.mock("@/lib/r2-storage", () => ({
   uploadToR2: vi.fn(),
   getObjectBufferR2: vi.fn(),
 }));
-vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
-  ecrireJournalActivite: (...a: unknown[]) => h.journal(...a),
+vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+vi.mock("@/server/journal/journaliser", () => ({
+  journaliser: (...a: unknown[]) => h.journal(...a),
 }));
 vi.mock("../stockage", async (orig) => ({
   ...(await orig<typeof import("../stockage")>()),
