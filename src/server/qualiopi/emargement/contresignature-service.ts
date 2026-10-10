@@ -42,6 +42,15 @@ import { demiJourneeCommencee } from "./creneaux-signables";
 //    CE QUI A ÉTÉ SIGNÉ.
 import { MENTION_VERSION_CONTRESIGNATURE } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
+import {
+  ConditionSuspensiveEnAttenteError,
+  MESSAGE_REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONDITION_SUSPENSIVE,
+  REFUS_CONVENTION_CADUQUE,
+  blocageConditionSuspensive,
+  refusDuBlocage,
+  exigerConditionLevee,
+} from "@/server/qualiopi/financements/condition-suspensive-service";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, ce n'est plus une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -54,6 +63,8 @@ export type RefusContresignature =
   | "base_indisponible"
   | "session_introuvable"
   | "session_close"
+  | typeof REFUS_CONDITION_SUSPENSIVE
+  | typeof REFUS_CONVENTION_CADUQUE
   | "journee_non_declaree"
   | "formateur_introuvable"
   | "pas_encore_commence"
@@ -151,6 +162,17 @@ export async function contresignerDemiJournee(
       ok: false,
       raison: "session_close",
       message: "Cette session est annulée ou reportée : elle ne peut plus être émargée.",
+    };
+  }
+
+  // 🔴 INT-T81-A — condition suspensive OPCO en attente : pas d'émargement, donc
+  // pas de contresignature. Relu plus bas dans la transaction d'insertion.
+  const blocage = await blocageConditionSuspensive(session.id);
+  if (blocage.bloque) {
+    return {
+      ok: false,
+      raison: refusDuBlocage(blocage),
+      message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
     };
   }
 
@@ -290,6 +312,7 @@ export async function contresignerDemiJournee(
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
     try {
       const cree = await prisma.$transaction(async (tx) => {
+        await exigerConditionLevee(session.id, tx);
         // 🔴 Ordre de la chaîne = celui de l'INSERTION (`createdAt`), jamais
         // `signeAt` (figé avant l'upload R2). Portée : (session × formateur).
         // ⚠️ Tout vérificateur — étape D comprise — trie À L'IDENTIQUE.
@@ -335,6 +358,14 @@ export async function contresignerDemiJournee(
 
       return { ok: true, contresignatureId: cree.id, selfHash: cree.selfHash };
     } catch (err) {
+      if (err instanceof ConditionSuspensiveEnAttenteError) {
+        await nettoyerImageOrpheline(image);
+        return {
+          ok: false,
+          raison: err.code,
+          message: MESSAGE_REFUS_CONDITION_SUSPENSIVE,
+        };
+      }
       const conflit = err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
       if (!conflit) {
         await nettoyerImageOrpheline(image);

@@ -72,6 +72,7 @@ import {
 } from "@/server/qualiopi/trainers/piece-competence";
 import {
   requireAdminWrite,
+  requireAdminPublish,
   requireHabilitation,
   logQualiopiActivity,
   donneesJournalQualiopi,
@@ -90,6 +91,9 @@ import {
   changementsTransition,
   evaluerLecture,
   lireConditionSuspensive,
+  leverBlocage,
+  ACTION_LEVEE_BLOCAGE,
+  MOTIFS_LEVEE_BLOCAGE,
 } from "@/server/qualiopi/financements/condition-suspensive-service";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
@@ -520,6 +524,75 @@ export async function renoncerConditionSuspensiveAction(input: {
       etat: "active",
       message:
         "Renonciation enregistrée : la convention produit ses effets à sa date de signature.",
+    },
+  };
+}
+
+const leveeBlocageSchema = z
+  .object({
+    documentId: z.string().uuid(),
+    /** Motif FERMÉ : jamais un texte libre. */
+    motif: z.enum(MOTIFS_LEVEE_BLOCAGE),
+    /** Référence du document de renonciation écrite : un repère, pas un récit. */
+    referenceRenonciation: z
+      .string()
+      .trim()
+      .min(3)
+      .max(80)
+      .regex(/^[A-Za-z0-9][A-Za-z0-9 ._\-/]*$/, "Référence invalide"),
+  })
+  .strict();
+
+const LIBELLE_REFUS_LEVEE: Record<string, string> = {
+  introuvable: "Cette pièce ne porte pas de condition suspensive.",
+  pas_en_attente:
+    "La condition n'est plus en attente (ou la convention est annulée) : il n'y a rien à lever.",
+  deja_levee: "Le blocage de cette convention a déjà été levé : une levée ne se réécrit pas.",
+  journal_incoherent: "Levée refusée : journal incohérent.",
+};
+
+/**
+ * INT-T81-A — LÈVE, une seule fois, le blocage de la convocation et de
+ * l'émargement d'une session dont la convention est encore `en_attente`, parce
+ * que le client a renoncé PAR ÉCRIT au même moment.
+ *
+ * Réservée à l'ADMINISTRATEUR (`admin` / `super_admin`), rôle rejugé ICI : plus
+ * strict que `requireAdminWrite`, qui admet `editor`. Motif fermé, référence du
+ * document de renonciation, journal (qui, quand, quelle convention, quelle
+ * référence — aucune donnée de stagiaire). La condition elle-même ne change pas
+ * d'état : pour la renonciation de fond, `renoncerConditionSuspensiveAction`.
+ */
+export async function leverBlocageConditionSuspensiveAction(input: {
+  documentId: string;
+  motif: (typeof MOTIFS_LEVEE_BLOCAGE)[number];
+  referenceRenonciation: string;
+}): Promise<ActionResult<{ message: string }>> {
+  const adminSession = await requireAdminPublish();
+  if (isStub()) return { error: "Action désactivée en mode build (stub)" };
+  const parsed = leveeBlocageSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  const lecture = await lireConditionSuspensive(parsed.data.documentId);
+  if (lecture === null) return { error: LIBELLE_REFUS_LEVEE.introuvable! };
+
+  const journal = await donneesJournalQualiopi({
+    action: ACTION_LEVEE_BLOCAGE,
+    targetType: "DocumentGenere",
+    targetId: lecture.document.id,
+    changes: {
+      numero: lecture.document.numero,
+      motif: parsed.data.motif,
+      referenceRenonciation: parsed.data.referenceRenonciation,
+      leveeLe: new Date().toISOString(),
+    },
+    session: adminSession,
+  });
+  const res = await leverBlocage({ documentId: lecture.document.id, journal });
+  if (!res.ok) return { error: LIBELLE_REFUS_LEVEE[res.raison] ?? "Levée refusée." };
+  return {
+    data: {
+      message:
+        "Blocage levé : la convocation et l'émargement de la session sont ouverts. La condition, elle, reste en attente.",
     },
   };
 }
