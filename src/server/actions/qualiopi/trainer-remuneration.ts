@@ -173,9 +173,7 @@ const MESSAGE_CALCUL_EN_COURS =
   "Un calcul de rémunération est en cours sur cette période : réessayez dans une minute.";
 
 function estDelaiTransactionDepasse(err: unknown): boolean {
-  return (
-    typeof err === "object" && err !== null && (err as { code?: unknown }).code === "P2028"
-  );
+  return typeof err === "object" && err !== null && (err as { code?: unknown }).code === "P2028";
 }
 
 /**
