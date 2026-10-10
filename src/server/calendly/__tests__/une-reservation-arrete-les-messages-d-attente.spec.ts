@@ -168,6 +168,22 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     };
   const marqueEcrite = () =>
     JSON.stringify(majLigne.mock.calls[0]?.[0] ?? {}).includes("_callBookedServeur");
+  // 2026-10-10 (P5) : l'objectif ne part que pour une réservation rattachée à une
+  // fiche née de la page vidéo — chaque cas ci-dessous en est une.
+  const ficheVideo = (utmContent: string | null = "ad-42") => {
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_video" });
+    ficheLue.mockResolvedValueOnce({
+      details: {
+        vsl: { etapeAtteinte: 2 },
+        funnel: {
+          utm: { utm_source: "facebook", ...(utmContent ? { utm_content: utmContent } : {}) },
+        },
+      },
+    });
+  };
+  beforeEach(() => {
+    ficheVideo();
+  });
 
   it("émet UNE fois, sans donnée personnelle, et pose son marqueur dans les clés privées", async () => {
     findUnique.mockResolvedValueOnce(row({ utmSource: "facebook" }));
@@ -176,7 +192,7 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     expect(plausible).toHaveBeenCalledTimes(1);
     expect(evenement().nom).toBe("Call Booked");
     expect(evenement().chemin).toBe("/apporteur-affaires/video/merci");
-    expect(evenement().props).toEqual({ source: "facebook", origine: "serveur" });
+    expect(evenement().props).toEqual({ source: "facebook", origine: "serveur", annonce: "ad-42" });
     // Aucune adresse, aucun nom, aucun téléphone dans l'événement.
     expect(JSON.stringify(plausible.mock.calls[0])).not.toMatch(/lea@|Léa|\+33|06 /);
     expect(marqueEcrite()).toBe(true);
@@ -224,6 +240,33 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     fetchInvitee.mockResolvedValueOnce(api());
     plausible.mockRejectedValueOnce(new Error("hors ligne"));
     expect((await enrichCalendlyEvent("evt_1")).ok).toBe(true);
+  });
+
+  it("🔴 une réservation apporteur qui n'est PAS rattachée à une fiche vidéo (Indeed, ancien formulaire) n'émet rien", async () => {
+    rattacher.mockReset();
+    ficheLue.mockReset();
+    // Aucun rattachement.
+    rattacher.mockResolvedValueOnce({ rattache: false, motif: "aucun_dossier_apporteur" });
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    // Rattachée à une fiche hors page vidéo.
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_indeed" });
+    ficheLue.mockResolvedValueOnce({ details: { subType: "candidature-commerciale" } });
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(plausible).not.toHaveBeenCalled();
+  });
+
+  it("une fiche vidéo sans identifiant d'annonce : l'objectif part, sans propriété `annonce`", async () => {
+    rattacher.mockReset();
+    ficheLue.mockReset();
+    ficheVideo(null);
+    findUnique.mockResolvedValueOnce(row({ utmSource: "facebook" }));
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(evenement().props).toEqual({ source: "facebook", origine: "serveur" });
   });
 });
 

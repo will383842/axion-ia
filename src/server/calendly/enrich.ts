@@ -543,14 +543,26 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
 
   // `Call Booked` (serveur) : le libellé de campagne seulement, jamais une donnée
   // personnelle (règle de `plausible-serveur.ts`). Fail-soft, borné à 1,5 s.
-  if (callBookedAEmettre) {
+  //
+  // 🔴 2026-10-10 — SEULEMENT pour une réservation rattachée à une fiche née de la
+  // PAGE VIDÉO : sous le chemin du tunnel (`VSL_MERCI_PATH`), une réservation
+  // Indeed ou d'un ancien formulaire gonflait l'objectif de la campagne. Les
+  // autres échanges apporteur n'ont pas d'objectif serveur ailleurs : rien.
+  // `annonce` = l'utm_content d'ORIGINE de la fiche (un libellé, jamais une
+  // donnée personnelle).
+  if (callBookedAEmettre && attribution?.ficheVideo) {
     try {
       await emettreEvenementPlausible({
         nom: "Call Booked",
         chemin: VSL_MERCI_PATH,
         props: {
-          source: (data["utmSource"] as string | undefined) ?? row.utmSource ?? "direct",
+          source:
+            (data["utmSource"] as string | undefined) ??
+            row.utmSource ??
+            attribution.utmSource ??
+            "direct",
           origine: "serveur",
+          ...(attribution.utmContent ? { annonce: attribution.utmContent } : {}),
         },
       });
     } catch (e) {
