@@ -98,6 +98,8 @@ function piece(over: Record<string, unknown> = {}) {
     hashSha256: "c".repeat(64),
     metadata: {},
     sessionId: SESSION,
+    // Ancre directe du titulaire : `null` sur une pièce de session ordinaire.
+    trainerId: null as string | null,
     // Colonne toujours présente en base. L'omettre du gabarit ferait passer
     // TOUTES les pièces pour annulées (`undefined !== null`) et rendrait vertes,
     // pour la mauvaise raison, les 36 assertions de refus de ce fichier.
@@ -208,6 +210,105 @@ function attendRefus(res: unknown, raison: string) {
   expect(mockPrisma.documentSignature.create).not.toHaveBeenCalled();
 }
 
+describe("🔴 L0b — pièce SANS session ancrée au formateur (lettre-cadre, contrat de travail)", () => {
+  const TRAINER_B = "66666666-6666-4666-8666-666666666666";
+  const INCONNU = "77777777-7777-4777-8777-777777777777";
+
+  function lettreCadreDe(trainerId: string, over: Record<string, unknown> = {}) {
+    return piece({
+      type: "lettre_mission",
+      numero: "AXI-LDM-2026-0007",
+      sessionId: null,
+      session: null,
+      trainerId,
+      ...over,
+    });
+  }
+
+  const porteurB: PorteurSignatureDocument = {
+    type: "formateur_authentifie",
+    trainerId: TRAINER_B,
+    partie: "formateur",
+  };
+
+  it("✅ le formateur A signe SA lettre-cadre depuis son espace", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(lettreCadreDe(TRAINER));
+    const res = await signerDocument(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(mockPrisma.documentSignature.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("✅ le formateur A signe SON contrat de travail depuis son espace", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      lettreCadreDe(TRAINER, { type: "contrat_travail", numero: "AXI-CT-2026-0003" }),
+    );
+    expect(await signerDocument(entree())).toMatchObject({ ok: true });
+  });
+
+  it("🔴 B sur la lettre-cadre de A → réponse STRICTEMENT identique à un identifiant inconnu", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(lettreCadreDe(TRAINER));
+    const surPieceDeA = await signerDocument(entree({ porteur: porteurB }));
+
+    vi.clearAllMocks();
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(null);
+    const surInconnu = await signerDocument(
+      entree({ porteur: porteurB, documentGenereId: INCONNU }),
+    );
+
+    expect(surPieceDeA).toStrictEqual(surInconnu);
+    attendRefus(surPieceDeA, "piece_introuvable");
+  });
+
+  it("🔴 B déclarant une AUTRE partie ne perce pas non plus le masque", async () => {
+    // Le contrôle de partie viendrait-il avant le rattachement, B recevrait
+    // `porteur_non_autorise` ici et `piece_introuvable` sur un identifiant inventé.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(lettreCadreDe(TRAINER));
+    attendRefus(
+      await signerDocument(entree({ porteur: { ...porteurB, partie: "axionia" } })),
+      "piece_introuvable",
+    );
+  });
+
+  it("🔴 liste FERMÉE : une pièce sans session d'un autre type portant le trainerId de A reste masquée", async () => {
+    // Une autofacture porte l'ancre du formateur et n'a rien à recevoir de lui.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      lettreCadreDe(TRAINER, { type: "facture" }),
+    );
+    attendRefus(await signerDocument(entree()), "piece_introuvable");
+  });
+
+  it("🔴 une pièce sans session ni ancre n'appartient à personne", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      lettreCadreDe(TRAINER, { trainerId: null }),
+    );
+    attendRefus(await signerDocument(entree()), "piece_introuvable");
+  });
+
+  it("🔴 l'ancre ne vaut que pour la partie « formateur » : A ne signe pas pour l'organisme", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(lettreCadreDe(TRAINER));
+    attendRefus(
+      await signerDocument(entree({ porteur: { ...PORTEUR_FORMATEUR, partie: "axionia" } })),
+      // L0b : tout refus d'un formateur répond « introuvable » (REFUS_PIECE_INTROUVABLE).
+      "piece_introuvable",
+    );
+  });
+
+  it("pièce AVEC session : comportement inchangé — l'ancre trainerId n'ouvre rien", async () => {
+    // Lettre de mission de session ancrée sur B, mais B n'anime pas la session :
+    // seule l'appartenance à la session décide. Le refus répond « introuvable »
+    // depuis L0b : la session d'un autre ne se distingue pas d'une pièce inventée.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      piece({ type: "lettre_mission", trainerId: TRAINER_B }),
+    );
+    attendRefus(await signerDocument(entree({ porteur: porteurB })), "piece_introuvable");
+
+    vi.clearAllMocks();
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(piece({ type: "lettre_mission" }));
+    // Le membre de la session signe toujours, comme avant.
+    expect(await signerDocument(entree())).toMatchObject({ ok: true });
+  });
+});
+
 describe("🔴 autorisation du porteur", () => {
   it("refuse un formateur qui n'anime PAS la session", async () => {
     attendRefus(
@@ -220,17 +321,22 @@ describe("🔴 autorisation du porteur", () => {
           },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 
   // 2026-08-10 (décision Will) : le cas « formateur du parcours AFEST rattaché »
   // est parti avec la branche coaching de `porteurAutorise` (module supprimé).
-  it("refuse un formateur sur une pièce sans session rattachée", async () => {
+  // L0b (2026-10-10) : ce test figeait `porteur_non_autorise` sur TOUTE pièce sans
+  // session — ce qui refusait au formateur sa propre lettre-cadre et son contrat de
+  // travail. Le refus subsiste pour une pièce sans session qui ne lui appartient
+  // pas, mais il répond désormais « introuvable » (voir le bloc L0b ci-dessous).
+  it("refuse un formateur sur une pièce sans session qui ne lui est pas rattachée", async () => {
     mockPrisma.documentGenere.findUnique.mockResolvedValue(
       piece({ sessionId: null, session: null }),
     );
-    attendRefus(await signerDocument(entree()), "porteur_non_autorise");
+    attendRefus(await signerDocument(entree()), "piece_introuvable");
   });
 
   it("🔴 le refus d'autorisation passe AVANT `deja_signe` — sinon il fuite l'état", async () => {
@@ -247,7 +353,8 @@ describe("🔴 autorisation du porteur", () => {
           },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 
@@ -282,7 +389,8 @@ describe("🔴 autorisation du porteur", () => {
         },
       }),
     );
-    attendRefus(await signerDocument(entree()), "porteur_non_autorise");
+    // L0b : refus d'un formateur ≡ identifiant inconnu.
+    attendRefus(await signerDocument(entree()), "piece_introuvable");
   });
 
   it("🔴 un formateur ne peut PAS signer au titre du CLIENT", async () => {
@@ -296,7 +404,8 @@ describe("🔴 autorisation du porteur", () => {
           porteur: { type: "formateur_authentifie", trainerId: TRAINER, partie: "client" },
         }),
       ),
-      "porteur_non_autorise",
+      // L0b : refus d'un formateur ≡ identifiant inconnu.
+      "piece_introuvable",
     );
   });
 

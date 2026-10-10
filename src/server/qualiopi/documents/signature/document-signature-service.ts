@@ -37,6 +37,7 @@
  * Node runtime (Prisma + R2). Stub-aware pour le build SSG.
  */
 
+import { REFUS_PIECE_INTROUVABLE } from "./refus-piece-introuvable";
 import { randomUUID } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { Prisma } from "../../../../../prisma/generated/client";
@@ -213,7 +214,7 @@ function estStub(): boolean {
 }
 
 const MESSAGES: Record<RefusSignatureDocument, string> = {
-  piece_introuvable: "Pièce introuvable.",
+  piece_introuvable: REFUS_PIECE_INTROUVABLE.message,
   piece_specimen:
     "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, régénérez la pièce, puis faites-la signer.",
   piece_non_scellee:
@@ -278,6 +279,10 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
       hashSha256: true,
       metadata: true,
       sessionId: true,
+      // 🔑 Ancre DIRECTE du titulaire, posée par `refs: { trainerId }` sur les
+      // pièces qui n'ont pas de session (lettre-cadre, contrat de travail). Sans
+      // elle, `porteurAutorise` refusait le formateur sur SA propre pièce.
+      trainerId: true,
       // 🔴 Le SORT de la pièce entre dans la décision de signer. Il n'y entrait
       // pas : `verifierJeton` pesait cinq conditions — existence, pièce visée,
       // partie, révocation, péremption — dont aucune ne regardait si la pièce
@@ -620,6 +625,36 @@ const ROLES_ADMIN_HABILITES = {
 };
 
 /**
+ * 🔴 Types de pièce qu'un formateur signe SANS session, par l'ancre directe
+ * `DocumentGenere.trainerId`. Liste FERMÉE : ce sont les seules pièces que le
+ * générateur rattache au formateur lui-même (`refs: { trainerId }`) et que ce
+ * formateur signe en tant que partie « formateur » —
+ *  - `lettre_mission` : la lettre-CADRE (`genererLettreMissionCadreAction`) ;
+ *    une lettre de mission de session garde la voie « session » ci-dessous ;
+ *  - `contrat_travail` : le contrat du formateur salarié.
+ *
+ * ⚠️ Ajouter un type ici élargit la signature formateur à toute pièce de ce
+ * type portant son `trainerId` — une autofacture, par exemple, en porte un et
+ * n'a RIEN à recevoir de lui. On n'ajoute qu'un type dont le formateur est
+ * nommément signataire.
+ */
+const TYPES_SIGNES_PAR_TITULAIRE_SANS_SESSION: ReadonlySet<string> = new Set([
+  "lettre_mission",
+  "contrat_travail",
+]);
+
+/**
+ * Verdict de la garde d'autorisation.
+ *
+ * `masque` : le porteur n'a AUCUN lien avec la pièce — ou c'est un formateur,
+ * dont tout refus est masqué — et la réponse doit être celle d'un identifiant
+ * inconnu (`REFUS_PIECE_INTROUVABLE`) — sinon le refus
+ * confirmerait l'existence d'une lettre-cadre ou d'un contrat de travail
+ * nominatif à quiconque devine son identifiant.
+ */
+type VerdictPorteur = "autorise" | "non_autorise" | "masque";
+
+/**
  * Le porteur a-t-il quelque chose à voir avec cette pièce, et signe-t-il au bon
  * titre ?
  *
@@ -628,16 +663,37 @@ const ROLES_ADMIN_HABILITES = {
  * convention d'une session qu'il n'anime pas — en son nom, puisque l'identité
  * est lue côté serveur.
  */
-function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument): boolean {
-  if (porteur.type === "formateur_authentifie" || porteur.type === "organisme_authentifie") {
-    if (!PARTIES_PAR_CANAL_AUTHENTIFIE[porteur.type].includes(porteur.partie)) return false;
+function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument): VerdictPorteur {
+  // 🔴 Pièce SANS session vue par un formateur : le rattachement passe AVANT le
+  // contrôle de partie. Dans l'ordre inverse, un formateur étranger déclarant
+  // une autre partie recevrait `porteur_non_autorise` sur une pièce existante et
+  // `piece_introuvable` sur un identifiant inventé — un oracle d'existence.
+  if (porteur.type === "formateur_authentifie" && ctx.session === null) {
+    const titulaire =
+      TYPES_SIGNES_PAR_TITULAIRE_SANS_SESSION.has(ctx.type) &&
+      ctx.trainerId !== null &&
+      ctx.trainerId === porteur.trainerId;
+    if (!titulaire) return "masque";
   }
-  if (porteur.type !== "formateur_authentifie") return true;
+  // 🔴 Côté formateur, TOUT refus d'autorisation est masqué : la session d'un
+  // autre, une partie qu'il ne tient pas — il ne doit jamais lire autre chose que
+  // la réponse d'un identifiant inconnu (`REFUS_PIECE_INTROUVABLE`).
+  const refusDuPorteur: VerdictPorteur =
+    porteur.type === "formateur_authentifie" ? "masque" : "non_autorise";
+  if (porteur.type === "formateur_authentifie" || porteur.type === "organisme_authentifie") {
+    if (!PARTIES_PAR_CANAL_AUTHENTIFIE[porteur.type].includes(porteur.partie)) {
+      return refusDuPorteur;
+    }
+  }
+  if (porteur.type !== "formateur_authentifie") return "autorise";
+  // Titulaire d'une pièce sans session, vérifié ci-dessus.
+  if (ctx.session === null) return "autorise";
+
   // 2026-08-10 (décision Will) : la branche « formateur du parcours coaching
   // rattaché » a été retirée avec le module AFEST 1-to-1 ; l'appartenance à la
-  // SESSION collective reste la seule voie d'autorisation d'un formateur.
-  if (ctx.session === null) return false;
-
+  // SESSION collective reste la seule voie d'autorisation d'un formateur sur
+  // une pièce de session.
+  //
   // 🔴 On délègue à `resoudreAppartenance`, source de vérité UNIQUE de
   // l'appartenance formateur↔session dans tout le dépôt. Réimplémenter la règle
   // ici — ce que faisait la première version — c'était exactement l'erreur que
@@ -649,7 +705,9 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
     roleSessionFormateur:
       (ctx.session.sessionFormateurs.find((f) => f.trainerId === porteur.trainerId)?.role as
         RoleFormateur | undefined) ?? null,
-  }).estMembre;
+  }).estMembre
+    ? "autorise"
+    : refusDuPorteur;
 }
 
 /**
@@ -671,15 +729,17 @@ export async function signerDocument(
   const provider = providerDuPorteur(porteur);
 
   const ctx = await lirePiece(input.documentGenereId, partie);
-  if (ctx === null) return refus("piece_introuvable");
+  if (ctx === null) return { ...REFUS_PIECE_INTROUVABLE };
 
   // ── 1. GARDE D'AUTORISATION — avant toute autre vérification métier ──
-  if (!porteurAutorise(ctx, porteur)) {
+  const verdict = porteurAutorise(ctx, porteur);
+  if (verdict !== "autorise") {
     Sentry.captureException(new Error("Signature de document tentée hors périmètre du porteur"), {
-      tags: { action: "signerDocument:porteur_non_autorise" },
+      tags: { action: `signerDocument:porteur_${verdict}` },
       extra: { documentGenereId: input.documentGenereId, typePorteur: porteur.type },
     });
-    return refus("porteur_non_autorise");
+    // `masque` : réponse STRICTEMENT identique à celle d'un identifiant inconnu.
+    return verdict === "masque" ? { ...REFUS_PIECE_INTROUVABLE } : refus("porteur_non_autorise");
   }
 
   // Canal A — la garde d'autorisation est le JETON lui-même, et elle est en
