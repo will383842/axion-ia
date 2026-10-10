@@ -573,6 +573,9 @@ model Submission {
   calendlyEvents CalendlyEvent[]
   // 2026-09-27 — réponses d'un candidat apporteur reçues dans la boîte Zoho.
   inboundReplies SubmissionInboundReply[]
+  // Candidatures unifiées L4 (2026-10-07) — liens privés de fichiers envoyés à un
+  // futur apporteur (créés en L6). En cascade, comme `inboundReplies`.
+  liensPartage   LienPartage[]
 
   @@index([type])
   @@index([status])
@@ -9740,6 +9743,10 @@ model JobApplication {
   /// par elle) ; les rendez-vous, non — voir `CalendlyEvent`.
   interviews     JobInterview[]
   calendlyEvents CalendlyEvent[]
+  /// Candidatures unifiées L4 (2026-10-07) — liens privés de fichiers envoyés
+  /// à ce candidat (créés en L5). En cascade : effacer le dossier coupe ses
+  /// liens ; les FICHIERS, eux, restent (ADR 0065).
+  liensPartage   LienPartage[]
 
   @@index([offerId])
   @@index([status, needsAttention])
@@ -15569,4 +15576,191 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+// ============================================================
+// Candidatures unifiées — L4 : fichiers partagés et bibliothèque (ADR 0065, 2026-10-07)
+// ============================================================
+//
+// Les fichiers que l'équipe envoie aux candidats (LUT, rushs, vidéos
+// d'exemple, consignes…) et, à partir de L5b, ceux qu'un candidat renvoie.
+// Les OCTETS vivent dans R2 (compartiment dédié `R2_PARTAGES_BUCKET_NAME`,
+// préfixe `partages/`), jamais sur le disque du serveur ni en base.
+//
+// Le SQL brut (CHECK, triggers) est déclaré dans
+// `src/server/partages/objets-sql.ts` et confronté à la base en Gate D.
+// Aucune suppression automatique : un fichier s'archive, il ne s'efface pas.
+
+/// Un fichier R2 déposé par morceaux, ou un lien Drive / WeTransfer collé.
+enum NatureFichierPartage {
+  fichier
+  lien_externe
+
+  @@map("nature_fichier_partage")
+}
+
+/// Qui a apporté le fichier.
+enum OrigineFichierPartage {
+  /// Déposé depuis la console par l'équipe.
+  equipe
+  /// Renvoyé par un candidat depuis son lien personnel (L5b) — `lien_depot_id` obligatoire.
+  personne
+
+  @@map("origine_fichier_partage")
+}
+
+/// Rangement du fichier. Ce qu'on propose à un futur apporteur en est DÉRIVÉ
+/// (kit et présentation seulement), jamais stocké.
+enum CategorieFichierPartage {
+  lut
+  video_exemple
+  rushs
+  consignes
+  musique
+  kit_apporteur
+  presentation
+  /// Le montage d'essai renvoyé par un candidat (L5b).
+  essai_rendu
+  autre
+
+  @@map("categorie_fichier_partage")
+}
+
+/// Où en est le dépôt d'un fichier R2.
+enum EtatDepotFichier {
+  /// Envoi par morceaux commencé, pas encore terminé (reprise possible).
+  en_cours
+  /// Tous les morceaux sont assemblés et la taille vérifiée.
+  disponible
+  /// Envoi arrêté. La ligne reste ; les morceaux sont nettoyés par R2.
+  abandonne
+
+  @@map("etat_depot_fichier")
+}
+
+/// Verdict de l'antivirus sur un fichier R2 (NULL pour un lien externe).
+enum AnalyseFichierPartage {
+  /// Pas encore analysé : jamais servi.
+  en_attente
+  sain
+  /// Signature trouvée : archivé, jamais servi, jamais effacé automatiquement.
+  infecte
+  /// Fichier de l'équipe au-delà de 200 Mo : non analysé (décision 7 de Will).
+  hors_limite
+
+  @@map("analyse_fichier_partage")
+}
+
+/// Ce qu'a fait le lien privé d'un candidat (journal des accès, L5).
+enum TypeAccesPartage {
+  page_ouverte
+  telechargement
+
+  @@map("type_acces_partage")
+}
+
+/// Un fichier partagé : métadonnées seulement, les octets sont dans R2.
+/// rgpd: technique — fichiers de travail déposés par l'équipe (LUT, rushs, consignes) ; aucune donnée de candidat en L4. Les fichiers renvoyés par une personne (L5b) suivront son dossier.
+model FichierPartage {
+  id               String                  @id @default(uuid()) @db.Uuid
+  titre            String                  @db.VarChar(200)
+  nature           NatureFichierPartage
+  origine          OrigineFichierPartage   @default(equipe)
+  categorie        CategorieFichierPartage
+  /// Visible dans « Bibliothèque de fichiers » (sinon : fichier ponctuel joint à un envoi).
+  dansBibliotheque Boolean                 @default(false) @map("dans_bibliotheque")
+
+  // ── Fichier R2 ──
+  /// Nom affiché et proposé au téléchargement (sans chemin).
+  nomFichier       String?                @map("nom_fichier") @db.VarChar(255)
+  /// Jusqu'à 20 Gio (équipe) ou 4 Gio (personne) — CHECK en base.
+  tailleOctets     BigInt?                @map("taille_octets")
+  typeMime         String?                @map("type_mime") @db.VarChar(150)
+  /// `partages/<id>/<nom-ascii>`, choisie par le serveur.
+  r2Cle            String?                @unique @map("r2_cle") @db.VarChar(400)
+  /// Identifiant de l'envoi par morceaux R2 (reprise, abandon).
+  r2UploadId       String?                @map("r2_upload_id") @db.VarChar(1024)
+  etatDepot        EtatDepotFichier       @map("etat_depot")
+  disponibleLe     DateTime?              @map("disponible_le")
+  analyse          AnalyseFichierPartage? @map("analyse_antivirus")
+  analyseLe        DateTime?              @map("analyse_le")
+  /// Nom de la signature trouvée (`infecte` seulement).
+  analyseSignature String?                @map("analyse_signature") @db.VarChar(200)
+
+  // ── Lien externe ──
+  /// https uniquement (CHECK en base).
+  urlExterne String? @map("url_externe") @db.VarChar(2000)
+
+  /// Sans clé étrangère (comme `DocumentProjet.ajouteParId`).
+  deposeParId  String?   @map("depose_par_id") @db.Uuid
+  deposeParNom String    @map("depose_par_nom") @db.VarChar(200)
+  /// Le lien par lequel une personne a renvoyé ce fichier (L5b). Sans clé étrangère.
+  lienDepotId  String?   @map("lien_depot_id") @db.Uuid
+  creeLe       DateTime  @default(now()) @map("cree_le")
+  /// Archivé = masqué de la bibliothèque, réaffichable. Jamais supprimé.
+  archiveLe    DateTime? @map("archive_le")
+  archiveParId String?   @map("archive_par_id") @db.Uuid
+
+  liens LienPartageFichier[]
+
+  @@index([dansBibliotheque, archiveLe])
+  @@index([etatDepot, analyse])
+  @@index([lienDepotId])
+  @@map("fichiers_partages")
+}
+
+/// Un lien privé envoyé à UNE personne (candidat OU futur apporteur), créé en L5.
+/// Pas de trigger anti-suppression : l'effacement manuel d'un dossier l'emporte en cascade.
+/// rgpd: technique — identifiants, dates d'expiration et de retrait ; supprimé avec le dossier de la personne (cascade)
+model LienPartage {
+  id            String          @id @default(uuid()) @db.Uuid
+  applicationId String?         @map("application_id") @db.Uuid
+  application   JobApplication? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  submissionId  String?         @map("submission_id") @db.Uuid
+  submission    Submission?     @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  /// La réponse qui a porté le lien (`JobApplicationReply` ou `SubmissionReply`). Sans clé étrangère.
+  reponseId     String?         @map("reponse_id") @db.VarChar(40)
+  /// Le lien autorise-t-il « Déposer votre version » (L5b) ?
+  depotAutorise Boolean         @default(false) @map("depot_autorise")
+  expireLe      DateTime        @map("expire_le")
+  revoqueLe     DateTime?       @map("revoque_le")
+  motifRetrait  String?         @map("motif_retrait") @db.VarChar(200)
+  creeLe        DateTime        @default(now()) @map("cree_le")
+  creeParId     String?         @map("cree_par_id") @db.Uuid
+  creeParNom    String          @map("cree_par_nom") @db.VarChar(200)
+
+  fichiers LienPartageFichier[]
+
+  @@index([applicationId])
+  @@index([submissionId])
+  @@map("liens_partage")
+}
+
+/// Les fichiers d'un lien. Un fichier envoyé ne se supprime pas (Restrict).
+/// rgpd: technique — couple d'identifiants lien / fichier
+model LienPartageFichier {
+  lienId    String         @map("lien_id") @db.Uuid
+  lien      LienPartage    @relation(fields: [lienId], references: [id], onDelete: Cascade)
+  fichierId String         @map("fichier_id") @db.Uuid
+  fichier   FichierPartage @relation(fields: [fichierId], references: [id], onDelete: Restrict)
+
+  @@id([lienId, fichierId])
+  @@index([fichierId])
+  @@map("liens_partage_fichiers")
+}
+
+/// Journal en ajout seul des accès à un lien privé (L5). Sans clé étrangère :
+/// il survit à l'effacement manuel d'un dossier sans le bloquer [B1].
+/// rgpd: technique — date, type et origine probable d'un accès à un lien privé ; ni IP, ni navigateur, ni personne
+model LienPartageAcces {
+  id        String                   @id @default(uuid()) @db.Uuid
+  lienId    String                   @map("lien_id") @db.Uuid
+  fichierId String?                  @map("fichier_id") @db.Uuid
+  type      TypeAccesPartage
+  origine   OrigineOuvertureDocument
+  survenuLe DateTime                 @default(now()) @map("survenu_le")
+
+  @@index([lienId, survenuLe])
+  @@index([fichierId])
+  @@map("liens_partage_acces")
 }

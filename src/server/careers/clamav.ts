@@ -119,3 +119,56 @@ export function analyserFichier(chemin: string): Promise<VerdictAntivirus> {
     });
   });
 }
+
+/**
+ * Même protocole `zINSTREAM`, sur un FLUX d'octets (bibliothèque de fichiers,
+ * Candidatures unifiées L4, ADR 0065) : l'objet est lu dans R2 et passé à
+ * clamd morceau par morceau, SANS rien poser sur le disque ni tout charger en
+ * mémoire. Mêmes trois issues ; une erreur de lecture du flux est
+ * « indisponible », jamais « sain ». Les fonctions ci-dessus sont inchangées.
+ */
+export function analyserFlux(
+  flux: AsyncIterable<Uint8Array>,
+  delaiMs: number = DELAI_MS,
+): Promise<VerdictAntivirus> {
+  return new Promise((resolve) => {
+    let fini = false;
+    let reponse = "";
+    const finir = (v: VerdictAntivirus) => {
+      if (fini) return;
+      fini = true;
+      socket.destroy();
+      resolve(v);
+    };
+    const socket = connect({ host: HOTE, port: PORT });
+    socket.setTimeout(delaiMs, () => finir({ issue: "indisponible", raison: "délai dépassé" }));
+    socket.on("error", (e) => finir({ issue: "indisponible", raison: e.message }));
+    socket.on("data", (d) => {
+      reponse += d.toString("utf8");
+      if (reponse.includes("\0")) finir(lireReponseClamd(reponse));
+    });
+    socket.on("end", () => finir(lireReponseClamd(reponse)));
+    socket.on("connect", () => {
+      socket.write("zINSTREAM\0");
+      void (async () => {
+        try {
+          for await (const bloc of flux) {
+            if (fini) return;
+            const b = Buffer.from(bloc.buffer, bloc.byteOffset, bloc.byteLength);
+            const entete = Buffer.alloc(4);
+            entete.writeUInt32BE(b.length, 0);
+            if (!socket.write(Buffer.concat([entete, b]))) {
+              await new Promise<void>((r) => {
+                socket.once("drain", () => r());
+                socket.once("close", () => r());
+              });
+            }
+          }
+          if (!fini) socket.write(Buffer.alloc(4));
+        } catch (e) {
+          finir({ issue: "indisponible", raison: `lecture : ${(e as Error).message}` });
+        }
+      })();
+    });
+  });
+}
