@@ -299,10 +299,9 @@ export async function createTrainerAction(
       action: "qualiopi.trainer.create",
       targetType: "Trainer",
       targetId: created.id,
+      // Aucune donnée personnelle en clair dans le journal : `targetId` désigne
+      // la fiche, qui porte l'identité (correction U6, 2026-10-10).
       changes: {
-        nom: v.nom,
-        prenom: v.prenom,
-        email: v.email,
         statut: v.statut,
         ...(v.actif !== undefined ? { actif: v.actif } : {}),
       },
