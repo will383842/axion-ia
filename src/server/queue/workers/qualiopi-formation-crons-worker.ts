@@ -152,6 +152,9 @@ export type FormationCronJobType =
   // 2026-09-28 (Will) — réponse automatique « poste pourvu » aux candidats hors
   // vidéo restés sans réponse 7 jours. HORAIRE, plafonnée, coupable en console.
   | "formation-crons.reponse-poste-pourvu"
+  // Lot L3 (2026-10-07) — relève, dans la boîte Zoho Mail, les réponses des
+  // candidats emploi : visibles seules dans leur fiche. TOUTES LES 15 MINUTES.
+  | "formation-crons.reponses-entrantes-candidatures"
   // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
   //
   // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
@@ -2409,6 +2412,40 @@ async function handleReponsePostePourvu(): Promise<void> {
 }
 
 /**
+ * Réponses des candidats emploi reçues par e-mail (lot L3, 2026-10-07) — corps
+ * et doctrine dans `features/admin-job-applications/reponses-entrantes-candidature.ts`.
+ * Relevé SÉPARÉ de celui des apporteurs (file `apporteur-crons`, inchangé).
+ * Import PARESSEUX. Ne lève pas : un passage suspendu le dit lui-même.
+ * ÉTEINT PAR DÉFAUT : interrupteur `CANDIDATS_REPONSES_RECUES_ENABLED=true`
+ * dans l'environnement du worker pour l'allumer.
+ */
+async function handleReponsesEntrantesCandidatures(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  // ÉTEINT PAR DÉFAUT (paquet 2) : seule la valeur exacte "true" l'allume.
+  if (process.env["CANDIDATS_REPONSES_RECUES_ENABLED"] !== "true") return;
+  try {
+    const { passerReponsesEntrantesCandidats } =
+      await import("@/features/admin-job-applications/reponses-entrantes-candidature");
+    const r = await passerReponsesEntrantesCandidats();
+    if (r.suspendu) return; // déjà dit par le passage lui-même (une fois, pour la config)
+    const { humaines, automatiques } = r.enregistrees;
+    if (humaines + automatiques + r.remises > 0 || r.erreurs > 0) {
+      console.log(
+        `[formation-crons] reponses-entrantes-candidatures: ${humaines} réponse(s) de ` +
+          `candidat(s), ${automatiques} automatique(s), ${r.alertes} alerte(s), ` +
+          `${r.remises} remise(s) au passage suivant, sur ${r.lus} message(s) lu(s)` +
+          (r.erreurs > 0 ? ` — ${r.erreurs} non enregistrée(s), reprises au passage suivant` : ""),
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] reponses-entrantes-candidatures: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
  * Liens vidéo des candidats, vérifiés chaque lundi (Will, 2026-09-28) — corps
  * et doctrine dans `server/careers/liens-surveilles.ts`. Import PARESSEUX.
  */
@@ -2540,6 +2577,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.candidatures-en-sommeil": handleCandidaturesEnSommeil,
   "formation-crons.liens-surveilles": handleLiensSurveilles,
   "formation-crons.reponse-poste-pourvu": handleReponsePostePourvu,
+  "formation-crons.reponses-entrantes-candidatures": handleReponsesEntrantesCandidatures,
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,

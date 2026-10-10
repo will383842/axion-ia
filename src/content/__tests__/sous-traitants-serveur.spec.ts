@@ -182,6 +182,17 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   R2_BUCKET_IMMUTABLE: {
     exempt: "Nom du bucket de sauvegarde immuable, côté Axion-IA. Même tiers, déjà déclaré.",
   },
+  // Candidatures unifiées L4 (ADR 0065) — bibliothèque de fichiers partagés,
+  // compartiment R2 DÉDIÉ et son jeton limité. Même tiers (Cloudflare).
+  R2_PARTAGES_BUCKET_NAME: {
+    exempt:
+      "Nom du compartiment de la bibliothèque de fichiers, côté Axion-IA. Même tiers, déjà déclaré.",
+  },
+  R2_PARTAGES_ACCESS_KEY_ID: { tiers: "Cloudflare" },
+  R2_PARTAGES_SECRET_ACCESS_KEY: { tiers: "Cloudflare" },
+  PARTAGES_SECRET: {
+    exempt: "Clé HMAC interne des liens privés de fichiers. Aucun tiers ne la reçoit.",
+  },
   SENTRY_DSN: { tiers: "Sentry" },
   SENTRY_AUTH_TOKEN: { tiers: "Sentry" },
   OPENAI_API_KEY: { tiers: "OpenAI," },
