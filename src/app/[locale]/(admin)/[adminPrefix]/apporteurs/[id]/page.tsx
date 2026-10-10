@@ -4,12 +4,17 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EnvoiLienDossier, ParrainEtNote } from "@/components/admin/apporteurs/fiche/BlocsFiche";
 import { CorrigerNom } from "@/components/admin/apporteurs/fiche/CorrigerNom";
 import { DecisionDossier } from "@/components/admin/apporteurs/fiche/DecisionDossier";
+import {
+  NomEtEntreprise,
+  NomEtEntrepriseEnCours,
+} from "@/components/admin/apporteurs/fiche/NomEtEntreprise";
 import { RetraitDuReseau } from "@/components/admin/apporteurs/fiche/RetraitDuReseau";
 import { etatSuppression, refusSuppression, retraitDe } from "@/features/apporteurs-reseau/retrait";
 import {
@@ -148,6 +153,13 @@ export default async function FicheApporteurPage({ params, searchParams }: PageP
           </p>
           <DecisionDossier apporteurId={d.id} />
         </AdminCard>
+      ) : null}
+
+      {/* Le nom du contrat correspond-il à l'entreprise ? (10/10) Registre relu à l'affichage. */}
+      {voitPii && (d.siren || siret) ? (
+        <Suspense fallback={<NomEtEntrepriseEnCours />}>
+          <NomEtEntreprise prenom={d.prenom} nom={d.nom} siren={d.siren} siret={siret} />
+        </Suspense>
       ) : null}
 
       {d.statut === "a_completer" && d.dernierMessage ? (
