@@ -108,7 +108,9 @@ export async function repondreEnMasseApporteursAction(
       continue;
     }
     const adresse = decryptPii(f.contactEmail);
-    const { prenom, nom } = splitNomPrenom(f.contactName, false);
+    // `contactName` est chiffré au repos : le découper sans le déchiffrer rend
+    // un prénom vide, et le modèle écarte alors tout le monde.
+    const { prenom, nom } = splitNomPrenom(decryptPii(f.contactName), false);
     const motif = motifExclusionApporteur({
       opposee: adresse ? await estOpposee(adresse) : false,
       sansSuite:
