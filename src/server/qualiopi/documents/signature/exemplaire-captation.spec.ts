@@ -13,6 +13,14 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   p: {
+    // Interrupteur `signature.exemplaire_captation` allumé : coupé, le
+    // consentement ne se rend pas (cf. `exemplaire-captation-interrupteur.spec.ts`).
+    setting: {
+      findUnique: vi.fn(async () => ({
+        value: { actif: true, allumeLe: "2026-10-01T00:00:00.000Z" },
+        updatedAt: new Date("2026-10-01T00:00:00Z"),
+      })),
+    },
     documentGenere: { findUnique: vi.fn() },
     documentSignature: { findMany: vi.fn() },
   },

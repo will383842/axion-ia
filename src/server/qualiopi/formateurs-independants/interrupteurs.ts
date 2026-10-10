@@ -381,6 +381,18 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.suite_contrat_cadre",
   },
+  // 🔴 Sur `main`, l'exemplaire d'une autorisation de captation rendait
+  // `type_non_rendu` : AUCUN e-mail. Le rendre sans interrupteur aurait fait
+  // partir d'un coup, par le rattrapage horaire, l'exemplaire de chaque
+  // consentement signé depuis le 01/09. Allumé, seul ce qui est signé APRÈS
+  // l'allumage est rattrapé (`dateAllumageSignature`).
+  exemplaire_captation: {
+    ...envoi(
+      "Exemplaire de l'autorisation de captation",
+      "L'autorisation de captation signée est remise en exemplaire signé. Seules les autorisations signées après l'allumage sont rattrapées automatiquement.",
+    ),
+    cle: "signature.exemplaire_captation",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -401,6 +413,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   exemplaire_contrat_travail: [],
   alertes_hors_jeton: [],
   suite_contrat_cadre: [],
+  exemplaire_captation: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
@@ -447,4 +460,22 @@ export function prealablesManquantsSignature(
     if (p.sorte === "non_lisible") return [p.libelle];
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });
+}
+
+/**
+ * Date d'ALLUMAGE d'un interrupteur `signature.*`, ou `null` s'il est arrêté.
+ *
+ * `allumeLe` est posé par l'écrivain au passage arrêté → allumé, et reconduit
+ * tant qu'il reste allumé. À défaut (ligne écrite à la main, valeur ancienne),
+ * la date de dernière écriture du réglage : elle n'est jamais ANTÉRIEURE à
+ * l'allumage, donc l'erreur possible ne va que vers « moins rattrapé ».
+ */
+export function dateAllumageSignature(brut: unknown, misAJourLe: Date | null): Date | null {
+  if (!lireValeurSignature(brut).valeur) return null;
+  const allumeLe = (brut as Record<string, unknown>).allumeLe;
+  if (typeof allumeLe === "string") {
+    const d = new Date(allumeLe);
+    if (!Number.isNaN(d.getTime())) return d;
+  }
+  return misAJourLe;
 }

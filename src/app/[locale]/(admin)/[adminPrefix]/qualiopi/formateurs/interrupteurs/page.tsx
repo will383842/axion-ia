@@ -31,6 +31,7 @@ import {
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
+  basculerSignatureExemplaireCaptationAction,
   basculerSignatureExemplaireContratTravailAction,
   basculerFormateursActivationAutoAction,
   basculerFormateursChoixSuivantsAction,
@@ -85,6 +86,7 @@ const ACTIONS_SIGNATURE: Record<
   exemplaire_contrat_travail: basculerSignatureExemplaireContratTravailAction,
   alertes_hors_jeton: basculerSignatureAlertesHorsJetonAction,
   suite_contrat_cadre: basculerFormateursSuiteContratCadreAction,
+  exemplaire_captation: basculerSignatureExemplaireCaptationAction,
 };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

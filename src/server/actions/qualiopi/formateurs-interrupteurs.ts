@@ -22,6 +22,7 @@ import {
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
   cleSettingSignature,
+  dateAllumageSignature,
   lireValeurSignature,
   prealablesManquantsSignature,
   type CleInterrupteurSignature,
@@ -298,17 +299,31 @@ function ecrireSignature(
     });
     const manquants = prealablesManquantsSignature(cle, valeur, etatsDepuisLignes(lignes));
     if (manquants.length > 0) return manquants;
-    const actuelle = await tx.setting.findUnique({ where: { key }, select: { value: true } });
+    const actuelle = await tx.setting.findUnique({
+      where: { key },
+      select: { value: true, updatedAt: true },
+    });
     const avant = lireValeurSignature(actuelle?.value).valeur;
+    // L'exemplaire de captation date son allumage : le rattrapage ne reprend que
+    // ce qui est signé APRÈS. Rallumer un interrupteur déjà allumé garde la date.
+    const value =
+      cle === "exemplaire_captation" && valeur
+        ? {
+            actif: true,
+            allumeLe: (
+              dateAllumageSignature(actuelle?.value, actuelle?.updatedAt ?? null) ?? new Date()
+            ).toISOString(),
+          }
+        : { actif: valeur };
     await tx.setting.upsert({
       where: { key },
       create: {
         key,
-        value: { actif: valeur } as never,
+        value: value as never,
         description: `Socle de signature › Interrupteurs — ${def.libelle}`,
         updatedBy: userId,
       },
-      update: { value: { actif: valeur } as never, updatedBy: userId },
+      update: { value: value as never, updatedBy: userId },
     });
     await tx.activityLog.create({
       data: {
@@ -340,6 +355,12 @@ export async function basculerSignatureAlertesHorsJetonAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("alertes_hors_jeton", formData);
+}
+export async function basculerSignatureExemplaireCaptationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("exemplaire_captation", formData);
 }
 export async function basculerFormateursSuiteContratCadreAction(
   _prev: EtatBascule,

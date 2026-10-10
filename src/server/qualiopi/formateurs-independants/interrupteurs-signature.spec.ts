@@ -12,16 +12,18 @@ import {
   etatsSignatureDepuisLignes,
   etatsSignatureParDefaut,
   lireValeurSignature,
+  dateAllumageSignature,
   prealablesManquantsSignature,
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("quatre clés, chacune protégée de l'éditeur générique", () => {
+  it("cinq clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         "formateurs.suite_contrat_cadre",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
+        "signature.exemplaire_captation",
         "signature.exemplaire_contrat_travail",
       ].sort(),
     );
@@ -55,5 +57,21 @@ describe("interrupteurs du socle de signature", () => {
     for (const c of CLES_INTERRUPTEURS_SIGNATURE) {
       expect(prealablesManquantsSignature(c, false, etats)).toEqual([]);
     }
+  });
+});
+
+describe("date d'allumage (`signature.exemplaire_captation`)", () => {
+  const MAJ = new Date("2026-10-10T12:00:00Z");
+  it("arrêté, absent ou illisible : pas de date", () => {
+    expect(dateAllumageSignature(undefined, MAJ)).toBeNull();
+    expect(dateAllumageSignature({ actif: false, allumeLe: MAJ.toISOString() }, MAJ)).toBeNull();
+    expect(dateAllumageSignature({ actif: "true" }, MAJ)).toBeNull();
+  });
+  it("allumé : `allumeLe`, sinon la date du réglage", () => {
+    expect(
+      dateAllumageSignature({ actif: true, allumeLe: "2026-10-09T08:00:00.000Z" }, MAJ),
+    ).toEqual(new Date("2026-10-09T08:00:00.000Z"));
+    expect(dateAllumageSignature({ actif: true }, MAJ)).toEqual(MAJ);
+    expect(dateAllumageSignature({ actif: true, allumeLe: "n'importe" }, MAJ)).toEqual(MAJ);
   });
 });
