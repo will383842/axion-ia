@@ -422,18 +422,37 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // jamais la main, ni l'événement CRM ni l'alerte ne partiraient. Il est borné
   // à 5 secondes et ne lève pas.
   //
-  // 🔴 8 ter. UN ÉCHANGE FORMATEUR NE SORT PAS D'ICI (lot F-CAL-1, 2026-10-09).
-  // Ni au CRM des ventes, ni en alerte : un formateur indépendant n'est pas un
-  // prospect, et cette route est publique — un POST forgé avec un slug
-  // « formateur » ne doit rien déclencher hors de la ligne enregistrée. Le slug
-  // ET le nom relu après enrichissement sont lus : l'un ou l'autre suffit.
-  // Apporteur d'abord : un nom qui porte les deux mots garde le comportement
-  // apporteur (pas de CRM — garde centrale —, mais l'alerte part).
-  const familles = [
-    familleHorsClients({ typeRendezVous, eventTypeName: nomType }),
-    familleHorsClients({ eventTypeName: parsed.data.eventTypeSlug }),
-  ];
-  const echangeFormateur = !familles.includes("apporteur") && familles.includes("formateur");
+  // 🔴 8 ter. UN ÉCHANGE FORMATEUR NE SORT PAS D'ICI (lot F-CAL-1, 2026-10-09)
+  //    — MAIS SEULEMENT S'IL EST CONFIRMÉ PAR L'API CALENDLY.
+  //
+  // Un formateur indépendant n'est pas un prospect : ni CRM des ventes, ni
+  // alerte. Mais cette route est PUBLIQUE, et le slug, le nom et les UTM
+  // viennent du navigateur. Une première version lisait le slug : un prospect
+  // qui en forgeait un contenant « formateur » sortait du CRM et de l'alerte.
+  //
+  // RÈGLE : seul un nom de type RELU PAR L'API classe « formateur ».
+  // L'enrichissement l'écrit à la place du slug et le signale dans
+  // `updatedFields` ; sans cela (pas de jeton, échec réseau, nom absent de la
+  // réponse), la réservation suit le chemin CLIENT, comme avant le lot. Ce sont
+  // l'enrichissement planifié (`refresh.ts`) et le webhook signé qui la
+  // reclassent ensuite.
+  //
+  // Aucun e-mail client ne part d'ici : ils partent des passages planifiés
+  // (`rappels-appel.ts`), qui exigent `startTime` et `inviteeEmail` — donc une
+  // ligne enrichie, dont le nom est alors celui de l'API.
+  //
+  // L'apporteur garde son comportement (slug compris, inchangé par ce lot) :
+  // il l'emporte, et son alerte part toujours.
+  const nomConfirmeParApi =
+    enriched?.ok === true && (enriched.updatedFields ?? []).includes("eventTypeName");
+  const familleConfirmee = nomConfirmeParApi
+    ? familleHorsClients({ typeRendezVous, eventTypeName: nomType })
+    : null;
+  const apporteur =
+    familleConfirmee === "apporteur" ||
+    familleHorsClients({ typeRendezVous, eventTypeName: nomType }) === "apporteur" ||
+    familleHorsClients({ eventTypeName: parsed.data.eventTypeSlug }) === "apporteur";
+  const echangeFormateur = !apporteur && familleConfirmee === "formateur";
   if (notifyEmail && !echangeFormateur) {
     await syncCalendlyEventToCrm({
       kind: "booked",
@@ -461,6 +480,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
         ...(parsed.data.utmContent ? { utmContent: parsed.data.utmContent } : {}),
       },
+      // Le nom porté ici peut être le slug du navigateur : la garde centrale ne
+      // doit pas y lire « formateur » (8 ter).
+      nomDuTypeNonConfirme: !nomConfirmeParApi,
     });
   }
 
