@@ -3,11 +3,7 @@
  * Qualiopi et espace formateur n'y interpole de coordonnée personnelle ni de
  * donnée bancaire.
  *
- * ⚠️ Le NOM du bénéficiaire reste aujourd'hui dans les deux messages
- * « besoin d'adaptation » de `portail.ts` — un test existant l'exige
- * (`declaration-besoin-sans-handicap.spec.ts`). Ils sont figés ici : toute
- * NOUVELLE interpolation de nom échoue, et retirer celles-là demande une
- * décision, pas un correctif au passage.
+ * Aucun message n'interpole de nom : toute interpolation de nom échoue.
  */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -72,13 +68,10 @@ describe("Telegram — aucune coordonnée personnelle ni bancaire", () => {
     expect(fautifs).toEqual([]);
   });
 
-  it("les noms interpolés se limitent aux deux messages connus de portail.ts", () => {
+  it("aucun nom ni prénom n'est interpolé", () => {
     const avecNom = appels
       .filter(({ corps }) => /\$\{[^}]*\.(nom|prenom)\b[^}]*\}/.test(corps))
       .map((a) => a.fichier);
-    expect(avecNom).toEqual([
-      "src/server/actions/qualiopi/portail.ts",
-      "src/server/actions/qualiopi/portail.ts",
-    ]);
+    expect(avecNom).toEqual([]);
   });
 });

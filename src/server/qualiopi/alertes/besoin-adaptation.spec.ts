@@ -14,7 +14,10 @@
  */
 import { describe, it, expect } from "vitest";
 
-import { construireAlerteBesoinAdaptation } from "./besoin-adaptation";
+import {
+  construireAlerteBesoinAdaptation,
+  construireMessageTelegramAdaptation,
+} from "./besoin-adaptation";
 import { ALERTE_CATALOGUE } from "./catalogue";
 
 const LE = new Date("2026-09-25T08:00:05.000Z");
@@ -94,5 +97,14 @@ describe("l'entrée du catalogue", () => {
   it("est d'un niveau que /qualiopi/a-traiter affiche vraiment", () => {
     // Cette page ne rend que `critique` et `important` ; `info` n'y paraît pas.
     expect(["critique", "important"]).toContain(entree?.niveau);
+  });
+});
+
+describe("le message Telegram", () => {
+  it("ne contient que le renvoi vers la fiche", () => {
+    const m = construireMessageTelegramAdaptation("11111111-1111-4111-8111-111111111111");
+    expect(m).toContain("Un stagiaire a déclaré une situation à prendre en compte.");
+    expect(m).toContain("/qualiopi/stagiaires/11111111-1111-4111-8111-111111111111");
+    expect(m).not.toMatch(/chiffr|handicap|santé/i);
   });
 });

@@ -56,7 +56,10 @@ import {
 } from "@/server/qualiopi/adaptation/detail-sante-chiffre";
 import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
-import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
+import {
+  construireAlerteBesoinAdaptation,
+  construireMessageTelegramAdaptation,
+} from "@/server/qualiopi/alertes/besoin-adaptation";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
 import { declarerBesoinAmenagementSurInscriptions } from "@/server/qualiopi/adaptation/declaration-amenagement";
 import {
@@ -394,24 +397,10 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // bénéficiaire sur la latence de Telegram. Il ne remplace pas l'alerte —
   // Will peut ne pas le lire, et rien ne l'y ramène.
   //
-  // 🔴 Le message DÉPEND de ce qui a réellement été écrit. Le détail est retiré
-  // du JSON des réponses AVANT la soumission : si le chiffrement refuse, il
-  // n'est nulle part. Annoncer « le détail est chiffré » enverrait alors le
-  // référent chercher un texte qui n'existe pas — ou pire, lire une déclaration
-  // ANTÉRIEURE en croyant lire celle du jour, et organiser l'adaptation sur un
-  // contenu périmé, avant une formation.
-  const detailPrecise = detail.length > 0;
-  const detailEnregistre = detailChiffre !== null;
+  // Le message ne contient ni identité ni nature : un renvoi vers la fiche.
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
-    body:
-      `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation ` +
-      `dans son questionnaire de positionnement.\n` +
-      (detailEnregistre
-        ? `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`
-        : detailPrecise
-          ? `⚠️ La précision saisie n'a PAS pu être enregistrée : la contacter pour la recueillir.`
-          : `Aucune précision n'a été saisie : la contacter pour la recueillir.`),
+    body: construireMessageTelegramAdaptation(trainee.id),
   }).catch(() => {});
 }
 
@@ -760,18 +749,10 @@ async function declarerDepuisMonCompte(
   // 2. Le message Telegram — utile pour être prévenu hors console, mais il ne
   // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
   //
-  // ⚠️ La NATURE se dit, et elle n'est pas le détail : « situation de handicap
-  // ou problème de santé » vs « aménagement, sans handicap déclaré ». Sans elle,
-  // le même message annoncerait deux choses différentes, et la personne qui lit
-  // supposerait la première — ce que tout ce correctif cesse de faire.
+  // Canal tiers : le message se limite à un renvoi vers la fiche.
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
-    body:
-      `♿ ${trainee.prenom} ${trainee.nom} a déclaré ` +
-      (nature === "handicap"
-        ? `une situation de handicap ou un problème de santé nécessitant une adaptation.\n`
-        : `un besoin d'aménagement, SANS déclarer de situation de handicap.\n`) +
-      `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
+    body: construireMessageTelegramAdaptation(trainee.id),
   }).catch(() => {});
 
   return { data: { ok: true } };
