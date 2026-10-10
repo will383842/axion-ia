@@ -46,6 +46,7 @@ import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 import { creerFicheDepuisRendezVous } from "./fiche-rendez-vous-apporteur";
+import { attributionDeLaFiche, estFicheVideo, recopieAttribution } from "./attribution-origine";
 import { estRendezVousApporteur } from "./appel-apporteur";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { majMessageVsl } from "@/features/commercial-application/lead-vsl-details";
@@ -468,6 +469,41 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
   }
+  // ── La fiche rattachée, lue UNE fois (2026-10-10) ───────────────────────────
+  // Une fiche de la page vidéo porte l'attribution d'origine de la personne
+  // (annonce comprise) : on la recopie sur le rendez-vous, quel que soit le chemin
+  // de la réservation (page merci, e-mail, autre appareil) — `attribution-origine.ts`.
+  if (ficheRattachee) {
+    try {
+      const fiche = await prisma.submission.findUnique({
+        where: { id: ficheRattachee },
+        select: { details: true, deletedAt: true },
+      });
+      if (fiche && fiche.deletedAt === null && estFicheVideo(fiche.details)) {
+        const recopie = recopieAttribution(
+          {
+            utmSource: (data["utmSource"] as string | undefined) ?? row.utmSource,
+            utmMedium: (data["utmMedium"] as string | undefined) ?? row.utmMedium,
+            utmCampaign: (data["utmCampaign"] as string | undefined) ?? row.utmCampaign,
+            rawPayload: data["rawPayload"] ?? row.rawPayload,
+          },
+          attributionDeLaFiche(fiche.details),
+          ficheRattachee,
+          new Date(),
+        );
+        if (recopie) {
+          await prisma.calendlyEvent.update({
+            where: { id: eventId },
+            data: recopie,
+            select: { id: true },
+          });
+        }
+      }
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-attribution-origine" } });
+    }
+  }
+
   // `Schedule` (Meta, serveur) : seulement si la réservation est rattachée à une
   // fiche — c'est elle qui porte la réponse à la bannière, la source de la
   // campagne et le `fbclid` horodaté. Fail-soft, borné à 3 s, ne lève jamais.

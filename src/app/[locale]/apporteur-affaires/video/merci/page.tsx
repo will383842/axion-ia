@@ -21,6 +21,11 @@
 //     des e-mails) ;
 //   · les UTM d'arrivée (adresse, sinon cookie) : recopiés dans chaque créneau,
 //     puis en champs cachés du formulaire → colonne « Provenance » de la fiche ;
+//   · l'ANNONCE d'origine (`utm_content` de la publicité) ne voyage PAS dans ces
+//     liens — ici `utm_content` désigne le bouton. Elle est gardée sur la fiche à
+//     l'étape 1, et l'enrichissement de la réservation la relit sur la fiche
+//     (`server/calendly/attribution-origine.ts`) : elle survit ainsi aussi à une
+//     réservation prise depuis l'e-mail ou un autre appareil (2026-10-10) ;
 //   · le jeton `?j=` de l'étape 1 : recopié dans chaque créneau, il permet au
 //     formulaire de proposer le prénom et l'e-mail déjà donnés
 //     (`identite-reservation-vsl.ts`) — le même e-mail rattache la réservation à

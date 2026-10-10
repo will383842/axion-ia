@@ -23,16 +23,18 @@ import {
   construireEntonnoir,
   comparerPages,
   coutParApporteurActif,
-  decouperParAnnonce,
   decouperParCampagne,
+  repartirParAnnonce,
   lundiDe,
   type ComparaisonPage,
   type CoutActif,
   type Depense,
   type EntonnoirApporteurs,
   type LeadSuivi,
+  type LigneAnnonce,
   type LigneBalise,
   type LigneDecoupage,
+  type RetourConnuSuivi,
   type SourcesLues,
 } from "./apporteurs-entonnoir";
 
@@ -76,7 +78,8 @@ export interface TableauApporteurs {
   entonnoir: EntonnoirApporteurs;
   comparaison: ComparaisonPage[];
   parCampagne: LigneDecoupage[];
-  parAnnonce: LigneDecoupage[];
+  /** Par annonce (`utm_content`), avec une ligne « Total » et une ligne « Déjà connus ». */
+  parAnnonce: LigneAnnonce[];
   actifs: CoutActif;
   /** Dépenses de la période (centimes) — 0 = rien de saisi, affiché « non saisi ». */
   depenseTotale: number;
@@ -88,6 +91,23 @@ export interface TableauApporteurs {
 
 function enregistrement(v: unknown): Record<string, unknown> {
   return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+}
+
+/** Les entrées `retoursVsl` d'une fiche datées de la période. */
+function retoursDepuis(details: unknown, depuis: Date): Array<Record<string, unknown>> {
+  const v = enregistrement(details)["retoursVsl"];
+  if (!Array.isArray(v)) return [];
+  return v
+    .map(enregistrement)
+    .filter((e) => typeof e["le"] === "string" && Date.parse(e["le"]) >= depuis.getTime());
+}
+
+/** Le premier retour de la période, ou `null`. */
+function premierRetourDepuis(details: unknown, depuis: Date): Date | null {
+  const t = retoursDepuis(details, depuis)
+    .map((e) => Date.parse(e["le"] as string))
+    .sort((a, b) => a - b)[0];
+  return t === undefined ? null : new Date(t);
 }
 
 async function lire<T>(f: () => Promise<T>, repli: T): Promise<{ ok: boolean; v: T }> {
@@ -140,25 +160,52 @@ export async function chargerTableauApporteurs(
       details: Prisma.JsonValue;
     }>,
   );
+  // 2 bis. Les personnes DÉJÀ CONNUES revenues par la publicité (trace
+  // `details.retoursVsl` posée par la page vidéo sur leur fiche existante).
+  // Lecture brute : un filtre Prisma « la clé existe » sur du JSON n'est pas sûr.
+  const fichesConnues = await lire(
+    () =>
+      prisma.$queryRaw<
+        Array<{ id: string; contactEmailHash: string | null; details: Prisma.JsonValue }>
+      >`
+        SELECT id, contact_email_hash AS "contactEmailHash", details
+        FROM submissions
+        WHERE deleted_at IS NULL AND details ? 'retoursVsl'
+        LIMIT ${PLAFOND_LEADS}
+      `,
+    [] as Array<{ id: string; contactEmailHash: string | null; details: Prisma.JsonValue }>,
+  );
+  const connusLus = fichesConnues.v
+    .map((f) => ({ f, revenuLe: premierRetourDepuis(f.details, depuis) }))
+    .filter((x): x is { f: (typeof fichesConnues.v)[number]; revenuLe: Date } => !!x.revenuLe);
+
   const ids = fiches.v.map((f) => f.id);
+  const idsConnus = connusLus.map((x) => x.f.id);
   const hashes = [
-    ...new Set(fiches.v.map((f) => f.contactEmailHash).filter((h): h is string => !!h)),
+    ...new Set(
+      [...fiches.v, ...connusLus.map((x) => x.f)]
+        .map((f) => f.contactEmailHash)
+        .filter((h): h is string => !!h),
+    ),
   ];
 
   // 3. Réservations et issues d'échange, rattachées aux fiches.
+  const tousIds = [...ids, ...idsConnus];
   const rdv = await lire(
     () =>
-      ids.length === 0
+      tousIds.length === 0
         ? Promise.resolve([])
         : prisma.calendlyEvent.findMany({
-            where: { linkedSubmissionId: { in: ids } },
+            where: { linkedSubmissionId: { in: tousIds } },
             select: {
               linkedSubmissionId: true,
+              capturedAt: true,
               suivi: { select: { issue: true, decision: true } },
             },
           }),
     [] as Array<{
       linkedSubmissionId: string | null;
+      capturedAt: Date;
       suivi: { issue: string; decision: string | null } | null;
     }>,
   );
@@ -284,6 +331,23 @@ export async function chargerTableauApporteurs(
     reseau: reseau.ok && dossiers.ok,
   };
 
+  // Les « déjà connus » : ce qui leur est arrivé APRÈS leur retour.
+  const connus: RetourConnuSuivi[] = connusLus.map(({ f, revenuLe }) => {
+    const apres = (rdvParFiche.get(f.id) ?? []).filter(
+      (m) => m.capturedAt.getTime() >= revenuLe.getTime(),
+    );
+    const r = f.contactEmailHash ? reseauDe.get(f.contactEmailHash) : undefined;
+    return {
+      id: f.id,
+      revenuLe,
+      etape2: retoursDepuis(f.details, depuis).some((x) => x["etape"] === 2),
+      reserve: apres.length > 0,
+      tenu: apres.some((m) => m.suivi?.issue === "eu_lieu"),
+      retenu: apres.some((m) => m.suivi?.decision === "retenu"),
+      contrat: !!r?.signeParSocieteAt && r.signeParSocieteAt.getTime() >= revenuLe.getTime(),
+    };
+  });
+
   const jusqua = maintenant;
   const entonnoir = construireEntonnoir({
     lignes: balises.v,
@@ -302,7 +366,12 @@ export async function chargerTableauApporteurs(
     entonnoir,
     comparaison: comparerPages(balises.v),
     parCampagne: decouperParCampagne(balises.v, leads, depensesLues.v, balises.ok),
-    parAnnonce: decouperParAnnonce(leads),
+    parAnnonce: repartirParAnnonce({
+      leads,
+      connus,
+      depenseTotale: entonnoir.depenseTotale,
+      sources: { ...sources, fiches: sources.fiches && fichesConnues.ok },
+    }),
     actifs: coutParApporteurActif(entonnoir.depenseTotale, actifsN),
     depenseTotale: entonnoir.depenseTotale,
     dernieresDepenses: dernieres.v,

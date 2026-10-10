@@ -17,6 +17,7 @@ import {
   coutParMarche,
   partDepuisPrecedente,
   type Cellule,
+  type LigneAnnonce,
   type LigneDecoupage,
   type Marche,
 } from "@/features/admin-tunnels/apporteurs-entonnoir";
@@ -142,6 +143,49 @@ export function VueApporteurs({
       align: "right",
       cell: (r) =>
         cout(r.depenseCentimes === null ? null : coutParMarche(r.depenseCentimes, r.etape2)),
+    },
+  ];
+
+  const colAnnonce: ReadonlyArray<AdminTableColumn<LigneAnnonce>> = [
+    {
+      key: "cle",
+      header: "Annonce",
+      cell: (r) => (r.genre === "annonce" ? r.cle : <strong>{r.cle}</strong>),
+      width: "24%",
+    },
+    { key: "v", header: "Visites", align: "right", cell: (r) => cellule(r.visites, true) },
+    { key: "e1", header: "Étape 1 (e-mail)", align: "right", cell: (r) => cellule(r.etape1, true) },
+    {
+      key: "e2",
+      header: "Étape 2 (téléphone)",
+      align: "right",
+      cell: (r) => cellule(r.etape2, true),
+    },
+    {
+      key: "res",
+      header: "Créneaux réservés",
+      align: "right",
+      cell: (r) => cellule(r.reserves, true),
+    },
+    { key: "tenu", header: "Échanges tenus", align: "right", cell: (r) => cellule(r.tenus, true) },
+    { key: "ret", header: "Retenus", align: "right", cell: (r) => cellule(r.retenus, true) },
+    {
+      key: "ctr",
+      header: "Contrats signés",
+      align: "right",
+      cell: (r) => cellule(r.contrats, true),
+    },
+    {
+      key: "c1",
+      header: "Coût par étape 1",
+      align: "right",
+      cell: (r) => cout(r.coutParEtape1),
+    },
+    {
+      key: "cr",
+      header: "Coût par réservation",
+      align: "right",
+      cell: (r) => cout(r.coutParReservation),
     },
   ];
 
@@ -279,11 +323,9 @@ export function VueApporteurs({
       </section>
 
       <section className="mt-[var(--space-admin-6)]">
-        <h2 className="admin-h2">Par campagne et par annonce</h2>
+        <h2 className="admin-h2">Par campagne</h2>
         <p className="admin-lede">
-          La campagne est le repère <code>utm_campaign</code> du lien, l&apos;annonce son{" "}
-          <code>utm_content</code>. Les visites ne sont pas mesurables par annonce (la balise
-          anonyme ne la porte pas) : « non mesuré ».
+          La campagne est le repère <code>utm_campaign</code> du lien.
         </p>
         <AdminTable
           columns={colDecoupage("Campagne")}
@@ -292,11 +334,23 @@ export function VueApporteurs({
           caption="Par campagne"
           emptyState={<p className="admin-meta-small">Aucune donnée sur la période.</p>}
         />
-        <div className="mt-[var(--space-admin-4)]" />
+      </section>
+
+      <section className="mt-[var(--space-admin-6)]">
+        <h2 className="admin-h2">Par annonce</h2>
+        <p className="admin-lede">
+          Chaque inscription garde l&apos;identifiant de l&apos;annonce qui l&apos;a amenée (
+          <code>utm_content</code> du lien), jusqu&apos;à la réservation et au contrat — même quand
+          le créneau est pris depuis l&apos;e-mail. « (sans identifiant) » : arrivée sans annonce
+          repérée. Les visites ne se mesurent pas par annonce (la balise anonyme ne la porte pas) :
+          « non mesuré ». Les dépenses se saisissent par campagne : le coût n&apos;apparaît que sur
+          la ligne « Total ». Les personnes déjà connues revenues par la publicité sont comptées à
+          part, sur leur propre ligne.
+        </p>
         <AdminTable
-          columns={colDecoupage("Annonce")}
+          columns={colAnnonce}
           rows={t.parAnnonce}
-          getRowId={(r) => r.cle}
+          getRowId={(r) => `${r.genre}:${r.cle}`}
           caption="Par annonce"
           emptyState={<p className="admin-meta-small">Aucune inscription sur la période.</p>}
         />
