@@ -28,10 +28,12 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { VARIANTE_DOSSIER_COMMENCE } from "@/lib/commercial-application/kit-apporteur";
+import { VARIANTE_VSL_ABANDON } from "@/lib/commercial-application/vsl-apporteur";
 import {
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
   VARIANTE_KIT_DIFFERE,
+  VARIANTE_VSL_ABANDON_DIFFEREE,
   GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
 } from "./verdict-envoi";
 
@@ -53,6 +55,10 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
       true,
     ],
     ["lead-apporteur-recu", { variante: "dossier-commence" }, true],
+    // 2026-10-10 — A1 du tunnel vidéo, différé de 30 minutes : une sollicitation.
+    ["lead-apporteur-recu", { variante: "vsl-abandon" }, true],
+    // B1 « C'est noté » répond à l'étape 2 que la personne vient de valider.
+    ["lead-apporteur-recu", { variante: "vsl-etape2" }, false],
     // L'accusé immédiat d'une démarche n'est PAS une sollicitation.
     ["lead-apporteur-recu", {}, false],
     ["lead-apporteur-recu", { variante: "autre-chose" }, false],
@@ -67,6 +73,7 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
 
   it("la variante locale est celle du kit — sans que le module importe le kit", () => {
     expect(VARIANTE_KIT_DIFFERE).toBe(VARIANTE_DOSSIER_COMMENCE);
+    expect(VARIANTE_VSL_ABANDON_DIFFEREE).toBe(VARIANTE_VSL_ABANDON);
   });
 
   it("l'ensemble des sollicitations n'a pas bougé", () => {

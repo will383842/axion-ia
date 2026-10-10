@@ -14,7 +14,8 @@ import { render } from "@react-email/render";
 import * as React from "react";
 
 import { LeadApporteurRecuEmail, leadApporteurRecuSubject } from "../lead-apporteur-recu";
-import { LeadApporteurRelanceEmail } from "../lead-apporteur-relance";
+import { LeadApporteurRelanceEmail, leadApporteurRelanceSubject } from "../lead-apporteur-relance";
+import { OBJET_MAX } from "../../objet-email";
 import { REGIME_FAMILLE } from "../_layout";
 import {
   VARIANTE_VSL_ABANDON,
@@ -99,6 +100,21 @@ describe("objets", () => {
       "Votre inscription n'est pas terminée",
     );
     expect(leadApporteurRecuSubject("fr", { variante: VARIANTE_VSL_ETAPE2 })).toBe("C'est noté");
+  });
+
+  it("A2 « Votre inscription vous attend » — l'objet suit le titre de la variante vidéo", () => {
+    const a2 = leadApporteurRelanceSubject("fr", { etape: "j2", variante: VARIANTE_VSL_RELANCE });
+    expect(a2).toBe("Votre inscription vous attend");
+    const a3 = leadApporteurRelanceSubject("fr", { etape: "j7", variante: VARIANTE_VSL_RELANCE });
+    expect(a3).toBe("Votre inscription : dernier rappel");
+    for (const o of [a2, a3]) {
+      expect(o).not.toMatch(/Votre candidature vous attend/);
+      expect(o.length).toBeLessThanOrEqual(OBJET_MAX);
+    }
+    // L'ancienne relance (sans variante) garde son objet.
+    expect(leadApporteurRelanceSubject("fr", { etape: "j2" })).toBe(
+      "Votre candidature vous attend",
+    );
   });
 });
 

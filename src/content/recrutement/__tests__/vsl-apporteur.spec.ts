@@ -64,7 +64,7 @@ describe("le texte de la page VSL apporteurs", () => {
 
   it("la FAQ place la somme « à titre indicatif » dans la même phrase, et vient de pricing.ts", () => {
     const gains = faqVsl("500 €").find((q) => q.id === "gains");
-    expect(gains?.answer).toMatch(/à titre indicatif[^.]*500 €/i);
+    expect(gains?.answer).toMatch(/à titre indicatif, 500 €\u00a0HT par journée/i);
     // La page l'alimente avec `COMMISSION_FORMATION_PAR_JOURNEE_EUR`, pas avec un littéral.
     expect(COMMISSION_FORMATION_PAR_JOURNEE_EUR).toBeGreaterThan(0);
   });
@@ -106,7 +106,8 @@ describe("le bloc « Votre commission »", () => {
 
   it("titre, grand chiffre « … par journée de formation facturée », sous-ligne obligatoire", () => {
     expect(c.titre).toBe("Votre commission");
-    expect(`${c.montant} ${c.apres}`).toBe("500 € par journée de formation facturée");
+    // « HT » comme le contrat (2026-10-10), insécable : jamais seul en début de ligne.
+    expect(`${c.montant} ${c.apres}`).toBe("500 €\u00a0HT par journée de formation facturée");
     expect(c.sousLigne).toBe(
       "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
     );

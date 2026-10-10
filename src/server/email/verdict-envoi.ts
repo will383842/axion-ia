@@ -96,6 +96,19 @@ export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = n
 export const VARIANTE_KIT_DIFFERE = "dossier-commence";
 
 /**
+ * Variante A1 du tunnel vidéo (`VARIANTE_VSL_ABANDON`, `vsl-apporteur.ts`) : même
+ * gabarit, même départ différé de 30 minutes sans nouvelle démarche — c'est une
+ * sollicitation, que l'opposition retient AU DÉPART comme le kit (2026-10-10).
+ * Copie locale pour la même raison ; égalité vérifiée par `verdict-envoi.spec.ts`.
+ */
+export const VARIANTE_VSL_ABANDON_DIFFEREE = "vsl-abandon";
+
+const VARIANTES_DIFFEREES: ReadonlySet<unknown> = new Set([
+  VARIANTE_KIT_DIFFERE,
+  VARIANTE_VSL_ABANDON_DIFFEREE,
+]);
+
+/**
  * Cet envoi est-il une SOLLICITATION, que l'opposition doit retenir ?
  *
  * Le kit du dossier commencé partage son gabarit avec l'accusé immédiat
@@ -110,7 +123,7 @@ export function estSollicitationSoumiseAOpposition(
 ): boolean {
   if (GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(template)) return true;
   if (template !== "lead-apporteur-recu") return false;
-  return (payload as { variante?: unknown } | null | undefined)?.variante === VARIANTE_KIT_DIFFERE;
+  return VARIANTES_DIFFEREES.has((payload as { variante?: unknown } | null | undefined)?.variante);
 }
 
 function estStub(): boolean {
