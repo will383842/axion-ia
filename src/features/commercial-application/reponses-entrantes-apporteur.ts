@@ -25,7 +25,15 @@
 //   · les rappels : `lireEtatsRelance` compte une réponse humaine comme une
 //     réponse (motif `repondu`) — au passage quotidien ET au filet du départ ;
 //   · la liste : badge « A répondu le JJ/MM » (`badgeSuiviInvitation`) ;
-//   · la fiche : bloc « Réponses reçues par e-mail ».
+//   · la fiche : bloc « Réponses reçues par e-mail » ;
+//   · les messages automatiques d'ATTENTE (R6, 2026-10-10) : une réponse humaine
+//     de la personne annule ses relances « votre inscription / candidature vous
+//     attend » (A1, A2, A3 du tunnel vidéo, J+2 / J+7 de l'ancien formulaire),
+//     comme une réponse envoyée depuis la console (`reply-actions.ts`). Cela vaut
+//     AUSSI pour une personne qui n'a pas encore été invitée — c'est même le cas
+//     courant : elle répond à « il vous manque une étape ». Ce message-là n'est
+//     pas enregistré (le relevé ne garde que les réponses à une invitation), il
+//     arrête seulement les relances. Une réponse automatique n'arrête rien.
 //
 // ── Réponse automatique ───────────────────────────────────────────────────
 // Enregistrée, marquée `auto`, et elle n'arrête RIEN : un « je suis absent »
@@ -56,6 +64,10 @@ import {
   type MessageZoho,
 } from "@/server/zoho-mail/client";
 import { GABARIT_INVITATION } from "./relance-invitation-etat";
+import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
+
+/** Motif écrit au journal des envois pour chaque relance retirée. */
+export const MOTIF_ANNULATION_REPONSE = "Envoi annulé : la personne a répondu par e-mail.";
 
 /** Clé du curseur dans la table `settings`. */
 export const CLE_CURSEUR = "apporteurs.reponses-entrantes.curseur";
@@ -132,6 +144,7 @@ interface LigneFiche {
   contactEmailHash: string | null;
   contactName: string;
   details: unknown;
+  submittedAt?: Date | null;
 }
 
 /** Une réponse à enregistrer : le message, la fiche invitée, l'empreinte. */
@@ -141,11 +154,21 @@ interface Rattachement {
   readonly fiche: LigneFiche;
 }
 
+/** Un message d'une personne connue comme apporteur, sans invitation avant lui. */
+interface MessageHorsInvitation {
+  readonly message: MessageZoho;
+  readonly adresse: string;
+}
+
 /**
  * Les messages d'une personne invitée, arrivés après son invitation, chacun
- * rattaché à la fiche de la DERNIÈRE invitation partie avant lui.
+ * rattaché à la fiche de la DERNIÈRE invitation partie avant lui — et, à part,
+ * ceux d'une personne apporteur arrivés après sa fiche mais SANS invitation
+ * avant eux (ils n'arrêtent que les relances d'attente).
  */
-async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement[]> {
+async function rattacher(
+  messages: readonly MessageZoho[],
+): Promise<{ rattachements: Rattachement[]; horsInvitation: MessageHorsInvitation[] }> {
   const parEmpreinte = new Map<string, MessageZoho[]>();
   for (const m of messages) {
     const adresse = adresseExpediteur(m.fromAddress);
@@ -153,14 +176,20 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
     if (!empreinte) continue;
     parEmpreinte.set(empreinte, [...(parEmpreinte.get(empreinte) ?? []), m]);
   }
-  if (parEmpreinte.size === 0) return [];
+  if (parEmpreinte.size === 0) return { rattachements: [], horsInvitation: [] };
 
   const fiches = (await prisma.submission.findMany({
     where: { contactEmailHash: { in: [...parEmpreinte.keys()] }, deletedAt: null },
-    select: { id: true, contactEmailHash: true, contactName: true, details: true },
+    select: {
+      id: true,
+      contactEmailHash: true,
+      contactName: true,
+      details: true,
+      submittedAt: true,
+    },
   })) as LigneFiche[];
   const ficheParId = new Map(fiches.map((f) => [f.id, f]));
-  if (fiches.length === 0) return [];
+  if (fiches.length === 0) return { rattachements: [], horsInvitation: [] };
 
   const invitations = await prisma.emailLog.findMany({
     where: {
@@ -173,7 +202,14 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
   });
 
   const sortie: Rattachement[] = [];
+  const horsInvitation: MessageHorsInvitation[] = [];
   for (const [empreinte, liste] of parEmpreinte) {
+    // La plus ANCIENNE fiche apporteur de la personne : un message arrivé avant
+    // elle ne répond à aucun de nos messages.
+    const premiereFiche = fiches
+      .filter((f) => f.contactEmailHash === empreinte && estApporteur(f.details))
+      .map((f) => (f.submittedAt instanceof Date ? f.submittedAt.getTime() : 0))
+      .sort((a, b) => a - b)[0];
     const invits = invitations
       .map((i) => ({ fiche: i.entityId ? ficheParId.get(i.entityId) : undefined, i }))
       .filter(
@@ -182,15 +218,37 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
       )
       .map((x) => ({ fiche: x.fiche, le: (x.i.sentAt ?? x.i.createdAt).getTime() }))
       .sort((a, b) => b.le - a.le);
-    if (invits.length === 0) continue;
     for (const m of liste) {
       // 🔑 Partie AVANT le message : un message antérieur à l'invitation n'y
-      // répond pas (premier contact, question d'avant) — il n'arrête rien.
+      // répond pas (premier contact, question d'avant) — il n'est pas enregistré.
       const invit = invits.find((x) => x.le < m.receivedAt.getTime());
-      if (invit) sortie.push({ message: m, empreinte, fiche: invit.fiche });
+      if (invit) {
+        sortie.push({ message: m, empreinte, fiche: invit.fiche });
+        continue;
+      }
+      const adresse = adresseExpediteur(m.fromAddress);
+      if (adresse && premiereFiche !== undefined && premiereFiche < m.receivedAt.getTime()) {
+        horsInvitation.push({ message: m, adresse });
+      }
     }
   }
-  return sortie;
+  return { rattachements: sortie, horsInvitation };
+}
+
+/**
+ * R6 — une réponse humaine de la personne arrête ses relances d'attente.
+ * Best-effort : un retrait raté n'interrompt pas le relevé (la relance repart
+ * au pire une fois, comme avant), et ne fait pas reculer le curseur.
+ */
+async function arreterRelancesAttente(adresse: string): Promise<void> {
+  try {
+    await annulerRelancesLeadApporteur(adresse, MOTIF_ANNULATION_REPONSE);
+  } catch (e) {
+    console.warn(
+      "[reponses-entrantes] relances d'attente non retirées :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
 }
 
 async function notifier(r: Rattachement, auto: boolean, objet: string): Promise<void> {
@@ -261,7 +319,7 @@ export async function passerReponsesEntrantes(
     return vide("zoho-injoignable");
   }
 
-  const rattachements = await rattacher(liste.messages);
+  const { rattachements, horsInvitation } = await rattacher(liste.messages);
   let dejaConnues = 0;
   let erreurs = 0;
   const enregistrees = { humaines: 0, automatiques: 0 };
@@ -346,8 +404,27 @@ export async function passerReponsesEntrantes(
           );
         }
       }
+      if (!auto) {
+        const adresse = adresseExpediteur(m.fromAddress);
+        if (adresse) await arreterRelancesAttente(adresse);
+      }
       await notifier(r, auto, objet);
     }
+  }
+
+  // Messages d'une personne apporteur SANS invitation avant eux (un lead de la
+  // page vidéo qui répond à « il vous manque une étape ») : rien n'est
+  // enregistré, mais une réponse humaine arrête ses relances d'attente. Les
+  // en-têtes décident d'une réponse automatique, comme plus haut.
+  for (const h of horsInvitation) {
+    let entetes: Entetes | null = null;
+    try {
+      entetes = await client.lireEntetes(h.message.folderId, h.message.messageId);
+    } catch {
+      entetes = null;
+    }
+    if (estReponseAutomatique({ entetes, objet: objetEnregistre(h.message.subject) })) continue;
+    await arreterRelancesAttente(h.adresse);
   }
 
   // Le curseur n'avance que sur un passage SANS erreur : un message raté est
