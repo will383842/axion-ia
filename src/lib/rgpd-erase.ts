@@ -1578,6 +1578,17 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "(art. L.123-22 du code de commerce, art. 17(3)(b) RGPD). Il est rendu par l'export.",
   },
   {
+    // Candidatures, lot L5b (relecture sécurité, 2026-10-08).
+    modele: "FichierPartage",
+    motif:
+      "fichier renvoyé par un candidat par son lien privé (`origine = personne`) : objet du " +
+      "stockage puis ligne effacés avec sa candidature par `effacerCandidaturesPour` " +
+      "(`candidature-rgpd.ts`, appelé par la même route) via " +
+      "`effacerFichiersRenvoyesCandidature` ; s'il ne peut pas l'être, la candidature est " +
+      "conservée et signalée, jamais annoncée effacée. Les fichiers de l'équipe ne portent " +
+      "rien sur une personne.",
+  },
+  {
     // Candidatures, lot L3 (2026-10-08).
     modele: "JobApplicationInboundReply",
     motif:

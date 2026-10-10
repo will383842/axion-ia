@@ -58,4 +58,16 @@ describe("antivirus — trois issues, jamais deux", () => {
     expect(lireReponseClamd("").issue).toBe("indisponible");
     expect(lireReponseClamd("INSTREAM size limit exceeded. ERROR\0").issue).toBe("indisponible");
   });
+
+  it("🔴 un dépassement de limite signalé par clamd (AlertExceedsMax) est « indisponible », ni sain ni infecté", () => {
+    for (const brut of [
+      "stream: Heuristics.Limits.Exceeded.MaxFileSize FOUND\0",
+      "stream: Heuristics.Limits.Exceeded.MaxScanSize FOUND\0",
+      "stream: Heuristics.Limits.Exceeded FOUND\0",
+    ]) {
+      const v = lireReponseClamd(brut);
+      expect(v.issue, brut).toBe("indisponible");
+    }
+    expect(lireReponseClamd("stream: Win.Trojan.Limits-1 FOUND\0").issue).toBe("infecte");
+  });
 });

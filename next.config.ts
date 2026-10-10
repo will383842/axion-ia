@@ -982,6 +982,31 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Candidatures unifiées L5b (2026-10-08) — la page de DÉPÔT du lien privé :
+      // la SEULE page du lien qui charge un script, servi à part par
+      // `/api/partage/script-depot` (`'self'`, aucun script en ligne), et qui parle au
+      // stockage (envoi des morceaux en PUT direct). Placée APRÈS la règle
+      // `/api/partage/:path*` : sa CSP l'emporte sur cette page seulement. Le
+      // compartiment exact n'est pas connu au build (en-têtes figés ici) : le joker
+      // R2, sur cette page uniquement. Même valeur que `CSP_PAGE_DEPOT`.
+      {
+        source: "/api/partage/:id/:jeton/deposer",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'none'",
+              "script-src 'self'",
+              "style-src 'unsafe-inline'",
+              "img-src 'self'",
+              "connect-src 'self' https://*.r2.cloudflarestorage.com",
+              "form-action 'none'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+            ].join("; "),
+          },
+        ],
+      },
     ];
   },
 };

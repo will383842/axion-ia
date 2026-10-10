@@ -347,7 +347,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {
     await alertIncident(
-      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${newsletterResult.guideDeleted} demandes du guide, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching.`,
+      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${newsletterResult.guideDeleted} demandes du guide, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching, ${candidaturesResult.supprimees} candidatures effacées (${candidaturesResult.conservees} CONSERVÉES : fichiers renvoyés non effacés du stockage).`,
       { userId: v.jti },
     );
   } catch {
@@ -377,6 +377,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // personne doit l'apprendre ici, pas le decouvrir plus tard. Un
       // effacement tronque qui se presente comme complet est pire qu'un
       // effacement refuse.
+      // L5b (relecture sécurité, 2026-10-08) — une candidature dont les
+      // fichiers renvoyés par la personne n'ont pas pu être effacés du stockage
+      // est GARDÉE (la supprimer les rendrait introuvables). Elle est signalée
+      // ici, jamais comptée ni annoncée comme effacée.
+      candidaturesSupprimees: candidaturesResult.supprimees,
+      candidaturesConservees: candidaturesResult.conservees,
+      ...(candidaturesResult.conservees > 0
+        ? {
+            avertissementCandidatures:
+              `${candidaturesResult.conservees} candidature(s) conservée(s) : les fichiers ` +
+              "que vous nous avez renvoyés n'ont pas pu être effacés du stockage. " +
+              "Renouvelez votre demande, ou écrivez à contact@axion-ia.com.",
+          }
+        : {}),
       ...(podcastResult.tronque || candidaturesResult.tronque
         ? {
             avertissement:
@@ -390,6 +404,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     },
     notice: {
       explanation:
+        (candidaturesResult.conservees > 0
+          ? `${candidaturesResult.conservees} candidature(s) conservée(s) : les fichiers que vous nous avez renvoyés n'ont pas pu être effacés du stockage, ces candidatures n'ont donc pas été effacées. Renouvelez votre demande, ou écrivez à contact@axion-ia.com. Pour le reste : `
+          : "") +
         "Vos données identifiantes ont été effacées ou anonymisées. Les lignes business (factures, audit comptable) sont conservées sous forme anonymisée conformément à l'art. 30 RGPD (legal hold).",
       retentionExceptions: [
         "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",

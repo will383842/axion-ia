@@ -262,7 +262,12 @@ describe("archiver ≠ supprimer", () => {
         fautifs.push(f);
       }
     }
-    expect(fautifs).toEqual([]);
+    // UNE exception, nommée : l'effacement MANUEL d'un dossier candidat (L5b,
+    // art. 17) emporte les fichiers que la personne a renvoyés — jamais une
+    // purge, et seulement des lignes `origine = personne`, sous le drapeau
+    // d'effacement (verrouillé par `l-effacement-manuel-emporte-les-fichiers-renvoyes.spec.ts`).
+    const EFFACEMENT_MANUEL = "src/server/partages/effacement-candidat.ts";
+    expect(fautifs.filter((f) => f.replace(/\\/g, "/") !== EFFACEMENT_MANUEL)).toEqual([]);
   });
 });
 

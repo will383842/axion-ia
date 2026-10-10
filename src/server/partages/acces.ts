@@ -43,7 +43,7 @@ type Db = Pick<PrismaClient, "lienPartage" | "lienPartageAcces" | "$transaction"
 export interface AlertePartage {
   readonly category: "FICHIERS_PARTAGES";
   readonly payload: {
-    readonly kind: "rushs_telecharges" | "plafond_atteint";
+    readonly kind: "rushs_telecharges" | "plafond_atteint" | "essai_rendu" | "analyse_en_retard";
     readonly offre: string;
     readonly fichier: string;
     readonly applicationId: string | null;
@@ -130,6 +130,8 @@ interface LienLu {
   applicationId: string | null;
   expireLe: Date;
   revoqueLe: Date | null;
+  /** L5b — « Déposer votre version » proposé sur la page. */
+  depotAutorise?: boolean;
   application: { offerTitleSnap: string } | null;
   fichiers: Array<{ fichier: FichierLu }>;
 }
@@ -145,6 +147,7 @@ async function lireLien(id: string, jeton: string, deps: DepsAcces): Promise<Lie
       applicationId: true,
       expireLe: true,
       revoqueLe: true,
+      depotAutorise: true,
       application: { select: { offerTitleSnap: true } },
       fichiers: {
         select: {
@@ -263,6 +266,8 @@ export async function ouvrirPageLien(
       expireLe: lien.expireLe,
       rushs: porteDesRushs(categories(lien)),
       fichiers,
+      // L5b — seulement pour un candidat (monde « emploi »), et si Will l'a coché.
+      depotAutorise: lien.depotAutorise === true && lien.applicationId !== null,
     }),
   };
 }

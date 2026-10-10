@@ -41,6 +41,7 @@ import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
 import { tailleLisible } from "@/lib/careers/videos";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import { partagesActifs } from "@/server/partages/config";
+import { relancerAnalysesPartagesEnAttente } from "@/server/partages/depot";
 import {
   compterLiensActifs,
   fichiersPourComposeur,
@@ -161,6 +162,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // Vidéos DÉPOSÉES (2026-09-28) : lues ici, relancées si l'antivirus a été
   // interrompu (le worker n'a pas le volume : pas de cron possible).
   await relancerAnalysesEnAttente(a.id);
+  // L5b — un essai renvoyé par le candidat resté « en attente » (antivirus
+  // coupé, redémarrage) repart à l'analyse à l'ouverture de sa fiche.
+  if (partagesAllumes) void relancerAnalysesPartagesEnAttente();
   const videos = await prisma.jobApplicationVideo
     .findMany({
       where: { applicationId: a.id, statut: { in: ["analyse", "disponible", "rejetee"] } },

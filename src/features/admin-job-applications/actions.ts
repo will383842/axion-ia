@@ -13,6 +13,7 @@ import { adminPath } from "@/lib/admin-path";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
+import { effacerFichiersRenvoyesCandidature } from "@/server/partages/effacement-candidat";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 // La lecture SANS session, et les trois valeurs qu'un module `"use server"` ne
 // peut pas exporter (statuts, schéma, déchiffrement tolérant). Une seule
@@ -576,6 +577,12 @@ export async function deleteApplicationAction(
   });
   if (!a) return { ok: false, error: "Candidature introuvable." };
 
+  // L5b — les fichiers renvoyés par son lien, EN PREMIER : sans clé étrangère,
+  // ils deviendraient introuvables une fois le dossier supprimé. Si leur
+  // effacement échoue, le dossier est GARDÉ, rien d'autre n'est entamé, et
+  // l'erreur le dit (relecture sécurité, 2026-10-08).
+  const fichiers = await effacerFichiersRenvoyesCandidature(id);
+  if (!fichiers.ok) return { ok: false, error: fichiers.erreur };
   await deleteCv(a.cvStoragePath); // purge CV AVANT le delete
   await deleteCv(a.photoStoragePath); // purge photo AVANT le delete (RGPD)
   await supprimerVideosCandidature(id); // vidéos déposées (2026-09-28), même règle

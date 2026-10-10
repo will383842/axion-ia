@@ -146,6 +146,8 @@ export function ComposerReponse({
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
   const [fichiers, setFichiers] = useState<FichierJoint[]>([]);
   const [panneauFichiers, setPanneauFichiers] = useState(false);
+  // L5b — le candidat pourra déposer sa version par le même lien.
+  const [depotAutorise, setDepotAutorise] = useState(false);
   const [, demarrer] = useTransition();
   const corpsRef = useRef<HTMLTextAreaElement>(null);
 
@@ -233,12 +235,13 @@ export function ComposerReponse({
         bodyMarkdown: corps,
         modele,
         ...(note.trim() ? { internalNote: note.trim() } : {}),
-        ...(fichiers.length > 0 ? { fichierIds: fichiers.map((f) => f.id) } : {}),
+        ...(fichiers.length > 0 ? { fichierIds: fichiers.map((f) => f.id), depotAutorise } : {}),
       }).then((r) => {
         if (r.ok) {
           setPhase({ nom: "en_file", replyId: r.replyId });
           setFichiers([]);
           setPanneauFichiers(false);
+          setDepotAutorise(false);
           router.refresh();
           return;
         }
@@ -390,6 +393,16 @@ export function ComposerReponse({
                 </li>
               ))}
             </ul>
+          ) : null}
+          {fichiers.length > 0 ? (
+            <label className="admin-checkbox">
+              <input
+                type="checkbox"
+                checked={depotAutorise}
+                onChange={(e) => setDepotAutorise(e.target.checked)}
+              />
+              <span>Permettre au candidat de déposer sa version par ce lien (4 Go au plus)</span>
+            </label>
           ) : null}
           {panneauFichiers ? (
             <JoindreFichiers
