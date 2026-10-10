@@ -159,7 +159,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
-      <VslMerciMesure landing={VSL_SLUG} />
+      <VslMerciMesure landing={VSL_SLUG} candidatureEventId={fiche?.candidatureEventId ?? null} />
       <Section tone="halo-warm" className="pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-14 lg:pb-14">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="display-editorial text-fg text-balance">{VSL_MERCI.title}</h1>

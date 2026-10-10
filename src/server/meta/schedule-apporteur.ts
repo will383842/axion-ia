@@ -17,6 +17,8 @@
 //   · seul un contact venu de Facebook / Instagram compte (`leadCompteChezMeta`) :
 //     un contact LinkedIn ferait croire que la campagne convertit ce qu'elle n'a
 //     pas amené ;
+//   · une ligne « suspecte » (envoi trop rapide : un robot) ne compte pas — même
+//     règle que `Lead` (2026-10-10) ;
 //   · le `fbclid` et son HEURE D'ARRIVÉE sont lus sur la fiche (gardés à l'étape 1
 //     avec le consentement) pour un `fbc` au bon horodatage.
 //
@@ -89,7 +91,10 @@ export interface EnvoyerScheduleInput {
 
 export type ResultatSchedule =
   | ResultatEnvoiMeta
-  | { envoye: false; motif: "fiche_introuvable" | "pas_facebook" | "base_indisponible" };
+  | {
+      envoye: false;
+      motif: "fiche_introuvable" | "pas_facebook" | "suspect" | "base_indisponible";
+    };
 
 export async function envoyerScheduleApporteur(
   input: EnvoyerScheduleInput,
@@ -109,6 +114,10 @@ export async function envoyerScheduleApporteur(
 
   const m = lireDonneesMetaFiche(details);
   if (!leadCompteChezMeta(m.source)) return { envoye: false, motif: "pas_facebook" };
+  // 2026-10-10 — même règle que `Lead` et `SubmitApplication` : une ligne marquée
+  // « suspecte » (robot) n'entraîne pas Meta.
+  const vsl = enregistrement(enregistrement(details)["vsl"]);
+  if (vsl["suspect"] === true) return { envoye: false, motif: "suspect" };
 
   const prenom = (input.nom ?? "").trim().split(/\s+/)[0] ?? "";
   return envoyerEvenementMeta(

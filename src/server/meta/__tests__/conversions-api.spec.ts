@@ -204,9 +204,10 @@ describe("envoyerEvenementMeta — l'événement est un paramètre (lot 5, 2026-
     envMock.env.META_CAPI_TEST_EVENT_CODE = undefined;
   });
 
-  it("le nom d'événement n'est plus codé en dur : Lead et Schedule", () => {
+  it("le nom d'événement n'est plus codé en dur : Lead, Schedule et SubmitApplication", () => {
     expect(construireEvenementMeta("Lead", evt).event_name).toBe("Lead");
     expect(construireEvenementMeta("Schedule", evt).event_name).toBe("Schedule");
+    expect(construireEvenementMeta("SubmitApplication", evt).event_name).toBe("SubmitApplication");
   });
 
   it("l'event_id est transmis TEL QUEL : c'est ce qui fait dédoublonner Meta avec le navigateur", () => {

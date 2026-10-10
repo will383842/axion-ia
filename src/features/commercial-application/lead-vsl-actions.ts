@@ -80,6 +80,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { envoyerEvenementMeta } from "@/server/meta/conversions-api";
+import { lireDonneesMetaFiche } from "@/server/meta/schedule-apporteur";
 import {
   CANDIDATURE_COMMERCIALE_SUBTYPE,
   SOURCE_OPTIONS,
@@ -622,6 +623,8 @@ export async function completerLeadVsl(
       telephone: d.telephone,
       reponseId: d.reponseId,
       merciUrl,
+      ip,
+      userAgent: (await headers()).get("user-agent") ?? null,
     });
     return { ok: true, merciUrl };
   } catch (err) {
@@ -749,6 +752,8 @@ async function suiteEtape2(a: {
   telephone: string;
   reponseId: string;
   merciUrl: string;
+  ip: string | null;
+  userAgent: string | null;
 }): Promise<void> {
   let email: string | null = null;
   let prenom = "";
@@ -788,6 +793,39 @@ async function suiteEtape2(a: {
   } catch (err) {
     console.error("[lead-vsl] e-mail B1 non envoyé:", err);
     Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "email-b1" } });
+  }
+
+  // `SubmitApplication` vers Meta (API Conversions), étape 2 (2026-10-10) : MÊMES
+  // conditions que `Lead` à l'étape 1 — contact venu de Facebook / Instagram,
+  // ligne non suspecte (on n'arrive ici qu'avec une ligne saine), réponse
+  // « acceptée » à la bannière lue sur la FICHE (`funnel.consentPub`) ; avec le
+  // téléphone en plus, haché. Le pixel tire le même `eventID` depuis la page
+  // « C'est noté ». Jamais pour une personne déjà connue (autre chemin). Lancé
+  // SANS attendre, comme `Lead`.
+  const meta = lireDonneesMetaFiche(a.ligne.details);
+  if (leadCompteChezMeta(meta.source)) {
+    const accepte = meta.consentPub === "accepted";
+    void envoyerEvenementMeta(
+      "SubmitApplication",
+      {
+        eventId: `candidature:${a.ligne.id}`,
+        email,
+        prenom,
+        telephone: a.telephone,
+        ip: a.ip,
+        userAgent: a.userAgent,
+        fbp: accepte ? meta.fbp : null,
+        fbclid: accepte ? meta.fbclid : null,
+        fbcCreeLe: accepte ? meta.fbcCreeLe : null,
+        sourceUrl: `${SITE_URL}/fr${VSL_PAGE_PATH}`,
+        at: new Date(),
+      },
+      { consentPub: meta.consentPub },
+    ).catch((err: unknown) => {
+      Sentry.captureException(err, {
+        tags: { action: "completerLeadVsl", step: "meta-candidature" },
+      });
+    });
   }
 
   const details =

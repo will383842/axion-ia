@@ -27,6 +27,7 @@ import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/l
 import { verifierJeton } from "./jeton-lead";
 import { lireRetoursVsl, lireVsl } from "./lead-vsl-details";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import { leadCompteChezMeta } from "@/lib/commercial-application/lead-apporteur";
 
 /** Nom du paramètre d'URL qui porte le jeton, comme sur la page merci (`?j=`). */
 export const PARAM_JETON_VSL = "j";
@@ -87,13 +88,21 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
  *     en promet donc pas, et rien n'est prérempli (`identiteDuJetonVsl` rend
  *     `null` : une personne qui a tapé l'adresse d'autrui ne lit rien) ;
  *   · `annonce` : l'`utm_content` d'ORIGINE (la fiche, ou le dernier retour d'une
- *     personne déjà connue) — un libellé de campagne, jamais une donnée personnelle.
+ *     personne déjà connue) — un libellé de campagne, jamais une donnée personnelle ;
+ *   · `candidatureEventId` : `candidature:<id>` quand le lead vidéo vient de
+ *     valider l'étape 2 (moins d'une heure), sans être suspect, venu de Facebook /
+ *     Instagram — l'`eventID` du `SubmitApplication` du pixel, le même que celui
+ *     du serveur. Jamais pour une personne déjà connue.
  * `null` dès que quelque chose manque — jamais d'exception.
  */
 export interface FicheDuJetonVsl {
   readonly genre: "lead" | "connu";
   readonly annonce: string | null;
+  readonly candidatureEventId: string | null;
 }
+
+/** Fenêtre après l'étape 2 où la page tire encore `SubmitApplication` (rechargement). */
+const FENETRE_SUBMIT_APPLICATION_MS = 60 * 60 * 1000;
 
 const chaine = (v: unknown): string | null => (typeof v === "string" && v ? v : null);
 
@@ -101,7 +110,10 @@ function objet(v: unknown): Record<string, unknown> {
   return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
 }
 
-export async function ficheDuJetonVsl(valeur: unknown): Promise<FicheDuJetonVsl | null> {
+export async function ficheDuJetonVsl(
+  valeur: unknown,
+  maintenant: number = Date.now(),
+): Promise<FicheDuJetonVsl | null> {
   const brut = jetonVslValide(valeur);
   const jeton = brut ? verifierJeton(brut) : null;
   if (!jeton) return null;
@@ -112,11 +124,29 @@ export async function ficheDuJetonVsl(valeur: unknown): Promise<FicheDuJetonVsl 
     });
     if (!ligne) return null;
     const d = objet(ligne.details);
-    if (lireVsl(ligne.details)) {
-      return { genre: "lead", annonce: chaine(objet(objet(d["funnel"])["utm"])["utm_content"]) };
+    const vsl = lireVsl(ligne.details);
+    if (vsl) {
+      const e2 = vsl.atteinte?.e2 ? Date.parse(vsl.atteinte.e2) : NaN;
+      const recente =
+        vsl.etapeAtteinte === 2 &&
+        Number.isFinite(e2) &&
+        maintenant >= e2 &&
+        maintenant - e2 <= FENETRE_SUBMIT_APPLICATION_MS;
+      const source = chaine(objet(d["candidature"])["sourceConnaissance"]);
+      const mesurable =
+        recente && vsl.suspect !== true && !jeton.suspect && leadCompteChezMeta(source);
+      return {
+        genre: "lead",
+        annonce: chaine(objet(objet(d["funnel"])["utm"])["utm_content"]),
+        candidatureEventId: mesurable ? `candidature:${jeton.lead}` : null,
+      };
     }
     if (d["subType"] !== CANDIDATURE_COMMERCIALE_SUBTYPE) return null;
-    return { genre: "connu", annonce: chaine(lireRetoursVsl(ligne.details).at(-1)?.utm?.content) };
+    return {
+      genre: "connu",
+      annonce: chaine(lireRetoursVsl(ligne.details).at(-1)?.utm?.content),
+      candidatureEventId: null,
+    };
   } catch {
     return null;
   }

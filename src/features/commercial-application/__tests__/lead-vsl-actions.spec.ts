@@ -976,3 +976,100 @@ describe("Lead vers Meta à l'étape 1 (lot 5)", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("SubmitApplication vers Meta à l'étape 2 (2026-10-10)", () => {
+  const FICHE_ACCEPTEE = {
+    vsl: { etapeAtteinte: 1, version: "vsl-v1" },
+    funnel: {
+      utm: { utm_campaign: "apporteurs" },
+      consentPub: { accepte: true, le: "2026-10-05T10:00:00.000Z" },
+      fbp: "fb.1.1725000000000.123456",
+      fbclidValeur: "IwAR0abcdefghijklmnop",
+      fbcCreeLe: "2026-10-05T09:59:00.000Z",
+    },
+    candidature: { sourceConnaissance: "facebook" },
+  };
+  const appelsSubmit = () => envoyerMeta.mock.calls.filter((c) => c[0] === "SubmitApplication");
+
+  it("part avec event_id `candidature:<id de la ligne>`, le téléphone en plus, le consentement LU SUR LA FICHE", async () => {
+    ligneParId = ligneVsl({ details: FICHE_ACCEPTEE });
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appelsSubmit()).toHaveLength(1);
+    const [, evt, opts] = appelsSubmit()[0] as unknown as [
+      string,
+      Record<string, unknown>,
+      { consentPub: string },
+    ];
+    expect(evt).toMatchObject({
+      eventId: `candidature:${ID_LEAD}`,
+      email: "nadia@example.com",
+      prenom: "Nadia",
+      telephone: "06 12 34 56 78",
+      fbp: "fb.1.1725000000000.123456",
+      fbclid: "IwAR0abcdefghijklmnop",
+      sourceUrl: "https://axion-ia.com/fr/apporteur-affaires/video",
+    });
+    expect(evt["fbcCreeLe"]).toEqual(new Date("2026-10-05T09:59:00.000Z"));
+    expect(opts.consentPub).toBe("accepted");
+  });
+
+  it("refus ou absence de réponse tracée : la réponse part TELLE QUELLE (la règle de refus de Meta s'applique), ni fbp ni fbclid", async () => {
+    ligneParId = ligneVsl({
+      details: { ...FICHE_ACCEPTEE, funnel: { consentPub: { accepte: false } } },
+    });
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    const [, evt, opts] = appelsSubmit()[0] as unknown as [
+      string,
+      Record<string, unknown>,
+      { consentPub: string },
+    ];
+    expect(opts.consentPub).toBe("declined");
+    expect(evt["fbp"]).toBeNull();
+    expect(evt["fbclid"]).toBeNull();
+  });
+
+  it("un contact venu d'ailleurs (LinkedIn) n'est pas compté", async () => {
+    ligneParId = ligneVsl({
+      details: { ...FICHE_ACCEPTEE, candidature: { sourceConnaissance: "linkedin" } },
+    });
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appelsSubmit()).toHaveLength(0);
+  });
+
+  it("ligne suspecte, étape 2 trop rapide, double clic : rien ne part", async () => {
+    ligneParId = ligneVsl({ details: { ...FICHE_ACCEPTEE, vsl: { suspect: true } } });
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    ligneParId = ligneVsl({ details: FICHE_ACCEPTEE });
+    vi.setSystemTime(MAINTENANT + 500);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    avancer.mockResolvedValue("deja");
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appelsSubmit()).toHaveLength(0);
+  });
+
+  it("une personne DÉJÀ CONNUE n'envoie rien à Meta", async () => {
+    ligneParId = {
+      ...ligneVsl(),
+      details: {
+        subType: "candidature-commerciale",
+        candidature: { sourceConnaissance: "facebook" },
+      },
+    };
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("une panne de Meta ne fait pas échouer l'étape 2", async () => {
+    ligneParId = ligneVsl({ details: FICHE_ACCEPTEE });
+    envoyerMeta.mockRejectedValueOnce(new Error("panne"));
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(r.ok).toBe(true);
+  });
+});

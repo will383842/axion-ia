@@ -179,6 +179,13 @@ describe("envoyerScheduleApporteur", () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
+  it("une ligne « suspecte » (robot) n'entraîne pas Meta — même règle que Lead (2026-10-10)", async () => {
+    trouver.mockResolvedValue({ details: { ...FICHE_ACCEPTEE, vsl: { suspect: true } } });
+    const { input, fetchImpl } = entree();
+    expect(await envoyerScheduleApporteur(input)).toEqual({ envoye: false, motif: "suspect" });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
   it("fiche introuvable ou base muette : rien ne part, rien ne lève", async () => {
     trouver.mockResolvedValueOnce(null);
     const a = entree();

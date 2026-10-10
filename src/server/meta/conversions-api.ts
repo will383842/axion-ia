@@ -52,8 +52,12 @@ export const META_GRAPH_VERSION = "v21.0";
 /** Délai au-delà duquel on abandonne : une action serveur ne doit pas attendre Meta. */
 const DELAI_MS = 3000;
 
-/** Les seuls événements que le serveur envoie : peu, pour que Meta puisse apprendre. */
-export type NomEvenementMeta = "Lead" | "Schedule";
+/**
+ * Les seuls événements que le serveur envoie : peu, pour que Meta puisse apprendre.
+ * `SubmitApplication` (2026-10-10) : l'étape 2 du tunnel vidéo (téléphone donné),
+ * `event_id` = `candidature:<id de la ligne>`.
+ */
+export type NomEvenementMeta = "Lead" | "Schedule" | "SubmitApplication";
 
 /**
  * Ce qu'il faut pour fabriquer un événement. `eventId` est l'identifiant COMPLET

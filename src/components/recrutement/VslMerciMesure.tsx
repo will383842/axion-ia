@@ -1,5 +1,5 @@
 "use client";
-// use-client: tire l'étape « Call Booking Viewed » de l'entonnoir apporteurs à l'affichage — navigateur seulement.
+// use-client: tire l'étape « Call Booking Viewed » de l'entonnoir apporteurs et le `SubmitApplication` du pixel à l'affichage — navigateur seulement.
 
 // Mesure de la page « C'est noté » des apporteurs (2026-10-07).
 //
@@ -18,10 +18,29 @@
 
 import * as React from "react";
 import { trackFunnel } from "@/lib/tracking";
+import { trackMetaSubmitApplication } from "@/lib/analytics/meta-pixel";
+import { readAnalyticsConsent } from "@/components/analytics/CookieConsent";
 
-export function VslMerciMesure({ landing }: { readonly landing: string }) {
+export function VslMerciMesure({
+  landing,
+  candidatureEventId = null,
+}: {
+  readonly landing: string;
+  /**
+   * `candidature:<id>` (2026-10-10) : l'étape 2 vient d'être validée par un lead
+   * venu de Facebook / Instagram — décidé par le SERVEUR (`ficheDuJetonVsl`),
+   * jamais pour une personne déjà connue. `SubmitApplication` part avec le même
+   * `eventID` que l'API Conversions, et SEULEMENT avec la bannière acceptée.
+   */
+  readonly candidatureEventId?: string | null;
+}) {
   React.useEffect(() => {
     trackFunnel("Call Booking Viewed", { landing });
   }, [landing]);
+  React.useEffect(() => {
+    if (candidatureEventId && readAnalyticsConsent() === "accepted") {
+      trackMetaSubmitApplication(candidatureEventId);
+    }
+  }, [candidatureEventId]);
   return null;
 }

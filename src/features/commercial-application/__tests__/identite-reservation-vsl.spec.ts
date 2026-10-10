@@ -122,7 +122,11 @@ describe("🔒 personne DÉJÀ CONNUE (2026-10-10) — le jeton désigne sa fich
   it("ficheDuJetonVsl : « connu » pour une fiche apporteur hors page vidéo, « lead » pour un lead vidéo", async () => {
     const jeton = creerJeton({ lead: "fiche-1", suspect: false });
     findFirst.mockResolvedValueOnce(FICHE_CONNUE);
-    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu", annonce: null });
+    expect(await ficheDuJetonVsl(jeton)).toEqual({
+      genre: "connu",
+      annonce: null,
+      candidatureEventId: null,
+    });
     findFirst.mockResolvedValueOnce(LIGNE_VSL);
     expect(await ficheDuJetonVsl(jeton)).toMatchObject({ genre: "lead" });
     // Pas une fiche apporteur, pas de ligne, base en panne, jeton faux : null.
@@ -142,7 +146,7 @@ describe("ficheDuJetonVsl — l'annonce d'ORIGINE (P4, 2026-10-10)", () => {
     findFirst.mockResolvedValueOnce({
       details: { vsl: { etapeAtteinte: 2 }, funnel: { utm: { utm_content: "ad-42" } } },
     });
-    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "lead", annonce: "ad-42" });
+    expect(await ficheDuJetonVsl(jeton)).toMatchObject({ genre: "lead", annonce: "ad-42" });
     findFirst.mockResolvedValueOnce({
       details: {
         subType: "candidature-commerciale",
@@ -152,6 +156,37 @@ describe("ficheDuJetonVsl — l'annonce d'ORIGINE (P4, 2026-10-10)", () => {
         ],
       },
     });
-    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu", annonce: "ad-7" });
+    expect(await ficheDuJetonVsl(jeton)).toMatchObject({ genre: "connu", annonce: "ad-7" });
+  });
+});
+
+describe("ficheDuJetonVsl — `SubmitApplication` du pixel (P6, 2026-10-10)", () => {
+  const MAINTENANT = Date.parse("2026-10-10T10:00:00.000Z");
+  const lead = (o: Record<string, unknown> = {}, source = "facebook") => ({
+    details: {
+      vsl: { etapeAtteinte: 2, atteinte: { e2: "2026-10-10T09:59:00.000Z" }, ...o },
+      candidature: { sourceConnaissance: source },
+    },
+  });
+  const jeton = creerJeton({ lead: "lead-1", suspect: false, maintenant: MAINTENANT - 60_000 });
+
+  it("étape 2 validée il y a moins d'une heure, venue de Facebook : `candidature:<id>`", async () => {
+    findFirst.mockResolvedValueOnce(lead());
+    expect((await ficheDuJetonVsl(jeton, MAINTENANT))?.candidatureEventId).toBe(
+      "candidature:lead-1",
+    );
+  });
+
+  it("jamais : étape 1 seule, trop ancienne, suspecte, autre source, ou déjà connue", async () => {
+    for (const ligne of [
+      lead({ etapeAtteinte: 1 }),
+      lead({ atteinte: { e2: "2026-10-10T08:00:00.000Z" } }),
+      lead({ suspect: true }),
+      lead({}, "linkedin"),
+      { details: { subType: "candidature-commerciale" } },
+    ]) {
+      findFirst.mockResolvedValueOnce(ligne);
+      expect((await ficheDuJetonVsl(jeton, MAINTENANT))?.candidatureEventId ?? null).toBeNull();
+    }
   });
 });
