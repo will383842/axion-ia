@@ -262,9 +262,36 @@ async function basculerSignature(
   if (a !== "1" && a !== "0") return { ok: false, error: "Valeur invalide." };
   const valeur = a === "1";
   const userId = session.user.id;
-  const key = cleSettingSignature(cle);
 
-  const manques = await prisma.$transaction(async (tx) => {
+  let manques: string[];
+  try {
+    manques = await ecrireSignature(cle, valeur, userId);
+  } catch (err) {
+    // Même règle que `basculer` : une erreur de la base devient un message,
+    // rien n'a été écrit (transaction annulée), Sentry garde la trace.
+    Sentry.captureException(err, { tags: { action: "basculerSignatureInterrupteur", cle } });
+    return {
+      ok: false,
+      error: "Le changement n'a pas été enregistré (erreur technique). Réessayez plus tard.",
+    };
+  }
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
+}
+
+/** Préalables relus, réglage et journal : une seule transaction. Rend les manques. */
+function ecrireSignature(
+  cle: CleInterrupteurSignature,
+  valeur: boolean,
+  userId: string,
+): Promise<string[]> {
+  const def = INTERRUPTEURS_SIGNATURE[cle];
+  const key = cleSettingSignature(cle);
+  return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
       where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
       select: { key: true, value: true },
@@ -287,19 +314,13 @@ async function basculerSignature(
       data: {
         adminUserId: userId,
         action: valeur ? "signature.interrupteur_allume" : "signature.interrupteur_coupe",
+        // ⚠️ Pas de `targetId` : colonne `uuid`, la clé est du texte (cf. `ecrire`).
         targetType: "setting",
-        targetId: key,
         changes: { cle: key, avant, apres: valeur } as never,
       },
     });
     return [];
   });
-
-  if (manques.length > 0) {
-    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
-  }
-  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
-  return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
 }
 
 export async function basculerSignatureCopiePartielleAction(
