@@ -115,14 +115,14 @@ function normaliser(s: string): string {
     .trim();
 }
 
-/** Le premier mot significatif d'un nom de société (« Hetzner Online GmbH » → « hetzner »). */
+/** Le premier mot significatif d'un nom de société (« Exemple Hébergement SAS » → « exemple »). */
 function motCle(nom: string): string {
   return normaliser(nom).split(" ")[0] ?? "";
 }
 
 /**
  * Un destinataire figure-t-il sur la page publique ? Rapprochement souple par le
- * premier mot du nom (« Hetzner » ↔ « Hetzner Online GmbH »), dans les deux sens.
+ * premier mot du nom (« Exemple » ↔ « Exemple Hébergement SAS »), dans les deux sens.
  */
 export function figureSurPagePublique(
   nomDestinataire: string,
