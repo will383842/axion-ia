@@ -16,7 +16,8 @@ import { prisma } from "@/lib/prisma";
 import { consumeFormateurMagicLink } from "@/server/formateur/magic-link";
 import { signFormateurSession } from "@/lib/formateur-session";
 import { setFormateurCookie } from "@/server/formateur/cookie";
-import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
+import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
+import { destinationApresConnexion } from "@/server/formateur/suite-lien";
 import { publicUrl } from "@/lib/public-url";
 
 export const dynamic = "force-dynamic";
@@ -53,5 +54,9 @@ export async function GET(
     data: { lastFormateurLoginAt: new Date() },
   });
 
-  return NextResponse.redirect(publicUrl(FORMATEUR_BASE_PATH));
+  // S6a (h) — `suite` n'est suivi que s'il figure sur la liste blanche des
+  // chemins de l'espace : jamais de redirection ouverte.
+  return NextResponse.redirect(
+    publicUrl(destinationApresConnexion(request.nextUrl.searchParams.get("suite"))),
+  );
 }
