@@ -15,6 +15,11 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { estCleProtegee } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+
+// Les clés `formateurs.*` sont des interrupteurs à préalables (lot S0-ter) :
+// les écrire en JSON brut contournerait préalables, habilitation et journal.
+const REFUS_CLE_FORMATEURS = "Ce réglage se change dans Formateurs freelance › Interrupteurs";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -77,6 +82,9 @@ export async function upsertSettingAction(
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
+  }
+  if (estCleProtegee(parsed.data.key)) {
+    return { ok: false, error: REFUS_CLE_FORMATEURS };
   }
 
   let value: unknown;
@@ -142,6 +150,9 @@ export async function deleteSettingAction(
   const key = formData.get("key");
   if (typeof key !== "string" || key.length < 2) {
     return { ok: false, error: "Clé invalide." };
+  }
+  if (estCleProtegee(key)) {
+    return { ok: false, error: REFUS_CLE_FORMATEURS };
   }
   await prisma.$transaction([
     prisma.setting.delete({ where: { key } }),

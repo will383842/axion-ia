@@ -43,6 +43,7 @@ import {
   signerDocument,
   type RefusSignatureDocument,
 } from "@/server/qualiopi/documents/signature/document-signature-service";
+import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/refus-piece-introuvable";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
@@ -56,7 +57,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_CONTRAT: readonly PartieSignataire[] = partiesRequisesPour("contrat_travail") ?? [];
 
 export type RefusContratTravail =
-  RefusSignatureDocument | "non_titulaire" | "requete_invalide" | "role_insuffisant" | "stockage";
+  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureContratTravail =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -161,6 +162,16 @@ async function classerContratAuDossier(
   }
 }
 
+/**
+ * 🔴 La MÊME réponse que le service et que les deux autres actions formateur
+ * (`REFUS_PIECE_INTROUVABLE`) : un message propre à cette action distinguerait,
+ * d'une action à l'autre, une pièce existante d'une pièce inventée.
+ *
+ * L'unique réponse « introuvable » du côté salarié : identifiant inconnu, pièce
+ * d'un autre type ou contrat d'une autre personne répondent à l'identique.
+ */
+const CONTRAT_INTROUVABLE = REFUS_PIECE_INTROUVABLE;
+
 /** Le salarié signe SON contrat depuis son espace authentifié. */
 export async function signerContratTravailFormateurAction(input: {
   documentGenereId: string;
@@ -188,7 +199,7 @@ export async function signerContratTravailFormateurAction(input: {
     select: { type: true, numero: true, trainerId: true },
   });
   if (piece === null || piece.type !== "contrat_travail") {
-    return { ok: false, raison: "piece_introuvable", message: "Contrat de travail introuvable." };
+    return { ...CONTRAT_INTROUVABLE };
   }
 
   // Le titulaire EST l'ancre. `null` = la pièce n'appartient à personne : elle se
@@ -198,12 +209,9 @@ export async function signerContratTravailFormateurAction(input: {
       tags: { action: "signerContratTravailFormateurAction:non_titulaire" },
       extra: { documentGenereId: donnees.documentGenereId },
     });
-    return {
-      ok: false,
-      raison: "non_titulaire",
-      message:
-        "Ce contrat de travail ne vous concerne pas : il nomme une personne précise, et elle seule peut le signer.",
-    };
+    // Même réponse qu'un identifiant inconnu : le contrat d'un autre salarié ne
+    // doit pas se distinguer d'un contrat qui n'existe pas.
+    return { ...CONTRAT_INTROUVABLE };
   }
 
   try {
@@ -219,7 +227,12 @@ export async function signerContratTravailFormateurAction(input: {
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
       ...(await contexteRequete()),
     });
-    if (!res.ok) return res;
+    if (!res.ok) {
+      // Défense en profondeur : le service masque déjà tout refus d'autorisation
+      // d'un formateur ; un `porteur_non_autorise` qui remonterait quand même ne
+      // doit pas se distinguer d'un identifiant inconnu.
+      return res.raison === "porteur_non_autorise" ? { ...CONTRAT_INTROUVABLE } : res;
+    }
     if (res.statutSignature === "signee") {
       await classerContratAuDossier(formateur.trainerId, piece.numero, donnees.documentGenereId);
     }

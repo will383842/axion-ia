@@ -8,40 +8,36 @@
  * recalcule le jeton et le compare à temps constant. Incrémenter `versionLien`
  * révoque tous les liens déjà envoyés.
  *
- * Même doctrine que `server/visio/questionnaire-en-ligne/jeton.ts` : clé dérivée
- * d'`AUTH_SECRET` avec séparation de domaine ; sans secret EN PRODUCTION, aucun lien
- * n'est fabriqué ni valide.
+ * Signature et vérification déléguées à la fabrique commune `@/lib/security/lien-signe`
+ * (FAC-4) : clé dérivée d'`AUTH_SECRET` avec séparation de domaine ; sans secret EN
+ * PRODUCTION, aucun lien n'est fabriqué ni valide.
  *
- * Module serveur léger : `node:crypto` et `SITE_URL` — ni Prisma, ni `next/headers`.
+ * Module serveur léger : `node:crypto` (via la fabrique) et `SITE_URL` — ni Prisma, ni
+ * `next/headers`.
  */
 
-import { createHash, createHmac, timingSafeEqual } from "node:crypto";
-
+import { fabriqueLienSigne } from "@/lib/security/lien-signe";
 import { SITE_URL } from "@/lib/site-url";
 
-const DOMAINE = "apporteur-dossier:v1:";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const JETON = /^[A-Za-z0-9_-]{43}$/;
 
-function cle(): Buffer | null {
-  const secret = process.env["AUTH_SECRET"];
-  if (secret && secret.length > 0) {
-    return createHash("sha256").update(`axion-apporteur-dossier|${secret}`).digest();
-  }
-  if (process.env.NODE_ENV === "production") return null;
-  return createHash("sha256").update("axion-apporteur-dossier|dev").digest();
-}
-
-function signer(k: Buffer, id: string, version: number): string {
-  return createHmac("sha256", k).update(`${DOMAINE}${id}:${version}`).digest("base64url");
-}
+/**
+ * Domaine `apporteur-dossier:v1:` et clé `sha256("axion-apporteur-dossier|" + AUTH_SECRET)` :
+ * EXACTEMENT ceux d'avant FAC-4. Les changer casse tous les liens déjà envoyés
+ * (garde : `le-jeton-apporteur-passe-par-la-fabrique.spec.ts`, 20 jetons figés).
+ */
+const LIEN = fabriqueLienSigne({
+  domaine: "apporteur-dossier",
+  version: 1,
+  cle: "axion-apporteur-dossier",
+});
 
 /** Le jeton d'un dossier à sa version de lien, ou `null`. */
 export function jetonDossier(apporteurId: string, versionLien: number): string | null {
   const id = apporteurId.toLowerCase();
   if (!UUID.test(id) || !Number.isInteger(versionLien) || versionLien < 1) return null;
-  const k = cle();
-  return k === null ? null : signer(k, id, versionLien);
+  return LIEN.signer(`${id}:${versionLien}`);
 }
 
 /**
@@ -60,11 +56,8 @@ export function jetonDossierValide(
 ): boolean {
   const id = apporteurId.toLowerCase();
   if (!UUID.test(id) || !JETON.test(jeton)) return false;
-  const attendu = jetonDossier(id, versionLien);
-  if (attendu === null) return false;
-  const a = Buffer.from(attendu, "utf8");
-  const b = Buffer.from(jeton, "utf8");
-  return a.length === b.length && timingSafeEqual(a, b);
+  if (!Number.isInteger(versionLien) || versionLien < 1) return false;
+  return LIEN.verifier(`${id}:${versionLien}`, jeton);
 }
 
 /** L'URL complète, pour le bouton de l'e-mail. */

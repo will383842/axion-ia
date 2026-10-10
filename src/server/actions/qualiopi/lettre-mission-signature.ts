@@ -60,6 +60,7 @@ import {
   signerDocument,
   type RefusSignatureDocument,
 } from "@/server/qualiopi/documents/signature/document-signature-service";
+import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/refus-piece-introuvable";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
@@ -76,7 +77,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_LETTRE: readonly PartieSignataire[] = partiesRequisesPour("lettre_mission") ?? [];
 
 export type RefusLettreMission =
-  RefusSignatureDocument | "non_mandataire" | "requete_invalide" | "role_insuffisant" | "stockage";
+  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureLettreMission =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -138,6 +139,16 @@ function refusStockage(err: SignatureStockageError): ResultatSignatureLettreMiss
  * garde du service, qui ne fait confiance à aucun appelant mais ne connaît que
  * l'appartenance à la session — plus large que le mandat.
  */
+/**
+ * 🔴 La MÊME réponse que le service et que les deux autres actions formateur
+ * (`REFUS_PIECE_INTROUVABLE`) : un message propre à cette action distinguerait,
+ * d'une action à l'autre, une pièce existante d'une pièce inventée.
+ *
+ * L'unique réponse « introuvable » du côté formateur : identifiant inconnu,
+ * pièce d'un autre type ou lettre d'un autre formateur répondent à l'identique.
+ */
+const LETTRE_INTROUVABLE = REFUS_PIECE_INTROUVABLE;
+
 export async function signerLettreMissionFormateurAction(input: {
   documentGenereId: string;
   methode: "trace" | "papier_scanne" | "confirmation_accessible";
@@ -164,11 +175,7 @@ export async function signerLettreMissionFormateurAction(input: {
     select: { type: true, sessionId: true, trainerId: true },
   });
   if (piece === null || piece.type !== "lettre_mission") {
-    return {
-      ok: false,
-      raison: "piece_introuvable",
-      message: "Lettre de mission introuvable.",
-    };
+    return { ...LETTRE_INTROUVABLE };
   }
 
   // 🔴 L'ancre directe `trainerId` PRIME quand elle existe (pièces émises
@@ -188,12 +195,9 @@ export async function signerLettreMissionFormateurAction(input: {
         extra: { documentGenereId: donnees.documentGenereId },
       },
     );
-    return {
-      ok: false,
-      raison: "non_mandataire",
-      message:
-        "Cette lettre de mission ne vous est pas adressée : elle nomme un formateur précis, et lui seul peut la signer.",
-    };
+    // Même réponse qu'un identifiant inconnu : la lettre d'un autre formateur
+    // ne doit pas se distinguer d'une lettre qui n'existe pas.
+    return { ...LETTRE_INTROUVABLE };
   }
 
   try {
@@ -209,7 +213,12 @@ export async function signerLettreMissionFormateurAction(input: {
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
       ...(await contexteRequete()),
     });
-    if (!res.ok) return res;
+    if (!res.ok) {
+      // Défense en profondeur : le service masque déjà tout refus d'autorisation
+      // d'un formateur ; un `porteur_non_autorise` qui remonterait quand même ne
+      // doit pas se distinguer d'un identifiant inconnu.
+      return res.raison === "porteur_non_autorise" ? { ...LETTRE_INTROUVABLE } : res;
+    }
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);

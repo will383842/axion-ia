@@ -154,6 +154,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // existe encore (contrôle 3, cliquet des symboles). Il n'appelle rien : sans
   // ce chargement, une entrée morte dans la liste resterait verte pour toujours.
   "src/server/mcp/__tests__/harnais.spec.ts",
+  // Lot S1 formateurs (ADR 0066) — la console coaching (dés)active un compte
+  // formateur. `Trainer.actif` n'a désormais qu'UN écrivain, sous garde
+  // (`formateurs-independants/activation.ts`) : cette action l'appelle au lieu
+  // d'écrire la colonne en direct. Nommée seule, pas le répertoire.
+  "src/server/actions/coaching-admin/formateurs.actions.ts",
   // Réseau d'apporteurs (2026-10-05) — l'autofacture de l'apporteur RÉUTILISE le gabarit PDF,
   //    l'identité de l'organisme et la construction de pièce d'autofacturation des formateurs
   //    (même pièce, vendeur et acheteur inversés) plutôt que d'en écrire une seconde. Nommés un par un.
@@ -167,6 +172,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    candidature crée la fiche formateur par `createTrainerAction`, l'action EXISTANTE, plutôt que
   //    d'écrire une seconde création de `Trainer` hors du domaine. Elle n'importe que cette action.
   "src/features/admin-job-applications/fiche-formateur-actions.ts",
+  // Interrupteurs formateurs (lot S0-ter) : l'éditeur générique de réglages REFUSE les clés
+  //    `formateurs.*`. Il n'importe que `estCleProtegee`, pour que le préfixe protégé ne soit
+  //    écrit qu'une fois — une recopie divergerait et rouvrirait le contournement.
+  "src/features/admin-settings/actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

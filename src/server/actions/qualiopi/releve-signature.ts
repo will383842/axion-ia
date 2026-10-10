@@ -45,6 +45,7 @@ import {
   signerDocument,
   type RefusSignatureDocument,
 } from "@/server/qualiopi/documents/signature/document-signature-service";
+import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/refus-piece-introuvable";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
@@ -60,7 +61,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_RELEVE: readonly PartieSignataire[] = partiesRequisesPour("releve_connexion") ?? [];
 
 export type RefusReleve =
-  RefusSignatureDocument | "non_membre" | "requete_invalide" | "role_insuffisant" | "stockage";
+  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureReleve =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -121,6 +122,16 @@ function refusStockage(err: SignatureStockageError): ResultatSignatureReleve {
  * formateur ; le second est la garde du service, qui ne fait confiance à aucun
  * appelant.
  */
+/**
+ * 🔴 La MÊME réponse que le service et que les deux autres actions formateur
+ * (`REFUS_PIECE_INTROUVABLE`) : un message propre à cette action distinguerait,
+ * d'une action à l'autre, une pièce existante d'une pièce inventée.
+ *
+ * L'unique réponse « introuvable » du côté formateur : identifiant inconnu,
+ * pièce d'un autre type ou relevé d'une session qu'il n'anime pas.
+ */
+const RELEVE_INTROUVABLE = REFUS_PIECE_INTROUVABLE;
+
 export async function signerReleveFormateurAction(input: {
   documentGenereId: string;
   methode: "trace" | "papier_scanne" | "confirmation_accessible";
@@ -143,11 +154,7 @@ export async function signerReleveFormateurAction(input: {
     select: { type: true, sessionId: true },
   });
   if (piece === null || piece.type !== "releve_connexion") {
-    return {
-      ok: false,
-      raison: "piece_introuvable",
-      message: "Relevé de connexion introuvable.",
-    };
+    return { ...RELEVE_INTROUVABLE };
   }
 
   if (
@@ -158,7 +165,9 @@ export async function signerReleveFormateurAction(input: {
       tags: { action: "signerReleveFormateurAction:non_membre" },
       extra: { documentGenereId: donnees.documentGenereId },
     });
-    return { ok: false, raison: "non_membre", message: "Vous n'animez pas cette session." };
+    // Même réponse qu'un identifiant inconnu : le relevé d'une session animée par
+    // un autre ne doit pas se distinguer d'un relevé qui n'existe pas.
+    return { ...RELEVE_INTROUVABLE };
   }
 
   try {
@@ -174,7 +183,12 @@ export async function signerReleveFormateurAction(input: {
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
       ...(await contexteRequete()),
     });
-    if (!res.ok) return res;
+    if (!res.ok) {
+      // Défense en profondeur : le service masque déjà tout refus d'autorisation
+      // d'un formateur ; un `porteur_non_autorise` qui remonterait quand même ne
+      // doit pas se distinguer d'un identifiant inconnu.
+      return res.raison === "porteur_non_autorise" ? { ...RELEVE_INTROUVABLE } : res;
+    }
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);

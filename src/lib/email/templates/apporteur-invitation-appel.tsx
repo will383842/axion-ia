@@ -125,8 +125,7 @@ const COPY = {
     kitCandidature: "Pour préparer l'échange :",
     dossierCandidature:
       "Il nous manque encore votre candidature complète : complétez-la avant l'échange — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
-    creneauCandidature:
-      "Les créneaux sont limités : réservez le vôtre dès maintenant avec le bouton ci-dessous.",
+    creneauCandidature: "Réservez le vôtre dès maintenant avec le bouton ci-dessous.",
     ctaCandidature: "Réserver mon créneau",
     // 2026-09-28 (Will) — variante `offre` : texte validé par Will, passé au
     // vouvoiement le 2026-09-29 (Will : « on reste sur le vouvoiement »).
@@ -203,7 +202,7 @@ const COPY = {
     kitCandidature: "To prepare for the call:",
     dossierCandidature:
       "We are still missing your file: please complete it before the call — three minutes, no resume. Your details are already filled in: ",
-    creneauCandidature: "Slots are limited: book yours now with the button below.",
+    creneauCandidature: "Book yours now with the button below.",
     ctaCandidature: "Book my slot",
     sujetOffre: "Your application at Axion-IA: another proposal",
     titleOffre: "Another proposal",

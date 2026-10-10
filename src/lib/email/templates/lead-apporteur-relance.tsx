@@ -49,8 +49,10 @@ const COPY = {
     ctaVsl: "Terminer mon inscription",
     // 2026-10-07 (D9) : la relance du tunnel vidéo a son titre et son pré-en-tête.
     // « Trois minutes, sans CV… vos réponses » décrivait l'ancien formulaire.
+    // 2026-10-10 — le dernier rappel dit aussi « inscription », et tient dans les
+    // 45 caractères d'un objet (« Votre candidature d'apporteur : … » en faisait 46).
     titleVsl: (dernier: boolean) =>
-      dernier ? "Votre candidature d'apporteur : dernier rappel" : "Votre inscription vous attend",
+      dernier ? "Votre inscription : dernier rappel" : "Votre inscription vous attend",
     previewVsl: "Il vous reste une étape : votre numéro de téléphone et une question.",
     cta: "Compléter ma candidature",
     refRow: (id: string) => `Référence : ${id}`,
@@ -70,7 +72,7 @@ const COPY = {
       "A week since you started your registration. We do not chase ten times: this is the last reminder. If now is not the right time, no problem — your details stay on record and you can pick it up whenever you like.",
     ctaVsl: "Finish my registration",
     titleVsl: (dernier: boolean) =>
-      dernier ? "Your introducer application: last reminder" : "Your registration is waiting",
+      dernier ? "Your registration: last reminder" : "Your registration is waiting",
     previewVsl: "One step left: your phone number and one question.",
     cta: "Complete my application",
     refRow: (id: string) => `Reference: ${id}`,
@@ -79,7 +81,10 @@ const COPY = {
 
 export const leadApporteurRelanceSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const dernier = p.etape === "j7";
-  return COPY[locale === "fr" ? "fr" : "en"].title(dernier);
+  const t = COPY[locale === "fr" ? "fr" : "en"];
+  // 2026-10-10 — la variante vidéo a son objet : « inscription », pas « candidature »
+  // (le titre l'avait déjà depuis le 07/10, l'objet était resté sur l'ancien).
+  return p.variante === VARIANTE_VSL_RELANCE ? t.titleVsl(dernier) : t.title(dernier);
 };
 
 export function LeadApporteurRelanceEmail({

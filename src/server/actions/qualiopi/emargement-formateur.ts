@@ -39,13 +39,28 @@ import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { z } from "zod";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
-export type RefusFormateur = RefusSignature | "non_membre" | "stockage";
+export type RefusFormateur = RefusSignature | "stockage";
 
 export type ResultatSignatureFormateur =
   { ok: true; signatureId: string } | { ok: false; raison: RefusFormateur; message: string };
 
-export type RefusContresignatureFormateur =
-  RefusContresignature | "non_membre" | "stockage" | "requete_invalide";
+export type RefusContresignatureFormateur = RefusContresignature | "stockage" | "requete_invalide";
+
+/**
+ * Les uniques réponses « introuvable » du poste formateur : une session ou un
+ * créneau qu'il n'anime pas répond EXACTEMENT comme un identifiant inconnu.
+ */
+const CRENEAU_INTROUVABLE = {
+  ok: false,
+  raison: "creneau_introuvable",
+  message: "Créneau introuvable.",
+} as const;
+
+const SESSION_INTROUVABLE = {
+  ok: false,
+  raison: "session_introuvable",
+  message: "Session introuvable.",
+} as const;
 
 export type ResultatContresignatureFormateur =
   | { ok: true; contresignatureId: string }
@@ -116,24 +131,23 @@ export async function signerPourStagiaireAction(input: {
   }
   const donnees = parse.data;
 
-  // ADR 0060 — signer À LA PLACE du stagiaire sur un dossier clos réécrirait la
-  // preuve de présence après coup : refusé (la signature du stagiaire lui-même,
-  // par son jeton, reste possible tant que le jeton vit).
-  const verrou = await assertDossierOuvert(donnees.sessionId);
-  if (!verrou.ok) return { ok: false, raison: "session_close", message: verrou.message };
-
+  // 🔴 L'appartenance AVANT le verrou : sinon une session animée par un autre
+  // répondrait « dossier clos » là où un identifiant inconnu répond
+  // « introuvable », et l'état d'un dossier se lirait sans y avoir accès.
   const estMembre = await estMembreDeSession(donnees.sessionId, formateur.trainerId);
   if (!estMembre) {
     Sentry.captureException(new Error("Signature tentée sur une session non animée"), {
       tags: { action: "signerPourStagiaireAction:non_membre" },
       extra: { sessionId: donnees.sessionId },
     });
-    return {
-      ok: false,
-      raison: "non_membre",
-      message: "Vous n'animez pas cette session.",
-    };
+    return { ...CRENEAU_INTROUVABLE };
   }
+
+  // ADR 0060 — signer À LA PLACE du stagiaire sur un dossier clos réécrirait la
+  // preuve de présence après coup : refusé (la signature du stagiaire lui-même,
+  // par son jeton, reste possible tant que le jeton vit).
+  const verrou = await assertDossierOuvert(donnees.sessionId);
+  if (!verrou.ok) return { ok: false, raison: "session_close", message: verrou.message };
 
   const entetes = await headers();
   // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
@@ -156,6 +170,13 @@ export async function signerPourStagiaireAction(input: {
       userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
     });
 
+    // Un créneau d'une AUTRE session répond comme un créneau inconnu.
+    if (
+      !res.ok &&
+      (res.raison === "porteur_non_autorise" || res.raison === "creneau_introuvable")
+    ) {
+      return { ...CRENEAU_INTROUVABLE };
+    }
     if (!res.ok) return { ok: false, raison: res.raison, message: res.message };
     return { ok: true, signatureId: res.signatureId };
   } catch (err) {
@@ -219,7 +240,7 @@ export async function contresignerDemiJourneeAction(input: {
       tags: { action: "contresignerDemiJourneeAction:non_membre" },
       extra: { sessionId: donnees.sessionId },
     });
-    return { ok: false, raison: "non_membre", message: "Vous n'animez pas cette session." };
+    return { ...SESSION_INTROUVABLE };
   }
 
   const entetes = await headers();
@@ -241,6 +262,7 @@ export async function contresignerDemiJourneeAction(input: {
       userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
     });
 
+    if (!res.ok && res.raison === "session_introuvable") return { ...SESSION_INTROUVABLE };
     if (!res.ok) return { ok: false, raison: res.raison, message: res.message };
     return { ok: true, contresignatureId: res.contresignatureId };
   } catch (err) {

@@ -95,7 +95,8 @@ export function commissionVsl(montant: string): {
   return {
     titre: "Votre commission",
     indicatif: "À titre indicatif",
-    montant,
+    // « HT » comme le contrat (2026-10-10) ; espace insécable : jamais seul en début de ligne.
+    montant: `${montant}\u00a0HT`,
     apres: "par journée de formation facturée",
     sousLigne:
       "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
@@ -175,7 +176,7 @@ export function faqVsl(commissionParJournee: string): readonly {
     {
       id: "gains",
       question: "Combien puis-je gagner ?",
-      answer: `À titre indicatif, ${commissionParJournee} par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
+      answer: `À titre indicatif, ${commissionParJournee}\u00a0HT par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
     },
     {
       id: "negocier",

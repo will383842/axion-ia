@@ -137,6 +137,9 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   // Lien de l'echange de 15 minutes propose aux apporteurs (2026-09-19) —
   // envoye sur invitation depuis la console, meme sous-traitant que /appel.
   CALENDLY_APPORTEUR_URL: { tiers: "Calendly" },
+  // Lien de l'echange de 20 minutes propose aux formateurs independants
+  // (lot F-CAL-1, 2026-10-09) — meme sous-traitant que /appel.
+  CALENDLY_FORMATEUR_URL: { tiers: "Calendly" },
   // API Conversions Meta : envoi SERVEUR de l'evenement Lead, hache, et
   // seulement si le visiteur a accepte la banniere (server/meta/conversions-api.ts).
   META_CAPI_ACCESS_TOKEN: { tiers: "Meta" },

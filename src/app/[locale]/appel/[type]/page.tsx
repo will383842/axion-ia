@@ -1,10 +1,12 @@
 /**
- * `/fr/appel/<type>` — l'adresse PROPRE de chacun des quatre rendez-vous.
+ * `/fr/appel/<type>` — l'adresse PROPRE de chacun des cinq rendez-vous.
  *
  *   /fr/appel/diagnostic      Diagnostic IA
  *   /fr/appel/echange-projet  Échange projet
  *   /fr/appel/apporteur       Échange apporteur d'affaires   (lien privé)
  *   /fr/appel/salon-gofab     Rencontre au salon GOFAB       (lien privé)
+ *   /fr/appel/formateur-independant
+ *                             Échange formateur indépendant  (lien privé, 2026-10-09)
  *
  * ## Pourquoi cette page ne contient (presque) rien
  *

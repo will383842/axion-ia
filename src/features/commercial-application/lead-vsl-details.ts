@@ -152,3 +152,133 @@ export async function avancerVslEtape2(a: AvancerEtape2): Promise<IssueAvancemen
     return "avance" as const;
   });
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// RETOURS d'une personne DÉJÀ CONNUE (2026-10-10)
+// ───────────────────────────────────────────────────────────────────────────
+//
+// Une adresse qui a déjà une ligne apporteur qui n'est pas un lead vidéo (ancien
+// formulaire, Indeed, saisie manuelle, fiche archivée…) et qui revient par la
+// publicité : on ne crée rien et on ne rétrograde rien (R3), mais on GARDE la
+// trace du retour sur la fiche existante — sans elle, Will n'en savait rien et le
+// téléphone de l'étape 2 était perdu.
+//
+// 🔒 La trace est la SEULE écriture : ni étape, ni statut, ni nom, ni archivage,
+// ni téléphone principal, ni `updated_at` (la fiche ne remonte pas dans les
+// listes). Bornée à `MAX_RETOURS_VSL` entrées, les plus récentes : quelqu'un qui
+// tape l'adresse d'autrui ne peut qu'ajouter une ligne courte, jamais lire ni
+// écraser quoi que ce soit.
+
+/** Nombre maximal d'entrées gardées dans `details.retoursVsl`. */
+export const MAX_RETOURS_VSL = 10;
+
+export interface RetourVsl {
+  /** Heure de l'étape 1 (ISO) — c'est aussi l'`iat` du jeton : elle désigne l'entrée. */
+  le: string;
+  etape: 1 | 2;
+  utm?: { source?: string; medium?: string; campaign?: string; content?: string };
+  consentPub?: boolean;
+  /** Étape 2 : heure, réponse « dirigeants connus », téléphone CHIFFRÉ. */
+  e2?: string;
+  reponse?: string;
+  telephone?: string | null;
+  suspect?: true;
+}
+
+/** Lit défensivement `details.retoursVsl` (tableau vide sinon). */
+export function lireRetoursVsl(details: unknown): RetourVsl[] {
+  if (!details || typeof details !== "object" || Array.isArray(details)) return [];
+  const v = (details as Record<string, unknown>)["retoursVsl"];
+  if (!Array.isArray(v)) return [];
+  return v.filter(
+    (e): e is RetourVsl =>
+      !!e && typeof e === "object" && !Array.isArray(e) && typeof (e as RetourVsl).le === "string",
+  );
+}
+
+/**
+ * Ajoute une entrée à `details.retoursVsl` et ne garde que les
+ * `MAX_RETOURS_VSL` plus récentes — UNE instruction, aucune relecture de
+ * `details`, aucune autre clé touchée. Lève si la base échoue.
+ */
+export async function ajouterRetourVsl(id: string, entree: RetourVsl): Promise<void> {
+  const json = JSON.stringify(entree);
+  await prisma.$executeRaw`
+    UPDATE submissions
+    SET details = jsonb_set(
+          COALESCE(details, '{}'::jsonb),
+          '{retoursVsl}',
+          (
+            SELECT COALESCE(jsonb_agg(t.e ORDER BY t.n), '[]'::jsonb)
+            FROM (
+              SELECT e, n
+              FROM jsonb_array_elements(
+                CASE WHEN jsonb_typeof(details -> 'retoursVsl') = 'array'
+                     THEN details -> 'retoursVsl' ELSE '[]'::jsonb END
+                || jsonb_build_array(${json}::jsonb)
+              ) WITH ORDINALITY AS a(e, n)
+              ORDER BY n DESC
+              LIMIT ${MAX_RETOURS_VSL}
+            ) t
+          ),
+          true
+        )
+    WHERE id = ${id}::uuid AND deleted_at IS NULL
+  `;
+}
+
+export type IssueRetour = "complete" | "deja" | "introuvable";
+
+export interface CompleterRetour {
+  readonly id: string;
+  /** L'heure de l'étape 1 portée par le jeton : elle désigne l'entrée à compléter. */
+  readonly le: string;
+  /** Téléphone DÉJÀ chiffré (`encryptPii`). */
+  readonly telephoneChiffre: string | null;
+  readonly reponseId: string;
+  readonly suspect: boolean;
+  readonly maintenant: Date;
+}
+
+/**
+ * Complète l'entrée `retoursVsl` de l'étape 1 (celle dont `le` est l'heure du
+ * jeton) avec l'étape 2 — une seule fois, de façon atomique (ligne verrouillée),
+ * comme `avancerVslEtape2`. Ne touche JAMAIS au téléphone principal de la fiche.
+ */
+export async function completerRetourVsl(a: CompleterRetour): Promise<IssueRetour> {
+  return prisma.$transaction(async (tx) => {
+    const lignes = await tx.$queryRaw<Array<{ retours: unknown }>>`
+      SELECT details -> 'retoursVsl' AS retours
+      FROM submissions
+      WHERE id = ${a.id}::uuid AND deleted_at IS NULL
+      FOR UPDATE
+    `;
+    const ligne = lignes[0];
+    if (!ligne || !Array.isArray(ligne.retours)) return "introuvable" as const;
+    const idx = (ligne.retours as unknown[]).findIndex(
+      (e) => !!e && typeof e === "object" && (e as RetourVsl).le === a.le,
+    );
+    if (idx < 0) return "introuvable" as const;
+    if ((ligne.retours[idx] as RetourVsl).etape === 2) return "deja" as const;
+    const patch: Partial<RetourVsl> = {
+      etape: 2,
+      e2: a.maintenant.toISOString(),
+      reponse: a.reponseId,
+      telephone: a.telephoneChiffre,
+      ...(a.suspect ? { suspect: true as const } : {}),
+    };
+    const json = JSON.stringify(patch);
+    const chemin = ["retoursVsl", String(idx)];
+    await tx.$executeRaw`
+      UPDATE submissions
+      SET details = jsonb_set(
+            details,
+            ${chemin}::text[],
+            (details -> 'retoursVsl' -> ${idx}::int) || ${json}::jsonb,
+            false
+          )
+      WHERE id = ${a.id}::uuid
+    `;
+    return "complete" as const;
+  });
+}

@@ -33,8 +33,8 @@ import { prisma } from "@/lib/prisma";
 
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import {
-  HORS_APPELS_APPORTEUR,
-  HORS_APPELS_APPORTEUR_PAR_NOM,
+  HORS_ECHANGES_HORS_CLIENTS,
+  HORS_ECHANGES_HORS_CLIENTS_PAR_NOM,
 } from "@/server/calendly/appel-apporteur";
 import { estColonneTypeRendezVousAbsente } from "@/server/calendly/type-rendez-vous";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
@@ -322,12 +322,15 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       since,
       until,
       loadIds: async (from, to) => {
-        // Les échanges apporteur ne sont jamais émis (`syncCalendlyEventToCrm`) :
-        // les compter ici les ferait passer pour des émissions perdues.
-        // 🔑 `HORS_APPELS_APPORTEUR` est le complément EXACT de la garde CRM
-        // (classé apporteur OU nommé apporteur, 2026-10-04).
+        // Les échanges apporteur et formateur ne sont jamais émis
+        // (`syncCalendlyEventToCrm`) : les compter ici les ferait passer pour
+        // des émissions perdues.
+        // 🔑 `HORS_ECHANGES_HORS_CLIENTS` est le complément EXACT de la garde CRM
+        // (classé apporteur OU nommé apporteur, 2026-10-04 ; OU nommé
+        // formateur, 2026-10-09).
         const lire = (
-          horsApporteur: typeof HORS_APPELS_APPORTEUR | typeof HORS_APPELS_APPORTEUR_PAR_NOM,
+          horsApporteur:
+            typeof HORS_ECHANGES_HORS_CLIENTS | typeof HORS_ECHANGES_HORS_CLIENTS_PAR_NOM,
         ) =>
           prisma.calendlyEvent.findMany({
             where: {
@@ -340,12 +343,12 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
             take: MAX_SOURCES_PER_FAMILY,
           });
         try {
-          return await lire(HORS_APPELS_APPORTEUR);
+          return await lire(HORS_ECHANGES_HORS_CLIENTS);
         } catch (e) {
           // Worker en avance sur la migration (~50 min, AGENTS.md) : la colonne
           // du type n'existe pas encore — le nom seul, comme avant.
           if (!estColonneTypeRendezVousAbsente(e)) throw e;
-          return lire(HORS_APPELS_APPORTEUR_PAR_NOM);
+          return lire(HORS_ECHANGES_HORS_CLIENTS_PAR_NOM);
         }
       },
     }),

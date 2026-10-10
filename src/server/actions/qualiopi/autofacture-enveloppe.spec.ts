@@ -33,6 +33,12 @@ vi.mock("@/lib/prisma", () => ({
     trainerStatement: {
       findUnique: (...a: unknown[]) => mockStatementFindUnique(...a),
       update: (...a: unknown[]) => mockStatementUpdate(...a),
+      // ASSEMBLAGE S3 — émission et contestation écrivent conditionnellement
+      // (`updateMany`) : même journal d'écritures, une ligne touchée.
+      updateMany: async (...a: unknown[]) => {
+        await mockStatementUpdate(...a);
+        return { count: 1 };
+      },
       findMany: (...a: unknown[]) => mockStatementFindMany(...a),
     },
     documentGenere: {

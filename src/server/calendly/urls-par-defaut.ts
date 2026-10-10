@@ -1,4 +1,4 @@
-// Les adresses Calendly par défaut des quatre rendez-vous — module FEUILLE.
+// Les adresses Calendly par défaut des cinq rendez-vous — module FEUILLE.
 //
 // Aucun import : la table des types (`types-reservables.ts`) et l'aide des liens
 // d'e-mail (`@/lib/calendly/lien-du-site.ts`) les lisent, et ni l'une ni l'autre ne
@@ -28,3 +28,10 @@ export const URL_CALENDLY_APPORTEUR_ANCIEN_DEFAUT =
   "https://calendly.com/axion-ia/echange-apporteur-affaires";
 /** Type « Rencontre au salon GOFAB — 13 octobre » (20 min, sur place). */
 export const URL_CALENDLY_SALON_PAR_DEFAUT = "https://calendly.com/axion-ia/rencontre-salon-gofab";
+/**
+ * Type « Échange formateur indépendant (20 min) » (chantier « formateurs
+ * freelance », lot F-CAL-1, 2026-10-09). Calque de l'apporteur : la variable
+ * `CALENDLY_FORMATEUR_URL`, si elle est posée, l'emporte sur ce défaut.
+ */
+export const URL_CALENDLY_FORMATEUR_PAR_DEFAUT =
+  "https://calendly.com/axion-ia/echange-formateur-independant";

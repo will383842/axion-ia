@@ -38,9 +38,14 @@ describe("écrans rattachés : chaque parent y mène par un lien (lot L4)", () =
     );
   });
 
-  it("Formateurs mène aux Accès, à la Rémunération et aux Sous-traitants", () => {
+  it("Formateurs mène aux Accès, à la Rémunération, aux Interrupteurs et aux Sous-traitants", () => {
     expect(libelles("qualiopi/formateurs").sort()).toEqual(
-      ["Accès & connexions formateurs", "Rémunération formateurs", "Sous-traitants"].sort(),
+      [
+        "Accès & connexions formateurs",
+        "Rémunération formateurs",
+        "Interrupteurs formateurs",
+        "Sous-traitants",
+      ].sort(),
     );
   });
 

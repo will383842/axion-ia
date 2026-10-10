@@ -1,12 +1,14 @@
 // Banc @formateurs — lire le JOURNAL DES ENVOIS (`email_logs`).
 //
-// ⚠️ Sous Gate B, `BULLMQ_DISABLED=true` : `enqueueEmail` rend
-// `{ enqueued: false }` AVANT d'écrire au journal (`src/server/queue/queues.ts`,
-// garde `if (!emailsQueue)`). Ce banc ne prouve donc AUCUN envoi — un journal
-// vide y est l'état attendu, pas une preuve d'absence. Les e-mails seront
-// prouvés par un autre banc, où la file existe. Ces lectures servent dès
-// maintenant à affirmer qu'un écran ou une garde n'a RIEN fait partir par un
-// autre chemin, et serviront telles quelles au banc des e-mails.
+// Le banc tourne dans son propre job CI (`banc-formateurs.yml`), où la file
+// d'e-mails EXISTE : Redis réel, worker lancé en tâche de fond, puits SMTP
+// local (`puits-smtp.ts`). Un envoi y laisse donc une ligne ici ET un message
+// dans le puits — les deux se constatent.
+//
+// ⚠️ Hors de ce job (Gate B, poste de développement sans worker), sous
+// `BULLMQ_DISABLED=true`, `enqueueEmail` rend `{ enqueued: false }` AVANT
+// d'écrire au journal (`src/server/queue/queues.ts`, garde
+// `if (!emailsQueue)`) : un journal vide n'y prouve rien.
 
 import { prisma } from "./base";
 

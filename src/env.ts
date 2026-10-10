@@ -206,6 +206,19 @@ export const env = createEnv({
     // build GitHub Actions, où il n'est pas posé.
     CALENDLY_APPORTEUR_URL: z.string().url().optional(),
 
+    // Lien de réservation de l'ÉCHANGE DE 20 MINUTES proposé aux formateurs
+    // indépendants (chantier « formateurs freelance », lot F-CAL-1, 2026-10-09).
+    // Calque de `CALENDLY_APPORTEUR_URL`. Absent = le défaut du code
+    // (`URL_CALENDLY_FORMATEUR_PAR_DEFAUT`), qui est l'adresse réelle du compte.
+    //
+    // ⚠️ Le NOM de l'événement dans Calendly doit contenir « formateur » : c'est
+    // ce qui l'exclut des e-mails client, du CRM des ventes, du dossier client
+    // et de la visio (`server/calendly/echange-formateur.ts`).
+    //
+    // Variable SERVEUR, lue à l'exécution (jamais au chargement d'un module) :
+    // le build GitHub Actions ne la porte pas (contrat `stub.invalid`).
+    CALENDLY_FORMATEUR_URL: z.string().url().optional(),
+
     // ── Zoho Mail, LECTURE SEULE — réponses des candidats apporteurs (2026-09-27)
     // Le worker relève toutes les 15 minutes, dans la boîte de réception de
     // contact@axion-ia.com, les réponses des personnes invitées à l'échange :
@@ -713,6 +726,7 @@ export const env = createEnv({
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
     CALENDLY_APPORTEUR_URL: process.env.CALENDLY_APPORTEUR_URL,
+    CALENDLY_FORMATEUR_URL: process.env.CALENDLY_FORMATEUR_URL,
     ZOHO_MAIL_CLIENT_ID: process.env.ZOHO_MAIL_CLIENT_ID,
     ZOHO_MAIL_CLIENT_SECRET: process.env.ZOHO_MAIL_CLIENT_SECRET,
     ZOHO_MAIL_REFRESH_TOKEN: process.env.ZOHO_MAIL_REFRESH_TOKEN,
