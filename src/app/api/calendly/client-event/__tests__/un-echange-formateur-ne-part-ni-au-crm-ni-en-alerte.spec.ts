@@ -8,6 +8,12 @@
  * ventes et à une alerte sur le téléphone du gérant.
  *
  * `syncCalendlyEventToCrm` est le VRAI ; seule la mise en file est simulée.
+ *
+ * 🔴 RÈGLE (relecture sécurité de la PR 1421) : le slug, le nom et les UTM
+ * viennent du NAVIGATEUR. Ils ne peuvent JAMAIS faire sortir une réservation du
+ * chemin client. Seul un nom de type RELU PAR L'API Calendly (l'enrichissement
+ * l'écrit, et le signale dans `updatedFields`) classe « formateur ». Tant que ce
+ * n'est pas le cas, la réservation part au CRM et en alerte, comme avant le lot.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
@@ -37,6 +43,13 @@ vi.mock("@/server/crm-sync/enqueue", () => ({
 vi.mock("@/lib/security/email-hash", () => ({
   hashEmailForLookup: (e: string) => (e ? `h-${e}` : null),
   normalizeEmail: (e: string) => e.trim().toLowerCase(),
+}));
+
+// Les e-mails client ne partent JAMAIS de cette route (seulement des passages
+// planifiés de `rappels-appel.ts`) : on le vérifie quand même.
+const enfilerEmail = vi.fn(async (..._a: unknown[]) => "job");
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: (...a: unknown[]) => enfilerEmail(...a),
 }));
 
 const enrichMock = vi.fn();
@@ -99,20 +112,51 @@ beforeEach(() => {
   calendlyFindUnique.mockResolvedValue(null);
 });
 
-describe("POST forgé avec un slug « formateur »", () => {
+describe("POST forgé avec un slug « formateur » — le navigateur ne classe rien", () => {
+  // ⚠️ Adapté (relecture sécurité, PR 1421) : ce cas attendait « 0 CRM, 0 alerte »
+  // sur le SLUG seul — c'était précisément la faiblesse : un prospect qui forge
+  // le slug sortait du CRM et de l'alerte.
   it.each(["echange-formateur-independant", "FORMATEUR", "diagnostic-ia-formateur"])(
-    "🔴 « %s » sans enrichissement : 0 synchro CRM, 0 alerte",
+    "🔴 « %s » sans enrichissement : chemin CLIENT — synchro CRM ET alerte",
     async (slug) => {
       const { POST } = await import("../route");
       const res = await POST(requete(slug));
       expect(res.status).toBe(200);
-      expect(enfilerCrm).not.toHaveBeenCalled();
-      expect(notifier).not.toHaveBeenCalled();
+      expect(enfilerCrm).toHaveBeenCalledTimes(1);
+      expect(notifier).toHaveBeenCalledTimes(1);
     },
   );
 
-  it("🔴 enrichi en « Échange formateur indépendant (20 min) » classé autre : 0 CRM, 0 alerte", async () => {
-    enrichMock.mockResolvedValue({ ok: true, updatedFields: [], answersText: null });
+  it("🔴 slug « echange-formateur-independant » mais l'API relit « Diagnostic IA » : CRM ET alerte", async () => {
+    enrichMock.mockResolvedValue({
+      ok: true,
+      updatedFields: ["eventTypeName"],
+      answersText: null,
+    });
+    calendlyFindUnique.mockResolvedValue(ligneEnrichie("Diagnostic IA", "diagnostic"));
+    const { POST } = await import("../route");
+    await POST(requete("echange-formateur-independant"));
+    expect(enfilerCrm).toHaveBeenCalledTimes(1);
+    expect(notifier).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 enrichi, mais le nom n'a PAS été relu par l'API (reste le slug forgé) : CRM ET alerte", async () => {
+    enrichMock.mockResolvedValue({ ok: true, updatedFields: ["startTime"], answersText: null });
+    calendlyFindUnique.mockResolvedValue(ligneEnrichie("echange-formateur-independant", "autre"));
+    const { POST } = await import("../route");
+    await POST(requete("echange-formateur-independant"));
+    expect(enfilerCrm).toHaveBeenCalledTimes(1);
+    expect(notifier).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Vrai échange formateur, CONFIRMÉ par l'API Calendly", () => {
+  it("relu « Échange formateur indépendant (20 min) » classé autre : 0 CRM, 0 alerte, 0 e-mail client", async () => {
+    enrichMock.mockResolvedValue({
+      ok: true,
+      updatedFields: ["eventTypeName"],
+      answersText: null,
+    });
     calendlyFindUnique.mockResolvedValue(
       ligneEnrichie("Échange formateur indépendant (20 min)", "autre"),
     );
@@ -120,15 +164,21 @@ describe("POST forgé avec un slug « formateur »", () => {
     await POST(requete("echange-formateur-independant"));
     expect(enfilerCrm).not.toHaveBeenCalled();
     expect(notifier).not.toHaveBeenCalled();
+    expect(enfilerEmail).not.toHaveBeenCalled();
   });
 
-  it("🔴 slug neutre, mais le nom relu après enrichissement dit « formateur » : 0 CRM, 0 alerte", async () => {
-    enrichMock.mockResolvedValue({ ok: true, updatedFields: [], answersText: null });
+  it("slug neutre, nom relu par l'API « Échange formateur indépendant » : 0 CRM, 0 alerte", async () => {
+    enrichMock.mockResolvedValue({
+      ok: true,
+      updatedFields: ["eventTypeName"],
+      answersText: null,
+    });
     calendlyFindUnique.mockResolvedValue(ligneEnrichie("Échange formateur indépendant", null));
     const { POST } = await import("../route");
     await POST(requete("rendez-vous-20-min"));
     expect(enfilerCrm).not.toHaveBeenCalled();
     expect(notifier).not.toHaveBeenCalled();
+    expect(enfilerEmail).not.toHaveBeenCalled();
   });
 });
 
