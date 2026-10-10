@@ -39,6 +39,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { hashIp } from "@/lib/security/ip-hash";
+import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibles";
 import {
   requireAdminRead,
   requireAdminWrite,
@@ -149,7 +150,9 @@ export async function donneesJournalQualiopi(input: QualiopiActivityInput): Prom
     action: input.action.slice(0, 120),
     targetType: (input.targetType ?? "qualiopi").slice(0, 80),
     targetId: input.targetId ?? null,
-    changes: (input.changes ?? null) as never,
+    // Données bancaires et personnelles jamais en clair dans le journal : la
+    // trace dit QU'un IBAN ou un e-mail a changé, pas lesquels.
+    changes: masquerDonneesSensibles(input.changes ?? null) as never,
     ipAddress: ipAddress?.slice(0, 64) ?? null,
     userAgent: userAgent?.slice(0, 2000) ?? null,
   };
