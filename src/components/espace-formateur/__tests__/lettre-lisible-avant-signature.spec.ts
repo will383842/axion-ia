@@ -95,7 +95,10 @@ describe("`D4-1-A` — la lettre est lisible avant d'être signée", () => {
   it("🔴 la route refuse : pas de session, mauvais mandataire, autre type de pièce", () => {
     const route = lire("src", "app", "api", "formateur", "lettre-mission", "[id]", "route.ts");
     expect(route, "401 sans session formateur").toMatch(/status: 401/);
-    expect(route, "403 hors mandat").toMatch(/status: 403/);
+    // Lot S4 : hors mandat, la route répond comme pour un identifiant inconnu
+    // (404 `not_found`), et plus jamais 403 — couvert à l'exécution par
+    // `l-espace-formateur-repond-introuvable-a-l-identique.spec.ts`.
+    expect(route, "aucun 403 hors mandat").not.toMatch(/status: 403/);
     // ⚠️ 404 et non 403 sur un autre type : le formateur n'a pas à apprendre
     // qu'un identifiant existe s'il désigne autre chose que sa lettre.
     expect(route).toMatch(/piece\.type !== "lettre_mission"/);
