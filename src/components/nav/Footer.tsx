@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import NextLink from "next/link";
 import { LogIn } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
@@ -229,8 +230,10 @@ export async function Footer() {
 
         {/* Bottom strip */}
         {/* Trois zones depuis le 2026-08-01 (identité · liens utilitaires ·
-            accès formateur). `lg:gap-6` : avec un troisième bloc, le `gap-3`
-            d'origine laissait les groupes se toucher en 1280 px. */}
+            accès aux espaces). `lg:gap-6` : avec un troisième bloc, le `gap-3`
+            d'origine laissait les groupes se toucher en 1280 px. Depuis le
+            2026-10-10 la troisième zone empile deux blocs (formateur, puis
+            apporteur en français) : toujours trois zones, pas quatre. */}
         <div className="border-border-on-mocha text-mocha-fg/55 mt-12 flex flex-col gap-3 border-t pt-5 text-xs lg:flex-row lg:items-center lg:justify-between lg:gap-6">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <span className="text-mocha-fg/80 font-medium">{`© ${year} ${BRAND.legalName}`}</span>
@@ -292,24 +295,48 @@ export async function Footer() {
             déjà connecté atterrit sur son tableau de bord au lieu d'un
             formulaire qu'il n'a pas à remplir.
           */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            <span className="text-mocha-fg/70">
-              {isFr ? "Vous êtes formateur ?" : "Are you a trainer?"}
-            </span>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <span className="text-mocha-fg/70">
+                {isFr ? "Vous êtes formateur ?" : "Are you a trainer?"}
+              </span>
+              {/*
+                `as never` : l'espace formateur n'est pas déclaré dans les
+                `pathnames` de next-intl (outil interne, hors routage localisé).
+                Même échappement que `FooterLinkList` plus bas dans ce fichier.
+              */}
+              <Link
+                href={"/espace-formateur" as never}
+                prefetch={false}
+                rel="nofollow"
+                className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
+                {isFr ? "Accéder à mon espace" : "Access my area"}
+              </Link>
+            </div>
             {/*
-              `as never` : l'espace formateur n'est pas déclaré dans les
-              `pathnames` de next-intl (outil interne, hors routage localisé).
-              Même échappement que `FooterLinkList` plus bas dans ce fichier.
+              Espace apporteur — ajouté 2026-10-10. Même raison que l'espace
+              formateur ci-dessus : un lien que personne ne voit ne règle rien.
+              Un apporteur qui a supprimé ses e-mails n'avait aucun chemin vers
+              « Retrouver mon espace ». Français seulement (l'espace n'existe pas
+              en anglais). `NextLink` et NON le `Link` de `@/i18n/navigation` :
+              `/apporteur/*` est HORS du routage localisé (pas de préfixe `/fr`).
             */}
-            <Link
-              href={"/espace-formateur" as never}
-              prefetch={false}
-              rel="nofollow"
-              className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
-              {isFr ? "Accéder à mon espace" : "Access my area"}
-            </Link>
+            {isFr && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <span className="text-mocha-fg/70">Vous êtes apporteur d&apos;affaires ?</span>
+                <NextLink
+                  href="/apporteur/dossier/retrouver"
+                  prefetch={false}
+                  rel="nofollow"
+                  className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
+                  Accéder à mon espace
+                </NextLink>
+              </div>
+            )}
           </div>
         </div>
       </div>

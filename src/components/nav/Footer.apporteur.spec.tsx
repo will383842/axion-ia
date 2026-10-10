@@ -84,3 +84,33 @@ describe("pied de page — le réseau d'apporteurs n'est pas rangé parmi les em
     expect(entreprise?.items).toContainEqual({ href: CIBLE, label: "Become a business referrer" });
   });
 });
+
+/** Tous les `href` de l'arbre rendu (liens des colonnes comme boutons du bas). */
+function hrefs(noeud: unknown, out: string[] = []): string[] {
+  if (Array.isArray(noeud)) {
+    for (const n of noeud) hrefs(n, out);
+    return out;
+  }
+  if (!isValidElement(noeud)) return out;
+  const props = noeud.props as Record<string, unknown>;
+  if (typeof props.href === "string") out.push(props.href);
+  if (Array.isArray(props.items)) {
+    for (const l of props.items as Lien[]) out.push(l.href);
+  }
+  hrefs(props.children, out);
+  return out;
+}
+
+describe("pied de page — l'apporteur retrouve son espace (2026-10-10)", () => {
+  const RETROUVER = "/apporteur/dossier/retrouver";
+
+  it("en français, le bouton mène à « Retrouver mon espace »", async () => {
+    langue = "fr";
+    expect(hrefs(await Footer())).toContain(RETROUVER);
+  });
+
+  it("en anglais, le lien n'apparaît pas", async () => {
+    langue = "en";
+    expect(hrefs(await Footer())).not.toContain(RETROUVER);
+  });
+});
