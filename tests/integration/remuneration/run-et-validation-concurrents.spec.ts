@@ -8,9 +8,16 @@
  * PENDANT le run, qui en recrée alors de nouvelles rattachées au même relevé —
  * un relevé validé qui porte deux fois la même prestation.
  *
- * Chaque itération repart d'un relevé `a_valider`, puis joue
+ * Chaque itération repart de relevés `a_valider`, puis joue
  * `Promise.all([run, valider])`. Attendu : jamais plus d'UNE ligne par
  * prestation, et un relevé dont le total égale la somme de ses lignes.
+ *
+ * 🔑 La fenêtre de la course est étroite (entre la lecture du statut par le
+ * run et l'effacement de ses lignes) : une seule validation par itération ne
+ * la touchait qu'une fois sur cinquante environ. Six formateurs co-animent
+ * donc la session — six validations par course — lancées avec un décalage
+ * de 0 à 2 ms qui balaie la fenêtre. Sans le verrou, le test rougit à chaque
+ * exécution ; un détecteur qui ne rougit qu'une fois sur deux n'en est pas un.
  *
  * Le test écrit et VALIDE ses lignes (une course ne se joue pas dans une
  * transaction annulée) sur un mois que rien d'autre n'occupe, puis efface tout
@@ -48,14 +55,14 @@ import { transitionStatementAction } from "../../../src/server/actions/qualiopi/
 /** Un mois lointain : aucune autre donnée ne peut s'y trouver. */
 const PERIODE = { year: 2031, month: 3 } as const;
 const ITERATIONS = 50;
+const FORMATEURS = 6;
 
 const suffixe = randomUUID().slice(0, 8);
 const ids = {
   offre: randomUUID(),
   formation: randomUUID(),
   session: randomUUID(),
-  trainer: randomUUID(),
-  regle: randomUUID(),
+  trainers: Array.from({ length: FORMATEURS }, () => randomUUID()),
 };
 
 beforeAll(async () => {
@@ -84,40 +91,43 @@ beforeAll(async () => {
     `TEST-SESS-S3-${suffixe}`,
     ids.formation,
   );
-  await prisma.trainer.create({
-    data: {
-      id: ids.trainer,
-      nom: "Course",
-      prenom: "S3",
-      email: `s3-${suffixe}@example.invalid`,
-      statut: "sous_traitant",
-      regimeTvaHonoraires: "assujetti_20",
-    },
-  });
-  await prisma.trainerCompensationRule.create({
-    data: {
-      id: ids.regle,
-      trainerId: ids.trainer,
-      model: "taux_journalier",
-      tauxJourneeHtCents: 90_000,
-      effectiveFrom: new Date("2030-01-01T00:00:00Z"),
-    },
-  });
-  await prisma.sessionFormateur.create({
-    data: { sessionId: ids.session, trainerId: ids.trainer },
-  });
+  for (const [k, trainerId] of ids.trainers.entries()) {
+    await prisma.trainer.create({
+      data: {
+        id: trainerId,
+        nom: "Course",
+        prenom: `S3-${k}`,
+        email: `s3-${suffixe}-${k}@example.invalid`,
+        statut: "sous_traitant",
+        regimeTvaHonoraires: "assujetti_20",
+      },
+    });
+    await prisma.trainerCompensationRule.create({
+      data: {
+        trainerId,
+        model: "taux_journalier",
+        tauxJourneeHtCents: 90_000,
+        effectiveFrom: new Date("2030-01-01T00:00:00Z"),
+      },
+    });
+    await prisma.sessionFormateur.create({ data: { sessionId: ids.session, trainerId } });
+  }
 });
 
+const desFormateurs = { trainerId: { in: ids.trainers } };
+
 async function viderLaPeriode(): Promise<void> {
-  await prisma.trainerFeeLine.deleteMany({ where: { trainerId: ids.trainer } });
-  await prisma.trainerStatement.deleteMany({ where: { trainerId: ids.trainer } });
+  await prisma.trainerFeeLine.deleteMany({ where: desFormateurs });
+  await prisma.trainerStatement.deleteMany({ where: desFormateurs });
 }
+
+const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 afterAll(async () => {
   await viderLaPeriode();
-  await prisma.sessionFormateur.deleteMany({ where: { trainerId: ids.trainer } });
-  await prisma.trainerCompensationRule.deleteMany({ where: { trainerId: ids.trainer } });
-  await prisma.trainer.deleteMany({ where: { id: ids.trainer } });
+  await prisma.sessionFormateur.deleteMany({ where: desFormateurs });
+  await prisma.trainerCompensationRule.deleteMany({ where: desFormateurs });
+  await prisma.trainer.deleteMany({ where: { id: { in: ids.trainers } } });
   await prisma.$executeRawUnsafe(
     `DELETE FROM "training_sessions" WHERE "id" = $1::uuid`,
     ids.session,
@@ -134,40 +144,49 @@ describe("run mensuel ∥ validation du relevé (Postgres réel)", () => {
     for (let i = 0; i < ITERATIONS; i += 1) {
       await viderLaPeriode();
       await runRemunerationMensuelle(PERIODE);
-      const releve = await prisma.trainerStatement.update({
-        where: {
-          trainerId_periodeYear_periodeMonth: {
-            trainerId: ids.trainer,
+      await prisma.trainerStatement.updateMany({
+        where: { ...desFormateurs, periodeYear: PERIODE.year, periodeMonth: PERIODE.month },
+        data: { statut: "a_valider" },
+      });
+      const releves = await prisma.trainerStatement.findMany({
+        where: { ...desFormateurs, periodeYear: PERIODE.year, periodeMonth: PERIODE.month },
+        select: { id: true },
+      });
+      if (releves.length !== FORMATEURS) fautes.push(`#${i} : ${releves.length} relevés préparés`);
+
+      const [, ...validations] = await Promise.all([
+        runRemunerationMensuelle(PERIODE),
+        ...releves.map(async (r, k) => {
+          await attendre((i + k) % 3);
+          return transitionStatementAction({ id: r.id, to: "valide" });
+        }),
+      ]);
+      for (const v of validations) {
+        if ("error" in v) fautes.push(`#${i} validation refusée : ${v.error}`);
+      }
+
+      for (const r of releves) {
+        const final = await prisma.trainerStatement.findUnique({
+          where: { id: r.id },
+          select: { trainerId: true, statut: true, totalHtCents: true },
+        });
+        const lignes = await prisma.trainerFeeLine.findMany({
+          where: {
+            trainerId: final?.trainerId ?? "",
             periodeYear: PERIODE.year,
             periodeMonth: PERIODE.month,
           },
-        },
-        data: { statut: "a_valider" },
-        select: { id: true },
-      });
-
-      const [, validation] = await Promise.all([
-        runRemunerationMensuelle(PERIODE),
-        transitionStatementAction({ id: releve.id, to: "valide" }),
-      ]);
-      if ("error" in validation) fautes.push(`#${i} validation refusée : ${validation.error}`);
-
-      const lignes = await prisma.trainerFeeLine.findMany({
-        where: { trainerId: ids.trainer, periodeYear: PERIODE.year, periodeMonth: PERIODE.month },
-        select: { statementId: true, statut: true, montantHtCents: true },
-      });
-      const final = await prisma.trainerStatement.findUnique({
-        where: { id: releve.id },
-        select: { statut: true, totalHtCents: true },
-      });
-      if (lignes.length !== 1) fautes.push(`#${i} : ${lignes.length} lignes pour 1 prestation`);
-      const rattachees = lignes.filter((l) => l.statementId === releve.id);
-      const somme = rattachees.reduce((s, l) => s + l.montantHtCents, 0);
-      if (final?.statut === "valide" && somme !== final.totalHtCents) {
-        fautes.push(`#${i} : relevé validé à ${final.totalHtCents} pour ${somme} de lignes`);
-      }
-      if (final?.statut === "valide" && rattachees.some((l) => l.statut !== "valide")) {
-        fautes.push(`#${i} : relevé validé portant une ligne non gelée`);
+          select: { statementId: true, statut: true, montantHtCents: true },
+        });
+        if (lignes.length !== 1) fautes.push(`#${i} : ${lignes.length} lignes pour 1 prestation`);
+        const rattachees = lignes.filter((l) => l.statementId === r.id);
+        const somme = rattachees.reduce((s, l) => s + l.montantHtCents, 0);
+        if (final?.statut === "valide" && somme !== final.totalHtCents) {
+          fautes.push(`#${i} : relevé validé à ${final.totalHtCents} pour ${somme} de lignes`);
+        }
+        if (final?.statut === "valide" && rattachees.some((l) => l.statut !== "valide")) {
+          fautes.push(`#${i} : relevé validé portant une ligne non gelée`);
+        }
       }
     }
 
