@@ -4,8 +4,11 @@
 // le reste du contenu vient de `commercial-offer.ts` (FIXE).
 //
 // 1 seul CTA (décision Will 2026-06-08) → page candidature indexable.
+// 2026-10-10 : en français, un lien texte discret « Déjà apporteur ? » mène à
+// l'espace apporteur (hors routage localisé, d'où `NextLink`), sans 2e bouton.
 
 import type { ReactNode } from "react";
+import NextLink from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { Cta } from "@/components/marketing/Cta";
@@ -43,15 +46,27 @@ export function DevenirCommercialHero({ isFr, villeName }: DevenirCommercialHero
       schemaNodes={nodes}
       schemaAriaLabel={isFr ? COMMERCIAL_HERO.ariaLabel.fr : COMMERCIAL_HERO.ariaLabel.en}
       ctas={
-        <Cta
-          href="/devenir-commercial-ia/candidature"
-          size="lg"
-          className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
-          track="commercial-hero-apply"
-        >
-          {isFr ? COMMERCIAL_HERO.ctaLabel.fr : COMMERCIAL_HERO.ctaLabel.en}
-          <ArrowRight aria-hidden="true" className="h-4 w-4" />
-        </Cta>
+        <>
+          <Cta
+            href="/devenir-commercial-ia/candidature"
+            size="lg"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+            track="commercial-hero-apply"
+          >
+            {isFr ? COMMERCIAL_HERO.ctaLabel.fr : COMMERCIAL_HERO.ctaLabel.en}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Cta>
+          {isFr && (
+            <NextLink
+              href="/apporteur/dossier/retrouver"
+              prefetch={false}
+              rel="nofollow"
+              className="text-fg-soft hover:text-fg text-sm underline underline-offset-4"
+            >
+              Déjà apporteur ? Accéder à mon espace
+            </NextLink>
+          )}
+        </>
       }
     />
   );
