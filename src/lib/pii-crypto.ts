@@ -58,13 +58,41 @@ const TAG_BYTES = 16;
  * mesuré, pas supposé. À faire dans un lot dédié, pas au détour d'un correctif.
  */
 export const PREFIX_V1 = "enc:v1:";
-/** Préfixe `v2` — à implémenter. */
-export const PREFIX_V2: string = "";
 
-/** Options du chiffrement `enc:v2:` (AAD facultative, clé exigée). À IMPLÉMENTER. */
+/**
+ * Préfixe d'un chiffré `v2` (schéma n° 1 du chantier formateurs freelance,
+ * 2026-10-10 — l'IBAN chiffré d'une fiche formateur).
+ *
+ * Même enveloppe que `v1` (`<iv-hex>:<chiffré-hex>:<tag-hex>`, AES-256-GCM,
+ * même clé), avec en plus une AAD FACULTATIVE : des données authentifiées
+ * non chiffrées (typiquement `trainers:<id>:iban`) qui LIENT le chiffré à sa
+ * ligne. Recopié sur une autre fiche, il ne se déchiffre plus (anti row-swap).
+ * Sans AAD, l'AAD est vide : l'aller-retour marche, sans liaison.
+ *
+ * ⚠️ `v1` reste le format par défaut : `encryptPii(x)` sans option produit
+ * toujours `enc:v1:`, et `enc:v1:` se lit à l'identique. On n'obtient `v2`
+ * qu'en le demandant (`encryptPii(x, { … })`).
+ */
+export const PREFIX_V2 = "enc:v2:";
+
+/** Options qui demandent le format `enc:v2:`. */
 export interface OptionsChiffrementPii {
+  /**
+   * Données authentifiées associées. À fournir À L'IDENTIQUE au déchiffrement,
+   * sinon il LÈVE. Ignorée pour un chiffré `v1` (qui n'en a pas).
+   */
   readonly aad?: string;
+  /**
+   * Clé EXIGÉE : sans `PII_ENCRYPTION_KEY`, chiffrer et déchiffrer LÈVENT —
+   * aucun repli en clair à l'écriture, aucun placeholder à la lecture. Et une
+   * valeur non chiffrée lue sous cette option LÈVE aussi : elle n'aurait jamais
+   * dû être écrite. Même doctrine que `chiffrerOctetsPii`.
+   */
   readonly cleExigee?: boolean;
+}
+
+function estChiffre(value: string): boolean {
+  return value.startsWith(PREFIX_V1) || value.startsWith(PREFIX_V2);
 }
 
 // Lecture directe `process.env` (pas via `env` t3-validator) pour rester
@@ -79,7 +107,10 @@ function getKey(): Buffer | null {
 
 /**
  * Chiffre un plaintext PII. Si la clé est absente (dev fallback) → retourne
- * le plaintext inchangé (avec warn une seule fois).
+ * le plaintext inchangé (avec warn une seule fois) — sauf `cleExigee`, qui lève.
+ *
+ * Sans `options` : `enc:v1:` (inchangé). Avec `options` : `enc:v2:`, AAD liée
+ * si fournie.
  *
  * `null` et string vide retournent inchangés (pas de pollution `enc:v1:` sur
  * des valeurs vides).
@@ -87,12 +118,14 @@ function getKey(): Buffer | null {
 let warnedNoKey = false;
 export function encryptPii<T extends string | null | undefined>(
   plaintext: T,
-  _options?: OptionsChiffrementPii,
+  options?: OptionsChiffrementPii,
 ): T {
   if (plaintext == null) return plaintext;
   if (plaintext === "") return plaintext;
   // Déjà chiffré : éviter double-encrypt (idempotent).
-  if (typeof plaintext === "string" && plaintext.startsWith(PREFIX_V1)) return plaintext;
+  if (typeof plaintext === "string" && estChiffre(plaintext)) return plaintext;
+
+  if (options !== undefined) return chiffrerV2(plaintext, options) as T;
 
   const key = getKey();
   if (!key) {
@@ -111,6 +144,27 @@ export function encryptPii<T extends string | null | undefined>(
   const ciphertext = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
   const tag = cipher.getAuthTag();
   return `${PREFIX_V1}${iv.toString("hex")}:${ciphertext.toString("hex")}:${tag.toString("hex")}` as T;
+}
+
+function chiffrerV2(plaintext: string, options: OptionsChiffrementPii): string {
+  const key = options.cleExigee ? cleOuErreur("chiffrement enc:v2") : getKey();
+  if (!key) {
+    // Repli historique (développement), seulement quand la clé n'est pas exigée.
+    if (!warnedNoKey) {
+      console.warn(
+        "[pii-crypto] PII_ENCRYPTION_KEY absent — PII stored cleartext (dev mode). " +
+          "Set the env var to enable AES-256-GCM at-rest encryption.",
+      );
+      warnedNoKey = true;
+    }
+    return plaintext;
+  }
+  const iv = crypto.randomBytes(IV_BYTES);
+  const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
+  cipher.setAAD(Buffer.from(options.aad ?? "", "utf8"));
+  const ciphertext = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `${PREFIX_V2}${iv.toString("hex")}:${ciphertext.toString("hex")}:${tag.toString("hex")}`;
 }
 
 /**
@@ -134,22 +188,34 @@ export function isDecryptedEmailUsable(value: string | null | undefined): boolea
 }
 
 /**
- * Déchiffre une valeur PII. Si la valeur n'a pas le préfixe `enc:v1:` ou si
- * la clé est absente → retourne inchangé (compat cleartext legacy).
+ * Déchiffre une valeur PII. Si la valeur n'a pas de préfixe `enc:v1:` /
+ * `enc:v2:` ou si la clé est absente → retourne inchangé (compat cleartext
+ * legacy) — sauf `options.cleExigee`, qui lève dans les deux cas.
+ *
+ * `enc:v2:` est authentifié avec `options.aad` (vide si absente) : une autre
+ * AAD lève. `enc:v1:` ignore l'AAD (lecture à l'identique).
  *
  * Throw `Error` si tampering détecté (authentication tag fail) — caller doit
  * catch et logger une alerte sécu critique (potentielle compromission DB).
  */
 export function decryptPii<T extends string | null | undefined>(
   value: T,
-  _options?: OptionsChiffrementPii,
+  options?: OptionsChiffrementPii,
 ): T {
   if (value == null) return value;
   if (value === "") return value;
   if (typeof value !== "string") return value;
-  if (!value.startsWith(PREFIX_V1)) return value; // cleartext legacy
+  if (!estChiffre(value)) {
+    if (options?.cleExigee) {
+      throw new Error(
+        "[pii-crypto] valeur non chiffrée lue sous « clé exigée » (aucun clair admis)",
+      );
+    }
+    return value; // cleartext legacy
+  }
+  const v2 = value.startsWith(PREFIX_V2);
 
-  const key = getKey();
+  const key = options?.cleExigee ? cleOuErreur("déchiffrement") : getKey();
   if (!key) {
     // Clé absente mais ciphertext présent : impossible de décrypter. Renvoyer
     // un placeholder explicite plutôt que throw (ne pas casser les pages admin
@@ -157,7 +223,7 @@ export function decryptPii<T extends string | null | undefined>(
     return PII_DECRYPT_PLACEHOLDER as T;
   }
 
-  const parts = value.slice(PREFIX_V1.length).split(":");
+  const parts = value.slice(v2 ? PREFIX_V2.length : PREFIX_V1.length).split(":");
   if (parts.length !== 3) {
     throw new Error(
       `[pii-crypto] invalid ciphertext format (expected 3 parts, got ${parts.length})`,
@@ -172,6 +238,7 @@ export function decryptPii<T extends string | null | undefined>(
 
   const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
   decipher.setAuthTag(tag);
+  if (v2) decipher.setAAD(Buffer.from(options?.aad ?? "", "utf8"));
   const plaintext = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
   return plaintext.toString("utf8") as T;
 }
@@ -277,5 +344,5 @@ export function dechiffrerOctetsPii(enveloppe: Buffer): Buffer {
  * batch re-encrypt v2).
  */
 export function isEncryptedPii(value: unknown): boolean {
-  return typeof value === "string" && value.startsWith(PREFIX_V1);
+  return typeof value === "string" && estChiffre(value);
 }
