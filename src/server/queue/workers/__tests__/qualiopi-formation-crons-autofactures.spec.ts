@@ -26,7 +26,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    trainerStatement: { findMany: vi.fn(), findUnique: vi.fn(), update: vi.fn() },
+    trainerStatement: {
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      // ASSEMBLAGE S3 — l'émission écrit conditionnellement : routée sur `update`
+      // pour garder un seul journal d'écritures.
+      updateMany: vi.fn(),
+    },
     documentGenere: { findUnique: vi.fn(), findMany: vi.fn() },
     activityLog: { create: vi.fn() },
     // Verrou consultatif de la série AXI-AUTOF : toujours obtenu ici (un seul
@@ -105,6 +112,7 @@ const mp = prisma as unknown as {
     findMany: ReturnType<typeof vi.fn>;
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
   };
   documentGenere: { findUnique: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   activityLog: { create: ReturnType<typeof vi.fn> };
@@ -173,6 +181,10 @@ beforeEach(() => {
   warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   vi.spyOn(console, "log").mockImplementation(() => {});
   mp.trainerStatement.update.mockResolvedValue({});
+  mp.trainerStatement.updateMany.mockImplementation(async (...a: unknown[]) => {
+    await mp.trainerStatement.update(...a);
+    return { count: 1 };
+  });
   mp.documentGenere.findMany.mockResolvedValue([]);
   mp.documentGenere.findUnique.mockResolvedValue({
     type: "autofacture_honoraires",

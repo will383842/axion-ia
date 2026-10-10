@@ -50,6 +50,19 @@ vi.mock("@/lib/prisma", () => {
           )
           .map((r) => ({ numeroFacture: r["numeroFacture"] }));
       }),
+      // ASSEMBLAGE S3 — l'émission écrit conditionnellement : égalité stricte
+      // sur chaque champ du `where`, comme Postgres.
+      updateMany: vi.fn(
+        async (a: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
+          await Promise.resolve();
+          const r = etat.releves.get(String(a.where["id"]));
+          if (r === undefined) return { count: 0 };
+          const correspond = Object.entries(a.where).every(([k, v]) => r[k] === v);
+          if (!correspond) return { count: 0 };
+          Object.assign(r, a.data);
+          return { count: 1 };
+        },
+      ),
       update: vi.fn(async (a: { where: { id: string }; data: Record<string, unknown> }) => {
         await Promise.resolve();
         const r = etat.releves.get(a.where.id) as Record<string, unknown>;
@@ -211,5 +224,47 @@ describe("🔴 deux émissions simultanées", () => {
 
     const reprise = await emettreAutofacture(ID_A, journal);
     expect("data" in reprise).toBe(true);
+  });
+});
+
+/**
+ * ASSEMBLAGE S3 — le verrou de SÉRIE ne sérialise pas l'émission avec la
+ * transition ni avec le run : pendant le rendu du PDF, le relevé peut
+ * redescendre en `a_valider`, ou voir son total réécrit. L'écriture est donc
+ * conditionnelle à l'état contrôlé.
+ */
+describe("ASSEMBLAGE S3 — émission ∥ transition du relevé", () => {
+  it("relevé redescendu en `a_valider` pendant le rendu : rien n'est écrit, rien n'est envoyé", async () => {
+    etat.releves.set(ID_A, releve(ID_A));
+    mockGenerate.mockImplementationOnce(async () => {
+      // La transition `valide → a_valider` commite pendant le rendu.
+      (etat.releves.get(ID_A) as Record<string, unknown>)["statut"] = "a_valider";
+      return { id: "doc-x", numero: "AXI-DOC-2026-009", pdfUrl: null, hashSha256: "b".repeat(64) };
+    });
+
+    const res = await emettreAutofacture(ID_A, journal);
+
+    expect("error" in res && res.error).toMatch(/a changé/i);
+    const apres = etat.releves.get(ID_A) as Record<string, unknown>;
+    expect(apres["statut"]).toBe("a_valider");
+    expect(apres["numeroFacture"]).toBeNull();
+    expect(apres["autofactureAt"]).toBeNull();
+    expect(mockEnqueue).not.toHaveBeenCalled();
+  });
+
+  it("total réécrit pendant le rendu : la pièce ne réclame pas l'ancien montant", async () => {
+    etat.releves.set(ID_A, releve(ID_A));
+    mockGenerate.mockImplementationOnce(async () => {
+      (etat.releves.get(ID_A) as Record<string, unknown>)["totalTtcCents"] = 120_000;
+      return { id: "doc-y", numero: "AXI-DOC-2026-010", pdfUrl: null, hashSha256: "c".repeat(64) };
+    });
+
+    const res = await emettreAutofacture(ID_A, journal);
+
+    expect("error" in res).toBe(true);
+    const apres = etat.releves.get(ID_A) as Record<string, unknown>;
+    expect(apres["numeroFacture"]).toBeNull();
+    expect(apres["autofactureAt"]).toBeNull();
+    expect(mockEnqueue).not.toHaveBeenCalled();
   });
 });
