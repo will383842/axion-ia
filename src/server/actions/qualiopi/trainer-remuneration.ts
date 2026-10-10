@@ -32,6 +32,7 @@ import { requireHabilitation, logQualiopiActivity } from "@/server/actions/quali
 import { runRemunerationMensuelle } from "@/server/qualiopi/remuneration/statements";
 import { transitionAutorisee, type StatementStatut } from "@/server/qualiopi/remuneration/run";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
+import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verrou-remuneration";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -178,9 +179,15 @@ export async function transitionStatementAction(
     where: { id: v.id },
     select: {
       id: true,
+      // Lot S3 : de quoi prendre les MÊMES verrous que le run mensuel.
+      trainerId: true,
+      periodeYear: true,
+      periodeMonth: true,
       statut: true,
       totalTtcCents: true,
       numeroFacture: true,
+      // Lot S3 (C5) : une autofacture émise fige le relevé.
+      autofactureAt: true,
       dateFacture: true,
       montantFactureTtcCents: true,
       // Autofacturation : une pièce CONTESTÉE ne se paie pas (cf. la garde
@@ -194,6 +201,31 @@ export async function transitionStatementAction(
   const from = releve.statut;
   if (!transitionAutorisee(from, v.to)) {
     return { error: `Transition « ${from} » → « ${v.to} » interdite.` };
+  }
+
+  /**
+   * 🔴 LOT S3 (C5) — UNE AUTOFACTURE ÉMISE NE SE DÉFAIT PAS.
+   *
+   * La pièce est partie chez le formateur, numérotée dans notre série : c'est
+   * une facture, pas un brouillon. Revenir en arrière (`valide → a_valider`
+   * rouvrirait le relevé au run mensuel, `facture_recue → valide` détacherait
+   * la pièce de son relevé) ou changer son numéro réécrirait une pièce émise.
+   * Une correction passera par un AVOIR — jamais par une réécriture.
+   */
+  if (releve.autofactureAt != null) {
+    const retourArriere =
+      (from === "valide" && v.to === "a_valider") ||
+      (from === "facture_recue" && v.to === "valide");
+    if (retourArriere) {
+      return {
+        error: `Une autofacture a été émise pour ce relevé : le retour « ${from} » → « ${v.to} » est refusé. Une correction passe par un avoir.`,
+      };
+    }
+    if (v.numeroFacture !== undefined && v.numeroFacture !== releve.numeroFacture) {
+      return {
+        error: `Le numéro d'une autofacture émise (${releve.numeroFacture ?? "—"}) ne se modifie pas. Une correction passe par un avoir.`,
+      };
+    }
   }
 
   // ── Gardes propres à la cible ──
@@ -250,10 +282,32 @@ export async function transitionStatementAction(
   }
 
   const maintenant = new Date();
+  let aChange = false;
   try {
     await prisma.$transaction(async (tx) => {
-      await tx.trainerStatement.update({
-        where: { id: v.id },
+      /**
+       * 🔴 LOT S3 (C4) — LES MÊMES VERROUS QUE LE RUN, DANS LE MÊME ORDRE.
+       *
+       * Le run mensuel lit le statut du relevé sous le verrou de la période.
+       * Une validation qui ne le prenait pas pouvait geler les lignes PENDANT
+       * le run, qui en recréait alors à côté, rattachées au même relevé : un
+       * relevé validé portant deux fois la même prestation. Période, puis
+       * formateur — l'ordre fixe de `prendreVerrousRemuneration`.
+       */
+      await prendreVerrousRemuneration(tx, {
+        periodes: [{ year: releve.periodeYear, month: releve.periodeMonth }],
+        trainerIds: [releve.trainerId],
+      });
+
+      /**
+       * Écriture CONDITIONNELLE : seulement si le relevé est encore dans l'état
+       * qu'on a lu et contrôlé (statut, et autofacture émise ou non). Sinon un
+       * autre écrivain est passé entre la lecture et le verrou — second clic
+       * « payé », annulation concurrente, autofacture émise — et appliquer
+       * notre transition reviendrait à décider sur un état périmé.
+       */
+      const ecrit = await tx.trainerStatement.updateMany({
+        where: { id: v.id, statut: from, autofactureAt: releve.autofactureAt },
         data: {
           statut: v.to,
           ...(v.to === "valide" ? { validatedById: session.userId } : {}),
@@ -289,6 +343,10 @@ export async function transitionStatementAction(
             : {}),
         },
       });
+      if (ecrit.count !== 1) {
+        aChange = true;
+        return;
+      }
 
       // Valider FIGE les lignes : le run mensuel n'efface que le non-`valide`.
       if (v.to === "valide") {
@@ -312,6 +370,11 @@ export async function transitionStatementAction(
     });
   } catch {
     return { error: "Erreur lors du changement de statut." };
+  }
+  if (aChange) {
+    return {
+      error: "Le relevé a changé pendant l'opération : rechargez la page et recommencez.",
+    };
   }
 
   await logQualiopiActivity({

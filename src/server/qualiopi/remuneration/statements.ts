@@ -8,8 +8,9 @@
  * ── Ce que le run garantit ───────────────────────────────────────────────────
  * - **Idempotent.** Relancer le run sur un mois recalculable efface ses lignes
  *   et les réécrit. Deux exécutions de suite donnent la même base.
- * - **Sérialisé.** Un `pg_advisory_xact_lock` par période empêche deux runs
- *   concurrents de dédoubler les lignes (même mécanique que `invoice-numbering.ts`).
+ * - **Sérialisé.** Un verrou consultatif par période (puis un par formateur,
+ *   cf. `verrou-remuneration.ts`) empêche deux runs concurrents — ou un run et
+ *   la validation d'un relevé — de dédoubler les lignes.
  * - **Respectueux du passé.** Un formateur dont le relevé du mois a dépassé
  *   `a_valider` est intégralement sauté : ni ses lignes, ni son relevé ne sont
  *   touchés (invariant 1 de `run.ts`). Il ressort dans `formateursIgnores`.
@@ -52,6 +53,7 @@ import {
   type StatementStatut,
 } from "./run";
 import { HEURES_PAR_JOUR_DEFAUT } from "./calcul";
+import { prendreVerrousRemuneration } from "./verrou-remuneration";
 
 /** Un formateur écarté du run parce que son relevé est déjà figé. */
 export interface FormateurIgnore {
@@ -349,11 +351,10 @@ export async function runRemunerationMensuelle(
 
   await prisma.$transaction(
     async (tx) => {
-      // Sérialise les runs concurrents sur CETTE période. Relâché au commit/rollback.
-      const cle = `remuneration_run_${periode.year}_${periode.month}`;
-      await tx.$executeRawUnsafe(
-        `SELECT pg_advisory_xact_lock(hashtext('${cle.replace(/'/g, "''")}'))`,
-      );
+      // Sérialise les runs concurrents sur CETTE période — et, depuis le lot S3,
+      // les transitions de relevé, qui prennent le même verrou (cf.
+      // `verrou-remuneration.ts`). Relâché au commit/rollback.
+      await prendreVerrousRemuneration(tx, { periodes: [periode], trainerIds: [] });
 
       // Les formateurs qui avaient des lignes sur la période mais n'en ont plus
       // (session supprimée, affectation retirée) doivent voir les leurs EFFACÉES.
@@ -368,6 +369,10 @@ export async function runRemunerationMensuelle(
         ...lignesParFormateur.keys(),
         ...dejaPresents.map((l) => l.trainerId),
       ]);
+      // Puis le verrou de chaque formateur concerné, APRÈS celui de la période :
+      // c'est l'ordre fixe de `prendreVerrousRemuneration`, le même que celui
+      // de `transitionStatementAction` — aucun interblocage possible.
+      await prendreVerrousRemuneration(tx, { periodes: [], trainerIds: [...concernes] });
 
       for (const trainerId of concernes) {
         const lignes = lignesParFormateur.get(trainerId) ?? [];
