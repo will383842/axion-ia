@@ -58,6 +58,14 @@ const TAG_BYTES = 16;
  * mesuré, pas supposé. À faire dans un lot dédié, pas au détour d'un correctif.
  */
 export const PREFIX_V1 = "enc:v1:";
+/** Préfixe `v2` — à implémenter. */
+export const PREFIX_V2: string = "";
+
+/** Options du chiffrement `enc:v2:` (AAD facultative, clé exigée). À IMPLÉMENTER. */
+export interface OptionsChiffrementPii {
+  readonly aad?: string;
+  readonly cleExigee?: boolean;
+}
 
 // Lecture directe `process.env` (pas via `env` t3-validator) pour rester
 // compatible Vitest (t3-env throw "client-side detected" en test sans
@@ -77,7 +85,10 @@ function getKey(): Buffer | null {
  * des valeurs vides).
  */
 let warnedNoKey = false;
-export function encryptPii<T extends string | null | undefined>(plaintext: T): T {
+export function encryptPii<T extends string | null | undefined>(
+  plaintext: T,
+  _options?: OptionsChiffrementPii,
+): T {
   if (plaintext == null) return plaintext;
   if (plaintext === "") return plaintext;
   // Déjà chiffré : éviter double-encrypt (idempotent).
@@ -129,7 +140,10 @@ export function isDecryptedEmailUsable(value: string | null | undefined): boolea
  * Throw `Error` si tampering détecté (authentication tag fail) — caller doit
  * catch et logger une alerte sécu critique (potentielle compromission DB).
  */
-export function decryptPii<T extends string | null | undefined>(value: T): T {
+export function decryptPii<T extends string | null | undefined>(
+  value: T,
+  _options?: OptionsChiffrementPii,
+): T {
   if (value == null) return value;
   if (value === "") return value;
   if (typeof value !== "string") return value;
