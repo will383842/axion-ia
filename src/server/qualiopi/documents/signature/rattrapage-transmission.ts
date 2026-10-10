@@ -59,6 +59,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { allumageExemplaireCaptation } from "./interrupteur-captation";
 import { transmettreExemplaireSigne, type MotifNonTransmission } from "./transmission-exemplaire";
 
 /**
@@ -137,8 +138,28 @@ export async function rattraperExemplairesNonTransmis(
     where: { ...commun, updatedAt: { lte: limiteHaute, lt: SEUIL_RATTRAPAGE } },
   });
 
+  // 🔴 L'autorisation de captation n'entre au rattrapage qu'à partir de
+  // l'allumage de `signature.exemplaire_captation` : jamais l'historique. Une
+  // pièce qui porte une signature ANTÉRIEURE à l'allumage est écartée — elle
+  // reste remettable à la main (bouton #1008). Coupé : rien ne change ici, et
+  // le rendu refuse le consentement (`type_non_rendu`), comme sur `main`.
+  const allumageCaptation = await allumageExemplaireCaptation();
+  const horsHistoriqueCaptation =
+    allumageCaptation === null
+      ? {}
+      : {
+          NOT: {
+            type: "autorisation_captation" as const,
+            signatures: { some: { signeAt: { lt: allumageCaptation } } },
+          },
+        };
+
   const pieces = await prisma.documentGenere.findMany({
-    where: { ...commun, updatedAt: { lte: limiteHaute, gte: SEUIL_RATTRAPAGE } },
+    where: {
+      ...commun,
+      ...horsHistoriqueCaptation,
+      updatedAt: { lte: limiteHaute, gte: SEUIL_RATTRAPAGE },
+    },
     select: { id: true, numero: true },
     orderBy: { updatedAt: "asc" },
     take: PLAFOND_PAR_PASSAGE,

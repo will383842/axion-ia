@@ -58,7 +58,9 @@ import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
+import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
+import { allumageExemplaireCaptation } from "./interrupteur-captation";
 import {
   typeGabarit,
   versionGabaritCourante,
@@ -93,6 +95,13 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
   lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
   mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
+  // S6a (f) — le consentement du stagiaire est un circuit du SSOT depuis
+  // l'origine, et son template rend la preuve (`data.signatures.beneficiaire`).
+  // Il manquait ICI : sa remise rendait `type_non_rendu`, et la personne qui
+  // consentait ne recevait jamais l'exemplaire de son propre consentement.
+  // 🔴 Commandé par `signature.exemplaire_captation` (cf. `rendreExemplaireSigne`) :
+  // coupé, il rend toujours `type_non_rendu`, comme sur `main`.
+  autorisation_captation: AutorisationCaptationPdf as unknown as ComposantPiece,
 };
 
 /**
@@ -278,6 +287,11 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
   }
 
   if (COMPOSANTS[piece.type] === undefined) {
+    return { ok: false, raison: "type_non_rendu", message: MESSAGES.type_non_rendu };
+  }
+  // 🔴 Rendre le consentement, c'est l'envoyer : remise nominale ET rattrapage
+  // horaire. Interrupteur coupé (ou illisible) = comportement de `main`.
+  if (piece.type === "autorisation_captation" && (await allumageExemplaireCaptation()) === null) {
     return { ok: false, raison: "type_non_rendu", message: MESSAGES.type_non_rendu };
   }
 

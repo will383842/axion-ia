@@ -45,6 +45,9 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSignatureButton";
+import { ContresignerLotButton } from "@/components/admin/qualiopi/ContresignerLotButton";
+import { estContresignable } from "@/server/qualiopi/documents/signature/contresignables";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 import { RelancerQuestionnaireButton } from "@/components/admin/qualiopi/RelancerQuestionnaireButton";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
@@ -344,6 +347,21 @@ export default async function ATraiterPage({ params }: PageProps) {
             <Signature size={18} aria-hidden="true" className="shrink-0" />
             Signatures en attente <span className={pastille}>{signatures.length}</span>
           </h2>
+          {/* S6a (i) — ce qu'il ne reste qu'à l'organisme de signer, d'un geste. */}
+          {peutSignerPourOrganisme(role) && (
+            <ContresignerLotButton
+              ids={signatures
+                .filter(
+                  (s) =>
+                    s.statutSignature === "partielle" &&
+                    estContresignable(
+                      s.type,
+                      s.signatures.map((sig) => sig.partie),
+                    ),
+                )
+                .map((s) => s.id)}
+            />
+          )}
           <ul>
             {signatures.map((s) => {
               const label = TYPE_LABELS[s.type] ?? s.type;

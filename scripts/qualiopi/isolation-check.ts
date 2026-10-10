@@ -463,6 +463,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    (uuid). Il vit sous `tests/integration/`, seul dossier que lit
   //    `vitest.integration.config.ts` — pas sous `tests/qualiopi/`.
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
+  // ── Même calque pour les interrupteurs du socle de signature (S6a).
+  "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :

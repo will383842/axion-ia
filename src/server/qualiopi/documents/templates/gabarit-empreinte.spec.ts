@@ -68,6 +68,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   releve_connexion: "releve-connexion.tsx",
   lettre_mission: "lettre-mission.tsx",
   mandat_opco: "mandat-opco.tsx",
+  autorisation_captation: "autorisation-captation.tsx",
 };
 
 /**
@@ -132,6 +133,11 @@ const EMPREINTES: Readonly<
     // v1 — 04/10/2026 : premier texte (INT-T66-A), avec les trois ajouts de la juriste
     // (issue 656, commentaire 5981375404) intégrés AVANT toute émission : reste en v1.
     sha: "d1eb58ca3d70e5c0804503a505cc2f3bd1d541e9af3504da93d0525b9aca78ad",
+    version: 1,
+  },
+  autorisation_captation: {
+    // v1 — 10/10/2026 (S6a) : entrée dans la table, texte d'origine relevé tel quel.
+    sha: "6a15a48290dfd6fd336474e4148d41c46465b0a0c39a7b2523bb3e96e36bb687",
     version: 1,
   },
 };

@@ -21,6 +21,7 @@ const { tx, horsTx, etat } = vi.hoisted(() => {
     tx: {
       setting: {
         findMany: vi.fn(async () => etat.lignes),
+        findUnique: vi.fn(async () => null),
         upsert: vi.fn(async () => ({})),
       },
       activityLog: { create: vi.fn(async () => ({})) },
@@ -45,6 +46,7 @@ import {
   basculerFormateursPassagePaiementAction,
   basculerFormateursRelancesAutoAction,
   basculerFormateursTextesValidesAction,
+  basculerSignatureAlertesHorsJetonAction,
 } from "../formateurs-interrupteurs";
 
 const INITIAL = { ok: true as const, message: "" };
@@ -188,6 +190,27 @@ describe("constaté en prod le 2026-10-10 — « Allumer » cassait la page", ()
     connecte("super_admin");
     tx.activityLog.create.mockRejectedValueOnce(new Error("P2023 Inconsistent column data"));
     const r = await basculerFormateursEchangeOuvertAction(INITIAL, fd({ actif: "1" }));
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error).toMatch(/n'a pas été enregistré/);
+  });
+});
+
+describe("interrupteurs `signature.*` (S6a) — même règle", () => {
+  it("le journal ne met pas la clé texte dans `targetId` (colonne `uuid`)", async () => {
+    connecte("super_admin");
+    await basculerSignatureAlertesHorsJetonAction(INITIAL, fd({ actif: "1" }));
+    const data = (tx.activityLog.create.mock.calls[0] as unknown as [{ data: object }])[0].data;
+    expect(data).not.toHaveProperty("targetId");
+    expect(data).toMatchObject({
+      targetType: "setting",
+      changes: { cle: "signature.alertes_hors_jeton", avant: false, apres: true },
+    });
+  });
+
+  it("une erreur de la base devient un message à l'écran, jamais une page cassée", async () => {
+    connecte("super_admin");
+    tx.activityLog.create.mockRejectedValueOnce(new Error("P2023 Inconsistent column data"));
+    const r = await basculerSignatureAlertesHorsJetonAction(INITIAL, fd({ actif: "1" }));
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.error).toMatch(/n'a pas été enregistré/);
   });
