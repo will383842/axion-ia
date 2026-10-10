@@ -176,3 +176,94 @@ describe("garde et anti-doublon", () => {
     expect(majCandidature).not.toHaveBeenCalled();
   });
 });
+
+// 🔴 Correction U6 — la forme de l'entrée du prédicat U2. Le prédicat de `main`
+// lit l'offre IMBRIQUÉE (`offer.slug`, `offer.employmentType`). Un appelant qui
+// lui passerait l'ancienne forme PLATE (`offerSlug`, `employmentType`) serait
+// lu comme une candidature SANS offre : la règle du slug et celle du
+// CONTRACTOR cesseraient de compter, sans aucune erreur. Ces tests passent par
+// la VRAIE action et le VRAI prédicat (aucun mock de règle) : ils rougissent
+// dès qu'un maillon reprend la forme plate.
+describe("forme de l'entrée du prédicat U2 (offre imbriquée)", () => {
+  it("offre de formateur CONTRACTOR, intitulé sans « freelance » → sous_traitant", async () => {
+    candidature = {
+      ...candidature,
+      offerTitleSnap: "Formateur IA — missions en région",
+      offer: {
+        slug: "formateur-ia-missions",
+        titleFr: "Formateur IA — missions en région",
+        employmentType: "CONTRACTOR",
+        secondaryEmploymentType: null,
+      },
+    };
+    const r = await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    expect(r).toMatchObject({ ok: true, trainerId: TRAINER_ID });
+    expect(argumentsCreation()).toMatchObject({ statut: "sous_traitant", actif: false });
+  });
+
+  it("slug `formateur-ia-freelance`, intitulé et titre muets → sous_traitant", async () => {
+    candidature = {
+      ...candidature,
+      offerTitleSnap: "Formateur IA",
+      offer: {
+        slug: "formateur-ia-freelance",
+        titleFr: "Formateur IA",
+        employmentType: "FULL_TIME",
+        secondaryEmploymentType: null,
+      },
+    };
+    const r = await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    expect(r).toMatchObject({ ok: true });
+    expect(argumentsCreation()).toMatchObject({ statut: "sous_traitant", actif: false });
+  });
+
+  it("la lecture Prisma sélectionne l'offre imbriquée que le prédicat lit", async () => {
+    await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    const lecture = lireCandidature.mock.calls[0]?.[0] as {
+      select: { offerTitleSnap?: boolean; offer?: { select: Record<string, boolean> } };
+    };
+    expect(lecture.select.offerTitleSnap).toBe(true);
+    expect(lecture.select.offer?.select).toMatchObject({
+      slug: true,
+      titleFr: true,
+      employmentType: true,
+      secondaryEmploymentType: true,
+    });
+  });
+});
+
+// 🔴 Correction U6 — garde SERVEUR et données personnelles. Le bouton est
+// masqué aux autres rôles, mais l'action est un point d'entrée réseau : elle
+// doit refuser d'elle-même, et ne rien écrire de personnel en clair dans un
+// journal.
+describe("garde serveur et journal sans donnée personnelle", () => {
+  it.each(["editor", "secretaire", "responsable_qualite", "formateur", "viewer"])(
+    "le rôle « %s » est refusé, sans lecture ni écriture",
+    async (role) => {
+      session = { user: { id: "u-x", role, name: "X" } };
+      const r = await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+      expect(r).toMatchObject({ ok: false, erreur: "non-autorise" });
+      expect(lireCandidature).not.toHaveBeenCalled();
+      expect(creerFormateur).not.toHaveBeenCalled();
+      expect(lier).not.toHaveBeenCalled();
+      expect(journalConsole).not.toHaveBeenCalled();
+      expect(evenement).not.toHaveBeenCalled();
+    },
+  );
+
+  it("sans session : refusé", async () => {
+    session = null;
+    const r = await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    expect(r).toMatchObject({ ok: false, erreur: "non-autorise" });
+    expect(creerFormateur).not.toHaveBeenCalled();
+  });
+
+  it("création puis rattachement : ni nom, ni e-mail, ni téléphone dans les traces", async () => {
+    await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    formateurExistant = { id: EXISTANT_ID };
+    candidature = { ...candidature, id: APP_ID };
+    await creerFicheFormateurDepuisCandidatureAction({ applicationId: APP_ID });
+    const traces = JSON.stringify([...journalConsole.mock.calls, ...evenement.mock.calls]);
+    expect(traces).not.toMatch(/Alex|Exemple|alex@example\.com|0600000000/);
+  });
+});
