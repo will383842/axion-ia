@@ -162,7 +162,7 @@ describe("logQualiopiActivity — A-02 RGPD : hachage IP", () => {
     await logQualiopiActivity({
       action: "qualiopi.formation.publish",
       targetType: "Formation",
-      targetId: "form-uuid-1",
+      targetId: "3f2a9c1e-7b4d-4e8a-9f0c-1d2e3f4a5b6c",
       changes: { slug: "ma-formation" },
       session: SESSION,
     });
@@ -173,6 +173,6 @@ describe("logQualiopiActivity — A-02 RGPD : hachage IP", () => {
     expect(createCall.data.action).toBe("qualiopi.formation.publish");
     expect(createCall.data.adminUserId).toBe("admin-uuid-1");
     expect(createCall.data.targetType).toBe("Formation");
-    expect(createCall.data.targetId).toBe("form-uuid-1");
+    expect(createCall.data.targetId).toBe("3f2a9c1e-7b4d-4e8a-9f0c-1d2e3f4a5b6c");
   });
 });

@@ -39,7 +39,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { hashIp } from "@/lib/security/ip-hash";
-import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibles";
+import { donneesJournal, journaliser, type ContexteJournal } from "@/server/journal/journaliser";
 import {
   requireAdminRead,
   requireAdminWrite,
@@ -138,35 +138,22 @@ export async function donneesJournalQualiopi(input: QualiopiActivityInput): Prom
   ipAddress: string | null;
   userAgent: string | null;
 }> {
+  // Construction et filtre (FAC-8 : à toute profondeur) vivent dans le journal
+  // unique ; l'auteur, ici, est toujours une session admin.
+  const data = donneesJournal(input, await contexteRequete());
+  return { ...data, adminUserId: input.session.userId };
+}
+
+/** Contexte de la requête en cours (IP hachée, user-agent), pour le journal. */
+async function contexteRequete(): Promise<ContexteJournal> {
   const h = await headers();
   // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
   // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
-  const rawIp = ipVisiteurOuNull(h);
   // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
-  const ipAddress = hashIp(rawIp);
-  const userAgent = h.get("user-agent") || null;
-  return {
-    adminUserId: input.session.userId,
-    action: input.action.slice(0, 120),
-    targetType: (input.targetType ?? "qualiopi").slice(0, 80),
-    targetId: input.targetId ?? null,
-    // Données bancaires et personnelles jamais en clair dans le journal : la
-    // trace dit QU'un IBAN ou un e-mail a changé, pas lesquels.
-    changes: masquerDonneesSensibles(input.changes ?? null) as never,
-    ipAddress: ipAddress?.slice(0, 64) ?? null,
-    userAgent: userAgent?.slice(0, 2000) ?? null,
-  };
+  return { ipAddress: hashIp(ipVisiteurOuNull(h)), userAgent: h.get("user-agent") || null };
 }
 
 export async function logQualiopiActivity(input: QualiopiActivityInput): Promise<void> {
-  try {
-    await prisma.activityLog.create({ data: await donneesJournalQualiopi(input) });
-  } catch (err) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        "[qualiopi-activity-log] persist failed (best-effort):",
-        err instanceof Error ? err.message : String(err),
-      );
-    }
-  }
+  // Délègue au journal unique, avec sa tolérance (best-effort, fail-silent).
+  await journaliser(prisma, input, { contexte: contexteRequete });
 }
