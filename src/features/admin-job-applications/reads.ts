@@ -25,6 +25,7 @@
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
+import { libelleCanal } from "@/lib/careers/provenance";
 import { getClientIp } from "@/lib/client-ip";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -101,6 +102,16 @@ export const listApplicationsSchema = z.object({
   ),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(50),
+  /**
+   * L8b — l'ONGLET de la liste (Monteurs, Formateurs, Autres offres) : les
+   * offres qu'il couvre (`offerIdIn`) ou celles qu'il écarte (`offerIdNotIn`).
+   * ⚠️ `NOT IN` écarte aussi les candidatures sans offre (`NULL`), ce qui est
+   * voulu : elles ont leur onglet « Spontanées ».
+   */
+  offerIdIn: z.array(z.string().uuid()).max(500).optional(),
+  offerIdNotIn: z.array(z.string().uuid()).max(500).optional(),
+  /** L8b — tri par date : la plus récente d'abord (défaut) ou la plus ancienne. */
+  tri: z.enum(["recent", "ancien"]).default("recent"),
 });
 
 export type ListApplicationsInput = z.infer<typeof listApplicationsSchema>;
@@ -133,6 +144,10 @@ export interface JobApplicationListItem {
   hasCv: boolean;
   needsAttention: boolean;
   submittedAt: Date;
+  /** L8b — la ville déclarée ; `null` sans droit d'ouvrir le dossier. */
+  ville?: string | null;
+  /** L8b — d'où vient la candidature (`utm_source`, sinon « inconnue »). */
+  origine?: string;
 }
 
 export interface JobApplicationListResult {
@@ -221,6 +236,8 @@ export function construireFiltreCandidatures(input: Partial<ListApplicationsInpu
   // ligne, la colonne étant un UUID.
   if (parsed.offerId === AUCUNE_OFFRE_ID) where.offerId = null;
   else if (parsed.offerId) where.offerId = parsed.offerId;
+  else if (parsed.offerIdIn) where.offerId = { in: parsed.offerIdIn };
+  else if (parsed.offerIdNotIn) where.offerId = { notIn: parsed.offerIdNotIn };
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
   if (parsed.view === "monteur") {
@@ -279,6 +296,8 @@ export async function listApplications(
     cvStoragePath: true,
     needsAttention: true,
     submittedAt: true,
+    city: true,
+    utmSource: true,
   } as const;
 
   // ── DEUX CHEMINS, ET LE SECOND N'EST PAS UN LUXE ──────────────────────────
@@ -333,10 +352,13 @@ export async function listApplications(
     // (`admin-inbox/queries.ts`) et les vues mono-offre (`monteur`, `standard`,
     // lien depuis une fiche d'offre) veulent la chronologie pure — leur
     // comportement ne bouge pas d'un octet.
-    const trierParOffre = parsed.view === "all" && !parsed.offerId;
+    // L8b — un ONGLET (`offerIdIn`/`offerIdNotIn`) se lit chronologiquement,
+    // comme la maquette : le tri par offre ne vaut que pour la liste entière.
+    const trierParOffre =
+      parsed.view === "all" && !parsed.offerId && !parsed.offerIdIn && !parsed.offerIdNotIn;
     const orderBy = trierParOffre
       ? [{ offerTitleSnap: "asc" as const }, { submittedAt: "desc" as const }]
-      : [{ submittedAt: "desc" as const }];
+      : [{ submittedAt: parsed.tri === "ancien" ? ("asc" as const) : ("desc" as const) }];
     const [compte, page] = await Promise.all([
       prisma.jobApplication.count({ where }),
       prisma.jobApplication.findMany({
@@ -370,6 +392,8 @@ export async function listApplications(
     hasCv: ouvert ? Boolean(r.cvStoragePath) : false,
     needsAttention: r.needsAttention,
     submittedAt: r.submittedAt,
+    ville: ouvert && r.city ? safeDecrypt(r.city) : null,
+    origine: libelleCanal(r.utmSource),
   }));
 
   // ── LA TRACE — ce qui rend l'accès défendable ─────────────────────────────

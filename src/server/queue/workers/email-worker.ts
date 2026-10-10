@@ -478,12 +478,33 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
     return;
   }
 
+  // 🔒 L6 (Candidatures unifiées) — une réponse à un futur apporteur peut
+  // porter un lien privé (kit, présentation). Même règle que
+  // `handleCandidatureReponse` : la base ne porte que l'adresse MASQUÉE, le
+  // jeton n'est remis qu'ici. Sans lien ni marqueur (toute autre réponse), le
+  // corps passe tel quel — c'est ce qui rend ce worker compatible avec une app
+  // plus ancienne pendant la fenêtre de déploiement.
+  // Table pas encore migrée (worker en avance sur l'app) : cf. `lienDeLaReponse`.
+  const lien = await lienDeLaReponse({ reponseId: reply.id });
+  const corps = devoilerLienPrive({ html: reply.bodyHtml, text: reply.bodyText }, lien?.id ?? null);
+  if (!corps.ok) {
+    await prisma.submissionReply.update({
+      where: { id: reply.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: `lien privé : ${corps.raison}`,
+      },
+    });
+    return;
+  }
+
   try {
     const result = await sendEmail({
       to,
       subject: reply.subject,
-      html: reply.bodyHtml,
-      text: reply.bodyText,
+      html: corps.html,
+      text: corps.text,
       replyTo,
     });
     const now = new Date();

@@ -121,16 +121,7 @@ export const MODELES_REPONSE: readonly ModeleReponse[] = [
 ];
 
 /**
- * Substitue les variables d'un modèle.
- *
- * 🔑 Une variable inconnue est LAISSÉE TELLE QUELLE, accolades comprises. Un
- * remplacement par une chaîne vide produirait « Bonjour , » — une phrase
- * grammaticalement correcte, donc invisible à la relecture, qui partirait telle
- * quelle. Un `{prenom}` resté à l'écran se voit et se corrige.
+ * Substitue les variables d'un modèle — la règle vit dans `content/modeles/remplir.ts`,
+ * partagée avec les modèles du réseau d'apporteurs. Réexportée ici pour les appelants.
  */
-export function remplirModele(texte: string, valeurs: Record<string, string | null>): string {
-  return texte.replace(/\{(\w+)\}/g, (entier, cle: string) => {
-    const valeur = valeurs[cle];
-    return valeur != null && valeur.trim().length > 0 ? valeur : entier;
-  });
-}
+export { remplirModele } from "@/content/modeles/remplir";

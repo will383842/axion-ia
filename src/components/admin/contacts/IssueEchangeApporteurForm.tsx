@@ -160,7 +160,7 @@ export function IssueEchangeApporteurForm({
       </div>
       {peutRetenir ? null : (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          « Retenu » ouvre un contrat : il est réservé à l&apos;administrateur.
+          « On poursuit » ouvre un contrat : il est réservé à l&apos;administrateur.
         </p>
       )}
 
@@ -347,7 +347,7 @@ export function IssueEchangeApporteurForm({
                     onClick={() => choisir("non_retenu")}
                     disabled={occupe}
                   >
-                    Plutôt : Non retenu
+                    Plutôt : Sans suite
                   </button>
                 ) : null}
               </div>

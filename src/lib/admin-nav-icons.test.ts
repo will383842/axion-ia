@@ -83,8 +83,9 @@ describe("registre d'icônes nav admin (NAV_ICONS)", () => {
 
     expect(icone("Newsletter")).toBeDefined();
     expect(icone("Newsletter")).not.toBe("Mail");
-    expect(icone("Offres d'emploi")).toBeDefined();
-    expect(icone("Offres d'emploi")).not.toBe("Briefcase");
+    // L8e : « Offres d'emploi » s'appelle désormais « Offres publiées ».
+    expect(icone("Offres publiées")).toBeDefined();
+    expect(icone("Offres publiées")).not.toBe("Briefcase");
 
     const reseau = icone("Réseau de partenaires");
     expect(reseau).toBeDefined();

@@ -42,7 +42,9 @@ const NAVIGATION = { waitUntil: "domcontentloaded", timeout: 120_000 } as const;
  * écran qui en porte soixante. Leçon déjà payée deux fois dans ce dépôt.
  */
 export async function adressesDesFichesCandidature(page: Page): Promise<string[]> {
-  await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
+  // L8b : sans `?vue=`, la liste s'ouvre sur « Monteurs & vidéastes », vide en
+  // recette ; le socle pose ses candidatures sur des offres « Autres offres ».
+  await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures?vue=autres`, NAVIGATION);
   const liens = page.getByRole("link", { name: /détail/i });
   await liens.first().waitFor({ state: "visible", timeout: 60_000 });
 

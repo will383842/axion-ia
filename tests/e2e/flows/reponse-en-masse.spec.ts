@@ -43,7 +43,9 @@ import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
 // (Argon2id), et sous `next dev` la PREMIÈRE navigation vers chaque route la
 // COMPILE — 15 s à 3 min sur un poste chargé.
 
-const CHEMIN = `/fr/${ADMIN_PREFIX}/contacts/candidatures?view=standard`;
+// L8b : sans `?vue=`, la liste s'ouvre sur « Monteurs & vidéastes », vide en
+// recette ; le socle pose ses candidatures sur des offres « Autres offres ».
+const CHEMIN = `/fr/${ADMIN_PREFIX}/contacts/candidatures?view=standard&vue=autres`;
 
 /** Coche les `n` premières lignes emploi, et rend leur nombre réel. */
 async function cocher(page: Page, n: number): Promise<number> {

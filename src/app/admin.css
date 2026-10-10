@@ -2982,3 +2982,178 @@ a.admin-card-inline {
   align-items: center;
   gap: var(--space-admin-2, 8px);
 }
+
+/* ---------------------------------------------------------------------------
+ * .admin-fil — LE FIL « ÉCHANGES » D'UNE FICHE (Candidatures unifiées L7,
+ * maquette v2 validée le 2026-10-07).
+ *
+ * « Reçu » à gauche, « Envoyé » à droite, les notes au centre. Classes hors
+ * couche, comme le reste de ce fichier : aucune utilitaire Tailwind n'est posée
+ * sur ces éléments (elle serait inerte, cf. admin-design-tokens.test.ts).
+ * À 390 px, les bulles prennent toute la largeur moins un retrait de 12 % du
+ * côté opposé : le sens reste lisible sans faire défiler.
+ * Écrites DANS `@layer components` (garde `marge-posee-a-cote-d-une-classe-admin`) :
+ * une règle de plus hors couche serait un endroit de plus où une utilitaire
+ * serait inerte.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .admin-fil {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-admin-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .admin-fil-bulle {
+    max-width: min(36rem, 88%);
+    padding: var(--space-admin-4) var(--space-admin-5);
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-lg);
+    font-size: var(--text-admin-sm);
+    line-height: var(--lh-admin-body);
+    overflow-wrap: anywhere;
+  }
+  .admin-fil-bulle-recu {
+    align-self: flex-start;
+    background-color: var(--color-admin-paper-alt);
+    border-left: 3px solid var(--color-admin-info);
+  }
+  .admin-fil-bulle-envoye {
+    align-self: flex-end;
+    background-color: var(--color-admin-paper);
+    border-right: 3px solid var(--color-admin-accent);
+  }
+  .admin-fil-note {
+    align-self: center;
+    max-width: min(32rem, 100%);
+    padding: var(--space-admin-3) var(--space-admin-5);
+    border-radius: var(--radius-admin-pill);
+    background-color: var(--color-admin-neutral-soft);
+    color: var(--color-admin-fg-soft);
+    font-size: var(--text-admin-xs);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .admin-fil-tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-admin-2) var(--space-admin-3);
+  }
+  .admin-fil-titre {
+    font-weight: 600;
+  }
+  .admin-fil-texte {
+    margin: var(--space-admin-2) 0 0;
+    white-space: pre-wrap;
+  }
+  .admin-fil-fichiers {
+    margin: var(--space-admin-3) 0 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-md);
+    overflow: hidden;
+  }
+  .admin-fil-fichiers > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-admin-2) var(--space-admin-4);
+    padding: var(--space-admin-3) var(--space-admin-5);
+    background-color: var(--color-admin-paper-alt);
+  }
+  .admin-fil-fichiers > li + li {
+    border-top: 1px solid var(--color-admin-border);
+  }
+  .admin-fil-fichier-nom {
+    font-weight: 600;
+    word-break: break-all;
+  }
+  /* Lien d'une bulle (« Ouvrir dans Zoho ») : cible tactile de 44 px. */
+  .admin-fil-lien {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-admin-min-mobile);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * .admin-etapes — la barre d'étapes d'une fiche, et la pastille d'une liste
+ * (Candidatures unifiées L8a). Sur téléphone, la barre DÉFILE (comme les
+ * tableaux de la console) : elle ne se replie jamais en colonne.
+ * Dans `@layer components`, comme le fil.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .admin-pastille-etape {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-admin-1);
+  }
+  .admin-etapes {
+    display: flex;
+    gap: var(--space-admin-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .admin-etapes-pas {
+    flex-shrink: 0;
+    padding: var(--space-admin-2) var(--space-admin-5);
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-pill);
+    background-color: var(--color-admin-paper);
+    color: var(--color-admin-fg-muted);
+    font-size: var(--text-admin-xs);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .admin-etapes-faite {
+    background-color: var(--color-admin-success-soft);
+    border-color: transparent;
+    color: var(--color-admin-success-fg);
+  }
+  .admin-etapes-courante {
+    background-color: var(--color-admin-accent);
+    border-color: transparent;
+    color: var(--color-admin-accent-fg);
+    font-weight: 600;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * .admin-tuiles — les tuiles « Ses prix » de la fiche emploi (Candidatures
+ * unifiées L8c, maquette v2) : le libellé, le montant en grand, le rang parmi
+ * les autres candidats de l'offre. Dans `@layer components`, comme le fil.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .admin-tuiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-admin-5);
+    margin-bottom: var(--space-admin-5);
+  }
+  .admin-tuile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-admin-2);
+    padding: var(--space-admin-5);
+    border: 1px solid var(--color-admin-border);
+    border-radius: var(--radius-admin-lg);
+    background-color: var(--color-admin-paper-alt);
+  }
+  .admin-tuile-libelle {
+    font-size: var(--text-admin-sm);
+    font-weight: 500;
+    color: var(--color-admin-fg-soft);
+  }
+  .admin-tuile-valeur {
+    font-size: var(--text-admin-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}

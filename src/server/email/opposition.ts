@@ -32,6 +32,7 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { syncNewsletterOptOutToCrm } from "@/server/crm-sync";
+import { MOTIF_RETRAIT } from "@/server/partages/liens";
 import { lireJetonOpposition, normaliserAdresse } from "./opposition-jeton";
 
 function estStub(): boolean {
@@ -69,6 +70,29 @@ async function annulerEnvoisProgrammes(email: string): Promise<void> {
     );
   } catch (e) {
     Sentry.captureException(e, { tags: { module: "email-opposition", step: "annuler-relances" } });
+  }
+}
+
+/**
+ * L6 (Candidatures unifiées) — une opposition FERME les liens privés encore
+ * ouverts envoyés à cette personne côté réseau d'apporteurs (kit,
+ * présentation). Elle a dit ne plus vouloir être sollicitée : un lien qui
+ * continuerait de servir nos documents serait une sollicitation qui dure.
+ *
+ * Par l'EMPREINTE de la fiche (`Submission.contactEmailHash`), jamais par
+ * l'adresse : les colonnes d'identité sont chiffrées. Best-effort, comme le
+ * retrait des envois programmés : l'opposition est acquise même si ce retrait
+ * échoue. Les liens d'une candidature à un emploi ne sont pas touchés (ils
+ * relèvent de la décision sur la candidature, `MOTIF_RETRAIT.decision`).
+ */
+async function retirerLiensApporteur(emailHash: string): Promise<void> {
+  try {
+    await prisma.lienPartage.updateMany({
+      where: { revoqueLe: null, submission: { contactEmailHash: emailHash } },
+      data: { revoqueLe: new Date(), motifRetrait: MOTIF_RETRAIT.opposition },
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { module: "email-opposition", step: "retirer-liens" } });
   }
 }
 
@@ -123,6 +147,7 @@ export async function enregistrerOppositionPourAdresse(
       // Un second clic rattrape aussi un envoi resté en file (opposition
       // antérieure à ce correctif, ou file indisponible au premier clic).
       await annulerEnvoisProgrammes(email);
+      await retirerLiensApporteur(emailHash);
       return { ok: true, email, dejaOpposee: true };
     }
 
@@ -145,6 +170,7 @@ export async function enregistrerOppositionPourAdresse(
     });
 
     await annulerEnvoisProgrammes(email);
+    await retirerLiensApporteur(emailHash);
 
     return { ok: true, email, dejaOpposee: false };
   } catch (e) {

@@ -29,11 +29,14 @@ export interface Etat {
   prixMax: string;
   ville: string;
   etape: string;
+  /** L8b — l'onglet de la liste qui porte ce panneau (`?vue=monteurs`). */
+  vue?: string;
 }
 
 export function hrefAvec(chemin: string, etat: Etat, change: Partial<Etat>): string {
   const e = { ...etat, ...change };
   const p = new URLSearchParams();
+  if (e.vue) p.set("vue", e.vue);
   if (e.tri) p.set("tri", e.tri);
   if (e.sens === "desc") p.set("sens", "desc");
   if (e.prixMax) p.set("prixMax", e.prixMax);
@@ -293,6 +296,7 @@ export function Filtres({ etat, chemin, ouvert }: { etat: Etat; chemin: string; 
       className="mb-[var(--space-admin-5)] flex flex-wrap items-end gap-3"
       aria-label="Filtrer les candidatures"
     >
+      {etat.vue ? <input type="hidden" name="vue" value={etat.vue} /> : null}
       {etat.tri ? <input type="hidden" name="tri" value={etat.tri} /> : null}
       {etat.sens === "desc" ? <input type="hidden" name="sens" value="desc" /> : null}
       {ouvert ? (

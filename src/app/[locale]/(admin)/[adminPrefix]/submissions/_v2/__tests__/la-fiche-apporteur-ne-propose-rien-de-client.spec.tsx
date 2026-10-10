@@ -58,11 +58,17 @@ vi.mock("@/components/admin/contacts/BlocInvitationApporteur", () => ({
 vi.mock("@/components/admin/contacts/RendezVousApporteur", () => ({
   RendezVousApporteur: () => null,
 }));
-// Même cause, troisième voisin (2026-09-27) : les réponses reçues par e-mail
-// sont lues par un composant SERVEUR asynchrone.
-vi.mock("@/components/admin/contacts/ReponsesRecuesApporteur", () => ({
-  ReponsesRecuesApporteur: () => null,
+// L7 — les réponses reçues et envoyées vivent désormais dans le fil
+// « Échanges », lu par la page : la lecture est simulée vide.
+vi.mock("@/features/echanges/lire-fil", () => ({
+  lireFilApporteur: () => Promise.resolve([]),
 }));
+// L6 — le composeur unique côté réseau est un composant CLIENT (`useRouter`) ;
+// ses tests vivent à côté de lui. Bibliothèque éteinte ici.
+vi.mock("@/components/admin/contacts/ComposerReponseApporteur", () => ({
+  ComposerReponseApporteur: () => null,
+}));
+vi.mock("@/server/partages/config", () => ({ partagesActifs: () => false }));
 // Les gestes de la fiche, eux, sont un composant CLIENT : ils appellent
 // `useRouter`, que ce fichier ne fournit pas (son mock de `next/navigation` ne
 // porte que `notFound` et `redirect`). Leurs tests vivent a cote d'eux.

@@ -469,7 +469,7 @@ function formatBody(event: NotificationEvent): string {
         p.plafondAtteint
           ? formatKV("⚠️ Examen tronqué", "le plafond a été atteint, d'autres dossiers attendent")
           : null,
-        formatKV("Ouvrir", `${SITE_URL}${adminPath("fr", "contacts/candidatures/pilotage")}`),
+        formatKV("Ouvrir", `${SITE_URL}${adminPath("fr", "contacts/candidatures")}`),
         formatKV(
           "Règle",
           "aucun statut n'a été changé et aucun message n'est parti — répondre reste un geste humain",

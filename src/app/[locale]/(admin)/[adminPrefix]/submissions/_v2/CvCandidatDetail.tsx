@@ -112,8 +112,18 @@ export function CvCandidatDetail({ cv, cvHref }: { cv: CvCandidat; cvHref: strin
         <h2 className="admin-h2">CV</h2>
         {fichier ? (
           <p className="text-[length:var(--text-admin-base)]">
-            <a href={cvHref} className="admin-link">
-              Télécharger le CV ({fichier.nomOriginal}
+            {/* L8d — « Lire ici » : un PDF s'ouvre dans le navigateur. */}
+            <a
+              href={`${cvHref}?lire=1`}
+              target="_blank"
+              rel="noopener"
+              className="admin-link admin-fil-lien"
+            >
+              Lire ici
+            </a>
+            {" · "}
+            <a href={cvHref} className="admin-link admin-fil-lien">
+              Télécharger ({fichier.nomOriginal}
               {tailleLisible(fichier.tailleOctets)})
             </a>
           </p>

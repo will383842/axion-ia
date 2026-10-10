@@ -9,19 +9,16 @@
 //    « apporteurs » (les deux clés du prédicat unique `estApporteur`) s'ajoute
 //    désormais à la catégorie ; les autres « recrutement » vont dans Autres.
 
-import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
+import { ListeFutursApporteurs } from "./_composants/ListeFutursApporteurs";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
-// Filtre forcé : seules les candidatures recrutement (commerciaux). Passe par
-// `forcedTypes` (comme /contacts/clients), PAS par un `unifiedType` écrasé
-// dans `sp` — sinon le sélecteur « Catégorie » choisit une valeur que la
-// query ignore (audit UX : filtre affiché mais inopérant).
-//
-// La catégorie reste : elle masque le sélecteur « Catégorie », sans objet ici.
-// Le périmètre, lui, restreint aux apporteurs sans écraser ce filtre.
-const COMMERCIAL_TYPES = ["recrutement"] as const;
+// L8d (Candidatures unifiées, 2026-10-09) — la liste a son propre écran,
+// conforme à la maquette v2 (`ListeFutursApporteurs`) : même périmètre
+// (catégorie « recrutement » + les deux clés de `estApporteur`), mêmes onglets
+// et même archivage automatique (la PR 1358). `SubmissionsV2` reste celui des
+// autres types de messages.
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
@@ -42,14 +39,5 @@ export default async function ContactsCommercialPage({ params, searchParams }: P
   await gardePage("consultation", `/fr/${adminPrefix}/login`);
 
   const sp = await searchParams;
-  return (
-    <SubmissionsV2
-      adminPrefix={adminPrefix}
-      searchParams={sp}
-      basePath="contacts/commercial"
-      forcedTypes={COMMERCIAL_TYPES}
-      perimetre="apporteurs"
-      title="Apporteurs"
-    />
-  );
+  return <ListeFutursApporteurs adminPrefix={adminPrefix} searchParams={sp} />;
 }

@@ -207,10 +207,13 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   contacts: "Contacts & demandes",
   // Le pipeline apporteurs (candidature, kit, invitation, échange, contrat),
   // avec les deux écrans qui disent d'où ils viennent — sortis de « Ops ».
-  apporteurs: "Apporteurs d'affaires",
+  // L8e (Candidatures unifiées, 2026-10-09) : nommés comme la maquette v2 —
+  // « Réseau d'apporteurs » et « Candidatures », deux groupes DISTINCTS
+  // (contrainte juridique : jamais un groupe commun aux deux mondes).
+  apporteurs: "Réseau d'apporteurs",
   // Les candidatures aux offres d'emploi publiées. Distinct des apporteurs :
   // « Candidatures » seul se lisait des deux façons.
-  recrutement: "Recrutement salariés",
+  recrutement: "Candidatures",
   // Imprimés et QR étaient rangés dans « Ops & monitoring », entre les alertes
   // et la synchro CRM : du matériel commercial, pas de l'exploitation.
   imprimes: "Imprimés & QR",
@@ -694,7 +697,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // Messages, et la garde réciproque range sa route parmi les sous-écrans.
     {
       href: `${base}/contacts/commercial`,
-      label: "Candidats apporteurs",
+      label: "Futurs apporteurs",
       icon: "UserSearch",
       group: "apporteurs",
       navLevel: 0,
@@ -704,7 +707,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // commissions, en attendant Axion Partners.
     {
       href: `${base}/apporteurs`,
-      label: "Apporteurs",
+      label: "Apporteurs signés",
       icon: "Handshake",
       group: "apporteurs",
       navLevel: 0,
@@ -718,7 +721,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/apporteurs/commissions`,
-      label: "Commissions apporteurs",
+      label: "Commissions",
       icon: "Coins",
       group: "apporteurs",
       navLevel: 0,
@@ -726,7 +729,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
-      label: "Candidatures emploi",
+      label: "Candidatures",
       icon: "UserPlus",
       group: "recrutement",
       navLevel: 0,
@@ -755,17 +758,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // colonnes. Ce n'est pas l'onglet « Monteur vidéo » retiré le 2026-09-23
     // (une liste de noms, comme les autres) : c'est la seule vue qui compare des
     // prix sans ouvrir chaque fiche.
+    // L8e (2026-10-09) — « Monteurs & vidéastes » et « Suivi des
+    // candidatures » QUITTENT le menu : le premier est devenu l'onglet de la
+    // liste (`?vue=monteurs`), le second se lit en tête de liste (dossier le
+    // plus ancien sans réponse). Leurs adresses REDIRIGENT vers la liste.
+    //
+    // La bibliothèque de fichiers (L4) entre au menu : c'est là qu'on dépose
+    // ce qu'on envoie aux candidats et aux futurs apporteurs.
     {
-      href: `${base}/contacts/candidatures/video`,
-      label: "Monteurs & vidéastes",
-      icon: "Clapperboard",
-      group: "recrutement",
-      navLevel: 1,
-    },
-    {
-      href: `${base}/contacts/candidatures/pilotage`,
-      label: "Suivi des candidatures",
-      icon: "Gauge",
+      href: `${base}/contacts/candidatures/bibliotheque`,
+      label: "Bibliothèque de fichiers",
+      icon: "FolderOpen",
       group: "recrutement",
       navLevel: 1,
     },
@@ -775,7 +778,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // bouge pas. Pas `Briefcase` : « Demandes clients » le porte dans ce groupe.
     {
       href: `${base}/offres-emploi`,
-      label: "Offres d'emploi",
+      label: "Offres publiées",
       icon: "FileUser",
       group: "recrutement",
       navLevel: 1,
@@ -1928,7 +1931,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //    après « Candidats apporteurs », déclaré plus haut.
     {
       href: `${base}/annonces`,
-      label: "Provenance des annonces",
+      label: "Annonces",
       icon: "Megaphone",
       group: "apporteurs",
     },
