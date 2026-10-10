@@ -58,6 +58,7 @@ import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
+import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 import {
   typeGabarit,
@@ -93,6 +94,11 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
   lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
   mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
+  // S6a (f) — le consentement du stagiaire est un circuit du SSOT depuis
+  // l'origine, et son template rend la preuve (`data.signatures.beneficiaire`).
+  // Il manquait ICI : sa remise rendait `type_non_rendu`, et la personne qui
+  // consentait ne recevait jamais l'exemplaire de son propre consentement.
+  autorisation_captation: AutorisationCaptationPdf as unknown as ComposantPiece,
 };
 
 /**
