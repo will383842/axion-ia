@@ -9,8 +9,22 @@
 // dans `features/commercial-application/relance-invitation-etat.ts`, le passage
 // quotidien dans `relances-invitation-apporteur.ts`.
 //
-// ⚠️ Il entre dans le graphe du worker d'e-mails (par le module d'état) : aucun
-// import, et il doit le rester.
+// ⚠️ Il entre dans le graphe du worker d'e-mails (par le module d'état) : il
+// n'importe que le moteur commun des campagnes, PUR lui aussi, et doit le rester.
+//
+// CAMP-0a (ADR 0066 § g) : `motifBloquant`, `decisionRelance` et
+// `jobIdRelanceInvitation` sont des ENVELOPPES au-dessus du moteur commun
+// (`lib/relances/campagne.ts`), à comportement identique — mêmes signatures,
+// mêmes constantes, mêmes motifs, mêmes identifiants de job.
+
+import {
+  cleEnvoi,
+  decisionCampagne,
+  motifsBloquants,
+  type DrapeauxCampagne,
+  type MotifCampagne,
+  type RegleCampagne,
+} from "../relances/campagne";
 
 /** Nom du gabarit des rappels — aussi la clé de lecture du journal (`EmailLog.template`). */
 export const GABARIT_RELANCE_INVITATION = "apporteur-invitation-relance";
@@ -40,6 +54,9 @@ export const AGE_MAX_INVITATION_MS = 14 * JOUR_MS;
 /** Jamais plus de deux rappels par invitation. */
 export const RELANCES_MAX = 2;
 
+/** Préfixe des clés d'envoi (identifiants de job) des rappels d'invitation. */
+const CAMPAGNE_RELANCE_INVITATION = "apporteur-invit-relance";
+
 /**
  * Identifiant du job BullMQ d'un rappel. DÉTERMINISTE : un passage qui repasse
  * (worker redémarré, passage rejoué) ne pose pas un second job — BullMQ ignore
@@ -59,8 +76,25 @@ export function jobIdRelanceInvitation(
   empreinte: string,
   invitationId: string,
 ): string {
-  return `apporteur-invit-relance-${etape}-${empreinte}-${invitationId}`.replace(/:/g, "-");
+  return cleEnvoi(CAMPAGNE_RELANCE_INVITATION, `${empreinte}-${invitationId}`, etape);
 }
+
+/**
+ * La règle des rappels, exprimée pour le moteur commun. Ni « une par jour »
+ * ni fenêtre horaire : l'écart de trois jours suffit, et le passage
+ * quotidien choisit son heure — c'est le comportement d'origine, inchangé.
+ */
+export const REGLE_RELANCE_INVITATION: RegleCampagne<EtapeRelanceInvitation> = {
+  etapes: [
+    { id: "j3", delaiMs: DELAI_J3_MS },
+    { id: "j7", delaiMs: DELAI_J7_MS },
+  ],
+  ecartMinMs: ECART_MIN_ENTRE_RELANCES_MS,
+  silenceApresMs: AGE_MAX_INVITATION_MS,
+  max: RELANCES_MAX,
+  unParJour: false,
+  fenetre: null,
+};
 
 /** Ce qui, une fois lu, suffit à décider. */
 export interface EtatRelanceInvitation {
@@ -90,6 +124,50 @@ export type DecisionRelance =
   | { readonly relancer: true; readonly etape: EtapeRelanceInvitation }
   | { readonly relancer: false; readonly motif: MotifSansRelance };
 
+/** Le motif du moteur commun → le motif historique des rappels d'invitation. */
+const MOTIF_APPORTEUR: Partial<Record<MotifCampagne, MotifSansRelance>> = {
+  efface: "efface",
+  "action-faite": "reserve",
+  "reponse-humaine": "repondu",
+  close: "close",
+  "fenetre-depassee": "trop-ancienne",
+  plafond: "termine",
+  "pas-encore": "pas-encore",
+};
+
+/**
+ * Priorité HISTORIQUE des motifs des rappels quand plusieurs sont vrais à la
+ * fois (le moteur commun, lui, lit `close` avant `action-faite` et `plafond`
+ * avant `fenetre-depassee`). Elle ne change que le motif affiché : dès qu'un
+ * motif est présent, rien ne part, dans un ordre comme dans l'autre.
+ */
+const PRIORITE_APPORTEUR: readonly MotifSansRelance[] = [
+  "efface",
+  "reserve",
+  "repondu",
+  "close",
+  "trop-ancienne",
+  "termine",
+];
+
+function premierMotifApporteur(motifs: readonly MotifCampagne[]): MotifSansRelance | null {
+  const presents = new Set(motifs.map((m) => MOTIF_APPORTEUR[m]));
+  return PRIORITE_APPORTEUR.find((m) => presents.has(m)) ?? null;
+}
+
+function drapeaux(
+  e: Pick<EtatRelanceInvitation, "efface" | "reserve" | "repondu" | "close">,
+): DrapeauxCampagne {
+  return {
+    efface: e.efface,
+    opposition: false,
+    adresseMorte: false,
+    close: e.close,
+    actionFaite: e.reserve,
+    reponseHumaine: e.repondu,
+  };
+}
+
 /**
  * Ce qui BLOQUE toute relance, indépendamment du calendrier. Partagé par le
  * passage quotidien et par le filet du départ (worker d'e-mails) : les deux
@@ -98,33 +176,22 @@ export type DecisionRelance =
 export function motifBloquant(
   e: Pick<EtatRelanceInvitation, "efface" | "reserve" | "repondu" | "close">,
 ): Extract<MotifSansRelance, "efface" | "reserve" | "repondu" | "close"> | null {
-  if (e.efface) return "efface";
-  if (e.reserve) return "reserve";
-  if (e.repondu) return "repondu";
-  if (e.close) return "close";
-  return null;
+  return premierMotifApporteur(motifsBloquants(drapeaux(e))) as Extract<
+    MotifSansRelance,
+    "efface" | "reserve" | "repondu" | "close"
+  > | null;
 }
 
 /** Faut-il relancer aujourd'hui, et avec quel rappel ? */
 export function decisionRelance(e: EtatRelanceInvitation, maintenant: Date): DecisionRelance {
-  const bloquant = motifBloquant(e);
-  if (bloquant) return { relancer: false, motif: bloquant };
-
-  const age = maintenant.getTime() - e.derniereInvitation.getTime();
-  if (age > AGE_MAX_INVITATION_MS) return { relancer: false, motif: "trop-ancienne" };
-
-  const n = e.relancesApres.length;
-  if (n >= RELANCES_MAX) return { relancer: false, motif: "termine" };
-  if (n === 0) {
-    return age >= DELAI_J3_MS
-      ? { relancer: true, etape: "j3" }
-      : { relancer: false, motif: "pas-encore" };
-  }
-  const derniere = Math.max(...e.relancesApres.map((d) => d.getTime()));
-  if (age >= DELAI_J7_MS && maintenant.getTime() - derniere >= ECART_MIN_ENTRE_RELANCES_MS) {
-    return { relancer: true, etape: "j7" };
-  }
-  return { relancer: false, motif: "pas-encore" };
+  const etat = { ...drapeaux(e), origine: e.derniereInvitation, envois: e.relancesApres };
+  const d = decisionCampagne({ etat, maintenant, regle: REGLE_RELANCE_INVITATION });
+  if (d.envoyer) return { relancer: true, etape: d.etape };
+  const motif =
+    premierMotifApporteur(motifsBloquants(etat, REGLE_RELANCE_INVITATION, maintenant)) ??
+    MOTIF_APPORTEUR[d.motif] ??
+    "pas-encore";
+  return { relancer: false, motif };
 }
 
 // ── La console ───────────────────────────────────────────────────────────
