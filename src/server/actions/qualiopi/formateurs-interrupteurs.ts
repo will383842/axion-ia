@@ -10,6 +10,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
@@ -86,7 +87,34 @@ async function basculer(cle: CleInterrupteur, formData: FormData): Promise<EtatB
   const userId = session.user.id;
   const coupe = estPositionSure(cle, valeur);
 
-  const manques = await prisma.$transaction(async (tx) => {
+  let manques: string[];
+  try {
+    manques = await ecrire(cle, valeur, coupe, userId);
+  } catch (err) {
+    // Une erreur de la base ne casse jamais l'écran : rien n'a été écrit (la
+    // transaction est annulée), l'écran le dit, Sentry garde la trace.
+    Sentry.captureException(err, { tags: { action: "basculerFormateursInterrupteur", cle } });
+    return {
+      ok: false,
+      error: "Le changement n'a pas été enregistré (erreur technique). Réessayez plus tard.",
+    };
+  }
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: coupe ? "Coupé." : "Enregistré." };
+}
+
+/** Préalables relus, réglage et journal : une seule transaction. Rend les manques. */
+function ecrire(
+  cle: CleInterrupteur,
+  valeur: unknown,
+  coupe: boolean,
+  userId: string,
+): Promise<string[]> {
+  return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
       where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
       select: { key: true, value: true },
@@ -109,19 +137,15 @@ async function basculer(cle: CleInterrupteur, formData: FormData): Promise<EtatB
       data: {
         adminUserId: userId,
         action: coupe ? "formateurs.interrupteur_coupe" : "formateurs.interrupteur_allume",
+        // ⚠️ Pas de `targetId` : la colonne est `uuid` et une clé de `settings`
+        // est du texte — Postgres refusait la ligne et annulait tout (prod,
+        // 2026-10-10). La clé est dans `changes.cle`, comme ailleurs.
         targetType: "setting",
-        targetId: cleSetting(cle),
         changes: { cle: cleSetting(cle), avant, apres: valeur } as never,
       },
     });
     return [];
   });
-
-  if (manques.length > 0) {
-    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
-  }
-  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
-  return { ok: true, message: coupe ? "Coupé." : "Enregistré." };
 }
 
 export async function basculerFormateursTextesValidesAction(

@@ -53,7 +53,11 @@ export const META_GRAPH_VERSION = "v21.0";
 const DELAI_MS = 3000;
 
 /** Les seuls événements que le serveur envoie : peu, pour que Meta puisse apprendre. */
-export type NomEvenementMeta = "Lead" | "Schedule";
+/**
+ * `SubmitApplication` (2026-10-10) : la validation de l'étape 2 de la page vidéo
+ * (téléphone + question) — l'inscription TERMINÉE, distincte du `Lead` de l'étape 1.
+ */
+export type NomEvenementMeta = "Lead" | "Schedule" | "SubmitApplication";
 
 /**
  * Ce qu'il faut pour fabriquer un événement. `eventId` est l'identifiant COMPLET

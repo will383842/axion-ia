@@ -81,6 +81,13 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },
   {
+    // Candidatures, lot L3 (2026-10-08) : lues par `candidature-rgpd.ts`.
+    modele: "JobApplicationInboundReply",
+    motif:
+      "vos réponses par e-mail à une candidature (date, objet, court extrait) sont rendues " +
+      "dans la partie « candidatures » de cet export, avec votre dossier de candidature.",
+  },
+  {
     // Réseau d'apporteurs (2026-10-05) : la liste des pièces est rendue, pas leurs octets.
     modele: "PieceApporteurContenu",
     motif:

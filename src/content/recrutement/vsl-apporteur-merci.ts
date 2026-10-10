@@ -4,6 +4,11 @@
 export const VSL_MERCI = {
   title: "C'est noté.",
   texte: "Choisissez maintenant le créneau de 15 minutes qui vous convient.",
+  /**
+   * Personne DÉJÀ CONNUE revenue par la publicité (2026-10-10) : aucun e-mail ne
+   * lui part (R3), la page ne lui en promet donc aucun.
+   */
+  texteDejaConnu: "Choisissez votre créneau ci-dessous.",
   cta: "Choisir mon créneau",
   ctaMicro: "Un échange de 15 minutes. Aucun engagement.",
   email: "Vous recevez aussi le lien par e-mail. Pensez à regarder vos courriers indésirables.",

@@ -404,19 +404,103 @@ export function decouperParCampagne(
   });
 }
 
-/** Par annonce (`utm_content`). Les visites ne sont pas mesurables : la balise ne porte pas l'annonce. */
-export function decouperParAnnonce(leads: readonly LeadSuivi[]): LigneDecoupage[] {
-  const vids = leads.filter((l) => l.page === "video");
-  const cles = [...new Set(vids.map((l) => l.annonce ?? SANS))].sort();
-  return cles.map((cle) => {
-    const ls = vids.filter((l) => (l.annonce ?? SANS) === cle);
-    return {
-      cle,
-      visites: null,
-      etape1: ls.length,
-      etape2: ls.filter((l) => l.etape2).length,
-      reserves: ls.filter((l) => l.reserve).length,
-      depenseCentimes: null,
-    };
+// ── Répartition PAR ANNONCE (2026-10-10) ─────────────────────────────────────
+//
+// Ce que Will lit pour juger chaque annonce d'un petit budget test : de
+// l'inscription au contrat signé, par identifiant d'annonce (`utm_content` du
+// lien publicitaire, gardé sur la fiche dès l'étape 1 — la réservation le relit
+// sur la fiche, `server/calendly/attribution-origine.ts`).
+//
+//   · VISITES : « non mesuré ». La balise anonyme ne porte pas l'annonce (elle
+//     ne garde que la campagne) ; l'y ajouter demanderait une migration.
+//   · COÛT : les dépenses se saisissent PAR CAMPAGNE, sans champ annonce. Aucun
+//     coût n'est donc inventé par annonce : il n'apparaît que sur la ligne
+//     « Total », dépense de la période ÷ étapes 1 (ou ÷ réservations).
+//   · Les « DÉJÀ CONNUS » revenus par la publicité (fiche existante, trace
+//     `retoursVsl`) sont comptés À PART, dans leur ligne : ils ne sont ni de
+//     nouvelles inscriptions ni un coût d'acquisition.
+//   · Une source illisible rend « non mesuré » pour ses colonnes, jamais 0.
+
+/** Libellé d'une inscription arrivée sans identifiant d'annonce. */
+export const SANS_ANNONCE = "(sans identifiant)";
+
+/** Une personne DÉJÀ CONNUE revenue par la publicité pendant la période. */
+export interface RetourConnuSuivi {
+  readonly id: string;
+  /** Premier retour de la période (`retoursVsl[].le`). */
+  readonly revenuLe: Date;
+  readonly etape2: boolean;
+  /** Réservation, échange, décision et contrat POSTÉRIEURS au retour. */
+  readonly reserve: boolean;
+  readonly tenu: boolean;
+  readonly retenu: boolean;
+  readonly contrat: boolean;
+}
+
+export interface LigneAnnonce {
+  readonly cle: string;
+  readonly genre: "annonce" | "total" | "deja-connus";
+  /** Toujours `null` aujourd'hui : la balise ne porte pas l'annonce. */
+  readonly visites: Cellule;
+  readonly etape1: Cellule;
+  readonly etape2: Cellule;
+  readonly reserves: Cellule;
+  readonly tenus: Cellule;
+  readonly retenus: Cellule;
+  readonly contrats: Cellule;
+  /** Centimes, ligne « Total » seulement ; `null` = « — ». */
+  readonly coutParEtape1: number | null;
+  readonly coutParReservation: number | null;
+}
+
+export function repartirParAnnonce(e: {
+  readonly leads: readonly LeadSuivi[];
+  readonly connus: readonly RetourConnuSuivi[];
+  readonly depenseTotale: number;
+  readonly sources: SourcesLues;
+}): LigneAnnonce[] {
+  const vids = e.leads.filter((l) => l.page === "video");
+  // Rien sur la période (ni inscription, ni retour) : un tableau vide, pas des zéros.
+  if (vids.length === 0 && e.connus.length === 0) return [];
+  const f = e.sources.fiches;
+  const r = f && e.sources.reservations;
+  const c = f && e.sources.reseau;
+  const compter = <T>(liste: readonly T[], lue: boolean, pred: (x: T) => boolean): Cellule =>
+    lue ? liste.filter(pred).length : null;
+  const ligne = (
+    cle: string,
+    genre: LigneAnnonce["genre"],
+    ls: readonly (LeadSuivi | RetourConnuSuivi)[],
+  ): LigneAnnonce => ({
+    cle,
+    genre,
+    visites: null,
+    etape1: f ? ls.length : null,
+    etape2: compter(ls, f, (x) => x.etape2),
+    reserves: compter(ls, r, (x) => x.reserve),
+    tenus: compter(ls, r, (x) => x.tenu),
+    retenus: compter(ls, r, (x) => x.retenu),
+    contrats: compter(ls, c, (x) => x.contrat),
+    coutParEtape1: null,
+    coutParReservation: null,
   });
+
+  const cles = [...new Set(vids.map((l) => l.annonce ?? SANS_ANNONCE))].sort((a, b) =>
+    a === SANS_ANNONCE ? 1 : b === SANS_ANNONCE ? -1 : a.localeCompare(b),
+  );
+  const lignes = cles.map((cle) =>
+    ligne(
+      cle,
+      "annonce",
+      vids.filter((l) => (l.annonce ?? SANS_ANNONCE) === cle),
+    ),
+  );
+  const total = ligne("Total (nouvelles inscriptions)", "total", vids);
+  lignes.push({
+    ...total,
+    coutParEtape1: coutParMarche(e.depenseTotale, total.etape1),
+    coutParReservation: coutParMarche(e.depenseTotale, total.reserves),
+  });
+  lignes.push(ligne("Déjà connus (revenus par la publicité)", "deja-connus", e.connus));
+  return lignes;
 }

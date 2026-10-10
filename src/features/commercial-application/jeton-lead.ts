@@ -12,19 +12,21 @@
 // dépendance JWT. Comparaison à temps constant.
 //
 // ── Ce que le jeton porte ─────────────────────────────────────────────────
-//   · `lead`    identifiant de la ligne (un identifiant sans ligne pour une adresse
-//     déjà connue : voir ci-dessous) ;
+//   · `lead`    identifiant de la ligne (pour une adresse déjà connue : sa fiche
+//     la plus récente, voir ci-dessous) ;
 //   · `genre`   `saisie` (visite, 24 h) ou `reprise` (e-mail de relance, 10 j) ;
 //   · `iat/exp` émission et expiration (ms) — `iat` sert au DÉLAI MINIMAL de
 //     l'étape 2 : un téléphone posté moins de 2 s après l'émission est suspect ;
+//     pour une adresse déjà connue, `iat` est aussi l'heure de la trace de son
+//     retour (`details.retoursVsl[].le`), celle que l'étape 2 complète ;
 //   · `suspect` la ligne a été créée trop vite après l'affichage (étape 1) ;
 //
 // 🔑 Le jeton est LISIBLE (base64) par qui le reçoit : il ne doit donc RIEN dire
-// de ce que le serveur sait. Pour une adresse déjà connue (ou un robot qui a
-// rempli le leurre), le serveur signe un jeton qui porte un identifiant de forme
-// identique mais SANS ligne derrière ; l'étape 2 y répond « succès » sans rien
-// écrire. Aucun drapeau « fantôme » n'existe dans le jeton : il trahirait
-// exactement ce qu'on veut taire (une adresse connue).
+// de ce que le serveur sait. Pour une adresse déjà connue, il désigne sa fiche
+// la plus récente exactement comme il désigne un lead neuf (2026-10-10 ; avant,
+// un identifiant inventé, sans ligne derrière). Aucun drapeau « fantôme » ni
+// « connu » n'existe dans le jeton : il trahirait exactement ce qu'on veut taire.
+// Le serveur le re-déduit de la base à chaque usage (`deja-connu-vsl.ts`).
 //
 // Aucune adresse, aucun prénom, aucun téléphone dans le jeton : il circule dans
 // des adresses d'e-mail et des journaux.

@@ -15,9 +15,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-const { cookie, dispo } = vi.hoisted(() => ({
+const { cookie, dispo, connue } = vi.hoisted(() => ({
   cookie: { valeur: undefined as string | undefined },
   dispo: { resultat: { ok: false, reason: "not_configured" } as unknown },
+  connue: { ids: new Set<string>() },
 }));
 
 vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
@@ -34,6 +35,11 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+// « Déjà connu(e) » se déduit de la base (le jeton n'en dit rien) : doublé ici.
+vi.mock("@/features/commercial-application/deja-connu-vsl", () => ({
+  ligneDejaConnue: async (j: { lead: string; genre: string }) =>
+    j.genre === "saisie" && connue.ids.has(j.lead) ? { id: j.lead } : null,
+}));
 vi.mock("@/server/calendly/availability", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/calendly/availability")>()),
   fetchAvailableSlots: async () => dispo.resultat,
@@ -218,5 +224,23 @@ describe("la page de merci des apporteurs — réservation du site", () => {
     expect(t).toMatch(/15 minutes/);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
     expect(t).not.toMatch(/sous\s+\d+\s?h|qualiopi|parrain/i);
+  });
+
+  it("P2 — personne DÉJÀ CONNUE : aucun e-mail promis, le calendrier reste là", async () => {
+    connue.ids = new Set(["fiche-connue"]);
+    try {
+      const jeton = creerJeton({ lead: "fiche-connue", suspect: false });
+      const t = texte(await rendre({ j: jeton }));
+      expect(t).toContain("C'est noté.");
+      expect(t).toContain("Choisissez votre créneau ci-dessous.");
+      expect(t).not.toMatch(/par e-mail|e-mail de confirmation/);
+      expect(t).toContain("Choisir mon créneau");
+      // Un lead ordinaire garde le texte d'origine.
+      const t2 = texte(await rendre({ j: creerJeton({ lead: "lead-1", suspect: false }) }));
+      expect(t2).toContain("Choisissez maintenant le créneau de 15 minutes qui vous convient.");
+      expect(t2).toContain("Vous recevez aussi le lien par e-mail");
+    } finally {
+      connue.ids = new Set();
+    }
   });
 });

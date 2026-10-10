@@ -2004,6 +2004,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "35 * * * *",
         jobId: "formation-crons-reponse-poste-pourvu-cron",
       },
+      // Réponses des candidats emploi reçues par e-mail (lot L3, 2026-10-07) —
+      // TOUTES LES 15 MINUTES, décalé de 7 minutes du relevé des apporteurs
+      // (`apporteur-crons`, à :00/:15/:30/:45, inchangé) : deux lectures de la
+      // même boîte ne tombent jamais à la même minute.
+      {
+        type: "formation-crons.reponses-entrantes-candidatures",
+        pattern: "7,22,37,52 * * * *",
+        jobId: "formation-crons-reponses-entrantes-candidatures-cron",
+      },
       // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
       // quotidienne comme ses voisines. Une panne d'e-mails découverte le
       // lendemain matin, c'est une journée de convocations et d'attestations

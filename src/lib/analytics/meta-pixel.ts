@@ -34,6 +34,17 @@ export function trackMetaSchedule(eventId: string): void {
   f("track", "Schedule", {}, { eventID: eventId });
 }
 
+/**
+ * Événement standard `SubmitApplication` (étape 2 de la page vidéo validée),
+ * `eventID` = `candidature:<identifiant de la ligne>` — le serveur envoie le même
+ * `event_id` : Meta ne compte qu'une conversion.
+ */
+export function trackMetaSubmitApplication(eventId: string): void {
+  const f = fbq();
+  if (!f) return;
+  f("track", "SubmitApplication", {}, { eventID: eventId });
+}
+
 /** Cookie `_fbp` posé par le pixel — transmis à l'API Conversions pour l'appariement. */
 export function lireCookieFbp(): string | undefined {
   if (typeof document === "undefined") return undefined;
