@@ -45,6 +45,7 @@ import {
   signerDocument,
   type RefusSignatureDocument,
 } from "@/server/qualiopi/documents/signature/document-signature-service";
+import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/refus-piece-introuvable";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
@@ -122,14 +123,14 @@ function refusStockage(err: SignatureStockageError): ResultatSignatureReleve {
  * appelant.
  */
 /**
+ * 🔴 La MÊME réponse que le service et que les deux autres actions formateur
+ * (`REFUS_PIECE_INTROUVABLE`) : un message propre à cette action distinguerait,
+ * d'une action à l'autre, une pièce existante d'une pièce inventée.
+ *
  * L'unique réponse « introuvable » du côté formateur : identifiant inconnu,
  * pièce d'un autre type ou relevé d'une session qu'il n'anime pas.
  */
-const RELEVE_INTROUVABLE = {
-  ok: false,
-  raison: "piece_introuvable",
-  message: "Relevé de connexion introuvable.",
-} as const;
+const RELEVE_INTROUVABLE = REFUS_PIECE_INTROUVABLE;
 
 export async function signerReleveFormateurAction(input: {
   documentGenereId: string;
@@ -182,7 +183,12 @@ export async function signerReleveFormateurAction(input: {
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
       ...(await contexteRequete()),
     });
-    if (!res.ok) return res;
+    if (!res.ok) {
+      // Défense en profondeur : le service masque déjà tout refus d'autorisation
+      // d'un formateur ; un `porteur_non_autorise` qui remonterait quand même ne
+      // doit pas se distinguer d'un identifiant inconnu.
+      return res.raison === "porteur_non_autorise" ? { ...RELEVE_INTROUVABLE } : res;
+    }
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);
