@@ -156,7 +156,7 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(t).toContain("Que se passe-t-il après ma demande ?");
     expect(t).toContain("Vos données sont utilisées pour traiter votre demande.");
     // La ligne « Aucun frais d'entrée… » reste, une seule fois.
-    expect(t.match(/Aucun frais d'entrée · Aucun quota · Aucun gain garanti/g)).toHaveLength(1);
+    expect(t.match(/Aucun frais d'entrée · Aucun quota · Sans exclusivité/g)).toHaveLength(1);
   });
 
   it("la cible idéale en premier dans « pour qui », l'espace personnel dans les preuves", async () => {
@@ -206,13 +206,13 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(brut).not.toMatch(/€|\beuros?\b|gagn|commission|revenu/i);
   });
 
-  it("le bloc commission : titre, grand chiffre, sous-ligne lisible, « aucun gain garanti » conservé", async () => {
+  it("le bloc commission : titre, grand chiffre, sous-ligne lisible, jamais « aucun gain garanti » (ordre de Will, 10/10)", async () => {
     const t = texte(await rendre());
     expect(t).toContain("Votre commission");
     expect(t).toContain(
       "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
     );
-    expect(t).toContain("Aucun gain garanti");
+    expect(t).not.toMatch(/gain garanti/i);
     expect(t).not.toMatch(/revenu complémentaire|sans effort/i);
     // Après le héro (donc après le premier bouton), avant les pastilles « pour qui ».
     expect(t.indexOf("Votre commission")).toBeGreaterThan(t.indexOf("Devenir apporteur"));
