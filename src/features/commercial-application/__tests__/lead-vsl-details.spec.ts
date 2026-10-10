@@ -31,8 +31,12 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import {
+  MAX_RETOURS_VSL,
+  ajouterRetourVsl,
   avancerVslEtape2,
+  completerRetourVsl,
   etapeVsl,
+  lireRetoursVsl,
   lireVsl,
   majMessageVsl,
   majVslCible,
@@ -162,5 +166,85 @@ describe("message de la fiche (console)", () => {
     expect(sql).toContain("details ? 'vsl'");
     expect(sql).toContain("'{message}'");
     expect(executes[0]?.valeurs).toContain(JSON.stringify("Échange réservé"));
+  });
+});
+
+// P2 (2026-10-10) — la trace d'une personne DÉJÀ CONNUE revenue par la publicité.
+describe("ajouterRetourVsl", () => {
+  it("ajoute UNE entrée bornée aux 10 plus récentes, sans toucher au reste de la fiche", async () => {
+    await ajouterRetourVsl("11111111-1111-4111-8111-111111111111", {
+      le: "2026-10-10T08:00:00.000Z",
+      etape: 1,
+      utm: { content: "annonce-42" },
+    });
+    expect(executes).toHaveLength(1);
+    const sql = executes[0]?.texte ?? "";
+    expect(sql).toContain("'{retoursVsl}'");
+    expect(sql).toContain("LIMIT ?");
+    expect(executes[0]?.valeurs).toContain(MAX_RETOURS_VSL);
+    expect(MAX_RETOURS_VSL).toBe(10);
+    // Ni étape, ni statut, ni nom, ni téléphone, ni archivage, ni date de mise à jour.
+    expect(sql).not.toMatch(/contact_phone|contact_name|status|archived_at|updated_at|'\{vsl\}'/);
+    expect(sql).not.toMatch(/SET details = \?/);
+  });
+});
+
+describe("completerRetourVsl", () => {
+  const base = {
+    id: "11111111-1111-4111-8111-111111111111",
+    le: "2026-10-10T08:00:00.000Z",
+    telephoneChiffre: "enc:07",
+    reponseId: "moins-5",
+    suspect: false,
+    maintenant: new Date("2026-10-10T08:01:00Z"),
+  };
+  const retours = (r: unknown[]) => {
+    ligneVerrouillee = [{ retours: r } as unknown as { vsl: unknown }];
+  };
+
+  it("complète l'entrée DÉSIGNÉE par l'heure du jeton, jamais le téléphone de la fiche", async () => {
+    retours([
+      { le: "2026-10-09T08:00:00.000Z", etape: 1 },
+      { le: base.le, etape: 1 },
+      { le: "2026-10-10T09:00:00.000Z", etape: 1 },
+    ]);
+    expect(await completerRetourVsl(base)).toBe("complete");
+    expect(executes[0]?.texte).toContain("FOR UPDATE");
+    const ecriture = executes[1];
+    expect(ecriture?.valeurs).toContainEqual(["retoursVsl", "1"]);
+    expect(ecriture?.texte).not.toMatch(/contact_phone|updated_at/);
+    const patch = JSON.parse(
+      String(ecriture?.valeurs.find((v) => String(v).includes("telephone"))),
+    ) as Record<string, unknown>;
+    expect(patch).toEqual({
+      etape: 2,
+      e2: "2026-10-10T08:01:00.000Z",
+      reponse: "moins-5",
+      telephone: "enc:07",
+    });
+  });
+
+  it("déjà complétée : rien n'est réécrit (aucune seconde notification)", async () => {
+    retours([{ le: base.le, etape: 2 }]);
+    expect(await completerRetourVsl(base)).toBe("deja");
+    expect(executes).toHaveLength(1);
+  });
+
+  it("entrée absente (sortie des 10, ou jeton d'un autre moment) : rien n'est écrit", async () => {
+    retours([{ le: "2026-10-01T00:00:00.000Z", etape: 1 }]);
+    expect(await completerRetourVsl(base)).toBe("introuvable");
+    retours(null as unknown as unknown[]);
+    expect(await completerRetourVsl(base)).toBe("introuvable");
+    expect(executes.filter((e) => e.texte.startsWith("UPDATE"))).toHaveLength(0);
+  });
+});
+
+describe("lireRetoursVsl", () => {
+  it("lit défensivement", () => {
+    expect(lireRetoursVsl(null)).toEqual([]);
+    expect(lireRetoursVsl({ retoursVsl: "x" })).toEqual([]);
+    expect(lireRetoursVsl({ retoursVsl: [{ le: "a", etape: 1 }, null, 3] })).toEqual([
+      { le: "a", etape: 1 },
+    ]);
   });
 });

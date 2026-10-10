@@ -30,7 +30,11 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/routes";
 import { trackFunnel } from "@/lib/tracking";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
-import { lireCookieFbp, trackMetaLead } from "@/lib/analytics/meta-pixel";
+import {
+  lireCookieFbp,
+  trackMetaLead,
+  trackMetaSubmitApplication,
+} from "@/lib/analytics/meta-pixel";
 import { readAnalyticsConsent } from "@/components/analytics/CookieConsent";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { PrimaryButton, TextField } from "@/components/forms/commercial-application/ui";
@@ -266,6 +270,12 @@ export function VslFormulaire({ capturer, completer }: VslFormulaireProps) {
         setErreurServeur(messageServeur(r.error));
         setEnvoi(false);
         return;
+      }
+      // `SubmitApplication` du pixel : seulement avec la bannière acceptée, et
+      // seulement quand le serveur rend l'`eventID` (ni ligne suspecte, ni
+      // personne déjà connue). Le serveur envoie le même : Meta dédoublonne.
+      if (r.candidature && readAnalyticsConsent() === "accepted") {
+        trackMetaSubmitApplication(r.candidature);
       }
       // Même nom d'événement que l'ancienne page : l'historique reste comparable.
       trackFunnel("Lead Apporteur Submitted", {

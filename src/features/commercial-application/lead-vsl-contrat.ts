@@ -50,7 +50,17 @@ export interface CompleterLeadVslInput {
 }
 
 export type CompleterLeadVslResultat =
-  { ok: true; merciUrl: string } | { ok: false; error: "invalid" | "jeton" | "rate" | "unknown" };
+  | {
+      ok: true;
+      merciUrl: string;
+      /**
+       * `eventID` du `SubmitApplication` Meta (`candidature:<id de la ligne>`), le
+       * même que celui du serveur. Absent quand rien ne doit être compté (ligne
+       * suspecte, personne déjà connue) : le navigateur ne tire alors rien.
+       */
+      candidature?: string;
+    }
+  | { ok: false; error: "invalid" | "jeton" | "rate" | "unknown" };
 
 export type CapturerLeadVslAction = (
   input: CapturerLeadVslInput,

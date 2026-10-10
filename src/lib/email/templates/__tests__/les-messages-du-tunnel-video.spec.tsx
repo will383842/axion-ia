@@ -14,7 +14,8 @@ import { render } from "@react-email/render";
 import * as React from "react";
 
 import { LeadApporteurRecuEmail, leadApporteurRecuSubject } from "../lead-apporteur-recu";
-import { LeadApporteurRelanceEmail } from "../lead-apporteur-relance";
+import { LeadApporteurRelanceEmail, leadApporteurRelanceSubject } from "../lead-apporteur-relance";
+import { OBJET_MAX } from "../../objet-email";
 import { REGIME_FAMILLE } from "../_layout";
 import {
   VARIANTE_VSL_ABANDON,
@@ -177,6 +178,21 @@ describe("A1 / A2 / A3 — « il vous manque une étape »", () => {
     expect(texte(h)).toMatch(/Votre inscription vous attend/);
     expect(h).toMatch(/Il vous reste une étape/);
     expect(texte(h)).not.toMatch(/Votre dossier vous attend|sans CV/);
+  });
+
+  it("2026-10-10 : l'OBJET de la relance vidéo suit son titre — « inscription », pas « candidature »", () => {
+    const a2 = leadApporteurRelanceSubject("fr", { etape: "j2", variante: VARIANTE_VSL_RELANCE });
+    expect(a2).toBe("Votre inscription vous attend");
+    const a3 = leadApporteurRelanceSubject("fr", { etape: "j7", variante: VARIANTE_VSL_RELANCE });
+    expect(a3).toBe("Votre inscription : dernier rappel");
+    for (const o of [a2, a3]) expect(o.length).toBeLessThanOrEqual(OBJET_MAX);
+    // L'ancien formulaire garde son objet.
+    expect(leadApporteurRelanceSubject("fr", { etape: "j2" })).toBe(
+      "Votre candidature vous attend",
+    );
+    expect(leadApporteurRelanceSubject("en", { etape: "j2", variante: VARIANTE_VSL_RELANCE })).toBe(
+      "Your registration is waiting",
+    );
   });
 });
 

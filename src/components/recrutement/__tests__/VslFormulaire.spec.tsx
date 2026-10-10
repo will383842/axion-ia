@@ -10,12 +10,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
-const { push, trackFunnel, trackMetaLead, consentement } = vi.hoisted(() => ({
-  push: vi.fn(),
-  trackFunnel: vi.fn(),
-  trackMetaLead: vi.fn(),
-  consentement: { valeur: "accepted" as "accepted" | "declined" | "unknown" },
-}));
+const { push, trackFunnel, trackMetaLead, trackMetaSubmitApplication, consentement } = vi.hoisted(
+  () => ({
+    push: vi.fn(),
+    trackFunnel: vi.fn(),
+    trackMetaLead: vi.fn(),
+    trackMetaSubmitApplication: vi.fn(),
+    consentement: { valeur: "accepted" as "accepted" | "declined" | "unknown" },
+  }),
+);
 
 vi.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ push }),
@@ -27,6 +30,7 @@ vi.mock("@/lib/tracking", () => ({ trackFunnel }));
 vi.mock("@/lib/analytics/meta-pixel", () => ({
   lireCookieFbp: () => "fb.1.1700000000000.123456",
   trackMetaLead,
+  trackMetaSubmitApplication,
 }));
 vi.mock("@/components/analytics/CookieConsent", () => ({
   readAnalyticsConsent: () => consentement.valeur,
@@ -289,6 +293,52 @@ describe("étape 2", () => {
     });
     expect(push).toHaveBeenCalledWith("/apporteur-affaires/video/merci?utm_source=facebook");
     expect(trackFunnel).toHaveBeenCalledWith("Lead Apporteur Submitted", { landing: "facebook" });
+  });
+
+  it("P6 — `SubmitApplication` du pixel à l'étape 2, avec l'eventID du serveur, bannière acceptée seulement", async () => {
+    trackMetaSubmitApplication.mockClear();
+    monter({
+      completer: {
+        ok: true,
+        merciUrl: "/apporteur-affaires/video/merci",
+        candidature: "candidature:lead-1",
+      },
+    });
+    await allerEtape2();
+    remplirEtape2();
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer et choisir mon créneau/ }));
+    await waitFor(() => expect(push).toHaveBeenCalled());
+    expect(trackMetaSubmitApplication).toHaveBeenCalledTimes(1);
+    expect(trackMetaSubmitApplication).toHaveBeenCalledWith("candidature:lead-1");
+  });
+
+  it("P6 — rien sans l'accord à la bannière, ni quand le serveur ne rend pas d'eventID (déjà connu, suspect)", async () => {
+    trackMetaSubmitApplication.mockClear();
+    consentement.valeur = "declined";
+    try {
+      monter({
+        completer: {
+          ok: true,
+          merciUrl: "/apporteur-affaires/video/merci",
+          candidature: "candidature:lead-1",
+        },
+      });
+      await allerEtape2();
+      remplirEtape2();
+      fireEvent.click(screen.getByRole("button", { name: /Envoyer et choisir mon créneau/ }));
+      await waitFor(() => expect(push).toHaveBeenCalled());
+    } finally {
+      consentement.valeur = "accepted";
+    }
+    cleanup();
+    push.mockClear();
+    __reinitialiserEtatVslPourTests();
+    monter({ completer: { ok: true, merciUrl: "/apporteur-affaires/video/merci" } });
+    await allerEtape2();
+    remplirEtape2();
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer et choisir mon créneau/ }));
+    await waitFor(() => expect(push).toHaveBeenCalled());
+    expect(trackMetaSubmitApplication).not.toHaveBeenCalled();
   });
 
   it("n'ouvre jamais une adresse d'un autre site renvoyée par le serveur", async () => {

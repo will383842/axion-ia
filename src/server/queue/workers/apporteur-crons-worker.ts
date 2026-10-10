@@ -152,7 +152,12 @@ async function passerFacturation(): Promise<void> {
 async function passerReponses(): Promise<void> {
   const { passerReponsesEntrantes } =
     await import("@/features/commercial-application/reponses-entrantes-apporteur");
-  const r = await passerReponsesEntrantes();
+  // R6 : une réponse par e-mail arrête les relances d'attente. Injecté ici : le
+  // relevé reste hors de Next (la file d'e-mails tire `next-auth`), le worker,
+  // lui, charge déjà ce module pour l'archivage automatique.
+  const { annulerRelancesLeadApporteur } =
+    await import("@/features/commercial-application/relances-lead-apporteur");
+  const r = await passerReponsesEntrantes({ annulerRelances: annulerRelancesLeadApporteur });
   if (r.suspendu) return; // déjà dit par le passage lui-même (une fois, pour la config)
   const { humaines, automatiques } = r.enregistrees;
   if (humaines + automatiques > 0 || r.erreurs > 0) {

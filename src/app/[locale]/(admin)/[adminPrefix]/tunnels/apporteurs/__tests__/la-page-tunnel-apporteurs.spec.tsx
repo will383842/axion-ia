@@ -157,4 +157,47 @@ describe("la page « Tunnel apporteurs »", () => {
     expect(html).toContain("apporteurs-video");
     expect(html).toContain("Supprimer");
   });
+
+  it("P4 — par annonce : chaque marche, « non mesuré » pour les visites, déjà connus à part", async () => {
+    charger.mockResolvedValue(
+      tableau({
+        parAnnonce: [
+          {
+            cle: "annonce-42",
+            genre: "annonce",
+            visites: null,
+            etape1: 3,
+            etape2: 2,
+            reserves: 1,
+            tenus: 1,
+            retenus: 1,
+            contrats: 1,
+            coutParEtape1: null,
+            coutParReservation: null,
+          },
+          {
+            cle: "Déjà connus (revenus par la publicité)",
+            genre: "deja-connus",
+            visites: null,
+            etape1: 1,
+            etape2: 1,
+            reserves: null,
+            tenus: null,
+            retenus: null,
+            contrats: null,
+            coutParEtape1: null,
+            coutParReservation: null,
+          },
+        ],
+      }),
+    );
+    const html = await rendre();
+    expect(html).toContain("Par annonce");
+    expect(html).toContain("annonce-42");
+    expect(html).toContain("Créneaux réservés");
+    expect(html).toContain("Contrats signés");
+    expect(html).toContain("Déjà connus (revenus par la publicité)");
+    const ligneDejaConnus = html.slice(html.indexOf("Déjà connus (revenus"));
+    expect(ligneDejaConnus.slice(0, ligneDejaConnus.indexOf("</tr>"))).toContain("non mesuré");
+  });
 });

@@ -16,6 +16,7 @@ const d = vi.hoisted(() => ({
   facturation: vi.fn(),
   quotidien: vi.fn(),
   archivage: vi.fn(),
+  annuler: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -36,6 +37,9 @@ vi.mock("@/features/commercial-application/reponses-entrantes-apporteur", () => 
   passerReponsesEntrantes: (...a: unknown[]) => d.reponses(...a),
 }));
 
+vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
+  annulerRelancesLeadApporteur: (...a: unknown[]) => d.annuler(...a),
+}));
 vi.mock("@/features/commercial-application/invitation-auto", () => ({
   passerInvitationsAuto: (...a: unknown[]) => d.invitations(...a),
 }));
@@ -117,6 +121,9 @@ describe("🔴 l'aiguillage de la file apporteur-crons", () => {
     await processeur()({ name: "reponses-entrantes", data: { type: "reponses-entrantes" } });
     expect(d.reponses).toHaveBeenCalledTimes(1);
     expect(d.relances).not.toHaveBeenCalled();
+    // R6 (2026-10-10) : le relevé reçoit de quoi arrêter les relances d'attente.
+    const opts = d.reponses.mock.calls[0]?.[0] as { annulerRelances?: unknown };
+    expect(typeof opts?.annulerRelances).toBe("function");
   });
 
   it("un job `relance-invitation` lance les rappels, et ne relève pas Zoho", async () => {

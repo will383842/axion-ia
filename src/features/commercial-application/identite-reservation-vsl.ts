@@ -18,7 +18,10 @@
 //   · lever : un jeton faux, expiré, sans ligne (adresse déjà connue, robot) ou une
 //     base injoignable rendent `null`, et le formulaire s'affiche vide, comme pour
 //     un client ;
-//   · lire une ligne qui n'est pas un lead de la page vidéo.
+//   · lire une ligne qui n'est pas un lead de la page vidéo ;
+//   · lire la fiche d'une personne DÉJÀ CONNUE (2026-10-10) : son jeton désigne une
+//     fiche existante, et quiconque a tapé son adresse à l'étape 1 en détient un —
+//     le formulaire lui proposerait le prénom d'un autre. Formulaire vide.
 //
 // Aucun `server-only` : appelé par la page du formulaire, et par les tests.
 
@@ -26,6 +29,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { verifierJeton } from "./jeton-lead";
 import { lireVsl } from "./lead-vsl-details";
+import { ligneDejaConnue } from "./deja-connu-vsl";
 
 /** Nom du paramètre d'URL qui porte le jeton, comme sur la page merci (`?j=`). */
 export const PARAM_JETON_VSL = "j";
@@ -54,6 +58,7 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
   if (!brut) return null;
   const jeton = verifierJeton(brut);
   if (!jeton) return null;
+  if (await ligneDejaConnue(jeton)) return null;
   try {
     const ligne = await prisma.submission.findFirst({
       where: { id: jeton.lead, deletedAt: null },

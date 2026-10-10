@@ -8,13 +8,18 @@
  * seulement pour un échange apporteur : une réservation d'appel client ne touche
  * à rien.
  */
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const findUnique = vi.fn();
+/** La fiche rattachée, relue par l'enrichissement (attribution d'origine, `Call Booked`). */
+const ficheLue = vi.fn(async (..._a: unknown[]): Promise<unknown> => null);
 const majLigne = vi.fn(async (..._a: unknown[]) => ({}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    submission: { findFirst: vi.fn(async () => null) },
+    submission: {
+      findFirst: vi.fn(async () => null),
+      findUnique: (...a: unknown[]) => ficheLue(...a),
+    },
     calendlyEvent: {
       updateMany: vi.fn(async () => ({ count: 0 })),
       findUnique: (...a: unknown[]) => findUnique(...a),
@@ -156,6 +161,23 @@ describe("une réservation d'échange apporteur", () => {
 });
 
 describe("`Call Booked` côté serveur (lot 4)", () => {
+  // 2026-10-10 (P5) : l'objectif du tunnel ne part que pour une réservation
+  // rattachée à une fiche venue de la PAGE VIDÉO.
+  beforeEach(() => {
+    rattacher.mockResolvedValue({ rattache: true, submissionId: "sub_lea" });
+    ficheLue.mockResolvedValue({
+      deletedAt: null,
+      details: {
+        vsl: { version: "vsl-v1", etapeAtteinte: 2 },
+        funnel: { utm: { utm_source: "facebook", utm_content: "annonce-42" } },
+      },
+    });
+  });
+  afterEach(() => {
+    rattacher.mockResolvedValue({ rattache: false, motif: "aucun_dossier_apporteur" });
+    ficheLue.mockResolvedValue(null);
+  });
+
   const evenement = () =>
     plausible.mock.calls[0]?.[0] as {
       nom: string;
@@ -172,7 +194,12 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     expect(plausible).toHaveBeenCalledTimes(1);
     expect(evenement().nom).toBe("Call Booked");
     expect(evenement().chemin).toBe("/apporteur-affaires/video/merci");
-    expect(evenement().props).toEqual({ source: "facebook", origine: "serveur" });
+    // `annonce` : l'identifiant d'annonce d'origine, relu sur la fiche (P5).
+    expect(evenement().props).toEqual({
+      source: "facebook",
+      origine: "serveur",
+      annonce: "annonce-42",
+    });
     // Aucune adresse, aucun nom, aucun téléphone dans l'événement.
     expect(JSON.stringify(plausible.mock.calls[0])).not.toMatch(/lea@|Léa|\+33|06 /);
     expect(marqueEcrite()).toBe(true);
@@ -213,6 +240,33 @@ describe("`Call Booked` côté serveur (lot 4)", () => {
     const res = await enrichCalendlyEvent("evt_1");
     expect(res.ok).toBe(false);
     expect(plausible).not.toHaveBeenCalled();
+  });
+
+  it("🔴 P5 — une réservation d'échange apporteur HORS tunnel vidéo (Indeed, ancien formulaire) n'émet rien", async () => {
+    ficheLue.mockResolvedValue({
+      deletedAt: null,
+      details: { subType: "candidature-commerciale", source: "indeed" },
+    });
+    findUnique.mockResolvedValueOnce(row({ utmSource: "facebook" }));
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(plausible).not.toHaveBeenCalled();
+  });
+
+  it("P5 — sans fiche rattachée, rien n'est émis", async () => {
+    rattacher.mockResolvedValue({ rattache: false, motif: "aucun_dossier_apporteur" });
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(plausible).not.toHaveBeenCalled();
+  });
+
+  it("P5 — une fiche vidéo arrivée sans annonce n'a pas de propriété `annonce`", async () => {
+    ficheLue.mockResolvedValue({ deletedAt: null, details: { vsl: { etapeAtteinte: 2 } } });
+    findUnique.mockResolvedValueOnce(row());
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(evenement().props).toEqual({ source: "direct", origine: "serveur" });
   });
 
   it("une panne de Plausible ne fait pas échouer l'enrichissement", async () => {

@@ -14,8 +14,10 @@ import {
   construireEntonnoir,
   coutParApporteurActif,
   coutParMarche,
-  decouperParAnnonce,
   decouperParCampagne,
+  repartirParAnnonce,
+  SANS_ANNONCE,
+  type RetourConnuSuivi,
   listerSemaines,
   lundiDe,
   partDepuisPrecedente,
@@ -349,13 +351,122 @@ describe("découpage", () => {
     const l = decouperParCampagne([], [lead("a", "2026-09-15")], [], false);
     expect(l[0]?.visites).toBeNull();
   });
+});
 
-  it("par annonce : les visites ne sont jamais mesurées (la balise ne porte pas l'annonce)", () => {
-    const l = decouperParAnnonce([
-      lead("a", "2026-09-15"),
-      lead("b", "2026-09-15", { annonce: null }),
+// P4 (2026-10-10) — la répartition PAR ANNONCE que Will lit pour juger chaque
+// annonce d'un petit budget test.
+describe("repartirParAnnonce", () => {
+  const leads = [
+    lead("a1", "2026-09-15", { annonce: "ad-1", etape2: true, reserve: true, tenu: true }),
+    lead("a2", "2026-09-16", {
+      annonce: "ad-1",
+      etape2: true,
+      reserve: true,
+      tenu: true,
+      retenu: true,
+      contrat: true,
+    }),
+    lead("a3", "2026-09-17", { annonce: "ad-1" }),
+    lead("b1", "2026-09-18", { annonce: "ad-2", etape2: true }),
+    lead("s1", "2026-09-19", { annonce: null, etape2: true, reserve: true }),
+    // Ancienne page : jamais dans la répartition de la page vidéo.
+    lead("x", "2026-09-19", { page: "court", annonce: "ad-1" }),
+  ];
+  const connu = (o: Partial<RetourConnuSuivi> = {}): RetourConnuSuivi => ({
+    id: "c",
+    revenuLe: new Date("2026-09-20T10:00:00Z"),
+    etape2: false,
+    reserve: false,
+    tenu: false,
+    retenu: false,
+    contrat: false,
+    ...o,
+  });
+
+  it("une ligne par annonce, de l'étape 1 au contrat signé ; « (sans identifiant) » en dernier", () => {
+    const l = repartirParAnnonce({ leads, connus: [], depenseTotale: 0, sources: OK });
+    expect(l.map((x) => x.cle)).toEqual([
+      "ad-1",
+      "ad-2",
+      SANS_ANNONCE,
+      "Total (nouvelles inscriptions)",
+      "Déjà connus (revenus par la publicité)",
     ]);
-    expect(l.map((x) => x.cle).sort()).toEqual(["(sans repère)", "ad-1"]);
+    expect(SANS_ANNONCE).toBe("(sans identifiant)");
+    expect(l[0]).toMatchObject({
+      genre: "annonce",
+      etape1: 3,
+      etape2: 2,
+      reserves: 2,
+      tenus: 2,
+      retenus: 1,
+      contrats: 1,
+    });
+    expect(l[1]).toMatchObject({ etape1: 1, etape2: 1, reserves: 0, contrats: 0 });
+    expect(l[2]).toMatchObject({ etape1: 1, etape2: 1, reserves: 1 });
+    expect(l[3]).toMatchObject({ genre: "total", etape1: 5, etape2: 4, reserves: 3 });
+  });
+
+  it("🔴 les visites ne sont JAMAIS un 0 : « non mesuré » (la balise ne porte pas l'annonce)", () => {
+    const l = repartirParAnnonce({ leads, connus: [], depenseTotale: 0, sources: OK });
     expect(l.every((x) => x.visites === null)).toBe(true);
+  });
+
+  it("coût : seulement sur le Total (les dépenses n'ont pas de champ annonce) — rien d'inventé", () => {
+    const l = repartirParAnnonce({ leads, connus: [], depenseTotale: 12_000, sources: OK });
+    for (const x of l.filter((y) => y.genre !== "total")) {
+      expect(x.coutParEtape1).toBeNull();
+      expect(x.coutParReservation).toBeNull();
+    }
+    const total = l.find((x) => x.genre === "total");
+    expect(total?.coutParEtape1).toBe(2_400); // 120 € ÷ 5 étapes 1
+    expect(total?.coutParReservation).toBe(4_000); // 120 € ÷ 3 réservations
+    // Sans dépense saisie : « — », jamais 0 €.
+    const sans = repartirParAnnonce({ leads, connus: [], depenseTotale: 0, sources: OK });
+    expect(sans.find((x) => x.genre === "total")?.coutParEtape1).toBeNull();
+  });
+
+  it("les déjà connus sont comptés À PART, jamais dans le Total ni dans une annonce", () => {
+    const l = repartirParAnnonce({
+      leads,
+      connus: [connu({ id: "c1", etape2: true, reserve: true }), connu({ id: "c2" })],
+      depenseTotale: 0,
+      sources: OK,
+    });
+    expect(l.find((x) => x.genre === "deja-connus")).toMatchObject({
+      etape1: 2,
+      etape2: 1,
+      reserves: 1,
+      tenus: 0,
+      contrats: 0,
+    });
+    expect(l.find((x) => x.genre === "total")?.etape1).toBe(5);
+  });
+
+  it("une source illisible rend « non mesuré » pour SES colonnes, jamais 0", () => {
+    const l = repartirParAnnonce({
+      leads,
+      connus: [],
+      depenseTotale: 0,
+      sources: { ...OK, reservations: false, reseau: false },
+    });
+    expect(l[0]).toMatchObject({ etape1: 3, etape2: 2 });
+    expect(l[0]?.reserves).toBeNull();
+    expect(l[0]?.tenus).toBeNull();
+    expect(l[0]?.retenus).toBeNull();
+    expect(l[0]?.contrats).toBeNull();
+    const sansFiches = repartirParAnnonce({
+      leads,
+      connus: [],
+      depenseTotale: 0,
+      sources: { ...OK, fiches: false },
+    });
+    expect(sansFiches.every((x) => x.etape1 === null && x.contrats === null)).toBe(true);
+  });
+
+  it("rien sur la période : un tableau vide, pas une rangée de zéros", () => {
+    expect(repartirParAnnonce({ leads: [], connus: [], depenseTotale: 0, sources: OK })).toEqual(
+      [],
+    );
   });
 });
