@@ -212,6 +212,51 @@ describe("<CookieConsent> — stockage indisponible", () => {
   });
 });
 
+describe("clé v2 — un « accepté » donné au bandeau Clarity seul ne vaut pas consentement Meta (2026-10-10)", () => {
+  const V1 = "axion-cookie-consent-v1";
+
+  afterEach(() => {
+    document.cookie = `${V1}=; path=/; max-age=0`;
+    document.body.innerHTML = "";
+  });
+
+  it("la clé est bien la v2", () => {
+    expect(ANALYTICS_CONSENT_KEY).toBe("axion-cookie-consent-v2");
+  });
+
+  it("v1 « accepted » seul (stockage local) ⇒ « unknown », bandeau revu", () => {
+    window.localStorage.setItem(V1, "accepted");
+    window.localStorage.setItem(`${V1}:ts`, String(Date.now()));
+    expect(readAnalyticsConsent()).toBe("unknown");
+    render(<CookieConsent />);
+    expect(banner()).not.toBeNull();
+  });
+
+  it("v1 « declined » seul ⇒ « unknown » aussi : un ancien refus ne vaut pas non plus", () => {
+    window.localStorage.setItem(V1, "declined");
+    window.localStorage.setItem(`${V1}:ts`, String(Date.now()));
+    expect(readAnalyticsConsent()).toBe("unknown");
+  });
+
+  it("v1 « accepted » dans le cookie de repli ⇒ « unknown »", () => {
+    document.cookie = `${V1}=${encodeURIComponent(`accepted|${Date.now()}`)}; path=/`;
+    expect(readAnalyticsConsent()).toBe("unknown");
+  });
+
+  it("v1 « accepted » ne cache PAS le bandeau avant l'hydratation (script en ligne)", () => {
+    window.localStorage.setItem(V1, "accepted");
+    window.localStorage.setItem(`${V1}:ts`, String(Date.now()));
+    const hote = monterAvantHydratation();
+    expect((hote.querySelector("#cookie-consent-banner") as HTMLElement).hidden).toBe(false);
+  });
+
+  it("v2 « accepted » frais ⇒ « accepted »", () => {
+    window.localStorage.setItem("axion-cookie-consent-v2", "accepted");
+    window.localStorage.setItem("axion-cookie-consent-v2:ts", String(Date.now()));
+    expect(readAnalyticsConsent()).toBe("accepted");
+  });
+});
+
 describe("resetAnalyticsConsent — RGPD art. 7.3", () => {
   it("purge le stockage et ré-affiche le banner", async () => {
     render(<CookieConsent />);

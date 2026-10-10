@@ -19,7 +19,7 @@
 // autre chemin ré-initialise l'embed sans consentement et ce fichier ne sert
 // plus à rien.
 //
-// PIÈGE 2 — NE PAS brancher ce gate sur la clé `axion-cookie-consent-v1` de la
+// PIÈGE 2 — NE PAS brancher ce gate sur la clé `axion-cookie-consent-v2` de la
 // CMP. Ce serait la solution la plus rapide et elle est mauvaise : cette clé
 // porte le consentement Microsoft Clarity (mesure d'audience). Refuser Clarity
 // bloquerait alors la prise de rendez-vous ; accepter Clarity autoriserait

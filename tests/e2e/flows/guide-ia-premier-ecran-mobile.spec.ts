@@ -34,8 +34,8 @@ test.use({ viewport: { width: LARGEUR, height: HAUTEUR }, hasTouch: true, isMobi
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     try {
-      window.localStorage.setItem("axion-cookie-consent-v1", "declined");
-      window.localStorage.setItem("axion-cookie-consent-v1:ts", String(Date.now()));
+      window.localStorage.setItem("axion-cookie-consent-v2", "declined");
+      window.localStorage.setItem("axion-cookie-consent-v2:ts", String(Date.now()));
     } catch {
       /* stockage indisponible : le bandeau s'affichera, la mesure reste valable */
     }

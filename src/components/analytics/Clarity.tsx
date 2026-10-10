@@ -8,7 +8,7 @@
 // après clic visiteur "Accepter" dans `CookieConsent` banner.
 //
 // Architecture :
-//  - `useAnalyticsConsent()` lit `localStorage.axion-cookie-consent-v1` + écoute
+//  - `useAnalyticsConsent()` lit `localStorage.axion-cookie-consent-v2` + écoute
 //    l'event custom `axion-consent-changed` → re-render automatique au clic accept.
 //  - Si pas de consent OU declined OU projectId absent → render `null` (zéro
 //    requête réseau Clarity, zéro cookie).
