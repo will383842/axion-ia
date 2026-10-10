@@ -473,6 +473,9 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // Une fiche de la page vidéo porte l'attribution d'origine de la personne
   // (annonce comprise) : on la recopie sur le rendez-vous, quel que soit le chemin
   // de la réservation (page merci, e-mail, autre appareil) — `attribution-origine.ts`.
+  // Détails de la fiche rattachée QUAND elle vient de la page vidéo (sinon `null`) :
+  // ils servent aussi à `Call Booked`, plus bas.
+  let detailsFicheVideo: unknown = null;
   if (ficheRattachee) {
     try {
       const fiche = await prisma.submission.findUnique({
@@ -480,6 +483,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
         select: { details: true, deletedAt: true },
       });
       if (fiche && fiche.deletedAt === null && estFicheVideo(fiche.details)) {
+        detailsFicheVideo = fiche.details;
         const recopie = recopieAttribution(
           {
             utmSource: (data["utmSource"] as string | undefined) ?? row.utmSource,
@@ -523,14 +527,24 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
 
   // `Call Booked` (serveur) : le libellé de campagne seulement, jamais une donnée
   // personnelle (règle de `plausible-serveur.ts`). Fail-soft, borné à 1,5 s.
-  if (callBookedAEmettre) {
+  //
+  // 2026-10-10 — SEULEMENT pour une réservation rattachée à une fiche venue de la
+  // page vidéo : c'est l'objectif du TUNNEL (chemin de sa page merci). Avant, toute
+  // réservation d'échange apporteur (Indeed, ancien formulaire, invitation) le
+  // gonflait. Les autres réservations apporteur n'émettent rien ici (aucun autre
+  // émetteur serveur n'existe pour elles). Propriété `annonce` = l'identifiant
+  // d'annonce d'origine (`utm_content` gardé sur la fiche) : un libellé de
+  // campagne, jamais une donnée personnelle.
+  if (callBookedAEmettre && detailsFicheVideo !== null) {
     try {
+      const annonce = attributionDeLaFiche(detailsFicheVideo).utm_content;
       await emettreEvenementPlausible({
         nom: "Call Booked",
         chemin: VSL_MERCI_PATH,
         props: {
           source: (data["utmSource"] as string | undefined) ?? row.utmSource ?? "direct",
           origine: "serveur",
+          ...(annonce ? { annonce: annonce.slice(0, 100) } : {}),
         },
       });
     } catch (e) {

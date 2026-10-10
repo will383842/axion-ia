@@ -31,9 +31,10 @@
 //     (`identite-reservation-vsl.ts`) — le même e-mail rattache la réservation à
 //     la fiche. Seul le jeton voyage, jamais l'adresse.
 // Le `Schedule` Meta et le `Call Booked` Plausible de la réservation partent du
-// serveur (`server/calendly/enrich.ts`) pour toute réservation d'échange
-// apporteur ; l'étape « Call Booking Viewed » de l'entonnoir reste tirée ici
-// (`VslMerciMesure`).
+// serveur (`server/calendly/enrich.ts`) — `Call Booked` seulement pour une
+// réservation rattachée à une fiche venue de cette page vidéo (2026-10-10), avec
+// l'annonce d'origine ; l'étape « Call Booking Viewed » de l'entonnoir reste
+// tirée ici (`VslMerciMesure`).
 //
 // ── DYNAMIQUE, et c'est voulu ───────────────────────────────────────────────
 // L'adresse Calendly du type (`CALENDLY_APPORTEUR_URL`) et le drapeau
