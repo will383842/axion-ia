@@ -8,18 +8,20 @@
  * trace écrite à côté de la transaction survivrait à son annulation.
  *
  * - **Sans option** : tolérance historique de `logQualiopiActivity` — un échec
- *   (écriture ou lecture du contexte de requête) est avalé, la fonction rend
- *   `false`. Un log raté n'invalide pas l'action métier.
+ *   (écriture ou lecture du contexte) est avalé, la fonction rend `false`. Un
+ *   log raté n'invalide pas l'action métier.
  * - **`exiger: true`** : l'échec est LEVÉ. Pour l'activation d'un formateur et
  *   tout acte qui touche à l'argent : sans trace, pas d'acte.
  *
  * Les `changes:` passent TOUJOURS par `filtrerChangesJournal`.
+ *
+ * ⚠️ Ce module n'importe ni `next/headers` ni le client global : le worker
+ * (`tsx`, hors de Next) doit pouvoir l'utiliser. Le contexte de requête (IP
+ * hachée, user-agent) est fourni par l'appelant via `options.contexte` —
+ * `_guards` qualiopi le lit dans les en-têtes, un acte du worker n'en a pas.
  */
 
-import { headers } from "next/headers";
-import { hashIp } from "@/lib/security/ip-hash";
 import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibles";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export interface EntreeJournal {
   /** Action canonique ex. "qualiopi.trainer.activation". */
@@ -34,9 +36,17 @@ export interface EntreeJournal {
   readonly session: { readonly userId: string } | null;
 }
 
+/** Contexte de la requête à l'origine de l'acte, déjà prêt à stocker (IP hachée). */
+export interface ContexteJournal {
+  readonly ipAddress: string | null;
+  readonly userAgent: string | null;
+}
+
 export interface OptionsJournal {
   /** Lever si l'entrée n'a pas pu être écrite (activation, argent). */
   readonly exiger?: boolean;
+  /** Lecture du contexte, appelée sous la même tolérance que l'écriture. */
+  readonly contexte?: () => ContexteJournal | Promise<ContexteJournal>;
 }
 
 export interface DonneesJournal {
@@ -125,19 +135,18 @@ export function filtrerChangesJournal(changes: unknown): unknown {
 }
 
 /** Les données d'une entrée de journal, SANS l'écrire. */
-export async function donneesJournal(entree: EntreeJournal): Promise<DonneesJournal> {
-  const h = await headers();
-  // IP du visiteur par la règle unique (cf. lib/client-ip-core), hachée avant stockage (RGPD).
-  const ipAddress = hashIp(ipVisiteurOuNull(h));
-  const userAgent = h.get("user-agent") || null;
+export function donneesJournal(
+  entree: EntreeJournal,
+  contexte?: ContexteJournal | null,
+): DonneesJournal {
   return {
     adminUserId: entree.session?.userId ?? null,
     action: entree.action.slice(0, 120),
     targetType: (entree.targetType ?? "qualiopi").slice(0, 80),
     targetId: entree.targetId ?? null,
     changes: filtrerChangesJournal(entree.changes) as never,
-    ipAddress: ipAddress?.slice(0, 64) ?? null,
-    userAgent: userAgent?.slice(0, 2000) ?? null,
+    ipAddress: contexte?.ipAddress?.slice(0, 64) ?? null,
+    userAgent: contexte?.userAgent?.slice(0, 2000) ?? null,
   };
 }
 
@@ -151,7 +160,8 @@ export async function journaliser(
   options?: OptionsJournal,
 ): Promise<boolean> {
   try {
-    await tx.activityLog.create({ data: await donneesJournal(entree) });
+    const contexte = options?.contexte ? await options.contexte() : null;
+    await tx.activityLog.create({ data: donneesJournal(entree, contexte) });
     return true;
   } catch (err) {
     if (options?.exiger) throw err;

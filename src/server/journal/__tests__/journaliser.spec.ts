@@ -15,11 +15,7 @@ const { globalCreate } = vi.hoisted(() => ({ globalCreate: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
   prisma: { activityLog: { create: globalCreate } },
 }));
-vi.mock("next/headers", () => ({
-  headers: vi.fn(async () => ({ get: () => null })),
-}));
 
-import { headers } from "next/headers";
 import { filtrerChangesJournal, journaliser } from "@/server/journal/journaliser";
 
 const SESSION = { userId: "admin-uuid-1", role: "admin" as const };
@@ -130,6 +126,28 @@ describe("journaliser — écrit dans la transaction passée", () => {
   });
 });
 
+describe("journaliser — contexte de requête fourni par l'appelant", () => {
+  it("l'IP (déjà hachée) et le user-agent fournis sont écrits, bornés", async () => {
+    const { tx, create } = txFactice();
+    await journaliser(
+      tx,
+      { action: "qualiopi.test", session: SESSION },
+      { contexte: () => ({ ipAddress: "h:" + "a".repeat(80), userAgent: "navigateur" }) },
+    );
+    const data = (create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data["ipAddress"]).toBe(("h:" + "a".repeat(80)).slice(0, 64));
+    expect(data["userAgent"]).toBe("navigateur");
+  });
+
+  it("sans contexte (acte du worker), IP et user-agent sont nuls", async () => {
+    const { tx, create } = txFactice();
+    await journaliser(tx, { action: "qualiopi.test", session: null });
+    const data = (create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data["ipAddress"]).toBeNull();
+    expect(data["userAgent"]).toBeNull();
+  });
+});
+
 describe("journaliser — option `exiger`", () => {
   it("🔴 `exiger: true` : un échec d'écriture est levé", async () => {
     const { tx, create } = txFactice();
@@ -139,12 +157,26 @@ describe("journaliser — option `exiger`", () => {
     ).rejects.toThrow("base indisponible");
   });
 
-  it("`exiger: true` : un échec de lecture du contexte est levé aussi", async () => {
-    const { tx } = txFactice();
-    vi.mocked(headers).mockRejectedValueOnce(new Error("hors requête"));
+  it("`exiger: true` : un échec de lecture du contexte est levé aussi, rien n'est écrit", async () => {
+    const { tx, create } = txFactice();
+    const contexte = async () => {
+      throw new Error("hors requête");
+    };
     await expect(
-      journaliser(tx, { action: "qualiopi.test", session: SESSION }, { exiger: true }),
+      journaliser(tx, { action: "qualiopi.test", session: SESSION }, { exiger: true, contexte }),
     ).rejects.toThrow("hors requête");
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("sans l'option : un échec de lecture du contexte est toléré, rien n'est écrit", async () => {
+    const { tx, create } = txFactice();
+    const contexte = async () => {
+      throw new Error("hors requête");
+    };
+    await expect(
+      journaliser(tx, { action: "qualiopi.test", session: SESSION }, { contexte }),
+    ).resolves.toBe(false);
+    expect(create).not.toHaveBeenCalled();
   });
 
   it("sans l'option : l'échec est toléré, la fonction rend `false`", async () => {
@@ -156,9 +188,15 @@ describe("journaliser — option `exiger`", () => {
   });
 });
 
-describe("garde statique — le module de journal écrit dans `tx`", () => {
+describe("garde statique — le module de journal écrit dans `tx`, et tourne hors de Next", () => {
+  const source = readFileSync(join(process.cwd(), "src/server/journal/journaliser.ts"), "utf-8");
+
   it("🔴 il n'importe pas le client global", () => {
-    const source = readFileSync(join(process.cwd(), "src/server/journal/journaliser.ts"), "utf-8");
     expect(source).not.toMatch(/from\s+["']@\/lib\/prisma["']/);
+  });
+
+  it("il n'importe ni `next/headers` ni `server-only` (le worker doit pouvoir l'utiliser)", () => {
+    expect(source).not.toMatch(/["']next\/headers["']/);
+    expect(source).not.toMatch(/["']server-only["']/);
   });
 });
