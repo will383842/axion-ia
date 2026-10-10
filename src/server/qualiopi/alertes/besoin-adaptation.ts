@@ -75,3 +75,15 @@ export function construireAlerteBesoinAdaptation(beneficiaire: BeneficiairePourA
       `session. Cette alerte se fermera d'elle-même.`,
   };
 }
+
+/**
+ * Message Telegram d'une déclaration : aucune donnée identifiante, aucune
+ * nature de situation — un renvoi vers la fiche console, et rien d'autre.
+ */
+export function construireMessageTelegramAdaptation(traineeId: string): string {
+  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const prefix = process.env.ADMIN_URL_PREFIX ?? "admin";
+  const chemin = `/fr/${prefix}/qualiopi/stagiaires/${traineeId}`;
+  const lien = site ? `${site}${chemin}` : `(console ${chemin})`;
+  return `Un stagiaire a déclaré une situation à prendre en compte. Voir sa fiche : ${lien}`;
+}

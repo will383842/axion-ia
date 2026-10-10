@@ -280,10 +280,11 @@ describe("🔴 aménagement SANS handicap — la case n'est pas cochée", () => 
       // contient. Un motif trop court accuse à tort — premier jet rouge ici.
       expect(emis).not.toContain("place près");
     }
-    // …et le message nomme quand même la personne et dit où regarder.
+    // …le message ne nomme personne et renvoie à la fiche.
     const telegram = JSON.stringify(sendTelegram.mock.calls[0]?.[0] ?? {});
-    expect(telegram).toContain("Simone");
-    expect(telegram).toContain("chiffré");
+    expect(telegram).not.toContain("Simone");
+    expect(telegram).not.toContain("Blanc");
+    expect(telegram).toContain(`/qualiopi/stagiaires/${UUID}`);
   });
 
   it("idempotence : deux déclarations ne font pas deux lignes, seulement une date plus récente", async () => {

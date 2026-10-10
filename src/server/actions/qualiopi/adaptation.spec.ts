@@ -152,10 +152,14 @@ describe("déclaration — quelqu'un est enfin prévenu", () => {
       JSON.stringify(sendTelegram.mock.calls[0]?.[0] ?? {}),
     ]) {
       expect(emis).not.toContain("fauteuil");
-      // …mais chacun nomme la personne et dit où regarder, sinon il est inutile.
-      expect(emis).toContain("Simone");
-      expect(emis).toContain("chiffré");
     }
+    // L'alerte console nomme la personne ; le Telegram, canal tiers, ne la
+    // nomme pas et renvoie seulement à sa fiche.
+    expect(JSON.stringify(creerOuDedup.mock.calls[0]?.[0] ?? {})).toContain("Simone");
+    const telegram = JSON.stringify(sendTelegram.mock.calls[0]?.[0] ?? {});
+    expect(telegram).not.toContain("Simone");
+    expect(telegram).not.toContain("Blanc");
+    expect(telegram).toContain(`/qualiopi/stagiaires/${UUID}`);
   });
 
   it("une panne d'alerte ne fait pas échouer la déclaration", async () => {
