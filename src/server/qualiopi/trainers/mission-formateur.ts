@@ -603,6 +603,9 @@ export function normaliserMotifRefus(motif: string | undefined): string | null {
  * `SessionFormateur` supprimée. La session apparaît alors sans formateur — et
  * l'alerte `formateur_mission_refusee` la réclame au secrétariat.
  */
+/** L'unique réponse « introuvable » : proposition inconnue ou adressée à un autre. */
+const MISSION_INTROUVABLE = "Cette proposition n'existe pas.";
+
 export async function repondreMission(
   input: RepondreMissionInput,
 ): Promise<RepondreMissionResultat> {
@@ -620,9 +623,11 @@ export async function repondreMission(
       session: { select: { dateDebut: true, statut: true, formateurPrincipalId: true } },
     },
   });
-  if (mission === null) return { ok: false, erreur: "Cette proposition n'existe pas." };
+  // La proposition d'un AUTRE formateur répond exactement comme une proposition
+  // inconnue : un identifiant ne doit rien apprendre à qui ne le possède pas.
+  if (mission === null) return { ok: false, erreur: MISSION_INTROUVABLE };
   if (input.trainerId !== undefined && input.trainerId !== mission.trainerId) {
-    return { ok: false, erreur: "Cette proposition ne vous est pas adressée." };
+    return { ok: false, erreur: MISSION_INTROUVABLE };
   }
   if (mission.statut !== "en_attente") {
     return {
