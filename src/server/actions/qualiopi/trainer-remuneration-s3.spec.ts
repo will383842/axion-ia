@@ -220,3 +220,60 @@ describe("C5 — une autofacture émise ne se défait pas", () => {
     expect(res).toEqual({ data: { id: ID, statut: "a_valider" } });
   });
 });
+
+/**
+ * ASSEMBLAGE S3 — la transition attend le run, elle ne casse pas sur lui.
+ *
+ * Le run mensuel tient le verrou de période jusqu'à `DELAI_TRANSACTION_RUN_MS`.
+ * Avec les 5 s par défaut de Prisma, une validation lancée pendant un run levait
+ * une erreur brute au bout de 5 s.
+ */
+describe("ASSEMBLAGE S3 — délais de la transaction de transition", () => {
+  it("la transaction attend au moins aussi longtemps que le run peut tenir le verrou", async () => {
+    const { DELAI_TRANSACTION_RUN_MS, ATTENTE_CONNEXION_RUN_MS } = await import(
+      "@/server/qualiopi/remuneration/verrou-remuneration"
+    );
+    mockStatementFindUnique.mockResolvedValue(releve({ statut: "a_valider" }));
+
+    await transitionStatementAction({ id: ID, to: "valide" });
+
+    const options = mockTransaction.mock.calls[0]?.[1] as
+      | { timeout?: number; maxWait?: number }
+      | undefined;
+    expect(options?.timeout).toBeGreaterThan(DELAI_TRANSACTION_RUN_MS);
+    expect(options?.maxWait).toBe(ATTENTE_CONNEXION_RUN_MS);
+  });
+
+  it("délai dépassé (P2028) : message clair « calcul en cours », pas une erreur brute", async () => {
+    mockStatementFindUnique.mockResolvedValue(releve({ statut: "a_valider" }));
+    mockTransaction.mockRejectedValueOnce(
+      Object.assign(new Error("Transaction already closed: timeout"), { code: "P2028" }),
+    );
+
+    const res = await transitionStatementAction({ id: ID, to: "valide" });
+
+    expect(res).toEqual({
+      error: expect.stringMatching(/calcul .*en cours.*réessayez dans une minute/i),
+    });
+  });
+
+  it("CONTRE-TÉMOIN : une autre erreur garde le message générique", async () => {
+    mockStatementFindUnique.mockResolvedValue(releve({ statut: "a_valider" }));
+    mockTransaction.mockRejectedValueOnce(new Error("connexion perdue"));
+
+    const res = await transitionStatementAction({ id: ID, to: "valide" });
+
+    expect(res).toEqual({ error: "Erreur lors du changement de statut." });
+  });
+
+  it("le paiement n'écrit que si aucune contestation n'est arrivée entre-temps", async () => {
+    mockStatementFindUnique.mockResolvedValue(
+      releve({ statut: "facture_recue", numeroFacture: "F-001", montantFactureTtcCents: 108_000 }),
+    );
+
+    await transitionStatementAction({ id: ID, to: "paye", moyenPaiement: "virement" });
+
+    const where = tx.trainerStatement.updateMany.mock.calls[0]?.[0]?.where;
+    expect(where).toMatchObject({ id: ID, statut: "facture_recue", contesteeAt: null });
+  });
+});

@@ -21,6 +21,27 @@
  * et des UUID validés en amont ; l'apostrophe est tout de même doublée.
  */
 
+/**
+ * Délais de la transaction du run mensuel (`statements.ts`), qui tient le verrou
+ * de période d'un bout à l'autre. Ils vivent ICI parce que toute transaction qui
+ * prend le MÊME verrou (`transitionStatementAction`) peut l'attendre jusqu'à
+ * `DELAI_TRANSACTION_RUN_MS` : ses propres délais se calculent à partir de
+ * ceux-ci, jamais à côté.
+ */
+export const DELAI_TRANSACTION_RUN_MS = 120_000;
+export const ATTENTE_CONNEXION_RUN_MS = 10_000;
+
+/**
+ * Délais d'une transaction qui ATTEND le verrou de période : le run peut le
+ * tenir `DELAI_TRANSACTION_RUN_MS` (au-delà, Prisma l'annule et le verrou tombe
+ * au rollback), plus une marge pour sa propre écriture. Avec les 5 s par défaut
+ * de Prisma, une validation lancée pendant un run levait une erreur brute.
+ */
+export const DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION = {
+  timeout: DELAI_TRANSACTION_RUN_MS + 15_000,
+  maxWait: ATTENTE_CONNEXION_RUN_MS,
+} as const;
+
 export interface PeriodeVerrou {
   year: number;
   month: number;

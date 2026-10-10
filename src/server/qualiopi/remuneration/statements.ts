@@ -53,7 +53,11 @@ import {
   type StatementStatut,
 } from "./run";
 import { HEURES_PAR_JOUR_DEFAUT } from "./calcul";
-import { prendreVerrousRemuneration } from "./verrou-remuneration";
+import {
+  ATTENTE_CONNEXION_RUN_MS,
+  DELAI_TRANSACTION_RUN_MS,
+  prendreVerrousRemuneration,
+} from "./verrou-remuneration";
 
 /** Un formateur écarté du run parce que son relevé est déjà figé. */
 export interface FormateurIgnore {
@@ -463,7 +467,7 @@ export async function runRemunerationMensuelle(
     },
     // Un mois chargé enchaîne beaucoup d'aller-retours : les 5 s par défaut de
     // Prisma sont trop courtes, et un timeout ici annulerait tout le run.
-    { timeout: 120_000, maxWait: 10_000 },
+    { timeout: DELAI_TRANSACTION_RUN_MS, maxWait: ATTENTE_CONNEXION_RUN_MS },
   );
 
   return {

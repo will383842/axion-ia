@@ -32,7 +32,10 @@ import { requireHabilitation, logQualiopiActivity } from "@/server/actions/quali
 import { runRemunerationMensuelle } from "@/server/qualiopi/remuneration/statements";
 import { transitionAutorisee, type StatementStatut } from "@/server/qualiopi/remuneration/run";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
-import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verrou-remuneration";
+import {
+  DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION,
+  prendreVerrousRemuneration,
+} from "@/server/qualiopi/remuneration/verrou-remuneration";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -160,6 +163,20 @@ const transitionSchema = z.object({
   moyenPaiement: z.string().max(30).optional(),
   referenceVirement: z.string().max(80).optional(),
 });
+
+/**
+ * Le run mensuel tient le verrou de période jusqu'à deux minutes. Une transition
+ * qui l'attend au-delà de son propre délai le dit en clair, plutôt que de rendre
+ * une erreur technique indistinguable d'une panne.
+ */
+const MESSAGE_CALCUL_EN_COURS =
+  "Un calcul de rémunération est en cours sur cette période : réessayez dans une minute.";
+
+function estDelaiTransactionDepasse(err: unknown): boolean {
+  return (
+    typeof err === "object" && err !== null && (err as { code?: unknown }).code === "P2028"
+  );
+}
 
 /**
  * Fait passer un relevé d'un statut à un autre. Refuse toute transition que la
@@ -307,7 +324,15 @@ export async function transitionStatementAction(
        * notre transition reviendrait à décider sur un état périmé.
        */
       const ecrit = await tx.trainerStatement.updateMany({
-        where: { id: v.id, statut: from, autofactureAt: releve.autofactureAt },
+        where: {
+          id: v.id,
+          statut: from,
+          autofactureAt: releve.autofactureAt,
+          // Une contestation consignée entre la lecture et l'écriture
+          // (`contesterAutofactureAction`) bloque le paiement, comme la garde
+          // plus haut : sinon le virement partirait sur une pièce contestée.
+          ...(v.to === "paye" ? { contesteeAt: null } : {}),
+        },
         data: {
           statut: v.to,
           ...(v.to === "valide" ? { validatedById: session.userId } : {}),
@@ -367,8 +392,13 @@ export async function transitionStatementAction(
           data: { statut: "calcule" },
         });
       }
-    });
-  } catch {
+    }, DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION);
+  } catch (err) {
+    // P2028 : délai de transaction dépassé, ou aucune connexion obtenue à temps.
+    // Rollback complet — rien n'est écrit, la transition peut être rejouée.
+    if (estDelaiTransactionDepasse(err)) {
+      return { error: MESSAGE_CALCUL_EN_COURS };
+    }
     return { error: "Erreur lors du changement de statut." };
   }
   if (aChange) {
