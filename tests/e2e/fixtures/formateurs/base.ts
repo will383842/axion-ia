@@ -3,9 +3,9 @@
 // Même import que les autres specs de bout en bout (`index.js` explicite : le
 // dépôt est en ESM, un import de dossier ne s'y résout pas).
 //
-// 🔑 Chaque test EFFACE ce qu'il a écrit. La base E2E est partagée par toute la
-// suite Gate B : un rendez-vous laissé derrière soi changerait les comptes de
-// l'onglet Rendez-vous que d'autres specs lisent.
+// 🔑 Chaque test EFFACE ce qu'il a écrit. La base du banc est partagée par tous
+// ses specs (et, en local, par le reste de la suite) : un rendez-vous laissé
+// derrière soi changerait les comptes que d'autres specs lisent.
 
 import { PrismaClient } from "../../../../prisma/generated/client/index.js";
 

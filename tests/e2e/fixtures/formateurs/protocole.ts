@@ -21,6 +21,18 @@ export type EntreeBanc =
       readonly rendezVous: readonly RendezVousSimule[];
       /** L'instant du passage (ISO 8601) — l'horloge pilotée du banc. */
       readonly maintenant: string;
+    }
+  | {
+      /**
+       * Enfile un e-mail par `enqueueEmail` — le chemin RÉEL de tout envoi du
+       * site. Ne marche que là où la file existe (job `banc-formateurs`) : sous
+       * `BULLMQ_DISABLED`, la fonction rend `{ enqueued: false }`.
+       */
+      readonly action: "enfiler-email";
+      readonly gabarit: string;
+      readonly destinataire: string;
+      /** Retard BullMQ : le job dort en file, comme une relance programmée. */
+      readonly delaiMs?: number;
     };
 
 export interface ResultatWebhook {
@@ -38,4 +50,12 @@ export interface ResultatPassage {
     readonly reason?: string;
   };
   readonly reseau: readonly AppelReseau[];
+}
+
+/** Ce que `enqueueEmail` a rendu, tel quel (champs facultatifs absents). */
+export interface ResultatEnfilage {
+  readonly enqueued: boolean;
+  readonly garePourValidation?: boolean;
+  readonly retenu?: string;
+  readonly corbeilleIndisponible?: boolean;
 }

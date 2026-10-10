@@ -1,0 +1,175 @@
+name: Banc formateurs
+
+# Lot X1-bis du chantier « formateurs freelance » — le banc `@formateurs` dans
+# SON job, avec ce que Gate B n'a pas et ne doit pas avoir :
+#
+#   · Postgres et Redis RÉELS (conteneurs de service) ;
+#   · BullMQ ALLUMÉ — pas de `BULLMQ_DISABLED` — et le worker de production
+#     (`pnpm worker`, soit `tsx src/server/queue/worker.ts`) en tâche de fond ;
+#   · un PUITS SMTP (Mailpit) : le worker y remet, Mailpit garde et ne relaie
+#     rien. Aucune clé d'envoi réelle n'existe dans ce job — ni identifiants
+#     SMTP, ni jeton de relais, ni aucun `secrets.*` : rien ne peut sortir.
+#
+# L'horloge n'est jamais truquée : les passages planifiés reçoivent leur
+# `maintenant` en paramètre, appelés par l'exécuteur du banc
+# (`tests/e2e/fixtures/formateurs/serveur/executer.ts`), pas par les crons.
+#
+# ⚠️ Informatif : ce job n'est PAS un contexte requis de la protection de
+# `main`, et ne touche pas Gate B (qui exclut désormais `@formateurs`, et
+# n'attend rien d'ici). Il tourne sur les PR qui touchent le chantier, chaque
+# nuit (appelé par `nightly.yml`) et à la demande.
+#
+# Antivirus : aucun chemin du banc n'analyse de fichier aujourd'hui. Le mode
+# prévu pour les tests s'applique — `CLAMAV_HOST` pointe sur un hôte qui ne
+# résout pas, donc toute analyse rend « indisponible » et rien n'est montré
+# sans verdict (`src/server/careers/clamav.ts`). Le jour où un lot du chantier
+# dépose un fichier, un conteneur ClamAV rejoindra les services ci-dessous.
+#
+# Stockage : le pilote local du dépôt (dossiers sur disque) ; aucun seau distant
+# n'est configuré, donc aucun envoi de pièce vers R2.
+
+on:
+  pull_request:
+    paths:
+      - "src/server/qualiopi/formateurs-independants/**"
+      - "src/server/calendly/**"
+      - "src/lib/relances/**"
+      - "src/server/qualiopi/documents/signature/**"
+      - "src/app/api/calendly/**"
+      - "src/lib/careers/formateur-freelance*"
+      - "tests/e2e/formateurs/**"
+      - "tests/e2e/fixtures/formateurs/**"
+      - "tests/e2e/qualiopi/formateurs/**"
+      - ".github/workflows/banc-formateurs.yml"
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  banc:
+    name: Banc formateurs · file, worker, puits SMTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: axion_ia_banc
+          POSTGRES_PASSWORD: banc_password_dummy
+          POSTGRES_DB: axion_ia_banc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U axion_ia_banc"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      mailpit:
+        image: axllent/mailpit:v1.31.2
+        ports:
+          - 1025:1025
+          - 8025:8025
+    env:
+      SKIP_ENV_VALIDATION: "true"
+      DATABASE_URL: "postgresql://axion_ia_banc:banc_password_dummy@localhost:5432/axion_ia_banc?schema=public"
+      DIRECT_URL: "postgresql://axion_ia_banc:banc_password_dummy@localhost:5432/axion_ia_banc?schema=public"
+      REDIS_URL: "redis://localhost:6379"
+      # Le puits. Sans `SMTP_USER` / `SMTP_PASS`, le transport part sans
+      # authentification ni TLS — ce qui n'est permis que hors production.
+      SMTP_HOST: "localhost"
+      SMTP_PORT: "1025"
+      BANC_PUITS_SMTP_URL: "http://localhost:8025"
+      # Dans ce job, un puits absent est une faute de câblage, pas un saut.
+      BANC_FORMATEURS: "1"
+      CLAMAV_HOST: "clamav.invalid"
+      IMAGE_BANK_STORAGE_PATH: "/tmp/banc-formateurs/stockage/image-bank"
+      EDITORIAL_STORAGE_PATH: "/tmp/banc-formateurs/stockage/editorial"
+      # Valeurs FICTIVES, les mêmes que Gate B : elles ne protègent rien de réel.
+      AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+      IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
+      PII_ENCRYPTION_KEY: "ci-dummy-pii-encryption-key-not-used-in-build-32"
+      NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
+      # Le banc ne charge aucune page : sans cette adresse, Playwright
+      # démarrerait `pnpm start`, qui exige un build que ce job ne fait pas.
+      E2E_BASE_URL: "http://localhost:3000"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Migrer et semer la base du banc
+        run: |
+          set -e
+          pnpm prisma migrate deploy
+          PGPASSWORD=banc_password_dummy psql -h localhost -U axion_ia_banc -d axion_ia_banc -f prisma/migrations_fts/0002_fts_setup.sql
+          PGPASSWORD=banc_password_dummy psql -h localhost -U axion_ia_banc -d axion_ia_banc -f prisma/migrations_fts/kb_fts_setup.sql
+          pnpm db:seed
+      - name: Le puits SMTP répond
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8025/api/v1/info > /dev/null; then
+              echo "Mailpit prêt"; exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Mailpit ne répond pas sur :8025"
+          exit 1
+      - name: Démarrer le worker (tâche de fond)
+        run: |
+          mkdir -p /tmp/banc-formateurs/stockage
+          nohup pnpm worker > /tmp/banc-formateurs/worker.log 2>&1 &
+          echo $! > /tmp/banc-formateurs/worker.pid
+          for i in $(seq 1 90); do
+            if grep -q "workers running" /tmp/banc-formateurs/worker.log; then
+              grep -E "email-worker|workers running" /tmp/banc-formateurs/worker.log
+              exit 0
+            fi
+            if ! kill -0 "$(cat /tmp/banc-formateurs/worker.pid)" 2>/dev/null; then
+              echo "::error::le worker est mort au démarrage"
+              cat /tmp/banc-formateurs/worker.log
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "::error::le worker ne s'est pas déclaré prêt en 3 min"
+          tail -50 /tmp/banc-formateurs/worker.log
+          exit 1
+      - name: Banc @formateurs
+        # `--retries=0` : un banc qui ne passe qu'au troisième essai ne prouve
+        # pas ce qu'il affirme. Pas de navigateur : aucun spec du banc n'ouvre
+        # de page (une spec d'écran reste dans Gate B, sans le tag).
+        run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0
+        timeout-minutes: 10
+      - name: Journal du worker
+        if: ${{ always() }}
+        run: |
+          kill "$(cat /tmp/banc-formateurs/worker.pid)" 2>/dev/null || true
+          tail -200 /tmp/banc-formateurs/worker.log || true
+      - name: Rapport et journal
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: banc-formateurs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/
+            /tmp/banc-formateurs/worker.log
+          retention-days: 7
+          if-no-files-found: ignore

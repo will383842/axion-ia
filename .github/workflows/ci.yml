@@ -907,7 +907,14 @@ jobs:
         # de le dire.
         #
         # Garde : `tests/unit/ci/suite-facultative-non-executee.spec.ts`.
-        run: pnpm test:e2e --project=chromium --grep-invert "@baseline"
+        #
+        # 🔵 2026-10-10 (lot X1-bis) — `@formateurs` sort aussi, et pour la raison
+        # inverse : ce n'est pas une suite facultative, c'est une suite qui a
+        # besoin de ce que Gate B n'a pas (file BullMQ allumée, worker, puits
+        # SMTP). Elle tourne dans son job, `banc-formateurs.yml`. Une spec
+        # d'ÉCRAN ou de GARDE du chantier reste ici : elle ne porte pas le tag.
+        # Garde : `tests/unit/ci/le-banc-formateurs-a-son-job.spec.ts`.
+        run: pnpm test:e2e --project=chromium --grep-invert "@baseline|@formateurs"
         # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
         # tourné ont été COUPÉS par ce plafond, pas terminés :
         #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
