@@ -56,7 +56,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_CONTRAT: readonly PartieSignataire[] = partiesRequisesPour("contrat_travail") ?? [];
 
 export type RefusContratTravail =
-  RefusSignatureDocument | "non_titulaire" | "requete_invalide" | "role_insuffisant" | "stockage";
+  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureContratTravail =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -161,6 +161,16 @@ async function classerContratAuDossier(
   }
 }
 
+/**
+ * L'unique réponse « introuvable » du côté salarié : identifiant inconnu, pièce
+ * d'un autre type ou contrat d'une autre personne répondent à l'identique.
+ */
+const CONTRAT_INTROUVABLE = {
+  ok: false,
+  raison: "piece_introuvable",
+  message: "Contrat de travail introuvable.",
+} as const;
+
 /** Le salarié signe SON contrat depuis son espace authentifié. */
 export async function signerContratTravailFormateurAction(input: {
   documentGenereId: string;
@@ -188,7 +198,7 @@ export async function signerContratTravailFormateurAction(input: {
     select: { type: true, numero: true, trainerId: true },
   });
   if (piece === null || piece.type !== "contrat_travail") {
-    return { ok: false, raison: "piece_introuvable", message: "Contrat de travail introuvable." };
+    return { ...CONTRAT_INTROUVABLE };
   }
 
   // Le titulaire EST l'ancre. `null` = la pièce n'appartient à personne : elle se
@@ -198,12 +208,9 @@ export async function signerContratTravailFormateurAction(input: {
       tags: { action: "signerContratTravailFormateurAction:non_titulaire" },
       extra: { documentGenereId: donnees.documentGenereId },
     });
-    return {
-      ok: false,
-      raison: "non_titulaire",
-      message:
-        "Ce contrat de travail ne vous concerne pas : il nomme une personne précise, et elle seule peut le signer.",
-    };
+    // Même réponse qu'un identifiant inconnu : le contrat d'un autre salarié ne
+    // doit pas se distinguer d'un contrat qui n'existe pas.
+    return { ...CONTRAT_INTROUVABLE };
   }
 
   try {

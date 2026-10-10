@@ -111,7 +111,7 @@ describe("🔴 signature du formateur mandaté", () => {
       coFormateurs: [{ trainerId: TRAINER, role: "co_formateur" }],
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
@@ -138,7 +138,7 @@ describe("🔴 signature du formateur mandaté", () => {
       trainerId: null,
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
@@ -165,7 +165,7 @@ describe("🔴 signature du formateur mandaté", () => {
       trainerId: AUTRE_TRAINER,
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
@@ -185,7 +185,7 @@ describe("🔴 signature du formateur mandaté", () => {
       coFormateurs: [],
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
@@ -197,14 +197,14 @@ describe("🔴 signature du formateur mandaté", () => {
       coFormateurs: [],
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
   it("refuse quand la session référencée n'existe plus", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(null);
     const res = await signerLettreMissionFormateurAction(ENTREE);
-    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
   });
 
   it("admet le principal résolu par le repli Json legacy, comme le générateur", async () => {

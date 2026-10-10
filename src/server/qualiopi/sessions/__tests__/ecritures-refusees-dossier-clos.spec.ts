@@ -358,6 +358,14 @@ const APPELS: Record<string, { appel: Appel; prepare?: () => void }> = {
       ),
   },
   signerPourStagiaireAction: {
+    // Lot S4 : l'appartenance est vérifiée AVANT le verrou (une session animée
+    // par un autre répond « introuvable », comme un identifiant inconnu) — le
+    // formateur doit donc animer la session pour atteindre la garde.
+    prepare: () =>
+      h.lectures.set("trainingSession.findUnique", {
+        formateurPrincipalId: TRAINER,
+        sessionFormateurs: [],
+      }),
     appel: async () =>
       (await import("@/server/actions/qualiopi/emargement-formateur")).signerPourStagiaireAction({
         sessionId: SESSION,

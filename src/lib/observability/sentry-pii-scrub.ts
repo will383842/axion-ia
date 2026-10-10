@@ -10,6 +10,7 @@
 
 import type { ErrorEvent, EventHint, NodeOptions } from "@sentry/nextjs";
 
+import { masquerDonneesSensibles } from "../security/masquage-donnees-sensibles";
 import { viderRequeteDesDocuments } from "./sentry-documents-projet";
 
 /**
@@ -100,13 +101,15 @@ function masquerSegmentsSensibles(url: string): string {
 
 function redactString(input: unknown): unknown {
   if (typeof input !== "string") return input;
-  return masquerSegmentsSensibles(input)
+  const texte = masquerSegmentsSensibles(input)
     .replace(JWT_RE, "[JWT]")
     .replace(MAGIC_TOKEN_RE, "[TOKEN]")
     .replace(EMAIL_RE, "[EMAIL]")
     .replace(IPV4_RE, "[IP]")
     .replace(PHONE_RE, "[PHONE]")
     .replace(HEX_TOKEN_RE, "[TOKEN]");
+  // Sur un texte, `masquerDonneesSensibles` masque tout ce qui a la forme d'un IBAN.
+  return masquerDonneesSensibles(texte);
 }
 
 /**
@@ -172,7 +175,10 @@ function redactRecord(
 ): Record<string, unknown> | undefined {
   if (!rec) return rec;
   const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(rec)) {
+  // Même règle que le journal Qualiopi : IBAN / BIC / RIB, e-mail, téléphone et
+  // adresse sont masqués par leur CLÉ, à toute profondeur — les motifs de
+  // `redactString` ne voient que les valeurs texte du premier niveau.
+  for (const [k, v] of Object.entries(masquerDonneesSensibles(rec))) {
     const kl = k.toLowerCase();
     if (SENSITIVE_HEADER_KEYS.has(kl) || SENSITIVE_QUERY_KEYS.has(kl)) {
       out[k] = "[REDACTED]";

@@ -60,7 +60,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_RELEVE: readonly PartieSignataire[] = partiesRequisesPour("releve_connexion") ?? [];
 
 export type RefusReleve =
-  RefusSignatureDocument | "non_membre" | "requete_invalide" | "role_insuffisant" | "stockage";
+  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureReleve =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -121,6 +121,16 @@ function refusStockage(err: SignatureStockageError): ResultatSignatureReleve {
  * formateur ; le second est la garde du service, qui ne fait confiance à aucun
  * appelant.
  */
+/**
+ * L'unique réponse « introuvable » du côté formateur : identifiant inconnu,
+ * pièce d'un autre type ou relevé d'une session qu'il n'anime pas.
+ */
+const RELEVE_INTROUVABLE = {
+  ok: false,
+  raison: "piece_introuvable",
+  message: "Relevé de connexion introuvable.",
+} as const;
+
 export async function signerReleveFormateurAction(input: {
   documentGenereId: string;
   methode: "trace" | "papier_scanne" | "confirmation_accessible";
@@ -143,11 +153,7 @@ export async function signerReleveFormateurAction(input: {
     select: { type: true, sessionId: true },
   });
   if (piece === null || piece.type !== "releve_connexion") {
-    return {
-      ok: false,
-      raison: "piece_introuvable",
-      message: "Relevé de connexion introuvable.",
-    };
+    return { ...RELEVE_INTROUVABLE };
   }
 
   if (
@@ -158,7 +164,9 @@ export async function signerReleveFormateurAction(input: {
       tags: { action: "signerReleveFormateurAction:non_membre" },
       extra: { documentGenereId: donnees.documentGenereId },
     });
-    return { ok: false, raison: "non_membre", message: "Vous n'animez pas cette session." };
+    // Même réponse qu'un identifiant inconnu : le relevé d'une session animée par
+    // un autre ne doit pas se distinguer d'un relevé qui n'existe pas.
+    return { ...RELEVE_INTROUVABLE };
   }
 
   try {
