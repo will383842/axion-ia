@@ -40,6 +40,7 @@ import { sendTelegram } from "@/lib/telegram";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { changerActivationFormateur } from "@/server/qualiopi/formateurs-independants/activation";
+import { lireEtatsSignature } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
 import {
   devisConcernesPourEmission,
@@ -72,6 +73,12 @@ export interface ContexteApresSignature {
   /** La partie qui vient de signer. */
   readonly partie: PartieSignataire;
   readonly acteur: ActeurSignature;
+  /**
+   * `lien_a_jeton` : la pièce signée par lien (`signerPieceParJetonAction`), le
+   * seul canal qui alertait Telegram avant S6a. Les autres canaux n'alertent que
+   * si l'interrupteur `signature.alertes_hors_jeton` est allumé.
+   */
+  readonly canal?: "lien_a_jeton";
 }
 
 function capturer(err: unknown, branche: string, ctx: ContexteApresSignature): void {
@@ -327,12 +334,19 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
   const circuit = circuitPour(ctx.type);
   const libelle = circuit?.libelle ?? "pièce";
 
+  // 🔴 Les comportements NEUFS de S6a sont livrés ÉTEINTS : clé absente,
+  // illisible ou lecture en panne = comportement d'avant S6a, à l'identique.
+  const interrupteurs = await lireEtatsSignature();
+  const alerter = ctx.canal === "lien_a_jeton" || interrupteurs.alertes_hors_jeton;
+
   // ── 1. Remise ─────────────────────────────────────────────────────────────
   //
   // ⚠️ AVANT toute branche par type : c'est ce qui manquait à la lettre de
   // mission, et une remise placée après un `return` de branche ne
   // s'exécuterait que pour certains types.
-  if (ctx.statutSignature === "signee") {
+  // Le contrat de travail n'était que classé : sa remise au salarié est neuve.
+  const remettre = ctx.type !== "contrat_travail" || interrupteurs.exemplaire_contrat_travail;
+  if (ctx.statutSignature === "signee" && remettre) {
     try {
       const remise = await transmettreExemplaireSigne(ctx.documentGenereId);
       if (!remise.ok && remise.motif !== "deja_transmis" && remise.motif !== "aucun_destinataire") {
@@ -345,30 +359,34 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
     } catch (err) {
       capturer(err, "exemplaire", ctx);
     }
-  } else {
+  } else if (ctx.statutSignature !== "signee") {
     // 🔴 Une signature reçue que personne ne remarque laisse la pièce en
     // attente indéfiniment. ⚠️ AUCUNE donnée personnelle : Telegram est un
     // canal tiers — libellé, numéro et codes de parties suffisent à agir.
-    try {
-      const manquantes =
-        circuit === null ? [] : await partiesManquantes(ctx.documentGenereId, circuit.parties);
-      await sendTelegram({
-        tag: "AUTO",
-        body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
-      });
-    } catch (err) {
-      capturer(err, "alerte", ctx);
+    if (alerter) {
+      try {
+        const manquantes =
+          circuit === null ? [] : await partiesManquantes(ctx.documentGenereId, circuit.parties);
+        await sendTelegram({
+          tag: "AUTO",
+          body: `✍️ ${libelle} ${ctx.numero} : signature reçue (${ctx.partie}). Reste à signer : ${manquantes.join(", ")}.`,
+        });
+      } catch (err) {
+        capturer(err, "alerte", ctx);
+      }
     }
-    try {
-      await transmettreCopiePartielle(ctx.documentGenereId, ctx.partie);
-    } catch (err) {
-      capturer(err, "copie_partielle", ctx);
+    if (interrupteurs.copie_partielle) {
+      try {
+        await transmettreCopiePartielle(ctx.documentGenereId, ctx.partie);
+      } catch (err) {
+        capturer(err, "copie_partielle", ctx);
+      }
     }
   }
 
   // Le canal jeton prévenait aussi d'une complétion : on le garde pour les
   // signataires extérieurs, l'organisme qui contresigne le sait déjà.
-  if (ctx.statutSignature === "signee" && ctx.acteur.type === "signataire") {
+  if (ctx.statutSignature === "signee" && ctx.acteur.type === "signataire" && alerter) {
     await sendTelegram({
       tag: "AUTO",
       body: `✅ ${libelle} ${ctx.numero} : intégralement signée.`,
@@ -406,7 +424,9 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
     if (ctx.type === "devis") await accepterDevis(ctx.documentGenereId);
     else if (ctx.type === "contrat_travail") {
       await classerContratTravail(ctx.documentGenereId, ctx.numero);
-    } else if (ctx.type === "contrat_sous_traitance") await contratSousTraitanceFormateur(ctx);
+    } else if (ctx.type === "contrat_sous_traitance" && interrupteurs.suite_contrat_cadre) {
+      await contratSousTraitanceFormateur(ctx);
+    }
   } catch (err) {
     capturer(err, ctx.type, ctx);
   }

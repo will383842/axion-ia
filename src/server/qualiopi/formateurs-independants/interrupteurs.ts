@@ -164,7 +164,9 @@ export function cleSetting(cle: CleInterrupteur): string {
 
 /** Une clé de `settings` réservée à l'écran Interrupteurs (casse ignorée). */
 export function estCleProtegee(key: string): boolean {
-  return key.toLowerCase().startsWith(PREFIXE_CLES_FORMATEURS);
+  const k = key.toLowerCase();
+  // `signature.` : les interrupteurs du socle de signature (S6a, en fin de module).
+  return k.startsWith(PREFIXE_CLES_FORMATEURS) || k.startsWith("signature.");
 }
 
 export function estCleInterrupteur(x: string): x is CleInterrupteur {
@@ -329,6 +331,119 @@ export function prealablesManquants(
 ): string[] {
   if (estPositionSure(cle, valeur)) return [];
   return PREALABLES[cle].flatMap((p) => {
+    if (p.sorte === "non_lisible") return [p.libelle];
+    return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Interrupteurs du SOCLE DE SIGNATURE — lot S6a
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Quatre comportements neufs de l'après-signature commun, livrés ÉTEINTS. Même
+// contrat que les seize ci-dessus : une ligne `settings` par clé, `{ actif }`,
+// absente ou illisible = ARRÊTÉ, c'est-à-dire exactement le comportement d'avant
+// S6a. Registre à part : les seize sont la liste du chantier formateurs, figée
+// par son propre verrou ; ces quatre-là appartiennent au socle de signature.
+//
+// 🔑 Clé complète portée par la définition : trois vivent sous `signature.`,
+// la suite du contrat-cadre reste sous `formateurs.` — c'est une conséquence du
+// parcours formateur. Les deux préfixes sont protégés de l'éditeur générique.
+
+export const PREFIXE_CLES_SIGNATURE = "signature.";
+
+export const INTERRUPTEURS_SIGNATURE = {
+  copie_partielle: {
+    ...envoi(
+      "Copie au signataire d'une pièce partielle",
+      "Chaque signataire reçoit par e-mail une copie portant sa signature, sans attendre les autres parties.",
+    ),
+    cle: "signature.copie_partielle",
+  },
+  exemplaire_contrat_travail: {
+    ...envoi(
+      "Exemplaire du contrat de travail au salarié",
+      "Le contrat de travail intégralement signé est remis au salarié dès la dernière signature.",
+    ),
+    cle: "signature.exemplaire_contrat_travail",
+  },
+  alertes_hors_jeton: {
+    ...envoi(
+      "Alertes de signature hors lien à jeton",
+      "Alerte « reste à signer » (et complétion) aussi pour les contresignatures, lettres de mission et contrats de travail.",
+    ),
+    cle: "signature.alertes_hors_jeton",
+  },
+  suite_contrat_cadre: {
+    ...envoi(
+      "Suite du contrat-cadre signé",
+      "Contrat-cadre d'un formateur indépendant intégralement signé : date sur la fiche, pièce au dossier, journal, activation demandée.",
+    ),
+    cle: "formateurs.suite_contrat_cadre",
+  },
+} as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
+
+export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
+
+export const CLES_INTERRUPTEURS_SIGNATURE = Object.keys(
+  INTERRUPTEURS_SIGNATURE,
+) as ReadonlyArray<CleInterrupteurSignature>;
+
+export type EtatsInterrupteursSignature = { [C in CleInterrupteurSignature]: boolean };
+
+/** Préalables à l'allumage — mêmes règles que `PREALABLES`. */
+export const PREALABLES_SIGNATURE: Readonly<
+  Record<CleInterrupteurSignature, ReadonlyArray<Prealable>>
+> = {
+  // Le courriel de copie partielle est un texte neuf, envoyé entre autres aux
+  // formateurs (lettre de mission) : il passe par la validation des textes.
+  copie_partielle: [exige("textes_valides")],
+  exemplaire_contrat_travail: [],
+  alertes_hors_jeton: [],
+  suite_contrat_cadre: [],
+};
+
+export function cleSettingSignature(cle: CleInterrupteurSignature): string {
+  return INTERRUPTEURS_SIGNATURE[cle].cle;
+}
+
+/** Interprète une ligne : `{ actif: true }` seulement. Absent ou illisible : arrêté. */
+export function lireValeurSignature(brut: unknown): { valeur: boolean; lisible: boolean } {
+  if (brut === null || typeof brut !== "object" || Array.isArray(brut)) {
+    return { valeur: false, lisible: false };
+  }
+  const actif = (brut as Record<string, unknown>).actif;
+  return typeof actif === "boolean"
+    ? { valeur: actif, lisible: true }
+    : { valeur: false, lisible: false };
+}
+
+export function etatsSignatureParDefaut(): EtatsInterrupteursSignature {
+  return Object.fromEntries(
+    CLES_INTERRUPTEURS_SIGNATURE.map((c) => [c, false]),
+  ) as EtatsInterrupteursSignature;
+}
+
+/** Les états à partir des lignes `settings` lues (n'importe quel ordre). */
+export function etatsSignatureDepuisLignes(
+  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+): EtatsInterrupteursSignature {
+  const etats = etatsSignatureParDefaut();
+  for (const cle of CLES_INTERRUPTEURS_SIGNATURE) {
+    const ligne = lignes.find((l) => l.key === cleSettingSignature(cle));
+    etats[cle] = lireValeurSignature(ligne?.value).valeur;
+  }
+  return etats;
+}
+
+/** Ce qui manque pour allumer `cle`. Couper est toujours permis. */
+export function prealablesManquantsSignature(
+  cle: CleInterrupteurSignature,
+  valeur: boolean,
+  etats: EtatsInterrupteurs,
+): string[] {
+  if (valeur !== true) return [];
+  return PREALABLES_SIGNATURE[cle].flatMap((p) => {
     if (p.sorte === "non_lisible") return [p.libelle];
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });

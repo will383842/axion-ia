@@ -17,8 +17,13 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import {
   INTERRUPTEURS,
+  INTERRUPTEURS_SIGNATURE,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
+  cleSettingSignature,
+  lireValeurSignature,
+  prealablesManquantsSignature,
+  type CleInterrupteurSignature,
   estDateDePassage,
   estPositionSure,
   etatsDepuisLignes,
@@ -214,4 +219,86 @@ export async function basculerFormateursProchesBlocAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculer("proches_bloc", formData);
+}
+
+// ─── Socle de signature (S6a) — même calque, registre à part ─────────────────
+
+async function basculerSignature(
+  cle: CleInterrupteurSignature,
+  formData: FormData,
+): Promise<EtatBascule> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Session expirée." };
+  const role = (session.user as { role?: string }).role;
+  const def = INTERRUPTEURS_SIGNATURE[cle];
+  if (role == null || !ROLES_PAR_HABILITATION[def.habilitation].includes(role)) {
+    return { ok: false, error: REFUS_HABILITATION[def.habilitation] };
+  }
+  const a = formData.get("actif");
+  if (a !== "1" && a !== "0") return { ok: false, error: "Valeur invalide." };
+  const valeur = a === "1";
+  const userId = session.user.id;
+  const key = cleSettingSignature(cle);
+
+  const manques = await prisma.$transaction(async (tx) => {
+    const lignes = await tx.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    const manquants = prealablesManquantsSignature(cle, valeur, etatsDepuisLignes(lignes));
+    if (manquants.length > 0) return manquants;
+    const actuelle = await tx.setting.findUnique({ where: { key }, select: { value: true } });
+    const avant = lireValeurSignature(actuelle?.value).valeur;
+    await tx.setting.upsert({
+      where: { key },
+      create: {
+        key,
+        value: { actif: valeur } as never,
+        description: `Socle de signature › Interrupteurs — ${def.libelle}`,
+        updatedBy: userId,
+      },
+      update: { value: { actif: valeur } as never, updatedBy: userId },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: valeur ? "signature.interrupteur_allume" : "signature.interrupteur_coupe",
+        targetType: "setting",
+        targetId: key,
+        changes: { cle: key, avant, apres: valeur } as never,
+      },
+    });
+    return [];
+  });
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
+}
+
+export async function basculerSignatureCopiePartielleAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("copie_partielle", formData);
+}
+export async function basculerSignatureExemplaireContratTravailAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("exemplaire_contrat_travail", formData);
+}
+export async function basculerSignatureAlertesHorsJetonAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("alertes_hors_jeton", formData);
+}
+export async function basculerFormateursSuiteContratCadreAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("suite_contrat_cadre", formData);
 }

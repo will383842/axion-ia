@@ -16,12 +16,22 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import {
   INTERRUPTEURS,
+  INTERRUPTEURS_SIGNATURE,
   estPositionSure,
   prealablesManquants,
+  prealablesManquantsSignature,
   type CleInterrupteur,
+  type CleInterrupteurSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
-import { lireInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
+  lireInterrupteurs,
+  lireInterrupteursSignature,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+import {
+  basculerFormateursSuiteContratCadreAction,
+  basculerSignatureAlertesHorsJetonAction,
+  basculerSignatureCopiePartielleAction,
+  basculerSignatureExemplaireContratTravailAction,
   basculerFormateursActivationAutoAction,
   basculerFormateursChoixSuivantsAction,
   basculerFormateursCommunesGeoCronAction,
@@ -67,6 +77,16 @@ const ACTIONS: Record<CleInterrupteur, typeof basculerFormateursTextesValidesAct
   proches_bloc: basculerFormateursProchesBlocAction,
 };
 
+const ACTIONS_SIGNATURE: Record<
+  CleInterrupteurSignature,
+  typeof basculerFormateursTextesValidesAction
+> = {
+  copie_partielle: basculerSignatureCopiePartielleAction,
+  exemplaire_contrat_travail: basculerSignatureExemplaireContratTravailAction,
+  alertes_hors_jeton: basculerSignatureAlertesHorsJetonAction,
+  suite_contrat_cadre: basculerFormateursSuiteContratCadreAction,
+};
+
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {
   const sorte = INTERRUPTEURS[cle].sorte;
   if (sorte === "date") return typeof valeur === "string" ? `Le ${valeur}` : "Pas de date";
@@ -92,6 +112,7 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
   const { etats, lignes } = await lireInterrupteurs();
+  const lignesSignature = await lireInterrupteursSignature();
   const direction = acces.role === "super_admin" || acces.role === "admin";
 
   return (
@@ -164,6 +185,70 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
                       sorte={def.sorte}
                       valeur={l.valeur}
                       desactive={!habilite}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </AdminCard>
+      <AdminCard>
+        <h2>Socle de signature</h2>
+        <p className="admin-meta-small">
+          Comportements ajoutés par le socle de signature commun, livrés coupés : coupés, la
+          signature se comporte exactement comme avant lui.
+        </p>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Interrupteur</th>
+              <th>État</th>
+              <th>Préalables manquants</th>
+              <th>Dernier changement</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {lignesSignature.map((l) => {
+              const def = INTERRUPTEURS_SIGNATURE[l.cle];
+              const manques = l.valeur ? [] : prealablesManquantsSignature(l.cle, true, etats);
+              return (
+                <tr key={l.cle}>
+                  <td>
+                    <strong>{def.libelle}</strong>
+                    <div className="admin-meta-small">{def.aide}</div>
+                  </td>
+                  <td>
+                    <AdminBadge tone={l.valeur ? "success" : "neutral"}>
+                      {l.valeur ? "Allumé" : "Coupé"}
+                    </AdminBadge>
+                    {!l.lisible && l.misAJourLe ? (
+                      <div className="admin-meta-small">Valeur illisible : position sûre.</div>
+                    ) : null}
+                  </td>
+                  <td>
+                    {manques.length ? (
+                      <ul className="admin-meta-small">
+                        {manques.map((m) => (
+                          <li key={m}>{m}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="admin-meta-small">—</span>
+                    )}
+                  </td>
+                  <td className="admin-meta-small">
+                    {l.misAJourLe
+                      ? `${DATE.format(l.misAJourLe)}${l.misAJourPar ? ` · ${l.misAJourPar}` : ""}`
+                      : "Jamais"}
+                  </td>
+                  <td>
+                    <BoutonInterrupteur
+                      action={ACTIONS_SIGNATURE[l.cle]}
+                      sorte="envoi"
+                      valeur={l.valeur}
+                      desactive={!direction}
                     />
                   </td>
                 </tr>

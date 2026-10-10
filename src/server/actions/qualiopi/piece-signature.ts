@@ -308,6 +308,7 @@ export async function signerPieceParJetonAction(input: {
       statutSignature: res.statutSignature,
       partie: verif.partie,
       acteur: { type: "signataire" },
+      canal: "lien_a_jeton",
     });
 
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };

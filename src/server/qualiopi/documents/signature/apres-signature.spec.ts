@@ -23,6 +23,7 @@ const h = vi.hoisted(() => ({
     trainer: { findUnique: vi.fn(), updateMany: vi.fn() },
     trainerDocument: { findFirst: vi.fn(), create: vi.fn() },
     activityLog: { create: vi.fn() },
+    setting: { findMany: vi.fn() },
   },
 }));
 
@@ -69,6 +70,17 @@ function ctx(patch: Partial<ContexteApresSignature> = {}): ContexteApresSignatur
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // Ce fichier éprouve les comportements NEUFS de S6a : leurs interrupteurs
+  // sont allumés. Clé absente = comportement d'avant S6a, éprouvé dans
+  // `apres-signature-interrupteurs.spec.ts`.
+  h.p.setting.findMany.mockResolvedValue(
+    [
+      "signature.copie_partielle",
+      "signature.exemplaire_contrat_travail",
+      "signature.alertes_hors_jeton",
+      "formateurs.suite_contrat_cadre",
+    ].map((key) => ({ key, value: { actif: true } })),
+  );
   h.transmettre.mockResolvedValue({ ok: true, destinataires: ["f@x.test"], r2Key: "k" });
   h.copie.mockResolvedValue({ ok: true, r2Key: "k2" });
   h.telegram.mockResolvedValue(undefined);
