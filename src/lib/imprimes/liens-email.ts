@@ -95,8 +95,18 @@ export function lienCalendlyPourEmail(
   };
 }
 
-/** Les liens d'insertion complets, imprimés + Calendly (si configuré). */
-export function liensInsertionComposeur(calendlyUrl: string | undefined): readonly LienInsertion[] {
+/**
+ * Les liens d'insertion complets, imprimés + Calendly (si configuré).
+ *
+ * 🔴 U3 (formateurs freelance) : sur une candidature de FORMATEUR, jamais le
+ * lien de l'échange APPORTEUR — il mène au parcours d'un apporteur d'affaires,
+ * pas au sien. Rien ne le remplace tant que le lien formateur n'existe pas.
+ */
+export function liensInsertionComposeur(
+  calendlyUrl: string | undefined,
+  options: { candidatureFormateur?: boolean } = {},
+): readonly LienInsertion[] {
+  if (options.candidatureFormateur) return liensImprimesPourEmail();
   const calendly = lienCalendlyPourEmail(calendlyUrl);
   return calendly ? [...liensImprimesPourEmail(), calendly] : liensImprimesPourEmail();
 }

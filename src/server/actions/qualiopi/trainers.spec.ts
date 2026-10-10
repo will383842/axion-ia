@@ -683,3 +683,30 @@ describe("updateTrainerSousTraitancePiecesAction", () => {
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
+
+// 🔴 Correction U6 — la passerelle « candidature → fiche formateur » crée la
+// fiche par cette action : son journal ne doit porter NI nom, NI prénom, NI
+// e-mail en clair. L'identifiant de la fiche suffit à retrouver la personne.
+describe("createTrainerAction — journal sans donnée personnelle", () => {
+  it("le journal porte le statut, jamais l'identité", async () => {
+    const { logQualiopiActivity } = await import("@/server/actions/qualiopi/_guards");
+    vi.mocked(logQualiopiActivity).mockClear();
+    mockCreate.mockResolvedValue({ id: TRAINER_ID });
+    await createTrainerAction({
+      nom: "Dupont",
+      prenom: "Marie",
+      email: "marie@example.com",
+      statut: "sous_traitant",
+      telephone: "0611223344",
+      actif: false,
+    });
+    expect(logQualiopiActivity).toHaveBeenCalledTimes(1);
+    const entree = vi.mocked(logQualiopiActivity).mock.calls[0]?.[0];
+    expect(entree).toMatchObject({
+      action: "qualiopi.trainer.create",
+      targetId: TRAINER_ID,
+      changes: { statut: "sous_traitant", actif: false },
+    });
+    expect(JSON.stringify(entree)).not.toMatch(/Dupont|Marie|marie@example\.com|0611223344/);
+  });
+});

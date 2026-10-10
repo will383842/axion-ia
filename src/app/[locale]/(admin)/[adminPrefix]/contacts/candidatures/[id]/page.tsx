@@ -18,6 +18,14 @@ import { lireAccuseReception } from "@/features/admin-job-applications/accuse-re
 import { Entretiens } from "./Entretiens";
 import { DeposerCv } from "./DeposerCv";
 import { ProposerReseauApporteurs } from "./ProposerReseauApporteurs";
+import { CreerFicheFormateur } from "./CreerFicheFormateur";
+import {
+  estCandidatureFormateur,
+  mentionActivationFormateur,
+  peutCreerFicheFormateur,
+  statutFormateurDepuisOffre,
+} from "@/lib/careers/fiche-formateur";
+import { peutEngager } from "@/server/auth/habilitations";
 import { ficheApporteurDeLaCandidature } from "@/features/admin-job-applications/proposer-reseau";
 import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
 import { adminPath } from "@/lib/admin-path";
@@ -142,6 +150,40 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     })
     .catch(() => []);
   const montreVideo = liens.some(montreDuTravail) || videos.some((v) => v.statut === "disponible");
+
+  // Ce que la candidature dit de son poste : l'offre si elle existe encore,
+  // sinon l'intitulé figé (spontanée, offre supprimée). Forme du prédicat U2 :
+  // offre IMBRIQUÉE (cf. `PosteCandidature`).
+  const indicesPoste = {
+    offerTitleSnap: a.offerTitleSnap,
+    offer: offer
+      ? {
+          slug: offer.slug,
+          titleFr: offer.titleFr,
+          employmentType: offer.employmentType,
+          secondaryEmploymentType: offer.secondaryEmploymentType,
+        }
+      : null,
+  };
+  // U3 — une candidature de FORMATEUR (freelance ou salarié) ne reçoit ni le
+  // lien de l'échange apporteur, ni la proposition du réseau d'apporteurs.
+  const candidatureFormateur = estCandidatureFormateur(indicesPoste);
+
+  // L10/U6 — « Fiche formateur ». La carte n'apparaît que si la fiche existe,
+  // ou si la passerelle s'ouvre ET que la personne connectée peut référencer
+  // un intervenant (direction : même garde que l'action).
+  const formateurLie = a.trainerId
+    ? await prisma.trainer
+        .findUnique({
+          where: { id: a.trainerId },
+          select: { id: true, actif: true, sousTraitantNda: true },
+        })
+        .catch(() => null)
+    : null;
+  const montrerFicheFormateur =
+    formateurLie !== null ||
+    (peutEngager(acteur.role, "contresigner") &&
+      peutCreerFicheFormateur({ status: a.status, ...indicesPoste }));
 
   return (
     <AdminPageShell>
@@ -390,7 +432,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             // imports qu'un composant CLIENT ne doit pas tirer dans son
             // bundle pour trois boutons. Même doctrine que `OPTIONS_STATUT`
             // dans `ApplicationsV2.tsx`.
-            liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL)}
+            liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL, {
+              candidatureFormateur,
+            })}
           />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
@@ -399,22 +443,42 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
 
       {/* 2026-09-28 (Will) — proposer AUSSI le réseau d'apporteurs d'affaires
           indépendants à une personne qui a postulé à une offre salariée. La
-          candidature au poste n'en est pas modifiée. */}
-      <AdminCard>
-        <h3 className="admin-section-title">Réseau d&apos;apporteurs</h3>
-        <ProposerReseauApporteurs
-          applicationId={a.id}
-          ficheExistante={
-            ficheApporteur
-              ? {
-                  lien: adminPath("fr", `contacts/commercial/${ficheApporteur.id}`),
-                  creeeLe: formatDateFrShort(ficheApporteur.creeeLe),
-                }
-              : null
-          }
-          lienCalendlyConfigure={estLienCalendlyValide(env.CALENDLY_APPORTEUR_URL ?? "")}
-        />
-      </AdminCard>
+          candidature au poste n'en est pas modifiée. Jamais à un formateur (U3). */}
+      {candidatureFormateur ? null : (
+        <AdminCard>
+          <h3 className="admin-section-title">Réseau d&apos;apporteurs</h3>
+          <ProposerReseauApporteurs
+            applicationId={a.id}
+            ficheExistante={
+              ficheApporteur
+                ? {
+                    lien: adminPath("fr", `contacts/commercial/${ficheApporteur.id}`),
+                    creeeLe: formatDateFrShort(ficheApporteur.creeeLe),
+                  }
+                : null
+            }
+            lienCalendlyConfigure={estLienCalendlyValide(env.CALENDLY_APPORTEUR_URL ?? "")}
+          />
+        </AdminCard>
+      )}
+
+      {montrerFicheFormateur ? (
+        <AdminCard>
+          <h3 className="admin-section-title">Fiche formateur</h3>
+          <CreerFicheFormateur
+            applicationId={a.id}
+            statutPropose={statutFormateurDepuisOffre(indicesPoste)}
+            ficheExistante={
+              formateurLie
+                ? {
+                    lien: adminPath("fr", `qualiopi/formateurs/${formateurLie.id}`),
+                    mention: mentionActivationFormateur(formateurLie),
+                  }
+                : null
+            }
+          />
+        </AdminCard>
+      ) : null}
 
       <AdminCard>
         <h3 className="admin-section-title">Suivi</h3>

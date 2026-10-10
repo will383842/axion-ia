@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import * as module from "../formateur-freelance";
+import { statutFormateurDepuisOffre } from "../fiche-formateur";
 
 /**
  * LOT U2 — le prédicat UNIQUE « est-ce une candidature de formateur FREELANCE ? »
@@ -110,5 +111,105 @@ describe("estCandidatureFormateurFreelance — par l'offre", () => {
     expect(verdict("")).toBe(false);
     expect(verdict({})).toBe(false);
     expect(verdict({ offerTitleSnap: null, offer: { slug: null } })).toBe(false);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// U6 — chantier « formateurs freelance » : quelle fiche formateur naît d'une
+// candidature, et quand on REFUSE de deviner. Cas de la PR #1393, réécrits
+// dans la forme du prédicat U2 (offre IMBRIQUÉE sous `offer`).
+//
+// 🔴 Avant : `statutFormateurDepuisOffre` rendait `salarie` par défaut. Une
+// candidature spontanée « Formateur IA indépendant », ou une offre de formateur
+// freelance mal typée FULL_TIME, créait donc une fiche de SALARIÉ — et un
+// sous-traitant enregistré comme salarié fausse le BPF et la lettre de mission.
+//
+// Ordre de la règle :
+//   1. candidature de formateur FREELANCE → `sous_traitant` ;
+//   2. offre salariée EXPLICITE → `salarie` ;
+//   3. tout le reste → `null` : l'administrateur choisit, on ne devine pas.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("estCandidatureFormateurFreelance — cas de la fiche formateur (U6)", () => {
+  it("reconnaît l'offre freelance à son slug, quel que soit son type de contrat", () => {
+    expect(
+      verdict({
+        offerTitleSnap: "Formateur IA (F/H)",
+        offer: { slug: "formateur-ia-freelance", employmentType: "FULL_TIME" },
+      }),
+    ).toBe(true);
+  });
+
+  it("reconnaît une spontanée « Formateur IA indépendant » à son intitulé", () => {
+    expect(verdict({ offerTitleSnap: "Formateur IA indépendant", offer: null })).toBe(true);
+    expect(verdict({ offerTitleSnap: "Formatrice freelance", offer: null })).toBe(true);
+  });
+
+  it("reconnaît une offre de formateur en CONTRACTOR", () => {
+    expect(
+      verdict({
+        offerTitleSnap: "Formateur IA",
+        offer: { slug: "formateur-ia-itinerant", employmentType: "CONTRACTOR" },
+      }),
+    ).toBe(true);
+  });
+
+  it("ne prend pas un freelance qui n'est pas formateur, ni un formateur salarié", () => {
+    expect(verdict({ offerTitleSnap: "Monteur vidéo freelance", offer: null })).toBe(false);
+    expect(
+      verdict({
+        offerTitleSnap: "Formateur IA (F/H)",
+        offer: { slug: "formateur-ia-sedentaire", employmentType: "FULL_TIME" },
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("statutFormateurDepuisOffre — jamais `salarie` par défaut", () => {
+  it("spontanée « Formateur IA indépendant » → sous_traitant", () => {
+    expect(
+      statutFormateurDepuisOffre({ offerTitleSnap: "Formateur IA indépendant", offer: null }),
+    ).toBe("sous_traitant");
+  });
+
+  it("offre FULL_TIME étiquetée freelance → sous_traitant", () => {
+    expect(
+      statutFormateurDepuisOffre({
+        offerTitleSnap: "Formateur IA freelance (F/H)",
+        offer: { slug: "formateur-ia-freelance", employmentType: "FULL_TIME" },
+      }),
+    ).toBe("sous_traitant");
+  });
+
+  it("offre de formateur CONTRACTOR sans le mot « freelance » → sous_traitant", () => {
+    // Le cas qui se perdait EN SILENCE avec l'ancienne entrée plate : ni le
+    // slug ni le CONTRACTOR n'étaient lus, seul l'intitulé comptait.
+    expect(
+      statutFormateurDepuisOffre({
+        offerTitleSnap: "Formateur IA — missions en région",
+        offer: { slug: "formateur-ia-missions", employmentType: "CONTRACTOR" },
+      }),
+    ).toBe("sous_traitant");
+  });
+
+  it("offre salariée explicite → salarie", () => {
+    for (const type of ["FULL_TIME", "PART_TIME"]) {
+      expect(
+        statutFormateurDepuisOffre({
+          offerTitleSnap: "Formateur IA (F/H)",
+          offer: { slug: "formateur-ia-sedentaire", employmentType: type },
+        }),
+      ).toBe("salarie");
+    }
+  });
+
+  it("spontanée sans indice, offre supprimée, type inconnu → null (refus de deviner)", () => {
+    expect(statutFormateurDepuisOffre({ offerTitleSnap: "Formateur IA", offer: null })).toBeNull();
+    expect(
+      statutFormateurDepuisOffre({
+        offerTitleSnap: "Formateur IA",
+        offer: { slug: "formateur-ia-itinerant", employmentType: "VALEUR_INCONNUE" },
+      }),
+    ).toBeNull();
   });
 });

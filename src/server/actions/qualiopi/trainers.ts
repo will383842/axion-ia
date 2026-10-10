@@ -106,6 +106,13 @@ const createTrainerSchema = z.object({
   dateEmbauche: z.coerce.date().optional(),
   tarifJourneeHtCents: z.number().int().min(0).optional(),
   sousTraitantNda: z.string().max(20).optional(),
+  /**
+   * Absent = actif (défaut de la colonne, comportement inchangé). `false` sert
+   * la passerelle « Retenue → fiche formateur » (L10) : une fiche née d'une
+   * candidature n'a pas de numéro de déclaration d'activité, et aucun
+   * formateur externe n'est actif sans lui.
+   */
+  actif: z.boolean().optional(),
 });
 
 const updateTrainerSchema = z.object({
@@ -283,6 +290,7 @@ export async function createTrainerAction(
           ? { tarifJourneeHtCents: v.tarifJourneeHtCents }
           : {}),
         ...(v.sousTraitantNda !== undefined ? { sousTraitantNda: v.sousTraitantNda } : {}),
+        ...(v.actif !== undefined ? { actif: v.actif } : {}),
       },
       select: { id: true },
     });
@@ -291,7 +299,12 @@ export async function createTrainerAction(
       action: "qualiopi.trainer.create",
       targetType: "Trainer",
       targetId: created.id,
-      changes: { nom: v.nom, prenom: v.prenom, email: v.email, statut: v.statut },
+      // Aucune donnée personnelle en clair dans le journal : `targetId` désigne
+      // la fiche, qui porte l'identité (correction U6, 2026-10-10).
+      changes: {
+        statut: v.statut,
+        ...(v.actif !== undefined ? { actif: v.actif } : {}),
+      },
       session,
     });
 

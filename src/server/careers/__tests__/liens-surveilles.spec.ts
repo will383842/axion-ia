@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type Ligne = { etat: string; mortDepuis: Date | null; httpStatus: number | null };
+type Ligne = {
+  etat: string;
+  etatFerme?: string;
+  mortDepuis: Date | null;
+  httpStatus: number | null;
+};
 const table = new Map<string, Ligne>();
 let tableAbsente = false;
+/** Fenêtre app/worker : la colonne `etat_ferme` n'existe pas encore en base. */
+let colonneEnumAbsente = false;
 const candidatures: unknown[] = [];
 
 vi.mock("@/lib/prisma", () => ({
@@ -19,6 +26,9 @@ vi.mock("@/lib/prisma", () => ({
         create: Ligne;
         update: Partial<Ligne>;
       }) => {
+        if (colonneEnumAbsente && ("etatFerme" in a.create || "etatFerme" in a.update)) {
+          throw Object.assign(new Error("colonne absente"), { code: "P2022" });
+        }
         const k = a.where.applicationId_url.url;
         const avant = table.get(k);
         table.set(k, avant ? { ...avant, ...a.update } : a.create);
@@ -44,6 +54,7 @@ const candidat = (texte: string) => ({
 beforeEach(() => {
   table.clear();
   tableAbsente = false;
+  colonneEnumAbsente = false;
   candidatures.length = 0;
 });
 
@@ -98,6 +109,40 @@ describe("passage du lundi", () => {
       etat: "vivant",
       mortDepuis: null,
     });
+  });
+
+  it("L12 — chaque état écrit l'est AUSSI en liste fermée, identique", async () => {
+    candidatures.push(candidat("https://drive.google.com/drive/folders/Y"));
+    await surveillerLiens(LUNDI, async () => 404);
+    expect(table.get("https://drive.google.com/drive/folders/Y")).toMatchObject({
+      etat: "mort",
+      etatFerme: "mort",
+    });
+    await surveillerLiens(SEMAINE_SUIVANTE, async () => 200);
+    expect(table.get("https://drive.google.com/drive/folders/Y")).toMatchObject({
+      etat: "vivant",
+      etatFerme: "vivant",
+    });
+  });
+
+  it("L12 — une panne ne touche ni l'une ni l'autre colonne d'état", async () => {
+    candidatures.push(candidat("https://moi.framer.app/z"));
+    await surveillerLiens(LUNDI, async () => 404);
+    await surveillerLiens(SEMAINE_SUIVANTE, async () => null);
+    expect(table.get("https://moi.framer.app/z")).toMatchObject({
+      etat: "mort",
+      etatFerme: "mort",
+    });
+  });
+
+  it("🔴 L12 — fenêtre app/worker : colonne enum absente → l'état texte s'écrit quand même", async () => {
+    colonneEnumAbsente = true;
+    candidatures.push(candidat("https://drive.google.com/drive/folders/W"));
+    const bilan = await surveillerLiens(LUNDI, async () => 404);
+    expect(bilan).toMatchObject({ abstenu: false, verifies: 1, morts: 1 });
+    const ligne = table.get("https://drive.google.com/drive/folders/W");
+    expect(ligne).toMatchObject({ etat: "mort", mortDepuis: LUNDI });
+    expect(ligne).not.toHaveProperty("etatFerme");
   });
 
   it("🔴 une panne après une mort constatée ne l'efface pas", async () => {
