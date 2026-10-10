@@ -41,6 +41,10 @@ const RACINE = process.cwd();
 const MODELES_SIGNATURE_FIGES: ReadonlyArray<string> = [
   "CoachingSeanceSignature",
   "DocumentSignature",
+  // Lot S6a (e) — ce n'est PAS une table de preuve : elle porte l'empreinte HMAC
+  // d'un code éphémère (10 min, 5 essais) que l'ADR 0066 étape 7 exige pour
+  // signer le contrat-cadre. La preuve, elle, reste dans `DocumentSignature`.
+  "DocumentSignatureCode",
   "DocumentSignatureToken",
   "EmargementContresignature",
   "EmargementSignature",

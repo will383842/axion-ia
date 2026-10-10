@@ -7413,6 +7413,37 @@ model DocumentSignatureToken {
   @@map("document_signature_tokens")
 }
 
+/// Code à usage unique pour SIGNER une pièce (lot S6a, e — ADR 0066 étape 7).
+///
+/// Le formateur indépendant signe son contrat-cadre avec un code reçu par
+/// e-mail : le lien prouve qu'on a ouvert la pièce, le code prouve qu'on
+/// détient la boîte aux lettres au moment de signer.
+///
+/// 🔴 Le code n'est JAMAIS stocké en clair : seule son empreinte HMAC (secret
+/// serveur + identifiant de la ligne) l'est. Six chiffres, valable 10 minutes,
+/// 5 essais au plus, invalidé dès son usage. Un seul code vivant par
+/// (pièce, partie) : en émettre un nouveau invalide le précédent.
+///
+/// Sans clé étrangère déclarée, comme les tables ajoutées pendant la fenêtre
+/// app/worker : aucune requête existante n'en dépend. Migration ADDITIVE.
+/// rgpd: technique — empreinte d'un code éphémère, aucune donnée en clair
+model DocumentSignatureCode {
+  id               String                   @id @default(uuid()) @db.Uuid
+  documentGenereId String                   @map("document_genere_id") @db.Uuid
+  partie           DocumentPartieSignataire
+  /// HMAC-SHA256 hex du code — jamais le clair.
+  codeHash         String                   @map("code_hash") @db.Char(64)
+  expiresAt        DateTime                 @map("expires_at")
+  essais           Int                      @default(0)
+  utiliseAt        DateTime?                @map("utilise_at")
+  invalideAt       DateTime?                @map("invalide_at")
+  createdAt        DateTime                 @default(now()) @map("created_at")
+
+  @@index([documentGenereId, partie])
+  @@index([expiresAt])
+  @@map("document_signature_codes")
+}
+
 // ============================================================
 // QUALIOPI — T8 : Émargement présentiel + relevé de connexion distanciel
 // Suivi de l'exécution (indicateur 12). Présence par créneau (demi-journée)
