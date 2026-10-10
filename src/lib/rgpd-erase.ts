@@ -1577,6 +1577,14 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "il figure sur les autofactures émises en votre nom, que la loi impose de conserver " +
       "(art. L.123-22 du code de commerce, art. 17(3)(b) RGPD). Il est rendu par l'export.",
   },
+  {
+    // Candidatures, lot L3 (2026-10-08).
+    modele: "JobApplicationInboundReply",
+    motif:
+      "réponse par e-mail d'un candidat : effacée avec sa candidature par " +
+      "`effacerCandidaturesPour` (`candidature-rgpd.ts`, appelé par la même route), " +
+      "par la cascade du dossier ET par l'empreinte de l'adresse.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
