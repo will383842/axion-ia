@@ -68,7 +68,14 @@ describe("Server Actions : le texte réécrit est validé puis transmis", () => 
       note: null,
       texte: "Non.",
     });
-    expect(appliquerDecision).toHaveBeenCalledWith(ID, "refuser", "", "Non.");
+    // 5e argument (10/10) : la case « nom vérifié », jamais cochée par défaut.
+    expect(appliquerDecision).toHaveBeenCalledWith(
+      ID,
+      "refuser",
+      "",
+      "Non.",
+      expect.objectContaining({ nomVerifie: false }),
+    );
   });
   it("un texte modifié mais vide est refusé, rien n'est envoyé", async () => {
     const r = await envoyerLienAction({ apporteurId: ID, mot: null, texte: "   " });

@@ -37,7 +37,14 @@ import { chiffresTelephone } from "./telephone";
 
 export type Retour = { ok: true; message: string } | { ok: false; message: string };
 export type RetourApercu =
-  { ok: true; email: ApercuRendu; dejaEnvoyeLe?: string | null } | { ok: false; message: string };
+  | {
+      ok: true;
+      email: ApercuRendu;
+      dejaEnvoyeLe?: string | null;
+      /** Contresignature : le nom ne correspond pas au registre, case à cocher exigée (10/10). */
+      alerteNom?: string;
+    }
+  | { ok: false; message: string };
 
 // Relecture de a1 (08/10) : la règle « contresigner » des habilitations, pas une liste de rôles
 // écrite ici — un rôle ajouté ou retiré là-bas l'est aussi pour ces actions.
@@ -122,6 +129,8 @@ export async function appliquerDecisionAction(input: {
   note: string | null;
   /** Texte principal réécrit (facultatif). Jamais journalisé. */
   texte?: string | null;
+  /** Case « J'ai vérifié : cette personne a bien le droit d'engager cette entreprise » (10/10). */
+  nomVerifie?: boolean;
 }): Promise<Retour> {
   const refus = await exigerAdmin();
   if (refus) return { ok: false, message: refus };
@@ -130,11 +139,13 @@ export async function appliquerDecisionAction(input: {
   const texte = validerTexteLibre(input.texte);
   if (!texte.ok) return texte;
   try {
+    const session = await auth();
     const r = await appliquerDecision(
       input.apporteurId,
       input.decision,
       (input.note ?? "").slice(0, 2000),
       texte.texte,
+      { nomVerifie: input.nomVerifie === true, acteurId: session?.user?.id ?? null },
     );
     rafraichir(input.apporteurId);
     return r;
