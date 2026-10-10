@@ -27,7 +27,6 @@ vi.mock("@/server/actions/knowledge/_guards", () => ({
 }));
 
 import { headers } from "next/headers";
-// @ts-expect-error — module créé par le commit suivant (test rouge d'abord).
 import { filtrerChangesJournal, journaliser } from "@/server/journal/journaliser";
 import { donneesJournalQualiopi, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 
