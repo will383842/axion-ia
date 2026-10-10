@@ -39,6 +39,7 @@ import {
   VARIANTE_DOSSIER_COMMENCE,
 } from "@/lib/commercial-application/kit-apporteur";
 import {
+  DELAI_ETAPE2_VSL_MS,
   VARIANTE_VSL_ABANDON,
   VARIANTE_VSL_ETAPE2,
   VARIANTE_VSL_RELANCE,
@@ -65,6 +66,9 @@ function jobsCaducs(emailKey: string): string[] {
   return [
     jobIdKitDossierCommence(emailKey),
     ...RELANCES_LEAD_APPORTEUR.map((r) => jobIdRelance(r.etape, emailKey)),
+    // B1 « C'est noté » (tunnel vidéo), retardé de 15 min : une réservation, une
+    // réponse ou une opposition arrivées entre-temps le retirent aussi.
+    jobIdVslEtape2(emailKey),
   ];
 }
 
@@ -215,12 +219,24 @@ export interface EnvoyerEtape2Input {
   calendlyUrl: string;
   dossierUrl: string;
   submissionId: string;
+  /**
+   * Jeton signé (`?j=`) que le gabarit recopie dans le lien de réservation : le
+   * formulaire du site reconnaît alors la personne (nom, e-mail, téléphone) et
+   * rattache la réservation à sa fiche. Il vit aussi longtemps que le message
+   * peut être ouvert (`VALIDITE_JETON_REPRISE_MS`) ; absent, le lien part nu.
+   */
+  jetonReservation?: string;
 }
 
 /**
- * B1 — « C'est noté » + bouton Calendly, IMMÉDIAT, une seule fois par adresse
- * (le `jobId` dérivé du hash fait ignorer un second enfilage). Renvoie vrai si
- * le message est parti en file.
+ * B1 — « C'est noté » + bouton Calendly, RETARDÉ de 15 minutes (2026-10-10), une
+ * seule fois par adresse (le `jobId` dérivé du hash fait ignorer un second
+ * enfilage). Renvoie vrai si le message est parti en file.
+ *
+ * Celui qui réserve aussitôt n'en reçoit pas : la réservation retire le job
+ * (`annulerRelancesLeadApporteur`, appelée par l'enrichissement Calendly), comme
+ * pour A1, A2 et A3 — ce job fait partie de `jobsCaducs`. Il ne double pas A1 :
+ * l'étape 2 retire A1 avant de poser B1, les deux ne coexistent jamais.
  */
 export async function envoyerEtape2Vsl(input: EnvoyerEtape2Input): Promise<boolean> {
   const emailKey = hashEmailForLookup(input.email);
@@ -233,10 +249,12 @@ export async function envoyerEtape2Vsl(input: EnvoyerEtape2Input): Promise<boole
       contactName: input.prenom,
       calendlyUrl: input.calendlyUrl,
       dossierUrl: input.dossierUrl,
+      ...(input.jetonReservation ? { jetonReservation: input.jetonReservation } : {}),
       variante: VARIANTE_VSL_ETAPE2,
       submissionId: input.submissionId,
     },
     {
+      delayMs: DELAI_ETAPE2_VSL_MS,
       jobId: jobIdVslEtape2(emailKey),
       entityType: "Submission",
       entityId: input.submissionId,

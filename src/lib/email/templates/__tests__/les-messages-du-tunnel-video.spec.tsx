@@ -112,6 +112,39 @@ describe("le lien de réservation", () => {
     expect(texte(h)).toMatch(/Choisir mon créneau/);
   });
 
+  const withJeton = (calendlyUrl: string, jetonReservation?: string) => (
+    <LeadApporteurRecuEmail
+      locale="fr"
+      payload={{
+        contactName: "Nadia",
+        dossierUrl: DOSSIER,
+        calendlyUrl,
+        variante: VARIANTE_VSL_ETAPE2,
+        ...(jetonReservation ? { jetonReservation } : {}),
+      }}
+    />
+  );
+
+  it("B1 recopie le jeton `j` dans le lien et garde `depuis` (attribution)", async () => {
+    const h = await html(withJeton(CALENDLY, "abc_DEF-1.0f"));
+    expect(h).toContain("/fr/appel/apporteur?depuis=email-vsl-apporteur&amp;j=abc_DEF-1.0f");
+  });
+
+  it("B1 sans jeton : le lien part nu, comme avant", async () => {
+    const h = await html(withJeton(CALENDLY));
+    expect(h).toContain("/fr/appel/apporteur?depuis=email-vsl-apporteur");
+    expect(h).not.toContain("j=");
+  });
+
+  it("le jeton n'est JAMAIS ajouté à une autre adresse (page merci, autre agenda)", async () => {
+    const merci = "https://axion-ia.com/fr/apporteur-affaires/video/merci?j=deja";
+    const h = await html(withJeton(merci, "autre.jeton"));
+    expect(h).toContain(merci);
+    expect(h).not.toContain("autre.jeton");
+    const ailleurs = await html(withJeton("https://calendly.com/autre/compte", "autre.jeton"));
+    expect(ailleurs).not.toContain("autre.jeton");
+  });
+
   it.each([
     ["A1", A1],
     ["A2", A2],

@@ -214,7 +214,7 @@ export function faqVsl(commissionParJournee: string): readonly {
       id: "apres",
       question: "Que se passe-t-il après ma demande ?",
       answer:
-        "Vous recevez un e-mail de confirmation, puis vous choisissez un créneau de 15 minutes. Si nous poursuivons ensemble, vous complétez un dossier en ligne, puis un contrat vous est proposé.",
+        "Vous choisissez un créneau de 15 minutes et la confirmation vous est envoyée par e-mail ; si vous ne réservez pas tout de suite, le lien vous est envoyé un peu plus tard. Si nous poursuivons ensemble, vous complétez un dossier en ligne, puis un contrat vous est proposé.",
     },
   ];
 }

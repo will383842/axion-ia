@@ -115,13 +115,14 @@ describe("planifierKitDossierCommence — le kit de qui a quitté le dossier", (
 });
 
 describe("annulerRelancesLeadApporteur", () => {
-  it("retire le kit ET les deux relances de l'adresse", async () => {
+  it("retire le kit, les deux relances ET « C'est noté » (B1) de l'adresse", async () => {
     const n = await annulerRelancesLeadApporteur("nadia@example.com");
-    expect(n).toBe(3);
+    expect(n).toBe(4);
     expect(retirer.mock.calls.map((c) => c[0])).toEqual([
       "lead-apporteur-kit-h-nadiaexamplecom",
       "lead-apporteur-relance-j2-h-nadiaexamplecom",
       "lead-apporteur-relance-j7-h-nadiaexamplecom",
+      "lead-apporteur-vsl-etape2-h-nadiaexamplecom",
     ]);
   });
 
@@ -137,8 +138,9 @@ describe("annulerRelancesLeadApporteur", () => {
     });
     retirer.mockImplementationOnce(async () => 0);
     retirer.mockImplementationOnce(async () => 0);
+    retirer.mockImplementationOnce(async () => 0);
     await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
-    expect(retirer).toHaveBeenCalledTimes(3);
+    expect(retirer).toHaveBeenCalledTimes(4);
   });
 });
 
@@ -163,6 +165,7 @@ describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulemen
       "lead-apporteur-kit-h-nadiaexamplecom",
       "lead-apporteur-relance-j2-h-nadiaexamplecom",
       "lead-apporteur-relance-j7-h-nadiaexamplecom",
+      "lead-apporteur-vsl-etape2-h-nadiaexamplecom",
     ]);
   });
 
@@ -172,13 +175,13 @@ describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulemen
     // retrait réussi laisserait précisément les lignes qu'on veut fermer.
     retirer.mockResolvedValue(0);
     await annulerRelancesLeadApporteur("nadia@example.com");
-    expect(marquerAnnuleMock).toHaveBeenCalledTimes(3);
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(4);
   });
 
   it("referme la ligne même si le retrait LÈVE", async () => {
     retirer.mockRejectedValue(new Error("redis indisponible"));
     await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
-    expect(marquerAnnuleMock).toHaveBeenCalledTimes(3);
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(4);
   });
 
   it("porte un motif lisible — le journal doit dire POURQUOI la ligne est close", async () => {

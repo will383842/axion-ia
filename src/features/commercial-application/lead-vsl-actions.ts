@@ -654,6 +654,10 @@ async function suiteEtape2(a: {
       calendlyUrl: lienReservation() ?? `${SITE_URL}/fr${a.merciUrl}`,
       dossierUrl: `${SITE_URL}/fr${DOSSIER_COMPLET_PATH}`,
       submissionId: a.ligne.id,
+      // Jeton de 10 jours (genre « reprise »), pas celui de la visite (24 h) : le
+      // message s'ouvre parfois le lendemain ou plus tard. Même signature, même
+      // contenu opaque (aucune donnée personnelle) ; il ne sert qu'à préremplir.
+      jetonReservation: creerJeton({ lead: a.ligne.id, genre: "reprise" }),
     });
     // `false` : rien n'est parti (file absente, adresse retenue, garé en validation).
     // Aucune trace d'envoi n'est écrite ici ; on le dit au journal, sans lever.

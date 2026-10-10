@@ -41,6 +41,41 @@ describe("identiteDuJetonVsl", () => {
     );
   });
 
+  it("téléphone de l'étape 2 sur la fiche → proposé en clair, modifiable ; absent → pas de clé", async () => {
+    vi.stubEnv("PII_ENCRYPTION_KEY", "a".repeat(64));
+    try {
+      findFirst.mockResolvedValueOnce({ ...LIGNE_VSL, contactPhone: encryptPii("06 12 34 56 78") });
+      const jeton = creerJeton({ lead: "lead-1", suspect: false });
+      expect(await identiteDuJetonVsl(jeton)).toEqual({
+        nom: "Léa",
+        email: "lea@exemple.fr",
+        telephone: "06 12 34 56 78",
+      });
+      expect(findFirst).toHaveBeenCalledWith(
+        expect.objectContaining({
+          select: expect.objectContaining({ contactPhone: true }),
+        }),
+      );
+      findFirst.mockResolvedValueOnce({ ...LIGNE_VSL, contactPhone: null });
+      expect(await identiteDuJetonVsl(jeton)).toEqual({ nom: "Léa", email: "lea@exemple.fr" });
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("jeton de réservation (reprise, 10 jours) accepté ; trafiqué → rien ne se préremplit", async () => {
+    findFirst.mockResolvedValue(LIGNE_VSL);
+    const jeton = creerJeton({ lead: "lead-1", genre: "reprise" });
+    expect(await identiteDuJetonVsl(jeton)).toEqual({ nom: "Léa", email: "lea@exemple.fr" });
+    findFirst.mockClear();
+    const [corps, sig] = jeton.split(".") as [string, string];
+    const autre = Buffer.from(
+      JSON.stringify({ ...JSON.parse(Buffer.from(corps, "base64url").toString()), lead: "lead-2" }),
+    ).toString("base64url");
+    expect(await identiteDuJetonVsl(`${autre}.${sig}`)).toBeNull();
+    expect(findFirst).not.toHaveBeenCalled();
+  });
+
   it("jeton absent, trafiqué ou expiré → null, sans lire la base", async () => {
     const jeton = creerJeton({ lead: "lead-1", suspect: false });
     const expire = creerJeton({ lead: "lead-1", suspect: false, maintenant: 0 });
@@ -110,6 +145,34 @@ describe("câblage de la page du formulaire", () => {
     expect(src).toMatch(
       /reprise\s*\?\s*\{ erreurs: reprise\.erreurs, valeurs: reprise\.valeurs \}/,
     );
+  });
+
+  it("le formulaire reçoit le téléphone préchargé, dans un champ qui reste modifiable", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const src = readFileSync(
+      join(process.cwd(), "src/app/[locale]/appel/reserver/page.tsx"),
+      "utf8",
+    ).replace(/^\s*\/\/.*$/gm, " ");
+    expect(src).toMatch(
+      /prerempli\.telephone \? \{ \[CHAMPS\.telephone\]: prerempli\.telephone \}/,
+    );
+  });
+
+  it("la page calendrier de l'échange apporteur recopie le jeton VALIDE dans chaque créneau", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const src = readFileSync(
+      join(process.cwd(), "src/app/[locale]/appel/page.tsx"),
+      "utf8",
+    ).replace(/^\s*\/\/.*$/gm, " ");
+    // Validé par `jetonVslValide` (un jeton faux n'est jamais recopié), et seulement
+    // pour l'échange apporteur.
+    expect(src).toMatch(
+      /choix === "apporteur" \? \(jetonVslValide\(sp\[PARAM_JETON_VSL\]\) \?\? undefined\)/,
+    );
+    expect(src).toMatch(/\$\{PARAM_JETON_VSL\}=\$\{encodeURIComponent\(jeton\)\}/);
+    expect(src).toMatch(/parametresDuChoix=\{parametresCreneau\}/);
   });
 
   it("🔒 P2 — personne DÉJÀ CONNUE : aucun préremplissage, sa fiche n'est pas lue", async () => {

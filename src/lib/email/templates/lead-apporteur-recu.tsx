@@ -50,6 +50,12 @@ import {
 } from "@/lib/commercial-application/vsl-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
 
+/**
+ * Nom du paramètre du jeton (`PARAM_JETON_VSL`, `identite-reservation-vsl.ts`).
+ * Recopié ici : ce module-là lit la base, un gabarit d'e-mail ne l'importe pas.
+ */
+const PARAM_JETON_VSL = "j";
+
 interface Payload {
   /** Prénom (seul le premier mot est dit). */
   contactName?: string;
@@ -60,6 +66,29 @@ interface Payload {
   variante?: string;
   /** `vsl-etape2` : le lien de réservation (bouton principal). */
   calendlyUrl?: string;
+  /** `vsl-etape2` : jeton signé recopié dans le lien (`?j=`), pour préremplir la réservation. */
+  jetonReservation?: string;
+}
+
+/**
+ * Le lien de réservation de B1 : la page du site (`?depuis=` pour l'attribution) et,
+ * quand le message en porte un, le jeton `?j=` qui préremplit le formulaire. Le
+ * jeton n'est ajouté qu'à NOTRE page apporteur : jamais à une adresse Calendly
+ * rendue telle quelle, ni à une page qui en porte déjà un.
+ */
+function lienReservationB1(p: Payload): string {
+  const lien = lienDeReservationDuSite(p.calendlyUrl as string, { depuis: "email-vsl-apporteur" });
+  if (!p.jetonReservation) return lien;
+  try {
+    const u = new URL(lien);
+    if (!u.pathname.endsWith("/appel/apporteur") || u.searchParams.has(PARAM_JETON_VSL)) {
+      return lien;
+    }
+    u.searchParams.set(PARAM_JETON_VSL, p.jetonReservation);
+    return u.toString();
+  } catch {
+    return lien;
+  }
 }
 
 const COPY = {
@@ -179,7 +208,7 @@ export function LeadApporteurRecuEmail({
         label: t.ctaEtape2,
         // 2026-10-05 : NOTRE page de réservation quand l'adresse est celle de
         // l'échange apporteur, l'adresse reçue sinon (`lien-du-site.ts`).
-        href: lienDeReservationDuSite(p.calendlyUrl as string, { depuis: "email-vsl-apporteur" }),
+        href: lienReservationB1(p),
       }
     : { label: abandon ? t.ctaAbandon : t.cta, href: p.dossierUrl };
   return (

@@ -543,15 +543,31 @@ describe("étape 2 — completerLeadVsl", () => {
         "lead-apporteur-kit-hnadiaexamplecom",
         "lead-apporteur-relance-j2-hnadiaexamplecom",
         "lead-apporteur-relance-j7-hnadiaexamplecom",
+        "lead-apporteur-vsl-etape2-hnadiaexamplecom",
       ].sort(),
     );
     const b1 = jobsPoses().find((j) => j.gabarit === "lead-apporteur-recu");
     expect(b1?.payload["variante"]).toBe("vsl-etape2");
     expect(b1?.payload["calendlyUrl"]).toBe("https://calendly.com/axion-ia/echange-apporteur");
     expect(b1?.options.jobId).toBe("lead-apporteur-vsl-etape2-hnadiaexamplecom");
-    expect(b1?.options.delayMs).toBeUndefined(); // immédiat
+    expect(b1?.options.delayMs).toBe(15 * 60 * 1000); // 15 min, retiré si la personne réserve
     // Aucune adresse dans la clé de tâche.
     expect(b1?.options.jobId).not.toContain("@");
+  });
+
+  it("B1 porte un jeton de RÉSERVATION valide 10 jours, qui désigne la ligne et ne dit rien d'autre", async () => {
+    process.env["CALENDLY_APPORTEUR_URL"] = "https://calendly.com/axion-ia/echange-apporteur";
+    ligneParId = ligneVsl();
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+
+    const b1 = jobsPoses().find((j) => j.gabarit === "lead-apporteur-recu");
+    const jeton = String(b1?.payload["jetonReservation"]);
+    // Le message peut être ouvert 9 jours plus tard : le jeton vit encore.
+    const contenu = verifierJeton(jeton, MAINTENANT + 9 * 24 * 3_600_000);
+    expect(contenu).toMatchObject({ lead: ID_LEAD, genre: "reprise" });
+    expect(verifierJeton(jeton, MAINTENANT + 11 * 24 * 3_600_000)).toBeNull();
+    expect(jeton).not.toContain("@");
   });
 
   it("sans lien Calendly valide en configuration, le bouton de B1 mène à la page de remerciement", async () => {
@@ -695,14 +711,15 @@ describe("étape 2 — completerLeadVsl", () => {
 });
 
 describe("R1/R2 — les tâches d'attente s'arrêtent à chaque avancée (réservation, dossier complet)", () => {
-  it("annulerRelancesLeadApporteur retire A1, A2 et A3 d'une adresse — c'est ce qu'appellent la réservation et le dossier complet", async () => {
+  it("annulerRelancesLeadApporteur retire A1, A2, A3 et B1 d'une adresse — c'est ce qu'appellent la réservation et le dossier complet", async () => {
     const n = await annulerRelancesLeadApporteur("nadia@example.com", "réservation");
-    expect(n).toBe(3);
+    expect(n).toBe(4);
     expect(retirer.mock.calls.map((c) => c[0]).sort()).toEqual(
       [
         "lead-apporteur-kit-hnadiaexamplecom",
         "lead-apporteur-relance-j2-hnadiaexamplecom",
         "lead-apporteur-relance-j7-hnadiaexamplecom",
+        "lead-apporteur-vsl-etape2-hnadiaexamplecom",
       ].sort(),
     );
   });
