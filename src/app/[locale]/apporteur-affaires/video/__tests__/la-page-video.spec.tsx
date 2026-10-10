@@ -165,7 +165,7 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
       "Vous apportez déjà des affaires : l'IA complète ce que vous recommandez, sans exclusivité";
     expect(t).toContain(premiere);
     expect(t.indexOf(premiere)).toBeLessThan(t.indexOf("Vous avez des contacts"));
-    expect(t).toContain("Votre espace personnel");
+    expect(t).toContain("Votre lien personnel");
     expect(t).not.toMatch(/tableau des commissions/i);
   });
 
