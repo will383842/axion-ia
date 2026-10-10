@@ -33,7 +33,10 @@ export function FormateurAccountManager({
   function toggle(id: string, actif: boolean) {
     setMsg(null);
     startTransition(async () => {
-      await setFormateurActifAction({ trainerId: id, actif });
+      const res = await setFormateurActifAction({ trainerId: id, actif });
+      // Un refus (dossier d'indépendant incomplet, rôle non habilité) se dit :
+      // sans message, le bouton aurait l'air de ne rien faire.
+      if (!res.ok) setMsg({ ok: false, texte: res.error ?? "Le changement a échoué." });
       router.refresh();
     });
   }

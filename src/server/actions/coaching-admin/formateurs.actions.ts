@@ -8,7 +8,9 @@
  * - `sendFormateurLinkAction` : envoie un lien de connexion au formateur depuis
  *   la console (dépannage : le formateur peut aussi le demander lui-même).
  *
- * RBAC : `requireAdminWrite` (editor+).
+ * RBAC : `requireAdminWrite` (editor+) pour entrer ; l'ACTIVATION d'un
+ * formateur indépendant exige en plus l'habilitation `habiliter_formateur` et
+ * un dossier complet — c'est l'écrivain unique qui en juge (lot S1, ADR 0066).
  */
 
 import { z } from "zod";
@@ -17,6 +19,10 @@ import { requireAdminWrite } from "@/server/actions/intervention-documents/_guar
 import { enqueueEmail } from "@/server/queue/queues";
 import { createFormateurMagicLink } from "@/server/formateur/magic-link";
 import { buildFormateurMagicLinkUrl } from "@/server/formateur/routes";
+import {
+  changerActivationFormateur,
+  messageRefusActivation,
+} from "@/server/qualiopi/formateurs-independants/activation";
 
 export interface AdminActionResult {
   readonly ok: boolean;
@@ -28,13 +34,20 @@ const setActifSchema = z.object({ trainerId: z.string().uuid(), actif: z.boolean
 export async function setFormateurActifAction(
   input: z.infer<typeof setActifSchema>,
 ): Promise<AdminActionResult> {
-  await requireAdminWrite();
+  const session = await requireAdminWrite();
   const parsed = setActifSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Requête invalide." };
-  await prisma.trainer.update({
-    where: { id: parsed.data.trainerId },
-    data: { actif: parsed.data.actif },
+  // 🔴 Lot S1 : cette porte écrivait `actif` en direct, sans garde. Elle passe
+  // désormais par l'écrivain unique, comme la fiche formateur.
+  const r = await changerActivationFormateur({
+    trainerId: parsed.data.trainerId,
+    actif: parsed.data.actif,
+    acteur: { type: "administrateur", session },
+    motif: parsed.data.actif
+      ? "activation_depuis_la_console_coaching"
+      : "desactivation_depuis_la_console_coaching",
   });
+  if (!r.ok) return { ok: false, error: messageRefusActivation(r) };
   // Le rafraîchissement UI est assuré par router.refresh() côté client
   // (FormateurAccountManager) — pas de revalidatePath ici car le préfixe admin
   // est secret ([adminPrefix]) et un chemin hardcodé ne matcherait jamais.
