@@ -1,0 +1,2935 @@
+{
+  "version": "2026-10",
+  "dateInventaire": "2026-10-10",
+  "commitLu": "0bc2fbc1",
+  "responsable": {
+    "nom": "AXION IA SAS (marque Axion-IA)",
+    "siren": "108 018 631",
+    "contactRgpd": "contact@axion-ia.com",
+    "dpo": "aucun (désignation non obligatoire, même mention que la politique publiée)",
+    "autorite": "CNIL"
+  },
+  "methode": "Inventaire en lecture seule du dépôt au commit indiqué : schéma Prisma, src/features, src/server, workers BullMQ, intégrations, src/content/legal.ts (ce qui est ANNONCÉ) et src/content/subprocessors.ts. Aucune donnée de production consultée : l'état réel des interrupteurs (variables Coolify) n'est pas vérifiable depuis le dépôt et est signalé comme tel.",
+  "legende": {
+    "statut": {
+      "actif": "le code tourne en production",
+      "conditionnel": "le code existe mais ne tourne que si un interrupteur ou une clé est posé en production (à vérifier)",
+      "pilote": "ne tourne que sur des tests internes",
+      "hors_depot": "traitement fait dans une autre application (Axion CRM Pro, Axion Partners), seulement visible ici par ses traces",
+      "inerte": "tables présentes, aucun code ne les remplit"
+    },
+    "annoncePolitique": {
+      "oui": "décrit dans /politique-confidentialite",
+      "partiel": "évoqué, mais incomplet ou inexact",
+      "non": "absent de /politique-confidentialite"
+    },
+    "purge": {
+      "aucune": "rien n'est effacé automatiquement",
+      "partielle": "une partie seulement est effacée automatiquement",
+      "active": "effacement automatique en service"
+    },
+    "surSousProcesseurs": {
+      "oui": "inscrit sur /sous-processeurs",
+      "non": "absent de /sous-processeurs",
+      "interne": "outil interne d'Axion-IA (même responsable), non concerné par la liste",
+      "public": "service public / source de données, pas un sous-traitant au sens strict"
+    }
+  },
+  "resume": {
+    "nombreTraitements": 41,
+    "nombreEcarts": 24,
+    "ecartsParGravite": {
+      "critique": 2,
+      "élevé": 9,
+      "moyen": 10,
+      "faible": 3
+    }
+  },
+  "traitements": [
+    {
+      "id": "T01",
+      "domaine": "Commercial",
+      "nom": "Demandes de contact et de devis",
+      "statut": "actif",
+      "personnes": [
+        "Prospects qui remplissent un formulaire du site (audit, devis, formation, implémentation, presse, partenariat, investisseur, intervention, support)",
+        "Demandeurs du rapport ROI (simulateur)",
+        "Visiteurs dont le chatbot capte les coordonnées"
+      ],
+      "donnees": [
+        "Nom, e-mail, téléphone (chiffrés)",
+        "Entreprise, SIREN, secteur, adresse, effectif, fonction",
+        "Message libre, budget, délai, ville",
+        "Provenance (UTM, page d'origine), user-agent, référent",
+        "Adresse IP en clair (colonne dite « dépréciée » mais toujours écrite) et empreinte d'IP",
+        "Notes internes de l'équipe, réponses envoyées par l'équipe (en clair)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Répondre à la demande, préparer un devis, suivre la relation commerciale.",
+      "baseLegale": {
+        "article": "6.1.b (mesures précontractuelles) ; 6.1.f (suivi de la relation)",
+        "detail": "Annoncé dans la politique (« Exécution contractuelle… intérêt légitime… suivi de la relation »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. »",
+        "source": "src/content/legal.ts — section « Durée de conservation »"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Aucune suppression automatique (purge des demandes archivées retirée le 2026-10-07). Corbeille récupérable en console ; effacement définitif réservé au super-administrateur."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram (messagerie interne de l'équipe)",
+          "role": "alerte immédiate : nom, e-mail, téléphone, 500 premiers caractères du message, en clair",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail (Zoho)",
+          "role": "accusé de réception et réponses de l'équipe",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "copie du contact (e-mail, nom, téléphone, entreprise, ville, consentement ; jamais le message)",
+          "pays": "UE (serveur Hetzner)",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        },
+        {
+          "nom": "Cloudflare (Turnstile)",
+          "role": "anti-robot : jeton et adresse IP",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "WhatsApp via CallMeBot",
+          "role": "alerte sans donnée personnelle (catégorie et heure seulement)",
+          "pays": "inconnu",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        }
+      ],
+      "securite": [
+        "Nom, e-mail, téléphone chiffrés AES-256-GCM (encryptPii)",
+        "Empreinte HMAC de l'e-mail pour l'export/effacement",
+        "Anti-robot Turnstile, champ leurre, limitation de débit",
+        "⚠️ Lecture des demandes déchiffrées possible avec le rôle « reader »"
+      ],
+      "droits": {
+        "aujourdhui": "E-mail à contact@axion-ia.com ; export et effacement par /api/gdpr-export et /api/gdpr-erase (lien reçu par e-mail) ; effacement console.",
+        "manques": [
+          "Les réponses envoyées par l'équipe (SubmissionReply) ne sont ni exportées ni effacées",
+          "L'empreinte d'IP n'est pas effacée"
+        ]
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/features/unified-contact/actions.ts",
+        "src/features/roi-report/actions.ts",
+        "src/features/admin-submissions/",
+        "src/features/admin-inbox/queries.ts",
+        "prisma/schema.prisma (Submission, SubmissionReply)"
+      ],
+      "ecarts": ["E05", "E07", "E09", "E10", "E11"]
+    },
+    {
+      "id": "T02",
+      "domaine": "Commercial",
+      "nom": "Réservations d'appel (Calendly) et suivi des rendez-vous",
+      "statut": "actif",
+      "personnes": [
+        "Prospects qui réservent un appel sur /appel",
+        "Candidats apporteurs qui réservent l'échange de 15 min",
+        "Visiteurs de salon (GOFAB et autres rendez-vous « salon »)",
+        "Invités ajoutés à une réservation"
+      ],
+      "donnees": [
+        "Nom, e-mail, téléphone (en clair)",
+        "Réponses au formulaire de réservation, besoin",
+        "Lien de visio ou numéro, date, liens d'annulation",
+        "Provenance (UTM, référent)",
+        "Contenu complet reçu de Calendly",
+        "Note de suivi rédigée par l'équipe, note sur 20, décision"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Prendre et rappeler les rendez-vous, préparer l'échange, suivre la relation commerciale.",
+      "baseLegale": {
+        "article": "6.1.b (mesures précontractuelles) ; 6.1.f pour la note de suivi",
+        "detail": "La politique décrit le rendez-vous et les données saisies (section « Rendez-vous de découverte »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Seules les informations que vous saisissez au moment de la réservation […] sont conservées, dans les conditions décrites ci-dessus » (= demandes commerciales : pas de suppression automatique).",
+        "source": "src/content/visio-annonce-textes.ts (section « Rendez-vous de découverte » de legal.ts)"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Purge des rendez-vous Calendly retirée le 2026-10-07 : conservation sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Calendly",
+          "role": "prise de rendez-vous ; notre serveur crée et lit les réservations",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Google Agenda",
+          "role": "rendez-vous ajoutés depuis la console (nom, téléphone, note)",
+          "pays": "Irlande / monde",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Google Meet",
+          "role": "tenue de la visio",
+          "pays": "Irlande / monde",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "alerte : nom, e-mail, téléphone, heure, réponses, en clair",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "confirmation et rappels J-2, J-1, H-1",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "copie du rendez-vous (sans le téléphone dans les réponses)",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        },
+        {
+          "nom": "Plausible (auto-hébergé)",
+          "role": "événement d'audience côté serveur",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Meta (API Conversions)",
+          "role": "événement « Schedule » pour un candidat apporteur venu de Facebook, si consentement",
+          "pays": "Irlande / États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Accès réservé aux rôles super_admin, admin, editor",
+        "Coordonnées masquées pour les autres rôles dans la boîte de réception",
+        "⚠️ Aucune donnée chiffrée dans la table des rendez-vous"
+      ],
+      "droits": {
+        "aujourdhui": "E-mail ; export et effacement (anonymisation) par /api/gdpr-*.",
+        "manques": [
+          "Un invité ajouté à la réservation n'est pas retrouvé : la recherche ne porte que sur la personne qui a réservé"
+        ]
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/server/calendly/",
+        "src/features/admin-calendly/",
+        "src/features/admin-rendezvous/",
+        "src/server/google-calendar/",
+        "src/app/api/calendly/"
+      ],
+      "ecarts": ["E05", "E07", "E09", "E12"]
+    },
+    {
+      "id": "T03",
+      "domaine": "Commercial",
+      "nom": "Clients et dossier client",
+      "statut": "actif",
+      "personnes": [
+        "Contacts des entreprises clientes ou prospectes",
+        "Clients particuliers",
+        "Personnes simplement citées dans un dossier"
+      ],
+      "donnees": [
+        "Nom, fonction, e-mail, téléphone des contacts (en clair)",
+        "Notes, contexte, besoins identifiés",
+        "Projets, devis, brouillons de vente",
+        "Documents du projet (fichiers en base, non chiffrés)",
+        "Questionnaires de cadrage et réponses (chiffrés)",
+        "E-mails de suivi",
+        "Opposition au traitement par IA",
+        "Fichiers partagés (stockage Cloudflare R2)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Gérer la relation client, établir devis et propositions, préparer et suivre les prestations.",
+      "baseLegale": {
+        "article": "6.1.b (contrat) ; 6.1.c (obligations comptables) ; 6.1.f (prospects)",
+        "detail": "« Exécution contractuelle (RGPD art. 6.1.b) pour les clients »."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Données clients : 5 ans après fin de prestation (obligation comptable française). »",
+        "source": "src/content/legal.ts — section « Durée de conservation »"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Aucune suppression automatique : les échéances de 3 ans (prospect) et 5 ans (client) calculées par le code ne sont plus appliquées depuis le 2026-10-07. Garde sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Hetzner",
+          "role": "hébergement de la base",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Cloudflare R2",
+          "role": "fichiers partagés",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "e-mails au client",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "API Recherche d'entreprises (État)",
+          "role": "vérification du SIREN / de la raison sociale",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "public"
+        },
+        {
+          "nom": "OpenAI",
+          "role": "questionnaire et e-mail de suivi rédigés par IA — seulement sur une rencontre de test (mode pilote)",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "suivi de la relation",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Fiche : écriture réservée aux rôles d'écriture",
+        "Échanges, faits, comptes rendus : super_admin et admin seulement",
+        "Fichiers analysés par antivirus (ClamAV)",
+        "⚠️ Coordonnées des contacts et documents non chiffrés"
+      ],
+      "droits": {
+        "aujourdhui": "E-mail ; export du dossier par /api/gdpr-export ; effacement ciblé par /api/gdpr-erase (la fiche liée à une facture est conservée, art. 17.3.b).",
+        "manques": [
+          "Aucune action de console pour l'effacement ciblé",
+          "Le titre d'un projet qui nomme une personne n'est pas réécrit"
+        ]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/features/dossier-client/",
+        "src/server/clients/",
+        "src/features/personne/",
+        "src/server/partages/",
+        "src/lib/rgpd-dossier-client.ts"
+      ],
+      "ecarts": ["E04", "E05", "E12"]
+    },
+    {
+      "id": "T04",
+      "domaine": "Commercial",
+      "nom": "Enregistrement, transcription et compte rendu des visios (et dictée après un appel)",
+      "statut": "pilote",
+      "personnes": [
+        "Participants aux rendez-vous Google Meet",
+        "Williams (sa piste, ses dictées)",
+        "Personnes citées pendant l'échange"
+      ],
+      "donnees": [
+        "Son en deux pistes (morceaux de 10 s chiffrés)",
+        "Transcription horodatée (chiffrée)",
+        "Compte rendu et faits extraits avec leur citation (chiffrés)",
+        "Preuve d'accord (texte de l'annonce et réponse, chiffrés)"
+      ],
+      "donneesSensibles": ["Voix (enregistrement audio)"],
+      "finalite": "Tirer un compte rendu fidèle, relu et validé par Williams, et les faits utiles au projet du client.",
+      "baseLegale": {
+        "article": "6.1.a (accord oral au début de la réunion) ; 6.1.f pour la dictée",
+        "detail": "Texte prêt dans visio-annonce-textes.ts, NON publié tant que ETAT_COMPTES_RENDUS_VISIO = « pending_activation »."
+      },
+      "conservationAnnoncee": {
+        "texte": "Aujourd'hui : « Ces rendez-vous ne sont ni enregistrés ni transcrits. » Après activation : son effacé à la validation du compte rendu, au plus tard 30 jours ; le reste sans suppression automatique.",
+        "source": "src/content/visio-annonce-textes.ts (RDV_DECOUVERTE, CONSERVATION_VISIO)"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "Le son est bien effacé (validation, refus, retrait d'accord, au plus tard 30 jours). Transcription, comptes rendus, faits, preuves : plus aucune purge depuis le 2026-10-07."
+      },
+      "destinataires": [
+        {
+          "nom": "OpenAI (comptes rendus)",
+          "role": "transcription et rédaction — DPA « pending »",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Cloudflare R2",
+          "role": "son chiffré, temporaire",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "alertes techniques du circuit, sans contenu",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Chiffrement strict sans repli en clair (chiffrer-parole)",
+        "Accès super_admin et admin",
+        "Extension d'enregistrement authentifiée par jeton d'appareil (90 jours)",
+        "Refus si le client est opposé à l'IA ou si son préavis court",
+        "Mode effectif bridé à « pilote » (rencontres de test) tant que la notice n'est pas publiée ; dictée refusée (503)"
+      ],
+      "droits": {
+        "aujourdhui": "Retrait de l'accord en console ; export des paroles du demandeur et effacement ciblé par /api/gdpr-*.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/server/visio/",
+        "src/features/admin-enregistreur/",
+        "src/features/dossier-client/compte-rendu-gestes.ts",
+        "src/content/visio-annonce-textes.ts",
+        "extensions/enregistreur-meet/"
+      ],
+      "ecarts": ["E05", "E14"]
+    },
+    {
+      "id": "T05",
+      "domaine": "Commercial",
+      "nom": "Chatbot du site",
+      "statut": "conditionnel",
+      "personnes": ["Visiteurs qui écrivent au chatbot"],
+      "donnees": [
+        "Texte libre tapé par le visiteur (peut contenir nom, e-mail, situation)",
+        "Résumé de la conversation, profil déduit (structure, secteur, besoin, maturité)",
+        "Page d'origine, empreinte d'IP",
+        "Coordonnées si le visiteur les laisse (deviennent une demande T01)",
+        "Questions transmises à l'équipe (escalade, avec e-mail)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Répondre aux questions des visiteurs et transmettre une demande à l'équipe.",
+      "baseLegale": {
+        "article": "non annoncée (6.1.f ou 6.1.b à décider)",
+        "detail": "Le chatbot n'est pas décrit dans la politique."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien d'annoncé pour le chatbot.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "Conversations, messages et escalades : plus de purge depuis le 2026-10-07. Seuls le cache de réponses et la table d'idempotence sont effacés à 12 mois."
+      },
+      "destinataires": [
+        {
+          "nom": "OpenAI (par défaut) ou Anthropic",
+          "role": "génération des réponses : les messages du visiteur partent tels quels",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        },
+        {
+          "nom": "Voyage AI",
+          "role": "classement des passages : reçoit la question du visiteur",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        },
+        {
+          "nom": "Telegram",
+          "role": "lead (nom, e-mail, téléphone, besoin) et escalades",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "lead capté",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": ["Empreinte d'IP", "Lecture en console pour tous les rôles"],
+      "droits": {
+        "aujourdhui": "E-mail ; export/effacement par /api/gdpr-* uniquement si la conversation est liée à un lead ou une escalade.",
+        "manques": ["Une conversation anonyme où le visiteur a tapé ses données est introuvable"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/chatbot/",
+        "src/app/api/chatbot/",
+        "src/features/admin-chatbot/",
+        "src/lib/rgpd-export-chat.ts"
+      ],
+      "ecarts": ["E02", "E03", "E05", "E08", "E14"]
+    },
+    {
+      "id": "T06",
+      "domaine": "Marketing",
+      "nom": "Envoi du guide IA entreprise",
+      "statut": "actif",
+      "personnes": [
+        "Personnes qui demandent le guide (/guide-ia, encart d'article, envoi depuis la console)"
+      ],
+      "donnees": [
+        "E-mail, page d'origine, langue",
+        "Version du texte d'information présenté",
+        "Dates d'envoi, d'affichage du lien, de clic",
+        "Empreintes de l'e-mail et de l'IP (registre de preuve)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Envoyer le guide demandé ; savoir s'il a été ouvert.",
+      "baseLegale": {
+        "article": "6.1.b (exécution de la demande) ; 6.1.f (inscription au CRM au clic)",
+        "detail": "Décrit en détail dans la section « Guide IA entreprise et lettre d'information »."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … sont conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement. »",
+        "source": "src/content/legal.ts — section « Guide IA entreprise et lettre d'information »"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Aucune suppression automatique (purgerLettreEtGuide retirée du planning). Conforme à l'annonce."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "envoi du guide",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "alerte avec adresse masquée",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "contact créé au clic sur le guide (interrupteur CRM_SYNC_GUIDE_ENABLED, fermé par défaut)",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Jetons aléatoires",
+        "Empreintes HMAC/SHA-256 salées dans le registre de preuve",
+        "Anti-robot Turnstile, vérification MX"
+      ],
+      "droits": {
+        "aujourdhui": "Lien de désinscription en un clic ; export et effacement par /api/gdpr-* ; effacement console.",
+        "manques": []
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/features/guide-ia/",
+        "src/server/guide-ia/",
+        "src/app/api/guide-ia/telecharger/",
+        "src/server/crm-sync/lettre-guide.ts"
+      ],
+      "ecarts": []
+    },
+    {
+      "id": "T07",
+      "domaine": "Marketing",
+      "nom": "Lettre d'information",
+      "statut": "actif",
+      "personnes": [
+        "Abonnés (adresse professionnelle : intérêt légitime ; adresse personnelle : case cochée)"
+      ],
+      "donnees": [
+        "E-mail, langue, statut, provenance",
+        "Dates d'inscription, confirmation, désinscription, rebond",
+        "Version du texte présenté, empreinte d'IP"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Envoyer 1 à 2 e-mails par mois. Aucune lettre n'est envoyée à ce jour (MailWizz/PowerMTA non en service).",
+      "baseLegale": {
+        "article": "6.1.f (adresse pro, art. L.34-5 CPCE) ; 6.1.a (adresse perso)",
+        "detail": "Annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … ne sont pas supprimées automatiquement. Après une désinscription, votre adresse reste conservée pour qu'aucun envoi ne vous parvienne. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme : purge des désinscrits retirée du planning."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "confirmation d'inscription",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "alerte d'inscription (adresse en clair d'après l'inventaire Telegram)",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "inscription confirmée, désinscriptions",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": ["Jetons aléatoires, IP hachée (colonne IP en clair supprimée le 2026-09-25)"],
+      "droits": {
+        "aujourdhui": "Désinscription en un clic ; export/effacement /api/gdpr-* ; effacement console.",
+        "manques": []
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/features/newsletter/",
+        "src/server/newsletter/",
+        "src/features/admin-newsletter/"
+      ],
+      "ecarts": ["E09"]
+    },
+    {
+      "id": "T08",
+      "domaine": "Marketing",
+      "nom": "Avis clients",
+      "statut": "actif",
+      "personnes": ["Clients qui déposent un avis"],
+      "donnees": [
+        "Prénom, initiale du nom, entreprise, ville",
+        "Titre et commentaire",
+        "Photo (portrait ou logo)",
+        "E-mail (chiffré, sans empreinte)",
+        "Empreinte d'IP, version du consentement"
+      ],
+      "donneesSensibles": ["Photographie (image de la personne)"],
+      "finalite": "Publier les avis après modération.",
+      "baseLegale": {
+        "article": "6.1.a (consentement à la publication)",
+        "detail": "Non décrit dans la politique."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien d'annoncé.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conservation sans limite ; suppression manuelle par le super-administrateur."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram",
+          "role": "prénom, initiale, extrait",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "reçoit le NOM DE FAMILLE COMPLET, qui n'est même pas gardé sur le site",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "e-mails de confirmation",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["E-mail chiffré", "Photos sur le volume du serveur, sauvegardées dans R2"],
+      "droits": {
+        "aujourdhui": "E-mail puis suppression manuelle en console.",
+        "manques": [
+          "Ni export ni effacement par /api/gdpr-* : l'e-mail chiffré sans empreinte est introuvable"
+        ]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/features/review-submission/actions.ts",
+        "src/features/admin-reviews/",
+        "src/server/reviews/"
+      ],
+      "ecarts": ["E03", "E07", "E19"]
+    },
+    {
+      "id": "T09",
+      "domaine": "Marketing",
+      "nom": "Demandes de passage dans le podcast",
+      "statut": "actif",
+      "personnes": ["Dirigeants qui demandent à être invités"],
+      "donnees": [
+        "Nom, e-mail, téléphone (chiffrés)",
+        "Entreprise, ville, code postal, activité",
+        "Empreinte d'IP, notes internes"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Étudier la demande et organiser l'enregistrement.",
+      "baseLegale": {
+        "article": "6.1.b",
+        "detail": "Couvert implicitement par « demandes commerciales »."
+      },
+      "conservationAnnoncee": {
+        "texte": "Comme les demandes commerciales : pas de suppression automatique.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram",
+          "role": "nom, e-mail, téléphone, ville",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "accusé de réception",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "contact",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": ["Coordonnées chiffrées"],
+      "droits": {
+        "aujourdhui": "Export et effacement par /api/gdpr-* ; suppression console.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": ["src/features/podcast-request/", "src/features/admin-podcast-requests/"],
+      "ecarts": ["E09"]
+    },
+    {
+      "id": "T10",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Gestion des stagiaires, inscriptions, documents et financements",
+      "statut": "actif",
+      "personnes": [
+        "Stagiaires et bénéficiaires (CPF, OPCO, France Travail)",
+        "Contacts sur place des clients",
+        "Contacts des financeurs"
+      ],
+      "donnees": [
+        "Nom, prénom, e-mail, téléphone, entreprise, fonction (en clair)",
+        "Inscriptions, statut, motif de sortie (texte libre), taux de présence",
+        "Adaptations réalisées (texte libre en clair)",
+        "Numéro de dossier OPCO, type de financement, montants",
+        "Documents générés : convention, convocation, attestation, certificat de réalisation (PDF sur R2)",
+        "Factures de formation (destinataire, adresse)",
+        "Accès au portail stagiaire (jeton, cookie 90 jours)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Exécuter l'action de formation, produire les preuves Qualiopi, le BPF et les pièces pour les financeurs.",
+      "baseLegale": {
+        "article": "6.1.b (contrat de formation) ; 6.1.c (obligations des organismes de formation)",
+        "detail": "Annoncé dans la convention (art. 6), le livret d'accueil et le règlement intérieur ; pas dans la politique du site."
+      },
+      "conservationAnnoncee": {
+        "texte": "Livret d'accueil : « conservées pendant 5 ans à compter de la fin de votre formation ». Règlement intérieur : « conservées pendant cinq (5) ans ». Convention : « conservation des pièces justificatives pendant cinq (5) ans ».",
+        "source": "src/server/qualiopi/documents/templates/livret-accueil.tsx, reglement-interieur.tsx, convention.tsx"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Une date « suppression prévue » (+5 ans) est écrite sur les documents, mais AUCUN code ne l'applique (script de simulation seulement). Garde sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "documents PDF",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "convocations, conventions, attestations, liens d'accès",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Entreprise cliente et OPCO",
+          "role": "pièces de remboursement (envoi validé à la main ou ZIP à déposer)",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "public"
+        }
+      ],
+      "securite": [
+        "Rôles de console et habilitations (requireAdminRead/Write, requireHabilitation)",
+        "Chaque action Qualiopi est journalisée",
+        "Lecture des PDF par lien signé de 15 min"
+      ],
+      "droits": {
+        "aujourdhui": "Depuis le portail stagiaire : demande d'export ou de suppression, traitée à la main en console sous 30 jours (accusé de réception). E-mail.",
+        "manques": [
+          "/api/gdpr-* ne couvre pas les stagiaires",
+          "L'export omet réclamations, signatures de documents, factures, incidents",
+          "La suppression laisse intacts : motif de sortie, adaptations réalisées, PDF qui portent le nom, réclamations, appréciations, factures, relevés de connexion"
+        ]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/qualiopi/",
+        "src/server/actions/qualiopi/trainees.ts",
+        "src/server/actions/qualiopi/enrollments.ts",
+        "src/server/qualiopi/portail/",
+        "src/app/[locale]/portail/",
+        "src/server/qualiopi/financements/",
+        "src/server/qualiopi/legal/retention-echeance.ts"
+      ],
+      "ecarts": ["E03", "E04", "E07"]
+    },
+    {
+      "id": "T11",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Référent handicap et besoins d'adaptation",
+      "statut": "actif",
+      "personnes": [
+        "Stagiaires qui déclarent un handicap, un problème de santé ou un besoin d'aménagement"
+      ],
+      "donnees": [
+        "Case « situation de handicap »",
+        "Détail de la situation (chiffré)",
+        "Détail d'adaptation du questionnaire de positionnement (chiffré)",
+        "Adaptations réalisées (texte libre en clair)"
+      ],
+      "donneesSensibles": ["Données de santé (art. 9 RGPD)"],
+      "finalite": "Adapter la formation (obligation Qualiopi, indicateurs 20 et 26).",
+      "baseLegale": {
+        "article": "6.1.c + 9.2.b/g (obligation d'accessibilité) — à confirmer, ou 9.2.a (consentement explicite)",
+        "detail": "Aucune base écrite dans la politique ; le livret ne parle pas de santé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien de spécifique (5 ans pour l'ensemble des données de formation).",
+        "source": "livret-accueil.tsx"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite ; effacé (détail chiffré) seulement si une suppression est traitée en console."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram",
+          "role": "⚠️ « Prénom Nom a déclaré une situation de handicap ou un problème de santé… » EN CLAIR",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Formateur",
+          "role": "voit seulement « besoin d'adaptation : oui »",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Détail chiffré par un point d'entrée unique",
+        "Lecture du détail : super-administrateur seulement, journalisée",
+        "⚠️ « Adaptations réalisées » en clair"
+      ],
+      "droits": {
+        "aujourdhui": "Consultation sur le portail ; export (détail déchiffré) et suppression via demande portail.",
+        "manques": ["« Adaptations réalisées » non effacé par la suppression"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/actions/qualiopi/portail.ts (l. 405 et 767)",
+        "src/server/qualiopi/adaptation/detail-sante-chiffre.ts",
+        "src/server/qualiopi/positionnement/"
+      ],
+      "ecarts": ["E01", "E03", "E14"]
+    },
+    {
+      "id": "T12",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Émargement et relevés de présence",
+      "statut": "actif",
+      "personnes": [
+        "Stagiaires",
+        "Formateurs (contresignature)",
+        "Tuteurs",
+        "Participants d'une visio importés d'un fichier Zoom/Teams/Meet (y compris non stagiaires)"
+      ],
+      "donnees": [
+        "Nom, e-mail du signataire",
+        "IMAGE de la signature manuscrite (R2)",
+        "Empreintes d'IP et de navigateur, chaîne d'intégrité",
+        "Créneaux, heures de connexion/déconnexion",
+        "Fichier brut des relevés de connexion (noms, e-mails, durées)"
+      ],
+      "donneesSensibles": ["Signature manuscrite"],
+      "finalite": "Prouver l'assiduité (indicateur 12), établir le certificat de réalisation, justifier auprès des financeurs.",
+      "baseLegale": {
+        "article": "6.1.c (obligation légale des organismes de formation) ; 6.1.b",
+        "detail": "Annoncé dans la convention (« données d'émargement »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "5 ans (convention, livret, règlement intérieur).",
+        "source": "templates Qualiopi"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite. Images d'émargement purgées seulement lors d'une suppression traitée en console ; images de contresignature des formateurs jamais purgées."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "images de signature, feuilles PDF, fichiers de relevés",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "liens d'émargement",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Jetons hachés, IP et navigateur hachés",
+        "Chaîne d'empreintes scellée (inaltérabilité)"
+      ],
+      "droits": {
+        "aujourdhui": "Via la demande portail (stagiaires).",
+        "manques": [
+          "Les participants non stagiaires du fichier de relevés n'ont aucun moyen de savoir ni d'agir",
+          "Formateurs : rien"
+        ]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/qualiopi/emargement/",
+        "src/server/qualiopi/presence/",
+        "src/server/actions/qualiopi/presence.ts"
+      ],
+      "ecarts": ["E03", "E04", "E07"]
+    },
+    {
+      "id": "T13",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Évaluations, questionnaires, appréciations, réclamations et incidents",
+      "statut": "actif",
+      "personnes": ["Stagiaires", "Réclamants", "Formateurs mis en cause dans un incident"],
+      "donnees": [
+        "Scores, niveau, compétences, recommandations",
+        "Réponses aux questionnaires, note globale",
+        "Appréciations (commentaire avec nom et fonction du répondant, peut juger le formateur)",
+        "Réclamations : nom, e-mail, objet, description, réponse",
+        "Incidents : faits reprochés à un intervenant, niveau de vigilance calculé"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Mesurer les acquis et la satisfaction, traiter les réclamations, suivre la fiabilité des intervenants (Qualiopi).",
+      "baseLegale": {
+        "article": "6.1.c / 6.1.f",
+        "detail": "Évaluations annoncées (convention, livret) ; réclamations et notation des intervenants non annoncées."
+      },
+      "conservationAnnoncee": {
+        "texte": "5 ans (documents Qualiopi).",
+        "source": "templates Qualiopi"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Hetzner",
+          "role": "hébergement",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Lectures gardées par requireAdminRead ; actions journalisées"],
+      "droits": {
+        "aujourdhui": "Demande portail pour les stagiaires ; e-mail.",
+        "manques": [
+          "Réclamations jamais exportées ni effacées",
+          "Commentaires d'appréciation non effacés"
+        ]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/qualiopi/evaluations/",
+        "src/server/qualiopi/satisfaction/",
+        "src/server/actions/qualiopi/reclamations.ts",
+        "src/server/qualiopi/trainers/fiabilite-service.ts"
+      ],
+      "ecarts": ["E03", "E04", "E07", "E15"]
+    },
+    {
+      "id": "T14",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Signature électronique des pièces (conventions, devis, lettres de mission, contrats)",
+      "statut": "actif",
+      "personnes": ["Signataires côté client", "Stagiaires", "Formateurs et salariés"],
+      "donnees": [
+        "Nom, e-mail, qualité du signataire",
+        "Image de la signature (R2)",
+        "Empreintes d'IP et de navigateur, chaîne d'intégrité",
+        "Administrateur qui a recueilli la signature"
+      ],
+      "donneesSensibles": ["Signature manuscrite"],
+      "finalite": "Recueillir et prouver la signature des pièces contractuelles.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.c (preuve)",
+        "detail": "Non décrit dans la politique (DocuSeal y est cité, mais n'est plus utilisé)."
+      },
+      "conservationAnnoncee": {
+        "texte": "5 ans (« suppression prévue » écrite sur la ligne).",
+        "source": "src/server/qualiopi/legal/retention-echeance.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite ; images de signature jamais purgées."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "images et exemplaires signés",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "liens de signature, exemplaire signé",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "DocuSeal (auto-hébergé)",
+          "role": "plus utilisé ; le webhook reste ouvert et stocke tout ce qu'il reçoit",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Jetons hachés, IP et navigateur hachés", "Chaîne d'empreintes"],
+      "droits": {
+        "aujourdhui": "Effacement /api/gdpr-* : jetons révoqués, adresse pseudonymisée ; signatures conservées (preuve).",
+        "manques": ["Non exporté"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/qualiopi/documents/signature/",
+        "src/app/api/docuseal/webhook/route.ts"
+      ],
+      "ecarts": ["E03", "E04", "E16"]
+    },
+    {
+      "id": "T15",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Coaching individuel",
+      "statut": "actif",
+      "personnes": ["Bénéficiaires du coaching", "Tuteurs en entreprise"],
+      "donnees": [
+        "Nom et e-mail du bénéficiaire et du tuteur (en clair)",
+        "Cartographie d'activité, irritants, comptes rendus de séance",
+        "Champs « données sensibles » et « notes confidentielles » (texte libre)",
+        "Image de signature de séance (R2), empreinte d'IP"
+      ],
+      "donneesSensibles": ["Texte libre pouvant contenir des informations personnelles sensibles"],
+      "finalite": "Conduire et prouver les séances de coaching.",
+      "baseLegale": {
+        "article": "6.1.b",
+        "detail": "Non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien d'annoncé.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite ; suppression manuelle par le formateur."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "signatures",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Accès limité au formateur propriétaire de la séance et à la console coaching"],
+      "droits": {
+        "aujourdhui": "E-mail ; seules les signatures sont effacées par /api/gdpr-*.",
+        "manques": ["Ni export ni effacement des contenus de coaching"]
+      },
+      "annoncePolitique": "non",
+      "sources": ["src/server/actions/formateur/coaching.actions.ts", "src/server/coaching-admin/"],
+      "ecarts": ["E03", "E07"]
+    },
+    {
+      "id": "T16",
+      "domaine": "Ressources humaines",
+      "nom": "Formateurs et salariés (dossier, contrat, pièces, missions, disponibilités)",
+      "statut": "actif",
+      "personnes": [
+        "Formateurs salariés",
+        "Formateurs indépendants et sous-traitants",
+        "Autres salariés (secrétariat, marketing, développement)"
+      ],
+      "donnees": [
+        "Nom, prénom, e-mail, téléphone, adresses",
+        "Date et lieu de naissance, adresse personnelle (contrat de travail)",
+        "Poste, classification, durée, période d'essai, salaire fixe, tarif journalier",
+        "CV, compétences, habilitations, entretiens professionnels",
+        "Pièces : contrat, DPAE, attestation URSSAF, Kbis, NDA, RC pro, diplômes, RIB (liens saisis par l'admin)",
+        "Missions, refus, désistements",
+        "Indisponibilités, dont le type « maladie »",
+        "IBAN (champ posé le 2026-10-10, chiffrement imposé, non encore utilisé)"
+      ],
+      "donneesSensibles": ["Indication de santé (indisponibilité « maladie »)", "IBAN (à venir)"],
+      "finalite": "Gérer les contrats de travail et de sous-traitance, affecter les missions, justifier les compétences (Qualiopi).",
+      "baseLegale": {
+        "article": "6.1.b (contrat) ; 6.1.c (droit du travail, Qualiopi)",
+        "detail": "Contrat de travail : « traitées aux seules fins de la gestion du contrat de travail et conservées pendant la durée légale applicable ». Rien pour les indépendants."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Pendant la durée légale applicable » (contrat de travail).",
+        "source": "src/server/qualiopi/documents/templates/contrat-travail.tsx"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite ; « suppression » d'une pièce = archivage."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "propositions de mission, liens",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Cloudflare R2",
+          "role": "lettres de mission, contrats",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Écriture réservée et habilitation « habiliter_formateur »",
+        "Espace formateur par lien magique (15 min) puis cookie 30 jours",
+        "⚠️ Adresse IP en clair dans les liens magiques",
+        "Numéro de sécurité sociale volontairement non collecté"
+      ],
+      "droits": {
+        "aujourdhui": "Rien d'outillé : demande par e-mail traitée à la main.",
+        "manques": [
+          "Aucun export ni effacement pour les formateurs et salariés",
+          "Aucune information RGPD pour les indépendants"
+        ]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/actions/qualiopi/trainers.ts",
+        "src/server/actions/qualiopi/trainer-contrat.ts",
+        "src/server/qualiopi/trainers/",
+        "src/server/rh/",
+        "src/server/formateur/",
+        "src/server/qualiopi/formateurs-independants/"
+      ],
+      "ecarts": ["E03", "E04", "E07", "E11", "E15"]
+    },
+    {
+      "id": "T17",
+      "domaine": "Ressources humaines",
+      "nom": "Rémunération et autofacturation des formateurs",
+      "statut": "actif",
+      "personnes": ["Formateurs salariés et indépendants"],
+      "donnees": [
+        "Règles de rémunération, lignes d'honoraires, relevés",
+        "Numéro de facture, autofacture, contestation",
+        "Date et moyen de paiement, référence de virement",
+        "SIRET, TVA, mandat d'autofacturation"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Payer les formateurs et émettre les autofactures.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.c (obligations comptables et fiscales)",
+        "detail": "Non annoncé aux intéressés."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien d'annoncé.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite (pièces comptables : 10 ans minimum de toute façon)."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "autofactures PDF",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "TIIME",
+          "role": "réception des autofactures prévue (aucune intégration à ce jour, simple lien)",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "non"
+        }
+      ],
+      "securite": ["Rôles d'écriture"],
+      "droits": {
+        "aujourdhui": "Rien d'outillé.",
+        "manques": ["Aucun export"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/qualiopi/remuneration/",
+        "src/server/actions/qualiopi/trainer-remuneration.ts",
+        "src/server/actions/qualiopi/autofacture.ts"
+      ],
+      "ecarts": ["E03", "E13"]
+    },
+    {
+      "id": "T18",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Partenaires et sous-traitants de formation (registres Qualiopi)",
+      "statut": "actif",
+      "personnes": ["Interlocuteurs des sociétés sous-traitantes et partenaires"],
+      "donnees": [
+        "Nom, e-mail, fonction de l'interlocuteur (en clair)",
+        "SIRET, NDA, attestation RC pro, CV, capture data.gouv"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Tenir les registres Qualiopi des partenariats et de la sous-traitance.",
+      "baseLegale": {
+        "article": "6.1.b / 6.1.f",
+        "detail": "Non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien d'annoncé.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Hetzner",
+          "role": "hébergement",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Écriture réservée, actions journalisées"],
+      "droits": {
+        "aujourdhui": "E-mail.",
+        "manques": ["Hors de la chaîne d'effacement"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/actions/qualiopi/partenariats.ts",
+        "prisma/schema.prisma (Partenariat, SousTraitant)"
+      ],
+      "ecarts": ["E03", "E07"]
+    },
+    {
+      "id": "T19",
+      "domaine": "Réseau d'apporteurs",
+      "nom": "Candidats apporteurs d'affaires (tunnels, relances, invitation)",
+      "statut": "actif",
+      "personnes": [
+        "Personnes intéressées par le réseau (Facebook/Instagram, LinkedIn, /indeed, /leboncoin, /memo-isere, accès direct, saisie console)",
+        "Candidats à un emploi à qui le réseau est proposé"
+      ],
+      "donnees": [
+        "Prénom, nom, e-mail, téléphone (chiffrés)",
+        "Ville, code postal, expériences, usages de l'IA, zones, pitch, disponibilité, permis/véhicule, statut, LinkedIn, message",
+        "Date de naissance et nationalité (facultatives, en clair)",
+        "Réponse « nombre de dirigeants connus » (page vidéo)",
+        "Score de candidature",
+        "Réponse au bandeau cookies, identifiants Facebook (si consentement)",
+        "Adresse IP EN CLAIR + empreinte, user-agent",
+        "CV importé à la main depuis Indeed (script)"
+      ],
+      "donneesSensibles": ["Nationalité"],
+      "finalite": "Étudier la candidature, envoyer les documents demandés, relancer, inviter à un échange.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.f (personne recommandée ; candidat emploi à qui on propose le réseau)",
+        "detail": "Annoncé (section « Réseau d'apporteurs d'affaires »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Votre dossier est conservé pour garder la trace de nos échanges ; il n'est pas supprimé automatiquement. »",
+        "source": "src/content/legal.ts — section « Réseau d'apporteurs d'affaires »"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme. L'« archivage automatique » n'est qu'un changement de statut."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "kit à +30 min, relances J+2/J+7, invitation et rappels",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "nom, ville, zone, disponibilité",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Calendly",
+          "role": "réservation de l'échange",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Meta (pixel + API Conversions)",
+          "role": "si consentement : e-mail, téléphone, prénom, ville hachés ; IP et navigateur en clair",
+          "pays": "Irlande / États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Zoho Mail (lecture)",
+          "role": "repérage des réponses à l'invitation",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Axion CRM Pro",
+          "role": "seulement en cas d'opposition (e-mail + motif)",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Coordonnées chiffrées",
+        "Preuve de consentement en empreinte",
+        "Fiche ouverte au rôle « consultation » mais coordonnées masquées hors rôles habilités (prénom et nom restent visibles)"
+      ],
+      "droits": {
+        "aujourdhui": "Lien d'opposition dans chaque e-mail (arrête aussi les relances) ; export et effacement /api/gdpr-*.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/features/commercial-application/",
+        "src/lib/commercial-application/model.ts",
+        "src/server/meta/",
+        "scripts/import-cv-apporteurs.mjs"
+      ],
+      "ecarts": ["E09", "E11", "E23"]
+    },
+    {
+      "id": "T20",
+      "domaine": "Réseau d'apporteurs",
+      "nom": "Dossier d'apporteur : contrat, pièces, IBAN, signature",
+      "statut": "actif",
+      "personnes": ["Apporteurs (souvent micro-entrepreneurs)", "Parrains et filleuls"],
+      "donnees": [
+        "Prénom, nom, e-mail, téléphone, IBAN (chiffrés)",
+        "SIREN, dénomination, adresse (souvent le domicile, en clair), NAF, statut, TVA, déclarations",
+        "Pièces : pièce d'identité, RIB, RC pro, attestation de vigilance, immatriculation (octets chiffrés en base)",
+        "Signature : nom tapé, date, empreinte d'IP, navigateur, texte du contrat (en clair dans un JSON)",
+        "Contrat signé (PDF sur R2)",
+        "Note interne"
+      ],
+      "donneesSensibles": ["Pièce d'identité", "IBAN"],
+      "finalite": "Vérifier, contracter avec et suivre un apporteur.",
+      "baseLegale": {
+        "article": "6.1.b (contrat) ; 6.1.c (vigilance, art. L.8222-1 C. trav.)",
+        "detail": "Couvert par la section « Réseau d'apporteurs d'affaires » (« si vous complétez le dossier, s'y ajoutent les réponses… ») — pièces, IBAN et signature non détaillés."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … n'est pas supprimé automatiquement. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "Pièce d'identité effacée dès qu'elle est jugée conforme, et quand elle est remplacée. Dossier refusé : identité et RIB effacés, IBAN vidé. MAIS : RC pro, vigilance et immatriculation jamais effacées (même refus) ; pièces d'un dossier abandonné, retiré ou résilié jamais effacées (y compris une pièce d'identité jamais jugée)."
+      },
+      "destinataires": [
+        {
+          "nom": "API Recherche d'entreprises (État)",
+          "role": "vérifier SIREN/SIRET",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "public"
+        },
+        {
+          "nom": "Cloudflare R2",
+          "role": "contrat signé",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "contrat signé en pièce jointe, liens",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Coordonnées et IBAN chiffrés ; IBAN affiché masqué",
+        "Pièces chiffrées (AXB1), antivirus au dépôt et à la lecture",
+        "Ouverture des pièces et du contrat : super_admin et admin",
+        "⚠️ Ouverture d'une pièce d'identité ou d'un RIB NON journalisée",
+        "⚠️ Lien personnel du dossier sans date d'expiration"
+      ],
+      "droits": {
+        "aujourdhui": "Export complet et effacement /api/gdpr-* (conservation légale motivée si contrat contresigné ou commissions) ; suppression console sous conditions.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/features/apporteurs-reseau/donnees.ts",
+        "src/features/apporteurs-reseau/verification.ts",
+        "src/features/apporteurs-reseau/pieces-chiffrement.ts",
+        "src/features/apporteurs-reseau/signature.ts",
+        "src/lib/rgpd-reseau-apporteur.ts"
+      ],
+      "ecarts": ["E06"]
+    },
+    {
+      "id": "T21",
+      "domaine": "Réseau d'apporteurs",
+      "nom": "Commissions, autofactures et relevés des apporteurs",
+      "statut": "actif",
+      "personnes": ["Apporteurs"],
+      "donnees": [
+        "Montants, palier, facture liée, mois de relevé",
+        "Numéros d'autofacture et d'avoir, litiges",
+        "Autofactures PDF : nom, adresse, SIREN, TVA"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Calculer et payer les commissions, émettre les autofactures.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.c (art. L.123-22 C. com.)",
+        "detail": "Finalité « calculer la rémunération de l'apporteur » citée côté personnes présentées."
+      },
+      "conservationAnnoncee": {
+        "texte": "Pas de suppression automatique.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme (obligation comptable de 10 ans)."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "autofactures",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "relevé mensuel",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Exports réservés au droit « facturer »"],
+      "droits": {
+        "aujourdhui": "Export /api/gdpr-* ; conservation légale opposée à l'effacement.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/features/apporteurs-reseau/facturation.ts",
+        "src/features/apporteurs-reseau/commissions.ts"
+      ],
+      "ecarts": []
+    },
+    {
+      "id": "T22",
+      "domaine": "Réseau d'apporteurs",
+      "nom": "Personnes présentées par un apporteur",
+      "statut": "actif",
+      "personnes": [
+        "Dirigeants et salariés d'entreprises dont un apporteur nous transmet les coordonnées"
+      ],
+      "donnees": [
+        "Nom, e-mail, téléphone (chiffrés)",
+        "Fonction, besoin, note, date de l'échange (en clair)",
+        "SIREN, SIRET, dénomination"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Présenter nos services, suivre la relation, calculer la commission.",
+      "baseLegale": {
+        "article": "6.1.f (+ information art. 14 au premier message)",
+        "detail": "Annoncé (ancre #personnes-presentees-par-un-apporteur)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … tant qu'elles restent exactes et que vous exercez la fonction […] ; elles ne sont pas supprimées automatiquement. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "premier message (art. 14) avec lien d'opposition",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "API Recherche d'entreprises (État)",
+          "role": "vérifier l'établissement",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "public"
+        },
+        {
+          "nom": "L'apporteur",
+          "role": "informé des seules suites utiles à sa commission",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "public"
+        }
+      ],
+      "securite": ["Coordonnées chiffrées, visibles seulement des rôles habilités"],
+      "droits": {
+        "aujourdhui": "Lien d'opposition ; export et effacement (anonymisation) /api/gdpr-*.",
+        "manques": []
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/features/apporteurs-reseau/presentations.ts",
+        "src/features/apporteurs-reseau/declaration-entreprise.ts",
+        "src/features/apporteurs-reseau/coordonnees-presentees.ts"
+      ],
+      "ecarts": ["E17"]
+    },
+    {
+      "id": "T23",
+      "domaine": "Recrutement",
+      "nom": "Candidatures aux offres d'emploi, entretiens et vivier",
+      "statut": "actif",
+      "personnes": [
+        "Candidats qui postulent sur /carrieres (offres diffusées aussi sur Indeed, leboncoin…)",
+        "Candidats spontanés"
+      ],
+      "donnees": [
+        "Prénom, nom, e-mail, téléphone (chiffrés)",
+        "Civilité, ville, poste actuel, expérience, disponibilité, LinkedIn, motivation, réponses, rémunération souhaitée",
+        "CV et photo (facultatifs, sur le disque du serveur, non chiffrés)",
+        "Empreinte d'IP, user-agent en clair, provenance",
+        "Notes internes, motif de refus, journal du dossier, réponses envoyées, entretiens et compte rendu",
+        "Réponses reçues par e-mail (date, objet en clair, extrait chiffré)",
+        "Accord vivier et opposition"
+      ],
+      "donneesSensibles": ["Photographie"],
+      "finalite": "Recruter ; recontacter pour d'autres postes si accord vivier.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.a (vivier)",
+        "detail": "Annoncé (sections « Candidatures et recrutement », « Conservation des candidatures »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … conservé pour garder la trace de nos échanges ; il n'est pas supprimé automatiquement. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme à l'annonce (purge des candidatures retirée)."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram",
+          "role": "nom, e-mail, téléphone, ville, rémunération souhaitée, 500 caractères de motivation, réponses — EN CLAIR",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "accusé de réception, réponses, rappels d'entretien",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Zoho Mail (lecture)",
+          "role": "repérage des réponses (interrupteur éteint par défaut)",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Cloudflare (Turnstile, sauvegardes R2 chiffrées)",
+          "role": "anti-robot, sauvegarde des CV",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Coordonnées chiffrées",
+        "Accès aux dossiers réservé (super_admin, admin, responsable qualité, secrétaire)",
+        "Chaque ouverture, téléchargement, export est journalisé",
+        "Turnstile, limitation de débit, champ leurre",
+        "Aucun envoi au CRM (ADR 0047)"
+      ],
+      "droits": {
+        "aujourdhui": "Opposition au vivier en un clic ; export et effacement /api/gdpr-* ; suppression console (super_admin).",
+        "manques": [
+          "L'export oublie ville, motivation, réponses, disponibilité, notes, journal, réponses envoyées, entretiens, vidéos, liens, provenance, accord vivier"
+        ]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/features/job-application/actions.ts",
+        "src/features/admin-job-applications/",
+        "src/server/careers/",
+        "src/server/vivier/",
+        "src/server/careers/candidature-rgpd.ts"
+      ],
+      "ecarts": ["E05", "E07", "E09", "E12", "E18"]
+    },
+    {
+      "id": "T24",
+      "domaine": "Recrutement",
+      "nom": "Monteurs et vidéastes freelance (candidatures vidéo)",
+      "statut": "actif",
+      "personnes": [
+        "Candidats monteurs vidéo et vidéastes freelance",
+        "Monteurs en poste (membres de la console éditoriale)"
+      ],
+      "donnees": [
+        "Comme T23, plus les tarifs",
+        "Jusqu'à 3 vidéos (200 Mo chacune, sur le disque du serveur)",
+        "Liens vers leurs réalisations (vérifiés chaque semaine)",
+        "Une fois en poste : nom, e-mail, rôle"
+      ],
+      "donneesSensibles": ["Image et voix (vidéos)"],
+      "finalite": "Sélectionner des prestataires vidéo ; leur donner accès à leur file de travail.",
+      "baseLegale": {
+        "article": "6.1.b",
+        "detail": "Couvert par la section « Candidatures et recrutement » (vidéos et vérification des liens non mentionnées)."
+      },
+      "conservationAnnoncee": {
+        "texte": "Comme T23 : pas de suppression automatique.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram (salon dédié)",
+          "role": "nom, ville, e-mail, téléphone, prix — en clair",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "WhatsApp via CallMeBot",
+          "role": "alerte sans contenu",
+          "pays": "inconnu",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        },
+        {
+          "nom": "YouTube, Vimeo, TikTok (oEmbed) et sites des candidats",
+          "role": "vérification hebdomadaire des liens fournis",
+          "pays": "États-Unis / Chine",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        }
+      ],
+      "securite": [
+        "Vidéos analysées par antivirus, lisibles en console une fois disponibles",
+        "Vue console cloisonnée",
+        "Jeton signé pour compléter les tarifs"
+      ],
+      "droits": {
+        "aujourdhui": "Comme T23 ; vidéos effacées par l'effacement art. 17.",
+        "manques": ["Vidéos non exportées"]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/lib/careers/video-editor-offer.ts",
+        "src/server/careers/videos-candidat.ts",
+        "src/server/careers/liens-surveilles.ts",
+        "src/features/admin-job-applications/video-freelance.ts",
+        "src/server/recrutement/jeton-complement.ts"
+      ],
+      "ecarts": ["E09", "E12", "E13", "E18"]
+    },
+    {
+      "id": "T25",
+      "domaine": "Commercial",
+      "nom": "Synchronisation vers Axion CRM Pro",
+      "statut": "actif",
+      "personnes": [
+        "Auteurs de formulaires, invités Calendly, demandeurs du guide, abonnés, auteurs d'avis, demandeurs de podcast, leads du chatbot, personnes opposées"
+      ],
+      "donnees": [
+        "E-mail en clair et son empreinte, prénom, nom, téléphone",
+        "Entreprise (SIREN, nom, ville, site, taille, secteur)",
+        "Version et date du consentement",
+        "Provenance, type de rendez-vous, besoin (tronqué), jusqu'à 10 réponses"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Suivre la relation commerciale dans l'outil CRM interne ; propager oppositions et effacements.",
+      "baseLegale": {
+        "article": "6.1.f",
+        "detail": "Annoncé pour le guide (« logiciel interne de gestion de la relation client (CRM) ») ; pas pour les autres sources."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien côté CRM.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "File d'envoi du site : lignes envoyées effacées à 30 jours ; lignes en échec gardées sans limite (données en clair). Côté CRM : inconnu depuis ce dépôt."
+      },
+      "destinataires": [
+        {
+          "nom": "Axion CRM Pro (application Laravel, serveur Hetzner)",
+          "role": "destinataire interne",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Envoi HTTPS signé HMAC",
+        "⚠️ La console « synchro CRM » affiche le contenu complet des lignes en erreur au rôle consultation",
+        "⚠️ Données déchiffrées en clair dans la file d'envoi"
+      ],
+      "droits": {
+        "aujourdhui": "Accès et effacement propagés au CRM ; oppositions propagées dans les deux sens.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/server/crm-sync/",
+        "src/server/queue/workers/crm-sync-worker.ts",
+        "src/app/api/internal/crm-webhook/"
+      ],
+      "ecarts": ["E10", "E12", "E19"]
+    },
+    {
+      "id": "T26",
+      "domaine": "Commercial",
+      "nom": "Base de prospection entreprises, organisateurs d'événements, fédérations",
+      "statut": "hors_depot",
+      "personnes": [
+        "Dirigeants et responsables d'entreprises (sources publiques)",
+        "Professionnels de santé (RPPS)",
+        "Organisateurs d'événements professionnels"
+      ],
+      "donnees": [
+        "Nom, prénoms, fonction, photo, LinkedIn",
+        "E-mails et téléphones nominatifs",
+        "Pour les praticiens : RPPS, profession, spécialité, adresse, téléphone, e-mail",
+        "Événements : nom, dates, lieu, public"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Constituer une base d'entreprises et proposer nos services / les interventions de Williams.",
+      "baseLegale": {
+        "article": "6.1.f (+ information art. 14)",
+        "detail": "Annoncé pour les organisateurs d'événements (ancre #organisateurs-evenements). La prospection des entreprises et des praticiens n'est PAS décrite."
+      },
+      "conservationAnnoncee": {
+        "texte": "Organisateurs : « pendant la durée de nos échanges ». Rien pour la base d'entreprises.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Tables présentes dans le schéma du site, alimentées par Axion CRM Pro (un test parle de ~4,29 M entreprises et ~1,32 M personnes). Purges retirées ; données en clair ; journal d'accès et liste d'opposition sans aucun code."
+      },
+      "destinataires": [
+        {
+          "nom": "Axion CRM Pro",
+          "role": "outil qui collecte et exploite",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "⚠️ Aucun chiffrement",
+        "Aucune console dans ce dépôt (menu « Prospection » = lien vers le CRM)"
+      ],
+      "droits": {
+        "aujourdhui": "Réponse « STOP » ou e-mail (organisateurs). Rien côté site pour la base d'entreprises.",
+        "manques": [
+          "/api/gdpr-* ne touche pas les tables de prospection",
+          "Liste d'opposition inerte"
+        ]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "prisma/schema.prisma (Prospection*, l. 11543-12098)",
+        "src/server/queue/workers/__tests__/prospection-aucune-purge-automatique.spec.ts",
+        "_PROSPECTION-BASE-ENTREPRISES/AIPD-ET-MENTIONS-PRETES.md",
+        "src/components/admin/ui/AdminSidebarNav.tsx"
+      ],
+      "ecarts": ["E05", "E14", "E20"]
+    },
+    {
+      "id": "T27",
+      "domaine": "Commercial",
+      "nom": "Synchronisation vers Axion Partners",
+      "statut": "conditionnel",
+      "personnes": ["Apporteurs, candidats apporteurs, clients"],
+      "donnees": [
+        "Identifiants, statuts, montants (jamais nom, e-mail, téléphone)",
+        "Exception : Partners peut lire les coordonnées d'un candidat (5 lectures par 24 h)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Alimenter l'application interne des apporteurs.",
+      "baseLegale": {
+        "article": "6.1.b / 6.1.f",
+        "detail": "Non annoncé (application interne)."
+      },
+      "conservationAnnoncee": {
+        "texte": "—",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Désactivé par défaut (PARTNERS_SYNC_ENABLED absent)."
+      },
+      "destinataires": [
+        {
+          "nom": "Axion Partners",
+          "role": "application interne",
+          "pays": "inconnu",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": ["HMAC, liste d'IP autorisées, journal sans clair"],
+      "droits": {
+        "aujourdhui": "—",
+        "manques": []
+      },
+      "annoncePolitique": "non",
+      "sources": ["src/server/partners/", "src/server/partners-sync/"],
+      "ecarts": []
+    },
+    {
+      "id": "T28",
+      "domaine": "Site et technique",
+      "nom": "Mesure d'audience (Plausible), parcours et performance du site",
+      "statut": "actif",
+      "personnes": ["Visiteurs du site"],
+      "donnees": [
+        "Pages vues anonymisées, référents, navigateur agrégé (Plausible)",
+        "Événements serveur Plausible (IP et navigateur transmis à l'outil auto-hébergé)",
+        "Parcours (identifiant de session, route, secteur, effectif, UTM)",
+        "Mesures de performance (URL, appareil, user-agent)",
+        "Cookie « axion_utm » 30 jours posé sans consentement"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Statistiques d'audience anonymes, attribution des réservations, performance.",
+      "baseLegale": {
+        "article": "6.1.f (exemption CNIL de mesure d'audience)",
+        "detail": "Annoncé (« statistiques d'audience anonymes »)."
+      },
+      "conservationAnnoncee": {
+        "texte": "« … mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "active",
+        "texte": "Conforme : performance 6 mois, parcours 12 mois. Plausible : rétention gérée par l'outil (non vérifiée)."
+      },
+      "destinataires": [
+        {
+          "nom": "Plausible (auto-hébergé)",
+          "role": "mesure d'audience",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Aucun cookie pour Plausible"],
+      "droits": {
+        "aujourdhui": "Non applicable (données anonymes).",
+        "manques": []
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/components/analytics/Plausible.tsx",
+        "src/lib/analytics/plausible-serveur.ts",
+        "src/lib/analytics/funnel-beacon.ts",
+        "src/app/api/vitals/route.ts",
+        "src/lib/utm.ts",
+        "src/proxy.ts"
+      ],
+      "ecarts": ["E21"]
+    },
+    {
+      "id": "T29",
+      "domaine": "Site et technique",
+      "nom": "Traceurs soumis au consentement : Microsoft Clarity, LinkedIn Insight, pixel Meta",
+      "statut": "conditionnel",
+      "personnes": ["Visiteurs qui acceptent le bandeau cookies"],
+      "donnees": [
+        "Cookies d'identification (Clarity, LinkedIn, _fbp/_fbc)",
+        "IP, navigateur, pages, clics et défilement (Clarity)",
+        "Pour Meta : appariement avec un compte (données hachées)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Analyse qualitative de l'ergonomie (Clarity) ; mesure et ciblage publicitaire (LinkedIn, Meta, limité au tunnel Facebook).",
+      "baseLegale": {
+        "article": "6.1.a (consentement, art. 82 loi I&L)",
+        "detail": "Clarity annoncé ; Meta seulement dans la section apporteurs ; LinkedIn non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Durées des cookies sur /sous-processeurs ; choix du bandeau 13 mois.",
+        "source": "src/content/subprocessors.ts"
+      },
+      "conservationReelle": {
+        "purge": "active",
+        "texte": "Cookies expirent seuls. Les trois outils sont « pending_activation » (identifiants non posés)."
+      },
+      "destinataires": [
+        {
+          "nom": "Microsoft Clarity",
+          "role": "analyse d'ergonomie",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "LinkedIn",
+          "role": "reciblage",
+          "pays": "Irlande / États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Meta",
+          "role": "pixel et API Conversions",
+          "pays": "Irlande / États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Chargement seulement après acceptation ; jamais en console ni sur les URL secrètes"
+      ],
+      "droits": {
+        "aujourdhui": "Page /preferences-cookies.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/components/analytics/CookieConsent.tsx",
+        "src/components/analytics/Clarity.tsx",
+        "src/components/analytics/LinkedInInsight.tsx",
+        "src/components/analytics/MetaPixel.tsx"
+      ],
+      "ecarts": ["E21"]
+    },
+    {
+      "id": "T30",
+      "domaine": "Site et technique",
+      "nom": "Comptes de la console, journal d'activité et anti-abus",
+      "statut": "actif",
+      "personnes": [
+        "Administrateurs et membres de l'équipe",
+        "Visiteurs qui déclenchent un piège anti-robot",
+        "Personnes qui exercent un droit (trace de l'export/effacement)"
+      ],
+      "donnees": [
+        "Nom, e-mail, mot de passe haché (argon2id), rôle",
+        "Secret de double authentification (EN CLAIR)",
+        "Dernière IP de connexion (en clair)",
+        "Journal : action, cible, modifications, IP EN CLAIR, navigateur ; e-mail saisi lors d'une connexion échouée",
+        "Qui a lu quel message",
+        "Clés de limitation de débit (IP/e-mail, 15 min)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Sécuriser l'accès, tracer les actions, lutter contre les abus.",
+      "baseLegale": {
+        "article": "6.1.f (sécurité) ; 6.1.c (art. 32)",
+        "detail": "« Sécurité du site » annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "« Journaux techniques : conservés sans suppression automatique… »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme pour le journal (purge retirée). Clés anti-abus : 15 min."
+      },
+      "destinataires": [
+        {
+          "nom": "Sentry",
+          "role": "erreurs, avec nettoyage des données personnelles",
+          "pays": "États-Unis ou UE selon le DSN",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Serveur MCP « axion-ops » (assistant vocal interne)",
+          "role": "lit la boîte de réception : NOMS des contacts en clair",
+          "pays": "interne",
+          "horsUE": false,
+          "surSousProcesseurs": "interne"
+        }
+      ],
+      "securite": [
+        "Mot de passe argon2id, limitation des essais",
+        "⚠️ 2FA facultative et secret stocké en clair",
+        "Sessions JWT 30 jours",
+        "⚠️ Aucune sécurité au niveau des lignes (RLS) dans Postgres : tout repose sur le code"
+      ],
+      "droits": {
+        "aujourdhui": "Non exporté ni effacé (déclaré « immuable »).",
+        "manques": ["IP et e-mails en clair dans le journal non couverts"]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/auth.ts",
+        "src/features/admin-auth/actions.ts",
+        "src/features/admin-users/",
+        "src/features/admin-activity-logs/",
+        "src/lib/limites-connexion-admin.ts",
+        "src/lib/security/honeypot-observable.ts",
+        "src/server/mcp/"
+      ],
+      "ecarts": ["E10", "E11"]
+    },
+    {
+      "id": "T31",
+      "domaine": "Site et technique",
+      "nom": "Envoi des e-mails et copies des envois",
+      "statut": "actif",
+      "personnes": ["Toute personne à qui le site écrit"],
+      "donnees": [
+        "Adresse du destinataire, gabarit, statut, rebonds",
+        "Copie complète : objet, corps, noms des pièces jointes (en clair)",
+        "File d'attente : contenu complet du message"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Envoyer les e-mails et garder la preuve de ce qui a été envoyé.",
+      "baseLegale": {
+        "article": "6.1.b / 6.1.f",
+        "detail": "ZeptoMail cité ; copie des envois non annoncée en tant que telle."
+      },
+      "conservationAnnoncee": {
+        "texte": "Journaux techniques : sans suppression automatique. (Le code annonce encore « 12 mois » dans un commentaire.)",
+        "source": "src/content/legal.ts ; src/server/email/copie-envoi.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Aucune purge depuis le 2026-10-07."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail (Zoho, région UE)",
+          "role": "relais d'envoi : message complet",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Secrets masqués dans la copie"],
+      "droits": {
+        "aujourdhui": "Export ; effacement (journal pseudonymisé, copie et file supprimées).",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/lib/email/client.ts",
+        "src/server/queue/workers/email-worker.ts",
+        "src/server/email/"
+      ],
+      "ecarts": ["E04"]
+    },
+    {
+      "id": "T32",
+      "domaine": "Site et technique",
+      "nom": "Notifications internes (Telegram, WhatsApp)",
+      "statut": "actif",
+      "personnes": ["Toutes les personnes dont une demande déclenche une alerte"],
+      "donnees": [
+        "Contact, devis, presse, candidatures, rendez-vous, podcast : nom, e-mail, téléphone et message EN CLAIR",
+        "Demandes RGPD et guide : données masquées",
+        "Stagiaire : nom + nature « handicap ou problème de santé »"
+      ],
+      "donneesSensibles": ["Santé (une alerte)"],
+      "finalite": "Prévenir l'équipe pour rappeler rapidement.",
+      "baseLegale": {
+        "article": "6.1.f",
+        "detail": "Déclaré sur /sous-processeurs ; partiellement dans la politique."
+      },
+      "conservationAnnoncee": {
+        "texte": "—",
+        "source": "src/content/subprocessors.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Les messages restent dans Telegram sans limite (hors du contrôle du site)."
+      },
+      "destinataires": [
+        {
+          "nom": "Telegram FZ-LLC",
+          "role": "8 à 11 groupes ; aucun DPA ; « SCC » déclarées mais Telegram n'en signe pas",
+          "pays": "Émirats arabes unis (pas de décision d'adéquation)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "CallMeBot (WhatsApp)",
+          "role": "catégorie et heure + numéro de Will",
+          "pays": "inconnu",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        }
+      ],
+      "securite": [
+        "Messages tronqués à 800 caractères",
+        "Masquage seulement pour RGPD, guide, réponses de candidats"
+      ],
+      "droits": {
+        "aujourdhui": "Rien : les messages Telegram ne sont pas effacés par l'effacement art. 17.",
+        "manques": ["Effacement impossible des messages déjà envoyés"]
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/server/notifications/format.ts",
+        "src/server/notifications/index.ts",
+        "src/server/notifications/channels/telegram.ts",
+        "src/server/notifications/channels/whatsapp.ts"
+      ],
+      "ecarts": ["E01", "E09", "E13"]
+    },
+    {
+      "id": "T33",
+      "domaine": "Site et technique",
+      "nom": "Lecture de la boîte Zoho Mail contact@axion-ia.com",
+      "statut": "actif",
+      "personnes": [
+        "Candidats apporteurs et candidats emploi qui répondent par e-mail",
+        "Tout expéditeur de la boîte (lu puis ignoré)"
+      ],
+      "donnees": [
+        "Expéditeur, date, objet, résumé calculé par Zoho (jamais le corps ni les pièces jointes)",
+        "Conservé si reconnu : empreinte de l'expéditeur, objet en clair, extrait de 300 caractères chiffré"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Arrêter les relances et rattacher la réponse au bon dossier.",
+      "baseLegale": {
+        "article": "6.1.f",
+        "detail": "Annoncé (sections apporteurs et candidatures)."
+      },
+      "conservationAnnoncee": {
+        "texte": "Conservé dans le dossier, sans suppression automatique.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme (le commentaire du schéma « purge 24 mois » est faux)."
+      },
+      "destinataires": [
+        {
+          "nom": "Zoho Mail",
+          "role": "boîte lue en lecture seule (centre UE)",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "apporteurs : nom et objet ; candidats : intitulé du poste",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Portées OAuth en lecture seule", "Extrait chiffré"],
+      "droits": {
+        "aujourdhui": "Export et effacement /api/gdpr-*.",
+        "manques": []
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/server/zoho-mail/client.ts",
+        "src/features/commercial-application/reponses-entrantes-apporteur.ts",
+        "src/features/admin-job-applications/reponses-entrantes-candidature.ts"
+      ],
+      "ecarts": ["E04"]
+    },
+    {
+      "id": "T34",
+      "domaine": "Conformité",
+      "nom": "Gestion des droits RGPD et des preuves de consentement",
+      "statut": "actif",
+      "personnes": ["Personnes qui exercent un droit, qui consentent ou qui s'opposent"],
+      "donnees": [
+        "Registre des consentements : empreinte de l'e-mail, version du texte, action, empreintes d'IP et de navigateur",
+        "Liste d'opposition : empreinte de l'e-mail seulement",
+        "Demandes RGPD des stagiaires (type, statut, dates)",
+        "Journal des effacements (table, ligne, motif) pour les rejouer après une restauration"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Prouver les consentements, respecter les oppositions, répondre aux demandes.",
+      "baseLegale": {
+        "article": "6.1.c (art. 7.1, 12 à 21 RGPD)",
+        "detail": "—"
+      },
+      "conservationAnnoncee": {
+        "texte": "« … votre opposition est conservée pour être respectée. »",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Conforme."
+      },
+      "destinataires": [
+        {
+          "nom": "ZeptoMail",
+          "role": "liens d'export, accusés",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Telegram",
+          "role": "alerte masquée",
+          "pays": "Émirats arabes unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": [
+        "Jeton HMAC 24 h (rejouable pendant 24 h, e-mail dans l'URL)",
+        "Limites : 3 exports / jour, 1 effacement / jour"
+      ],
+      "droits": {
+        "aujourdhui": "/mes-donnees n'a AUCUN formulaire : renvoi vers contact@axion-ia.com. Aucun écran n'appelle /api/gdpr-export/request ni /api/gdpr-erase.",
+        "manques": [
+          "Pas de libre-service réel",
+          "Modèles de réponse DPO obsolètes (citent un modèle « Bookings » disparu)"
+        ]
+      },
+      "annoncePolitique": "oui",
+      "sources": [
+        "src/app/[locale]/mes-donnees/",
+        "src/app/api/gdpr-export/",
+        "src/app/api/gdpr-erase/route.ts",
+        "src/lib/rgpd-erase.ts",
+        "src/lib/consents/",
+        "src/server/email/opposition.ts",
+        "docs/dpo-templates/"
+      ],
+      "ecarts": ["E07", "E24"]
+    },
+    {
+      "id": "T35",
+      "domaine": "Site et technique",
+      "nom": "Sauvegardes",
+      "statut": "actif",
+      "personnes": ["Toutes les personnes présentes en base et dans les fichiers"],
+      "donnees": [
+        "Copies chiffrées de la base, de Redis, de Plausible, de DocuSeal, des fichiers (CV, avis, documents), de la banque d'images",
+        "Copie NON rechiffrée des pièces légales (documents, supports, émargement) dans un second compartiment verrouillé 1 an"
+      ],
+      "donneesSensibles": ["Toutes celles de la base"],
+      "finalite": "Pouvoir restaurer en cas d'incident.",
+      "baseLegale": {
+        "article": "6.1.f / 6.1.c (art. 32)",
+        "detail": "—"
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "Rotations 7 / 4 / 12 (quotidien / hebdo / mensuel), 24 horaires ; DocuSeal mensuel 24. ⚠️ Miroir Hetzner Storage Box sans rotation dans le script."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "sauvegarde principale",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Hetzner Storage Box",
+          "role": "miroir",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "GitHub Actions",
+          "role": "exercice de restauration mensuel, tâches planifiées avec les secrets de production",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "non"
+        }
+      ],
+      "securite": ["Chiffrement AES-256 avant envoi", "Effacements rejoués après restauration"],
+      "droits": {
+        "aujourdhui": "Les effacements sont rejoués après restauration.",
+        "manques": []
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "scripts/backup-lib.sh",
+        "scripts/backup-postgres-r2.sh",
+        "scripts/run-storagebox-mirror.sh",
+        "scripts/backup-documents-r2.sh",
+        "scripts/rgpd-rejouer-effacements.ts",
+        "infra/pgbackrest/pgbackrest.conf"
+      ],
+      "ecarts": ["E13", "E22"]
+    },
+    {
+      "id": "T36",
+      "domaine": "Contenus",
+      "nom": "Studio vidéo et console éditoriale (invités, transcriptions)",
+      "statut": "inerte",
+      "personnes": ["Invités du podcast / des vidéos", "Membres de l'équipe éditoriale"],
+      "donnees": [
+        "Invité : nom, entreprise, e-mail, téléphone, note, autorisation de droit à l'image (en clair)",
+        "Transcription des vidéos (peut contenir la parole d'invités)",
+        "Membres : nom, e-mail, rôle"
+      ],
+      "donneesSensibles": ["Image et voix des invités"],
+      "finalite": "Produire et publier les contenus vidéo.",
+      "baseLegale": {
+        "article": "6.1.a (autorisation de droit à l'image) / 6.1.b",
+        "detail": "Non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Tables des invités sans aucun code d'écriture à ce jour (inerte) ; lues et exportées par la console."
+      },
+      "destinataires": [
+        {
+          "nom": "Hetzner (disque local)",
+          "role": "médias",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Permissions de la console éditoriale"],
+      "droits": {
+        "aujourdhui": "Rien.",
+        "manques": ["Hors de la chaîne d'effacement"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "prisma/schema.prisma (EdInvite, EdEpisodeInvite, EdMembre, EdAsset)",
+        "src/server/editorial/",
+        "src/app/[locale]/(admin)/[adminPrefix]/console-editoriale/export/route.ts"
+      ],
+      "ecarts": ["E03", "E07"]
+    },
+    {
+      "id": "T37",
+      "domaine": "Contenus",
+      "nom": "Banque d'images et retours sur la base de connaissances",
+      "statut": "actif",
+      "personnes": [
+        "Photographes crédités (Unsplash)",
+        "Visiteurs qui notent un article de la base de connaissances",
+        "Personnes éventuellement visibles sur les photos"
+      ],
+      "donnees": [
+        "Nom et lien du photographe",
+        "Journaux d'usage et de téléchargement (empreinte d'IP, user-agent)",
+        "Retours : empreinte d'IP, identifiant de session"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Créditer les images, mesurer leur usage, améliorer les contenus.",
+      "baseLegale": {
+        "article": "6.1.f",
+        "detail": "Non annoncé en tant que tel."
+      },
+      "conservationAnnoncee": {
+        "texte": "Journaux techniques : sans suppression automatique.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Purge des journaux d'images retirée le 2026-10-07."
+      },
+      "destinataires": [
+        {
+          "nom": "Anthropic (vision)",
+          "role": "description des images pour le référencement",
+          "pays": "États-Unis",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "Nominatim (OpenStreetMap)",
+          "role": "géocodage de lieux pour les images (pas de visiteur)",
+          "pays": "Royaume-Uni",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Empreintes d'IP ; outil « oublier une empreinte »"],
+      "droits": {
+        "aujourdhui": "Outil console pour oublier une empreinte d'IP.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/server/image-bank/",
+        "src/server/actions/image-bank/forget-ip-hash.action.ts"
+      ],
+      "ecarts": ["E08"]
+    },
+    {
+      "id": "T38",
+      "domaine": "Gestion",
+      "nom": "Facturation clients et encaissements",
+      "statut": "actif",
+      "personnes": ["Clients (contacts, particuliers)"],
+      "donnees": [
+        "Devis et lignes",
+        "Encaissements manuels (virement, chèque, espèces), référence, notes",
+        "Numéros émis (sans donnée personnelle)"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Facturer et suivre les paiements.",
+      "baseLegale": {
+        "article": "6.1.b ; 6.1.c (code de commerce, CGI)",
+        "detail": "« Données clients : 5 ans… (obligation comptable) »."
+      },
+      "conservationAnnoncee": {
+        "texte": "« 5 ans après fin de prestation (obligation comptable française) » — l'obligation légale pour les pièces comptables est de 10 ans.",
+        "source": "src/content/legal.ts"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite. TIIME : simple lien externe, aucune intégration. Stripe : éteint. Facturation électronique : adaptateur non implémenté."
+      },
+      "destinataires": [
+        {
+          "nom": "TIIME",
+          "role": "logiciel comptable utilisé à la main (lien depuis la console)",
+          "pays": "France",
+          "horsUE": false,
+          "surSousProcesseurs": "non"
+        },
+        {
+          "nom": "Stripe",
+          "role": "éteint",
+          "pays": "Irlande",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Rôles d'écriture"],
+      "droits": {
+        "aujourdhui": "Conservation légale opposée à l'effacement.",
+        "manques": []
+      },
+      "annoncePolitique": "partiel",
+      "sources": [
+        "src/server/actions/qualiopi/devis.ts",
+        "src/lib/stripe.ts",
+        "src/lib/admin-nav.ts",
+        "src/server/qualiopi/financements/e-invoicing/pa-adapter.ts"
+      ],
+      "ecarts": ["E04", "E08", "E13"]
+    },
+    {
+      "id": "T39",
+      "domaine": "Formation (Qualiopi)",
+      "nom": "Espace ressources et documents d'intervention",
+      "statut": "actif",
+      "personnes": ["Formateurs et commerciaux destinataires de documents"],
+      "donnees": [
+        "E-mail et nom (en clair)",
+        "Liens de connexion (adresse IP EN CLAIR)",
+        "Journal de qui a téléchargé quoi"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Donner accès aux supports et savoir qui les a récupérés.",
+      "baseLegale": {
+        "article": "6.1.b / 6.1.f",
+        "detail": "Non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "partielle",
+        "texte": "Liens expirés effacés à la demande suivante ; le reste sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Cloudflare R2",
+          "role": "supports",
+          "pays": "États-Unis (stockage)",
+          "horsUE": true,
+          "surSousProcesseurs": "oui"
+        },
+        {
+          "nom": "ZeptoMail",
+          "role": "liens de connexion",
+          "pays": "UE",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Jetons hachés"],
+      "droits": {
+        "aujourdhui": "Effacement (pseudonymisation) /api/gdpr-*.",
+        "manques": ["Non exporté"]
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/intervention-documents/",
+        "src/server/actions/ressources/auth.actions.ts"
+      ],
+      "ecarts": ["E03", "E11"]
+    },
+    {
+      "id": "T40",
+      "domaine": "Gestion",
+      "nom": "Documents de la société",
+      "statut": "actif",
+      "personnes": ["Dirigeant", "Salariés (dont salariés étrangers)", "Formateurs"],
+      "donnees": [
+        "Pièce d'identité du dirigeant",
+        "RIB",
+        "Liste nominative des salariés étrangers",
+        "CV et liste des formateurs"
+      ],
+      "donneesSensibles": ["Pièce d'identité", "Nationalité (liste des salariés étrangers)"],
+      "finalite": "Tenir les justificatifs de la société (Qualiopi, administrations, banques).",
+      "baseLegale": {
+        "article": "6.1.c",
+        "detail": "Interne."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite."
+      },
+      "destinataires": [
+        {
+          "nom": "Hetzner (disque local)",
+          "role": "stockage",
+          "pays": "Allemagne",
+          "horsUE": false,
+          "surSousProcesseurs": "oui"
+        }
+      ],
+      "securite": ["Marquage « sensible », rôles d'écriture"],
+      "droits": {
+        "aujourdhui": "Interne.",
+        "manques": []
+      },
+      "annoncePolitique": "non",
+      "sources": [
+        "src/server/actions/societe-documents/documents.actions.ts",
+        "src/server/societe-documents/",
+        "src/server/console-documents/"
+      ],
+      "ecarts": []
+    },
+    {
+      "id": "T41",
+      "domaine": "Contenus",
+      "nom": "Baromètre / observatoire",
+      "statut": "actif",
+      "personnes": ["Répondants au baromètre"],
+      "donnees": [
+        "Identifiant visiteur (empreinte d'IP)",
+        "Taille, secteur, région, rôle du répondant, réponses"
+      ],
+      "donneesSensibles": [],
+      "finalite": "Publier des statistiques agrégées sur l'usage de l'IA.",
+      "baseLegale": {
+        "article": "6.1.f",
+        "detail": "Non annoncé."
+      },
+      "conservationAnnoncee": {
+        "texte": "Rien.",
+        "source": "—"
+      },
+      "conservationReelle": {
+        "purge": "aucune",
+        "texte": "Garde sans limite ; seuls des agrégats partent au modèle d'IA."
+      },
+      "destinataires": [],
+      "securite": ["Pseudonyme"],
+      "droits": {
+        "aujourdhui": "Non applicable en pratique (pseudonyme).",
+        "manques": []
+      },
+      "annoncePolitique": "non",
+      "sources": ["src/server/actions/observatoire/public.ts", "src/server/observatoire/"],
+      "ecarts": ["E03"]
+    }
+  ],
+  "ecarts": [
+    {
+      "id": "E01",
+      "gravite": "critique",
+      "categorie": "securite_transfert",
+      "titre": "Une donnée de santé part en clair sur Telegram, hors UE",
+      "traitements": ["T11", "T32"],
+      "constat": "Quand un stagiaire déclare un handicap ou un besoin d'adaptation sur le portail, le site envoie sur Telegram « Prénom Nom a déclaré une situation de handicap ou un problème de santé nécessitant une adaptation ». Le détail reste chiffré, mais le nom associé au mot « santé » est déjà une donnée de santé (art. 9). Telegram est aux Émirats arabes unis, sans accord de sous-traitance.",
+      "preuve": "src/server/actions/qualiopi/portail.ts:405 et :767",
+      "correction": "Remplacer le nom par une référence et un lien vers la fiche console (« Une déclaration d'adaptation attend le référent handicap : <lien> »)."
+    },
+    {
+      "id": "E02",
+      "gravite": "critique",
+      "categorie": "non_annonce",
+      "titre": "Le chatbot envoie les messages des visiteurs à OpenAI / Anthropic / Voyage AI, alors que le site promet le contraire",
+      "traitements": ["T05"],
+      "constat": "Les messages tapés dans le chatbot partent tels quels au modèle d'IA (OpenAI par défaut, Anthropic en option) et à Voyage AI. La politique, /sous-processeurs et /transparence affirment : « Aucune donnée personnelle de visiteur n'est transmise aux modèles d'IA ». Le chatbot n'est pas décrit dans la politique. Le traitement ne tourne que si le chatbot et les clés d'IA sont allumés en production : à vérifier.",
+      "preuve": "src/server/chatbot/generation/generate-stream.ts, src/server/chatbot/retrieval/rerank.ts ; src/content/visio-annonce-textes.ts (hebergementIA, spIa, trFaqLlm)",
+      "correction": "Vérifier si le chatbot est allumé ; si oui, ajouter une section « Chatbot » à la politique, une ligne dédiée sur /sous-processeurs et corriger la phrase « aucune donnée personnelle de visiteur » — sinon, laisser éteint."
+    },
+    {
+      "id": "E03",
+      "gravite": "élevé",
+      "categorie": "non_annonce",
+      "titre": "Une douzaine de traitements ne sont pas décrits dans la politique de confidentialité",
+      "traitements": [
+        "T05",
+        "T08",
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T18",
+        "T36",
+        "T39",
+        "T41"
+      ],
+      "constat": "La politique ne dit rien des stagiaires (ils sont informés par la convention, le livret et le règlement intérieur, mais sans les destinataires ni la santé), du référent handicap, des formateurs et salariés (une phrase dans le contrat de travail ; rien pour les indépendants), du coaching, des avis clients, des signatures électroniques, des réclamations, de l'espace ressources, du studio vidéo et du baromètre.",
+      "preuve": "src/content/legal.ts (sections de « politique-confidentialite »)",
+      "correction": "Ajouter à la politique une section « Formation » (stagiaires, handicap, émargement, signatures, réclamations, coaching) et une section « Avis clients », et remettre aux formateurs et salariés une notice d'information dédiée."
+    },
+    {
+      "id": "E04",
+      "gravite": "élevé",
+      "categorie": "duree",
+      "titre": "Des durées sont annoncées alors que rien ne les applique",
+      "traitements": ["T03", "T10", "T12", "T13", "T14", "T16", "T31", "T33", "T38"],
+      "constat": "Depuis la décision du 2026-10-07 (« on garde sans purger »), plus rien n'est effacé, mais plusieurs textes promettent encore une durée : « Données clients : 5 ans après fin de prestation » (politique) ; « conservées pendant 5 ans » (livret d'accueil, règlement intérieur, convention, envoyés aux stagiaires) ; date « suppression prévue +5 ans » écrite sur les pièces Qualiopi sans aucun code qui l'applique ; « copie des e-mails 12 mois » et « purge 24 mois » dans des commentaires du code et du schéma. À l'inverse, les pièces comptables doivent être gardées 10 ans, et non 5.",
+      "preuve": "src/content/legal.ts (Durée de conservation) ; src/server/qualiopi/documents/templates/livret-accueil.tsx, reglement-interieur.tsx, convention.tsx ; src/server/qualiopi/legal/retention-echeance.ts ; src/server/email/copie-envoi.ts ; prisma/schema.prisma (SubmissionInboundReply, VenteBrouillon, JobApplication)",
+      "correction": "Choisir pour chaque catégorie entre « réappliquer la durée » et « réécrire le texte en critère (“tant que…”, “au moins 5 ans”) », puis aligner la politique et les gabarits Qualiopi dans une même PR."
+    },
+    {
+      "id": "E05",
+      "gravite": "élevé",
+      "categorie": "duree",
+      "titre": "Garder sans limite est contraire au principe de durée limitée (art. 5.1.e) pour certaines catégories",
+      "traitements": ["T01", "T02", "T03", "T04", "T05", "T23", "T26"],
+      "constat": "La doctrine actuelle est assumée et écrite dans la politique, mais la CNIL attend une durée ou un critère pour : les candidats non retenus (référence CNIL : 2 ans), les prospects sans suite (3 ans après le dernier contact), les conversations du chatbot, les transcriptions de visio et, surtout, la base de prospection (environ 1,3 million de personnes d'après un test du dépôt). « Pour garder la trace de nos échanges » ne fixe aucune fin.",
+      "preuve": "src/server/queue/workers/retention-purge-worker.ts:5-121 ; garde aucun-effacement-automatique-de-personnes.spec.ts",
+      "correction": "Faire valider par Will, catégorie par catégorie, soit une durée, soit une justification écrite de la conservation sans limite à verser au registre, en commençant par la prospection et les candidatures non retenues."
+    },
+    {
+      "id": "E06",
+      "gravite": "élevé",
+      "categorie": "securite",
+      "titre": "Pièces des apporteurs : la règle « identité effacée dès vérification, pièces du refusé effacées » n'est vraie qu'en partie",
+      "traitements": ["T20"],
+      "constat": "Bien fait : la pièce d'identité est effacée dès qu'elle est jugée conforme ou qu'elle est remplacée ; au refus définitif, l'identité et le RIB sont effacés et l'IBAN est vidé. Pas fait : au refus, l'assurance RC pro, l'attestation de vigilance et l'immatriculation restent ; dans un dossier abandonné, retiré ou résilié, aucune pièce n'est effacée, y compris une pièce d'identité déposée mais jamais jugée. De plus, l'ouverture d'une pièce d'identité ou d'un RIB en console n'est pas journalisée, et le lien personnel du dossier n'expire jamais.",
+      "preuve": "src/features/apporteurs-reseau/verification.ts:79-96 et :459-475 ; donnees.ts:480-547 ; route apporteurs/[id]/pieces/[pieceId]",
+      "correction": "Étendre l'effacement au refus à toutes les pièces, effacer une pièce d'identité non jugée au bout d'un délai court, journaliser chaque ouverture de pièce et dater le lien personnel."
+    },
+    {
+      "id": "E07",
+      "gravite": "élevé",
+      "categorie": "droits",
+      "titre": "Les droits ne s'exercent qu'à la main, et les outils oublient des données",
+      "traitements": [
+        "T01",
+        "T02",
+        "T08",
+        "T10",
+        "T12",
+        "T13",
+        "T15",
+        "T16",
+        "T18",
+        "T23",
+        "T34",
+        "T36"
+      ],
+      "constat": "/mes-donnees n'a aucun formulaire : il renvoie vers contact@axion-ia.com, et aucun écran n'appelle l'export ni l'effacement en libre-service. Quand l'équipe répond, ses outils oublient : les réponses envoyées aux demandes de contact, les avis clients (e-mail introuvable), le coaching, les réclamations, les commentaires d'appréciation, les formateurs et salariés (rien du tout), les invités Calendly ajoutés, les conversations anonymes du chatbot, les partenariats Qualiopi, les invités du studio. L'export d'une candidature oublie la plupart des champs (ville, motivation, réponses, notes, entretiens, vidéos…). La suppression d'un stagiaire laisse son nom dans les PDF, les réclamations et les factures (en partie légitime, mais non motivé).",
+      "preuve": "src/app/[locale]/mes-donnees/page.tsx ; src/app/api/gdpr-erase/route.ts ; src/lib/rgpd-erase.ts ; src/server/careers/candidature-rgpd.ts:180-248 ; src/server/qualiopi/portail/rgpd-service.ts",
+      "correction": "Ajouter à /mes-donnees un formulaire qui envoie le lien d'export ou d'effacement, et compléter la chaîne d'export et d'effacement pour chaque table listée, en écrivant le motif de chaque conservation."
+    },
+    {
+      "id": "E08",
+      "gravite": "moyen",
+      "categorie": "sous_traitant",
+      "titre": "/sous-processeurs décrit mal ce que reçoivent certains prestataires",
+      "traitements": ["T05", "T37", "T38"],
+      "constat": "OpenAI, Anthropic et Voyage AI y sont décrits comme « prompts éditoriaux uniquement, jamais de donnée client », alors qu'ils servent aussi au chatbot (E02) ; Anthropic décrit aussi les images de la banque d'images et sert au moteur de formation. Nominatim est décrit pour « les villes saisies par les visiteurs », alors qu'il ne sert qu'au géocodage des images. Zoom et Calendly Notetaker y figurent sans aucun flux réel.",
+      "preuve": "src/content/subprocessors.ts ; src/server/image-bank/services/image-seo-enrichment.service.ts",
+      "correction": "Réécrire la finalité et les données de ces lignes d'après le code."
+    },
+    {
+      "id": "E09",
+      "gravite": "élevé",
+      "categorie": "securite_transfert",
+      "titre": "Telegram reçoit en clair, hors UE et sans contrat, le contenu complet des demandes",
+      "traitements": ["T01", "T02", "T07", "T09", "T19", "T23", "T24", "T32"],
+      "constat": "Nom, e-mail, téléphone et message des demandes de contact, devis, presse, rendez-vous, podcast, et pour les candidatures la rémunération souhaitée, 500 caractères de motivation et les réponses. C'est déclaré sur /sous-processeurs, mais Telegram (Émirats arabes unis, pays sans décision d'adéquation) ne signe ni accord de sous-traitance ni clauses types : la ligne affiche « SCC » sans qu'elles existent. Les messages restent dans Telegram sans limite et ne sont pas effacés par une demande d'effacement. La section « Candidatures » de la politique ne cite Telegram que pour les réponses, pas pour la candidature elle-même.",
+      "preuve": "src/server/notifications/format.ts:305-416 et :568-600 ; src/content/subprocessors.ts:278-310",
+      "correction": "Ne plus envoyer sur Telegram qu'une catégorie et un lien vers la console (comme pour les demandes RGPD), ou changer d'outil pour un service européen sous contrat."
+    },
+    {
+      "id": "E10",
+      "gravite": "élevé",
+      "categorie": "securite",
+      "titre": "Accès à la console : 2FA facultative et secret en clair, rôle « lecteur » trop large, pas de cloisonnement en base",
+      "traitements": ["T01", "T25", "T30"],
+      "constat": "Le secret de double authentification est stocké en clair et la 2FA est facultative pour tous les rôles. Un compte « reader » lit les demandes de contact déchiffrées, et la page « synchro CRM » lui montre le contenu complet des envois en erreur. Postgres n'a aucune sécurité au niveau des lignes (RLS) : tout repose sur le code. L'assistant vocal interne (serveur MCP) reçoit les noms des contacts de la boîte de réception.",
+      "preuve": "src/features/admin-auth/actions.ts:196 ; src/auth.ts:42-46 ; src/features/admin-submissions/actions.ts:50-54 ; src/server/crm-sync/health.ts ; src/server/mcp/outils/inbox-recent.ts",
+      "correction": "Chiffrer le secret 2FA, rendre la 2FA obligatoire pour les rôles qui voient des données personnelles, et masquer les coordonnées pour le rôle « reader » (boîte de réception, synchro CRM, MCP)."
+    },
+    {
+      "id": "E11",
+      "gravite": "moyen",
+      "categorie": "securite",
+      "titre": "Des adresses IP sont encore écrites en clair",
+      "traitements": ["T01", "T16", "T19", "T30", "T39"],
+      "constat": "La colonne IP des demandes est dite « dépréciée » mais toujours remplie (formulaire de contact, rapport ROI, quatre parcours apporteurs) ; le journal d'activité, la dernière connexion admin et les liens magiques formateurs et ressources gardent l'IP en clair, sans limite. Ailleurs, le site n'utilise que l'empreinte.",
+      "preuve": "src/features/unified-contact/actions.ts:255 ; src/features/commercial-application/actions.ts:407, lead-actions.ts:215, lead-vsl-actions.ts:421, capture-actions.ts:170 ; src/auth.ts ; src/server/formateur/magic-link.ts ; src/server/actions/ressources/auth.actions.ts:68",
+      "correction": "Cesser d'écrire l'IP en clair (empreinte seulement) et vider les anciennes valeurs."
+    },
+    {
+      "id": "E12",
+      "gravite": "moyen",
+      "categorie": "securite",
+      "titre": "Données comparables chiffrées ici, en clair là",
+      "traitements": ["T02", "T03", "T23", "T24", "T25"],
+      "constat": "Les coordonnées sont chiffrées dans les demandes, candidatures et dossiers d'apporteurs, mais en clair dans les rendez-vous Calendly, les contacts clients et les documents de projet. Les CV, photos et vidéos des candidats sont en clair sur le disque (chiffrés seulement dans les sauvegardes). La file d'envoi vers le CRM garde en clair les lignes en échec, sans limite.",
+      "preuve": "prisma/schema.prisma (CalendlyEvent, ClientContact, ClientContactAdresse, DocumentProjetContenu, CrmSyncOutbox) ; src/server/careers/cv-storage.ts",
+      "correction": "Chiffrer les coordonnées de CalendlyEvent et ClientContact comme celles des demandes, et purger ou chiffrer les lignes du CRM en échec."
+    },
+    {
+      "id": "E13",
+      "gravite": "moyen",
+      "categorie": "sous_traitant",
+      "titre": "Des prestataires utilisés ne figurent pas sur /sous-processeurs",
+      "traitements": ["T17", "T24", "T32", "T35", "T38"],
+      "constat": "Absents : CallMeBot (relais WhatsApp, reçoit le numéro de Will et la catégorie des alertes) ; GitHub Actions (exécute des tâches planifiées et l'exercice de restauration avec les secrets de production) ; TIIME (comptabilité, utilisé à la main, prévu pour les autofactures) ; YouTube, Vimeo et TikTok (interrogés chaque semaine sur les liens fournis par les candidats vidéo). La ligne Telegram porte le statut DPA `self_hosted_no_dpa`, prévu pour les outils auto-hébergés : il ne décrit pas Telegram.",
+      "preuve": "src/server/notifications/channels/whatsapp.ts ; .github/workflows/ ; src/lib/admin-nav.ts ; src/server/careers/liens-surveilles.ts",
+      "correction": "Ajouter ces lignes à src/content/subprocessors.ts (ou cesser l'usage), et corriger le statut DPA de Telegram."
+    },
+    {
+      "id": "E14",
+      "gravite": "élevé",
+      "categorie": "aipd",
+      "titre": "Traitements qui demandent une analyse d'impact (AIPD) introuvable dans le dépôt",
+      "traitements": ["T04", "T05", "T11", "T26"],
+      "constat": "1) Enregistrement et transcription des visios par IA américaine : AIPD annoncée « hors dépôt (Drive, 00 Juridique) », non vérifiable ici. 2) Données de santé des stagiaires (handicap). 3) Base de prospection à grande échelle avec des professionnels de santé (RPPS) : AIPD exigée par le schéma lui-même, brouillon incomplet (_PROSPECTION-BASE-ENTREPRISES/AIPD-ET-MENTIONS-PRETES.md, champs « À COMPLÉTER »). 4) Chatbot IA, si allumé (à évaluer). Il n'existe pas non plus de registre des violations de données (docs/rgpd/breach-register.md, prévu en mai, jamais créé).",
+      "preuve": "_AUDIT/AUDIT-FINAL-PROD-READY-2026-05-22/RGPD-REGISTRE-ART30.md §8 ter et TODO 5 ; prisma/schema.prisma l. 11938-11940",
+      "correction": "Rédiger (ou verser au dossier) les AIPD visio, santé des stagiaires et prospection avant toute activation ou extension, et créer le registre des violations."
+    },
+    {
+      "id": "E15",
+      "gravite": "moyen",
+      "categorie": "non_annonce",
+      "titre": "Formateurs : notation de fiabilité et indisponibilité « maladie » non annoncées",
+      "traitements": ["T13", "T16"],
+      "constat": "Le site calcule un « niveau de vigilance » par intervenant à partir des incidents (annulation tardive, désistement, retard) et enregistre des indisponibilités de type « maladie ». Aucun formateur n'en est informé.",
+      "preuve": "src/server/qualiopi/trainers/fiabilite-service.ts ; prisma/schema.prisma (TrainerAvailability)",
+      "correction": "Le mentionner dans la notice formateurs (E03) et remplacer « maladie » par un type neutre (« indisponible »)."
+    },
+    {
+      "id": "E16",
+      "gravite": "faible",
+      "categorie": "securite",
+      "titre": "Le webhook DocuSeal reste ouvert alors que DocuSeal n'est plus utilisé",
+      "traitements": ["T14"],
+      "constat": "La signature est désormais faite par le site, mais la route DocuSeal stocke encore tout ce qu'elle reçoit (noms et e-mails des signataires) sans limite et en relaie un extrait sur Telegram.",
+      "preuve": "src/app/api/docuseal/webhook/route.ts",
+      "correction": "Fermer la route (ou la faire répondre sans rien stocker) et retirer DocuSeal de /sous-processeurs s'il n'est plus utilisé."
+    },
+    {
+      "id": "E17",
+      "gravite": "faible",
+      "categorie": "non_annonce",
+      "titre": "Personnes présentées : la politique annonce un envoi au CRM qui n'existe pas",
+      "traitements": ["T22"],
+      "constat": "La section « Personnes présentées par un apporteur » cite le CRM parmi les destinataires, mais aucun code du réseau d'apporteurs n'y envoie ces personnes. Annoncer plus qu'on ne fait n'est pas grave, mais le texte doit rester exact.",
+      "preuve": "src/content/legal.ts (#personnes-presentees-par-un-apporteur) ; src/features/apporteurs-reseau/",
+      "correction": "Retirer le CRM de cette liste, ou l'y laisser si l'envoi est prévu à court terme."
+    },
+    {
+      "id": "E18",
+      "gravite": "moyen",
+      "categorie": "non_annonce",
+      "titre": "Candidatures : destinataires et traitements oubliés dans la politique",
+      "traitements": ["T23", "T24"],
+      "constat": "La section « Candidatures et recrutement » ne dit pas que la candidature complète part sur Telegram (voir E09), ni que les liens fournis par les candidats vidéo sont vérifiés chaque semaine auprès de YouTube, Vimeo et TikTok, ni que les vidéos des candidats sont conservées.",
+      "preuve": "src/content/legal.ts (Candidatures et recrutement) ; src/features/job-application/actions.ts:500-522 ; src/server/careers/liens-surveilles.ts",
+      "correction": "Compléter la section (destinataires, vidéos, vérification des liens)."
+    },
+    {
+      "id": "E19",
+      "gravite": "moyen",
+      "categorie": "sous_traitant",
+      "titre": "Axion CRM Pro reçoit beaucoup plus que ce que la politique décrit",
+      "traitements": ["T08", "T25"],
+      "constat": "La politique ne cite le CRM que pour le guide, les organisateurs d'événements et les personnes présentées. En réalité, il reçoit aussi les demandes de contact, les rendez-vous Calendly, les demandes de podcast, le rapport ROI, les leads du chatbot et les avis clients (avec le nom de famille complet, qui n'est même pas gardé sur le site). Ce que le CRM fait de ces données (durée, envois) n'est pas visible depuis ce dépôt.",
+      "preuve": "src/server/crm-sync/index.ts ; src/features/review-submission/actions.ts:222",
+      "correction": "Écrire dans la politique une phrase générale sur le CRM interne (sources, finalité, hébergement), et inventorier le dépôt Axion CRM Pro dans un second registre."
+    },
+    {
+      "id": "E20",
+      "gravite": "élevé",
+      "categorie": "non_annonce",
+      "titre": "La base de prospection des entreprises n'est décrite nulle part",
+      "traitements": ["T26"],
+      "constat": "Le schéma du site contient les tables d'une base de prospection (dirigeants, e-mails nominatifs, praticiens de santé), alimentée par Axion CRM Pro. La politique ne décrit que les organisateurs d'événements et les personnes présentées. La liste d'opposition et le journal d'accès prévus n'ont aucun code, et l'effacement en libre-service ne touche pas ces tables. Cette collecte indirecte exige une information art. 14 au premier contact : elle n'est pas vérifiable d'ici.",
+      "preuve": "prisma/schema.prisma l. 11543-12098 ; src/server/queue/workers/__tests__/prospection-aucune-purge-automatique.spec.ts",
+      "correction": "Vérifier dans Axion CRM Pro l'information art. 14 et l'opposition, ajouter une section « Prospection des entreprises » à la politique, et brancher les tables de prospection sur l'effacement."
+    },
+    {
+      "id": "E21",
+      "gravite": "moyen",
+      "categorie": "non_annonce",
+      "titre": "Cookies : la promesse « aucun cookie publicitaire » deviendra fausse à l'activation de Meta ou LinkedIn",
+      "traitements": ["T28", "T29"],
+      "constat": "La politique (« Aucun cookie publicitaire, aucun tracker cross-site ») et les mentions légales (« sans cookie publicitaire ni traceur tiers de profilage ») le promettent, alors que le pixel Meta et LinkedIn Insight sont intégrés. Ils sont éteints (identifiants non posés), donc c'est vrai aujourd'hui. LinkedIn n'est pas cité dans la politique. Le cookie « axion_utm » (30 jours) est posé sans consentement pour l'attribution des réservations.",
+      "preuve": "src/content/legal.ts (Données collectées ; Mentions légales › Cookies) ; src/components/analytics/MetaPixel.tsx, LinkedInInsight.tsx ; src/proxy.ts:383",
+      "correction": "Lier la phrase de la politique au même interrupteur que le pixel (comme pour les visios), et vérifier que « axion_utm » entre dans l'exemption CNIL ou le soumettre au bandeau."
+    },
+    {
+      "id": "E22",
+      "gravite": "moyen",
+      "categorie": "securite",
+      "titre": "Sauvegardes : un miroir sans rotation et une copie non rechiffrée",
+      "traitements": ["T35"],
+      "constat": "Le miroir Hetzner Storage Box n'a aucune rotation dans le script : les copies s'y accumulent sans limite. Les pièces légales (documents, émargement) sont copiées sans rechiffrement dans un second compartiment R2. La politique ne parle pas des sauvegardes. (Point positif : les effacements sont rejoués après une restauration.)",
+      "preuve": "scripts/run-storagebox-mirror.sh ; scripts/backup-documents-r2.sh",
+      "correction": "Ajouter une rotation au miroir Storage Box et chiffrer la copie des pièces légales comme les autres sauvegardes."
+    },
+    {
+      "id": "E23",
+      "gravite": "moyen",
+      "categorie": "non_annonce",
+      "titre": "Apporteurs : date de naissance et nationalité collectées sans être annoncées",
+      "traitements": ["T19"],
+      "constat": "Le dossier de candidature apporteur propose deux champs facultatifs, date de naissance et nationalité, stockés en clair. Ils ne figurent pas dans la section « Réseau d'apporteurs d'affaires » et ne semblent pas nécessaires à la finalité (minimisation, art. 5.1.c).",
+      "preuve": "src/features/commercial-application/actions.ts:379-380 ; src/lib/commercial-application/model.ts:367-372",
+      "correction": "Retirer ces deux champs du formulaire (ou les annoncer et justifier leur besoin)."
+    },
+    {
+      "id": "E24",
+      "gravite": "faible",
+      "categorie": "droits",
+      "titre": "Outils RGPD vieillis ou incomplets",
+      "traitements": ["T34"],
+      "constat": "Les modèles de réponse DPO citent un modèle « Bookings » qui n'existe plus. Le lien d'export reste rejouable pendant 24 h et porte l'e-mail dans l'URL. Les accords de sous-traitance de Google Agenda et Google Meet (actifs) sont encore « pending ».",
+      "preuve": "docs/dpo-templates/03-effacement-art-17.md ; src/lib/gdpr-token.ts ; src/content/subprocessors.ts",
+      "correction": "Mettre les modèles à jour, rendre le jeton à usage unique, et accepter les DPA Google (Workspace)."
+    }
+  ],
+  "tablesInertes": [
+    "Survey / SurveyResponse (aucun usage)",
+    "LienPartage / LienPartageAcces (lot non livré)",
+    "TrainerDocumentContenu, PreuveVigilance, VerificationRegistreSousTraitance, ChoixFormateurSession (aucun écrivain)",
+    "ProspectionSuppressionEntry, ProspectionAccessLog (aucun code)",
+    "EdInvite / EdEpisodeInvite (aucun écrivain)"
+  ]
+}
