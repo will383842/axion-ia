@@ -9,7 +9,8 @@
 import { redirect } from "next/navigation";
 import { signIn, signOut, auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generate2FASecret, verify2FACode } from "@/lib/auth-2fa";
+import { generate2FASecret } from "@/lib/auth-2fa";
+import { chiffrerSecret2FA, verifierCode2FAStocke } from "@/lib/auth-2fa-secret";
 import { verifyPasswordSafe } from "@/lib/auth-password";
 import { consulterRateLimit, enregistrerTentative } from "@/lib/rate-limit";
 import {
@@ -193,7 +194,7 @@ export async function setup2FAStartAction(): Promise<Setup2FAStartState> {
     const { secret, otpauthUrl } = generate2FASecret(user.email);
     await tx.adminUser.update({
       where: { id: session.user.id },
-      data: { twoFactorSecret: secret },
+      data: { twoFactorSecret: chiffrerSecret2FA(session.user.id, secret) },
     });
     await tx.activityLog.create({
       data: {
@@ -230,7 +231,12 @@ export async function setup2FAConfirmAction(
   if (!user?.twoFactorSecret) return { ok: false, error: "Setup 2FA non initialisé." };
   if (user.twoFactorEnabled) return { ok: false, error: "2FA déjà activée." };
 
-  if (!verify2FACode(parsed.data.code, user.twoFactorSecret)) {
+  const verification = verifierCode2FAStocke(
+    session.user.id,
+    parsed.data.code,
+    user.twoFactorSecret,
+  );
+  if (!verification.valide) {
     return { ok: false, error: "Code 2FA incorrect." };
   }
 
@@ -239,7 +245,11 @@ export async function setup2FAConfirmAction(
   await prisma.$transaction([
     prisma.adminUser.update({
       where: { id: session.user.id },
-      data: { twoFactorEnabled: true, twoFactorVerified: true },
+      data: {
+        twoFactorEnabled: true,
+        twoFactorVerified: true,
+        ...(verification.aReecrire ? { twoFactorSecret: verification.aReecrire } : {}),
+      },
     }),
     prisma.activityLog.create({
       data: {
@@ -284,7 +294,7 @@ export async function disable2FAAction(
   const passwordOk = await verifyPasswordSafe(user.passwordHash, parsed.data.password);
   if (!passwordOk) return { ok: false, error: "Mot de passe incorrect." };
 
-  if (!verify2FACode(parsed.data.code, user.twoFactorSecret)) {
+  if (!verifierCode2FAStocke(session.user.id, parsed.data.code, user.twoFactorSecret).valide) {
     return { ok: false, error: "Code 2FA incorrect." };
   }
 

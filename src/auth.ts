@@ -14,7 +14,7 @@ import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth.config";
 import { prisma } from "./lib/prisma";
-import { verify2FACode } from "./lib/auth-2fa";
+import { verifierCode2FAStocke } from "./lib/auth-2fa-secret";
 import { verifyPasswordSafe } from "./lib/auth-password";
 import { checkRateLimit } from "./lib/rate-limit";
 import {
@@ -164,13 +164,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // `_ROLES_REQUIRING_2FA` reste défini comme documentation au cas où
         // l'enforcement role-based serait à ré-activer plus tard.
         const requires2FA = user.twoFactorEnabled;
+        // Secret encore en clair (antérieur au chiffrement au repos) : réécrit
+        // chiffré avec la mise à jour de connexion ci-dessous.
+        let secret2FAChiffre: string | null = null;
         if (requires2FA) {
           if (!user.twoFactorSecret) {
             // 2FA enabled but no secret — corrupted state, refuse.
             return null;
           }
           if (!totp) return null;
-          if (!verify2FACode(totp, user.twoFactorSecret)) {
+          const verification = verifierCode2FAStocke(user.id, totp, user.twoFactorSecret);
+          if (!verification.valide) {
             await prisma.activityLog.create({
               data: {
                 adminUserId: user.id,
@@ -181,12 +185,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             });
             return null;
           }
+          secret2FAChiffre = verification.aReecrire;
         }
 
         // 6. Success — log + update lastLogin*
         await prisma.adminUser.update({
           where: { id: user.id },
-          data: { lastLoginAt: new Date(), lastLoginIp: ip },
+          data: {
+            lastLoginAt: new Date(),
+            lastLoginIp: ip,
+            ...(secret2FAChiffre ? { twoFactorSecret: secret2FAChiffre } : {}),
+          },
         });
         await prisma.activityLog.create({
           data: {
