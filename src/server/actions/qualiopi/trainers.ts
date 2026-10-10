@@ -5,7 +5,8 @@
  * updateTrainerAction       : met à jour les champs éditoriaux.
  * setTrainerHabilitationsAction : remplace la liste des formations habilitées.
  * verifyTrainerSousTraitantAction : marque la vérification data.gouv.fr (off.19/27).
- * setTrainerActifAction     : active / désactive un formateur.
+ * setTrainerActifAction     : active / désactive un formateur — par l'écrivain
+ *                             unique (`formateurs-independants/activation.ts`).
  *
  * Guards RBAC write + audit ActivityLog. Email unique (P2002 → message clair).
  */
@@ -41,6 +42,12 @@ import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import {
+  actifALaCreation,
+  changerActivationFormateur,
+  desactiverSiGardeNonRemplie,
+  messageRefusActivation,
+} from "@/server/qualiopi/formateurs-independants/activation";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -107,10 +114,11 @@ const createTrainerSchema = z.object({
   tarifJourneeHtCents: z.number().int().min(0).optional(),
   sousTraitantNda: z.string().max(20).optional(),
   /**
-   * Absent = actif (défaut de la colonne, comportement inchangé). `false` sert
-   * la passerelle « Retenue → fiche formateur » (L10) : une fiche née d'une
-   * candidature n'a pas de numéro de déclaration d'activité, et aucun
-   * formateur externe n'est actif sans lui.
+   * Absent = actif (défaut de la colonne) pour un salarié ou un dirigeant.
+   * `false` sert la passerelle « Retenue → fiche formateur » (L10).
+   *
+   * 🔴 Lot S1 (ADR 0066) : IGNORÉ pour un `sous_traitant`, qui naît toujours
+   * inactif — son activation est un acte à part, gardé (`actifALaCreation`).
    */
   actif: z.boolean().optional(),
 });
@@ -252,6 +260,9 @@ export async function createTrainerAction(
   const parsed = createTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // La valeur initiale de `actif` vient de l'écrivain unique : un indépendant
+  // naît inactif, quoi que demande le formulaire.
+  const actifInitial = actifALaCreation({ statut: v.statut, actifDemande: v.actif });
 
   try {
     const created = await prisma.trainer.create({
@@ -290,7 +301,7 @@ export async function createTrainerAction(
           ? { tarifJourneeHtCents: v.tarifJourneeHtCents }
           : {}),
         ...(v.sousTraitantNda !== undefined ? { sousTraitantNda: v.sousTraitantNda } : {}),
-        ...(v.actif !== undefined ? { actif: v.actif } : {}),
+        ...actifInitial,
       },
       select: { id: true },
     });
@@ -303,7 +314,7 @@ export async function createTrainerAction(
       // la fiche, qui porte l'identité (correction U6, 2026-10-10).
       changes: {
         statut: v.statut,
-        ...(v.actif !== undefined ? { actif: v.actif } : {}),
+        ...actifInitial,
       },
       session,
     });
@@ -317,14 +328,33 @@ export async function createTrainerAction(
   }
 }
 
-/** Met à jour les champs éditoriaux d'un formateur. */
+/**
+ * Met à jour les champs éditoriaux d'un formateur.
+ *
+ * 🔴 Lot S1 (ADR 0066) — un passage au statut `sous_traitant` est une
+ * activation qui ne dit pas son nom : un salarié actif requalifié devenait un
+ * indépendant actif, sans aucune pièce. Si la garde n'est pas remplie, la fiche
+ * est désactivée par l'écrivain unique, et la réponse le dit (`desactive`).
+ */
 export async function updateTrainerAction(
   input: z.infer<typeof updateTrainerSchema>,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; desactive?: boolean; manques?: ReadonlyArray<string> }>> {
   const session = await requireAdminWrite();
   const parsed = updateTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
+
+  // Le statut AVANT la mise à jour : seul un CHANGEMENT vers `sous_traitant`
+  // déclenche la garde (un indépendant déjà actif n'est pas concerné par ce lot).
+  let devientSousTraitant = false;
+  if (fields.statut === "sous_traitant") {
+    try {
+      const avant = await prisma.trainer.findUnique({ where: { id }, select: { statut: true } });
+      devientSousTraitant = avant !== null && avant.statut !== "sous_traitant";
+    } catch {
+      return { error: "Erreur lors de la lecture du formateur." };
+    }
+  }
 
   try {
     await prisma.trainer.update({
@@ -377,6 +407,17 @@ export async function updateTrainerAction(
       changes: fields,
       session,
     });
+
+    if (devientSousTraitant) {
+      const garde = await desactiverSiGardeNonRemplie({
+        trainerId: id,
+        acteur: { type: "administrateur", session },
+        motif: "passage_au_statut_sous_traitant_sans_dossier_complet",
+      });
+      if (garde.desactive) {
+        return { data: { id, desactive: true, manques: garde.manques } };
+      }
+    }
 
     return { data: { id } };
   } catch (err) {
@@ -769,7 +810,15 @@ export async function setTrainerCompetencesAction(input: {
 // AFEST n'a plus de surface d'écriture (le champ `afestHabiliteAt` reste au
 // schéma, étape ultérieure).
 
-/** Active / désactive un formateur (un inactif ne peut plus être assigné). */
+/**
+ * Active / désactive un formateur (un inactif ne peut plus être assigné).
+ *
+ * 🔴 Lot S1 (ADR 0066) — passe par l'écrivain unique. Activer un
+ * `sous_traitant` exige l'habilitation `habiliter_formateur` (plus jamais
+ * `editor`) ET un dossier complet ; le refus liste ce qui manque. Désactiver
+ * retire les propositions de mission encore en attente. Salariés et
+ * dirigeants : inchangé.
+ */
 export async function setTrainerActifAction(
   input: z.infer<typeof setActifSchema>,
 ): Promise<ActionResult<{ id: string }>> {
@@ -778,19 +827,15 @@ export async function setTrainerActifAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id, actif } = parsed.data;
 
-  try {
-    await prisma.trainer.update({ where: { id }, data: { actif } });
-  } catch {
-    return { error: "Erreur lors du changement de statut du formateur." };
-  }
-
-  await logQualiopiActivity({
-    action: "qualiopi.trainer.set_actif",
-    targetType: "Trainer",
-    targetId: id,
-    changes: { actif },
-    session,
+  const r = await changerActivationFormateur({
+    trainerId: id,
+    actif,
+    acteur: { type: "administrateur", session },
+    motif: actif
+      ? "activation_depuis_la_fiche_formateur"
+      : "desactivation_depuis_la_fiche_formateur",
   });
+  if (!r.ok) return { error: messageRefusActivation(r) };
 
   return { data: { id } };
 }

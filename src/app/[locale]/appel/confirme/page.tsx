@@ -256,6 +256,11 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   const choixTransmis = lireChoixRendezVous(sp["rdv"]);
   const type: TypeRendezVous | null =
     detail?.type ?? (choixTransmis ? typeDuChoix(choixTransmis) : null);
+  // L'échange formateur (lot F-CAL-1, 2026-10-09) est classé `autre` en base :
+  // seul le choix transmis par notre formulaire le distingue. Il ne change que
+  // des LIBELLÉS, et seulement pour un rendez-vous non classé — un `rdv=` forgé
+  // ne peut rien faire d'autre que renommer l'écran.
+  const formateur = (type === null || type === "autre") && choixTransmis === "formateur";
 
   return (
     <div className="bg-canvas min-h-screen pt-8 pb-20 sm:pt-14">
@@ -268,9 +273,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
           {incertain ? (
             <EnCoursDeVerification />
           ) : aVerifier ? (
-            <ADeuxVerifier detail={detail} type={type} />
+            <ADeuxVerifier detail={detail} type={type} formateur={formateur} />
           ) : (
-            <Confirme detail={detail} type={type} />
+            <Confirme detail={detail} type={type} formateur={formateur} />
           )}
 
           <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
@@ -285,7 +290,8 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
  * ou « Premier contact » quand le type n'est pas l'un des deux rendez-vous
  * publics (ou inconnu).
  */
-function nomDuRendezVous(type: TypeRendezVous | null): string {
+function nomDuRendezVous(type: TypeRendezVous | null, formateur = false): string {
+  if (formateur) return configDuChoix("formateur").nom;
   if (type === "diagnostic" || type === "echange_projet") return LIBELLES_TYPE_RENDEZ_VOUS[type];
   // L'échange apporteur et la rencontre au salon portent leur nom de la table des
   // types (2026-10-05) : « Premier contact » ne leur correspond pas.
@@ -296,11 +302,13 @@ function nomDuRendezVous(type: TypeRendezVous | null): string {
 function Confirme({
   detail,
   type,
+  formateur,
 }: {
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
+  formateur: boolean;
 }) {
-  const nom = nomDuRendezVous(type);
+  const nom = nomDuRendezVous(type, formateur);
   return (
     <>
       {detail?.debut ? (
@@ -309,7 +317,11 @@ function Confirme({
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="C'est réservé."
-          sous="Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
+          sous={
+            formateur
+              ? "Vous allez recevoir l'invitation d'agenda par e-mail, avec le lien de la visioconférence."
+              : "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
+          }
         />
       ) : (
         // 🔴 Sans détail, on ne dit pas « c'est réservé » avec l'assurance d'un
@@ -322,7 +334,11 @@ function Confirme({
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="Votre réservation est enregistrée."
-          sous="Nous n'avons pas pu afficher le détail ici. L'e-mail de confirmation, qui arrive en quelques minutes, fait foi : il porte la date, le format et le lien pour annuler ou déplacer."
+          sous={
+            formateur
+              ? "Nous n'avons pas pu afficher le détail ici. L'invitation d'agenda, qui arrive en quelques minutes, fait foi : elle porte la date et le lien de la visioconférence."
+              : "Nous n'avons pas pu afficher le détail ici. L'e-mail de confirmation, qui arrive en quelques minutes, fait foi : il porte la date, le format et le lien pour annuler ou déplacer."
+          }
         />
       )}
 
@@ -343,7 +359,11 @@ function Confirme({
           détail. Elle ne dit rien de la date ni du format : elle dit ce qui
           arrive ensuite, et c'est précisément là que le visiteur privé de
           récapitulatif a le plus besoin d'être tenu. */}
-      <CeQuiSePasseMaintenant format={detail?.format ?? "inconnu"} type={type} />
+      <CeQuiSePasseMaintenant
+        format={detail?.format ?? "inconnu"}
+        type={type}
+        formateur={formateur}
+      />
     </>
   );
 }
@@ -490,54 +510,76 @@ function CarteRendezVous({
 function CeQuiSePasseMaintenant({
   format,
   type,
+  formateur,
 }: {
   format: DetailEvenement["format"];
   type: TypeRendezVous | null;
+  formateur: boolean;
 }) {
-  const etapes = [
-    // Le diagnostic se PRÉPARE (chantier « Types de rendez-vous », L2) : on y
-    // arrive avec des exemples concrets, c'est ce qui donne de bonnes pistes.
-    ...(type === "diagnostic"
-      ? [
-          {
-            Picto: ListChecks,
-            titre: "Préparez deux ou trois exemples",
-            corps:
-              "Les tâches qui vous prennent le plus de temps : c'est d'elles que partent les premières pistes.",
-          },
-        ]
-      : []),
-    {
-      Picto: Mail,
-      titre: "Notre e-mail de confirmation",
-      corps:
-        "Il arrive en quelques minutes et récapitule tout, avec vos liens pour annuler ou déplacer.",
-    },
+  // 🔴 Un échange formateur ne reçoit AUCUN de nos e-mails — ni confirmation, ni
+  // rappel (`rappels-appel.ts` : hors de toutes les populations, lot F-CAL-1).
+  // Lui annoncer « notre e-mail » et « deux rappels » serait promettre ce que le
+  // code n'envoie pas. Seule l'invitation d'agenda de Calendly part.
+  const etapesFormateur = [
     {
       Picto: CalendarPlus,
       titre: "L'invitation dans votre agenda",
       corps:
-        format === "visio"
-          ? "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau : le lien de connexion y figure aussi."
-          : "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau dans votre agenda.",
-    },
-    {
-      Picto: BellRing,
-      titre: "Deux rappels, sans rien faire",
-      // Le salon n'a pas de rappel une heure avant : on est déjà en route
-      // (`rappels-appel.ts`, passes `rdv-salon-*` : J-2 et J-1).
-      corps:
-        type === "salon"
-          ? "Un deux jours avant, un autre la veille. Vous ne pouvez pas l'oublier."
-          : "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
+        "Elle arrive par e-mail, envoyée par Calendly. Acceptez-la pour bloquer le créneau : le lien de connexion y figure.",
     },
     {
       Picto: CalendarClock,
       titre: "Un empêchement ?",
       corps:
-        "Annulez ou déplacez en un clic depuis l'e-mail, jusqu'à la dernière minute. Aucune justification à donner.",
+        "L'invitation de Calendly porte les liens pour annuler ou déplacer. Aucune justification à donner.",
     },
   ];
+  const etapes = formateur
+    ? etapesFormateur
+    : [
+        // Le diagnostic se PRÉPARE (chantier « Types de rendez-vous », L2) : on y
+        // arrive avec des exemples concrets, c'est ce qui donne de bonnes pistes.
+        ...(type === "diagnostic"
+          ? [
+              {
+                Picto: ListChecks,
+                titre: "Préparez deux ou trois exemples",
+                corps:
+                  "Les tâches qui vous prennent le plus de temps : c'est d'elles que partent les premières pistes.",
+              },
+            ]
+          : []),
+        {
+          Picto: Mail,
+          titre: "Notre e-mail de confirmation",
+          corps:
+            "Il arrive en quelques minutes et récapitule tout, avec vos liens pour annuler ou déplacer.",
+        },
+        {
+          Picto: CalendarPlus,
+          titre: "L'invitation dans votre agenda",
+          corps:
+            format === "visio"
+              ? "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau : le lien de connexion y figure aussi."
+              : "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau dans votre agenda.",
+        },
+        {
+          Picto: BellRing,
+          titre: "Deux rappels, sans rien faire",
+          // Le salon n'a pas de rappel une heure avant : on est déjà en route
+          // (`rappels-appel.ts`, passes `rdv-salon-*` : J-2 et J-1).
+          corps:
+            type === "salon"
+              ? "Un deux jours avant, un autre la veille. Vous ne pouvez pas l'oublier."
+              : "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
+        },
+        {
+          Picto: CalendarClock,
+          titre: "Un empêchement ?",
+          corps:
+            "Annulez ou déplacez en un clic depuis l'e-mail, jusqu'à la dernière minute. Aucune justification à donner.",
+        },
+      ];
 
   return (
     <section aria-labelledby="suite-du-parcours" className="mt-9">
@@ -580,14 +622,16 @@ function CeQuiSePasseMaintenant({
 function ADeuxVerifier({
   detail,
   type,
+  formateur,
 }: {
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
+  formateur: boolean;
 }) {
   return (
     <>
       <TeteDeParcours
-        surtitre={`${nomDuRendezVous(type)} · un point à confirmer`}
+        surtitre={`${nomDuRendezVous(type, formateur)} · un point à confirmer`}
         icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Votre rendez-vous est pris."

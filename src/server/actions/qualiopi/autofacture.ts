@@ -197,13 +197,27 @@ export async function contesterAutofactureAction(
     releve.contestationAvantAt !== null &&
     releve.contestationAvantAt.getTime() < maintenant.getTime();
 
+  // ASSEMBLAGE S3 — conditionnelle : une seconde contestation simultanée
+  // n'écrase pas le motif (ni la date) de la première. Le paiement, lui, exige
+  // `contesteeAt: null` dans sa propre écriture (`transitionStatementAction`).
+  let ecrites: number;
   try {
-    await prisma.trainerStatement.update({
-      where: { id: statementId },
+    ({ count: ecrites } = await prisma.trainerStatement.updateMany({
+      where: {
+        id: statementId,
+        contesteeAt: null,
+        autofactureAt: { not: null },
+      },
       data: { contesteeAt: maintenant, contestationMotif: motif },
-    });
+    }));
   } catch {
     return { error: "Erreur lors de l'enregistrement de la contestation." };
+  }
+  if (ecrites !== 1) {
+    return {
+      error:
+        "Le relevé a changé entre-temps (une contestation vient d'être enregistrée) : rechargez la page.",
+    };
   }
 
   await logQualiopiActivity({

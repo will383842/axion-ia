@@ -21,6 +21,18 @@
  *    `if:` (dont `if: false`), `needs`, ou une commande qui avale l'échec
  *    (`|| true`, `|| :`, `; true`, `set +e`…) (revue sécurité, D2).
  *
+ * 2026-10-10 — la suite est découpée en 3 morceaux parallèles
+ * (`gate-a-couverture-morceau`, `--shard=N/3`), fusionnés par
+ * « Gate A · couverture » (`vitest run --merge-reports --coverage`), qui
+ * applique les seuils de vitest.config.ts à la couverture FUSIONNÉE. Ce fichier
+ * verrouille en plus :
+ *  - que la matrice couvre EXACTEMENT 1/3, 2/3 et 3/3 (un morceau oublié =
+ *    un tiers de la suite qui ne tourne plus, en vert) ;
+ *  - que le job de fusion attende la matrice, tourne TOUJOURS (`always()`) et
+ *    rougisse si elle n'est pas `success` (échec, annulation ou saut) ;
+ *  - que les seuils ne soient surchargés QUE dans les morceaux, jamais à la
+ *    fusion.
+ *
  * ⚠️ Ce qu'il NE vérifie PAS : que « Gate A · couverture » soit un contexte
  * EXIGÉ de la protection de `main`. Cela se lit dans les réglages du dépôt, pas
  * dans ce fichier : `gh api repos/will383842/axion-ia/branches/main/protection/required_status_checks`.
@@ -64,24 +76,41 @@ function etapeAutour(corps: string, ligne: string): string {
   return lignes.slice(debut, fin).join("\n");
 }
 
-describe("la suite Vitest tourne une fois, dans « Gate A · couverture »", () => {
+describe("la suite Vitest tourne une fois, en 3 morceaux fusionnés par « Gate A · couverture »", () => {
   const ci = codeYaml(CI);
+  const morceaux = corpsDuJob(ci, "gate-a-couverture-morceau");
   const couverture = corpsDuJob(ci, "gate-a-couverture");
   const gateA = corpsDuJob(ci, "gate-a");
+
+  const LANCE_UN_MORCEAU =
+    "pnpm test:coverage --shard=${{ matrix.shard }}/3 --reporter=default --reporter=blob --outputFile.blob=rapports-blob/blob-${{ matrix.shard }}-3.json --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0 --coverage.reporter=text-summary";
+  const FUSIONNE = "pnpm exec vitest run --merge-reports=rapports-blob --coverage";
 
   it("le job gate-a-couverture existe, sous le nom exact attendu par la protection de main", () => {
     expect(couverture, `🔴 job « gate-a-couverture » introuvable dans ${CI}`).not.toBeNull();
     expect(couverture).toMatch(/^\s+name:\s+Gate A · couverture\s*$/m);
   });
 
-  it("il lance pnpm test:coverage, et c'est le seul lancement de Vitest du workflow", () => {
+  it("la matrice lance pnpm test:coverage en morceaux 1/3, 2/3, 3/3, et c'est le seul lancement de la suite", () => {
+    expect(morceaux, `🔴 job « gate-a-couverture-morceau » introuvable dans ${CI}`).not.toBeNull();
+    expect(morceaux).toMatch(/^ {8}shard: \[1, 2, 3\]\s*$/m);
+    expect(morceaux).toMatch(/^ {6}fail-fast: false\s*$/m);
+    expect(
+      lignesQuiLancentVitest(morceaux!).map((l) => l.replace(/^(?:-\s+)?run:\s*/, "")),
+    ).toEqual([LANCE_UN_MORCEAU]);
+    expect(
+      lignesQuiLancentVitest(ci)
+        .map((l) => l.replace(/^(?:-\s+)?run:\s*/, ""))
+        .sort(),
+      "🔴 La suite Vitest est lancée ailleurs que dans la matrice et sa fusion.",
+    ).toEqual([FUSIONNE, LANCE_UN_MORCEAU].sort());
+  });
+
+  it("la fusion ne relance aucun test et applique les seuils de vitest.config.ts, non surchargés", () => {
     expect(
       lignesQuiLancentVitest(couverture!).map((l) => l.replace(/^(?:-\s+)?run:\s*/, "")),
-    ).toEqual(["pnpm test:coverage"]);
-    expect(
-      lignesQuiLancentVitest(ci),
-      "🔴 La suite Vitest est lancée plus d'une fois dans ci.yml : elle ne doit tourner que dans gate-a-couverture.",
-    ).toHaveLength(1);
+    ).toEqual([FUSIONNE]);
+    expect(couverture).not.toMatch(/thresholds/);
   });
 
   it("pnpm test:coverage lance la suite ENTIÈRE, sans chemin ni filtre", () => {
@@ -101,21 +130,30 @@ describe("la suite Vitest tourne une fois, dans « Gate A · couverture »", () 
     expect(lignesQuiLancentVitest(gateA!)).toEqual([]);
   });
 
-  it("le job n'est ni muet ni conditionnel, ni en file derrière Gate A", () => {
-    expect(couverture).not.toMatch(/continue-on-error/);
-    // Clés de niveau JOB (4 espaces) : l'`if: always()` de l'étape d'upload
-    // est légitime et ne doit pas être visé.
-    expect(couverture).not.toMatch(/^ {4}needs:/m);
-    expect(couverture).not.toMatch(/^ {4}if:/m);
+  it("la matrice n'est ni muette ni conditionnelle, ni en file derrière Gate A", () => {
+    expect(morceaux).not.toMatch(/continue-on-error/);
+    // Clés de niveau JOB (4 espaces) : le `if:` de l'étape d'upload est légitime.
+    expect(morceaux).not.toMatch(/^ {4}needs:/m);
+    expect(morceaux).not.toMatch(/^ {4}if:/m);
   });
 
-  it("l'étape qui lance la suite ne peut pas être neutralisée", () => {
-    const [ligne] = lignesQuiLancentVitest(couverture!);
-    expect(ligne, "aucune ligne ne lance Vitest dans gate-a-couverture").toBeDefined();
-    const etape = etapeAutour(couverture!, ligne!);
-    expect(etape).not.toMatch(/^\s+if:/m);
-    expect(etape).not.toMatch(/continue-on-error/);
-    expect(etape).not.toMatch(AVALE_L_ECHEC);
+  it("la fusion attend la matrice, tourne toujours, et rougit si elle n'est pas success", () => {
+    expect(couverture).not.toMatch(/continue-on-error/);
+    expect(couverture).toMatch(/^ {4}needs: gate-a-couverture-morceau\s*$/m);
+    expect(couverture).toMatch(/^ {4}if: always\(\)\s*$/m);
+    expect(couverture).toContain("RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}");
+    expect(couverture).toMatch(/if \[ "\$\{RESULTAT\}" != "success" \]; then[\s\S]*?exit 1/);
+  });
+
+  it("les étapes qui lancent la suite ne peuvent pas être neutralisées", () => {
+    for (const corps of [morceaux!, couverture!]) {
+      const [ligne] = lignesQuiLancentVitest(corps);
+      expect(ligne, "aucune ligne ne lance Vitest").toBeDefined();
+      const etape = etapeAutour(corps, ligne!);
+      expect(etape).not.toMatch(/^\s+if:/m);
+      expect(etape).not.toMatch(/continue-on-error/);
+      expect(etape).not.toMatch(AVALE_L_ECHEC);
+    }
   });
 
   it.each([

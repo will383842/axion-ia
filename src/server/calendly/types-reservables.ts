@@ -1,4 +1,9 @@
-// Les QUATRE rendez-vous que le site sait réserver lui-même — une seule table.
+// Les CINQ rendez-vous que le site sait réserver lui-même — une seule table.
+//
+// 2026-10-09 (lot F-CAL-1, chantier « formateurs freelance ») : cinquième entrée,
+// l'échange formateur indépendant. Classée `autre` (l'enum Prisma n'a pas de
+// valeur « formateur » et ce lot ne migre rien) : c'est le NOM de l'événement
+// (« formateur ») qui l'exclut des familles client (`echange-formateur.ts`).
 //
 // Chantier « parcours sur mesure pour les quatre types » (2026-10-05, ordre de
 // Will). Jusqu'ici le parcours maison (`/appel` → créneaux → formulaire →
@@ -30,14 +35,31 @@ import {
   URL_CALENDLY_APPEL_PAR_DEFAUT,
   URL_CALENDLY_APPORTEUR_PAR_DEFAUT,
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
+  URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
 } from "@/server/calendly/urls-par-defaut";
 // Import de TYPE seulement (effacé à la compilation) : aucun cycle à l'exécution.
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 
-/** Les quatre rendez-vous réservables sur le site. */
+/**
+ * Les quatre rendez-vous qui ont un TYPE PROPRE en base (une valeur de l'enum
+ * `TypeRendezVous` chacun, et réciproquement). Ils se répondent dans les deux
+ * sens avec `typeDuChoix` / `choixDuTypeRendezVous`.
+ */
 export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] as const;
-export type ChoixRendezVous = (typeof CHOIX_RENDEZ_VOUS)[number];
+
+/**
+ * Les rendez-vous réservables SANS type propre en base — classés `autre`,
+ * reconnus par le NOM de l'événement (2026-10-09, lot F-CAL-1 : l'échange
+ * formateur ; l'enum n'a pas de valeur « formateur » et ce lot ne migre rien).
+ * Ils ont leur page, leur adresse et leur lien d'e-mail, mais `autre` ne les
+ * désigne JAMAIS (`choixDuTypeRendezVous`).
+ */
+export const CHOIX_SANS_TYPE_PROPRE = ["formateur"] as const;
+
+/** Les cinq rendez-vous réservables sur le site : pages, routes, adresses Calendly. */
+export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_SANS_TYPE_PROPRE] as const;
+export type ChoixRendezVous = (typeof TOUS_LES_CHOIX)[number];
 
 /**
  * Les deux rendez-vous OFFERTS AU PUBLIC sur l'écran du choix de `/appel`.
@@ -92,12 +114,16 @@ function varApporteur(): string | undefined {
 function varSalon(): string | undefined {
   return process.env.CALENDLY_SALON_URL;
 }
+function varFormateur(): string | undefined {
+  return process.env.CALENDLY_FORMATEUR_URL;
+}
 
 const LECTURE_DE_LA_VARIABLE: Readonly<Record<ChoixRendezVous, () => string | undefined>> = {
   diagnostic: varDiagnostic,
   projet: varProjet,
   apporteur: varApporteur,
   salon: varSalon,
+  formateur: varFormateur,
 };
 
 // 🔴 Le CHOIX DU FORMAT s'annonce à l'étape 1, et pas ailleurs : c'est le moment où
@@ -182,6 +208,29 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     urlParDefaut: URL_CALENDLY_SALON_PAR_DEFAUT,
     variable: "CALENDLY_SALON_URL",
   },
+  formateur: {
+    choix: "formateur",
+    route: "formateur-independant",
+    // ⚠️ `autre`, faute de valeur d'enum (aucune migration dans ce lot). D'où le
+    // filtre de `choixDuTypeRendezVous` : cette entrée ne répond JAMAIS pour un
+    // type `autre`, sinon tout rendez-vous non classé y serait reprogrammé.
+    type: "autre",
+    public: false,
+    nom: "Échange formateur indépendant",
+    titre: "Échange formateur indépendant — 20 minutes en visio",
+    promesse: "Sans engagement",
+    premiereEtape: PREMIERE_ETAPE_VISIO,
+    // 🔴 Un échange formateur ne reçoit AUCUN de nos e-mails (ni confirmation, ni
+    // rappel : il est hors de toutes les populations de `rappels-appel.ts`).
+    // Seule l'invitation d'agenda de Calendly part — on ne promet que cela.
+    deuxiemeEtape:
+      "Vous recevez l'invitation d'agenda par e-mail, avec le lien de la visioconférence.",
+    troisiemeEtape:
+      "Nous faisons connaissance et nous échangeons sur vos domaines d'intervention et sur la façon dont nous travaillons avec des formateurs indépendants.",
+    formats: ["visio"],
+    urlParDefaut: URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
+    variable: "CALENDLY_FORMATEUR_URL",
+  },
 };
 
 /** Le descriptif d'un choix. */
@@ -189,21 +238,33 @@ export function configDuChoix(choix: ChoixRendezVous): ConfigRendezVous {
   return TYPES_RESERVABLES[choix];
 }
 
-/** Vrai si la valeur est l'un des quatre choix. */
+/** Vrai si la valeur est l'un des cinq choix. */
 export function estUnChoix(valeur: unknown): valeur is ChoixRendezVous {
-  return typeof valeur === "string" && (CHOIX_RENDEZ_VOUS as readonly string[]).includes(valeur);
+  return typeof valeur === "string" && (TOUS_LES_CHOIX as readonly string[]).includes(valeur);
 }
 
 /** Le choix qui porte ce segment d'URL (`salon-gofab` → `salon`), `null` sinon. */
 export function choixDeLaRoute(segment: unknown): ChoixRendezVous | null {
   if (typeof segment !== "string") return null;
   const s = segment.trim().toLowerCase();
-  return CHOIX_RENDEZ_VOUS.find((c) => TYPES_RESERVABLES[c].route === s) ?? null;
+  return TOUS_LES_CHOIX.find((c) => TYPES_RESERVABLES[c].route === s) ?? null;
 }
 
-/** Le choix qui correspond à un type classé en base, `null` pour `autre`. */
+/**
+ * Le choix qui correspond à un type classé en base, `null` pour `autre`.
+ *
+ * 🔴 Les entrées de type `autre` (l'échange formateur, 2026-10-09) sont IGNORÉES :
+ * `autre` veut dire « non classé », jamais « formateur ». Sans ce filtre, tout
+ * rendez-vous non classé serait reprogrammé sur le calendrier formateur, et la
+ * sortie des quatre entrées historiques changerait.
+ */
 export function choixDuTypeRendezVous(type: unknown): ChoixRendezVous | null {
-  return CHOIX_RENDEZ_VOUS.find((c) => TYPES_RESERVABLES[c].type === type) ?? null;
+  if (type === "autre") return null;
+  return (
+    TOUS_LES_CHOIX.find(
+      (c) => TYPES_RESERVABLES[c].type !== "autre" && TYPES_RESERVABLES[c].type === type,
+    ) ?? null
+  );
 }
 
 /** Ce choix est-il listé sur l'écran public ? */

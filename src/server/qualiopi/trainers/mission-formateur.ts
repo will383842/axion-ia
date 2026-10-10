@@ -55,6 +55,7 @@ import {
 } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import type {
   MissionFormateurStatut,
+  Prisma,
   SessionFormateurRole,
 } from "../../../../prisma/generated/client";
 
@@ -385,25 +386,50 @@ export async function retirerMissionsOuvertes(
   sessionId: string,
   opts: { saufTrainerId?: string | null; role?: SessionFormateurRole } = {},
 ): Promise<number> {
+  return retirerMissions(
+    {
+      sessionId,
+      statut: { in: [...STATUTS_MISSION_OUVERTE] },
+      ...(opts.role !== undefined ? { role: opts.role } : {}),
+      ...(opts.saufTrainerId ? { trainerId: { not: opts.saufTrainerId } } : {}),
+    },
+    `session ${sessionId}`,
+  );
+}
+
+/** Le geste commun : passer en `retiree`, fail-soft (0 si la base refuse). */
+async function retirerMissions(
+  where: Prisma.MissionFormateurWhereInput,
+  contexte: string,
+): Promise<number> {
   if (isStub()) return 0;
   try {
-    const r = await prisma.missionFormateur.updateMany({
-      where: {
-        sessionId,
-        statut: { in: [...STATUTS_MISSION_OUVERTE] },
-        ...(opts.role !== undefined ? { role: opts.role } : {}),
-        ...(opts.saufTrainerId ? { trainerId: { not: opts.saufTrainerId } } : {}),
-      },
-      data: { statut: "retiree" },
-    });
+    const r = await prisma.missionFormateur.updateMany({ where, data: { statut: "retiree" } });
     return r.count;
   } catch (err) {
     console.error(
-      `[mission-formateur] retrait des sollicitations impossible (session ${sessionId}):`,
+      `[mission-formateur] retrait des sollicitations impossible (${contexte}):`,
       err instanceof Error ? err.message : String(err),
     );
     return 0;
   }
+}
+
+/**
+ * Reprend les sollicitations encore EN ATTENTE d'un formateur qu'on DÉSACTIVE,
+ * toutes sessions confondues (lot S1, ADR 0066).
+ *
+ * Même geste que {@link retirerMissionsOuvertes}, même statut d'arrivée
+ * (`retiree`, « Retirée par l'organisme ») — mais côté FORMATEUR, et sur les
+ * seules missions `en_attente`. Un formateur désactivé ne doit plus pouvoir
+ * « accepter » une proposition restée ouverte.
+ *
+ * ⚠️ Les missions ACCEPTÉES ne sont pas touchées, à dessein : le formateur
+ * tient la place, et c'est l'alerte `formateur_desactive_encore_affecte` qui
+ * le signale à l'organisme. Les retirer ici ferait taire cette alerte.
+ */
+export async function retirerSollicitationsDuFormateur(trainerId: string): Promise<number> {
+  return retirerMissions({ trainerId, statut: "en_attente" }, `formateur ${trainerId}`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

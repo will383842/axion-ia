@@ -9,6 +9,7 @@
  *   · les SIX crons (été UTC+2 : 10/15/20 ; hiver UTC+1 : 11/16/21) ;
  *   · le job `precheck`, qui ne laisse passer que le jeu de la saison en cours
  *     et saute si la prod sert déjà le dernier commit ;
+ *   · le refus d'un créneau rejoué plus de 90 min après son cron ;
  *   · le build, qui dépend de `precheck` ;
  *   · la notification, qui se tait quand le build est sauté (aucune fausse alarme).
  *
@@ -50,6 +51,11 @@ describe("🕛 mise en ligne à heures fixes", () => {
     expect(p).toContain("TZ=Europe/Paris date +%z");
     expect(p).toContain("+0200:10|+0200:15|+0200:20|+0100:11|+0100:16|+0100:21");
     expect(p).toContain("x-axion-build-sha");
+    // Un créneau rejoué plus de 90 min après l'heure de son cron est refusé
+    // (cron « 7 20 » relancé par GitHub à 23:58 UTC le 2026-10-09).
+    expect(p).toMatch(
+      /if \[ "\$\{retard\}" -gt 90 \]; then\s*\n.*::notice::.*\n\s*echo "go=false"/,
+    );
     // Un lancement manuel passe toujours.
     expect(p).toMatch(/if \[ "\$\{EVENT\}" != "schedule" \]; then\s*\n\s*echo "go=true"/);
   });

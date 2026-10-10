@@ -70,14 +70,17 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
     });
   }
 
-  function run(fn: () => Promise<{ error: string } | { data: unknown }>, ok: string) {
+  function run(
+    fn: () => Promise<{ error: string } | { data: unknown }>,
+    ok: string | ((data: unknown) => string),
+  ) {
     setMsg(null);
     setError(null);
     startTransition(async () => {
       const r = await fn();
       if ("error" in r) setError(r.error);
       else {
-        setMsg(ok);
+        setMsg(typeof ok === "function" ? ok(r.data) : ok);
         router.refresh();
       }
     });
@@ -154,7 +157,15 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
             onClick={() =>
               run(
                 () => updateTrainerAction({ id: props.trainerId, statut }),
-                `Statut enregistré : ${STATUT_LABELS[statut]}. Conformité recalculée — voir la carte en haut de page.`,
+                (data) => {
+                  const base = `Statut enregistré : ${STATUT_LABELS[statut]}. Conformité recalculée — voir la carte en haut de page.`;
+                  // Lot S1 : un passage au statut sous-traitant sans dossier
+                  // complet désactive la fiche — l'écran le dit, avec les manques.
+                  const d = data as { desactive?: boolean; manques?: ReadonlyArray<string> };
+                  return d.desactive
+                    ? `${base} Fiche désactivée : ${(d.manques ?? []).join(" ")}`
+                    : base;
+                },
               )
             }
           >
