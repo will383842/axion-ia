@@ -43,6 +43,12 @@ import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import type { ModeleReponseId } from "@/content/recrutement/modeles-reponse";
 import type { Locale } from "../../../prisma/generated/client";
 
+import {
+  corpsAvecFichiers,
+  creerLienPartage,
+  type LienPrepare,
+} from "@/server/partages/attacher-a-une-reponse";
+
 import { consignerEvenement } from "./journal";
 
 /** Le dossier, réduit à ce dont l'envoi a besoin. */
@@ -71,6 +77,12 @@ export interface ContenuDeLaReponse {
   bodyMarkdown: string;
   modele: ModeleReponseId;
   internalNote?: string | undefined;
+  /**
+   * Fichiers joints (Candidatures unifiées L5) : un LIEN privé, jamais une pièce
+   * jointe. Son paragraphe est ajouté à la fin du message, et le lien est écrit
+   * DANS la transaction de la réponse (même `reponseId`).
+   */
+  lienFichiers?: LienPrepare | undefined;
 }
 
 /**
@@ -103,11 +115,13 @@ export async function ecrireEtEnfilerReponse(
     return { ecrit: false, error: "invalid_recipient" };
   }
 
+  const corps = corpsAvecFichiers(contenu.bodyMarkdown, contenu.lienFichiers);
+
   let rendu: { subject: string; html: string; text: string };
   try {
     rendu = await renderEmailTemplate("candidature-reponse", candidature.locale, {
       subject: contenu.subject,
-      bodyMarkdown: contenu.bodyMarkdown,
+      bodyMarkdown: corps,
       offerTitle: candidature.offerTitleSnap,
     });
   } catch (e) {
@@ -139,6 +153,15 @@ export async function ecrireEtEnfilerReponse(
         select: { id: true },
       });
 
+      if (contenu.lienFichiers) {
+        await creerLienPartage(tx, {
+          lien: contenu.lienFichiers,
+          applicationId: candidature.id,
+          reponseId: reponse.id,
+          auteur: acteur,
+        });
+      }
+
       await tx.jobApplication.update({
         where: { id: candidature.id },
         data: {
@@ -157,9 +180,15 @@ export async function ecrireEtEnfilerReponse(
           authorId: acteur.userId,
           authorName: acteur.nom,
           summary: `Réponse envoyée — ${contenu.subject}`,
-          body: contenu.bodyMarkdown,
+          body: corps,
           replyId: reponse.id,
-          meta: { modele: contenu.modele },
+          meta: contenu.lienFichiers
+            ? {
+                modele: contenu.modele,
+                lienPartageId: contenu.lienFichiers.lienId,
+                fichiers: contenu.lienFichiers.fichierIds.length,
+              }
+            : { modele: contenu.modele },
         },
         tx,
       );

@@ -31,6 +31,11 @@ interface Props {
   assignedTo: string | null;
   rejectionReason: string | null;
   needsAttention: boolean;
+  /**
+   * Liens de fichiers encore ouverts (Candidatures unifiées L5). Au passage à
+   * « Non retenue » ou « Retirée », leur retrait est PROPOSÉ, case cochée [I5].
+   */
+  liensActifs?: number;
 }
 
 export function ApplicationStatusForm({
@@ -40,6 +45,7 @@ export function ApplicationStatusForm({
   assignedTo,
   rejectionReason,
   needsAttention,
+  liensActifs = 0,
 }: Props) {
   const [state, formAction, pending] = useActionState(updateApplicationStatusAction, init);
   const [delState, delAction, delPending] = useActionState(deleteApplicationAction, init);
@@ -51,6 +57,8 @@ export function ApplicationStatusForm({
     status as JobApplicationStatus,
   );
   const motifRequis = exigeUnMotif(statutChoisi);
+  const retraitLiensPropose =
+    liensActifs > 0 && (statutChoisi === "rejected" || statutChoisi === "withdrawn");
 
   return (
     <>
@@ -129,6 +137,20 @@ export function ApplicationStatusForm({
         ) : (
           <input type="hidden" name="rejectionReason" value="" />
         )}
+
+        {retraitLiensPropose ? (
+          <label className="admin-checkbox">
+            <input
+              type="checkbox"
+              name="retirerLiens"
+              value="true"
+              defaultChecked
+              disabled={pending}
+            />
+            Retirer {liensActifs > 1 ? `les ${liensActifs} liens` : "le lien"} de fichiers envoyés à
+            cette personne (la page de téléchargement ne montrera plus rien)
+          </label>
+        ) : null}
 
         <div className="admin-field">
           <label htmlFor="internalNotes" className="admin-label">
