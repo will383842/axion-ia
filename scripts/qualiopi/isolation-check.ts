@@ -167,6 +167,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    candidature crée la fiche formateur par `createTrainerAction`, l'action EXISTANTE, plutôt que
   //    d'écrire une seconde création de `Trainer` hors du domaine. Elle n'importe que cette action.
   "src/features/admin-job-applications/fiche-formateur-actions.ts",
+  // Interrupteurs formateurs (lot S0-ter) : l'éditeur générique de réglages REFUSE les clés
+  //    `formateurs.*`. Il n'importe que `estCleProtegee`, pour que le préfixe protégé ne soit
+  //    écrit qu'une fois — une recopie divergerait et rouvrirait le contournement.
+  "src/features/admin-settings/actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
