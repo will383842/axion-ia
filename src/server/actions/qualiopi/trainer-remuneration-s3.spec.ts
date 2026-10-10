@@ -230,16 +230,14 @@ describe("C5 — une autofacture émise ne se défait pas", () => {
  */
 describe("ASSEMBLAGE S3 — délais de la transaction de transition", () => {
   it("la transaction attend au moins aussi longtemps que le run peut tenir le verrou", async () => {
-    const { DELAI_TRANSACTION_RUN_MS, ATTENTE_CONNEXION_RUN_MS } = await import(
-      "@/server/qualiopi/remuneration/verrou-remuneration"
-    );
+    const { DELAI_TRANSACTION_RUN_MS, ATTENTE_CONNEXION_RUN_MS } =
+      await import("@/server/qualiopi/remuneration/verrou-remuneration");
     mockStatementFindUnique.mockResolvedValue(releve({ statut: "a_valider" }));
 
     await transitionStatementAction({ id: ID, to: "valide" });
 
-    const options = mockTransaction.mock.calls[0]?.[1] as
-      | { timeout?: number; maxWait?: number }
-      | undefined;
+    const options = (mockTransaction.mock.calls[0] as unknown[] | undefined)?.[1] as
+      { timeout?: number; maxWait?: number } | undefined;
     expect(options?.timeout).toBeGreaterThan(DELAI_TRANSACTION_RUN_MS);
     expect(options?.maxWait).toBe(ATTENTE_CONNEXION_RUN_MS);
   });
