@@ -4506,6 +4506,10 @@ enum TypeRendezVous {
   apporteur
   salon
   autre
+  /// Échange avec un formateur indépendant (ADR 0066 (c)) — hors clients.
+  /// Schéma n° 1 formateurs freelance (2026-10-10) : posée, AUCUN classement ne
+  /// la produit encore (le miroir `TYPES_RENDEZ_VOUS` ne la porte pas).
+  formateur
 
   @@map("type_rendez_vous")
 }
@@ -5390,6 +5394,11 @@ enum TrainerDocumentType {
   diplome
   certification
   autre
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) — posées avant leur premier usage ──
+  /// Récépissé de déclaration d'activité (numéro de DA de l'indépendant).
+  recepisse_declaration_activite
+  /// Relevé d'identité bancaire (l'IBAN lui-même vit chiffré sur `Trainer.iban`).
+  rib
 }
 
 /// Cycle de validation d'une pièce. L'expiration n'est PAS un statut : elle se
@@ -5657,6 +5666,14 @@ model TrainerDocument {
   notes            String?                  @db.Text
   createdAt        DateTime                 @default(now()) @map("created_at")
   updatedAt        DateTime                 @updatedAt @map("updated_at")
+
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) ──
+  /// Archiver sans supprimer : la pièce reste lisible. CHECK `trainer_documents_archive_coherent`.
+  archiveAt        DateTime?               @map("archive_at")
+  archiveParId     String?                 @map("archive_par_id") @db.Uuid
+  archiveMotif     String?                 @map("archive_motif") @db.Text
+  contenu          TrainerDocumentContenu?
+  preuvesVigilance PreuveVigilance[]
 
   @@index([trainerId])
   @@index([type])
@@ -5940,6 +5957,8 @@ model TrainingSession {
   sessionFormateurs          SessionFormateur[]
   /// Sollicitations (journal des propositions de mission) — 2026-09-03.
   missionsFormateur          MissionFormateur[]
+  /// Schéma n° 1 formateurs — formateurs choisis, par rang.
+  choixFormateurs            ChoixFormateurSession[]
   /// Affectations RETIRÉES — l'archive de ce que la suppression détruisait (D6).
   affectationsRetirees       SessionFormateurRetire[]
   /// Incidents rattachés à la session (registre des incidents — LOT 4).
@@ -6190,7 +6209,7 @@ model Trainer {
   /// Lot 3 du chantier recrutement — la candidature d'où vient cette personne,
   /// quand elle vient d'une candidature. Facultatif : un formateur peut avoir
   /// été recruté avant l'existence du suivi.
-  candidatures    JobApplication[]
+  candidatures    JobApplication[]  @relation("CandidatureTrainer")
   sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
@@ -6234,12 +6253,74 @@ model Trainer {
   /// Incidents où ce formateur est mis en cause (art. 7 sous-traitance).
   incidents Incident[] @relation("IncidentIntervenant")
 
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) ──────────
+  //
+  // ADDITIF, livré ÉTEINT : aucune de ces colonnes n'est lue ni écrite par le
+  // code de ce lot. Toutes sont nullables ou portent un défaut — l'ancien code
+  // (fenêtre app/worker) continue de fonctionner contre la base migrée.
+  // CHECK et index partiels en SQL brut : `formateurs-independants/socle-objets-sql.ts`.
+  //
+  /// Activation VALIDÉE (ADR 0066 étape 8). `controle` : par un administrateur
+  /// identifié (`activationValideeParId`), après la garde. `anterieure_au_controle` :
+  /// fiche déjà active à la migration — un constat daté, SANS auteur, jamais une
+  /// validation. CHECK `trainers_activation_coherente`.
+  activationValideeAt     DateTime?                           @map("activation_validee_at")
+  activationValideeParId  String?                             @map("activation_validee_par_id") @db.Uuid
+  activationValideeSource ActivationValideeSource?            @map("activation_validee_source")
+  /// Fiche active d'avant le contrôle, LISTÉE pour mise à niveau (lot ultérieur).
+  miseANiveauListeeAt     DateTime?                           @map("mise_a_niveau_listee_at")
+  /// IBAN CHIFFRÉ `enc:v2:` (AAD = la fiche) — jamais en clair : CHECK
+  /// `trainers_iban_chiffre_v2`. Tout changement validé avant virement (ADR 0066 (e)).
+  iban                    String?                             @db.Text
+  /// Empreinte HMAC de l'IBAN normalisé (`IBAN_EMPREINTE_SECRET`) : détecte un
+  /// changement et un IBAN partagé sans déchiffrer.
+  ibanEmpreinte           String?                             @map("iban_empreinte") @db.Char(64)
+  /// Incrémentée pour révoquer les liens d'accès déjà envoyés (calque apporteurs).
+  accesVersion            Int                                 @default(0) @map("acces_version")
+  /// Fiche du banc d'essai (calque de `Rencontre.estTestInterne`) — colonne seule.
+  estTestInterne          Boolean                             @default(false) @map("est_test_interne")
+  /// Dossier en ligne à jeton (ADR 0066 étape 5).
+  dossierStatut           DossierFormateurStatut?             @map("dossier_statut")
+  dossierOuvertAt         DateTime?                           @map("dossier_ouvert_at")
+  dossierEnvoyeAt         DateTime?                           @map("dossier_envoye_at")
+  dossierVerifieAt        DateTime?                           @map("dossier_verifie_at")
+  /// Déclarations cochées dans le dossier (clé → date ISO), calque apporteurs.
+  declarations            Json?
+  declarationsVersion     String?                             @map("declarations_version") @db.VarChar(20)
+  declarationsAt          DateTime?                           @map("declarations_at")
+  /// Lieu d'exercice : code postal et commune INSEE, coordonnées (proximité).
+  codePostalPro           String?                             @map("code_postal_pro") @db.VarChar(5)
+  communeInsee            String?                             @map("commune_insee") @db.Char(5)
+  geoLat                  Decimal?                            @map("geo_lat") @db.Decimal(9, 6)
+  geoLng                  Decimal?                            @map("geo_lng") @db.Decimal(9, 6)
+  geoCalculeAt            DateTime?                           @map("geo_calcule_at")
+  /// FERMETURE de la fiche (ADR 0067) : datée, motivée, attribuée. Une fiche
+  /// fermée libère l'adresse (`trainers_email_ouverte_unique`).
+  finCollaborationAt      DateTime?                           @map("fin_collaboration_at")
+  finCollaborationMotif   FinCollaborationMotif?              @map("fin_collaboration_motif")
+  finCollaborationParId   String?                             @map("fin_collaboration_par_id") @db.Uuid
+  /// Numéro de DA vu sur la liste publique des OF (preuve : `verificationsRegistre`).
+  ndaVerifieListeAt       DateTime?                           @map("nda_verifie_liste_at")
+  /// Intervenant mis à disposition par un ORGANISME sous-traitant.
+  organismeSousTraitantId String?                             @map("organisme_sous_traitant_id") @db.Uuid
+  organismeSousTraitant   SousTraitant?                       @relation("TrainerOrganismeSousTraitant", fields: [organismeSousTraitantId], references: [id], onDelete: SetNull)
+  /// Empreinte de l'e-mail (recherche sans clair, calque `JobApplication.emailHash`).
+  emailHash               String?                             @map("email_hash") @db.Char(64)
+  /// La candidature d'où vient la fiche. Unique PARTIEL (`trainers_candidature_unique`).
+  candidatureId           String?                             @map("candidature_id") @db.Uuid
+  candidatureOrigine      JobApplication?                     @relation("TrainerCandidatureOrigine", fields: [candidatureId], references: [id], onDelete: SetNull)
+  verificationsRegistre   VerificationRegistreSousTraitance[]
+  preuvesVigilance        PreuveVigilance[]
+  choixSessions           ChoixFormateurSession[]
+
   @@index([statut])
   @@index([actif])
   @@index([region])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
   @@index([rcProEcheanceAt])
   @@index([sousTraitantProchaineVerifAt])
+  /// Schéma n° 1 formateurs — recherche par empreinte d'e-mail.
+  @@index([emailHash])
   @@map("trainers")
 }
 
@@ -6396,6 +6477,9 @@ enum MissionFormateurStatut {
   /// sans reponse, quand il n'y a plus rien a faire. `sans_reponse` tombe AVANT
   /// le demarrage, et libere la session pour qu'on trouve quelqu'un d'autre.
   sans_reponse
+  /// Le formateur s'est DÉSISTÉ après avoir accepté (`desisteAt`, `desisteMotif`).
+  /// Schéma n° 1 du chantier formateurs freelance (2026-10-10) : valeur posée, aucun code ne l'écrit encore.
+  desistee
 }
 
 /// Jointure normalisée session ↔ formateur. Remplace le champ Json
@@ -6448,6 +6532,8 @@ model SessionFormateur {
   rappelJ1EnvoyeAt       DateTime?            @map("rappel_j1_envoye_at")
   createdAt              DateTime             @default(now()) @map("created_at")
   updatedAt              DateTime             @updatedAt @map("updated_at")
+  /// Schéma n° 1 du chantier formateurs freelance (2026-10-10) — l'intervenant a été annoncé au client.
+  intervenantAnnonceClientAt DateTime?            @map("intervenant_annonce_client_at")
 
   @@unique([sessionId, trainerId], map: "session_formateur_unique")
   @@index([trainerId, sessionId])
@@ -6469,6 +6555,11 @@ enum SessionFormateurRetraitMotif {
   refus_formateur
   /// Échéance de réponse dépassée, session libérée par le cron.
   sans_reponse_delai
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) — posées avant leur premier usage ──
+  /// Le formateur s'est désisté d'une mission acceptée.
+  desistement_formateur
+  /// La fiche du formateur a été désactivée alors qu'il était affecté.
+  formateur_desactive
 }
 
 /// 🔴 CE QUE LE REMPLACEMENT D'UN FORMATEUR DÉTRUISAIT (défaut D6, 2026-09-05).
@@ -6584,6 +6675,22 @@ model MissionFormateur {
   accordHorsOutilMotif String?                @map("accord_hors_outil_motif") @db.Text
   createdAt            DateTime               @default(now()) @map("created_at")
   updatedAt            DateTime               @updatedAt @map("updated_at")
+
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) ──
+  //
+  // Lettre de mission vivante (ADR 0066 étape 10), désistement, et prix FIGÉS
+  // à la proposition (centimes entiers). CHECK en SQL brut.
+  lettreMissionId                  String?              @map("lettre_mission_id") @db.Uuid
+  lettreMission                    DocumentGenere?      @relation("MissionFormateurLettre", fields: [lettreMissionId], references: [id], onDelete: SetNull)
+  lettreRelanceAt                  DateTime?            @map("lettre_relance_at")
+  lettreAlerteJ7At                 DateTime?            @map("lettre_alerte_j7_at")
+  lettreBlocageMotif               String?              @map("lettre_blocage_motif") @db.Text
+  lettreBlocageNotifieAt           DateTime?            @map("lettre_blocage_notifie_at")
+  desisteAt                        DateTime?            @map("desiste_at")
+  desisteMotif                     String?              @map("desiste_motif") @db.Text
+  tarifHtCents                     Int?                 @map("tarif_ht_cents")
+  forfaitDeplacementParJourHtCents Int?                 @map("forfait_deplacement_par_jour_ht_cents")
+  regimeTvaFige                    TvaRegimeHonoraires? @map("regime_tva_fige")
 
   @@index([sessionId, trainerId, statut])
   @@index([trainerId, statut])
@@ -7231,6 +7338,8 @@ model DocumentGenere {
   signatures             DocumentSignature[]
   signatureTokens        DocumentSignatureToken[]
   devisPortes            Devis[]                  @relation("DevisPieceSignable")
+  /// Schéma n° 1 formateurs — missions dont cette pièce est la lettre de mission.
+  missionsFormateurLettre MissionFormateur[]       @relation("MissionFormateurLettre")
 
   @@index([type, sessionId])
   @@index([traineeId, type])
@@ -8180,6 +8289,8 @@ model SousTraitant {
   documentsGeneres DocumentGenere[]
   /// Incidents où cet organisme est mis en cause (art. 7 sous-traitance).
   incidents        Incident[]       @relation("IncidentIntervenant")
+  /// Schéma n° 1 formateurs — intervenants mis à disposition par l'organisme.
+  intervenants     Trainer[]        @relation("TrainerOrganismeSousTraitant")
 
   @@index([actif])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
@@ -9544,6 +9655,12 @@ model JobOffer {
 
   applications JobApplication[]
 
+  /// Schéma n° 1 du chantier formateurs freelance (2026-10-10) — nature de la collaboration proposée. Remplie à la
+  /// migration par la traduction SQL de `estCandidatureFormateurFreelance`
+  /// (`src/lib/careers/nature-collaboration-sql.ts`). Livrée ÉTEINTE : aucun
+  /// code ne la lit encore.
+  natureCollaboration NatureCollaboration @default(salarie) @map("nature_collaboration")
+
   @@index([status])
   @@index([category, status])
   @@index([indexationTier, status])
@@ -9705,7 +9822,7 @@ model JobApplication {
   hiredAt   DateTime? @map("hired_at")
   startDate DateTime? @map("start_date") @db.Date
   trainerId String?   @map("trainer_id") @db.Uuid
-  trainer   Trainer?  @relation(fields: [trainerId], references: [id], onDelete: SetNull)
+  trainer   Trainer?  @relation("CandidatureTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
 
   /// Qui suit ce dossier. Remplace `assignedTo`, une chaîne libre où deux
   /// orthographes faisaient deux recruteurs et où « mes candidatures » n'était
@@ -9747,6 +9864,19 @@ model JobApplication {
   /// à ce candidat (créés en L5). En cascade : effacer le dossier coupe ses
   /// liens ; les FICHIERS, eux, restent (ADR 0065).
   liensPartage   LienPartage[]
+
+  // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) — livré ÉTEINT ──
+  /// Copie de l'offre ; pour une spontanée, le prédicat d'intitulé (sinon NULL).
+  natureCollaboration      NatureCollaboration?      @map("nature_collaboration")
+  /// Invitation au parcours formateur indépendant, et son issue.
+  invitationFormateurAt    DateTime?                 @map("invitation_formateur_at")
+  invitationFormateurIssue IssueInvitationFormateur? @map("invitation_formateur_issue")
+  rattrapageAt             DateTime?                 @map("rattrapage_at")
+  clotureSansSuiteAt       DateTime?                 @map("cloture_sans_suite_at")
+  /// D'où vient la candidature : le formulaire public, ou saisie en console.
+  origine                  OrigineCandidature        @default(formulaire)
+  /// Fiche formateur ouverte depuis cette candidature (unique partiel côté Trainer).
+  fichesFormateurOuvertes  Trainer[]                 @relation("TrainerCandidatureOrigine")
 
   @@index([offerId])
   @@index([status, needsAttention])
@@ -15576,6 +15706,189 @@ model CommissionApporteur {
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// FORMATEURS FREELANCE — SCHÉMA N° 1 : SOCLE DU PARCOURS (2026-10-10)
+//
+// ADR 0066 (parcours du formateur indépendant) et ADR 0067 (une fiche par
+// relation). Migration `20261010150000_formateurs_socle`, ADDITIVE : aucune
+// suppression, aucun renommage ; tout est nullable ou porte un défaut. Livré
+// ÉTEINT : aucun code de ce lot ne lit ni n'écrit ces tables et colonnes.
+//
+// Prisma 5.22 n'exprime ni CHECK, ni trigger, ni index partiel : ils vivent en
+// SQL brut, déclarés dans `src/server/qualiopi/formateurs-independants/socle-objets-sql.ts`.
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Nature de la collaboration proposée par une offre (et portée par la candidature).
+enum NatureCollaboration {
+  salarie
+  freelance
+
+  @@map("nature_collaboration")
+}
+
+/// Comment l'activation d'une fiche a été validée (ADR 0066 étape 8).
+enum ActivationValideeSource {
+  /// Par un administrateur identifié, après la garde d'activation.
+  controle
+  /// Fiche déjà active à la migration : un constat, jamais une validation.
+  anterieure_au_controle
+
+  @@map("activation_validee_source")
+}
+
+/// Pourquoi une fiche formateur est fermée (ADR 0067 : liste fermée).
+enum FinCollaborationMotif {
+  /// La relation change de nature (salarié devenu indépendant…) : une
+  /// nouvelle fiche s'ouvre pour la même adresse.
+  changement_de_nature
+
+  @@map("fin_collaboration_motif")
+}
+
+/// Où en est le dossier en ligne d'un formateur indépendant (ADR 0066 étape 5).
+enum DossierFormateurStatut {
+  /// Lien envoyé : le formateur complète son dossier.
+  en_cours
+  /// Envoyé par le formateur : à vérifier.
+  a_verifier
+  /// Complément demandé : le dossier est rouvert.
+  a_completer
+  /// Vérifié par un administrateur.
+  verifie
+
+  @@map("dossier_formateur_statut")
+}
+
+/// D'où vient une candidature.
+enum OrigineCandidature {
+  /// Le formulaire public du site (valeur de toutes les candidatures existantes).
+  formulaire
+  /// Saisie depuis la console (candidat reçu par un autre canal).
+  console
+
+  @@map("origine_candidature")
+}
+
+/// Issue de l'invitation d'un candidat au parcours formateur indépendant.
+enum IssueInvitationFormateur {
+  acceptee
+  declinee
+  sans_reponse
+
+  @@map("issue_invitation_formateur")
+}
+
+/// Verdict d'un contrôle registre (ADR 0066 étape 6 et (i)). `orange` = « à
+/// contrôler » : jamais une conclusion tirée d'une absence de réponse.
+enum VerdictRegistre {
+  vert
+  orange
+  rouge
+
+  @@map("verdict_registre")
+}
+
+/// Résultat d'une vérification d'attestation de vigilance URSSAF.
+enum ResultatPreuveVigilance {
+  valide
+  invalide
+  a_controler
+
+  @@map("resultat_preuve_vigilance")
+}
+
+/// Contrôle registre d'un formateur indépendant — PREUVE HORODATÉE, en AJOUT
+/// SEUL (triggers `…_ajout_seul` / `…_pas_de_truncate`). Une vérification ne se
+/// corrige pas : on en inscrit une nouvelle.
+/// rgpd: technique — verdict, source, numéros d'entreprise publics, réponse source et son empreinte ; aucun nom, e-mail ni téléphone
+model VerificationRegistreSousTraitance {
+  id                        String          @id @default(uuid()) @db.Uuid
+  trainerId                 String          @map("trainer_id") @db.Uuid
+  trainer                   Trainer         @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  verifieAt                 DateTime        @map("verifie_at")
+  verdict                   VerdictRegistre
+  /// Source interrogée (registre SIRENE, liste publique des OF…).
+  source                    String          @db.VarChar(120)
+  siren                     String?         @db.Char(9)
+  siret                     String?         @db.Char(14)
+  numeroDeclarationActivite String?         @map("numero_declaration_activite") @db.VarChar(20)
+  /// Réponse brute de la source, et son empreinte SHA-256.
+  reponseSource             Json?           @map("reponse_source")
+  reponseSha256             String?         @map("reponse_sha256") @db.Char(64)
+  motif                     String?         @db.Text
+  /// Administrateur auteur ; NULL = contrôle par tâche de fond.
+  verifieParId              String?         @map("verifie_par_id") @db.Uuid
+  createdAt                 DateTime        @default(now()) @map("created_at")
+
+  @@index([trainerId, verifieAt])
+  @@map("verifications_registre_sous_traitance")
+}
+
+/// Vérification d'une attestation de vigilance URSSAF (art. L.8222-1) — PREUVE
+/// en AJOUT SEUL (triggers `…_ajout_seul` / `…_pas_de_truncate`).
+/// rgpd: technique — résultat, dates, code de vérification URSSAF et empreinte de la pièce ; aucun nom, e-mail ni téléphone
+model PreuveVigilance {
+  id                String                  @id @default(uuid()) @db.Uuid
+  trainerId         String                  @map("trainer_id") @db.Uuid
+  trainer           Trainer                 @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  trainerDocumentId String?                 @map("trainer_document_id") @db.Uuid
+  trainerDocument   TrainerDocument?        @relation(fields: [trainerDocumentId], references: [id], onDelete: Restrict)
+  verifieeAt        DateTime                @map("verifiee_at")
+  resultat          ResultatPreuveVigilance
+  codeVerification  String?                 @map("code_verification") @db.VarChar(60)
+  dateAttestation   DateTime?               @map("date_attestation")
+  dateFinValidite   DateTime?               @map("date_fin_validite")
+  fichierSha256     String?                 @map("fichier_sha256") @db.Char(64)
+  verifieeParId     String?                 @map("verifiee_par_id") @db.Uuid
+  createdAt         DateTime                @default(now()) @map("created_at")
+
+  @@index([trainerId, verifieeAt])
+  @@index([trainerDocumentId])
+  @@map("preuves_vigilance")
+}
+
+/// Octets d'une pièce de formateur, CHIFFRÉS (enveloppe `AXB1`,
+/// `chiffrerOctetsPii`). Une ligne par pièce ; suit la pièce (CASCADE).
+/// rgpd: technique — octets CHIFFRÉS d'une pièce du dossier FORMATEUR (prestataire, pas personne cliente) ; suivent `TrainerDocument` (CASCADE) et son régime de conservation ; aucune donnée de client ni de stagiaire
+model TrainerDocumentContenu {
+  trainerDocumentId String          @id @map("trainer_document_id") @db.Uuid
+  trainerDocument   TrainerDocument @relation(fields: [trainerDocumentId], references: [id], onDelete: Cascade)
+  octets            Bytes
+  /// Longueur des octets stockés. CHECK `trainer_document_contenus_taille`.
+  taille            Int
+  /// SHA-256 des octets CLAIRS (celui de `TrainerDocument.hashSha256`).
+  sha256            String          @db.Char(64)
+  mime              String          @db.VarChar(100)
+  nomOriginal       String?         @map("nom_original") @db.VarChar(255)
+  createdAt         DateTime        @default(now()) @map("created_at")
+
+  @@map("trainer_document_contenus")
+}
+
+/// rgpd: technique — rang, prix figés et saut d'un formateur pour une session ; aucune donnée de client ni de stagiaire
+/// Formateurs CHOISIS pour une session, par rang : le rang 1 est sollicité
+/// d'abord, puis le suivant s'il refuse ou se tait (`sauteAt`). Prix figés au
+/// choix, en centimes entiers.
+model ChoixFormateurSession {
+  id                               String          @id @default(uuid()) @db.Uuid
+  sessionId                        String          @map("session_id") @db.Uuid
+  session                          TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId                        String          @map("trainer_id") @db.Uuid
+  trainer                          Trainer         @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  rang                             Int
+  tarifHtCents                     Int?            @map("tarif_ht_cents")
+  forfaitDeplacementParJourHtCents Int?            @map("forfait_deplacement_par_jour_ht_cents")
+  sauteAt                          DateTime?       @map("saute_at")
+  sauteMotif                       String?         @map("saute_motif") @db.Text
+  createdAt                        DateTime        @default(now()) @map("created_at")
+  updatedAt                        DateTime        @updatedAt @map("updated_at")
+
+  @@unique([sessionId, rang])
+  @@unique([sessionId, trainerId])
+  @@index([trainerId])
+  @@map("choix_formateur_session")
 }
 
 // ============================================================

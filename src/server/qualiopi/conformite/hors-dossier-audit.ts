@@ -118,6 +118,12 @@ const DESTINATION_PIECE_FORMATEUR: Record<TrainerDocumentType, DestinationPieceF
   // Type LIBRE de l'écran formateur : un RIB, une pièce d'identité ou un titre
   // de séjour peut y être rangé. Pas exporté ; compté, et ouvert sur demande.
   autre: "sur_demande",
+  // Schéma n° 1 formateurs freelance (2026-10-10). Le récépissé de déclaration
+  // d'activité prouve le numéro de DA, comme `nda_sous_traitant` (indicateur 27).
+  recepisse_declaration_activite: "joint",
+  // Pièce de PAIEMENT : aucune exigence du RNQ, comme la facture. Des
+  // coordonnées bancaires n'ont rien à faire dans un dossier d'audit.
+  rib: "hors_dossier",
 };
 
 /** `true` si une pièce du registre de ce type a sa place dans un dossier d'audit. */

@@ -48,7 +48,10 @@ export type TrainerDocumentTypeValue =
   | "cv"
   | "diplome"
   | "certification"
-  | "autre";
+  | "autre"
+  // Schéma n° 1 formateurs freelance (2026-10-10) — posées, encore jamais écrites.
+  | "recepisse_declaration_activite"
+  | "rib";
 
 /** Miroir de l'enum Prisma `DocumentValidationStatut`. */
 export type DocumentValidationStatutValue = "en_attente" | "valide" | "rejete";
@@ -134,6 +137,8 @@ const LIBELLES: Record<TrainerDocumentTypeValue, string> = {
   diplome: "diplôme",
   certification: "certification",
   autre: "pièce",
+  recepisse_declaration_activite: "récépissé de déclaration d'activité",
+  rib: "relevé d'identité bancaire",
 };
 
 /** Ajoute `mois` mois à une date (arithmétique calendaire UTC, sans DST). */
