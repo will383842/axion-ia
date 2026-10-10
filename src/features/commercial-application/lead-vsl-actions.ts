@@ -80,6 +80,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { envoyerEvenementMeta } from "@/server/meta/conversions-api";
+import { lireDonneesMetaFiche } from "@/server/meta/schedule-apporteur";
 import {
   CANDIDATURE_COMMERCIALE_SUBTYPE,
   SOURCE_OPTIONS,
@@ -127,7 +128,8 @@ export type CapturerLeadVslResultat =
   | { ok: false; error: "invalid" | "rate" | "unknown" };
 
 export type CompleterLeadVslResultat =
-  { ok: true; merciUrl: string } | { ok: false; error: "invalid" | "jeton" | "rate" | "unknown" };
+  | { ok: true; merciUrl: string; candidature?: string }
+  | { ok: false; error: "invalid" | "jeton" | "rate" | "unknown" };
 
 export interface CapturerLeadVslInput {
   prenom: string;
@@ -583,18 +585,22 @@ export async function completerLeadVsl(
       return { ok: true, merciUrl: urlMerci(jeton.lead, jeton.suspect) };
     }
     const merciUrl = urlMerci(ligne.id, suspect);
+    if (suspect) return { ok: true, merciUrl };
+    // `SubmitApplication` (Meta) : le navigateur le tire avec ce même `eventID`.
+    const candidature = `candidature:${ligne.id}`;
     // Étape 2 déjà atteinte (double clic, retour en arrière) : même réponse,
     // aucun second message, aucune seconde notification.
-    if (issue === "deja") return { ok: true, merciUrl };
-    if (suspect) return { ok: true, merciUrl };
+    if (issue === "deja") return { ok: true, merciUrl, candidature };
 
     await suiteEtape2({
       ligne,
       telephone: d.telephone,
       reponseId: d.reponseId,
       merciUrl,
+      ip,
+      eventId: candidature,
     });
-    return { ok: true, merciUrl };
+    return { ok: true, merciUrl, candidature };
   } catch (err) {
     console.error("[lead-vsl] échec de l'étape 2:", err);
     Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "persist" } });
@@ -611,6 +617,8 @@ async function suiteEtape2(a: {
   telephone: string;
   reponseId: string;
   merciUrl: string;
+  ip: string | null;
+  eventId: string;
 }): Promise<void> {
   let email: string | null = null;
   let prenom = "";
@@ -659,6 +667,43 @@ async function suiteEtape2(a: {
   const funnel = (details["funnel"] ?? {}) as { utm?: UtmParams };
   const candidature = (details["candidature"] ?? {}) as { sourceConnaissance?: string };
   const libelleSource = optionLabel(SOURCE_OPTIONS, candidature.sourceConnaissance ?? "facebook");
+
+  // `SubmitApplication` vers Meta (API Conversions), étape 2 — mêmes conditions
+  // que `Lead` à l'étape 1 : contact venu de Facebook / Instagram, ligne non
+  // suspecte (déjà écartée plus haut), et la réponse « acceptée » à la bannière,
+  // lue sur la FICHE (`details.funnel.consentPub`, gardée à l'étape 1). Avec le
+  // téléphone, haché par le module. Même `event_id` que le navigateur. Lancé
+  // SANS attendre ; `envoyerEvenementMeta` ne lève jamais.
+  const meta = lireDonneesMetaFiche(a.ligne.details);
+  if (leadCompteChezMeta(meta.source)) {
+    let userAgent: string | null = null;
+    try {
+      userAgent = (await headers()).get("user-agent");
+    } catch {
+      userAgent = null;
+    }
+    void envoyerEvenementMeta(
+      "SubmitApplication",
+      {
+        eventId: a.eventId,
+        email,
+        telephone: a.telephone,
+        prenom,
+        ip: a.ip,
+        userAgent,
+        fbp: meta.fbp,
+        fbclid: meta.fbclid,
+        fbcCreeLe: meta.fbcCreeLe,
+        sourceUrl: `${SITE_URL}/fr${VSL_PAGE_PATH}`,
+        at: new Date(),
+      },
+      { consentPub: meta.consentPub },
+    ).catch((err: unknown) => {
+      Sentry.captureException(err, {
+        tags: { action: "completerLeadVsl", step: "meta-candidature" },
+      });
+    });
+  }
 
   // N1 : UNE seule notification à l'équipe, au moment où le lead est « qualifié ».
   try {

@@ -962,3 +962,107 @@ describe("P2 — déjà connu(e) : étape 2", () => {
     expect(notifier).not.toHaveBeenCalled();
   });
 });
+
+// ───────────────────────────────────────────────────────────────────────────
+// P6 (2026-10-10) — `SubmitApplication` vers Meta à l'étape 2
+// ───────────────────────────────────────────────────────────────────────────
+
+describe("SubmitApplication vers Meta à l'étape 2", () => {
+  const ficheMeta = (funnel: Record<string, unknown>, source = "facebook") =>
+    ligneVsl({
+      details: {
+        vsl: { etapeAtteinte: 1, version: "vsl-v1" },
+        funnel,
+        candidature: { sourceConnaissance: source },
+      },
+    });
+  const ACCEPTE = {
+    consentPub: { accepte: true, le: "2026-10-05T10:00:00.000Z" },
+    fbp: "fb.1.1725000000000.123456",
+    fbclidValeur: "IwAR0abcdefghijklmnop",
+    fbcCreeLe: "2026-10-05T09:59:00.000Z",
+  };
+  const appel = () =>
+    envoyerMeta.mock.calls.find((c) => c[0] === "SubmitApplication") as unknown as
+      [string, Record<string, unknown>, { consentPub: string }] | undefined;
+
+  it("part avec event_id `candidature:<id>` — celui que le navigateur reçoit —, le téléphone et le consentement de la FICHE", async () => {
+    ligneParId = ficheMeta(ACCEPTE);
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.candidature).toBe(`candidature:${ID_LEAD}`);
+    const a = appel();
+    expect(a).toBeDefined();
+    const [, evt, opts] = a!;
+    expect(evt["eventId"]).toBe(`candidature:${ID_LEAD}`);
+    expect(evt["email"]).toBe("nadia@example.com");
+    expect(evt["telephone"]).toBe("06 12 34 56 78");
+    expect(evt["fbp"]).toBe("fb.1.1725000000000.123456");
+    expect(evt["fbclid"]).toBe("IwAR0abcdefghijklmnop");
+    expect((evt["fbcCreeLe"] as Date).toISOString()).toBe("2026-10-05T09:59:00.000Z");
+    expect(evt["sourceUrl"]).toBe("https://axion-ia.com/fr/apporteur-affaires/video");
+    expect(opts.consentPub).toBe("accepted");
+  });
+
+  it("refus ou absence de réponse à la bannière sur la fiche : la règle de refus de Meta s'applique (jamais « accepted » déduit)", async () => {
+    ligneParId = ficheMeta({ consentPub: { accepte: false, le: "x" } });
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appel()?.[2].consentPub).toBe("declined");
+    envoyerMeta.mockClear();
+    ligneParId = ficheMeta({});
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appel()?.[2].consentPub).toBe("unknown");
+  });
+
+  it("contact qui ne vient pas de Facebook / Instagram : rien ne part", async () => {
+    ligneParId = ficheMeta(ACCEPTE, "linkedin");
+    vi.setSystemTime(MAINTENANT + 30_000);
+    await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(appel()).toBeUndefined();
+  });
+
+  it("ligne suspecte : ni envoi, ni eventID rendu au navigateur", async () => {
+    ligneParId = ficheMeta(ACCEPTE);
+    vi.setSystemTime(MAINTENANT + 500); // trop rapide
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.candidature).toBeUndefined();
+    expect(appel()).toBeUndefined();
+  });
+
+  it("double validation (« deja ») : même eventID rendu, aucun second envoi serveur", async () => {
+    ligneParId = ficheMeta(ACCEPTE);
+    avancer.mockResolvedValue("deja");
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.candidature).toBe(`candidature:${ID_LEAD}`);
+    expect(appel()).toBeUndefined();
+  });
+
+  it("personne DÉJÀ CONNUE (P2) : ni envoi serveur, ni eventID rendu", async () => {
+    lignesExistantes = [ANCIENNE];
+    ligneParId = {
+      id: ID_FICHE,
+      contactEmailHash: "hnadiaexamplecom",
+      contactName: "enc:Nadia",
+      contactEmail: "enc:nadia@example.com",
+      details: { subType: "candidature-commerciale", ...{ funnel: ACCEPTE } },
+    };
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_FICHE, maintenant: MAINTENANT }));
+    if (!r.ok) throw new Error("attendu : succès");
+    expect(r.candidature).toBeUndefined();
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("une panne de Meta ne fait pas échouer l'étape 2", async () => {
+    ligneParId = ficheMeta(ACCEPTE);
+    envoyerMeta.mockRejectedValueOnce(new Error("défaut de programmation"));
+    vi.setSystemTime(MAINTENANT + 30_000);
+    const r = await completer(creerJeton({ lead: ID_LEAD, maintenant: MAINTENANT }));
+    expect(r.ok).toBe(true);
+  });
+});
