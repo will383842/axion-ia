@@ -17,6 +17,7 @@ const d = vi.hoisted(() => ({
   sendEmail: vi.fn(),
   reponse: null as Record<string, unknown> | null,
   lien: null as { id: string } | null,
+  erreurLien: null as unknown,
   majs: [] as Array<Record<string, unknown>>,
 }));
 
@@ -51,7 +52,26 @@ vi.mock("@/lib/prisma", () => ({
         return {};
       },
     },
-    lienPartage: { findFirst: async () => d.lien },
+    submissionReply: {
+      findUnique: async () =>
+        d.reponse && {
+          ...d.reponse,
+          submissionId: "s1",
+          submission: { id: "s1", firstRepliedAt: null },
+        },
+      update: async (a: { data: Record<string, unknown> }) => {
+        d.majs.push(a.data);
+        return {};
+      },
+    },
+    submission: { update: async () => ({}) },
+    $transaction: async (ops: unknown[]) => Promise.all(ops),
+    lienPartage: {
+      findFirst: async () => {
+        if (d.erreurLien) throw d.erreurLien;
+        return d.lien;
+      },
+    },
   },
 }));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
@@ -76,12 +96,12 @@ function processeur(): Processeur {
   return d.ctor.mock.calls[0]?.[1] as Processeur;
 }
 
-function envoyer(): Promise<void> {
+function envoyer(template = "candidature-reponse"): Promise<void> {
   return processeur()({
     id: "job-1",
-    name: "candidature-reponse",
+    name: template,
     data: {
-      template: "candidature-reponse",
+      template,
       to: "",
       locale: "fr",
       payload: { replyId: "rep-1" },
@@ -106,6 +126,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   d.majs = [];
   d.lien = { id: LIEN };
+  d.erreurLien = null;
   d.reponse = reponseAvec(LIEN);
   d.sendEmail.mockResolvedValue({ messageId: "<m1>" });
   process.env["PARTAGES_SECRET"] = SECRET;
@@ -148,5 +169,39 @@ describe("le worker remet le vrai jeton au moment de l'envoi", () => {
     expect(d.sendEmail).toHaveBeenCalledWith(
       expect.objectContaining({ html: "<p>Bonjour</p>", text: "Bonjour" }),
     );
+  });
+});
+
+describe("la table des liens n'existe pas encore (worker en avance sur la migration)", () => {
+  it("table absente (P2021) : la réponse part, sans lien", async () => {
+    d.erreurLien = Object.assign(new Error("table absente"), { code: "P2021" });
+    d.reponse = { ...reponseAvec(LIEN), bodyHtml: "<p>Bonjour</p>", bodyText: "Bonjour" };
+    await envoyer();
+    expect(d.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ html: "<p>Bonjour</p>", text: "Bonjour" }),
+    );
+    expect(d.majs.at(-1)).toMatchObject({ deliveryStatus: "sent" });
+  });
+
+  it("toute autre erreur : rien ne part, le job lève pour que BullMQ réessaie", async () => {
+    d.erreurLien = Object.assign(new Error("connexion perdue"), { code: "P1001" });
+    await expect(envoyer()).rejects.toThrow("connexion perdue");
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("réponse à une fiche (submission-reply), table absente : la réponse part, sans lien", async () => {
+    d.erreurLien = Object.assign(new Error("table absente"), { code: "P2021" });
+    d.reponse = { ...reponseAvec(LIEN), bodyHtml: "<p>Bonjour</p>", bodyText: "Bonjour" };
+    await envoyer("submission-reply");
+    expect(d.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ html: "<p>Bonjour</p>", text: "Bonjour" }),
+    );
+    expect(d.majs.at(-1)).toMatchObject({ deliveryStatus: "sent" });
+  });
+
+  it("réponse à une fiche, autre erreur : rien ne part, le job lève", async () => {
+    d.erreurLien = Object.assign(new Error("connexion perdue"), { code: "P1001" });
+    await expect(envoyer("submission-reply")).rejects.toThrow("connexion perdue");
+    expect(d.sendEmail).not.toHaveBeenCalled();
   });
 });
