@@ -166,7 +166,7 @@ export const VSL_PREUVES = {
    * commissions », pas de durée de saisie promise.
    */
   espace: {
-    titre: "Votre espace personnel",
+    titre: "Votre lien personnel",
     texte:
       "Une fois le contrat signé, vous y présentez chaque entreprise et suivez où elle en est.",
   },
