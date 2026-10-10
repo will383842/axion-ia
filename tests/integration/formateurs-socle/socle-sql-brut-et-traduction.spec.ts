@@ -246,6 +246,7 @@ describe("socle formateurs — catalogue Postgres", () => {
         "SessionFormateurRetraitMotif.formateur_desactive",
         "TrainerDocumentType.recepisse_declaration_activite",
         "TrainerDocumentType.rib",
+        "type_rendez_vous.formateur",
         "fin_collaboration_motif.changement_de_nature",
         "nature_collaboration.salarie",
         "nature_collaboration.freelance",

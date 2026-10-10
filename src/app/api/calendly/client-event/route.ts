@@ -51,6 +51,7 @@ import {
   reponsesDuBrut,
   type ReponseCrm,
   classerRendezVous,
+  estTypeRendezVous,
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
 
@@ -389,7 +390,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .catch(() => null);
     if (fresh) {
       nomType = fresh.eventTypeName || nomType;
-      typeRendezVous = fresh.typeRendezVous ?? typeRendezVous;
+      // `formateur` (posé en base au schéma n° 1, jamais écrit) n'est pas un type
+      // du miroir : on garde alors le classement provisoire, comme pour NULL.
+      typeRendezVous = estTypeRendezVous(fresh.typeRendezVous)
+        ? fresh.typeRendezVous
+        : typeRendezVous;
       besoin = besoinDuBrut(fresh.rawPayload);
       reponses = reponsesDuBrut(fresh.rawPayload);
       notifyName = fresh.inviteeName ?? notifyName;

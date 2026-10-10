@@ -11,10 +11,11 @@
 // (NFD, sans accents, minuscules), contient « formateur ». « Formation IA – … »
 // ne le contient pas : un client en formation reste un client.
 //
-// ⚠️ L'enum Prisma `TypeRendezVous` n'a PAS de valeur « formateur », et ce lot
-// ne migre rien : la colonne d'un échange formateur vaut `autre` (ou NULL). La
-// branche `typeRendezVous === "formateur"` ne sert donc qu'aux lectures en
-// mémoire, et au jour où la valeur existera. Le NOM est le verrou réel.
+// ⚠️ L'enum Prisma `TypeRendezVous` porte la valeur « formateur » depuis le
+// schéma n° 1 (2026-10-10), mais aucun classement ne l'écrit encore : la colonne
+// d'un échange formateur vaut `autre` (ou NULL). La branche
+// `typeRendezVous === "formateur"` sert aux lectures en mémoire et au jour où
+// le classement l'écrira. Le NOM est le verrou réel.
 //
 // Le prédicat commun (apporteur OU formateur) et les clauses Prisma vivent à
 // côté de ceux de l'apporteur (`estEchangeHorsClients`,

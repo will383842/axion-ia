@@ -2,9 +2,8 @@
 -- FORMATEURS FREELANCE — SCHÉMA N° 1 : SOCLE DU PARCOURS (2026-10-10)
 --
 -- ADR 0066 (parcours du formateur indépendant), ADR 0067 (une fiche par
--- relation). Quatre lots regroupés (M-G, M-A1, X2, M-A2), décision de Will : UNE
--- migration. M-CAL (`formateur` dans `type_rendez_vous`) est REPORTÉ : son
--- miroir TypeScript impose de toucher des fichiers de PR encore ouvertes.
+-- relation). Quatre lots regroupés (M-G, M-A1, X2, M-A2) + M-CAL, décision de Will :
+-- UNE migration.
 --
 -- 🔴 ADDITIVE SEULEMENT : aucun DROP, aucun RENAME, aucun changement de type.
 -- Toute colonne ajoutée est nullable ou porte un défaut. L'ancien code (fenêtre
@@ -41,6 +40,9 @@ ALTER TYPE "SessionFormateurRetraitMotif" ADD VALUE IF NOT EXISTS 'formateur_des
 ALTER TYPE "TrainerDocumentType" ADD VALUE IF NOT EXISTS 'recepisse_declaration_activite';
 
 ALTER TYPE "TrainerDocumentType" ADD VALUE IF NOT EXISTS 'rib';
+
+-- M-CAL : échange avec un formateur indépendant (ADR 0066 (c)).
+ALTER TYPE "type_rendez_vous" ADD VALUE IF NOT EXISTS 'formateur';
 
 -- ═══ 2. TYPES, COLONNES ET TABLES (texte de `prisma migrate diff`) ═════════
 

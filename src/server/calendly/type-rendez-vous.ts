@@ -39,7 +39,17 @@ import {
   URL_CALENDLY_SALON_PAR_DEFAUT,
 } from "@/server/calendly/urls-par-defaut";
 
-/** Les cinq types — 🔑 MIROIR EXACT de l'enum Prisma `TypeRendezVous`. */
+/**
+ * Les cinq types CLASSÉS — miroir de l'enum Prisma `TypeRendezVous`, MOINS
+ * `formateur`.
+ *
+ * ⚠️ `formateur` existe en base depuis le schéma n° 1 du chantier formateurs
+ * freelance (2026-10-10), mais AUCUN classement ne le produit encore : le
+ * verrou « hors clients » reste le NOM (`echange-formateur.ts`). Il entrera ici
+ * avec le lot qui l'écrit — ce jour-là, chaque `switch` sur ce type (titres
+ * d'alerte, teintes, libellés) devra le traiter. Les lectures de la colonne
+ * passent par `estTypeRendezVous` pour l'écarter.
+ */
 export const TYPES_RENDEZ_VOUS = [
   "diagnostic",
   "echange_projet",

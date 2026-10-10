@@ -159,7 +159,9 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     utmCampaign: string | null;
     linkedSubmissionId: string | null;
     linkedJobApplicationId: string | null;
-    typeRendezVous: TypeRendezVous | null;
+    // La colonne admet `formateur` (schéma n° 1 formateurs freelance), que le
+    // classement ne produit pas encore : seule la comparaison ci-dessous la lit.
+    typeRendezVous: TypeRendezVous | "formateur" | null;
     eventTypeUri: string | null;
     utmContent: string | null;
   } | null;

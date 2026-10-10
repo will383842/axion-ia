@@ -4503,6 +4503,10 @@ enum TypeRendezVous {
   apporteur
   salon
   autre
+  /// Échange avec un formateur indépendant (ADR 0066 (c)) — hors clients.
+  /// Schéma n° 1 formateurs freelance (2026-10-10) : posée, AUCUN classement ne
+  /// la produit encore (le miroir `TYPES_RENDEZ_VOUS` ne la porte pas).
+  formateur
 
   @@map("type_rendez_vous")
 }
