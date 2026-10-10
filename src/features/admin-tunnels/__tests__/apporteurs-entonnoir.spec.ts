@@ -14,14 +14,16 @@ import {
   construireEntonnoir,
   coutParApporteurActif,
   coutParMarche,
-  decouperParAnnonce,
   decouperParCampagne,
+  repartirParAnnonce,
+  SANS_ANNONCE,
   listerSemaines,
   lundiDe,
   partDepuisPrecedente,
   type Depense,
   type LeadSuivi,
   type LigneBalise,
+  type RetourConnuSuivi,
   type SourcesLues,
 } from "../apporteurs-entonnoir";
 
@@ -351,11 +353,134 @@ describe("découpage", () => {
   });
 
   it("par annonce : les visites ne sont jamais mesurées (la balise ne porte pas l'annonce)", () => {
-    const l = decouperParAnnonce([
-      lead("a", "2026-09-15"),
-      lead("b", "2026-09-15", { annonce: null }),
+    const r = repartirParAnnonce(
+      [lead("a", "2026-09-15"), lead("b", "2026-09-15", { annonce: null })],
+      OK,
+      0,
+      { suivis: [], sources: OK },
+    );
+    expect(r.lignes.map((x) => x.cle)).toEqual(["ad-1", SANS_ANNONCE]);
+    expect(SANS_ANNONCE).toBe("(sans identifiant)");
+    expect(r.lignes.every((x) => x.visites === null)).toBe(true);
+    expect(r.total.visites).toBeNull();
+  });
+});
+
+describe("🔴 répartition PAR ANNONCE (2026-10-10, statistiques réelles)", () => {
+  const connu = (o: Partial<RetourConnuSuivi> = {}): RetourConnuSuivi => ({
+    id: "c",
+    etape2: false,
+    reserve: false,
+    tenu: false,
+    retenu: false,
+    contrat: false,
+    ...o,
+  });
+  const LEADS = [
+    lead("a", "2026-09-15", { annonce: "ad-1", etape2: true, reserve: true, tenu: true }),
+    lead("b", "2026-09-15", {
+      annonce: "ad-1",
+      etape2: true,
+      reserve: true,
+      tenu: true,
+      retenu: true,
+      contrat: true,
+    }),
+    lead("c", "2026-09-16", { annonce: "ad-2" }),
+    lead("d", "2026-09-16", { annonce: null, etape2: true }),
+    // L'ancienne page n'entre pas dans la répartition du tunnel vidéo.
+    lead("e", "2026-09-16", { page: "court", annonce: "ad-1" }),
+  ];
+
+  it("compte chaque marche par annonce — étape 1, étape 2, réservés, tenus, retenus, contrats", () => {
+    const r = repartirParAnnonce(LEADS, OK, 0, { suivis: [], sources: OK });
+    expect(r.lignes).toEqual([
+      {
+        cle: "ad-1",
+        visites: null,
+        etape1: 2,
+        etape2: 2,
+        reserves: 2,
+        tenus: 2,
+        retenus: 1,
+        contrats: 1,
+      },
+      {
+        cle: "ad-2",
+        visites: null,
+        etape1: 1,
+        etape2: 0,
+        reserves: 0,
+        tenus: 0,
+        retenus: 0,
+        contrats: 0,
+      },
+      {
+        cle: SANS_ANNONCE,
+        visites: null,
+        etape1: 1,
+        etape2: 1,
+        reserves: 0,
+        tenus: 0,
+        retenus: 0,
+        contrats: 0,
+      },
     ]);
-    expect(l.map((x) => x.cle).sort()).toEqual(["(sans repère)", "ad-1"]);
-    expect(l.every((x) => x.visites === null)).toBe(true);
+    expect(r.total).toMatchObject({ cle: "Total", etape1: 4, etape2: 3, reserves: 2, contrats: 1 });
+  });
+
+  it("le coût ne se calcule qu'au TOTAL (aucun champ annonce dans les dépenses), jamais inventé", () => {
+    const r = repartirParAnnonce(LEADS, OK, 12_000, { suivis: [], sources: OK });
+    expect(r.total.depenseCentimes).toBe(12_000);
+    expect(r.total.coutParEtape1).toBe(3_000);
+    expect(r.total.coutParReservation).toBe(6_000);
+    for (const l of r.lignes) expect(l).not.toHaveProperty("coutParEtape1");
+    // Rien de saisi : « — », jamais 0 €.
+    const sans = repartirParAnnonce(LEADS, OK, 0, { suivis: [], sources: OK });
+    expect(sans.total.depenseCentimes).toBeNull();
+    expect(sans.total.coutParEtape1).toBeNull();
+    expect(sans.total.coutParReservation).toBeNull();
+    // Aucune réservation : pas de division par zéro.
+    const z = repartirParAnnonce([lead("x", "2026-09-15")], OK, 5_000, { suivis: [], sources: OK });
+    expect(z.total.coutParReservation).toBeNull();
+  });
+
+  it("une source illisible rend « non mesuré » (null), jamais 0", () => {
+    const r = repartirParAnnonce(LEADS, { ...OK, reservations: false, reseau: false }, 0, {
+      suivis: [],
+      sources: OK,
+    });
+    const ad1 = r.lignes.find((l) => l.cle === "ad-1")!;
+    expect(ad1.etape1).toBe(2);
+    expect(ad1.reserves).toBeNull();
+    expect(ad1.tenus).toBeNull();
+    expect(ad1.retenus).toBeNull();
+    expect(ad1.contrats).toBeNull();
+    const sansFiches = repartirParAnnonce(LEADS, { ...OK, fiches: false }, 0, {
+      suivis: [],
+      sources: OK,
+    });
+    expect(sansFiches.total.etape1).toBeNull();
+  });
+
+  it("les « déjà connus » revenus par la pub sont comptés À PART, hors des annonces et du total", () => {
+    const r = repartirParAnnonce(LEADS, OK, 0, {
+      suivis: [connu({ id: "k1", etape2: true, reserve: true }), connu({ id: "k2" })],
+      sources: OK,
+    });
+    expect(r.dejaConnus).toMatchObject({
+      cle: "Déjà connus (revenus par la publicité)",
+      etape1: 2,
+      etape2: 1,
+      reserves: 1,
+      tenus: 0,
+    });
+    expect(r.total.etape1).toBe(4);
+    // Lecture des fiches connues en échec : la ligne n'est pas affichée comme des zéros.
+    const ko = repartirParAnnonce(LEADS, OK, 0, {
+      suivis: [],
+      sources: { ...OK, fiches: false },
+    });
+    expect(ko.dejaConnus).toBeNull();
   });
 });

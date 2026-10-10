@@ -16,9 +16,11 @@
 //     qui porte ses propres replis.
 //
 // ── Ce qui suit la personne jusqu'à la réservation ──────────────────────────
-//   · `depuis=vsl-apporteur` : le bouton, mesuré en `utm_content`
-//     (`apporteur:vsl-apporteur`, même forme que `apporteur:email-vsl-apporteur`
-//     des e-mails) ;
+//   · `depuis=vsl-apporteur` : le BOUTON, dans son propre paramètre ;
+//   · `utm_content` = l'ANNONCE d'origine (2026-10-10) — celle de la fiche, sinon
+//     celle du cookie d'arrivée ; le marqueur du bouton (`apporteur:vsl-apporteur`)
+//     ne la remplace plus et ne sert qu'à défaut. La réservation maison, elle,
+//     relit l'annonce sur la fiche à son rattachement (`attribution-fiche-video.ts`) ;
 //   · les UTM d'arrivée (adresse, sinon cookie) : recopiés dans chaque créneau,
 //     puis en champs cachés du formulaire → colonne « Provenance » de la fiche ;
 //   · le jeton `?j=` de l'étape 1 : recopié dans chaque créneau, il permet au
@@ -123,8 +125,9 @@ export default async function Page({ params, searchParams }: Props) {
   // Attribution : les UTM de l'adresse d'abord, sinon ceux du cookie posé à l'arrivée.
   const sp = await searchParams;
   let suivi: SuiviArrivee = lireSuiviArrivee(sp);
+  const cookie = (await cookies()).get(UTM_COOKIE_NAME)?.value;
+  const annonceDuCookie = cookie ? (deserializeUtmCookie(cookie).utm_content ?? null) : null;
   if (!suivi.utm_source && !suivi.utm_medium && !suivi.utm_campaign) {
-    const cookie = (await cookies()).get(UTM_COOKIE_NAME)?.value;
     if (cookie) {
       const utm = deserializeUtmCookie(cookie);
       suivi = {
@@ -140,6 +143,8 @@ export default async function Page({ params, searchParams }: Props) {
   const jeton = jetonVslValide(sp[PARAM_JETON_VSL]);
   const fiche = jeton ? await ficheDuJetonVsl(jeton) : null;
   const connu = fiche?.genre === "connu";
+  // L'annonce d'ORIGINE, jamais remplacée par le marqueur du bouton (2026-10-10).
+  const annonce = fiche?.annonce ?? annonceDuCookie ?? utmContentDuChoix(CHOIX, DEPUIS_MERCI_VSL);
   const parametres =
     parametresDuChoix(CHOIX, DEPUIS_MERCI_VSL, suivi) +
     (jeton ? `&${PARAM_JETON_VSL}=${encodeURIComponent(jeton)}` : "");
@@ -172,7 +177,7 @@ export default async function Page({ params, searchParams }: Props) {
                 height={720}
                 reservationDirecte
                 locale={locale}
-                utmContent={utmContentDuChoix(CHOIX, DEPUIS_MERCI_VSL)}
+                utmContent={annonce}
                 parametresDuChoix={parametres}
                 suivi={suivi}
                 repli={<div className="px-4 py-8">{bouton}</div>}

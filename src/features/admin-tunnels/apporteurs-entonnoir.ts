@@ -404,19 +404,112 @@ export function decouperParCampagne(
   });
 }
 
-/** Par annonce (`utm_content`). Les visites ne sont pas mesurables : la balise ne porte pas l'annonce. */
-export function decouperParAnnonce(leads: readonly LeadSuivi[]): LigneDecoupage[] {
+// ── Répartition PAR ANNONCE (2026-10-10, « statistiques réelles par annonce ») ──
+//
+// L'annonce est l'`utm_content` du lien Facebook, gardé sur la FICHE à l'étape 1 :
+// c'est la fiche qui fait foi, pas la réservation — quel que soit le lien par
+// lequel la personne a réservé (page « C'est noté », e-mail, rappel), sa
+// réservation est rattachée à SA fiche, donc à son annonce.
+//   · les visites ne sont pas mesurables par annonce (la balise anonyme ne porte
+//     pas l'annonce) : « non mesuré », jamais 0 ;
+//   · une marche dont la source n'a pas pu être lue : « non mesuré » aussi ;
+//   · les dépenses sont saisies par CAMPAGNE, sans champ annonce : le coût ne se
+//     calcule qu'au TOTAL, jamais inventé par annonce ;
+//   · les personnes DÉJÀ CONNUES revenues par la publicité sont comptées À PART.
+
+/** Libellé d'une inscription sans identifiant d'annonce. */
+export const SANS_ANNONCE = "(sans identifiant)";
+
+export interface LigneAnnonce {
+  readonly cle: string;
+  /** Toujours `null` par annonce : la balise anonyme ne porte pas l'annonce. */
+  readonly visites: Cellule;
+  readonly etape1: Cellule;
+  readonly etape2: Cellule;
+  readonly reserves: Cellule;
+  readonly tenus: Cellule;
+  readonly retenus: Cellule;
+  readonly contrats: Cellule;
+}
+
+export interface LigneTotalAnnonces extends LigneAnnonce {
+  /** Dépenses de la période (centimes) ; `null` = rien de saisi. */
+  readonly depenseCentimes: number | null;
+  /** Coût par étape 1 et par réservation, au TOTAL seulement ; `null` = « — ». */
+  readonly coutParEtape1: number | null;
+  readonly coutParReservation: number | null;
+}
+
+/** Une personne DÉJÀ CONNUE revenue par la page vidéo sur la période (`details.retoursVsl`). */
+export interface RetourConnuSuivi {
+  readonly id: string;
+  readonly etape2: boolean;
+  readonly reserve: boolean;
+  readonly tenu: boolean;
+  readonly retenu: boolean;
+  readonly contrat: boolean;
+}
+
+export interface RepartitionAnnonces {
+  readonly lignes: LigneAnnonce[];
+  readonly total: LigneTotalAnnonces;
+  /** `null` si la lecture des fiches a échoué ; une ligne à zéro s'il n'y en a aucun. */
+  readonly dejaConnus: LigneAnnonce | null;
+}
+
+function compterSi<T>(liste: readonly T[], pred: (x: T) => boolean, lue: boolean): Cellule {
+  return lue ? liste.filter(pred).length : null;
+}
+
+function ligneDe(
+  cle: string,
+  ls: readonly Pick<LeadSuivi, "etape2" | "reserve" | "tenu" | "retenu" | "contrat">[],
+  sources: SourcesLues,
+): LigneAnnonce {
+  const fiches = sources.fiches;
+  const rdv = fiches && sources.reservations;
+  return {
+    cle,
+    visites: null,
+    etape1: fiches ? ls.length : null,
+    etape2: compterSi(ls, (l) => l.etape2, fiches),
+    reserves: compterSi(ls, (l) => l.reserve, rdv),
+    tenus: compterSi(ls, (l) => l.tenu, rdv),
+    retenus: compterSi(ls, (l) => l.retenu, rdv),
+    contrats: compterSi(ls, (l) => l.contrat, fiches && sources.reseau),
+  };
+}
+
+/** Par annonce, sur la période, plus un total (avec coûts) et la ligne « déjà connus ». */
+export function repartirParAnnonce(
+  leads: readonly LeadSuivi[],
+  sources: SourcesLues,
+  depenseTotaleCentimes: number,
+  connus: { readonly suivis: readonly RetourConnuSuivi[]; readonly sources: SourcesLues },
+): RepartitionAnnonces {
   const vids = leads.filter((l) => l.page === "video");
-  const cles = [...new Set(vids.map((l) => l.annonce ?? SANS))].sort();
-  return cles.map((cle) => {
-    const ls = vids.filter((l) => (l.annonce ?? SANS) === cle);
-    return {
+  const cles = [...new Set(vids.map((l) => l.annonce ?? SANS_ANNONCE))].sort((a, b) =>
+    a === SANS_ANNONCE ? 1 : b === SANS_ANNONCE ? -1 : a.localeCompare(b),
+  );
+  const lignes = cles.map((cle) =>
+    ligneDe(
       cle,
-      visites: null,
-      etape1: ls.length,
-      etape2: ls.filter((l) => l.etape2).length,
-      reserves: ls.filter((l) => l.reserve).length,
-      depenseCentimes: null,
-    };
-  });
+      vids.filter((l) => (l.annonce ?? SANS_ANNONCE) === cle),
+      sources,
+    ),
+  );
+  const t = ligneDe("Total", vids, sources);
+  const depense = depenseTotaleCentimes > 0 ? depenseTotaleCentimes : null;
+  return {
+    lignes,
+    total: {
+      ...t,
+      depenseCentimes: depense,
+      coutParEtape1: depense === null ? null : coutParMarche(depense, t.etape1),
+      coutParReservation: depense === null ? null : coutParMarche(depense, t.reserves),
+    },
+    dejaConnus: connus.sources.fiches
+      ? ligneDe("Déjà connus (revenus par la publicité)", connus.suivis, connus.sources)
+      : null,
+  };
 }

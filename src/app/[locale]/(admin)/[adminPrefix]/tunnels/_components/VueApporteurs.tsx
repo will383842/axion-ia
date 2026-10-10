@@ -17,6 +17,7 @@ import {
   coutParMarche,
   partDepuisPrecedente,
   type Cellule,
+  type LigneAnnonce,
   type LigneDecoupage,
   type Marche,
 } from "@/features/admin-tunnels/apporteurs-entonnoir";
@@ -144,6 +145,33 @@ export function VueApporteurs({
         cout(r.depenseCentimes === null ? null : coutParMarche(r.depenseCentimes, r.etape2)),
     },
   ];
+
+  // Par annonce : chaque marche, « non mesuré » quand elle ne l'est pas — jamais 0.
+  const colAnnonce: ReadonlyArray<AdminTableColumn<LigneAnnonce>> = [
+    { key: "cle", header: "Annonce", cell: (r) => r.cle, width: "28%" },
+    { key: "visites", header: "Visites", align: "right", cell: (r) => cellule(r.visites, true) },
+    { key: "e1", header: "Étape 1 (e-mail)", align: "right", cell: (r) => cellule(r.etape1, true) },
+    {
+      key: "e2",
+      header: "Étape 2 (téléphone)",
+      align: "right",
+      cell: (r) => cellule(r.etape2, true),
+    },
+    { key: "res", header: "Réservés", align: "right", cell: (r) => cellule(r.reserves, true) },
+    { key: "tenus", header: "Échanges tenus", align: "right", cell: (r) => cellule(r.tenus, true) },
+    { key: "ret", header: "Retenus", align: "right", cell: (r) => cellule(r.retenus, true) },
+    {
+      key: "contrats",
+      header: "Contrats signés",
+      align: "right",
+      cell: (r) => cellule(r.contrats, true),
+    },
+  ];
+  const pa = t.parAnnonce;
+  const lignesAnnonce: LigneAnnonce[] =
+    pa.lignes.length === 0 && !pa.dejaConnus?.etape1
+      ? []
+      : [...pa.lignes, pa.total, ...(pa.dejaConnus ? [pa.dejaConnus] : [])];
 
   const a = t.actifs;
 
@@ -294,12 +322,29 @@ export function VueApporteurs({
         />
         <div className="mt-[var(--space-admin-4)]" />
         <AdminTable
-          columns={colDecoupage("Annonce")}
-          rows={t.parAnnonce}
+          columns={colAnnonce}
+          rows={lignesAnnonce}
           getRowId={(r) => r.cle}
           caption="Par annonce"
           emptyState={<p className="admin-meta-small">Aucune inscription sur la période.</p>}
         />
+        <p className="admin-meta-small mt-[var(--space-admin-2)]">
+          L&apos;annonce est celle de la fiche (le lien de l&apos;étape 1) : une réservation faite
+          depuis un e-mail compte pour l&apos;annonce d&apos;origine. « Déjà connus » : personnes
+          qui avaient déjà une fiche et sont revenues par la publicité, comptées à part (et hors du
+          total).
+        </p>
+        <p className="admin-meta-small">
+          Coût au total seulement (les dépenses sont saisies par campagne, sans annonce) :{" "}
+          {pa.total.depenseCentimes === null ? (
+            "aucune dépense saisie sur la période."
+          ) : (
+            <>
+              {euros(pa.total.depenseCentimes)} dépensés · par étape 1 :{" "}
+              {cout(pa.total.coutParEtape1)} · par réservation : {cout(pa.total.coutParReservation)}
+            </>
+          )}
+        </p>
       </section>
 
       <section className="mt-[var(--space-admin-6)]">

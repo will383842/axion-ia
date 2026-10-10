@@ -53,6 +53,11 @@ import { VSL_MERCI_PATH } from "@/lib/commercial-application/vsl-apporteur";
 import { envoyerScheduleApporteur } from "@/server/meta/schedule-apporteur";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 import {
+  attributionDeLaFiche,
+  completerAttribution,
+  type AttributionFiche,
+} from "./attribution-fiche-video";
+import {
   besoinDesReponses,
   reponsesDesQuestions,
   classerRendezVous,
@@ -468,6 +473,57 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
   }
+  // ── L'attribution D'ORIGINE de la fiche (2026-10-10) ───────────────────────
+  // Rattachée à une fiche née de la page vidéo, la réservation reprend son
+  // annonce (`utm_content`) et ses UTM manquants, quel que soit le lien emprunté
+  // (page « C'est noté », B1, rappels) — voir `attribution-fiche-video.ts`.
+  // Best-effort strict : un échec laisse la réservation telle quelle.
+  let attribution: AttributionFiche | null = null;
+  if (ficheRattachee) {
+    try {
+      const fiche = await prisma.submission.findUnique({
+        where: { id: ficheRattachee },
+        select: { details: true },
+      });
+      attribution = fiche ? attributionDeLaFiche(fiche.details) : null;
+      if (attribution) {
+        const { ecrire, marqueurRemplace } = completerAttribution(
+          {
+            utmSource: (data["utmSource"] as string | undefined) ?? row.utmSource,
+            utmMedium: (data["utmMedium"] as string | undefined) ?? row.utmMedium,
+            utmCampaign: (data["utmCampaign"] as string | undefined) ?? row.utmCampaign,
+            utmContent: colonnesTypeAbsentes
+              ? null
+              : ((data["utmContent"] as string | undefined) ?? row.utmContent),
+          },
+          attribution,
+        );
+        const { utmContent, ...autres } = ecrire;
+        const maj: Record<string, unknown> = { ...autres };
+        if (utmContent && !colonnesTypeAbsentes) maj["utmContent"] = utmContent;
+        if (marqueurRemplace && maj["utmContent"]) {
+          // Le marqueur du BOUTON n'est pas perdu : il reste lisible dans la charge brute.
+          const brut = (data["rawPayload"] ?? row.rawPayload) as unknown;
+          maj["rawPayload"] = {
+            ...(brut && typeof brut === "object" && !Array.isArray(brut)
+              ? (brut as Record<string, unknown>)
+              : {}),
+            _utmContentBouton: marqueurRemplace,
+          } as never;
+        }
+        if (Object.keys(maj).length > 0) {
+          await prisma.calendlyEvent.update({
+            where: { id: eventId },
+            data: maj,
+            select: { id: true },
+          });
+        }
+      }
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-attribution-fiche" } });
+    }
+  }
+
   // `Schedule` (Meta, serveur) : seulement si la réservation est rattachée à une
   // fiche — c'est elle qui porte la réponse à la bannière, la source de la
   // campagne et le `fbclid` horodaté. Fail-soft, borné à 3 s, ne lève jamais.

@@ -25,7 +25,7 @@
 import { prisma } from "@/lib/prisma";
 import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { verifierJeton } from "./jeton-lead";
-import { lireVsl } from "./lead-vsl-details";
+import { lireRetoursVsl, lireVsl } from "./lead-vsl-details";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 
 /** Nom du paramètre d'URL qui porte le jeton, comme sur la page merci (`?j=`). */
@@ -85,12 +85,17 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
  *   · `connu` : une fiche apporteur qui n'est PAS un lead vidéo (personne déjà
  *     connue revenue par la publicité) — aucun e-mail ne lui part, la page ne lui
  *     en promet donc pas, et rien n'est prérempli (`identiteDuJetonVsl` rend
- *     `null` : une personne qui a tapé l'adresse d'autrui ne lit rien).
+ *     `null` : une personne qui a tapé l'adresse d'autrui ne lit rien) ;
+ *   · `annonce` : l'`utm_content` d'ORIGINE (la fiche, ou le dernier retour d'une
+ *     personne déjà connue) — un libellé de campagne, jamais une donnée personnelle.
  * `null` dès que quelque chose manque — jamais d'exception.
  */
 export interface FicheDuJetonVsl {
   readonly genre: "lead" | "connu";
+  readonly annonce: string | null;
 }
+
+const chaine = (v: unknown): string | null => (typeof v === "string" && v ? v : null);
 
 function objet(v: unknown): Record<string, unknown> {
   return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
@@ -106,10 +111,12 @@ export async function ficheDuJetonVsl(valeur: unknown): Promise<FicheDuJetonVsl 
       select: { details: true },
     });
     if (!ligne) return null;
-    if (lireVsl(ligne.details)) return { genre: "lead" };
-    return objet(ligne.details)["subType"] === CANDIDATURE_COMMERCIALE_SUBTYPE
-      ? { genre: "connu" }
-      : null;
+    const d = objet(ligne.details);
+    if (lireVsl(ligne.details)) {
+      return { genre: "lead", annonce: chaine(objet(objet(d["funnel"])["utm"])["utm_content"]) };
+    }
+    if (d["subType"] !== CANDIDATURE_COMMERCIALE_SUBTYPE) return null;
+    return { genre: "connu", annonce: chaine(lireRetoursVsl(ligne.details).at(-1)?.utm?.content) };
   } catch {
     return null;
   }

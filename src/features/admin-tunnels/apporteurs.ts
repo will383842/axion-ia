@@ -19,12 +19,13 @@ import { Prisma } from "../../../prisma/generated/client";
 import { etapeDeLaLigne } from "@/lib/commercial-application/etape-apporteur";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { VSL_VERSION } from "@/lib/commercial-application/vsl-apporteur";
+import { lireRetoursVsl } from "@/features/commercial-application/lead-vsl-details";
 import {
   construireEntonnoir,
   comparerPages,
   coutParApporteurActif,
-  decouperParAnnonce,
   decouperParCampagne,
+  repartirParAnnonce,
   lundiDe,
   type ComparaisonPage,
   type CoutActif,
@@ -33,6 +34,8 @@ import {
   type LeadSuivi,
   type LigneBalise,
   type LigneDecoupage,
+  type RepartitionAnnonces,
+  type RetourConnuSuivi,
   type SourcesLues,
 } from "./apporteurs-entonnoir";
 
@@ -76,7 +79,8 @@ export interface TableauApporteurs {
   entonnoir: EntonnoirApporteurs;
   comparaison: ComparaisonPage[];
   parCampagne: LigneDecoupage[];
-  parAnnonce: LigneDecoupage[];
+  /** Par annonce (`utm_content` de la fiche), avec total, coûts au total et « déjà connus ». */
+  parAnnonce: RepartitionAnnonces;
   actifs: CoutActif;
   /** Dépenses de la période (centimes) — 0 = rien de saisi, affiché « non saisi ». */
   depenseTotale: number;
@@ -199,6 +203,77 @@ export async function chargerTableauApporteurs(
     }>,
   );
 
+  // 5 bis. Personnes DÉJÀ CONNUES revenues par la page vidéo (`details.retoursVsl`,
+  // 2026-10-10) : comptées À PART, à partir de leur premier retour de la période.
+  const connusLus = await lire(
+    () =>
+      prisma.submission.findMany({
+        where: {
+          deletedAt: null,
+          AND: [
+            { details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE } },
+            { details: { path: ["retoursVsl"], not: Prisma.AnyNull } },
+          ],
+        },
+        select: { id: true, contactEmailHash: true, details: true },
+        take: PLAFOND_LEADS,
+      }),
+    [] as Array<{ id: string; contactEmailHash: string | null; details: Prisma.JsonValue }>,
+  );
+  const retoursDePeriode = connusLus.v
+    .map((f) => {
+      const r = lireRetoursVsl(f.details).filter((x) => Date.parse(x.le) >= depuis.getTime());
+      return { f, r, premier: Math.min(...r.map((x) => Date.parse(x.le))) };
+    })
+    .filter((x) => x.r.length > 0);
+  const idsConnus = retoursDePeriode.map((x) => x.f.id);
+  const hashesConnus = retoursDePeriode
+    .map((x) => x.f.contactEmailHash)
+    .filter((h): h is string => !!h);
+  const rdvConnus = await lire(
+    () =>
+      idsConnus.length === 0
+        ? Promise.resolve([])
+        : prisma.calendlyEvent.findMany({
+            where: { linkedSubmissionId: { in: idsConnus } },
+            select: {
+              linkedSubmissionId: true,
+              capturedAt: true,
+              suivi: { select: { issue: true, decision: true } },
+            },
+          }),
+    [] as Array<{
+      linkedSubmissionId: string | null;
+      capturedAt: Date;
+      suivi: { issue: string; decision: string | null } | null;
+    }>,
+  );
+  const reseauConnus = await lire(
+    () =>
+      hashesConnus.length === 0
+        ? Promise.resolve([])
+        : prisma.apporteurReseau.findMany({
+            where: { emailHash: { in: hashesConnus } },
+            select: { emailHash: true, signeParSocieteAt: true },
+          }),
+    [] as Array<{ emailHash: string; signeParSocieteAt: Date | null }>,
+  );
+  const connus: RetourConnuSuivi[] = retoursDePeriode.map(({ f, r, premier }) => {
+    // Seul ce qui suit le RETOUR compte : une réservation d'avant n'est pas la pub.
+    const mes = rdvConnus.v.filter(
+      (x) => x.linkedSubmissionId === f.id && x.capturedAt.getTime() >= premier,
+    );
+    const signe = reseauConnus.v.find((x) => x.emailHash === f.contactEmailHash)?.signeParSocieteAt;
+    return {
+      id: f.id,
+      etape2: r.some((x) => x.etape === 2),
+      reserve: mes.length > 0,
+      tenu: mes.some((m) => m.suivi?.issue === "eu_lieu"),
+      retenu: mes.some((m) => m.suivi?.decision === "retenu"),
+      contrat: !!signe && signe.getTime() >= premier,
+    };
+  });
+
   // 6. Dépenses.
   const depensesLues = await lire(
     () =>
@@ -302,7 +377,15 @@ export async function chargerTableauApporteurs(
     entonnoir,
     comparaison: comparerPages(balises.v),
     parCampagne: decouperParCampagne(balises.v, leads, depensesLues.v, balises.ok),
-    parAnnonce: decouperParAnnonce(leads),
+    parAnnonce: repartirParAnnonce(leads, sources, entonnoir.depenseTotale, {
+      suivis: connus,
+      sources: {
+        balises: false,
+        fiches: connusLus.ok,
+        reservations: rdvConnus.ok,
+        reseau: reseauConnus.ok,
+      },
+    }),
     actifs: coutParApporteurActif(entonnoir.depenseTotale, actifsN),
     depenseTotale: entonnoir.depenseTotale,
     dernieresDepenses: dernieres.v,

@@ -246,3 +246,28 @@ describe("🔴 personne DÉJÀ CONNUE revenue par la publicité (2026-10-10)", (
     expect(t).toContain("Vous recevez aussi le lien par e-mail.");
   });
 });
+
+describe("🔴 l'ANNONCE d'origine (utm_content) n'est plus écrasée par le marqueur du bouton (P4)", () => {
+  const utmContentRecu = () => (props[0] as { utmContent?: string } | undefined)?.utmContent;
+  afterEach(() => {
+    fiche.ligne = null;
+  });
+
+  it("celle de la fiche d'abord, sinon celle du cookie, sinon seulement le marqueur", async () => {
+    dispo.resultat = AVEC_CRENEAUX;
+    fiche.ligne = {
+      details: { vsl: { etapeAtteinte: 2 }, funnel: { utm: { utm_content: "ad-42" } } },
+    };
+    cookie.valeur = serializeUtmCookie({ utm_source: "facebook", utm_content: "ad-cookie" });
+    await rendre({ j: creerJeton({ lead: "lead-1" }) });
+    expect(utmContentRecu()).toBe("ad-42");
+
+    fiche.ligne = null;
+    await rendre();
+    expect(utmContentRecu()).toBe("ad-cookie");
+
+    cookie.valeur = undefined;
+    await rendre();
+    expect(utmContentRecu()).toBe("apporteur:vsl-apporteur");
+  });
+});

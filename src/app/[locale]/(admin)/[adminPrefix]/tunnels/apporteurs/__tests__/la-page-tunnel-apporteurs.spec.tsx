@@ -35,6 +35,8 @@ import { chargerTableauApporteurs as _ignore } from "@/features/admin-tunnels/ap
 import {
   coutParApporteurActif,
   construireEntonnoir,
+  repartirParAnnonce,
+  type LeadSuivi,
 } from "@/features/admin-tunnels/apporteurs-entonnoir";
 import type { TableauApporteurs } from "@/features/admin-tunnels/apporteurs";
 import Page from "../page";
@@ -60,7 +62,7 @@ function tableau(o: Partial<TableauApporteurs> = {}): TableauApporteurs {
     }),
     comparaison: [],
     parCampagne: [],
-    parAnnonce: [],
+    parAnnonce: repartirParAnnonce([], ok, 0, { suivis: [], sources: ok }),
     actifs: coutParApporteurActif(0, 0),
     depenseTotale: 0,
     dernieresDepenses: [],
@@ -156,5 +158,51 @@ describe("la page « Tunnel apporteurs »", () => {
     const html = await rendre();
     expect(html).toContain("apporteurs-video");
     expect(html).toContain("Supprimer");
+  });
+
+  it("🔴 par annonce : chaque marche, une ligne « déjà connus » à part, le coût au total seulement", async () => {
+    const ok = { balises: true, fiches: true, reservations: true, reseau: true };
+    const base: LeadSuivi = {
+      id: "a",
+      page: "video",
+      inscritLe: new Date("2026-10-01T10:00:00Z"),
+      campagne: "apporteurs-vsl-2026-10",
+      annonce: "ad-42",
+      canal: "facebook",
+      etape2: true,
+      reserve: true,
+      tenu: true,
+      retenu: false,
+      dossier: false,
+      contrat: false,
+      presente: false,
+      actif: false,
+    };
+    charger.mockResolvedValue(
+      tableau({
+        parAnnonce: repartirParAnnonce(
+          [base, { ...base, id: "b", annonce: null, etape2: false, reserve: false, tenu: false }],
+          ok,
+          6000,
+          {
+            suivis: [
+              { id: "c", etape2: true, reserve: false, tenu: false, retenu: false, contrat: false },
+            ],
+            sources: ok,
+          },
+        ),
+      }),
+    );
+    const html = await rendre();
+    const t = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(t).toContain("ad-42");
+    expect(t).toContain("(sans identifiant)");
+    expect(t).toContain("Déjà connus (revenus par la publicité)");
+    for (const entete of ["Étape 1 (e-mail)", "Étape 2 (téléphone)", "Échanges tenus", "Retenus"]) {
+      expect(t).toContain(entete);
+    }
+    expect(t).toContain("Contrats signés");
+    // 60 € ÷ 2 inscriptions ; 60 € ÷ 1 réservation.
+    expect(t).toMatch(/par étape 1 : 30,00\s€ · par réservation : 60,00\s€/);
   });
 });

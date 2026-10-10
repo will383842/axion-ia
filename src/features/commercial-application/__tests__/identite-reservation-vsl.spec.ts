@@ -122,7 +122,7 @@ describe("🔒 personne DÉJÀ CONNUE (2026-10-10) — le jeton désigne sa fich
   it("ficheDuJetonVsl : « connu » pour une fiche apporteur hors page vidéo, « lead » pour un lead vidéo", async () => {
     const jeton = creerJeton({ lead: "fiche-1", suspect: false });
     findFirst.mockResolvedValueOnce(FICHE_CONNUE);
-    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu" });
+    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu", annonce: null });
     findFirst.mockResolvedValueOnce(LIGNE_VSL);
     expect(await ficheDuJetonVsl(jeton)).toMatchObject({ genre: "lead" });
     // Pas une fiche apporteur, pas de ligne, base en panne, jeton faux : null.
@@ -133,5 +133,25 @@ describe("🔒 personne DÉJÀ CONNUE (2026-10-10) — le jeton désigne sa fich
     findFirst.mockRejectedValueOnce(new Error("panne"));
     expect(await ficheDuJetonVsl(jeton)).toBeNull();
     expect(await ficheDuJetonVsl(`${jeton}x`)).toBeNull();
+  });
+});
+
+describe("ficheDuJetonVsl — l'annonce d'ORIGINE (P4, 2026-10-10)", () => {
+  it("lead vidéo : l'utm_content de la fiche ; déjà connu : celui du dernier retour", async () => {
+    const jeton = creerJeton({ lead: "fiche-1", suspect: false });
+    findFirst.mockResolvedValueOnce({
+      details: { vsl: { etapeAtteinte: 2 }, funnel: { utm: { utm_content: "ad-42" } } },
+    });
+    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "lead", annonce: "ad-42" });
+    findFirst.mockResolvedValueOnce({
+      details: {
+        subType: "candidature-commerciale",
+        retoursVsl: [
+          { le: "2026-10-01", etape: 1, utm: { content: "ad-1" } },
+          { le: "2026-10-09", etape: 2, utm: { content: "ad-7" } },
+        ],
+      },
+    });
+    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu", annonce: "ad-7" });
   });
 });

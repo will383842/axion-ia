@@ -12,9 +12,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findUnique = vi.fn();
 const majLigne = vi.fn(async (..._a: unknown[]) => ({}));
+const ficheLue = vi.fn(async (..._a: unknown[]): Promise<{ details: unknown } | null> => null);
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    submission: { findFirst: vi.fn(async () => null) },
+    submission: {
+      findFirst: vi.fn(async () => null),
+      findUnique: (...a: unknown[]) => ficheLue(...a),
+    },
     calendlyEvent: {
       updateMany: vi.fn(async () => ({ count: 0 })),
       findUnique: (...a: unknown[]) => findUnique(...a),
@@ -300,5 +304,78 @@ describe("message de la fiche à la réservation", () => {
     fetchInvitee.mockResolvedValueOnce(api());
     await enrichCalendlyEvent("evt_1");
     expect(majMessage).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 l'attribution D'ORIGINE de la fiche vidéo (P4, 2026-10-10)", () => {
+  const FICHE_VIDEO = {
+    details: {
+      vsl: { etapeAtteinte: 2 },
+      funnel: {
+        utm: {
+          utm_source: "facebook",
+          utm_campaign: "apporteurs-vsl-2026-10",
+          utm_content: "ad-42",
+        },
+      },
+    },
+  };
+  const ecritureAttribution = () =>
+    majLigne.mock.calls
+      .map((c) => (c[0] as { data: Record<string, unknown> }).data)
+      .find((d) => "utmContent" in d || "utmCampaign" in d);
+
+  it("réservation faite depuis la page « C'est noté » : l'annonce remplace le marqueur du bouton", async () => {
+    findUnique.mockResolvedValueOnce(
+      row({
+        utmSource: "facebook",
+        utmMedium: null,
+        utmCampaign: "apporteurs-vsl-2026-10",
+        utmContent: "apporteur:vsl-apporteur",
+        rawPayload: { _ipHash: "h" },
+      }),
+    );
+    fetchInvitee.mockResolvedValueOnce(api());
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_video" });
+    ficheLue.mockResolvedValueOnce(FICHE_VIDEO);
+    await enrichCalendlyEvent("evt_1");
+    const d = ecritureAttribution();
+    expect(d?.["utmContent"]).toBe("ad-42");
+    expect(d).not.toHaveProperty("utmSource");
+    // Le marqueur du bouton reste lisible, et les clés privées sont gardées.
+    expect(d?.["rawPayload"]).toMatchObject({
+      _ipHash: "h",
+      _utmContentBouton: "apporteur:vsl-apporteur",
+    });
+  });
+
+  it("réservation depuis l'e-mail B1 (aucune UTM) : la réservation reçoit toute l'attribution", async () => {
+    findUnique.mockResolvedValueOnce(
+      row({ utmSource: null, utmMedium: null, utmCampaign: null, utmContent: null }),
+    );
+    fetchInvitee.mockResolvedValueOnce(api());
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_video" });
+    ficheLue.mockResolvedValueOnce(FICHE_VIDEO);
+    await enrichCalendlyEvent("evt_1");
+    expect(ecritureAttribution()).toMatchObject({
+      utmSource: "facebook",
+      utmCampaign: "apporteurs-vsl-2026-10",
+      utmContent: "ad-42",
+    });
+  });
+
+  it("une fiche qui n'est pas de la page vidéo, ou aucun rattachement : rien n'est recopié", async () => {
+    findUnique.mockResolvedValueOnce(row({ utmContent: null }));
+    fetchInvitee.mockResolvedValueOnce(api());
+    rattacher.mockResolvedValueOnce({ rattache: true, submissionId: "sub_ancien" });
+    ficheLue.mockResolvedValueOnce({ details: { subType: "candidature-commerciale" } });
+    await enrichCalendlyEvent("evt_1");
+    expect(ecritureAttribution()).toBeUndefined();
+
+    majLigne.mockClear();
+    findUnique.mockResolvedValueOnce(row({ utmContent: null }));
+    fetchInvitee.mockResolvedValueOnce(api());
+    await enrichCalendlyEvent("evt_1");
+    expect(ecritureAttribution()).toBeUndefined();
   });
 });
