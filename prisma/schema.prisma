@@ -6312,6 +6312,8 @@ model Trainer {
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
   @@index([rcProEcheanceAt])
   @@index([sousTraitantProchaineVerifAt])
+  /// Schéma n° 1 formateurs — recherche par empreinte d'e-mail.
+  @@index([emailHash])
   @@map("trainers")
 }
 

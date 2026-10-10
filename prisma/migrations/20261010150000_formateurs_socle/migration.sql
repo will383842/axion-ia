@@ -201,6 +201,9 @@ CREATE TABLE "choix_formateur_session" (
 );
 
 -- CreateIndex
+CREATE INDEX "trainers_email_hash_idx" ON "trainers"("email_hash");
+
+-- CreateIndex
 CREATE INDEX "verifications_registre_sous_traitance_trainer_id_verifie_at_idx" ON "verifications_registre_sous_traitance"("trainer_id", "verifie_at");
 
 -- CreateIndex
