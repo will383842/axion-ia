@@ -40,8 +40,9 @@ export function VslCta({ href, label, placement, landing, className }: VslCtaPro
       data-cta={`vsl-${landing}-${placement}`}
       className={cn(
         // 60 px de haut, pleine largeur au pouce : c'est le seul geste que la
-        // page attend, il ne doit jamais demander de viser.
-        "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-on-mocha flex min-h-[60px] w-full items-center justify-center gap-2.5 rounded-full px-7 text-center text-[17px] font-bold tracking-tight transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:outline-none sm:w-auto",
+        // page attend, il ne doit jamais demander de viser. TOUJOURS sur une
+        // ligne (360 px compris) : `whitespace-nowrap`, marge réduite sous `sm`.
+        "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-on-mocha flex min-h-[60px] w-full items-center justify-center gap-2.5 rounded-full px-5 text-center text-[17px] font-bold tracking-tight whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:outline-none sm:w-auto sm:px-7",
         className,
       )}
     >

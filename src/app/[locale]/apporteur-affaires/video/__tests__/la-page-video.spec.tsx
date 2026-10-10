@@ -242,6 +242,16 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     expect(tailles.filter((n) => n < 14)).toEqual([]);
   });
 
+  it("mobile 360 px (2026-10-10) : chaque bouton tient sur UNE ligne, la case de consentement fait 24 px", async () => {
+    const h = await rendre();
+    const boutons = [...h.matchAll(/<(?:a|button) [^>]*data-cta="(vsl-[^"]*)"[^>]*>/g)];
+    expect(boutons.length).toBeGreaterThanOrEqual(4); // héro, milieu, collant, « Continuer »
+    for (const b of boutons) expect(b[0], b[1]).toContain("whitespace-nowrap");
+    const caseConsent = h.match(/<input[^>]*id="vsl-consent"[^>]*>/)?.[0] ?? "";
+    expect(caseConsent).toMatch(/\bh-6\b/);
+    expect(caseConsent).toMatch(/\bw-6\b/);
+  });
+
   it("une colonne, pas d'image avant le formulaire (le LCP est le titre) ni de lien vers le site", async () => {
     film.present = false;
     const h = await rendre();

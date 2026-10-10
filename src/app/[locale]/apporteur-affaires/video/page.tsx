@@ -281,12 +281,12 @@ export default async function Page({ params }: Props) {
         <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
           <div className="bg-paper border-border-strong shadow-card rounded-2xl border p-5">
             <p className="text-fg font-semibold">{VSL_PREUVES.catalogue.titre}</p>
-            <p className="mt-3 text-[15px]">
+            <p className="mt-1 text-[15px]">
               <a
                 href="/fr/catalogue"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-terracotta-deep underline underline-offset-2"
+                className="text-terracotta-deep inline-flex min-h-11 items-center underline underline-offset-2"
               >
                 {VSL_PREUVES.catalogue.lien}
               </a>

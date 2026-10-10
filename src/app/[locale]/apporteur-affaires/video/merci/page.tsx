@@ -106,7 +106,7 @@ function BoutonCreneau({ href }: { href: string }) {
       <a
         href={href}
         data-cta="vsl-merci-creneau"
-        className="bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep flex min-h-[64px] w-full items-center justify-center gap-2.5 rounded-full px-8 text-center text-lg font-bold tracking-tight transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto"
+        className="bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta-deep flex min-h-[64px] w-full items-center justify-center gap-2.5 rounded-full px-5 text-center text-lg font-bold tracking-tight whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto sm:px-8"
       >
         <CalendarCheck aria-hidden="true" className="h-5 w-5 shrink-0" />
         {VSL_MERCI.cta}
@@ -219,7 +219,7 @@ export default async function Page({ params, searchParams }: Props) {
                 variant="outline"
                 external
                 track="vsl-merci-catalogue"
-                className="w-full justify-center sm:w-auto"
+                className="w-full justify-center px-4 whitespace-nowrap sm:w-auto"
               >
                 {VSL_MERCI.kitCatalogue} →
               </Cta>

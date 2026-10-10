@@ -442,7 +442,7 @@ export function CalendlySlotPicker({
                               ? `Réserver ${fmt.dayLong.format(utcOf(day.dateKey))} à ${heure}`
                               : `Book ${fmt.dayLong.format(utcOf(day.dateKey))} at ${heure}`
                           }
-                          className="border-terracotta text-terracotta hover:bg-terracotta hover:text-mocha-fg focus-visible:ring-terracotta flex h-11 w-full items-center justify-center rounded-lg border text-sm font-semibold tabular-nums transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                          className="border-terracotta text-terracotta hover:bg-terracotta hover:text-mocha-fg focus-visible:ring-terracotta flex h-11 w-full items-center justify-center rounded-lg border text-sm font-semibold whitespace-nowrap tabular-nums transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                         >
                           {heure}
                         </a>
