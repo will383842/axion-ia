@@ -152,3 +152,114 @@ export async function avancerVslEtape2(a: AvancerEtape2): Promise<IssueAvancemen
     return "avance" as const;
   });
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// RETOURS d'une personne DÉJÀ CONNUE (2026-10-10, R3 — audit du tunnel pub)
+// ───────────────────────────────────────────────────────────────────────────
+//
+// Une personne qui a déjà une fiche apporteur qui n'est PAS un lead vidéo
+// (ancien formulaire, Indeed, saisie manuelle, fiche archivée…) et qui revient
+// par la publicité passait les deux étapes sans que RIEN ne soit gardé : ni
+// l'annonce, ni le téléphone. On garde désormais une TRACE BORNÉE sur sa fiche,
+// `details.retoursVsl` — et rien d'autre : ni étape, ni statut, ni nom, ni
+// archivage, ni téléphone principal (une personne qui tape l'adresse d'autrui
+// ne peut qu'AJOUTER une trace, jamais lire ni écraser).
+
+/** Au plus dix retours gardés, les plus récents. */
+export const RETOURS_VSL_MAX = 10;
+
+export interface RetourVsl {
+  /** Heure de l'étape 1 (ISO) — c'est aussi l'émission du jeton, qui la retrouve. */
+  le: string;
+  etape: 1 | 2;
+  utm?: { source?: string; medium?: string; campaign?: string; content?: string };
+  /** Réponse à la bannière publicitaire à l'étape 1 ; `null` si inconnue. */
+  consentPub: boolean | null;
+  /** Étape 2 : heure, réponse « dirigeants connus », téléphone CHIFFRÉ. */
+  e2?: string;
+  dirigeants?: string;
+  telephoneChiffre?: string | null;
+}
+
+/** Lit défensivement `details.retoursVsl` (tableau, sinon vide). */
+export function lireRetoursVsl(details: unknown): RetourVsl[] {
+  if (!details || typeof details !== "object" || Array.isArray(details)) return [];
+  const r = (details as Record<string, unknown>)["retoursVsl"];
+  if (!Array.isArray(r)) return [];
+  return r.filter(
+    (e): e is RetourVsl => !!e && typeof e === "object" && typeof (e as RetourVsl).le === "string",
+  );
+}
+
+/** Garde les `RETOURS_VSL_MAX` derniers, dans l'ordre d'arrivée. */
+export function bornerRetours(retours: readonly RetourVsl[]): RetourVsl[] {
+  return retours.slice(-RETOURS_VSL_MAX);
+}
+
+export type IssueRetour = "ecrit" | "deja" | "introuvable";
+
+/**
+ * Écrit `details.retoursVsl` d'une fiche qui n'est PAS un lead vidéo, sous verrou
+ * de ligne : relit le tableau, applique `modifier`, réécrit CE tableau seul
+ * (`jsonb_set`). `updated_at` n'est pas touché : la fiche n'a pas « bougé ».
+ */
+async function ecrireRetours(
+  id: string,
+  modifier: (retours: RetourVsl[]) => RetourVsl[] | "deja",
+): Promise<IssueRetour> {
+  return prisma.$transaction(async (tx) => {
+    const lignes = await tx.$queryRaw<Array<{ retours: unknown }>>`
+      SELECT details -> 'retoursVsl' AS retours
+      FROM submissions
+      WHERE id = ${id}::uuid AND deleted_at IS NULL AND NOT (COALESCE(details, '{}'::jsonb) ? 'vsl')
+      FOR UPDATE
+    `;
+    const ligne = lignes[0];
+    if (!ligne) return "introuvable" as const;
+    const suivant = modifier(lireRetoursVsl({ retoursVsl: ligne.retours }));
+    if (suivant === "deja") return "deja" as const;
+    const json = JSON.stringify(bornerRetours(suivant));
+    await tx.$executeRaw`
+      UPDATE submissions
+      SET details = jsonb_set(COALESCE(details, '{}'::jsonb), '{retoursVsl}', ${json}::jsonb, true)
+      WHERE id = ${id}::uuid
+    `;
+    return "ecrit" as const;
+  });
+}
+
+/** Étape 1 d'une personne déjà connue : ajoute un retour (borné à dix). */
+export async function ajouterRetourVsl(id: string, retour: RetourVsl): Promise<IssueRetour> {
+  return ecrireRetours(id, (r) => [...r, retour]);
+}
+
+export interface CompleterRetour {
+  readonly id: string;
+  /** Heure de l'étape 1 (ISO), lue dans le jeton : désigne le retour à compléter. */
+  readonly le: string;
+  readonly maintenant: Date;
+  readonly dirigeants: string;
+  readonly telephoneChiffre: string | null;
+}
+
+/**
+ * Étape 2 d'une personne déjà connue : complète le retour de SON étape 1 (ou en
+ * ajoute un, si la trace de l'étape 1 manque). « deja » si ce retour a déjà son
+ * étape 2 (double clic) : aucun second message.
+ */
+export async function completerRetourVsl(c: CompleterRetour): Promise<IssueRetour> {
+  return ecrireRetours(c.id, (retours) => {
+    const i = retours.findIndex((r) => r.le === c.le);
+    const base: RetourVsl =
+      i >= 0 ? (retours[i] as RetourVsl) : { le: c.le, etape: 1, consentPub: null };
+    if (base.etape === 2) return "deja";
+    const complet: RetourVsl = {
+      ...base,
+      etape: 2,
+      e2: c.maintenant.toISOString(),
+      dirigeants: c.dirigeants,
+      telephoneChiffre: c.telephoneChiffre,
+    };
+    return i >= 0 ? retours.map((r, j) => (j === i ? complet : r)) : [...retours, complet];
+  });
+}

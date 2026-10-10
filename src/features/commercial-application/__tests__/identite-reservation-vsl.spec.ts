@@ -12,7 +12,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: { submission: { findFirst } } }));
 
 import { creerJeton } from "../jeton-lead";
 import { encryptPii } from "@/lib/pii-crypto";
-import { identiteDuJetonVsl, jetonVslValide } from "../identite-reservation-vsl";
+import { ficheDuJetonVsl, identiteDuJetonVsl, jetonVslValide } from "../identite-reservation-vsl";
 
 const LIGNE_VSL = {
   contactName: "Léa",
@@ -103,5 +103,35 @@ describe("câblage de la page du formulaire", () => {
     expect(src).toMatch(
       /reprise\s*\?\s*\{ erreurs: reprise\.erreurs, valeurs: reprise\.valeurs \}/,
     );
+  });
+});
+
+describe("🔒 personne DÉJÀ CONNUE (2026-10-10) — le jeton désigne sa fiche existante", () => {
+  const FICHE_CONNUE = {
+    contactName: "Léa",
+    contactEmail: "lea@exemple.fr",
+    details: { subType: "candidature-commerciale", etape: "premier-contact" },
+  };
+
+  it("aucun préremplissage : le prénom et l'adresse de la fiche ne s'affichent jamais", async () => {
+    findFirst.mockResolvedValue(FICHE_CONNUE);
+    const jeton = creerJeton({ lead: "fiche-1", suspect: false });
+    expect(await identiteDuJetonVsl(jeton)).toBeNull();
+  });
+
+  it("ficheDuJetonVsl : « connu » pour une fiche apporteur hors page vidéo, « lead » pour un lead vidéo", async () => {
+    const jeton = creerJeton({ lead: "fiche-1", suspect: false });
+    findFirst.mockResolvedValueOnce(FICHE_CONNUE);
+    expect(await ficheDuJetonVsl(jeton)).toEqual({ genre: "connu" });
+    findFirst.mockResolvedValueOnce(LIGNE_VSL);
+    expect(await ficheDuJetonVsl(jeton)).toMatchObject({ genre: "lead" });
+    // Pas une fiche apporteur, pas de ligne, base en panne, jeton faux : null.
+    findFirst.mockResolvedValueOnce({ ...FICHE_CONNUE, details: { subType: "autre" } });
+    expect(await ficheDuJetonVsl(jeton)).toBeNull();
+    findFirst.mockResolvedValueOnce(null);
+    expect(await ficheDuJetonVsl(jeton)).toBeNull();
+    findFirst.mockRejectedValueOnce(new Error("panne"));
+    expect(await ficheDuJetonVsl(jeton)).toBeNull();
+    expect(await ficheDuJetonVsl(`${jeton}x`)).toBeNull();
   });
 });

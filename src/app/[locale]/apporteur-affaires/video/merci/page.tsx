@@ -25,6 +25,12 @@
 //     formulaire de proposer le prénom et l'e-mail déjà donnés
 //     (`identite-reservation-vsl.ts`) — le même e-mail rattache la réservation à
 //     la fiche. Seul le jeton voyage, jamais l'adresse.
+//
+// ── Personne DÉJÀ CONNUE (2026-10-10, R3) ───────────────────────────────────
+// Le jeton désigne alors sa fiche existante (pas un lead vidéo) : aucun e-mail
+// ne lui part, la page ne lui en promet donc pas (« C'est noté. Choisissez votre
+// créneau ci-dessous. »). Le calendrier reste, SANS préremplissage : le prénom et
+// l'adresse d'une fiche existante ne s'affichent jamais à qui a tapé l'adresse.
 // Le `Schedule` Meta et le `Call Booked` Plausible de la réservation partent du
 // serveur (`server/calendly/enrich.ts`) pour toute réservation d'échange
 // apporteur ; l'étape « Call Booking Viewed » de l'entonnoir reste tirée ici
@@ -65,6 +71,7 @@ import {
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
 import {
+  ficheDuJetonVsl,
   jetonVslValide,
   PARAM_JETON_VSL,
 } from "@/features/commercial-application/identite-reservation-vsl";
@@ -131,6 +138,8 @@ export default async function Page({ params, searchParams }: Props) {
   // Le jeton n'est recopié que s'il est VALIDE : une adresse trafiquée ne se
   // propage pas dans les liens de la page.
   const jeton = jetonVslValide(sp[PARAM_JETON_VSL]);
+  const fiche = jeton ? await ficheDuJetonVsl(jeton) : null;
+  const connu = fiche?.genre === "connu";
   const parametres =
     parametresDuChoix(CHOIX, DEPUIS_MERCI_VSL, suivi) +
     (jeton ? `&${PARAM_JETON_VSL}=${encodeURIComponent(jeton)}` : "");
@@ -148,7 +157,9 @@ export default async function Page({ params, searchParams }: Props) {
       <Section tone="halo-warm" className="pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-14 lg:pb-14">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="display-editorial text-fg text-balance">{VSL_MERCI.title}</h1>
-          <p className="text-fg-soft mt-4 mb-8 text-lg leading-relaxed">{VSL_MERCI.texte}</p>
+          <p className="text-fg-soft mt-4 mb-8 text-lg leading-relaxed">
+            {connu ? VSL_MERCI.texteConnu : VSL_MERCI.texte}
+          </p>
         </div>
 
         {resolu ? (
@@ -172,14 +183,16 @@ export default async function Page({ params, searchParams }: Props) {
           <div className="mx-auto max-w-2xl">{bouton}</div>
         )}
 
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-fg-soft bg-paper border-border mx-auto mt-8 inline-flex items-start gap-2.5 rounded-xl border px-4 py-3 text-left text-sm leading-relaxed">
-            <MailCheck aria-hidden="true" className="text-sage mt-0.5 h-4 w-4 shrink-0" />
-            <span>
-              {VSL_MERCI.email} {VSL_MERCI.aucunCreneau}
-            </span>
-          </p>
-        </div>
+        {connu ? null : (
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-fg-soft bg-paper border-border mx-auto mt-8 inline-flex items-start gap-2.5 rounded-xl border px-4 py-3 text-left text-sm leading-relaxed">
+              <MailCheck aria-hidden="true" className="text-sage mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                {VSL_MERCI.email} {VSL_MERCI.aucunCreneau}
+              </span>
+            </p>
+          </div>
+        )}
       </Section>
 
       {/* Le kit : découvrir ce qu'on recommandera. Secondaire : l'action est le créneau. */}

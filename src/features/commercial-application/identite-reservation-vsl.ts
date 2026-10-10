@@ -26,6 +26,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii, isDecryptedEmailUsable, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { verifierJeton } from "./jeton-lead";
 import { lireVsl } from "./lead-vsl-details";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 
 /** Nom du paramètre d'URL qui porte le jeton, comme sur la page merci (`?j=`). */
 export const PARAM_JETON_VSL = "j";
@@ -73,6 +74,42 @@ export async function identiteDuJetonVsl(valeur: unknown): Promise<IdentiteReser
     ).trim();
     const nom = nomClair === PII_DECRYPT_PLACEHOLDER ? "" : nomClair;
     return { nom, email };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Ce que la page « C'est noté » doit savoir de la fiche derrière le jeton
+ * (2026-10-10) — lu côté SERVEUR, jamais dans le navigateur :
+ *   · `connu` : une fiche apporteur qui n'est PAS un lead vidéo (personne déjà
+ *     connue revenue par la publicité) — aucun e-mail ne lui part, la page ne lui
+ *     en promet donc pas, et rien n'est prérempli (`identiteDuJetonVsl` rend
+ *     `null` : une personne qui a tapé l'adresse d'autrui ne lit rien).
+ * `null` dès que quelque chose manque — jamais d'exception.
+ */
+export interface FicheDuJetonVsl {
+  readonly genre: "lead" | "connu";
+}
+
+function objet(v: unknown): Record<string, unknown> {
+  return v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+}
+
+export async function ficheDuJetonVsl(valeur: unknown): Promise<FicheDuJetonVsl | null> {
+  const brut = jetonVslValide(valeur);
+  const jeton = brut ? verifierJeton(brut) : null;
+  if (!jeton) return null;
+  try {
+    const ligne = await prisma.submission.findFirst({
+      where: { id: jeton.lead, deletedAt: null },
+      select: { details: true },
+    });
+    if (!ligne) return null;
+    if (lireVsl(ligne.details)) return { genre: "lead" };
+    return objet(ligne.details)["subType"] === CANDIDATURE_COMMERCIALE_SUBTYPE
+      ? { genre: "connu" }
+      : null;
   } catch {
     return null;
   }

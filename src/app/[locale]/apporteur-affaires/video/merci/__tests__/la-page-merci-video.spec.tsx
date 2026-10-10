@@ -33,7 +33,10 @@ vi.mock("@/i18n/navigation", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+const { fiche } = vi.hoisted(() => ({ fiche: { ligne: null as unknown } }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: { submission: { findFirst: async () => fiche.ligne } },
+}));
 vi.mock("@/server/calendly/availability", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/calendly/availability")>()),
   fetchAvailableSlots: async () => dispo.resultat,
@@ -218,5 +221,28 @@ describe("la page de merci des apporteurs — réservation du site", () => {
     expect(t).toMatch(/15 minutes/);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
     expect(t).not.toMatch(/sous\s+\d+\s?h|qualiopi|parrain/i);
+  });
+});
+
+describe("🔴 personne DÉJÀ CONNUE revenue par la publicité (2026-10-10)", () => {
+  const FICHE = "55555555-5555-4555-8555-555555555555";
+  afterEach(() => {
+    fiche.ligne = null;
+  });
+
+  it("ne promet AUCUN e-mail : « C'est noté. Choisissez votre créneau ci-dessous. », calendrier gardé", async () => {
+    fiche.ligne = { details: { subType: "candidature-commerciale", etape: "premier-contact" } };
+    const h = await rendre({ j: creerJeton({ lead: FICHE }) });
+    const t = texte(h);
+    expect(t).toContain("C'est noté. Choisissez votre créneau ci-dessous.");
+    expect(t).not.toMatch(/par e-mail|e-mail de confirmation|courriers indésirables/);
+    expect(h).toContain('data-cta="vsl-merci-creneau"');
+  });
+
+  it("un lead vidéo garde le texte actuel et la ligne e-mail", async () => {
+    fiche.ligne = { details: { vsl: { etapeAtteinte: 2 } } };
+    const t = texte(await rendre({ j: creerJeton({ lead: FICHE }) }));
+    expect(t).toContain("Choisissez maintenant le créneau de 15 minutes qui vous convient.");
+    expect(t).toContain("Vous recevez aussi le lien par e-mail.");
   });
 });
