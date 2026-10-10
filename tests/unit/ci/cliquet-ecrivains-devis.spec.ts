@@ -145,7 +145,10 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       ).toEqual([
         "src/app/api/docuseal/webhook/route.ts (dispatchDevisEvent › travail de transactionDevisSigne())",
         "src/server/actions/qualiopi/devis.ts (acceptDevisAction › travail de transactionDevisSigne())",
-        "src/server/actions/qualiopi/piece-signature.ts (consequenceSignatureComplete › travail de transactionDevisSigne())",
+        // Lot S6a : l'écrivain du canal maison a quitté `piece-signature.ts`
+        // (`consequenceSignatureComplete`) pour l'après-signature commun — même
+        // transaction, même garde, un fichier hors « use server ».
+        "src/server/qualiopi/documents/signature/apres-signature.ts (accepterDevis › travail de transactionDevisSigne())",
       ]);
     },
   );
