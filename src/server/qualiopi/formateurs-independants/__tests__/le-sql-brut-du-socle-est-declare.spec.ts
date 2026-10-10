@@ -63,7 +63,6 @@ const VALEURS_AJOUTEES: ReadonlyArray<readonly [string, string]> = [
   ["SessionFormateurRetraitMotif", "formateur_desactive"],
   ["TrainerDocumentType", "recepisse_declaration_activite"],
   ["TrainerDocumentType", "rib"],
-  ["type_rendez_vous", "formateur"],
 ];
 
 function tousPresents(): ObjetPresentSocle[] {

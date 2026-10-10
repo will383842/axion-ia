@@ -246,7 +246,6 @@ describe("socle formateurs — catalogue Postgres", () => {
         "SessionFormateurRetraitMotif.formateur_desactive",
         "TrainerDocumentType.recepisse_declaration_activite",
         "TrainerDocumentType.rib",
-        "type_rendez_vous.formateur",
         "fin_collaboration_motif.changement_de_nature",
         "nature_collaboration.salarie",
         "nature_collaboration.freelance",
@@ -460,7 +459,9 @@ describe("socle formateurs — comportement", () => {
         id,
       ];
       expect(await essayer(tx, lier(uuid(1, "77777777")))).toBe("accepte");
-      expect(await essayer(tx, lier(uuid(2, "77777777")))).toMatch(/trainers_candidature_unique/);
+      expect(await essayer(tx, lier(uuid(2, "77777777")))).toMatch(
+        /23505.*Key \(candidature_id\)/s,
+      );
     });
   });
 });

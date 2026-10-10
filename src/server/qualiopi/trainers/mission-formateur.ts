@@ -94,6 +94,8 @@ export const LIBELLE_STATUT_MISSION: Record<MissionFormateurStatut, string> = {
   // seraient alors indiscernables d'une acceptation par lien, ce qui est
   // exactement ce que la valeur d'énumération sépare.
   accord_hors_outil: "Accord consigné hors outil",
+  // Schéma n° 1 formateurs freelance (2026-10-10) — posée, encore jamais écrite.
+  desistee: "Désistement du formateur",
 };
 
 /** Les réponses qu'un formateur peut donner — et rien d'autre. */

@@ -63,10 +63,17 @@ const TYPE_LABELS: Record<TrainerDocumentTypeValue, string> = {
   diplome: "Diplôme",
   certification: "Certification",
   autre: "Autre",
+  // Schéma n° 1 formateurs freelance — libellés seuls : ces types ne sont pas
+  // encore proposés au dépôt (absents de `TYPE_ORDER`).
+  recepisse_declaration_activite: "Récépissé de déclaration d'activité",
+  rib: "RIB",
 };
 
+/** Les types qu'on peut DÉPOSER ici — ceux qu'accepte `createTrainerDocumentAction`. */
+type TypeDeposable = Exclude<TrainerDocumentTypeValue, "recepisse_declaration_activite" | "rib">;
+
 // Ordre du select : on met en tête les pièces les plus courantes du dossier.
-const TYPE_ORDER: TrainerDocumentTypeValue[] = [
+const TYPE_ORDER: TypeDeposable[] = [
   "contrat_travail",
   "nda_sous_traitant",
   "kbis_avis_sirene",
@@ -108,7 +115,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
   const { demander, dialogue } = useConfirmation();
 
   // Formulaire d'ajout.
-  const [type, setType] = useState<TrainerDocumentTypeValue>("contrat_travail");
+  const [type, setType] = useState<TypeDeposable>("contrat_travail");
   const [numeroPiece, setNumeroPiece] = useState("");
   const [fichierUrl, setFichierUrl] = useState("");
   const [dateEmission, setDateEmission] = useState("");
@@ -382,7 +389,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
           <span className="admin-meta">Type de pièce</span>
           <select
             value={type}
-            onChange={(e) => setType(e.target.value as TrainerDocumentTypeValue)}
+            onChange={(e) => setType(e.target.value as TypeDeposable)}
             disabled={isPending}
             className="admin-input"
           >
