@@ -1,5 +1,5 @@
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { familleHorsClients } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
   bornerReponsesCrm,
@@ -164,8 +164,19 @@ export function payloadRendezVousAuContrat(
 
 /** Un rendez-vous Calendly (pris, honoré, annulé, non honoré). */
 export async function syncCalendlyEventToCrm(
-  input: BaseInput & { kind: "booked" | "completed" | "canceled" | "no_show" },
+  entree: BaseInput & {
+    kind: "booked" | "completed" | "canceled" | "no_show";
+    /**
+     * Vrai quand le nom du type n'a PAS été relu par l'API Calendly (route
+     * publique `client-event`, slug venu du navigateur). La garde « formateur »
+     * ne le lit alors pas : une donnée du navigateur ne fait jamais sortir une
+     * réservation du CRM (relecture sécurité, lot F-CAL-1). La garde apporteur,
+     * elle, est inchangée.
+     */
+    nomDuTypeNonConfirme?: boolean;
+  },
 ): Promise<void> {
+  const { nomDuTypeNonConfirme = false, ...input } = entree;
   const payload = payloadRendezVousAuContrat(input.payload);
 
   // Un échange avec un candidat apporteur n'est pas une interaction commerciale :
@@ -178,7 +189,15 @@ export async function syncCalendlyEventToCrm(
   // seulement par chance : « echange-apporteur-affaires » contient le mot-clé.
   // Double verrou : le type OU le nom. Un futur slug « apporteur-salon-… »
   // classé « salon » par l'URI ne doit pas fuir vers les ventes.
-  if (payload.typeRendezVous === "apporteur" || estAppelApporteur(payload.eventTypeName)) return;
+  //
+  // 🔑 2026-10-09 (lot F-CAL-1) : un échange avec un formateur indépendant n'est
+  // pas plus un prospect — même garde, par le prédicat commun « hors clients »
+  // (apporteur OU formateur, `server/calendly/echange-formateur.ts`).
+  const famille = familleHorsClients({
+    typeRendezVous: payload.typeRendezVous,
+    eventTypeName: payload.eventTypeName,
+  });
+  if (famille === "apporteur" || (famille === "formateur" && !nomDuTypeNonConfirme)) return;
 
   const map = {
     booked: "calendly_booked",

@@ -24,6 +24,12 @@
 // Un `scheduled_event` ne porte ni le slug ni l'URL de réservation de son type,
 // seulement son nom : c'est la seule clé disponible sans appel d'API de plus.
 
+import {
+  estEchangeFormateur,
+  estEchangeFormateurParNom,
+  NOM_HORS_ECHANGE_FORMATEUR,
+} from "./echange-formateur";
+
 /** Le mot qui, dans le nom du type d'événement Calendly, désigne un échange apporteur. */
 export const MOT_CLE_TYPE_APPEL_APPORTEUR = "apporteur";
 
@@ -66,40 +72,17 @@ export const SEULS_APPELS_APPORTEUR_PAR_NOM = {
 };
 
 /**
- * Clause historique, nom seul : « tout SAUF les échanges apporteur ».
- *
- * `mode: "insensitive"` couvre la casse ; « apporteur » ne porte pas d'accent,
- * donc la normalisation de `estAppelApporteur` n'a pas d'équivalent à chercher
- * côté base.
- */
-export const HORS_APPELS_APPORTEUR_PAR_NOM = {
-  NOT: { eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const } },
-};
-
-/**
  * « SEULEMENT les échanges apporteur » : classés apporteur, OU nommés apporteur.
  *
- * 🔑 Écrit en positif, jamais comme une négation de `HORS_APPELS_APPORTEUR`.
- * Ensemble, les deux filtres couvrent tout le compte, sans recouvrement
+ * 🔑 Écrit en positif, jamais comme une négation de `HORS_ECHANGES_HORS_CLIENTS`.
+ * Ensemble, les deux filtres couvrent tout le compte SAUF les échanges
+ * formateur (2026-10-09), sans recouvrement
  * (`un-type-classe-garde-les-memes-populations.spec.ts` le prouve sur toutes
- * les combinaisons type × nom).
+ * les combinaisons type × nom ; `un-echange-formateur-n-est-jamais-un-client.spec.ts`
+ * pour le formateur).
  */
 export const SEULS_APPELS_APPORTEUR = {
   OR: [{ typeRendezVous: "apporteur" as const }, SEULS_APPELS_APPORTEUR_PAR_NOM],
-};
-
-/**
- * « Tout SAUF les échanges apporteur » : ni classé apporteur, ni nommé apporteur.
- *
- * ⚠️ `typeRendezVous: { not: "apporteur" }` serait FAUX : en SQL, `NULL <> x`
- * n'est pas vrai, et les lignes non classées sortiraient de la population
- * client. D'où la liste explicite des autres types, plus `null`.
- */
-export const HORS_APPELS_APPORTEUR = {
-  AND: [
-    { OR: [{ typeRendezVous: null }, { typeRendezVous: { in: [...TYPES_HORS_APPORTEUR] } }] },
-    HORS_APPELS_APPORTEUR_PAR_NOM,
-  ],
 };
 
 /**
@@ -112,3 +95,94 @@ export function estRendezVousApporteur(rdv: {
 }): boolean {
   return rdv.typeRendezVous === "apporteur" || estAppelApporteur(rdv.eventTypeName);
 }
+
+// ── Les échanges HORS CLIENTS : apporteur OU formateur (2026-10-09) ────────
+//
+// Lot F-CAL-1 du chantier « formateurs freelance ». Un échange avec un
+// formateur indépendant (`echange-formateur.ts`) n'est pas plus un client
+// qu'un échange apporteur. Toute EXCLUSION des familles client — e-mails
+// « appel de découverte », CRM des ventes, dossier client, visio enregistrée —
+// lit désormais ce prédicat commun ; les prédicats « apporteur » seuls ne
+// servent plus qu'à SÉLECTIONNER les apporteurs (fiche, rattachement,
+// invitation, classement). Inventaire figé par
+// `__tests__/inventaire-des-gardes-hors-clients.spec.ts`.
+//
+// 🔑 Un nom qui contient les deux mots reste « apporteur » : `SEULS_APPELS_APPORTEUR`
+// et `estRendezVousApporteur` n'ont pas bougé, il reçoit donc toujours les
+// messages apporteur — et toujours rien des familles client.
+
+/** Vrai si ce type d'événement Calendly n'est PAS un client : apporteur ou formateur. */
+export function estEchangeHorsClientsParNom(nomTypeEvenement: string | null | undefined): boolean {
+  return estAppelApporteur(nomTypeEvenement) || estEchangeFormateurParNom(nomTypeEvenement);
+}
+
+/** Vrai si ce rendez-vous n'est PAS un client : échange apporteur OU échange formateur. */
+export function estEchangeHorsClients(rdv: {
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
+}): boolean {
+  return estRendezVousApporteur(rdv) || estEchangeFormateur(rdv);
+}
+
+/**
+ * La famille « hors clients » d'un rendez-vous : `apporteur`, `formateur`, ou
+ * `null` (un client, un salon). Apporteur D'ABORD : un nom qui contient les
+ * deux mots reste un échange apporteur, et garde tout ce qu'un apporteur reçoit.
+ */
+export function familleHorsClients(rdv: {
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
+}): "apporteur" | "formateur" | null {
+  if (estRendezVousApporteur(rdv)) return "apporteur";
+  if (estEchangeFormateur(rdv)) return "formateur";
+  return null;
+}
+
+/** Nom seul : « le nom ne dit pas apporteur ». */
+const NOM_HORS_APPEL_APPORTEUR = {
+  NOT: { eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const } },
+};
+
+/**
+ * Clause historique, nom seul : « ni apporteur, ni formateur » — repli du
+ * worker quand la colonne `type_rendez_vous` n'existe pas encore.
+ *
+ * `mode: "insensitive"` couvre la casse ; aucun des deux mots-clés ne porte
+ * d'accent, donc la normalisation des prédicats en mémoire n'a pas
+ * d'équivalent à chercher côté base.
+ */
+export const HORS_ECHANGES_HORS_CLIENTS_PAR_NOM = {
+  AND: [NOM_HORS_APPEL_APPORTEUR, NOM_HORS_ECHANGE_FORMATEUR],
+};
+
+/**
+ * « Ni apporteur, ni formateur » : ni classé apporteur, ni nommé apporteur,
+ * ni nommé formateur.
+ *
+ * 🔑 Écrit EXPLICITEMENT, jamais comme une négation de `SEULS_APPELS_APPORTEUR` :
+ * avec lui, il ne couvre plus tout le compte — un échange formateur n'est dans
+ * AUCUNE des deux populations, et c'est voulu (aucun e-mail de notre part ;
+ * Calendly envoie l'invitation d'agenda).
+ *
+ * ⚠️ `typeRendezVous: { not: "apporteur" }` serait FAUX : en SQL, `NULL <> x`
+ * n'est pas vrai, et les lignes non classées sortiraient de la population
+ * client. D'où la liste explicite des autres types, plus `null`.
+ */
+export const HORS_ECHANGES_HORS_CLIENTS = {
+  AND: [
+    { OR: [{ typeRendezVous: null }, { typeRendezVous: { in: [...TYPES_HORS_APPORTEUR] } }] },
+    NOM_HORS_APPEL_APPORTEUR,
+    NOM_HORS_ECHANGE_FORMATEUR,
+  ],
+};
+
+/**
+ * @deprecated Alias de `HORS_ECHANGES_HORS_CLIENTS` (2026-10-09). Le nom ment
+ * depuis le lot F-CAL-1 : la clause exclut aussi les échanges formateur.
+ * Gardé pour les tests historiques ; aucun code ne doit plus l'importer
+ * (`inventaire-des-gardes-hors-clients.spec.ts`).
+ */
+export const HORS_APPELS_APPORTEUR = HORS_ECHANGES_HORS_CLIENTS;
+
+/** @deprecated Alias de `HORS_ECHANGES_HORS_CLIENTS_PAR_NOM` (2026-10-09). */
+export const HORS_APPELS_APPORTEUR_PAR_NOM = HORS_ECHANGES_HORS_CLIENTS_PAR_NOM;

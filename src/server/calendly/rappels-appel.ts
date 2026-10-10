@@ -64,8 +64,8 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../prisma/generated/client";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import {
-  HORS_APPELS_APPORTEUR,
-  HORS_APPELS_APPORTEUR_PAR_NOM,
+  HORS_ECHANGES_HORS_CLIENTS,
+  HORS_ECHANGES_HORS_CLIENTS_PAR_NOM,
   SEULS_APPELS_APPORTEUR,
   SEULS_APPELS_APPORTEUR_PAR_NOM,
 } from "@/server/calendly/appel-apporteur";
@@ -125,10 +125,13 @@ interface Passage {
    * 🔴 Les deux filtres sont écrits en POSITIF et en NÉGATIF explicitement
    * (`appel-apporteur.ts`), jamais l'un dérivé de l'autre. Ensemble ils
    * couvrent tout, sans recouvrement : aucun rendez-vous ne peut recevoir les
-   * deux jeux de messages, et aucun ne peut n'en recevoir aucun.
+   * deux jeux de messages, et aucun ne peut n'en recevoir aucun — SAUF un
+   * échange formateur (lot F-CAL-1, 2026-10-09), volontairement hors de toutes
+   * les populations : il ne reçoit aucun message de notre part, seulement
+   * l'invitation d'agenda de Calendly.
    */
   readonly filtres: readonly (
-    | typeof HORS_APPELS_APPORTEUR
+    | typeof HORS_ECHANGES_HORS_CLIENTS
     | typeof SEULS_APPELS_APPORTEUR
     | typeof HORS_RDV_SALON
     | typeof SEULS_RDV_SALON
@@ -141,7 +144,7 @@ interface Passage {
    * l'heure tombe dedans serait PERDU.
    */
   readonly filtresParNom: readonly (
-    | typeof HORS_APPELS_APPORTEUR_PAR_NOM
+    | typeof HORS_ECHANGES_HORS_CLIENTS_PAR_NOM
     | typeof SEULS_APPELS_APPORTEUR_PAR_NOM
     | typeof HORS_RDV_SALON_PAR_NOM
     | typeof SEULS_RDV_SALON_PAR_NOM
@@ -164,8 +167,8 @@ export const PASSAGES: readonly Passage[] = [
     moment: "confirmation",
     job: "appel-confirme",
     destinataire: "client",
-    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
-    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
+    filtres: [HORS_ECHANGES_HORS_CLIENTS, HORS_RDV_SALON],
+    filtresParNom: [HORS_ECHANGES_HORS_CLIENTS_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -175,8 +178,8 @@ export const PASSAGES: readonly Passage[] = [
     moment: "j1",
     job: "appel-rappel-j1",
     destinataire: "client",
-    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
-    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
+    filtres: [HORS_ECHANGES_HORS_CLIENTS, HORS_RDV_SALON],
+    filtresParNom: [HORS_ECHANGES_HORS_CLIENTS_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -185,8 +188,8 @@ export const PASSAGES: readonly Passage[] = [
     moment: "h1",
     job: "appel-rappel",
     destinataire: "client",
-    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
-    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
+    filtres: [HORS_ECHANGES_HORS_CLIENTS, HORS_RDV_SALON],
+    filtresParNom: [HORS_ECHANGES_HORS_CLIENTS_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
     avecDate: false,
@@ -234,14 +237,15 @@ export const PASSAGES: readonly Passage[] = [
   // salon est une LIGNE distincte d'un appel, les colonnes ne se marchent pas
   // dessus.
   //
-  // 🔑 `HORS_APPELS_APPORTEUR` en plus de `SEULS_RDV_SALON` : un nom qui
-  // contiendrait les deux mots reste un échange apporteur (`rdv-salon.ts`).
+  // 🔑 `HORS_ECHANGES_HORS_CLIENTS` en plus de `SEULS_RDV_SALON` : un nom qui
+  // contiendrait les deux mots reste un échange apporteur (`rdv-salon.ts`) ; un
+  // nom « salon » qui dit aussi « formateur » ne reçoit rien (lot F-CAL-1).
   {
     moment: "confirmation",
     job: "rdv-salon-confirme",
     destinataire: "salon",
-    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
-    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
+    filtres: [SEULS_RDV_SALON, HORS_ECHANGES_HORS_CLIENTS],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_ECHANGES_HORS_CLIENTS_PAR_NOM],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -251,8 +255,8 @@ export const PASSAGES: readonly Passage[] = [
     moment: "j2",
     job: "rdv-salon-rappel-j2",
     destinataire: "salon",
-    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
-    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
+    filtres: [SEULS_RDV_SALON, HORS_ECHANGES_HORS_CLIENTS],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_ECHANGES_HORS_CLIENTS_PAR_NOM],
     marqueur: "rappelJ2EnvoyeAt",
     fenetre: { minMinutes: 2880, maxMinutes: 2895 },
     avecDate: true,
@@ -261,8 +265,8 @@ export const PASSAGES: readonly Passage[] = [
     moment: "j1",
     job: "rdv-salon-rappel-j1",
     destinataire: "salon",
-    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
-    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
+    filtres: [SEULS_RDV_SALON, HORS_ECHANGES_HORS_CLIENTS],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_ECHANGES_HORS_CLIENTS_PAR_NOM],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
