@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import { buildAdminNav } from "../admin-nav";
+import { buildAdminNav } from "@/lib/admin-nav";
 import {
   etatsEntreeDepuisLignes,
   etatsEntreeParDefaut,
