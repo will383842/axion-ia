@@ -4,9 +4,13 @@
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+vi.mock("@/server/qualiopi/formateurs-independants/interrupteurs-etat", () => ({
+  lireEtatsInterrupteurs: vi.fn(),
+}));
 vi.mock("@/server/email/outbox-service", () => ({ jobIdDejaGare: vi.fn() }));
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({ envoyer: vi.fn() }));
 
+import { prisma } from "@/lib/prisma";
 import { decisionCampagne } from "@/lib/relances/campagne";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import { REGISTRE_CAMPAGNES, cleRelance } from "@/server/relances/registre-campagnes";
@@ -17,7 +21,12 @@ import {
   CAMPAGNE_PIECES,
   CAMPAGNE_VIGILANCE,
   faitsPieces,
+  WHERE_POPULATION,
   faitsVigilance,
+  lirePourRelances,
+  motifHorsPopulation,
+  motifRetenueRelancePiece,
+  type FicheRelance,
   type LecturePieces,
 } from "../pieces-relances";
 
@@ -42,9 +51,26 @@ function piece(over: Partial<PieceLue> = {}): PieceLue {
   } as PieceLue;
 }
 
+/** Le cas INCLUS : indépendant du nouveau parcours, dossier vérifié, actif, en cours. */
+function fiche(over: Partial<FicheRelance> = {}): FicheRelance {
+  return {
+    id: T1,
+    prenom: "Camille",
+    email: "camille@example.com",
+    statut: "sous_traitant",
+    actif: true,
+    finCollaborationAt: null,
+    organismeSousTraitantId: null,
+    dossierStatut: "verifie",
+    candidature: { natureCollaboration: "freelance", status: "hired" },
+    pseudonymisee: false,
+    ...over,
+  };
+}
+
 function lecture(pieces: PieceLue[], over: Partial<LecturePieces> = {}): LecturePieces {
   return {
-    fiches: [{ id: T1, prenom: "Camille", email: "camille@example.com" }],
+    fiches: [fiche()],
     pieces: new Map([[T1, pieces]]),
     envois: [],
     opposes: new Set(),
@@ -163,18 +189,19 @@ describe("S6 bis — autres pièces (F41)", () => {
     expect(f!.etat.envois).toHaveLength(1);
   });
 
-  it("opposition, adresse morte, fiche effacée : la campagne s'arrête", () => {
+  it("opposition, adresse morte : la campagne s'arrête ; fiche effacée : hors population", () => {
     const base = lecture([piece()]);
     const [o] = faitsPieces({ ...base, opposes: new Set([T1]) }, MAINTENANT);
     const [m] = faitsPieces({ ...base, adressesMortes: new Set([T1]) }, MAINTENANT);
-    const [e] = faitsPieces(
-      { ...base, fiches: [{ id: T1, prenom: "", email: "x@erased.local" }] },
-      MAINTENANT,
-    );
+    expect(
+      faitsPieces(
+        { ...base, fiches: [fiche({ prenom: "", email: "x@erased.local" })] },
+        MAINTENANT,
+      ),
+    ).toEqual([]);
     for (const [f, motif] of [
       [o, "opposition"],
       [m, "adresse-morte"],
-      [e, "efface"],
     ] as const) {
       const d = decisionCampagne({
         etat: f!.etat,
@@ -206,17 +233,6 @@ describe("S6 — attestation URSSAF (F40)", () => {
       ),
       dateExpiration: null,
     });
-
-  it("à 20 jours de l'échéance : rien encore (la demande part à J-15)", () => {
-    const [f] = faitsVigilance(lecture([attestation(20)]), MAINTENANT);
-    const d = decisionCampagne({
-      etat: f!.etat,
-      maintenant: MAINTENANT,
-      regle: CAMPAGNE_VIGILANCE.regle,
-    });
-    expect(d.envoyer).toBe(false);
-    expect(d.motif).toBe("pas-encore");
-  });
 
   it("à 10 jours de l'échéance : la demande part, variante « avant l'échéance »", () => {
     const [f] = faitsVigilance(lecture([attestation(10)]), MAINTENANT);
@@ -251,6 +267,24 @@ describe("S6 — attestation URSSAF (F40)", () => {
   it("aucune attestation déposée : pas de F40 « avant l'échéance »", () => {
     expect(faitsVigilance(lecture([]), MAINTENANT)).toEqual([]);
   });
+
+  it("fenêtre du plan : rien avant J-15, rien après J+16", () => {
+    expect(faitsVigilance(lecture([attestation(20)]), MAINTENANT)).toEqual([]);
+    expect(faitsVigilance(lecture([attestation(-17)]), MAINTENANT)).toEqual([]);
+    expect(faitsVigilance(lecture([attestation(15)]), MAINTENANT)).toHaveLength(1);
+    expect(faitsVigilance(lecture([attestation(-16)]), MAINTENANT)).toHaveLength(1);
+  });
+
+  it("attestation déjà renouvelée (nouvelle pièce validée) : plus aucune relance", () => {
+    const neuve = piece({
+      id: "55555555-5555-4555-8555-555555555555",
+      type: "attestation_vigilance_urssaf",
+      dateEmission: new Date(MAINTENANT.getTime() - JOUR),
+      dateExpiration: null,
+      createdAt: MAINTENANT,
+    });
+    expect(faitsVigilance(lecture([attestation(-5), neuve]), MAINTENANT)).toEqual([]);
+  });
 });
 
 describe("le texte qui part est complet", () => {
@@ -265,5 +299,226 @@ describe("le texte qui part est complet", () => {
     }
     const sans = { prenom: "Camille", valeurs: {}, etape: CAMPAGNE_VIGILANCE.variante!("j15") };
     expect(reel("formateur-vigilance", sans)).toBe(false);
+  });
+});
+
+describe("population STRICTE (un cas par catégorie exclue, et le cas inclus)", () => {
+  const exclus: ReadonlyArray<readonly [string, Partial<FicheRelance>, string]> = [
+    ["formateur salarié", { statut: "salarie" }, "salarie"],
+    ["dirigeant-formateur", { statut: "dirigeant" }, "dirigeant"],
+    [
+      "sous-traitant historique (sans candidature du nouveau parcours)",
+      { candidature: null, dossierStatut: null },
+      "hors-nouveau-parcours",
+    ],
+    [
+      "candidature salariée",
+      { candidature: { natureCollaboration: "salarie", status: "hired" } },
+      "hors-nouveau-parcours",
+    ],
+    [
+      "candidat non retenu",
+      { candidature: { natureCollaboration: "freelance", status: "rejected" } },
+      "candidat-non-retenu",
+    ],
+    [
+      "candidat qui s'est retiré",
+      { candidature: { natureCollaboration: "freelance", status: "withdrawn" } },
+      "candidat-non-retenu",
+    ],
+    ["dossier en ligne non vérifié", { dossierStatut: "a_verifier" }, "dossier-non-verifie"],
+    [
+      "intervenant d'un organisme sous-traitant",
+      { organismeSousTraitantId: "66666666-6666-4666-8666-666666666666" },
+      "intervenant-organisme",
+    ],
+    ["fiche inactive", { actif: false }, "inactif"],
+    [
+      "collaboration terminée",
+      { finCollaborationAt: new Date("2026-10-01") },
+      "collaboration-terminee",
+    ],
+    ["pseudonymisée (lien contractuel conservé)", { pseudonymisee: true }, "efface"],
+    ["effacée", { email: "erased:x@erased.local", prenom: "[erased-rgpd-art17]" }, "efface"],
+  ];
+
+  for (const [nom, over, motif] of exclus) {
+    it(`${nom} : jamais relancé (S6 ni S6 bis)`, () => {
+      const f = fiche(over);
+      expect(motifHorsPopulation(f)).toBe(motif);
+      const attestationProche = piece({
+        id: "77777777-7777-4777-8777-777777777777",
+        type: "attestation_vigilance_urssaf",
+        dateEmission: new Date(MAINTENANT.getTime() - 175 * JOUR),
+        dateExpiration: null,
+      });
+      const l = lecture([piece(), attestationProche], { fiches: [f] });
+      expect(faitsPieces(l, MAINTENANT)).toEqual([]);
+      expect(faitsVigilance(l, MAINTENANT)).toEqual([]);
+    });
+  }
+
+  it("RC pro déjà renouvelée (nouvelle pièce validée, échéance lointaine) : jamais relancée", () => {
+    const neuve = piece({
+      id: "88888888-8888-4888-8888-888888888888",
+      dateEmission: MAINTENANT,
+      dateExpiration: new Date(MAINTENANT.getTime() + 365 * JOUR),
+      createdAt: MAINTENANT,
+    });
+    expect(faitsPieces(lecture([piece(), neuve]), MAINTENANT)).toEqual([]);
+  });
+
+  it("le cas inclus : indépendant du nouveau parcours, actif, en cours, pièce dans la fenêtre", () => {
+    expect(motifHorsPopulation(fiche())).toBeNull();
+    expect(faitsPieces(lecture([piece()]), MAINTENANT)).toHaveLength(1);
+  });
+
+  it("le `where` en base porte chaque exclusion (le code relit ensuite chaque fiche)", () => {
+    expect(WHERE_POPULATION).toMatchObject({
+      statut: "sous_traitant",
+      organismeSousTraitantId: null,
+      dossierStatut: "verifie",
+      actif: true,
+      finCollaborationAt: null,
+      candidatureOrigine: {
+        is: { natureCollaboration: "freelance", status: { notIn: ["rejected", "withdrawn"] } },
+      },
+    });
+  });
+});
+
+// ── Base simulée pour la lecture en lot et la relecture au départ ───────────
+function baseSimulee(o: {
+  fiches: Array<Record<string, unknown>>;
+  pieces?: PieceLue[];
+  effacements?: string[];
+  opposition?: boolean;
+}) {
+  const trouverFiches = vi.fn(async (args: { where: Record<string, unknown> }) =>
+    o.fiches.filter((f) => !("id" in args.where) || f.id === args.where.id),
+  );
+  Object.assign(prisma, {
+    trainer: { findMany: trouverFiches },
+    activityLog: {
+      findMany: vi.fn(async () => (o.effacements ?? []).map((targetId) => ({ targetId }))),
+    },
+    trainerDocument: {
+      findMany: vi.fn(async () => (o.pieces ?? []).map((p) => ({ ...p, trainerId: T1 }))),
+    },
+    emailLog: { findMany: vi.fn(async () => []) },
+    emailOutbox: { findMany: vi.fn(async () => []) },
+    emailOpposition: {
+      findMany: vi.fn(async (args: { where: { emailHash: { in: string[] } } }) =>
+        o.opposition ? args.where.emailHash.in.map((emailHash) => ({ emailHash })) : [],
+      ),
+    },
+  });
+  return { trouverFiches };
+}
+
+const ligneBase = (over: Record<string, unknown> = {}) => ({
+  id: T1,
+  prenom: "Camille",
+  email: "camille@example.com",
+  statut: "sous_traitant",
+  actif: true,
+  finCollaborationAt: null,
+  organismeSousTraitantId: null,
+  dossierStatut: "verifie",
+  candidatureOrigine: { natureCollaboration: "freelance", status: "hired" },
+  ...over,
+});
+
+describe("lecture en lot", () => {
+  it("interroge la base avec le `where` de la population", async () => {
+    const { trouverFiches } = baseSimulee({ fiches: [ligneBase()], pieces: [piece()] });
+    const l = await lirePourRelances();
+    expect(trouverFiches.mock.calls[0]![0].where).toEqual(WHERE_POPULATION);
+    expect(l.fiches).toHaveLength(1);
+  });
+
+  it("une fiche pseudonymisée (effacement journalisé) est écartée même si la base la rend", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()], effacements: [T1] });
+    expect((await lirePourRelances()).fiches).toEqual([]);
+  });
+
+  it("une ligne hors population rendue par la base est écartée par le code", async () => {
+    baseSimulee({ fiches: [ligneBase({ statut: "salarie" })], pieces: [piece()] });
+    expect((await lirePourRelances()).fiches).toEqual([]);
+  });
+});
+
+describe("relecture au départ : arrêt immédiat", () => {
+  const allumes = async () => true;
+  const job = (origineRelance: unknown = "assurance_rc_pro-20261102") =>
+    ["formateur-piece-a-renouveler", "Trainer", T1, { origineRelance }] as const;
+
+  it("tout est encore vrai : la relance part", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()] });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toBeNull();
+  });
+
+  it("pièce renouvelée entre-temps : retenue", async () => {
+    const neuve = piece({
+      id: "99999999-9999-4999-8999-999999999999",
+      dateEmission: MAINTENANT,
+      dateExpiration: new Date(MAINTENANT.getTime() + 365 * JOUR),
+      createdAt: MAINTENANT,
+    });
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece(), neuve] });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(
+      /plus à renouveler/,
+    );
+  });
+
+  it("nouvelle pièce déposée (en attente) : retenue", async () => {
+    const depot = piece({
+      id: "99999999-9999-4999-8999-999999999998",
+      statutValidation: "en_attente",
+      createdAt: MAINTENANT,
+      valideAt: null,
+    });
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece(), depot] });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/déposée/);
+  });
+
+  it("collaboration terminée entre-temps : retenue", async () => {
+    baseSimulee({ fiches: [ligneBase({ finCollaborationAt: new Date() })], pieces: [piece()] });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/plus concernée/);
+  });
+
+  it("désinscrite (opposition) : retenue", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()], opposition: true });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/opposée/);
+  });
+
+  it("pseudonymisée entre-temps : retenue", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()], effacements: [T1] });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/plus concernée/);
+  });
+
+  it("interrupteur coupé entre-temps : retenue", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()] });
+    expect(await motifRetenueRelancePiece(...job(), async () => false, MAINTENANT)).toMatch(
+      /coupées/,
+    );
+  });
+
+  it("sans origine lisible, ou base muette : retenue (échec fermé)", async () => {
+    expect(await motifRetenueRelancePiece(...job(42), allumes, MAINTENANT)).not.toBeNull();
+    Object.assign(prisma, {
+      trainer: {
+        findMany: vi.fn(async () => {
+          throw new Error("base muette");
+        }),
+      },
+    });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/illisible/);
+  });
+
+  it("le payload porte l'origine, jamais l'adresse", () => {
+    const [f] = faitsPieces(lecture([piece()]), MAINTENANT);
+    expect(f!.payload.origineRelance).toBe("assurance_rc_pro-20261102");
+    expect(JSON.stringify(f!.payload)).not.toMatch(/@/);
   });
 });

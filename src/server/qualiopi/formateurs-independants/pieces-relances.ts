@@ -27,6 +27,8 @@
  * Module sans `server-only` : il tourne dans le worker `formation-crons`.
  */
 
+import type { Prisma } from "../../../../prisma/generated/client";
+
 import {
   FENETRE_ENVOI_PAR_DEFAUT,
   type EtatCampagne,
@@ -45,11 +47,66 @@ const JOUR_MS = 24 * 60 * 60 * 1000;
 const CAMPAGNE_VIGILANCE_ID = "vigilance";
 const CAMPAGNE_PIECES_ID = "piece";
 
-/** Une fiche telle que lue pour les relances. */
+/**
+ * Une fiche telle que lue pour les relances : l'identité, et TOUT ce qui décide si la
+ * personne fait partie de la population (relu en code, pas seulement dans le `where`).
+ */
 export interface FicheRelance {
   readonly id: string;
   readonly prenom: string;
   readonly email: string;
+  readonly statut: "salarie" | "sous_traitant" | "dirigeant";
+  readonly actif: boolean;
+  readonly finCollaborationAt: Date | null;
+  readonly organismeSousTraitantId: string | null;
+  readonly dossierStatut: "en_cours" | "a_verifier" | "a_completer" | "verifie" | null;
+  /** La candidature d'origine (nouveau parcours) ; `null` : fiche hors parcours. */
+  readonly candidature: {
+    readonly natureCollaboration: "salarie" | "freelance" | null;
+    readonly status: string;
+  } | null;
+  /** Un effacement art. 17 a été journalisé pour cette fiche (même avec lien conservé). */
+  readonly pseudonymisee: boolean;
+}
+
+/** Action du journal posée par l'effacement art. 17 d'un formateur indépendant. */
+export const ACTION_EFFACEMENT_FORMATEUR = "qualiopi.trainer.rgpd_effacement";
+
+/** Une candidature arrêtée de notre fait ou du sien : jamais relancée. */
+const STATUTS_NON_RETENUS = ["rejected", "withdrawn"] as const;
+const CANDIDATURE_NON_RETENUE: ReadonlySet<string> = new Set(STATUTS_NON_RETENUS);
+
+export type MotifHorsPopulation =
+  | "salarie"
+  | "dirigeant"
+  | "intervenant-organisme"
+  | "hors-nouveau-parcours"
+  | "dossier-non-verifie"
+  | "candidat-non-retenu"
+  | "inactif"
+  | "collaboration-terminee"
+  | "efface";
+
+/**
+ * La population STRICTE des relances de pièces : un formateur INDÉPENDANT venu du
+ * nouveau parcours (candidature « freelance » non refusée, dossier en ligne vérifié),
+ * actif, collaboration en cours, jamais effacé ni pseudonymisé. Rend le motif
+ * d'exclusion, ou `null`. Pur ; le même prédicat filtre la lecture en lot et la
+ * relecture au départ.
+ */
+export function motifHorsPopulation(f: FicheRelance): MotifHorsPopulation | null {
+  if (f.statut === "salarie") return "salarie";
+  if (f.statut !== "sous_traitant") return "dirigeant";
+  if (f.organismeSousTraitantId !== null) return "intervenant-organisme";
+  if (f.candidature === null || f.candidature.natureCollaboration !== "freelance") {
+    return "hors-nouveau-parcours";
+  }
+  if (CANDIDATURE_NON_RETENUE.has(f.candidature.status)) return "candidat-non-retenu";
+  if (f.dossierStatut !== "verifie") return "dossier-non-verifie";
+  if (!f.actif) return "inactif";
+  if (f.finCollaborationAt !== null) return "collaboration-terminee";
+  if (f.pseudonymisee || estEffacee(f.email) || f.prenom === MARQUE_EFFACEMENT) return "efface";
+  return null;
 }
 
 /** Une relance déjà tentée (journal ou corbeille), par sa clé. */
@@ -103,6 +160,14 @@ export const REGLE_PIECE_F41: RegleCampagne<EtapePieceF41> = {
   fenetre: FENETRE_ENVOI_PAR_DEFAUT,
 };
 
+/**
+ * Fenêtre de S6 : de J-15 de l'échéance jusqu'au silence de la règle (dernière étape à
+ * J+15, un jour de grâce). Hors de là, la fiche n'est même pas candidate.
+ */
+const VIGILANCE_DEBUT_AVANT_ECHEANCE_MS = 15 * JOUR_MS;
+const VIGILANCE_FIN_APRES_ECHEANCE_MS =
+  REGLE_VIGILANCE.silenceApresMs - VIGILANCE_DEBUT_AVANT_ECHEANCE_MS;
+
 /** Variantes du texte F40 (1 = à la signature, 2 = avant l'échéance, 3 = avant une formation). */
 const VARIANTE_F40_AVANT_ECHEANCE = 2;
 /** Variantes du texte F41 (1 = premier rappel, 2 = relance, 3 = pièce refusée). */
@@ -124,8 +189,12 @@ const jourCle = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
 
 // ── Les faits (purs) ─────────────────────────────────────────────────────
 
-const estEffacee = (email: string) =>
-  email.trim() === "" || email.endsWith("@erased.local") || email === MARQUE_EFFACEMENT;
+function estEffacee(email: string): boolean {
+  return email.trim() === "" || email.endsWith("@erased.local") || email === MARQUE_EFFACEMENT;
+}
+
+/** Les fiches de la population, et elles seules. */
+const population = (l: LecturePieces) => l.fiches.filter((f) => motifHorsPopulation(f) === null);
 
 function prefixeEnvoi(campagne: string, entityId: string, origineId: string): string {
   return `fi-${campagne}-${entityId}-${origineId}-`.replace(/:/g, "-");
@@ -143,26 +212,33 @@ function etatCommun(
   fiche: FicheRelance,
 ): Omit<EtatCampagne, "origine" | "envois" | "actionFaite"> {
   return {
-    efface: estEffacee(fiche.email),
+    // Déjà exclue par la population ; gardé comme second verrou.
+    efface: motifHorsPopulation(fiche) !== null,
     opposition: l.opposes.has(fiche.id),
     adresseMorte: l.adressesMortes.has(fiche.id),
-    // La lecture ne prend que des fiches ouvertes (sans fin de collaboration).
-    close: false,
+    close: fiche.finCollaborationAt !== null,
     // ⚠️ Les réponses humaines (Zoho) ne se lisent pas encore (CAMP-4) : aucune pause.
     reponseHumaine: false,
     derniereRelancePersonne: null,
   };
 }
 
-/** S6 : une ligne par fiche dont l'attestation arrive à échéance ou est échue. */
+/**
+ * S6 : une ligne par fiche de la population dont l'attestation est dans la fenêtre
+ * (J-15 de l'échéance à J+16), à renouveler ou échue.
+ */
 export function faitsVigilance(l: LecturePieces, maintenant: Date): FaitsCampagne[] {
-  return l.fiches.flatMap((fiche): FaitsCampagne[] => {
+  return population(l).flatMap((fiche): FaitsCampagne[] => {
     const e: EtatPiece = etatPiece(
       l.pieces.get(fiche.id) ?? [],
       "attestation_vigilance_urssaf",
       maintenant,
     );
     if (e.etat !== "a_renouveler" && e.etat !== "echue") return [];
+    const ecart = e.echeance.getTime() - maintenant.getTime();
+    if (ecart > VIGILANCE_DEBUT_AVANT_ECHEANCE_MS || -ecart > VIGILANCE_FIN_APRES_ECHEANCE_MS) {
+      return [];
+    }
     const origineId = jourCle(e.echeance);
     return [
       {
@@ -176,15 +252,15 @@ export function faitsVigilance(l: LecturePieces, maintenant: Date): FaitsCampagn
           origine: new Date(e.echeance.getTime() - 15 * JOUR_MS),
           envois: envoisDe(l, CAMPAGNE_VIGILANCE_ID, fiche.id, origineId),
         },
-        payload: { prenom: fiche.prenom, valeurs: {} },
+        payload: { prenom: fiche.prenom, valeurs: {}, origineRelance: origineId },
       },
     ];
   });
 }
 
-/** S6 bis : une ligne par (fiche, pièce) à renouveler dans les 30 jours. */
+/** S6 bis : une ligne par (fiche de la population, pièce) à renouveler dans les 30 jours. */
 export function faitsPieces(l: LecturePieces, maintenant: Date): FaitsCampagne[] {
-  return l.fiches.flatMap((fiche) =>
+  return population(l).flatMap((fiche) =>
     TYPES_F41.flatMap((type): FaitsCampagne[] => {
       const e = etatPiece(l.pieces.get(fiche.id) ?? [], type, maintenant);
       if (e.etat !== "a_renouveler") return [];
@@ -207,6 +283,7 @@ export function faitsPieces(l: LecturePieces, maintenant: Date): FaitsCampagne[]
           },
           payload: {
             prenom: fiche.prenom,
+            origineRelance: origineId,
             valeurs: {
               "la pièce": LIBELLE_PIECE_F41[type],
               date: DATE_FR.format(e.echeance),
@@ -227,32 +304,76 @@ const PLAFOND_PIECES = 10_000;
 const PLAFOND_ENVOIS = 20_000;
 
 /**
- * Indépendants seulement : actifs, sans fin de collaboration, hors intervenants d'un
- * organisme (qui n'ont pas d'espace). Lève si la base ne répond pas : le passage saute
- * la campagne.
+ * Le `where` de la population (miroir en base de {@link motifHorsPopulation}, qui relit
+ * chaque fiche ensuite) : indépendant, hors intervenant d'un organisme, venu d'une
+ * candidature « freelance » non refusée, dossier en ligne vérifié, actif, collaboration
+ * en cours, adresse non effacée.
  */
-export async function lirePourRelances(): Promise<LecturePieces> {
-  const fiches = await prisma.trainer.findMany({
-    where: {
-      statut: "sous_traitant",
-      actif: true,
-      finCollaborationAt: null,
-      organismeSousTraitantId: null,
+export const WHERE_POPULATION: Prisma.TrainerWhereInput = {
+  statut: "sous_traitant",
+  organismeSousTraitantId: null,
+  dossierStatut: "verifie",
+  candidatureOrigine: {
+    is: {
+      natureCollaboration: "freelance",
+      status: { notIn: [...STATUTS_NON_RETENUS] },
     },
-    select: { id: true, prenom: true, email: true },
+  },
+  actif: true,
+  finCollaborationAt: null,
+  NOT: { email: { endsWith: "@erased.local" } },
+};
+
+const LECTURE_VIDE: LecturePieces = {
+  fiches: [],
+  pieces: new Map(),
+  envois: [],
+  opposes: new Set(),
+  adressesMortes: new Set(),
+};
+
+/**
+ * Lecture en lot de la population (ou d'UNE fiche, `seulement`, pour la relecture au
+ * départ). Lève si la base ne répond pas : le passage saute la campagne, le départ retient.
+ */
+export async function lirePourRelances(seulement?: string): Promise<LecturePieces> {
+  const lues = await prisma.trainer.findMany({
+    where: seulement === undefined ? WHERE_POPULATION : { ...WHERE_POPULATION, id: seulement },
+    select: {
+      id: true,
+      prenom: true,
+      email: true,
+      statut: true,
+      actif: true,
+      finCollaborationAt: true,
+      organismeSousTraitantId: true,
+      dossierStatut: true,
+      candidatureOrigine: { select: { natureCollaboration: true, status: true } },
+    },
     orderBy: { id: "asc" },
     take: PLAFOND_FICHES,
   });
-  if (fiches.length >= PLAFOND_FICHES) throw new Error("lecture des fiches tronquée");
-  if (fiches.length === 0) {
-    return {
-      fiches: [],
-      pieces: new Map(),
-      envois: [],
-      opposes: new Set(),
-      adressesMortes: new Set(),
-    };
-  }
+  if (lues.length >= PLAFOND_FICHES) throw new Error("lecture des fiches tronquée");
+  if (lues.length === 0) return LECTURE_VIDE;
+  // Pseudonymisée AVEC lien contractuel : l'adresse reste (facturation), mais la personne
+  // a exercé son droit à l'effacement — plus aucune relance.
+  const effacements = await prisma.activityLog.findMany({
+    where: {
+      action: ACTION_EFFACEMENT_FORMATEUR,
+      targetType: "Trainer",
+      targetId: { in: lues.map((f) => f.id) },
+    },
+    select: { targetId: true },
+  });
+  const pseudonymisees = new Set(effacements.map((e) => e.targetId));
+  const fiches: FicheRelance[] = lues
+    .map(({ candidatureOrigine, ...f }): FicheRelance => ({
+      ...f,
+      candidature: candidatureOrigine,
+      pseudonymisee: pseudonymisees.has(f.id),
+    }))
+    .filter((f) => motifHorsPopulation(f) === null);
+  if (fiches.length === 0) return LECTURE_VIDE;
   const ids = fiches.map((f) => f.id);
   const prefixes = [`fi-${CAMPAGNE_VIGILANCE_ID}-`, `fi-${CAMPAGNE_PIECES_ID}-`];
   const empreintes = new Map<string, string>();
@@ -367,3 +488,49 @@ export const CAMPAGNE_PIECES: DeclarationCampagne<EtapePieceF41> = {
   variante: (etape) => VARIANTES_F41[etape as EtapePieceF41] ?? 1,
   lireFaits: async (maintenant) => faitsPieces(await lirePourRelances(), maintenant),
 };
+
+// ── La relecture au départ ───────────────────────────────────────────────
+
+const CAMPAGNE_PAR_GABARIT: ReadonlyMap<string, DeclarationCampagne> = new Map(
+  [CAMPAGNE_VIGILANCE, CAMPAGNE_PIECES].map((c): [string, DeclarationCampagne] => [c.gabarit, c]),
+);
+
+/**
+ * Juste avant l'envoi d'une relance F40 / F41 (job en file ou approuvé depuis la
+ * corbeille) : la campagne est-elle toujours allumée, la personne toujours dans la
+ * population, et CETTE pièce (`payload.origineRelance`) toujours à renouveler, sans
+ * dépôt en attente, sans opposition ni adresse morte ? Rend le motif de la retenue, ou
+ * `null`. Échec FERMÉ : toute lecture impossible retient.
+ */
+export async function motifRetenueRelancePiece(
+  gabarit: string,
+  entityType: string | undefined,
+  entityId: string | undefined,
+  payload: unknown,
+  interrupteursAllumes: (cles: DeclarationCampagne["interrupteurs"]) => Promise<boolean>,
+  maintenant: Date = new Date(),
+): Promise<string | null> {
+  const campagne = CAMPAGNE_PAR_GABARIT.get(gabarit);
+  if (!campagne) return null;
+  const origine = (payload as { origineRelance?: unknown } | null | undefined)?.origineRelance;
+  if (entityType !== "Trainer" || !entityId || typeof origine !== "string") {
+    return "relance de pièce sans origine lisible — état invérifiable";
+  }
+  try {
+    if (!(await interrupteursAllumes(campagne.interrupteurs))) {
+      return "relances des pièces coupées";
+    }
+    const l = await lirePourRelances(entityId);
+    if (l.fiches.length === 0) return "la personne n'est plus concernée par ces relances";
+    const faits =
+      campagne === CAMPAGNE_VIGILANCE ? faitsVigilance(l, maintenant) : faitsPieces(l, maintenant);
+    const f = faits.find((x) => x.entityId === entityId && x.origineId === origine);
+    if (!f) return "la pièce n'est plus à renouveler";
+    if (f.etat.actionFaite) return "une nouvelle pièce a été déposée";
+    if (f.etat.opposition) return "la personne s'est opposée aux envois";
+    if (f.etat.adresseMorte) return "adresse en rebond définitif";
+    return null;
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+}
