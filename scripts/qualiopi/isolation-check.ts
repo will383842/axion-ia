@@ -412,6 +412,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    seuls lecteurs autorisés des clés `formateurs.*`, ADR 0066 (f)). Deux
   //    imports de LECTURE pure, sans écriture ni Next.
   "src/server/email/relecture-au-depart.ts",
+  // ── Moteur commun des campagnes de relance (CAMP-3, 08 §12.3) : le passage
+  //    lit les interrupteurs du chantier formateurs (seuls lecteurs autorisés des
+  //    clés `formateurs.*`) et envoie par l'adaptateur des formateurs. Le registre
+  //    déclare ses campagnes avec ces mêmes clés. La spec double ces modules.
+  "src/server/relances/passer-campagnes.ts",
+  "src/server/relances/registre-campagnes.ts",
+  "src/server/relances/__tests__/passer-campagnes.spec.ts",
   // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
   //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
   //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du
