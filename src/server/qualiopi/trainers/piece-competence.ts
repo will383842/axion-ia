@@ -51,11 +51,25 @@ export function aUnFichier(fichierUrl: string | null | undefined): boolean {
   return typeof fichierUrl === "string" && fichierUrl.trim() !== "";
 }
 
+/**
+ * Une pièce porte-t-elle un fichier ? Son adresse, OU ses octets déposés en base
+ * par le formateur (`TrainerDocumentContenu`, lot L5b) — une pièce déposée n'a
+ * pas d'adresse. Un lecteur qui ne charge pas `contenu` reste sur l'adresse seule.
+ */
+export function pieceAUnFichier(piece: {
+  fichierUrl: string | null;
+  contenu?: { trainerDocumentId: string } | null;
+}): boolean {
+  return aUnFichier(piece.fichierUrl) || (piece.contenu !== undefined && piece.contenu !== null);
+}
+
 /** Ce que le prédicat lit d'une pièce — pas plus. */
 export interface PieceLue {
   type: string;
   statutValidation: string;
   fichierUrl: string | null;
+  /** Octets déposés (lot L5b) ; absent = non chargé. */
+  contenu?: { trainerDocumentId: string } | null;
   dateExpiration: Date | null;
 }
 
@@ -65,7 +79,7 @@ export type MotifPieceNonProbante = "hors_competence" | "non_validee" | "sans_fi
 export function motifPieceNonProbante(piece: PieceLue, now: Date): MotifPieceNonProbante | null {
   if (!estTypePieceCompetence(piece.type)) return "hors_competence";
   if (piece.statutValidation !== "valide") return "non_validee";
-  if (!aUnFichier(piece.fichierUrl)) return "sans_fichier";
+  if (!pieceAUnFichier(piece)) return "sans_fichier";
   if (piece.dateExpiration !== null && piece.dateExpiration <= now) return "expiree";
   return null;
 }
@@ -95,8 +109,10 @@ export function prefiltrePieceCompetenceProbante(now: Date) {
   return {
     type: { in: [...TYPES_PIECE_COMPETENCE] },
     statutValidation: "valide" as const,
-    fichierUrl: { not: null },
-    OR: [{ dateExpiration: null }, { dateExpiration: { gte: now } }],
+    AND: [
+      { OR: [{ fichierUrl: { not: null } }, { contenu: { isNot: null } }] },
+      { OR: [{ dateExpiration: null }, { dateExpiration: { gte: now } }] },
+    ],
   };
 }
 
@@ -105,5 +121,6 @@ export const SELECT_PIECE_COMPETENCE = {
   type: true,
   statutValidation: true,
   fichierUrl: true,
+  contenu: { select: { trainerDocumentId: true } },
   dateExpiration: true,
 } as const;

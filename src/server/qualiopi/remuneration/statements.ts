@@ -298,18 +298,25 @@ async function apresBascule(
   formateurs: Map<string, FormateurContexte>,
 ): Promise<PrestationACalculer[]> {
   const dateBascule = await lireDateBascule(prisma);
-  if (dateBascule === null) return prestations;
   const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
   if (sessionIds.length === 0) return prestations;
+  // Sans date, seules les revendications `par_mission` comptent (bascule coupée
+  // après des paiements par mission) ; aucune n'existe tant que le passage n'a
+  // jamais tourné, et la fonction rend alors les prestations telles quelles.
   const [revendications, sessions] = await Promise.all([
     prisma.revendicationPaiement.findMany({
-      where: { sessionId: { in: sessionIds } },
+      where: {
+        sessionId: { in: sessionIds },
+        ...(dateBascule === null ? { regime: "par_mission" as const } : {}),
+      },
       select: { trainerId: true, sessionId: true, regime: true },
     }),
-    prisma.trainingSession.findMany({
-      where: { id: { in: sessionIds } },
-      select: { id: true, dateDebut: true, jours: { select: { date: true } } },
-    }),
+    dateBascule === null
+      ? Promise.resolve([])
+      : prisma.trainingSession.findMany({
+          where: { id: { in: sessionIds } },
+          select: { id: true, dateDebut: true, jours: { select: { date: true } } },
+        }),
   ]);
   return filtrerPrestationsApresBascule(prestations, {
     dateBascule,

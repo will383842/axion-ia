@@ -502,6 +502,12 @@ export async function basculerFormateursGardeMissionPortesAction(
 ): Promise<EtatBascule> {
   return basculerSignature("garde_mission_portes", formData);
 }
+export async function basculerFormateursFinCollaborationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("fin_collaboration", formData);
+}
 export async function basculerFormateursChoixCartesAction(
   _prev: EtatBascule,
   formData: FormData,

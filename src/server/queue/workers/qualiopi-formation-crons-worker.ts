@@ -194,6 +194,9 @@ export type FormationCronJobType =
   // proches). QUOTIDIEN, mais ne télécharge qu'une fois par mois ; arrêté tant
   // que `formateurs.communes_geo_cron` n'est pas allumé.
   | "formation-crons.communes-geo"
+  // Lot L14 (2026-10-11) — clôture des fins de collaboration avec préavis à leur date
+  // d'effet. QUOTIDIEN ; arrêté tant que `formateurs.fin_collaboration` est coupé.
+  | "formation-crons.fin-collaboration"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2628,6 +2631,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.campagnes-formateurs": handleCampagnesFormateurs,
   "formation-crons.paiement-mission": handlePaiementMission,
   "formation-crons.communes-geo": handleCommunesGeo,
+  "formation-crons.fin-collaboration": handleFinCollaboration,
 };
 
 /**
@@ -2686,6 +2690,31 @@ async function handlePaiementMission(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] paiement-mission: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Lot L14 — fins de collaboration avec préavis arrivées à leur date d'effet. Corps dans
+ * `formateurs-independants/fin-collaboration-service.ts` (interrupteur lu AVANT toute
+ * requête) ; ici on déclenche et on trace des compteurs. Import PARESSEUX.
+ */
+async function handleFinCollaboration(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { cloreFinsArrivees } =
+      await import("@/server/qualiopi/formateurs-independants/fin-collaboration-service");
+    const b = await cloreFinsArrivees(new Date());
+    if (b.etat === "coupe") return;
+    const ligne =
+      `[formation-crons] fin-collaboration: ${b.closes} fiche(s) close(s), ` +
+      `${b.avecMissionsApres} avec une mission à la date d'effet ou après, ${b.erreurs} erreur(s)`;
+    if (b.erreurs > 0 || b.avecMissionsApres > 0) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] fin-collaboration: erreur:",
       err instanceof Error ? err.message : String(err),
     );
   }
