@@ -393,6 +393,17 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "signature.exemplaire_captation",
   },
+  // Lot S2 (affectation et acceptation sûres). Registre à part des seize pour la
+  // même raison que les quatre du socle : un comportement neuf, sur des missions
+  // déjà en ligne, livré ÉTEINT. Arrêté, chaque porte d'affectation et
+  // d'acceptation se comporte exactement comme avant S2.
+  affectation_sure: {
+    ...envoi(
+      "Affectation et acceptation sûres",
+      "Accord hors outil seulement pour un formateur encore affecté ; information pratique aussi après un accord hors outil ; formateur indépendant déjà pris refusé à la création et au report ; proposition renvoyée après contrôle ; refus d'un indépendant sans motif exigé ; refus et silences retirés de sa fiche.",
+    ),
+    cle: "formateurs.affectation_sure",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -414,6 +425,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   alertes_hors_jeton: [],
   suite_contrat_cadre: [],
   exemplaire_captation: [],
+  affectation_sure: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

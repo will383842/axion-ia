@@ -28,6 +28,7 @@ import {
   lireInterrupteursSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
+  basculerFormateursAffectationSureAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -87,6 +88,7 @@ const ACTIONS_SIGNATURE: Record<
   alertes_hors_jeton: basculerSignatureAlertesHorsJetonAction,
   suite_contrat_cadre: basculerFormateursSuiteContratCadreAction,
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
+  affectation_sure: basculerFormateursAffectationSureAction,
 };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {
@@ -196,10 +198,10 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
         </table>
       </AdminCard>
       <AdminCard>
-        <h2>Socle de signature</h2>
+        <h2>Comportements neufs livrés coupés</h2>
         <p className="admin-meta-small">
-          Comportements ajoutés par le socle de signature commun, livrés coupés : coupés, la
-          signature se comporte exactement comme avant lui.
+          Comportements ajoutés au socle de signature commun et aux missions, livrés coupés :
+          coupés, tout se comporte exactement comme avant eux.
         </p>
         <table className="admin-table">
           <thead>

@@ -42,6 +42,7 @@ import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -57,6 +58,7 @@ import type {
   MissionFormateurStatut,
   Prisma,
   SessionFormateurRole,
+  TrainerStatut,
 } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -101,6 +103,59 @@ export const LIBELLE_STATUT_MISSION: Record<MissionFormateurStatut, string> = {
 /** Les réponses qu'un formateur peut donner — et rien d'autre. */
 export const REPONSES_MISSION = ["acceptee", "refusee"] as const;
 export type ReponseMission = (typeof REPONSES_MISSION)[number];
+
+/**
+ * L'ACCORD DONNÉ (lot S2, N1/N2) : par le lien (`acceptee`) ou consigné hors de
+ * l'outil (`accord_hors_outil`). Constante unique : convocation, rappel, retrait
+ * et alertes disent la même chose (test statique : aucune comparaison littérale
+ * à `"acceptee"` ailleurs qu'ici, hors des trois règles d'alerte qui portent
+ * déjà la paire complète).
+ */
+export const STATUTS_ACCORD_DONNE = [
+  "acceptee",
+  "accord_hors_outil",
+] as const satisfies ReadonlyArray<MissionFormateurStatut>;
+
+/**
+ * Ce qui vaut accord pour CONVOQUER (J-7) et RAPPELER (J-1).
+ *
+ * Interrupteur `formateurs.affectation_sure` arrêté : l'accord par le lien
+ * seul, exactement comme avant S2. Allumé : l'accord hors outil aussi — un
+ * formateur dont l'accord a été noté au téléphone reçoit enfin ses
+ * informations pratiques.
+ */
+export function statutsAccordConvocation(
+  affectationSure: boolean,
+): ReadonlyArray<MissionFormateurStatut> {
+  return affectationSure ? STATUTS_ACCORD_DONNE : ["acceptee"];
+}
+
+/**
+ * L'écran de réponse doit-il proposer le refus LIBRE (motif facultatif) ?
+ * Interrupteur `formateurs.affectation_sure` allumé ET formateur indépendant.
+ * Toute erreur de lecture : non (l'écran d'avant).
+ */
+export async function refusLibrePour(trainerId: string): Promise<boolean> {
+  if (!(await interrupteurAllume("affectation_sure"))) return false;
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true },
+    });
+    return t !== null && refusSansMotifExige(t.statut);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Un refus sans motif exigé : celui d'un formateur indépendant (à lire
+ * seulement interrupteur `formateurs.affectation_sure` allumé). Le salarié
+ * garde son motif.
+ */
+export function refusSansMotifExige(statut: TrainerStatut): boolean {
+  return statut === "sous_traitant";
+}
 
 function isStub(): boolean {
   return Boolean(process.env["DATABASE_URL"]?.includes("stub.invalid"));
@@ -349,6 +404,19 @@ async function envoyerProposition(args: {
 const STATUTS_MISSION_OUVERTE = ["en_attente", "acceptee"] as const;
 
 /**
+ * 🔴 N2 (lot S2) — l'accord HORS OUTIL tient aussi la place. Sans lui dans la
+ * liste, le remplacement d'un formateur dont l'accord avait été noté au
+ * téléphone laissait sa mission `accord_hors_outil` vivante : une mission
+ * fantôme, que les trois règles d'alerte lisent comme « quelqu'un tient la
+ * place ». Interrupteur `formateurs.affectation_sure` arrêté : la liste d'avant.
+ */
+export function statutsMissionOuverte(
+  affectationSure: boolean,
+): ReadonlyArray<MissionFormateurStatut> {
+  return affectationSure ? ["en_attente", ...STATUTS_ACCORD_DONNE] : STATUTS_MISSION_OUVERTE;
+}
+
+/**
  * Reprend les sollicitations encore OUVERTES d'une session — quand l'organisme
  * retire le formateur ou en affecte un autre. Sans cela, le formateur écarté
  * pourrait encore « accepter » une session qui n'est plus la sienne, et
@@ -388,10 +456,11 @@ export async function retirerMissionsOuvertes(
   sessionId: string,
   opts: { saufTrainerId?: string | null; role?: SessionFormateurRole } = {},
 ): Promise<number> {
+  const statuts = statutsMissionOuverte(await interrupteurAllume("affectation_sure"));
   return retirerMissions(
     {
       sessionId,
-      statut: { in: [...STATUTS_MISSION_OUVERTE] },
+      statut: { in: [...statuts] },
       ...(opts.role !== undefined ? { role: opts.role } : {}),
       ...(opts.saufTrainerId ? { trainerId: { not: opts.saufTrainerId } } : {}),
     },
@@ -634,6 +703,27 @@ export function normaliserMotifRefus(motif: string | undefined): string | null {
 /** L'unique réponse « introuvable » : proposition inconnue ou adressée à un autre. */
 const MISSION_INTROUVABLE = "Cette proposition n'existe pas.";
 
+/**
+ * Lot S2 (T6) — réponse NEUTRE quand l'acceptation ne peut plus être reçue
+ * (fiche désactivée entre la proposition et le clic). Elle ne dit pas pourquoi :
+ * la raison est interne, et l'organisme est prévenu à part.
+ */
+export const PROPOSITION_SUSPENDUE =
+  "Cette proposition est suspendue. Nous revenons vers vous rapidement.";
+
+/** Lot S2 (T6) — la proposition a changé ENTRE la lecture et l'écriture (retrait, réponse croisée). */
+export const PROPOSITION_CHANGEE =
+  "Cette proposition vient de changer. Rechargez la page pour voir son état.";
+
+/** Levée DANS la transaction pour l'annuler quand l'écriture conditionnelle n'a rien trouvé. */
+class PropositionChangee extends Error {}
+
+/** Motif d'un refus libre : ce qui a été écrit ou choisi, nettoyé, ou `null`. */
+export function normaliserMotifLibre(motif: string | undefined): string | null {
+  const m = (motif ?? "").trim();
+  return m.length > 0 ? m : null;
+}
+
 export async function repondreMission(
   input: RepondreMissionInput,
 ): Promise<RepondreMissionResultat> {
@@ -649,6 +739,9 @@ export async function repondreMission(
       statut: true,
       echeanceReponseAt: true,
       session: { select: { dateDebut: true, statut: true, formateurPrincipalId: true } },
+      // Lot S2 — relus seulement interrupteur allumé (acceptation recontrôlée,
+      // refus libre de l'indépendant).
+      trainer: { select: { actif: true, statut: true } },
     },
   });
   // La proposition d'un AUTRE formateur répond exactement comme une proposition
@@ -694,11 +787,34 @@ export async function repondreMission(
     };
   }
 
+  // Lot S2 — interrupteur `formateurs.affectation_sure`. Arrêté : tout ce qui
+  // suit se comporte exactement comme avant S2.
+  const affectationSure = await interrupteurAllume("affectation_sure");
+
   if (input.reponse === "acceptee") {
-    await prisma.missionFormateur.update({
-      where: { id: mission.id },
-      data: { statut: "acceptee", reponduAt: now },
-    });
+    if (affectationSure) {
+      // 🔴 T6 — l'acceptation ne recontrôlait rien. Une fiche désactivée entre
+      // la proposition et le clic acceptait quand même.
+      if (mission.trainer.actif !== true) {
+        console.error(
+          `[mission-formateur] acceptation suspendue (mission ${mission.id}) : fiche inactive`,
+        );
+        return { ok: false, erreur: PROPOSITION_SUSPENDUE };
+      }
+      // 🔴 T6 — écriture CONDITIONNELLE. Un retrait (remplacement, désactivation)
+      // qui passe entre la lecture ci-dessus et cette ligne était écrasé :
+      // `retiree` redevenait `acceptee`, sur une session qui n'était plus la sienne.
+      const ecrit = await prisma.missionFormateur.updateMany({
+        where: { id: mission.id, statut: "en_attente" },
+        data: { statut: "acceptee", reponduAt: now },
+      });
+      if (ecrit.count !== 1) return { ok: false, erreur: PROPOSITION_CHANGEE };
+    } else {
+      await prisma.missionFormateur.update({
+        where: { id: mission.id },
+        data: { statut: "acceptee", reponduAt: now },
+      });
+    }
     return {
       ok: true,
       statut: "acceptee",
@@ -707,8 +823,10 @@ export async function repondreMission(
     };
   }
 
-  const motif = normaliserMotifRefus(input.motif);
-  if (motif === null) {
+  // S-UX-6 — l'indépendant refuse sans motif exigé ; le salarié, comme avant.
+  const refusLibre = affectationSure && refusSansMotifExige(mission.trainer.statut);
+  const motif = refusLibre ? normaliserMotifLibre(input.motif) : normaliserMotifRefus(input.motif);
+  if (motif === null && !refusLibre) {
     return {
       ok: false,
       erreur: `Indiquez le motif de votre refus (${MOTIF_REFUS_MIN} caractères au moins) : il nous aide à réaffecter la session.`,
@@ -719,21 +837,36 @@ export async function repondreMission(
     sessionId: mission.sessionId,
     trainerId: mission.trainerId,
   });
-  await prisma.$transaction(async (tx) => {
-    await tx.missionFormateur.update({
-      where: { id: mission.id },
-      data: { statut: "refusee", reponduAt: now, motifRefus: motif },
-    });
-    if (mission.session.formateurPrincipalId === mission.trainerId) {
-      await tx.trainingSession.update({
-        where: { id: mission.sessionId },
-        data: { formateurPrincipalId: null },
+  try {
+    await prisma.$transaction(async (tx) => {
+      if (affectationSure) {
+        // T6 — même écriture conditionnelle que l'acceptation : un retrait passé
+        // entre-temps annule tout, affectation comprise.
+        const ecrit = await tx.missionFormateur.updateMany({
+          where: { id: mission.id, statut: "en_attente" },
+          data: { statut: "refusee", reponduAt: now, motifRefus: motif },
+        });
+        if (ecrit.count !== 1) throw new PropositionChangee();
+      } else {
+        await tx.missionFormateur.update({
+          where: { id: mission.id },
+          data: { statut: "refusee", reponduAt: now, motifRefus: motif },
+        });
+      }
+      if (mission.session.formateurPrincipalId === mission.trainerId) {
+        await tx.trainingSession.update({
+          where: { id: mission.sessionId },
+          data: { formateurPrincipalId: null },
+        });
+      }
+      await tx.sessionFormateur.deleteMany({
+        where: { sessionId: mission.sessionId, trainerId: mission.trainerId },
       });
-    }
-    await tx.sessionFormateur.deleteMany({
-      where: { sessionId: mission.sessionId, trainerId: mission.trainerId },
     });
-  });
+  } catch (err) {
+    if (err instanceof PropositionChangee) return { ok: false, erreur: PROPOSITION_CHANGEE };
+    throw err;
+  }
   await archiverAffectationsRetirees(snapshot, {
     motif: "refus_formateur",
     // Le retrait est posé par le FORMATEUR lui-même, pas par un compte admin :
@@ -997,6 +1130,53 @@ export async function statsMissionsFormateur(
   }
 }
 
+/**
+ * Lot S2 (R4) — ce que la console affiche d'un formateur INDÉPENDANT : les
+ * missions acceptées (par le lien ou hors outil) et les missions réalisées.
+ * Rien d'autre : un refus ou un silence est un droit du sous-traitant, il
+ * n'entre dans aucun chiffre (T20). Ne lit ni `refusee`, ni `sans_reponse`, ni
+ * `desistee`, ni `expiree`.
+ */
+export interface MissionsVisiblesIndependant {
+  acceptees: number;
+  realisees: number;
+}
+
+export async function missionsVisiblesIndependant(
+  trainerId: string,
+  now: Date = new Date(),
+): Promise<MissionsVisiblesIndependant> {
+  if (isStub()) return { acceptees: 0, realisees: 0 };
+  const depuis = new Date(now);
+  depuis.setMonth(depuis.getMonth() - FENETRE_PILOTAGE_MOIS);
+  try {
+    const [acceptees, realisees] = await Promise.all([
+      prisma.missionFormateur.count({
+        where: {
+          trainerId,
+          statut: { in: [...STATUTS_ACCORD_DONNE] },
+          solliciteAt: { gte: depuis },
+        },
+      }),
+      prisma.sessionFormateur.count({
+        where: { trainerId, session: { statut: "realisee", dateDebut: { gte: depuis } } },
+      }),
+    ]);
+    return { acceptees, realisees };
+  } catch {
+    return { acceptees: 0, realisees: 0 };
+  }
+}
+
+/** « 3 missions acceptées · 2 réalisées » — la seule ligne de la fiche d'un indépendant. */
+export function libelleMissionsIndependant(m: MissionsVisiblesIndependant): string {
+  const s = (n: number): string => (n > 1 ? "s" : "");
+  return (
+    `${m.acceptees} mission${s(m.acceptees)} acceptée${s(m.acceptees)} · ` +
+    `${m.realisees} réalisée${s(m.realisees)}`
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Accord donné HORS de l'outil
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1100,16 +1280,51 @@ export async function consignerAccordHorsOutil(input: {
     };
   }
 
+  // Lot S2 — interrupteur `formateurs.affectation_sure`. Arrêté : comme avant.
+  const affectationSure = await interrupteurAllume("affectation_sure");
+  if (affectationSure) {
+    // 🔴 N3 / T6 — un `sans_reponse` (ou un retrait) a SUPPRIMÉ l'affectation.
+    // Noter l'accord par-dessus disait « d'accord » pour quelqu'un qui n'est
+    // plus sur la session : la place paraissait tenue, personne ne la tenait.
+    // On réaffecte d'abord (la porte d'affectation et ses contrôles), puis on
+    // note l'accord sur la nouvelle proposition.
+    let affecte: { id: string } | null;
+    try {
+      affecte = await prisma.sessionFormateur.findUnique({
+        where: { sessionId_trainerId: { sessionId: input.sessionId, trainerId: input.trainerId } },
+        select: { id: true },
+      });
+    } catch {
+      return { ok: false, erreur: "Erreur lors de la lecture de l'affectation." };
+    }
+    if (affecte === null) {
+      return {
+        ok: false,
+        erreur:
+          "Ce formateur n'est plus affecté à cette session. Réaffectez-le d'abord " +
+          "(l'affectation repasse par ses contrôles), puis notez son accord.",
+      };
+    }
+  }
+
   try {
-    await prisma.missionFormateur.update({
-      where: { id: mission.id },
-      data: {
-        statut: "accord_hors_outil",
-        accordHorsOutilAt: new Date(),
-        accordHorsOutilParId: input.parAdminId,
-        accordHorsOutilMotif: motif,
-      },
-    });
+    const donnees = {
+      statut: "accord_hors_outil",
+      accordHorsOutilAt: new Date(),
+      accordHorsOutilParId: input.parAdminId,
+      accordHorsOutilMotif: motif,
+    } as const;
+    if (affectationSure) {
+      // Écriture conditionnelle : une réponse du formateur arrivée entre la
+      // lecture et l'écriture n'est jamais écrasée.
+      const ecrit = await prisma.missionFormateur.updateMany({
+        where: { id: mission.id, statut: mission.statut },
+        data: donnees,
+      });
+      if (ecrit.count !== 1) return { ok: false, erreur: PROPOSITION_CHANGEE };
+    } else {
+      await prisma.missionFormateur.update({ where: { id: mission.id }, data: donnees });
+    }
   } catch (err) {
     console.error(
       `[mission-formateur] accord hors outil impossible (mission ${mission.id}):`,
