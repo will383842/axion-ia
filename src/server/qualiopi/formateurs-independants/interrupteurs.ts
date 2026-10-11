@@ -126,7 +126,7 @@ export const INTERRUPTEURS = {
   },
   communes_geo_cron: envoi(
     "Communes desservies",
-    "Recalcul régulier des communes autour de chaque formateur.",
+    "Téléchargement mensuel du référentiel public des communes (lieu des formateurs et des sessions).",
   ),
   proches_bloc: envoi(
     "Bloc « formateurs proches »",
@@ -166,7 +166,12 @@ export function cleSetting(cle: CleInterrupteur): string {
 export function estCleProtegee(key: string): boolean {
   const k = key.toLowerCase();
   // `signature.` : les interrupteurs du socle de signature (S6a, en fin de module).
-  return k.startsWith(PREFIXE_CLES_FORMATEURS) || k.startsWith("signature.");
+  // `textes_valides.` : le registre « texte validé » (FAC-1), écrit par son acte seul.
+  return (
+    k.startsWith(PREFIXE_CLES_FORMATEURS) ||
+    k.startsWith("signature.") ||
+    k.startsWith("textes_valides.")
+  );
 }
 
 export function estCleInterrupteur(x: string): x is CleInterrupteur {
