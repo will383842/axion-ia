@@ -648,7 +648,9 @@ async function passerLesSansReponse(now: Date): Promise<number> {
       trainerId: true,
       solliciteAt: true,
       session: { select: { formateurPrincipalId: true } },
-      trainer: { select: { statut: true, prenom: true, email: true } },
+      trainer: {
+        select: { statut: true, organismeSousTraitantId: true, prenom: true, email: true },
+      },
     },
   });
 

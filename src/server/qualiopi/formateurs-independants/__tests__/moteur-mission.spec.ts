@@ -44,8 +44,10 @@ const h = vi.hoisted(() => {
         "conditionSuspensiveOpco" in where ? etat.opco : etat.engageantes,
       ),
       findUnique: vi.fn(async () => ({ metadata: { renderData: {} } })),
+      findFirst: vi.fn(async () => null as unknown),
       update: vi.fn(async () => ({})),
     },
+    sessionFormateur: { findUnique: vi.fn(async () => ({ tarifHtCents: 40_000 })) },
     $transaction: vi.fn(async (f: (tx: unknown) => Promise<unknown>) => {
       const tour = file.then(() => f({ $executeRaw: vi.fn(async () => 1) }));
       file = tour.catch(() => undefined);
@@ -172,10 +174,10 @@ describe("lettre due (T8)", () => {
     expect(h.envoyer).toHaveBeenCalledTimes(1);
   });
 
-  it("le régime de TVA est figé AVANT l'émission ; l'empreinte est rangée sur la lettre", async () => {
+  it("tarif et régime de TVA figés APRÈS une émission réussie ; l'empreinte est rangée", async () => {
     await reevaluerMission(MISSION, "convention", MAINTENANT);
-    const figeAvant = h.prisma.missionFormateur.updateMany.mock.invocationCallOrder[0]!;
-    expect(figeAvant).toBeLessThan(h.generer.mock.invocationCallOrder[0]!);
+    const fige = h.prisma.missionFormateur.updateMany.mock.invocationCallOrder[0]!;
+    expect(fige).toBeGreaterThan(h.generer.mock.invocationCallOrder[0]!);
     expect(h.prisma.missionFormateur.updateMany).toHaveBeenCalledWith({
       where: { id: MISSION, regimeTvaFige: null },
       data: { regimeTvaFige: "franchise_293b" },
@@ -203,6 +205,40 @@ describe("lettre due (T8)", () => {
     }
     // 1 journée + 1 demi-journée = 525 € ; 2 journées de déplacement × 80 € = 160 €.
     expect((envoi.payload.valeurs as Record<string, string>).total).toBe("685");
+  });
+
+  it("mission sans tarif : le tarif de l'affectation, comme la lettre (F26 et gel)", async () => {
+    h.etat.mission!.tarifHtCents = null;
+    await reevaluerMission(MISSION, "convention", MAINTENANT);
+    expect(h.prisma.missionFormateur.updateMany).toHaveBeenCalledWith({
+      where: { id: MISSION, tarifHtCents: null },
+      data: { tarifHtCents: 40_000 },
+    });
+    const envoi = (
+      h.envoyer.mock.calls[0] as unknown as [{ payload: { valeurs: Record<string, string> } }]
+    )[0];
+    // 1 journée (400 €) + 1 demi-journée (200 €) + 2 × 80 € de déplacement.
+    expect(envoi.payload.valeurs.total).toBe("760");
+  });
+
+  it("émission refusée : rien n'est figé, alerte sans nom", async () => {
+    h.generer.mockResolvedValueOnce({
+      ok: false,
+      erreur: "Le SIRET du formateur manque.",
+    } as never);
+    expect((await reevaluerMission(MISSION, "convention", MAINTENANT)).action).toBe(
+      "lettre_refusee",
+    );
+    expect(h.prisma.missionFormateur.updateMany).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie|SIRET/);
+  });
+
+  it("une lettre émise hors du moteur et déjà signée par le formateur est SA lettre : rien n'est réémis", async () => {
+    h.prisma.documentGenere.findFirst.mockResolvedValueOnce({
+      signatures: [{ partie: "formateur" }],
+    });
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).etape).toBe("lettre_signee");
+    expect(h.generer).not.toHaveBeenCalled();
   });
 
   it("pas de lettre sans client engagé (F25 à la réponse seulement), ni avec un financeur en attente", async () => {

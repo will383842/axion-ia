@@ -375,5 +375,7 @@ export async function consignerAccordHorsOutilAction(
     changes: { sessionId: v.sessionId, trainerId: v.trainerId, motif: v.motif },
     session,
   });
+  // Lot L11c — le moteur des missions (interrupteurs coupés : rien).
+  await reevaluerMission(r.missionId, "accord_hors_outil", new Date());
   return { data: { missionId: r.missionId } };
 }

@@ -21,10 +21,16 @@ export async function notifierPropositionClose(m: {
   id: string;
   solliciteAt: Date;
   trainerId: string;
-  trainer: { statut: string; prenom: string; email: string };
+  trainer: {
+    statut: string;
+    organismeSousTraitantId: string | null;
+    prenom: string;
+    email: string;
+  };
 }): Promise<void> {
   try {
-    if (m.trainer.statut !== "sous_traitant") return;
+    // Indépendant en nom propre seulement : un organisme a son propre circuit.
+    if (m.trainer.statut !== "sous_traitant" || m.trainer.organismeSousTraitantId !== null) return;
     if (!(await envoiAllume("lettre_auto"))) return;
     await envoyer({
       gabarit: "formateur-proposition-close",

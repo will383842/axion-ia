@@ -182,7 +182,7 @@ export async function reevaluerMission(
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`mission-formateur:${missionId}`}))`;
         return agir(missionId, cause, maintenant);
       },
-      { maxWait: 15_000, timeout: 120_000 },
+      { maxWait: 15_000, timeout: 300_000 },
     );
   } catch (err) {
     console.error(
@@ -199,6 +199,8 @@ export interface EtatMission {
   readonly etape: EtapeMission;
   readonly gardeRefus: ReadonlyArray<string>;
   readonly empreinteActuelle: string;
+  /** Tarif de la journée : mission, puis affectation, puis 350 € HT (comme la lettre). */
+  readonly tarifEffectif: number;
 }
 
 /**
@@ -224,26 +226,47 @@ export async function lireEtatMission(
     return null;
   }
   const s = m.session;
-  const [clientEngage, financeurEnAttente, garde, contrat] = await Promise.all([
-    prisma.documentGenere.count({
-      where: {
-        sessionId: m.sessionId,
-        type: { in: [...PIECES_ENGAGEANTES] },
-        statutSignature: "signee",
-        annuleeAt: null,
-      },
-    }),
-    prisma.documentGenere.count({
-      where: {
-        sessionId: m.sessionId,
-        conditionSuspensiveOpco: true,
-        etatConditionSuspensive: "en_attente",
-        annuleeAt: null,
-      },
-    }),
-    controlerGardeMission(m.trainerId, maintenant),
-    lireContratCadreSigne(m.trainerId),
-  ]);
+  const [clientEngage, financeurEnAttente, garde, contrat, affectation, v1Signee] =
+    await Promise.all([
+      prisma.documentGenere.count({
+        where: {
+          sessionId: m.sessionId,
+          type: { in: [...PIECES_ENGAGEANTES] },
+          statutSignature: "signee",
+          annuleeAt: null,
+        },
+      }),
+      prisma.documentGenere.count({
+        where: {
+          sessionId: m.sessionId,
+          conditionSuspensiveOpco: true,
+          etatConditionSuspensive: "en_attente",
+          annuleeAt: null,
+        },
+      }),
+      controlerGardeMission(m.trainerId, maintenant),
+      lireContratCadreSigne(m.trainerId),
+      // Même repli que la lettre : tarif de la mission, puis de l'affectation.
+      prisma.sessionFormateur.findUnique({
+        where: { sessionId_trainerId: { sessionId: m.sessionId, trainerId: m.trainerId } },
+        select: { tarifHtCents: true },
+      }),
+      // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
+      // c'est SA lettre ; le moteur n'en émet pas d'autre.
+      m.lettreMission === null || m.lettreMission.annuleeAt !== null
+        ? prisma.documentGenere.findFirst({
+            where: {
+              type: "lettre_mission",
+              sessionId: m.sessionId,
+              trainerId: m.trainerId,
+              annuleeAt: null,
+              signatures: { some: { revokedAt: null, partie: "formateur" } },
+            },
+            select: { signatures: { where: { revokedAt: null }, select: { partie: true } } },
+          })
+        : Promise.resolve(null),
+    ]);
+  const tarifEffectif = m.tarifHtCents ?? affectation?.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
   const regime = m.regimeTvaFige ?? m.trainer.regimeTvaHonoraires;
   const jours = s.jours.map((j) => ({
     date: dateCivile(j.date),
@@ -258,7 +281,7 @@ export async function lireEtatMission(
     adresse: s.lieuAdresse,
     codePostal: s.lieuCodePostal,
     ville: s.lieuVille,
-    tarifHtCents: m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS,
+    tarifHtCents: tarifEffectif,
     forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
     regimeTva: regime,
     role: m.role,
@@ -272,7 +295,14 @@ export async function lireEtatMission(
           signeeAxion: m.lettreMission.signatures.some((x) => x.partie !== "formateur"),
           empreinte: empreinteDeMetadata(m.lettreMission.metadata),
         }
-      : null;
+      : v1Signee !== null
+        ? {
+            signeeFormateur: true,
+            signeeAxion: v1Signee.signatures.some((x) => x.partie !== "formateur"),
+            // Émise hors du moteur : aucune empreinte, jamais « périmée » par lui.
+            empreinte: null,
+          }
+        : null;
   const etape = etapeMission(
     {
       statut: m.statut,
@@ -288,7 +318,7 @@ export async function lireEtatMission(
     },
     maintenant,
   );
-  return { mission: m, etape, gardeRefus: garde.refus, empreinteActuelle };
+  return { mission: m, etape, gardeRefus: garde.refus, empreinteActuelle, tarifEffectif };
 }
 
 async function agir(
@@ -304,7 +334,7 @@ async function agir(
 
   switch (etape) {
     case "lettre_due":
-      return emettreLettre(m, empreinteActuelle, maintenant);
+      return emettreLettre(m, empreinteActuelle, etat.tarifEffectif, maintenant);
     case "bloquee":
       return notifierBlocage(m, garde.refus, maintenant);
     case "client_pas_engage":
@@ -330,16 +360,9 @@ type MissionLue = Prisma.MissionFormateurGetPayload<{ select: typeof MISSION_SEL
 async function emettreLettre(
   m: MissionLue,
   empreinte: string,
+  tarif: number,
   maintenant: Date,
 ): Promise<ResultatReevaluation> {
-  // Le régime de TVA se FIGE à l'émission (08 §2.7 règle 3) : la lettre, le
-  // paiement et l'empreinte liront désormais celui-ci.
-  if (m.regimeTvaFige === null && m.trainer.regimeTvaHonoraires !== null) {
-    await prisma.missionFormateur.updateMany({
-      where: { id: m.id, regimeTvaFige: null },
-      data: { regimeTvaFige: m.trainer.regimeTvaHonoraires },
-    });
-  }
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
@@ -359,6 +382,19 @@ async function emettreLettre(
       );
     }
     return { etape: "lettre_due", action: "lettre_refusee" };
+  }
+  // Le régime de TVA et le tarif se FIGENT à l'émission réussie (08 §2.7
+  // règle 3) : la lettre vient de les lire ainsi ; le paiement et l'empreinte
+  // liront désormais ceux-ci.
+  await prisma.missionFormateur.updateMany({
+    where: { id: m.id, tarifHtCents: null },
+    data: { tarifHtCents: tarif },
+  });
+  if (m.regimeTvaFige === null && m.trainer.regimeTvaHonoraires !== null) {
+    await prisma.missionFormateur.updateMany({
+      where: { id: m.id, regimeTvaFige: null },
+      data: { regimeTvaFige: m.trainer.regimeTvaHonoraires },
+    });
   }
   const doc = await prisma.documentGenere.findUnique({
     where: { id: r.documentId },
@@ -392,7 +428,6 @@ async function emettreLettre(
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
   const distanciel = m.session.lieuType === "distanciel";
   const forfait = distanciel ? null : m.forfaitDeplacementParJourHtCents;
-  const tarif = m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
   const premier = jours[0];
   const dernier = jours[jours.length - 1];
   if (premier !== undefined && dernier !== undefined) {
@@ -443,6 +478,9 @@ async function notifierBlocage(
 ): Promise<ResultatReevaluation> {
   const motif = refus.join(" ").slice(0, 500);
   if (motif === m.lettreBlocageMotif) return { etape: "bloquee", action: "rien" };
+  // F32 ne repart que si ce que le FORMATEUR doit fournir a changé.
+  const avant = m.lettreBlocageMotif ?? "";
+  const dejaDit = [...MANQUE_POUR_LE_FORMATEUR.keys()].filter((k) => avant.includes(k));
   await prisma.missionFormateur.update({
     where: { id: m.id },
     data: { lettreBlocageMotif: motif, lettreBlocageNotifieAt: maintenant },
@@ -462,7 +500,10 @@ async function notifierBlocage(
   const pourLui = refus
     .map((r) => MANQUE_POUR_LE_FORMATEUR.get(r))
     .filter((x): x is string => x !== undefined);
-  if (pourLui.length > 0) {
+  const memes =
+    dejaDit.length === pourLui.length &&
+    dejaDit.every((k) => pourLui.includes(MANQUE_POUR_LE_FORMATEUR.get(k)!));
+  if (pourLui.length > 0 && !memes) {
     const lien = lienEspaceFormateur();
     await envoyer({
       gabarit: "formateur-mission-en-attente",
@@ -515,7 +556,7 @@ export function dansLaFenetre(maintenant: Date): boolean {
 
 /**
  * Passage horaire (filet) : les missions acceptées d'indépendants, à venir,
- * sans lettre liée, puis celles dont la lettre attend une signature.
+ * sans lettre vivante liée (aucune, ou annulée).
  */
 export async function passerMoteurMissions(maintenant: Date): Promise<{
   reevaluees: number;
@@ -527,7 +568,7 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
     where: {
       role: "principal",
       statut: { in: [...STATUTS_ACCORD_DONNE] },
-      lettreMissionId: null,
+      OR: [{ lettreMissionId: null }, { lettreMission: { annuleeAt: { not: null } } }],
       trainer: { statut: "sous_traitant", organismeSousTraitantId: null },
       session: { statut: "planifiee", dateDebut: { gt: maintenant } },
     },
