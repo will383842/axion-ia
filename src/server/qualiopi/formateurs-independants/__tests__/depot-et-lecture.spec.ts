@@ -75,7 +75,12 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.allume.mockResolvedValue(true);
   m.debit.mockResolvedValue({ allowed: true });
-  m.controler.mockResolvedValue({ ok: true, typeMime: "application/pdf", taille: CLAIR.length, sha256: SHA });
+  m.controler.mockResolvedValue({
+    ok: true,
+    typeMime: "application/pdf",
+    taille: CLAIR.length,
+    sha256: SHA,
+  });
   m.trainerFindUnique.mockResolvedValue({ id: TRAINER, statut: "sous_traitant" });
   m.docCreate.mockResolvedValue({ id: DOC });
   m.contenuCreate.mockResolvedValue({});
@@ -93,7 +98,11 @@ describe("deposerPieceFormateur — écriture du dépôt", () => {
     const c = (m.contenuCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(c.trainerDocumentId).toBe(DOC);
     expect(c.sha256).toBe(SHA);
-    expect(Buffer.from(c.octets as Buffer).subarray(0, 4).toString()).toBe("AXB1");
+    expect(
+      Buffer.from(c.octets as Buffer)
+        .subarray(0, 4)
+        .toString(),
+    ).toBe("AXB1");
     expect(c.taille).toBe((c.octets as Buffer).length);
     const log = (m.logCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(log).toMatchObject({ action: ACTION_DEPOT_FORMATEUR, adminUserId: null, targetId: DOC });
@@ -108,9 +117,15 @@ describe("deposerPieceFormateur — écriture du dépôt", () => {
   });
 
   it("refus du contrôle commun (antivirus, format…) → message rendu tel quel, rien d'écrit", async () => {
-    m.controler.mockResolvedValue({ ok: false, message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre." });
+    m.controler.mockResolvedValue({
+      ok: false,
+      message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre.",
+    });
     const r = await depot();
-    expect(r).toEqual({ ok: false, message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre." });
+    expect(r).toEqual({
+      ok: false,
+      message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre.",
+    });
     expect(m.docCreate).not.toHaveBeenCalled();
   });
 
@@ -139,7 +154,8 @@ describe("deposerPieceFormateur — écriture du dépôt", () => {
   it("pièce gardée (vigilance, avis SIRENE) : date d'émission exigée, jamais future, échéance CALCULÉE", async () => {
     expect((await depot({ type: "kbis_avis_sirene" })).ok).toBe(false);
     expect(
-      (await depot({ type: "kbis_avis_sirene", dateEmission: new Date(Date.now() + 86_400_000) })).ok,
+      (await depot({ type: "kbis_avis_sirene", dateEmission: new Date(Date.now() + 86_400_000) }))
+        .ok,
     ).toBe(false);
     expect(m.docCreate).not.toHaveBeenCalled();
     const emise = new Date(Date.now() - 10 * 86_400_000);
@@ -203,11 +219,15 @@ describe("lirePieceDeposee — route console", () => {
 
   it("la pièce RIB n'est servie qu'avec le droit de rémunérer", async () => {
     m.docFindUnique.mockResolvedValue(doc({ type: "rib" }));
-    expect(await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite })).toEqual({
+    expect(
+      await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite }),
+    ).toEqual({
       ok: false,
       statut: 404,
     });
-    expect((await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: admin })).ok).toBe(true);
+    expect(
+      (await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: admin })).ok,
+    ).toBe(true);
   });
 
   it("rôle sans droit d'habiliter → refus", async () => {
@@ -222,15 +242,21 @@ describe("lirePieceDeposee — route console", () => {
 
   it("interrupteur éteint → introuvable (comportement d'aujourd'hui)", async () => {
     m.allume.mockResolvedValue(false);
-    expect(await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite })).toEqual({
+    expect(
+      await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite }),
+    ).toEqual({
       ok: false,
       statut: 404,
     });
   });
 
   it("empreinte qui ne correspond plus → refus, jamais d'octets douteux servis", async () => {
-    m.docFindUnique.mockResolvedValue(doc({ contenu: { ...doc().contenu, sha256: "0".repeat(64) } }));
-    expect((await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite })).ok).toBe(false);
+    m.docFindUnique.mockResolvedValue(
+      doc({ contenu: { ...doc().contenu, sha256: "0".repeat(64) } }),
+    );
+    expect(
+      (await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite })).ok,
+    ).toBe(false);
   });
 
   it("journal indisponible → la pièce n'est PAS servie (lecture tracée ou rien)", async () => {

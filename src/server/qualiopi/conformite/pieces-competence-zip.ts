@@ -34,7 +34,10 @@ import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 import { createHash } from "node:crypto";
 
 import { dechiffrerOctetsPii } from "@/lib/pii-crypto";
-import { aUnFichier, estPieceCompetenceProbante } from "@/server/qualiopi/trainers/piece-competence";
+import {
+  aUnFichier,
+  estPieceCompetenceProbante,
+} from "@/server/qualiopi/trainers/piece-competence";
 import { originePublique } from "./liens-site-public";
 import { pieceAdmissibleAuDossier } from "./piece-admissible";
 import { documentJointAuDossierAudit } from "./hors-dossier-audit";

@@ -30,7 +30,11 @@
  * d'outil : on ne bloque donc pas sur une règle non validée, mais on la signale.
  */
 
-import { pieceAUnFichier, estPieceCompetenceProbante, estTypePieceCompetence } from "./piece-competence";
+import {
+  pieceAUnFichier,
+  estPieceCompetenceProbante,
+  estTypePieceCompetence,
+} from "./piece-competence";
 
 /** Miroir de l'enum Prisma `TrainerStatut`. */
 export type TrainerStatutValue = "salarie" | "sous_traitant" | "dirigeant";
@@ -320,8 +324,7 @@ export function evaluerConformiteFormateur(
       message:
         cv === null
           ? documents.some(
-              (d) =>
-                d.type === "cv" && d.statutValidation === "valide" && !pieceAUnFichier(d),
+              (d) => d.type === "cv" && d.statutValidation === "valide" && !pieceAUnFichier(d),
             )
             ? "CV validé mais sans fichier joint : il ne prouve rien. Ajoutez une nouvelle pièce avec son fichier, puis rejetez l'ancienne."
             : "CV absent ou non validé."
