@@ -301,7 +301,8 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   choix_suivants: [exige("textes_valides")],
   passage_paiement: [],
   communes_geo_cron: [],
-  proches_bloc: [],
+  // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
+  proches_bloc: [exige("communes_geo_cron")],
 };
 
 /**

@@ -14,13 +14,13 @@ import { prisma } from "@/lib/prisma";
 import { createHash } from "node:crypto";
 
 import {
-  chiffrerOctetsPii,
   decryptPii,
   dechiffrerOctetsPii,
   ENTETE_OCTETS_V1,
   isEncryptedPii,
   PII_DECRYPT_PLACEHOLDER,
 } from "@/lib/pii-crypto";
+import { chiffrerPieceAuRepos } from "@/server/pieces/depot-controle";
 import { signalerErreurReseau } from "./signaler";
 
 /** Combien de pièces en clair le rattrapage chiffre par passage. */
@@ -36,7 +36,8 @@ export function contenuChiffre(octets: Uint8Array): boolean {
 
 /** Les octets à écrire en base : chiffrés. Lève si la clé manque. */
 export function chiffrerContenuPiece(clair: Uint8Array): Buffer {
-  return chiffrerOctetsPii(Buffer.from(clair));
+  // Une seule enveloppe : celle du dépôt contrôlé commun (FAC-6).
+  return chiffrerPieceAuRepos(clair);
 }
 
 /** Les octets en clair d'une pièce, qu'elle soit déjà chiffrée ou encore en clair (ancienne). */
