@@ -46,6 +46,7 @@ const demande = () => envoyerCodeSignature({ documentGenereId: "d-1", maintenant
 
 beforeEach(() => {
   vi.clearAllMocks();
+  process.env["PII_ENCRYPTION_KEY"] = "b2".repeat(32);
   h.texteValide.mockResolvedValue(true);
   h.piece.mockResolvedValue({
     type: "contrat_sous_traitance",
@@ -116,8 +117,18 @@ describe("envoyerCodeSignature", () => {
       entityType: "Trainer",
       entityId: "t-1",
       sansValidation: true,
-      payload: { prenom: "Claire", valeurs: { code: "042517", durée: "10 minutes" } },
+      payload: {
+        prenom: "Claire",
+        // Le code traverse la file SCELLÉ : jamais en clair dans Redis ni chez Sentry.
+        valeurs: { code: expect.stringMatching(/^enc:v2:/), durée: "10 minutes" },
+      },
     });
+    expect(JSON.stringify(h.envoyer.mock.calls)).not.toContain("042517");
+  });
+  it("sans clé de scellement : rien n'est enfilé (aucun repli en clair)", async () => {
+    delete process.env["PII_ENCRYPTION_KEY"];
+    expect(await demande()).toMatchObject({ ok: false, raison: "envoi-impossible" });
+    expect(h.envoyer).not.toHaveBeenCalled();
   });
   it("deux demandes simultanées : celle dont le code a été invalidé n'envoie rien", async () => {
     h.vivant.mockResolvedValue({ expiresAt: new Date(EXPIRE.getTime() + 5) });

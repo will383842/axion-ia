@@ -1,7 +1,7 @@
 /**
  * Envoi du CODE DE SIGNATURE (F17) — lot S6b, fin du socle de signature.
  *
- * Le mécanisme (émission, vérification, 10 minutes, 5 essais) est celui de S6a
+ * Le mécanisme (émission, vérification, 15 minutes, 5 essais) est celui de S6a
  * (`documents/signature/code-signature.ts`) ; ce module le remet au formateur par e-mail,
  * par l'adaptateur d'envoi des formateurs : texte validé exigé, jamais garé en corbeille
  * (un code qui attend une relecture expire), aucune priorité (il passe avant les relances).
@@ -16,10 +16,13 @@
  *   · « Code non reçu ? Renvoyer » : pas avant 2 minutes après le précédent, 3 codes par
  *     heure au plus pour la pièce, 5 par heure au plus pour un même formateur ;
  *   · deux demandes simultanées : seule celle dont le code est resté VIVANT l'envoie ;
- *   · le code en clair ne va QUE dans l'e-mail (la copie conservée le masque).
+ *   · le code en clair ne va QUE dans l'e-mail : il traverse la file SCELLÉ
+ *     (`code-en-file.ts`), jamais lisible dans Redis, Sentry ni les journaux ; la copie
+ *     conservée le masque ; aucune erreur de ce module ne le porte.
  */
 
 import { prisma } from "@/lib/prisma";
+import { scellerCodePourFile } from "@/server/email/code-en-file";
 import {
   CODE_VALIDITE_MS,
   emettreCodeSignature,
@@ -53,7 +56,7 @@ const refus = (raison: Raison): ResultatCodeSignature => ({
   message: MESSAGES[raison],
 });
 
-/** « 10 minutes » : la durée réelle du code, jamais une durée écrite à la main. */
+/** « 15 minutes » : la durée réelle du code, jamais une durée écrite à la main. */
 export function libelleDuree(ms: number = CODE_VALIDITE_MS): string {
   const minutes = Math.round(ms / 60_000);
   return `${minutes} minute${minutes > 1 ? "s" : ""}`;
@@ -114,13 +117,16 @@ export async function envoyerCodeSignature(input: {
   });
   if (parFormateur >= CODES_PAR_HEURE_PAR_FORMATEUR_MAX) return refus("trop-de-codes");
 
-  let emis: { code: string; expiresAt: Date };
+  // Le code n'existe en clair que dans cette portée : scellé aussitôt émis, il n'est ni
+  // retourné, ni journalisé, ni porté par une erreur (le `catch` ne garde rien).
+  let emis: { codeScelle: string; expiresAt: Date };
   try {
-    emis = await emettreCodeSignature({
+    const brut = await emettreCodeSignature({
       documentGenereId: input.documentGenereId,
       partie,
       maintenant: input.maintenant,
     });
+    emis = { codeScelle: scellerCodePourFile(brut.code), expiresAt: brut.expiresAt };
   } catch {
     return refus("envoi-impossible");
   }
@@ -147,7 +153,7 @@ export async function envoyerCodeSignature(input: {
     sansValidation: true,
     payload: {
       ...(formateur.prenom ? { prenom: formateur.prenom } : {}),
-      valeurs: { code: emis.code, durée: libelleDuree() },
+      valeurs: { code: emis.codeScelle, durée: libelleDuree() },
     },
   });
   return r === "envoye" ? { ok: true } : refus("envoi-impossible");
