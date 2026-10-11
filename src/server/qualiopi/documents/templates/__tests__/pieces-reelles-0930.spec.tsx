@@ -205,7 +205,9 @@ describe("3-4. chaque article cité porte bien sur l'objet de la pièce", () => 
         identite={IDENTITE}
       />,
     );
-    expect(t).toContain("Document à conserver 5 ans");
+    expect(t).toContain(
+      "Document à conserver pendant la relation, puis le temps des délais légaux de réclamation.",
+    );
     expect(t).not.toContain("L.6353-9");
   });
 

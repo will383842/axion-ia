@@ -13,7 +13,15 @@
  */
 
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, pdf } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  pdf,
+  type DocumentProps,
+} from "@react-pdf/renderer";
 
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import {
@@ -32,19 +40,37 @@ registerQualiopiPdfFonts();
 /** Une activité telle que le PDF la reçoit : tout l'article 30, AUCUN écart. */
 export type ActivitePdf = Omit<Traitement, "ecarts">;
 
-export function activitesPourPdf(registre: Registre): ActivitePdf[] {
-  return registre.traitements.map(({ ecarts: _ecarts, ...reste }) => reste);
+/**
+ * Les champs de l'article 30, nommés un à un : ni les écarts, ni rien de ce que la
+ * base ajoute (identifiant interne, statut) n'atteint le gabarit.
+ */
+export function activitesPourPdf(registre: {
+  traitements: ReadonlyArray<Pick<Registre["traitements"][number], keyof ActivitePdf>>;
+}): ActivitePdf[] {
+  return registre.traitements.map((t) => ({
+    id: t.id,
+    nom: t.nom,
+    personnes: t.personnes,
+    donnees: t.donnees,
+    finalite: t.finalite,
+    baseLegale: t.baseLegale,
+    conservationAnnoncee: t.conservationAnnoncee,
+    conservationReelle: t.conservationReelle,
+    destinataires: t.destinataires,
+    securite: t.securite,
+    droits: t.droits,
+  }));
 }
 
 const NON_IMPRIMABLES =
   /[\u{2190}-\u{21FF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE00}-\u{FE0F}\u{1F000}-\u{1FAFF}\u{200D}]/gu;
 
-function txt(v: string | null | undefined): string {
+export function txt(v: string | null | undefined): string {
   const s = assainirEspacesPdf(v ?? "").replace(NON_IMPRIMABLES, "");
   return s.trim() === "" ? "—" : s;
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   page: {
     paddingTop: S.page,
     paddingHorizontal: S.page,
@@ -85,7 +111,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Ligne({ libelle, valeur }: { libelle: string; valeur: string | null }) {
+export function Ligne({ libelle, valeur }: { libelle: string; valeur: string | null }) {
   return (
     <View style={styles.ligne} wrap={false}>
       <Text style={styles.libelle}>{libelle}</Text>
@@ -103,6 +129,15 @@ function destinataires(a: ActivitePdf): string {
     .join(" ; ");
 }
 
+export function dateLongue(d: Date): string {
+  return d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  });
+}
+
 export function RegistrePdf({
   activites,
   genereLe,
@@ -110,12 +145,7 @@ export function RegistrePdf({
   activites: ReadonlyArray<ActivitePdf>;
   genereLe: Date;
 }) {
-  const date = genereLe.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Europe/Paris",
-  });
+  const date = dateLongue(genereLe);
   return (
     <Document title="Registre des activités de traitement" author={IDENTITE_LEGALE.legalName}>
       <Page size="A4" style={styles.page}>
@@ -148,10 +178,16 @@ export function RegistrePdf({
   );
 }
 
-export async function rendreRegistreEnPdf(registre: Registre, genereLe: Date): Promise<Buffer> {
-  const stream = await pdf(
-    <RegistrePdf activites={activitesPourPdf(registre)} genereLe={genereLe} />,
-  ).toBuffer();
+export async function rendreRegistreEnPdf(
+  registre: Parameters<typeof activitesPourPdf>[0],
+  genereLe: Date,
+): Promise<Buffer> {
+  return enBuffer(<RegistrePdf activites={activitesPourPdf(registre)} genereLe={genereLe} />);
+}
+
+/** Un document React-PDF rendu en `Buffer` — partagé avec le journal des incidents. */
+export async function enBuffer(document: React.ReactElement<DocumentProps>): Promise<Buffer> {
+  const stream = await pdf(document).toBuffer();
   return new Promise<Buffer>((resolve, reject) => {
     const morceaux: Buffer[] = [];
     stream.on("data", (m: Buffer | Uint8Array) =>

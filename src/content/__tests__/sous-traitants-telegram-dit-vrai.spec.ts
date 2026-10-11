@@ -64,14 +64,12 @@ describe("`D6-5-C2` — la page des sous-traitants dit vrai sur Telegram", () =>
     expect(fiche).not.toMatch(/PII minimisée \(cf\. ADR 0010\)\s*:\s*email partiel/);
   });
 
-  it("🔴 elle déclare que nom, e-mail et téléphone partent EN CLAIR", () => {
-    // C'est ce que le code fait. La page doit le dire — c'est tout l'objet de
-    // l'article 13.
-    expect(fiche).toMatch(/EN CLAIR|en clair/);
-    for (const mot of ["Nom", "nom"]) {
-      if (fiche.includes(mot)) return;
-    }
-    expect(fiche, "le nom transmis doit être nommé").toMatch(/nom/i);
+  it("🔴 elle déclare ce qui part : prénom et initiale, ni e-mail ni téléphone", () => {
+    // Depuis le 11/10/2026, c'est ce que le code fait. La page doit le dire —
+    // c'est tout l'objet de l'article 13.
+    expect(fiche).toMatch(/prénom et initiale du nom/);
+    expect(fiche).toMatch(/Aucune adresse e-mail, aucun numéro de téléphone/);
+    expect(fiche).not.toMatch(/EN CLAIR/);
   });
 
   it("elle distingue les DEUX régimes — le minimisé et le complet", () => {
@@ -83,17 +81,22 @@ describe("`D6-5-C2` — la page des sous-traitants dit vrai sur Telegram", () =>
     expect(fiche).toMatch(/minimis/i);
   });
 
-  it("🔴 le formateur transmet BIEN les champs en clair — sinon la page ment à l'envers", () => {
-    // 🔑 Le témoin qui empêche la fausse correction. Si quelqu'un minimise un
-    // jour le formateur sans mettre la page à jour, celle-ci deviendrait fausse
-    // dans l'autre sens : elle annoncerait une transmission plus large que la
-    // réalité — ce qui est aussi une déclaration inexacte.
+  it("🔴 le formateur minimise BIEN — sinon la page ment dans l'autre sens", () => {
+    // 🔑 Le témoin de la correspondance. Si quelqu'un réintroduit un jour une
+    // coordonnée dans le formateur sans mettre la page à jour, celle-ci
+    // deviendrait fausse : elle annoncerait une transmission plus étroite que
+    // la réalité.
     const format = lire("src", "server", "notifications", "format.ts")
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/(^|[^:])\/\/.*$/gm, "$1");
 
-    expect(format, "le nom part tel quel").toMatch(/formatKV\("Nom",\s*p\.contactName\)/);
-    expect(format, "l'e-mail part tel quel").toMatch(/formatKV\("Email",\s*p\.contactEmail\)/);
+    expect(format, "le nom passe par prénom + initiale").toMatch(
+      /prenomEtInitialeDepuisNomComplet\(p\.contactName\)/,
+    );
+    expect(format, "aucun e-mail n'est rendu").not.toMatch(
+      /p\.(contactEmail|inviteeEmail|email)\b/,
+    );
+    expect(format, "aucun téléphone n'est rendu").not.toMatch(/p\.(contactPhone|inviteePhone)\b/);
   });
 
   it("la minimisation RGPD, elle, existe VRAIMENT dans le code", () => {
