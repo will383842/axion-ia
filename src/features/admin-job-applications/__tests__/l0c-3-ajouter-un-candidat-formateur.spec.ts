@@ -24,6 +24,7 @@ const h = vi.hoisted(() => ({
   maj: [] as Array<Record<string, unknown>>,
   envois: [] as Array<Record<string, unknown>>,
   resultatEnvoi: "envoye" as string,
+  texteValide: true,
 }));
 
 vi.mock("@/auth", () => ({
@@ -34,6 +35,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
   lireEtatsEntree: async () => ({ ajout_console: h.allume }),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
+  texteValide: async () => h.texteValide,
   envoyer: async (e: Record<string, unknown>) => {
     h.envois.push(e);
     return h.resultatEnvoi;
@@ -81,6 +83,7 @@ beforeEach(() => {
   h.maj = [];
   h.envois = [];
   h.resultatEnvoi = "envoye";
+  h.texteValide = true;
 });
 
 describe("L0c-3 — règles pures", () => {
@@ -155,11 +158,18 @@ describe("L0c-3 — l'action", () => {
     expect(h.maj[0]).toHaveProperty("invitationFormateurAt");
   });
 
-  it("texte non validé : la fiche existe, l'invitation n'est pas datée", async () => {
-    h.resultatEnvoi = "texte-non-valide";
+  it("texte de l'invitation non validé : refus AVANT d'écrire", async () => {
+    h.texteValide = false;
     const r = await ajouterCandidatFormateurAction(saisie({ envoyerInvitation: true }));
-    expect(r.ok).toBe(true);
-    expect(h.maj).toHaveLength(0);
+    expect(r.ok).toBe(false);
+    expect(h.cree).toHaveLength(0);
+    expect(h.envois).toHaveLength(0);
+  });
+
+  it("l'origine saisie ne fausse pas la provenance mesurée (aucune balise utm)", async () => {
+    await ajouterCandidatFormateurAction(saisie({ origine: "linkedin" }));
+    expect(h.cree[0]).not.toHaveProperty("utmSource");
+    expect(h.cree[0]).toMatchObject({ answers: { "Origine (saisie en console)": "LinkedIn" } });
   });
 
   it("une candidature existe déjà pour cette adresse : rien n'est créé", async () => {

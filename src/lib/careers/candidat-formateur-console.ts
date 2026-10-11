@@ -7,10 +7,11 @@
  *
  * 🔑 ADRESSE RELAIS. Indeed et d'autres plateformes donnent une adresse de
  * relais, la même pour des personnes différentes ou changeante d'une annonce à
- * l'autre : son empreinte n'identifie PERSONNE. Elle n'arrête donc jamais rien
- * (aucun doublon, aucune opposition rapprochée par elle) ; le rattachement d'un
- * échange se fait par le marqueur `fa-<id>` du lien. « Adresse réelle, si vous
- * l'avez » la remplace pour les envois et pour l'empreinte.
+ * l'autre : son empreinte n'identifie PERSONNE. Elle n'est donc ni enregistrée
+ * ni cherchée comme doublon. (Le module d'envoi, lui, retient prudemment un
+ * envoi vers un relais qui porte une opposition.) Le rattachement d'un échange
+ * se fera par le marqueur `fa-<id>` du lien (lot F-CAL-2). « Adresse réelle, si
+ * vous l'avez » remplace le relais pour les envois et pour l'empreinte.
  *
  * Module pur.
  */

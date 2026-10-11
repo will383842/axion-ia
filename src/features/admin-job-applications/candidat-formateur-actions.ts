@@ -29,7 +29,8 @@ import { lienDuSite } from "@/lib/calendly/lien-du-site";
 import { SLUG_OFFRE_FORMATEUR_FREELANCE } from "@/lib/careers/formateur-freelance";
 import { preparerSaisieCandidatFormateur } from "@/lib/careers/candidat-formateur-console";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
-import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { envoyer, texteValide } from "@/server/qualiopi/formateurs-independants/envois";
+import { ORIGINES_CANDIDAT_FORMATEUR } from "@/lib/careers/candidat-formateur-console";
 
 /** Marque de consentement d'une candidature saisie en console (≤ 40 caractères). */
 const CONSENT_CONSOLE = "console-sans-consentement";
@@ -57,6 +58,15 @@ export async function ajouterCandidatFormateurAction(
   if (!p.ok) return { ok: false, message: p.message };
   const d = p.saisie;
   const emailHash = p.empreinteSur ? hashEmailForLookup(p.empreinteSur) : null;
+  // L'invitation se vérifie AVANT d'écrire (comme le lien chez les apporteurs) :
+  // une fiche créée sans son invitation ne se rattrape pas ici.
+  if (d.envoyerInvitation && !(await texteValide("formateur-invitation-echange"))) {
+    return {
+      ok: false,
+      message:
+        "Le texte de l'invitation n'est pas encore validé : décochez « Envoyer l'invitation » pour ajouter le candidat sans message.",
+    };
+  }
 
   try {
     if (emailHash) {
@@ -88,8 +98,12 @@ export async function ajouterCandidatFormateurAction(
         locale: "fr",
         natureCollaboration: "freelance",
         origine: "console",
-        utmSource: d.origine,
-        utmMedium: "console",
+        // L'origine saisie n'est PAS une provenance mesurée : elle ne va pas dans
+        // `utm*` (bilan de provenance), mais dans les réponses lisibles en console.
+        answers: {
+          "Origine (saisie en console)":
+            ORIGINES_CANDIDAT_FORMATEUR.find((o) => o.id === d.origine)?.libelle ?? d.origine,
+        },
       },
       select: { id: true },
     });
