@@ -559,6 +559,13 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.modeles_composeur",
   },
+  ajout_console: {
+    ...envoi(
+      "Ajouter un candidat formateur en console",
+      "Saisir un candidat rencontré hors du site (salon, recommandation, LinkedIn, Indeed) ; l'invitation à l'échange ne part que si la case est cochée et son texte validé.",
+    ),
+    cle: "formateurs.ajout_console",
+  },
   // Lot F-CAL-2 (+ U7-f) — le suivi de l'échange formateur par l'outil. Coupé : un
   // échange formateur ne reçoit aucun e-mail de notre part, n'est rattaché à aucune
   // candidature et n'a pas d'issue « formateur » en console, exactement comme avant.
@@ -595,6 +602,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     formulaire_freelance: [],
     menu_freelance: [],
     modeles_composeur: [],
+    ajout_console: [],
     suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
     reponses_formateurs: [],
   };
