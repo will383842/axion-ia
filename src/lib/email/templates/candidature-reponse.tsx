@@ -33,6 +33,7 @@
 import { Text } from "@react-email/components";
 
 import { EmailLayout, emailStyles } from "./_layout";
+import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import { paragraphes, preEnTeteDepuisCorps, rendreParagraphe } from "./_markdown-leger";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -46,6 +47,8 @@ interface Payload {
   offerTitle?: string;
   /** Signature. Défaut : « Williams » — jamais le nom complet (règle de marque). */
   signature?: string;
+  /** Lien signé « Supprimer ma candidature » (2026-10-11). */
+  lienSuppression?: string;
 }
 
 export const candidatureReponseSubject = (
@@ -113,6 +116,7 @@ export function CandidatureReponseEmail({
           {resteSignature.join(" · ")}
         </Text>
       )}
+      <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
     </EmailLayout>
   );
 }

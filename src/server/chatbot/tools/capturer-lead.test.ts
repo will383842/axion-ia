@@ -227,12 +227,16 @@ describe("capturer_lead — PII chiffré au repos (AES-256-GCM)", () => {
     expect(data.contactEmailHash).toBe(hashEmailForLookup("jean@acme.fr"));
   }, 20_000);
 
-  it("notifie l'équipe et écrit au visiteur avec la valeur EN CLAIR", async () => {
+  it("notifie l'équipe (prénom + initiale) et écrit au visiteur avec la valeur EN CLAIR", async () => {
     await capturerLead({ ...validInput, telephone: "+33611223344" }, ctx);
 
+    // Décision du 11/10/2026 : ni coordonnées ni besoin dans Telegram.
     const corps = (sendTelegramMock.mock.calls[0]![0] as { body: string }).body;
-    expect(corps).toContain("jean@acme.fr");
-    expect(corps).toContain("Jean Dupont");
+    expect(corps).toContain("Jean D.");
+    expect(corps).not.toContain("Dupont");
+    expect(corps).not.toContain("jean@acme.fr");
+    expect(corps).not.toContain("611223344");
+    expect(corps).not.toContain("Audit IA pour ma PME");
     expect(corps).not.toContain("enc:v1:");
 
     expect(enqueueEmailMock.mock.calls[0]![1]).toBe("jean@acme.fr");

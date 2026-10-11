@@ -22,6 +22,8 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { proposerMissionFormateur } from "@/server/qualiopi/trainers/mission-formateur";
+import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
   detecterIndisponibiliteFormateur,
   formulerConflit,
@@ -290,6 +292,8 @@ export async function createSessionAction(
   // SLUGS en production alors que la garde compare des UUID (constat F11), donc
   // `includes()` n'y serait jamais vrai et tout formateur serait refusé.
   let tarifFormateurCents: number | null = null;
+  /** Lot S2 (N5) — double emploi d'un salarié : signalé, jamais bloquant. */
+  let doubleEmploiSignale: string | null = null;
   if (v.trainerId !== undefined) {
     let trainer:
       | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
@@ -327,6 +331,39 @@ export async function createSessionAction(
     );
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
+    }
+
+    // 🔴 N5 (lot S2) — la création était la seule porte sans contrôle de double
+    // emploi : un formateur pouvait être posé sur deux formations le même jour.
+    // Même contrôle que la fiche de session (`constaterDoubleEmploi`). Bloquant
+    // pour un indépendant ; signalé pour un salarié (les conflits actuels ne
+    // sont pas encore comptés). Interrupteur `formateurs.affectation_sure`
+    // arrêté : aucun contrôle, comme avant.
+    if (await interrupteurAllume("affectation_sure")) {
+      let conflit: string | null = null;
+      try {
+        conflit = await constaterDoubleEmploi(v.trainerId, {
+          key: "formation:nouvelle",
+          debut: v.dateDebut,
+          fin: v.dateFin,
+          statut: "planifiee",
+        });
+      } catch {
+        if (trainer.statut === "sous_traitant") {
+          return {
+            error:
+              "Assignation refusée : le planning du formateur est illisible pour l'instant. Réessayez.",
+          };
+        }
+      }
+      if (conflit !== null) {
+        if (trainer.statut === "sous_traitant") {
+          return {
+            error: `Assignation refusée : ${conflit} Libérez d'abord cette prestation, ou choisissez un autre formateur.`,
+          };
+        }
+        doubleEmploiSignale = `Attention : ${conflit}`;
+      }
     }
 
     // Tarif FIGÉ à l'affectation, comme le fait l'assignation depuis la fiche :
@@ -557,6 +594,7 @@ export async function createSessionAction(
   // arrive demain empêcherait de planifier, et une garde qui empêche de
   // travailler finit par être retirée.
   const avertissements = await avertissementsAffectation(v.trainerId ?? null);
+  if (doubleEmploiSignale !== null) avertissements.push(doubleEmploiSignale);
 
   // 2026-09-03 — seconde voie d'affectation : la mission est PROPOSÉE au
   // formateur ici aussi, sinon une session créée avec son formateur ne lui

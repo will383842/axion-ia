@@ -3,7 +3,7 @@
 
 import type { RoleAdmin } from "@/server/auth/habilitations";
 
-import type { Destinataire, Ecart, Gravite, Registre, Traitement } from "./schema";
+import type { Destinataire, Ecart, Gravite, Traitement } from "./schema";
 
 /** Les tons de `AdminBadge` — repris tels quels, pour ne pas inventer de couleur. */
 export type TonPastille = "neutral" | "info" | "success" | "warning" | "destructive";
@@ -24,12 +24,14 @@ export const TON_GRAVITE: Readonly<Record<Gravite, TonPastille>> = {
   faible: "neutral",
 };
 
-export function ecartsOuverts(t: Pick<Traitement, "ecarts">): Ecart[] {
+export function ecartsOuverts<E extends Pick<Ecart, "statut">>(t: {
+  ecarts: ReadonlyArray<E>;
+}): E[] {
   return t.ecarts.filter((e) => e.statut === "ouvert");
 }
 
 /** La gravité la plus forte parmi les écarts OUVERTS, ou `null` s'il n'y en a aucun. */
-export function graviteMax(t: Pick<Traitement, "ecarts">): Gravite | null {
+export function graviteMax(t: { ecarts: ReadonlyArray<Ecart> }): Gravite | null {
   let max: Gravite | null = null;
   for (const e of ecartsOuverts(t)) {
     if (max === null || RANG[e.gravite] < RANG[max]) max = e.gravite;
@@ -38,29 +40,56 @@ export function graviteMax(t: Pick<Traitement, "ecarts">): Gravite | null {
 }
 
 /** La pastille d'état d'une activité : vert « À jour » sans écart ouvert. */
-export function pastilleEtat(t: Pick<Traitement, "ecarts">): { libelle: string; ton: TonPastille } {
+export function pastilleEtat(t: { ecarts: ReadonlyArray<Ecart> }): {
+  libelle: string;
+  ton: TonPastille;
+} {
   const g = graviteMax(t);
   if (g === null) return { libelle: "À jour", ton: "success" };
   return { libelle: LIBELLE_GRAVITE[g], ton: TON_GRAVITE[g] };
 }
 
-export interface EcartListe extends Ecart {
+export type EcartListe<E extends Ecart = Ecart> = E & {
   traitementId: string;
   traitementNom: string;
+};
+
+interface RegistreLisible<E extends Ecart> {
+  traitements: ReadonlyArray<Pick<Traitement, "id" | "nom"> & { ecarts: ReadonlyArray<E> }>;
 }
 
-/** Tous les écarts ouverts du registre, du plus grave au moins grave (ordre stable). */
-export function pointsACorriger(registre: Registre): EcartListe[] {
+/** Les écarts d'un statut, du plus grave au moins grave (ordre stable). */
+function ecartsDuStatut<E extends Ecart>(
+  registre: RegistreLisible<E>,
+  statut: Ecart["statut"],
+): EcartListe<E>[] {
   return registre.traitements
     .flatMap((t) =>
-      ecartsOuverts(t).map((e) => ({ ...e, traitementId: t.id, traitementNom: t.nom })),
+      t.ecarts
+        .filter((e) => e.statut === statut)
+        .map((e) => ({ ...e, traitementId: t.id, traitementNom: t.nom })),
     )
     .map((e, i) => ({ e, i }))
     .sort((a, b) => RANG[a.e.gravite] - RANG[b.e.gravite] || a.i - b.i)
     .map(({ e }) => e);
 }
 
-export function compterOuverts(registre: Registre): { total: number; graves: number } {
+/** Tous les écarts ouverts du registre, du plus grave au moins grave (ordre stable). */
+export function pointsACorriger<E extends Ecart>(registre: RegistreLisible<E>): EcartListe<E>[] {
+  return ecartsDuStatut(registre, "ouvert");
+}
+
+/** Les écarts corrigés : ils restent visibles (sous-onglet « Corrigés »). */
+export function pointsCorriges<E extends Ecart>(registre: RegistreLisible<E>): EcartListe<E>[] {
+  return ecartsDuStatut(registre, "corrige");
+}
+
+export function compterOuverts<E extends Ecart>(
+  registre: RegistreLisible<E>,
+): {
+  total: number;
+  graves: number;
+} {
   const tous = pointsACorriger(registre);
   return {
     total: tous.length,
@@ -139,7 +168,7 @@ export function figureSurPagePublique(
 
 /** Les destinataires du registre absents de la page publique, dédoublonnés par nom. */
 export function destinatairesAbsents(
-  registre: Registre,
+  registre: { traitements: ReadonlyArray<Pick<Traitement, "destinataires">> },
   nomsPublics: ReadonlyArray<string>,
 ): Destinataire[] {
   const vus = new Map<string, Destinataire>();

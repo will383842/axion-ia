@@ -66,18 +66,20 @@ describe("`D6-5-C1` — le message WhatsApp ne porte aucune donnée personnelle"
     }
   });
 
-  it("🔴 le TÉMOIN : ces mêmes données partent bien sur Telegram", () => {
+  it("🔴 le TÉMOIN : Telegram porte le prénom, l'initiale, la ville et l'entreprise", () => {
     // 🔑 Sans ce témoin, le test ci-dessus passerait au vert même si le
-    // formateur Telegram cessait lui aussi de porter le détail — et on aurait
-    // « corrigé » le problème en privant Will de ce qui lui sert à rappeler.
-    // C'est le partage qu'on garde : WhatsApp prévient, Telegram renseigne.
+    // formateur Telegram cessait de porter quoi que ce soit d'utile. Depuis le
+    // 11/10/2026, Telegram dit QUI (prénom + initiale), d'où, pour quelle
+    // entreprise, et renvoie à la fiche — jamais les coordonnées ni le message.
     // ⚠️ `formatNotificationPlain` et non `formatNotification` : le second
-    // échappe le MarkdownV2 (`exemple\.fr`), et le témoin échouerait sur
-    // l'échappement au lieu de dire ce qu'il doit dire.
+    // échappe le MarkdownV2, et le témoin échouerait sur l'échappement.
     const telegram = formatNotificationPlain(EVENEMENT, "info").text;
-    expect(telegram).toContain("Jeanne Dupont");
-    expect(telegram).toContain("jeanne.dupont@exemple.fr");
-    expect(telegram, "et le message, que Will lit pour rappeler").toContain("douze personnes");
+    expect(telegram).toContain("Jeanne D.");
+    expect(telegram).toContain("Grenoble");
+    expect(telegram).toContain("Exemple SAS");
+    expect(telegram).not.toContain("Dupont");
+    expect(telegram).not.toContain("jeanne.dupont@exemple.fr");
+    expect(telegram, "le message se lit sur la fiche").not.toContain("douze personnes");
   });
 
   it("il prévient quand même : nature de l'alerte et heure", () => {

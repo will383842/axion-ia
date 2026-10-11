@@ -15,6 +15,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -34,6 +35,8 @@ interface Payload {
    * d'avant, à l'octet près.
    */
   mission?: boolean;
+  /** Lien signé « Supprimer ma candidature » (2026-10-11). */
+  lienSuppression?: string;
 }
 
 /** F0 — texte validé (`TEXTES-A-VALIDER`, bloc F0). Français seulement. */
@@ -113,6 +116,7 @@ export function CandidatureRecueEmail({
           <br />
           {MISSION.suite}
         </Text>
+        <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
       </EmailLayout>
     );
   }
@@ -132,6 +136,7 @@ export function CandidatureRecueEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.reponse}</Text>
       {p.lienDepot ? <Text style={emailStyles.paragraphStyle}>{t.depot}</Text> : null}
+      <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
     </EmailLayout>
   );
 }
