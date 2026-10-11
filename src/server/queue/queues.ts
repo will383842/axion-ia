@@ -2049,6 +2049,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "10 8 * * *",
         jobId: "formation-crons-missions-formateur-cron",
       },
+      // Lots L11c et L11h (2026-10-11) — le MOTEUR des missions de formateur
+      // indépendant, HORAIRE (lettre due, élément manquant, choix suivant). Il
+      // ne travaille que de 8 h à 19 h, heure de Paris, et ne lit rien tant que
+      // ses interrupteurs sont coupés. `:25`, minute libre des autres files.
+      {
+        type: "formation-crons.moteur-missions",
+        pattern: "25 * * * *",
+        jobId: "formation-crons-moteur-missions-cron",
+      },
       {
         type: "formation-crons.formateur-rappel-j1",
         pattern: "40 * * * *",

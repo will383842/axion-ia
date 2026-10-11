@@ -46,6 +46,7 @@ import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/in
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
+import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -645,7 +646,9 @@ async function passerLesSansReponse(now: Date): Promise<number> {
       id: true,
       sessionId: true,
       trainerId: true,
+      solliciteAt: true,
       session: { select: { formateurPrincipalId: true } },
+      trainer: { select: { statut: true, prenom: true, email: true } },
     },
   });
 
@@ -682,6 +685,8 @@ async function passerLesSansReponse(now: Date): Promise<number> {
         retireById: null,
         now,
       });
+      // Lot L11c — F24 à l'indépendant (interrupteur `formateurs.lettre_auto`).
+      if (m.trainer !== undefined && m.trainer !== null) await notifierPropositionClose(m);
       n += 1;
     } catch (err) {
       console.error(

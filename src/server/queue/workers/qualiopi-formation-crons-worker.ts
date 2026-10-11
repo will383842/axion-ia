@@ -174,6 +174,7 @@ export type FormationCronJobType =
   | "formation-crons.incidents-rappels"
   // Cycle de vie du formateur sur une session (2026-09-03).
   | "formation-crons.missions-formateur"
+  | "formation-crons.moteur-missions"
   | "formation-crons.formateur-convocation-j7"
   | "formation-crons.formateur-rappel-j1"
   // 🔴 Rappel de la VEILLE au STAGIAIRE (2026-09-05, ADR 0048 §4.3). À ne pas
@@ -2066,6 +2067,32 @@ async function handleDemandesContresignature(): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Horaire :25 — le moteur des missions de formateur indépendant (lots L11c et
+ * L11h). Chaque étape lit ses interrupteurs et sa fenêtre (8 h - 19 h, Paris) :
+ * coupés, rien n'est lu au-delà d'eux.
+ */
+async function handleMoteurMissions(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  const maintenant = new Date();
+  // Import À LA DEMANDE : le moteur tire le générateur de lettres et
+  // l'adaptateur d'envoi, que ce worker n'a pas à charger au démarrage.
+  const { dansLaFenetre, passerMoteurMissions } =
+    await import("@/server/qualiopi/formateurs-independants/moteur-mission");
+  const { proposerRangsSuivants } =
+    await import("@/server/qualiopi/formateurs-independants/choix-formateur-service");
+  const moteur = await passerMoteurMissions(maintenant);
+  const suivants = dansLaFenetre(maintenant)
+    ? await proposerRangsSuivants(maintenant)
+    : { proposes: 0, aPourvoir: 0 };
+  if (moteur.reevaluees + suivants.proposes + suivants.aPourvoir > 0) {
+    console.log(
+      `[formation-crons] moteur-missions: ${moteur.reevaluees} mission(s) réévaluée(s), ` +
+        `${moteur.lettres} lettre(s) émise(s), ${suivants.proposes} choix suivant(s) proposé(s)`,
+    );
+  }
+}
+
+/**
  * Quotidien 08:10 UTC — relance les propositions de mission sans réponse
  * depuis trois jours (une fois), puis expire celles dont la session a démarré.
  * Tout le travail vit dans le service : le cron ne fait que l'appeler et dire
@@ -2621,6 +2648,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.incidents-rappels": handleIncidentsRappels,
   "formation-crons.missions-formateur": handleMissionsFormateur,
+  "formation-crons.moteur-missions": handleMoteurMissions,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,

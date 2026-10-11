@@ -452,6 +452,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.rang_suivant",
   },
+  // Lot L11d — la page « Missions » de la console (qui doit agir, étape de
+  // chaque mission, même calcul que le moteur). Coupé : la page n'existe pas.
+  missions_console: {
+    ...envoi(
+      "Page « Missions »",
+      "La console liste les missions des formateurs indépendants groupées par « qui doit agir » (Vous, le formateur, le client), avec l'étape de chacune.",
+    ),
+    cle: "formateurs.missions_console",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -480,6 +489,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   choix_cartes: [],
   // F48 (désistement reçu) est un texte neuf.
   rang_suivant: [exige("textes_valides")],
+  missions_console: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

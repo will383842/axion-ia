@@ -616,8 +616,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre lettre de mission est prête à signer",
         objetPropose: null,
         paragraphes: [
-          "Votre lettre de mission pour [intitulé] est prête : [N] journée(s) et [M] demi-journée(s), du [date] au [date], à [lieu].",
-          "Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT), le forfait de déplacement [le cas échéant] et la date limite de paiement : au plus tard le [date], 30 jours après la dernière journée.",
+          "Votre lettre de mission pour [intitulé] est prête : [N] journée(s) et [M] demi-journée(s), du [date de début] au [date de fin], à [lieu].",
+          "Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT), le forfait de déplacement [le cas échéant] et la date limite de paiement : au plus tard le [date limite], 30 jours après la dernière journée.",
         ],
         boutons: ["Signer ma lettre"],
       },
@@ -744,7 +744,7 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre mission : il nous manque un élément",
         objetPropose: "Pour vous confier la mission [intitulé], il nous manque un élément",
         paragraphes: [
-          "Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].",
+          "Pour vous confier cette mission, il nous manque : [motif].",
           "Déposez-le depuis votre espace : la lettre partira aussitôt.",
         ],
         boutons: ["Déposer depuis mon espace"],

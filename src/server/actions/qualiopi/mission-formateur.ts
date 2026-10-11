@@ -24,6 +24,7 @@ import {
   proposerMissionFormateur,
   repondreMission,
   REPONSES_MISSION,
+  STATUTS_ACCORD_DONNE,
   FAITS_ABSENCE,
   consignerAccordHorsOutil,
   MOTIF_ACCORD_HORS_OUTIL_MIN,
@@ -39,6 +40,7 @@ import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/in
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { HABILITATION_ACTIVE_WHERE, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { proposerRangSuivant } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
+import { reevaluerMission } from "@/server/qualiopi/formateurs-independants/moteur-mission";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
 type ActionResult<T> = { data: T } | { error: string };
@@ -78,7 +80,7 @@ export async function repondreMissionParJetonAction(input: {
     ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
   });
   if (!r.ok) return { error: r.erreur };
-  await apresRefus(r.statut, r.sessionId);
+  await apresReponse(r.statut, r.sessionId, mission.id);
   return { data: { statut: r.statut, sessionId: r.sessionId } };
 }
 
@@ -120,17 +122,28 @@ export async function repondreMissionFormateurAction(input: {
     ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
   });
   if (!r.ok) return { error: r.erreur };
-  await apresRefus(r.statut, r.sessionId);
+  await apresReponse(r.statut, r.sessionId, input.missionId);
   return { data: { statut: r.statut, sessionId: r.sessionId } };
 }
 
 /**
- * Lot L11h — après un refus, le choix suivant est proposé seul (interrupteur
- * `formateurs.rang_suivant` ; coupé : rien). Ne lève jamais.
+ * Après la réponse :
+ *  - lot L11h — un refus fait proposer le choix suivant (interrupteur
+ *    `formateurs.rang_suivant` ; coupé : rien) ;
+ *  - lot L11c — un accord réveille le moteur des missions, qui émet la lettre
+ *    si elle est due (interrupteurs `formateurs.lettre_auto` et
+ *    `formateurs.lettre_v2` ; coupés : rien).
+ * Ne lève jamais.
  */
-async function apresRefus(statut: MissionFormateurStatut, sessionId: string): Promise<void> {
-  if (statut !== "refusee") return;
-  await proposerRangSuivant(sessionId, "refus", new Date());
+async function apresReponse(
+  statut: MissionFormateurStatut,
+  sessionId: string,
+  missionId: string,
+): Promise<void> {
+  if (statut === "refusee") await proposerRangSuivant(sessionId, "refus", new Date());
+  if ((STATUTS_ACCORD_DONNE as ReadonlyArray<MissionFormateurStatut>).includes(statut)) {
+    await reevaluerMission(missionId, "reponse", new Date());
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
