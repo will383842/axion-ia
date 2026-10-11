@@ -168,6 +168,7 @@ export async function validateTrainerDocumentAction(
     let piece: {
       type: string;
       fichierUrl: string | null;
+      contenu?: { trainerDocumentId: string } | null;
       dateEmission?: Date | null;
       dateExpiration: Date | null;
       rejetMotif?: string | null;
@@ -178,6 +179,9 @@ export async function validateTrainerDocumentAction(
         select: {
           type: true,
           fichierUrl: true,
+          // Lot L5b (W5 I-2) : un CV DÉPOSÉ par le formateur n'a pas d'adresse,
+          // ses octets sont en base — il porte bien un fichier.
+          contenu: { select: { trainerDocumentId: true } },
           dateEmission: true,
           dateExpiration: true,
           rejetMotif: true,
@@ -279,18 +283,29 @@ export async function deleteTrainerDocumentAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
 
-  const le = new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const maintenant = new Date();
+  const le = maintenant.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const motif = `Pièce retirée du dossier le ${le}.`;
+  // 🔑 Lot L5b — archivage DURCI : date et auteur posés (`archiveAt`,
+  // `archiveParId`), et jamais deux fois : l'écriture conditionnelle garde le
+  // premier auteur. La marque dans `rejetMotif` reste, pour les lecteurs qui
+  // ne lisent qu'elle.
+  let archivees: number;
   try {
-    await prisma.trainerDocument.update({
-      where: { id },
+    ({ count: archivees } = await prisma.trainerDocument.updateMany({
+      where: { id, archiveAt: null },
       data: {
         statutValidation: "rejete",
-        rejetMotif: `${MARQUE_ARCHIVE} Pièce retirée du dossier le ${le}.`,
+        rejetMotif: `${MARQUE_ARCHIVE} ${motif}`,
+        archiveAt: maintenant,
+        archiveParId: session.userId,
+        archiveMotif: motif,
       },
-    });
+    }));
   } catch {
     return { error: "Erreur lors de l'archivage de la pièce." };
   }
+  if (archivees === 0) return { error: "Pièce introuvable ou déjà archivée." };
 
   await logQualiopiActivity({
     action: "qualiopi.trainer_document.archive",

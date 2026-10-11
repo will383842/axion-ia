@@ -38,6 +38,8 @@ export async function listTrainerDocuments(trainerId: string): Promise<DocumentC
         // 🔴 I21-02 : sans le fichier, le moteur retenait un CV validé qui
         // n'avait rien derrière (« Dossier complet », pas d'alerte « CV absent »).
         fichierUrl: true,
+        // Lot L5b : une pièce déposée par le formateur n'a pas d'adresse.
+        contenu: { select: { trainerDocumentId: true } },
         dateEmission: true,
         dateExpiration: true,
       },
@@ -65,6 +67,8 @@ export interface TrainerDocumentRow {
    * « Validé » en vert là où l'écran de conformité la déclarait absente.
    */
   ecarteeDeLaPreuve: PieceValideeEcartee | null;
+  /** Octets déposés en base par le formateur (lot L5b) : lisibles par la route console. */
+  aContenu: boolean;
 }
 
 /**
@@ -89,10 +93,15 @@ export async function listTrainerDocumentsFull(trainerId: string): Promise<Train
         statutValidation: true,
         rejetMotif: true,
         createdAt: true,
+        contenu: { select: { trainerDocumentId: true } },
       },
       orderBy: [{ createdAt: "desc" }],
     });
-    return lignes.map((l) => ({ ...l, ecarteeDeLaPreuve: pieceValideeEcartee(l, maintenant) }));
+    return lignes.map(({ contenu, ...l }) => ({
+      ...l,
+      ecarteeDeLaPreuve: pieceValideeEcartee({ ...l, contenu }, maintenant),
+      aContenu: contenu !== null && contenu !== undefined,
+    }));
   } catch {
     return [];
   }

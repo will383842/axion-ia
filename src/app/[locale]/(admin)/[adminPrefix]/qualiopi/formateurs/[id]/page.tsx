@@ -744,7 +744,11 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       <TrainerCompetencesPanel trainerId={trainer.id} domainesInitiaux={domainesInitiaux} />
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
-      <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+      <TrainerDocumentsPanel
+        trainerId={trainer.id}
+        documents={documents}
+        basePiecesDeposees={`${base}/${trainer.id}/pieces`}
+      />
 
       {/*
         Lettres de mission du formateur — contreseing de l'organisme (2026-08-01).
