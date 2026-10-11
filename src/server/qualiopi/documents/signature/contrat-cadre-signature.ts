@@ -178,7 +178,12 @@ export function siretDuContrat(metadata: unknown): string | null {
   if (typeof metadata !== "object" || metadata === null) return null;
   const rd = (metadata as Record<string, unknown>)["renderData"];
   if (typeof rd !== "object" || rd === null) return null;
-  const c = (rd as Record<string, unknown>)["cocontractant"];
+  // 🔴 L'instantané écrit par `documents-service.ts` est `{ data, identite,
+  // gabaritVersion }` : le cocontractant vit sous `data`. Le lire à la racine
+  // rendait `null` pour toute pièce réelle, donc un refus à chaque signature.
+  const data = (rd as Record<string, unknown>)["data"];
+  if (typeof data !== "object" || data === null) return null;
+  const c = (data as Record<string, unknown>)["cocontractant"];
   if (typeof c !== "object" || c === null) return null;
   const v = (c as Record<string, unknown>)["siret"];
   const s = typeof v === "string" ? v.replace(/\s+/g, "") : "";

@@ -33,6 +33,12 @@ export interface VersionArretee {
   /** Fichier source, relatif à `templates/`. */
   readonly fichier: string;
   readonly Composant: ComposantPiece;
+  /**
+   * Lot L7d — ce qui change pour le signataire, en une phrase courte, tel que l'e-mail
+   * « nouvelle version » le cite. ABSENT tant que la direction ne l'a pas écrit : l'envoi
+   * de la nouvelle version est alors refusé, rien n'est préparé ni envoyé.
+   */
+  readonly resumePourLeFormateur?: string;
 }
 
 export const VERSIONS_ARRETEES: Readonly<
@@ -123,4 +129,10 @@ export function verifierVersionDuComposant(
       );
     }
   }
+}
+
+/** Lot L7d — le résumé des changements de cette version arrêtée, ou `null`. */
+export function resumeVersionArretee(type: TypeGabaritSignable, version: number): string | null {
+  const r = VERSIONS_ARRETEES[type]?.[version]?.resumePourLeFormateur?.trim() ?? "";
+  return r === "" ? null : r;
 }

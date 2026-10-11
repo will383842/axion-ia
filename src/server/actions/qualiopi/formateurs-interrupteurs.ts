@@ -533,3 +533,21 @@ export async function basculerFormateursFinCollaborationAction(
 ): Promise<EtatBascule> {
   return basculerSignature("fin_collaboration", formData);
 }
+export async function basculerFormateursContratCadreEmissionAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("contrat_cadre_emission", formData);
+}
+export async function basculerFormateursMiseANiveauAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("mise_a_niveau", formData);
+}
+export async function basculerFormateursNouvelleVersionContratAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("nouvelle_version_contrat", formData);
+}

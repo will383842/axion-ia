@@ -45,6 +45,9 @@ import {
   basculerFormateursPresentationPayeeAction,
   basculerFormateursDas2CommunAction,
   basculerFormateursFinCollaborationAction,
+  basculerFormateursContratCadreEmissionAction,
+  basculerFormateursMiseANiveauAction,
+  basculerFormateursNouvelleVersionContratAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -110,6 +113,9 @@ const ACTIONS_SIGNATURE: Record<
   presentation_payee: basculerFormateursPresentationPayeeAction,
   das2_commun: basculerFormateursDas2CommunAction,
   fin_collaboration: basculerFormateursFinCollaborationAction,
+  contrat_cadre_emission: basculerFormateursContratCadreEmissionAction,
+  mise_a_niveau: basculerFormateursMiseANiveauAction,
+  nouvelle_version_contrat: basculerFormateursNouvelleVersionContratAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =

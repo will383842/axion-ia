@@ -37,7 +37,8 @@ const V2 = { renderData: { gabaritVersion: 2 } };
 const DOC = "11111111-1111-4111-8111-111111111111";
 const MAINTENANT = new Date("2026-10-12T09:00:00Z");
 const SIRET = "98765432100017";
-const V3 = { renderData: { gabaritVersion: 3, cocontractant: { siret: SIRET } } };
+// La forme RÉELLE de l'instantané (`documents-service.ts`) : `{ data, identite, gabaritVersion }`.
+const V3 = { renderData: { gabaritVersion: 3, data: { cocontractant: { siret: SIRET } } } };
 /** Preuve canonique d'un registre qui a CONFIRMÉ l'entreprise active. */
 const PREUVE_ACTIVE = {
   entreprise: {
