@@ -134,3 +134,94 @@ export function remplirModele(texte: string, valeurs: Record<string, string | nu
     return valeur != null && valeur.trim().length > 0 ? valeur : entier;
   });
 }
+
+// ─── Lot L0c-2 — modèles « formateur indépendant » ───────────────────────────
+//
+// Textes de `TEXTES-A-VALIDER` (blocs F1, F6, F7), adaptés au composeur : un
+// lien à insérer remplace le bouton. Proposés SEULEMENT sur une candidature de
+// formateur freelance, interrupteur `formateurs.modeles_composeur` allumé.
+// ⚠️ F6 promettait « Nous gardons votre candidature » : retiré ici, la
+// conservation dépend de la case vivier (cf. les tests de ce fichier).
+
+export const MODELES_REPONSE_FORMATEUR_IDS = [
+  "formateur-proposition-echange",
+  "formateur-non-retenu",
+  "formateur-absent",
+] as const;
+
+export type ModeleReponseFormateurId = (typeof MODELES_REPONSE_FORMATEUR_IDS)[number];
+
+export interface ModeleReponseFormateur extends Omit<ModeleReponse, "id"> {
+  readonly id: ModeleReponseFormateurId;
+}
+
+/** Tous les identifiants qu'un composeur peut envoyer (source du `z.enum` des actions). */
+export const MODELES_COMPOSEUR_IDS = [
+  ...MODELES_REPONSE_IDS,
+  ...MODELES_REPONSE_FORMATEUR_IDS,
+] as const;
+
+export type ModeleComposeurId = (typeof MODELES_COMPOSEUR_IDS)[number];
+
+export const MODELES_REPONSE_FORMATEUR: readonly ModeleReponseFormateur[] = [
+  {
+    id: "formateur-proposition-echange",
+    libelle: "Proposition d'un échange",
+    quand:
+      "Proposer l'échange de 20 minutes. Insérez le lien « Réserver un échange » à l'endroit indiqué.",
+    objet: "Choisissez votre moment pour notre échange",
+    corps: [
+      "Bonjour {prenom},",
+      "",
+      "Merci pour votre candidature.",
+      "",
+      "Nous vous proposons un échange de 20 minutes en visio pour faire connaissance, vous présenter comment fonctionnent les missions que nous confions à des formateurs indépendants, et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
+      "",
+      "Choisissez le moment qui vous convient avec ce lien :",
+      "",
+      "— *(insérez ici le lien « Réserver un échange »)*",
+    ].join("\n"),
+  },
+  {
+    id: "formateur-non-retenu",
+    libelle: "Non retenu après l'échange",
+    quand: "Après l'échange, quand vous ne donnez pas suite.",
+    objet: "Merci pour notre échange",
+    corps: [
+      "Bonjour {prenom},",
+      "",
+      "Merci pour le temps que vous nous avez consacré.",
+      "",
+      "Nous ne donnons pas suite pour le moment : nos besoins actuels ne correspondent pas à votre profil.",
+      "",
+      "Si vous préférez que nous effacions vos données, répondez simplement à ce message : Williams Jullin, responsable d'Axion-IA, traite votre demande. Nous rendons alors votre fiche anonyme et ne gardons que ce que la loi nous impose de conserver.",
+    ].join("\n"),
+  },
+  {
+    id: "formateur-absent",
+    libelle: "Absent à l'échange",
+    quand: "La personne n'est pas venue à l'échange. Une seule fois.",
+    objet: "Nous vous avons attendu",
+    corps: [
+      "Bonjour {prenom},",
+      "",
+      "Nous vous avons attendu pour notre échange. Un imprévu arrive à tout le monde.",
+      "",
+      "Si la proposition vous intéresse toujours, choisissez un nouveau créneau avec ce lien. Sinon, vous n'avez rien à faire : nous ne vous relancerons pas.",
+      "",
+      "— *(insérez ici le lien « Réserver un échange »)*",
+    ].join("\n"),
+  },
+];
+
+/** Les modèles proposés par le composeur. Coupé : ceux d'aujourd'hui, et eux seuls. */
+export function modelesDuComposeur(o: {
+  readonly modelesFormateur: boolean;
+}): ReadonlyArray<ModeleReponse | ModeleReponseFormateur> {
+  return o.modelesFormateur ? [...MODELES_REPONSE, ...MODELES_REPONSE_FORMATEUR] : MODELES_REPONSE;
+}
+
+/** Le serveur revérifie : un modèle formateur n'est accepté que s'il est proposé. */
+export function modeleAutorise(id: string, o: { readonly modelesFormateur: boolean }): boolean {
+  return modelesDuComposeur(o).some((m) => m.id === id);
+}

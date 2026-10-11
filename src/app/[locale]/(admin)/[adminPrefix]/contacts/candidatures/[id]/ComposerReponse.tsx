@@ -34,9 +34,9 @@ import {
 // y fait planter la page entière au chargement.
 import { LIBELLES_ERREUR_REPONSE } from "@/features/admin-job-applications/libelles-erreurs";
 import {
-  MODELES_REPONSE,
+  modelesDuComposeur,
   remplirModele,
-  type ModeleReponseId,
+  type ModeleComposeurId,
 } from "@/content/recrutement/modeles-reponse";
 import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
 import { OBJET_MAX } from "@/lib/email/objet-email";
@@ -66,6 +66,12 @@ interface Props {
   readonly poste: string;
   /** Boutons « Insérer un lien » proposés à côté du corps du message. */
   readonly liensInsertion?: readonly LienInsertionComposeur[];
+  /**
+   * Lot L0c-2 — modèles « formateur indépendant » (candidature de formateur
+   * freelance, interrupteur `formateurs.modeles_composeur`). Faux : la liste
+   * d'aujourd'hui.
+   */
+  readonly modelesFormateur?: boolean;
 }
 
 /** Rendu de l'aperçu — mêmes fragments que l'e-mail, apparence de la console. */
@@ -100,10 +106,12 @@ export function ComposerReponse({
   prenom,
   poste,
   liensInsertion = [],
+  modelesFormateur = false,
 }: Props): React.ReactElement {
+  const modeles = modelesDuComposeur({ modelesFormateur });
   const router = useRouter();
   const [ouvert, setOuvert] = useState(false);
-  const [modele, setModele] = useState<ModeleReponseId>("libre");
+  const [modele, setModele] = useState<ModeleComposeurId>("libre");
   const [objet, setObjet] = useState("");
   const [corps, setCorps] = useState("");
   const [note, setNote] = useState("");
@@ -139,9 +147,9 @@ export function ComposerReponse({
     });
   }
 
-  function choisirModele(id: ModeleReponseId): void {
+  function choisirModele(id: ModeleComposeurId): void {
     setModele(id);
-    const m = MODELES_REPONSE.find((x) => x.id === id);
+    const m = modeles.find((x) => x.id === id);
     if (!m) return;
     const valeurs = { prenom, poste };
     // 🔑 On ÉCRASE, y compris avec du vide pour « Message libre ». Fusionner
@@ -245,15 +253,15 @@ export function ComposerReponse({
           id="modele"
           className="admin-input"
           value={modele}
-          onChange={(e) => choisirModele(e.target.value as ModeleReponseId)}
+          onChange={(e) => choisirModele(e.target.value as ModeleComposeurId)}
         >
-          {MODELES_REPONSE.map((m) => (
+          {modeles.map((m) => (
             <option key={m.id} value={m.id}>
               {m.libelle}
             </option>
           ))}
         </select>
-        <p className="admin-meta-small">{MODELES_REPONSE.find((m) => m.id === modele)?.quand}</p>
+        <p className="admin-meta-small">{modeles.find((m) => m.id === modele)?.quand}</p>
       </div>
 
       <div className="admin-field">

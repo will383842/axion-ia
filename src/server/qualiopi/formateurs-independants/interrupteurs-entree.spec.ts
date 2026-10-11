@@ -43,4 +43,9 @@ describe("interrupteurs de l'entrée", () => {
     expect(cleSettingEntree("menu_freelance")).toBe("formateurs.menu_freelance");
     expect(etatsEntreeParDefaut().menu_freelance).toBe(false);
   });
+
+  it("L0c-2 — les modèles « formateur » du composeur, coupés par défaut", () => {
+    expect(cleSettingEntree("modeles_composeur")).toBe("formateurs.modeles_composeur");
+    expect(etatsEntreeParDefaut().modeles_composeur).toBe(false);
+  });
 });

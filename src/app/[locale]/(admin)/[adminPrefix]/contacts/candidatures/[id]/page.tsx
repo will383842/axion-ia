@@ -1,6 +1,8 @@
 // Détail d'une candidature — PII déchiffrées, réponses lisibles (label question),
 // download CV authentifié, formulaire de suivi (statut/notes/assignation/suppr).
 
+import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import Link from "next/link";
 import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
@@ -169,6 +171,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // U3 — une candidature de FORMATEUR (freelance ou salarié) ne reçoit ni le
   // lien de l'échange apporteur, ni la proposition du réseau d'apporteurs.
   const candidatureFormateur = estCandidatureFormateur(indicesPoste);
+  // Lot L0c-2 — modèles « formateur » du composeur (`formateurs.modeles_composeur`).
+  const modelesFormateur =
+    estCandidatureFormateurFreelance(indicesPoste) && (await lireEtatsEntree()).modeles_composeur;
 
   // L10/U6 — « Fiche formateur ». La carte n'apparaît que si la fiche existe,
   // ou si la passerelle s'ouvre ET que la personne connectée peut référencer
@@ -435,7 +440,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             // dans `ApplicationsV2.tsx`.
             liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL, {
               candidatureFormateur,
+              ...(modelesFormateur ? { echangeFormateurPour: a.id } : {}),
             })}
+            modelesFormateur={modelesFormateur}
           />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
