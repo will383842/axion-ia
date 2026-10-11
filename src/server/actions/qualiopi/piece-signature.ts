@@ -54,7 +54,20 @@ import {
 } from "@/server/qualiopi/documents/signature/document-signature-service";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
+import {
+  codeRequis,
+  masquerAdresse,
+  memeAdresse,
+  objectionContratCadre,
+} from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
+import {
+  CodeSignatureIndisponible,
+  emettreCodeSignature,
+  verifierCodeSignature,
+} from "@/server/qualiopi/documents/signature/code-signature";
+import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
+import { envoyer as envoyerFormateur } from "@/server/qualiopi/formateurs-independants/envois";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -68,6 +81,8 @@ import { requireAdminWrite, logQualiopiActivity } from "./_guards";
  */
 const LIMITE_PAR_JETON = { limit: 12, windowSec: 60 } as const;
 const LIMITE_PAR_IP = { limit: 600, windowSec: 60 } as const;
+/** Code de signature (contrat-cadre v3) : 3 envois par heure et par lien, au plus. */
+const LIMITE_CODE_PAR_JETON = { limit: 3, windowSec: 3600 } as const;
 
 export type RefusSignaturePiece =
   | RefusSignatureDocument
@@ -81,7 +96,11 @@ export type RefusSignaturePiece =
   /** Le lien est valide, mais la pièce n'est plus en état d'être signée. */
   | "piece_non_signable_maintenant"
   | "role_insuffisant"
-  | "trop_de_tentatives";
+  | "trop_de_tentatives"
+  /** Contrat-cadre v3 : la signature exige le code reçu par e-mail (lot L7c). */
+  | "code_requis"
+  | "code_refuse"
+  | "code_indisponible";
 
 export type ResultatSignaturePiece =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -103,6 +122,11 @@ const entreeJetonSchema = z.object({
   token: z.string().min(1).max(4000),
   methode: z.enum(["trace", "confirmation_accessible"]),
   imageDataUrl: z.string().max(3_000_000).optional(),
+  /** Code à usage unique — exigé pour le seul contrat-cadre v3 (lot L7c). */
+  code: z
+    .string()
+    .regex(/^\d{6}$/)
+    .optional(),
 });
 
 const entreeContresignatureSchema = z.object({
@@ -202,13 +226,18 @@ export async function signerPieceParJetonAction(input: {
   token: string;
   methode: "trace" | "confirmation_accessible";
   imageDataUrl?: string;
+  code?: string;
 }): Promise<ResultatSignaturePiece> {
   const parse = entreeJetonSchema.safeParse(input);
   if (!parse.success) {
     return {
       ok: false,
-      raison: "requete_invalide",
-      message: "Cette demande n'est pas valide. Rechargez la page.",
+      raison: parse.error.issues.some((i) => i.path[0] === "code")
+        ? "code_refuse"
+        : "requete_invalide",
+      message: parse.error.issues.some((i) => i.path[0] === "code")
+        ? MESSAGE_CODE_FORMAT
+        : "Cette demande n'est pas valide. Rechargez la page.",
     };
   }
   const donnees = parse.data;
@@ -254,7 +283,7 @@ export async function signerPieceParJetonAction(input: {
 
   const piece = await prisma.documentGenere.findUnique({
     where: { id: verif.documentGenereId },
-    select: { type: true, numero: true },
+    select: { type: true, numero: true, metadata: true },
   });
   if (piece === null) {
     return { ok: false, raison: "piece_introuvable", message: "Pièce introuvable." };
@@ -283,9 +312,35 @@ export async function signerPieceParJetonAction(input: {
     };
   }
 
-  const objection = await objectionMetier(piece.type, verif.documentGenereId);
+  const objection =
+    (await objectionMetier(piece.type, verif.documentGenereId)) ??
+    (await objectionContratCadre({
+      documentGenereId: verif.documentGenereId,
+      type: piece.type,
+      metadata: piece.metadata,
+      partie: verif.partie,
+    }));
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
+  }
+
+  // Contrat-cadre v3 : le code à usage unique est vérifié et CONSOMMÉ juste
+  // avant l'écriture de la preuve. Sans code valide, rien n'est signé.
+  const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
+  if (avecCode) {
+    if (donnees.code === undefined) {
+      return {
+        ok: false,
+        raison: "code_requis",
+        message: "Saisissez le code reçu par e-mail pour signer.",
+      };
+    }
+    const v = await verifierCodeSignature({
+      documentGenereId: verif.documentGenereId,
+      partie: verif.partie,
+      code: donnees.code,
+    });
+    if (!v.ok) return { ok: false, raison: "code_refuse", message: v.message };
   }
 
   try {
@@ -295,6 +350,7 @@ export async function signerPieceParJetonAction(input: {
       methode: donnees.methode,
       partiesRequises: circuit.parties,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
+      ...(avecCode ? { consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE } : {}),
       ...contexte,
     });
     if (!res.ok) return res;
@@ -317,6 +373,142 @@ export async function signerPieceParJetonAction(input: {
     Sentry.captureException(err, { tags: { action: "signerPieceParJetonAction" } });
     throw err;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Contrat-cadre v3 — le code à usage unique (F17), lot L7c
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MESSAGE_CODE_FORMAT = "Le code se compose de 6 chiffres. Vérifiez-le et réessayez.";
+
+const REFUS_CODE_INDISPONIBLE = {
+  ok: false,
+  raison: "code_indisponible",
+  message:
+    "Le code de signature ne peut pas vous être envoyé pour le moment. Réessayez dans quelques minutes ; si cela persiste, répondez à notre e-mail.",
+} as const;
+
+export type ResultatDemandeCode =
+  | { ok: true; destinataireMasque: string }
+  | { ok: false; raison: RefusSignaturePiece; message: string };
+
+/**
+ * Envoie le code à usage unique qui permet de signer un contrat-cadre v3.
+ *
+ * 🔴 PUBLIQUE, gardée par le jeton seul — comme la signature elle-même.
+ *  · le code part à l'adresse FIGÉE sur le lien, et seulement si elle est celle
+ *    de la fiche du formateur : un lien transféré à une autre adresse ne reçoit
+ *    rien ;
+ *  · 3 envois par heure et par lien au plus ;
+ *  · le code n'est jamais rendu ni journalisé : il ne voyage que dans l'e-mail.
+ */
+export async function demanderCodeSignatureAction(input: {
+  token: string;
+}): Promise<ResultatDemandeCode> {
+  const token = typeof input?.token === "string" ? input.token : "";
+  if (token === "" || token.length > 4000) {
+    return {
+      ok: false,
+      raison: "requete_invalide",
+      message: "Cette demande n'est pas valide. Rechargez la page.",
+    };
+  }
+
+  const empreinteJeton = createHash("sha256").update(token).digest("hex");
+  const parJeton = await checkRateLimit(`piece:code:${empreinteJeton}`, LIMITE_CODE_PAR_JETON);
+  if (!parJeton.allowed) {
+    return {
+      ok: false,
+      raison: "trop_de_tentatives",
+      message:
+        "Trois codes vous ont déjà été envoyés dans l'heure. Utilisez le plus récent, ou réessayez plus tard.",
+    };
+  }
+  const contexte = await contexteRequete();
+  if (contexte.ipHash !== null) {
+    const parIp = await checkRateLimit(`piece:ip:${contexte.ipHash}`, LIMITE_PAR_IP);
+    if (!parIp.allowed) {
+      return {
+        ok: false,
+        raison: "trop_de_tentatives",
+        message: "Trop de tentatives depuis ce réseau. Patientez une minute.",
+      };
+    }
+  }
+
+  const verif = await verifierTokenDocument(token);
+  if (!verif.ok) {
+    const m = REFUS_JETON[verif.raison];
+    return { ok: false, raison: m.raison, message: m.message };
+  }
+
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: verif.documentGenereId },
+    select: {
+      type: true,
+      metadata: true,
+      trainerId: true,
+      trainer: { select: { email: true, prenom: true } },
+    },
+  });
+  if (piece === null) {
+    return { ok: false, raison: "piece_introuvable", message: "Pièce introuvable." };
+  }
+  if (!codeRequis(piece.type, piece.metadata, verif.partie)) {
+    return {
+      ok: false,
+      raison: "piece_non_signable",
+      message: "Cette pièce se signe sans code.",
+    };
+  }
+
+  // L'adresse du lien doit être celle de la fiche : sinon, rien ne part.
+  if (
+    piece.trainerId === null ||
+    piece.trainer === null ||
+    !memeAdresse(verif.signataireEmail, piece.trainer.email)
+  ) {
+    Sentry.captureException(
+      new Error("Code de signature demandé pour une adresse non concordante"),
+      {
+        tags: { action: "demanderCodeSignatureAction:adresse" },
+      },
+    );
+    return {
+      ok: false,
+      raison: "code_indisponible",
+      message:
+        "Le code ne peut pas être envoyé à l'adresse de ce lien. Contactez votre interlocuteur chez Axion-IA : un nouveau lien vous sera adressé.",
+    };
+  }
+
+  let code: string;
+  try {
+    ({ code } = await emettreCodeSignature({
+      documentGenereId: verif.documentGenereId,
+      partie: verif.partie,
+    }));
+  } catch (err) {
+    if (!(err instanceof CodeSignatureIndisponible)) {
+      Sentry.captureException(err, { tags: { action: "demanderCodeSignatureAction:emission" } });
+    }
+    return { ...REFUS_CODE_INDISPONIBLE };
+  }
+
+  // Sans priorité : le code passe devant les relances dans la boîte partagée.
+  const envoi = await envoyerFormateur({
+    gabarit: "formateur-code-signature",
+    destinataire: piece.trainer.email,
+    payload: {
+      ...(piece.trainer.prenom ? { prenom: piece.trainer.prenom } : {}),
+      valeurs: { "123456": code },
+    },
+    entityType: "Trainer",
+    entityId: piece.trainerId,
+  });
+  if (envoi !== "envoye") return { ...REFUS_CODE_INDISPONIBLE };
+
+  return { ok: true, destinataireMasque: masquerAdresse(piece.trainer.email) };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -387,7 +579,7 @@ async function contresignerUne(
 
   const piece = await prisma.documentGenere.findUnique({
     where: { id: donnees.documentGenereId },
-    select: { type: true, numero: true },
+    select: { type: true, numero: true, metadata: true },
   });
   if (piece === null) {
     return { ok: false, raison: "piece_introuvable", message: "Pièce introuvable." };
@@ -425,7 +617,14 @@ async function contresignerUne(
     }
   }
 
-  const objection = await objectionMetier(piece.type, donnees.documentGenereId);
+  const objection =
+    (await objectionMetier(piece.type, donnees.documentGenereId)) ??
+    (await objectionContratCadre({
+      documentGenereId: donnees.documentGenereId,
+      type: piece.type,
+      metadata: piece.metadata,
+      partie: "axionia",
+    }));
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }

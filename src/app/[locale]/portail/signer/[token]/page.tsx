@@ -27,7 +27,11 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
-import { signerPieceParJetonAction } from "@/server/actions/qualiopi/piece-signature";
+import {
+  demanderCodeSignatureAction,
+  signerPieceParJetonAction,
+} from "@/server/actions/qualiopi/piece-signature";
+import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { prisma } from "@/lib/prisma";
 import {
@@ -113,6 +117,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // valide (il l'est), et rien à l'écran ne disait que l'organisme avait
       // annulé le document que le signataire s'apprêtait à signer.
       annuleeAt: true,
+      // Contrat-cadre v3 (lot L7c) : la version du gabarit dit si un code est exigé.
+      metadata: true,
       client: { select: { raisonSociale: true } },
       trainee: { select: { prenom: true, nom: true } },
       sousTraitant: { select: { nom: true } },
@@ -231,6 +237,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
     (piece.trainee !== null ? `${piece.trainee.prenom} ${piece.trainee.nom}`.trim() : null) ??
     null;
 
+  const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
+
   const mentions = mentionCompleteDocument(
     verif.partie,
     {
@@ -239,6 +247,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       organisme: identite.raisonSociale,
     },
     circuit.canal === "maison",
+    avecCode,
   );
 
   return (
@@ -267,6 +276,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
       signerAction={signerPieceParJetonAction}
+      {...(avecCode ? { demanderCodeAction: demanderCodeSignatureAction } : {})}
     />
   );
 }
