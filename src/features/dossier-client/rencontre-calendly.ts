@@ -19,7 +19,8 @@
  *
  *   · la rencontre : source `calendly`, type (visio / téléphone, dérivé comme
  *     partout du lieu Calendly), copie du titre, des dates et des URI (elles
- *     survivent à la purge des 36 mois), code Meet s'il se lit dans le lieu ;
+ *     ne dépendent pas de `calendly_events`, dont la purge des 36 mois a été
+ *     retirée), code Meet s'il se lit dans le lieu ;
  *   · les participants : le titulaire, les invités qu'il a ajoutés
  *     (`event_guests`), et Williams — chacun avec l'empreinte de son adresse,
  *     jamais l'adresse elle-même ;
