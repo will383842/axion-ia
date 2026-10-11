@@ -9,13 +9,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const findUnique = vi.fn();
-const findFirst = vi.fn();
+const findMany = vi.fn();
+const controler = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: { findUnique: (...a: unknown[]) => findUnique(...a) },
-    verificationRegistreSousTraitance: { findFirst: (...a: unknown[]) => findFirst(...a) },
+    verificationRegistreSousTraitance: { findMany: (...a: unknown[]) => findMany(...a) },
   },
+}));
+vi.mock("@/server/qualiopi/formateurs-independants/controle", () => ({
+  controlerRegistreFormateur: (...a: unknown[]) => controler(...a),
 }));
 
 import {
@@ -24,6 +28,7 @@ import {
   masquerAdresse,
   memeAdresse,
   objectionContratCadre,
+  sourceRegistreAnnuaire,
 } from "./contrat-cadre-signature";
 
 const V3 = { renderData: { gabaritVersion: 3 } };
@@ -31,7 +36,7 @@ const V2 = { renderData: { gabaritVersion: 2 } };
 const DOC = "11111111-1111-4111-8111-111111111111";
 const MAINTENANT = new Date("2026-10-12T09:00:00Z");
 
-const actif = vi.fn(async () => ({
+const actif = vi.fn(async (_: string) => ({
   ok: true as const,
   entreprise: {
     siren: "987654321",
@@ -46,19 +51,16 @@ const actif = vi.fn(async () => ({
 }));
 const ferme = vi.fn(async () => ({
   ok: true as const,
-  entreprise: { ...(await actif()).entreprise, active: false },
+  entreprise: { ...(await actif("x")).entreprise, active: false },
 }));
 const muet = vi.fn(async () => ({ ok: false as const, raison: "indisponible" as const }));
 const introuvable = vi.fn(async () => ({ ok: false as const, raison: "introuvable" as const }));
 
 beforeEach(() => {
   vi.clearAllMocks();
-  findUnique.mockResolvedValue({
-    trainerId: "t-1",
-    trainer: { siret: "98765432100017" },
-    sousTraitant: null,
-  });
-  findFirst.mockResolvedValue(null);
+  findUnique.mockResolvedValue({ trainerId: "t-1" });
+  findMany.mockResolvedValue([]);
+  controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
 });
 
 describe("code requis", () => {
@@ -86,141 +88,126 @@ describe("adresses", () => {
   });
 });
 
-describe("objection — registre public", () => {
+describe("objection — registre public, par le contrôle L4", () => {
   const base = { documentGenereId: DOC, type: "contrat_sous_traitance", maintenant: MAINTENANT };
+  const ligne = (verdict: string, joursAvant: number, source = "registre_entreprises+liste_of") => {
+    const at = new Date(MAINTENANT.getTime() - joursAvant * 86_400_000);
+    return { verdict, source, verifieAt: at, createdAt: at };
+  };
 
-  it("🔑 éteint : une v2 ne lit rien et n'objecte rien", async () => {
-    const r = await objectionContratCadre({
-      ...base,
-      metadata: V2,
-      partie: "sous_traitant",
-      lecteur: ferme,
-    });
+  it("🔑 éteint : une v2 ne lit rien et ne contrôle rien", async () => {
+    const r = await objectionContratCadre({ ...base, metadata: V2, partie: "sous_traitant" });
     expect(r).toBeNull();
     expect(findUnique).not.toHaveBeenCalled();
-    expect(ferme).not.toHaveBeenCalled();
+    expect(controler).not.toHaveBeenCalled();
   });
 
-  it("signature : un contrôle récent vert suffit, sans lecture en direct", async () => {
-    findFirst.mockResolvedValue({ verdict: "vert" });
-    const r = await objectionContratCadre({
-      ...base,
-      metadata: V3,
-      partie: "sous_traitant",
-      lecteur: ferme,
-    });
-    expect(r).toBeNull();
-    expect(ferme).not.toHaveBeenCalled();
-  });
-
-  it("signature : un contrôle récent ROUGE refuse", async () => {
-    findFirst.mockResolvedValue({ verdict: "rouge" });
-    const r = await objectionContratCadre({
-      ...base,
-      metadata: V3,
-      partie: "sous_traitant",
-      lecteur: actif,
-    });
-    expect(r?.message).toMatch(/pas active/);
-  });
-
-  it("signature : sans contrôle récent, lecture en direct ; entreprise fermée = refus", async () => {
+  it("signature : un contrôle vert de moins de 30 jours suffit, sans nouveau contrôle", async () => {
+    findMany.mockResolvedValue([ligne("vert", 3)]);
     expect(
-      await objectionContratCadre({
-        ...base,
-        metadata: V3,
-        partie: "sous_traitant",
-        lecteur: actif,
-      }),
+      await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
     ).toBeNull();
-    const r = await objectionContratCadre({
-      ...base,
-      metadata: V3,
-      partie: "sous_traitant",
-      lecteur: ferme,
-    });
-    expect(r?.message).toMatch(/pas active/);
-    const i = await objectionContratCadre({
-      ...base,
-      metadata: V3,
-      partie: "sous_traitant",
-      lecteur: introuvable,
-    });
-    expect(i?.message).toMatch(/introuvable/);
+    expect(controler).not.toHaveBeenCalled();
   });
 
-  it("signature : registre muet = la signature passe (la contresignature relira)", async () => {
+  it("signature : un dernier contrôle ROUGE refuse sans relire", async () => {
+    findMany.mockResolvedValue([ligne("rouge", 2)]);
+    const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
+    expect(r?.message).toMatch(/pas active/);
+    expect(controler).not.toHaveBeenCalled();
+  });
+
+  it("signature : contrôle trop ancien → nouveau contrôle (sans auteur) ; rouge = refus", async () => {
+    findMany.mockResolvedValue([ligne("vert", 40)]);
+    controler.mockResolvedValue({ ok: true, verdict: "rouge", motifs: ["etablissement_ferme"] });
+    const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
+    expect(r?.message).toMatch(/pas active/);
+    expect(controler.mock.calls[0]?.[2]).toEqual({
+      trainerId: "t-1",
+      verifieParId: null,
+      maintenant: MAINTENANT,
+    });
+  });
+
+  it("signature : registre muet (orange) = la signature passe", async () => {
+    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["registre_muet"] });
     expect(
-      await objectionContratCadre({
-        ...base,
-        metadata: V3,
-        partie: "sous_traitant",
-        lecteur: muet,
-      }),
+      await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
     ).toBeNull();
   });
 
-  it("🔴 contresignature : lecture en direct EXIGÉE, même avec un contrôle récent vert", async () => {
-    findFirst.mockResolvedValue({ verdict: "vert" });
+  it("🔴 contresignature : contrôle TOUJOURS refait, même avec un vert récent, au nom de l'administrateur", async () => {
+    findMany.mockResolvedValue([ligne("vert", 1)]);
+    controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
       partie: "axionia",
-      lecteur: ferme,
+      adminId: "admin-1",
+    });
+    expect(r).toBeNull();
+    expect(controler.mock.calls[0]?.[2]).toMatchObject({ verifieParId: "admin-1" });
+  });
+
+  it("🔴 contresignature : rouge = refus", async () => {
+    controler.mockResolvedValue({ ok: true, verdict: "rouge", motifs: ["siren_cesse"] });
+    const r = await objectionContratCadre({
+      ...base,
+      metadata: V3,
+      partie: "axionia",
+      adminId: "a",
     });
     expect(r?.message).toMatch(/Contresignature impossible/);
-    expect(ferme).toHaveBeenCalledWith("98765432100017");
   });
 
   it("🔴 contresignature : registre muet = refus « réessayez »", async () => {
+    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["registre_muet"] });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
       partie: "axionia",
-      lecteur: muet,
+      adminId: "a",
     });
     expect(r?.message).toMatch(/Réessayez/);
   });
 
-  it("contresignature : registre qui lève = muet = refus", async () => {
-    const leve = vi.fn(async () => {
-      throw new Error("réseau");
-    });
-    const r = await objectionContratCadre({
-      ...base,
-      metadata: V3,
-      partie: "axionia",
-      lecteur: leve,
-    });
-    expect(r?.message).toMatch(/Réessayez/);
-  });
-
-  it("contresignature : entreprise active = rien à objecter", async () => {
+  it("contresignature : orange pour un numéro de déclaration en cours = ne bloque pas (article 19)", async () => {
+    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["nda_en_cours"] });
     expect(
-      await objectionContratCadre({ ...base, metadata: V3, partie: "axionia", lecteur: actif }),
+      await objectionContratCadre({ ...base, metadata: V3, partie: "axionia", adminId: "a" }),
     ).toBeNull();
   });
 
-  it("sans SIRET : refus des deux côtés", async () => {
-    findUnique.mockResolvedValue({
-      trainerId: "t-1",
-      trainer: { siret: null },
-      sousTraitant: null,
-    });
+  it("fiche hors périmètre ou contrat d'organisme : refus", async () => {
+    controler.mockResolvedValue({ ok: false, raison: "hors_perimetre" });
     expect(
-      (
-        await objectionContratCadre({
-          ...base,
-          metadata: V3,
-          partie: "sous_traitant",
-          lecteur: actif,
-        })
-      )?.message,
-    ).toMatch(/SIRET/);
-    expect(
-      (await objectionContratCadre({ ...base, metadata: V3, partie: "axionia", lecteur: actif }))
+      (await objectionContratCadre({ ...base, metadata: V3, partie: "axionia", adminId: "a" }))
         ?.message,
-    ).toMatch(/SIRET/);
+    ).toMatch(/Contresignature impossible/);
+    findUnique.mockResolvedValue({ trainerId: null });
+    expect(
+      (await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }))?.message,
+    ).toMatch(/organisme/);
+  });
+});
+
+describe("source du registre pour le contrôle L4", () => {
+  it("établissement fermé → rouge ; registre muet → orange, jamais rouge", async () => {
+    const { jugerControleRegistre } =
+      await import("@/server/qualiopi/formateurs-independants/controle-regles");
+    const siret = "98765432100017";
+    const juger = async (lecteur: Parameters<typeof sourceRegistreAnnuaire>[0]) =>
+      jugerControleRegistre({
+        siret,
+        nda: "en cours",
+        entreprise: await sourceRegistreAnnuaire(lecteur).lireEntreprise(siret),
+        listeOF: null,
+      });
+    expect((await juger(ferme)).verdict).toBe("rouge");
+    expect((await juger(muet)).verdict).toBe("orange");
+    expect((await juger(muet)).motifs).toContain("registre_muet");
+    expect((await juger(introuvable)).motifs).toContain("etablissement_introuvable");
+    expect((await juger(actif)).verdict).not.toBe("rouge");
   });
 });
 

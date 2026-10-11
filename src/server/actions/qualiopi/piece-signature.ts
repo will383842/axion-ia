@@ -629,6 +629,7 @@ async function contresignerUne(
       type: piece.type,
       metadata: piece.metadata,
       partie: "axionia",
+      adminId: session.userId,
     }));
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
