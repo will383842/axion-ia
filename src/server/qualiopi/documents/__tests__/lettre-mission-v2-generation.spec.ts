@@ -19,6 +19,8 @@ const h = vi.hoisted(() => {
     trainer: vi.fn(),
     mission: vi.fn(),
     contrat: vi.fn(),
+    vivantes: vi.fn(async (..._a: unknown[]) => [] as unknown[]),
+    affectation: vi.fn(async (..._a: unknown[]) => ({ tarifHtCents: null }) as unknown),
     count: vi.fn(async (..._a: unknown[]) => 0),
     docUpdateMany: vi.fn(async (..._a: unknown[]) => ({ count: 1 })),
     missionUpdate: vi.fn(async (..._a: unknown[]) => ({})),
@@ -27,12 +29,14 @@ const h = vi.hoisted(() => {
   const prisma = {
     trainingSession: { findUnique: (...a: unknown[]) => m.session(...a) },
     trainer: { findUnique: (...a: unknown[]) => m.trainer(...a) },
+    sessionFormateur: { findUnique: (...a: unknown[]) => m.affectation(...a) },
     missionFormateur: {
       findFirst: (...a: unknown[]) => m.mission(...a),
       update: (...a: unknown[]) => m.missionUpdate(...a),
     },
     documentGenere: {
       findFirst: (...a: unknown[]) => m.contrat(...a),
+      findMany: (...a: unknown[]) => m.vivantes(...a),
       count: (...a: unknown[]) => m.count(...a),
       updateMany: (...a: unknown[]) => m.docUpdateMany(...a),
     },
@@ -52,7 +56,11 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
   })),
 }));
 
-import { genererLettreMissionV2, MOTIF_LETTRE_REMPLACEE } from "../lettre-mission-v2-generation";
+import {
+  genererLettreMissionV2,
+  MOTIF_CHANGEMENT_FORMATEUR,
+  MOTIF_LETTRE_REMPLACEE,
+} from "../lettre-mission-v2-generation";
 import { composantGabarit } from "../signature/exemplaire-signe";
 import { gabaritArchive } from "../templates/archives";
 import { GABARIT_VERSIONS } from "../templates/gabarit-versions";
@@ -60,7 +68,7 @@ import { GABARIT_VERSIONS } from "../templates/gabarit-versions";
 const SESSION_ID = "a5a5a5a5-0000-4000-8000-00000000000a";
 const TRAINER_ID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 
-function mission(lettre: unknown = null) {
+function mission() {
   return {
     id: "mi-1",
     statut: "acceptee",
@@ -69,8 +77,6 @@ function mission(lettre: unknown = null) {
     tarifHtCents: null,
     forfaitDeplacementParJourHtCents: null,
     regimeTvaFige: null,
-    lettreMissionId: lettre === null ? null : "lettre-1",
-    lettreMission: lettre,
   };
 }
 
@@ -134,22 +140,45 @@ describe("allumé : la lettre v2", () => {
     expect(h.m.generate).not.toHaveBeenCalled();
   });
 
-  it("une seule lettre vivante : l'ancienne NON signée est annulée par le système", async () => {
-    h.m.mission.mockResolvedValue(mission({ id: "lettre-1", annuleeAt: null, signatures: [] }));
+  it("une seule lettre vivante : l'ancienne NON signée (v1 comprise) est annulée APRÈS l'émission", async () => {
+    h.m.vivantes.mockResolvedValue([{ id: "lettre-1", signatures: [] }]);
     const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     expect(r).toMatchObject({ ok: true, lettreAnnuleeId: "lettre-1" });
     expect(h.m.docUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { id: "lettre-1", annuleeAt: null },
+        where: { id: { in: ["lettre-1"] }, annuleeAt: null },
         data: expect.objectContaining({ annuleeMotif: MOTIF_LETTRE_REMPLACEE }),
       }),
     );
+    // Annulée après : un rendu en échec ne laisse pas la mission sans lettre.
+    expect(h.m.generate.mock.invocationCallOrder[0]).toBeLessThan(
+      h.m.docUpdateMany.mock.invocationCallOrder[0]!,
+    );
+    // La contrainte de la base exige un motif d'au moins 10 caractères.
+    expect(MOTIF_LETTRE_REMPLACEE.trim().length).toBeGreaterThanOrEqual(10);
+    expect(MOTIF_CHANGEMENT_FORMATEUR.trim().length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("rendu en échec : aucune lettre n'est annulée", async () => {
+    h.m.vivantes.mockResolvedValue([{ id: "lettre-1", signatures: [] }]);
+    h.m.generate.mockRejectedValueOnce(new Error("rendu impossible"));
+    await expect(
+      genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID }),
+    ).rejects.toThrow();
+    expect(h.m.docUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("tarif : celui figé à l'affectation quand la mission n'en porte pas", async () => {
+    h.m.affectation.mockResolvedValue({ tarifHtCents: 40_000 });
+    await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
+      buildElement: (n: string) => { props: { data: { totalHtCents: number } } };
+    };
+    expect(entree.buildElement("N").props.data.totalHtCents).toBe(40_000);
   });
 
   it("une lettre déjà SIGNÉE n'est jamais annulée en silence : motif exigé", async () => {
-    h.m.mission.mockResolvedValue(
-      mission({ id: "lettre-1", annuleeAt: null, signatures: [{ id: "sig-1" }] }),
-    );
+    h.m.vivantes.mockResolvedValue([{ id: "lettre-1", signatures: [{ id: "sig-1" }] }]);
     const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     expect(r.ok).toBe(false);
     expect(h.m.generate).not.toHaveBeenCalled();

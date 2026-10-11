@@ -128,7 +128,7 @@ const EMPREINTES: Readonly<
   },
   lettre_mission: {
     // v2 — 10/10/2026 (S5) : lettre d'une page, texte arrêté par Will ; v1 archivée.
-    sha: "45d029f520600287416d65de79e4d3ddef7707100cca3771da1566019a17e4ec",
+    sha: "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
     version: 2,
   },
   mandat_opco: {

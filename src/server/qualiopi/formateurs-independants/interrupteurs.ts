@@ -409,7 +409,7 @@ export const INTERRUPTEURS_SIGNATURE = {
   lettre_v2: {
     ...envoi(
       "Lettre de mission v2",
-      "La console émet la lettre d'une page pour un formateur indépendant (contrat-cadre v3 signé, accord donné) ; une seule lettre vivante par mission.",
+      "La console émet la lettre d'une page pour un formateur indépendant (contrat-cadre v3 signé, accord donné) ; une seule lettre vivante par mission. À n'allumer qu'une fois le contrat-cadre v3 en service : avant, aucune lettre ne peut partir.",
     ),
     cle: "formateurs.lettre_v2",
   },

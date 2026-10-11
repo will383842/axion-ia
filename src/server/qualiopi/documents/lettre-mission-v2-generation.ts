@@ -28,9 +28,9 @@ import {
 } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-donnees";
 
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
-export const MOTIF_LETTRE_REMPLACEE = "remplacee";
+export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
 /** Motif système : la lettre d'un formateur ÉCARTÉ de la session, jamais signée. */
-export const MOTIF_CHANGEMENT_FORMATEUR = "changement_formateur";
+export const MOTIF_CHANGEMENT_FORMATEUR = "Formateur remplacé sur cette session";
 
 export type ResultatLettreV2 =
   | { ok: true; documentId: string; numero: string; lettreAnnuleeId: string | null }
@@ -69,7 +69,15 @@ export async function genererLettreMissionV2(input: {
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
   const maintenant = input.maintenant ?? new Date();
-  const [session, trainer, mission, contratCadre, conditionEnAttente] = await Promise.all([
+  const [
+    session,
+    trainer,
+    mission,
+    contratCadre,
+    lettresVivantes,
+    affectation,
+    conditionEnAttente,
+  ] = await Promise.all([
     prisma.trainingSession.findUnique({
       where: { id: input.sessionId },
       select: {
@@ -106,17 +114,28 @@ export async function genererLettreMissionV2(input: {
         tarifHtCents: true,
         forfaitDeplacementParJourHtCents: true,
         regimeTvaFige: true,
-        lettreMissionId: true,
-        lettreMission: {
-          select: {
-            id: true,
-            annuleeAt: true,
-            signatures: { where: { revokedAt: null, partie: "formateur" }, select: { id: true } },
-          },
-        },
       },
     }),
     contratCadreSigne(input.trainerId),
+    // Toutes les lettres VIVANTES de ce formateur sur cette session, v1 comprise :
+    // le lien `lettreMissionId` n'existe que depuis la v2.
+    prisma.documentGenere.findMany({
+      where: {
+        type: "lettre_mission",
+        sessionId: input.sessionId,
+        trainerId: input.trainerId,
+        annuleeAt: null,
+      },
+      select: {
+        id: true,
+        signatures: { where: { revokedAt: null, partie: "formateur" }, select: { id: true } },
+      },
+    }),
+    // Tarif figé à l'AFFECTATION : repli quand la mission ne porte pas encore le sien.
+    prisma.sessionFormateur.findUnique({
+      where: { sessionId_trainerId: { sessionId: input.sessionId, trainerId: input.trainerId } },
+      select: { tarifHtCents: true },
+    }),
     prisma.documentGenere.count({
       where: {
         sessionId: input.sessionId,
@@ -143,7 +162,10 @@ export async function genererLettreMissionV2(input: {
       organismeSousTraitantId: trainer.organismeSousTraitantId,
     },
     contratCadre,
-    mission,
+    mission:
+      mission === null
+        ? null
+        : { ...mission, tarifHtCents: mission.tarifHtCents ?? affectation?.tarifHtCents ?? null },
     session: {
       titre: session.titreSession,
       numero: session.numero,
@@ -161,40 +183,21 @@ export async function genererLettreMissionV2(input: {
   const essai = assemblerLettreV2(faits("—"));
   if (!essai.ok) return { ok: false, erreur: essai.motif };
 
-  // Une lettre vivante par mission : l'ancienne lettre non signée par le
-  // formateur est annulée par le système ; une lettre signée exige un motif.
-  const ancienne = mission?.lettreMission ?? null;
-  const ancienneVivante = ancienne !== null && ancienne.annuleeAt === null;
-  const ancienneSignee = ancienneVivante && ancienne.signatures.length > 0;
-  if (ancienneSignee && input.rectificationMotif === undefined) {
+  // Une lettre vivante par mission : une lettre déjà signée par le formateur
+  // n'est jamais remplacée en silence (motif exigé) ; les autres sont annulées
+  // APRÈS l'émission de la nouvelle, jamais avant (un rendu en échec ne laisse
+  // pas la mission sans lettre).
+  if (
+    lettresVivantes.some((l) => l.signatures.length > 0) &&
+    input.rectificationMotif === undefined
+  ) {
     return {
       ok: false,
       erreur:
         "La lettre en vigueur est déjà signée par le formateur : indiquez le motif de la rectification.",
     };
   }
-  let lettreAnnuleeId: string | null = null;
-  if (ancienneVivante && !ancienneSignee) {
-    const r = await prisma.documentGenere.updateMany({
-      where: { id: ancienne.id, annuleeAt: null },
-      data: { annuleeAt: maintenant, annuleeMotif: MOTIF_LETTRE_REMPLACEE, annuleePar: "system" },
-    });
-    if (r.count === 1) lettreAnnuleeId = ancienne.id;
-  }
-  // La lettre d'un formateur ÉCARTÉ de cette session, qu'il n'a pas signée,
-  // cesse de circuler : sans cela, la lettre du nouveau sortait filigranée
-  // « COPIE » d'une pièce adressée à quelqu'un d'autre. Une lettre signée par
-  // l'écarté reste au registre : c'est à Will de décider (révocation motivée).
-  await prisma.documentGenere.updateMany({
-    where: {
-      type: "lettre_mission",
-      sessionId: input.sessionId,
-      trainerId: { not: input.trainerId },
-      annuleeAt: null,
-      signatures: { none: { revokedAt: null, partie: "formateur" } },
-    },
-    data: { annuleeAt: maintenant, annuleeMotif: MOTIF_CHANGEMENT_FORMATEUR, annuleePar: "system" },
-  });
+  const aAnnuler = lettresVivantes.filter((l) => l.signatures.length === 0).map((l) => l.id);
 
   const identite = await getOrganismeIdentite();
   const doc = await generateDocument({
@@ -221,5 +224,26 @@ export async function genererLettreMissionV2(input: {
       data: { lettreMissionId: doc.id },
     });
   }
+  let lettreAnnuleeId: string | null = null;
+  if (aAnnuler.length > 0) {
+    const r = await prisma.documentGenere.updateMany({
+      where: { id: { in: aAnnuler }, annuleeAt: null },
+      data: { annuleeAt: maintenant, annuleeMotif: MOTIF_LETTRE_REMPLACEE, annuleePar: "system" },
+    });
+    if (r.count > 0) lettreAnnuleeId = aAnnuler[0] ?? null;
+  }
+  // La lettre d'un formateur ÉCARTÉ de cette session, qu'il n'a pas signée,
+  // cesse de circuler. Une lettre signée par l'écarté reste au registre : c'est
+  // à Will de décider (révocation motivée).
+  await prisma.documentGenere.updateMany({
+    where: {
+      type: "lettre_mission",
+      sessionId: input.sessionId,
+      trainerId: { not: input.trainerId },
+      annuleeAt: null,
+      signatures: { none: { revokedAt: null, partie: "formateur" } },
+    },
+    data: { annuleeAt: maintenant, annuleeMotif: MOTIF_CHANGEMENT_FORMATEUR, annuleePar: "system" },
+  });
   return { ok: true, documentId: doc.id, numero: doc.numero, lettreAnnuleeId };
 }

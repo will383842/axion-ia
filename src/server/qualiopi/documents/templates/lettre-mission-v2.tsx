@@ -202,13 +202,19 @@ export function LettreMissionV2Pdf({
             <Text style={pdfStyles.paragraph}>
               Axion établit la facture à votre nom (autofacture) dès que les feuilles de présence
               sont signées. Vous la recevez dans votre espace et par e-mail, et vous pouvez la
-              contester dans les 8 jours. Le virement part au plus tard le {data.echeancePaiement},
-              que le client ait réglé ou non.
+              contester dans les 8 jours.{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                Le virement part au plus tard le {data.echeancePaiement}
+              </Text>
+              , que le client ait réglé ou non.
             </Text>
           ) : (
             <Text style={pdfStyles.paragraph}>
-              Vous adressez votre facture à Axion. Le virement part au plus tard le{" "}
-              {data.echeancePaiement}, que le client ait réglé ou non.
+              Vous adressez votre facture à Axion.{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                Le virement part au plus tard le {data.echeancePaiement}
+              </Text>
+              , que le client ait réglé ou non.
             </Text>
           )}
           {data.echeancesParMois && data.echeancesParMois.length > 1 ? (
@@ -275,7 +281,7 @@ export function LettreMissionV2Pdf({
 
         <DocSection title="Signatures">
           <SignatureZone
-            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateMission}`}
+            faitLe={`Le ${data.dateMission}`}
             parties={[
               {
                 titre: p.forme === "organisme" ? "Pour l'organisme" : "Pour le formateur",

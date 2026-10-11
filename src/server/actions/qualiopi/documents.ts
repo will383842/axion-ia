@@ -1882,6 +1882,7 @@ export async function genererLettreMissionAction(input: {
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
     adresseProfessionnelle: string | null;
+    organismeSousTraitantId: string | null;
   } | null = null;
 
   if (principalTrainerId) {
@@ -1896,6 +1897,7 @@ export async function genererLettreMissionAction(input: {
         tarifJourneeHtCents: true,
         sousTraitantNda: true,
         adresseProfessionnelle: true,
+        organismeSousTraitantId: true,
       },
     });
   }
@@ -1951,6 +1953,8 @@ export async function genererLettreMissionAction(input: {
   // l'interrupteur `formateurs.lettre_v2`. Coupé : la v1 ci-dessous, inchangée.
   if (
     trainer?.statut === "sous_traitant" &&
+    // Un organisme sous-traitant garde la v1 jusqu'à son lot (L11f, canal A).
+    trainer.organismeSousTraitantId === null &&
     principalTrainerId !== null &&
     (await interrupteurAllume("lettre_v2"))
   ) {
