@@ -1,0 +1,298 @@
+"use server";
+
+/**
+ * Écran « Vérifier et contresigner » (W-4, lot L9) — ACTIONS.
+ *
+ * Un seul bouton : « Contresigner et ouvrir son espace ». Dans l'ordre, et
+ * chaque étape SAUTÉE quand elle est déjà faite (un second clic rejoue sans
+ * rien doubler) :
+ *   1. l'attestation URSSAF vérifiée (service L4b : une `PreuveVigilance`) ;
+ *   2. les pièces en attente validées (chemin commun des pièces) ;
+ *   3. les formations cochées habilitées (chemin commun des habilitations) ;
+ *   4. le contrat-cadre contresigné (chemin commun de contresignature L7c :
+ *      registre relu EN DIRECT côté serveur, rouge ou muet = refus) ;
+ *   5. l'orange du registre validé, si la personne a coché « J'ai vérifié » ;
+ *   6. l'activation, par l'écrivain unique, sous la règle complète ;
+ *   7. F20 « Votre espace formateur est ouvert », une fois, texte validé exigé.
+ *
+ * 🔴 LIVRÉ ÉTEINT : `formateurs.activation_auto` absent = toutes ces actions
+ * refusent sans rien lire ni écrire.
+ *
+ * Rôles : vérifier et habiliter = `habiliter_formateur` ; contresigner engage
+ * l'organisme = `contresigner` (direction). Les deux sont exigés ici.
+ */
+
+import * as Sentry from "@sentry/nextjs";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+import { prisma } from "@/lib/prisma";
+import { logQualiopiActivity, requireHabilitation } from "@/server/actions/qualiopi/_guards";
+import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import { validateTrainerDocumentAction } from "@/server/actions/qualiopi/trainer-documents";
+import { setTrainerHabilitationsAction } from "@/server/actions/qualiopi/trainers";
+import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
+import {
+  changerActivationFormateur,
+  messageRefusActivation,
+} from "@/server/qualiopi/formateurs-independants/activation";
+import { validerControleOrange } from "@/server/qualiopi/formateurs-independants/controle";
+import { SOURCE_VALIDATION_ORANGE } from "@/server/qualiopi/formateurs-independants/controle-regles";
+import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
+import { validerAttestationVigilance } from "@/server/qualiopi/formateurs-independants/validation-vigilance";
+import { lireEcranVerifierContresigner } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture";
+import {
+  MOTIFS_COMPLEMENT,
+  MOTIFS_ORANGE,
+  manquesPourContresigner,
+  raisonGrise,
+  refusPossible,
+} from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
+
+export type ResultatW4 = { ok: true; message: string } | { ok: false; error: string };
+
+const ETEINT: ResultatW4 = {
+  ok: false,
+  error: "Cet écran n'est pas encore ouvert (interrupteur « Activation automatique » coupé).",
+};
+
+async function allume(): Promise<boolean> {
+  return lireDrapeauEnvoi(await lireEtatsInterrupteurs(), "activation_auto");
+}
+
+function rafraichir(): void {
+  revalidatePath("/[locale]/[adminPrefix]/qualiopi/formateurs/[id]/verifier", "page");
+}
+
+const contresignerSchema = z
+  .object({
+    trainerId: z.string().uuid(),
+    codeAttestation: z.string().max(80),
+    attestationAuthentique: z.boolean(),
+    piecesVerifiees: z.boolean(),
+    formationIds: z.array(z.string().uuid()).max(200),
+    orangeVerifie: z.boolean(),
+    motifOrange: z.enum(MOTIFS_ORANGE).nullable(),
+  })
+  .strict();
+
+export async function contresignerEtOuvrirEspaceAction(
+  input: z.input<typeof contresignerSchema>,
+): Promise<ResultatW4> {
+  const session = await requireHabilitation("habiliter_formateur");
+  if (!peutEngager(session.role, "contresigner")) {
+    return { ok: false, error: `Contresignature refusée : ${MOTIF_REFUS.contresigner}` };
+  }
+  if (!(await allume())) return ETEINT;
+  const parsed = contresignerSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Demande invalide : rechargez la page." };
+  const s = parsed.data;
+
+  const ecran = await lireEcranVerifierContresigner(s.trainerId);
+  if (ecran === null) return { ok: false, error: "Formateur indépendant introuvable." };
+  const f = ecran.faits;
+  if (f.actif) return { ok: true, message: "Son espace est déjà ouvert." };
+
+  // La MÊME règle que le bouton grisé : rien n'est écrit si un bloc est à faire.
+  const manques = manquesPourContresigner(f, s);
+  if (manques.length > 0) return { ok: false, error: raisonGrise(manques) };
+
+  try {
+    // 1. Attestation URSSAF (L4b).
+    if (f.attestation !== null && !f.attestation.prouvee) {
+      const r = await validerAttestationVigilance({
+        trainerDocumentId: f.attestation.id,
+        codeVerification: s.codeAttestation,
+        authenticiteVerifiee: true,
+        resultat: "valide",
+      });
+      if ("error" in r) return { ok: false, error: r.error };
+    }
+
+    // 2. Pièces en attente (CV, RIB, RC pro si déposée).
+    for (const p of [f.pieces.cv, f.pieces.rib, f.pieces.rcPro]) {
+      if (p === null || !p.fichierPresent || p.statutValidation !== "en_attente") continue;
+      const r = await validateTrainerDocumentAction({ id: p.id, statutValidation: "valide" });
+      if ("error" in r) return { ok: false, error: r.error };
+    }
+
+    // 3. Formations cochées : AJOUTÉES aux habilitations actives, jamais retirées.
+    const nouvelles = s.formationIds.filter(
+      (id) => !ecran.formations.some((x) => x.id === id && x.habilite),
+    );
+    if (nouvelles.length > 0) {
+      const actives = ecran.formations.filter((x) => x.habilite).map((x) => x.id);
+      const r = await setTrainerHabilitationsAction({
+        id: s.trainerId,
+        formationsHabilitees: [...actives, ...nouvelles],
+      });
+      if ("error" in r) return { ok: false, error: r.error };
+    }
+
+    // 4. Contresignature (registre relu en direct par le chemin commun).
+    if (f.contrat !== null && f.contrat.statutSignature === "partielle") {
+      const r = await contresignerPieceAction({
+        documentGenereId: f.contrat.id,
+        methode: "confirmation_accessible",
+      });
+      // Double clic : la seconde contresignature est refusée par l'unicité —
+      // le contrat EST contresigné, on poursuit.
+      if (!r.ok && r.raison !== "deja_signe") return { ok: false, error: r.message };
+    }
+
+    // 5. Orange du registre (le contrôle fait à l'instant par la contresignature).
+    if (s.orangeVerifie && s.motifOrange !== null) {
+      const dernier = await prisma.verificationRegistreSousTraitance.findFirst({
+        where: { trainerId: s.trainerId },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, verdict: true, source: true },
+      });
+      if (dernier?.verdict === "orange" && dernier.source !== SOURCE_VALIDATION_ORANGE) {
+        await validerControleOrange(prisma, {
+          trainerId: s.trainerId,
+          controleId: dernier.id,
+          motif: s.motifOrange,
+          valideParId: session.userId,
+          maintenant: new Date(),
+        });
+      }
+    }
+
+    // 6. Activation — écrivain unique, règle complète, jamais par « système ».
+    const numero = f.contrat?.numero ?? "";
+    const a = await changerActivationFormateur({
+      trainerId: s.trainerId,
+      actif: true,
+      acteur: { type: "administrateur", session },
+      motif: `Contrat-cadre ${numero} contresigné (écran Vérifier et contresigner).`,
+    });
+    if (!a.ok) {
+      rafraichir();
+      return {
+        ok: false,
+        error: `Contrat contresigné, espace non ouvert : ${messageRefusActivation(a)}`,
+      };
+    }
+
+    // 7. F20 — une seule fois par activation (clé d'idempotence par fiche).
+    let messageEnvoi = "";
+    if (!a.inchange) {
+      const t = await prisma.trainer.findUnique({
+        where: { id: s.trainerId },
+        select: { email: true },
+      });
+      const envoi =
+        t?.email == null
+          ? "sans-adresse"
+          : await envoyer({
+              gabarit: "formateur-espace-ouvert",
+              destinataire: t.email,
+              payload: {},
+              entityType: "Trainer",
+              entityId: s.trainerId,
+              jobId: `fi-espace-ouvert-${s.trainerId}`,
+            });
+      if (envoi === "texte-non-valide")
+        messageEnvoi = " L'e-mail attend la validation de son texte.";
+    }
+    rafraichir();
+    return { ok: true, message: `Contrat contresigné, espace ouvert.${messageEnvoi}` };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "contresignerEtOuvrirEspaceAction" } });
+    return { ok: false, error: "Erreur lors de la contresignature : rechargez la page." };
+  }
+}
+
+const complementSchema = z
+  .object({ trainerId: z.string().uuid(), motif: z.enum(MOTIFS_COMPLEMENT) })
+  .strict();
+
+/** « Demander un complément » : F12, motif d'une liste fermée. Aucun état changé. */
+export async function demanderComplementFormateurAction(
+  input: z.input<typeof complementSchema>,
+): Promise<ResultatW4> {
+  const session = await requireHabilitation("habiliter_formateur");
+  if (!(await allume())) return ETEINT;
+  const parsed = complementSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Choisissez un motif dans la liste." };
+  const { trainerId, motif } = parsed.data;
+  // Un double clic n'envoie qu'un e-mail : un même motif, une fois par jour.
+  const jour = new Date().toISOString().slice(0, 10);
+  const cle = `fi-complement-${trainerId}-${MOTIFS_COMPLEMENT.indexOf(motif)}-${jour}`;
+  return envoyerAuFormateur(session, trainerId, "formateur-dossier-a-completer", { motif }, cle);
+}
+
+const refusSchema = z.object({ trainerId: z.string().uuid() }).strict();
+
+/** « Refuser le dossier » : F13, seulement sur un registre rouge. Aucun état changé. */
+export async function refuserDossierFormateurAction(
+  input: z.input<typeof refusSchema>,
+): Promise<ResultatW4> {
+  const session = await requireHabilitation("habiliter_formateur");
+  if (!(await allume())) return ETEINT;
+  const parsed = refusSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Demande invalide : rechargez la page." };
+  const ecran = await lireEcranVerifierContresigner(parsed.data.trainerId);
+  if (ecran === null) return { ok: false, error: "Formateur indépendant introuvable." };
+  if (!refusPossible(ecran.faits)) {
+    return { ok: false, error: "Le refus n'est proposé que sur un registre rouge." };
+  }
+  const motif =
+    ecran.faits.controle.raison?.includes("cessée") === true
+      ? "entreprise fermée"
+      : "numéro introuvable";
+  return envoyerAuFormateur(
+    session,
+    ecran.trainerId,
+    "formateur-dossier-refuse",
+    { motif },
+    `fi-dossier-refuse-${ecran.trainerId}`,
+  );
+}
+
+async function envoyerAuFormateur(
+  session: Awaited<ReturnType<typeof requireHabilitation>>,
+  trainerId: string,
+  gabarit: "formateur-dossier-a-completer" | "formateur-dossier-refuse",
+  payload: Record<string, unknown>,
+  jobId: string,
+): Promise<ResultatW4> {
+  const t = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: { email: true, statut: true },
+  });
+  if (t === null || t.statut !== "sous_traitant" || !t.email) {
+    return { ok: false, error: "Formateur indépendant introuvable." };
+  }
+  const r = await envoyer({
+    gabarit,
+    destinataire: t.email,
+    payload,
+    entityType: "Trainer",
+    entityId: trainerId,
+    jobId,
+  });
+  if (r === "texte-non-valide") {
+    return {
+      ok: false,
+      error: "Le texte de cet e-mail n'est pas encore validé : rien n'est parti.",
+    };
+  }
+  if (r !== "envoye" && r !== "en-validation") {
+    return { ok: false, error: "L'e-mail n'a pas pu partir : réessayez." };
+  }
+  await logQualiopiActivity({
+    action: `qualiopi.formateur.${gabarit === "formateur-dossier-refuse" ? "dossier_refuse" : "complement_demande"}`,
+    targetType: "Trainer",
+    targetId: trainerId,
+    changes: { motif: payload.motif },
+    session,
+  });
+  rafraichir();
+  return {
+    ok: true,
+    message: r === "envoye" ? "E-mail envoyé." : "E-mail préparé : il attend votre relecture.",
+  };
+}
