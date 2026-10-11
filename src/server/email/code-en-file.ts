@@ -62,14 +62,35 @@ export function payloadPourRendu(
 }
 
 /**
- * L'erreur d'un envoi à code, telle qu'elle peut être journalisée, gardée dans Redis et
- * remontée à Sentry : son message est masqué, et elle ne porte NI la pile d'origine NI
- * `cause` (un objet d'erreur du relais peut recopier l'objet du message, qui porte le code).
+ * Le code OUVERT d'un payload de gabarit à code, pour le masquer à sa valeur exacte ;
+ * `null` si le payload n'en porte pas ou s'il ne s'ouvre pas.
  */
-export function erreurSansCode(err: unknown): Error {
+export function codeDuPayload(template: string, payload: Record<string, unknown>): string | null {
+  if (!GABARITS_A_CODE_UNIQUE.has(template)) return null;
+  try {
+    const v = payloadPourRendu(template, payload)["valeurs"] as Record<string, unknown>;
+    return typeof v["code"] === "string" ? v["code"] : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Masque la valeur exacte du code (où qu'elle soit collée), puis toute suite de 6 chiffres. */
+export function masquerCode(texte: string, codeExact: string | null): string {
+  const exact = codeExact ? texte.split(codeExact).join("[code masqué]") : texte;
+  return sansCode(exact);
+}
+
+/**
+ * L'erreur d'un envoi à code, telle qu'elle peut être journalisée, gardée dans Redis et
+ * remontée à Sentry : son message est masqué (valeur exacte du code, puis motif), son nom
+ * aussi, et elle ne porte NI la pile d'origine NI `cause` (un objet d'erreur du relais
+ * peut recopier l'objet du message, qui porte le code — parfois encodé, collé à un mot).
+ */
+export function erreurSansCode(err: unknown, codeExact: string | null = null): Error {
   const brut = err instanceof Error ? err.message : String(err);
-  const propre = new Error(sansCode(brut));
-  propre.name = err instanceof Error && err.name ? err.name : "Error";
+  const propre = new Error(masquerCode(brut, codeExact));
+  propre.name = err instanceof Error && err.name ? masquerCode(err.name, codeExact) : "Error";
   propre.stack = `${propre.name}: ${propre.message}`;
   return propre;
 }

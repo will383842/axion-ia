@@ -24,9 +24,10 @@
  *   fois, même si deux requêtes arrivent ensemble. Chaque écriture (essai,
  *   consommation) reprend l'échéance : un code expiré entre la lecture et
  *   l'écriture n'est ni compté ni consommé.
- * - **Comparaison à temps constant** (`timingSafeEqual`), et une empreinte est
- *   calculée même quand aucun code n'est vivant : la durée d'un refus ne dit
- *   pas s'il existait un code.
+ * - **Comparaison à temps constant** (`timingSafeEqual`). Une empreinte est
+ *   calculée même quand aucun code n'est vivant, ce qui RÉDUIT l'écart de durée
+ *   entre les refus sans l'annuler (une écriture de moins) : il faut de toute
+ *   façon détenir le jeton du lien pour poser la question.
  * - **Un seul code vivant** par (pièce, partie) : en émettre un nouveau
  *   invalide le précédent.
  * - **Refus uniformes** : un code faux, expiré, épuisé ou inexistant rend le
@@ -150,7 +151,7 @@ export async function verifierCodeSignature(input: {
     select: { id: true, codeHash: true, essais: true },
   });
   if (ligne === null) {
-    // Même travail qu'un vrai refus : la durée ne trahit pas l'absence de code.
+    // Empreinte calculée quand même : l'écart de durée avec un vrai refus est réduit.
     try {
       empreinteCode(randomUUID(), saisi);
     } catch {

@@ -46,4 +46,15 @@ describe("copie d'un e-mail à code", () => {
     });
     expect(ecrit()).toContain("123456");
   });
+  it("code collé à un mot (motif aveugle) : masqué par sa valeur exacte", async () => {
+    await enregistrerCopieEnvoi({
+      jobId: "j-2",
+      template: "formateur-code-signature",
+      codeAMasquer: "042517",
+      subject: "=?UTF-8?Q?042517_:_code?=",
+      html: "<p>code_042517x</p>",
+      text: "codeA042517",
+    });
+    expect(ecrit()).not.toContain("042517");
+  });
 });
