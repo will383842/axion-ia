@@ -13,6 +13,7 @@
  * La logique vit dans `formateurs-independants/choix-formateur*.ts`.
  */
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { requireFormateurAction } from "@/server/formateur/guard";
@@ -25,9 +26,11 @@ import {
   seDesister,
 } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { prisma } from "@/lib/prisma";
+import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 
 import { logQualiopiActivity, requireAdminWrite } from "./_guards";
+import { repondreMissionFormateurAction } from "./mission-formateur";
 import { assignTrainerToSessionAction } from "./trainers";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -162,4 +165,52 @@ export async function seDesisterMissionAction(
   }
   if (!r.ok) return { error: r.erreur };
   return { data: { ok: true } };
+}
+
+/**
+ * Même geste, depuis un formulaire HTML sans JavaScript (écran F-15) : la page
+ * reste légère, et le formateur revient sur sa mission avec le résultat.
+ */
+export async function seDesisterDepuisFormulaireAction(formData: FormData): Promise<void> {
+  const missionId = String(formData.get("missionId") ?? "");
+  if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
+  const texte = (cle: string) => {
+    const v = String(formData.get(cle) ?? "").trim();
+    return v === "" ? undefined : v;
+  };
+  const motif = texte("motif");
+  const remplacant = texte("remplacant");
+  const r = await seDesisterMissionAction({
+    missionId,
+    ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
+    ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
+  });
+  redirect(`${FORMATEUR_BASE_PATH}/missions/${missionId}?${"error" in r ? "erreur=1" : "fait=1"}`);
+}
+
+/**
+ * Réponse à une proposition depuis la page de mission (écran F-8), par un
+ * formulaire HTML sans JavaScript : « J'accepte » ou « Je ne suis pas
+ * disponible », le motif restant facultatif. Même garde et même service que
+ * `repondreMissionFormateurAction` (le formateur connecté, SA mission).
+ */
+export async function repondreDepuisFormulaireAction(formData: FormData): Promise<void> {
+  const missionId = String(formData.get("missionId") ?? "");
+  if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
+  const reponse = formData.get("reponse") === "acceptee" ? "acceptee" : "refusee";
+  const motif = [
+    String(formData.get("choix") ?? "").trim(),
+    String(formData.get("motif") ?? "").trim(),
+  ]
+    .filter((x) => x !== "")
+    .join(" : ")
+    .slice(0, 2000);
+  const r = await repondreMissionFormateurAction({
+    missionId,
+    reponse,
+    ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
+  });
+  const page = `${FORMATEUR_BASE_PATH}/missions/${missionId}`;
+  // Aucun texte libre dans l'adresse : un code, que la page traduit.
+  redirect("error" in r ? `${page}?erreur=reponse` : `${page}?reponse=${reponse}`);
 }
