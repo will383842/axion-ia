@@ -15,21 +15,22 @@ import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { encryptPii } from "@/lib/pii-crypto";
+import { lienConsole, prenomEtInitialeDepuisNomComplet } from "@/server/notifications/personne";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
  * jamais échouer la capture). Même canal que l'escalade (Telegram via le hub
  * notify()). No-op silencieux si Telegram non configuré (pas de token).
+ *
+ * Prénom + initiale et structure seulement : coordonnées et besoin se lisent
+ * sur la fiche (décision du 11/10/2026).
  */
 async function notifyNewLead(input: CapturerLeadInput, submissionId: string): Promise<void> {
   const body = [
     "🟢 Nouveau lead chatbot",
-    `Nom : ${input.nom}`,
-    `Email : ${input.email}`,
-    input.telephone ? `Tél : ${input.telephone}` : null,
+    `Personne : ${prenomEtInitialeDepuisNomComplet(input.nom)}`,
     input.structure ? `Structure : ${input.structure}` : null,
-    `Besoin : ${input.besoin_resume}`,
-    `Submission #${submissionId}`,
+    `Voir la fiche : ${lienConsole(`contacts/messages/${submissionId}`)}`,
   ]
     .filter((l): l is string => l !== null)
     .join("\n");
