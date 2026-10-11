@@ -360,6 +360,9 @@ async function rangSuivantOuvert(): Promise<boolean> {
  */
 export const MOTIF_CHAINE_ARRETEE = "Retrait ou remplacement par l'équipe";
 
+/** Délai laissé à l'action de choix pour proposer au 1er choix. */
+export const DELAI_GRACE_CHOIX_MS = 15 * 60 * 1000;
+
 /** Motif posé sur les choix restants quand tous ont été proposés. */
 export const MOTIF_CHOIX_EPUISES = "Tous les choix ont été proposés";
 
@@ -415,10 +418,16 @@ export async function proposerRangSuivant(
     if (vivantsDuChoix.length > 0) {
       // Rien ne bouge avant que le 1er choix ait été proposé par l'action de choix.
       const choisiLe = Math.min(...vivantsDuChoix.map((c) => c.updatedAt.getTime()));
-      if (derniere === undefined || derniere.updatedAt.getTime() < choisiLe) {
+      const pasCommencee = derniere === undefined || derniere.updatedAt.getTime() < choisiLe;
+      // Juste après le choix, l'action d'affectation n'a peut-être pas encore
+      // proposé : on attend. Passé ce délai, aucune mission depuis le choix veut
+      // dire que la place a été rendue sans proposition (salarié retiré,
+      // affectation sans proposition puis retrait) : la chaîne s'arrête, et la
+      // session sort du passage planifié.
+      if (pasCommencee && maintenant.getTime() - choisiLe < DELAI_GRACE_CHOIX_MS) {
         return { fait: "rien", raison: "chaîne pas commencée" };
       }
-      if (!chaineOuverte(derniere, new Set(choix.map((c) => c.trainerId)))) {
+      if (pasCommencee || !chaineOuverte(derniere, new Set(choix.map((c) => c.trainerId)))) {
         // Les choix restants sont marqués : le passage ne les reprend plus (un
         // nouveau choix les rouvre). Rien ne s'efface.
         await prisma.choixFormateurSession.updateMany({
@@ -429,9 +438,12 @@ export async function proposerRangSuivant(
           action: "qualiopi.mission.chaine_arretee",
           targetType: "TrainingSession",
           targetId: sessionId,
-          changes: { cause, statut: derniere.statut },
+          changes: { cause, statut: derniere?.statut ?? null },
           session: null,
         });
+        await alerter(
+          `⏹️ Session ${session.numero} : formateur retiré ou remplacé par l'équipe, les choix suivants ne seront pas proposés. ${lienFicheSession(sessionId)}`,
+        );
         return { fait: "rien", raison: "chaîne arrêtée par l'équipe" };
       }
     }

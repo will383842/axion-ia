@@ -47,6 +47,8 @@ export const LIBELLE_ANOMALIE: Record<MotifAnomalie, string> = {
   assiette_ca_absente: "Commission sur un CA nul",
   regime_tva_absent: "Régime de TVA non renseigné",
   conditions_figees_mission: "Honoraires figés au choix : réglés par le paiement par mission",
+  conditions_figees_hors_mission:
+    "Honoraires figés au choix, session hors paiement par mission : à régler à la main",
 };
 
 /**

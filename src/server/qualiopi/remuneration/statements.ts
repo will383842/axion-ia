@@ -345,22 +345,49 @@ async function sansConditionsFigees(
 ): Promise<{ prestations: PrestationACalculer[]; anomalies: Anomalie[] }> {
   const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
   if (sessionIds.length === 0) return { prestations, anomalies: [] };
-  const figees = await prisma.missionFormateur.findMany({
-    where: {
-      sessionId: { in: sessionIds },
-      statut: { in: [...MISSIONS_ACCEPTEES] },
-      tarifHtCents: { not: null },
-    },
-    select: { trainerId: true, sessionId: true },
+  // La mission acceptée la PLUS RÉCENTE de chaque couple fait foi (comme la
+  // lettre) : une ancienne mission figée ne fixe jamais le prix d'une nouvelle.
+  const missions = await prisma.missionFormateur.findMany({
+    where: { sessionId: { in: sessionIds }, statut: { in: [...MISSIONS_ACCEPTEES] } },
+    orderBy: { solliciteAt: "desc" },
+    select: { trainerId: true, sessionId: true, tarifHtCents: true },
   });
+  const vus = new Set<string>();
+  const figees = new Set<string>();
+  for (const m of missions) {
+    const cle = cleRevendication(m.trainerId, m.sessionId);
+    if (vus.has(cle)) continue;
+    vus.add(cle);
+    if (m.tarifHtCents !== null) figees.add(cle);
+  }
   const r = ecarterConditionsFigees(prestations, {
     statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
-    figees: new Set(figees.map((m) => cleRevendication(m.trainerId, m.sessionId))),
+    figees,
   });
+  if (r.ecartees.length === 0) return { prestations: r.prestations, anomalies: [] };
+  // Le libellé dit la vérité : « réglé par mission » seulement si la session
+  // l'est ; sinon, personne ne paie automatiquement et il faut le dire.
+  const dateBascule = await lireDateBascule(prisma);
+  const sessionsEcartees = [
+    ...new Set(r.ecartees.flatMap((e) => (e.prestation.sessionId ? [e.prestation.sessionId] : []))),
+  ];
+  const sessions =
+    dateBascule === null
+      ? []
+      : await prisma.trainingSession.findMany({
+          where: { id: { in: sessionsEcartees } },
+          select: { id: true, dateDebut: true, jours: { select: { date: true } } },
+        });
+  const parMission = new Set(
+    sessions.filter((x) => premiereJourneeSession(x) >= dateBascule!).map((x) => x.id),
+  );
   return {
     prestations: r.prestations,
     anomalies: r.ecartees.map(({ trainerId, prestation }) => ({
-      motif: "conditions_figees_mission" as const,
+      motif:
+        prestation.sessionId !== null && parMission.has(prestation.sessionId)
+          ? ("conditions_figees_mission" as const)
+          : ("conditions_figees_hors_mission" as const),
       trainerId,
       prestation: {
         type: prestation.type,
