@@ -110,14 +110,18 @@ describe("mise à niveau (L9b)", () => {
   });
 
   it("envoi : liste figée exigée ; un dossier à vérifier n'est jamais renvoyé", () => {
-    const base = { ...ANCIEN, miseANiveauListeeAt: null, dossierStatut: null };
+    const base = { concerne: true, miseANiveauListeeAt: null, dossierStatut: null };
     expect(refusEnvoiMiseANiveau(base)).toBe("liste_non_figee");
     expect(refusEnvoiMiseANiveau({ ...base, miseANiveauListeeAt: MAINTENANT })).toBeNull();
     expect(
-      refusEnvoiMiseANiveau({ ...base, miseANiveauListeeAt: MAINTENANT, dossierStatut: "a_verifier" }),
+      refusEnvoiMiseANiveau({
+        ...base,
+        miseANiveauListeeAt: MAINTENANT,
+        dossierStatut: "a_verifier",
+      }),
     ).toBe("dossier_a_verifier");
-    expect(refusEnvoiMiseANiveau({ ...base, actif: false, miseANiveauListeeAt: MAINTENANT })).toBe(
-      "pas_concerne",
-    );
+    expect(
+      refusEnvoiMiseANiveau({ ...base, concerne: false, miseANiveauListeeAt: MAINTENANT }),
+    ).toBe("pas_concerne");
   });
 });

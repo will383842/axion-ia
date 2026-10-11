@@ -106,7 +106,13 @@ describe("verdictEmissionContrat (L7b)", () => {
     expect(
       refus({
         controles: [
-          { verdict: "vert", source: "registre", verifieAt: ancien, createdAt: ancien, siret: SIRET },
+          {
+            verdict: "vert",
+            source: "registre",
+            verifieAt: ancien,
+            createdAt: ancien,
+            siret: SIRET,
+          },
         ],
       }),
     ).toContain(REFUS_EMISSION.controle);
@@ -143,7 +149,11 @@ describe("verdictEmissionContrat (L7b)", () => {
 });
 
 describe("donneesContratCadreIndependant", () => {
-  const AXION = { regionDeclaration: "Région", adresseFormateurs: "f@exemple.fr", certificateur: "" };
+  const AXION = {
+    regionDeclaration: "Région",
+    adresseFormateurs: "f@exemple.fr",
+    certificateur: "",
+  };
 
   it("entreprise individuelle, mandat donné, numéro « en cours » imprimé comme tel", () => {
     const d = donneesContratCadreIndependant(FAITS, AXION, "N-1", "11 octobre 2026");
@@ -174,7 +184,9 @@ describe("à faire re-signer (L7d)", () => {
         contrat({ version: 4, statutSignature: "en_attente" }),
       ]),
     ).toBe(3);
-    expect(versionEnVigueur([contrat({ version: 4, statutSignature: "signee", annuleeAt: HIER })])).toBeNull();
+    expect(
+      versionEnVigueur([contrat({ version: 4, statutSignature: "signee", annuleeAt: HIER })]),
+    ).toBeNull();
   });
 
   it("v3 en vigueur et v4 arrêtée : à re-signer ; sans v3 : relève de la mise à niveau", () => {

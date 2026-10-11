@@ -108,15 +108,15 @@ export function finDelaiGrace(premierEnvoi: Date | null): Date | null {
  */
 export type RefusEnvoiMiseANiveau = "pas_concerne" | "liste_non_figee" | "dossier_a_verifier";
 
-export function refusEnvoiMiseANiveau(
-  f: FaitsMiseANiveau & {
-    readonly miseANiveauListeeAt: Date | null;
-    readonly dossierStatut: string | null;
-  },
-): RefusEnvoiMiseANiveau | null {
-  if (!concerneParMiseANiveau(f)) return "pas_concerne";
-  if (f.miseANiveauListeeAt === null) return "liste_non_figee";
-  if (f.dossierStatut === "a_verifier") return "dossier_a_verifier";
+export function refusEnvoiMiseANiveau(e: {
+  /** `concerneParMiseANiveau` sur les faits lus. */
+  readonly concerne: boolean;
+  readonly miseANiveauListeeAt: Date | null;
+  readonly dossierStatut: string | null;
+}): RefusEnvoiMiseANiveau | null {
+  if (!e.concerne) return "pas_concerne";
+  if (e.miseANiveauListeeAt === null) return "liste_non_figee";
+  if (e.dossierStatut === "a_verifier") return "dossier_a_verifier";
   return null;
 }
 
