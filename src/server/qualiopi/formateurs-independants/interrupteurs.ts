@@ -430,6 +430,25 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.garde_mission_portes",
   },
+  // Lot L12i — la présentation de la méthode payée (175 € HT, relevé hors
+  // mission). Coupé : l'action « Présentation faite le … » refuse, exactement
+  // comme avant L12i (la présentation reste payée par « facture reçue »).
+  presentation_payee: {
+    ...envoi(
+      "Présentation de la méthode payée",
+      "« Présentation faite le … » écrit une demi-journée de 175 € HT, au régime de TVA de la fiche, sur un relevé hors mission à valider (une seule par formateur, contrat-cadre signé).",
+    ),
+    cle: "formateurs.presentation_payee",
+  },
+  // Lot L12h — l'export DAS 2 COMMUN (apporteurs, formateurs, organismes). Coupé :
+  // la route d'export refuse ; l'export des apporteurs reste en place, inchangé.
+  das2_commun: {
+    ...envoi(
+      "Export DAS 2 commun",
+      "Un seul fichier annuel des honoraires et commissions versés (apporteurs, formateurs indépendants, organismes), au seuil unique des paiements sortants.",
+    ),
+    cle: "formateurs.das2_commun",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -455,6 +474,8 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
+  presentation_payee: [],
+  das2_commun: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
