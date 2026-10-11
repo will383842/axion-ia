@@ -163,6 +163,11 @@ export type FormationCronJobType =
   // conformité de la formation. Créer une file dédiée pour un `count()` horaire
   // aurait ajouté une septième file à surveiller pour surveiller.
   | "formation-crons.email-sante"
+  // Incidents de données (2026-10-11) — rappels Telegram du délai CNIL de 72 h.
+  // ⚠️ Pas « formation » non plus : même raison que `email-sante`, ce
+  // répartiteur horaire existe déjà, une file dédiée pour une requête à l'heure
+  // en ferait une de plus à surveiller.
+  | "formation-crons.incidents-rappels"
   // Cycle de vie du formateur sur une session (2026-09-03).
   | "formation-crons.missions-formateur"
   | "formation-crons.formateur-convocation-j7"
@@ -2583,6 +2588,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.reponse-poste-pourvu": handleReponsePostePourvu,
   "formation-crons.reponses-entrantes-candidatures": handleReponsesEntrantesCandidatures,
   "formation-crons.email-sante": handleEmailSante,
+  "formation-crons.incidents-rappels": handleIncidentsRappels,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
@@ -2658,6 +2664,31 @@ async function handleSuiviEntrepriseOpco(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] suivi-entreprise-opco: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Horaire — rappels Telegram des incidents de données dont la décision CNIL
+ * n'est pas renseignée. Corps et doctrine dans
+ * `features/conformite-rgpd/incidents-alertes.ts`. Import PARESSEUX.
+ */
+async function handleIncidentsRappels(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerRappelsIncidents } = await import("@/features/conformite-rgpd/incidents-alertes");
+    const b = await passerRappelsIncidents(new Date());
+    if (b.envoyes + b.echecs === 0 && !b.plafondAtteint) return;
+    const ligne =
+      `[formation-crons] incidents-rappels: ${b.envoyes} rappel(s) envoyé(s), ${b.echecs} échec(s)` +
+      ` sur ${b.examines} incident(s) en attente de décision CNIL` +
+      (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.echecs > 0 || b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] incidents-rappels: erreur:",
       err instanceof Error ? err.message : String(err),
     );
   }

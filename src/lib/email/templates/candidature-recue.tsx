@@ -15,6 +15,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -27,6 +28,8 @@ interface Payload {
    * déposer ses montages (la page n'était atteinte que par un e-mail manuel).
    */
   lienDepot?: string;
+  /** Lien signé « Supprimer ma candidature » (2026-10-11). */
+  lienSuppression?: string;
 }
 
 const COPY = {
@@ -99,6 +102,7 @@ export function CandidatureRecueEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.reponse}</Text>
       {p.lienDepot ? <Text style={emailStyles.paragraphStyle}>{t.depot}</Text> : null}
+      <LienSuppressionCandidature href={p.lienSuppression} locale={locale} />
     </EmailLayout>
   );
 }

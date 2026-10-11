@@ -9,6 +9,7 @@ import type {
   NotificationCategory,
   NotificationEvent,
   NotificationSeverity,
+  PalierAlerteIncident,
 } from "./types";
 import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
@@ -53,6 +54,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   avis: { emoji: "⭐", label: "AVIS CLIENT" },
   messages: { emoji: "💬", label: "MESSAGE" },
   "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
+  incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -102,6 +104,7 @@ const TITLES: Record<NotificationCategory, string> = {
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
+  CANDIDAT_SELF_ERASED: "Un candidat a supprimé sa candidature",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
   BACKUP_SUCCESS: "Sauvegarde réussie",
@@ -112,6 +115,7 @@ const TITLES: Record<NotificationCategory, string> = {
   STRIPE_WEBHOOK_SIGNATURE_FAIL: "Stripe — signature webhook invalide",
   MONITORING_ALERT: "Alerte monitoring",
   CRM_SYNC_ALERT: "Synchro CRM — anomalie",
+  DATA_INCIDENT_ALERT: "Délai CNIL de 72 h",
 };
 
 /**
@@ -674,6 +678,25 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
+    case "CANDIDAT_SELF_ERASED": {
+      // Le dossier est effacé : pas de lien vers une fiche qui n'existe plus,
+      // et aucune donnée nominative — le poste et l'heure.
+      const p = event.payload;
+      return [
+        formatKV("Poste", p.offerTitle),
+        formatKV(
+          "Supprimée le",
+          new Date(p.erasedAt).toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+        ),
+        formatKV("Origine", "lien « Supprimer ma candidature » de nos e-mails"),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
     case "ADMIN_REPLIED_TO_SUBMISSION": {
       const p = event.payload;
       return [
@@ -775,6 +798,54 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
+    case "DATA_INCIDENT_ALERT": {
+      const p = event.payload;
+      return [
+        escapeMarkdownV2(phraseAlerteIncident(p.numero, p.palier, new Date(p.echeance))),
+        `Ouvrir la fiche : ${escapeMarkdownV2(lienFicheIncident(p.numero))}`,
+      ].join("\n");
+    }
+  }
+}
+
+/** Le lien console de la fiche d'un incident. */
+export function lienFicheIncident(numero: number): string {
+  return `${SITE_URL}${adminPath("fr", `conformite-rgpd/incidents/${numero}`)}`;
+}
+
+/** « 14 octobre 2026 à 09:30 », heure de Paris. */
+function echeanceLisible(d: Date): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(d);
+}
+
+/**
+ * La phrase d'une alerte d'incident. Elle ne porte QUE le numéro et l'échéance :
+ * rien de ce qui a été saisi dans la fiche ne part sur Telegram.
+ */
+export function phraseAlerteIncident(
+  numero: number,
+  palier: PalierAlerteIncident,
+  echeance: Date,
+  maintenant: Date = new Date(),
+): string {
+  const quand = echeanceLisible(echeance);
+  switch (palier) {
+    case "declare":
+      // Un incident découvert il y a plus de 72 h peut être déclaré tard : ne
+      // jamais écrire « à décider avant » une date déjà passée.
+      return echeance.getTime() > maintenant.getTime()
+        ? `🚨 Incident de données n° ${numero} déclaré. À traiter : déclaration à la CNIL à décider avant le ${quand}.`
+        : `🚨 Incident de données n° ${numero} déclaré. À traiter : le délai de 72 h pour décider de la déclaration à la CNIL est déjà dépassé (échéance le ${quand}).`;
+    case "48h":
+    case "24h":
+    case "6h":
+      return `⏰ Rappel : incident de données n° ${numero}, il reste moins de ${palier.replace("h", " h")} pour décider de la déclaration à la CNIL (avant le ${quand}).`;
+    case "depasse":
+      return `⛔ Incident de données n° ${numero} : délai de 72 h dépassé (échéance le ${quand}). La décision CNIL n'est toujours pas renseignée.`;
   }
 }
 
