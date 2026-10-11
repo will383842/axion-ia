@@ -176,6 +176,8 @@ export type NotificationEvent =
         availability?: string;
         /** Utilise déjà l'IA au quotidien. */
         usesAi: boolean;
+        /** Personne déjà connue, revenue par la publicité (le titre le précise). */
+        dejaConnu?: boolean;
         locale: "fr" | "en";
       };
     }

@@ -18,6 +18,7 @@ import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
 import { salonDuNom } from "@/server/calendly/rdv-salon";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { estTypeRendezVous, type TypeRendezVous } from "@/server/calendly/type-rendez-vous";
+import { lienConsole, prenomEtInitialeDepuisNomComplet } from "./personne";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -200,6 +201,11 @@ function humanDateOrText(value: string | undefined): string | undefined {
   return ISO_INSTANT.test(value) ? formatParisDateTime(value) : value;
 }
 
+/** Un lien `http(s)` de réunion, ou rien (numéro ou adresse ne partent pas). */
+function lienDeReunion(lieu: string | undefined): string | undefined {
+  return lieu && /^https?:\/\//i.test(lieu.trim()) ? lieu.trim() : undefined;
+}
+
 function formatKV(label: string, value: string | number | null | undefined): string | null {
   if (value === null || value === undefined || value === "") return null;
   return `• *${escapeMarkdownV2(label)}* : ${escapeMarkdownV2(String(value))}`;
@@ -314,14 +320,11 @@ function formatBody(event: NotificationEvent): string {
     case "SPEAKER_INVITATION_RECEIVED":
     case "INVESTOR_INQUIRY_RECEIVED":
     case "CUSTOMER_SUPPORT_REQUEST": {
+      // Décision du 11/10/2026 : prénom + initiale, jamais les coordonnées ni
+      // le message. Le détail se lit sur la fiche, dont le lien clôt l'alerte.
       const p = event.payload;
       const lines = [
-        formatKV("Nom", p.contactName),
-        formatKV("Email", p.contactEmail),
-        "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
-        // Le CONTENU du message, en tête (demande Will 2026-08-12) : c'est ce
-        // qu'on veut lire depuis le téléphone, avant les métadonnées.
-        "message" in p ? formatKV("Message", p.message) : null,
+        formatKV("Personne", prenomEtInitialeDepuisNomComplet(p.contactName)),
         "ville" in p ? formatKV("Ville", p.ville) : null,
         "companyName" in p ? formatKV("Société", p.companyName) : null,
         "companySize" in p ? formatKV("Taille", p.companySize) : null,
@@ -340,7 +343,7 @@ function formatBody(event: NotificationEvent): string {
         "firm" in p ? formatKV("Société", p.firm) : null,
         "source" in p ? formatKV("Source", p.source) : null,
         formatKV("Locale", p.locale),
-        formatKV("ID", p.submissionId),
+        formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
@@ -352,21 +355,15 @@ function formatBody(event: NotificationEvent): string {
       // ligne, contact sur une ligne, les réponses déjà regroupées par
       // `labeledAnswers` (tous les prix sur « Prix »), et le lien console en
       // dernier. Plus de « Catégorie » : elle ne sert à rien pour trier.
+      // Depuis le 11/10/2026 : ni coordonnées ni réponses (tarifs compris).
       const p = event.payload;
+      const candidat = prenomEtInitialeDepuisNomComplet(p.contactName);
       return [
-        formatKV("Candidat", p.city ? `${p.contactName} · ${p.city}` : p.contactName),
-        formatKV(
-          "Contact",
-          p.contactPhone ? `${p.contactEmail} · ${p.contactPhone}` : p.contactEmail,
-        ),
+        formatKV("Candidat", p.city ? `${candidat} · ${p.city}` : candidat),
         // « Vidéaste freelance (F/H) » suffit à distinguer les deux offres : la
         // suite du titre (après le tiret long) est l'accroche de l'annonce.
         formatKV("Offre", p.offerTitle.split(" — ")[0]),
-        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/candidatures/${p.applicationId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -374,21 +371,13 @@ function formatBody(event: NotificationEvent): string {
     case "JOB_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
-        formatKV("Email", p.contactEmail),
-        p.contactPhone ? formatKV("Téléphone", p.contactPhone) : null,
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
         formatKV("Offre", p.offerTitle),
         p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
-        p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
-        p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
-        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/candidatures/${p.applicationId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -399,7 +388,8 @@ function formatBody(event: NotificationEvent): string {
       // pitch, message libre) vit dans l'email interne + la console.
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
+        p.dejaConnu ? formatKV("Déjà connu(e)", "revenu(e) par la publicité") : null,
         p.ville ? formatKV("Ville", p.ville) : null,
         p.zone ? formatKV("Zone souhaitée", p.zone) : null,
         p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
@@ -409,7 +399,7 @@ function formatBody(event: NotificationEvent): string {
         // suit l'alerte est d'inviter la personne à l'échange de 15 minutes.
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#invitation`,
+          lienConsole(`contacts/commercial/${p.submissionId}#invitation`),
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -466,15 +456,14 @@ function formatBody(event: NotificationEvent): string {
     case "REVIEW_SUBMITTED": {
       const p = event.payload;
       return [
-        formatKV("Auteur", p.authorName),
+        formatKV("Auteur", prenomEtInitialeDepuisNomComplet(p.authorName)),
         formatKV("Note", `${p.rating}/5 ★`),
         p.companyName ? formatKV("Société", p.companyName) : null,
         p.clientSector ? formatKV("Secteur", p.clientSector) : null,
         p.city ? formatKV("Ville", p.city) : null,
         p.serviceLine ? formatKV("Service", p.serviceLine) : null,
         formatKV("Photo", p.hasPhoto ? "jointe ✅" : "aucune"),
-        p.excerpt ? formatKV("Extrait", p.excerpt.slice(0, 160)) : null,
-        formatKV("Modérer en console", `${SITE_URL}${adminPath("fr", "avis")}/${p.reviewId}`),
+        formatKV("Modérer en console", lienConsole(`avis/${p.reviewId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -488,7 +477,6 @@ function formatBody(event: NotificationEvent): string {
         // clique et voit le dossier complet, au lieu de lire un nom dans
         // Telegram. Sans lui, la rédaction se paierait en aller-retours.
         formatKV("Personne", p.traineeNomMasque),
-        formatKV("Email", p.traineeEmailMasque),
         formatKV("À traiter avant le", p.echeance),
         formatKV("Référence", p.demandeId),
         formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "qualiopi/rgpd")}`),
@@ -498,13 +486,10 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Entreprise", p.companyName),
-        formatKV("Dirigeant", p.leaderName),
-        formatKV("Email", p.contactEmail),
-        formatKV("Téléphone", p.contactPhone),
-        formatKV("Lieu du tournage", `${p.city} (${p.postalCode})`),
-        p.activityExcerpt ? formatKV("Activité", p.activityExcerpt.slice(0, 200)) : null,
+        formatKV("Dirigeant", prenomEtInitialeDepuisNomComplet(p.leaderName)),
+        formatKV("Ville du tournage", p.city),
         p.source ? formatKV("Source", p.source) : null,
-        formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "podcast")}/${p.requestId}`),
+        formatKV("Voir en console", lienConsole(`podcast/${p.requestId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -513,19 +498,19 @@ function formatBody(event: NotificationEvent): string {
     case "NEWSLETTER_CONFIRMED":
     case "NEWSLETTER_UNSUBSCRIBED": {
       const p = event.payload;
-      return [formatKV("Email", p.email), formatKV("Locale", p.locale)]
+      return [formatKV("Locale", p.locale), formatKV("Voir en console", lienConsole("newsletter"))]
         .filter((v): v is string => v !== null)
         .join("\n");
     }
     case "GUIDE_REQUESTED": {
       const p = event.payload;
-      // `p.email` arrive DÉJÀ masqué (`redactEmail`) — ADR 0010.
+      // Aucune adresse, même masquée (décision du 11/10/2026).
       return [
-        formatKV("Email", p.email),
         formatKV("Provenance", p.source),
         formatKV("Lettre", LETTRE_LIBELLES[p.lettre]),
         formatKV("Envoi", p.envoi),
         formatKV("Première demande", p.nouvelle ? "oui" : "non (redemande)"),
+        formatKV("Voir en console", lienConsole("newsletter/demandes-guide")),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -548,20 +533,22 @@ function formatBody(event: NotificationEvent): string {
     case "OPTION_CONFIRMED":
     case "OPTION_REFUSED":
     case "OPTION_EXPIRED": {
+      // Ni e-mail ni motif saisi : prénom + initiale seulement.
       const p = event.payload as Record<string, string | number | undefined>;
       const order = [
         "bookingId",
         "serviceType",
-        "contactName",
-        "contactEmail",
         "bookingDate",
         "expiresAt",
         "admin",
         "cancelledBy",
-        "reason",
       ];
-      return order
-        .map((k) => formatKV(k, p[k]))
+      return [
+        ...order.map((k) => formatKV(k, p[k])),
+        typeof p.contactName === "string"
+          ? formatKV("contact", prenomEtInitialeDepuisNomComplet(p.contactName))
+          : null,
+      ]
         .filter((v): v is string => v !== null)
         .join("\n");
     }
@@ -581,19 +568,16 @@ function formatBody(event: NotificationEvent): string {
         // Juste après le format : quand on lit « Visio », la question suivante
         // est « où ? ». La faire descendre sous les coordonnées obligerait à
         // chercher, et l'alerte existe pour éviter de chercher.
-        formatKV("Lieu", p.lieu),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
-        formatKV("Téléphone", p.inviteePhone),
+        //
+        // ⚠️ Seulement un LIEN de réunion : pour un appel ou un rendez-vous sur
+        // place, Calendly y met le numéro ou l'adresse de l'invité.
+        formatKV("Lieu", lienDeReunion(p.lieu)),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Début", humanDateOrText(p.eventStartTime)),
-        formatKV("Réponses formulaire", p.answersText),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
         formatKV("Annuler / déplacer", p.cancelUrl),
       ]
         .filter((v): v is string => v !== null)
@@ -603,14 +587,9 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Était prévu le", humanDateOrText(p.eventStartTime)),
-        formatKV("Raison", p.reason),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -619,14 +598,10 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Avant", humanDateOrText(p.oldStart)),
         formatKV("Après", humanDateOrText(p.newStart)),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -634,8 +609,7 @@ function formatBody(event: NotificationEvent): string {
     case "APPORTEUR_REPLIED": {
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
-        formatKV("Objet", p.subject),
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
         formatKV(
           "Reçu le",
           new Date(p.receivedAt).toLocaleString("fr-FR", {
@@ -647,7 +621,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Rappels automatiques", "arrêtés"),
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#reponses-recues`,
+          lienConsole(`contacts/commercial/${p.submissionId}#reponses-recues`),
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -668,7 +642,7 @@ function formatBody(event: NotificationEvent): string {
         ),
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}#reponses-recues`,
+          lienConsole(`contacts/candidatures/${p.applicationId}#reponses-recues`),
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -678,9 +652,7 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Par", p.repliedBy),
-        formatKV("À", p.toEmail),
-        formatKV("Sujet", p.subject),
-        formatKV("Submission", p.submissionId),
+        formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
