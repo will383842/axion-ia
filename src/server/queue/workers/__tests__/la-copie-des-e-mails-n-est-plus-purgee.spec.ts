@@ -45,6 +45,9 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 vi.mock("@/server/careers/cv-storage", () => ({ deleteCv: vi.fn(async () => undefined) }));
+vi.mock("@/server/careers/videos-candidat", () => ({
+  supprimerVideosCandidature: vi.fn(async () => undefined),
+}));
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("../connection", () => ({ getBullConnectionOrThrow: () => ({}) }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));

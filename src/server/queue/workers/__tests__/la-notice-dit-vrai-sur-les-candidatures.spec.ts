@@ -12,19 +12,22 @@
  * appliquait.
  *
  * Le 2026-10-07, Will a décidé qu'AUCUNE candidature n'est supprimée
- * automatiquement (« non je ne veux surtout pas d'effacement ») : le bloc du
- * worker est retiré, et la notice le dit. Ce fichier existe pour que les deux
- * ne se séparent plus : le dépôt a deux précédents documentés où le code a
- * changé et le texte publié est resté.
+ * automatiquement : le bloc du worker a été retiré, et la notice l'a dit.
+ *
+ * Le 2026-10-11, il a tranché de nouveau : « on garde les CV et données
+ * 2 ans », puis effacement automatique. Le worker efface donc les candidatures
+ * 24 mois après le dernier échange (jamais une personne recrutée), et la
+ * notice l'annonce. Ce fichier existe pour que les deux ne se séparent plus :
+ * le dépôt a deux précédents documentés où le code a changé et le texte publié
+ * est resté.
  *
  * ## Ce qu'il vérifie
  *
- * ✅ La notice (FR et EN) ne promet plus de suppression automatique ni de
- *    durée en mois pour une candidature.
- * ✅ La notice dit ce qui se passe vraiment : le dossier est conservé, n'est
- *    pas supprimé automatiquement, et son effacement se demande.
- * ✅ Le worker ne supprime aucune candidature — les deux moitiés sont COUPLÉES :
- *    rétablir une purge sans changer la notice rougit, et inversement.
+ * ✅ La notice (FR et EN) annonce deux ans après le dernier échange, puis un
+ *    effacement automatique ; l'effacement anticipé sur demande ; l'exception
+ *    des personnes recrutées.
+ * ✅ Le worker fait ce que la notice annonce — les deux moitiés sont COUPLÉES :
+ *    retirer l'effacement ou changer sa durée sans changer la notice rougit.
  *
  * ❌ Il ne juge pas la rédaction. C'est une garde de forme, et elle le dit.
  */
@@ -70,31 +73,40 @@ describe("la notice dit vrai sur les candidatures", () => {
     );
   });
 
-  it("🔴 la notice ne promet plus de suppression automatique ni de durée en mois", () => {
-    expect(FR()).not.toMatch(/suppression automatique/i);
-    expect(FR()).not.toMatch(/Candidature non retenue\s*:\s*\d+\s*mois/);
-    expect(EN()).not.toMatch(/automatic deletion/i);
-    expect(EN()).not.toMatch(/\d+\s*months/);
+  it("🔴 la notice annonce ce que le code fait : deux ans après le dernier échange, puis effacement automatique", () => {
+    // Décision du responsable de traitement, 2026-10-11 — voir
+    // `les-candidatures-s-effacent-a-2-ans.spec.ts`.
+    expect(FR()).toMatch(
+      /conservé deux ans après notre dernier échange, puis effacé automatiquement/,
+    );
+    expect(EN()).toMatch(/kept for two years after our last exchange, then deleted automatically/);
+    // L'ancienne promesse inverse ne doit pas survivre à côté de la nouvelle.
+    expect(FR()).not.toMatch(/n'est pas supprimé automatiquement/);
+    expect(EN()).not.toMatch(/it is not deleted automatically/);
   });
 
-  it("🔴 la notice dit ce qui se passe : conservé, pas supprimé automatiquement, effacement sur demande", () => {
-    expect(FR()).toMatch(/n'est pas supprimé automatiquement/);
-    expect(FR()).toMatch(/demander son effacement/);
-    expect(EN()).toMatch(/it is not deleted automatically/);
-    expect(EN()).toMatch(/ask for it to be erased/);
+  it("🔴 l'effacement anticipé sur demande et l'exception des personnes recrutées sont dits", () => {
+    expect(FR()).toMatch(/demander son effacement plus tôt/);
+    expect(FR()).toMatch(/dossier du personnel et n'est pas concerné par cet effacement/);
+    expect(EN()).toMatch(/ask for it to be erased earlier/);
+    expect(EN()).toMatch(/personnel file and is not covered by this deletion/);
   });
 
-  it("🔴 les deux moitiés sont couplées : le worker ne supprime aucune candidature", () => {
+  it("🔴 les deux moitiés sont couplées : la durée annoncée est celle du worker", () => {
     // 🔑 Une garde qui ne testerait que la notice laisserait passer un code qui
-    // recommence à effacer ; une garde qui ne testerait que le code laisserait
-    // passer une notice qui promet encore une suppression.
-    const noticeAnnonceUneSuppression = /suppression automatique/i.test(FR());
+    // n'efface rien, ou qui efface à une autre échéance ; une garde qui ne
+    // testerait que le code laisserait passer une notice qui annonce autre chose.
     expect(
       workerSupprimeDesCandidatures(),
-      "le worker supprime de nouveau des candidatures : c'est interdit par décision " +
-        "du responsable de traitement (2026-10-07), et la notice dit le contraire.",
-    ).toBe(false);
-    expect(noticeAnnonceUneSuppression).toBe(workerSupprimeDesCandidatures());
+      "la notice annonce un effacement automatique que le worker ne fait pas.",
+    ).toBe(true);
+    expect(codeDuWorker(), "la notice dit « deux ans » : le worker doit dire 24 mois").toMatch(
+      /CANDIDATURES_MOIS = 24;/,
+    );
+    // Le point de départ est le dernier échange, pas le seul dépôt.
+    expect(codeDuWorker()).toMatch(/lastActivityAt/);
+    // 🛑 Et les personnes recrutées sont épargnées, comme la notice le dit.
+    expect(codeDuWorker()).toMatch(/notIn:\s*\[\s*"hired"/);
   });
 
   it("le vivier reste décrit, avec son consentement", () => {

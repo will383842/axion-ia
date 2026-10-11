@@ -108,7 +108,7 @@ const EFFETS: Readonly<Record<Transition, Effet>> = {
   // ⚠️ Classer sans suite ne programme AUCUNE suppression : depuis la décision
   // de Will du 2026-10-07, le worker de purge ne supprime plus les fiches
   // archivées, et la politique de confidentialité le dit. N'écrire ici aucun
-  // compte à rebours — garde `les-candidatures-ne-sont-jamais-purgees.spec.ts`.
+  // compte à rebours — garde `les-candidatures-s-effacent-a-2-ans.spec.ts`.
   "sans-suite": {
     donnees: { status: "archived", archivedAt: new Date(0), needsAttention: false },
     annuleLesRelances: true,

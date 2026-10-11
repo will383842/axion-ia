@@ -811,6 +811,18 @@ export function JobApplicationForm({
             .
           </span>
         </label>
+
+        {/* INFORMATION, pas un consentement (décision de Will, 2026-10-11) :
+            la durée de conservation du dossier lui-même, dite au moment de la
+            collecte (RGPD art. 13). Elle est celle du worker de purge
+            (`CANDIDATURES_MOIS`) et de la notice — les trois bougent ensemble.
+            Ce n'est PAS un texte de case : la version `careers-v2-2026-08-13`
+            n'est pas touchée. */}
+        <p className="text-fg-muted mt-3 text-xs">
+          Votre candidature, votre CV et votre photo sont conservés 2 ans après notre dernier
+          échange, puis effacés. Vous pouvez en demander l&apos;effacement plus tôt à
+          contact@axion-ia.com.
+        </p>
       </fieldset>
 
       {/* Anti-spam Cloudflare. La plupart du temps rien ne s'affiche ici : le

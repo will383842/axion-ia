@@ -3,9 +3,13 @@
 // Cron 03:00 UTC.
 //
 // 🛑 DÉCISION DE WILL, 2026-10-07 : « coupe tous les effacements ». Ce worker
-// ne supprime PLUS AUCUNE donnée concernant une personne ou un échange. Il ne
-// garde que des purges purement TECHNIQUES, où ne figure ni personne ni
-// échange :
+// ne supprime PLUS AUCUNE donnée concernant une personne ou un échange — à UNE
+// exception près, décidée par lui le 2026-10-11 : les CANDIDATURES AUX OFFRES
+// D'EMPLOI (`jobApplication`, avec CV, photo et vidéos), effacées 24 mois
+// après le dernier échange. Voir le bloc 6 du handler.
+//
+// Pour le reste, il ne garde que des purges purement TECHNIQUES, où ne figure
+// ni personne ni échange :
 //
 //   - generation_logs   : journaux techniques de la génération de contenus
 //                         (prompts éditoriaux, job_id) — 12 mois ;
@@ -26,8 +30,12 @@
 //   RETENTION_CHAT_MONTHS=12              (cache sémantique et idempotence SEULEMENT)
 //   RETENTION_CRM_OUTBOX_SENT_DAYS=30
 //
+// La durée des candidatures (24 mois) n'est PAS une variable d'environnement :
+// elle est écrite dans la notice et sous le formulaire, et une variable
+// permettrait de les faire mentir sans toucher au code.
+//
 // Ce qui n'est PLUS supprimé automatiquement (code retiré, pas un drapeau) :
-// candidatures et CV, fiches et dossiers (`submissions`), journal d'activité
+// fiches et dossiers (`submissions`, apporteurs compris), journal d'activité
 // (`activity_logs`, traces RGPD comprises), rendez-vous Calendly, lettre
 // d'information et guide (désinscrits, inscriptions non confirmées, abonnés
 // inactifs, rebonds, demandes du guide, preuves), conversations et escalades
@@ -37,8 +45,8 @@
 // rejetés, dossiers échus, preuves d'accord). Voir le bloc dédié du handler.
 //
 // L'effacement reste possible, mais comme un GESTE : console, droit à
-// l'effacement (`api/gdpr-erase`), suppression d'une candidature. Rien de cela
-// ne vit ici, et rien de cela n'est touché.
+// l'effacement (`api/gdpr-erase`), suppression anticipée d'une candidature.
+// Rien de cela ne vit ici, et rien de cela n'est touché.
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
@@ -47,6 +55,8 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { purgerOutboxCrm } from "@/server/newsletter/retention";
+import { deleteCv } from "@/server/careers/cv-storage";
+import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -55,6 +65,39 @@ const DEFAULTS = {
   chat: 12,
   funnelEvents: 12,
 } as const;
+
+/**
+ * Durée de conservation d'une candidature à une offre d'emploi, comptée depuis
+ * le DERNIER ÉCHANGE. Décision de Will du 2026-10-11 (recommandation CNIL :
+ * deux ans après le dernier contact). Annoncée telle quelle par la notice
+ * (`legal.ts`, « Conservation des candidatures ») et sous le formulaire.
+ */
+export const CANDIDATURES_MOIS = 24;
+
+/** Plafond d'effacements par passe : une passe quotidienne n'a pas à tout vider d'un coup. */
+export const CANDIDATURES_PAR_PASSE = 200;
+
+/**
+ * Les candidatures dont le DERNIER ÉCHANGE est antérieur à `limite`.
+ *
+ * 🔑 « Dernier échange », pas « date de dépôt » : une candidature de 2024 à
+ * laquelle on a répondu le mois dernier repart pour deux ans. Chaque signal
+ * d'échange est donc exigé ANCIEN — le dépôt, le journal (`lastActivityAt`),
+ * nos réponses, les réponses reçues du candidat, les entretiens.
+ *
+ * 🛑 `hired` est exclu (décision `D4` du 2026-09-03) : le dossier d'une
+ * personne recrutée est une pièce de son dossier du personnel.
+ */
+export function candidaturesEchuesWhere(limite: Date) {
+  return {
+    status: { notIn: ["hired" as const] },
+    submittedAt: { lt: limite },
+    OR: [{ lastActivityAt: null }, { lastActivityAt: { lt: limite } }],
+    replies: { none: { repliedAt: { gte: limite } } },
+    reponsesRecues: { none: { receivedAt: { gte: limite } } },
+    interviews: { none: { scheduledAt: { gte: limite } } },
+  };
+}
 
 function monthsAgo(months: number): Date {
   const d = new Date();
@@ -87,9 +130,13 @@ export async function executerPurgeRetention(): Promise<void> {
     chatIdempotency: 0,
     funnelEvents: 0,
     crmOutbox: 0,
+    candidatures: 0,
+    candidaturesRecruteesEpargnees: 0,
   };
 
   // ── 🛑 AUCUN EFFACEMENT AUTOMATIQUE DE DONNÉES DE PERSONNES. DÉCISION DE WILL. ──
+  // (Seule exception : les candidatures aux offres d'emploi, bloc 6 — décision
+  // de Will du 2026-10-11.)
   //
   // **Ordres explicites de Will** : 2026-10-07 « non je ne veux surtout pas
   // d'effacement », puis « coupe tous les effacements » ; ils prolongent ceux
@@ -98,7 +145,7 @@ export async function executerPurgeRetention(): Promise<void> {
   // qu'on efface quoi que ce soit »), et la décision prospection du 2026-08-20.
   //
   // Les blocs qui vivaient ici ont été RETIRÉS — pas désactivés par un drapeau,
-  // retirés : `jobApplication` (et CV, photo, vidéos), `submission` archivées,
+  // retirés : `submission` archivées,
   // `activityLog` (traces RGPD comprises), `calendlyEvent` (et le gel des
   // rencontres qui le précédait), lettre et guide (`purgerDesinscrits`,
   // `purgerLettreEtGuide`), `chatConversation`, `chatEscalation`, `emailLog`,
@@ -118,7 +165,8 @@ export async function executerPurgeRetention(): Promise<void> {
   // ⚠️ Gardes : `aucun-effacement-automatique-de-personnes.spec.ts` et
   // `les-candidatures-ne-sont-jamais-purgees.spec.ts` échouent si l'une de ces
   // suppressions réapparaît dans ce worker. Ne pas « réparer » la rétention ici
-  // sans un nouvel arbitrage explicite de Will.
+  // sans un nouvel arbitrage explicite de Will. Le second garde aussi que le
+  // bloc 6 reste borné aux candidatures, à 24 mois, hors personnes recrutées.
 
   // 1) crm_sync_outbox — lignes `sent` (acquittées par le CRM) à 30 jours ;
   // jamais `pending`, `failed` ni `gave_up`. La donnée vit dans le CRM : la
@@ -171,12 +219,60 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.chatIdempotency = chatIdemResult.count;
 
+  // 6) CANDIDATURES AUX OFFRES D'EMPLOI — 24 mois après le dernier échange.
+  //
+  // **Décision de Will, 2026-10-11** : « on garde les CV et données 2 ans »,
+  // puis effacement automatique. C'est le nouvel arbitrage explicite que
+  // demandait la décision du 2026-10-07, et il ne porte QUE sur
+  // `jobApplication`. Les apporteurs (`submission`), contacts, prospects et
+  // rendez-vous restent sans effacement automatique.
+  //
+  // La suppression de la ligne emporte en cascade son journal, ses réponses,
+  // ses entretiens, ses liens et ses vidéos en base ; les rendez-vous d'agenda
+  // survivent (lien `SetNull`).
+  try {
+    const limite = monthsAgo(CANDIDATURES_MOIS);
+    const echues = await prisma.jobApplication.findMany({
+      where: candidaturesEchuesWhere(limite),
+      select: { id: true, cvStoragePath: true, photoStoragePath: true },
+      orderBy: { submittedAt: "asc" },
+      take: CANDIDATURES_PAR_PASSE,
+    });
+
+    // OBSERVATION, jamais une purge : un `count`, donc aucune ligne rendue.
+    counts.candidaturesRecruteesEpargnees = await prisma.jobApplication.count({
+      where: { status: "hired", submittedAt: { lt: limite } },
+    });
+
+    for (const c of echues) {
+      // Fichiers d'abord : si la suppression disque échoue, la ligne reste et
+      // la passe de demain réessaie. L'inverse perdrait le chemin du fichier
+      // et le rendrait introuvable — donc ineffaçable.
+      try {
+        await deleteCv(c.cvStoragePath);
+        await deleteCv(c.photoStoragePath);
+        await supprimerVideosCandidature(c.id);
+      } catch (err) {
+        console.error(`[retention-purge][candidatures] fichiers de ${c.id} : reprise demain.`);
+        captureWorkerError("retention-purge", "retention-purge", undefined, err);
+        continue;
+      }
+      await prisma.jobApplication.delete({ where: { id: c.id } });
+      counts.candidatures += 1;
+    }
+  } catch (err) {
+    console.error("[retention-purge][candidatures] étape en échec, reprise demain.");
+    captureWorkerError("retention-purge", "retention-purge", undefined, err);
+  }
+
   console.log(
     `[retention-purge] generationLogs=${counts.generationLogs} ` +
       `webVitals=${counts.webVitals} funnelEvents=${counts.funnelEvents} ` +
       `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
       `crmOutbox=${counts.crmOutbox} ` +
-      `donneesDePersonnes=CONSERVÉES (décision Will 2026-10-07)`,
+      `candidatures=${counts.candidatures} ` +
+      `candidaturesRecruteesEpargnees=${counts.candidaturesRecruteesEpargnees} ` +
+      `autresDonneesDePersonnes=CONSERVÉES (décision Will 2026-10-07)`,
   );
 }
 

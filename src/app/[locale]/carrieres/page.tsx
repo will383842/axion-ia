@@ -463,6 +463,13 @@ export default async function CarrieresHubPage({
               ? "Notre siège et nos bureaux sont à Grenoble (Isère) ; beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
               : "Our head office and offices are in Grenoble (Isère); many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
           </p>
+          {/* Disponibilité des postes — discret (décision de Will, 2026-10-11) :
+              les annonces constituent un vivier, et la page le dit. */}
+          <p className="text-fg-muted mt-2 max-w-3xl text-sm">
+            {isFr
+              ? "Nous préparons nos prochains recrutements : chaque candidature est étudiée et conservée pour le moment où le poste s'ouvrira."
+              : "We are preparing our next hires: every application is reviewed and kept for when the role opens."}
+          </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
             {CAREER_CITIES.map((city) => {
               const isHq = city === "Grenoble";

@@ -264,8 +264,8 @@ export function ApplicationsV2({
             Réponse automatique « poste pourvu » : {reponseAuto.active ? "active" : "arrêtée"}.
           </strong>{" "}
           Chaque heure, au plus 15 candidats hors vidéo restés « nouvelle » sans réponse depuis{" "}
-          {reponseAuto.ageMinJours} jours reçoivent « poste pourvu, nous gardons votre dossier ».
-          Passer un dossier « en revue » le protège. En attente :{" "}
+          {reponseAuto.ageMinJours} jours reçoivent « pas de besoin immédiat, nous gardons votre
+          dossier deux ans ». Passer un dossier « en revue » le protège. En attente :{" "}
           <strong>{reponseAuto.enAttente}</strong>.{" "}
           <button type="submit" className="admin-button-ghost">
             {reponseAuto.active ? "Arrêter" : "Mettre en marche"}

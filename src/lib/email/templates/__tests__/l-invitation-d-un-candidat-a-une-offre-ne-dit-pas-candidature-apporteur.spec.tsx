@@ -88,7 +88,9 @@ describe("invitation — variante « offre »", () => {
       ).html,
     );
     expect(t).toContain("Merci pour votre candidature à notre offre « Data Scientist ».");
-    expect(t).toContain("ce poste est aujourd'hui pourvu");
+    expect(t).toContain("nous n'avons pas de besoin immédiat sur ce poste");
+    // 2026-10-11 — plus de « poste pourvu » : aucun poste n'était forcément ouvert.
+    expect(t).not.toContain("aujourd'hui pourvu");
     expect(t).toContain("rémunéré à la commission");
     expect(t).not.toContain("suit son cours normalement");
     expect(t).not.toContain("profil commercial");
