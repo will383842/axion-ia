@@ -24,8 +24,9 @@ function correspond(l: Ligne, w: Filtre): boolean {
   return Object.entries(w).every(([k, v]) => {
     const val = (l as unknown as Record<string, unknown>)[k];
     if (v !== null && typeof v === "object" && !(v instanceof Date)) {
-      const o = v as { lt?: number; gt?: Date };
+      const o = v as { lt?: number; gte?: number; gt?: Date };
       if (o.lt !== undefined) return (val as number) < o.lt;
+      if (o.gte !== undefined) return (val as number) >= o.gte;
       if (o.gt !== undefined) return (val as Date).getTime() > o.gt.getTime();
     }
     return val === v;
@@ -110,9 +111,9 @@ describe("émission", () => {
     expect(table[0]!.codeHash).toMatch(/^[0-9a-f]{64}$/);
   });
 
-  it("valable 10 minutes", async () => {
+  it("valable 15 minutes (décision 35)", async () => {
     const { expiresAt } = await emettreCodeSignature({ ...base, maintenant: T0 });
-    expect(expiresAt.getTime() - T0.getTime()).toBe(10 * 60 * 1000);
+    expect(expiresAt.getTime() - T0.getTime()).toBe(15 * 60 * 1000);
   });
 
   it("sans secret serveur, l'émission est REFUSÉE (garde fermée)", async () => {
@@ -138,9 +139,9 @@ describe("vérification", () => {
     expect((await verifierCodeSignature({ ...base, code, maintenant: T0 })).ok).toBe(false);
   });
 
-  it("expiré après 10 minutes", async () => {
+  it("expiré après 15 minutes", async () => {
     const { code } = await emettreCodeSignature({ ...base, maintenant: T0 });
-    const apres = new Date(T0.getTime() + 10 * 60 * 1000 + 1);
+    const apres = new Date(T0.getTime() + 15 * 60 * 1000 + 1);
     expect((await verifierCodeSignature({ ...base, code, maintenant: apres })).ok).toBe(false);
   });
 
@@ -152,6 +153,23 @@ describe("vérification", () => {
       );
     }
     expect(table[0]!.invalideAt).not.toBeNull();
+    expect((await verifierCodeSignature({ ...base, code, maintenant: T0 })).ok).toBe(false);
+  });
+
+  it("cinq échecs SIMULTANÉS épuisent le code : il est invalidé, le bon code ne passe plus", async () => {
+    const { code } = await emettreCodeSignature({ ...base, maintenant: T0 });
+    await Promise.all(
+      Array.from({ length: CODE_ESSAIS_MAX }, () =>
+        verifierCodeSignature({ ...base, code: faux(code), maintenant: T0 }),
+      ),
+    );
+    expect(table[0]!.invalideAt).not.toBeNull();
+    expect((await verifierCodeSignature({ ...base, code, maintenant: T0 })).ok).toBe(false);
+  });
+
+  it("rejeu : un code accepté ne repasse jamais, même aussitôt", async () => {
+    const { code } = await emettreCodeSignature({ ...base, maintenant: T0 });
+    expect((await verifierCodeSignature({ ...base, code, maintenant: T0 })).ok).toBe(true);
     expect((await verifierCodeSignature({ ...base, code, maintenant: T0 })).ok).toBe(false);
   });
 
