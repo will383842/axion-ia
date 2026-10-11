@@ -71,10 +71,13 @@ export const SQL_INDEX_PAIEMENT = {
     `WHERE ${MISSION} AND "session_id" IS NULL AND "avoir_de_id" IS NULL AND ${OCCUPE};`,
   trainer_statements_avoir_unique:
     `CREATE UNIQUE INDEX "trainer_statements_avoir_unique" ON "trainer_statements" ` +
-    `("avoir_de_id") WHERE "avoir_de_id" IS NOT NULL;`,
+    `("avoir_de_id") WHERE "avoir_de_id" IS NOT NULL AND ${OCCUPE};`,
+  trainer_statements_remplacement_unique:
+    `CREATE UNIQUE INDEX "trainer_statements_remplacement_unique" ON "trainer_statements" ` +
+    `("remplace_id") WHERE "remplace_id" IS NOT NULL AND ${OCCUPE};`,
   trainer_statements_facture_emetteur_unique:
     `CREATE UNIQUE INDEX "trainer_statements_facture_emetteur_unique" ON "trainer_statements" ` +
-    `(COALESCE("organisme_sous_traitant_id", "trainer_id"), "numero_facture") ` +
+    `(COALESCE("organisme_sous_traitant_id", "trainer_id"), upper(btrim("numero_facture"))) ` +
     `WHERE ${MISSION} AND "autofacture_at" IS NULL AND "numero_facture" IS NOT NULL AND ${OCCUPE};`,
   trainer_fee_lines_mission_unique:
     `CREATE UNIQUE INDEX "trainer_fee_lines_mission_unique" ON "trainer_fee_lines" ` +
@@ -214,9 +217,15 @@ export const OBJETS_SQL_PAIEMENT_FORMATEURS: ReadonlyArray<ObjetSqlPaiement> = [
     "avoir_de_id IS NOT NULL",
   ),
   index(
+    "trainer_statements_remplacement_unique",
+    S,
+    "Une pièce n'est remplacée (réémise) qu'une fois.",
+    "remplace_id IS NOT NULL",
+  ),
+  index(
     "trainer_statements_facture_emetteur_unique",
     S,
-    "Une facture reçue ne se saisit pas deux fois : numéro unique par émetteur (organisme ou formateur).",
+    "Une facture reçue ne se saisit pas deux fois : numéro unique par émetteur (organisme ou formateur), casse et espaces ignorés.",
     "autofacture_at IS NULL",
   ),
   // ── trainer_fee_lines ─────────────────────────────────────────────────────
@@ -231,6 +240,12 @@ export const OBJETS_SQL_PAIEMENT_FORMATEURS: ReadonlyArray<ObjetSqlPaiement> = [
     type: "check",
     table: L,
     role: "Un motif d'annulation n'existe que sur une ligne annulée.",
+  },
+  {
+    nom: "trainer_fee_lines_retard_sur_releve",
+    type: "check",
+    table: L,
+    role: "Une pénalité de retard ou l'indemnité de 40 € est toujours portée par un relevé.",
   },
   {
     nom: "trainer_fee_lines_quantites_positives",
@@ -286,7 +301,7 @@ export const OBJETS_SQL_PAIEMENT_FORMATEURS: ReadonlyArray<ObjetSqlPaiement> = [
     nom: "demandes_changement_formateur_iban_chiffre",
     type: "check",
     table: D,
-    role: "IBAN demandé : chiffré `enc:v2:` avec son empreinte — jamais en clair.",
+    role: "IBAN demandé : format complet `enc:v2:iv:chiffré:tag` avec son empreinte — jamais en clair.",
   },
   {
     nom: "demandes_changement_formateur_empreinte_hex",

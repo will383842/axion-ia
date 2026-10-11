@@ -5683,6 +5683,8 @@ model TrainerStatement {
   avoirDe                 TrainerStatement?  @relation("TrainerStatementAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
   avoirs                  TrainerStatement[] @relation("TrainerStatementAvoir")
   /// Ce relevé REMPLACE le relevé désigné (réémission après avoir) : il garde son échéance.
+  /// ⚠️ Une pièce déjà PAYÉE ne passe jamais en `annule` pour être réémise : son
+  /// avoir ouvre un trop-perçu (imputation, décision 89). Le payé se lit sur `payeAt`.
   remplaceId              String?            @map("remplace_id") @db.Uuid
   remplace                TrainerStatement?  @relation("TrainerStatementRemplacement", fields: [remplaceId], references: [id], onDelete: Restrict)
   remplacements           TrainerStatement[] @relation("TrainerStatementRemplacement")
@@ -16394,7 +16396,7 @@ enum MotifCommissionNulle {
   @@map("motif_commission_nulle")
 }
 
-/// rgpd: technique — identifiant de commission, motif fermé et SIREN public de l'entreprise ; aucun nom, e-mail ni téléphone
+/// rgpd: technique — identifiant de commission, motif fermé et SIREN de l'entreprise (registre public ; identifie la personne quand l'entreprise est individuelle, comme `Trainer.siret` qu'il recopie) ; aucun nom, e-mail ni téléphone
 /// La trace de POURQUOI une commission d'apporteur vaut 0 (L12j, décision 74).
 /// Table à part : la commission elle-même n'est ni supprimée, ni modifiée dans
 /// sa forme ; seul son montant est mis à 0 par le lot L12j (éteint).

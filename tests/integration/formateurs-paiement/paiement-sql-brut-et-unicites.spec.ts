@@ -355,6 +355,23 @@ describe("schéma n° 2 — aucun double paiement (après M-D, simulé)", () => 
     });
   });
 
+  it("une facture reçue ne se saisit pas deux fois (casse et espaces ignorés) ; une pénalité a son relevé", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await sansUniqueHistorique(tx);
+      const t = await formateur(tx);
+      const s1 = await session(tx);
+      const s2 = await session(tx);
+      const facture = `INSERT INTO "trainer_statements" ("id", "trainer_id", "periode_year", "periode_month", "tva_regime",
+           "updated_at", "origine", "session_id", "numero_facture")
+         VALUES (gen_random_uuid(), $1::uuid, 2031, 10, 'franchise_293b', now(), 'passage_mission', $2::uuid, $3)`;
+      await tx.$executeRawUnsafe(facture, t, s1, "F-001");
+      expect(await refuse(tx, facture, t, s2, "  f-001 ")).toMatch(/23505/);
+      expect(
+        await refuse(tx, LIGNE, t, s1, "calcule", 10, "passage_mission", "penalites_retard"),
+      ).toMatch(/trainer_fee_lines_retard_sur_releve/);
+    });
+  });
+
   it("une seule présentation de la méthode payée par formateur", async () => {
     await dansTransactionAnnulee(async (tx) => {
       const t = await formateur(tx);
@@ -432,16 +449,40 @@ describe("schéma n° 2 — demandes de changement (M-E)", () => {
       expect(
         await refuse(tx, demande, t, "iban", "FR7630006000011234567890189", "a".repeat(64)),
       ).toMatch(/demandes_changement_formateur_iban_chiffre/);
+      // Un IBAN en clair déguisé derrière le préfixe : refusé (format complet exigé).
+      expect(
+        await refuse(tx, demande, t, "iban", "enc:v2:FR7630006000011234567890189", "a".repeat(64)),
+      ).toMatch(/demandes_changement_formateur_iban_chiffre/);
       expect(await refuse(tx, demande, t, "iban", "enc:v1:abc", "a".repeat(64))).toMatch(
         /demandes_changement_formateur_iban_chiffre/,
       );
-      expect(await refuse(tx, demande, t, "iban", "enc:v2:abc", null)).toMatch(
-        /demandes_changement_formateur_iban_chiffre/,
+      expect(
+        await refuse(
+          tx,
+          demande,
+          t,
+          "iban",
+          "enc:v2:aaaaaaaaaaaaaaaaaaaaaaaa:0f0f0f0f0f0f0f0f:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          null,
+        ),
+      ).toMatch(/demandes_changement_formateur_iban_chiffre/);
+      await tx.$executeRawUnsafe(
+        demande,
+        t,
+        "iban",
+        "enc:v2:aaaaaaaaaaaaaaaaaaaaaaaa:0f0f0f0f0f0f0f0f:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "a".repeat(64),
       );
-      await tx.$executeRawUnsafe(demande, t, "iban", "enc:v2:abc", "a".repeat(64));
-      expect(await refuse(tx, demande, t, "iban", "enc:v2:def", "b".repeat(64))).toMatch(
-        /23505[\s\S]*Key \(trainer_id, nature\)=/,
-      );
+      expect(
+        await refuse(
+          tx,
+          demande,
+          t,
+          "iban",
+          "enc:v2:cccccccccccccccccccccccc:1e1e1e1e1e1e1e1e:dddddddddddddddddddddddddddddddd",
+          "b".repeat(64),
+        ),
+      ).toMatch(/23505[\s\S]*Key \(trainer_id, nature\)=/);
       // Une autre nature, en même temps : permise.
       await tx.$executeRawUnsafe(demande, t, "adresse", "1 rue de test", null);
       // Un refus sans motif, ou un traitement sans auteur : refusés.

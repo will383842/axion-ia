@@ -271,9 +271,11 @@ CREATE UNIQUE INDEX "trainer_statements_mensuel_unique" ON "trainer_statements" 
 
 CREATE UNIQUE INDEX "trainer_statements_hors_mission_unique" ON "trainer_statements" ("trainer_id", "periode_year", "periode_month") WHERE "origine" = 'passage_mission' AND "session_id" IS NULL AND "avoir_de_id" IS NULL AND "statut" <> 'annule';
 
-CREATE UNIQUE INDEX "trainer_statements_avoir_unique" ON "trainer_statements" ("avoir_de_id") WHERE "avoir_de_id" IS NOT NULL;
+CREATE UNIQUE INDEX "trainer_statements_avoir_unique" ON "trainer_statements" ("avoir_de_id") WHERE "avoir_de_id" IS NOT NULL AND "statut" <> 'annule';
 
-CREATE UNIQUE INDEX "trainer_statements_facture_emetteur_unique" ON "trainer_statements" (COALESCE("organisme_sous_traitant_id", "trainer_id"), "numero_facture") WHERE "origine" = 'passage_mission' AND "autofacture_at" IS NULL AND "numero_facture" IS NOT NULL AND "statut" <> 'annule';
+CREATE UNIQUE INDEX "trainer_statements_remplacement_unique" ON "trainer_statements" ("remplace_id") WHERE "remplace_id" IS NOT NULL AND "statut" <> 'annule';
+
+CREATE UNIQUE INDEX "trainer_statements_facture_emetteur_unique" ON "trainer_statements" (COALESCE("organisme_sous_traitant_id", "trainer_id"), upper(btrim("numero_facture"))) WHERE "origine" = 'passage_mission' AND "autofacture_at" IS NULL AND "numero_facture" IS NOT NULL AND "statut" <> 'annule';
 
 -- ── trainer_fee_lines ───────────────────────────────────────────────────────
 ALTER TABLE "trainer_fee_lines" ADD CONSTRAINT "trainer_fee_lines_objet_mission" CHECK (
@@ -284,6 +286,13 @@ ALTER TABLE "trainer_fee_lines" ADD CONSTRAINT "trainer_fee_lines_objet_mission"
 -- existantes n'en ont pas : permis).
 ALTER TABLE "trainer_fee_lines" ADD CONSTRAINT "trainer_fee_lines_annule_motif_coherent" CHECK (
   "annule_motif" IS NULL OR "statut" = 'annule'
+);
+
+-- Une pénalité de retard ou l'indemnité de 40 € est TOUJOURS portée par un relevé :
+-- sans lui, l'unicité « une par relevé » ne la verrait pas.
+ALTER TABLE "trainer_fee_lines" ADD CONSTRAINT "trainer_fee_lines_retard_sur_releve" CHECK (
+  "objet" IS NULL OR "objet" NOT IN ('penalites_retard', 'indemnite_recouvrement')
+  OR "statement_id" IS NOT NULL
 );
 
 ALTER TABLE "trainer_fee_lines" ADD CONSTRAINT "trainer_fee_lines_quantites_positives" CHECK (
@@ -314,8 +323,11 @@ CREATE TRIGGER "revendications_paiement_pas_de_truncate"
 
 -- ── demandes_changement_formateur ───────────────────────────────────────────
 -- IBAN demandé : jamais en clair, jamais en v1 (sans AAD) ; avec son empreinte.
+-- Le FORMAT complet de `encryptPii` v2 est exigé (`iv:chiffré:tag` en hexadécimal) :
+-- un simple préfixe laisserait passer « enc:v2:FR76… » en clair.
 ALTER TABLE "demandes_changement_formateur" ADD CONSTRAINT "demandes_changement_formateur_iban_chiffre" CHECK (
-  "nature" <> 'iban' OR ("valeur" LIKE 'enc:v2:%' AND "valeur_empreinte" IS NOT NULL)
+  "nature" <> 'iban'
+  OR ("valeur" ~ '^enc:v2:[0-9a-f]{24}:[0-9a-f]+:[0-9a-f]{32}$' AND "valeur_empreinte" IS NOT NULL)
 );
 
 ALTER TABLE "demandes_changement_formateur" ADD CONSTRAINT "demandes_changement_formateur_empreinte_hex" CHECK (
