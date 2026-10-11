@@ -477,6 +477,12 @@ export async function basculerFormateursModelesComposeurAction(
 ): Promise<EtatBascule> {
   return basculerEntree("modeles_composeur", formData);
 }
+export async function basculerFormateursDossiersContratsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("dossiers_contrats", formData);
+}
 
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,

@@ -559,6 +559,14 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.modeles_composeur",
   },
+  // Lot L8 — l'entrée « Dossiers et contrats » du groupe (exige aussi `menu_freelance`).
+  dossiers_contrats: {
+    ...envoi(
+      "Dossiers et contrats",
+      "Le groupe « Formateurs freelance » montre la liste des formateurs indépendants, avec leur étape calculée et leurs compteurs.",
+    ),
+    cle: "formateurs.dossiers_contrats",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -576,6 +584,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     formulaire_freelance: [],
     menu_freelance: [],
     modeles_composeur: [],
+    dossiers_contrats: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {
