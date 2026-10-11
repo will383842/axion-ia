@@ -28,7 +28,6 @@ import {
   statutsAccordConvocation,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
-import { proposerRangsSuivants } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
@@ -2086,6 +2085,10 @@ async function handleMissionsFormateur(): Promise<void> {
   );
   // Lot L11h — le choix suivant des sessions libérées (interrupteur
   // `formateurs.rang_suivant` ; coupé : rien n'est lu au-delà de l'interrupteur).
+  // Import À LA DEMANDE : le module tire l'adaptateur d'envoi, que ce worker
+  // n'a pas à charger tant que rien ne s'allume.
+  const { proposerRangsSuivants } =
+    await import("@/server/qualiopi/formateurs-independants/choix-formateur-service");
   const suivants = await proposerRangsSuivants(maintenant);
   if (suivants.proposes > 0 || suivants.aPourvoir > 0) {
     console.log(
