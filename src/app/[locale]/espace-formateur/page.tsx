@@ -49,6 +49,8 @@ import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/in
 import { lirePropositionChiffree } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { eurosCourts } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 
+import { VueMission } from "@/components/espace-formateur/VueMission";
+
 import { CoquilleFormateur } from "./_coquille";
 
 const reponseAvant = new Intl.DateTimeFormat("fr-FR", {
@@ -68,8 +70,28 @@ const dateCourte = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 });
 
-export default async function EspaceFormateurAccueilPage(): Promise<React.ReactElement> {
+export default async function EspaceFormateurAccueilPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ mission?: string; fait?: string; erreur?: string; reponse?: string }>;
+}): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
+
+  // Lots L11b-ux / L11h — la page d'UNE mission, rendue ici (aucune route de
+  // plus). Interrupteur `formateurs.choix_cartes` coupé : le paramètre est
+  // ignoré, l'accueil d'avant s'affiche.
+  const sp = (await searchParams) ?? {};
+  if (
+    typeof sp.mission === "string" &&
+    /^[0-9a-f-]{36}$/i.test(sp.mission) &&
+    (await interrupteurAllume("choix_cartes"))
+  ) {
+    return (
+      <CoquilleFormateur section="accueil">
+        <VueMission trainerId={trainerId} id={sp.mission} sp={sp} />
+      </CoquilleFormateur>
+    );
+  }
 
   // Lu APRÈS la garde d'authentification : les deux lectures ne connaissent que
   // `trainerId`, elles n'ont aucun moyen de vérifier elles-mêmes que l'appelant
@@ -157,7 +179,7 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
                       </p>
                     ) : null}
                     <Link
-                      href={`${FORMATEUR_BASE_PATH}/missions/${m.id}`}
+                      href={`${FORMATEUR_BASE_PATH}?mission=${m.id}`}
                       className="bg-terracotta mt-3 inline-flex min-h-[48px] items-center justify-center rounded-md px-5 text-sm font-semibold text-white hover:opacity-90"
                     >
                       Voir et répondre

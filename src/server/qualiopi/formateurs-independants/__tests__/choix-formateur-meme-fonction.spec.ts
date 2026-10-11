@@ -35,7 +35,7 @@ describe("T3 — une seule évaluation", () => {
   it("le désistement vérifie le formateur connecté", () => {
     const action = lire("src/server/actions/qualiopi/choix-formateur.ts");
     expect(action).toMatch(/const \{ trainerId \} = await requireFormateurAction\(\)/);
-    const page = lire("src/app/[locale]/espace-formateur/missions/[id]/page.tsx");
+    const page = lire("src/components/espace-formateur/VueMission.tsx");
     expect(page).toMatch(/where: \{ id, trainerId \}/);
   });
 });

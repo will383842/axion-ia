@@ -266,7 +266,7 @@ export default async function Page({
               <>
                 {" "}
                 <Link
-                  href={`${FORMATEUR_BASE_PATH}/missions/${mission.id}`}
+                  href={`${FORMATEUR_BASE_PATH}?mission=${mission.id}`}
                   className="text-terracotta hover:underline"
                 >
                   Voir ma mission
