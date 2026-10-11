@@ -409,6 +409,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.affectation_sure",
   },
+  // Lot S5 — la lettre de mission v2 d'une page (texte arrêté par Will). Coupé :
+  // la console émet la lettre v1, exactement comme avant S5.
+  lettre_v2: {
+    ...envoi(
+      "Lettre de mission v2",
+      "La console émet la lettre d'une page pour un formateur indépendant (contrat-cadre v3 signé, accord donné) ; une seule lettre vivante par mission. À n'allumer qu'une fois le contrat-cadre v3 en service : avant, aucune lettre ne peut partir.",
+    ),
+    cle: "formateurs.lettre_v2",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -431,6 +440,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   suite_contrat_cadre: [],
   exemplaire_captation: [],
   affectation_sure: [],
+  lettre_v2: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

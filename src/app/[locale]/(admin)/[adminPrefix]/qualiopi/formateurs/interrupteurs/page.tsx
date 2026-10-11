@@ -34,6 +34,7 @@ import {
 import {
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
+  basculerFormateursLettreV2Action,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -94,6 +95,7 @@ const ACTIONS_SIGNATURE: Record<
   suite_contrat_cadre: basculerFormateursSuiteContratCadreAction,
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
   affectation_sure: basculerFormateursAffectationSureAction,
+  lettre_v2: basculerFormateursLettreV2Action,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =

@@ -17,11 +17,13 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("six clés, chacune protégée de l'éditeur générique", () => {
+  it("sept clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
         "formateurs.affectation_sure",
+        // Lot S5 — lettre de mission v2, livrée éteinte.
+        "formateurs.lettre_v2",
         "formateurs.suite_contrat_cadre",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
