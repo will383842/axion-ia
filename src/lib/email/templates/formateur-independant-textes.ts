@@ -1186,3 +1186,27 @@ export const GABARITS_FORMATEUR_INDEPENDANT = Object.keys(
 export function estGabaritFormateurIndependant(x: string): x is GabaritFormateurIndependant {
   return Object.prototype.hasOwnProperty.call(TEXTES_FORMATEUR, x);
 }
+
+/**
+ * Les e-mails d'ARGENT : seuls ceux-ci partent encore après une fin de collaboration, et
+ * l'opposition ne les arrête pas (classe C). Même nom de constante que chez les apporteurs.
+ */
+export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateurIndependant> =
+  new Set<GabaritFormateurIndependant>([
+    "formateur-virement-fait",
+    "formateur-virement-en-attente",
+    "formateur-facture-rectifiee",
+    "formateur-trop-percu",
+    "formateur-facture-deposee",
+    "formateur-desaccord-recu",
+    "formateur-desaccord-non-retenu",
+    "formateur-fin-collaboration",
+  ]);
+
+/** Les SOLLICITATIONS (classe A) : soumises à l'opposition, comme celles des apporteurs. */
+export const GABARITS_SOLLICITATION_FORMATEUR: ReadonlySet<GabaritFormateurIndependant> =
+  new Set<GabaritFormateurIndependant>(
+    (Object.keys(TEXTES_FORMATEUR) as GabaritFormateurIndependant[]).filter(
+      (g) => TEXTES_FORMATEUR[g].sollicitation,
+    ),
+  );

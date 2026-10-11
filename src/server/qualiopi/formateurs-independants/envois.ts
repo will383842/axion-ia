@@ -19,7 +19,10 @@
  */
 
 import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
-import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
+import {
+  GABARITS_ARGENT_FORMATEUR,
+  TEXTES_FORMATEUR,
+} from "@/lib/email/templates/formateur-independant-textes";
 import { assemblerParagraphes } from "@/lib/email/texte-par-defaut";
 import { prisma } from "@/lib/prisma";
 import {
@@ -95,16 +98,7 @@ export const GABARITS_FORMATEUR: readonly GabaritFormateur[] = [
 ];
 
 /** Après une fin de collaboration, seuls ceux-ci partent encore (même nom que chez les apporteurs). */
-export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateur> = new Set<GabaritFormateur>([
-  "formateur-virement-fait",
-  "formateur-virement-en-attente",
-  "formateur-facture-rectifiee",
-  "formateur-trop-percu",
-  "formateur-facture-deposee",
-  "formateur-desaccord-recu",
-  "formateur-desaccord-non-retenu",
-  "formateur-fin-collaboration",
-]);
+export { GABARITS_ARGENT_FORMATEUR };
 
 export type ResultatEnvoiFormateur = ResultatEnvoi | "texte-non-valide" | "fin-de-collaboration";
 
