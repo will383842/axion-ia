@@ -18,6 +18,7 @@ function faits(extra: Partial<FaitsParcours> = {}): FaitsParcours {
     actif: false,
     finCollaborationAt: null,
     activationValideeAt: null,
+    issueDuParcours: true,
     dossierStatut: null,
     dossierOuvertAt: null,
     dossierEnvoyeAt: null,
@@ -77,6 +78,9 @@ describe("etapeFormateurIndependant", () => {
       "dossier_verifie",
     );
     expect(etapeFormateurIndependant(faits()).cle).toBe("fiche_creee");
+    // Un ancien sous-traitant inactif, sans candidature ni dossier : « Retirés ».
+    const ancien = etapeFormateurIndependant(faits({ issueDuParcours: false }));
+    expect([ancien.cle, ancien.onglet]).toEqual(["anterieure", "retires"]);
   });
 
   it("compteurs par onglet", () => {

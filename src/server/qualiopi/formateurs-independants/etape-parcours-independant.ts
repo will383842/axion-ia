@@ -24,7 +24,8 @@ export type CleEtape =
   | "dossier_a_completer"
   | "dossier_verifie"
   | "dossier_ouvert"
-  | "fiche_creee";
+  | "fiche_creee"
+  | "anterieure";
 
 export type Onglet = "actifs" | "a_verifier" | "dossier_en_cours" | "retires" | "termines";
 
@@ -49,6 +50,8 @@ export interface FaitsParcours {
   readonly actif: boolean;
   readonly finCollaborationAt: Date | null;
   readonly activationValideeAt: Date | null;
+  /** Fiche née d'une candidature retenue (M-A2) ; `false` = fiche d'avant le parcours. */
+  readonly issueDuParcours: boolean;
   readonly dossierStatut: "en_cours" | "a_verifier" | "a_completer" | "verifie" | null;
   readonly dossierOuvertAt: Date | null;
   readonly dossierEnvoyeAt: Date | null;
@@ -117,7 +120,11 @@ export function etapeFormateurIndependant(f: FaitsParcours): Etape {
     case "en_cours":
       return etape("dossier_ouvert", `Dossier ouvert${le(f.dossierOuvertAt)}`, "dossier_en_cours");
     case null:
-      return etape("fiche_creee", "Fiche créée", "dossier_en_cours");
+      // Fiche d'avant le parcours (aucune candidature, aucun dossier) : elle n'a
+      // pas de dossier « en cours » — rangée avec les retirées.
+      return f.issueDuParcours
+        ? etape("fiche_creee", "Fiche créée", "dossier_en_cours")
+        : etape("anterieure", "Fiche antérieure au parcours", "retires");
   }
 }
 

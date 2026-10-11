@@ -12,9 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 import { etapeFormateurIndependant, type Etape } from "./etape-parcours-independant";
-
-/** Première version du contrat-cadre signée avec un code (L7c) : celle du parcours. */
-const VERSION_CONTRAT_PARCOURS = 3;
+import { VERSION_CONTRAT_CADRE_MINIMALE } from "./lettre-mission-v2-donnees";
 
 /** Plafond de la liste : au-delà, la console découpera. */
 export const PLAFOND_LISTE = 500;
@@ -45,12 +43,13 @@ export async function lireDossiersEtContrats(): Promise<LigneDossier[]> {
       estTestInterne: true,
       finCollaborationAt: true,
       activationValideeAt: true,
+      candidatureId: true,
       dossierStatut: true,
       dossierOuvertAt: true,
       dossierEnvoyeAt: true,
       dossierVerifieAt: true,
       verificationsRegistre: {
-        orderBy: { createdAt: "desc" },
+        orderBy: { verifieAt: "desc" },
         take: 1,
         select: { verdict: true },
       },
@@ -71,9 +70,15 @@ export async function lireDossiersEtContrats(): Promise<LigneDossier[]> {
   });
 
   return trainers.map((t) => {
-    const contrat = t.documentsGeneres.find(
-      (d) => versionDuContrat(d.metadata) >= VERSION_CONTRAT_PARCOURS,
+    // « La plus haute version contresignée », jamais « la plus récente émise » :
+    // un contrat signé passe avant une réémission en attente.
+    const v3 = t.documentsGeneres.filter(
+      (d) => versionDuContrat(d.metadata) >= VERSION_CONTRAT_CADRE_MINIMALE,
     );
+    const contrat =
+      v3.find((d) => d.statutSignature === "signee") ??
+      v3.find((d) => d.statutSignature === "partielle") ??
+      v3[0];
     const signature = (partie: string) =>
       contrat?.signatures.find((s) => s.partie === partie)?.signeAt ?? null;
     return {
@@ -84,6 +89,7 @@ export async function lireDossiersEtContrats(): Promise<LigneDossier[]> {
         actif: t.actif,
         finCollaborationAt: t.finCollaborationAt,
         activationValideeAt: t.activationValideeAt,
+        issueDuParcours: t.candidatureId !== null,
         dossierStatut: t.dossierStatut,
         dossierOuvertAt: t.dossierOuvertAt,
         dossierEnvoyeAt: t.dossierEnvoyeAt,

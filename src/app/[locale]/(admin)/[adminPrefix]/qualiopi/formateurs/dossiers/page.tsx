@@ -1,11 +1,11 @@
 /**
  * Admin — Formateurs freelance › Dossiers et contrats (lot L8).
  *
- * Une ligne = un formateur indépendant et son étape calculée ; quatre cartes
+ * Une ligne = un formateur indépendant et son étape calculée ; trois cartes
  * de compteurs ; des onglets. Maquette : `maquette-formateurs-freelance-console.html`.
  *
- * 🔴 LIVRÉ ÉTEINT : `formateurs.dossiers_contrats` coupé ou absent = la page
- * l'annonce et ne lit rien.
+ * 🔴 LIVRÉ ÉTEINT : `formateurs.dossiers_contrats` (ou le groupe
+ * `formateurs.menu_freelance`) coupé ou absent = la page l'annonce et ne lit rien.
  */
 
 import type { Metadata } from "next";
@@ -45,7 +45,8 @@ export default async function DossiersEtContratsPage({ params, searchParams }: P
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  if (!(await lireEtatsEntree()).dossiers_contrats) {
+  const entree = await lireEtatsEntree();
+  if (!entree.dossiers_contrats || !entree.menu_freelance) {
     return (
       <AdminPageShell>
         <AdminPageHeader title="Dossiers et contrats" />
@@ -104,11 +105,9 @@ export default async function DossiersEtContratsPage({ params, searchParams }: P
                   </td>
                   <td>{l.etape.libelle}</td>
                   <td>
-                    {l.etape.aVerifier ? (
-                      <Link className="admin-button-ghost" href={`${base}/${l.trainerId}/verifier`}>
-                        Vérifier et contresigner
-                      </Link>
-                    ) : null}
+                    <Link className="admin-button-ghost" href={`${base}/${l.trainerId}`}>
+                      Ouvrir
+                    </Link>
                   </td>
                 </tr>
               ))}
