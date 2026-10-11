@@ -23,6 +23,7 @@ import { LIBELLE_REFUS_PRESENTATION } from "@/server/qualiopi/formateurs-indepen
 import {
   ecrirePresentationMethode,
   lireVerdictPresentation,
+  prealablesSchemaPresentation,
 } from "@/server/qualiopi/formateurs-independants/paiement/presentation-methode-base";
 import { DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION } from "@/server/qualiopi/remuneration/verrou-remuneration";
 
@@ -84,11 +85,15 @@ export async function enregistrerPresentationMethodeAction(
     trainerId: v.trainerId,
     jour: v.jour,
     contratSigneLe: contrat?.signeLe ?? null,
+    contratVersion: contrat?.version ?? null,
     maintenant: new Date(),
     userId,
   };
 
   if (v.confirmer !== "oui") {
+    // L'aperçu dit d'emblée ce que l'écriture refuserait faute de schéma.
+    const prealable = await prealablesSchemaPresentation(prisma, demande);
+    if (prealable !== null) return { error: messageRefus(prealable) };
     const verdict = await lireVerdictPresentation(prisma, demande);
     if (verdict === null) return { error: messageRefus("introuvable") };
     if (!verdict.ok) return { error: messageRefus(verdict.motif) };
@@ -116,7 +121,11 @@ export async function enregistrerPresentationMethodeAction(
   } catch (err) {
     // L'index unique « une présentation par formateur » : un double clic qui aurait
     // franchi les verrous est refusé ici, jamais payé deux fois.
-    if ((err as { code?: unknown })?.code === "P2002") return { error: messageRefus("deja_payee") };
+    if ((err as { code?: unknown })?.code === "P2002")
+      return {
+        error:
+          "Une présentation, ou un relevé hors mission de ce mois, est déjà enregistré pour ce formateur.",
+      };
     Sentry.captureException(err, { tags: { action: "enregistrerPresentationMethode" } });
     return { error: "La présentation n'a pas été enregistrée (erreur technique)." };
   }

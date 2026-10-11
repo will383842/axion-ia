@@ -91,6 +91,7 @@ describe("L12i — présentation de la méthode (vraie base)", () => {
         userId,
         jour: "2031-11-20",
         contratSigneLe: CONTRAT,
+        contratVersion: 3,
         maintenant: MAINTENANT,
       };
       expect(await ecrirePresentationMethode(tx, d)).toEqual({
@@ -116,6 +117,7 @@ describe("L12i — présentation de la méthode (vraie base)", () => {
         userId,
         jour: "2031-11-20",
         contratSigneLe: CONTRAT,
+        contratVersion: 3,
         maintenant: MAINTENANT,
       };
       const r = await ecrirePresentationMethode(tx, d);
@@ -175,6 +177,7 @@ describe("L12i — présentation de la méthode (vraie base)", () => {
           userId,
           jour: "2031-11-20",
           contratSigneLe: null,
+          contratVersion: null,
           maintenant: MAINTENANT,
         }),
       ).toEqual({ issue: "refuse", motif: "contrat_non_signe" });

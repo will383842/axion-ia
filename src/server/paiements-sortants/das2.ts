@@ -73,12 +73,15 @@ export function construireDas2Commune(
   ];
   // Le seuil s'apprécie PAR BÉNÉFICIAIRE : une même entreprise (même SIREN) payée
   // comme apporteur ET comme formateur cumule ses deux flux.
+  // Clé = les seuls CHIFFRES du SIREN : « 123 456 789 » et « 123456789 » cumulent.
+  const cle = (siren: string | null): string => (siren ?? "").replace(/\D/g, "");
   const cumulParSiren = new Map<string, number>();
   for (const l of lignes) {
-    if (l.siren) cumulParSiren.set(l.siren, (cumulParSiren.get(l.siren) ?? 0) + l.totalCents);
+    const k = cle(l.siren);
+    if (k) cumulParSiren.set(k, (cumulParSiren.get(k) ?? 0) + l.totalCents);
   }
   const total = (l: LigneDas2Commune): number =>
-    l.siren ? (cumulParSiren.get(l.siren) ?? l.totalCents) : l.totalCents;
+    cle(l.siren) ? (cumulParSiren.get(cle(l.siren)) ?? l.totalCents) : l.totalCents;
   const retenues = options.seulementADeclarer
     ? lignes.filter((l) => total(l) > seuilCents)
     : lignes;
@@ -135,14 +138,15 @@ export function regrouperRelevesPayes(
   const parBeneficiaire = new Map<string, LigneDas2Commune>();
   for (const r of releves) {
     const cle = `${r.flux}:${r.beneficiaireId}`;
-    // Un SIRET saisi avec des espaces (« 987 654 321 00012 ») garde ses 9 premiers
-    // CHIFFRES pour SIREN : le cumul par bénéficiaire en dépend.
-    const siret = r.siret ? r.siret.replace(/\s+/g, "") || null : null;
+    // Un SIRET saisi avec des espaces ou des points (« 987 654 321 00012 ») garde
+    // ses 9 premiers CHIFFRES pour SIREN : le cumul par bénéficiaire en dépend.
+    const siret = r.siret ? r.siret.replace(/\D/g, "") || null : null;
     const cur = parBeneficiaire.get(cle);
     parBeneficiaire.set(cle, {
       flux: r.flux,
       beneficiaire: r.beneficiaire,
-      denomination: null,
+      // Un organisme est une personne morale : sa raison sociale est aussi sa dénomination.
+      denomination: r.flux === "organisme" ? r.beneficiaire : null,
       siren: siret ? siret.slice(0, 9) : null,
       siret,
       adresse: r.adresse,

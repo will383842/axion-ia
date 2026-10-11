@@ -12,7 +12,7 @@
  *   - la fiche n'est pas un formateur indépendant (salarié, dirigeant) ;
  *   - c'est l'intervenant d'un organisme : l'organisme facture, pas lui ;
  *   - la fiche n'a pas de régime de TVA (la machine ne le devine pas) ;
- *   - aucun contrat-cadre intégralement signé ;
+ *   - aucun contrat-cadre intégralement signé, ou un contrat d'avant la version 3 ;
  *   - la présentation est datée avant la signature du contrat, ou dans le futur ;
  *   - une présentation payée existe déjà (une seule par formateur).
  */
@@ -21,6 +21,7 @@ import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul"
 
 import { presentationMethode } from "../argent/calcul-mission";
 import { estJourCivil, type JourCivil } from "../argent/dates";
+import { VERSION_CONTRAT_CADRE_MINIMALE } from "../lettre-mission-v2-donnees";
 
 export type MotifRefusPresentation =
   | "date_invalide"
@@ -28,6 +29,7 @@ export type MotifRefusPresentation =
   | "intervenant_d_organisme"
   | "regime_tva_inconnu"
   | "contrat_non_signe"
+  | "contrat_sans_presentation"
   | "date_avant_contrat"
   | "date_future"
   | "deja_payee";
@@ -39,6 +41,8 @@ export const LIBELLE_REFUS_PRESENTATION: Record<MotifRefusPresentation, string> 
     "Ce formateur intervient pour un organisme : c'est l'organisme qui facture.",
   regime_tva_inconnu: "Le régime de TVA de la fiche n'est pas renseigné.",
   contrat_non_signe: "Le contrat-cadre n'est pas intégralement signé.",
+  contrat_sans_presentation:
+    "Le contrat-cadre signé ne prévoit pas la présentation payée (version 3 requise).",
   date_avant_contrat: "La présentation est datée avant la signature du contrat-cadre.",
   date_future: "La présentation n'a pas encore eu lieu.",
   deja_payee: "Une présentation de la méthode est déjà payée pour ce formateur.",
@@ -50,6 +54,11 @@ export interface FaitsPresentation {
   readonly regimeTva: TvaRegimeHonoraires | null;
   /** Jour civil (Paris) de la dernière signature du contrat-cadre, ou `null`. */
   readonly contratSigneLe: JourCivil | null;
+  /**
+   * Version du contrat-cadre signé. Seule la version 3 (art. 21) prévoit la
+   * présentation payée et le mandat d'autofacturation qui la couvre.
+   */
+  readonly contratVersion: number | null;
   /** Jour de la présentation, tel que saisi (« Présentation faite le … »). */
   readonly jour: string;
   /** Jour civil (Paris) du geste. */
@@ -74,6 +83,8 @@ export function verdictPresentationMethode(f: FaitsPresentation): VerdictPresent
   if (f.organismeSousTraitantId !== null) return refus("intervenant_d_organisme");
   if (f.regimeTva === null) return refus("regime_tva_inconnu");
   if (f.contratSigneLe === null) return refus("contrat_non_signe");
+  if (f.contratVersion === null || f.contratVersion < VERSION_CONTRAT_CADRE_MINIMALE)
+    return refus("contrat_sans_presentation");
   if (f.jour < f.contratSigneLe) return refus("date_avant_contrat");
   if (f.jour > f.aujourdhui) return refus("date_future");
   if (f.dejaPayee) return refus("deja_payee");

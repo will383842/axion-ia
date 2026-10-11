@@ -474,7 +474,15 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
-  presentation_payee: [],
+  // L'écriture exige M-D et l'élargissement du CHECK historique : deux
+  // changements de schéma qu'aucune règle lisible ne vérifie encore ici.
+  presentation_payee: [
+    {
+      sorte: "non_lisible",
+      libelle:
+        "La base doit d'abord accepter une ligne d'honoraires sans session et plusieurs relevés par mois (changement de schéma à venir).",
+    },
+  ],
   das2_commun: [],
 };
 

@@ -66,6 +66,15 @@ beforeEach(() => {
 });
 
 describe("L12h — DAS 2 commune, formateurs et organismes", () => {
+  it("un SIREN écrit avec des espaces cumule avec le même SIREN écrit d'un bloc", () => {
+    const base = { denomination: null, siret: null, adresse: null, pieces: 1 } as const;
+    const csv = construireDas2Commune(2027, [
+      { ...base, flux: "apporteur", beneficiaire: "A", siren: "123 456 789", totalCents: 70_000 },
+      { ...base, flux: "formateur", beneficiaire: "B", siren: "123456789", totalCents: 60_000 },
+    ]);
+    expect(lignes(csv).map((l) => l.split(";").pop())).toEqual(["oui", "oui"]);
+  });
+
   it("la requête écarte les fiches du banc d'essai et ne lit que les relevés payés de l'année", async () => {
     m.findMany.mockResolvedValue([]);
     await exportDas2Commune(2027);
@@ -92,7 +101,7 @@ describe("L12h — DAS 2 commune, formateurs et organismes", () => {
     expect(lignes(csv)).toEqual([
       "2027;formateur;Ada L;;123456789;12345678900011;1 rue A;1050,00;4;non",
       "2027;formateur;Bob M;;222333444;22233344400019;;500,00;1;non",
-      "2027;organisme;Org Formation SAS;;987654321;98765432100012;;1400,00;1;oui",
+      "2027;organisme;Org Formation SAS;Org Formation SAS;987654321;98765432100012;;1400,00;1;oui",
     ]);
   });
 
@@ -129,7 +138,7 @@ describe("L12h — DAS 2 commune, formateurs et organismes", () => {
     const csv = await exportDas2Commune(2027, { seulementADeclarer: true });
     expect(lignes(csv)).toEqual([
       "2027;formateur;Ada L;;123456789;12345678900011;1 rue A;700,00;1;oui",
-      "2027;organisme;Ada Conseil;;123456789;12345678900029;;600,00;1;oui",
+      "2027;organisme;Ada Conseil;Ada Conseil;123456789;12345678900029;;600,00;1;oui",
     ]);
   });
 });

@@ -73,6 +73,8 @@ export interface DemandePresentation {
   readonly jour: string;
   /** Dernière signature du contrat-cadre intégralement signé, ou `null`. */
   readonly contratSigneLe: Date | null;
+  /** Version de ce contrat-cadre (instantané de rendu), ou `null`. */
+  readonly contratVersion: number | null;
   readonly maintenant: Date;
   readonly userId: string;
 }
@@ -96,10 +98,39 @@ export async function lireVerdictPresentation(tx: Tx, d: DemandePresentation) {
     organismeSousTraitantId: t.organismeSousTraitantId,
     regimeTva: t.regimeTvaHonoraires,
     contratSigneLe: d.contratSigneLe ? jourParis(d.contratSigneLe) : null,
+    contratVersion: d.contratVersion,
     jour: d.jour,
     aujourdhui: jourParis(d.maintenant),
     dejaPayee: deja > 0,
   });
+}
+
+/**
+ * Les préalables de schéma et l'anomalie « relevé hors mission déjà là », lus
+ * SANS verrou ni écriture : pour l'aperçu. `null` = rien ne s'y oppose.
+ */
+export async function prealablesSchemaPresentation(
+  db: Tx,
+  d: Pick<DemandePresentation, "trainerId" | "jour">,
+): Promise<
+  "contract_non_fait" | "schema_hors_mission_absent" | "releve_hors_mission_existant" | null
+> {
+  if (!(await uniqueHistoriqueRetire(db))) return "contract_non_fait";
+  if (!(await ligneHorsMissionPermise(db))) return "schema_hors_mission_absent";
+  const mois = /^(\d{4})-(\d{2})-\d{2}$/.exec(d.jour);
+  if (!mois) return null;
+  const n: number = await db.trainerStatement.count({
+    where: {
+      trainerId: d.trainerId,
+      origine: "passage_mission",
+      sessionId: null,
+      avoirDeId: null,
+      periodeYear: Number(mois[1]),
+      periodeMonth: Number(mois[2]),
+      statut: { not: "annule" },
+    },
+  });
+  return n > 0 ? "releve_hors_mission_existant" : null;
 }
 
 /**

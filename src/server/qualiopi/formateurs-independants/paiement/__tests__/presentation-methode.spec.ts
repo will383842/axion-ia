@@ -19,6 +19,7 @@ const base: FaitsPresentation = {
   organismeSousTraitantId: null,
   regimeTva: "franchise_293b",
   contratSigneLe: "2026-11-02",
+  contratVersion: 3,
   jour: "2026-11-20",
   aujourdhui: "2026-11-21",
   dejaPayee: false,
@@ -70,6 +71,11 @@ describe("L12i — présentation de la méthode", () => {
     expect(verdictPresentationMethode({ ...base, jour: "2026-11-01" })).toEqual({
       ok: false,
       motif: "date_avant_contrat",
+    });
+    // Un contrat signé d'avant la version 3 ne prévoit pas la présentation payée.
+    expect(verdictPresentationMethode({ ...base, contratVersion: 2 })).toEqual({
+      ok: false,
+      motif: "contrat_sans_presentation",
     });
     // Le jour même de la signature : permis.
     expect(verdictPresentationMethode({ ...base, jour: "2026-11-02" }).ok).toBe(true);

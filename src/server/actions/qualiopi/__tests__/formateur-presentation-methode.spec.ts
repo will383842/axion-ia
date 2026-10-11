@@ -17,6 +17,7 @@ const m = vi.hoisted(() => ({
   lireContratCadreSigne: vi.fn(),
   lireVerdictPresentation: vi.fn(),
   ecrirePresentationMethode: vi.fn(),
+  prealablesSchemaPresentation: vi.fn(),
   transaction: vi.fn(),
 }));
 
@@ -34,6 +35,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur", ()
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/presentation-methode-base", () => ({
   lireVerdictPresentation: m.lireVerdictPresentation,
   ecrirePresentationMethode: m.ecrirePresentationMethode,
+  prealablesSchemaPresentation: m.prealablesSchemaPresentation,
 }));
 
 import { enregistrerPresentationMethodeAction } from "../formateur-presentation-methode";
@@ -44,6 +46,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.requireHabilitation.mockResolvedValue({ userId: "u", role: "super_admin" });
   m.interrupteurAllume.mockResolvedValue(true);
+  m.prealablesSchemaPresentation.mockResolvedValue(null);
   m.lireContratCadreSigne.mockResolvedValue({ version: 3, signeLe: new Date("2026-11-02") });
 });
 
@@ -99,6 +102,13 @@ describe("enregistrerPresentationMethodeAction", () => {
     expect(m.transaction).not.toHaveBeenCalled();
   });
 
+  it("aperçu : un préalable de schéma manquant est dit avant toute confirmation", async () => {
+    m.prealablesSchemaPresentation.mockResolvedValue("schema_hors_mission_absent");
+    const r = await enregistrerPresentationMethodeAction({ trainerId: T, jour: "2026-11-20" });
+    expect("error" in r && r.error).toMatch(/sans session/);
+    expect(m.lireVerdictPresentation).not.toHaveBeenCalled();
+  });
+
   it("un refus de la règle est rendu en clair", async () => {
     m.lireVerdictPresentation.mockResolvedValue({ ok: false, motif: "deja_payee" });
     const r = await enregistrerPresentationMethodeAction({ trainerId: T, jour: "2026-11-20" });
@@ -107,16 +117,14 @@ describe("enregistrerPresentationMethodeAction", () => {
     });
   });
 
-  it("double clic arrivé jusqu'à l'index unique : « déjà payée »", async () => {
+  it("double clic arrivé jusqu'à un index unique : refus en clair, jamais d'erreur brute", async () => {
     m.transaction.mockRejectedValue(Object.assign(new Error("unique"), { code: "P2002" }));
     const r = await enregistrerPresentationMethodeAction({
       trainerId: T,
       jour: "2026-11-20",
       confirmer: "oui",
     });
-    expect(r).toEqual({
-      error: "Une présentation de la méthode est déjà payée pour ce formateur.",
-    });
+    expect("error" in r && r.error).toMatch(/déjà enregistré/);
   });
 
   it("données invalides : refus", async () => {
