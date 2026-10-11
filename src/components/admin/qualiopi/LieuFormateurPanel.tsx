@@ -60,12 +60,12 @@ export function LieuFormateurPanel({
             maxLength={5}
             required
             defaultValue={codePostalPro ?? ""}
-            className="admin-input min-h-[44px] w-[8rem]"
+            className="admin-input"
           />
         </label>
         <label className="flex flex-col text-[length:var(--text-admin-sm)]">
           Ville (facultatif)
-          <input name="ville" maxLength={120} className="admin-input min-h-[44px]" />
+          <input name="ville" maxLength={120} className="admin-input" />
         </label>
         <AdminButton type="submit">Enregistrer le lieu</AdminButton>
       </form>
