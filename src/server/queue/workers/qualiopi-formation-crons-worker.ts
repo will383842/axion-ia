@@ -28,6 +28,7 @@ import {
   statutsAccordConvocation,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { proposerRangsSuivants } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
@@ -2076,12 +2077,22 @@ async function handleMissionsFormateur(): Promise<void> {
     console.log("[formation-crons] missions-formateur: stub DB, skip");
     return;
   }
-  const bilan = await relancerEtExpirerMissions(new Date());
+  const maintenant = new Date();
+  const bilan = await relancerEtExpirerMissions(maintenant);
   console.log(
     `[formation-crons] missions-formateur: ${bilan.relancees} relance(s) envoyée(s), ` +
       `${bilan.sansReponse} sans réponse dans le délai (session libérée), ` +
       `${bilan.expirees} proposition(s) expirée(s), ${bilan.erreurs} erreur(s)`,
   );
+  // Lot L11h — le choix suivant des sessions libérées (interrupteur
+  // `formateurs.choix_suivants` ; coupé : rien n'est lu au-delà de l'interrupteur).
+  const suivants = await proposerRangsSuivants(maintenant);
+  if (suivants.proposes > 0 || suivants.aPourvoir > 0) {
+    console.log(
+      `[formation-crons] missions-formateur: ${suivants.proposes} choix suivant(s) proposé(s), ` +
+        `${suivants.aPourvoir} session(s) à pourvoir`,
+    );
+  }
 }
 
 /**

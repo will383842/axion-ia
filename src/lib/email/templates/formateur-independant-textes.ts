@@ -780,9 +780,20 @@ export const TEXTES_FORMATEUR = {
     famille: "B",
     interne: false,
     sollicitation: false,
+    // Deux variantes (lot L11h) : le second paragraphe du texte soumis ne vaut
+    // que « si un remplaçant a été proposé ». Étape 1 = sans, étape 2 = avec.
     variantes: [
       {
         etape: null,
+        objet: "Votre désistement est enregistré",
+        objetPropose: null,
+        paragraphes: [
+          "C'est noté pour la mission [intitulé] du [date] : nous sommes prévenus. Aucune pénalité n'est due. Rien d'autre à faire de votre part.",
+        ],
+        boutons: [],
+      },
+      {
+        etape: "avec remplaçant",
         objet: "Votre désistement est enregistré",
         objetPropose: null,
         paragraphes: [

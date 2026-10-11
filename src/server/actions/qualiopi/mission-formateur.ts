@@ -38,6 +38,7 @@ import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-g
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { HABILITATION_ACTIVE_WHERE, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
+import { proposerRangSuivant } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
 type ActionResult<T> = { data: T } | { error: string };
@@ -77,6 +78,7 @@ export async function repondreMissionParJetonAction(input: {
     ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
   });
   if (!r.ok) return { error: r.erreur };
+  await apresRefus(r.statut, r.sessionId);
   return { data: { statut: r.statut, sessionId: r.sessionId } };
 }
 
@@ -118,7 +120,17 @@ export async function repondreMissionFormateurAction(input: {
     ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
   });
   if (!r.ok) return { error: r.erreur };
+  await apresRefus(r.statut, r.sessionId);
   return { data: { statut: r.statut, sessionId: r.sessionId } };
+}
+
+/**
+ * Lot L11h — après un refus, le choix suivant est proposé seul (interrupteur
+ * `formateurs.choix_suivants` ; coupé : rien). Ne lève jamais.
+ */
+async function apresRefus(statut: MissionFormateurStatut, sessionId: string): Promise<void> {
+  if (statut !== "refusee") return;
+  await proposerRangSuivant(sessionId, "refus", new Date());
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

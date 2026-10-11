@@ -114,8 +114,8 @@ export const INTERRUPTEURS = {
   },
   lettre_auto: envoi("Lettres de mission automatiques", "Préparer la lettre de chaque mission."),
   choix_suivants: envoi(
-    "Message aux candidats suivants",
-    "Prévenir les autres candidats quand un formateur est choisi.",
+    "Choix suivants et désistement",
+    "Après un refus, un silence ou un désistement, la mission est proposée seule au choix suivant (2e, puis 3e) ; le formateur peut se désister depuis son espace.",
   ),
   passage_paiement: {
     sorte: "date",
@@ -430,6 +430,17 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.garde_mission_portes",
   },
+  // Lots L11b et L11b-ux — choisir le formateur en cartes « 1er · 2e · 3e choix »
+  // (conditions financières figées au choix) et la page de proposition de
+  // l'espace. Coupé : la liste déroulante de la fiche session et l'espace
+  // formateur se comportent exactement comme avant.
+  choix_cartes: {
+    ...envoi(
+      "Choix du formateur en cartes",
+      "La fiche session propose des cartes « 1er choix · 2e · 3e » (tarif et forfait figés au choix, raisons des formateurs qui ne peuvent pas) ; l'espace formateur montre la proposition en six lignes, montant compris, avant « J'accepte ».",
+    ),
+    cle: "formateurs.choix_cartes",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -455,6 +466,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
+  choix_cartes: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

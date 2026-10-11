@@ -34,6 +34,15 @@ interface Payload {
   /** Quand les informations pratiques arriveront RÉELLEMENT. */
   infosPratiques?: string;
   relance?: boolean;
+  /**
+   * Lot L11b-ux — variante CHIFFRÉE (« honoraires »), validée à part par Will.
+   * Absente : le texte d'avant, inchangé.
+   */
+  variante?: "honoraires";
+  lignesJours?: string[];
+  lieuMission?: string;
+  ligneHonoraires?: string;
+  ligneDeplacement?: string;
 }
 
 export const formateurMissionProposeeSubject = (
@@ -41,6 +50,9 @@ export const formateurMissionProposeeSubject = (
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as unknown as Payload;
+  if (p.variante === "honoraires" && locale === "fr") {
+    return objetCompose("Proposition de mission :", p.titreFormation ?? "Formation");
+  }
   const prefixe = p.relance === true ? "Relance mission —" : "Mission proposée —";
   if (locale === "fr") return objetCompose(prefixe, p.titreFormation ?? "Formation");
   return objetCompose(
@@ -58,6 +70,7 @@ export function FormateurMissionProposeeEmail({
 }) {
   const p = payload as unknown as Payload;
   const relance = p.relance === true;
+  if (p.variante === "honoraires") return <PropositionChiffree p={p} locale={locale} />;
   return (
     <EmailLayout
       famille="C"
@@ -111,6 +124,40 @@ export function FormateurMissionProposeeEmail({
         {p.dateLimiteReponse}, nous confierons la session à quelqu&apos;un d&apos;autre — le lien
         vous permettra encore de nous écrire, mais plus d&apos;accepter. Référence :{" "}
         {p.numeroSession}.
+      </Text>
+    </EmailLayout>
+  );
+}
+
+/**
+ * F23 — variante chiffrée (texte soumis à Will le 10/10/2026, section 4). Le
+ * tarif, les dates, le déplacement et la date limite sont AVANT le bouton.
+ */
+function PropositionChiffree({ p, locale }: { p: Payload; locale: Locale }) {
+  const puce = { ...emailStyles.paragraphStyle, margin: "0 0 4px 0" };
+  return (
+    <EmailLayout
+      famille="C"
+      preview="Nous vous proposons une mission : le détail et le montant sont dans ce message."
+      title="Nous vous proposons une mission"
+      cta={{ label: "Voir et répondre", href: p.lienReponse }}
+      ctaSecret
+      locale={locale}
+    >
+      <Text style={emailStyles.paragraphStyle}>Nous vous proposons une mission.</Text>
+      <Text style={puce}>• Formation : {p.titreFormation}</Text>
+      <Text style={puce}>• Dates : {(p.lignesJours ?? []).join(" ; ")}</Text>
+      <Text style={puce}>• Lieu : {p.lieuMission}</Text>
+      <Text style={puce}>
+        • Honoraires : <strong>{p.ligneHonoraires}</strong>
+      </Text>
+      <Text style={puce}>• Déplacement : {p.ligneDeplacement}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        • Réponse souhaitée avant le {p.dateLimiteReponse}
+      </Text>
+      <Text style={emailStyles.paragraphStyle}>
+        Vous êtes libre d&apos;accepter ou de refuser, sans aucune conséquence. Sans réponse avant
+        cette date, la proposition sera faite à quelqu&apos;un d&apos;autre.
       </Text>
     </EmailLayout>
   );

@@ -57,7 +57,12 @@ import type { SessionFormateurRole } from "../../../../prisma/generated/client";
  * valeurs sont les quatre seules écritures du dépôt.
  */
 export type MotifRetraitAffectation =
-  "remplacement" | "desaffectation" | "refus_formateur" | "sans_reponse_delai";
+  | "remplacement"
+  | "desaffectation"
+  | "refus_formateur"
+  | "sans_reponse_delai"
+  // Lot L11h — le formateur se désiste depuis son espace (valeur posée par le schéma n° 1).
+  | "desistement_formateur";
 
 /** Ce que la ligne `SessionFormateur` portait à l'instant de son retrait. */
 export interface SnapshotAffectation {
@@ -194,6 +199,7 @@ export const LIBELLE_MOTIF_RETRAIT: Record<MotifRetraitAffectation, string> = {
   desaffectation: "Retiré de la session sans remplaçant",
   refus_formateur: "A refusé la mission",
   sans_reponse_delai: "N'a pas répondu dans le délai",
+  desistement_formateur: "S'est désisté de la mission",
 };
 
 /**
