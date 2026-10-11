@@ -3856,6 +3856,30 @@ model ArticleFeedback {
 // Source : INSEE communes + geo.api.gouv.fr. Suivi couverture content-gen.
 // ============================================================
 
+/// Référentiel des communes de France (lot M-B / L2c du chantier formateurs,
+/// ADR 0066). Rempli par le passage mensuel `communes-geo` depuis le référentiel
+/// public geo.api.gouv.fr — aucune donnée personnelle, aucun nom envoyé.
+/// 🔴 Jamais de suppression : une commune disparue (fusion) garde sa ligne et
+/// son `majAt` ancien. Aucune colonne sur `Client` : le lieu se résout à la lecture.
+/// rgpd: technique — référentiel public des communes, aucune donnée sur une personne
+model CommuneGeo {
+  /// Code INSEE (« 2A004 », « 97101 »), pas le code postal.
+  codeInsee    String   @id @map("code_insee") @db.Char(5)
+  nom          String   @db.VarChar(120)
+  codesPostaux String[] @map("codes_postaux")
+  /// Centre de la commune. ⚠️ geo.api rend [longitude, latitude].
+  latitude     Float
+  longitude    Float
+  /// « 01 », « 2A », « 971 » : lu dans le référentiel, jamais tiré du code postal.
+  departement  String   @db.VarChar(3)
+  population   Int?
+  majAt        DateTime @map("maj_at")
+
+  @@index([codesPostaux], type: Gin)
+  @@index([departement])
+  @@map("communes_geo")
+}
+
 /// Base villes France metropolitaine + DOM-TOM >= 5 000 hab.
 /// 2 100 communes ordonnees par population decroissante (Paris = priority 1).
 /// Suivi couverture content-gen : isCovered / articlesCount / lastArticleAt.
