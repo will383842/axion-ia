@@ -39,6 +39,7 @@ import {
   formulerConflit,
 } from "@/server/qualiopi/trainers/conflits-indisponibilite";
 import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
@@ -885,6 +886,8 @@ export async function assignTrainerToSessionAction(
 
   // Snapshot du tarif du formateur à l'affectation (figé sur la ligne SessionFormateur).
   let tarifSnapshot: number | null = null;
+  /** Lot L3 — raisons de la garde de mission dites sans bloquer (« avertir »). */
+  let avertissementsGarde: ReadonlyArray<string> = [];
 
   if (trainerId !== null) {
     // Les habilitations viennent de `TrainerHabilitation`, jamais de la colonne
@@ -926,6 +929,14 @@ export async function assignTrainerToSessionAction(
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
+
+    // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
+    // coupé : aucun effet). Avant toute écriture d'affectation.
+    const garde = await controlerGardeMission(trainerId);
+    if (garde.refus.length > 0) {
+      return { error: `Assignation refusée : ${garde.refus.join(" ")}` };
+    }
+    avertissementsGarde = garde.avertissements;
 
     // 🔴 DOUBLE-AFFECTATION — le contrôle existait, personne ne l'appelait.
     //
@@ -1052,6 +1063,7 @@ export async function assignTrainerToSessionAction(
   // l'autre voie d'affectation — la création de session — ne l'a jamais eu. Une
   // règle qui ne vit qu'à l'endroit où on l'a écrite ne protège que cet endroit.
   const avertissements = await avertissementsAffectation(trainerId);
+  avertissements.push(...avertissementsGarde);
 
   // 2026-09-03 — cycle de vie du formateur. L'affectation lui est PROPOSÉE :
   // un e-mail avec un lien pour accepter ou refuser (motif obligatoire). Les

@@ -36,6 +36,7 @@ import type {
 } from "../../../../prisma/generated/client";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { HABILITATION_ACTIVE_WHERE, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
@@ -165,6 +166,13 @@ export async function renvoyerPropositionMissionAction(
     if (refus !== null) return { error: `Proposition impossible : ${refus}.` };
     // Le VRAI rôle de l'affectation : un co-formateur n'est pas « principal ».
     role = affecte.role;
+  }
+
+  // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
+  // coupé : aucun effet). Dite ici en clair, à la console.
+  const garde = await controlerGardeMission(trainerId);
+  if (garde.refus.length > 0) {
+    return { error: `Proposition impossible : ${garde.refus.join(" ")}` };
   }
 
   const r = await proposerMissionFormateur({ sessionId, trainerId, role });

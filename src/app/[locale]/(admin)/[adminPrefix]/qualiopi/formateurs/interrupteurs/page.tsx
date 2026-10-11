@@ -30,6 +30,7 @@ import {
 import {
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
+  basculerFormateursGardeMissionPortesAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -91,6 +92,7 @@ const ACTIONS_SIGNATURE: Record<
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
   affectation_sure: basculerFormateursAffectationSureAction,
   lettre_v2: basculerFormateursLettreV2Action,
+  garde_mission_portes: basculerFormateursGardeMissionPortesAction,
 };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {
