@@ -23,27 +23,41 @@ export function cleRevendication(trainerId: string, sessionId: string): string {
 }
 
 /**
- * Retire des prestations de SESSION les affectations d'indépendants que le
- * relevé mensuel n'a pas revendiquées. Coachings et audits : inchangés (hors
- * paiement par mission).
+ * Retire des prestations de SESSION les affectations d'indépendants qui
+ * appartiennent au PAIEMENT PAR MISSION :
+ *   - le couple est revendiqué `par_mission` ; ou
+ *   - il n'est revendiqué par personne ET la session a commencé à la bascule ou
+ *     après (première journée ≥ `D`).
+ * Tout le reste RESTE au relevé mensuel — en particulier une session d'avant la
+ * bascule que le rattrapage n'aurait pas encore revendiquée : elle n'est jamais
+ * payée par mission, l'écarter ici la ferait payer par personne.
+ * Coachings et audits : inchangés (hors paiement par mission).
  */
 export function filtrerPrestationsApresBascule<P extends PrestationAvecAffectations>(
   prestations: ReadonlyArray<P>,
   e: {
     readonly dateBascule: string | null;
     readonly statutParTrainer: ReadonlyMap<string, string>;
-    readonly revendiqueesMensuel: ReadonlySet<string>;
+    /** Revendications existantes, par `cleRevendication`. */
+    readonly revendications: ReadonlyMap<string, "releve_mensuel" | "par_mission">;
+    /** Première journée de chaque session (jour civil), même calcul que le passage. */
+    readonly premiereJourneeParSession: ReadonlyMap<string, string>;
   },
 ): P[] {
   if (e.dateBascule === null) return [...prestations];
+  const d = e.dateBascule;
   return prestations.map((p) => {
     if (p.sessionId === null) return p;
     const sessionId = p.sessionId;
-    const affectations = p.affectations.filter(
-      (a) =>
-        e.statutParTrainer.get(a.trainerId) !== "sous_traitant" ||
-        e.revendiqueesMensuel.has(cleRevendication(a.trainerId, sessionId)),
-    );
+    const premiere = e.premiereJourneeParSession.get(sessionId);
+    const affectations = p.affectations.filter((a) => {
+      if (e.statutParTrainer.get(a.trainerId) !== "sous_traitant") return true;
+      const regime = e.revendications.get(cleRevendication(a.trainerId, sessionId));
+      if (regime === "par_mission") return false;
+      if (regime === "releve_mensuel") return true;
+      // Personne n'a revendiqué : la date de la première journée décide. Inconnue → mensuel.
+      return premiere === undefined || premiere < d;
+    });
     return affectations.length === p.affectations.length ? p : { ...p, affectations };
   });
 }

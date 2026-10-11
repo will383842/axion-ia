@@ -16,7 +16,7 @@
  * appelable par un script). Rien n'est supprimé, rien n'est modifié.
  */
 
-import { jourDeColonneDate, jourParis } from "../argent/dates";
+import { premiereJourneeSession } from "./lecture-passage";
 
 export interface CoupleARevendiquer {
   readonly trainerId: string;
@@ -150,8 +150,7 @@ export async function lireApercuRattrapage(
   );
   const couples: Array<{ trainerId: string; sessionId: string; premiereJournee: string }> = [];
   for (const s of sessions) {
-    const jours = s.jours.map((j) => jourDeColonneDate(j.date)).sort();
-    const premiereJournee = jours[0] ?? jourParis(s.dateDebut);
+    const premiereJournee = premiereJourneeSession(s);
     for (const sf of s.sessionFormateurs) {
       if (sf.trainer.statut === "sous_traitant")
         couples.push({ trainerId: sf.trainerId, sessionId: s.id, premiereJournee });
