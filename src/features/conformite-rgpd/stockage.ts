@@ -1,6 +1,7 @@
 // Conformité RGPD (console) — où vit le registre : le stockage PRIVÉ R2, jamais le dépôt.
 //
-// · `conformite/registre.json` — la version en cours, relue par la page ;
+// · `conformite/registre.json` — le dernier fichier importé. La page lit la BASE
+//   depuis le lot 2 ; ce fichier ne sert plus qu'à la reprise (`registreARecuperer`) ;
 // · `conformite/historique/registre-<horodatage>.json` — une copie par import, jamais
 //   effacée : c'est l'historique du registre.
 //
@@ -59,4 +60,18 @@ export async function enregistrerRegistre(contenu: unknown, maintenant: Date): P
   // La copie datée d'abord : si la seconde écriture échoue, l'historique est complet.
   await uploadToR2(cleHistorique(maintenant), corps, "application/json");
   await uploadToR2(CLE_REGISTRE, corps, "application/json");
+}
+
+/** Le stockage privé est-il branché ? (Sans lui, pas d'import : l'historique manquerait.) */
+export function stockageConfigure(): boolean {
+  return isR2Configured();
+}
+
+/** Reprise du lot 1 : un registre lisible attend-il dans R2 ? Jamais d'exception. */
+export async function registreARecuperer(): Promise<boolean> {
+  try {
+    return (await lireRegistre()).etat === "ok";
+  } catch {
+    return false;
+  }
 }
