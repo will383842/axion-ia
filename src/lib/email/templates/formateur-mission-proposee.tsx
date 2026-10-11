@@ -51,7 +51,10 @@ export const formateurMissionProposeeSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (p.variante === "honoraires" && locale === "fr") {
-    return objetCompose("Proposition de mission :", p.titreFormation ?? "Formation");
+    return objetCompose(
+      p.relance === true ? "Relance — proposition de mission :" : "Proposition de mission :",
+      p.titreFormation ?? "Formation",
+    );
   }
   const prefixe = p.relance === true ? "Relance mission —" : "Mission proposée —";
   if (locale === "fr") return objetCompose(prefixe, p.titreFormation ?? "Formation");

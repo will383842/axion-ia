@@ -5,7 +5,7 @@
  * Deux interrupteurs, chacun ABSENT = comportement d'avant EXACTEMENT :
  *   - `formateurs.choix_cartes` : les cartes et le choix enregistré (L11b) ;
  *     coupé, aucune ligne `ChoixFormateurSession` n'est jamais écrite ;
- *   - `formateurs.choix_suivants` : le rang suivant proposé seul, et le
+ *   - `formateurs.rang_suivant` : le rang suivant proposé seul, et le
  *     désistement depuis l'espace (L11h) ; coupé, rien ne se propose seul.
  *
  * 🔑 Une personne de l'équipe choisit, toujours. Le moteur du rang suivant ne
@@ -22,6 +22,7 @@
  */
 
 import { sendTelegram } from "@/lib/telegram";
+import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
 import {
@@ -38,6 +39,7 @@ import type { MissionFormateurStatut } from "../../../../prisma/generated/client
 import {
   LIBELLE_RANG,
   choixRestants,
+  rangConsomme,
   estRang,
   nomCourt,
   proximite,
@@ -45,12 +47,14 @@ import {
   type CarteFormateur,
   type ChoixFige,
   type LieuChoix,
+  type SollicitationPassee,
   type Rang,
 } from "./choix-formateur";
 import { departementDeCodePostal } from "./departement-region";
 import { envoyer } from "./envois";
 import { evaluerAffectation, type SessionAEvaluer } from "./evaluer-affectation";
-import { envoiAllume } from "./interrupteurs-envoi";
+import { controlerGardeMission } from "./garde-mission-portes";
+import { interrupteurAllume } from "./interrupteur-allume";
 
 const isStub = (): boolean => process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
 
@@ -68,6 +72,18 @@ async function alerter(body: string): Promise<void> {
   } catch {
     // Une alerte manquée ne défait jamais l'acte.
   }
+}
+
+/** Les missions de la session, telles que le rang suivant les lit. */
+function sollicitationsDe(
+  missions: ReadonlyArray<{ trainerId: string; statut: MissionFormateurStatut; updatedAt: Date }>,
+): SollicitationPassee[] {
+  const vivants = statutsPlaceTenue();
+  return missions.map((m) => ({
+    trainerId: m.trainerId,
+    faitLe: m.updatedAt,
+    vivante: vivants.includes(m.statut),
+  }));
 }
 
 const SESSION_SELECT = {
@@ -165,8 +181,8 @@ export async function lireCartesChoix(
     }),
     prisma.missionFormateur.findMany({
       where: { sessionId },
-      orderBy: { solliciteAt: "desc" },
-      select: { trainerId: true, statut: true, solliciteAt: true },
+      orderBy: { updatedAt: "desc" },
+      select: { trainerId: true, statut: true, updatedAt: true },
     }),
   ]);
   const cartes: CarteFormateur[] = await Promise.all(
@@ -187,14 +203,17 @@ export async function lireCartesChoix(
   const choixActuels: ChoixActuel[] = choix
     .filter((c) => estRang(c.rang))
     .map((c) => {
-      const mission = missions.find(
-        (m) => m.trainerId === c.trainerId && m.solliciteAt.getTime() >= c.updatedAt.getTime(),
+      const siennes = missions.filter((m) => m.trainerId === c.trainerId);
+      const consomme = rangConsomme(
+        { trainerId: c.trainerId, choisiLe: c.updatedAt },
+        sollicitationsDe(siennes),
       );
+      const derniere = siennes[0];
       const etat =
-        c.sauteAt !== null
-          ? "sauté : ne peut plus recevoir cette mission"
-          : mission !== undefined
-            ? LIBELLE_STATUT_MISSION[mission.statut].toLowerCase()
+        consomme && derniere !== undefined
+          ? LIBELLE_STATUT_MISSION[derniere.statut].toLowerCase()
+          : c.sauteAt !== null
+            ? "sauté : ne peut plus recevoir cette mission"
             : "en attente de son tour";
       return {
         rang: c.rang as Rang,
@@ -293,6 +312,17 @@ export type ResultatRangSuivant =
     }
   | { readonly fait: "a_pourvoir"; readonly sautes: number };
 
+/**
+ * Le rang suivant n'a de sens qu'avec le choix en cartes : il exige les DEUX
+ * interrupteurs (sinon il proposerait d'anciens choix, sans conditions figées).
+ */
+async function rangSuivantOuvert(): Promise<boolean> {
+  return (await interrupteurAllume("rang_suivant")) && (await interrupteurAllume("choix_cartes"));
+}
+
+/** Motif posé sur les choix restants quand tous ont été proposés. */
+export const MOTIF_CHOIX_EPUISES = "Tous les choix ont été proposés";
+
 /** Ce qui tient la place (lu à l'appel, jamais au chargement du module). */
 function statutsPlaceTenue(): MissionFormateurStatut[] {
   return ["en_attente", ...STATUTS_ACCORD_DONNE];
@@ -300,7 +330,7 @@ function statutsPlaceTenue(): MissionFormateurStatut[] {
 
 /**
  * Propose la mission au choix suivant de la session, s'il y a lieu. Ne lève
- * jamais. Interrupteur `formateurs.choix_suivants` coupé : ne fait rien.
+ * jamais. Interrupteur `formateurs.rang_suivant` coupé : ne fait rien.
  */
 export async function proposerRangSuivant(
   sessionId: string,
@@ -308,7 +338,7 @@ export async function proposerRangSuivant(
   maintenant: Date,
 ): Promise<ResultatRangSuivant> {
   if (isStub()) return { fait: "coupe" };
-  if (!(await envoiAllume("choix_suivants"))) return { fait: "coupe" };
+  if (!(await rangSuivantOuvert())) return { fait: "coupe" };
   try {
     const session = await prisma.trainingSession.findUnique({
       where: { id: sessionId },
@@ -329,14 +359,14 @@ export async function proposerRangSuivant(
       }),
       prisma.missionFormateur.findMany({
         where: { sessionId },
-        select: { trainerId: true, solliciteAt: true },
+        select: { trainerId: true, statut: true, updatedAt: true },
       }),
     ]);
     // Jamais deux propositions vivantes sur la même place.
     if (vivantes > 0) return { fait: "rien", raison: "proposition vivante" };
     const restants = choixRestants(
       choix.map((c) => ({ ...c, choisiLe: c.updatedAt })),
-      sollicitations,
+      sollicitationsDe(sollicitations),
     );
     if (restants.length === 0 && choix.length === 0) return { fait: "rien", raison: "aucun choix" };
 
@@ -370,10 +400,20 @@ export async function proposerRangSuivant(
         );
         continue;
       }
-      const trainer = await prisma.trainer.findUnique({
-        where: { id: c.trainerId },
-        select: { tarifJourneeHtCents: true },
-      });
+      // T4 — la garde de mission est relue au plus près de l'écriture
+      // (l'évaluation ci-dessus l'a déjà lue ; une pièce a pu expirer entre-temps).
+      const [garde, verrou, trainer] = await Promise.all([
+        controlerGardeMission(c.trainerId, maintenant),
+        chargerEtatVerrou(sessionId),
+        prisma.trainer.findUnique({
+          where: { id: c.trainerId },
+          select: { tarifJourneeHtCents: true },
+        }),
+      ]);
+      if (verrou !== null && verrou.etat.etat === "clos") {
+        return { fait: "rien", raison: "dossier clos" };
+      }
+      if (garde.refus.length > 0) continue;
       // La place se prend par une écriture CONDITIONNELLE : si quelqu'un l'a
       // prise entre-temps (une affectation depuis la console), on s'arrête.
       const pris = await prisma.$transaction(async (tx) => {
@@ -408,11 +448,26 @@ export async function proposerRangSuivant(
         changes: { rang, cause, trainerId: c.trainerId, proposee: p.proposee },
         session: null,
       });
+      if (!p.proposee) {
+        // La place est tenue mais la proposition n'est pas partie : on le dit,
+        // sinon la session resterait bloquée en silence.
+        await alerter(
+          `⚠️ Session ${session.numero} : le ${LIBELLE_RANG[rang]} est affecté mais la proposition n'est pas partie. ${lienFicheSession(sessionId)}`,
+        );
+      }
       return { fait: "propose", rang, trainerId: c.trainerId, proposee: p.proposee };
     }
     // Plus personne : la session revient « à pourvoir ». On ne le dit qu'une
     // fois : quand un événement vient de libérer la place, ou quand ce passage
     // vient de sauter le dernier rang.
+    // Les choix restants sont marqués épuisés : le passage planifié ne les
+    // reprend plus (un nouveau choix les rouvre).
+    if (choix.length > 0) {
+      await prisma.choixFormateurSession.updateMany({
+        where: { sessionId, rang: { lte: 3 }, sauteAt: null },
+        data: { sauteAt: maintenant, sauteMotif: MOTIF_CHOIX_EPUISES },
+      });
+    }
     if (cause !== "passage" || sautes > 0) {
       await journaliser(prisma, {
         action: "qualiopi.mission.a_pourvoir",
@@ -448,7 +503,7 @@ export async function proposerRangsSuivants(maintenant: Date): Promise<{
 }> {
   const bilan = { proposes: 0, aPourvoir: 0 };
   if (isStub()) return bilan;
-  if (!(await envoiAllume("choix_suivants"))) return bilan;
+  if (!(await rangSuivantOuvert())) return bilan;
   let sessions: Array<{ id: string }>;
   try {
     sessions = await prisma.trainingSession.findMany({
@@ -516,7 +571,7 @@ export async function seDesister(input: {
   maintenant: Date;
 }): Promise<ResultatDesistement> {
   if (isStub()) return { ok: false, erreur: "Service indisponible." };
-  if (!(await envoiAllume("choix_suivants"))) {
+  if (!(await rangSuivantOuvert())) {
     return {
       ok: false,
       erreur: "Écrivez-nous pour nous prévenir : ce geste n'est pas encore ouvert.",

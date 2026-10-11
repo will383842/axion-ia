@@ -502,3 +502,9 @@ export async function basculerFormateursChoixCartesAction(
 ): Promise<EtatBascule> {
   return basculerSignature("choix_cartes", formData);
 }
+export async function basculerFormateursRangSuivantAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("rang_suivant", formData);
+}

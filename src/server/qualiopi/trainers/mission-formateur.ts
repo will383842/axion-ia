@@ -289,7 +289,9 @@ export async function proposerMissionFormateur(
     // Lot L11b — les conditions financières FIGÉES au choix en cartes sont
     // recopiées sur la mission (interrupteur `formateurs.choix_cartes` ; coupé :
     // `null`, la mission se crée exactement comme avant).
-    const conditions = await lireConditionsFigees(session.id, trainer.id);
+    // Le choix en cartes ne vaut que pour le formateur PRINCIPAL.
+    const conditions =
+      role === "principal" ? await lireConditionsFigees(session.id, trainer.id) : null;
 
     const mission = await prisma.$transaction(async (tx) => {
       await tx.missionFormateur.updateMany({

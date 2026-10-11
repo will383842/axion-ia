@@ -114,8 +114,8 @@ export const INTERRUPTEURS = {
   },
   lettre_auto: envoi("Lettres de mission automatiques", "Préparer la lettre de chaque mission."),
   choix_suivants: envoi(
-    "Choix suivants et désistement",
-    "Après un refus, un silence ou un désistement, la mission est proposée seule au choix suivant (2e, puis 3e) ; le formateur peut se désister depuis son espace.",
+    "Message aux candidats suivants",
+    "Prévenir les autres candidats quand un formateur est choisi.",
   ),
   passage_paiement: {
     sorte: "date",
@@ -441,6 +441,17 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.choix_cartes",
   },
+  // Lot L11h — le choix suivant proposé seul (refus, silence, désistement) et le
+  // désistement depuis l'espace. Clé NEUVE : `formateurs.choix_suivants` existe
+  // depuis S0-ter avec un autre sens et a pu être allumée. Coupé : rien ne se
+  // propose seul, aucun désistement depuis l'espace.
+  rang_suivant: {
+    ...envoi(
+      "Choix suivant et désistement",
+      "Après un refus, un silence ou un désistement, la mission est proposée seule au choix suivant (2e, puis 3e) arrêté en cartes ; le formateur peut se désister depuis son espace. Exige le choix en cartes.",
+    ),
+    cle: "formateurs.rang_suivant",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -467,6 +478,8 @@ export const PREALABLES_SIGNATURE: Readonly<
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
   choix_cartes: [],
+  // F48 (désistement reçu) est un texte neuf.
+  rang_suivant: [exige("textes_valides")],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

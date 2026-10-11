@@ -104,6 +104,12 @@ vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: h.journaliser }));
 vi.mock("../envois", () => ({ envoyer: h.envoyer }));
 vi.mock("../evaluer-affectation", () => ({ evaluerAffectation: h.evaluer }));
+vi.mock("../garde-mission-portes", () => ({
+  controlerGardeMission: vi.fn(async () => ({ mode: "coupee", refus: [], avertissements: [] })),
+}));
+vi.mock("@/server/qualiopi/sessions/verrou-dossier", () => ({
+  chargerEtatVerrou: vi.fn(async () => null),
+}));
 vi.mock("@/server/qualiopi/trainers/affectation-retiree", () => ({
   lireAffectationsAvantRetrait: vi.fn(async () => []),
   archiverAffectationsRetirees: h.archiver,
@@ -115,6 +121,7 @@ vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
 }));
 
 import {
+  MOTIF_CHOIX_EPUISES,
   MOTIF_CHOIX_REMPLACE,
   MOTIF_LETTRE_DESISTEMENT,
   enregistrerChoix,
@@ -234,10 +241,12 @@ describe("enregistrer le choix : rien ne s'efface", () => {
 });
 
 describe("rang suivant (T15)", () => {
-  beforeEach(() => allumer("choix_suivants"));
+  beforeEach(() => allumer("rang_suivant", "choix_cartes"));
 
   it("refus au rang 1 : le rang 2 est proposé, place prise par écriture conditionnelle", async () => {
-    h.etat.missions = [{ trainerId: A, solliciteAt: new Date("2026-10-11T09:05:00Z") }];
+    h.etat.missions = [
+      { trainerId: A, statut: "refusee", updatedAt: new Date("2026-10-11T09:05:00Z") },
+    ];
     const r = await proposerRangSuivant(SESSION, "refus", MAINTENANT);
     expect(r).toEqual({ fait: "propose", rang: 2, trainerId: B, proposee: true });
     expect(h.tx.trainingSession.updateMany).toHaveBeenCalledWith({
@@ -250,7 +259,9 @@ describe("rang suivant (T15)", () => {
   });
 
   it("un rang devenu inéligible est sauté (journal + alerte sans nom), puis le suivant", async () => {
-    h.etat.missions = [{ trainerId: A, solliciteAt: new Date("2026-10-11T09:05:00Z") }];
+    h.etat.missions = [
+      { trainerId: A, statut: "refusee", updatedAt: new Date("2026-10-11T09:05:00Z") },
+    ];
     h.evaluer.mockImplementation(async (t: string) =>
       t === B
         ? {
@@ -303,7 +314,8 @@ describe("rang suivant (T15)", () => {
   it("plus personne : « à pourvoir », alerte une fois sur un événement", async () => {
     h.etat.missions = [A, B, C].map((t) => ({
       trainerId: t,
-      solliciteAt: new Date("2026-10-11T09:30:00Z"),
+      statut: "refusee",
+      updatedAt: new Date("2026-10-11T09:30:00Z"),
     }));
     expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toEqual({
       fait: "a_pourvoir",
@@ -318,6 +330,47 @@ describe("rang suivant (T15)", () => {
     expect(h.telegram).not.toHaveBeenCalled();
   });
 
+  it("un formateur qui a refusé APRÈS un nouveau choix n'est jamais resollicité", async () => {
+    // A tenait la place, le choix a été réenregistré à 09:00, A refuse à 09:30.
+    h.etat.missions = [
+      { trainerId: A, statut: "refusee", updatedAt: new Date("2026-10-11T09:30:00Z") },
+    ];
+    expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toMatchObject({
+      rang: 2,
+      trainerId: B,
+    });
+  });
+
+  it("une proposition encore vivante consomme son rang, quelle que soit sa date", async () => {
+    h.etat.missions = [
+      { trainerId: A, statut: "en_attente", updatedAt: new Date("2026-10-01T09:00:00Z") },
+    ];
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({ rang: 2 });
+  });
+
+  it("tout est épuisé : les choix restants sont marqués, le passage ne les reprend plus", async () => {
+    h.etat.missions = [A, B, C].map((t) => ({
+      trainerId: t,
+      statut: "sans_reponse",
+      updatedAt: MAINTENANT,
+    }));
+    await proposerRangSuivant(SESSION, "sans_reponse", MAINTENANT);
+    expect(JSON.stringify(h.prisma.choixFormateurSession.updateMany.mock.calls)).toContain(
+      MOTIF_CHOIX_EPUISES,
+    );
+  });
+
+  it("place prise mais proposition non partie : alerte", async () => {
+    h.proposer.mockResolvedValueOnce({ proposee: false, raison: "erreur" } as never);
+    await proposerRangSuivant(SESSION, "refus", MAINTENANT);
+    expect(JSON.stringify(h.telegram.mock.calls)).toContain("pas partie");
+  });
+
+  it("le choix en cartes coupé coupe aussi le rang suivant", async () => {
+    h.etat.settings.delete("formateurs.choix_cartes");
+    expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toEqual({ fait: "coupe" });
+  });
+
   it("une session sans choix en cartes n'est jamais touchée", async () => {
     h.etat.choix = [];
     expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toMatchObject({ fait: "rien" });
@@ -327,7 +380,7 @@ describe("rang suivant (T15)", () => {
 
 describe("désistement (T16)", () => {
   beforeEach(() => {
-    allumer("choix_suivants");
+    allumer("rang_suivant", "choix_cartes");
     h.etat.missionUnique = {
       id: MISSION,
       trainerId: A,

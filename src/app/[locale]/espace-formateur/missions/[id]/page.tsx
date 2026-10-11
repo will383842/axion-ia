@@ -22,7 +22,6 @@ import { requireFormateur } from "@/server/formateur/guard";
 import { prisma } from "@/lib/prisma";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
-import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { lirePropositionChiffree } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import {
   MOTIF_REFUS_MIN,
@@ -79,7 +78,7 @@ export default async function Page({
   const [proposition, refusLibre, desistementOuvert] = await Promise.all([
     lirePropositionChiffree(mission.id),
     enAttente ? refusLibrePour(trainerId) : Promise.resolve(false),
-    accordDonne && avantLeDebut ? envoiAllume("choix_suivants") : Promise.resolve(false),
+    accordDonne && avantLeDebut ? interrupteurAllume("rang_suivant") : Promise.resolve(false),
   ]);
   const texte = TEXTE_STATUT_MISSION[mission.statut];
 

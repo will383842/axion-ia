@@ -286,6 +286,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // formateur hors de l'espace formateur : la garde serait verte et
   // l'architecture fausse.
   "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // Lots L11b-ux et L11h (2026-10-11) : la page d'UNE mission du formateur
+  // (proposition chiffrée, désistement) et ses deux composants. Lecture bornée
+  // au `trainerId` de la session (`where: { id, trainerId }`), une seule action
+  // (`seDesisterMissionAction`, qui revérifie l'appartenance). La coquille ne
+  // lit que l'interrupteur `formateurs.choix_cartes` et le statut du formateur
+  // connecté, pour nommer le menu (« Mes missions », « Mes honoraires »).
+  "src/app/[locale]/espace-formateur/missions/[id]/page.tsx",
+  "src/app/[locale]/espace-formateur/_coquille.tsx",
+  "src/components/espace-formateur/DesistementForm.tsx",
+  "src/components/espace-formateur/PropositionSixLignes.tsx",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la
   // même partout : un même document téléchargé depuis la console et depuis

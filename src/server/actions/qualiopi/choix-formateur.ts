@@ -92,13 +92,12 @@ export async function choisirFormateursSessionAction(
       }),
     ]);
     dejaPropose = session?.formateurPrincipalId === premier.trainerId && vivante !== null;
-    // Une proposition faite avant les cartes n'a pas de forfait figé : rien à comparer.
-    if (
-      dejaPropose &&
-      vivante !== null &&
-      vivante.forfaitDeplacementParJourHtCents !== null &&
-      vivante.forfaitDeplacementParJourHtCents !== premier.forfaitDeplacementParJourHtCents
-    ) {
+    // Une proposition déjà faite porte ses conditions : on ne les change pas en
+    // silence. Faite avant les cartes (aucun forfait sur la mission), elle ne
+    // vaut que « déplacement compris » : un autre forfait exige de la retirer.
+    const forfaitMission = vivante?.forfaitDeplacementParJourHtCents ?? 0;
+    const forfaitChoisi = premier.forfaitDeplacementParJourHtCents ?? 0;
+    if (dejaPropose && forfaitMission !== forfaitChoisi) {
       return {
         error:
           "Le 1er choix a déjà reçu la proposition avec un autre forfait : retirez-la d'abord pour en changer.",
@@ -149,13 +148,18 @@ export async function seDesisterMissionAction(
   const { trainerId } = await requireFormateurAction();
   const parsed = desistementSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const r = await seDesister({
-    trainerId,
-    missionId: parsed.data.missionId,
-    ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
-    ...(parsed.data.remplacant !== undefined ? { remplacant: parsed.data.remplacant } : {}),
-    maintenant: new Date(),
-  });
+  let r: Awaited<ReturnType<typeof seDesister>>;
+  try {
+    r = await seDesister({
+      trainerId,
+      missionId: parsed.data.missionId,
+      ...(parsed.data.motif !== undefined ? { motif: parsed.data.motif } : {}),
+      ...(parsed.data.remplacant !== undefined ? { remplacant: parsed.data.remplacant } : {}),
+      maintenant: new Date(),
+    });
+  } catch {
+    return { error: "Votre réponse n'a pas pu être enregistrée : rechargez la page." };
+  }
   if (!r.ok) return { error: r.erreur };
   return { data: { ok: true } };
 }

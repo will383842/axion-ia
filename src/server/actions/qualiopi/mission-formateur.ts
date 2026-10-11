@@ -126,7 +126,7 @@ export async function repondreMissionFormateurAction(input: {
 
 /**
  * Lot L11h — après un refus, le choix suivant est proposé seul (interrupteur
- * `formateurs.choix_suivants` ; coupé : rien). Ne lève jamais.
+ * `formateurs.rang_suivant` ; coupé : rien). Ne lève jamais.
  */
 async function apresRefus(statut: MissionFormateurStatut, sessionId: string): Promise<void> {
   if (statut !== "refusee") return;

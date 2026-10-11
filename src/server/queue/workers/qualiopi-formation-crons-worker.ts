@@ -2085,7 +2085,7 @@ async function handleMissionsFormateur(): Promise<void> {
       `${bilan.expirees} proposition(s) expirée(s), ${bilan.erreurs} erreur(s)`,
   );
   // Lot L11h — le choix suivant des sessions libérées (interrupteur
-  // `formateurs.choix_suivants` ; coupé : rien n'est lu au-delà de l'interrupteur).
+  // `formateurs.rang_suivant` ; coupé : rien n'est lu au-delà de l'interrupteur).
   const suivants = await proposerRangsSuivants(maintenant);
   if (suivants.proposes > 0 || suivants.aPourvoir > 0) {
     console.log(

@@ -304,13 +304,27 @@ export interface ChoixEnregistre {
 
 export interface SollicitationPassee {
   readonly trainerId: string;
-  readonly solliciteAt: Date;
+  /** Dernière écriture de la mission (proposition, réponse, retrait…). */
+  readonly faitLe: Date;
+  /** Proposition en attente ou accord donné : elle tient le rang. */
+  readonly vivante: boolean;
+}
+
+/** Une mission consomme le rang si elle vit encore, ou si elle a bougé depuis le choix. */
+export function rangConsomme(
+  c: Pick<ChoixEnregistre, "trainerId" | "choisiLe">,
+  sollicitations: ReadonlyArray<SollicitationPassee>,
+): boolean {
+  return sollicitations.some(
+    (s) => s.trainerId === c.trainerId && (s.vivante || s.faitLe.getTime() >= c.choisiLe.getTime()),
+  );
 }
 
 /**
  * Les choix encore à proposer, dans l'ordre des rangs : rang 1 à 3, non
- * sautés, et pas encore sollicités depuis le choix (une proposition faite
- * pendant ce tour, quelle qu'en soit l'issue, consomme le rang).
+ * sautés, et pas encore consommés. Une proposition faite ou close pendant ce
+ * tour (quelle qu'en soit l'issue), ou encore vivante, consomme le rang : un
+ * formateur qui vient de refuser n'est jamais resollicité par le moteur.
  */
 export function choixRestants(
   choix: ReadonlyArray<ChoixEnregistre>,
@@ -318,12 +332,7 @@ export function choixRestants(
 ): ChoixEnregistre[] {
   return [...choix]
     .filter((c) => estRang(c.rang) && c.sauteAt === null)
-    .filter(
-      (c) =>
-        !sollicitations.some(
-          (s) => s.trainerId === c.trainerId && s.solliciteAt.getTime() >= c.choisiLe.getTime(),
-        ),
-    )
+    .filter((c) => !rangConsomme(c, sollicitations))
     .sort((a, b) => a.rang - b.rang);
 }
 

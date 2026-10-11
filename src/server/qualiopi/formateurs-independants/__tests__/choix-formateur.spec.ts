@@ -196,16 +196,16 @@ describe("rang suivant (T15) : jamais deux fois le même rang dans un tour", () 
   ];
   it("saute les rangs déjà sollicités depuis le choix, et les rangs sautés", () => {
     expect(
-      choixRestants(choix, [{ trainerId: "a", solliciteAt: new Date("2026-10-11T08:01:00Z") }]).map(
-        (c) => c.trainerId,
-      ),
+      choixRestants(choix, [
+        { trainerId: "a", faitLe: new Date("2026-10-11T08:01:00Z"), vivante: false },
+      ]).map((c) => c.trainerId),
     ).toEqual(["b"]);
   });
   it("une sollicitation d'avant le choix ne consomme pas le rang", () => {
     expect(
-      choixRestants(choix, [{ trainerId: "a", solliciteAt: new Date("2026-10-01T08:00:00Z") }]).map(
-        (c) => c.trainerId,
-      ),
+      choixRestants(choix, [
+        { trainerId: "a", faitLe: new Date("2026-10-01T08:00:00Z"), vivante: false },
+      ]).map((c) => c.trainerId),
     ).toEqual(["a", "b"]);
   });
 });

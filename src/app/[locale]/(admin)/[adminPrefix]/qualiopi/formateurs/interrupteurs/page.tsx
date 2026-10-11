@@ -40,6 +40,7 @@ import {
   basculerFormateursLettreV2Action,
   basculerFormateursGardeMissionPortesAction,
   basculerFormateursChoixCartesAction,
+  basculerFormateursRangSuivantAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -103,6 +104,7 @@ const ACTIONS_SIGNATURE: Record<
   lettre_v2: basculerFormateursLettreV2Action,
   garde_mission_portes: basculerFormateursGardeMissionPortesAction,
   choix_cartes: basculerFormateursChoixCartesAction,
+  rang_suivant: basculerFormateursRangSuivantAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
