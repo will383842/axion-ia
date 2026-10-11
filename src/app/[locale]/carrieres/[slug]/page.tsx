@@ -422,7 +422,7 @@ export default async function JobOfferDetailPage({
                   aria-hidden="true"
                   className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
                 />
-                {isFr ? "Candidatures ouvertes" : "Applications open"}
+                {isFr ? "Vivier de talents" : "Talent pool"}
                 <span aria-hidden="true" className="text-fg-muted">
                   ·
                 </span>

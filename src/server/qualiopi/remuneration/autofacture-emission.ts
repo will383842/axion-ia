@@ -648,6 +648,9 @@ export async function transmettreAutofacture(
     await prisma.trainerStatement.update({
       where: { id: releve.statementId },
       data: { autofactureTransmiseAt: maintenant, contestationAvantAt: contestationAvant },
+      // Aucune colonne relue : le client régénéré ne réclame pas de colonne que la
+      // base n'aurait pas encore (fenêtre app/worker, AGENTS.md).
+      select: { id: true },
     });
   } catch {
     // La pièce est partie mais la date n'a pas pu s'écrire : on rend `false`

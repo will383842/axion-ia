@@ -40,10 +40,10 @@ const FIGEES: ReadonlyArray<readonly [string, string, string, unknown]> = [
     VERSION_LETTRE.article,
     TEXTE_CASE_LETTRE.article,
   ],
-  ["guide-mention-pro-v2-2026-09-26", "d687d5c090122de4", VERSION_MENTION.pro, TEXTE_MENTION.pro],
+  ["guide-mention-pro-v3-2026-10-11", "bac267e99a9af404", VERSION_MENTION.pro, TEXTE_MENTION.pro],
   [
-    "guide-mention-perso-v1-2026-09-24",
-    "339cc5e7fbf0aeaa",
+    "guide-mention-perso-v2-2026-10-11",
+    "8e5dae3cf6c15cdc",
     VERSION_MENTION.perso,
     TEXTE_MENTION.perso,
   ],

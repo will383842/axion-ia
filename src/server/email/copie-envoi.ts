@@ -20,7 +20,9 @@
  *   pas pouvoir rejouer une signature, un émargement ou une connexion ;
  * · les NOMS des pièces jointes, jamais leur contenu.
  *
- * Durée : 12 mois (purge de rétention). Effacement art. 17 : supprimée
+ * Durée : aucune suppression automatique (la purge de rétention a été
+ * retirée) ; conservée tant que la relation dure, puis le temps des délais
+ * légaux de réclamation. Effacement art. 17 : supprimée
  * (`eraseEmailTracesForEmail`). Export art. 15 : rendue (`api/gdpr-export`).
  */
 
