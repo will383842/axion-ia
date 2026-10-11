@@ -18,9 +18,13 @@ export type ActionRetrouver = (
  * « Retrouver mon espace » — composant COMMUN (FAC-10), extrait du dossier apporteur.
  * L'action du monde appelant envoie le lien et rend toujours la même réponse neutre.
  */
-export function FormulaireRetrouver({ demanderLien }: { demanderLien: ActionRetrouver }) {
+export function FormulaireRetrouver({
+  demanderLienAction,
+}: {
+  demanderLienAction: ActionRetrouver;
+}) {
   const [etat, action, enCours] = useActionState<EtatRetrouver | undefined, FormData>(
-    demanderLien,
+    demanderLienAction,
     undefined,
   );
   if (etat?.envoye) {

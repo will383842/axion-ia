@@ -6,5 +6,5 @@ import { FormulaireRetrouver as FormulaireCommun } from "@/components/dossier-en
 import { demanderLienEspace } from "./actions";
 
 export function FormulaireRetrouver() {
-  return <FormulaireCommun demanderLien={demanderLienEspace} />;
+  return <FormulaireCommun demanderLienAction={demanderLienEspace} />;
 }

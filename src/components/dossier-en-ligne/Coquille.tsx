@@ -1,7 +1,7 @@
 // Composants COMMUNS du dossier en ligne (FAC-10), extraits du dossier apporteur :
 // coquille (bandeau de marque, colonne de lecture étroite, mobile d'abord) et écrans
 // d'état (lien invalide, dossier reçu, signé). Les textes sont passés en paramètre :
-// chaque monde (apporteurs, formateurs) donne les siens.
+// chaque monde donne les siens ; à rendre depuis une enveloppe du monde appelant.
 // Composants SERVEUR : aucun JavaScript envoyé au navigateur.
 
 export interface TextesCoquille {

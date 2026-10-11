@@ -25,13 +25,13 @@ describe("aucun texte apporteur dans les composants communs", () => {
   it("la coquille rend la marque, le surtitre et l'astuce donnés", () => {
     const html = renderToStaticMarkup(
       <Coquille
-        textes={{ marque: "Axion-IA", surtitre: "Votre dossier de formateur", astuce: "Conseil." }}
+        textes={{ marque: "Axion-IA", surtitre: "Votre dossier de test", astuce: "Conseil." }}
         titre="T"
       >
         <p />
       </Coquille>,
     );
-    expect(html).toContain("Votre dossier de formateur");
+    expect(html).toContain("Votre dossier de test");
     expect(html).toContain("Conseil.");
     expect(html).not.toContain("apporteur");
   });
