@@ -24,6 +24,8 @@ import { describe, expect, it } from "vitest";
 import { conservationApresFin } from "@/server/qualiopi/formateurs-independants/fin-collaboration";
 import { DUREE_LIEN_DOSSIER_JOURS } from "@/server/qualiopi/formateurs-independants/jeton-dossier";
 import { FENETRE_STATS_MOIS } from "@/server/qualiopi/formateurs-proches/stats-formateurs";
+import { SEUIL_FIABILITE } from "@/server/qualiopi/indicateurs/calcul";
+import { masquerIbanFormateur } from "@/lib/rgpd-formateur-independant";
 
 import { LEGAL_PAGES } from "../legal";
 
@@ -99,10 +101,41 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(FR()).toContain("recherche-entreprises.api.gouv.fr");
   });
 
-  it("dit le lien personnel : sa durée lue dans le code, et sa révocation", () => {
+  it("dit le lien personnel : sa durée lue dans le code, et QUI le révoque vraiment", () => {
     expect(DUREE_LIEN_DOSSIER_JOURS).toBe(30);
     expect(FR()).toMatch(new RegExp(`lien personnel, valable ${DUREE_LIEN_DOSSIER_JOURS} jours`));
-    expect(FR()).toMatch(/annule les précédents/);
+    expect(FR()).toMatch(
+      /quand l'équipe vous renvoie un nouveau lien, ou quand vous envoyez votre dossier, les liens précédents cessent de fonctionner/,
+    );
+    expect(EN()).toMatch(
+      /when the team sends you a new link, or when you send your file, the previous links stop working/,
+    );
+    // 🔴 Faux : les relances et « Retrouver mon lien » renvoient le lien COURANT, sans rien annuler.
+    expect(FR()).not.toMatch(/chaque nouveau lien[^.;]*annule/);
+    expect(EN()).not.toMatch(/each new link[^.;]*cancels/);
+
+    // Le code : le renvoi par l'équipe et l'envoi du dossier incrémentent la version
+    // d'accès ; la relance et « Retrouver mon lien » ne la touchent pas.
+    const envois = lire(
+      "src",
+      "server",
+      "qualiopi",
+      "formateurs-independants",
+      "envois-dossier.ts",
+    );
+    const renvoi = envois.slice(envois.indexOf("export async function renvoyerLienDossier"));
+    expect(renvoi.slice(0, renvoi.indexOf("\n}\n"))).toMatch(/nouvelleVersion\(/);
+    const nv = envois.slice(envois.indexOf("async function nouvelleVersion"));
+    expect(nv.slice(0, nv.indexOf("\n}\n"))).toMatch(/accesVersion: \{ increment: 1 \}/);
+    const dossier = lire("src", "server", "qualiopi", "formateurs-independants", "dossier.ts");
+    const envoi = dossier.slice(dossier.indexOf("export async function envoyerDossier"));
+    expect(envoi.slice(0, envoi.indexOf("\n}\n"))).toMatch(/accesVersion: \{ increment: 1 \}/);
+    for (const sansRevocation of [
+      ["src", "server", "qualiopi", "formateurs-independants", "relance-dossier.ts"],
+      ["src", "app", "formateur", "dossier", "retrouver", "actions.ts"],
+    ]) {
+      expect(lire(...sansRevocation), sansRevocation.join("/")).not.toMatch(/increment/);
+    }
   });
 
   it("dit l'antivirus et le chiffrement de chaque pièce déposée, comme le dépôt le fait", () => {
@@ -137,6 +170,7 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
 
   it("dit vrai sur les statistiques internes : satisfaction, commune et non adresse, usage interne", () => {
     expect(FENETRE_STATS_MOIS).toBe(36);
+    expect(SEUIL_FIABILITE).toBe(5);
     expect(FR()).toMatch(/trois dernières années/);
     expect(FR()).toMatch(/satisfaction donnée par les stagiaires/);
     expect(FR()).toMatch(/centre de votre commune d'exercice \(jamais votre adresse\)/);
@@ -145,10 +179,78 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
   });
 
   it("dit l'export art. 15 et l'effacement art. 17 tels que le module les fait", () => {
-    expect(FR()).toMatch(/IBAN masqué/);
+    // IBAN : quatre premiers et quatre derniers caractères, lus dans le code.
+    expect(masquerIbanFormateur("FR7612345678901234567890189")).toBe("FR76 •••• •••• 0189");
+    expect(FR()).toMatch(
+      /IBAN masqué \(seuls ses quatre premiers et ses quatre derniers caractères apparaissent\)/,
+    );
+    expect(EN()).toMatch(/IBAN masked \(only its first four and last four characters appear\)/);
     expect(FR()).toMatch(/liste de vos pièces, sans leur contenu/);
+    expect(EN()).toMatch(/list of your documents, without their content/);
+    // Export et effacement ne valent que derrière `formateurs.dossier_en_ligne` : la
+    // notice les rattache aux données du dossier en ligne.
+    const module = lire("src", "lib", "rgpd-formateur-independant.ts");
+    expect(module).toMatch(/if \(!\(await droitsFormateurActifs\(\)\)\) return null;/);
+    expect(module).toMatch(/if \(etat !== "actif"\) return \{ formateur: etat/);
+    expect(FR()).toMatch(/la copie des données de votre dossier en ligne montre votre IBAN masqué/);
+    expect(FR()).toMatch(/demande d'effacement des données de votre dossier en ligne/);
+    expect(EN()).toMatch(/copy of your online file data/);
+    expect(EN()).toMatch(/request to erase your online file data/);
     expect(FR()).toMatch(/pseudonymisation/);
-    expect(FR()).toMatch(/pièces que la loi impose de conserver[^.]*restent intactes/);
+    // Sans lien contractuel, IBAN et numéros de l'entreprise sont effacés.
+    for (const champ of ["iban", "siret", "numeroTvaIntracom", "sousTraitantNda"]) {
+      expect(module).toMatch(new RegExp(`\\b${champ}: null`));
+    }
+    expect(FR()).toMatch(/votre IBAN et les numéros de votre entreprise sont effacés/);
+    expect(EN()).toMatch(/your IBAN and your company numbers are erased/);
+    expect(FR()).toMatch(/pièces que la loi impose de conserver restent intactes/);
+  });
+
+  it("nomme chaque pièce que le module garde intacte (PIECES_LEGALES), en FR et en EN", () => {
+    const module = lire("src", "lib", "rgpd-formateur-independant.ts");
+    const types = (nom: string) => {
+      const m = module.match(
+        new RegExp(`const ${nom}: ReadonlySet<string> = new Set\\(\\[([^\\]]*)\\]`),
+      );
+      expect(m, nom).not.toBeNull();
+      return [...m![1]!.matchAll(/"([a-z_]+)"/g)].map((x) => x[1]!);
+    };
+    // Pièces sans objet pour un indépendant (contrat de travail, déclaration d'embauche).
+    const horsSujet = new Set(["contrat_travail", "dpae"]);
+    const mots: Record<string, readonly [RegExp, RegExp]> = {
+      contrat_sous_traitance: [/contrats/, /agreements/],
+      attestation_vigilance_urssaf: [/preuves de vigilance/, /due-diligence proofs/],
+      kbis_avis_sirene: [
+        /extrait Kbis ou avis de situation Sirene/,
+        /Kbis extract or Sirene status notice/,
+      ],
+      nda_sous_traitant: [
+        /justificatif de votre numéro de déclaration d'activité/,
+        /proof of your training declaration number/,
+      ],
+      recepisse_declaration_activite: [/récépissé de déclaration/, /declaration receipt/],
+      attestation_qualiopi: [/attestation Qualiopi/, /Qualiopi certificate/],
+      assurance_rc_pro: [/attestation d'assurance/, /insurance certificate/],
+      diplome: [/justificatifs de compétences/, /proofs of skills/],
+      certification: [/justificatifs de compétences/, /proofs of skills/],
+      rib: [/RIB/, /bank details/],
+    };
+    const fr = FR().slice(FR().indexOf("Les pièces que la loi impose de conserver"));
+    const en = EN().slice(EN().indexOf("Documents the law requires us to keep"));
+    for (const t of [...types("PIECES_LEGALES"), ...types("PIECES_LEGALES_SI_LIEN")]) {
+      if (horsSujet.has(t)) continue;
+      expect(mots[t], `type ${t} non décrit par la notice`).toBeDefined();
+      expect(fr, t).toMatch(mots[t]![0]);
+      expect(en, t).toMatch(mots[t]![1]);
+    }
+  });
+
+  it("le miroir anglais dit vrai sur les statistiques internes", () => {
+    expect(EN()).toMatch(/centre of your town of practice \(never your address\)/);
+    expect(EN()).toMatch(/last three years/);
+    expect(EN()).toMatch(/from five reviews/);
+    expect(EN()).toMatch(/never published nor shown to trainers/);
+    expect(EN()).toMatch(/satisfaction score given by the trainees/);
   });
 
   it("dit la décision humaine (G1) et le fil interne sans nom (G2)", () => {
