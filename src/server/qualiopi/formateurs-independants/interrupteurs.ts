@@ -559,6 +559,16 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.modeles_composeur",
   },
+  // Lot F-CAL-2 (+ U7-f) — le suivi de l'échange formateur par l'outil. Coupé : un
+  // échange formateur ne reçoit aucun e-mail de notre part, n'est rattaché à aucune
+  // candidature et n'a pas d'issue « formateur » en console, exactement comme avant.
+  suivi_echange: {
+    ...envoi(
+      "Suivi de l'échange formateur",
+      "Un échange réservé est rattaché à sa candidature, reçoit sa confirmation et ses deux rappels (la veille, une heure avant), et son issue se note en console. À allumer avant de couper les rappels natifs de Calendly.",
+    ),
+    cle: "formateurs.suivi_echange",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -576,6 +586,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     formulaire_freelance: [],
     menu_freelance: [],
     modeles_composeur: [],
+    suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {

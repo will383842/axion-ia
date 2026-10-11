@@ -25,6 +25,9 @@ import { lireDrapeauEnregistrement as drapeauEnregistrement } from "@/server/vis
 import { invitesSupplementaires, lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
+import { IssueEchangeFormateurForm } from "@/components/admin/contacts/IssueEchangeFormateurForm";
+import { estEchangeFormateur } from "@/server/calendly/echange-formateur";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import {
   LIBELLE_ISSUE_APPORTEUR,
   issueDepuisSuivi,
@@ -106,6 +109,9 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   const peutFaireLePoint =
     event.status !== "canceled" && event.startTime != null && event.startTime <= new Date();
   const suivi = peutFaireLePoint ? await lireSuivi(event.id) : null;
+  // Lot F-CAL-2 : l'issue « formateur » ne s'affiche qu'interrupteur allumé (coupé : comme avant).
+  const suiviFormateur =
+    peutFaireLePoint && estEchangeFormateur(event) && (await lireEtatsEntree()).suivi_echange;
   const mailtoRelance =
     peutFaireLePoint && event.inviteeEmail && event.startTime
       ? mailtoRelanceAbsent({
@@ -237,7 +243,16 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
             ) : null}
             {/* 2026-09-28 — un échange APPORTEUR a ses propres boutons et ses
                 e-mails, avec aperçu avant envoi. */}
-            {estAppelApporteur(event.eventTypeName) ? (
+            {suiviFormateur && estEchangeFormateur(event) ? (
+              // Lot F-CAL-2 : interrupteur `formateurs.suivi_echange` allumé seulement.
+              <IssueEchangeFormateurForm
+                calendlyEventId={event.id}
+                peutRetenir={peutEngager(
+                  (session?.user as { role?: string } | undefined)?.role,
+                  "contresigner",
+                )}
+              />
+            ) : estAppelApporteur(event.eventTypeName) ? (
               <IssueEchangeApporteurForm
                 peutRetenir={peutEngager(
                   (session?.user as { role?: string } | undefined)?.role,
