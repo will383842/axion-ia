@@ -75,6 +75,8 @@ const SENSITIVE_KEYS: ReadonlySet<string> = new Set([
   "ip_hash_salt",
   "internal_hmac_secret",
   "docuseal_strict_hmac",
+  // S6b — code de signature à usage unique (scellé dans la file, masqué ici en plus).
+  "code",
 ]);
 
 /** Noms de clés à redacter via redactEmail (premier char + masque + @domaine). */

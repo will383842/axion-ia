@@ -31,7 +31,13 @@ import type JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { documentPdfKey, getObjectBufferR2 } from "@/lib/r2-storage";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
-import { estPieceCompetenceProbante } from "@/server/qualiopi/trainers/piece-competence";
+import { createHash } from "node:crypto";
+
+import { dechiffrerOctetsPii } from "@/lib/pii-crypto";
+import {
+  aUnFichier,
+  estPieceCompetenceProbante,
+} from "@/server/qualiopi/trainers/piece-competence";
 import { originePublique } from "./liens-site-public";
 import { pieceAdmissibleAuDossier } from "./piece-admissible";
 import { documentJointAuDossierAudit } from "./hors-dossier-audit";
@@ -205,7 +211,32 @@ export interface PieceFormateurZip {
   readonly type: string;
   readonly statutValidation: string;
   readonly fichierUrl: string | null;
+  /** Octets déposés par le formateur (lot L5b), chiffrés en base. */
+  readonly contenu?: { readonly trainerDocumentId: string } | null;
   readonly dateExpiration: Date | null;
+}
+
+/**
+ * Lot L5b — le fichier d'une pièce DÉPOSÉE par le formateur : ses octets
+ * chiffrés en base, déchiffrés et contrôlés par leur empreinte. Ne lève jamais.
+ */
+export async function lireContenuDepose(trainerDocumentId: string): Promise<RecuperationPiece> {
+  try {
+    const c = await prisma.trainerDocumentContenu.findUnique({
+      where: { trainerDocumentId },
+      select: { octets: true, sha256: true, mime: true },
+    });
+    if (c === null) return { ok: false, motif: "pièce déposée introuvable" };
+    const clair = dechiffrerOctetsPii(Buffer.from(c.octets));
+    if (createHash("sha256").update(clair).digest("hex") !== c.sha256) {
+      return { ok: false, motif: "pièce déposée altérée (empreinte différente)" };
+    }
+    const extension = EXTENSION_PAR_TYPE_MIME[c.mime];
+    if (extension === undefined) return { ok: false, motif: "format de pièce déposée inconnu" };
+    return { ok: true, buffer: clair, extension };
+  } catch {
+    return { ok: false, motif: "pièce déposée illisible" };
+  }
 }
 
 export interface ResultatPiecesCompetence {
@@ -260,7 +291,13 @@ export async function joindreFichiersPiecesCompetence(
   for (let i = 0; i < probantes.length; i += LOT) {
     const lot = probantes.slice(i, i + LOT);
     const resultats = await Promise.all(
-      lot.map(async (p) => ({ p, r: await recupererFichierPiece(p.fichierUrl ?? "") })),
+      lot.map(async (p) => ({
+        p,
+        r:
+          !aUnFichier(p.fichierUrl) && p.contenu
+            ? await lireContenuDepose(p.contenu.trainerDocumentId)
+            : await recupererFichierPiece(p.fichierUrl ?? ""),
+      })),
     );
     for (const { p, r } of resultats) {
       const libelle = LIBELLE_TYPE_PIECE[p.type] ?? p.type;

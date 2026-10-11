@@ -64,7 +64,9 @@ export async function sendVivierInformationBatch(
   const baseUrl = options.baseUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 
   const rows = await prisma.jobApplication.findMany({
-    where: { vivierInfoSentAt: null, vivierOpposedAt: null },
+    // L0c-3 : une candidature saisie en console n'a rempli aucun formulaire —
+    // elle ne reçoit aucun envoi automatique (seule son invitation, cochée).
+    where: { vivierInfoSentAt: null, vivierOpposedAt: null, origine: "formulaire" },
     orderBy: { submittedAt: "asc" },
     take: limit,
     select: {

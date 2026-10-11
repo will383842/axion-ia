@@ -35,6 +35,7 @@ import {
   basculerFormateursFormulaireFreelanceAction,
   basculerFormateursMenuFreelanceAction,
   basculerFormateursModelesComposeurAction,
+  basculerFormateursAjoutConsoleAction,
   basculerFormateursDossiersContratsAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
@@ -110,6 +111,7 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     formulaire_freelance: basculerFormateursFormulaireFreelanceAction,
     menu_freelance: basculerFormateursMenuFreelanceAction,
     modeles_composeur: basculerFormateursModelesComposeurAction,
+    ajout_console: basculerFormateursAjoutConsoleAction,
     dossiers_contrats: basculerFormateursDossiersContratsAction,
   };
 

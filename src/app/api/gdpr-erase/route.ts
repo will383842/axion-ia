@@ -29,6 +29,10 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { effacerCandidaturesPour } from "@/server/careers/candidature-rgpd";
+import {
+  candidaturesAConserverPour,
+  formateurIndependantASignalerPour,
+} from "@/lib/rgpd-formateur-independant";
 import { effacerDemandesPodcastPour } from "@/features/podcast-request/rgpd";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -118,6 +122,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // par eraseSubmissionsForEmail.
   const chatResult = await eraseChatDataForEmail(email);
 
+  // Lot L16a (W5 I-11) — lu AVANT les effacements : les candidatures d'origine
+  // d'un formateur sous lien contractuel sont CONSERVÉES. Éteint
+  // (`formateurs.dossier_en_ligne` absent) = ensemble vide, comportement d'avant.
+  const candidaturesRetenues = await candidaturesAConserverPour(email);
+  // La fiche du formateur n'est PAS modifiée ici : son effacement
+  // (pseudonymisation, aucune suppression) est un geste d'administrateur, avec
+  // confirmation. La route le SIGNALE seulement au journal.
+  const formateurIndependant = await formateurIndependantASignalerPour(email);
+
   // Exécution des effacements
   const [
     submissionsResult,
@@ -150,7 +163,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Le défaut était plus profond qu'un oubli de branchement : `email` est
     // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
     // son adresse. Cf. `careers/candidature-rgpd.ts`.
-    effacerCandidaturesPour(email),
+    effacerCandidaturesPour(email, { conserver: candidaturesRetenues }),
     // 🔴 `D5-5-01` (2026-08-24) — LES DEUX TABLES D'E-MAIL ÉTAIENT HORS DE PORTÉE.
     //
     // Exactement le défaut de `D5-5-03` ci-dessus, une table plus loin :
@@ -270,6 +283,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         dossierClient: dossierClientResult,
         reseauApporteur: { ...reseauApporteurResult },
+        formateurIndependant,
+        candidaturesRetenues: candidaturesRetenues.size,
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,

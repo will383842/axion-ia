@@ -118,7 +118,17 @@ export async function trouverCandidatures(email: string): Promise<{
  * l'anonymisation préserve un audit métier légitime — une candidature non
  * retenue n'a aucune raison de conservation opposable au droit d'effacement.
  */
-export async function effacerCandidaturesPour(email: string): Promise<{
+export async function effacerCandidaturesPour(
+  email: string,
+  options?: {
+    /**
+     * Lot L16a (W5 I-11) — candidatures d'origine d'un formateur indépendant
+     * sous lien contractuel : CONSERVÉES (elles fondent la relation). Absent =
+     * comportement d'avant.
+     */
+    readonly conserver?: ReadonlySet<string>;
+  },
+): Promise<{
   readonly supprimees: number;
   readonly fichiersSupprimes: number;
   readonly tronque: boolean;
@@ -141,6 +151,7 @@ export async function effacerCandidaturesPour(email: string): Promise<{
   }
 
   for (const c of candidatures) {
+    if (options?.conserver?.has(c.id)) continue;
     for (const chemin of [c.cvStoragePath, c.photoStoragePath]) {
       if (chemin === null) continue;
       try {
