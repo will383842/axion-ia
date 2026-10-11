@@ -44,6 +44,7 @@ import type { ModeleComposeurId } from "@/content/recrutement/modeles-reponse";
 import type { Locale } from "../../../prisma/generated/client";
 
 import { consignerEvenement } from "./journal";
+import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
 
 /** Le dossier, réduit à ce dont l'envoi a besoin. */
 export interface CandidatureDestinataire {
@@ -105,10 +106,14 @@ export async function ecrireEtEnfilerReponse(
 
   let rendu: { subject: string; html: string; text: string };
   try {
+    // Le HTML est rendu ICI et stocké : le lien « Supprimer ma candidature »
+    // y est donc figé, avec un jeton qui vit plus longtemps que le dossier.
+    const lienSuppression = await lienSuppressionCandidature(candidature.id);
     rendu = await renderEmailTemplate("candidature-reponse", candidature.locale, {
       subject: contenu.subject,
       bodyMarkdown: contenu.bodyMarkdown,
       offerTitle: candidature.offerTitleSnap,
+      ...(lienSuppression ? { lienSuppression } : {}),
     });
   } catch (e) {
     Sentry.captureException(e);

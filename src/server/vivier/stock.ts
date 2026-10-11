@@ -27,6 +27,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 
 import { isVivierStockEnabled, VIVIER_OPPOSITION_WINDOW_DAYS } from "./config";
 import { signVivierOppositionToken } from "./token";
+import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
 
 /** Plafond par passage : on n'envoie pas 71 emails en rafale sans respirer. */
 const BATCH_LIMIT = 100;
@@ -126,6 +127,8 @@ export async function sendVivierInformationBatch(
 
     const token = await signVivierOppositionToken(row.id);
     const oppositionUrl = `${baseUrl.replace(/\/+$/, "")}/api/vivier-opposition?token=${encodeURIComponent(token)}`;
+    // Distinct de l'opposition : celui-ci efface le dossier entier (2026-10-11).
+    const lienSuppression = await lienSuppressionCandidature(row.id);
 
     const queued = await enqueueEmail(
       "vivier-information",
@@ -141,6 +144,7 @@ export async function sendVivierInformationBatch(
         }),
         oppositionUrl,
         joursOpposition: VIVIER_OPPOSITION_WINDOW_DAYS,
+        ...(lienSuppression ? { lienSuppression } : {}),
       },
       // Transactionnel : c'est une information RGPD obligatoire, pas une
       // sollicitation commerciale. Elle ne passe donc pas par la corbeille de

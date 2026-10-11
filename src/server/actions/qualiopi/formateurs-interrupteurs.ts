@@ -483,3 +483,10 @@ export async function basculerFormateursAjoutConsoleAction(
 ): Promise<EtatBascule> {
   return basculerEntree("ajout_console", formData);
 }
+
+export async function basculerFormateursAffectationSureAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("affectation_sure", formData);
+}

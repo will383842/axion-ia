@@ -3861,6 +3861,30 @@ model ArticleFeedback {
 // Source : INSEE communes + geo.api.gouv.fr. Suivi couverture content-gen.
 // ============================================================
 
+/// Référentiel des communes de France (lot M-B / L2c du chantier formateurs,
+/// ADR 0066). Rempli par le passage mensuel `communes-geo` depuis le référentiel
+/// public geo.api.gouv.fr — aucune donnée personnelle, aucun nom envoyé.
+/// 🔴 Jamais de suppression : une commune disparue (fusion) garde sa ligne et
+/// son `majAt` ancien. Aucune colonne sur `Client` : le lieu se résout à la lecture.
+/// rgpd: technique — référentiel public des communes, aucune donnée sur une personne
+model CommuneGeo {
+  /// Code INSEE (« 2A004 », « 97101 »), pas le code postal.
+  codeInsee    String   @id @map("code_insee") @db.Char(5)
+  nom          String   @db.VarChar(120)
+  codesPostaux String[] @map("codes_postaux")
+  /// Centre de la commune. ⚠️ geo.api rend [longitude, latitude].
+  latitude     Float
+  longitude    Float
+  /// « 01 », « 2A », « 971 » : lu dans le référentiel, jamais tiré du code postal.
+  departement  String   @db.VarChar(3)
+  population   Int?
+  majAt        DateTime @map("maj_at")
+
+  @@index([codesPostaux], type: Gin)
+  @@index([departement])
+  @@map("communes_geo")
+}
+
 /// Base villes France metropolitaine + DOM-TOM >= 5 000 hab.
 /// 2 100 communes ordonnees par population decroissante (Paris = priority 1).
 /// Suivi couverture content-gen : isCovered / articlesCount / lastArticleAt.
@@ -5552,11 +5576,32 @@ model TrainerFeeLine {
   periodeMonth Int @map("periode_month")
 
   statementId String?           @map("statement_id") @db.Uuid
-  statement   TrainerStatement? @relation(fields: [statementId], references: [id], onDelete: SetNull)
+  statement   TrainerStatement? @relation("TrainerStatementLignes", fields: [statementId], references: [id], onDelete: SetNull)
 
   calculatedAt DateTime? @map("calculated_at")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // ── Schéma n° 2 du chantier formateurs freelance (M-C, expand) ──
+  //
+  // Le run mensuel n'écrit aucune de ces colonnes : `origine` prend son défaut
+  // (`releve_mensuel`), `objet` reste NULL. Seul le paiement par mission (éteint,
+  // `formateurs.passage_paiement`) les remplit. Unicités : index PARTIELS en SQL
+  // brut (`paiement-objets-sql.ts`).
+  /// Quel moteur a écrit la ligne. Défaut = le relevé mensuel (tout l'existant).
+  origine             OrigineHonoraire     @default(releve_mensuel)
+  /// Ce que paie la ligne. NULL = ligne du relevé mensuel (barème) ; obligatoire
+  /// pour une ligne du paiement par mission (CHECK `trainer_fee_lines_objet_mission`).
+  objet               ObjetLigneHonoraire?
+  /// Pourquoi une ligne est passée en `annule` (aucune ligne ne se supprime).
+  annuleMotif         AnnuleMotifLigne?    @map("annule_motif")
+  /// Demi-journées SIGNÉES payées par la ligne (paiement par mission), base figée.
+  demiJournees        Int?                 @map("demi_journees")
+  /// Journées de déplacement payées par la ligne (forfait par journée).
+  journeesDeplacement Int?                 @map("journees_deplacement")
+  /// Trop-perçu : la ligne d'ajustement (négative) impute l'AVOIR désigné ici.
+  imputeDeStatementId String?              @map("impute_de_statement_id") @db.Uuid
+  imputeDeStatement   TrainerStatement?    @relation("TrainerFeeLineImputation", fields: [imputeDeStatementId], references: [id], onDelete: Restrict)
 
   @@index([trainerId, periodeYear, periodeMonth])
   @@index([statut])
@@ -5566,6 +5611,7 @@ model TrainerFeeLine {
   @@index([bookingId])
   @@index([auditMissionId])
   @@index([prestationType, periodeYear, periodeMonth])
+  @@index([imputeDeStatementId])
   @@map("trainer_fee_lines")
 }
 
@@ -5641,11 +5687,52 @@ model TrainerStatement {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  feeLines TrainerFeeLine[]
+  feeLines TrainerFeeLine[] @relation("TrainerStatementLignes")
+
+  // ── Schéma n° 2 du chantier formateurs freelance (M-C, expand) ──
+  //
+  // ⚠️ L'unique historique `statement_unique_trainer_periode` RESTE (le retrait
+  // est M-D, « contract », pas encore fait) : tant qu'il est là, un relevé de
+  // mission ne peut pas coexister avec le relevé mensuel du même mois. Le
+  // paiement par mission reste donc coupé (ADR 0066 v2, §8.10 n° 12).
+  /// Quel moteur a écrit le relevé. Défaut = le relevé mensuel (tout l'existant).
+  origine                 OrigineHonoraire   @default(releve_mensuel)
+  /// La session payée (relevé de mission). NULL = relevé mensuel, ou relevé
+  /// « hors mission » (présentation de la méthode).
+  sessionId               String?            @map("session_id") @db.Uuid
+  session                 TrainingSession?   @relation("TrainerStatementSession", fields: [sessionId], references: [id], onDelete: Restrict)
+  /// Organisme qui facture (décision 88 : un relevé par organisme). NULL = le formateur lui-même.
+  organismeSousTraitantId String?            @map("organisme_sous_traitant_id") @db.Uuid
+  organismeSousTraitant   SousTraitant?      @relation("TrainerStatementOrganisme", fields: [organismeSousTraitantId], references: [id], onDelete: Restrict)
+  /// Preuve du compte payé : 4 derniers caractères et empreinte de l'IBAN LUS AU CLIC.
+  ibanFin4                String?            @map("iban_fin4") @db.VarChar(4)
+  ibanEmpreinte           String?            @map("iban_empreinte") @db.Char(64)
+  /// Ce relevé est l'AVOIR du relevé désigné (une correction ne réécrit jamais une pièce).
+  avoirDeId               String?            @map("avoir_de_id") @db.Uuid
+  avoirDe                 TrainerStatement?  @relation("TrainerStatementAvoir", fields: [avoirDeId], references: [id], onDelete: Restrict)
+  avoirs                  TrainerStatement[] @relation("TrainerStatementAvoir")
+  /// Ce relevé REMPLACE le relevé désigné (réémission après avoir) : il garde son échéance.
+  /// ⚠️ Une pièce déjà PAYÉE ne passe jamais en `annule` pour être réémise : son
+  /// avoir ouvre un trop-perçu (imputation, décision 89). Le payé se lit sur `payeAt`.
+  remplaceId              String?            @map("remplace_id") @db.Uuid
+  remplace                TrainerStatement?  @relation("TrainerStatementRemplacement", fields: [remplaceId], references: [id], onDelete: Restrict)
+  remplacements           TrainerStatement[] @relation("TrainerStatementRemplacement")
+  /// « Payer sur constat » (feuilles jamais complètes) : `super_admin`, avec un motif.
+  surConstatAt            DateTime?          @map("sur_constat_at")
+  surConstatParId         String?            @map("sur_constat_par_id") @db.Uuid
+  surConstatMotif         String?            @map("sur_constat_motif") @db.Text
+  /// Trop-perçu sans relevé suivant : demande de remboursement envoyée (F54).
+  remboursementDemandeAt  DateTime?          @map("remboursement_demande_at")
+  /// Lignes d'ajustement qui imputent CET avoir sur un relevé suivant.
+  imputations             TrainerFeeLine[]   @relation("TrainerFeeLineImputation")
 
   @@unique([trainerId, periodeYear, periodeMonth], map: "statement_unique_trainer_periode")
   @@index([statut])
   @@index([echeanceAt])
+  @@index([sessionId])
+  @@index([organismeSousTraitantId])
+  @@index([avoirDeId])
+  @@index([remplaceId])
   @@map("trainer_statements")
 }
 
@@ -5964,6 +6051,8 @@ model TrainingSession {
   missionsFormateur          MissionFormateur[]
   /// Schéma n° 1 formateurs — formateurs choisis, par rang.
   choixFormateurs            ChoixFormateurSession[]
+  /// Schéma n° 2 formateurs — relevés PAR MISSION (paiement par mission, éteint).
+  relevesMission             TrainerStatement[]          @relation("TrainerStatementSession")
   /// Affectations RETIRÉES — l'archive de ce que la suppression détruisait (D6).
   affectationsRetirees       SessionFormateurRetire[]
   /// Incidents rattachés à la session (registre des incidents — LOT 4).
@@ -6317,6 +6406,10 @@ model Trainer {
   verificationsRegistre   VerificationRegistreSousTraitance[]
   preuvesVigilance        PreuveVigilance[]
   choixSessions           ChoixFormateurSession[]
+  /// Schéma n° 2 formateurs — propriétaire du paiement de chaque session (ajout seul).
+  revendicationsPaiement  RevendicationPaiement[]
+  /// Schéma n° 2 formateurs — demandes de changement (adresse, TVA, IBAN, e-mail).
+  demandesChangement      DemandeChangementFormateur[]
 
   @@index([statut])
   @@index([actif])
@@ -8324,9 +8417,13 @@ model SousTraitant {
 
   documentsGeneres DocumentGenere[]
   /// Incidents où cet organisme est mis en cause (art. 7 sous-traitance).
-  incidents        Incident[]       @relation("IncidentIntervenant")
+  incidents        Incident[]         @relation("IncidentIntervenant")
   /// Schéma n° 1 formateurs — intervenants mis à disposition par l'organisme.
-  intervenants     Trainer[]        @relation("TrainerOrganismeSousTraitant")
+  intervenants     Trainer[]          @relation("TrainerOrganismeSousTraitant")
+  /// Schéma n° 2 formateurs — relevés tenus PAR ORGANISME (décision 88, éteint).
+  relevesOrganisme TrainerStatement[] @relation("TrainerStatementOrganisme")
+  /// Schéma n° 2 formateurs — pièces de l'organisme (vigilance, Kbis…).
+  pieces           PieceOrganisme[]
 
   @@index([actif])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
@@ -15739,6 +15836,9 @@ model CommissionApporteur {
   creeAt                   DateTime                  @default(now()) @map("cree_at") @db.Timestamptz(3)
   majAt                    DateTime                  @updatedAt @map("maj_at") @db.Timestamptz(3)
 
+  /// Schéma n° 2 formateurs — pourquoi la commission vaut 0 (L12j, éteint).
+  motifNul CommissionMotifNul?
+
   @@unique([factureId, apporteurId, parrainage])
   @@index([apporteurId, statut])
   @@map("commissions_apporteur")
@@ -16112,6 +16212,232 @@ model LienPartageAcces {
   @@index([lienId, survenuLe])
   @@index([fichierId])
   @@map("liens_partage_acces")
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// FORMATEURS FREELANCE — SCHÉMA N° 2 : PAIEMENT PAR MISSION (2026-10-11)
+//
+// Lots M-C (paiement sans double, « expand »), M-E (demandes de changement) et
+// M-F (pièces des organismes), regroupés en UNE migration (10-PLAN §16) :
+// `20261011130000_formateurs_paiement`. ADDITIVE : aucune suppression, aucun
+// renommage, rien de rendu obligatoire sur des données. M-D (« contract » :
+// retrait de l'unique `statement_unique_trainer_periode`) N'EST PAS ICI : c'est
+// un DROP, laissé pour plus tard.
+//
+// Livré ÉTEINT : aucun chemin en ligne n'écrit ces tables ni ces colonnes ;
+// seul le remplissage de `revendications_paiement` (stock du relevé mensuel)
+// est fait par la migration elle-même.
+//
+// CHECK, triggers et index partiels : SQL brut, déclarés dans
+// `src/server/qualiopi/formateurs-independants/paiement-objets-sql.ts`.
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Quel moteur a écrit une ligne ou un relevé d'honoraires (ADR 0066 v2 (e)).
+enum OrigineHonoraire {
+  /// Le run mensuel existant (valeur de tout l'existant).
+  releve_mensuel
+  /// Le paiement par mission (éteint, `formateurs.passage_paiement`).
+  passage_mission
+
+  @@map("origine_honoraire")
+}
+
+/// Ce que paie une ligne du paiement par mission.
+enum ObjetLigneHonoraire {
+  /// Demi-journées signées × tarif / 2.
+  animation
+  /// Journées de déplacement × forfait par journée.
+  deplacement
+  /// Annulation tardive par Axion (une par formateur et session, sans le mois).
+  indemnite_annulation
+  /// Présentation de la méthode (une par formateur).
+  presentation_methode
+  /// Correction (trop-perçu imputé, écart) : jamais comptée par les unicités.
+  ajustement
+  /// Pénalités de retard (L441-10 II C. com.), virement après l'échéance.
+  penalites_retard
+  /// Indemnité forfaitaire pour frais de recouvrement (40 €, D441-5 C. com.).
+  indemnite_recouvrement
+
+  @@map("objet_ligne_honoraire")
+}
+
+/// Pourquoi une ligne est passée en `annule` (aucune ligne ne se supprime).
+enum AnnuleMotifLigne {
+  recalcul
+  session_annulee
+  ajustement_remplace
+  autre
+
+  @@map("annule_motif_ligne")
+}
+
+/// Propriétaire du paiement d'une session pour un formateur.
+enum RegimePaiement {
+  releve_mensuel
+  par_mission
+
+  @@map("regime_paiement")
+}
+
+/// Qui a inscrit une revendication.
+enum SourceRevendication {
+  /// La migration du schéma n° 2 : stock porté par une ligne mensuelle.
+  stock_migration
+  /// Le run mensuel.
+  run_mensuel
+  /// Le paiement par mission.
+  passage_mission
+  /// Le rattrapage lancé depuis la console (L12e).
+  rattrapage_console
+
+  @@map("source_revendication")
+}
+
+/// rgpd: technique — couple formateur / session, régime et date ; aucun nom, e-mail ni montant
+/// Propriétaire UNIQUE du paiement d'une session pour un formateur (ADR 0066 v2
+/// (e), §2.7 règle 1). Le premier moteur qui écrit pour (formateur, session)
+/// insère sa ligne ; l'autre la lit et s'abstient. Ajout seul : ni UPDATE, ni
+/// DELETE, ni TRUNCATE (triggers). Pas de clé étrangère vers la session : une
+/// revendication ne doit jamais empêcher, ni suivre, la suppression d'une
+/// session (`trainer_fee_lines.session_id` n'en a pas non plus).
+model RevendicationPaiement {
+  id           String              @id @default(uuid()) @db.Uuid
+  trainerId    String              @map("trainer_id") @db.Uuid
+  trainer      Trainer             @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  sessionId    String              @map("session_id") @db.Uuid
+  regime       RegimePaiement
+  source       SourceRevendication
+  revendiqueAt DateTime            @default(now()) @map("revendique_at")
+
+  @@unique([trainerId, sessionId])
+  @@index([sessionId])
+  @@map("revendications_paiement")
+}
+
+/// Ce que le formateur demande à changer (M-E, L13b).
+enum NatureChangementFormateur {
+  adresse
+  regime_tva
+  iban
+  email
+
+  @@map("nature_changement_formateur")
+}
+
+enum StatutDemandeChangement {
+  en_attente
+  acceptee
+  refusee
+
+  @@map("statut_demande_changement")
+}
+
+/// rgpd: technique — demande d'un PRESTATAIRE (formateur indépendant, pas personne cliente) ; IBAN chiffré `enc:v2:` (AAD `demande:<id>:iban`) ; suit la fiche `Trainer` et son régime de conservation ; aucune donnée de client ni de stagiaire
+/// Demande de changement d'une coordonnée par le formateur, validée par un
+/// administrateur (décision 72). Rien n'est écrit sur la fiche avant l'accord.
+/// L'IBAN n'est jamais en clair (CHECK `demandes_changement_formateur_iban_chiffre`).
+/// Une seule demande EN ATTENTE par nature (index partiel).
+model DemandeChangementFormateur {
+  id                      String                    @id @default(uuid()) @db.Uuid
+  trainerId               String                    @map("trainer_id") @db.Uuid
+  trainer                 Trainer                   @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  nature                  NatureChangementFormateur
+  /// Valeur demandée. IBAN : chiffré `enc:v2:`, AAD `demande:<id>:iban`.
+  valeur                  String                    @db.Text
+  /// Empreinte de l'IBAN demandé (HMAC à secret dédié), pour les doublons.
+  valeurEmpreinte         String?                   @map("valeur_empreinte") @db.Char(64)
+  /// Date d'effet demandée (régime de TVA : une facture lit le régime à la date de la journée).
+  effetAt                 DateTime?                 @map("effet_at")
+  statut                  StatutDemandeChangement   @default(en_attente)
+  /// Avis envoyé à l'ANCIENNE adresse (IBAN, e-mail).
+  ancienneAdresseAviseeAt DateTime?                 @map("ancienne_adresse_avisee_at")
+  traiteParId             String?                   @map("traite_par_id") @db.Uuid
+  traiteAt                DateTime?                 @map("traite_at")
+  motifRefus              String?                   @map("motif_refus") @db.Text
+  createdAt               DateTime                  @default(now()) @map("created_at")
+
+  @@index([trainerId, createdAt])
+  @@index([statut])
+  @@map("demandes_changement_formateur")
+}
+
+/// Pièces d'un organisme sous-traitant (M-F, L11f).
+enum TypePieceOrganisme {
+  attestation_vigilance_urssaf
+  kbis
+  liste_salaries_etrangers
+  nda
+  rc_pro
+  autre
+
+  @@map("type_piece_organisme")
+}
+
+/// rgpd: technique — pièce d'une PERSONNE MORALE sous-traitante (vigilance, Kbis, NDA) ; aucune donnée de client ni de stagiaire
+/// Pièce justificative d'un organisme sous-traitant. Table à part : la pièce
+/// d'un formateur (`TrainerDocument`) exige un `trainerId` et suit la fiche en
+/// cascade. Aucune suppression : une pièce remplacée reçoit `remplaceeAt`.
+model PieceOrganisme {
+  id               String                   @id @default(uuid()) @db.Uuid
+  sousTraitantId   String                   @map("sous_traitant_id") @db.Uuid
+  sousTraitant     SousTraitant             @relation(fields: [sousTraitantId], references: [id], onDelete: Restrict)
+  type             TypePieceOrganisme
+  numeroPiece      String?                  @map("numero_piece") @db.VarChar(60)
+  dateEmission     DateTime?                @map("date_emission")
+  dateExpiration   DateTime?                @map("date_expiration")
+  statutValidation DocumentValidationStatut @default(en_attente) @map("statut_validation")
+  valideParId      String?                  @map("valide_par_id") @db.Uuid
+  valideAt         DateTime?                @map("valide_at")
+  rejetMotif       String?                  @map("rejet_motif") @db.Text
+  remplaceeAt      DateTime?                @map("remplacee_at")
+  createdAt        DateTime                 @default(now()) @map("created_at")
+  contenu          PieceOrganismeContenu?
+
+  @@index([sousTraitantId, type])
+  @@index([dateExpiration])
+  @@map("pieces_organismes")
+}
+
+/// rgpd: technique — octets CHIFFRÉS (enveloppe `AXB1`) d'une pièce d'organisme sous-traitant ; aucune donnée de client ni de stagiaire
+/// Octets d'une pièce d'organisme, CHIFFRÉS. Une ligne par pièce. Restrict :
+/// le contenu d'une pièce ne disparaît jamais avec elle.
+model PieceOrganismeContenu {
+  pieceOrganismeId String         @id @map("piece_organisme_id") @db.Uuid
+  pieceOrganisme   PieceOrganisme @relation(fields: [pieceOrganismeId], references: [id], onDelete: Restrict)
+  octets           Bytes
+  /// Longueur des octets stockés. CHECK `pieces_organismes_contenus_taille`.
+  taille           Int
+  /// SHA-256 des octets CLAIRS.
+  sha256           String         @db.Char(64)
+  mime             String         @db.VarChar(100)
+  nomOriginal      String?        @map("nom_original") @db.VarChar(255)
+  createdAt        DateTime       @default(now()) @map("created_at")
+
+  @@map("pieces_organismes_contenus")
+}
+
+/// Pourquoi une commission d'apporteur vaut 0 (L12j).
+enum MotifCommissionNulle {
+  /// L'apporteur anime lui-même la formation (même SIREN que le formateur).
+  animee_par_l_apporteur
+
+  @@map("motif_commission_nulle")
+}
+
+/// rgpd: technique — identifiant de commission, motif fermé et SIREN de l'entreprise (registre public ; identifie la personne quand l'entreprise est individuelle, comme `Trainer.siret` qu'il recopie) ; aucun nom, e-mail ni téléphone
+/// La trace de POURQUOI une commission d'apporteur vaut 0 (L12j, décision 74).
+/// Table à part : la commission elle-même n'est ni supprimée, ni modifiée dans
+/// sa forme ; seul son montant est mis à 0 par le lot L12j (éteint).
+model CommissionMotifNul {
+  commissionId String               @id @map("commission_id") @db.Uuid
+  commission   CommissionApporteur  @relation(fields: [commissionId], references: [id], onDelete: Restrict)
+  motif        MotifCommissionNulle
+  /// SIREN commun à l'apporteur et au formateur de la session.
+  siren        String               @db.Char(9)
+  creeAt       DateTime             @default(now()) @map("cree_at")
+
+  @@map("commissions_motif_nul")
 }
 
 // ═══ Conformité RGPD — lot 2 : registre, écarts, incidents (2026-10-11) ═══

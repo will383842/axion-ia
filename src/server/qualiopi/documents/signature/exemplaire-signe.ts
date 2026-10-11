@@ -70,6 +70,7 @@ import {
   gabaritArchive,
   type ComposantPiece,
 } from "@/server/qualiopi/documents/templates/archives";
+import { composantVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
 
 /**
  * Type de pièce → composant de rendu.
@@ -123,6 +124,9 @@ export function composantGabarit(type: string, version: number): ComposantPiece 
   const gabarit = typeGabarit(type);
   const versionCourante = versionGabaritCourante(type);
   if (gabarit === null || versionCourante === null || version === versionCourante) return courant;
+  // L7a — une version arrêtée EN AVANCE (contrat-cadre v3) se rejoue avec son
+  // propre composant, jamais avec la version émise par défaut.
+  if (version > versionCourante) return composantVersionArretee(gabarit, version);
   return gabaritArchive(gabarit, version);
 }
 
