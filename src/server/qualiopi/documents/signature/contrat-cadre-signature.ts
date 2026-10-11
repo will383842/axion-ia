@@ -169,7 +169,27 @@ export function preuveEntrepriseActive(reponseSource: unknown, siret: string): b
   return ent["etatAdministratif"] === "A" && et["ouvert"] === true && et["siret"] === siret;
 }
 
+/**
+ * Le SIRET FIGÉ dans le contrat (`renderData.cocontractant.siret`, rendu dans
+ * son texte), normalisé ; `null` s'il est absent ou invalide. C'est l'entreprise
+ * QUI CONTRACTE : c'est elle, et nulle autre, que le registre doit confirmer.
+ */
+export function siretDuContrat(metadata: unknown): string | null {
+  if (typeof metadata !== "object" || metadata === null) return null;
+  const rd = (metadata as Record<string, unknown>)["renderData"];
+  if (typeof rd !== "object" || rd === null) return null;
+  const c = (rd as Record<string, unknown>)["cocontractant"];
+  if (typeof c !== "object" || c === null) return null;
+  const v = (c as Record<string, unknown>)["siret"];
+  const s = typeof v === "string" ? v.replace(/\s+/g, "") : "";
+  return /^\d{14}$/.test(s) ? s : null;
+}
+
 const MESSAGES = {
+  siretContrat:
+    "Le contrat ne peut pas être signé pour l'instant : il porte un numéro SIRET qui n'est plus celui de votre dossier. Un contrat à jour va vous être adressé ; pour toute question, répondez à notre e-mail.",
+  contresignerSiretContrat:
+    "Contresignature impossible : le numéro SIRET inscrit dans le contrat est absent ou n'est plus celui de la fiche du cocontractant. Émettez un contrat à jour.",
   sansFiche:
     "Le contrat ne peut pas être signé pour l'instant : votre dossier est incomplet. Votre interlocuteur chez Axion-IA va le compléter.",
   nonConfirme:
@@ -211,13 +231,13 @@ const JOUR_MS = 24 * 3600 * 1000;
 
 /**
  * Signature : le dernier contrôle INTERROGÉ (jamais une ligne de validation),
- * de moins de 30 jours, au SIRET actuel de la fiche, qui confirme l'entreprise
+ * de moins de 30 jours, au SIRET du contrat (égal à celui de la fiche), qui confirme l'entreprise
  * active dans sa preuve. `rouge` = le dernier état connu refuse sans relire ;
  * `a_refaire` = rien de probant, on interroge.
  */
 async function controleRecent(
   trainerId: string,
-  siretFiche: string,
+  siret: string,
   maintenant: Date,
 ): Promise<{ issue: "confirme" | "a_refaire" } | { issue: "rouge"; motifs: string[] }> {
   const lignes = await prisma.verificationRegistreSousTraitance.findMany({
@@ -237,9 +257,9 @@ async function controleRecent(
   const etat = etatControle(lignes, maintenant);
   if (etat.statut === "rouge") {
     const derniere = [...lignes].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
-    // Un rouge porté par un AUTRE SIRET que celui de la fiche (numéro corrigé
+    // Un rouge porté par un AUTRE SIRET que celui du contrat (numéro corrigé
     // depuis) ne ferme pas la porte : le registre est relu, sans impasse.
-    if (derniere !== undefined && derniere.siret !== siretFiche) return { issue: "a_refaire" };
+    if (derniere !== undefined && derniere.siret !== siret) return { issue: "a_refaire" };
     return { issue: "rouge", motifs: motifsDeLaLigne(derniere?.motif ?? null) };
   }
   const l = [...lignes]
@@ -253,10 +273,10 @@ async function controleRecent(
     maintenant.getTime() - at <= FRAICHEUR_CONTROLE_JOURS * JOUR_MS;
   const probant =
     frais &&
-    siretFiche !== "" &&
-    l.siret === siretFiche &&
+    siret !== "" &&
+    l.siret === siret &&
     entrepriseActiveConfirmee(l.verdict, motifsDeLaLigne(l.motif)) &&
-    preuveEntrepriseActive(l.reponseSource, siretFiche);
+    preuveEntrepriseActive(l.reponseSource, siret);
   return { issue: probant ? "confirme" : "a_refaire" };
 }
 
@@ -298,12 +318,21 @@ export async function objectionContratCadre(input: {
   // Contrat d'organisme : son circuit vient avec le lot des organismes.
   if (piece.trainerId === null) return { message: MESSAGES.organisme };
 
+  // 🔴 AVANT TOUT CONTRÔLE : l'entreprise confirmée doit être CELLE QUI
+  // CONTRACTE. Le contrat porte son propre SIRET figé ; absent, invalide ou
+  // différent de celui de la fiche = refus, sans lire le registre. Un registre
+  // relu sur le SIRET de la fiche ne dit rien du SIRET inscrit dans le contrat.
+  const siretContrat = siretDuContrat(input.metadata);
+  const siretFiche = (piece.trainer?.siret ?? "").replace(/\s+/g, "");
+  if (siretContrat === null || siretContrat !== siretFiche) {
+    return { message: contresigne ? MESSAGES.contresignerSiretContrat : MESSAGES.siretContrat };
+  }
+
   // Signature : un contrôle de moins de 30 jours qui CONFIRME l'entreprise
-  // active, au SIRET actuel de la fiche, suffit ; un rouge récent refuse sans
-  // relire. Contresignature : toujours relu.
+  // active, au SIRET du contrat, suffit ; un rouge récent refuse sans relire.
+  // Contresignature : toujours relu.
   if (!contresigne) {
-    const siretFiche = (piece.trainer?.siret ?? "").replace(/\s+/g, "");
-    const recent = await controleRecent(piece.trainerId, siretFiche, maintenant);
+    const recent = await controleRecent(piece.trainerId, siretContrat, maintenant);
     if (recent.issue === "rouge") return { message: messageRefus(recent.motifs, false) };
     if (recent.issue === "confirme") return null;
   }
@@ -320,6 +349,11 @@ export async function objectionContratCadre(input: {
     return { message: contresigne ? MESSAGES.contresignerMuet : MESSAGES.muet };
   }
   if (!r.ok) return { message: contresigne ? MESSAGES.contresignerSansFiche : MESSAGES.sansFiche };
+  // Le contrôle relit la fiche : si son SIRET a changé entre-temps, la preuve
+  // inscrite ne porte pas sur l'entreprise du contrat.
+  if (r.siret !== siretContrat) {
+    return { message: contresigne ? MESSAGES.contresignerSiretContrat : MESSAGES.siretContrat };
+  }
   if (!entrepriseActiveConfirmee(r.verdict, r.motifs)) {
     return { message: messageRefus(r.motifs, contresigne) };
   }
