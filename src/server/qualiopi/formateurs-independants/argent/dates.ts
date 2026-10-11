@@ -13,7 +13,7 @@
  *   - l'orange et le rouge se calculent sur la date cible, jamais sur l'échéance.
  */
 
-import { joursFeriesFrance } from "@/lib/jours-ouvres";
+import { dernierJourOuvreAuPlusTard as dernierOuvre, estJourCivilOuvre } from "@/lib/jours-ouvres";
 
 import { PARAMETRES_ARGENT_FORMATEURS, type ParametresArgentFormateurs } from "./parametres";
 
@@ -73,18 +73,14 @@ export function moisDe(j: JourCivil): string {
 }
 
 export function estOuvre(j: JourCivil): boolean {
-  const d = exiger(j);
-  const jourSemaine = d.getUTCDay();
-  if (jourSemaine === 0 || jourSemaine === 6) return false;
-  return !joursFeriesFrance(d.getUTCFullYear()).includes(j);
+  exiger(j);
+  return estJourCivilOuvre(j);
 }
 
-/** Le dernier jour ouvré au plus tard à `j` (lui-même s'il est ouvré). */
+/** Le dernier jour ouvré au plus tard à `j` (source unique : `lib/jours-ouvres.ts`). */
 export function dernierJourOuvreAuPlusTard(j: JourCivil): JourCivil {
-  let x = j;
-  // Au plus 4 jours d'affilée chômés en métropole (vendredi férié + week-end + lundi férié).
-  for (let i = 0; i < 10 && !estOuvre(x); i += 1) x = ajouterJours(x, -1);
-  return x;
+  exiger(j);
+  return dernierOuvre(j);
 }
 
 /** Échéance légale : dernière journée réalisée + 30 jours (jamais déplacée par Axion). */

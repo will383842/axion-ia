@@ -82,6 +82,13 @@ export function demiJourneesSignees(
   return dedoublonner(out);
 }
 
+/** « 9:00 » → « 09:00 » ; tout autre format est refusé (jamais deviné). */
+function heure(h: string): string {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(h.trim());
+  if (!m || Number(m[1]) > 23 || Number(m[2]) > 59) throw new Error(`horaire illisible : ${h}`);
+  return `${m[1]!.padStart(2, "0")}:${m[2]}`;
+}
+
 /**
  * Demi-journées PRÉVUES d'une journée : le matin si elle commence avant
  * `matinAvant`, l'après-midi si elle finit après `apresMidiApres`. Une journée
@@ -90,16 +97,23 @@ export function demiJourneesSignees(
  */
 export function demiJourneesPrevues(
   journees: ReadonlyArray<JourneePrevue>,
-  bornes: { readonly matinAvant: string; readonly apresMidiApres: string },
+  bornes: {
+    readonly matinAvant: string;
+    readonly apresMidiApres: string;
+    readonly milieuDeJournee: string;
+  },
 ): DemiJourneeDatee[] {
   const out: DemiJourneeDatee[] = [];
   for (const j of journees) {
-    const matin = j.heureDebut < bornes.matinAvant;
-    const apresMidi = j.heureFin > bornes.apresMidiApres;
+    // Comparaison de chaînes : sûre seulement sur « HH:MM » à deux chiffres.
+    const debut = heure(j.heureDebut);
+    const fin = heure(j.heureFin);
+    const matin = debut < bornes.matinAvant;
+    const apresMidi = fin > bornes.apresMidiApres;
     if (matin) out.push({ jour: j.jour, creneau: "matin" });
     if (apresMidi) out.push({ jour: j.jour, creneau: "apres_midi" });
     if (!matin && !apresMidi)
-      out.push({ jour: j.jour, creneau: j.heureDebut < "13:00" ? "matin" : "apres_midi" });
+      out.push({ jour: j.jour, creneau: debut < bornes.milieuDeJournee ? "matin" : "apres_midi" });
   }
   return dedoublonner(out);
 }

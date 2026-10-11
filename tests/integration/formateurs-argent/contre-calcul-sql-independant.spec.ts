@@ -4,8 +4,9 @@
  * Le bloc SQL de la relecture argent (§2.1) encode les règles À LA MAIN, sans lire
  * aucune table du domaine. On l'exécute sur un vrai Postgres et on compare, au
  * centime et au jour, à ce que rendent les fonctions pures du paiement par
- * mission. Variantes retenues : celles du contrat-cadre v3 (S03 par les feuilles,
- * S08 et S27 sur les journées annulées, hors forfait).
+ * mission. Variantes retenues : celles du contrat-cadre v3 (S08 et S27 sur les
+ * journées annulées, hors forfait). Les jours fériés utiles sont écrits en dur
+ * dans le SQL (S20 : 25/12 ; S29 : lundi de Pâques 2027).
  *
  * Sans `DATABASE_URL`, ce fichier ÉCHOUE — il ne se saute pas.
  */
@@ -29,11 +30,14 @@ import {
 
 /** Copie du bloc de la relecture argent, §2.1 (unité : centimes). */
 const SQL_RELECTURE = `
-WITH scen(code, regime, demi_jours, forfait_cents, indemnite_base_cents, dernier_jour) AS (VALUES
+WITH feries(d) AS (VALUES
+  (DATE '2026-11-11'), (DATE '2026-12-25'), (DATE '2027-01-01'), (DATE '2027-03-29')
+),
+scen(code, regime, demi_jours, forfait_cents, indemnite_base_cents, dernier_jour) AS (VALUES
   ('S01',    'franchise_293b', 2,     0,     0, DATE '2026-11-05'),
   ('S02',    'franchise_293b', 1,     0,     0, DATE '2026-11-05'),
-  ('S03',    'franchise_293b', 2,     0,     0, DATE '2026-11-05'),
-  ('S04',    'franchise_293b', 2,     0,     0, DATE '2026-11-05'),
+  ('S20',    'franchise_293b', 4,     0,     0, DATE '2026-11-26'),
+  ('S29',    'franchise_293b', 2,     0,     0, DATE '2027-02-27'),
   ('S07-10', 'franchise_293b', 2,     0,     0, DATE '2026-10-26'),
   ('S07-11', 'franchise_293b', 4,     0,     0, DATE '2026-11-23'),
   ('S07-12', 'franchise_293b', 4,     0,     0, DATE '2026-12-14'),
@@ -47,8 +51,9 @@ SELECT code,
        (CASE WHEN regime = 'assujetti_20' THEN ROUND(ht * 20 / 100.0)::int ELSE 0 END) AS tva,
        (ht + CASE WHEN regime = 'assujetti_20' THEN ROUND(ht * 20 / 100.0)::int ELSE 0 END)::int AS ttc,
        to_char(dernier_jour + 30, 'YYYY-MM-DD') AS echeance,
-       to_char((dernier_jour + 30) - CASE EXTRACT(ISODOW FROM dernier_jour + 30)
-                 WHEN 6 THEN 1 WHEN 7 THEN 2 ELSE 0 END, 'YYYY-MM-DD') AS virement
+       to_char((SELECT max(j)::date FROM generate_series(dernier_jour + 20, dernier_jour + 30, interval '1 day') j
+                WHERE EXTRACT(ISODOW FROM j) < 6
+                  AND j::date NOT IN (SELECT d FROM feries)), 'YYYY-MM-DD') AS virement
 FROM (SELECT *, demi_jours * 17500 + forfait_cents + indemnite_base_cents / 2 AS ht FROM scen) s
 ORDER BY code`;
 
@@ -126,8 +131,10 @@ function domaine(): LigneSql[] {
   return [
     r("S01", releve(["2026-11-05"], "journee")),
     r("S02", releve(["2026-11-05"], "matin")),
-    r("S03", releve(["2026-11-05"], "journee")),
-    r("S04", releve(["2026-11-05"], "journee")),
+    // S20 : échéance sam. 26/12, le 25/12 est férié → jeudi 24/12.
+    r("S20", releve(["2026-11-25", "2026-11-26"], "journee")),
+    // S29 : échéance lundi de Pâques 29/03/2027 (férié) → vendredi 26/03.
+    r("S29", releve(["2027-02-27"], "journee")),
     r("S07-10", s07[0]!),
     r("S07-11", s07[1]!),
     r("S07-12", s07[2]!),

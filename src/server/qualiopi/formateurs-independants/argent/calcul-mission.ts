@@ -236,7 +236,6 @@ export interface VerdictPayable {
  * seul repli, porté par l'appelant.
  */
 export function moisPayable(e: {
-  readonly prevues: number;
   readonly signees: number;
   readonly manquantes: number;
   readonly conditionFinanceurEnAttente: boolean;

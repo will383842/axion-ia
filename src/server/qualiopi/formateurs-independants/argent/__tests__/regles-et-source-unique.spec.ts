@@ -27,7 +27,11 @@ import {
 } from "../dates";
 import { PARAMETRES_ARGENT_FORMATEURS as P } from "../parametres";
 
-const BORNES = { matinAvant: P.matinAvant, apresMidiApres: P.apresMidiApres };
+const BORNES = {
+  matinAvant: P.matinAvant,
+  apresMidiApres: P.apresMidiApres,
+  milieuDeJournee: P.milieuDeJournee,
+};
 
 describe("dates", () => {
   it("jours civils : valide seulement une vraie date", () => {
@@ -73,6 +77,15 @@ describe("demi-journées prévues et manquantes", () => {
     ]);
   });
 
+  it("« 9:00 » sans zéro est lu « 09:00 » ; un horaire illisible est refusé", () => {
+    expect(
+      demiJourneesPrevues([{ jour: "2026-11-03", heureDebut: "9:00", heureFin: "17:00" }], BORNES),
+    ).toHaveLength(2);
+    expect(() =>
+      demiJourneesPrevues([{ jour: "2026-11-03", heureDebut: "9h", heureFin: "17:00" }], BORNES),
+    ).toThrow(/illisible/);
+  });
+
   it("une journée aux horaires incohérents compte une demi-journée, jamais zéro", () => {
     expect(
       demiJourneesPrevues([{ jour: "2026-11-03", heureDebut: "12:15", heureFin: "13:15" }], BORNES),
@@ -87,20 +100,19 @@ describe("demi-journées prévues et manquantes", () => {
     const signees = demiJourneesSignees([{ jour: "2026-11-05", demiJournee: "matin" }]);
     const manquantes = demiJourneesSansSignature(prevues, signees);
     expect(manquantes).toEqual([{ jour: "2026-11-05", creneau: "apres_midi" }]);
+    expect(moisPayable({ signees: 1, manquantes: 1, conditionFinanceurEnAttente: false })).toEqual({
+      payable: false,
+      raison: "feuilles_incompletes",
+      manquantes: 1,
+    });
     expect(
-      moisPayable({ prevues: 2, signees: 1, manquantes: 1, conditionFinanceurEnAttente: false }),
-    ).toEqual({ payable: false, raison: "feuilles_incompletes", manquantes: 1 });
-    expect(
-      moisPayable({ prevues: 2, signees: 2, manquantes: 0, conditionFinanceurEnAttente: true })
-        .raison,
+      moisPayable({ signees: 2, manquantes: 0, conditionFinanceurEnAttente: true }).raison,
     ).toBe("condition_financeur_en_attente");
     expect(
-      moisPayable({ prevues: 2, signees: 0, manquantes: 2, conditionFinanceurEnAttente: false })
-        .raison,
+      moisPayable({ signees: 0, manquantes: 2, conditionFinanceurEnAttente: false }).raison,
     ).toBe("aucune_signature");
     expect(
-      moisPayable({ prevues: 2, signees: 2, manquantes: 0, conditionFinanceurEnAttente: false })
-        .payable,
+      moisPayable({ signees: 2, manquantes: 0, conditionFinanceurEnAttente: false }).payable,
     ).toBe(true);
   });
 });

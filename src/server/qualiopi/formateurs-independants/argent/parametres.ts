@@ -63,6 +63,8 @@ export const PARAMETRES_ARGENT_FORMATEURS = {
    */
   matinAvant: "12:00",
   apresMidiApres: "13:30",
+  /** Journée aux horaires incohérents (ni matin ni après-midi) : rangée au créneau de son début. */
+  milieuDeJournee: "13:00",
 } as const;
 
 export type ParametresArgentFormateurs = typeof PARAMETRES_ARGENT_FORMATEURS;
