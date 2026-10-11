@@ -44,6 +44,8 @@ const FIGEES: ReadonlyArray<readonly [string, string]> = [
   ["guide-mention-pro-v1-2026-09-24", "9ac098c73985c73f"],
   ["guide-mention-pro-v2-2026-09-26", "d687d5c090122de4"],
   ["guide-mention-perso-v1-2026-09-24", "339cc5e7fbf0aeaa"],
+  ["guide-mention-pro-v3-2026-10-11", "bac267e99a9af404"],
+  ["guide-mention-perso-v2-2026-10-11", "8e5dae3cf6c15cdc"],
   ["lettre-reinscription-email-v1-2026-09-24", "64ee6d85b35aab42"],
   ["lettre-reinscription-email-v2-2026-09-25", "331b82ae25e1207c"],
   ["lettre-reinscription-email-v3-2026-09-26", "1979abb533a3b28b"],

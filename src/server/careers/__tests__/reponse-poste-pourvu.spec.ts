@@ -39,7 +39,10 @@ vi.mock("@/server/careers/proposer-reseau-auto", () => ({
 import {
   AGE_MIN_JOURS,
   AUTEUR,
+  CORPS,
+  PARAGRAPHE_RESEAU,
   PAR_PASSAGE,
+  corpsAvecReseau,
   critereEligible,
   passerReponsePostePourvu,
   posteCourt,
@@ -202,5 +205,23 @@ describe("le passage horaire", () => {
     const b = await passerReponsePostePourvu(MAINTENANT);
     expect(b).toMatchObject({ envoyees: 2, ecartees: 20 });
     expect(repondre).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("la suppression du dossier passe par le lien « Supprimer ma candidature » (2026-10-11)", () => {
+  it("le corps renvoie au lien, plus à une réponse par e-mail", () => {
+    expect(CORPS).toContain(
+      "vous pouvez le faire vous-même en un clic grâce au lien « Supprimer ma candidature » en bas de ce message",
+    );
+    expect(CORPS).not.toContain("il suffit de répondre à ce message");
+  });
+
+  it("corpsAvecReseau place toujours le paragraphe réseau AVANT cette phrase", () => {
+    const corps = corpsAvecReseau();
+    expect(corps).toContain(PARAGRAPHE_RESEAU);
+    expect(corps.indexOf(PARAGRAPHE_RESEAU)).toBeLessThan(
+      corps.indexOf("Si vous préférez que nous supprimions"),
+    );
+    expect(corps).not.toBe(CORPS);
   });
 });

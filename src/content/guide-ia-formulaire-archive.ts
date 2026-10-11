@@ -47,6 +47,12 @@ const SUITE_V1_FR =
 const SUITE_V1_EN =
   "When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Retention: 3 years after your last exchange with us. To exercise your rights: contact@axion-ia.com.";
 
+// 11/10 : conservation exprimée par critère (mention pro v3, perso v2).
+const SUITE_V2_FR =
+  "Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : tant que la relation dure, puis le temps des délais légaux de réclamation. Pour exercer vos droits : contact@axion-ia.com.";
+const SUITE_V2_EN =
+  "When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Retention: for as long as the relationship lasts, then for the statutory limitation periods for claims. To exercise your rights: contact@axion-ia.com.";
+
 /** Les mentions sont servies aux deux points de collecte (page du guide et encart). */
 const REFS_MENTION = ["newsletter-guide-ia", "newsletter-encart-article"] as const;
 
@@ -95,6 +101,18 @@ export const ARCHIVE_TEXTES_CONSENTEMENT: Readonly<Record<string, TexteArchive>>
     depuis: "2026-09-24",
     fr: `Le guide vous est envoyé par e-mail. La lettre d'Axion-IA ne vous est envoyée que si vous cochez la case ci-dessus ; désinscription en un clic, à tout moment. ${SUITE_V1_FR}`,
     en: `The guide is sent to you by email. Axion-IA's letter is only sent to you if you tick the box above; one-click unsubscribe, at any time. ${SUITE_V1_EN}`,
+  },
+  "guide-mention-pro-v3-2026-10-11": {
+    formRefs: REFS_MENTION,
+    depuis: "2026-10-11",
+    fr: `En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. ${SUITE_V2_FR}`,
+    en: `Along with the guide, you will also receive 1 to 2 emails a month, only when there is something new and useful. One-click unsubscribe, at any time. ${SUITE_V2_EN}`,
+  },
+  "guide-mention-perso-v2-2026-10-11": {
+    formRefs: REFS_MENTION,
+    depuis: "2026-10-11",
+    fr: `Le guide vous est envoyé par e-mail. La lettre d'Axion-IA ne vous est envoyée que si vous cochez la case ci-dessus ; désinscription en un clic, à tout moment. ${SUITE_V2_FR}`,
+    en: `The guide is sent to you by email. Axion-IA's letter is only sent to you if you tick the box above; one-click unsubscribe, at any time. ${SUITE_V2_EN}`,
   },
 
   // ── Réinscription d'une personne désabonnée ────────────────────────────────
