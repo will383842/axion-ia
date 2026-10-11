@@ -505,6 +505,16 @@ export type NotificationEvent =
         receivedAt: string;
       };
     }
+  // === Formateur indépendant : dossier envoyé, à vérifier (lot L-ENV, F11) ===
+  // 🔴 MINIMISÉE : ni nom, ni adresse, ni IBAN, ni numéro d'entreprise. Un
+  // identifiant court, la couleur du registre, le lien de la console.
+  | {
+      category: "TRAINER_DOSSIER_RECU";
+      payload: {
+        trainerId: string;
+        registre: "vert" | "orange" | "rouge" | "muet";
+      };
+    }
   // === Reply admin (Chantier 5) ===
   | {
       category: "ADMIN_REPLIED_TO_SUBMISSION";

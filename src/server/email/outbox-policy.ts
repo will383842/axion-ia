@@ -17,6 +17,12 @@
  * `outbox-service.ts`, ce qui rend cette politique testable sans infrastructure.
  */
 
+import {
+  TEXTES_FORMATEUR,
+  estGabaritFormateurIndependant,
+  type GabaritFormateurIndependant,
+} from "@/lib/email/templates/formateur-independant-textes";
+
 /**
  * Emails soumis à validation par défaut : ceux qui engagent la relation
  * commerciale ou l'argent.
@@ -131,6 +137,13 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
  * que de passer pour un nom de code assumé.
  */
 export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
+  // Formateurs indépendants (lot L-ENV) : dérivés du texte, jamais recopiés.
+  ...Object.fromEntries(
+    (Object.keys(TEXTES_FORMATEUR) as GabaritFormateurIndependant[]).map((g) => [
+      g,
+      `Formateur indépendant : ${TEXTES_FORMATEUR[g].titre} (${TEXTES_FORMATEUR[g].code})`,
+    ]),
+  ),
   "apporteur-dossier-lien": "Apporteur : lien de son dossier en ligne",
   "apporteur-dossier-a-completer": "Apporteur : dossier à compléter",
   "apporteur-dossier-refuse": "Apporteur : dossier non retenu",
@@ -260,6 +273,10 @@ export function resoudreModeEnvoi(
 
   for (const niveau of niveaux) {
     if (niveau.mode === null) continue;
+    // Formateurs indépendants (lot L-ENV, P6) : une règle attrape-tout ne les
+    // emporte jamais. Seule une règle qui NOMME le gabarit — posée par un
+    // super-admin (`reglementationFormateurReservee`) — s'applique.
+    if (niveau.attrapeTout && estGabaritFormateurIndependant(template)) continue;
     // La garde : une règle qui ne nomme pas le template ne peut pas retenir un
     // envoi dont le retard casse une obligation réglementaire.
     if (
@@ -316,4 +333,17 @@ export function reglesRetenantDesEnvoisReglementaires(
     )
     .map((r) => r.template as string);
   return [...new Set(natures)];
+}
+
+/**
+ * Formateurs indépendants (lot L-ENV, P6) : approuver un de leurs e-mails en corbeille,
+ * ou poser une règle qui NOMME un de leurs gabarits, est réservé au super-admin.
+ * Rend le message de refus, ou `null` si le geste est permis.
+ */
+export function refusGabaritFormateur(
+  template: string | null | undefined,
+  estSuperAdmin: boolean,
+): string | null {
+  if (!template || !estGabaritFormateurIndependant(template) || estSuperAdmin) return null;
+  return "Les e-mails aux formateurs indépendants sont réservés à la direction (super-admin).";
 }
