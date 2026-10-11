@@ -65,6 +65,7 @@ import {
   ADMIN_LIENS_EPINGLES,
   ADMIN_NAV_GROUP_LABELS,
   ADMIN_NAV_GROUP_ORDER,
+  ordreDesGroupesNav,
   GROUP_POLE_LABELS,
   GROUP_POLE_ORDER,
   findActiveNavHref,
@@ -1055,7 +1056,7 @@ export function AdminSidebarNav({
             )}
           </a>
 
-          {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
+          {ordreDesGroupesNav(filtered).map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette
             // mais volontairement masqués de la sidebar (placeholders non livrés).
             // Exclut aussi les entrées ÉPINGLÉES (`epingle`) : elles sont déjà

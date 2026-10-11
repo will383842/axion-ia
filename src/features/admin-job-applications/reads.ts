@@ -29,6 +29,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { decryptPii } from "@/lib/pii-crypto";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
+import { whereCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance-filtre";
 import type { JobApplicationStatus, Prisma } from "../../../prisma/generated/client";
 import { STATUTS_CANDIDATURE } from "@/content/recrutement/statuts";
 
@@ -226,7 +227,9 @@ export function construireFiltreCandidatures(input: Partial<ListApplicationsInpu
   else if (parsed.offerId) where.offerId = parsed.offerId;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
-  if (parsed.view === "monteur") {
+  if (parsed.view === "formateurs-freelance") {
+    where.AND = [whereCandidatureFormateurFreelance()];
+  } else if (parsed.view === "monteur") {
     where.offer = { slug: VIDEO_EDITOR_OFFER_SLUG };
   } else if (parsed.view === "standard" && !parsed.offerId) {
     // Vue standard sans filtre d'offre explicite : les candidatures monteur

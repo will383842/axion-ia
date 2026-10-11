@@ -451,8 +451,19 @@ export function buildAdminNav(
   adminPrefix: string,
   options: { readonly formateursFreelance?: boolean } = {},
 ): ReadonlyArray<AdminNavItem> {
-  void options;
-  return buildAdminNavSocle(adminPrefix);
+  const items = buildAdminNavSocle(adminPrefix);
+  if (!options.formateursFreelance) return items;
+  return [
+    ...items,
+    // Lot L0h — la vue filtrée de la liste existante (pas de page nouvelle).
+    {
+      href: `/fr/${adminPrefix}/contacts/candidatures?view=formateurs-freelance`,
+      label: "Candidatures",
+      icon: "UserPlus",
+      group: "formateurs-freelance",
+      navLevel: 0,
+    },
+  ];
 }
 
 /**
@@ -462,8 +473,13 @@ export function buildAdminNav(
 export function ordreDesGroupesNav(
   items: ReadonlyArray<Pick<AdminNavItem, "group">>,
 ): ReadonlyArray<AdminNavGroup> {
-  void items;
-  return ADMIN_NAV_GROUP_ORDER;
+  if (!items.some((it) => it.group === "formateurs-freelance")) return ADMIN_NAV_GROUP_ORDER;
+  const i = ADMIN_NAV_GROUP_ORDER.indexOf("recrutement");
+  return [
+    ...ADMIN_NAV_GROUP_ORDER.slice(0, i + 1),
+    "formateurs-freelance",
+    ...ADMIN_NAV_GROUP_ORDER.slice(i + 1),
+  ];
 }
 
 function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {

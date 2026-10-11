@@ -14,6 +14,7 @@
 // compris : ils redirigent vers l'équivalent actuel plutôt que de casser un
 // lien déjà partagé (favori, message Telegram, etc.).
 
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -71,6 +72,10 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
     );
   }
 
+  // Lot L0h — la vue du groupe « Formateurs freelance ». Interrupteur
+  // `formateurs.menu_freelance` coupé : le paramètre est ignoré, comme avant.
+  const vueFormateurs =
+    sp.view === "formateurs-freelance" && (await lireEtatsEntree()).menu_freelance;
   const page = sp.page ? parseInt(sp.page, 10) : 1;
   const onlyAttention = sp.attention === "1";
   const recherche = sp.q?.trim() || undefined;
@@ -82,7 +87,7 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       // Toutes les offres, monteur vidéo comprise : l'ancienne exclusion
       // n'avait de sens que face à un onglet dédié, qui n'existe plus. Le
       // filtre par offre (sélecteur) remplace la distinction d'onglet.
-      view: "all",
+      view: vueFormateurs ? "formateurs-freelance" : "all",
       onlyAttention,
       ...(recherche ? { search: recherche } : {}),
       page,

@@ -191,6 +191,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/carrieres/[slug]/page.tsx",
   "src/app/[locale]/carrieres/[slug]/postuler/page.tsx",
   "src/features/job-application/actions.ts",
+  // Groupe de menu « Formateurs freelance » (lot L0h) : interrupteur `formateurs.menu_freelance`,
+  //    lu par la liste des candidatures (vue filtrée ; le gabarit de la console est déjà en zone).
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/page.tsx",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
