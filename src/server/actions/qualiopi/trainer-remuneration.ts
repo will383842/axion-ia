@@ -220,9 +220,19 @@ export async function transitionStatementAction(
       // Paiement par mission (L12c/L12d) : échéance fixe et gardes propres.
       origine: true,
       echeanceAt: true,
+      // L12g : un AVOIR est une pièce de correction, jamais un relevé à faire vivre.
+      avoirDeId: true,
     },
   });
   if (releve === null) return { error: "Relevé introuvable." };
+  // `!= null` : un `select` qui perdrait le champ ne doit pas bloquer les relevés
+  // ordinaires (aucun avoir n'existe tant que le paiement par mission est coupé).
+  if (releve.avoirDeId != null) {
+    return {
+      error:
+        "Ce relevé est un avoir : il ne change pas de statut. Une correction passe par une nouvelle pièce.",
+    };
+  }
   const releveDeMission = releve.origine === "passage_mission";
 
   const from = releve.statut;
@@ -380,6 +390,15 @@ export async function transitionStatementAction(
           select: { ibanEmpreinte: true },
         });
         if (t?.ibanEmpreinte !== preuveIban.ibanEmpreinte) {
+          ibanChange = true;
+          return;
+        }
+        // Une demande de changement d'IBAN déposée entre la garde et le verrou
+        // suspend aussi le virement (« compte bancaire à valider »).
+        const enAttente = await tx.demandeChangementFormateur.count({
+          where: { trainerId: releve.trainerId, nature: "iban", statut: "en_attente" },
+        });
+        if (enAttente > 0) {
           ibanChange = true;
           return;
         }

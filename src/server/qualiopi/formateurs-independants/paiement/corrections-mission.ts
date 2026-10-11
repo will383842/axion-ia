@@ -514,7 +514,11 @@ export async function traiterTropPercu(
   }
   // Un avoir ne s'impute que sur un relevé du MÊME régime de TVA : en HT, deux
   // régimes différents fausseraient le TTC retenu. Sinon, il attend (ou la demande).
-  const imputables = suivant ? ouverts.filter((o) => o.tvaRegime === suivant!.tvaRegime) : ouverts;
+  // Un avoir dont le remboursement a été DEMANDÉ ne s'impute plus : le formateur
+  // a pu rembourser, et rien ne le dit encore — l'imputer reprendrait deux fois.
+  const imputables = suivant
+    ? ouverts.filter((o) => o.tvaRegime === suivant!.tvaRegime && !o.remboursementDemande)
+    : ouverts;
   const plan = planTropPercu(
     imputables,
     suivant ? { totalHtCents: suivant.totalHtCents } : null,
