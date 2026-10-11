@@ -328,6 +328,12 @@ export async function renvoyerFinCollaborationAction(
     }
     const e = envoiF47(ctx);
     if (e === null) return { data: { email: "aucun" } };
+    // Déjà remis : jamais un second F47 (le job terminé peut avoir quitté la file).
+    const dejaParti = await prisma.emailLog.findFirst({
+      where: { jobId: e.jobId ?? "", status: { in: ["sent", "pending"] } },
+      select: { id: true },
+    });
+    if (dejaParti !== null) return { error: "L'e-mail de fin est déjà parti." };
     return { data: { email: await envoyer(e) } };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "renvoyerFinCollaboration" } });

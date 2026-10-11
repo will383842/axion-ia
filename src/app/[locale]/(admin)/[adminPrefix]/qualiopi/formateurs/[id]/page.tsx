@@ -22,6 +22,7 @@ import {
   LIBELLES_MOTIF_FIN,
   conservationApresFin,
   estMotifFin,
+  jourParis,
 } from "@/server/qualiopi/formateurs-independants/fin-collaboration";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
@@ -375,7 +376,7 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   const finTerminee =
     decideeAt !== null
       ? {
-          decideeLe: jourIso(decideeAt),
+          decideeLe: jourParis(decideeAt),
           effetLe: trainer.finCollaborationEffetAt
             ? jourIso(trainer.finCollaborationEffetAt)
             : null,

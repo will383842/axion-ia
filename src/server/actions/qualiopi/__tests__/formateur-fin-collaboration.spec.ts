@@ -12,6 +12,7 @@ const d = vi.hoisted(() => ({
   missions: vi.fn(),
   envoyer: vi.fn(),
   apercu: vi.fn(),
+  dejaParti: vi.fn(),
 }));
 
 vi.mock("@/auth", () => ({ auth: () => d.auth() }));
@@ -19,7 +20,10 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/adm/${p}` }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { adminUser: { findUnique: vi.fn(async () => ({ name: "Admin" })) } },
+  prisma: {
+    adminUser: { findUnique: vi.fn(async () => ({ name: "Admin" })) },
+    emailLog: { findFirst: (...a: unknown[]) => d.dejaParti(...a) },
+  },
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/interrupteur-allume", () => ({
   interrupteurAllume: (...a: unknown[]) => d.allume(...a),
@@ -70,6 +74,7 @@ beforeEach(() => {
   d.missions.mockResolvedValue([]);
   d.terminer.mockResolvedValue({ ok: true, preavis: 30, close: false, desactivee: true, contexte });
   d.envoyer.mockResolvedValue("envoye");
+  d.dejaParti.mockResolvedValue(null);
   d.apercu.mockResolvedValue({ sujet: "s", html: "<p></p>", destinataire: "x" });
 });
 
@@ -175,6 +180,21 @@ describe("renvoi de F47", () => {
     const e = d.envoyer.mock.calls[0]![0] as { jobId: string; payload: { texteLibre: string } };
     expect(e.jobId).toBe(`fi-fin-collaboration-${ID}`);
     expect(e.payload.texteLibre).toContain("11 octobre 2026");
+  });
+
+  it("F47 déjà remis : pas de second envoi", async () => {
+    d.contexte.mockResolvedValue({
+      ...contexte,
+      trainer: {
+        ...contexte.trainer,
+        finCollaborationDecideeAt: new Date("2026-10-11T08:00:00Z"),
+        finCollaborationMotifPrevu: "siret_cesse",
+        finCollaborationEffetAt: new Date("2026-10-11T00:00:00Z"),
+      },
+    });
+    d.dejaParti.mockResolvedValue({ id: "x" });
+    expect(await renvoyerFinCollaborationAction({ trainerId: ID })).toHaveProperty("error");
+    expect(d.envoyer).not.toHaveBeenCalled();
   });
 
   it("aucune fin décidée : refus", async () => {
