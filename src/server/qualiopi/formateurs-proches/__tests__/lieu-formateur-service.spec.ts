@@ -78,16 +78,13 @@ describe("enregistrerLieuFormateur", () => {
     expect(d.logs).toHaveLength(0);
   });
 
-  it("commune introuvable : code postal gardé, coordonnées vides", async () => {
+  it("commune introuvable : RIEN n'est écrit (la commune connue n'est jamais effacée)", async () => {
     d.communes = [];
-    expect(await enregistrerLieuFormateur(ID, "74000", null, USER, maintenant)).toBe(
+    expect(await enregistrerLieuFormateur(ID, "74999", null, USER, maintenant)).toBe(
       "commune_inconnue",
     );
-    expect(d.update.mock.calls[0]![0].data).toMatchObject({
-      codePostalPro: "74000",
-      communeInsee: null,
-      geoLat: null,
-    });
+    expect(d.update).not.toHaveBeenCalled();
+    expect(d.logs).toHaveLength(0);
   });
 });
 
@@ -115,8 +112,25 @@ describe("rattraperLieuxFormateurs", () => {
       trouvees: 1,
       sansCodePostal: 2,
       sansCommune: 0,
+      aConfirmer: 0,
     });
     expect(d.update).toHaveBeenCalledTimes(1);
+  });
+
+  it("code postal partagé : commune non écrite, laissée à confirmer", async () => {
+    d.communes = [ANNECY, { ...ANNECY, codeInsee: "74011", nom: "Autre" }];
+    d.fiches = [
+      {
+        id: "00000000-0000-4000-8000-00000000000a",
+        codePostalPro: "74000",
+        adresseProfessionnelle: null,
+      },
+    ];
+    expect(await rattraperLieuxFormateurs(USER, maintenant)).toMatchObject({
+      aConfirmer: 1,
+      trouvees: 0,
+    });
+    expect(d.update).not.toHaveBeenCalled();
   });
 
   it("code déjà saisi dont la commune reste introuvable : aucune réécriture", async () => {

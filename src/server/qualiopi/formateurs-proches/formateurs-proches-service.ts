@@ -34,6 +34,9 @@ export interface ResultatProches {
   readonly groupes: ReadonlyArray<Groupe>;
 }
 
+/** Borne de lecture : bien au-delà du nombre de formateurs actifs attendu. */
+const PLAFOND_FORMATEURS = 500;
+
 const REGION_PAR_DEPARTEMENT: ReadonlyMap<string, string> = new Map(
   REGIONS.flatMap((r) => r.departements.map((d) => [d, r.slug] as const)),
 );
@@ -105,6 +108,8 @@ export async function lireFormateursProches(
 
     const formateurs = await prisma.trainer.findMany({
       where: { actif: true, finCollaborationAt: null },
+      orderBy: { id: "asc" },
+      take: PLAFOND_FORMATEURS,
       select: {
         id: true,
         prenom: true,
@@ -138,6 +143,7 @@ export async function lireFormateursProches(
     const stats = await statsFormateurs(
       prisma as unknown as LecteurStats,
       formateurs.map((f) => f.id),
+      maintenant,
     );
 
     const aClasser = formateurs.map((f): FormateurAClasser => {

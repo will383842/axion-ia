@@ -13,34 +13,33 @@
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
 
-import { resoudreCodePostal } from "./communes-lecture";
+import { resoudreCodePostal, type CommuneResolue } from "./communes-lecture";
 import { extraireCodePostal, normaliserCodePostal } from "./lieu";
 
 export type IssueLieu = "enregistre" | "approximatif" | "commune_inconnue" | "code_invalide";
 
-/** Plafond d'un rattrapage (un geste de la console, pas un passage de fond). */
-export const PLAFOND_RATTRAPAGE = 500;
+/** Taille d'une page du rattrapage, et nombre de fiches examinées au plus par geste. */
+export const PAGE_RATTRAPAGE = 200;
+export const PLAFOND_RATTRAPAGE = 5_000;
 
 const arrondi2 = (x: number) => Math.round(x * 100) / 100;
 
 async function ecrire(
   trainerId: string,
-  codePostal: string,
-  ville: string | null,
+  r: CommuneResolue,
   userId: string,
   maintenant: Date,
   action: string,
-): Promise<IssueLieu> {
-  const r = await resoudreCodePostal(codePostal, ville);
+): Promise<void> {
   await prisma.$transaction(async (tx) => {
     await tx.trainer.update({
       where: { id: trainerId },
       data: {
-        codePostalPro: codePostal,
-        communeInsee: r?.commune.codeInsee ?? null,
-        geoLat: r ? arrondi2(r.commune.latitude) : null,
-        geoLng: r ? arrondi2(r.commune.longitude) : null,
-        geoCalculeAt: r ? maintenant : null,
+        codePostalPro: r.codePostal,
+        communeInsee: r.commune.codeInsee,
+        geoLat: arrondi2(r.commune.latitude),
+        geoLng: arrondi2(r.commune.longitude),
+        geoCalculeAt: maintenant,
       },
     });
     await journaliser(
@@ -49,14 +48,12 @@ async function ecrire(
         action,
         targetType: "Trainer",
         targetId: trainerId,
-        changes: { lieuModifie: true, communeTrouvee: r !== null },
+        changes: { lieuModifie: true },
         session: { userId },
       },
       { exiger: true },
     );
   });
-  if (!r) return "commune_inconnue";
-  return r.approximatif ? "approximatif" : "enregistre";
 }
 
 /** Saisie à la console : code postal (5 chiffres) et ville facultative. */
@@ -69,7 +66,12 @@ export async function enregistrerLieuFormateur(
 ): Promise<IssueLieu> {
   const cp = normaliserCodePostal(saisieCodePostal);
   if (!cp) return "code_invalide";
-  return ecrire(trainerId, cp, ville?.trim() || null, userId, maintenant, "qualiopi.trainer.lieu");
+  const r = await resoudreCodePostal(cp, ville?.trim() || null);
+  // Aucune commune : RIEN n'est écrit — une faute de frappe n'efface jamais
+  // la commune déjà connue.
+  if (!r) return "commune_inconnue";
+  await ecrire(trainerId, r, userId, maintenant, "qualiopi.trainer.lieu");
+  return r.approximatif ? "approximatif" : "enregistre";
 }
 
 export interface BilanRattrapage {
@@ -77,46 +79,63 @@ export interface BilanRattrapage {
   readonly trouvees: number;
   readonly sansCodePostal: number;
   readonly sansCommune: number;
+  /** Plusieurs communes pour le code postal : laissées à confirmer à la main. */
+  readonly aConfirmer: number;
 }
 
-/** Rattrape les formateurs actifs sans commune. Ne supprime ni ne vide rien. */
+/**
+ * Rattrape les formateurs actifs sans commune, page par page (curseur sur
+ * l'id) : une fiche sans issue n'empêche jamais d'examiner les suivantes.
+ * Une commune APPROXIMATIVE (code postal partagé) n'est pas écrite : la fiche
+ * reste « à compléter » et la ville se précise à la main. Ne vide rien.
+ */
 export async function rattraperLieuxFormateurs(
   userId: string,
   maintenant: Date,
 ): Promise<BilanRattrapage> {
-  const fiches = await prisma.trainer.findMany({
-    where: { actif: true, finCollaborationAt: null, communeInsee: null },
-    select: { id: true, codePostalPro: true, adresseProfessionnelle: true },
-    take: PLAFOND_RATTRAPAGE,
-    orderBy: { id: "asc" },
-  });
+  let examinees = 0;
   let trouvees = 0;
   let sansCodePostal = 0;
   let sansCommune = 0;
-  for (const f of fiches) {
-    const cp =
-      normaliserCodePostal(f.codePostalPro) ?? extraireCodePostal(f.adresseProfessionnelle);
-    if (!cp) {
-      sansCodePostal += 1;
-      continue;
+  let aConfirmer = 0;
+  let apres: string | null = null;
+  while (examinees < PLAFOND_RATTRAPAGE) {
+    const fiches: Array<{
+      id: string;
+      codePostalPro: string | null;
+      adresseProfessionnelle: string | null;
+    }> = await prisma.trainer.findMany({
+      where: {
+        actif: true,
+        finCollaborationAt: null,
+        communeInsee: null,
+        ...(apres ? { id: { gt: apres } } : {}),
+      },
+      select: { id: true, codePostalPro: true, adresseProfessionnelle: true },
+      take: PAGE_RATTRAPAGE,
+      orderBy: { id: "asc" },
+    });
+    if (fiches.length === 0) break;
+    for (const f of fiches) {
+      examinees += 1;
+      const cp =
+        normaliserCodePostal(f.codePostalPro) ?? extraireCodePostal(f.adresseProfessionnelle);
+      if (!cp) {
+        sansCodePostal += 1;
+        continue;
+      }
+      const r = await resoudreCodePostal(cp, null);
+      if (!r) sansCommune += 1;
+      else if (r.approximatif) aConfirmer += 1;
+      else {
+        await ecrire(f.id, r, userId, maintenant, "qualiopi.trainer.lieu.rattrapage");
+        trouvees += 1;
+      }
     }
-    // Rien de neuf à écrire si la commune reste introuvable pour un code déjà saisi.
-    if (cp === f.codePostalPro && (await resoudreCodePostal(cp, null)) === null) {
-      sansCommune += 1;
-      continue;
-    }
-    const issue = await ecrire(
-      f.id,
-      cp,
-      null,
-      userId,
-      maintenant,
-      "qualiopi.trainer.lieu.rattrapage",
-    );
-    if (issue === "commune_inconnue") sansCommune += 1;
-    else trouvees += 1;
+    if (fiches.length < PAGE_RATTRAPAGE) break;
+    apres = fiches[fiches.length - 1]!.id;
   }
-  return { examinees: fiches.length, trouvees, sansCodePostal, sansCommune };
+  return { examinees, trouvees, sansCodePostal, sansCommune, aConfirmer };
 }
 
 /** Les formateurs actifs dont le lieu reste à compléter (liste de la console). */

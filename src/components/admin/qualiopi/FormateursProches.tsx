@@ -43,8 +43,8 @@ function Ligne({ f, formateursBase }: { f: FormateurClasse; formateursBase: stri
       {f.distanceKm !== null ? <span>{f.distanceKm} km</span> : null}
       <span className={DOUX}>{marques.join(" · ")}</span>
       <span className={DOUX}>
-        {s.formationsRealisees} formation{s.formationsRealisees > 1 ? "s" : ""} réalisée
-        {s.formationsRealisees > 1 ? "s" : ""}
+        {s.formationsRealisees} formation{s.formationsRealisees > 1 ? "s" : ""} animée
+        {s.formationsRealisees > 1 ? "s" : ""} en 36 mois
         {" · "}
         {s.satisfaction
           ? `satisfaction ${s.satisfaction.moyenne.toLocaleString("fr-FR")}/5 (${s.satisfaction.avis} avis)`
@@ -84,6 +84,10 @@ export function FormateursProches({
           : depart.sorte === "distanciel"
             ? `Prochaine formation : ${depart.libelle}.`
             : "Indiquez un code postal sur la fiche client ou sur la prochaine session pour classer par distance."}
+      </p>
+      <p className={DOUX}>
+        Formations animées comme principal ou co-formateur ; usage interne, jamais montré aux
+        formateurs.
       </p>
       {groupes.length === 0 ? (
         <p className={DOUX}>Aucun formateur actif.</p>

@@ -13,7 +13,7 @@ export const MESSAGES_RETOUR_LIEU = {
   commune_inconnue: {
     ton: "alerte",
     texte:
-      "Code postal enregistré, mais aucune commune ne lui correspond encore dans le référentiel. La commune sera retrouvée au prochain rattrapage.",
+      "Aucune commune ne correspond à ce code postal : rien n'a été modifié. Vérifiez le code postal.",
   },
   code_invalide: { ton: "alerte", texte: "Le code postal doit compter 5 chiffres." },
   rattrapage_fait: {

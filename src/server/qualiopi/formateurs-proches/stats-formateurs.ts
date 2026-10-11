@@ -11,7 +11,12 @@
  * - Un refus de mission n'entre dans AUCUN chiffre (R4) : seules les sessions
  *   réalisées sont lues.
  *
- * Trois requêtes au total, quel que soit le nombre de formateurs. Usage
+ * - Fenêtre : les 36 derniers mois (sessions commencées depuis), pour borner
+ *   la lecture et parler de l'activité récente.
+ * - ≠ compteur de la fiche formateur (`whereSessionsDuFormateur`, tous rôles,
+ *   depuis l'origine) : l'écart est voulu et le libellé de l'encadré le dit.
+ *
+ * Deux requêtes au total, quel que soit le nombre de formateurs. Usage
  * interne seulement : jamais montré aux formateurs.
  */
 
@@ -25,6 +30,8 @@ export interface SessionLue {
   readonly formateurPrincipalId: string | null;
   readonly animateurs: ReadonlyArray<{ readonly trainerId: string; readonly role: string }>;
 }
+
+export const FENETRE_STATS_MOIS = 36;
 
 const ROLES_QUI_ANIMENT: ReadonlySet<string> = new Set(["principal", "co_formateur"]);
 
@@ -100,12 +107,16 @@ export interface LecteurStats {
 export async function statsFormateurs(
   db: LecteurStats,
   trainerIds: ReadonlyArray<string>,
+  maintenant: Date,
 ): Promise<Map<string, StatsFormateur>> {
   if (trainerIds.length === 0) return new Map();
   const ids = [...trainerIds];
+  const depuis = new Date(maintenant);
+  depuis.setUTCMonth(depuis.getUTCMonth() - FENETRE_STATS_MOIS);
   const brutes = await db.trainingSession.findMany({
     where: {
       statut: "realisee",
+      dateDebut: { gte: depuis },
       OR: [
         { formateurPrincipalId: { in: ids } },
         {

@@ -81,11 +81,13 @@ describe("statsFormateurs (lecture)", () => {
       trainingSession: { findMany: vi.fn(async () => []) },
       questionnaire: { findMany: vi.fn(async () => []) },
     };
-    expect(await statsFormateurs(db, [])).toEqual(new Map());
+    expect(await statsFormateurs(db, [], new Date("2026-10-11T00:00:00Z"))).toEqual(new Map());
     expect(db.trainingSession.findMany).not.toHaveBeenCalled();
-    await statsFormateurs(db, ["a"]);
+    await statsFormateurs(db, ["a"], new Date("2026-10-11T00:00:00Z"));
     const args = (db.trainingSession.findMany as ReturnType<typeof vi.fn>).mock.calls[0]![0];
     expect(args.where.statut).toBe("realisee");
+    // Bornée aux 36 derniers mois.
+    expect(args.where.dateDebut.gte.toISOString()).toBe("2023-10-11T00:00:00.000Z");
     expect(db.questionnaire.findMany).not.toHaveBeenCalled();
   });
 });
