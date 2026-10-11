@@ -297,7 +297,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // connecté, pour nommer le menu (« Mes missions », « Mes honoraires »).
   "src/app/[locale]/espace-formateur/missions/[id]/page.tsx",
   "src/app/[locale]/espace-formateur/_coquille.tsx",
-  "src/components/espace-formateur/DesistementForm.tsx",
   "src/components/espace-formateur/PropositionSixLignes.tsx",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la

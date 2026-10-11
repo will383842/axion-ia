@@ -41,11 +41,6 @@ export interface MissionReponseFormProps {
    * ou faux : l'écran d'avant, motif demandé.
    */
   readonly refusLibre?: boolean;
-  /**
-   * Lot L11b-ux (F-8) — deux boutons de même taille, 48 px au moins, pour le
-   * téléphone. Absent : les boutons d'avant.
-   */
-  readonly grandsBoutons?: boolean;
 }
 
 type Etat =
@@ -59,7 +54,6 @@ export function MissionReponseForm({
   resume,
   motifMin,
   refusLibre = false,
-  grandsBoutons = false,
 }: MissionReponseFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -217,10 +211,10 @@ export function MissionReponseForm({
           </div>
         </div>
       ) : (
-        <div className={grandsBoutons ? "grid grid-cols-2 gap-3" : "flex flex-wrap gap-3"}>
+        <div className="flex flex-wrap gap-3">
           <button
             type="button"
-            className={grandsBoutons ? `${boutonPrimaire} min-h-[48px] w-full` : boutonPrimaire}
+            className={boutonPrimaire}
             disabled={isPending}
             onClick={() => envoyer("acceptee")}
           >
@@ -228,7 +222,7 @@ export function MissionReponseForm({
           </button>
           <button
             type="button"
-            className={grandsBoutons ? `${boutonSecondaire} min-h-[48px] w-full` : boutonSecondaire}
+            className={boutonSecondaire}
             disabled={isPending}
             onClick={() => setEtat({ phase: "refus" })}
           >
