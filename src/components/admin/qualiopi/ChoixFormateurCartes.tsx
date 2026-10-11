@@ -212,7 +212,7 @@ export function ChoixFormateurCartes({
                             onClick={() => choisir(c.trainerId, r)}
                             className={
                               rang === r
-                                ? "admin-button min-h-[40px] font-semibold"
+                                ? "admin-button min-h-[40px]"
                                 : "min-h-[40px] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] disabled:opacity-40"
                             }
                           >
