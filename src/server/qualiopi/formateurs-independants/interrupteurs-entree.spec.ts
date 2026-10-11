@@ -32,4 +32,20 @@ describe("interrupteurs de l'entrée", () => {
       expect((CLES_INTERRUPTEURS as readonly string[]).includes(c)).toBe(false);
     }
   });
+
+  it("L0c-1 — le formulaire du formateur indépendant, coupé par défaut", () => {
+    expect(CLES_INTERRUPTEURS_ENTREE).toContain("formulaire_freelance");
+    expect(cleSettingEntree("formulaire_freelance")).toBe("formateurs.formulaire_freelance");
+    expect(etatsEntreeParDefaut().formulaire_freelance).toBe(false);
+  });
+
+  it("L0h — le groupe de menu « Formateurs freelance », coupé par défaut", () => {
+    expect(cleSettingEntree("menu_freelance")).toBe("formateurs.menu_freelance");
+    expect(etatsEntreeParDefaut().menu_freelance).toBe(false);
+  });
+
+  it("L0c-2 — les modèles « formateur » du composeur, coupés par défaut", () => {
+    expect(cleSettingEntree("modeles_composeur")).toBe("formateurs.modeles_composeur");
+    expect(etatsEntreeParDefaut().modeles_composeur).toBe(false);
+  });
 });

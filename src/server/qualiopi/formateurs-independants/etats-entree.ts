@@ -10,6 +10,10 @@ import { prisma } from "@/lib/prisma";
 
 import {
   CLES_INTERRUPTEURS_ENTREE,
+  PREFIXE_CLES_FORMATEURS,
+  etatsDepuisLignes,
+  etatsParDefaut,
+  type EtatsInterrupteurs,
   cleSettingEntree,
   etatsEntreeDepuisLignes,
   etatsEntreeParDefaut,
@@ -29,5 +33,22 @@ export async function lireEtatsEntree(): Promise<EtatsInterrupteursEntree> {
     return etatsEntreeDepuisLignes(Array.isArray(lignes) ? lignes : []);
   } catch {
     return etatsEntreeParDefaut();
+  }
+}
+
+/**
+ * Les états des seize, pour une règle qui en dépend (pas pour l'écran).
+ *
+ * 🔴 Ne lève JAMAIS : une lecture en échec vaut « position sûre partout ».
+ */
+export async function lireEtatsFormateurs(): Promise<EtatsInterrupteurs> {
+  try {
+    const lignes = await prisma.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    return etatsDepuisLignes(Array.isArray(lignes) ? lignes : []);
+  } catch {
+    return etatsParDefaut();
   }
 }

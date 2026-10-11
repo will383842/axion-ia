@@ -77,6 +77,9 @@ export async function lireInterrupteurs(): Promise<{
   return { etats: etatsDepuisLignes(brutes), lignes };
 }
 
+// `lireEtatsFormateurs` vit dans `etats-entree.ts` (module neutre).
+export { lireEtatsFormateurs } from "./etats-entree";
+
 // ─── Socle de signature (S6a) ────────────────────────────────────────────────
 
 const CLES_SETTINGS_SIGNATURE = CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature);

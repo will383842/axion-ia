@@ -21,7 +21,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { LIEU_DOCUMENT_SELECT } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
-import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import { lireContratCadreSigne } from "@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur";
 import {
   assemblerLettreV2,
   type FaitsLettreV2,
@@ -35,32 +35,6 @@ export const MOTIF_CHANGEMENT_FORMATEUR = "Formateur remplacé sur cette session
 export type ResultatLettreV2 =
   | { ok: true; documentId: string; numero: string; lettreAnnuleeId: string | null }
   | { ok: false; erreur: string };
-
-async function contratCadreSigne(trainerId: string): Promise<FaitsLettreV2["contratCadre"]> {
-  const contrat = await prisma.documentGenere.findFirst({
-    where: {
-      trainerId,
-      type: "contrat_sous_traitance",
-      statutSignature: "signee",
-      annuleeAt: null,
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      metadata: true,
-      signatures: {
-        where: { revokedAt: null },
-        orderBy: { signeAt: "desc" },
-        take: 1,
-        select: { signeAt: true },
-      },
-    },
-  });
-  if (contrat === null) return null;
-  const meta = contrat.metadata as { renderData?: unknown } | null;
-  const signeLe = contrat.signatures[0]?.signeAt ?? null;
-  if (signeLe === null) return null;
-  return { version: versionGabaritInstantane(meta?.renderData), signeLe };
-}
 
 export async function genererLettreMissionV2(input: {
   sessionId: string;
@@ -116,7 +90,7 @@ export async function genererLettreMissionV2(input: {
         regimeTvaFige: true,
       },
     }),
-    contratCadreSigne(input.trainerId),
+    lireContratCadreSigne(input.trainerId),
     // Toutes les lettres VIVANTES de ce formateur sur cette session, v1 comprise :
     // le lien `lettreMissionId` n'existe que depuis la v2.
     prisma.documentGenere.findMany({

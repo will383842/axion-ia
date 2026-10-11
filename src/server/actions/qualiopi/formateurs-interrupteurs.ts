@@ -406,6 +406,11 @@ async function basculerEntree(
     return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
   }
   revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  // Les pages publiques des offres sont en cache (ISR) : elles relisent les
+  // interrupteurs de l'entrée dès la requête suivante. (Le formulaire, lui,
+  // tolère la coexistence des deux versions pendant la bascule.)
+  revalidatePath("/[locale]/carrieres/[slug]", "page");
+  revalidatePath("/[locale]/carrieres/[slug]/postuler", "page");
   return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
 }
 
@@ -454,6 +459,24 @@ export async function basculerFormateursNatureOffreAction(
 ): Promise<EtatBascule> {
   return basculerEntree("nature_offre", formData);
 }
+export async function basculerFormateursFormulaireFreelanceAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("formulaire_freelance", formData);
+}
+export async function basculerFormateursMenuFreelanceAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("menu_freelance", formData);
+}
+export async function basculerFormateursModelesComposeurAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("modeles_composeur", formData);
+}
 
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
@@ -466,4 +489,10 @@ export async function basculerFormateursLettreV2Action(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("lettre_v2", formData);
+}
+export async function basculerFormateursGardeMissionPortesAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("garde_mission_portes", formData);
 }

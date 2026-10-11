@@ -22,7 +22,13 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { lienComplement } from "@/features/job-application/complement";
-import { MODELES_REPONSE_IDS } from "@/content/recrutement/modeles-reponse";
+import {
+  MODELES_COMPOSEUR_IDS,
+  MODELES_REPONSE_FORMATEUR_IDS,
+  modeleAutorise,
+} from "@/content/recrutement/modeles-reponse";
+import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 
 /**
  * Qui peut écrire à un candidat.
@@ -67,7 +73,7 @@ const schemaReponse = z.object({
    */
   subject: z.string().min(2).max(120),
   bodyMarkdown: z.string().min(1).max(50_000),
-  modele: z.enum(MODELES_REPONSE_IDS).default("libre"),
+  modele: z.enum(MODELES_COMPOSEUR_IDS).default("libre"),
   internalNote: z.string().max(2000).optional(),
 });
 
@@ -101,10 +107,33 @@ export async function repondreAuCandidatAction(
       offerTitleSnap: true,
       firstName: true,
       lastName: true,
-      offer: { select: { id: true, screeningQuestions: true } },
+      offer: {
+        select: {
+          id: true,
+          screeningQuestions: true,
+          slug: true,
+          titleFr: true,
+          employmentType: true,
+          secondaryEmploymentType: true,
+        },
+      },
     },
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // Lot L0c-2 — un modèle « formateur » n'est accepté que là où le composeur le
+  // propose (candidature de formateur freelance, `formateurs.modeles_composeur`).
+  if ((MODELES_REPONSE_FORMATEUR_IDS as readonly string[]).includes(data.modele)) {
+    const modelesFormateur =
+      (await lireEtatsEntree()).modeles_composeur &&
+      estCandidatureFormateurFreelance({
+        offerTitleSnap: candidature.offerTitleSnap,
+        offer: candidature.offer,
+      });
+    if (!modeleAutorise(data.modele, { modelesFormateur })) {
+      return { ok: false, error: "modele_indisponible" };
+    }
+  }
 
   // `{lien_complement}` se résout ICI, côté serveur : le lien est signé avec
   // AUTH_SECRET, que le navigateur n'a pas. Une offre sans questions n'a pas

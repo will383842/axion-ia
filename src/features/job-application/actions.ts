@@ -45,6 +45,15 @@ import {
 } from "@/server/careers/cv-storage";
 import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
+import {
+  decisionsDuDepot,
+  lireChampsFormateurFreelance,
+} from "@/lib/careers/formulaire-formateur-freelance";
+import {
+  lireEtatsEntree,
+  lireEtatsFormateurs,
+} from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
 
 /**
@@ -272,6 +281,9 @@ export async function submitJobApplicationAction(
           filledAt: true,
           validThrough: true,
           screeningQuestions: true,
+          employmentType: true,
+          secondaryEmploymentType: true,
+          natureCollaboration: true,
         },
       })
     : null;
@@ -286,12 +298,40 @@ export async function submitJobApplicationAction(
     }
   }
 
+  // 6ter. L0c-1 — candidature de formateur indépendant (formulaire en 4 blocs).
+  // Seule la page sert ce formulaire, et seulement quand l'interrupteur
+  // `formateurs.formulaire_freelance` est allumé ; le serveur n'accepte le mode
+  // que pour une offre de formateur freelance (jamais pour une autre offre).
+  const [entree, formateurs] = await Promise.all([lireEtatsEntree(), lireEtatsFormateurs()]);
+  // 🔑 Le formulaire DIT lequel il est (champ caché `formulaire`), et le serveur
+  // ne l'accepte que pour une offre de formateur freelance. Les pages de l'offre
+  // sont en cache (ISR 1 h, Cloudflare) : pendant la bascule de l'interrupteur,
+  // l'ancien formulaire et le nouveau coexistent, et chacun reste valable.
+  const decisions = decisionsDuDepot({
+    formulaireEnvoye: formData.get("formulaire"),
+    formulaireAllume: entree.formulaire_freelance,
+    textesValides: formateurs.textes_valides,
+    natureLue: entree.nature_offre,
+    offre: offer,
+  });
+  const modeFormateur = decisions.modeFormateur;
+  const champsFormateur = modeFormateur
+    ? lireChampsFormateurFreelance((k) => {
+        const v = formData.get(k);
+        return typeof v === "string" ? v : null;
+      })
+    : null;
+  if (champsFormateur && !champsFormateur.ok) return { ok: false, error: champsFormateur.error };
+  const formateur = champsFormateur?.ok ? champsFormateur : null;
+
   // 6bis. Questions propres à l'offre. Une question `required` manquante est
   // refusée ICI, avant toute écriture disque : l'attribut HTML seul se
   // contourne, et l'offre monteur vidéo exige le prix du candidat.
   const questions = parseScreeningQuestions(offer?.screeningQuestions);
-  const answers = collectAnswers(formData);
-  const manquante = missingRequired(questions, answers)[0];
+  // Mode formateur : ni questions de l'offre, ni clé `answer_*` du navigateur —
+  // seules les réponses contrôlées du formulaire sont écrites.
+  const answers = formateur ? { ...formateur.reponses } : collectAnswers(formData);
+  const manquante = formateur ? undefined : missingRequired(questions, answers)[0];
   if (manquante) {
     return {
       ok: false,
@@ -299,7 +339,7 @@ export async function submitJobApplicationAction(
     };
   }
   // Un prix = UN montant. Une fourchette laisserait la négociation ouverte.
-  const prixFaux = prixInvalides(questions, answers)[0];
+  const prixFaux = formateur ? undefined : prixInvalides(questions, answers)[0];
   if (prixFaux) {
     return {
       ok: false,
@@ -348,7 +388,7 @@ export async function submitJobApplicationAction(
   let photoRawName = "photo";
   let photoOriginalName: string | null = null;
   let photoMimeType: string | null = null;
-  const photo = formData.get("photo");
+  const photo = formateur ? null : formData.get("photo");
   if (photo instanceof File && photo.size > 0) {
     if (photo.size > PHOTO_MAX_BYTES)
       return { ok: false, error: "Photo trop volumineuse (5 Mo max)." };
@@ -429,11 +469,11 @@ export async function submitJobApplicationAction(
         // `contactEmailHash` sur les `Submission`.
         emailHash: hashEmailForLookup(d.email),
         phone: encryptPii(d.phone),
-        city: d.city ?? null,
-        motivation: d.motivation ?? null,
-        currentRole: d.currentRole ?? null,
-        experienceBand: d.experienceBand ?? null,
-        availability: d.availability ?? null,
+        city: formateur ? formateur.codePostal : (d.city ?? null),
+        motivation: formateur ? formateur.formations : (d.motivation ?? null),
+        currentRole: formateur ? null : (d.currentRole ?? null),
+        experienceBand: formateur ? null : (d.experienceBand ?? null),
+        availability: formateur ? null : (d.availability ?? null),
         linkedinUrl: d.linkedinUrl ?? null,
         hasDriverLicense,
         hasVehicle,
@@ -444,7 +484,17 @@ export async function submitJobApplicationAction(
         photoStoragePath,
         photoOriginalName,
         photoMimeType,
-        salaryExpectation: d.salaryExpectation ?? null,
+        salaryExpectation: formateur ? null : (d.salaryExpectation ?? null),
+        // L0c-1 — nature FIGÉE au dépôt (M-G P7), posée seulement allumé.
+        ...(decisions.figerNature
+          ? {
+              natureCollaboration: offer
+                ? offer.natureCollaboration
+                : estCandidatureFormateurFreelance(titrePoste)
+                  ? ("freelance" as const)
+                  : null,
+            }
+          : {}),
         ipHash: hashIp(ip),
         userAgent,
         consentVersion: CONSENT_VERSION,
@@ -513,9 +563,13 @@ export async function submitJobApplicationAction(
         ...(d.phone ? { contactPhone: d.phone } : {}),
         offerTitle: titrePoste,
         ...(offer ? { offerCategory: offer.category } : {}),
-        ...(d.city ? { city: d.city } : {}),
-        ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
-        ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
+        ...(formateur
+          ? { city: formateur.codePostal, motivationExcerpt: formateur.formations.slice(0, 500) }
+          : {
+              ...(d.city ? { city: d.city } : {}),
+              ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
+              ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
+            }),
         answers: labeledAnswers(questions, answers),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
@@ -553,6 +607,8 @@ export async function submitJobApplicationAction(
         // Métiers de l'image (2026-09-29) : le lien de dépôt des montages dès
         // l'accusé — sans lui, un nouveau candidat ne pouvait pas y accéder.
         ...(lienDepot ? { lienDepot } : {}),
+        // L0c-1 — F0 « mission », seulement quand son texte est validé.
+        ...(decisions.accuseMission ? { mission: true } : {}),
         ...(lienSuppression ? { lienSuppression } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },

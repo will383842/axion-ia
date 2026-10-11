@@ -129,6 +129,12 @@ interface Props {
     ageMinJours: number;
     basculer: (formData: FormData) => Promise<void>;
   } | null;
+  /**
+   * Lot L0h — vue « Formateurs freelance » retenue par la page (interrupteur
+   * `formateurs.menu_freelance`). Propagée aux filtres, à la pagination et à
+   * l'export, pour qu'ils parlent du même ensemble que l'écran.
+   */
+  vueFormateursFreelance?: boolean;
 }
 
 export function ApplicationsV2({
@@ -142,6 +148,7 @@ export function ApplicationsV2({
   balayageTronque = false,
   plusAncienJamaisRepondu = null,
   reponseAuto = null,
+  vueFormateursFreelance = false,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -152,12 +159,11 @@ export function ApplicationsV2({
   // seconde liste de clés divergerait au premier filtre ajouté, et l'export
   // sortirait un périmètre différent de l'écran sans qu'on le voie.
   //
-  // 🔑 `view=all` est FIXE, et non dérivé d'une prop : cet écran n'affiche
-  // plus que des candidatures emploi, toutes offres comprises — c'est
-  // exactement ce que l'export doit refléter, mot pour mot.
+  // 🔑 `view=all`, sauf la vue « Formateurs freelance » (lot L0h, interrupteur
+  // `formateurs.menu_freelance`) : l'export porte alors la même vue que l'écran.
   const exportQuery = new URLSearchParams(
     Object.entries({
-      view: "all",
+      view: vueFormateursFreelance ? "formateurs-freelance" : "all",
       offerId: offerId ?? "",
       status: sp["status"] ?? "",
       attention: sp["attention"] ?? "",
@@ -275,6 +281,9 @@ export function ApplicationsV2({
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
+          {vueFormateursFreelance ? (
+            <input type="hidden" name="view" value="formateurs-freelance" />
+          ) : null}
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="offerId" className="admin-label">
@@ -413,6 +422,7 @@ export function ApplicationsV2({
         totalPages={totalPages}
         baseHref={baseHref}
         preservedParams={{
+          ...(vueFormateursFreelance ? { view: "formateurs-freelance" } : {}),
           status: sp["status"],
           offerId: sp["offerId"],
           attention: sp["attention"],
