@@ -48,4 +48,9 @@ describe("interrupteurs de l'entrée", () => {
     expect(cleSettingEntree("modeles_composeur")).toBe("formateurs.modeles_composeur");
     expect(etatsEntreeParDefaut().modeles_composeur).toBe(false);
   });
+
+  it("L0c-3 — l'ajout d'un candidat formateur en console, coupé par défaut", () => {
+    expect(cleSettingEntree("ajout_console")).toBe("formateurs.ajout_console");
+    expect(etatsEntreeParDefaut().ajout_console).toBe(false);
+  });
 });
