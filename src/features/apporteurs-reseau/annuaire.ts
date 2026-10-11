@@ -47,6 +47,36 @@ export interface EntrepriseRegistre {
   personnes?: PersonneRegistre[];
   /** Nombre de dirigeants qui sont des SOCIÉTÉS (une holding présidente), sans nom de personne. */
   dirigeantsSocietes?: number;
+  /** Lot L1 — seulement avec `enrichi: true` (contrôle des formateurs indépendants). */
+  enrichissement?: EnrichissementRegistre;
+}
+
+/**
+ * Lot L1 (chantier formateurs freelance) — ce que le registre public dit en plus.
+ * 🔑 `null` = le registre ne le dit pas : jamais un « non ».
+ */
+export interface EnrichissementRegistre {
+  estOrganismeFormation: boolean | null;
+  /** Numéros de déclaration d'activité listés pour ce SIREN (11 chiffres). */
+  ndaListe: string[];
+  estQualiopi: boolean | null;
+  /** Code d'activité dans la nomenclature 2025, quand le registre le publie. */
+  naf25: string | null;
+  codePostal: string | null;
+  communeInsee: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  dateCreation: string | null;
+  natureJuridique: string | null;
+  estEntrepreneurIndividuel: boolean | null;
+  nombreEtablissementsOuverts: number | null;
+}
+
+export function enrichissementDuRegistre(
+  _res: Record<string, unknown>,
+  _etab: Record<string, unknown>,
+): EnrichissementRegistre {
+  throw new Error("L1 : non implémenté");
 }
 
 /** Une personne physique rattachée à l'entreprise au registre. */
@@ -135,7 +165,12 @@ export function personnesDuRegistre(
 /** Lit l'entreprise d'un SIREN. Injectable (`fetch`) pour les tests. */
 export async function lireEntrepriseParSiren(
   brut: string,
-  options: { fetch?: typeof fetch; attendre?: (ms: number) => Promise<void> } = {},
+  options: {
+    fetch?: typeof fetch;
+    attendre?: (ms: number) => Promise<void>;
+    /** Lot L1 — ajoute `enrichissement` ; absent, la réponse est celle d'avant. */
+    enrichi?: boolean;
+  } = {},
 ): Promise<ResultatRegistre> {
   const siren = brut.replace(/\s+/g, "");
   if (!sirenValide(siren)) return { ok: false, raison: "siren_invalide" };
@@ -198,7 +233,12 @@ export async function lireEntrepriseParSiren(
  */
 export async function lireEtablissementParSiret(
   brut: string,
-  options: { fetch?: typeof fetch; attendre?: (ms: number) => Promise<void> } = {},
+  options: {
+    fetch?: typeof fetch;
+    attendre?: (ms: number) => Promise<void>;
+    /** Lot L1 — ajoute `enrichissement` ; absent, la réponse est celle d'avant. */
+    enrichi?: boolean;
+  } = {},
 ): Promise<ResultatRegistre> {
   const siret = normalizeSiret(brut);
   if (!checkSiretFormat(siret).ok) return { ok: false, raison: "siren_invalide" };
