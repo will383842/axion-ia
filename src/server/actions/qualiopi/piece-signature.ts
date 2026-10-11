@@ -393,6 +393,9 @@ export type ResultatDemandeCode =
  *    de la fiche du formateur : un lien transféré à une autre adresse ne reçoit
  *    rien ;
  *  · plafonds d'émission de l'envoi S6b (2 min, 3/h par pièce, 5/h par formateur) ;
+ *  · aucun code tant que le registre ne CONFIRME pas l'entreprise active
+ *    (`objectionContratCadre`, fermé par défaut) : on ne promet pas une
+ *    signature qui serait refusée ;
  *  · le code n'est jamais rendu ni journalisé : il ne voyage que dans l'e-mail
  *    (scellé dans la file d'envoi, lot S6b).
  */
@@ -479,6 +482,18 @@ export async function demanderCodeSignatureAction(input: {
       message:
         "Le code ne peut pas être envoyé à l'adresse de ce lien. Contactez votre interlocuteur chez Axion-IA : un nouveau lien vous sera adressé.",
     };
+  }
+
+  // 🔴 Aucun code sans entreprise CONFIRMÉE ACTIVE au registre (règle du
+  // propriétaire) : même contrôle, fermé par défaut, que la signature elle-même.
+  const objection = await objectionContratCadre({
+    documentGenereId: verif.documentGenereId,
+    type: piece.type,
+    metadata: piece.metadata,
+    partie: verif.partie,
+  });
+  if (objection !== null) {
+    return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
 
   // L'envoi lui-même est celui du lot S6b (`envoyerCodeSignature`) : il relit la pièce
