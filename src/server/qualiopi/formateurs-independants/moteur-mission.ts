@@ -418,7 +418,21 @@ async function rectifierLettre(
   if (s.statut !== "planifiee" || s.dateDebut.getTime() <= maintenant.getTime()) {
     return { etape: "lettre_perimee", action: "rien" };
   }
-  const signee = m.lettreMission?.signatures.some((x) => x.partie === "formateur") ?? false;
+  // La garde passe avant toute nouvelle lettre, rectificative comprise.
+  if (etat.gardeRefus.length > 0) return { etape: "lettre_perimee", action: "rien" };
+  // Signée = N'IMPORTE QUELLE lettre en vigueur du couple (une rectificative non
+  // signée laisse la lettre d'origine signée en vigueur : le générateur exige
+  // alors le motif).
+  const signee =
+    (await prisma.documentGenere.count({
+      where: {
+        type: "lettre_mission",
+        sessionId: m.sessionId,
+        trainerId: m.trainerId,
+        annuleeAt: null,
+        signatures: { some: { revokedAt: null, partie: "formateur" } },
+      },
+    })) > 0;
   const changements = ceQuiChange(
     lireResume(m.lettreMission?.metadata ?? null),
     resumeDe(m, etat.tarifEffectif),
@@ -686,10 +700,16 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
     select: { id: true },
     take: MISSIONS_PAR_PASSAGE,
   });
+  if (missions.length === MISSIONS_PAR_PASSAGE) {
+    // Les plus proches d'abord ; le reste attend le passage suivant. Dit, pas tu.
+    console.warn(
+      `[moteur-mission] ${MISSIONS_PAR_PASSAGE} missions par passage atteintes : les suivantes attendent.`,
+    );
+  }
   for (const x of missions) {
     const r = await reevaluerMission(x.id, "passage", maintenant);
     bilan.reevaluees += 1;
-    if (r.action === "lettre_emise") bilan.lettres += 1;
+    if (r.action === "lettre_emise" || r.action === "lettre_rectifiee") bilan.lettres += 1;
   }
   return bilan;
 }

@@ -11,7 +11,7 @@ const ANCIENNE = "00000000-0000-4000-8000-000000000031";
 const NOUVELLE = "00000000-0000-4000-8000-000000000032";
 
 const h = vi.hoisted(() => {
-  const etat = { mission: null as Record<string, unknown> | null };
+  const etat = { mission: null as Record<string, unknown> | null, signees: 0 };
   const prisma = {
     setting: {
       findUnique: vi.fn(async ({ where }: { where: { key: string } }) =>
@@ -28,7 +28,11 @@ const h = vi.hoisted(() => {
     },
     documentGenere: {
       count: vi.fn(async (a: { where: Record<string, unknown> }) =>
-        "conditionSuspensiveOpco" in a.where ? 0 : 1,
+        "conditionSuspensiveOpco" in a.where
+          ? 0
+          : a.where.type === "lettre_mission"
+            ? h.etat.signees
+            : 1,
       ),
       findUnique: vi.fn(async () => ({ metadata: {} })),
       findFirst: vi.fn(async () => null),
@@ -70,6 +74,7 @@ import { MOTIF_RECTIFICATION, ceQuiChange, reevaluerMission } from "../moteur-mi
 const MAINTENANT = new Date("2026-10-12T09:00:00Z");
 
 function mission(signee: boolean, dateDebut = "2026-11-04T08:00:00Z") {
+  h.etat.signees = signee ? 1 : 0;
   return {
     id: MISSION,
     statut: "acceptee",
@@ -141,6 +146,15 @@ describe("L11e — lettre périmée", () => {
 
   it("signée : lettre RECTIFICATIVE, avec son motif", async () => {
     h.etat.mission = mission(true);
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.generer).toHaveBeenCalledWith(
+      expect.objectContaining({ rectificationMotif: MOTIF_RECTIFICATION }),
+    );
+  });
+
+  it("rectificative non signée mais lettre d'origine signée : le motif est donné", async () => {
+    h.etat.mission = mission(false);
+    h.etat.signees = 1;
     await reevaluerMission(MISSION, "passage", MAINTENANT);
     expect(h.generer).toHaveBeenCalledWith(
       expect.objectContaining({ rectificationMotif: MOTIF_RECTIFICATION }),

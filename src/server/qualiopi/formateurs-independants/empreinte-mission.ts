@@ -3,8 +3,8 @@
  *
  * Le SHA-256 des seuls faits CONTRACTUELS de la lettre de mission : intitulé,
  * chaque journée avec ses horaires, lieu (adresse, code postal, ville) ou
- * « à distance », tarif et forfait figés, régime de TVA figé, rôle, version du
- * contrat-cadre et version du gabarit de la lettre. Rangée dans
+ * « à distance », tarif et forfait figés, régime de TVA figé, rôle (les
+ * versions du contrat-cadre et du gabarit ne sont PAS hachées). Rangée dans
  * `DocumentGenere.metadata.empreinteMission` à l'émission ; recalculée par le
  * moteur. Différente : la lettre est PÉRIMÉE.
  *
@@ -38,6 +38,8 @@ export function empreinteMission(f: FaitsEmpreinte): string {
   const jours = [...f.jours]
     .map((j) => [j.date, j.heureDebut, j.heureFin] as const)
     .sort((a, b) => (a.join() < b.join() ? -1 : a.join() > b.join() ? 1 : 0));
+  void f.versionContratCadre;
+  void f.gabaritVersion;
   const canon = JSON.stringify({
     v: 1,
     intitule: net(f.intitule),
@@ -48,8 +50,9 @@ export function empreinteMission(f: FaitsEmpreinte): string {
     forfait: f.distanciel ? 0 : (f.forfaitDeplacementParJourHtCents ?? 0),
     tva: f.regimeTva,
     role: f.role,
-    contrat: f.versionContratCadre,
-    gabarit: f.gabaritVersion,
+    // ⚠️ Ni la version du contrat-cadre ni celle du gabarit (lot L11e) : un
+    // contrat renouvelé ou un nouveau gabarit ne sont pas des conditions de
+    // CETTE mission, et périmeraient d'un coup toutes les lettres à venir.
   });
   return createHash("sha256").update(canon).digest("hex");
 }
