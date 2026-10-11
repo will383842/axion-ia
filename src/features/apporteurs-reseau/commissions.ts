@@ -849,6 +849,14 @@ export function construireCsvDas2(annee: number, lignes: readonly LigneDas2[]): 
 
 /** Commissions VERSÉES dans l'année civile (Paris approximée en UTC), par apporteur. */
 export async function exportDas2(annee: number): Promise<string> {
+  return construireCsvDas2(annee, await lignesDas2Apporteurs(annee));
+}
+
+/**
+ * Les lignes de `exportDas2`, sans le CSV : la déclaration commune des paiements
+ * sortants (`server/paiements-sortants`, FAC-9) les relit telles quelles.
+ */
+export async function lignesDas2Apporteurs(annee: number): Promise<LigneDas2[]> {
   const g = await prisma.commissionApporteur.groupBy({
     by: ["apporteurId"],
     where: {
@@ -901,5 +909,5 @@ export async function exportDas2(annee: number): Promise<string> {
     };
   });
   lignes.sort((a, b) => a.nom.localeCompare(b.nom, "fr"));
-  return construireCsvDas2(annee, lignes);
+  return lignes;
 }
