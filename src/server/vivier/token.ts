@@ -21,16 +21,36 @@
  *    montre. Le pouvoir conféré est d'ailleurs minuscule et non destructeur :
  *    faire retirer SA PROPRE candidature d'un vivier. 400 jours couvrent la
  *    fenêtre de 30 jours et l'essentiel de la conservation de 2 ans.
+ *
+ * ── Une seconde finalité : l'EFFACEMENT par le candidat (2026-10-11) ────────
+ *
+ * Le lien « Supprimer ma candidature » des e-mails aux candidats signe le même
+ * genre de jeton (une candidature, une échéance), avec SA PROPRE audience
+ * (`candidature-effacement`). Mêmes octets, même secret, même vérification :
+ * c'est l'audience seule qui sépare les deux autorisations. Un jeton
+ * d'opposition ne peut donc pas effacer un dossier, et réciproquement.
+ *
+ * Sa durée de vie couvre la conservation entière du dossier (24 mois après le
+ * dernier échange) : un lien qui expirerait avant le dossier ferait de
+ * l'effacement en un clic une promesse à durée limitée.
  */
 
 const ENCODER = new TextEncoder();
 const DECODER = new TextDecoder();
 
+const JOUR_MS = 24 * 60 * 60 * 1000;
+
 /** Cf. en-tête : le lien doit survivre dans la boîte mail du candidat. */
-const TOKEN_TTL_MS = 400 * 24 * 60 * 60 * 1000;
+const TOKEN_TTL_MS = 400 * JOUR_MS;
 
 /** Séparateur de domaine : rend le jeton inutilisable pour une autre action. */
 const AUDIENCE = "vivier-opposition";
+
+/** Lien « Supprimer ma candidature » — autre autorisation, autre audience. */
+const AUDIENCE_EFFACEMENT = "candidature-effacement";
+
+/** 26 mois : la conservation (24 mois après le dernier échange) et sa marge. */
+const TOKEN_EFFACEMENT_TTL_MS = 800 * JOUR_MS;
 
 interface TokenPayload {
   /** Identifiant de la candidature visée. */
@@ -72,12 +92,12 @@ async function hmacKey(): Promise<CryptoKey> {
   );
 }
 
-/** Signe un lien d'opposition pour UNE candidature précise. */
-export async function signVivierOppositionToken(applicationId: string): Promise<string> {
+/** Signe un jeton pour UNE candidature précise et UNE finalité. */
+async function signer(applicationId: string, aud: string, ttlMs: number): Promise<string> {
   const payload: TokenPayload = {
     sub: applicationId,
-    aud: AUDIENCE,
-    exp: Date.now() + TOKEN_TTL_MS,
+    aud,
+    exp: Date.now() + ttlMs,
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
   const payloadB64 = b64urlEncode(payloadBytes);
@@ -86,6 +106,16 @@ export async function signVivierOppositionToken(applicationId: string): Promise<
     await crypto.subtle.sign("HMAC", key, payloadBytes as BufferSource),
   );
   return `${payloadB64}.${b64urlEncode(sigBytes)}`;
+}
+
+/** Signe un lien d'opposition pour UNE candidature précise. */
+export async function signVivierOppositionToken(applicationId: string): Promise<string> {
+  return signer(applicationId, AUDIENCE, TOKEN_TTL_MS);
+}
+
+/** Signe un lien d'EFFACEMENT pour UNE candidature précise. */
+export async function signEffacementCandidatureToken(applicationId: string): Promise<string> {
+  return signer(applicationId, AUDIENCE_EFFACEMENT, TOKEN_EFFACEMENT_TTL_MS);
 }
 
 export type VivierTokenResult = { ok: true; applicationId: string } | { ok: false; reason: string };
@@ -100,6 +130,17 @@ export type VivierTokenResult = { ok: true; applicationId: string } | { ok: fals
 export async function verifyVivierOppositionToken(
   token: string | null | undefined,
 ): Promise<VivierTokenResult> {
+  return verifier(token, AUDIENCE);
+}
+
+/** Vérifie un jeton d'effacement — refuse tout jeton d'une autre finalité. */
+export async function verifyEffacementCandidatureToken(
+  token: string | null | undefined,
+): Promise<VivierTokenResult> {
+  return verifier(token, AUDIENCE_EFFACEMENT);
+}
+
+async function verifier(token: string | null | undefined, aud: string): Promise<VivierTokenResult> {
   if (!token) return { ok: false, reason: "missing_token" };
 
   const parts = token.split(".");
@@ -136,9 +177,9 @@ export async function verifyVivierOppositionToken(
     return { ok: false, reason: "malformed_payload" };
   }
 
-  // Un jeton d'une AUTRE finalité (export RGPD…) est refusé, bien que
-  // parfaitement signé : même secret, autorisations distinctes.
-  if (payload.aud !== AUDIENCE) return { ok: false, reason: "wrong_audience" };
+  // Un jeton d'une AUTRE finalité (export RGPD, opposition, effacement…) est
+  // refusé, bien que parfaitement signé : même secret, autorisations distinctes.
+  if (payload.aud !== aud) return { ok: false, reason: "wrong_audience" };
   if (typeof payload.sub !== "string" || payload.sub.length === 0) {
     return { ok: false, reason: "invalid_subject" };
   }

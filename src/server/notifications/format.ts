@@ -102,6 +102,7 @@ const TITLES: Record<NotificationCategory, string> = {
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
+  CANDIDAT_SELF_ERASED: "Un candidat a supprimé sa candidature",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
   BACKUP_SUCCESS: "Sauvegarde réussie",
@@ -670,6 +671,25 @@ function formatBody(event: NotificationEvent): string {
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}#reponses-recues`,
         ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CANDIDAT_SELF_ERASED": {
+      // Le dossier est effacé : pas de lien vers une fiche qui n'existe plus,
+      // et aucune donnée nominative — le poste et l'heure.
+      const p = event.payload;
+      return [
+        formatKV("Poste", p.offerTitle),
+        formatKV(
+          "Supprimée le",
+          new Date(p.erasedAt).toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+        ),
+        formatKV("Origine", "lien « Supprimer ma candidature » de nos e-mails"),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
