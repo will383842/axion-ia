@@ -46,7 +46,8 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
   });
 
   it("dit la décision humaine (G1) et le fil interne sans nom (G2)", () => {
-    expect(FR()).toMatch(/(décision (est )?(toujours )?prise|décidés) par une personne/i);
+    expect(FR()).toMatch(/décidés par une personne/i);
+    expect(FR()).toMatch(/ne concluent jamais seuls/);
     expect(FR()).toMatch(/Telegram/);
     expect(FR()).toMatch(/ni votre nom/);
   });
@@ -54,12 +55,19 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
   it("dit la conservation par critères, vigilance 5 ans après la fin (G5), sans purge annoncée", () => {
     expect(FR()).toMatch(/cinq ans après la fin/);
     expect(FR()).toMatch(/dix ans/);
-    expect(FR()).toMatch(/pas supprimé(e)?s? automatiquement/);
+    // La candidature, elle, EST purgée à 2 ans (retention-purge-worker) : la notice le dit.
+    expect(FR()).toMatch(/candidature[^.]*effacée automatiquement deux ans/);
+    expect(FR()).toMatch(/Hors candidature, vos données ne sont pas supprimées automatiquement/);
   });
 
   it("dit « données personnelles » même en entreprise individuelle (G4)", () => {
     expect(FR()).toMatch(/données personnelles/);
     expect(FR()).toMatch(/entreprise individuelle/);
+  });
+
+  it("cite Calendly et la messagerie qui reçoit les réponses, comme les sections voisines", () => {
+    expect(FR()).toMatch(/Calendly/);
+    expect(FR()).toMatch(/Zoho Mail/);
   });
 
   it("aucun mot du contrat de travail ni du mandat d'agence", () => {
