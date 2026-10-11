@@ -505,6 +505,17 @@ export type NotificationEvent =
         receivedAt: string;
       };
     }
+  // === Candidat emploi : effacement de SON dossier en un clic (2026-10-11) ===
+  // Depuis le lien « Supprimer ma candidature » de nos e-mails. Le dossier
+  // n'existe plus : ni lien vers la fiche, ni nom — le poste et l'heure.
+  | {
+      category: "CANDIDAT_SELF_ERASED";
+      payload: {
+        offerTitle: string;
+        /** ISO 8601. */
+        erasedAt: string;
+      };
+    }
   // === Reply admin (Chantier 5) ===
   | {
       category: "ADMIN_REPLIED_TO_SUBMISSION";
