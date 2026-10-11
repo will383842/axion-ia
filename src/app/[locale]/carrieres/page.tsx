@@ -467,8 +467,8 @@ export default async function CarrieresHubPage({
               les annonces constituent un vivier, et la page le dit. */}
           <p className="text-fg-muted mt-2 max-w-3xl text-sm">
             {isFr
-              ? "Nous recrutons régulièrement sur ces profils : chaque candidature est étudiée, pour un poste ouvert ou un besoin à venir."
-              : "We hire regularly for these profiles: every application is reviewed, for an open role or an upcoming need."}
+              ? "Nous préparons nos prochains recrutements : chaque candidature est étudiée et conservée pour le moment où le poste s'ouvrira."
+              : "We are preparing our next hires: every application is reviewed and kept for when the role opens."}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
             {CAREER_CITIES.map((city) => {

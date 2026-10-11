@@ -62,14 +62,16 @@ interface PerkItem {
 /** Offre clôturée = non publiée, pourvue OU expirée (Date.now isolé hors render). */
 /**
  * Ce que l'annonce dit de la disponibilité du poste (décision de Will,
- * 2026-10-11). Les annonces restent en ligne pour constituer un vivier : on
- * recrute régulièrement sur ces profils, sans qu'un poste soit forcément ouvert
- * le jour où la personne postule. Le Code du travail (art. L5331-3) interdit
- * de laisser croire le contraire ; cette phrase le dit, sans bandeau.
+ * 2026-10-11). Les annonces restent en ligne pour constituer un vivier : aucun
+ * poste n'est forcément ouvert le jour où la personne postule, et l'entreprise
+ * ne recrute pas encore régulièrement — ne PAS écrire « nous recrutons
+ * régulièrement », ce serait faux. Le Code du travail (art. L5331-3) interdit
+ * de laisser croire qu'un poste est disponible ; cette phrase dit ce qui est,
+ * sans bandeau.
  */
 const RECRUTEMENT_REGULIER = {
-  fr: "Nous recrutons régulièrement sur ce profil : chaque candidature est étudiée, pour un poste ouvert ou un besoin à venir.",
-  en: "We hire regularly for this profile: every application is reviewed, for an open role or an upcoming need.",
+  fr: "Nous préparons nos prochains recrutements : chaque candidature est étudiée et conservée pour le moment où ce poste s'ouvrira.",
+  en: "We are preparing our next hires: every application is reviewed and kept for when this role opens.",
 } as const;
 
 /** Date d'annonce lisible (« 13 août 2026 »), à l'heure de Paris. */
@@ -420,7 +422,7 @@ export default async function JobOfferDetailPage({
                   aria-hidden="true"
                   className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
                 />
-                {isFr ? "Nous recrutons régulièrement" : "We hire regularly"}
+                {isFr ? "Candidatures ouvertes" : "Applications open"}
                 <span aria-hidden="true" className="text-fg-muted">
                   ·
                 </span>

@@ -97,7 +97,7 @@ export const CORPS = [
   // 2026-10-11 (Will) — « Ce poste est aujourd'hui pourvu » était faux quand
   // aucun poste n'était ouvert : les annonces constituent un vivier. On dit ce
   // qui est, et la durée de conservation est celle de la notice (2 ans).
-  "Nous n'avons pas de besoin immédiat sur ce poste. Nos équipes continuent cependant de se développer, et votre profil nous intéresse pour la suite : nous conservons votre candidature pendant deux ans et nous reviendrons vers vous si un besoin correspondant s'ouvre.",
+  "Nous n'avons pas de besoin immédiat sur ce poste. Axion-IA se développe cependant, et votre profil nous intéresse pour la suite : nous conservons votre candidature pendant deux ans et nous reviendrons vers vous si un besoin correspondant s'ouvre.",
   "",
   "Si vous préférez que nous supprimions votre dossier, il suffit de répondre à ce message.",
   "",
