@@ -584,7 +584,28 @@ export type NotificationEvent =
         /** Référence de l'enregistrement source, pour un abandon unitaire. */
         subjectRef?: string;
       };
+    }
+  // === Incidents de données (conformité RGPD, 2026-10-11) ===
+  //
+  // 🔴 AUCUN CONTENU SAISI DANS CE PAYLOAD, ET C'EST DÉLIBÉRÉ. La description
+  // d'un incident peut décrire des personnes (elle est chiffrée en base pour
+  // cette raison) ; Telegram est un canal tiers. Le numéro, le palier et
+  // l'échéance suffisent à agir ; le reste se lit dans la console.
+  | {
+      category: "DATA_INCIDENT_ALERT";
+      payload: {
+        numero: number;
+        palier: PalierAlerteIncident;
+        /** Échéance des 72 h (ISO 8601). */
+        echeance: string;
+      };
     };
+
+/**
+ * Le moment de l'alerte : la déclaration, puis les rappels tant que la décision
+ * CNIL n'est pas prise (48 h, 24 h, 6 h restantes, puis délai dépassé).
+ */
+export type PalierAlerteIncident = "declare" | "48h" | "24h" | "6h" | "depasse";
 
 /**
  * Les quatre anomalies que la synchro sait signaler.

@@ -261,6 +261,12 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   } else {
     routing = `${dedicated.join(", ")} dédié${dedicated.length > 1 ? "s" : ""} · ${missing.join(", ")} → canal par défaut`;
   }
+  // Salon 🚨 Incidents de données (2026-10-11) : affiché à part, il ne change
+  // pas le statut de la carte — son absence n'est pas une panne, les alertes
+  // retombent dans Système puis dans le salon général.
+  routing += process.env["TELEGRAM_CHAT_ID_INCIDENTS"]
+    ? " · Incidents dédié"
+    : " · Incidents → Système (ou canal par défaut)";
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
