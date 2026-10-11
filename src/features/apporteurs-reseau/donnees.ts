@@ -10,13 +10,14 @@
 
 import "server-only";
 
-import { createHash } from "node:crypto";
-
 import { prisma } from "@/lib/prisma";
 import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { analyserOctets, type VerdictAntivirus } from "@/server/careers/clamav";
-import { formatDepuisNom, signatureConforme } from "@/features/dossier-client/documents/formats";
+import {
+  TAILLE_MAX_PIECE,
+  alerteAntivirusLimitee,
+  controlerPiece,
+} from "@/server/pieces/depot-controle";
 import type {
   ApporteurReseauStatut,
   RegimeTvaApporteur,
@@ -33,31 +34,24 @@ import { enregistrerSiret, siretDe } from "./siret-apporteur";
 import { CLE_REGISTRE_INDISPONIBLE, etatDeLaPage, vigilanceDemandee } from "./signature-regles";
 import { argentEnJeu, retraitDe } from "./retrait";
 
-const FENETRE_ALERTE_ANTIVIRUS_MS = 15 * 60 * 1000;
-let derniereAlerteAntivirus = 0;
+// Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée
+// personnelle — la garde est celle du dépôt commun (FAC-6), le canal celui du réseau.
+const alerteAntivirus = alerteAntivirusLimitee(() =>
+  signalerErreurReseau("antivirus indisponible", new Error("pièce refusée : antivirus muet")),
+);
 
 /** Antivirus muet : une alerte Sentry par 15 minutes au plus (garde en mémoire), sans donnée personnelle. */
 export function alerterAntivirusIndisponible(maintenant: number = Date.now()): boolean {
-  if (maintenant - derniereAlerteAntivirus < FENETRE_ALERTE_ANTIVIRUS_MS) return false;
-  derniereAlerteAntivirus = maintenant;
-  signalerErreurReseau("antivirus indisponible", new Error("pièce refusée : antivirus muet"));
-  return true;
+  return alerteAntivirus.alerter(maintenant);
 }
 
 /** Réservé aux tests : remet la garde à zéro. */
 export function reinitialiserAlerteAntivirus(): void {
-  derniereAlerteAntivirus = 0;
+  alerteAntivirus.reinitialiser();
 }
 
 /** Taille maximale d'une pièce déposée (10 Mo : une photo de téléphone y tient). */
-export const TAILLE_MAX_PIECE = 10 * 1024 * 1024;
-const FORMATS_PIECE = new Set(["pdf", "png", "jpg"]);
-
-const MIME: Record<string, string> = {
-  pdf: "application/pdf",
-  png: "image/png",
-  jpg: "image/jpeg",
-};
+export { TAILLE_MAX_PIECE };
 
 // ── Création ─────────────────────────────────────────────────────────────
 
@@ -445,33 +439,9 @@ export async function deposerPiece(
   octets: Uint8Array,
   expireAt: Date | null = null,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  const format = formatDepuisNom(nomFichier);
-  if (!format || !FORMATS_PIECE.has(format) || !signatureConforme(format, octets)) {
-    return { ok: false, message: "Format accepté : PDF, ou photo (JPG, PNG)." };
-  }
-  if (octets.length === 0 || octets.length > TAILLE_MAX_PIECE) {
-    return { ok: false, message: "Le fichier doit faire moins de 10 Mo." };
-  }
-  let verdict: VerdictAntivirus;
-  try {
-    verdict = await analyserOctets(octets, 60_000);
-  } catch {
-    verdict = { issue: "indisponible", raison: "erreur" };
-  }
-  if (verdict.issue === "infecte") {
-    return {
-      ok: false,
-      message: "Ce fichier a été refusé par notre antivirus. Envoyez-en un autre.",
-    };
-  }
-  if (verdict.issue !== "sain") {
-    alerterAntivirusIndisponible();
-    return {
-      ok: false,
-      message: "Le contrôle du fichier n'a pas pu se faire. Réessayez dans un instant.",
-    };
-  }
-  const sha256 = createHash("sha256").update(octets).digest("hex");
+  // Format, taille, antivirus, empreinte, chiffrement : le dépôt contrôlé commun (FAC-6).
+  const controle = await controlerPiece(nomFichier, octets, { alerterAntivirusIndisponible });
+  if (!controle.ok) return controle;
   const maintenant = new Date();
   let pieceId = "";
   await prisma.$transaction(
@@ -493,9 +463,9 @@ export async function deposerPiece(
           apporteurId,
           type,
           nomFichier: nomFichier.slice(0, 200),
-          typeMime: MIME[format] ?? "application/octet-stream",
-          taille: octets.length,
-          sha256,
+          typeMime: controle.typeMime,
+          taille: controle.taille,
+          sha256: controle.sha256,
           expireAt,
         },
         select: { id: true },
