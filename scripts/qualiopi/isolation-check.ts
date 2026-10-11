@@ -146,6 +146,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Dossier en ligne à jeton du FORMATEUR INDÉPENDANT (lot L5, ADR 0066 étape 5). Page
+  // publique hors `[locale]`, jumelle du dossier apporteur : elle ne sait rien faire sans
+  // le domaine qui porte la fiche `Trainer`, ses pièces, le contrôle registre et les règles
+  // d'admission. Élargissement nommé fichier par fichier : la page, ses actions (chacune
+  // relit le dossier PAR SON LIEN, interrupteur `dossier_en_ligne` compris), le composant
+  // client (qui n'importe que les règles PURES du dossier et les actions) et son test.
+  "src/app/formateur/dossier/[id]/[jeton]/page.tsx",
+  "src/app/formateur/dossier/[id]/[jeton]/actions.ts",
+  "src/app/formateur/dossier/[id]/[jeton]/DossierFormateur.tsx",
+  "src/app/formateur/dossier/[id]/[jeton]/le-dossier-formateur-respecte-le-lexique.spec.ts",
   // Lot 4b — l'adaptateur MCP branche `qualiopi.conformite` sur `listAlertes()`
   // (la lecture persistée, PAS l'évaluateur). Inscrit NOMINATIVEMENT : un motif
   // de répertoire serait un blanc-seing pour tout fichier futur sous mcp/.
