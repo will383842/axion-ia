@@ -297,37 +297,22 @@ export async function submitJobApplicationAction(
     }
   }
 
-  // 6bis. Questions propres à l'offre. Une question `required` manquante est
-  // refusée ICI, avant toute écriture disque : l'attribut HTML seul se
-  // contourne, et l'offre monteur vidéo exige le prix du candidat.
-  const questions = parseScreeningQuestions(offer?.screeningQuestions);
-  const answers = collectAnswers(formData);
-  const manquante = missingRequired(questions, answers)[0];
-  if (manquante) {
-    return {
-      ok: false,
-      error: `Réponse obligatoire manquante : ${manquante.labelFr ?? manquante.labelEn ?? manquante.id}`,
-    };
-  }
-  // Un prix = UN montant. Une fourchette laisserait la négociation ouverte.
-  const prixFaux = prixInvalides(questions, answers)[0];
-  if (prixFaux) {
-    return {
-      ok: false,
-      error: `Indiquez un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
-    };
-  }
-
   // 6ter. L0c-1 — candidature de formateur indépendant (formulaire en 4 blocs).
-  // Le mode est décidé ICI, par l'offre et les interrupteurs, jamais par le
-  // navigateur. Interrupteur `formateurs.formulaire_freelance` absent : rien
-  // ne change, aucun champ propre n'est lu.
+  // Seule la page sert ce formulaire, et seulement quand l'interrupteur
+  // `formateurs.formulaire_freelance` est allumé ; le serveur n'accepte le mode
+  // que pour une offre de formateur freelance (jamais pour une autre offre).
   const [entree, formateurs] = await Promise.all([lireEtatsEntree(), lireEtatsFormateurs()]);
-  const modeFormateur = modeFormateurFreelance({
-    formulaireAllume: entree.formulaire_freelance,
-    natureLue: entree.nature_offre,
-    offre: offer,
-  });
+  // 🔑 Le formulaire DIT lequel il est (champ caché `formulaire`), et le serveur
+  // ne l'accepte que pour une offre de formateur freelance. Les pages de l'offre
+  // sont en cache (ISR 1 h, Cloudflare) : pendant la bascule de l'interrupteur,
+  // l'ancien formulaire et le nouveau coexistent, et chacun reste valable.
+  const modeFormateur =
+    formData.get("formulaire") === "formateur-freelance" &&
+    modeFormateurFreelance({
+      formulaireAllume: true,
+      natureLue: entree.nature_offre,
+      offre: offer,
+    });
   const champsFormateur = modeFormateur
     ? lireChampsFormateurFreelance((k) => {
         const v = formData.get(k);
@@ -336,7 +321,29 @@ export async function submitJobApplicationAction(
     : null;
   if (champsFormateur && !champsFormateur.ok) return { ok: false, error: champsFormateur.error };
   const formateur = champsFormateur?.ok ? champsFormateur : null;
-  if (formateur) Object.assign(answers, formateur.reponses);
+
+  // 6bis. Questions propres à l'offre. Une question `required` manquante est
+  // refusée ICI, avant toute écriture disque : l'attribut HTML seul se
+  // contourne, et l'offre monteur vidéo exige le prix du candidat.
+  const questions = parseScreeningQuestions(offer?.screeningQuestions);
+  // Mode formateur : ni questions de l'offre, ni clé `answer_*` du navigateur —
+  // seules les réponses contrôlées du formulaire sont écrites.
+  const answers = formateur ? { ...formateur.reponses } : collectAnswers(formData);
+  const manquante = formateur ? undefined : missingRequired(questions, answers)[0];
+  if (manquante) {
+    return {
+      ok: false,
+      error: `Réponse obligatoire manquante : ${manquante.labelFr ?? manquante.labelEn ?? manquante.id}`,
+    };
+  }
+  // Un prix = UN montant. Une fourchette laisserait la négociation ouverte.
+  const prixFaux = formateur ? undefined : prixInvalides(questions, answers)[0];
+  if (prixFaux) {
+    return {
+      ok: false,
+      error: `Indiquez un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
+    };
+  }
 
   /**
    * Le titre du poste, TOUJOURS connu — c'est l'invariant de tout l'aval.

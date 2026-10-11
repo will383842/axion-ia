@@ -116,6 +116,8 @@ export function FormulaireFormateurFreelance({ offerId, invitationAuto }: Props)
   return (
     <form onSubmit={onSubmit} className="space-y-8" encType="multipart/form-data">
       <HoneypotField />
+      {/* Dit au serveur lequel des deux formulaires est envoyé (pages en cache). */}
+      <input type="hidden" name="formulaire" value="formateur-freelance" />
 
       <fieldset className={FIELDSET}>
         <legend className={SECTION}>Vous</legend>

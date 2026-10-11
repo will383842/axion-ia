@@ -406,6 +406,11 @@ async function basculerEntree(
     return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
   }
   revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  // Les pages publiques des offres sont en cache (ISR) : elles relisent les
+  // interrupteurs de l'entrée dès la requête suivante. (Le formulaire, lui,
+  // tolère la coexistence des deux versions pendant la bascule.)
+  revalidatePath("/[locale]/carrieres/[slug]", "page");
+  revalidatePath("/[locale]/carrieres/[slug]/postuler", "page");
   return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
 }
 

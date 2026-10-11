@@ -500,7 +500,7 @@ export const INTERRUPTEURS_ENTREE = {
   formulaire_freelance: {
     ...envoi(
       "Formulaire du formateur indépendant",
-      "Les offres de formateur freelance reçoivent le formulaire en 4 blocs, l'accusé « mission » (une fois les textes validés) et des données Google sans salaire.",
+      "Les offres de formateur freelance reçoivent le formulaire en 4 blocs, l'accusé « mission » (une fois les textes validés) et des données Google sans fourchette de prix.",
     ),
     cle: "formateurs.formulaire_freelance",
   },

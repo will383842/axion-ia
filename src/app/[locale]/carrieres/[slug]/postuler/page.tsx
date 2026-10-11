@@ -13,7 +13,7 @@ import { buildProductMetadata } from "@/lib/seo";
 import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import { JobApplicationForm, type ScreeningQuestion } from "@/components/forms/JobApplicationForm";
-import dynamic from "next/dynamic";
+import { FormulaireFormateurFreelance } from "@/components/forms/FormulaireFormateurFreelance";
 import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
 import {
   lireEtatsEntree,
@@ -21,13 +21,6 @@ import {
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 export const revalidate = 3600;
-
-// L0c-1 — chargé à part : coupé, le formulaire d'aujourd'hui n'en porte pas un octet.
-const FormulaireFormateurFreelance = dynamic(() =>
-  import("@/components/forms/FormulaireFormateurFreelance").then(
-    (m) => m.FormulaireFormateurFreelance,
-  ),
-);
 
 export async function generateMetadata({
   params,
