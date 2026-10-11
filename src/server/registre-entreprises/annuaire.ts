@@ -49,6 +49,75 @@ export interface EntrepriseRegistre {
   personnes?: PersonneRegistre[];
   /** Nombre de dirigeants qui sont des SOCIÉTÉS (une holding présidente), sans nom de personne. */
   dirigeantsSocietes?: number;
+  /** Lot L1 — seulement avec `enrichi: true` (contrôle des formateurs indépendants). */
+  enrichissement?: EnrichissementRegistre;
+}
+
+/**
+ * Lot L1 (chantier formateurs freelance) — ce que le registre public dit en plus.
+ * 🔑 `null` = le registre ne le dit pas : jamais un « non ».
+ */
+export interface EnrichissementRegistre {
+  estOrganismeFormation: boolean | null;
+  /**
+   * Numéros de déclaration d'activité listés pour ce SIREN (11 caractères,
+   * « 2A »/« 2B » de Corse compris) ; `null` si le registre ne publie pas la liste.
+   */
+  ndaListe: string[] | null;
+  estQualiopi: boolean | null;
+  /** Code d'activité dans la nomenclature 2025, quand le registre le publie. */
+  naf25: string | null;
+  codePostal: string | null;
+  communeInsee: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  dateCreation: string | null;
+  natureJuridique: string | null;
+  estEntrepreneurIndividuel: boolean | null;
+  nombreEtablissementsOuverts: number | null;
+}
+
+const booleen = (v: unknown): boolean | null => (typeof v === "boolean" ? v : null);
+const nombre = (v: unknown): number | null => {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : null;
+};
+
+/**
+ * Lit l'enrichissement dans la réponse du registre (`res`) et l'établissement
+ * retenu (`etab` : celui du SIRET, ou le siège). Pur : testé sur une réponse
+ * figée. Les numéros de déclaration sont réduits à leurs chiffres ; seuls ceux
+ * de 11 chiffres sont gardés.
+ */
+export function enrichissementDuRegistre(
+  res: Record<string, unknown>,
+  etab: Record<string, unknown>,
+): EnrichissementRegistre {
+  const complements = (res.complements ?? {}) as Record<string, unknown>;
+  const ndaListe = Array.isArray(complements.liste_id_organisme_formation)
+    ? (complements.liste_id_organisme_formation as unknown[])
+        .filter((v): v is string | number => typeof v === "string" || typeof v === "number")
+        .map((v) =>
+          String(v)
+            .toUpperCase()
+            .replace(/[^0-9AB]/g, ""),
+        )
+        .filter((v) => /^[0-9AB]{11}$/.test(v))
+    : null;
+  return {
+    estOrganismeFormation: booleen(complements.est_organisme_formation),
+    ndaListe,
+    estQualiopi: booleen(complements.est_qualiopi),
+    naf25: texte(etab.activite_principale_naf25) ?? texte(res.activite_principale_naf25),
+    codePostal: texte(etab.code_postal),
+    communeInsee: texte(etab.commune),
+    latitude: nombre(etab.latitude),
+    longitude: nombre(etab.longitude),
+    dateCreation: texte(res.date_creation),
+    natureJuridique: texte(res.nature_juridique),
+    estEntrepreneurIndividuel: booleen(complements.est_entrepreneur_individuel),
+    nombreEtablissementsOuverts: nombre(res.nombre_etablissements_ouverts),
+  };
 }
 
 /** Une personne physique rattachée à l'entreprise au registre. */
@@ -137,7 +206,12 @@ export function personnesDuRegistre(
 /** Lit l'entreprise d'un SIREN. Injectable (`fetch`) pour les tests. */
 export async function lireEntrepriseParSiren(
   brut: string,
-  options: { fetch?: typeof fetch; attendre?: (ms: number) => Promise<void> } = {},
+  options: {
+    fetch?: typeof fetch;
+    attendre?: (ms: number) => Promise<void>;
+    /** Lot L1 — ajoute `enrichissement` ; absent, la réponse est celle d'avant. */
+    enrichi?: boolean;
+  } = {},
 ): Promise<ResultatRegistre> {
   const siren = brut.replace(/\s+/g, "");
   if (!sirenValide(siren)) return { ok: false, raison: "siren_invalide" };
@@ -186,6 +260,7 @@ export async function lireEntrepriseParSiren(
         ),
         diffusionPartielle: denomination === null || adresse === null,
         ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
+        ...(options.enrichi ? { enrichissement: enrichissementDuRegistre(res, siege) } : {}),
       },
     };
   } catch {
@@ -200,7 +275,12 @@ export async function lireEntrepriseParSiren(
  */
 export async function lireEtablissementParSiret(
   brut: string,
-  options: { fetch?: typeof fetch; attendre?: (ms: number) => Promise<void> } = {},
+  options: {
+    fetch?: typeof fetch;
+    attendre?: (ms: number) => Promise<void>;
+    /** Lot L1 — ajoute `enrichissement` ; absent, la réponse est celle d'avant. */
+    enrichi?: boolean;
+  } = {},
 ): Promise<ResultatRegistre> {
   const siret = normalizeSiret(brut);
   if (!checkSiretFormat(siret).ok) return { ok: false, raison: "siren_invalide" };
@@ -257,6 +337,7 @@ export async function lireEtablissementParSiret(
         ),
         diffusionPartielle: denomination === null || adresse === null,
         ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
+        ...(options.enrichi ? { enrichissement: enrichissementDuRegistre(res, etab) } : {}),
       },
     };
   } catch {

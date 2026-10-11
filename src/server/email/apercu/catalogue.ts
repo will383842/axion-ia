@@ -34,6 +34,10 @@
  */
 
 import type { EmailJobName } from "@/server/queue/types";
+import {
+  TEXTES_FORMATEUR,
+  type GabaritFormateurIndependant,
+} from "@/lib/email/templates/formateur-independant-textes";
 
 export type CategorieEmail =
   "rendez-vous" | "formation" | "commerce" | "recrutement" | "rgpd" | "divers";
@@ -97,7 +101,25 @@ export interface FicheEmail {
   readonly source: string | null;
 }
 
+/**
+ * Formateurs indépendants (lot L-ENV) : une fiche par gabarit, DÉRIVÉE du texte (le
+ * « quand » est celui soumis à Will). Tous partent du même adaptateur.
+ */
+const FICHES_FORMATEUR_INDEPENDANT = Object.fromEntries(
+  (Object.keys(TEXTES_FORMATEUR) as GabaritFormateurIndependant[]).map((g) => {
+    const t = TEXTES_FORMATEUR[g];
+    const fiche: FicheEmail = {
+      categorie: "formation",
+      quand: `${t.code} — ${t.quand} (texte à valider : rien ne part avant)`,
+      destinataire: t.interne ? "interne" : "le formateur indépendant",
+      source: "server/qualiopi/formateurs-independants/envois.ts",
+    };
+    return [g, fiche];
+  }),
+) as Record<GabaritFormateurIndependant, FicheEmail>;
+
 export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
+  ...FICHES_FORMATEUR_INDEPENDANT,
   // ── Rendez-vous & Calendly ────────────────────────────────────────────────
   "appel-confirme": {
     categorie: "rendez-vous",

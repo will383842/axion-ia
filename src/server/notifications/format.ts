@@ -105,6 +105,7 @@ const TITLES: Record<NotificationCategory, string> = {
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
+  TRAINER_DOSSIER_RECU: "Dossier de formateur reçu, à vérifier",
   CANDIDAT_SELF_ERASED: "Un candidat a supprimé sa candidature",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
@@ -647,6 +648,20 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Voir en console",
           lienConsole(`contacts/candidatures/${p.applicationId}#reponses-recues`),
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "TRAINER_DOSSIER_RECU": {
+      // Minimisée (L-ENV) : identifiant court, couleur du registre, lien. Rien d'autre.
+      const p = event.payload;
+      return [
+        formatKV("Dossier", p.trainerId.slice(0, 8)),
+        formatKV("Registre", p.registre),
+        formatKV(
+          "Vérifier et contresigner",
+          `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}`,
         ),
       ]
         .filter((v): v is string => v !== null)
