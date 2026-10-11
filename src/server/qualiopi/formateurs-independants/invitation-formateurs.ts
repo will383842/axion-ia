@@ -47,6 +47,12 @@ export const FENETRE_INVITATION_FORMATEUR_MS = 72 * 60 * MINUTE_MS;
 export const CLOTURE_SANS_SUITE_MS = 30 * JOUR_MS;
 export const PLAFOND_INVITATIONS_PAR_PASSAGE = 30;
 export const PRIORITE_RATTRAPAGE = 10;
+/**
+ * Budget horaire de F1, sous la boîte partagée (40 e-mails par heure pour tout le site) :
+ * le balayage tourne toutes les 5 min, le plafond par passage seul autoriserait 360/h.
+ */
+export const BUDGET_F1_PAR_HEURE = 20;
+export const FENETRE_CLOTURE_MS = 60 * JOUR_MS;
 /** Le stock du rattrapage : les candidatures reçues depuis le 09/10/2026 (heure de Paris). */
 export const DEBUT_STOCK_RATTRAPAGE = new Date("2026-10-08T22:00:00.000Z");
 
@@ -62,6 +68,14 @@ function payloadInvitation(candidatureId: string, prenom: string | null): Record
 export interface DependancesInvitation {
   /** `invitation_auto` ET `suivi_echange`. Lecture en échec : coupé. */
   readonly allume: () => Promise<boolean>;
+  /**
+   * Depuis quand les deux interrupteurs sont allumés (la plus récente écriture des deux
+   * réglages). Le balayage n'invite que ce qui est arrivé APRÈS : le stock d'avant passe
+   * par le rattrapage, avec aperçu. `null` : illisible, rien ne part.
+   */
+  readonly allumeLe: () => Promise<Date | null>;
+  /** F1 enfilés ou garés dans l'heure écoulée. `null` : illisible, rien ne part. */
+  readonly envoyesDerniereHeure: (maintenant: Date) => Promise<number | null>;
   readonly envoyer: (e: EnvoiFormateur) => Promise<ResultatEnvoiFormateur>;
 }
 
@@ -71,16 +85,53 @@ async function allumeParDefaut(): Promise<boolean> {
   return formateurs.invitation_auto === true && entree.suivi_echange === true;
 }
 
+async function allumeLeParDefaut(): Promise<Date | null> {
+  try {
+    const lignes = await prisma.setting.findMany({
+      where: { key: { in: ["formateurs.invitation_auto", "formateurs.suivi_echange"] } },
+      select: { updatedAt: true },
+    });
+    if (lignes.length < 2) return null;
+    return new Date(Math.max(...lignes.map((l) => l.updatedAt.getTime())));
+  } catch {
+    return null;
+  }
+}
+
+async function envoyesDerniereHeureParDefaut(maintenant: Date): Promise<number | null> {
+  const depuis = new Date(maintenant.getTime() - 60 * MINUTE_MS);
+  try {
+    const [journal, corbeille] = await Promise.all([
+      prisma.emailLog.count({
+        where: { template: "formateur-invitation-echange", createdAt: { gte: depuis } },
+      }),
+      prisma.emailOutbox.count({
+        where: { template: "formateur-invitation-echange", createdAt: { gte: depuis } },
+      }),
+    ]);
+    return journal + corbeille;
+  } catch {
+    return null;
+  }
+}
+
 async function envoyerParDefaut(e: EnvoiFormateur): Promise<ResultatEnvoiFormateur> {
   const { envoyer } = await import("./envois");
   return envoyer(e);
 }
 
 function dependances(deps?: Partial<DependancesInvitation>): DependancesInvitation {
-  return { allume: deps?.allume ?? allumeParDefaut, envoyer: deps?.envoyer ?? envoyerParDefaut };
+  return {
+    allume: deps?.allume ?? allumeParDefaut,
+    allumeLe: deps?.allumeLe ?? allumeLeParDefaut,
+    envoyesDerniereHeure: deps?.envoyesDerniereHeure ?? envoyesDerniereHeureParDefaut,
+    envoyer: deps?.envoyer ?? envoyerParDefaut,
+  };
 }
 
 const estPartie = (r: ResultatEnvoiFormateur) => r === "envoye" || r === "en-validation";
+/** Panne ou texte pas encore validé : on retentera. Tout autre refus est définitif. */
+const estPassager = (r: ResultatEnvoiFormateur) => r === "texte-non-valide" || r === "indisponible";
 
 // ─── F1 : le balayage ─────────────────────────────────────────────────────────
 
@@ -117,10 +168,22 @@ export async function passerInvitationsFormateurs(
   if (!allume) return vide(false);
 
   const t = maintenant.getTime();
+  const [allumeLe, dejaCetteHeure] = await Promise.all([
+    d.allumeLe(),
+    d.envoyesDerniereHeure(maintenant),
+  ]);
+  if (allumeLe === null || dejaCetteHeure === null) {
+    ecartees["etat-illisible"] = 1;
+    return vide(true);
+  }
+  const plafond = Math.min(
+    PLAFOND_INVITATIONS_PAR_PASSAGE,
+    Math.max(0, BUDGET_F1_PAR_HEURE - dejaCetteHeure),
+  );
   const candidates = (await prisma.jobApplication.findMany({
     where: {
       submittedAt: {
-        gte: new Date(t - FENETRE_INVITATION_FORMATEUR_MS),
+        gte: new Date(Math.max(t - FENETRE_INVITATION_FORMATEUR_MS, allumeLe.getTime())),
         lte: new Date(t - DELAI_INVITATION_FORMATEUR_MS),
       },
       status: "new",
@@ -151,7 +214,7 @@ export async function passerInvitationsFormateurs(
       ecartees["deja-invitee"] = (ecartees["deja-invitee"] ?? 0) + 1;
       continue;
     }
-    if (invitees + refus >= PLAFOND_INVITATIONS_PAR_PASSAGE) {
+    if (invitees + refus >= plafond) {
       plafondAtteint = true;
       break;
     }
@@ -175,7 +238,13 @@ export async function passerInvitationsFormateurs(
     }
     refus += 1;
     // Texte non validé ou file en panne : inutile d'enchaîner, le passage suivant reprend.
-    if (r === "texte-non-valide" || r === "indisponible") break;
+    if (estPassager(r)) break;
+    // Refus DÉFINITIF (adresse retenue, crochet non rempli…) : la candidature est close
+    // « sans suite », sans e-mail — sinon elle serait retentée toutes les 5 minutes.
+    await prisma.jobApplication.updateMany({
+      where: { id: c.id, clotureSansSuiteAt: null },
+      data: { clotureSansSuiteAt: maintenant },
+    });
   }
 
   const closes = await clorerSansSuite(maintenant);
@@ -186,11 +255,17 @@ export async function passerInvitationsFormateurs(
 async function clorerSansSuite(maintenant: Date): Promise<number> {
   const invitees = (await prisma.jobApplication.findMany({
     where: {
-      invitationFormateurAt: { lte: new Date(maintenant.getTime() - CLOTURE_SANS_SUITE_MS) },
+      // Une fenêtre bornée (J+30 à J+60) : les candidatures qui ne se closent pas (réservé,
+      // répondu) en sortent d'elles-mêmes au lieu de bloquer les suivantes.
+      invitationFormateurAt: {
+        gte: new Date(maintenant.getTime() - FENETRE_CLOTURE_MS),
+        lte: new Date(maintenant.getTime() - CLOTURE_SANS_SUITE_MS),
+      },
       clotureSansSuiteAt: null,
       status: "new",
     },
-    take: 50,
+    orderBy: { invitationFormateurAt: "asc" },
+    take: 200,
     select: SELECT_CANDIDATURE_INVITATION,
   })) as CandidatureInvitation[];
   if (invitees.length === 0) return 0;
@@ -255,6 +330,10 @@ async function envoisS1(ids: readonly string[]): Promise<Map<string, Date[]>> {
 }
 
 export async function lireFaitsS1(maintenant: Date): Promise<readonly FaitsCampagne[]> {
+  // Le registre commun ne lit que les seize ; `suivi_echange` (registre de l'entrée) est
+  // relu ici : sans le suivi, un rappel mènerait à une réservation ni rattachée ni confirmée.
+  const { lireEtatsEntree } = await import("./etats-entree");
+  if (!(await lireEtatsEntree()).suivi_echange) return [];
   const candidatures = (await prisma.jobApplication.findMany({
     where: {
       invitationFormateurAt: {
@@ -281,7 +360,7 @@ export async function lireFaitsS1(maintenant: Date): Promise<readonly FaitsCampa
         envois: (envois.get(c.id) ?? []).filter((d) => d >= c.invitationFormateurAt!),
         efface,
         opposition: f.opposition,
-        adresseMorte: false, // le verdict d'envoi retient un rebond dur
+        adresseMorte: f.adresseMorte,
         close: f.decidee || f.ficheOuverte || f.registreRouge,
         actionFaite: f.reserve,
         reponseHumaine: f.reponseHumaine,
@@ -323,17 +402,24 @@ export function empreinteRattrapage(ids: readonly string[]): string {
  * anciennes que la fenêtre du balayage (72 h), jamais invitées, jamais décidées, sans
  * réservation ni fiche — une ligne par personne (la plus récente).
  */
-export async function listerRattrapage(maintenant: Date): Promise<{
+export async function listerRattrapage(
+  maintenant: Date,
+  allumeLe: () => Promise<Date | null> = allumeLeParDefaut,
+): Promise<{
   lignes: LigneRattrapage[];
   destinataires: Map<string, { destinataire: string; prenom: string | null; personneId: string }>;
   empreinte: string;
 }> {
+  // Le stock = ce qui est arrivé AVANT l'allumage (le balayage prend la suite). Cohorte
+  // figée : une candidature refusée par le balayage est close, elle n'y revient pas.
+  const borne = await allumeLe();
+  if (borne === null) {
+    return { lignes: [], destinataires: new Map(), empreinte: empreinteRattrapage([]) };
+  }
+  void maintenant;
   const candidatures = (await prisma.jobApplication.findMany({
     where: {
-      submittedAt: {
-        gte: DEBUT_STOCK_RATTRAPAGE,
-        lt: new Date(maintenant.getTime() - FENETRE_INVITATION_FORMATEUR_MS),
-      },
+      submittedAt: { gte: DEBUT_STOCK_RATTRAPAGE, lt: borne },
       status: "new",
       origine: "formulaire",
       invitationFormateurAt: null,
@@ -402,7 +488,7 @@ export async function envoyerRattrapage(
 ): Promise<ResultatRattrapage> {
   const d = dependances(deps);
   if (!(await d.allume())) return { ok: false, motif: "coupe" };
-  const liste = await listerRattrapage(maintenant);
+  const liste = await listerRattrapage(maintenant, d.allumeLe);
   if (liste.empreinte !== empreinteVue) return { ok: false, motif: "liste-changee" };
   let envoyes = 0;
   let refus = 0;
@@ -427,7 +513,12 @@ export async function envoyerRattrapage(
       continue;
     }
     refus += 1;
-    if (r === "texte-non-valide" || r === "indisponible") break;
+    if (estPassager(r)) break;
+    // Refus définitif : close « sans suite », elle quitte la liste.
+    await prisma.jobApplication.updateMany({
+      where: { id: l.candidatureId, clotureSansSuiteAt: null },
+      data: { clotureSansSuiteAt: maintenant },
+    });
   }
   return {
     ok: true,

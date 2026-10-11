@@ -29,6 +29,7 @@ const base = {
   reponsesFormateur: [] as Array<{ candidatureId: string; recuLe: Date }>,
   fiches: [] as Array<{ candidatureId: string; verificationsRegistre: Array<{ verdict: string }> }>,
   oppositions: [] as Array<{ emailHash: string }>,
+  rebonds: [] as Array<{ recipient: string }>,
 };
 const updateMany = vi.fn(async (a: { where: { id: string }; data: Record<string, Date> }) => {
   const c = base.candidatures.find((x) => x.id === a.where.id);
@@ -77,9 +78,14 @@ vi.mock("@/lib/prisma", () => ({
     reponseEntranteFormateur: { findMany: vi.fn(async () => base.reponsesFormateur) },
     trainer: { findMany: vi.fn(async () => base.fiches) },
     emailOpposition: { findMany: vi.fn(async () => base.oppositions) },
-    emailLog: { findMany: vi.fn(async () => []) },
+    emailLog: { findMany: vi.fn(async () => base.rebonds) },
     emailOutbox: { findMany: vi.fn(async () => []) },
   },
+}));
+const suiviEchange = { valeur: true };
+vi.mock("../etats-entree", () => ({
+  lireEtatsEntree: async () => ({ suivi_echange: suiviEchange.valeur }),
+  lireEtatsFormateurs: async () => ({}),
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v.replace(/^enc:/, "") }));
 
@@ -119,6 +125,12 @@ function cand(o: Partial<Cand> = {}): Cand {
   };
 }
 const allume = async () => true;
+// Interrupteurs allumés le 01/10 ; aucun F1 dans l'heure.
+const ALLUME_LE = new Date("2026-10-01T00:00:00Z");
+const etat = {
+  allumeLe: async () => ALLUME_LE,
+  envoyesDerniereHeure: async () => 0,
+};
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -130,13 +142,19 @@ beforeEach(() => {
   base.reponsesFormateur = [];
   base.fiches = [];
   base.oppositions = [];
+  base.rebonds = [];
+  suiviEchange.valeur = true;
 });
 
 describe("F1 — le balayage", () => {
   it("interrupteurs coupés : rien n'est lu ni envoyé", async () => {
     base.candidatures = [cand()];
     const envoyer = vi.fn();
-    const b = await passerInvitationsFormateurs(MAINTENANT, { allume: async () => false, envoyer });
+    const b = await passerInvitationsFormateurs(MAINTENANT, {
+      allume: async () => false,
+      ...etat,
+      envoyer,
+    });
     expect(b.allume).toBe(false);
     expect(envoyer).not.toHaveBeenCalled();
   });
@@ -145,7 +163,7 @@ describe("F1 — le balayage", () => {
     const c = cand();
     base.candidatures = [c, cand({ submittedAt: new Date(MAINTENANT.getTime() - 10 * MIN) })];
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(b.invitees).toBe(1);
     const e = envoyer.mock.calls[0]![0];
     expect(e).toMatchObject({
@@ -165,10 +183,10 @@ describe("F1 — le balayage", () => {
   it("une invitation par personne : deux candidatures à la même adresse → un seul F1", async () => {
     base.candidatures = [cand({ emailHash: "meme" }), cand({ emailHash: "meme" })];
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(envoyer).toHaveBeenCalledTimes(1);
     // Le passage suivant ne réinvite pas la sœur.
-    await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(envoyer).toHaveBeenCalledTimes(1);
   });
 
@@ -189,7 +207,7 @@ describe("F1 — le balayage", () => {
     base.demandes = [{ contactEmailHash: apporteur.emailHash!, calendlyEvents: [{ id: "e" }] }];
     base.oppositions = [{ emailHash: oppose.emailHash! }];
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(envoyer).not.toHaveBeenCalled();
     expect(b.ecartees).toMatchObject({
       "registre-rouge": 1,
@@ -205,7 +223,7 @@ describe("F1 — le balayage", () => {
       cand({ natureCollaboration: null, offerTitleSnap: "Formateur" }),
     ];
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(envoyer.mock.calls[0]![0].entityId).toBe(base.candidatures[0]!.id);
   });
@@ -214,15 +232,85 @@ describe("F1 — le balayage", () => {
     const c = cand();
     base.candidatures = [c, cand()];
     const envoyer = vi.fn().mockResolvedValue("texte-non-valide");
-    await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(c.invitationFormateurAt).toBeNull();
+  });
+
+  it("à l'allumage, seul ce qui arrive APRÈS est invité : le stock passe par le rattrapage", async () => {
+    const avant = cand({ submittedAt: new Date(MAINTENANT.getTime() - 60 * MIN) });
+    base.candidatures = [avant];
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      allumeLe: async () => new Date(MAINTENANT.getTime() - 30 * MIN),
+      envoyer,
+    });
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("budget horaire : jamais plus de 20 F1 dans l'heure, toutes passes confondues", async () => {
+    base.candidatures = Array.from({ length: 10 }, () => cand());
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyesDerniereHeure: async () => 17,
+      envoyer,
+    });
+    expect(envoyer).toHaveBeenCalledTimes(3);
+  });
+
+  it("état illisible (date d'allumage ou budget) : rien ne part", async () => {
+    base.candidatures = [cand()];
+    const envoyer = vi.fn();
+    await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      allumeLe: async () => null,
+      envoyer,
+    });
+    await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyesDerniereHeure: async () => null,
+      envoyer,
+    });
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("refus définitif (adresse retenue) : close sans suite, jamais retentée", async () => {
+    const c = cand();
+    base.candidatures = [c];
+    const envoyer = vi.fn().mockResolvedValue("retenu");
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
+    expect(c.clotureSansSuiteAt).toEqual(MAINTENANT);
+    await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
+    expect(envoyer).toHaveBeenCalledTimes(1);
+  });
+
+  it("rebond dur connu ou réponse déjà échangée : aucune invitation", async () => {
+    const morte = cand();
+    const repondu = cand();
+    base.candidatures = [morte, repondu];
+    base.rebonds = [{ recipient: "P1@example.com" }];
+    base.reponses = [{ applicationId: repondu.id, receivedAt: new Date("2026-10-19T10:00:00Z") }];
+    const envoyer = vi.fn();
+    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(b.ecartees).toMatchObject({ "adresse-morte": 1, "deja-repondu": 1 });
   });
 
   it("plafond : 30 invitations par passage", async () => {
     base.candidatures = Array.from({ length: 35 }, () => cand());
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    const b = await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyesDerniereHeure: async () => -100, // budget neutralisé : seul le plafond joue
+      envoyer,
+    });
     expect(envoyer).toHaveBeenCalledTimes(30);
     expect(b.plafondAtteint).toBe(true);
   });
@@ -234,7 +322,7 @@ describe("F1 — le balayage", () => {
     });
     base.candidatures = [c];
     const envoyer = vi.fn();
-    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, envoyer });
+    const b = await passerInvitationsFormateurs(MAINTENANT, { allume, ...etat, envoyer });
     expect(b.closes).toBe(1);
     expect(c.clotureSansSuiteAt).toEqual(MAINTENANT);
     expect(envoyer).not.toHaveBeenCalled();
@@ -279,6 +367,12 @@ describe("S1 — les rappels au registre commun", () => {
     expect(decision(reponduAvant.id)).toMatchObject({ envoyer: true });
   });
 
+  it("suivi de l'échange coupé : aucun rappel (S1 lit aussi le registre de l'entrée)", async () => {
+    base.candidatures = [cand({ invitationFormateurAt: new Date("2026-10-16T10:00:00Z") })];
+    suiviEchange.valeur = false;
+    expect(await lireFaitsS1(MAINTENANT)).toEqual([]);
+  });
+
   it("« J'ai répondu ailleurs » arrête les rappels", async () => {
     const invit = new Date(MAINTENANT.getTime() - 4 * 24 * 3600 * 1000);
     const c = cand({ invitationFormateurAt: invit });
@@ -307,18 +401,30 @@ describe("F55 — le rattrapage unique du stock", () => {
     const recente = cand(); // dans la fenêtre du balayage : pas au rattrapage
     const avantLe9 = cand({ submittedAt: new Date("2026-10-05T10:00:00Z") });
     base.candidatures = [vieille, recente, avantLe9];
-    const liste = await listerRattrapage(MAINTENANT);
+    const liste = await listerRattrapage(MAINTENANT, async () => new Date("2026-10-18T00:00:00Z"));
     expect(liste.lignes.map((l) => l.candidatureId)).toEqual([vieille.id]);
     expect(liste.lignes[0]!.nom).toBe("Camille M.");
 
     const envoyer = vi.fn().mockResolvedValue("envoye");
-    expect(await envoyerRattrapage(MAINTENANT, "0".repeat(64), { allume, envoyer })).toEqual({
+    expect(
+      await envoyerRattrapage(MAINTENANT, "0".repeat(64), {
+        allume,
+        ...etat,
+        allumeLe: async () => new Date("2026-10-18T00:00:00Z"),
+        envoyer,
+      }),
+    ).toEqual({
       ok: false,
       motif: "liste-changee",
     });
     expect(envoyer).not.toHaveBeenCalled();
 
-    const r = await envoyerRattrapage(MAINTENANT, liste.empreinte, { allume, envoyer });
+    const r = await envoyerRattrapage(MAINTENANT, liste.empreinte, {
+      allume,
+      ...etat,
+      allumeLe: async () => new Date("2026-10-18T00:00:00Z"),
+      envoyer,
+    });
     expect(r).toMatchObject({ ok: true, envoyes: 1 });
     expect(envoyer.mock.calls[0]![0]).toMatchObject({
       gabarit: "formateur-invitation-rattrapage",
@@ -327,13 +433,15 @@ describe("F55 — le rattrapage unique du stock", () => {
     });
     expect(vieille.rattrapageAt).toEqual(MAINTENANT);
     // Une seule fois : la liste suivante est vide.
-    expect((await listerRattrapage(MAINTENANT)).lignes).toEqual([]);
+    expect(
+      (await listerRattrapage(MAINTENANT, async () => new Date("2026-10-18T00:00:00Z"))).lignes,
+    ).toEqual([]);
   });
 
   it("interrupteurs coupés : rien ne part", async () => {
     const envoyer = vi.fn();
     expect(
-      await envoyerRattrapage(MAINTENANT, "x", { allume: async () => false, envoyer }),
+      await envoyerRattrapage(MAINTENANT, "x", { allume: async () => false, ...etat, envoyer }),
     ).toEqual({
       ok: false,
       motif: "coupe",

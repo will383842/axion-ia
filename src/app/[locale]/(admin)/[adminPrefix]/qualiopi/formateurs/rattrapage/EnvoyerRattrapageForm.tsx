@@ -20,7 +20,10 @@ export function EnvoyerRattrapageForm({
   const [etat, action, enCours] = useActionState(envoyerRattrapageFormateursAction, INITIAL);
   return (
     <form action={action} className="flex flex-col gap-[var(--space-admin-3)]">
-      <input type="hidden" name="confirmer" value="oui" />
+      <label className="flex items-center gap-[var(--space-admin-2)]">
+        <input type="checkbox" name="confirmer" value="oui" required />
+        J&apos;ai relu la liste ci-dessus
+      </label>
       <input type="hidden" name="empreinte" value={empreinte} />
       <div>
         <button type="submit" className="admin-button" disabled={enCours || nombre === 0}>

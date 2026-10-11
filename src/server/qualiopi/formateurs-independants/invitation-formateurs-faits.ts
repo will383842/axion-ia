@@ -79,6 +79,8 @@ export interface FaitsInvitation {
   /** Le dernier contrôle du registre d'une fiche de la personne est rouge. */
   readonly registreRouge: boolean;
   readonly opposition: boolean;
+  /** Rebond dur sur l'adresse (le verdict d'envoi la retiendrait de toute façon). */
+  readonly adresseMorte: boolean;
   /** Décidée par Will (statut changé) ou close « sans suite ». */
   readonly decidee: boolean;
 }
@@ -167,11 +169,21 @@ export async function lireFaitsInvitation(
     ]);
 
   const opposees = new Set(oppositions.map((o) => o.emailHash));
+  const clairs = new Map(candidatures.map((c) => [c.id, dechiffrer(c.email)]));
+  const adresses = [...new Set([...clairs.values()].filter((a): a is string => a !== null))];
+  // `recipient` est citext : l'égalité ignore la casse (même lecture que le verdict d'envoi).
+  const rebonds = adresses.length
+    ? await prisma.emailLog.findMany({
+        where: { recipient: { in: adresses }, status: "bounced", bounceType: "hard" },
+        select: { recipient: true },
+      })
+    : [];
+  const mortes = new Set(rebonds.map((r) => r.recipient.toLowerCase()));
   for (const c of candidatures) {
     const lignes = new Set(lignesDe(c));
     const borne = depuis(c);
     const apres = (d: Date) => borne === null || d.getTime() > borne.getTime();
-    const destinataire = dechiffrer(c.email);
+    const destinataire = clairs.get(c.id) ?? null;
     const prenomBrut = dechiffrer(c.firstName);
     const fichesDeLaPersonne = fiches.filter((f) => f.candidatureId && lignes.has(f.candidatureId));
     sortie.set(c.id, {
@@ -205,6 +217,7 @@ export async function lireFaitsInvitation(
         (f) => f.verificationsRegistre[0]?.verdict === "rouge",
       ),
       opposition: c.emailHash !== null && opposees.has(c.emailHash),
+      adresseMorte: destinataire !== null && mortes.has(destinataire.toLowerCase()),
       decidee: c.status !== "new" || c.clotureSansSuiteAt !== null,
     });
   }
@@ -219,9 +232,13 @@ export function motifNePasInviter(f: FaitsInvitation): string | null {
   if (!f.freelance) return "pas-freelance";
   if (f.destinataire === null) return "efface";
   if (f.opposition) return "opposition";
+  if (f.adresseMorte) return "adresse-morte";
   if (f.decidee) return "decidee";
   if (f.dejaInvitee) return "deja-invitee";
   if (f.reserve) return "deja-reserve";
+  // Will a déjà échangé avec la personne (réponse reçue ou « répondu ailleurs ») : ni F1 ni
+  // F55 (« nous revenons vers vous » serait faux).
+  if (f.reponseHumaine) return "deja-repondu";
   if (f.registreRouge) return "registre-rouge";
   if (f.ficheOuverte) return "fiche-ouverte";
   return null;

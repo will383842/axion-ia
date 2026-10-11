@@ -143,6 +143,13 @@ const relireInvitationFormateur: LecteurAuDepart = async (job) => {
     return "invitation formateur sans candidature liée — état invérifiable";
   }
   try {
+    // Couper l'invitation (ou le suivi) retient aussi ce qui est déjà en file ou garé.
+    const { lireEtatsEntree } =
+      await import("@/server/qualiopi/formateurs-independants/etats-entree");
+    const etats = await lireEtatsInterrupteurs();
+    if (!lireDrapeauEnvoi(etats, "invitation_auto") || !(await lireEtatsEntree()).suivi_echange) {
+      return "invitation automatique ou suivi de l'échange coupé";
+    }
     const { motifRetenueInvitationFormateur } =
       await import("@/server/qualiopi/formateurs-independants/invitation-formateurs-faits");
     return await motifRetenueInvitationFormateur(job.entityId, job.template);
