@@ -45,6 +45,7 @@ import {
 } from "@/server/careers/cv-storage";
 import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
 
 /**
  * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
@@ -539,6 +540,9 @@ export async function submitJobApplicationAction(
       offer && isVideoFamilyOffer(offer.slug)
         ? await lienComplement(app.id, offer).catch(() => null)
         : null;
+    // « Supprimer ma candidature » (2026-10-11) : le candidat efface son
+    // dossier seul, depuis le pied de l'accusé.
+    const lienSuppression = await lienSuppressionCandidature(app.id);
     await enqueueEmail(
       "candidature-recue",
       d.email,
@@ -549,6 +553,7 @@ export async function submitJobApplicationAction(
         // Métiers de l'image (2026-09-29) : le lien de dépôt des montages dès
         // l'accusé — sans lui, un nouveau candidat ne pouvait pas y accéder.
         ...(lienDepot ? { lienDepot } : {}),
+        ...(lienSuppression ? { lienSuppression } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },
     );

@@ -802,7 +802,6 @@ async function suiteRetourDejaConnu(a: {
     Sentry.captureException(err, { tags: { action: "completerLeadVsl", step: "connu-lecture" } });
   }
   const consoleUrl = `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${a.ficheId}`;
-  const DEJA_CONNU = "Déjà connu(e) : revenu(e) par la publicité";
   const retour = lireRetoursVsl(details).find((r) => r.le === a.le);
   const campagne = [retour?.utm?.campaign, retour?.utm?.content].filter(Boolean).join(" · ");
 
@@ -811,7 +810,8 @@ async function suiteRetourDejaConnu(a: {
       category: "COMMERCIAL_APPLICATION_RECEIVED",
       payload: {
         submissionId: a.ficheId,
-        contactName: `${prenom || "(prénom illisible)"} — ${DEJA_CONNU}`,
+        contactName: prenom || "(prénom illisible)",
+        dejaConnu: true,
         contactEmail: email,
         contactPhone: a.telephone,
         ville: "— voir la fiche existante",
