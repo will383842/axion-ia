@@ -2,7 +2,10 @@
 // download CV authentifié, formulaire de suivi (statut/notes/assignation/suppr).
 
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
-import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import {
+  lireEtatsEntree,
+  lireEtatsFormateurs,
+} from "@/server/qualiopi/formateurs-independants/etats-entree";
 import Link from "next/link";
 import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
@@ -22,6 +25,8 @@ import { Entretiens } from "./Entretiens";
 import { DeposerCv } from "./DeposerCv";
 import { ProposerReseauApporteurs } from "./ProposerReseauApporteurs";
 import { CreerFicheFormateur } from "./CreerFicheFormateur";
+import { InvitationFormateur } from "./InvitationFormateur";
+import { resumeInvitationFormateur } from "@/lib/careers/invitation-formateur-resume";
 import {
   estCandidatureFormateur,
   mentionActivationFormateur,
@@ -186,6 +191,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         })
         .catch(() => null)
     : null;
+  // Lot L-INV — l'invitation à l'échange (interrupteur `formateurs.invitation_auto`).
+  const invitationFormateur =
+    estCandidatureFormateurFreelance(indicesPoste) && (await lireEtatsFormateurs()).invitation_auto
+      ? await prisma.jobApplication
+          .findUnique({
+            where: { id: a.id },
+            select: { invitationFormateurAt: true, rattrapageAt: true, clotureSansSuiteAt: true },
+          })
+          .catch(() => null)
+      : null;
   const montrerFicheFormateur =
     formateurLie !== null ||
     (peutEngager(acteur.role, "contresigner") &&
@@ -473,6 +488,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         </AdminCard>
       )}
 
+      {invitationFormateur ? (
+        <AdminCard>
+          <h3 className="admin-section-title">Invitation à l&apos;échange</h3>
+          <InvitationFormateur
+            candidatureId={a.id}
+            peutDeclarer={peutEngager(acteur.role, "habiliter_formateur")}
+            resume={resumeInvitationFormateur(invitationFormateur)}
+          />
+        </AdminCard>
+      ) : null}
       {montrerFicheFormateur ? (
         <AdminCard>
           <h3 className="admin-section-title">Fiche formateur</h3>

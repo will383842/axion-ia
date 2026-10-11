@@ -117,8 +117,9 @@ beforeEach(() => {
 });
 
 describe("livré éteint", () => {
-  it("le registre est vide à la livraison", () => {
-    expect(REGISTRE_CAMPAGNES).toEqual([]);
+  it("le registre ne porte que des campagnes déclarées par leur lot (S1 : L-INV), toutes sous interrupteur", () => {
+    expect(REGISTRE_CAMPAGNES.map((c) => c.id)).toEqual(["invit-relance"]);
+    for (const c of REGISTRE_CAMPAGNES) expect(c.interrupteurs.length).toBeGreaterThan(0);
   });
   it("interrupteurs absents : aucune campagne active, rien ne part", async () => {
     const b = await passerCampagnes(

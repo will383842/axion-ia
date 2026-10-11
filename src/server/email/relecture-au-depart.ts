@@ -129,6 +129,28 @@ const relireFormateur: LecteurAuDepart = async (job) => {
   }
 };
 
+const GABARITS_INVITATION_FORMATEUR = [
+  "formateur-invitation-echange",
+  "formateur-invitation-relance",
+  "formateur-invitation-rattrapage",
+] as const;
+
+/** Les règles communes d'abord, puis l'état de la candidature. Échec fermé. */
+const relireInvitationFormateur: LecteurAuDepart = async (job) => {
+  const commun = await relireFormateur(job);
+  if (commun !== null) return commun;
+  if (job.entityType !== "JobApplication" || !job.entityId) {
+    return "invitation formateur sans candidature liée — état invérifiable";
+  }
+  try {
+    const { motifRetenueInvitationFormateur } =
+      await import("@/server/qualiopi/formateurs-independants/invitation-formateurs-faits");
+    return await motifRetenueInvitationFormateur(job.entityId, job.template);
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -136,4 +158,10 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
 >([
   [GABARIT_RELANCE_INVITATION, relireRelanceInvitationApporteur],
   ...GABARITS_FORMATEUR_INDEPENDANT.map((g): [string, LecteurAuDepart] => [g, relireFormateur]),
+  // L-INV : l'invitation, ses rappels et le rattrapage relisent EN PLUS la candidature
+  // (réservé, répondu, décidé, fiche ouverte) — la dernière entrée d'une clé l'emporte.
+  ...GABARITS_INVITATION_FORMATEUR.map((g): [string, LecteurAuDepart] => [
+    g,
+    relireInvitationFormateur,
+  ]),
 ]);
