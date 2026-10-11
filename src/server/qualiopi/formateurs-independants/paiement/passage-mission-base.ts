@@ -11,7 +11,7 @@ import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul"
 import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verrou-remuneration";
 import { journaliser } from "@/server/journal/journaliser";
 
-import { jourDeColonneDate, jourParis } from "../argent/dates";
+import { jourDeColonneDate } from "../argent/dates";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
 
