@@ -12,12 +12,13 @@
  * et seulement RATTACHÉ à une candidature (marqueur ou adresse, `rattachement-formateur.ts`).
  *
  * 🔴 ÉTEINT À LA LIVRAISON : interrupteur `formateurs.suivi_echange` absent = aucun
- * passage, aucune lecture de la table. Un échange formateur ne reçoit alors, comme avant,
+ * passage, aucune lecture de `calendly_events` (seulement celle du réglage). Un échange formateur ne reçoit alors, comme avant,
  * que l'invitation d'agenda de Calendly.
  *
  * `maintenant` est un PARAMÈTRE (le banc l'appelle avec son horloge).
  */
 
+import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import type { Prisma } from "../../../prisma/generated/client";
@@ -197,6 +198,7 @@ export async function executerPassageFormateur(
     startTime: Date | null;
     location: string | null;
     linkedJobApplicationId: string | null;
+    linkedJobApplication: { email: string } | null;
   }>;
   try {
     lignes = await prisma.calendlyEvent.findMany({
@@ -204,7 +206,6 @@ export async function executerPassageFormateur(
         status: "scheduled",
         startTime,
         ...filtreNonEnvoye(p.marqueur),
-        inviteeEmail: { not: null },
         // Seul un échange RATTACHÉ à une candidature reçoit nos messages : le départ
         // (`relecture-au-depart.ts`) relit la fiche, et un échange « à vérifier » n'en a pas.
         linkedJobApplicationId: { not: null },
@@ -221,6 +222,9 @@ export async function executerPassageFormateur(
         startTime: true,
         location: true,
         linkedJobApplicationId: true,
+        // 🔴 Le destinataire est l'adresse de la CANDIDATURE, jamais `inviteeEmail` : la
+        // route publique `client-event` peut avoir écrit cette colonne avec une autre adresse.
+        linkedJobApplication: { select: { email: true } },
       },
     });
   } catch {
@@ -231,31 +235,44 @@ export async function executerPassageFormateur(
   const aTraiter = lignes.slice(0, PLAFOND_PAR_PASSAGE_FORMATEUR);
   let envoyes = 0;
   for (const rdv of aTraiter) {
-    if (!rdv.startTime || !rdv.inviteeEmail || !rdv.linkedJobApplicationId) continue;
-    let statut: string;
+    if (!rdv.startTime || !rdv.linkedJobApplicationId || !rdv.linkedJobApplication) continue;
+    let destinataire: string | null;
     try {
-      statut = await envoyer({
-        gabarit: p.gabarit,
-        destinataire: rdv.inviteeEmail,
-        payload: {
-          ...payloadEchange({ ...rdv, startTime: rdv.startTime }),
-          ...(p.etape ? { etape: p.etape } : {}),
-        },
-        entityType: "JobApplication",
-        entityId: rdv.linkedJobApplicationId,
-        // Hors du préfixe `fi-` des campagnes : un message d'échange n'est pas une relance.
-        jobId: `formateur-echange-${p.moment}-${rdv.id}`,
-      });
+      destinataire = decryptPii(rdv.linkedJobApplication.email).trim();
     } catch {
-      statut = "indisponible";
+      destinataire = null;
+    }
+    let statut: string;
+    if (!destinataire || destinataire.endsWith("@erased.local")) {
+      statut = "fiche-retiree";
+    } else {
+      try {
+        statut = await envoyer({
+          gabarit: p.gabarit,
+          destinataire,
+          payload: {
+            ...payloadEchange({ ...rdv, startTime: rdv.startTime }),
+            ...(p.etape ? { etape: p.etape } : {}),
+          },
+          entityType: "JobApplication",
+          entityId: rdv.linkedJobApplicationId,
+          // Hors du préfixe `fi-` des campagnes : un message d'échange n'est pas une relance.
+          jobId: `formateur-echange-${p.moment}-${rdv.id}`,
+        });
+      } catch {
+        statut = "indisponible";
+      }
     }
     // 🔴 Panne ou texte pas encore validé : AUCUN marqueur, on retente au passage suivant.
+    // Un texte non validé l'est pour toutes les lignes : on s'arrête. Une panne peut ne
+    // toucher qu'une ligne : on passe à la suivante, sans bloquer la file.
     // Tout autre refus (adresse retenue, fiche retirée…) est DÉFINITIF pour ce moment : le
     // marqueur est posé, sinon la même ligne serait retentée chaque minute.
     const envoye = statut === "envoye" || statut === "en-validation";
     if (!envoye) {
       refus[statut] = (refus[statut] ?? 0) + 1;
-      if (statut === "indisponible" || statut === "texte-non-valide") break;
+      if (statut === "texte-non-valide") break;
+      if (statut === "indisponible") continue;
     }
     try {
       await prisma.calendlyEvent.update({
@@ -278,7 +295,7 @@ export async function executerPassageFormateur(
   };
 }
 
-/** Les trois passages, dans l'ordre. Interrupteur coupé : rien, aucune lecture. */
+/** Les trois passages, dans l'ordre. Interrupteur coupé : rien (une lecture du réglage). */
 export async function envoyerMessagesEchangeFormateur(
   maintenant: Date,
   deps?: Partial<DependancesRappelsFormateur>,

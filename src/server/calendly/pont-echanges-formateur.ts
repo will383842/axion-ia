@@ -26,8 +26,11 @@ import { SEULS_ECHANGES_FORMATEUR } from "./rappels-echange-formateur";
 /** Le 13/10/2026, 0 h, heure de Paris : premier jour où le lien formateur a pu partir. */
 export const DEBUT_DU_PONT = new Date("2026-10-12T22:00:00.000Z");
 
-/** Au plus 50 relectures par geste (une requête à l'API Calendly chacune). */
-export const PLAFOND_RELECTURES_PONT = 50;
+/**
+ * Au plus 15 relectures par geste (une requête à l'API Calendly chacune) : le geste tient
+ * dans le délai d'une requête ; au-delà, on relance la relecture.
+ */
+export const PLAFOND_RELECTURES_PONT = 15;
 
 export type EtatEchangePont = "a_verifier" | "a_trancher" | "issue_notee" | "a_venir" | "annule";
 

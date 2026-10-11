@@ -151,13 +151,18 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
       }
     }
     // Famille `formateur` (lot F-CAL-2) : interrupteur `formateurs.suivi_echange` coupé =
-    // aucun passage, aucune lecture. Ne lève jamais.
+    // aucun passage (une lecture du réglage seulement). Ne lève jamais.
     try {
       for (const res of await envoyerMessagesEchangeFormateur(new Date())) {
         if (res.envoyes > 0) {
           console.warn(`[echange-formateur-${res.moment}] ${res.envoyes} message(s) envoye(s)`);
         }
         if (!res.ok) console.warn(`[echange-formateur-${res.moment}] passage en echec`);
+        // Des compteurs par motif, aucune donnée personnelle : un texte non validé ou un
+        // crochet non rempli se voit au lieu de se taire.
+        if (Object.keys(res.refus).length > 0) {
+          console.warn(`[echange-formateur-${res.moment}] refus ${JSON.stringify(res.refus)}`);
+        }
         if (res.plafondAtteint) {
           console.error(`[echange-formateur-${res.moment}] PLAFOND ATTEINT`);
         }
