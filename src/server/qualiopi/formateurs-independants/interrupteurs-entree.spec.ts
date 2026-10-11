@@ -38,4 +38,9 @@ describe("interrupteurs de l'entrée", () => {
     expect(cleSettingEntree("formulaire_freelance")).toBe("formateurs.formulaire_freelance");
     expect(etatsEntreeParDefaut().formulaire_freelance).toBe(false);
   });
+
+  it("L0h — le groupe de menu « Formateurs freelance », coupé par défaut", () => {
+    expect(cleSettingEntree("menu_freelance")).toBe("formateurs.menu_freelance");
+    expect(etatsEntreeParDefaut().menu_freelance).toBe(false);
+  });
 });
