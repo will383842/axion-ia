@@ -36,6 +36,7 @@ import {
 import { enRegistre, lireRegistreBase } from "@/features/conformite-rgpd/base";
 import { LIBELLE_ORIGINE, listerDemandes } from "@/features/conformite-rgpd/demandes";
 import { pastilleCnil } from "@/features/conformite-rgpd/incidents";
+import { salonIncidentsDedie } from "@/features/conformite-rgpd/incidents-alertes";
 import { listerIncidents } from "@/features/conformite-rgpd/incidents-base";
 import {
   compterOuverts,
@@ -518,6 +519,11 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
                 ) : null}
               </div>
             ) : null}
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+              {salonIncidentsDedie()
+                ? "Les alertes partent dans le salon Telegram « Incidents »."
+                : "Salon Telegram dédié non configuré : les alertes partent dans le salon général."}
+            </p>
             {admin && sp.nouveau === "1" ? (
               <FormulaireIncident libelle="Enregistrer l'incident" />
             ) : null}

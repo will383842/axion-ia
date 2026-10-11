@@ -43,6 +43,8 @@ import {
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
 import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
+import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import {
   parseCoFormateurs,
@@ -334,9 +336,62 @@ export async function createRecurringSessionsAction(
  *
  * @param input Paramètres du report.
  */
-export async function reportSessionAction(
-  input: z.infer<typeof reportSessionSchema>,
-): Promise<ActionResult<{ nouvelleSessionId: string; nouvelleSessionNumero: string }>> {
+/**
+ * Lot S2 (T7) — les co-formateurs d'une session reportée qui ne repassent PAS
+ * la garde du principal : fiche inactive, habilitation retirée, ou indépendant
+ * déjà pris aux nouvelles dates. Une lecture impossible écarte (on ne devine
+ * pas une habilitation).
+ */
+async function coFormateursNonReconductibles(
+  ancienne: {
+    formationId: string;
+    formateurPrincipalId: string | null;
+    coFormateurs: unknown;
+    sessionFormateurs: ReadonlyArray<{ trainerId: string; role: string }>;
+  },
+  cible: Parameters<typeof constaterDoubleEmploi>[1],
+): Promise<Set<string>> {
+  const ids = new Set(
+    [
+      ...ancienne.sessionFormateurs.filter((r) => r.role !== "principal").map((r) => r.trainerId),
+      ...parseCoFormateurs(ancienne.coFormateurs).map((e) => e.trainerId),
+    ].filter((id) => id !== ancienne.formateurPrincipalId),
+  );
+  const ecartes = new Set<string>();
+  for (const id of ids) {
+    try {
+      const trainer = await prisma.trainer.findUnique({
+        where: { id },
+        select: {
+          actif: true,
+          statut: true,
+          sousTraitantVerifieAt: true,
+          habilitations: { where: { ...HABILITATION_ACTIVE_WHERE }, select: { formationId: true } },
+        },
+      });
+      const garde =
+        trainer !== null &&
+        isTrainerHabilite(
+          { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+          ancienne.formationId,
+        ).ok &&
+        !(trainer.statut === "sous_traitant" && (await constaterDoubleEmploi(id, cible)) !== null);
+      if (!garde) ecartes.add(id);
+    } catch {
+      ecartes.add(id);
+    }
+  }
+  return ecartes;
+}
+
+export async function reportSessionAction(input: z.infer<typeof reportSessionSchema>): Promise<
+  ActionResult<{
+    nouvelleSessionId: string;
+    nouvelleSessionNumero: string;
+    /** Lot S2 — présent seulement interrupteur allumé et chevauchement signalé. */
+    avertissements?: string[];
+  }>
+> {
   const adminSession = await requireAdminWrite();
   const parsed = reportSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -486,7 +541,20 @@ export async function reportSessionAction(
   // remplacement doit exister quoi qu'il arrive. Le formateur est simplement
   // omis — et l'alerte `session_sans_formateur` lève alors À BON DROIT : elle
   // NOMME ce qu'il reste à faire, là où une recopie l'aurait tue.
+  // Lot S2 (N5, T7) — interrupteur `formateurs.affectation_sure`. Arrêté : le
+  // report se comporte exactement comme avant S2.
+  const affectationSure = await interrupteurAllume("affectation_sure");
+  /** Les dates de la session de remplacement, pour le contrôle de double emploi. */
+  const cibleReport = {
+    // L'ancienne session elle-même est exclue : elle passe à `reportee`.
+    key: `formation:${ancienne.id}`,
+    debut: v.nouvelleDateDebut,
+    fin: v.nouvelleDateFin,
+    statut: "planifiee" as const,
+  };
   let formateurRetenuId: string | null = null;
+  /** Lot S2 (N5) — double emploi d'un salarié reconduit : signalé, jamais bloquant. */
+  const avertissementsReport: string[] = [];
   if (ancienne.formateurPrincipalId !== null) {
     try {
       const trainer = await prisma.trainer.findUnique({
@@ -510,7 +578,25 @@ export async function reportSessionAction(
           ancienne.formationId,
         ).ok
       ) {
-        formateurRetenuId = ancienne.formateurPrincipalId;
+        // 🔴 N5 (lot S2) — un indépendant déjà pris aux NOUVELLES dates n'est pas
+        // réinstallé : la session part sans formateur, et l'alerte le dit. Un
+        // salarié est reconduit, et le chevauchement est signalé.
+        if (affectationSure && trainer.statut === "sous_traitant") {
+          // Planning illisible : l'exception remonte au `catch` ci-dessous, et
+          // l'indépendant n'est pas reconduit (on ne devine pas).
+          if ((await constaterDoubleEmploi(ancienne.formateurPrincipalId, cibleReport)) === null) {
+            formateurRetenuId = ancienne.formateurPrincipalId;
+          }
+        } else {
+          formateurRetenuId = ancienne.formateurPrincipalId;
+          if (affectationSure) {
+            const conflit = await constaterDoubleEmploi(
+              ancienne.formateurPrincipalId,
+              cibleReport,
+            ).catch(() => null);
+            if (conflit !== null) avertissementsReport.push(`Attention : ${conflit}`);
+          }
+        }
       }
     } catch {
       // Lecture indisponible : on ne DEVINE pas une habilitation. La session part
@@ -527,9 +613,19 @@ export async function reportSessionAction(
   // principal que la garde vient d'écarter : `resolvePrincipalTrainerId` retombe
   // dessus quand la FK est nulle, et les documents nominatifs (convention,
   // convocation, émargement) le nommeraient quand même.
+  //
+  // 🔴 T7 (lot S2) — les CO-FORMATEURS étaient recopiés sans aucune garde : le
+  // report réinstallait un co-animateur désactivé, déshabilité ou déjà pris aux
+  // nouvelles dates. Chacun repasse la garde du principal ; celui qui échoue
+  // n'est pas reconduit.
+  const coEcartes = affectationSure
+    ? await coFormateursNonReconductibles(ancienne, cibleReport)
+    : new Set<string>();
   const coFormateursReportes =
-    formateurEcarteId !== null
-      ? parseCoFormateurs(ancienne.coFormateurs).filter((e) => e.trainerId !== formateurEcarteId)
+    formateurEcarteId !== null || coEcartes.size > 0
+      ? parseCoFormateurs(ancienne.coFormateurs).filter(
+          (e) => e.trainerId !== formateurEcarteId && !coEcartes.has(e.trainerId),
+        )
       : ancienne.coFormateurs;
 
   // Allouer le numéro de la nouvelle session (sans suffixe de récurrence)
@@ -614,7 +710,7 @@ export async function reportSessionAction(
       // ces deux lectures : un troisième état où deux tables du même dossier se
       // contredisent.
       const rowsFormateurs = ancienne!.sessionFormateurs.filter(
-        (r) => r.trainerId !== formateurEcarteId,
+        (r) => r.trainerId !== formateurEcarteId && !coEcartes.has(r.trainerId),
       );
       if (rowsFormateurs.length > 0) {
         await tx.sessionFormateur.createMany({
@@ -824,5 +920,11 @@ export async function reportSessionAction(
     session: adminSession,
   });
 
-  return { data: { nouvelleSessionId, nouvelleSessionNumero } };
+  return {
+    data: {
+      nouvelleSessionId,
+      nouvelleSessionNumero,
+      ...(avertissementsReport.length > 0 ? { avertissements: avertissementsReport } : {}),
+    },
+  };
 }

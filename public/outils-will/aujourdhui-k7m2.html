@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Post du jour</title>
+<style>
+:root{--bg:#F7F2EA;--surface:#FFFDF9;--fg:#1E1611;--muted:#6B5D52;--line:#E4D8C8;--accent:#B44F29;--ok:#3F6B4A;--doux:#F3E2D7}
+@media (prefers-color-scheme:dark){:root{--bg:#110A05;--surface:#1C130D;--fg:#E9DCC8;--muted:#BFA88B;--line:#3A2B20;--accent:#C9643B;--ok:#4F8A5E;--doux:#2E1B11;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 16px 70px}
+.wrap{max-width:560px;margin:0 auto;display:grid;gap:16px}
+h1{font-size:1.6rem;margin:0}
+h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:18px 0 0}
+p{margin:0}
+.muted{color:var(--muted);font-size:.93rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.badge{justify-self:start;font:700 .72rem system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;background:var(--doux);color:var(--accent);border-radius:99px;padding:4px 10px}
+.nom{font-weight:700;font-size:1.15rem;line-height:1.25}
+.etape{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.num{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.etape>div{display:grid;gap:8px;min-width:0}
+img.visuel{width:100%;border-radius:10px;display:block}
+pre{white-space:pre-wrap;margin:0;font:inherit;font-size:.93rem;background:var(--doux);border-radius:10px;padding:12px;max-height:190px;overflow:auto}
+button,a.btn{display:block;width:100%;min-height:50px;font:600 1rem system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 16px;cursor:pointer;text-align:center;text-decoration:none}
+a.sec{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+button.ok{background:var(--ok)}
+button.lien{background:none;border:0;color:var(--muted);text-decoration:underline;min-height:0;padding:6px;font-weight:400;font-size:.93rem}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.fait{text-align:center;padding:26px 16px}
+.fait b{display:block;font-size:1.3rem;margin-bottom:6px}
+.g{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.g:first-of-type{border-top:0}
+.g .n{font-weight:600;line-height:1.25}
+.g a{color:var(--accent);font-size:.93rem}
+.g label{display:flex;align-items:center;gap:8px;font-size:.93rem;white-space:nowrap}
+.g input{width:26px;height:26px;accent-color:var(--ok)}
+#verrou{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;padding:24px;z-index:10}
+#verrou form{display:grid;gap:14px;width:min(100%,320px);text-align:center}
+#verrou label{font-weight:700;font-size:1.15rem}
+#code{font:600 1.6rem system-ui,sans-serif;letter-spacing:.4em;text-align:center;padding:12px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);width:100%}
+#erreur{color:var(--accent);min-height:1.4em;margin:0;font-size:.95rem}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="verrou">
+  <form id="f-code" autocomplete="off">
+    <label for="code">Code d'accès</label>
+    <input id="code" name="code" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autofocus>
+    <p id="erreur" role="alert"></p>
+    <button type="submit">Ouvrir</button>
+  </form>
+</div>
+
+<div class="wrap" id="contenu" hidden>
+  <h1>Post du jour</h1>
+  <p class="muted">Un seul post par jour, dans un seul groupe. Jamais deux fois le même groupe en moins de 3 semaines.</p>
+
+  <div id="jour"></div>
+
+  <h2>Mes groupes</h2>
+  <p class="muted">Ouvrez chaque groupe et demandez à entrer. Quand vous êtes accepté, cochez la case : le groupe entre dans la rotation.</p>
+  <div class="card" id="liste"></div>
+
+  <a class="btn sec" href="reponses-facebook-k7m2.html">Réponses à copier (commentaires et Messenger)</a>
+</div>
+
+<script>
+// Verrou simple (pas une protection forte) : même code que la page des réponses.
+var EMPREINTE = "fee3fc453b5ce356860aa4ac62057dbdffe1d42560a7f5f6996e9e3fafe571a8";
+var PAUSE_JOURS = 21;
+var BASE = "https://axion-ia.com/fr/apporteur-affaires/video";
+
+var GROUPES = [
+  {id:"li-1531947", r:"LinkedIn", f:"conseil", n:"Consultants, Indépendants, Freelance, Portage Salarial", m:"32 555", u:"https://www.linkedin.com/groups/1531947"},
+  {id:"li-2532892", r:"LinkedIn", f:"compta", n:"Experts-comptables et professionnels du Chiffre", m:"54 633", u:"https://www.linkedin.com/groups/2532892"},
+  {id:"li-2604987", r:"LinkedIn", f:"transition", n:"Le Management de Transition", m:"36 067", u:"https://www.linkedin.com/groups/2604987"},
+  {id:"fb-9369773246438202", r:"Facebook", f:"apporteurs", n:"Réseau Apporteurs d'Affaires France", m:"9 500", u:"https://www.facebook.com/groups/9369773246438202"},
+  {id:"li-3676175", r:"LinkedIn", f:"agents", n:"Agent Co", m:"2 226", u:"https://www.linkedin.com/groups/3676175"},
+  {id:"li-2938597", r:"LinkedIn", f:"patrimoine", n:"Rhinoceros, le Cercle d'échanges de la Gestion de Patrimoine", m:"6 150", u:"https://www.linkedin.com/groups/2938597"},
+  {id:"li-12866216", r:"LinkedIn", f:"conseil", n:"Entre Free-lance & Portage Salarial à Paris", m:"4 179", u:"https://www.linkedin.com/groups/12866216"},
+  {id:"fb-373277632765320", r:"Facebook", f:"apporteurs", n:"LES APPORTEURS D'AFFAIRES", m:"12 100", u:"https://www.facebook.com/groups/373277632765320"},
+  {id:"li-9373193", r:"LinkedIn", f:"transition", n:"Opportunités Cadres & Dirigeants | Management de Transition", m:"2 293", u:"https://www.linkedin.com/groups/9373193"},
+  {id:"li-8462983", r:"LinkedIn", f:"rh", n:"Communauté RH en France", m:"4 109", u:"https://www.linkedin.com/groups/8462983"},
+  {id:"li-2698336", r:"LinkedIn", f:"conseil", n:"Consultants indépendants", m:"2 620", u:"https://www.linkedin.com/groups/2698336"},
+  {id:"li-7441152", r:"LinkedIn", f:"compta", n:"IFEC - Institut Français des Experts-Comptables", m:"1 717", u:"https://www.linkedin.com/groups/7441152"},
+  {id:"fb-agentscommerciaux", r:"Facebook", f:"apporteurs", n:"Agent commercial, VRP multicartes, apporteur d'affaire", m:"9 900", u:"https://www.facebook.com/groups/agentscommerciaux"},
+  {id:"li-8313993", r:"LinkedIn", f:"transition", n:"Parlons Management de Transition", m:"1 479", u:"https://www.linkedin.com/groups/8313993"},
+  {id:"li-12650127", r:"LinkedIn", f:"agents", n:"Agents Commerciaux & Entreprises", m:"824", u:"https://www.linkedin.com/groups/12650127"},
+  {id:"li-8130888", r:"LinkedIn", f:"conseil", n:"Club des Nouveaux Entrepreneurs (CNE) de Paris Île-de-France", m:"1 557", u:"https://www.linkedin.com/groups/8130888"},
+  {id:"fb-1754946468307175", r:"Facebook", f:"apporteurs", n:"LES APPORTEUR D'AFFAIRES", m:"6 200", u:"https://www.facebook.com/groups/1754946468307175"},
+  {id:"li-10011898", r:"LinkedIn", f:"transition", n:"Management de Transition Connect : Talents & Recruteurs", m:"1 167", u:"https://www.linkedin.com/groups/10011898"},
+  {id:"fb-3367077880231046", r:"Facebook", f:"apporteurs", n:"COMMERCIAUX INDÉPENDANTS", m:"6 700", u:"https://www.facebook.com/groups/3367077880231046"}
+];
+
+var FIN = "\n\n500 € HT par journée de formation que nous réalisons, 30 % sur les audits, 15 % sur les automatisations. La commission est versée une fois la prestation réalisée et réglée par l'entreprise.\n\nAucune compétence en IA nécessaire. Sans exclusivité, aucun frais d'entrée, partout en France.\n\nTout est expliqué en 2 minutes : ";
+
+var FAMILLES = {
+  apporteurs: {v:[1,3,4,5,2], t:"Apporteurs d'affaires : ajoutez l'IA à ce que vous recommandez.\n\nVous connaissez des dirigeants, des DRH ou des DSI, en TPE, PME, ETI ou grand groupe ? Présentez-leur Axion-IA. Votre rôle s'arrête quand ils réservent un appel avec nous. Ensuite, c'est nous : proposition, réalisation, facturation."},
+  agents: {v:[2,3,4,1,5], t:"Vous représentez déjà plusieurs partenaires auprès de dirigeants ? Ajoutez l'IA.\n\nVous présentez Axion-IA à un dirigeant, un DRH ou un DSI que vous connaissez. Votre rôle s'arrête quand il réserve un appel avec nous. Ensuite, c'est nous : proposition, réalisation, facturation."},
+  conseil: {v:[4,2,5,3,1], t:"Consultants et indépendants : vos clients vous demandent par où commencer avec l'IA ?\n\nVous n'avez pas à devenir spécialiste. Présentez-leur Axion-IA : nous formons leurs équipes, nous réalisons les audits et les automatisations. Votre rôle s'arrête quand votre client réserve un appel avec nous."},
+  compta: {v:[4,5,2], t:"Experts-comptables : vos clients dirigeants vous interrogent sur l'IA ?\n\nVous êtes souvent la première personne à qui ils en parlent. Présentez-leur Axion-IA : nous formons leurs équipes, nous réalisons les audits et les automatisations. Votre rôle s'arrête quand votre client réserve un appel avec nous."},
+  transition: {v:[4,5,2], t:"Managers de transition : pendant vos missions, les équipes demandent à être formées à l'IA ?\n\nVous n'avez pas à le porter vous-même. Présentez Axion-IA au dirigeant : nous formons les équipes, nous réalisons les audits et les automatisations. Votre rôle s'arrête quand il réserve un appel avec nous."},
+  rh: {v:[4,5,2], t:"Consultants et indépendants RH : les entreprises que vous accompagnez cherchent à former leurs équipes à l'IA ?\n\nPrésentez-leur Axion-IA : nous formons les équipes, partout en France. Votre rôle s'arrête quand l'entreprise réserve un appel avec nous."},
+  patrimoine: {v:[4,5,2], t:"Conseillers en gestion de patrimoine : vos clients dirigeants vous parlent d'IA pour leur entreprise ?\n\nPrésentez-leur Axion-IA : nous formons leurs équipes, nous réalisons les audits et les automatisations. Votre rôle s'arrête quand votre client réserve un appel avec nous."}
+};
+
+// Ce qui est coché et publié reste dans le téléphone (rien n'est envoyé au site).
+var etat = {acc:{}, pub:{}, saut:{}, n:0};
+try { var s = JSON.parse(localStorage.getItem("axion-post-du-jour") || "null"); if (s) { etat = s; etat.acc = etat.acc || {}; etat.pub = etat.pub || {}; etat.saut = etat.saut || {}; etat.n = etat.n || 0; } } catch (e) {}
+function garder(){ try { localStorage.setItem("axion-post-du-jour", JSON.stringify(etat)); } catch (e) {} }
+function jour(d){ return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+function ecart(a){ return Math.round((new Date(jour(new Date())) - new Date(a)) / 86400000); }
+function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+function lien(g){ return BASE + "?utm_source=" + g.r.toLowerCase() + "&utm_medium=groupe&utm_campaign=app-groupes-2026-10&utm_content=groupe-" + g.f; }
+function texte(g){ return FAMILLES[g.f].t + FIN + lien(g); }
+function visuel(g){ var v = FAMILLES[g.f].v; return "visuels/g" + v[etat.n % v.length] + ".jpg"; }
+
+function prochain(){
+  var auj = jour(new Date());
+  var dispo = GROUPES.filter(function(g){ return etat.acc[g.id] && etat.saut[g.id] !== auj && (!etat.pub[g.id] || ecart(etat.pub[g.id]) >= PAUSE_JOURS); });
+  dispo.sort(function(a, b){ var x = etat.pub[a.id] || "", y = etat.pub[b.id] || ""; return x < y ? -1 : x > y ? 1 : 0; });
+  return dispo[0];
+}
+
+function etape(n, contenu){ var e = el("div", "etape"); e.appendChild(el("div", "num", String(n))); var d = el("div"); contenu.forEach(function(c){ d.appendChild(c); }); e.appendChild(d); return e; }
+
+function afficherJour(){
+  var zone = document.getElementById("jour"); zone.textContent = "";
+  var auj = jour(new Date());
+  var faitAuj = Object.keys(etat.pub).some(function(k){ return etat.pub[k] === auj; });
+  var carte = el("div", "card");
+  if (faitAuj) {
+    carte.className = "card fait"; carte.appendChild(el("b", null, "C'est fait pour aujourd'hui.")); carte.appendChild(el("p", "muted", "Prochain post demain. Pensez à répondre aux commentaires avec « Réponses à copier »."));
+    zone.appendChild(carte); return;
+  }
+  var g = prochain();
+  if (!g) {
+    carte.className = "card fait";
+    var nb = GROUPES.filter(function(x){ return etat.acc[x.id]; }).length;
+    if (!nb) { carte.appendChild(el("b", null, "Première étape : entrer dans les groupes.")); carte.appendChild(el("p", "muted", "Demandez à entrer dans les groupes ci-dessous. Dès qu'un groupe vous accepte, cochez-le : le post du jour apparaît ici.")); }
+    else { carte.appendChild(el("b", null, "Rien à publier aujourd'hui.")); carte.appendChild(el("p", "muted", "Tous vos groupes acceptés ont reçu leur post il y a moins de 3 semaines. Cochez de nouveaux groupes pour continuer.")); }
+    zone.appendChild(carte); return;
+  }
+  carte.appendChild(el("span", "badge", g.r));
+  carte.appendChild(el("div", "nom", g.n));
+
+  var img = el("img", "visuel"); img.src = visuel(g); img.alt = "Visuel du jour";
+  var bImg = el("button", null, "Enregistrer l'image");
+  bImg.addEventListener("click", function(){
+    fetch(img.src).then(function(r){ return r.blob(); }).then(function(b){
+      var f = new File([b], "axion-ia-apporteur.jpg", {type:"image/jpeg"});
+      if (navigator.canShare && navigator.canShare({files:[f]})) { return navigator.share({files:[f]}); }
+      var a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "axion-ia-apporteur.jpg"; document.body.appendChild(a); a.click(); a.remove();
+    }).catch(function(){});
+  });
+  carte.appendChild(etape(1, [img, bImg, el("p", "muted", "Sur iPhone : choisissez « Enregistrer l'image ».")]));
+
+  var pre = el("pre", null, texte(g));
+  var bTxt = el("button", null, "Copier le texte");
+  bTxt.addEventListener("click", function(){
+    var fini = function(){ bTxt.textContent = "Texte copié"; bTxt.classList.add("ok"); setTimeout(function(){ bTxt.textContent = "Copier le texte"; bTxt.classList.remove("ok"); }, 1800); };
+    var t = pre.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(fini, function(){ repli(t); fini(); }); } else { repli(t); fini(); }
+  });
+  carte.appendChild(etape(2, [pre, bTxt]));
+
+  var bGrp = el("a", "btn", "Ouvrir le groupe"); bGrp.href = g.u; bGrp.target = "_blank"; bGrp.rel = "noopener";
+  carte.appendChild(etape(3, [bGrp, el("p", "muted", "Dans le groupe : nouveau post, collez le texte, ajoutez l'image, publiez.")]));
+
+  var bOk = el("button", "ok", "C'est publié");
+  bOk.addEventListener("click", function(){ etat.pub[g.id] = auj; etat.n += 1; garder(); afficherJour(); afficherListe(); });
+  var bAutre = el("button", "lien", "Proposer un autre groupe aujourd'hui");
+  bAutre.addEventListener("click", function(){ etat.saut[g.id] = auj; garder(); afficherJour(); });
+  carte.appendChild(etape(4, [bOk, bAutre]));
+  zone.appendChild(carte);
+}
+
+function afficherListe(){
+  var zone = document.getElementById("liste"); zone.textContent = "";
+  GROUPES.forEach(function(g){
+    var l = el("div", "g"); var d = el("div");
+    d.appendChild(el("div", "n", g.n));
+    var info = g.r + " · " + g.m + " membres" + (etat.pub[g.id] ? " · publié le " + etat.pub[g.id].split("-").reverse().join("/") : "");
+    d.appendChild(el("div", "muted", info));
+    var a = el("a", null, "Ouvrir le groupe"); a.href = g.u; a.target = "_blank"; a.rel = "noopener"; d.appendChild(a);
+    var lab = el("label"); var c = document.createElement("input"); c.type = "checkbox"; c.checked = !!etat.acc[g.id];
+    c.addEventListener("change", function(){ if (c.checked) etat.acc[g.id] = true; else delete etat.acc[g.id]; garder(); afficherJour(); });
+    lab.appendChild(c); lab.appendChild(document.createTextNode("Accepté"));
+    l.appendChild(d); l.appendChild(lab); zone.appendChild(l);
+  });
+}
+
+function repli(t){ var a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) {} a.remove(); }
+function ouvrir(){ document.getElementById("verrou").hidden = true; document.getElementById("contenu").hidden = false; afficherJour(); afficherListe(); }
+function empreinte(s){ return crypto.subtle.digest("SHA-256", new TextEncoder().encode("axion-reponses:" + s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join(""); }); }
+document.getElementById("f-code").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var c = document.getElementById("code");
+  empreinte(c.value.trim()).then(function(h){
+    if (h === EMPREINTE) { ouvrir(); }
+    else { document.getElementById("erreur").textContent = "Code incorrect."; c.value = ""; c.focus(); }
+  });
+});
+</script>
+</body>
+</html>

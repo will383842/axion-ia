@@ -79,6 +79,7 @@ import {
 import { besoinDuBrut, estColonneTypeRendezVousAbsente } from "@/server/calendly/type-rendez-vous";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { enqueueEmail } from "@/server/queue/queues";
+import { lienConsole, prenomEtInitialeDepuisNomComplet } from "@/server/notifications/personne";
 import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
 import type { MomentSalon } from "@/lib/email/templates/rdv-salon";
 
@@ -536,7 +537,7 @@ export async function executerPassage(
                 `Rendez-vous en VISIO dans une heure, sans lien de connexion.
 
 ` +
-                `Invité : ${rdv.inviteeName ?? "(inconnu)"}
+                `Invité : ${prenomEtInitialeDepuisNomComplet(rdv.inviteeName)}
 ` +
                 `Heure : ${heureParis(rdv.startTime)} (heure de Paris)
 
@@ -544,7 +545,8 @@ export async function executerPassage(
                 `Calendly n'a pas créé le lien de réunion, ou ne l'a pas transmis. ` +
                 `Le prospect a reçu ses e-mails et sera renvoyé vers l'invitation ` +
                 `d'agenda. Vérifier la connexion Google Agenda côté Calendly, et ` +
-                `au besoin envoyer un lien à la main.`,
+                `au besoin envoyer un lien à la main.\n\n` +
+                `Voir la fiche : ${lienConsole(`contacts/appels/${rdv.id}`)}`,
             },
           },
           // Une par rendez-vous : le passage H-1 repasse toutes les quelques
