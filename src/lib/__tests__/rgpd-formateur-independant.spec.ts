@@ -158,6 +158,13 @@ describe("eraseFormateurIndependantForEmail — art. 17", () => {
     expect(m.contenuDeleteMany).not.toHaveBeenCalled();
   });
 
+  it("réglage illisible (base en panne) → « illisible », jamais « éteint » en silence", async () => {
+    m.setting.mockRejectedValue(new Error("connexion perdue"));
+    const r = await eraseFormateurIndependantForEmail(EMAIL);
+    expect(r.formateur).toBe("illisible");
+    expect(m.trainerUpdate).not.toHaveBeenCalled();
+  });
+
   it("aucune fiche → aucun effet", async () => {
     m.trainerFindFirst.mockResolvedValue(null);
     expect((await eraseFormateurIndependantForEmail(EMAIL)).formateur).toBe("aucun");
@@ -175,7 +182,10 @@ describe("eraseFormateurIndependantForEmail — art. 17", () => {
     expect(data.iban).toBeNull();
     expect(data.ibanEmpreinte).toBeNull();
     expect(data.emailHash).toBeNull();
-    expect(String(data.email)).toMatch(/^erased:[0-9a-f]+@erased\.local$/);
+    // Par l'identifiant : deux effacements de la même adresse ne se heurtent pas.
+    expect(data.email).toBe(`erased:${ID}@erased.local`);
+    expect(data.numeroTvaIntracom).toBeNull();
+    expect(data.sousTraitantNda).toBeNull();
     expect(data.accesVersion).toEqual({ increment: 1 });
   });
 

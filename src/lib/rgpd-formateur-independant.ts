@@ -13,8 +13,7 @@
 // · la fiche `Trainer` n'est JAMAIS supprimée : elle porte les missions, les
 //   relevés, les preuves de vigilance (5 ans après la fin) et les autofactures.
 
-import { createHash } from "node:crypto";
-
+import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { cleSetting, lireValeur } from "@/server/qualiopi/formateurs-independants/interrupteurs";
@@ -22,17 +21,26 @@ import { cleSetting, lireValeur } from "@/server/qualiopi/formateurs-independant
 /** Marqueur d'effacement (même valeur que `rgpd-erase.ts`). */
 const EFFACE = "[erased-rgpd-art17]";
 
-/** L'interrupteur `dossier_en_ligne` est-il allumé ? Absent, illisible ou en panne = non. */
-export async function droitsFormateurActifs(): Promise<boolean> {
+export type EtatDroitsFormateur = "actif" | "eteint" | "illisible";
+
+/**
+ * L'interrupteur `dossier_en_ligne` : absent ou illisible en VALEUR = éteint ;
+ * base injoignable = `illisible` (l'effacement le dit, il ne se déclare pas fait).
+ */
+export async function etatDroitsFormateur(): Promise<EtatDroitsFormateur> {
   try {
     const ligne = await prisma.setting.findUnique({
       where: { key: cleSetting("dossier_en_ligne") },
       select: { value: true },
     });
-    return lireValeur("dossier_en_ligne", ligne?.value).valeur === true;
+    return lireValeur("dossier_en_ligne", ligne?.value).valeur === true ? "actif" : "eteint";
   } catch {
-    return false;
+    return "illisible";
   }
+}
+
+async function droitsFormateurActifs(): Promise<boolean> {
+  return (await etatDroitsFormateur()) === "actif";
 }
 
 /** « FR76 •••• •••• 0189 » : jamais l'IBAN entier. */
@@ -242,13 +250,8 @@ export function aUnLienContractuel(f: FicheLien): boolean {
   return Object.values(f._count).some((n) => n > 0);
 }
 
-function empreinteCourte(email: string): string {
-  const salt = process.env.IP_HASH_SALT ?? "axion-ia-rgpd-erase";
-  return createHash("sha256").update(`${salt}::${email}`).digest("hex").slice(0, 16);
-}
-
 export interface EraseFormateurIndependantResult {
-  formateur: "eteint" | "aucun" | "efface" | "conserve_obligation_legale";
+  formateur: "eteint" | "illisible" | "aucun" | "efface" | "conserve_obligation_legale";
   octetsSupprimes: number;
 }
 
@@ -262,7 +265,9 @@ export interface EraseFormateurIndependantResult {
 export async function eraseFormateurIndependantForEmail(
   email: string,
 ): Promise<EraseFormateurIndependantResult> {
-  if (!(await droitsFormateurActifs())) return { formateur: "eteint", octetsSupprimes: 0 };
+  const etat = await etatDroitsFormateur();
+  // `illisible` remonte au journal de l'effacement : jamais déclaré fait en silence.
+  if (etat !== "actif") return { formateur: etat, octetsSupprimes: 0 };
   const t = await prisma.trainer.findFirst({
     where: ficheIndependante(email),
     select: {
@@ -287,19 +292,28 @@ export async function eraseFormateurIndependantForEmail(
     }
     await tx.trainerDocument.updateMany({
       where: { trainerId: t.id },
-      data: { fichierUrl: null, notes: null, numeroPiece: null },
+      data: { fichierUrl: null, notes: null, numeroPiece: null, rejetMotif: null },
     });
     await tx.trainer.update({
       where: { id: t.id },
       data: {
         prenom: EFFACE,
         nom: EFFACE,
-        email: `erased:${empreinteCourte(email.toLowerCase())}@erased.local`,
+        // Par l'IDENTIFIANT de la fiche : une même adresse effacée deux fois
+        // (recandidature) ne heurte jamais l'unicité de `trainers.email`.
+        email: `erased:${t.id}@erased.local`,
         emailHash: null,
         telephone: null,
         iban: null,
         ibanEmpreinte: null,
         siret: null,
+        // Le numéro de TVA d'une entreprise individuelle contient son SIREN.
+        numeroTvaIntracom: null,
+        sousTraitantNda: null,
+        sousTraitantScreenshotUrl: null,
+        rcProAttestationUrl: null,
+        declarations: PrismaRuntime.DbNull,
+        region: null,
         adresseProfessionnelle: null,
         adressePersonnelle: null,
         codePostalPro: null,
