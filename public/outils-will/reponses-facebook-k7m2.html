@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Réponses">
+<meta name="theme-color" content="#B44F29">
+<link rel="apple-touch-icon" href="/logo-axion-ia.png">
+<title>Réponses à copier</title>
+<style>
+:root{--bg:#F7F2EA;--surface:#FFFDF9;--fg:#1E1611;--muted:#6B5D52;--line:#E4D8C8;--accent:#B44F29;--ok:#3F6B4A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(28px,env(safe-area-inset-top)) 16px 60px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:18px}
+h1{font-size:1.7rem;margin:0}
+.lead{color:var(--muted);margin:0}
+h2{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:14px 0 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.q{font-weight:700}
+.t{white-space:pre-wrap;margin:0;font:inherit}
+button{justify-self:stretch;min-height:48px;font:600 .92rem system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 16px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+button.ok{background:var(--ok)}
+.rule{font-size:.9rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Réponses à copier</h1>
+  <p class="lead">Pour Messenger et pour les commentaires sous les pubs. Un clic sur « Copier », puis collez dans Facebook. Textes validés le 11 octobre 2026.</p>
+
+  <h2>Sous un commentaire de pub</h2>
+  <div class="card">
+    <div class="q">Quelqu'un commente « intéressé », « infos ? », « comment faire ? »</div>
+    <pre class="t" id="r0">Bonjour, merci pour votre commentaire !
+
+Le principe : vous parlez d'Axion-IA aux dirigeants, DRH ou DSI que vous connaissez, en entreprise, de la TPE au grand groupe. Quand ils réservent un appel avec nous, votre rôle est terminé. Commission : 500 € HT par journée de formation réalisée, 30 % sur les audits, 15 % sur les automatisations.
+
+Tout est expliqué ici, en 2 minutes : https://axion-ia.com/fr/apporteur-affaires/video?utm_source=facebook&utm_content=commentaire-pub</pre>
+    <button data-c="r0">Copier</button>
+  </div>
+
+  <h2>Dans Messenger</h2>
+  <div class="card">
+    <div class="q">« Combien ça rapporte ? »</div>
+    <pre class="t" id="r1">500 € HT par journée de formation réalisée chez une entreprise que vous nous avez présentée. 30 % sur les audits. 15 % sur les automatisations. Les conditions exactes sont dans le contrat, que vous lisez avant de signer.</pre>
+    <button data-c="r1">Copier</button>
+  </div>
+  <div class="card">
+    <div class="q">« Que dois-je faire exactement ? »</div>
+    <pre class="t" id="r2">Parler d'Axion-IA aux dirigeants, DRH ou DSI que vous connaissez, en entreprise, de la TPE au grand groupe, jusqu'à ce qu'ils réservent un appel avec nous. Ensuite, c'est nous : proposition, formation, facturation. Aucune compétence en IA n'est nécessaire.</pre>
+    <button data-c="r2">Copier</button>
+  </div>
+  <div class="card">
+    <div class="q">« Y a-t-il un engagement ? »</div>
+    <pre class="t" id="r3">Aucun frais d'entrée, aucun quota, aucune exclusivité : vous gardez vos autres partenaires. Vous présentez qui vous voulez, quand vous voulez.</pre>
+    <button data-c="r3">Copier</button>
+  </div>
+  <div class="card">
+    <div class="q">« Comment commencer ? »</div>
+    <pre class="t" id="r4">En 2 minutes sur cette page : https://axion-ia.com/fr/apporteur-affaires/video?utm_source=facebook&utm_content=messenger
+Vous laissez vos coordonnées, puis nous faisons connaissance lors d'un échange de 15 minutes en visio.</pre>
+    <button data-c="r4">Copier</button>
+  </div>
+
+  <p class="rule">À ne jamais écrire : « gain garanti », Grenoble, « démarcher », « prospecter », « vendre », « commercial », « candidature », ni un revenu mensuel estimé.</p>
+</div>
+<script>
+document.querySelectorAll("button[data-c]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var t = document.getElementById(b.dataset.c).textContent;
+    var fini = function(){ b.textContent = "Copié"; b.classList.add("ok"); setTimeout(function(){ b.textContent = "Copier"; b.classList.remove("ok"); }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(fini, function(){ repli(t); fini(); }); }
+    else { repli(t); fini(); }
+  });
+});
+function repli(t){ var a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) {} a.remove(); }
+</script>
+</body>
+</html>
