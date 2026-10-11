@@ -20,11 +20,15 @@ import {
   lireMissionParJeton,
   LIBELLE_STATUT_MISSION,
   MOTIF_REFUS_MIN,
+  refusLibrePour,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { MissionReponseForm } from "@/components/espace-formateur/MissionReponseForm";
 import { MissionMessageApresDelai } from "@/components/espace-formateur/MissionMessageApresDelai";
 import { ecrireApresDelaiAction } from "@/server/actions/qualiopi/mission-formateur";
-import { SUITE_APRES_REPONSE } from "@/components/espace-formateur/mission-copy";
+import {
+  REPONSE_ENREGISTREE,
+  SUITE_APRES_REPONSE,
+} from "@/components/espace-formateur/mission-copy";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 
@@ -49,6 +53,8 @@ export default async function Page({
 }): Promise<React.ReactElement> {
   const { token } = await params;
   const mission = await lireMissionParJeton(token);
+  // Lot S2 (S-UX-6) — refus d'un indépendant sans motif exigé (interrupteur).
+  const refusLibre = mission !== null && (await refusLibrePour(mission.trainer.id));
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -129,8 +135,13 @@ export default async function Page({
             {mission.statut === "en_attente" && !mission.delaiDepasse ? (
               <MissionReponseForm
                 cible={{ token }}
-                resume="Acceptez-vous d'animer cette session ? Un refus doit être motivé : il nous aide à réaffecter la session rapidement."
+                resume={
+                  refusLibre
+                    ? "Acceptez-vous d'animer cette session ?"
+                    : "Acceptez-vous d'animer cette session ? Un refus doit être motivé : il nous aide à réaffecter la session rapidement."
+                }
                 motifMin={MOTIF_REFUS_MIN}
+                refusLibre={refusLibre}
               />
             ) : (
               /*
@@ -143,20 +154,24 @@ export default async function Page({
               <>
                 <div role="status" className="border-border rounded-lg border p-4">
                   <p className="text-mocha text-sm font-semibold">
-                    {mission.statut === "acceptee" || mission.statut === "refusee"
-                      ? SUITE_APRES_REPONSE[mission.statut].titre
-                      : mission.delaiDepasse
-                        ? "Le délai de réponse est dépassé."
-                        : `Cette proposition n'attend plus de réponse : ${LIBELLE_STATUT_MISSION[
-                            mission.statut
-                          ].toLowerCase()}.`}
+                    {refusLibre && mission.statut === "refusee"
+                      ? REPONSE_ENREGISTREE
+                      : mission.statut === "acceptee" || mission.statut === "refusee"
+                        ? SUITE_APRES_REPONSE[mission.statut].titre
+                        : mission.delaiDepasse
+                          ? "Le délai de réponse est dépassé."
+                          : `Cette proposition n'attend plus de réponse : ${LIBELLE_STATUT_MISSION[
+                              mission.statut
+                            ].toLowerCase()}.`}
                   </p>
                   <p className="text-fg-soft mt-1 text-sm">
-                    {mission.statut === "acceptee" || mission.statut === "refusee"
-                      ? SUITE_APRES_REPONSE[mission.statut].suite
-                      : mission.delaiDepasse
-                        ? "La session a été libérée pour être confiée à quelqu'un d'autre. Nous ne l'avons peut-être pas encore fait."
-                        : "Pour revoir vos missions, connectez-vous à votre espace."}
+                    {refusLibre && mission.statut === "refusee"
+                      ? null
+                      : mission.statut === "acceptee" || mission.statut === "refusee"
+                        ? SUITE_APRES_REPONSE[mission.statut].suite
+                        : mission.delaiDepasse
+                          ? "La session a été libérée pour être confiée à quelqu'un d'autre. Nous ne l'avons peut-être pas encore fait."
+                          : "Pour revoir vos missions, connectez-vous à votre espace."}
                   </p>
                   <Link
                     href={FORMATEUR_CONNEXION_PATH}

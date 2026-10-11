@@ -12,6 +12,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
+import { lienConsole } from "@/server/notifications/personne";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
 export const EscaladerQuestionInputSchema = z
@@ -51,11 +52,13 @@ export async function escaladerQuestion(
 
   // Ping équipe best-effort. Fail-soft AUTOPORTANT : on n'échoue jamais la
   // création d'escalade (déjà persistée) à cause d'un souci de notification.
+  // Ni la question ni l'adresse (décision du 11/10/2026) : elles se lisent
+  // dans la console.
   const body = [
     "❓ Escalade chatbot — question sans réponse",
-    `Question : ${input.question}`,
-    input.contact_email ? `Contact : ${input.contact_email}` : "Contact : non fourni",
+    input.contact_email ? "Contact : fourni" : "Contact : non fourni",
     `Escalade #${escalation.id}`,
+    `Voir en console : ${lienConsole("chatbot/escalades")}`,
   ].join("\n");
   let notified = false;
   try {

@@ -37,3 +37,21 @@ export const SUITE_APRES_REPONSE: Record<ReponseDonnee, { titre: string; suite: 
       "L'organisme est prévenu et va confier la session à un autre intervenant. Merci d'avoir répondu vite.",
   },
 };
+
+/**
+ * Lot S2 (S-UX-6) — refus d'un formateur INDÉPENDANT : aucun motif exigé, et
+ * aucune phrase qui en fasse un service rendu. Une seule ligne.
+ */
+export const REPONSE_ENREGISTREE = "Réponse enregistrée. Merci.";
+
+/** La question du refus libre, et ses quatre réponses possibles (toutes facultatives). */
+export const QUESTION_REFUS_LIBRE = "Voulez-vous nous dire pourquoi ?";
+export const CHOIX_MOTIF_REFUS_LIBRE = [
+  "Dates impossibles",
+  "Trop loin",
+  "Sujet hors de mes formations",
+  "Autre",
+] as const;
+
+/** La phrase de liberté, au-dessus des deux boutons. */
+export const PHRASE_LIBERTE = "Vous êtes libre d'accepter ou de refuser, sans aucune conséquence.";

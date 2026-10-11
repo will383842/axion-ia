@@ -2025,6 +2025,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "20 * * * *",
         jobId: "formation-crons-email-sante-cron",
       },
+      // Incidents de données (2026-10-11) — rappels Telegram du délai CNIL de
+      // 72 h (48 h, 24 h, 6 h restantes, puis dépassé), HORAIRE : le plus petit
+      // palier fait 6 h, un passage manqué se rattrape au suivant. `:55`, minute
+      // libre de toutes les autres files horaires.
+      {
+        type: "formation-crons.incidents-rappels",
+        pattern: "55 * * * *",
+        jobId: "formation-crons-incidents-rappels-cron",
+      },
       // Cycle de vie du FORMATEUR sur une session (2026-09-03). Convocation
       // pratique J-7 à 08:05, juste après le rappel J-7 des stagiaires ;
       // relances de mission à 08:10 ; rappel J-1 HORAIRE à :40 — la fenêtre
@@ -2071,6 +2080,16 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.campagnes-formateurs",
         pattern: "50 * * * *",
         jobId: "formation-crons-campagnes-formateurs-cron",
+      },
+      // Lot L2c (2026-10-11) — référentiel des communes (formateurs proches).
+      // 07:50 UTC (08:50 ou 09:50 à Paris), chaque jour : le corps ne
+      // télécharge que si le référentiel a 30 jours ou plus. Un seul appel
+      // public, aucune donnée personnelle. Arrêté tant que l'interrupteur
+      // `formateurs.communes_geo_cron` n'est pas allumé.
+      {
+        type: "formation-crons.communes-geo",
+        pattern: "50 7 * * *",
+        jobId: "formation-crons-communes-geo-cron",
       },
     ];
 
