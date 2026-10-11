@@ -134,6 +134,13 @@ export async function envoyerDossierMiseANiveauAction(
     });
     if (!r.ok) return { error: r.message };
     revalidatePath(ECRAN);
+    // Les liens précédents ne valent plus : un e-mail qui n'est pas parti se dit franchement.
+    if (r.envoi !== "envoye" && r.envoi !== "en-validation") {
+      return {
+        error:
+          "Le dossier est ouvert, mais l'e-mail n'est pas parti et les liens envoyés avant ne valent plus : réessayez l'envoi.",
+      };
+    }
     return { data: { envoi: r.envoi } };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "envoyerDossierMiseANiveauAction" } });
@@ -278,6 +285,7 @@ export async function envoyerNouvelleVersionAction(
         entityId: trainerId,
         jobId: `fi-contrat-version-${trainerId}-v${r.version}-depart`,
       });
+      revalidatePath(fiche(trainerId));
       const parti = envoi === "envoye" || envoi === "en-validation";
       resultats.push({
         trainerId,

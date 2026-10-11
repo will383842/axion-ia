@@ -42,6 +42,12 @@ export interface ContratEmisLu {
   readonly annuleeAt: Date | null;
   /** Au moins une signature non révoquée (d'une partie quelconque). */
   readonly signatures: number;
+  /**
+   * Liens de signature encore utilisables (ni révoqués, ni utilisés, ni échus). Une pièce
+   * dont un lien circule est « en cours de signature » : elle n'est jamais remplacée en
+   * silence (le formateur pourrait signer pendant qu'on l'annule).
+   */
+  readonly liensActifs?: number;
 }
 
 /** Ce que le registre public dit de l'entreprise du SIRET, lu au moment de préparer. */
@@ -79,7 +85,10 @@ export const REFUS_EMISSION = {
   version: "Aucune version arrêtée du contrat-cadre ne peut être émise.",
   enAttente:
     "Un contrat-cadre signé par le formateur attend la contresignature : contresignez-le, ou annulez-le avec un motif, avant d'en préparer un autre.",
-  dejaEmis: "Un contrat-cadre de cette version existe déjà pour ce formateur.",
+  dejaEmis:
+    "Un contrat-cadre de cette version existe déjà pour ce formateur (s'il est refusé ou périmé, annulez-le avec un motif avant d'en préparer un autre).",
+  lienEnCours:
+    "Un lien de signature circule encore sur un contrat-cadre précédent : révoquez ce lien ou annulez ce contrat avant d'en préparer un nouveau.",
   vigilance: MANQUES_COMPLETS.vigilance,
   controle: MANQUES_COMPLETS.controle,
   siret: MANQUES_COMPLETS.siret,
@@ -133,6 +142,17 @@ export function verdictEmissionContrat(
       refus.push(REFUS_EMISSION.enAttente);
     }
     if (vivants.some((c) => c.version >= versionCible)) refus.push(REFUS_EMISSION.dejaEmis);
+    if (
+      vivants.some(
+        (c) =>
+          c.version < versionCible &&
+          c.statutSignature !== "signee" &&
+          c.signatures === 0 &&
+          (c.liensActifs ?? 0) > 0,
+      )
+    ) {
+      refus.push(REFUS_EMISSION.lienEnCours);
+    }
 
     if (!vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)) {
       refus.push(REFUS_EMISSION.vigilance);

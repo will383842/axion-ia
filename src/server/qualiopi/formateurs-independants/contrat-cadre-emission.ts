@@ -32,15 +32,19 @@ import {
 } from "@/server/registre-entreprises/annuaire";
 
 import {
+  REFUS_EMISSION,
   donneesContratCadreIndependant,
   verdictEmissionContrat,
   type FaitsEmissionContrat,
   type RegistreLu,
 } from "./contrat-cadre-emission-regles";
 import { versionDuContrat } from "./faits-activation";
+import { VERSION_MINIMALE_CONTRAT_INDEPENDANT } from "./garde-activation-complete";
 
 /** Motif système d'annulation d'un contrat jamais signé, remplacé par une version plus récente. */
 export const MOTIF_CONTRAT_REMPLACE = "Remplacé par une version plus récente du contrat-cadre";
+/** Motif système : une préparation simultanée a émis la même version juste avant. */
+export const MOTIF_DOUBLON = "Doublon d'une préparation simultanée du même contrat-cadre";
 
 const DATE_FR = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -77,6 +81,7 @@ async function lireRegistre(siret: string | null, lire: LireRegistre): Promise<R
 export async function lireFaitsEmissionContrat(
   trainerId: string,
   lire: LireRegistre = (s) => lireEtablissementParSiret(s, { enrichi: true }),
+  maintenant: Date = new Date(),
 ): Promise<FaitsEmissionContrat | null> {
   const t = await prisma.trainer.findUnique({
     where: { id: trainerId },
@@ -114,7 +119,14 @@ export async function lireFaitsEmissionContrat(
         metadata: true,
         statutSignature: true,
         annuleeAt: true,
-        _count: { select: { signatures: { where: { revokedAt: null } } } },
+        _count: {
+          select: {
+            signatures: { where: { revokedAt: null } },
+            signatureTokens: {
+              where: { revokedAt: null, usedAt: null, expiresAt: { gt: maintenant } },
+            },
+          },
+        },
       },
     }),
     prisma.verificationRegistreSousTraitance.findMany({
@@ -149,6 +161,7 @@ export async function lireFaitsEmissionContrat(
       statutSignature: c.statutSignature,
       annuleeAt: c.annuleeAt,
       signatures: c._count.signatures,
+      liensActifs: c._count.signatureTokens,
     })),
     controles,
     pieces: t.documents,
@@ -181,7 +194,7 @@ export async function preparerContratCadre(input: {
     return { ok: false, refus: ["Indisponible pendant le build."] };
   }
   const version = versionContratAEmettre();
-  const faits = await lireFaitsEmissionContrat(input.trainerId, input.lire);
+  const faits = await lireFaitsEmissionContrat(input.trainerId, input.lire, input.maintenant);
   if (faits === null) return { ok: false, refus: ["Formateur introuvable."] };
   const verdict = verdictEmissionContrat(faits, version, input.maintenant);
   if (!verdict.ok) return verdict;
@@ -228,6 +241,34 @@ export async function preparerContratCadre(input: {
     estCopie: false,
   });
 
+  // Deux préparations simultanées (deux onglets, deux administrateurs) passent toutes deux
+  // le verdict. Après l'émission, seule la PLUS ANCIENNE pièce vivante de cette version
+  // reste : chaque préparation annule sa propre pièce si une autre l'a précédée. Une pièce
+  // tout juste émise n'a ni signature ni lien.
+  const memesVersions = (
+    await prisma.documentGenere.findMany({
+      where: {
+        trainerId: input.trainerId,
+        type: "contrat_sous_traitance",
+        annuleeAt: null,
+      },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+      select: { id: true, metadata: true },
+    })
+  ).filter((c) => versionDuContrat(c.metadata) >= versionEmise);
+  if (memesVersions.length > 1 && memesVersions[0]?.id !== doc.id) {
+    await prisma.documentGenere.updateMany({
+      where: {
+        id: doc.id,
+        annuleeAt: null,
+        statutSignature: { not: "signee" },
+        signatures: { none: { revokedAt: null } },
+      },
+      data: { annuleeAt: input.maintenant, annuleeMotif: MOTIF_DOUBLON, annuleePar: "system" },
+    });
+    return { ok: false, refus: [REFUS_EMISSION.dejaEmis] };
+  }
+
   let remplaces = 0;
   if (verdict.aRemplacer.length > 0) {
     const r = await prisma.documentGenere.updateMany({
@@ -237,6 +278,10 @@ export async function preparerContratCadre(input: {
         annuleeAt: null,
         statutSignature: { not: "signee" },
         signatures: { none: { revokedAt: null } },
+        // Re-vérifié au moment d'écrire : aucun lien n'a été émis entre-temps.
+        signatureTokens: {
+          none: { revokedAt: null, usedAt: null, expiresAt: { gt: input.maintenant } },
+        },
       },
       data: {
         annuleeAt: input.maintenant,
@@ -295,6 +340,8 @@ export async function lireContratsCadreFiche(trainerId: string): Promise<Contrat
       etat: etatContrat(c.statutSignature, !vivant, formateurASigne),
       lienEnvoyable:
         vivant &&
+        // Les versions antérieures se signent sans la garde du registre (L7c).
+        versionDuContrat(c.metadata) >= VERSION_MINIMALE_CONTRAT_INDEPENDANT &&
         !formateurASigne &&
         (c.statutSignature === "en_attente" || c.statutSignature === "expiree"),
       aContresigner: vivant && c.statutSignature === "partielle" && formateurASigne,

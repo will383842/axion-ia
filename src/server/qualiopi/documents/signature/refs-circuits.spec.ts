@@ -88,8 +88,11 @@ const REF_KEYS = [
  * se résout depuis l'organisme (`sousTraitantId`) OU depuis la fiche d'un formateur
  * indépendant (`trainerId`, `resoudreIdentite` S6a j) : l'une ou l'autre.
  */
-const REFS_EQUIVALENTES: Readonly<Record<string, readonly string[]>> = {
-  sousTraitantId: ["sousTraitantId", "trainerId"],
+const REFS_EQUIVALENTES: Readonly<
+  Partial<Record<string, Readonly<Record<string, readonly string[]>>>>
+> = {
+  // Seul le contrat de sous-traitance a les deux cocontractants possibles.
+  contrat_sous_traitance: { sousTraitantId: ["sousTraitantId", "trainerId"] },
 };
 
 /**
@@ -161,7 +164,7 @@ describe("circuits de signature — chaque partie déclarée est émissible", ()
           );
           const assume = ECARTS_ASSUMES.some((e) => e.type === type && e.partie === partie);
           if (assume) continue;
-          const acceptees = REFS_EQUIVALENTES[ref] ?? [ref];
+          const acceptees = REFS_EQUIVALENTES[type]?.[ref] ?? [ref];
           expect(
             acceptees.some((r) => refsFournies.includes(r)),
             `la pièce « ${type} » déclare la partie « ${partie} » mais son générateur ne passe pas « ${acceptees.join(" » ou « ")} » dans refs — le lien de signature sera refusé à l'émission`,

@@ -188,3 +188,43 @@ describe("preparerContratCadre", () => {
     });
   });
 });
+
+describe("préparations simultanées", () => {
+  it("une autre préparation a émis la même version juste avant : la nôtre est annulée", async () => {
+    // 1re lecture (faits) : rien ; 2e lecture (après émission) : deux v3 vivantes.
+    d.contrats.mockResolvedValueOnce([]).mockResolvedValueOnce([
+      { id: "autre", metadata: { renderData: { gabaritVersion: 3 } } },
+      { id: "doc-neuf", metadata: { renderData: { gabaritVersion: 3 } } },
+    ]);
+    const r = await preparerContratCadre({ trainerId: ID, maintenant: MAINTENANT, lire });
+    expect(r.ok).toBe(false);
+    expect(d.annuler).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: "doc-neuf", annuleeAt: null }),
+      data: expect.objectContaining({ annuleePar: "system" }),
+    });
+  });
+});
+
+describe("le contrat préparé se signe : le SIRET de l'instantané est relu par la signature", () => {
+  it("la forme écrite par `generateDocument` donne le SIRET du contrat à `siretDuContrat`", async () => {
+    const { siretDuContrat } =
+      await import("@/server/qualiopi/documents/signature/contrat-cadre-signature");
+    await preparerContratCadre({ trainerId: ID, maintenant: MAINTENANT, lire });
+    const appel = d.generer.mock.calls[0]?.[0] as {
+      buildElement: (n: string) => { props: { data: unknown; identite: unknown } };
+      gabaritVersion: number;
+    };
+    const el = appel.buildElement("AXI-FORM-2026-010");
+    // Miroir de l'instantané de `documents-service.ts` (renderData).
+    const metadata = {
+      renderData: JSON.parse(
+        JSON.stringify({
+          data: el.props.data,
+          identite: el.props.identite,
+          gabaritVersion: appel.gabaritVersion,
+        }),
+      ),
+    };
+    expect(siretDuContrat(metadata)).toBe(SIRET);
+  });
+});

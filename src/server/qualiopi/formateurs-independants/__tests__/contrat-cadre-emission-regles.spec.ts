@@ -90,6 +90,15 @@ describe("verdictEmissionContrat (L7b)", () => {
     expect(refus({ contrats: [contrat({ annuleeAt: HIER })] })).toEqual([]);
   });
 
+  it("un lien circule encore sur un contrat précédent : jamais remplacé en silence", () => {
+    const r = verdictEmissionContrat(
+      { ...FAITS, contrats: [contrat({ id: "v2", version: 2, liensActifs: 1 })] },
+      3,
+      MAINTENANT,
+    );
+    expect(r).toEqual({ ok: false, refus: [REFUS_EMISSION.lienEnCours] });
+  });
+
   it("attestation URSSAF sans preuve de vérification : refus", () => {
     expect(refus({ preuvesVigilance: [] })).toContain(REFUS_EMISSION.vigilance);
   });
