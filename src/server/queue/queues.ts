@@ -2063,6 +2063,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 6,7 * * 1-5",
         jobId: "formation-crons-suivi-entreprise-opco-cron",
       },
+      // Lot L12c (2026-10-11) — paiement par mission des formateurs indépendants.
+      // 08:15 UTC (09:15 ou 10:15 à Paris), chaque jour : rien tant que
+      // `formateurs.passage_paiement` n'a pas de date, ni tant que l'unique
+      // historique des relevés (M-D) est en base. Idempotent.
+      {
+        type: "formation-crons.paiement-mission",
+        pattern: "15 8 * * *",
+        jobId: "formation-crons-paiement-mission-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {
