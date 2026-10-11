@@ -66,7 +66,7 @@ import {
   envoyerProposition,
   preparerProposition,
 } from "@/server/careers/proposer-reseau-auto";
-import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import type { Prisma } from "../../../prisma/generated/client";
 
 export const CLE_ACTIVATION = "recrutement.reponse-poste-pourvu-auto";

@@ -14,10 +14,7 @@ import {
   CLES_INTERRUPTEURS_ENTREE,
   CLES_INTERRUPTEURS_SIGNATURE,
   cleSettingEntree,
-  etatsEntreeDepuisLignes,
-  etatsEntreeParDefaut,
   type CleInterrupteurEntree,
-  type EtatsInterrupteursEntree,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
   cleSettingSignature,
@@ -137,23 +134,9 @@ export async function lireInterrupteursSignature(): Promise<
 
 const CLES_SETTINGS_ENTREE = CLES_INTERRUPTEURS_ENTREE.map(cleSettingEntree);
 
-/**
- * Les interrupteurs de l'entrée, pour les règles qui en dépendent.
- *
- * 🔴 Ne lève JAMAIS : une lecture en échec vaut « tout arrêté », c'est-à-dire
- * le comportement d'avant le lot.
- */
-export async function lireEtatsEntree(): Promise<EtatsInterrupteursEntree> {
-  try {
-    const lignes = await prisma.setting.findMany({
-      where: { key: { in: CLES_SETTINGS_ENTREE } },
-      select: { key: true, value: true },
-    });
-    return etatsEntreeDepuisLignes(Array.isArray(lignes) ? lignes : []);
-  } catch {
-    return etatsEntreeParDefaut();
-  }
-}
+// `lireEtatsEntree` vit dans `etats-entree.ts` (sans `server-only` : le worker
+// l'atteint par la réponse automatique aux candidatures).
+export { lireEtatsEntree } from "./etats-entree";
 
 export interface LigneInterrupteurEntree {
   readonly cle: CleInterrupteurEntree;
