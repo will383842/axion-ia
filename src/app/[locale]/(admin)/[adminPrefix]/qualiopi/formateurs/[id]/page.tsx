@@ -754,7 +754,17 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       <TrainerCompetencesPanel trainerId={trainer.id} domainesInitiaux={domainesInitiaux} />
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
-      <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+      <TrainerDocumentsPanel
+        trainerId={trainer.id}
+        documents={documents}
+        basePiecesDeposees={
+          // Lot L5b : lien vers la route console, seulement là où elle sert.
+          peutEngager(role, "habiliter_formateur") && (await envoiAllume("dossier_en_ligne"))
+            ? `${base}/${trainer.id}/pieces`
+            : undefined
+        }
+        voitRib={peutEngager(role, "remunerer_formateur")}
+      />
 
       {/*
         Lettres de mission du formateur — contreseing de l'organisme (2026-08-01).

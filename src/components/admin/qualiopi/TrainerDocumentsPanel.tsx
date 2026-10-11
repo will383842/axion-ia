@@ -41,11 +41,17 @@ export interface TrainerDocumentView {
    * fichier, ou expirée). Calculé côté serveur par le prédicat partagé.
    */
   ecarteeDeLaPreuve: PieceValideeEcartee | null;
+  /** Octets déposés par le formateur (lot L5b), lus par la route console. */
+  aContenu?: boolean;
 }
 
 export interface TrainerDocumentsPanelProps {
   trainerId: string;
   documents: TrainerDocumentView[];
+  /** Base de la route console des pièces déposées (`…/formateurs/<id>/pieces`). */
+  basePiecesDeposees?: string | undefined;
+  /** Le RIB déposé ne s'ouvre qu'avec le droit de rémunérer. */
+  voitRib?: boolean;
 }
 
 // Libellés pour un tableau (capitalisés) — les libellés de `conformite.ts` sont
@@ -232,6 +238,17 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
                         href={d.fichierUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className="text-[color:var(--color-admin-accent)] underline"
+                      >
+                        {TYPE_LABELS[d.type]}
+                      </a>
+                    ) : d.aContenu &&
+                      props.basePiecesDeposees &&
+                      (d.type !== "rib" || props.voitRib) ? (
+                      // Pièce déposée par le formateur : téléchargée par la route
+                      // console, qui journalise chaque lecture.
+                      <a
+                        href={`${props.basePiecesDeposees}/${d.id}`}
                         className="text-[color:var(--color-admin-accent)] underline"
                       >
                         {TYPE_LABELS[d.type]}

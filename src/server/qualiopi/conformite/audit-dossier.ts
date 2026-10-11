@@ -39,6 +39,7 @@ import {
   produireRegistreAdaptations,
 } from "@/server/qualiopi/conformite/adaptations-dossier-global";
 import { joindreFichiersPiecesCompetence } from "@/server/qualiopi/conformite/pieces-competence-zip";
+import { pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
@@ -896,6 +897,8 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       type: true,
       numeroPiece: true,
       fichierUrl: true,
+      // Lot L5b : une pièce déposée par le formateur n'a pas d'adresse.
+      contenu: { select: { trainerDocumentId: true } },
       dateEmission: true,
       dateExpiration: true,
       statutValidation: true,
@@ -953,7 +956,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       `  ${nbPiecesNonFormateurs} pièce${nbPiecesNonFormateurs > 1 ? "s" : ""} de personnes qui n'animent pas non exportée${nbPiecesNonFormateurs > 1 ? "s" : ""} : elle${nbPiecesNonFormateurs > 1 ? "s" : ""} ne prouve${nbPiecesNonFormateurs > 1 ? "nt" : ""} aucun indicateur Qualiopi et reste${nbPiecesNonFormateurs > 1 ? "nt" : ""} au dossier du salarié.`,
     );
   }
-  const sansFichier = piecesFormateurs.filter((p) => p.fichierUrl === null).length;
+  const sansFichier = piecesFormateurs.filter((p) => !pieceAUnFichier(p)).length;
   const expirees = piecesFormateurs.filter(
     (p) => p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now(),
   ).length;
@@ -988,6 +991,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
         type: p.type,
         statutValidation: p.statutValidation,
         fichierUrl: p.fichierUrl,
+        contenu: p.contenu,
         dateExpiration: p.dateExpiration,
       })),
       now,
