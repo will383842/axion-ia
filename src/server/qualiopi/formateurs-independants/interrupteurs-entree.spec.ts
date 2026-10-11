@@ -49,3 +49,21 @@ describe("interrupteurs de l'entrée", () => {
     expect(etatsEntreeParDefaut().modeles_composeur).toBe(false);
   });
 });
+
+describe("F-CAL-2 — le suivi de l'échange formateur", () => {
+  it("coupé par défaut, protégé, et ne s'allume qu'avec l'échange ouvert et les textes validés", async () => {
+    const { prealablesManquantsEntree, etatsParDefaut } = await import("./interrupteurs");
+    expect(cleSettingEntree("suivi_echange")).toBe("formateurs.suivi_echange");
+    expect(etatsEntreeParDefaut().suivi_echange).toBe(false);
+    expect(etatsEntreeDepuisLignes([]).suivi_echange).toBe(false);
+    expect(prealablesManquantsEntree("suivi_echange", true, etatsParDefaut())).toHaveLength(2);
+    expect(
+      prealablesManquantsEntree("suivi_echange", true, {
+        ...etatsParDefaut(),
+        echange_ouvert: true,
+        textes_valides: true,
+      }),
+    ).toEqual([]);
+    expect(prealablesManquantsEntree("suivi_echange", false, etatsParDefaut())).toEqual([]);
+  });
+});
