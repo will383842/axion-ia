@@ -55,6 +55,12 @@ function applicantLocationRequirements(
 export function buildJobPostingJsonLd(
   offer: JobOffer,
   locale: "fr" | "en" = "fr",
+  /**
+   * L0c-1 (interrupteur `formateurs.formulaire_freelance`) : offre de
+   * formateur indépendant — une mission, pas un contrat de travail. Absent ou
+   * faux : les données d'avant, à l'identique.
+   */
+  options: { readonly formateurFreelance?: boolean } = {},
 ): Record<string, unknown> | null {
   // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
   // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
@@ -105,7 +111,8 @@ export function buildJobPostingJsonLd(
   };
 
   // jobBenefits depuis les perks pilotés en console (si présents).
-  if (Array.isArray(offer.perks)) {
+  // Mission freelance : pas d'avantages de salarié.
+  if (!options.formateurFreelance && Array.isArray(offer.perks)) {
     const benefits = (offer.perks as Array<{ labelFr?: string; labelEn?: string }>)
       .map((p) => (isFr ? p.labelFr : p.labelEn) ?? p.labelFr ?? p.labelEn)
       .filter((x): x is string => Boolean(x));
@@ -115,9 +122,12 @@ export function buildJobPostingJsonLd(
   // Lieu : multi-villes (itinérant/territorial) → tableau de Place (Google for Jobs
   // affiche l'offre dans toutes ces villes, 1 seule annonce, zéro page dupliquée) ;
   // sinon remote → TELECOMMUTE ; sinon Place si ville ; sinon France.
-  const multiLocations = Array.isArray(offer.jobLocations)
-    ? (offer.jobLocations as Array<{ city?: string; region?: string }>).filter((l) => l.city)
-    : [];
+  // Mission freelance (L0c-1) : aucune ville nommée (même lexique que la FAQ) —
+  // le pays seul suffit à Google for Jobs ; le lieu se lit dans la description.
+  const multiLocations =
+    Array.isArray(offer.jobLocations) && !options.formateurFreelance
+      ? (offer.jobLocations as Array<{ city?: string; region?: string }>).filter((l) => l.city)
+      : [];
   if (multiLocations.length > 0) {
     jsonLd.jobLocation = multiLocations.map((l) => ({
       "@type": "Place",
@@ -131,6 +141,15 @@ export function buildJobPostingJsonLd(
   } else if (offer.workMode === "remote") {
     jsonLd.jobLocationType = "TELECOMMUTE";
     jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
+  } else if (offer.city && options.formateurFreelance) {
+    jsonLd.jobLocation = {
+      "@type": "Place",
+      address: { "@type": "PostalAddress", addressCountry: offer.country },
+    };
+    if (offer.workMode === "hybrid") {
+      jsonLd.jobLocationType = "TELECOMMUTE";
+      jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
+    }
   } else if (offer.city) {
     jsonLd.jobLocation = {
       "@type": "Place",
@@ -154,7 +173,11 @@ export function buildJobPostingJsonLd(
 
   // Rémunération : commission → incentiveCompensation ; sinon baseSalary
   // (uniquement si fourchette renseignée ET affichée publiquement).
-  if (offer.isCommission) {
+  if (options.formateurFreelance) {
+    // Une mission confiée à un indépendant : CONTRACTOR seul, jamais de
+    // salaire de base. Le tarif se lit dans la description de l'offre.
+    jsonLd.employmentType = "CONTRACTOR";
+  } else if (offer.isCommission) {
     jsonLd.incentiveCompensation = isFr
       ? "Rémunération à la commission, déplafonnée."
       : "Uncapped commission-based pay.";
