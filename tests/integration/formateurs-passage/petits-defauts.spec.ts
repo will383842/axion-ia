@@ -139,7 +139,6 @@ async function ecrireEtEmettre(
   return r;
 }
 
-
 const MOIS = (trainerId: string, sessionId: string, jours: string[]) => ({
   trainerId,
   sessionId,
@@ -162,7 +161,11 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
         sessions[0]!,
       );
       expect(
-        await ecrireMoisDansTransaction(tx, MOIS(trainerId, sessions[0]!, ["2031-12-03"]), MAINTENANT),
+        await ecrireMoisDansTransaction(
+          tx,
+          MOIS(trainerId, sessions[0]!, ["2031-12-03"]),
+          MAINTENANT,
+        ),
       ).toBe("conflit_ligne_mensuelle");
       expect(await tx.revendicationPaiement.count({ where: { trainerId } })).toBe(0);
     });
@@ -228,7 +231,11 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
       await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
       const { trainerId, sessions } = await fixture(tx);
       // Animation du 20/12 (échéance 19/01/2032), indemnité au 10/12 (09/01/2032).
-      await ecrireMoisDansTransaction(tx, MOIS(trainerId, sessions[0]!, ["2031-12-20"]), MAINTENANT);
+      await ecrireMoisDansTransaction(
+        tx,
+        MOIS(trainerId, sessions[0]!, ["2031-12-20"]),
+        MAINTENANT,
+      );
       const indemnite = indemniteAnnulation({
         annuleeA: new Date("2031-12-10T08:00:00Z"),
         debutPremiereAnnulee: new Date("2031-12-12T08:00:00Z"),
@@ -262,7 +269,11 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
       const piece = await ecrireEtEmettre(tx, trainerId, sessions[0]!, ["2031-12-03"]);
       expect((await emettreAvoirMission(tx, piece.id, MAINTENANT)).issue).toBe("avoir_emis");
       expect(
-        await ecrireMoisDansTransaction(tx, MOIS(trainerId, sessions[0]!, ["2031-12-03"]), MAINTENANT),
+        await ecrireMoisDansTransaction(
+          tx,
+          MOIS(trainerId, sessions[0]!, ["2031-12-03"]),
+          MAINTENANT,
+        ),
       ).toBe("reemission_attendue");
       const r = await reemettreMission(
         tx,
@@ -286,7 +297,11 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
         where: { id: (a as { avoirId: string }).avoirId },
         data: { remboursementDemandeAt: MAINTENANT },
       });
-      await ecrireMoisDansTransaction(tx, MOIS(trainerId, sessions[1]!, ["2031-12-04"]), MAINTENANT);
+      await ecrireMoisDansTransaction(
+        tx,
+        MOIS(trainerId, sessions[1]!, ["2031-12-04"]),
+        MAINTENANT,
+      );
       const suivant = await tx.trainerStatement.findFirstOrThrow({
         where: { trainerId, sessionId: sessions[1]! },
       });

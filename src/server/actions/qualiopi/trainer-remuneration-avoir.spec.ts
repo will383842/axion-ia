@@ -79,14 +79,17 @@ beforeEach(() => {
 });
 
 describe("un avoir ne change pas de statut", () => {
-  it.each(["annule", "a_valider", "facture_recue"])("valide → %s refusé, rien n'est écrit", async (to) => {
-    mockStatementFindUnique.mockResolvedValue(
-      releve({ avoirDeId: "33333333-3333-4333-8333-333333333333", totalTtcCents: -35_000 }),
-    );
-    const r = await transitionStatementAction({ id: ID, to: to as never });
-    expect("error" in r && r.error).toMatch(/avoir/);
-    expect(mockTransaction).not.toHaveBeenCalled();
-  });
+  it.each(["annule", "a_valider", "facture_recue"])(
+    "valide → %s refusé, rien n'est écrit",
+    async (to) => {
+      mockStatementFindUnique.mockResolvedValue(
+        releve({ avoirDeId: "33333333-3333-4333-8333-333333333333", totalTtcCents: -35_000 }),
+      );
+      const r = await transitionStatementAction({ id: ID, to: to as never });
+      expect("error" in r && r.error).toMatch(/avoir/);
+      expect(mockTransaction).not.toHaveBeenCalled();
+    },
+  );
 
   it("témoin : un relevé ordinaire s'annule comme avant", async () => {
     mockStatementFindUnique.mockResolvedValue(releve());
