@@ -185,6 +185,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/page.tsx",
   "src/features/admin-job-offers/actions.ts",
   "src/server/careers/reponse-poste-pourvu.ts",
+  // Formulaire du formateur indépendant (lot L0c-1) : mêmes règles, interrupteur
+  //    `formateurs.formulaire_freelance` (pages publiques de l'offre et de candidature,
+  //    action de dépôt) ; elles ne lisent que `lireEtatsEntree` et `lireEtatsFormateurs`.
+  "src/app/[locale]/carrieres/[slug]/page.tsx",
+  "src/app/[locale]/carrieres/[slug]/postuler/page.tsx",
+  "src/features/job-application/actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

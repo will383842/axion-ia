@@ -24,6 +24,8 @@ import { GraduationCap, Handshake, MessagesSquare } from "lucide-react";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
+import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
@@ -349,8 +351,18 @@ export default async function JobOfferDetailPage({
   const mentionDate = isFr
     ? `Annonce publiée le ${dateAnnonce(publieeLe, true)} · mise à jour le ${dateAnnonce(offer.updatedAt, true)}`
     : `Posted on ${dateAnnonce(publieeLe, false)} · updated on ${dateAnnonce(offer.updatedAt, false)}`;
+  // L0c-1 — offre de formateur indépendant, interrupteur allumé : une mission,
+  // pas un emploi (données Google sans salaire, carte « Tarif »).
+  const entree = await lireEtatsEntree();
+  const formateurFreelance = modeFormateurFreelance({
+    formulaireAllume: entree.formulaire_freelance,
+    natureLue: entree.nature_offre,
+    offre: offer,
+  });
   const heroFacts = [
-    sal ? { label: isFr ? "Rémunération" : "Pay", value: sal } : null,
+    sal
+      ? { label: formateurFreelance ? "Tarif" : isFr ? "Rémunération" : "Pay", value: sal }
+      : null,
     contractFact ? { label: isFr ? "Contrat" : "Contract", value: contractFact } : null,
     { label: isFr ? "Zone" : "Area", value: zoneLabel },
     offer.startDate
@@ -361,7 +373,11 @@ export default async function JobOfferDetailPage({
       : null,
   ].filter((f): f is { label: string; value: string } => f !== null);
 
-  const jobPosting = buildJobPostingJsonLd(offer, loc);
+  const jobPosting = buildJobPostingJsonLd(
+    offer,
+    loc,
+    formateurFreelance ? { formateurFreelance: true } : {},
+  );
   const webPage = buildWebPageJsonLd({
     locale: loc,
     path: `/carrieres/${offer.slug}`,

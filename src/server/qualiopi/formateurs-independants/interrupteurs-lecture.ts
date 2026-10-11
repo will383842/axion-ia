@@ -19,6 +19,7 @@ import {
   cleSetting,
   cleSettingSignature,
   etatsDepuisLignes,
+  etatsParDefaut,
   etatsSignatureDepuisLignes,
   etatsSignatureParDefaut,
   lireValeur,
@@ -75,6 +76,23 @@ export async function lireInterrupteurs(): Promise<{
     };
   });
   return { etats: etatsDepuisLignes(brutes), lignes };
+}
+
+/**
+ * Les états des seize, pour une règle qui en dépend (pas pour l'écran).
+ *
+ * 🔴 Ne lève JAMAIS : une lecture en échec vaut « position sûre partout ».
+ */
+export async function lireEtatsFormateurs(): Promise<EtatsInterrupteurs> {
+  try {
+    const lignes = await prisma.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    return etatsDepuisLignes(Array.isArray(lignes) ? lignes : []);
+  } catch {
+    return etatsParDefaut();
+  }
 }
 
 // ─── Socle de signature (S6a) ────────────────────────────────────────────────

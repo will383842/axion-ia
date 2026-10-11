@@ -45,6 +45,15 @@ import {
 } from "@/server/careers/cv-storage";
 import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
+import {
+  lireChampsFormateurFreelance,
+  modeFormateurFreelance,
+} from "@/lib/careers/formulaire-formateur-freelance";
+import {
+  lireEtatsEntree,
+  lireEtatsFormateurs,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 /**
  * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
@@ -271,6 +280,9 @@ export async function submitJobApplicationAction(
           filledAt: true,
           validThrough: true,
           screeningQuestions: true,
+          employmentType: true,
+          secondaryEmploymentType: true,
+          natureCollaboration: true,
         },
       })
     : null;
@@ -305,6 +317,26 @@ export async function submitJobApplicationAction(
       error: `Indiquez un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
     };
   }
+
+  // 6ter. L0c-1 — candidature de formateur indépendant (formulaire en 4 blocs).
+  // Le mode est décidé ICI, par l'offre et les interrupteurs, jamais par le
+  // navigateur. Interrupteur `formateurs.formulaire_freelance` absent : rien
+  // ne change, aucun champ propre n'est lu.
+  const [entree, formateurs] = await Promise.all([lireEtatsEntree(), lireEtatsFormateurs()]);
+  const modeFormateur = modeFormateurFreelance({
+    formulaireAllume: entree.formulaire_freelance,
+    natureLue: entree.nature_offre,
+    offre: offer,
+  });
+  const champsFormateur = modeFormateur
+    ? lireChampsFormateurFreelance((k) => {
+        const v = formData.get(k);
+        return typeof v === "string" ? v : null;
+      })
+    : null;
+  if (champsFormateur && !champsFormateur.ok) return { ok: false, error: champsFormateur.error };
+  const formateur = champsFormateur?.ok ? champsFormateur : null;
+  if (formateur) Object.assign(answers, formateur.reponses);
 
   /**
    * Le titre du poste, TOUJOURS connu — c'est l'invariant de tout l'aval.
@@ -347,7 +379,7 @@ export async function submitJobApplicationAction(
   let photoRawName = "photo";
   let photoOriginalName: string | null = null;
   let photoMimeType: string | null = null;
-  const photo = formData.get("photo");
+  const photo = formateur ? null : formData.get("photo");
   if (photo instanceof File && photo.size > 0) {
     if (photo.size > PHOTO_MAX_BYTES)
       return { ok: false, error: "Photo trop volumineuse (5 Mo max)." };
@@ -428,11 +460,11 @@ export async function submitJobApplicationAction(
         // `contactEmailHash` sur les `Submission`.
         emailHash: hashEmailForLookup(d.email),
         phone: encryptPii(d.phone),
-        city: d.city ?? null,
-        motivation: d.motivation ?? null,
-        currentRole: d.currentRole ?? null,
-        experienceBand: d.experienceBand ?? null,
-        availability: d.availability ?? null,
+        city: formateur ? formateur.codePostal : (d.city ?? null),
+        motivation: formateur ? formateur.formations : (d.motivation ?? null),
+        currentRole: formateur ? null : (d.currentRole ?? null),
+        experienceBand: formateur ? null : (d.experienceBand ?? null),
+        availability: formateur ? null : (d.availability ?? null),
         linkedinUrl: d.linkedinUrl ?? null,
         hasDriverLicense,
         hasVehicle,
@@ -443,7 +475,17 @@ export async function submitJobApplicationAction(
         photoStoragePath,
         photoOriginalName,
         photoMimeType,
-        salaryExpectation: d.salaryExpectation ?? null,
+        salaryExpectation: formateur ? null : (d.salaryExpectation ?? null),
+        // L0c-1 — nature FIGÉE au dépôt (M-G P7), posée seulement allumé.
+        ...(entree.formulaire_freelance
+          ? {
+              natureCollaboration: offer
+                ? offer.natureCollaboration
+                : estCandidatureFormateurFreelance(titrePoste)
+                  ? ("freelance" as const)
+                  : null,
+            }
+          : {}),
         ipHash: hashIp(ip),
         userAgent,
         consentVersion: CONSENT_VERSION,
@@ -512,9 +554,13 @@ export async function submitJobApplicationAction(
         ...(d.phone ? { contactPhone: d.phone } : {}),
         offerTitle: titrePoste,
         ...(offer ? { offerCategory: offer.category } : {}),
-        ...(d.city ? { city: d.city } : {}),
-        ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
-        ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
+        ...(formateur
+          ? { city: formateur.codePostal, motivationExcerpt: formateur.formations.slice(0, 500) }
+          : {
+              ...(d.city ? { city: d.city } : {}),
+              ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
+              ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
+            }),
         answers: labeledAnswers(questions, answers),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
@@ -549,6 +595,8 @@ export async function submitJobApplicationAction(
         // Métiers de l'image (2026-09-29) : le lien de dépôt des montages dès
         // l'accusé — sans lui, un nouveau candidat ne pouvait pas y accéder.
         ...(lienDepot ? { lienDepot } : {}),
+        // L0c-1 — F0 « mission », seulement quand son texte est validé.
+        ...(formateur && formateurs.textes_valides ? { mission: true } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },
     );

@@ -13,8 +13,21 @@ import { buildProductMetadata } from "@/lib/seo";
 import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import { JobApplicationForm, type ScreeningQuestion } from "@/components/forms/JobApplicationForm";
+import dynamic from "next/dynamic";
+import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
+import {
+  lireEtatsEntree,
+  lireEtatsFormateurs,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 export const revalidate = 3600;
+
+// L0c-1 — chargé à part : coupé, le formulaire d'aujourd'hui n'en porte pas un octet.
+const FormulaireFormateurFreelance = dynamic(() =>
+  import("@/components/forms/FormulaireFormateurFreelance").then(
+    (m) => m.FormulaireFormateurFreelance,
+  ),
+);
 
 export async function generateMetadata({
   params,
@@ -51,6 +64,46 @@ export default async function PostulerPage({
   if (!offer || !isOfferOpen(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
+
+  // L0c-1 — formulaire du formateur indépendant (interrupteur
+  // `formateurs.formulaire_freelance`, coupé = la page d'aujourd'hui).
+  const [entree, formateurs] = await Promise.all([lireEtatsEntree(), lireEtatsFormateurs()]);
+  if (
+    modeFormateurFreelance({
+      formulaireAllume: entree.formulaire_freelance,
+      natureLue: entree.nature_offre,
+      offre: offer,
+    })
+  ) {
+    return (
+      <Section tone="halo-cool" className="pt-12 sm:pt-14 lg:pt-20">
+        <Container>
+          <Breadcrumbs
+            items={[
+              { href: "/carrieres", label: "Carrières" },
+              { href: `/carrieres/${offer.slug}`, label: title },
+              { href: `/carrieres/${offer.slug}/postuler`, label: "Candidature" },
+            ]}
+          />
+          <div className="mx-auto mt-8 max-w-2xl text-center">
+            <h1 className="font-serif text-4xl font-semibold sm:text-5xl">
+              Proposer ma candidature
+            </h1>
+            <p className="text-fg-muted mt-4 text-lg">
+              {title} · missions en entreprise, partout en France
+            </p>
+          </div>
+          <div className="border-border bg-paper shadow-card mx-auto mt-8 max-w-2xl rounded-3xl border p-6 sm:p-9">
+            <FormulaireFormateurFreelance
+              offerId={offer.id}
+              invitationAuto={formateurs.invitation_auto}
+            />
+          </div>
+        </Container>
+      </Section>
+    );
+  }
+
   // Offres vidéo freelance : formulaire court (ni CV, ni photo, ni lettre).
   const compact = isVideoFreelanceOffer(offer.slug);
   const screeningQuestions: ScreeningQuestion[] = Array.isArray(offer.screeningQuestions)

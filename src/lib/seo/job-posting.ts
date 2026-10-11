@@ -55,7 +55,12 @@ function applicantLocationRequirements(
 export function buildJobPostingJsonLd(
   offer: JobOffer,
   locale: "fr" | "en" = "fr",
-  _options: { readonly formateurFreelance?: boolean } = {},
+  /**
+   * L0c-1 (interrupteur `formateurs.formulaire_freelance`) : offre de
+   * formateur indépendant — une mission, pas un contrat de travail. Absent ou
+   * faux : les données d'avant, à l'identique.
+   */
+  options: { readonly formateurFreelance?: boolean } = {},
 ): Record<string, unknown> | null {
   // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
   // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
@@ -155,7 +160,11 @@ export function buildJobPostingJsonLd(
 
   // Rémunération : commission → incentiveCompensation ; sinon baseSalary
   // (uniquement si fourchette renseignée ET affichée publiquement).
-  if (offer.isCommission) {
+  if (options.formateurFreelance) {
+    // Une mission confiée à un indépendant : CONTRACTOR seul, jamais de
+    // salaire de base. Le tarif se lit dans la description de l'offre.
+    jsonLd.employmentType = "CONTRACTOR";
+  } else if (offer.isCommission) {
     jsonLd.incentiveCompensation = isFr
       ? "Rémunération à la commission, déplafonnée."
       : "Uncapped commission-based pay.";
