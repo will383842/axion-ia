@@ -508,6 +508,18 @@ export async function basculerFormateursGardeMissionPortesAction(
 ): Promise<EtatBascule> {
   return basculerSignature("garde_mission_portes", formData);
 }
+export async function basculerFormateursPresentationPayeeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("presentation_payee", formData);
+}
+export async function basculerFormateursDas2CommunAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("das2_commun", formData);
+}
 export async function basculerFormateursFinCollaborationAction(
   _prev: EtatBascule,
   formData: FormData,

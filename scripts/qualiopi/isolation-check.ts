@@ -568,6 +568,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    l'écrivain réel que le cliquet confronte. Le code de production ne
   //    dépend pas du domaine ; seule sa preuve l'importe.
   "src/server/partners-sync/__tests__/producteurs-client.spec.ts",
+  // ── Export DAS 2 commun (lot L12h formateurs) : la route lit SON interrupteur
+  //    `formateurs.das2_commun` par la lecture unique `interrupteur-allume.ts`
+  //    (aucun autre fichier n'interprète une clé `formateurs.*`). Elle ne lit
+  //    rien d'autre du domaine : l'export vit dans `server/paiements-sortants`.
+  "src/app/[locale]/(admin)/[adminPrefix]/paiements-sortants/das2/export/route.ts",
 ]);
 
 /**
