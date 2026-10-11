@@ -121,6 +121,17 @@ describe("dossier en ligne du formateur — cloisonnement (IDOR)", () => {
     expect(await lireDossierParLien(A, jeton, MAINTENANT)).toBeNull();
   });
 
+  it("après l'envoi, l'ancien lien montre « Dossier reçu » en LECTURE SEULE, jamais plus vieux", async () => {
+    const jeton = jetonDossierFormateur(A, 0, MAINTENANT)!;
+    h.trainer.mockResolvedValue(fiche(A, { accesVersion: 1, dossierStatut: "a_verifier" }));
+    expect((await lireDossierParLien(A, jeton, MAINTENANT))?.etat).toBe("a_verifier");
+    h.trainer.mockResolvedValue(fiche(A, { accesVersion: 2, dossierStatut: "a_verifier" }));
+    expect(await lireDossierParLien(A, jeton, MAINTENANT)).toBeNull();
+    // Rouvert « à compléter » : l'ancien lien ne rouvre RIEN (un nouveau lien est envoyé).
+    h.trainer.mockResolvedValue(fiche(A, { accesVersion: 1, dossierStatut: "a_completer" }));
+    expect(await lireDossierParLien(A, jeton, MAINTENANT)).toBeNull();
+  });
+
   it("fiche fermée, salariée, d'organisme ou sans dossier : neutre", async () => {
     const jeton = jetonDossierFormateur(A, 0, MAINTENANT)!;
     for (const p of [
@@ -152,6 +163,7 @@ describe("dossier en ligne du formateur — cloisonnement (IDOR)", () => {
       accesVersion: 0,
       statut: "sous_traitant",
       finCollaborationAt: null,
+      organismeSousTraitantId: null,
     });
   });
 

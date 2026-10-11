@@ -40,6 +40,7 @@ import {
   type PieceDossier,
   type RegimeTvaDossier,
 } from "./dossier-regles";
+import { estPieceArchivee } from "./gardes";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 import { jetonDossierFormateurValide, lienDossierFormateurBienForme } from "./jeton-dossier";
@@ -134,6 +135,8 @@ function vue(t: Ligne, etat: EtatPage): DossierVue {
   let codeUrssafSaisi = false;
   for (const d of t.documents) {
     if (!estPieceDossier(d.type) || pieces.some((p) => p.type === d.type)) continue;
+    // Ancienne marque d'archivage (lot S1) : la pièce n'est plus active.
+    if (estPieceArchivee(d.rejetMotif)) continue;
     pieces.push({
       type: d.type,
       statut:
@@ -200,9 +203,21 @@ export async function lireDossierParLien(
     if (t.statut !== "sous_traitant") return null;
     if (t.finCollaborationAt !== null || t.organismeSousTraitantId !== null) return null;
     if (t.dossierStatut === null) return null;
-    if (!jetonDossierFormateurValide(t.id, t.accesVersion, jeton, maintenant)) return null;
-    if (MODIFIABLES.includes(t.dossierStatut)) return vue(t, "modifiable");
-    if (t.dossierStatut === "a_verifier") return vue(t, "a_verifier");
+    if (jetonDossierFormateurValide(t.id, t.accesVersion, jeton, maintenant)) {
+      if (MODIFIABLES.includes(t.dossierStatut)) return vue(t, "modifiable");
+      if (t.dossierStatut === "a_verifier") return vue(t, "a_verifier");
+      return null;
+    }
+    // Le lien révoqué PAR L'ENVOI (version précédente) montre encore « Dossier reçu », en
+    // lecture seule : aucune écriture n'est possible (`gardeEcriture` exige la version
+    // courante et un état modifiable ; les actions exigent l'état « modifiable »).
+    if (
+      t.dossierStatut === "a_verifier" &&
+      t.accesVersion >= 1 &&
+      jetonDossierFormateurValide(t.id, t.accesVersion - 1, jeton, maintenant)
+    ) {
+      return vue(t, "a_verifier");
+    }
     return null;
   } catch {
     return null;
@@ -216,6 +231,7 @@ function gardeEcriture(d: Pick<DossierVue, "id" | "accesVersion">): Prisma.Train
     accesVersion: d.accesVersion,
     statut: "sous_traitant",
     finCollaborationAt: null,
+    organismeSousTraitantId: null,
     dossierStatut: { in: [...MODIFIABLES] },
   };
 }
@@ -318,7 +334,13 @@ export async function deposerPiece(
       where: gardeEcriture(d),
       data: { updatedAt: maintenant },
     });
-    if (encore.count !== 1) return false;
+    if (encore.count !== 1) return "perime" as const;
+    // Une pièce déjà VÉRIFIÉE ne se remplace pas ici (jamais deux pièces actives du type).
+    const verifiee = await tx.trainerDocument.findFirst({
+      where: { trainerId: d.id, type: p.type, archiveAt: null, statutValidation: "valide" },
+      select: { id: true, rejetMotif: true },
+    });
+    if (verifiee && !estPieceArchivee(verifiee.rejetMotif)) return "verifiee" as const;
     // La pièce remplacée est ARCHIVÉE, jamais supprimée (une pièce validée ne se remplace pas).
     await tx.trainerDocument.updateMany({
       where: {
@@ -363,9 +385,12 @@ export async function deposerPiece(
       },
       { exiger: true },
     );
-    return true;
+    return "ok" as const;
   });
-  return ok ? { ok: true } : LIEN_PERIME;
+  if (ok === "verifiee") {
+    return { ok: false, message: "Cette pièce est déjà vérifiée : rien à renvoyer." };
+  }
+  return ok === "ok" ? { ok: true } : LIEN_PERIME;
 }
 
 /** Étape 3 : le code de sécurité de l'attestation URSSAF, sur la pièce déposée. */
@@ -374,8 +399,12 @@ export async function enregistrerCodeUrssaf(
   code: string,
 ): Promise<ResultatEcriture> {
   const ok = await prisma.$transaction(async (tx) => {
-    const encore = await tx.trainer.count({ where: gardeEcriture(d) });
-    if (encore !== 1) return false;
+    // Verrou de ligne (même ordre que le dépôt) : pas de course avec un remplacement.
+    const encore = await tx.trainer.updateMany({
+      where: gardeEcriture(d),
+      data: { updatedAt: new Date() },
+    });
+    if (encore.count !== 1) return false;
     const r = await tx.trainerDocument.updateMany({
       where: {
         trainerId: d.id,
@@ -399,17 +428,27 @@ export async function enregistrerCodeUrssaf(
  */
 export async function envoyerDossier(
   d: DossierVue,
-  etat: EtatDossier,
+  entreprise: { readonly bloquante: boolean },
   maintenant: Date,
 ): Promise<ResultatEcriture> {
-  const manques = manquesDuDossier(etat);
-  if (manques.length > 0) {
-    return { ok: false, message: `Pour envoyer, il manque : ${manques.join(" · ")}.` };
-  }
   const iso = maintenant.toISOString();
   const declarations = Object.fromEntries(DECLARATIONS_FORMATEUR.map((x) => [x.cle, iso]));
-  const ok = await prisma.$transaction(async (tx) => {
-    const r = await tx.trainer.updateMany({
+  const r = await prisma.$transaction(async (tx) => {
+    // Verrou de ligne d'abord (même ordre que le dépôt et le code), puis RELECTURE : les
+    // manques se calculent sur l'état en base, jamais sur l'instantané de la page.
+    const verrou = await tx.trainer.updateMany({
+      where: gardeEcriture(d),
+      data: { updatedAt: maintenant },
+    });
+    if (verrou.count !== 1) return LIEN_PERIME;
+    const t = await tx.trainer.findUnique({ where: { id: d.id }, select: SELECTION });
+    if (!t) return LIEN_PERIME;
+    const v = vue(t, "modifiable");
+    const manques = manquesDuDossier(etatDuDossier(v, entreprise.bloquante));
+    if (manques.length > 0) {
+      return { ok: false, message: `Pour envoyer, il manque : ${manques.join(" · ")}.` } as const;
+    }
+    const e = await tx.trainer.updateMany({
       where: gardeEcriture(d),
       data: {
         declarations,
@@ -420,7 +459,7 @@ export async function envoyerDossier(
         accesVersion: { increment: 1 },
       },
     });
-    if (r.count !== 1) return false;
+    if (e.count !== 1) return LIEN_PERIME;
     await journaliser(
       tx,
       {
@@ -432,9 +471,23 @@ export async function envoyerDossier(
       },
       { exiger: true },
     );
-    return true;
+    return { ok: true } as const;
   });
-  return ok ? { ok: true } : LIEN_PERIME;
+  return r;
+}
+
+/** L'état utile aux règles (manques, étape) depuis la vue du dossier. */
+export function etatDuDossier(v: DossierVue, entrepriseBloquante: boolean): EtatDossier {
+  return {
+    codePostalPro: v.codePostalPro,
+    siret: v.siret,
+    nda: v.nda,
+    regimeTva: v.regimeTva,
+    ibanSaisi: v.ibanSaisi,
+    piecesDeposees: v.pieces.filter((p) => p.statut !== "a_retransmettre").map((p) => p.type),
+    codeUrssafSaisi: v.codeUrssafSaisi,
+    entrepriseBloquante,
+  };
 }
 
 /**

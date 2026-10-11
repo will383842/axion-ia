@@ -15,7 +15,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { lireDossierParLien } from "@/server/qualiopi/formateurs-independants/dossier";
+import {
+  etatDuDossier,
+  lireDossierParLien,
+} from "@/server/qualiopi/formateurs-independants/dossier";
 import {
   etapeInitiale,
   piecesDemandees,
@@ -55,17 +58,8 @@ export default async function DossierFormateurPage({ params }: PageProps) {
     );
   }
 
-  const etat = {
-    codePostalPro: dossier.codePostalPro,
-    siret: dossier.siret,
-    nda: dossier.nda,
-    regimeTva: dossier.regimeTva,
-    ibanSaisi: dossier.ibanSaisi,
-    piecesDeposees: dossier.pieces.filter((p) => p.statut !== "a_retransmettre").map((p) => p.type),
-    codeUrssafSaisi: dossier.codeUrssafSaisi,
-    // Le registre n'est pas rappelé à l'affichage : l'étape 2 le rejuge à la recherche.
-    entrepriseBloquante: false,
-  };
+  // Le registre n'est pas rappelé à l'affichage : l'étape 2 le rejuge à la recherche.
+  const etat = etatDuDossier(dossier, false);
 
   return (
     <Coquille titre={titre}>

@@ -328,20 +328,7 @@ export async function envoyerDossierAction(fd: FormData): Promise<Resultat> {
     bloquante = !ECRANS_QUI_LAISSENT_CONTINUER.has(v.ecran);
   }
   try {
-    const r = await envoyerDossier(
-      d,
-      {
-        codePostalPro: d.codePostalPro,
-        siret: d.siret,
-        nda: d.nda,
-        regimeTva: d.regimeTva,
-        ibanSaisi: d.ibanSaisi,
-        piecesDeposees: d.pieces.filter((p) => p.statut !== "a_retransmettre").map((p) => p.type),
-        codeUrssafSaisi: d.codeUrssafSaisi,
-        entrepriseBloquante: bloquante,
-      },
-      maintenant,
-    );
+    const r = await envoyerDossier(d, { bloquante }, maintenant);
     if (!r.ok) return r;
   } catch (e) {
     signaler("envoi", e);
