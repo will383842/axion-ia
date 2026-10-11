@@ -7,6 +7,12 @@
  * soit et de perdre des contacts ») et du 03/10 (« je veux tout qu'on garde et
  * surtout pas qu'on efface quoi que ce soit »).
  *
+ * **Une exception, décidée par lui le 2026-10-11** : les candidatures aux
+ * offres d'emploi (`jobApplication`, CV, photo et vidéos compris) s'effacent
+ * 24 mois après le dernier échange. Elle est gardée, avec ses bornes, par
+ * `les-candidatures-s-effacent-a-2-ans.spec.ts` ; ici, `jobApplication` est le
+ * SEUL modèle de personnes admis dans la liste blanche, et rien d'autre.
+ *
  * Même forme que `prospection-aucune-purge-automatique.spec.ts` : ce fichier
  * ne rappelle rien, il **empêche**. Si une suppression de données de
  * personnes réapparaît dans le worker de purge — par un correctif automatique,
@@ -56,7 +62,6 @@ function sansCommentaires(source: string): string {
 
 /** Modèles Prisma qui portent des personnes ou des échanges : jamais supprimés ici. */
 const MODELES_INTOUCHABLES = [
-  "jobApplication",
   "submission",
   "activityLog",
   "calendlyEvent",
@@ -94,9 +99,13 @@ const APPELS_INTERDITS = [
   "purgerPreuvesAccordEchues",
   "figerRencontresAvantPurge",
   "executerPurgeVisio",
-  "deleteCv",
-  "supprimerVideosCandidature",
 ] as const;
+
+/**
+ * La seule exception (décision du 2026-10-11) : les candidatures aux offres
+ * d'emploi. Listée À PART pour qu'on ne l'allonge pas par mégarde.
+ */
+const EXCEPTION_CANDIDATURES = ["jobApplication"] as const;
 
 /** Les seules tables que la passe a le droit de purger. */
 const PURGES_TECHNIQUES_AUTORISEES = [
@@ -153,6 +162,10 @@ const { purgerOutboxCrm, captureWorkerError } = vi.hoisted(() => ({
   captureWorkerError: vi.fn(),
 }));
 vi.mock("@/server/newsletter/retention", () => ({ purgerOutboxCrm }));
+vi.mock("@/server/careers/cv-storage", () => ({ deleteCv: vi.fn(async () => undefined) }));
+vi.mock("@/server/careers/videos-candidat", () => ({
+  supprimerVideosCandidature: vi.fn(async () => undefined),
+}));
 vi.mock("bullmq", () => ({ Worker: class {} }));
 vi.mock("../connection", () => ({ getBullConnectionOrThrow: () => ({}) }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError }));
@@ -201,6 +214,7 @@ describe("🛑 aucun effacement automatique de données de personnes", () => {
       "RETENTION_EMAIL_CONTENTS_MONTHS",
       "RETENTION_EMAIL_OUTBOX_MONTHS",
       "RETENTION_PROSPECTION_ACCESS_MONTHS",
+      // La durée des candidatures est écrite en dur (24 mois) : aucune variable.
       "RETENTION_CANDIDATURES_MONTHS",
       "RETENTION_SUBS_ARCHIVE_MONTHS",
     ]) {
@@ -226,12 +240,16 @@ describe("🛑 aucun effacement automatique de données de personnes", () => {
       expect(captureWorkerError).not.toHaveBeenCalled();
     });
 
-    it("🛑 liste blanche : la passe ne supprime RIEN d'autre que les tables techniques", () => {
-      const autorisees = new Set<string>(PURGES_TECHNIQUES_AUTORISEES);
+    it("🛑 liste blanche : la passe ne supprime RIEN d'autre que les tables techniques et les candidatures échues", () => {
+      const autorisees = new Set<string>([
+        ...PURGES_TECHNIQUES_AUTORISEES,
+        ...EXCEPTION_CANDIDATURES,
+      ]);
       const horsListe = [...suppressions.keys()].filter((m) => !autorisees.has(m));
       expect(
         horsListe,
-        "suppression hors des tables techniques autorisées (décision du 2026-10-07)",
+        "suppression hors des tables techniques autorisées (décision du 2026-10-07) " +
+          "et de l'exception candidatures (décision du 2026-10-11)",
       ).toEqual([]);
     });
   });

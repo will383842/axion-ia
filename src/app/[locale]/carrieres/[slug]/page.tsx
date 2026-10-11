@@ -60,6 +60,33 @@ interface PerkItem {
 }
 
 /** Offre clôturée = non publiée, pourvue OU expirée (Date.now isolé hors render). */
+/**
+ * Ce que l'annonce dit de la disponibilité du poste (décision de Will,
+ * 2026-10-11). Les annonces restent en ligne pour constituer un vivier : on
+ * recrute régulièrement sur ces profils, sans qu'un poste soit forcément ouvert
+ * le jour où la personne postule. Le Code du travail (art. L5331-3) interdit
+ * de laisser croire le contraire ; cette phrase le dit, sans bandeau.
+ */
+const RECRUTEMENT_REGULIER = {
+  fr: "Nous recrutons régulièrement sur ce profil : chaque candidature est étudiée, pour un poste ouvert ou un besoin à venir.",
+  en: "We hire regularly for this profile: every application is reviewed, for an open role or an upcoming need.",
+} as const;
+
+/** Date d'annonce lisible (« 13 août 2026 »), à l'heure de Paris. */
+function dateAnnonce(d: Date, isFr: boolean): string {
+  return new Intl.DateTimeFormat(isFr ? "fr-FR" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Paris",
+  }).format(d);
+}
+
+/** Le texte dit-il déjà que le poste s'adresse aux femmes comme aux hommes ? */
+function mentionneFemmesEtHommes(texte: string): boolean {
+  return /\b[FH]\s*\/\s*[FH]\b|·e\b|·rice\b|\(e\)/i.test(texte);
+}
+
 function isOfferClosed(o: Pick<JobOffer, "status" | "filledAt" | "validThrough">): boolean {
   if (o.status !== "published") return true;
   if (o.filledAt) return true;
@@ -177,8 +204,8 @@ function buildOfferFaq(
     id: "candidature",
     question: isFr ? "Comment postuler à cette offre ?" : "How do I apply?",
     answer: isFr
-      ? "Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire."
-      : "Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills.",
+      ? `Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire. ${RECRUTEMENT_REGULIER.fr}`
+      : `Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills. ${RECRUTEMENT_REGULIER.en}`,
   });
 
   return items;
@@ -308,7 +335,18 @@ export default async function JobOfferDetailPage({
         : `${WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"] ?? ""}${offer.city ? ` · ${offer.city}` : ""}`;
   // Contrat : libellé libre admin si présent, sinon dérivé de l'enum (SSOT
   // contractTypeLabel) — sans repli, la carte manquait sur la moitié des offres.
-  const contractFact = offer.contractLabel ?? contractTypeLabel(offer, isFr);
+  const contractBrut = offer.contractLabel ?? contractTypeLabel(offer, isFr);
+  // « F/H » à côté du contrat (non-discrimination, Code du travail L1142-1),
+  // sauf si l'intitulé ou le libellé le dit déjà. Le H1 et le slug ne bougent pas.
+  const contractFact =
+    contractBrut && !mentionneFemmesEtHommes(`${title} ${contractBrut}`)
+      ? `${contractBrut} · ${isFr ? "F/H" : "F/M"}`
+      : contractBrut;
+  // Une offre d'emploi doit être DATÉE (Code du travail L5331-2).
+  const publieeLe = offer.publishedAt ?? offer.datePosted;
+  const mentionDate = isFr
+    ? `Annonce publiée le ${dateAnnonce(publieeLe, true)} · mise à jour le ${dateAnnonce(offer.updatedAt, true)}`
+    : `Posted on ${dateAnnonce(publieeLe, false)} · updated on ${dateAnnonce(offer.updatedAt, false)}`;
   const heroFacts = [
     sal ? { label: isFr ? "Rémunération" : "Pay", value: sal } : null,
     contractFact ? { label: isFr ? "Contrat" : "Contract", value: contractFact } : null,
@@ -382,7 +420,7 @@ export default async function JobOfferDetailPage({
                   aria-hidden="true"
                   className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
                 />
-                {isFr ? "On recrute" : "We're hiring"}
+                {isFr ? "Nous recrutons régulièrement" : "We hire regularly"}
                 <span aria-hidden="true" className="text-fg-muted">
                   ·
                 </span>
@@ -434,6 +472,18 @@ export default async function JobOfferDetailPage({
                   </Cta>
                 </div>
               ) : null}
+
+              {/* Date de l'annonce et disponibilité du poste — discrets, en
+                  petit texte (décision de Will, 2026-10-11). */}
+              <p className="text-fg-muted mt-4 text-xs">
+                {mentionDate}
+                {!isClosed ? (
+                  <>
+                    <br />
+                    {isFr ? RECRUTEMENT_REGULIER.fr : RECRUTEMENT_REGULIER.en}
+                  </>
+                ) : null}
+              </p>
             </div>
 
             {/* Colonne droite — photo */}

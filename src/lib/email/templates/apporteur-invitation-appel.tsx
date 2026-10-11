@@ -149,7 +149,7 @@ const COPY = {
         ? `Merci pour votre candidature spontanée au poste de ${o}.`
         : "Merci pour votre candidature spontanée.",
     bodyOffrePourvu:
-      "Comme annoncé dans notre message précédent, ce poste est aujourd'hui pourvu. En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et nous souhaitions vous le proposer : un statut indépendant, rémunéré à la commission, que vous pouvez exercer à côté d'une autre activité.",
+      "Comme annoncé dans notre message précédent, nous n'avons pas de besoin immédiat sur ce poste. En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et nous souhaitions vous le proposer : un statut indépendant, rémunéré à la commission, que vous pouvez exercer à côté d'une autre activité.",
     bodyOffreSuite:
       "Nous vous proposons un échange de 15 minutes en visio pour vous présenter le fonctionnement et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
     provenanceOffre: (o: string) =>

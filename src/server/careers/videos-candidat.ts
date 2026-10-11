@@ -1,6 +1,7 @@
-// ⚠️ PAS de `import "server-only"` : `supprimerVideosCandidature` était appelée
+// ⚠️ PAS de `import "server-only"` : `supprimerVideosCandidature` est appelée
 // par la purge de rétention, qui tourne dans le WORKER (`tsx`) — purge retirée
-// le 2026-10-07 (décision de Will : aucune candidature effacée automatiquement).
+// le 2026-10-07, rétablie le 2026-10-11 (décision de Will : candidatures
+// effacées 24 mois après le dernier échange).
 // Le module reste importable hors Next (`aucun-module-du-worker-nimporte-server-only.spec.ts`).
 
 /**
