@@ -101,7 +101,11 @@ function periodeLabel(year: number, month: number): string {
 function designationLigne(l: {
   prestationType: string;
   heures: { toNumber(): number } | null;
+  /** Paiement par mission seulement (`null` sur toute ligne du relevé mensuel). */
+  objet?: string | null;
 }): string {
+  // L12i : la présentation de la méthode n'est pas une formation animée.
+  if (l.objet === "presentation_methode") return "Présentation de la méthode — 1 demi-journée";
   const nature =
     l.prestationType === "formation_collective"
       ? "Formation collective"
@@ -151,7 +155,7 @@ export async function lireReleveAutofacture(id: string) {
       },
       feeLines: {
         where: { nature: "honoraire_du" },
-        select: { prestationType: true, heures: true, montantHtCents: true },
+        select: { prestationType: true, heures: true, montantHtCents: true, objet: true },
         orderBy: { montantHtCents: "desc" },
       },
     },

@@ -17,7 +17,7 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("onze clés, chacune protégée de l'éditeur générique", () => {
+  it("seize clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -26,12 +26,19 @@ describe("interrupteurs du socle de signature", () => {
         "formateurs.lettre_v2",
         // Lot L3 — garde de mission aux portes, livrée éteinte.
         "formateurs.garde_mission_portes",
+        // Lots L12i et L12h — présentation payée et DAS 2 commun, livrés éteints.
+        "formateurs.presentation_payee",
+        "formateurs.das2_commun",
         // Lot L14 — fin de collaboration, livrée éteinte.
         "formateurs.fin_collaboration",
         // Lots L11b et L11b-ux — choix du formateur en cartes, livré éteint.
         "formateurs.choix_cartes",
         // Lot L11h — choix suivant et désistement, livrés éteints.
         "formateurs.rang_suivant",
+        // Lots L7b, L9b, L7d — contrat-cadre émis, mise à niveau, nouvelle version, éteints.
+        "formateurs.contrat_cadre_emission",
+        "formateurs.mise_a_niveau",
+        "formateurs.nouvelle_version_contrat",
         "formateurs.suite_contrat_cadre",
         "signature.alertes_hors_jeton",
         "signature.copie_partielle",
@@ -58,6 +65,22 @@ describe("interrupteurs du socle de signature", () => {
         { key: "formateurs.suite_contrat_cadre", value: "oui" },
       ]),
     ).toMatchObject({ copie_partielle: true, suite_contrat_cadre: false });
+  });
+
+  it("la mise à niveau exige le dossier en ligne ; la nouvelle version, les textes validés", () => {
+    const etats = etatsParDefaut();
+    expect(prealablesManquantsSignature("contrat_cadre_emission", true, etats)).toEqual([]);
+    expect(prealablesManquantsSignature("mise_a_niveau", true, etats)).toHaveLength(1);
+    expect(
+      prealablesManquantsSignature("mise_a_niveau", true, { ...etats, dossier_en_ligne: true }),
+    ).toEqual([]);
+    expect(prealablesManquantsSignature("nouvelle_version_contrat", true, etats)).toHaveLength(1);
+    expect(
+      prealablesManquantsSignature("nouvelle_version_contrat", true, {
+        ...etats,
+        textes_valides: true,
+      }),
+    ).toEqual([]);
   });
 
   it("la copie partielle exige la validation des textes ; couper n'exige rien", () => {

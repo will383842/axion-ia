@@ -55,7 +55,11 @@ import {
   type ProviderSignature,
   type TupleDocumentSignatureV1,
 } from "./document-signature-hash";
-import { MENTION_VERSION_DOCUMENT, CONSENTEMENT_VERSION_DOCUMENT } from "./mentions-document";
+import {
+  MENTION_VERSION_DOCUMENT,
+  CONSENTEMENT_VERSION_DOCUMENT,
+  type VersionConsentementDocument,
+} from "./mentions-document";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, c'est autre chose qu'une course. */
 const MAX_REPRISES_CHAINE = 3;
@@ -207,6 +211,12 @@ export interface EntreeSignatureDocument {
   userAgentSha256?: string | null | undefined;
   /** Injectable pour les tests. Jamais `new Date()` en dur dans la logique. */
   maintenant?: Date | undefined;
+  /**
+   * Consentement recueilli — défaut : le consentement ordinaire. La variante
+   * « code » n'est passée que par l'appelant qui a VÉRIFIÉ et consommé le code
+   * à usage unique (contrat-cadre v3, lot L7c) : elle entre dans le tuple haché.
+   */
+  consentementVersion?: VersionConsentementDocument | undefined;
 }
 
 function estStub(): boolean {
@@ -847,6 +857,8 @@ export async function signerDocument(
   const suppressionPrevueAt = new Date(maintenant);
   suppressionPrevueAt.setFullYear(suppressionPrevueAt.getFullYear() + DOCUMENT_RETENTION_YEARS);
 
+  const consentementVersion = input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT;
+
   const socle = {
     contexteType: "document_engagement" as const,
     documentGenereId: ctx.id,
@@ -862,7 +874,7 @@ export async function signerDocument(
     methode: input.methode,
     signatureSha256: image?.sha256 ?? null,
     mentionVersion: MENTION_VERSION_DOCUMENT,
-    consentementVersion: CONSENTEMENT_VERSION_DOCUMENT,
+    consentementVersion,
     signeAtIso: maintenant.toISOString(),
   };
 
@@ -913,7 +925,7 @@ export async function signerDocument(
             selfHash,
             hashVersion: HASH_VERSION_DOCUMENT,
             mentionVersion: MENTION_VERSION_DOCUMENT,
-            consentementVersion: CONSENTEMENT_VERSION_DOCUMENT,
+            consentementVersion,
             signeAt: maintenant,
             ipHash: input.ipHash ?? null,
             userAgentSha256: input.userAgentSha256 ?? null,

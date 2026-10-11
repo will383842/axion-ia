@@ -36,13 +36,20 @@ import {
   basculerFormateursMenuFreelanceAction,
   basculerFormateursModelesComposeurAction,
   basculerFormateursAjoutConsoleAction,
+  basculerFormateursSuiviEchangeAction,
+  basculerFormateursDossiersContratsAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
   basculerFormateursGardeMissionPortesAction,
+  basculerFormateursPresentationPayeeAction,
+  basculerFormateursDas2CommunAction,
   basculerFormateursFinCollaborationAction,
   basculerFormateursChoixCartesAction,
   basculerFormateursRangSuivantAction,
+  basculerFormateursContratCadreEmissionAction,
+  basculerFormateursMiseANiveauAction,
+  basculerFormateursNouvelleVersionContratAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -105,9 +112,14 @@ const ACTIONS_SIGNATURE: Record<
   affectation_sure: basculerFormateursAffectationSureAction,
   lettre_v2: basculerFormateursLettreV2Action,
   garde_mission_portes: basculerFormateursGardeMissionPortesAction,
+  presentation_payee: basculerFormateursPresentationPayeeAction,
+  das2_commun: basculerFormateursDas2CommunAction,
   fin_collaboration: basculerFormateursFinCollaborationAction,
   choix_cartes: basculerFormateursChoixCartesAction,
   rang_suivant: basculerFormateursRangSuivantAction,
+  contrat_cadre_emission: basculerFormateursContratCadreEmissionAction,
+  mise_a_niveau: basculerFormateursMiseANiveauAction,
+  nouvelle_version_contrat: basculerFormateursNouvelleVersionContratAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
@@ -117,6 +129,8 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     menu_freelance: basculerFormateursMenuFreelanceAction,
     modeles_composeur: basculerFormateursModelesComposeurAction,
     ajout_console: basculerFormateursAjoutConsoleAction,
+    suivi_echange: basculerFormateursSuiviEchangeAction,
+    dossiers_contrats: basculerFormateursDossiersContratsAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

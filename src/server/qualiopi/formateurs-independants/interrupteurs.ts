@@ -430,6 +430,25 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.garde_mission_portes",
   },
+  // Lot L12i — la présentation de la méthode payée (175 € HT, relevé hors
+  // mission). Coupé : l'action « Présentation faite le … » refuse, exactement
+  // comme avant L12i (la présentation reste payée par « facture reçue »).
+  presentation_payee: {
+    ...envoi(
+      "Présentation de la méthode payée",
+      "« Présentation faite le … » écrit une demi-journée de 175 € HT, au régime de TVA de la fiche, sur un relevé hors mission à valider (une seule par formateur, contrat-cadre signé).",
+    ),
+    cle: "formateurs.presentation_payee",
+  },
+  // Lot L12h — l'export DAS 2 COMMUN (apporteurs, formateurs, organismes). Coupé :
+  // la route d'export refuse ; l'export des apporteurs reste en place, inchangé.
+  das2_commun: {
+    ...envoi(
+      "Export DAS 2 commun",
+      "Un seul fichier annuel des honoraires et commissions versés (apporteurs, formateurs indépendants, organismes), au seuil unique des paiements sortants.",
+    ),
+    cle: "formateurs.das2_commun",
+  },
   // Lot L14 — fin de collaboration d'un formateur indépendant. Coupé : la carte
   // n'apparaît pas sur la fiche et les actions refusent, exactement comme avant L14.
   fin_collaboration: {
@@ -461,6 +480,33 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.rang_suivant",
   },
+  // Lot L7b — le contrat-cadre v3 d'un formateur indépendant, préparé depuis sa fiche.
+  // Coupé : le panneau n'apparaît pas et l'action refuse, exactement comme avant L7b.
+  contrat_cadre_emission: {
+    ...envoi(
+      "Contrat-cadre préparé depuis la fiche",
+      "La fiche d'un formateur indépendant permet de préparer son contrat-cadre (dernière version arrêtée, attestation URSSAF vérifiée, registre contrôlé sur le SIRET du contrat), puis d'envoyer le lien de signature.",
+    ),
+    cle: "formateurs.contrat_cadre_emission",
+  },
+  // Lot L9b — mise à niveau des indépendants actifs d'avant le contrôle. Coupé :
+  // l'écran est fermé et les actions refusent, sans rien lire ni écrire.
+  mise_a_niveau: {
+    ...envoi(
+      "Mise à niveau des indépendants actifs",
+      "L'écran « À mettre à niveau » liste les indépendants actifs sans contrat-cadre en vigueur, avec ce qui leur manque, fige la liste, puis envoie à chacun son dossier prérempli.",
+    ),
+    cle: "formateurs.mise_a_niveau",
+  },
+  // Lot L7d — nouvelle version du contrat-cadre. Coupé : la liste « à faire re-signer »
+  // est fermée et rien n'est émis ni envoyé.
+  nouvelle_version_contrat: {
+    ...envoi(
+      "Nouvelle version du contrat-cadre",
+      "Lister les formateurs dont le contrat-cadre en vigueur est antérieur à la dernière version arrêtée, et leur envoyer la nouvelle version à signer, après aperçu.",
+    ),
+    cle: "formateurs.nouvelle_version_contrat",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -486,10 +532,25 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
+  // L'écriture exige M-D et l'élargissement du CHECK historique : deux
+  // changements de schéma qu'aucune règle lisible ne vérifie encore ici.
+  presentation_payee: [
+    {
+      sorte: "non_lisible",
+      libelle:
+        "La base doit d'abord accepter une ligne d'honoraires sans session et plusieurs relevés par mois (changement de schéma à venir).",
+    },
+  ],
+  das2_commun: [],
   fin_collaboration: [],
   choix_cartes: [],
   // F48 (désistement reçu) est un texte neuf.
   rang_suivant: [exige("textes_valides")],
+  contrat_cadre_emission: [],
+  // Le dossier envoyé doit pouvoir s'ouvrir.
+  mise_a_niveau: [exige("dossier_en_ligne")],
+  // F45 est un texte neuf adressé aux formateurs.
+  nouvelle_version_contrat: [exige("textes_valides")],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
@@ -601,6 +662,24 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.ajout_console",
   },
+  // Lot F-CAL-2 (+ U7-f) — le suivi de l'échange formateur par l'outil. Coupé : un
+  // échange formateur ne reçoit aucun e-mail de notre part, n'est rattaché à aucune
+  // candidature et n'a pas d'issue « formateur » en console, exactement comme avant.
+  suivi_echange: {
+    ...envoi(
+      "Suivi de l'échange formateur",
+      "Un échange réservé est rattaché à sa candidature, reçoit sa confirmation et ses deux rappels (la veille, une heure avant), et son issue se note en console. À allumer avant de couper les rappels natifs de Calendly.",
+    ),
+    cle: "formateurs.suivi_echange",
+  },
+  // Lot L8 — l'entrée « Dossiers et contrats » du groupe (exige aussi `menu_freelance`).
+  dossiers_contrats: {
+    ...envoi(
+      "Dossiers et contrats",
+      "Le groupe « Formateurs freelance » montre la liste des formateurs indépendants, avec leur étape calculée et leurs compteurs.",
+    ),
+    cle: "formateurs.dossiers_contrats",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -619,6 +698,8 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     menu_freelance: [],
     modeles_composeur: [],
     ajout_console: [],
+    suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
+    dossiers_contrats: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {

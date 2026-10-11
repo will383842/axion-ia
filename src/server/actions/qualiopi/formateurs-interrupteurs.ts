@@ -483,6 +483,19 @@ export async function basculerFormateursAjoutConsoleAction(
 ): Promise<EtatBascule> {
   return basculerEntree("ajout_console", formData);
 }
+export async function basculerFormateursDossiersContratsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("dossiers_contrats", formData);
+}
+
+export async function basculerFormateursSuiviEchangeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("suivi_echange", formData);
+}
 
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
@@ -502,6 +515,18 @@ export async function basculerFormateursGardeMissionPortesAction(
 ): Promise<EtatBascule> {
   return basculerSignature("garde_mission_portes", formData);
 }
+export async function basculerFormateursPresentationPayeeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("presentation_payee", formData);
+}
+export async function basculerFormateursDas2CommunAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("das2_commun", formData);
+}
 export async function basculerFormateursFinCollaborationAction(
   _prev: EtatBascule,
   formData: FormData,
@@ -519,4 +544,22 @@ export async function basculerFormateursRangSuivantAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("rang_suivant", formData);
+}
+export async function basculerFormateursContratCadreEmissionAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("contrat_cadre_emission", formData);
+}
+export async function basculerFormateursMiseANiveauAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("mise_a_niveau", formData);
+}
+export async function basculerFormateursNouvelleVersionContratAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("nouvelle_version_contrat", formData);
 }
