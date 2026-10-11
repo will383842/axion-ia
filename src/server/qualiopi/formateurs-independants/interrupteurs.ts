@@ -523,6 +523,13 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.modeles_composeur",
   },
+  ajout_console: {
+    ...envoi(
+      "Ajouter un candidat formateur en console",
+      "Saisir un candidat rencontré hors du site (salon, recommandation, LinkedIn, Indeed) ; l'invitation à l'échange ne part que si la case est cochée et son texte validé.",
+    ),
+    cle: "formateurs.ajout_console",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -540,6 +547,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     formulaire_freelance: [],
     menu_freelance: [],
     modeles_composeur: [],
+    ajout_console: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {

@@ -199,6 +199,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    la fiche de candidature (proposés) et l'action de réponse (revérifiés).
   "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/page.tsx",
   "src/features/admin-job-applications/reply-actions.ts",
+  // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
+  //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
+  "src/features/admin-job-applications/candidat-formateur-actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
