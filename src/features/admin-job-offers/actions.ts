@@ -17,6 +17,11 @@ import { pingIndexNow } from "@/lib/indexnow";
 import { enqueueGoogleIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { isJobOfferIndexable } from "@/lib/careers/job-offers";
 import { normalizeApplicantCountries } from "@/lib/careers/format";
+import {
+  natureAEnregistrer,
+  type NatureCollaborationOffre,
+} from "@/lib/careers/formateur-freelance";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
   JobCategory,
@@ -121,6 +126,8 @@ export interface JobOfferListItem {
   status: PublishStatus;
   workMode: JobWorkMode;
   titleFr: string;
+  /** L0g — affichée seulement quand `formateurs.nature_offre` est allumé. */
+  natureCollaboration: NatureCollaborationOffre;
   city: string | null;
   displayOrder: number;
   viewCount: number;
@@ -160,6 +167,7 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
         status: true,
         workMode: true,
         titleFr: true,
+        natureCollaboration: true,
         city: true,
         displayOrder: true,
         viewCount: true,
@@ -179,6 +187,7 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
     status: r.status,
     workMode: r.workMode,
     titleFr: r.titleFr,
+    natureCollaboration: r.natureCollaboration,
     city: r.city,
     displayOrder: r.displayOrder,
     viewCount: r.viewCount,
@@ -326,9 +335,32 @@ export async function upsertJobOfferAction(
   const existing = d.id
     ? await prisma.jobOffer.findUnique({
         where: { id: d.id },
-        select: { publishedAt: true, slug: true },
+        select: {
+          publishedAt: true,
+          slug: true,
+          natureCollaboration: true,
+          _count: { select: { applications: true } },
+        },
       })
     : null;
+
+  // L0g — nature de la collaboration. Éteint (`formateurs.nature_offre`
+  // absent) : déduite comme au remplissage du schéma n° 1, aucun choix lu.
+  const { nature_offre: natureLue } = await lireEtatsEntree();
+  const demandee = formData.get("natureCollaboration");
+  const nature = natureAEnregistrer({
+    natureLue,
+    offre: {
+      slug: d.slug,
+      titleFr: d.titleFr,
+      employmentType: d.employmentType,
+      secondaryEmploymentType: d.secondaryEmploymentType ?? null,
+    },
+    actuelle: existing?.natureCollaboration ?? null,
+    demandee: demandee === "freelance" || demandee === "salarie" ? demandee : null,
+    aDesCandidatures: (existing?._count?.applications ?? 0) > 0,
+  });
+  if (!nature.ok) return { ok: false, error: nature.error };
   const publishedAt =
     d.status === "published"
       ? (existing?.publishedAt ?? new Date())
@@ -367,6 +399,7 @@ export async function upsertJobOfferAction(
     bodyEn: d.bodyEn || d.bodyFr,
     bodyTextEn: d.bodyTextEn || d.bodyTextFr,
     employmentType: d.employmentType,
+    natureCollaboration: nature.nature,
     // Garde-fou : un second type identique au premier n'apporte rien → null.
     secondaryEmploymentType:
       d.secondaryEmploymentType && d.secondaryEmploymentType !== d.employmentType

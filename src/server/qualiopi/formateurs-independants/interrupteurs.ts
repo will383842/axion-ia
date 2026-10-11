@@ -496,3 +496,71 @@ export function dateAllumageSignature(brut: unknown, misAJourLe: Date | null): D
   }
   return misAJourLe;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Interrupteurs de l'ENTRÉE des formateurs freelance — lots L0g et suivants
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Même contrat que les deux registres ci-dessus : une ligne `settings` par clé,
+// `{ actif }`, absente ou illisible = ARRÊTÉ, c'est-à-dire exactement le
+// comportement d'avant le lot. Registre à part : les seize et les cinq du socle
+// de signature sont figés par leurs propres verrous.
+
+export const INTERRUPTEURS_ENTREE = {
+  nature_offre: {
+    ...envoi(
+      "Nature de l'offre lue en base",
+      "« Freelance » ou « salarié » se choisit sur chaque offre, et c'est ce choix qui exclut les offres freelance de la réponse automatique aux candidatures closes.",
+    ),
+    cle: "formateurs.nature_offre",
+  },
+} as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
+
+export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
+
+export const CLES_INTERRUPTEURS_ENTREE = Object.keys(
+  INTERRUPTEURS_ENTREE,
+) as ReadonlyArray<CleInterrupteurEntree>;
+
+export type EtatsInterrupteursEntree = { [C in CleInterrupteurEntree]: boolean };
+
+/** Préalables à l'allumage — mêmes règles que `PREALABLES`. */
+export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyArray<Prealable>>> =
+  {
+    nature_offre: [],
+  };
+
+export function cleSettingEntree(cle: CleInterrupteurEntree): string {
+  return INTERRUPTEURS_ENTREE[cle].cle;
+}
+
+export function etatsEntreeParDefaut(): EtatsInterrupteursEntree {
+  return Object.fromEntries(
+    CLES_INTERRUPTEURS_ENTREE.map((c) => [c, false]),
+  ) as EtatsInterrupteursEntree;
+}
+
+/** Les états à partir des lignes `settings` lues (n'importe quel ordre). */
+export function etatsEntreeDepuisLignes(
+  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+): EtatsInterrupteursEntree {
+  const etats = etatsEntreeParDefaut();
+  for (const cle of CLES_INTERRUPTEURS_ENTREE) {
+    const ligne = lignes.find((l) => l.key === cleSettingEntree(cle));
+    etats[cle] = lireValeurSignature(ligne?.value).valeur;
+  }
+  return etats;
+}
+
+/** Ce qui manque pour allumer `cle`. Couper est toujours permis. */
+export function prealablesManquantsEntree(
+  cle: CleInterrupteurEntree,
+  valeur: boolean,
+  etats: EtatsInterrupteurs,
+): string[] {
+  if (valeur !== true) return [];
+  return PREALABLES_ENTREE[cle].flatMap((p) => {
+    if (p.sorte === "non_lisible") return [p.libelle];
+    return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
+  });
+}

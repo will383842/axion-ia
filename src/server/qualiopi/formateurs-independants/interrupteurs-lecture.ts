@@ -11,7 +11,10 @@ import { prisma } from "@/lib/prisma";
 
 import {
   CLES_INTERRUPTEURS,
+  CLES_INTERRUPTEURS_ENTREE,
   CLES_INTERRUPTEURS_SIGNATURE,
+  cleSettingEntree,
+  type CleInterrupteurEntree,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
   cleSettingSignature,
@@ -116,6 +119,43 @@ export async function lireInterrupteursSignature(): Promise<
   const parCle = new Map(brutes.map((b) => [b.key, b]));
   return CLES_INTERRUPTEURS_SIGNATURE.map((cle): LigneInterrupteurSignature => {
     const brute = parCle.get(cleSettingSignature(cle));
+    const lu = lireValeurSignature(brute?.value);
+    return {
+      cle,
+      valeur: lu.valeur,
+      lisible: lu.lisible,
+      misAJourLe: brute?.updatedAt ?? null,
+      misAJourPar: brute?.updatedBy ? (noms.get(brute.updatedBy) ?? null) : null,
+    };
+  });
+}
+
+// ─── Entrée des formateurs freelance (L0g et suivants) ───────────────────────
+
+const CLES_SETTINGS_ENTREE = CLES_INTERRUPTEURS_ENTREE.map(cleSettingEntree);
+
+// `lireEtatsEntree` vit dans `etats-entree.ts` (sans `server-only` : le worker
+// l'atteint par la réponse automatique aux candidatures).
+export { lireEtatsEntree } from "./etats-entree";
+
+export interface LigneInterrupteurEntree {
+  readonly cle: CleInterrupteurEntree;
+  readonly valeur: boolean;
+  readonly lisible: boolean;
+  readonly misAJourLe: Date | null;
+  readonly misAJourPar: string | null;
+}
+
+/** Pour l'écran console. */
+export async function lireInterrupteursEntree(): Promise<ReadonlyArray<LigneInterrupteurEntree>> {
+  const brutes = await prisma.setting.findMany({
+    where: { key: { in: CLES_SETTINGS_ENTREE } },
+    select: { key: true, value: true, updatedAt: true, updatedBy: true },
+  });
+  const noms = await nomsAuteurs(brutes);
+  const parCle = new Map(brutes.map((b) => [b.key, b]));
+  return CLES_INTERRUPTEURS_ENTREE.map((cle): LigneInterrupteurEntree => {
+    const brute = parCle.get(cleSettingEntree(cle));
     const lu = lireValeurSignature(brute?.value);
     return {
       cle,
