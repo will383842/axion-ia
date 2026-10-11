@@ -722,7 +722,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Durée de conservation",
           body:
-            "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
+            "Données clients : conservées tant que la relation dure, puis le temps des délais légaux de réclamation ; les pièces comptables (factures et pièces justificatives) sont conservées dix ans (article L.123-22 du code de commerce). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
             CN_FR.conservation,
         },
         {
@@ -840,7 +840,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Retention period",
           body:
-            "Client data: 5 years after end of service (French accounting obligation). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
+            "Client data: kept for as long as the relationship lasts, then for the statutory limitation periods for claims; accounting records (invoices and supporting documents) are kept for ten years (article L.123-22 of the French Commercial Code). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
             CN_EN.conservation,
         },
         {
@@ -1014,7 +1014,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Droit à l'effacement (art. 17)",
-          body: "Demander la suppression de vos données, sous réserve des obligations légales (comptabilité 5 ans).",
+          body: "Demander la suppression de vos données, sous réserve des obligations légales (pièces comptables : dix ans, article L.123-22 du code de commerce).",
         },
         {
           title: "Droit d'opposition (art. 21)",
@@ -1054,7 +1054,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Right to erasure (art. 17)",
-          body: "Request deletion of your data, subject to legal obligations (5-year accounting).",
+          body: "Request deletion of your data, subject to legal obligations (accounting records: ten years, article L.123-22 of the French Commercial Code).",
         },
         {
           title: "Right to object (art. 21)",
