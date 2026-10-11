@@ -44,6 +44,7 @@ import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-inp
 import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
 import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
 import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import {
@@ -336,6 +337,45 @@ export async function createRecurringSessionsAction(
  *
  * @param input Paramètres du report.
  */
+/** Les co-formateurs d'une session (lignes et Json), principal exclu. */
+function coFormateursDe(ancienne: {
+  formateurPrincipalId: string | null;
+  coFormateurs: unknown;
+  sessionFormateurs: ReadonlyArray<{ trainerId: string; role: string }>;
+}): Set<string> {
+  return new Set(
+    [
+      ...ancienne.sessionFormateurs.filter((r) => r.role !== "principal").map((r) => r.trainerId),
+      ...parseCoFormateurs(ancienne.coFormateurs).map((e) => e.trainerId),
+    ].filter((id) => id !== ancienne.formateurPrincipalId),
+  );
+}
+
+/**
+ * Lot L3 — les co-formateurs que la garde de mission REFUSE (interrupteur
+ * `formateurs.garde_mission_portes` ; coupé : aucun).
+ */
+async function coFormateursRefusesParGarde(
+  ancienne: {
+    formateurPrincipalId: string | null;
+    coFormateurs: unknown;
+    sessionFormateurs: ReadonlyArray<{ trainerId: string; role: string }>;
+  },
+  avertissements: string[],
+): Promise<Set<string>> {
+  const refuses = new Set<string>();
+  for (const id of coFormateursDe(ancienne)) {
+    const garde = await controlerGardeMission(id);
+    if (garde.refus.length > 0) {
+      refuses.add(id);
+      avertissements.push(`Co-formateur non reconduit : ${garde.refus.join(" ")}`);
+    } else {
+      avertissements.push(...garde.avertissements.map((a) => `Attention : ${a}`));
+    }
+  }
+  return refuses;
+}
+
 /**
  * Lot S2 (T7) — les co-formateurs d'une session reportée qui ne repassent PAS
  * la garde du principal : fiche inactive, habilitation retirée, ou indépendant
@@ -351,12 +391,7 @@ async function coFormateursNonReconductibles(
   },
   cible: Parameters<typeof constaterDoubleEmploi>[1],
 ): Promise<Set<string>> {
-  const ids = new Set(
-    [
-      ...ancienne.sessionFormateurs.filter((r) => r.role !== "principal").map((r) => r.trainerId),
-      ...parseCoFormateurs(ancienne.coFormateurs).map((e) => e.trainerId),
-    ].filter((id) => id !== ancienne.formateurPrincipalId),
-  );
+  const ids = coFormateursDe(ancienne);
   const ecartes = new Set<string>();
   for (const id of ids) {
     try {
@@ -603,6 +638,17 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
       // sans formateur et l'alerte le signale — jamais l'inverse.
     }
   }
+  // 🔴 L3 — la garde de mission s'applique aussi au report (interrupteur
+  // `formateurs.garde_mission_portes` ; coupé : aucun effet).
+  if (formateurRetenuId !== null) {
+    const garde = await controlerGardeMission(formateurRetenuId);
+    if (garde.refus.length > 0) {
+      formateurRetenuId = null;
+      avertissementsReport.push(`Formateur non reconduit : ${garde.refus.join(" ")}`);
+    } else {
+      avertissementsReport.push(...garde.avertissements.map((a) => `Attention : ${a}`));
+    }
+  }
   /** Le principal que la garde vient d'écarter, s'il y en a un. */
   const formateurEcarteId =
     ancienne.formateurPrincipalId !== null && formateurRetenuId === null
@@ -618,9 +664,10 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
   // report réinstallait un co-animateur désactivé, déshabilité ou déjà pris aux
   // nouvelles dates. Chacun repasse la garde du principal ; celui qui échoue
   // n'est pas reconduit.
-  const coEcartes = affectationSure
-    ? await coFormateursNonReconductibles(ancienne, cibleReport)
-    : new Set<string>();
+  const coEcartes = new Set([
+    ...(affectationSure ? await coFormateursNonReconductibles(ancienne, cibleReport) : []),
+    ...(await coFormateursRefusesParGarde(ancienne, avertissementsReport)),
+  ]);
   const coFormateursReportes =
     formateurEcarteId !== null || coEcartes.size > 0
       ? parseCoFormateurs(ancienne.coFormateurs).filter(

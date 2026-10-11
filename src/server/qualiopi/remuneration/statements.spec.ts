@@ -39,6 +39,9 @@ vi.mock("@/lib/prisma", () => ({
     auditMission: { findMany: (...a: unknown[]) => mockAuditFindMany(...a) },
     trainer: { findMany: (...a: unknown[]) => mockTrainerFindMany(...a) },
     trainerCompensationRule: { findMany: (...a: unknown[]) => mockRuleFindMany(...a) },
+    // Lot L12c : le run lit l'interrupteur `formateurs.passage_paiement`. Absent
+    // = aucune bascule = le run d'avant, que ce fichier décrit.
+    setting: { findUnique: async () => null },
     $transaction: (...a: unknown[]) => mockTransaction(...(a as [never])),
   },
 }));

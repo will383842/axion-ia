@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { listJobOffersAction } from "@/features/admin-job-offers/actions";
 import { listStaleJobPostings } from "@/server/careers/freshness";
 import { JobOffersV2 } from "./_v2/JobOffersV2";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export default async function JobOffersListPage({ params, searchParams }: PagePr
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const [result, staleOffers] = await Promise.all([
+  const [result, staleOffers, entree] = await Promise.all([
     listJobOffersAction({
       category: sp.category as never,
       status: sp.status as never,
@@ -29,6 +30,7 @@ export default async function JobOffersListPage({ params, searchParams }: PagePr
     }),
     // Fraîcheur Google for Jobs : offres (DB + statiques) à republier.
     listStaleJobPostings().catch(() => []),
+    lireEtatsEntree(),
   ]);
 
   return (
@@ -40,6 +42,7 @@ export default async function JobOffersListPage({ params, searchParams }: PagePr
       page={result.page}
       totalPages={result.totalPages}
       staleOffers={staleOffers}
+      natureLue={entree.nature_offre}
     />
   );
 }

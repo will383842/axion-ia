@@ -54,6 +54,14 @@ import {
 } from "./run";
 import { HEURES_PAR_JOUR_DEFAUT } from "./calcul";
 import {
+  cleRevendication,
+  filtrerPrestationsApresBascule,
+} from "@/server/qualiopi/formateurs-independants/paiement/apres-bascule";
+import {
+  lireDateBascule,
+  premiereJourneeSession,
+} from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import {
   ATTENTE_CONNEXION_RUN_MS,
   DELAI_TRANSACTION_RUN_MS,
   prendreVerrousRemuneration,
@@ -280,6 +288,39 @@ async function lireFormateursEtRegles(
   return { formateurs, regles };
 }
 
+/**
+ * Les prestations du run, une fois la bascule du paiement par mission prise en
+ * compte. 🔴 Une lecture en échec LÈVE (cf. `lecture-passage.ts`) : un run qui
+ * échoue vaut mieux qu'un run qui paie une session déjà payée par mission.
+ */
+async function apresBascule(
+  prestations: PrestationACalculer[],
+  formateurs: Map<string, FormateurContexte>,
+): Promise<PrestationACalculer[]> {
+  const dateBascule = await lireDateBascule(prisma);
+  if (dateBascule === null) return prestations;
+  const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
+  if (sessionIds.length === 0) return prestations;
+  const [revendications, sessions] = await Promise.all([
+    prisma.revendicationPaiement.findMany({
+      where: { sessionId: { in: sessionIds } },
+      select: { trainerId: true, sessionId: true, regime: true },
+    }),
+    prisma.trainingSession.findMany({
+      where: { id: { in: sessionIds } },
+      select: { id: true, dateDebut: true, jours: { select: { date: true } } },
+    }),
+  ]);
+  return filtrerPrestationsApresBascule(prestations, {
+    dateBascule,
+    statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
+    revendications: new Map(
+      revendications.map((r) => [cleRevendication(r.trainerId, r.sessionId), r.regime]),
+    ),
+    premiereJourneeParSession: new Map(sessions.map((s) => [s.id, premiereJourneeSession(s)])),
+  });
+}
+
 /* ──────────────────────────────────────────────────────────────────────────────
  * Écriture
  * ────────────────────────────────────────────────────────────────────────────── */
@@ -310,11 +351,13 @@ export async function runRemunerationMensuelle(
 ): Promise<RunResultat> {
   const dryRun = opts.dryRun === true;
 
-  const prestations = await lirePrestations(periode);
-  const trainerIds = [
-    ...new Set(prestations.flatMap((p) => p.affectations.map((a) => a.trainerId))),
-  ];
-  const { formateurs, regles } = await lireFormateursEtRegles(trainerIds);
+  const lues = await lirePrestations(periode);
+  const trainerIdsLus = [...new Set(lues.flatMap((p) => p.affectations.map((a) => a.trainerId)))];
+  const { formateurs, regles } = await lireFormateursEtRegles(trainerIdsLus);
+  // Paiement par mission (ADR 0066 v2 (e)) : SANS date de bascule, rien ne change.
+  // Après la bascule, un indépendant n'est traité ici que pour les sessions que le
+  // relevé mensuel a revendiquées ; le reste appartient au paiement par mission.
+  const prestations = await apresBascule(lues, formateurs);
 
   const anomalies: Anomalie[] = [];
   const lignesParFormateur = new Map<string, LigneAPersister[]>();
@@ -365,7 +408,12 @@ export async function runRemunerationMensuelle(
       // Itérer seulement sur les formateurs du run laisserait des lignes
       // fantômes, et un relevé qui les totalise.
       const dejaPresents = await tx.trainerFeeLine.findMany({
-        where: { periodeYear: periode.year, periodeMonth: periode.month },
+        // Les lignes du paiement par mission ne sont jamais celles du run.
+        where: {
+          periodeYear: periode.year,
+          periodeMonth: periode.month,
+          origine: "releve_mensuel",
+        },
         select: { trainerId: true },
         distinct: ["trainerId"],
       });
@@ -408,6 +456,8 @@ export async function runRemunerationMensuelle(
             periodeYear: periode.year,
             periodeMonth: periode.month,
             statut: { not: "valide" },
+            // Le run n'efface que SES lignes : jamais celles du paiement par mission.
+            origine: "releve_mensuel",
           },
         });
 

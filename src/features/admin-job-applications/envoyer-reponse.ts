@@ -40,7 +40,7 @@ import { prisma } from "@/lib/prisma";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
-import type { ModeleReponseId } from "@/content/recrutement/modeles-reponse";
+import type { ModeleComposeurId } from "@/content/recrutement/modeles-reponse";
 import type { Locale } from "../../../prisma/generated/client";
 
 import { consignerEvenement } from "./journal";
@@ -70,7 +70,7 @@ export interface ActeurDeLaReponse {
 export interface ContenuDeLaReponse {
   subject: string;
   bodyMarkdown: string;
-  modele: ModeleReponseId;
+  modele: ModeleComposeurId;
   internalNote?: string | undefined;
 }
 

@@ -176,6 +176,32 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    `formateurs.*`. Il n'importe que `estCleProtegee`, pour que le préfixe protégé ne soit
   //    écrit qu'une fois — une recopie divergerait et rouvrirait le contournement.
   "src/features/admin-settings/actions.ts",
+  // Entrée des formateurs freelance (lot L0g, ADR 0066) : la nature de l'offre ne se lit que
+  //    derrière l'interrupteur `formateurs.nature_offre`. Ces surfaces n'importent que
+  //    `lireEtatsEntree` (lecture qui ne lève jamais) ; une seconde lecture des clés
+  //    `formateurs.*` hors du module des interrupteurs est interdite (garde X3, règle 5).
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/[id]/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/new/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/page.tsx",
+  "src/features/admin-job-offers/actions.ts",
+  "src/server/careers/reponse-poste-pourvu.ts",
+  // Formulaire du formateur indépendant (lot L0c-1) : mêmes règles, interrupteur
+  //    `formateurs.formulaire_freelance` (pages publiques de l'offre et de candidature,
+  //    action de dépôt) ; elles ne lisent que `lireEtatsEntree` et `lireEtatsFormateurs`.
+  "src/app/[locale]/carrieres/[slug]/page.tsx",
+  "src/app/[locale]/carrieres/[slug]/postuler/page.tsx",
+  "src/features/job-application/actions.ts",
+  // Groupe de menu « Formateurs freelance » (lot L0h) : interrupteur `formateurs.menu_freelance`,
+  //    lu par la liste des candidatures (vue filtrée ; le gabarit de la console est déjà en zone).
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/page.tsx",
+  "src/app/api/admin/candidatures/export/route.ts",
+  // Modèles « formateur » du composeur (lot L0c-2) : `formateurs.modeles_composeur`, lu par
+  //    la fiche de candidature (proposés) et l'action de réponse (revérifiés).
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/page.tsx",
+  "src/features/admin-job-applications/reply-actions.ts",
+  // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
+  //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
+  "src/features/admin-job-applications/candidat-formateur-actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -371,6 +397,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    plomberie seulement — jetons, polices, nettoyage d'espaces. DEUXIÈME
   //    emprunteur : le prochain déplace la plomberie vers une zone neutre.
   "src/features/conformite-rgpd/registre-pdf.tsx",
+  // ── Droits RGPD des formateurs indépendants (lot L16a, ADR 0066) : l'export
+  //    art. 15 et l'effacement art. 17 lisent l'interrupteur
+  //    `formateurs.dossier_en_ligne` par `interrupteurs.ts`, SEUL lecteur des
+  //    clés du chantier (ADR 0066 (f)) — le recopier ici serait la faute que
+  //    la garde X3 interdit. Lecture d'un réglage, aucune session ni indicateur.
+  "src/lib/rgpd-formateur-independant.ts",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
   // ── Liste de suppression (audit e-mails 2026-09-02) : un envoi retenu
@@ -386,6 +418,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    seuls lecteurs autorisés des clés `formateurs.*`, ADR 0066 (f)). Deux
   //    imports de LECTURE pure, sans écriture ni Next.
   "src/server/email/relecture-au-depart.ts",
+  // ── Moteur commun des campagnes de relance (CAMP-3, 08 §12.3) : le passage
+  //    lit les interrupteurs du chantier formateurs (seuls lecteurs autorisés des
+  //    clés `formateurs.*`) et envoie par l'adaptateur des formateurs. Le registre
+  //    déclare ses campagnes avec ces mêmes clés. La spec double ces modules.
+  "src/server/relances/passer-campagnes.ts",
+  "src/server/relances/registre-campagnes.ts",
+  "src/server/relances/__tests__/passer-campagnes.spec.ts",
   // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
   //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
   //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du

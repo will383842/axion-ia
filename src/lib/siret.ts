@@ -269,3 +269,22 @@ export function sirenContreditLeSiret(c: IdentifiantsClient): boolean {
 /** Avertissement affiché quand `sirenContreditLeSiret` est vrai. */
 export const AVERTISSEMENT_SIREN_CONTRAIRE =
   "Le SIREN ne correspond pas au SIRET : il est conservé. Vérifiez lequel est juste.";
+
+/** Code NAF : « 6920Z », « 69.20z » → « 69.20Z » ; `null` si ce n'en est pas un (FAC-5). */
+export function normaliserNaf(naf: string | null | undefined): string | null {
+  if (!naf) return null;
+  const s = naf.replace(/[\s.]/g, "").toUpperCase();
+  if (!/^\d{4}[A-Z]$/.test(s)) return null;
+  return `${s.slice(0, 2)}.${s.slice(2)}`;
+}
+
+/**
+ * SIREN : 9 chiffres (espaces tolérés) et clé de Luhn (FAC-5, sorti du dossier apporteur).
+ * ⚠️ Distinct de `checkSirenFormat`, dont la normalisation diffère : sortie identique à
+ * l'ancien `sirenValide` des apporteurs.
+ */
+export function sirenValide(brut: string): boolean {
+  const s = brut.replace(/\s+/g, "");
+  if (!/^\d{9}$/.test(s)) return false;
+  return luhnValid(s);
+}

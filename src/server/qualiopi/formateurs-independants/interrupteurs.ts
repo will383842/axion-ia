@@ -301,7 +301,8 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   choix_suivants: [exige("textes_valides")],
   passage_paiement: [],
   communes_geo_cron: [],
-  proches_bloc: [],
+  // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
+  proches_bloc: [exige("communes_geo_cron")],
 };
 
 /**
@@ -409,6 +410,26 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.affectation_sure",
   },
+  // Lot S5 — la lettre de mission v2 d'une page (texte arrêté par Will). Coupé :
+  // la console émet la lettre v1, exactement comme avant S5.
+  lettre_v2: {
+    ...envoi(
+      "Lettre de mission v2",
+      "La console émet la lettre d'une page pour un formateur indépendant (contrat-cadre v3 signé, accord donné) ; une seule lettre vivante par mission. À n'allumer qu'une fois le contrat-cadre v3 en service : avant, aucune lettre ne peut partir.",
+    ),
+    cle: "formateurs.lettre_v2",
+  },
+  // Lot L3 — la garde de mission APPLIQUÉE aux portes (affectation, création,
+  // report, proposition, acceptation, renvoi, accord hors outil). Coupée : les
+  // portes se comportent exactement comme avant L3. Allumée : le niveau de
+  // « Garde de mission » s'applique (« avertir » pour l'ancien stock seulement).
+  garde_mission_portes: {
+    ...envoi(
+      "Garde de mission aux portes",
+      "Un formateur indépendant sans contrat-cadre en vigueur, contrôle du registre récent, numéro de déclaration ou attestation URSSAF valable ne reçoit plus de mission.",
+    ),
+    cle: "formateurs.garde_mission_portes",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -431,6 +452,9 @@ export const PREALABLES_SIGNATURE: Readonly<
   suite_contrat_cadre: [],
   exemplaire_captation: [],
   affectation_sure: [],
+  lettre_v2: [],
+  // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
+  garde_mission_portes: [exige("controle_registre_periodique")],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
@@ -495,4 +519,104 @@ export function dateAllumageSignature(brut: unknown, misAJourLe: Date | null): D
     if (!Number.isNaN(d.getTime())) return d;
   }
   return misAJourLe;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Interrupteurs de l'ENTRÉE des formateurs freelance — lots L0g et suivants
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Même contrat que les deux registres ci-dessus : une ligne `settings` par clé,
+// `{ actif }`, absente ou illisible = ARRÊTÉ, c'est-à-dire exactement le
+// comportement d'avant le lot. Registre à part : les seize et les cinq du socle
+// de signature sont figés par leurs propres verrous.
+
+export const INTERRUPTEURS_ENTREE = {
+  nature_offre: {
+    ...envoi(
+      "Nature de l'offre lue en base",
+      "« Freelance » ou « salarié » se choisit sur chaque offre, et c'est ce choix qui exclut les offres freelance de la réponse automatique aux candidatures closes.",
+    ),
+    cle: "formateurs.nature_offre",
+  },
+  formulaire_freelance: {
+    ...envoi(
+      "Formulaire du formateur indépendant",
+      "Les offres de formateur freelance reçoivent le formulaire en 4 blocs, l'accusé « mission » (une fois les textes validés) et des données Google sans fourchette de prix.",
+    ),
+    cle: "formateurs.formulaire_freelance",
+  },
+  menu_freelance: {
+    ...envoi(
+      "Groupe de menu « Formateurs freelance »",
+      "La console range les candidatures des formateurs indépendants dans un groupe de menu à part, avec leur vue filtrée.",
+    ),
+    cle: "formateurs.menu_freelance",
+  },
+  modeles_composeur: {
+    ...envoi(
+      "Modèles « formateur » du composeur",
+      "Sur une candidature de formateur freelance, le composeur de réponse propose « Proposition d'un échange », « Non retenu après l'échange » et « Absent à l'échange ».",
+    ),
+    cle: "formateurs.modeles_composeur",
+  },
+  ajout_console: {
+    ...envoi(
+      "Ajouter un candidat formateur en console",
+      "Saisir un candidat rencontré hors du site (salon, recommandation, LinkedIn, Indeed) ; l'invitation à l'échange ne part que si la case est cochée et son texte validé.",
+    ),
+    cle: "formateurs.ajout_console",
+  },
+} as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
+
+export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
+
+export const CLES_INTERRUPTEURS_ENTREE = Object.keys(
+  INTERRUPTEURS_ENTREE,
+) as ReadonlyArray<CleInterrupteurEntree>;
+
+export type EtatsInterrupteursEntree = { [C in CleInterrupteurEntree]: boolean };
+
+/** Préalables à l'allumage — mêmes règles que `PREALABLES`. */
+export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyArray<Prealable>>> =
+  {
+    nature_offre: [],
+    formulaire_freelance: [],
+    menu_freelance: [],
+    modeles_composeur: [],
+    ajout_console: [],
+  };
+
+export function cleSettingEntree(cle: CleInterrupteurEntree): string {
+  return INTERRUPTEURS_ENTREE[cle].cle;
+}
+
+export function etatsEntreeParDefaut(): EtatsInterrupteursEntree {
+  return Object.fromEntries(
+    CLES_INTERRUPTEURS_ENTREE.map((c) => [c, false]),
+  ) as EtatsInterrupteursEntree;
+}
+
+/** Les états à partir des lignes `settings` lues (n'importe quel ordre). */
+export function etatsEntreeDepuisLignes(
+  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+): EtatsInterrupteursEntree {
+  const etats = etatsEntreeParDefaut();
+  for (const cle of CLES_INTERRUPTEURS_ENTREE) {
+    const ligne = lignes.find((l) => l.key === cleSettingEntree(cle));
+    etats[cle] = lireValeurSignature(ligne?.value).valeur;
+  }
+  return etats;
+}
+
+/** Ce qui manque pour allumer `cle`. Couper est toujours permis. */
+export function prealablesManquantsEntree(
+  cle: CleInterrupteurEntree,
+  valeur: boolean,
+  etats: EtatsInterrupteurs,
+): string[] {
+  if (valeur !== true) return [];
+  return PREALABLES_ENTREE[cle].flatMap((p) => {
+    if (p.sorte === "non_lisible") return [p.libelle];
+    return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
+  });
 }

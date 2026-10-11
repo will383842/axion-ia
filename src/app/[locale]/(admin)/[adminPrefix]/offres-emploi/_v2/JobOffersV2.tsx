@@ -66,6 +66,8 @@ interface Props {
   totalPages: number;
   /** Offres à republier (fraîcheur Google for Jobs) — bandeau d'alerte. */
   staleOffers?: ReadonlyArray<StaleJobPosting>;
+  /** L0g — interrupteur `formateurs.nature_offre` : l'étiquette n'apparaît qu'allumé. */
+  natureLue?: boolean;
 }
 
 export function JobOffersV2({
@@ -76,6 +78,7 @@ export function JobOffersV2({
   page,
   totalPages,
   staleOffers = [],
+  natureLue = false,
 }: Props): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<JobOfferListItem>> = [
     { key: "order", header: "Ordre", cell: (o) => o.displayOrder },
@@ -86,6 +89,12 @@ export function JobOffersV2({
       cell: (o) => (
         <>
           {o.titleFr}
+          {natureLue ? (
+            <span className="admin-meta-small">
+              {" "}
+              · {o.natureCollaboration === "freelance" ? "freelance" : "salarié"}
+            </span>
+          ) : null}
           {o.filledAt ? <span className="admin-meta-small"> · pourvu</span> : null}
         </>
       ),
