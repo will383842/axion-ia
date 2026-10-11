@@ -45,7 +45,12 @@ import {
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 import { whereSessionsDuFormateur } from "@/server/formateur/collectif-queries";
 import { fiabiliteFormateur } from "@/server/qualiopi/trainers/fiabilite-service";
-import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  libelleMissionsIndependant,
+  missionsVisiblesIndependant,
+  statsMissionsFormateur,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
@@ -345,6 +350,12 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   // consignées. Pour TOUS les statuts : un salarié qui refuse ou ne vient pas
   // est un fait à piloter, même s'il ne se « reconduit » pas (2026-09-03).
   const missions = await statsMissionsFormateur(trainer.id, now);
+  // Lot S2 (R4) — un refus ou un silence est un droit du sous-traitant : sa
+  // fiche ne montre que les missions acceptées et réalisées (interrupteur).
+  const missionsIndependant =
+    trainer.statut === "sous_traitant" && (await interrupteurAllume("affectation_sure"))
+      ? await missionsVisiblesIndependant(trainer.id, now)
+      : null;
 
   return (
     <AdminPageShell width="wide">
@@ -650,21 +661,34 @@ export default async function FicheFormateurPage({ params }: PageProps) {
 
       {/* Missions — refus et absences (2026-09-03). Des FAITS, datés et motivés. */}
       <div className="admin-card mb-[var(--space-admin-5)]">
-        <p className="admin-meta">Missions proposées (24 derniers mois)</p>
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          {missions.proposees === 0
-            ? "Aucune mission proposée par l'outil à ce jour."
-            : `${missions.proposees} proposée${missions.proposees > 1 ? "s" : ""} · ` +
-              `${missions.acceptees} acceptée${missions.acceptees > 1 ? "s" : ""} · ` +
-              `${missions.refusees} refusée${missions.refusees > 1 ? "s" : ""} · ` +
-              `${missions.enAttente} en attente de réponse · ` +
-              `${missions.sansReponse} sans réponse dans le délai · ` +
-              `${missions.expirees} expirée${missions.expirees > 1 ? "s" : ""}.`}{" "}
-          {missions.absences > 0
-            ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
-            : "Aucune absence consignée."}
+        <p className="admin-meta">
+          {missionsIndependant !== null
+            ? "Missions (24 derniers mois)"
+            : "Missions proposées (24 derniers mois)"}
         </p>
-        {missions.derniersRefus.length > 0 && (
+        {missionsIndependant !== null ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            {libelleMissionsIndependant(missionsIndependant)}.{" "}
+            {missions.absences > 0
+              ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
+              : "Aucune absence consignée."}
+          </p>
+        ) : (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            {missions.proposees === 0
+              ? "Aucune mission proposée par l'outil à ce jour."
+              : `${missions.proposees} proposée${missions.proposees > 1 ? "s" : ""} · ` +
+                `${missions.acceptees} acceptée${missions.acceptees > 1 ? "s" : ""} · ` +
+                `${missions.refusees} refusée${missions.refusees > 1 ? "s" : ""} · ` +
+                `${missions.enAttente} en attente de réponse · ` +
+                `${missions.sansReponse} sans réponse dans le délai · ` +
+                `${missions.expirees} expirée${missions.expirees > 1 ? "s" : ""}.`}{" "}
+            {missions.absences > 0
+              ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
+              : "Aucune absence consignée."}
+          </p>
+        )}
+        {missionsIndependant === null && missions.derniersRefus.length > 0 && (
           <ul className="mt-3 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             {missions.derniersRefus.map((r, i) => (
               <li key={`${r.session.numero}-${i}`}>

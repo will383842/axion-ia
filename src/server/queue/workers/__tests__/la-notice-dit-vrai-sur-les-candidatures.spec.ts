@@ -25,7 +25,8 @@
  *
  * ✅ La notice (FR et EN) annonce deux ans après le dernier échange, puis un
  *    effacement automatique ; l'effacement anticipé sur demande ; l'exception
- *    des personnes recrutées.
+ *    des personnes recrutées ; l'effacement en un clic depuis nos messages,
+ *    après confirmation (2026-10-11).
  * ✅ Le worker fait ce que la notice annonce — les deux moitiés sont COUPLÉES :
  *    retirer l'effacement ou changer sa durée sans changer la notice rougit.
  *
@@ -90,6 +91,27 @@ describe("la notice dit vrai sur les candidatures", () => {
     expect(FR()).toMatch(/dossier du personnel et n'est pas concerné par cet effacement/);
     expect(EN()).toMatch(/ask for it to be erased earlier/);
     expect(EN()).toMatch(/personnel file and is not covered by this deletion/);
+  });
+
+  it("🔴 l'effacement en un clic est annoncé, et le lien existe dans le code (2026-10-11)", () => {
+    expect(FR()).toMatch(
+      /l'effacer vous-même en un clic depuis le lien « Supprimer ma candidature »/,
+    );
+    expect(EN()).toMatch(/erase it yourself in one click from the “Delete my application” link/);
+    // La notice parle d'une confirmation : la page la demande bien (le GET
+    // n'efface rien, l'effacement passe par le formulaire).
+    expect(FR()).toMatch(/après avoir confirmé votre demande/);
+    const page = readFileSync(
+      join(process.cwd(), "src/app/[locale]/candidature/supprimer/page.tsx"),
+      "utf8",
+    );
+    expect(page).toContain("<form action={supprimerMaCandidature}>");
+    const gabarit = readFileSync(
+      join(process.cwd(), "src/lib/email/templates/_lien-suppression-candidature.tsx"),
+      "utf8",
+    );
+    expect(gabarit).toContain('lien: "Supprimer ma candidature"');
+    expect(gabarit).toContain('lien: "Delete my application"');
   });
 
   it("🔴 les deux moitiés sont couplées : la durée annoncée est celle du worker", () => {

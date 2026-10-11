@@ -9,6 +9,7 @@ import type {
   NotificationCategory,
   NotificationEvent,
   NotificationSeverity,
+  PalierAlerteIncident,
 } from "./types";
 import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
@@ -18,6 +19,7 @@ import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
 import { salonDuNom } from "@/server/calendly/rdv-salon";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { estTypeRendezVous, type TypeRendezVous } from "@/server/calendly/type-rendez-vous";
+import { lienConsole, prenomEtInitialeDepuisNomComplet } from "./personne";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -53,6 +55,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   avis: { emoji: "⭐", label: "AVIS CLIENT" },
   messages: { emoji: "💬", label: "MESSAGE" },
   "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
+  incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -102,6 +105,8 @@ const TITLES: Record<NotificationCategory, string> = {
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
+  TRAINER_DOSSIER_RECU: "Dossier de formateur reçu, à vérifier",
+  CANDIDAT_SELF_ERASED: "Un candidat a supprimé sa candidature",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
   BACKUP_SUCCESS: "Sauvegarde réussie",
@@ -112,6 +117,7 @@ const TITLES: Record<NotificationCategory, string> = {
   STRIPE_WEBHOOK_SIGNATURE_FAIL: "Stripe — signature webhook invalide",
   MONITORING_ALERT: "Alerte monitoring",
   CRM_SYNC_ALERT: "Synchro CRM — anomalie",
+  DATA_INCIDENT_ALERT: "Délai CNIL de 72 h",
 };
 
 /**
@@ -198,6 +204,11 @@ const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
 function humanDateOrText(value: string | undefined): string | undefined {
   if (!value) return undefined;
   return ISO_INSTANT.test(value) ? formatParisDateTime(value) : value;
+}
+
+/** Un lien `http(s)` de réunion, ou rien (numéro ou adresse ne partent pas). */
+function lienDeReunion(lieu: string | undefined): string | undefined {
+  return lieu && /^https?:\/\//i.test(lieu.trim()) ? lieu.trim() : undefined;
 }
 
 function formatKV(label: string, value: string | number | null | undefined): string | null {
@@ -314,14 +325,11 @@ function formatBody(event: NotificationEvent): string {
     case "SPEAKER_INVITATION_RECEIVED":
     case "INVESTOR_INQUIRY_RECEIVED":
     case "CUSTOMER_SUPPORT_REQUEST": {
+      // Décision du 11/10/2026 : prénom + initiale, jamais les coordonnées ni
+      // le message. Le détail se lit sur la fiche, dont le lien clôt l'alerte.
       const p = event.payload;
       const lines = [
-        formatKV("Nom", p.contactName),
-        formatKV("Email", p.contactEmail),
-        "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
-        // Le CONTENU du message, en tête (demande Will 2026-08-12) : c'est ce
-        // qu'on veut lire depuis le téléphone, avant les métadonnées.
-        "message" in p ? formatKV("Message", p.message) : null,
+        formatKV("Personne", prenomEtInitialeDepuisNomComplet(p.contactName)),
         "ville" in p ? formatKV("Ville", p.ville) : null,
         "companyName" in p ? formatKV("Société", p.companyName) : null,
         "companySize" in p ? formatKV("Taille", p.companySize) : null,
@@ -340,7 +348,7 @@ function formatBody(event: NotificationEvent): string {
         "firm" in p ? formatKV("Société", p.firm) : null,
         "source" in p ? formatKV("Source", p.source) : null,
         formatKV("Locale", p.locale),
-        formatKV("ID", p.submissionId),
+        formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
@@ -352,21 +360,15 @@ function formatBody(event: NotificationEvent): string {
       // ligne, contact sur une ligne, les réponses déjà regroupées par
       // `labeledAnswers` (tous les prix sur « Prix »), et le lien console en
       // dernier. Plus de « Catégorie » : elle ne sert à rien pour trier.
+      // Depuis le 11/10/2026 : ni coordonnées ni réponses (tarifs compris).
       const p = event.payload;
+      const candidat = prenomEtInitialeDepuisNomComplet(p.contactName);
       return [
-        formatKV("Candidat", p.city ? `${p.contactName} · ${p.city}` : p.contactName),
-        formatKV(
-          "Contact",
-          p.contactPhone ? `${p.contactEmail} · ${p.contactPhone}` : p.contactEmail,
-        ),
+        formatKV("Candidat", p.city ? `${candidat} · ${p.city}` : candidat),
         // « Vidéaste freelance (F/H) » suffit à distinguer les deux offres : la
         // suite du titre (après le tiret long) est l'accroche de l'annonce.
         formatKV("Offre", p.offerTitle.split(" — ")[0]),
-        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/candidatures/${p.applicationId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -374,21 +376,13 @@ function formatBody(event: NotificationEvent): string {
     case "JOB_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
-        formatKV("Email", p.contactEmail),
-        p.contactPhone ? formatKV("Téléphone", p.contactPhone) : null,
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
         formatKV("Offre", p.offerTitle),
         p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
-        p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
-        p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
-        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/candidatures/${p.applicationId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -399,7 +393,8 @@ function formatBody(event: NotificationEvent): string {
       // pitch, message libre) vit dans l'email interne + la console.
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
+        p.dejaConnu ? formatKV("Déjà connu(e)", "revenu(e) par la publicité") : null,
         p.ville ? formatKV("Ville", p.ville) : null,
         p.zone ? formatKV("Zone souhaitée", p.zone) : null,
         p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
@@ -409,7 +404,7 @@ function formatBody(event: NotificationEvent): string {
         // suit l'alerte est d'inviter la personne à l'échange de 15 minutes.
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#invitation`,
+          lienConsole(`contacts/commercial/${p.submissionId}#invitation`),
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -466,15 +461,14 @@ function formatBody(event: NotificationEvent): string {
     case "REVIEW_SUBMITTED": {
       const p = event.payload;
       return [
-        formatKV("Auteur", p.authorName),
+        formatKV("Auteur", prenomEtInitialeDepuisNomComplet(p.authorName)),
         formatKV("Note", `${p.rating}/5 ★`),
         p.companyName ? formatKV("Société", p.companyName) : null,
         p.clientSector ? formatKV("Secteur", p.clientSector) : null,
         p.city ? formatKV("Ville", p.city) : null,
         p.serviceLine ? formatKV("Service", p.serviceLine) : null,
         formatKV("Photo", p.hasPhoto ? "jointe ✅" : "aucune"),
-        p.excerpt ? formatKV("Extrait", p.excerpt.slice(0, 160)) : null,
-        formatKV("Modérer en console", `${SITE_URL}${adminPath("fr", "avis")}/${p.reviewId}`),
+        formatKV("Modérer en console", lienConsole(`avis/${p.reviewId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -488,7 +482,6 @@ function formatBody(event: NotificationEvent): string {
         // clique et voit le dossier complet, au lieu de lire un nom dans
         // Telegram. Sans lui, la rédaction se paierait en aller-retours.
         formatKV("Personne", p.traineeNomMasque),
-        formatKV("Email", p.traineeEmailMasque),
         formatKV("À traiter avant le", p.echeance),
         formatKV("Référence", p.demandeId),
         formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "qualiopi/rgpd")}`),
@@ -498,13 +491,10 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Entreprise", p.companyName),
-        formatKV("Dirigeant", p.leaderName),
-        formatKV("Email", p.contactEmail),
-        formatKV("Téléphone", p.contactPhone),
-        formatKV("Lieu du tournage", `${p.city} (${p.postalCode})`),
-        p.activityExcerpt ? formatKV("Activité", p.activityExcerpt.slice(0, 200)) : null,
+        formatKV("Dirigeant", prenomEtInitialeDepuisNomComplet(p.leaderName)),
+        formatKV("Ville du tournage", p.city),
         p.source ? formatKV("Source", p.source) : null,
-        formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "podcast")}/${p.requestId}`),
+        formatKV("Voir en console", lienConsole(`podcast/${p.requestId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -513,19 +503,19 @@ function formatBody(event: NotificationEvent): string {
     case "NEWSLETTER_CONFIRMED":
     case "NEWSLETTER_UNSUBSCRIBED": {
       const p = event.payload;
-      return [formatKV("Email", p.email), formatKV("Locale", p.locale)]
+      return [formatKV("Locale", p.locale), formatKV("Voir en console", lienConsole("newsletter"))]
         .filter((v): v is string => v !== null)
         .join("\n");
     }
     case "GUIDE_REQUESTED": {
       const p = event.payload;
-      // `p.email` arrive DÉJÀ masqué (`redactEmail`) — ADR 0010.
+      // Aucune adresse, même masquée (décision du 11/10/2026).
       return [
-        formatKV("Email", p.email),
         formatKV("Provenance", p.source),
         formatKV("Lettre", LETTRE_LIBELLES[p.lettre]),
         formatKV("Envoi", p.envoi),
         formatKV("Première demande", p.nouvelle ? "oui" : "non (redemande)"),
+        formatKV("Voir en console", lienConsole("newsletter/demandes-guide")),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -548,20 +538,22 @@ function formatBody(event: NotificationEvent): string {
     case "OPTION_CONFIRMED":
     case "OPTION_REFUSED":
     case "OPTION_EXPIRED": {
+      // Ni e-mail ni motif saisi : prénom + initiale seulement.
       const p = event.payload as Record<string, string | number | undefined>;
       const order = [
         "bookingId",
         "serviceType",
-        "contactName",
-        "contactEmail",
         "bookingDate",
         "expiresAt",
         "admin",
         "cancelledBy",
-        "reason",
       ];
-      return order
-        .map((k) => formatKV(k, p[k]))
+      return [
+        ...order.map((k) => formatKV(k, p[k])),
+        typeof p.contactName === "string"
+          ? formatKV("contact", prenomEtInitialeDepuisNomComplet(p.contactName))
+          : null,
+      ]
         .filter((v): v is string => v !== null)
         .join("\n");
     }
@@ -581,19 +573,16 @@ function formatBody(event: NotificationEvent): string {
         // Juste après le format : quand on lit « Visio », la question suivante
         // est « où ? ». La faire descendre sous les coordonnées obligerait à
         // chercher, et l'alerte existe pour éviter de chercher.
-        formatKV("Lieu", p.lieu),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
-        formatKV("Téléphone", p.inviteePhone),
+        //
+        // ⚠️ Seulement un LIEN de réunion : pour un appel ou un rendez-vous sur
+        // place, Calendly y met le numéro ou l'adresse de l'invité.
+        formatKV("Lieu", lienDeReunion(p.lieu)),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Début", humanDateOrText(p.eventStartTime)),
-        formatKV("Réponses formulaire", p.answersText),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
         formatKV("Annuler / déplacer", p.cancelUrl),
       ]
         .filter((v): v is string => v !== null)
@@ -603,14 +592,9 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Était prévu le", humanDateOrText(p.eventStartTime)),
-        formatKV("Raison", p.reason),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -619,14 +603,10 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
-        formatKV("Invité", p.inviteeName),
-        formatKV("Email", p.inviteeEmail),
+        formatKV("Invité", prenomEtInitialeDepuisNomComplet(p.inviteeName)),
         formatKV("Avant", humanDateOrText(p.oldStart)),
         formatKV("Après", humanDateOrText(p.newStart)),
-        formatKV(
-          "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
-        ),
+        formatKV("Voir en console", lienConsole(`contacts/appels/${p.eventUri}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -634,8 +614,7 @@ function formatBody(event: NotificationEvent): string {
     case "APPORTEUR_REPLIED": {
       const p = event.payload;
       return [
-        formatKV("Candidat", p.contactName),
-        formatKV("Objet", p.subject),
+        formatKV("Candidat", prenomEtInitialeDepuisNomComplet(p.contactName)),
         formatKV(
           "Reçu le",
           new Date(p.receivedAt).toLocaleString("fr-FR", {
@@ -647,7 +626,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Rappels automatiques", "arrêtés"),
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#reponses-recues`,
+          lienConsole(`contacts/commercial/${p.submissionId}#reponses-recues`),
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -668,8 +647,41 @@ function formatBody(event: NotificationEvent): string {
         ),
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}#reponses-recues`,
+          lienConsole(`contacts/candidatures/${p.applicationId}#reponses-recues`),
         ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "TRAINER_DOSSIER_RECU": {
+      // Minimisée (L-ENV) : identifiant court, couleur du registre, lien. Rien d'autre.
+      const p = event.payload;
+      return [
+        formatKV("Dossier", p.trainerId.slice(0, 8)),
+        formatKV("Registre", p.registre),
+        formatKV(
+          "Vérifier et contresigner",
+          `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CANDIDAT_SELF_ERASED": {
+      // Le dossier est effacé : pas de lien vers une fiche qui n'existe plus,
+      // et aucune donnée nominative — le poste et l'heure.
+      const p = event.payload;
+      return [
+        formatKV("Poste", p.offerTitle),
+        formatKV(
+          "Supprimée le",
+          new Date(p.erasedAt).toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+        ),
+        formatKV("Origine", "lien « Supprimer ma candidature » de nos e-mails"),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -678,9 +690,7 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Par", p.repliedBy),
-        formatKV("À", p.toEmail),
-        formatKV("Sujet", p.subject),
-        formatKV("Submission", p.submissionId),
+        formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -775,6 +785,54 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
+    case "DATA_INCIDENT_ALERT": {
+      const p = event.payload;
+      return [
+        escapeMarkdownV2(phraseAlerteIncident(p.numero, p.palier, new Date(p.echeance))),
+        `Ouvrir la fiche : ${escapeMarkdownV2(lienFicheIncident(p.numero))}`,
+      ].join("\n");
+    }
+  }
+}
+
+/** Le lien console de la fiche d'un incident. */
+export function lienFicheIncident(numero: number): string {
+  return `${SITE_URL}${adminPath("fr", `conformite-rgpd/incidents/${numero}`)}`;
+}
+
+/** « 14 octobre 2026 à 09:30 », heure de Paris. */
+function echeanceLisible(d: Date): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(d);
+}
+
+/**
+ * La phrase d'une alerte d'incident. Elle ne porte QUE le numéro et l'échéance :
+ * rien de ce qui a été saisi dans la fiche ne part sur Telegram.
+ */
+export function phraseAlerteIncident(
+  numero: number,
+  palier: PalierAlerteIncident,
+  echeance: Date,
+  maintenant: Date = new Date(),
+): string {
+  const quand = echeanceLisible(echeance);
+  switch (palier) {
+    case "declare":
+      // Un incident découvert il y a plus de 72 h peut être déclaré tard : ne
+      // jamais écrire « à décider avant » une date déjà passée.
+      return echeance.getTime() > maintenant.getTime()
+        ? `🚨 Incident de données n° ${numero} déclaré. À traiter : déclaration à la CNIL à décider avant le ${quand}.`
+        : `🚨 Incident de données n° ${numero} déclaré. À traiter : le délai de 72 h pour décider de la déclaration à la CNIL est déjà dépassé (échéance le ${quand}).`;
+    case "48h":
+    case "24h":
+    case "6h":
+      return `⏰ Rappel : incident de données n° ${numero}, il reste moins de ${palier.replace("h", " h")} pour décider de la déclaration à la CNIL (avant le ${quand}).`;
+    case "depasse":
+      return `⛔ Incident de données n° ${numero} : délai de 72 h dépassé (échéance le ${quand}). La décision CNIL n'est toujours pas renseignée.`;
   }
 }
 

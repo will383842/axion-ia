@@ -155,6 +155,10 @@ describe("Mention TVA — garde-fou au niveau des sources", () => {
     // « Exonération formation (261-4-4° CGI) ») : nommer le régime est le
     // travail de ce map, la mention rendue reste dérivée de la config.
     path.join("src", "server", "actions", "qualiopi", "financements.ts"),
+    // Contrat-cadre v3 (lot L7a), article 14.1 : il énonce, mot pour mot dans le
+    // texte arrêté, la mention que portera l'autofacture selon le régime DU
+    // FORMATEUR. Ce n'est pas le régime d'Axion, et rien n'y est déduit.
+    path.join("src", "server", "qualiopi", "documents", "templates", "contrat-cadre.tsx"),
   ];
 
   function fichiersDeRendu(): string[] {
