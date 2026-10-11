@@ -160,6 +160,16 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   */
   contrat_travail: 2,
   releve_connexion: 2,
+  /*
+    v1 — texte historique (six pages), toujours émis par défaut : lettre de
+    session interrupteur `formateurs.lettre_v2` coupé, organisme sous-traitant,
+    lettre-cadre des coachings et audits.
+    v2 — 10/10/2026, lot S5 : lettre d'une page, texte ARRÊTÉ par Will. Elle
+    n'est PAS la version par défaut : elle vit dans `VERSIONS_ARRETEES`
+    (`versions-arretees.ts`), à côté du contrat-cadre v3, et n'est émise que
+    sur demande explicite du générateur v2. Le jour où elle devient la version
+    par défaut, elle passe ici et la v1 part dans `archives/`.
+  */
   lettre_mission: 1,
   mandat_opco: 1,
   /*

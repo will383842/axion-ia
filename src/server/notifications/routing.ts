@@ -74,6 +74,7 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // --- Réponse entrante d'un candidat apporteur (2026-09-27) ---
   APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
   CANDIDAT_REPLIED: { channels: ["telegram"], severity: "info" },
+  TRAINER_DOSSIER_RECU: { channels: ["telegram"], severity: "info" },
   CANDIDAT_SELF_ERASED: { channels: ["telegram"], severity: "info" },
 
   // --- Ops ---
@@ -191,6 +192,7 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // La réponse d'un candidat emploi par e-mail (lot L3, 2026-10-07) : avec les
   // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
   CANDIDAT_REPLIED: "candidatures",
+  TRAINER_DOSSIER_RECU: "candidatures",
   // L'effacement d'un dossier par le candidat lui-même (2026-10-11).
   CANDIDAT_SELF_ERASED: "candidatures",
 
