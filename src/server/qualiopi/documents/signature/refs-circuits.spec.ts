@@ -70,9 +70,27 @@ const FICHIERS_GENERATEURS = [
   // dont convention, tripartite et contrat, toutes signables — a déménagé dans
   // la couche service partagée avec le worker `qualiopi-documents-worker`.
   "src/server/qualiopi/documents/production/producteurs.ts",
+  // L7b (2026-10-11) : le contrat-cadre d'un formateur indépendant, rattaché à sa fiche.
+  "src/server/qualiopi/formateurs-independants/contrat-cadre-emission.ts",
 ];
 
-const REF_KEYS = ["sessionId", "clientId", "traineeId", "sousTraitantId", "coachingSessionId"];
+const REF_KEYS = [
+  "sessionId",
+  "clientId",
+  "traineeId",
+  "sousTraitantId",
+  "coachingSessionId",
+  "trainerId",
+];
+
+/**
+ * Refs qui satisfont une exigence À LA PLACE de la ref nominale. Le `sous_traitant`
+ * se résout depuis l'organisme (`sousTraitantId`) OU depuis la fiche d'un formateur
+ * indépendant (`trainerId`, `resoudreIdentite` S6a j) : l'une ou l'autre.
+ */
+const REFS_EQUIVALENTES: Readonly<Record<string, readonly string[]>> = {
+  sousTraitantId: ["sousTraitantId", "trainerId"],
+};
 
 /**
  * Extrait, pour un type de document, les clés de refs passées à
@@ -143,10 +161,11 @@ describe("circuits de signature — chaque partie déclarée est émissible", ()
           );
           const assume = ECARTS_ASSUMES.some((e) => e.type === type && e.partie === partie);
           if (assume) continue;
+          const acceptees = REFS_EQUIVALENTES[ref] ?? [ref];
           expect(
-            refsFournies,
-            `la pièce « ${type} » déclare la partie « ${partie} » mais son générateur ne passe pas « ${ref} » dans refs — le lien de signature sera refusé à l'émission`,
-          ).toContain(ref);
+            acceptees.some((r) => refsFournies.includes(r)),
+            `la pièce « ${type} » déclare la partie « ${partie} » mais son générateur ne passe pas « ${acceptees.join(" » ou « ")} » dans refs — le lien de signature sera refusé à l'émission`,
+          ).toBe(true);
         }
       }
     });
