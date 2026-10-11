@@ -35,6 +35,7 @@ import {
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
+  basculerFormateursGardeMissionPortesAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -96,6 +97,7 @@ const ACTIONS_SIGNATURE: Record<
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
   affectation_sure: basculerFormateursAffectationSureAction,
   lettre_v2: basculerFormateursLettreV2Action,
+  garde_mission_portes: basculerFormateursGardeMissionPortesAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =

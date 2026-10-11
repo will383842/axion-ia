@@ -43,6 +43,7 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -275,6 +276,12 @@ export async function proposerMissionFormateur(
     // vaudrait plus rien comme preuve.
     if (!accordRequis(trainer.statut)) {
       return { proposee: false, raison: `formateur ${trainer.statut}, accord non requis` };
+    }
+    // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
+    // coupé : aucun effet). Aucune proposition à qui ne peut pas recevoir de mission.
+    const garde = await controlerGardeMission(trainer.id, now);
+    if (garde.refus.length > 0) {
+      return { proposee: false, raison: `garde de mission : ${garde.refus.join(" ")}` };
     }
 
     const mission = await prisma.$transaction(async (tx) => {
@@ -794,6 +801,16 @@ export async function repondreMission(
   const affectationSure = await interrupteurAllume("affectation_sure");
 
   if (input.reponse === "acceptee") {
+    // 🔴 L3 — la garde de mission est relue au « J'accepte » (interrupteur
+    // `formateurs.garde_mission_portes` ; coupé : aucun effet). Réponse neutre :
+    // la raison est interne.
+    const garde = await controlerGardeMission(mission.trainerId, now);
+    if (garde.refus.length > 0) {
+      console.error(
+        `[mission-formateur] acceptation suspendue par la garde de mission (mission ${mission.id}) : ${garde.refus.join(" ")}`,
+      );
+      return { ok: false, erreur: PROPOSITION_SUSPENDUE };
+    }
     if (affectationSure) {
       // 🔴 T6 — l'acceptation ne recontrôlait rien. Une fiche désactivée entre
       // la proposition et le clic acceptait quand même.
@@ -1280,6 +1297,14 @@ export async function consignerAccordHorsOutil(input: {
         "Cette mission porte déjà une décision (refus ou retrait). Consigner un " +
         "accord par-dessus effacerait cette trace.",
     };
+  }
+
+  // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
+  // coupé : aucun effet). Un accord ne se note pas pour qui ne peut pas recevoir
+  // de mission.
+  const garde = await controlerGardeMission(input.trainerId);
+  if (garde.refus.length > 0) {
+    return { ok: false, erreur: `Accord non consigné : ${garde.refus.join(" ")}` };
   }
 
   // Lot S2 — interrupteur `formateurs.affectation_sure`. Arrêté : comme avant.
