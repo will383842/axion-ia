@@ -16,7 +16,10 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import {
   INTERRUPTEURS,
+  INTERRUPTEURS_ENTREE,
   INTERRUPTEURS_SIGNATURE,
+  prealablesManquantsEntree,
+  type CleInterrupteurEntree,
   estPositionSure,
   prealablesManquants,
   prealablesManquantsSignature,
@@ -25,9 +28,11 @@ import {
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import {
   lireInterrupteurs,
+  lireInterrupteursEntree,
   lireInterrupteursSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
+  basculerFormateursNatureOffreAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -89,6 +94,11 @@ const ACTIONS_SIGNATURE: Record<
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
 };
 
+const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
+  {
+    nature_offre: basculerFormateursNatureOffreAction,
+  };
+
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {
   const sorte = INTERRUPTEURS[cle].sorte;
   if (sorte === "date") return typeof valeur === "string" ? `Le ${valeur}` : "Pas de date";
@@ -115,6 +125,7 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
   }
   const { etats, lignes } = await lireInterrupteurs();
   const lignesSignature = await lireInterrupteursSignature();
+  const lignesEntree = await lireInterrupteursEntree();
   const direction = acces.role === "super_admin" || acces.role === "admin";
 
   return (
@@ -248,6 +259,70 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
                   <td>
                     <BoutonInterrupteur
                       action={ACTIONS_SIGNATURE[l.cle]}
+                      sorte="envoi"
+                      valeur={l.valeur}
+                      desactive={!direction}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </AdminCard>
+      <AdminCard>
+        <h2>Entrée des formateurs freelance</h2>
+        <p className="admin-meta-small">
+          Nouveautés de l&apos;entrée (offre, candidature, échange), livrées coupées : coupées, tout
+          se comporte exactement comme avant elles.
+        </p>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Interrupteur</th>
+              <th>État</th>
+              <th>Préalables manquants</th>
+              <th>Dernier changement</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {lignesEntree.map((l) => {
+              const def = INTERRUPTEURS_ENTREE[l.cle];
+              const manques = l.valeur ? [] : prealablesManquantsEntree(l.cle, true, etats);
+              return (
+                <tr key={l.cle}>
+                  <td>
+                    <strong>{def.libelle}</strong>
+                    <div className="admin-meta-small">{def.aide}</div>
+                  </td>
+                  <td>
+                    <AdminBadge tone={l.valeur ? "success" : "neutral"}>
+                      {l.valeur ? "Allumé" : "Coupé"}
+                    </AdminBadge>
+                    {!l.lisible && l.misAJourLe ? (
+                      <div className="admin-meta-small">Valeur illisible : position sûre.</div>
+                    ) : null}
+                  </td>
+                  <td>
+                    {manques.length ? (
+                      <ul className="admin-meta-small">
+                        {manques.map((m) => (
+                          <li key={m}>{m}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="admin-meta-small">—</span>
+                    )}
+                  </td>
+                  <td className="admin-meta-small">
+                    {l.misAJourLe
+                      ? `${DATE.format(l.misAJourLe)}${l.misAJourPar ? ` · ${l.misAJourPar}` : ""}`
+                      : "Jamais"}
+                  </td>
+                  <td>
+                    <BoutonInterrupteur
+                      action={ACTIONS_ENTREE[l.cle]}
                       sorte="envoi"
                       valeur={l.valeur}
                       desactive={!direction}

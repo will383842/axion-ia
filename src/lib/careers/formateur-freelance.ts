@@ -92,27 +92,93 @@ export function estCandidatureFormateurFreelance(
   );
 }
 
-// ─── Lot L0g — la nature de l'offre (squelette, test rouge) ──────────────────
+// ─── Lot L0g — la NATURE de l'offre (`JobOffer.natureCollaboration`) ──────────
+//
+// « Freelance » ou « salarié » se lit sur l'offre, choisi dans la console, et
+// plus dans son slug ni dans son type schema.org (chaîne libre, faite pour
+// Google). Livré ÉTEINT : `natureLue` vient de l'interrupteur
+// `formateurs.nature_offre` ; faux = le prédicat d'aujourd'hui, au résultat près.
 
 export type NatureCollaborationOffre = "salarie" | "freelance";
 
+type OffreAvecNature = OffreLue & {
+  readonly natureCollaboration?: NatureCollaborationOffre | null | undefined;
+};
+
+/** Une offre de FORMATEUR (slug ou intitulé), sans rien dire du statut. */
+function estOffreDeFormateur(offre: OffreLue): boolean {
+  return [offre.titleFr, offre.slug?.replace(/-/g, " ")]
+    .map(plie)
+    .some((t) => contientUn(t, MOTS_FORMATEUR));
+}
+
+/**
+ * LE point de décision « offre de formateur freelance ».
+ *
+ * Allumé : la colonne ET une offre de formateur. Colonne non lue (sélection
+ * Prisma sans elle, ou fenêtre où le code neuf tourne sur l'ancienne base) :
+ * le prédicat d'aujourd'hui, jamais « salarié » par défaut.
+ */
 export function estOffreFormateurFreelance(
-  _offre: OffreLue & { readonly natureCollaboration?: NatureCollaborationOffre | null | undefined },
-  _options: { readonly natureLue: boolean },
+  offre: OffreAvecNature,
+  options: { readonly natureLue: boolean },
 ): boolean {
-  throw new Error("L0g : non implémenté");
+  if (!options.natureLue || offre.natureCollaboration == null) {
+    return estCandidatureFormateurFreelance(offre);
+  }
+  return offre.natureCollaboration === "freelance" && estOffreDeFormateur(offre);
 }
 
-export function natureCollaborationDeduite(_offre: OffreLue): NatureCollaborationOffre {
-  throw new Error("L0g : non implémenté");
+/**
+ * La nature que le remplissage du schéma n° 1 aurait posée
+ * (`SQL_REMPLIR_NATURE_OFFRES`) : le prédicat appliqué à l'offre.
+ */
+export function natureCollaborationDeduite(offre: OffreLue): NatureCollaborationOffre {
+  return estCandidatureFormateurFreelance(offre) ? "freelance" : "salarie";
 }
 
-export function natureAEnregistrer(_e: {
+const declareContractor = (o: OffreLue) =>
+  o.employmentType === EMPLOI_CONTRACTOR || o.secondaryEmploymentType === EMPLOI_CONTRACTOR;
+
+/**
+ * La nature à écrire quand la console enregistre une offre.
+ *
+ * Éteint : la nature déduite (le choix d'un formulaire forgé est ignoré), sans
+ * jamais redescendre de « freelance » à « salarié » — la colonne n'est lue par
+ * rien tant que c'est éteint, mais elle doit être juste le jour de l'allumage.
+ *
+ * Allumé : le choix est exigé ; « freelance » exige le type CONTRACTOR (Google
+ * doit voir la même chose que nos règles) ; une offre freelance qui a déjà des
+ * candidatures ne repasse pas en salarié (leurs candidats sont des
+ * indépendants).
+ */
+export function natureAEnregistrer(e: {
   readonly natureLue: boolean;
   readonly offre: OffreLue;
   readonly actuelle: NatureCollaborationOffre | null;
   readonly demandee?: NatureCollaborationOffre | null | undefined;
   readonly aDesCandidatures?: boolean | undefined;
 }): { ok: true; nature: NatureCollaborationOffre } | { ok: false; error: string } {
-  throw new Error("L0g : non implémenté");
+  if (!e.natureLue) {
+    const deduite = natureCollaborationDeduite(e.offre);
+    return { ok: true, nature: e.actuelle === "freelance" ? "freelance" : deduite };
+  }
+  if (e.demandee !== "freelance" && e.demandee !== "salarie") {
+    return { ok: false, error: "Choisissez la nature de la collaboration : freelance ou salarié." };
+  }
+  if (e.demandee === "freelance" && !declareContractor(e.offre)) {
+    return {
+      ok: false,
+      error:
+        "Une offre freelance se déclare aussi « Prestataire / freelance » dans le type de contrat (Google), en premier ou en second type.",
+    };
+  }
+  if (e.actuelle === "freelance" && e.demandee === "salarie" && e.aDesCandidatures) {
+    return {
+      ok: false,
+      error:
+        "Cette offre freelance a déjà des candidatures : elle ne peut pas repasser en salarié. Dupliquez-la plutôt.",
+    };
+  }
+  return { ok: true, nature: e.demandee };
 }

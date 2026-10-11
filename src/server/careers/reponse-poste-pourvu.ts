@@ -66,6 +66,7 @@ import {
   envoyerProposition,
   preparerProposition,
 } from "@/server/careers/proposer-reseau-auto";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import type { Prisma } from "../../../prisma/generated/client";
 
 export const CLE_ACTIVATION = "recrutement.reponse-poste-pourvu-auto";
@@ -201,7 +202,7 @@ function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
 export function critereEligible(
   maintenant: Date,
   idsTunnel: readonly string[] = [],
-  _options: { readonly natureOffreLue?: boolean } = {},
+  options: { readonly natureOffreLue?: boolean } = {},
 ): Prisma.JobApplicationWhereInput {
   return {
     status: "new",
@@ -220,6 +221,19 @@ export function critereEligible(
         offerTitleSnap: { not: { contains: t }, mode: "insensitive" as const },
       })),
       ...exclusionFormateurFreelance(),
+      // L0g, interrupteur `formateurs.nature_offre` : une mission n'est jamais
+      // « pourvue » — toute offre étiquetée freelance sort, formateur ou non.
+      // Éteint, rien n'est ajouté : le filtre est celui d'avant, à l'octet près.
+      ...(options.natureOffreLue
+        ? [
+            {
+              OR: [
+                { offer: null },
+                { offer: { natureCollaboration: { not: "freelance" as const } } },
+              ],
+            },
+          ]
+        : []),
     ],
   };
 }
@@ -244,7 +258,8 @@ export async function idsBasculesAuTunnel(): Promise<string[]> {
 export async function critereEligibleActuel(
   maintenant: Date,
 ): Promise<Prisma.JobApplicationWhereInput> {
-  return critereEligible(maintenant, await idsBasculesAuTunnel());
+  const [idsTunnel, entree] = await Promise.all([idsBasculesAuTunnel(), lireEtatsEntree()]);
+  return critereEligible(maintenant, idsTunnel, { natureOffreLue: entree.nature_offre });
 }
 
 /** Interrupteur : ABSENT ou illisible = ARRÊTÉ. */
