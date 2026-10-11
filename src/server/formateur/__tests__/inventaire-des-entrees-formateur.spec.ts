@@ -25,6 +25,8 @@ const INVENTAIRE = [
   "src/app/api/formateur/contrat-travail/[id]/route.ts",
   "src/app/api/formateur/lettre-mission/[id]/route.ts",
   "src/server/actions/formateur/coaching.actions.ts",
+  // Lot L11h — « Je ne peux plus assurer cette mission » (appartenance revérifiée).
+  "src/server/actions/qualiopi/choix-formateur.ts",
   "src/server/actions/qualiopi/contrat-travail-signature.ts",
   "src/server/actions/qualiopi/emargement-formateur.ts",
   "src/server/actions/qualiopi/lettre-mission-signature.ts",
