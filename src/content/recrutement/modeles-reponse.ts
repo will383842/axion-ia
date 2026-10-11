@@ -134,3 +134,29 @@ export function remplirModele(texte: string, valeurs: Record<string, string | nu
     return valeur != null && valeur.trim().length > 0 ? valeur : entier;
   });
 }
+
+// ─── Lot L0c-2 — modèles « formateur indépendant » (squelette, test rouge) ───
+
+export const MODELES_REPONSE_FORMATEUR_IDS = [
+  "formateur-proposition-echange",
+  "formateur-non-retenu",
+  "formateur-absent",
+] as const;
+
+export type ModeleReponseFormateurId = (typeof MODELES_REPONSE_FORMATEUR_IDS)[number];
+
+export interface ModeleReponseFormateur extends Omit<ModeleReponse, "id"> {
+  readonly id: ModeleReponseFormateurId;
+}
+
+export const MODELES_REPONSE_FORMATEUR: readonly ModeleReponseFormateur[] = [];
+
+export function modelesDuComposeur(_o: {
+  readonly modelesFormateur: boolean;
+}): ReadonlyArray<ModeleReponse | ModeleReponseFormateur> {
+  throw new Error("L0c-2 : non implémenté");
+}
+
+export function modeleAutorise(_id: string, _o: { readonly modelesFormateur: boolean }): boolean {
+  throw new Error("L0c-2 : non implémenté");
+}
