@@ -14,14 +14,20 @@
  *   empreinte SHA-256 nue se renverserait en une seconde depuis une copie de la
  *   base. Sans le secret serveur, l'empreinte ne dit rien. Secret absent :
  *   émission REFUSÉE (garde fermée, ADR 0066 f).
- * - **10 minutes** : assez pour aller lire sa boîte, trop peu pour qu'un code
- *   oublié reste une porte ouverte.
+ * - **15 minutes** (décision 35, texte F17) : assez pour aller lire sa boîte,
+ *   trop peu pour qu'un code oublié reste une porte ouverte.
  * - **5 essais au plus** : l'essai est compté AVANT la comparaison, par un
  *   `updateMany` conditionnel — deux essais concurrents ne passent pas sous le
- *   plafond à deux. Au cinquième échec, le code est invalidé.
+ *   plafond à deux. Au cinquième échec, le code est invalidé — par une écriture
+ *   conditionnée sur le compteur EN BASE, jamais sur une lecture antérieure.
  * - **Invalidé après usage**, atomiquement : un code accepté ne l'est qu'une
- *   fois, même si deux requêtes arrivent ensemble.
- * - **Comparaison à temps constant** (`timingSafeEqual`).
+ *   fois, même si deux requêtes arrivent ensemble. Chaque écriture (essai,
+ *   consommation) reprend l'échéance : un code expiré entre la lecture et
+ *   l'écriture n'est ni compté ni consommé.
+ * - **Comparaison à temps constant** (`timingSafeEqual`). Une empreinte est
+ *   calculée même quand aucun code n'est vivant, ce qui RÉDUIT l'écart de durée
+ *   entre les refus sans l'annuler (une écriture de moins) : il faut de toute
+ *   façon détenir le jeton du lien pour poser la question.
  * - **Un seul code vivant** par (pièce, partie) : en émettre un nouveau
  *   invalide le précédent.
  * - **Refus uniformes** : un code faux, expiré, épuisé ou inexistant rend le
@@ -34,7 +40,7 @@ import { prisma } from "@/lib/prisma";
 import type { PartieSignataire } from "./document-signature-hash";
 
 export const CODE_LONGUEUR = 6;
-export const CODE_VALIDITE_MS = 10 * 60 * 1000;
+export const CODE_VALIDITE_MS = 15 * 60 * 1000;
 export const CODE_ESSAIS_MAX = 5;
 
 const FORMAT_CODE = /^\d{6}$/;
@@ -130,6 +136,7 @@ export async function verifierCodeSignature(input: {
   const maintenant = input.maintenant ?? new Date();
   const saisi = (input.code ?? "").trim();
   if (!FORMAT_CODE.test(saisi)) return REFUS;
+  const vivant = { utiliseAt: null, invalideAt: null, expiresAt: { gt: maintenant } } as const;
 
   const ligne = await prisma.documentSignatureCode.findFirst({
     where: {
@@ -143,12 +150,20 @@ export async function verifierCodeSignature(input: {
     orderBy: { createdAt: "desc" },
     select: { id: true, codeHash: true, essais: true },
   });
-  if (ligne === null) return REFUS;
+  if (ligne === null) {
+    // Empreinte calculée quand même : l'écart de durée avec un vrai refus est réduit.
+    try {
+      empreinteCode(randomUUID(), saisi);
+    } catch {
+      // secret absent : refus uniforme
+    }
+    return REFUS;
+  }
 
   // L'essai est COMPTÉ avant la comparaison, sous condition : sans place sous
   // le plafond, la comparaison n'a même pas lieu.
   const compte = await prisma.documentSignatureCode.updateMany({
-    where: { id: ligne.id, essais: { lt: CODE_ESSAIS_MAX }, utiliseAt: null, invalideAt: null },
+    where: { id: ligne.id, essais: { lt: CODE_ESSAIS_MAX }, ...vivant },
     data: { essais: { increment: 1 } },
   });
   if (compte.count === 0) return REFUS;
@@ -161,18 +176,18 @@ export async function verifierCodeSignature(input: {
   }
 
   if (!egauxATempsConstant(attendu, ligne.codeHash)) {
-    if (ligne.essais + 1 >= CODE_ESSAIS_MAX) {
-      await prisma.documentSignatureCode.updateMany({
-        where: { id: ligne.id, invalideAt: null },
-        data: { invalideAt: maintenant },
-      });
-    }
+    // Conditionné sur le compteur EN BASE : deux échecs simultanés ne laissent pas un
+    // code épuisé « vivant ».
+    await prisma.documentSignatureCode.updateMany({
+      where: { id: ligne.id, invalideAt: null, essais: { gte: CODE_ESSAIS_MAX } },
+      data: { invalideAt: maintenant },
+    });
     return REFUS;
   }
 
   // Consommation atomique : de deux requêtes simultanées, une seule passe.
   const consomme = await prisma.documentSignatureCode.updateMany({
-    where: { id: ligne.id, utiliseAt: null, invalideAt: null },
+    where: { id: ligne.id, ...vivant },
     data: { utiliseAt: maintenant },
   });
   return consomme.count === 1 ? { ok: true } : REFUS;
