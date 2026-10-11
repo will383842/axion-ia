@@ -371,6 +371,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    plomberie seulement — jetons, polices, nettoyage d'espaces. DEUXIÈME
   //    emprunteur : le prochain déplace la plomberie vers une zone neutre.
   "src/features/conformite-rgpd/registre-pdf.tsx",
+  // ── Droits RGPD des formateurs indépendants (lot L16a, ADR 0066) : l'export
+  //    art. 15 et l'effacement art. 17 lisent l'interrupteur
+  //    `formateurs.dossier_en_ligne` par `interrupteurs.ts`, SEUL lecteur des
+  //    clés du chantier (ADR 0066 (f)) — le recopier ici serait la faute que
+  //    la garde X3 interdit. Lecture d'un réglage, aucune session ni indicateur.
+  "src/lib/rgpd-formateur-independant.ts",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
   // ── Liste de suppression (audit e-mails 2026-09-02) : un envoi retenu
