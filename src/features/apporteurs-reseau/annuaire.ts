@@ -57,8 +57,11 @@ export interface EntrepriseRegistre {
  */
 export interface EnrichissementRegistre {
   estOrganismeFormation: boolean | null;
-  /** Numéros de déclaration d'activité listés pour ce SIREN (11 chiffres). */
-  ndaListe: string[];
+  /**
+   * Numéros de déclaration d'activité listés pour ce SIREN (11 caractères,
+   * « 2A »/« 2B » de Corse compris) ; `null` si le registre ne publie pas la liste.
+   */
+  ndaListe: string[] | null;
   estQualiopi: boolean | null;
   /** Code d'activité dans la nomenclature 2025, quand le registre le publie. */
   naf25: string | null;
@@ -89,13 +92,16 @@ export function enrichissementDuRegistre(
   etab: Record<string, unknown>,
 ): EnrichissementRegistre {
   const complements = (res.complements ?? {}) as Record<string, unknown>;
-  const listes = Array.isArray(complements.liste_id_organisme_formation)
+  const ndaListe = Array.isArray(complements.liste_id_organisme_formation)
     ? (complements.liste_id_organisme_formation as unknown[])
-    : [];
-  const ndaListe = listes
-    .filter((v): v is string => typeof v === "string")
-    .map((v) => v.replace(/\D/g, ""))
-    .filter((v) => /^\d{11}$/.test(v));
+        .filter((v): v is string | number => typeof v === "string" || typeof v === "number")
+        .map((v) =>
+          String(v)
+            .toUpperCase()
+            .replace(/[^0-9AB]/g, ""),
+        )
+        .filter((v) => /^[0-9AB]{11}$/.test(v))
+    : null;
   return {
     estOrganismeFormation: booleen(complements.est_organisme_formation),
     ndaListe,

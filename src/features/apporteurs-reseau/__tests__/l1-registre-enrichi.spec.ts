@@ -126,7 +126,7 @@ describe("L1 — registre enrichi, à la demande", () => {
   it("un registre muet ne devient jamais un « non » : null, pas false", () => {
     expect(enrichissementDuRegistre({}, {})).toEqual({
       estOrganismeFormation: null,
-      ndaListe: [],
+      ndaListe: null,
       estQualiopi: null,
       naf25: null,
       codePostal: null,
@@ -142,10 +142,12 @@ describe("L1 — registre enrichi, à la demande", () => {
 
   it("numéros de déclaration normalisés, illisibles écartés", () => {
     const e = enrichissementDuRegistre(
-      { complements: { liste_id_organisme_formation: ["84 69 1234569", "x", 12] } },
+      {
+        complements: { liste_id_organisme_formation: ["84 69 1234569", "x", 12, "94 2A 0123456"] },
+      },
       { latitude: "n/a" },
     );
-    expect(e.ndaListe).toEqual(["84691234569"]);
+    expect(e.ndaListe).toEqual(["84691234569", "942A0123456"]);
     expect(e.latitude).toBeNull();
   });
 });
