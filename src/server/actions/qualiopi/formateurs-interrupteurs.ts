@@ -465,3 +465,9 @@ export async function basculerFormateursFormulaireFreelanceAction(
 ): Promise<EtatBascule> {
   return basculerEntree("formulaire_freelance", formData);
 }
+export async function basculerFormateursMenuFreelanceAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("menu_freelance", formData);
+}

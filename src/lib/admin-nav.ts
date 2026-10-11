@@ -47,6 +47,7 @@ export type AdminNavGroup =
   | "contacts"
   | "apporteurs"
   | "recrutement"
+  | "formateurs-freelance"
   | "imprimes"
   | "tunnels"
   | "content"
@@ -211,6 +212,11 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   // Les candidatures aux offres d'emploi publiées. Distinct des apporteurs :
   // « Candidatures » seul se lisait des deux façons.
   recrutement: "Recrutement salariés",
+  // Lot L0h (chantier formateurs freelance) : la candidature d'un formateur
+  // indépendant suit son propre parcours (échange, dossier, contrat). Groupe
+  // HORS de `ADMIN_NAV_GROUP_ORDER` : il n'apparaît qu'avec l'interrupteur
+  // `formateurs.menu_freelance` (voir `ordreDesGroupesNav`).
+  "formateurs-freelance": "Formateurs freelance",
   // Imprimés et QR étaient rangés dans « Ops & monitoring », entre les alertes
   // et la synchro CRM : du matériel commercial, pas de l'exploitation.
   imprimes: "Imprimés & QR",
@@ -441,7 +447,26 @@ export const ADMIN_ROUTES_EPINGLEES: ReadonlyArray<string> = Object.values(ADMIN
  * @param adminPrefix - segment URL admin résolu par adminSegment() (cf. src/lib/admin-path.ts).
  * @returns liste typée des items pour la sidebar / cmdk / breadcrumbs.
  */
-export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> {
+export function buildAdminNav(
+  adminPrefix: string,
+  options: { readonly formateursFreelance?: boolean } = {},
+): ReadonlyArray<AdminNavItem> {
+  void options;
+  return buildAdminNavSocle(adminPrefix);
+}
+
+/**
+ * L'ordre des groupes à rendre : `ADMIN_NAV_GROUP_ORDER`, plus « Formateurs
+ * freelance » juste après « Recrutement salariés » quand le menu le porte.
+ */
+export function ordreDesGroupesNav(
+  items: ReadonlyArray<Pick<AdminNavItem, "group">>,
+): ReadonlyArray<AdminNavGroup> {
+  void items;
+  return ADMIN_NAV_GROUP_ORDER;
+}
+
+function buildAdminNavSocle(adminPrefix: string): ReadonlyArray<AdminNavItem> {
   const base = `/fr/${adminPrefix}`;
   return [
     // ── main (« Activité quotidienne ») — 3 pôles (refonte UX 2026-07-08) ───

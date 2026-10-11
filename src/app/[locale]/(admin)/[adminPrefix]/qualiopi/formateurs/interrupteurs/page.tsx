@@ -33,6 +33,7 @@ import {
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
   basculerFormateursFormulaireFreelanceAction,
+  basculerFormateursMenuFreelanceAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
@@ -99,6 +100,7 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
   {
     nature_offre: basculerFormateursNatureOffreAction,
     formulaire_freelance: basculerFormateursFormulaireFreelanceAction,
+    menu_freelance: basculerFormateursMenuFreelanceAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

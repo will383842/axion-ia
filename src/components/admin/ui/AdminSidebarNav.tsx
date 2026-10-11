@@ -91,6 +91,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   // Groupes créés le 2026-09-28 (menu rangé par fréquence d'usage).
   apporteurs: Handshake,
   recrutement: UserPlus,
+  "formateurs-freelance": GraduationCap,
   imprimes: Printer,
   tunnels: Filter,
   content: Newspaper,

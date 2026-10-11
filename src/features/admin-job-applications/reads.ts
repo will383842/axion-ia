@@ -82,7 +82,10 @@ export const listApplicationsSchema = z.object({
   // Le défaut reste `standard` — la boîte de réception unifiée appelle cette
   // action sans `view` et son canal Candidatures ne doit pas changer de
   // périmètre en silence.
-  view: z.enum(["standard", "monteur", "all"]).default("standard"),
+  // L0h — « formateurs-freelance » : la vue du groupe de menu « Formateurs
+  // freelance », passée par la page seulement quand `formateurs.menu_freelance`
+  // est allumé.
+  view: z.enum(["standard", "monteur", "all", "formateurs-freelance"]).default("standard"),
   onlyAttention: z.coerce.boolean().optional(),
   /**
    * Recherche libre sur le nom et l'adresse.
