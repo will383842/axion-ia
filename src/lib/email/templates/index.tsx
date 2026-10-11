@@ -182,6 +182,8 @@ import {
   ApporteurVirementFaitEmail,
 } from "./apporteur-demarrage";
 import { ApporteurLienEspaceEmail, apporteurLienEspaceSubject } from "./apporteur-lien-espace";
+import { ENTREES_FORMATEUR_INDEPENDANT } from "./_formateur-independant";
+import { estGabaritFormateurIndependant } from "./formateur-independant-textes";
 import {
   apporteurAttributionConfirmeeSubject,
   ApporteurAttributionConfirmeeEmail,
@@ -630,6 +632,9 @@ const TEMPLATES: TemplateMap = {
     subject: opcoSuiviEntrepriseSubject,
     component: OpcoSuiviEntrepriseEmail,
   },
+  // Formateurs indépendants (lot L-ENV, F1 à F60) — un châssis pour tous ; les textes ne
+  // partent qu'une fois validés par Will (`server/qualiopi/formateurs-independants/envois.ts`).
+  ...ENTREES_FORMATEUR_INDEPENDANT,
 };
 
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */
@@ -685,7 +690,8 @@ export async function renderEmailTemplate(
     oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
     // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
     lienEspace:
-      name.startsWith("apporteur-") && typeof payload.lienEspace === "string"
+      (name.startsWith("apporteur-") || estGabaritFormateurIndependant(name)) &&
+      typeof payload.lienEspace === "string"
         ? payload.lienEspace
         : null,
   };

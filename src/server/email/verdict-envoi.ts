@@ -85,6 +85,23 @@ export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = n
 ]);
 
 /**
+ * CAMP-1 — les sollicitations des FORMATEURS INDÉPENDANTS (F1, F2, F7, F22, F55), tenues
+ * dans leur propre liste : celle des apporteurs ne bouge pas.
+ *
+ * ⚠️ Copie LOCALE de `GABARITS_SOLLICITATION_FORMATEUR`
+ * (`lib/email/templates/formateur-independant-textes.ts`) : ce module n'importe que la base
+ * et l'empreinte (garde « module pur » de `verdict-envoi.spec.ts`). L'égalité des deux est
+ * vérifiée par `email-worker.formateur-au-depart.spec.ts`.
+ */
+export const GABARITS_SOLLICITATION_FORMATEUR_LOCAL: ReadonlySet<string> = new Set([
+  "formateur-invitation-echange",
+  "formateur-invitation-relance",
+  "formateur-invitation-rattrapage",
+  "formateur-issue-absent",
+  "formateur-presentation-methode",
+]);
+
+/**
  * Variante du kit envoyé 30 minutes après l'écran 1 d'un dossier non terminé.
  *
  * ⚠️ Copie LOCALE de `VARIANTE_DOSSIER_COMMENCE` (`kit-apporteur.ts`), et c'est
@@ -124,6 +141,9 @@ export function estSollicitationSoumiseAOpposition(
   payload: Record<string, unknown> | null | undefined,
 ): boolean {
   if (GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(template)) return true;
+  // CAMP-1 — les sollicitations des formateurs indépendants (F1, F2, F7, F22, F55),
+  // tenues dans leur propre liste : celle des apporteurs ne bouge pas.
+  if (GABARITS_SOLLICITATION_FORMATEUR_LOCAL.has(template)) return true;
   if (template !== "lead-apporteur-recu") return false;
   return VARIANTES_DIFFEREES.has((payload as { variante?: unknown } | null | undefined)?.variante);
 }
@@ -179,7 +199,7 @@ export async function verdictAvantEnvoi(
   const marketing =
     contexte.marketing && !GABARITS_EXEMPTES_DU_DESABONNEMENT.has(contexte.template);
   const sollicitation =
-    contexte.sollicitation ?? GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(contexte.template);
+    contexte.sollicitation ?? estSollicitationSoumiseAOpposition(contexte.template, undefined);
   if (marketing || sollicitation) {
     try {
       // Le désabonnement newsletter ne vaut que pour le marketing.

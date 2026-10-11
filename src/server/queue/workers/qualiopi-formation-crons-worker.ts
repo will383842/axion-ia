@@ -174,6 +174,9 @@ export type FormationCronJobType =
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
   // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
   | "formation-crons.suivi-entreprise-opco"
+  // Chantier formateurs indépendants (CAMP-3) — le passage HORAIRE des campagnes de
+  // relance, de 8 h à 19 h à Paris. Livré éteint : registre vide, interrupteurs coupés.
+  | "formation-crons.campagnes-formateurs"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2584,7 +2587,33 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
+  "formation-crons.campagnes-formateurs": handleCampagnesFormateurs,
 };
+
+/**
+ * CAMP-3 — passage horaire des campagnes de relance des formateurs indépendants. Corps
+ * dans `server/relances/passer-campagnes.ts` (fenêtre 8 h-19 h, interrupteurs, plafond
+ * de 30, anti-doublon) ; ici on déclenche et on trace. Import PARESSEUX.
+ */
+async function handleCampagnesFormateurs(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerCampagnes } = await import("@/server/relances/passer-campagnes");
+    const b = await passerCampagnes(new Date());
+    if (b.horsFenetre || b.campagnesActives === 0) return;
+    const ligne =
+      `[formation-crons] campagnes-formateurs: ${b.campagnesActives} campagne(s) active(s), ` +
+      `${b.envoyes} relance(s), ${b.gares} garée(s), écartées ${JSON.stringify(b.ecartes)}` +
+      (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] campagnes-formateurs: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * Lot OPCO A8 — envoi automatique du dossier prêt à déposer et relances de

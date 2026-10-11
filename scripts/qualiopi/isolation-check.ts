@@ -403,6 +403,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
   //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
   "src/server/email/suppression.ts",
+  // ── Relecture au départ (chantier formateurs indépendants, CAMP-1) : le
+  //    worker relit, juste avant d'envoyer un e-mail formateur, les
+  //    interrupteurs du chantier (`formateurs-independants/interrupteurs*.ts`,
+  //    seuls lecteurs autorisés des clés `formateurs.*`, ADR 0066 (f)). Deux
+  //    imports de LECTURE pure, sans écriture ni Next.
+  "src/server/email/relecture-au-depart.ts",
   // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
   //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
   //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du
