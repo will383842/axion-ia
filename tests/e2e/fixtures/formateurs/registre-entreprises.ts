@@ -4,7 +4,7 @@
 // qui acceptent TOUS LES DEUX un `fetch` injecté — c'est le mécanisme de
 // simulation existant, le banc n'en invente pas d'autre :
 //   · `lireEntrepriseParSiren` / `lireEtablissementParSiret`
-//     (`src/features/apporteurs-reseau/annuaire.ts`, option `fetch`) ;
+//     (`src/server/registre-entreprises/annuaire.ts`, option `fetch`) ;
 //   · `rechercherSiren` (`src/features/dossier-client/recherche-entreprises.ts`,
 //     option `fetch`).
 // Ce module rend ce `fetch`, réglé sur l'une des cinq réponses du registre.

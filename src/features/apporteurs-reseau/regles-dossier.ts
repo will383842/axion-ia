@@ -5,23 +5,9 @@
  * que `regles.ts` importe pour le forfait de conférence. `regles.ts` le ré-exporte.
  */
 
-/** Liste fermée de Partners (`StatutJuridique`, PR #727), avec ses libellés. */
-
-export const STATUTS_JURIDIQUES = [
-  { valeur: "micro_entrepreneur", libelle: "Micro-entrepreneur (auto-entrepreneur)" },
-  { valeur: "entrepreneur_individuel", libelle: "Entrepreneur individuel (hors micro)" },
-  { valeur: "eurl", libelle: "EURL" },
-  { valeur: "sarl", libelle: "SARL" },
-  { valeur: "sasu", libelle: "SASU" },
-  { valeur: "sas", libelle: "SAS" },
-  { valeur: "sa", libelle: "SA" },
-  { valeur: "snc", libelle: "SNC" },
-] as const;
-export type StatutJuridique = (typeof STATUTS_JURIDIQUES)[number]["valeur"];
-
-export function estStatutJuridique(v: unknown): v is StatutJuridique {
-  return STATUTS_JURIDIQUES.some((s) => s.valeur === v);
-}
+// Statuts juridiques : liste fermée neutre (FAC-5), ré-exportée ici pour le réseau.
+export { STATUTS_JURIDIQUES, estStatutJuridique } from "@/lib/statut-juridique";
+export type { StatutJuridique } from "@/lib/statut-juridique";
 
 /** Les déclarations que l'apporteur coche avant de signer (contrat v2). */
 export const DECLARATIONS = [

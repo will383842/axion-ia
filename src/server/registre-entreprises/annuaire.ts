@@ -15,8 +15,7 @@
  */
 
 import { checkSiretFormat, normalizeSiret, sirenDuSiret, sirenValide } from "@/lib/siret";
-// La liste fermée des statuts (Partners) : TYPE seulement, aucune règle apporteur importée.
-import type { StatutJuridique } from "@/features/apporteurs-reseau/regles-dossier";
+import type { StatutJuridique } from "@/lib/statut-juridique";
 
 const URL = "https://recherche-entreprises.api.gouv.fr/search";
 const DELAI_MS = 4_000;

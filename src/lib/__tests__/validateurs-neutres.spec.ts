@@ -6,6 +6,7 @@ import { PAYS_SEPA, ibanValide } from "../iban";
 import { resumerNavigateur } from "../navigateur";
 import { luhnValid, normaliserNaf, sirenValide } from "../siret";
 import { VIGILANCE_VALIDITE_MOIS } from "../vigilance";
+import { STATUTS_JURIDIQUES, estStatutJuridique } from "../statut-juridique";
 import * as regles from "@/features/apporteurs-reseau/regles";
 import * as reglesDossier from "@/features/apporteurs-reseau/regles-dossier";
 import * as signatureRegles from "@/features/apporteurs-reseau/signature-regles";
@@ -46,6 +47,8 @@ describe("une seule source : les anciens chemins ré-exportent", () => {
     expect(regles.normaliserNaf).toBe(normaliserNaf);
     expect(regles.VIGILANCE_VALIDITE_MOIS).toBe(VIGILANCE_VALIDITE_MOIS);
     expect(signatureRegles.resumerNavigateur).toBe(resumerNavigateur);
+    expect(reglesDossier.STATUTS_JURIDIQUES).toBe(STATUTS_JURIDIQUES);
+    expect(reglesDossier.estStatutJuridique).toBe(estStatutJuridique);
   });
   it("registre des entreprises", () => {
     expect(annuaireApporteur.lireEntrepriseParSiren).toBe(annuaire.lireEntrepriseParSiren);
