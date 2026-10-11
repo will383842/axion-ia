@@ -62,18 +62,20 @@ describe("formatNotification", () => {
     );
     expect(text).toContain("🟢");
     expect(text).toContain("*Nouveau message contact*");
-    // Email contient un point → doit être échappé.
-    expect(text).toContain("jean@example\\.com");
-    // ID submission affiché.
-    expect(text).toContain("sub\\_123");
+    // Prénom + initiale (le point est échappé), jamais l'e-mail.
+    expect(text).toContain("Jean D\\.");
+    expect(text).not.toContain("Dupont");
+    expect(text).not.toContain("jean@example");
+    // Lien vers la fiche (l'underscore de l'identifiant est échappé).
+    expect(text).toContain("contacts/messages/sub\\_123");
     // Footer avec catégorie.
     expect(text).toContain("CONTACT\\_FORM\\_SUBMITTED");
   });
 
-  // Demande Will 2026-08-12 : le CONTENU écrit par le visiteur doit arriver
-  // dans Telegram/WhatsApp, pas seulement les métadonnées. Ces trois cas
-  // rougissent si quelqu'un retire les champs message/motivation/réponses.
-  it("le contenu du message du visiteur est rendu (formulaires unifiés)", () => {
+  // Décision du 11/10/2026 : le CONTENU saisi par la personne (message,
+  // motivation, réponses, tarifs) ne part plus sur Telegram — il se lit sur la
+  // fiche. Ces cas rougissent si quelqu'un le réintroduit.
+  it("le contenu du message du visiteur n'est PAS rendu (formulaires unifiés)", () => {
     const { text } = formatNotification(
       {
         category: "CONTACT_FORM_SUBMITTED",
@@ -88,11 +90,12 @@ describe("formatNotification", () => {
       },
       "info",
     );
-    expect(text).toContain("*Message*");
-    expect(text).toContain("formation IA pour 12 personnes");
+    expect(text).not.toContain("*Message*");
+    expect(text).not.toContain("formation IA pour 12 personnes");
+    expect(text).toContain("contacts/messages/sub\\_9");
   });
 
-  it("la motivation d'une candidature est rendue", () => {
+  it("la motivation d'une candidature n'est PAS rendue", () => {
     const { text } = formatNotification(
       {
         category: "JOB_APPLICATION_RECEIVED",
@@ -108,11 +111,12 @@ describe("formatNotification", () => {
       },
       "info",
     );
-    expect(text).toContain("*Motivation*");
-    expect(text).toContain("montage documentaire");
+    expect(text).not.toContain("*Motivation*");
+    expect(text).not.toContain("montage documentaire");
+    expect(text).toContain("contacts/candidatures/app\\_1");
   });
 
-  it("candidature monteur : les réponses aux questions de l'offre (prix) sont rendues", () => {
+  it("candidature monteur : les réponses aux questions de l'offre (prix) ne sont PAS rendues", () => {
     const { text } = formatNotification(
       {
         category: "VIDEO_EDITOR_APPLICATION_RECEIVED",
@@ -128,11 +132,11 @@ describe("formatNotification", () => {
       },
       "info",
     );
-    expect(text).toContain("*Prix vidéo verticale 30 s*");
-    expect(text).toContain("45 € HT");
+    expect(text).not.toContain("Prix vidéo verticale");
+    expect(text).not.toContain("45 € HT");
   });
 
-  it("les réponses du formulaire Calendly sont rendues", () => {
+  it("les réponses du formulaire Calendly ne sont PAS rendues", () => {
     const { text } = formatNotification(
       {
         category: "CALENDLY_INVITEE_CREATED",
@@ -147,8 +151,8 @@ describe("formatNotification", () => {
       },
       "info",
     );
-    expect(text).toContain("*Réponses formulaire*");
-    expect(text).toContain("automatiser la compta");
+    expect(text).not.toContain("*Réponses formulaire*");
+    expect(text).not.toContain("automatiser la compta");
   });
 
   it("CALENDLY_INVITEE_CREATED inclut start-time et page URL échappés", () => {
@@ -324,6 +328,8 @@ describe("candidature vidéo freelance : le message Telegram arrive entier", () 
     return preparerPourTelegram(text);
   }
 
+  // Depuis le 11/10/2026, ni coordonnées ni réponses (tarifs compris) : le
+  // message tient sans troncature et renvoie à la fiche.
   it("vidéaste : tout tient, aucune ligne écartée", () => {
     const envoye = message(VIDEASTE, {
       prix_demi_journee: "180",
@@ -337,15 +343,17 @@ describe("candidature vidéo freelance : le message Telegram arrive entier", () 
       exemples: `${LIEN}\n${LIEN}`,
     });
     expect(envoye).not.toContain("TRONQUE");
-    expect(envoye).toContain("soirée 200 €");
-    // Parenthèses échappées : c'est le texte MarkdownV2 réellement envoyé.
-    expect(envoye).toContain(String.raw`à deux \(journée\) 550 €`);
-    expect(envoye).toContain("déplacement");
+    expect(envoye).toContain(String.raw`Jean\-Baptiste T\.`);
+    expect(envoye).not.toContain("Durand");
+    expect(envoye).not.toContain("exemple\\-temoin");
+    expect(envoye).not.toContain("00 00");
+    expect(envoye).not.toContain("200 €");
+    expect(envoye).not.toContain("Rode Wireless");
     expect(envoye).toContain("Voir en console");
     expect(envoye).not.toContain("Catégorie");
   });
 
-  it("monteur : les six prix et les liens tiennent aussi", () => {
+  it("monteur : les tarifs ne partent pas, le lien console reste", () => {
     const envoye = message(MONTEUR, {
       prix_vertical_30: "40",
       prix_vertical_60: "60",
@@ -357,7 +365,7 @@ describe("candidature vidéo freelance : le message Telegram arrive entier", () 
       exemples_horizontal: LIEN,
     });
     expect(envoye).not.toContain("TRONQUE");
-    expect(envoye).toContain(String.raw`min en \+ 25 €`);
+    expect(envoye).not.toContain("25 €");
     expect(envoye).toContain("Voir en console");
   });
 });
