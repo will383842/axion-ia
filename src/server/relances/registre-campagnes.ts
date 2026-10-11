@@ -17,6 +17,10 @@
 import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
 import type { EtatCampagne, RegleCampagne } from "@/lib/relances/campagne";
 import type { CleEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import {
+  CAMPAGNE_PIECES,
+  CAMPAGNE_VIGILANCE,
+} from "@/server/qualiopi/formateurs-independants/pieces-relances";
 
 /** A sollicitation (invitation) ; B obligation (pièce, signature) ; C information et argent. */
 export type ClasseCampagne = "A" | "B" | "C";
@@ -48,6 +52,11 @@ export interface DeclarationCampagne<E extends string = string> {
   readonly regle: RegleCampagne<E>;
   /** Interrupteurs à allumer TOUS (le premier est la clé mère). */
   readonly interrupteurs: readonly [CleEnvoi, ...CleEnvoi[]];
+  /**
+   * La variante du texte (1, 2…) pour une étape. Absente : le rang de l'étape. Sert quand
+   * le texte validé n'a pas une variante par étape (F41 : la 3e variante est le refus).
+   */
+  readonly variante?: (etape: string) => number;
   /** Lecture en lot des personnes candidates. Lève : le passage saute la campagne. */
   readonly lireFaits: (maintenant: Date) => Promise<readonly FaitsCampagne[]>;
 }
@@ -68,5 +77,10 @@ export function cleRelance(
 /**
  * Les campagnes déclarées. VIDE à la livraison de CAMP-3 : S1 (L-INV), S3 et S5 (L6),
  * S4 (L7b), S6 à S7 (L13), S8 et S9 bis (L11c), S9 (L12c), S11 (L7d) s'y inscrivent.
+ *
+ * Inscrites : S6 et S6 bis (L13b), derrière `pieces_cron`.
  */
-export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [];
+export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
+  CAMPAGNE_VIGILANCE,
+  CAMPAGNE_PIECES,
+];

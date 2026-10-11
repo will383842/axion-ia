@@ -117,8 +117,13 @@ beforeEach(() => {
 });
 
 describe("livré éteint", () => {
-  it("le registre est vide à la livraison", () => {
-    expect(REGISTRE_CAMPAGNES).toEqual([]);
+  // Vide à la livraison de CAMP-3 ; L13b y inscrit S6 et S6 bis. Chaque campagne
+  // inscrite reste coupée tant que ses interrupteurs sont à leur position sûre.
+  it("aucune campagne du registre n'est active avec les interrupteurs absents", () => {
+    const etats = etatsParDefaut() as Record<string, unknown>;
+    for (const c of REGISTRE_CAMPAGNES) {
+      expect(c.interrupteurs.some((cle) => etats[cle] !== true)).toBe(true);
+    }
   });
   it("interrupteurs absents : aucune campagne active, rien ne part", async () => {
     const b = await passerCampagnes(

@@ -254,10 +254,11 @@ export async function passerCampagnes(
       continue;
     }
     const etapeIndex = c.campagne.regle.etapes.findIndex((e) => e.id === c.etape);
+    const variante = c.campagne.variante?.(c.etape) ?? etapeIndex + 1;
     const r = await d.envoyer({
       gabarit: c.campagne.gabarit,
       destinataire: c.faits.destinataire,
-      payload: { ...c.faits.payload, etape: etapeIndex + 1 },
+      payload: { ...c.faits.payload, etape: variante },
       entityType: c.campagne.entityType,
       entityId: c.faits.entityId,
       jobId,
