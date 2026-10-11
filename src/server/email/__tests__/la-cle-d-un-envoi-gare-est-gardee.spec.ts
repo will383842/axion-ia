@@ -39,6 +39,11 @@ describe("garerPourValidation écrit la clé", () => {
     expect(create).toHaveBeenCalledTimes(2);
     expect(create.mock.calls[1]![0].data).not.toHaveProperty("jobId");
   });
+  it("erreur passagère au premier essai : aucun second essai sans la clé", async () => {
+    create.mockRejectedValueOnce(new Error("ECONNREFUSED"));
+    expect(await garerPourValidation({ ...BASE, jobId: "k" })).toBeNull();
+    expect(create).toHaveBeenCalledTimes(1);
+  });
   it("base muette : null, comme avant", async () => {
     create.mockRejectedValue(new Error("ECONNREFUSED"));
     expect(await garerPourValidation({ ...BASE, jobId: "k" })).toBeNull();

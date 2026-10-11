@@ -78,10 +78,13 @@ export async function garerPourValidation(input: EmailAGarer): Promise<string | 
   if (jobId) {
     try {
       return await creerLigne(input, jobId);
-    } catch {
+    } catch (e) {
       // Fenêtre de déploiement (~50 min) : le worker neuf peut tourner sur une base
-      // où la colonne `job_id` n'existe pas encore. On gare SANS la clé, comme avant
-      // CAMP-2, plutôt que de perdre l'e-mail.
+      // où la colonne `job_id` n'existe pas encore. Dans CE cas seulement, on gare
+      // SANS la clé, comme avant CAMP-2, plutôt que de perdre l'e-mail. Toute autre
+      // erreur suit le chemin d'avant (`null`) : regarer sans clé ouvrirait la porte
+      // au doublon que la clé empêche.
+      if (!colonneJobIdAbsente(e)) return null;
     }
   }
   try {
@@ -89,6 +92,13 @@ export async function garerPourValidation(input: EmailAGarer): Promise<string | 
   } catch {
     return null;
   }
+}
+
+/** L'erreur dit-elle que la colonne `job_id` n'existe pas (encore) ? */
+function colonneJobIdAbsente(e: unknown): boolean {
+  const code = (e as { code?: unknown } | null)?.code;
+  const message = e instanceof Error ? e.message : String(e);
+  return code === "P2022" || /job_id|jobId/.test(message);
 }
 
 async function creerLigne(input: EmailAGarer, jobId: string | null): Promise<string> {
