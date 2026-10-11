@@ -17,6 +17,13 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
+import { FinCollaborationPanel } from "@/components/admin/qualiopi/FinCollaborationPanel";
+import {
+  LIBELLES_MOTIF_FIN,
+  conservationApresFin,
+  estMotifFin,
+  jourParis,
+} from "@/server/qualiopi/formateurs-independants/fin-collaboration";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
@@ -367,6 +374,34 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // Lot L15a — lieu d'exercice (formateurs proches). Rôle jugé AVANT toute
   // lecture ; interrupteur `formateurs.proches_bloc` absent = panneau absent.
   const voitLieu = peutEngager(role, "habiliter_formateur") && (await envoiAllume("proches_bloc"));
+  // Lot L14 — fin de collaboration : indépendant en nom propre, interrupteur allumé.
+  const voitFinCollaboration =
+    trainer.statut === "sous_traitant" &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await interrupteurAllume("fin_collaboration"));
+  const jourIso = (d: Date) => d.toISOString().slice(0, 10);
+  const decideeAt = trainer.finCollaborationDecideeAt ?? trainer.finCollaborationAt;
+  const motifFin = trainer.finCollaborationMotifPrevu ?? trainer.finCollaborationMotif;
+  const finTerminee =
+    decideeAt !== null
+      ? {
+          decideeLe: jourParis(decideeAt),
+          effetLe: trainer.finCollaborationEffetAt
+            ? jourIso(trainer.finCollaborationEffetAt)
+            : null,
+          motif: estMotifFin(motifFin) ? LIBELLES_MOTIF_FIN[motifFin] : "motif non listé",
+          close: trainer.finCollaborationAt !== null,
+          actif: trainer.actif,
+          conservation: (() => {
+            const c = conservationApresFin(trainer.finCollaborationEffetAt ?? decideeAt);
+            return {
+              contratEtVigilance: jourIso(c.contratEtVigilance),
+              piecesComptables: jourIso(c.piecesComptables),
+            };
+          })(),
+        }
+      : null;
   const communeLieu =
     voitLieu && trainer.communeInsee
       ? await prisma.communeGeo
@@ -900,6 +935,10 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           }}
         />
       </div>
+
+      {voitFinCollaboration ? (
+        <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
+      ) : null}
 
       <TrainerManageForm
         trainerId={trainer.id}
