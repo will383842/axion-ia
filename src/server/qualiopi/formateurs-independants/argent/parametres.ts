@@ -13,6 +13,8 @@
  * Centimes entiers partout. Jamais de flottant sur un montant.
  */
 
+import { SEUIL_DAS2_COMMUN_CENTS } from "@/server/paiements-sortants/parametres";
+
 export const PARAMETRES_ARGENT_FORMATEURS = {
   /** Contrat v3 art. 9.1 : honoraires d'une journée (deux demi-journées). */
   tarifJourneeHtCents: 35_000,
@@ -50,10 +52,10 @@ export const PARAMETRES_ARGENT_FORMATEURS = {
   /** Décision 98 : alerte si le brouillon mensuel n'est pas validé N jours après le 1er. */
   releveMensuelAlerteJours: 5,
   /**
-   * Seuil DAS 2 par bénéficiaire et par an (décision 70, §12.6 n° 13) : UN seul
-   * paramètre, valeur PRUDENTE 1 200 € tant que le juriste n'a pas confirmé.
+   * Seuil DAS 2 par bénéficiaire et par an (décision 70, §12.6 n° 13) : le
+   * paramètre UNIQUE des paiements sortants (FAC-9), valeur prudente 1 200 €.
    */
-  seuilDas2Cents: 120_000,
+  seuilDas2Cents: SEUIL_DAS2_COMMUN_CENTS,
   /** Orange à J-5 de la date cible du virement. */
   orangeAvantDateCibleJours: 5,
   /**

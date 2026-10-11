@@ -2081,6 +2081,16 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "15 8 * * *",
         jobId: "formation-crons-paiement-mission-cron",
       },
+      // Lot L2c (2026-10-11) — référentiel des communes (formateurs proches).
+      // 07:50 UTC (08:50 ou 09:50 à Paris), chaque jour : le corps ne
+      // télécharge que si le référentiel a 30 jours ou plus. Un seul appel
+      // public, aucune donnée personnelle. Arrêté tant que l'interrupteur
+      // `formateurs.communes_geo_cron` n'est pas allumé.
+      {
+        type: "formation-crons.communes-geo",
+        pattern: "50 7 * * *",
+        jobId: "formation-crons-communes-geo-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

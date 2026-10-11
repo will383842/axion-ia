@@ -23,7 +23,11 @@
 
 import { Worker } from "bullmq";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { relancerEtExpirerMissions } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  relancerEtExpirerMissions,
+  statutsAccordConvocation,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
@@ -183,6 +187,10 @@ export type FormationCronJobType =
   // indépendants. QUOTIDIEN ; arrêté tant que `formateurs.passage_paiement` n'a
   // pas de date. Écrit des relevés « à valider », jamais validés seuls.
   | "formation-crons.paiement-mission"
+  // Lot L2c (2026-10-11, ADR 0066) — référentiel des communes (formateurs
+  // proches). QUOTIDIEN, mais ne télécharge qu'une fois par mois ; arrêté tant
+  // que `formateurs.communes_geo_cron` n'est pas allumé.
+  | "formation-crons.communes-geo"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2167,12 +2175,18 @@ async function affectationsAConvoquer(
    * La règle : on informe quand l'accord n'est PAS requis (salarié,
    * dirigeant-formateur — cf. `accordRequis`), ou quand il a été DONNÉ. Un
    * sous-traitant silencieux ne reçoit rien tant qu'il n'a pas répondu.
+   *
+   * 🔴 N1 (lot S2) — « donné » couvre aussi l'accord noté HORS OUTIL : sans lui,
+   * un formateur dont l'accord avait été pris au téléphone n'était jamais
+   * convoqué ni rappelé. Derrière l'interrupteur `formateurs.affectation_sure` :
+   * arrêté, l'accord par le lien seul, comme avant.
    */
+  const statutsAccord = statutsAccordConvocation(await interrupteurAllume("affectation_sure"));
   const aAccepte = new Set(
     (
       await prisma.missionFormateur.findMany({
         where: {
-          statut: "acceptee",
+          statut: { in: [...statutsAccord] },
           OR: affectations.map((a) => ({ sessionId: a.sessionId, trainerId: a.trainerId })),
         },
         select: { sessionId: true, trainerId: true },
@@ -2595,6 +2609,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
   "formation-crons.paiement-mission": handlePaiementMission,
+  "formation-crons.communes-geo": handleCommunesGeo,
 };
 
 /**
@@ -2628,6 +2643,26 @@ async function handlePaiementMission(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] paiement-mission: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Lot L2c — référentiel des communes. Corps et doctrine dans
+ * `formateurs-proches/communes-geo-passage.ts` ; ici on déclenche et on trace.
+ * Import PARESSEUX ; le passage ne lève jamais.
+ */
+async function handleCommunesGeo(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerCommunesGeo, ligneBilanCommunesGeo } =
+      await import("@/server/qualiopi/formateurs-proches/communes-geo-passage");
+    const { niveau, ligne } = ligneBilanCommunesGeo(await passerCommunesGeo(new Date()));
+    console[niveau](ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] communes-geo: erreur:",
       err instanceof Error ? err.message : String(err),
     );
   }

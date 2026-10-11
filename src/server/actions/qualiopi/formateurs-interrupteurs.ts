@@ -368,3 +368,9 @@ export async function basculerFormateursSuiteContratCadreAction(
 ): Promise<EtatBascule> {
   return basculerSignature("suite_contrat_cadre", formData);
 }
+export async function basculerFormateursAffectationSureAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("affectation_sure", formData);
+}
