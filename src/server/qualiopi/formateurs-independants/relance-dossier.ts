@@ -117,6 +117,7 @@ export async function lireFaitsRelanceDossier(maintenant: Date): Promise<FaitsCa
       dossierStatut: true,
       finCollaborationAt: true,
     },
+    orderBy: { id: "asc" },
     take: 500,
   });
   if (fiches.length === 0) return [];
@@ -130,7 +131,14 @@ export async function lireFaitsRelanceDossier(maintenant: Date): Promise<FaitsCa
         status: { not: "failed" },
         createdAt: { gte: depuis },
       },
-      select: { id: true, entityId: true, template: true, createdAt: true, bounceType: true },
+      select: {
+        id: true,
+        entityId: true,
+        template: true,
+        status: true,
+        createdAt: true,
+        bounceType: true,
+      },
       orderBy: { createdAt: "asc" },
     }),
     prisma.emailOpposition.findMany({
@@ -148,8 +156,13 @@ export async function lireFaitsRelanceDossier(maintenant: Date): Promise<FaitsCa
   const faits: FaitsCampagne[] = [];
   for (const f of fiches) {
     const lignes = journal.filter((j) => j.entityId === f.id);
-    const origines = lignes.filter((j) =>
-      (ORIGINES_RELANCE_DOSSIER as readonly string[]).includes(j.template),
+    // Une origine est un lien PARTI ou en file : un envoi annulé au départ (validation
+    // retirée, adresse supprimée) n'ouvre aucune relance. Les relances annulées, elles,
+    // restent comptées (côté prudent).
+    const origines = lignes.filter(
+      (j) =>
+        (ORIGINES_RELANCE_DOSSIER as readonly string[]).includes(j.template) &&
+        (j.status === "pending" || j.status === "sent"),
     );
     const derniere = origines.at(-1) ?? null;
     const empreinte = empreinteOpposition(f.email);

@@ -138,9 +138,10 @@ const relireRelanceDossier: LecteurAuDepart = async (job) => {
   const commun = await relireFormateur(job);
   if (commun !== null) return commun;
   try {
-    if (!lireDrapeauEnvoi(await lireEtatsInterrupteurs(), "relances_auto")) {
-      return "relances automatiques coupées";
-    }
+    const etats = await lireEtatsInterrupteurs();
+    // La clé mère d'abord : dossier coupé = le lien mènerait à la page neutre.
+    if (!lireDrapeauEnvoi(etats, "dossier_en_ligne")) return "dossier en ligne coupé";
+    if (!lireDrapeauEnvoi(etats, "relances_auto")) return "relances automatiques coupées";
     const t = await prisma.trainer.findUnique({
       where: { id: job.entityId! },
       select: { dossierStatut: true },

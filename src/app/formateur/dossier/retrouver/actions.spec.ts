@@ -57,6 +57,8 @@ describe("retrouver mon dossier (F14)", () => {
     const inconnue = await demanderLienDossier(undefined, fd("x@exemple.fr"));
     const connue = await demanderLienDossier(undefined, fd("marie@exemple.fr"));
     expect(inconnue).toEqual(connue);
+    // L'envoi part sans être attendu (pas d'oracle de temps) : on laisse la file tourner.
+    await vi.waitFor(() => expect(h.envoyer).toHaveBeenCalled());
     expect(h.envoyer).toHaveBeenCalledTimes(1);
     expect(h.envoyer.mock.calls[0]![0]).toMatchObject({
       gabarit: "formateur-lien-espace",

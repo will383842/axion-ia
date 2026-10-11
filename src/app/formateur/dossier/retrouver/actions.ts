@@ -32,6 +32,29 @@ async function ipHachee(): Promise<string> {
   }
 }
 
+async function envoyerLienSiConnu(email: string): Promise<void> {
+  const fiche = await prisma.trainer.findFirst({
+    where: {
+      email,
+      statut: "sous_traitant",
+      finCollaborationAt: null,
+      organismeSousTraitantId: null,
+      dossierStatut: { in: ["en_cours", "a_completer"] },
+    },
+    select: { id: true, prenom: true, email: true, accesVersion: true },
+  });
+  if (!fiche) return;
+  const lien = urlDossierFormateur(fiche.id, fiche.accesVersion, new Date());
+  if (!lien) return;
+  await envoyer({
+    gabarit: "formateur-lien-espace",
+    destinataire: fiche.email,
+    payload: { prenom: fiche.prenom, lien, bouton: 1 },
+    entityType: "Trainer",
+    entityId: fiche.id,
+  });
+}
+
 export async function demanderLienDossier(
   _prec: EtatRetrouver | undefined,
   formData: FormData,
@@ -57,31 +80,8 @@ export async function demanderLienDossier(
   if (!parIp.allowed || !parAdresse.allowed) return neutre;
   if (!(await dossierEnLigneOuvert())) return neutre;
 
-  try {
-    const fiche = await prisma.trainer.findFirst({
-      where: {
-        email: lu.data,
-        statut: "sous_traitant",
-        finCollaborationAt: null,
-        organismeSousTraitantId: null,
-        dossierStatut: { in: ["en_cours", "a_completer"] },
-      },
-      select: { id: true, prenom: true, email: true, accesVersion: true },
-    });
-    if (fiche) {
-      const lien = urlDossierFormateur(fiche.id, fiche.accesVersion, new Date());
-      if (lien) {
-        await envoyer({
-          gabarit: "formateur-lien-espace",
-          destinataire: fiche.email,
-          payload: { prenom: fiche.prenom, lien, bouton: 1 },
-          entityType: "Trainer",
-          entityId: fiche.id,
-        });
-      }
-    }
-  } catch {
-    // Même réponse : rien ne dit si l'adresse est connue.
-  }
+  // Lancé SANS être attendu : une adresse connue ne répond pas plus lentement qu'une
+  // inconnue (pas d'oracle de temps). Les erreurs restent muettes.
+  void envoyerLienSiConnu(lu.data).catch(() => undefined);
   return neutre;
 }

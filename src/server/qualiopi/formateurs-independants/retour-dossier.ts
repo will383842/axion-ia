@@ -7,7 +7,10 @@ export const MESSAGES_RETOUR_DOSSIER = {
   lien_envoye: { ton: "ok", texte: "Nouveau lien envoyé ; les liens précédents ne valent plus." },
   complement_demande: { ton: "ok", texte: "Complément demandé : le dossier est rouvert." },
   en_validation: { ton: "ok", texte: "E-mail placé dans la corbeille de validation." },
-  envoi_echoue: { ton: "alerte", texte: "L'e-mail n'est pas parti : réessayez plus tard." },
+  envoi_echoue: {
+    ton: "alerte",
+    texte: "L'e-mail n'est pas parti et les anciens liens ne valent plus : réessayez plus tard.",
+  },
   eteint: { ton: "alerte", texte: "Le dossier en ligne est éteint (écran Interrupteurs)." },
   "texte-non-valide": {
     ton: "alerte",

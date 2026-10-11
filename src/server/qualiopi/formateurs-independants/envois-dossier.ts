@@ -23,6 +23,7 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
+import { dejaTente } from "@/server/relances/passer-campagnes";
 
 import { envoyer, texteValide, type ResultatEnvoiFormateur } from "./envois";
 import { lireDrapeauEnvoi } from "./interrupteurs";
@@ -89,6 +90,11 @@ async function nouvelleVersion(
   });
 }
 
+/** Un lien peut-il être signé (secret présent) ? Vérifié AVANT de révoquer les anciens. */
+function lienFabricable(p: { trainerId: string; maintenant: Date }): boolean {
+  return urlDossierFormateur(p.trainerId, 0, p.maintenant) !== null;
+}
+
 /** F8 — renvoyer le lien du dossier (nouvelle version : les anciens liens sont révoqués). */
 export async function renvoyerLienDossier(p: {
   trainerId: string;
@@ -132,6 +138,7 @@ export async function demanderComplement(p: {
   if (!(await texteValide("formateur-dossier-a-completer"))) {
     return { ok: false, raison: "texte-non-valide" };
   }
+  if (!lienFabricable(p)) return { ok: false, raison: "etat" };
   const t = await nouvelleVersion(
     p.trainerId,
     ["a_verifier"],
@@ -161,13 +168,17 @@ export async function prevenirStatutNonOuvert(trainerId: string): Promise<Result
     select: { id: true, email: true, prenom: true },
   });
   if (!t) return "indisponible";
+  const jobId = `fi-statut-non-ouvert-${t.id}`;
+  // « Une seule fois » au-delà de la mémoire de la file : journal ET corbeille relus.
+  const deja = await dejaTente(jobId);
+  if (deja !== false) return "indisponible";
   return envoyer({
     gabarit: "formateur-statut-non-ouvert",
     destinataire: t.email,
     payload: { prenom: t.prenom },
     entityType: "Trainer",
     entityId: t.id,
-    jobId: `fi-statut-non-ouvert-${t.id}`,
+    jobId,
   });
 }
 
