@@ -29,6 +29,10 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { effacerCandidaturesPour } from "@/server/careers/candidature-rgpd";
+import {
+  candidaturesAConserverPour,
+  eraseFormateurIndependantForEmail,
+} from "@/lib/rgpd-formateur-independant";
 import { effacerDemandesPodcastPour } from "@/features/podcast-request/rgpd";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -118,6 +122,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // par eraseSubmissionsForEmail.
   const chatResult = await eraseChatDataForEmail(email);
 
+  // Lot L16a (W5 I-11) — lu AVANT les effacements : la fiche formateur est
+  // retrouvée par son adresse, que l'effacement ci-dessous remplace. Éteint
+  // (`formateurs.dossier_en_ligne` absent) = ensemble vide, comportement d'avant.
+  const candidaturesRetenues = await candidaturesAConserverPour(email);
+
   // Exécution des effacements
   const [
     submissionsResult,
@@ -135,6 +144,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     reseauApporteurResult,
     reponsesEntrantesResult,
     dossierClientResult,
+    formateurIndependantResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -150,7 +160,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Le défaut était plus profond qu'un oubli de branchement : `email` est
     // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
     // son adresse. Cf. `careers/candidature-rgpd.ts`.
-    effacerCandidaturesPour(email),
+    effacerCandidaturesPour(email, { conserver: candidaturesRetenues }),
     // 🔴 `D5-5-01` (2026-08-24) — LES DEUX TABLES D'E-MAIL ÉTAIENT HORS DE PORTÉE.
     //
     // Exactement le défaut de `D5-5-03` ci-dessus, une table plus loin :
@@ -223,6 +233,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // rencontres ; les comptes rendus qui la citent sont vidés pour être
     // réécrits sans elle. Les preuves d'accord restent (art. 17(3)(e)).
     effacerCibleParAdresses([email], { motif: "art17" }),
+    // Lot L16a — formateur indépendant : octets des pièces supprimés, identité
+    // effacée ou conservée (lien contractuel), fiche jamais supprimée. Éteint
+    // tant que `formateurs.dossier_en_ligne` n'est pas allumé.
+    eraseFormateurIndependantForEmail(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -270,6 +284,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         dossierClient: dossierClientResult,
         reseauApporteur: { ...reseauApporteurResult },
+        formateurIndependant: { ...formateurIndependantResult },
+        candidaturesRetenues: candidaturesRetenues.size,
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,
