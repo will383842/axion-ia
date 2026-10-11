@@ -73,7 +73,7 @@ export const MESSAGES_DEPOT_FORMATEUR = {
 const alerteAntivirus = alerteAntivirusLimitee(() => {
   try {
     Sentry.captureException(new Error("pièce formateur refusée : antivirus muet"), {
-      tags: { action: "formateurs.depot:antivirus_muet" },
+      tags: { action: "formateur-depot:antivirus_muet" },
     });
   } catch {
     // Observabilité : jamais bloquante.
