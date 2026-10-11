@@ -517,9 +517,25 @@ export const CLES_INTERRUPTEURS_SIGNATURE = Object.keys(
 
 export type EtatsInterrupteursSignature = { [C in CleInterrupteurSignature]: boolean };
 
+/**
+ * Un préalable du registre de signature : ceux de `PREALABLES`, plus deux sortes
+ * qui n'ont de sens qu'ici — un AUTRE interrupteur de ce registre, et la date de
+ * passage au paiement par mission (`passage_paiement` porte une date, pas un
+ * booléen).
+ */
+export type PrealableSignature =
+  | Prealable
+  | { readonly sorte: "signature"; readonly cle: CleInterrupteurSignature }
+  | { readonly sorte: "date_passage_paiement" };
+
+const exigeSignature = (cle: CleInterrupteurSignature): PrealableSignature => ({
+  sorte: "signature",
+  cle,
+});
+
 /** Préalables à l'allumage — mêmes règles que `PREALABLES`. */
 export const PREALABLES_SIGNATURE: Readonly<
-  Record<CleInterrupteurSignature, ReadonlyArray<Prealable>>
+  Record<CleInterrupteurSignature, ReadonlyArray<PrealableSignature>>
 > = {
   // Le courriel de copie partielle est un texte neuf, envoyé entre autres aux
   // formateurs (lettre de mission) : il passe par la validation des textes.
@@ -543,9 +559,16 @@ export const PREALABLES_SIGNATURE: Readonly<
   ],
   das2_commun: [],
   fin_collaboration: [],
-  choix_cartes: [],
-  // F48 (désistement reçu) est un texte neuf.
-  rang_suivant: [exige("textes_valides")],
+  // Les honoraires figés au choix ne sont payés que par le paiement par mission :
+  // sans date de passage, le relevé mensuel paierait le tarif de la fiche.
+  choix_cartes: [{ sorte: "date_passage_paiement" }],
+  // F48 (désistement reçu) est un texte neuf. Le rang suivant propose seul : la
+  // garde de mission doit refuser pour de vrai aux portes, et l'acceptation être sûre.
+  rang_suivant: [
+    exige("textes_valides"),
+    exigeSignature("garde_mission_portes"),
+    exigeSignature("affectation_sure"),
+  ],
   contrat_cadre_emission: [],
   // Le dossier envoyé doit pouvoir s'ouvrir.
   mise_a_niveau: [exige("dossier_en_ligne")],
@@ -591,10 +614,22 @@ export function prealablesManquantsSignature(
   cle: CleInterrupteurSignature,
   valeur: boolean,
   etats: EtatsInterrupteurs,
+  /** États de ce registre ; absents = tous arrêtés (le plus strict). */
+  etatsSignature: EtatsInterrupteursSignature = etatsSignatureParDefaut(),
 ): string[] {
   if (valeur !== true) return [];
   return PREALABLES_SIGNATURE[cle].flatMap((p) => {
     if (p.sorte === "non_lisible") return [p.libelle];
+    if (p.sorte === "date_passage_paiement") {
+      return etats.passage_paiement !== null
+        ? []
+        : [`« ${INTERRUPTEURS.passage_paiement.libelle} » doit porter une date.`];
+    }
+    if (p.sorte === "signature") {
+      return etatsSignature[p.cle]
+        ? []
+        : [`« ${INTERRUPTEURS_SIGNATURE[p.cle].libelle} » doit être allumé.`];
+    }
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });
 }

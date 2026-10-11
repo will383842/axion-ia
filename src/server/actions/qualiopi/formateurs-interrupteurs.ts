@@ -29,6 +29,7 @@ import {
   dateAllumageSignature,
   lireValeurSignature,
   prealablesManquantsSignature,
+  etatsSignatureDepuisLignes,
   type CleInterrupteurSignature,
   estDateDePassage,
   estPositionSure,
@@ -298,10 +299,21 @@ function ecrireSignature(
   const key = cleSettingSignature(cle);
   return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
-      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      // Les préalables lisent les seize ET ce registre (dont `signature.*`).
+      where: {
+        OR: [
+          { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+          { key: { startsWith: "signature." } },
+        ],
+      },
       select: { key: true, value: true },
     });
-    const manquants = prealablesManquantsSignature(cle, valeur, etatsDepuisLignes(lignes));
+    const manquants = prealablesManquantsSignature(
+      cle,
+      valeur,
+      etatsDepuisLignes(lignes),
+      etatsSignatureDepuisLignes(lignes),
+    );
     if (manquants.length > 0) return manquants;
     const actuelle = await tx.setting.findUnique({
       where: { key },

@@ -110,3 +110,30 @@ describe("date d'allumage (`signature.exemplaire_captation`)", () => {
     expect(dateAllumageSignature({ actif: true, allumeLe: "n'importe" }, MAJ)).toEqual(MAJ);
   });
 });
+
+describe("correctifs L11b et L11h — préalables du choix en cartes et du rang suivant", () => {
+  const etats = etatsParDefaut();
+  it("le choix en cartes exige une date de passage au paiement par mission", () => {
+    expect(prealablesManquantsSignature("choix_cartes", true, etats)).toHaveLength(1);
+    expect(
+      prealablesManquantsSignature("choix_cartes", true, {
+        ...etats,
+        passage_paiement: "2026-12-01",
+      }),
+    ).toEqual([]);
+  });
+  it("le rang suivant exige la garde aux portes et l'affectation sûre", () => {
+    const sig = etatsSignatureParDefaut();
+    const avecTextes = { ...etats, textes_valides: true };
+    expect(prealablesManquantsSignature("rang_suivant", true, avecTextes, sig)).toHaveLength(2);
+    expect(
+      prealablesManquantsSignature("rang_suivant", true, avecTextes, {
+        ...sig,
+        garde_mission_portes: true,
+        affectation_sure: true,
+      }),
+    ).toEqual([]);
+    // États du registre non fournis : le plus strict.
+    expect(prealablesManquantsSignature("rang_suivant", true, avecTextes)).toHaveLength(2);
+  });
+});

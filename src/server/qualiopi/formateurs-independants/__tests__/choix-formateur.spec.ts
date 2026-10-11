@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  chaineOuverte,
   choixRestants,
   deplacementCompris,
   eurosCourts,
@@ -30,6 +31,7 @@ import { TARIF_JOURNEE_HT_CENTS } from "../lettre-mission-v2-calcul";
 const carte = (p: Partial<CarteFormateur> & { trainerId: string }): CarteFormateur => ({
   nomCourt: p.trainerId,
   independant: true,
+  regimeTva: "franchise_293b",
   departement: null,
   proximite: "meme_departement",
   refus: [],
@@ -129,17 +131,39 @@ describe("figer le choix (T3 : une carte grisée n'est jamais acceptée)", () =>
           rang: 1,
           tarifHtCents: TARIF_JOURNEE_HT_CENTS,
           forfaitDeplacementParJourHtCents: 0,
+          regimeTvaFige: "franchise_293b",
         },
         {
           trainerId: "b",
           rang: 2,
           tarifHtCents: TARIF_JOURNEE_HT_CENTS,
           forfaitDeplacementParJourHtCents: 8_000,
+          regimeTvaFige: "franchise_293b",
         },
         // Un salarié : ni tarif ni forfait ici (sa source reste SessionFormateur).
-        { trainerId: "c", rang: 3, tarifHtCents: null, forfaitDeplacementParJourHtCents: null },
+        {
+          trainerId: "c",
+          rang: 3,
+          tarifHtCents: null,
+          forfaitDeplacementParJourHtCents: null,
+          regimeTvaFige: null,
+        },
       ],
     });
+  });
+  it("correctif ARGENT : le régime de TVA de la fiche est figé au choix, avec les honoraires", () => {
+    const r = figerChoix(
+      [{ trainerId: "z", rang: 1, forfaitDeplacementParJourHtCents: 0 }],
+      [carte({ trainerId: "z", regimeTva: "assujetti_20" })],
+    );
+    expect(r).toMatchObject({ ok: true, choix: [{ regimeTvaFige: "assujetti_20" }] });
+  });
+  it("correctif ARGENT : un indépendant sans régime de TVA ne se choisit pas", () => {
+    const r = figerChoix(
+      [{ trainerId: "z", rang: 1, forfaitDeplacementParJourHtCents: 0 }],
+      [carte({ trainerId: "z", regimeTva: null })],
+    );
+    expect(r.ok).toBe(false);
   });
   it("refuse une carte grisée", () => {
     const r = figerChoix(
@@ -263,5 +287,23 @@ describe("honoraires de la proposition (même calcul que la lettre)", () => {
     );
     expect(ligneJour(jour("2026-11-04", "09:00", "12:00"))).toBe("mercredi 4 novembre · matin");
     expect(eurosCourts(17_550)).toBe("175,50 €");
+  });
+});
+
+describe("correctif EXACTITUDE — la chaîne ne repart qu'après refus, silence ou désistement", () => {
+  const choix = new Set(["a", "b"]);
+  it("refus, silence, désistement d'un formateur du choix : ouverte", () => {
+    for (const statut of ["refusee", "sans_reponse", "desistee"]) {
+      expect(chaineOuverte({ trainerId: "a", statut }, choix)).toBe(true);
+    }
+  });
+  it("retrait, expiration, accord, attente : fermée", () => {
+    for (const statut of ["retiree", "expiree", "acceptee", "accord_hors_outil", "en_attente"]) {
+      expect(chaineOuverte({ trainerId: "a", statut }, choix)).toBe(false);
+    }
+  });
+  it("un formateur hors du choix (remplacement par l'équipe) ou aucune mission : fermée", () => {
+    expect(chaineOuverte({ trainerId: "x", statut: "refusee" }, choix)).toBe(false);
+    expect(chaineOuverte(undefined, choix)).toBe(false);
   });
 });

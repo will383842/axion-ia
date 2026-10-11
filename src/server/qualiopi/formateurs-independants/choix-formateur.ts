@@ -23,8 +23,15 @@
  * dans le même geste que le rang ailleurs. Un salarié ou le dirigeant n'a ni
  * tarif ni forfait ici : leur source reste `SessionFormateur.tarifHtCents`.
  *
+ * 🔑 Le RÉGIME DE TVA est figé dans le même geste (`regimeTvaFige`, lu sur la
+ * fiche au choix) : la proposition, la lettre et le paiement par mission lisent
+ * la même valeur, jamais une valeur recalculée ni reçue du navigateur. Un
+ * indépendant dont le régime n'est pas renseigné ne se choisit pas.
+ *
  * Jamais de taux de refus, jamais de silence affiché : ni ici, ni sur l'écran.
  */
+
+import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul";
 
 import { MANQUES_MISSION } from "./garde-mission";
 import { departementDeCodePostal, regionDeDepartement } from "./departement-region";
@@ -164,6 +171,8 @@ export interface CarteFormateur {
   readonly nomCourt: string;
   /** Formateur indépendant : tarif et forfait figés au choix. */
   readonly independant: boolean;
+  /** Régime de TVA de la fiche, lu au choix (indépendant seulement). */
+  readonly regimeTva?: TvaRegimeHonoraires | null;
   readonly departement: string | null;
   readonly proximite: Proximite;
   /** Vide : la carte se choisit. Sinon : grisée, avec ces raisons. */
@@ -211,6 +220,8 @@ export interface ChoixFige {
   readonly rang: Rang;
   readonly tarifHtCents: number | null;
   readonly forfaitDeplacementParJourHtCents: number | null;
+  /** Figé au choix avec le tarif (indépendant) ; `null` pour un salarié. */
+  readonly regimeTvaFige: TvaRegimeHonoraires | null;
 }
 
 export type ResultatFigerChoix =
@@ -255,8 +266,16 @@ export function figerChoix(
         rang,
         tarifHtCents: null,
         forfaitDeplacementParJourHtCents: null,
+        regimeTvaFige: null,
       });
       continue;
+    }
+    const regimeTva = c.regimeTva ?? null;
+    if (regimeTva === null) {
+      return {
+        ok: false,
+        erreur: `Renseignez d'abord le régime de TVA de ${c.nomCourt} sur sa fiche : il est figé au choix, avec ses honoraires.`,
+      };
     }
     let forfait: number;
     if (deplacementCompris(c.proximite)) {
@@ -276,6 +295,7 @@ export function figerChoix(
       rang,
       tarifHtCents: TARIF_JOURNEE_HT_CENTS,
       forfaitDeplacementParJourHtCents: forfait,
+      regimeTvaFige: regimeTva,
     });
   }
   return { ok: true, choix };
@@ -334,6 +354,28 @@ export function choixRestants(
     .filter((c) => estRang(c.rang) && c.sauteAt === null)
     .filter((c) => !rangConsomme(c, sollicitations))
     .sort((a, b) => a.rang - b.rang);
+}
+
+/**
+ * Les seules issues qui rendent la main au rang suivant (08 §2.5 : refus,
+ * silence, désistement). Un retrait ou un remplacement fait par l'équipe
+ * (`retiree`, ou un accord donné dont l'affectation a été retirée) arrête la
+ * chaîne : le moteur ne va jamais contre le geste de l'équipe.
+ */
+export const ISSUES_QUI_PASSENT_LA_MAIN = ["refusee", "sans_reponse", "desistee"] as const;
+
+/**
+ * La chaîne des choix peut-elle continuer ? Oui seulement si la DERNIÈRE
+ * mission (formateur principal) de la session est celle d'un formateur du
+ * choix, close par refus, silence ou désistement. Aucune mission : rien.
+ */
+export function chaineOuverte(
+  derniere: { readonly trainerId: string; readonly statut: string } | undefined,
+  trainersDuChoix: ReadonlySet<string>,
+): boolean {
+  if (derniere === undefined) return false;
+  if (!trainersDuChoix.has(derniere.trainerId)) return false;
+  return (ISSUES_QUI_PASSENT_LA_MAIN as ReadonlyArray<string>).includes(derniere.statut);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

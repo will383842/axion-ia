@@ -309,6 +309,7 @@ export async function proposerMissionFormateur(
             ? {
                 tarifHtCents: conditions.tarifHtCents,
                 forfaitDeplacementParJourHtCents: conditions.forfaitDeplacementParJourHtCents,
+                regimeTvaFige: conditions.regimeTvaFige,
               }
             : {}),
         },

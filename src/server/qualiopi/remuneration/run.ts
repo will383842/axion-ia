@@ -92,7 +92,9 @@ export type MotifAnomalie =
   | "bareme_absent"
   | "heures_absentes"
   | "assiette_ca_absente"
-  | "regime_tva_absent";
+  | "regime_tva_absent"
+  // Correctif L11b — honoraires figés au choix : payés par mission, jamais ici.
+  | "conditions_figees_mission";
 
 /** Références d'une prestation. Exactement une est renseignée (CHECK SQL). */
 export interface PrestationRef {
