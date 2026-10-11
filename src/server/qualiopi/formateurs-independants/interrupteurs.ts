@@ -439,6 +439,33 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.fin_collaboration",
   },
+  // Lot L7b — le contrat-cadre v3 d'un formateur indépendant, préparé depuis sa fiche.
+  // Coupé : le panneau n'apparaît pas et l'action refuse, exactement comme avant L7b.
+  contrat_cadre_emission: {
+    ...envoi(
+      "Contrat-cadre préparé depuis la fiche",
+      "La fiche d'un formateur indépendant permet de préparer son contrat-cadre (dernière version arrêtée, attestation URSSAF vérifiée, registre contrôlé sur le SIRET du contrat), puis d'envoyer le lien de signature.",
+    ),
+    cle: "formateurs.contrat_cadre_emission",
+  },
+  // Lot L9b — mise à niveau des indépendants actifs d'avant le contrôle. Coupé :
+  // l'écran est fermé et les actions refusent, sans rien lire ni écrire.
+  mise_a_niveau: {
+    ...envoi(
+      "Mise à niveau des indépendants actifs",
+      "L'écran « À mettre à niveau » liste les indépendants actifs sans contrat-cadre en vigueur, avec ce qui leur manque, fige la liste, puis envoie à chacun son dossier prérempli.",
+    ),
+    cle: "formateurs.mise_a_niveau",
+  },
+  // Lot L7d — nouvelle version du contrat-cadre. Coupé : la liste « à faire re-signer »
+  // est fermée et rien n'est émis ni envoyé.
+  nouvelle_version_contrat: {
+    ...envoi(
+      "Nouvelle version du contrat-cadre",
+      "Lister les formateurs dont le contrat-cadre en vigueur est antérieur à la dernière version arrêtée, et leur envoyer la nouvelle version à signer, après aperçu.",
+    ),
+    cle: "formateurs.nouvelle_version_contrat",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -465,6 +492,11 @@ export const PREALABLES_SIGNATURE: Readonly<
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
   fin_collaboration: [],
+  contrat_cadre_emission: [],
+  // Le dossier envoyé doit pouvoir s'ouvrir.
+  mise_a_niveau: [exige("dossier_en_ligne")],
+  // F45 est un texte neuf adressé aux formateurs.
+  nouvelle_version_contrat: [exige("textes_valides")],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
