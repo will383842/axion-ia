@@ -15,6 +15,9 @@ import {
   etatsParDefaut,
   type EtatsInterrupteurs,
   cleSettingEntree,
+  cleSetting,
+  lireValeur,
+  lireValeurSignature,
   etatsEntreeDepuisLignes,
   etatsEntreeParDefaut,
   type EtatsInterrupteursEntree,
@@ -50,5 +53,31 @@ export async function lireEtatsFormateurs(): Promise<EtatsInterrupteurs> {
     return etatsDepuisLignes(Array.isArray(lignes) ? lignes : []);
   } catch {
     return etatsParDefaut();
+  }
+}
+
+/**
+ * Lot L-INV — depuis quand l'invitation automatique est en service : la plus récente
+ * écriture des deux réglages `invitation_auto` et `suivi_echange`, s'ils sont TOUS DEUX
+ * allumés. Le balayage n'invite que ce qui arrive après ; le stock d'avant passe par le
+ * rattrapage, avec aperçu.
+ *
+ * 🔴 Ne lève JAMAIS : illisible, absent ou coupé = `null` (rien ne part).
+ */
+export async function dateAllumageInvitationFormateurs(): Promise<Date | null> {
+  try {
+    const lignes = await prisma.setting.findMany({
+      where: { key: { in: [cleSetting("invitation_auto"), cleSettingEntree("suivi_echange")] } },
+      select: { key: true, value: true, updatedAt: true },
+    });
+    if (!Array.isArray(lignes) || lignes.length < 2) return null;
+    const invitation = lignes.find((l) => l.key === cleSetting("invitation_auto"));
+    const suivi = lignes.find((l) => l.key === cleSettingEntree("suivi_echange"));
+    if (!invitation || !suivi) return null;
+    if (!lireValeur("invitation_auto", invitation.value).valeur) return null;
+    if (!lireValeurSignature(suivi.value).valeur) return null;
+    return new Date(Math.max(invitation.updatedAt.getTime(), suivi.updatedAt.getTime()));
+  } catch {
+    return null;
   }
 }

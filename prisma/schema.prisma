@@ -16570,8 +16570,9 @@ model IncidentDonnees {
 /// CAMP-4 (chantier formateurs freelance) — une RÉPONSE d'un formateur indépendant ou d'un
 /// candidat formateur : relevée dans la boîte Zoho par le relevé des candidatures (#1342),
 /// ou déclarée en console (« J'ai répondu ailleurs »). Aucun corps, aucun objet, aucune
-/// adresse : l'empreinte de l'expéditeur et l'heure. Arrête l'invitation (S1) ; une
-/// réponse automatique (`auto`) n'a aucun effet.
+/// adresse, aucune empreinte : la fiche (ou la candidature) et l'heure. Arrête
+/// l'invitation (S1) ; une réponse automatique (`auto`) n'a aucun effet.
+/// rgpd: technique — un horodatage rattaché par clé étrangère à la fiche formateur ou à la candidature, supprimé avec elle (ON DELETE CASCADE) ; ni nom, ni adresse, ni empreinte, ni contenu
 model ReponseEntranteFormateur {
   id            String          @id @default(uuid()) @db.Uuid
   trainerId     String?         @map("trainer_id") @db.Uuid
@@ -16581,7 +16582,6 @@ model ReponseEntranteFormateur {
   /// `zoho` (relevé) ou `hors_circuit` (« J'ai répondu ailleurs »).
   source        String          @db.VarChar(20)
   recuLe        DateTime        @map("recu_le")
-  fromEmailHash String?         @map("from_email_hash") @db.VarChar(64)
   /// Unique : un message relevé deux fois n'est écrit qu'une fois.
   zohoMessageId String?         @unique @map("zoho_message_id") @db.VarChar(64)
   auto          Boolean         @default(false)

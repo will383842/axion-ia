@@ -4,7 +4,7 @@
  * même curseur — aucun troisième relevé, aucun second curseur.
  *
  * Un message dont l'expéditeur est l'adresse d'une fiche formateur OUVERTE (sans fin de
- * collaboration) devient une ligne `reponses_entrantes_formateurs` : l'empreinte et l'heure,
+ * collaboration) devient une ligne `reponses_entrantes_formateurs` : la fiche et l'heure,
  * jamais l'objet ni le corps. Une réponse automatique est gardée, sans effet ; une réponse
  * humaine récente lève UNE alerte (`FORMATEUR_REPLIED`), à la création de la ligne seulement :
  * un message relu au passage suivant n'alerte plus (clé unique `zoho_message_id`).
@@ -19,7 +19,6 @@ import {
   type Entetes,
 } from "@/lib/commercial-application/reponse-entrante";
 import { prisma } from "@/lib/prisma";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
 import type { ClientZohoMail, MessageZoho } from "@/server/zoho-mail/client";
 
 import { lireEtatsEntree } from "./etats-entree";
@@ -107,7 +106,6 @@ export async function rapprocherReponsesFormateurs(
             trainerId: fiche.id,
             source: "zoho",
             recuLe: m.receivedAt,
-            fromEmailHash: hashEmailForLookup(adresse),
             zohoMessageId: m.messageId,
             auto,
           },

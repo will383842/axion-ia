@@ -2,7 +2,7 @@
 --
 -- Les réponses d'un formateur indépendant (ou d'un candidat formateur) : relevées dans
 -- la boîte Zoho par le relevé des candidatures existant, ou déclarées en console
--- (« J'ai répondu ailleurs »). Ni corps, ni objet, ni adresse : l'empreinte et l'heure.
+-- (« J'ai répondu ailleurs »). Ni corps, ni objet, ni adresse, ni empreinte : l'heure.
 --
 -- Ajout seul : une table neuve, ses index et ses clés étrangères. Aucune donnée
 -- existante touchée, aucun DROP.
@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS "reponses_entrantes_formateurs" (
     "candidature_id" UUID,
     "source" VARCHAR(20) NOT NULL,
     "recu_le" TIMESTAMP(3) NOT NULL,
-    "from_email_hash" VARCHAR(64),
     "zoho_message_id" VARCHAR(64),
     "auto" BOOLEAN NOT NULL DEFAULT false,
     "auteur_id" UUID,

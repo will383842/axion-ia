@@ -86,16 +86,8 @@ async function allumeParDefaut(): Promise<boolean> {
 }
 
 async function allumeLeParDefaut(): Promise<Date | null> {
-  try {
-    const lignes = await prisma.setting.findMany({
-      where: { key: { in: ["formateurs.invitation_auto", "formateurs.suivi_echange"] } },
-      select: { updatedAt: true },
-    });
-    if (lignes.length < 2) return null;
-    return new Date(Math.max(...lignes.map((l) => l.updatedAt.getTime())));
-  } catch {
-    return null;
-  }
+  const { dateAllumageInvitationFormateurs } = await import("./etats-entree");
+  return dateAllumageInvitationFormateurs();
 }
 
 async function envoyesDerniereHeureParDefaut(maintenant: Date): Promise<number | null> {
