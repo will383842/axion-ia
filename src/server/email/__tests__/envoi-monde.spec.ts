@@ -52,7 +52,7 @@ describe("resultatDeLEnfilage", () => {
       "en-validation",
     );
     expect(resultatDeLEnfilage({ enqueued: true })).toBe("envoye");
-    expect(resultatDeLEnfilage({ enqueued: false, retenu: true })).toBe("retenu");
+    expect(resultatDeLEnfilage({ enqueued: false, retenu: "oppose" })).toBe("retenu");
     expect(resultatDeLEnfilage({ enqueued: false })).toBe("indisponible");
   });
 });
