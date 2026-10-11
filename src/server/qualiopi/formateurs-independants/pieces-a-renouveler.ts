@@ -61,14 +61,37 @@ export const PIECES_SUIVIES: ReadonlyArray<{
 export const PREAVIS_RENOUVELLEMENT_JOURS = 30;
 
 export type EtatPiece =
-  | { readonly etat: "valable"; readonly echeance: Date | null }
-  | { readonly etat: "a_renouveler"; readonly echeance: Date }
+  | {
+      readonly etat: "valable";
+      readonly echeance: Date | null;
+      /** Une nouvelle pièce déposée attend sa vérification (dépôt anticipé). */
+      readonly depotEnAttente: boolean;
+    }
+  | { readonly etat: "a_renouveler"; readonly echeance: Date; readonly depotEnAttente: boolean }
   | { readonly etat: "echue"; readonly echeance: Date }
   | { readonly etat: "en_verification" }
-  | { readonly etat: "a_renvoyer"; readonly motif: string | null }
+  | {
+      readonly etat: "a_renvoyer";
+      readonly motif: string | null;
+      /** La pièce refusée (ou à redater) — sert d'origine et de clé au rappel J+7. */
+      readonly pieceId: string;
+      readonly decideLe: Date;
+    }
   | { readonly etat: "absente" };
 
-/** Échéance d'une pièce VALIDE, selon son type. `null` : n'expire pas. */
+/** Motif affiché quand une pièce validée n'a pas de date d'émission. */
+export const MOTIF_DATE_MANQUANTE = "la date d'émission manque";
+
+/** Pièces dont l'échéance part de la date d'émission : sans elle, rien n'est prouvé. */
+const ECHEANCE_DEPUIS_EMISSION: ReadonlySet<TrainerDocumentTypeValue> = new Set([
+  "attestation_vigilance_urssaf",
+  "cv",
+]);
+
+/**
+ * Échéance d'une pièce VALIDE, selon son type. `null` : n'expire pas, ou
+ * (vigilance, CV) date d'émission absente — l'appelant le traite à part.
+ */
 export function echeancePiece(
   doc: DocumentConformite,
   config: ConformiteConfig = CONFORMITE_DEFAUTS,
@@ -76,10 +99,9 @@ export function echeancePiece(
   switch (doc.type) {
     case "attestation_vigilance_urssaf": {
       // Même lecture que `pieceGardeeProbante` : la PLUS PROCHE entre l'échéance
-      // calculée (émission + 6 mois) et celle saisie ; sans date d'émission,
-      // rien n'est prouvé (échue).
+      // calculée (émission + 6 mois) et celle saisie.
       const calculee = echeanceCalculee("attestation_vigilance_urssaf", doc.dateEmission);
-      if (calculee === null) return new Date(0);
+      if (calculee === null) return null;
       return doc.dateExpiration && doc.dateExpiration < calculee ? doc.dateExpiration : calculee;
     }
     case "cv":
@@ -94,9 +116,34 @@ const actives = (docs: ReadonlyArray<PieceLue>, type: TrainerDocumentTypeValue) 
   docs.filter((d) => d.type === type && d.archiveAt === null && !estPieceArchivee(d.rejetMotif));
 
 /**
- * L'état d'UN type de pièce. Ordre : une pièce déposée en attente SUSPEND tout
- * (« reçue, en vérification ») ; sinon la pièce valide retenue et son
- * échéance ; sinon la dernière refusée ; sinon absente.
+ * Une pièce validée qu'on peut RETENIR, avant toute question d'échéance :
+ * émission jamais dans le futur (même règle que la garde S1), et — pour une
+ * pièce de compétence — un fichier derrière (I21-02, même prédicat que
+ * `trouverValide` à la date d'émission).
+ */
+function retenable(d: PieceLue, maintenant: Date): boolean {
+  if (d.statutValidation !== "valide") return false;
+  if (d.dateEmission !== null && d.dateEmission.getTime() > maintenant.getTime()) return false;
+  if (d.type === "cv") {
+    // `trouverValide` à l'instant de l'émission : seul le fichier est jugé, pas la date.
+    const instant = d.dateEmission ?? maintenant;
+    return trouverValide([d], "cv", instant) !== null;
+  }
+  return true;
+}
+
+const plusRecente = (a: PieceLue, b: PieceLue) =>
+  (b.dateEmission?.getTime() ?? -Infinity) - (a.dateEmission?.getTime() ?? -Infinity) ||
+  b.createdAt.getTime() - a.createdAt.getTime();
+
+/**
+ * L'état d'UN type de pièce :
+ * 1. la pièce validée retenable la plus récente fixe l'échéance (valable, à
+ *    renouveler, échue) ; une pièce déposée en attente à côté d'une pièce
+ *    encore valable est un DÉPÔT ANTICIPÉ : l'état reste valable, il suspend
+ *    seulement les rappels ;
+ * 2. sans pièce valable, une pièce en attente → « reçue, en vérification » ;
+ * 3. sinon la dernière refusée → « à renvoyer » ; sinon absente.
  */
 export function etatPiece(
   documents: ReadonlyArray<PieceLue>,
@@ -105,29 +152,44 @@ export function etatPiece(
   config: ConformiteConfig = CONFORMITE_DEFAUTS,
 ): EtatPiece {
   const docs = actives(documents, type);
-  if (docs.some((d) => d.statutValidation === "en_attente")) return { etat: "en_verification" };
+  const enAttente = docs.some((d) => d.statutValidation === "en_attente");
+  const valide = docs.filter((d) => retenable(d, maintenant)).sort(plusRecente)[0] ?? null;
 
-  // `trouverValide` écarte les pièces dont la `dateExpiration` est passée ; on
-  // cherche donc aussi la plus récente valide pour dire « échue le … ».
-  const valide =
-    trouverValide([...docs], type, maintenant) ??
-    docs
-      .filter((d) => d.statutValidation === "valide")
-      .sort((a, b) => (b.dateEmission?.getTime() ?? 0) - (a.dateEmission?.getTime() ?? 0))[0] ??
-    null;
   if (valide) {
     const echeance = echeancePiece(valide, config);
-    if (echeance === null) return { etat: "valable", echeance: null };
-    if (echeance <= maintenant) return { etat: "echue", echeance };
-    if (echeance.getTime() - maintenant.getTime() <= PREAVIS_RENOUVELLEMENT_JOURS * JOUR_MS) {
-      return { etat: "a_renouveler", echeance };
+    if (echeance === null && ECHEANCE_DEPUIS_EMISSION.has(type)) {
+      // Validée sans date d'émission : rien n'est prouvé, il faut la redater.
+      if (enAttente) return { etat: "en_verification" };
+      return {
+        etat: "a_renvoyer",
+        motif: MOTIF_DATE_MANQUANTE,
+        pieceId: valide.id,
+        decideLe: valide.valideAt ?? valide.createdAt,
+      };
     }
-    return { etat: "valable", echeance };
+    if (echeance === null) return { etat: "valable", echeance: null, depotEnAttente: enAttente };
+    if (echeance > maintenant) {
+      const proche =
+        echeance.getTime() - maintenant.getTime() <= PREAVIS_RENOUVELLEMENT_JOURS * JOUR_MS;
+      return proche
+        ? { etat: "a_renouveler", echeance, depotEnAttente: enAttente }
+        : { etat: "valable", echeance, depotEnAttente: enAttente };
+    }
+    if (enAttente) return { etat: "en_verification" };
+    return { etat: "echue", echeance };
   }
+  if (enAttente) return { etat: "en_verification" };
   const refusee = docs
     .filter((d) => d.statutValidation === "rejete")
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
-  return refusee ? { etat: "a_renvoyer", motif: refusee.rejetMotif } : { etat: "absente" };
+  return refusee
+    ? {
+        etat: "a_renvoyer",
+        motif: refusee.rejetMotif,
+        pieceId: refusee.id,
+        decideLe: refusee.valideAt ?? refusee.createdAt,
+      }
+    : { etat: "absente" };
 }
 
 const DATE_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
@@ -152,12 +214,9 @@ export function libelleEtatPiece(e: EtatPiece): string {
 
 /** Un état qui demande un geste du formateur. */
 export function demandeUnGeste(e: EtatPiece): boolean {
-  return (
-    e.etat === "a_renouveler" ||
-    e.etat === "echue" ||
-    e.etat === "a_renvoyer" ||
-    e.etat === "absente"
-  );
+  // Un dépôt anticipé en attente : le formateur a déjà fait son geste.
+  if (e.etat === "a_renouveler") return !e.depotEnAttente;
+  return e.etat === "echue" || e.etat === "a_renvoyer" || e.etat === "absente";
 }
 
 /**
@@ -236,17 +295,15 @@ export interface FaitsPersonne {
 /**
  * L'état de campagne d'une pièce (S6 bis), ou `null` si aucune campagne ne
  * s'applique (pièce valable loin de l'échéance, en vérification, absente).
- * Une pièce en vérification SUSPEND (`actionFaite`), une réponse humaine met
- * en PAUSE 72 h.
+ * Un dépôt anticipé en attente SUSPEND (`actionFaite`), une réponse humaine
+ * met en PAUSE 72 h.
  */
 export function etatCampagnePiece(
   e: EtatPiece,
-  documents: ReadonlyArray<PieceLue>,
-  type: TrainerDocumentTypeValue,
   faits: FaitsPersonne,
   envois: readonly Date[],
   maintenant: Date,
-): { regle: "a_renouveler" | "refusee"; etat: EtatCampagne; echeance: Date | null } | null {
+): { regle: "a_renouveler" | "refusee"; etat: EtatCampagne; repere: Date | string } | null {
   const pause =
     faits.derniereReponseHumaine !== null &&
     maintenant.getTime() - faits.derniereReponseHumaine.getTime() < PAUSE_REPONSE_HUMAINE_MS;
@@ -262,34 +319,36 @@ export function etatCampagnePiece(
   if (e.etat === "a_renouveler" || e.etat === "echue") {
     return {
       regle: "a_renouveler",
-      echeance: e.echeance,
+      repere: e.echeance,
       etat: {
         ...commun,
-        actionFaite: false,
+        actionFaite: e.etat === "a_renouveler" && e.depotEnAttente,
         origine: new Date(e.echeance.getTime() - PREAVIS_RENOUVELLEMENT_JOURS * JOUR_MS),
       },
     };
   }
   if (e.etat === "a_renvoyer") {
-    const refusee = actives(documents, type)
-      .filter((d) => d.statutValidation === "rejete")
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]!;
     return {
       regle: "refusee",
-      echeance: null,
-      etat: { ...commun, actionFaite: false, origine: refusee.valideAt ?? refusee.createdAt },
+      repere: e.pieceId,
+      etat: { ...commun, actionFaite: false, origine: e.decideLe },
     };
   }
   return null;
 }
 
-/** `fi-piece-<étape>-<trainer>-<type>-<AAAAMMJJ>` : ni adresse, ni `:`. */
+/**
+ * `fi-piece-<étape>-<trainer>-<type>-<repère>` : le repère est le jour de
+ * l'échéance (S6 bis) ou l'id de la pièce refusée (deux refus successifs ont
+ * chacun leur rappel). Ni adresse, ni `:`.
+ */
 export function clePiece(
   trainerId: string,
   type: string,
-  echeance: Date | null,
+  repere: Date | string,
   etape: string,
 ): string {
-  const jour = echeance ? echeance.toISOString().slice(0, 10).replace(/-/g, "") : "refus";
-  return cleEnvoi("fi-piece", `${trainerId}-${type}-${jour}`, etape);
+  const r =
+    typeof repere === "string" ? repere : repere.toISOString().slice(0, 10).replace(/-/g, "");
+  return cleEnvoi("fi-piece", `${trainerId}-${type}-${r}`, etape);
 }

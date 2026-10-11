@@ -52,7 +52,16 @@ export default async function PiecesARenouvelerPage({ params }: PageProps) {
   }
   const base = `/${locale}/${adminPrefix}/qualiopi/formateurs`;
   const allume = await envoiAllume("pieces_cron");
-  const lignes = allume ? await lirePiecesARenouveler(new Date()).catch(() => null) : [];
+  const lignes = allume
+    ? await lirePiecesARenouveler(new Date()).catch((err: unknown) => {
+        // Le nom de l'erreur seulement : aucune donnée de fiche.
+        console.error(
+          "[formateurs/pieces] lecture indisponible :",
+          err instanceof Error ? err.name : "inconnue",
+        );
+        return null;
+      })
+    : [];
 
   return (
     <AdminPageShell>

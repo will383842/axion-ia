@@ -145,6 +145,7 @@ describe("etatPiece — autres pièces", () => {
     ).toEqual({
       etat: "valable",
       echeance: null,
+      depotEnAttente: false,
     });
   });
 });
@@ -168,7 +169,7 @@ describe("séquence S6 bis par le moteur commun", () => {
   const e = etatPiece(docs, "attestation_vigilance_urssaf", MAINTENANT);
 
   it("première relance (J-30) due ; la suivante attend J-15", () => {
-    const c = etatCampagnePiece(e, docs, "attestation_vigilance_urssaf", FAITS, [], MAINTENANT)!;
+    const c = etatCampagnePiece(e, FAITS, [], MAINTENANT)!;
     expect(c.regle).toBe("a_renouveler");
     const d1 = decisionCampagne({
       etat: c.etat,
@@ -176,14 +177,7 @@ describe("séquence S6 bis par le moteur commun", () => {
       regle: REGLE_PIECE_A_RENOUVELER,
     });
     expect(d1).toMatchObject({ envoyer: true, etape: "j30" });
-    const c2 = etatCampagnePiece(
-      e,
-      docs,
-      "attestation_vigilance_urssaf",
-      FAITS,
-      [MAINTENANT],
-      MAINTENANT,
-    )!;
+    const c2 = etatCampagnePiece(e, FAITS, [MAINTENANT], MAINTENANT)!;
     const d2 = decisionCampagne({
       etat: c2.etat,
       maintenant: MAINTENANT,
@@ -193,14 +187,7 @@ describe("séquence S6 bis par le moteur commun", () => {
   });
 
   it("au plus 3 rappels, puis plus rien", () => {
-    const c = etatCampagnePiece(
-      e,
-      docs,
-      "attestation_vigilance_urssaf",
-      FAITS,
-      [ilYa(20), ilYa(10), ilYa(2)],
-      MAINTENANT,
-    )!;
+    const c = etatCampagnePiece(e, FAITS, [ilYa(20), ilYa(10), ilYa(2)], MAINTENANT)!;
     expect(
       decisionCampagne({ etat: c.etat, maintenant: MAINTENANT, regle: REGLE_PIECE_A_RENOUVELER }),
     ).toMatchObject({
@@ -212,8 +199,6 @@ describe("séquence S6 bis par le moteur commun", () => {
   it("réponse humaine il y a moins de 72 h : pause ; fin de collaboration : arrêt", () => {
     const pause = etatCampagnePiece(
       e,
-      docs,
-      "attestation_vigilance_urssaf",
       { ...FAITS, derniereReponseHumaine: ilYa(1) },
       [],
       MAINTENANT,
@@ -227,8 +212,6 @@ describe("séquence S6 bis par le moteur commun", () => {
     ).toBe(false);
     const reprise = etatCampagnePiece(
       e,
-      docs,
-      "attestation_vigilance_urssaf",
       { ...FAITS, derniereReponseHumaine: ilYa(4) },
       [],
       MAINTENANT,
@@ -240,14 +223,7 @@ describe("séquence S6 bis par le moteur commun", () => {
         regle: REGLE_PIECE_A_RENOUVELER,
       }).envoyer,
     ).toBe(true);
-    const fin = etatCampagnePiece(
-      e,
-      docs,
-      "attestation_vigilance_urssaf",
-      { ...FAITS, close: true },
-      [],
-      MAINTENANT,
-    )!;
+    const fin = etatCampagnePiece(e, { ...FAITS, close: true }, [], MAINTENANT)!;
     expect(
       decisionCampagne({ etat: fin.etat, maintenant: MAINTENANT, regle: REGLE_PIECE_A_RENOUVELER }),
     ).toMatchObject({
@@ -256,11 +232,14 @@ describe("séquence S6 bis par le moteur commun", () => {
   });
 
   it("pièce en vérification ou valable loin de l'échéance : aucune campagne", () => {
+    expect(etatCampagnePiece({ etat: "en_verification" }, FAITS, [], MAINTENANT)).toBeNull();
     expect(
-      etatCampagnePiece({ etat: "en_verification" }, docs, "cv", FAITS, [], MAINTENANT),
-    ).toBeNull();
-    expect(
-      etatCampagnePiece({ etat: "valable", echeance: dans(90) }, docs, "cv", FAITS, [], MAINTENANT),
+      etatCampagnePiece(
+        { etat: "valable", echeance: dans(90), depotEnAttente: false },
+        FAITS,
+        [],
+        MAINTENANT,
+      ),
     ).toBeNull();
   });
 
@@ -269,7 +248,7 @@ describe("séquence S6 bis par le moteur commun", () => {
       piece({ statutValidation: "rejete", valideAt: ilYa(8), rejetMotif: "illisible" }),
     ];
     const er = etatPiece(refus, "attestation_vigilance_urssaf", MAINTENANT);
-    const c = etatCampagnePiece(er, refus, "attestation_vigilance_urssaf", FAITS, [], MAINTENANT)!;
+    const c = etatCampagnePiece(er, FAITS, [], MAINTENANT)!;
     expect(c.regle).toBe("refusee");
     expect(
       decisionCampagne({ etat: c.etat, maintenant: MAINTENANT, regle: REGLE_PIECE_REFUSEE }),
@@ -280,6 +259,7 @@ describe("séquence S6 bis par le moteur commun", () => {
   });
 
   it("la clé d'envoi ne porte ni adresse ni « : »", () => {
+    expect(clePiece("t", "cv", "piece-1", "j7")).toBe("fi-piece-j7-t-cv-piece-1");
     const k = clePiece(
       "00000000-0000-4000-8000-000000000001",
       "assurance_rc_pro",
@@ -288,5 +268,86 @@ describe("séquence S6 bis par le moteur commun", () => {
     );
     expect(k).toBe("fi-piece-j15-00000000-0000-4000-8000-000000000001-assurance_rc_pro-20261101");
     expect(k).not.toMatch(/[:@]/);
+  });
+});
+
+describe("cas relevés en relecture", () => {
+  it("valide + nouvelle pièce déposée par anticipation : pas de blocage, rappels suspendus", () => {
+    const docs = [piece({ dateEmission: ilYa(170) }), piece({ statutValidation: "en_attente" })];
+    const e = etatPiece(docs, "attestation_vigilance_urssaf", MAINTENANT);
+    expect(e).toMatchObject({ etat: "a_renouveler", depotEnAttente: true });
+    expect(demandeUnGeste(e)).toBe(false);
+    expect(dossierBloque(docs, MAINTENANT)).toBe(false);
+    const c = etatCampagnePiece(e, FAITS, [], MAINTENANT)!;
+    expect(
+      decisionCampagne({ etat: c.etat, maintenant: MAINTENANT, regle: REGLE_PIECE_A_RENOUVELER }),
+    ).toMatchObject({
+      envoyer: false,
+      motif: "action-faite",
+    });
+  });
+
+  it("échue + nouvelle pièce en attente : « reçue, en vérification », toujours bloquant", () => {
+    const docs = [piece({ dateEmission: ilYa(200) }), piece({ statutValidation: "en_attente" })];
+    expect(etatPiece(docs, "attestation_vigilance_urssaf", MAINTENANT).etat).toBe(
+      "en_verification",
+    );
+    expect(dossierBloque(docs, MAINTENANT)).toBe(true);
+  });
+
+  it("émission dans le futur : jamais retenue (même règle que la garde S1)", () => {
+    const docs = [piece({ dateEmission: dans(200) }), piece({ dateEmission: ilYa(200) })];
+    expect(etatPiece(docs, "attestation_vigilance_urssaf", MAINTENANT).etat).toBe("echue");
+    expect(
+      etatPiece([piece({ dateEmission: dans(200) })], "attestation_vigilance_urssaf", MAINTENANT)
+        .etat,
+    ).toBe("absente");
+  });
+
+  it("plusieurs pièces valides : la plus récente fixe l'échéance", () => {
+    const docs = [piece({ dateEmission: ilYa(200) }), piece({ dateEmission: ilYa(20) })];
+    expect(etatPiece(docs, "attestation_vigilance_urssaf", MAINTENANT).etat).toBe("valable");
+  });
+
+  it("date d'émission absente : à renvoyer avec le motif, jamais « échue en 1970 »", () => {
+    const e = etatPiece(
+      [piece({ dateEmission: null })],
+      "attestation_vigilance_urssaf",
+      MAINTENANT,
+    );
+    expect(e).toMatchObject({ etat: "a_renvoyer", motif: "la date d'émission manque" });
+    expect(libelleEtatPiece(e)).not.toMatch(/1970/);
+  });
+
+  it("un CV validé sans fichier n'est pas « valable » (I21-02)", () => {
+    const e = etatPiece(
+      [piece({ type: "cv", fichierUrl: null, dateEmission: ilYa(10) })],
+      "cv",
+      MAINTENANT,
+    );
+    expect(e.etat).toBe("absente");
+  });
+
+  it("deux refus successifs : deux rappels distincts (clés différentes)", () => {
+    const r1 = piece({
+      type: "cv",
+      statutValidation: "rejete",
+      valideAt: ilYa(30),
+      createdAt: ilYa(31),
+      rejetMotif: "a",
+    });
+    const r2 = piece({
+      type: "cv",
+      statutValidation: "rejete",
+      valideAt: ilYa(8),
+      createdAt: ilYa(9),
+      rejetMotif: "b",
+    });
+    const e1 = etatPiece([r1], "cv", MAINTENANT);
+    const e2 = etatPiece([r1, r2], "cv", MAINTENANT);
+    const k1 = clePiece("t", "cv", etatCampagnePiece(e1, FAITS, [], MAINTENANT)!.repere, "j7");
+    const k2 = clePiece("t", "cv", etatCampagnePiece(e2, FAITS, [], MAINTENANT)!.repere, "j7");
+    expect(k1).not.toBe(k2);
+    expect(libelleEtatPiece(e2)).toBe("À renvoyer : b");
   });
 });

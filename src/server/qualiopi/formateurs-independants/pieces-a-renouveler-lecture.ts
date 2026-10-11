@@ -3,6 +3,9 @@
  * les fiches, une pour leurs pièces suivies ; l'état vient du module pur.
  *
  * Indépendants seulement (ADR 0066 (a)) : actifs, sans fin de collaboration.
+ *
+ * ⚠️ Ne juge ni le rôle ni l'interrupteur : l'appelant (la page) le fait AVANT.
+ * Ne jamais l'appeler depuis une Server Action sans cette garde.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -25,8 +28,9 @@ export interface LignePieces {
   }>;
 }
 
-/** Borne de lecture : bien au-delà du nombre de formateurs indépendants attendu. */
+/** Bornes de lecture : bien au-delà du nombre de formateurs indépendants attendu. */
 const PLAFOND_FICHES = 500;
+const PLAFOND_PIECES = 10_000;
 
 /** Les indépendants dont au moins une pièce suivie demande un geste ou est en vérification. */
 export async function lirePiecesARenouveler(maintenant: Date): Promise<LignePieces[]> {
@@ -41,7 +45,9 @@ export async function lirePiecesARenouveler(maintenant: Date): Promise<LignePiec
     where: {
       trainerId: { in: fiches.map((f) => f.id) },
       type: { in: PIECES_SUIVIES.map((p) => p.type) },
+      archiveAt: null,
     },
+    take: PLAFOND_PIECES,
     select: {
       id: true,
       trainerId: true,
