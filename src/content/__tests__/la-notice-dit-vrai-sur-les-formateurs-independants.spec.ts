@@ -29,6 +29,13 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(section("en"), "section EN absente").toBeDefined();
   });
 
+  it("le miroir anglais porte les mêmes faits clés", () => {
+    for (const fait of ["6.1.b", "6.1.c", "6.1.f", "L.8222-1", "IBAN", "Telegram", "Calendly"]) {
+      expect(EN()).toContain(fait);
+    }
+    expect(EN()).toMatch(/five years after the end/);
+  });
+
   it("nomme les bases légales (6.1.b, 6.1.c, 6.1.f) et l'obligation de vigilance", () => {
     for (const base of ["6.1.b", "6.1.c", "6.1.f"]) expect(FR()).toContain(base);
     expect(FR()).toMatch(/L\.?\s?8222-1/);
