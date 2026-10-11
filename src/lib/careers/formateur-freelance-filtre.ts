@@ -25,10 +25,37 @@ const TITRE_FORMATEUR = { OR: MOTS_FORMATEUR.map((f) => ({ titleFr: contient(f) 
 export function whereCandidatureFormateurFreelance(): Prisma.JobApplicationWhereInput {
   return {
     OR: [
-      { natureCollaboration: "freelance" },
+      // Nature figée « freelance » ET un intitulé de formateur (une offre de
+      // monteur peut aussi être freelance).
+      {
+        AND: [
+          { natureCollaboration: "freelance" as const },
+          {
+            OR: [
+              ...MOTS_FORMATEUR.map((f) => ({ offerTitleSnap: contient(f) })),
+              { offer: TITRE_FORMATEUR },
+              { offer: { OR: MOTS_FORMATEUR.map((f) => ({ slug: contient(f) })) } },
+            ],
+          },
+        ],
+      },
       ...PAIRES.map(([f, l]) => ({
         AND: [{ offerTitleSnap: contient(f) }, { offerTitleSnap: contient(l) }],
       })),
+      // Intitulé figé de formateur, offre déclarée CONTRACTOR.
+      {
+        AND: [
+          { OR: MOTS_FORMATEUR.map((f) => ({ offerTitleSnap: contient(f) })) },
+          {
+            offer: {
+              OR: [
+                { employmentType: EMPLOI_CONTRACTOR },
+                { secondaryEmploymentType: EMPLOI_CONTRACTOR },
+              ],
+            },
+          },
+        ],
+      },
       {
         offer: {
           OR: [
@@ -40,7 +67,12 @@ export function whereCandidatureFormateurFreelance(): Prisma.JobApplicationWhere
             ...PAIRES.map(([f, l]) => ({ AND: [{ slug: contient(f) }, { slug: contient(l) }] })),
             {
               AND: [
-                TITRE_FORMATEUR,
+                {
+                  OR: [
+                    ...TITRE_FORMATEUR.OR,
+                    ...MOTS_FORMATEUR.map((f) => ({ slug: contient(f) })),
+                  ],
+                },
                 {
                   OR: [
                     { employmentType: EMPLOI_CONTRACTOR },

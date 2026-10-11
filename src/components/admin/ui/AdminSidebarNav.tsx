@@ -64,7 +64,6 @@ import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
 import {
   ADMIN_LIENS_EPINGLES,
   ADMIN_NAV_GROUP_LABELS,
-  ADMIN_NAV_GROUP_ORDER,
   ordreDesGroupesNav,
   GROUP_POLE_LABELS,
   GROUP_POLE_ORDER,
@@ -262,11 +261,13 @@ export function AdminSidebarNav({
 }: AdminSidebarNavProps): React.ReactElement {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
+  // Lot L0h — le groupe « Formateurs freelance » n'existe qu'allumé.
+  const avecFormateursFreelance = items.some((it) => it.group === "formateurs-freelance");
   // Accordéon : tous les groupes FERMÉS par défaut (un groupe présent dans le
   // Set = fermé), SAUF celui contenant la page courante (ouvert d'emblée — évite
   // un flash SSR→client). Se déploie/replie ensuite au clic sur l'onglet.
   const [collapsedGroups, setCollapsedGroups] = useState<Set<AdminNavGroup>>(() => {
-    const s = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER);
+    const s = new Set<AdminNavGroup>(ordreDesGroupesNav(items));
     const activeHref = findActiveNavHref(items, pathname);
     const hit = items.find((it) => it.href === activeHref);
     if (hit) s.delete(hit.group);
@@ -355,7 +356,7 @@ export function AdminSidebarNav({
   const toggleGroup = (g: AdminNavGroup) => {
     setCollapsedGroups((prev) => {
       const wasOpen = !prev.has(g);
-      const next = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER); // tout fermé
+      const next = new Set<AdminNavGroup>(ordreDesGroupesNav(items)); // tout fermé
       if (!wasOpen) next.delete(g); // était fermé → ouvre g exclusivement
       try {
         window.localStorage.setItem(GROUPS_COLLAPSED_LS_KEY, JSON.stringify(Array.from(next)));
@@ -442,10 +443,13 @@ export function AdminSidebarNav({
       setCollapsedGroups((prev) => {
         // Mono-section : ouvre le groupe actif et ferme tous les autres.
         // No-op si déjà dans cet état exact (évite un render inutile).
-        if (prev.size === ADMIN_NAV_GROUP_ORDER.length - 1 && !prev.has(activeGroup)) {
+        const ordre = ordreDesGroupesNav(
+          avecFormateursFreelance ? [{ group: "formateurs-freelance" }] : [],
+        );
+        if (prev.size === ordre.length - 1 && !prev.has(activeGroup)) {
           return prev;
         }
-        const next = new Set<AdminNavGroup>(ADMIN_NAV_GROUP_ORDER);
+        const next = new Set<AdminNavGroup>(ordre);
         next.delete(activeGroup);
         return next;
       });
@@ -453,7 +457,7 @@ export function AdminSidebarNav({
     return () => {
       cancelled = true;
     };
-  }, [activeGroup]);
+  }, [activeGroup, avecFormateursFreelance]);
 
   // Badge éventuel pour un item donné (tone + count), sinon null.
   //

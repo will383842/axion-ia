@@ -52,4 +52,16 @@ describe("L0h — la vue des candidatures", () => {
     expect(texte).toContain('"slug":"formateur-ia-freelance"');
     expect(texte).toContain("indépendant");
   });
+
+  it("une nature « freelance » seule ne suffit pas : il faut un intitulé de formateur", () => {
+    const w = whereCandidatureFormateurFreelance() as { OR: Array<Record<string, unknown>> };
+    const branche = w.OR.find((b) =>
+      JSON.stringify(b).startsWith('{"AND":[{"natureCollaboration"'),
+    );
+    expect(branche).toBeDefined();
+    expect(JSON.stringify(branche)).toContain("formateur");
+    expect(w.OR.some((b) => JSON.stringify(b) === '{"natureCollaboration":"freelance"}')).toBe(
+      false,
+    );
+  });
 });

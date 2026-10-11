@@ -144,6 +144,7 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
         basculer: basculerReponsePostePourvuAction,
       }}
       adminPrefix={adminPrefix}
+      vueFormateursFreelance={vueFormateurs}
       searchParams={sp}
       offres={offres}
       items={r.items}

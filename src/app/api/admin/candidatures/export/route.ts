@@ -9,6 +9,7 @@
 // Même forme que la route du CV, et pour la même raison : ce qui rend cet accès
 // défendable n'est pas la liste des rôles, c'est la TRACE.
 
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -28,6 +29,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   const sp = request.nextUrl.searchParams;
+  // Lot L0h — la vue « formateurs-freelance » n'existe qu'interrupteur
+  // `formateurs.menu_freelance` allumé ; coupé, elle est refusée comme avant.
+  const vue = sp.get("view");
+  if (vue === "formateurs-freelance" && !(await lireEtatsEntree()).menu_freelance) {
+    return new NextResponse("Bad request", { status: 400 });
+  }
   let resultat;
   try {
     resultat = await construireExportCandidatures({
