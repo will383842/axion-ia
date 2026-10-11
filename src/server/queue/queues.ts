@@ -2109,6 +2109,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "50 7 * * *",
         jobId: "formation-crons-communes-geo-cron",
       },
+      // Lot L14 (2026-10-11) — fins de collaboration avec préavis arrivées à leur date
+      // d'effet. 05:05 UTC (06:05 ou 07:05 à Paris), chaque jour. Arrêté tant que
+      // l'interrupteur `formateurs.fin_collaboration` n'est pas allumé. Idempotent.
+      {
+        type: "formation-crons.fin-collaboration",
+        pattern: "5 5 * * *",
+        jobId: "formation-crons-fin-collaboration-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

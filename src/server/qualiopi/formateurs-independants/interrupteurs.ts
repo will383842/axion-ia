@@ -430,6 +430,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.garde_mission_portes",
   },
+  // Lot L14 — fin de collaboration d'un formateur indépendant. Coupé : la carte
+  // n'apparaît pas sur la fiche et les actions refusent, exactement comme avant L14.
+  fin_collaboration: {
+    ...envoi(
+      "Fin de collaboration",
+      "La fiche d'un formateur indépendant permet d'envoyer l'avertissement avant une fin pour manquement, puis de mettre fin à la collaboration (préavis selon la durée de la relation, e-mail après aperçu, aucune suppression).",
+    ),
+    cle: "formateurs.fin_collaboration",
+  },
   // Lots L11b et L11b-ux — choisir le formateur en cartes « 1er · 2e · 3e choix »
   // (conditions financières figées au choix) et la page de proposition de
   // l'espace. Coupé : la liste déroulante de la fiche session et l'espace
@@ -486,6 +495,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
+  fin_collaboration: [],
   choix_cartes: [],
   // F48 (désistement reçu) est un texte neuf.
   rang_suivant: [exige("textes_valides")],

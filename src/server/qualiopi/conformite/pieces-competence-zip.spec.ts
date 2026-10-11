@@ -6,7 +6,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import JSZip from "jszip";
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { documentGenere: { findFirst: vi.fn() } },
+  prisma: {
+    documentGenere: { findFirst: vi.fn() },
+    trainerDocumentContenu: { findUnique: vi.fn() },
+  },
+}));
+// Chiffrement factice : l'enveloppe est « AXB1 » + clair.
+vi.mock("@/lib/pii-crypto", () => ({
+  dechiffrerOctetsPii: (b: Buffer) => b.subarray(4),
 }));
 vi.mock("@/lib/r2-storage", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/lib/r2-storage")>()),
@@ -202,6 +209,29 @@ describe("joindreFichiersPiecesCompetence", () => {
     ]);
     expect(avertissements).toEqual([]);
     expect(r.lignesManifeste[0]).toMatch(/^2\/2 pièces de compétence validées jointes/);
+  });
+
+  // 🔴 Lot L5b — un CV DÉPOSÉ par le formateur (octets en base, sans adresse)
+  // compte pour l'indicateur : il doit donc être DANS le dossier remis.
+  it("joint un CV déposé par le formateur, lu en base et contrôlé par son empreinte", async () => {
+    const { createHash } = await import("node:crypto");
+    const contenu = prisma.trainerDocumentContenu.findUnique as unknown as ReturnType<typeof vi.fn>;
+    contenu.mockResolvedValue({
+      octets: Buffer.concat([Buffer.from("AXB1"), PDF]),
+      sha256: createHash("sha256").update(PDF).digest("hex"),
+      mime: "application/pdf",
+    });
+    const zip = new JSZip();
+    const r = await joindreFichiersPiecesCompetence(
+      zip,
+      [],
+      [],
+      [{ ...base, type: "cv", fichierUrl: null, contenu: { trainerDocumentId: ID } }],
+      maintenant,
+    );
+    expect(r.nbInclus).toBe(1);
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(Object.keys(zip.files)).toContain("formateurs/helene-durand/cv.pdf");
   });
 
   it("🔴 un fichier inaccessible est écrit dans l'index, les avertissements ET le manifeste", async () => {
