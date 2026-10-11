@@ -10,8 +10,9 @@
  *      texte validé et applique oppositions et liste de suppression ;
  *   2. le consentement n'est pas simulé : `consentVersion` dit « saisie en
  *      console, sans consentement », jamais une version de formulaire ;
- *   3. le doublon se détecte avant d'écrire — par l'empreinte, sauf pour une
- *      adresse relais, qui n'identifie personne.
+ *   3. l'ajout est atomique (fiche + journal, une transaction) et idempotent :
+ *      même adresse + même offre = on retrouve la fiche, sans rien écraser —
+ *      par l'empreinte, sauf pour une adresse relais, qui n'identifie personne.
  *
  * Livré ÉTEINT : `formateurs.ajout_console` absent = refus, rien n'est écrit.
  * Réservé à l'administrateur (direction).
@@ -69,85 +70,126 @@ export async function ajouterCandidatFormateurAction(
   }
 
   try {
-    if (emailHash) {
-      const existant = await prisma.jobApplication.findFirst({
-        where: { emailHash },
-        select: { id: true },
-      });
-      if (existant) {
-        return {
-          ok: false,
-          message: "Une candidature existe déjà pour cette adresse : ouvrez-la plutôt.",
-        };
-      }
-    }
     const offre = await prisma.jobOffer.findFirst({
       where: { slug: SLUG_OFFRE_FORMATEUR_FREELANCE },
       select: { id: true, titleFr: true },
     });
-    const cree = await prisma.jobApplication.create({
-      data: {
-        offerId: offre?.id ?? null,
-        offerTitleSnap: (offre?.titleFr ?? "Formateur IA indépendant").slice(0, 160),
-        firstName: encryptPii(d.prenom),
-        lastName: encryptPii(d.nom),
-        email: encryptPii(p.adresseEnvoi),
-        emailHash,
-        phone: encryptPii(d.telephone ?? ""),
-        consentVersion: CONSENT_CONSOLE,
-        locale: "fr",
-        natureCollaboration: "freelance",
-        origine: "console",
-        // L'origine saisie n'est PAS une provenance mesurée : elle ne va pas dans
-        // `utm*` (bilan de provenance), mais dans les réponses lisibles en console.
-        answers: {
-          "Origine (saisie en console)":
-            ORIGINES_CANDIDAT_FORMATEUR.find((o) => o.id === d.origine)?.libelle ?? d.origine,
-        },
-      },
-      select: { id: true },
-    });
-    await prisma.activityLog.create({
-      data: {
-        adminUserId: adminId,
-        action: "formateurs.candidat_ajoute",
-        targetType: "job_application",
-        targetId: cree.id,
-        changes: { origine: d.origine, relais: p.relais, invitation: d.envoyerInvitation } as never,
-      },
-    });
-
-    let message = "Candidat ajouté.";
-    if (d.envoyerInvitation) {
-      const r = await envoyer({
-        gabarit: "formateur-invitation-echange",
-        destinataire: p.adresseEnvoi,
-        payload: {
-          prenom: d.prenom,
-          lien: lienDuSite("formateur", { depuis: `fa-${cree.id}` }),
-        },
-        entityType: "JobApplication",
-        entityId: cree.id,
-        jobId: `fi-f1-${cree.id}`,
-      });
-      if (r === "envoye" || r === "en-validation") {
-        await prisma.jobApplication.update({
-          where: { id: cree.id },
-          data: { invitationFormateurAt: new Date() },
+    const offerId = offre?.id ?? null;
+    // Recherche du doublon, fiche et journal dans UNE transaction : une erreur
+    // à mi-chemin n'écrit rien (pas de fiche sans son journal), et un second
+    // envoi retrouve la fiche au lieu d'en créer une deuxième. Sérialisable :
+    // deux envois simultanés ne créent pas deux fiches (l'un échoue, son
+    // renvoi retrouve l'autre). Adresse relais : pas d'empreinte, donc pas
+    // de recherche — elle n'identifie personne.
+    const resultat = await prisma.$transaction(
+      async (tx) => {
+        if (emailHash) {
+          const existant = await tx.jobApplication.findFirst({
+            where: { emailHash },
+            select: { id: true, offerId: true, origine: true, invitationFormateurAt: true },
+          });
+          if (existant) {
+            return (existant.offerId ?? null) === offerId
+              ? ({ genre: "retrouvee", fiche: existant } as const)
+              : ({ genre: "autre-offre" } as const);
+          }
+        }
+        const cree = await tx.jobApplication.create({
+          data: {
+            offerId,
+            offerTitleSnap: (offre?.titleFr ?? "Formateur IA indépendant").slice(0, 160),
+            firstName: encryptPii(d.prenom),
+            lastName: encryptPii(d.nom),
+            email: encryptPii(p.adresseEnvoi),
+            emailHash,
+            phone: encryptPii(d.telephone ?? ""),
+            consentVersion: CONSENT_CONSOLE,
+            locale: "fr",
+            natureCollaboration: "freelance",
+            origine: "console",
+            // L'origine saisie n'est PAS une provenance mesurée : elle ne va pas dans
+            // `utm*` (bilan de provenance), mais dans les réponses lisibles en console.
+            answers: {
+              "Origine (saisie en console)":
+                ORIGINES_CANDIDAT_FORMATEUR.find((o) => o.id === d.origine)?.libelle ?? d.origine,
+            },
+          },
+          select: { id: true },
         });
-        message = "Candidat ajouté, invitation envoyée.";
-      } else if (r === "texte-non-valide") {
-        message =
-          "Candidat ajouté. L'invitation n'est pas partie : son texte n'est pas encore validé.";
-      } else if (r === "retenu") {
-        message =
-          "Candidat ajouté. L'invitation n'est pas partie : cette adresse s'est opposée aux envois.";
-      } else {
-        message = "Candidat ajouté. L'invitation n'est pas partie : réessayez plus tard.";
+        await tx.activityLog.create({
+          data: {
+            adminUserId: adminId,
+            action: "formateurs.candidat_ajoute",
+            targetType: "job_application",
+            targetId: cree.id,
+            changes: {
+              origine: d.origine,
+              relais: p.relais,
+              invitation: d.envoyerInvitation,
+            } as never,
+          },
+        });
+        return { genre: "creee", id: cree.id } as const;
+      },
+      { isolationLevel: "Serializable" },
+    );
+
+    if (resultat.genre === "autre-offre") {
+      return {
+        ok: false,
+        message: "Une candidature existe déjà pour cette adresse : ouvrez-la plutôt.",
+      };
+    }
+
+    // Fiche retrouvée : rien n'est écrit, ni écrasé, ni supprimé. Seule exception,
+    // la reprise d'une invitation demandée mais jamais partie sur une fiche posée
+    // par la console : l'envoi est gardé par sa clé (`fi-f1-<id>`), il ne part pas
+    // deux fois.
+    const retrouvee = resultat.genre === "retrouvee";
+    const id = retrouvee ? resultat.fiche.id : resultat.id;
+    const inviter =
+      d.envoyerInvitation &&
+      (!retrouvee ||
+        (resultat.fiche.origine === "console" && resultat.fiche.invitationFormateurAt === null));
+
+    let message = retrouvee
+      ? "Ce candidat existe déjà (même adresse, même offre) : sa fiche est retrouvée, rien n'a été modifié."
+      : "Candidat ajouté.";
+    const debut = retrouvee ? "Fiche retrouvée" : "Candidat ajouté";
+    if (inviter) {
+      try {
+        const r = await envoyer({
+          gabarit: "formateur-invitation-echange",
+          destinataire: p.adresseEnvoi,
+          payload: {
+            prenom: d.prenom,
+            lien: lienDuSite("formateur", { depuis: `fa-${id}` }),
+          },
+          entityType: "JobApplication",
+          entityId: id,
+          jobId: `fi-f1-${id}`,
+        });
+        if (r === "envoye" || r === "en-validation") {
+          await prisma.jobApplication.update({
+            where: { id },
+            data: { invitationFormateurAt: new Date() },
+          });
+          message = `${debut}, invitation envoyée.`;
+        } else if (r === "texte-non-valide") {
+          message = `${debut}. L'invitation n'est pas partie : son texte n'est pas encore validé.`;
+        } else if (r === "retenu") {
+          message = `${debut}. L'invitation n'est pas partie : cette adresse s'est opposée aux envois.`;
+        } else {
+          message = `${debut}. L'invitation n'est pas partie : réessayez plus tard.`;
+        }
+      } catch (err) {
+        // La fiche est posée : une panne d'envoi ne la fait pas passer pour un échec.
+        Sentry.captureException(err, { tags: { action: "ajouterCandidatFormateurAction.envoi" } });
+        message = `${debut}. L'invitation n'est pas partie : réessayez plus tard.`;
       }
     }
     revalidatePath(adminPath("fr", "contacts/candidatures"));
-    return { ok: true, id: cree.id, message };
+    return { ok: true, id, message };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "ajouterCandidatFormateurAction" } });
     return { ok: false, message: "L'ajout n'a pas été enregistré (erreur technique). Réessayez." };

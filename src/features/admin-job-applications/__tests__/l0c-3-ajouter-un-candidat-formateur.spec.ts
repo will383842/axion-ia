@@ -19,7 +19,16 @@ import {
 const h = vi.hoisted(() => ({
   role: "admin" as string,
   allume: true,
-  existant: null as null | { id: string },
+  existant: null as null | {
+    id: string;
+    offerId: string | null;
+    origine: string | null;
+    invitationFormateurAt: Date | null;
+  },
+  /** Fiches réellement « en base » : une transaction qui échoue n'en laisse aucune. */
+  base: [] as Array<Record<string, unknown>>,
+  echecJournal: false,
+  echecEnvoi: false,
   cree: [] as Array<Record<string, unknown>>,
   maj: [] as Array<Record<string, unknown>>,
   envois: [] as Array<Record<string, unknown>>,
@@ -37,27 +46,58 @@ vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   texteValide: async () => h.texteValide,
   envoyer: async (e: Record<string, unknown>) => {
+    if (h.echecEnvoi) throw new Error("panne d'envoi");
     h.envois.push(e);
     return h.resultatEnvoi;
   },
 }));
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    jobOffer: { findFirst: async () => ({ id: "offre-1", titleFr: "Formateur IA freelance" }) },
-    jobApplication: {
-      findFirst: async () => h.existant,
-      create: async (a: { data: Record<string, unknown> }) => {
-        h.cree.push(a.data);
-        return { id: "22222222-2222-4222-8222-222222222222" };
-      },
-      update: async (a: { data: Record<string, unknown> }) => {
-        h.maj.push(a.data);
-        return {};
+vi.mock("@/lib/prisma", () => {
+  const jobApplication = {
+    findFirst: async (a: { where: { emailHash: string } }) =>
+      h.existant ??
+      (h.base.find((f) => f.emailHash === a.where.emailHash)
+        ? {
+            id: "22222222-2222-4222-8222-222222222222",
+            offerId: "offre-1",
+            origine: "console",
+            invitationFormateurAt: null,
+          }
+        : null),
+    create: async (a: { data: Record<string, unknown> }) => {
+      h.cree.push(a.data);
+      h.base.push(a.data);
+      return { id: "22222222-2222-4222-8222-222222222222" };
+    },
+    update: async (a: { data: Record<string, unknown> }) => {
+      h.maj.push(a.data);
+      return {};
+    },
+  };
+  const activityLog = {
+    create: async () => {
+      if (h.echecJournal) throw new Error("panne du journal");
+      return {};
+    },
+  };
+  return {
+    prisma: {
+      jobOffer: { findFirst: async () => ({ id: "offre-1", titleFr: "Formateur IA freelance" }) },
+      jobApplication,
+      activityLog,
+      // Transaction simulée : un échec dans le rappel annule les écritures faites dedans.
+      $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+        const avant = { cree: [...h.cree], base: [...h.base] };
+        try {
+          return await fn({ jobApplication, activityLog });
+        } catch (e) {
+          h.cree = avant.cree;
+          h.base = avant.base;
+          throw e;
+        }
       },
     },
-    activityLog: { create: async () => ({}) },
-  },
-}));
+  };
+});
 
 const { ajouterCandidatFormateurAction } = await import("../candidat-formateur-actions");
 
@@ -79,6 +119,9 @@ beforeEach(() => {
   h.role = "admin";
   h.allume = true;
   h.existant = null;
+  h.base = [];
+  h.echecJournal = false;
+  h.echecEnvoi = false;
   h.cree = [];
   h.maj = [];
   h.envois = [];
@@ -173,15 +216,76 @@ describe("L0c-3 — l'action", () => {
   });
 
   it("une candidature existe déjà pour cette adresse : rien n'est créé", async () => {
-    h.existant = { id: "ancienne" };
+    h.existant = {
+      id: "ancienne",
+      offerId: "autre-offre",
+      origine: "formulaire",
+      invitationFormateurAt: null,
+    };
     const r = await ajouterCandidatFormateurAction(saisie({ envoyerInvitation: true }));
     expect(r.ok).toBe(false);
     expect(h.cree).toHaveLength(0);
     expect(h.envois).toHaveLength(0);
   });
 
+  it("même adresse + même offre : la fiche est retrouvée et dite, rien n'est créé ni écrasé", async () => {
+    h.existant = {
+      id: "ancienne",
+      offerId: "offre-1",
+      origine: "formulaire",
+      invitationFormateurAt: null,
+    };
+    const r = await ajouterCandidatFormateurAction(saisie({ envoyerInvitation: true }));
+    expect(r).toMatchObject({ ok: true, id: "ancienne" });
+    expect(r.message).toMatch(/existe déjà/);
+    expect(h.cree).toHaveLength(0);
+    expect(h.maj).toHaveLength(0);
+    // fiche venue du formulaire public : l'invitation ne part pas d'ici
+    expect(h.envois).toHaveLength(0);
+  });
+
+  it("erreur à mi-chemin (journal) : aucune fiche ne reste ; le second envoi n'en crée qu'une", async () => {
+    h.echecJournal = true;
+    const premier = await ajouterCandidatFormateurAction(saisie());
+    expect(premier.ok).toBe(false);
+    expect(h.base).toHaveLength(0);
+
+    h.echecJournal = false;
+    const second = await ajouterCandidatFormateurAction(saisie());
+    expect(second.ok).toBe(true);
+    expect(h.base).toHaveLength(1);
+
+    const troisieme = await ajouterCandidatFormateurAction(saisie());
+    expect(troisieme).toMatchObject({ ok: true, id: second.ok ? second.id : "" });
+    expect(troisieme.message).toMatch(/existe déjà/);
+    expect(h.base).toHaveLength(1);
+  });
+
+  it("fiche posée puis panne d'envoi : pas d'échec affiché, et le renvoi ne duplique pas", async () => {
+    h.echecEnvoi = true;
+    const premier = await ajouterCandidatFormateurAction(saisie({ envoyerInvitation: true }));
+    expect(premier.ok).toBe(true);
+    expect(premier.message).toMatch(/n'est pas partie/);
+    expect(h.base).toHaveLength(1);
+
+    h.echecEnvoi = false;
+    const second = await ajouterCandidatFormateurAction(saisie({ envoyerInvitation: true }));
+    expect(second.ok).toBe(true);
+    expect(h.base).toHaveLength(1);
+    // reprise de l'invitation, sous la même clé gardée
+    expect(h.envois).toHaveLength(1);
+    expect(h.envois[0]).toMatchObject({
+      jobId: "fi-f1-22222222-2222-4222-8222-222222222222",
+    });
+  });
+
   it("adresse relais : jamais d'arrêt par l'empreinte (pas de recherche de doublon)", async () => {
-    h.existant = { id: "ancienne" };
+    h.existant = {
+      id: "ancienne",
+      offerId: "offre-1",
+      origine: "formulaire",
+      invitationFormateurAt: null,
+    };
     const r = await ajouterCandidatFormateurAction(saisie({ email: "x@indeedemail.com" }));
     expect(r.ok).toBe(true);
     expect(h.cree[0]).toMatchObject({ emailHash: null });
