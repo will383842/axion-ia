@@ -135,6 +135,8 @@ export async function lireReleveAutofacture(id: string) {
       periodeYear: true,
       periodeMonth: true,
       trainerId: true,
+      origine: true,
+      echeanceAt: true,
       trainer: {
         select: {
           nom: true,
@@ -435,7 +437,13 @@ async function emettreSousVerrou(
     };
   }
 
-  const echeance = calculerEcheanceHonoraires(maintenant);
+  // Paiement par mission : l'échéance est FIXE (dernière journée + 30 jours),
+  // posée à la création du relevé, jamais repoussée par l'émission. Le relevé
+  // mensuel garde sa règle (émission + 30 jours).
+  const echeance =
+    releve.origine === "passage_mission" && releve.echeanceAt !== null
+      ? releve.echeanceAt
+      : calculerEcheanceHonoraires(maintenant);
   const contestationAvant = dateLimiteContestation(maintenant);
 
   // ── La pièce ───────────────────────────────────────────────────────────────
