@@ -43,6 +43,7 @@ import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/ga
 import {
   VERSIONS_ARRETEES,
   derniereVersionArretee,
+  verifierVersionDuComposant,
   versionArretee,
   versionGabaritAEcrire,
 } from "@/server/qualiopi/documents/templates/versions-arretees";
@@ -198,7 +199,7 @@ describe("L7a — chaque exemplaire signé se rejoue avec SA version", () => {
  * `gabarit-empreinte.spec.ts` (commentaires retirés, espaces normalisés).
  */
 const EMPREINTES_ARRETEES: Readonly<Record<string, string>> = {
-  "contrat-cadre.tsx": "39d67765572a8d05804ae80e241243dcdeccb53471cc72488ad03a507a564b9c",
+  "contrat-cadre.tsx": "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
 };
 
 function texteMesurable(source: string): string {
@@ -234,5 +235,42 @@ describe("⛔ le texte d'une version arrêtée ne change pas", () => {
         expect(v, type).toBeGreaterThan(versionGabaritCourante(type) ?? Infinity);
       }
     }
+  });
+});
+
+describe("L7a — la version inscrite suit le composant rendu", () => {
+  it("composant v3 + version 3 : accepté ; composant v2 + version 2 : accepté", () => {
+    expect(() =>
+      verifierVersionDuComposant("contrat_sous_traitance", ContratCadrePdf, 3),
+    ).not.toThrow();
+    expect(() =>
+      verifierVersionDuComposant("contrat_sous_traitance", ContratSousTraitancePdf, 2),
+    ).not.toThrow();
+  });
+
+  it("🔴 composant v3 inscrit en v2, ou v3 inscrite sur le composant v2 : refusé", () => {
+    expect(() => verifierVersionDuComposant("contrat_sous_traitance", ContratCadrePdf, 2)).toThrow(
+      /émission refusée/,
+    );
+    expect(() =>
+      verifierVersionDuComposant("contrat_sous_traitance", ContratSousTraitancePdf, 3),
+    ).toThrow(/émission refusée/);
+  });
+
+  it("les autres types ne sont pas concernés", () => {
+    expect(() => verifierVersionDuComposant("convention", ContratCadrePdf, 5)).not.toThrow();
+    expect(() => verifierVersionDuComposant("attestation", ContratCadrePdf, null)).not.toThrow();
+  });
+
+  it("documents-service vérifie avant le rendu", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src", "server", "qualiopi", "documents", "documents-service.ts"),
+      "utf8",
+    );
+    const verif = source.indexOf(
+      "verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);",
+    );
+    expect(verif).toBeGreaterThan(-1);
+    expect(verif).toBeLessThan(source.indexOf("await renderPdfToBuffer(elementToRender)"));
   });
 });

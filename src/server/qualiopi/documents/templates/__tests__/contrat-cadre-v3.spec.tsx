@@ -200,6 +200,7 @@ describe("contrat-cadre v3 — chaque variante n'imprime que ses passages", () =
       "sur le compte au nom de l'organisme déclaré",
       "Vous les communiquez à vos seuls intervenants désignés",
       "CV de moins de 24 mois pour chaque intervenant désigné",
+      "toute personne qui y accède y compris vos intervenants désignés soit tenue à la confidentialité",
     ];
     for (const p of passagesOrganisme) {
       expect(org, p).toContain(p);
@@ -276,4 +277,15 @@ describe("contrat-cadre v3 — rendu PDF", () => {
       expect(buffer.subarray(0, 5).toString()).toContain("%PDF");
     }
   }, 60_000);
+});
+
+describe("contrat-cadre v3 — bloc des signatures", () => {
+  it("reprend la ligne arrêtée, sans « Fait à » ni titre en double", () => {
+    expect(ind).toContain(
+      "Signatures : formateur — signature électronique avec code (article 33) ; Axion-IA SAS, représentée par Camille Martin — contresignature électronique. Certificat de signature joint.",
+    );
+    expect(org).toContain("Signatures : représentant de l'organisme — signature électronique");
+    expect(ind).not.toContain("Fait à");
+    expect(ind.match(/Signatures/g)?.length).toBe(1);
+  });
 });
