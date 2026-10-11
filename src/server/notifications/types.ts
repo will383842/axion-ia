@@ -507,6 +507,16 @@ export type NotificationEvent =
         receivedAt: string;
       };
     }
+  // === Formateur indépendant : dossier envoyé, à vérifier (lot L-ENV, F11) ===
+  // 🔴 MINIMISÉE : ni nom, ni adresse, ni IBAN, ni numéro d'entreprise. Un
+  // identifiant court, la couleur du registre, le lien de la console.
+  | {
+      category: "TRAINER_DOSSIER_RECU";
+      payload: {
+        trainerId: string;
+        registre: "vert" | "orange" | "rouge" | "muet";
+      };
+    }
   // === Candidat emploi : effacement de SON dossier en un clic (2026-10-11) ===
   // Depuis le lien « Supprimer ma candidature » de nos e-mails. Le dossier
   // n'existe plus : ni lien vers la fiche, ni nom — le poste et l'heure.

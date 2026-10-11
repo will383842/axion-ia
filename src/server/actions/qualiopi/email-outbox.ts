@@ -23,6 +23,8 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MotifRetenue } from "@/server/email/suppression";
 import type { EmailJobName } from "@/server/queue/types";
+import { estSuperAdmin } from "@/server/auth/habilitations";
+import { refusGabaritFormateur } from "@/server/email/outbox-policy";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -73,6 +75,8 @@ export async function approuverEmailAction(
     },
   });
   if (!email) return { error: "Email introuvable" };
+  const refusFormateur = refusGabaritFormateur(email.template, estSuperAdmin(session.role));
+  if (refusFormateur) return { error: refusFormateur };
   if (email.statut !== "a_valider") {
     return { error: `Cet email a déjà été traité (statut : ${email.statut}).` };
   }
@@ -267,6 +271,8 @@ export async function definirReglageEmailAction(
   }
   const clientId = v.scope === "client" ? (v.clientId ?? null) : null;
   const template = v.template ?? null;
+  const refusFormateur = refusGabaritFormateur(template, estSuperAdmin(session.role));
+  if (refusFormateur) return { error: refusFormateur };
 
   // `upsert` sur une clé composite dont deux membres sont nullables n'est pas
   // exprimable en Prisma 5 : le type d'entrée exige des non-null. On fait donc
@@ -308,6 +314,15 @@ export async function supprimerReglageEmailAction(input: {
   const session = await requireAdminWrite();
   const parsed = z.object({ id: z.string().uuid() }).safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
+  // L-ENV (P6) : retirer une règle qui nomme un gabarit formateur indépendant est réservé
+  // au super-admin, comme la poser.
+  const regle = await prisma.emailAutomationSetting.findUnique({
+    where: { id: parsed.data.id },
+    select: { template: true },
+  });
+  if (!regle) return { error: "Règle introuvable" };
+  const refusFormateur = refusGabaritFormateur(regle.template, estSuperAdmin(session.role));
+  if (refusFormateur) return { error: refusFormateur };
 
   await prisma.emailAutomationSetting.delete({ where: { id: parsed.data.id } });
   await logQualiopiActivity({

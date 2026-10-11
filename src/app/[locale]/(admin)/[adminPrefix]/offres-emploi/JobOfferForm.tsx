@@ -33,6 +33,8 @@ export interface JobOfferFormInitial {
   bodyEnHtml: string;
   employmentType: string;
   secondaryEmploymentType: string;
+  /** L0g — nature de la collaboration (`salarie` | `freelance`). */
+  natureCollaboration?: string;
   contractLabel: string;
   workMode: string;
   remoteDaysPerWeek: string;
@@ -66,9 +68,11 @@ export interface JobOfferFormInitial {
 
 interface Props {
   initial?: JobOfferFormInitial;
+  /** L0g — interrupteur `formateurs.nature_offre` : le choix n'apparaît qu'allumé. */
+  natureLue?: boolean;
 }
 
-export function JobOfferForm({ initial }: Props) {
+export function JobOfferForm({ initial, natureLue = false }: Props) {
   const [state, formAction, pending] = useActionState(upsertJobOfferAction, init);
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
@@ -304,6 +308,30 @@ export function JobOfferForm({ initial }: Props) {
             <option value="TEMPORARY">CDD / intérim</option>
           </select>
         </div>
+        {natureLue ? (
+          <div className="admin-field">
+            <label htmlFor="natureCollaboration" className="admin-label">
+              Nature de la collaboration
+            </label>
+            {/* L0g — c'est CE choix, et non le type Google, qui dit « freelance »
+                à nos règles. « Freelance » exige « Prestataire / freelance »
+                dans l'un des deux types ci-dessus. */}
+            <select
+              id="natureCollaboration"
+              name="natureCollaboration"
+              defaultValue={initial?.natureCollaboration ?? ""}
+              className="admin-input"
+              disabled={pending}
+              required
+            >
+              <option value="" disabled>
+                Choisir…
+              </option>
+              <option value="salarie">Salarié</option>
+              <option value="freelance">Freelance (mission)</option>
+            </select>
+          </div>
+        ) : null}
         <div className="admin-field">
           <label htmlFor="workMode" className="admin-label">
             Mode de travail

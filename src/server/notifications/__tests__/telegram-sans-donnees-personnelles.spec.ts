@@ -187,6 +187,7 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
     receivedAt: "2026-10-11T08:00:00Z",
   },
   CANDIDAT_SELF_ERASED: { offerTitle: "Vidéaste", erasedAt: "2026-10-11T08:00:00Z" },
+  TRAINER_DOSSIER_RECU: { trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13", registre: "vert" },
   ADMIN_REPLIED_TO_SUBMISSION: {
     submissionId: "sub_1",
     replyId: "rep_1",

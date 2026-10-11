@@ -176,6 +176,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    `formateurs.*`. Il n'importe que `estCleProtegee`, pour que le préfixe protégé ne soit
   //    écrit qu'une fois — une recopie divergerait et rouvrirait le contournement.
   "src/features/admin-settings/actions.ts",
+  // Entrée des formateurs freelance (lot L0g, ADR 0066) : la nature de l'offre ne se lit que
+  //    derrière l'interrupteur `formateurs.nature_offre`. Ces surfaces n'importent que
+  //    `lireEtatsEntree` (lecture qui ne lève jamais) ; une seconde lecture des clés
+  //    `formateurs.*` hors du module des interrupteurs est interdite (garde X3, règle 5).
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/[id]/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/new/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/offres-emploi/page.tsx",
+  "src/features/admin-job-offers/actions.ts",
+  "src/server/careers/reponse-poste-pourvu.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -380,6 +389,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
   //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
   "src/server/email/suppression.ts",
+  // ── Relecture au départ (chantier formateurs indépendants, CAMP-1) : le
+  //    worker relit, juste avant d'envoyer un e-mail formateur, les
+  //    interrupteurs du chantier (`formateurs-independants/interrupteurs*.ts`,
+  //    seuls lecteurs autorisés des clés `formateurs.*`, ADR 0066 (f)). Deux
+  //    imports de LECTURE pure, sans écriture ni Next.
+  "src/server/email/relecture-au-depart.ts",
   // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
   //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
   //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du
