@@ -53,6 +53,10 @@ import {
 import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { enqueueEmail } from "@/server/queue/queues";
+import {
+  envoyer as envoyerFormateur,
+  texteValide,
+} from "@/server/qualiopi/formateurs-independants/envois";
 import { requireAdminWrite, requireHabilitation, logQualiopiActivity } from "./_guards";
 import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
 
@@ -189,17 +193,73 @@ export async function envoyerLienSignatureParEmailAction(
       traineeId: true,
       sousTraitantId: true,
       sessionId: true,
+      trainerId: true,
       session: { select: { titreSession: true } },
       client: { select: { raisonSociale: true } },
     },
   });
   if (piece === null) return { error: "Pièce introuvable." };
 
-  const resolution = await resoudreIdentite(partie, piece);
+  // S6b (d) — le gabarit suit le TYPE de pièce. Le contrat-cadre d'un formateur
+  // indépendant (sans organisme rattaché) part par son propre e-mail (F16), et
+  // seulement quand ce texte est validé : sinon, rien n'est émis (le lien
+  // précédent n'est pas révoqué pour rien). Toute autre pièce garde EXACTEMENT
+  // le chemin d'avant : `convention-envoi`, identité sans fiche formateur.
+  const contratFormateur =
+    piece.type === "contrat_sous_traitance" &&
+    partie === "sous_traitant" &&
+    piece.sousTraitantId === null &&
+    piece.trainerId !== null;
+  if (contratFormateur && !(await texteValide("formateur-contrat-a-signer"))) {
+    return {
+      error:
+        "L'e-mail du contrat aux formateurs n'est pas encore validé : rien n'a été émis ni envoyé.",
+    };
+  }
+
+  const resolution = await resoudreIdentite(
+    partie,
+    contratFormateur ? piece : { ...piece, trainerId: null },
+  );
   if (!resolution.ok) return { error: resolution.motif };
 
   const emis = await emettreLienSignatureAction({ documentGenereId, partie });
   if ("error" in emis) return emis;
+
+  if (contratFormateur) {
+    const r = await envoyerFormateur({
+      gabarit: "formateur-contrat-a-signer",
+      destinataire: resolution.identite.email,
+      entityType: "Trainer",
+      entityId: piece.trainerId as string,
+      payload: { prenom: resolution.identite.nom.split(" ")[0] ?? "", lien: emis.data.url },
+    });
+    if (r !== "envoye" && r !== "en-validation") {
+      return {
+        error:
+          "Le lien a bien été émis, mais l'e-mail n'a pas pu partir. Réessayez : un nouveau lien sera émis (celui-ci n'a été reçu par personne).",
+      };
+    }
+    await logQualiopiActivity({
+      action: "qualiopi.piece.lien_signature.envoye",
+      targetType: "DocumentGenere",
+      targetId: documentGenereId,
+      changes: {
+        numero: piece.numero,
+        partie,
+        destinataire: resolution.identite.email,
+        garePourValidation: r === "en-validation",
+      },
+      session,
+    });
+    return {
+      data: {
+        destinataire: resolution.identite.email,
+        garePourValidation: r === "en-validation",
+        reemission: emis.data.reemission,
+      },
+    };
+  }
 
   let garePourValidation = false;
   try {
