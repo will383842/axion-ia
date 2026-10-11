@@ -36,6 +36,11 @@ import {
   updateTrainerSousTraitancePiecesAction,
 } from "@/server/actions/qualiopi/trainers";
 import { TrainerSousTraitancePanel } from "@/components/admin/qualiopi/TrainerSousTraitancePanel";
+import { TrainerEffacementRgpdPanel } from "@/components/admin/qualiopi/TrainerEffacementRgpdPanel";
+import {
+  CONFIRMATION_EFFACEMENT_FORMATEUR,
+  etatDroitsFormateur,
+} from "@/lib/rgpd-formateur-independant";
 import { ANCRE_DEVELOPPEMENT_COMPETENCES } from "@/server/qualiopi/conformite/intervenants-indicateur-22";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import {
@@ -152,6 +157,11 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   const base = `/${locale}/${adminPrefix}/qualiopi/formateurs`;
   const trainer = await getTrainer(id);
   if (!trainer) notFound();
+
+  const effacementPossible =
+    role === "super_admin" &&
+    trainer.statut === "sous_traitant" &&
+    (await etatDroitsFormateur()) === "actif";
 
   const formations = await listFormationsLite();
   const [documents, indispos, regles, formationOptions, lettresConsole] = await Promise.all([
@@ -926,6 +936,18 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           formations.some((f) => f.id === id),
         )}
       />
+
+      {/*
+        Lot L16a — droit à l'effacement d'un formateur indépendant : super-admin
+        seulement, interrupteur `formateurs.dossier_en_ligne` allumé, confirmation
+        saisie. Pseudonymisation, aucune suppression.
+      */}
+      {effacementPossible && (
+        <TrainerEffacementRgpdPanel
+          trainerId={trainer.id}
+          confirmation={CONFIRMATION_EFFACEMENT_FORMATEUR}
+        />
+      )}
     </AdminPageShell>
   );
 }

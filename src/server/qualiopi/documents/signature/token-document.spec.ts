@@ -24,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       updateMany: vi.fn(),
     },
+    documentSignatureCode: { updateMany: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
@@ -350,6 +351,21 @@ describe("révocation", () => {
     expect(mockPrisma.documentSignatureToken.updateMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { documentGenereId: DOC, revokedAt: null } }),
     );
+  });
+
+  it("S6b — révoquer les liens emporte le code de signature vivant (pas de rejeu sur un nouveau lien)", async () => {
+    await revoquerTokensDocument({
+      documentGenereId: DOC,
+      partie: "sous_traitant",
+      motif: "réémis",
+    });
+    expect(
+      (mockPrisma as unknown as { documentSignatureCode: { updateMany: ReturnType<typeof vi.fn> } })
+        .documentSignatureCode.updateMany,
+    ).toHaveBeenCalledWith({
+      where: { documentGenereId: DOC, utiliseAt: null, invalideAt: null, partie: "sous_traitant" },
+      data: { invalideAt: expect.any(Date) },
+    });
   });
 
   it("tronque un motif trop long plutôt que de violer le CHECK", async () => {

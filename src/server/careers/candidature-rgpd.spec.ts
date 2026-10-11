@@ -182,6 +182,13 @@ describe("🔴 effacerCandidaturesPour — le CV part avec la ligne", () => {
     expect(r.fichiersSupprimes).toBe(0);
   });
 
+  it("lot L16a : une candidature à CONSERVER (formateur sous contrat) reste en place", async () => {
+    const r = await effacerCandidaturesPour(CIBLE, { conserver: new Set(["c-1"]) });
+    expect(supprimer).not.toHaveBeenCalled();
+    expect(supprimerFichier).not.toHaveBeenCalled();
+    expect(r.supprimees).toBe(0);
+  });
+
   it("ne supprime RIEN quand la personne n'a pas candidaté", async () => {
     // Témoin de non-vacuité : sans lui, une fonction qui supprimerait tout
     // ferait passer les deux cas ci-dessus.
