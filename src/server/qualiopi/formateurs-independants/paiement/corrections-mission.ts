@@ -28,6 +28,8 @@ import {
   type ReleveMissionCalcule,
 } from "../argent/calcul-mission";
 import { jourParis, type JourCivil } from "../argent/dates";
+import { journaliser } from "@/server/journal/journaliser";
+
 import { uniqueHistoriqueRetire } from "./lecture-passage";
 import { instantDuJour } from "./passage-mission-base";
 
@@ -136,6 +138,17 @@ export async function ecrireIndemniteAnnulation(
     select: { id: true },
   });
   await recalculerTotaux(tx, releve!.id, e.regimeTva);
+  await journaliser(
+    tx,
+    {
+      action: "qualiopi.remuneration.indemnite_annulation_ecrite",
+      targetType: "TrainerStatement",
+      targetId: releve!.id,
+      changes: { montantHtCents: e.indemnite.montantHtCents, echeance: e.indemnite.echeance },
+      session: null,
+    },
+    { exiger: true },
+  );
   return "ecrite";
 }
 
@@ -153,6 +166,7 @@ export type IssueAvoir =
         | "deja_corrigee"
         | "montant_requis_pour_une_piece_payee"
         | "montant_invalide"
+        | "montant_inutile_piece_non_payee"
         | "contract_non_fait";
     };
 
@@ -208,6 +222,8 @@ export async function emettreAvoirMission(
   });
   if (dejaAvoir > 0) return { issue: "refuse", motif: "deja_corrigee" };
 
+  if (p.statut !== "paye" && trop)
+    return { issue: "refuse", motif: "montant_inutile_piece_non_payee" };
   if (p.statut === "paye") {
     if (!trop) return { issue: "refuse", motif: "montant_requis_pour_une_piece_payee" };
     if (
@@ -253,6 +269,17 @@ export async function emettreAvoirMission(
       },
       select: { id: true },
     });
+    await journaliser(
+      tx,
+      {
+        action: "qualiopi.remuneration.avoir_trop_percu",
+        targetType: "TrainerStatement",
+        targetId: partiel.id,
+        changes: { pieceId: p.id, montantHtCents: trop.montantHtCents },
+        session: null,
+      },
+      { exiger: true },
+    );
     return { issue: "trop_percu_ouvert", avoirId: partiel.id };
   }
 
@@ -299,6 +326,17 @@ export async function emettreAvoirMission(
     where: { statementId: p.id, statut: { not: "annule" } },
     data: { statut: "annule", annuleMotif: "ajustement_remplace" },
   });
+  await journaliser(
+    tx,
+    {
+      action: "qualiopi.remuneration.avoir_emis",
+      targetType: "TrainerStatement",
+      targetId: avoir.id,
+      changes: { pieceId: p.id, totalHtCents: -p.totalHtCents },
+      session: null,
+    },
+    { exiger: true },
+  );
   return { issue: "avoir_emis", avoirId: avoir.id };
 }
 
@@ -400,6 +438,7 @@ export async function traiterTropPercu(
     totalHtCents: number;
     createdAt: Date;
     remboursementDemandeAt: Date | null;
+    tvaRegime: TvaRegimeHonoraires;
     avoirDe: { statut: string } | null;
     imputations: Array<{ montantHtCents: number }>;
   }> = await tx.trainerStatement.findMany({
@@ -414,6 +453,7 @@ export async function traiterTropPercu(
       totalHtCents: true,
       createdAt: true,
       remboursementDemandeAt: true,
+      tvaRegime: true,
       avoirDe: { select: { statut: true } },
       imputations: { where: { statut: { not: "annule" } }, select: { montantHtCents: true } },
     },
@@ -429,6 +469,7 @@ export async function traiterTropPercu(
       ),
       emisLe: jourParis(a.createdAt),
       remboursementDemande: a.remboursementDemandeAt !== null,
+      tvaRegime: a.tvaRegime,
     }));
   let suivant: {
     id: string;
@@ -439,6 +480,8 @@ export async function traiterTropPercu(
     sessionId: string | null;
     periodeYear: number;
     periodeMonth: number;
+    origine: string;
+    avoirDeId: string | null;
   } | null = null;
   if (releveSuivantId) {
     suivant = await tx.trainerStatement.findUnique({
@@ -452,46 +495,92 @@ export async function traiterTropPercu(
         sessionId: true,
         periodeYear: true,
         periodeMonth: true,
+        origine: true,
+        avoirDeId: true,
       },
     });
+    // Seul un relevé DE MISSION (jamais un relevé mensuel, jamais un avoir), encore
+    // recalculable, reçoit une imputation : le run mensuel ne connaît pas ces lignes.
     if (
       !suivant ||
       suivant.trainerId !== trainerId ||
+      suivant.origine !== "passage_mission" ||
+      suivant.avoirDeId !== null ||
       !(RECALCULABLES as readonly string[]).includes(suivant.statut)
     )
       suivant = null;
+    // Un relevé suivant désigné mais inadmissible : rien (ni imputation, ni demande).
+    if (suivant === null) return { imputeHtCents: 0, demandesRemboursement: 0 };
   }
+  // Un avoir ne s'impute que sur un relevé du MÊME régime de TVA : en HT, deux
+  // régimes différents fausseraient le TTC retenu. Sinon, il attend (ou la demande).
+  const imputables = suivant ? ouverts.filter((o) => o.tvaRegime === suivant!.tvaRegime) : ouverts;
   const plan = planTropPercu(
-    ouverts,
+    imputables,
     suivant ? { totalHtCents: suivant.totalHtCents } : null,
     aujourdhui,
   );
   let impute = 0;
   if (suivant) {
     for (const i of plan.imputations) {
-      await tx.trainerFeeLine.create({
-        data: {
-          trainerId,
-          prestationType: "formation_collective",
-          sessionId: suivant.sessionId,
-          model: "taux_journalier",
-          nature: "honoraire_du",
-          montantHtCents: i.montantHtCents,
-          statut: "calcule",
-          periodeYear: suivant.periodeYear,
-          periodeMonth: suivant.periodeMonth,
-          statementId: suivant.id,
-          origine: "passage_mission",
-          objet: "ajustement",
-          imputeDeStatementId: i.avoirId,
-          motif: "Trop-perçu imputé (décision 89)",
-          calculatedAt: maintenant,
-        },
-        select: { id: true },
-      });
+      // Idempotent : une imputation existante de CET avoir sur CE relevé grossit,
+      // jamais de seconde ligne (index `trainer_fee_lines_imputation_unique`).
+      const existante: { id: string; montantHtCents: number } | null =
+        await tx.trainerFeeLine.findFirst({
+          where: {
+            statementId: suivant.id,
+            imputeDeStatementId: i.avoirId,
+            statut: { not: "annule" },
+          },
+          select: { id: true, montantHtCents: true },
+        });
+      if (existante) {
+        await tx.trainerFeeLine.update({
+          where: { id: existante.id },
+          data: {
+            montantHtCents: existante.montantHtCents + i.montantHtCents,
+            calculatedAt: maintenant,
+          },
+          select: { id: true },
+        });
+      } else {
+        await tx.trainerFeeLine.create({
+          data: {
+            trainerId,
+            prestationType: "formation_collective",
+            sessionId: suivant.sessionId,
+            model: "taux_journalier",
+            nature: "honoraire_du",
+            montantHtCents: i.montantHtCents,
+            statut: "calcule",
+            periodeYear: suivant.periodeYear,
+            periodeMonth: suivant.periodeMonth,
+            statementId: suivant.id,
+            origine: "passage_mission",
+            objet: "ajustement",
+            imputeDeStatementId: i.avoirId,
+            motif: "Trop-perçu imputé (décision 89)",
+            calculatedAt: maintenant,
+          },
+          select: { id: true },
+        });
+      }
       impute += -i.montantHtCents;
     }
-    if (plan.imputations.length) await recalculerTotaux(tx, suivant.id, suivant.tvaRegime);
+    if (plan.imputations.length) {
+      await recalculerTotaux(tx, suivant.id, suivant.tvaRegime);
+      await journaliser(
+        tx,
+        {
+          action: "qualiopi.remuneration.trop_percu_impute",
+          targetType: "TrainerStatement",
+          targetId: suivant.id,
+          changes: { imputeHtCents: impute },
+          session: null,
+        },
+        { exiger: true },
+      );
+    }
   }
   for (const id of plan.demandesRemboursement) {
     await tx.trainerStatement.update({

@@ -322,16 +322,22 @@ export async function transitionStatementAction(
       await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base");
     const { LIBELLE_SUSPENSION_VIREMENT } =
       await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission");
-    const c = await contexteVirementMission(
-      prisma,
-      {
-        trainerId: releve.trainerId,
-        echeanceAt: releve.echeanceAt,
-        totalTtcCents: releve.totalTtcCents,
-      },
-      v.ibanEmpreinteAffichee ?? null,
-      maintenant,
-    );
+    let c: Awaited<ReturnType<typeof contexteVirementMission>>;
+    try {
+      c = await contexteVirementMission(
+        prisma,
+        {
+          trainerId: releve.trainerId,
+          echeanceAt: releve.echeanceAt,
+          totalTtcCents: releve.totalTtcCents,
+        },
+        v.ibanEmpreinteAffichee ?? null,
+        maintenant,
+      );
+    } catch {
+      // Clé de chiffrement absente ou IBAN illisible : jamais d'erreur brute.
+      return { error: "Déchiffrement de l'IBAN impossible : paiement refusé." };
+    }
     if (!c.verdict.autorise || c.preuve === null) {
       return {
         error:
@@ -365,6 +371,18 @@ export async function transitionStatementAction(
        * « payé », annulation concurrente, autofacture émise — et appliquer
        * notre transition reviendrait à décider sur un état périmé.
        */
+      // Paiement par mission : l'empreinte de l'IBAN est RELUE sous verrou ; un
+      // compte changé entre la garde et l'écriture annule le paiement.
+      if (preuveIban !== null) {
+        const t = await tx.trainer.findUnique({
+          where: { id: releve.trainerId },
+          select: { ibanEmpreinte: true },
+        });
+        if (t?.ibanEmpreinte !== preuveIban.ibanEmpreinte) {
+          aChange = true;
+          return;
+        }
+      }
       const ecrit = await tx.trainerStatement.updateMany({
         where: {
           id: v.id,

@@ -10,6 +10,7 @@
 import { decryptPii } from "@/lib/pii-crypto";
 
 import { ajouterJours, jourDeColonneDate, jourParis } from "../argent/dates";
+import { PARAMETRES_ARGENT_FORMATEURS } from "../argent/parametres";
 import { gardeVirementMission, ibanFin4, type VerdictVirementMission } from "./virement-mission";
 
 /** Le strict nécessaire d'un client Prisma. */
@@ -42,7 +43,7 @@ export async function contexteVirementMission(
   preuve: { ibanFin4: string; ibanEmpreinte: string } | null;
 }> {
   const echeance = jourParis(releve.echeanceAt);
-  const derniereJournee = ajouterJours(echeance, -30);
+  const derniereJournee = ajouterJours(echeance, -PARAMETRES_ARGENT_FORMATEURS.delaiPaiementJours);
   const [trainer, attestations, enAttente, dernier] = await Promise.all([
     db.trainer.findUnique({
       where: { id: releve.trainerId },

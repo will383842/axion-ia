@@ -31,9 +31,9 @@ export const LIBELLE_REFUS_FACTURE: Record<RefusFacture, string> = {
   date_avant_la_mission: "La facture est datée d'avant la dernière journée facturée.",
 };
 
-/** Le numéro tel que l'index unique le compare. */
+/** Le numéro tel que l'index unique le compare (`upper(btrim(…))` : espaces seulement). */
 export function numeroFactureNormalise(numero: string): string {
-  return numero.trim().toUpperCase();
+  return numero.replace(/^ +| +$/g, "").toUpperCase();
 }
 
 export function controlerFactureDeposee(

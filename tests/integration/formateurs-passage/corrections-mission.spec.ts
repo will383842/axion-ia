@@ -265,4 +265,90 @@ describe("corrections du paiement par mission (vraie base)", () => {
       });
     });
   });
+
+  it("trop-perçu : jamais imputé sur un relevé MENSUEL ni sur un régime de TVA différent ; rejouable sans seconde ligne", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
+      const { trainerId, sessions } = await fixture(tx, 3);
+      const payee = await ecrireEtEmettre(tx, trainerId, sessions[0]!, ["2031-12-03"], "paye");
+      await emettreAvoirMission(tx, payee.id, MAINTENANT, { montantHtCents: 10_000 });
+      // Un relevé MENSUEL du même formateur : refusé comme relevé suivant.
+      const mensuel = await tx.trainerStatement.create({
+        data: {
+          trainerId,
+          periodeYear: 2032,
+          periodeMonth: 1,
+          tvaRegime: "franchise_293b",
+          totalHtCents: 35_000,
+        },
+      });
+      expect(await traiterTropPercu(tx, trainerId, mensuel.id, "2031-12-20", MAINTENANT)).toEqual({
+        imputeHtCents: 0,
+        demandesRemboursement: 0,
+      });
+      expect(await tx.trainerFeeLine.count({ where: { statementId: mensuel.id } })).toBe(0);
+      // Un relevé de mission assujetti 20 % : régime différent de l'avoir (franchise) → rien.
+      await ecrireMoisDansTransaction(
+        tx,
+        {
+          trainerId,
+          sessionId: sessions[1]!,
+          releve: releve(["2031-12-04"]),
+          regimeTva: "assujetti_20",
+          tarifJourneeHtCents: 35_000,
+          sansEcart: true,
+        },
+        MAINTENANT,
+      );
+      const assujetti = await tx.trainerStatement.findFirstOrThrow({
+        where: { trainerId, sessionId: sessions[1]! },
+      });
+      expect(
+        (await traiterTropPercu(tx, trainerId, assujetti.id, "2031-12-20", MAINTENANT))
+          .imputeHtCents,
+      ).toBe(0);
+      // Un relevé de mission du même régime : 60 € imputés, puis le reste (40 €) au second passage, sur la MÊME ligne.
+      await ecrireMoisDansTransaction(
+        tx,
+        {
+          trainerId,
+          sessionId: sessions[2]!,
+          releve: releve(["2031-12-05"], "matin"),
+          regimeTva: "franchise_293b",
+          tarifJourneeHtCents: 35_000,
+          sansEcart: true,
+        },
+        MAINTENANT,
+      );
+      const suivant = await tx.trainerStatement.findFirstOrThrow({
+        where: { trainerId, sessionId: sessions[2]! },
+      });
+      expect(
+        (await traiterTropPercu(tx, trainerId, suivant.id, "2031-12-20", MAINTENANT)).imputeHtCents,
+      ).toBe(10_000);
+      expect(await traiterTropPercu(tx, trainerId, suivant.id, "2031-12-20", MAINTENANT)).toEqual({
+        imputeHtCents: 0,
+        demandesRemboursement: 0,
+      });
+      const lignes = await tx.trainerFeeLine.findMany({
+        where: { statementId: suivant.id, objet: "ajustement" },
+      });
+      expect(lignes.map((l) => l.montantHtCents)).toEqual([-10_000]);
+      expect(
+        (await tx.trainerStatement.findUniqueOrThrow({ where: { id: suivant.id } })).totalHtCents,
+      ).toBe(7_500);
+    });
+  });
+
+  it("un montant de trop-perçu sur une pièce NON payée est refusé (jamais d'avoir total silencieux)", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
+      const { trainerId, sessions } = await fixture(tx);
+      const piece = await ecrireEtEmettre(tx, trainerId, sessions[0]!, ["2031-12-03"]);
+      expect(await emettreAvoirMission(tx, piece.id, MAINTENANT, { montantHtCents: 100 })).toEqual({
+        issue: "refuse",
+        motif: "montant_inutile_piece_non_payee",
+      });
+    });
+  });
 });
