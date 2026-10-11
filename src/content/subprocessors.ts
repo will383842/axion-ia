@@ -577,9 +577,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // pas. « Une notice qui minimise un flux réel est plus grave qu'une notice
     // absente » est écrit plus haut dans ce fichier : ça vaut contre nous aussi.
     dataCategoriesFr:
-      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion. La session n'est ni enregistrée ni transcrite. Ce que nous conservons ensuite : le rapport des participants tel que Zoom l'exporte — nom, adresse email, heures d'entrée et de sortie, durée — archivé cinq ans comme preuve d'assiduité, ainsi que les heures de connexion rattachées à chaque stagiaire.",
+      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion. La session n'est ni enregistrée ni transcrite. Ce que nous conservons ensuite : le rapport des participants tel que Zoom l'exporte — nom, adresse email, heures d'entrée et de sortie, durée — conservé comme preuve d'assiduité tant que la relation dure, puis le temps des délais légaux de réclamation, ainsi que les heures de connexion rattachées à chaque stagiaire.",
     dataCategoriesEn:
-      "Audio and video streams of the session, display name, trainee email address, IP address and connection data. Sessions are neither recorded nor transcribed. What we then retain: the participant report exactly as Zoom exports it — name, email address, join and leave times, duration — archived for five years as proof of attendance, together with the connection times matched to each trainee.",
+      "Audio and video streams of the session, display name, trainee email address, IP address and connection data. Sessions are neither recorded nor transcribed. What we then retain: the participant report exactly as Zoom exports it — name, email address, join and leave times, duration — kept as proof of attendance for as long as the relationship lasts, then for the statutory limitation periods for claims, together with the connection times matched to each trainee.",
     // Suivre une formation à distance, c'est l'exécution du contrat de
     // formation lui-même : la visioconférence EST la prestation vendue.
     legalBasis: "6.1.b_contract",
