@@ -18,8 +18,14 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import {
   INTERRUPTEURS,
+  INTERRUPTEURS_SIGNATURE,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
+  cleSettingSignature,
+  dateAllumageSignature,
+  lireValeurSignature,
+  prealablesManquantsSignature,
+  type CleInterrupteurSignature,
   estDateDePassage,
   estPositionSure,
   etatsDepuisLignes,
@@ -238,4 +244,127 @@ export async function basculerFormateursProchesBlocAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculer("proches_bloc", formData);
+}
+
+// ─── Socle de signature (S6a) — même calque, registre à part ─────────────────
+
+async function basculerSignature(
+  cle: CleInterrupteurSignature,
+  formData: FormData,
+): Promise<EtatBascule> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Session expirée." };
+  const role = (session.user as { role?: string }).role;
+  const def = INTERRUPTEURS_SIGNATURE[cle];
+  if (role == null || !ROLES_PAR_HABILITATION[def.habilitation].includes(role)) {
+    return { ok: false, error: REFUS_HABILITATION[def.habilitation] };
+  }
+  const a = formData.get("actif");
+  if (a !== "1" && a !== "0") return { ok: false, error: "Valeur invalide." };
+  const valeur = a === "1";
+  const userId = session.user.id;
+
+  let manques: string[];
+  try {
+    manques = await ecrireSignature(cle, valeur, userId);
+  } catch (err) {
+    // Même règle que `basculer` : une erreur de la base devient un message,
+    // rien n'a été écrit (transaction annulée), Sentry garde la trace.
+    Sentry.captureException(err, { tags: { action: "basculerSignatureInterrupteur", cle } });
+    return {
+      ok: false,
+      error: "Le changement n'a pas été enregistré (erreur technique). Réessayez plus tard.",
+    };
+  }
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
+}
+
+/** Préalables relus, réglage et journal : une seule transaction. Rend les manques. */
+function ecrireSignature(
+  cle: CleInterrupteurSignature,
+  valeur: boolean,
+  userId: string,
+): Promise<string[]> {
+  const def = INTERRUPTEURS_SIGNATURE[cle];
+  const key = cleSettingSignature(cle);
+  return prisma.$transaction(async (tx) => {
+    const lignes = await tx.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    const manquants = prealablesManquantsSignature(cle, valeur, etatsDepuisLignes(lignes));
+    if (manquants.length > 0) return manquants;
+    const actuelle = await tx.setting.findUnique({
+      where: { key },
+      select: { value: true, updatedAt: true },
+    });
+    const avant = lireValeurSignature(actuelle?.value).valeur;
+    // L'exemplaire de captation date son allumage : le rattrapage ne reprend que
+    // ce qui est signé APRÈS. Rallumer un interrupteur déjà allumé garde la date.
+    const value =
+      cle === "exemplaire_captation" && valeur
+        ? {
+            actif: true,
+            allumeLe: (
+              dateAllumageSignature(actuelle?.value, actuelle?.updatedAt ?? null) ?? new Date()
+            ).toISOString(),
+          }
+        : { actif: valeur };
+    await tx.setting.upsert({
+      where: { key },
+      create: {
+        key,
+        value: value as never,
+        description: `Socle de signature › Interrupteurs — ${def.libelle}`,
+        updatedBy: userId,
+      },
+      update: { value: value as never, updatedBy: userId },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: valeur ? "signature.interrupteur_allume" : "signature.interrupteur_coupe",
+        // ⚠️ Pas de `targetId` : colonne `uuid`, la clé est du texte (cf. `ecrire`).
+        targetType: "setting",
+        changes: { cle: key, avant, apres: valeur } as never,
+      },
+    });
+    return [];
+  });
+}
+
+export async function basculerSignatureCopiePartielleAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("copie_partielle", formData);
+}
+export async function basculerSignatureExemplaireContratTravailAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("exemplaire_contrat_travail", formData);
+}
+export async function basculerSignatureAlertesHorsJetonAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("alertes_hors_jeton", formData);
+}
+export async function basculerSignatureExemplaireCaptationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("exemplaire_captation", formData);
+}
+export async function basculerFormateursSuiteContratCadreAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("suite_contrat_cadre", formData);
 }

@@ -46,14 +46,10 @@
 
 "use server";
 
-import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
-import { headers } from "next/headers";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { estMandataireDeLaLettre } from "@/server/qualiopi/documents/signature/mandat-lettre-mission";
-import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import {
@@ -64,6 +60,9 @@ import { REFUS_PIECE_INTROUVABLE } from "@/server/qualiopi/documents/signature/r
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { partiesRequisesPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
+import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 
 /**
  * 🔴 Les parties attendues viennent du SSOT, jamais d'une liste locale.
@@ -94,22 +93,6 @@ const entreeSchema = z.object({
   methode: z.enum(["trace", "papier_scanne", "confirmation_accessible"]),
   imageDataUrl: z.string().max(3_000_000).optional(),
 });
-
-/** Empreintes de contexte, hors tuple haché donc effaçables (RGPD art. 17). */
-async function contexteRequete(): Promise<{
-  ipHash: string | null;
-  userAgentSha256: string | null;
-}> {
-  const entetes = await headers();
-  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
-  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
-  const ipBrute = ipVisiteurOuNull(entetes);
-  const ua = entetes.get("user-agent");
-  return {
-    ipHash: hashIp(ipBrute),
-    userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
-  };
-}
 
 /**
  * Traduit une panne de stockage en refus exploitable.
@@ -172,7 +155,7 @@ export async function signerLettreMissionFormateurAction(input: {
   // et la partie « formateur » est acceptable sur d'autres circuits.
   const piece = await prisma.documentGenere.findUnique({
     where: { id: donnees.documentGenereId },
-    select: { type: true, sessionId: true, trainerId: true },
+    select: { type: true, numero: true, sessionId: true, trainerId: true },
   });
   if (piece === null || piece.type !== "lettre_mission") {
     return { ...LETTRE_INTROUVABLE };
@@ -219,6 +202,14 @@ export async function signerLettreMissionFormateurAction(input: {
       // doit pas se distinguer d'un identifiant inconnu.
       return res.raison === "porteur_non_autorise" ? { ...LETTRE_INTROUVABLE } : res;
     }
+    await apresSignature({
+      documentGenereId: donnees.documentGenereId,
+      type: "lettre_mission",
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: "formateur",
+      acteur: { type: "signataire" },
+    });
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);
@@ -248,7 +239,7 @@ export async function contresignerLettreMissionAction(input: {
   imageDataUrl?: string;
 }): Promise<ResultatSignatureLettreMission> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
+  if (!peutSignerPourOrganisme(session.role)) {
     return {
       ok: false,
       raison: "role_insuffisant",
@@ -289,6 +280,17 @@ export async function contresignerLettreMissionAction(input: {
       ...(await contexteRequete()),
     });
     if (!res.ok) return res;
+
+    // 🔴 Avant S6a, rien n'était remis ici : la lettre contresignée attendait
+    // le rattrapage horaire. L'après-signature commun la remet sur-le-champ.
+    await apresSignature({
+      documentGenereId: donnees.documentGenereId,
+      type: "lettre_mission",
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: "axionia",
+      acteur: { type: "administrateur", session },
+    });
 
     await logQualiopiActivity({
       action: "qualiopi.lettre_mission.contresignature",

@@ -42,28 +42,21 @@
 
 import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
-import { headers } from "next/headers";
-import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { hashIp } from "@/lib/security/ip-hash";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { sendTelegram } from "@/lib/telegram";
+import type { AdminSession } from "@/server/actions/knowledge/_guards";
+import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
+import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
   signerDocument,
   type RefusSignatureDocument,
 } from "@/server/qualiopi/documents/signature/document-signature-service";
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
-import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
-import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
-import {
-  devisConcernesPourEmission,
-  emettreDevisSigne,
-  transactionDevisSigne,
-} from "@/server/partners-sync/producteurs/devis";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 
 /**
@@ -117,27 +110,6 @@ const entreeContresignatureSchema = z.object({
   methode: z.enum(["trace", "confirmation_accessible"]),
   imageDataUrl: z.string().max(3_000_000).optional(),
 });
-
-/** Empreintes de contexte, hors tuple haché donc effaçables (RGPD art. 17). */
-async function contexteRequete(): Promise<{
-  ipHash: string | null;
-  userAgentSha256: string | null;
-}> {
-  const entetes = await headers();
-  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
-  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
-  const ipBrute = ipVisiteurOuNull(entetes);
-  const ua = entetes.get("user-agent");
-  return {
-    ipHash: hashIp(ipBrute),
-    // ⚠️ `typeof !== "string"` et non `=== null` : `Headers.get()` rend
-    // `string | null` d'après la spec, mais tout ce qui rend `undefined` ferait
-    // lever `createHash().update(undefined)` — c'est-à-dire qu'un en-tête
-    // manquant ferait échouer une SIGNATURE. Le coût de la robustesse est nul,
-    // celui de la panne ne l'est pas.
-    userAgentSha256: typeof ua !== "string" ? null : createHash("sha256").update(ua).digest("hex"),
-  };
-}
 
 /**
  * Traduit une panne de stockage en refus exploitable.
@@ -214,214 +186,6 @@ async function objectionMetier(
         ? "Ce devis a déjà fait l'objet d'un accord. Aucune nouvelle signature n'est nécessaire."
         : "Ce devis n'est plus en cours : il a été retiré, refusé ou remplacé. Contactez votre interlocuteur pour en recevoir un nouveau.",
   };
-}
-
-/**
- * Conséquence métier d'une pièce INTÉGRALEMENT signée.
- *
- * 🔴 Séparée de l'écriture de la preuve, et jamais l'inverse : la preuve est la
- * source, le statut commercial n'en est qu'une conséquence. Les mêler ferait
- * dépendre l'enregistrement d'une signature du succès d'une mise à jour
- * commerciale — une panne sur la seconde perdrait la première.
- *
- * ⚠️ N'échoue JAMAIS bruyamment.
- */
-/**
- * Pièces dont la conclusion ENGAGE l'action de formation.
- *
- * C'est le moment exact où le positionnement doit partir : avant, on ne sait
- * pas encore si l'action aura lieu ; après, c'est un oubli qui coûte
- * l'indicateur 8. Le devis n'y figure pas — un accord commercial n'engage pas
- * encore une formation.
- */
-const PIECES_QUI_ENGAGENT_LACTION: ReadonlySet<string> = new Set([
-  "convention",
-  "convention_tripartite",
-  "contrat",
-]);
-
-/**
- * Envoie le questionnaire de positionnement à TOUS les stagiaires de la session
- * dès que la pièce qui engage l'action est intégralement signée (ind. 8).
- *
- * 🔴 Demandé par Will le 2026-08-15, après le premier dossier réel : « ça ne
- * pourrait pas devenir automatique pour qu'il n'y ait pas d'oubli ? ». Sur ce
- * dossier, le positionnement n'est parti que parce qu'on l'a cherché la veille
- * de la formation. Aucun cron ne le portait, aucune alerte ne le réclamait.
- *
- * ⚠️ IDEMPOTENT par `envoyeAt: null` : re-signer, ou repasser par ce chemin,
- * ne renvoie rien. C'est la garde qui autorise à l'appeler sans réfléchir.
- *
- * ⚠️ FAIL-SOFT, par stagiaire ET globalement : une panne d'e-mail ne doit
- * JAMAIS annuler une signature déjà écrite et chaînée. Le rattrapage manuel
- * (« Envoyer au stagiaire ») reste disponible, et la relance J+3 prend le
- * relais.
- */
-async function declencherPositionnement(documentGenereId: string): Promise<void> {
-  const piece = await prisma.documentGenere.findUnique({
-    where: { id: documentGenereId },
-    select: { sessionId: true },
-  });
-  if (piece?.sessionId == null) return;
-
-  const questionnaires = await prisma.questionnaire.findMany({
-    where: {
-      type: "positionnement",
-      envoyeAt: null,
-      reponduAt: null,
-      enrollment: { sessionId: piece.sessionId },
-    },
-    select: { id: true },
-  });
-
-  for (const q of questionnaires) {
-    try {
-      // 🔴 2026-08-24 — LE COMMENTAIRE CI-DESSOUS ÉTAIT JUSTE, ET L'APPEL FAUX.
-      //
-      // `envoyerPositionnement` n'écrit pas la trace — l'appelant la pose, comme
-      // le fait l'envoi manuel. Sans elle, impossible de distinguer « jamais
-      // envoyé » de « envoyé, sans réponse », et la relance J+3 ne partirait
-      // jamais. Tout cela reste vrai.
-      //
-      // Mais l'appel jetait son booléen. `envoyerPositionnement` rend `false`
-      // sans lever sur cinq chemins (stub, déjà répondu, stagiaire sans adresse,
-      // file indisponible, garage en corbeille de validation) : le `catch` ne
-      // voit aucun d'eux, et la trace était posée pour un courrier jamais parti.
-      // Ce qui suit la signature d'une convention est précisément le document
-      // qu'un certificateur demandera — poser sa date sans l'envoi produit une
-      // preuve fausse.
-      //
-      // 🔑 Ne rien écrire est le bon comportement : le cron du positionnement
-      // sélectionne sur `envoyeAt: null` et reprendra ce questionnaire.
-      // Cliquet : `notifications/__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts`.
-      if (!(await envoyerPositionnement(q.id))) {
-        console.error(
-          `[declencherPositionnement] NON ENVOYÉ — questionnaire ${q.id} laissé ` +
-            "sans trace, candidat au rattrapage par le cron `positionnement`",
-        );
-        continue;
-      }
-      await prisma.questionnaire.update({
-        where: { id: q.id },
-        data: { envoyeAt: new Date() },
-      });
-    } catch (err) {
-      Sentry.captureException(err, {
-        tags: { action: "declencherPositionnement" },
-        extra: { documentGenereId, questionnaireId: q.id },
-      });
-    }
-  }
-}
-
-async function consequenceSignatureComplete(type: string, documentGenereId: string): Promise<void> {
-  // ── LA BOUCLE CONTRACTUELLE SE REFERME ICI, ET NULLE PART AILLEURS ────────
-  //
-  // 🔴 Défaut vécu en production le 2026-09-04. La convention AXI-DOC-2026-039
-  // a été signée par la cliente à 20:47 UTC, contresignée par l'organisme à
-  // 21:33 UTC, et RIEN N'EST PARTI. La cliente n'a jamais reçu l'exemplaire
-  // intégralement signé — alors que l'écran de retour du portail le lui promet
-  // mot pour mot : « … vous adressera l'exemplaire contresigné ».
-  //
-  // Pourquoi ICI, et pas dans les deux Server Actions qui appellent cette
-  // fonction : parce qu'elles sont DEUX. La cliente peut signer en dernier
-  // (canal jeton), l'organisme peut contresigner en dernier (canal admin), et
-  // la remise doit avoir lieu dans les deux cas. Deux branchements auraient
-  // divergé — c'est littéralement l'histoire de ce défaut, où le canal jeton
-  // notifiait par Telegram et le canal contresignature ne notifiait rien.
-  //
-  // ⚠️ AVANT les branches par type, jamais après : les deux branches ci-dessous
-  // se terminent par un `return`, et une remise placée en fin de fonction ne
-  // s'exécuterait que pour les devis.
-  //
-  // ⚠️ FAIL-SOFT, comme tout ce qui suit une signature : la preuve est déjà
-  // écrite et chaînée en base. Une panne d'e-mail, de R2 ou de Redis ne doit
-  // jamais annuler une signature valide. Ce qui reste dû est un ENVOI, et
-  // l'alerte `exemplaire_signe_non_transmis` le rattrape.
-  try {
-    const remise = await transmettreExemplaireSigne(documentGenereId);
-    if (!remise.ok && remise.motif !== "deja_transmis" && remise.motif !== "aucun_destinataire") {
-      // On ne lève pas, mais on ne se tait pas non plus : le silence est
-      // exactement ce qui a permis au défaut d'origine de vivre trois mois.
-      Sentry.captureMessage("Exemplaire signé non transmis", {
-        level: "warning",
-        tags: { action: "consequenceSignatureComplete:exemplaire", motif: remise.motif },
-        extra: { documentGenereId, type, detail: remise.detail },
-      });
-    }
-  } catch (err) {
-    Sentry.captureException(err, {
-      tags: { action: "consequenceSignatureComplete:exemplaire" },
-      extra: { documentGenereId, type },
-    });
-  }
-
-  if (PIECES_QUI_ENGAGENT_LACTION.has(type)) {
-    // Encapsulé : `declencherPositionnement` capture déjà par stagiaire, mais
-    // une panne AVANT la boucle (lecture de la pièce) remonterait ici et
-    // ferait échouer une signature valide.
-    try {
-      await declencherPositionnement(documentGenereId);
-    } catch (err) {
-      Sentry.captureException(err, {
-        tags: { action: "consequenceSignatureComplete:positionnement" },
-        extra: { documentGenereId, type },
-      });
-    }
-    return;
-  }
-  if (type !== "devis") return;
-  try {
-    // ⚠️ `updateMany` avec garde sur le statut : un devis déjà `accepte` ou
-    // `transforme_convention` ne doit pas être rétrogradé. `expire` est INCLUS
-    // depuis le cron devis-expiration (06:45) : validité échue à minuit,
-    // client qui signe à 06:00, webhook traité à 06:50 → la preuve de
-    // signature était écrite mais le devis restait « expiré » et
-    // createSessionAction le refusait sans explication. Une signature
-    // intégrale vaut accord, même reçue après l'échéance.
-    //
-    // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
-    // Canal Partners ouvert, les devis concernés sont relus SOUS LA MÊME GARDE avant l'écriture,
-    // puis émis un à un ; `emettreDevisSigne` n'émet que pour un devis relu `accepte`. Canal
-    // fermé, l'écriture est exactement celle d'avant, et rien n'est relu.
-    const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
-    await transactionDevisSigne(prisma, async (tx) => {
-      const concernes = await devisConcernesPourEmission(tx, garde);
-      await tx.devis.updateMany({
-        where: garde,
-        data: { statut: "accepte", acceptedAt: new Date() },
-      });
-      for (const id of concernes) await emettreDevisSigne(tx, id);
-    });
-  } catch (err) {
-    Sentry.captureException(err, {
-      tags: { action: "consequenceSignatureComplete" },
-      extra: { documentGenereId, type },
-    });
-  }
-}
-
-/**
- * Parties requises qui n'ont pas encore signé.
- *
- * 🔴 Sert l'ALERTE, et ce n'est pas cosmétique : « pièce incomplète » n'apprend
- * rien, « reste à signer : axionia » dit quoi faire. C'était tout l'objet du
- * correctif F15 — une signature reçue que personne ne remarque laisse la pièce
- * en attente indéfiniment, pendant que le signataire attend son exemplaire.
- *
- * ⚠️ Lue APRÈS l'écriture, donc la signature qu'on vient de poser en est déjà
- * exclue.
- */
-async function partiesManquantes(
-  documentGenereId: string,
-  requises: readonly PartieSignataire[],
-): Promise<string[]> {
-  const posees = await prisma.documentSignature.findMany({
-    where: { documentGenereId, revokedAt: null },
-    select: { partie: true },
-  });
-  const vues = new Set(posees.map((p) => p.partie));
-  return requises.filter((p) => !vues.has(p));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -535,28 +299,17 @@ export async function signerPieceParJetonAction(input: {
     });
     if (!res.ok) return res;
 
-    if (res.statutSignature === "signee") {
-      await consequenceSignatureComplete(piece.type, verif.documentGenereId);
-    }
-
-    // 🔴 PRÉVENIR. Sans cette alerte, une partie signe et PERSONNE ne le sait.
-    //
-    // La pièce reste alors `partielle` indéfiniment : elle attend la
-    // contresignature de l'organisme, qui ne viendra pas puisque rien ne l'a
-    // signalée. Le signataire, lui, attend son exemplaire contresigné. C'est une
-    // panne silencieuse, de la même famille que le F4 corrigé le 2026-07-26 —
-    // « une panne de signature doit REMONTER ».
-    //
-    // ⚠️ Aucune donnée personnelle : Telegram est un canal tiers. Le numéro de
-    // pièce suffit à agir. `.catch()` — une panne Telegram ne doit jamais
-    // annuler une signature déjà écrite et chaînée.
-    sendTelegram({
-      tag: "AUTO",
-      body:
-        res.statutSignature === "signee"
-          ? `✅ ${circuit.libelle} ${piece.numero} : intégralement signée.`
-          : `✍️ ${circuit.libelle} ${piece.numero} : signature reçue (${verif.partie}). Reste à signer : ${(await partiesManquantes(verif.documentGenereId, circuit.parties)).join(", ")}.`,
-    }).catch(() => {});
+    // Remise, alerte « reste à signer », copie partielle et conséquences
+    // métier : un seul après-signature pour les six actions (S6a).
+    await apresSignature({
+      documentGenereId: verif.documentGenereId,
+      type: piece.type,
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: verif.partie,
+      acteur: { type: "signataire" },
+      canal: "lien_a_jeton",
+    });
 
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {
@@ -598,15 +351,30 @@ export async function contresignerPieceAction(input: {
   imageDataUrl?: string;
 }): Promise<ResultatSignaturePiece> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
-    return {
-      ok: false,
-      raison: "role_insuffisant",
-      message:
-        "Signer une pièce contractuelle engage l'organisme : seuls un administrateur ou le dirigeant peuvent le faire.",
-    };
-  }
+  if (!peutSignerPourOrganisme(session.role)) return { ...REFUS_ROLE_ORGANISME };
+  return contresignerUne(session, input);
+}
 
+const REFUS_ROLE_ORGANISME = {
+  ok: false,
+  raison: "role_insuffisant",
+  message:
+    "Signer une pièce contractuelle engage l'organisme : seuls un administrateur ou le dirigeant peuvent le faire.",
+} as const satisfies ResultatSignaturePiece;
+
+/**
+ * Contresignature d'UNE pièce, la session déjà gardée. Partagée par l'action
+ * unitaire et l'action par lot : la garde d'ordre, l'objection métier, la
+ * preuve et l'après-signature sont les mêmes, pièce par pièce.
+ */
+async function contresignerUne(
+  session: AdminSession,
+  input: {
+    documentGenereId: string;
+    methode: "trace" | "confirmation_accessible";
+    imageDataUrl?: string;
+  },
+): Promise<ResultatSignaturePiece> {
   const parse = entreeContresignatureSchema.safeParse(input);
   if (!parse.success) {
     return {
@@ -673,9 +441,14 @@ export async function contresignerPieceAction(input: {
     });
     if (!res.ok) return res;
 
-    if (res.statutSignature === "signee") {
-      await consequenceSignatureComplete(piece.type, donnees.documentGenereId);
-    }
+    await apresSignature({
+      documentGenereId: donnees.documentGenereId,
+      type: piece.type,
+      numero: piece.numero,
+      statutSignature: res.statutSignature,
+      partie: "axionia",
+      acteur: { type: "administrateur", session },
+    });
 
     await logQualiopiActivity({
       action: "qualiopi.piece.contresignature",
@@ -696,4 +469,81 @@ export async function contresignerPieceAction(input: {
     Sentry.captureException(err, { tags: { action: "contresignerPieceAction" } });
     throw err;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Contresignature PAR LOT — S6a (i)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Plafond d'un lot : au-delà, l'écran découpe. Borne le travail d'un appel. */
+const TAILLE_MAX_LOT = 50;
+
+export type ResultatLotContresignature =
+  | {
+      ok: true;
+      resultats: ReadonlyArray<{ documentGenereId: string } & ResultatSignaturePiece>;
+      signees: number;
+      refusees: number;
+    }
+  | { ok: false; raison: "role_insuffisant" | "requete_invalide"; message: string };
+
+const entreeLotSchema = z.object({
+  ids: z.array(z.string().uuid()).min(1).max(TAILLE_MAX_LOT),
+  methode: z.enum(["trace", "confirmation_accessible"]),
+  imageDataUrl: z.string().max(3_000_000).optional(),
+});
+
+/**
+ * L'organisme contresigne PLUSIEURS pièces d'un même geste.
+ *
+ * 🔑 Une ligne de preuve PAR PIÈCE : chaque pièce passe par la contresignature
+ * unitaire, avec ses gardes (ordre du circuit, objection métier) et son
+ * après-signature. Un lot n'est pas une signature collective — c'est N
+ * signatures, chacune scellée sur l'empreinte de SA pièce.
+ *
+ * ⚠️ Une pièce refusée ne bloque pas les autres : le résultat dit, pièce par
+ * pièce, ce qui a été signé et pourquoi le reste ne l'a pas été. Une panne
+ * inattendue sur une pièce est rendue comme un refus de cette pièce seule.
+ */
+export async function contresignerParLotAction(input: {
+  ids: string[];
+  methode: "trace" | "confirmation_accessible";
+  imageDataUrl?: string;
+}): Promise<ResultatLotContresignature> {
+  const session = await requireAdminWrite();
+  if (!peutSignerPourOrganisme(session.role)) {
+    return { ok: false, raison: "role_insuffisant", message: REFUS_ROLE_ORGANISME.message };
+  }
+  const parse = entreeLotSchema.safeParse(input);
+  if (!parse.success) {
+    return {
+      ok: false,
+      raison: "requete_invalide",
+      message: `Sélectionnez entre 1 et ${TAILLE_MAX_LOT} pièces.`,
+    };
+  }
+  const { ids, methode, imageDataUrl } = parse.data;
+
+  const resultats: Array<{ documentGenereId: string } & ResultatSignaturePiece> = [];
+  // Séquentiel, et c'est voulu : la chaîne de hachage des signatures est
+  // ordonnée, et un lot ne doit pas mettre N transactions en concurrence.
+  for (const documentGenereId of [...new Set(ids)]) {
+    let r: ResultatSignaturePiece;
+    try {
+      r = await contresignerUne(session, {
+        documentGenereId,
+        methode,
+        ...(imageDataUrl === undefined ? {} : { imageDataUrl }),
+      });
+    } catch {
+      r = {
+        ok: false,
+        raison: "stockage",
+        message: "Cette pièce n'a pas pu être signée. Réessayez-la seule.",
+      };
+    }
+    resultats.push({ documentGenereId, ...r });
+  }
+  const signees = resultats.filter((r) => r.ok).length;
+  return { ok: true, resultats, signees, refusees: resultats.length - signees };
 }

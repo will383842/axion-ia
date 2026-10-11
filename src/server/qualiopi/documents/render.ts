@@ -69,11 +69,18 @@ export async function renderPdfToBuffer(element: React.ReactElement): Promise<Pd
  *   - `uploadToR2(key, buffer, contentType?, metadata?): Promise<UploadResult>`
  *   - `getSignedUrlR2(key, expiresInSeconds?): Promise<string>`
  */
-export async function storeAndSignPdf(buffer: Buffer, key: string): Promise<string | null> {
+export async function storeAndSignPdf(
+  buffer: Buffer,
+  key: string,
+  metadata?: Record<string, string>,
+): Promise<string | null> {
   if (!isR2Configured()) {
     return null;
   }
-  await uploadToR2(key, buffer, "application/pdf");
+  // `metadata` : métadonnées R2 de l'objet (ex. empreintes de l'exemplaire
+  // signé, lot S6a). Absentes, l'appel est strictement celui d'avant.
+  if (metadata === undefined) await uploadToR2(key, buffer, "application/pdf");
+  else await uploadToR2(key, buffer, "application/pdf", metadata);
   const signedUrl = await getSignedUrlR2(key, 900);
   return signedUrl;
 }

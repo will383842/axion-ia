@@ -53,6 +53,7 @@
  *     `exemplaire_signe_non_transmis` le rattrape.
  */
 
+import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { documentPdfKey } from "@/lib/r2-storage";
 import { storeAndSignPdf } from "@/server/qualiopi/documents/render";
@@ -101,6 +102,32 @@ export function exemplaireSignePdfKey(doc: {
   // non UTC) est déjà tranchée là-bas — la redériver ici la ferait diverger un
   // 31 décembre au soir.
   return documentPdfKey(doc).replace(/\.pdf$/, "-signe.pdf");
+}
+
+/**
+ * Métadonnées R2 d'un exemplaire (S6a, k) : l'empreinte COMPLÈTE de la pièce
+ * scellée — celle que la signature a scellée — et celle du PDF transmis.
+ *
+ * 🔑 Les deux, et pas l'une pour l'autre : l'exemplaire est un rendu DÉRIVÉ,
+ * son empreinte diffère toujours de celle de l'original. Qui retrouve le
+ * fichier dans le stockage doit pouvoir le rattacher à la pièce signée sans
+ * ouvrir la base.
+ */
+export function metadonneesEmpreinte(
+  empreintePiece: string | null | undefined,
+  exemplaire: Buffer,
+): Record<string, string> {
+  const piece = (empreintePiece ?? "").trim();
+  return {
+    "empreinte-exemplaire-sha256": createHash("sha256").update(exemplaire).digest("hex"),
+    ...(piece !== "" ? { "empreinte-piece-sha256": piece } : {}),
+  };
+}
+
+/** L'empreinte de la pièce scellée, en ENTIER, pour le courriel de remise. */
+function champEmpreinte(empreintePiece: string | null | undefined): { empreinte?: string } {
+  const piece = (empreintePiece ?? "").trim();
+  return piece !== "" ? { empreinte: piece } : {};
 }
 
 /**
@@ -153,6 +180,7 @@ export async function transmettreExemplaireSigne(
       annuleeAt: true,
       exemplaireSigneEnvoyeAt: true,
       clientId: true,
+      hashSha256: true,
       signatures: {
         where: { revokedAt: null },
         select: { partie: true, signataireEmail: true, signataireNom: true },
@@ -198,7 +226,11 @@ export async function transmettreExemplaireSigne(
   }
 
   const r2Key = exemplaireSignePdfKey(piece);
-  const archive = await storeAndSignPdf(rendu.buffer, r2Key).catch(() => null);
+  const archive = await storeAndSignPdf(
+    rendu.buffer,
+    r2Key,
+    metadonneesEmpreinte(piece.hashSha256, rendu.buffer),
+  ).catch(() => null);
   if (archive === null) {
     // `storeAndSignPdf` rend `null` quand R2 n'est pas configuré. Sans clé R2,
     // `enqueueEmail` ne peut PAS joindre le PDF — et un e-mail qui annonce un
@@ -222,6 +254,7 @@ export async function transmettreExemplaireSigne(
         signataires: piece.signatures
           .filter((s) => s.signataireNom.trim().length > 0)
           .map((s) => s.signataireNom),
+        ...champEmpreinte(piece.hashSha256),
       },
       {
         attachments: [{ filename: rendu.nomFichier, r2Key, contentType: "application/pdf" }],
@@ -246,4 +279,121 @@ export async function transmettreExemplaireSigne(
     .catch(() => undefined);
 
   return { ok: true, destinataires, r2Key };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Copie PARTIELLE — S6a (a)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type ResultatCopiePartielle =
+  | { readonly ok: true; readonly r2Key: string }
+  | {
+      readonly ok: false;
+      readonly motif:
+        | "organisme"
+        | "pas_partielle"
+        | "annulee"
+        | "aucun_destinataire"
+        | "rendu_impossible"
+        | "archivage_impossible"
+        | "file_indisponible";
+    };
+
+/** Clé d'archive de la copie partielle d'UNE partie — jamais celle de l'exemplaire. */
+export function copiePartiellePdfKey(
+  doc: { type: string; numero: string; createdAt: Date },
+  partie: string,
+): string {
+  return documentPdfKey(doc).replace(/\.pdf$/, `-copie-${partie}.pdf`);
+}
+
+/**
+ * Remet au signataire qui vient de signer une COPIE de la pièce portant sa
+ * signature, quand d'autres parties doivent encore signer.
+ *
+ * Pourquoi : sans elle, un signataire n'a AUCUNE trace de son geste tant que
+ * l'organisme n'a pas contresigné — et la contresignature peut attendre des
+ * jours. Le courriel dit explicitement que l'exemplaire complet suivra : la
+ * copie ne se fait pas passer pour l'accord conclu.
+ *
+ * ⚠️ Jamais à l'organisme, jamais sur une pièce complète (c'est le rôle de
+ * l'exemplaire), jamais sur une pièce annulée. Ne lève jamais.
+ * Une partie ne signe qu'une fois une pièce : un appel par signature suffit à
+ * l'unicité, sans colonne de revendication.
+ */
+export async function transmettreCopiePartielle(
+  documentGenereId: string,
+  partie: string,
+): Promise<ResultatCopiePartielle> {
+  if (partie === PARTIE_ORGANISME) return { ok: false, motif: "organisme" };
+  try {
+    const piece = await prisma.documentGenere.findUnique({
+      where: { id: documentGenereId },
+      select: {
+        id: true,
+        type: true,
+        numero: true,
+        createdAt: true,
+        statutSignature: true,
+        annuleeAt: true,
+        clientId: true,
+        hashSha256: true,
+        signatures: {
+          where: { revokedAt: null, partie: partie as never },
+          select: { signataireEmail: true, signataireNom: true },
+          take: 1,
+        },
+      },
+    });
+    if (piece === null) return { ok: false, motif: "rendu_impossible" };
+    if (piece.statutSignature !== "partielle") return { ok: false, motif: "pas_partielle" };
+    if (piece.annuleeAt !== null) return { ok: false, motif: "annulee" };
+    const signataire = piece.signatures[0];
+    const to = (signataire?.signataireEmail ?? "").trim();
+    if (to === "") return { ok: false, motif: "aucun_destinataire" };
+
+    const rendu = await rendreExemplaireSigne(piece.id).catch(() => null);
+    if (rendu === null || !rendu.ok) return { ok: false, motif: "rendu_impossible" };
+
+    const r2Key = copiePartiellePdfKey(piece, partie);
+    const archive = await storeAndSignPdf(
+      rendu.buffer,
+      r2Key,
+      metadonneesEmpreinte(piece.hashSha256, rendu.buffer),
+    ).catch(() => null);
+    if (archive === null) return { ok: false, motif: "archivage_impossible" };
+
+    const libellePiece = circuitPour(piece.type)?.libelle ?? "la pièce";
+    const res = await enqueueEmail(
+      "piece-exemplaire-signe",
+      to,
+      "fr",
+      {
+        numero: piece.numero,
+        libellePiece,
+        partielle: true,
+        ...(signataire !== undefined && signataire.signataireNom.trim() !== ""
+          ? { signataires: [signataire.signataireNom] }
+          : {}),
+        ...champEmpreinte(piece.hashSha256),
+      },
+      {
+        attachments: [
+          {
+            filename: rendu.nomFichier.replace(/\.pdf$/, "-copie.pdf"),
+            r2Key,
+            contentType: "application/pdf",
+          },
+        ],
+        entityType: "DocumentGenere",
+        entityId: piece.id,
+        clientId: piece.clientId,
+        sujet: `Copie de votre signature — ${libellePiece} ${piece.numero}`,
+      },
+    ).catch(() => ({ enqueued: false }) as const);
+    if (!res.enqueued) return { ok: false, motif: "file_indisponible" };
+    return { ok: true, r2Key };
+  } catch {
+    return { ok: false, motif: "rendu_impossible" };
+  }
 }

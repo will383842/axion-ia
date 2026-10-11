@@ -64,7 +64,8 @@ export type TypeGabaritSignable =
   | "contrat_travail"
   | "releve_connexion"
   | "lettre_mission"
-  | "mandat_opco";
+  | "mandat_opco"
+  | "autorisation_captation";
 
 /**
  * Version courante du texte rendu, par type de pièce.
@@ -86,6 +87,7 @@ export type TypeGabaritSignable =
  * | `convention` | 5 | 04/10 — INT-T65-A : clause « 5 bis. Condition suspensive de prise en charge par l'opérateur de compétences » (texte de la juriste A07 validé par Williams, axion-apporteurs#656 commentaire 5978462914), imprimée SEULEMENT si la case est cochée. Sans la case, le texte imprimé est celui de la v4 ; l'incrément est gardé par prudence (cf. ci-dessous). **v4 archivée** |
  * | `convention_tripartite` | 5 | 04/10 — même clause, mot pour mot. **v4 archivée** |
  * | `mandat_opco` | 1 | 04/10 — premier texte (INT-T66-A) : mandat spécial, limité, révocable, sans pouvoir de recevoir des fonds ; relu par la juriste avant fusion |
+ * | `autorisation_captation` | 1 | 10/10 — S6a : entre dans la table pour être rendue en exemplaire signé ; texte inchangé depuis l'origine |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -160,6 +162,13 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   releve_connexion: 2,
   lettre_mission: 1,
   mandat_opco: 1,
+  /*
+    v1 — 10/10/2026, S6a : le consentement devient rendable en exemplaire signé.
+    Le texte n'a pas bougé ; c'est son ENTRÉE dans cette table qui date de ce
+    jour. Les pièces émises avant ne portent pas de version : elles se lisent
+    v1, ce qui est exact — c'est le seul texte qui ait existé.
+  */
+  autorisation_captation: 1,
 };
 
 /**

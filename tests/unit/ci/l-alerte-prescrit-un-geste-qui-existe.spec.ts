@@ -54,7 +54,9 @@ function lire(relatif: string): string {
 
 const EVALUATEUR = lire("src/server/qualiopi/alertes/evaluateur.ts");
 const ACTIONS_DOCUMENTS = lire("src/server/actions/qualiopi/documents.ts");
-const PIECE_SIGNATURE = lire("src/server/actions/qualiopi/piece-signature.ts");
+// Lot S6a : le crochet de signature a quitté `piece-signature.ts` pour
+// l'après-signature commun, appelé par les six actions de signature.
+const PIECE_SIGNATURE = lire("src/server/qualiopi/documents/signature/apres-signature.ts");
 const TRANSMISSION = lire("src/server/qualiopi/documents/signature/transmission-exemplaire.ts");
 const ECRAN = lire("src/components/admin/qualiopi/DocumentsSection.tsx");
 const PAGE_SESSION = lire("src/app/[locale]/(admin)/[adminPrefix]/qualiopi/sessions/[id]/page.tsx");
