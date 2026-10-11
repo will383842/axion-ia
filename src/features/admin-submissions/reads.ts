@@ -97,7 +97,7 @@ export interface SubmissionListItem {
    * details.sansSuiteAt — horodatage du classement « sans suite ».
    *
    * 🔑 CE N'EST PAS UN SYNONYME D'ARCHIVÉ, et c'est tout l'intérêt. Les deux
-   * écrivent `status: archived` (une seule vérité pour la purge à 24 mois),
+   * écrivent `status: archived` (une seule vérité pour l'état du dossier),
    * mais « archivé » veut dire « rangé » et « sans suite » veut dire « on a
    * décidé de ne pas donner suite ». Sans cette marque, la console ne sait plus
    * distinguer un dossier qu'on a écarté d'un dossier qu'on a simplement rangé.

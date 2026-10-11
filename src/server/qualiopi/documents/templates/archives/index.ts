@@ -39,7 +39,6 @@ import { ConventionPdf as ConventionPdfV4 } from "./convention.v4";
 import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./convention-tripartite.v4";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
-import { LettreMissionPdf as LettreMissionPdfV1 } from "./lettre-mission.v1";
 
 export type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
 
@@ -81,16 +80,6 @@ export const GABARITS_ARCHIVES: Readonly<
     1: {
       fichier: "releve-connexion.v1.tsx",
       Composant: ReleveConnexionPdfV1 as unknown as ComposantPiece,
-    },
-  },
-  // Lot S5 (10/10/2026) — la lettre v2 d'une page devient le gabarit courant.
-  // La v1 reste celle de TOUTE lettre déjà émise, et de toute lettre émise
-  // tant que l'interrupteur `formateurs.lettre_v2` est coupé (le générateur la
-  // date alors explicitement v1). Copie à l'identique de `lettre-mission.tsx`.
-  lettre_mission: {
-    1: {
-      fichier: "lettre-mission.v1.tsx",
-      Composant: LettreMissionPdfV1 as unknown as ComposantPiece,
     },
   },
 };

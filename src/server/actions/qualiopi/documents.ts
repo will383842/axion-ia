@@ -2052,8 +2052,10 @@ export async function genererLettreMissionAction(input: {
     // `trainerId` en plus de la session : c'est lui qui rend la pièce
     // retrouvable et signable sans détour par la session (cf. lettre-cadre).
     refs: { sessionId, ...(principalTrainerId !== null ? { trainerId: principalTrainerId } : {}) },
-    // Lot S5 — la v2 est devenue le gabarit courant ; ce texte-ci est la v1
-    // archivée, et son exemplaire signé doit être rendu avec elle.
+    // Lot S5 — ce texte-ci est la v1, version émise par défaut ; la v2 n'est
+    // qu'une version ARRÊTÉE en avance. On la date explicitement : si la v2
+    // devenait un jour la courante sans archiver la v1, l'émission échouerait
+    // au lieu de sceller une pièce rejouée avec un autre texte.
     gabaritVersion: 1,
   });
 
@@ -2538,7 +2540,7 @@ export async function genererLettreMissionCadreAction(input: {
         identite,
       }),
     refs: { trainerId },
-    // Lot S5 — la lettre-CADRE imprime le texte v1 (archivé) : on le date tel.
+    // Lot S5 — la lettre-CADRE imprime le texte v1 : on le date tel.
     gabaritVersion: 1,
     metadata: {
       lettreCadre: {

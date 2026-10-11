@@ -279,7 +279,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Dubaï, Émirats Arabes Unis (hors UE)",
     serversLocation: "Émirats Arabes Unis + edge global",
     purposeFr:
-      "Notifications administratives via Bot API à destination du gérant : alertes d'exploitation, et remontée immédiate des demandes entrantes pour permettre un rappel rapide.",
+      "Notifications administratives via Bot API à destination du gérant : alertes d'exploitation, et signalement immédiat des demandes entrantes avec un lien vers la fiche dans la console.",
     purposeEn: "Admin notifications via Bot API to the manager (operations alerts).",
     // 🔴 `D6-5-C2` (2026-08-20) — cette ligne affirmait « PII minimisée : email
     // partiel, initiales, téléphone partiel ». C'était FAUX pour l'essentiel du
@@ -292,15 +292,14 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // `notifications/format.ts` transmet nom, e-mail, téléphone et le message
     // ENTIER, en clair.
     //
-    // 🔑 Ce n'est pas un défaut de comportement : `notifications/types.ts` le
-    // documente comme délibéré (« l'équipe doit pouvoir rappeler »), et c'est
-    // une décision légitime du responsable de traitement. Le défaut était de ne
-    // pas le DIRE. La transparence (art. 13-14 RGPD) n'exige pas de minimiser
-    // ici — elle exige de déclarer ce qui part réellement.
+    // 🔑 Depuis le 11/10/2026 (décision du responsable de traitement), toutes
+    // les alertes suivent une règle unique : prénom + initiale du nom, et un
+    // lien vers la fiche console (`notifications/personne.ts`). Le garde-fou
+    // `telegram-sans-coordonnees-personnelles.spec.ts` le vérifie sur tout `src/`.
     dataCategoriesFr:
-      "Deux régimes selon la nature de l'alerte. **Demandes RGPD** : données minimisées (e-mail partiel `j****@acme.com`, initiales `J. D.`) — la référence du dossier suffit à la traiter. **Alertes commerciales et de recrutement** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous) : nom, adresse e-mail, téléphone et contenu du message transmis EN CLAIR, afin que l'organisme puisse rappeler la personne. S'y ajoutent sociétés, villes, dates, montants et identifiants techniques.",
+      "Données minimisées pour toutes les alertes. **Demandes RGPD** : initiales (`J. D.`) et référence du dossier. **Autres alertes** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous, avis) : prénom et initiale du nom (« Marie D. »), nom de l'entreprise, ville, provenance, montant ou statut, et un lien vers la fiche dans la console. Aucune adresse e-mail, aucun numéro de téléphone ni aucun contenu de message ne sont transmis. S'y ajoutent dates et identifiants techniques.",
     dataCategoriesEn:
-      "Two regimes depending on the alert. **GDPR requests**: minimised data (partial email `j****@acme.com`, initials `J. D.`) — the case reference is enough to handle them. **Sales and recruitment alerts** (contact form, quote/audit/intervention request, job application, invitation, booking): full name, email address, phone number and message body sent IN CLEAR, so that the organisation can call the person back. Plus company names, cities, dates, amounts and technical identifiers.",
+      'Minimised data for every alert. **GDPR requests**: initials (`J. D.`) and case reference. **Other alerts** (contact form, quote/audit/intervention request, job application, invitation, booking, review): first name and last-name initial ("Marie D."), company name, city, origin, amount or status, and a link to the record in the admin console. No email address, phone number or message content is sent. Plus dates and technical identifiers.',
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "scc",
@@ -577,9 +576,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // pas. « Une notice qui minimise un flux réel est plus grave qu'une notice
     // absente » est écrit plus haut dans ce fichier : ça vaut contre nous aussi.
     dataCategoriesFr:
-      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion. La session n'est ni enregistrée ni transcrite. Ce que nous conservons ensuite : le rapport des participants tel que Zoom l'exporte — nom, adresse email, heures d'entrée et de sortie, durée — archivé cinq ans comme preuve d'assiduité, ainsi que les heures de connexion rattachées à chaque stagiaire.",
+      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion. La session n'est ni enregistrée ni transcrite. Ce que nous conservons ensuite : le rapport des participants tel que Zoom l'exporte — nom, adresse email, heures d'entrée et de sortie, durée — conservé comme preuve d'assiduité tant que la relation dure, puis le temps des délais légaux de réclamation, ainsi que les heures de connexion rattachées à chaque stagiaire.",
     dataCategoriesEn:
-      "Audio and video streams of the session, display name, trainee email address, IP address and connection data. Sessions are neither recorded nor transcribed. What we then retain: the participant report exactly as Zoom exports it — name, email address, join and leave times, duration — archived for five years as proof of attendance, together with the connection times matched to each trainee.",
+      "Audio and video streams of the session, display name, trainee email address, IP address and connection data. Sessions are neither recorded nor transcribed. What we then retain: the participant report exactly as Zoom exports it — name, email address, join and leave times, duration — kept as proof of attendance for as long as the relationship lasts, then for the statutory limitation periods for claims, together with the connection times matched to each trainee.",
     // Suivre une formation à distance, c'est l'exécution du contrat de
     // formation lui-même : la visioconférence EST la prestation vendue.
     legalBasis: "6.1.b_contract",

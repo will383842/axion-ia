@@ -418,6 +418,12 @@ export const routing = defineRouting({
       fr: "/completer-ma-candidature",
       en: "/completer-ma-candidature",
     },
+    // Lien « Supprimer ma candidature » des e-mails aux candidats (2026-10-11).
+    // Même chemin en fr et en, pour la même raison que `/vivier-opposition`.
+    "/candidature/supprimer": {
+      fr: "/candidature/supprimer",
+      en: "/candidature/supprimer",
+    },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/mes-donnees/export": { fr: "/mes-donnees/export", en: "/my-data/export" },
