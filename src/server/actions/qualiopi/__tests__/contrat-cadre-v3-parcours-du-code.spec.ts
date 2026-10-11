@@ -54,7 +54,11 @@ const { DOC, TRAINER } = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => {
   let horloge = 0;
   const documentSignatureCode = {
-    create: async ({ data }: { data: Omit<LigneCode, "essais" | "utiliseAt" | "invalideAt" | "createdAt"> }) => {
+    create: async ({
+      data,
+    }: {
+      data: Omit<LigneCode, "essais" | "utiliseAt" | "invalideAt" | "createdAt">;
+    }) => {
       const l: LigneCode = {
         ...data,
         essais: 0,
@@ -84,7 +88,8 @@ vi.mock("@/lib/prisma", () => {
       [...h.codes].sort(parDate).find((l) => correspond(l, where)) ?? null,
     findMany: async ({ where }: { where: Filtre }) =>
       [...h.codes].sort(parDate).filter((l) => correspond(l, where)),
-    count: async ({ where }: { where: Filtre }) => h.codes.filter((l) => correspond(l, where)).length,
+    count: async ({ where }: { where: Filtre }) =>
+      h.codes.filter((l) => correspond(l, where)).length,
   };
   const piece = {
     type: "contrat_sous_traitance",
