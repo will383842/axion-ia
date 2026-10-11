@@ -91,3 +91,28 @@ export function estCandidatureFormateurFreelance(
     offre?.secondaryEmploymentType === EMPLOI_CONTRACTOR
   );
 }
+
+// ─── Lot L0g — la nature de l'offre (squelette, test rouge) ──────────────────
+
+export type NatureCollaborationOffre = "salarie" | "freelance";
+
+export function estOffreFormateurFreelance(
+  _offre: OffreLue & { readonly natureCollaboration?: NatureCollaborationOffre | null | undefined },
+  _options: { readonly natureLue: boolean },
+): boolean {
+  throw new Error("L0g : non implémenté");
+}
+
+export function natureCollaborationDeduite(_offre: OffreLue): NatureCollaborationOffre {
+  throw new Error("L0g : non implémenté");
+}
+
+export function natureAEnregistrer(_e: {
+  readonly natureLue: boolean;
+  readonly offre: OffreLue;
+  readonly actuelle: NatureCollaborationOffre | null;
+  readonly demandee?: NatureCollaborationOffre | null | undefined;
+  readonly aDesCandidatures?: boolean | undefined;
+}): { ok: true; nature: NatureCollaborationOffre } | { ok: false; error: string } {
+  throw new Error("L0g : non implémenté");
+}

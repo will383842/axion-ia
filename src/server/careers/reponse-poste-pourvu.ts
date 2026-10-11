@@ -201,6 +201,7 @@ function exclusionFormateurFreelance(): Prisma.JobApplicationWhereInput[] {
 export function critereEligible(
   maintenant: Date,
   idsTunnel: readonly string[] = [],
+  _options: { readonly natureOffreLue?: boolean } = {},
 ): Prisma.JobApplicationWhereInput {
   return {
     status: "new",
