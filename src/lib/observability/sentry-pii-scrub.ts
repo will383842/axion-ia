@@ -92,6 +92,8 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   /(\/apporteur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   // Page publique de signature (S6b) : `/portail/signer/<jeton>`.
   /(\/portail\/signer\/)[^/?#]+/gi,
+  // Dossier en ligne d'un formateur indépendant (lot L5) : `/formateur/dossier/<uuid>/<jeton>`.
+  /(\/formateur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
 ];
 
 /** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */
@@ -122,7 +124,8 @@ function redactString(input: unknown): unknown {
  * Et le dossier en ligne d'un apporteur (`/apporteur/dossier/…`, 2026-10-05) : son
  * corps de requête porte l'IBAN, le téléphone et les pièces déposées.
  * Et la page publique de signature (`/portail/signer/…`, S6b) : son corps porte le
- * code de signature à usage unique saisi par le signataire.
+ * code de signature à usage unique saisi par le signataire. De même pour le dossier en
+ * ligne d'un formateur indépendant (`/formateur/dossier/…`, lot L5).
  *
  * Le SDK serveur capture par défaut le CORPS des requêtes entrantes
  * (`event.request.data`, ~10 Ko) malgré `sendDefaultPii: false`. Sur ces
@@ -132,7 +135,7 @@ function redactString(input: unknown): unknown {
  * on SUPPRIME, sans chercher à reconnaître.
  */
 const ROUTE_A_REQUETE_SECRETE =
-  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer)(?:\/|$)/i;
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier)(?:\/|$)/i;
 
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);
