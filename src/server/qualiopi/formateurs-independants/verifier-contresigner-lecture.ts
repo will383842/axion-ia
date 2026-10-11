@@ -19,6 +19,7 @@ import { etatControle, LIBELLES_MOTIFS, type MotifControle } from "./controle-re
 import { versionDuContrat } from "./faits-activation";
 import {
   VERSION_MINIMALE_CONTRAT_INDEPENDANT,
+  cvProbant,
   vigilanceProuvee,
 } from "./garde-activation-complete";
 import type { FaitsW4, PieceW4 } from "./verifier-contresigner-regles";
@@ -37,16 +38,21 @@ export interface EcranW4 {
   readonly liens: ReadonlyArray<LienPiece>;
   readonly lienAttestation: string | null;
   readonly formations: ReadonlyArray<{ id: string; titre: string; habilite: boolean }>;
+  /** TOUTES les habilitations actives, quelle que soit la formation affichée. */
+  readonly habilitationsActives: ReadonlyArray<string>;
 }
 
-function raisonControle(motif: string | null): string | null {
-  if (motif === null || motif.trim() === "") return null;
-  const libelles = motif
+/** Codes `MotifControle` d'une ligne de contrôle (texte libre ignoré). */
+export function motifsControle(motif: string | null): MotifControle[] {
+  if (motif === null || motif.trim() === "") return [];
+  return motif
     .split(",")
     .map((m) => m.trim())
-    .filter((m): m is MotifControle => Object.prototype.hasOwnProperty.call(LIBELLES_MOTIFS, m))
-    .map((m) => LIBELLES_MOTIFS[m]);
-  return libelles.length > 0 ? libelles.join(" ") : null;
+    .filter((m): m is MotifControle => Object.prototype.hasOwnProperty.call(LIBELLES_MOTIFS, m));
+}
+
+function raisonControle(motifs: ReadonlyArray<MotifControle>): string | null {
+  return motifs.length > 0 ? motifs.map((m) => LIBELLES_MOTIFS[m]).join(" ") : null;
 }
 
 function pieceW4(
@@ -138,13 +144,14 @@ export async function lireEcranVerifierContresigner(
       },
     }),
     prisma.formation.findMany({
-      where: { statut: "actif" },
+      where: { statut: { in: ["actif", "publie"] } },
       orderBy: { titre: "asc" },
       select: { id: true, titre: true },
     }),
   ]);
 
   const etat = etatControle(controles, maintenant);
+  const cvDoc = t.documents.find((d) => d.type === "cv" && d.statutValidation !== "rejete");
   const derniere = controles[0];
   // Raison du contrôle jugé (celui qui a été validé, pour un orange validé).
   const jugee = controles.find((c) => c.source !== "validation_administrateur") ?? derniere;
@@ -164,7 +171,8 @@ export async function lireEcranVerifierContresigner(
     controle: {
       statut: etat.statut,
       dernierAt: etat.dernierAt,
-      raison: raisonControle(jugee?.motif ?? null),
+      raison: raisonControle(motifsControle(jugee?.motif ?? null)),
+      motifs: motifsControle(jugee?.motif ?? null),
     },
     nda: {
       renseigne: (t.sousTraitantNda ?? "").trim() !== "",
@@ -181,6 +189,9 @@ export async function lireEcranVerifierContresigner(
           },
     pieces: { cv, rcPro, rib },
     dossier: {
+      // Même test que la règle complète, sur la pièce telle qu'elle sera validée.
+      cvDate:
+        cvDoc !== undefined && cvProbant([{ ...cvDoc, statutValidation: "valide" }], maintenant),
       regimeTva: t.regimeTvaHonoraires !== null,
       iban: typeof t.iban === "string" && t.iban !== "",
       declarations: (t.declarationsVersion ?? "").trim() !== "",
@@ -208,5 +219,6 @@ export async function lireEcranVerifierContresigner(
     liens,
     lienAttestation: att !== undefined && aUnFichier(att.fichierUrl) ? att.fichierUrl : null,
     formations: formations.map((f) => ({ ...f, habilite: habilitees.has(f.id) })),
+    habilitationsActives: [...habilitees],
   };
 }

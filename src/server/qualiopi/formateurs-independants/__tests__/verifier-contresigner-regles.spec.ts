@@ -10,6 +10,7 @@ import {
   blocsW4,
   manquesPourContresigner,
   raisonGrise,
+  motifRefus,
   refusPossible,
   type FaitsW4,
   type SaisieW4,
@@ -23,11 +24,16 @@ const piece = (statutValidation = "en_attente") => ({
 
 function faits(extra: Partial<FaitsW4> = {}): FaitsW4 {
   return {
-    controle: { statut: "vert", dernierAt: new Date("2026-10-11T07:12:00Z"), raison: null },
+    controle: {
+      statut: "vert",
+      dernierAt: new Date("2026-10-11T07:12:00Z"),
+      raison: null,
+      motifs: [],
+    },
     nda: { renseigne: true, vuSurListe: true },
     attestation: { id: "att", statutValidation: "en_attente", code: "A1B2C3D4", prouvee: false },
     pieces: { cv: piece(), rcPro: null, rib: piece() },
-    dossier: { regimeTva: true, iban: true, declarations: true },
+    dossier: { cvDate: true, regimeTva: true, iban: true, declarations: true },
     habilitationsActives: 0,
     contrat: { id: "c", numero: "CST-1", statutSignature: "partielle" },
     actif: false,
@@ -86,16 +92,26 @@ describe("écran W-4 — bouton grisé avec la raison (maquette)", () => {
       controle: {
         statut: "rouge",
         dernierAt: null,
-        raison: "L'entreprise est cessée au registre.",
+        raison: null,
+        motifs: ["etablissement_ferme"],
       },
     });
     expect(manquesPourContresigner(f, coche)).toContain("une entreprise active au registre");
     expect(refusPossible(f)).toBe(true);
     expect(refusPossible(faits())).toBe(false);
+    // F13 dit « entreprise fermée » pour un établissement fermé (code, pas libellé).
+    expect(motifRefus(f)).toBe("entreprise fermée");
   });
 
   it("registre orange : « J'ai vérifié » ET un motif de la liste sont exigés", () => {
-    const f = faits({ controle: { statut: "orange_a_valider", dernierAt: null, raison: null } });
+    const f = faits({
+      controle: {
+        statut: "orange_a_valider",
+        dernierAt: null,
+        raison: null,
+        motifs: ["activite_a_controler"],
+      },
+    });
     expect(manquesPourContresigner(f, coche)).toEqual(["la vérification du registre"]);
     expect(
       manquesPourContresigner(f, { ...coche, orangeVerifie: true, motifOrange: "ok" }),
@@ -113,7 +129,7 @@ describe("écran W-4 — bouton grisé avec la raison (maquette)", () => {
   it("pièce ou donnée de dossier absente : rouge, pas de case à cocher qui la remplace", () => {
     const f = faits({
       pieces: { cv: null, rcPro: null, rib: piece() },
-      dossier: { regimeTva: false, iban: true, declarations: true },
+      dossier: { cvDate: true, regimeTva: false, iban: true, declarations: true },
     });
     expect(manquesPourContresigner(f, coche)).toEqual(["le CV", "le régime de TVA"]);
     expect(blocsW4(f, coche).find((b) => b.cle === "pieces")?.pastille).toBe("rouge");
@@ -129,6 +145,13 @@ describe("écran W-4 — bouton grisé avec la raison (maquette)", () => {
         coche,
       ),
     ).toEqual(["l'attestation URSSAF"]);
+  });
+
+  it("CV sans date ou de plus de 24 mois : rouge avant de contresigner (même test que la garde)", () => {
+    const f = faits({
+      dossier: { cvDate: false, regimeTva: true, iban: true, declarations: true },
+    });
+    expect(manquesPourContresigner(f, coche)).toEqual(["un CV daté de moins de 24 mois"]);
   });
 
   it("fin de collaboration : rien n'est possible", () => {

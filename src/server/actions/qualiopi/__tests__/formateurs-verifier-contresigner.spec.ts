@@ -61,6 +61,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/validation-vigilance", () => 
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture", () => ({
   lireEcranVerifierContresigner: h.lireEcran,
+  motifsControle: (m: string | null) => (m ? m.split(",") : []),
 }));
 
 import { contresignerEtOuvrirEspaceAction } from "../formateurs-verifier-contresigner";
@@ -76,8 +77,9 @@ function ecran(extra: Record<string, unknown> = {}) {
     liens: [],
     lienAttestation: null,
     formations: [{ id: FORMATION, titre: "IA pour managers", habilite: false }],
+    habilitationsActives: [] as string[],
     faits: {
-      controle: { statut: "vert", dernierAt: new Date(), raison: null },
+      controle: { statut: "vert", dernierAt: new Date(), raison: null, motifs: [] },
       nda: { renseigne: true, vuSurListe: true },
       attestation: { id: "att", statutValidation: "en_attente", code: "A1B2C3D4", prouvee: false },
       pieces: {
@@ -85,7 +87,7 @@ function ecran(extra: Record<string, unknown> = {}) {
         rcPro: null,
         rib: { id: "rib", statutValidation: "valide", fichierPresent: true },
       },
-      dossier: { regimeTva: true, iban: true, declarations: true },
+      dossier: { cvDate: true, regimeTva: true, iban: true, declarations: true },
       habilitationsActives: 0,
       contrat: { id: "doc-1", numero: "CST-1", statutSignature: "partielle" },
       actif: false,
@@ -121,6 +123,8 @@ beforeEach(() => {
     sollicitationsRetirees: 0,
   });
   h.envoyer.mockResolvedValue("envoye");
+  h.dernierControle = null;
+  h.orange.mockResolvedValue({ ok: true });
 });
 
 describe("contresignerEtOuvrirEspaceAction", () => {
@@ -179,7 +183,7 @@ describe("contresignerEtOuvrirEspaceAction", () => {
     });
   });
 
-  it("double clic : contrat déjà contresigné → aucune seconde signature, activation inchangée, aucun second e-mail", async () => {
+  it("double clic : seconde contresignature refusée (déjà signé), activation inchangée, F20 sous la même clé", async () => {
     h.contresigner.mockResolvedValue({ ok: false, raison: "deja_signe", message: "déjà" });
     h.activer.mockResolvedValue({
       ok: true,
@@ -189,7 +193,36 @@ describe("contresignerEtOuvrirEspaceAction", () => {
     });
     const r = await contresignerEtOuvrirEspaceAction(saisie);
     expect(r.ok).toBe(true);
-    expect(h.envoyer).not.toHaveBeenCalled();
+    // La clé d'idempotence par fiche empêche le second envoi en file.
+    expect(h.envoyer.mock.calls[0]![0]).toMatchObject({ jobId: `fi-espace-ouvert-${TRAINER}` });
+  });
+
+  it("les habilitations existantes (même sur une formation non affichée) sont gardées", async () => {
+    const autre = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+    h.lireEcran.mockResolvedValue({ ...ecran(), habilitationsActives: [autre] });
+    await contresignerEtOuvrirEspaceAction(saisie);
+    expect(h.habiliter).toHaveBeenCalledWith({
+      id: TRAINER,
+      formationsHabilitees: [autre, FORMATION],
+    });
+  });
+
+  it("orange relu avec un motif que la personne n'a pas vu : jamais validé, espace non ouvert", async () => {
+    h.lireEcran.mockResolvedValue(ecran({ nda: { renseigne: true, vuSurListe: false } }));
+    h.dernierControle = {
+      id: "ctl-3",
+      verdict: "orange",
+      source: "registre_entreprises+liste_of",
+      motif: "activite_a_controler",
+    };
+    const r = await contresignerEtOuvrirEspaceAction({
+      ...saisie,
+      orangeVerifie: true,
+      motifOrange: "Numéro de déclaration en cours d'attribution",
+    });
+    expect(r.ok).toBe(false);
+    expect(h.orange).not.toHaveBeenCalled();
+    expect(h.activer).not.toHaveBeenCalled();
   });
 
   it("contresignature refusée (registre relu en direct) : rien n'est activé", async () => {
@@ -206,7 +239,12 @@ describe("contresignerEtOuvrirEspaceAction", () => {
 
   it("orange coché : le contrôle fait par la contresignature est validé avant l'activation", async () => {
     h.lireEcran.mockResolvedValue(ecran({ nda: { renseigne: true, vuSurListe: false } }));
-    h.dernierControle = { id: "ctl-2", verdict: "orange", source: "registre_entreprises+liste_of" };
+    h.dernierControle = {
+      id: "ctl-2",
+      verdict: "orange",
+      source: "registre_entreprises+liste_of",
+      motif: "liste_of_muette",
+    };
     const r = await contresignerEtOuvrirEspaceAction({
       ...saisie,
       orangeVerifie: true,

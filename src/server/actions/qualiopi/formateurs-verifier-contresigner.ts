@@ -42,11 +42,16 @@ import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
 import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
 import { validerAttestationVigilance } from "@/server/qualiopi/formateurs-independants/validation-vigilance";
-import { lireEcranVerifierContresigner } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture";
+import {
+  lireEcranVerifierContresigner,
+  motifsControle,
+} from "@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture";
 import {
   MOTIFS_COMPLEMENT,
   MOTIFS_ORANGE,
   manquesPourContresigner,
+  motifRefus,
+  motifsCouverts,
   raisonGrise,
   refusPossible,
 } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
@@ -63,7 +68,7 @@ async function allume(): Promise<boolean> {
 }
 
 function rafraichir(): void {
-  revalidatePath("/[locale]/[adminPrefix]/qualiopi/formateurs/[id]/verifier", "page");
+  revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/formateurs/[id]/verifier", "page");
 }
 
 const contresignerSchema = z
@@ -119,11 +124,11 @@ export async function contresignerEtOuvrirEspaceAction(
     }
 
     // 3. Formations cochées : AJOUTÉES aux habilitations actives, jamais retirées.
-    const nouvelles = s.formationIds.filter(
-      (id) => !ecran.formations.some((x) => x.id === id && x.habilite),
-    );
+    //    La liste envoyée part de TOUTES les habilitations actives en base, pas
+    //    des seules formations affichées : le chemin commun remplace la liste.
+    const actives = ecran.habilitationsActives;
+    const nouvelles = s.formationIds.filter((id) => !actives.includes(id));
     if (nouvelles.length > 0) {
-      const actives = ecran.formations.filter((x) => x.habilite).map((x) => x.id);
       const r = await setTrainerHabilitationsAction({
         id: s.trainerId,
         formationsHabilitees: [...actives, ...nouvelles],
@@ -142,21 +147,38 @@ export async function contresignerEtOuvrirEspaceAction(
       if (!r.ok && r.raison !== "deja_signe") return { ok: false, error: r.message };
     }
 
-    // 5. Orange du registre (le contrôle fait à l'instant par la contresignature).
-    if (s.orangeVerifie && s.motifOrange !== null) {
-      const dernier = await prisma.verificationRegistreSousTraitance.findFirst({
-        where: { trainerId: s.trainerId },
-        orderBy: { createdAt: "desc" },
-        select: { id: true, verdict: true, source: true },
+    // 5. Orange du registre : la contresignature vient de relire le registre.
+    //    « J'ai vérifié » ne couvre que les motifs que la personne a vus.
+    const dernier = await prisma.verificationRegistreSousTraitance.findFirst({
+      where: { trainerId: s.trainerId },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, verdict: true, source: true, motif: true },
+    });
+    if (dernier?.verdict === "orange" && dernier.source !== SOURCE_VALIDATION_ORANGE) {
+      const couverts = motifsCouverts(f);
+      const nouveaux = motifsControle(dernier.motif);
+      const vus = nouveaux.every((m) => couverts.includes(m));
+      if (!s.orangeVerifie || s.motifOrange === null || !vus) {
+        rafraichir();
+        return {
+          ok: false,
+          error:
+            "Contrat contresigné. Le registre relu à l'instant demande une vérification : rechargez la page, vérifiez, puis cliquez de nouveau.",
+        };
+      }
+      const v = await validerControleOrange(prisma, {
+        trainerId: s.trainerId,
+        controleId: dernier.id,
+        motif: s.motifOrange,
+        valideParId: session.userId,
+        maintenant: new Date(),
       });
-      if (dernier?.verdict === "orange" && dernier.source !== SOURCE_VALIDATION_ORANGE) {
-        await validerControleOrange(prisma, {
-          trainerId: s.trainerId,
-          controleId: dernier.id,
-          motif: s.motifOrange,
-          valideParId: session.userId,
-          maintenant: new Date(),
-        });
+      if (!v.ok) {
+        rafraichir();
+        return {
+          ok: false,
+          error: "Contrat contresigné. Le registre a changé : rechargez la page et revérifiez.",
+        };
       }
     }
 
@@ -170,15 +192,23 @@ export async function contresignerEtOuvrirEspaceAction(
     });
     if (!a.ok) {
       rafraichir();
+      // Double clic simultané : l'autre clic a ouvert l'espace.
+      const relu = await prisma.trainer.findUnique({
+        where: { id: s.trainerId },
+        select: { actif: true },
+      });
+      if (relu?.actif === true) return { ok: true, message: "Son espace est déjà ouvert." };
       return {
         ok: false,
         error: `Contrat contresigné, espace non ouvert : ${messageRefusActivation(a)}`,
       };
     }
 
-    // 7. F20 — une seule fois par activation (clé d'idempotence par fiche).
+    // 7. F20 — la fiche était inactive au départ et l'est plus : l'activation a
+    //    pu être faite par l'après-signature (inchangée ici) ; la clé
+    //    d'idempotence par fiche garde l'envoi unique.
     let messageEnvoi = "";
-    if (!a.inchange) {
+    if (a.actif) {
       const t = await prisma.trainer.findUnique({
         where: { id: s.trainerId },
         select: { email: true },
@@ -239,10 +269,7 @@ export async function refuserDossierFormateurAction(
   if (!refusPossible(ecran.faits)) {
     return { ok: false, error: "Le refus n'est proposé que sur un registre rouge." };
   }
-  const motif =
-    ecran.faits.controle.raison?.includes("cessée") === true
-      ? "entreprise fermée"
-      : "numéro introuvable";
+  const motif = motifRefus(ecran.faits);
   return envoyerAuFormateur(
     session,
     ecran.trainerId,

@@ -37,6 +37,8 @@ export interface FaitsW4 {
     readonly dernierAt: Date | null;
     /** Raison de l'orange ou du rouge, déjà en clair. */
     readonly raison: string | null;
+    /** Codes du contrôle jugé (`MotifControle`) : ce que la personne a vu. */
+    readonly motifs: ReadonlyArray<string>;
   };
   readonly nda: { readonly renseigne: boolean; readonly vuSurListe: boolean };
   /** Attestation URSSAF la plus récente, ou `null` si aucune n'est déposée. */
@@ -54,6 +56,8 @@ export interface FaitsW4 {
     readonly rib: PieceW4 | null;
   };
   readonly dossier: {
+    /** Le CV porte une date d'émission de moins de 24 mois (règle complète, condition 6). */
+    readonly cvDate: boolean;
     readonly regimeTva: boolean;
     readonly iban: boolean;
     readonly declarations: boolean;
@@ -117,6 +121,7 @@ function pieceAFaire(f: FaitsW4): boolean {
 function manquesDossier(f: FaitsW4): string[] {
   const m: string[] = [];
   if (!piecePresente(f.pieces.cv)) m.push("le CV");
+  else if (!f.dossier.cvDate) m.push("un CV daté de moins de 24 mois");
   if (!piecePresente(f.pieces.rib)) m.push("le RIB");
   if (!f.dossier.iban) m.push("l'IBAN");
   if (!f.dossier.regimeTva) m.push("le régime de TVA");
@@ -124,7 +129,35 @@ function manquesDossier(f: FaitsW4): string[] {
   return m;
 }
 
-const orangeAVerifier = (f: FaitsW4): boolean =>
+/** Motifs d'orange que le bloc « Numéro de déclaration » couvre quand il est à vérifier. */
+export const MOTIFS_ORANGE_NDA: ReadonlyArray<string> = [
+  "nda_absent",
+  "nda_en_cours",
+  "liste_of_muette",
+  "nda_non_verifie",
+  "nda_hors_liste",
+];
+
+/**
+ * Les motifs d'orange que « J'ai vérifié » couvre : ceux du contrôle affiché,
+ * plus ceux du numéro de déclaration quand son bloc était à vérifier. Un orange
+ * relu à la contresignature avec un AUTRE motif n'est jamais validé à l'aveugle.
+ */
+export function motifsCouverts(f: FaitsW4): ReadonlyArray<string> {
+  return [
+    ...(f.controle.statut === "orange_a_valider" ? f.controle.motifs : []),
+    ...(!f.nda.vuSurListe ? MOTIFS_ORANGE_NDA : []),
+  ];
+}
+
+/** Motifs codés d'un contrôle qui font dire « entreprise fermée » (F13). */
+export function motifRefus(f: FaitsW4): "entreprise fermée" | "numéro introuvable" {
+  return f.controle.motifs.some((m) => m === "siren_cesse" || m === "etablissement_ferme")
+    ? "entreprise fermée"
+    : "numéro introuvable";
+}
+
+export const orangeAVerifier = (f: FaitsW4): boolean =>
   f.controle.statut === "orange_a_valider" ||
   (!f.nda.vuSurListe && f.controle.statut !== "orange_valide");
 

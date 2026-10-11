@@ -17,6 +17,7 @@ import {
   MOTIFS_ORANGE,
   blocsW4,
   manquesPourContresigner,
+  orangeAVerifier,
   raisonGrise,
   refusPossible,
   type MotifComplement,
@@ -92,9 +93,7 @@ export function VerifierContresigner({ ecran, peutContresigner, peutVerifier }: 
     );
   };
 
-  const orangeVisible =
-    f.controle.statut === "orange_a_valider" ||
-    (!f.nda.vuSurListe && f.controle.statut !== "orange_valide");
+  const orangeVisible = orangeAVerifier(f);
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-3)]">
