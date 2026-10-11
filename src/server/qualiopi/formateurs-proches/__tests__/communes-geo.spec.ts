@@ -11,7 +11,11 @@ import {
   departementDeCommune,
   referentielAJour,
 } from "../communes-geo";
-import { passerCommunesGeo, type DepsPassageCommunes } from "../communes-geo-passage";
+import {
+  lireCorpsBorne,
+  passerCommunesGeo,
+  type DepsPassageCommunes,
+} from "../communes-geo-passage";
 
 const AJACCIO = {
   code: "2A004",
@@ -62,6 +66,12 @@ describe("analyserCommunesGeo", () => {
     ]);
     expect(communes).toHaveLength(1);
     expect(rejets).toBe(4);
+  });
+
+  it("un code INSEE en double : le second est écarté (Postgres refuserait le paquet)", () => {
+    const { communes, rejets } = analyserCommunesGeo([AJACCIO, { ...AJACCIO, nom: "Doublon" }]);
+    expect(communes.map((c) => c.nom)).toEqual(["Ajaccio"]);
+    expect(rejets).toBe(1);
   });
 
   it("une réponse qui n'est pas une liste ne rend rien", () => {
@@ -172,5 +182,19 @@ describe("le passage tourne dans le worker (tsx, hors de Next)", () => {
       expect(src, f).not.toMatch(/["'](?:server-only|next\/[^"']*|next-auth)["']/);
       expect(src, f).not.toMatch(/^\s*["']use server["']/m);
     }
+  });
+});
+
+describe("lireCorpsBorne", () => {
+  it("lit un corps sous la limite", async () => {
+    expect(await lireCorpsBorne(new Response("[1,2]"), 100)).toEqual([1, 2]);
+  });
+  it("refuse au-delà de la limite, annoncée ou reçue", async () => {
+    await expect(
+      lireCorpsBorne(new Response("[1]", { headers: { "content-length": "999" } }), 10),
+    ).rejects.toThrow(/volumineuse/);
+    await expect(lireCorpsBorne(new Response(JSON.stringify("x".repeat(50))), 10)).rejects.toThrow(
+      /volumineuse/,
+    );
   });
 });

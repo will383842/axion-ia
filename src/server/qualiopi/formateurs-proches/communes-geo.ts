@@ -22,6 +22,9 @@ export const URL_COMMUNES_GEO =
  */
 export const MINIMUM_COMMUNES_ATTENDUES = 30_000;
 
+/** Au-delà, la réponse est refusée sans être lue (la vraie pèse quelques Mo). */
+export const TAILLE_MAX_REPONSE_OCTETS = 30 * 1024 * 1024;
+
 /** Le référentiel est retéléchargé quand il a 30 jours ou plus. */
 export const FRAICHEUR_REFERENTIEL_JOURS = 30;
 
@@ -86,14 +89,16 @@ export function analyserCommunesGeo(brut: unknown): {
   lisible: boolean;
 } {
   if (!Array.isArray(brut)) return { communes: [], rejets: 0, lisible: false };
-  const communes: CommuneGeoLue[] = [];
+  // Un code INSEE en double ferait refuser tout son paquet par Postgres
+  // (« ON CONFLICT … cannot affect row a second time ») : le second est écarté.
+  const parCode = new Map<string, CommuneGeoLue>();
   let rejets = 0;
   for (const ligne of brut) {
     const c = lireCommune(ligne);
-    if (c) communes.push(c);
+    if (c && !parCode.has(c.codeInsee)) parCode.set(c.codeInsee, c);
     else rejets += 1;
   }
-  return { communes, rejets, lisible: true };
+  return { communes: [...parCode.values()], rejets, lisible: true };
 }
 
 /**

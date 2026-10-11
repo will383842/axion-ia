@@ -126,7 +126,7 @@ export const INTERRUPTEURS = {
   },
   communes_geo_cron: envoi(
     "Communes desservies",
-    "Recalcul régulier des communes autour de chaque formateur.",
+    "Téléchargement mensuel du référentiel public des communes (lieu des formateurs et des sessions).",
   ),
   proches_bloc: envoi(
     "Bloc « formateurs proches »",
