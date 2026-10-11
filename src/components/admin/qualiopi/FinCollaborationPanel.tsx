@@ -17,7 +17,9 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 import {
   apercuAvertissementAction,
   apercuFinCollaborationAction,
+  desactiverApresFinAction,
   envoyerAvertissementFormateurAction,
+  renvoyerFinCollaborationAction,
   terminerCollaborationFormateurAction,
   type ApercuFin,
 } from "@/server/actions/qualiopi/formateur-fin-collaboration";
@@ -42,6 +44,10 @@ export interface FinTerminee {
   readonly decideeLe: string;
   readonly effetLe: string | null;
   readonly motif: string;
+  /** Close (date d'effet arrivée) ; sinon programmée, la fiche reste opérationnelle. */
+  readonly close: boolean;
+  /** La fiche est-elle encore active ? (close et active = à désactiver) */
+  readonly actif: boolean;
   readonly conservation: { contratEtVigilance: string; piecesComptables: string } | null;
 }
 
@@ -84,10 +90,22 @@ export function FinCollaborationPanel({
         <h2 id="fin-collab-titre" className="admin-meta">
           Fin de collaboration
         </h2>
+        {message ? (
+          <p
+            role="status"
+            className={`admin-alert ${message.ton === "ok" ? "admin-alert-success" : "admin-alert-warning"} mt-[var(--space-admin-2)]`}
+          >
+            {message.texte}
+          </p>
+        ) : null}
         <p className="text-[length:var(--text-admin-sm)]">
-          Collaboration terminée le {dateFr(terminee.decideeLe)}
+          {terminee.close ? "Collaboration terminée" : "Fin programmée"} — décidée le{" "}
+          {dateFr(terminee.decideeLe)}
           {terminee.effetLe ? `, avec effet au ${dateFr(terminee.effetLe)}` : ""} — {terminee.motif}
           .
+          {terminee.close
+            ? ""
+            : " D'ici là, la fiche reste opérationnelle pour les missions déjà acceptées."}
         </p>
         {terminee.conservation ? (
           <p className="text-[length:var(--text-admin-sm)]">
@@ -97,6 +115,51 @@ export function FinCollaborationPanel({
             automatique.
           </p>
         ) : null}
+        {terminee.close && terminee.actif ? (
+          <p className="admin-alert admin-alert-warning mt-[var(--space-admin-2)]">
+            La collaboration est close mais la fiche est encore active.
+          </p>
+        ) : null}
+        <div className="mt-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-3)]">
+          {terminee.close && terminee.actif ? (
+            <AdminButton
+              type="button"
+              variant="danger"
+              disabled={enCours}
+              onClick={() =>
+                demarrer(async () => {
+                  const r = await desactiverApresFinAction({ trainerId });
+                  setMessage(
+                    "error" in r
+                      ? { ton: "erreur", texte: r.error }
+                      : r.data.desactivee
+                        ? { ton: "ok", texte: "Fiche désactivée." }
+                        : { ton: "erreur", texte: "La désactivation n'a pas abouti." },
+                  );
+                })
+              }
+            >
+              Désactiver la fiche
+            </AdminButton>
+          ) : null}
+          <AdminButton
+            type="button"
+            variant="secondary"
+            disabled={enCours}
+            onClick={() =>
+              demarrer(async () => {
+                const r = await renvoyerFinCollaborationAction({ trainerId });
+                setMessage(
+                  "error" in r
+                    ? { ton: "erreur", texte: r.error }
+                    : { ton: "ok", texte: resultatEmail(r.data.email) },
+                );
+              })
+            }
+          >
+            Renvoyer l&apos;e-mail de fin
+          </AdminButton>
+        </div>
       </section>
     );
   }
@@ -271,7 +334,10 @@ export function FinCollaborationPanel({
                     ? { ton: "erreur", texte: r.error }
                     : {
                         ton: "ok",
-                        texte: `Collaboration terminée. ${resultatEmail(r.data.email)}`,
+                        texte:
+                          `${r.data.close ? "Collaboration terminée." : "Fin programmée."} ` +
+                          (r.data.desactivee ? "" : "La fiche n'a pas pu être désactivée. ") +
+                          resultatEmail(r.data.email),
                       },
                 );
               })
@@ -298,6 +364,12 @@ export function FinCollaborationPanel({
             et vigilance) et jusqu&apos;au {dateFr(apercuFin.conservation.piecesComptables)} (pièces
             comptables).
           </p>
+          {apercuFin.email && !apercuFin.texteValide ? (
+            <p className="admin-alert admin-alert-warning mt-[var(--space-admin-2)]">
+              Le texte de cet e-mail n&apos;est pas encore validé : il ne partira pas. Vous pourrez
+              le renvoyer depuis cette carte une fois le texte validé.
+            </p>
+          ) : null}
           {apercuFin.email ? (
             <Apercu sujet={apercuFin.email.sujet} html={apercuFin.email.html} />
           ) : (

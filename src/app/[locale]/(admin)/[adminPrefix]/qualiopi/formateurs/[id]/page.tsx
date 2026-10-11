@@ -370,20 +370,20 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     peutEngager(role, "habiliter_formateur") &&
     (await interrupteurAllume("fin_collaboration"));
   const jourIso = (d: Date) => d.toISOString().slice(0, 10);
+  const decideeAt = trainer.finCollaborationDecideeAt ?? trainer.finCollaborationAt;
+  const motifFin = trainer.finCollaborationMotifPrevu ?? trainer.finCollaborationMotif;
   const finTerminee =
-    trainer.finCollaborationAt !== null
+    decideeAt !== null
       ? {
-          decideeLe: jourIso(trainer.finCollaborationAt),
+          decideeLe: jourIso(decideeAt),
           effetLe: trainer.finCollaborationEffetAt
             ? jourIso(trainer.finCollaborationEffetAt)
             : null,
-          motif: estMotifFin(trainer.finCollaborationMotif)
-            ? LIBELLES_MOTIF_FIN[trainer.finCollaborationMotif]
-            : "motif non listé",
+          motif: estMotifFin(motifFin) ? LIBELLES_MOTIF_FIN[motifFin] : "motif non listé",
+          close: trainer.finCollaborationAt !== null,
+          actif: trainer.actif,
           conservation: (() => {
-            const c = conservationApresFin(
-              trainer.finCollaborationEffetAt ?? trainer.finCollaborationAt,
-            );
+            const c = conservationApresFin(trainer.finCollaborationEffetAt ?? decideeAt);
             return {
               contratEtVigilance: jourIso(c.contratEtVigilance),
               piecesComptables: jourIso(c.piecesComptables),

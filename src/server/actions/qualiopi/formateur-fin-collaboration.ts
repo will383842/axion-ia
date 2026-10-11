@@ -15,23 +15,26 @@ import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { peutEngager } from "@/server/auth/habilitations";
-import { apercu, envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { apercu, envoyer, texteValide } from "@/server/qualiopi/formateurs-independants/envois";
 import {
   MESSAGES_REFUS_FIN,
   MOTIFS_FIN,
   avecPreavis,
   conservationApresFin,
   dateEffetParDefaut,
+  jourParis,
   preavisJours,
   refusFin,
   texteFinCollaboration,
   valeursAvertissement,
 } from "@/server/qualiopi/formateurs-independants/fin-collaboration";
 import {
+  deciderFinCollaboration,
+  desactiverApresFin,
   estIndependant,
   lireContexteFin,
   missionsApres,
-  terminerCollaboration,
+  type ContexteFin,
 } from "@/server/qualiopi/formateurs-independants/fin-collaboration-service";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 
@@ -53,11 +56,12 @@ async function autorise(): Promise<{ userId: string; role: string } | Refus> {
 const DATE_ISO = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const versDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
 const jourIso = (d: Date) => d.toISOString().slice(0, 10);
+const DATE_VALIDE = DATE_ISO.refine((x) => jourIso(versDate(x)) === x, "date invalide");
 
 const schemaFin = z.object({
   trainerId: z.string().uuid(),
   motif: z.enum(MOTIFS_FIN),
-  dateEffet: DATE_ISO.optional(),
+  dateEffet: DATE_VALIDE.optional(),
   note: z.string().max(2000).default(""),
   irreparable: z.boolean().default(false),
 });
@@ -73,6 +77,8 @@ export interface ApercuFin {
   readonly conservation: { contratEtVigilance: string; piecesComptables: string };
   /** `null` : aucun e-mail (décès). */
   readonly email: { sujet: string; html: string; destinataire: string } | null;
+  /** Le texte F47 est-il validé ? Sinon l'e-mail ne partira pas (il pourra être renvoyé). */
+  readonly texteValide: boolean;
 }
 
 /** Ce qui se passerait, sans rien écrire ni envoyer. */
@@ -88,6 +94,9 @@ export async function apercuFinCollaborationAction(
     if (ctx === null) return { error: "Formateur introuvable." };
     if (!estIndependant(ctx.trainer)) {
       return { error: "Réservé aux formateurs indépendants en nom propre." };
+    }
+    if (ctx.trainer.finCollaborationDecideeAt !== null || ctx.trainer.finCollaborationAt !== null) {
+      return { error: "La fin de cette collaboration est déjà décidée." };
     }
     const maintenant = new Date();
     const defaut = dateEffetParDefaut(p.data.motif, ctx.debutRelation, maintenant);
@@ -126,6 +135,7 @@ export async function apercuFinCollaborationAction(
           piecesComptables: jourIso(c.piecesComptables),
         },
         email: email && { sujet: email.sujet, html: email.html, destinataire: email.destinataire },
+        texteValide: await texteValide("formateur-fin-collaboration"),
       },
     };
   } catch (err) {
@@ -135,14 +145,36 @@ export async function apercuFinCollaborationAction(
 }
 
 const schemaTerminer = schemaFin.extend({
-  dateEffet: DATE_ISO,
+  dateEffet: DATE_VALIDE,
   /** Envoyer F47 après la fin (jamais pour un décès). */
   envoyerEmail: z.boolean().default(true),
 });
 
+/** F47 tel qu'il part, pour une fin décidée. `null` : aucun e-mail (décès). */
+function envoiF47(ctx: ContexteFin): Parameters<typeof envoyer>[0] | null {
+  const t = ctx.trainer;
+  if (t.finCollaborationMotifPrevu === null || t.finCollaborationEffetAt === null) return null;
+  const preavis = preavisJours(ctx.debutRelation, t.finCollaborationDecideeAt ?? new Date());
+  const texte = texteFinCollaboration(
+    t.finCollaborationMotifPrevu,
+    t.finCollaborationEffetAt,
+    preavis,
+  );
+  if (texte === null) return null;
+  return {
+    gabarit: "formateur-fin-collaboration",
+    destinataire: t.email,
+    payload: { prenom: t.prenom, texteLibre: texte },
+    entityType: "Trainer",
+    entityId: t.id,
+    // Une seule fin par fiche : un renvoi après échec reprend la même clé.
+    jobId: `fi-fin-collaboration-${t.id}`,
+  };
+}
+
 export async function terminerCollaborationFormateurAction(
   input: z.input<typeof schemaTerminer>,
-): Promise<{ data: { email: string } } | Refus> {
+): Promise<{ data: { email: string; close: boolean; desactivee: boolean } } | Refus> {
   const a = await autorise();
   if ("error" in a) return a;
   const p = schemaTerminer.safeParse(input);
@@ -155,7 +187,7 @@ export async function terminerCollaborationFormateurAction(
       select: { name: true },
     });
     const annuleePar = auteur?.name?.trim() || a.role || "Administrateur";
-    const r = await terminerCollaboration(
+    const r = await deciderFinCollaboration(
       {
         trainerId: p.data.trainerId,
         motif: p.data.motif,
@@ -178,13 +210,14 @@ export async function terminerCollaborationFormateurAction(
             ? "Formateur introuvable."
             : r.raison === "pas-independant"
               ? "Réservé aux formateurs indépendants en nom propre."
-              : "La collaboration est déjà terminée.",
+              : "La fin de cette collaboration est déjà décidée.",
       };
     }
     revalidatePath(fiche(p.data.trainerId));
+    const etat = { close: r.close, desactivee: r.desactivee };
 
     const texte = texteFinCollaboration(p.data.motif, dateEffet, r.preavis);
-    if (texte === null || !p.data.envoyerEmail) return { data: { email: "aucun" } };
+    if (texte === null || !p.data.envoyerEmail) return { data: { email: "aucun", ...etat } };
     const envoi = await envoyer({
       gabarit: "formateur-fin-collaboration",
       destinataire: r.contexte.trainer.email,
@@ -193,7 +226,7 @@ export async function terminerCollaborationFormateurAction(
       entityId: p.data.trainerId,
       jobId: `fi-fin-collaboration-${p.data.trainerId}`,
     });
-    return { data: { email: envoi } };
+    return { data: { email: envoi, ...etat } };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "terminerCollaborationFormateur" } });
     return { error: "La fin de collaboration n'a pas pu être enregistrée." };
@@ -210,7 +243,11 @@ async function preparerAvertissement(input: z.input<typeof schemaAvertissement>)
   if (!p.success) return { error: "Décrivez le fait constaté (10 caractères au moins)." } as Refus;
   const ctx = await lireContexteFin(p.data.trainerId);
   if (ctx === null) return { error: "Formateur introuvable." } as Refus;
-  if (!estIndependant(ctx.trainer) || ctx.trainer.finCollaborationAt !== null) {
+  if (
+    !estIndependant(ctx.trainer) ||
+    ctx.trainer.finCollaborationAt !== null ||
+    ctx.trainer.finCollaborationDecideeAt !== null
+  ) {
     return { error: "Réservé à un formateur indépendant en cours de collaboration." } as Refus;
   }
   return {
@@ -260,12 +297,65 @@ export async function envoyerAvertissementFormateurAction(
       entityType: "Trainer",
       entityId: e.trainerId,
       // Un avertissement par jour au plus (double clic, rechargement).
-      jobId: `fi-avertissement-${e.trainerId}-${jourIso(new Date()).replace(/-/g, "")}`,
+      jobId: `fi-avertissement-${e.trainerId}-${jourParis(new Date()).replace(/-/g, "")}`,
     });
     revalidatePath(fiche(e.trainerId));
     return { data: { email: envoi } };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "envoyerAvertissementFormateur" } });
     return { error: "L'avertissement n'a pas pu être envoyé." };
+  }
+}
+
+const schemaFiche = z.object({ trainerId: z.string().uuid() });
+
+/** Renvoie F47 (fin décidée, e-mail non parti : texte non validé, file coupée…). */
+export async function renvoyerFinCollaborationAction(
+  input: z.input<typeof schemaFiche>,
+): Promise<{ data: { email: string } } | Refus> {
+  const a = await autorise();
+  if ("error" in a) return a;
+  const p = schemaFiche.safeParse(input);
+  if (!p.success) return { error: "Données invalides." };
+  try {
+    const ctx = await lireContexteFin(p.data.trainerId);
+    if (
+      ctx === null ||
+      !estIndependant(ctx.trainer) ||
+      ctx.trainer.finCollaborationDecideeAt === null
+    ) {
+      return { error: "Aucune fin de collaboration décidée pour ce formateur." };
+    }
+    const e = envoiF47(ctx);
+    if (e === null) return { data: { email: "aucun" } };
+    return { data: { email: await envoyer(e) } };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "renvoyerFinCollaboration" } });
+    return { error: "L'e-mail n'a pas pu être renvoyé." };
+  }
+}
+
+/** Désactive une fiche CLOSE restée active (clôture par le passage quotidien, ou échec). */
+export async function desactiverApresFinAction(
+  input: z.input<typeof schemaFiche>,
+): Promise<{ data: { desactivee: boolean } } | Refus> {
+  const a = await autorise();
+  if ("error" in a) return a;
+  const p = schemaFiche.safeParse(input);
+  if (!p.success) return { error: "Données invalides." };
+  try {
+    const ctx = await lireContexteFin(p.data.trainerId);
+    if (ctx === null || !estIndependant(ctx.trainer) || ctx.trainer.finCollaborationAt === null) {
+      return { error: "La collaboration de ce formateur n'est pas close." };
+    }
+    const desactivee = await desactiverApresFin(p.data.trainerId, {
+      userId: a.userId,
+      role: a.role,
+    });
+    revalidatePath(fiche(p.data.trainerId));
+    return { data: { desactivee } };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "desactiverApresFin" } });
+    return { error: "La désactivation n'a pas pu aboutir." };
   }
 }

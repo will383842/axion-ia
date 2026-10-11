@@ -1,37 +1,41 @@
 /**
  * Fin de collaboration d'un formateur indépendant — le SERVICE (lot L14, E25).
  *
- * Une seule transaction :
- *   1. la fiche est fermée (`finCollaborationAt` = la décision, motif, auteur, date d'effet,
- *      note) et ses accès sont révoqués (`accesVersion + 1`) ;
- *   2. un contrat-cadre encore NON signé est annulé (motif système) et ses liens de
- *      signature non utilisés sont révoqués ;
- *   3. le journal est écrit (`exiger`) : motif, dates, préavis — jamais la note ni une
- *      coordonnée.
- * Puis, hors transaction : une fin IMMÉDIATE désactive la fiche par l'écrivain unique de
- * `actif` (`activation.ts`, lot S1), qui retire aussi les sollicitations en attente ; avec
- * préavis, seules les sollicitations en attente sont retirées (la fiche reste active
- * jusqu'à la date d'effet : ses missions acceptées avant restent dues).
+ * Deux temps :
+ *   - **la décision** (`deciderFinCollaboration`, console) : date, auteur, motif prévu,
+ *     date d'effet et note sont écrits ; les sollicitations en attente sont retirées.
+ *     Pendant le préavis, la fiche reste OPÉRATIONNELLE : ses missions acceptées sont
+ *     menées à terme (e-mails, signatures, garde de mission inchangés) ;
+ *   - **la clôture** (`cloreDansTransaction`), le jour d'effet : `finCollaborationAt`,
+ *     motif, auteur, `accesVersion + 1`, contrat-cadre non signé annulé et ses liens non
+ *     utilisés révoqués, journal. Une fin sans préavis est close dans la transaction de la
+ *     décision, puis la fiche est désactivée par l'écrivain unique de `actif`
+ *     (`activation.ts`, côté application) ; une fin avec préavis est close par le passage
+ *     quotidien du worker (`cloreFinsArrivees`), et la fiche close encore active est
+ *     signalée sur sa page, avec le bouton qui la désactive (le worker n'importe pas
+ *     `activation.ts`, qui passe par le journal de la console).
  *
  * 🔴 AUCUNE SUPPRESSION. Le mandat d'autofacturation n'est pas touché : il survit pour
  * les missions réalisées (décision F4 ; décès : règlement à la main, procédure L18).
  *
- * ⚠️ Ne juge ni le rôle ni l'interrupteur : l'action serveur le fait AVANT.
+ * ⚠️ `deciderFinCollaboration` ne juge ni le rôle ni l'interrupteur : l'action serveur le
+ * fait AVANT. Le passage quotidien lit l'interrupteur LUI-MÊME, avant toute requête sur
+ * les colonnes du lot (fenêtre app/worker).
  */
 
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
 import { retirerSollicitationsDuFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 
-import { changerActivationFormateur } from "./activation";
-
 import {
   avecPreavis,
+  jourParis,
   preavisJours,
   refusFin,
   type MotifFin,
   type RefusFin,
 } from "./fin-collaboration";
+import { interrupteurAllume } from "./interrupteur-allume";
 
 export const GABARIT_AVERTISSEMENT = "formateur-avertissement";
 
@@ -43,10 +47,13 @@ export interface ContexteFin {
     readonly statut: string;
     readonly organismeSousTraitantId: string | null;
     readonly finCollaborationAt: Date | null;
+    readonly finCollaborationDecideeAt: Date | null;
+    readonly finCollaborationMotifPrevu: MotifFin | null;
+    readonly finCollaborationEffetAt: Date | null;
   };
   /** Première signature d'un contrat-cadre, sinon la date saisie, sinon la création. */
   readonly debutRelation: Date;
-  /** Dernier avertissement F49 parti (ni en échec, ni annulé). */
+  /** Dernier avertissement F49 effectivement PARTI (statut `sent`), ou `null`. */
   readonly avertissementEnvoyeAt: Date | null;
 }
 
@@ -61,6 +68,9 @@ export async function lireContexteFin(trainerId: string): Promise<ContexteFin | 
       statut: true,
       organismeSousTraitantId: true,
       finCollaborationAt: true,
+      finCollaborationDecideeAt: true,
+      finCollaborationMotifPrevu: true,
+      finCollaborationEffetAt: true,
       sousTraitantContratSigneAt: true,
       createdAt: true,
     },
@@ -78,15 +88,18 @@ export async function lireContexteFin(trainerId: string): Promise<ContexteFin | 
         },
       },
     }),
+    // Seul un envoi REMIS au relais compte : ni `pending` (file arrêtée), ni échec,
+    // ni rebond, ni annulation.
     prisma.emailLog.findFirst({
       where: {
         template: GABARIT_AVERTISSEMENT,
         entityType: "Trainer",
         entityId: trainerId,
-        status: { in: ["sent", "pending"] },
+        status: "sent",
+        sentAt: { not: null },
       },
-      orderBy: { createdAt: "desc" },
-      select: { createdAt: true },
+      orderBy: { sentAt: "desc" },
+      select: { sentAt: true },
     }),
   ]);
   const signatures = (contrats as Array<{ signatures?: Array<{ signeAt: Date }> }>)
@@ -107,9 +120,12 @@ export async function lireContexteFin(trainerId: string): Promise<ContexteFin | 
       statut: trainer.statut,
       organismeSousTraitantId: trainer.organismeSousTraitantId,
       finCollaborationAt: trainer.finCollaborationAt,
+      finCollaborationDecideeAt: trainer.finCollaborationDecideeAt,
+      finCollaborationMotifPrevu: trainer.finCollaborationMotifPrevu as MotifFin | null,
+      finCollaborationEffetAt: trainer.finCollaborationEffetAt,
     },
     debutRelation,
-    avertissementEnvoyeAt: avertissement?.createdAt ?? null,
+    avertissementEnvoyeAt: avertissement?.sentAt ?? null,
   };
 }
 
@@ -149,6 +165,112 @@ export async function missionsApres(
   return [...parSession].map(([sessionId, debut]) => ({ sessionId, debut }));
 }
 
+// ── La clôture (commune à la fin immédiate et au passage quotidien) ──────
+
+type Tx = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
+
+class DejaClose extends Error {}
+
+/**
+ * Ferme la fiche dans `tx`. Lève `DejaClose` si une autre écriture l'a déjà fermée
+ * (concurrence) : l'appelant annule la transaction.
+ */
+async function cloreDansTransaction(
+  tx: Tx,
+  c: {
+    readonly trainerId: string;
+    readonly motif: MotifFin;
+    /** L'administrateur qui a DÉCIDÉ la fin (UUID). */
+    readonly parId: string;
+    /** L'auteur de la clôture au journal : l'administrateur, ou le système. */
+    readonly session: { readonly userId: string } | null;
+    readonly annuleePar: string;
+    readonly maintenant: Date;
+  },
+): Promise<void> {
+  const fermee = await tx.trainer.updateMany({
+    where: { id: c.trainerId, finCollaborationAt: null },
+    data: {
+      finCollaborationAt: c.maintenant,
+      finCollaborationMotif: c.motif,
+      finCollaborationParId: c.parId,
+      accesVersion: { increment: 1 },
+    },
+  });
+  if (fermee.count === 0) throw new DejaClose();
+
+  const contratsNonSignes = await tx.documentGenere.findMany({
+    where: {
+      trainerId: c.trainerId,
+      type: "contrat_sous_traitance",
+      statutSignature: { in: ["en_attente", "partielle"] },
+      annuleeAt: null,
+    },
+    select: { id: true },
+  });
+  const ids = (contratsNonSignes ?? []).map((d) => d.id);
+  if (ids.length > 0) {
+    await tx.documentGenere.updateMany({
+      where: { id: { in: ids }, annuleeAt: null },
+      data: {
+        annuleeAt: c.maintenant,
+        annuleeMotif: "Fin de collaboration : contrat non signé annulé.",
+        annuleePar: c.annuleePar,
+      },
+    });
+    await tx.documentSignatureToken.updateMany({
+      where: { documentGenereId: { in: ids }, revokedAt: null, usedAt: null },
+      data: {
+        revokedAt: c.maintenant,
+        revokedMotif: "Fin de collaboration",
+        ...(c.session ? { revokedById: c.session.userId } : {}),
+      },
+    });
+  }
+
+  await journaliser(
+    tx,
+    {
+      action: "qualiopi.trainer.fin_collaboration_close",
+      targetType: "Trainer",
+      targetId: c.trainerId,
+      changes: { motif: c.motif, contratsAnnules: ids.length },
+      session: c.session,
+    },
+    { exiger: true },
+  );
+}
+
+/**
+ * Désactive par l'écrivain unique de `actif` (`activation.ts`, CÔTÉ APPLICATION : il
+ * passe par le journal de la console). Import PARESSEUX : le passage quotidien du worker
+ * n'importe jamais ce module. Rend `false` si la désactivation a échoué.
+ */
+export async function desactiverApresFin(
+  trainerId: string,
+  session: AdminSessionFin,
+): Promise<boolean> {
+  try {
+    const { changerActivationFormateur } = await import("./activation");
+    const r = await changerActivationFormateur({
+      trainerId,
+      actif: false,
+      acteur: { type: "administrateur", session },
+      motif: "Fin de collaboration",
+    });
+    return r.ok;
+  } catch {
+    return false;
+  }
+}
+
+// ── La décision ──────────────────────────────────────────────────────────
+
+export interface AdminSessionFin {
+  readonly userId: string;
+  readonly role: string;
+}
+
 export interface EntreeFin {
   readonly trainerId: string;
   readonly motif: MotifFin;
@@ -163,7 +285,14 @@ export interface EntreeFin {
 }
 
 export type ResultatFin =
-  | { readonly ok: true; readonly preavis: 30 | 60 | 90; readonly contexte: ContexteFin }
+  | {
+      readonly ok: true;
+      readonly preavis: 30 | 60 | 90;
+      readonly close: boolean;
+      /** Fin immédiate : la désactivation a-t-elle abouti ? (`true` avec préavis.) */
+      readonly desactivee: boolean;
+      readonly contexte: ContexteFin;
+    }
   | { readonly ok: false; readonly raison: "introuvable" | "pas-independant" | "deja-terminee" }
   | {
       readonly ok: false;
@@ -172,13 +301,19 @@ export type ResultatFin =
       readonly missions: Array<{ sessionId: string; debut: Date }>;
     };
 
-class DejaTerminee extends Error {}
-
-export async function terminerCollaboration(e: EntreeFin, maintenant: Date): Promise<ResultatFin> {
+export async function deciderFinCollaboration(
+  e: EntreeFin,
+  maintenant: Date,
+): Promise<ResultatFin> {
   const contexte = await lireContexteFin(e.trainerId);
   if (contexte === null) return { ok: false, raison: "introuvable" };
   if (!estIndependant(contexte.trainer)) return { ok: false, raison: "pas-independant" };
-  if (contexte.trainer.finCollaborationAt !== null) return { ok: false, raison: "deja-terminee" };
+  if (
+    contexte.trainer.finCollaborationAt !== null ||
+    contexte.trainer.finCollaborationDecideeAt !== null
+  ) {
+    return { ok: false, raison: "deja-terminee" };
+  }
 
   const missions = await missionsApres(e.trainerId, e.dateEffet);
   const refus = refusFin({
@@ -199,81 +334,137 @@ export async function terminerCollaboration(e: EntreeFin, maintenant: Date): Pro
 
   try {
     await prisma.$transaction(async (tx) => {
-      const fermee = await tx.trainer.updateMany({
-        where: { id: e.trainerId, finCollaborationAt: null },
+      const decidee = await tx.trainer.updateMany({
+        where: { id: e.trainerId, finCollaborationAt: null, finCollaborationDecideeAt: null },
         data: {
-          finCollaborationAt: maintenant,
-          finCollaborationMotif: e.motif,
-          finCollaborationParId: e.userId,
+          finCollaborationDecideeAt: maintenant,
+          finCollaborationDecideeParId: e.userId,
+          finCollaborationMotifPrevu: e.motif,
           finCollaborationEffetAt: e.dateEffet,
           finCollaborationNote: note === "" ? null : note,
-          accesVersion: { increment: 1 },
         },
       });
-      if (fermee.count === 0) throw new DejaTerminee();
-
-      const contratsNonSignes = await tx.documentGenere.findMany({
-        where: {
-          trainerId: e.trainerId,
-          type: "contrat_sous_traitance",
-          statutSignature: { in: ["en_attente", "partielle"] },
-          annuleeAt: null,
-        },
-        select: { id: true },
-      });
-      const ids = (contratsNonSignes ?? []).map((d) => d.id);
-      if (ids.length > 0) {
-        await tx.documentGenere.updateMany({
-          where: { id: { in: ids }, annuleeAt: null },
-          data: {
-            annuleeAt: maintenant,
-            annuleeMotif: "Fin de collaboration : contrat non signé annulé.",
-            annuleePar: e.annuleePar,
-          },
-        });
-        await tx.documentSignatureToken.updateMany({
-          where: { documentGenereId: { in: ids }, revokedAt: null, usedAt: null },
-          data: {
-            revokedAt: maintenant,
-            revokedMotif: "Fin de collaboration",
-            revokedById: e.userId,
-          },
-        });
-      }
-
+      if (decidee.count === 0) throw new DejaClose();
       await journaliser(
         tx,
         {
-          action: "qualiopi.trainer.fin_collaboration",
+          action: "qualiopi.trainer.fin_collaboration_decidee",
           targetType: "Trainer",
           targetId: e.trainerId,
           changes: {
             motif: e.motif,
-            dateEffet: e.dateEffet.toISOString().slice(0, 10),
+            dateEffet: jourParis(e.dateEffet),
             preavisJours: immediate ? 0 : preavis,
-            contratsAnnules: ids.length,
             noteSaisie: note !== "",
           },
           session: { userId: e.userId },
         },
         { exiger: true },
       );
+      if (immediate) {
+        await cloreDansTransaction(tx, {
+          trainerId: e.trainerId,
+          motif: e.motif,
+          parId: e.userId,
+          session: { userId: e.userId },
+          annuleePar: e.annuleePar,
+          maintenant,
+        });
+      }
     });
   } catch (err) {
-    if (err instanceof DejaTerminee) return { ok: false, raison: "deja-terminee" };
+    if (err instanceof DejaClose) return { ok: false, raison: "deja-terminee" };
     throw err;
   }
 
-  // Hors transaction, tolérant : la fiche est déjà fermée, c'est l'essentiel.
+  // Hors transaction, tolérant : la décision est acquise.
+  let desactivee = true;
   if (immediate) {
-    await changerActivationFormateur({
-      trainerId: e.trainerId,
-      actif: false,
-      acteur: { type: "administrateur", session: { userId: e.userId, role: e.role } },
-      motif: "Fin de collaboration",
-    });
+    desactivee = await desactiverApresFin(e.trainerId, { userId: e.userId, role: e.role });
   } else {
+    // Plus aucune proposition en attente : seules les missions déjà acceptées avant la
+    // date d'effet sont menées à terme.
     await retirerSollicitationsDuFormateur(e.trainerId);
   }
-  return { ok: true, preavis, contexte };
+  return { ok: true, preavis, close: immediate, desactivee, contexte };
+}
+
+// ── Le passage quotidien ─────────────────────────────────────────────────
+
+export interface BilanCloture {
+  readonly etat: "coupe" | "fait";
+  readonly closes: number;
+  /** Fiches closes qui portaient encore une mission à la date d'effet ou après. */
+  readonly avecMissionsApres: number;
+  readonly erreurs: number;
+}
+
+const PLAFOND_CLOTURES = 200;
+
+/**
+ * Clôt les fins avec préavis dont la date d'effet est arrivée (jour de Paris). Ne lève
+ * jamais. Interrupteur coupé : AUCUNE requête sur les colonnes du lot. Une fiche close
+ * n'est plus proposable (garde de mission, `finCollaborationAt`) et ne reçoit plus que
+ * les e-mails d'argent ; sa désactivation (`actif`) est un geste de la console.
+ */
+export async function cloreFinsArrivees(maintenant: Date): Promise<BilanCloture> {
+  const vide = { closes: 0, avecMissionsApres: 0, erreurs: 0 };
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return { etat: "coupe", ...vide };
+  if (!(await interrupteurAllume("fin_collaboration"))) return { etat: "coupe", ...vide };
+
+  const aujourdhui = new Date(`${jourParis(maintenant)}T00:00:00Z`);
+  let fiches: Array<{
+    id: string;
+    finCollaborationMotifPrevu: MotifFin | null;
+    finCollaborationDecideeParId: string | null;
+    finCollaborationEffetAt: Date | null;
+  }>;
+  try {
+    fiches = (await prisma.trainer.findMany({
+      where: {
+        finCollaborationAt: null,
+        finCollaborationDecideeAt: { not: null },
+        finCollaborationEffetAt: { lte: aujourdhui },
+      },
+      select: {
+        id: true,
+        finCollaborationMotifPrevu: true,
+        finCollaborationDecideeParId: true,
+        finCollaborationEffetAt: true,
+      },
+      orderBy: { finCollaborationEffetAt: "asc" },
+      take: PLAFOND_CLOTURES,
+    })) as typeof fiches;
+  } catch {
+    return { etat: "fait", ...vide, erreurs: 1 };
+  }
+
+  let closes = 0;
+  let avecMissionsApres = 0;
+  let erreurs = 0;
+  for (const f of fiches) {
+    if (f.finCollaborationMotifPrevu === null || f.finCollaborationDecideeParId === null) {
+      erreurs++;
+      continue;
+    }
+    try {
+      if ((await missionsApres(f.id, f.finCollaborationEffetAt ?? aujourdhui)).length > 0) {
+        avecMissionsApres++;
+      }
+      await prisma.$transaction((tx) =>
+        cloreDansTransaction(tx, {
+          trainerId: f.id,
+          motif: f.finCollaborationMotifPrevu as MotifFin,
+          parId: f.finCollaborationDecideeParId as string,
+          session: null,
+          annuleePar: "Système (fin de collaboration à la date d'effet)",
+          maintenant,
+        }),
+      );
+      closes++;
+    } catch (err) {
+      if (!(err instanceof DejaClose)) erreurs++;
+    }
+  }
+  return { etat: "fait", closes, avecMissionsApres, erreurs };
 }

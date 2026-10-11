@@ -95,6 +95,33 @@ describe("refus de la fin demandée", () => {
   });
 });
 
+describe("jour de Paris, pas d'UTC", () => {
+  it("décision à 0 h 30 à Paris (22 h 30 UTC la veille) : le préavis part du jour de Paris", () => {
+    const decision = new Date("2026-10-11T22:30:00Z"); // 12/10 à Paris
+    expect(
+      dateEffetParDefaut(
+        "initiative_axion",
+        new Date("2026-03-01T00:00:00Z"),
+        decision,
+      ).toISOString(),
+    ).toBe("2026-11-11T00:00:00.000Z");
+    expect(
+      refusFin(
+        demande({ motif: "siret_cesse", decision, dateEffet: new Date("2026-10-11T00:00:00Z") }),
+      ),
+    ).toContain("date-effet-avant-decision");
+  });
+
+  it("une fin sans préavis prend effet le jour même", () => {
+    expect(
+      refusFin(demande({ motif: "siret_cesse", dateEffet: new Date("2026-10-20T00:00:00Z") })),
+    ).toEqual(["date-effet-immediate"]);
+    expect(
+      refusFin(demande({ motif: "siret_cesse", dateEffet: new Date("2026-10-13T00:00:00Z") })),
+    ).toEqual([]);
+  });
+});
+
 describe("conservation (G5) : aucune purge, des dates affichées", () => {
   it("contrat et vigilance 5 ans après la fin, pièces comptables 10 ans", () => {
     const c = conservationApresFin(new Date("2026-11-12T00:00:00Z"));

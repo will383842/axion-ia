@@ -46,8 +46,13 @@ vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
   retirerSollicitationsDuFormateur: retrait,
 }));
 vi.mock("../activation", () => ({ changerActivationFormateur: activation }));
+const { allume } = vi.hoisted(() => ({ allume: vi.fn(async () => false) }));
+vi.mock("../interrupteur-allume", () => ({ interrupteurAllume: allume }));
 
-import { terminerCollaboration } from "../fin-collaboration-service";
+import {
+  cloreFinsArrivees,
+  deciderFinCollaboration as terminerCollaboration,
+} from "../fin-collaboration-service";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 const ADMIN = "22222222-2222-4222-8222-222222222222";
@@ -61,6 +66,9 @@ const fiche = (over: Record<string, unknown> = {}) => ({
   statut: "sous_traitant",
   organismeSousTraitantId: null,
   finCollaborationAt: null,
+  finCollaborationDecideeAt: null,
+  finCollaborationMotifPrevu: null,
+  finCollaborationEffetAt: null,
   sousTraitantContratSigneAt: null,
   createdAt: new Date("2026-03-01T00:00:00Z"),
   ...over,
@@ -116,8 +124,29 @@ describe("terminerCollaboration", () => {
     expect(r).toEqual({ ok: false, raison: "deja-terminee" });
   });
 
+  it("fin déjà programmée : refusé", async () => {
+    reponses["trainer.findUnique"] = fiche({ finCollaborationDecideeAt: new Date("2026-10-01") });
+    const r = await terminerCollaboration(
+      { ...base, motif: "siret_cesse", dateEffet: MAINTENANT },
+      MAINTENANT,
+    );
+    expect(r).toEqual({ ok: false, raison: "deja-terminee" });
+  });
+
+  it("seul un avertissement F49 REMIS compte (statut `sent`, date d'envoi)", async () => {
+    await terminerCollaboration(
+      { ...base, motif: "manquement", dateEffet: MAINTENANT },
+      MAINTENANT,
+    );
+    const lecture = appels.find((a) => a.modele === "emailLog" && a.methode === "findFirst");
+    expect(lecture?.args).toMatchObject({
+      where: { template: "formateur-avertissement", status: "sent", sentAt: { not: null } },
+      orderBy: { sentAt: "desc" },
+    });
+  });
+
   it("manquement sans avertissement de 8 jours : refusé, rien n'est écrit", async () => {
-    reponses["emailLog.findFirst"] = { createdAt: new Date(MAINTENANT.getTime() - 2 * JOUR) };
+    reponses["emailLog.findFirst"] = { sentAt: new Date(MAINTENANT.getTime() - 2 * JOUR) };
     const r = await terminerCollaboration(
       { ...base, motif: "manquement", dateEffet: MAINTENANT },
       MAINTENANT,
@@ -145,19 +174,29 @@ describe("terminerCollaboration", () => {
     );
     expect(r).toMatchObject({ ok: true });
 
-    const maj = appels.find((a) => a.modele === "trainer" && a.methode === "updateMany");
-    expect(maj?.args).toMatchObject({
+    const majs = appels.filter((a) => a.modele === "trainer" && a.methode === "updateMany");
+    expect(majs[0]?.args).toMatchObject({
+      where: { id: ID, finCollaborationAt: null, finCollaborationDecideeAt: null },
+      data: {
+        finCollaborationDecideeAt: MAINTENANT,
+        finCollaborationDecideeParId: ADMIN,
+        finCollaborationMotifPrevu: "siret_cesse",
+        finCollaborationNote: "Note privée de Will",
+      },
+    });
+    expect(majs[1]?.args).toMatchObject({
       where: { id: ID, finCollaborationAt: null },
       data: {
         finCollaborationAt: MAINTENANT,
         finCollaborationMotif: "siret_cesse",
         finCollaborationParId: ADMIN,
-        finCollaborationNote: "Note privée de Will",
         accesVersion: { increment: 1 },
       },
     });
     // `actif` passe par son écrivain unique, jamais par cette transaction.
-    expect((maj?.args as { data: Record<string, unknown> }).data.actif).toBeUndefined();
+    for (const m of majs) {
+      expect((m.args as { data: Record<string, unknown> }).data.actif).toBeUndefined();
+    }
     expect(activation).toHaveBeenCalledWith(
       expect.objectContaining({ trainerId: ID, actif: false, motif: "Fin de collaboration" }),
     );
@@ -177,11 +216,14 @@ describe("terminerCollaboration", () => {
       data: { revokedAt: MAINTENANT, revokedById: ADMIN },
     });
 
-    const journal = appels.find((a) => a.modele === "activityLog" && a.methode === "create");
-    const data = (journal?.args as { data: Record<string, unknown> }).data;
-    expect(data.targetId).toBe(ID);
-    expect(JSON.stringify(data)).not.toContain("Note privée");
-    expect(JSON.stringify(data)).not.toContain("camille");
+    const journaux = appels.filter((a) => a.modele === "activityLog" && a.methode === "create");
+    expect(journaux).toHaveLength(2);
+    for (const j of journaux) {
+      const data = (j.args as { data: Record<string, unknown> }).data;
+      expect(data.targetId).toBe(ID);
+      expect(JSON.stringify(data)).not.toContain("Note privée");
+      expect(JSON.stringify(data)).not.toContain("camille");
+    }
   });
 
   it("avec préavis : la fiche reste active jusqu'à la date d'effet", async () => {
@@ -189,9 +231,14 @@ describe("terminerCollaboration", () => {
       { ...base, motif: "initiative_axion", dateEffet: new Date("2026-11-12T00:00:00Z") },
       MAINTENANT,
     );
-    expect(r).toMatchObject({ ok: true, preavis: 30 });
-    const maj = appels.find((a) => a.modele === "trainer" && a.methode === "updateMany");
-    expect((maj?.args as { data: Record<string, unknown> }).data.actif).toBeUndefined();
+    expect(r).toMatchObject({ ok: true, preavis: 30, close: false });
+    // La décision seule : la fiche n'est PAS close avant la date d'effet.
+    const majs = appels.filter((a) => a.modele === "trainer" && a.methode === "updateMany");
+    expect(majs).toHaveLength(1);
+    const data = (majs[0]?.args as { data: Record<string, unknown> }).data;
+    expect(data.finCollaborationAt).toBeUndefined();
+    expect(data.accesVersion).toBeUndefined();
+    expect(data.actif).toBeUndefined();
     expect(activation).not.toHaveBeenCalled();
     expect(retrait).toHaveBeenCalledWith(ID);
   });
@@ -204,5 +251,40 @@ describe("terminerCollaboration", () => {
     );
     expect(r).toEqual({ ok: false, raison: "deja-terminee" });
     expect(appels.some((a) => a.modele === "activityLog")).toBe(false);
+  });
+});
+
+describe("cloreFinsArrivees (passage quotidien)", () => {
+  it("interrupteur coupé : aucune requête", async () => {
+    allume.mockResolvedValue(false);
+    expect(await cloreFinsArrivees(MAINTENANT)).toMatchObject({ etat: "coupe", closes: 0 });
+    expect(appels).toEqual([]);
+  });
+
+  it("date d'effet arrivée (jour de Paris) : la fiche est close, sans écrire `actif`", async () => {
+    allume.mockResolvedValue(true);
+    reponses["trainer.findMany"] = [
+      {
+        id: ID,
+        finCollaborationMotifPrevu: "initiative_axion",
+        finCollaborationDecideeParId: ADMIN,
+        finCollaborationEffetAt: new Date("2026-10-13T00:00:00Z"),
+      },
+    ];
+    // 23 h 30 UTC le 12 = le 13 à Paris.
+    const b = await cloreFinsArrivees(new Date("2026-10-12T23:30:00Z"));
+    expect(b).toMatchObject({ etat: "fait", closes: 1, erreurs: 0 });
+    const lecture = appels.find((a) => a.modele === "trainer" && a.methode === "findMany");
+    expect(lecture?.args).toMatchObject({
+      where: { finCollaborationEffetAt: { lte: new Date("2026-10-13T00:00:00Z") } },
+    });
+    const maj = appels.find((a) => a.modele === "trainer" && a.methode === "updateMany");
+    expect(maj?.args).toMatchObject({
+      data: { finCollaborationMotif: "initiative_axion", finCollaborationParId: ADMIN },
+    });
+    expect((maj?.args as { data: Record<string, unknown> }).data.actif).toBeUndefined();
+    expect(activation).not.toHaveBeenCalled();
+    const journal = appels.find((a) => a.modele === "activityLog");
+    expect((journal?.args as { data: { adminUserId: unknown } }).data.adminUserId).toBeNull();
   });
 });

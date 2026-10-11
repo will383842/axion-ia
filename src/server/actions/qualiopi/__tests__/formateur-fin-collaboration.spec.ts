@@ -27,9 +27,11 @@ vi.mock("@/server/qualiopi/formateurs-independants/interrupteur-allume", () => (
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   envoyer: (...a: unknown[]) => d.envoyer(...a),
   apercu: (...a: unknown[]) => d.apercu(...a),
+  texteValide: async () => false,
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/fin-collaboration-service", () => ({
-  terminerCollaboration: (...a: unknown[]) => d.terminer(...a),
+  deciderFinCollaboration: (...a: unknown[]) => d.terminer(...a),
+  desactiverApresFin: vi.fn(async () => true),
   lireContexteFin: (...a: unknown[]) => d.contexte(...a),
   missionsApres: (...a: unknown[]) => d.missions(...a),
   estIndependant: (t: { statut: string; organismeSousTraitantId: string | null }) =>
@@ -38,6 +40,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/fin-collaboration-service", (
 
 import {
   apercuAvertissementAction,
+  renvoyerFinCollaborationAction,
   envoyerAvertissementFormateurAction,
   terminerCollaborationFormateurAction,
 } from "../formateur-fin-collaboration";
@@ -51,6 +54,9 @@ const contexte = {
     statut: "sous_traitant",
     organismeSousTraitantId: null,
     finCollaborationAt: null,
+    finCollaborationDecideeAt: null,
+    finCollaborationMotifPrevu: null,
+    finCollaborationEffetAt: null,
   },
   debutRelation: new Date("2026-01-01T00:00:00Z"),
   avertissementEnvoyeAt: null,
@@ -62,7 +68,7 @@ beforeEach(() => {
   d.allume.mockResolvedValue(true);
   d.contexte.mockResolvedValue(contexte);
   d.missions.mockResolvedValue([]);
-  d.terminer.mockResolvedValue({ ok: true, preavis: 30, contexte });
+  d.terminer.mockResolvedValue({ ok: true, preavis: 30, close: false, desactivee: true, contexte });
   d.envoyer.mockResolvedValue("envoye");
   d.apercu.mockResolvedValue({ sujet: "s", html: "<p></p>", destinataire: "x" });
 });
@@ -86,7 +92,9 @@ describe("terminerCollaborationFormateurAction", () => {
   });
 
   it("fin enregistrée : F47 part par l'adaptateur, avec le texte choisi", async () => {
-    expect(await terminerCollaborationFormateurAction(fin)).toEqual({ data: { email: "envoye" } });
+    expect(await terminerCollaborationFormateurAction(fin)).toEqual({
+      data: { email: "envoye", close: false, desactivee: true },
+    });
     const e = d.envoyer.mock.calls[0]![0] as { gabarit: string; payload: { texteLibre: string } };
     expect(e.gabarit).toBe("formateur-fin-collaboration");
     expect(e.payload.texteLibre).toContain("à notre demande, avec un préavis de 30 jours");
@@ -99,7 +107,7 @@ describe("terminerCollaborationFormateurAction", () => {
         motif: "deces",
         dateEffet: "2026-10-20",
       }),
-    ).toEqual({ data: { email: "aucun" } });
+    ).toMatchObject({ data: { email: "aucun" } });
     expect(d.envoyer).not.toHaveBeenCalled();
   });
 
@@ -147,5 +155,30 @@ describe("avertissement F49", () => {
     expect(e.payload.valeurs["fait précis, écrit par Will"]).toBe(av.fait);
     expect(e.payload.valeurs.date).toBeTruthy();
     expect(e.jobId).toMatch(new RegExp(`^fi-avertissement-${ID}-\\d{8}$`));
+  });
+});
+
+describe("renvoi de F47", () => {
+  it("fin décidée : F47 renvoyé avec la même clé", async () => {
+    d.contexte.mockResolvedValue({
+      ...contexte,
+      trainer: {
+        ...contexte.trainer,
+        finCollaborationDecideeAt: new Date("2026-10-11T08:00:00Z"),
+        finCollaborationMotifPrevu: "siret_cesse",
+        finCollaborationEffetAt: new Date("2026-10-11T00:00:00Z"),
+      },
+    });
+    expect(await renvoyerFinCollaborationAction({ trainerId: ID })).toEqual({
+      data: { email: "envoye" },
+    });
+    const e = d.envoyer.mock.calls[0]![0] as { jobId: string; payload: { texteLibre: string } };
+    expect(e.jobId).toBe(`fi-fin-collaboration-${ID}`);
+    expect(e.payload.texteLibre).toContain("11 octobre 2026");
+  });
+
+  it("aucune fin décidée : refus", async () => {
+    expect(await renvoyerFinCollaborationAction({ trainerId: ID })).toHaveProperty("error");
+    expect(d.envoyer).not.toHaveBeenCalled();
   });
 });

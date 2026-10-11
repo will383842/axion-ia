@@ -70,9 +70,21 @@ export function preavisJours(debutRelation: Date, decision: Date): 30 | 60 | 90 
   return n < 1 ? 30 : n < 2 ? 60 : 90;
 }
 
-/** Début du jour UTC (les dates d'effet se comparent au jour). */
+const JOUR_PARIS = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** Le jour CIVIL à Paris (`AAAA-MM-JJ`) : le contrat, l'écran et l'e-mail raisonnent ainsi. */
+export function jourParis(d: Date): string {
+  return JOUR_PARIS.format(d);
+}
+
+/** Minuit UTC du jour civil de Paris : c'est ainsi qu'une date d'effet est stockée. */
 function jour(d: Date): number {
-  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  return Date.parse(`${jourParis(d)}T00:00:00Z`);
 }
 
 /** Date d'effet proposée par l'écran : décision + préavis, ou le jour même. */
@@ -97,6 +109,7 @@ export interface DemandeFin {
 
 export type RefusFin =
   | "date-effet-avant-decision"
+  | "date-effet-immediate"
   | "preavis-trop-court"
   | "avertissement-manquant"
   | "note-manquante"
@@ -106,6 +119,10 @@ export type RefusFin =
 export function refusFin(d: DemandeFin): RefusFin[] {
   const refus: RefusFin[] = [];
   if (jour(d.dateEffet) < jour(d.decision)) refus.push("date-effet-avant-decision");
+  else if (!avecPreavis(d.motif) && jour(d.dateEffet) !== jour(d.decision)) {
+    // Une fin sans préavis prend effet le jour même : l'e-mail annonce cette date.
+    refus.push("date-effet-immediate");
+  }
   if (
     avecPreavis(d.motif) &&
     jour(d.dateEffet) < jour(dateEffetParDefaut(d.motif, d.debutRelation, d.decision))
@@ -128,6 +145,7 @@ export function refusFin(d: DemandeFin): RefusFin[] {
 
 export const MESSAGES_REFUS_FIN: Readonly<Record<RefusFin, string>> = {
   "date-effet-avant-decision": "La date d'effet ne peut pas être antérieure à aujourd'hui.",
+  "date-effet-immediate": "Une fin sans préavis prend effet aujourd'hui.",
   "preavis-trop-court": "La date d'effet ne respecte pas le préavis lié à la durée de la relation.",
   "avertissement-manquant":
     "Une fin pour manquement suppose l'avertissement envoyé au moins 8 jours avant, sauf faute qui ne peut pas être réparée (à motiver).",

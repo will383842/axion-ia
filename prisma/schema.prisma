@@ -6394,9 +6394,14 @@ model Trainer {
   finCollaborationMotif   FinCollaborationMotif?              @map("fin_collaboration_motif")
   finCollaborationParId   String?                             @map("fin_collaboration_par_id") @db.Uuid
   /// Lot L14 — date d'EFFET de la fin (préavis compris) ; `finCollaborationAt` est la
-  /// date de la décision. Note libre de Will, jamais journalisée.
+  /// date de la CLÔTURE (le jour d'effet). Note libre de Will, jamais journalisée.
   finCollaborationEffetAt DateTime?                           @map("fin_collaboration_effet_at")
   finCollaborationNote    String?                             @map("fin_collaboration_note") @db.Text
+  /// Lot L14 — la DÉCISION (date, auteur, motif prévu). Une fin avec préavis n'est
+  /// close (`finCollaborationAt`) qu'à la date d'effet, par le passage quotidien.
+  finCollaborationDecideeAt    DateTime?              @map("fin_collaboration_decidee_at")
+  finCollaborationDecideeParId String?                @map("fin_collaboration_decidee_par_id") @db.Uuid
+  finCollaborationMotifPrevu   FinCollaborationMotif? @map("fin_collaboration_motif_prevu")
   /// Numéro de DA vu sur la liste publique des OF (preuve : `verificationsRegistre`).
   ndaVerifieListeAt       DateTime?                           @map("nda_verifie_liste_at")
   /// Intervenant mis à disposition par un ORGANISME sous-traitant.
