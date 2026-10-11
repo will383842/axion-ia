@@ -1,24 +1,21 @@
 /**
- * Espace formateur — UNE mission (lots L11b-ux et L11h, écrans F-8 et F-15).
+ * Espace formateur — UNE mission (lots L11b-ux et L11h, écrans F-8 et F-15),
+ * rendue par l'accueil (`/espace-formateur?mission=<id>`) : aucune route de
+ * plus, aucun JavaScript (formulaires serveur).
  *
  * Proposition : six lignes (formation, journées, lieu, honoraires,
  * déplacement, réponse avant), la phrase de liberté, deux boutons de même
  * taille. Mission acceptée, avant le début : « Je ne peux plus assurer cette
  * mission » (sans pénalité). Sinon : pourquoi elle en est là, et quoi faire.
  *
- * 🔑 Interrupteur `formateurs.choix_cartes` coupé : la page n'existe pas
- * (404), l'espace reste exactement celui d'avant.
- *
- * 🔴 Un formateur ne voit que SES missions : la lecture filtre par
- * `trainerId` de la session ; la mission d'un autre répond comme une mission
- * inconnue (404).
+ * 🔴 Un formateur ne voit que SES missions : la lecture filtre par le
+ * `trainerId` de la session connectée ; la mission d'un autre répond comme
+ * une mission inconnue (404).
  */
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 
-import { requireFormateur } from "@/server/formateur/guard";
 import { prisma } from "@/lib/prisma";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
@@ -28,7 +25,7 @@ import {
   STATUTS_ACCORD_DONNE,
   refusLibrePour,
 } from "@/server/qualiopi/trainers/mission-formateur";
-import { PropositionSixLignes } from "@/components/espace-formateur/PropositionSixLignes";
+import { PropositionSixLignes } from "./PropositionSixLignes";
 import {
   repondreDepuisFormulaireAction,
   seDesisterDepuisFormulaireAction,
@@ -41,30 +38,24 @@ import {
   REPONSE_ENREGISTREE,
   SUITE_APRES_REPONSE,
   TEXTE_STATUT_MISSION,
-} from "@/components/espace-formateur/mission-copy";
-import type { MissionFormateurStatut } from "../../../../../../prisma/generated/client";
+} from "./mission-copy";
+import type { MissionFormateurStatut } from "../../../prisma/generated/client";
 
-import { CoquilleFormateur } from "../../_coquille";
+export interface ParametresVueMission {
+  readonly fait?: string;
+  readonly erreur?: string;
+  readonly reponse?: string;
+}
 
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "Ma mission — Axion-IA",
-  robots: { index: false, follow: false },
-};
-
-export default async function Page({
-  params,
-  searchParams,
+export async function VueMission({
+  trainerId,
+  id,
+  sp,
 }: {
-  params: Promise<{ locale: string; id: string }>;
-  searchParams: Promise<{ fait?: string; erreur?: string; reponse?: string }>;
+  trainerId: string;
+  id: string;
+  sp: ParametresVueMission;
 }): Promise<React.ReactElement> {
-  const { trainerId } = await requireFormateur();
-  if (!(await interrupteurAllume("choix_cartes"))) notFound();
-  const { id } = await params;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
-
   const mission = await prisma.missionFormateur.findFirst({
     where: { id, trainerId },
     select: {
@@ -93,10 +84,9 @@ export default async function Page({
     accordDonne && avantLeDebut ? interrupteurAllume("rang_suivant") : Promise.resolve(false),
   ]);
   const texte = TEXTE_STATUT_MISSION[mission.statut];
-  const sp = await searchParams;
 
   return (
-    <CoquilleFormateur section="accueil">
+    <>
       <Link href={FORMATEUR_BASE_PATH} className="text-terracotta text-sm hover:underline">
         ← À faire
       </Link>
@@ -253,6 +243,6 @@ export default async function Page({
           </details>
         ) : null}
       </div>
-    </CoquilleFormateur>
+    </>
   );
 }
