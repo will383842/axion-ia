@@ -76,6 +76,10 @@ export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactur
       statut: "valide",
       autofactureAt: null,
       numeroFacture: null,
+      // Un AVOIR (paiement par mission, éteint) n'est pas une autofacture à
+      // émettre : refusé à chaque passage sans être mis à jour, il resterait en
+      // tête de liste et finirait par occuper tout le plafond.
+      avoirDeId: null,
       trainer: { statut: "sous_traitant" },
     },
     select: { id: true },

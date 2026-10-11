@@ -11,6 +11,7 @@ import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul"
 import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verrou-remuneration";
 import { journaliser } from "@/server/journal/journaliser";
 
+import { totaliser } from "../argent/calcul-mission";
 import { jourDeColonneDate } from "../argent/dates";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
@@ -37,11 +38,23 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   // Fenêtre large d'un jour : le jour de Paris tranche ensuite.
   const depuis = new Date(`${dateBascule}T00:00:00Z`);
   depuis.setUTCDate(depuis.getUTCDate() - 1);
+  // Une session déjà revendiquée par mission reste lue même si toutes ses journées
+  // ont été déplacées avant la bascule : le run mensuel l'écarte, le passage la paie.
+  const revendiqueesAvant = await prisma.revendicationPaiement.findMany({
+    where: { regime: "par_mission" },
+    select: { sessionId: true },
+  });
   const sessions = await prisma.trainingSession.findMany({
     // `dateDebut` OU une journée à la bascule ou après : une session reportée dont la
     // date de début est restée ancienne ne doit pas échapper aux deux moteurs.
     // La première journée (`premiereJourneeSession`) tranche ensuite.
-    where: { OR: [{ dateDebut: { gte: depuis } }, { jours: { some: { date: { gte: depuis } } } }] },
+    where: {
+      OR: [
+        { dateDebut: { gte: depuis } },
+        { jours: { some: { date: { gte: depuis } } } },
+        { id: { in: revendiqueesAvant.map((r) => r.sessionId) } },
+      ],
+    },
     select: {
       id: true,
       dateDebut: true,
@@ -51,7 +64,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   });
   if (sessions.length === 0) return [];
   const ids = sessions.map((s) => s.id);
-  const [signatures, missions] = await Promise.all([
+  const [signatures, missions, revendiquees] = await Promise.all([
     prisma.emargementContresignature.findMany({
       where: {
         sessionId: { in: ids },
@@ -76,7 +89,12 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
         regimeTvaFige: true,
       },
     }),
+    prisma.revendicationPaiement.findMany({
+      where: { sessionId: { in: ids }, regime: "par_mission" },
+      select: { trainerId: true, sessionId: true },
+    }),
   ]);
+  const parMission = new Set(revendiquees.map((r) => `${r.trainerId}|${r.sessionId}`));
 
   const out: CandidatMission[] = [];
   for (const s of sessions) {
@@ -118,6 +136,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
         // ⚠️ La condition suspensive du financeur (PR OPCO encore ouverte) n'est
         // pas encore lisible : faute de mieux, on ne paie que ce qui est signé.
         conditionFinanceurEnAttente: false,
+        revendiqueParMission: parMission.has(`${trainerId}|${s.id}`),
       });
     }
   }
@@ -149,7 +168,20 @@ export async function ecrireMoisDansTransaction(
     trainerIds: [m.trainerId],
   });
 
-  // 1. Le premier moteur qui écrit revendique ; l'autre s'abstient.
+  // 1. Propriétaire en conflit : une ligne mensuelle vivante, tous mois confondus.
+  // Contrôlé AVANT de revendiquer : une revendication `par_mission` posée sur un
+  // conflit écarterait le couple du run mensuel, et personne ne paierait.
+  const mensuelle = await tx.trainerFeeLine.count({
+    where: {
+      trainerId: m.trainerId,
+      sessionId: m.sessionId,
+      origine: "releve_mensuel",
+      statut: { not: "annule" },
+    },
+  });
+  if (mensuelle > 0) return "conflit_ligne_mensuelle";
+
+  // 2. Le premier moteur qui écrit revendique ; l'autre s'abstient.
   await tx.$executeRawUnsafe(
     `INSERT INTO "revendications_paiement" ("id", "trainer_id", "session_id", "regime", "source")
          VALUES (gen_random_uuid(), $1::uuid, $2::uuid, 'par_mission', 'passage_mission')
@@ -162,17 +194,6 @@ export async function ecrireMoisDansTransaction(
     select: { regime: true },
   });
   if (rev?.regime !== "par_mission") return "revendique_par_le_mensuel";
-
-  // 2. Propriétaire en conflit : une ligne mensuelle vivante, tous mois confondus.
-  const mensuelle = await tx.trainerFeeLine.count({
-    where: {
-      trainerId: m.trainerId,
-      sessionId: m.sessionId,
-      origine: "releve_mensuel",
-      statut: { not: "annule" },
-    },
-  });
-  if (mensuelle > 0) return "conflit_ligne_mensuelle";
 
   // 3. Déjà écrit ce mois (un relevé vivant, hors avoir) : rien.
   const existant = await tx.trainerStatement.findFirst({
@@ -189,6 +210,11 @@ export async function ecrireMoisDansTransaction(
     select: { id: true },
   });
   if (existant) {
+    // Le relevé ne porte encore QUE l'indemnité d'annulation (écrite en premier,
+    // L12f) et n'est pas validé : l'animation du mois s'y ajoute, totaux
+    // recalculés, la plus proche des deux échéances gardée.
+    const complete = await completerReleveIndemnite(tx, existant.id, m, annee, mois, maintenant);
+    if (complete) return "ecrit";
     // Des demi-journées signées APRÈS l'écriture du relevé ne sont pas payées en
     // silence : on le signale (complément à traiter par avoir et réémission).
     const ecrites = await tx.trainerFeeLine.aggregate({
@@ -198,6 +224,24 @@ export async function ecrireMoisDansTransaction(
     const aPayer = m.releve.lignes.find((l) => l.objet === "animation")?.demiJournees ?? 0;
     return aPayer > (ecrites._sum.demiJournees ?? 0) ? "complement_a_traiter" : "deja_ecrit";
   }
+
+  // Une pièce de ce mois a été ANNULÉE par avoir : sa réémission (qui garde
+  // l'échéance d'origine et le lien `remplaceId`) est un geste humain. Le passage
+  // ne réécrit pas le mois à sa place.
+  const annuleeParAvoir = await tx.trainerStatement.count({
+    where: {
+      trainerId: m.trainerId,
+      sessionId: m.sessionId,
+      origine: "passage_mission",
+      periodeYear: annee,
+      periodeMonth: mois,
+      avoirDeId: null,
+      organismeSousTraitantId: null,
+      statut: "annule",
+      avoirs: { some: { statut: { not: "annule" } } },
+    },
+  });
+  if (annuleeParAvoir > 0) return "reemission_attendue";
 
   const releve = await tx.trainerStatement.create({
     data: {
@@ -252,6 +296,86 @@ export async function ecrireMoisDansTransaction(
     { exiger: true },
   );
   return "ecrit";
+}
+
+const RECALCULABLES = ["brouillon", "a_valider"] as const;
+
+/**
+ * Ajoute l'animation (et le déplacement) d'un mois à un relevé de mission qui ne
+ * porte encore que l'indemnité d'annulation. `false` si le relevé porte déjà de
+ * l'animation, n'est plus recalculable, ou n'a pas le régime de TVA du mois.
+ */
+async function completerReleveIndemnite(
+  tx: Tx,
+  statementId: string,
+  m: MoisAEcrire,
+  annee: number,
+  mois: number,
+  maintenant: Date,
+): Promise<boolean> {
+  const r = await tx.trainerStatement.findUnique({
+    where: { id: statementId },
+    select: {
+      statut: true,
+      echeanceAt: true,
+      tvaRegime: true,
+      feeLines: { where: { statut: { not: "annule" } }, select: { objet: true } },
+    },
+  });
+  if (!r || !(RECALCULABLES as readonly string[]).includes(r.statut)) return false;
+  if (r.tvaRegime !== m.regimeTva) return false;
+  if (r.feeLines.length === 0 || r.feeLines.some((l) => l.objet !== "indemnite_annulation"))
+    return false;
+  await tx.trainerFeeLine.createMany({
+    data: m.releve.lignes.map((l) => ({
+      trainerId: m.trainerId,
+      prestationType: "formation_collective" as const,
+      sessionId: m.sessionId,
+      model: "taux_journalier" as const,
+      nature: "honoraire_du" as const,
+      tauxSnapshotCents: l.objet === "animation" ? m.tarifJourneeHtCents : null,
+      montantHtCents: l.montantHtCents,
+      statut: "calcule" as const,
+      periodeYear: annee,
+      periodeMonth: mois,
+      statementId,
+      origine: "passage_mission" as const,
+      objet: l.objet,
+      demiJournees: l.demiJournees ?? null,
+      journeesDeplacement: l.journeesDeplacement ?? null,
+      calculatedAt: maintenant,
+    })),
+  });
+  const lignes = await tx.trainerFeeLine.findMany({
+    where: { statementId, statut: { not: "annule" } },
+    select: { montantHtCents: true },
+  });
+  const t = totaliser(lignes, m.regimeTva);
+  const echeanceMois = instantDuJour(m.releve.echeance);
+  const echeanceAt =
+    r.echeanceAt && r.echeanceAt.getTime() < echeanceMois.getTime() ? r.echeanceAt : echeanceMois;
+  await tx.trainerStatement.update({
+    where: { id: statementId },
+    data: {
+      totalHtCents: t.totalHtCents,
+      tvaCents: t.tvaCents,
+      totalTtcCents: t.totalTtcCents,
+      echeanceAt,
+    },
+    select: { id: true },
+  });
+  await journaliser(
+    tx,
+    {
+      action: "qualiopi.remuneration.releve_mission_complete",
+      targetType: "TrainerStatement",
+      targetId: statementId,
+      changes: { mois: m.releve.mois, totalHtCents: t.totalHtCents },
+      session: null,
+    },
+    { exiger: true },
+  );
+  return true;
 }
 
 /** Les dépendances réelles du passage. */
