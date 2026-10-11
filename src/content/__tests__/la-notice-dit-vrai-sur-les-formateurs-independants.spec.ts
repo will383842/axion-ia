@@ -30,10 +30,11 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
   });
 
   it("le miroir anglais porte les mêmes faits clés", () => {
-    for (const fait of ["6.1.b", "6.1.c", "6.1.f", "L.8222-1", "IBAN", "Telegram", "Calendly"]) {
+    for (const fait of ["6.1.b", "6.1.c", "6.1.f", "L.8222-1", "IBAN", "Calendly"]) {
       expect(EN()).toContain(fait);
     }
     expect(EN()).toMatch(/five years after the end/);
+    expect(EN()).not.toMatch(/antivirus|Telegram|chartered accountant|never displayed/);
   });
 
   it("nomme les bases légales (6.1.b, 6.1.c, 6.1.f) et l'obligation de vigilance", () => {
@@ -46,17 +47,17 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(FR()).toMatch(/liste publique des organismes de formation/i);
   });
 
-  it("dit que l'IBAN est chiffré et jamais réaffiché en entier", () => {
-    expect(FR()).toMatch(/IBAN/);
-    expect(FR()).toMatch(/chiffr/);
-    expect(FR()).toMatch(/jamais réaffiché en entier/);
+  it("dit que l'IBAN est enregistré chiffré, sans promettre ce que le code ne fait pas encore", () => {
+    expect(FR()).toMatch(/IBAN est enregistré chiffré/);
+    // Aucun code de main ne porte encore l'antivirus des pièces, le lien de 30 jours,
+    // l'alerte Telegram sans nom ni l'affichage masqué de l'IBAN pour les formateurs.
+    expect(FR()).not.toMatch(/antivirus|expire au bout|réaffiché|ni votre nom/);
+    expect(FR()).not.toMatch(/expert-comptable/);
   });
 
   it("dit la décision humaine (G1) et le fil interne sans nom (G2)", () => {
     expect(FR()).toMatch(/décidés par une personne/i);
     expect(FR()).toMatch(/ne concluent jamais seuls/);
-    expect(FR()).toMatch(/Telegram/);
-    expect(FR()).toMatch(/ni votre nom/);
   });
 
   it("dit la conservation par critères, vigilance 5 ans après la fin (G5), sans purge annoncée", () => {
