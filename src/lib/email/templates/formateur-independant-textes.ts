@@ -463,7 +463,7 @@ export const TEXTES_FORMATEUR = {
         // La durée est remplie par l'outil depuis le mécanisme (`CODE_VALIDITE_MS`, 15 minutes
         // depuis S6b, décision 35) : le texte n'annonce jamais une durée fausse.
         paragraphes: [
-          "Votre code de signature est [code]. Il reste valable [durée].",
+          "Votre code de signature : [code]. Il est valable [durée].",
           "Vous n'êtes pas en train de signer ? Ignorez simplement ce message.",
         ],
         boutons: [],

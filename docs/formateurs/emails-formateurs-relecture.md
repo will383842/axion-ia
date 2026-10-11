@@ -436,12 +436,12 @@ Comment lire chaque fiche :
 
 - **Objet** : [code] : votre code de signature Axion-IA
 - **Titre** : [code] : votre code de signature Axion-IA
-- **Aperçu** : Votre code de signature est [code].
+- **Aperçu** : Votre code de signature :
 - **Corps** :
 
   > Bonjour Prénom,
   >
-  > Votre code de signature est [code]. Il reste valable [durée].
+  > Votre code de signature : [code]. Il est valable [durée].
   >
   > Vous n'êtes pas en train de signer ? Ignorez simplement ce message.
 
