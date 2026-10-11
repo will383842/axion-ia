@@ -203,6 +203,11 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
   STRIPE_WEBHOOK_SIGNATURE_FAIL: {},
   MONITORING_ALERT: { kind: "test", details: {} },
   CRM_SYNC_ALERT: { kind: "backlog", count: 3 },
+  CANDIDAT_SELF_ERASED: {
+    offerTitle: "Vidéaste freelance (F/H)",
+    erasedAt: "2026-10-11T10:00:00Z",
+  },
+  DATA_INCIDENT_ALERT: { numero: 1, palier: "48h", echeance: "2026-10-13T10:00:00Z" },
 };
 
 /** Catégories qui concernent une personne : elles doivent porter un lien console. */
