@@ -189,9 +189,9 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(EN()).toMatch(/list of your documents, without their content/);
     // Export et effacement ne valent que derrière `formateurs.dossier_en_ligne` : la
     // notice les rattache aux données du dossier en ligne.
-    const module = lire("src", "lib", "rgpd-formateur-independant.ts");
-    expect(module).toMatch(/if \(!\(await droitsFormateurActifs\(\)\)\) return null;/);
-    expect(module).toMatch(/if \(etat !== "actif"\) return \{ formateur: etat/);
+    const source = lire("src", "lib", "rgpd-formateur-independant.ts");
+    expect(source).toMatch(/if \(!\(await droitsFormateurActifs\(\)\)\) return null;/);
+    expect(source).toMatch(/if \(etat !== "actif"\) return \{ formateur: etat/);
     expect(FR()).toMatch(/la copie des données de votre dossier en ligne montre votre IBAN masqué/);
     expect(FR()).toMatch(/demande d'effacement des données de votre dossier en ligne/);
     expect(EN()).toMatch(/copy of your online file data/);
@@ -199,7 +199,7 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(FR()).toMatch(/pseudonymisation/);
     // Sans lien contractuel, IBAN et numéros de l'entreprise sont effacés.
     for (const champ of ["iban", "siret", "numeroTvaIntracom", "sousTraitantNda"]) {
-      expect(module).toMatch(new RegExp(`\\b${champ}: null`));
+      expect(source).toMatch(new RegExp(`\\b${champ}: null`));
     }
     expect(FR()).toMatch(/votre IBAN et les numéros de votre entreprise sont effacés/);
     expect(EN()).toMatch(/your IBAN and your company numbers are erased/);
@@ -207,9 +207,9 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
   });
 
   it("nomme chaque pièce que le module garde intacte (PIECES_LEGALES), en FR et en EN", () => {
-    const module = lire("src", "lib", "rgpd-formateur-independant.ts");
+    const source = lire("src", "lib", "rgpd-formateur-independant.ts");
     const types = (nom: string) => {
-      const m = module.match(
+      const m = source.match(
         new RegExp(`const ${nom}: ReadonlySet<string> = new Set\\(\\[([^\\]]*)\\]`),
       );
       expect(m, nom).not.toBeNull();
