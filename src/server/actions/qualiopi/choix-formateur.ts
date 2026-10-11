@@ -185,7 +185,7 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
     ...(motif !== undefined ? { motif: motif.slice(0, 1400) } : {}),
     ...(remplacant !== undefined ? { remplacant: remplacant.slice(0, 500) } : {}),
   });
-  redirect(`${FORMATEUR_BASE_PATH}/missions/${missionId}?${"error" in r ? "erreur=1" : "fait=1"}`);
+  redirect(`${FORMATEUR_BASE_PATH}?mission=${missionId}&${"error" in r ? "erreur=1" : "fait=1"}`);
 }
 
 /**
@@ -210,7 +210,7 @@ export async function repondreDepuisFormulaireAction(formData: FormData): Promis
     reponse,
     ...(reponse === "refusee" && motif !== "" ? { motif } : {}),
   });
-  const page = `${FORMATEUR_BASE_PATH}/missions/${missionId}`;
+  const page = `${FORMATEUR_BASE_PATH}?mission=${missionId}`;
   // Aucun texte libre dans l'adresse : un code, que la page traduit.
-  redirect("error" in r ? `${page}?erreur=reponse` : `${page}?reponse=${reponse}`);
+  redirect("error" in r ? `${page}&erreur=reponse` : `${page}&reponse=${reponse}`);
 }
