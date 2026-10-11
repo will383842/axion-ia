@@ -493,7 +493,7 @@ export const INTERRUPTEURS_ENTREE = {
   nature_offre: {
     ...envoi(
       "Nature de l'offre lue en base",
-      "« Freelance » ou « salarié » se choisit sur chaque offre, et c'est ce choix qui exclut les offres freelance de la réponse automatique « poste pourvu ».",
+      "« Freelance » ou « salarié » se choisit sur chaque offre, et c'est ce choix qui exclut les offres freelance de la réponse automatique aux candidatures closes.",
     ),
     cle: "formateurs.nature_offre",
   },

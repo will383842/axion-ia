@@ -118,6 +118,10 @@ function estOffreDeFormateur(offre: OffreLue): boolean {
  * Allumé : la colonne ET une offre de formateur. Colonne non lue (sélection
  * Prisma sans elle, ou fenêtre où le code neuf tourne sur l'ancienne base) :
  * le prédicat d'aujourd'hui, jamais « salarié » par défaut.
+ *
+ * ⚠️ Écart voulu : le filtre de la réponse automatique (`critereEligible`)
+ * écarte, lui, TOUTE offre freelance, de formateur ou non — une mission n'est
+ * jamais « pourvue ». Ce prédicat-ci ne parle que des formateurs.
  */
 export function estOffreFormateurFreelance(
   offre: OffreAvecNature,
