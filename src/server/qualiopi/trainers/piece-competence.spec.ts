@@ -113,8 +113,27 @@ describe("prefiltrePieceCompetenceProbante — le rétrécissement SQL", () => {
     expect(prefiltrePieceCompetenceProbante(NOW)).toEqual({
       type: { in: ["cv", "diplome", "certification"] },
       statutValidation: "valide",
-      fichierUrl: { not: null },
-      OR: [{ dateExpiration: null }, { dateExpiration: { gte: NOW } }],
+      AND: [
+        { OR: [{ fichierUrl: { not: null } }, { contenu: { isNot: null } }] },
+        { OR: [{ dateExpiration: null }, { dateExpiration: { gte: NOW } }] },
+      ],
     });
+  });
+});
+
+// 🔴 Lot L5b (W5 I-2) — une pièce DÉPOSÉE par le formateur n'a pas d'adresse :
+// ses octets vivent chiffrés dans `TrainerDocumentContenu`. Sans ce cas, un CV
+// déposé ne se validait pas et l'indicateur 21 tombait.
+describe("pièce déposée (octets en base, sans adresse)", () => {
+  const deposee = (over: Record<string, unknown> = {}) =>
+    piece({ fichierUrl: null, contenu: { trainerDocumentId: "d" }, ...over });
+
+  it("compte comme portant un fichier", () => {
+    expect(motifPieceNonProbante(deposee(), NOW)).toBeNull();
+    expect(estPieceCompetenceProbante(deposee(), NOW)).toBe(true);
+  });
+
+  it("sans adresse NI contenu → toujours « sans fichier »", () => {
+    expect(motifPieceNonProbante(deposee({ contenu: null }), NOW)).toBe("sans_fichier");
   });
 });

@@ -38,6 +38,7 @@ import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
 import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
 import { exporterReseauApporteurPour } from "@/lib/rgpd-reseau-apporteur";
+import { exporterFormateurIndependantPour } from "@/lib/rgpd-formateur-independant";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
 
@@ -257,6 +258,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Réseau d'apporteurs (2026-10-05) : le dossier de l'apporteur, ou qui a présenté la personne.
   const reseauApporteurs = await exporterReseauApporteurPour(email);
 
+  // Lot L16a — formateur indépendant : sa fiche, IBAN MASQUÉ, pièces sans
+  // octets. `null` tant que `formateurs.dossier_en_ligne` est éteint.
+  const formateurIndependant = await exporterFormateurIndependantPour(email);
+
   // Registre de consentements (lot L4) — la PREUVE de ce que la personne a
   // accepté, et quand. Elle fait partie de « toutes les données la concernant ».
   const consentEvents = lookupHash
@@ -472,6 +477,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      */
     dossierClient,
     reseauApporteurs,
+    ...(formateurIndependant ? { formateurIndependant } : {}),
     consentEvents,
     /** Liste d'opposition : l'empreinte de votre adresse, si vous vous êtes opposé(e). */
     oppositions,
