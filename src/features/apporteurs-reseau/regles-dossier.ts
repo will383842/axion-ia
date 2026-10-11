@@ -6,6 +6,7 @@
  */
 
 /** Liste fermée de Partners (`StatutJuridique`, PR #727), avec ses libellés. */
+
 export const STATUTS_JURIDIQUES = [
   { valeur: "micro_entrepreneur", libelle: "Micro-entrepreneur (auto-entrepreneur)" },
   { valeur: "entrepreneur_individuel", libelle: "Entrepreneur individuel (hors micro)" },
@@ -96,79 +97,8 @@ export const MOTIFS_A_RETRANSMETTRE = [
 ] as const;
 export type MotifARetransmettre = (typeof MOTIFS_A_RETRANSMETTRE)[number]["valeur"];
 
-/**
- * Pays de la zone SEPA (analyse du 09/10, réseau réservé à la France) : les commissions sont
- * versées par virement SEPA, sans frais ni change ; un IBAN hors de la zone est refusé.
- */
-export const PAYS_SEPA: ReadonlySet<string> = new Set([
-  "AD",
-  "AT",
-  "BE",
-  "BG",
-  "CH",
-  "CY",
-  "CZ",
-  "DE",
-  "DK",
-  "EE",
-  "ES",
-  "FI",
-  "FR",
-  "GB",
-  "GG",
-  "GI",
-  "GR",
-  "HR",
-  "HU",
-  "IE",
-  "IM",
-  "IS",
-  "IT",
-  "JE",
-  "LI",
-  "LT",
-  "LU",
-  "LV",
-  "MC",
-  "MT",
-  "NL",
-  "NO",
-  "PL",
-  "PT",
-  "RO",
-  "SE",
-  "SI",
-  "SK",
-  "SM",
-  "VA",
-]);
+// IBAN : validateur neutre (FAC-5), ré-exporté ici pour les appelants du réseau.
+export { PAYS_SEPA, ibanValide } from "@/lib/iban";
 
-/** IBAN : forme, pays SEPA et clé de contrôle (ISO 13616, modulo 97). */
-export function ibanValide(brut: string): boolean {
-  const s = brut.replace(/\s+/g, "").toUpperCase();
-  if (!/^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(s)) return false;
-  if (!PAYS_SEPA.has(s.slice(0, 2))) return false;
-  const r = s.slice(4) + s.slice(0, 4);
-  let reste = 0;
-  for (const c of r) {
-    const v = c >= "A" && c <= "Z" ? (c.charCodeAt(0) - 55).toString() : c;
-    for (const ch of v) reste = (reste * 10 + Number(ch)) % 97;
-  }
-  return reste === 1;
-}
-
-/** SIREN : 9 chiffres et clé de Luhn. */
-export function sirenValide(brut: string): boolean {
-  const s = brut.replace(/\s+/g, "");
-  if (!/^\d{9}$/.test(s)) return false;
-  let somme = 0;
-  for (let i = 0; i < 9; i++) {
-    let n = Number(s[8 - i]);
-    if (i % 2 === 1) {
-      n *= 2;
-      if (n > 9) n -= 9;
-    }
-    somme += n;
-  }
-  return somme % 10 === 0;
-}
+// SIREN : validateur neutre (FAC-5), ré-exporté ici pour les appelants du réseau.
+export { sirenValide } from "@/lib/siret";

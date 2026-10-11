@@ -11,6 +11,7 @@
  */
 
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
+import { normaliserNaf } from "@/lib/siret";
 import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
 
 import {
@@ -57,7 +58,8 @@ export const PARRAINAGE_MOIS = 6;
 /** Art. 5.4 et 6.2 (L.8222-1, D.8222-5) : seuil de vigilance, et son approche. */
 export const SEUIL_VIGILANCE_CENTS = 500_000;
 export const APPROCHE_VIGILANCE_CENTS = 400_000;
-export const VIGILANCE_VALIDITE_MOIS = 6;
+// Durée de validité retenue pour l'attestation de vigilance : valeur commune (FAC-5).
+export { VIGILANCE_VALIDITE_MOIS } from "@/lib/vigilance";
 
 const JOUR_MS = 86_400_000;
 
@@ -101,13 +103,8 @@ export const NAF_EXCLUS = [
 /** Codes NAF qui exigent une attestation spécifique (REQ-JUR-022 de Partners) : revue humaine. */
 export const NAF_A_REVOIR = ["69.20Z", "66.19B", "66.22Z"] as const;
 
-/** « 6920Z », « 69.20z » → « 69.20Z ». */
-export function normaliserNaf(naf: string | null | undefined): string | null {
-  if (!naf) return null;
-  const s = naf.replace(/[\s.]/g, "").toUpperCase();
-  if (!/^\d{4}[A-Z]$/.test(s)) return null;
-  return `${s.slice(0, 2)}.${s.slice(2)}`;
-}
+/** « 6920Z », « 69.20z » → « 69.20Z » (validateur neutre, FAC-5). */
+export { normaliserNaf };
 
 export type RefusAdmission =
   "siren_inactif" | "siren_etranger" | "profession_exclue" | "siren_de_la_societe";
