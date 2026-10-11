@@ -223,9 +223,9 @@ describe("L0c-1 — accusé F0", () => {
       offerTitle: "Formateur IA freelance",
       mission: true,
     });
-    expect(r.subject).toBe("Votre candidature de formateur indépendant est bien arrivée");
+    expect(r.subject).toBe("Bien reçu : votre candidature de formateur");
     expect(r.text).toContain(
-      "Votre candidature à la mission de formateur IA indépendant est bien arrivée.",
+      "Votre candidature à nos missions de formateur IA indépendant est bien arrivée.",
     );
     expect(r.text).toContain(
       "Si votre profil correspond, nous vous proposerons un échange de 20 minutes en visio pour faire connaissance, sans engagement.",

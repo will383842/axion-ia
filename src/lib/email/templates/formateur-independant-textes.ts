@@ -57,14 +57,14 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Choisissez votre moment pour notre échange",
+        objet: "Et si on en parlait 20 minutes ?",
         objetPropose: null,
         paragraphes: [
-          "Merci pour votre candidature.",
-          "Nous vous proposons un échange de 20 minutes en visio pour faire connaissance, vous présenter comment fonctionnent les missions que nous confions à des formateurs indépendants, et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
-          "Choisissez le moment qui vous convient avec le bouton ci-dessous.",
+          "Merci pour votre candidature à nos missions de formateur IA indépendant.",
+          "Nous vous proposons un échange de 20 minutes en visio : faire connaissance, vous expliquer simplement comment fonctionnent nos missions et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
+          "Choisissez vous-même le moment qui vous arrange, en un clic, avec le bouton ci-dessous.",
         ],
-        boutons: ["Choisir mon moment"],
+        boutons: ["Choisir mon créneau"],
       },
     ],
   },
@@ -81,17 +81,22 @@ export const TEXTES_FORMATEUR = {
         etape: "J+3",
         objet: "Votre échange vous attend",
         objetPropose: null,
-        paragraphes: ["Il ne reste qu'à choisir le moment, en un clic."],
-        boutons: ["Choisir mon moment"],
+        paragraphes: [
+          "Il ne vous reste plus qu'à choisir le moment de notre échange de 20 minutes en visio.",
+          "Réservez le vôtre en un clic avec le bouton ci-dessous.",
+        ],
+        boutons: ["Réserver mon créneau"],
       },
       {
         etape: "J+7",
-        objet: "Dernier message au sujet de notre échange",
+        objet: "Dernier rappel : notre échange en visio",
         objetPropose: "Notre dernier message au sujet de notre échange",
         paragraphes: [
-          "L'échange de 20 minutes reste ouvert. Si le moment n'est pas le bon, aucun souci : nous ne vous relancerons plus.",
+          "C'est notre dernier message à ce sujet.",
+          "L'échange de 20 minutes en visio reste ouvert si vous souhaitez découvrir nos missions.",
+          "Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus.",
         ],
-        boutons: ["Choisir mon moment"],
+        boutons: ["Réserver mon créneau"],
       },
     ],
   },
@@ -109,11 +114,12 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre candidature : nous revenons vers vous",
         objetPropose: "Votre candidature de formateur indépendant : nous revenons vers vous",
         paragraphes: [
-          "Vous avez candidaté à la mission de formateur IA indépendant. Nous vous répondons un peu plus tard que prévu, et nous nous en excusons.",
-          "Nous vous proposons un échange en visio pour faire connaissance, vous expliquer comment fonctionnent les missions et répondre à vos questions. Sans engagement.",
-          "Si vous avez trouvé une autre voie entre-temps, vous n'avez rien à faire : nous ne vous relancerons pas.",
+          "Merci pour votre candidature à nos missions de formateur IA indépendant.",
+          "Notre réponse arrive plus tard que prévu : pardon pour ce délai.",
+          "Nous vous proposons un échange en visio : faire connaissance, vous expliquer simplement comment fonctionnent nos missions et répondre à vos questions. Sans engagement.",
+          "Et si vous avez trouvé une autre voie entre-temps, vous n'avez rien à faire : nous ne vous relancerons pas.",
         ],
-        boutons: ["Choisir mon moment"],
+        boutons: ["Choisir mon créneau"],
       },
     ],
   },
@@ -127,11 +133,13 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Échange confirmé : [jour] à [heure]",
+        objet: "C'est confirmé : [jour] à [heure]",
         objetPropose: "C'est confirmé : notre échange du [jour] à [heure]",
         paragraphes: [
-          "C'est confirmé. Nous ferons connaissance, nous vous présenterons le fonctionnement des missions et vous poserez vos questions.",
-          "L'invitation d'agenda vous parvient séparément, par Calendly. Nous vous écrivons la veille, puis une heure avant. Rien à préparer.",
+          "Votre échange est confirmé.",
+          "Au programme : faire connaissance, vous expliquer simplement nos missions, et répondre à toutes vos questions.",
+          "L'invitation d'agenda vous parvient séparément, par Calendly. Nous vous écrivons la veille, puis une heure avant.",
+          "Rien à préparer de votre côté.",
         ],
         boutons: [],
       },
@@ -147,19 +155,23 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: "veille",
-        objet: "Notre échange a lieu demain à [HH:MM]",
+        objet: "Votre échange a lieu demain à [HH:MM]",
         objetPropose: null,
         paragraphes: [
-          "Votre échange a lieu demain à [HH:MM] (heure de Paris). Le lien de connexion est dans l'invitation d'agenda.",
+          "Petit rappel, nous nous parlons demain à [HH:MM] (heure de Paris).",
+          "Le lien de connexion est dans l'invitation d'agenda. Rien à préparer de votre côté.",
         ],
         boutons: [],
       },
       {
         etape: "1 heure avant",
-        objet: "Notre échange commence dans une heure",
+        objet: "Votre échange a lieu dans une heure",
         objetPropose: null,
-        paragraphes: ["Votre échange a lieu dans une heure, à [HH:MM] (heure de Paris)."],
-        boutons: ["Rejoindre la visio"],
+        paragraphes: [
+          "Petit rappel, nous nous parlons à [HH:MM] (heure de Paris).",
+          "Rien à préparer de votre côté.",
+        ],
+        boutons: ["Rejoindre la visioconférence"],
       },
     ],
   },
@@ -173,12 +185,14 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Votre candidature : la suite",
+        objet: "Merci pour notre échange : la suite",
         objetPropose: "Votre candidature de formateur indépendant : la suite",
         paragraphes: [
           "Merci pour notre échange. Nous serions heureux de vous confier des missions de formation.",
-          "Comment cela se passe :\n• une mission vous est proposée, avec les dates et les honoraires indiqués avant que vous répondiez ; vous l'acceptez ou vous la refusez librement, sans aucune conséquence ;\n• aucun volume n'est garanti ;\n• vous restez libre de vos méthodes d'animation, dans le programme convenu, et de travailler pour d'autres clients ;\n• honoraires : 350 € HT la journée, 175 € HT la demi-journée.",
-          "Première étape : compléter votre dossier (environ 10 minutes, vous pouvez reprendre plus tard). Vous y signerez aussi votre contrat de sous-traitance, qui ne prend effet qu'après notre vérification et notre propre signature.",
+          "Comment ça marche :\n• chaque mission vous est proposée avec ses dates et ses honoraires, avant que vous répondiez ;\n• vous l'acceptez ou la refusez librement, sans aucune conséquence ;\n• aucun volume n'est garanti ;\n• vous restez libre de vos méthodes d'animation, dans le programme convenu, et de travailler pour d'autres clients.",
+          "Vos honoraires : 350 € HT la journée, 175 € HT la demi-journée.",
+          "Première étape : complétez votre dossier avec le bouton ci-dessous. Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
+          "Vous y signerez aussi votre contrat de sous-traitance. Nous le contresignons ensuite, après vérification : il ne prend effet qu'à ce moment-là.",
         ],
         boutons: ["Compléter mon dossier"],
       },
@@ -194,12 +208,14 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Merci pour notre échange",
+        objet: "Suite à notre échange",
         objetPropose: null,
         paragraphes: [
-          "Merci pour le temps que vous nous avez consacré.",
-          "Nous ne donnons pas suite pour le moment : nos besoins actuels ne correspondent pas à votre profil. Nous gardons votre candidature et pourrons revenir vers vous si cela change.",
-          "Si vous préférez que nous effacions vos données, répondez simplement à ce message : Williams Jullin, responsable d'Axion-IA, traite votre demande. Nous rendons alors votre fiche anonyme et ne gardons que ce que la loi nous impose de conserver.",
+          "Merci pour le temps que vous nous avez accordé lors de notre échange.",
+          "Pour le moment, nos besoins ne correspondent pas à votre profil.",
+          "Votre candidature reste chez nous : si nos besoins évoluent, nous pourrons revenir vers vous.",
+          "Vous préférez que nous effacions vos données ? Répondez simplement à ce message : Williams Jullin, responsable d'Axion-IA, traite votre demande. Votre fiche est alors rendue anonyme, et seul ce que la loi impose de conserver est gardé.",
+          "Nous vous souhaitons le meilleur pour la suite de vos projets.",
         ],
         boutons: [],
       },
@@ -215,13 +231,14 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Nous vous avons attendu",
+        objet: "Nous vous avons attendu : un autre créneau ?",
         objetPropose: null,
         paragraphes: [
-          "Nous vous avons attendu pour notre échange. Un imprévu arrive à tout le monde.",
-          "Si la proposition vous intéresse toujours, choisissez un nouveau créneau. Sinon, vous n'avez rien à faire : nous ne vous relancerons pas.",
+          "Nous vous avons attendu pour notre échange en visio. Aucun souci : un imprévu arrive à tout le monde.",
+          "Si nos missions vous intéressent toujours, choisissez simplement un nouveau créneau avec le bouton ci-dessous.",
+          "Et si ce n'est plus d'actualité pour vous, vous n'avez rien à faire : nous ne vous relancerons pas.",
         ],
-        boutons: ["Choisir un autre moment"],
+        boutons: ["Choisir un nouveau créneau"],
       },
     ],
   },
@@ -235,10 +252,13 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Le lien de votre dossier de formateur",
+        objet: "Votre dossier de formateur, en ligne",
         objetPropose: "Le lien de votre dossier de formateur indépendant",
         paragraphes: [
-          "Voici le lien de votre dossier : coordonnées, activité, pièces à fournir et contrat. Environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard. Ce lien vous est personnel.",
+          "Voici votre lien personnel pour compléter votre dossier.",
+          "Vous y trouverez :\n• vos coordonnées ;\n• votre activité ;\n• les pièces à fournir ;\n• votre contrat.",
+          "Comptez environ 10 minutes ; vous pouvez vous arrêter et reprendre plus tard.",
+          "Ce lien vous est personnel.",
         ],
         boutons: ["Compléter mon dossier"],
       },
@@ -257,7 +277,10 @@ export const TEXTES_FORMATEUR = {
         etape: "J+3",
         objet: "Votre dossier vous attend",
         objetPropose: null,
-        paragraphes: ["Il reste à le compléter pour que nous puissions vous confier des missions."],
+        paragraphes: [
+          "Petit rappel, votre dossier n'est pas encore complété.",
+          "Il reste à le compléter pour que nous puissions vous confier des missions. Vous pouvez reprendre là où vous vous êtes arrêté.",
+        ],
         boutons: ["Compléter mon dossier"],
       },
       {
@@ -265,7 +288,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Dernier rappel : votre dossier reste ouvert",
         objetPropose: null,
         paragraphes: [
-          "Votre dossier est toujours ouvert, vous pouvez le reprendre là où vous l'avez laissé.",
+          "C'est notre dernier rappel au sujet de votre dossier.",
+          "Il reste ouvert, et vous pouvez le reprendre là où vous l'avez laissé.",
+          "Si vous ne souhaitez pas donner suite, vous n'avez rien à faire.",
         ],
         boutons: ["Compléter mon dossier"],
       },
@@ -282,11 +307,13 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Votre dossier est bien reçu",
+        objet: "Bien reçu : votre dossier et votre contrat",
         objetPropose: null,
         paragraphes: [
-          "Votre dossier est bien reçu. Vous trouverez en pièce jointe la copie du contrat que vous avez signé.",
-          "Nous vérifions maintenant vos informations au registre public. Votre contrat contresigné et l'accès à votre espace vous parviendront ensuite par e-mail.",
+          "Votre dossier et votre contrat signé nous sont bien parvenus, merci.",
+          "La copie du contrat que vous avez signé est en pièce jointe.",
+          "Nous relisons maintenant votre dossier, en le rapprochant du registre public des entreprises.",
+          "Vous recevrez ensuite par e-mail votre contrat contresigné et l'accès à votre espace.",
         ],
         boutons: [],
       },
@@ -323,11 +350,11 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Votre dossier : il nous manque un élément",
+        objet: "Votre dossier : un complément",
         objetPropose: null,
         paragraphes: [
-          "Pour continuer, il nous manque : [motif].",
-          "Vous pouvez le déposer avec le même lien, il suffit de reprendre votre dossier.",
+          "Merci pour votre dossier. Pour continuer, il nous manque : [motif].",
+          "Déposez-le avec le même lien : il suffit de reprendre votre dossier.",
         ],
         boutons: ["Reprendre mon dossier"],
       },
@@ -347,8 +374,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre dossier de formateur indépendant",
         objetPropose: null,
         paragraphes: [
-          "Merci pour votre intérêt.",
-          "Le registre public n'indique pas d'activité ouverte à ce numéro [motif : entreprise fermée / numéro introuvable]. Si vous créez ou régularisez votre entreprise (une micro-entreprise suffit), écrivez-nous : nous reprendrons votre dossier.",
+          "Merci pour le temps consacré à votre dossier.",
+          "Le registre public n'indique pas d'activité ouverte à ce numéro [motif : entreprise fermée / numéro introuvable].",
+          "Une micro-entreprise suffit. Dès que votre entreprise est créée ou régularisée, écrivez-nous : nous reprendrons votre dossier.",
         ],
         boutons: [],
       },
@@ -368,8 +396,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre lien pour retrouver votre espace",
         objetPropose: null,
         paragraphes: [
-          "Voici le lien que vous avez demandé. Il vous est personnel.",
-          "Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.",
+          "Voici le lien que vous avez demandé.",
+          "Ce lien vous est personnel : ne transférez pas cet e-mail. Si vous n'êtes pas à l'origine de cette demande, ignorez-le simplement.",
         ],
         boutons: ["Reprendre mon dossier", "Ouvrir mon espace"],
       },
@@ -385,10 +413,12 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Votre dossier : ce statut n'est pas ouvert",
+        objet: "Votre dossier : un statut pas encore ouvert",
         objetPropose: "Votre dossier : ce statut n'est pas encore ouvert chez nous",
         paragraphes: [
-          "Ce statut n'est pas encore ouvert chez nous. Nous gardons votre dossier et nous revenons vers vous dès que ce sera possible.",
+          "Merci pour votre dossier.",
+          "Le statut que vous avez indiqué n'est pas encore ouvert chez nous.",
+          "Votre dossier reste chez nous : nous revenons vers vous dès que ce sera possible.",
         ],
         boutons: [],
       },
@@ -406,11 +436,12 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "Votre contrat de sous-traitance à signer",
+        objet: "Votre contrat de sous-traitance, en ligne",
         objetPropose: "Votre contrat de sous-traitance est prêt à être signé",
         paragraphes: [
           "Votre contrat de sous-traitance est prêt.",
-          "Lisez-le, puis signez-le en ligne : un code vous sera envoyé par e-mail au moment de signer. Il prend effet quand nous l'aurons contresigné ; votre espace s'ouvre alors.",
+          "Lisez-le, puis signez-le en ligne avec le bouton ci-dessous. Au moment de signer, un code vous est envoyé par e-mail.",
+          "Il prend effet une fois signé à son tour par Axion-IA : votre espace s'ouvre alors.",
         ],
         boutons: ["Lire et signer mon contrat"],
       },
@@ -432,8 +463,8 @@ export const TEXTES_FORMATEUR = {
         // La durée est remplie par l'outil depuis le mécanisme (`CODE_VALIDITE_MS`, 15 minutes
         // depuis S6b, décision 35) : le texte n'annonce jamais une durée fausse.
         paragraphes: [
-          "Votre code de signature : [code]. Il est valable [durée].",
-          "Si vous n'êtes pas en train de signer, ignorez ce message.",
+          "Votre code de signature est [code]. Il reste valable [durée].",
+          "Vous n'êtes pas en train de signer ? Ignorez simplement ce message.",
         ],
         boutons: [],
       },
@@ -451,15 +482,16 @@ export const TEXTES_FORMATEUR = {
         etape: "J+3",
         objet: "Votre contrat vous attend",
         objetPropose: null,
-        paragraphes: ["Il ne reste qu'à le signer."],
+        paragraphes: ["Il ne reste qu'à signer votre contrat de sous-traitance."],
         boutons: ["Lire et signer mon contrat"],
       },
       {
         etape: "J+7",
-        objet: "Dernier rappel pour votre contrat",
+        objet: "Dernier rappel : votre contrat",
         objetPropose: null,
         paragraphes: [
-          "Votre contrat reste disponible. Si vous avez changé d'avis, vous n'avez rien à faire.",
+          "C'est notre dernier rappel. Votre contrat reste disponible.",
+          "Si vous avez changé d'avis, vous n'avez rien à faire.",
         ],
         boutons: ["Lire et signer mon contrat"],
       },
@@ -479,8 +511,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre espace formateur est ouvert",
         objetPropose: null,
         paragraphes: [
-          "Votre espace formateur est ouvert.",
-          "Quand une mission vous sera proposée, vous recevrez un e-mail ; vous l'acceptez ou la refusez librement. Aucun volume n'est garanti.",
+          "Votre contrat est contresigné, et votre espace formateur est ouvert.",
+          "Quand une mission vous est proposée, vous recevez un e-mail. Vous l'acceptez ou la refusez librement.",
+          "Aucun volume n'est garanti.",
         ],
         boutons: ["Ouvrir mon espace"],
       },
@@ -500,7 +533,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre numéro de déclaration d'activité",
         objetPropose: null,
         paragraphes: [
-          "Dès que la préfecture vous a attribué votre numéro de déclaration d'activité, merci de le transmettre depuis votre espace : il est nécessaire pour vous confier une mission.",
+          "Dès que la préfecture vous a attribué votre numéro de déclaration d'activité, transmettez-le depuis votre espace.",
+          "Il est nécessaire pour vous confier une mission.",
         ],
         boutons: ["Transmettre mon numéro"],
       },
@@ -519,8 +553,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Notre façon de travailler (facultatif)",
         objetPropose: "Une présentation de notre façon de travailler (facultative)",
         paragraphes: [
-          "Nous vous proposons, si vous le souhaitez, une présentation de notre façon de travailler : une demi-journée, le [date], honorée 175 € HT.",
-          "Elle est facultative et ne change rien aux missions qui vous seront proposées.",
+          "Si vous le souhaitez, nous vous proposons une présentation de notre façon de travailler.",
+          "Une demi-journée, le [date], honorée 175 € HT.",
+          "Elle est facultative : elle ne change rien aux missions qui vous seront proposées.",
         ],
         boutons: ["Répondre à cette proposition"],
       },
@@ -541,7 +576,8 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "Une nouvelle version de votre contrat de sous-traitance est disponible.",
           "Ce qui change : [liste courte].",
-          "Vous avez 30 jours pour la lire et la signer. Vos missions en cours ne changent pas. Si vous préférez rester sur la version actuelle, vous le pouvez.",
+          "Vous avez 30 jours pour la lire et la signer. Vos missions en cours ne changent pas.",
+          "Vous préférez rester sur la version actuelle ? C'est possible.",
         ],
         boutons: ["Lire la nouvelle version"],
       },
@@ -549,7 +585,9 @@ export const TEXTES_FORMATEUR = {
         etape: "Relance (J+7)",
         objet: "Votre nouvelle version du contrat vous attend",
         objetPropose: null,
-        paragraphes: ["Il vous reste [N] jours pour la lire et la signer."],
+        paragraphes: [
+          "Il vous reste [N] jours pour lire et signer la nouvelle version de votre contrat.",
+        ],
         boutons: ["Lire la nouvelle version"],
       },
       {
@@ -557,7 +595,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Dernier rappel : nouvelle version du contrat",
         objetPropose: "Dernier rappel : nouvelle version de votre contrat",
         paragraphes: [
-          "Il vous reste [N] jours. Si vous préférez rester sur la version actuelle, répondez simplement à ce message.",
+          "Il vous reste [N] jours pour signer la nouvelle version de votre contrat.",
+          "Vous préférez rester sur la version actuelle ? Répondez simplement à ce message.",
         ],
         boutons: [],
       },
@@ -576,7 +615,8 @@ export const TEXTES_FORMATEUR = {
         objet: "La proposition de mission du [date] est close",
         objetPropose: null,
         paragraphes: [
-          "La proposition de mission du [date] n'a pas reçu de réponse : elle est close. Rien à faire de votre part ; d'autres missions pourront vous être proposées.",
+          "Sans réponse de votre part, la proposition de mission du [date] est close.",
+          "Vous n'avez rien à faire : d'autres missions pourront vous être proposées.",
         ],
         boutons: [],
       },
@@ -596,7 +636,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Merci, votre accord est enregistré",
         objetPropose: null,
         paragraphes: [
-          "Merci, votre accord est enregistré pour la mission [intitulé]. Votre lettre de mission vous parviendra dès que le client aura signé sa convention.",
+          "Votre accord pour la mission [intitulé] est bien noté.",
+          "Votre lettre de mission vous parviendra dès que le client aura signé sa convention.",
         ],
         boutons: [],
       },
@@ -616,8 +657,10 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre lettre de mission est prête à signer",
         objetPropose: null,
         paragraphes: [
-          "Votre lettre de mission pour [intitulé] est prête : [N] journée(s) et [M] demi-journée(s), du [date] au [date], à [lieu].",
-          "Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT), le forfait de déplacement [le cas échéant] et la date limite de paiement : au plus tard le [date], 30 jours après la dernière journée.",
+          "Votre lettre de mission pour [intitulé] est prête.",
+          "Elle couvre [N] journée(s) et [M] demi-journée(s), du [date] au [date], à [lieu].",
+          "Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT) et le forfait de déplacement [le cas échéant].",
+          "Elle rappelle aussi la date limite de paiement de vos honoraires : le [date] au plus tard, 30 jours après la dernière journée.",
         ],
         boutons: ["Signer ma lettre"],
       },
@@ -636,7 +679,7 @@ export const TEXTES_FORMATEUR = {
         etape: "1re",
         objet: "Votre lettre de mission est à signer",
         objetPropose: "Votre lettre de mission attend votre signature",
-        paragraphes: ["Votre lettre pour [intitulé] est prête : il ne reste qu'à la signer."],
+        paragraphes: ["Il ne reste qu'à signer votre lettre de mission pour [intitulé]."],
         boutons: ["Signer ma lettre"],
       },
       {
@@ -662,7 +705,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre copie de la lettre de mission signée",
         objetPropose: null,
         paragraphes: [
-          "C'est signé. Voici la copie de votre signature de la lettre de mission [numéro] (PDF joint). L'exemplaire signé des deux parties vous parviendra ensuite.",
+          "C'est signé, merci.",
+          "Voici la copie de votre signature de la lettre de mission [numéro], en pièce jointe.",
+          "L'exemplaire signé des deux parties vous parviendra ensuite.",
         ],
         boutons: [],
       },
@@ -682,7 +727,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Les conditions de votre mission [intitulé] ont changé : [ce qui change].",
-          "Une lettre rectifiée remplace la précédente. Merci de la signer depuis votre espace.",
+          "Une lettre rectifiée remplace la précédente. Signez-la depuis votre espace, avec le bouton ci-dessous.",
         ],
         boutons: ["Signer ma lettre rectifiée"],
       },
@@ -702,9 +747,10 @@ export const TEXTES_FORMATEUR = {
         objet: "Une mission ne vous est plus confiée",
         objetPropose: "La mission [intitulé] ne vous est plus confiée",
         paragraphes: [
-          "La mission [intitulé] du [date] ne vous est plus confiée : [motif : changement d'organisation du client / financement non accordé / autre choix d'Axion].",
+          "La mission [intitulé] du [date] ne vous est plus confiée.",
+          "La raison : [motif : changement d'organisation du client / financement non accordé / autre choix d'Axion].",
+          "Comme le prévoit votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
           "Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.",
-          "Conformément à votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
         ],
         boutons: [],
       },
@@ -723,8 +769,8 @@ export const TEXTES_FORMATEUR = {
         objet: "La formation [intitulé] du [date] est annulée",
         objetPropose: null,
         paragraphes: [
-          "La formation [intitulé] du [date] est annulée. Votre mission est donc annulée aussi.",
-          "Conformément à votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
+          "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
+          "Comme le prévoit votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
         ],
         boutons: [],
       },
@@ -745,7 +791,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "Pour vous confier la mission [intitulé], il nous manque un élément",
         paragraphes: [
           "Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].",
-          "Déposez-le depuis votre espace : la lettre partira aussitôt.",
+          "Déposez-le depuis votre espace : la lettre de mission partira aussitôt.",
         ],
         boutons: ["Déposer depuis mon espace"],
       },
@@ -765,8 +811,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Il manque des signatures sur vos feuilles",
         objetPropose: "Il manque des signatures pour établir votre facture",
         paragraphes: [
-          "Pour établir votre facture, il manque votre signature sur les feuilles de présence du [jour] ([N] demi-journée(s)).",
-          "Vous pouvez les signer depuis votre espace, ou déposer la feuille papier signée.",
+          "Il manque votre signature sur les feuilles de présence du [jour] ([N] demi-journée(s)).",
+          "Elle est nécessaire pour établir votre facture.",
+          "Signez-les depuis votre espace, ou déposez la feuille papier signée.",
         ],
         boutons: ["Signer mes feuilles"],
       },
@@ -785,8 +832,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre désistement est enregistré",
         objetPropose: null,
         paragraphes: [
-          "C'est noté pour la mission [intitulé] du [date] : nous sommes prévenus. Aucune pénalité n'est due. Rien d'autre à faire de votre part.",
-          "Nous examinons la personne que vous nous avez indiquée et nous vous répondons.",
+          "C'est noté pour la mission [intitulé] du [date].",
+          "Aucune pénalité n'est due, et vous n'avez rien d'autre à faire.",
+          "Merci aussi pour la personne que vous nous avez indiquée : nous étudions cette piste et nous vous répondons.",
         ],
         boutons: [],
       },
@@ -806,7 +854,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre relevé de connexion est à signer",
         objetPropose: "Le relevé de connexion de votre formation à distance est à signer",
         paragraphes: [
-          "Le relevé de connexion de la formation [intitulé] est prêt. Relisez-le et signez-le depuis votre espace : cela prend une minute.",
+          "Le relevé de connexion de la formation [intitulé] est prêt.",
+          "Relisez-le et signez-le depuis votre espace : une minute suffit.",
           "Il garde la trace des connexions ; il ne remplace pas vos feuilles de présence.",
         ],
         boutons: ["Signer le relevé"],
@@ -815,7 +864,9 @@ export const TEXTES_FORMATEUR = {
         etape: "Relance (J+3)",
         objet: "Le relevé de connexion attend votre signature",
         objetPropose: null,
-        paragraphes: ["Le relevé de la formation [intitulé] attend votre signature."],
+        paragraphes: [
+          "Le relevé de connexion de la formation [intitulé] attend encore votre signature.",
+        ],
         boutons: ["Signer le relevé"],
       },
     ],
@@ -833,7 +884,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Virement effectué : facture n° [numéro]",
         objetPropose: null,
         paragraphes: [
-          "Le virement de [montant] € pour la facture n° [numéro] a été effectué le [date]. Le délai d'arrivée sur votre compte dépend de votre banque.",
+          "Le virement de [montant] € pour la facture n° [numéro] est parti le [date].",
+          "Le délai d'arrivée sur votre compte dépend de votre banque.",
         ],
         boutons: [],
       },
@@ -852,7 +904,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Virement en attente : attestation URSSAF",
         objetPropose: "Facture n° [numéro] : le virement attend votre attestation URSSAF",
         paragraphes: [
-          "Votre facture n° [numéro] est due. Pour que nous puissions effectuer le virement, nous avons besoin de votre attestation URSSAF à jour. Déposez-la depuis votre espace, elle se télécharge sur urssaf.fr : le virement partira ensuite.",
+          "Votre facture n° [numéro] est due, et son virement attend votre attestation URSSAF à jour.",
+          "Déposez-la depuis votre espace : le virement partira ensuite.",
+          "Elle se télécharge sur urssaf.fr.",
         ],
         boutons: ["Déposer mon attestation"],
       },
@@ -871,7 +925,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Facture n° [numéro] corrigée",
         objetPropose: null,
         paragraphes: [
-          "Suite à votre remarque, la facture n° [numéro] est annulée par l'avoir n° [numéro]. La facture rectifiée n° [numéro] est jointe.",
+          "Suite à votre remarque, la facture n° [numéro] est corrigée.",
+          "Elle est annulée par l'avoir n° [numéro], et la facture rectifiée n° [numéro] est jointe.",
         ],
         boutons: [],
       },
@@ -891,8 +946,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Une régularisation sur vos honoraires",
         objetPropose: null,
         paragraphes: [
-          "Une correction de la facture n° [numéro] (avoir n° [numéro]) a fait apparaître que nous vous avons versé [montant] € de trop. Il n'a pas pu être déduit d'une prochaine facture.",
-          "Pourriez-vous nous le rembourser par virement sur le compte indiqué ci-dessous ? Si vous préférez en parler, répondez simplement à ce message.",
+          "Une correction de la facture n° [numéro] (avoir n° [numéro]) montre que nous vous avons versé [montant] € de trop.",
+          "Ce montant n'a pas pu être déduit d'une prochaine facture.",
+          "Pourriez-vous nous le rembourser par virement, sur le compte ci-dessous ? Pour en parler, répondez simplement à ce message.",
           "[coordonnées bancaires d'Axion]",
           "Nous ne retenons jamais rien sur une autre mission sans votre accord écrit.",
         ],
@@ -914,7 +970,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre facture n° [numéro] est bien reçue",
         objetPropose: null,
         paragraphes: [
-          "Votre facture n° [numéro] est bien reçue. Nous contrôlons ses mentions. La date limite de paiement ne change pas : [date].",
+          "Votre facture n° [numéro] est bien reçue, merci.",
+          "Nous relisons ses mentions. La date limite de paiement ne change pas : [date].",
         ],
         boutons: [],
       },
@@ -933,7 +990,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre désaccord est bien reçu",
         objetPropose: null,
         paragraphes: [
-          "Votre message du [date] sur la facture n° [numéro] est bien reçu. Nous l'examinons et nous vous répondons par écrit.",
+          "Votre message du [date] sur la facture n° [numéro] est bien reçu.",
+          "Nous l'examinons, et nous vous répondons par écrit.",
         ],
         boutons: [],
       },
@@ -953,8 +1011,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Réponse à votre désaccord",
         objetPropose: "Réponse à votre désaccord sur la facture n° [numéro]",
         paragraphes: [
-          "Nous avons examiné votre message du [date]. Nous ne modifions pas la facture n° [numéro], pour la raison suivante : [motif écrit par vous].",
-          "Si vous pensez toujours qu'elle est inexacte, répondez à ce message : nous la regarderons avec vous.",
+          "Nous avons examiné votre message du [date].",
+          "La facture n° [numéro] ne change pas, pour la raison suivante : [motif écrit par vous].",
+          "Vous pensez toujours qu'elle est inexacte ? Répondez à ce message : nous la regarderons avec vous.",
         ],
         boutons: [],
       },
@@ -974,7 +1033,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre attestation de vigilance URSSAF",
         objetPropose: null,
         paragraphes: [
-          "Pour vous confier des missions, nous avons besoin de votre attestation de vigilance URSSAF, datée de moins de 6 mois. Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la depuis votre espace.",
+          "Pour vous confier des missions, nous avons besoin de votre attestation de vigilance URSSAF, datée de moins de 6 mois.",
+          "Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la ensuite depuis votre espace.",
         ],
         boutons: ["Déposer mon attestation"],
       },
@@ -983,7 +1043,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre attestation URSSAF arrive à échéance",
         objetPropose: "Votre attestation URSSAF arrive à échéance le [date]",
         paragraphes: [
-          "Déposez la nouvelle depuis votre espace (elle se télécharge sur urssaf.fr). Elle est nécessaire pour vous confier de nouvelles missions.",
+          "Pensez à déposer la nouvelle depuis votre espace.",
+          "Elle se télécharge sur urssaf.fr, et elle est nécessaire pour vous confier de nouvelles missions.",
         ],
         boutons: ["Déposer mon attestation"],
       },
@@ -992,7 +1053,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre attestation URSSAF est à renouveler",
         objetPropose: "Votre attestation URSSAF doit être renouvelée avant le [date]",
         paragraphes: [
-          "Votre attestation expire avant la formation du [date]. Déposez la nouvelle depuis votre espace : sans elle, nous ne pouvons pas maintenir la mission.",
+          "Votre attestation URSSAF expire avant la formation du [date].",
+          "Déposez la nouvelle depuis votre espace : sans elle, nous ne pouvons pas maintenir la mission.",
         ],
         boutons: ["Déposer mon attestation"],
       },
@@ -1012,7 +1074,7 @@ export const TEXTES_FORMATEUR = {
         objet: "Une pièce de votre dossier est à renouveler",
         objetPropose: "Votre [CV / assurance RC pro / numéro de déclaration] est à renouveler",
         paragraphes: [
-          "Pour tenir votre dossier à jour, merci de déposer [la pièce] avant le [date], depuis votre espace.",
+          "Pour garder votre dossier à jour, déposez [la pièce] depuis votre espace avant le [date].",
         ],
         boutons: ["Déposer ma pièce"],
       },
@@ -1020,7 +1082,7 @@ export const TEXTES_FORMATEUR = {
         etape: "Relance (15 jours avant)",
         objet: "Rappel : une pièce à renouveler",
         objetPropose: "Rappel : [pièce] à renouveler avant le [date]",
-        paragraphes: ["Il reste [N] jours."],
+        paragraphes: ["Il reste [N] jours pour déposer votre nouvelle pièce depuis votre espace."],
         boutons: ["Déposer ma pièce"],
       },
       {
@@ -1028,7 +1090,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Une pièce est à renvoyer",
         objetPropose: "Votre [pièce] est à renvoyer",
         paragraphes: [
-          "Nous n'avons pas pu retenir la pièce déposée : [motif : illisible / périmée / ne correspond pas à votre nom / incomplète]. Merci d'en déposer une nouvelle.",
+          "La pièce déposée n'a pas pu être retenue : [motif : illisible / périmée / ne correspond pas à votre nom / incomplète].",
+          "Déposez-en une nouvelle depuis votre espace.",
         ],
         boutons: ["Déposer ma pièce"],
       },
@@ -1065,9 +1128,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Changement de vos coordonnées bancaires",
         objetPropose: "Demande de modification de vos coordonnées bancaires",
         paragraphes: [
-          "Une demande de modification de vos coordonnées bancaires a été reçue le [date].",
-          "Elle sera prise en compte après vérification, au plus tôt dans 48 heures. Vos virements continuent sur l'ancien compte en attendant.",
-          "Si vous n'êtes pas à l'origine de cette demande, répondez immédiatement à ce message.",
+          "Nous avons reçu le [date] une demande de modification de vos coordonnées bancaires.",
+          "Elle sera prise en compte après vérification, au plus tôt dans 48 heures. En attendant, vos virements continuent sur l'ancien compte.",
+          "Vous n'êtes pas à l'origine de cette demande ? Répondez immédiatement à ce message.",
         ],
         boutons: [],
       },
@@ -1106,7 +1169,9 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre demande est enregistrée",
         objetPropose: null,
         paragraphes: [
-          "Votre demande est enregistrée : à compter du [date, un mois après], vous nous adresserez vos propres factures, que vous déposerez dans votre espace. Les factures déjà établies à votre nom restent valables. La date limite de paiement ne change pas.",
+          "Votre demande est enregistrée, merci.",
+          "À compter du [date, un mois après], vous nous adresserez vos propres factures, à déposer dans votre espace.",
+          "Les factures déjà établies à votre nom restent valables, et la date limite de paiement ne change pas.",
         ],
         boutons: [],
       },
@@ -1126,9 +1191,10 @@ export const TEXTES_FORMATEUR = {
         objet: "Fin de notre collaboration",
         objetPropose: null,
         paragraphes: [
-          "Nous mettons fin à notre collaboration à compter du [date], [motif : à votre demande / à notre demande, avec un préavis de [30/60/90] jours / entreprise ou numéro de déclaration devenus caducs / manquement grave].",
+          "Notre collaboration prend fin à compter du [date], [motif : à votre demande / à notre demande, avec un préavis de [30/60/90] jours / entreprise ou numéro de déclaration devenus caducs / manquement grave].",
           "Les missions déjà acceptées sont menées à terme et payées selon votre contrat.\nLes journées déjà réalisées vous sont payées selon votre contrat ; les missions qui n'ont pas commencé sont retirées.",
-          "Vos relevés et vos factures vous parviendront par e-mail. Vous pouvez retrouver votre espace avec votre adresse habituelle pour les consulter.",
+          "Vos relevés et vos factures vous parviendront par e-mail.",
+          "Pour les consulter, vous pouvez aussi retrouver votre espace avec votre adresse habituelle.",
         ],
         boutons: [],
       },
@@ -1149,7 +1215,8 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "Un point important sur votre collaboration avec Axion-IA",
         paragraphes: [
           "Nous avons constaté ce qui suit : [fait précis, écrit par Will].",
-          "Nous vous demandons de nous répondre ou de régulariser la situation d'ici 8 jours, soit avant le [date]. Passé ce délai, sans réponse ou sans régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.",
+          "Merci de nous répondre ou de régulariser la situation d'ici 8 jours, soit avant le [date].",
+          "Passé ce délai, sans réponse ni régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.",
           "Pour en parler, répondez simplement à ce message.",
         ],
         boutons: [],
@@ -1170,7 +1237,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre dossier est à jour",
         objetPropose: null,
         paragraphes: [
-          "Votre dossier est à jour : de nouvelles missions peuvent de nouveau vous être proposées. Rien d'autre à faire.",
+          "Votre dossier est de nouveau à jour, merci.",
+          "De nouvelles missions peuvent vous être proposées. Rien d'autre à faire de votre part.",
         ],
         boutons: [],
       },
