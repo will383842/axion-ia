@@ -25,7 +25,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
-import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";

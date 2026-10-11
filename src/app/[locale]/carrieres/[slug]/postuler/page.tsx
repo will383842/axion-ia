@@ -18,7 +18,7 @@ import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freel
 import {
   lireEtatsEntree,
   lireEtatsFormateurs,
-} from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+} from "@/server/qualiopi/formateurs-independants/etats-entree";
 
 export const revalidate = 3600;
 

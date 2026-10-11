@@ -53,7 +53,7 @@ import {
 import {
   lireEtatsEntree,
   lireEtatsFormateurs,
-} from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
+} from "@/server/qualiopi/formateurs-independants/etats-entree";
 
 /**
  * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
