@@ -58,6 +58,7 @@ export type ActionMoteur =
   | "rien"
   | "lettre_emise"
   | "lettre_refusee"
+  | "lettre_rectifiee"
   | "bloquee_notifiee"
   | "accord_enregistre"
   | "erreur";
@@ -350,9 +351,82 @@ async function agir(
         return { etape, action: "accord_enregistre" };
       }
       return { etape, action: "rien" };
+    case "lettre_perimee":
+      return rectifierLettre(m, etat, maintenant);
     default:
       return { etape, action: "rien" };
   }
+}
+
+/** Motif de rectification d'une lettre déjà signée (L11e, D-L7). */
+export const MOTIF_RECTIFICATION = "Conditions de la mission modifiées (dates, lieu ou honoraires)";
+
+/** Ce que la lettre résume, pour dire à F29 ce qui a changé. */
+interface ResumeMission {
+  readonly dates: ReadonlyArray<string>;
+  readonly lieu: string;
+  readonly honoraires: string;
+}
+
+function resumeDe(m: MissionLue, tarif: number): ResumeMission {
+  const s = m.session;
+  return {
+    dates: s.jours.map((j) => `${dateCivile(j.date)} ${j.heureDebut}-${j.heureFin}`).sort(),
+    lieu:
+      s.lieuType === "distanciel"
+        ? "distanciel"
+        : [s.lieuAdresse, s.lieuCodePostal, s.lieuVille].filter(Boolean).join(" "),
+    honoraires: `${tarif}/${s.lieuType === "distanciel" ? 0 : (m.forfaitDeplacementParJourHtCents ?? 0)}`,
+  };
+}
+
+function lireResume(metadata: unknown): ResumeMission | null {
+  if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)) return null;
+  const r = (metadata as Record<string, unknown>).resumeMission;
+  if (r === null || typeof r !== "object") return null;
+  const o = r as Record<string, unknown>;
+  return Array.isArray(o.dates) && typeof o.lieu === "string" && typeof o.honoraires === "string"
+    ? { dates: o.dates as string[], lieu: o.lieu, honoraires: o.honoraires }
+    : null;
+}
+
+/** « les dates et le lieu » — repli générique si l'ancienne lettre ne le dit pas. */
+export function ceQuiChange(avant: ResumeMission | null, apres: ResumeMission): string {
+  if (avant === null) return "les dates, le lieu ou les honoraires";
+  const parts = [
+    ...(avant.dates.join() !== apres.dates.join() ? ["les dates"] : []),
+    ...(avant.lieu !== apres.lieu ? ["le lieu"] : []),
+    ...(avant.honoraires !== apres.honoraires ? ["les honoraires"] : []),
+  ];
+  if (parts.length === 0) return "les conditions de la lettre";
+  return parts.length === 1 ? parts[0]! : `${parts.slice(0, -1).join(", ")} et ${parts.at(-1)}`;
+}
+
+/**
+ * L11e — lettre PÉRIMÉE (empreinte différente : dates, horaires, lieu, tarif ou
+ * forfait changés). Avant le début seulement. Non signée par le formateur :
+ * remplacée (l'ancienne est annulée par le générateur). Signée : lettre
+ * RECTIFICATIVE, l'ancienne gardée au registre. F29 dans les deux cas, Will
+ * prévenu.
+ */
+async function rectifierLettre(
+  m: MissionLue,
+  etat: EtatMission,
+  maintenant: Date,
+): Promise<ResultatReevaluation> {
+  const s = m.session;
+  if (s.statut !== "planifiee" || s.dateDebut.getTime() <= maintenant.getTime()) {
+    return { etape: "lettre_perimee", action: "rien" };
+  }
+  const signee = m.lettreMission?.signatures.some((x) => x.partie === "formateur") ?? false;
+  const changements = ceQuiChange(
+    lireResume(m.lettreMission?.metadata ?? null),
+    resumeDe(m, etat.tarifEffectif),
+  );
+  return emettreLettre(m, etat.empreinteActuelle, etat.tarifEffectif, maintenant, {
+    ...(signee ? { motif: MOTIF_RECTIFICATION } : {}),
+    changements,
+  });
 }
 
 type MissionLue = Prisma.MissionFormateurGetPayload<{ select: typeof MISSION_SELECT }>;
@@ -362,10 +436,13 @@ async function emettreLettre(
   empreinte: string,
   tarif: number,
   maintenant: Date,
+  rectification?: { readonly motif?: string; readonly changements: string },
 ): Promise<ResultatReevaluation> {
+  const etapeDepart: EtapeMission = rectification === undefined ? "lettre_due" : "lettre_perimee";
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
+    ...(rectification?.motif !== undefined ? { rectificationMotif: rectification.motif } : {}),
     maintenant,
   });
   if (!r.ok) {
@@ -381,7 +458,7 @@ async function emettreLettre(
         `📄 Session ${m.session.numero} : la lettre de mission ne peut pas être émise. ${lienFiche(m.sessionId)}`,
       );
     }
-    return { etape: "lettre_due", action: "lettre_refusee" };
+    return { etape: etapeDepart, action: "lettre_refusee" };
   }
   // Le régime de TVA et le tarif se FIGENT à l'émission réussie (08 §2.7
   // règle 3) : la lettre vient de les lire ainsi ; le paiement et l'empreinte
@@ -406,7 +483,13 @@ async function emettreLettre(
       : {};
   await prisma.documentGenere.update({
     where: { id: r.documentId },
-    data: { metadata: { ...meta, empreinteMission: empreinte } as never },
+    data: {
+      metadata: {
+        ...meta,
+        empreinteMission: empreinte,
+        resumeMission: resumeDe(m, tarif),
+      } as never,
+    },
   });
   if (m.lettreBlocageMotif !== null) {
     await prisma.missionFormateur.update({
@@ -418,9 +501,37 @@ async function emettreLettre(
     action: "qualiopi.mission.lettre_emise",
     targetType: "MissionFormateur",
     targetId: m.id,
-    changes: { documentId: r.documentId, numero: r.numero, automatique: true },
+    changes: {
+      documentId: r.documentId,
+      numero: r.numero,
+      automatique: true,
+      ...(rectification !== undefined
+        ? { rectification: true, signeeAvant: rectification.motif !== undefined }
+        : {}),
+    },
     session: null,
   });
+
+  if (rectification !== undefined) {
+    // F29 — la lettre rectifiée remplace la précédente ; Will est prévenu.
+    const lien = lienEspaceFormateur();
+    await envoyer({
+      gabarit: "formateur-lettre-rectifiee",
+      destinataire: m.trainer.email,
+      entityType: "Trainer",
+      entityId: m.trainerId,
+      jobId: `formateur-lettre-rectifiee-${r.documentId}`,
+      payload: {
+        prenom: m.trainer.prenom,
+        ...(lien !== null ? { lien } : {}),
+        valeurs: { intitulé: m.session.titreSession, "ce qui change": rectification.changements },
+      },
+    });
+    await alerter(
+      `📝 Session ${m.session.numero} : lettre de mission rectifiée (conditions modifiées). ${lienFiche(m.sessionId)}`,
+    );
+    return { etape: etapeDepart, action: "lettre_rectifiee" };
+  }
 
   // F26 — la lettre est prête. Les montants sont ceux de la lettre (même règle).
   const jours = [...m.session.jours]
@@ -556,7 +667,7 @@ export function dansLaFenetre(maintenant: Date): boolean {
 
 /**
  * Passage horaire (filet) : les missions acceptées d'indépendants, à venir,
- * sans lettre vivante liée (aucune, ou annulée).
+ * les plus proches d'abord : lettre à émettre, ou à rectifier (L11e).
  */
 export async function passerMoteurMissions(maintenant: Date): Promise<{
   reevaluees: number;
@@ -568,7 +679,6 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
     where: {
       role: "principal",
       statut: { in: [...STATUTS_ACCORD_DONNE] },
-      OR: [{ lettreMissionId: null }, { lettreMission: { annuleeAt: { not: null } } }],
       trainer: { statut: "sous_traitant", organismeSousTraitantId: null },
       session: { statut: "planifiee", dateDebut: { gt: maintenant } },
     },
