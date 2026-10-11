@@ -43,6 +43,8 @@ import {
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
   basculerFormateursGardeMissionPortesAction,
+  basculerFormateursPresentationPayeeAction,
+  basculerFormateursDas2CommunAction,
   basculerFormateursFinCollaborationAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
@@ -106,6 +108,8 @@ const ACTIONS_SIGNATURE: Record<
   affectation_sure: basculerFormateursAffectationSureAction,
   lettre_v2: basculerFormateursLettreV2Action,
   garde_mission_portes: basculerFormateursGardeMissionPortesAction,
+  presentation_payee: basculerFormateursPresentationPayeeAction,
+  das2_commun: basculerFormateursDas2CommunAction,
   fin_collaboration: basculerFormateursFinCollaborationAction,
 };
 
