@@ -42,6 +42,9 @@ vi.mock("@/lib/prisma", () => ({
     // Lot L12c : le run lit l'interrupteur `formateurs.passage_paiement`. Absent
     // = aucune bascule = le run d'avant, que ce fichier décrit.
     setting: { findUnique: async () => null },
+    // Relecture argent L12 : sans bascule, le run lit encore les revendications
+    // `par_mission` (aucune tant que le passage n'a jamais tourné).
+    revendicationPaiement: { findMany: async () => [] },
     $transaction: (...a: unknown[]) => mockTransaction(...(a as [never])),
   },
 }));
