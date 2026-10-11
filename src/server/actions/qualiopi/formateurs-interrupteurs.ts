@@ -490,6 +490,13 @@ export async function basculerFormateursDossiersContratsAction(
   return basculerEntree("dossiers_contrats", formData);
 }
 
+export async function basculerFormateursSuiviEchangeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("suivi_echange", formData);
+}
+
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
   formData: FormData,

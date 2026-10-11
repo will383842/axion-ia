@@ -216,6 +216,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
   //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
   "src/features/admin-job-applications/candidat-formateur-actions.ts",
+  // Suivi de l'échange formateur (lots F-CAL-2 et U7-f) : `formateurs.suivi_echange`, lu par
+  //    `lireEtatsEntree` (ne lève jamais) ; F3, F4 et l'issue partent par le module d'envoi
+  //    des formateurs (`envois.ts`), jamais par une copie.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/appels/[id]/page.tsx",
+  "src/features/admin-rendezvous/issue-formateur-actions.ts",
+  "src/features/admin-rendezvous/issue-formateur-envoi.ts",
+  "src/server/calendly/enrich.ts",
+  "src/server/calendly/rappels-echange-formateur.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

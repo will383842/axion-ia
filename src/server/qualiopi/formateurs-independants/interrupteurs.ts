@@ -605,6 +605,16 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.ajout_console",
   },
+  // Lot F-CAL-2 (+ U7-f) — le suivi de l'échange formateur par l'outil. Coupé : un
+  // échange formateur ne reçoit aucun e-mail de notre part, n'est rattaché à aucune
+  // candidature et n'a pas d'issue « formateur » en console, exactement comme avant.
+  suivi_echange: {
+    ...envoi(
+      "Suivi de l'échange formateur",
+      "Un échange réservé est rattaché à sa candidature, reçoit sa confirmation et ses deux rappels (la veille, une heure avant), et son issue se note en console. À allumer avant de couper les rappels natifs de Calendly.",
+    ),
+    cle: "formateurs.suivi_echange",
+  },
   // Lot L8 — l'entrée « Dossiers et contrats » du groupe (exige aussi `menu_freelance`).
   dossiers_contrats: {
     ...envoi(
@@ -631,6 +641,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     menu_freelance: [],
     modeles_composeur: [],
     ajout_console: [],
+    suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
     dossiers_contrats: [],
   };
 
