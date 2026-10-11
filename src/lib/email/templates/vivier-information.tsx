@@ -25,6 +25,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { LienSuppressionCandidature } from "./_lien-suppression-candidature";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -35,6 +36,8 @@ interface Payload {
   /** Lien d'opposition signé (un clic, sans login). */
   oppositionUrl?: string;
   joursOpposition?: number;
+  /** Lien signé « Supprimer ma candidature » (2026-10-11). */
+  lienSuppression?: string;
 }
 
 const TITRE = "Votre candidature chez Axion-IA — conservation dans notre vivier";
@@ -96,6 +99,12 @@ export function VivierInformationEmail({
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         Détails : politique de confidentialité — https://axion-ia.com/fr/politique-confidentialite
       </Text>
+
+      {/* Ajout du 2026-10-11, HORS du texte validé ci-dessus (qui reste mot
+          pour mot) : la suppression en un clic, sous la mention légale.
+          ⚠️ Exception assumée au budget de la famille A (2 URL) : ce lien porte
+          l'exercice d'un droit, demandé expressément par Will — il passe à 3. */}
+      <LienSuppressionCandidature href={p.lienSuppression} locale="fr" />
     </EmailLayout>
   );
 }
