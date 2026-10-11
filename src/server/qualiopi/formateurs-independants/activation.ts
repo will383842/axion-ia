@@ -33,11 +33,20 @@ import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { retirerSollicitationsDuFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import type { DocumentConformite } from "@/server/qualiopi/trainers/conformite";
+import { journaliser as journaliserDansLaTransaction } from "@/server/journal/journaliser";
+import { lireFaitsActivationComplete } from "./faits-activation";
+import {
+  peutActiverFormateurIndependantComplet,
+  regleActivationApplicable,
+  type RegleActivation,
+} from "./garde-activation-complete";
 import {
   peutActiverFormateurIndependant,
   TYPES_PIECES_GARDEES,
   type FormateurPourActivation,
+  type VerdictActivation,
 } from "./gardes";
+import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 
 /** L'acte qui ouvre l'activation d'un indépendant — pas `editor`. */
 export const ACTE_ACTIVATION_INDEPENDANT = "habiliter_formateur" as const;
@@ -222,6 +231,7 @@ export async function changerActivationFormateur(
     return { ok: true, actif: true, inchange: true, sollicitationsRetirees: 0 };
   }
 
+  let regle: RegleActivation = "provisoire";
   if (formateur.statut !== "salarie" && formateur.statut !== "dirigeant") {
     if (!peutEngager(input.acteur.session.role, ACTE_ACTIVATION_INDEPENDANT)) {
       return refus(
@@ -229,7 +239,24 @@ export async function changerActivationFormateur(
         `Activation refusée : ${MOTIF_REFUS[ACTE_ACTIVATION_INDEPENDANT]}`,
       );
     }
-    const verdict = peutActiverFormateurIndependant(formateur);
+    // Lot L9 : interrupteurs absents = règle provisoire de S1, à l'identique.
+    regle = regleActivationApplicable(await lireEtatsInterrupteurs());
+    let verdict: VerdictActivation;
+    if (regle === "complete") {
+      let faits: Awaited<ReturnType<typeof lireFaitsActivationComplete>>;
+      try {
+        faits = await lireFaitsActivationComplete(input.trainerId);
+      } catch {
+        return refus(
+          "erreur",
+          "Lecture du formateur impossible : activation refusée par prudence.",
+        );
+      }
+      if (faits === null) return refus("introuvable", "Formateur introuvable.");
+      verdict = peutActiverFormateurIndependantComplet(faits);
+    } else {
+      verdict = peutActiverFormateurIndependant(formateur);
+    }
     if (!verdict.activable) {
       return refus(
         "garde",
@@ -237,6 +264,10 @@ export async function changerActivationFormateur(
         verdict.manques,
       );
     }
+  }
+
+  if (regle === "complete") {
+    return activerSelonRegleComplete(demande, input.acteur.session, formateur.statut);
   }
 
   try {
@@ -258,6 +289,68 @@ export async function changerActivationFormateur(
   }
 
   await journaliser(demande, { statut: formateur.statut });
+  return { ok: true, actif: true, inchange: false, sollicitationsRetirees: 0 };
+}
+
+/**
+ * Écriture de l'activation sous la RÈGLE COMPLÈTE (lot L9) : la validation est
+ * datée et attribuée (`activationValidee*`, source `controle`), conditionnelle
+ * (fiche encore inactive, même statut, sans fin de collaboration) et
+ * journalisée DANS la même transaction — un acte engageant ne se fait pas sans
+ * trace.
+ */
+async function activerSelonRegleComplete(
+  input: ChangerActivationInput,
+  session: AdminSession,
+  statut: string,
+): Promise<ResultatActivation> {
+  try {
+    const fait = await prisma.$transaction(async (tx) => {
+      const maintenant = new Date();
+      const r = await tx.trainer.updateMany({
+        where: {
+          id: input.trainerId,
+          statut: statut as never,
+          actif: false,
+          finCollaborationAt: null,
+        },
+        data: {
+          actif: true,
+          activationValideeAt: maintenant,
+          activationValideeParId: session.userId,
+          activationValideeSource: "controle",
+        },
+      });
+      if (r.count === 0) return false;
+      await journaliserDansLaTransaction(
+        tx,
+        {
+          action: "qualiopi.trainer.activation",
+          targetType: "Trainer",
+          targetId: input.trainerId,
+          changes: {
+            actif: true,
+            motif: input.motif,
+            acteur: "administrateur",
+            role: session.role,
+            statut,
+            regle: "complete",
+          },
+          session: { userId: session.userId },
+        },
+        { exiger: true },
+      );
+      return true;
+    });
+    if (!fait) {
+      return refus(
+        "erreur",
+        "La fiche a changé pendant l'activation : rechargez la page et recommencez.",
+      );
+    }
+  } catch {
+    return refus("erreur", "Erreur lors de l'activation du formateur.");
+  }
   return { ok: true, actif: true, inchange: false, sollicitationsRetirees: 0 };
 }
 

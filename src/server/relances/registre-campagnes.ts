@@ -21,6 +21,7 @@ import {
   CAMPAGNE_PIECES,
   CAMPAGNE_VIGILANCE,
 } from "@/server/qualiopi/formateurs-independants/pieces-relances";
+import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 
 /** A sollicitation (invitation) ; B obligation (pièce, signature) ; C information et argent. */
 export type ClasseCampagne = "A" | "B" | "C";
@@ -78,9 +79,12 @@ export function cleRelance(
  * Les campagnes déclarées. VIDE à la livraison de CAMP-3 : S1 (L-INV), S3 et S5 (L6),
  * S4 (L7b), S6 à S7 (L13), S8 et S9 bis (L11c), S9 (L12c), S11 (L7d) s'y inscrivent.
  *
- * Inscrites : S6 et S6 bis (L13b), derrière `pieces_cron`.
+ * Inscrites : S3 et S5 (L6), derrière `relances_auto` ; S6 et S6 bis (L13b), derrière `pieces_cron`.
  */
 export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
+  // L6 — S3 (et S5 par son origine F12) : relances du dossier en ligne.
+  CAMPAGNE_RELANCE_DOSSIER as DeclarationCampagne,
+  // L13b — S6 et S6 bis : relances des pièces à renouveler.
   CAMPAGNE_VIGILANCE,
   CAMPAGNE_PIECES,
 ];
