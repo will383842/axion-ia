@@ -52,21 +52,21 @@ describe("ecrireCommunes (vraie base)", () => {
       expect(
         await ecrireCommunes(
           tx,
-          [commune("38185", "Grenoble", ["38000", "38100"]), commune("01053", "Bourg", ["01000"])],
+          [commune("74010", "Annecy", ["74000", "74370"]), commune("01053", "Bourg", ["01000"])],
           t1,
         ),
       ).toBe(2);
-      // Passage suivant : Grenoble renommée, Bourg absente du téléchargement.
-      expect(
-        await ecrireCommunes(tx, [commune("38185", "Grenoble (nouveau)", ["38000"])], t2),
-      ).toBe(1);
+      // Passage suivant : Annecy renommée, Bourg absente du téléchargement.
+      expect(await ecrireCommunes(tx, [commune("74010", "Annecy (nouveau)", ["74000"])], t2)).toBe(
+        1,
+      );
 
       const lignes = await tx.communeGeo.findMany({ orderBy: { codeInsee: "asc" } });
       expect(
         lignes.map((l) => [l.codeInsee, l.nom, l.codesPostaux, l.majAt.toISOString()]),
       ).toEqual([
         ["01053", "Bourg", ["01000"], t1.toISOString()],
-        ["38185", "Grenoble (nouveau)", ["38000"], t2.toISOString()],
+        ["74010", "Annecy (nouveau)", ["74000"], t2.toISOString()],
       ]);
 
       const parCp = await tx.communeGeo.findMany({ where: { codesPostaux: { has: "01000" } } });
