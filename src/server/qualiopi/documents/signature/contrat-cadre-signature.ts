@@ -237,6 +237,9 @@ async function controleRecent(
   const etat = etatControle(lignes, maintenant);
   if (etat.statut === "rouge") {
     const derniere = [...lignes].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+    // Un rouge porté par un AUTRE SIRET que celui de la fiche (numéro corrigé
+    // depuis) ne ferme pas la porte : le registre est relu, sans impasse.
+    if (derniere !== undefined && derniere.siret !== siretFiche) return { issue: "a_refaire" };
     return { issue: "rouge", motifs: motifsDeLaLigne(derniere?.motif ?? null) };
   }
   const l = [...lignes]

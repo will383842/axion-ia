@@ -143,6 +143,15 @@ describe("objection — registre public, par le contrôle L4", () => {
     expect(controler).not.toHaveBeenCalled();
   });
 
+  it("signature : un rouge sur un ANCIEN SIRET (fiche corrigée depuis) → registre relu", async () => {
+    findMany.mockResolvedValue([ligne("rouge", 2, { siret: "11111111100011" })]);
+    controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
+    expect(
+      await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
+    ).toBeNull();
+    expect(controler).toHaveBeenCalledTimes(1);
+  });
+
   it("signature : contrôle trop ancien → nouveau contrôle (sans auteur) ; rouge = refus", async () => {
     findMany.mockResolvedValue([ligne("vert", 40)]);
     controler.mockResolvedValue({ ok: true, verdict: "rouge", motifs: ["etablissement_ferme"] });
