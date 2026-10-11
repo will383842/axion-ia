@@ -49,7 +49,7 @@ export interface TrainerDocumentsPanelProps {
   trainerId: string;
   documents: TrainerDocumentView[];
   /** Base de la route console des pièces déposées (`…/formateurs/<id>/pieces`). */
-  basePiecesDeposees?: string;
+  basePiecesDeposees?: string | undefined;
   /** Le RIB déposé ne s'ouvre qu'avec le droit de rémunérer. */
   voitRib?: boolean;
 }
