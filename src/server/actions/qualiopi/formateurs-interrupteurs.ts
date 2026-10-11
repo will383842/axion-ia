@@ -465,3 +465,10 @@ export async function basculerFormateursFormulaireFreelanceAction(
 ): Promise<EtatBascule> {
   return basculerEntree("formulaire_freelance", formData);
 }
+
+export async function basculerFormateursAffectationSureAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("affectation_sure", formData);
+}

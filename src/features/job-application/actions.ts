@@ -54,6 +54,7 @@ import {
   lireEtatsEntree,
   lireEtatsFormateurs,
 } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
 
 /**
  * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
@@ -593,6 +594,9 @@ export async function submitJobApplicationAction(
       offer && isVideoFamilyOffer(offer.slug)
         ? await lienComplement(app.id, offer).catch(() => null)
         : null;
+    // « Supprimer ma candidature » (2026-10-11) : le candidat efface son
+    // dossier seul, depuis le pied de l'accusé.
+    const lienSuppression = await lienSuppressionCandidature(app.id);
     await enqueueEmail(
       "candidature-recue",
       d.email,
@@ -605,6 +609,7 @@ export async function submitJobApplicationAction(
         ...(lienDepot ? { lienDepot } : {}),
         // L0c-1 — F0 « mission », seulement quand son texte est validé.
         ...(decisions.accuseMission ? { mission: true } : {}),
+        ...(lienSuppression ? { lienSuppression } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },
     );

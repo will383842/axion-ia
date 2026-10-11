@@ -127,7 +127,7 @@ export async function desabonnerAbonne(
       category: "INCIDENT_DETECTED",
       payload: {
         title: "Lettre : désabonnement sans preuve « optout » au registre",
-        error: `${redactEmail(abonne.email)} — abonné ${abonne.id}, motif ${motif}`,
+        error: `abonné ${abonne.id}, motif ${motif}`,
       },
       sync: true,
     }).catch(() => undefined);

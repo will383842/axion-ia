@@ -295,8 +295,8 @@ export async function unarchiveSubmissionAction(id: string): Promise<ResultatGes
 /**
  * Classer sans suite : on a décidé de ne pas donner suite.
  *
- * Même effet de base qu'archiver — les relances s'arrêtent, la purge à 24 mois
- * s'applique par le MÊME chemin — plus une marque lisible sur la fiche et une
+ * Même effet de base qu'archiver — les relances s'arrêtent par le MÊME
+ * chemin (aucune purge automatique ne s'applique) — plus une marque lisible sur la fiche et une
  * entrée au journal d'activité. La console peut alors distinguer « écarté » de
  * « rangé », ce qu'un seul `status: archived` ne permettait pas.
  */
