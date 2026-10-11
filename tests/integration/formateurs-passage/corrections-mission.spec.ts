@@ -307,7 +307,7 @@ describe("corrections du paiement par mission (vraie base)", () => {
         (await traiterTropPercu(tx, trainerId, assujetti.id, "2031-12-20", MAINTENANT))
           .imputeHtCents,
       ).toBe(0);
-      // Un relevé de mission du même régime : 60 € imputés, puis le reste (40 €) au second passage, sur la MÊME ligne.
+      // Un relevé de mission du même régime (175 €) : les 100 € sont imputés d'un coup ; un second passage n'impute rien.
       await ecrireMoisDansTransaction(
         tx,
         {
@@ -349,6 +349,62 @@ describe("corrections du paiement par mission (vraie base)", () => {
         issue: "refuse",
         motif: "montant_inutile_piece_non_payee",
       });
+    });
+  });
+
+  it("imputation en deux temps : la ligne existante GROSSIT (jamais de seconde ligne)", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
+      const { trainerId, sessions } = await fixture(tx, 2);
+      const payee = await ecrireEtEmettre(tx, trainerId, sessions[0]!, ["2031-12-03"], "paye");
+      await emettreAvoirMission(tx, payee.id, MAINTENANT, { montantHtCents: 30_000 });
+      await ecrireMoisDansTransaction(
+        tx,
+        {
+          trainerId,
+          sessionId: sessions[1]!,
+          releve: releve(["2031-12-05"], "matin"),
+          regimeTva: "franchise_293b",
+          tarifJourneeHtCents: 35_000,
+          sansEcart: true,
+        },
+        MAINTENANT,
+      );
+      const suivant = await tx.trainerStatement.findFirstOrThrow({
+        where: { trainerId, sessionId: sessions[1]! },
+      });
+      // 175 € disponibles : 175 € imputés, 125 € restent dus.
+      expect(
+        (await traiterTropPercu(tx, trainerId, suivant.id, "2031-12-20", MAINTENANT)).imputeHtCents,
+      ).toBe(17_500);
+      // Le relevé grossit (une ligne ajoutée hors moteur, pour le test) : le reste est imputé sur la MÊME ligne.
+      await tx.trainerFeeLine.create({
+        data: {
+          trainerId,
+          prestationType: "formation_collective",
+          sessionId: sessions[1]!,
+          model: "taux_journalier",
+          nature: "honoraire_du",
+          montantHtCents: 17_500,
+          statut: "calcule",
+          periodeYear: 2031,
+          periodeMonth: 12,
+          statementId: suivant.id,
+          origine: "passage_mission",
+          objet: "ajustement",
+        },
+      });
+      await tx.trainerStatement.update({
+        where: { id: suivant.id },
+        data: { totalHtCents: 17_500 },
+      });
+      expect(
+        (await traiterTropPercu(tx, trainerId, suivant.id, "2031-12-20", MAINTENANT)).imputeHtCents,
+      ).toBe(12_500);
+      const imputations = await tx.trainerFeeLine.findMany({
+        where: { statementId: suivant.id, imputeDeStatementId: { not: null } },
+      });
+      expect(imputations.map((l) => l.montantHtCents)).toEqual([-30_000]);
     });
   });
 });

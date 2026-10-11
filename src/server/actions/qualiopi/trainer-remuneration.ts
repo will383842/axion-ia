@@ -348,6 +348,7 @@ export async function transitionStatementAction(
     preuveIban = c.preuve;
   }
   let aChange = false;
+  let ibanChange = false;
   try {
     await prisma.$transaction(async (tx) => {
       /**
@@ -379,7 +380,7 @@ export async function transitionStatementAction(
           select: { ibanEmpreinte: true },
         });
         if (t?.ibanEmpreinte !== preuveIban.ibanEmpreinte) {
-          aChange = true;
+          ibanChange = true;
           return;
         }
       }
@@ -463,6 +464,12 @@ export async function transitionStatementAction(
       return { error: MESSAGE_CALCUL_EN_COURS };
     }
     return { error: "Erreur lors du changement de statut." };
+  }
+  if (ibanChange) {
+    return {
+      error:
+        "Le compte bancaire du formateur a changé pendant l'opération : rechargez la page et vérifiez l'IBAN avant de payer.",
+    };
   }
   if (aChange) {
     return {
