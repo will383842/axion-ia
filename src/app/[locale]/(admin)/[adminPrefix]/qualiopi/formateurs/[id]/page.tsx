@@ -72,6 +72,9 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { SessionsLieesSection } from "@/components/admin/qualiopi/SessionsLiees";
 import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
 import { gardePage } from "@/server/auth/garde-page";
+import { peutEngager } from "@/server/auth/habilitations";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -81,6 +84,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 async function listFormationsLite(): Promise<Array<{ id: string; titre: string }>> {
@@ -136,7 +140,7 @@ async function getTrainerActivityCounts(
   }
 }
 
-export default async function FicheFormateurPage({ params }: PageProps) {
+export default async function FicheFormateurPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
@@ -350,6 +354,19 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   // consignées. Pour TOUS les statuts : un salarié qui refuse ou ne vient pas
   // est un fait à piloter, même s'il ne se « reconduit » pas (2026-09-03).
   const missions = await statsMissionsFormateur(trainer.id, now);
+  // Lot L15a — lieu d'exercice (formateurs proches). Rôle jugé AVANT toute
+  // lecture ; interrupteur `formateurs.proches_bloc` absent = panneau absent.
+  const voitLieu = peutEngager(role, "habiliter_formateur") && (await envoiAllume("proches_bloc"));
+  const communeLieu =
+    voitLieu && trainer.communeInsee
+      ? await prisma.communeGeo
+          .findUnique({
+            where: { codeInsee: trainer.communeInsee },
+            select: { nom: true, departement: true },
+          })
+          .catch(() => null)
+      : null;
+  const retourLieu = voitLieu ? ((await searchParams) ?? {})["lieu"] : undefined;
   // Lot S2 (R4) — un refus ou un silence est un droit du sous-traitant : sa
   // fiche ne montre que les missions acceptées et réalisées (interrupteur).
   const missionsIndependant =
@@ -405,6 +422,15 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           .
         </p>
       </div>
+
+      {voitLieu ? (
+        <LieuFormateurPanel
+          trainerId={trainer.id}
+          codePostalPro={trainer.codePostalPro}
+          commune={communeLieu ? `${communeLieu.nom} (${communeLieu.departement})` : null}
+          retour={retourLieu}
+        />
+      ) : null}
 
       {/* Lot L4 — chaque session mène à LA fiche session. */}
       <SessionsLieesSection
