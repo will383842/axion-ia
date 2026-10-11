@@ -87,6 +87,7 @@ import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
+import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
 import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
 
 export const dynamic = "force-dynamic";
@@ -427,6 +428,12 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       ? await missionsVisiblesIndependant(trainer.id, now)
       : null;
 
+  // Lot L12i — « Présentation faite le … » : interrupteur absent = panneau absent.
+  const voitPresentation =
+    trainer.statut === "sous_traitant" &&
+    peutEngager(role, "remunerer_formateur") &&
+    (await interrupteurAllume("presentation_payee"));
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -615,6 +622,8 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           }}
         />
       )}
+
+      {voitPresentation && <PresentationMethodePanel trainerId={trainer.id} />}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.
