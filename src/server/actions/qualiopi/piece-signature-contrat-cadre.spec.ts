@@ -221,3 +221,19 @@ describe("envoi du code F17", () => {
     expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
   });
 });
+
+describe("envoi du code — contrat v3 sans fiche formateur", () => {
+  it("aucun code émis, et aucune alerte « adresse non concordante »", async () => {
+    findUnique.mockResolvedValue({
+      type: "contrat_sous_traitance",
+      metadata: V3,
+      trainerId: null,
+      trainer: null,
+    });
+    const { captureException } = await import("@sentry/nextjs");
+    const r = await demanderCodeSignatureAction({ token: "jeton" });
+    expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
+    expect(mEmettre).not.toHaveBeenCalled();
+    expect(captureException).not.toHaveBeenCalled();
+  });
+});

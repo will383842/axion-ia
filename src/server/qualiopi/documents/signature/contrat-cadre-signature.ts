@@ -49,8 +49,8 @@ export function codeRequis(type: string, metadata: unknown, partie: PartieSignat
 
 /**
  * « jeanne.martin@exemple.fr » → « j***@e***.fr ». Ce qui s'affiche à l'écran
- * et s'imprime au certificat : assez pour reconnaître son adresse, pas assez
- * pour la lire.
+ * après l'envoi du code : assez pour reconnaître son adresse, pas assez pour la
+ * lire.
  */
 export function masquerAdresse(email: string): string {
   const [local = "", domaine = ""] = email.trim().split("@");

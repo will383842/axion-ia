@@ -421,7 +421,7 @@ export async function demanderCodeSignatureAction(input: {
       ok: false,
       raison: "trop_de_tentatives",
       message:
-        "Trois codes vous ont déjà été envoyés dans l'heure. Utilisez le plus récent, ou réessayez plus tard.",
+        "Vous avez déjà demandé trois codes dans l'heure. Utilisez le plus récent reçu, ou réessayez plus tard.",
     };
   }
   const contexte = await contexteRequete();
@@ -462,17 +462,22 @@ export async function demanderCodeSignatureAction(input: {
     };
   }
 
+  // Un contrat v3 d'ORGANISME (sans fiche formateur) attend son propre circuit
+  // (lot des organismes) : aucun code ne part, sans alerte trompeuse.
+  if (piece.trainerId === null || piece.trainer === null) {
+    return {
+      ok: false,
+      raison: "code_indisponible",
+      message:
+        "Cette pièce ne peut pas encore être signée en ligne. Contactez votre interlocuteur chez Axion-IA.",
+    };
+  }
+
   // L'adresse du lien doit être celle de la fiche : sinon, rien ne part.
-  if (
-    piece.trainerId === null ||
-    piece.trainer === null ||
-    !memeAdresse(verif.signataireEmail, piece.trainer.email)
-  ) {
+  if (!memeAdresse(verif.signataireEmail, piece.trainer.email)) {
     Sentry.captureException(
       new Error("Code de signature demandé pour une adresse non concordante"),
-      {
-        tags: { action: "demanderCodeSignatureAction:adresse" },
-      },
+      { tags: { action: "demanderCodeSignatureAction:adresse" } },
     );
     return {
       ok: false,
