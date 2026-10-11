@@ -1,6 +1,7 @@
 /**
  * Versions de gabarit ARRÊTÉES par la direction, en avance sur la version
- * émise par défaut (lot L7a, chantier formateurs indépendants).
+ * émise par défaut (chantier formateurs indépendants) : contrat-cadre v3
+ * (lot L7a) et lettre de mission v2 (lot S5).
  *
  * ## Pourquoi un registre à part
  *
@@ -23,6 +24,7 @@
 
 import type { ComposantPiece } from "./archives";
 import { ContratCadrePdf } from "./contrat-cadre";
+import { LettreMissionV2Pdf } from "./lettre-mission-v2";
 import { GABARIT_VERSIONS, typeGabarit, type TypeGabaritSignable } from "./gabarit-versions";
 
 export interface VersionArretee {
@@ -41,6 +43,15 @@ export const VERSIONS_ARRETEES: Readonly<
       arreteeLe: "2026-10-10",
       fichier: "contrat-cadre.tsx",
       Composant: ContratCadrePdf as unknown as ComposantPiece,
+    },
+  },
+  // Lot S5 — lettre de mission v2 d'une page, conditions particulières du
+  // contrat-cadre v3. La v1 reste la version émise par défaut.
+  lettre_mission: {
+    2: {
+      arreteeLe: "2026-10-10",
+      fichier: "lettre-mission-v2.tsx",
+      Composant: LettreMissionV2Pdf as unknown as ComposantPiece,
     },
   },
 };

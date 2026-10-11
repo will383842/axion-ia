@@ -18,7 +18,11 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import {
   INTERRUPTEURS,
+  INTERRUPTEURS_ENTREE,
   INTERRUPTEURS_SIGNATURE,
+  cleSettingEntree,
+  prealablesManquantsEntree,
+  type CleInterrupteurEntree,
   PREFIXE_CLES_FORMATEURS,
   cleSetting,
   cleSettingSignature,
@@ -368,9 +372,98 @@ export async function basculerFormateursSuiteContratCadreAction(
 ): Promise<EtatBascule> {
   return basculerSignature("suite_contrat_cadre", formData);
 }
+
+// ─── Entrée des formateurs freelance (L0g et suivants) — même calque ─────────
+
+async function basculerEntree(
+  cle: CleInterrupteurEntree,
+  formData: FormData,
+): Promise<EtatBascule> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Session expirée." };
+  const role = (session.user as { role?: string }).role;
+  const def = INTERRUPTEURS_ENTREE[cle];
+  if (role == null || !ROLES_PAR_HABILITATION[def.habilitation].includes(role)) {
+    return { ok: false, error: REFUS_HABILITATION[def.habilitation] };
+  }
+  const a = formData.get("actif");
+  if (a !== "1" && a !== "0") return { ok: false, error: "Valeur invalide." };
+  const valeur = a === "1";
+  const userId = session.user.id;
+
+  let manques: string[];
+  try {
+    manques = await ecrireEntree(cle, valeur, userId);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "basculerEntreeInterrupteur", cle } });
+    return {
+      ok: false,
+      error: "Le changement n'a pas été enregistré (erreur technique). Réessayez plus tard.",
+    };
+  }
+
+  if (manques.length > 0) {
+    return { ok: false, error: `Allumage refusé : ${manques.join(" ")}` };
+  }
+  revalidatePath(adminPath("fr", "qualiopi/formateurs/interrupteurs"));
+  return { ok: true, message: valeur ? "Enregistré." : "Coupé." };
+}
+
+/** Préalables relus, réglage et journal : une seule transaction. Rend les manques. */
+function ecrireEntree(
+  cle: CleInterrupteurEntree,
+  valeur: boolean,
+  userId: string,
+): Promise<string[]> {
+  const def = INTERRUPTEURS_ENTREE[cle];
+  const key = cleSettingEntree(cle);
+  return prisma.$transaction(async (tx) => {
+    const lignes = await tx.setting.findMany({
+      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      select: { key: true, value: true },
+    });
+    const manquants = prealablesManquantsEntree(cle, valeur, etatsDepuisLignes(lignes));
+    if (manquants.length > 0) return manquants;
+    const avant = lireValeurSignature(lignes.find((l) => l.key === key)?.value).valeur;
+    await tx.setting.upsert({
+      where: { key },
+      create: {
+        key,
+        value: { actif: valeur } as never,
+        description: `Formateurs freelance › Interrupteurs — ${def.libelle}`,
+        updatedBy: userId,
+      },
+      update: { value: { actif: valeur } as never, updatedBy: userId },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: valeur ? "formateurs.interrupteur_allume" : "formateurs.interrupteur_coupe",
+        // ⚠️ Pas de `targetId` : colonne `uuid`, la clé est du texte (cf. `ecrire`).
+        targetType: "setting",
+        changes: { cle: key, avant, apres: valeur } as never,
+      },
+    });
+    return [];
+  });
+}
+
+export async function basculerFormateursNatureOffreAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("nature_offre", formData);
+}
+
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("affectation_sure", formData);
+}
+export async function basculerFormateursLettreV2Action(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("lettre_v2", formData);
 }
