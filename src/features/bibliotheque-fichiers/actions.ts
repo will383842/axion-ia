@@ -48,6 +48,8 @@ const demandeSchema = z.object({
   typeMime: z.string().max(300).nullable().optional(),
   categorie: z.string().max(40),
   titre: z.string().max(1000).nullable().optional(),
+  /** L5 : `false` pour un fichier ponctuel déposé depuis le composeur de réponse. */
+  dansBibliotheque: z.boolean().optional(),
 });
 const lienSchema = z.object({
   url: z.string().max(5000),
@@ -62,7 +64,10 @@ export async function commencerDepotAction(demande: unknown): Promise<Resultat<D
   if (!g.ok) return g;
   const d = demandeSchema.safeParse(demande);
   if (!d.success) return INVALIDE;
-  const r = await commencerDepot({ ...d.data, dansBibliotheque: true }, g.auteur);
+  const r = await commencerDepot(
+    { ...d.data, dansBibliotheque: d.data.dansBibliotheque ?? true },
+    g.auteur,
+  );
   if (r.ok) await tracerGeste("depot_commence", r.valeur.fichierId, g.auteur.id);
   return r;
 }

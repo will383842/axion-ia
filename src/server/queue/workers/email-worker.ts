@@ -22,6 +22,8 @@ import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
+// Module léger (`node:crypto` seulement) : sûr sur le trajet du worker.
+import { devoilerLienPrive } from "@/server/partages/jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
@@ -538,6 +540,23 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
 // chaîne d'envoi en a fait. Les confondre produirait deux lignes pour un geste,
 // et une frise qui se répète.
 
+// Le lien privé attaché à une réponse, ou `null`.
+//
+// 🔴 Le worker est reconstruit ~3 min après une fusion, l'application ne joue
+// les migrations que ~50 min plus tard (cf. AGENTS.md, « DEUX conteneurs, DEUX
+// vitesses »). Pendant cette fenêtre la table `liens_partage` peut ne pas
+// exister : Prisma lève P2021. Aucun lien ne peut exister avant la migration,
+// donc « pas de lien » est la seule réponse juste — et la réponse part. Toute
+// autre erreur remonte : BullMQ réessaie, comme avant.
+async function lienDeLaReponse(where: { reponseId: string }): Promise<{ id: string } | null> {
+  try {
+    return await prisma.lienPartage.findFirst({ where, select: { id: true } });
+  } catch (e) {
+    if (!!e && typeof e === "object" && (e as { code?: unknown }).code === "P2021") return null;
+    throw e;
+  }
+}
+
 async function handleCandidatureReponse(payload: Record<string, unknown>): Promise<void> {
   const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
   if (!replyId) throw new Error("[email-worker] candidature-reponse: replyId manquant");
@@ -560,12 +579,34 @@ async function handleCandidatureReponse(payload: Record<string, unknown>): Promi
     return;
   }
 
+  // 🔒 Lien privé (Candidatures unifiées L5) : la base ne porte que l'adresse
+  // MASQUÉE. Le vrai jeton n'est remis qu'ici, au moment de l'envoi, et
+  // seulement pour le lien de CETTE réponse. Impossible (PARTAGES_SECRET absent
+  // du worker, lien d'une autre réponse) → échec marqué, rien ne part avec le
+  // marqueur, et pas de `throw` : réessayer ne fabriquerait pas la clé.
+  const lien = await lienDeLaReponse({ reponseId: reponse.id });
+  const corps = devoilerLienPrive(
+    { html: reponse.bodyHtml, text: reponse.bodyText },
+    lien?.id ?? null,
+  );
+  if (!corps.ok) {
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: `lien privé : ${corps.raison}`,
+      },
+    });
+    return;
+  }
+
   try {
     const resultat = await sendEmail({
       to,
       subject: reponse.subject,
-      html: reponse.bodyHtml,
-      text: reponse.bodyText,
+      html: corps.html,
+      text: corps.text,
       replyTo,
     });
     await prisma.jobApplicationReply.update({

@@ -23,6 +23,8 @@ import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { lienComplement } from "@/features/job-application/complement";
 import { MODELES_REPONSE_IDS } from "@/content/recrutement/modeles-reponse";
+import { preparerLienFichiers, type LienPrepare } from "@/server/partages/attacher-a-une-reponse";
+import { FICHIERS_PAR_LIEN_MAX } from "@/server/partages/liens";
 
 /**
  * Qui peut écrire à un candidat.
@@ -69,13 +71,19 @@ const schemaReponse = z.object({
   bodyMarkdown: z.string().min(1).max(50_000),
   modele: z.enum(MODELES_REPONSE_IDS).default("libre"),
   internalNote: z.string().max(2000).optional(),
+  /**
+   * Fichiers joints (Candidatures unifiées L5) : identifiants de la
+   * bibliothèque ou de fichiers déposés depuis l'ordinateur. Ils partent comme
+   * UN lien privé dans le corps du message, jamais en pièce jointe.
+   */
+  fichierIds: z.array(z.string().uuid()).max(FICHIERS_PAR_LIEN_MAX).default([]),
 });
 
 export type EtatReponse =
   | { ok: true; replyId: string }
   /** `replyId` présent si la réponse est en base mais que l'envoi a échoué :
    *  elle est alors rejouable, et l'écran doit le proposer. */
-  | { ok: false; error: string; replyId?: string };
+  | { ok: false; error: string; replyId?: string; detail?: string };
 
 export async function repondreAuCandidatAction(
   input: z.input<typeof schemaReponse>,
@@ -116,6 +124,16 @@ export async function repondreAuCandidatAction(
     corps = remplirModele(corps, { lien_complement: lien });
   }
 
+  // Fichiers joints : vérifiés et préparés AVANT la transaction (le rendu de
+  // l'e-mail a besoin du paragraphe final) ; le lien est écrit DANS la
+  // transaction de la réponse, par `ecrireEtEnfilerReponse`.
+  let lienFichiers: LienPrepare | undefined;
+  if (data.fichierIds.length > 0) {
+    const p = await preparerLienFichiers(data.fichierIds);
+    if (!p.ok) return { ok: false, error: "fichiers_invalides", detail: p.erreur };
+    lienFichiers = p.lien;
+  }
+
   // 🔑 L'ÉCRITURE PASSE PAR `ecrireEtEnfilerReponse`, ET C'EST LE MÊME CHEMIN
   // QUE L'ENVOI GROUPÉ. Ces cent lignes vivaient ici ; les recopier dans le
   // geste groupé les aurait fait dériver, et ce qui se perd dans une copie, ce
@@ -127,9 +145,24 @@ export async function repondreAuCandidatAction(
     bodyMarkdown: corps,
     modele: data.modele,
     internalNote: data.internalNote,
+    lienFichiers,
   });
 
   if (!issue.ecrit) return { ok: false, error: issue.error };
+
+  if (lienFichiers) {
+    // Trace du geste (identifiant du lien seulement), best-effort.
+    await prisma.activityLog
+      .create({
+        data: {
+          adminUserId: acteur.userId,
+          action: "lien_partage.envoye",
+          targetType: "lien_partage",
+          targetId: lienFichiers.lienId,
+        },
+      })
+      .catch((e: unknown) => Sentry.captureException(e));
+  }
 
   revalidatePath(adminPath("fr", "contacts/candidatures"));
   revalidatePath(adminPath("fr", `contacts/candidatures/${candidature.id}`));

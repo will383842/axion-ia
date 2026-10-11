@@ -31,6 +31,8 @@ import {
 // réseau, et le module des gestes en masse doit les partager plutôt que les
 // recopier.
 import { requireAdminWrite, requireAdminRead } from "./session";
+import { retraitPropose } from "@/server/partages/liens";
+import { retirerLiensCandidature } from "@/server/partages/suivi";
 import type { ListApplicationsInput } from "./reads";
 export type {
   ListApplicationsInput,
@@ -514,6 +516,28 @@ export async function updateApplicationStatusAction(
     // Le message Postgres de la contrainte n'apprend rien à un recruteur ; le
     // contrôle en amont a déjà nommé le cas prévisible.
     return { ok: false, error: "Enregistrement refusé — vérifiez le statut et son motif." };
+  }
+
+  // Candidatures unifiées L5 [I5] — « Non retenue » ou « Retirée » : le retrait
+  // des liens de fichiers encore ouverts est PROPOSÉ (case cochée par défaut sur
+  // la fiche). Best-effort : la décision est déjà enregistrée, un retrait manqué
+  // se refait d'un clic dans « Fichiers envoyés ».
+  if (formData.get("retirerLiens") === "true" && retraitPropose(parsed.data.status)) {
+    try {
+      const n = await retirerLiensCandidature(parsed.data.id);
+      if (n > 0) {
+        await prisma.activityLog.create({
+          data: {
+            adminUserId: session.userId,
+            action: "lien_partage.retire_a_la_decision",
+            targetType: "job_application",
+            targetId: parsed.data.id,
+          },
+        });
+      }
+    } catch (e) {
+      console.warn("[partages] retrait des liens non fait :", (e as Error).message);
+    }
   }
 
   await prisma.activityLog.create({

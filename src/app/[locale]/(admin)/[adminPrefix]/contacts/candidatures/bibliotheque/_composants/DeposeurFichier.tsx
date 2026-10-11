@@ -70,7 +70,26 @@ function noterReprise(f: File, id: string | null): void {
 
 class ErreurEnvoi extends Error {}
 
-export default function DeposeurFichier({ onFermer }: { onFermer: () => void }) {
+/** Un fichier déposé, rendu à l'appelant (composeur de réponse, L5). */
+export interface FichierDepose {
+  readonly id: string;
+  readonly titre: string;
+  readonly categorie: string;
+  readonly taille: number;
+}
+
+interface PropsDeposeur {
+  readonly onFermer: () => void;
+  /**
+   * Candidatures unifiées L5 — utilisé DEPUIS LE COMPOSEUR de réponse : le
+   * fichier est ponctuel (`dansBibliotheque: false`), seul le mode « Depuis mon
+   * ordinateur » est proposé, et l'appelant reçoit le fichier une fois déposé.
+   */
+  readonly ponctuel?: boolean;
+  readonly onDepose?: (f: FichierDepose) => void;
+}
+
+export default function DeposeurFichier({ onFermer, ponctuel = false, onDepose }: PropsDeposeur) {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("fichier");
   const [fichier, setFichier] = useState<File | null>(null);
@@ -144,6 +163,7 @@ export default function DeposeurFichier({ onFermer }: { onFermer: () => void }) 
           typeMime: f.type || null,
           categorie,
           titre: titre.trim() || null,
+          ...(ponctuel ? { dansBibliotheque: false } : {}),
         });
         if (!r.ok) throw new ErreurEnvoi(r.erreur);
         id = r.valeur.fichierId;
@@ -182,7 +202,11 @@ export default function DeposeurFichier({ onFermer }: { onFermer: () => void }) 
       idEnCours.current = null;
       setPhase("fini");
       setMessage("Fichier déposé. L'antivirus le vérifie (sauf au-delà de 200 Mo).");
-      router.refresh();
+      if (onDepose) {
+        onDepose({ id, titre: titre.trim() || f.name, categorie, taille: f.size });
+      } else {
+        router.refresh();
+      }
     } catch (e) {
       setPhase("choix");
       if (controleur.signal.aborted) return;
@@ -227,7 +251,11 @@ export default function DeposeurFichier({ onFermer }: { onFermer: () => void }) 
   return (
     <div>
       <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
-        <div className="flex flex-wrap gap-[var(--space-admin-2)]" role="group" aria-label="Source">
+        <div
+          className={ponctuel ? "hidden" : "flex flex-wrap gap-[var(--space-admin-2)]"}
+          role="group"
+          aria-label="Source"
+        >
           <button
             type="button"
             className={

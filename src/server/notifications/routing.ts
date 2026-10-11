@@ -30,6 +30,8 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // Rappel quotidien « candidatures oubliées » — même nature que celui des
   // offres à republier : de la maintenance, pas un lead. Telegram seul.
   JOB_APPLICATIONS_STALE: { channels: ["telegram"], severity: "warn" },
+  // L5 — rushs téléchargés (info), plafond de téléchargements atteint (warn, posé au call-site).
+  FICHIERS_PARTAGES: { channels: ["telegram"], severity: "info" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
@@ -180,6 +182,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // La réponse d'un candidat emploi par e-mail (lot L3, 2026-10-07) : avec les
   // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
   CANDIDAT_REPLIED: "candidatures",
+  // Les fichiers envoyés à un candidat vivent avec sa candidature (L5).
+  FICHIERS_PARTAGES: "candidatures",
 
   // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
   // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce

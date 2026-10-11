@@ -220,6 +220,20 @@ export type NotificationEvent =
       };
     }
   | {
+      // Candidatures unifiées L5 (2026-10-08) — un lien privé de fichiers envoyé à
+      // un candidat : premier téléchargement de rushs par une personne, ou plafond
+      // de 20 téléchargements atteint pour un fichier. 🔴 AUCUNE IDENTITÉ : ni nom,
+      // ni adresse, ni lien (le jeton ouvrirait les fichiers). L'intitulé de
+      // l'offre, le titre du fichier et l'adresse de la fiche suffisent.
+      category: "FICHIERS_PARTAGES";
+      payload: {
+        kind: "rushs_telecharges" | "plafond_atteint";
+        offre: string;
+        fichier: string;
+        applicationId: string | null;
+      };
+    }
+  | {
       category: "REVIEW_SUBMITTED";
       payload: {
         reviewId: string;
