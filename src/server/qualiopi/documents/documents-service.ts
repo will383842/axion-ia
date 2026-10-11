@@ -24,7 +24,10 @@ import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions
 import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { pieceSignable } from "@/server/qualiopi/documents/signature/parties-requises";
-import { versionGabaritAEcrire } from "@/server/qualiopi/documents/templates/versions-arretees";
+import {
+  verifierVersionDuComposant,
+  versionGabaritAEcrire,
+} from "@/server/qualiopi/documents/templates/versions-arretees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
@@ -597,6 +600,7 @@ export async function generateDocument(
         "[generateDocument] L'un des champs `element` ou `buildElement` est obligatoire.",
       );
     }
+    verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);
     elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);

@@ -87,3 +87,29 @@ export function versionGabaritAEcrire(type: string, demandee?: number): number |
       `(${courante}) ni une version arrêtée : émission refusée.`,
   );
 }
+
+/**
+ * Contrôle de cohérence entre l'élément rendu et la version inscrite.
+ *
+ * Rendre le composant d'une version arrêtée sans l'inscrire (ou l'inverse)
+ * scellerait une pièce que l'exemplaire signé rejouerait avec un autre texte.
+ * Lève une erreur dans les deux cas ; ne dit rien pour tout autre composant.
+ */
+export function verifierVersionDuComposant(
+  type: string,
+  composant: unknown,
+  version: number | null,
+): void {
+  const gabarit = typeGabarit(type);
+  if (gabarit === null) return;
+  for (const [v, arretee] of Object.entries(VERSIONS_ARRETEES[gabarit] ?? {})) {
+    const estCeComposant = composant === arretee.Composant;
+    const estCetteVersion = version === Number(v);
+    if (estCeComposant !== estCetteVersion) {
+      throw new Error(
+        `[gabarit] « ${type} » : le composant rendu et la version inscrite (${String(version)}) ` +
+          `ne correspondent pas à la version arrêtée ${v} : émission refusée.`,
+      );
+    }
+  }
+}

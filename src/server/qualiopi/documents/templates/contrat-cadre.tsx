@@ -81,7 +81,8 @@ export interface ContratCadreData {
   /**
    * Mandat d'autofacturation (annexe 3). Toujours donné par un indépendant ;
    * un organisme peut le refuser à la signature (article 13.4). Porté par
-   * l'instantané pour que la dérivation du mandat le lise.
+   * l'instantané : `mandat-source.ts` ne dérive aucun mandat d'un contrat qui
+   * porte `false`.
    */
   mandatAutofacturation: boolean;
   /** Champs d'Axion propres à ce contrat, absents de l'identité commune. */
@@ -929,9 +930,7 @@ export function ContratCadrePdf({
           <BulletList
             items={[
               "traitez ces données sur les seules instructions écrites d'Axion, et l'avertissez si une instruction vous semble contraire à la réglementation ;",
-              `veillez à ce que toute personne qui y accède${
-                org ? " (y compris vos intervenants désignés)" : ""
-              } soit tenue à la confidentialité ;`,
+              `veillez à ce que toute personne qui y accède${org ? " y compris vos intervenants désignés" : ""} soit tenue à la confidentialité ;`,
               "prenez des mesures de sécurité adaptées : appareils protégés par un mot de passe et verrouillés, pas d'ordinateur partagé, aucune copie sur un support non chiffré, aucun envoi à une adresse personnelle d'un tiers ;",
               "ne saisissez aucune donnée de stagiaire (nom, travaux, réponses, images, voix) dans un outil d'intelligence artificielle ou un service en ligne qu'Axion n'a pas validé par écrit ; la liste des outils validés figure dans votre espace ;",
               "ne réalisez aucune photo, vidéo ou enregistrement sonore des stagiaires ou des personnels du client, hors du cadre de l'article 25 et de l'annexe 4 ;",
@@ -1420,7 +1419,7 @@ export function ContratCadrePdf({
           </P>
         </DocSection>
 
-        <DocSection title="Signatures">
+        <>
           <Text style={pdfStyles.legalNote}>
             Signatures : {org ? "représentant de l'organisme" : "formateur"} — signature
             électronique avec code (article 33) ; Axion-IA SAS, représentée par{" "}
@@ -1428,7 +1427,6 @@ export function ContratCadrePdf({
             signature joint.
           </Text>
           <SignatureZone
-            faitLe={`${champ(identite.rcsVille)}, le ${data.dateContrat}`}
             parties={[
               {
                 titre: org ? "Pour l'organisme sous-traitant" : "Le formateur indépendant",
@@ -1446,7 +1444,7 @@ export function ContratCadrePdf({
               },
             ]}
           />
-        </DocSection>
+        </>
       </Feuillet>
     </Document>
   );
