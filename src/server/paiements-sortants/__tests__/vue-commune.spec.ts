@@ -8,18 +8,19 @@
  *     des pièces lues) ;
  *   · la date cible est le dernier jour ouvré au plus tard à l'échéance ;
  *   · les flux apporteurs sont lus par LEUR fonction, inchangée (garde statique) ;
- *   · DAS 2 commune : un seul seuil, avoirs déduits, CSV conforme à l'existant.
+ *   · DAS 2 commune : un seul seuil apprécié par SIREN, avoirs déduits, formules
+ *     de tableur neutralisées.
+ *
+ * Les égalités avec la zone Qualiopi (statuts dus, seuil du paiement par mission)
+ * sont vérifiées DANS cette zone : `argent/__tests__/paiements-sortants-sources.spec.ts`.
  */
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { STATUTS_RELEVE_DU } from "@/server/qualiopi/remuneration/echeance";
-import { PARAMETRES_ARGENT_FORMATEURS } from "@/server/qualiopi/formateurs-independants/argent/parametres";
-
 import { construireDas2Commune, regrouperRelevesPayes } from "../das2";
-import { SEUIL_DAS2_COMMUN_CENTS, STATUTS_RELEVE_A_VIRER } from "../parametres";
+import { SEUIL_DAS2_COMMUN_CENTS } from "../parametres";
 import { couleurDe, ordonnerVirements, totauxVirements, type VirementLu } from "../virements";
 
 const v = (o: Partial<VirementLu> & Pick<VirementLu, "flux" | "montantCents">): VirementLu => ({
@@ -68,12 +69,7 @@ describe("vue commune — ordre, dates cibles, couleurs", () => {
 });
 
 describe("vue commune — sources uniques", () => {
-  it("les statuts « à virer » sont ceux de l'échéance des relevés", () => {
-    expect([...STATUTS_RELEVE_A_VIRER].sort()).toEqual([...STATUTS_RELEVE_DU].sort());
-  });
-
-  it("le seuil DAS 2 du paiement par mission EST le paramètre commun", () => {
-    expect(PARAMETRES_ARGENT_FORMATEURS.seuilDas2Cents).toBe(SEUIL_DAS2_COMMUN_CENTS);
+  it("le seuil DAS 2 commun vaut la valeur prudente de 1 200 €", () => {
     expect(SEUIL_DAS2_COMMUN_CENTS).toBe(120_000);
   });
 

@@ -33,6 +33,13 @@ export interface VirementLu {
   readonly emissionAt: Date;
   /** Échéance légale « AAAA-MM-JJ », si le flux la connaît. */
   readonly echeance: string | null;
+  /**
+   * Formateur seulement : la facture rapprochée ne correspond pas au dû. Le
+   * virement est bloqué (« facture non conforme ») ; la vue affiche le DÛ.
+   */
+  readonly nonConforme?: boolean;
+  /** Formateur seulement : relevé validé, facture pas encore émise ni reçue. */
+  readonly factureAttendue?: boolean;
 }
 
 export interface VirementSortant extends VirementLu {
@@ -106,12 +113,28 @@ function jourParis(d: Date): string {
   return `${p.year}-${p.month}-${p.day}`;
 }
 
+/** Ce que la vue lit d'un relevé pour le dater (forme de `ReleveDatable`). */
+export interface ReleveADater {
+  readonly statut: (typeof STATUTS_RELEVE_A_VIRER)[number];
+  readonly dateFacture: Date | null;
+  readonly echeanceAt: Date | null;
+  readonly payeAt: Date | null;
+}
+
 /**
  * La vue commune, lue en base. Apporteurs : la fonction existante, telle quelle.
  * Formateurs : les relevés dont le virement est dû, non payés, non contestés.
- * Lecture seule. Le relevé d'un formateur porte son échéance (`echeanceAt`).
+ * Lecture seule.
+ *
+ * 🔑 L'échéance d'un relevé de formateur est DONNÉE par l'appelant
+ * (`echeanceEffective` de la rémunération, qui sait retomber sur « facture + 30
+ * jours » pour le stock sans `echeanceAt`) : ce module neutre ne la recalcule
+ * pas, pour qu'il n'en existe qu'une règle.
  */
-export async function lireVirementsSortants(maintenant: Date): Promise<VirementSortant[]> {
+export async function lireVirementsSortants(
+  maintenant: Date,
+  echeanceFormateur: (r: ReleveADater) => Date | null,
+): Promise<VirementSortant[]> {
   const [{ lireVirementsAFaire }, { prisma }] = await Promise.all([
     import("@/features/apporteurs-reseau/facturation"),
     import("@/lib/prisma"),
@@ -127,11 +150,13 @@ export async function lireVirementsSortants(maintenant: Date): Promise<VirementS
       },
       select: {
         id: true,
+        statut: true,
         trainerId: true,
         numeroFacture: true,
         totalTtcCents: true,
         montantFactureTtcCents: true,
         echeanceAt: true,
+        payeAt: true,
         autofactureAt: true,
         dateFacture: true,
         createdAt: true,
@@ -150,17 +175,28 @@ export async function lireVirementsSortants(maintenant: Date): Promise<VirementS
       emissionAt: a.emissionAt,
       echeance: null,
     })),
-    ...releves.map((r): VirementLu => ({
-      flux: "formateur",
-      pieceId: r.id,
-      beneficiaireId: r.trainerId,
-      beneficiaire: `${r.trainer.prenom} ${r.trainer.nom}`.trim(),
-      reference: r.numeroFacture,
-      // Facture reçue : on vire le montant de la facture rapprochée ; sinon le relevé.
-      montantCents: r.montantFactureTtcCents ?? r.totalTtcCents,
-      emissionAt: r.autofactureAt ?? r.dateFacture ?? r.createdAt,
-      echeance: r.echeanceAt ? jourParis(r.echeanceAt) : null,
-    })),
+    ...releves.map((r): VirementLu => {
+      const echeance = echeanceFormateur({
+        statut: r.statut as ReleveADater["statut"],
+        dateFacture: r.dateFacture,
+        echeanceAt: r.echeanceAt,
+        payeAt: r.payeAt,
+      });
+      return {
+        flux: "formateur",
+        pieceId: r.id,
+        beneficiaireId: r.trainerId,
+        beneficiaire: `${r.trainer.prenom} ${r.trainer.nom}`.trim(),
+        reference: r.numeroFacture,
+        // Toujours le DÛ : une facture d'un autre montant bloque le virement.
+        montantCents: r.totalTtcCents,
+        nonConforme:
+          r.montantFactureTtcCents !== null && r.montantFactureTtcCents !== r.totalTtcCents,
+        factureAttendue: r.statut === "valide",
+        emissionAt: r.autofactureAt ?? r.dateFacture ?? r.createdAt,
+        echeance: echeance ? jourParis(echeance) : null,
+      };
+    }),
   ];
   return ordonnerVirements(lus, jourParis(maintenant));
 }

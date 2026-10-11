@@ -25,8 +25,15 @@ export interface LigneDas2Commune {
   readonly pieces: number;
 }
 
+/**
+ * Un champ CSV sûr : guillemets doublés, et un texte qui commence par `=`, `+`,
+ * `-`, `@`, une tabulation ou un retour chariot est préfixé d'une apostrophe
+ * (un tableur l'exécuterait comme une formule). Les nombres ne sont pas touchés.
+ */
 function champCsv(v: string | number | null): string {
-  const s = v === null ? "" : String(v);
+  if (typeof v === "number") return String(v);
+  let s = v ?? "";
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
@@ -54,6 +61,14 @@ export function construireDas2Commune(
     "nombre_pieces",
     "a_declarer",
   ];
+  // Le seuil s'apprécie PAR BÉNÉFICIAIRE : une même entreprise (même SIREN) payée
+  // comme apporteur ET comme formateur cumule ses deux flux.
+  const cumulParSiren = new Map<string, number>();
+  for (const l of lignes) {
+    if (l.siren) cumulParSiren.set(l.siren, (cumulParSiren.get(l.siren) ?? 0) + l.totalCents);
+  }
+  const total = (l: LigneDas2Commune): number =>
+    l.siren ? (cumulParSiren.get(l.siren) ?? l.totalCents) : l.totalCents;
   const triees = [...lignes].sort((a, b) =>
     a.flux === b.flux
       ? a.beneficiaire.localeCompare(b.beneficiaire, "fr")
@@ -70,12 +85,13 @@ export function construireDas2Commune(
       l.siren,
       l.siret,
       l.adresse,
-      euros(l.totalCents),
+      { montant: euros(l.totalCents) },
       l.pieces,
-      // « au-delà du seuil » : strictement supérieur, comme l'export existant.
-      l.totalCents > seuilCents ? "oui" : "non",
+      // « au-delà du seuil » : strictement supérieur, comme l'export existant ;
+      // apprécié sur le cumul du SIREN, tous flux confondus.
+      total(l) > seuilCents ? "oui" : "non",
     ]
-      .map(champCsv)
+      .map((x) => (typeof x === "object" && x !== null ? x.montant : champCsv(x)))
       .join(";"),
   );
   return `﻿${[entete.join(";"), ...corps].join("\r\n")}\r\n`;
