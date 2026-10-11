@@ -66,8 +66,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   contrat_sous_traitance: "contrat-sous-traitance.tsx",
   contrat_travail: "contrat-travail.tsx",
   releve_connexion: "releve-connexion.tsx",
-  // Lot S5 — la v2 d'une page est la courante ; la v1 est archivée.
-  lettre_mission: "lettre-mission-v2.tsx",
+  lettre_mission: "lettre-mission.tsx",
   mandat_opco: "mandat-opco.tsx",
   autorisation_captation: "autorisation-captation.tsx",
 };
@@ -127,9 +126,8 @@ const EMPREINTES: Readonly<
     version: 2,
   },
   lettre_mission: {
-    // v2 — 10/10/2026 (S5) : lettre d'une page, texte arrêté par Will ; v1 archivée.
-    sha: "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
-    version: 2,
+    sha: "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
+    version: 1,
   },
   mandat_opco: {
     // v1 — 04/10/2026 : premier texte (INT-T66-A), avec les trois ajouts de la juriste
@@ -301,7 +299,6 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
     "fb7fa23dae608dc04921190e5e0538373fc94615bc228f145354c4cda53b154e",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
-  "lettre-mission.v1.tsx": "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
 };
 

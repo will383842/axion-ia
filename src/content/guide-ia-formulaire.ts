@@ -67,9 +67,11 @@ export const VERSION_LETTRE: Record<VarianteFormulaireGuide, string> = {
  */
 // pro v2 (26/09) : la cadence annoncée passe de « quelques envois annuels » à « 1 à 2 e-mails
 // par mois » (décision de Will). La mention perso n'annonce aucune cadence : elle garde sa v1.
+// pro v3 / perso v2 (11/10) : la conservation est exprimée par critère (relation, puis délais
+// légaux de réclamation) au lieu de « 3 ans après votre dernier échange » (décision de Will).
 export const VERSION_MENTION: Record<"pro" | "perso", string> = {
-  pro: "guide-mention-pro-v2-2026-09-26",
-  perso: "guide-mention-perso-v1-2026-09-24",
+  pro: "guide-mention-pro-v3-2026-10-11",
+  perso: "guide-mention-perso-v2-2026-10-11",
 };
 
 /**
@@ -103,8 +105,8 @@ export const TEXTE_CASE_LETTRE: Record<
 
 /** Suite commune aux deux mentions : le CRM (décision D1), la conservation, les droits. */
 const MENTION_SUITE: Record<LocaleFormulaire, string> = {
-  fr: "Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : 3 ans après votre dernier échange avec nous. Pour exercer vos droits : contact@axion-ia.com.",
-  en: "When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Retention: 3 years after your last exchange with us. To exercise your rights: contact@axion-ia.com.",
+  fr: "Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Conservation : tant que la relation dure, puis le temps des délais légaux de réclamation. Pour exercer vos droits : contact@axion-ia.com.",
+  en: "When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Retention: for as long as the relationship lasts, then for the statutory limitation periods for claims. To exercise your rights: contact@axion-ia.com.",
 };
 
 /**

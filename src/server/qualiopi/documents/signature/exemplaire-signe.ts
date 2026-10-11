@@ -56,7 +56,7 @@ import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contr
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat-travail";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
-import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
+import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
@@ -70,6 +70,7 @@ import {
   gabaritArchive,
   type ComposantPiece,
 } from "@/server/qualiopi/documents/templates/archives";
+import { composantVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
 
 /**
  * Type de pièce → composant de rendu.
@@ -93,8 +94,9 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   // template ont disparu avec le module AFEST 1-to-1. Une vieille pièce de ce
   // type rendrait `type_non_rendu`, la preuve reste consultable au registre.
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
-  // v2 courante (lot S5) ; la v1 se rend depuis `templates/archives/`.
-  lettre_mission: LettreMissionV2Pdf as unknown as ComposantPiece,
+  // v1 émise par défaut ; la v2 (lot S5) est une version ARRÊTÉE en avance,
+  // rejouée par `versions-arretees.ts`, comme le contrat-cadre v3.
+  lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
   mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
   // S6a (f) — le consentement du stagiaire est un circuit du SSOT depuis
   // l'origine, et son template rend la preuve (`data.signatures.beneficiaire`).
@@ -124,6 +126,9 @@ export function composantGabarit(type: string, version: number): ComposantPiece 
   const gabarit = typeGabarit(type);
   const versionCourante = versionGabaritCourante(type);
   if (gabarit === null || versionCourante === null || version === versionCourante) return courant;
+  // L7a — une version arrêtée EN AVANCE (contrat-cadre v3) se rejoue avec son
+  // propre composant, jamais avec la version émise par défaut.
+  if (version > versionCourante) return composantVersionArretee(gabarit, version);
   return gabaritArchive(gabarit, version);
 }
 

@@ -8,8 +8,8 @@
  * contradiction. Une lettre couvre 1 à N jours, consécutifs ou non.
  *
  * Réservée aux formateurs INDÉPENDANTS et aux ORGANISMES sous-traitants. La v1
- * (`lettre-mission.tsx`, archivée en `archives/lettre-mission.v1.tsx`) reste
- * celle de toute pièce déjà émise.
+ * (`lettre-mission.tsx`) reste la version émise par défaut et celle de toute
+ * pièce déjà émise ; cette v2 est une version ARRÊTÉE (`versions-arretees.ts`).
  *
  * Données entièrement CALCULÉES avant le rendu (`lettre-mission-v2-calcul.ts`) :
  * le gabarit n'additionne rien, il imprime. Montants en centimes entiers.

@@ -24,7 +24,10 @@ import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions
 import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { pieceSignable } from "@/server/qualiopi/documents/signature/parties-requises";
-import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import {
+  verifierVersionDuComposant,
+  versionGabaritAEcrire,
+} from "@/server/qualiopi/documents/templates/versions-arretees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
@@ -190,6 +193,16 @@ export interface GenerateDocumentInput {
    */
   estCopie?: boolean;
   /**
+   * Version du GABARIT que l'élément rendu porte réellement.
+   *
+   * Laissée vide : la version courante, comme avant. Seul un émetteur qui rend
+   * une version ARRÊTÉE en avance (`templates/versions-arretees.ts`) la donne,
+   * et une version ni courante ni arrêtée fait échouer l'émission AVANT
+   * l'allocation du numéro : on ne scelle pas une pièce dont l'exemplaire
+   * signé ne pourrait pas être rejoué.
+   */
+  gabaritVersion?: number;
+  /**
    * Numéro de la pièce que celle-ci **rectifie**, et motif de la rectification.
    *
    * 🔴 Audit pré-visite 2026-08-03. Régénérer une pièce parce que la DONNÉE a
@@ -245,13 +258,6 @@ export interface GenerateDocumentInput {
    * Optionnel — absent pour les documents PDF sans source d'import.
    */
   fichierOriginalPath?: string;
-  /**
-   * Version de gabarit RÉELLEMENT rendue, quand elle n'est pas la courante
-   * (lot S5) : un générateur qui imprime encore un texte archivé — la lettre de
-   * mission v1, tant que `formateurs.lettre_v2` est coupé — le date ici, pour
-   * que l'exemplaire signé soit rendu avec ce même texte. Absent : la courante.
-   */
-  gabaritVersion?: number;
 }
 
 export interface GenerateDocumentResult {
@@ -489,6 +495,8 @@ export async function generateDocument(
     };
   }
 
+  const gabaritVersion = versionGabaritAEcrire(input.type, input.gabaritVersion);
+
   // Garde-fou conformité (runtime only) : refuse un document à valeur
   // juridique/fiscale si l'identité de l'OF est incomplète (SIRET/NDA/adresse/
   // Qualiopi vides) plutôt que de masquer la ligne en silence. Systématique
@@ -592,6 +600,7 @@ export async function generateDocument(
         "[generateDocument] L'un des champs `element` ou `buildElement` est obligatoire.",
       );
     }
+    verifierVersionDuComposant(input.type, elementToRender.type, gabaritVersion);
     elementToRender = avecFiligraneCopie(elementToRender, estUneRegeneration);
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
@@ -653,9 +662,7 @@ export async function generateDocument(
             //
             // ⚠️ `null` quand la pièce n'est pas signable : la question ne se
             // pose pas, et stocker un nombre laisserait croire qu'elle se pose.
-            ...(versionGabaritCourante(input.type) !== null
-              ? { gabaritVersion: input.gabaritVersion ?? versionGabaritCourante(input.type) }
-              : {}),
+            ...(gabaritVersion !== null ? { gabaritVersion } : {}),
           }),
         ) as unknown;
       }

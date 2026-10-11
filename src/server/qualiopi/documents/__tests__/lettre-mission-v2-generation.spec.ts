@@ -62,8 +62,9 @@ import {
   MOTIF_LETTRE_REMPLACEE,
 } from "../lettre-mission-v2-generation";
 import { composantGabarit } from "../signature/exemplaire-signe";
-import { gabaritArchive } from "../templates/archives";
 import { GABARIT_VERSIONS } from "../templates/gabarit-versions";
+import { LettreMissionPdf } from "../templates/lettre-mission";
+import { LettreMissionV2Pdf } from "../templates/lettre-mission-v2";
 
 const SESSION_ID = "a5a5a5a5-0000-4000-8000-00000000000a";
 const TRAINER_ID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
@@ -206,15 +207,9 @@ describe("coupé : la lettre d'avant, à l'identique", () => {
     expect(ACTION.match(/gabaritVersion: 1,/g)?.length).toBe(2);
   });
 
-  it("une lettre datée v1 se rend avec la v1 archivée ; la courante est la v2", () => {
-    expect(GABARIT_VERSIONS.lettre_mission).toBe(2);
-    expect(composantGabarit("lettre_mission", 1)).toBe(gabaritArchive("lettre_mission", 1));
-    expect(composantGabarit("lettre_mission", 1)).not.toBeNull();
-  });
-
-  it("la v1 archivée est mot pour mot l'ancien gabarit courant", () => {
-    const lire = (f: string) =>
-      readFileSync(join(process.cwd(), "src/server/qualiopi/documents/templates", f), "utf8");
-    expect(lire("archives/lettre-mission.v1.tsx")).toBe(lire("lettre-mission.tsx"));
+  it("la v1 reste la version émise par défaut ; la v2 est une version arrêtée", () => {
+    expect(GABARIT_VERSIONS.lettre_mission).toBe(1);
+    expect(composantGabarit("lettre_mission", 1)).toBe(LettreMissionPdf);
+    expect(composantGabarit("lettre_mission", 2)).toBe(LettreMissionV2Pdf);
   });
 });
