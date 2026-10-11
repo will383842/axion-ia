@@ -32,6 +32,7 @@ import {
   lireInterrupteursSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
+  basculerFormateursFormulaireFreelanceAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
@@ -97,6 +98,7 @@ const ACTIONS_SIGNATURE: Record<
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
   {
     nature_offre: basculerFormateursNatureOffreAction,
+    formulaire_freelance: basculerFormateursFormulaireFreelanceAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

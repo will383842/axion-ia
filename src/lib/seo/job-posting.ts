@@ -55,6 +55,7 @@ function applicantLocationRequirements(
 export function buildJobPostingJsonLd(
   offer: JobOffer,
   locale: "fr" | "en" = "fr",
+  _options: { readonly formateurFreelance?: boolean } = {},
 ): Record<string, unknown> | null {
   // Garde-fou cohérent avec l'indexabilité : pas de JobPosting si non-publiée,
   // pourvue, noindex (tier≠1) ou expirée (sinon Google for Jobs indexe une offre
