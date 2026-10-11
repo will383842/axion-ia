@@ -80,7 +80,7 @@ describe("L12h — DAS 2 commune, formateurs et organismes", () => {
     await exportDas2Commune(2027);
     const where = m.findMany.mock.calls[0]![0].where;
     expect(where.statut).toBe("paye");
-    expect(where.trainer).toEqual({ estTestInterne: false });
+    expect(where.trainer).toEqual({ NOT: { estTestInterne: true } });
     expect(where.payeAt.gte.toISOString()).toBe("2026-12-31T23:00:00.000Z");
     expect(where.payeAt.lt.toISOString()).toBe("2027-12-31T23:00:00.000Z");
   });

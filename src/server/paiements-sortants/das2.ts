@@ -158,6 +158,13 @@ export function regrouperRelevesPayes(
 }
 
 /**
+ * Les fiches formateur du banc d'essai (autofacture « spécimen ») : jamais dans la
+ * DAS 2. Filtre NOMMÉ, distinct de celui des rencontres de test
+ * (`HORS_RENCONTRES_DE_TEST`), qui ne porte pas sur les mêmes lignes.
+ */
+export const HORS_FICHES_DU_BANC = { NOT: { estTestInterne: true } } as const;
+
+/**
  * La déclaration commune de l'année, lue en base (lecture seule).
  *
  * L12h : un relevé tenu PAR UN ORGANISME (décision 88) est déclaré au nom de
@@ -172,7 +179,7 @@ export async function exportDas2Commune(annee: number, options: OptionsDas2 = {}
   const [apporteurs, payes] = await Promise.all([
     lignesDas2Apporteurs(annee),
     prisma.trainerStatement.findMany({
-      where: { statut: "paye", payeAt: bornesAnnee(annee), trainer: { estTestInterne: false } },
+      where: { statut: "paye", payeAt: bornesAnnee(annee), trainer: HORS_FICHES_DU_BANC },
       select: {
         trainerId: true,
         totalTtcCents: true,
