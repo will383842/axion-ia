@@ -876,6 +876,10 @@ model EmailOutbox {
   client              Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
   entityType          String?           @map("entity_type") @db.VarChar(80)
   entityId            String?           @map("entity_id") @db.VarChar(64)
+  /// CAMP-2 — la clé d'idempotence (`jobId`) de l'envoi garé, quand l'appelant
+  /// en donne une. Le moteur de campagnes la lit avec le journal : une relance
+  /// garée n'est jamais garée deux fois.
+  jobId               String?           @map("job_id") @db.VarChar(200)
   /// Pièces jointes (clés R2) — recopiées telles quelles, jamais modifiables.
   attachments         Json?
   approuveAt          DateTime?         @map("approuve_at")
@@ -894,6 +898,7 @@ model EmailOutbox {
   @@index([template])
   @@index([clientId])
   @@index([createdAt])
+  @@index([jobId])
   @@map("email_outbox")
 }
 

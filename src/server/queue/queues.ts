@@ -1013,6 +1013,8 @@ export async function enqueueEmail(
         entityType: options?.entityType ?? null,
         entityId: options?.entityId ?? null,
         ...(options?.attachments ? { attachments: options.attachments } : {}),
+        // CAMP-2 : la clé d'idempotence suit l'envoi en corbeille.
+        ...(options?.jobId ? { jobId: options.jobId } : {}),
       });
       if (outboxId !== null) {
         return { enqueued: false, garePourValidation: true, outboxId };

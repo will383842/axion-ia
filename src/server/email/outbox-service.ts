@@ -63,6 +63,8 @@ export interface EmailAGarer {
   entityType?: string | null;
   entityId?: string | null;
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  /** CAMP-2 — la clé d'idempotence de l'envoi, quand l'appelant en donne une. */
+  jobId?: string | null;
 }
 
 /**
@@ -72,25 +74,59 @@ export interface EmailAGarer {
  */
 export async function garerPourValidation(input: EmailAGarer): Promise<string | null> {
   if (estStub()) return null;
+  const jobId = input.jobId ? input.jobId.slice(0, 200) : null;
+  if (jobId) {
+    try {
+      return await creerLigne(input, jobId);
+    } catch {
+      // Fenêtre de déploiement (~50 min) : le worker neuf peut tourner sur une base
+      // où la colonne `job_id` n'existe pas encore. On gare SANS la clé, comme avant
+      // CAMP-2, plutôt que de perdre l'e-mail.
+    }
+  }
   try {
-    const ligne = await prisma.emailOutbox.create({
-      data: {
-        template: input.template,
-        recipient: input.recipient,
-        locale: input.locale,
-        payload: input.payload as never,
-        sujet: input.sujet.slice(0, 300),
-        statut: "a_valider",
-        ...(input.clientId ? { clientId: input.clientId } : {}),
-        ...(input.entityType ? { entityType: input.entityType } : {}),
-        ...(input.entityId ? { entityId: input.entityId } : {}),
-        ...(input.attachments && input.attachments.length > 0
-          ? { attachments: input.attachments as never }
-          : {}),
-      },
+    return await creerLigne(input, null);
+  } catch {
+    return null;
+  }
+}
+
+async function creerLigne(input: EmailAGarer, jobId: string | null): Promise<string> {
+  const ligne = await prisma.emailOutbox.create({
+    data: {
+      template: input.template,
+      recipient: input.recipient,
+      locale: input.locale,
+      payload: input.payload as never,
+      sujet: input.sujet.slice(0, 300),
+      statut: "a_valider",
+      ...(input.clientId ? { clientId: input.clientId } : {}),
+      ...(input.entityType ? { entityType: input.entityType } : {}),
+      ...(input.entityId ? { entityId: input.entityId } : {}),
+      ...(input.attachments && input.attachments.length > 0
+        ? { attachments: input.attachments as never }
+        : {}),
+      ...(jobId ? { jobId } : {}),
+    },
+    select: { id: true },
+  });
+  return ligne.id;
+}
+
+/**
+ * CAMP-2 — un envoi de cette clé a-t-il déjà été garé (quel que soit son statut :
+ * en attente, approuvé, refusé, envoyé) ? Lu par le moteur de campagnes avec le
+ * journal. `null` : on ne sait pas (base muette, colonne pas encore posée) —
+ * l'appelant ne relance pas.
+ */
+export async function jobIdDejaGare(jobId: string): Promise<boolean | null> {
+  if (estStub()) return null;
+  try {
+    const ligne = await prisma.emailOutbox.findFirst({
+      where: { jobId: jobId.slice(0, 200) },
       select: { id: true },
     });
-    return ligne.id;
+    return ligne !== null;
   } catch {
     return null;
   }
