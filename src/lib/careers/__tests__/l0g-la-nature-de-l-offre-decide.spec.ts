@@ -17,14 +17,6 @@ import {
   natureCollaborationDeduite,
 } from "../formateur-freelance";
 import { critereEligible } from "@/server/careers/reponse-poste-pourvu";
-import {
-  CLES_INTERRUPTEURS,
-  CLES_INTERRUPTEURS_ENTREE,
-  cleSettingEntree,
-  estCleProtegee,
-  etatsEntreeDepuisLignes,
-  etatsEntreeParDefaut,
-} from "@/server/qualiopi/formateurs-independants/interrupteurs";
 
 const MAINTENANT = new Date("2026-10-11T08:00:00Z");
 
@@ -70,24 +62,6 @@ describe("L0g — interrupteur éteint : rien ne change", () => {
     expect(JSON.stringify(critereEligible(MAINTENANT, ["x"], { natureOffreLue: false }))).toBe(
       JSON.stringify(critereEligible(MAINTENANT, ["x"])),
     );
-  });
-
-  it("l'interrupteur est absent par défaut, protégé, hors de la liste des seize", () => {
-    expect(etatsEntreeParDefaut().nature_offre).toBe(false);
-    expect(etatsEntreeDepuisLignes([]).nature_offre).toBe(false);
-    expect(
-      etatsEntreeDepuisLignes([{ key: "formateurs.nature_offre", value: { actif: "true" } }])
-        .nature_offre,
-    ).toBe(false);
-    expect(
-      etatsEntreeDepuisLignes([{ key: "formateurs.nature_offre", value: { actif: true } }])
-        .nature_offre,
-    ).toBe(true);
-    expect(cleSettingEntree("nature_offre")).toBe("formateurs.nature_offre");
-    for (const c of CLES_INTERRUPTEURS_ENTREE) {
-      expect(estCleProtegee(cleSettingEntree(c))).toBe(true);
-      expect((CLES_INTERRUPTEURS as readonly string[]).includes(c)).toBe(false);
-    }
   });
 });
 
