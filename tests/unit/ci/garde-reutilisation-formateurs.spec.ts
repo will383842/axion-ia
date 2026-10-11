@@ -61,7 +61,7 @@ interface Regle {
 }
 
 const FONCTIONS_A_REUTILISER: Readonly<Record<string, string>> = {
-  ibanValide: "src/features/apporteurs-reseau/regles-dossier.ts (à extraire en module commun)",
+  ibanValide: "src/lib/iban.ts",
   jugerAdmission: "src/features/apporteurs-reseau/regles.ts (à extraire en module commun)",
   estReponseAutomatique: "src/lib/commercial-application/reponse-entrante.ts",
   normaliserNom: "src/server/qualiopi/crm/normaliser-nom.ts",
@@ -79,7 +79,7 @@ const REGLES: ReadonlyArray<Regle> = [
     id: "registre",
     motif: /recherche-entreprises\.api\.gouv\.fr/g,
     message: () =>
-      "réutilisez le client du registre (src/features/apporteurs-reseau/annuaire.ts ou son module commun) au lieu de recréer un appel à recherche-entreprises",
+      "réutilisez le client du registre (src/server/registre-entreprises/annuaire.ts) au lieu de recréer un appel à recherche-entreprises",
   },
   {
     id: "nodemailer",
@@ -214,9 +214,10 @@ describe("⛔ formateurs indépendants : ne rien recréer (ADR 0066, lot X3)", (
   it("témoin : chaque détecteur reconnaît l'original dans son module de référence", () => {
     const references: ReadonlyArray<[string, string]> = [
       ["hmac", "src/lib/security/lien-signe.ts"],
-      ["registre", "src/features/apporteurs-reseau/annuaire.ts"],
+      // FAC-5 : le client du registre et l'IBAN vivent dans leurs modules communs.
+      ["registre", "src/server/registre-entreprises/annuaire.ts"],
       ["queue", "src/server/queue/queues.ts"],
-      ["fonction", "src/features/apporteurs-reseau/regles-dossier.ts"],
+      ["fonction", "src/lib/iban.ts"],
       ["fonction", "src/features/apporteurs-reseau/regles.ts"],
       ["fonction", "src/lib/commercial-application/reponse-entrante.ts"],
       ["fonction", "src/server/qualiopi/crm/normaliser-nom.ts"],
@@ -295,7 +296,7 @@ describe("test du test : une violation fait échouer la fonction de contrôle", 
     ]);
     for (const f of fautes) expect(f).toMatch(/réutilisez .+ au lieu d/);
     expect(fautes[0]).toContain("src/lib/security/lien-signe.ts");
-    expect(fautes[1]).toContain("src/features/apporteurs-reseau/annuaire.ts");
+    expect(fautes[1]).toContain("src/server/registre-entreprises/annuaire.ts");
     expect(fautes[11]).toContain("src/lib/pii-crypto.ts");
     expect(fautes[12]).toContain("src/app/formateur/dossier/page.tsx:1");
   });

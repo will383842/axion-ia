@@ -301,7 +301,8 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   choix_suivants: [exige("textes_valides")],
   passage_paiement: [],
   communes_geo_cron: [],
-  proches_bloc: [],
+  // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
+  proches_bloc: [exige("communes_geo_cron")],
 };
 
 /**
@@ -409,6 +410,26 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.affectation_sure",
   },
+  // Lot S5 — la lettre de mission v2 d'une page (texte arrêté par Will). Coupé :
+  // la console émet la lettre v1, exactement comme avant S5.
+  lettre_v2: {
+    ...envoi(
+      "Lettre de mission v2",
+      "La console émet la lettre d'une page pour un formateur indépendant (contrat-cadre v3 signé, accord donné) ; une seule lettre vivante par mission. À n'allumer qu'une fois le contrat-cadre v3 en service : avant, aucune lettre ne peut partir.",
+    ),
+    cle: "formateurs.lettre_v2",
+  },
+  // Lot L3 — la garde de mission APPLIQUÉE aux portes (affectation, création,
+  // report, proposition, acceptation, renvoi, accord hors outil). Coupée : les
+  // portes se comportent exactement comme avant L3. Allumée : le niveau de
+  // « Garde de mission » s'applique (« avertir » pour l'ancien stock seulement).
+  garde_mission_portes: {
+    ...envoi(
+      "Garde de mission aux portes",
+      "Un formateur indépendant sans contrat-cadre en vigueur, contrôle du registre récent, numéro de déclaration ou attestation URSSAF valable ne reçoit plus de mission.",
+    ),
+    cle: "formateurs.garde_mission_portes",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -431,6 +452,9 @@ export const PREALABLES_SIGNATURE: Readonly<
   suite_contrat_cadre: [],
   exemplaire_captation: [],
   affectation_sure: [],
+  lettre_v2: [],
+  // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
+  garde_mission_portes: [exige("controle_registre_periodique")],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

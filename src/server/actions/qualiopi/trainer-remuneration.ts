@@ -132,6 +132,14 @@ const STATUTS = [
 const transitionSchema = z.object({
   id: uuid,
   to: z.enum(STATUTS),
+  /**
+   * Paiement par mission (L12d) : l'empreinte de l'IBAN AFFICHÉE à l'opérateur.
+   * Relue au clic et comparée : un compte changé entre-temps refuse le virement.
+   */
+  ibanEmpreinteAffichee: z
+    .string()
+    .regex(/^[0-9a-f]{64}$/)
+    .optional(),
   // Renseignés au passage en `facture_recue`.
   numeroFacture: z.string().max(60).optional(),
   dateFacture: z
@@ -209,9 +217,13 @@ export async function transitionStatementAction(
       // juste en dessous).
       contesteeAt: true,
       contestationMotif: true,
+      // Paiement par mission (L12c/L12d) : échéance fixe et gardes propres.
+      origine: true,
+      echeanceAt: true,
     },
   });
   if (releve === null) return { error: "Relevé introuvable." };
+  const releveDeMission = releve.origine === "passage_mission";
 
   const from = releve.statut;
   if (!transitionAutorisee(from, v.to)) {
@@ -297,7 +309,46 @@ export async function transitionStatementAction(
   }
 
   const maintenant = new Date();
+  /**
+   * Paiement par mission (L12d) — vigilance à la date de la mission, IBAN en
+   * attente ou trop récent, empreinte relue au clic. Les relevés MENSUELS ne
+   * passent jamais ici : leur chemin est inchangé.
+   */
+  let preuveIban: { ibanFin4: string; ibanEmpreinte: string } | null = null;
+  if (v.to === "paye" && releveDeMission) {
+    if (releve.echeanceAt == null)
+      return { error: "Relevé de mission sans échéance : paiement refusé." };
+    const { contexteVirementMission } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base");
+    const { LIBELLE_SUSPENSION_VIREMENT } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission");
+    let c: Awaited<ReturnType<typeof contexteVirementMission>>;
+    try {
+      c = await contexteVirementMission(
+        prisma,
+        {
+          trainerId: releve.trainerId,
+          echeanceAt: releve.echeanceAt,
+          totalTtcCents: releve.totalTtcCents,
+        },
+        v.ibanEmpreinteAffichee ?? null,
+        maintenant,
+      );
+    } catch {
+      // Clé de chiffrement absente ou IBAN illisible : jamais d'erreur brute.
+      return { error: "Déchiffrement de l'IBAN impossible : paiement refusé." };
+    }
+    if (!c.verdict.autorise || c.preuve === null) {
+      return {
+        error:
+          c.verdict.motifs.map((m) => LIBELLE_SUSPENSION_VIREMENT[m]).join(" ") ||
+          "Paiement refusé.",
+      };
+    }
+    preuveIban = c.preuve;
+  }
   let aChange = false;
+  let ibanChange = false;
   try {
     await prisma.$transaction(async (tx) => {
       /**
@@ -321,6 +372,18 @@ export async function transitionStatementAction(
        * « payé », annulation concurrente, autofacture émise — et appliquer
        * notre transition reviendrait à décider sur un état périmé.
        */
+      // Paiement par mission : l'empreinte de l'IBAN est RELUE sous verrou ; un
+      // compte changé entre la garde et l'écriture annule le paiement.
+      if (preuveIban !== null) {
+        const t = await tx.trainer.findUnique({
+          where: { id: releve.trainerId },
+          select: { ibanEmpreinte: true },
+        });
+        if (t?.ibanEmpreinte !== preuveIban.ibanEmpreinte) {
+          ibanChange = true;
+          return;
+        }
+      }
       const ecrit = await tx.trainerStatement.updateMany({
         where: {
           id: v.id,
@@ -348,7 +411,8 @@ export async function transitionStatementAction(
            * rattrapé par le repli de `echeanceEffective` et par
            * `pnpm backfill:echeance-honoraires`.
            */
-          ...(v.dateFacture !== undefined
+          // Un relevé de MISSION garde son échéance fixe (dernière journée + 30 j).
+          ...(v.dateFacture !== undefined && !releveDeMission
             ? { echeanceAt: calculerEcheanceHonoraires(v.dateFacture) }
             : {}),
           ...(v.montantFactureTtcEuros !== undefined
@@ -362,6 +426,8 @@ export async function transitionStatementAction(
                 payeAt: maintenant,
                 moyenPaiement: v.moyenPaiement ?? null,
                 referenceVirement: v.referenceVirement ?? null,
+                // Preuve du compte payé, lue au clic (relevé de mission seulement).
+                ...(preuveIban ?? {}),
               }
             : {}),
         },
@@ -398,6 +464,12 @@ export async function transitionStatementAction(
       return { error: MESSAGE_CALCUL_EN_COURS };
     }
     return { error: "Erreur lors du changement de statut." };
+  }
+  if (ibanChange) {
+    return {
+      error:
+        "Le compte bancaire du formateur a changé pendant l'opération : rechargez la page et vérifiez l'IBAN avant de payer.",
+    };
   }
   if (aChange) {
     return {

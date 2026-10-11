@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { proposerMissionFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
   detecterIndisponibiliteFormateur,
@@ -294,6 +295,8 @@ export async function createSessionAction(
   let tarifFormateurCents: number | null = null;
   /** Lot S2 (N5) — double emploi d'un salarié : signalé, jamais bloquant. */
   let doubleEmploiSignale: string | null = null;
+  /** Lot L3 — raisons de la garde de mission dites sans bloquer (« avertir »). */
+  let avertissementsGarde: ReadonlyArray<string> = [];
   if (v.trainerId !== undefined) {
     let trainer:
       | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
@@ -332,6 +335,14 @@ export async function createSessionAction(
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
+
+    // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
+    // coupé : aucun effet). Avant la création, donc avant toute écriture.
+    const garde = await controlerGardeMission(v.trainerId);
+    if (garde.refus.length > 0) {
+      return { error: `Assignation refusée : ${garde.refus.join(" ")}` };
+    }
+    avertissementsGarde = garde.avertissements;
 
     // 🔴 N5 (lot S2) — la création était la seule porte sans contrôle de double
     // emploi : un formateur pouvait être posé sur deux formations le même jour.
@@ -595,6 +606,7 @@ export async function createSessionAction(
   // travailler finit par être retirée.
   const avertissements = await avertissementsAffectation(v.trainerId ?? null);
   if (doubleEmploiSignale !== null) avertissements.push(doubleEmploiSignale);
+  avertissements.push(...avertissementsGarde);
 
   // 2026-09-03 — seconde voie d'affectation : la mission est PROPOSÉE au
   // formateur ici aussi, sinon une session créée avec son formateur ne lui

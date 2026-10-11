@@ -490,3 +490,15 @@ export async function basculerFormateursAffectationSureAction(
 ): Promise<EtatBascule> {
   return basculerSignature("affectation_sure", formData);
 }
+export async function basculerFormateursLettreV2Action(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("lettre_v2", formData);
+}
+export async function basculerFormateursGardeMissionPortesAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("garde_mission_portes", formData);
+}
