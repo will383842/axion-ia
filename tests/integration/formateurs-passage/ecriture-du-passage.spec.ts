@@ -138,6 +138,31 @@ describe("écriture d'un mois du paiement par mission (vraie base)", () => {
     });
   });
 
+  it("des demi-journées signées après l'écriture : « complément à traiter », jamais « déjà écrit » en silence", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      const { trainerId, sessionId } = await fixture(tx);
+      expect(await ecrireMoisDansTransaction(tx, mois(trainerId, sessionId), MAINTENANT)).toBe(
+        "ecrit",
+      );
+      const [m2] = parMoisCivil(
+        demiJourneesSignees([
+          { jour: "2031-12-03", demiJournee: "journee" },
+          { jour: "2031-12-04", demiJournee: "matin" },
+        ]),
+      );
+      const plus = {
+        ...mois(trainerId, sessionId),
+        releve: calculerReleveDuMois(m2!, {
+          tarifJourneeHtCents: 35_000,
+          forfaitDeplacementParJourHtCents: null,
+          regimeTva: "franchise_293b",
+        }),
+      };
+      expect(await ecrireMoisDansTransaction(tx, plus, MAINTENANT)).toBe("complement_a_traiter");
+      expect(await tx.trainerStatement.count({ where: { trainerId } })).toBe(1);
+    });
+  });
+
   it("une session revendiquée d'abord par le relevé mensuel : abstention, rien n'est écrit", async () => {
     await dansTransactionAnnulee(async (tx) => {
       const { trainerId, sessionId } = await fixture(tx);

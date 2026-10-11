@@ -71,7 +71,11 @@ export interface MoisAEcrire {
   readonly sansEcart: boolean;
 }
 
-export type MotifAnomaliePassage = "conditions_absentes" | "conditions_hors_plafond";
+export type MotifAnomaliePassage =
+  | "conditions_absentes"
+  | "conditions_hors_plafond"
+  /** Signatures sur un mois sans aucune demi-journée prévue pour ce formateur : jamais payé seul. */
+  | "prevu_absent";
 
 export interface Plan {
   readonly aEcrire: ReadonlyArray<MoisAEcrire>;
@@ -79,7 +83,7 @@ export interface Plan {
     trainerId: string;
     sessionId: string;
     mois: string;
-    raison: RaisonNonPayable;
+    raison: RaisonNonPayable | "aucune_signature_mois_passe";
     manquantes: number;
   }>;
   readonly anomalies: ReadonlyArray<{
@@ -97,6 +101,8 @@ export function planifierPassage(
   candidats: ReadonlyArray<CandidatMission>,
   dateBascule: string,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
+  /** Pour signaler les mois prévus, passés, sans aucune signature (relances). */
+  aujourdhui?: string,
 ): Plan {
   const aEcrire: MoisAEcrire[] = [];
   const enAttente: Plan["enAttente"][number][] = [];
@@ -122,8 +128,27 @@ export function planifierPassage(
     const conditions = c.conditions;
     const prevues = demiJourneesPrevues(c.journeesPrevues, bornes);
     const prevuesParMois = new Map(parMoisCivil(prevues).map((m) => [m.mois, m] as const));
+    const moisSignes = new Set(parMoisCivil(signees).map((m) => m.mois));
+    if (aujourdhui) {
+      for (const pm of prevuesParMois.values()) {
+        if (!moisSignes.has(pm.mois) && pm.derniereJournee < aujourdhui)
+          enAttente.push({
+            trainerId: c.trainerId,
+            sessionId: c.sessionId,
+            mois: pm.mois,
+            raison: "aucune_signature_mois_passe",
+            manquantes: pm.demiJournees,
+          });
+      }
+    }
     for (const mois of parMoisCivil(signees)) {
       const prevuDuMois: MoisAnime | undefined = prevuesParMois.get(mois.mois);
+      if (!prevuDuMois) {
+        // Aucune demi-journée prévue pour lui ce mois-là : impossible de savoir si
+        // le mois est complet. Jamais payé seul (sinon le reste du mois serait perdu).
+        anomalies.push({ trainerId: c.trainerId, sessionId: c.sessionId, motif: "prevu_absent" });
+        continue;
+      }
       const manquantes = prevuDuMois
         ? demiJourneesSansSignature(prevuDuMois.detail, mois.detail).length
         : 0;
@@ -159,7 +184,7 @@ export function planifierPassage(
         releve,
         regimeTva: conditions.regimeTva,
         tarifJourneeHtCents: conditions.tarifJourneeHtCents,
-        sansEcart: prevuDuMois ? releveSansEcart(releve, prevuDuMois, conditions, p) : false,
+        sansEcart: releveSansEcart(releve, prevuDuMois, conditions, p),
       });
     }
   }
@@ -168,7 +193,12 @@ export function planifierPassage(
 
 /** Ce que l'écriture d'un mois a donné. */
 export type IssueEcriture =
-  "ecrit" | "deja_ecrit" | "revendique_par_le_mensuel" | "conflit_ligne_mensuelle";
+  | "ecrit"
+  | "deja_ecrit"
+  | "revendique_par_le_mensuel"
+  | "conflit_ligne_mensuelle"
+  /** Relevé déjà écrit, mais des demi-journées signées en plus : à corriger par avoir. */
+  | "complement_a_traiter";
 
 export interface DepsPassage {
   dateBascule(): Promise<string | null>;
@@ -186,6 +216,8 @@ export type BilanPassage =
       ecrits: number;
       dejaEcrits: number;
       conflits: number;
+      complements: number;
+      erreurs: number;
       enAttente: number;
       anomalies: Plan["anomalies"];
     };
@@ -200,14 +232,24 @@ export async function passerPaiementsMission(
     // La bascule n'a d'effet qu'à partir de sa date (un 1er du mois).
     if (jourParis(maintenant) < d) return { etat: "coupe" };
     if (!(await deps.uniqueHistoriqueRetire())) return { etat: "bloque_contract" };
-    const plan = planifierPassage(await deps.candidats(d), d);
+    const plan = planifierPassage(await deps.candidats(d), d, undefined, jourParis(maintenant));
     let ecrits = 0;
     let dejaEcrits = 0;
     let conflits = 0;
+    let complements = 0;
+    let erreurs = 0;
     for (const m of plan.aEcrire) {
-      const issue = await deps.ecrireMois(m, maintenant);
+      // Une erreur sur UN mois n'arrête pas les autres : elle est comptée.
+      let issue: IssueEcriture;
+      try {
+        issue = await deps.ecrireMois(m, maintenant);
+      } catch {
+        erreurs += 1;
+        continue;
+      }
       if (issue === "ecrit") ecrits += 1;
       else if (issue === "deja_ecrit") dejaEcrits += 1;
+      else if (issue === "complement_a_traiter") complements += 1;
       else conflits += 1;
     }
     return {
@@ -215,6 +257,8 @@ export async function passerPaiementsMission(
       ecrits,
       dejaEcrits,
       conflits,
+      complements,
+      erreurs,
       enAttente: plan.enAttente.length,
       anomalies: plan.anomalies,
     };

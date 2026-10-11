@@ -57,7 +57,10 @@ import {
   cleRevendication,
   filtrerPrestationsApresBascule,
 } from "@/server/qualiopi/formateurs-independants/paiement/apres-bascule";
-import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import {
+  lireDateBascule,
+  premiereJourneeSession,
+} from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
 import {
   ATTENTE_CONNEXION_RUN_MS,
   DELAI_TRANSACTION_RUN_MS,
@@ -297,16 +300,24 @@ async function apresBascule(
   const dateBascule = await lireDateBascule(prisma);
   if (dateBascule === null) return prestations;
   const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
-  const mensuelles = sessionIds.length
-    ? await prisma.revendicationPaiement.findMany({
-        where: { sessionId: { in: sessionIds }, regime: "releve_mensuel" },
-        select: { trainerId: true, sessionId: true },
-      })
-    : [];
+  if (sessionIds.length === 0) return prestations;
+  const [revendications, sessions] = await Promise.all([
+    prisma.revendicationPaiement.findMany({
+      where: { sessionId: { in: sessionIds } },
+      select: { trainerId: true, sessionId: true, regime: true },
+    }),
+    prisma.trainingSession.findMany({
+      where: { id: { in: sessionIds } },
+      select: { id: true, dateDebut: true, jours: { select: { date: true } } },
+    }),
+  ]);
   return filtrerPrestationsApresBascule(prestations, {
     dateBascule,
     statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
-    revendiqueesMensuel: new Set(mensuelles.map((r) => cleRevendication(r.trainerId, r.sessionId))),
+    revendications: new Map(
+      revendications.map((r) => [cleRevendication(r.trainerId, r.sessionId), r.regime]),
+    ),
+    premiereJourneeParSession: new Map(sessions.map((s) => [s.id, premiereJourneeSession(s)])),
   });
 }
 
@@ -398,7 +409,11 @@ export async function runRemunerationMensuelle(
       // fantômes, et un relevé qui les totalise.
       const dejaPresents = await tx.trainerFeeLine.findMany({
         // Les lignes du paiement par mission ne sont jamais celles du run.
-        where: { periodeYear: periode.year, periodeMonth: periode.month, origine: "releve_mensuel" },
+        where: {
+          periodeYear: periode.year,
+          periodeMonth: periode.month,
+          origine: "releve_mensuel",
+        },
         select: { trainerId: true },
         distinct: ["trainerId"],
       });

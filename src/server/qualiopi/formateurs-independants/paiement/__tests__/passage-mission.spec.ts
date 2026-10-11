@@ -126,9 +126,42 @@ describe("planifierPassage (pur)", () => {
     expect(p.enAttente.map((e) => e.raison)).toEqual(["condition_financeur_en_attente"]);
   });
 
-  it("un formateur retiré est payé pour SES demi-journées signées, même sans journée prévue", () => {
+  it("signatures sur un mois SANS journée prévue pour lui : jamais payé seul (le reste du mois serait perdu)", () => {
     const p = planifierPassage([candidat({ journeesPrevues: [] })], "2026-12-01");
-    expect(p.aEcrire.map((m) => [m.releve.totalHtCents, m.sansEcart])).toEqual([[35_000, false]]);
+    expect(p.aEcrire).toEqual([]);
+    expect(p.anomalies).toEqual([{ trainerId: "t1", sessionId: "s1", motif: "prevu_absent" }]);
+  });
+
+  it("une demi-journée signée sur quatre prévues : le mois attend, rien n'est écrit", () => {
+    const p = planifierPassage(
+      [
+        candidat({
+          contresignatures: [{ jour: "2026-12-03", demiJournee: "matin" }],
+          journeesPrevues: [JOUR("2026-12-03"), JOUR("2026-12-04")],
+        }),
+      ],
+      "2026-12-01",
+    );
+    expect(p.aEcrire).toEqual([]);
+    expect(p.enAttente.map((e) => e.manquantes)).toEqual([3]);
+  });
+
+  it("un mois prévu, passé, sans AUCUNE signature est signalé (relances)", () => {
+    const p = planifierPassage(
+      [candidat({ journeesPrevues: [JOUR("2026-12-03"), JOUR("2027-01-07")] })],
+      "2026-12-01",
+      undefined,
+      "2027-01-10",
+    );
+    expect(p.enAttente).toEqual([
+      {
+        trainerId: "t1",
+        sessionId: "s1",
+        mois: "2027-01",
+        raison: "aucune_signature_mois_passe",
+        manquantes: 2,
+      },
+    ]);
   });
 });
 
@@ -178,6 +211,27 @@ describe("passerPaiementsMission (éteint par défaut)", () => {
       ecrits: 1,
       dejaEcrits: 1,
       conflits: 1,
+      complements: 0,
+      erreurs: 0,
+    });
+    // Une erreur sur un mois n'arrête pas les autres ; un complément est compté à part.
+    let j = 0;
+    const melange = deps({
+      candidats: vi.fn(async () => [
+        candidat(),
+        candidat({ sessionId: "s2" }),
+        candidat({ sessionId: "s3" }),
+      ]),
+      ecrireMois: vi.fn(async () => {
+        j += 1;
+        if (j === 1) throw new Error("verrou");
+        return j === 2 ? ("complement_a_traiter" as const) : ("ecrit" as const);
+      }),
+    });
+    expect(await passerPaiementsMission(MAINTENANT, melange)).toMatchObject({
+      ecrits: 1,
+      complements: 1,
+      erreurs: 1,
     });
     const panne = deps({ candidats: vi.fn(async () => Promise.reject(new Error("base"))) });
     expect(await passerPaiementsMission(MAINTENANT, panne)).toEqual({
@@ -203,21 +257,49 @@ describe("le run mensuel après la bascule", () => {
       filtrerPrestationsApresBascule(prestations, {
         dateBascule: null,
         statutParTrainer,
-        revendiqueesMensuel: new Set(),
+        revendications: new Map(),
+        premiereJourneeParSession: new Map(),
       }),
     ).toEqual(prestations);
   });
 
-  it("après la bascule : l'indépendant ne reste que sur ses sessions revendiquées par le mensuel ; salariés et coachings inchangés", () => {
-    const r = filtrerPrestationsApresBascule(prestations, {
-      dateBascule: "2026-12-01",
-      statutParTrainer,
-      revendiqueesMensuel: new Set(["ind|s2"]),
-    });
+  it("après la bascule : seul ce qui appartient au paiement par mission est écarté ; salariés et coachings inchangés", () => {
+    const r = filtrerPrestationsApresBascule(
+      [...prestations, { sessionId: "s3", affectations: [{ trainerId: "ind" }] }],
+      {
+        dateBascule: "2026-12-01",
+        statutParTrainer,
+        // s1 : revendiquée par mission → écartée. s2 : revendiquée au mensuel → gardée.
+        // s3 : revendiquée par personne mais commencée AVANT la bascule → gardée (jamais payée par personne).
+        revendications: new Map([
+          ["ind|s1", "par_mission"],
+          ["ind|s2", "releve_mensuel"],
+        ]),
+        premiereJourneeParSession: new Map([
+          ["s1", "2026-12-03"],
+          ["s2", "2026-11-28"],
+          ["s3", "2026-11-20"],
+        ]),
+      },
+    );
     expect(r.map((p) => [p.sessionId, p.affectations.map((a) => a.trainerId)])).toEqual([
       ["s1", ["sal"]],
       ["s2", ["ind"]],
       [null, ["ind"]],
+      ["s3", ["ind"]],
     ]);
+  });
+
+  it("une session d'après la bascule revendiquée par personne : écartée (le passage la paiera)", () => {
+    const r = filtrerPrestationsApresBascule(
+      [{ sessionId: "s4", affectations: [{ trainerId: "ind" }] }],
+      {
+        dateBascule: "2026-12-01",
+        statutParTrainer,
+        revendications: new Map(),
+        premiereJourneeParSession: new Map([["s4", "2026-12-01"]]),
+      },
+    );
+    expect(r[0]!.affectations).toEqual([]);
   });
 });

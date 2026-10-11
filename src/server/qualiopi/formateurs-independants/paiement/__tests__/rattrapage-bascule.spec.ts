@@ -77,7 +77,8 @@ describe("S19 / S19b de bout en bout (pur)", () => {
       {
         dateBascule: D,
         statutParTrainer: new Map([["t2", "sous_traitant"]]),
-        revendiqueesMensuel: new Set([cleRevendication("t2", "s19b")]),
+        revendications: new Map([[cleRevendication("t2", "s19b"), "releve_mensuel" as const]]),
+        premiereJourneeParSession: new Map([["s19b", "2026-09-22"]]),
       },
     );
     expect(run[0]!.affectations).toEqual([{ trainerId: "t2" }]);

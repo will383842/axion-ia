@@ -10,7 +10,20 @@
  * un double paiement. Mieux vaut un run qui échoue qu'un run qui paie deux fois.
  */
 
+import { jourDeColonneDate, jourParis } from "../argent/dates";
 import { cleSetting, lireValeur } from "../interrupteurs";
+
+/**
+ * Première journée d'une session (jour civil de Paris) : la première `SessionJour`,
+ * à défaut le jour de `dateDebut`. SEUL calcul, partagé par le passage et le run.
+ */
+export function premiereJourneeSession(s: {
+  readonly dateDebut: Date;
+  readonly jours: ReadonlyArray<{ readonly date: Date }>;
+}): string {
+  const jours = s.jours.map((j) => jourDeColonneDate(j.date)).sort();
+  return jours[0] ?? jourParis(s.dateDebut);
+}
 
 /** Le strict nécessaire d'un client Prisma (ou d'une transaction). */
 export interface LecteurPassage {

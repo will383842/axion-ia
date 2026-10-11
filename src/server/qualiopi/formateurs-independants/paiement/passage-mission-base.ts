@@ -12,7 +12,7 @@ import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verro
 import { journaliser } from "@/server/journal/journaliser";
 
 import { jourDeColonneDate, jourParis } from "../argent/dates";
-import { lireDateBascule, uniqueHistoriqueRetire } from "./lecture-passage";
+import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
 
 /** Statuts d'une sollicitation dont les conditions financières font foi. */
@@ -77,8 +77,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
 
   const out: CandidatMission[] = [];
   for (const s of sessions) {
-    const jours = s.jours.map((j) => jourDeColonneDate(j.date)).sort();
-    const premiereJournee = jours[0] ?? jourParis(s.dateDebut);
+    const premiereJournee = premiereJourneeSession(s);
     const parFormateur = new Map<string, typeof signatures>();
     for (const sig of signatures) {
       if (sig.sessionId !== s.id) continue;
@@ -87,9 +86,9 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     for (const [trainerId, sigs] of parFormateur) {
       // La plus récente des sollicitations acceptées, à prix figé.
       const m = missions.find((x) => x.sessionId === s.id && x.trainerId === trainerId);
-      const principal = s.sessionFormateurs.some(
-        (sf) => sf.trainerId === trainerId && sf.role === "principal",
-      );
+      // Affecté à la session (principal ou co-formateur) : les journées sans
+      // formateur désigné lui reviennent aussi.
+      const affecte = s.sessionFormateurs.some((sf) => sf.trainerId === trainerId);
       out.push({
         trainerId,
         sessionId: s.id,
@@ -107,7 +106,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
           demiJournee: x.demiJournee,
         })),
         journeesPrevues: s.jours
-          .filter((j) => j.trainerId === trainerId || (j.trainerId === null && principal))
+          .filter((j) => j.trainerId === trainerId || (j.trainerId === null && affecte))
           .map((j) => ({
             jour: jourDeColonneDate(j.date),
             heureDebut: j.heureDebut,
@@ -186,7 +185,16 @@ export async function ecrireMoisDansTransaction(
     },
     select: { id: true },
   });
-  if (existant) return "deja_ecrit";
+  if (existant) {
+    // Des demi-journées signées APRÈS l'écriture du relevé ne sont pas payées en
+    // silence : on le signale (complément à traiter par avoir et réémission).
+    const ecrites = await tx.trainerFeeLine.aggregate({
+      where: { statementId: existant.id, objet: "animation", statut: { not: "annule" } },
+      _sum: { demiJournees: true },
+    });
+    const aPayer = m.releve.lignes.find((l) => l.objet === "animation")?.demiJournees ?? 0;
+    return aPayer > (ecrites._sum.demiJournees ?? 0) ? "complement_a_traiter" : "deja_ecrit";
+  }
 
   const releve = await tx.trainerStatement.create({
     data: {

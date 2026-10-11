@@ -2609,7 +2609,8 @@ async function handlePaiementMission(): Promise<void> {
     if (b.etat === "fait") {
       console.log(
         `${p} ${b.ecrits} relevé(s) écrit(s), ${b.dejaEcrits} déjà écrit(s), ` +
-          `${b.conflits} conflit(s), ${b.enAttente} mois en attente, ${b.anomalies.length} anomalie(s)`,
+          `${b.conflits} conflit(s), ${b.complements} complément(s), ${b.erreurs} erreur(s), ` +
+          `${b.enAttente} mois en attente, ${b.anomalies.length} anomalie(s)`,
       );
     } else if (b.etat === "echec") {
       console.error(`${p} échec : ${b.message}`);
