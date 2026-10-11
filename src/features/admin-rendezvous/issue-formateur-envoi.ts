@@ -104,11 +104,18 @@ export async function preparerIssueFormateur(input: {
       eventTypeName: true,
       typeRendezVous: true,
       linkedJobApplicationId: true,
+      status: true,
+      startTime: true,
     },
   });
   if (!rdv) return { ok: false, message: "Rendez-vous introuvable." };
   if (!estEchangeFormateur(rdv)) {
     return { ok: false, message: "Ce rendez-vous n'est pas un échange formateur." };
+  }
+  // Le point se fait une fois l'échange commencé, jamais sur un échange annulé — relu ici,
+  // pas seulement par la page : un formulaire forgé ne note pas « Absent » à l'avance.
+  if (rdv.status === "canceled" || !rdv.startTime || rdv.startTime > new Date()) {
+    return { ok: false, message: "L'issue se note après l'échange, jamais sur un échange annulé." };
   }
   if (!rdv.linkedJobApplicationId) {
     return {

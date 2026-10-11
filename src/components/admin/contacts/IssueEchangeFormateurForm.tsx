@@ -26,6 +26,8 @@ export interface IssueEchangeFormateurFormProps {
   readonly calendlyEventId: string;
   /** Administrateur : « Retenu » ouvre la fiche formateur. Masqué sinon ; le serveur refuse aussi. */
   readonly peutRetenir?: boolean;
+  /** « Non retenu » et « Absent » : `habiliter_formateur`. Masqués sinon ; le serveur refuse aussi. */
+  readonly peutDecider?: boolean;
 }
 
 const ETAT_INITIAL: EtatIssueFormateur = { etat: "initial" };
@@ -42,6 +44,7 @@ const CHAMP = "flex flex-col gap-1 text-[length:var(--text-admin-sm)]";
 export function IssueEchangeFormateurForm({
   calendlyEventId,
   peutRetenir = false,
+  peutDecider = false,
 }: IssueEchangeFormateurFormProps): React.ReactElement {
   const [etat, action, enCours] = useActionState(enregistrerIssueFormateurAction, ETAT_INITIAL);
   const [choix, setChoix] = useState<IssueEchange | null>(null);
@@ -74,7 +77,11 @@ export function IssueEchangeFormateurForm({
         aria-label="Issue de l'échange"
         className="flex flex-wrap gap-[var(--space-admin-2)]"
       >
-        {ISSUES_ECHANGE.filter((i) => peutRetenir || i !== "retenu").map((i) =>
+        {ISSUES_ECHANGE.filter(
+          (i) =>
+            (peutRetenir || i !== "retenu") &&
+            (peutDecider || (i !== "non_retenu" && i !== "absent")),
+        ).map((i) =>
           i === "reporte" ? (
             <button
               key={i}

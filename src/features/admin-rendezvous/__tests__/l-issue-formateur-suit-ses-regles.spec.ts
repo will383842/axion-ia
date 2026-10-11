@@ -40,6 +40,8 @@ beforeEach(() => {
     eventTypeName: "Échange formateur indépendant (20 min)",
     typeRendezVous: "autre",
     linkedJobApplicationId: CAND,
+    status: "scheduled",
+    startTime: new Date("2026-10-01T08:00:00Z"),
   });
   findUniqueJA.mockResolvedValue({
     id: CAND,
@@ -100,12 +102,31 @@ describe("preparerIssueFormateur", () => {
     }
   });
 
+  it("échange à venir ou annulé : l'issue ne se note pas", async () => {
+    for (const r of [
+      { status: "scheduled", startTime: new Date(Date.now() + 3_600_000) },
+      { status: "canceled", startTime: new Date("2026-10-01T08:00:00Z") },
+    ]) {
+      findUniqueEvt.mockResolvedValue({
+        id: "evt_f1",
+        eventTypeName: "Échange formateur indépendant (20 min)",
+        typeRendezVous: "autre",
+        linkedJobApplicationId: CAND,
+        ...r,
+      });
+      const p = await preparerIssueFormateur({ calendlyEventId: "evt_f1", issue: "absent" });
+      expect(p.ok).toBe(false);
+    }
+  });
+
   it("sans candidature rattachée : refus, rien n'est préparé", async () => {
     findUniqueEvt.mockResolvedValue({
       id: "evt_f1",
       eventTypeName: "Échange formateur indépendant (20 min)",
       typeRendezVous: null,
       linkedJobApplicationId: null,
+      status: "scheduled",
+      startTime: new Date("2026-10-01T08:00:00Z"),
     });
     const p = await preparerIssueFormateur({ calendlyEventId: "evt_f1", issue: "absent" });
     expect(p.ok).toBe(false);
@@ -117,6 +138,8 @@ describe("preparerIssueFormateur", () => {
       eventTypeName: "Échange apporteur d'affaires (15 min)",
       typeRendezVous: "apporteur",
       linkedJobApplicationId: CAND,
+      status: "scheduled",
+      startTime: new Date("2026-10-01T08:00:00Z"),
     });
     const p = await preparerIssueFormateur({ calendlyEventId: "evt_a", issue: "absent" });
     expect(p.ok).toBe(false);

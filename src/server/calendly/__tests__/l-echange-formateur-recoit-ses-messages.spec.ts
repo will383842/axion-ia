@@ -15,6 +15,8 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v.replace(/^enc:/, "") }));
+
 import {
   PASSAGES_FORMATEUR,
   envoyerMessagesEchangeFormateur,
@@ -30,6 +32,7 @@ const RDV = {
   startTime: new Date("2026-10-21T08:00:00.000Z"),
   location: "https://meet.example/abc",
   linkedJobApplicationId: "0b7c3a52-4a0e-4d4c-9f43-2f6a7d1c9e10",
+  linkedJobApplication: { email: "enc:camille@candidature.example" },
 };
 
 beforeEach(() => {
@@ -69,6 +72,8 @@ describe("interrupteur allumé", () => {
     const e = envoyer.mock.calls[0]![0];
     expect(e.gabarit).toBe("formateur-echange-confirme");
     expect(e.entityType).toBe("JobApplication");
+    // L'adresse de la candidature, jamais `inviteeEmail` (colonne qu'une route publique écrit).
+    expect(e.destinataire).toBe("camille@candidature.example");
     expect(e.entityId).toBe(RDV.linkedJobApplicationId);
     expect(e.jobId).toBe("formateur-echange-confirmation-evt_f1");
     expect(e.jobId.startsWith("fi-")).toBe(false);
@@ -131,6 +136,24 @@ describe("interrupteur allumé", () => {
       vi.fn().mockResolvedValue("retenu"),
     );
     expect(b.envoyes).toBe(0);
+    expect(update).toHaveBeenCalledTimes(1);
+  });
+
+  it("une panne sur une ligne ne bloque pas les suivantes (aucun marqueur pour elle)", async () => {
+    findMany.mockResolvedValue([RDV, { ...RDV, id: "evt_f2" }]);
+    const envoyer = vi.fn().mockResolvedValueOnce("indisponible").mockResolvedValueOnce("envoye");
+    const b = await executerPassageFormateur(PASSAGES_FORMATEUR[0]!, MAINTENANT, envoyer);
+    expect(envoyer).toHaveBeenCalledTimes(2);
+    expect(b.envoyes).toBe(1);
+    expect(update).toHaveBeenCalledTimes(1);
+    expect(update.mock.calls[0]![0].where).toEqual({ id: "evt_f2" });
+  });
+
+  it("candidature effacée : rien ne part, marqueur posé", async () => {
+    findMany.mockResolvedValue([{ ...RDV, linkedJobApplication: { email: "enc:x@erased.local" } }]);
+    const envoyer = vi.fn();
+    await executerPassageFormateur(PASSAGES_FORMATEUR[0]!, MAINTENANT, envoyer);
+    expect(envoyer).not.toHaveBeenCalled();
     expect(update).toHaveBeenCalledTimes(1);
   });
 

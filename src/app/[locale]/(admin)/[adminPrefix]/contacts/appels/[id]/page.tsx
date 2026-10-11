@@ -247,6 +247,10 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               // Lot F-CAL-2 : interrupteur `formateurs.suivi_echange` allumé seulement.
               <IssueEchangeFormateurForm
                 calendlyEventId={event.id}
+                peutDecider={peutEngager(
+                  (session?.user as { role?: string } | undefined)?.role,
+                  "habiliter_formateur",
+                )}
                 peutRetenir={peutEngager(
                   (session?.user as { role?: string } | undefined)?.role,
                   "contresigner",
