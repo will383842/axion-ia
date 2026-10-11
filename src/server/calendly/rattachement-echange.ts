@@ -85,7 +85,10 @@ export async function rattacherEchange(
 
   const { count } = await prisma.calendlyEvent.updateMany({
     where: { id: ligne.id, linkedSubmissionId: null, linkedJobApplicationId: null },
-    data: { [adaptateur.colonne]: cible.id },
+    data:
+      adaptateur.colonne === "linkedSubmissionId"
+        ? { linkedSubmissionId: cible.id }
+        : { linkedJobApplicationId: cible.id },
   });
   if (count === 0) return { rattache: false, motif: "rattache_entre_temps" };
   return cible.parNom
