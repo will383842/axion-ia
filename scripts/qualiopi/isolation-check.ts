@@ -490,6 +490,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/formateur/echeances-formateur.spec.ts",
   "src/server/formateur/etapes-formateur.spec.ts",
   "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
+  // L16b-2 — la notice « Formateurs indépendants » dit vrai : le test lit les durées et
+  // les seuils (conservation, lien du dossier, statistiques) dans le domaine, au lieu
+  // de les recopier. Une notice ne se vérifie pas sans lire ce qu'elle décrit.
+  "src/content/__tests__/la-notice-dit-vrai-sur-les-formateurs-independants.spec.ts",
   // Compare le pied de page des e-mails aux SSOT dont il dérive — dont
   // `MENTION_NON_AGREMENT` et `NDA_NUMERO`. C'est le test qui empêche la
   // recopie : il ne peut pas vérifier la dérivation sans lire la source.
