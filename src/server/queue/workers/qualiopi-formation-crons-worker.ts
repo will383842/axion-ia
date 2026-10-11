@@ -2603,7 +2603,7 @@ async function handleCampagnesFormateurs(): Promise<void> {
     if (b.horsFenetre || b.campagnesActives === 0) return;
     const ligne =
       `[formation-crons] campagnes-formateurs: ${b.campagnesActives} campagne(s) active(s), ` +
-      `${b.envoyes} relance(s), écartées ${JSON.stringify(b.ecartes)}` +
+      `${b.envoyes} relance(s), ${b.gares} garée(s), écartées ${JSON.stringify(b.ecartes)}` +
       (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
     if (b.plafondAtteint) console.error(ligne);
     else console.log(ligne);

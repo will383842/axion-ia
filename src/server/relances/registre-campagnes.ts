@@ -30,6 +30,10 @@ export interface FaitsCampagne {
   /** Identifiant de l'ORIGINE (lien envoyé, contrat émis…) : entre dans la clé. */
   readonly origineId: string;
   readonly destinataire: string;
+  /**
+   * L'état lu. `derniereRelancePersonne` peut rester vide : le PASSAGE impose lui-même
+   * « une relance par personne et par jour » sur toutes les campagnes (journal ET corbeille).
+   */
   readonly etat: EtatCampagne;
   /** Le payload de l'e-mail (valeurs des crochets, lien). */
   readonly payload: Record<string, unknown>;

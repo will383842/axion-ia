@@ -92,6 +92,7 @@ function allumes(...cles: string[]): EtatsInterrupteurs {
 }
 
 const tentes = new Set<string>();
+let relancees: ReadonlySet<string> | null = new Set();
 let envoyer: ReturnType<typeof vi.fn>;
 function deps(
   registre: DeclarationCampagne[],
@@ -100,6 +101,7 @@ function deps(
   return {
     registre,
     lireInterrupteurs: async () => etats,
+    relanceesAujourdhui: async () => relancees,
     dejaTente: async (k) => tentes.has(k),
     envoyer: envoyer as unknown as DependancesPassage["envoyer"],
   };
@@ -107,6 +109,7 @@ function deps(
 
 beforeEach(() => {
   tentes.clear();
+  relancees = new Set();
   envoyer = vi.fn(async (e: { jobId: string }) => {
     tentes.add(e.jobId);
     return "envoye";
@@ -231,6 +234,41 @@ describe("anti-doublon et plafonds", () => {
     const b = await passerCampagnes(MAINTENANT, deps([casse, campagne("dossier", [faits(1)])]));
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(b.ecartes["lecture-impossible"]).toBe(1);
+  });
+});
+
+describe("une relance par personne et par jour, toutes campagnes", () => {
+  it("une fiche déjà relancée aujourd'hui (journal ou corbeille) n'est pas relancée", async () => {
+    relancees = new Set(["t1"]);
+    await passerCampagnes(MAINTENANT, deps([campagne("dossier", [faits(1), faits(2)])]));
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect((envoyer.mock.calls[0]![0] as { entityId: string }).entityId).toBe("t2");
+  });
+  it("journal illisible : rien ne part", async () => {
+    relancees = null;
+    const b = await passerCampagnes(MAINTENANT, deps([campagne("dossier", [faits(1)])]));
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(b.ecartes["journal-illisible"]).toBe(1);
+  });
+});
+
+describe("bilan et pannes", () => {
+  it("une relance garée est comptée à part", async () => {
+    envoyer.mockResolvedValue("en-validation");
+    const b = await passerCampagnes(MAINTENANT, deps([campagne("dossier", [faits(1)])]));
+    expect(b.envoyes).toBe(0);
+    expect(b.gares).toBe(1);
+  });
+  it("au premier « indisponible », le passage s'arrête", async () => {
+    envoyer.mockResolvedValue("indisponible");
+    await passerCampagnes(MAINTENANT, deps([campagne("dossier", [faits(1), faits(2), faits(3)])]));
+    expect(envoyer).toHaveBeenCalledTimes(1);
+  });
+  it("une décision qui lève n'emporte pas le passage", async () => {
+    const casse = faits(1, { etat: etat({ envois: null as unknown as Date[] }) });
+    const b = await passerCampagnes(MAINTENANT, deps([campagne("dossier", [casse, faits(2)])]));
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(b.ecartes["decision-impossible"]).toBe(1);
   });
 });
 
