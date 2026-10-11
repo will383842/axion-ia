@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
+  decisionsDuDepot,
   lireChampsFormateurFreelance,
   modeFormateurFreelance,
 } from "../formulaire-formateur-freelance";
@@ -230,5 +231,44 @@ describe("L0c-1 — accusé F0", () => {
       "Si votre profil correspond, nous vous proposerons un échange de 20 minutes en visio pour faire connaissance, sans engagement.",
     );
     expect(r.text).not.toMatch(/\bposte\b|entretien|recrutement|salaire/i);
+  });
+});
+
+describe("L0c-1 — le dépôt", () => {
+  const base = { textesValides: true, natureLue: false, offre: OFFRE_FREELANCE };
+  it("éteint, ancien formulaire : rien de neuf", () => {
+    expect(decisionsDuDepot({ ...base, formulaireEnvoye: null, formulaireAllume: false })).toEqual({
+      modeFormateur: false,
+      accuseMission: false,
+      figerNature: false,
+    });
+  });
+  it("éteint, nouveau formulaire (cache ou champ forgé) : validé, mais ni F0 ni nature figée", () => {
+    expect(
+      decisionsDuDepot({
+        ...base,
+        formulaireEnvoye: "formateur-freelance",
+        formulaireAllume: false,
+      }),
+    ).toEqual({ modeFormateur: true, accuseMission: false, figerNature: false });
+  });
+  it("allumé : F0 seulement avec les textes validés", () => {
+    const d = { ...base, formulaireEnvoye: "formateur-freelance", formulaireAllume: true };
+    expect(decisionsDuDepot(d)).toEqual({
+      modeFormateur: true,
+      accuseMission: true,
+      figerNature: true,
+    });
+    expect(decisionsDuDepot({ ...d, textesValides: false }).accuseMission).toBe(false);
+  });
+  it("le champ ne force jamais le mode sur une autre offre", () => {
+    expect(
+      decisionsDuDepot({
+        ...base,
+        formulaireEnvoye: "formateur-freelance",
+        formulaireAllume: true,
+        offre: { slug: "monteur-video", titleFr: "Monteur vidéo", employmentType: "CONTRACTOR" },
+      }).modeFormateur,
+    ).toBe(false);
   });
 });

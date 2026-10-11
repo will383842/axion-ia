@@ -47,8 +47,8 @@ import type { Prisma } from "../../../prisma/generated/client";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
 import {
+  decisionsDuDepot,
   lireChampsFormateurFreelance,
-  modeFormateurFreelance,
 } from "@/lib/careers/formulaire-formateur-freelance";
 import {
   lireEtatsEntree,
@@ -306,13 +306,14 @@ export async function submitJobApplicationAction(
   // ne l'accepte que pour une offre de formateur freelance. Les pages de l'offre
   // sont en cache (ISR 1 h, Cloudflare) : pendant la bascule de l'interrupteur,
   // l'ancien formulaire et le nouveau coexistent, et chacun reste valable.
-  const modeFormateur =
-    formData.get("formulaire") === "formateur-freelance" &&
-    modeFormateurFreelance({
-      formulaireAllume: true,
-      natureLue: entree.nature_offre,
-      offre: offer,
-    });
+  const decisions = decisionsDuDepot({
+    formulaireEnvoye: formData.get("formulaire"),
+    formulaireAllume: entree.formulaire_freelance,
+    textesValides: formateurs.textes_valides,
+    natureLue: entree.nature_offre,
+    offre: offer,
+  });
+  const modeFormateur = decisions.modeFormateur;
   const champsFormateur = modeFormateur
     ? lireChampsFormateurFreelance((k) => {
         const v = formData.get(k);
@@ -484,7 +485,7 @@ export async function submitJobApplicationAction(
         photoMimeType,
         salaryExpectation: formateur ? null : (d.salaryExpectation ?? null),
         // L0c-1 — nature FIGÉE au dépôt (M-G P7), posée seulement allumé.
-        ...(entree.formulaire_freelance
+        ...(decisions.figerNature
           ? {
               natureCollaboration: offer
                 ? offer.natureCollaboration
@@ -603,7 +604,7 @@ export async function submitJobApplicationAction(
         // l'accusé — sans lui, un nouveau candidat ne pouvait pas y accéder.
         ...(lienDepot ? { lienDepot } : {}),
         // L0c-1 — F0 « mission », seulement quand son texte est validé.
-        ...(formateur && formateurs.textes_valides ? { mission: true } : {}),
+        ...(decisions.accuseMission ? { mission: true } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },
     );

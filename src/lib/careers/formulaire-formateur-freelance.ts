@@ -106,3 +106,26 @@ export function lireChampsFormateurFreelance(
 
   return { ok: true, codePostal, formations, reponses };
 }
+
+/**
+ * Ce que le dépôt fait d'une candidature, selon le formulaire envoyé et les
+ * interrupteurs. Le formulaire se déclare (champ caché `formulaire`) : pendant
+ * la bascule, l'ancien et le nouveau restent valables (pages en cache). Mais
+ * tout EFFET neuf — accusé « mission », nature figée — exige l'interrupteur.
+ */
+export function decisionsDuDepot(e: {
+  readonly formulaireEnvoye: unknown;
+  readonly formulaireAllume: boolean;
+  readonly textesValides: boolean;
+  readonly natureLue: boolean;
+  readonly offre: Parameters<typeof modeFormateurFreelance>[0]["offre"];
+}): { modeFormateur: boolean; accuseMission: boolean; figerNature: boolean } {
+  const modeFormateur =
+    e.formulaireEnvoye === "formateur-freelance" &&
+    modeFormateurFreelance({ formulaireAllume: true, natureLue: e.natureLue, offre: e.offre });
+  return {
+    modeFormateur,
+    accuseMission: modeFormateur && e.formulaireAllume && e.textesValides,
+    figerNature: e.formulaireAllume,
+  };
+}
