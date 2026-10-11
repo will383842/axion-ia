@@ -9,9 +9,17 @@
  * à Williams avant chaque envoi décidé par lui.
  */
 
-import { renderEmailTemplate } from "@/lib/email/templates";
 import { texteParDefaut } from "@/lib/email/templates/apporteur-demarrage";
-import { emailsQueue, enqueueEmail } from "@/server/queue/queues";
+import {
+  apercuGabarit,
+  avecLienEspaceRecalcule,
+  jobIdSansDeuxPoints,
+  resultatDeLEnfilage,
+  retirerEnvoiEchoue,
+  type ApercuRendu as ApercuRenduMonde,
+  type ResultatEnvoi,
+} from "@/server/email/envoi-monde";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
 import { signalerErreurReseau } from "./signaler";
@@ -78,50 +86,17 @@ export interface EnvoiApporteur {
 }
 
 /** L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut. */
-export interface ApercuRendu {
-  gabarit: GabaritApporteur;
-  sujet: string;
-  html: string;
-  destinataire: string;
-  /** Texte principal par défaut, pour pré-remplir « Modifier le texte » ; absent si non modifiable. */
-  texteDefaut?: string;
-}
+export type ApercuRendu = ApercuRenduMonde<GabaritApporteur>;
 
-/**
- * Ajoute le texte réécrit par Will au payload (jamais vide : validé en amont).
- * Sans texte, le payload est rendu tel quel.
- */
-export function avecTexteLibre(
-  payload: Record<string, unknown>,
-  texte: string | undefined,
-): Record<string, unknown> {
-  return texte ? { ...payload, texteLibre: texte } : payload;
-}
+// Fonctions communes du module d'envoi « monde » (FAC-1) : ré-exportées, jamais recopiées.
+export { avecTexteLibre, retirerEnvoiEchoue } from "@/server/email/envoi-monde";
+export type { ResultatEnvoi };
 
 export async function apercu(
   e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">,
 ): Promise<ApercuRendu> {
-  const r = await renderEmailTemplate(e.gabarit as EmailJobName, "fr", e.payload, {
-    destinataire: e.destinataire,
-  });
-  // Le texte par défaut se calcule SANS le texte réécrit : « Texte d'origine » reste possible.
-  const { texteLibre: _ignore, ...sansTexte } = e.payload;
-  const texteDefaut = texteParDefaut(e.gabarit, sansTexte);
-  return {
-    gabarit: e.gabarit,
-    sujet: r.subject,
-    html: r.html,
-    destinataire: e.destinataire,
-    ...(texteDefaut !== null ? { texteDefaut } : {}),
-  };
+  return apercuGabarit(e, texteParDefaut);
 }
-
-/**
- * `fiche-retiree` (2026-10-07) : l'apporteur est retiré du réseau et l'e-mail n'est pas lié
- * à l'argent — il ne part pas.
- */
-export type ResultatEnvoi =
-  "envoye" | "en-validation" | "retenu" | "indisponible" | "fiche-retiree";
 
 /**
  * Gabarits que reçoit l'APPORTEUR lui-même (et non une entreprise) : ce sont eux qui
@@ -163,23 +138,6 @@ async function apporteurDeLEnvoi(e: EnvoiApporteur): Promise<string | null> {
 }
 
 /**
- * Un job ÉCHOUÉ reste 30 jours dans Redis (`removeOnFail`) : son identifiant fixe ferait
- * ignorer en silence la nouvelle tentative, alors que `enqueueEmail` répond « enfilé ».
- * On le retire AVANT de ré-enfiler. Un job terminé, actif ou en attente n'est JAMAIS
- * touché (l'idempotence est conservée). Fail-soft : ne lève jamais.
- */
-export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
-  try {
-    const file = emailsQueue;
-    if (!file) return;
-    const job = await file.getJob(jobId);
-    if (job && (await job.isFailed())) await job.remove();
-  } catch {
-    // Au pire, on retombe sur le comportement d'avant.
-  }
-}
-
-/**
  * « Ouvrir mon espace » (décision de Will, 2026-10-09) : chaque e-mail adressé à l'apporteur
  * porte son lien personnel, que le gabarit de base affiche en bas de la carte. Le dernier
  * e-mail reçu suffit donc à retrouver son espace. Jamais pour un dossier refusé ou résilié
@@ -190,25 +148,21 @@ export async function retirerEnvoiEchoue(jobId: string): Promise<void> {
  * `lienEspace` reçu dans le payload est retiré ou écrasé, jamais repris (relecture de #1408).
  */
 async function avecLienEspace(e: EnvoiApporteur): Promise<Record<string, unknown>> {
-  const { lienEspace: _ignore, ...sansLien } = e.payload;
-  if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
-    return sansLien;
-  }
-  try {
+  return avecLienEspaceRecalcule(e.payload, async () => {
+    if (!GABARITS_VERS_L_APPORTEUR.has(e.gabarit) || e.gabarit === "apporteur-dossier-refuse") {
+      return null;
+    }
     const apporteurId = await apporteurDeLEnvoi(e);
-    if (!apporteurId || (await retraitDe(apporteurId))) return sansLien;
+    if (!apporteurId || (await retraitDe(apporteurId))) return null;
     const a = await prisma.apporteurReseau.findUnique({
       where: { id: apporteurId },
       select: { versionLien: true, statut: true, refuseAt: true, resilieAt: true },
     });
     if (!a || a.statut === "refuse" || a.statut === "resilie" || a.refuseAt || a.resilieAt) {
-      return sansLien;
+      return null;
     }
-    const lien = urlDossier(apporteurId, a.versionLien);
-    return lien ? { ...sansLien, lienEspace: lien } : sansLien;
-  } catch {
-    return sansLien;
-  }
+    return urlDossier(apporteurId, a.versionLien);
+  });
 }
 
 export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
@@ -220,7 +174,7 @@ export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
       const apporteurId = await apporteurDeLEnvoi(e);
       if (apporteurId && (await retraitDe(apporteurId))) return "fiche-retiree";
     }
-    const jobId = e.jobId ? e.jobId.replace(/:/g, "-") : undefined;
+    const jobId = jobIdSansDeuxPoints(e.jobId);
     if (jobId) await retirerEnvoiEchoue(jobId);
     const payload = await avecLienEspace(e);
     const r = await enqueueEmail(e.gabarit as EmailJobName, e.destinataire, "fr", payload, {
@@ -229,9 +183,7 @@ export async function envoyer(e: EnvoiApporteur): Promise<ResultatEnvoi> {
       ...(jobId ? { jobId } : {}),
       ...(e.attachments ? { attachments: e.attachments } : {}),
     });
-    if (r.garePourValidation) return "en-validation";
-    if (r.enqueued) return "envoye";
-    return r.retenu ? "retenu" : "indisponible";
+    return resultatDeLEnfilage(r);
   } catch (err) {
     signalerErreurReseau(`envoi ${e.gabarit}`, err);
     return "indisponible";

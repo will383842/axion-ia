@@ -29,6 +29,7 @@ import { Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
 import { EmailLayout, emailStyles } from "./_layout";
+import { assemblerParagraphes, listeTexte } from "../texte-par-defaut";
 import { paragraphesLibres } from "./texte-libre-reseau";
 import { ligneAPreparer, lignesBareme } from "./_bareme-apporteur";
 import { PARRAINAGE_BPS, PARRAINAGE_MOIS } from "@/features/apporteurs-reseau/regles";
@@ -1207,10 +1208,8 @@ export function texteParDefaut(gabarit: string, payload: Record<string, unknown>
   if (!estTexteModifiable(gabarit)) return null;
   const p = payload as Payload;
   const mot = texteOuNull(p.motPersonnel);
-  const avecMot = (blocs: Array<string | null>): string =>
-    blocs.filter((b): b is string => b !== null && b !== "").join("\n\n");
-  const liste = (xs: readonly string[], num = false): string =>
-    xs.map((x, i) => `${num ? `${i + 1}.` : "•"} ${x}`).join("\n");
+  const avecMot = assemblerParagraphes;
+  const liste = listeTexte;
 
   switch (gabarit) {
     case "apporteur-dossier-lien": {
