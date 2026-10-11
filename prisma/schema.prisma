@@ -16190,7 +16190,7 @@ model LienPartageAcces {
 //
 // Lots M-C (paiement sans double, « expand »), M-E (demandes de changement) et
 // M-F (pièces des organismes), regroupés en UNE migration (10-PLAN §16) :
-// `20261011090000_formateurs_paiement`. ADDITIVE : aucune suppression, aucun
+// `20261011100000_formateurs_paiement`. ADDITIVE : aucune suppression, aucun
 // renommage, rien de rendu obligatoire sur des données. M-D (« contract » :
 // retrait de l'unique `statement_unique_trainer_periode`) N'EST PAS ICI : c'est
 // un DROP, laissé pour plus tard.

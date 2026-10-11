@@ -5,7 +5,7 @@
  * (schéma n° 2 du chantier formateurs freelance : M-C « expand », M-E, M-F).
  *
  * Sans base : lit le texte de `MIGRATION_FORMATEURS_PAIEMENT` et vérifie
- *   · que la migration est la DERNIÈRE du dépôt, datée après le schéma n° 1 ;
+ *   · que la migration est datée après le schéma n° 1, sans horodatage partagé ;
  *   · que chaque objet déclaré (CHECK, trigger, index partiel) est créé, sur sa
  *     table, et que rien de créé n'échappe au registre ;
  *   · que chaque index partiel est le texte EXACT de `SQL_INDEX_PAIEMENT` (la
@@ -63,13 +63,12 @@ function tousPresents(): ObjetPresentPaiement[] {
 }
 
 describe("migration du paiement par mission (schéma n° 2)", () => {
-  it("existe, est la dernière du dépôt, datée après le schéma n° 1", () => {
+  it("existe, datée après le schéma n° 1, sans horodatage partagé avec une autre migration", () => {
     expect(existsSync(FICHIER), FICHIER).toBe(true);
     expect(MIGRATION_FORMATEURS_PAIEMENT > MIGRATION_FORMATEURS_SOCLE).toBe(true);
-    const datees = readdirSync(DOSSIER)
-      .filter((n) => /^\d{14}_/.test(n))
-      .sort();
-    expect(datees.at(-1)).toBe(MIGRATION_FORMATEURS_PAIEMENT);
+    const horodatage = MIGRATION_FORMATEURS_PAIEMENT.slice(0, 14);
+    const memesDates = readdirSync(DOSSIER).filter((n) => n.startsWith(`${horodatage}_`));
+    expect(memesDates).toEqual([MIGRATION_FORMATEURS_PAIEMENT]);
   });
 
   it("crée chaque objet déclaré, sur la table déclarée", () => {
