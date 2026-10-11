@@ -2074,6 +2074,13 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 6,7 * * 1-5",
         jobId: "formation-crons-suivi-entreprise-opco-cron",
       },
+      // Formateurs indépendants (CAMP-3) — campagnes de relance, HORAIRE à :50 ; le
+      // corps ne travaille qu'entre 8 h et 19 h à Paris. Éteint à la livraison.
+      {
+        type: "formation-crons.campagnes-formateurs",
+        pattern: "50 * * * *",
+        jobId: "formation-crons-campagnes-formateurs-cron",
+      },
       // Lot L2c (2026-10-11) — référentiel des communes (formateurs proches).
       // 07:50 UTC (08:50 ou 09:50 à Paris), chaque jour : le corps ne
       // télécharge que si le référentiel a 30 jours ou plus. Un seul appel
