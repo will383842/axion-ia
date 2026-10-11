@@ -23,7 +23,11 @@
 
 import { Worker } from "bullmq";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { relancerEtExpirerMissions } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  relancerEtExpirerMissions,
+  statutsAccordConvocation,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
@@ -2163,12 +2167,18 @@ async function affectationsAConvoquer(
    * La règle : on informe quand l'accord n'est PAS requis (salarié,
    * dirigeant-formateur — cf. `accordRequis`), ou quand il a été DONNÉ. Un
    * sous-traitant silencieux ne reçoit rien tant qu'il n'a pas répondu.
+   *
+   * 🔴 N1 (lot S2) — « donné » couvre aussi l'accord noté HORS OUTIL : sans lui,
+   * un formateur dont l'accord avait été pris au téléphone n'était jamais
+   * convoqué ni rappelé. Derrière l'interrupteur `formateurs.affectation_sure` :
+   * arrêté, l'accord par le lien seul, comme avant.
    */
+  const statutsAccord = statutsAccordConvocation(await interrupteurAllume("affectation_sure"));
   const aAccepte = new Set(
     (
       await prisma.missionFormateur.findMany({
         where: {
-          statut: "acceptee",
+          statut: { in: [...statutsAccord] },
           OR: affectations.map((a) => ({ sessionId: a.sessionId, trainerId: a.trainerId })),
         },
         select: { sessionId: true, trainerId: true },
