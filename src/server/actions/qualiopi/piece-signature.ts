@@ -77,8 +77,12 @@ import { requireAdminWrite, logQualiopiActivity } from "./_guards";
  */
 const LIMITE_PAR_JETON = { limit: 12, windowSec: 60 } as const;
 const LIMITE_PAR_IP = { limit: 600, windowSec: 60 } as const;
-/** Code de signature (contrat-cadre v3) : 3 envois par heure et par lien, au plus. */
-const LIMITE_CODE_PAR_JETON = { limit: 3, windowSec: 3600 } as const;
+/**
+ * Demande de code (contrat-cadre v3) : simple frein au martèlement d'un lien. Les
+ * plafonds d'ÉMISSION (2 min, 3/h par pièce, 5/h par formateur) sont ceux de l'envoi
+ * S6b, comptés sur les codes réellement émis : un clic « trop tôt » n'en consomme aucun.
+ */
+const LIMITE_CODE_PAR_JETON = { limit: 10, windowSec: 600 } as const;
 
 export type RefusSignaturePiece =
   | RefusSignatureDocument
@@ -388,7 +392,7 @@ export type ResultatDemandeCode =
  *  · le code part à l'adresse FIGÉE sur le lien, et seulement si elle est celle
  *    de la fiche du formateur : un lien transféré à une autre adresse ne reçoit
  *    rien ;
- *  · 3 envois par heure et par lien au plus ;
+ *  · plafonds d'émission de l'envoi S6b (2 min, 3/h par pièce, 5/h par formateur) ;
  *  · le code n'est jamais rendu ni journalisé : il ne voyage que dans l'e-mail
  *    (scellé dans la file d'envoi, lot S6b).
  */
@@ -411,7 +415,7 @@ export async function demanderCodeSignatureAction(input: {
       ok: false,
       raison: "trop_de_tentatives",
       message:
-        "Vous avez déjà demandé trois codes dans l'heure. Utilisez le plus récent reçu, ou réessayez plus tard.",
+        "Trop de demandes de code. Utilisez le plus récent reçu, ou réessayez dans quelques minutes.",
     };
   }
   const contexte = await contexteRequete();
@@ -491,7 +495,12 @@ export async function demanderCodeSignatureAction(input: {
         envoi.raison === "trop-tot" || envoi.raison === "trop-de-codes"
           ? "trop_de_tentatives"
           : "code_indisponible",
-      message: envoi.message,
+      // « Hors circuit » ici = fiche qui n'est plus celle d'un sous-traitant : l'écran
+      // affiche un champ code, le message ne doit pas dire le contraire.
+      message:
+        envoi.raison === "piece-hors-circuit"
+          ? "Le code ne peut pas vous être envoyé pour l'instant. Contactez votre interlocuteur chez Axion-IA."
+          : envoi.message,
     };
   }
 

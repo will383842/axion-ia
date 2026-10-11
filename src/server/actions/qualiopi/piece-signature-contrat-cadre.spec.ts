@@ -169,11 +169,17 @@ describe("envoi du code F17", () => {
     ["trop-tot", "trop_de_tentatives"],
     ["trop-de-codes", "trop_de_tentatives"],
     ["envoi-impossible", "code_indisponible"],
-    ["piece-hors-circuit", "code_indisponible"],
   ])("refus de l'envoi (%s) : rendu en « %s », avec son message", async (raison, attendue) => {
     mEnvoyer.mockResolvedValue({ ok: false, raison, message: "Message de l'envoi." });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toEqual({ ok: false, raison: attendue, message: "Message de l'envoi." });
+  });
+
+  it("fiche hors circuit : le message renvoie vers l'interlocuteur, sans contredire l'écran", async () => {
+    mEnvoyer.mockResolvedValue({ ok: false, raison: "piece-hors-circuit", message: "x" });
+    const r = await demanderCodeSignatureAction({ token: "jeton" });
+    expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
+    expect((r as { message: string }).message).toContain("interlocuteur");
   });
 
   it("🔴 adresse du lien ≠ adresse de la fiche : aucun code émis ni envoyé", async () => {
@@ -191,11 +197,11 @@ describe("envoi du code F17", () => {
     expect(mEnvoyer).not.toHaveBeenCalled();
   });
 
-  it("🔴 plus de 3 envois dans l'heure : refus, rien n'est émis", async () => {
+  it("🔴 lien martelé : refus, rien n'est émis", async () => {
     mLimit.mockResolvedValueOnce({ allowed: false });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toMatchObject({ ok: false, raison: "trop_de_tentatives" });
-    expect(mLimit.mock.calls[0]?.[1]).toEqual({ limit: 3, windowSec: 3600 });
+    expect(mLimit.mock.calls[0]?.[1]).toEqual({ limit: 10, windowSec: 600 });
     expect(mEnvoyer).not.toHaveBeenCalled();
   });
 

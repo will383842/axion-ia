@@ -153,9 +153,9 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   }),
 }));
 vi.mock("@/server/qualiopi/documents/signature/document-signature-service", () => ({
-  // La preuve et l'instantané figé : une seule ligne par partie, comme l'index unique.
+  // La preuve et l'instantané figé. Le double accepte TOUT appel : c'est le code, et lui
+  // seul, qui doit empêcher une seconde signature.
   signerDocument: async (input: unknown) => {
-    if (h.signatures.length > 0) return { ok: false, raison: "deja_signe", message: "Déjà signé." };
     h.signatures.push(input);
     return { ok: true, signatureId: "sig-1", selfHash: "a", statutSignature: "partielle" };
   },
@@ -249,6 +249,16 @@ describe("contrat-cadre v3 : demande → e-mail F17 → saisie → signature", (
     const code = await codeLuDansLEmail();
     const [a, b] = await Promise.all([signer(code), signer(code)]);
     expect([a.ok, b.ok].filter(Boolean)).toHaveLength(1);
+    expect([a, b].find((r) => !r.ok)).toMatchObject({ raison: "code_refuse" });
+    expect(h.signatures).toHaveLength(1);
+    expect(h.codes.filter((l) => l.utiliseAt !== null)).toHaveLength(1);
+  });
+
+  it("🔴 rejeu après une signature réussie : refusé", async () => {
+    await demanderCodeSignatureAction({ token: "jeton" });
+    const code = await codeLuDansLEmail();
+    expect((await signer(code)).ok).toBe(true);
+    expect(await signer(code)).toMatchObject({ ok: false, raison: "code_refuse" });
     expect(h.signatures).toHaveLength(1);
   });
 
