@@ -231,7 +231,9 @@ describe("N5 — un indépendant déjà pris aux nouvelles dates n'est pas réin
   it("allumé : un salarié reste reconduit (jamais bloqué au report)", async () => {
     allumer(true);
     mockTrainerFindUnique.mockResolvedValue(formateur({ statut: "salarie" }));
-    await reportSessionAction(INPUT);
+    const r = await reportSessionAction(INPUT);
     expect(dataCreee()["formateurPrincipalId"]).toBe(PRINCIPAL);
+    // …et le chevauchement est dit, jamais tu.
+    expect("data" in r && r.data.avertissements?.[0]).toMatch(/^Attention : /);
   });
 });

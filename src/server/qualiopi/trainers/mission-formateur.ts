@@ -706,7 +706,9 @@ const MISSION_INTROUVABLE = "Cette proposition n'existe pas.";
 /**
  * Lot S2 (T6) — réponse NEUTRE quand l'acceptation ne peut plus être reçue
  * (fiche désactivée entre la proposition et le clic). Elle ne dit pas pourquoi :
- * la raison est interne, et l'organisme est prévenu à part.
+ * la raison est interne. Rien n'est écrit : la mission reste `en_attente`
+ * jusqu'à son retrait, et l'alerte `formateur_desactive_encore_affecte` la
+ * signale à l'organisme tant que l'affectation existe.
  */
 export const PROPOSITION_SUSPENDUE =
   "Cette proposition est suspendue. Nous revenons vers vous rapidement.";
@@ -1315,10 +1317,15 @@ export async function consignerAccordHorsOutil(input: {
       accordHorsOutilMotif: motif,
     } as const;
     if (affectationSure) {
-      // Écriture conditionnelle : une réponse du formateur arrivée entre la
-      // lecture et l'écriture n'est jamais écrasée.
+      // Écriture conditionnelle, en UNE requête : ni une réponse du formateur
+      // ni un retrait de l'affectation arrivés entre la lecture et l'écriture
+      // ne sont écrasés.
       const ecrit = await prisma.missionFormateur.updateMany({
-        where: { id: mission.id, statut: mission.statut },
+        where: {
+          id: mission.id,
+          statut: mission.statut,
+          session: { sessionFormateurs: { some: { trainerId: input.trainerId } } },
+        },
         data: donnees,
       });
       if (ecrit.count !== 1) return { ok: false, erreur: PROPOSITION_CHANGEE };

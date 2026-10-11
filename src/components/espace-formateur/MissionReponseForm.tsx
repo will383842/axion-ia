@@ -151,7 +151,8 @@ export function MissionReponseForm({
             value={motif}
             onChange={(e) => setMotif(e.target.value)}
             rows={2}
-            maxLength={2000}
+            // 2 000 au plus côté serveur, choix et « : » compris.
+            maxLength={1960}
             disabled={isPending}
             className="border-border w-full rounded-md border px-3 py-2 text-sm"
           />

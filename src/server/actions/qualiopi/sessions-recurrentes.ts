@@ -384,9 +384,14 @@ async function coFormateursNonReconductibles(
   return ecartes;
 }
 
-export async function reportSessionAction(
-  input: z.infer<typeof reportSessionSchema>,
-): Promise<ActionResult<{ nouvelleSessionId: string; nouvelleSessionNumero: string }>> {
+export async function reportSessionAction(input: z.infer<typeof reportSessionSchema>): Promise<
+  ActionResult<{
+    nouvelleSessionId: string;
+    nouvelleSessionNumero: string;
+    /** Lot S2 — présent seulement interrupteur allumé et chevauchement signalé. */
+    avertissements?: string[];
+  }>
+> {
   const adminSession = await requireAdminWrite();
   const parsed = reportSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -548,6 +553,8 @@ export async function reportSessionAction(
     statut: "planifiee" as const,
   };
   let formateurRetenuId: string | null = null;
+  /** Lot S2 (N5) — double emploi d'un salarié reconduit : signalé, jamais bloquant. */
+  const avertissementsReport: string[] = [];
   if (ancienne.formateurPrincipalId !== null) {
     try {
       const trainer = await prisma.trainer.findUnique({
@@ -569,16 +576,27 @@ export async function reportSessionAction(
         isTrainerHabilite(
           { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
           ancienne.formationId,
-        ).ok &&
-        // 🔴 N5 (lot S2) — un indépendant déjà pris aux NOUVELLES dates n'est pas
-        // réinstallé : la session part sans formateur, et l'alerte le dit.
-        !(
-          affectationSure &&
-          trainer.statut === "sous_traitant" &&
-          (await constaterDoubleEmploi(ancienne.formateurPrincipalId, cibleReport)) !== null
-        )
+        ).ok
       ) {
-        formateurRetenuId = ancienne.formateurPrincipalId;
+        // 🔴 N5 (lot S2) — un indépendant déjà pris aux NOUVELLES dates n'est pas
+        // réinstallé : la session part sans formateur, et l'alerte le dit. Un
+        // salarié est reconduit, et le chevauchement est signalé.
+        if (affectationSure && trainer.statut === "sous_traitant") {
+          // Planning illisible : l'exception remonte au `catch` ci-dessous, et
+          // l'indépendant n'est pas reconduit (on ne devine pas).
+          if ((await constaterDoubleEmploi(ancienne.formateurPrincipalId, cibleReport)) === null) {
+            formateurRetenuId = ancienne.formateurPrincipalId;
+          }
+        } else {
+          formateurRetenuId = ancienne.formateurPrincipalId;
+          if (affectationSure) {
+            const conflit = await constaterDoubleEmploi(
+              ancienne.formateurPrincipalId,
+              cibleReport,
+            ).catch(() => null);
+            if (conflit !== null) avertissementsReport.push(`Attention : ${conflit}`);
+          }
+        }
       }
     } catch {
       // Lecture indisponible : on ne DEVINE pas une habilitation. La session part
@@ -902,5 +920,11 @@ export async function reportSessionAction(
     session: adminSession,
   });
 
-  return { data: { nouvelleSessionId, nouvelleSessionNumero } };
+  return {
+    data: {
+      nouvelleSessionId,
+      nouvelleSessionNumero,
+      ...(avertissementsReport.length > 0 ? { avertissements: avertissementsReport } : {}),
+    },
+  };
 }

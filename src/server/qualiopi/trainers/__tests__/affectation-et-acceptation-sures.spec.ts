@@ -230,7 +230,11 @@ describe("N3 / T7 — accord hors outil après un « sans réponse »", () => {
     const arg = premierArg(h.prisma.missionFormateur.updateMany) as unknown as {
       where: { id: string; statut: string };
     };
-    expect(arg.where).toEqual({ id: MISSION_ID, statut: "en_attente" });
+    expect(arg.where).toMatchObject({ id: MISSION_ID, statut: "en_attente" });
+    // Un retrait de l'affectation entre la lecture et l'écriture n'est pas écrasé.
+    expect(arg.where).toMatchObject({
+      session: { sessionFormateurs: { some: { trainerId: TRAINER_ID } } },
+    });
   });
 });
 
