@@ -22,6 +22,7 @@ import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateu
 import { remplir, varianteDe } from "@/lib/email/templates/_formateur-independant";
 import {
   CROCHET_NON_REMPLI,
+  GABARITS_ARGENT_FORMATEUR,
   TEXTES_FORMATEUR,
 } from "@/lib/email/templates/formateur-independant-textes";
 import { assemblerParagraphes } from "@/lib/email/texte-par-defaut";
@@ -99,16 +100,7 @@ export const GABARITS_FORMATEUR: readonly GabaritFormateur[] = [
 ];
 
 /** Après une fin de collaboration, seuls ceux-ci partent encore (même nom que chez les apporteurs). */
-export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateur> = new Set<GabaritFormateur>([
-  "formateur-virement-fait",
-  "formateur-virement-en-attente",
-  "formateur-facture-rectifiee",
-  "formateur-trop-percu",
-  "formateur-facture-deposee",
-  "formateur-desaccord-recu",
-  "formateur-desaccord-non-retenu",
-  "formateur-fin-collaboration",
-]);
+export { GABARITS_ARGENT_FORMATEUR };
 
 export type ResultatEnvoiFormateur =
   | ResultatEnvoi

@@ -23,7 +23,11 @@
 
 import { Worker } from "bullmq";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { relancerEtExpirerMissions } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  relancerEtExpirerMissions,
+  statutsAccordConvocation,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
@@ -163,6 +167,11 @@ export type FormationCronJobType =
   // conformité de la formation. Créer une file dédiée pour un `count()` horaire
   // aurait ajouté une septième file à surveiller pour surveiller.
   | "formation-crons.email-sante"
+  // Incidents de données (2026-10-11) — rappels Telegram du délai CNIL de 72 h.
+  // ⚠️ Pas « formation » non plus : même raison que `email-sante`, ce
+  // répartiteur horaire existe déjà, une file dédiée pour une requête à l'heure
+  // en ferait une de plus à surveiller.
+  | "formation-crons.incidents-rappels"
   // Cycle de vie du formateur sur une session (2026-09-03).
   | "formation-crons.missions-formateur"
   | "formation-crons.formateur-convocation-j7"
@@ -174,6 +183,10 @@ export type FormationCronJobType =
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
   // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
   | "formation-crons.suivi-entreprise-opco"
+  // Lot L2c (2026-10-11, ADR 0066) — référentiel des communes (formateurs
+  // proches). QUOTIDIEN, mais ne télécharge qu'une fois par mois ; arrêté tant
+  // que `formateurs.communes_geo_cron` n'est pas allumé.
+  | "formation-crons.communes-geo"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2158,12 +2171,18 @@ async function affectationsAConvoquer(
    * La règle : on informe quand l'accord n'est PAS requis (salarié,
    * dirigeant-formateur — cf. `accordRequis`), ou quand il a été DONNÉ. Un
    * sous-traitant silencieux ne reçoit rien tant qu'il n'a pas répondu.
+   *
+   * 🔴 N1 (lot S2) — « donné » couvre aussi l'accord noté HORS OUTIL : sans lui,
+   * un formateur dont l'accord avait été pris au téléphone n'était jamais
+   * convoqué ni rappelé. Derrière l'interrupteur `formateurs.affectation_sure` :
+   * arrêté, l'accord par le lien seul, comme avant.
    */
+  const statutsAccord = statutsAccordConvocation(await interrupteurAllume("affectation_sure"));
   const aAccepte = new Set(
     (
       await prisma.missionFormateur.findMany({
         where: {
-          statut: "acceptee",
+          statut: { in: [...statutsAccord] },
           OR: affectations.map((a) => ({ sessionId: a.sessionId, trainerId: a.trainerId })),
         },
         select: { sessionId: true, trainerId: true },
@@ -2579,12 +2598,34 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.reponse-poste-pourvu": handleReponsePostePourvu,
   "formation-crons.reponses-entrantes-candidatures": handleReponsesEntrantesCandidatures,
   "formation-crons.email-sante": handleEmailSante,
+  "formation-crons.incidents-rappels": handleIncidentsRappels,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
+  "formation-crons.communes-geo": handleCommunesGeo,
 };
+
+/**
+ * Lot L2c — référentiel des communes. Corps et doctrine dans
+ * `formateurs-proches/communes-geo-passage.ts` ; ici on déclenche et on trace.
+ * Import PARESSEUX ; le passage ne lève jamais.
+ */
+async function handleCommunesGeo(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerCommunesGeo, ligneBilanCommunesGeo } =
+      await import("@/server/qualiopi/formateurs-proches/communes-geo-passage");
+    const { niveau, ligne } = ligneBilanCommunesGeo(await passerCommunesGeo(new Date()));
+    console[niveau](ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] communes-geo: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * Lot OPCO A8 — envoi automatique du dossier prêt à déposer et relances de
@@ -2617,6 +2658,31 @@ async function handleSuiviEntrepriseOpco(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] suivi-entreprise-opco: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Horaire — rappels Telegram des incidents de données dont la décision CNIL
+ * n'est pas renseignée. Corps et doctrine dans
+ * `features/conformite-rgpd/incidents-alertes.ts`. Import PARESSEUX.
+ */
+async function handleIncidentsRappels(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerRappelsIncidents } = await import("@/features/conformite-rgpd/incidents-alertes");
+    const b = await passerRappelsIncidents(new Date());
+    if (b.envoyes + b.echecs === 0 && !b.plafondAtteint) return;
+    const ligne =
+      `[formation-crons] incidents-rappels: ${b.envoyes} rappel(s) envoyé(s), ${b.echecs} échec(s)` +
+      ` sur ${b.examines} incident(s) en attente de décision CNIL` +
+      (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.echecs > 0 || b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] incidents-rappels: erreur:",
       err instanceof Error ? err.message : String(err),
     );
   }
