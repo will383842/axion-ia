@@ -3,8 +3,9 @@
  * 08b §3.1) : `reevaluerMission` lit les faits, calcule l'étape
  * (`etapeMission`) et fait la SEULE chose due à cette étape.
  *
- *   - lettre due : régime de TVA figé sur la mission, lettre v2 émise
- *     (`genererLettreMissionV2`), empreinte rangée, F26 ;
+ *   - lettre due : lettre v2 émise (`genererLettreMissionV2`) AUX CONDITIONS
+ *     FIGÉES AU CHOIX (tarif, forfait, régime de TVA de la mission — jamais
+ *     recalculés ici), liée à CETTE mission, empreinte rangée, F26 ;
  *   - bloquée : motif mémorisé, F32 si le motif CHANGE (et seulement pour une
  *     pièce que le formateur peut fournir), alerte ;
  *   - acceptée, client pas encore engagé : F25, à la réponse seulement.
@@ -199,7 +200,7 @@ export interface EtatMission {
   readonly etape: EtapeMission;
   readonly gardeRefus: ReadonlyArray<string>;
   readonly empreinteActuelle: string;
-  /** Tarif de la journée : mission, puis affectation, puis 350 € HT (comme la lettre). */
+  /** Tarif de la journée figé sur la mission (au choix), à défaut 350 € HT. */
   readonly tarifEffectif: number;
 }
 
@@ -226,7 +227,7 @@ export async function lireEtatMission(
     return null;
   }
   const s = m.session;
-  const [clientEngage, financeurEnAttente, garde, contrat, affectation, v1Signee] =
+  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] =
     await Promise.all([
       prisma.documentGenere.count({
         where: {
@@ -246,11 +247,6 @@ export async function lireEtatMission(
       }),
       controlerGardeMission(m.trainerId, maintenant),
       lireContratCadreSigne(m.trainerId),
-      // Même repli que la lettre : tarif de la mission, puis de l'affectation.
-      prisma.sessionFormateur.findUnique({
-        where: { sessionId_trainerId: { sessionId: m.sessionId, trainerId: m.trainerId } },
-        select: { tarifHtCents: true },
-      }),
       // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
       // c'est SA lettre ; le moteur n'en émet pas d'autre.
       m.lettreMission === null || m.lettreMission.annuleeAt !== null
@@ -266,7 +262,9 @@ export async function lireEtatMission(
           })
         : Promise.resolve(null),
     ]);
-  const tarifEffectif = m.tarifHtCents ?? affectation?.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
+  // Jamais le tarif de l'affectation (08 §2.8 : la source des salariés) : le
+  // moteur n'émet que sur des conditions figées au choix (cf. `emettreLettre`).
+  const tarifEffectif = m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
   const regime = m.regimeTvaFige ?? m.trainer.regimeTvaHonoraires;
   const jours = s.jours.map((j) => ({
     date: dateCivile(j.date),
@@ -357,44 +355,82 @@ async function agir(
 
 type MissionLue = Prisma.MissionFormateurGetPayload<{ select: typeof MISSION_SELECT }>;
 
+/** La lettre ne peut pas partir : dit à Will une fois par motif, jamais au formateur. */
+async function refuserLettre(m: MissionLue, motif: string): Promise<ResultatReevaluation> {
+  if (motif !== m.lettreBlocageMotif) {
+    await prisma.missionFormateur.update({
+      where: { id: m.id },
+      data: { lettreBlocageMotif: motif.slice(0, 500) },
+    });
+    await alerter(
+      `📄 Session ${m.session.numero} : la lettre de mission ne peut pas être émise. ${lienFiche(m.sessionId)}`,
+    );
+  }
+  return { etape: "lettre_due", action: "lettre_refusee" };
+}
+
+/** Motif : une mission sans honoraires ni régime de TVA figés au choix. */
+export const MOTIF_CONDITIONS_NON_FIGEES =
+  "Honoraires ou régime de TVA non figés au choix : lettre à émettre depuis la console.";
+
+/** Un envoi qui n'est pas parti se dit : journal (codes) et alerte sans nom. */
+async function signalerEnvoi(
+  m: MissionLue,
+  gabarit: string,
+  issue: Awaited<ReturnType<typeof envoyer>>,
+): Promise<void> {
+  if (issue === "envoye" || issue === "en-validation") return;
+  await journaliser(prisma, {
+    action: "qualiopi.mission.envoi_non_parti",
+    targetType: "MissionFormateur",
+    targetId: m.id,
+    changes: { gabarit, issue },
+    session: null,
+  });
+  await alerter(
+    `✉️ Session ${m.session.numero} : un e-mail au formateur n'est pas parti (${gabarit}, ${issue}). ${lienFiche(m.sessionId)}`,
+  );
+}
+
 async function emettreLettre(
   m: MissionLue,
   empreinte: string,
   tarif: number,
   maintenant: Date,
 ): Promise<ResultatReevaluation> {
+  // ARGENT — la lettre lit les conditions FIGÉES AU CHOIX, recopiées sur la
+  // mission ; le moteur ne les recalcule ni ne les complète jamais. Une mission
+  // qui n'en porte pas (proposée hors des cartes) ne reçoit pas de lettre
+  // automatique : Will l'émet depuis la console.
+  if (m.tarifHtCents === null || m.regimeTvaFige === null) {
+    return refuserLettre(m, MOTIF_CONDITIONS_NON_FIGEES);
+  }
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
+    // La lettre est liée à CETTE mission, jamais à une autre du couple.
+    missionId: m.id,
     maintenant,
   });
-  if (!r.ok) {
-    // La lettre ne peut pas partir (pièce de la fiche manquante) : on le dit à
-    // Will une fois par motif, jamais au formateur (ce n'est pas une pièce
-    // qu'il dépose).
-    if (r.erreur !== m.lettreBlocageMotif) {
-      await prisma.missionFormateur.update({
-        where: { id: m.id },
-        data: { lettreBlocageMotif: r.erreur.slice(0, 500) },
-      });
-      await alerter(
-        `📄 Session ${m.session.numero} : la lettre de mission ne peut pas être émise. ${lienFiche(m.sessionId)}`,
-      );
-    }
-    return { etape: "lettre_due", action: "lettre_refusee" };
-  }
-  // Le régime de TVA et le tarif se FIGENT à l'émission réussie (08 §2.7
-  // règle 3) : la lettre vient de les lire ainsi ; le paiement et l'empreinte
-  // liront désormais ceux-ci.
-  await prisma.missionFormateur.updateMany({
-    where: { id: m.id, tarifHtCents: null },
-    data: { tarifHtCents: tarif },
+  if (!r.ok) return refuserLettre(m, r.erreur);
+  // EXACTITUDE — la lettre liée à la mission est-elle bien celle qui vient
+  // d'être émise ? Sinon : alerte et arrêt (aucune empreinte, aucun F26).
+  const liee = await prisma.missionFormateur.findUnique({
+    where: { id: m.id },
+    select: { lettreMissionId: true },
   });
-  if (m.regimeTvaFige === null && m.trainer.regimeTvaHonoraires !== null) {
-    await prisma.missionFormateur.updateMany({
-      where: { id: m.id, regimeTvaFige: null },
-      data: { regimeTvaFige: m.trainer.regimeTvaHonoraires },
+  if (liee?.lettreMissionId !== r.documentId) {
+    await journaliser(prisma, {
+      action: "qualiopi.mission.lettre_liee_ailleurs",
+      targetType: "MissionFormateur",
+      targetId: m.id,
+      changes: { documentId: r.documentId },
+      session: null,
     });
+    await alerter(
+      `🚨 Session ${m.session.numero} : la lettre émise n'est pas liée à la mission traitée, rien d'autre n'est fait. ${lienFiche(m.sessionId)}`,
+    );
+    return { etape: "lettre_due", action: "erreur" };
   }
   const doc = await prisma.documentGenere.findUnique({
     where: { id: r.documentId },
@@ -404,16 +440,21 @@ async function emettreLettre(
     doc?.metadata !== null && typeof doc?.metadata === "object" && !Array.isArray(doc?.metadata)
       ? (doc.metadata as Record<string, unknown>)
       : {};
-  await prisma.documentGenere.update({
-    where: { id: r.documentId },
-    data: { metadata: { ...meta, empreinteMission: empreinte } as never },
-  });
-  if (m.lettreBlocageMotif !== null) {
-    await prisma.missionFormateur.update({
-      where: { id: m.id },
-      data: { lettreBlocageMotif: null, lettreBlocageNotifieAt: null },
-    });
-  }
+  // L'empreinte et la levée du blocage dans la même transaction.
+  await prisma.$transaction([
+    prisma.documentGenere.update({
+      where: { id: r.documentId },
+      data: { metadata: { ...meta, empreinteMission: empreinte } as never },
+    }),
+    ...(m.lettreBlocageMotif !== null
+      ? [
+          prisma.missionFormateur.update({
+            where: { id: m.id },
+            data: { lettreBlocageMotif: null, lettreBlocageNotifieAt: null },
+          }),
+        ]
+      : []),
+  ]);
   await journaliser(prisma, {
     action: "qualiopi.mission.lettre_emise",
     targetType: "MissionFormateur",
@@ -439,7 +480,7 @@ async function emettreLettre(
     });
     const { journees, demiJournees } = decompterJournees(jours);
     const lien = lienEspaceFormateur();
-    await envoyer({
+    const issue = await envoyer({
       gabarit: "formateur-lettre-a-signer",
       destinataire: m.trainer.email,
       entityType: "Trainer",
@@ -467,6 +508,7 @@ async function emettreLettre(
         },
       },
     });
+    await signalerEnvoi(m, "formateur-lettre-a-signer", issue);
   }
   return { etape: "lettre_due", action: "lettre_emise" };
 }
