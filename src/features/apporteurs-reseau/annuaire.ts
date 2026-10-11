@@ -72,11 +72,44 @@ export interface EnrichissementRegistre {
   nombreEtablissementsOuverts: number | null;
 }
 
+const booleen = (v: unknown): boolean | null => (typeof v === "boolean" ? v : null);
+const nombre = (v: unknown): number | null => {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : null;
+};
+
+/**
+ * Lit l'enrichissement dans la réponse du registre (`res`) et l'établissement
+ * retenu (`etab` : celui du SIRET, ou le siège). Pur : testé sur une réponse
+ * figée. Les numéros de déclaration sont réduits à leurs chiffres ; seuls ceux
+ * de 11 chiffres sont gardés.
+ */
 export function enrichissementDuRegistre(
-  _res: Record<string, unknown>,
-  _etab: Record<string, unknown>,
+  res: Record<string, unknown>,
+  etab: Record<string, unknown>,
 ): EnrichissementRegistre {
-  throw new Error("L1 : non implémenté");
+  const complements = (res.complements ?? {}) as Record<string, unknown>;
+  const listes = Array.isArray(complements.liste_id_organisme_formation)
+    ? (complements.liste_id_organisme_formation as unknown[])
+    : [];
+  const ndaListe = listes
+    .filter((v): v is string => typeof v === "string")
+    .map((v) => v.replace(/\D/g, ""))
+    .filter((v) => /^\d{11}$/.test(v));
+  return {
+    estOrganismeFormation: booleen(complements.est_organisme_formation),
+    ndaListe,
+    estQualiopi: booleen(complements.est_qualiopi),
+    naf25: texte(etab.activite_principale_naf25) ?? texte(res.activite_principale_naf25),
+    codePostal: texte(etab.code_postal),
+    communeInsee: texte(etab.commune),
+    latitude: nombre(etab.latitude),
+    longitude: nombre(etab.longitude),
+    dateCreation: texte(res.date_creation),
+    natureJuridique: texte(res.nature_juridique),
+    estEntrepreneurIndividuel: booleen(complements.est_entrepreneur_individuel),
+    nombreEtablissementsOuverts: nombre(res.nombre_etablissements_ouverts),
+  };
 }
 
 /** Une personne physique rattachée à l'entreprise au registre. */
@@ -219,6 +252,7 @@ export async function lireEntrepriseParSiren(
         ),
         diffusionPartielle: denomination === null || adresse === null,
         ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
+        ...(options.enrichi ? { enrichissement: enrichissementDuRegistre(res, siege) } : {}),
       },
     };
   } catch {
@@ -295,6 +329,7 @@ export async function lireEtablissementParSiret(
         ),
         diffusionPartielle: denomination === null || adresse === null,
         ...personnesDuRegistre(res, complements.est_entrepreneur_individuel === true),
+        ...(options.enrichi ? { enrichissement: enrichissementDuRegistre(res, etab) } : {}),
       },
     };
   } catch {
