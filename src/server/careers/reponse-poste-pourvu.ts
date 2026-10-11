@@ -99,7 +99,10 @@ export const CORPS = [
   // qui est, et la durée de conservation est celle de la notice (2 ans).
   "Nous n'avons pas de besoin immédiat sur ce poste. Axion-IA se développe cependant, et votre profil nous intéresse pour la suite : nous conservons votre candidature pendant deux ans et nous reviendrons vers vous si un besoin correspondant s'ouvre.",
   "",
-  "Si vous préférez que nous supprimions votre dossier, il suffit de répondre à ce message.",
+  // 2026-10-11 (Will) — la suppression se fait seule, par le lien signé que
+  // `ecrireEtEnfilerReponse` pose au pied de chaque réponse. Le début de la
+  // phrase sert de repère à `corpsAvecReseau` : ne pas le changer.
+  "Si vous préférez que nous supprimions votre dossier, vous pouvez le faire vous-même en un clic grâce au lien « Supprimer ma candidature » en bas de ce message.",
   "",
   "Belle suite à vous, et à bientôt peut-être.",
 ].join("\n");

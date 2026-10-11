@@ -2023,6 +2023,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "20 * * * *",
         jobId: "formation-crons-email-sante-cron",
       },
+      // Incidents de données (2026-10-11) — rappels Telegram du délai CNIL de
+      // 72 h (48 h, 24 h, 6 h restantes, puis dépassé), HORAIRE : le plus petit
+      // palier fait 6 h, un passage manqué se rattrape au suivant. `:55`, minute
+      // libre de toutes les autres files horaires.
+      {
+        type: "formation-crons.incidents-rappels",
+        pattern: "55 * * * *",
+        jobId: "formation-crons-incidents-rappels-cron",
+      },
       // Cycle de vie du FORMATEUR sur une session (2026-09-03). Convocation
       // pratique J-7 à 08:05, juste après le rappel J-7 des stagiaires ;
       // relances de mission à 08:10 ; rappel J-1 HORAIRE à :40 — la fenêtre
