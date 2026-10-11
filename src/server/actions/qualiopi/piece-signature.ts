@@ -60,14 +60,10 @@ import {
   memeAdresse,
   objectionContratCadre,
 } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
-import {
-  CodeSignatureIndisponible,
-  emettreCodeSignature,
-  verifierCodeSignature,
-} from "@/server/qualiopi/documents/signature/code-signature";
+import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
 import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { envoyer as envoyerFormateur } from "@/server/qualiopi/formateurs-independants/envois";
+import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -381,13 +377,6 @@ export async function signerPieceParJetonAction(input: {
 
 const MESSAGE_CODE_FORMAT = "Le code se compose de 6 chiffres. Vérifiez-le et réessayez.";
 
-const REFUS_CODE_INDISPONIBLE = {
-  ok: false,
-  raison: "code_indisponible",
-  message:
-    "Le code de signature ne peut pas vous être envoyé pour le moment. Réessayez dans quelques minutes ; si cela persiste, répondez à notre e-mail.",
-} as const;
-
 export type ResultatDemandeCode =
   | { ok: true; destinataireMasque: string }
   | { ok: false; raison: RefusSignaturePiece; message: string };
@@ -400,7 +389,8 @@ export type ResultatDemandeCode =
  *    de la fiche du formateur : un lien transféré à une autre adresse ne reçoit
  *    rien ;
  *  · 3 envois par heure et par lien au plus ;
- *  · le code n'est jamais rendu ni journalisé : il ne voyage que dans l'e-mail.
+ *  · le code n'est jamais rendu ni journalisé : il ne voyage que dans l'e-mail
+ *    (scellé dans la file d'envoi, lot S6b).
  */
 export async function demanderCodeSignatureAction(input: {
   token: string;
@@ -487,31 +477,23 @@ export async function demanderCodeSignatureAction(input: {
     };
   }
 
-  let code: string;
-  try {
-    ({ code } = await emettreCodeSignature({
-      documentGenereId: verif.documentGenereId,
-      partie: verif.partie,
-    }));
-  } catch (err) {
-    if (!(err instanceof CodeSignatureIndisponible)) {
-      Sentry.captureException(err, { tags: { action: "demanderCodeSignatureAction:emission" } });
-    }
-    return { ...REFUS_CODE_INDISPONIBLE };
-  }
-
-  // Sans priorité : le code passe devant les relances dans la boîte partagée.
-  const envoi = await envoyerFormateur({
-    gabarit: "formateur-code-signature",
-    destinataire: piece.trainer.email,
-    payload: {
-      ...(piece.trainer.prenom ? { prenom: piece.trainer.prenom } : {}),
-      valeurs: { "123456": code },
-    },
-    entityType: "Trainer",
-    entityId: piece.trainerId,
+  // L'envoi lui-même est celui du lot S6b (`envoyerCodeSignature`) : il relit la pièce
+  // et la fiche, exige le texte F17 validé, borne les renvois (2 min, 3/h par pièce,
+  // 5/h par formateur), scelle le code dans la file et ne le rend jamais ici.
+  const envoi = await envoyerCodeSignature({
+    documentGenereId: verif.documentGenereId,
+    maintenant: new Date(),
   });
-  if (envoi !== "envoye") return { ...REFUS_CODE_INDISPONIBLE };
+  if (!envoi.ok) {
+    return {
+      ok: false,
+      raison:
+        envoi.raison === "trop-tot" || envoi.raison === "trop-de-codes"
+          ? "trop_de_tentatives"
+          : "code_indisponible",
+      message: envoi.message,
+    };
+  }
 
   return { ok: true, destinataireMasque: masquerAdresse(piece.trainer.email) };
 }

@@ -23,15 +23,15 @@ vi.mock("@/server/qualiopi/documents/signature/apres-signature", () => ({
   apresSignature: vi.fn(),
 }));
 vi.mock("@/server/qualiopi/documents/signature/code-signature", () => ({
-  CodeSignatureIndisponible: class extends Error {},
-  emettreCodeSignature: vi.fn(),
   verifierCodeSignature: vi.fn(),
 }));
 vi.mock("@/server/qualiopi/documents/signature/contrat-cadre-signature", async (orig) => ({
   ...(await orig<typeof import("@/server/qualiopi/documents/signature/contrat-cadre-signature")>()),
   objectionContratCadre: vi.fn(async () => null),
 }));
-vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({ envoyer: vi.fn() }));
+vi.mock("@/server/qualiopi/formateurs-independants/code-signature-envoi", () => ({
+  envoyerCodeSignature: vi.fn(),
+}));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
 vi.mock("next/headers", () => ({
   headers: vi.fn(async () => ({ get: (_: string): string | null => null })),
@@ -44,14 +44,11 @@ vi.mock("./_guards", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
-import {
-  emettreCodeSignature,
-  verifierCodeSignature,
-} from "@/server/qualiopi/documents/signature/code-signature";
+import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
 import { objectionContratCadre } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
-import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 
 import { demanderCodeSignatureAction, signerPieceParJetonAction } from "./piece-signature";
 
@@ -60,8 +57,7 @@ const findUnique = prisma.documentGenere.findUnique as unknown as Mock;
 const mVerif = verifierTokenDocument as unknown as Mock;
 const mSigner = signerDocument as unknown as Mock;
 const mCode = verifierCodeSignature as unknown as Mock;
-const mEmettre = emettreCodeSignature as unknown as Mock;
-const mEnvoyer = envoyer as unknown as Mock;
+const mEnvoyer = envoyerCodeSignature as unknown as Mock;
 const mObjection = objectionContratCadre as unknown as Mock;
 const mLimit = checkRateLimit as unknown as Mock;
 
@@ -94,8 +90,7 @@ beforeEach(() => {
     statutSignature: "partielle",
   });
   mCode.mockResolvedValue({ ok: true });
-  mEmettre.mockResolvedValue({ code: "042517", expiresAt: new Date() });
-  mEnvoyer.mockResolvedValue("envoye");
+  mEnvoyer.mockResolvedValue({ ok: true });
   mObjection.mockResolvedValue(null);
 });
 
@@ -160,23 +155,25 @@ describe("signature d'un contrat-cadre v3 par lien", () => {
 });
 
 describe("envoi du code F17", () => {
-  it("part à l'adresse de la fiche, sans priorité, et rend l'adresse masquée", async () => {
+  it("passe par l'envoi du lot S6b (pièce seule, jamais d'adresse ni de code) et rend l'adresse masquée", async () => {
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toEqual({ ok: true, destinataireMasque: "A***@e***.fr" });
-    const envoi = mEnvoyer.mock.calls[0]?.[0];
-    expect(envoi).toMatchObject({
-      gabarit: "formateur-code-signature",
-      destinataire: "Alex@exemple.fr",
-      entityType: "Trainer",
-      entityId: "t-1",
-      payload: { valeurs: { "123456": "042517" } },
+    expect(mEnvoyer).toHaveBeenCalledTimes(1);
+    expect(mEnvoyer.mock.calls[0]?.[0]).toEqual({
+      documentGenereId: DOC,
+      maintenant: expect.any(Date),
     });
-    expect(envoi).not.toHaveProperty("priority");
   });
 
-  it("🔴 le code n'est jamais rendu à l'appelant", async () => {
+  it.each([
+    ["trop-tot", "trop_de_tentatives"],
+    ["trop-de-codes", "trop_de_tentatives"],
+    ["envoi-impossible", "code_indisponible"],
+    ["piece-hors-circuit", "code_indisponible"],
+  ])("refus de l'envoi (%s) : rendu en « %s », avec son message", async (raison, attendue) => {
+    mEnvoyer.mockResolvedValue({ ok: false, raison, message: "Message de l'envoi." });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
-    expect(JSON.stringify(r)).not.toContain("042517");
+    expect(r).toEqual({ ok: false, raison: attendue, message: "Message de l'envoi." });
   });
 
   it("🔴 adresse du lien ≠ adresse de la fiche : aucun code émis ni envoyé", async () => {
@@ -191,7 +188,6 @@ describe("envoi du code F17", () => {
     });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
-    expect(mEmettre).not.toHaveBeenCalled();
     expect(mEnvoyer).not.toHaveBeenCalled();
   });
 
@@ -200,7 +196,7 @@ describe("envoi du code F17", () => {
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toMatchObject({ ok: false, raison: "trop_de_tentatives" });
     expect(mLimit.mock.calls[0]?.[1]).toEqual({ limit: 3, windowSec: 3600 });
-    expect(mEmettre).not.toHaveBeenCalled();
+    expect(mEnvoyer).not.toHaveBeenCalled();
   });
 
   it("une pièce qui se signe sans code ne déclenche aucun envoi", async () => {
@@ -212,11 +208,15 @@ describe("envoi du code F17", () => {
     });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r.ok).toBe(false);
-    expect(mEmettre).not.toHaveBeenCalled();
+    expect(mEnvoyer).not.toHaveBeenCalled();
   });
 
   it("texte F17 non validé (rien ne part) : la personne en est informée", async () => {
-    mEnvoyer.mockResolvedValue("texte-non-valide");
+    mEnvoyer.mockResolvedValue({
+      ok: false,
+      raison: "texte-non-valide",
+      message: "L'envoi du code n'est pas encore ouvert. Réessayez plus tard.",
+    });
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
   });
@@ -233,7 +233,7 @@ describe("envoi du code — contrat v3 sans fiche formateur", () => {
     const { captureException } = await import("@sentry/nextjs");
     const r = await demanderCodeSignatureAction({ token: "jeton" });
     expect(r).toMatchObject({ ok: false, raison: "code_indisponible" });
-    expect(mEmettre).not.toHaveBeenCalled();
+    expect(mEnvoyer).not.toHaveBeenCalled();
     expect(captureException).not.toHaveBeenCalled();
   });
 });
