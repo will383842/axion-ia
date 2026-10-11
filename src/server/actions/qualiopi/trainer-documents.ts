@@ -21,6 +21,10 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { motifPieceNonProbante } from "@/server/qualiopi/trainers/piece-competence";
 import {
+  ACTION_DEPOT_FORMATEUR,
+  ACTIONS_CREATION_PIECE,
+} from "@/server/qualiopi/formateurs-independants/vigilance";
+import {
   echeanceCalculee,
   estPieceArchivee,
   estPieceGardee,
@@ -131,6 +135,9 @@ export async function createTrainerDocumentAction(
   return { data: { id } };
 }
 
+/** Auteur d'une pièce déposée par le formateur : jamais un validateur de la console. */
+const DEPOT_DU_FORMATEUR = "depot-du-formateur";
+
 const validateSchema = z.object({
   id: uuid,
   /** `rejete` exige un motif : on ne rejette pas une pièce sans le dire. */
@@ -163,11 +170,26 @@ export async function validateTrainerDocumentAction(
   // définition de « fichier présent » que la couverture et les pièces imprimées.
   // Seul le motif `sans_fichier` bloque : une pièce expirée reste authentique et
   // se valide, elle ne couvre simplement rien (l'écran le signale).
+  // 🔴 Lot L5b — une pièce ARCHIVÉE ne se valide ni ne se rejette : rejeter
+  // remplacerait la marque d'archive, et une validation la ferait revivre.
+  try {
+    const etat = await prisma.trainerDocument.findUnique({
+      where: { id },
+      select: { archiveAt: true, rejetMotif: true },
+    });
+    if (etat !== null && (etat.archiveAt != null || estPieceArchivee(etat.rejetMotif))) {
+      return { error: "Cette pièce est archivée : elle ne peut plus être validée ni rejetée." };
+    }
+  } catch {
+    return { error: "Erreur lors de la validation de la pièce." };
+  }
+
   let echeanceRecalculee: Date | null | undefined;
   if (statutValidation === "valide") {
     let piece: {
       type: string;
       fichierUrl: string | null;
+      contenu?: { trainerDocumentId: string } | null;
       dateEmission?: Date | null;
       dateExpiration: Date | null;
       rejetMotif?: string | null;
@@ -178,6 +200,9 @@ export async function validateTrainerDocumentAction(
         select: {
           type: true,
           fichierUrl: true,
+          // Lot L5b (W5 I-2) : un CV DÉPOSÉ par le formateur n'a pas d'adresse,
+          // ses octets sont en base — il porte bien un fichier.
+          contenu: { select: { trainerDocumentId: true } },
           dateEmission: true,
           dateExpiration: true,
           rejetMotif: true,
@@ -200,11 +225,16 @@ export async function validateTrainerDocumentAction(
         let createur: string | null = null;
         try {
           const trace = await prisma.activityLog.findFirst({
-            where: { action: "qualiopi.trainer_document.create", targetId: id },
+            where: { action: { in: [...ACTIONS_CREATION_PIECE] }, targetId: id },
             orderBy: { createdAt: "asc" },
-            select: { adminUserId: true },
+            select: { action: true, adminUserId: true },
           });
-          createur = trace?.adminUserId ?? null;
+          // Lot L5b — une pièce DÉPOSÉE par le formateur n'a pas d'auteur en
+          // console : n'importe quel validateur habilité est un « autre ».
+          createur =
+            trace?.action === ACTION_DEPOT_FORMATEUR && trace.adminUserId === null
+              ? DEPOT_DU_FORMATEUR
+              : (trace?.adminUserId ?? null);
         } catch {
           createur = null;
         }
@@ -214,6 +244,11 @@ export async function validateTrainerDocumentAction(
               "Validation refusée : une attestation de vigilance ou un avis SIRENE est validé par une autre personne que celle qui l'a enregistré.",
           };
         }
+      }
+      // Une émission future ferait vivre la pièce au-delà de sa durée légale
+      // (pièce déposée par le formateur, lot L5b, ou saisie ancienne).
+      if (piece.dateEmission != null && piece.dateEmission.getTime() > Date.now()) {
+        return { error: "La date d'émission de cette pièce est dans le futur." };
       }
       // L'échéance est RECALCULÉE à la validation : une pièce saisie avant ce
       // lot avec une date libre ne la garde pas.
@@ -279,18 +314,29 @@ export async function deleteTrainerDocumentAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
 
-  const le = new Date().toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const maintenant = new Date();
+  const le = maintenant.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const motif = `Pièce retirée du dossier le ${le}.`;
+  // 🔑 Lot L5b — archivage DURCI : date et auteur posés (`archiveAt`,
+  // `archiveParId`), et jamais deux fois : l'écriture conditionnelle garde le
+  // premier auteur. La marque dans `rejetMotif` reste, pour les lecteurs qui
+  // ne lisent qu'elle.
+  let archivees: number;
   try {
-    await prisma.trainerDocument.update({
-      where: { id },
+    ({ count: archivees } = await prisma.trainerDocument.updateMany({
+      where: { id, archiveAt: null },
       data: {
         statutValidation: "rejete",
-        rejetMotif: `${MARQUE_ARCHIVE} Pièce retirée du dossier le ${le}.`,
+        rejetMotif: `${MARQUE_ARCHIVE} ${motif}`,
+        archiveAt: maintenant,
+        archiveParId: session.userId,
+        archiveMotif: motif,
       },
-    });
+    }));
   } catch {
     return { error: "Erreur lors de l'archivage de la pièce." };
   }
+  if (archivees === 0) return { error: "Pièce introuvable ou déjà archivée." };
 
   await logQualiopiActivity({
     action: "qualiopi.trainer_document.archive",

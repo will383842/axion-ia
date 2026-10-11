@@ -33,11 +33,11 @@ import {
   sourceRegistreAnnuaire,
 } from "./contrat-cadre-signature";
 
-const V3 = { renderData: { gabaritVersion: 3 } };
 const V2 = { renderData: { gabaritVersion: 2 } };
 const DOC = "11111111-1111-4111-8111-111111111111";
 const MAINTENANT = new Date("2026-10-12T09:00:00Z");
 const SIRET = "98765432100017";
+const V3 = { renderData: { gabaritVersion: 3, cocontractant: { siret: SIRET } } };
 /** Preuve canonique d'un registre qui a CONFIRMÉ l'entreprise active. */
 const PREUVE_ACTIVE = {
   entreprise: {
@@ -74,7 +74,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   findUnique.mockResolvedValue({ trainerId: "t-1", trainer: { siret: SIRET } });
   findMany.mockResolvedValue([]);
-  controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
+  controler.mockResolvedValue({ ok: true, siret: SIRET, verdict: "vert", motifs: [] });
 });
 
 describe("code requis", () => {
@@ -145,7 +145,7 @@ describe("objection — registre public, par le contrôle L4", () => {
 
   it("signature : un rouge sur un ANCIEN SIRET (fiche corrigée depuis) → registre relu", async () => {
     findMany.mockResolvedValue([ligne("rouge", 2, { siret: "11111111100011" })]);
-    controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
+    controler.mockResolvedValue({ ok: true, siret: SIRET, verdict: "vert", motifs: [] });
     expect(
       await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
     ).toBeNull();
@@ -154,7 +154,12 @@ describe("objection — registre public, par le contrôle L4", () => {
 
   it("signature : contrôle trop ancien → nouveau contrôle (sans auteur) ; rouge = refus", async () => {
     findMany.mockResolvedValue([ligne("vert", 40)]);
-    controler.mockResolvedValue({ ok: true, verdict: "rouge", motifs: ["etablissement_ferme"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "rouge",
+      motifs: ["etablissement_ferme"],
+    });
     const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
     expect(r?.message).toMatch(/ne confirme pas/);
     expect(controler.mock.calls[0]?.[2]).toEqual({
@@ -165,7 +170,12 @@ describe("objection — registre public, par le contrôle L4", () => {
   });
 
   it("🔴 signature : registre muet = REFUS « réessayez », jamais une signature", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["registre_muet"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["registre_muet"],
+    });
     const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
     expect(r?.message).toMatch(/Réessayez/);
   });
@@ -173,6 +183,7 @@ describe("objection — registre public, par le contrôle L4", () => {
   it("🔴 signature : établissement INTROUVABLE (orange) = refus qui oriente vers le SIRET", async () => {
     controler.mockResolvedValue({
       ok: true,
+      siret: SIRET,
       verdict: "orange",
       motifs: ["registre_muet", "etablissement_introuvable", "activite_a_controler"],
     });
@@ -182,7 +193,12 @@ describe("objection — registre public, par le contrôle L4", () => {
   });
 
   it("🔴 signature : SIRET absent de la fiche = refus", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["siret_absent"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["siret_absent"],
+    });
     const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
     expect(r?.message).toMatch(/ne confirme pas/);
   });
@@ -205,6 +221,7 @@ describe("objection — registre public, par le contrôle L4", () => {
     findMany.mockResolvedValue([validation, controle]);
     controler.mockResolvedValue({
       ok: true,
+      siret: SIRET,
       verdict: "orange",
       motifs: ["etablissement_introuvable"],
     });
@@ -215,7 +232,7 @@ describe("objection — registre public, par le contrôle L4", () => {
 
   it("signature : un contrôle récent sur un AUTRE SIRET que la fiche ne compte pas → relu", async () => {
     findMany.mockResolvedValue([ligne("vert", 3, { siret: "11111111100011" })]);
-    controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
+    controler.mockResolvedValue({ ok: true, siret: SIRET, verdict: "vert", motifs: [] });
     expect(
       await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
     ).toBeNull();
@@ -224,14 +241,24 @@ describe("objection — registre public, par le contrôle L4", () => {
 
   it("signature : un « vert » dont la preuve ne dit pas l'entreprise active ne compte pas", async () => {
     findMany.mockResolvedValue([ligne("vert", 3, { preuve: { entreprise: null } })]);
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["registre_muet"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["registre_muet"],
+    });
     const r = await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" });
     expect(controler).toHaveBeenCalledTimes(1);
     expect(r).not.toBeNull();
   });
 
   it("signature : numéro de déclaration en cours (orange) avec entreprise active = passe (article 19)", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["nda_en_cours"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["nda_en_cours"],
+    });
     expect(
       await objectionContratCadre({ ...base, metadata: V3, partie: "sous_traitant" }),
     ).toBeNull();
@@ -239,7 +266,7 @@ describe("objection — registre public, par le contrôle L4", () => {
 
   it("🔴 contresignature : contrôle TOUJOURS refait, même avec un vert récent, au nom de l'administrateur", async () => {
     findMany.mockResolvedValue([ligne("vert", 1)]);
-    controler.mockResolvedValue({ ok: true, verdict: "vert", motifs: [] });
+    controler.mockResolvedValue({ ok: true, siret: SIRET, verdict: "vert", motifs: [] });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
@@ -251,7 +278,12 @@ describe("objection — registre public, par le contrôle L4", () => {
   });
 
   it("🔴 contresignature : rouge = refus", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "rouge", motifs: ["siren_cesse"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "rouge",
+      motifs: ["siren_cesse"],
+    });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
@@ -266,7 +298,7 @@ describe("objection — registre public, par le contrôle L4", () => {
     [["siret_absent"]],
     [["registre_muet", "etablissement_ferme"]],
   ])("🔴 contresignature : %j = refus", async (motifs) => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs });
+    controler.mockResolvedValue({ ok: true, siret: SIRET, verdict: "orange", motifs });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
@@ -277,7 +309,12 @@ describe("objection — registre public, par le contrôle L4", () => {
   });
 
   it("🔴 contresignature : registre muet = refus « réessayez »", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["registre_muet"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["registre_muet"],
+    });
     const r = await objectionContratCadre({
       ...base,
       metadata: V3,
@@ -288,7 +325,12 @@ describe("objection — registre public, par le contrôle L4", () => {
   });
 
   it("contresignature : orange pour un numéro de déclaration en cours = ne bloque pas (article 19)", async () => {
-    controler.mockResolvedValue({ ok: true, verdict: "orange", motifs: ["nda_en_cours"] });
+    controler.mockResolvedValue({
+      ok: true,
+      siret: SIRET,
+      verdict: "orange",
+      motifs: ["nda_en_cours"],
+    });
     expect(
       await objectionContratCadre({ ...base, metadata: V3, partie: "axionia", adminId: "a" }),
     ).toBeNull();

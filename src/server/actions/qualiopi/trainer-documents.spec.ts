@@ -12,6 +12,7 @@ const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 const mockFindUnique = vi.fn();
+const mockUpdateMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -19,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => mockFindUnique(...a),
       create: (...a: unknown[]) => mockCreate(...a),
       update: (...a: unknown[]) => mockUpdate(...a),
+      updateMany: (...a: unknown[]) => mockUpdateMany(...a),
       delete: (...a: unknown[]) => mockDelete(...a),
     },
   },
@@ -57,6 +59,8 @@ beforeEach(() => {
   mockCreate.mockResolvedValue({ id: DOC_ID });
   mockUpdate.mockResolvedValue({ id: DOC_ID });
   mockDelete.mockResolvedValue({ id: DOC_ID });
+  mockUpdateMany.mockReset();
+  mockUpdateMany.mockResolvedValue({ count: 1 });
 });
 
 describe("createTrainerDocumentAction", () => {
@@ -219,6 +223,38 @@ describe("validateTrainerDocumentAction", () => {
     },
   );
 
+  // 🔴 Lot L5b (W5 I-2) — un CV DÉPOSÉ par le formateur (octets en base, sans
+  // adresse) se valide.
+  it("valide un CV déposé : sans adresse, mais avec son contenu en base", async () => {
+    mockFindUnique.mockResolvedValue({
+      type: "cv",
+      fichierUrl: null,
+      dateExpiration: null,
+      contenu: { trainerDocumentId: DOC_ID },
+    });
+    const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+    expect(r).toEqual({ data: { id: DOC_ID } });
+  });
+
+  // 🔴 Relecture L5b — une pièce ARCHIVÉE (`archiveAt`) ne se valide ni ne se
+  // rejette : rejeter effacerait la marque, puis valider la ferait revivre.
+  it.each(["valide", "rejete"] as const)("refuse « %s » sur une pièce archivée", async (statut) => {
+    mockFindUnique.mockResolvedValue({
+      type: "assurance_rc_pro",
+      fichierUrl: "https://drive.example/rc.pdf",
+      dateExpiration: null,
+      rejetMotif: null,
+      archiveAt: new Date("2026-10-01"),
+    });
+    const r = await validateTrainerDocumentAction({
+      id: DOC_ID,
+      statutValidation: statut,
+      rejetMotif: "motif",
+    });
+    expect(r).toHaveProperty("error");
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
   it("refuse un statut hors { valide, rejete }", async () => {
     const r = await validateTrainerDocumentAction({
       id: DOC_ID,
@@ -236,7 +272,27 @@ describe("deleteTrainerDocumentAction", () => {
     const r = await deleteTrainerDocumentAction({ id: DOC_ID });
     expect(r).toEqual({ data: { id: DOC_ID } });
     expect(mockDelete).not.toHaveBeenCalled();
-    expect(mockUpdate).toHaveBeenCalledTimes(1);
+    expect(mockUpdateMany).toHaveBeenCalledTimes(1);
+  });
+
+  // 🔴 Lot L5b — archivage DURCI : qui, quand, et jamais deux fois.
+  it("pose l'archivage logique (date, auteur, motif) en plus de la marque", async () => {
+    await deleteTrainerDocumentAction({ id: DOC_ID });
+    const arg = mockUpdateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(arg.where).toEqual({ id: DOC_ID, archiveAt: null });
+    expect(arg.data.archiveAt).toBeInstanceOf(Date);
+    expect(arg.data.archiveParId).toBe("admin-uuid");
+    expect(typeof arg.data.archiveMotif).toBe("string");
+    expect(String(arg.data.rejetMotif)).toMatch(/^\[archivée\]/);
+  });
+
+  it("une pièce DÉJÀ archivée ne se ré-archive pas (le premier auteur reste)", async () => {
+    mockUpdateMany.mockResolvedValue({ count: 0 });
+    const r = await deleteTrainerDocumentAction({ id: DOC_ID });
+    expect(r).toHaveProperty("error");
   });
 
   it("refuse un id non UUID", async () => {
@@ -244,5 +300,6 @@ describe("deleteTrainerDocumentAction", () => {
     expect(r).toEqual({ error: "Données invalides" });
     expect(mockDelete).not.toHaveBeenCalled();
     expect(mockUpdate).not.toHaveBeenCalled();
+    expect(mockUpdateMany).not.toHaveBeenCalled();
   });
 });
