@@ -1,6 +1,7 @@
 /**
  * Admin — Conformité RGPD · fiche d'une activité du registre : tous ses champs, puis
- * ses points à corriger. Lecture seule ; le registre se met à jour par import.
+ * ses points à corriger. Les champs se mettent à jour par import ; les points se
+ * marquent corrigés ici, et l'activité s'archive (administrateurs). Rien ne s'efface.
  */
 
 import type { Metadata } from "next";
@@ -12,13 +13,20 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { AdminSubmitButton } from "@/components/admin/ui/AdminSubmitButton";
 import {
   CarteEcart,
+  GestesEcart,
   PastilleEtat,
   TIRET,
   texteOuTiret,
 } from "@/components/admin/conformite-rgpd/blocs";
-import { lireRegistre } from "@/features/conformite-rgpd/stockage";
+import {
+  archiverTraitementAction,
+  reactiverTraitementAction,
+} from "@/features/conformite-rgpd/actions-ecarts";
+import { lireRegistreBase } from "@/features/conformite-rgpd/base";
+import { peutImporterRegistre } from "@/features/conformite-rgpd/regles";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +37,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 function Champ({ libelle, children }: { libelle: string; children: React.ReactNode }) {
@@ -44,17 +53,20 @@ function Champ({ libelle, children }: { libelle: string; children: React.ReactNo
   );
 }
 
-export default async function FicheTraitementPage({ params }: PageProps) {
+export default async function FicheTraitementPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
   const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
   }
   const base = `/fr/${adminPrefix}/conformite-rgpd`;
-  const lecture = await lireRegistre();
+  const sp = await searchParams;
+  const lecture = await lireRegistreBase();
   if (lecture.etat !== "ok") notFound();
-  const t = lecture.registre.traitements.find((x) => x.id === id);
+  const t = [...lecture.traitements, ...lecture.archives].find((x) => x.id === id);
   if (!t) notFound();
+  const admin = peutImporterRegistre(acces.role);
+  const archive = t.statut === "archive";
 
   return (
     <AdminPageShell width="wide">
@@ -66,8 +78,31 @@ export default async function FicheTraitementPage({ params }: PageProps) {
               ← Conformité RGPD
             </Link>
           }
-          meta={<PastilleEtat traitement={t} />}
+          meta={
+            archive ? (
+              <AdminBadge tone="neutral">Archivée</AdminBadge>
+            ) : (
+              <PastilleEtat traitement={t} />
+            )
+          }
+          actions={
+            admin ? (
+              <form action={archive ? reactiverTraitementAction : archiverTraitementAction}>
+                <input type="hidden" name="traitementId" value={t.uuid} />
+                <input type="hidden" name="retour" value="fiche" />
+                <input type="hidden" name="cle" value={t.id} />
+                <AdminSubmitButton pendingLabel="Enregistrement…">
+                  {archive ? "Réactiver" : "Archiver"}
+                </AdminSubmitButton>
+              </form>
+            ) : undefined
+          }
         />
+        {sp.erreur ? (
+          <p role="alert" className="admin-alert admin-alert-error">
+            Refusé. {sp.erreur.slice(0, 400)}
+          </p>
+        ) : null}
         <dl className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)]">
           <Champ libelle="Personnes concernées">{texteOuTiret(t.personnes.join(", "))}</Champ>
           <Champ libelle="Données">{texteOuTiret(t.donnees.join(", "))}</Champ>
@@ -105,8 +140,14 @@ export default async function FicheTraitementPage({ params }: PageProps) {
           <AdminEmptyState variant="inline" title="Aucun point relevé." />
         ) : (
           <ul className="flex flex-col gap-[var(--space-admin-3)]">
-            {t.ecarts.map((e, i) => (
-              <CarteEcart key={`${e.code ?? "e"}-${i}`} ecart={e} />
+            {t.ecarts.map((e) => (
+              <CarteEcart
+                key={e.id}
+                ecart={e}
+                gestes={
+                  admin ? <GestesEcart ecart={e} retour={{ vers: "fiche", cle: t.id }} /> : null
+                }
+              />
             ))}
           </ul>
         )}

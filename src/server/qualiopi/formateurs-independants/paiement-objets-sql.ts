@@ -25,7 +25,7 @@
 
 import { StatementStatut } from "../../../../prisma/generated/client";
 
-export const MIGRATION_FORMATEURS_PAIEMENT = "20261011100000_formateurs_paiement";
+export const MIGRATION_FORMATEURS_PAIEMENT = "20261011130000_formateurs_paiement";
 
 /**
  * Le seul statut qui LIBÈRE une place : un relevé annulé ne compte plus dans les

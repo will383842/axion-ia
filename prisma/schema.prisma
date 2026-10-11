@@ -16190,7 +16190,7 @@ model LienPartageAcces {
 //
 // Lots M-C (paiement sans double, « expand »), M-E (demandes de changement) et
 // M-F (pièces des organismes), regroupés en UNE migration (10-PLAN §16) :
-// `20261011100000_formateurs_paiement`. ADDITIVE : aucune suppression, aucun
+// `20261011130000_formateurs_paiement`. ADDITIVE : aucune suppression, aucun
 // renommage, rien de rendu obligatoire sur des données. M-D (« contract » :
 // retrait de l'unique `statement_unique_trainer_periode`) N'EST PAS ICI : c'est
 // un DROP, laissé pour plus tard.
@@ -16409,4 +16409,127 @@ model CommissionMotifNul {
   creeAt       DateTime             @default(now()) @map("cree_at")
 
   @@map("commissions_motif_nul")
+}
+
+// ═══ Conformité RGPD — lot 2 : registre, écarts, incidents (2026-10-11) ═══
+//
+// Le registre des traitements quitte le fichier R2 pour la base. Le fichier
+// importé reste la source : l'import fait un upsert par `cle` (traitement) et par
+// `code` (écart), sans jamais rouvrir un écart corrigé dans la console.
+// ⛔ AUCUNE suppression : un traitement se retire par `statut = archive`, un écart
+// reste visible une fois corrigé, un incident se clôt. Pas de cascade.
+
+enum StatutTraitementRgpd {
+  actif
+  archive
+
+  @@map("statut_traitement_rgpd")
+}
+
+enum GraviteEcartRgpd {
+  critique
+  eleve
+  moyen
+  faible
+
+  @@map("gravite_ecart_rgpd")
+}
+
+enum StatutEcartRgpd {
+  ouvert
+  corrige
+
+  @@map("statut_ecart_rgpd")
+}
+
+enum StatutIncidentDonnees {
+  ouvert
+  clos
+
+  @@map("statut_incident_donnees")
+}
+
+/// Une activité du registre (art. 30). `cle` = l'`id` du fichier importé.
+/// rgpd: technique — description d'une activité de traitement ; aucune donnée sur une personne
+model TraitementRgpd {
+  id                   String               @id @default(uuid()) @db.Uuid
+  cle                  String               @unique @db.VarChar(80)
+  nom                  String               @db.VarChar(300)
+  personnes            String[]             @default([])
+  donnees              String[]             @default([])
+  finalite             String?
+  baseLegale           String?              @map("base_legale")
+  conservationAnnoncee String?              @map("conservation_annoncee")
+  conservationReelle   String?              @map("conservation_reelle")
+  /// `[{ nom, pays, horsUE }]`, tel que validé par `schema.ts`.
+  destinataires        Json                 @default("[]")
+  securite             String?
+  droits               String?
+  statut               StatutTraitementRgpd @default(actif)
+  /// Position dans le dernier fichier importé.
+  ordre                Int                  @default(0)
+  importeLe            DateTime             @map("importe_le")
+  creeLe               DateTime             @default(now()) @map("cree_le")
+  majLe                DateTime             @updatedAt @map("maj_le")
+
+  ecarts EcartRgpd[]
+
+  @@index([statut, ordre])
+  @@map("traitements_rgpd")
+}
+
+/// Un point à corriger d'une activité. `code` unique dans son activité.
+/// rgpd: technique — constat de conformité et auteur de la correction ; aucune donnée sur une personne concernée
+model EcartRgpd {
+  id            String           @id @default(uuid()) @db.Uuid
+  traitementId  String           @map("traitement_id") @db.Uuid
+  traitement    TraitementRgpd   @relation(fields: [traitementId], references: [id], onDelete: Restrict)
+  code          String           @db.VarChar(200)
+  gravite       GraviteEcartRgpd
+  constat       String?
+  correction    String?
+  statut        StatutEcartRgpd  @default(ouvert)
+  corrigeLe     DateTime?        @map("corrige_le")
+  corrigeParId  String?          @map("corrige_par_id") @db.Uuid
+  corrigeParNom String?          @map("corrige_par_nom") @db.VarChar(200)
+  note          String?
+  ordre         Int              @default(0)
+  creeLe        DateTime         @default(now()) @map("cree_le")
+  majLe         DateTime         @updatedAt @map("maj_le")
+
+  @@unique([traitementId, code])
+  @@index([statut])
+  @@map("ecarts_rgpd")
+}
+
+/// Le journal des violations de données (art. 33.5). Textes libres chiffrés
+/// (`encryptPii`) : ils peuvent décrire des personnes.
+/// rgpd: technique — journal légal des violations de données, textes chiffrés au repos
+model IncidentDonnees {
+  id                   String                @id @default(uuid()) @db.Uuid
+  numero               Int                   @unique @default(autoincrement())
+  decouvertLe          DateTime              @map("decouvert_le")
+  survenuLe            DateTime?             @map("survenu_le")
+  description          String
+  donneesConcernees    String?               @map("donnees_concernees")
+  nombrePersonnes      Int?                  @map("nombre_personnes")
+  categoriesPersonnes  String?               @map("categories_personnes")
+  consequences         String?
+  mesuresPrises        String?               @map("mesures_prises")
+  /// `null` = pas encore décidé : le compte à rebours de 72 h court.
+  declareCnil          Boolean?              @map("declare_cnil")
+  declareCnilLe        DateTime?             @map("declare_cnil_le")
+  motifNonDeclaration  String?               @map("motif_non_declaration")
+  personnesPrevenues   Boolean?              @map("personnes_prevenues")
+  personnesPrevenuesLe DateTime?             @map("personnes_prevenues_le")
+  motifNonInformation  String?               @map("motif_non_information")
+  statut               StatutIncidentDonnees @default(ouvert)
+  closLe               DateTime?             @map("clos_le")
+  creeParId            String?               @map("cree_par_id") @db.Uuid
+  creeParNom           String                @map("cree_par_nom") @db.VarChar(200)
+  creeLe               DateTime              @default(now()) @map("cree_le")
+  majLe                DateTime              @updatedAt @map("maj_le")
+
+  @@index([statut, decouvertLe])
+  @@map("incidents_donnees")
 }
