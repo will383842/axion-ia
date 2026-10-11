@@ -112,6 +112,19 @@ function valides(...gabarits: string[]) {
   );
 }
 
+/** Textes validés ET `relances_auto` allumé (relance du dossier, L6). */
+function relancesAllumees(...gabarits: string[]) {
+  d.settings.mockImplementation(async (q: { where: { key: { startsWith: string } } }) =>
+    q.where.key.startsWith === "formateurs."
+      ? [
+          { key: "formateurs.textes_valides", value: { actif: true } },
+          { key: "formateurs.dossier_en_ligne", value: { actif: true } },
+          { key: "formateurs.relances_auto", value: { actif: true } },
+        ]
+      : gabarits.map((g) => ({ key: `textes_valides.${g}`, value: { valide: true } })),
+  );
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   d.render.mockResolvedValue({ subject: "Objet", html: "<p>x</p>", text: "x", famille: "B" });
@@ -162,8 +175,37 @@ describe("copies locales et noms", () => {
 describe("texte validé, relu au départ", () => {
   it("validé : la relance part", async () => {
     valides("formateur-dossier-relance");
+    // L6 : la relance du dossier exige en plus `relances_auto` et un dossier à compléter.
+    relancesAllumees("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "en_cours",
+    });
     await processeur()(job("formateur-dossier-relance"));
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+  it("L6 : dossier envoyé entre l'enfilage et le départ : la relance est retenue", async () => {
+    relancesAllumees("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "a_verifier",
+    });
+    await processeur()(job("formateur-dossier-relance"));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/plus à compléter/));
+  });
+  it("L6 : dossier ou relances coupés après l'enfilage : retenue", async () => {
+    valides("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "en_cours",
+    });
+    await processeur()(job("formateur-dossier-relance"));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/coupé/));
   });
   it("validation retirée après l'enfilage : retenu, clos annulé", async () => {
     valides();
@@ -180,9 +222,10 @@ describe("texte validé, relu au départ", () => {
     expect(d.annuler).toHaveBeenCalledTimes(1);
   });
   it("sans fiche liée : retenu", async () => {
-    valides("formateur-dossier-relance");
+    // L6 : un gabarit SANS lecteur propre, pour que seul le filet commun décide.
+    valides("formateur-dossier-lien");
     await processeur()(
-      job("formateur-dossier-relance", { entityType: undefined, entityId: undefined }),
+      job("formateur-dossier-lien", { entityType: undefined, entityId: undefined }),
     );
     expect(d.sendEmail).not.toHaveBeenCalled();
   });
@@ -190,22 +233,25 @@ describe("texte validé, relu au départ", () => {
 
 describe("fiche et fin de collaboration", () => {
   it("fiche effacée (art. 17) : retenu", async () => {
-    valides("formateur-dossier-relance");
+    // L6 : un gabarit SANS lecteur propre, pour que seul le filet commun décide.
+    valides("formateur-dossier-lien");
     d.trainer.mockResolvedValue({ email: "erased:abc@erased.local", finCollaborationAt: null });
-    await processeur()(job("formateur-dossier-relance"));
+    await processeur()(job("formateur-dossier-lien"));
     expect(d.sendEmail).not.toHaveBeenCalled();
   });
   it("fiche marquée effacée (marque art. 17) : retenu", async () => {
-    valides("formateur-dossier-relance");
+    // L6 : un gabarit SANS lecteur propre, pour que seul le filet commun décide.
+    valides("formateur-dossier-lien");
     d.trainer.mockResolvedValue({ email: "[erased-rgpd-art17]", finCollaborationAt: null });
-    await processeur()(job("formateur-dossier-relance"));
+    await processeur()(job("formateur-dossier-lien"));
     expect(d.sendEmail).not.toHaveBeenCalled();
   });
   it("candidature indéchiffrable : retenu (échec fermé)", async () => {
-    valides("formateur-dossier-relance");
+    // L6 : un gabarit SANS lecteur propre, pour que seul le filet commun décide.
+    valides("formateur-dossier-lien");
     d.application.mockResolvedValue({ email: null });
     await processeur()(
-      job("formateur-dossier-relance", { entityType: "JobApplication", entityId: TRAINER }),
+      job("formateur-dossier-lien", { entityType: "JobApplication", entityId: TRAINER }),
     );
     expect(d.sendEmail).not.toHaveBeenCalled();
   });

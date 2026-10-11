@@ -39,6 +39,17 @@ export const MENTION_VERSION_DOCUMENT = "doc-v1" as const;
 /** Version du CONSENTEMENT recueilli. Évolue indépendamment de la précédente. */
 export const CONSENTEMENT_VERSION_DOCUMENT = "doc-consent-v1" as const;
 
+/**
+ * Version du consentement quand la signature passe par un CODE à usage unique
+ * reçu par e-mail (contrat-cadre v3, lot L7c). Le procédé consenti n'est pas le
+ * même : il est donc versionné à part, et la version entre dans le tuple haché
+ * — c'est elle qui scelle « signé avec le code », sans colonne nouvelle.
+ */
+export const CONSENTEMENT_VERSION_DOCUMENT_CODE = "doc-consent-code-v1" as const;
+
+export type VersionConsentementDocument =
+  typeof CONSENTEMENT_VERSION_DOCUMENT | typeof CONSENTEMENT_VERSION_DOCUMENT_CODE;
+
 export interface ParametresMentionDocument {
   /** Type lisible de la pièce, ex. « convention de formation ». */
   pieceLibelle: string;
@@ -115,6 +126,15 @@ export const MENTION_CONSENTEMENT_DOCUMENT = [
   `J'ai pu prendre connaissance de la pièce dans son intégralité avant de signer, et j'en recevrai un exemplaire.`,
 ] as const;
 
+/**
+ * Bloc 3, variante signée avec un code (versionné par
+ * `CONSENTEMENT_VERSION_DOCUMENT_CODE`).
+ */
+export const MENTION_CONSENTEMENT_DOCUMENT_CODE = [
+  `J'accepte de signer cette pièce par voie électronique, en saisissant le code à usage unique reçu à mon adresse électronique.`,
+  `J'ai pu prendre connaissance de la pièce dans son intégralité avant de signer, et j'en recevrai un exemplaire.`,
+] as const;
+
 /** Bloc 4 — information RGPD due au signataire (art. 13), au moment de la collecte. */
 export const MENTION_RGPD_DOCUMENT = [
   `Données enregistrées : votre nom, le cas échéant votre adresse électronique et votre qualité, l'image de votre signature lorsqu'elle est tracée, la date et l'heure exactes, ainsi qu'une empreinte non réversible de votre adresse IP et de votre navigateur.`,
@@ -127,6 +147,8 @@ export const MENTION_RGPD_DOCUMENT = [
 /**
  * Le texte complet, dans l'ordre d'affichage. Exposé pour l'écran ET pour le PDF.
  *
+ * @param avecCode `true` quand la signature passe par un code à usage unique
+ *        (contrat-cadre v3) : consentement de la variante « code ».
  * @param canalMaison `true` pour le canal interne : ajoute le plafond probant.
  *        En canal fournisseur, la phrase serait fausse — un certificat est bien
  *        remis au signataire.
@@ -135,12 +157,13 @@ export function mentionCompleteDocument(
   partie: PartieSignataire,
   p: ParametresMentionDocument,
   canalMaison: boolean,
+  avecCode = false,
 ): string[] {
   return [
     mentionAttestationDocument(partie, p),
     MENTION_VALEUR_JURIDIQUE_DOCUMENT,
     ...(canalMaison ? [MENTION_PLAFOND_CANAL_MAISON] : []),
-    ...MENTION_CONSENTEMENT_DOCUMENT,
+    ...(avecCode ? MENTION_CONSENTEMENT_DOCUMENT_CODE : MENTION_CONSENTEMENT_DOCUMENT),
     ...MENTION_RGPD_DOCUMENT,
   ];
 }

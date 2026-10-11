@@ -140,7 +140,7 @@ describe("listTrainerDocumentsFull", () => {
     ];
     mockDocumentFindMany.mockResolvedValue(rows);
     await expect(listTrainerDocumentsFull("t1")).resolves.toEqual([
-      { ...rows[0], ecarteeDeLaPreuve: null },
+      { ...rows[0], ecarteeDeLaPreuve: null, aContenu: false },
     ]);
   });
 

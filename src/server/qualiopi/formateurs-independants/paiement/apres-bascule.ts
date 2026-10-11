@@ -8,8 +8,10 @@
  * que le relevé mensuel a revendiquées (`revendications_paiement`). Les salariés
  * et les dirigeants ne sont jamais concernés.
  *
- * 🔑 SANS DATE DE BASCULE, RIEN NE CHANGE : la fonction rend les prestations
- * telles quelles (le run d'aujourd'hui, octet pour octet).
+ * 🔑 SANS DATE DE BASCULE, RIEN NE CHANGE tant qu'aucune session n'est revendiquée
+ * `par_mission` : la fonction rend les prestations telles quelles (le run
+ * d'aujourd'hui, octet pour octet). Une bascule COUPÉE après des paiements par
+ * mission garde ces sessions hors du relevé mensuel.
  */
 
 /** La forme minimale d'une prestation du run (`PrestationACalculer`). */
@@ -44,8 +46,23 @@ export function filtrerPrestationsApresBascule<P extends PrestationAvecAffectati
     readonly premiereJourneeParSession: ReadonlyMap<string, string>;
   },
 ): P[] {
-  if (e.dateBascule === null) return [...prestations];
   const d = e.dateBascule;
+  // Sans date (jamais allumée, ou COUPÉE après coup) : seul un couple déjà
+  // revendiqué `par_mission` est écarté — il a été, ou sera, payé par mission ;
+  // le repayer au mensuel serait un double paiement. Sans revendication
+  // `par_mission`, les prestations sont rendues telles quelles.
+  if (d === null) {
+    return prestations.map((p) => {
+      if (p.sessionId === null) return p;
+      const sessionId = p.sessionId;
+      const affectations = p.affectations.filter(
+        (a) =>
+          e.statutParTrainer.get(a.trainerId) !== "sous_traitant" ||
+          e.revendications.get(cleRevendication(a.trainerId, sessionId)) !== "par_mission",
+      );
+      return affectations.length === p.affectations.length ? p : { ...p, affectations };
+    });
+  }
   return prestations.map((p) => {
     if (p.sessionId === null) return p;
     const sessionId = p.sessionId;

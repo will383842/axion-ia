@@ -59,6 +59,12 @@ export interface CandidatMission {
   readonly journeesPrevues: ReadonlyArray<JourneePrevue>;
   /** Une condition du financeur est en attente (rien n'est payable). */
   readonly conditionFinanceurEnAttente: boolean;
+  /**
+   * Le couple est déjà revendiqué `par_mission` : il RESTE au passage, même si
+   * une journée ajoutée après coup place la première journée avant la bascule
+   * (le run mensuel l'écarte à cause de la revendication : personne ne paierait).
+   */
+  readonly revendiqueParMission?: boolean;
 }
 
 export interface MoisAEcrire {
@@ -114,7 +120,7 @@ export function planifierPassage(
   };
 
   for (const c of candidats) {
-    if (c.premiereJournee < dateBascule) continue;
+    if (c.premiereJournee < dateBascule && c.revendiqueParMission !== true) continue;
     const signees = demiJourneesSignees(c.contresignatures);
     if (signees.length === 0) continue;
     if (c.conditions === null) {
@@ -198,7 +204,9 @@ export type IssueEcriture =
   | "revendique_par_le_mensuel"
   | "conflit_ligne_mensuelle"
   /** Relevé déjà écrit, mais des demi-journées signées en plus : à corriger par avoir. */
-  | "complement_a_traiter";
+  | "complement_a_traiter"
+  /** La pièce du mois a été annulée par avoir : sa réémission est un geste humain. */
+  | "reemission_attendue";
 
 export interface DepsPassage {
   dateBascule(): Promise<string | null>;
@@ -254,7 +262,9 @@ export async function passerPaiementsMission(
       }
       if (issue === "ecrit") ecrits += 1;
       else if (issue === "deja_ecrit") dejaEcrits += 1;
-      else if (issue === "complement_a_traiter") complements += 1;
+      // « À traiter à la main » : complément signé après coup, ou réémission après avoir.
+      else if (issue === "complement_a_traiter" || issue === "reemission_attendue")
+        complements += 1;
       else conflits += 1;
     }
     return {

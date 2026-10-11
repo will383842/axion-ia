@@ -37,10 +37,12 @@ import {
   basculerFormateursModelesComposeurAction,
   basculerFormateursAjoutConsoleAction,
   basculerFormateursSuiviEchangeAction,
+  basculerFormateursDossiersContratsAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
   basculerFormateursGardeMissionPortesAction,
+  basculerFormateursFinCollaborationAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -103,6 +105,7 @@ const ACTIONS_SIGNATURE: Record<
   affectation_sure: basculerFormateursAffectationSureAction,
   lettre_v2: basculerFormateursLettreV2Action,
   garde_mission_portes: basculerFormateursGardeMissionPortesAction,
+  fin_collaboration: basculerFormateursFinCollaborationAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
@@ -113,6 +116,7 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     modeles_composeur: basculerFormateursModelesComposeurAction,
     ajout_console: basculerFormateursAjoutConsoleAction,
     suivi_echange: basculerFormateursSuiviEchangeAction,
+    dossiers_contrats: basculerFormateursDossiersContratsAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

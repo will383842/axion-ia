@@ -430,6 +430,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.garde_mission_portes",
   },
+  // Lot L14 — fin de collaboration d'un formateur indépendant. Coupé : la carte
+  // n'apparaît pas sur la fiche et les actions refusent, exactement comme avant L14.
+  fin_collaboration: {
+    ...envoi(
+      "Fin de collaboration",
+      "La fiche d'un formateur indépendant permet d'envoyer l'avertissement avant une fin pour manquement, puis de mettre fin à la collaboration (préavis selon la durée de la relation, e-mail après aperçu, aucune suppression).",
+    ),
+    cle: "formateurs.fin_collaboration",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -455,6 +464,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
+  fin_collaboration: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
@@ -576,6 +586,14 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.suivi_echange",
   },
+  // Lot L8 — l'entrée « Dossiers et contrats » du groupe (exige aussi `menu_freelance`).
+  dossiers_contrats: {
+    ...envoi(
+      "Dossiers et contrats",
+      "Le groupe « Formateurs freelance » montre la liste des formateurs indépendants, avec leur étape calculée et leurs compteurs.",
+    ),
+    cle: "formateurs.dossiers_contrats",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -595,6 +613,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     modeles_composeur: [],
     ajout_console: [],
     suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
+    dossiers_contrats: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {

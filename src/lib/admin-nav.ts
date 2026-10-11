@@ -449,10 +449,22 @@ export const ADMIN_ROUTES_EPINGLEES: ReadonlyArray<string> = Object.values(ADMIN
  */
 export function buildAdminNav(
   adminPrefix: string,
-  options: { readonly formateursFreelance?: boolean } = {},
+  options: { readonly formateursFreelance?: boolean; readonly dossiersEtContrats?: boolean } = {},
 ): ReadonlyArray<AdminNavItem> {
   const items = buildAdminNavSocle(adminPrefix);
   if (!options.formateursFreelance) return items;
+  // Lot L8 — « Dossiers et contrats », éteint par `formateurs.dossiers_contrats`.
+  const dossiers: ReadonlyArray<AdminNavItem> = options.dossiersEtContrats
+    ? [
+        {
+          href: `/fr/${adminPrefix}/qualiopi/formateurs/dossiers`,
+          label: "Dossiers et contrats",
+          icon: "ClipboardCheck",
+          group: "formateurs-freelance",
+          navLevel: 0,
+        },
+      ]
+    : [];
   return [
     ...items,
     // Lot L0h — la vue filtrée de la liste existante (pas de page nouvelle).
@@ -463,6 +475,7 @@ export function buildAdminNav(
       group: "formateurs-freelance",
       navLevel: 0,
     },
+    ...dossiers,
   ];
 }
 
