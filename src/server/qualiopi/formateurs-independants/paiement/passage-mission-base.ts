@@ -38,11 +38,23 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   // Fenêtre large d'un jour : le jour de Paris tranche ensuite.
   const depuis = new Date(`${dateBascule}T00:00:00Z`);
   depuis.setUTCDate(depuis.getUTCDate() - 1);
+  // Une session déjà revendiquée par mission reste lue même si toutes ses journées
+  // ont été déplacées avant la bascule : le run mensuel l'écarte, le passage la paie.
+  const revendiqueesAvant = await prisma.revendicationPaiement.findMany({
+    where: { regime: "par_mission" },
+    select: { sessionId: true },
+  });
   const sessions = await prisma.trainingSession.findMany({
     // `dateDebut` OU une journée à la bascule ou après : une session reportée dont la
     // date de début est restée ancienne ne doit pas échapper aux deux moteurs.
     // La première journée (`premiereJourneeSession`) tranche ensuite.
-    where: { OR: [{ dateDebut: { gte: depuis } }, { jours: { some: { date: { gte: depuis } } } }] },
+    where: {
+      OR: [
+        { dateDebut: { gte: depuis } },
+        { jours: { some: { date: { gte: depuis } } } },
+        { id: { in: revendiqueesAvant.map((r) => r.sessionId) } },
+      ],
+    },
     select: {
       id: true,
       dateDebut: true,

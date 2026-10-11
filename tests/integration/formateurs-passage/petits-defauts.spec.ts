@@ -223,6 +223,38 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
     });
   });
 
+  it("animation écrite d'abord, indemnité ensuite : la plus proche échéance est gardée", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
+      const { trainerId, sessions } = await fixture(tx);
+      // Animation du 20/12 (échéance 19/01/2032), indemnité au 10/12 (09/01/2032).
+      await ecrireMoisDansTransaction(tx, MOIS(trainerId, sessions[0]!, ["2031-12-20"]), MAINTENANT);
+      const indemnite = indemniteAnnulation({
+        annuleeA: new Date("2031-12-10T08:00:00Z"),
+        debutPremiereAnnulee: new Date("2031-12-12T08:00:00Z"),
+        demiJourneesAnnulees: 2,
+        tarifJourneeHtCents: 35_000,
+        accepteeAvant: true,
+        parAxion: true,
+      });
+      expect(
+        await ecrireIndemniteAnnulation(tx, {
+          trainerId,
+          sessionId: sessions[0]!,
+          indemnite,
+          regimeTva: "franchise_293b",
+          tarifJourneeHtCents: 35_000,
+          maintenant: MAINTENANT,
+        }),
+      ).toBe("ecrite");
+      const r = await tx.trainerStatement.findFirstOrThrow({ where: { trainerId } });
+      expect([r.totalHtCents, r.echeanceAt?.toISOString().slice(0, 10)]).toEqual([
+        52_500,
+        "2032-01-09",
+      ]);
+    });
+  });
+
   it("après l'avoir d'une pièce non payée : le passage attend la réémission, qui passe et garde l'échéance", async () => {
     await dansTransactionAnnulee(async (tx) => {
       await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);

@@ -359,6 +359,7 @@ export async function transitionStatementAction(
   }
   let aChange = false;
   let ibanChange = false;
+  let ibanAValider = false;
   try {
     await prisma.$transaction(async (tx) => {
       /**
@@ -399,7 +400,7 @@ export async function transitionStatementAction(
           where: { trainerId: releve.trainerId, nature: "iban", statut: "en_attente" },
         });
         if (enAttente > 0) {
-          ibanChange = true;
+          ibanAValider = true;
           return;
         }
       }
@@ -483,6 +484,12 @@ export async function transitionStatementAction(
       return { error: MESSAGE_CALCUL_EN_COURS };
     }
     return { error: "Erreur lors du changement de statut." };
+  }
+  if (ibanAValider) {
+    return {
+      error:
+        "Compte bancaire à valider : une demande de changement d'IBAN attend votre accord. Paiement suspendu.",
+    };
   }
   if (ibanChange) {
     return {

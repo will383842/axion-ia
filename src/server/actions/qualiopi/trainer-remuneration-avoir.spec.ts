@@ -113,7 +113,7 @@ describe("« Virement fait » d'un relevé de mission : IBAN relu sous verrou", 
     mockStatementFindUnique.mockResolvedValue(mission);
     tx.demandeChangementFormateur.count.mockResolvedValue(1);
     const r = await transitionStatementAction(payer);
-    expect("error" in r && r.error).toMatch(/compte bancaire/);
+    expect("error" in r && r.error).toMatch(/compte bancaire à valider/i);
     expect(tx.demandeChangementFormateur.count).toHaveBeenCalled();
     expect(tx.trainerStatement.updateMany).not.toHaveBeenCalled();
   });

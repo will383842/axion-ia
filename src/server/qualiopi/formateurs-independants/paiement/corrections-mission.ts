@@ -87,19 +87,20 @@ export async function ecrireIndemniteAnnulation(
   });
   if (deja > 0) return "deja_ecrite";
   const [annee, mois] = e.indemnite.jourAnnulation.split("-").map(Number) as [number, number];
-  let releve: { id: string; statut: string } | null = await tx.trainerStatement.findFirst({
-    where: {
-      trainerId: e.trainerId,
-      sessionId: e.sessionId,
-      origine: "passage_mission",
-      periodeYear: annee,
-      periodeMonth: mois,
-      avoirDeId: null,
-      organismeSousTraitantId: null,
-      statut: { not: "annule" },
-    },
-    select: { id: true, statut: true },
-  });
+  let releve: { id: string; statut: string; echeanceAt: Date | null } | null =
+    await tx.trainerStatement.findFirst({
+      where: {
+        trainerId: e.trainerId,
+        sessionId: e.sessionId,
+        origine: "passage_mission",
+        periodeYear: annee,
+        periodeMonth: mois,
+        avoirDeId: null,
+        organismeSousTraitantId: null,
+        statut: { not: "annule" },
+      },
+      select: { id: true, statut: true, echeanceAt: true },
+    });
   if (releve && !(RECALCULABLES as readonly string[]).includes(releve.statut))
     return "releve_fige_a_la_main";
   if (!releve) {
@@ -115,8 +116,19 @@ export async function ecrireIndemniteAnnulation(
         // L'indemnité est payée au plus tard 30 jours après l'annulation (art. 11.3).
         echeanceAt: instantDuJour(e.indemnite.echeance),
       },
-      select: { id: true, statut: true },
+      select: { id: true, statut: true, echeanceAt: true },
     });
+  } else {
+    // Relevé de l'animation déjà là : la plus proche des deux échéances est gardée
+    // (même règle que l'animation ajoutée à un relevé d'indemnité).
+    const echeanceIndemnite = instantDuJour(e.indemnite.echeance);
+    if (releve.echeanceAt === null || echeanceIndemnite.getTime() < releve.echeanceAt.getTime()) {
+      await tx.trainerStatement.update({
+        where: { id: releve.id },
+        data: { echeanceAt: echeanceIndemnite },
+        select: { id: true },
+      });
+    }
   }
   await tx.trainerFeeLine.create({
     data: {
