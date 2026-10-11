@@ -199,7 +199,7 @@ export async function verdictAvantEnvoi(
   const marketing =
     contexte.marketing && !GABARITS_EXEMPTES_DU_DESABONNEMENT.has(contexte.template);
   const sollicitation =
-    contexte.sollicitation ?? GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(contexte.template);
+    contexte.sollicitation ?? estSollicitationSoumiseAOpposition(contexte.template, undefined);
   if (marketing || sollicitation) {
     try {
       // Le désabonnement newsletter ne vaut que pour le marketing.

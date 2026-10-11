@@ -67,7 +67,8 @@ vi.mock("@/server/email/email-log", () => ({
 }));
 
 import { startEmailWorker } from "../email-worker";
-import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
+import { MARQUE_EFFACEMENT, RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
+import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import {
   GABARITS_FORMATEUR_INDEPENDANT,
   GABARITS_SOLLICITATION_FORMATEUR,
@@ -152,6 +153,12 @@ describe("les sollicitations formateurs (F1, F2, F7, F22, F55)", () => {
   });
 });
 
+describe("copies locales et noms", () => {
+  it("la marque d'effacement est celle de rgpd-erase", () => {
+    expect(MARQUE_EFFACEMENT).toBe(ERASED_PLACEHOLDER);
+  });
+});
+
 describe("texte validé, relu au départ", () => {
   it("validé : la relance part", async () => {
     valides("formateur-dossier-relance");
@@ -188,6 +195,20 @@ describe("fiche et fin de collaboration", () => {
     await processeur()(job("formateur-dossier-relance"));
     expect(d.sendEmail).not.toHaveBeenCalled();
   });
+  it("fiche marquée effacée (marque art. 17) : retenu", async () => {
+    valides("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({ email: "[erased-rgpd-art17]", finCollaborationAt: null });
+    await processeur()(job("formateur-dossier-relance"));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+  it("candidature indéchiffrable : retenu (échec fermé)", async () => {
+    valides("formateur-dossier-relance");
+    d.application.mockResolvedValue({ email: null });
+    await processeur()(
+      job("formateur-dossier-relance", { entityType: "JobApplication", entityId: TRAINER }),
+    );
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
   it("candidature effacée : retenu", async () => {
     valides("formateur-invitation-relance");
     d.application.mockResolvedValue(null);
@@ -216,6 +237,15 @@ describe("opposition", () => {
     );
     expect(d.sendEmail).not.toHaveBeenCalled();
     expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/opposée/));
+  });
+  it("table des oppositions muette : la sollicitation formateur est retenue", async () => {
+    valides("formateur-invitation-relance");
+    d.opposition.mockRejectedValue(new Error("base"));
+    await processeur()(
+      job("formateur-invitation-relance", { entityType: "JobApplication", entityId: TRAINER }),
+    );
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledTimes(1);
   });
   it("l'argent passe malgré l'opposition", async () => {
     valides("formateur-virement-fait");

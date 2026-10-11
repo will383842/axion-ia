@@ -21,9 +21,11 @@ import { GABARIT_RELANCE_INVITATION } from "@/lib/commercial-application/relance
 import {
   GABARITS_ARGENT_FORMATEUR,
   GABARITS_FORMATEUR_INDEPENDANT,
+  GABARITS_SOLLICITATION_FORMATEUR,
   type GabaritFormateurIndependant,
 } from "@/lib/email/templates/formateur-independant-textes";
 import { decryptPii } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
@@ -33,6 +35,8 @@ import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independant
 /** Ce que le lecteur reçoit du job. */
 export interface JobAuDepart {
   readonly template: string;
+  /** L'adresse du destinataire (relue pour l'opposition d'une sollicitation formateur). */
+  readonly to?: string | undefined;
   readonly entityType?: string | undefined;
   readonly entityId?: string | undefined;
 }
@@ -48,23 +52,29 @@ const relireRelanceInvitationApporteur: LecteurAuDepart = async (job) => {
 };
 
 /**
+ * Marque d'effacement posée par `rgpd-erase.ts` (`ERASED_PLACEHOLDER`). Copie LOCALE : ce
+ * module est sur le trajet du worker et `rgpd-erase.ts` n'a rien à y faire. L'égalité est
+ * vérifiée par `email-worker.formateur-au-depart.spec.ts`.
+ */
+export const MARQUE_EFFACEMENT = "[erased-rgpd-art17]";
+
+const estEffacee = (adresse: string): boolean =>
+  adresse.endsWith("@erased.local") || adresse === MARQUE_EFFACEMENT;
+
+/**
  * La fiche d'un formateur (ou sa candidature) a-t-elle disparu ou été effacée ?
  * Lève si la base ne répond pas : l'appelant RETIENT.
  */
 async function ficheFormateurEffacee(entityType: string, id: string): Promise<boolean> {
   if (entityType === "Trainer") {
     const t = await prisma.trainer.findUnique({ where: { id }, select: { email: true } });
-    return t === null || t.email.endsWith("@erased.local");
+    return t === null || estEffacee(t.email);
   }
   const a = await prisma.jobApplication.findUnique({ where: { id }, select: { email: true } });
   if (a === null) return true;
-  let adresse: string | null = null;
-  try {
-    adresse = decryptPii(a.email);
-  } catch {
-    adresse = null;
-  }
-  return typeof adresse === "string" && adresse.endsWith("@erased.local");
+  // Échec fermé : une adresse indéchiffrable est un état invérifiable — on retient.
+  const adresse = decryptPii(a.email);
+  return typeof adresse !== "string" || estEffacee(adresse);
 }
 
 async function finDeCollaboration(id: string): Promise<boolean> {
@@ -91,6 +101,18 @@ const relireFormateur: LecteurAuDepart = async (job) => {
       return "textes des e-mails formateurs non validés";
     if (!estTexteValide(await lireTextesValides(), gabarit))
       return "texte de cet e-mail non validé";
+    // L'opposition est déjà relue par le verdict du worker, mais en échec OUVERT (règle
+    // historique des apporteurs). Pour une sollicitation formateur, on la relit ici en
+    // échec FERMÉ : une table muette retient.
+    if (GABARITS_SOLLICITATION_FORMATEUR.has(gabarit)) {
+      const empreinte = job.to ? hashEmailForLookup(job.to) : null;
+      if (empreinte === null) return "destinataire invérifiable — retenu par prudence";
+      const opposition = await prisma.emailOpposition.findUnique({
+        where: { emailHash: empreinte },
+        select: { id: true },
+      });
+      if (opposition !== null) return "la personne s'est opposée aux sollicitations";
+    }
     if (await ficheFormateurEffacee(job.entityType, job.entityId)) {
       return "la fiche a été supprimée ou effacée (RGPD)";
     }
