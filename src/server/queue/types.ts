@@ -8,7 +8,12 @@ import type { Locale } from "../../../prisma/generated/client";
 // Queue: emails
 // ============================================================
 
+import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
+
 export type EmailJobName =
+  // Formateurs indépendants (lot L-ENV) : F1 à F60, listés dans
+  // `lib/email/templates/formateur-independant-textes.ts`.
+  | GabaritFormateurIndependant
   // 🔴 Transmission de la facture d'honoraires établie SOUS MANDAT au nom du
   // sous-traitant. Cet envoi n'est pas une courtoisie : il OUVRE le délai de
   // huit jours pendant lequel le sous-traitant peut contester la pièce

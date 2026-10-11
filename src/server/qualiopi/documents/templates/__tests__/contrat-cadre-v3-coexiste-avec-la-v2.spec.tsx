@@ -150,8 +150,13 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
     expect(versionGabaritAEcrire("attestation", 3)).toBeNull();
   });
 
-  it("la lettre de mission n'a encore aucune version arrêtée (lot de la lettre)", () => {
-    expect(derniereVersionArretee("lettre_mission")).toBeNull();
+  // Le lot de la lettre (S5) est arrivé : sa v2 est arrêtée à côté de la v3 du
+  // contrat-cadre, et la v1 reste émise par défaut (cf.
+  // `versions-arretees-deux-familles.spec.ts`).
+  it("la lettre de mission a sa propre version arrêtée (S5), sans toucher au contrat-cadre", () => {
+    expect(derniereVersionArretee("lettre_mission")).toBe(2);
+    expect(versionGabaritCourante("lettre_mission")).toBe(1);
+    expect(derniereVersionArretee("contrat_sous_traitance")).toBe(3);
   });
 
   it("documents-service inscrit la version demandée, validée avant le numéro", () => {
@@ -200,6 +205,8 @@ describe("L7a — chaque exemplaire signé se rejoue avec SA version", () => {
  */
 const EMPREINTES_ARRETEES: Readonly<Record<string, string>> = {
   "contrat-cadre.tsx": "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
+  // Lot S5 — lettre de mission v2, arrêtée le 10/10/2026.
+  "lettre-mission-v2.tsx": "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
 };
 
 function texteMesurable(source: string): string {

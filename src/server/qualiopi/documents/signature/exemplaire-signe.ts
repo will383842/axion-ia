@@ -94,6 +94,8 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   // template ont disparu avec le module AFEST 1-to-1. Une vieille pièce de ce
   // type rendrait `type_non_rendu`, la preuve reste consultable au registre.
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
+  // v1 émise par défaut ; la v2 (lot S5) est une version ARRÊTÉE en avance,
+  // rejouée par `versions-arretees.ts`, comme le contrat-cadre v3.
   lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
   mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
   // S6a (f) — le consentement du stagiaire est un circuit du SSOT depuis
