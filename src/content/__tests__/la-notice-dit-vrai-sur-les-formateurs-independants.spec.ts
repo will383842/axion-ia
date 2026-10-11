@@ -141,7 +141,7 @@ describe("la notice dit vrai sur les formateurs indépendants", () => {
     expect(FR()).toMatch(/satisfaction donnée par les stagiaires/);
     expect(FR()).toMatch(/centre de votre commune d'exercice \(jamais votre adresse\)/);
     expect(FR()).toMatch(/à partir de cinq avis/);
-    expect(FR()).toMatch(/jamais montrée aux formateurs/);
+    expect(FR()).toMatch(/jamais publiée ni montrée aux formateurs/);
   });
 
   it("dit l'export art. 15 et l'effacement art. 17 tels que le module les fait", () => {
