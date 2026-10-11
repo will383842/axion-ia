@@ -369,7 +369,6 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Voici le lien que vous avez demandé. Il vous est personnel.",
-          "\n",
           "Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.",
         ],
         boutons: ["Reprendre mon dossier", "Ouvrir mon espace"],
@@ -1210,3 +1209,6 @@ export const GABARITS_SOLLICITATION_FORMATEUR: ReadonlySet<GabaritFormateurIndep
       (g) => TEXTES_FORMATEUR[g].sollicitation,
     ),
   );
+
+/** Un [crochet] encore présent : une valeur que l'outil n'a pas remplie. */
+export const CROCHET_NON_REMPLI = /\[[^[\]]+\]/;

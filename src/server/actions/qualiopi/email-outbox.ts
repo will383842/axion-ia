@@ -314,6 +314,15 @@ export async function supprimerReglageEmailAction(input: {
   const session = await requireAdminWrite();
   const parsed = z.object({ id: z.string().uuid() }).safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
+  // L-ENV (P6) : retirer une règle qui nomme un gabarit formateur indépendant est réservé
+  // au super-admin, comme la poser.
+  const regle = await prisma.emailAutomationSetting.findUnique({
+    where: { id: parsed.data.id },
+    select: { template: true },
+  });
+  if (!regle) return { error: "Règle introuvable" };
+  const refusFormateur = refusGabaritFormateur(regle.template, estSuperAdmin(session.role));
+  if (refusFormateur) return { error: refusFormateur };
 
   await prisma.emailAutomationSetting.delete({ where: { id: parsed.data.id } });
   await logQualiopiActivity({
