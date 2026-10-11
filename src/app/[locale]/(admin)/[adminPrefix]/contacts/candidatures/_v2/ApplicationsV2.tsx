@@ -21,6 +21,8 @@
 //     Le tri par défaut passe par l'offre en premier (33 offres + 1 bucket
 //     « Candidature spontanée » contigus à l'écran), la date en second.
 
+import { AjouterCandidatFormateur } from "./AjouterCandidatFormateur";
+import type { EtatAjoutCandidatFormateur } from "@/features/admin-job-applications/candidat-formateur-actions";
 import Link from "next/link";
 import { ArrowRight, Download, FolderOpen, Gauge } from "lucide-react";
 import {
@@ -135,6 +137,11 @@ interface Props {
    * l'export, pour qu'ils parlent du même ensemble que l'écran.
    */
   vueFormateursFreelance?: boolean;
+  /**
+   * Lot L0c-3 — « Ajouter un candidat formateur » (`formateurs.ajout_console`,
+   * direction) : l'action, passée par la page, ou `null`.
+   */
+  ajoutCandidatFormateur?: ((payload: unknown) => Promise<EtatAjoutCandidatFormateur>) | null;
 }
 
 export function ApplicationsV2({
@@ -149,6 +156,7 @@ export function ApplicationsV2({
   plusAncienJamaisRepondu = null,
   reponseAuto = null,
   vueFormateursFreelance = false,
+  ajoutCandidatFormateur = null,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -279,6 +287,9 @@ export function ApplicationsV2({
         </form>
       ) : null}
 
+      {vueFormateursFreelance && ajoutCandidatFormateur ? (
+        <AjouterCandidatFormateur ajouter={ajoutCandidatFormateur} />
+      ) : null}
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
           {vueFormateursFreelance ? (
