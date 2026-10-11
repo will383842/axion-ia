@@ -323,7 +323,6 @@ export async function eraseFormateurIndependantForEmail(
         cvUrl: null,
         dateNaissance: null,
         lieuNaissance: null,
-        actif: false,
         accesVersion: { increment: 1 },
       },
     });
