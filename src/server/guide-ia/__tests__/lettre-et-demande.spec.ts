@@ -117,7 +117,7 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     });
     // La demande porte la version de la mention PERSO.
     const data = (guideCreate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
-    expect(data["version"]).toBe("guide-mention-perso-v1-2026-09-24");
+    expect(data["version"]).toBe("guide-mention-perso-v2-2026-10-11");
   });
 
   it("adresse PERSO + case cochée : inscrite, preuve « optin » avec le texte de la CASE", async () => {
@@ -150,7 +150,7 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     expect(recordConsentEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         action: "information",
-        consentVersion: "guide-mention-pro-v2-2026-09-26",
+        consentVersion: "guide-mention-pro-v3-2026-10-11",
       }),
     );
     // L'e-mail porte le lien de désinscription (et l'en-tête One-Click).

@@ -5,8 +5,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => ({
   session: null as null | { user: { id: string; role: string } },
   enregistrer: vi.fn(),
+  ecrireBase: vi.fn(),
   journal: vi.fn(),
   configure: true,
+  dejaEnBase: 0,
+  lecture: { etat: "absent" } as unknown,
 }));
 vi.mock("@/auth", () => ({ auth: async () => h.session }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
@@ -21,16 +24,25 @@ vi.mock("@/lib/r2-storage", () => ({
   uploadToR2: vi.fn(),
   getObjectBufferR2: vi.fn(),
 }));
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: { traitementRgpd: { count: async () => h.dejaEnBase } },
+}));
 vi.mock("@/server/journal/journaliser", () => ({
   journaliser: (...a: unknown[]) => h.journal(...a),
 }));
 vi.mock("../stockage", async (orig) => ({
   ...(await orig<typeof import("../stockage")>()),
   enregistrerRegistre: (...a: unknown[]) => h.enregistrer(...a),
+  lireRegistre: async () => h.lecture,
 }));
 
-import { importerRegistre, importerRegistreAction } from "../actions";
+vi.mock("../base", async (orig) => ({
+  ...(await orig<typeof import("../base")>()),
+  ecrireRegistreEnBase: (...a: unknown[]) => h.ecrireBase(...a),
+}));
+
+import { importerRegistre, importerRegistreAction, reprendreRegistre } from "../actions";
+import { validerRegistre } from "../schema";
 import { registreFictif } from "./fixtures";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
@@ -45,7 +57,12 @@ beforeEach(() => {
   h.session = { user: { id: ID, role: "admin" } };
   h.configure = true;
   h.enregistrer.mockReset();
+  h.ecrireBase.mockReset();
+  h.ecrireBase.mockResolvedValue({ traitements: 3, ecarts: 5, archives: 0 });
   h.journal.mockReset();
+  h.dejaEnBase = 0;
+  const v = validerRegistre(registreFictif);
+  h.lecture = v.ok ? { etat: "ok", registre: v.registre, importeLe: null } : null;
 });
 
 describe("Mettre à jour le registre", () => {
@@ -63,6 +80,7 @@ describe("Mettre à jour le registre", () => {
       const r = await importerRegistre(formulaire(JSON.stringify(registreFictif)));
       expect(r).toEqual({ ok: false, erreur: "Réservé aux administrateurs." });
       expect(h.enregistrer).not.toHaveBeenCalled();
+      expect(h.ecrireBase).not.toHaveBeenCalled();
       expect(h.journal).not.toHaveBeenCalled();
     },
   );
@@ -95,10 +113,37 @@ describe("Mettre à jour le registre", () => {
     expect(h.enregistrer).not.toHaveBeenCalled();
   });
 
-  it("enregistre un registre valide et journalise SANS contenu", async () => {
+  it("refuse deux écarts de même code dans une activité, sans rien écrire", async () => {
+    const r = await importerRegistre(
+      formulaire(
+        JSON.stringify({
+          traitements: [
+            {
+              id: "x",
+              nom: "X",
+              ecarts: [
+                { code: "Z", gravite: "faible" },
+                { code: "Z", gravite: "moyen" },
+              ],
+            },
+          ],
+        }),
+      ),
+    );
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.erreur).toContain("code déjà utilisé");
+    expect(h.enregistrer).not.toHaveBeenCalled();
+    expect(h.ecrireBase).not.toHaveBeenCalled();
+  });
+
+  it("enregistre un registre valide (copie R2 PUIS base) et journalise SANS contenu", async () => {
     const r = await importerRegistre(formulaire(JSON.stringify(registreFictif)));
     expect(r).toEqual({ ok: true, traitements: 3 });
     expect(h.enregistrer).toHaveBeenCalledTimes(1);
+    expect(h.ecrireBase).toHaveBeenCalledTimes(1);
+    expect(h.enregistrer.mock.invocationCallOrder[0]).toBeLessThan(
+      h.ecrireBase.mock.invocationCallOrder[0]!,
+    );
     expect(h.journal).toHaveBeenCalledTimes(1);
     const trace = JSON.stringify(h.journal.mock.calls[0]);
     expect(trace).toContain("conformite.registre.importe");
@@ -114,5 +159,38 @@ describe("Mettre à jour le registre", () => {
     await expect(importerRegistreAction(formulaire("{}"))).rejects.toThrow(
       /REDIRECT:\/fr\/adm\/conformite-rgpd\?erreur=/,
     );
+  });
+});
+
+describe("Reprendre le registre déjà importé", () => {
+  it("refuse un non-administrateur, sans rien écrire", async () => {
+    h.session = { user: { id: ID, role: "secretaire" } };
+    expect(await reprendreRegistre()).toEqual({
+      ok: false,
+      erreur: "Réservé aux administrateurs.",
+    });
+    expect(h.ecrireBase).not.toHaveBeenCalled();
+  });
+
+  it("refuse si la base contient déjà le registre", async () => {
+    h.dejaEnBase = 2;
+    const r = await reprendreRegistre();
+    expect(r.ok).toBe(false);
+    expect(h.ecrireBase).not.toHaveBeenCalled();
+  });
+
+  it("refuse s'il n'y a rien de lisible dans le stockage privé", async () => {
+    h.lecture = { etat: "absent" };
+    expect((await reprendreRegistre()).ok).toBe(false);
+    expect(h.ecrireBase).not.toHaveBeenCalled();
+  });
+
+  it("base vide + registre dans R2 : l'écrit en base et journalise sans contenu", async () => {
+    const r = await reprendreRegistre();
+    expect(r).toEqual({ ok: true, traitements: 3 });
+    expect(h.ecrireBase).toHaveBeenCalledTimes(1);
+    const trace = JSON.stringify(h.journal.mock.calls[0]);
+    expect(trace).toContain("conformite.registre.repris");
+    expect(trace).not.toContain("Activité A");
   });
 });
