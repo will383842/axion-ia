@@ -195,6 +195,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    lu par la liste des candidatures (vue filtrée ; le gabarit de la console est déjà en zone).
   "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/page.tsx",
   "src/app/api/admin/candidatures/export/route.ts",
+  // Modèles « formateur » du composeur (lot L0c-2) : `formateurs.modeles_composeur`, lu par
+  //    la fiche de candidature (proposés) et l'action de réponse (revérifiés).
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/page.tsx",
+  "src/features/admin-job-applications/reply-actions.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

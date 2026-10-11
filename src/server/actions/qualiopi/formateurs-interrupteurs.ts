@@ -471,3 +471,9 @@ export async function basculerFormateursMenuFreelanceAction(
 ): Promise<EtatBascule> {
   return basculerEntree("menu_freelance", formData);
 }
+export async function basculerFormateursModelesComposeurAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("modeles_composeur", formData);
+}
