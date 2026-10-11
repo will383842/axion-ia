@@ -360,6 +360,10 @@ async function rangSuivantOuvert(): Promise<boolean> {
  */
 export const MOTIF_CHAINE_ARRETEE = "Retrait ou remplacement par l'équipe";
 
+/** Motif : le rang suivant a affecté sans qu'une proposition parte. */
+export const MOTIF_AFFECTE_SANS_PROPOSITION =
+  "Affecté sans proposition : la suite des choix revient à l'équipe";
+
 /** Délai laissé à l'action de choix pour proposer au 1er choix. */
 export const DELAI_GRACE_CHOIX_MS = 15 * 60 * 1000;
 
@@ -560,6 +564,14 @@ export async function proposerRangSuivant(
         session: null,
       });
       if (!p.proposee) {
+        // Affecté sans proposition (salarié, garde, erreur) : aucune mission ne
+        // trace ce tour. La chaîne s'arrête ici — ce rang et les suivants sont
+        // marqués — pour qu'un retrait ultérieur par l'équipe ne relance jamais
+        // ni ce formateur ni le suivant. La suite revient à l'équipe.
+        await prisma.choixFormateurSession.updateMany({
+          where: { sessionId, rang: { lte: 3 }, sauteAt: null },
+          data: { sauteAt: maintenant, sauteMotif: MOTIF_AFFECTE_SANS_PROPOSITION },
+        });
         // La place est tenue mais la proposition n'est pas partie : on le dit,
         // sinon la session resterait bloquée en silence.
         await alerter(

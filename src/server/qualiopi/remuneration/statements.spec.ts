@@ -570,7 +570,7 @@ describe("runRemunerationMensuelle — correctif L11b : honoraires figés au cho
     const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
 
     expect(r.lignesEcrites).toBe(1);
-    expect(r.anomalies.some((a) => a.motif === "conditions_figees_mission")).toBe(false);
+    expect(r.anomalies.some((a) => a.motif === "conditions_figees_hors_mission")).toBe(false);
   });
 
   it("un salarié n'est jamais écarté, même avec une mission chiffrée", async () => {

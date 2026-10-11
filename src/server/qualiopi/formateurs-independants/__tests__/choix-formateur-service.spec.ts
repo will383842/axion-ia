@@ -122,6 +122,7 @@ vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
 }));
 
 import {
+  MOTIF_AFFECTE_SANS_PROPOSITION,
   MOTIF_CHAINE_ARRETEE,
   MOTIF_CHOIX_EPUISES,
   MOTIF_CHOIX_REMPLACE,
@@ -406,6 +407,10 @@ describe("rang suivant (T15)", () => {
     h.proposer.mockResolvedValueOnce({ proposee: false, raison: "erreur" } as never);
     await proposerRangSuivant(SESSION, "refus", MAINTENANT);
     expect(JSON.stringify(h.telegram.mock.calls)).toContain("pas partie");
+    // La chaîne s'arrête : un retrait ultérieur ne relancera ni ce rang ni le suivant.
+    expect(JSON.stringify(h.prisma.choixFormateurSession.updateMany.mock.calls)).toContain(
+      MOTIF_AFFECTE_SANS_PROPOSITION,
+    );
   });
 
   it("le choix en cartes coupé coupe aussi le rang suivant", async () => {

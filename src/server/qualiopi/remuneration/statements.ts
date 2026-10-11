@@ -364,30 +364,13 @@ async function sansConditionsFigees(
     statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
     figees,
   });
-  if (r.ecartees.length === 0) return { prestations: r.prestations, anomalies: [] };
-  // Le libellé dit la vérité : « réglé par mission » seulement si la session
-  // l'est ; sinon, personne ne paie automatiquement et il faut le dire.
-  const dateBascule = await lireDateBascule(prisma);
-  const sessionsEcartees = [
-    ...new Set(r.ecartees.flatMap((e) => (e.prestation.sessionId ? [e.prestation.sessionId] : []))),
-  ];
-  const sessions =
-    dateBascule === null
-      ? []
-      : await prisma.trainingSession.findMany({
-          where: { id: { in: sessionsEcartees } },
-          select: { id: true, dateDebut: true, jours: { select: { date: true } } },
-        });
-  const parMission = new Set(
-    sessions.filter((x) => premiereJourneeSession(x) >= dateBascule!).map((x) => x.id),
-  );
+  // Un couple qui arrive ici n'est PAS payé par mission : `apresBascule` a déjà
+  // écarté tous ceux qui le sont (première journée ≥ D sans revendication, ou
+  // revendiqués `par_mission`). Il reste donc à régler à la main : on le dit.
   return {
     prestations: r.prestations,
     anomalies: r.ecartees.map(({ trainerId, prestation }) => ({
-      motif:
-        prestation.sessionId !== null && parMission.has(prestation.sessionId)
-          ? ("conditions_figees_mission" as const)
-          : ("conditions_figees_hors_mission" as const),
+      motif: "conditions_figees_hors_mission" as const,
       trainerId,
       prestation: {
         type: prestation.type,
