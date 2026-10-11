@@ -1013,6 +1013,8 @@ export async function enqueueEmail(
         entityType: options?.entityType ?? null,
         entityId: options?.entityId ?? null,
         ...(options?.attachments ? { attachments: options.attachments } : {}),
+        // CAMP-2 : la clé d'idempotence suit l'envoi en corbeille.
+        ...(options?.jobId ? { jobId: options.jobId } : {}),
       });
       if (outboxId !== null) {
         return { enqueued: false, garePourValidation: true, outboxId };
@@ -2071,6 +2073,22 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.suivi-entreprise-opco",
         pattern: "30 6,7 * * 1-5",
         jobId: "formation-crons-suivi-entreprise-opco-cron",
+      },
+      // Formateurs indépendants (CAMP-3) — campagnes de relance, HORAIRE à :50 ; le
+      // corps ne travaille qu'entre 8 h et 19 h à Paris. Éteint à la livraison.
+      {
+        type: "formation-crons.campagnes-formateurs",
+        pattern: "50 * * * *",
+        jobId: "formation-crons-campagnes-formateurs-cron",
+      },
+      // Lot L12c (2026-10-11) — paiement par mission des formateurs indépendants.
+      // 08:15 UTC (09:15 ou 10:15 à Paris), chaque jour : rien tant que
+      // `formateurs.passage_paiement` n'a pas de date, ni tant que l'unique
+      // historique des relevés (M-D) est en base. Idempotent.
+      {
+        type: "formation-crons.paiement-mission",
+        pattern: "15 8 * * *",
+        jobId: "formation-crons-paiement-mission-cron",
       },
       // Lot L2c (2026-10-11) — référentiel des communes (formateurs proches).
       // 07:50 UTC (08:50 ou 09:50 à Paris), chaque jour : le corps ne

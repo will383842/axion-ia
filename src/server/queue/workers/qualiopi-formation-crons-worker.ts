@@ -183,6 +183,13 @@ export type FormationCronJobType =
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
   // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
   | "formation-crons.suivi-entreprise-opco"
+  // Chantier formateurs indépendants (CAMP-3) — le passage HORAIRE des campagnes de
+  // relance, de 8 h à 19 h à Paris. Livré éteint : registre vide, interrupteurs coupés.
+  | "formation-crons.campagnes-formateurs"
+  // Lot L12c (2026-10-11, ADR 0066 v2) — paiement par mission des formateurs
+  // indépendants. QUOTIDIEN ; arrêté tant que `formateurs.passage_paiement` n'a
+  // pas de date. Écrit des relevés « à valider », jamais validés seuls.
+  | "formation-crons.paiement-mission"
   // Lot L2c (2026-10-11, ADR 0066) — référentiel des communes (formateurs
   // proches). QUOTIDIEN, mais ne télécharge qu'une fois par mois ; arrêté tant
   // que `formateurs.communes_geo_cron` n'est pas allumé.
@@ -2604,8 +2611,71 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
+  "formation-crons.campagnes-formateurs": handleCampagnesFormateurs,
+  "formation-crons.paiement-mission": handlePaiementMission,
   "formation-crons.communes-geo": handleCommunesGeo,
 };
+
+/**
+ * CAMP-3 — passage horaire des campagnes de relance des formateurs indépendants. Corps
+ * dans `server/relances/passer-campagnes.ts` (fenêtre 8 h-19 h, interrupteurs, plafond
+ * de 30, anti-doublon) ; ici on déclenche et on trace. Import PARESSEUX.
+ */
+async function handleCampagnesFormateurs(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerCampagnes } = await import("@/server/relances/passer-campagnes");
+    const b = await passerCampagnes(new Date());
+    if (b.horsFenetre || b.campagnesActives === 0) return;
+    const ligne =
+      `[formation-crons] campagnes-formateurs: ${b.campagnesActives} campagne(s) active(s), ` +
+      `${b.envoyes} relance(s), ${b.gares} garée(s), écartées ${JSON.stringify(b.ecartes)}` +
+      (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] campagnes-formateurs: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Lot L12c — paiement par mission. Corps et doctrine dans
+ * `formateurs-independants/paiement/passage-mission.ts` ; ici on déclenche et on
+ * trace (aucune donnée personnelle : des compteurs). Import PARESSEUX ; le
+ * passage ne lève jamais.
+ */
+async function handlePaiementMission(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const [{ passerPaiementsMission }, { depsPassageReelles }] = await Promise.all([
+      import("@/server/qualiopi/formateurs-independants/paiement/passage-mission"),
+      import("@/server/qualiopi/formateurs-independants/paiement/passage-mission-base"),
+    ]);
+    const b = await passerPaiementsMission(new Date(), await depsPassageReelles());
+    const p = "[formation-crons] paiement-mission:";
+    if (b.etat === "fait") {
+      console.log(
+        `${p} ${b.ecrits} relevé(s) écrit(s), ${b.dejaEcrits} déjà écrit(s), ` +
+          `${b.conflits} conflit(s), ${b.complements} complément(s), ${b.erreurs} erreur(s), ` +
+          `${b.enAttente} mois en attente, ${b.anomalies.length} anomalie(s)`,
+      );
+    } else if (b.etat === "echec") {
+      console.error(`${p} échec : ${b.message}`);
+    } else {
+      console.log(
+        `${p} ${b.etat === "coupe" ? "coupé (aucune date de bascule)" : "bloqué (M-D non fait)"}`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] paiement-mission: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * Lot L2c — référentiel des communes. Corps et doctrine dans

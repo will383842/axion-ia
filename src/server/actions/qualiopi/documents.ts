@@ -96,6 +96,8 @@ import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signatur
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
+import { genererLettreMissionV2 } from "@/server/qualiopi/documents/lettre-mission-v2-generation";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
   LIEU_DOCUMENT_SELECT,
   refusEmissionLieu,
@@ -1880,6 +1882,7 @@ export async function genererLettreMissionAction(input: {
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
     adresseProfessionnelle: string | null;
+    organismeSousTraitantId: string | null;
   } | null = null;
 
   if (principalTrainerId) {
@@ -1894,6 +1897,7 @@ export async function genererLettreMissionAction(input: {
         tarifJourneeHtCents: true,
         sousTraitantNda: true,
         adresseProfessionnelle: true,
+        organismeSousTraitantId: true,
       },
     });
   }
@@ -1943,6 +1947,36 @@ export async function genererLettreMissionAction(input: {
   if (trainer !== null) {
     const refus = refusLettreSelonStatut(trainer.statut, nomPrenom);
     if (refus !== null) return { error: refus };
+  }
+
+  // Lot S5 — lettre v2 d'une page, pour un formateur INDÉPENDANT, derrière
+  // l'interrupteur `formateurs.lettre_v2`. Coupé : la v1 ci-dessous, inchangée.
+  if (
+    trainer?.statut === "sous_traitant" &&
+    // Un organisme sous-traitant garde la v1 jusqu'à son lot (L11f, canal A).
+    trainer.organismeSousTraitantId === null &&
+    principalTrainerId !== null &&
+    (await interrupteurAllume("lettre_v2"))
+  ) {
+    const v2 = await genererLettreMissionV2({
+      sessionId,
+      trainerId: principalTrainerId,
+      ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
+    });
+    if (!v2.ok) return { error: v2.erreur };
+    await logQualiopiActivity({
+      action: "qualiopi.document.lettre_mission.genere",
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: {
+        documentId: v2.documentId,
+        numero: v2.numero,
+        gabaritVersion: 2,
+        ...(v2.lettreAnnuleeId !== null ? { lettreAnnuleeId: v2.lettreAnnuleeId } : {}),
+      },
+      session: adminSession,
+    });
+    return { data: { documentId: v2.documentId, numero: v2.numero } };
   }
 
   const tarifJourHt = trainer?.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0;
@@ -2018,6 +2052,11 @@ export async function genererLettreMissionAction(input: {
     // `trainerId` en plus de la session : c'est lui qui rend la pièce
     // retrouvable et signable sans détour par la session (cf. lettre-cadre).
     refs: { sessionId, ...(principalTrainerId !== null ? { trainerId: principalTrainerId } : {}) },
+    // Lot S5 — ce texte-ci est la v1, version émise par défaut ; la v2 n'est
+    // qu'une version ARRÊTÉE en avance. On la date explicitement : si la v2
+    // devenait un jour la courante sans archiver la v1, l'émission échouerait
+    // au lieu de sceller une pièce rejouée avec un autre texte.
+    gabaritVersion: 1,
   });
 
   await logQualiopiActivity({
@@ -2501,6 +2540,8 @@ export async function genererLettreMissionCadreAction(input: {
         identite,
       }),
     refs: { trainerId },
+    // Lot S5 — la lettre-CADRE imprime le texte v1 : on le date tel.
+    gabaritVersion: 1,
     metadata: {
       lettreCadre: {
         du: dateDebut,

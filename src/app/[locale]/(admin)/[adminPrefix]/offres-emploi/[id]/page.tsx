@@ -8,6 +8,7 @@ import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { JobOfferForm, type JobOfferFormInitial } from "../JobOfferForm";
 import { OfferLifecycleActions } from "./OfferLifecycleActions";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
 
   const o = await getJobOfferDetailAction(id);
   if (!o) notFound();
+  const { nature_offre: natureLue } = await lireEtatsEntree();
 
   const initial: JobOfferFormInitial = {
     id: o.id,
@@ -38,6 +40,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     bodyFrHtml: o.bodyFr,
     bodyEnHtml: o.bodyEn,
     employmentType: o.employmentType,
+    natureCollaboration: o.natureCollaboration,
     secondaryEmploymentType: o.secondaryEmploymentType ?? "",
     contractLabel: o.contractLabel ?? "",
     workMode: o.workMode,
@@ -96,7 +99,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
         }
       />
       <OfferLifecycleActions id={o.id} />
-      <JobOfferForm initial={initial} />
+      <JobOfferForm initial={initial} natureLue={natureLue} />
     </AdminPageShell>
   );
 }

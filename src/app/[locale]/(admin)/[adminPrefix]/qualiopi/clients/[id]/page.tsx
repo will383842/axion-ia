@@ -64,6 +64,10 @@ import { AVERTISSEMENT_SIREN_CONTRAIRE, sirenContreditLeSiret, sirenDuClient } f
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { gardePage } from "@/server/auth/garde-page";
+import { peutEngager } from "@/server/auth/habilitations";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import { lireFormateursProches } from "@/server/qualiopi/formateurs-proches/formateurs-proches-service";
+import { FormateursProches } from "@/components/admin/qualiopi/FormateursProches";
 import {
   OngletEchanges,
   OngletPersonnes,
@@ -341,6 +345,15 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       : null;
   const ongletCourant = typeof sp.onglet === "string" ? sp.onglet : "";
 
+  // Lot L15c — « Formateurs proches » (W6 D-W6-1) : au-dessus des onglets, pour
+  // les rôles qui habilitent un formateur. 🔴 Le rôle est jugé AVANT toute
+  // lecture : hors rôle, ni l'interrupteur ni les formateurs ne sont requêtés.
+  // Interrupteur `formateurs.proches_bloc` absent = encadré absent.
+  const proches =
+    peutEngager(acces.role, "habiliter_formateur") && (await envoiAllume("proches_bloc"))
+      ? await lireFormateursProches(client.id, maintenant)
+      : undefined;
+
   let contenuDossier: React.ReactNode = null;
   if (voitEchanges && onglet === "synthese") {
     const [faits, projets] = await Promise.all([lireFaitsDuClient(id), lireProjetsDuClient(id)]);
@@ -510,6 +523,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       />
 
       <BandeauEtatFonds bandeau={bandeauFonds} />
+
+      {proches !== undefined ? (
+        <FormateursProches resultat={proches} formateursBase={`${qBase}/formateurs`} />
+      ) : null}
 
       {/* ── Onglets du dossier client (A2 : administrateurs seulement) ─────── */}
       {voitEchanges ? (

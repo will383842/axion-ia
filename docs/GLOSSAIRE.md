@@ -20,13 +20,15 @@ Les valeurs d'énumération et les termes métier qui ne s'expliquent pas d'eux-
 
 ## Énumérations Prisma
 
-| Enum                          | Valeur           | Sens                                                                                                                                   | ADR  |
-| ----------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| `TypeEvenementDossierSession` | `reouverture`    | Un dossier clos redevient modifiable. Motif ≥ 10 caractères, contrôlé en base (CHECK). Habilitation `rouvrir_dossier`.                 | 0060 |
-| `TypeEvenementDossierSession` | `reverrouillage` | Un dossier rouvert est clos à nouveau, à la main ; refusé tant qu'il manque une attestation ou qu'un émargement reste signable.        | 0060 |
-| `OrigineReponseQuestionnaire` | `stagiaire`      | La réponse vient du répondant lui-même (portail du stagiaire, ou lien de l'enquête entreprise).                                        | 0060 |
-| `OrigineReponseQuestionnaire` | `organisme`      | La réponse a été saisie par l'organisme à la place du répondant (console).                                                             | 0060 |
-| `OrigineReponseQuestionnaire` | _(NULL)_         | Origine non tracée : réponse antérieure au 30/09/2026, ou enregistrée pendant la fenêtre de déploiement. Jamais lue comme `stagiaire`. | 0060 |
+| Enum                          | Valeur           | Sens                                                                                                                                            | ADR  |
+| ----------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| `TypeEvenementDossierSession` | `reouverture`    | Un dossier clos redevient modifiable. Motif ≥ 10 caractères, contrôlé en base (CHECK). Habilitation `rouvrir_dossier`.                          | 0060 |
+| `TypeEvenementDossierSession` | `reverrouillage` | Un dossier rouvert est clos à nouveau, à la main ; refusé tant qu'il manque une attestation ou qu'un émargement reste signable.                 | 0060 |
+| `NatureCollaboration`         | `salarie`        | Offre (ou candidature) de contrat de travail. Défaut d'une offre. Lu par les règles seulement quand `formateurs.nature_offre` est allumé (L0g). | 0066 |
+| `NatureCollaboration`         | `freelance`      | Offre de mission confiée à un indépendant : jamais « pourvue », choisie dans la console ; exige le type Google CONTRACTOR (L0g).                | 0066 |
+| `OrigineReponseQuestionnaire` | `stagiaire`      | La réponse vient du répondant lui-même (portail du stagiaire, ou lien de l'enquête entreprise).                                                 | 0060 |
+| `OrigineReponseQuestionnaire` | `organisme`      | La réponse a été saisie par l'organisme à la place du répondant (console).                                                                      | 0060 |
+| `OrigineReponseQuestionnaire` | _(NULL)_         | Origine non tracée : réponse antérieure au 30/09/2026, ou enregistrée pendant la fenêtre de déploiement. Jamais lue comme `stagiaire`.          | 0060 |
 
 ## Habilitations
 

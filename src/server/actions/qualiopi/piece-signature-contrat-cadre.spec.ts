@@ -197,6 +197,21 @@ describe("envoi du code F17", () => {
     expect(mEnvoyer).not.toHaveBeenCalled();
   });
 
+  it("🔴 entreprise non confirmée active au registre : aucun code émis, message qui oriente", async () => {
+    mObjection.mockResolvedValue({
+      message: "Le registre public des entreprises ne confirme pas que l'entreprise … est active.",
+    });
+    const r = await demanderCodeSignatureAction({ token: "jeton" });
+    expect(r).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
+    expect((r as { message: string }).message).toMatch(/ne confirme pas/);
+    expect(mEnvoyer).not.toHaveBeenCalled();
+    expect(mObjection.mock.calls[0]?.[0]).toMatchObject({
+      documentGenereId: DOC,
+      type: "contrat_sous_traitance",
+      partie: "sous_traitant",
+    });
+  });
+
   it("🔴 lien martelé : refus, rien n'est émis", async () => {
     mLimit.mockResolvedValueOnce({ allowed: false });
     const r = await demanderCodeSignatureAction({ token: "jeton" });

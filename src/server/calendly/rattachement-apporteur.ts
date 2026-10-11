@@ -27,16 +27,21 @@
 // tourne aussi dans le worker (sondage `refresh.ts`).
 
 import { prisma } from "@/lib/prisma";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
 import { decryptPii } from "@/lib/pii-crypto";
 import { motsDuNom, nomCorrespond } from "@/lib/calendly/nom-fiche";
 import { estRendezVousApporteur } from "./appel-apporteur";
+import {
+  rattacherEchange,
+  type AdaptateurRattachement,
+  type LigneEchange,
+} from "./rattachement-echange";
 
 /** Combien de dossiers apporteur on relit pour chercher un nom (repli). */
 const PLAFOND_LECTURE_NOMS = 600;
 
-export interface LigneARattacher {
+/** La ligne à rattacher (la forme commune, `LigneEchange`). */
+export interface LigneARattacher extends LigneEchange {
   id: string;
   eventTypeName: string | null | undefined;
   /**
@@ -116,6 +121,27 @@ export type IssueRattachement =
     };
 
 /**
+ * La famille `apporteur` du moteur commun (FAC-7) : un échange apporteur, et la demande
+ * (`Submission`) apporteur la plus récente de la personne.
+ */
+export const ADAPTATEUR_APPORTEUR: AdaptateurRattachement = {
+  estEchange: (ligne) => estRendezVousApporteur(ligne),
+  async ficheParEmpreinte(empreinte) {
+    const dossier = await prisma.submission.findFirst({
+      where: { contactEmailHash: empreinte, deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
+      orderBy: { submittedAt: "desc" },
+      select: { id: true, details: true },
+    });
+    // Double contrôle EN MÉMOIRE : la clause JSON fait le tri en base, le
+    // prédicat pur fait foi. Si les deux divergeaient un jour, on préfère ne rien
+    // rattacher plutôt que rattacher un client à un échange apporteur.
+    return dossier && estApporteur(dossier.details) ? dossier.id : null;
+  },
+  fichesParNom: (nom) => fichesApporteurAuNom(nom),
+  colonne: "linkedSubmissionId",
+};
+
+/**
  * Rattache un échange apporteur au dossier apporteur le plus récent de la même
  * personne. Idempotent ; n'écrit que sur une ligne qui n'est rattachée à rien.
  *
@@ -126,43 +152,17 @@ export type IssueRattachement =
 export async function rattacherEchangeApporteur(
   ligne: LigneARattacher,
 ): Promise<IssueRattachement> {
-  if (!estRendezVousApporteur(ligne)) {
-    return { rattache: false, motif: "pas_un_echange_apporteur" };
+  const r = await rattacherEchange(ADAPTATEUR_APPORTEUR, ligne);
+  if (r.rattache) {
+    return r.parNom
+      ? { rattache: true, submissionId: r.ficheId, parNom: true }
+      : { rattache: true, submissionId: r.ficheId };
   }
-  if (ligne.linkedSubmissionId || ligne.linkedJobApplicationId) {
-    return { rattache: false, motif: "deja_rattache" };
-  }
-  const empreinte = hashEmailForLookup(ligne.inviteeEmail);
-  if (!empreinte) return { rattache: false, motif: "sans_adresse" };
-
-  const dossier = await prisma.submission.findFirst({
-    where: { contactEmailHash: empreinte, deletedAt: null, ...FILTRE_APPORTEUR_PRISMA },
-    orderBy: { submittedAt: "desc" },
-    select: { id: true, details: true },
-  });
-  // Double contrôle EN MÉMOIRE : la clause JSON fait le tri en base, le
-  // prédicat pur fait foi. Si les deux divergeaient un jour, on préfère ne rien
-  // rattacher plutôt que rattacher un client à un échange apporteur.
-  let cible: { id: string; parNom: boolean } | null =
-    dossier && estApporteur(dossier.details) ? { id: dossier.id, parNom: false } : null;
-
-  // Repli : aucune fiche à cette ADRESSE. Un candidat Indeed porte une adresse
-  // relais et réserve avec la vraie. On ne rattache que s'il y a EXACTEMENT UNE
-  // fiche apporteur au nom correspondant : zéro ou plusieurs → on ne fait rien,
-  // le sélecteur de la console les PROPOSE et un humain choisit.
-  if (!cible) {
-    const trouvees = await fichesApporteurAuNom(ligne.inviteeName);
-    const seule = trouvees.length === 1 ? trouvees[0] : undefined;
-    if (seule) cible = { id: seule, parNom: true };
-  }
-  if (!cible) return { rattache: false, motif: "aucun_dossier_apporteur" };
-
-  const { count } = await prisma.calendlyEvent.updateMany({
-    where: { id: ligne.id, linkedSubmissionId: null, linkedJobApplicationId: null },
-    data: { linkedSubmissionId: cible.id },
-  });
-  if (count === 0) return { rattache: false, motif: "rattache_entre_temps" };
-  return cible.parNom
-    ? { rattache: true, submissionId: cible.id, parNom: true }
-    : { rattache: true, submissionId: cible.id };
+  const motif =
+    r.motif === "pas_un_echange_de_la_famille"
+      ? "pas_un_echange_apporteur"
+      : r.motif === "aucune_fiche"
+        ? "aucun_dossier_apporteur"
+        : r.motif;
+  return { rattache: false, motif };
 }

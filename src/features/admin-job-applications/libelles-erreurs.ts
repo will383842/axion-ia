@@ -42,6 +42,8 @@ export const LIBELLES_ERREUR_REPONSE: Record<string, string> = {
   deja_envoyee: "Cette réponse est déjà partie.",
   lien_complement_indisponible:
     "{lien_complement} impossible : l'offre de ce candidat ne pose aucune question.",
+  modele_indisponible:
+    "Ce modèle n'est plus proposé pour cette candidature — rechargez la page et choisissez-en un autre.",
 };
 
 /** Consignation au journal — `journal-actions.ts`. */
