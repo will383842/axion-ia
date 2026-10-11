@@ -78,3 +78,39 @@ export function filtrerPrestationsApresBascule<P extends PrestationAvecAffectati
     return affectations.length === p.affectations.length ? p : { ...p, affectations };
   });
 }
+
+/**
+ * Correctif L11b (ARGENT) — le relevé mensuel ne paie JAMAIS au tarif de la fiche
+ * un couple (indépendant, session) dont la mission acceptée porte des honoraires
+ * FIGÉS au choix (`MissionFormateur.tarifHtCents`) : le formateur a lu ce montant
+ * avant « J'accepte », et seul le paiement par mission le paie. L'affectation est
+ * écartée et rendue dans `ecartees`, pour que le run le dise (anomalie), jamais
+ * en silence.
+ *
+ * Aucune mission figée (interrupteurs coupés : rien ne fige) : les prestations
+ * sont rendues telles quelles, le run d'aujourd'hui octet pour octet.
+ */
+export function ecarterConditionsFigees<P extends PrestationAvecAffectations>(
+  prestations: ReadonlyArray<P>,
+  e: {
+    readonly statutParTrainer: ReadonlyMap<string, string>;
+    /** Couples à conditions figées, par `cleRevendication`. */
+    readonly figees: ReadonlySet<string>;
+  },
+): { prestations: P[]; ecartees: Array<{ trainerId: string; prestation: P }> } {
+  const ecartees: Array<{ trainerId: string; prestation: P }> = [];
+  if (e.figees.size === 0) return { prestations: [...prestations], ecartees };
+  const sortie = prestations.map((p) => {
+    if (p.sessionId === null) return p;
+    const sessionId = p.sessionId;
+    const affectations = p.affectations.filter((a) => {
+      const figee =
+        e.statutParTrainer.get(a.trainerId) === "sous_traitant" &&
+        e.figees.has(cleRevendication(a.trainerId, sessionId));
+      if (figee) ecartees.push({ trainerId: a.trainerId, prestation: p });
+      return !figee;
+    });
+    return affectations.length === p.affectations.length ? p : { ...p, affectations };
+  });
+  return { prestations: sortie, ecartees };
+}

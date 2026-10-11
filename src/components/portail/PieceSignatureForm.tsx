@@ -98,9 +98,17 @@ export interface PieceSignatureFormProps {
     token: string;
     methode: "trace" | "confirmation_accessible";
     imageDataUrl?: string;
+    code?: string;
   }) => Promise<
     { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
   >;
+  /**
+   * Présente = la pièce se signe avec un code à usage unique reçu par e-mail
+   * (contrat-cadre v3, lot L7c). Absente, l'écran est celui de toujours.
+   */
+  demanderCodeAction?: (input: {
+    token: string;
+  }) => Promise<{ ok: true; destinataireMasque: string } | { ok: false; message: string }>;
 }
 
 export function PieceSignatureForm({
@@ -119,6 +127,7 @@ export function PieceSignatureForm({
   pdfUrl,
   mentions,
   signerAction,
+  demanderCodeAction,
 }: PieceSignatureFormProps): React.ReactElement {
   // La PREMIÈRE mention est l'attestation : c'est ce que la partie déclare
   // accepter, et donc ce qu'on coche. Les suivantes l'encadrent (valeur
@@ -137,7 +146,23 @@ export function PieceSignatureForm({
   // la modalité choisie n'a pas produit ce qu'elle doit produire. Sans le second
   // test, un clic sur un pavé vide enverrait `trace` sans image — et le service
   // refuserait en `image_requise`, message que personne ne saurait interpréter.
-  const pretASigner = consent && (modeAccessible || trace !== null);
+  const avecCode = demanderCodeAction !== undefined;
+  const [code, setCode] = useState("");
+  const [codeEnvoyeA, setCodeEnvoyeA] = useState<string | null>(null);
+  const [envoiCodeEnCours, startEnvoiCode] = useTransition();
+
+  const pretASigner =
+    consent && (modeAccessible || trace !== null) && (!avecCode || /^\d{6}$/.test(code));
+
+  function demanderCode() {
+    if (demanderCodeAction === undefined) return;
+    setErreur(null);
+    startEnvoiCode(async () => {
+      const res = await demanderCodeAction({ token });
+      if (res.ok) setCodeEnvoyeA(res.destinataireMasque);
+      else setErreur(res.message);
+    });
+  }
 
   function soumettre() {
     setErreur(null);
@@ -149,6 +174,7 @@ export function PieceSignatureForm({
         // (`image_interdite`), parce que transmettre un tracé présenterait comme
         // manuscrite une signature qui ne l'est pas.
         ...(modeAccessible || trace === null ? {} : { imageDataUrl: trace }),
+        ...(avecCode ? { code } : {}),
       });
       if (res.ok) setSigne(true);
       else setErreur(res.message);
@@ -373,6 +399,42 @@ export function PieceSignatureForm({
           </details>
         )}
 
+        {avecCode && (
+          <div className="mt-5 rounded border border-gray-300 p-4">
+            <p className="text-sm text-gray-900">
+              Pour signer, saisissez le code à 6 chiffres que nous vous envoyons par e-mail.
+            </p>
+            <button
+              type="button"
+              onClick={demanderCode}
+              disabled={envoiCodeEnCours || enCours}
+              className="mt-3 min-h-12 rounded border border-gray-900 px-4 text-sm font-medium disabled:opacity-40"
+            >
+              {codeEnvoyeA === null ? "Recevoir mon code" : "Recevoir un nouveau code"}
+            </button>
+            {codeEnvoyeA !== null && (
+              <p className="mt-2 text-xs text-gray-600" aria-live="polite">
+                {`Code envoyé à ${codeEnvoyeA}.`}
+              </p>
+            )}
+            <label className="mt-3 block text-sm text-gray-900" htmlFor="code-signature">
+              Code reçu par e-mail
+            </label>
+            <input
+              id="code-signature"
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxLength={6}
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              disabled={enCours}
+              className="mt-1 min-h-12 w-40 rounded border border-gray-400 px-3 text-lg tracking-widest tabular-nums"
+            />
+          </div>
+        )}
+
         {erreur !== null && (
           <p role="alert" className="mt-4 text-sm text-red-700">
             {erreur}
@@ -389,9 +451,10 @@ export function PieceSignatureForm({
         </button>
         {!pretASigner && (
           <p className="mt-2 text-xs text-gray-600">
-            {modeAccessible
+            {(modeAccessible
               ? "Cochez la case ci-dessus pour confirmer votre accord."
-              : "Tracez votre signature et cochez la case ci-dessus."}
+              : "Tracez votre signature et cochez la case ci-dessus.") +
+              (avecCode ? " Saisissez ensuite le code reçu par e-mail." : "")}
           </p>
         )}
       </section>

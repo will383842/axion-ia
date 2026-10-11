@@ -207,3 +207,27 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   version: "v2",
   ville: "Grenoble",
 } as const;
+
+/**
+ * Les VARIANTES d'un gabarit partagé, validées à part par Will (registre « texte
+ * validé », clé `<gabarit>#<variante>`) : chacune a son aperçu, pour être relue
+ * avant d'être validée. La page d'aperçu les lit par `?variante=<nom>` ; les
+ * champs ci-dessous s'ajoutent au jeu commun.
+ */
+export const VARIANTES_EXEMPLE: Readonly<
+  Record<string, Readonly<Record<string, Readonly<Record<string, unknown>>>>>
+> = {
+  // Lot L11b-ux — F23 chiffrée : le montant avant « J'accepte ».
+  "formateur-mission-proposee": {
+    honoraires: {
+      variante: "honoraires",
+      lignesJours: [
+        "mardi 15 septembre 2026 · matin et après-midi",
+        "mercredi 16 septembre 2026 · matin et après-midi",
+      ],
+      lieuMission: "12 rue de l'Exemple, 69003 Lyon",
+      ligneHonoraires: "2 journées × 350 € HT = 700 € HT",
+      ligneDeplacement: "forfait de 80 € HT par journée de déplacement",
+    },
+  },
+};

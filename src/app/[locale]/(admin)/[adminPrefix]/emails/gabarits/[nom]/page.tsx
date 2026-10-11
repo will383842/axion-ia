@@ -25,7 +25,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import { CATALOGUE, LIBELLE_CATEGORIE } from "@/server/email/apercu/catalogue";
-import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
+import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import type { EmailJobName } from "@/server/queue/types";
 
@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; nom: string }>;
+  searchParams: Promise<{ variante?: string }>;
 }
 
 function estGabarit(nom: string): nom is EmailJobName {
@@ -46,13 +47,22 @@ function estGabarit(nom: string): nom is EmailJobName {
 
 export default async function ApercuGabaritPage({
   params,
+  searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix, nom } = await params;
+  const { variante: varianteDemandee } = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   if (!estGabarit(nom)) notFound();
   const fiche = CATALOGUE[nom];
+  // Une variante validée à part (gabarit partagé) a son propre aperçu.
+  const variantes = VARIANTES_EXEMPLE[nom] ?? {};
+  const variante =
+    varianteDemandee !== undefined &&
+    Object.prototype.hasOwnProperty.call(variantes, varianteDemandee)
+      ? varianteDemandee
+      : null;
 
   // Le rendu peut échouer — un gabarit dont un champ requis manquerait lèverait.
   // On le montre au lieu de rendre une page blanche : un aperçu cassé est une
@@ -60,7 +70,10 @@ export default async function ApercuGabaritPage({
   let rendu: { subject: string; html: string } | null = null;
   let erreur: string | null = null;
   try {
-    const r = await renderEmailTemplate(nom, "fr", { ...PAYLOAD_EXEMPLE });
+    const r = await renderEmailTemplate(nom, "fr", {
+      ...PAYLOAD_EXEMPLE,
+      ...(variante !== null ? variantes[variante] : {}),
+    });
     rendu = { subject: r.subject, html: r.html };
   } catch (e) {
     erreur = e instanceof Error ? e.message : String(e);
@@ -143,6 +156,33 @@ export default async function ApercuGabaritPage({
             <p className="text-fg-soft text-sm">{fiche.quand}</p>
             <h2 className="text-fg mt-5 mb-2 text-sm font-semibold">Qui le reçoit</h2>
             <p className="text-fg-soft text-sm">{fiche.destinataire}</p>
+            {Object.keys(variantes).length > 0 ? (
+              <>
+                <h2 className="text-fg mt-5 mb-2 text-sm font-semibold">Variantes</h2>
+                <ul className="text-sm">
+                  <li>
+                    <Link
+                      href={`/fr/${adminPrefix}/emails/gabarits/${nom}`}
+                      className="text-primary hover:underline"
+                      aria-current={variante === null ? "page" : undefined}
+                    >
+                      Texte de base
+                    </Link>
+                  </li>
+                  {Object.keys(variantes).map((v) => (
+                    <li key={v}>
+                      <Link
+                        href={`/fr/${adminPrefix}/emails/gabarits/${nom}?variante=${v}`}
+                        className="text-primary hover:underline"
+                        aria-current={variante === v ? "page" : undefined}
+                      >
+                        Variante « {v} »
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
             <h2 className="text-fg mt-5 mb-2 text-sm font-semibold">D&apos;où il part</h2>
             {fiche.source ? (
               <code className="text-fg-soft block text-xs break-all">src/{fiche.source}</code>

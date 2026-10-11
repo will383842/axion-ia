@@ -15,6 +15,7 @@ const mockCoachingFindMany = vi.fn();
 const mockAuditFindMany = vi.fn();
 const mockTrainerFindMany = vi.fn();
 const mockRuleFindMany = vi.fn();
+const mockMissionFindMany = vi.fn();
 
 const tx = {
   $executeRawUnsafe: vi.fn(),
@@ -45,6 +46,9 @@ vi.mock("@/lib/prisma", () => ({
     // Relecture argent L12 : sans bascule, le run lit encore les revendications
     // `par_mission` (aucune tant que le passage n'a jamais tourné).
     revendicationPaiement: { findMany: async () => [] },
+    // Correctif L11b : le run lit les missions à honoraires figés au choix (aucune
+    // tant que le choix en cartes n'a jamais servi) — le run d'avant, inchangé.
+    missionFormateur: { findMany: (...a: unknown[]) => mockMissionFindMany(...a) },
     $transaction: (...a: unknown[]) => mockTransaction(...(a as [never])),
   },
 }));
@@ -104,6 +108,7 @@ beforeEach(() => {
   mockAuditFindMany.mockResolvedValue([]);
   mockTrainerFindMany.mockResolvedValue([]);
   mockRuleFindMany.mockResolvedValue([]);
+  mockMissionFindMany.mockResolvedValue([]);
   tx.trainerFeeLine.findMany.mockResolvedValue([]);
   tx.trainerFeeLine.deleteMany.mockResolvedValue({ count: 0 });
   tx.trainerFeeLine.createMany.mockResolvedValue({ count: 0 });
@@ -519,5 +524,44 @@ describe("runRemunerationMensuelle — source AUDIT", () => {
     >[];
     // Ligne prévisionnelle (pas encore dûe).
     expect(lignes[0]?.statut).toBe("previsionnel");
+  });
+});
+
+describe("runRemunerationMensuelle — correctif L11b : honoraires figés au choix", () => {
+  it("un indépendant dont la mission porte un tarif figé n'est PAS payé ici au tarif de la fiche", async () => {
+    mockTrainingFindMany.mockResolvedValue([sessionRow()]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow()]);
+    mockRuleFindMany.mockResolvedValue([ruleRow()]);
+    mockMissionFindMany.mockResolvedValue([{ trainerId: "t1", sessionId: "s1" }]);
+
+    const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
+
+    expect(r.lignesEcrites).toBe(0);
+    expect(r.relevesEcrits).toBe(0);
+    expect(r.anomalies).toContainEqual(
+      expect.objectContaining({ motif: "conditions_figees_mission", trainerId: "t1" }),
+    );
+  });
+
+  it("aucune mission figée : le run d'avant, inchangé (une ligne au barème)", async () => {
+    mockTrainingFindMany.mockResolvedValue([sessionRow()]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow()]);
+    mockRuleFindMany.mockResolvedValue([ruleRow()]);
+
+    const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
+
+    expect(r.lignesEcrites).toBe(1);
+    expect(r.anomalies.some((a) => a.motif === "conditions_figees_mission")).toBe(false);
+  });
+
+  it("un salarié n'est jamais écarté, même avec une mission chiffrée", async () => {
+    mockTrainingFindMany.mockResolvedValue([sessionRow()]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow({ statut: "salarie" })]);
+    mockRuleFindMany.mockResolvedValue([ruleRow()]);
+    mockMissionFindMany.mockResolvedValue([{ trainerId: "t1", sessionId: "s1" }]);
+
+    const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
+
+    expect(r.lignesEcrites).toBe(1);
   });
 });

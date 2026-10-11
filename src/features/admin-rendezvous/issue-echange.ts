@@ -52,7 +52,7 @@ export const LIBELLE_ISSUE_ECHANGE: Readonly<Record<IssueEchange, string>> = {
 };
 
 /** Les familles d'échange. Chaque famille ajoute sa ligne à `GABARITS_ISSUE_PAR_FAMILLE`. */
-export type FamilleEchange = "apporteur";
+export type FamilleEchange = "apporteur" | "formateur";
 
 /** Les trois gabarits qu'une issue peut faire partir, pour une famille. */
 export interface GabaritsIssue<G extends string = string> {
@@ -71,6 +71,12 @@ export const GABARITS_ISSUE_PAR_FAMILLE = {
     absent: "apporteur-issue-absent",
     retenu: "apporteur-issue-retenu",
     non_retenu: "apporteur-issue-non-retenu",
+  },
+  // Lot F-CAL-2 : F7, F5, F6 du catalogue formateurs (envoyés par `envois.ts`).
+  formateur: {
+    absent: "formateur-issue-absent",
+    retenu: "formateur-issue-retenu",
+    non_retenu: "formateur-issue-non-retenu",
   },
 } as const satisfies Record<FamilleEchange, GabaritsIssue>;
 

@@ -146,6 +146,20 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Dossier en ligne à jeton du FORMATEUR INDÉPENDANT (lot L5, ADR 0066 étape 5). Page
+  // publique hors `[locale]`, jumelle du dossier apporteur : elle ne sait rien faire sans
+  // le domaine qui porte la fiche `Trainer`, ses pièces, le contrôle registre et les règles
+  // d'admission. Élargissement nommé fichier par fichier : la page, ses actions (chacune
+  // relit le dossier PAR SON LIEN, interrupteur `dossier_en_ligne` compris), le composant
+  // client (qui n'importe que les règles PURES du dossier et les actions) et son test.
+  "src/app/formateur/dossier/[id]/[jeton]/page.tsx",
+  "src/app/formateur/dossier/[id]/[jeton]/actions.ts",
+  "src/app/formateur/dossier/[id]/[jeton]/DossierFormateur.tsx",
+  "src/app/formateur/dossier/[id]/[jeton]/le-dossier-formateur-respecte-le-lexique.spec.ts",
+  // Lot L6 — « Retrouver mon dossier » (F14) : même dossier, même interrupteur, l'action
+  // n'envoie que le lien de la fiche dont l'adresse est ENREGISTRÉE, réponse toujours neutre.
+  "src/app/formateur/dossier/retrouver/page.tsx",
+  "src/app/formateur/dossier/retrouver/actions.ts",
   // Lot 4b — l'adaptateur MCP branche `qualiopi.conformite` sur `listAlertes()`
   // (la lecture persistée, PAS l'évaluateur). Inscrit NOMINATIVEMENT : un motif
   // de répertoire serait un blanc-seing pour tout fichier futur sous mcp/.
@@ -202,6 +216,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
   //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
   "src/features/admin-job-applications/candidat-formateur-actions.ts",
+  // Suivi de l'échange formateur (lots F-CAL-2 et U7-f) : `formateurs.suivi_echange`, lu par
+  //    `lireEtatsEntree` (ne lève jamais) ; F3, F4 et l'issue partent par le module d'envoi
+  //    des formateurs (`envois.ts`), jamais par une copie.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/appels/[id]/page.tsx",
+  "src/features/admin-rendezvous/issue-formateur-actions.ts",
+  "src/features/admin-rendezvous/issue-formateur-envoi.ts",
+  "src/server/calendly/enrich.ts",
+  "src/server/calendly/rappels-echange-formateur.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -486,6 +508,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/formateur/echeances-formateur.spec.ts",
   "src/server/formateur/etapes-formateur.spec.ts",
   "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
+  // L16b-2 — la notice « Formateurs indépendants » dit vrai : le test lit les durées et
+  // les seuils (conservation, lien du dossier, statistiques) dans le domaine, au lieu
+  // de les recopier. Une notice ne se vérifie pas sans lire ce qu'elle décrit.
+  "src/content/__tests__/la-notice-dit-vrai-sur-les-formateurs-independants.spec.ts",
   // Compare le pied de page des e-mails aux SSOT dont il dérive — dont
   // `MENTION_NON_AGREMENT` et `NDA_NUMERO`. C'est le test qui empêche la
   // recopie : il ne peut pas vérifier la dérivation sans lire la source.
@@ -564,6 +590,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    l'écrivain réel que le cliquet confronte. Le code de production ne
   //    dépend pas du domaine ; seule sa preuve l'importe.
   "src/server/partners-sync/__tests__/producteurs-client.spec.ts",
+  // ── Export DAS 2 commun (lot L12h formateurs) : la route lit SON interrupteur
+  //    `formateurs.das2_commun` par la lecture unique `interrupteur-allume.ts`
+  //    (aucun autre fichier n'interprète une clé `formateurs.*`). Elle ne lit
+  //    rien d'autre du domaine : l'export vit dans `server/paiements-sortants`.
+  "src/app/[locale]/(admin)/[adminPrefix]/paiements-sortants/das2/export/route.ts",
 ]);
 
 /**

@@ -42,6 +42,8 @@ export interface ChoixFormateurCartesProps {
   disponibles: ReadonlyArray<CarteFormateur>;
   indisponibles: ReadonlyArray<CarteFormateur>;
   choixActuels: ReadonlyArray<ChoixActuelVue>;
+  /** Aperçu de l'e-mail de proposition chiffrée (F23, variante « honoraires »). */
+  lienApercuEmail?: string;
 }
 
 /** « 80 » ou « 80,50 » → centimes ; `null` si vide ou illisible. */
@@ -62,6 +64,7 @@ export function ChoixFormateurCartes({
   disponibles,
   indisponibles,
   choixActuels,
+  lienApercuEmail,
 }: ChoixFormateurCartesProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -262,6 +265,16 @@ export function ChoixFormateurCartes({
             >
               {isPending ? "…" : libelleProposer(ordonnes.map((c) => c.nomCourt))}
             </button>
+            {lienApercuEmail !== undefined && (
+              <a
+                href={lienApercuEmail}
+                target="_blank"
+                rel="noopener"
+                className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:underline"
+              >
+                Voir l&apos;aperçu de l&apos;e-mail
+              </a>
+            )}
           </div>
         </>
       )}

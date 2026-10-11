@@ -9,6 +9,7 @@
 
 import dynamic from "next/dynamic";
 
+import { adminPath } from "@/lib/admin-path";
 import { lireCartesChoix } from "@/server/qualiopi/formateurs-independants/choix-formateur-service";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 
@@ -42,6 +43,10 @@ export async function SectionChoixFormateur({
           nomCourt: c.nomCourt,
           etat: c.etat,
         }))}
+        lienApercuEmail={adminPath(
+          "fr",
+          "emails/gabarits/formateur-mission-proposee?variante=honoraires",
+        )}
       />
       <details>
         <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
