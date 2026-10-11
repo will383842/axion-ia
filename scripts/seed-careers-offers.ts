@@ -50,6 +50,14 @@ interface Poste {
   city: string | null;
   /** Pays d'où l'on accepte les candidatures (ISO2). Absent = France seule. */
   applicantCountries?: string[];
+  /**
+   * Offre d'indépendant payé à la commission, sans fixe (décision de Will,
+   * 2026-10-11 : le « Commercial·e terrain B2B » est un apporteur d'affaires,
+   * pas un CDI). Absent = on ne touche PAS au réglage saisi en console.
+   */
+  commission?: boolean;
+  /** Libellé de contrat affiché (« Indépendant · commission »). Absent = inchangé. */
+  contractLabel?: string;
 }
 interface GenContent {
   titleFr: string;
@@ -154,6 +162,10 @@ async function main() {
       displayOrder: p.num,
       publishedAt: new Date(),
       ...(jobLocations ? { jobLocations } : {}),
+      // Écrits SEULEMENT s'ils sont déclarés : un re-seed n'efface pas un
+      // réglage de commission ou un libellé saisis en console sur une autre offre.
+      ...(p.commission ? { isCommission: true } : {}),
+      ...(p.contractLabel ? { contractLabel: p.contractLabel } : {}),
     };
 
     const existing = await prisma.jobOffer.findUnique({

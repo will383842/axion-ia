@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { ENREGISTREMENT, enTeteContentDisposition } from "@/lib/content-disposition";
 import { rendreRegistreEnPdf } from "@/features/conformite-rgpd/registre-pdf";
-import { lireRegistre } from "@/features/conformite-rgpd/stockage";
+import { enRegistre, lireRegistreBase } from "@/features/conformite-rgpd/base";
 import { peutConsulter } from "@/server/auth/habilitations";
 
 export const runtime = "nodejs";
@@ -27,13 +27,13 @@ export async function GET(): Promise<NextResponse> {
   const role = (session.user as { role?: string }).role ?? null;
   if (!peutConsulter(role)) return refus(403, "Accès refusé.");
 
-  const lecture = await lireRegistre();
-  if (lecture.etat === "non_configure") return refus(503, "Stockage privé non configuré.");
-  if (lecture.etat === "absent") return refus(404, "Aucun registre importé.");
-  if (lecture.etat === "illisible") return refus(422, lecture.erreur);
+  const lecture = await lireRegistreBase();
+  if (lecture.etat !== "ok") return refus(503, "Base indisponible. Réessayez dans un instant.");
+  if (lecture.traitements.length === 0) return refus(404, "Aucun registre importé.");
 
   const maintenant = new Date();
-  const pdf = await rendreRegistreEnPdf(lecture.registre, maintenant);
+  // Les activités ACTIVES seulement ; le gabarit ne reçoit aucun écart.
+  const pdf = await rendreRegistreEnPdf(enRegistre(lecture.traitements), maintenant);
   const jour = maintenant.toISOString().slice(0, 10);
   return new NextResponse(pdf as unknown as BodyInit, {
     status: 200,

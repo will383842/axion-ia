@@ -903,11 +903,11 @@ describe("P2 — déjà connu(e) : étape 2", () => {
     expect(notifier).toHaveBeenCalledTimes(1);
     const n = notifier.mock.calls[0]?.[0] as {
       dedupKey: string;
-      payload: { contactName: string; submissionId: string };
+      payload: { contactName: string; submissionId: string; dejaConnu?: boolean };
     };
     expect(n.dedupKey).toBe(`retour-vsl:${ID_FICHE}:2026-10-05`);
     expect(n.payload.submissionId).toBe(ID_FICHE);
-    expect(n.payload.contactName).toContain("Déjà connu(e) : revenu(e) par la publicité");
+    expect(n.payload.dejaConnu).toBe(true);
     // Le récapitulatif interne SEULEMENT : aucun e-mail vers la personne.
     const envois = jobsPoses();
     expect(envois.map((e) => e.gabarit)).toEqual(["candidature-commercial-recap"]);

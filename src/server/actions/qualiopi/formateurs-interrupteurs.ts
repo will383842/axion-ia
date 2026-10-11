@@ -454,3 +454,10 @@ export async function basculerFormateursNatureOffreAction(
 ): Promise<EtatBascule> {
   return basculerEntree("nature_offre", formData);
 }
+
+export async function basculerFormateursAffectationSureAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("affectation_sure", formData);
+}
