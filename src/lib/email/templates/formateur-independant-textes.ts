@@ -429,9 +429,8 @@ export const TEXTES_FORMATEUR = {
         etape: null,
         objet: "[code] : votre code de signature Axion-IA",
         objetPropose: null,
-        // ⚠️ Le document de validation dit « valable 15 minutes » ; le mécanisme (S6a,
-        // `CODE_VALIDITE_MS`) donne 10 minutes. La durée est remplie par l'outil depuis le
-        // mécanisme, pour ne jamais annoncer une durée fausse — à trancher par Will.
+        // La durée est remplie par l'outil depuis le mécanisme (`CODE_VALIDITE_MS`, 15 minutes
+        // depuis S6b, décision 35) : le texte n'annonce jamais une durée fausse.
         paragraphes: [
           "Votre code de signature : [code]. Il est valable [durée].",
           "Si vous n'êtes pas en train de signer, ignorez ce message.",

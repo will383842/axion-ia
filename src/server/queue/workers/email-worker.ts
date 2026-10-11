@@ -26,6 +26,8 @@ import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
+import { GABARITS_A_CODE_UNIQUE } from "@/lib/email/gabarits-a-code";
+import { codeDuPayload, erreurSansCode, payloadPourRendu } from "@/server/email/code-en-file";
 // Base seule : sûr sur le trajet du worker (cf. l'en-tête de `journal.ts`).
 import { marquerGuideEnvoye } from "@/server/guide-ia/journal";
 import { ENTITE_GUIDE } from "@/server/guide-ia/config";
@@ -240,7 +242,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           html,
           text,
           famille,
-        } = await renderEmailTemplate(template, locale, payload, {
+        } = await renderEmailTemplate(template, locale, payloadPourRendu(template, payload), {
           destinataire: to,
         });
         const attachments = await resolveAttachments(job.data.attachments);
@@ -303,6 +305,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             html,
             text,
             attachmentNames: job.data.attachments?.map((a) => a.filename),
+            // S6b : seul un e-mail à code à usage unique transmet son gabarit (code masqué).
+            ...(GABARITS_A_CODE_UNIQUE.has(template)
+              ? { template, codeAMasquer: codeDuPayload(template, payload) }
+              : {}),
           });
         } catch (e) {
           console.error(
@@ -315,7 +321,13 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         if (entityType === ENTITE_GUIDE && entityId) {
           await marquerGuideEnvoye(entityId);
         }
-      } catch (err) {
+      } catch (errBrut) {
+        // S6b (relecture sécurité) — un envoi à code n'expose jamais son code : le message
+        // d'erreur (relais, rendu) est masqué AVANT d'aller au journal des envois, dans
+        // Redis (raison d'échec du job) et chez Sentry (rethrow → `failed`).
+        const err = GABARITS_A_CODE_UNIQUE.has(template)
+          ? erreurSansCode(errBrut, codeDuPayload(template, payload))
+          : errBrut;
         const msg = err instanceof Error ? err.message : String(err);
         // 🔴 Lot 2 (2026-09-02) — UNE ligne par job, et « échec » seulement quand
         // c'est fini. Avant : chaque tentative ratée clôturait la ligne en
