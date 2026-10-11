@@ -6616,22 +6616,22 @@ model SessionKitSorties {
 }
 
 model SessionFormateur {
-  id                         String               @id @default(uuid()) @db.Uuid
-  sessionId                  String               @map("session_id") @db.Uuid
-  session                    TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  trainerId                  String               @map("trainer_id") @db.Uuid
-  trainer                    Trainer              @relation(fields: [trainerId], references: [id], onDelete: Restrict)
-  role                       SessionFormateurRole @default(co_formateur)
-  heuresAnimees              Decimal?             @map("heures_animees") @db.Decimal(6, 2)
-  tarifHtCents               Int?                 @map("tarif_ht_cents")
+  id                     String               @id @default(uuid()) @db.Uuid
+  sessionId              String               @map("session_id") @db.Uuid
+  session                TrainingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId              String               @map("trainer_id") @db.Uuid
+  trainer                Trainer              @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  role                   SessionFormateurRole @default(co_formateur)
+  heuresAnimees          Decimal?             @map("heures_animees") @db.Decimal(6, 2)
+  tarifHtCents           Int?                 @map("tarif_ht_cents")
   /// Convocation pratique J-7 envoyée au formateur (adresse, salle, contact,
   /// consignes d'accès, horaires, effectif). État, pas balayage par date —
   /// même patron que `TrainingSession.rappelJ7EnvoyeAt`.
-  convocationJ7EnvoyeeAt     DateTime?            @map("convocation_j7_envoyee_at")
+  convocationJ7EnvoyeeAt DateTime?            @map("convocation_j7_envoyee_at")
   /// Rappel de la veille (J-1) envoyé au formateur.
-  rappelJ1EnvoyeAt           DateTime?            @map("rappel_j1_envoye_at")
-  createdAt                  DateTime             @default(now()) @map("created_at")
-  updatedAt                  DateTime             @updatedAt @map("updated_at")
+  rappelJ1EnvoyeAt       DateTime?            @map("rappel_j1_envoye_at")
+  createdAt              DateTime             @default(now()) @map("created_at")
+  updatedAt              DateTime             @updatedAt @map("updated_at")
   /// Schéma n° 1 du chantier formateurs freelance (2026-10-10) — l'intervenant a été annoncé au client.
   intervenantAnnonceClientAt DateTime?            @map("intervenant_annonce_client_at")
 
@@ -7434,10 +7434,10 @@ model DocumentGenere {
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
 
-  enrollmentsAttestation  Enrollment[]             @relation("EnrollmentAttestation")
-  signatures              DocumentSignature[]
-  signatureTokens         DocumentSignatureToken[]
-  devisPortes             Devis[]                  @relation("DevisPieceSignable")
+  enrollmentsAttestation Enrollment[]             @relation("EnrollmentAttestation")
+  signatures             DocumentSignature[]
+  signatureTokens        DocumentSignatureToken[]
+  devisPortes            Devis[]                  @relation("DevisPieceSignable")
   /// Schéma n° 1 formateurs — missions dont cette pièce est la lettre de mission.
   missionsFormateurLettre MissionFormateur[]       @relation("MissionFormateurLettre")
 
@@ -10002,16 +10002,16 @@ model JobApplication {
 
   // ── Schéma n° 1 du chantier formateurs freelance (2026-10-10) — livré ÉTEINT ──
   /// Copie de l'offre ; pour une spontanée, le prédicat d'intitulé (sinon NULL).
-  natureCollaboration      NatureCollaboration?       @map("nature_collaboration")
+  natureCollaboration      NatureCollaboration?      @map("nature_collaboration")
   /// Invitation au parcours formateur indépendant, et son issue.
-  invitationFormateurAt    DateTime?                  @map("invitation_formateur_at")
-  invitationFormateurIssue IssueInvitationFormateur?  @map("invitation_formateur_issue")
-  rattrapageAt             DateTime?                  @map("rattrapage_at")
-  clotureSansSuiteAt       DateTime?                  @map("cloture_sans_suite_at")
+  invitationFormateurAt    DateTime?                 @map("invitation_formateur_at")
+  invitationFormateurIssue IssueInvitationFormateur? @map("invitation_formateur_issue")
+  rattrapageAt             DateTime?                 @map("rattrapage_at")
+  clotureSansSuiteAt       DateTime?                 @map("cloture_sans_suite_at")
   /// D'où vient la candidature : le formulaire public, ou saisie en console.
-  origine                  OrigineCandidature         @default(formulaire)
+  origine                  OrigineCandidature        @default(formulaire)
   /// Fiche formateur ouverte depuis cette candidature (unique partiel côté Trainer).
-  fichesFormateurOuvertes  Trainer[]                  @relation("TrainerCandidatureOrigine")
+  fichesFormateurOuvertes  Trainer[]                 @relation("TrainerCandidatureOrigine")
   /// CAMP-4 — réponses relevées ou déclarées « répondu ailleurs ».
   reponsesFormateur        ReponseEntranteFormateur[]
 
@@ -15685,24 +15685,24 @@ enum StatutPieceApporteur {
 /// (seule la date de vérification reste).
 /// rgpd: dossier-client
 model PieceApporteur {
-  id          String               @id @default(uuid()) @db.Uuid
-  apporteurId String               @map("apporteur_id") @db.Uuid
-  apporteur   ApporteurReseau      @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  id          String                 @id @default(uuid()) @db.Uuid
+  apporteurId String                 @map("apporteur_id") @db.Uuid
+  apporteur   ApporteurReseau        @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
   type        TypePieceApporteur
-  statut      StatutPieceApporteur @default(deposee)
+  statut      StatutPieceApporteur   @default(deposee)
   /// Motif « à retransmettre » : illisible, perimee, mauvais_nom, incomplete, autre.
-  motif       String?              @db.VarChar(40)
-  nomFichier  String               @map("nom_fichier") @db.VarChar(200)
-  typeMime    String               @map("type_mime") @db.VarChar(80)
+  motif       String?                @db.VarChar(40)
+  nomFichier  String                 @map("nom_fichier") @db.VarChar(200)
+  typeMime    String                 @map("type_mime") @db.VarChar(80)
   taille      Int
-  sha256      String               @db.Char(64)
+  sha256      String                 @db.Char(64)
   /// Validité (attestation de vigilance : 6 mois).
-  expireAt    DateTime?            @map("expire_at") @db.Timestamptz(3)
-  deposeeAt   DateTime             @default(now()) @map("deposee_at") @db.Timestamptz(3)
-  verifieeAt  DateTime?            @map("verifiee_at") @db.Timestamptz(3)
-  purgeeAt    DateTime?            @map("purgee_at") @db.Timestamptz(3)
+  expireAt    DateTime?              @map("expire_at") @db.Timestamptz(3)
+  deposeeAt   DateTime               @default(now()) @map("deposee_at") @db.Timestamptz(3)
+  verifieeAt  DateTime?              @map("verifiee_at") @db.Timestamptz(3)
+  purgeeAt    DateTime?              @map("purgee_at") @db.Timestamptz(3)
   /// Remplacée par un nouveau dépôt du même type.
-  remplaceeAt DateTime?            @map("remplacee_at") @db.Timestamptz(3)
+  remplaceeAt DateTime?              @map("remplacee_at") @db.Timestamptz(3)
 
   contenu PieceApporteurContenu?
 
@@ -15740,35 +15740,35 @@ enum StatutPresentation {
 /// Une entreprise présentée par un apporteur. Coordonnées de la personne CHIFFRÉES.
 /// rgpd: dossier-client
 model PresentationEntreprise {
-  id                 String             @id @default(uuid()) @db.Uuid
-  apporteurId        String             @map("apporteur_id") @db.Uuid
-  apporteur          ApporteurReseau    @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
-  siren              String             @db.Char(9)
-  denomination       String             @db.VarChar(250)
-  personneNom        String             @map("personne_nom") @db.Text
-  personneFonction   String?            @map("personne_fonction") @db.VarChar(150)
-  personneEmail      String             @map("personne_email") @db.Text
+  id                 String                @id @default(uuid()) @db.Uuid
+  apporteurId        String                @map("apporteur_id") @db.Uuid
+  apporteur          ApporteurReseau       @relation(fields: [apporteurId], references: [id], onDelete: Restrict)
+  siren              String                @db.Char(9)
+  denomination       String                @db.VarChar(250)
+  personneNom        String                @map("personne_nom") @db.Text
+  personneFonction   String?               @map("personne_fonction") @db.VarChar(150)
+  personneEmail      String                @map("personne_email") @db.Text
   /// Empreinte de recherche de l'e-mail de la personne (`hashEmailForLookup`) : sert à
   /// l'export et à l'effacement RGPD de la personne présentée.
-  personneEmailHash  String?            @map("personne_email_hash") @db.VarChar(64)
-  personneTelephone  String?            @map("personne_telephone") @db.Text
-  besoin             String?            @db.Text
-  dateEchange        DateTime?          @map("date_echange") @db.Date
+  personneEmailHash  String?               @map("personne_email_hash") @db.VarChar(64)
+  personneTelephone  String?               @map("personne_telephone") @db.Text
+  besoin             String?               @db.Text
+  dateEchange        DateTime?             @map("date_echange") @db.Date
   /// Horodatage de réception de l'e-mail de l'apporteur : il fait foi (art. 3.5).
-  recueAt            DateTime           @map("recue_at") @db.Timestamptz(3)
-  statut             StatutPresentation @default(reservee)
+  recueAt            DateTime              @map("recue_at") @db.Timestamptz(3)
+  statut             StatutPresentation    @default(reservee)
   /// Envoi de la prise de contact de Williams à la personne présentée.
-  contactEnvoyeAt    DateTime?          @map("contact_envoye_at") @db.Timestamptz(3)
+  contactEnvoyeAt    DateTime?             @map("contact_envoye_at") @db.Timestamptz(3)
   /// Réponse de l'entreprise, ou confirmation réputée acquise (30 jours).
-  confirmeeAt        DateTime?          @map("confirmee_at") @db.Timestamptz(3)
-  confirmationTacite Boolean            @default(false) @map("confirmation_tacite")
+  confirmeeAt        DateTime?             @map("confirmee_at") @db.Timestamptz(3)
+  confirmationTacite Boolean               @default(false) @map("confirmation_tacite")
   /// Fin de la protection (confirmée + 6 mois), et prolongation unique (+ 3 mois).
-  protegeeJusquAt    DateTime?          @map("protegee_jusqu_at") @db.Timestamptz(3)
-  prolongeeAt        DateTime?          @map("prolongee_at") @db.Timestamptz(3)
-  motifProlongation  String?            @map("motif_prolongation") @db.VarChar(40)
-  note               String?            @db.Text
-  creeAt             DateTime           @default(now()) @map("cree_at") @db.Timestamptz(3)
-  majAt              DateTime           @updatedAt @map("maj_at") @db.Timestamptz(3)
+  protegeeJusquAt    DateTime?             @map("protegee_jusqu_at") @db.Timestamptz(3)
+  prolongeeAt        DateTime?             @map("prolongee_at") @db.Timestamptz(3)
+  motifProlongation  String?               @map("motif_prolongation") @db.VarChar(40)
+  note               String?               @db.Text
+  creeAt             DateTime              @default(now()) @map("cree_at") @db.Timestamptz(3)
+  majAt              DateTime              @updatedAt @map("maj_at") @db.Timestamptz(3)
 
   commissions CommissionApporteur[]
 
