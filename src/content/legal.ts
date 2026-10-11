@@ -722,7 +722,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Durée de conservation",
           body:
-            "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
+            "Données clients : conservées tant que la relation dure, puis le temps des délais légaux de réclamation ; les pièces comptables (factures et pièces justificatives) sont conservées dix ans (article L.123-22 du code de commerce). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
             CN_FR.conservation,
         },
         {
@@ -743,7 +743,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Conservation des candidatures",
-          body: "Votre dossier de candidature — CV, photographie, vidéos et historique de nos échanges compris — est conservé deux ans après notre dernier échange, puis effacé automatiquement. Vous pouvez demander son effacement plus tôt, à tout moment, en écrivant à contact@axion-ia.com. Si vous êtes recruté ou recrutée, il devient une pièce de votre dossier du personnel et n'est pas concerné par cet effacement. Conservation en vivier : facultative, et distincte de la candidature elle-même. Elle n'a lieu que si vous l'avez expressément acceptée — la case est décochée par défaut — et sert à vous recontacter pour d'autres postes, pendant cette même durée de deux ans. Vous pouvez vous y opposer à tout moment, en un clic, depuis le lien figurant dans nos messages, sans créer de compte ni justifier votre demande. Sans cet accord, votre candidature n'est utilisée que pour l'offre à laquelle vous avez postulé.",
+          body: "Votre dossier de candidature — CV, photographie, vidéos et historique de nos échanges compris — est conservé deux ans après notre dernier échange, puis effacé automatiquement. Vous pouvez demander son effacement plus tôt, à tout moment, en écrivant à contact@axion-ia.com, ou l'effacer vous-même en un clic depuis le lien « Supprimer ma candidature » présent dans nos messages, après avoir confirmé votre demande sur la page qui s'ouvre. Si vous êtes recruté ou recrutée, il devient une pièce de votre dossier du personnel et n'est pas concerné par cet effacement. Conservation en vivier : facultative, et distincte de la candidature elle-même. Elle n'a lieu que si vous l'avez expressément acceptée — la case est décochée par défaut — et sert à vous recontacter pour d'autres postes, pendant cette même durée de deux ans. Vous pouvez vous y opposer à tout moment, en un clic, depuis le lien figurant dans nos messages, sans créer de compte ni justifier votre demande. Sans cet accord, votre candidature n'est utilisée que pour l'offre à laquelle vous avez postulé.",
         },
         {
           // 2026-09-19 — le tunnel des apporteurs d'affaires n'était décrit
@@ -840,7 +840,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Retention period",
           body:
-            "Client data: 5 years after end of service (French accounting obligation). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
+            "Client data: kept for as long as the relationship lasts, then for the statutory limitation periods for claims; accounting records (invoices and supporting documents) are kept for ten years (article L.123-22 of the French Commercial Code). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
             CN_EN.conservation,
         },
         {
@@ -859,7 +859,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Retention of job applications",
-          body: "Your application file — CV, photograph, videos and the record of our exchanges included — is kept for two years after our last exchange, then deleted automatically. You may ask for it to be erased earlier, at any time, by writing to contact@axion-ia.com. If you are hired, it becomes part of your personnel file and is not covered by this deletion. Talent-pool retention: optional, and separate from the application itself. It only happens if you have expressly agreed to it — the box is unticked by default — and serves to contact you about other roles, for that same two-year period. You may object at any time, in one click, from the link in our messages, without creating an account or giving a reason. Without that agreement, your application is used only for the role you applied to.",
+          body: "Your application file — CV, photograph, videos and the record of our exchanges included — is kept for two years after our last exchange, then deleted automatically. You may ask for it to be erased earlier, at any time, by writing to contact@axion-ia.com, or erase it yourself in one click from the “Delete my application” link in our messages, after confirming your request on the page that opens. If you are hired, it becomes part of your personnel file and is not covered by this deletion. Talent-pool retention: optional, and separate from the application itself. It only happens if you have expressly agreed to it — the box is unticked by default — and serves to contact you about other roles, for that same two-year period. You may object at any time, in one click, from the link in our messages, without creating an account or giving a reason. Without that agreement, your application is used only for the role you applied to.",
         },
         {
           // 2026-09-19 — mirror of the French section « Réseau d'apporteurs
@@ -1014,7 +1014,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Droit à l'effacement (art. 17)",
-          body: "Demander la suppression de vos données, sous réserve des obligations légales (comptabilité 5 ans).",
+          body: "Demander la suppression de vos données, sous réserve des obligations légales (pièces comptables : dix ans, article L.123-22 du code de commerce).",
         },
         {
           title: "Droit d'opposition (art. 21)",
@@ -1054,7 +1054,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Right to erasure (art. 17)",
-          body: "Request deletion of your data, subject to legal obligations (5-year accounting).",
+          body: "Request deletion of your data, subject to legal obligations (accounting records: ten years, article L.123-22 of the French Commercial Code).",
         },
         {
           title: "Right to object (art. 21)",

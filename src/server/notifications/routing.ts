@@ -74,6 +74,7 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // --- Réponse entrante d'un candidat apporteur (2026-09-27) ---
   APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
   CANDIDAT_REPLIED: { channels: ["telegram"], severity: "info" },
+  CANDIDAT_SELF_ERASED: { channels: ["telegram"], severity: "info" },
 
   // --- Ops ---
   DEPLOY_SUCCESS: { channels: ["telegram"], severity: "info" },
@@ -114,6 +115,15 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
     severity: "error",
     rateLimitPerHour: 12,
   },
+
+  // --- Incidents de données (conformité RGPD, 2026-10-11) ---
+  //
+  // `warn` et non `error` : l'envoi reste SYNCHRONE (`shouldDispatchAsync`),
+  // donc l'appelant sait s'il est parti — c'est ce qui permet au passage horaire
+  // de ne noter un rappel comme envoyé qu'une fois réellement envoyé. Jamais
+  // silencieux (`info` seul l'est) : un délai légal de 72 h court.
+  // Pas de `rateLimitPerHour` : un message par incident et par palier, au plus.
+  DATA_INCIDENT_ALERT: { channels: ["telegram"], severity: "warn" },
 };
 
 export function getRouting(category: NotificationCategory): RoutingEntry {
@@ -151,6 +161,7 @@ export type TelegramGroup =
   | "avis"
   | "messages"
   | "crm-sync"
+  | "incidents"
   | "system";
 
 /**
@@ -180,6 +191,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // La réponse d'un candidat emploi par e-mail (lot L3, 2026-10-07) : avec les
   // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
   CANDIDAT_REPLIED: "candidatures",
+  // L'effacement d'un dossier par le candidat lui-même (2026-10-11).
+  CANDIDAT_SELF_ERASED: "candidatures",
 
   // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
   // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce
@@ -224,6 +237,12 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // Le salon est optionnel : sans `TELEGRAM_CHAT_ID_CRM_SYNC`, on retombe sur
   // 🔔 Système, exactement là où ces messages seraient allés sinon.
   CRM_SYNC_ALERT: "crm-sync",
+
+  // 🚨 Incidents de données — salon RÉSERVÉ (demande Will, 2026-10-11) : une
+  // déclaration et ses rappels de délai CNIL ne doivent pas se perdre entre
+  // deux sauvegardes réussies. Sans `TELEGRAM_CHAT_ID_INCIDENTS`, repli sur
+  // 🔔 Système puis sur le salon général : jamais d'alerte perdue.
+  DATA_INCIDENT_ALERT: "incidents",
 
   // 🔔 Système — newsletter, ops, et le tunnel de réservation payante ÉTEINT.
   //
@@ -375,6 +394,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   avis: "TELEGRAM_CHAT_ID_AVIS",
   messages: "TELEGRAM_CHAT_ID_MESSAGES",
   "crm-sync": "TELEGRAM_CHAT_ID_CRM_SYNC",
+  incidents: "TELEGRAM_CHAT_ID_INCIDENTS",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -414,6 +434,8 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   // dans 🔔 Système — là où elles seraient allées si on n'avait pas créé de
   // groupe. Le repli n'est donc jamais une perte, juste un mélange.
   "crm-sync": ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
+  // Même repli que la synchro CRM : Système, puis le salon général.
+  incidents: ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   system: ["TELEGRAM_CHAT_ID"],
 };
 
