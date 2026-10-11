@@ -38,7 +38,7 @@ import {
   detecterIndisponibiliteFormateur,
   formulerConflit,
 } from "@/server/qualiopi/trainers/conflits-indisponibilite";
-import { getTrainerConflicts } from "@/features/admin-planning/queries";
+import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
@@ -941,20 +941,15 @@ export async function assignTrainerToSessionAction(
     // une lecture de planning qui échoue ne doit pas bloquer une affectation
     // légitime — c'est un garde-fou d'ordonnancement, pas un acte engageant.
     try {
-      const conflits = await getTrainerConflicts(trainerId, {
+      const conflit = await constaterDoubleEmploi(trainerId, {
         key: `formation:${sessionId}`,
         debut: trainingSession.dateDebut,
         fin: trainingSession.dateFin,
         statut: trainingSession.statut as PlanningStatut,
       });
-      if (conflits.length > 0) {
-        const premier = conflits[0];
-        const autres = conflits.length > 1 ? ` (et ${conflits.length - 1} autre(s))` : "";
+      if (conflit !== null) {
         return {
-          error:
-            `Assignation refusée : ce formateur est déjà mobilisé sur « ${premier?.titre ?? "une autre prestation"} »` +
-            ` du ${premier?.debut.toLocaleDateString("fr-FR")} au ${(premier?.fin ?? premier?.debut)?.toLocaleDateString("fr-FR")}${autres}.` +
-            ` Libérez d'abord cette prestation, ou choisissez un autre formateur.`,
+          error: `Assignation refusée : ${conflit} Libérez d'abord cette prestation, ou choisissez un autre formateur.`,
         };
       }
     } catch (err) {
