@@ -236,6 +236,25 @@ describe("validateTrainerDocumentAction", () => {
     expect(r).toEqual({ data: { id: DOC_ID } });
   });
 
+  // 🔴 Relecture L5b — une pièce ARCHIVÉE (`archiveAt`) ne se valide ni ne se
+  // rejette : rejeter effacerait la marque, puis valider la ferait revivre.
+  it.each(["valide", "rejete"] as const)("refuse « %s » sur une pièce archivée", async (statut) => {
+    mockFindUnique.mockResolvedValue({
+      type: "assurance_rc_pro",
+      fichierUrl: "https://drive.example/rc.pdf",
+      dateExpiration: null,
+      rejetMotif: null,
+      archiveAt: new Date("2026-10-01"),
+    });
+    const r = await validateTrainerDocumentAction({
+      id: DOC_ID,
+      statutValidation: statut,
+      rejetMotif: "motif",
+    });
+    expect(r).toHaveProperty("error");
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
   it("refuse un statut hors { valide, rejete }", async () => {
     const r = await validateTrainerDocumentAction({
       id: DOC_ID,

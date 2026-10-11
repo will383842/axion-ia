@@ -50,6 +50,8 @@ export interface TrainerDocumentsPanelProps {
   documents: TrainerDocumentView[];
   /** Base de la route console des pièces déposées (`…/formateurs/<id>/pieces`). */
   basePiecesDeposees?: string;
+  /** Le RIB déposé ne s'ouvre qu'avec le droit de rémunérer. */
+  voitRib?: boolean;
 }
 
 // Libellés pour un tableau (capitalisés) — les libellés de `conformite.ts` sont
@@ -240,7 +242,9 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
                       >
                         {TYPE_LABELS[d.type]}
                       </a>
-                    ) : d.aContenu && props.basePiecesDeposees ? (
+                    ) : d.aContenu &&
+                      props.basePiecesDeposees &&
+                      (d.type !== "rib" || props.voitRib) ? (
                       // Pièce déposée par le formateur : téléchargée par la route
                       // console, qui journalise chaque lecture.
                       <a

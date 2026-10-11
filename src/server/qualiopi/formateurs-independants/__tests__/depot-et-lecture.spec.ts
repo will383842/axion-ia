@@ -136,6 +136,24 @@ describe("deposerPieceFormateur — écriture du dépôt", () => {
     expect(m.docCreate).not.toHaveBeenCalled();
   });
 
+  it("pièce gardée (vigilance, avis SIRENE) : date d'émission exigée, jamais future, échéance CALCULÉE", async () => {
+    expect((await depot({ type: "kbis_avis_sirene" })).ok).toBe(false);
+    expect(
+      (await depot({ type: "kbis_avis_sirene", dateEmission: new Date(Date.now() + 86_400_000) })).ok,
+    ).toBe(false);
+    expect(m.docCreate).not.toHaveBeenCalled();
+    const emise = new Date(Date.now() - 10 * 86_400_000);
+    await depot({ type: "kbis_avis_sirene", dateEmission: emise });
+    const doc = (m.docCreate.mock.calls[0]![0] as { data: { dateExpiration: Date } }).data;
+    expect(doc.dateExpiration.getTime()).toBeGreaterThan(emise.getTime());
+  });
+
+  it("un RIB ne garde jamais de numéro de pièce (l'IBAN n'y est jamais recopié)", async () => {
+    await depot({ type: "rib", nomFichier: "rib.pdf", numeroPiece: "FR7630006000011234567890189" });
+    const doc = (m.docCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(doc.numeroPiece).toBeNull();
+  });
+
   it("le nom d'origine est nettoyé et tronqué", async () => {
     await depot({ nomFichier: `../../${"x".repeat(400)}<script>.pdf` });
     const c = (m.contenuCreate.mock.calls[0]![0] as { data: { nomOriginal: string } }).data;
@@ -219,6 +237,15 @@ describe("lirePieceDeposee — route console", () => {
     m.logCreate.mockRejectedValue(new Error("base"));
     const r = await lirePieceDeposee({ trainerId: TRAINER, documentId: DOC, session: qualite });
     expect(r.ok).toBe(false);
+  });
+
+  it("identifiants en majuscules : même pièce", async () => {
+    const r = await lirePieceDeposee({
+      trainerId: TRAINER.toUpperCase(),
+      documentId: DOC.toUpperCase(),
+      session: qualite,
+    });
+    expect(r.ok).toBe(true);
   });
 
   it("identifiants non UUID → introuvable sans requête", async () => {

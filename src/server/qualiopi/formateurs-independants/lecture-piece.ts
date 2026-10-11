@@ -42,7 +42,9 @@ export async function lirePieceDeposee(demande: {
   readonly documentId: string;
   readonly session: { readonly userId: string; readonly role: string | null | undefined };
 }): Promise<LecturePiece> {
-  const { trainerId, documentId, session } = demande;
+  const { session } = demande;
+  const trainerId = demande.trainerId.toLowerCase();
+  const documentId = demande.documentId.toLowerCase();
   if (!peutEngager(session.role, "habiliter_formateur")) return { ok: false, statut: 403 };
   if (!UUID.test(trainerId) || !UUID.test(documentId)) return INTROUVABLE;
   if (!(await envoiAllume("dossier_en_ligne"))) return INTROUVABLE;

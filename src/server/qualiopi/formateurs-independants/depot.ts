@@ -29,6 +29,7 @@ import {
 } from "@/server/pieces/depot-controle";
 
 import type { TrainerDocumentType } from "../../../../prisma/generated/client";
+import { echeanceCalculee, estPieceGardee } from "./gardes";
 import { envoiAllume } from "./interrupteurs-envoi";
 import { ACTION_DEPOT_FORMATEUR } from "./vigilance";
 
@@ -64,6 +65,8 @@ export const MESSAGES_DEPOT_FORMATEUR = {
   debit: "Trop de dépôts en peu de temps. Réessayez dans un quart d'heure.",
   type: "Ce type de pièce ne se dépose pas ici.",
   erreur: "Le dépôt n'a pas pu s'enregistrer. Réessayez dans un instant.",
+  emission: "Indiquez la date d'émission de cette pièce : sa durée de validité en dépend.",
+  emissionFuture: "La date d'émission ne peut pas être dans le futur.",
 } as const;
 
 // Antivirus muet : une alerte au plus par quart d'heure, sans donnée personnelle.
@@ -104,6 +107,20 @@ export async function deposerPieceFormateur(entree: EntreeDepot): Promise<Result
   if (!(TYPES_DEPOSABLES as readonly string[]).includes(entree.type)) {
     return { ok: false, message: MESSAGES_DEPOT_FORMATEUR.type };
   }
+  // Pièces lues par la garde d'activation : mêmes règles que la saisie console
+  // (`createTrainerDocumentAction`) — émission exigée, jamais future, échéance
+  // CALCULÉE, jamais saisie.
+  let dateExpiration: Date | null = null;
+  if (estPieceGardee(entree.type)) {
+    const emission = entree.dateEmission ?? null;
+    if (emission === null || Number.isNaN(emission.getTime())) {
+      return { ok: false, message: MESSAGES_DEPOT_FORMATEUR.emission };
+    }
+    if (emission.getTime() > Date.now()) {
+      return { ok: false, message: MESSAGES_DEPOT_FORMATEUR.emissionFuture };
+    }
+    dateExpiration = echeanceCalculee(entree.type, emission);
+  }
   const debit = await checkRateLimit(`formateur-dossier:piece:${entree.trainerId}`, LIMITE_DEPOT);
   if (!debit.allowed) return { ok: false, message: MESSAGES_DEPOT_FORMATEUR.debit };
 
@@ -136,8 +153,11 @@ export async function deposerPieceFormateur(entree: EntreeDepot): Promise<Result
           trainerId: fiche.id,
           type: entree.type as TypeDeposable,
           hashSha256: controle.sha256,
-          numeroPiece: entree.numeroPiece?.slice(0, 60) ?? null,
+          // Jamais de numéro sur un RIB : l'IBAN n'est pas recopié dans un champ
+          // que toute la console lit (il vit chiffré sur `Trainer.iban`).
+          numeroPiece: entree.type === "rib" ? null : (entree.numeroPiece?.slice(0, 60) ?? null),
           dateEmission: entree.dateEmission ?? null,
+          dateExpiration,
         },
         select: { id: true },
       });

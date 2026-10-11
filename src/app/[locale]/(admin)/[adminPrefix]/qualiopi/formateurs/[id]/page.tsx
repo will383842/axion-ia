@@ -747,7 +747,13 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       <TrainerDocumentsPanel
         trainerId={trainer.id}
         documents={documents}
-        basePiecesDeposees={`${base}/${trainer.id}/pieces`}
+        basePiecesDeposees={
+          // Lot L5b : lien vers la route console, seulement là où elle sert.
+          peutEngager(role, "habiliter_formateur") && (await envoiAllume("dossier_en_ligne"))
+            ? `${base}/${trainer.id}/pieces`
+            : undefined
+        }
+        voitRib={peutEngager(role, "remunerer_formateur")}
       />
 
       {/*
