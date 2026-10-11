@@ -25,6 +25,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { GABARITS_A_CODE_UNIQUE } from "@/lib/email/gabarits-a-code";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { EmailLogStatus } from "../../../prisma/generated/client";
@@ -41,6 +42,14 @@ export interface CopieEnvoi {
   text: string;
   /** Noms des pièces jointes (le binaire n'est jamais copié). */
   attachmentNames?: readonly string[] | undefined;
+  /** Le gabarit envoyé : certains portent un code à usage unique, masqué dans la copie. */
+  template?: string | undefined;
+}
+
+const CODE_A_MASQUER = /\b\d{6}\b/g;
+
+function sansCode(texte: string): string {
+  return texte.replace(CODE_A_MASQUER, "[code masqué]");
 }
 
 /**
@@ -61,10 +70,11 @@ export async function enregistrerCopieEnvoi(copie: CopieEnvoi): Promise<boolean>
       select: { id: true },
     });
     if (!ligne) return false;
+    const aCode = copie.template !== undefined && GABARITS_A_CODE_UNIQUE.has(copie.template);
     const masque = masquerSecretsEmail({
-      subject: copie.subject,
-      html: copie.html,
-      text: copie.text,
+      subject: aCode ? sansCode(copie.subject) : copie.subject,
+      html: aCode ? sansCode(copie.html) : copie.html,
+      text: aCode ? sansCode(copie.text) : copie.text,
     });
     const donnees = {
       subject: masque.subject.slice(0, 998),

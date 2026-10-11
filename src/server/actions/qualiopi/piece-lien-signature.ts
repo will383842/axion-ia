@@ -210,6 +210,12 @@ export async function envoyerLienSignatureParEmailAction(
     partie === "sous_traitant" &&
     piece.sousTraitantId === null &&
     piece.trainerId !== null;
+  if (contratFormateur && messagePersonnalise) {
+    return {
+      error:
+        "Le mot personnel n'est pas encore possible pour l'e-mail du contrat aux formateurs : retirez-le, puis renvoyez.",
+    };
+  }
   if (contratFormateur && !(await texteValide("formateur-contrat-a-signer"))) {
     return {
       error:
@@ -227,12 +233,19 @@ export async function envoyerLienSignatureParEmailAction(
   if ("error" in emis) return emis;
 
   if (contratFormateur) {
+    const fiche = await prisma.trainer.findUnique({
+      where: { id: piece.trainerId as string },
+      select: { prenom: true },
+    });
     const r = await envoyerFormateur({
       gabarit: "formateur-contrat-a-signer",
       destinataire: resolution.identite.email,
       entityType: "Trainer",
       entityId: piece.trainerId as string,
-      payload: { prenom: resolution.identite.nom.split(" ")[0] ?? "", lien: emis.data.url },
+      payload: {
+        ...(fiche?.prenom?.trim() ? { prenom: fiche.prenom.trim() } : {}),
+        lien: emis.data.url,
+      },
     });
     if (r !== "envoye" && r !== "en-validation") {
       return {

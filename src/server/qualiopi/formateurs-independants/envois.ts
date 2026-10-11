@@ -143,6 +143,11 @@ export interface EnvoiFormateur {
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
   /** Relances : `priority: 10` (le code de signature et le lien de connexion n'en ont pas). */
   priority?: number;
+  /**
+   * Jamais garé en corbeille de validation — réservé aux e-mails qui expirent (le code de
+   * signature) : le texte, lui, reste exigé validé.
+   */
+  sansValidation?: boolean;
 }
 
 /** Le texte principal par défaut (pré-remplit « Modifier le texte »). */
@@ -205,6 +210,7 @@ export async function envoyer(e: EnvoiFormateur): Promise<ResultatEnvoiFormateur
       ...(jobId ? { jobId } : {}),
       ...(e.attachments ? { attachments: e.attachments } : {}),
       ...(e.priority !== undefined ? { priority: e.priority } : {}),
+      ...(e.sansValidation ? { bypassValidation: true } : {}),
     });
     return resultatDeLEnfilage(r);
   } catch {

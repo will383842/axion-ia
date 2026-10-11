@@ -26,6 +26,7 @@ import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
+import { GABARITS_A_CODE_UNIQUE } from "@/lib/email/gabarits-a-code";
 // Base seule : sûr sur le trajet du worker (cf. l'en-tête de `journal.ts`).
 import { marquerGuideEnvoye } from "@/server/guide-ia/journal";
 import { ENTITE_GUIDE } from "@/server/guide-ia/config";
@@ -298,6 +299,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             html,
             text,
             attachmentNames: job.data.attachments?.map((a) => a.filename),
+            // S6b : seul un e-mail à code à usage unique transmet son gabarit (code masqué).
+            ...(GABARITS_A_CODE_UNIQUE.has(template) ? { template } : {}),
           });
         } catch (e) {
           console.error(

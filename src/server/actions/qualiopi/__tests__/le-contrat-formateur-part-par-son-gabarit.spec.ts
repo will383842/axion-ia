@@ -12,7 +12,10 @@ const h = vi.hoisted(() => ({
   texteValide: vi.fn(),
 }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { documentGenere: { findUnique: (...a: unknown[]) => h.piece(...a) } },
+  prisma: {
+    documentGenere: { findUnique: (...a: unknown[]) => h.piece(...a) },
+    trainer: { findUnique: async () => ({ prenom: "Claire" }) },
+  },
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("../_guards", () => ({
@@ -105,6 +108,20 @@ describe("contrat-cadre d'un formateur indépendant", () => {
     expect(h.enqueue).not.toHaveBeenCalled();
     // La fiche formateur est bien transmise à la résolution d'identité.
     expect(h.resoudre.mock.calls[0]![1]).toMatchObject({ trainerId: TRAINER });
+  });
+});
+
+describe("mot personnel sur le contrat formateur", () => {
+  it("refusé explicitement plutôt qu'ignoré", async () => {
+    h.piece.mockResolvedValue({ ...basePiece, type: "contrat_sous_traitance" });
+    h.texteValide.mockResolvedValue(true);
+    const r = await envoyerLienSignatureParEmailAction({
+      documentGenereId: DOC,
+      partie: "sous_traitant",
+      messagePersonnalise: "Bonjour",
+    });
+    expect(r).toEqual({ error: expect.stringMatching(/mot personnel/) });
+    expect(h.emettre).not.toHaveBeenCalled();
   });
 });
 
