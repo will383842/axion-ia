@@ -58,6 +58,7 @@ export type MotifControle =
   | "nda_absent"
   | "nda_en_cours"
   | "liste_of_muette"
+  | "nda_non_verifie"
   | "nda_hors_liste"
   | "nda_autre_siren";
 
@@ -80,6 +81,8 @@ export const LIBELLES_MOTIFS: Readonly<Record<MotifControle, string>> = {
   nda_absent: "Numéro de déclaration d'activité non renseigné : à contrôler.",
   nda_en_cours: "Numéro de déclaration d'activité en cours d'attribution : à contrôler.",
   liste_of_muette: "La liste publique des organismes de formation n'a pas répondu : à contrôler.",
+  nda_non_verifie:
+    "Numéro de déclaration non vérifié sur la liste publique, faute de SIRET : à contrôler.",
   nda_hors_liste:
     "Le numéro de déclaration n'apparaît pas encore sur la liste publique : à contrôler.",
   nda_autre_siren: "Le numéro de déclaration est inscrit au nom d'une autre entreprise.",
@@ -92,11 +95,12 @@ export const LIBELLES_VERDICT: Readonly<Record<VerdictRegistre, string>> = {
 };
 
 /**
- * Préfixes NAF d'une activité de formation ou de conseil proche. Hors liste =
+ * Préfixes NAF d'une activité de formation (85.5, 85.6), de conseil (70.22) ou
+ * d'activité spécialisée diverse (74.90, fréquente chez les indépendants). Hors liste =
  * orange (« à contrôler »), jamais rouge : un code NAF mal choisi n'est pas
  * une fraude.
  */
-const NAF_COHERENTS = ["85.5", "85.6", "70.2", "62.0", "63.1", "73.1", "74.9", "82.3", "90.0"];
+const NAF_COHERENTS = ["85.5", "85.6", "70.22", "74.90"];
 
 function nafNormalise(naf: string): string {
   const s = naf.replace(/\s+/g, "").toUpperCase();
@@ -152,6 +156,9 @@ export function jugerControleRegistre(e: EntreeControle): VerdictControle {
   let ndaSurLaListe = false;
   if (nda === null) {
     motifs.push(ndaEnCours(e.nda) ? "nda_en_cours" : "nda_absent");
+  } else if (!/^\d{14}$/.test(siret)) {
+    // Sans SIRET, la liste n'est pas interrogée : ne pas dire qu'elle « n'a pas répondu ».
+    motifs.push("nda_non_verifie");
   } else if (e.listeOF === null) {
     motifs.push("liste_of_muette");
   } else {

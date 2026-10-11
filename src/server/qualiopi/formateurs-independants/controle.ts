@@ -48,7 +48,12 @@ export interface SourceRegistre {
 
 type Db = Pick<
   PrismaClient,
-  "trainer" | "verificationRegistreSousTraitance" | "activityLog" | "setting" | "$transaction"
+  | "trainer"
+  | "verificationRegistreSousTraitance"
+  | "activityLog"
+  | "setting"
+  | "$transaction"
+  | "$executeRaw"
 >;
 
 /** Source inscrite sur une ligne de contrôle par interrogation. */
@@ -62,8 +67,56 @@ async function silencieux<T>(appel: () => Promise<T | null>): Promise<T | null> 
   }
 }
 
-function empreinte(valeur: unknown): string {
-  return createHash("sha256").update(JSON.stringify(valeur)).digest("hex");
+/**
+ * Sérialisation CANONIQUE (clés triées à toute profondeur, `undefined` retirés) :
+ * `jsonb` réordonne les clés, donc l'empreinte se recalcule sur ce qui est en
+ * base en re-sérialisant de la même façon.
+ */
+export function jsonCanonique(valeur: unknown): string {
+  return JSON.stringify(valeur, (_cle, v: unknown) =>
+    v !== null && typeof v === "object" && !Array.isArray(v)
+      ? Object.fromEntries(
+          Object.entries(v as Record<string, unknown>)
+            .filter(([, x]) => x !== undefined)
+            .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)),
+        )
+      : v,
+  );
+}
+
+function empreinte(canonique: string): string {
+  return createHash("sha256").update(canonique).digest("hex");
+}
+
+/**
+ * Ne garde que les champs du contrat `FaitsEntreprise` : un adaptateur bavard
+ * (dirigeants, adresse) ne fait jamais entrer de donnée personnelle dans la preuve.
+ */
+function faitsRetenus(e: FaitsEntreprise | null): FaitsEntreprise | null {
+  if (e === null) return null;
+  return {
+    siren: e.siren,
+    etatAdministratif: e.etatAdministratif,
+    naf: e.naf,
+    etablissement:
+      e.etablissement === null
+        ? null
+        : { siret: e.etablissement.siret, ouvert: e.etablissement.ouvert },
+  };
+}
+
+function listeRetenue(l: FaitsListeOF | null): FaitsListeOF | null {
+  return l === null ? null : { ndaDuSiren: [...l.ndaDuSiren], sirenDuNda: l.sirenDuNda };
+}
+
+type ClientVerrou = { $executeRaw: Db["$executeRaw"] };
+
+/**
+ * Verrou consultatif par formateur, pris en tête de chaque transaction qui
+ * inscrit une ligne : « vérifier le dernier contrôle puis écrire » reste atomique.
+ */
+async function verrouFormateur(tx: ClientVerrou, trainerId: string): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`controle_registre:${trainerId}`}))`;
 }
 
 export type ResultatControle =
@@ -106,9 +159,14 @@ export async function controlerRegistreFormateur(
     entreprise,
     listeOF,
   });
-  const reponseSource = { entreprise, listeOF, motifs: v.motifs };
+  const canonique = jsonCanonique({
+    entreprise: faitsRetenus(entreprise),
+    listeOF: listeRetenue(listeOF),
+    motifs: v.motifs,
+  });
 
   await db.$transaction(async (tx) => {
+    await verrouFormateur(tx, t.id);
     await tx.verificationRegistreSousTraitance.create({
       data: {
         trainerId: t.id,
@@ -118,8 +176,8 @@ export async function controlerRegistreFormateur(
         siren: siren !== null && /^\d{9}$/.test(siren) ? siren : null,
         siret: siretValide ? siret : null,
         numeroDeclarationActivite: nda,
-        reponseSource: reponseSource as never,
-        reponseSha256: empreinte(reponseSource),
+        reponseSource: JSON.parse(canonique) as never,
+        reponseSha256: empreinte(canonique),
         motif: v.motifs.length > 0 ? v.motifs.join(",") : null,
         verifieParId: p.verifieParId,
       },
@@ -181,13 +239,14 @@ export async function validerControleOrange(
   if (c.verdict !== "orange" || c.source === SOURCE_VALIDATION_ORANGE) {
     return { ok: false, raison: "pas_orange" };
   }
-  const plusRecent = await db.verificationRegistreSousTraitance.findFirst({
-    where: { trainerId: p.trainerId, createdAt: { gt: c.createdAt } },
-    select: { id: true },
-  });
-  if (plusRecent !== null) return { ok: false, raison: "pas_le_dernier" };
-
-  await db.$transaction(async (tx) => {
+  const fait = await db.$transaction(async (tx) => {
+    // Sous verrou : aucun contrôle ne s'inscrit entre la vérification et l'écriture.
+    await verrouFormateur(tx, p.trainerId);
+    const plusRecent = await tx.verificationRegistreSousTraitance.findFirst({
+      where: { trainerId: p.trainerId, createdAt: { gt: c.createdAt } },
+      select: { id: true },
+    });
+    if (plusRecent !== null) return false;
     await tx.verificationRegistreSousTraitance.create({
       data: {
         trainerId: p.trainerId,
@@ -212,8 +271,9 @@ export async function validerControleOrange(
       },
       { exiger: true },
     );
+    return true;
   });
-  return { ok: true };
+  return fait ? { ok: true } : { ok: false, raison: "pas_le_dernier" };
 }
 
 export type ResultatPassage =

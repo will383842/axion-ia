@@ -22,6 +22,7 @@ import {
 } from "../controle-regles";
 import {
   controlerRegistreFormateur,
+  jsonCanonique,
   passerControleRegistrePeriodique,
   validerControleOrange,
   type SourceRegistre,
@@ -124,10 +125,12 @@ describe("jugerControleRegistre — les quatre vérifications", () => {
     expect(v.motifs).toContain("activite_a_controler");
   });
 
-  it("SIRET absent → orange", () => {
-    const v = jugerControleRegistre(entree({ siret: null }));
+  it("SIRET absent → orange, et la liste n'est pas dite « muette »", () => {
+    const v = jugerControleRegistre(entree({ siret: null, entreprise: null, listeOF: null }));
     expect(v.verdict).toBe("orange");
     expect(v.motifs).toContain("siret_absent");
+    expect(v.motifs).toContain("nda_non_verifie");
+    expect(v.motifs).not.toContain("liste_of_muette");
   });
 
   it("normaliserNda garde 11 chiffres, sinon null", () => {
@@ -260,6 +263,7 @@ function fausseBase(opts: {
         opts.interrupteur === undefined ? null : { value: opts.interrupteur },
       ),
     },
+    $executeRaw: vi.fn(async () => 0),
     $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => fn(db)),
   };
   return { db, crees, journal, majTrainer, verif };
@@ -305,6 +309,34 @@ describe("controlerRegistreFormateur — une preuve à CHAQUE contrôle", () => 
     expect(String(crees[0]!.reponseSha256)).toMatch(/^[0-9a-f]{64}$/);
     expect(journal).toHaveLength(1);
     expect(journal[0]!.targetId).toBe(TRAINER);
+  });
+
+  it("l'empreinte se recalcule sur la réponse stockée, sans champ hors contrat", async () => {
+    const { db, crees } = fausseBase({ trainer: formateur });
+    const bavarde: SourceRegistre = {
+      ...sourceVerte,
+      lireEntreprise: async () =>
+        ({
+          siren: SIREN,
+          etatAdministratif: "A",
+          naf: "85.59A",
+          etablissement: { siret: SIRET, ouvert: true },
+          dirigeants: ["Nom Prénom"],
+        }) as never,
+    };
+    await controlerRegistreFormateur(db as never, bavarde, {
+      trainerId: TRAINER,
+      verifieParId: null,
+      maintenant,
+    });
+    const stockee = crees[0]!.reponseSource;
+    expect(JSON.stringify(stockee)).not.toContain("dirigeants");
+    // jsonb réordonne les clés : on re-sérialise de façon canonique.
+    const { createHash } = await import("node:crypto");
+    const relue = JSON.parse(JSON.stringify(stockee));
+    expect(createHash("sha256").update(jsonCanonique(relue)).digest("hex")).toBe(
+      crees[0]!.reponseSha256,
+    );
   });
 
   it("deux contrôles = deux lignes, jamais un UPDATE", async () => {
@@ -443,6 +475,7 @@ describe("validerControleOrange — un orange validé est une NOUVELLE ligne", (
 
   it("un contrôle plus récent existe → refus (on ne valide que le dernier)", async () => {
     const { db, crees, verif } = fausseBase({ controles: [orange] });
+    // La vérification se fait SOUS VERROU, dans la transaction.
     verif.findFirst.mockResolvedValueOnce({ id: "plus-recent" } as never);
     const r = await validerControleOrange(db as never, {
       trainerId: TRAINER,

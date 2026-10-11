@@ -26,7 +26,7 @@ vi.mock("@/lib/prisma", () => {
   const client = {
     trainerDocument: {
       findUnique: (...a: unknown[]) => m.findUnique(...a),
-      update: (...a: unknown[]) => m.docUpdate(...a),
+      updateMany: (...a: unknown[]) => m.docUpdate(...a),
     },
     preuveVigilance: {
       create: (...a: unknown[]) => m.preuveCreate(...a),
@@ -72,11 +72,14 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.session = { userId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", role: "admin" };
   m.findUnique.mockResolvedValue(piece());
-  m.docUpdate.mockResolvedValue({});
+  m.docUpdate.mockResolvedValue({ count: 1 });
   m.preuveCreate.mockResolvedValue({ id: "p1" });
   m.logCreate.mockResolvedValue({});
   // Pièce déposée par le formateur depuis son dossier : trace sans auteur console.
-  m.logFindFirst.mockResolvedValue({ adminUserId: null });
+  m.logFindFirst.mockResolvedValue({
+    action: "qualiopi.trainer_document.depot_formateur",
+    adminUserId: null,
+  });
 });
 
 const base = {
@@ -167,7 +170,10 @@ describe("validerAttestationVigilanceAction", () => {
   });
 
   it("quatre yeux : celui qui a saisi la pièce en console ne la valide pas", async () => {
-    m.logFindFirst.mockResolvedValue({ adminUserId: m.session.userId });
+    m.logFindFirst.mockResolvedValue({
+      action: "qualiopi.trainer_document.create",
+      adminUserId: m.session.userId,
+    });
     expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
@@ -176,6 +182,24 @@ describe("validerAttestationVigilanceAction", () => {
     m.logFindFirst.mockResolvedValue(null);
     expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
+  });
+
+  it("quatre yeux : saisie console dont l'auteur a disparu → refus", async () => {
+    m.logFindFirst.mockResolvedValue({
+      action: "qualiopi.trainer_document.create",
+      adminUserId: null,
+    });
+    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect(m.preuveCreate).not.toHaveBeenCalled();
+  });
+
+  it("validation concurrente : la pièce n'est plus en attente → erreur, rien d'acté", async () => {
+    m.docUpdate.mockResolvedValue({ count: 0 });
+    const r = await validerAttestationVigilanceAction(base);
+    expect("error" in r).toBe(true);
+    expect(m.logCreate).not.toHaveBeenCalled();
+    const where = (m.docUpdate.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
+    expect(where).toMatchObject({ statutValidation: "en_attente", archiveAt: null });
   });
 
   it("une attestation déjà vérifiée ne se revalide pas", async () => {
@@ -193,6 +217,7 @@ describe("validerAttestationVigilanceAction", () => {
     expect(r).toEqual({ data: { id: DOC } });
     const data = (m.preuveCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(data.resultat).toBe("invalide");
+    expect(data.dateFinValidite).toBeNull();
     const maj = (m.docUpdate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(maj.statutValidation).toBe("rejete");
     expect(String(maj.rejetMotif)).toContain("urssaf.fr");

@@ -79,7 +79,10 @@ export interface PiecePourVigilance {
  * garde FERMÉE), sinon l'administrateur auteur, `null` pour un dépôt du
  * formateur lui-même.
  */
-export type TraceCreation = { readonly adminUserId: string | null } | null;
+export type TraceCreation = { readonly action: string; readonly adminUserId: string | null } | null;
+
+/** Seul un DÉPÔT DU FORMATEUR peut porter un auteur nul. */
+export const ACTION_DEPOT_FORMATEUR = ACTIONS_CREATION_PIECE[1];
 
 /**
  * La pièce peut-elle recevoir une vérification de ce code par cette personne ?
@@ -107,6 +110,11 @@ export function refusVigilance(
   // Sans trace, l'auteur est réputé être le validateur — garde FERMÉE.
   if (!estSuperAdmin(validateur.role)) {
     if (trace === null || trace.adminUserId === validateur.userId) return "quatre_yeux";
+    // Une saisie console dont l'auteur a disparu (`onDelete: SetNull`) n'est
+    // pas un dépôt du formateur : auteur inconnu, garde FERMÉE.
+    if (trace.adminUserId === null && trace.action !== ACTION_DEPOT_FORMATEUR) {
+      return "quatre_yeux";
+    }
   }
   return null;
 }

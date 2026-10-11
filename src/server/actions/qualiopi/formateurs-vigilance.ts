@@ -85,9 +85,9 @@ export async function validerAttestationVigilanceAction(
     const log = await prisma.activityLog.findFirst({
       where: { action: { in: [...ACTIONS_CREATION_PIECE] }, targetId: v.trainerDocumentId },
       orderBy: { createdAt: "asc" },
-      select: { adminUserId: true },
+      select: { action: true, adminUserId: true },
     });
-    trace = log === null ? null : { adminUserId: log.adminUserId ?? null };
+    trace = log === null ? null : { action: log.action, adminUserId: log.adminUserId ?? null };
   } catch {
     return { error: "La pièce n'a pas pu être lue : réessayez." };
   }
@@ -129,13 +129,16 @@ export async function validerAttestationVigilanceAction(
           resultat: v.resultat,
           codeVerification: code,
           dateAttestation: emission,
-          dateFinValidite: fin,
+          // Une attestation non authentique n'a pas de validité.
+          dateFinValidite: valide ? fin : null,
           fichierSha256: sha,
           verifieeParId: session.userId,
         },
       });
-      await tx.trainerDocument.update({
-        where: { id: piece.id },
+      // CONDITIONNELLE : deux validations simultanées → la seconde ne trouve
+      // plus la pièce en attente, lève, et sa preuve est annulée avec elle.
+      const maj = await tx.trainerDocument.updateMany({
+        where: { id: piece.id, statutValidation: "en_attente", archiveAt: null },
         data: valide
           ? {
               statutValidation: "valide",
@@ -152,6 +155,7 @@ export async function validerAttestationVigilanceAction(
               rejetMotif: `Attestation non authentique (vérification urssaf.fr) : ${motif}`,
             },
       });
+      if (maj.count !== 1) throw new Error("piece_deja_traitee");
       await journaliser(
         tx,
         {
