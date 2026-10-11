@@ -56,7 +56,7 @@ import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contr
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat-travail";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
-import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
+import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
 import { MandatOpcoPdf } from "@/server/qualiopi/documents/templates/mandat-opco";
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
@@ -93,7 +93,8 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   // template ont disparu avec le module AFEST 1-to-1. Une vieille pièce de ce
   // type rendrait `type_non_rendu`, la preuve reste consultable au registre.
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
-  lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
+  // v2 courante (lot S5) ; la v1 se rend depuis `templates/archives/`.
+  lettre_mission: LettreMissionV2Pdf as unknown as ComposantPiece,
   mandat_opco: MandatOpcoPdf as unknown as ComposantPiece,
   // S6a (f) — le consentement du stagiaire est un circuit du SSOT depuis
   // l'origine, et son template rend la preuve (`data.signatures.beneficiaire`).

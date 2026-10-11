@@ -245,6 +245,13 @@ export interface GenerateDocumentInput {
    * Optionnel — absent pour les documents PDF sans source d'import.
    */
   fichierOriginalPath?: string;
+  /**
+   * Version de gabarit RÉELLEMENT rendue, quand elle n'est pas la courante
+   * (lot S5) : un générateur qui imprime encore un texte archivé — la lettre de
+   * mission v1, tant que `formateurs.lettre_v2` est coupé — le date ici, pour
+   * que l'exemplaire signé soit rendu avec ce même texte. Absent : la courante.
+   */
+  gabaritVersion?: number;
 }
 
 export interface GenerateDocumentResult {
@@ -647,7 +654,7 @@ export async function generateDocument(
             // ⚠️ `null` quand la pièce n'est pas signable : la question ne se
             // pose pas, et stocker un nombre laisserait croire qu'elle se pose.
             ...(versionGabaritCourante(input.type) !== null
-              ? { gabaritVersion: versionGabaritCourante(input.type) }
+              ? { gabaritVersion: input.gabaritVersion ?? versionGabaritCourante(input.type) }
               : {}),
           }),
         ) as unknown;

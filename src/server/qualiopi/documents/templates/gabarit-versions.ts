@@ -160,7 +160,15 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   */
   contrat_travail: 2,
   releve_connexion: 2,
-  lettre_mission: 1,
+  /*
+    v1 — texte historique (six pages), archivé le 10/10/2026.
+    v2 — 10/10/2026, lot S5 : lettre d'une page, texte ARRÊTÉ par Will
+    (conditions particulières du contrat-cadre v3 ; SIRET et numéro de
+    déclaration dans deux cases ; autofacture ; paiement au plus tard dernière
+    journée + 30 jours). Émise seulement interrupteur `formateurs.lettre_v2`
+    allumé : coupé, le générateur imprime la v1 et la DATE v1.
+  */
+  lettre_mission: 2,
   mandat_opco: 1,
   /*
     v1 — 10/10/2026, S6a : le consentement devient rendable en exemplaire signé.

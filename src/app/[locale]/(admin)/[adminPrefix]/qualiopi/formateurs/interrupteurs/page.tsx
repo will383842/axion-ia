@@ -29,6 +29,7 @@ import {
 } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import {
   basculerFormateursAffectationSureAction,
+  basculerFormateursLettreV2Action,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -89,6 +90,7 @@ const ACTIONS_SIGNATURE: Record<
   suite_contrat_cadre: basculerFormateursSuiteContratCadreAction,
   exemplaire_captation: basculerSignatureExemplaireCaptationAction,
   affectation_sure: basculerFormateursAffectationSureAction,
+  lettre_v2: basculerFormateursLettreV2Action,
 };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {
