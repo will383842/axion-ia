@@ -1,17 +1,18 @@
 /**
- * Qualiopi — validation de l'attestation de vigilance URSSAF d'un formateur
- * indépendant (lot L4b, ADR 0066 (d) 4).
+ * Formateurs indépendants — SERVICE de validation de l'attestation de vigilance
+ * URSSAF (lot L4b, ADR 0066 (d) 4).
  *
  * Une validation = UNE ligne `PreuveVigilance` (ajout seul) ET la pièce passée
  * à `valide` (ou `rejete`), dans la MÊME transaction, avec sa trace au journal.
  * Sans preuve, pas de validation ; sans trace, pas de preuve.
  *
- * Livré ÉTEINT : aucun écran ne l'appelle encore (l'écran « Vérifier et
- * contresigner » arrive avec L9). La validation générique des pièces reste
- * inchangée.
+ * Livré ÉTEINT : un SERVICE, pas encore une Server Action — l'action et son
+ * écran (« Vérifier et contresigner », W-4) arrivent avec L9, qui l'appelle.
+ * L'habilitation est exigée ICI, quel que soit l'appelant. La validation
+ * générique des pièces reste inchangée.
  */
 
-"use server";
+import "server-only";
 
 import { z } from "zod";
 
@@ -26,7 +27,7 @@ import {
   normaliserCodeVigilance,
   refusVigilance,
   type TraceCreation,
-} from "@/server/qualiopi/formateurs-independants/vigilance";
+} from "./vigilance";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -42,7 +43,7 @@ const schema = z
   })
   .strict();
 
-export async function validerAttestationVigilanceAction(
+export async function validerAttestationVigilance(
   input: z.input<typeof schema>,
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireHabilitation("habiliter_formateur");

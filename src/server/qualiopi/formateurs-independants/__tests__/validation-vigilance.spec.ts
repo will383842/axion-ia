@@ -45,7 +45,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireHabilitation: vi.fn(async () => m.session),
 }));
 
-import { validerAttestationVigilanceAction } from "../formateurs-vigilance";
+import { validerAttestationVigilance } from "../validation-vigilance";
 
 const DOC = "22222222-2222-4222-8222-222222222222";
 const TRAINER = "11111111-1111-4111-8111-111111111111";
@@ -89,16 +89,16 @@ const base = {
   resultat: "valide" as const,
 };
 
-describe("validerAttestationVigilanceAction", () => {
+describe("validerAttestationVigilance", () => {
   it("🔴 une validation SANS code est refusée, rien n'est écrit", async () => {
-    const r = await validerAttestationVigilanceAction({ ...base, codeVerification: "" });
+    const r = await validerAttestationVigilance({ ...base, codeVerification: "" });
     expect("error" in r).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
     expect(m.docUpdate).not.toHaveBeenCalled();
   });
 
   it("sans la case « authenticité vérifiée sur urssaf.fr » → refus", async () => {
-    const r = await validerAttestationVigilanceAction({
+    const r = await validerAttestationVigilance({
       ...base,
       authenticiteVerifiee: false as never,
     });
@@ -107,7 +107,7 @@ describe("validerAttestationVigilanceAction", () => {
   });
 
   it("valide : écrit UNE preuve (ajout seul) puis valide la pièce, avec échéance calculée", async () => {
-    const r = await validerAttestationVigilanceAction(base);
+    const r = await validerAttestationVigilance(base);
     expect(r).toEqual({ data: { id: DOC } });
     expect(m.preuveCreate).toHaveBeenCalledTimes(1);
     const data = (m.preuveCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
@@ -129,13 +129,13 @@ describe("validerAttestationVigilanceAction", () => {
   });
 
   it("le code saisi diffère de celui donné par le formateur → refus", async () => {
-    const r = await validerAttestationVigilanceAction({ ...base, codeVerification: "ZZZZ9999" });
+    const r = await validerAttestationVigilance({ ...base, codeVerification: "ZZZZ9999" });
     expect("error" in r).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("code comparé sans espaces ni casse", async () => {
-    const r = await validerAttestationVigilanceAction({
+    const r = await validerAttestationVigilance({
       ...base,
       codeVerification: " a1b2 c3d4 e5f6 g7 ",
     });
@@ -144,28 +144,28 @@ describe("validerAttestationVigilanceAction", () => {
 
   it("une autre pièce qu'une attestation URSSAF → refus", async () => {
     m.findUnique.mockResolvedValue(piece({ type: "cv" }));
-    const r = await validerAttestationVigilanceAction(base);
+    const r = await validerAttestationVigilance(base);
     expect("error" in r).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("pièce archivée → refus", async () => {
     m.findUnique.mockResolvedValue(piece({ archiveAt: new Date() }));
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     m.findUnique.mockResolvedValue(piece({ rejetMotif: "[archivée] retirée" }));
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("formateur salarié → hors périmètre, refus", async () => {
     m.findUnique.mockResolvedValue(piece({ trainer: { statut: "salarie" } }));
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("sans date d'émission → refus (l'échéance en dépend)", async () => {
     m.findUnique.mockResolvedValue(piece({ dateEmission: null }));
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
@@ -174,13 +174,13 @@ describe("validerAttestationVigilanceAction", () => {
       action: "qualiopi.trainer_document.create",
       adminUserId: m.session.userId,
     });
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("quatre yeux : aucune trace de création → auteur inconnu, garde FERMÉE", async () => {
     m.logFindFirst.mockResolvedValue(null);
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
@@ -189,13 +189,13 @@ describe("validerAttestationVigilanceAction", () => {
       action: "qualiopi.trainer_document.create",
       adminUserId: null,
     });
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("validation concurrente : la pièce n'est plus en attente → erreur, rien d'acté", async () => {
     m.docUpdate.mockResolvedValue({ count: 0 });
-    const r = await validerAttestationVigilanceAction(base);
+    const r = await validerAttestationVigilance(base);
     expect("error" in r).toBe(true);
     expect(m.logCreate).not.toHaveBeenCalled();
     const where = (m.docUpdate.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
@@ -204,12 +204,12 @@ describe("validerAttestationVigilanceAction", () => {
 
   it("une attestation déjà vérifiée ne se revalide pas", async () => {
     m.findUnique.mockResolvedValue(piece({ statutValidation: "valide" }));
-    expect("error" in (await validerAttestationVigilanceAction(base))).toBe(true);
+    expect("error" in (await validerAttestationVigilance(base))).toBe(true);
     expect(m.preuveCreate).not.toHaveBeenCalled();
   });
 
   it("invalide : preuve « invalide » ET pièce rejetée avec motif", async () => {
-    const r = await validerAttestationVigilanceAction({
+    const r = await validerAttestationVigilance({
       ...base,
       resultat: "invalide",
       motif: "Le code ne renvoie aucune attestation sur urssaf.fr.",
@@ -224,7 +224,7 @@ describe("validerAttestationVigilanceAction", () => {
   });
 
   it("invalide sans motif → refus", async () => {
-    const r = await validerAttestationVigilanceAction({ ...base, resultat: "invalide" });
+    const r = await validerAttestationVigilance({ ...base, resultat: "invalide" });
     expect("error" in r).toBe(true);
   });
 });
