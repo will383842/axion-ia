@@ -58,7 +58,7 @@ export const PIECES_SUIVIES: ReadonlyArray<{
 ];
 
 /** Délai avant l'échéance où la pièce passe « à renouveler » (J-30). */
-export const PREAVIS_RENOUVELLEMENT_JOURS = 30;
+export const DELAI_AVANT_ECHEANCE_JOURS = 30;
 
 export type EtatPiece =
   | {
@@ -170,7 +170,7 @@ export function etatPiece(
     if (echeance === null) return { etat: "valable", echeance: null, depotEnAttente: enAttente };
     if (echeance > maintenant) {
       const proche =
-        echeance.getTime() - maintenant.getTime() <= PREAVIS_RENOUVELLEMENT_JOURS * JOUR_MS;
+        echeance.getTime() - maintenant.getTime() <= DELAI_AVANT_ECHEANCE_JOURS * JOUR_MS;
       return proche
         ? { etat: "a_renouveler", echeance, depotEnAttente: enAttente }
         : { etat: "valable", echeance, depotEnAttente: enAttente };
@@ -323,7 +323,7 @@ export function etatCampagnePiece(
       etat: {
         ...commun,
         actionFaite: e.etat === "a_renouveler" && e.depotEnAttente,
-        origine: new Date(e.echeance.getTime() - PREAVIS_RENOUVELLEMENT_JOURS * JOUR_MS),
+        origine: new Date(e.echeance.getTime() - DELAI_AVANT_ECHEANCE_JOURS * JOUR_MS),
       },
     };
   }
