@@ -117,7 +117,14 @@ export async function lireApercuRattrapage(
   const fin = new Date(`${dateBascule}T00:00:00Z`);
   fin.setUTCDate(fin.getUTCDate() + 1);
   const sessions = await db.trainingSession.findMany({
-    where: { dateDebut: { gte: depuis, lt: fin } },
+    // Même règle que le passage : `dateDebut` OU une journée dans la fenêtre ; la
+    // première journée (`premiereJourneeSession`) tranche ensuite.
+    where: {
+      OR: [
+        { dateDebut: { gte: depuis, lt: fin } },
+        { jours: { some: { date: { gte: depuis, lt: fin } } } },
+      ],
+    },
     select: {
       id: true,
       dateDebut: true,

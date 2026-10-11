@@ -243,8 +243,13 @@ export async function passerPaiementsMission(
       let issue: IssueEcriture;
       try {
         issue = await deps.ecrireMois(m, maintenant);
-      } catch {
+      } catch (err) {
         erreurs += 1;
+        // Identifiants techniques seulement (aucune donnée personnelle).
+        console.error(
+          `[paiement-mission] mois ${m.releve.mois} de la session ${m.sessionId} non écrit :`,
+          err instanceof Error ? err.message.slice(0, 200) : String(err),
+        );
         continue;
       }
       if (issue === "ecrit") ecrits += 1;

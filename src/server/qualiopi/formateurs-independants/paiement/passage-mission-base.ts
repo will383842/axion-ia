@@ -38,7 +38,10 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   const depuis = new Date(`${dateBascule}T00:00:00Z`);
   depuis.setUTCDate(depuis.getUTCDate() - 1);
   const sessions = await prisma.trainingSession.findMany({
-    where: { dateDebut: { gte: depuis } },
+    // `dateDebut` OU une journée à la bascule ou après : une session reportée dont la
+    // date de début est restée ancienne ne doit pas échapper aux deux moteurs.
+    // La première journée (`premiereJourneeSession`) tranche ensuite.
+    where: { OR: [{ dateDebut: { gte: depuis } }, { jours: { some: { date: { gte: depuis } } } }] },
     select: {
       id: true,
       dateDebut: true,
