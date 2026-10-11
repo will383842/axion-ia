@@ -117,8 +117,16 @@ beforeEach(() => {
 });
 
 describe("livré éteint", () => {
-  it("le registre ne porte que des campagnes déclarées par leur lot (S1 : L-INV), toutes sous interrupteur", () => {
-    expect(REGISTRE_CAMPAGNES.map((c) => c.id)).toEqual(["invit-relance"]);
+  // Le registre était vide à la livraison de CAMP-3 ; chaque lot y inscrit sa séquence
+  // (L6 : S3). Ce qui reste vrai : interrupteurs absents, aucune campagne déclarée n'est active.
+  it("chaque campagne déclarée est éteinte quand ses interrupteurs sont absents", () => {
+    const etats = etatsParDefaut();
+    for (const c of REGISTRE_CAMPAGNES) {
+      expect(c.interrupteurs.some((cle) => etats[cle] !== true)).toBe(true);
+    }
+  });
+  it("le registre ne porte que des campagnes déclarées par leur lot (S3 : L6, S1 : L-INV), toutes sous interrupteur", () => {
+    expect(REGISTRE_CAMPAGNES.map((c) => c.id)).toEqual(["dossier-relance", "invit-relance"]);
     for (const c of REGISTRE_CAMPAGNES) expect(c.interrupteurs.length).toBeGreaterThan(0);
   });
   it("interrupteurs absents : aucune campagne active, rien ne part", async () => {

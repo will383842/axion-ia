@@ -129,6 +129,32 @@ const relireFormateur: LecteurAuDepart = async (job) => {
   }
 };
 
+/**
+ * Relance du dossier (F9, lot L6) : en plus du filet commun, le dossier doit être ENCORE
+ * à compléter et `relances_auto` encore allumé. Un dossier envoyé entre l'enfilage et le
+ * départ retient la relance. Échec fermé.
+ */
+const relireRelanceDossier: LecteurAuDepart = async (job) => {
+  const commun = await relireFormateur(job);
+  if (commun !== null) return commun;
+  try {
+    const etats = await lireEtatsInterrupteurs();
+    // La clé mère d'abord : dossier coupé = le lien mènerait à la page neutre.
+    if (!lireDrapeauEnvoi(etats, "dossier_en_ligne")) return "dossier en ligne coupé";
+    if (!lireDrapeauEnvoi(etats, "relances_auto")) return "relances automatiques coupées";
+    const t = await prisma.trainer.findUnique({
+      where: { id: job.entityId! },
+      select: { dossierStatut: true },
+    });
+    if (t?.dossierStatut !== "en_cours" && t?.dossierStatut !== "a_completer") {
+      return "le dossier n'est plus à compléter";
+    }
+    return null;
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
 const GABARITS_INVITATION_FORMATEUR = [
   "formateur-invitation-echange",
   "formateur-invitation-relance",
@@ -196,6 +222,8 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
 >([
   [GABARIT_RELANCE_INVITATION, relireRelanceInvitationApporteur],
   ...GABARITS_FORMATEUR_INDEPENDANT.map((g): [string, LecteurAuDepart] => [g, relireFormateur]),
+  // L6 : la relance du dossier remplace le lecteur commun (elle l'appelle d'abord).
+  ["formateur-dossier-relance", relireRelanceDossier],
   // L-INV : l'invitation, ses rappels et le rattrapage relisent EN PLUS la candidature
   // (réservé, répondu, décidé, fiche ouverte) — la dernière entrée d'une clé l'emporte.
   // F1 : l'invitation posée à la main par la console garde la relecture commune.
