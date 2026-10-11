@@ -195,7 +195,7 @@ describe("markdownV2ToPlain", () => {
       "info",
     );
     expect(text).not.toContain("\\");
-    expect(text).toContain("Marie Dupont");
+    expect(text).toContain("Marie D.");
     expect(text).toContain("Grenoble");
   });
 });

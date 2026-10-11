@@ -15,6 +15,7 @@ import { journaliser } from "@/server/journal/journaliser";
 
 import { exigerAdministrateur, lireUuid } from "./garde";
 import { decisionCnilPrise, lireFormulaireIncident } from "./incidents";
+import { alerterDeclarationIncident } from "./incidents-alertes";
 import { creerIncident, modifierIncident } from "./incidents-base";
 
 export type ResultatIncident = { ok: true; numero: number } | { ok: false; erreur: string };
@@ -40,6 +41,8 @@ export async function declarerIncident(formData: FormData): Promise<ResultatInci
     session: { userId: garde.auteur.id },
     changes: { numero: cree.numero },
   });
+  // Telegram, salon « Incidents » : fail-soft, ne lève jamais.
+  await alerterDeclarationIncident(cree.numero, f.saisie.decouvertLe);
   return { ok: true, numero: cree.numero };
 }
 

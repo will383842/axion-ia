@@ -38,6 +38,7 @@ import {
   LIBELLE_STATUT_MISSION,
   MOTIF_REFUS_MIN,
   formulerEffectif,
+  refusLibrePour,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import {
   formulerAdresseComplete,
@@ -93,6 +94,8 @@ export default async function Page({
   // La sollicitation en cours pour CE formateur sur CETTE session — lue après
   // la garde de propriété, avec le seul `trainerId` de la session connectée.
   const mission = await lireMissionCourante(id, trainerId);
+  // Lot S2 (S-UX-6) — refus d'un indépendant sans motif exigé (interrupteur).
+  const refusLibre = mission !== null && (await refusLibrePour(trainerId));
   // 🔴 ADR 0060 — dossier clos : le formateur ne fait plus signer À LA PLACE
   // d'un stagiaire (écriture VERROU, refusée par le serveur). Lu APRÈS la garde
   // de propriété. Sa contresignature reste ouverte.
@@ -242,8 +245,9 @@ export default async function Page({
             </h2>
             <MissionReponseForm
               cible={{ missionId: mission.id }}
-              resume={`Proposée le ${dateFmt.format(mission.solliciteAt)} comme ${libelle(ROLE_FORMATEUR_LABELS, mission.role).toLowerCase()}. Acceptez-vous d'animer cette session ? Un refus doit être motivé.`}
+              resume={`Proposée le ${dateFmt.format(mission.solliciteAt)} comme ${libelle(ROLE_FORMATEUR_LABELS, mission.role).toLowerCase()}. Acceptez-vous d'animer cette session ?${refusLibre ? "" : " Un refus doit être motivé."}`}
               motifMin={MOTIF_REFUS_MIN}
+              refusLibre={refusLibre}
             />
           </section>
         ) : mission !== null ? (
