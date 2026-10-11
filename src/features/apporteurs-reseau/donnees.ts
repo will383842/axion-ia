@@ -439,7 +439,8 @@ export async function deposerPiece(
   octets: Uint8Array,
   expireAt: Date | null = null,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  // Format, taille, antivirus, empreinte, chiffrement : le dépôt contrôlé commun (FAC-6).
+  // Format, taille, antivirus, empreinte : le dépôt contrôlé commun (FAC-6). Le chiffrement
+  // au repos reste ici, dans la transaction.
   const controle = await controlerPiece(nomFichier, octets, { alerterAntivirusIndisponible });
   if (!controle.ok) return controle;
   const maintenant = new Date();

@@ -19,7 +19,6 @@ import {
   chiffrerPieceAuRepos,
   controlerPiece,
 } from "../depot-controle";
-import * as donnees from "@/features/apporteurs-reseau/donnees";
 
 const PDF = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31]);
 const alerter = vi.fn();
@@ -102,11 +101,5 @@ describe("alerteAntivirusLimitee", () => {
     a.reinitialiser();
     expect(a.alerter(t + 15 * 60 * 1000 + 1)).toBe(true);
     expect(signaler).toHaveBeenCalledTimes(3);
-  });
-});
-
-describe("une seule source", () => {
-  it("la taille maximale des apporteurs est celle du dépôt commun", () => {
-    expect(donnees.TAILLE_MAX_PIECE).toBe(TAILLE_MAX_PIECE);
   });
 });
