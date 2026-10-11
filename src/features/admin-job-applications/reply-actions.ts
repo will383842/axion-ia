@@ -22,7 +22,11 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { lienComplement } from "@/features/job-application/complement";
-import { MODELES_COMPOSEUR_IDS, modeleAutorise } from "@/content/recrutement/modeles-reponse";
+import {
+  MODELES_COMPOSEUR_IDS,
+  MODELES_REPONSE_FORMATEUR_IDS,
+  modeleAutorise,
+} from "@/content/recrutement/modeles-reponse";
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 
@@ -119,7 +123,7 @@ export async function repondreAuCandidatAction(
 
   // Lot L0c-2 — un modèle « formateur » n'est accepté que là où le composeur le
   // propose (candidature de formateur freelance, `formateurs.modeles_composeur`).
-  if (data.modele.startsWith("formateur-")) {
+  if ((MODELES_REPONSE_FORMATEUR_IDS as readonly string[]).includes(data.modele)) {
     const modelesFormateur =
       (await lireEtatsEntree()).modeles_composeur &&
       estCandidatureFormateurFreelance({
@@ -127,7 +131,7 @@ export async function repondreAuCandidatAction(
         offer: candidature.offer,
       });
     if (!modeleAutorise(data.modele, { modelesFormateur })) {
-      return { ok: false, error: "champs_invalides" };
+      return { ok: false, error: "modele_indisponible" };
     }
   }
 

@@ -51,3 +51,21 @@ describe("L0c-2 — modèles du composeur", () => {
     }
   });
 });
+
+describe("L0c-2 — le lien de l'échange formateur", () => {
+  it("inséré seulement si la fiche le demande, jamais le lien apporteur", async () => {
+    const { liensInsertionComposeur } = await import("@/lib/imprimes/liens-email");
+    const URL_APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur";
+    const sans = liensInsertionComposeur(URL_APPORTEUR, { candidatureFormateur: true });
+    expect(sans.some((l) => l.id.startsWith("calendly"))).toBe(false);
+    const avec = liensInsertionComposeur(URL_APPORTEUR, {
+      candidatureFormateur: true,
+      echangeFormateurPour: "11111111-1111-4111-8111-111111111111",
+    });
+    const lien = avec.find((l) => l.id === "calendly-echange-formateur");
+    expect(lien?.url).toMatch(
+      /\/fr\/appel\/formateur-independant\?depuis=fa-11111111-1111-4111-8111-111111111111$/,
+    );
+    expect(avec.some((l) => l.id === "calendly-echange")).toBe(false);
+  });
+});

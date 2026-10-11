@@ -29,7 +29,7 @@ import "server-only";
 import { IMPRIMES } from "@/content/imprimes";
 import { SITE_URL } from "@/lib/site-url";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
-import { lienDeReservationDuSite } from "@/lib/calendly/lien-du-site";
+import { lienDeReservationDuSite, lienDuSite } from "@/lib/calendly/lien-du-site";
 
 export interface LienInsertion {
   readonly id: string;
@@ -104,9 +104,27 @@ export function lienCalendlyPourEmail(
  */
 export function liensInsertionComposeur(
   calendlyUrl: string | undefined,
-  options: { candidatureFormateur?: boolean } = {},
+  options: {
+    candidatureFormateur?: boolean;
+    /**
+     * Lot L0c-2 (interrupteur `formateurs.modeles_composeur`) : l'identifiant de la
+     * candidature de formateur FREELANCE, pour insérer le lien de SON échange
+     * (`/fr/appel/formateur-independant?depuis=fa-<id>`). Absent : comme avant.
+     */
+    echangeFormateurPour?: string;
+  } = {},
 ): readonly LienInsertion[] {
-  if (options.candidatureFormateur) return liensImprimesPourEmail();
+  if (options.candidatureFormateur) {
+    if (!options.echangeFormateurPour) return liensImprimesPourEmail();
+    return [
+      ...liensImprimesPourEmail(),
+      {
+        id: "calendly-echange-formateur",
+        label: "Réserver un échange",
+        url: lienDuSite("formateur", { depuis: `fa-${options.echangeFormateurPour}` }),
+      },
+    ];
+  }
   const calendly = lienCalendlyPourEmail(calendlyUrl);
   return calendly ? [...liensImprimesPourEmail(), calendly] : liensImprimesPourEmail();
 }

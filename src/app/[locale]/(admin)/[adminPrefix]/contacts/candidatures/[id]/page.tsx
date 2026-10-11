@@ -440,6 +440,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             // dans `ApplicationsV2.tsx`.
             liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL, {
               candidatureFormateur,
+              ...(modelesFormateur ? { echangeFormateurPour: a.id } : {}),
             })}
             modelesFormateur={modelesFormateur}
           />
