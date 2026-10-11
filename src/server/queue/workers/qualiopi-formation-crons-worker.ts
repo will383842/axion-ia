@@ -174,6 +174,10 @@ export type FormationCronJobType =
   // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
   // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
   | "formation-crons.suivi-entreprise-opco"
+  // Lot L2c (2026-10-11, ADR 0066) — référentiel des communes (formateurs
+  // proches). QUOTIDIEN, mais ne télécharge qu'une fois par mois ; arrêté tant
+  // que `formateurs.communes_geo_cron` n'est pas allumé.
+  | "formation-crons.communes-geo"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2584,7 +2588,28 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
   "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
+  "formation-crons.communes-geo": handleCommunesGeo,
 };
+
+/**
+ * Lot L2c — référentiel des communes. Corps et doctrine dans
+ * `formateurs-proches/communes-geo-passage.ts` ; ici on déclenche et on trace.
+ * Import PARESSEUX ; le passage ne lève jamais.
+ */
+async function handleCommunesGeo(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerCommunesGeo, ligneBilanCommunesGeo } =
+      await import("@/server/qualiopi/formateurs-proches/communes-geo-passage");
+    const { niveau, ligne } = ligneBilanCommunesGeo(await passerCommunesGeo(new Date()));
+    console[niveau](ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] communes-geo: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * Lot OPCO A8 — envoi automatique du dossier prêt à déposer et relances de
