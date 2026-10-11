@@ -119,6 +119,14 @@ export async function envoyerCodeSignature(input: {
 
   // Le code n'existe en clair que dans cette portée : scellé aussitôt émis, il n'est ni
   // retourné, ni journalisé, ni porté par une erreur (le `catch` ne garde rien).
+  // La clé de scellement est éprouvée AVANT d'émettre : sans elle, aucun code n'est
+  // émis (il invaliderait le précédent sans jamais partir).
+  try {
+    scellerCodePourFile("000000");
+  } catch {
+    return refus("envoi-impossible");
+  }
+
   let emis: { codeScelle: string; expiresAt: Date };
   try {
     const brut = await emettreCodeSignature({

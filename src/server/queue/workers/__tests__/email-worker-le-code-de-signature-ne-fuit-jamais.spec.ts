@@ -65,13 +65,11 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn().mockResolvedValue([{ id: "d-1" }]),
     },
     trainer: {
-      findUnique: vi
-        .fn()
-        .mockResolvedValue({
-          statut: "sous_traitant",
-          prenom: "Claire",
-          email: "c@exemple.invalid",
-        }),
+      findUnique: vi.fn().mockResolvedValue({
+        statut: "sous_traitant",
+        prenom: "Claire",
+        email: "c@exemple.invalid",
+      }),
     },
     documentSignatureCode: {
       findMany: vi.fn().mockResolvedValue([]),
@@ -196,6 +194,36 @@ describe("le code de signature ne sort que par l'e-mail", () => {
     expect(d.sentry).toHaveBeenCalledTimes(1);
     expect(d.cloturer).toHaveBeenCalledWith(expect.objectContaining({ status: "failed" }));
     expect(toutCeQuiEstSorti()).not.toContain(CODE);
+  });
+
+  it.each([
+    ["objet encodé (RFC 2047), code collé à un mot", `=?UTF-8?Q?${CODE}_:_votre_code?=`],
+    ["code collé à des lettres", `rejected subjectX${CODE}Y`],
+  ])("🔴 %s : masqué à sa valeur exacte", async (_cas, recopie) => {
+    const e = new Error(`550 ${recopie}`);
+    e.name = `SmtpError${CODE}`;
+    d.sendEmail.mockRejectedValue(e);
+    startEmailWorker();
+    const job = await jobDuCode();
+    let leve: unknown;
+    try {
+      await (d.ctor.mock.calls[0]?.[1] as Processeur)(job);
+    } catch (x) {
+      leve = x;
+    }
+    d.handlers.get("failed")?.({ ...job, failedReason: (leve as Error).message }, leve);
+    expect(JSON.stringify([(leve as Error).name, (leve as Error).message])).not.toContain(CODE);
+    expect(toutCeQuiEstSorti()).not.toContain(CODE);
+  });
+
+  it("la copie conservée reçoit la valeur exacte à masquer", async () => {
+    d.sendEmail.mockResolvedValue({ messageId: "<m1>" });
+    startEmailWorker();
+    await (d.ctor.mock.calls[0]?.[1] as Processeur)(await jobDuCode());
+    expect(d.copie.mock.calls[0]?.[0]).toMatchObject({
+      template: "formateur-code-signature",
+      codeAMasquer: CODE,
+    });
   });
 
   it("une tentative intermédiaire en échec ne journalise pas non plus le code", async () => {

@@ -129,6 +129,8 @@ describe("envoyerCodeSignature", () => {
     delete process.env["PII_ENCRYPTION_KEY"];
     expect(await demande()).toMatchObject({ ok: false, raison: "envoi-impossible" });
     expect(h.envoyer).not.toHaveBeenCalled();
+    // La clé est éprouvée AVANT : aucun code n'est émis (le précédent reste valable).
+    expect(h.emettre).not.toHaveBeenCalled();
   });
   it("deux demandes simultanées : celle dont le code a été invalidé n'envoie rien", async () => {
     h.vivant.mockResolvedValue({ expiresAt: new Date(EXPIRE.getTime() + 5) });
