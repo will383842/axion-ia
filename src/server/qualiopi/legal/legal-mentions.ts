@@ -286,9 +286,13 @@ export function formatHeuresCentiemes(heures: number): string {
 /**
  * Durée de conservation des pièces de formation, en ANNÉES.
  *
- * Choix de l'organisme (décision de conservation, pas une durée légale citée) :
- * imprimée telle quelle sur les émargements, les relevés de connexion et le
- * livret d'accueil.
+ * Choix de l'organisme (décision de conservation, pas une durée légale citée).
+ * Elle pilote `suppressionPrevueAt` (aucun traitement de suppression ne la lit
+ * aujourd'hui). Depuis le 2026-10-11, l'émargement et le livret d'accueil
+ * n'impriment plus cette durée : leur mention est exprimée par critère
+ * (relation, puis délais légaux de réclamation). Elle reste imprimée là où le
+ * texte est scellé par une version (mentions de signature, relevé de
+ * connexion) : changer ce texte-là passe par un incrément de version.
  *
  * 🔴 2026-09-30 — cette ligne se réclamait de « l'art. L.6353-9 du Code du
  * travail », et les pièces l'imprimaient. L.6353-9 porte sur les INFORMATIONS
