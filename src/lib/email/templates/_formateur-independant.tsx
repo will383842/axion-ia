@@ -127,7 +127,9 @@ export function composantFormateur(gabarit: GabaritFormateurIndependant) {
         preview={premiereSouhaitable(paragraphes, objet)}
         title={objet}
         locale={locale === "fr" ? "fr" : "en"}
-        {...(libelle && lien ? { cta: { label: libelle, href: lien }, ctaSecret: true } : {})}
+        {...(libelle && lien
+          ? { cta: { label: libelle, href: lien }, ctaSecret: fiche.famille === "A" }
+          : {})}
         sansReseauxSociaux
         signature="fondateur-court"
       >

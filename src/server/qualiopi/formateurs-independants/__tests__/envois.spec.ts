@@ -50,6 +50,15 @@ function reglages(o: { interrupteur?: boolean; valides?: string[] }) {
   });
 }
 
+/** Une valeur pour chaque [crochet] du texte d'un gabarit. */
+function valeursPour(g: keyof typeof TEXTES_FORMATEUR): Record<string, string> {
+  const t = TEXTES_FORMATEUR[g].variantes[0];
+  const cles = [...`${t.objet}\n${t.paragraphes.join("\n")}`.matchAll(/\[([^[\]]+)\]/g)].map(
+    (m) => m[1]!,
+  );
+  return Object.fromEntries(cles.map((c) => [c, "x"]));
+}
+
 const envoi = (over: Partial<EnvoiFormateur> = {}) =>
   envoyer({
     gabarit: "formateur-dossier-relance",
@@ -107,6 +116,24 @@ describe("rien ne part tant que le texte n'est pas validé", () => {
   });
 });
 
+describe("un [crochet] non rempli ne part jamais", () => {
+  beforeEach(() => reglages({ interrupteur: true, valides: ["formateur-virement-fait"] }));
+  it("sans ses valeurs : rien n'est enfilé", async () => {
+    expect(await envoi({ gabarit: "formateur-virement-fait" })).toBe("valeurs-manquantes");
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+  });
+  it("avec toutes ses valeurs : l'e-mail part", async () => {
+    const t = TEXTES_FORMATEUR["formateur-virement-fait"].variantes[0];
+    const cles = [...`${t.objet}\n${t.paragraphes.join("\n")}`.matchAll(/\[([^[\]]+)\]/g)].map(
+      (m) => m[1]!,
+    );
+    const valeurs = Object.fromEntries(cles.map((c) => [c, "x"]));
+    expect(await envoi({ gabarit: "formateur-virement-fait", payload: { valeurs } })).toBe(
+      "envoye",
+    );
+  });
+});
+
 describe("le lien d'espace n'est jamais repris du payload", () => {
   it("un lienEspace reçu est retiré", async () => {
     reglages({ interrupteur: true, valides: ["formateur-dossier-relance"] });
@@ -128,7 +155,12 @@ describe("après une fin de collaboration, seuls les e-mails d'argent partent", 
     expect(h.enqueueEmail).not.toHaveBeenCalled();
   });
   it("le virement part", async () => {
-    expect(await envoi({ gabarit: "formateur-virement-fait" })).toBe("envoye");
+    expect(
+      await envoi({
+        gabarit: "formateur-virement-fait",
+        payload: { valeurs: valeursPour("formateur-virement-fait") },
+      }),
+    ).toBe("envoye");
     expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
   });
   it("fiche illisible : rien ne part (on ne sait pas)", async () => {
@@ -158,6 +190,11 @@ describe("lexique des textes formateurs", () => {
       ...t.variantes.flatMap((v) => [v.objet, ...v.paragraphes, ...v.boutons]),
     ].join("\n");
     expect(tout).not.toMatch(INTERDITS);
+  });
+  it.each(GABARITS_FORMATEUR_INDEPENDANT)("%s : aucun paragraphe vide", (g) => {
+    for (const v of TEXTES_FORMATEUR[g].variantes) {
+      for (const p of v.paragraphes) expect(p.trim()).not.toBe("");
+    }
   });
   it.each(GABARITS_FORMATEUR_INDEPENDANT)("%s : objet de 45 caractères au plus", (g) => {
     for (const v of TEXTES_FORMATEUR[g].variantes) expect(v.objet.length).toBeLessThanOrEqual(45);

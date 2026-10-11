@@ -274,9 +274,12 @@ export function resoudreModeEnvoi(
   for (const niveau of niveaux) {
     if (niveau.mode === null) continue;
     // Formateurs indépendants (lot L-ENV, P6) : une règle attrape-tout ne les
-    // emporte jamais. Seule une règle qui NOMME le gabarit — posée par un
-    // super-admin (`reglementationFormateurReservee`) — s'applique.
-    if (niveau.attrapeTout && estGabaritFormateurIndependant(template)) continue;
+    // fait jamais partir sans relecture (`auto`) ; elle peut toujours les
+    // RETENIR (`validation`). Seule une règle qui NOMME le gabarit — posée par
+    // un super-admin (`refusGabaritFormateur`) — peut les rendre automatiques.
+    if (niveau.attrapeTout && niveau.mode === "auto" && estGabaritFormateurIndependant(template)) {
+      continue;
+    }
     // La garde : une règle qui ne nomme pas le template ne peut pas retenir un
     // envoi dont le retard casse une obligation réglementaire.
     if (

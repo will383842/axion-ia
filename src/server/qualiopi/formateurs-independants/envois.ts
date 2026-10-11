@@ -19,7 +19,11 @@
  */
 
 import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
-import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
+import { remplir, varianteDe } from "@/lib/email/templates/_formateur-independant";
+import {
+  CROCHET_NON_REMPLI,
+  TEXTES_FORMATEUR,
+} from "@/lib/email/templates/formateur-independant-textes";
 import { assemblerParagraphes } from "@/lib/email/texte-par-defaut";
 import { prisma } from "@/lib/prisma";
 import {
@@ -106,7 +110,26 @@ export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateur> = new Set<
   "formateur-fin-collaboration",
 ]);
 
-export type ResultatEnvoiFormateur = ResultatEnvoi | "texte-non-valide" | "fin-de-collaboration";
+export type ResultatEnvoiFormateur =
+  | ResultatEnvoi
+  | "texte-non-valide"
+  | "fin-de-collaboration"
+  /** Un [crochet] du texte n'a pas reçu sa valeur : rien n'est enfilé. */
+  | "valeurs-manquantes";
+
+/**
+ * Le texte qui partirait contient-il un [crochet] non rempli ? Le texte réécrit par Will
+ * remplace le corps ; l'objet, lui, vient toujours du gabarit.
+ */
+export function valeursManquantes(
+  gabarit: GabaritFormateur,
+  payload: Record<string, unknown>,
+): boolean {
+  const v = varianteDe(gabarit, payload);
+  const libre = typeof payload.texteLibre === "string" && payload.texteLibre.trim() !== "";
+  const textes = [v.objet, ...(libre ? [payload.texteLibre as string] : v.paragraphes)];
+  return textes.some((t) => CROCHET_NON_REMPLI.test(remplir(t, payload)));
+}
 
 export interface EnvoiFormateur {
   gabarit: GabaritFormateur;
@@ -167,6 +190,7 @@ async function lienEspace(_e: EnvoiFormateur): Promise<string | null> {
 export async function envoyer(e: EnvoiFormateur): Promise<ResultatEnvoiFormateur> {
   try {
     if (!(await texteValide(e.gabarit))) return "texte-non-valide";
+    if (valeursManquantes(e.gabarit, e.payload)) return "valeurs-manquantes";
     if (e.entityType === "Trainer" && !GABARITS_ARGENT_FORMATEUR.has(e.gabarit)) {
       const fin = await finDeCollaboration(e.entityId);
       if (fin === null) return "indisponible";

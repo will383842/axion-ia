@@ -369,7 +369,6 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Voici le lien que vous avez demandé. Il vous est personnel.",
-          "\n",
           "Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.",
         ],
         boutons: ["Reprendre mon dossier", "Ouvrir mon espace"],
@@ -1186,3 +1185,6 @@ export const GABARITS_FORMATEUR_INDEPENDANT = Object.keys(
 export function estGabaritFormateurIndependant(x: string): x is GabaritFormateurIndependant {
   return Object.prototype.hasOwnProperty.call(TEXTES_FORMATEUR, x);
 }
+
+/** Un [crochet] encore présent : une valeur que l'outil n'a pas remplie. */
+export const CROCHET_NON_REMPLI = /\[[^[\]]+\]/;

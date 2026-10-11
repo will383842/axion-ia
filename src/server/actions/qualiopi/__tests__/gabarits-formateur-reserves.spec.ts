@@ -6,30 +6,39 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { refusGabaritFormateur, resoudreModeEnvoi } from "@/server/email/outbox-policy";
 
 describe("resoudreModeEnvoi — formateurs indépendants", () => {
-  it("une règle globale attrape-tout `validation` ne les emporte pas", () => {
-    const regles = [
-      { scope: "global" as const, clientId: null, template: null, mode: "validation" as const },
-    ];
-    expect(resoudreModeEnvoi("formateur-dossier-relance", regles)).toBe("auto");
-    // Témoin : un e-mail commercial reste emporté par la même règle.
-    expect(resoudreModeEnvoi("devis-envoi", regles)).toBe("validation");
+  const regle = (template: string | null, mode: "auto" | "validation") => [
+    { scope: "global" as const, template, mode },
+  ];
+  it("une règle attrape-tout `auto` ne les fait jamais partir sans relecture", () => {
+    expect(resoudreModeEnvoi("formateur-dossier-relance", regle(null, "auto"))).toBe("auto");
+    expect(
+      resoudreModeEnvoi("formateur-dossier-relance", [
+        { scope: "global" as const, template: null, mode: "auto" as const },
+        {
+          scope: "client" as const,
+          template: null,
+          mode: "auto" as const,
+        },
+      ]),
+    ).toBe("auto");
+  });
+  it("une règle attrape-tout `validation` les retient toujours", () => {
+    expect(resoudreModeEnvoi("formateur-dossier-relance", regle(null, "validation"))).toBe(
+      "validation",
+    );
   });
   it("une règle qui NOMME le gabarit s'applique", () => {
-    const regles = [
-      {
-        scope: "global" as const,
-        clientId: null,
-        template: "formateur-dossier-relance",
-        mode: "validation" as const,
-      },
-    ];
-    expect(resoudreModeEnvoi("formateur-dossier-relance", regles)).toBe("validation");
+    expect(
+      resoudreModeEnvoi(
+        "formateur-dossier-relance",
+        regle("formateur-dossier-relance", "validation"),
+      ),
+    ).toBe("validation");
   });
   it("un gabarit « formateur-… » existant n'est pas concerné", () => {
-    const regles = [
-      { scope: "global" as const, clientId: null, template: null, mode: "validation" as const },
-    ];
-    expect(resoudreModeEnvoi("formateur-mission-proposee", regles)).toBe("validation");
+    expect(resoudreModeEnvoi("formateur-mission-proposee", regle(null, "validation"))).toBe(
+      "validation",
+    );
   });
 });
 
@@ -53,6 +62,8 @@ const h = vi.hoisted(() => ({
   updateMany: vi.fn(),
   findFirst: vi.fn(),
   create: vi.fn(),
+  regle: vi.fn(),
+  supprimer: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: async () => h.session,
@@ -70,6 +81,8 @@ vi.mock("@/lib/prisma", () => ({
       findFirst: (...a: unknown[]) => h.findFirst(...a),
       create: (...a: unknown[]) => h.create(...a),
       update: vi.fn(),
+      findUnique: (...a: unknown[]) => h.regle(...a),
+      delete: (...a: unknown[]) => h.supprimer(...a),
     },
   },
 }));
@@ -77,6 +90,7 @@ vi.mock("@/lib/prisma", () => ({
 import {
   approuverEmailAction,
   definirReglageEmailAction,
+  supprimerReglageEmailAction,
 } from "@/server/actions/qualiopi/email-outbox";
 
 const OUTBOX = "00000000-0000-4000-8000-000000000001";
@@ -125,5 +139,20 @@ describe("definirReglageEmailAction", () => {
   it("une règle attrape-tout reste permise (elle ne les emporte pas)", async () => {
     const r = await definirReglageEmailAction({ scope: "global", template: null, mode: "auto" });
     expect(r).toEqual({ data: { id: OUTBOX } });
+  });
+});
+
+describe("supprimerReglageEmailAction", () => {
+  it("un editor ne peut pas retirer une règle qui nomme un gabarit formateur indépendant", async () => {
+    h.regle.mockResolvedValue({ template: "formateur-dossier-relance" });
+    const r = await supprimerReglageEmailAction({ id: OUTBOX });
+    expect(r).toEqual({ error: expect.stringMatching(/super-admin/) });
+    expect(h.supprimer).not.toHaveBeenCalled();
+  });
+  it("les autres règles se retirent comme avant", async () => {
+    h.regle.mockResolvedValue({ template: null });
+    const r = await supprimerReglageEmailAction({ id: OUTBOX });
+    expect(r).toEqual({ data: { id: OUTBOX } });
+    expect(h.supprimer).toHaveBeenCalledTimes(1);
   });
 });
