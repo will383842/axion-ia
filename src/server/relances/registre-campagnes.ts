@@ -17,6 +17,7 @@
 import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
 import type { EtatCampagne, RegleCampagne } from "@/lib/relances/campagne";
 import type { CleEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 import { CAMPAGNE_S1 } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
 
 /** A sollicitation (invitation) ; B obligation (pièce, signature) ; C information et argent. */
@@ -72,6 +73,8 @@ export function cleRelance(
  * Chacune reste éteinte tant que ses interrupteurs ne sont pas TOUS allumés.
  */
 export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
+  // L6 — S3 (et S5 par son origine F12) : relances du dossier en ligne.
+  CAMPAGNE_RELANCE_DOSSIER as DeclarationCampagne,
   // S1 (L-INV) — rappels de l'invitation à l'échange formateur (F2), J+3 et J+7.
   CAMPAGNE_S1 as DeclarationCampagne,
 ];

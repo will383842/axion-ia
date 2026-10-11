@@ -6393,6 +6393,15 @@ model Trainer {
   finCollaborationAt      DateTime?                           @map("fin_collaboration_at")
   finCollaborationMotif   FinCollaborationMotif?              @map("fin_collaboration_motif")
   finCollaborationParId   String?                             @map("fin_collaboration_par_id") @db.Uuid
+  /// Lot L14 — date d'EFFET de la fin (préavis compris) ; `finCollaborationAt` est la
+  /// date de la CLÔTURE (le jour d'effet). Note libre de Will, jamais journalisée.
+  finCollaborationEffetAt DateTime?                           @map("fin_collaboration_effet_at")
+  finCollaborationNote    String?                             @map("fin_collaboration_note") @db.Text
+  /// Lot L14 — la DÉCISION (date, auteur, motif prévu). Une fin avec préavis n'est
+  /// close (`finCollaborationAt`) qu'à la date d'effet, par le passage quotidien.
+  finCollaborationDecideeAt    DateTime?              @map("fin_collaboration_decidee_at")
+  finCollaborationDecideeParId String?                @map("fin_collaboration_decidee_par_id") @db.Uuid
+  finCollaborationMotifPrevu   FinCollaborationMotif? @map("fin_collaboration_motif_prevu")
   /// Numéro de DA vu sur la liste publique des OF (preuve : `verificationsRegistre`).
   ndaVerifieListeAt       DateTime?                           @map("nda_verifie_liste_at")
   /// Intervenant mis à disposition par un ORGANISME sous-traitant.
@@ -15883,6 +15892,19 @@ enum FinCollaborationMotif {
   /// La relation change de nature (salarié devenu indépendant…) : une
   /// nouvelle fiche s'ouvre pour la même adresse.
   changement_de_nature
+  /// Lot L14 — fin de collaboration d'un formateur indépendant (E25, F47).
+  /// Le formateur met fin à la relation (préavis 30/60/90 jours).
+  initiative_formateur
+  /// Axion met fin à la relation (préavis 30/60/90 jours).
+  initiative_axion
+  /// Entreprise du formateur cessée ou radiée : fin immédiate.
+  siret_cesse
+  /// Numéro de déclaration d'activité caduc : fin immédiate.
+  nda_caduc
+  /// Manquement grave (art. 30.4), après l'avertissement F49 sauf faute irréparable.
+  manquement
+  /// Décès : aucun e-mail (D-V6).
+  deces
 
   @@map("fin_collaboration_motif")
 }

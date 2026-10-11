@@ -17,6 +17,13 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
+import { FinCollaborationPanel } from "@/components/admin/qualiopi/FinCollaborationPanel";
+import {
+  LIBELLES_MOTIF_FIN,
+  conservationApresFin,
+  estMotifFin,
+  jourParis,
+} from "@/server/qualiopi/formateurs-independants/fin-collaboration";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
@@ -80,6 +87,7 @@ import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
+import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -367,6 +375,34 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   // Lot L15a — lieu d'exercice (formateurs proches). Rôle jugé AVANT toute
   // lecture ; interrupteur `formateurs.proches_bloc` absent = panneau absent.
   const voitLieu = peutEngager(role, "habiliter_formateur") && (await envoiAllume("proches_bloc"));
+  // Lot L14 — fin de collaboration : indépendant en nom propre, interrupteur allumé.
+  const voitFinCollaboration =
+    trainer.statut === "sous_traitant" &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await interrupteurAllume("fin_collaboration"));
+  const jourIso = (d: Date) => d.toISOString().slice(0, 10);
+  const decideeAt = trainer.finCollaborationDecideeAt ?? trainer.finCollaborationAt;
+  const motifFin = trainer.finCollaborationMotifPrevu ?? trainer.finCollaborationMotif;
+  const finTerminee =
+    decideeAt !== null
+      ? {
+          decideeLe: jourParis(decideeAt),
+          effetLe: trainer.finCollaborationEffetAt
+            ? jourIso(trainer.finCollaborationEffetAt)
+            : null,
+          motif: estMotifFin(motifFin) ? LIBELLES_MOTIF_FIN[motifFin] : "motif non listé",
+          close: trainer.finCollaborationAt !== null,
+          actif: trainer.actif,
+          conservation: (() => {
+            const c = conservationApresFin(trainer.finCollaborationEffetAt ?? decideeAt);
+            return {
+              contratEtVigilance: jourIso(c.contratEtVigilance),
+              piecesComptables: jourIso(c.piecesComptables),
+            };
+          })(),
+        }
+      : null;
   const communeLieu =
     voitLieu && trainer.communeInsee
       ? await prisma.communeGeo
@@ -377,6 +413,13 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           .catch(() => null)
       : null;
   const retourLieu = voitLieu ? ((await searchParams) ?? {})["lieu"] : undefined;
+  // Lot L6 — dossier en ligne : rôle jugé AVANT toute lecture ; interrupteur
+  // `formateurs.dossier_en_ligne` absent = panneau absent.
+  const voitDossier =
+    trainer.dossierStatut !== null &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await envoiAllume("dossier_en_ligne"));
+  const retourDossier = voitDossier ? ((await searchParams) ?? {})["dossier"] : undefined;
   // Lot S2 (R4) — un refus ou un silence est un droit du sous-traitant : sa
   // fiche ne montre que les missions acceptées et réalisées (interrupteur).
   const missionsIndependant =
@@ -439,6 +482,14 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           codePostalPro={trainer.codePostalPro}
           commune={communeLieu ? `${communeLieu.nom} (${communeLieu.departement})` : null}
           retour={retourLieu}
+        />
+      ) : null}
+
+      {voitDossier && trainer.dossierStatut ? (
+        <DossierEnLignePanel
+          trainerId={trainer.id}
+          dossierStatut={trainer.dossierStatut}
+          retour={retourDossier}
         />
       ) : null}
 
@@ -754,7 +805,17 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       <TrainerCompetencesPanel trainerId={trainer.id} domainesInitiaux={domainesInitiaux} />
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
-      <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+      <TrainerDocumentsPanel
+        trainerId={trainer.id}
+        documents={documents}
+        basePiecesDeposees={
+          // Lot L5b : lien vers la route console, seulement là où elle sert.
+          peutEngager(role, "habiliter_formateur") && (await envoiAllume("dossier_en_ligne"))
+            ? `${base}/${trainer.id}/pieces`
+            : undefined
+        }
+        voitRib={peutEngager(role, "remunerer_formateur")}
+      />
 
       {/*
         Lettres de mission du formateur — contreseing de l'organisme (2026-08-01).
@@ -890,6 +951,10 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           }}
         />
       </div>
+
+      {voitFinCollaboration ? (
+        <FinCollaborationPanel trainerId={trainer.id} terminee={finTerminee} />
+      ) : null}
 
       <TrainerManageForm
         trainerId={trainer.id}

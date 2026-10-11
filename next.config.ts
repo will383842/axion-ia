@@ -936,6 +936,32 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Dossier en ligne d'un formateur indépendant (lot L5) —
+      // `/formateur/dossier/<id>/<jeton>`. Mêmes en-têtes que le dossier des
+      // apporteurs : CSP stricte, `same-origin` (jamais `no-referrer`, qui casse les
+      // actions serveur) et `noindex`. Placé après `/:path*` pour l'emporter.
+      {
+        source: "/formateur/dossier/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
       // Lot OPCO A8 (2026-10-04) — réponse en un clic de l'entreprise,
       // `/api/qualiopi/suivi-opco/<jeton>` : le jeton est dans l'adresse. Même
       // valeurs que `ENTETES_PAGE_SUIVI` (la route les pose aussi) ; placée

@@ -25,6 +25,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => m.findUnique(...a),
       create: (...a: unknown[]) => m.create(...a),
       update: (...a: unknown[]) => m.update(...a),
+      updateMany: (...a: unknown[]) => m.update(...a),
       delete: (...a: unknown[]) => m.del(...a),
     },
     activityLog: { findFirst: (...a: unknown[]) => m.logFindFirst(...a) },
@@ -169,6 +170,7 @@ describe("validateTrainerDocumentAction — quatre yeux sur les pièces gardées
 
 describe("deleteTrainerDocumentAction — archivage logique", () => {
   it("🔴 n'efface plus la pièce : elle est archivée et ne compte plus", async () => {
+    m.update.mockResolvedValue({ count: 1 });
     const r = await deleteTrainerDocumentAction({ id: DOC_ID });
     expect(r).toEqual({ data: { id: DOC_ID } });
     expect(m.del).not.toHaveBeenCalled();
@@ -176,7 +178,7 @@ describe("deleteTrainerDocumentAction — archivage logique", () => {
       where: { id: string };
       data: Record<string, unknown>;
     };
-    expect(arg.where).toEqual({ id: DOC_ID });
+    expect(arg.where).toEqual({ id: DOC_ID, archiveAt: null });
     expect(arg.data["statutValidation"]).toBe("rejete");
     expect(String(arg.data["rejetMotif"])).toMatch(/^\[archivée\]/);
   });

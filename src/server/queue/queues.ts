@@ -2100,6 +2100,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "50 7 * * *",
         jobId: "formation-crons-communes-geo-cron",
       },
+      // Lot L14 (2026-10-11) — fins de collaboration avec préavis arrivées à leur date
+      // d'effet. 05:05 UTC (06:05 ou 07:05 à Paris), chaque jour. Arrêté tant que
+      // l'interrupteur `formateurs.fin_collaboration` n'est pas allumé. Idempotent.
+      {
+        type: "formation-crons.fin-collaboration",
+        pattern: "5 5 * * *",
+        jobId: "formation-crons-fin-collaboration-cron",
+      },
       // Lot L-INV (2026-10-11) — invitation automatique des candidats formateurs
       // indépendants (F1, 15 à 20 min après la candidature). Toutes les 5 min.
       // Arrêté tant que `formateurs.invitation_auto` ou `formateurs.suivi_echange`
