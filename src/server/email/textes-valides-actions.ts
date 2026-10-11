@@ -12,6 +12,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
+import { getClientIp } from "@/lib/client-ip";
 import { prisma } from "@/lib/prisma";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 
@@ -33,6 +34,7 @@ export async function validerTexteEmailAction(d: {
       error: "Valider les textes des e-mails est réservé à la direction (super-admin).",
     };
   }
+  if (!d || typeof d !== "object") return { ok: false, error: "Champs invalides." };
   if (!estNomValide(d.gabarit) || (d.variante !== undefined && !estNomValide(d.variante))) {
     return { ok: false, error: "Gabarit inconnu." };
   }
@@ -40,6 +42,7 @@ export async function validerTexteEmailAction(d: {
   const cle = cleTexteValide(d.gabarit, d.variante);
   const userId = session.user.id;
   const valide = d.valide;
+  const ip = await getClientIp();
   try {
     await prisma.$transaction(async (tx) => {
       const avant = lireValidation(
@@ -60,6 +63,7 @@ export async function validerTexteEmailAction(d: {
           adminUserId: userId,
           action: valide ? "email.texte_valide" : "email.texte_invalide",
           targetType: "setting",
+          ipAddress: ip,
           changes: { cle, avant, apres: valide } as never,
         },
       });

@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const auth = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => auth() }));
+vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
 
 const { tx } = vi.hoisted(() => ({
   tx: {
@@ -67,6 +68,7 @@ describe("validerTexteEmailAction", () => {
     )[0].data;
     expect(log).not.toHaveProperty("targetId");
     expect(log.targetType).toBe("setting");
+    expect(log.ipAddress).toBe("203.0.113.7");
     expect(log.action).toBe("email.texte_valide");
     expect(log.changes).toEqual({ cle, avant: false, apres: true });
   });

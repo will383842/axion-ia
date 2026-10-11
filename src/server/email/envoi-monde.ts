@@ -63,7 +63,7 @@ export async function apercuGabarit<G extends string>(
     sujet: r.subject,
     html: r.html,
     destinataire: e.destinataire,
-    ...(texteDefaut !== null ? { texteDefaut: texteDefaut as string } : {}),
+    ...(typeof texteDefaut === "string" ? { texteDefaut } : {}),
   };
 }
 
