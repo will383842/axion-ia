@@ -159,9 +159,8 @@ export function ApplicationsV2({
   // seconde liste de clés divergerait au premier filtre ajouté, et l'export
   // sortirait un périmètre différent de l'écran sans qu'on le voie.
   //
-  // 🔑 `view=all` est FIXE, et non dérivé d'une prop : cet écran n'affiche
-  // plus que des candidatures emploi, toutes offres comprises — c'est
-  // exactement ce que l'export doit refléter, mot pour mot.
+  // 🔑 `view=all`, sauf la vue « Formateurs freelance » (lot L0h, interrupteur
+  // `formateurs.menu_freelance`) : l'export porte alors la même vue que l'écran.
   const exportQuery = new URLSearchParams(
     Object.entries({
       view: vueFormateursFreelance ? "formateurs-freelance" : "all",
