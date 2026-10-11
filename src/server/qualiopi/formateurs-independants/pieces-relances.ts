@@ -8,12 +8,18 @@
  * - **S6 bis — CV et assurance RC pro (F41)** : 30 jours puis 15 jours avant l'échéance
  *   (texte F41 soumis à Will). Rien après l'échéance.
  *
- * 🔑 Rien n'est recréé : l'état d'une pièce vient de `pieces-a-renouveler.ts` (lot L13),
+ * ⚠️ La règle J-30/J-15/J0 et `clePiece` de `pieces-a-renouveler.ts` (L13) ne sont PAS
+ * utilisées : le texte F41 soumis à Will annonce deux envois (J-30, J-15), et la clé de
+ * toute relance est celle du passage (`cleRelance`). Ne pas appeler `clePiece` pour un
+ * envoi : il échapperait à l'anti-doublon de cette campagne.
+ *
+ * 🔑 L'état d'une pièce vient de `pieces-a-renouveler.ts` (lot L13),
  * la décision du moteur commun (`lib/relances/campagne.ts`), l'envoi de l'adaptateur des
  * formateurs (texte validé, fin de collaboration, crochets) via le passage de CAMP-3.
  *
- * 🔴 ÉTEINT : les deux campagnes exigent `formateurs.pieces_cron`. Interrupteur absent,
- * le passage ne les lit même pas.
+ * 🔴 ÉTEINT : les deux campagnes exigent `formateurs.dossier_en_ligne` (clé mère de
+ * `pieces_cron` : la couper suspend ces relances) ET `formateurs.pieces_cron`.
+ * Interrupteur absent, le passage ne les lit même pas.
  *
  * Hors périmètre (dit dans le RAPPORT L13b) : F40 « avant une formation », F41 « pièce
  * refusée » (le motif de refus en base est un texte libre, pas un motif fermé), F57.
@@ -237,6 +243,7 @@ export async function lirePourRelances(): Promise<LecturePieces> {
     orderBy: { id: "asc" },
     take: PLAFOND_FICHES,
   });
+  if (fiches.length >= PLAFOND_FICHES) throw new Error("lecture des fiches tronquée");
   if (fiches.length === 0) {
     return {
       fiches: [],
@@ -302,6 +309,15 @@ export async function lirePourRelances(): Promise<LecturePieces> {
     }),
   ]);
 
+  // Une lecture tronquée pourrait cacher la pièce valable la plus récente et faire partir
+  // un rappel à tort : échec FERMÉ, le passage saute la campagne.
+  if (
+    docs.length >= PLAFOND_PIECES ||
+    journal.length >= PLAFOND_ENVOIS ||
+    corbeille.length >= PLAFOND_ENVOIS
+  ) {
+    throw new Error("lecture des pièces tronquée");
+  }
   const pieces = new Map<string, PieceLue[]>();
   for (const d of docs) {
     const liste = pieces.get(d.trainerId) ?? [];
@@ -336,7 +352,7 @@ export const CAMPAGNE_VIGILANCE: DeclarationCampagne<EtapeVigilance> = {
   entityType: "Trainer",
   classe: "B",
   regle: REGLE_VIGILANCE,
-  interrupteurs: ["pieces_cron"],
+  interrupteurs: ["dossier_en_ligne", "pieces_cron"],
   variante: () => VARIANTE_F40_AVANT_ECHEANCE,
   lireFaits: async (maintenant) => faitsVigilance(await lirePourRelances(), maintenant),
 };
@@ -347,7 +363,7 @@ export const CAMPAGNE_PIECES: DeclarationCampagne<EtapePieceF41> = {
   entityType: "Trainer",
   classe: "B",
   regle: REGLE_PIECE_F41,
-  interrupteurs: ["pieces_cron"],
+  interrupteurs: ["dossier_en_ligne", "pieces_cron"],
   variante: (etape) => VARIANTES_F41[etape as EtapePieceF41] ?? 1,
   lireFaits: async (maintenant) => faitsPieces(await lirePourRelances(), maintenant),
 };

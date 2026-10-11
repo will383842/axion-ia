@@ -58,8 +58,9 @@ describe("livré éteint", () => {
     const ids = REGISTRE_CAMPAGNES.map((c) => c.id);
     expect(ids).toContain(CAMPAGNE_VIGILANCE.id);
     expect(ids).toContain(CAMPAGNE_PIECES.id);
-    expect(CAMPAGNE_VIGILANCE.interrupteurs[0]).toBe("pieces_cron");
-    expect(CAMPAGNE_PIECES.interrupteurs[0]).toBe("pieces_cron");
+    // Clé mère d'abord : couper le dossier en ligne suspend ces relances.
+    expect(CAMPAGNE_VIGILANCE.interrupteurs).toEqual(["dossier_en_ligne", "pieces_cron"]);
+    expect(CAMPAGNE_PIECES.interrupteurs).toEqual(["dossier_en_ligne", "pieces_cron"]);
   });
 
   it("interrupteurs absents : aucun formateur n'est lu, aucun e-mail ne part", async () => {
@@ -244,11 +245,25 @@ describe("S6 — attestation URSSAF (F40)", () => {
       dateExpiration: null,
       valideAt: null,
     });
-    const faits = faitsVigilance(lecture([attestation(-5), enAttente]), MAINTENANT);
-    expect(faits.every((f) => f.etat.actionFaite)).toBe(true);
+    expect(faitsVigilance(lecture([attestation(-5), enAttente]), MAINTENANT)).toEqual([]);
   });
 
   it("aucune attestation déposée : pas de F40 « avant l'échéance »", () => {
     expect(faitsVigilance(lecture([]), MAINTENANT)).toEqual([]);
+  });
+});
+
+describe("le texte qui part est complet", () => {
+  it("F40 et F41 : aucun crochet sans valeur, à chaque étape, avec les vraies déclarations", async () => {
+    const { valeursManquantes: reel } = await vi.importActual<
+      typeof import("@/server/qualiopi/formateurs-independants/envois")
+    >("@/server/qualiopi/formateurs-independants/envois");
+    const [p] = faitsPieces(lecture([piece()]), MAINTENANT);
+    for (const etape of ["j30", "j15"]) {
+      const payload = { ...p!.payload, etape: CAMPAGNE_PIECES.variante!(etape) };
+      expect(reel("formateur-piece-a-renouveler", payload)).toBe(false);
+    }
+    const sans = { prenom: "Camille", valeurs: {}, etape: CAMPAGNE_VIGILANCE.variante!("j15") };
+    expect(reel("formateur-vigilance", sans)).toBe(false);
   });
 });
