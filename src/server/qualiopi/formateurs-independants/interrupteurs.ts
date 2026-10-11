@@ -449,6 +449,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.das2_commun",
   },
+  // Lot L14 — fin de collaboration d'un formateur indépendant. Coupé : la carte
+  // n'apparaît pas sur la fiche et les actions refusent, exactement comme avant L14.
+  fin_collaboration: {
+    ...envoi(
+      "Fin de collaboration",
+      "La fiche d'un formateur indépendant permet d'envoyer l'avertissement avant une fin pour manquement, puis de mettre fin à la collaboration (préavis selon la durée de la relation, e-mail après aperçu, aucune suppression).",
+    ),
+    cle: "formateurs.fin_collaboration",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -484,6 +493,7 @@ export const PREALABLES_SIGNATURE: Readonly<
     },
   ],
   das2_commun: [],
+  fin_collaboration: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

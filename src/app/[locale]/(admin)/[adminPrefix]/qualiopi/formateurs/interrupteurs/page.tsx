@@ -42,6 +42,7 @@ import {
   basculerFormateursGardeMissionPortesAction,
   basculerFormateursPresentationPayeeAction,
   basculerFormateursDas2CommunAction,
+  basculerFormateursFinCollaborationAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -106,6 +107,7 @@ const ACTIONS_SIGNATURE: Record<
   garde_mission_portes: basculerFormateursGardeMissionPortesAction,
   presentation_payee: basculerFormateursPresentationPayeeAction,
   das2_commun: basculerFormateursDas2CommunAction,
+  fin_collaboration: basculerFormateursFinCollaborationAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =

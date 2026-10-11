@@ -514,3 +514,9 @@ export async function basculerFormateursDas2CommunAction(
 ): Promise<EtatBascule> {
   return basculerSignature("das2_commun", formData);
 }
+export async function basculerFormateursFinCollaborationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("fin_collaboration", formData);
+}
