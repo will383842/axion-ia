@@ -84,3 +84,30 @@ export function ajouterJoursOuvres(depuis: Date, jours: number): Date {
   }
   return d;
 }
+
+/**
+ * Jour civil « AAAA-MM-JJ » ouvré ? (week-end et jours fériés de métropole exclus).
+ * Travaille sur la clé du jour, sans fuseau : la clé est déjà un jour de Paris.
+ */
+export function estJourCivilOuvre(jour: string): boolean {
+  const d = new Date(`${jour}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) throw new Error(`jour civil invalide : ${jour}`);
+  const jourSemaine = d.getUTCDay();
+  if (jourSemaine === 0 || jourSemaine === 6) return false;
+  return !joursFeriesFrance(d.getUTCFullYear()).includes(jour);
+}
+
+/**
+ * Le dernier jour ouvré au plus tard à `jour` (lui-même s'il est ouvré). Sert à la
+ * date cible d'un virement : une échéance qui tombe un samedi se paie le vendredi.
+ */
+export function dernierJourOuvreAuPlusTard(jour: string): string {
+  let x = jour;
+  // Au plus quatre jours chômés d'affilée en métropole (vendredi férié, week-end, lundi férié).
+  for (let i = 0; i < 10 && !estJourCivilOuvre(x); i += 1) {
+    const d = new Date(`${x}T00:00:00Z`);
+    d.setUTCDate(d.getUTCDate() - 1);
+    x = d.toISOString().slice(0, 10);
+  }
+  return x;
+}

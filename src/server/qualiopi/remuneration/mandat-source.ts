@@ -37,8 +37,11 @@ import { prisma } from "@/lib/prisma";
  * Version du contrat de sous-traitance à partir de laquelle le texte signé
  * contient l'article 4 bis (mandat de facturation).
  *
- * ⚠️ Comparaison `>=` et non `===` : une v3 future contiendrait toujours la
- * clause. **Si une version future la RETIRAIT, ce seuil deviendrait faux** —
+ * ⚠️ Comparaison `>=` et non `===`. Depuis le contrat-cadre v3 (lot L7a), la
+ * clause reste dans le texte mais un ORGANISME peut refuser le mandat à la
+ * signature (article 13.4) : ce refus est porté par l'instantané
+ * (`data.mandatAutofacturation === false`) et `refuseLeMandat` l'écarte.
+ * **Si une version future RETIRAIT la clause, ce seuil deviendrait faux** —
  * c'est la seule évolution qui casserait ce module en silence, et elle est
  * signalée ici plutôt que découverte plus tard. La garde d'empreinte
  * (`gabarit-empreinte.spec.ts`) force à trancher à chaque retouche du texte :
@@ -128,6 +131,8 @@ export async function resoudreMandat(trainerId: string, saisi: MandatSaisi): Pro
 
     for (const c of contrats) {
       if (versionGabarit(c.metadata) < VERSION_CONTRAT_AVEC_MANDAT) continue;
+      // Contrat-cadre v3 : un organisme qui a refusé le mandat n'en donne aucun.
+      if (refuseLeMandat(c.metadata)) continue;
       // Dernière signature apposée : la pièce n'engage qu'une fois complète.
       // `signeAt` est NON NULL au schéma : une ligne de signature sans date
       // n'existe pas. On ne filtre donc pas — un filtre inutile laisserait
@@ -164,4 +169,20 @@ function versionGabarit(metadata: unknown): number {
   if (typeof rd !== "object" || rd === null) return 1;
   const v = (rd as Record<string, unknown>)["gabaritVersion"];
   return typeof v === "number" && Number.isFinite(v) && v > 0 ? v : 1;
+}
+
+/**
+ * Vrai si l'instantané d'un contrat porte un REFUS explicite du mandat
+ * d'autofacturation (contrat-cadre v3, article 13.4, variante organisme).
+ *
+ * Seul `false` vaut refus : l'absence du champ (v2, v3 d'un indépendant) laisse
+ * la règle de version décider, comme avant.
+ */
+function refuseLeMandat(metadata: unknown): boolean {
+  if (typeof metadata !== "object" || metadata === null) return false;
+  const rd = (metadata as Record<string, unknown>)["renderData"];
+  if (typeof rd !== "object" || rd === null) return false;
+  const data = (rd as Record<string, unknown>)["data"];
+  if (typeof data !== "object" || data === null) return false;
+  return (data as Record<string, unknown>)["mandatAutofacturation"] === false;
 }

@@ -18,7 +18,7 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { requireFormateurAction } from "@/server/formateur/guard";
-import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { requireAdminWrite, requireHabilitation, logQualiopiActivity } from "./_guards";
 import {
   lireMissionParJeton,
   proposerMissionFormateur,
@@ -30,8 +30,13 @@ import {
   type ReponseMission,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { ecrireApresDelai } from "@/server/qualiopi/trainers/message-apres-delai";
-import type { MissionFormateurStatut } from "../../../../prisma/generated/client";
+import type {
+  MissionFormateurStatut,
+  SessionFormateurRole,
+} from "../../../../prisma/generated/client";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { HABILITATION_ACTIVE_WHERE, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
 type ActionResult<T> = { data: T } | { error: string };
@@ -138,18 +143,31 @@ export async function renvoyerPropositionMissionAction(
 
   // Le formateur doit être AFFECTÉ : on ne propose pas une mission à quelqu'un
   // qui n'est pas sur la session — ce serait une affectation déguisée.
-  let affecte: { id: string } | null;
+  let affecte: { id: string; role: SessionFormateurRole } | null;
   try {
     affecte = await prisma.sessionFormateur.findUnique({
       where: { sessionId_trainerId: { sessionId, trainerId } },
-      select: { id: true },
+      select: { id: true, role: true },
     });
   } catch {
     return { error: "Erreur lors de la lecture de l'affectation" };
   }
   if (affecte === null) return { error: "Ce formateur n'est pas affecté à cette session." };
 
-  const r = await proposerMissionFormateur({ sessionId, trainerId, role: "principal" });
+  // Lot S2 — interrupteur `formateurs.affectation_sure`. Arrêté : comme avant
+  // (aucun recontrôle, rôle « principal »).
+  let role: SessionFormateurRole = "principal";
+  if (await interrupteurAllume("affectation_sure")) {
+    // 🔴 Le renvoi ne recontrôlait RIEN : une fiche désactivée, ou dont
+    // l'habilitation a été retirée depuis l'affectation, recevait une nouvelle
+    // proposition. Même garde que les portes d'affectation, réutilisée.
+    const refus = await refusRenvoi(sessionId, trainerId);
+    if (refus !== null) return { error: `Proposition impossible : ${refus}.` };
+    // Le VRAI rôle de l'affectation : un co-formateur n'est pas « principal ».
+    role = affecte.role;
+  }
+
+  const r = await proposerMissionFormateur({ sessionId, trainerId, role });
   if (!r.proposee) return { error: `Proposition impossible : ${r.raison}.` };
 
   await logQualiopiActivity({
@@ -160,6 +178,37 @@ export async function renvoyerPropositionMissionAction(
     session,
   });
   return { data: { missionId: r.missionId, emailEnvoye: r.emailEnvoye } };
+}
+
+/** La raison de refuser un renvoi (garde d'habilitation), ou `null`. */
+async function refusRenvoi(sessionId: string, trainerId: string): Promise<string | null> {
+  try {
+    const [s, trainer] = await Promise.all([
+      prisma.trainingSession.findUnique({
+        where: { id: sessionId },
+        select: { formationId: true },
+      }),
+      prisma.trainer.findUnique({
+        where: { id: trainerId },
+        select: {
+          actif: true,
+          statut: true,
+          sousTraitantVerifieAt: true,
+          habilitations: { where: { ...HABILITATION_ACTIVE_WHERE }, select: { formationId: true } },
+        },
+      }),
+    ]);
+    if (s === null) return "session introuvable";
+    if (trainer === null) return "formateur introuvable";
+    const check = isTrainerHabilite(
+      { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+      s.formationId,
+    );
+    return check.ok ? null : (check.raison ?? "formateur non habilité");
+  } catch {
+    // Lecture indisponible : on ne devine pas une habilitation (garde fermée).
+    return "contrôle du formateur indisponible, réessayez";
+  }
 }
 
 const absenceSchema = coupleSchema.extend({
@@ -262,7 +311,11 @@ const accordHorsOutilSchema = z.object({
 export async function consignerAccordHorsOutilAction(
   input: z.infer<typeof accordHorsOutilSchema>,
 ): Promise<ActionResult<{ missionId: string }>> {
-  const session = await requireAdminWrite();
+  // Lot S2 (N3) — interrupteur allumé : noter un accord engage la place d'un
+  // sous-traitant, c'est l'acte `habiliter_formateur`, plus une simple écriture.
+  const session = (await interrupteurAllume("affectation_sure"))
+    ? await requireHabilitation("habiliter_formateur")
+    : await requireAdminWrite();
   const parsed = accordHorsOutilSchema.safeParse(input);
   if (!parsed.success) {
     return {
