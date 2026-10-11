@@ -293,7 +293,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
   // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le
   // statut du formateur connecté, pour nommer le menu (« Mes missions »,
-  // « Mes honoraires »).
+  // « Mes honoraires »). `VueMission` : la page d'une mission (lecture bornée
+  // au `trainerId` de la session, `where: { id, trainerId }` ; deux actions qui
+  // revérifient l'appartenance).
+  "src/components/espace-formateur/VueMission.tsx",
   "src/app/[locale]/espace-formateur/_coquille.tsx",
   "src/components/espace-formateur/PropositionSixLignes.tsx",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
