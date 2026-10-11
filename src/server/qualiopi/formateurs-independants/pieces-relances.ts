@@ -73,7 +73,8 @@ export interface FicheRelance {
 export const ACTION_EFFACEMENT_FORMATEUR = "qualiopi.trainer.rgpd_effacement";
 
 /** Une candidature arrêtée de notre fait ou du sien : jamais relancée. */
-const STATUTS_NON_RETENUS = ["rejected", "withdrawn"] as const;
+// `archived` : candidatures reprises de l'ancien stock — hors nouveau parcours.
+const STATUTS_NON_RETENUS = ["rejected", "withdrawn", "archived"] as const;
 const CANDIDATURE_NON_RETENUE: ReadonlySet<string> = new Set(STATUTS_NON_RETENUS);
 
 export type MotifHorsPopulation =

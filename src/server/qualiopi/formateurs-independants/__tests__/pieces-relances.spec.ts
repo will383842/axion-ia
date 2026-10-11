@@ -326,6 +326,11 @@ describe("population STRICTE (un cas par catégorie exclue, et le cas inclus)", 
       { candidature: { natureCollaboration: "freelance", status: "withdrawn" } },
       "candidat-non-retenu",
     ],
+    [
+      "candidature reprise de l'ancien stock",
+      { candidature: { natureCollaboration: "freelance", status: "archived" } },
+      "candidat-non-retenu",
+    ],
     ["dossier en ligne non vérifié", { dossierStatut: "a_verifier" }, "dossier-non-verifie"],
     [
       "intervenant d'un organisme sous-traitant",
@@ -381,7 +386,10 @@ describe("population STRICTE (un cas par catégorie exclue, et le cas inclus)", 
       actif: true,
       finCollaborationAt: null,
       candidatureOrigine: {
-        is: { natureCollaboration: "freelance", status: { notIn: ["rejected", "withdrawn"] } },
+        is: {
+          natureCollaboration: "freelance",
+          status: { notIn: ["rejected", "withdrawn", "archived"] },
+        },
       },
     });
   });
@@ -393,6 +401,7 @@ function baseSimulee(o: {
   pieces?: PieceLue[];
   effacements?: string[];
   opposition?: boolean;
+  rebond?: boolean;
 }) {
   const trouverFiches = vi.fn(async (args: { where: Record<string, unknown> }) =>
     o.fiches.filter((f) => !("id" in args.where) || f.id === args.where.id),
@@ -405,7 +414,11 @@ function baseSimulee(o: {
     trainerDocument: {
       findMany: vi.fn(async () => (o.pieces ?? []).map((p) => ({ ...p, trainerId: T1 }))),
     },
-    emailLog: { findMany: vi.fn(async () => []) },
+    emailLog: {
+      findMany: vi.fn(async (args: { where: { status?: unknown } }) =>
+        o.rebond && args.where.status === "bounced" ? [{ recipient: "camille@example.com" }] : [],
+      ),
+    },
     emailOutbox: { findMany: vi.fn(async () => []) },
     emailOpposition: {
       findMany: vi.fn(async (args: { where: { emailHash: { in: string[] } } }) =>
@@ -502,6 +515,49 @@ describe("relecture au départ : arrêt immédiat", () => {
     expect(await motifRetenueRelancePiece(...job(), async () => false, MAINTENANT)).toMatch(
       /coupées/,
     );
+  });
+
+  it("rebond dur entre-temps : retenue", async () => {
+    baseSimulee({ fiches: [ligneBase()], pieces: [piece()], rebond: true });
+    expect(await motifRetenueRelancePiece(...job(), allumes, MAINTENANT)).toMatch(/rebond/);
+  });
+
+  it("F40 : part dans la fenêtre, retenue une fois l'attestation renouvelée", async () => {
+    const attestation = piece({
+      type: "attestation_vigilance_urssaf",
+      dateEmission: new Date(MAINTENANT.getTime() - 175 * JOUR),
+      dateExpiration: null,
+    });
+    baseSimulee({ fiches: [ligneBase()], pieces: [attestation] });
+    const [f] = faitsVigilance(await lirePourRelances(), MAINTENANT);
+    const jobF40 = [
+      "formateur-vigilance",
+      "Trainer",
+      T1,
+      { origineRelance: f!.origineId },
+    ] as const;
+    expect(await motifRetenueRelancePiece(...jobF40, allumes, MAINTENANT)).toBeNull();
+    const neuve = piece({
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      type: "attestation_vigilance_urssaf",
+      dateEmission: new Date(MAINTENANT.getTime() - JOUR),
+      dateExpiration: null,
+      createdAt: MAINTENANT,
+    });
+    baseSimulee({ fiches: [ligneBase()], pieces: [attestation, neuve] });
+    expect(await motifRetenueRelancePiece(...jobF40, allumes, MAINTENANT)).toMatch(
+      /plus à renouveler/,
+    );
+  });
+
+  it("le worker relit F40 et F41 par la relecture propre aux pièces", async () => {
+    const { RELECTURES_AU_DEPART } = await import("@/server/email/relecture-au-depart");
+    const vigilance = RELECTURES_AU_DEPART.get("formateur-vigilance");
+    const pieceF41 = RELECTURES_AU_DEPART.get("formateur-piece-a-renouveler");
+    const autre = RELECTURES_AU_DEPART.get("formateur-dossier-relance");
+    expect(vigilance).toBeDefined();
+    expect(vigilance).toBe(pieceF41);
+    expect(vigilance).not.toBe(autre);
   });
 
   it("sans origine lisible, ou base muette : retenue (échec fermé)", async () => {
