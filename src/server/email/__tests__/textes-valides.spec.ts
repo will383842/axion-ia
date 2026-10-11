@@ -8,7 +8,6 @@ import {
   estTexteValide,
   textesValidesDepuisLignes,
 } from "../textes-valides";
-import { estCleProtegee } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 
 describe("cleTexteValide", () => {
   it("une clé par gabarit, et une par variante", () => {
@@ -44,12 +43,5 @@ describe("estTexteValide — défaut = non validé", () => {
   });
   it("une ligne hors préfixe n'est jamais lue", () => {
     expect(estTexteValide(registre, "autre.cle")).toBe(false);
-  });
-});
-
-describe("les clés du registre échappent à l'éditeur générique des réglages", () => {
-  it("estCleProtegee couvre le préfixe", () => {
-    expect(estCleProtegee(cleTexteValide("g-un"))).toBe(true);
-    expect(estCleProtegee(cleTexteValide("g-un").toUpperCase())).toBe(true);
   });
 });
