@@ -112,6 +112,18 @@ function valides(...gabarits: string[]) {
   );
 }
 
+/** Textes validés ET `relances_auto` allumé (relance du dossier, L6). */
+function relancesAllumees(...gabarits: string[]) {
+  d.settings.mockImplementation(async (q: { where: { key: { startsWith: string } } }) =>
+    q.where.key.startsWith === "formateurs."
+      ? [
+          { key: "formateurs.textes_valides", value: { actif: true } },
+          { key: "formateurs.relances_auto", value: { actif: true } },
+        ]
+      : gabarits.map((g) => ({ key: `textes_valides.${g}`, value: { valide: true } })),
+  );
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   d.render.mockResolvedValue({ subject: "Objet", html: "<p>x</p>", text: "x", famille: "B" });
@@ -162,8 +174,37 @@ describe("copies locales et noms", () => {
 describe("texte validé, relu au départ", () => {
   it("validé : la relance part", async () => {
     valides("formateur-dossier-relance");
+    // L6 : la relance du dossier exige en plus `relances_auto` et un dossier à compléter.
+    relancesAllumees("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "en_cours",
+    });
     await processeur()(job("formateur-dossier-relance"));
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+  it("L6 : dossier envoyé entre l'enfilage et le départ : la relance est retenue", async () => {
+    relancesAllumees("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "a_verifier",
+    });
+    await processeur()(job("formateur-dossier-relance"));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/plus à compléter/));
+  });
+  it("L6 : relances automatiques coupées après l'enfilage : retenue", async () => {
+    valides("formateur-dossier-relance");
+    d.trainer.mockResolvedValue({
+      email: "claire@exemple.fr",
+      finCollaborationAt: null,
+      dossierStatut: "en_cours",
+    });
+    await processeur()(job("formateur-dossier-relance"));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/coupées/));
   });
   it("validation retirée après l'enfilage : retenu, clos annulé", async () => {
     valides();

@@ -156,6 +156,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/formateur/dossier/[id]/[jeton]/actions.ts",
   "src/app/formateur/dossier/[id]/[jeton]/DossierFormateur.tsx",
   "src/app/formateur/dossier/[id]/[jeton]/le-dossier-formateur-respecte-le-lexique.spec.ts",
+  // Lot L6 — « Retrouver mon dossier » (F14) : même dossier, même interrupteur, l'action
+  // n'envoie que le lien de la fiche dont l'adresse est ENREGISTRÉE, réponse toujours neutre.
+  "src/app/formateur/dossier/retrouver/page.tsx",
+  "src/app/formateur/dossier/retrouver/actions.ts",
   // Lot 4b — l'adaptateur MCP branche `qualiopi.conformite` sur `listAlertes()`
   // (la lecture persistée, PAS l'évaluateur). Inscrit NOMINATIVEMENT : un motif
   // de répertoire serait un blanc-seing pour tout fichier futur sous mcp/.

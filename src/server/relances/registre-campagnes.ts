@@ -17,6 +17,7 @@
 import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateur-independant-textes";
 import type { EtatCampagne, RegleCampagne } from "@/lib/relances/campagne";
 import type { CleEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 
 /** A sollicitation (invitation) ; B obligation (pièce, signature) ; C information et argent. */
 export type ClasseCampagne = "A" | "B" | "C";
@@ -69,4 +70,7 @@ export function cleRelance(
  * Les campagnes déclarées. VIDE à la livraison de CAMP-3 : S1 (L-INV), S3 et S5 (L6),
  * S4 (L7b), S6 à S7 (L13), S8 et S9 bis (L11c), S9 (L12c), S11 (L7d) s'y inscrivent.
  */
-export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [];
+export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
+  // L6 — S3 (et S5 par son origine F12) : relances du dossier en ligne.
+  CAMPAGNE_RELANCE_DOSSIER as DeclarationCampagne,
+];

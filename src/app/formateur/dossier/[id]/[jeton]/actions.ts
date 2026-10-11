@@ -47,6 +47,10 @@ import {
   type EcranEntreprise,
 } from "@/server/qualiopi/formateurs-independants/regles-admission";
 import { normaliserNda } from "@/server/qualiopi/formateurs-independants/controle-regles";
+import {
+  alerterDossierRecu,
+  prevenirStatutNonOuvert,
+} from "@/server/qualiopi/formateurs-independants/envois-dossier";
 import { sourceRegistreCommune } from "@/server/qualiopi/formateurs-independants/source-registre";
 import {
   codeVigilanceBienForme,
@@ -199,6 +203,7 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   // Le registre est rejugé ICI : le navigateur ne décide pas qu'une entreprise est ouverte.
   const { v } = await jugerSiret(d, siret, nda);
   if (!ECRANS_QUI_LAISSENT_CONTINUER.has(v.ecran)) {
+    if (v.ecran === "statut_non_ouvert" || v.ecran === "hors_france") await statutNonOuvert(d);
     return { ok: false, message: messageEcran(v.ecran) };
   }
   try {
@@ -206,6 +211,15 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   } catch (e) {
     signaler("activite", e);
     return ECHEC;
+  }
+}
+
+/** F15, une seule fois par fiche (L6) ; une panne ne bloque jamais l'écran. */
+async function statutNonOuvert(d: DossierVue): Promise<void> {
+  try {
+    await prevenirStatutNonOuvert(d.id);
+  } catch (e) {
+    signaler("statut-non-ouvert", e);
   }
 }
 
@@ -238,6 +252,7 @@ export async function signalerSituationAction(fd: FormData): Promise<Resultat> {
   if (!situation) return NEUTRE;
   try {
     await signalerSituation(d, situation);
+    if (situation !== "sans_entreprise") await statutNonOuvert(d);
     return { ok: true };
   } catch (e) {
     signaler("situation", e);
@@ -344,6 +359,12 @@ export async function envoyerDossierAction(fd: FormData): Promise<Resultat> {
     });
   } catch (e) {
     signaler("controle-registre", e);
+  }
+  // F11 : l'alerte interne, minimisée (L6). Une panne ne défait pas l'envoi.
+  try {
+    await alerterDossierRecu(d.id);
+  } catch (e) {
+    signaler("alerte-dossier-recu", e);
   }
   return { ok: true };
 }
