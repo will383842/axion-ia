@@ -4,7 +4,7 @@
  * Tableau participants : Nom-Prénom / Entreprise / Signature matin /
  * Signature après-midi / Paraphe formateur / Observations.
  * Mention de certification + signature formateur + visa responsable pédagogique.
- * Conservation obligatoire 5 ans (DOCUMENT_RETENTION_YEARS).
+ * Mention de conservation exprimée par critère (relation, puis délais légaux).
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -21,7 +21,6 @@ import {
   SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
@@ -278,9 +277,10 @@ export function EmargementPdf({
         {/* Mention conservation.
             🔴 2026-09-30 — elle se réclamait de « l'article L.6353-9 », qui porte
             sur les informations demandées aux candidats, pas sur la conservation.
-            Aucun article ne fixe cette durée : on la dit, sans citation. */}
+            Aucun article ne fixe cette durée : on la dit, sans citation.
+            2026-10-11 — exprimée par critère plutôt qu'en durée fixe. */}
         <Text style={pdfStyles.legalNote}>
-          Document à conserver {DOCUMENT_RETENTION_YEARS} ans.
+          Document à conserver pendant la relation, puis le temps des délais légaux de réclamation.
         </Text>
       </QualiopiPage>
     </Document>

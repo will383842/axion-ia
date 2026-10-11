@@ -15,7 +15,13 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
-import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  libelleMissionsIndependant,
+  missionsVisiblesIndependant,
+  statsMissionsFormateur,
+  type MissionsVisiblesIndependant,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -53,6 +59,18 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
     await Promise.all(
       trainers.map(async (t) => [t.id, await statsMissionsFormateur(t.id, now)] as const),
     ),
+  );
+  // Lot S2 (R4) — pour un indépendant, ni refus ni silence : acceptées et
+  // réalisées seulement (interrupteur `formateurs.affectation_sure`).
+  const r4 = await interrupteurAllume("affectation_sure");
+  const missionsIndependants = new Map<string, MissionsVisiblesIndependant>(
+    r4
+      ? await Promise.all(
+          trainers
+            .filter((t) => t.statut === "sous_traitant")
+            .map(async (t) => [t.id, await missionsVisiblesIndependant(t.id, now)] as const),
+        )
+      : [],
   );
 
   // « Internes » = salariés + dirigeant-formateur (l'OF anime lui-même).
@@ -161,6 +179,10 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {(() => {
+                      const mi = missionsIndependants.get(t.id);
+                      if (mi !== undefined) {
+                        return <span>{libelleMissionsIndependant(mi)}</span>;
+                      }
                       const m = missionsParFormateur.get(t.id);
                       if (m === undefined || (m.proposees === 0 && m.absences === 0)) {
                         return (

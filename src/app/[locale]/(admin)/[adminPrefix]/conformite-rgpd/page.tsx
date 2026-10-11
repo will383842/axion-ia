@@ -2,8 +2,9 @@
  * Admin — Conformité RGPD : le registre des traitements, ses points à corriger, les
  * demandes des personnes, les sous-traitants et la conduite à tenir en cas d'incident.
  *
- * ⛔ Le registre n'est PAS dans le dépôt : il est importé ici (administrateurs) et
- * rangé dans le stockage privé R2 (cf. `src/features/conformite-rgpd/stockage.ts`).
+ * ⛔ Le registre n'est PAS dans le dépôt : il est importé ici (administrateurs), écrit
+ * dans la BASE (lot 2, `base.ts`) et sa copie datée rangée dans le stockage privé R2.
+ * Les écarts se corrigent par clics ; les incidents se déclarent ici. Rien ne s'efface.
  *
  * Server Component — garde de consultation, force-dynamic (donc `no-store`), noindex.
  * Onglets en liens `?onglet=` : aucun JavaScript client pour changer de vue.
@@ -11,7 +12,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlertTriangle, BookOpenCheck, Building2, Inbox } from "lucide-react";
+import { AlertTriangle, BookOpenCheck, Building2, Inbox, ShieldAlert } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -20,10 +21,23 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminSubmitButton } from "@/components/admin/ui/AdminSubmitButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { CarteEcart, PastilleEtat, texteOuTiret } from "@/components/admin/conformite-rgpd/blocs";
+import {
+  CarteEcart,
+  GestesEcart,
+  PastilleEtat,
+  texteOuTiret,
+} from "@/components/admin/conformite-rgpd/blocs";
+import { FormulaireIncident } from "@/components/admin/conformite-rgpd/FormulaireIncident";
 import { SUBPROCESSORS } from "@/content/subprocessors";
-import { importerRegistreAction } from "@/features/conformite-rgpd/actions";
+import {
+  importerRegistreAction,
+  reprendreRegistreAction,
+} from "@/features/conformite-rgpd/actions";
+import { enRegistre, lireRegistreBase } from "@/features/conformite-rgpd/base";
 import { LIBELLE_ORIGINE, listerDemandes } from "@/features/conformite-rgpd/demandes";
+import { pastilleCnil } from "@/features/conformite-rgpd/incidents";
+import { salonIncidentsDedie } from "@/features/conformite-rgpd/incidents-alertes";
+import { listerIncidents } from "@/features/conformite-rgpd/incidents-base";
 import {
   compterOuverts,
   destinatairesAbsents,
@@ -31,9 +45,10 @@ import {
   pastilleDelai,
   peutImporterRegistre,
   pointsACorriger,
+  pointsCorriges,
   transfereHorsUE,
 } from "@/features/conformite-rgpd/regles";
-import { lireRegistre } from "@/features/conformite-rgpd/stockage";
+import { registreARecuperer, stockageConfigure } from "@/features/conformite-rgpd/stockage";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -88,14 +103,35 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
   const racine = `/fr/${adminPrefix}`;
   const onglet = ONGLETS.find((o) => o.cle === sp.onglet) ?? ONGLETS[0];
 
-  const [lecture, demandes] = await Promise.all([lireRegistre(), listerDemandes()]);
-  const registre = lecture.etat === "ok" ? lecture.registre : null;
+  const [lecture, demandes, incidentsLus] = await Promise.all([
+    lireRegistreBase(),
+    listerDemandes(),
+    listerIncidents(),
+  ]);
+  const admin = peutImporterRegistre(acces.role);
+  const r2 = stockageConfigure();
+  const archives = lecture.etat === "ok" ? lecture.archives : [];
+  const registre =
+    lecture.etat === "ok" && lecture.traitements.length > 0
+      ? enRegistre(lecture.traitements)
+      : null;
+  // Reprise du lot 1 : base vide, registre dans R2 → un bouton, jamais d'import silencieux.
+  const reprise =
+    admin && r2 && lecture.etat === "ok" && registre === null && archives.length === 0
+      ? await registreARecuperer()
+      : false;
+  const vueCorriges = sp.vue === "corriges";
   const points = registre ? pointsACorriger(registre) : [];
+  const corriges = registre ? pointsCorriges(registre) : [];
   const ouverts = registre ? compterOuverts(registre) : { total: 0, graves: 0 };
   const aTraiter = demandes.filter((d) => d.aTraiter).length;
   const nomsPublics = SUBPROCESSORS.map((s) => s.name);
   const absents = registre ? destinatairesAbsents(registre, nomsPublics) : [];
-  const admin = peutImporterRegistre(acces.role);
+  const maintenant = new Date();
+  const incidents = (incidentsLus ?? []).map((i) => ({ ...i, cnil: pastilleCnil(i, maintenant) }));
+  const incidentsOuverts = incidents.filter((i) => i.statut === "ouvert").length;
+  const delaisEnCours = incidents.filter((i) => i.cnil.enCours);
+  const delaiDepasse = delaisEnCours.some((i) => i.cnil.ton === "destructive");
 
   return (
     <AdminPageShell width="wide">
@@ -119,22 +155,22 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
         ) : null}
         {sp.erreur ? (
           <p role="alert" className="admin-alert admin-alert-error">
-            Import refusé. {sp.erreur.slice(0, 400)}
+            Refusé. {sp.erreur.slice(0, 400)}
           </p>
         ) : null}
-        {lecture.etat === "non_configure" ? (
+        {!r2 && admin ? (
           <p role="status" className="admin-alert admin-alert-info">
-            Le stockage privé n&apos;est pas configuré sur ce serveur : le registre ne peut être ni
-            lu ni importé ici.
+            Le stockage privé n&apos;est pas configuré sur ce serveur : le registre ne peut pas être
+            importé ici.
           </p>
         ) : null}
-        {lecture.etat === "illisible" ? (
+        {lecture.etat === "indisponible" ? (
           <p role="alert" className="admin-alert admin-alert-error">
-            Le registre enregistré ne peut pas être lu. {lecture.erreur} Importez-le de nouveau.
+            La base ne répond pas : le registre ne peut pas être lu. Réessayez dans un instant.
           </p>
         ) : null}
 
-        <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-[var(--space-admin-3)] md:grid-cols-5">
           <AdminStatCard
             label="Activités au registre"
             value={registre ? registre.traitements.length : "—"}
@@ -164,9 +200,33 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
             icon={AlertTriangle}
             href={`${base}?onglet=points`}
           />
+          <AdminStatCard
+            label="Incidents ouverts"
+            value={incidentsLus === null ? "—" : incidentsOuverts}
+            tone={delaiDepasse ? "destructive" : delaisEnCours.length > 0 ? "warning" : "default"}
+            {...(delaisEnCours.length > 0
+              ? { meta: `dont ${delaisEnCours.length} en attente de décision CNIL` }
+              : {})}
+            icon={ShieldAlert}
+            href={`${base}?onglet=incidents`}
+          />
         </div>
 
-        {admin && lecture.etat !== "non_configure" ? (
+        {reprise ? (
+          <form
+            action={reprendreRegistreAction}
+            className="flex flex-wrap items-center gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+          >
+            <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+              Un registre importé avant la mise à jour attend d&apos;entrer dans la base.
+            </span>
+            <AdminSubmitButton pendingLabel="Reprise…">
+              Reprendre le registre déjà importé
+            </AdminSubmitButton>
+          </form>
+        ) : null}
+
+        {admin && r2 && lecture.etat === "ok" ? (
           <form
             action={importerRegistreAction}
             className="flex flex-wrap items-end gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
@@ -196,6 +256,7 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
               {o.libelle}
               {o.cle === "points" && registre ? ` (${ouverts.total})` : ""}
               {o.cle === "demandes" && aTraiter > 0 ? ` (${aTraiter})` : ""}
+              {o.cle === "incidents" && incidentsOuverts > 0 ? ` (${incidentsOuverts})` : ""}
             </Link>
           ))}
         </nav>
@@ -252,32 +313,73 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
             </div>
           )
         ) : null}
+        {onglet.cle === "registre" && archives.length > 0 ? (
+          <p className={sousTexteCls}>
+            Archivées :{" "}
+            {archives.map((t, i) => (
+              <span key={t.id}>
+                {i > 0 ? " · " : ""}
+                <Link href={`${base}/${t.id}`} className="underline underline-offset-2">
+                  {t.nom}
+                </Link>
+              </span>
+            ))}
+          </p>
+        ) : null}
 
         {onglet.cle === "points" ? (
           registre === null ? (
             <AdminEmptyState title="Aucun registre importé." description={MESSAGE_VIDE} />
-          ) : points.length === 0 ? (
-            <AdminEmptyState
-              title="Rien à corriger."
-              description="Aucun point ouvert au registre."
-            />
           ) : (
-            <ul className="flex flex-col gap-[var(--space-admin-3)]">
-              {points.map((e, i) => (
-                <CarteEcart
-                  key={`${e.traitementId}-${i}`}
-                  ecart={e}
-                  contexte={
-                    <Link
-                      href={`${base}/${e.traitementId}`}
-                      className="text-[length:var(--text-admin-xs)] font-semibold underline-offset-2 hover:underline"
-                    >
-                      {e.traitementNom}
-                    </Link>
-                  }
+            <div className="flex flex-col gap-[var(--space-admin-3)]">
+              <nav aria-label="Vues" className="flex flex-wrap gap-[var(--space-admin-2)]">
+                <Link
+                  href={`${base}?onglet=points`}
+                  aria-current={vueCorriges ? undefined : "page"}
+                  className={`${vueCorriges ? "admin-button-secondary" : "admin-button"} admin-button-sm`}
+                >
+                  À corriger ({points.length})
+                </Link>
+                <Link
+                  href={`${base}?onglet=points&vue=corriges`}
+                  aria-current={vueCorriges ? "page" : undefined}
+                  className={`${vueCorriges ? "admin-button" : "admin-button-secondary"} admin-button-sm`}
+                >
+                  Corrigés ({corriges.length})
+                </Link>
+              </nav>
+              {(vueCorriges ? corriges : points).length === 0 ? (
+                <AdminEmptyState
+                  title={vueCorriges ? "Aucun point corrigé." : "Rien à corriger."}
+                  {...(vueCorriges ? {} : { description: "Aucun point ouvert au registre." })}
                 />
-              ))}
-            </ul>
+              ) : (
+                <ul className="flex flex-col gap-[var(--space-admin-3)]">
+                  {(vueCorriges ? corriges : points).map((e) => (
+                    <CarteEcart
+                      key={e.id}
+                      ecart={e}
+                      contexte={
+                        <Link
+                          href={`${base}/${e.traitementId}`}
+                          className="text-[length:var(--text-admin-xs)] font-semibold underline-offset-2 hover:underline"
+                        >
+                          {e.traitementNom}
+                        </Link>
+                      }
+                      gestes={
+                        admin ? (
+                          <GestesEcart
+                            ecart={e}
+                            retour={{ vers: vueCorriges ? "corriges" : "points" }}
+                          />
+                        ) : null
+                      }
+                    />
+                  ))}
+                </ul>
+              )}
+            </div>
           )
         ) : null}
 
@@ -405,6 +507,26 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
 
         {onglet.cle === "incidents" ? (
           <div className="flex flex-col gap-[var(--space-admin-5)]">
+            {admin ? (
+              <div className="flex flex-wrap gap-[var(--space-admin-2)]">
+                <Link href={`${base}?onglet=incidents&nouveau=1`} className="admin-button">
+                  Déclarer un incident
+                </Link>
+                {incidents.length > 0 ? (
+                  <a href={`${base}/incidents-pdf`} className="admin-button-secondary">
+                    Journal des incidents (PDF)
+                  </a>
+                ) : null}
+              </div>
+            ) : null}
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+              {salonIncidentsDedie()
+                ? "Les alertes partent dans le salon Telegram « Incidents »."
+                : "Salon Telegram dédié non configuré : les alertes partent dans le salon général."}
+            </p>
+            {admin && sp.nouveau === "1" ? (
+              <FormulaireIncident libelle="Enregistrer l'incident" />
+            ) : null}
             <ol className="flex flex-col gap-[var(--space-admin-3)]">
               <li className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
                 <p className="font-semibold">1. Tout de suite : noter</p>
@@ -434,10 +556,61 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
                 </p>
               </li>
             </ol>
-            <AdminEmptyState
-              title="Aucun incident déclaré."
-              description="Bientôt : déclarer un incident depuis cette page."
-            />
+            {incidents.length === 0 ? (
+              <AdminEmptyState
+                title="Aucun incident déclaré."
+                {...(incidentsLus === null ? { description: "La base ne répond pas." } : {})}
+              />
+            ) : (
+              <div className={tableCls}>
+                <table className="w-full border-collapse text-[length:var(--text-admin-sm)]">
+                  <thead className="border-b border-[color:var(--color-admin-border)]">
+                    <tr>
+                      <th className={headCls}>Incident</th>
+                      <th className={headCls}>Découvert le</th>
+                      <th className={headCls}>CNIL</th>
+                      <th className={headCls}>État</th>
+                      {admin ? <th className={headCls}>Fiche</th> : null}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {incidents.map((i) => (
+                      <tr
+                        key={i.id}
+                        className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
+                      >
+                        <td className={cellCls}>
+                          <span className="font-medium">n° {i.numero}</span>
+                        </td>
+                        <td className={cellCls}>{fr(i.decouvertLe)}</td>
+                        <td className={cellCls}>
+                          <AdminBadge tone={i.cnil.ton} dot>
+                            {i.cnil.libelle}
+                          </AdminBadge>
+                        </td>
+                        <td className={cellCls}>
+                          {i.statut === "clos" ? (
+                            <AdminBadge tone="neutral">Clos</AdminBadge>
+                          ) : (
+                            <AdminBadge tone="warning">Ouvert</AdminBadge>
+                          )}
+                        </td>
+                        {admin ? (
+                          <td className={cellCls}>
+                            <Link
+                              href={`${base}/incidents/${i.numero}`}
+                              className="admin-button-secondary"
+                            >
+                              Ouvrir
+                            </Link>
+                          </td>
+                        ) : null}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         ) : null}
       </div>

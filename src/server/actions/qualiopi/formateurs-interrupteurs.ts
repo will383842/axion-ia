@@ -471,3 +471,10 @@ export async function basculerFormateursMenuFreelanceAction(
 ): Promise<EtatBascule> {
   return basculerEntree("menu_freelance", formData);
 }
+
+export async function basculerFormateursAffectationSureAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("affectation_sure", formData);
+}
