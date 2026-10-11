@@ -186,7 +186,10 @@ export function SessionLifecycleButtons({
         return;
       }
       setSucces({
-        texte: "Session reportée. Nouvelle session créée :",
+        // Lot S2 — un chevauchement du formateur reconduit est dit, jamais tu.
+        texte: `Session reportée.${
+          result.data.avertissements ? ` ${result.data.avertissements.join(" ")}` : ""
+        } Nouvelle session créée :`,
         sessionId: result.data.nouvelleSessionId,
         numero: result.data.nouvelleSessionNumero,
       });

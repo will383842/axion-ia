@@ -26,6 +26,8 @@ import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
+import { GABARITS_A_CODE_UNIQUE } from "@/lib/email/gabarits-a-code";
+import { erreurSansCode, payloadPourRendu } from "@/server/email/code-en-file";
 // Base seule : sûr sur le trajet du worker (cf. l'en-tête de `journal.ts`).
 import { marquerGuideEnvoye } from "@/server/guide-ia/journal";
 import { ENTITE_GUIDE } from "@/server/guide-ia/config";
@@ -39,8 +41,9 @@ import {
 } from "@/server/email/verdict-envoi";
 // Base + déchiffrement + règle pure seulement : sûr sur le trajet du worker
 // (même garde de graphe que `verdict-envoi`).
-import { motifRetenueRelanceInvitation } from "@/features/commercial-application/relance-invitation-etat";
-import { GABARIT_RELANCE_INVITATION } from "@/lib/commercial-application/relance-invitation";
+// Le registre des relectures au départ (CAMP-1) : base, déchiffrement, règles pures
+// seulement — même garde de graphe que `verdict-envoi`.
+import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
@@ -93,7 +96,10 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
   const verdict = await verdictAvantEnvoi(data.to, {
     template: data.template,
     marketing: data.marketing === true,
-    sollicitation: true,
+    // CAMP-1 : seule une SOLLICITATION honore l'opposition ; un gabarit relu au
+    // départ sans en être une (argent, pièce) ne s'arrête que sur rebond ou
+    // désabonnement. Pour tout gabarit entré ici avant CAMP-1, c'était `true`.
+    sollicitation: estSollicitationSoumiseAOpposition(data.template, data.payload),
   });
   if (verdict.retenu) {
     return verdict.motif === "oppose"
@@ -110,12 +116,10 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
   // 2026-09-27 — les rappels de l'invitation à l'échange : une réservation,
   // une réponse, un classement arrivés depuis le passage qui les a posés les
   // retiennent ICI. Sans fiche liée, on ne peut rien vérifier : on retient.
-  if (data.template === GABARIT_RELANCE_INVITATION) {
-    if (data.entityType !== "Submission" || !data.entityId) {
-      return "rappel d'invitation sans fiche liée — état invérifiable";
-    }
-    return motifRetenueRelanceInvitation(data.entityId);
-  }
+  // CAMP-1 — chaque gabarit relu déclare son lecteur dans le registre
+  // (`relecture-au-depart.ts`) ; celui des rappels apporteurs est inchangé.
+  const lecteur = RELECTURES_AU_DEPART.get(data.template);
+  if (lecteur) return lecteur(data);
   return null;
 }
 
@@ -213,7 +217,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       // honorée comme une panne. Pas de `throw` — BullMQ rejouerait le job.
       // Pas d'alerte console non plus : une opposition respectée n'appelle
       // aucune action.
-      if (estSollicitationSoumiseAOpposition(template, payload)) {
+      if (
+        estSollicitationSoumiseAOpposition(template, payload) ||
+        RELECTURES_AU_DEPART.has(template)
+      ) {
         const motif = await motifDeRetenueAuDepart(job.data);
         if (motif !== null) {
           const trace = `Retenu à l'envoi : ${motif}`;
@@ -235,7 +242,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           html,
           text,
           famille,
-        } = await renderEmailTemplate(template, locale, payload, {
+        } = await renderEmailTemplate(template, locale, payloadPourRendu(template, payload), {
           destinataire: to,
         });
         const attachments = await resolveAttachments(job.data.attachments);
@@ -298,6 +305,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             html,
             text,
             attachmentNames: job.data.attachments?.map((a) => a.filename),
+            // S6b : seul un e-mail à code à usage unique transmet son gabarit (code masqué).
+            ...(GABARITS_A_CODE_UNIQUE.has(template) ? { template } : {}),
           });
         } catch (e) {
           console.error(
@@ -310,7 +319,11 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         if (entityType === ENTITE_GUIDE && entityId) {
           await marquerGuideEnvoye(entityId);
         }
-      } catch (err) {
+      } catch (errBrut) {
+        // S6b (relecture sécurité) — un envoi à code n'expose jamais son code : le message
+        // d'erreur (relais, rendu) est masqué AVANT d'aller au journal des envois, dans
+        // Redis (raison d'échec du job) et chez Sentry (rethrow → `failed`).
+        const err = GABARITS_A_CODE_UNIQUE.has(template) ? erreurSansCode(errBrut) : errBrut;
         const msg = err instanceof Error ? err.message : String(err);
         // 🔴 Lot 2 (2026-09-02) — UNE ligne par job, et « échec » seulement quand
         // c'est fini. Avant : chaque tentative ratée clôturait la ligne en

@@ -22,6 +22,7 @@ import type { GabaritFormateurIndependant } from "@/lib/email/templates/formateu
 import { remplir, varianteDe } from "@/lib/email/templates/_formateur-independant";
 import {
   CROCHET_NON_REMPLI,
+  GABARITS_ARGENT_FORMATEUR,
   TEXTES_FORMATEUR,
 } from "@/lib/email/templates/formateur-independant-textes";
 import { assemblerParagraphes } from "@/lib/email/texte-par-defaut";
@@ -99,16 +100,7 @@ export const GABARITS_FORMATEUR: readonly GabaritFormateur[] = [
 ];
 
 /** Après une fin de collaboration, seuls ceux-ci partent encore (même nom que chez les apporteurs). */
-export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateur> = new Set<GabaritFormateur>([
-  "formateur-virement-fait",
-  "formateur-virement-en-attente",
-  "formateur-facture-rectifiee",
-  "formateur-trop-percu",
-  "formateur-facture-deposee",
-  "formateur-desaccord-recu",
-  "formateur-desaccord-non-retenu",
-  "formateur-fin-collaboration",
-]);
+export { GABARITS_ARGENT_FORMATEUR };
 
 export type ResultatEnvoiFormateur =
   | ResultatEnvoi
@@ -143,6 +135,11 @@ export interface EnvoiFormateur {
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
   /** Relances : `priority: 10` (le code de signature et le lien de connexion n'en ont pas). */
   priority?: number;
+  /**
+   * Jamais garé en corbeille de validation — réservé aux e-mails qui expirent (le code de
+   * signature) : le texte, lui, reste exigé validé.
+   */
+  sansValidation?: boolean;
 }
 
 /** Le texte principal par défaut (pré-remplit « Modifier le texte »). */
@@ -205,6 +202,7 @@ export async function envoyer(e: EnvoiFormateur): Promise<ResultatEnvoiFormateur
       ...(jobId ? { jobId } : {}),
       ...(e.attachments ? { attachments: e.attachments } : {}),
       ...(e.priority !== undefined ? { priority: e.priority } : {}),
+      ...(e.sansValidation ? { bypassValidation: true } : {}),
     });
     return resultatDeLEnfilage(r);
   } catch {

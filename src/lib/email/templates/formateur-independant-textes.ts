@@ -427,13 +427,15 @@ export const TEXTES_FORMATEUR = {
     variantes: [
       {
         etape: null,
-        objet: "[123456] : votre code de signature Axion-IA",
+        objet: "[code] : votre code de signature Axion-IA",
         objetPropose: null,
+        // La durée est remplie par l'outil depuis le mécanisme (`CODE_VALIDITE_MS`, 15 minutes
+        // depuis S6b, décision 35) : le texte n'annonce jamais une durée fausse.
         paragraphes: [
-          "Votre code de signature : . Il est valable 15 minutes.",
+          "Votre code de signature : [code]. Il est valable [durée].",
           "Si vous n'êtes pas en train de signer, ignorez ce message.",
         ],
-        boutons: ["123456"],
+        boutons: [],
       },
     ],
   },
@@ -1185,6 +1187,30 @@ export const GABARITS_FORMATEUR_INDEPENDANT = Object.keys(
 export function estGabaritFormateurIndependant(x: string): x is GabaritFormateurIndependant {
   return Object.prototype.hasOwnProperty.call(TEXTES_FORMATEUR, x);
 }
+
+/**
+ * Les e-mails d'ARGENT : seuls ceux-ci partent encore après une fin de collaboration, et
+ * l'opposition ne les arrête pas (classe C). Même nom de constante que chez les apporteurs.
+ */
+export const GABARITS_ARGENT_FORMATEUR: ReadonlySet<GabaritFormateurIndependant> =
+  new Set<GabaritFormateurIndependant>([
+    "formateur-virement-fait",
+    "formateur-virement-en-attente",
+    "formateur-facture-rectifiee",
+    "formateur-trop-percu",
+    "formateur-facture-deposee",
+    "formateur-desaccord-recu",
+    "formateur-desaccord-non-retenu",
+    "formateur-fin-collaboration",
+  ]);
+
+/** Les SOLLICITATIONS (classe A) : soumises à l'opposition, comme celles des apporteurs. */
+export const GABARITS_SOLLICITATION_FORMATEUR: ReadonlySet<GabaritFormateurIndependant> =
+  new Set<GabaritFormateurIndependant>(
+    (Object.keys(TEXTES_FORMATEUR) as GabaritFormateurIndependant[]).filter(
+      (g) => TEXTES_FORMATEUR[g].sollicitation,
+    ),
+  );
 
 /** Un [crochet] encore présent : une valeur que l'outil n'a pas remplie. */
 export const CROCHET_NON_REMPLI = /\[[^[\]]+\]/;

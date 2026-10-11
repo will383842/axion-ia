@@ -317,6 +317,7 @@ export async function revoquerTokensDocument(input: {
 }): Promise<number> {
   if (estStub()) return 0;
 
+  const maintenant = new Date();
   const res = await prisma.documentSignatureToken.updateMany({
     where: {
       documentGenereId: input.documentGenereId,
@@ -324,10 +325,21 @@ export async function revoquerTokensDocument(input: {
       ...(input.partie !== undefined ? { partie: input.partie } : {}),
     },
     data: {
-      revokedAt: new Date(),
+      revokedAt: maintenant,
       revokedMotif: input.motif.slice(0, 500),
       revokedById: input.parAdminId ?? null,
     },
+  });
+  // S6b — un lien révoqué emporte le code de signature vivant de la même partie : un
+  // code reçu pour l'ancien lien ne se rejoue pas sur le nouveau (P9).
+  await prisma.documentSignatureCode.updateMany({
+    where: {
+      documentGenereId: input.documentGenereId,
+      utiliseAt: null,
+      invalideAt: null,
+      ...(input.partie !== undefined ? { partie: input.partie } : {}),
+    },
+    data: { invalideAt: maintenant },
   });
   return res.count;
 }

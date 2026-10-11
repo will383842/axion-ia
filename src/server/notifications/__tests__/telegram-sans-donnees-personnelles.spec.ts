@@ -186,6 +186,8 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
     offerTitle: "Vidéaste",
     receivedAt: "2026-10-11T08:00:00Z",
   },
+  CANDIDAT_SELF_ERASED: { offerTitle: "Vidéaste", erasedAt: "2026-10-11T08:00:00Z" },
+  TRAINER_DOSSIER_RECU: { trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13", registre: "vert" },
   ADMIN_REPLIED_TO_SUBMISSION: {
     submissionId: "sub_1",
     replyId: "rep_1",
@@ -203,14 +205,7 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
   STRIPE_WEBHOOK_SIGNATURE_FAIL: {},
   MONITORING_ALERT: { kind: "test", details: {} },
   CRM_SYNC_ALERT: { kind: "backlog", count: 3 },
-  // Catégories ajoutées en parallèle (incidents, effacement par le candidat,
-  // dossier formateur) : sans elles, ce Record exhaustif ne compile plus.
-  DATA_INCIDENT_ALERT: { numero: 3, palier: "declare", echeance: "2026-10-14T10:00:00Z" },
-  CANDIDAT_SELF_ERASED: {
-    offerTitle: "Vidéaste freelance (F/H)",
-    erasedAt: "2026-10-11T10:00:00Z",
-  },
-  TRAINER_DOSSIER_RECU: { trainerId: "11111111-1111-4111-8111-111111111111", registre: "vert" },
+  DATA_INCIDENT_ALERT: { numero: 7, palier: "declare", echeance: "2026-10-14T09:00:00.000Z" },
 };
 
 /** Catégories qui concernent une personne : elles doivent porter un lien console. */
