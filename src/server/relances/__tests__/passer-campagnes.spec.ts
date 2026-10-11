@@ -118,9 +118,10 @@ beforeEach(() => {
 
 describe("livré éteint", () => {
   // Le registre était vide à la livraison de CAMP-3 ; chaque lot y inscrit sa séquence
-  // (L6 : S3). Ce qui reste vrai : interrupteurs absents, aucune campagne déclarée n'est active.
+  // (L6 : S3 ; L13b : S6 et S6 bis). Ce qui reste vrai : interrupteurs absents, aucune
+  // campagne déclarée n'est active.
   it("chaque campagne déclarée est éteinte quand ses interrupteurs sont absents", () => {
-    const etats = etatsParDefaut();
+    const etats = etatsParDefaut() as Record<string, unknown>;
     for (const c of REGISTRE_CAMPAGNES) {
       expect(c.interrupteurs.some((cle) => etats[cle] !== true)).toBe(true);
     }

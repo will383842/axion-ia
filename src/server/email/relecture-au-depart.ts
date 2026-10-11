@@ -39,6 +39,8 @@ export interface JobAuDepart {
   readonly to?: string | undefined;
   readonly entityType?: string | undefined;
   readonly entityId?: string | undefined;
+  /** Le payload du job (relances de pièces : `origineRelance`, jamais une adresse). */
+  readonly payload?: unknown;
 }
 
 export type LecteurAuDepart = (job: JobAuDepart) => Promise<string | null>;
@@ -130,6 +132,38 @@ const relireFormateur: LecteurAuDepart = async (job) => {
 };
 
 /**
+ * Relances des pièces à renouveler (F40, F41 — lot L13b) : le filet commun des
+ * formateurs, PUIS la campagne relue pour CETTE fiche et CETTE pièce (population stricte,
+ * pièce toujours à renouveler, dépôt, opposition — classe B —, rebond, interrupteurs).
+ * Import paresseux : `pieces-relances.ts` importe ce module (marque d'effacement).
+ */
+const GABARITS_RELANCE_PIECE: ReadonlySet<string> = new Set([
+  "formateur-vigilance",
+  "formateur-piece-a-renouveler",
+]);
+
+const relireRelancePiece: LecteurAuDepart = async (job) => {
+  const commun = await relireFormateur(job);
+  if (commun !== null) return commun;
+  try {
+    const { motifRetenueRelancePiece } =
+      await import("@/server/qualiopi/formateurs-independants/pieces-relances");
+    return await motifRetenueRelancePiece(
+      job.template,
+      job.entityType,
+      job.entityId,
+      job.payload,
+      async (cles) => {
+        const etats = await lireEtatsInterrupteurs();
+        return cles.every((cle) => lireDrapeauEnvoi(etats, cle));
+      },
+    );
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
+/**
  * Relance du dossier (F9, lot L6) : en plus du filet commun, le dossier doit être ENCORE
  * à compléter et `relances_auto` encore allumé. Un dossier envoyé entre l'enfilage et le
  * départ retient la relance. Échec fermé.
@@ -161,7 +195,10 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   LecteurAuDepart
 >([
   [GABARIT_RELANCE_INVITATION, relireRelanceInvitationApporteur],
-  ...GABARITS_FORMATEUR_INDEPENDANT.map((g): [string, LecteurAuDepart] => [g, relireFormateur]),
+  ...GABARITS_FORMATEUR_INDEPENDANT.map((g): [string, LecteurAuDepart] => [
+    g,
+    GABARITS_RELANCE_PIECE.has(g) ? relireRelancePiece : relireFormateur,
+  ]),
   // L6 : la relance du dossier remplace le lecteur commun (elle l'appelle d'abord).
   ["formateur-dossier-relance", relireRelanceDossier],
 ]);
