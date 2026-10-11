@@ -17,11 +17,7 @@ import {
   BulletList,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
-import {
-  LEGAL_MENTIONS,
-  DOCUMENT_RETENTION_YEARS,
-  HANDICAP_PARTENAIRES,
-} from "@/server/qualiopi/legal/legal-mentions";
+import { LEGAL_MENTIONS, HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -347,8 +343,8 @@ export function LivretAccueilPdf({
           <Text style={local.bodyText}>
             Vos données personnelles (identité, coordonnées, données de connexion, évaluations) sont
             collectées aux fins de gestion administrative et pédagogique de votre formation. Elles
-            sont conservées pendant {DOCUMENT_RETENTION_YEARS} ans à compter de la fin de votre
-            formation, conformément aux obligations légales de l'organisme.
+            sont conservées tant que la relation dure, puis le temps des délais légaux de
+            réclamation.
           </Text>
           <Text style={local.bodyText}>
             Vous disposez des droits d'accès, de rectification, d'effacement, de limitation et de

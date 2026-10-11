@@ -6,7 +6,8 @@
  * ## Pourquoi deux tables, et une seule porte
  *
  * `RendezVousSuivi` (onglet « Rendez-vous », 27/09) exige un rendez-vous
- * Calendly et meurt avec lui à la purge des 36 mois : un rendez-vous saisi
+ * Calendly et meurt avec lui s'il est supprimé (la purge des 36 mois a été
+ * retirée) : un rendez-vous saisi
  * dans la console, une dictée, n'y auraient pas de suivi, et la suite d'un
  * client de juillet disparaîtrait en juillet d'il y a trois ans.
  * `RencontreSuivi` vit avec la RENCONTRE : c'est l'autorité.
