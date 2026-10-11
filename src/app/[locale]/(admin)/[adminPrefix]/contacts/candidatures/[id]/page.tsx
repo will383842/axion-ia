@@ -3,8 +3,8 @@
 
 import { estCandidatureFormateurFreelance } from "@/lib/careers/formateur-freelance";
 import {
+  invitationAutoFormateursAllumee,
   lireEtatsEntree,
-  lireEtatsFormateurs,
 } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -191,9 +191,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         })
         .catch(() => null)
     : null;
-  // Lot L-INV — l'invitation à l'échange (interrupteur `formateurs.invitation_auto`).
+  // Lot L-INV — l'invitation à l'échange (`formateurs.invitation_auto` ET
+  // `formateurs.suivi_echange`, comme le balayage F1).
   const invitationFormateur =
-    estCandidatureFormateurFreelance(indicesPoste) && (await lireEtatsFormateurs()).invitation_auto
+    estCandidatureFormateurFreelance(indicesPoste) && (await invitationAutoFormateursAllumee())
       ? await prisma.jobApplication
           .findUnique({
             where: { id: a.id },

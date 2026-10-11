@@ -76,7 +76,15 @@ export interface FaitsInvitation {
   readonly reponseHumaine: boolean;
   /** Une fiche formateur est ouverte pour la personne. */
   readonly ficheOuverte: boolean;
-  /** Le dernier contrôle du registre d'une fiche de la personne est rouge. */
+  /**
+   * Le dernier contrôle du registre d'une fiche de la personne est rouge.
+   *
+   * ⚠️ Sans effet PROPRE aujourd'hui : seule une personne qui a déjà une fiche formateur
+   * a un contrôle du registre, et cette fiche suffit déjà à écarter l'envoi
+   * (`ficheOuverte`). Une candidature ne porte pas de SIRET : rien n'est vérifié au
+   * registre avant F1. Garde conservée pour le jour où le formulaire recueillera le
+   * SIRET — il faudra alors la brancher sur lui.
+   */
   readonly registreRouge: boolean;
   readonly opposition: boolean;
   /** Rebond dur sur l'adresse (le verdict d'envoi la retiendrait de toute façon). */

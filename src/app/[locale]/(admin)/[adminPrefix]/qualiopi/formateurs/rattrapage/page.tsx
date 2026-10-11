@@ -16,10 +16,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { formatDateFr } from "@/lib/format-date-fr";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
-import {
-  lireEtatsEntree,
-  lireEtatsFormateurs,
-} from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { invitationAutoFormateursAllumee } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { listerRattrapage } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
 
 import { EnvoyerRattrapageForm } from "./EnvoyerRattrapageForm";
@@ -48,8 +45,7 @@ export default async function RattrapagePage({ params }: PageProps) {
       />
     );
   }
-  const [formateurs, entree] = await Promise.all([lireEtatsFormateurs(), lireEtatsEntree()]);
-  const allume = formateurs.invitation_auto && entree.suivi_echange;
+  const allume = await invitationAutoFormateursAllumee();
   const maintenant = new Date();
   const liste = allume
     ? await listerRattrapage(maintenant).catch((err: unknown) => {

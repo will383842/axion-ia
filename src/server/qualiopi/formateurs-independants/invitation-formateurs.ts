@@ -80,9 +80,8 @@ export interface DependancesInvitation {
 }
 
 async function allumeParDefaut(): Promise<boolean> {
-  const { lireEtatsFormateurs, lireEtatsEntree } = await import("./etats-entree");
-  const [formateurs, entree] = await Promise.all([lireEtatsFormateurs(), lireEtatsEntree()]);
-  return formateurs.invitation_auto === true && entree.suivi_echange === true;
+  const { invitationAutoFormateursAllumee } = await import("./etats-entree");
+  return invitationAutoFormateursAllumee();
 }
 
 async function allumeLeParDefaut(): Promise<Date | null> {

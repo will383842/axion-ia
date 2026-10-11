@@ -86,6 +86,7 @@ const suiviEchange = { valeur: true };
 vi.mock("../etats-entree", () => ({
   lireEtatsEntree: async () => ({ suivi_echange: suiviEchange.valeur }),
   lireEtatsFormateurs: async () => ({}),
+  invitationAutoFormateursAllumee: async () => false,
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => v.replace(/^enc:/, "") }));
 

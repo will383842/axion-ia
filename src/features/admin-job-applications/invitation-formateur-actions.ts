@@ -16,7 +16,7 @@ import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { peutEngager } from "@/server/auth/habilitations";
-import { lireEtatsFormateurs } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { invitationAutoFormateursAllumee } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { envoyerRattrapage } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
 
 export type EtatGesteInvitation =
@@ -40,7 +40,7 @@ export async function reponduAilleursFormateurAction(
 ): Promise<EtatGesteInvitation> {
   const qui = await acteur("habiliter_formateur");
   if (typeof qui === "string") return { etat: "erreur", message: qui };
-  if (!(await lireEtatsFormateurs()).invitation_auto) {
+  if (!(await invitationAutoFormateursAllumee())) {
     return { etat: "erreur", message: "L'invitation automatique est coupée." };
   }
   const id = fd.get("candidatureId");

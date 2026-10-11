@@ -158,6 +158,37 @@ const relireInvitationFormateur: LecteurAuDepart = async (job) => {
   }
 };
 
+/**
+ * L'invitation F1 a DEUX origines, sous le même gabarit :
+ * - le balayage automatique (L-INV), jugé par `relireInvitationFormateur` ;
+ * - l'invitation posée À LA MAIN par « Ajouter un candidat formateur » (L0c-3), qui ne
+ *   dépend que de la relecture commune — son comportement d'avant L-INV, à l'identique,
+ *   quels que soient les interrupteurs de l'invitation automatique.
+ *
+ * L'origine se lit EN BASE, sur la candidature : `origine = console` n'est écrit que par
+ * l'action de la console (le formulaire public prend le défaut `formulaire`), et le
+ * balayage n'invite jamais une candidature `console`. Ni la clé d'idempotence (perdue
+ * quand l'e-mail sort de la corbeille de validation), ni un champ du payload ne
+ * décident. Tout ce qui n'est pas prouvé `console` passe par le lecteur strict ; une base
+ * muette retient.
+ */
+const relireInvitationEchange: LecteurAuDepart = async (job) => {
+  if (job.entityType === "JobApplication" && job.entityId) {
+    let origine: string | null | undefined;
+    try {
+      const a = await prisma.jobApplication.findUnique({
+        where: { id: job.entityId },
+        select: { origine: true },
+      });
+      origine = a?.origine;
+    } catch {
+      return "état illisible au départ — retenu par prudence";
+    }
+    if (origine === "console") return relireFormateur(job);
+  }
+  return relireInvitationFormateur(job);
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -167,8 +198,9 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   ...GABARITS_FORMATEUR_INDEPENDANT.map((g): [string, LecteurAuDepart] => [g, relireFormateur]),
   // L-INV : l'invitation, ses rappels et le rattrapage relisent EN PLUS la candidature
   // (réservé, répondu, décidé, fiche ouverte) — la dernière entrée d'une clé l'emporte.
+  // F1 : l'invitation posée à la main par la console garde la relecture commune.
   ...GABARITS_INVITATION_FORMATEUR.map((g): [string, LecteurAuDepart] => [
     g,
-    relireInvitationFormateur,
+    g === "formateur-invitation-echange" ? relireInvitationEchange : relireInvitationFormateur,
   ]),
 ]);

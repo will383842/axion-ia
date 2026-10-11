@@ -57,6 +57,16 @@ export async function lireEtatsFormateurs(): Promise<EtatsInterrupteurs> {
 }
 
 /**
+ * Lot L-INV — l'invitation automatique est-elle en service ? `invitation_auto` ET
+ * `suivi_echange`, comme le balayage F1 : la carte de la candidature et le geste
+ * « J'ai répondu ailleurs » lisent la même règle. Ne lève jamais : échec = coupée.
+ */
+export async function invitationAutoFormateursAllumee(): Promise<boolean> {
+  const [formateurs, entree] = await Promise.all([lireEtatsFormateurs(), lireEtatsEntree()]);
+  return formateurs.invitation_auto === true && entree.suivi_echange === true;
+}
+
+/**
  * Lot L-INV — depuis quand l'invitation automatique est en service : la plus récente
  * écriture des deux réglages `invitation_auto` et `suivi_echange`, s'ils sont TOUS DEUX
  * allumés. Le balayage n'invite que ce qui arrive après ; le stock d'avant passe par le
