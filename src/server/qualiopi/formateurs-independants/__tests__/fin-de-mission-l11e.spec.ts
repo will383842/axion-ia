@@ -66,6 +66,7 @@ vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: h.journaliser }));
 vi.mock("@/server/qualiopi/documents/lettre-mission-v2-generation", () => ({
   genererLettreMissionV2: h.generer,
+  MOTIF_CHANGEMENT_FORMATEUR: "Formateur remplacé sur cette session",
 }));
 vi.mock("../envois", () => ({ envoyer: h.envoyer }));
 vi.mock("../garde-mission-portes", () => ({
@@ -195,6 +196,35 @@ describe("fin de mission — lettre NON signée", () => {
       expect(texte).not.toMatch(/honoraires|indemnit|réglée/i);
       expect(texte).not.toMatch(interdits);
     }
+  });
+});
+
+describe("correctifs de relecture", () => {
+  it("mission RETIRÉE par l'équipe (cas réel du remplacement) : lettre non signée annulée, F30", async () => {
+    h.etat.mission = mission({ statut: "retiree" });
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("lettre_annulee");
+    expect(h.envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({ gabarit: "formateur-mission-retiree" }),
+    );
+  });
+
+  it("retirée mais encore affectée (même personne réaffectée) : rien", async () => {
+    h.etat.mission = mission({ statut: "retiree", principal: TRAINER });
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("rien");
+    expect(h.prisma.documentGenere.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("session COMMENCÉE : la lettre des journées animées n'est jamais annulée, Will décide", async () => {
+    h.etat.mission = mission({ sessionStatut: "annulee", principal: TRAINER });
+    const pendant = new Date("2026-11-04T12:00:00Z");
+    await reevaluerMission(MISSION, "passage", pendant);
+    expect(h.prisma.documentGenere.updateMany).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+  });
+
+  it("le motif de changement de formateur est celui du générateur (une seule écriture)", () => {
+    expect(MOTIF_FERMETURE.changement_formateur).toBe("Formateur remplacé sur cette session");
   });
 });
 
