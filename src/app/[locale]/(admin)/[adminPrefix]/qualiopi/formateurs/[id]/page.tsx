@@ -63,6 +63,9 @@ import {
   statsMissionsFormateur,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { bandeauEtape } from "@/server/qualiopi/formateurs-independants/bandeau-etape";
+import { lireEtapeDuFormateur } from "@/server/qualiopi/formateurs-independants/dossiers-et-contrats-lecture";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
@@ -447,6 +450,20 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     peutEngager(role, "remunerer_formateur") &&
     (await interrupteurAllume("presentation_payee"));
 
+  // Lot F (W-10) — bandeau d'étape : indépendant en nom propre, page « Dossiers et contrats »
+  // ouverte (mêmes interrupteurs que cette page). Sinon, aucune lecture et aucun bandeau.
+  const entreeFiche =
+    trainer.statut === "sous_traitant" && trainer.organismeSousTraitantId === null
+      ? await lireEtatsEntree()
+      : null;
+  const etapeFiche =
+    entreeFiche !== null && entreeFiche.menu_freelance && entreeFiche.dossiers_contrats
+      ? await lireEtapeDuFormateur(trainer.id).catch(() => null)
+      : null;
+  const bandeau = etapeFiche
+    ? bandeauEtape(etapeFiche, `/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}`)
+    : null;
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -472,6 +489,22 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           ← Retour aux formateurs
         </Link>
       </div>
+
+      {bandeau ? (
+        <div
+          className={`admin-alert mb-[var(--space-admin-5)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] ${
+            bandeau.ton === "warn" ? "admin-alert-warning" : ""
+          }`}
+          role="status"
+        >
+          <span>Étape : {bandeau.libelle}</span>
+          {bandeau.lien ? (
+            <Link className="admin-button" href={bandeau.lien.href}>
+              {bandeau.lien.libelle}
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
 
       {/* L10 — une fiche née d'une candidature n'a pas de numéro de déclaration
           d'activité : elle reste inactive, et la mention dit ce qui manque. */}
