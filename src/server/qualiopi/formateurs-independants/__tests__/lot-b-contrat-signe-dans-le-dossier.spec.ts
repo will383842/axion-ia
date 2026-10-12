@@ -110,6 +110,7 @@ import { envoyerAccuseDossier } from "../accuse-dossier";
 import { etatsParDefaut } from "../interrupteurs";
 import {
   demanderCodeDuDossier,
+  MESSAGES_CONTRAT_DOSSIER,
   modeContratDossier,
   signerContratDuDossier,
 } from "../contrat-dans-le-dossier";
@@ -250,7 +251,19 @@ describe("demanderCodeDuDossier", () => {
     const r = await demanderCodeDuDossier(D, MAINTENANT);
     expect(r.ok).toBe(true);
     expect(h.preparer).not.toHaveBeenCalled();
-    expect(h.ordre).toEqual(["objection", "code"]);
+    // Contrat repris : le registre est quand même relu EN DIRECT avant l'envoi du code.
+    expect(h.ordre).toEqual(["registre", "objection", "code"]);
+    expect(h.lire.mock.calls[0]![0]).toBe(SIRET);
+  });
+
+  it("contrat repris, registre muet avant l'envoi du code : refus, aucun code", async () => {
+    h.p.documentGenere.findMany.mockResolvedValue([
+      { id: DOC, metadata: metadataV3(), statutSignature: "en_attente", signatures: [] },
+    ]);
+    h.lire.mockResolvedValue({ ok: false, raison: "indisponible" });
+    const r = await demanderCodeDuDossier(D, MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect(h.envoyerCode).not.toHaveBeenCalled();
   });
 
   it("SIRET changé dans le dossier depuis la création : l'ancien contrat non signé est annulé (jamais effacé), un nouveau est créé", async () => {
@@ -287,6 +300,40 @@ describe("signerContratDuDossier", () => {
     expect(h.signer).not.toHaveBeenCalled();
   });
 
+  it("registre relu EN DIRECT à la signature, sur le SIRET porté par le contrat", async () => {
+    // La fiche porte un autre SIRET : seul celui du contrat compte pour la relecture.
+    await signerContratDuDossier({ ...D, siret: "98765432100019" }, "123456", MAINTENANT);
+    expect(h.lire.mock.calls[0]![0]).toBe(SIRET);
+  });
+
+  it("registre muet à la signature : refus, le code n'est pas consommé", async () => {
+    h.lire.mockRejectedValue(new Error("timeout"));
+    const r = await signerContratDuDossier(D, "123456", MAINTENANT);
+    expect(r).toEqual({ ok: false, message: MESSAGES_CONTRAT_DOSSIER.muet });
+    expect(h.verifierCode).not.toHaveBeenCalled();
+    expect(h.signer).not.toHaveBeenCalled();
+  });
+
+  it("entreprise inactive à la signature : refus, rien n'est signé", async () => {
+    h.lire.mockResolvedValue({ ok: true, entreprise: { siret: SIRET, active: false } });
+    const r = await signerContratDuDossier(D, "123456", MAINTENANT);
+    expect(r).toEqual({ ok: false, message: MESSAGES_CONTRAT_DOSSIER.inactive });
+    expect(h.verifierCode).not.toHaveBeenCalled();
+  });
+
+  it("le code saisi n'apparaît dans aucun appel à Sentry", async () => {
+    const Sentry = await import("@sentry/nextjs");
+    h.signer.mockResolvedValue({ ok: false, raison: "x" });
+    await signerContratDuDossier(D, "482917", MAINTENANT);
+    h.verifierCode.mockRejectedValue(new Error("panne"));
+    await signerContratDuDossier(D, "482917", MAINTENANT).catch(() => undefined);
+    const tout = JSON.stringify([
+      vi.mocked(Sentry.captureException).mock.calls,
+      vi.mocked(Sentry.captureMessage).mock.calls,
+    ]);
+    expect(tout).not.toContain("482917");
+  });
+
   it("code refusé : rien n'est signé", async () => {
     h.verifierCode.mockResolvedValue({ ok: false, message: "Ce code ne correspond pas." });
     const r = await signerContratDuDossier(D, "123456", MAINTENANT);
@@ -297,7 +344,7 @@ describe("signerContratDuDossier", () => {
   it("signe par le moteur commun : lien émis par le système, code vérifié, consentement « code »", async () => {
     const r = await signerContratDuDossier(D, "123456", MAINTENANT);
     expect(r).toEqual({ ok: true, documentId: DOC });
-    expect(h.ordre).toEqual(["objection", "emettre", "verifierCode", "signer"]);
+    expect(h.ordre).toEqual(["registre", "objection", "emettre", "verifierCode", "signer"]);
     expect(h.emettre.mock.calls[0]![0]).toMatchObject({
       documentGenereId: DOC,
       partie: "sous_traitant",
