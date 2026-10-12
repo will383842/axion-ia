@@ -2093,6 +2093,10 @@ async function handleMoteurMissions(): Promise<void> {
   const { passerRelancesPropositionsHoraires } =
     await import("@/server/qualiopi/formateurs-independants/relances-propositions-horaires");
   const relances = await passerRelancesPropositionsHoraires(maintenant);
+  // Lot C (M16) — F21 : l'alerte interne à 90 jours (mêmes interrupteurs que la relance).
+  const { passerAlerteNda } =
+    await import("@/server/qualiopi/formateurs-independants/relances-missions");
+  await passerAlerteNda(maintenant);
   if (relances.relancees + relances.sansReponse + relances.expirees > 0) {
     console.log(
       `[formation-crons] propositions (horaire): ${relances.relancees} relance(s), ` +
