@@ -30,80 +30,93 @@ function versionDuContrat(metadata: unknown): number {
   return versionGabaritInstantane((metadata as Record<string, unknown>)["renderData"]);
 }
 
-export async function lireDossiersEtContrats(): Promise<LigneDossier[]> {
-  const trainers = await prisma.trainer.findMany({
-    where: { statut: "sous_traitant" },
-    orderBy: { updatedAt: "desc" },
-    take: PLAFOND_LISTE,
+const SELECTION = {
+  id: true,
+  prenom: true,
+  nom: true,
+  actif: true,
+  estTestInterne: true,
+  finCollaborationAt: true,
+  activationValideeAt: true,
+  candidatureId: true,
+  dossierStatut: true,
+  dossierOuvertAt: true,
+  dossierEnvoyeAt: true,
+  dossierVerifieAt: true,
+  verificationsRegistre: {
+    orderBy: { verifieAt: "desc" },
+    take: 1,
+    select: { verdict: true },
+  },
+  documentsGeneres: {
+    where: { type: "contrat_sous_traitance", annuleeAt: null },
+    orderBy: { createdAt: "desc" },
+    take: 5,
     select: {
-      id: true,
-      prenom: true,
-      nom: true,
-      actif: true,
-      estTestInterne: true,
-      finCollaborationAt: true,
-      activationValideeAt: true,
-      candidatureId: true,
-      dossierStatut: true,
-      dossierOuvertAt: true,
-      dossierEnvoyeAt: true,
-      dossierVerifieAt: true,
-      verificationsRegistre: {
-        orderBy: { verifieAt: "desc" },
-        take: 1,
-        select: { verdict: true },
-      },
-      documentsGeneres: {
-        where: { type: "contrat_sous_traitance", annuleeAt: null },
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        select: {
-          metadata: true,
-          statutSignature: true,
-          signatures: {
-            where: { revokedAt: null },
-            select: { partie: true, signeAt: true },
-          },
-        },
+      metadata: true,
+      statutSignature: true,
+      signatures: {
+        where: { revokedAt: null },
+        select: { partie: true, signeAt: true },
       },
     },
+  },
+} as const;
+
+const lireLesFiches = (where: { id?: string }, take: number) =>
+  prisma.trainer.findMany({
+    where: { ...where, statut: "sous_traitant" },
+    orderBy: { updatedAt: "desc" },
+    take,
+    select: SELECTION,
   });
 
-  return trainers.map((t) => {
-    // « La plus haute version contresignée », jamais « la plus récente émise » :
-    // un contrat signé passe avant une réémission en attente.
-    const v3 = t.documentsGeneres.filter(
-      (d) => versionDuContrat(d.metadata) >= VERSION_CONTRAT_CADRE_MINIMALE,
-    );
-    const contrat =
-      v3.find((d) => d.statutSignature === "signee") ??
-      v3.find((d) => d.statutSignature === "partielle") ??
-      v3[0];
-    const signature = (partie: string) =>
-      contrat?.signatures.find((s) => s.partie === partie)?.signeAt ?? null;
-    return {
-      trainerId: t.id,
-      nomAffiche: `${t.prenom} ${t.nom.slice(0, 1)}.`,
-      estTestInterne: t.estTestInterne,
-      etape: etapeFormateurIndependant({
-        actif: t.actif,
-        finCollaborationAt: t.finCollaborationAt,
-        activationValideeAt: t.activationValideeAt,
-        issueDuParcours: t.candidatureId !== null,
-        dossierStatut: t.dossierStatut,
-        dossierOuvertAt: t.dossierOuvertAt,
-        dossierEnvoyeAt: t.dossierEnvoyeAt,
-        dossierVerifieAt: t.dossierVerifieAt,
-        dernierVerdict: t.verificationsRegistre[0]?.verdict ?? null,
-        contrat:
-          contrat === undefined
-            ? null
-            : {
-                statutSignature: contrat.statutSignature,
-                signeLe: signature("sous_traitant"),
-                contresigneLe: signature("axionia"),
-              },
-      }),
-    };
-  });
+type TrainerLu = Awaited<ReturnType<typeof lireLesFiches>>[number];
+
+function ligneDe(t: TrainerLu): LigneDossier {
+  // « La plus haute version contresignée », jamais « la plus récente émise » :
+  // un contrat signé passe avant une réémission en attente.
+  const v3 = t.documentsGeneres.filter(
+    (d) => versionDuContrat(d.metadata) >= VERSION_CONTRAT_CADRE_MINIMALE,
+  );
+  const contrat =
+    v3.find((d) => d.statutSignature === "signee") ??
+    v3.find((d) => d.statutSignature === "partielle") ??
+    v3[0];
+  const signature = (partie: string) =>
+    contrat?.signatures.find((s) => s.partie === partie)?.signeAt ?? null;
+  return {
+    trainerId: t.id,
+    nomAffiche: `${t.prenom} ${t.nom.slice(0, 1)}.`,
+    estTestInterne: t.estTestInterne,
+    etape: etapeFormateurIndependant({
+      actif: t.actif,
+      finCollaborationAt: t.finCollaborationAt,
+      activationValideeAt: t.activationValideeAt,
+      issueDuParcours: t.candidatureId !== null,
+      dossierStatut: t.dossierStatut,
+      dossierOuvertAt: t.dossierOuvertAt,
+      dossierEnvoyeAt: t.dossierEnvoyeAt,
+      dossierVerifieAt: t.dossierVerifieAt,
+      dernierVerdict: t.verificationsRegistre[0]?.verdict ?? null,
+      contrat:
+        contrat === undefined
+          ? null
+          : {
+              statutSignature: contrat.statutSignature,
+              signeLe: signature("sous_traitant"),
+              contresigneLe: signature("axionia"),
+            },
+    }),
+  };
+}
+
+export async function lireDossiersEtContrats(): Promise<LigneDossier[]> {
+  return (await lireLesFiches({}, PLAFOND_LISTE)).map(ligneDe);
+}
+
+/** L'étape d'UN formateur (bandeau de sa fiche) ; `null` si la fiche n'existe pas. */
+export async function lireEtapeDuFormateur(trainerId: string): Promise<Etape | null> {
+  const [t] = await lireLesFiches({ id: trainerId }, 1);
+  return t === undefined ? null : ligneDe(t).etape;
 }

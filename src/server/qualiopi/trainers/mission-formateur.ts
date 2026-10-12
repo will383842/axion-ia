@@ -423,7 +423,8 @@ async function envoyerProposition(args: {
       delaiReponse: libelleEcheance(echeance, now),
       infosPratiques: libelleInfosPratiques(session.dateDebut, now),
       ...(args.relance ? { relance: true } : {}),
-      ...(chiffree ?? {}),
+      // M24 — la variante chiffrée salue au prénom (gabarit commun des formateurs).
+      ...(chiffree !== null ? { ...chiffree, prenom: trainer.prenom } : {}),
     },
     {
       jobId: `formateur-mission-${args.missionId}-${args.relance ? "relance" : "proposition"}`,

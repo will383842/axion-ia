@@ -230,4 +230,7 @@ export const VARIANTES_EXEMPLE: Readonly<
       ligneDeplacement: "forfait de 80 € HT par journée de déplacement",
     },
   },
+  // L11e — fin de mission, lettre non signée (étape 2 du payload), validée à part.
+  "formateur-mission-retiree": { "lettre-non-signee": { etape: 2 } },
+  "formateur-formation-annulee": { "lettre-non-signee": { etape: 2 } },
 };

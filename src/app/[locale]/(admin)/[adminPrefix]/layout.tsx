@@ -21,6 +21,12 @@
 // V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
 
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import {
+  FORMATEURS_NAV_VIDES,
+  compterFormateursNav,
+  type FormateursNavCounts,
+} from "@/server/qualiopi/formateurs-independants/nav-counts";
 import type { Metadata } from "next";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import localFont from "next/font/local";
@@ -202,13 +208,25 @@ function buildNav(
   adminPrefix: string,
   formateursFreelance = false,
   dossiersEtContrats = false,
+  entreesFormateurs: { missions: boolean } = { missions: false },
   virementsAFaire = false,
 ): NavItem[] {
   // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
   // AdminCommandPalette qui consomme la même source. Copie mutable (la SSOT
   // renvoie un `readonly[]`).
   return [
-    ...buildAdminNav(adminPrefix, { formateursFreelance, dossiersEtContrats, virementsAFaire }),
+    ...buildAdminNav(adminPrefix, {
+      formateursFreelance,
+      dossiersEtContrats,
+      // Lot F — « À faire maintenant » et « Honoraires » suivent le groupe ; « Missions » suit
+      // sa propre porte (`formateurs.missions_console`).
+      entreesFormateurs: {
+        aFaire: formateursFreelance,
+        honoraires: formateursFreelance,
+        missions: entreesFormateurs.missions,
+      },
+      virementsAFaire,
+    }),
   ];
 }
 
@@ -294,10 +312,14 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     dossiers_contrats: dossiersEtContrats,
     virements_a_faire: virementsAFaire,
   } = await lireEtatsEntree();
+  const missionsConsole = formateursFreelance
+    ? await interrupteurAllume("missions_console")
+    : false;
   const nav: NavItem[] = buildNav(
     adminPrefix,
     formateursFreelance,
     dossiersEtContrats,
+    { missions: missionsConsole },
     virementsAFaire,
   );
   const adminBase = `/fr/${adminPrefix}`;
@@ -324,6 +346,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   let rendezVousAFaireCount = 0;
   // Pastilles du groupe « Apporteurs d'affaires » (fail-soft interne → 0).
   let apporteursCounts: ApporteursNavCounts = APPORTEURS_NAV_VIDES;
+  // Pastilles du groupe « Formateurs freelance » (lot F) : rien n'est lu groupe éteint.
+  let formateursCounts: FormateursNavCounts = FORMATEURS_NAV_VIDES;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -344,6 +368,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       staleJobsCount,
       rdvAFaireCount,
       apporteursNavCounts,
+      formateursNavCounts,
     ] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
@@ -361,6 +386,13 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       getStaleJobPostingsCount().catch(() => 0),
       peutVoirLesAppels(roleSession) ? getRendezVousAFaireCount().catch(() => 0) : 0,
       compterApporteursNav().catch(() => APPORTEURS_NAV_VIDES),
+      formateursFreelance
+        ? compterFormateursNav({
+            dossiers: dossiersEtContrats,
+            missions: missionsConsole,
+            honoraires: true,
+          }).catch(() => FORMATEURS_NAV_VIDES)
+        : FORMATEURS_NAV_VIDES,
     ]);
 
     failedJobsCount = failedCount;
@@ -371,6 +403,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     staleJobOffersCount = staleJobsCount;
     rendezVousAFaireCount = rdvAFaireCount;
     apporteursCounts = apporteursNavCounts;
+    formateursCounts = formateursNavCounts;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -526,6 +559,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             staleJobOffersCount={staleJobOffersCount}
             rendezVousAFaireCount={rendezVousAFaireCount}
             apporteursCounts={apporteursCounts}
+            formateursCounts={formateursCounts}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}

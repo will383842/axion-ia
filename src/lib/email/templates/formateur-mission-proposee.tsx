@@ -8,9 +8,15 @@
 //
 // Sert aussi de RELANCE (`relance: true`) : même contenu, en-tête qui dit que
 // c'est la seconde demande. Un second gabarit aurait été une copie.
+//
+// La variante CHIFFRÉE (« honoraires », M24) suit le gabarit commun des formateurs
+// indépendants ; son rappel a ses propres mots (mêmes faits), sans « Relance » dans
+// l'objet. Le texte de base, partagé avec les salariés, ne change pas.
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { remplir } from "./_formateur-independant";
+import { TEXTE_F23_HONORAIRES } from "./formateur-independant-textes";
 import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -39,6 +45,8 @@ interface Payload {
    * Absente : le texte d'avant, inchangé.
    */
   variante?: "honoraires";
+  /** Variante chiffrée : « Bonjour Prénom, » (absent : « Bonjour, »). */
+  prenom?: string;
   lignesJours?: string[];
   lieuMission?: string;
   ligneHonoraires?: string;
@@ -51,10 +59,7 @@ export const formateurMissionProposeeSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (p.variante === "honoraires" && locale === "fr") {
-    return objetCompose(
-      p.relance === true ? "Relance — proposition de mission :" : "Proposition de mission :",
-      p.titreFormation ?? "Formation",
-    );
+    return objetCompose(texteF23(p).objet, p.titreFormation ?? "Formation");
   }
   const prefixe = p.relance === true ? "Relance mission —" : "Mission proposée —";
   if (locale === "fr") return objetCompose(prefixe, p.titreFormation ?? "Formation");
@@ -132,36 +137,55 @@ export function FormateurMissionProposeeEmail({
   );
 }
 
+/** Le texte de la variante chiffrée : 1er envoi, ou rappel (`relance: true`). */
+function texteF23(p: Payload) {
+  return p.relance === true ? TEXTE_F23_HONORAIRES.rappel : TEXTE_F23_HONORAIRES.envoi;
+}
+
 /**
- * F23 — variante chiffrée (texte soumis à Will le 10/10/2026, section 4). Le
- * tarif, les dates, le déplacement et la date limite sont AVANT le bouton.
+ * F23 — variante chiffrée (M24, lot A) : sur le GABARIT COMMUN des formateurs
+ * (`composantFormateur` : famille B, « Bonjour Prénom, », signature courte du
+ * fondateur, pas de rangée sociale), texte dans `formateur-independant-textes.ts`.
+ * Le tarif, les dates, le déplacement et la date limite sont AVANT le bouton. Le lien
+ * est le jeton de la sollicitation : `ctaSecret`.
  */
 function PropositionChiffree({ p, locale }: { p: Payload; locale: Locale }) {
-  const puce = { ...emailStyles.paragraphStyle, margin: "0 0 4px 0" };
+  const t = texteF23(p);
+  const valeurs = {
+    valeurs: {
+      intitulé: p.titreFormation,
+      dates: (p.lignesJours ?? []).join(" ; "),
+      lieu: p.lieuMission,
+      honoraires: p.ligneHonoraires,
+      déplacement: p.ligneDeplacement,
+      "date limite": p.dateLimiteReponse,
+    },
+  };
+  const paragraphes = t.paragraphes.map((x) => remplir(x, valeurs));
+  const prenom = typeof p.prenom === "string" && p.prenom.trim() !== "" ? p.prenom.trim() : null;
   return (
     <EmailLayout
-      famille="C"
-      preview="Nous vous proposons une mission : le détail et le montant sont dans ce message."
-      title="Nous vous proposons une mission"
-      cta={{ label: "Voir et répondre", href: p.lienReponse }}
+      famille="B"
+      // Comme le gabarit commun : la première phrase (40 à 90 caractères).
+      preview={paragraphes[0]!.split(/(?<=[.!?:])\s+/)[0]!}
+      title={objetCompose(t.objet, p.titreFormation ?? "Formation")}
+      cta={{ label: t.bouton, href: p.lienReponse }}
       ctaSecret
       locale={locale}
+      sansReseauxSociaux
+      signature="fondateur-court"
     >
-      <Text style={emailStyles.paragraphStyle}>Nous vous proposons une mission.</Text>
-      <Text style={puce}>• Formation : {p.titreFormation}</Text>
-      <Text style={puce}>• Dates : {(p.lignesJours ?? []).join(" ; ")}</Text>
-      <Text style={puce}>• Lieu : {p.lieuMission}</Text>
-      <Text style={puce}>
-        • Honoraires : <strong>{p.ligneHonoraires}</strong>
-      </Text>
-      <Text style={puce}>• Déplacement : {p.ligneDeplacement}</Text>
-      <Text style={emailStyles.paragraphStyle}>
-        • Réponse souhaitée avant le {p.dateLimiteReponse}
-      </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Vous êtes libre d&apos;accepter ou de refuser, sans aucune conséquence. Sans réponse avant
-        cette date, la proposition sera faite à quelqu&apos;un d&apos;autre.
-      </Text>
+      <Text style={emailStyles.paragraphStyle}>{prenom ? `Bonjour ${prenom},` : "Bonjour,"}</Text>
+      {paragraphes.map((x, i) => (
+        <Text key={i} style={emailStyles.paragraphStyle}>
+          {x.split("\n").map((l, j) => (
+            <span key={j}>
+              {j > 0 ? <br /> : null}
+              {l}
+            </span>
+          ))}
+        </Text>
+      ))}
     </EmailLayout>
   );
 }
