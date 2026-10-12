@@ -193,6 +193,7 @@ const CODES_ATTENDUS: string[] = [
   "formateur_mission_sans_reponse",
   // Recette du 2026-09-03 : la proposition EXPIRÉE ne levait rien du tout.
   "formateur_mission_expiree",
+  "formateur_desistement_lettre_signee",
   "formateur_indisponible_sur_session",
   // Recette du 2026-09-04 : la convocation partait muette sur la manière d'entrer.
   "session_contact_sur_place_absent",

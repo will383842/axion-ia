@@ -132,6 +132,11 @@ describe("livré éteint", () => {
       "vigilance",
       "piece",
       "invit-relance",
+      "contrat-relance",
+      "contrat-version-relance",
+      "lettre-1re",
+      "lettre-j3",
+      "nda-a-transmettre",
     ]);
     for (const c of REGISTRE_CAMPAGNES) expect(c.interrupteurs.length).toBeGreaterThan(0);
   });
@@ -239,6 +244,29 @@ describe("anti-doublon et plafonds", () => {
         payload: { etape: 1 },
       }),
     );
+  });
+  it("lot C : le payload est complété AU MOMENT de l'envoi ; `null` = rien ne part", async () => {
+    const complet = vi.fn(async (p: Record<string, unknown>) => ({
+      ...p,
+      lien: "https://x.invalid/l",
+    }));
+    await passerCampagnes(
+      MAINTENANT,
+      deps([
+        campagne("dossier", [faits(1, { payload: { prenom: "A" }, completerPayload: complet })]),
+      ]),
+    );
+    expect(complet).toHaveBeenCalledTimes(1);
+    expect(envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({ payload: { prenom: "A", lien: "https://x.invalid/l", etape: 1 } }),
+    );
+    envoyer.mockClear();
+    const b = await passerCampagnes(
+      MAINTENANT,
+      deps([campagne("dossier", [faits(2, { completerPayload: async () => null })])]),
+    );
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(b.ecartes["payload-indisponible"]).toBe(1);
   });
   it("une lecture en échec saute la campagne, pas le passage", async () => {
     const casse = campagne("casse", [], {

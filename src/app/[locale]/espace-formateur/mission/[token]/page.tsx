@@ -30,6 +30,10 @@ import {
   SUITE_APRES_REPONSE,
 } from "@/components/espace-formateur/mission-copy";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
+import { PropositionSixLignes } from "@/components/espace-formateur/PropositionSixLignes";
+import { PHRASE_LIBERTE } from "@/components/espace-formateur/mission-copy";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { lirePropositionChiffree } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 
 export const dynamic = "force-dynamic";
@@ -54,6 +58,15 @@ export default async function Page({
   const { token } = await params;
   const mission = await lireMissionParJeton(token);
   // Lot S2 (S-UX-6) — refus d'un indépendant sans motif exigé (interrupteur).
+  // Lot C (M18) — interrupteur `formateurs.choix_cartes` : la page ouverte depuis F23
+  // montre le montant, l'échéance et la liberté de refuser (le motif reste facultatif
+  // comme sur l'accueil : `formateurs.affectation_sure`, règle du serveur). Coupé : la page d'avant.
+  const chiffree =
+    mission !== null &&
+    mission.statut === "en_attente" &&
+    (await interrupteurAllume("choix_cartes"))
+      ? await lirePropositionChiffree(mission.id)
+      : null;
   const refusLibre = mission !== null && (await refusLibrePour(mission.trainer.id));
 
   return (
@@ -81,6 +94,13 @@ export default async function Page({
             Bonjour {mission.trainer.prenom} {mission.trainer.nom} — vous êtes sollicité comme{" "}
             {ROLE_FORMATEUR_LABELS[mission.role].toLowerCase()}.
           </p>
+
+          {chiffree !== null ? (
+            <div className="mt-6 space-y-3">
+              <PropositionSixLignes proposition={chiffree} echeance={mission.echeanceReponseAt} />
+              <p className="text-mocha text-sm">{PHRASE_LIBERTE}</p>
+            </div>
+          ) : null}
 
           <dl className="border-border mt-6 grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
