@@ -260,3 +260,92 @@ describe("fin de mission — rien à faire", () => {
     expect(h.prisma.documentGenere.updateMany).not.toHaveBeenCalled();
   });
 });
+
+describe("correctifs du 1er tour de relecture de #1507 — report", () => {
+  it("report, formateur reconduit : lettre non signée annulée (session_reportee), AUCUN F30, Will prévenu sans nom", async () => {
+    h.etat.mission = mission({ sessionStatut: "reportee", principal: TRAINER });
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("lettre_annulee");
+    expect(h.prisma.documentGenere.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ annuleeMotif: MOTIF_FERMETURE.session_reportee }),
+      }),
+    );
+    // 08b §3.4 : nouvelle lettre quand l'accord sur les nouvelles dates est donné ;
+    // rien ne dit au formateur que la mission « ne lui est plus confiée ».
+    expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(h.telegram.mock.calls)).toMatch(/report/i);
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie|IA pour managers|€/);
+  });
+
+  it("report, lettre SIGNÉE : gardée, Will prévenu une fois, aucun e-mail", async () => {
+    h.etat.mission = mission({ sessionStatut: "reportee", principal: TRAINER, signee: true });
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.prisma.documentGenere.updateMany).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+  });
+
+  it("mission RETIRÉE puis session ANNULÉE : la cause est l'annulation (F31), pas le changement de formateur", async () => {
+    h.etat.mission = mission({ statut: "retiree", sessionStatut: "annulee" });
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({ gabarit: "formateur-formation-annulee" }),
+    );
+    expect(h.prisma.documentGenere.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ annuleeMotif: MOTIF_FERMETURE.session_annulee }),
+      }),
+    );
+  });
+
+  it("course : la lettre a été signée entre la lecture et l'écriture (count ≠ 1) → rien, aucun e-mail", async () => {
+    h.etat.mission = mission({});
+    h.prisma.documentGenere.updateMany.mockResolvedValueOnce({ count: 0 });
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("rien");
+    expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("lettre signée : le marqueur s'écrit sous condition — déjà posé par un passage concurrent, aucun second Telegram", async () => {
+    h.etat.mission = mission({ signee: true });
+    h.prisma.missionFormateur.updateMany.mockResolvedValueOnce({ count: 0 });
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.telegram).not.toHaveBeenCalled();
+  });
+});
+
+describe("correctifs du 1er tour de relecture de #1507 — session commencée, chemin d'émission", () => {
+  const ECARTE = "00000000-0000-4000-8000-000000000022";
+  const LETTRE_ECARTE = "00000000-0000-4000-8000-000000000032";
+
+  it("remplacement en cours de session : la lettre non signée de l'écarté est GARDÉE et le générateur ne l'annule pas", async () => {
+    // Le nouveau formateur (TRAINER) a donné son accord : sa lettre est due.
+    h.etat.mission = {
+      ...mission({ principal: TRAINER, statut: "accord_hors_outil" }),
+      accordHorsOutilAt: new Date("2026-11-04T10:00:00Z"),
+      lettreMissionId: null,
+      lettreMission: null,
+    };
+    // L'écarté (AUTRE) garde une lettre non signée sur la session déjà commencée.
+    const ecarte = {
+      ...mission({ principal: TRAINER }),
+      id: ECARTE,
+      trainerId: AUTRE,
+      lettreMissionId: LETTRE_ECARTE,
+    };
+    h.prisma.missionFormateur.findMany.mockResolvedValueOnce([ecarte] as never);
+    h.generer.mockResolvedValueOnce({ ok: false, erreur: "arrêt du test" });
+    // Client engagé, aucune condition OPCO en attente : la lettre est due.
+    h.prisma.documentGenere.count.mockImplementation((async (a: { where: object }) =>
+      "conditionSuspensiveOpco" in a.where ? 0 : 1) as never);
+    const pendant = new Date("2026-11-04T12:00:00Z");
+    await reevaluerMission(MISSION, "accord_hors_outil", pendant);
+    // La lettre de l'écarté n'est pas annulée par le moteur…
+    expect(h.prisma.documentGenere.updateMany).not.toHaveBeenCalled();
+    // …ni par le générateur : le moteur lui dit de la garder.
+    expect(h.generer).toHaveBeenCalledWith(
+      expect.objectContaining({ lettresAGarder: [LETTRE_ECARTE] }),
+    );
+    h.prisma.documentGenere.count.mockImplementation(async () => 1);
+  });
+});
