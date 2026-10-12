@@ -20,6 +20,8 @@ const MOTIF = /requireFormateurAction|getFormateurSession|scope:\s*["']formateur
 const INVENTAIRE = [
   "src/app/[locale]/espace-formateur/_coquille.tsx",
   "src/app/[locale]/espace-formateur/connexion/page.tsx",
+  // Lot E (M13) — « Mon dossier » : dépôt sur la fiche de la SESSION, aucun identifiant reçu.
+  "src/app/[locale]/espace-formateur/dossier/actions.ts",
   "src/app/api/espace-formateur/documents/[id]/route.ts",
   "src/app/api/espace-formateur/kit/[sessionId]/route.ts",
   "src/app/api/formateur/contrat-travail/[id]/route.ts",

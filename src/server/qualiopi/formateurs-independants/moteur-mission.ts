@@ -1007,6 +1007,29 @@ export async function reevaluerMissionsDeLaSession(
 }
 
 /**
+ * Lot E (M13) — une pièce du formateur vient d'être VALIDÉE en console : ses missions
+ * acceptées à venir sont réévaluées (la garde relit la pièce, un blocage se lève sans
+ * attendre le passage horaire). Même coupure que le moteur.
+ */
+export async function reevaluerMissionsDuFormateur(
+  trainerId: string,
+  maintenant: Date,
+): Promise<number> {
+  if (isStub() || !(await moteurAllume())) return 0;
+  const missions = await prisma.missionFormateur.findMany({
+    where: {
+      trainerId,
+      role: "principal",
+      statut: { in: [...STATUTS_ACCORD_DONNE] },
+      session: { statut: "planifiee", dateDebut: { gt: maintenant } },
+    },
+    select: { id: true },
+  });
+  for (const x of missions) await reevaluerMission(x.id, "passage", maintenant);
+  return missions.length;
+}
+
+/**
  * Plafond d'ÉMISSIONS par passage (lettres émises ou rectifiées), sur le modèle
  * des passages planifiés du plan (plafond de 30 e-mails par passage). Il borne
  * ce qui PART, jamais ce qui est REVU : une mission en ordre ne prend pas de

@@ -19,7 +19,7 @@
  * déclare sa section, et la coquille reste un composant serveur.
  */
 
-import { CalendarDays, CircleCheckBig, Euro, UserRound } from "lucide-react";
+import { CalendarDays, CircleCheckBig, Euro, FolderOpen, UserRound } from "lucide-react";
 
 import { EspaceShell, type EspaceNavItem } from "@/components/espace/EspaceShell";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
@@ -28,8 +28,10 @@ import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 import { prisma } from "@/lib/prisma";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 
-export type SectionFormateur = "accueil" | "formations" | "remuneration" | "accompagnements";
+export type SectionFormateur =
+  "accueil" | "formations" | "remuneration" | "accompagnements" | "dossier";
 
 /**
  * Trois destinations. Le collectif AVANT l'individuel : c'est le cas
@@ -46,6 +48,8 @@ function construireNavigation(
    * allumé : « Mes missions » et « Mes honoraires ». Faux : les libellés d'avant.
    */
   libellesIndependant = false,
+  /** Lot E (M13) — indépendant, `formateurs.dossier_en_ligne` allumé : « Mon dossier ». */
+  avecDossier = false,
 ): readonly EspaceNavItem[] {
   return [
     {
@@ -72,6 +76,17 @@ function construireNavigation(
       labelCourt: libellesIndependant ? "Honoraires" : "Rémunération",
       icone: Euro,
     },
+    ...(avecDossier
+      ? [
+          {
+            cle: "dossier",
+            href: `${FORMATEUR_BASE_PATH}/dossier`,
+            label: "Mon dossier",
+            labelCourt: "Dossier",
+            icone: FolderOpen,
+          },
+        ]
+      : []),
     {
       cle: "accompagnements",
       href: `${FORMATEUR_BASE_PATH}/seances`,
@@ -98,6 +113,20 @@ async function estIndependantEnCartes(trainerId: string): Promise<boolean> {
   }
 }
 
+/** Interrupteur `formateurs.dossier_en_ligne` allumé ET formateur indépendant. Ne lève jamais. */
+async function aUnDossier(trainerId: string): Promise<boolean> {
+  if (!(await envoiAllume("dossier_en_ligne"))) return false;
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true },
+    });
+    return t?.statut === "sous_traitant";
+  } catch {
+    return false;
+  }
+}
+
 export interface CoquilleFormateurProps {
   section: SectionFormateur;
   /** Nombre de lettres de mission restant à signer. */
@@ -113,12 +142,13 @@ export async function CoquilleFormateur({
   const session = await getFormateurSession();
   const nom = session ? `${session.prenom} ${session.nom}`.trim() : "";
   const libellesIndependant = session !== null && (await estIndependantEnCartes(session.trainerId));
+  const avecDossier = session !== null && (await aUnDossier(session.trainerId));
 
   return (
     <EspaceShell
       titreEspace="Espace formateur"
       sousTitreEspace="Vos formations et vos documents"
-      navigation={construireNavigation(aSigner, libellesIndependant)}
+      navigation={construireNavigation(aSigner, libellesIndependant, avecDossier)}
       sectionActive={section}
       {...(nom !== "" ? { utilisateur: { nom } } : {})}
       actionSortie={<FormateurLogoutButton />}

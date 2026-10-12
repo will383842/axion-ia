@@ -846,6 +846,8 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
             : undefined
         }
         voitRib={peutEngager(role, "remunerer_formateur")}
+        // Lot E (M13) : motifs fermés de refus pour un indépendant, dossier en ligne allumé.
+        motifsFermes={trainer.statut === "sous_traitant" && (await envoiAllume("dossier_en_ligne"))}
       />
 
       {/*
