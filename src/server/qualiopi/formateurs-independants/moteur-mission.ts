@@ -110,9 +110,9 @@ function lienFiche(sessionId: string): string {
   return site ? `${site}${chemin}` : `(console ${chemin})`;
 }
 
-function lienEspaceFormateur(): string | null {
+function lienEspaceFormateur(suite = ""): string | null {
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  return site ? `${site}${FORMATEUR_BASE_PATH}` : null;
+  return site ? `${site}${FORMATEUR_BASE_PATH}${suite}` : null;
 }
 
 /**
@@ -902,7 +902,8 @@ async function emettreLettre(
       joursDeplacement: forfait !== null && forfait > 0 ? jours.length : 0,
     });
     const { journees, demiJournees } = decompterJournees(jours);
-    const lien = lienEspaceFormateur();
+    // Lot C (M18) : le bouton ouvre la lettre elle-même (chemin sur la liste blanche).
+    const lien = lienEspaceFormateur(`/lettre/${r.documentId}`);
     const issue = await envoyer({
       gabarit: "formateur-lettre-a-signer",
       destinataire: m.trainer.email,

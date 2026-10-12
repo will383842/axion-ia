@@ -239,6 +239,20 @@ describe("lettre due (T8)", () => {
     );
   });
 
+  it("lot C (M18) : le lien de F26 mène à la lettre à signer, pas à l'accueil", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://exemple.test");
+    try {
+      await reevaluerMission(MISSION, "convention", MAINTENANT);
+      const envoi = (
+        h.envoyer.mock.calls[0] as unknown as [{ gabarit: string; payload: Record<string, unknown> }]
+      )[0];
+      expect(envoi.gabarit).toBe("formateur-lettre-a-signer");
+      expect(envoi.payload.lien).toBe(`https://exemple.test/fr/espace-formateur/lettre/${DOC}`);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
   it("F26 : tous les crochets remplis, jobId déterministe, montant de la lettre", async () => {
     await reevaluerMission(MISSION, "convention", MAINTENANT);
     const envoi = (
