@@ -32,6 +32,8 @@ const h = vi.hoisted(() => ({
   signer: vi.fn(),
   apres: vi.fn(),
   archiver: vi.fn(),
+  copieRepli: vi.fn(),
+  etatsSignature: vi.fn(),
   envoyer: vi.fn(),
   p: {
     documentGenere: { findMany: vi.fn(), findUnique: vi.fn(), updateMany: vi.fn() },
@@ -103,7 +105,9 @@ vi.mock("@/server/qualiopi/documents/signature/contexte-requete", () => ({
 }));
 vi.mock("@/server/qualiopi/documents/signature/transmission-exemplaire", () => ({
   archiverCopiePartielle: (...a: unknown[]) => h.archiver(...a),
+  transmettreCopiePartielle: (...a: unknown[]) => h.copieRepli(...a),
 }));
+vi.mock("../interrupteurs-lecture", () => ({ lireEtatsSignature: () => h.etatsSignature() }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => h.envoyer(...a) }));
 
 import { envoyerAccuseDossier } from "../accuse-dossier";
@@ -169,6 +173,8 @@ beforeEach(() => {
   h.apres.mockResolvedValue(undefined);
   h.archiver.mockResolvedValue({ ok: true, r2Key: "copies/x.pdf", nomFichier: "contrat.pdf" });
   h.envoyer.mockResolvedValue("envoye");
+  h.copieRepli.mockResolvedValue({ ok: true });
+  h.etatsSignature.mockResolvedValue({ copie_partielle: true });
 });
 
 describe("modeContratDossier — `contrat_auto` réellement lu", () => {
@@ -341,10 +347,24 @@ describe("signerContratDuDossier", () => {
     expect(h.signer).not.toHaveBeenCalled();
   });
 
+  it("code refusé : aucun lien émis (aucune ligne de journal, aucun lien d'administrateur révoqué)", async () => {
+    h.verifierCode.mockResolvedValue({ ok: false, message: "Ce code ne correspond pas." });
+    await signerContratDuDossier(D, "123456", MAINTENANT);
+    expect(h.emettre).not.toHaveBeenCalled();
+  });
+
+  it("signature échouée APRÈS la consommation du code : le message dit de redemander un code", async () => {
+    h.signer.mockResolvedValue({ ok: false, raison: "deja_signe", message: "x" });
+    const r = await signerContratDuDossier(D, "123456", MAINTENANT);
+    expect(r.ok).toBe(false);
+    expect((r as { message: string }).message).toMatch(/nouveau code/);
+  });
+
   it("signe par le moteur commun : lien émis par le système, code vérifié, consentement « code »", async () => {
     const r = await signerContratDuDossier(D, "123456", MAINTENANT);
     expect(r).toEqual({ ok: true, documentId: DOC });
-    expect(h.ordre).toEqual(["registre", "objection", "emettre", "verifierCode", "signer"]);
+    // Le code d'abord : un code faux n'émet aucun lien (relecture du lot B).
+    expect(h.ordre).toEqual(["registre", "objection", "verifierCode", "emettre", "signer"]);
     expect(h.emettre.mock.calls[0]![0]).toMatchObject({
       documentGenereId: DOC,
       partie: "sous_traitant",
@@ -411,5 +431,33 @@ describe("envoyerAccuseDossier — F10 avec la copie de la signature", () => {
     const r = await envoyerAccuseDossier(D, DOC);
     expect(r).toBe("indisponible");
     expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("F10 parti : aucune copie de repli (pas de second e-mail)", async () => {
+    await envoyerAccuseDossier(D, DOC);
+    expect(h.copieRepli).not.toHaveBeenCalled();
+  });
+
+  it.each(["texte-non-valide", "indisponible", "valeurs-manquantes", "retenu"])(
+    "F10 ne part pas (%s) : la copie du moteur commun part en repli",
+    async (raison) => {
+      h.envoyer.mockResolvedValue(raison);
+      const r = await envoyerAccuseDossier(D, DOC);
+      expect(r).toBe(raison);
+      expect(h.copieRepli).toHaveBeenCalledWith(DOC, "sous_traitant");
+    },
+  );
+
+  it("copie non archivée : la copie du moteur commun part en repli", async () => {
+    h.archiver.mockResolvedValue({ ok: false, motif: "rendu_impossible" });
+    await envoyerAccuseDossier(D, DOC);
+    expect(h.copieRepli).toHaveBeenCalledWith(DOC, "sous_traitant");
+  });
+
+  it("interrupteur `copie_partielle` coupé : pas de repli (comportement du moteur commun)", async () => {
+    h.envoyer.mockResolvedValue("texte-non-valide");
+    h.etatsSignature.mockResolvedValue({ copie_partielle: false });
+    await envoyerAccuseDossier(D, DOC);
+    expect(h.copieRepli).not.toHaveBeenCalled();
   });
 });
