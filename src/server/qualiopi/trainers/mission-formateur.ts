@@ -714,11 +714,14 @@ async function passerLesSansReponse(now: Date): Promise<number> {
         sessionId: m.sessionId,
         trainerId: m.trainerId,
       });
-      await prisma.$transaction(async (tx) => {
-        await tx.missionFormateur.update({
-          where: { id: m.id },
+      const bascule = await prisma.$transaction(async (tx) => {
+        // Écriture CONDITIONNELLE : le formateur a pu répondre depuis la
+        // lecture. Sa réponse n'est jamais écrasée, son affectation reste.
+        const ecrite = await tx.missionFormateur.updateMany({
+          where: { id: m.id, statut: "en_attente" },
           data: { statut: "sans_reponse" },
         });
+        if (ecrite.count === 0) return false;
         if (m.session.formateurPrincipalId === m.trainerId) {
           await tx.trainingSession.update({
             where: { id: m.sessionId },
@@ -728,7 +731,9 @@ async function passerLesSansReponse(now: Date): Promise<number> {
         await tx.sessionFormateur.deleteMany({
           where: { sessionId: m.sessionId, trainerId: m.trainerId },
         });
+        return true;
       });
+      if (!bascule) continue;
       // Archive APRÈS le succès : une archive qui ment sur un retrait qui n'a
       // pas eu lieu serait pire que pas d'archive du tout.
       await archiverAffectationsRetirees(snapshot, {

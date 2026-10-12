@@ -31,6 +31,7 @@ import {
   etatsVirementsMission,
   relevesDeMissionParmi,
 } from "../virements-a-faire-lecture";
+import { ISSUE_DESACCORD_NON_RETENU } from "../desaccord-regle";
 
 const A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const T = "22222222-2222-4222-8222-222222222222";
@@ -115,7 +116,19 @@ describe("aUnVirementMissionDu (défaut 2)", () => {
       origine: "passage_mission",
       statut: "facture_recue",
       payeAt: null,
+      OR: [{ contesteeAt: null }, { contestationCloseIssue: ISSUE_DESACCORD_NON_RETENU }],
     });
+  });
+
+  it("seul relevé dû contesté, non tranché : il ne compte pas (l'IBAN ne se révèle pas)", async () => {
+    // Le `count` reçoit la même règle que la transition du « payé » : un relevé
+    // contesté n'est un virement dû que si le désaccord est clos « non retenu ».
+    count.mockResolvedValue(0);
+    expect(await aUnVirementMissionDu(T)).toBe(false);
+    const where = count.mock.calls[0]![0].where;
+    expect(where.OR).toContainEqual({ contesteeAt: null });
+    expect(where.OR).toContainEqual({ contestationCloseIssue: ISSUE_DESACCORD_NON_RETENU });
+    expect(where.OR).toHaveLength(2);
   });
 
   it("aucun relevé dû : faux", async () => {

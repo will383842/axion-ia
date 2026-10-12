@@ -20,6 +20,7 @@ import { estSuperAdmin } from "@/server/auth/habilitations";
 import {
   cleDuTexte,
   estTexteFormateurAValider,
+  listeDesTextesAffichee,
   TEXTES_FORMATEURS_A_VALIDER,
 } from "./textes-formateurs-a-valider";
 import { cleTexteValide, estNomValide, lireValidation } from "./textes-valides";
@@ -121,9 +122,9 @@ export async function validerTexteEmailFormAction(
  * M1 (lot A) — « Valider tous les textes formateurs d'un coup ».
  *
  * Super-admin seul. Deux garde-fous côté serveur : la case de confirmation cochée, et
- * le NOMBRE de textes affiché à l'écran (une liste qui aurait changé entre l'affichage
- * et le clic — un texte neuf déployé entre-temps — refuse : on ne valide pas ce qu'on
- * n'a pas vu). Seuls les textes pas encore validés sont écrits ; UNE ligne de journal,
+ * la LISTE des textes affichée à l'écran — nombre et clés (une liste qui aurait changé
+ * entre l'affichage et le clic — un texte neuf déployé entre-temps, ou remplacé par un
+ * autre à nombre égal — refuse : on ne valide pas ce qu'on n'a pas vu). Seuls les textes pas encore validés sont écrits ; UNE ligne de journal,
  * sans `targetId`, porte les clés écrites.
  */
 export async function validerTousTextesFormateursAction(
@@ -142,7 +143,10 @@ export async function validerTousTextesFormateursAction(
   if (formData.get("confirme") !== "oui") {
     return { ok: false, error: "Cochez la case de confirmation : rien n'a été validé." };
   }
-  if (formData.get("nombre") !== String(TEXTES_FORMATEURS_A_VALIDER.length)) {
+  if (
+    formData.get("nombre") !== String(TEXTES_FORMATEURS_A_VALIDER.length) ||
+    formData.get("liste") !== listeDesTextesAffichee()
+  ) {
     return {
       ok: false,
       error: "La liste des textes a changé depuis l'affichage : rechargez la page et relisez-la.",

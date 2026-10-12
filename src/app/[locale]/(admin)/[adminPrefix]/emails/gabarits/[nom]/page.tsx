@@ -35,7 +35,10 @@ import { CATALOGUE, LIBELLE_CATEGORIE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { estSuperAdmin } from "@/server/auth/habilitations";
-import { estTexteFormateurAValider } from "@/server/email/textes-formateurs-a-valider";
+import {
+  estTexteFormateurAValider,
+  phraseValidationVariante,
+} from "@/server/email/textes-formateurs-a-valider";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import type { EmailJobName } from "@/server/queue/types";
@@ -231,7 +234,7 @@ export default async function ApercuGabaritPage({
               </p>
               <p className="text-fg-soft mb-3 text-sm">
                 {variante !== null
-                  ? "Cette variante se valide à part : elle ne part que si le texte de base ET elle sont validés."
+                  ? phraseValidationVariante(nom)
                   : "Le texte ne part que s'il est validé ici ET que l'interrupteur « textes validés » des formateurs est allumé."}
               </p>
               {peutValider ? (

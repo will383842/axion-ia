@@ -88,7 +88,9 @@ export type MotifRefusEmissionDocument =
   /** Identité du signataire absente de la fiche : la signature serait anonyme. */
   | "signataire_non_identifie"
   /** Aucune adresse : un lien sans destinataire ne peut être lié à personne. */
-  | "destinataire_absent";
+  | "destinataire_absent"
+  /** `exigerVivant` : plus aucun lien vivant à remplacer (révoqué entre-temps). */
+  | "lien_non_vivant";
 
 export class TokenDocumentError extends Error {
   readonly motif: MotifRefusEmissionDocument;
@@ -179,6 +181,12 @@ export async function creerTokenDocument(input: {
   borneMetier: Date;
   createdIpHash?: string | null;
   maintenant?: Date;
+  /**
+   * Ne fait que RENOUVELER : refuse, dans la transaction même, s'il n'y a plus de
+   * lien vivant à remplacer. Une révocation par l'administrateur qui passe entre la
+   * lecture de l'appelant et cette écriture l'emporte (relances système).
+   */
+  exigerVivant?: boolean;
 }): Promise<{ token: string; tokenId: string; expiresAt: Date }> {
   const nom = nettoyer(input.signataireNom);
   if (nom === null) {
@@ -209,10 +217,13 @@ export async function creerTokenDocument(input: {
   const destinataireEmailSha256 = await sha256Hex(email);
 
   const ligne = await prisma.$transaction(async (tx) => {
-    await tx.documentSignatureToken.updateMany({
+    const remplaces = await tx.documentSignatureToken.updateMany({
       where: { documentGenereId: input.documentGenereId, partie: input.partie, revokedAt: null },
       data: { revokedAt: maintenant, revokedMotif: "Remplacé par un nouveau lien" },
     });
+    if (input.exigerVivant === true && remplaces.count === 0) {
+      throw new TokenDocumentError("lien_non_vivant", "Aucun lien vivant à renouveler.");
+    }
     return tx.documentSignatureToken.create({
       data: {
         documentGenereId: input.documentGenereId,

@@ -13,6 +13,7 @@
 import { prisma } from "@/lib/prisma";
 
 import type { Retard } from "../argent/calcul-mission";
+import { ISSUE_DESACCORD_NON_RETENU } from "./desaccord-regle";
 import { contexteVirementMission, ibanAffichePourVirement } from "./virement-mission-base";
 import type { MotifSuspensionVirement } from "./virement-mission";
 
@@ -83,10 +84,18 @@ export async function relevesDeMissionParmi(ids: ReadonlyArray<string>): Promise
 /**
  * Le formateur a-t-il au moins un virement de mission DÛ : facture reçue, pas
  * encore payé ? Sans cela, « Copier l'IBAN » n'a rien à servir (défaut 2).
+ * Un relevé contesté ne compte pas, sauf désaccord clos « non retenu » : même
+ * règle que la transition du « payé » (`desaccordBloquant`).
  */
 export async function aUnVirementMissionDu(trainerId: string): Promise<boolean> {
   const n = await prisma.trainerStatement.count({
-    where: { trainerId, origine: "passage_mission", statut: "facture_recue", payeAt: null },
+    where: {
+      trainerId,
+      origine: "passage_mission",
+      statut: "facture_recue",
+      payeAt: null,
+      OR: [{ contesteeAt: null }, { contestationCloseIssue: ISSUE_DESACCORD_NON_RETENU }],
+    },
   });
   return n > 0;
 }
