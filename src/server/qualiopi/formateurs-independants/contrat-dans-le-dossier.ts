@@ -78,6 +78,8 @@ export const MESSAGES_CONTRAT_DOSSIER = {
     "Votre contrat ne peut pas être préparé pour l'instant. Nous reprenons la main et revenons vers vous par e-mail.",
   pasDeContrat: "Demandez d'abord votre code avec le bouton « Recevoir mon code ».",
   signature: "La signature n'a pas pu être enregistrée. Réessayez dans un instant.",
+  signatureApresCode:
+    "La signature n'a pas pu être enregistrée, et votre code a été utilisé. Demandez un nouveau code avec le bouton « Recevoir mon code », puis signez de nouveau.",
 } as const;
 
 export type ModeContratDossier = { mode: "sans_contrat" } | { mode: "a_signer"; version: number };
@@ -349,6 +351,16 @@ export async function signerContratDuDossier(
     return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.signature };
   }
 
+  // Le code d'abord : un code faux n'émet aucun lien (ni ligne de journal, ni lien
+  // d'administrateur révoqué). Au-delà, le code est consommé : tout échec le dit.
+  const v = await verifierCodeSignature({
+    documentGenereId: contrat.id,
+    partie: PARTIE,
+    code,
+    maintenant,
+  });
+  if (!v.ok) return { ok: false, message: v.message };
+
   // Lien émis par le SYSTÈME (identité figée depuis la fiche) : il n'est jamais envoyé,
   // il porte seulement la signature dans le moteur commun.
   const lien = await emettreLienSignature({
@@ -359,16 +371,8 @@ export async function signerContratDuDossier(
   const jeton = "data" in lien ? jetonDuLien(lien.data.url) : null;
   const verif = jeton === null ? null : await verifierTokenDocument(jeton);
   if (verif === null || !verif.ok || verif.documentGenereId !== contrat.id) {
-    return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.signature };
+    return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.signatureApresCode };
   }
-
-  const v = await verifierCodeSignature({
-    documentGenereId: contrat.id,
-    partie: PARTIE,
-    code,
-    maintenant,
-  });
-  if (!v.ok) return { ok: false, message: v.message };
 
   const contexte = await contexteRequete();
   const res = await signerDocument({
@@ -379,7 +383,7 @@ export async function signerContratDuDossier(
     consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE,
     ...contexte,
   });
-  if (!res.ok) return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.signature };
+  if (!res.ok) return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.signatureApresCode };
 
   await apresSignature({
     documentGenereId: contrat.id,
@@ -389,7 +393,8 @@ export async function signerContratDuDossier(
     partie: PARTIE,
     acteur: { type: "signataire" },
     canal: "lien_a_jeton",
-    // F10 porte la copie de la signature : pas de second e-mail au même instant.
+    // F10 porte la copie de la signature : pas de second e-mail au même instant. Si
+    // F10 ne part pas, `envoyerAccuseDossier` remet la copie du moteur commun en repli.
     sansCopiePartielle: true,
   });
   return { ok: true, documentId: contrat.id };
