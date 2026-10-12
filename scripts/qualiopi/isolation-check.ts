@@ -297,6 +297,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // ── Espace formateur & portail stagiaire : consommateurs assumés du domaine,
   //    au même titre que `[locale]/portail/` déjà autorisé plus haut.
   "src/app/[locale]/espace-formateur/page.tsx",
+  // Lot C (M18) : la lettre de mission à signer, ouverte depuis F26 (mêmes lectures que l'accueil).
+  "src/app/[locale]/espace-formateur/lettre/[id]/page.tsx",
   // Cycle de vie du formateur (2026-09-03) : le formateur accepte ou refuse
   // une mission depuis son espace — le composant appelle l'action Qualiopi
   // qui enregistre la réponse. Même statut que `EmargementForm` : un seul
