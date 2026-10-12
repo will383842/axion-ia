@@ -122,6 +122,7 @@ import { regleConditionSuspensiveOpco } from "./regle-condition-suspensive-opco"
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
+import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 
@@ -5097,6 +5098,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "formateur_mission_sans_reponse", fn: regleMissionFormateurSansReponse },
   { nom: "formateur_mission_sans_reponse_delai", fn: regleMissionFormateurSansReponseDelai },
   { nom: "formateur_mission_expiree", fn: regleMissionFormateurExpiree },
+  { nom: "formateur_desistement_lettre_signee", fn: regleDesistementLettreSignee },
   { nom: "session_contact_sur_place_absent", fn: regleContactSurPlaceAbsent },
   { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },
   { nom: "formateur_non_habilite_assigne", fn: regleFormateurNonHabiliteAssigne },
