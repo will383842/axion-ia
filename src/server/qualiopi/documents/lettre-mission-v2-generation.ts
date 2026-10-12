@@ -21,6 +21,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { LIEU_DOCUMENT_SELECT } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
+import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 import { forfaitSelonLieu } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { lireContratCadreSigne } from "@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur";
 import {
@@ -30,8 +31,20 @@ import {
 
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
+/** Motif système : une lettre neuve que sa mission n'a pas pu recevoir. */
+export const MOTIF_LETTRE_NON_LIEE = "Lettre non liée à sa mission";
 /** Motif système : la lettre d'un formateur ÉCARTÉ de la session, jamais signée. */
 export const MOTIF_CHANGEMENT_FORMATEUR = "Formateur remplacé sur cette session";
+
+const MISSION_LETTRE_SELECT = {
+  id: true,
+  statut: true,
+  reponduAt: true,
+  accordHorsOutilAt: true,
+  tarifHtCents: true,
+  forfaitDeplacementParJourHtCents: true,
+  regimeTvaFige: true,
+} as const;
 
 export type ResultatLettreV2 =
   | { ok: true; documentId: string; numero: string; lettreAnnuleeId: string | null }
@@ -40,6 +53,13 @@ export type ResultatLettreV2 =
 export async function genererLettreMissionV2(input: {
   sessionId: string;
   trainerId: string;
+  /**
+   * La mission à laquelle lier la lettre (moteur L11c). Présente, elle DOIT
+   * être celle de ce couple session/formateur, sinon rien n'est émis. Absente
+   * (appel direct depuis la console) : la SEULE mission du couple dont l'accord
+   * est donné ; aucune, ou plusieurs, et rien n'est émis.
+   */
+  missionId?: string;
   rectificationMotif?: string;
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
@@ -47,7 +67,7 @@ export async function genererLettreMissionV2(input: {
   const [
     session,
     trainer,
-    mission,
+    missions,
     contratCadre,
     lettresVivantes,
     affectation,
@@ -79,18 +99,21 @@ export async function genererLettreMissionV2(input: {
         organismeSousTraitantId: true,
       },
     }),
-    prisma.missionFormateur.findFirst({
-      where: { sessionId: input.sessionId, trainerId: input.trainerId },
-      orderBy: { solliciteAt: "desc" },
-      select: {
-        id: true,
-        statut: true,
-        reponduAt: true,
-        accordHorsOutilAt: true,
-        tarifHtCents: true,
-        forfaitDeplacementParJourHtCents: true,
-        regimeTvaFige: true,
+    // Session, formateur ET id filtrés dans la MÊME requête ; sans id, seules
+    // les missions dont l'accord est donné, jamais « la plus récente » d'un
+    // couple qui a pu être refusée ou retirée.
+    prisma.missionFormateur.findMany({
+      where: {
+        sessionId: input.sessionId,
+        trainerId: input.trainerId,
+        ...(input.missionId !== undefined
+          ? { id: input.missionId }
+          : // Le rôle de la lettre, comme le moteur : jamais un accord de co-formateur.
+            { role: "principal", statut: { in: [...STATUTS_ACCORD_DONNE] } }),
       },
+      orderBy: { solliciteAt: "desc" },
+      take: 2,
+      select: MISSION_LETTRE_SELECT,
     }),
     lireContratCadreSigne(input.trainerId),
     // Toutes les lettres VIVANTES de ce formateur sur cette session, v1 comprise :
@@ -123,6 +146,20 @@ export async function genererLettreMissionV2(input: {
   ]);
   if (session === null) return { ok: false, erreur: "Session introuvable" };
   if (trainer === null) return { ok: false, erreur: "Formateur introuvable" };
+  // Une lettre n'est jamais liée à la mission d'un autre couple.
+  if (input.missionId !== undefined && missions.length === 0) {
+    return { ok: false, erreur: "Mission introuvable pour cette session et ce formateur" };
+  }
+  // Deux accords pour un même couple (données d'avant le moteur, ou course) :
+  // on ne choisit pas à la place de l'équipe.
+  if (missions.length > 1) {
+    return {
+      ok: false,
+      erreur:
+        "Ce formateur a donné son accord sur plusieurs missions de cette session : retirez celle qui ne vaut plus, puis émettez la lettre.",
+    };
+  }
+  const mission = missions[0] ?? null;
 
   const faits = (numero: string): FaitsLettreV2 => ({
     numero,
@@ -204,10 +241,23 @@ export async function genererLettreMissionV2(input: {
   });
 
   if (mission !== null) {
-    await prisma.missionFormateur.update({
-      where: { id: mission.id },
+    // Écriture CONDITIONNELLE : la mission de CE couple, et elle seule.
+    const lien = await prisma.missionFormateur.updateMany({
+      where: { id: mission.id, sessionId: input.sessionId, trainerId: input.trainerId },
       data: { lettreMissionId: doc.id },
     });
+    if (lien.count !== 1) {
+      // La lettre neuve n'est liée à rien : elle cesse de circuler (jamais
+      // supprimée), et l'ancienne reste la lettre vivante de la mission.
+      await prisma.documentGenere.updateMany({
+        where: { id: doc.id, annuleeAt: null },
+        data: { annuleeAt: maintenant, annuleeMotif: MOTIF_LETTRE_NON_LIEE, annuleePar: "system" },
+      });
+      return {
+        ok: false,
+        erreur: "La lettre n'a pas pu être liée à sa mission : rien n'a changé.",
+      };
+    }
   }
   let lettreAnnuleeId: string | null = null;
   if (aAnnuler.length > 0) {

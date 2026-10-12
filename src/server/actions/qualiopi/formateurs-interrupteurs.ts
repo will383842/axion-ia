@@ -563,6 +563,12 @@ export async function basculerFormateursRangSuivantAction(
 ): Promise<EtatBascule> {
   return basculerSignature("rang_suivant", formData);
 }
+export async function basculerFormateursMissionsConsoleAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("missions_console", formData);
+}
 export async function basculerFormateursContratCadreEmissionAction(
   _prev: EtatBascule,
   formData: FormData,

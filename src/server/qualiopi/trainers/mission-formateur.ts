@@ -43,9 +43,11 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
+import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -284,6 +286,28 @@ export async function proposerMissionFormateur(
     const garde = await controlerGardeMission(trainer.id, now);
     if (garde.refus.length > 0) {
       return { proposee: false, raison: `garde de mission : ${garde.refus.join(" ")}` };
+    }
+
+    // Lot L11c — moteur des missions allumé (`lettre_auto` ET `lettre_v2`) : un
+    // couple dont l'accord est déjà donné ne reçoit pas de seconde proposition.
+    // Une seconde mission ferait lier la lettre ailleurs que sur la mission
+    // acceptée. Coupé : exactement comme avant.
+    if ((await envoiAllume("lettre_auto")) && (await interrupteurAllume("lettre_v2"))) {
+      const dejaAcceptee = await prisma.missionFormateur.findFirst({
+        where: {
+          sessionId: session.id,
+          trainerId: trainer.id,
+          role,
+          statut: { in: [...STATUTS_ACCORD_DONNE] },
+        },
+        select: { id: true },
+      });
+      if (dejaAcceptee !== null) {
+        return {
+          proposee: false,
+          raison: "accord déjà donné pour cette session : aucune nouvelle proposition",
+        };
+      }
     }
 
     // Lot L11b — les conditions financières FIGÉES au choix en cartes sont
@@ -646,7 +670,11 @@ async function passerLesSansReponse(now: Date): Promise<number> {
       id: true,
       sessionId: true,
       trainerId: true,
+      solliciteAt: true,
       session: { select: { formateurPrincipalId: true } },
+      trainer: {
+        select: { statut: true, organismeSousTraitantId: true, prenom: true, email: true },
+      },
     },
   });
 
@@ -683,6 +711,8 @@ async function passerLesSansReponse(now: Date): Promise<number> {
         retireById: null,
         now,
       });
+      // Lot L11c — F24 à l'indépendant (interrupteur `formateurs.lettre_auto`).
+      if (m.trainer !== undefined && m.trainer !== null) await notifierPropositionClose(m);
       n += 1;
     } catch (err) {
       console.error(

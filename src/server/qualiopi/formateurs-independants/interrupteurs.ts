@@ -480,6 +480,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.rang_suivant",
   },
+  // Lot L11d — la page « Missions » de la console (qui doit agir, étape de
+  // chaque mission, même calcul que le moteur). Coupé : la page n'existe pas.
+  missions_console: {
+    ...envoi(
+      "Page « Missions »",
+      "La console liste les missions des formateurs indépendants groupées par « qui doit agir » (Vous, le formateur, le client), avec l'étape de chacune.",
+    ),
+    cle: "formateurs.missions_console",
+  },
   // Lot L7b — le contrat-cadre v3 d'un formateur indépendant, préparé depuis sa fiche.
   // Coupé : le panneau n'apparaît pas et l'action refuse, exactement comme avant L7b.
   contrat_cadre_emission: {
@@ -574,6 +583,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   mise_a_niveau: [exige("dossier_en_ligne")],
   // F45 est un texte neuf adressé aux formateurs.
   nouvelle_version_contrat: [exige("textes_valides")],
+  missions_console: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

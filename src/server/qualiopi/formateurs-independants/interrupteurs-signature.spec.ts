@@ -17,7 +17,7 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("seize clés, chacune protégée de l'éditeur générique", () => {
+  it("dix-sept clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -35,6 +35,8 @@ describe("interrupteurs du socle de signature", () => {
         "formateurs.choix_cartes",
         // Lot L11h — choix suivant et désistement, livrés éteints.
         "formateurs.rang_suivant",
+        // Lot L11d — page « Missions », livrée éteinte.
+        "formateurs.missions_console",
         // Lots L7b, L9b, L7d — contrat-cadre émis, mise à niveau, nouvelle version, éteints.
         "formateurs.contrat_cadre_emission",
         "formateurs.mise_a_niveau",

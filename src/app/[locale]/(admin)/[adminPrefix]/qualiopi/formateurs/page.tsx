@@ -63,6 +63,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
   // Lot S2 (R4) — pour un indépendant, ni refus ni silence : acceptées et
   // réalisées seulement (interrupteur `formateurs.affectation_sure`).
   const r4 = await interrupteurAllume("affectation_sure");
+  const pageMissions = await interrupteurAllume("missions_console");
   const missionsIndependants = new Map<string, MissionsVisiblesIndependant>(
     r4
       ? await Promise.all(
@@ -107,6 +108,12 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
         <Link href={`${base}/new`} className="admin-button">
           + Nouveau formateur
         </Link>
+        {/* Lot L11d — la page « Missions » (interrupteur `formateurs.missions_console`). */}
+        {pageMissions ? (
+          <Link href={`${base}/missions`} className="admin-button-ghost">
+            Missions
+          </Link>
+        ) : null}
       </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
