@@ -76,3 +76,13 @@ export function estTexteFormateurAValider(gabarit: string, variante?: string): b
 export function listeDesTextesAffichee(): string {
   return TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte).join("\n");
 }
+
+/**
+ * La phrase de l'écran d'une VARIANTE : ce que l'envoi exige vraiment. Le texte de
+ * base n'est cité que s'il se valide lui aussi (F23 chiffrée : seule la variante).
+ */
+export function phraseValidationVariante(gabarit: string): string {
+  return estTexteFormateurAValider(gabarit)
+    ? "Cette variante se valide à part : elle ne part que si le texte de base ET elle sont validés."
+    : "Cette variante se valide à part : elle ne part que si elle est validée ici.";
+}
