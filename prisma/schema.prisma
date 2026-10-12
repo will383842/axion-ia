@@ -6412,6 +6412,8 @@ model Trainer {
   /// La candidature d'où vient la fiche. Unique PARTIEL (`trainers_candidature_unique`).
   candidatureId           String?                             @map("candidature_id") @db.Uuid
   candidatureOrigine      JobApplication?                     @relation("TrainerCandidatureOrigine", fields: [candidatureId], references: [id], onDelete: SetNull)
+  /// CAMP-4 — réponses du formateur relevées par e-mail.
+  reponsesFormateur       ReponseEntranteFormateur[]
   verificationsRegistre   VerificationRegistreSousTraitance[]
   preuvesVigilance        PreuveVigilance[]
   choixSessions           ChoixFormateurSession[]
@@ -10019,6 +10021,8 @@ model JobApplication {
   origine                  OrigineCandidature        @default(formulaire)
   /// Fiche formateur ouverte depuis cette candidature (unique partiel côté Trainer).
   fichesFormateurOuvertes  Trainer[]                 @relation("TrainerCandidatureOrigine")
+  /// CAMP-4 — réponses relevées ou déclarées « répondu ailleurs ».
+  reponsesFormateur        ReponseEntranteFormateur[]
 
   @@index([offerId])
   @@index([status, needsAttention])
@@ -16583,4 +16587,31 @@ model IncidentDonnees {
 
   @@index([statut, decouvertLe])
   @@map("incidents_donnees")
+}
+
+/// CAMP-4 (chantier formateurs freelance) — une RÉPONSE d'un formateur indépendant ou d'un
+/// candidat formateur : relevée dans la boîte Zoho par le relevé des candidatures (#1342),
+/// ou déclarée en console (« J'ai répondu ailleurs »). Aucun corps, aucun objet, aucune
+/// adresse, aucune empreinte : la fiche (ou la candidature) et l'heure. Arrête
+/// l'invitation (S1) ; une réponse automatique (`auto`) n'a aucun effet.
+/// rgpd: technique — un horodatage rattaché par clé étrangère à la fiche formateur ou à la candidature, supprimé avec elle (ON DELETE CASCADE) ; ni nom, ni adresse, ni empreinte, ni contenu
+model ReponseEntranteFormateur {
+  id            String          @id @default(uuid()) @db.Uuid
+  trainerId     String?         @map("trainer_id") @db.Uuid
+  trainer       Trainer?        @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  candidatureId String?         @map("candidature_id") @db.Uuid
+  candidature   JobApplication? @relation(fields: [candidatureId], references: [id], onDelete: Cascade)
+  /// `zoho` (relevé) ou `hors_circuit` (« J'ai répondu ailleurs »).
+  source        String          @db.VarChar(20)
+  recuLe        DateTime        @map("recu_le")
+  /// Unique : un message relevé deux fois n'est écrit qu'une fois.
+  zohoMessageId String?         @unique @map("zoho_message_id") @db.VarChar(64)
+  auto          Boolean         @default(false)
+  /// L'administrateur qui a déclaré « J'ai répondu ailleurs ».
+  auteurId      String?         @map("auteur_id") @db.Uuid
+  createdAt     DateTime        @default(now()) @map("created_at")
+
+  @@index([trainerId, recuLe])
+  @@index([candidatureId, recuLe])
+  @@map("reponses_entrantes_formateurs")
 }
