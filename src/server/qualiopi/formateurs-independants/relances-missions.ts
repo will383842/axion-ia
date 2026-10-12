@@ -136,6 +136,29 @@ async function texteEstValide(gabarit: string): Promise<boolean> {
   return texteValide(gabarit as Parameters<typeof texteValide>[0]);
 }
 
+/**
+ * Ce que l'adaptateur d'envoi refuserait APRÈS l'émission du lien, vérifié AVANT : émettre
+ * révoque le lien précédent, et un refus ensuite laisserait le formateur sans lien valable.
+ * `false` aussi quand la base ne répond pas.
+ */
+async function envoiPossible(
+  trainerId: string,
+  gabarit: string,
+  payload: Record<string, unknown>,
+): Promise<boolean> {
+  const { valeursManquantes } = await import("./envois");
+  if (valeursManquantes(gabarit as Parameters<typeof valeursManquantes>[0], payload)) return false;
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { finCollaborationAt: true },
+    });
+    return t != null && t.finCollaborationAt == null;
+  } catch {
+    return false;
+  }
+}
+
 function etatDe(l: LigneContrat, origine: Date): EtatCampagne {
   return {
     origine,
@@ -169,6 +192,10 @@ export function faitsContrat(
     payload: { ...(l.prenom.trim() ? { prenom: l.prenom.trim() } : {}) },
     completerPayload: async (payload) => {
       if (!(await texteEstValide(gabarit))) return null;
+      const valeurs = campagne === "version" ? { valeurs: { N: "0" } } : {};
+      // Le lien réel n'existe pas encore : une valeur témoin suffit à vérifier les crochets.
+      const essai = { ...payload, lien: "https://lien.invalid", ...valeurs };
+      if (!(await envoiPossible(l.trainerId, gabarit, essai))) return null;
       const { emettreLienSignatureSystem } =
         await import("@/server/qualiopi/documents/signature/emettre-lien-signature");
       const lien = await emettreLienSignatureSystem(l.documentId, "sous_traitant");

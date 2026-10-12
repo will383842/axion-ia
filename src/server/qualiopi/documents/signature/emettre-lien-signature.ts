@@ -31,6 +31,7 @@ import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { prisma } from "@/lib/prisma";
 import { publicUrl } from "@/lib/public-url";
 import { hashIp } from "@/lib/security/ip-hash";
+import { journaliser } from "@/server/journal/journaliser";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import type { PartieSignataire } from "./document-signature-hash";
@@ -416,7 +417,16 @@ export async function emettreLienSignature(
  * contrat-cadre (F18, F45) part d'un passage du worker, sans administrateur ni
  * en-têtes. Mêmes gardes que `emettreLienSignature` (pièce vivante, non
  * spécimen, empreinte, pas déjà signée, identité lue en base) ; l'acteur est le
- * système, la trace en témoigne. Réémettre INVALIDE le lien précédent.
+ * système, la trace en témoigne (`session: null`, `systeme: true`). Réémettre
+ * INVALIDE le lien précédent.
+ *
+ * 🔴 Une tâche ne fait que RENOUVELER un lien humain encore vivant. Si le dernier
+ * lien de (pièce, partie) a été révoqué — par l'administrateur (`revokedById` :
+ * erreur de destinataire, pièce retirée, demande RGPD), par un effacement ou une
+ * fin de collaboration — ou s'il n'y en a jamais eu, AUCUN lien n'est émis : une
+ * relance ne rouvre jamais ce qu'un humain a fermé. Seule une réémission
+ * (`revokedById` à `null`, « Remplacé par un nouveau lien ») laisse un lien plus
+ * récent, vivant, que la tâche peut renouveler.
  *
  * Le lien en clair n'est ni stocké ni journalisé.
  */
@@ -464,6 +474,15 @@ export async function emettreLienSignatureSystem(
   ) {
     return { error: "Cette partie a déjà signé cette pièce." };
   }
+  const dernier = await prisma.documentSignatureToken.findFirst({
+    where: { documentGenereId, partie },
+    orderBy: { createdAt: "desc" },
+    select: { revokedAt: true, revokedById: true },
+  });
+  if (dernier?.revokedById != null) return { error: "Lien révoqué par l'administrateur." };
+  if (dernier == null || dernier.revokedAt !== null) {
+    return { error: "Aucun lien vivant à renouveler." };
+  }
   const resolution = await resoudreIdentite(partie, piece);
   if (!resolution.ok) return { error: resolution.motif };
   try {
@@ -475,6 +494,14 @@ export async function emettreLienSignatureSystem(
       signataireQualite: resolution.identite.qualite,
       borneMetier: piece.suppressionPrevueAt,
       createdIpHash: null,
+    });
+    await journaliser(prisma, {
+      action: "qualiopi.piece.lien_signature",
+      targetType: "DocumentGenere",
+      targetId: documentGenereId,
+      // ⚠️ Le LIEN n'est JAMAIS journalisé : il vaut signature.
+      changes: { numero: piece.numero, type: piece.type, partie, reemission: true, systeme: true },
+      session: null,
     });
     return { data: { url: publicUrl(`/fr/portail/signer/${token}`).toString() } };
   } catch (err) {

@@ -4,21 +4,45 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+const pz = vi.hoisted(() => ({
+  prisma: {
+    documentGenere: { findUnique: vi.fn() },
+    documentSignature: { count: vi.fn() },
+    documentSignatureToken: { findFirst: vi.fn() },
+    trainer: { findUnique: vi.fn() },
+  },
+  creerToken: vi.fn(),
+}));
+vi.mock("@/lib/prisma", () => ({ prisma: pz.prisma }));
+// Le vrai `emettreLienSignatureSystem` est branché dans le test de bout en bout : ses
+// dépendances hors base sont simulées ici.
+vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+vi.mock("next/headers", () => ({ headers: async () => new Headers() }));
+vi.mock("@/server/actions/qualiopi/_guards", () => ({ logQualiopiActivity: vi.fn() }));
+vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
+  creerTokenDocument: pz.creerToken,
+  TokenDocumentError: class TokenDocumentError extends Error {},
+}));
+vi.mock("@/server/email/outbox-service", () => ({ jobIdDejaGare: vi.fn() }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn() }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: vi.fn() }));
-const h = vi.hoisted(() => ({ valide: true, lien: vi.fn() }));
+const h = vi.hoisted(() => ({ valide: true, manquantes: false, lien: vi.fn() }));
 const e = vi.hoisted(() => ({
   etats: { dossier_en_ligne: true, relances_auto: true } as Record<string, boolean>,
 }));
 vi.mock("./interrupteurs-etat", () => ({ lireEtatsInterrupteurs: async () => e.etats }));
-vi.mock("./envois", () => ({ texteValide: async () => h.valide }));
+vi.mock("./envois", () => ({
+  texteValide: async () => h.valide,
+  valeursManquantes: () => h.manquantes,
+}));
 vi.mock("@/server/qualiopi/documents/signature/emettre-lien-signature", () => ({
   emettreLienSignatureSystem: h.lien,
 }));
 
 import { decisionCampagne } from "@/lib/relances/campagne";
+import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import {
+  CAMPAGNE_CONTRAT,
   REGLE_CONTRAT,
   REGLE_LETTRE_1RE,
   REGLE_LETTRE_J3,
@@ -43,6 +67,8 @@ const apres = (jours: number) => new Date(MAINTENANT.getTime() + jours * J);
 
 beforeEach(() => {
   h.valide = true;
+  h.manquantes = false;
+  pz.prisma.trainer.findUnique.mockReset().mockResolvedValue({ finCollaborationAt: null });
   h.lien.mockReset().mockResolvedValue({ data: { url: "https://x.invalid/portail/signer/T" } });
   vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://exemple.test");
 });
@@ -115,6 +141,18 @@ describe("F18 — contrat pas encore signé", () => {
       lien: "https://x.invalid/portail/signer/T",
     });
     expect(h.lien).toHaveBeenCalledWith("d1", "sous_traitant");
+  });
+  it("fin de collaboration survenue depuis la lecture : aucun lien émis (le lien de F16 reste vivant)", async () => {
+    pz.prisma.trainer.findUnique.mockResolvedValue({ finCollaborationAt: avant(0) });
+    const f = faitsContrat(contrat(), "contrat", MAINTENANT)!;
+    expect(await f.completerPayload!(f.payload)).toBeNull();
+    expect(h.lien).not.toHaveBeenCalled();
+  });
+  it("valeurs manquantes au texte : aucun lien émis", async () => {
+    h.manquantes = true;
+    const f = faitsContrat(contrat(), "contrat", MAINTENANT)!;
+    expect(await f.completerPayload!(f.payload)).toBeNull();
+    expect(h.lien).not.toHaveBeenCalled();
   });
   it("lien impossible à émettre : rien ne part", async () => {
     h.lien.mockResolvedValue({ error: "Pièce annulée." });
@@ -255,5 +293,74 @@ describe("passage de l'alerte F21", () => {
     e.etats = { dossier_en_ligne: true, relances_auto: false };
     expect(await passerAlerteNda(MAINTENANT)).toBe(0);
     e.etats = { dossier_en_ligne: true, relances_auto: true };
+  });
+});
+
+describe("F18 de bout en bout — un lien révoqué par l'administrateur n'est jamais réémis", () => {
+  const DOC = "66666666-6666-4666-8666-666666666666";
+  const TRAINER = "77777777-7777-4777-8777-777777777777";
+
+  async function passer(dernierJeton: { revokedAt: Date | null; revokedById: string | null }) {
+    const reel = await vi.importActual<
+      typeof import("@/server/qualiopi/documents/signature/emettre-lien-signature")
+    >("@/server/qualiopi/documents/signature/emettre-lien-signature");
+    h.lien.mockImplementation(reel.emettreLienSignatureSystem);
+    vi.stubEnv("DATABASE_URL", "postgresql://u:p@db.example:5432/x");
+    pz.prisma.documentGenere.findUnique.mockResolvedValue({
+      id: DOC,
+      type: "contrat_sous_traitance",
+      numero: "AXI-DOC-2026-300",
+      hashSha256: "d".repeat(64),
+      metadata: {},
+      annuleeAt: null,
+      clientId: null,
+      traineeId: null,
+      sousTraitantId: null,
+      sessionId: null,
+      trainerId: TRAINER,
+      suppressionPrevueAt: new Date("2031-01-01T00:00:00Z"),
+    });
+    pz.prisma.documentSignature.count.mockResolvedValue(0);
+    pz.prisma.documentSignatureToken.findFirst.mockResolvedValue(dernierJeton);
+    pz.prisma.trainer.findUnique.mockResolvedValue({
+      statut: "sous_traitant",
+      prenom: "Marie",
+      nom: "Curie",
+      email: "m@ex.test",
+    });
+    pz.creerToken.mockReset().mockResolvedValue({ token: "JETON", expiresAt: new Date() });
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    const ligne = contrat({ trainerId: TRAINER, documentId: DOC });
+    const bilan = await passerCampagnes(MAINTENANT, {
+      registre: [
+        {
+          ...CAMPAGNE_CONTRAT,
+          lireFaits: async (m: Date) => [faitsContrat(ligne, "contrat", m)!],
+        } as never,
+      ],
+      lireInterrupteurs: async () => e.etats as never,
+      relanceesAujourdhui: async () => new Set<string>(),
+      dejaTente: async () => false,
+      envoyer,
+    });
+    return { bilan, envoyer };
+  }
+
+  it("lien révoqué par l'administrateur : rien ne part, aucun jeton neuf", async () => {
+    const { bilan, envoyer } = await passer({
+      revokedAt: new Date("2026-10-11T09:00:00Z"),
+      revokedById: "88888888-8888-4888-8888-888888888888",
+    });
+    expect(bilan.envoyes).toBe(0);
+    expect(bilan.ecartes["payload-indisponible"]).toBe(1);
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(pz.creerToken).not.toHaveBeenCalled();
+  });
+
+  it("lien humain encore vivant : la relance le renouvelle et part", async () => {
+    const { bilan, envoyer } = await passer({ revokedAt: null, revokedById: null });
+    expect(bilan.envoyes).toBe(1);
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(pz.creerToken).toHaveBeenCalledTimes(1);
   });
 });

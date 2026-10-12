@@ -259,7 +259,9 @@ export async function passerCampagnes(
     if (c.faits.completerPayload) {
       let complet: Record<string, unknown> | null = null;
       try {
-        complet = await c.faits.completerPayload(payload);
+        // L'étape est connue du hook : il vérifie les crochets de la BONNE variante avant
+        // toute émission irréversible (un lien de signature neuf révoque le précédent).
+        complet = await c.faits.completerPayload({ ...payload, etape: variante });
       } catch {
         complet = null;
       }
