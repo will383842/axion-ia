@@ -12,9 +12,11 @@
  * erreur explicite (pas de redirect dans une action).
  *
  * Lot E (M14) — VERSION D'ACCÈS et LECTURE SEULE après une fin de collaboration :
- *  - la session porte `Trainer.accesVersion` ; la clôture d'une fin l'incrémente,
- *    donc toute session ouverte avant tombe. Une session sans version (signée avant
- *    ce lot) ne vaut plus rien une fois la collaboration close ;
+ *  - la session porte `versionSessionFormateur(fiche)` (tirée de la date de fin
+ *    close) ; la clôture d'une fin la change, donc toute session ouverte avant tombe.
+ *    Une session sans version (signée avant ce lot) ne vaut plus rien une fois la
+ *    collaboration close. ⚠️ Jamais `accesVersion`, qui révoque les liens du dossier
+ *    et bouge à chaque envoi du dossier par un formateur actif ;
  *  - `getFormateurSession()` (accès complet, seule porte des actions) refuse toute
  *    fiche dont la collaboration est close ;
  *  - `getFormateurSessionLecture()` rend en plus, en LECTURE SEULE, l'indépendant dont
@@ -27,7 +29,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { verifyFormateurSession } from "@/lib/formateur-session";
 import { getFormateurToken } from "./cookie";
-import { accesFormateur } from "./acces-apres-fin";
+import { accesFormateur, versionSessionFormateur } from "./acces-apres-fin";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "./routes";
 
 /** Où va une session en lecture seule qui ouvre une page à accès complet. */
@@ -63,13 +65,14 @@ async function lireSession() {
       email: true,
       actif: true,
       statut: true,
-      accesVersion: true,
       finCollaborationAt: true,
     },
   });
   if (!trainer) return null;
   // Version signée et dépassée : la session a été révoquée (fin de collaboration…).
-  if (result.version !== undefined && result.version !== trainer.accesVersion) return null;
+  if (result.version !== undefined && result.version !== versionSessionFormateur(trainer)) {
+    return null;
+  }
   return { trainer, versionSignee: result.version !== undefined };
 }
 

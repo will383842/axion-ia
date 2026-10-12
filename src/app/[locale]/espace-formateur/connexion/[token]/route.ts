@@ -18,7 +18,7 @@ import { signFormateurSession } from "@/lib/formateur-session";
 import { setFormateurCookie } from "@/server/formateur/cookie";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { destinationApresConnexion } from "@/server/formateur/suite-lien";
-import { accesFormateur } from "@/server/formateur/acces-apres-fin";
+import { accesFormateur, versionSessionFormateur } from "@/server/formateur/acces-apres-fin";
 import { FORMATEUR_LECTURE_SEULE_PATH } from "@/server/formateur/guard";
 import { publicUrl } from "@/lib/public-url";
 
@@ -43,7 +43,7 @@ export async function GET(
   // Le formateur peut avoir été désactivé entre l'envoi et le clic.
   const trainer = await prisma.trainer.findUnique({
     where: { id: trainerId },
-    select: { id: true, actif: true, statut: true, finCollaborationAt: true, accesVersion: true },
+    select: { id: true, actif: true, statut: true, finCollaborationAt: true },
   });
   // Lot E (M14) — accès complet, ou lecture seule après une fin de collaboration.
   const acces = trainer ? await accesFormateur(trainer) : null;
@@ -51,12 +51,13 @@ export async function GET(
     return NextResponse.redirect(failureUrl);
   }
 
-  // La session porte la version d'accès : une clôture de fin la fait tomber.
+  // La session porte la version de session : une clôture de fin la fait tomber (pas
+  // l'envoi du dossier, qui ne touche que `accesVersion`).
   const sessionToken = await signFormateurSession(
     trainer.id,
     "formateur",
     undefined,
-    trainer.accesVersion,
+    versionSessionFormateur(trainer),
   );
   await setFormateurCookie(sessionToken);
   await prisma.trainer.update({

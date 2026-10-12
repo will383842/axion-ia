@@ -48,6 +48,7 @@ import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants
 import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
+import { versionSessionFormateur } from "@/server/qualiopi/formateurs-independants/version-session";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -266,7 +267,7 @@ export async function proposerMissionFormateur(
           nom: true,
           actif: true,
           statut: true,
-          accesVersion: true,
+          finCollaborationAt: true,
         },
       }),
       prisma.enrollment.count({
@@ -388,7 +389,13 @@ async function envoyerProposition(args: {
     lieuSalle: string | null;
     lieuVisioUrl: string | null;
   };
-  trainer: { id: string; email: string; prenom: string; nom: string; accesVersion?: number };
+  trainer: {
+    id: string;
+    email: string;
+    prenom: string;
+    nom: string;
+    finCollaborationAt?: Date | null;
+  };
   inscrits: number;
   role: SessionFormateurRole;
   /** Échéance réelle de réponse ; absente sur une proposition ancienne. */
@@ -400,8 +407,11 @@ async function envoyerProposition(args: {
     scope: "formateur_mission",
     resourceId: args.missionId,
     ttlMs: ttlJusquAuDemarrage(session.dateDebut, now),
-    // Lot E (M14) — une fin de collaboration (version incrémentée) éteint le lien.
-    ...(trainer.accesVersion !== undefined ? { version: trainer.accesVersion } : {}),
+    // Lot E (M14) — une fin de collaboration (version de session changée) éteint le
+    // lien ; l'envoi du dossier (`accesVersion`) ne le touche pas.
+    ...(trainer.finCollaborationAt !== undefined
+      ? { version: versionSessionFormateur({ finCollaborationAt: trainer.finCollaborationAt }) }
+      : {}),
   });
   const lieu = formatLieu({
     ...session,
@@ -616,7 +626,9 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
       solliciteAt: true,
       echeanceReponseAt: true,
       session: { select: SESSION_POUR_MISSION },
-      trainer: { select: { id: true, email: true, prenom: true, nom: true, accesVersion: true } },
+      trainer: {
+        select: { id: true, email: true, prenom: true, nom: true, finCollaborationAt: true },
+      },
     },
   });
   const aRelancer = candidates.filter((m) => {
@@ -1070,7 +1082,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
         statut: true,
         role: true,
         echeanceReponseAt: true,
-        trainer: { select: { id: true, prenom: true, nom: true, accesVersion: true } },
+        trainer: { select: { id: true, prenom: true, nom: true, finCollaborationAt: true } },
         session: {
           select: {
             ...SESSION_POUR_MISSION,
@@ -1081,7 +1093,9 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
     });
     if (m === null) return null;
     // Lot E (M14) — jeton signé avec une version dépassée : révoqué (fin de collaboration).
-    if (verified.version !== undefined && verified.version !== m.trainer.accesVersion) return null;
+    if (verified.version !== undefined && verified.version !== versionSessionFormateur(m.trainer)) {
+      return null;
+    }
     return {
       id: m.id,
       statut: m.statut,

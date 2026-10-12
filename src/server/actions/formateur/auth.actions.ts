@@ -10,13 +10,14 @@
  * `logoutFormateurAction` : supprime le cookie de session.
  */
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { enqueueEmail } from "@/server/queue/queues";
 import { createFormateurMagicLink } from "@/server/formateur/magic-link";
-import { buildFormateurMagicLinkUrl } from "@/server/formateur/routes";
+import { buildFormateurMagicLinkUrl, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { clearFormateurCookie } from "@/server/formateur/cookie";
 import { accesFormateur } from "@/server/formateur/acces-apres-fin";
 
@@ -101,7 +102,12 @@ export async function sendFormateurMagicLinkAction(
   return { ok: true, message: GENERIC_MESSAGE };
 }
 
-/** Déconnexion : efface le cookie de session formateur. */
+/**
+ * Déconnexion : efface le cookie de session formateur, puis renvoie vers la connexion.
+ * Posté par le formulaire serveur de la coquille (aucun JavaScript client) : c'est donc
+ * l'action qui redirige, plus le bouton.
+ */
 export async function logoutFormateurAction(): Promise<void> {
   await clearFormateurCookie();
+  redirect(FORMATEUR_CONNEXION_PATH);
 }

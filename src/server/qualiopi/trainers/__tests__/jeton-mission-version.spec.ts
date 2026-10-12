@@ -1,7 +1,12 @@
 /**
- * Lot E (M14) — le jeton de MISSION porte la version d'accès de la fiche : après une
- * fin de collaboration (version incrémentée), un lien de proposition reçu avant ne
- * vaut plus rien. Un jeton signé avant ce lot (sans version) garde son comportement.
+ * Lot E (M14) — le jeton de MISSION porte la version de session de la fiche
+ * (`versionSessionFormateur`, tirée de la date de fin close) : après une fin de
+ * collaboration, un lien de proposition reçu avant ne vaut plus rien. Un jeton signé
+ * avant ce lot (sans version) garde son comportement.
+ *
+ * 🔴 Ce n'est PAS `accesVersion` : ce compteur révoque les liens du dossier et bouge à
+ * chaque envoi ou renvoi du dossier — il éteindrait les propositions d'un formateur
+ * actif.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -19,12 +24,12 @@ import { lireMissionParJeton } from "@/server/qualiopi/trainers/mission-formateu
 
 const MISSION = "5b6c7d8e-9f01-4a2b-8c3d-4e5f6a7b8c9d";
 
-const mission = (accesVersion: number) => ({
+const mission = (finCollaborationAt: Date | null, accesVersion = 3) => ({
   id: MISSION,
   statut: "en_attente",
   role: "principal",
   echeanceReponseAt: null,
-  trainer: { id: "t", prenom: "Camille", nom: "Martin", accesVersion },
+  trainer: { id: "t", prenom: "Camille", nom: "Martin", accesVersion, finCollaborationAt },
   session: {
     id: "s",
     numero: "S-1",
@@ -57,21 +62,27 @@ describe("jeton de mission et version d'accès", () => {
     expect(v.ok && v.version).toBe(4);
   });
 
-  it("version dépassée : le lien ne désigne plus rien", async () => {
-    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION, version: 2 });
-    db.missionFormateur.findUnique.mockResolvedValue(mission(3));
+  it("collaboration close depuis l'envoi : le lien ne désigne plus rien", async () => {
+    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION, version: 0 });
+    db.missionFormateur.findUnique.mockResolvedValue(mission(new Date("2026-10-01T00:00:00Z")));
     expect(await lireMissionParJeton(t)).toBeNull();
   });
 
   it("même version : le lien vaut", async () => {
-    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION, version: 3 });
-    db.missionFormateur.findUnique.mockResolvedValue(mission(3));
+    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION, version: 0 });
+    db.missionFormateur.findUnique.mockResolvedValue(mission(null));
+    expect((await lireMissionParJeton(t))?.id).toBe(MISSION);
+  });
+
+  it("🔴 l'envoi du dossier incrémente `accesVersion` : la proposition reste valable", async () => {
+    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION, version: 0 });
+    db.missionFormateur.findUnique.mockResolvedValue(mission(null, 4));
     expect((await lireMissionParJeton(t))?.id).toBe(MISSION);
   });
 
   it("jeton d'avant ce lot (sans version) : comportement inchangé", async () => {
     const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION });
-    db.missionFormateur.findUnique.mockResolvedValue(mission(7));
+    db.missionFormateur.findUnique.mockResolvedValue(mission(null, 7));
     expect((await lireMissionParJeton(t))?.id).toBe(MISSION);
   });
 });

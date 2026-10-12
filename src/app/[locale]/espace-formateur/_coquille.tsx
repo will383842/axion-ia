@@ -17,12 +17,26 @@
  * (`FormateurNav`) résolvait la section avec `usePathname()`, donc en client :
  * la navigation coûtait du JavaScript sur toutes les pages. Ici chaque page
  * déclare sa section, et la coquille reste un composant serveur.
+ *
+ * ## 🔴 Et elle ne rend AUCUN composant client (2026-10-12)
+ *
+ * Composée par chaque page, tout module client qu'elle rend est COPIÉ dans le chunk
+ * de chaque page. Les icônes `lucide-react` (base `"use client"` depuis la v1) et le
+ * bouton de déconnexion client y faisaient 3,5 ko identiques par page ; la page
+ * « Mon dossier » a suffi à dépasser le cliquet des page chunks publics. Icônes et
+ * déconnexion sont donc rendus par le serveur — verrou :
+ * `__tests__/coquille-sans-javascript.spec.ts`.
  */
-
-import { CalendarDays, CircleCheckBig, Euro, FolderOpen, UserRound } from "lucide-react";
 
 import { EspaceShell, type EspaceNavItem } from "@/components/espace/EspaceShell";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
+import {
+  IconeAccompagnements,
+  IconeAFaire,
+  IconeDossier,
+  IconeFormations,
+  IconeRemuneration,
+} from "@/components/espace-formateur/icones-navigation";
 import { getFormateurSessionLecture } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
@@ -56,7 +70,7 @@ function construireNavigation(
       cle: "accueil",
       href: FORMATEUR_BASE_PATH,
       label: "À faire",
-      icone: CircleCheckBig,
+      icone: IconeAFaire,
       ...(aSigner > 0 ? { enAttente: aSigner } : {}),
     },
     {
@@ -64,7 +78,7 @@ function construireNavigation(
       href: FORMATEUR_SESSIONS_PATH,
       label: libellesIndependant ? "Mes missions" : "Mes formations",
       labelCourt: libellesIndependant ? "Missions" : "Formations",
-      icone: CalendarDays,
+      icone: IconeFormations,
     },
     {
       // 🔴 Sa RÉMUNÉRATION — la destination qui manquait. Son espace portait
@@ -74,7 +88,7 @@ function construireNavigation(
       href: `${FORMATEUR_BASE_PATH}/remuneration`,
       label: libellesIndependant ? "Mes honoraires" : "Ma rémunération",
       labelCourt: libellesIndependant ? "Honoraires" : "Rémunération",
-      icone: Euro,
+      icone: IconeRemuneration,
     },
     ...(avecDossier
       ? [
@@ -83,7 +97,7 @@ function construireNavigation(
             href: `${FORMATEUR_BASE_PATH}/dossier`,
             label: "Mon dossier",
             labelCourt: "Dossier",
-            icone: FolderOpen,
+            icone: IconeDossier,
           },
         ]
       : []),
@@ -94,7 +108,7 @@ function construireNavigation(
       // destination, pas un nom de produit.
       label: "Accompagnements",
       labelCourt: "Suivi 1-to-1",
-      icone: UserRound,
+      icone: IconeAccompagnements,
     },
   ];
 }
