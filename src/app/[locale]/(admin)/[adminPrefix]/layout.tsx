@@ -26,7 +26,7 @@ import {
   FORMATEURS_NAV_VIDES,
   compterFormateursNav,
   type FormateursNavCounts,
-} from "@/server/admin/formateurs-nav-counts";
+} from "@/server/qualiopi/formateurs-independants/nav-counts";
 import type { Metadata } from "next";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import localFont from "next/font/local";

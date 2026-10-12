@@ -19,7 +19,7 @@ import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
-import { compterFormateursNav } from "@/server/admin/formateurs-nav-counts";
+import { compterFormateursNav } from "@/server/qualiopi/formateurs-independants/nav-counts";
 import { gardePage } from "@/server/auth/garde-page";
 import {
   blocsAFaire,
