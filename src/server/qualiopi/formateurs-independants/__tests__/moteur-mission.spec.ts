@@ -244,7 +244,9 @@ describe("lettre due (T8)", () => {
     try {
       await reevaluerMission(MISSION, "convention", MAINTENANT);
       const envoi = (
-        h.envoyer.mock.calls[0] as unknown as [{ gabarit: string; payload: Record<string, unknown> }]
+        h.envoyer.mock.calls[0] as unknown as [
+          { gabarit: string; payload: Record<string, unknown> },
+        ]
       )[0];
       expect(envoi.gabarit).toBe("formateur-lettre-a-signer");
       expect(envoi.payload.lien).toBe(`https://exemple.test/fr/espace-formateur/lettre/${DOC}`);

@@ -16,7 +16,11 @@ vi.mock("@/lib/prisma", () => ({
   prisma: { documentGenere: { findUnique: async () => h.piece } },
 }));
 vi.mock("@/server/qualiopi/documents/signature/exemplaire-signe", () => ({
-  rendreExemplaireSigne: async () => ({ ok: true, buffer: Buffer.from("pdf"), nomFichier: "l.pdf" }),
+  rendreExemplaireSigne: async () => ({
+    ok: true,
+    buffer: Buffer.from("pdf"),
+    nomFichier: "l.pdf",
+  }),
 }));
 vi.mock("@/server/qualiopi/documents/render", () => ({ storeAndSignPdf: async () => ({}) }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: h.enqueue }));

@@ -29,9 +29,7 @@ function heureParis(maintenant: Date): number {
   );
 }
 
-export async function passerRelancesPropositionsHoraires(
-  maintenant: Date,
-): Promise<BilanRelances> {
+export async function passerRelancesPropositionsHoraires(maintenant: Date): Promise<BilanRelances> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return VIDE;
   const h = heureParis(maintenant);
   if (h < 8 || h >= 19) return VIDE;

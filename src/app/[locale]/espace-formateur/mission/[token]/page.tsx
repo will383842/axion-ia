@@ -62,7 +62,9 @@ export default async function Page({
   // montre le montant, l'échéance et la liberté de refuser (le motif reste facultatif
   // comme sur l'accueil : `formateurs.affectation_sure`, règle du serveur). Coupé : la page d'avant.
   const chiffree =
-    mission !== null && mission.statut === "en_attente" && (await interrupteurAllume("choix_cartes"))
+    mission !== null &&
+    mission.statut === "en_attente" &&
+    (await interrupteurAllume("choix_cartes"))
       ? await lirePropositionChiffree(mission.id)
       : null;
   const refusLibre = mission !== null && (await refusLibrePour(mission.trainer.id));
