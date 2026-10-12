@@ -25,6 +25,10 @@ import type { QuiAgit } from "@/server/qualiopi/formateurs-independants/etape-mi
 import { peutEngager } from "@/server/auth/habilitations";
 import { ecrireIndemniteAnnulationFormAction } from "@/server/actions/qualiopi/indemnite-annulation";
 import { instantParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
+import { ContresignerLotButton } from "@/components/admin/qualiopi/ContresignerLotButton";
+import { estContresignable } from "@/server/qualiopi/documents/signature/contresignables";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
+import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import {
   apercuDecisionIndemnite,
   lireMissionsAIndemniser,
@@ -117,6 +121,23 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
     ),
   );
 
+  // Lot D2 (M8, S-UX-14) — lettres de mission et contrats-cadres que seul
+  // l'organisme doit encore signer : contresignature groupée, une preuve par pièce
+  // (`contresignerParLotAction`, mêmes gardes que la page « À traiter »).
+  const aContresigner = peutSignerPourOrganisme(acces.role)
+    ? (await listerPiecesEnAttente().catch(() => []))
+        .filter(
+          (x) =>
+            (x.type === "lettre_mission" || x.type === "contrat_sous_traitance") &&
+            x.statutSignature === "partielle" &&
+            estContresignable(
+              x.type,
+              x.signatures.map((sig) => sig.partie),
+            ),
+        )
+        .map((x) => x.id)
+    : [];
+
   return (
     <div className="mx-auto max-w-5xl space-y-[var(--space-admin-5)] p-[var(--space-admin-6)]">
       <h1 className="text-[length:var(--text-admin-xl)] font-semibold text-[color:var(--color-admin-fg)]">
@@ -131,6 +152,14 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
         <div className="admin-alert admin-alert-error" role="alert">
           {sp.erreur}
         </div>
+      )}
+      {aContresigner.length > 0 && (
+        <section className="space-y-[var(--space-admin-2)]" aria-labelledby="contresigner">
+          <h2 id="contresigner" className="text-[length:var(--text-admin-lg)] font-semibold">
+            Lettres et contrats à contresigner ({aContresigner.length})
+          </h2>
+          <ContresignerLotButton ids={aContresigner} />
+        </section>
       )}
       {aIndemniser.length > 0 && (
         <section className="space-y-[var(--space-admin-3)]" aria-labelledby="indemnites">

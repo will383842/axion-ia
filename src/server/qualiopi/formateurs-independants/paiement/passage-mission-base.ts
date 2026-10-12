@@ -33,7 +33,8 @@ async function client() {
 
 /**
  * Les couples (indépendant, session) d'une session commencée à `D` ou après,
- * pour lesquels le formateur a contresigné au moins une demi-journée.
+ * pour lesquels le formateur a contresigné au moins une demi-journée, ou porte
+ * une mission acceptée (lot D2 : liste vide de contresignatures).
  */
 export async function lireCandidats(dateBascule: string): Promise<CandidatMission[]> {
   const prisma = await client();
@@ -108,6 +109,11 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     for (const sig of signatures) {
       if (sig.sessionId !== s.id) continue;
       parFormateur.set(sig.trainerId, [...(parFormateur.get(sig.trainerId) ?? []), sig]);
+    }
+    // Lot D2 (M8) : une mission acceptée SANS aucune contresignature est lue aussi
+    // (feuilles manquantes, F35). Le passage l'ignore (rien de signé, rien d'écrit).
+    for (const m of missions) {
+      if (m.sessionId === s.id && !parFormateur.has(m.trainerId)) parFormateur.set(m.trainerId, []);
     }
     for (const [trainerId, sigs] of parFormateur) {
       // La plus récente des sollicitations acceptées ; son prix figé, ou aucun.

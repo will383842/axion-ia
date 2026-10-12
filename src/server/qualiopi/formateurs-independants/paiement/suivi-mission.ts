@@ -14,7 +14,9 @@
  *   3. **trop-perçu** (`traiterTropPercu`, F54) : l'avoir d'une pièce PAYÉE
  *      s'impute sur le relevé de mission suivant encore recalculable, sous les
  *      verrous ; sans relevé suivant à 60 jours, la demande de remboursement est
- *      marquée et F54 part, une fois par avoir.
+ *      marquée et F54 part, une fois par avoir ;
+ *   4. **feuilles manquantes** (M8) : F35, 4e marche, et alertes internes aux
+ *      délais existants (`feuilles-manquantes.ts`).
  *
  * 🔴 ÉTEINT : sans date `formateurs.passage_paiement`, rien ne se passe. Ne lève
  * jamais. Alertes et journaux : des compteurs et des numéros de pièce, aucun nom.
@@ -33,6 +35,8 @@ import { jourParis } from "../argent/dates";
 import { PARAMETRES_ARGENT_FORMATEURS } from "../argent/parametres";
 import { envoyer } from "../envois";
 import { traiterTropPercu } from "./corrections-mission";
+import { etapesFeuilles, feuillesManquantes } from "./feuilles-manquantes";
+import { lireCandidats } from "./passage-mission-base";
 import { lireDateBascule } from "./lecture-passage";
 import { alerteReleveNonValide, brouillonMensuelAPreparer } from "./releve-mensuel-auto";
 import { montantEnTexte } from "./virement-fait-envoi";
@@ -50,6 +54,9 @@ export interface BilanSuiviMission {
   readonly tropPercuImputeHtCents: number;
   readonly demandesRemboursement: number;
   readonly f54: number;
+  /** Lot D2 (M8) : F35 parties, alertes internes J+10 et J+20. */
+  readonly f35: number;
+  readonly alertesFeuilles: number;
 }
 
 const VIDE = {
@@ -58,6 +65,8 @@ const VIDE = {
   tropPercuImputeHtCents: 0,
   demandesRemboursement: 0,
   f54: 0,
+  f35: 0,
+  alertesFeuilles: 0,
 } as const;
 
 async function alerter(body: string): Promise<void> {
@@ -203,12 +212,90 @@ async function envoyerDemandesRemboursement(trainerId: string, maintenant: Date)
   return n;
 }
 
+const JOUR_LONG = new Intl.DateTimeFormat("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  timeZone: "UTC",
+});
+
+/**
+ * 4 — feuilles de présence manquantes (M8, sans pièce juridique nouvelle) : F35
+ * une fois par (formateur, session, mois) dès J+3 ; alertes internes à J+10 et à
+ * J+20 (« payer sur constat » n'est pas livré : décision humaine). Les trois
+ * délais viennent de `argent/parametres.ts`.
+ */
+async function feuilles(
+  maintenant: Date,
+  bascule: string,
+): Promise<{ f35: number; alertes: number }> {
+  const aujourdhui = jourParis(maintenant);
+  const candidats = (await lireCandidats(bascule)).filter(
+    (c) => c.premiereJournee >= bascule || c.revendiqueParMission === true,
+  );
+  const manques = feuillesManquantes(candidats, aujourdhui);
+  if (manques.length === 0) return { f35: 0, alertes: 0 };
+  const [formateurs, sessions] = await Promise.all([
+    prisma.trainer.findMany({
+      where: { id: { in: [...new Set(manques.map((m) => m.trainerId))] } },
+      select: { id: true, email: true, prenom: true, statut: true },
+    }),
+    prisma.trainingSession.findMany({
+      where: { id: { in: [...new Set(manques.map((m) => m.sessionId))] } },
+      select: { id: true, numero: true },
+    }),
+  ]);
+  const formateur = new Map(formateurs.map((f) => [f.id, f]));
+  const numero = new Map(sessions.map((x) => [x.id, x.numero]));
+  let f35 = 0;
+  let alertes = 0;
+  for (const m of manques) {
+    const t = formateur.get(m.trainerId);
+    if (t === undefined || t.statut !== "sous_traitant") continue;
+    const etapes = etapesFeuilles(m.derniereJournee, aujourdhui);
+    if (etapes.includes("relance")) {
+      const jobId = `fi-feuilles-${m.trainerId}-${m.sessionId}-${m.mois}`;
+      // Une seule fois : le journal des envois fait foi (un échec ne compte pas).
+      const deja = await prisma.emailLog.count({ where: { jobId, status: { not: "failed" } } });
+      if (deja === 0) {
+        const jours = [...new Set(m.manquantes.map((d) => d.jour))]
+          .map((j) => JOUR_LONG.format(new Date(`${j}T12:00:00Z`)))
+          .join(", ");
+        const r = await envoyer({
+          gabarit: "formateur-feuilles-manquantes",
+          destinataire: t.email,
+          entityType: "Trainer",
+          entityId: m.trainerId,
+          jobId,
+          payload: { prenom: t.prenom, valeurs: { jour: jours, N: String(m.manquantes.length) } },
+        }).catch(() => "indisponible" as const);
+        if (r === "envoye") f35 += 1;
+      }
+    }
+    const session = numero.get(m.sessionId) ?? "session";
+    if (etapes.includes("alerte")) {
+      alertes += 1;
+      await alerter(
+        `Feuilles de présence incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesAlerteJours} jours après la dernière journée (${session}, ${m.mois}) : ${m.manquantes.length} demi-journée(s) sans contresignature. Le formateur a été relancé ; la facture attend.`,
+      );
+    }
+    if (etapes.includes("sur_constat")) {
+      alertes += 1;
+      await alerter(
+        `Feuilles toujours incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesSurConstatJours} jours après la dernière journée (${session}, ${m.mois}). « Payer sur constat » n'est pas encore disponible : à décider à la main.`,
+      );
+    }
+  }
+  return { f35, alertes };
+}
+
 export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMission> {
   try {
     const bascule = await lireDateBascule(prisma);
     if (bascule === null || jourParis(maintenant) < bascule) return { etat: "coupe", ...VIDE };
     const { rappel, nonValides } = await rappelsMensuels(maintenant);
     const t = await tropPercus(maintenant);
+    const f = await feuilles(maintenant, bascule);
     return {
       etat: "fait",
       rappelBrouillon: rappel,
@@ -216,6 +303,8 @@ export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMi
       tropPercuImputeHtCents: t.imputeHtCents,
       demandesRemboursement: t.demandes,
       f54: t.f54,
+      f35: f.f35,
+      alertesFeuilles: f.alertes,
     };
   } catch {
     return { etat: "echec", ...VIDE };
