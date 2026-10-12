@@ -23,8 +23,9 @@ const { tx, horsTx, etat } = vi.hoisted(() => {
         findMany: vi.fn(async () => etat.lignes),
         findUnique: vi.fn(async () => null),
         upsert: vi.fn(async () => ({})),
+        update: vi.fn(async (_a: unknown) => ({})),
       },
-      activityLog: { create: vi.fn(async () => ({})) },
+      activityLog: { create: vi.fn(async (_a: unknown) => ({})) },
     },
     horsTx: {
       setting: { findMany: vi.fn(), upsert: vi.fn() },
@@ -40,6 +41,7 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import {
+  basculerFormateursDossierEnLigneAction,
   basculerFormateursEchangeOuvertAction,
   basculerFormateursGardeMissionAction,
   basculerFormateursInvitationAutoAction,
@@ -112,12 +114,17 @@ describe("préalables vérifiés côté serveur", () => {
     expect(r.ok).toBe(false);
   });
 
-  it("passage_paiement exige une date au 1er du mois", async () => {
+  it("passage_paiement exige une date au 1er du mois, et le canal de changement de compte", async () => {
     connecte("admin");
     const r = await basculerFormateursPassagePaiementAction(INITIAL, fd({ date: "2026-12-15" }));
     expect(r.ok).toBe(false);
-    const ok = await basculerFormateursPassagePaiementAction(INITIAL, fd({ date: "2026-12-01" }));
-    expect(ok.ok).toBe(true);
+    const refus = await basculerFormateursPassagePaiementAction(
+      INITIAL,
+      fd({ date: "2026-12-01" }),
+    );
+    expect(refus.ok).toBe(false);
+    if (!refus.ok) expect(refus.error).toMatch(/changement de compte/);
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
   });
 });
 
@@ -213,5 +220,59 @@ describe("interrupteurs `signature.*` (S6a) — même règle", () => {
     const r = await basculerSignatureAlertesHorsJetonAction(INITIAL, fd({ actif: "1" }));
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.error).toMatch(/n'a pas été enregistré/);
+  });
+});
+
+describe("lot F (M23) — couper une clé mère coupe ses filles allumées", () => {
+  it("couper dossier_en_ligne coupe relances_auto et mise_a_niveau, dans la transaction", async () => {
+    connecte("admin");
+    etat.lignes = [
+      ligne("dossier_en_ligne", { actif: true }),
+      ligne("relances_auto", { actif: true }),
+      ligne("pieces_cron", { actif: false }),
+      ligne("mise_a_niveau", { actif: true }),
+    ];
+    const r = await basculerFormateursDossierEnLigneAction(INITIAL, fd({ actif: "0" }));
+    expect(r.ok).toBe(true);
+    const cles = tx.setting.update.mock.calls.map(
+      (c) => (c[0] as { where: { key: string } }).where.key,
+    );
+    expect(cles.sort()).toEqual(["formateurs.mise_a_niveau", "formateurs.relances_auto"]);
+    expect(tx.setting.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ value: { actif: false } }) }),
+    );
+    // Une ligne de journal pour la mère, une par fille ; jamais de `targetId`.
+    expect(tx.activityLog.create).toHaveBeenCalledTimes(3);
+    for (const c of tx.activityLog.create.mock.calls) {
+      expect((c[0] as { data: object }).data).not.toHaveProperty("targetId");
+    }
+    expect(horsTx.setting.upsert).not.toHaveBeenCalled();
+  });
+
+  it("allumer ne coupe jamais rien", async () => {
+    connecte("admin");
+    etat.lignes = [
+      ligne("textes_valides", { actif: true }),
+      ligne("echange_ouvert", { actif: false }),
+    ];
+    await basculerFormateursEchangeOuvertAction(INITIAL, fd({ actif: "1" }));
+    expect(tx.setting.update).not.toHaveBeenCalled();
+  });
+
+  it("couper textes_valides atteint aussi le registre de signature", async () => {
+    connecte("super_admin");
+    etat.lignes = [
+      ligne("textes_valides", { actif: true }),
+      {
+        key: "signature.copie_partielle",
+        value: { actif: true },
+        updatedAt: new Date(),
+        updatedBy: null,
+      },
+    ];
+    await basculerFormateursTextesValidesAction(INITIAL, fd({ actif: "0" }));
+    expect(tx.setting.update).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { key: "signature.copie_partielle" } }),
+    );
   });
 });
