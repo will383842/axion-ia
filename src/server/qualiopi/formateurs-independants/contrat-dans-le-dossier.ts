@@ -9,8 +9,9 @@
  *      est créé par `preparerContratCadre` (parcours « dossier », sur cette même lecture).
  *      L'objection du contrat-cadre est relue sur le SIRET PORTÉ PAR LE CONTRAT, puis le
  *      code F17 part (`envoyerCodeSignature`) ;
- *   2. « Signer mon contrat » (`signerContratDuDossier`) : objection relue à la
- *      signature AVANT de consommer le code ; un lien est émis par le système
+ *      Un contrat REPRIS (déjà créé) fait relire le registre en direct sur son SIRET ;
+ *   2. « Signer mon contrat » (`signerContratDuDossier`) : registre relu EN DIRECT sur le
+ *      SIRET du contrat, puis objection, AVANT de consommer le code ; un lien est émis par le système
  *      (`emettreLienSignature`, jamais envoyé), le code est vérifié, et le moteur commun
  *      (`signerDocument`, partie `sous_traitant`) scelle la signature ;
  *   3. F10 (`accuse-dossier.ts`) part avec la copie de la signature en pièce jointe.
@@ -101,6 +102,10 @@ export interface FormateurDuDossier {
 export type ResultatContratDossier =
   { ok: true; documentId: string } | { ok: false; message: string };
 
+/** `reluEnDirect` : le registre vient d'être lu, dans cet appel, sur le SIRET du contrat. */
+type ContratPret =
+  { ok: true; documentId: string; reluEnDirect: boolean } | { ok: false; message: string };
+
 function versionDe(metadata: unknown): number {
   if (typeof metadata !== "object" || metadata === null) return 1;
   return versionGabaritInstantane((metadata as Record<string, unknown>)["renderData"]);
@@ -137,35 +142,16 @@ async function contratVivant(trainerId: string, version: number): Promise<Contra
   };
 }
 
-/** Le contrat à faire signer : repris s'il porte le SIRET du dossier, sinon (re)créé. */
-async function contratDuDossier(
-  d: FormateurDuDossier,
-  version: number,
-  maintenant: Date,
+/**
+ * 🔴 Lecture EN DIRECT du registre sur un SIRET : muet (panne, réponse absente) = refus,
+ * entreprise non active = refus. Jamais un contrôle récent en cache.
+ */
+async function relireEnDirect(
+  siret: string,
   lire: (siret: string) => Promise<ResultatRegistre>,
-): Promise<ResultatContratDossier> {
-  const siret = siretNormalise(d.siret);
-  if (!/^\d{14}$/.test(siret)) return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.siret };
-
-  const existant = await contratVivant(d.id, version);
-  if (existant) {
-    if (existant.signeParLeFormateur || siretDuContrat(existant.metadata) === siret) {
-      return { ok: true, documentId: existant.id };
-    }
-    // Le SIRET du dossier a changé depuis la création : le contrat non signé est
-    // ANNULÉ (jamais effacé), puis remplacé.
-    await prisma.documentGenere.updateMany({
-      where: {
-        id: existant.id,
-        annuleeAt: null,
-        statutSignature: { notIn: ["signee", "partielle"] },
-        signatures: { none: { revokedAt: null } },
-      },
-      data: { annuleeAt: maintenant, annuleeMotif: MOTIF_SIRET_CHANGE, annuleePar: "system" },
-    });
-  }
-
-  // 🔴 Le registre est lu EN DIRECT, sur ce SIRET, avant toute création.
+): Promise<
+  { ok: true; registre: ResultatRegistre & { ok: true } } | { ok: false; message: string }
+> {
   let registre: ResultatRegistre;
   try {
     registre = await lire(siret);
@@ -184,6 +170,52 @@ async function contratDuDossier(
   if (registre.entreprise.active !== true) {
     return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.inactive };
   }
+  return { ok: true, registre };
+}
+
+/** Relecture en direct sur le SIRET PORTÉ PAR LE CONTRAT (absent = refus). */
+async function relireSurLeContrat(
+  metadata: unknown,
+  lire: (siret: string) => Promise<ResultatRegistre>,
+): Promise<string | null> {
+  const siret = siretDuContrat(metadata);
+  if (siret === null) return MESSAGES_CONTRAT_DOSSIER.preparation;
+  const lu = await relireEnDirect(siret, lire);
+  return lu.ok ? null : lu.message;
+}
+
+/** Le contrat à faire signer : repris s'il porte le SIRET du dossier, sinon (re)créé. */
+async function contratDuDossier(
+  d: FormateurDuDossier,
+  version: number,
+  maintenant: Date,
+  lire: (siret: string) => Promise<ResultatRegistre>,
+): Promise<ContratPret> {
+  const siret = siretNormalise(d.siret);
+  if (!/^\d{14}$/.test(siret)) return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.siret };
+
+  const existant = await contratVivant(d.id, version);
+  if (existant) {
+    if (existant.signeParLeFormateur || siretDuContrat(existant.metadata) === siret) {
+      return { ok: true, documentId: existant.id, reluEnDirect: false };
+    }
+    // Le SIRET du dossier a changé depuis la création : le contrat non signé est
+    // ANNULÉ (jamais effacé), puis remplacé.
+    await prisma.documentGenere.updateMany({
+      where: {
+        id: existant.id,
+        annuleeAt: null,
+        statutSignature: { notIn: ["signee", "partielle"] },
+        signatures: { none: { revokedAt: null } },
+      },
+      data: { annuleeAt: maintenant, annuleeMotif: MOTIF_SIRET_CHANGE, annuleePar: "system" },
+    });
+  }
+
+  // 🔴 Le registre est lu EN DIRECT, sur ce SIRET, avant toute création.
+  const lu = await relireEnDirect(siret, lire);
+  if (!lu.ok) return lu;
+  const registre = lu.registre;
 
   // L'adresse du contrat : celle de l'établissement au registre, sans écraser une
   // adresse déjà portée par la fiche.
@@ -222,7 +254,7 @@ async function contratDuDossier(
     });
     return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.preparation };
   }
-  return { ok: true, documentId: r.documentId };
+  return { ok: true, documentId: r.documentId, reluEnDirect: true };
 }
 
 /** L'objection du contrat-cadre, relue sur la pièce telle qu'elle est en base. */
@@ -256,6 +288,16 @@ export async function demanderCodeDuDossier(
   if (mode.mode !== "a_signer") return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.ferme };
   const contrat = await contratDuDossier(d, mode.version, maintenant, lire);
   if (!contrat.ok) return contrat;
+  // 🔴 Contrat REPRIS (créé lors d'une demande précédente) : le registre est relu en
+  // direct, sur le SIRET qu'il porte, avant l'envoi du code — jamais un contrôle récent.
+  if (!contrat.reluEnDirect) {
+    const piece = await prisma.documentGenere.findUnique({
+      where: { id: contrat.documentId },
+      select: { metadata: true },
+    });
+    const muet = await relireSurLeContrat(piece?.metadata, lire);
+    if (muet !== null) return { ok: false, message: muet };
+  }
   // 🔴 Relu sur le SIRET porté par le contrat, AVANT l'envoi du code.
   const refus = await objection(contrat.documentId, maintenant);
   if (refus !== null) return { ok: false, message: refus };
@@ -282,6 +324,8 @@ export async function signerContratDuDossier(
   d: FormateurDuDossier,
   code: string,
   maintenant: Date,
+  lire: (siret: string) => Promise<ResultatRegistre> = (s) =>
+    lireEtablissementParSiret(s, { enrichi: true }),
 ): Promise<ResultatContratDossier> {
   const mode = await modeContratDossier();
   if (mode.mode !== "a_signer") return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.ferme };
@@ -289,7 +333,10 @@ export async function signerContratDuDossier(
   if (contrat === null) return { ok: false, message: MESSAGES_CONTRAT_DOSSIER.pasDeContrat };
   if (contrat.signeParLeFormateur) return { ok: true, documentId: contrat.id };
 
-  // 🔴 Relu À LA SIGNATURE, avant de consommer le code.
+  // 🔴 À LA SIGNATURE, avant de consommer le code : le registre est relu EN DIRECT sur
+  // le SIRET porté par le contrat (registre muet = refus), puis l'objection commune.
+  const muet = await relireSurLeContrat(contrat.metadata, lire);
+  if (muet !== null) return { ok: false, message: muet };
   const refus = await objection(contrat.id, maintenant);
   if (refus !== null) return { ok: false, message: refus };
 
