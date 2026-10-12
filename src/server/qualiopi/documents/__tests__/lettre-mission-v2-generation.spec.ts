@@ -259,6 +259,7 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
   const AUTRE_SESSION = "a5a5a5a5-0000-4000-8000-00000000000b";
   const AUTRE_FORMATEUR = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
   type M = ReturnType<typeof mission> & {
+    role?: string;
     sessionId: string;
     trainerId: string;
     solliciteAt: Date;
@@ -270,6 +271,7 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
     if (where.sessionId !== undefined && x.sessionId !== where.sessionId) return false;
     if (where.trainerId !== undefined && x.trainerId !== where.trainerId) return false;
     if (where.id !== undefined && x.id !== where.id) return false;
+    if (where.role !== undefined && x.role !== where.role) return false;
     const st = where.statut as { in?: string[] } | undefined;
     if (st?.in !== undefined && !st.in.includes(x.statut)) return false;
     return true;
@@ -290,6 +292,7 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
       {
         ...mission(),
         id: "mi-acceptee",
+        role: "principal",
         sessionId: SESSION_ID,
         trainerId: TRAINER_ID,
         solliciteAt: new Date("2026-10-01T08:00:00Z"),
@@ -335,6 +338,7 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
     base.push({
       ...mission(),
       id: "mi-refusee",
+      role: "principal",
       statut: "refusee",
       sessionId: SESSION_ID,
       trainerId: TRAINER_ID,
@@ -352,10 +356,18 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
     base.push({
       ...mission(),
       id: "mi-acceptee-2",
+      role: "principal",
       sessionId: SESSION_ID,
       trainerId: TRAINER_ID,
       solliciteAt: new Date("2026-10-05T08:00:00Z"),
     });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r.ok).toBe(false);
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("console, sans missionId : un accord de CO-FORMATEUR ne reçoit pas la lettre du principal", async () => {
+    base[0]!.role = "co_formateur";
     const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     expect(r.ok).toBe(false);
     expect(h.m.generate).not.toHaveBeenCalled();

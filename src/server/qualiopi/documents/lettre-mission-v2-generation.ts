@@ -108,7 +108,8 @@ export async function genererLettreMissionV2(input: {
         trainerId: input.trainerId,
         ...(input.missionId !== undefined
           ? { id: input.missionId }
-          : { statut: { in: [...STATUTS_ACCORD_DONNE] } }),
+          : // Le rôle de la lettre, comme le moteur : jamais un accord de co-formateur.
+            { role: "principal", statut: { in: [...STATUTS_ACCORD_DONNE] } }),
       },
       orderBy: { solliciteAt: "desc" },
       take: 2,
