@@ -227,41 +227,40 @@ export async function lireEtatMission(
     return null;
   }
   const s = m.session;
-  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] =
-    await Promise.all([
-      prisma.documentGenere.count({
-        where: {
-          sessionId: m.sessionId,
-          type: { in: [...PIECES_ENGAGEANTES] },
-          statutSignature: "signee",
-          annuleeAt: null,
-        },
-      }),
-      prisma.documentGenere.count({
-        where: {
-          sessionId: m.sessionId,
-          conditionSuspensiveOpco: true,
-          etatConditionSuspensive: "en_attente",
-          annuleeAt: null,
-        },
-      }),
-      controlerGardeMission(m.trainerId, maintenant),
-      lireContratCadreSigne(m.trainerId),
-      // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
-      // c'est SA lettre ; le moteur n'en émet pas d'autre.
-      m.lettreMission === null || m.lettreMission.annuleeAt !== null
-        ? prisma.documentGenere.findFirst({
-            where: {
-              type: "lettre_mission",
-              sessionId: m.sessionId,
-              trainerId: m.trainerId,
-              annuleeAt: null,
-              signatures: { some: { revokedAt: null, partie: "formateur" } },
-            },
-            select: { signatures: { where: { revokedAt: null }, select: { partie: true } } },
-          })
-        : Promise.resolve(null),
-    ]);
+  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] = await Promise.all([
+    prisma.documentGenere.count({
+      where: {
+        sessionId: m.sessionId,
+        type: { in: [...PIECES_ENGAGEANTES] },
+        statutSignature: "signee",
+        annuleeAt: null,
+      },
+    }),
+    prisma.documentGenere.count({
+      where: {
+        sessionId: m.sessionId,
+        conditionSuspensiveOpco: true,
+        etatConditionSuspensive: "en_attente",
+        annuleeAt: null,
+      },
+    }),
+    controlerGardeMission(m.trainerId, maintenant),
+    lireContratCadreSigne(m.trainerId),
+    // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
+    // c'est SA lettre ; le moteur n'en émet pas d'autre.
+    m.lettreMission === null || m.lettreMission.annuleeAt !== null
+      ? prisma.documentGenere.findFirst({
+          where: {
+            type: "lettre_mission",
+            sessionId: m.sessionId,
+            trainerId: m.trainerId,
+            annuleeAt: null,
+            signatures: { some: { revokedAt: null, partie: "formateur" } },
+          },
+          select: { signatures: { where: { revokedAt: null }, select: { partie: true } } },
+        })
+      : Promise.resolve(null),
+  ]);
   // Jamais le tarif de l'affectation (08 §2.8 : la source des salariés) : le
   // moteur n'émet que sur des conditions figées au choix (cf. `emettreLettre`).
   const tarifEffectif = m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
@@ -373,6 +372,10 @@ async function refuserLettre(m: MissionLue, motif: string): Promise<ResultatReev
 export const MOTIF_CONDITIONS_NON_FIGEES =
   "Honoraires ou régime de TVA non figés au choix : lettre à émettre depuis la console.";
 
+/** Motif : plusieurs missions avec accord pour le même couple session/formateur. */
+export const MOTIF_PLUSIEURS_ACCORDS =
+  "Plusieurs accords pour cette session et ce formateur : à régler depuis la console.";
+
 /** Un envoi qui n'est pas parti se dit : journal (codes) et alerte sans nom. */
 async function signalerEnvoi(
   m: MissionLue,
@@ -405,6 +408,19 @@ async function emettreLettre(
   if (m.tarifHtCents === null || m.regimeTvaFige === null) {
     return refuserLettre(m, MOTIF_CONDITIONS_NON_FIGEES);
   }
+  // EXACTITUDE — deux accords pour le même couple (données d'avant le moteur,
+  // ou course entre un renvoi et un « J'accepte ») : chaque lettre annulerait
+  // celle de l'autre mission, à chaque passage. Rien n'est émis ; Will tranche.
+  const autresAccords = await prisma.missionFormateur.count({
+    where: {
+      sessionId: m.sessionId,
+      trainerId: m.trainerId,
+      role: "principal",
+      statut: { in: [...STATUTS_ACCORD_DONNE] },
+      id: { not: m.id },
+    },
+  });
+  if (autresAccords > 0) return refuserLettre(m, MOTIF_PLUSIEURS_ACCORDS);
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
