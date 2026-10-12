@@ -77,6 +77,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: h.telegram }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: h.journaliser }));
 vi.mock("@/server/qualiopi/documents/lettre-mission-v2-generation", () => ({
+  MOTIF_CHANGEMENT_FORMATEUR: "Formateur remplacé sur cette session",
   genererLettreMissionV2: h.generer,
 }));
 vi.mock("../envois", () => ({ envoyer: h.envoyer }));

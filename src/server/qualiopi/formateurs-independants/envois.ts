@@ -160,10 +160,34 @@ export function apercu(
 }
 
 /** Le texte de ce gabarit peut-il partir ? Lecture en échec : non. */
-export async function texteValide(gabarit: GabaritFormateur): Promise<boolean> {
+export async function texteValide(gabarit: GabaritFormateur, variante?: string): Promise<boolean> {
   const etats = await lireEtatsInterrupteurs();
   if (!lireDrapeauEnvoi(etats, "textes_valides")) return false;
-  return estTexteValide(await lireTextesValides(), gabarit);
+  const registre = await lireTextesValides();
+  if (!estTexteValide(registre, gabarit)) return false;
+  return variante === undefined || estTexteValide(registre, gabarit, variante);
+}
+
+/**
+ * Variantes ajoutées APRÈS la validation possible du gabarit : elles se
+ * valident à part (`textes_valides.<gabarit>#<variante>`). Sans cette clé,
+ * rien ne part — jamais un texte neuf sous une validation ancienne.
+ * Clé : gabarit → (n° d'étape du payload → nom de la variante).
+ */
+const VARIANTES_VALIDEES_A_PART: Readonly<
+  Partial<Record<GabaritFormateur, Readonly<Record<number, string>>>>
+> = {
+  // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
+  "formateur-mission-retiree": { 2: "lettre-non-signee" },
+  "formateur-formation-annulee": { 2: "lettre-non-signee" },
+};
+
+function varianteAValider(gabarit: GabaritFormateur, payload: unknown): string | undefined {
+  const etape =
+    payload !== null && typeof payload === "object"
+      ? (payload as Record<string, unknown>).etape
+      : undefined;
+  return typeof etape === "number" ? VARIANTES_VALIDEES_A_PART[gabarit]?.[etape] : undefined;
 }
 
 /** La collaboration est-elle finie ? `null` : on ne sait pas (base injoignable). */
@@ -186,7 +210,9 @@ async function lienEspace(_e: EnvoiFormateur): Promise<string | null> {
 
 export async function envoyer(e: EnvoiFormateur): Promise<ResultatEnvoiFormateur> {
   try {
-    if (!(await texteValide(e.gabarit))) return "texte-non-valide";
+    if (!(await texteValide(e.gabarit, varianteAValider(e.gabarit, e.payload)))) {
+      return "texte-non-valide";
+    }
     if (valeursManquantes(e.gabarit, e.payload)) return "valeurs-manquantes";
     if (e.entityType === "Trainer" && !GABARITS_ARGENT_FORMATEUR.has(e.gabarit)) {
       const fin = await finDeCollaboration(e.entityId);

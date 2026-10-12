@@ -739,6 +739,24 @@ Comment lire chaque fiche :
 
 - **Bouton** : aucun
 
+### F30, variante « lettre non signée »
+
+- **Envoyé quand** : la lettre de mission avait été émise mais n'était pas encore signée. Aucune indemnité n'est annoncée. Variante neuve, à valider par Will.
+- **Objet** : Une mission ne vous est plus confiée
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > La mission [intitulé] du [date] ne vous est plus confiée.
+  >
+  > La raison : [motif].
+  >
+  > La lettre de mission, que vous n'aviez pas encore signée, est annulée.
+  >
+  > Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.
+
+- **Bouton** : aucun
+
 ## F31 — Formation annulée
 
 - **Gabarit** : `formateur-formation-annulee`
@@ -754,6 +772,20 @@ Comment lire chaque fiche :
   > La formation [intitulé] du [date] est annulée, et votre mission avec elle.
   >
   > Comme le prévoit votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.
+
+- **Bouton** : aucun
+
+### F31, variante « lettre non signée »
+
+- **Envoyé quand** : la lettre de mission avait été émise mais n'était pas encore signée. Aucune indemnité n'est annoncée. Variante neuve, à valider par Will.
+- **Objet** : La formation [intitulé] du [date] est annulée
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > La formation [intitulé] du [date] est annulée, et votre mission avec elle.
+  >
+  > La lettre de mission, que vous n'aviez pas encore signée, est annulée.
 
 - **Bouton** : aucun
 
@@ -812,6 +844,20 @@ Comment lire chaque fiche :
   > Aucune pénalité n'est due, et vous n'avez rien d'autre à faire.
   >
   > Merci aussi pour la personne que vous nous avez indiquée : nous étudions cette piste et nous vous répondons.
+
+- **Bouton** : aucun
+
+### F48, deux variantes
+
+Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur a indiqué une personne). Sans remplaçant, le dernier paragraphe n'est pas envoyé :
+
+- **Variante sans remplaçant** :
+
+  > Bonjour Prénom,
+  >
+  > C'est noté pour la mission [intitulé] du [date].
+  >
+  > Aucune pénalité n'est due, et vous n'avez rien d'autre à faire.
 
 - **Bouton** : aucun
 

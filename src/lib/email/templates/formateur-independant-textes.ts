@@ -754,6 +754,20 @@ export const TEXTES_FORMATEUR = {
         ],
         boutons: [],
       },
+      // Fin de mission (L11e) — lettre émise mais pas encore signée : aucune
+      // indemnité n'est annoncée. Variante neuve, à valider par Will.
+      {
+        etape: "lettre non signée",
+        objet: "Une mission ne vous est plus confiée",
+        objetPropose: "La mission [intitulé] ne vous est plus confiée",
+        paragraphes: [
+          "La mission [intitulé] du [date] ne vous est plus confiée.",
+          "La raison : [motif].",
+          "La lettre de mission, que vous n'aviez pas encore signée, est annulée.",
+          "Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.",
+        ],
+        boutons: [],
+      },
     ],
   },
   "formateur-formation-annulee": {
@@ -771,6 +785,18 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
           "Comme le prévoit votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
+        ],
+        boutons: [],
+      },
+      // Fin de mission (L11e) — lettre émise mais pas encore signée : aucune
+      // indemnité n'est annoncée. Variante neuve, à valider par Will.
+      {
+        etape: "lettre non signée",
+        objet: "La formation [intitulé] du [date] est annulée",
+        objetPropose: null,
+        paragraphes: [
+          "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
+          "La lettre de mission, que vous n'aviez pas encore signée, est annulée.",
         ],
         boutons: [],
       },

@@ -36,6 +36,7 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn() }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/lettre-mission-v2-generation", () => ({
+  MOTIF_CHANGEMENT_FORMATEUR: "Formateur remplacé sur cette session",
   genererLettreMissionV2: vi.fn(),
 }));
 

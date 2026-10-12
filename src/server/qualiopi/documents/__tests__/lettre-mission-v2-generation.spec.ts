@@ -392,3 +392,22 @@ describe("rattachement de la lettre — appel console compris (relecture #1502, 
     expect(annulations).not.toContainEqual({ in: ["doc-ancien"] });
   });
 });
+
+describe("lettres d'écartés gardées par le moteur (relecture #1507)", () => {
+  it("le générateur n'annule jamais une lettre que l'appelant garde", async () => {
+    h.m.vivantes.mockResolvedValue([]);
+    const r = await genererLettreMissionV2({
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+      lettresAGarder: ["doc-ecarte-garde"],
+    });
+    expect(r).toMatchObject({ ok: true });
+    const ecartes = h.m.docUpdateMany.mock.calls
+      .map((c) => (c[0] as { where: Record<string, unknown> }).where)
+      .find((w) => "trainerId" in w);
+    expect(ecartes).toMatchObject({
+      trainerId: { not: TRAINER_ID },
+      id: { notIn: ["doc-ecarte-garde"] },
+    });
+  });
+});

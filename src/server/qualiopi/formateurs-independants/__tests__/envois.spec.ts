@@ -200,3 +200,29 @@ describe("lexique des textes formateurs", () => {
     for (const v of TEXTES_FORMATEUR[g].variantes) expect(v.objet.length).toBeLessThanOrEqual(45);
   });
 });
+
+describe("L11e — une variante neuve se valide à part", () => {
+  const f30 = (etape: number) =>
+    envoi({
+      gabarit: "formateur-mission-retiree",
+      payload: {
+        prenom: "Claire",
+        etape,
+        valeurs: { intitulé: "x", date: "x", motif: "x" },
+      },
+    });
+
+  it("F30 validé, mais pas sa variante « lettre non signée » : elle ne part pas", async () => {
+    reglages({ interrupteur: true, valides: ["formateur-mission-retiree"] });
+    expect(await f30(2)).toBe("texte-non-valide");
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("variante validée à part : elle part", async () => {
+    reglages({
+      interrupteur: true,
+      valides: ["formateur-mission-retiree", "formateur-mission-retiree#lettre-non-signee"],
+    });
+    expect(await f30(2)).toBe("envoye");
+  });
+});
