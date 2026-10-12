@@ -34,6 +34,10 @@ on:
           # Enregistrement des visios (PR 5) : lu par le site ET le worker.
           - "ENREGISTREMENT_VISIO_PILOTE"
           - "ENREGISTREMENT_VISIO_OUVERT"
+          # Mention « certifié Qualiopi » : éteinte tant que le certificat n'est pas
+          # délivré (audit initial du 16/10/2026), à rallumer ensuite. Lue par le site
+          # (pages, pied de page, données structurées) ET le worker (pied des e-mails).
+          - "QUALIOPI_CERTIFICATION_OBTENUE"
       valeur:
         description: "Valeur"
         required: true
