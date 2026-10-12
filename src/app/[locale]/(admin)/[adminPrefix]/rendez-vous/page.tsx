@@ -33,6 +33,14 @@ import { enregistrementPropose } from "@/components/admin/contacts/enregistremen
 import { lireDrapeauEnregistrement as drapeauEnregistrement } from "@/server/visio/drapeau";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
+import { IssueEchangeFormateurForm } from "@/components/admin/contacts/IssueEchangeFormateurForm";
+import {
+  RattacherEchangeFormateurForm,
+  type PropositionRattachement,
+} from "@/components/admin/contacts/RattacherEchangeFormateurForm";
+import { formulaireDuPoint } from "@/features/admin-rendezvous/point-formateur";
+import { lirePropositionsRattachement } from "@/features/admin-rendezvous/rattachement-formateur-queries";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import {
   LIBELLE_ISSUE_APPORTEUR,
   issueDepuisSuivi,
@@ -411,11 +419,20 @@ function CartePoint({
   r,
   dossierVisible,
   peutRetenir,
+  peutDecider = false,
+  suiviFormateur = false,
+  propositions = [],
 }: {
   r: RdvAFaireLePoint;
   dossierVisible: boolean;
   peutRetenir: boolean;
+  /** Lot B (M17) : « Non retenu » et « Absent » d'un échange formateur. */
+  peutDecider?: boolean;
+  /** Interrupteur `formateurs.suivi_echange`. Coupé : comportement d'avant. */
+  suiviFormateur?: boolean;
+  propositions?: ReadonlyArray<PropositionRattachement>;
 }) {
+  const formulaire = formulaireDuPoint(r, suiviFormateur);
   const quand = `${formatDateFrShort(r.dayKey)} à ${timeInParis(r.debut)}`;
   // La page publique de réservation d'appel, et PAS le lien de report Calendly
   // de l'invité : ce dernier vise un rendez-vous déjà passé, que Calendly peut
@@ -457,8 +474,16 @@ function CartePoint({
           {quand} · <PastilleTypeRdv type={r.typeRendezVous} /> · {r.titre}
         </p>
       </div>
-      {r.typeRendezVous === "apporteur" ? (
+      {formulaire === "apporteur" ? (
         <IssueEchangeApporteurForm calendlyEventId={r.id} peutRetenir={peutRetenir} />
+      ) : formulaire === "formateur" ? (
+        <IssueEchangeFormateurForm
+          calendlyEventId={r.id}
+          peutRetenir={peutRetenir}
+          peutDecider={peutDecider}
+        />
+      ) : formulaire === "rattacher_formateur" ? (
+        <RattacherEchangeFormateurForm calendlyEventId={r.id} propositions={propositions} />
       ) : (
         <>
           {/* Chantier visio (PR 4) : le point complet — rangement, projet,
@@ -651,6 +676,7 @@ export default async function RendezVousPage({
       ) : vue === "point" ? (
         <VuePoint
           peutRetenir={peutRetenir}
+          peutDecider={peutEngager(acces.role, "habiliter_formateur")}
           aFaire={aFaire}
           maintenant={maintenant}
           dossierVisible={voitDossier}
@@ -705,15 +731,26 @@ async function VuePoint({
   dossierVisible,
   erreur,
   peutRetenir,
+  peutDecider = false,
 }: {
   aFaire: RdvAFaireLePoint[];
   maintenant: Date;
   dossierVisible: boolean;
   peutRetenir: boolean;
+  peutDecider?: boolean;
   /** Refus scellé d'« Après l'appel » (`actions-rencontres.ts`, N1). */
   erreur: string | null;
 }): Promise<React.ReactElement> {
   const bilan = await bilanDuMois(maintenant);
+  // Lot B (M17) : l'interrupteur et les propositions ne sont lus que s'il y a un
+  // échange formateur sur la tuile.
+  const formateurs = aFaire.filter((r) => r.echangeFormateur);
+  const suiviFormateur = formateurs.length > 0 && (await lireEtatsEntree()).suivi_echange === true;
+  const propositions = suiviFormateur
+    ? await lirePropositionsRattachement(formateurs.filter((r) => !r.rattache)).catch(
+        () => new Map<string, PropositionRattachement[]>(),
+      )
+    : new Map<string, PropositionRattachement[]>();
   return (
     <>
       {erreur !== null ? (
@@ -749,6 +786,9 @@ async function VuePoint({
               r={r}
               dossierVisible={dossierVisible}
               peutRetenir={peutRetenir}
+              peutDecider={peutDecider}
+              suiviFormateur={suiviFormateur}
+              propositions={propositions.get(r.id) ?? []}
             />
           ))}
         </ul>

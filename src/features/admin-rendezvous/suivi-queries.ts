@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
+import { estEchangeFormateur } from "@/server/calendly/echange-formateur";
 import { passeLeFiltre } from "./type-rdv";
 import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 import { finEffective, momentVisio } from "./visio";
@@ -33,6 +34,10 @@ export interface RdvAFaireLePoint {
    * sinon `null` (2026-09-28). La carte passe alors au rouge.
    */
   retardJours: number | null;
+  /** Lot B (M17) : un échange formateur, conclu par ses propres issues. */
+  echangeFormateur: boolean;
+  /** Rattaché à une candidature (exigé par l'issue formateur). */
+  rattache: boolean;
 }
 
 /**
@@ -71,6 +76,7 @@ export async function listRendezVousAFaireLePoint(
       inviteeEmail: true,
       rawPayload: true,
       typeRendezVous: true,
+      linkedJobApplicationId: true,
     },
   });
 
@@ -92,6 +98,8 @@ export async function listRendezVousAFaireLePoint(
         entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
         typeRendezVous,
         retardJours: joursDeRetard(finEffective(e.startTime, e.endTime), maintenant),
+        echangeFormateur: estEchangeFormateur(e),
+        rattache: e.linkedJobApplicationId != null,
       },
     ];
   });

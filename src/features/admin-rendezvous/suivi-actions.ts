@@ -21,6 +21,9 @@ import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { enregistrerSuivi } from "@/features/dossier-client/suivi";
+import { estEchangeFormateur } from "@/server/calendly/echange-formateur";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { MESSAGE_ECHANGE_FORMATEUR } from "./point-formateur";
 import { lireFormulaireSuivi, normaliserSuivi, suiviSchema } from "./suivi";
 
 export type EtatSuivi =
@@ -48,9 +51,14 @@ export async function enregistrerSuiviAction(
   try {
     const existe = await prisma.calendlyEvent.findUnique({
       where: { id: calendlyEventId },
-      select: { id: true },
+      select: { id: true, eventTypeName: true, typeRendezVous: true },
     });
     if (!existe) return { etat: "erreur", message: "Rendez-vous introuvable." };
+    // Lot B (M17) : suivi des échanges formateurs allumé, un échange formateur ne se
+    // conclut jamais ici (sinon il sortirait de la tuile sans issue, sans e-mail ni fiche).
+    if (estEchangeFormateur(existe) && (await lireEtatsEntree()).suivi_echange === true) {
+      return { etat: "erreur", message: MESSAGE_ECHANGE_FORMATEUR };
+    }
 
     await enregistrerSuivi(prisma, {
       calendlyEventId,
