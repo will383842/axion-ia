@@ -5677,6 +5677,14 @@ model TrainerStatement {
   /// « facture conforme ».
   contesteeAt            DateTime? @map("contestee_at")
   contestationMotif      String?   @map("contestation_motif") @db.Text
+  /// Clôture du désaccord (lot D2, M10). `contesteeAt` n'est jamais effacé : la
+  /// clôture dit qui (`ParId`), quand, l'issue (`acceptee` : avoir et réémission ;
+  /// `non_retenue` : motif écrit, F59) et pourquoi. Seule `non_retenue` débloque
+  /// le paiement de CE relevé.
+  contestationCloseAt    DateTime? @map("contestation_close_at")
+  contestationCloseParId String?   @map("contestation_close_par_id") @db.Uuid
+  contestationCloseIssue String?   @map("contestation_close_issue") @db.VarChar(20)
+  contestationCloseMotif String?   @map("contestation_close_motif") @db.Text
 
   // ── Paiement ──
   payeAt            DateTime? @map("paye_at")
@@ -5723,6 +5731,9 @@ model TrainerStatement {
   surConstatMotif         String?            @map("sur_constat_motif") @db.Text
   /// Trop-perçu sans relevé suivant : demande de remboursement envoyée (F54).
   remboursementDemandeAt  DateTime?          @map("remboursement_demande_at")
+  /// Anomalies constatées par le passage (lot D2, M22) : `[{ code, detail, constateLe }]`,
+  /// codes et chiffres seulement. Affichées sur l'écran du relevé ; rien ne s'y valide seul.
+  anomaliesMission        Json?              @map("anomalies_mission")
   /// Lignes d'ajustement qui imputent CET avoir sur un relevé suivant.
   imputations             TrainerFeeLine[]   @relation("TrainerFeeLineImputation")
 

@@ -65,3 +65,28 @@ export async function etatsVirementsMission(
   }
   return etats;
 }
+
+/**
+ * Parmi des identifiants reçus d'un formulaire, ceux qui sont des relevés de
+ * MISSION. Un relevé mensuel garde son « Virement fait » sur son propre écran :
+ * la vue ne le paie jamais, même par un POST forgé (relecture lot D, défaut 1).
+ */
+export async function relevesDeMissionParmi(ids: ReadonlyArray<string>): Promise<Set<string>> {
+  if (ids.length === 0) return new Set();
+  const lus = await prisma.trainerStatement.findMany({
+    where: { id: { in: [...ids] }, origine: "passage_mission" },
+    select: { id: true },
+  });
+  return new Set(lus.map((r) => r.id));
+}
+
+/**
+ * Le formateur a-t-il au moins un virement de mission DÛ : facture reçue, pas
+ * encore payé ? Sans cela, « Copier l'IBAN » n'a rien à servir (défaut 2).
+ */
+export async function aUnVirementMissionDu(trainerId: string): Promise<boolean> {
+  const n = await prisma.trainerStatement.count({
+    where: { trainerId, origine: "passage_mission", statut: "facture_recue", payeAt: null },
+  });
+  return n > 0;
+}

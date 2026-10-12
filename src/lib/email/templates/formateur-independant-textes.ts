@@ -979,7 +979,8 @@ export const TEXTES_FORMATEUR = {
   "formateur-facture-rectifiee": {
     code: "F39",
     titre: "Facture rectifiée",
-    quand: "vous acceptez un désaccord (avoir, puis nouvelle facture).",
+    quand:
+      "la nouvelle facture d'un désaccord accepté est émise (avoir, relevé recalculé validé, puis nouvelle facture). Une fois par avoir.",
     famille: "B",
     interne: false,
     sollicitation: false,
@@ -988,9 +989,12 @@ export const TEXTES_FORMATEUR = {
         etape: null,
         objet: "Facture n° [numéro] corrigée",
         objetPropose: null,
+        // Trois numéros DISTINCTS (lot D2) : [numéro] est la facture d'origine.
         paragraphes: [
-          "Suite à votre remarque, la facture n° [numéro] est corrigée.",
-          "Elle est annulée par l'avoir n° [numéro], et la facture rectifiée n° [numéro] est jointe.",
+          "Suite à votre remarque, nous avons corrigé la facture n° [numéro].",
+          "Elle est annulée par l'avoir n° [numéro de l'avoir].",
+          "La nouvelle facture porte le n° [numéro de la nouvelle facture]. L'avoir et la nouvelle facture sont joints à ce message.",
+          "Le virement reste prévu au plus tard le [date].",
         ],
         boutons: [],
       },
@@ -1010,7 +1014,7 @@ export const TEXTES_FORMATEUR = {
         objet: "Une régularisation sur vos honoraires",
         objetPropose: null,
         paragraphes: [
-          "Une correction de la facture n° [numéro] (avoir n° [numéro]) montre que nous vous avons versé [montant] € de trop.",
+          "Une correction de la facture n° [numéro] (avoir n° [numéro de l'avoir]) montre que nous vous avons versé [montant] € de trop.",
           "Ce montant n'a pas pu être déduit d'une prochaine facture.",
           "Pourriez-vous nous le rembourser par virement, sur le compte ci-dessous ? Pour en parler, répondez simplement à ce message.",
           "[coordonnées bancaires d'Axion]",

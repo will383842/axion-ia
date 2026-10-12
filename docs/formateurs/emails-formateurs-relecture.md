@@ -983,6 +983,27 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 
 - **Bouton** : « Signer le relevé »
 
+## F36 — Facture établie à votre nom (variante « mission », lot D2)
+
+- **Gabarit** : `autofacture-transmission` (existant), avec la valeur `missionLabel`.
+- **Envoyé quand** : la facture d'une mission (paiement par mission) est émise. Le texte du relevé mensuel ne change pas.
+- ⚠️ Cet e-mail ouvre le délai légal de contestation : il ne passe pas par l'interrupteur `textes_valides` (comme aujourd'hui pour le relevé mensuel). Il ne part que pour un relevé de mission, donc jamais tant que `passage_paiement` n'a pas de date.
+
+- **Objet** : Votre facture d'honoraires [numéro] (inchangé)
+- **Corps** :
+
+  > Bonjour Prénom Nom,
+  >
+  > Conformément au mandat de facturation que vous nous avez donné, nous avons établi en votre nom et pour votre compte la facture d'honoraires [numéro] pour la mission « [intitulé] » du [date] au [date], d'un montant de [montant TTC]. Elle est jointe au format PDF.
+  >
+  > Si quelque chose vous semble inexact, vous avez huit jours pour nous le signaler, soit jusqu'au [date] inclus : depuis votre espace (« Signaler un désaccord »), ou en répondant à cet e-mail. Passé ce délai, la facture est réputée acceptée.
+  >
+  > Le virement est prévu au plus tard le [date], 30 jours après la dernière journée.
+  >
+  > Vous restez le fournisseur de cette prestation et, le cas échéant, seul redevable de la TVA mentionnée. Vous pouvez révoquer ce mandat à tout moment par écrit : vous établirez alors vous-même vos factures.
+
+- **Bouton** : aucun (PDF joint)
+
 ## F37 — Virement effectué
 
 - **Gabarit** : `formateur-virement-fait`
@@ -1024,18 +1045,23 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 ## F39 — Facture rectifiée
 
 - **Gabarit** : `formateur-facture-rectifiee`
-- **Envoyé quand** : vous acceptez un désaccord (avoir, puis nouvelle facture).
+- **Envoyé quand** : la nouvelle facture d'un désaccord accepté est émise (avoir, relevé recalculé validé, puis nouvelle facture). Une fois par avoir.
+- **Réécrit (lot D2)** : les trois numéros sont distincts. [numéro] = la facture d'origine ; [numéro de l'avoir] ; [numéro de la nouvelle facture]. L'avoir et la nouvelle facture sont joints.
 
 - **Objet** : Facture n° [numéro] corrigée
 - **Titre** : Facture n° [numéro] corrigée
-- **Aperçu** : Suite à votre remarque, la facture n° [numéro] est corrigée.
+- **Aperçu** : Suite à votre remarque, nous avons corrigé la facture n° [numéro].
 - **Corps** :
 
   > Bonjour Prénom,
   >
-  > Suite à votre remarque, la facture n° [numéro] est corrigée.
+  > Suite à votre remarque, nous avons corrigé la facture n° [numéro].
   >
-  > Elle est annulée par l'avoir n° [numéro], et la facture rectifiée n° [numéro] est jointe.
+  > Elle est annulée par l'avoir n° [numéro de l'avoir].
+  >
+  > La nouvelle facture porte le n° [numéro de la nouvelle facture]. L'avoir et la nouvelle facture sont joints à ce message.
+  >
+  > Le virement reste prévu au plus tard le [date].
 
 - **Bouton** : aucun
 
@@ -1043,15 +1069,16 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 
 - **Gabarit** : `formateur-trop-percu`
 - **Envoyé quand** : une correction a fait apparaître un trop-versé et le formateur n'a pas de relevé suivant dans les 60 jours (une fois par avoir).
+- **Corrigé (lot D2)** : [numéro] = la facture corrigée, [numéro de l'avoir] = l'avoir (deux numéros distincts) ; [coordonnées bancaires d'Axion] = titulaire, IBAN et BIC d'Axion, ceux de ses factures.
 
 - **Objet** : Une régularisation sur vos honoraires
 - **Titre** : Une régularisation sur vos honoraires
-- **Aperçu** : Une correction de la facture n° [numéro] (avoir n° [numéro]) montre que nous vous avons versé [montant] € de trop.
+- **Aperçu** : Une correction de la facture n° [numéro] (avoir n° [numéro de l'avoir]) montre que nous vous avons versé [montant] € de trop.
 - **Corps** :
 
   > Bonjour Prénom,
   >
-  > Une correction de la facture n° [numéro] (avoir n° [numéro]) montre que nous vous avons versé [montant] € de trop.
+  > Une correction de la facture n° [numéro] (avoir n° [numéro de l'avoir]) montre que nous vous avons versé [montant] € de trop.
   >
   > Ce montant n'a pas pu être déduit d'une prochaine facture.
   >

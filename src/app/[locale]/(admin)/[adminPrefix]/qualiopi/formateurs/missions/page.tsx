@@ -24,6 +24,11 @@ import {
 import type { QuiAgit } from "@/server/qualiopi/formateurs-independants/etape-mission";
 import { peutEngager } from "@/server/auth/habilitations";
 import { ecrireIndemniteAnnulationFormAction } from "@/server/actions/qualiopi/indemnite-annulation";
+import { instantParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
+import { ContresignerLotButton } from "@/components/admin/qualiopi/ContresignerLotButton";
+import { estContresignable } from "@/server/qualiopi/documents/signature/contresignables";
+import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
+import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import {
   apercuDecisionIndemnite,
   lireMissionsAIndemniser,
@@ -36,7 +41,16 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ qui?: string; tout?: string; ok?: string; erreur?: string }>;
+  searchParams: Promise<{
+    qui?: string;
+    tout?: string;
+    ok?: string;
+    erreur?: string;
+    /** Aperçu de l'indemnité demandé pour CETTE mission, à l'instant saisi. */
+    apercu?: string;
+    annuleeA?: string;
+    parAxion?: string;
+  }>;
 }
 
 const ONGLETS: ReadonlyArray<{ cle: QuiAgit; libelle: string }> = [
@@ -92,17 +106,37 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
   const aIndemniser = peutEngager(acces.role, "remunerer_formateur")
     ? await lireMissionsAIndemniser()
     : [];
+  // L'aperçu se calcule à l'instant SAISI quand l'administrateur l'a demandé
+  // (défaut 3 de la relecture lot D), sinon à l'instant proposé.
+  const saisies = aIndemniser.map((m) => saisieDemandee(sp, m));
   const apercus = await Promise.all(
-    aIndemniser.map((m) =>
-      m.annuleeAProposee === null
+    saisies.map((v, i) =>
+      v === null
         ? null
         : apercuDecisionIndemnite({
-            missionId: m.missionId,
-            annuleeA: m.annuleeAProposee,
-            parAxion: true,
+            missionId: aIndemniser[i]!.missionId,
+            annuleeA: v.annuleeA,
+            parAxion: v.parAxion,
           }).catch(() => null),
     ),
   );
+
+  // Lot D2 (M8, S-UX-14) — lettres de mission et contrats-cadres que seul
+  // l'organisme doit encore signer : contresignature groupée, une preuve par pièce
+  // (`contresignerParLotAction`, mêmes gardes que la page « À traiter »).
+  const aContresigner = peutSignerPourOrganisme(acces.role)
+    ? (await listerPiecesEnAttente().catch(() => []))
+        .filter(
+          (x) =>
+            (x.type === "lettre_mission" || x.type === "contrat_sous_traitance") &&
+            x.statutSignature === "partielle" &&
+            estContresignable(
+              x.type,
+              x.signatures.map((sig) => sig.partie),
+            ),
+        )
+        .map((x) => x.id)
+    : [];
 
   return (
     <div className="mx-auto max-w-5xl space-y-[var(--space-admin-5)] p-[var(--space-admin-6)]">
@@ -119,6 +153,14 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
           {sp.erreur}
         </div>
       )}
+      {aContresigner.length > 0 && (
+        <section className="space-y-[var(--space-admin-2)]" aria-labelledby="contresigner">
+          <h2 id="contresigner" className="text-[length:var(--text-admin-lg)] font-semibold">
+            Lettres et contrats à contresigner ({aContresigner.length})
+          </h2>
+          <ContresignerLotButton ids={aContresigner} />
+        </section>
+      )}
       {aIndemniser.length > 0 && (
         <section className="space-y-[var(--space-admin-3)]" aria-labelledby="indemnites">
           <h2 id="indemnites" className="text-[length:var(--text-admin-lg)] font-semibold">
@@ -128,6 +170,7 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
             <DecisionIndemnite
               key={m.missionId}
               mission={m}
+              saisie={saisies[i] ?? null}
               apercu={apercus[i] ?? null}
               retour={`${base}/qualiopi/formateurs/missions`}
             />
@@ -208,31 +251,78 @@ function saisieParis(d: Date): string {
   return SAISIE_PARIS.format(d).replace(" ", "T");
 }
 
+interface SaisieIndemnite {
+  readonly brut: string;
+  readonly annuleeA: Date;
+  readonly parAxion: boolean;
+}
+
+/** Les valeurs dont l'aperçu est affiché : celles demandées, sinon la proposition. */
+function saisieDemandee(
+  sp: { apercu?: string; annuleeA?: string; parAxion?: string },
+  m: MissionAIndemniser,
+): SaisieIndemnite | null {
+  if (sp.apercu === m.missionId) {
+    const lu = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})$/.exec(sp.annuleeA ?? "");
+    if (lu !== null) {
+      try {
+        return {
+          brut: lu[0],
+          annuleeA: instantParis(lu[1]!, lu[2]!),
+          parAxion: sp.parAxion === "oui",
+        };
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+  if (m.annuleeAProposee === null) return null;
+  return {
+    brut: saisieParis(m.annuleeAProposee),
+    annuleeA: m.annuleeAProposee,
+    parAxion: true,
+  };
+}
+
 function DecisionIndemnite({
   mission: m,
+  saisie,
   apercu,
   retour,
 }: {
   mission: MissionAIndemniser;
+  saisie: SaisieIndemnite | null;
   apercu: ApercuIndemnite | null;
   retour: string;
 }) {
   const champ = `annulee-${m.missionId}`;
+  const htVu = apercu === null ? null : apercu.indemnite.due ? apercu.totaux.totalHtCents : 0;
   return (
     <form
+      id={`indemnite-${m.missionId}`}
       action={ecrireIndemniteAnnulationFormAction}
       className="space-y-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
     >
       <input type="hidden" name="retour" value={retour} />
       <input type="hidden" name="missionId" value={m.missionId} />
+      {saisie !== null && htVu !== null && (
+        <>
+          {/* Ce que l'administrateur voit : l'écriture refuse s'il a changé depuis. */}
+          <input type="hidden" name="vuAnnuleeA" value={saisie.brut} />
+          <input type="hidden" name="vuParAxion" value={saisie.parAxion ? "oui" : "non"} />
+          <input type="hidden" name="montantVuHtCents" value={htVu} />
+        </>
+      )}
       <p className="text-[length:var(--text-admin-sm)] font-semibold">
         {m.intitule} · {m.numero} · {m.formateur}
       </p>
-      {apercu !== null && (
+      {apercu !== null && saisie !== null && (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {`Aperçu pour une annulation le ${saisie.brut.replace("T", " à ")}${saisie.parAxion ? "" : ", hors du fait d'Axion"} : `}
           {apercu.indemnite.due
-            ? `Aperçu à l'instant proposé : ${apercu.demiJourneesAnnulees} demi-journée(s) annulée(s), ${montantEnTexte(apercu.totaux.totalHtCents)} € HT + ${montantEnTexte(apercu.totaux.tvaCents)} € de TVA = ${montantEnTexte(apercu.totaux.totalTtcCents)} € TTC, à régler avant le ${new Date(`${apercu.indemnite.echeance}T12:00:00Z`).toLocaleDateString("fr-FR")}.`
-            : "Aperçu à l'instant proposé : aucune indemnité due (annulation à plus de 72 heures ou aucune demi-journée annulée)."}
+            ? `${apercu.demiJourneesAnnulees} demi-journée(s) annulée(s), ${montantEnTexte(apercu.totaux.totalHtCents)} € HT + ${montantEnTexte(apercu.totaux.tvaCents)} € de TVA = ${montantEnTexte(apercu.totaux.totalTtcCents)} € TTC, à régler avant le ${new Date(`${apercu.indemnite.echeance}T12:00:00Z`).toLocaleDateString("fr-FR")}.`
+            : "aucune indemnité due (annulation à plus de 72 heures, pas du fait d'Axion, ou aucune demi-journée annulée)."}
         </p>
       )}
       <label htmlFor={champ} className="admin-label">
@@ -243,16 +333,31 @@ function DecisionIndemnite({
         type="datetime-local"
         name="annuleeA"
         required
-        defaultValue={m.annuleeAProposee === null ? undefined : saisieParis(m.annuleeAProposee)}
+        defaultValue={saisie?.brut}
         className="admin-input"
       />
       <label className="flex items-center gap-[var(--space-admin-2)]">
-        <input type="checkbox" name="parAxion" value="oui" defaultChecked />
+        <input
+          type="checkbox"
+          name="parAxion"
+          value="oui"
+          defaultChecked={saisie?.parAxion ?? true}
+        />
         L&apos;annulation vient d&apos;Axion (un désistement du formateur n&apos;ouvre aucun droit)
       </label>
+      <button
+        type="submit"
+        name="etape"
+        value="apercu"
+        formNoValidate
+        className="admin-button-secondary min-h-[40px]"
+      >
+        Voir l&apos;aperçu à cet instant
+      </button>
       <label className="flex items-center gap-[var(--space-admin-2)]">
         <input type="checkbox" name="confirmer" value="oui" required />
-        Je décide d&apos;écrire l&apos;indemnité (50 % des demi-journées annulées, hors forfait)
+        Je décide d&apos;écrire l&apos;indemnité de l&apos;aperçu ci-dessus (50 % des demi-journées
+        annulées, hors forfait)
       </label>
       <button type="submit" className="admin-button min-h-[40px]">
         Écrire l&apos;indemnité d&apos;annulation

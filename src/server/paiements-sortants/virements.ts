@@ -147,7 +147,11 @@ export async function lireVirementsSortants(
       where: {
         statut: { in: [...STATUTS_RELEVE_A_VIRER] },
         payeAt: null,
-        contesteeAt: null,
+        // Contesté : hors de la vue, sauf désaccord clos « non retenu » (lot D2,
+        // même règle que la transition : `desaccordBloquant`). Valeur écrite en
+        // clair : ce module n'importe pas la zone Qualiopi (le test de la vue
+        // vérifie qu'elle reste égale à `ISSUE_DESACCORD_NON_RETENU`).
+        OR: [{ contesteeAt: null }, { contestationCloseIssue: "non_retenue" }],
         totalTtcCents: { gt: 0 },
       },
       select: {

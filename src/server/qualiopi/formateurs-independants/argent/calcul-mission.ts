@@ -209,11 +209,25 @@ export function releveSansEcart(
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
 ): boolean {
   if (prevu.demiJournees <= 0) return false;
+  return montantPrevuDuMoisHtCents(prevu, c, p) === calcule.totalHtCents;
+}
+
+/**
+ * Le HT de la part PRÉVUE d'un mois (animation + déplacement), aux conditions
+ * figées : la référence de `releveSansEcart`, et le chiffre affiché par
+ * l'anomalie « écart avec le prévu » (lot D2, M22). Une seule formule.
+ */
+export function montantPrevuDuMoisHtCents(
+  prevu: Pick<MoisAnime, "demiJournees" | "journees">,
+  c: ConditionsMission,
+  p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
+): number {
+  if (prevu.demiJournees <= 0) return 0;
   const forfait = c.forfaitDeplacementParJourHtCents ?? 0;
-  const attendu =
+  return (
     montantAnimationCents(prevu.demiJournees, c.tarifJourneeHtCents) +
-    (forfait > 0 ? montantDeplacementCents(prevu.journees, forfait, p) : 0);
-  return attendu === calcule.totalHtCents;
+    (forfait > 0 ? montantDeplacementCents(prevu.journees, forfait, p) : 0)
+  );
 }
 
 /* ─── Mission payable (grain session × mois) ─────────────────────────────── */

@@ -44,6 +44,17 @@ import {
   libellePrestation,
 } from "../_labels";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
+import {
+  accepterDesaccordFormAction,
+  refuserDesaccordFormAction,
+} from "@/server/actions/qualiopi/desaccord-mission";
+import { LIBELLE_ANOMALIE_MISSION } from "@/server/qualiopi/formateurs-independants/paiement/anomalies-mission";
+import {
+  apercuDesaccordAccepte,
+  LONGUEUR_MAX_MOTIF_NON_RETENU,
+  LONGUEUR_MIN_MOTIF_NON_RETENU,
+} from "@/server/qualiopi/formateurs-independants/paiement/desaccord-mission";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -81,6 +92,22 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
     demandePaiement && releve.origine === "passage_mission"
       ? await ibanAffichePourVirement(prisma, releve.trainerId).catch(() => null)
       : null;
+  // Lot D2 (M10) : un désaccord ouvert sur une facture de MISSION se tranche ici.
+  const desaccordOuvert =
+    releve.origine === "passage_mission" &&
+    releve.avoirDeId === null &&
+    releve.autofacture.contesteeAt !== null &&
+    releve.desaccord.closeAt === null &&
+    releve.statut !== "annule" &&
+    releve.statut !== "paye";
+  const apercuAccepte = desaccordOuvert
+    ? await apercuDesaccordAccepte(releve.id).catch(() => null)
+    : null;
+  const f59 = TEXTES_FORMATEUR["formateur-desaccord-non-retenu"].variantes[0].paragraphes.map((p) =>
+    p
+      .replace("[date]", releve.autofacture.contesteeAt?.toLocaleDateString("fr-FR") ?? "[date]")
+      .replace("[numéro]", releve.numeroFacture ?? "[numéro]"),
+  );
   const ecartFacture =
     releve.montantFactureTtcCents !== null &&
     releve.montantFactureTtcCents !== releve.totalTtcCents;
@@ -303,7 +330,19 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
               </p>
             )}
 
-            {releve.autofacture.contesteeAt !== null ? (
+            {releve.autofacture.contesteeAt !== null &&
+            releve.desaccord.closeIssue === "non_retenue" ? (
+              <div
+                className="admin-alert admin-alert-success mt-[var(--space-admin-3)]"
+                role="status"
+              >
+                <strong>
+                  Désaccord du {releve.autofacture.contesteeAt.toLocaleDateString("fr-FR")} non
+                  retenu le {releve.desaccord.closeAt?.toLocaleDateString("fr-FR")}
+                </strong>{" "}
+                — le paiement est débloqué. Motif envoyé : « {releve.desaccord.closeMotif} »
+              </div>
+            ) : releve.autofacture.contesteeAt !== null ? (
               <div className="admin-alert admin-alert-error mt-[var(--space-admin-3)]" role="alert">
                 <strong>
                   Contestée le {releve.autofacture.contesteeAt.toLocaleDateString("fr-FR")}
@@ -339,6 +378,169 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
           </>
         )}
       </AdminCard>
+
+      {/* ── Lot D2 (M22) : anomalies constatées par le passage ────────────── */}
+      {releve.anomaliesMission.length > 0 && (
+        <AdminCard>
+          <h2 className="admin-h2">Anomalies du passage</h2>
+          <ul className="flex flex-col gap-[var(--space-admin-3)]">
+            {releve.anomaliesMission.map((a) => (
+              <li key={`${a.code}-${a.detail}`}>
+                <strong>{LIBELLE_ANOMALIE_MISSION[a.code].pourquoi}</strong>{" "}
+                <span className="admin-muted">
+                  ({a.detail} · constaté le{" "}
+                  {new Date(`${a.constateLe}T12:00:00Z`).toLocaleDateString("fr-FR")})
+                </span>
+                <br />
+                {LIBELLE_ANOMALIE_MISSION[a.code].quoiFaire}
+              </li>
+            ))}
+          </ul>
+          <p className="admin-muted mt-[var(--space-admin-2)]">
+            Rien n&apos;est validé seul : chaque relevé de mission attend votre validation.
+          </p>
+        </AdminCard>
+      )}
+
+      {/* ── Lot D2 (M10) : avoir, réémission, désaccord ──────────────────── */}
+      {(releve.avoirs.length > 0 ||
+        releve.remplacements.length > 0 ||
+        releve.remplaceId !== null ||
+        releve.avoirDeId !== null) && (
+        <AdminCard>
+          <h2 className="admin-h2">Correction de la facture</h2>
+          <ul className="flex flex-col gap-[var(--space-admin-2)]">
+            {releve.avoirDeId !== null && (
+              <li>
+                Ce relevé est un avoir.{" "}
+                <Link className="admin-link" href={`${listeUrl}/${releve.avoirDeId}`}>
+                  Voir la facture annulée
+                </Link>
+              </li>
+            )}
+            {releve.remplaceId !== null && (
+              <li>
+                Ce relevé remplace une facture annulée par avoir.{" "}
+                <Link className="admin-link" href={`${listeUrl}/${releve.remplaceId}`}>
+                  Voir la facture d&apos;origine
+                </Link>
+              </li>
+            )}
+            {releve.avoirs.map((a) => (
+              <li key={a.id}>
+                Avoir {a.numeroFacture ?? "(numéro à venir avec la nouvelle facture)"}.{" "}
+                <Link className="admin-link" href={`${listeUrl}/${a.id}`}>
+                  Voir l&apos;avoir
+                </Link>
+              </li>
+            ))}
+            {releve.remplacements.map((n) => (
+              <li key={n.id}>
+                Relevé réémis {n.numeroFacture ?? `(${LIBELLE_STATUT_RELEVE[n.statut]})`}.{" "}
+                <Link className="admin-link" href={`${listeUrl}/${n.id}`}>
+                  Voir le relevé réémis
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </AdminCard>
+      )}
+
+      {desaccordOuvert && (
+        <AdminCard>
+          <h2 className="admin-h2">Désaccord du formateur : à trancher</h2>
+          <p>
+            Reçu le {releve.autofacture.contesteeAt?.toLocaleDateString("fr-FR")} : «{" "}
+            {releve.autofacture.contestationMotif ?? "non précisé"} ». Le paiement de ce relevé est
+            bloqué.
+          </p>
+
+          <h3 className="admin-h3 mt-[var(--space-admin-4)]">Désaccord accepté</h3>
+          <p className="admin-muted">
+            Corrigez d&apos;abord la donnée d&apos;origine (journées, forfait) dans les écrans de la
+            mission. L&apos;outil recalcule alors le relevé : aucun montant ne se saisit ici.
+          </p>
+          {apercuAccepte === null ? (
+            <p className="admin-muted">Aperçu indisponible : rechargez la page.</p>
+          ) : !apercuAccepte.ok ? (
+            <p className="admin-alert admin-alert-warning" role="status">
+              {apercuAccepte.motif === "rien_n_a_change"
+                ? "Le recalcul donne exactement la facture contestée : corrigez d'abord la donnée d'origine."
+                : apercuAccepte.motif === "mois_non_payable"
+                  ? "Le recalcul ne trouve pas un mois complet (feuilles ou conditions manquantes)."
+                  : apercuAccepte.motif === "lignes_non_recalculables"
+                    ? "Ce relevé porte une indemnité ou un ajustement : correction à la main."
+                    : `Recalcul impossible (${apercuAccepte.motif}).`}
+            </p>
+          ) : (
+            <form
+              action={accepterDesaccordFormAction}
+              className="flex flex-col gap-[var(--space-admin-2)]"
+            >
+              <input type="hidden" name="statementId" value={releve.id} />
+              <input type="hidden" name="retour" value={retour} />
+              <input
+                type="hidden"
+                name="htVuCents"
+                value={apercuAccepte.nouveau.releve.totalHtCents}
+              />
+              <p>
+                Facture {apercuAccepte.ancien.numero} : {euros(apercuAccepte.ancien.totalHtCents)}{" "}
+                HT + {euros(apercuAccepte.ancien.tvaCents)} TVA ={" "}
+                {euros(apercuAccepte.ancien.totalTtcCents)} TTC, annulée par un avoir total.
+              </p>
+              <p>
+                Relevé recalculé : {euros(apercuAccepte.nouveau.releve.totalHtCents)} HT +{" "}
+                {euros(apercuAccepte.nouveau.releve.tvaCents)} TVA ={" "}
+                <strong>{euros(apercuAccepte.nouveau.releve.totalTtcCents)} TTC</strong>, réémis « à
+                valider », même échéance que la facture d&apos;origine.
+              </p>
+              <label className="flex items-center gap-[var(--space-admin-2)]">
+                <input type="checkbox" name="confirmer" value="oui" required />
+                La donnée d&apos;origine est corrigée : j&apos;émets l&apos;avoir et je réémets ce
+                relevé.
+              </label>
+              <button type="submit" className="admin-button self-start">
+                Désaccord accepté : avoir et réémission
+              </button>
+            </form>
+          )}
+
+          <h3 className="admin-h3 mt-[var(--space-admin-4)]">Désaccord non retenu</h3>
+          <p className="admin-muted">Le formateur recevra ce message (F59) :</p>
+          <blockquote className="admin-muted border-l-2 pl-[var(--space-admin-3)]">
+            {f59.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </blockquote>
+          <form
+            action={refuserDesaccordFormAction}
+            className="flex flex-col gap-[var(--space-admin-2)]"
+          >
+            <input type="hidden" name="statementId" value={releve.id} />
+            <input type="hidden" name="retour" value={retour} />
+            <label className="admin-label" htmlFor="motif-non-retenu">
+              Votre motif (il remplace « [motif écrit par vous] »)
+            </label>
+            <textarea
+              id="motif-non-retenu"
+              name="motif"
+              rows={3}
+              required
+              minLength={LONGUEUR_MIN_MOTIF_NON_RETENU}
+              maxLength={LONGUEUR_MAX_MOTIF_NON_RETENU}
+              className="admin-input"
+            />
+            <label className="flex items-center gap-[var(--space-admin-2)]">
+              <input type="checkbox" name="confirmer" value="oui" required />
+              Je ne retiens pas ce désaccord : F59 part et le paiement est débloqué.
+            </label>
+            <button type="submit" className="admin-button-secondary self-start">
+              Désaccord non retenu
+            </button>
+          </form>
+        </AdminCard>
+      )}
 
       {/* ── Transitions ───────────────────────────────────────────────────── */}
       <AdminCard>

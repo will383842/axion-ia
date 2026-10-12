@@ -317,6 +317,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // formateur hors de l'espace formateur : la garde serait verte et
   // l'architecture fausse.
   "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // Lot D2 (M10, 2026-10-12) : « Signaler un désaccord » sur une facture de
+  // MISSION, formulaire de la page ci-dessus. L'action n'importe que
+  // `signalerDesaccord`, qui revérifie côté serveur que le relevé appartient au
+  // formateur de la SESSION (le cookie, jamais le formulaire).
+  "src/server/actions/formateur/desaccord.actions.ts",
   // Lots L11b-ux et L11h (2026-10-11) : la proposition chiffrée en six
   // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
   // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le

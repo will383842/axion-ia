@@ -272,6 +272,11 @@ describe("ASSEMBLAGE S3 — délais de la transaction de transition", () => {
     await transitionStatementAction({ id: ID, to: "paye", moyenPaiement: "virement" });
 
     const where = tx.trainerStatement.updateMany.mock.calls[0]?.[0]?.where;
-    expect(where).toMatchObject({ id: ID, statut: "facture_recue", contesteeAt: null });
+    // Lot D2 (M10) : ou un désaccord clos « non retenu » (seule sortie tracée).
+    expect(where).toMatchObject({
+      id: ID,
+      statut: "facture_recue",
+      OR: [{ contesteeAt: null }, { contestationCloseIssue: "non_retenue" }],
+    });
   });
 });

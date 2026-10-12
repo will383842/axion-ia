@@ -77,6 +77,16 @@ import {
   basculerFormateursTextesValidesAction,
 } from "@/server/actions/qualiopi/formateurs-interrupteurs";
 
+import { prisma } from "@/lib/prisma";
+import { peutEngager } from "@/server/auth/habilitations";
+import { inscrireRattrapageFormAction } from "@/server/actions/qualiopi/rattrapage-bascule";
+import {
+  debutFenetreRattrapage,
+  lireApercuRattrapage,
+  type ApercuRattrapage,
+  type ClientRattrapage,
+} from "@/server/qualiopi/formateurs-independants/paiement/rattrapage-bascule";
+
 import { BoutonInterrupteur } from "./BoutonInterrupteur";
 
 export const dynamic = "force-dynamic";
@@ -156,10 +166,45 @@ const DATE = new Intl.DateTimeFormat("fr-FR", {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  /** Lot D2 (M22) : aperçu du rattrapage avant la bascule (`AAAA-MM-01`). */
+  searchParams: Promise<{ rattrapage?: string; ok?: string; erreur?: string }>;
 }
 
-export default async function InterrupteursFormateursPage({ params }: PageProps) {
+/** Lot D2 (M22) — l'aperçu nominatif du rattrapage, lecture seule. */
+async function apercuRattrapagePourPage(date: string | undefined): Promise<{
+  date: string;
+  apercu: ApercuRattrapage;
+  noms: Map<string, string>;
+  sessions: Map<string, string>;
+} | null> {
+  if (date === undefined || !/^\d{4}-\d{2}-01$/.test(date)) return null;
+  const apercu = await lireApercuRattrapage(
+    prisma as unknown as ClientRattrapage,
+    date,
+    debutFenetreRattrapage(date),
+  ).catch(() => null);
+  if (apercu === null) return null;
+  const [formateurs, sessions] = await Promise.all([
+    prisma.trainer.findMany({
+      where: { id: { in: [...new Set(apercu.couples.map((c) => c.trainerId))] } },
+      select: { id: true, prenom: true, nom: true },
+    }),
+    prisma.trainingSession.findMany({
+      where: { id: { in: [...new Set(apercu.couples.map((c) => c.sessionId))] } },
+      select: { id: true, numero: true, titreSession: true },
+    }),
+  ]);
+  return {
+    date,
+    apercu,
+    noms: new Map(formateurs.map((f) => [f.id, `${f.prenom} ${f.nom}`.trim()])),
+    sessions: new Map(sessions.map((x) => [x.id, `${x.numero} · ${x.titreSession}`])),
+  };
+}
+
+export default async function InterrupteursFormateursPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const sp = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -172,6 +217,9 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
   ) as EtatsInterrupteursSignature;
   const lignesEntree = await lireInterrupteursEntree();
   const direction = acces.role === "super_admin" || acces.role === "admin";
+  const remunere = peutEngager(acces.role, "remunerer_formateur");
+  const rattrapage = remunere ? await apercuRattrapagePourPage(sp.rattrapage) : null;
+  const retour = `/${locale}/${adminPrefix}/qualiopi/formateurs/interrupteurs`;
 
   return (
     <AdminPageShell>
@@ -381,6 +429,100 @@ export default async function InterrupteursFormateursPage({ params }: PageProps)
           </tbody>
         </table>
       </AdminCard>
+      {remunere && (
+        <AdminCard>
+          <h2 id="rattrapage">Avant la bascule : rattrapage du relevé mensuel</h2>
+          <p className="admin-meta-small">
+            Avant de donner une date au « Passage au paiement par mission », chaque session
+            d&apos;un indépendant commencée avant cette date reste au relevé mensuel. L&apos;aperçu
+            ne change rien ; l&apos;inscription ajoute seulement ce qui manque.
+          </p>
+          {sp.ok !== undefined && (
+            <div className="admin-alert admin-alert-success" role="status">
+              {sp.ok}
+            </div>
+          )}
+          {sp.erreur !== undefined && (
+            <div className="admin-alert admin-alert-error" role="alert">
+              {sp.erreur}
+            </div>
+          )}
+          <form method="get" action={retour} className="flex flex-wrap items-end gap-2">
+            <label className="admin-label" htmlFor="rattrapage-date">
+              Date de bascule prévue (un 1er du mois)
+            </label>
+            <input
+              id="rattrapage-date"
+              name="rattrapage"
+              type="date"
+              defaultValue={rattrapage?.date}
+              className="admin-input"
+              required
+            />
+            <button type="submit" className="admin-button-secondary">
+              Voir l&apos;aperçu
+            </button>
+          </form>
+          {sp.rattrapage !== undefined && rattrapage === null && (
+            <p className="admin-meta-small">
+              Aperçu indisponible : la date doit être un 1er du mois.
+            </p>
+          )}
+          {rattrapage !== null && (
+            <>
+              <p>
+                {rattrapage.apercu.couples.length} couple(s) avant le {rattrapage.date} ·{" "}
+                <strong>{rattrapage.apercu.aRevendiquer} à inscrire</strong> ·{" "}
+                {rattrapage.apercu.conflits.length} déjà revendiqué(s) par mission (à trancher).
+              </p>
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Formateur</th>
+                    <th>Session</th>
+                    <th>Première journée</th>
+                    <th>Aujourd&apos;hui</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rattrapage.apercu.couples.map((c) => (
+                    <tr key={`${c.trainerId}-${c.sessionId}`}>
+                      <td>{rattrapage.noms.get(c.trainerId) ?? "—"}</td>
+                      <td>{rattrapage.sessions.get(c.sessionId) ?? "—"}</td>
+                      <td>{c.premiereJournee}</td>
+                      <td>
+                        {c.regimeActuel === null
+                          ? "à inscrire"
+                          : c.regimeActuel === "par_mission"
+                            ? "par mission : à trancher"
+                            : "relevé mensuel"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {rattrapage.apercu.aRevendiquer > 0 && (
+                <form action={inscrireRattrapageFormAction} className="mt-2 flex flex-col gap-2">
+                  <input type="hidden" name="retour" value={retour} />
+                  <input type="hidden" name="dateBascule" value={rattrapage.date} />
+                  <input
+                    type="hidden"
+                    name="aRevendiquerVu"
+                    value={rattrapage.apercu.aRevendiquer}
+                  />
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" name="confirmer" value="oui" required />
+                    J&apos;inscris ces {rattrapage.apercu.aRevendiquer} couple(s) au relevé mensuel.
+                  </label>
+                  <button type="submit" className="admin-button self-start">
+                    Inscrire au relevé mensuel
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+        </AdminCard>
+      )}
     </AdminPageShell>
   );
 }

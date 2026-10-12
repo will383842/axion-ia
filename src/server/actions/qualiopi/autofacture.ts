@@ -50,6 +50,7 @@ import { requireHabilitation, logQualiopiActivity } from "@/server/actions/quali
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
 import {
   emettreAutofacture,
+  libelleMissionTransmission,
   lireReleveAutofacture,
   transmettreAutofacture,
 } from "@/server/qualiopi/remuneration/autofacture-emission";
@@ -134,7 +135,14 @@ export async function transmettreAutofactureAction(
       periodeYear: releve.periodeYear,
       periodeMonth: releve.periodeMonth,
       totalTtcCents: releve.totalTtcCents,
-      echeance: releve.dateFacture !== null ? calculerEcheanceHonoraires(releve.dateFacture) : null,
+      // Paiement par mission : l'échéance est FIXE (dernière journée + 30 jours).
+      echeance:
+        releve.origine === "passage_mission" && releve.echeanceAt !== null
+          ? releve.echeanceAt
+          : releve.dateFacture !== null
+            ? calculerEcheanceHonoraires(releve.dateFacture)
+            : null,
+      missionLabel: libelleMissionTransmission(releve),
     },
     "reprise",
   );

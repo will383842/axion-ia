@@ -191,3 +191,47 @@ describe("M6 — contrat-cadre signé et SIREN actif, contrôlés côté serveur
     expect(contexte).not.toHaveBeenCalled();
   });
 });
+
+describe("Lot D2 (M10) — le désaccord bloque le paiement de CE relevé, jusqu'à « non retenu »", () => {
+  const payer = () =>
+    transitionStatementAction({
+      id: ID,
+      to: "paye",
+      moyenPaiement: "virement",
+      ibanEmpreinteAffichee: E,
+    });
+
+  it("désaccord ouvert : refus, rien n'est écrit", async () => {
+    mockStatementFindUnique.mockResolvedValue(
+      releve({ contesteeAt: new Date("2032-01-02T10:00:00Z"), contestationMotif: "x" }),
+    );
+    const r = await payer();
+    expect(r).toEqual({ error: expect.stringMatching(/CONTESTÉE/) });
+    expect(tx.trainerStatement.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("désaccord clos « accepté » (pièce annulée par avoir) : toujours refusé", async () => {
+    mockStatementFindUnique.mockResolvedValue(
+      releve({
+        contesteeAt: new Date("2032-01-02T10:00:00Z"),
+        contestationCloseIssue: "acceptee",
+      }),
+    );
+    expect(await payer()).toEqual({ error: expect.stringMatching(/CONTESTÉE/) });
+    expect(tx.trainerStatement.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("désaccord clos « non retenu » : le paiement passe, sous la même écriture conditionnelle", async () => {
+    mockStatementFindUnique.mockResolvedValue(
+      releve({
+        contesteeAt: new Date("2032-01-02T10:00:00Z"),
+        contestationCloseIssue: "non_retenue",
+      }),
+    );
+    const r = await payer();
+    expect(r).not.toHaveProperty("error");
+    expect(tx.trainerStatement.updateMany.mock.calls[0]![0].where).toMatchObject({
+      OR: [{ contesteeAt: null }, { contestationCloseIssue: "non_retenue" }],
+    });
+  });
+});

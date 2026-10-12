@@ -27,10 +27,15 @@ export interface DecisionIndemnite {
   readonly missionId: string;
   readonly annuleeA: Date;
   readonly parAxion: boolean;
+  /**
+   * Le HT que l'administrateur a vu à l'aperçu, à CET instant et avec CETTE case.
+   * Différent du HT recalculé au clic : rien n'est écrit (« aperçu périmé »).
+   */
+  readonly montantVuHtCents?: number;
 }
 
 export type IssueDecisionIndemnite =
-  | { readonly issue: "refusee" | "non_due" }
+  | { readonly issue: "refusee" | "non_due" | "apercu_perime" }
   | {
       readonly issue: IssueIndemnite;
       readonly montantHtCents: number;
@@ -117,6 +122,10 @@ export async function ecrireIndemniteDecidee(
   const lu = apercuDe(m, d);
   if (lu === null) return { issue: "refusee" };
   const { apercu, regimeTva } = lu;
+  const htRecalcule = apercu.indemnite.due ? apercu.totaux.totalHtCents : 0;
+  if (d.montantVuHtCents !== undefined && d.montantVuHtCents !== htRecalcule) {
+    return { issue: "apercu_perime" };
+  }
   if (!apercu.indemnite.due || apercu.indemnite.montantHtCents <= 0) return { issue: "non_due" };
   const [annee, mois] = apercu.indemnite.jourAnnulation.split("-").map(Number) as [number, number];
   const issue: IssueIndemnite = await prisma.$transaction(async (tx) => {

@@ -35,6 +35,7 @@ import {
 import {
   calculerReleveDuMois,
   moisPayable,
+  montantPrevuDuMoisHtCents,
   releveSansEcart,
   type ConditionsMission,
   type RaisonNonPayable,
@@ -75,6 +76,8 @@ export interface MoisAEcrire {
   readonly tarifJourneeHtCents: number;
   /** Décision 66 : sans écart avec la part prévue du mois. Informatif tant qu'elle est ouverte. */
   readonly sansEcart: boolean;
+  /** Lot D2 (M22) : le HT de la part prévue du mois, pour l'anomalie « écart ». */
+  readonly prevuHtCents?: number;
 }
 
 export type MotifAnomaliePassage =
@@ -191,6 +194,7 @@ export function planifierPassage(
         regimeTva: conditions.regimeTva,
         tarifJourneeHtCents: conditions.tarifJourneeHtCents,
         sansEcart: releveSansEcart(releve, prevuDuMois, conditions, p),
+        prevuHtCents: montantPrevuDuMoisHtCents(prevuDuMois, conditions, p),
       });
     }
   }

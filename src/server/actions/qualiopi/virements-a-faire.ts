@@ -28,7 +28,11 @@ import {
   envoyerVirementEnAttente,
   envoyerVirementsFaits,
 } from "@/server/qualiopi/formateurs-independants/paiement/virement-fait-envoi";
-import { etatsVirementsMission } from "@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture";
+import {
+  aUnVirementMissionDu,
+  etatsVirementsMission,
+  relevesDeMissionParmi,
+} from "@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const EMPREINTE = /^[0-9a-f]{64}$/;
@@ -59,6 +63,8 @@ export async function revelerIbanVirementAction(
   if (!(await allumee())) return { error: COUPE };
   if (typeof trainerId !== "string" || !UUID.test(trainerId))
     return { error: "Formateur inconnu." };
+  if (!(await aUnVirementMissionDu(trainerId).catch(() => false)))
+    return { error: "Aucun virement de mission à faire pour ce formateur." };
   const lu = await ibanEnClairPourVirement(prisma, trainerId).catch(() => null);
   if (lu === null) return { error: "Aucun IBAN lisible pour ce formateur." };
   await logQualiopiActivity({
@@ -95,7 +101,13 @@ export async function virementsFaitsFormAction(formData: FormData): Promise<void
 
   const payes: string[] = [];
   const refus: string[] = [];
+  // Seuls les relevés de MISSION se paient ici : un mensuel reste sur son écran.
+  const deMission = await relevesDeMissionParmi(ids);
   for (const id of ids) {
+    if (!deMission.has(id)) {
+      refus.push(`${champ(formData, `reference_${id}`) ?? "relevé"} : pas un relevé de mission`);
+      continue;
+    }
     const empreinte = champ(formData, `empreinte_${id}`);
     const r = await transitionStatementAction({
       id,

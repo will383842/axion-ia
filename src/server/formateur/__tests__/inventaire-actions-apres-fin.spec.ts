@@ -201,6 +201,7 @@ const A = {
   lettre: "@/server/actions/qualiopi/lettre-mission-signature",
   contrat: "@/server/actions/qualiopi/contrat-travail-signature",
   dossier: "@/app/[locale]/espace-formateur/dossier/actions",
+  desaccord: "@/server/actions/formateur/desaccord.actions",
 } as const;
 
 const formateur = (
@@ -369,6 +370,13 @@ const INVENTAIRE: Record<string, Ligne> = {
     A.dossier,
     "demanderChangementAdresseAction",
     fd({ adresse: "1 rue de la Paix, 75002 Paris" }),
+  ),
+
+  // ── Ma rémunération : signaler un désaccord sur une facture d'honoraires ──
+  [`${A.desaccord}#signalerDesaccordFormAction`]: formateur(
+    A.desaccord,
+    "signalerDesaccordFormAction",
+    fd({ statementId: DOC, texte: "Le montant ne correspond pas." }),
   ),
 
   // ── Routes : kit imprimé, PDF de la lettre de mission et du contrat à signer ──

@@ -27,6 +27,8 @@ const INVENTAIRE = [
   "src/app/api/formateur/contrat-travail/[id]/route.ts",
   "src/app/api/formateur/lettre-mission/[id]/route.ts",
   "src/server/actions/formateur/coaching.actions.ts",
+  // Lot D2 (M10) — « Signaler un désaccord » : session du cookie, propriété du relevé revérifiée.
+  "src/server/actions/formateur/desaccord.actions.ts",
   // Lot L11h — « Je ne peux plus assurer cette mission » (appartenance revérifiée).
   "src/server/actions/qualiopi/choix-formateur.ts",
   "src/server/actions/qualiopi/contrat-travail-signature.ts",

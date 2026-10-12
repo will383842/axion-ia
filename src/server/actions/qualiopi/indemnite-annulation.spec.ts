@@ -53,6 +53,10 @@ const ok = {
   annuleeA: "2026-10-10T09:00",
   parAxion: "oui",
   confirmer: "oui",
+  // Ce que l'administrateur a vu à l'aperçu (défaut 3 de la relecture lot D).
+  vuAnnuleeA: "2026-10-10T09:00",
+  vuParAxion: "oui",
+  montantVuHtCents: "45000",
 };
 
 describe("ecrireIndemniteAnnulationFormAction", () => {
@@ -63,6 +67,7 @@ describe("ecrireIndemniteAnnulationFormAction", () => {
       // Heure d'été : 09 h 00 à Paris = 07 h 00 UTC.
       annuleeA: new Date("2026-10-10T07:00:00Z"),
       parAxion: true,
+      montantVuHtCents: 45_000,
     });
     expect(log.mock.calls[0]![0]).toMatchObject({
       targetType: "MissionFormateur",
@@ -70,6 +75,8 @@ describe("ecrireIndemniteAnnulationFormAction", () => {
       changes: { issue: "ecrite", montantHtCents: 45_000, parAxion: true },
     });
     expect(u).toMatch(/^\/fr\/adm\/qualiopi\/formateurs\/missions\?ok=.*450,00/);
+    // Défaut 4 : le relevé fait foi (TVA recalculée sur l'ensemble du relevé).
+    expect(u).toMatch(/relevé fait foi/);
   });
 
   it("sans confirmation, interrupteur coupé, date future ou mission forgée : rien n'est écrit", async () => {
@@ -81,9 +88,46 @@ describe("ecrireIndemniteAnnulationFormAction", () => {
     expect(ecrire).not.toHaveBeenCalled();
   });
 
+  it("« Voir l'aperçu » : rien n'est écrit, retour sur l'aperçu à l'instant saisi", async () => {
+    const u = await url(
+      ecrireIndemniteAnnulationFormAction(
+        fd({ ...ok, etape: "apercu", confirmer: "", annuleeA: "2026-10-09T15:30", parAxion: "" }),
+      ),
+    );
+    expect(ecrire).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
+    expect(u).toBe(`${RETOUR}?apercu=${M}&annuleeA=2026-10-09T15:30&parAxion=non#indemnite-${M}`);
+  });
+
+  it("instant ou case modifiés après l'aperçu : rien n'est écrit, nouvel aperçu", async () => {
+    let u = await url(
+      ecrireIndemniteAnnulationFormAction(fd({ ...ok, annuleeA: "2026-10-09T15:30" })),
+    );
+    expect(u).toContain(`apercu=${M}&annuleeA=2026-10-09T15:30&parAxion=oui`);
+    u = await url(ecrireIndemniteAnnulationFormAction(fd({ ...ok, parAxion: "" })));
+    expect(u).toContain("parAxion=non");
+    expect(ecrire).not.toHaveBeenCalled();
+  });
+
+  it("aucun montant vu : rien n'est écrit", async () => {
+    await url(ecrireIndemniteAnnulationFormAction(fd({ ...ok, montantVuHtCents: "" })));
+    expect(ecrire).not.toHaveBeenCalled();
+  });
+
+  it("le montant a changé depuis l'aperçu : rien n'est écrit, nouvel aperçu", async () => {
+    ecrire.mockResolvedValue({ issue: "apercu_perime" });
+    const u = await url(ecrireIndemniteAnnulationFormAction(fd(ok)));
+    expect(u).toContain(`apercu=${M}`);
+    expect(u).toMatch(/erreur=/);
+  });
+
   it("case « par Axion » décochée : transmis tel quel (rien ne sera dû)", async () => {
     ecrire.mockResolvedValue({ issue: "non_due" });
-    const u = await url(ecrireIndemniteAnnulationFormAction(fd({ ...ok, parAxion: "" })));
+    const u = await url(
+      ecrireIndemniteAnnulationFormAction(
+        fd({ ...ok, parAxion: "", vuParAxion: "non", montantVuHtCents: "0" }),
+      ),
+    );
     expect(ecrire.mock.calls[0]![0].parAxion).toBe(false);
     expect(u).toMatch(/erreur=/);
   });
