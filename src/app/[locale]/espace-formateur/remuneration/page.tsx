@@ -42,7 +42,7 @@
 import type { Metadata } from "next";
 import { Euro, FileText } from "lucide-react";
 
-import { requireFormateur } from "@/server/formateur/guard";
+import { requireFormateurLecture } from "@/server/formateur/guard";
 import { listRelevesDuFormateur } from "@/server/qualiopi/remuneration/queries";
 import { lireRemunerationDuFormateur } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { CoquilleFormateur } from "../_coquille";
@@ -74,7 +74,8 @@ const euros = (cents: number): string =>
 const jour = (d: Date): string => d.toLocaleDateString("fr-FR");
 
 export default async function RemunerationFormateurPage() {
-  const session = await requireFormateur();
+  // Lot E (M14) — reste ouverte en lecture seule après une fin de collaboration.
+  const session = await requireFormateurLecture();
   const [releves, moi] = await Promise.all([
     listRelevesDuFormateur(session.trainerId),
     lireRemunerationDuFormateur(session.trainerId),

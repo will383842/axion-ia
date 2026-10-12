@@ -27,7 +27,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
-import { getFormateurSession } from "@/server/formateur/guard";
+import { getFormateurSessionLecture } from "@/server/formateur/guard";
 import { documentPdfKey, existsInR2, getSignedUrlR2, isR2Configured } from "@/lib/r2-storage";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 
@@ -55,7 +55,9 @@ export async function GET(
 ): Promise<NextResponse> {
   const { id } = await params;
 
-  const session = await getFormateurSession();
+  // Lot E (M14) — lecture seule après une fin de collaboration : ses pièces restent
+  // téléchargeables (honoraires). La porte reste celle de la session de l'espace.
+  const session = await getFormateurSessionLecture();
   if (session === null) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }

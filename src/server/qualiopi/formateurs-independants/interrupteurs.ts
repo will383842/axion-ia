@@ -470,6 +470,15 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.fin_collaboration",
   },
+  // Lot E (M12) — demande de changement de compte bancaire ou d'adresse depuis l'espace,
+  // validée en console après 48 h. Coupé : ni formulaire, ni écran, comme avant.
+  changement_coordonnees: {
+    ...envoi(
+      "Changement de compte bancaire et d'adresse",
+      "Le formateur indépendant demande depuis son espace à changer d'IBAN ou d'adresse ; l'ancien compte reste utilisé jusqu'à la validation en console, au plus tôt 48 heures après la demande (alerte à chaque demande).",
+    ),
+    cle: "formateurs.changement_coordonnees",
+  },
   // Lots L11b et L11b-ux — choisir le formateur en cartes « 1er · 2e · 3e choix »
   // (conditions financières figées au choix) et la page de proposition de
   // l'espace. Coupé : la liste déroulante de la fiche session et l'espace
@@ -576,6 +585,7 @@ export const PREALABLES_SIGNATURE: Readonly<
   presentation_payee: [{ sorte: "date_passage_paiement" }],
   das2_commun: [],
   fin_collaboration: [],
+  changement_coordonnees: [],
   // Les honoraires figés au choix ne sont payés que par le paiement par mission :
   // sans date de passage, le relevé mensuel paierait le tarif de la fiche.
   choix_cartes: [{ sorte: "date_passage_paiement" }],

@@ -188,6 +188,15 @@ const PAYLOADS: Record<NotificationCategory, Record<string, unknown>> = {
   },
   CANDIDAT_SELF_ERASED: { offerTitle: "Vidéaste", erasedAt: "2026-10-11T08:00:00Z" },
   TRAINER_DOSSIER_RECU: { trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13", registre: "vert" },
+  TRAINER_CHANGEMENT_DEMANDE: {
+    trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13",
+    demandeId: "9a1b2c3d-4e5f-4a6b-8c7d-0e1f2a3b4c5d",
+    nature: "iban",
+  },
+  TRAINER_PIECE_DEPOSEE: {
+    trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13",
+    type: "attestation_vigilance_urssaf",
+  },
   FORMATEUR_REPLIED: {
     trainerId: "3f2a9c1e-0b7d-4c55-9e21-6a8f0d4b7c13",
     receivedAt: "2026-10-20T08:00:00Z",

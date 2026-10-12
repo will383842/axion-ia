@@ -30,6 +30,11 @@ import {
   estPieceGardee,
   MARQUE_ARCHIVE,
 } from "@/server/qualiopi/formateurs-independants/gardes";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import {
+  CLES_MOTIF_REFUS_PIECE,
+  libelleMotifRefus,
+} from "@/server/qualiopi/formateurs-independants/pieces-motifs-refus";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -143,6 +148,11 @@ const validateSchema = z.object({
   /** `rejete` exige un motif : on ne rejette pas une pièce sans le dire. */
   statutValidation: z.enum(["valide", "rejete"]),
   rejetMotif: z.string().max(500).optional(),
+  /**
+   * Lot E (M13) — motif FERMÉ (formateur indépendant) : écrit par son libellé, et
+   * seul à partir dans F41. Le motif libre reste accepté tel quel.
+   */
+  motifFerme: z.enum(CLES_MOTIF_REFUS_PIECE).optional(),
 });
 
 /** Valide ou rejette une pièce. Seule une pièce `valide` compte pour la conformité. */
@@ -153,7 +163,11 @@ export async function validateTrainerDocumentAction(
   const session = await requireHabilitation("habiliter_formateur");
   const parsed = validateSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { id, statutValidation, rejetMotif } = parsed.data;
+  const { id, statutValidation, motifFerme } = parsed.data;
+  const rejetMotif =
+    statutValidation === "rejete" && motifFerme !== undefined
+      ? libelleMotifRefus(motifFerme)
+      : parsed.data.rejetMotif;
 
   if (statutValidation === "rejete" && (rejetMotif === undefined || rejetMotif.trim() === "")) {
     return { error: "Un motif est requis pour rejeter une pièce." };
@@ -288,6 +302,23 @@ export async function validateTrainerDocumentAction(
     changes: { statutValidation },
     session,
   });
+
+  // Lot E (M13) — formateur indépendant seulement, interrupteur `dossier_en_ligne` :
+  // F41 sur motif fermé, F57 et levée du blocage des missions sur validation. Éteint
+  // ou salarié : rien. Import paresseux, et une panne ne défait jamais la décision.
+  try {
+    if (!(await envoiAllume("dossier_en_ligne"))) return { data: { id } };
+    const { apresDecisionPiece } =
+      await import("@/server/qualiopi/formateurs-independants/pieces-decision");
+    await apresDecisionPiece({
+      documentId: id,
+      decision: statutValidation,
+      motifFerme: statutValidation === "rejete" ? (motifFerme ?? null) : null,
+      maintenant: new Date(),
+    });
+  } catch {
+    // La décision est écrite et journalisée : la suite repassera par le moteur horaire.
+  }
 
   return { data: { id } };
 }

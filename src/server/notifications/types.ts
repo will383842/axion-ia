@@ -517,6 +517,25 @@ export type NotificationEvent =
         registre: "vert" | "orange" | "rouge" | "muet";
       };
     }
+  // === Formateur indépendant : pièce déposée depuis son espace (lot E, F42) ===
+  // 🔴 MINIMISÉE : ni nom, ni fichier. Un identifiant de fiche et le type de pièce.
+  | {
+      category: "TRAINER_PIECE_DEPOSEE";
+      payload: {
+        trainerId: string;
+        type: string;
+      };
+    }
+  // === Formateur indépendant : demande de changement d'IBAN ou d'adresse (lot E, M12) ===
+  // 🔴 MINIMISÉE : jamais l'IBAN, ni l'adresse, ni le nom. Des identifiants et la nature.
+  | {
+      category: "TRAINER_CHANGEMENT_DEMANDE";
+      payload: {
+        trainerId: string;
+        demandeId: string;
+        nature: "iban" | "adresse";
+      };
+    }
   // === Formateur indépendant : réponse reçue par e-mail (lot CAMP-4) ===
   // 🔴 MINIMISÉE : ni nom, ni objet, ni adresse. Un identifiant court et l'heure.
   | {

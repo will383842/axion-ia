@@ -34,6 +34,11 @@ interface SessionPayload {
   aud: SessionAudience;
   /** Expiration (unix ms). */
   exp: number;
+  /**
+   * Lot E (M14) — version d'accès de la fiche formateur (`Trainer.accesVersion`) au
+   * moment de la connexion. Facultative : un jeton signé avant ce lot n'en porte pas.
+   */
+  ver?: number;
 }
 
 function b64urlEncode(bytes: Uint8Array): string {
@@ -77,11 +82,14 @@ export async function signFormateurSession(
   subjectId: string,
   audience: SessionAudience,
   ttlSeconds: number = FORMATEUR_SESSION_MAX_AGE_SECONDS,
+  /** Lot E (M14) — version d'accès de la fiche, revérifiée côté Node à chaque requête. */
+  version?: number,
 ): Promise<string> {
   const payload: SessionPayload = {
     sub: subjectId,
     aud: audience,
     exp: Date.now() + ttlSeconds * 1000,
+    ...(version !== undefined && Number.isInteger(version) && version >= 0 ? { ver: version } : {}),
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
   const payloadB64 = b64urlEncode(payloadBytes);
@@ -93,7 +101,7 @@ export async function signFormateurSession(
 }
 
 export type FormateurSessionResult =
-  | { ok: true; trainerId: string }
+  | { ok: true; trainerId: string; version?: number }
   | { ok: false; reason: "malformed" | "invalid_signature" | "expired" | "wrong_audience" };
 
 /**
@@ -143,5 +151,10 @@ export async function verifyFormateurSession(
   if (typeof payload.exp !== "number" || payload.exp < Date.now()) {
     return { ok: false, reason: "expired" };
   }
-  return { ok: true, trainerId: payload.sub };
+  const ver = payload.ver;
+  return {
+    ok: true,
+    trainerId: payload.sub,
+    ...(typeof ver === "number" && Number.isInteger(ver) && ver >= 0 ? { version: ver } : {}),
+  };
 }

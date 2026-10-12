@@ -17,19 +17,35 @@
  * (`FormateurNav`) résolvait la section avec `usePathname()`, donc en client :
  * la navigation coûtait du JavaScript sur toutes les pages. Ici chaque page
  * déclare sa section, et la coquille reste un composant serveur.
+ *
+ * ## 🔴 Et elle ne rend AUCUN composant client (2026-10-12)
+ *
+ * Composée par chaque page, tout module client qu'elle rend est COPIÉ dans le chunk
+ * de chaque page. Les icônes `lucide-react` (base `"use client"` depuis la v1) et le
+ * bouton de déconnexion client y faisaient 3,5 ko identiques par page ; la page
+ * « Mon dossier » a suffi à dépasser le cliquet des page chunks publics. Icônes et
+ * déconnexion sont donc rendus par le serveur — verrou :
+ * `__tests__/coquille-sans-javascript.spec.ts`.
  */
-
-import { CalendarDays, CircleCheckBig, Euro, UserRound } from "lucide-react";
 
 import { EspaceShell, type EspaceNavItem } from "@/components/espace/EspaceShell";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
-import { getFormateurSession } from "@/server/formateur/guard";
+import {
+  IconeAccompagnements,
+  IconeAFaire,
+  IconeDossier,
+  IconeFormations,
+  IconeRemuneration,
+} from "@/components/espace-formateur/icones-navigation";
+import { getFormateurSessionLecture } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 import { prisma } from "@/lib/prisma";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 
-export type SectionFormateur = "accueil" | "formations" | "remuneration" | "accompagnements";
+export type SectionFormateur =
+  "accueil" | "formations" | "remuneration" | "accompagnements" | "dossier";
 
 /**
  * Trois destinations. Le collectif AVANT l'individuel : c'est le cas
@@ -46,13 +62,15 @@ function construireNavigation(
    * allumé : « Mes missions » et « Mes honoraires ». Faux : les libellés d'avant.
    */
   libellesIndependant = false,
+  /** Lot E (M13) — indépendant, `formateurs.dossier_en_ligne` allumé : « Mon dossier ». */
+  avecDossier = false,
 ): readonly EspaceNavItem[] {
   return [
     {
       cle: "accueil",
       href: FORMATEUR_BASE_PATH,
       label: "À faire",
-      icone: CircleCheckBig,
+      icone: IconeAFaire,
       ...(aSigner > 0 ? { enAttente: aSigner } : {}),
     },
     {
@@ -60,7 +78,7 @@ function construireNavigation(
       href: FORMATEUR_SESSIONS_PATH,
       label: libellesIndependant ? "Mes missions" : "Mes formations",
       labelCourt: libellesIndependant ? "Missions" : "Formations",
-      icone: CalendarDays,
+      icone: IconeFormations,
     },
     {
       // 🔴 Sa RÉMUNÉRATION — la destination qui manquait. Son espace portait
@@ -70,8 +88,19 @@ function construireNavigation(
       href: `${FORMATEUR_BASE_PATH}/remuneration`,
       label: libellesIndependant ? "Mes honoraires" : "Ma rémunération",
       labelCourt: libellesIndependant ? "Honoraires" : "Rémunération",
-      icone: Euro,
+      icone: IconeRemuneration,
     },
+    ...(avecDossier
+      ? [
+          {
+            cle: "dossier",
+            href: `${FORMATEUR_BASE_PATH}/dossier`,
+            label: "Mon dossier",
+            labelCourt: "Dossier",
+            icone: IconeDossier,
+          },
+        ]
+      : []),
     {
       cle: "accompagnements",
       href: `${FORMATEUR_BASE_PATH}/seances`,
@@ -79,7 +108,7 @@ function construireNavigation(
       // destination, pas un nom de produit.
       label: "Accompagnements",
       labelCourt: "Suivi 1-to-1",
-      icone: UserRound,
+      icone: IconeAccompagnements,
     },
   ];
 }
@@ -98,6 +127,30 @@ async function estIndependantEnCartes(trainerId: string): Promise<boolean> {
   }
 }
 
+/**
+ * `formateurs.dossier_en_ligne` (pièces) ou `formateurs.changement_coordonnees` (compte
+ * bancaire, adresse — lot E, M12) allumé, ET formateur indépendant. Ne lève jamais.
+ */
+async function aUnDossier(trainerId: string): Promise<boolean> {
+  if (
+    !(await envoiAllume("dossier_en_ligne")) &&
+    !(await interrupteurAllume("changement_coordonnees"))
+  ) {
+    return false;
+  }
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true },
+    });
+    return t?.statut === "sous_traitant";
+  } catch {
+    return false;
+  }
+}
+
+const JOUR_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
+
 export interface CoquilleFormateurProps {
   section: SectionFormateur;
   /** Nombre de lettres de mission restant à signer. */
@@ -110,19 +163,32 @@ export async function CoquilleFormateur({
   aSigner = 0,
   children,
 }: CoquilleFormateurProps) {
-  const session = await getFormateurSession();
+  // Lot E (M14) — la coquille sert aussi la lecture seule d'après une fin de collaboration.
+  const session = await getFormateurSessionLecture();
   const nom = session ? `${session.prenom} ${session.nom}`.trim() : "";
   const libellesIndependant = session !== null && (await estIndependantEnCartes(session.trainerId));
+  const avecDossier = session !== null && (await aUnDossier(session.trainerId));
+  const lectureSeule = session?.lectureSeule === true;
+  const navigation = construireNavigation(aSigner, libellesIndependant, avecDossier).filter(
+    (n) => !lectureSeule || n.cle === "remuneration" || n.cle === "dossier",
+  );
 
   return (
     <EspaceShell
       titreEspace="Espace formateur"
       sousTitreEspace="Vos formations et vos documents"
-      navigation={construireNavigation(aSigner, libellesIndependant)}
+      navigation={navigation}
       sectionActive={section}
       {...(nom !== "" ? { utilisateur: { nom } } : {})}
       actionSortie={<FormateurLogoutButton />}
     >
+      {lectureSeule && session?.finCollaborationAt && (
+        <p role="note" className="mb-6 rounded-lg border p-3 text-sm">
+          Notre collaboration a pris fin le {JOUR_FR.format(session.finCollaborationAt)}. Votre
+          espace reste ouvert en lecture : vos honoraires et votre dossier y sont consultables. Pour
+          toute question, répondez simplement à l&apos;un de nos e-mails.
+        </p>
+      )}
       {children}
     </EspaceShell>
   );
