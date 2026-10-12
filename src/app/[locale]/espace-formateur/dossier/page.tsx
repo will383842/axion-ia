@@ -13,7 +13,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { requireFormateur } from "@/server/formateur/guard";
+import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireMonDossier } from "@/server/qualiopi/formateurs-independants/mon-dossier";
 
 import { CoquilleFormateur } from "../_coquille";
@@ -34,7 +34,8 @@ export default async function MonDossierPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await requireFormateur();
+  // Lecture seule après une fin de collaboration (M14) : l'état, sans dépôt.
+  const session = await requireFormateurLecture();
   const vue = await lireMonDossier(session.trainerId, new Date());
   if (vue === null) notFound();
   const issue = messageDuCode((await searchParams).issue);
@@ -53,7 +54,7 @@ export default async function MonDossierPage({
         </p>
       )}
 
-      {vue.bloque && (
+      {vue.bloque && !session.lectureSeule && (
         <p className="mt-4 rounded-lg border p-3 text-sm">
           Votre attestation URSSAF n&apos;est pas valable aujourd&apos;hui : de nouvelles missions
           pourront vous être proposées dès que la nouvelle aura été vérifiée.
@@ -65,29 +66,31 @@ export default async function MonDossierPage({
           <li key={p.type} id={p.type} className="rounded-lg border p-4">
             <h2 className="font-semibold">{p.libelleType}</h2>
             <p className="mt-1 text-sm">{p.libelle}</p>
-            <form action={deposerMaPieceAction} className="mt-3 flex flex-col gap-2 text-sm">
-              <input type="hidden" name="type" value={p.type} />
-              <label className="flex flex-col gap-1">
-                <span>Fichier (PDF, JPG ou PNG, 10 Mo au plus)</span>
-                <input
-                  type="file"
-                  name="fichier"
-                  required
-                  accept="application/pdf,image/jpeg,image/png"
-                />
-              </label>
-              {AVEC_DATE.has(p.type) && (
+            {!session.lectureSeule && (
+              <form action={deposerMaPieceAction} className="mt-3 flex flex-col gap-2 text-sm">
+                <input type="hidden" name="type" value={p.type} />
                 <label className="flex flex-col gap-1">
-                  <span>
-                    {p.type === "cv" ? "Date de mise à jour du CV" : "Date de délivrance"}
-                  </span>
-                  <input type="date" name="dateEmission" required className="w-fit" />
+                  <span>Fichier (PDF, JPG ou PNG, 10 Mo au plus)</span>
+                  <input
+                    type="file"
+                    name="fichier"
+                    required
+                    accept="application/pdf,image/jpeg,image/png"
+                  />
                 </label>
-              )}
-              <button type="submit" className="w-fit rounded-md border px-3 py-1.5 font-medium">
-                {p.geste ? "Déposer la nouvelle pièce" : "Déposer une pièce plus récente"}
-              </button>
-            </form>
+                {AVEC_DATE.has(p.type) && (
+                  <label className="flex flex-col gap-1">
+                    <span>
+                      {p.type === "cv" ? "Date de mise à jour du CV" : "Date de délivrance"}
+                    </span>
+                    <input type="date" name="dateEmission" required className="w-fit" />
+                  </label>
+                )}
+                <button type="submit" className="w-fit rounded-md border px-3 py-1.5 font-medium">
+                  {p.geste ? "Déposer la nouvelle pièce" : "Déposer une pièce plus récente"}
+                </button>
+              </form>
+            )}
           </li>
         ))}
       </ul>

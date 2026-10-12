@@ -74,6 +74,8 @@ interface MagicPayload {
   email?: string;
   exp: number;
   jti: string;
+  /** Lot E (M14) — version d'accès du destinataire au moment de l'envoi (facultative). */
+  ver?: number;
 }
 
 function b64urlEncode(bytes: Uint8Array): string {
@@ -117,12 +119,18 @@ function randomJti(): string {
     .join("");
 }
 
+function versionValide(v: unknown): v is number {
+  return typeof v === "number" && Number.isInteger(v) && v >= 0;
+}
+
 export interface SignMagicTokenInput {
   scope: MagicScope;
   resourceId: string;
   email?: string;
   /** Override TTL (ms). Par défaut : `TTL_MS[scope]`. */
   ttlMs?: number;
+  /** Lot E (M14) — version d'accès à revérifier par l'appelant (`Trainer.accesVersion`). */
+  version?: number;
 }
 
 export async function signMagicToken(input: SignMagicTokenInput): Promise<string> {
@@ -132,6 +140,7 @@ export async function signMagicToken(input: SignMagicTokenInput): Promise<string
     ...(input.email ? { email: input.email.toLowerCase().trim() } : {}),
     exp: Date.now() + (input.ttlMs ?? TTL_MS[input.scope]),
     jti: randomJti(),
+    ...(versionValide(input.version) ? { ver: input.version } : {}),
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
   const payloadB64 = b64urlEncode(payloadBytes);
@@ -144,7 +153,15 @@ export async function signMagicToken(input: SignMagicTokenInput): Promise<string
 }
 
 export type VerifyResult =
-  | { ok: true; scope: MagicScope; resourceId: string; email?: string; jti: string }
+  | {
+      ok: true;
+      scope: MagicScope;
+      resourceId: string;
+      email?: string;
+      jti: string;
+      /** Présente seulement si le jeton a été signé avec une version. */
+      version?: number;
+    }
   | { ok: false; reason: VerifyFailReason };
 
 export type VerifyFailReason =
@@ -209,5 +226,6 @@ export async function verifyMagicToken(
     resourceId: payload.resourceId,
     ...(payload.email ? { email: payload.email } : {}),
     jti: payload.jti,
+    ...(versionValide(payload.ver) ? { version: payload.ver } : {}),
   };
 }

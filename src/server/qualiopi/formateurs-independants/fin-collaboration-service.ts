@@ -8,7 +8,7 @@
  *     menées à terme (e-mails, signatures, garde de mission inchangés) ;
  *   - **la clôture** (`cloreDansTransaction`), le jour d'effet : `finCollaborationAt`,
  *     motif, auteur, `accesVersion + 1`, contrat-cadre non signé annulé et ses liens non
- *     utilisés révoqués, journal. Une fin sans préavis est close dans la transaction de la
+ *     utilisés révoqués, lettres de mission non signées annulées de même (lot E), journal. Une fin sans préavis est close dans la transaction de la
  *     décision, puis la fiche est désactivée par l'écrivain unique de `actif`
  *     (`activation.ts`, côté application) ; une fin avec préavis est close par le passage
  *     quotidien du worker (`cloreFinsArrivees`), et la fiche close encore active est
@@ -228,13 +228,47 @@ async function cloreDansTransaction(
     });
   }
 
+  // Lot E (M14) — les lettres de mission que le formateur n'a PAS signées cessent de
+  // circuler : annulées (jamais supprimées), leurs liens non utilisés révoqués. Même
+  // prédicat que le désistement et la fin de mission : une lettre qui porte sa
+  // signature reste au registre (Will décide).
+  const nonSignee = { none: { revokedAt: null, partie: "formateur" } } as const;
+  const lettresNonSignees = await tx.documentGenere.findMany({
+    where: {
+      trainerId: c.trainerId,
+      type: "lettre_mission",
+      annuleeAt: null,
+      signatures: nonSignee,
+    },
+    select: { id: true },
+  });
+  const lettres = (lettresNonSignees ?? []).map((d) => d.id);
+  if (lettres.length > 0) {
+    await tx.documentGenere.updateMany({
+      where: { id: { in: lettres }, annuleeAt: null, signatures: nonSignee },
+      data: {
+        annuleeAt: c.maintenant,
+        annuleeMotif: "Fin de collaboration : lettre de mission non signée annulée.",
+        annuleePar: c.annuleePar,
+      },
+    });
+    await tx.documentSignatureToken.updateMany({
+      where: { documentGenereId: { in: lettres }, revokedAt: null, usedAt: null },
+      data: {
+        revokedAt: c.maintenant,
+        revokedMotif: "Fin de collaboration",
+        ...(c.session ? { revokedById: c.session.userId } : {}),
+      },
+    });
+  }
+
   await journaliser(
     tx,
     {
       action: "qualiopi.trainer.fin_collaboration_close",
       targetType: "Trainer",
       targetId: c.trainerId,
-      changes: { motif: c.motif, contratsAnnules: ids.length },
+      changes: { motif: c.motif, contratsAnnules: ids.length, lettresAnnulees: lettres.length },
       session: c.session,
     },
     { exiger: true },

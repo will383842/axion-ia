@@ -18,6 +18,8 @@ import { signFormateurSession } from "@/lib/formateur-session";
 import { setFormateurCookie } from "@/server/formateur/cookie";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { destinationApresConnexion } from "@/server/formateur/suite-lien";
+import { accesFormateur } from "@/server/formateur/acces-apres-fin";
+import { FORMATEUR_LECTURE_SEULE_PATH } from "@/server/formateur/guard";
 import { publicUrl } from "@/lib/public-url";
 
 export const dynamic = "force-dynamic";
@@ -41,13 +43,21 @@ export async function GET(
   // Le formateur peut avoir été désactivé entre l'envoi et le clic.
   const trainer = await prisma.trainer.findUnique({
     where: { id: trainerId },
-    select: { id: true, actif: true },
+    select: { id: true, actif: true, statut: true, finCollaborationAt: true, accesVersion: true },
   });
-  if (!trainer || !trainer.actif) {
+  // Lot E (M14) — accès complet, ou lecture seule après une fin de collaboration.
+  const acces = trainer ? await accesFormateur(trainer) : null;
+  if (!trainer || acces === null) {
     return NextResponse.redirect(failureUrl);
   }
 
-  const sessionToken = await signFormateurSession(trainer.id, "formateur");
+  // La session porte la version d'accès : une clôture de fin la fait tomber.
+  const sessionToken = await signFormateurSession(
+    trainer.id,
+    "formateur",
+    undefined,
+    trainer.accesVersion,
+  );
   await setFormateurCookie(sessionToken);
   await prisma.trainer.update({
     where: { id: trainer.id },
@@ -56,6 +66,7 @@ export async function GET(
 
   // S6a (h) — `suite` n'est suivi que s'il figure sur la liste blanche des
   // chemins de l'espace : jamais de redirection ouverte.
+  if (acces === "lecture") return NextResponse.redirect(publicUrl(FORMATEUR_LECTURE_SEULE_PATH));
   return NextResponse.redirect(
     publicUrl(destinationApresConnexion(request.nextUrl.searchParams.get("suite"))),
   );

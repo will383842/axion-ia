@@ -259,7 +259,15 @@ export async function proposerMissionFormateur(
         // 🔴 `statut` n'était PAS lu. C'est la colonne qui dit si l'accord de
         // cette personne est requis — sans elle, on demandait au dirigeant de
         // l'organisme s'il acceptait d'animer sa propre session.
-        select: { id: true, email: true, prenom: true, nom: true, actif: true, statut: true },
+        select: {
+          id: true,
+          email: true,
+          prenom: true,
+          nom: true,
+          actif: true,
+          statut: true,
+          accesVersion: true,
+        },
       }),
       prisma.enrollment.count({
         where: { sessionId: input.sessionId, ...inscriptionsActives() },
@@ -380,7 +388,7 @@ async function envoyerProposition(args: {
     lieuSalle: string | null;
     lieuVisioUrl: string | null;
   };
-  trainer: { id: string; email: string; prenom: string; nom: string };
+  trainer: { id: string; email: string; prenom: string; nom: string; accesVersion?: number };
   inscrits: number;
   role: SessionFormateurRole;
   /** Échéance réelle de réponse ; absente sur une proposition ancienne. */
@@ -392,6 +400,8 @@ async function envoyerProposition(args: {
     scope: "formateur_mission",
     resourceId: args.missionId,
     ttlMs: ttlJusquAuDemarrage(session.dateDebut, now),
+    // Lot E (M14) — une fin de collaboration (version incrémentée) éteint le lien.
+    ...(trainer.accesVersion !== undefined ? { version: trainer.accesVersion } : {}),
   });
   const lieu = formatLieu({
     ...session,
@@ -606,7 +616,7 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
       solliciteAt: true,
       echeanceReponseAt: true,
       session: { select: SESSION_POUR_MISSION },
-      trainer: { select: { id: true, email: true, prenom: true, nom: true } },
+      trainer: { select: { id: true, email: true, prenom: true, nom: true, accesVersion: true } },
     },
   });
   const aRelancer = candidates.filter((m) => {
@@ -1060,7 +1070,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
         statut: true,
         role: true,
         echeanceReponseAt: true,
-        trainer: { select: { id: true, prenom: true, nom: true } },
+        trainer: { select: { id: true, prenom: true, nom: true, accesVersion: true } },
         session: {
           select: {
             ...SESSION_POUR_MISSION,
@@ -1070,6 +1080,8 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       },
     });
     if (m === null) return null;
+    // Lot E (M14) — jeton signé avec une version dépassée : révoqué (fin de collaboration).
+    if (verified.version !== undefined && verified.version !== m.trainer.accesVersion) return null;
     return {
       id: m.id,
       statut: m.statut,
@@ -1077,7 +1089,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       echeanceReponseAt: m.echeanceReponseAt,
       delaiDepasse:
         m.echeanceReponseAt !== null && m.echeanceReponseAt.getTime() <= new Date().getTime(),
-      trainer: m.trainer,
+      trainer: { id: m.trainer.id, prenom: m.trainer.prenom, nom: m.trainer.nom },
       session: {
         id: m.session.id,
         numero: m.session.numero,

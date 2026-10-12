@@ -18,6 +18,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { createFormateurMagicLink } from "@/server/formateur/magic-link";
 import { buildFormateurMagicLinkUrl } from "@/server/formateur/routes";
 import { clearFormateurCookie } from "@/server/formateur/cookie";
+import { accesFormateur } from "@/server/formateur/acces-apres-fin";
 
 export interface FormateurAuthState {
   readonly ok: boolean;
@@ -76,10 +77,19 @@ export async function sendFormateurMagicLinkAction(
 
   const trainer = await prisma.trainer.findUnique({
     where: { email },
-    select: { id: true, prenom: true, nom: true, actif: true },
+    select: {
+      id: true,
+      prenom: true,
+      nom: true,
+      actif: true,
+      statut: true,
+      finCollaborationAt: true,
+    },
   });
 
-  if (trainer && trainer.actif) {
+  // Lot E (M14) — un indépendant dont la collaboration est close garde un accès en
+  // lecture (interrupteur `formateurs.fin_collaboration`) : il reçoit aussi le lien.
+  if (trainer && (await accesFormateur(trainer)) !== null) {
     const token = await createFormateurMagicLink(trainer.id, ip);
     await enqueueEmail("formateur-magic-link", email, "fr", {
       magicLink: buildFormateurMagicLinkUrl(token),

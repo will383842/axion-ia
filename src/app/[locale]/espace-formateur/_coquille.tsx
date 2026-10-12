@@ -23,7 +23,7 @@ import { CalendarDays, CircleCheckBig, Euro, FolderOpen, UserRound } from "lucid
 
 import { EspaceShell, type EspaceNavItem } from "@/components/espace/EspaceShell";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
-import { getFormateurSession } from "@/server/formateur/guard";
+import { getFormateurSessionLecture } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 import { prisma } from "@/lib/prisma";
@@ -127,6 +127,8 @@ async function aUnDossier(trainerId: string): Promise<boolean> {
   }
 }
 
+const JOUR_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
+
 export interface CoquilleFormateurProps {
   section: SectionFormateur;
   /** Nombre de lettres de mission restant à signer. */
@@ -139,20 +141,32 @@ export async function CoquilleFormateur({
   aSigner = 0,
   children,
 }: CoquilleFormateurProps) {
-  const session = await getFormateurSession();
+  // Lot E (M14) — la coquille sert aussi la lecture seule d'après une fin de collaboration.
+  const session = await getFormateurSessionLecture();
   const nom = session ? `${session.prenom} ${session.nom}`.trim() : "";
   const libellesIndependant = session !== null && (await estIndependantEnCartes(session.trainerId));
   const avecDossier = session !== null && (await aUnDossier(session.trainerId));
+  const lectureSeule = session?.lectureSeule === true;
+  const navigation = construireNavigation(aSigner, libellesIndependant, avecDossier).filter(
+    (n) => !lectureSeule || n.cle === "remuneration" || n.cle === "dossier",
+  );
 
   return (
     <EspaceShell
       titreEspace="Espace formateur"
       sousTitreEspace="Vos formations et vos documents"
-      navigation={construireNavigation(aSigner, libellesIndependant, avecDossier)}
+      navigation={navigation}
       sectionActive={section}
       {...(nom !== "" ? { utilisateur: { nom } } : {})}
       actionSortie={<FormateurLogoutButton />}
     >
+      {lectureSeule && session?.finCollaborationAt && (
+        <p role="note" className="mb-6 rounded-lg border p-3 text-sm">
+          Notre collaboration a pris fin le {JOUR_FR.format(session.finCollaborationAt)}. Votre
+          espace reste ouvert en lecture : vos honoraires et votre dossier y sont consultables. Pour
+          toute question, répondez simplement à l&apos;un de nos e-mails.
+        </p>
+      )}
       {children}
     </EspaceShell>
   );
