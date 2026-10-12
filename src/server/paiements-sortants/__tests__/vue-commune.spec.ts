@@ -153,3 +153,12 @@ describe("DAS 2 commune", () => {
     expect(csv.startsWith("﻿")).toBe(true);
   });
 });
+
+describe("vue commune — désaccord clos « non retenu » (lot D2)", () => {
+  it("la valeur écrite en clair reste celle de la règle unique", async () => {
+    const { ISSUE_DESACCORD_NON_RETENU } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/desaccord-regle");
+    const src = readFileSync(path.join(__dirname, "..", "virements.ts"), "utf8");
+    expect(src).toContain(`contestationCloseIssue: "${ISSUE_DESACCORD_NON_RETENU}"`);
+  });
+});
