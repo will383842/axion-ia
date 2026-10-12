@@ -508,6 +508,12 @@ export async function basculerFormateursSuiviEchangeAction(
 ): Promise<EtatBascule> {
   return basculerEntree("suivi_echange", formData);
 }
+export async function basculerFormateursReponsesFormateursAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("reponses_formateurs", formData);
+}
 
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,

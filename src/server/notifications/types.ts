@@ -517,6 +517,16 @@ export type NotificationEvent =
         registre: "vert" | "orange" | "rouge" | "muet";
       };
     }
+  // === Formateur indépendant : réponse reçue par e-mail (lot CAMP-4) ===
+  // 🔴 MINIMISÉE : ni nom, ni objet, ni adresse. Un identifiant court et l'heure.
+  | {
+      category: "FORMATEUR_REPLIED";
+      payload: {
+        trainerId: string;
+        /** ISO 8601. */
+        receivedAt: string;
+      };
+    }
   // === Candidat emploi : effacement de SON dossier en un clic (2026-10-11) ===
   // Depuis le lien « Supprimer ma candidature » de nos e-mails. Le dossier
   // n'existe plus : ni lien vers la fiche, ni nom — le poste et l'heure.

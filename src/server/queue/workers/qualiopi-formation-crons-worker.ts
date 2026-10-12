@@ -197,6 +197,10 @@ export type FormationCronJobType =
   // Lot L14 (2026-10-11) — clôture des fins de collaboration avec préavis à leur date
   // d'effet. QUOTIDIEN ; arrêté tant que `formateurs.fin_collaboration` est coupé.
   | "formation-crons.fin-collaboration"
+  // Lot L-INV (formateurs indépendants) — invitation automatique à l'échange (F1),
+  // 15 à 20 min après la candidature, et clôture « sans suite » à J+30. Toutes les 5 min ;
+  // arrêté tant que `formateurs.invitation_auto` ou `formateurs.suivi_echange` est coupé.
+  | "formation-crons.invitations-formateurs"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2632,7 +2636,34 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.paiement-mission": handlePaiementMission,
   "formation-crons.communes-geo": handleCommunesGeo,
   "formation-crons.fin-collaboration": handleFinCollaboration,
+  "formation-crons.invitations-formateurs": handleInvitationsFormateurs,
 };
+
+/**
+ * Lot L-INV — invitation automatique des candidats formateurs indépendants. Corps dans
+ * `formateurs-independants/invitation-formateurs.ts` ; ici on déclenche et on trace
+ * (des compteurs, aucune donnée personnelle). Import PARESSEUX ; ne lève jamais.
+ */
+async function handleInvitationsFormateurs(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { passerInvitationsFormateurs } =
+      await import("@/server/qualiopi/formateurs-independants/invitation-formateurs");
+    const b = await passerInvitationsFormateurs(new Date());
+    if (!b.allume || (b.invitees === 0 && b.closes === 0 && b.refus === 0)) return;
+    const ligne =
+      `[formation-crons] invitations-formateurs: ${b.invitees} invitation(s), ` +
+      `${b.closes} clôture(s) sans suite, ${b.refus} refus` +
+      (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] invitations-formateurs: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * CAMP-3 — passage horaire des campagnes de relance des formateurs indépendants. Corps

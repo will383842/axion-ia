@@ -715,6 +715,15 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.dossiers_contrats",
   },
+  // Lot CAMP-4 — les réponses des formateurs indépendants relevées dans le relevé des
+  // candidatures (#1342). Coupé : le relevé ne regarde que les candidatures, comme avant.
+  reponses_formateurs: {
+    ...envoi(
+      "Réponses des formateurs par e-mail",
+      "Une réponse d'un formateur indépendant (fiche ouverte, même adresse) est rangée sur sa fiche, avec une alerte ; une réponse automatique n'a aucun effet. Le relevé des candidatures doit être allumé.",
+    ),
+    cle: "formateurs.reponses_formateurs",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -735,6 +744,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     ajout_console: [],
     suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
     dossiers_contrats: [],
+    reponses_formateurs: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {
