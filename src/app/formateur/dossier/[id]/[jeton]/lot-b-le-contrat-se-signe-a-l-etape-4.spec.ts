@@ -83,6 +83,7 @@ import {
   signerEtEnvoyerDossierAction,
 } from "./actions";
 import { TEXTES } from "./textes";
+import { TEXTES_CONTRAT } from "./textes-contrat";
 
 const T = "6f1b8a52-4a0e-4d4c-9f43-2f6a7d1c9e10";
 const DOSSIER = {
@@ -203,16 +204,8 @@ const INTERDITS =
 describe("lexique des nouveaux textes", () => {
   it("textes de l'étape 4 et messages du service", () => {
     const textes = [
-      TEXTES.contratRempli,
-      ...TEXTES.contratResume,
-      TEXTES.contratApresCode,
-      TEXTES.jaiLu,
-      ...TEXTES.jaiLuPoints,
-      TEXTES.signeEnTantQue("x"),
-      TEXTES.codeEnvoye("x"),
-      TEXTES.merciSigneTitre,
-      TEXTES.merciSigneLigne,
-      TEXTES.contratDejaSigne,
+      ...Object.values(TEXTES_CONTRAT).flatMap((v) => (Array.isArray(v) ? v : [v])),
+      TEXTES.retrouverLien,
     ];
     expect(textes.filter((t) => INTERDITS.test(t))).toEqual([]);
     const service = readFileSync(

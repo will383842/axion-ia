@@ -37,6 +37,7 @@ import {
   type ResultatRecherche,
 } from "./actions";
 import { ADRESSE_CONTACT, ETAPES, LIEN_POLITIQUE, TEXTES } from "./textes";
+import type { TextesContrat } from "./textes-contrat";
 
 export interface DossierPublic {
   id: string;
@@ -122,7 +123,8 @@ type Envoi = (fd: FormData) => Promise<{ ok: true } | { ok: false; message: stri
 
 /** L'étape 4 : sans contrat (comportement d'avant), ou contrat à signer ici (lot B). */
 export type ContratEtape4 =
-  { mode: "sans_contrat" } | { mode: "a_signer"; signe: boolean; pdfUrl: string | null };
+  | { mode: "sans_contrat" }
+  | { mode: "a_signer"; signe: boolean; pdfUrl: string | null; textes: TextesContrat };
 
 export function DossierFormateur({
   dossier,
@@ -185,10 +187,14 @@ export function DossierFormateur({
           ✓
         </span>
         <h1 id="fin-titre" className="mt-4 font-serif text-[30px] leading-tight font-medium">
-          {signe ? TEXTES.merciSigneTitre : TEXTES.merciTitre}
+          {signe && contrat.mode === "a_signer"
+            ? contrat.textes.merciSigneTitre
+            : TEXTES.merciTitre}
         </h1>
         <p className="text-fg-soft mt-3 text-[18px]">
-          {signe ? TEXTES.merciSigneLigne : TEXTES.merciLigne}
+          {signe && contrat.mode === "a_signer"
+            ? contrat.textes.merciSigneLigne
+            : TEXTES.merciLigne}
         </p>
         <p className="bg-sand mt-4 inline-block rounded-full px-4 py-1.5 text-[15px] font-semibold">
           {TEXTES.merciEtat}
@@ -633,6 +639,7 @@ export function DossierFormateur({
   // ── Étape 4 · Votre contrat, signé ici (lot B : `contrat_auto` et version arrêtée) ──
   if (contrat.mode === "a_signer") {
     const dejaSigne = contrat.signe;
+    const T = contrat.textes;
     const codeValide = /^\d{6}$/.test(codeContrat.replace(/\s+/g, ""));
     return (
       <section aria-labelledby="etape-titre">
@@ -641,9 +648,9 @@ export function DossierFormateur({
           {ETAPES[3]}
         </h1>
         <div className={`${carte} mt-4`}>
-          <h2 className="text-[18px] font-semibold">{TEXTES.contratRempli}</h2>
+          <h2 className="text-[18px] font-semibold">{T.contratRempli}</h2>
           <ul className="text-fg-soft mt-2 list-disc pl-5 text-[16px]">
-            {TEXTES.contratResume.map((l) => (
+            {T.contratResume.map((l) => (
               <li key={l}>{l}</li>
             ))}
           </ul>
@@ -654,14 +661,14 @@ export function DossierFormateur({
               target="_blank"
               rel="noopener"
             >
-              {TEXTES.lireContrat}
+              {T.lireContrat}
             </a>
           ) : (
-            <p className="text-fg-soft mt-3 text-[15px]">{TEXTES.contratApresCode}</p>
+            <p className="text-fg-soft mt-3 text-[15px]">{T.contratApresCode}</p>
           )}
         </div>
         {dejaSigne ? (
-          <p className={`${carte} text-sage-deep mt-3 font-semibold`}>{TEXTES.contratDejaSigne}</p>
+          <p className={`${carte} text-sage-deep mt-3 font-semibold`}>{T.contratDejaSigne}</p>
         ) : null}
         <div className={`${carte} mt-3 grid gap-3`}>
           <label className="flex items-start gap-3 text-[16px]">
@@ -688,23 +695,23 @@ export function DossierFormateur({
               onChange={(e) => setAccepte(e.target.checked)}
             />
             <span>
-              <span className="font-semibold">{TEXTES.jaiLu}</span>
+              <span className="font-semibold">{T.jaiLu}</span>
               <ul className="text-fg-soft mt-1 list-disc pl-5 text-[15px]">
-                {TEXTES.jaiLuPoints.map((l) => (
+                {T.jaiLuPoints.map((l) => (
                   <li key={l}>{l}</li>
                 ))}
               </ul>
             </span>
           </label>
           <p className="text-fg-soft text-[15px]">
-            {TEXTES.signeEnTantQue(`${dossier.prenom} ${dossier.nom}`)}
+            {T.signeEnTantQue} {dossier.prenom} {dossier.nom}.
           </p>
         </div>
         {!dejaSigne ? (
           <div className={`${carte} mt-3`}>
             {adresseCode ? (
               <p role="status" className="text-[16px]">
-                {TEXTES.codeEnvoye(adresseCode)}
+                {T.codeEnvoyeAvant} {adresseCode}. {T.codeEnvoyeApres}
               </p>
             ) : null}
             <button
@@ -731,11 +738,11 @@ export function DossierFormateur({
                 });
               }}
             >
-              {adresseCode ? TEXTES.codeNonRecu : TEXTES.recevoirCode}
+              {adresseCode ? T.codeNonRecu : T.recevoirCode}
             </button>
             {adresseCode ? (
               <label className="mt-3 block">
-                <span className={etiquette}>{TEXTES.codeSignature}</span>
+                <span className={etiquette}>{T.codeSignature}</span>
                 <input
                   className={champ}
                   inputMode="numeric"
@@ -769,7 +776,7 @@ export function DossierFormateur({
               });
             }}
           >
-            {enCours ? TEXTES.signature : dejaSigne ? TEXTES.envoyer : TEXTES.signer}
+            {enCours ? T.signature : dejaSigne ? TEXTES.envoyer : T.signer}
           </button>
         </div>
       </section>

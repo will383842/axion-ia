@@ -28,6 +28,7 @@ import { etatContratDossier } from "@/server/qualiopi/formateurs-independants/co
 import { Coquille, EcranEtat } from "./Coquille";
 import { DossierFormateur } from "./DossierFormateur";
 import { TEXTES } from "./textes";
+import { TEXTES_CONTRAT } from "./textes-contrat";
 
 export const dynamic = "force-dynamic";
 
@@ -62,9 +63,12 @@ export default async function DossierFormateurPage({ params }: PageProps) {
   // Le registre n'est pas rappelé à l'affichage : l'étape 2 le rejuge à la recherche.
   const etat = etatDuDossier(dossier, false);
   // Lot B : `contrat_auto` allumé et version arrêtée → le contrat se signe à l'étape 4.
-  const contrat = await etatContratDossier(dossier.id).catch(() => ({
+  const etatContrat = await etatContratDossier(dossier.id).catch(() => ({
     mode: "sans_contrat" as const,
   }));
+  // Les textes du contrat ne voyagent qu'avec lui (hors du JavaScript du dossier).
+  const contrat =
+    etatContrat.mode === "a_signer" ? { ...etatContrat, textes: TEXTES_CONTRAT } : etatContrat;
 
   return (
     <Coquille titre={titre}>
