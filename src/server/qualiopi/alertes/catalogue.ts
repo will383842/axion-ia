@@ -975,6 +975,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "administratif",
   },
+  // Lot C (M11) — désistement alors que la lettre de mission est signée : la décision
+  // revient à l'administrateur. Se referme seule (lettre annulée ou incident consigné).
+  formateur_desistement_lettre_signee: {
+    niveau: "important",
+    titre: "Désistement après lettre signée : à vous de décider",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
   // 🔴 2026-09-04 — le silence tranché AVANT le démarrage.
   //
   // `formateur_mission_sans_reponse` prévient qu'on attend ; celle-ci constate

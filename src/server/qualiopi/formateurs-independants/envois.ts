@@ -178,8 +178,8 @@ const VARIANTES_VALIDEES_A_PART: Readonly<
   Partial<Record<GabaritFormateur, Readonly<Record<number, string>>>>
 > = {
   // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
-  "formateur-mission-retiree": { 2: "lettre-non-signee" },
-  "formateur-formation-annulee": { 2: "lettre-non-signee" },
+  "formateur-mission-retiree": { 2: "lettre-non-signee", 3: "sans-lettre" },
+  "formateur-formation-annulee": { 2: "lettre-non-signee", 3: "sans-lettre" },
 };
 
 function varianteAValider(gabarit: GabaritFormateur, payload: unknown): string | undefined {

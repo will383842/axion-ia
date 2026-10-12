@@ -63,6 +63,8 @@ export type ActionMoteur =
   | "lettre_refusee"
   | "lettre_rectifiee"
   | "lettre_annulee"
+  /** Lot C (M11) : mission acceptée SANS lettre, fermée (e-mail ou alerte, une seule fois). */
+  | "mission_fermee"
   | "bloquee_notifiee"
   | "accord_enregistre"
   | "erreur";
@@ -133,6 +135,7 @@ const MISSION_SELECT = {
   sessionId: true,
   lettreMissionId: true,
   lettreBlocageMotif: true,
+  reponduAt: true,
   tarifHtCents: true,
   forfaitDeplacementParJourHtCents: true,
   regimeTvaFige: true,
@@ -430,6 +433,10 @@ const STATUTS_FERMABLES = [...STATUTS_ACCORD_DONNE, "retiree"] as const;
 export const MOTIF_FERMEE_LETTRE_SIGNEE =
   "Mission fermée alors que la lettre est signée : Will décide (annuler avec motif, ou constater).";
 
+/** Marqueur (lot C, M11) : mission fermée sans lettre, formateur prévenu une fois. */
+export const MOTIF_FERMEE_SANS_LETTRE =
+  "Mission fermée alors qu'aucune lettre n'avait été adressée : formateur prévenu.";
+
 /** La cause de fermeture d'une mission acceptée, ou `null` si elle ne se ferme pas. */
 export function causeFermeture(f: {
   readonly sessionStatut: string;
@@ -455,7 +462,8 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
     return { etape: "close", action: "rien" };
   }
   const lettre = m.lettreMission;
-  if (m.lettreMissionId === null || lettre === null || lettre.annuleeAt !== null) {
+  if (m.lettreMissionId === null) return fermerSansLettre(m, maintenant);
+  if (lettre === null || lettre.annuleeAt !== null) {
     return { etape: "close", action: "rien" };
   }
   // Retirée mais encore affectée (réaffectation de la même personne) : rien.
@@ -568,6 +576,86 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
     `🗂️ Session ${m.session.numero} : mission fermée, lettre non signée annulée par le système. ${lienFiche(m.sessionId)}`,
   );
   return { etape: "close", action: "lettre_annulee" };
+}
+
+/**
+ * Lot C (M11, hors argent) — une mission dont l'accord était donné, qui n'a JAMAIS reçu de
+ * lettre, puis retirée ou dont la session est annulée. Le formateur l'apprend : F30 ou F31,
+ * variante « sans lettre » (aucune lettre à annuler, aucune indemnité annoncée). Une seule
+ * fois, par un marqueur posé AVANT l'envoi (écriture conditionnelle).
+ *   - session reportée : le formateur est en général reconduit, aucun e-mail ;
+ *   - mission retirée avant toute réponse : rien (il n'avait rien accepté) ;
+ *   - session déjà commencée : pas d'e-mail, l'administrateur est prévenu.
+ * Aucun montant, aucune suppression.
+ */
+async function fermerSansLettre(m: MissionLue, maintenant: Date): Promise<ResultatReevaluation> {
+  const rien = { etape: "close", action: "rien" } as const;
+  if (m.lettreBlocageMotif === MOTIF_FERMEE_SANS_LETTRE) return rien;
+  if (m.statut === "retiree" && m.reponduAt === null) return rien;
+  if (m.statut === "retiree" && m.session.formateurPrincipalId === m.trainerId) return rien;
+  const cause =
+    m.statut === "retiree" && m.session.statut !== "annulee"
+      ? "changement_formateur"
+      : causeFermeture({
+          sessionStatut: m.session.statut,
+          affecte: m.statut !== "retiree" && m.session.formateurPrincipalId === m.trainerId,
+        });
+  if (cause === null) return rien;
+  // Écriture CONDITIONNELLE : un seul passage gagne le droit de prévenir.
+  const marque = await prisma.missionFormateur.updateMany({
+    where: {
+      id: m.id,
+      lettreMissionId: null,
+      OR: [{ lettreBlocageMotif: null }, { lettreBlocageMotif: { not: MOTIF_FERMEE_SANS_LETTRE } }],
+    },
+    data: { lettreBlocageMotif: MOTIF_FERMEE_SANS_LETTRE, lettreBlocageNotifieAt: maintenant },
+  });
+  if (marque.count !== 1) return rien;
+  await journaliser(prisma, {
+    action: "qualiopi.mission.fermee_sans_lettre",
+    targetType: "MissionFormateur",
+    targetId: m.id,
+    changes: { cause },
+    session: null,
+  });
+  const commencee =
+    m.session.dateDebut.getTime() <= maintenant.getTime() ||
+    m.session.jours.some((j) => dateCivile(j.date) <= dateCivile(maintenant));
+  if (cause === "session_reportee" || commencee) {
+    await alerter(
+      `🗂️ Session ${m.session.numero} : mission fermée sans lettre (${
+        commencee ? "session déjà commencée : à vous de décider" : "session reportée"
+      }), aucun e-mail au formateur. ${lienFiche(m.sessionId)}`,
+    );
+    return { etape: "close", action: "mission_fermee" };
+  }
+  const premier = [...m.session.jours].map((j) => dateCivile(j.date)).sort()[0];
+  const date =
+    premier !== undefined ? civileLongue(premier) : DATE_LONGUE.format(m.session.dateDebut);
+  const gabarit =
+    cause === "session_annulee" ? "formateur-formation-annulee" : "formateur-mission-retiree";
+  const issue = await envoyer({
+    gabarit,
+    destinataire: m.trainer.email,
+    entityType: "Trainer",
+    entityId: m.trainerId,
+    jobId: `${gabarit}-${m.id}`,
+    payload: {
+      prenom: m.trainer.prenom,
+      // Variante « sans lettre » : aucune lettre à annuler, aucune indemnité annoncée.
+      etape: 3,
+      valeurs: {
+        intitulé: m.session.titreSession,
+        date,
+        ...(cause === "changement_formateur" ? { motif: MOTIF_F30[cause] } : {}),
+      },
+    },
+  });
+  await signalerEnvoi(m, gabarit, issue);
+  await alerter(
+    `🗂️ Session ${m.session.numero} : mission fermée, aucune lettre n'avait été adressée. ${lienFiche(m.sessionId)}`,
+  );
+  return { etape: "close", action: "mission_fermee" };
 }
 
 /**
@@ -1074,12 +1162,27 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
       role: "principal",
       statut: { in: [...STATUTS_FERMABLES] },
       trainer: { statut: "sous_traitant", organismeSousTraitantId: null },
-      lettreMission: { annuleeAt: null },
+      // Une lettre vivante, ou (lot C, M11) aucune lettre : la mission accordée puis
+      // fermée prévient quand même le formateur.
+      OR: [
+        { lettreMission: { annuleeAt: null } },
+        // (jamais répondu = rien accepté : une proposition retirée n'est pas une mission)
+        {
+          lettreMissionId: null,
+          OR: [{ reponduAt: { not: null } }, { accordHorsOutilAt: { not: null } }],
+        },
+      ],
       // Une session terminée n'appelle plus d'e-mail : aucun envoi rétroactif.
       session: { dateFin: { gt: maintenant } },
-      OR: [
-        { lettreBlocageMotif: null },
-        { lettreBlocageMotif: { not: MOTIF_FERMEE_LETTRE_SIGNEE } },
+      AND: [
+        {
+          OR: [
+            { lettreBlocageMotif: null },
+            {
+              lettreBlocageMotif: { notIn: [MOTIF_FERMEE_LETTRE_SIGNEE, MOTIF_FERMEE_SANS_LETTRE] },
+            },
+          ],
+        },
       ],
     },
     orderBy: [{ session: { dateDebut: "asc" } }, { id: "asc" }],
@@ -1135,7 +1238,9 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
     if (fermetures >= MISSIONS_PAR_PASSAGE) break;
     const r = await reevaluerMission(x.id, "passage", maintenant);
     bilan.reevaluees += 1;
-    if (r.action === "lettre_annulee" || r.action === "erreur") fermetures += 1;
+    if (r.action === "lettre_annulee" || r.action === "mission_fermee" || r.action === "erreur") {
+      fermetures += 1;
+    }
   }
   return bilan;
 }
