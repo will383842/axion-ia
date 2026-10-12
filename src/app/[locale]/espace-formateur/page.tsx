@@ -169,8 +169,7 @@ export default async function EspaceFormateurAccueilPage({
                   <>
                     {chiffrees.get(m.id) != null ? (
                       <p className="text-mocha mt-1 text-sm">
-                        Honoraires{" "}
-                        <strong>{eurosCourts(chiffrees.get(m.id)!.totalHtCents)} HT</strong>
+                        Total <strong>{eurosCourts(chiffrees.get(m.id)!.totalHtCents)} HT</strong>
                       </p>
                     ) : null}
                     {m.echeanceReponseAt !== null ? (

@@ -79,13 +79,26 @@ export interface LieuChoix {
 
 /**
  * La session se tient-elle à distance ? LA règle du lieu, lue par les cartes,
- * la proposition, la lettre et le paiement.
+ * la proposition, la lettre et le paiement (08 §8, L11b : « même département
+ * ou visio = 0 ») : le forfait de déplacement n'existe que sur place.
+ *
+ * Le lieu renseigné fait foi ; sans lieu (`lieuType` nul, session d'avant le
+ * lieu de déroulement), la modalité tranche. Une session hybride a des
+ * journées sur place : son forfait reste dû.
  */
 export function sessionADistance(s: {
   readonly lieuType: string | null;
   readonly modalite: string;
 }): boolean {
-  return s.lieuType === "distanciel";
+  return s.lieuType === "distanciel" || (s.lieuType === null && s.modalite === "distanciel");
+}
+
+/** Le forfait figé, sauf à distance : `null` (compris). Même règle partout. */
+export function forfaitSelonLieu(
+  forfaitFigeHtCents: number | null,
+  lieu: { readonly lieuType: string | null; readonly modalite: string },
+): number | null {
+  return sessionADistance(lieu) ? null : forfaitFigeHtCents;
 }
 
 export type Proximite = "distanciel" | "meme_departement" | "meme_region" | "ailleurs" | "inconnu";

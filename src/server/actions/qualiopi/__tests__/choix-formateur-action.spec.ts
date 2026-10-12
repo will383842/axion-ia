@@ -153,3 +153,22 @@ describe("réponse depuis le formulaire de l'espace", () => {
     expect(h.repondre).toHaveBeenLastCalledWith(expect.objectContaining({ reponse: "acceptee" }));
   });
 });
+
+describe("ARGENT — proposition faite avant les cartes (relecture #1501, 2e tour)", () => {
+  it("le 1er choix tient déjà une proposition SANS honoraires figés : refus, même à forfait 0", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    h.payeeParMission.mockResolvedValue(true);
+    vi.mocked(prisma.trainingSession.findUnique).mockResolvedValueOnce({
+      formateurPrincipalId: A,
+    } as never);
+    vi.mocked(prisma.missionFormateur.findFirst).mockResolvedValueOnce({
+      tarifHtCents: null,
+      forfaitDeplacementParJourHtCents: null,
+      regimeTvaFige: null,
+    } as never);
+    const r = await choisirFormateursSessionAction(SAISIE);
+    expect(r).toMatchObject({ error: expect.stringContaining("sans honoraires") });
+    expect(h.enregistrer).not.toHaveBeenCalled();
+    expect(h.assign).not.toHaveBeenCalled();
+  });
+});

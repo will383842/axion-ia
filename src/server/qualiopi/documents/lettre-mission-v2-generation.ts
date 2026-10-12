@@ -21,6 +21,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { LIEU_DOCUMENT_SELECT } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
+import { forfaitSelonLieu } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { lireContratCadreSigne } from "@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur";
 import {
   assemblerLettreV2,
@@ -58,6 +59,7 @@ export async function genererLettreMissionV2(input: {
         numero: true,
         titreSession: true,
         nbParticipantsPrevus: true,
+        modalite: true,
         ...LIEU_DOCUMENT_SELECT,
         client: { select: { raisonSociale: true } },
         jours: { select: { date: true, heureDebut: true, heureFin: true } },
@@ -139,7 +141,16 @@ export async function genererLettreMissionV2(input: {
     mission:
       mission === null
         ? null
-        : { ...mission, tarifHtCents: mission.tarifHtCents ?? affectation?.tarifHtCents ?? null },
+        : {
+            ...mission,
+            tarifHtCents: mission.tarifHtCents ?? affectation?.tarifHtCents ?? null,
+            // À distance, aucun forfait : la règle de la proposition et du
+            // paiement (`forfaitSelonLieu`).
+            forfaitDeplacementParJourHtCents: forfaitSelonLieu(
+              mission.forfaitDeplacementParJourHtCents,
+              session,
+            ),
+          },
     session: {
       titre: session.titreSession,
       numero: session.numero,

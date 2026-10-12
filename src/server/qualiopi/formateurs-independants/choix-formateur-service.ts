@@ -45,6 +45,7 @@ import {
   estRang,
   nomCourt,
   proximite,
+  sessionADistance,
   trierCartes,
   type CarteFormateur,
   type ChoixFige,
@@ -109,7 +110,7 @@ function lieuDe(s: {
   modalite: string;
 }): LieuChoix {
   return {
-    distanciel: s.lieuType === "distanciel" || (s.lieuType === null && s.modalite === "distanciel"),
+    distanciel: sessionADistance(s),
     codePostal: s.lieuCodePostal,
   };
 }
