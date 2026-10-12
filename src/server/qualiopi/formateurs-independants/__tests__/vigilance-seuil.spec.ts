@@ -68,6 +68,39 @@ describe("le cumul HT des honoraires", () => {
     ).toBe(320_000);
   });
 
+  it("relecture G1 : l'avoir TOTAL d'une pièce annulée n'est pas déduit une seconde fois", () => {
+    // 3 000 payé ; pièce 2 500 annulée ; avoir −2 500 ; réémission 2 500 → 5 500.
+    expect(
+      cumulDesReleves([
+        r(300_000, "paye"),
+        r(250_000, "annule"),
+        { ...r(-250_000, "valide"), avoirDe: { statut: "annule" } },
+        r(250_000, "facture_recue"),
+      ]),
+    ).toBe(550_000);
+  });
+
+  it("relecture G1 : un avoir PARTIEL d'une pièce payée est déduit une fois", () => {
+    expect(
+      cumulDesReleves([
+        r(400_000, "paye"),
+        r(150_000, "facture_recue"),
+        { ...r(-60_000, "valide"), avoirDe: { statut: "paye" } },
+      ]),
+    ).toBe(490_000);
+  });
+
+  it("relecture G1 : un trop-perçu IMPUTÉ n'est pas déduit une seconde fois", () => {
+    // 4 000 payé ; avoir −500 ; suivant 1 500 (= 2 000 − 500 imputés) → 5 500.
+    expect(
+      cumulDesReleves([
+        r(400_000, "paye"),
+        { ...r(-50_000, "valide"), avoirDe: { statut: "paye" } },
+        { ...r(150_000, "facture_recue"), imputations: [{ montantHtCents: -50_000 }] },
+      ]),
+    ).toBe(550_000);
+  });
+
   it("une valeur illisible n'abaisse jamais le cumul", () => {
     expect(cumulDesReleves([r(Number.NaN), r(100_000)])).toBe(100_000);
   });

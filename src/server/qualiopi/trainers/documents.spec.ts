@@ -18,20 +18,22 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
 const mockTrainerFindUnique = vi.fn();
 const mockDocumentFindMany = vi.fn();
 const mockSessionFormateurFindMany = vi.fn();
-const mockStatementAggregate = vi.fn();
+const mockStatementFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainer: { findUnique: (...a: unknown[]) => mockTrainerFindUnique(...a) },
     trainerDocument: { findMany: (...a: unknown[]) => mockDocumentFindMany(...a) },
     sessionFormateur: { findMany: (...a: unknown[]) => mockSessionFormateurFindMany(...a) },
-    trainerStatement: { aggregate: (...a: unknown[]) => mockStatementAggregate(...a) },
+    trainerStatement: { findMany: (...a: unknown[]) => mockStatementFindMany(...a) },
   },
 }));
 
 /** Lot G1 — cumul HT des relevés facturés (la base du seuil URSSAF). */
 const cumulFacture = (cents: number) =>
-  mockStatementAggregate.mockResolvedValue({ _sum: { totalHtCents: cents } });
+  mockStatementFindMany.mockResolvedValue([
+    { trainerId: "t1", statut: "paye", totalHtCents: cents, avoirDe: null, feeLines: [] },
+  ]);
 
 import {
   cumulAnnuelFormateurCents,
@@ -59,7 +61,7 @@ beforeEach(() => {
   mockSessionFormateurFindMany.mockReset();
   mockDocumentFindMany.mockResolvedValue([]);
   mockSessionFormateurFindMany.mockResolvedValue([]);
-  mockStatementAggregate.mockReset();
+  mockStatementFindMany.mockReset();
   cumulFacture(0);
 });
 
@@ -349,7 +351,7 @@ describe("getTrainerConformite", () => {
     const r = await getTrainerConformite("t1", 2026, NOW);
     expect(r?.montantRetenuCents).toBe(0);
     expect(r?.manquements.map((m) => m.type)).not.toContain("attestation_vigilance_urssaf");
-    const arg = mockStatementAggregate.mock.calls[0]?.[0] as {
+    const arg = mockStatementFindMany.mock.calls[0]?.[0] as {
       where: { trainerId: string; statut: { in: string[] } };
     };
     expect(arg.where).toEqual({
@@ -360,7 +362,7 @@ describe("getTrainerConformite", () => {
 
   it("lot G1 : cumul illisible → seuil réputé atteint (garde fermée)", async () => {
     mockTrainerFindUnique.mockResolvedValue({ statut: "sous_traitant" });
-    mockStatementAggregate.mockRejectedValue(new Error("no db"));
+    mockStatementFindMany.mockRejectedValue(new Error("no db"));
     const r = await getTrainerConformite("t1", 2026, NOW);
     expect(r?.cumulIllisible).toBe(true);
     expect(r?.manquements.some((m) => m.code === "vigilance_urssaf_absente")).toBe(true);

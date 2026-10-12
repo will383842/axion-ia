@@ -12,8 +12,9 @@
  *
  * Le cumul est celui des HONORAIRES HT du formateur avec l'organisme : ses relevés
  * facturés (validés, facture reçue, payés — la mission en cours de paiement en fait
- * partie), avoirs déduits, sans borne de période. Un relevé brouillon, à valider ou
- * annulé ne compte pas.
+ * partie), avoirs déduits UNE fois, sans borne de période. Un relevé brouillon, à valider
+ * ou annulé ne compte pas ; un trop-perçu imputé n'est pas déduit une seconde fois
+ * (`cumulDesReleves`).
  *
  * ⚠️ Différence assumée avec les apporteurs : leur cumul est apprécié TTC par prudence
  * (analyse du 09/10, art. 6.2 de LEUR contrat). Celui des formateurs est HT, comme le
@@ -34,15 +35,41 @@ export const STATUTS_RELEVE_CUMUL = ["valide", "facture_recue", "paye"] as const
 
 const COMPTE: ReadonlySet<string> = new Set(STATUTS_RELEVE_CUMUL);
 
-/** Cumul HT des relevés qui comptent. Un montant illisible est ignoré. */
-export function cumulDesReleves(
-  releves: ReadonlyArray<{ readonly statut: string; readonly totalHtCents: number }>,
-): number {
-  return releves.reduce(
-    (total, r) =>
-      COMPTE.has(r.statut) && Number.isFinite(r.totalHtCents) ? total + r.totalHtCents : total,
-    0,
-  );
+/** Un relevé tel que le cumul le lit : son statut, son total, et de quoi éviter les doubles. */
+export interface ReleveCumul {
+  readonly statut: string;
+  readonly totalHtCents: number;
+  /** Si ce relevé est un AVOIR : la pièce qu'il corrige (son statut). */
+  readonly avoirDe?: { readonly statut: string } | null;
+  /** Lignes d'imputation de trop-perçu (négatives, non annulées) portées par ce relevé. */
+  readonly imputations?: ReadonlyArray<{ readonly montantHtCents: number }>;
+}
+
+/**
+ * Cumul HT des relevés qui comptent — chaque somme UNE fois (correctif de la relecture G1).
+ *
+ *   - un AVOIR ne compte que si la pièce qu'il corrige compte encore : l'avoir TOTAL d'une
+ *     pièce non payée accompagne son passage en `annule`, qui l'a déjà sortie du cumul ;
+ *     le déduire en plus retirait deux fois la pièce ;
+ *   - une ligne d'IMPUTATION de trop-perçu (décision 89) est un remboursement, pas une
+ *     baisse d'honoraires : l'avoir partiel a déjà déduit le trop-perçu. Elle est donc
+ *     rajoutée au total du relevé qui la porte.
+ *
+ * 🔴 Le cumul déclenche une obligation légale : dans le doute il SUR-estime. Une valeur
+ * illisible n'abaisse jamais le cumul.
+ */
+export function cumulDesReleves(releves: ReadonlyArray<ReleveCumul>): number {
+  let total = 0;
+  for (const r of releves) {
+    if (!COMPTE.has(r.statut) || !Number.isFinite(r.totalHtCents)) continue;
+    if (r.avoirDe && !COMPTE.has(r.avoirDe.statut)) continue;
+    const rendu = (r.imputations ?? []).reduce(
+      (s, l) => (Number.isFinite(l.montantHtCents) && l.montantHtCents < 0 ? s - l.montantHtCents : s),
+      0,
+    );
+    total += r.totalHtCents + rendu;
+  }
+  return total;
 }
 
 export type PhaseVigilance = "sous_le_seuil" | "approche" | "seuil_atteint";
