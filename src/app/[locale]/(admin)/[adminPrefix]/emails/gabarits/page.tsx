@@ -46,6 +46,7 @@ import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import {
   cleDuTexte,
+  listeDesTextesAffichee,
   TEXTES_FORMATEURS_A_VALIDER,
 } from "@/server/email/textes-formateurs-a-valider";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
@@ -186,7 +187,10 @@ export default async function GabaritsEmailPage({
         </details>
         {peutValider && nbValides < textesFormateurs.length ? (
           <div className="border-border mt-4 border-t pt-4">
-            <ValiderTousTextesFormateurs nombre={textesFormateurs.length} />
+            <ValiderTousTextesFormateurs
+              nombre={textesFormateurs.length}
+              liste={listeDesTextesAffichee()}
+            />
           </div>
         ) : null}
       </section>

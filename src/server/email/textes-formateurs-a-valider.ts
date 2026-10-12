@@ -67,3 +67,12 @@ export function estTexteFormateurAValider(gabarit: string, variante?: string): b
     return false;
   }
 }
+
+/**
+ * La liste des textes telle que l'écran l'affiche : les clés, dans l'ordre, une par
+ * ligne. « Valider tous les textes » la renvoie et l'action la compare à la liste du
+ * moment : un texte remplacé par un autre, à nombre égal, est refusé.
+ */
+export function listeDesTextesAffichee(): string {
+  return TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte).join("\n");
+}
