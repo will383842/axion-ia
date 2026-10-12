@@ -640,11 +640,11 @@ Comment lire chaque fiche :
   >
   > Votre lettre de mission pour [intitulé] est prête.
   >
-  > Elle couvre [N] journée(s) et [M] demi-journée(s), du [date] au [date], à [lieu].
+  > Elle couvre [N] journée(s) et [M] demi-journée(s), du [date de début] au [date de fin], à [lieu].
   >
   > Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT) et le forfait de déplacement [le cas échéant].
   >
-  > Elle rappelle aussi la date limite de paiement de vos honoraires : le [date] au plus tard, 30 jours après la dernière journée.
+  > Elle rappelle aussi la date limite de paiement de vos honoraires : le [date limite] au plus tard, 30 jours après la dernière journée.
 
 - **Bouton** : « Signer ma lettre »
 
