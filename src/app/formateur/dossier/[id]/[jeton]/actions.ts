@@ -30,6 +30,7 @@ import {
   enregistrerCodeUrssaf,
   enregistrerVous,
   envoyerDossier,
+  etatDuDossier,
   lireDossierParLien,
   signalerSituation,
   type DossierVue,
@@ -39,6 +40,7 @@ import {
   codePostalValide,
   estPieceDossier,
   estRegimeTva,
+  manquesDuDossier,
   piecesDemandees,
 } from "@/server/qualiopi/formateurs-independants/dossier-regles";
 import {
@@ -51,6 +53,14 @@ import {
   alerterDossierRecu,
   prevenirStatutNonOuvert,
 } from "@/server/qualiopi/formateurs-independants/envois-dossier";
+import {
+  demanderCodeDuDossier,
+  envoyerAccuseDossier,
+  lienPdfContratDossier,
+  modeContratDossier,
+  signerContratDuDossier,
+  type FormateurDuDossier,
+} from "@/server/qualiopi/formateurs-independants/contrat-dans-le-dossier";
 import { sourceRegistreCommune } from "@/server/qualiopi/formateurs-independants/source-registre";
 import {
   codeVigilanceBienForme,
@@ -80,6 +90,8 @@ const LIMITES = {
   activite: { limit: 20, windowSec: 900, surPanne: "refuser" },
   piece: { limit: 30, windowSec: 900, surPanne: "laisser-passer" },
   envoi: { limit: 6, windowSec: 900, surPanne: "refuser" },
+  // Le code de signature (lot B) : les plafonds d'émission restent ceux de l'envoi F17.
+  code: { limit: 10, windowSec: 900, surPanne: "refuser" },
 } as const satisfies Record<string, RateLimitConfig>;
 
 async function ipHachee(): Promise<string | null> {
@@ -116,10 +128,8 @@ function signaler(etape: string, e: unknown): void {
   });
 }
 
-const ECHEC: Resultat = {
-  ok: false,
-  message: "L'enregistrement n'a pas abouti. Réessayez dans quelques minutes.",
-};
+const ECHEC_MESSAGE = "L'enregistrement n'a pas abouti. Réessayez dans quelques minutes.";
+const ECHEC: Resultat = { ok: false, message: ECHEC_MESSAGE };
 
 // ── Étape 1 ──────────────────────────────────────────────────────────────
 
@@ -335,13 +345,12 @@ export async function envoyerDossierAction(fd: FormData): Promise<Resultat> {
   if (champ(fd, "certifie", 5) !== "1") {
     return { ok: false, message: "Cochez la case « Je certifie que » pour envoyer." };
   }
-  const maintenant = new Date();
-  // Le registre est rejugé à l'envoi : une entreprise fermée entre-temps renvoie à l'étape 2.
-  let bloquante = !d.siret;
-  if (d.siret) {
-    const { v } = await jugerSiret(d, d.siret, d.nda);
-    bloquante = !ECRANS_QUI_LAISSENT_CONTINUER.has(v.ecran);
+  // Contrat à signer ici (lot B) : le dossier ne part qu'avec la signature.
+  if ((await modeContratDossier()).mode === "a_signer") {
+    return { ok: false, message: "Signez votre contrat : votre dossier part avec lui." };
   }
+  const maintenant = new Date();
+  const bloquante = await entrepriseBloquante(d);
   try {
     const r = await envoyerDossier(d, { bloquante }, maintenant);
     if (!r.ok) return r;
@@ -349,6 +358,19 @@ export async function envoyerDossierAction(fd: FormData): Promise<Resultat> {
     signaler("envoi", e);
     return ECHEC;
   }
+  await apresEnvoi(d, maintenant);
+  return { ok: true };
+}
+
+/** Le registre est rejugé à l'envoi : une entreprise fermée entre-temps renvoie à l'étape 2. */
+async function entrepriseBloquante(d: DossierVue): Promise<boolean> {
+  if (!d.siret) return true;
+  const { v } = await jugerSiret(d, d.siret, d.nda);
+  return !ECRANS_QUI_LAISSENT_CONTINUER.has(v.ecran);
+}
+
+/** Contrôle registre (L4) et alerte F11 après l'envoi : une panne ne défait pas l'envoi. */
+async function apresEnvoi(d: DossierVue, maintenant: Date): Promise<void> {
   // Le contrôle registre du lot L4, déclenché par l'envoi : il écrit SA preuve. Une panne ne
   // défait pas l'envoi (le contrôle se relance depuis la console).
   try {
@@ -365,6 +387,79 @@ export async function envoyerDossierAction(fd: FormData): Promise<Resultat> {
     await alerterDossierRecu(d.id);
   } catch (e) {
     signaler("alerte-dossier-recu", e);
+  }
+}
+
+// ── Étape 4, contrat signé dans le dossier (lot B, M3) ───────────────────
+
+export type ResultatCodeContrat =
+  { ok: true; adresse: string; pdfUrl: string | null } | { ok: false; message: string };
+
+const formateur = (d: DossierVue): FormateurDuDossier => ({
+  id: d.id,
+  siret: d.siret,
+  email: d.email,
+  prenom: d.prenom,
+});
+
+const MESSAGE_CODE = "Le code se compose de 6 chiffres. Vérifiez-le et réessayez.";
+
+/** « Recevoir mon code » : le contrat est créé (ou repris), puis le code F17 part. */
+export async function demanderCodeContratAction(fd: FormData): Promise<ResultatCodeContrat> {
+  if (!(await debitAutorise("code"))) return { ok: false, message: TEXTES.trop };
+  const d = await dossierModifiable(fd);
+  if (!d) return { ok: false, message: TEXTES.invalideTitre };
+  const maintenant = new Date();
+  try {
+    const r = await demanderCodeDuDossier(formateur(d), maintenant);
+    if (!r.ok) return r;
+    return { ok: true, adresse: r.destinataireMasque, pdfUrl: await lienPdfContratDossier(d.id) };
+  } catch (e) {
+    signaler("code-contrat", e);
+    return { ok: false, message: ECHEC_MESSAGE };
+  }
+}
+
+/**
+ * « Signer mon contrat » : signature par le code, puis envoi du dossier, contrôle,
+ * alerte F11 et F10 (copie de la signature). Une signature déjà posée n'est jamais
+ * refaite : après une panne, le même bouton reprend l'envoi.
+ */
+export async function signerEtEnvoyerDossierAction(fd: FormData): Promise<Resultat> {
+  if (!(await debitAutorise("envoi"))) return TROP;
+  const d = await dossierModifiable(fd);
+  if (!d) return NEUTRE;
+  if (champ(fd, "certifie", 5) !== "1" || champ(fd, "accepte", 5) !== "1") {
+    return { ok: false, message: "Cochez les deux cases avant de signer." };
+  }
+  const code = champ(fd, "code", 20).replace(/\s+/g, "");
+  if (!/^\d{6}$/.test(code)) return { ok: false, message: MESSAGE_CODE };
+  const maintenant = new Date();
+  // Avant de signer : une entreprise fermée entre-temps renvoie à l'étape 2, rien n'est signé.
+  const bloquante = await entrepriseBloquante(d);
+  if (bloquante) return { ok: false, message: TEXTES.ecranFermee };
+  // Rien n'est signé tant qu'il manque un élément du dossier.
+  const manques = manquesDuDossier(etatDuDossier(d, bloquante));
+  if (manques.length > 0) {
+    return { ok: false, message: `Pour envoyer, il manque : ${manques.join(" · ")}.` };
+  }
+  let documentId: string;
+  try {
+    const s = await signerContratDuDossier(formateur(d), code, maintenant);
+    if (!s.ok) return s;
+    documentId = s.documentId;
+    const r = await envoyerDossier(d, { bloquante }, maintenant);
+    if (!r.ok) return r;
+  } catch (e) {
+    signaler("signature-contrat", e);
+    return ECHEC;
+  }
+  await apresEnvoi(d, maintenant);
+  // F10 : « Bien reçu », avec la copie de la signature. Une panne ne défait rien.
+  try {
+    await envoyerAccuseDossier(formateur(d), documentId);
+  } catch (e) {
+    signaler("accuse-dossier", e);
   }
   return { ok: true };
 }

@@ -27,6 +27,8 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
+import { publicUrl } from "@/lib/public-url";
+import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { logQualiopiActivity, requireHabilitation } from "@/server/actions/qualiopi/_guards";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { validateTrainerDocumentAction } from "@/server/actions/qualiopi/trainer-documents";
@@ -37,6 +39,7 @@ import {
   messageRefusActivation,
 } from "@/server/qualiopi/formateurs-independants/activation";
 import { validerControleOrange } from "@/server/qualiopi/formateurs-independants/controle";
+import { marquerDossierVerifie } from "@/server/qualiopi/formateurs-independants/dossier-verifie";
 import { SOURCE_VALIDATION_ORANGE } from "@/server/qualiopi/formateurs-independants/controle-regles";
 import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
 import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
@@ -147,6 +150,20 @@ export async function contresignerEtOuvrirEspaceAction(
       if (!r.ok && r.raison !== "deja_signe") return { ok: false, error: r.message };
     }
 
+    // 4 bis (lot B). Contrat contresigné : le dossier passe « vérifié » (relances de
+    //    pièces S6) et son lien est révoqué. Une panne ne défait pas la contresignature.
+    if (f.contrat !== null) {
+      try {
+        await marquerDossierVerifie({
+          trainerId: s.trainerId,
+          parId: session.userId,
+          maintenant: new Date(),
+        });
+      } catch (err) {
+        Sentry.captureException(err, { tags: { action: "w4:dossier-verifie" } });
+      }
+    }
+
     // 5. Orange du registre : la contresignature vient de relire le registre.
     //    « J'ai vérifié » ne couvre que les motifs que la personne a vus.
     const dernier = await prisma.verificationRegistreSousTraitance.findFirst({
@@ -211,15 +228,21 @@ export async function contresignerEtOuvrirEspaceAction(
     if (a.actif) {
       const t = await prisma.trainer.findUnique({
         where: { id: s.trainerId },
-        select: { email: true },
+        select: { email: true, prenom: true },
       });
+      const prenom = t?.prenom?.trim() ?? "";
       const envoi =
         t?.email == null
           ? "sans-adresse"
           : await envoyer({
               gabarit: "formateur-espace-ouvert",
               destinataire: t.email,
-              payload: {},
+              // Le bouton mène à la connexion de l'espace : jamais un lien de connexion
+              // dans un e-mail qui peut être transféré.
+              payload: {
+                ...(prenom ? { prenom } : {}),
+                lien: publicUrl(FORMATEUR_CONNEXION_PATH).toString(),
+              },
               entityType: "Trainer",
               entityId: s.trainerId,
               jobId: `fi-espace-ouvert-${s.trainerId}`,

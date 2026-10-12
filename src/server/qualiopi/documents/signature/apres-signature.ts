@@ -79,6 +79,11 @@ export interface ContexteApresSignature {
    * si l'interrupteur `signature.alertes_hors_jeton` est allumé.
    */
   readonly canal?: "lien_a_jeton";
+  /**
+   * Lot B (M3) : l'appelant remet lui-même la copie de la signature (F10 du dossier
+   * formateur). Absent : comportement inchangé.
+   */
+  readonly sansCopiePartielle?: true;
 }
 
 function capturer(err: unknown, branche: string, ctx: ContexteApresSignature): void {
@@ -375,7 +380,7 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
         capturer(err, "alerte", ctx);
       }
     }
-    if (interrupteurs.copie_partielle) {
+    if (interrupteurs.copie_partielle && ctx.sansCopiePartielle !== true) {
       try {
         await transmettreCopiePartielle(ctx.documentGenereId, ctx.partie);
       } catch (err) {

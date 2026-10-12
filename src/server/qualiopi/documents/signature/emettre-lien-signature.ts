@@ -33,6 +33,7 @@ import { publicUrl } from "@/lib/public-url";
 import { hashIp } from "@/lib/security/ip-hash";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { journaliser } from "@/server/journal/journaliser";
 import type { PartieSignataire } from "./document-signature-hash";
 import { circuitPour } from "./parties-requises";
 import { creerTokenDocument, TokenDocumentError } from "./token-document";
@@ -276,14 +277,19 @@ export async function resoudreIdentite(
  */
 export async function emettreLienSignature(
   input: z.input<typeof schemaEmissionLien> & {
-    /** L'administrateur qui émet — son rôle a été gardé par l'appelant. */
-    readonly acteur: { readonly session: AdminSession };
+    /**
+     * L'administrateur qui émet — son rôle a été gardé par l'appelant — ou le SYSTÈME
+     * pour le contrat-cadre signé dans le dossier en ligne du formateur (lot B, M3) :
+     * l'identité est figée depuis la fiche comme pour tout lien, le code F17 envoyé à
+     * l'adresse de la fiche la confirme, et le lien n'est jamais envoyé.
+     */
+    readonly acteur: { readonly session: AdminSession } | { readonly systeme: "dossier_formateur" };
   },
 ): Promise<ResultatEmission<{ url: string; expiresAt: Date; reemission: boolean }>> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
   }
-  const session = input.acteur.session;
+  const session = "session" in input.acteur ? input.acteur.session : null;
 
   const parsed = schemaEmissionLien.safeParse(input);
   if (!parsed.success) return { error: "Entrée invalide." };
@@ -307,6 +313,16 @@ export async function emettreLienSignature(
     },
   });
   if (piece === null) return { error: "Pièce introuvable." };
+  // Le système n'émet que pour le contrat-cadre d'un indépendant, au titre du sous-traitant.
+  if (
+    session === null &&
+    (piece.type !== "contrat_sous_traitance" ||
+      partie !== "sous_traitant" ||
+      piece.sousTraitantId !== null ||
+      piece.trainerId === null)
+  ) {
+    return { error: "Cette pièce ne se signe pas depuis le dossier." };
+  }
 
   const circuit = circuitPour(piece.type);
   if (circuit === null) return { error: "Cette pièce ne se signe pas." };
@@ -388,14 +404,21 @@ export async function emettreLienSignature(
       createdIpHash: hashIp(ipBrute),
     });
 
-    await logQualiopiActivity({
+    const entree = {
       action: "qualiopi.piece.lien_signature",
       targetType: "DocumentGenere",
       targetId: documentGenereId,
       // ⚠️ Le LIEN n'est JAMAIS journalisé : il vaut signature.
       changes: { numero: piece.numero, type: piece.type, partie, reemission: actifs > 0 },
-      session,
-    });
+    } as const;
+    if (session !== null) await logQualiopiActivity({ ...entree, session });
+    else {
+      await journaliser(prisma, {
+        ...entree,
+        changes: { ...entree.changes, acteur: "dossier_formateur" },
+        session: null,
+      });
+    }
 
     return {
       data: {

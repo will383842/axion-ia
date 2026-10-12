@@ -321,6 +321,54 @@ export function copiePartiellePdfKey(
  * Une partie ne signe qu'une fois une pièce : un appel par signature suffit à
  * l'unicité, sans colonne de revendication.
  */
+export type ResultatArchiveCopiePartielle =
+  | { readonly ok: true; readonly r2Key: string; readonly nomFichier: string }
+  | {
+      readonly ok: false;
+      readonly motif: Exclude<ResultatCopiePartielle, { ok: true }>["motif"];
+    };
+
+/**
+ * Rend et ARCHIVE la copie partielle d'une partie, sans rien envoyer (lot B, M3) :
+ * l'e-mail qui la porte appartient à l'appelant (F10 du dossier formateur). Mêmes
+ * gardes que `transmettreCopiePartielle`, même clé d'archive. Ne lève jamais.
+ */
+export async function archiverCopiePartielle(
+  documentGenereId: string,
+  partie: string,
+): Promise<ResultatArchiveCopiePartielle> {
+  if (partie === PARTIE_ORGANISME) return { ok: false, motif: "organisme" };
+  try {
+    const piece = await prisma.documentGenere.findUnique({
+      where: { id: documentGenereId },
+      select: {
+        id: true,
+        type: true,
+        numero: true,
+        createdAt: true,
+        statutSignature: true,
+        annuleeAt: true,
+        hashSha256: true,
+      },
+    });
+    if (piece === null) return { ok: false, motif: "rendu_impossible" };
+    if (piece.statutSignature !== "partielle") return { ok: false, motif: "pas_partielle" };
+    if (piece.annuleeAt !== null) return { ok: false, motif: "annulee" };
+    const rendu = await rendreExemplaireSigne(piece.id).catch(() => null);
+    if (rendu === null || !rendu.ok) return { ok: false, motif: "rendu_impossible" };
+    const r2Key = copiePartiellePdfKey(piece, partie);
+    const archive = await storeAndSignPdf(
+      rendu.buffer,
+      r2Key,
+      metadonneesEmpreinte(piece.hashSha256, rendu.buffer),
+    ).catch(() => null);
+    if (archive === null) return { ok: false, motif: "archivage_impossible" };
+    return { ok: true, r2Key, nomFichier: rendu.nomFichier.replace(/\.pdf$/, "-copie.pdf") };
+  } catch {
+    return { ok: false, motif: "rendu_impossible" };
+  }
+}
+
 export async function transmettreCopiePartielle(
   documentGenereId: string,
   partie: string,

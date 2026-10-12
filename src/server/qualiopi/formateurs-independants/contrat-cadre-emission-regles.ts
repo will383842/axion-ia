@@ -122,7 +122,17 @@ export function verdictEmissionContrat(
   f: FaitsEmissionContrat,
   versionCible: number | null,
   maintenant: Date,
+  options: {
+    /**
+     * `dossier` (lot B, M3) : contrat créé dans le dossier, avant la vérification par
+     * Axion. L'attestation URSSAF vérifiée et le contrôle « probant » (orange validé)
+     * ne sont pas exigés ici — ils le sont à la contresignature (W-4) ; un dernier
+     * contrôle ROUGE refuse toujours, et le registre lu à l'instant doit dire actif.
+     */
+    parcours?: "console" | "dossier";
+  } = {},
 ): VerdictEmission {
+  const dossier = options.parcours === "dossier";
   try {
     if (f.statut !== "sous_traitant" || f.organismeSousTraitantId !== null) {
       return { ok: false, refus: [REFUS_EMISSION.horsPerimetre] };
@@ -154,10 +164,13 @@ export function verdictEmissionContrat(
       refus.push(REFUS_EMISSION.lienEnCours);
     }
 
-    if (!vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)) {
+    if (!dossier && !vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)) {
       refus.push(REFUS_EMISSION.vigilance);
     }
-    if (!etatControle(f.controles, maintenant).probant) refus.push(REFUS_EMISSION.controle);
+    const controle = etatControle(f.controles, maintenant);
+    if (dossier ? controle.statut === "rouge" || controle.statut === "aucun" : !controle.probant) {
+      refus.push(REFUS_EMISSION.controle);
+    }
 
     const siret = siretNormalise(f.siret);
     const dernier = [...f.controles].sort(

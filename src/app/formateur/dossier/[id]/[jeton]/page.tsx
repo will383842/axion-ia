@@ -23,6 +23,7 @@ import {
   etapeInitiale,
   piecesDemandees,
 } from "@/server/qualiopi/formateurs-independants/dossier-regles";
+import { etatContratDossier } from "@/server/qualiopi/formateurs-independants/contrat-dans-le-dossier";
 
 import { Coquille, EcranEtat } from "./Coquille";
 import { DossierFormateur } from "./DossierFormateur";
@@ -60,6 +61,10 @@ export default async function DossierFormateurPage({ params }: PageProps) {
 
   // Le registre n'est pas rappelé à l'affichage : l'étape 2 le rejuge à la recherche.
   const etat = etatDuDossier(dossier, false);
+  // Lot B : `contrat_auto` allumé et version arrêtée → le contrat se signe à l'étape 4.
+  const contrat = await etatContratDossier(dossier.id).catch(() => ({
+    mode: "sans_contrat" as const,
+  }));
 
   return (
     <Coquille titre={titre}>
@@ -83,6 +88,7 @@ export default async function DossierFormateurPage({ params }: PageProps) {
           piecesDemandees: piecesDemandees(dossier.nda),
         }}
         etapeInitiale={etapeInitiale(etat)}
+        contrat={contrat}
       />
     </Coquille>
   );
