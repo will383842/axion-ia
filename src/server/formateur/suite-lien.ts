@@ -28,8 +28,8 @@ const LISTE_BLANCHE: ReadonlyArray<RegExp> = [
   new RegExp(`^${FORMATEUR_BASE_PATH}$`),
   new RegExp(`^${FORMATEUR_BASE_PATH}/(remuneration|sessions|seances)$`),
   new RegExp(`^${FORMATEUR_BASE_PATH}/(sessions|seances)/${UUID}$`),
-  // Lot C (M18) — la lettre de mission à signer (lien de F26).
-  new RegExp(`^${FORMATEUR_BASE_PATH}/lettre/${UUID}$`),
+  // Lot C (M18) — la lettre de mission à signer (lien de F26) : l'accueil, lettre en tête.
+  new RegExp(`^${FORMATEUR_BASE_PATH}\\?lettre=${UUID}$`),
 ];
 
 /** `true` si `suite` est un chemin de l'espace admis tel quel. */

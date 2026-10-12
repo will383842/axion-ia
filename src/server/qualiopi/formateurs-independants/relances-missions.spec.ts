@@ -171,7 +171,7 @@ describe("F27 — lettre de mission pas encore signée", () => {
       decisionCampagne({ etat: f.etat, maintenant: MAINTENANT, regle: REGLE_LETTRE_1RE }),
     ).toMatchObject({ envoyer: true, etape: "1re" });
     expect(f.payload).toMatchObject({
-      lien: "https://exemple.test/fr/espace-formateur/lettre/d1",
+      lien: "https://exemple.test/fr/espace-formateur?lettre=d1",
       valeurs: { intitulé: "IA en entreprise" },
     });
     const tot = faitsLettre(lettre(30, 1), "1re", MAINTENANT)!;

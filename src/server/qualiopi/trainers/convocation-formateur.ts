@@ -234,7 +234,7 @@ async function chargerInfosPratiques(
     ...(lettreNonSignee ? { lettreNonSignee: { numeroSession: s.numero } } : {}),
     payload: {
       ...(lettreNonSignee && mission?.lettreMissionId
-        ? { lienLettre: `${base}${FORMATEUR_BASE_PATH}/lettre/${mission.lettreMissionId}` }
+        ? { lienLettre: `${base}${FORMATEUR_BASE_PATH}?lettre=${mission.lettreMissionId}` }
         : {}),
       formateurPrenomNom: `${sf.trainer.prenom} ${sf.trainer.nom}`,
       titreFormation: s.titreSession,

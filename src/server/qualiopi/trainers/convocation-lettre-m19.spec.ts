@@ -93,7 +93,7 @@ describe("convocation J-7 d'un indépendant", () => {
   it("lettre non signée : ligne + lien, agenda joint, alerte interne sans nom", async () => {
     await envoyerConvocationJ7Formateur("sf1");
     const [, , , payload, options] = appel();
-    expect(payload.lienLettre).toBe("https://exemple.test/fr/espace-formateur/lettre/d1");
+    expect(payload.lienLettre).toBe("https://exemple.test/fr/espace-formateur?lettre=d1");
     expect(options.attachments).toEqual([
       { filename: "session.ics", r2Key: "agenda-formateur/sf1.ics", contentType: "text/calendar" },
     ]);

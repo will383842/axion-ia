@@ -991,7 +991,7 @@ async function emettreLettre(
     });
     const { journees, demiJournees } = decompterJournees(jours);
     // Lot C (M18) : le bouton ouvre la lettre elle-même (chemin sur la liste blanche).
-    const lien = lienEspaceFormateur(`/lettre/${r.documentId}`);
+    const lien = lienEspaceFormateur(`?lettre=${r.documentId}`);
     const issue = await envoyer({
       gabarit: "formateur-lettre-a-signer",
       destinataire: m.trainer.email,

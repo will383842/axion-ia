@@ -366,7 +366,7 @@ export function faitsLettre(
   quelle: "1re" | "j3",
   maintenant: Date,
 ): FaitsCampagne | null {
-  const lien = lienEspace(`/lettre/${l.documentId}`);
+  const lien = lienEspace(`?lettre=${l.documentId}`);
   if (l.envoyeeAt === null || l.origineLogId === null || lien === null) return null;
   if (l.debutSession.getTime() <= maintenant.getTime()) return null;
   const j3 = new Date(l.debutSession.getTime() - 3 * JOUR_MS);

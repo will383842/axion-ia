@@ -249,7 +249,7 @@ describe("lettre due (T8)", () => {
         ]
       )[0];
       expect(envoi.gabarit).toBe("formateur-lettre-a-signer");
-      expect(envoi.payload.lien).toBe(`https://exemple.test/fr/espace-formateur/lettre/${DOC}`);
+      expect(envoi.payload.lien).toBe(`https://exemple.test/fr/espace-formateur?lettre=${DOC}`);
     } finally {
       vi.unstubAllEnvs();
     }

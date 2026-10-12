@@ -40,8 +40,8 @@ const HOSTILES = [
   `${FORMATEUR_BASE_PATH}@evil.example`,
   `${FORMATEUR_BASE_PATH}.evil.example`,
   `${FORMATEUR_BASE_PATH}/sessions/pas-un-uuid`,
-  `${FORMATEUR_BASE_PATH}/lettre/pas-un-uuid`,
-  `${FORMATEUR_BASE_PATH}/lettre/${UUID}?x=https://evil.example`,
+  `${FORMATEUR_BASE_PATH}?lettre=pas-un-uuid`,
+  `${FORMATEUR_BASE_PATH}?lettre=${UUID}&x=https://evil.example`,
   `${FORMATEUR_BASE_PATH}/connexion`,
   `/fr/admin`,
   ` ${FORMATEUR_BASE_PATH}`,
@@ -58,7 +58,7 @@ describe("liste blanche", () => {
       `${FORMATEUR_BASE_PATH}/seances/${UUID}`,
       `${FORMATEUR_BASE_PATH}/sessions/${UUID}`,
       // Lot C (M18) — la lettre de mission à signer, ouverte depuis F26.
-      `${FORMATEUR_BASE_PATH}/lettre/${UUID}`,
+      `${FORMATEUR_BASE_PATH}?lettre=${UUID}`,
     ]) {
       expect(suiteAdmise(s), s).toBe(true);
       expect(destinationApresConnexion(s)).toBe(s);
