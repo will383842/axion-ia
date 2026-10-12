@@ -40,6 +40,7 @@ import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import { enqueueEmail } from "@/server/queue/queues";
 
+import { VARIANTES_VALIDEES_A_PART } from "./envois-variantes";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 
@@ -167,20 +168,6 @@ export async function texteValide(gabarit: GabaritFormateur, variante?: string):
   if (!estTexteValide(registre, gabarit)) return false;
   return variante === undefined || estTexteValide(registre, gabarit, variante);
 }
-
-/**
- * Variantes ajoutées APRÈS la validation possible du gabarit : elles se
- * valident à part (`textes_valides.<gabarit>#<variante>`). Sans cette clé,
- * rien ne part — jamais un texte neuf sous une validation ancienne.
- * Clé : gabarit → (n° d'étape du payload → nom de la variante).
- */
-const VARIANTES_VALIDEES_A_PART: Readonly<
-  Partial<Record<GabaritFormateur, Readonly<Record<number, string>>>>
-> = {
-  // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
-  "formateur-mission-retiree": { 2: "lettre-non-signee" },
-  "formateur-formation-annulee": { 2: "lettre-non-signee" },
-};
 
 function varianteAValider(gabarit: GabaritFormateur, payload: unknown): string | undefined {
   const etape =

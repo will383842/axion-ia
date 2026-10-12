@@ -338,6 +338,27 @@ describe("lettre due (T8)", () => {
     expect(h.generer).not.toHaveBeenCalled();
   });
 
+  it("M7 — F32 : le payload réellement envoyé remplit tous les crochets du texte", async () => {
+    const { remplir, varianteDe } = await import("@/lib/email/templates/_formateur-independant");
+    const { CROCHET_NON_REMPLI } =
+      await import("@/lib/email/templates/formateur-independant-textes");
+    h.etat.gardeRefus = [MANQUES_MISSION.vigilance, MANQUES_MISSION.nda];
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
+      "bloquee_notifiee",
+    );
+    const e = (
+      h.envoyer.mock.calls[0] as unknown as [
+        { gabarit: "formateur-mission-en-attente"; payload: Record<string, unknown> },
+      ]
+    )[0];
+    expect(e.gabarit).toBe("formateur-mission-en-attente");
+    const v = varianteDe(e.gabarit, e.payload);
+    const vides = [v.objet, ...v.paragraphes]
+      .map((t) => remplir(t, e.payload))
+      .filter((t) => CROCHET_NON_REMPLI.test(t));
+    expect(vides).toEqual([]);
+  });
+
   it("organisme sous-traitant ou salarié : rien (circuit propre, lot L11f)", async () => {
     (h.etat.mission!.trainer as Record<string, unknown>).organismeSousTraitantId = SESSION;
     expect((await reevaluerMission(MISSION, "convention", MAINTENANT)).action).toBe("rien");

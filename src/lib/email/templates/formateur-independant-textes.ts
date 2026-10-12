@@ -354,7 +354,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Merci pour votre dossier. Pour continuer, il nous manque : [motif].",
-          "Déposez-le avec le même lien : il suffit de reprendre votre dossier.",
+          "Déposez-le avec le bouton ci-dessous : il suffit de reprendre votre dossier.",
         ],
         boutons: ["Reprendre mon dossier"],
       },
@@ -375,7 +375,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Merci pour le temps consacré à votre dossier.",
-          "Le registre public n'indique pas d'activité ouverte à ce numéro [motif : entreprise fermée / numéro introuvable].",
+          "Le registre public n'indique pas d'activité ouverte à ce numéro : [motif].",
           "Une micro-entreprise suffit. Dès que votre entreprise est créée ou régularisée, écrivez-nous : nous reprendrons votre dossier.",
         ],
         boutons: [],
@@ -816,7 +816,7 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre mission : il nous manque un élément",
         objetPropose: "Pour vous confier la mission [intitulé], il nous manque un élément",
         paragraphes: [
-          "Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].",
+          "Pour vous confier cette mission, il nous manque : [motif].",
           "Déposez-le depuis votre espace : la lettre de mission partira aussitôt.",
         ],
         boutons: ["Déposer depuis mon espace"],

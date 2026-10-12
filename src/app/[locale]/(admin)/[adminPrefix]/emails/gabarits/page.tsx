@@ -23,6 +23,12 @@
 // hydratation, et ne coûte rien au budget de la console. Même doctrine que le
 // sélecteur de créneaux (ADR 0038).
 //
+// ## Textes des formateurs indépendants (M1, lot A)
+//
+// Un encart dit combien de textes formateurs (gabarits et variantes) sont validés,
+// les liste, et donne au super-admin « valider tous les textes formateurs d'un
+// coup », avec case de confirmation. C'est le seul composant client de la page.
+//
 // FR uniquement (admin FR).
 
 import type { Metadata } from "next";
@@ -37,6 +43,14 @@ import {
   type CategorieEmail,
 } from "@/server/email/apercu/catalogue";
 import type { EmailJobName } from "@/server/queue/types";
+import { estSuperAdmin } from "@/server/auth/habilitations";
+import {
+  cleDuTexte,
+  TEXTES_FORMATEURS_A_VALIDER,
+} from "@/server/email/textes-formateurs-a-valider";
+import { lireTextesValides } from "@/server/email/textes-valides-lecture";
+
+import { ValiderTousTextesFormateurs } from "./ValiderTousTextesFormateurs";
 
 export const dynamic = "force-dynamic";
 
@@ -65,6 +79,14 @@ export default async function GabaritsEmailPage({
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  const registre = await lireTextesValides();
+  const textesFormateurs = TEXTES_FORMATEURS_A_VALIDER.map((t) => ({
+    ...t,
+    valide: registre.has(cleDuTexte(t)),
+  }));
+  const nbValides = textesFormateurs.filter((t) => t.valide).length;
+  const peutValider = estSuperAdmin((session.user as { role?: string }).role);
 
   const noms = Object.keys(CATALOGUE) as EmailJobName[];
   const groupes = ORDRE.map((cat) => ({
@@ -121,6 +143,53 @@ export default async function GabaritsEmailPage({
           </p>
         </div>
       ) : null}
+
+      <section
+        aria-labelledby="textes-formateurs"
+        className="border-border bg-paper mb-8 rounded-lg border p-4"
+      >
+        <h2 id="textes-formateurs" className="text-fg text-base font-semibold tracking-tight">
+          Textes des e-mails aux formateurs indépendants
+        </h2>
+        <p className="text-fg-soft mt-1 text-sm">
+          {nbValides} validé{nbValides > 1 ? "s" : ""} sur {textesFormateurs.length}. Un texte non
+          validé ne part jamais. Ouvrez un texte pour le lire, puis le valider (ou retirer sa
+          validation) sous son aperçu.
+        </p>
+        <details className="mt-3">
+          <summary className="text-primary cursor-pointer text-sm">Voir la liste</summary>
+          <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
+            {textesFormateurs.map((t) => (
+              <li key={cleDuTexte(t)} className="flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className={[
+                    "size-1.5 shrink-0 rounded-lg",
+                    t.valide ? "bg-sage" : "bg-terracotta",
+                  ].join(" ")}
+                />
+                <Link
+                  href={`/fr/${adminPrefix}/emails/gabarits/${t.gabarit}${
+                    t.variante !== undefined ? `?variante=${t.variante}` : ""
+                  }`}
+                  className="text-primary hover:underline"
+                >
+                  <code className="text-[13px]">
+                    {t.gabarit}
+                    {t.variante !== undefined ? ` · ${t.variante}` : ""}
+                  </code>
+                </Link>
+                <span className="text-fg-muted text-xs">{t.valide ? "validé" : "non validé"}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+        {peutValider && nbValides < textesFormateurs.length ? (
+          <div className="border-border mt-4 border-t pt-4">
+            <ValiderTousTextesFormateurs nombre={textesFormateurs.length} />
+          </div>
+        ) : null}
+      </section>
 
       <div className="space-y-12">
         {groupes.map(({ cat, items }) => (

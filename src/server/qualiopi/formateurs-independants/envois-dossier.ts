@@ -11,10 +11,14 @@
  *         (identifiant court, couleur du registre, lien console) ;
  *   - F12 `formateur-dossier-a-completer` : « Demander un complément » (console), motif
  *         d'une liste FERMÉE ; le dossier est rouvert avec un NOUVEAU lien ;
+ *   - F12 depuis l'écran W-4 (lot A, M7) : même geste, motif de la liste fermée de W-4 ;
+ *   - F13 `formateur-dossier-refuse`      : « Refuser le dossier » (W-4, registre rouge).
+ *         L'état « refusé » est ÉCRIT avant l'e-mail : une ligne `refus_administrateur`
+ *         AJOUTÉE au registre des contrôles (ajout seul, plan 08 §2.2), motif d'origine
+ *         gardé ;
  *   - F15 `formateur-statut-non-ouvert`   : une seule fois par fiche.
  *
- * Ni F10 (sa pièce jointe est la copie du contrat signé : signature pas encore livrée),
- * ni F13 (aucun état « refusé » n'existe encore pour le dossier) : voir le rapport du lot.
+ * Pas F10 (sa pièce jointe est la copie du contrat signé : signature pas encore livrée).
  *
  * 🔴 Les écritures sont conditionnelles ; le journal ne porte que des identifiants.
  */
@@ -29,6 +33,10 @@ import { envoyer, texteValide, type ResultatEnvoiFormateur } from "./envois";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 import { urlDossierFormateur } from "./jeton-dossier";
+import {
+  MOTIFS_COMPLEMENT as MOTIFS_COMPLEMENT_W4,
+  type MotifComplement as MotifComplementW4,
+} from "./verifier-contresigner-regles";
 
 /** Les motifs FERMÉS d'une demande de complément (F12), tels qu'écrits dans l'e-mail. */
 export const MOTIFS_COMPLEMENT = {
@@ -134,6 +142,31 @@ export async function demanderComplement(p: {
   parId: string;
   maintenant: Date;
 }): Promise<ResultatDossier> {
+  return complementAvecNouveauLien(p, p.motif, MOTIFS_COMPLEMENT[p.motif]);
+}
+
+/**
+ * F12 depuis l'écran W-4 (M7) : le motif est un libellé de la liste fermée de W-4
+ * (« le CV », « l'attestation URSSAF »…), écrit tel quel dans l'e-mail.
+ */
+export async function demanderComplementW4(p: {
+  trainerId: string;
+  motif: string;
+  parId: string;
+  maintenant: Date;
+}): Promise<ResultatDossier> {
+  if (!(MOTIFS_COMPLEMENT_W4 as ReadonlyArray<string>).includes(p.motif)) {
+    return { ok: false, raison: "etat" };
+  }
+  const motif = p.motif as MotifComplementW4;
+  return complementAvecNouveauLien(p, motif, motif);
+}
+
+async function complementAvecNouveauLien(
+  p: { trainerId: string; parId: string; maintenant: Date },
+  motifJournal: string,
+  libelle: string,
+): Promise<ResultatDossier> {
   if (!(await dossierOuvert())) return { ok: false, raison: "eteint" };
   if (!(await texteValide("formateur-dossier-a-completer"))) {
     return { ok: false, raison: "texte-non-valide" };
@@ -145,7 +178,7 @@ export async function demanderComplement(p: {
     "a_completer",
     "qualiopi.formateur.dossier_complement_demande",
     p.parId,
-    { motif: p.motif },
+    { motif: motifJournal },
   );
   if (!t) return { ok: false, raison: "etat" };
   const lien = urlDossierFormateur(t.id, t.accesVersion, p.maintenant);
@@ -153,10 +186,91 @@ export async function demanderComplement(p: {
   const envoi = await envoyer({
     gabarit: "formateur-dossier-a-completer",
     destinataire: t.email,
-    payload: { prenom: t.prenom, lien, valeurs: { motif: MOTIFS_COMPLEMENT[p.motif] } },
+    payload: { prenom: t.prenom, lien, valeurs: { motif: libelle } },
     entityType: "Trainer",
     entityId: t.id,
     jobId: `fi-dossier-complement-${t.id}-v${t.accesVersion}`,
+  });
+  return { ok: true, envoi };
+}
+
+/** La source de la ligne « dossier refusé » du registre des contrôles (F13). */
+export const SOURCE_REFUS_DOSSIER = "refus_administrateur";
+
+/**
+ * F13 — refuser le dossier sur un registre ROUGE. Sous le verrou des contrôles du
+ * formateur (même clé que `controle.ts`) : le dernier contrôle doit être rouge. L'état
+ * « refusé » est une ligne AJOUTÉE (verdict rouge, source `refus_administrateur`,
+ * date et motif du contrôle jugé) : rien n'est modifié ni effacé. Un second clic
+ * n'ajoute rien ; l'e-mail garde sa clé unique par fiche.
+ */
+export async function refuserDossier(p: {
+  trainerId: string;
+  motif: "entreprise fermée" | "numéro introuvable";
+  parId: string;
+}): Promise<ResultatDossier> {
+  // AVANT d'écrire : on ne refuse pas un dossier sans pouvoir le dire à la personne.
+  if (!(await texteValide("formateur-dossier-refuse"))) {
+    return { ok: false, raison: "texte-non-valide" };
+  }
+  const t = await prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`controle_registre:${p.trainerId}`}))`;
+    const fiche = await tx.trainer.findFirst({
+      where: { id: p.trainerId, ...FICHE_OUVERTE, actif: false },
+      select: { id: true, email: true, prenom: true },
+    });
+    if (fiche === null) return null;
+    const dernier = await tx.verificationRegistreSousTraitance.findFirst({
+      where: { trainerId: p.trainerId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        verdict: true,
+        source: true,
+        verifieAt: true,
+        siren: true,
+        siret: true,
+        numeroDeclarationActivite: true,
+        motif: true,
+      },
+    });
+    if (dernier === null || dernier.verdict !== "rouge") return null;
+    if (dernier.source !== SOURCE_REFUS_DOSSIER) {
+      await tx.verificationRegistreSousTraitance.create({
+        data: {
+          trainerId: p.trainerId,
+          verifieAt: dernier.verifieAt,
+          verdict: "rouge",
+          source: SOURCE_REFUS_DOSSIER,
+          siren: dernier.siren,
+          siret: dernier.siret,
+          numeroDeclarationActivite: dernier.numeroDeclarationActivite,
+          motif: dernier.motif,
+          verifieParId: p.parId,
+        },
+      });
+      await journaliser(
+        tx,
+        {
+          action: "qualiopi.formateur.dossier_refuse",
+          targetType: "Trainer",
+          targetId: p.trainerId,
+          changes: { controleId: dernier.id, motif: p.motif },
+          session: { userId: p.parId },
+        },
+        { exiger: true },
+      );
+    }
+    return fiche;
+  });
+  if (t === null) return { ok: false, raison: "etat" };
+  const envoi = await envoyer({
+    gabarit: "formateur-dossier-refuse",
+    destinataire: t.email,
+    payload: { prenom: t.prenom, valeurs: { motif: p.motif } },
+    entityType: "Trainer",
+    entityId: t.id,
+    jobId: `fi-dossier-refuse-${t.id}`,
   });
   return { ok: true, envoi };
 }

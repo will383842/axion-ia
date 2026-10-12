@@ -347,7 +347,7 @@ Comment lire chaque fiche :
   >
   > Merci pour votre dossier. Pour continuer, il nous manque : [motif].
   >
-  > Déposez-le avec le même lien : il suffit de reprendre votre dossier.
+  > Déposez-le avec le bouton ci-dessous : il suffit de reprendre votre dossier.
 
 - **Bouton** : « Reprendre mon dossier »
 
@@ -365,11 +365,12 @@ Comment lire chaque fiche :
   >
   > Merci pour le temps consacré à votre dossier.
   >
-  > Le registre public n'indique pas d'activité ouverte à ce numéro [motif : entreprise fermée / numéro introuvable].
+  > Le registre public n'indique pas d'activité ouverte à ce numéro : [motif].
   >
   > Une micro-entreprise suffit. Dès que votre entreprise est créée ou régularisée, écrivez-nous : nous reprendrons votre dossier.
 
 - **Bouton** : aucun
+- **[motif]** (rempli par l'outil, liste fermée) : « entreprise fermée » ou « numéro introuvable ». Le refus est inscrit sur la fiche (contrôle du registre « refusé par vous »).
 
 ## F14 — Retrouver mon espace (lien demandé par la personne)
 
@@ -801,11 +802,12 @@ Comment lire chaque fiche :
 
   > Bonjour Prénom,
   >
-  > Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].
+  > Pour vous confier cette mission, il nous manque : [motif].
   >
   > Déposez-le depuis votre espace : la lettre de mission partira aussitôt.
 
 - **Bouton** : « Déposer depuis mon espace »
+- **[motif]** (rempli par l'outil, un ou plusieurs, séparés par une virgule) : « une attestation URSSAF à jour », « votre numéro de déclaration d'activité », « la signature de votre contrat-cadre ».
 
 ## F35 — Feuilles de présence manquantes
 
