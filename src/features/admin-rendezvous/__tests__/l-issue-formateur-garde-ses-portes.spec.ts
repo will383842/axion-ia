@@ -22,6 +22,10 @@ const creerFiche = vi.fn();
 vi.mock("@/features/admin-job-applications/fiche-formateur-actions", () => ({
   creerFicheFormateurDepuisCandidatureAction: (...a: unknown[]) => creerFiche(...a),
 }));
+const ouvrir = vi.fn();
+vi.mock("@/server/qualiopi/formateurs-independants/ouverture-dossier", () => ({
+  ouvrirDossierRetenu: (...a: unknown[]) => ouvrir(...a),
+}));
 const preparer = vi.fn();
 vi.mock("../issue-formateur-envoi", () => ({
   preparerIssueFormateur: (...a: unknown[]) => preparer(...a),
@@ -146,5 +150,69 @@ describe("enregistrerIssueFormateurAction", () => {
         jobId: "k",
       }),
     );
+  });
+
+  it("lot B — « Retenu » avec F5 prévu : fiche créée, dossier OUVERT, F5 par l'ouverture (jamais l'envoi générique)", async () => {
+    preparer.mockResolvedValue({
+      ok: true,
+      calendlyEventId: "evt_f1",
+      candidatureId: CAND,
+      lignes: [CAND],
+      absencesAnterieures: 0,
+      envoi: {
+        gabarit: "formateur-issue-retenu",
+        destinataire: "c@x.y",
+        payload: { lien: "https://axion-ia.com/formateur/dossier/…" },
+        jobId: "k",
+        ouvreDossier: true,
+      },
+      sansEmail: null,
+    });
+    ouvrir.mockResolvedValue({ ok: true, envoi: "envoye" });
+    const sans = await enregistrerIssueFormateurAction(
+      INITIAL,
+      fd({ calendlyEventId: "evt_f1", issue: "retenu" }),
+    );
+    expect(sans.etat).toBe("erreur");
+    expect(ouvrir).not.toHaveBeenCalled();
+
+    const r = await enregistrerIssueFormateurAction(
+      INITIAL,
+      fd({ calendlyEventId: "evt_f1", issue: "retenu", confirmer: "oui" }),
+    );
+    expect(r).toMatchObject({ etat: "ok" });
+    if (r.etat === "ok") expect(r.message).toMatch(/Dossier en ligne ouvert.*E-mail envoyé/);
+    expect(ouvrir).toHaveBeenCalledWith(expect.objectContaining({ trainerId: "t1", parId: "u1" }));
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(logCreate.mock.calls[0]![0].data.changes).toMatchObject({
+      gabarit: "formateur-issue-retenu",
+      envoi: "envoye",
+    });
+  });
+
+  it("lot B — fiche non créée : le dossier ne s'ouvre pas, rien ne part", async () => {
+    preparer.mockResolvedValue({
+      ok: true,
+      calendlyEventId: "evt_f1",
+      candidatureId: CAND,
+      lignes: [CAND],
+      absencesAnterieures: 0,
+      envoi: {
+        gabarit: "formateur-issue-retenu",
+        destinataire: "c@x.y",
+        payload: {},
+        jobId: "k",
+        ouvreDossier: true,
+      },
+      sansEmail: null,
+    });
+    creerFiche.mockResolvedValue({ ok: false, message: "non éligible" });
+    const r = await enregistrerIssueFormateurAction(
+      INITIAL,
+      fd({ calendlyEventId: "evt_f1", issue: "retenu", confirmer: "oui" }),
+    );
+    expect(r.etat).toBe("ok");
+    expect(ouvrir).not.toHaveBeenCalled();
+    expect(envoyer).not.toHaveBeenCalled();
   });
 });

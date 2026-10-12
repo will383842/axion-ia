@@ -129,7 +129,7 @@ describe("préalables", () => {
     }
   });
 
-  it("un préalable non lisible en base refuse l'allumage", () => {
+  it("un préalable non établi (fait absent) refuse l'allumage", () => {
     const tout = etats(
       Object.fromEntries(
         CLES_INTERRUPTEURS.filter((c) => typeof INTERRUPTEURS[c].positionSure === "boolean").map(

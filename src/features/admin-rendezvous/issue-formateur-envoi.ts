@@ -7,8 +7,10 @@
 //     candidatures par l'empreinte d'adresse ;
 //   · les e-mails partent par l'adaptateur des formateurs (`envois.ts`) : texte validé
 //     par Will, sinon rien ;
-//   · « Retenu » (F5) porte le lien du dossier en ligne : tant que le dossier en ligne
-//     n'existe pas (lot L5), F5 ne part pas, et l'écran le dit.
+//   · « Retenu » (F5) porte le lien du dossier en ligne : interrupteur `dossier_en_ligne`
+//     coupé, F5 ne part pas, et l'écran le dit. Allumé, l'enregistrement OUVRE le dossier
+//     de la fiche créée puis envoie F5 avec son lien (`ouverture-dossier.ts`, lot B) ;
+//     l'aperçu montre le même e-mail, le lien personnel n'étant fabriqué qu'à l'ouverture.
 //
 // L'aperçu et l'enregistrement passent par `preparerIssueFormateur` : ce que Will a vu
 // est, au caractère près, ce qui part.
@@ -22,6 +24,8 @@ import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estEchangeFormateur } from "@/server/calendly/echange-formateur";
 import type { GabaritFormateur } from "@/server/qualiopi/formateurs-independants/envois";
+import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
 
 import { GABARITS_ISSUE_PAR_FAMILLE, gabaritDeLIssue, type IssueEchange } from "./issue-echange";
 
@@ -43,12 +47,20 @@ export type PreparationIssueFormateur =
         destinataire: string;
         payload: Record<string, unknown>;
         jobId: string;
+        /** F5 : l'enregistrement ouvre d'abord le dossier, puis envoie avec son vrai lien. */
+        ouvreDossier?: true;
       } | null;
       sansEmail: string | null;
     };
 
 export const MESSAGE_SANS_DOSSIER =
   "Le dossier en ligne n'est pas encore ouvert : l'e-mail « la suite » partira quand il le sera.";
+
+export const MESSAGE_DOSSIER_DEJA_OUVERT =
+  "Le dossier de cette personne est déjà ouvert : renvoyez son lien depuis sa fiche formateur.";
+
+/** Le lien montré par l'aperçu de F5 : le vrai, personnel, n'existe qu'à l'ouverture. */
+export const LIEN_DOSSIER_APERCU = "https://axion-ia.com/formateur/dossier/…";
 
 /** Le dernier envoi de ce gabarit à ces candidatures (parti, en file ou en validation). */
 export async function dernierEnvoiIssueFormateur(
@@ -176,9 +188,35 @@ export async function preparerIssueFormateur(input: {
     return { ...base, envoi: null, sansEmail };
   }
   if (efface) return { ...base, envoi: null, sansEmail: "La candidature a été effacée." };
-  // F5 porte le lien du dossier : aucun tant que le dossier en ligne n'existe pas (L5).
+  // F5 porte le lien du dossier : aucun tant que le dossier en ligne est coupé.
   if (gabarit === GABARITS_ISSUE_PAR_FAMILLE.formateur.retenu) {
-    return { ...base, envoi: null, sansEmail: MESSAGE_SANS_DOSSIER };
+    if (!lireDrapeauEnvoi(await lireEtatsInterrupteurs(), "dossier_en_ligne")) {
+      return { ...base, envoi: null, sansEmail: MESSAGE_SANS_DOSSIER };
+    }
+    // Une fiche de cette personne au dossier déjà ouvert : jamais rouvert par ce geste.
+    const ouvert = await prisma.trainer.findFirst({
+      where: {
+        dossierStatut: { not: null },
+        OR: [{ candidatureId: { in: lignes } }, { candidatures: { some: { id: { in: lignes } } } }],
+      },
+      select: { id: true },
+    });
+    if (ouvert) return { ...base, envoi: null, sansEmail: MESSAGE_DOSSIER_DEJA_OUVERT };
+    return {
+      ...base,
+      envoi: {
+        gabarit,
+        destinataire,
+        payload: {
+          ...(prenom && prenom !== ERASED_PLACEHOLDER ? { prenom } : {}),
+          lien: LIEN_DOSSIER_APERCU,
+        },
+        // Indicatif : l'envoi réel porte la clé de la fiche (`fi-issue-retenu-<id>`).
+        jobId: `formateur-issue-${gabarit}-${empreinte ?? candidature.id}`,
+        ouvreDossier: true,
+      },
+      sansEmail: null,
+    };
   }
   const deja = await dernierEnvoiIssueFormateur(gabarit, lignes);
   if (deja) {
