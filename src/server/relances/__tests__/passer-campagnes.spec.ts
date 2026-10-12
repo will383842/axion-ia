@@ -137,6 +137,8 @@ describe("livré éteint", () => {
       "lettre-1re",
       "lettre-j3",
       "nda-a-transmettre",
+      // Lot G2 — F61, sous `textes_valides` ET `formateurs.bilan_fin_formation`.
+      "bilan-fin-formation",
     ]);
     for (const c of REGISTRE_CAMPAGNES) expect(c.interrupteurs.length).toBeGreaterThan(0);
   });

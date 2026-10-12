@@ -935,6 +935,40 @@ export const TEXTES_FORMATEUR = {
       },
     ],
   },
+  // Lot G2 — relance du bilan de fin de formation (interrupteur
+  // `formateurs.bilan_fin_formation`). Texte neuf : validé à part, comme tous.
+  "formateur-bilan-fin-formation": {
+    code: "F61",
+    titre: "Bilan de fin de formation (2 rappels au plus)",
+    quand:
+      "2 jours puis 7 jours après la dernière journée, tant que le bilan n'est pas terminé. Plus rien dès qu'il l'est, ou si la collaboration est finie. Vous recevez une alerte à 10 jours.",
+    famille: "B",
+    interne: false,
+    sollicitation: false,
+    variantes: [
+      {
+        etape: "J+2",
+        objet: "Votre bilan de fin de formation",
+        objetPropose: null,
+        paragraphes: [
+          "La formation [intitulé] est terminée. Merci pour votre travail.",
+          "Il reste votre bilan : l'évaluation de chaque stagiaire et votre avis sur la session. Comptez quelques minutes, depuis votre téléphone si vous le souhaitez.",
+          "Nous en avons besoin pour établir votre facture.",
+        ],
+        boutons: ["Faire mon bilan"],
+      },
+      {
+        etape: "J+7",
+        objet: "Votre bilan de fin de formation attend",
+        objetPropose: null,
+        paragraphes: [
+          "Votre bilan de fin de formation pour [intitulé] n'est pas encore terminé.",
+          "Nous en avons besoin pour établir votre facture.",
+        ],
+        boutons: ["Faire mon bilan"],
+      },
+    ],
+  },
   "formateur-virement-fait": {
     code: "F37",
     titre: "Virement effectué",

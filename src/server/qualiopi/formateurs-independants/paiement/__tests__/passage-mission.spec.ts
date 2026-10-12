@@ -303,3 +303,39 @@ describe("le run mensuel après la bascule", () => {
     expect(r[0]!.affectations).toEqual([]);
   });
 });
+
+describe("planifierPassage — lot G2 : le bilan de fin de formation", () => {
+  it("sans exigence (interrupteur éteint) : rien ne change, le mois signé est écrit", () => {
+    const p = planifierPassage([candidat()], "2026-12-01");
+    expect(p.aEcrire).toHaveLength(1);
+    expect(p.enAttente).toEqual([]);
+  });
+
+  it("bilan exigé et non terminé : aucun relevé, en attente « bilan » ; aucun montant ne bouge", () => {
+    const p = planifierPassage(
+      [candidat({ bilanFinFormation: { termine: false, payerQuandMeme: false } })],
+      "2026-12-01",
+    );
+    expect(p.aEcrire).toEqual([]);
+    expect(p.enAttente).toEqual([
+      {
+        trainerId: "t1",
+        sessionId: "s1",
+        mois: "2026-12",
+        raison: "bilan_fin_formation_manquant",
+        manquantes: 0,
+      },
+    ]);
+  });
+
+  it("bilan terminé ou « payer quand même » : le même relevé, au même montant", () => {
+    const temoin = planifierPassage([candidat()], "2026-12-01").aEcrire;
+    for (const bilan of [
+      { termine: true, payerQuandMeme: false },
+      { termine: false, payerQuandMeme: true },
+    ]) {
+      const p = planifierPassage([candidat({ bilanFinFormation: bilan })], "2026-12-01");
+      expect(p.aEcrire).toEqual(temoin);
+    }
+  });
+});

@@ -27,6 +27,8 @@ import {
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
 import { EmargementDemandeContresignature } from "@/components/espace-formateur/EmargementDemandeContresignature";
+import { BilanFinFormation } from "@/components/espace-formateur/BilanFinFormation";
+import { lireBilanFormateur } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/service";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
@@ -68,8 +70,10 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
   const { id } = await params;
@@ -105,6 +109,11 @@ export default async function Page({
   // d'un stagiaire (écriture VERROU, refusée par le serveur). Lu APRÈS la garde
   // de propriété. Sa contresignature reste ouverte.
   const verrou = await chargerEtatVerrou(id);
+  // Lot G2 — le bilan de fin de formation : `null` (aucun bloc) tant que l'interrupteur
+  // `formateurs.bilan_fin_formation` est éteint, pour un salarié, ou avant la fin de la
+  // dernière journée. Lu APRÈS la garde de propriété, que le service refait lui-même.
+  const bilan = await lireBilanFormateur(id, trainerId, maintenant);
+  const issueBilan = (await searchParams)["bilan"];
   const signaturePourStagiaireFermee =
     verrou !== null && verrou.etat.etat === "clos"
       ? "Le dossier de cette session est clos : vous ne pouvez plus faire signer un stagiaire à sa place. Si une signature manque réellement, prévenez l'organisme, qui peut rouvrir le dossier. Votre contresignature, elle, reste possible."
@@ -142,6 +151,15 @@ export default async function Page({
 
         {/* Demande de contresignature — en tête, avec l'accès direct au geste. */}
         <EmargementDemandeContresignature demiJournees={aContresigner} />
+
+        {/* Lot G2 — « Fin de formation » : évaluer, donner son avis, terminer. */}
+        {bilan !== null ? (
+          <BilanFinFormation
+            sessionId={id}
+            vue={bilan}
+            issue={typeof issueBilan === "string" ? issueBilan : null}
+          />
+        ) : null}
 
         {/* En-tête récapitulatif */}
         <dl className="border-border grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">

@@ -202,6 +202,7 @@ const A = {
   contrat: "@/server/actions/qualiopi/contrat-travail-signature",
   dossier: "@/app/[locale]/espace-formateur/dossier/actions",
   desaccord: "@/server/actions/formateur/desaccord.actions",
+  bilan: "@/server/actions/formateur/bilan-fin-formation.actions",
 } as const;
 
 const formateur = (
@@ -377,6 +378,23 @@ const INVENTAIRE: Record<string, Ligne> = {
     A.desaccord,
     "signalerDesaccordFormAction",
     fd({ statementId: DOC, texte: "Le montant ne correspond pas." }),
+  ),
+
+  // ── Lot G2 : le bilan de fin de formation (page de la session) ──
+  [`${A.bilan}#evaluerStagiaireFormAction`]: formateur(
+    A.bilan,
+    "evaluerStagiaireFormAction",
+    fd({ sessionId: SESSION, enrollmentId: DOC, "note-0": "3" }),
+  ),
+  [`${A.bilan}#donnerAvisFormAction`]: formateur(
+    A.bilan,
+    "donnerAvisFormAction",
+    fd({ sessionId: SESSION, commentaire: "Groupe motivé, rien à signaler." }),
+  ),
+  [`${A.bilan}#terminerBilanFormAction`]: formateur(
+    A.bilan,
+    "terminerBilanFormAction",
+    fd({ sessionId: SESSION }),
   ),
 
   // ── Routes : kit imprimé, PDF de la lettre de mission et du contrat à signer ──

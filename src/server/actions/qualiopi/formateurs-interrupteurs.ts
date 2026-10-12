@@ -629,3 +629,10 @@ export async function basculerFormateursNouvelleVersionContratAction(
 ): Promise<EtatBascule> {
   return basculerSignature("nouvelle_version_contrat", formData);
 }
+/** Lot G2 — le bilan de fin de formation du formateur indépendant, attendu par le paiement. */
+export async function basculerFormateursBilanFinFormationAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("bilan_fin_formation", formData);
+}

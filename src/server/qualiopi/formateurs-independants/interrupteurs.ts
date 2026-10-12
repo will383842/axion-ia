@@ -537,6 +537,16 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.nouvelle_version_contrat",
   },
+  // Lot G2 — le bilan de fin de formation saisi par le formateur indépendant, attendu
+  // par le paiement par mission. Coupé : ni bloc dans l'espace, ni condition de
+  // paiement, ni relance, ni alerte — exactement comme avant G2.
+  bilan_fin_formation: {
+    ...envoi(
+      "Bilan de fin de formation",
+      "Après la dernière journée, le formateur indépendant évalue les acquis de ses stagiaires présents et donne son avis depuis la page de la session, puis « Terminer ». Le relevé de mission n'est payable qu'une fois le bilan terminé (sessions finies après l'allumage), sauf « payer quand même » motivé ; relances J+2 et J+7, alerte à J+10.",
+    ),
+    cle: "formateurs.bilan_fin_formation",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -602,6 +612,10 @@ export const PREALABLES_SIGNATURE: Readonly<
   // F45 est un texte neuf adressé aux formateurs.
   nouvelle_version_contrat: [exige("textes_valides")],
   missions_console: [],
+  // Aucun : l'écran et la condition de paiement ne dépendent d'aucune autre clé. La
+  // relance (F61) part seulement si son texte est validé (adaptateur d'envoi) — couper
+  // `textes_valides` ne doit PAS lever en silence la condition de paiement.
+  bilan_fin_formation: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {

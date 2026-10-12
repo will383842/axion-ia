@@ -26,6 +26,8 @@ import {
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+import { BilansFinFormationConsole } from "@/components/admin/qualiopi/BilansFinFormationConsole";
+import { lireBilansConsole } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/console";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -74,9 +76,10 @@ function attestationCouleur(resultat: string | null): string {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function EvaluationsPage({ params }: PageProps) {
+export default async function EvaluationsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
@@ -112,6 +115,13 @@ export default async function EvaluationsPage({ params }: PageProps) {
 
   if (!session) notFound();
 
+  // Lot G2 — le bilan de fin de formation des formateurs indépendants : `null` (rien
+  // n'est montré) tant que `formateurs.bilan_fin_formation` est éteint.
+  const bilans = await lireBilansConsole(id).catch(() => null);
+  const sp = (await searchParams) ?? {};
+  const message = (k: string): string | null =>
+    typeof sp[k] === "string" ? (sp[k] as string) : null;
+
   // 🔴 Parcours à blanc 2026-07-27. Cette normalisation ne connaissait que
   // `libelle` et retombait sur `String(o)`. Or le catalogue écrit
   // `{ id, verbe, description }` : la grille de compétences s'ouvrait donc avec
@@ -136,6 +146,16 @@ export default async function EvaluationsPage({ params }: PageProps) {
       <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         {`Formation : ${session.formation?.titre ?? "—"} · ${session.enrollments.length} stagiaire${session.enrollments.length > 1 ? "s" : ""}`}
       </p>
+
+      {bilans !== null ? (
+        <BilansFinFormationConsole
+          sessionId={id}
+          retour={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/evaluations`}
+          lignes={bilans}
+          ok={message("ok")}
+          erreur={message("erreur")}
+        />
+      ) : null}
 
       {session.enrollments.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
