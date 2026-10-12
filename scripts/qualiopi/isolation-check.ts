@@ -601,6 +601,19 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    (aucun autre fichier n'interprète une clé `formateurs.*`). Elle ne lit
   //    rien d'autre du domaine : l'export vit dans `server/paiements-sortants`.
   "src/app/[locale]/(admin)/[adminPrefix]/paiements-sortants/das2/export/route.ts",
+  // Lot B des formateurs indépendants (de l'entrée à l'activation) :
+  //  · la tuile « à faire le point » mène un échange formateur à ses issues et le
+  //    formulaire commun le refuse — ils lisent l'interrupteur `suivi_echange` ;
+  "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx",
+  "src/features/admin-rendezvous/suivi-actions.ts",
+  "src/features/admin-rendezvous/__tests__/lot-b-retenu-ouvre-le-dossier-et-envoie-f5.spec.ts",
+  //  · la page de réservation de l'échange : préremplissage par le jeton signé de F1/F7,
+  //    et annonce de nos e-mails seulement s'ils partent (interrupteurs, textes validés) ;
+  "src/app/[locale]/appel/page.tsx",
+  "src/app/[locale]/appel/reserver/page.tsx",
+  "src/server/calendly/annonces-echange-formateur.ts",
+  //  · la page neutre du dossier mène à « Retrouver mon espace » quand le dossier est ouvert.
+  "src/app/formateur/dossier/[id]/[jeton]/not-found.tsx",
 ]);
 
 /**
