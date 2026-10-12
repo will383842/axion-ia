@@ -1319,4 +1319,36 @@ export const GABARITS_SOLLICITATION_FORMATEUR: ReadonlySet<GabaritFormateurIndep
   );
 
 /** Un [crochet] encore présent : une valeur que l'outil n'a pas remplie. */
+/**
+ * F23 — proposition de mission CHIFFRÉE (variante « honoraires », lot L11b-ux ; ton
+ * aligné en M24, lot A). Validée À PART : `textes_valides.formateur-mission-proposee#honoraires`.
+ * Mise en page sur le gabarit commun des formateurs par `formateur-mission-proposee.tsx`
+ * (le gabarit est partagé avec les salariés : son texte de base ne change pas).
+ * L'objet est complété par l'intitulé. Crochets remplis depuis le payload : [intitulé],
+ * [dates], [lieu], [honoraires], [déplacement], [date limite].
+ */
+export const TEXTE_F23_HONORAIRES = {
+  envoi: {
+    objet: "Proposition de mission :",
+    paragraphes: [
+      "Nous avons une mission de formation à vous proposer. Voici le détail :",
+      "• Formation : [intitulé]\n• Dates : [dates]\n• Lieu : [lieu]\n• Honoraires : [honoraires]\n• Déplacement : [déplacement]",
+      "Merci de nous répondre avant le [date limite].",
+      "Vous êtes libre d'accepter ou de refuser, sans aucune conséquence. Sans réponse avant cette date, la proposition sera faite à quelqu'un d'autre.",
+    ],
+    bouton: "Voir et répondre",
+  },
+  /** 3 jours plus tard, sans réponse : mêmes faits, autres mots. */
+  rappel: {
+    objet: "Cette mission vous attend :",
+    paragraphes: [
+      "Nous n'avons pas encore votre réponse pour cette mission. Vous pouvez répondre avant le [date limite].",
+      "Pour mémoire, voici le détail :",
+      "• Formation : [intitulé]\n• Dates : [dates]\n• Lieu : [lieu]\n• Honoraires : [honoraires]\n• Déplacement : [déplacement]",
+      "Sans réponse avant cette date, la proposition sera faite à quelqu'un d'autre. Vous êtes libre d'accepter ou de refuser, sans aucune conséquence.",
+    ],
+    bouton: "Voir et répondre",
+  },
+} as const;
+
 export const CROCHET_NON_REMPLI = /\[[^[\]]+\]/;
