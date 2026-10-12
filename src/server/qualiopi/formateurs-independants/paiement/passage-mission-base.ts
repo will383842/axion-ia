@@ -13,7 +13,8 @@ import { journaliser } from "@/server/journal/journaliser";
 
 import { totaliser } from "../argent/calcul-mission";
 import { forfaitSelonLieu } from "../choix-formateur";
-import { jourDeColonneDate } from "../argent/dates";
+import { jourDeColonneDate, jourParis } from "../argent/dates";
+import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
 
@@ -231,7 +232,15 @@ export async function ecrireMoisDansTransaction(
       _sum: { demiJournees: true },
     });
     const aPayer = m.releve.lignes.find((l) => l.objet === "animation")?.demiJournees ?? 0;
-    return aPayer > (ecrites._sum.demiJournees ?? 0) ? "complement_a_traiter" : "deja_ecrit";
+    const payees = ecrites._sum.demiJournees ?? 0;
+    if (aPayer <= payees) return "deja_ecrit";
+    // Lot D2 (M22) : l'anomalie est CONSERVÉE sur le relevé (une fois), et affichée.
+    await conserverAnomalie(tx, existant.id, {
+      code: "complement_signe",
+      detail: `${aPayer} demi-journée(s) signée(s), ${payees} payée(s)`,
+      constateLe: jourParis(maintenant),
+    });
+    return "complement_a_traiter";
   }
 
   // Une pièce de ce mois a été ANNULÉE par avoir : sa réémission (qui garde
@@ -265,6 +274,19 @@ export async function ecrireMoisDansTransaction(
       tvaCents: m.releve.tvaCents,
       totalTtcCents: m.releve.totalTtcCents,
       echeanceAt: instantDuJour(m.releve.echeance),
+      // Lot D2 (M22) : l'écart avec la part prévue du mois est conservé et affiché ;
+      // le relevé reste « à valider » (validation humaine gardée).
+      ...(m.sansEcart
+        ? {}
+        : {
+            anomaliesMission: [
+              {
+                code: "ecart_prevu",
+                detail: `prévu ${m.prevuHtCents ?? 0} c HT, calculé ${m.releve.totalHtCents} c HT`,
+                constateLe: jourParis(maintenant),
+              } satisfies AnomalieMission,
+            ],
+          }),
     },
     select: { id: true },
   });
@@ -308,6 +330,21 @@ export async function ecrireMoisDansTransaction(
 }
 
 const RECALCULABLES = ["brouillon", "a_valider"] as const;
+
+/** Ajoute une anomalie au relevé si elle n'y est pas déjà (même code, même détail). */
+async function conserverAnomalie(tx: Tx, statementId: string, a: AnomalieMission): Promise<void> {
+  const r = await tx.trainerStatement.findUnique({
+    where: { id: statementId },
+    select: { anomaliesMission: true },
+  });
+  const suite = ajouterAnomalie(lireAnomaliesMission(r?.anomaliesMission), a);
+  if (suite === null) return;
+  await tx.trainerStatement.update({
+    where: { id: statementId },
+    data: { anomaliesMission: suite as unknown as object[] },
+    select: { id: true },
+  });
+}
 
 /**
  * Ajoute l'animation (et le déplacement) d'un mois à un relevé de mission qui ne

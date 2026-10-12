@@ -2746,6 +2746,12 @@ async function handlePaiementMission(): Promise<void> {
         `${p} ${b.etat === "coupe" ? "coupé (aucune date de bascule)" : "bloqué (M-D non fait)"}`,
       );
     }
+    // Lot D2 (M22) — rappels internes, trop-perçu (F54), feuilles manquantes (F35).
+    // Même interrupteur (date de bascule) ; ne lève jamais.
+    const { passerSuiviMission } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/suivi-mission");
+    const s = await passerSuiviMission(new Date());
+    if (s.etat !== "coupe") console.log(`${p} suivi ${JSON.stringify(s)}`);
   } catch (err) {
     console.error(
       "[formation-crons] paiement-mission: erreur:",

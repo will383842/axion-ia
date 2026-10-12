@@ -38,6 +38,12 @@ interface Payload {
   dateEcheanceLabel: string;
   /** Terme du droit de contestation, formaté. Ex. « 18/09/2026 ». */
   contestationAvantLabel: string;
+  /**
+   * F36, variante « mission » (lot D2, M22) : paiement PAR MISSION. Ex.
+   * « « IA générative » du 16/11/2026 au 17/11/2026 ». Absent : le texte du
+   * relevé mensuel, inchangé.
+   */
+  missionLabel?: string;
 }
 
 function field(p: Partial<Payload>, key: keyof Payload, fallback: string): string {
@@ -87,6 +93,22 @@ const COPY = {
   },
 } as const;
 
+/**
+ * F36, variante « mission » (lot D2) : « Mission » à la place de « période », le
+ * désaccord se signale aussi depuis l'espace, l'échéance part de la dernière
+ * journée. Français seulement (l'espace formateur est en français).
+ */
+const COPY_MISSION = {
+  corps: (num: string, mission: string, montant: string) =>
+    `Conformément au mandat de facturation que vous nous avez donné, nous avons établi en votre nom et pour votre compte la facture d'honoraires ${num} pour la mission ${mission}${montant ? `, d'un montant de ${montant}` : ""}. Elle est jointe au format PDF.`,
+  contestation: (d: string) =>
+    d
+      ? `Si quelque chose vous semble inexact, vous avez huit jours pour nous le signaler, soit jusqu'au ${d} inclus : depuis votre espace (« Signaler un désaccord »), ou en répondant à cet e-mail. Passé ce délai, la facture est réputée acceptée.`
+      : "Si quelque chose vous semble inexact, signalez-le depuis votre espace (« Signaler un désaccord »), ou répondez à cet e-mail.",
+  echeance: (d: string) =>
+    d ? `Le virement est prévu au plus tard le ${d}, 30 jours après la dernière journée.` : "",
+} as const;
+
 export const autofactureTransmissionSubject = (
   locale: Locale,
   payload: Record<string, unknown>,
@@ -106,19 +128,27 @@ export function AutofactureTransmissionEmail({
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
   const contestation = field(p, "contestationAvantLabel", "");
-  const echeance = t.echeance(field(p, "dateEcheanceLabel", ""));
+  const mission = locale === "fr" ? field(p, "missionLabel", "") : "";
+  const echeance =
+    mission !== ""
+      ? COPY_MISSION.echeance(field(p, "dateEcheanceLabel", ""))
+      : t.echeance(field(p, "dateEcheanceLabel", ""));
 
   return (
     <EmailLayout famille="A" locale={locale} title={t.title} preview={t.preview(contestation)}>
       <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "sousTraitantNom", ""))}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.corps(
-          field(p, "numero", ""),
-          field(p, "periodeLabel", ""),
-          field(p, "montantLabel", ""),
-        )}
+        {mission !== ""
+          ? COPY_MISSION.corps(field(p, "numero", ""), mission, field(p, "montantLabel", ""))
+          : t.corps(
+              field(p, "numero", ""),
+              field(p, "periodeLabel", ""),
+              field(p, "montantLabel", ""),
+            )}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.contestation(contestation)}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {mission !== "" ? COPY_MISSION.contestation(contestation) : t.contestation(contestation)}
+      </Text>
       {echeance !== "" && <Text style={emailStyles.paragraphStyle}>{echeance}</Text>}
       <Text style={emailStyles.paragraphStyle}>{t.mandat}</Text>
       <Text style={emailStyles.paragraphStyle}>

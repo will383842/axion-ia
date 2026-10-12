@@ -191,3 +191,13 @@ export async function inscrireRattrapage(
   }
   return n;
 }
+
+/**
+ * Lot D2 (M22) — la fenêtre lue par l'écran du rattrapage : les sessions
+ * commencées dans les 12 mois qui précèdent la bascule.
+ */
+export function debutFenetreRattrapage(dateBascule: string): Date {
+  const d = new Date(`${dateBascule}T00:00:00Z`);
+  d.setUTCFullYear(d.getUTCFullYear() - 1);
+  return d;
+}

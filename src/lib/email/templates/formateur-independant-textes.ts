@@ -988,7 +988,7 @@ export const TEXTES_FORMATEUR = {
         objet: "Une régularisation sur vos honoraires",
         objetPropose: null,
         paragraphes: [
-          "Une correction de la facture n° [numéro] (avoir n° [numéro]) montre que nous vous avons versé [montant] € de trop.",
+          "Une correction de la facture n° [numéro] (avoir n° [numéro de l'avoir]) montre que nous vous avons versé [montant] € de trop.",
           "Ce montant n'a pas pu être déduit d'une prochaine facture.",
           "Pourriez-vous nous le rembourser par virement, sur le compte ci-dessous ? Pour en parler, répondez simplement à ce message.",
           "[coordonnées bancaires d'Axion]",

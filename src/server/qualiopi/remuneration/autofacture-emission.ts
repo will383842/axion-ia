@@ -143,6 +143,8 @@ export async function lireReleveAutofacture(id: string) {
       echeanceAt: true,
       /** Lot D2 (M10) : la pièce REMPLACE une facture annulée par avoir (désaccord accepté). */
       remplaceId: true,
+      /** F36, variante « mission » : l'intitulé et les dates de la mission payée. */
+      session: { select: { titreSession: true, dateDebut: true, dateFin: true } },
       trainer: {
         select: {
           nom: true,
@@ -566,6 +568,7 @@ async function emettreSousVerrou(
       periodeMonth: releve.periodeMonth,
       totalTtcCents: releve.totalTtcCents,
       echeance,
+      missionLabel: libelleMissionTransmission(releve),
     },
   };
 }
@@ -601,6 +604,20 @@ export interface PieceATransmettre {
   readonly periodeMonth: number;
   readonly totalTtcCents: number;
   readonly echeance: Date | null;
+  /** F36, variante « mission » (paiement par mission) ; absent pour un relevé mensuel. */
+  readonly missionLabel?: string | null;
+}
+
+/** « « intitulé » du 16/11/2026 au 17/11/2026 » — relevé de mission seulement. */
+export function libelleMissionTransmission(releve: {
+  readonly origine: string;
+  readonly session?: { titreSession: string; dateDebut: Date; dateFin: Date } | null;
+}): string | null {
+  if (releve.origine !== "passage_mission" || !releve.session) return null;
+  const s = releve.session;
+  const du = dateFr(s.dateDebut);
+  const au = dateFr(s.dateFin);
+  return `« ${s.titreSession} » ${du === au ? `du ${du}` : `du ${du} au ${au}`}`;
 }
 
 /**
@@ -655,6 +672,7 @@ export async function transmettreAutofacture(
         montantLabel: `${euros(releve.totalTtcCents)} TTC`,
         ...(echeance !== null ? { dateEcheanceLabel: dateFr(echeance) } : {}),
         contestationAvantLabel: dateFr(contestationAvant),
+        ...(releve.missionLabel ? { missionLabel: releve.missionLabel } : {}),
       },
       {
         ...(doc !== null
