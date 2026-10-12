@@ -56,6 +56,7 @@ import {
   DELAI_VALIDATION_CHANGEMENT_MS,
   demanderChangementAdresse,
   demanderChangementIban,
+  lireDemandesEnCours,
   refuserDemandeChangement,
   validerDemandeChangement,
 } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
@@ -262,6 +263,20 @@ describe("M12 — validation en console (W-7)", () => {
     expect(JSON.stringify(db.activityLog.create.mock.calls)).not.toContain("téléphone");
   });
 
+  it("🔴 refus sans motif : refusé côté serveur, rien n'est écrit (CHECK `traitement_coherent`)", async () => {
+    for (const motif of ["", "   "]) {
+      const r = await refuserDemandeChangement({
+        demandeId: DEMANDE,
+        adminId: ADMIN,
+        motif,
+        maintenant: MAINTENANT,
+      });
+      expect(r).toEqual({ ok: false, raison: "motif" });
+    }
+    expect(db.demandeChangementFormateur.updateMany).not.toHaveBeenCalled();
+    expect(db.activityLog.create).not.toHaveBeenCalled();
+  });
+
   it("interrupteur coupé : ni validation ni refus", async () => {
     allume.mockResolvedValue(false);
     expect(
@@ -272,5 +287,31 @@ describe("M12 — validation en console (W-7)", () => {
       }),
     ).toEqual({ ok: false, raison: "coupe" });
     expect(db.demandeChangementFormateur.findUnique).not.toHaveBeenCalled();
+  });
+});
+
+describe("M12 — demandes en cours, lues par « Mon dossier »", () => {
+  it("🔴 salarié, fiche inactive ou close : `null` (la page n'affiche aucun formulaire)", async () => {
+    for (const over of [
+      { statut: "salarie" },
+      { actif: false },
+      { finCollaborationAt: new Date() },
+    ]) {
+      db.trainer.findUnique.mockResolvedValueOnce(fiche(over));
+      expect(await lireDemandesEnCours(ID)).toBeNull();
+    }
+    expect(db.demandeChangementFormateur.findMany).not.toHaveBeenCalled();
+  });
+
+  it("indépendant actif : la liste des demandes en attente", async () => {
+    const d = { nature: "iban", createdAt: MAINTENANT };
+    db.demandeChangementFormateur.findMany.mockResolvedValue([d]);
+    expect(await lireDemandesEnCours(ID)).toEqual([d]);
+  });
+
+  it("interrupteur coupé : `null`, rien n'est lu", async () => {
+    allume.mockResolvedValue(false);
+    expect(await lireDemandesEnCours(ID)).toBeNull();
+    expect(db.trainer.findUnique).not.toHaveBeenCalled();
   });
 });

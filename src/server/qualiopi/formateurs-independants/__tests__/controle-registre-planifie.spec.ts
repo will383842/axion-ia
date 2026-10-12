@@ -75,3 +75,16 @@ describe("M5 — recontrôle périodique du registre, tâche planifiée", () => 
     await expect(formationCronsHandler({ type: TYPE, tick: "x" })).resolves.toBeUndefined();
   });
 });
+
+describe("recontrôle périodique — journal du worker", () => {
+  it("🔴 une erreur est journalisée par son NOM, jamais son message brut", () => {
+    const src = readFileSync(
+      join(process.cwd(), "src/server/queue/workers/qualiopi-formation-crons-worker.ts"),
+      "utf8",
+    );
+    const debut = src.indexOf("async function handleControleRegistrePeriodique(");
+    const corps = src.slice(debut, src.indexOf("\n}\n", debut));
+    expect(corps).toContain("catch (err)");
+    expect(corps).not.toMatch(/err\.message|String\(err\)/);
+  });
+});

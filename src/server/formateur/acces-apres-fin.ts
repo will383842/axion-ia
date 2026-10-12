@@ -26,4 +26,7 @@ export async function accesFormateur(t: {
 
 // Version de session de l'espace : pure, logée côté Qualiopi pour que le jeton de
 // mission (`mission-formateur.ts`) la lise sans dépendre de l'espace.
-export { versionSessionFormateur } from "@/server/qualiopi/formateurs-independants/version-session";
+export {
+  ecritureFormateurPermise,
+  versionSessionFormateur,
+} from "@/server/qualiopi/formateurs-independants/version-session";

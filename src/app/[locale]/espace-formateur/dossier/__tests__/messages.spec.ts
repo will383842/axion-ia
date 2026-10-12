@@ -4,6 +4,9 @@
  * code inconnu n'affiche rien.
  */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import { MESSAGES_CHANGEMENT } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
@@ -32,5 +35,12 @@ describe("« Mon dossier » — codes d'issue", () => {
   it("réussites", () => {
     expect(messageDuCode("recu")?.ok).toBe(true);
     expect(messageDuCode("demande")?.ok).toBe(true);
+  });
+});
+
+describe("« Mon dossier » — ce que la page promet", () => {
+  it("🔴 aucun e-mail promis pour un changement d'adresse : seul le compte bancaire en déclenche un (F43)", () => {
+    const page = readFileSync(join(__dirname, "../page.tsx"), "utf8");
+    expect(page).not.toMatch(/Un e-mail vous confirme chaque demande\./);
   });
 });

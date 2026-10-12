@@ -85,4 +85,10 @@ describe("jeton de mission et version d'accès", () => {
     db.missionFormateur.findUnique.mockResolvedValue(mission(null, 7));
     expect((await lireMissionParJeton(t))?.id).toBe(MISSION);
   });
+
+  it("🔴 jeton sans version (lien d'avant ce lot) et collaboration close : refusé", async () => {
+    const t = await signMagicToken({ scope: "formateur_mission", resourceId: MISSION });
+    db.missionFormateur.findUnique.mockResolvedValue(mission(new Date("2026-10-01T00:00:00Z")));
+    expect(await lireMissionParJeton(t)).toBeNull();
+  });
 });

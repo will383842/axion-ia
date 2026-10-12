@@ -29,7 +29,11 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { verifyFormateurSession } from "@/lib/formateur-session";
 import { getFormateurToken } from "./cookie";
-import { accesFormateur, versionSessionFormateur } from "./acces-apres-fin";
+import {
+  accesFormateur,
+  ecritureFormateurPermise,
+  versionSessionFormateur,
+} from "./acces-apres-fin";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "./routes";
 
 /** Où va une session en lecture seule qui ouvre une page à accès complet. */
@@ -73,7 +77,7 @@ async function lireSession() {
   if (result.version !== undefined && result.version !== versionSessionFormateur(trainer)) {
     return null;
   }
-  return { trainer, versionSignee: result.version !== undefined };
+  return { trainer, version: result.version };
 }
 
 /** Session formateur courante (accès complet), ou null. Aucun effet de bord. */
@@ -81,7 +85,8 @@ export async function getFormateurSession(): Promise<FormateurSession | null> {
   const lue = await lireSession();
   if (!lue) return null;
   const { trainer } = lue;
-  if (!trainer.actif || trainer.finCollaborationAt != null) return null;
+  // Garde commune des écritures (aussi celle du lien de mission) : collaboration close → rien.
+  if (!trainer.actif || !ecritureFormateurPermise(lue.version, trainer)) return null;
 
   return {
     trainerId: trainer.id,
@@ -99,7 +104,8 @@ export async function getFormateurSession(): Promise<FormateurSession | null> {
 export async function getFormateurSessionLecture(): Promise<FormateurSessionLecture | null> {
   const lue = await lireSession();
   if (!lue) return null;
-  const { trainer, versionSignee } = lue;
+  const { trainer } = lue;
+  const versionSignee = lue.version !== undefined;
   const identite = {
     trainerId: trainer.id,
     nom: trainer.nom,

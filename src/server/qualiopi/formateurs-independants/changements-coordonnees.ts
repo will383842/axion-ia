@@ -226,9 +226,12 @@ export async function demanderChangementAdresse(
 /** Ce que l'espace montre : la nature et la date des demandes en cours. Jamais la valeur. */
 export async function lireDemandesEnCours(
   trainerId: string,
-): Promise<ReadonlyArray<{ nature: NatureChangement; createdAt: Date }>> {
-  if (!(await interrupteurAllume("changement_coordonnees"))) return [];
+): Promise<ReadonlyArray<{ nature: NatureChangement; createdAt: Date }> | null> {
+  // `null` = pas de section : interrupteur coupé, ou fiche hors périmètre (salarié,
+  // inactive, close) — la page ne montre alors aucun formulaire.
+  if (!(await interrupteurAllume("changement_coordonnees"))) return null;
   try {
+    if ((await ficheIndependante(trainerId)) === null) return null;
     const l = await prisma.demandeChangementFormateur.findMany({
       where: { trainerId, statut: "en_attente", nature: { in: [...NATURES_CHANGEMENT] } },
       select: { nature: true, createdAt: true },
@@ -236,7 +239,7 @@ export async function lireDemandesEnCours(
     });
     return l as Array<{ nature: NatureChangement; createdAt: Date }>;
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -287,7 +290,10 @@ export async function lireDemandesAValider(
 
 export type ResultatTraitement =
   | { ok: true }
-  | { ok: false; raison: "coupe" | "introuvable" | "trop_tot" | "deja_traitee" | "erreur" };
+  | {
+      ok: false;
+      raison: "coupe" | "introuvable" | "trop_tot" | "deja_traitee" | "motif" | "erreur";
+    };
 
 class DejaTraitee extends Error {}
 
@@ -397,6 +403,9 @@ export async function refuserDemandeChangement(p: {
   readonly maintenant: Date;
 }): Promise<ResultatTraitement> {
   if (!(await interrupteurAllume("changement_coordonnees"))) return { ok: false, raison: "coupe" };
+  // Le CHECK `demandes_changement_formateur_traitement_coherent` exige un motif non vide.
+  const motif = p.motif.trim().slice(0, 500);
+  if (motif === "") return { ok: false, raison: "motif" };
   try {
     const r = await prisma.demandeChangementFormateur.updateMany({
       where: { id: p.demandeId, statut: "en_attente" },
@@ -404,7 +413,7 @@ export async function refuserDemandeChangement(p: {
         statut: "refusee",
         traiteParId: p.adminId,
         traiteAt: p.maintenant,
-        motifRefus: p.motif.trim().slice(0, 500) || null,
+        motifRefus: motif,
       },
     });
     if (r.count !== 1) return { ok: false, raison: "deja_traitee" };

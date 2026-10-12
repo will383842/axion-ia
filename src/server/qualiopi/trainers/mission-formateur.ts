@@ -48,7 +48,10 @@ import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants
 import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
-import { versionSessionFormateur } from "@/server/qualiopi/formateurs-independants/version-session";
+import {
+  ecritureFormateurPermise,
+  versionSessionFormateur,
+} from "@/server/qualiopi/formateurs-independants/version-session";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -1093,10 +1096,9 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       },
     });
     if (m === null) return null;
-    // Lot E (M14) — jeton signé avec une version dépassée : révoqué (fin de collaboration).
-    if (verified.version !== undefined && verified.version !== versionSessionFormateur(m.trainer)) {
-      return null;
-    }
+    // Lot E (M14) — garde commune : collaboration close (jeton avec ou sans version) ou
+    // version dépassée → le lien ne désigne plus rien.
+    if (!ecritureFormateurPermise(verified.version, m.trainer)) return null;
     return {
       id: m.id,
       statut: m.statut,

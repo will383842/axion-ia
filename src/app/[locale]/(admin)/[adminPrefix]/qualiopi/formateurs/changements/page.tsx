@@ -37,6 +37,7 @@ const ISSUES: Readonly<Record<string, string>> = {
   refusee: "Demande refusée : la fiche n'a pas été modifiée.",
   trop_tot: "Trop tôt : une demande se valide au plus tôt 48 heures après sa création.",
   deja_traitee: "Cette demande a déjà été traitée.",
+  motif: "Motif obligatoire : indiquez pourquoi la demande est refusée.",
   introuvable: "Demande introuvable.",
   refuse: "Action réservée au droit de rémunérer un formateur.",
   coupe: "Le changement de coordonnées est coupé.",
@@ -142,6 +143,7 @@ export default async function ChangementsCoordonneesPage({ params, searchParams 
                     <input type="hidden" name="demandeId" value={d.id} />
                     <input
                       name="motif"
+                      required
                       maxLength={500}
                       placeholder="Motif (gardé en console)"
                       aria-label="Motif du refus"

@@ -2697,7 +2697,7 @@ async function handleControleRegistrePeriodique(): Promise<void> {
   } catch (err) {
     console.error(
       "[formation-crons] controle-registre-periodique: erreur:",
-      err instanceof Error ? err.message : String(err),
+      err instanceof Error ? err.name : "erreur",
     );
   }
 }
