@@ -42,7 +42,7 @@ Comment lire chaque fiche :
   >
   > Choisissez vous-même le moment qui vous arrange, en un clic, avec le bouton ci-dessous.
 
-- **Bouton** : « Choisir mon créneau »
+- **Bouton** : « Réserver mon créneau »
 
 ## F2 — Relances de l'invitation (2 au plus)
 
@@ -101,7 +101,7 @@ Comment lire chaque fiche :
   >
   > Et si vous avez trouvé une autre voie entre-temps, vous n'avez rien à faire : nous ne vous relancerons pas.
 
-- **Bouton** : « Choisir mon créneau »
+- **Bouton** : « Réserver mon créneau »
 
 ## F3 — Échange confirmé
 
@@ -202,7 +202,7 @@ Comment lire chaque fiche :
   >
   > Merci pour le temps que vous nous avez accordé lors de notre échange.
   >
-  > Pour le moment, nos besoins ne correspondent pas à votre profil.
+  > Nous ne donnons pas suite pour le moment. Nos besoins ne correspondent pas à votre profil.
   >
   > Votre candidature reste chez nous : si nos besoins évoluent, nous pourrons revenir vers vous.
   >
@@ -274,7 +274,7 @@ Comment lire chaque fiche :
   >
   > Petit rappel, votre dossier n'est pas encore complété.
   >
-  > Il reste à le compléter pour que nous puissions vous confier des missions. Vous pouvez reprendre là où vous vous êtes arrêté.
+  > Il reste à le compléter pour que nous puissions vous confier des missions. Vous pouvez reprendre votre dossier là où vous l'avez laissé.
 
 - **Bouton** : « Compléter mon dossier »
 
@@ -693,7 +693,7 @@ Comment lire chaque fiche :
   >
   > C'est signé, merci.
   >
-  > Voici la copie de votre signature de la lettre de mission [numéro], en pièce jointe.
+  > Voici la copie de votre signature de la lettre de mission [numéro], en PDF, en pièce jointe.
   >
   > L'exemplaire signé des deux parties vous parviendra ensuite.
 
@@ -1193,7 +1193,7 @@ Comment lire chaque fiche :
   >
   > Merci de nous répondre ou de régulariser la situation d'ici 8 jours, soit avant le [date].
   >
-  > Passé ce délai, sans réponse ni régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.
+  > Passé ce délai, sans réponse ou sans régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.
   >
   > Pour en parler, répondez simplement à ce message.
 

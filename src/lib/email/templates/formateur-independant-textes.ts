@@ -64,7 +64,7 @@ export const TEXTES_FORMATEUR = {
           "Nous vous proposons un échange de 20 minutes en visio : faire connaissance, vous expliquer simplement comment fonctionnent nos missions et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
           "Choisissez vous-même le moment qui vous arrange, en un clic, avec le bouton ci-dessous.",
         ],
-        boutons: ["Choisir mon créneau"],
+        boutons: ["Réserver mon créneau"],
       },
     ],
   },
@@ -119,7 +119,7 @@ export const TEXTES_FORMATEUR = {
           "Nous vous proposons un échange en visio : faire connaissance, vous expliquer simplement comment fonctionnent nos missions et répondre à vos questions. Sans engagement.",
           "Et si vous avez trouvé une autre voie entre-temps, vous n'avez rien à faire : nous ne vous relancerons pas.",
         ],
-        boutons: ["Choisir mon créneau"],
+        boutons: ["Réserver mon créneau"],
       },
     ],
   },
@@ -212,7 +212,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Merci pour le temps que vous nous avez accordé lors de notre échange.",
-          "Pour le moment, nos besoins ne correspondent pas à votre profil.",
+          "Nous ne donnons pas suite pour le moment. Nos besoins ne correspondent pas à votre profil.",
           "Votre candidature reste chez nous : si nos besoins évoluent, nous pourrons revenir vers vous.",
           "Vous préférez que nous effacions vos données ? Répondez simplement à ce message : Williams Jullin, responsable d'Axion-IA, traite votre demande. Votre fiche est alors rendue anonyme, et seul ce que la loi impose de conserver est gardé.",
           "Nous vous souhaitons le meilleur pour la suite de vos projets.",
@@ -279,7 +279,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Petit rappel, votre dossier n'est pas encore complété.",
-          "Il reste à le compléter pour que nous puissions vous confier des missions. Vous pouvez reprendre là où vous vous êtes arrêté.",
+          "Il reste à le compléter pour que nous puissions vous confier des missions. Vous pouvez reprendre votre dossier là où vous l'avez laissé.",
         ],
         boutons: ["Compléter mon dossier"],
       },
@@ -706,7 +706,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "C'est signé, merci.",
-          "Voici la copie de votre signature de la lettre de mission [numéro], en pièce jointe.",
+          "Voici la copie de votre signature de la lettre de mission [numéro], en PDF, en pièce jointe.",
           "L'exemplaire signé des deux parties vous parviendra ensuite.",
         ],
         boutons: [],
@@ -1216,7 +1216,7 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "Nous avons constaté ce qui suit : [fait précis, écrit par Will].",
           "Merci de nous répondre ou de régulariser la situation d'ici 8 jours, soit avant le [date].",
-          "Passé ce délai, sans réponse ni régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.",
+          "Passé ce délai, sans réponse ou sans régularisation, nous pourrons mettre fin à notre collaboration sans préavis, comme le prévoit l'article 30.4 de votre contrat.",
           "Pour en parler, répondez simplement à ce message.",
         ],
         boutons: [],
