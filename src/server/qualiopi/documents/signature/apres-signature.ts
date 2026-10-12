@@ -40,6 +40,7 @@ import { sendTelegram } from "@/lib/telegram";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { changerActivationFormateur } from "@/server/qualiopi/formateurs-independants/activation";
+import { marquerDossierVerifie } from "@/server/qualiopi/formateurs-independants/dossier-verifie";
 import { lireEtatsSignature } from "@/server/qualiopi/formateurs-independants/interrupteurs-lecture";
 import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
 import {
@@ -79,6 +80,11 @@ export interface ContexteApresSignature {
    * si l'interrupteur `signature.alertes_hors_jeton` est allumé.
    */
   readonly canal?: "lien_a_jeton";
+  /**
+   * Lot B (M3) : l'appelant remet lui-même la copie de la signature (F10 du dossier
+   * formateur). Absent : comportement inchangé.
+   */
+  readonly sansCopiePartielle?: true;
 }
 
 function capturer(err: unknown, branche: string, ctx: ContexteApresSignature): void {
@@ -218,7 +224,8 @@ async function classerContratTravail(documentGenereId: string, numero: string): 
  *   2. le casier `TrainerDocument` `contrat_sous_traitance`, idempotent par
  *      numéro ;
  *   3. la preuve au journal (numéro et empreinte, aucune donnée personnelle) ;
- *   4. l'activation DEMANDÉE par l'écrivain unique (lot S1) — et seulement si
+ *   4. le dossier en ligne « vérifié », lien révoqué (lot B, M15), puis
+ *      l'activation DEMANDÉE par l'écrivain unique (lot S1) — et seulement si
  *      l'acteur est un administrateur identifié. La garde de S1 peut refuser
  *      (pièces manquantes) : c'est son rôle, le refus est journalisé, la
  *      signature reste acquise.
@@ -310,6 +317,19 @@ async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promi
 
   // 4. Activation demandée — jamais par un signataire, jamais par « système ».
   if (ctx.acteur.type !== "administrateur") return;
+  // Lot B (M15) : contresigné par l'administrateur, quel que soit l'écran — le dossier
+  // en ligne passe « vérifié » et son lien est révoqué (sans effet sur la session de
+  // l'espace). Écriture conditionnelle : une fiche sans dossier ouvert n'est pas touchée.
+  // Une panne ne défait ni la signature ni l'activation.
+  try {
+    await marquerDossierVerifie({
+      trainerId,
+      parId: ctx.acteur.session.userId,
+      maintenant: new Date(),
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apresSignature:dossier-verifie" } });
+  }
   const r = await changerActivationFormateur({
     trainerId,
     actif: true,
@@ -375,7 +395,7 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
         capturer(err, "alerte", ctx);
       }
     }
-    if (interrupteurs.copie_partielle) {
+    if (interrupteurs.copie_partielle && ctx.sansCopiePartielle !== true) {
       try {
         await transmettreCopiePartielle(ctx.documentGenereId, ctx.partie);
       } catch (err) {

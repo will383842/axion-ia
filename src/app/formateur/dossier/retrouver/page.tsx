@@ -1,4 +1,5 @@
-// « RETROUVER MON LIEN » du formateur indépendant (lot L6, F14).
+// « RETROUVER MON ESPACE » du formateur indépendant (lot L6, F14 ; lot B, M25 : une
+// seule page, pour le dossier en cours comme pour l'espace d'une fiche active).
 //
 // `/formateur/dossier/retrouver` : segment STATIQUE, il passe avant `[id]` et hérite des
 // en-têtes de `/formateur/dossier/*` (noindex, `Referrer-Policy: same-origin`, CSP).
@@ -16,7 +17,7 @@ import { FormulaireRetrouver } from "./FormulaireRetrouver";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { absolute: "Retrouver mon dossier de formateur — Axion-IA" },
+  title: { absolute: "Retrouver mon espace de formateur — Axion-IA" },
   robots: { index: false, follow: false },
 };
 
@@ -25,10 +26,10 @@ export default async function RetrouverMonDossierPage() {
   if (!(await dossierEnLigneOuvert())) notFound();
   return (
     <Coquille>
-      <h1 className="font-serif text-[28px] leading-tight font-medium">Retrouver mon dossier</h1>
+      <h1 className="font-serif text-[28px] leading-tight font-medium">Retrouver mon espace</h1>
       <p className="text-fg-soft mt-3 text-[16px] leading-relaxed">
         Indiquez l&apos;adresse e‑mail que vous nous avez donnée : nous vous renvoyons votre lien
-        personnel.
+        personnel, vers votre dossier s&apos;il est en cours, ou vers votre espace.
       </p>
       <FormulaireRetrouver />
     </Coquille>

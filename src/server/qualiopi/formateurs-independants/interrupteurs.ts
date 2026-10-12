@@ -261,8 +261,14 @@ export function lireDatePassagePaiement(etats: EtatsInterrupteurs): string | nul
 
 export type Prealable =
   | { readonly sorte: "interrupteur"; readonly cle: CleEnvoi }
+  /** Un fait lisible par l'outil, hors interrupteurs (lu par `prealables-faits.ts`). */
+  | { readonly sorte: "fait"; readonly fait: FaitPrealable; readonly libelle: string }
   /** Une condition qu'aucune donnée en base ne permet encore de vérifier. */
   | { readonly sorte: "non_lisible"; readonly libelle: string };
+
+/** Les faits lisibles qu'un préalable peut exiger. Absent = non établi (refus). */
+export type FaitPrealable = "version_contrat_arretee";
+export type FaitsPrealables = Readonly<Partial<Record<FaitPrealable, boolean>>>;
 
 const exige = (cle: CleEnvoi): Prealable => ({ sorte: "interrupteur", cle });
 
@@ -285,8 +291,9 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
     exige("dossier_en_ligne"),
     exige("textes_valides"),
     {
-      sorte: "non_lisible",
-      libelle: "La version en vigueur du contrat-cadre n'est pas encore lisible par l'outil.",
+      sorte: "fait",
+      fait: "version_contrat_arretee",
+      libelle: "Aucune version du contrat-cadre n'est arrêtée : le contrat ne peut pas être créé.",
     },
   ],
   garde_activation: [
@@ -337,10 +344,12 @@ export function prealablesManquants(
   cle: CleInterrupteur,
   valeur: unknown,
   etats: EtatsInterrupteurs,
+  faits: FaitsPrealables = {},
 ): string[] {
   if (estPositionSure(cle, valeur)) return [];
   return PREALABLES[cle].flatMap((p) => {
     if (p.sorte === "non_lisible") return [p.libelle];
+    if (p.sorte === "fait") return faits[p.fait] === true ? [] : [p.libelle];
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });
 }
@@ -638,7 +647,8 @@ export function prealablesManquantsSignature(
 ): string[] {
   if (valeur !== true) return [];
   return PREALABLES_SIGNATURE[cle].flatMap((p) => {
-    if (p.sorte === "non_lisible") return [p.libelle];
+    // Aucun fait n'est lu pour ce registre : un préalable « fait » y refuse (prudent).
+    if (p.sorte === "non_lisible" || p.sorte === "fait") return [p.libelle];
     if (p.sorte === "date_passage_paiement") {
       return etats.passage_paiement !== null
         ? []
@@ -807,7 +817,8 @@ export function prealablesManquantsEntree(
 ): string[] {
   if (valeur !== true) return [];
   return PREALABLES_ENTREE[cle].flatMap((p) => {
-    if (p.sorte === "non_lisible") return [p.libelle];
+    // Aucun fait n'est lu pour ce registre : un préalable « fait » y refuse (prudent).
+    if (p.sorte === "non_lisible" || p.sorte === "fait") return [p.libelle];
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });
 }

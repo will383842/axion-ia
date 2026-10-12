@@ -26,7 +26,6 @@
 
 import { createHash } from "node:crypto";
 
-import { lienDuSite } from "@/lib/calendly/lien-du-site";
 import { FENETRE_ENVOI_PAR_DEFAUT, type RegleCampagne } from "@/lib/relances/campagne";
 import { prisma } from "@/lib/prisma";
 import type { DeclarationCampagne, FaitsCampagne } from "@/server/relances/registre-campagnes";
@@ -38,6 +37,7 @@ import {
   type CandidatureInvitation,
 } from "./invitation-formateurs-faits";
 import type { EnvoiFormateur, ResultatEnvoiFormateur } from "./envois";
+import { lienEchangeFormateur } from "./jeton-reservation";
 
 const MINUTE_MS = 60_000;
 const JOUR_MS = 24 * 60 * MINUTE_MS;
@@ -56,9 +56,12 @@ export const FENETRE_CLOTURE_MS = 60 * JOUR_MS;
 /** Le stock du rattrapage : les candidatures reçues depuis le 09/10/2026 (heure de Paris). */
 export const DEBUT_STOCK_RATTRAPAGE = new Date("2026-10-08T22:00:00.000Z");
 
-/** Le lien d'invitation : la page du site, marquée pour le rattachement (`fa-<id>`). */
+/**
+ * Le lien d'invitation : la page du site, marquée pour le rattachement (`fa-<id>`), avec
+ * le jeton signé qui préremplit la réservation (lot B, M25).
+ */
 export function lienInvitation(candidatureId: string): string {
-  return lienDuSite("formateur", { depuis: `fa-${candidatureId}` });
+  return lienEchangeFormateur(candidatureId);
 }
 
 function payloadInvitation(candidatureId: string, prenom: string | null): Record<string, unknown> {

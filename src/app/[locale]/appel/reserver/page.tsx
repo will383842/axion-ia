@@ -63,6 +63,7 @@ import {
   identiteDuJetonVsl,
   PARAM_JETON_VSL,
 } from "@/features/commercial-application/identite-reservation-vsl";
+import { identiteDuJetonReservation } from "@/server/qualiopi/formateurs-independants/identite-reservation";
 
 /**
  * Rendu à chaque requête.
@@ -170,8 +171,13 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // et l'e-mail de l'étape 1 (et le téléphone de l'étape 2) sont proposés d'office. Le même e-mail rattache la
   // réservation à la fiche. Une reprise (saisie déjà faite) l'emporte toujours ;
   // un jeton faux ou expiré ne change rien au formulaire.
+  // Lot B (M25) : échange formateur ouvert depuis F1 ou F7, même règle (jeton signé,
+  // candidature de formateur freelance seulement ; sinon formulaire vide).
   const prerempli =
-    !reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null;
+    (!reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null) ??
+    (!reprise && choix === "formateur"
+      ? await identiteDuJetonReservation(sp[PARAM_JETON_VSL])
+      : null);
 
   return (
     <div className="bg-canvas min-h-screen pt-6 pb-16 sm:pt-10">

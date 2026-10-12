@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   copie: vi.fn(),
   telegram: vi.fn(),
   activer: vi.fn(),
+  verifie: vi.fn(),
   log: vi.fn(),
   p: {
     documentGenere: { findUnique: vi.fn() },
@@ -40,6 +41,9 @@ vi.mock("@/server/qualiopi/formateurs-independants/activation", () => ({
   changerActivationFormateur: h.activer,
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({ logQualiopiActivity: h.log }));
+vi.mock("@/server/qualiopi/formateurs-independants/dossier-verifie", () => ({
+  marquerDossierVerifie: h.verifie,
+}));
 vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   devisConcernesPourEmission: vi.fn(async () => []),
   emettreDevisSigne: vi.fn(),
@@ -204,6 +208,7 @@ describe("(4) suite du contrat-cadre formateur — formateurs.suite_contrat_cadr
     expect(h.log).not.toHaveBeenCalled();
     expect(h.p.activityLog.create).not.toHaveBeenCalled();
     expect(h.activer).not.toHaveBeenCalled();
+    expect(h.verifie).not.toHaveBeenCalled();
   });
 
   it("clé allumée : fiche, pièce au dossier, journal, activation demandée", async () => {
@@ -213,5 +218,25 @@ describe("(4) suite du contrat-cadre formateur — formateurs.suite_contrat_cadr
     expect(h.p.trainerDocument.create).toHaveBeenCalledOnce();
     expect(h.log).toHaveBeenCalledOnce();
     expect(h.activer).toHaveBeenCalledOnce();
+  });
+
+  it("lot B (M15) : contresignature par l'administrateur, quel que soit l'écran — le dossier passe « vérifié »", async () => {
+    allumer("formateurs.suite_contrat_cadre");
+    await apresSignature(signe());
+    expect(h.verifie).toHaveBeenCalledOnce();
+    expect(h.verifie.mock.calls[0]![0]).toMatchObject({ trainerId: TRAINER, parId: "adm-1" });
+  });
+
+  it("lot B (M15) : une panne du passage « vérifié » ne défait ni la signature ni l'activation", async () => {
+    allumer("formateurs.suite_contrat_cadre");
+    h.verifie.mockRejectedValue(new Error("panne"));
+    await expect(apresSignature(signe())).resolves.toBeUndefined();
+    expect(h.activer).toHaveBeenCalledOnce();
+  });
+
+  it("lot B (M15) : un signataire (lien à jeton) ne fait jamais passer le dossier « vérifié »", async () => {
+    allumer("formateurs.suite_contrat_cadre");
+    await apresSignature({ ...signe(), partie: "sous_traitant", acteur: { type: "signataire" } });
+    expect(h.verifie).not.toHaveBeenCalled();
   });
 });

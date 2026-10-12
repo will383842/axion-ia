@@ -47,6 +47,29 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(async () => [{ partie: "sous_traitant" }]),
     },
     verificationRegistreSousTraitance: { findMany: vi.fn(async () => []) },
+    // Dossier complet (attestation prouvée, pièces validées) : la porte de
+    // contresignature ne s'arrête que sur le SIRET, objet de ce spec.
+    trainer: {
+      findUnique: vi.fn(async () => {
+        const piece = {
+          fichierUrl: "r2://piece",
+          dateEmission: new Date(Date.now() - 30 * 24 * 3600 * 1000),
+          dateExpiration: null,
+          statutValidation: "valide",
+        };
+        return {
+          statut: "sous_traitant",
+          documents: [
+            { ...piece, id: "att", type: "attestation_vigilance_urssaf" },
+            { ...piece, id: "cv", type: "cv" },
+            { ...piece, id: "rib", type: "rib" },
+          ],
+        };
+      }),
+    },
+    preuveVigilance: {
+      findMany: vi.fn(async () => [{ trainerDocumentId: "att", resultat: "valide" }]),
+    },
   },
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/controle", () => ({

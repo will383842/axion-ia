@@ -27,6 +27,7 @@ import {
   type CleInterrupteur,
   type CleInterrupteurSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 import {
   lireInterrupteurs,
   lireInterrupteursEntree,
@@ -250,7 +251,9 @@ export default async function InterrupteursFormateursPage({ params, searchParams
                   : def.sorte === "date"
                     ? "2000-01-01"
                     : l.valeur !== true;
-              const manques = sure ? prealablesManquants(l.cle, cible, etats) : [];
+              const manques = sure
+                ? prealablesManquants(l.cle, cible, etats, lireFaitsPrealables())
+                : [];
               const habilite =
                 def.habilitation === "valider_texte_email"
                   ? acces.role === "super_admin"

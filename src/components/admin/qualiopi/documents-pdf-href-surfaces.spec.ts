@@ -60,6 +60,10 @@ const HREF_PDFURL = /href=\{[^}]*\bpdfUrl\b/;
  */
 const HREF_PDFURL_LEGITIMES: ReadonlyArray<{ file: string; why: string }> = [
   {
+    file: "app/formateur/dossier/[id]/[jeton]/DossierFormateur.tsx",
+    why: "contrat-cadre à signer dans le dossier (lot B) : URL re-signée 15 min à CHAQUE rendu par page.tsx et à chaque « Recevoir mon code » (`lienPdfContratDossier`) — jamais la valeur stockée, comme portail/signer",
+  },
+  {
     file: "components/portail/PieceSignatureForm.tsx",
     why: "reçoit en prop une URL re-signée à CHAQUE rendu par portail/signer/[token]/page.tsx — jamais la valeur stockée",
   },

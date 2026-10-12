@@ -25,6 +25,7 @@ import {
 } from "@/server/qualiopi/formateurs-independants/dossier-regles";
 
 import {
+  demanderCodeContratAction,
   deposerPieceAction,
   enregistrerActiviteAction,
   enregistrerCodeUrssafAction,
@@ -32,9 +33,11 @@ import {
   envoyerDossierAction,
   rechercherSiretAction,
   signalerSituationAction,
+  signerEtEnvoyerDossierAction,
   type ResultatRecherche,
 } from "./actions";
 import { ADRESSE_CONTACT, ETAPES, LIEN_POLITIQUE, TEXTES } from "./textes";
+import type { TextesContrat } from "./textes-contrat";
 
 export interface DossierPublic {
   id: string;
@@ -118,12 +121,19 @@ function Progression({ etape }: { etape: number }) {
 
 type Envoi = (fd: FormData) => Promise<{ ok: true } | { ok: false; message: string }>;
 
+/** L'étape 4 : sans contrat (comportement d'avant), ou contrat à signer ici (lot B). */
+export type ContratEtape4 =
+  | { mode: "sans_contrat" }
+  | { mode: "a_signer"; signe: boolean; pdfUrl: string | null; textes: TextesContrat };
+
 export function DossierFormateur({
   dossier,
   etapeInitiale,
+  contrat = { mode: "sans_contrat" },
 }: {
   dossier: DossierPublic;
   etapeInitiale: 1 | 2 | 3 | 4;
+  contrat?: ContratEtape4;
 }) {
   const router = useRouter();
   const [etape, setEtape] = useState<1 | 2 | 3 | 4>(etapeInitiale);
@@ -146,6 +156,11 @@ export function DossierFormateur({
   const [code, setCode] = useState("");
   // Étape 4
   const [certifie, setCertifie] = useState(false);
+  const [accepte, setAccepte] = useState(false);
+  const [codeContrat, setCodeContrat] = useState("");
+  const [adresseCode, setAdresseCode] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState(contrat.mode === "a_signer" ? contrat.pdfUrl : null);
+  const [signe, setSigne] = useState(false);
 
   function envoyer(action: Envoi, fd: FormData, suite: () => void) {
     setErreur(null);
@@ -172,9 +187,15 @@ export function DossierFormateur({
           ✓
         </span>
         <h1 id="fin-titre" className="mt-4 font-serif text-[30px] leading-tight font-medium">
-          {TEXTES.merciTitre}
+          {signe && contrat.mode === "a_signer"
+            ? contrat.textes.merciSigneTitre
+            : TEXTES.merciTitre}
         </h1>
-        <p className="text-fg-soft mt-3 text-[18px]">{TEXTES.merciLigne}</p>
+        <p className="text-fg-soft mt-3 text-[18px]">
+          {signe && contrat.mode === "a_signer"
+            ? contrat.textes.merciSigneLigne
+            : TEXTES.merciLigne}
+        </p>
         <p className="bg-sand mt-4 inline-block rounded-full px-4 py-1.5 text-[15px] font-semibold">
           {TEXTES.merciEtat}
         </p>
@@ -615,8 +636,156 @@ export function DossierFormateur({
     );
   }
 
+  // ── Étape 4 · Votre contrat, signé ici (lot B : `contrat_auto` et version arrêtée) ──
+  if (contrat.mode === "a_signer") {
+    const dejaSigne = contrat.signe;
+    const T = contrat.textes;
+    const codeValide = /^\d{6}$/.test(codeContrat.replace(/\s+/g, ""));
+    return (
+      <section aria-labelledby="etape-titre">
+        <Progression etape={4} />
+        <h1 id="etape-titre" className="font-serif text-[28px] font-medium">
+          {ETAPES[3]}
+        </h1>
+        <div className={`${carte} mt-4`}>
+          <h2 className="text-[18px] font-semibold">{T.contratRempli}</h2>
+          <ul className="text-fg-soft mt-2 list-disc pl-5 text-[16px]">
+            {T.contratResume.map((l) => (
+              <li key={l}>{l}</li>
+            ))}
+          </ul>
+          {pdfUrl ? (
+            <a
+              className={`${lienTexte} mt-3 inline-block`}
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener"
+            >
+              {T.lireContrat}
+            </a>
+          ) : (
+            <p className="text-fg-soft mt-3 text-[15px]">{T.contratApresCode}</p>
+          )}
+        </div>
+        {dejaSigne ? (
+          <p className={`${carte} text-sage-deep mt-3 font-semibold`}>{T.contratDejaSigne}</p>
+        ) : null}
+        <div className={`${carte} mt-3 grid gap-3`}>
+          <label className="flex items-start gap-3 text-[16px]">
+            <input
+              type="checkbox"
+              className="mt-1 h-5 w-5"
+              checked={certifie}
+              onChange={(e) => setCertifie(e.target.checked)}
+            />
+            <span>
+              <span className="font-semibold">{TEXTES.jeCertifie}</span>
+              <ul className="text-fg-soft mt-1 list-disc pl-5 text-[15px]">
+                {DECLARATIONS_FORMATEUR.map((d) => (
+                  <li key={d.cle}>{d.texte}</li>
+                ))}
+              </ul>
+            </span>
+          </label>
+          <label className="flex items-start gap-3 text-[16px]">
+            <input
+              type="checkbox"
+              className="mt-1 h-5 w-5"
+              checked={accepte}
+              onChange={(e) => setAccepte(e.target.checked)}
+            />
+            <span>
+              <span className="font-semibold">{T.jaiLu}</span>
+              <ul className="text-fg-soft mt-1 list-disc pl-5 text-[15px]">
+                {T.jaiLuPoints.map((l) => (
+                  <li key={l}>{l}</li>
+                ))}
+              </ul>
+            </span>
+          </label>
+          <p className="text-fg-soft text-[15px]">
+            {T.signeEnTantQue} {dossier.prenom} {dossier.nom}.
+          </p>
+        </div>
+        {!dejaSigne ? (
+          <div className={`${carte} mt-3`}>
+            {adresseCode ? (
+              <p role="status" className="text-[16px]">
+                {T.codeEnvoyeAvant} {adresseCode}. {T.codeEnvoyeApres}
+              </p>
+            ) : null}
+            <button
+              type="button"
+              className={`${adresseCode ? boutonSecondaire : boutonPrincipal} mt-2`}
+              disabled={enCours}
+              onClick={() => {
+                setErreur(null);
+                const fd = new FormData();
+                fd.set("id", dossier.id);
+                fd.set("jeton", dossier.jeton);
+                demarrer(async () => {
+                  try {
+                    const r = await demanderCodeContratAction(fd);
+                    if (!r.ok) {
+                      setErreur(r.message);
+                      return;
+                    }
+                    setAdresseCode(r.adresse);
+                    if (r.pdfUrl) setPdfUrl(r.pdfUrl);
+                  } catch {
+                    setErreur(TEXTES.connexionPerdue);
+                  }
+                });
+              }}
+            >
+              {adresseCode ? T.codeNonRecu : T.recevoirCode}
+            </button>
+            {adresseCode ? (
+              <label className="mt-3 block">
+                <span className={etiquette}>{T.codeSignature}</span>
+                <input
+                  className={champ}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={7}
+                  value={codeContrat}
+                  onChange={(e) => setCodeContrat(e.target.value)}
+                />
+              </label>
+            ) : null}
+          </div>
+        ) : null}
+        <Erreur message={erreur} />
+        <div className="mt-5 grid grid-cols-[auto_1fr] gap-2">
+          <button type="button" className={boutonSecondaire} onClick={() => setEtape(3)}>
+            {TEXTES.retour}
+          </button>
+          <button
+            type="button"
+            className={boutonPrincipal}
+            disabled={enCours || !certifie || !accepte || (!dejaSigne && !codeValide)}
+            onClick={() => {
+              const fd = new FormData();
+              fd.set("certifie", "1");
+              fd.set("accepte", "1");
+              // Contrat déjà signé : le code n'est plus relu, l'envoi reprend.
+              fd.set("code", dejaSigne ? "000000" : codeContrat);
+              envoyer(signerEtEnvoyerDossierAction, fd, () => {
+                setSigne(true);
+                setFini(true);
+              });
+            }}
+          >
+            {enCours ? T.signature : dejaSigne ? TEXTES.envoyer : T.signer}
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   // ── Étape 4 · Votre contrat ──
-  // Le contrat-cadre se signera ici (S6/L7c) ; d'ici là, le dossier part sans signature.
+  // Sans contrat à signer ici (interrupteur coupé ou aucune version arrêtée) : le dossier
+  // part sans signature.
   return (
     <section aria-labelledby="etape-titre">
       <Progression etape={4} />

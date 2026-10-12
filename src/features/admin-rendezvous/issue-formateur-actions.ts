@@ -26,6 +26,7 @@ import { creerFicheFormateurDepuisCandidatureAction } from "@/features/admin-job
 import { peutEngager } from "@/server/auth/habilitations";
 import { apercu, envoyer } from "@/server/qualiopi/formateurs-independants/envois";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
+import { ouvrirDossierRetenu } from "@/server/qualiopi/formateurs-independants/ouverture-dossier";
 
 import {
   ISSUES_ECHANGE,
@@ -162,6 +163,8 @@ export async function enregistrerIssueFormateurAction(
   // « Retenu » : la fiche formateur INACTIVE, `sous_traitant` (passerelle de la fiche
   // candidat, qui revérifie elle-même le rôle), reliée à sa candidature d'origine.
   let fiche = "";
+  let envoi: string | null = null;
+  let ouverture = "";
   if (saisie.issue === "retenu") {
     const r = await creerFicheFormateurDepuisCandidatureAction({
       applicationId: prep.candidatureId,
@@ -179,13 +182,31 @@ export async function enregistrerIssueFormateurAction(
         Sentry.captureException(err, { tags: { action: "issue-formateur", step: "candidature" } });
       }
       fiche = r.deja ? " La fiche formateur existait déjà." : " Fiche formateur créée (inactive).";
+      // F5 relu à l'aperçu : le dossier s'ouvre, puis l'e-mail part avec son vrai lien.
+      if (prep.envoi?.ouvreDossier) {
+        try {
+          const o = await ouvrirDossierRetenu({
+            trainerId: r.trainerId,
+            parId: qui.id,
+            maintenant: new Date(),
+          });
+          if (o.ok) {
+            ouverture = " Dossier en ligne ouvert.";
+            envoi = o.envoi;
+          } else {
+            ouverture = ` ${o.message}`;
+          }
+        } catch (err) {
+          Sentry.captureException(err, { tags: { action: "issue-formateur", step: "dossier" } });
+          ouverture = " ⚠️ Le dossier en ligne n'a pas pu être ouvert : réessayez depuis la fiche.";
+        }
+      }
     } else {
       fiche = ` ⚠️ La fiche formateur n'a pas été créée : ${r.message}`;
     }
   }
 
-  let envoi: string | null = null;
-  if (prep.envoi) {
+  if (prep.envoi && !prep.envoi.ouvreDossier) {
     envoi = await envoyer({
       gabarit: prep.envoi.gabarit,
       destinataire: prep.envoi.destinataire,
@@ -231,6 +252,6 @@ export async function enregistrerIssueFormateurAction(
           : envoi === "texte-non-valide"
             ? " E-mail non envoyé : son texte n'est pas encore validé."
             : ` E-mail non envoyé (${envoi}).`;
-  const message = `Issue enregistrée : ${LIBELLE_ISSUE_ECHANGE[saisie.issue]}.${fiche}${phraseEnvoi}${prep.sansEmail ? ` ${prep.sansEmail}` : ""}`;
+  const message = `Issue enregistrée : ${LIBELLE_ISSUE_ECHANGE[saisie.issue]}.${fiche}${ouverture}${phraseEnvoi}${prep.sansEmail ? ` ${prep.sansEmail}` : ""}`;
   return { etat: "ok", message };
 }

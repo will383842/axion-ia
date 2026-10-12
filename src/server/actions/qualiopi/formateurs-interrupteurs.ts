@@ -41,6 +41,7 @@ import {
   type CleInterrupteur,
   type Habilitation,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 
 export type EtatBascule = { ok: true; message: string } | { ok: false; error: string };
 
@@ -160,7 +161,7 @@ function ecrire(
       select: { key: true, value: true },
     });
     const etats = etatsDepuisLignes(lignes);
-    const manquants = prealablesManquants(cle, valeur, etats);
+    const manquants = prealablesManquants(cle, valeur, etats, lireFaitsPrealables());
     if (manquants.length > 0) return manquants;
     const avant = etats[cle];
     await tx.setting.upsert({

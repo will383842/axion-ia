@@ -87,6 +87,11 @@ export interface ConfigRendezVous {
   readonly premiereEtape: string;
   /** Étape 2 : ce que le visiteur reçoit après la réservation — ce que le code envoie vraiment. */
   readonly deuxiemeEtape: string;
+  /**
+   * Lot B (M25) — échange formateur seulement : la 2e étape quand NOS e-mails partent
+   * (`nosEmailsPourEchangeFormateur`). Absente : `deuxiemeEtape`, toujours.
+   */
+  readonly deuxiemeEtapeAvecNosEmails?: string;
   /** Étape 3 : ce que l'on fait pendant le rendez-vous. */
   readonly troisiemeEtape: string;
   /** Les formats d'échange CANDIDATS, dans l'ordre où le formulaire les propose. */
@@ -225,6 +230,9 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     // Seule l'invitation d'agenda de Calendly part — on ne promet que cela.
     deuxiemeEtape:
       "Vous recevez l'invitation d'agenda par e-mail, avec le lien de la visioconférence.",
+    // Suivi des échanges allumé et textes F3 / F4 validés : nos e-mails partent aussi.
+    deuxiemeEtapeAvecNosEmails:
+      "Vous recevez notre confirmation et l'invitation d'agenda par e-mail, avec le lien de la visioconférence, puis un rappel la veille et un autre une heure avant.",
     troisiemeEtape:
       "Nous faisons connaissance et nous échangeons sur vos domaines d'intervention et sur la façon dont nous travaillons avec des formateurs indépendants.",
     formats: ["visio"],

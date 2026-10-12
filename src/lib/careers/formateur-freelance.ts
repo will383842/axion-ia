@@ -43,6 +43,11 @@ type OffreLue = {
 type CandidatureLue = {
   readonly offerTitleSnap?: string | null;
   readonly offer?: OffreLue | null;
+  /**
+   * Lot B (M25) : la nature FIGÉE au dépôt de la candidature. Présente, elle décide ;
+   * absente ou vide (candidature antérieure, sélection sans elle), la règle d'avant.
+   */
+  readonly natureCollaboration?: string | null;
 };
 
 function plie(v: string | null | undefined): string {
@@ -71,10 +76,12 @@ export function estCandidatureFormateurFreelance(
     const t = plie(entree);
     return contientUn(t, MOTS_FORMATEUR) && contientUn(t, MOTS_FREELANCE);
   }
-  const offre: OffreLue | null | undefined =
-    "offerTitleSnap" in entree || "offer" in entree
-      ? (entree as CandidatureLue).offer
-      : (entree as OffreLue);
+  const estCandidature = "offerTitleSnap" in entree || "offer" in entree;
+  const nature = estCandidature ? (entree as CandidatureLue).natureCollaboration : null;
+  if (nature === "salarie") return false;
+  const offre: OffreLue | null | undefined = estCandidature
+    ? (entree as CandidatureLue).offer
+    : (entree as OffreLue);
   if (offre?.slug === SLUG_OFFRE_FORMATEUR_FREELANCE) return true;
   const textes = [
     (entree as CandidatureLue).offerTitleSnap,
@@ -83,6 +90,8 @@ export function estCandidatureFormateurFreelance(
   ].map(plie);
   const formateur = textes.some((t) => contientUn(t, MOTS_FORMATEUR));
   if (!formateur) return false;
+  // Une candidature de FORMATEUR dont la nature figée au dépôt est « freelance ».
+  if (nature === "freelance") return true;
   if (textes.some((t) => contientUn(t, MOTS_FORMATEUR) && contientUn(t, MOTS_FREELANCE))) {
     return true;
   }

@@ -189,6 +189,12 @@ export async function preparerContratCadre(input: {
   trainerId: string;
   maintenant: Date;
   lire?: LireRegistre;
+  /**
+   * `dossier` (lot B, M3) : le contrat est créé à l'étape 4 du dossier en ligne, AVANT
+   * la vérification de l'attestation URSSAF et la validation d'un orange par Axion,
+   * qui ont lieu à la contresignature (W-4). Défaut `console` : règles inchangées.
+   */
+  parcours?: "console" | "dossier";
 }): Promise<ResultatPreparation> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     return { ok: false, refus: ["Indisponible pendant le build."] };
@@ -196,7 +202,9 @@ export async function preparerContratCadre(input: {
   const version = versionContratAEmettre();
   const faits = await lireFaitsEmissionContrat(input.trainerId, input.lire, input.maintenant);
   if (faits === null) return { ok: false, refus: ["Formateur introuvable."] };
-  const verdict = verdictEmissionContrat(faits, version, input.maintenant);
+  const verdict = verdictEmissionContrat(faits, version, input.maintenant, {
+    parcours: input.parcours ?? "console",
+  });
   if (!verdict.ok) return verdict;
   // `verdictEmissionContrat` a refusé toute version nulle.
   const versionEmise = version as number;

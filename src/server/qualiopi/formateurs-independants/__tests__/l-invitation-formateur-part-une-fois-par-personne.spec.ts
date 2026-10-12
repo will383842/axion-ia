@@ -176,7 +176,8 @@ describe("F1 — le balayage", () => {
     });
     expect(e.priority).toBeUndefined();
     expect(String(e.payload.lien)).toMatch(
-      new RegExp(`formateur-independant\\?depuis=fa-${c.id}$`),
+      // Lot B (M25) : suivi du jeton signé de préremplissage.
+      new RegExp(`formateur-independant\\?depuis=fa-${c.id}&j=${c.id}\\.[^&]+$`),
     );
     expect(c.invitationFormateurAt).toEqual(MAINTENANT);
   });

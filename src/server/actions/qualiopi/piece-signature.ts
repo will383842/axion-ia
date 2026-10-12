@@ -64,6 +64,7 @@ import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/cod
 import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
+import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -312,14 +313,12 @@ export async function signerPieceParJetonAction(input: {
     };
   }
 
-  const objection =
-    (await objectionMetier(piece.type, verif.documentGenereId)) ??
-    (await objectionContratCadre({
-      documentGenereId: verif.documentGenereId,
-      type: piece.type,
-      metadata: piece.metadata,
-      partie: verif.partie,
-    }));
+  const objection = await objectionAvantSignature({
+    documentGenereId: verif.documentGenereId,
+    type: piece.type,
+    metadata: piece.metadata,
+    partie: verif.partie,
+  });
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
@@ -522,6 +521,42 @@ export async function demanderCodeSignatureAction(input: {
   return { ok: true, destinataireMasque: masquerAdresse(piece.trainer.email) };
 }
 
+/**
+ * Ce qui s'oppose à l'écriture d'une signature : l'objection métier de la pièce,
+ * puis celle du contrat-cadre v3.
+ *
+ * 🔴 Partie `axionia` : LA porte unique de contresignature du contrat-cadre d'un
+ * formateur indépendant (`objectionContresignatureContratCadre` : version en
+ * vigueur, signature du formateur, attestation URSSAF prouvée, pièces validées,
+ * SIREN actif relu en direct sur le SIRET du contrat). Tous les chemins de
+ * contresignature y passent : pièce, lot, écran W-4, et le jeton (que le moteur
+ * refuse de toute façon pour `axionia`). Toute autre pièce : inchangé.
+ */
+async function objectionAvantSignature(input: {
+  documentGenereId: string;
+  type: string;
+  metadata: unknown;
+  partie: PartieSignataire;
+  adminId?: string;
+}): Promise<{ message: string } | null> {
+  const metier = await objectionMetier(input.type, input.documentGenereId);
+  if (metier !== null) return metier;
+  if (input.partie === "axionia") {
+    return objectionContresignatureContratCadre({
+      documentGenereId: input.documentGenereId,
+      type: input.type,
+      metadata: input.metadata,
+      adminId: input.adminId ?? null,
+    });
+  }
+  return objectionContratCadre({
+    documentGenereId: input.documentGenereId,
+    type: input.type,
+    metadata: input.metadata,
+    partie: input.partie,
+  });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Canal B — l'organisme signe, authentifié
 // ─────────────────────────────────────────────────────────────────────────────
@@ -628,15 +663,13 @@ async function contresignerUne(
     }
   }
 
-  const objection =
-    (await objectionMetier(piece.type, donnees.documentGenereId)) ??
-    (await objectionContratCadre({
-      documentGenereId: donnees.documentGenereId,
-      type: piece.type,
-      metadata: piece.metadata,
-      partie: "axionia",
-      adminId: session.userId,
-    }));
+  const objection = await objectionAvantSignature({
+    documentGenereId: donnees.documentGenereId,
+    type: piece.type,
+    metadata: piece.metadata,
+    partie: "axionia",
+    adminId: session.userId,
+  });
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
   }
