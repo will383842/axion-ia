@@ -72,6 +72,7 @@ import {
 import { cn } from "@/lib/utils";
 import { agregerBadges, type BadgeTone as BadgeToneRollup } from "./badge-rollup";
 import { badgeApporteurs, type ApporteursNavCountsProp } from "./badges-apporteurs";
+import { badgeFormateurs, type FormateursNavCountsProp } from "./badges-formateurs";
 
 // Toutes les clés de pôles, tous groupes confondus (content_gen + qualiopi).
 // Les clés sont disjointes entre groupes → un seul Set<string> pilote l'état
@@ -213,6 +214,8 @@ interface AdminSidebarNavProps {
    * vigilance déposées, relevés du mois à émettre. « Reste à faire », descend à zéro.
    */
   apporteursCounts?: ApporteursNavCountsProp;
+  /** Pastilles du groupe « Formateurs freelance » (lot F) : « reste à faire », descend à zéro. */
+  formateursCounts?: FormateursNavCountsProp;
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -255,6 +258,7 @@ export function AdminSidebarNav({
   staleJobOffersCount = 0,
   rendezVousAFaireCount = 0,
   apporteursCounts,
+  formateursCounts,
   userEmail,
   accountHref,
   logoutAction,
@@ -559,6 +563,9 @@ export function AdminSidebarNav({
     // ── Apporteurs d'affaires (2026-10-05) ───────────────────────────────
     const apporteurs = badgeApporteurs(href, accountHref ?? "", apporteursCounts);
     if (apporteurs) return apporteurs;
+    // ── Formateurs freelance (lot F) ─────────────────────────────────────
+    const formateurs = badgeFormateurs(href, accountHref ?? "", formateursCounts);
+    if (formateurs) return formateurs;
     // ── Console Qualiopi (refonte phase 1, 2026-08-01) ───────────────────
     // Égalité EXACTE (même précaution que la boîte de réception) : sans elle,
     // « À traiter » capterait /qualiopi/a-traiter/* et « Alertes » capterait

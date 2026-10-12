@@ -449,33 +449,48 @@ export const ADMIN_ROUTES_EPINGLEES: ReadonlyArray<string> = Object.values(ADMIN
  */
 export function buildAdminNav(
   adminPrefix: string,
-  options: { readonly formateursFreelance?: boolean; readonly dossiersEtContrats?: boolean } = {},
+  options: {
+    readonly formateursFreelance?: boolean;
+    readonly dossiersEtContrats?: boolean;
+    /**
+     * Lot F — les entrées en plus du groupe, chacune derrière son propre bloc allumé :
+     * « À faire maintenant » (groupe), « Missions » (`missions_console`), « Honoraires ».
+     */
+    readonly entreesFormateurs?: {
+      readonly aFaire?: boolean;
+      readonly missions?: boolean;
+      readonly honoraires?: boolean;
+    };
+  } = {},
 ): ReadonlyArray<AdminNavItem> {
   const items = buildAdminNavSocle(adminPrefix);
   if (!options.formateursFreelance) return items;
+  const plus = options.entreesFormateurs ?? {};
+  const entree = (chemin: string, label: string, icon: string): AdminNavItem => ({
+    href: `/fr/${adminPrefix}/${chemin}`,
+    label,
+    icon,
+    group: "formateurs-freelance",
+    navLevel: 0,
+  });
   // Lot L8 — « Dossiers et contrats », éteint par `formateurs.dossiers_contrats`.
   const dossiers: ReadonlyArray<AdminNavItem> = options.dossiersEtContrats
-    ? [
-        {
-          href: `/fr/${adminPrefix}/qualiopi/formateurs/dossiers`,
-          label: "Dossiers et contrats",
-          icon: "ClipboardCheck",
-          group: "formateurs-freelance",
-          navLevel: 0,
-        },
-      ]
+    ? [entree("qualiopi/formateurs/dossiers", "Dossiers et contrats", "ClipboardCheck")]
     : [];
   return [
     ...items,
+    ...(plus.aFaire
+      ? [entree("qualiopi/formateurs/a-faire", "À faire maintenant", "ClipboardList")]
+      : []),
     // Lot L0h — la vue filtrée de la liste existante (pas de page nouvelle).
-    {
-      href: `/fr/${adminPrefix}/contacts/candidatures?view=formateurs-freelance`,
-      label: "Candidatures",
-      icon: "UserPlus",
-      group: "formateurs-freelance",
-      navLevel: 0,
-    },
+    entree("contacts/candidatures?view=formateurs-freelance", "Candidatures", "UserPlus"),
     ...dossiers,
+    ...(plus.missions ? [entree("qualiopi/formateurs/missions", "Missions", "CalendarCheck")] : []),
+    // La page existante de rémunération ; le paramètre ne sert qu'à lui donner une adresse à
+    // elle dans le menu (une adresse partagée allumerait deux entrées à la fois).
+    ...(plus.honoraires
+      ? [entree("qualiopi/remuneration?vue=formateurs-freelance", "Honoraires", "Banknote")]
+      : []),
   ];
 }
 
