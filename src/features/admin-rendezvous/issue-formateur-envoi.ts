@@ -17,7 +17,6 @@
 //
 // Ce module n'est PAS `"use server"`.
 
-import { lienDuSite } from "@/lib/calendly/lien-du-site";
 import { decryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
@@ -26,6 +25,7 @@ import { estEchangeFormateur } from "@/server/calendly/echange-formateur";
 import type { GabaritFormateur } from "@/server/qualiopi/formateurs-independants/envois";
 import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
+import { lienEchangeFormateur } from "@/server/qualiopi/formateurs-independants/jeton-reservation";
 
 import { GABARITS_ISSUE_PAR_FAMILLE, gabaritDeLIssue, type IssueEchange } from "./issue-echange";
 
@@ -226,7 +226,7 @@ export async function preparerIssueFormateur(input: {
   const payload: Record<string, unknown> = {
     ...(prenom && prenom !== ERASED_PLACEHOLDER ? { prenom } : {}),
     ...(gabarit === GABARITS_ISSUE_PAR_FAMILLE.formateur.absent
-      ? { lien: lienDuSite("formateur", { depuis: `fa-${candidature.id}` }) }
+      ? { lien: lienEchangeFormateur(candidature.id) }
       : {}),
   };
   return {

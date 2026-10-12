@@ -82,6 +82,7 @@ import {
 } from "@/server/calendly/type-rendez-vous";
 import { lireChoixRendezVous, typeDuChoix } from "@/server/calendly/choix-rendez-vous";
 import { choixDuTypeRendezVous, configDuChoix } from "@/server/calendly/types-reservables";
+import { nosEmailsPourEchangeFormateur } from "@/server/calendly/annonces-echange-formateur";
 
 export const dynamic = "force-dynamic";
 
@@ -261,6 +262,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   // des LIBELLÉS, et seulement pour un rendez-vous non classé — un `rdv=` forgé
   // ne peut rien faire d'autre que renommer l'écran.
   const formateur = (type === null || type === "autre") && choixTransmis === "formateur";
+  // Lot B (M25) : nos e-mails de l'échange formateur (F3, F4) ne sont annoncés que
+  // s'ils partent vraiment (suivi allumé, textes validés). Sinon, comme avant.
+  const nosEmails = formateur ? await nosEmailsPourEchangeFormateur() : false;
 
   return (
     <div className="bg-canvas min-h-screen pt-8 pb-20 sm:pt-14">
@@ -275,7 +279,7 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
           ) : aVerifier ? (
             <ADeuxVerifier detail={detail} type={type} formateur={formateur} />
           ) : (
-            <Confirme detail={detail} type={type} formateur={formateur} />
+            <Confirme detail={detail} type={type} formateur={formateur} nosEmails={nosEmails} />
           )}
 
           <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
@@ -303,10 +307,13 @@ function Confirme({
   detail,
   type,
   formateur,
+  nosEmails = false,
 }: {
   detail: DetailEvenement | null;
   type: TypeRendezVous | null;
   formateur: boolean;
+  /** Lot B (M25) : échange formateur dont la confirmation et les rappels partent. */
+  nosEmails?: boolean;
 }) {
   const nom = nomDuRendezVous(type, formateur);
   return (
@@ -319,7 +326,9 @@ function Confirme({
           titre="C'est réservé."
           sous={
             formateur
-              ? "Vous allez recevoir l'invitation d'agenda par e-mail, avec le lien de la visioconférence."
+              ? nosEmails
+                ? "Vous allez recevoir notre confirmation par e-mail, puis l'invitation d'agenda avec le lien de la visioconférence."
+                : "Vous allez recevoir l'invitation d'agenda par e-mail, avec le lien de la visioconférence."
               : "Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
           }
         />
@@ -363,6 +372,7 @@ function Confirme({
         format={detail?.format ?? "inconnu"}
         type={type}
         formateur={formateur}
+        nosEmails={nosEmails}
       />
     </>
   );
@@ -511,22 +521,44 @@ function CeQuiSePasseMaintenant({
   format,
   type,
   formateur,
+  nosEmails = false,
 }: {
   format: DetailEvenement["format"];
   type: TypeRendezVous | null;
   formateur: boolean;
+  nosEmails?: boolean;
 }) {
   // 🔴 Un échange formateur ne reçoit AUCUN de nos e-mails — ni confirmation, ni
   // rappel (`rappels-appel.ts` : hors de toutes les populations, lot F-CAL-1).
   // Lui annoncer « notre e-mail » et « deux rappels » serait promettre ce que le
   // code n'envoie pas. Seule l'invitation d'agenda de Calendly part.
+  // Lot B (M25) : suivi allumé et textes F3 / F4 validés — notre confirmation et nos
+  // deux rappels partent vraiment, ils sont donc annoncés.
   const etapesFormateur = [
+    ...(nosEmails
+      ? [
+          {
+            Picto: Mail,
+            titre: "Notre e-mail de confirmation",
+            corps: "Il arrive en quelques minutes. Rien à préparer de votre côté.",
+          },
+        ]
+      : []),
     {
       Picto: CalendarPlus,
       titre: "L'invitation dans votre agenda",
       corps:
         "Elle arrive par e-mail, envoyée par Calendly. Acceptez-la pour bloquer le créneau : le lien de connexion y figure.",
     },
+    ...(nosEmails
+      ? [
+          {
+            Picto: BellRing,
+            titre: "Deux rappels, sans rien faire",
+            corps: "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
+          },
+        ]
+      : []),
     {
       Picto: CalendarClock,
       titre: "Un empêchement ?",

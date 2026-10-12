@@ -76,6 +76,11 @@ export function lienDuSite(
     /** Emplacement du lien (`email-invitation-apporteur`) : mesuré en `utm_content`. */
     readonly depuis?: string;
     readonly origine?: string;
+    /**
+     * Lot B (M25) : le jeton signé de préremplissage (`?j=`), sans rien de personnel.
+     * Une valeur hors forme n'est jamais écrite.
+     */
+    readonly jeton?: string | undefined;
   } = {},
 ): string {
   const base = (options.origine ?? SITE_URL).replace(/\/+$/, "");
@@ -84,6 +89,9 @@ export function lienDuSite(
   // Même nettoyage que `lireDepuis` : minuscules, chiffres, tirets — rien d'autre.
   if (options.depuis && /^[a-z0-9][a-z0-9-]{0,59}$/.test(options.depuis)) {
     params.set("depuis", options.depuis);
+  }
+  if (options.jeton && /^[A-Za-z0-9._-]{1,200}$/.test(options.jeton)) {
+    params.set("j", options.jeton);
   }
   const requete = params.toString();
   return `${base}/${locale}/appel/${TYPES_RESERVABLES[choix].route}${requete ? `?${requete}` : ""}`;

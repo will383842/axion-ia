@@ -12,6 +12,9 @@ export const ETAPES = ["Vous", "Votre activité", "Vos documents", "Votre contra
 
 export const LIEN_POLITIQUE = "/fr/politique-confidentialite#formateurs-independants";
 
+/** « Retrouver mon espace » (F14) : une seule page, dossier en cours ou espace ouvert. */
+export const CHEMIN_RETROUVER = "/formateur/dossier/retrouver";
+
 export const TEXTES = {
   marque: "Axion-IA",
   surtitre: "Votre dossier de formateur",
@@ -168,6 +171,7 @@ export const TEXTES = {
   invalideLigne:
     "Il est peut-être incomplet ou trop ancien. Écrivez-nous : nous vous enverrons le bon lien.",
   nousEcrire: "Nous écrire",
+  retrouverLien: "Recevoir un nouveau lien par e‑mail",
   erreurTitre: "Un incident est survenu",
   erreurLigne: "Votre saisie est gardée. Réessayez dans un instant, ou écrivez-nous :",
   reessayer: "Réessayer",

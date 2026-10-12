@@ -72,7 +72,8 @@ describe("preparerIssueFormateur", () => {
     expect(p.envoi.gabarit).toBe("formateur-issue-absent");
     expect(p.envoi.destinataire).toBe("camille@example.com");
     expect(p.envoi.payload.lien).toMatch(
-      new RegExp(`/fr/appel/formateur-independant\\?depuis=fa-${CAND}$`),
+      // Lot B (M25) : suivi du jeton signé de préremplissage.
+      new RegExp(`/fr/appel/formateur-independant\\?depuis=fa-${CAND}&j=${CAND}\\.[^&]+$`),
     );
     expect(p.envoi.jobId).toBe("formateur-issue-formateur-issue-absent-h-camille");
   });

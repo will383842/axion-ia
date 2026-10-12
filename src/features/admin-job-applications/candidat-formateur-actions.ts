@@ -26,8 +26,8 @@ import { prisma } from "@/lib/prisma";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { adminPath } from "@/lib/admin-path";
-import { lienDuSite } from "@/lib/calendly/lien-du-site";
 import { SLUG_OFFRE_FORMATEUR_FREELANCE } from "@/lib/careers/formateur-freelance";
+import { lienEchangeFormateur } from "@/server/qualiopi/formateurs-independants/jeton-reservation";
 import { preparerSaisieCandidatFormateur } from "@/lib/careers/candidat-formateur-console";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { envoyer, texteValide } from "@/server/qualiopi/formateurs-independants/envois";
@@ -163,7 +163,7 @@ export async function ajouterCandidatFormateurAction(
           destinataire: p.adresseEnvoi,
           payload: {
             prenom: d.prenom,
-            lien: lienDuSite("formateur", { depuis: `fa-${id}` }),
+            lien: lienEchangeFormateur(id),
           },
           entityType: "JobApplication",
           entityId: id,

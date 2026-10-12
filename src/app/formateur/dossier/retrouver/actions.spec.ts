@@ -20,6 +20,10 @@ vi.mock("@/server/qualiopi/formateurs-independants/dossier", () => ({
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   envoyer: (...a: unknown[]) => h.envoyer(...a),
 }));
+const magique = vi.fn();
+vi.mock("@/server/formateur/magic-link", () => ({
+  createFormateurMagicLink: (...a: unknown[]) => magique(...a),
+}));
 
 import { demanderLienDossier } from "./actions";
 import { MESSAGE_RETROUVER } from "./messages";
@@ -72,5 +76,29 @@ describe("retrouver mon dossier (F14)", () => {
     h.limite.mockResolvedValue({ allowed: false });
     await demanderLienDossier(undefined, fd("marie@exemple.fr"));
     expect(h.envoyer).not.toHaveBeenCalled();
+  });
+
+  it("lot B — fiche ACTIVE : F14 avec « Ouvrir mon espace » et un lien de connexion (IP en empreinte)", async () => {
+    h.ouvert.mockResolvedValue(true);
+    h.trainer.mockResolvedValue({
+      id: ID,
+      prenom: "Marie",
+      email: "marie@exemple.fr",
+      accesVersion: 3,
+      actif: true,
+    });
+    magique.mockResolvedValue("JETON-CONNEXION");
+    await demanderLienDossier(undefined, fd("marie@exemple.fr"));
+    await vi.waitFor(() => expect(h.envoyer).toHaveBeenCalled());
+    expect(magique).toHaveBeenCalledWith(ID, "ip-hachee");
+    const e = h.envoyer.mock.calls[0]![0];
+    expect(e).toMatchObject({ gabarit: "formateur-lien-espace", entityId: ID });
+    expect(e.payload.bouton).toBe(2);
+    expect(e.payload.lien).toMatch(/\/fr\/espace-formateur\/connexion\/JETON-CONNEXION$/);
+    // La recherche couvre le dossier en cours ET la fiche active.
+    expect(h.trainer.mock.calls[0]![0].where.OR).toEqual([
+      { dossierStatut: { in: ["en_cours", "a_completer"] } },
+      { actif: true },
+    ]);
   });
 });

@@ -40,6 +40,8 @@ import {
   type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
 import { configDuChoix, estUnChoixPublic } from "@/server/calendly/types-reservables";
+import { nosEmailsPourEchangeFormateur } from "@/server/calendly/annonces-echange-formateur";
+import { candidatureDuJetonReservation } from "@/server/qualiopi/formateurs-independants/jeton-reservation";
 import {
   jetonVslValide,
   PARAM_JETON_VSL,
@@ -164,6 +166,15 @@ export default async function AppelPage({ params, searchParams }: Props) {
   // sur un autre type de rendez-vous : ignoré, jamais recopié.
   const jetonApporteur =
     choix === "apporteur" ? (jetonVslValide(sp[PARAM_JETON_VSL]) ?? undefined) : undefined;
+  // Lot B (M25) : échange formateur ouvert depuis F1 ou F7 (`?j=<jeton>`). Le jeton
+  // signé, s'il est VALIDE, est recopié dans chaque créneau pour préremplir le
+  // formulaire ; faux ou échu : ignoré, jamais recopié.
+  const jetonFormateur =
+    choix === "formateur" && candidatureDuJetonReservation(sp[PARAM_JETON_VSL], new Date())
+      ? String(sp[PARAM_JETON_VSL])
+      : undefined;
+  // Nos e-mails (F3, F4) ne sont annoncés que s'ils partent vraiment.
+  const nosEmails = choix === "formateur" ? await nosEmailsPourEchangeFormateur() : false;
   // Une seule lecture de la liste des types (en cache 24 h) pour les deux.
   const resolus = await resoudreLesDeuxChoix();
   // Les deux types privés (apporteur, salon) ne sont pas dans `resolus` : ils se
@@ -240,7 +251,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
             resolu={resolu}
             depuis={depuis}
             suivi={suivi}
-            jeton={jetonApporteur}
+            jeton={jetonApporteur ?? jetonFormateur}
+            nosEmails={nosEmails}
             locale={locale}
             isFr={isFr}
             trackingContext={trackingContext}
@@ -458,6 +470,7 @@ function Calendrier({
   depuis,
   suivi,
   jeton,
+  nosEmails = false,
   locale,
   isFr,
   trackingContext,
@@ -466,8 +479,10 @@ function Calendrier({
   resolu: ChoixResolu;
   depuis: string | null;
   suivi: SuiviArrivee;
-  /** Jeton de l'étape 1 de la page vidéo, déjà vérifié ; absent sinon. */
+  /** Jeton de l'étape 1 de la page vidéo, ou de F1 / F7 (formateur), déjà vérifié. */
   jeton?: string | undefined;
+  /** Lot B (M25) : nos e-mails de l'échange formateur partent (F3, F4). */
+  nosEmails?: boolean;
   locale: string;
   isFr: boolean;
   trackingContext: {
@@ -479,7 +494,11 @@ function Calendrier({
     referrer?: string;
   };
 }) {
-  const config = configDuChoix(choix);
+  const base = configDuChoix(choix);
+  const config =
+    nosEmails && base.deuxiemeEtapeAvecNosEmails
+      ? { ...base, deuxiemeEtape: base.deuxiemeEtapeAvecNosEmails }
+      : base;
   const duree = libelleDuree(resolu);
   const utmContent = utmContentDuChoix(choix, depuis);
   const retour = parametresDuRetour(depuis, suivi);
