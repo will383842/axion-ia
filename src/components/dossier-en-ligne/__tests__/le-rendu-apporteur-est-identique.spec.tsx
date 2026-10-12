@@ -10,8 +10,23 @@ vi.mock("@/app/apporteur/dossier/retrouver/actions", () => ({ demanderLienEspace
 import REFERENCE from "./rendus-apporteur-reference.json";
 import { rendus } from "./_rendus";
 
+// Le rendu de `DepotPiece` porte la date du jour (`max` du champ « Date de délivrance ») :
+// l'horloge est figée à la date des références, sinon le test rougit à minuit UTC.
+// Seul `Date` est simulé (pas les minuteries), et l'horloge est restaurée aussitôt.
+const JOUR_DES_REFERENCES = new Date("2026-10-11T12:00:00Z");
+
+function rendusALaDateDesReferences() {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(JOUR_DES_REFERENCES);
+  try {
+    return rendus();
+  } finally {
+    vi.useRealTimers();
+  }
+}
+
 describe("rendu apporteur identique, octet pour octet", () => {
-  const actuels = rendus();
+  const actuels = rendusALaDateDesReferences();
   it("les mêmes cas sont figés", () => {
     expect(Object.keys(actuels).sort()).toEqual(Object.keys(REFERENCE).sort());
   });
