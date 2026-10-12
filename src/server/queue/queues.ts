@@ -2117,6 +2117,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "5 5 * * *",
         jobId: "formation-crons-fin-collaboration-cron",
       },
+      // Lot L-INV (2026-10-11) — invitation automatique des candidats formateurs
+      // indépendants (F1, 15 à 20 min après la candidature). Toutes les 5 min.
+      // Arrêté tant que `formateurs.invitation_auto` ou `formateurs.suivi_echange`
+      // est coupé : une lecture de réglage, rien d'autre.
+      {
+        type: "formation-crons.invitations-formateurs",
+        pattern: "*/5 * * * *",
+        jobId: "formation-crons-invitations-formateurs-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

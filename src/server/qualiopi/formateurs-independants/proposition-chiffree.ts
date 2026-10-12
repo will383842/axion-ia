@@ -16,7 +16,7 @@ import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 
-import { eurosCourts, honorairesProposition, ligneJour } from "./choix-formateur";
+import { eurosCourts, honorairesProposition, ligneJour, sessionADistance } from "./choix-formateur";
 import { interrupteurAllume } from "./interrupteur-allume";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
@@ -52,6 +52,7 @@ export async function lirePropositionChiffree(
           select: {
             titreSession: true,
             lieuType: true,
+            modalite: true,
             lieuIntitule: true,
             lieuAdresse: true,
             lieuCodePostal: true,
@@ -68,7 +69,7 @@ export async function lirePropositionChiffree(
     const jours = [...s.jours]
       .map((j) => ({ date: dateCivile(j.date), heureDebut: j.heureDebut, heureFin: j.heureFin }))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
-    const distanciel = s.lieuType === "distanciel";
+    const distanciel = sessionADistance(s);
     const h = honorairesProposition({
       jours,
       tarifJourneeHtCents: m.tarifHtCents,
