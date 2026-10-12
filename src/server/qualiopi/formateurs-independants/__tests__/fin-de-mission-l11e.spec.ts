@@ -33,7 +33,10 @@ const h = vi.hoisted(() => {
         Object.assign(etat.mission!, data);
         return {};
       }),
-      updateMany: vi.fn(async () => ({ count: 1 })),
+      updateMany: vi.fn(async ({ data }: { data: Record<string, unknown> }) => {
+        Object.assign(etat.mission!, data);
+        return { count: 1 };
+      }),
       findMany: vi.fn(async () => []),
       count: vi.fn(async () => 0),
     },
@@ -172,7 +175,7 @@ describe("fin de mission — lettre NON signée", () => {
     expect(JSON.stringify(h.prisma)).not.toContain("deleteMany");
   });
 
-  it("session annulée : F31, variante sans indemnité ; session reportée : F30", async () => {
+  it("session annulée : F31, variante sans indemnité ; session reportée : motif session_reportee", async () => {
     h.etat.mission = mission({ sessionStatut: "annulee", principal: TRAINER });
     await reevaluerMission(MISSION, "passage", MAINTENANT);
     expect(h.envoyer).toHaveBeenLastCalledWith(
@@ -347,5 +350,18 @@ describe("correctifs du 1er tour de relecture de #1507 — session commencée, c
       expect.objectContaining({ lettresAGarder: [LETTRE_ECARTE] }),
     );
     h.prisma.documentGenere.count.mockImplementation(async () => 1);
+  });
+});
+
+describe("correctifs du 1er tour de relecture de #1507 — passage", () => {
+  it("retirée puis réaffectée à la même personne : jamais relue à chaque passage", async () => {
+    const { passerMoteurMissions } = await import("../moteur-mission");
+    const reaffectee = { ...mission({ statut: "retiree", principal: TRAINER }) };
+    h.prisma.missionFormateur.findMany
+      .mockResolvedValueOnce([] as never)
+      .mockResolvedValueOnce([reaffectee] as never);
+    const bilan = await passerMoteurMissions(MAINTENANT);
+    expect(bilan.reevaluees).toBe(0);
+    expect(h.prisma.missionFormateur.findUnique).not.toHaveBeenCalled();
   });
 });

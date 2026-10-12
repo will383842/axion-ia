@@ -66,6 +66,11 @@ export async function genererLettreMissionV2(input: {
    * `dates_modifiees`). Absent : « remplacée », comme avant.
    */
   motifAnnulation?: string;
+  /**
+   * Lettres d'AUTRES formateurs que l'appelant a choisi de garder (moteur L11e :
+   * lettre non signée d'une session commencée, Will décide). Jamais annulées ici.
+   */
+  lettresAGarder?: ReadonlyArray<string>;
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
   const maintenant = input.maintenant ?? new Date();
@@ -284,6 +289,9 @@ export async function genererLettreMissionV2(input: {
       type: "lettre_mission",
       sessionId: input.sessionId,
       trainerId: { not: input.trainerId },
+      ...(input.lettresAGarder !== undefined && input.lettresAGarder.length > 0
+        ? { id: { notIn: [...input.lettresAGarder] } }
+        : {}),
       annuleeAt: null,
       signatures: { none: { revokedAt: null, partie: "formateur" } },
     },

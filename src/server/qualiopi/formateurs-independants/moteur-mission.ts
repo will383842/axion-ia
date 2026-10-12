@@ -413,10 +413,13 @@ export const MOTIF_FERMETURE: Readonly<Record<CauseFermeture, string>> = {
   session_reportee: "Session reportée (session_reportee)",
 };
 
-/** Ce que F30 dit au formateur, selon la cause (texte à valider avec la variante). */
-const MOTIF_F30: Readonly<Record<Exclude<CauseFermeture, "session_annulee">, string>> = {
+/**
+ * Ce que F30 dit au formateur (texte à valider avec la variante). Seul le
+ * changement de formateur l'envoie : une annulation envoie F31, un report
+ * n'envoie rien (08b §3.4).
+ */
+const MOTIF_F30: Readonly<Record<"changement_formateur", string>> = {
   changement_formateur: "autre choix d'Axion",
-  session_reportee: "la formation est reportée",
 };
 
 /** Statuts d'une mission qui peut porter une lettre à fermer : accord donné, ou
@@ -459,13 +462,13 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
   if (m.statut === "retiree" && m.session.formateurPrincipalId === m.trainerId) {
     return { etape: "close", action: "rien" };
   }
-  const cause =
-    m.statut === "retiree"
-      ? "changement_formateur"
-      : causeFermeture({
-          sessionStatut: m.session.statut,
-          affecte: m.session.formateurPrincipalId === m.trainerId,
-        });
+  // L'état de la SESSION prime : une mission retirée sur une session ensuite
+  // annulée (ou reportée) se ferme pour cette raison-là (F31), pas pour un
+  // changement de formateur.
+  const cause = causeFermeture({
+    sessionStatut: m.session.statut,
+    affecte: m.statut !== "retiree" && m.session.formateurPrincipalId === m.trainerId,
+  });
   if (cause === null) return { etape: "close", action: "rien" };
 
   const signee = lettre.signatures.some((x) => x.partie === "formateur");
@@ -478,10 +481,19 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
     if (m.lettreBlocageMotif === MOTIF_FERMEE_LETTRE_SIGNEE) {
       return { etape: "close", action: "rien" };
     }
-    await prisma.missionFormateur.update({
-      where: { id: m.id },
+    // Écriture CONDITIONNELLE : un passage concurrent (`fermerLesEcartes` ne
+    // prend pas le verrou de l'écarté) a pu poser le marqueur ; un seul prévient.
+    const marque = await prisma.missionFormateur.updateMany({
+      where: {
+        id: m.id,
+        OR: [
+          { lettreBlocageMotif: null },
+          { lettreBlocageMotif: { not: MOTIF_FERMEE_LETTRE_SIGNEE } },
+        ],
+      },
       data: { lettreBlocageMotif: MOTIF_FERMEE_LETTRE_SIGNEE, lettreBlocageNotifieAt: maintenant },
     });
+    if (marque.count !== 1) return { etape: "close", action: "rien" };
     await journaliser(prisma, {
       action: "qualiopi.mission.fermee_lettre_signee",
       targetType: "MissionFormateur",
@@ -515,6 +527,15 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
     changes: { cause, documentId: m.lettreMissionId },
     session: null,
   });
+  // REPORT (08b §3.4) : l'ancienne lettre est annulée ; la nouvelle viendra avec
+  // l'accord sur les nouvelles dates. Le formateur est en général reconduit :
+  // F30 (« la mission ne vous est plus confiée ») serait faux. Aucun e-mail.
+  if (cause === "session_reportee") {
+    await alerter(
+      `🗂️ Session ${m.session.numero} : session reportée, lettre non signée annulée par le système. La nouvelle lettre suivra l'accord sur les nouvelles dates. ${lienFiche(m.sessionId)}`,
+    );
+    return { etape: "close", action: "lettre_annulee" };
+  }
   const premier = [...m.session.jours].map((j) => dateCivile(j.date)).sort()[0];
   const date =
     premier !== undefined ? civileLongue(premier) : DATE_LONGUE.format(m.session.dateDebut);
@@ -533,7 +554,7 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
       valeurs: {
         intitulé: m.session.titreSession,
         date,
-        ...(cause !== "session_annulee" ? { motif: MOTIF_F30[cause] } : {}),
+        ...(cause === "changement_formateur" ? { motif: MOTIF_F30[cause] } : {}),
       },
     },
   });
@@ -544,8 +565,12 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
   return { etape: "close", action: "lettre_annulee" };
 }
 
-/** Les missions d'AUTRES formateurs de la session dont une lettre vit encore. */
-async function fermerLesEcartes(m: MissionLue, maintenant: Date): Promise<void> {
+/**
+ * Les missions d'AUTRES formateurs de la session dont une lettre vit encore.
+ * Rend les lettres que la fermeture a GARDÉES (signée, session commencée,
+ * course) : le générateur ne doit pas les annuler derrière elle.
+ */
+async function fermerLesEcartes(m: MissionLue, maintenant: Date): Promise<string[]> {
   const autres = await prisma.missionFormateur.findMany({
     where: {
       sessionId: m.sessionId,
@@ -556,12 +581,17 @@ async function fermerLesEcartes(m: MissionLue, maintenant: Date): Promise<void> 
     },
     select: MISSION_SELECT,
   });
+  const gardees: string[] = [];
   for (const a of autres) {
     if (a.trainer.statut !== "sous_traitant" || a.trainer.organismeSousTraitantId !== null) {
       continue;
     }
-    await fermerMission(a, maintenant);
+    const r = await fermerMission(a, maintenant);
+    if (r.action !== "lettre_annulee" && a.lettreMissionId !== null) {
+      gardees.push(a.lettreMissionId);
+    }
   }
+  return gardees;
 }
 
 /** Motif système (fermé) d'annulation d'une lettre non signée devenue périmée. */
@@ -730,7 +760,9 @@ async function emettreLettre(
   // Fin de mission de l'ÉCARTÉ d'abord (08b §3.4 : avant l'émission de celle du
   // nouveau) : sa lettre non signée est fermée par le moteur, avec F30. Sinon le
   // générateur l'annulerait seul, sans prévenir le formateur.
-  await fermerLesEcartes(m, maintenant);
+  // Ce qu'elle a GARDÉ (lettre d'une session commencée, Will décide) n'est pas
+  // annulé derrière elle par le générateur.
+  const lettresAGarder = await fermerLesEcartes(m, maintenant);
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
@@ -740,6 +772,7 @@ async function emettreLettre(
     // Une lettre non signée remplacée parce que ses conditions ont changé porte le
     // motif fermé `dates_modifiees` (08b §3.4), pas « remplacée ».
     ...(rectification !== undefined ? { motifAnnulation: MOTIF_DATES_MODIFIEES } : {}),
+    ...(lettresAGarder.length > 0 ? { lettresAGarder } : {}),
     maintenant,
   });
   if (!r.ok) return refuserLettre(m, r.erreur, etapeDepart);
@@ -1060,7 +1093,9 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
   const aFermer = fermees
     .filter(
       (x) =>
-        x.statut === "retiree" ||
+        // Retirée puis réaffectée à la même personne : rien à fermer, jamais
+        // relue à chaque passage.
+        (x.statut === "retiree" && x.session.formateurPrincipalId !== x.trainerId) ||
         causeFermeture({
           sessionStatut: x.session.statut,
           affecte: x.session.formateurPrincipalId === x.trainerId,
