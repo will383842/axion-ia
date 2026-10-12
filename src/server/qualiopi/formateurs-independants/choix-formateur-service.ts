@@ -21,6 +21,7 @@
  * Module NEUTRE (Prisma seulement) : le worker le charge.
  */
 
+import { FENETRE_ENVOI_PAR_DEFAUT, dansFenetreEnvoi } from "@/lib/relances/campagne";
 import { sendTelegram } from "@/lib/telegram";
 import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
 import { prisma } from "@/lib/prisma";
@@ -38,6 +39,7 @@ import type { MissionFormateurStatut } from "../../../../prisma/generated/client
 
 import {
   LIBELLE_RANG,
+  chaineOuverte,
   choixRestants,
   rangConsomme,
   estRang,
@@ -50,6 +52,7 @@ import {
   type SollicitationPassee,
   type Rang,
 } from "./choix-formateur";
+import { sessionPayeeParMission } from "./conditions-figees";
 import { departementDeCodePostal } from "./departement-region";
 import { envoyer } from "./envois";
 import { evaluerAffectation, type SessionAEvaluer } from "./evaluer-affectation";
@@ -164,7 +167,14 @@ export async function lireCartesChoix(
   const [trainers, choix, missions] = await Promise.all([
     prisma.trainer.findMany({
       where: { actif: true },
-      select: { id: true, prenom: true, nom: true, statut: true, codePostalPro: true },
+      select: {
+        id: true,
+        prenom: true,
+        nom: true,
+        statut: true,
+        codePostalPro: true,
+        regimeTvaHonoraires: true,
+      },
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],
     }),
     prisma.choixFormateurSession.findMany({
@@ -192,6 +202,7 @@ export async function lireCartesChoix(
         trainerId: t.id,
         nomCourt: nomCourt(t.prenom, t.nom),
         independant: t.statut === "sous_traitant",
+        regimeTva: t.regimeTvaHonoraires,
         departement: departementDeCodePostal(t.codePostalPro),
         proximite: proximite(lieu, t.codePostalPro),
         refus: ev.refus,
@@ -272,6 +283,7 @@ export async function enregistrerChoix(
         rang: c.rang,
         tarifHtCents: c.tarifHtCents,
         forfaitDeplacementParJourHtCents: c.forfaitDeplacementParJourHtCents,
+        regimeTvaFige: c.regimeTvaFige,
         sauteAt: null,
         sauteMotif: null,
       };
@@ -293,6 +305,28 @@ export async function enregistrerChoix(
       });
     }
   });
+}
+
+/** Motif posé sur le choix quand l'affectation du 1er choix a échoué. */
+export const MOTIF_CHOIX_NON_RETENU = "Affectation du 1er choix impossible : choix non retenu";
+
+/**
+ * L'affectation du 1er choix a échoué : le choix qui vient d'être écrit n'est
+ * pas retenu. Ses rangs sont marqués sautés (rien ne s'efface), pour que le
+ * passage du rang suivant ne les propose jamais. Ne lève jamais.
+ */
+export async function abandonnerChoix(sessionId: string, maintenant: Date): Promise<void> {
+  try {
+    await prisma.choixFormateurSession.updateMany({
+      where: { sessionId, rang: { lte: 3 }, sauteAt: null },
+      data: { sauteAt: maintenant, sauteMotif: MOTIF_CHOIX_NON_RETENU },
+    });
+  } catch (err) {
+    console.error(
+      `[choix-formateur] choix non marqué après un échec d'affectation (session ${sessionId}) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -319,6 +353,12 @@ export type ResultatRangSuivant =
 async function rangSuivantOuvert(): Promise<boolean> {
   return (await interrupteurAllume("rang_suivant")) && (await interrupteurAllume("choix_cartes"));
 }
+
+/**
+ * Motif posé sur les choix restants quand l'équipe a retiré ou remplacé le
+ * formateur depuis la console : le rang suivant ne part pas contre son geste.
+ */
+export const MOTIF_CHAINE_ARRETEE = "Retrait ou remplacement par l'équipe";
 
 /** Motif posé sur les choix restants quand tous ont été proposés. */
 export const MOTIF_CHOIX_EPUISES = "Tous les choix ont été proposés";
@@ -359,44 +399,88 @@ export async function proposerRangSuivant(
       }),
       prisma.missionFormateur.findMany({
         where: { sessionId },
-        select: { trainerId: true, statut: true, updatedAt: true },
+        select: { trainerId: true, statut: true, role: true, updatedAt: true },
       }),
     ]);
     // Jamais deux propositions vivantes sur la même place.
     if (vivantes > 0) return { fait: "rien", raison: "proposition vivante" };
+    if (choix.length === 0) return { fait: "rien", raison: "aucun choix" };
+    // La chaîne ne continue qu'après un refus, un silence ou un désistement d'un
+    // formateur du choix. Un retrait ou un remplacement par l'équipe l'arrête :
+    // le moteur ne va jamais contre le geste de l'équipe.
+    const derniere = [...sollicitations]
+      .filter((m) => m.role === "principal")
+      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())[0];
+    const vivantsDuChoix = choix.filter((c) => c.sauteAt === null);
+    if (vivantsDuChoix.length > 0) {
+      // Rien ne bouge avant que le 1er choix ait été proposé par l'action de choix.
+      const choisiLe = Math.min(...vivantsDuChoix.map((c) => c.updatedAt.getTime()));
+      if (derniere === undefined || derniere.updatedAt.getTime() < choisiLe) {
+        return { fait: "rien", raison: "chaîne pas commencée" };
+      }
+      if (!chaineOuverte(derniere, new Set(choix.map((c) => c.trainerId)))) {
+        // Les choix restants sont marqués : le passage ne les reprend plus (un
+        // nouveau choix les rouvre). Rien ne s'efface.
+        await prisma.choixFormateurSession.updateMany({
+          where: { sessionId, rang: { lte: 3 }, sauteAt: null },
+          data: { sauteAt: maintenant, sauteMotif: MOTIF_CHAINE_ARRETEE },
+        });
+        await journaliser(prisma, {
+          action: "qualiopi.mission.chaine_arretee",
+          targetType: "TrainingSession",
+          targetId: sessionId,
+          changes: { cause, statut: derniere.statut },
+          session: null,
+        });
+        return { fait: "rien", raison: "chaîne arrêtée par l'équipe" };
+      }
+    }
+    // Fenêtre d'envoi unique (8 h - 19 h, heure de Paris) : hors fenêtre, rien ne
+    // part ; le passage planifié reprend la session à l'heure d'ouverture.
+    if (!dansFenetreEnvoi(maintenant, FENETRE_ENVOI_PAR_DEFAUT)) {
+      return { fait: "rien", raison: "hors fenêtre d'envoi" };
+    }
     const restants = choixRestants(
       choix.map((c) => ({ ...c, choisiLe: c.updatedAt })),
       sollicitationsDe(sollicitations),
     );
-    if (restants.length === 0 && choix.length === 0) return { fait: "rien", raison: "aucun choix" };
 
     let sautes = 0;
+    // Un rang sauté l'est toujours avec une trace : choix marqué, journal (codes
+    // seulement), alerte sans nom.
+    const sauter = async (
+      trainerId: string,
+      rang: Rang,
+      codes: ReadonlyArray<string>,
+      motif: string,
+    ): Promise<void> => {
+      await prisma.choixFormateurSession.updateMany({
+        where: { sessionId, trainerId, sauteAt: null },
+        data: { sauteAt: maintenant, sauteMotif: motif.slice(0, 500) },
+      });
+      sautes += 1;
+      await journaliser(prisma, {
+        action: "qualiopi.mission.rang_saute",
+        targetType: "TrainingSession",
+        targetId: sessionId,
+        changes: { rang, cause, raisons: [...codes] },
+        session: null,
+      });
+      await alerter(
+        `🔁 Session ${session.numero} : le ${LIBELLE_RANG[rang]} ne peut plus recevoir la mission (${codes.join(
+          ", ",
+        )}), rang sauté. ${lienFicheSession(sessionId)}`,
+      );
+    };
     for (const c of restants) {
       const rang = c.rang as Rang;
       const ev = await evaluerAffectation(c.trainerId, aEvaluer(session), maintenant);
       if (ev.refus.length > 0) {
-        await prisma.choixFormateurSession.updateMany({
-          where: { sessionId, trainerId: c.trainerId, sauteAt: null },
-          data: {
-            sauteAt: maintenant,
-            sauteMotif: ev.refus
-              .map((r) => r.texte)
-              .join(" ")
-              .slice(0, 500),
-          },
-        });
-        sautes += 1;
-        await journaliser(prisma, {
-          action: "qualiopi.mission.rang_saute",
-          targetType: "TrainingSession",
-          targetId: sessionId,
-          changes: { rang, cause, raisons: ev.refus.map((r) => r.code) },
-          session: null,
-        });
-        await alerter(
-          `🔁 Session ${session.numero} : le ${LIBELLE_RANG[rang]} ne peut plus recevoir la mission (${ev.refus
-            .map((r) => r.code)
-            .join(", ")}), rang sauté. ${lienFicheSession(sessionId)}`,
+        await sauter(
+          c.trainerId,
+          rang,
+          ev.refus.map((r) => r.code),
+          ev.refus.map((r) => r.texte).join(" "),
         );
         continue;
       }
@@ -407,13 +491,28 @@ export async function proposerRangSuivant(
         chargerEtatVerrou(sessionId),
         prisma.trainer.findUnique({
           where: { id: c.trainerId },
-          select: { tarifJourneeHtCents: true },
+          select: { tarifJourneeHtCents: true, statut: true },
         }),
       ]);
       if (verrou !== null && verrou.etat.etat === "clos") {
         return { fait: "rien", raison: "dossier clos" };
       }
-      if (garde.refus.length > 0) continue;
+      if (garde.refus.length > 0) {
+        await sauter(c.trainerId, rang, ["garde"], garde.refus.join(" "));
+        continue;
+      }
+      // ARGENT — un indépendant n'est proposé que si la session est réglée par
+      // mission, aux conditions figées au choix : sinon le relevé mensuel
+      // paierait un autre montant que celui annoncé.
+      if (trainer?.statut === "sous_traitant" && !(await sessionPayeeParMission(sessionId))) {
+        await sauter(
+          c.trainerId,
+          rang,
+          ["releve_mensuel"],
+          "Session réglée par le relevé mensuel : le montant figé au choix ne serait pas celui payé.",
+        );
+        continue;
+      }
       // La place se prend par une écriture CONDITIONNELLE : si quelqu'un l'a
       // prise entre-temps (une affectation depuis la console), on s'arrête.
       const pris = await prisma.$transaction(async (tx) => {

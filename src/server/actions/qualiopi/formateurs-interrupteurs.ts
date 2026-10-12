@@ -29,6 +29,7 @@ import {
   dateAllumageSignature,
   lireValeurSignature,
   prealablesManquantsSignature,
+  etatsSignatureDepuisLignes,
   type CleInterrupteurSignature,
   estDateDePassage,
   estPositionSure,
@@ -298,10 +299,21 @@ function ecrireSignature(
   const key = cleSettingSignature(cle);
   return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
-      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      // Les préalables lisent les seize ET ce registre (dont `signature.*`).
+      where: {
+        OR: [
+          { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+          { key: { startsWith: "signature." } },
+        ],
+      },
       select: { key: true, value: true },
     });
-    const manquants = prealablesManquantsSignature(cle, valeur, etatsDepuisLignes(lignes));
+    const manquants = prealablesManquantsSignature(
+      cle,
+      valeur,
+      etatsDepuisLignes(lignes),
+      etatsSignatureDepuisLignes(lignes),
+    );
     if (manquants.length > 0) return manquants;
     const actuelle = await tx.setting.findUnique({
       where: { key },
@@ -483,6 +495,19 @@ export async function basculerFormateursAjoutConsoleAction(
 ): Promise<EtatBascule> {
   return basculerEntree("ajout_console", formData);
 }
+export async function basculerFormateursDossiersContratsAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("dossiers_contrats", formData);
+}
+
+export async function basculerFormateursSuiviEchangeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("suivi_echange", formData);
+}
 
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
@@ -501,6 +526,18 @@ export async function basculerFormateursGardeMissionPortesAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("garde_mission_portes", formData);
+}
+export async function basculerFormateursPresentationPayeeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("presentation_payee", formData);
+}
+export async function basculerFormateursDas2CommunAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("das2_commun", formData);
 }
 export async function basculerFormateursFinCollaborationAction(
   _prev: EtatBascule,
@@ -525,4 +562,22 @@ export async function basculerFormateursMissionsConsoleAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("missions_console", formData);
+}
+export async function basculerFormateursContratCadreEmissionAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("contrat_cadre_emission", formData);
+}
+export async function basculerFormateursMiseANiveauAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("mise_a_niveau", formData);
+}
+export async function basculerFormateursNouvelleVersionContratAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("nouvelle_version_contrat", formData);
 }

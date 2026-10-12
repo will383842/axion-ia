@@ -73,7 +73,8 @@ const h = vi.hoisted(() => {
     trainer: { findUnique: vi.fn(async () => ({ tarifJourneeHtCents: null })) },
     missionFormateur: {
       count: vi.fn(async () => etat.vivantes),
-      findMany: vi.fn(async () => etat.missions),
+      // Une mission sans rôle déclaré est celle du formateur principal.
+      findMany: vi.fn(async () => etat.missions.map((m) => ({ role: "principal", ...m }))),
       findUnique: vi.fn(async () => etat.missionUnique),
     },
     choixFormateurSession: {
@@ -121,6 +122,7 @@ vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
 }));
 
 import {
+  MOTIF_CHAINE_ARRETEE,
   MOTIF_CHOIX_EPUISES,
   MOTIF_CHOIX_REMPLACE,
   MOTIF_LETTRE_DESISTEMENT,
@@ -193,12 +195,32 @@ describe("conditions figées (L11b) : recopiées seulement depuis un choix vivan
   it("rang 1 à 3 non sauté : tarif et forfait", async () => {
     allumer("choix_cartes");
     h.etat.choix = [
-      { rang: 2, sauteAt: null, tarifHtCents: 35_000, forfaitDeplacementParJourHtCents: 8_000 },
+      {
+        rang: 2,
+        sauteAt: null,
+        tarifHtCents: 35_000,
+        forfaitDeplacementParJourHtCents: 8_000,
+        regimeTvaFige: "franchise_293b",
+      },
     ];
     expect(await lireConditionsFigees(SESSION, B)).toEqual({
       tarifHtCents: 35_000,
       forfaitDeplacementParJourHtCents: 8_000,
+      regimeTvaFige: "franchise_293b",
     });
+  });
+  it("correctif ARGENT : un choix sans régime de TVA figé ne recopie rien", async () => {
+    allumer("choix_cartes");
+    h.etat.choix = [
+      {
+        rang: 1,
+        sauteAt: null,
+        tarifHtCents: 35_000,
+        forfaitDeplacementParJourHtCents: 0,
+        regimeTvaFige: null,
+      },
+    ];
+    expect(await lireConditionsFigees(SESSION, A)).toBeNull();
   });
   it("choix archivé (au-delà du rang 3) ou sauté : rien", async () => {
     allumer("choix_cartes");
@@ -218,8 +240,20 @@ describe("enregistrer le choix : rien ne s'efface", () => {
     await enregistrerChoix(
       SESSION,
       [
-        { trainerId: B, rang: 1, tarifHtCents: 35_000, forfaitDeplacementParJourHtCents: 0 },
-        { trainerId: C, rang: 2, tarifHtCents: 35_000, forfaitDeplacementParJourHtCents: 8_000 },
+        {
+          trainerId: B,
+          rang: 1,
+          tarifHtCents: 35_000,
+          forfaitDeplacementParJourHtCents: 0,
+          regimeTvaFige: "franchise_293b",
+        },
+        {
+          trainerId: C,
+          rang: 2,
+          tarifHtCents: 35_000,
+          forfaitDeplacementParJourHtCents: 8_000,
+          regimeTvaFige: "assujetti_20",
+        },
       ],
       MAINTENANT,
     );
@@ -235,6 +269,8 @@ describe("enregistrer le choix : rien ne s'efface", () => {
         trainerId: C,
         rang: 2,
         forfaitDeplacementParJourHtCents: 8_000,
+        // Correctif ARGENT : le régime de TVA est figé dans le même geste.
+        regimeTvaFige: "assujetti_20",
       }),
     });
   });
@@ -342,10 +378,13 @@ describe("rang suivant (T15)", () => {
   });
 
   it("une proposition encore vivante consomme son rang, quelle que soit sa date", async () => {
+    // (Correctif « rang relancé après retrait » : la chaîne ne repart qu'après le
+    // refus d'un formateur du choix — ici B, au rang 2.)
     h.etat.missions = [
       { trainerId: A, statut: "en_attente", updatedAt: new Date("2026-10-01T09:00:00Z") },
+      { trainerId: B, statut: "refusee", updatedAt: new Date("2026-10-11T09:30:00Z") },
     ];
-    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({ rang: 2 });
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({ rang: 3 });
   });
 
   it("tout est épuisé : les choix restants sont marqués, le passage ne les reprend plus", async () => {
@@ -361,6 +400,9 @@ describe("rang suivant (T15)", () => {
   });
 
   it("place prise mais proposition non partie : alerte", async () => {
+    h.etat.missions = [
+      { trainerId: A, statut: "refusee", updatedAt: new Date("2026-10-11T09:05:00Z") },
+    ];
     h.proposer.mockResolvedValueOnce({ proposee: false, raison: "erreur" } as never);
     await proposerRangSuivant(SESSION, "refus", MAINTENANT);
     expect(JSON.stringify(h.telegram.mock.calls)).toContain("pas partie");
@@ -375,6 +417,140 @@ describe("rang suivant (T15)", () => {
     h.etat.choix = [];
     expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toMatchObject({ fait: "rien" });
     expect(h.telegram).not.toHaveBeenCalled();
+  });
+});
+
+describe("correctif EXACTITUDE — rang relancé après retrait", () => {
+  beforeEach(() => allumer("rang_suivant", "choix_cartes"));
+
+  it("retrait du 1er choix par l'équipe (mission « retirée ») : rien n'est proposé, les choix restants sont marqués", async () => {
+    h.etat.missions = [
+      { trainerId: A, statut: "retiree", updatedAt: new Date("2026-10-11T09:30:00Z") },
+    ];
+    const r = await proposerRangSuivant(SESSION, "passage", MAINTENANT);
+    expect(r).toEqual({ fait: "rien", raison: "chaîne arrêtée par l'équipe" });
+    expect(h.proposer).not.toHaveBeenCalled();
+    expect(h.tx.trainingSession.updateMany).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.prisma.choixFormateurSession.updateMany.mock.calls)).toContain(
+      MOTIF_CHAINE_ARRETEE,
+    );
+    expect(h.journaliser).toHaveBeenCalledWith(
+      h.prisma,
+      expect.objectContaining({ action: "qualiopi.mission.chaine_arretee", targetId: SESSION }),
+    );
+  });
+
+  it("accord donné puis affectation retirée par l'équipe : rien n'est proposé", async () => {
+    h.etat.missions = [
+      { trainerId: A, statut: "acceptee", updatedAt: new Date("2026-10-11T09:30:00Z") },
+    ];
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({
+      fait: "rien",
+    });
+    expect(h.proposer).not.toHaveBeenCalled();
+  });
+
+  it("remplacement par l'équipe (un formateur hors du choix a refusé ensuite) : rien", async () => {
+    h.etat.missions = [
+      { trainerId: A, statut: "retiree", updatedAt: new Date("2026-10-11T09:10:00Z") },
+      { trainerId: UUID(99), statut: "refusee", updatedAt: new Date("2026-10-11T09:40:00Z") },
+    ];
+    expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toMatchObject({
+      fait: "rien",
+    });
+    expect(h.proposer).not.toHaveBeenCalled();
+  });
+
+  it("aucune mission depuis le choix : la chaîne n'a pas commencé, rien", async () => {
+    h.etat.missions = [];
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toEqual({
+      fait: "rien",
+      raison: "chaîne pas commencée",
+    });
+    expect(h.prisma.choixFormateurSession.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("refus, silence et désistement passent la main", async () => {
+    for (const statut of ["refusee", "sans_reponse", "desistee"]) {
+      vi.clearAllMocks();
+      h.etat.missions = [{ trainerId: A, statut, updatedAt: new Date("2026-10-11T09:30:00Z") }];
+      expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({
+        fait: "propose",
+        rang: 2,
+      });
+    }
+  });
+});
+
+describe("correctifs L11b — fenêtre d'envoi, rang refusé par la garde, paiement par mission", () => {
+  beforeEach(() => {
+    allumer("rang_suivant", "choix_cartes");
+    h.etat.missions = [
+      { trainerId: A, statut: "refusee", updatedAt: new Date("2026-10-11T09:05:00Z") },
+    ];
+  });
+
+  it("refus à 22 h (heure de Paris) : rien ne part, le passage reprendra à l'ouverture", async () => {
+    const soir = new Date("2026-10-11T20:00:00Z"); // 22 h à Paris
+    expect(await proposerRangSuivant(SESSION, "refus", soir)).toEqual({
+      fait: "rien",
+      raison: "hors fenêtre d'envoi",
+    });
+    expect(h.proposer).not.toHaveBeenCalled();
+  });
+
+  it("un rang refusé par la garde relue est marqué sauté, journalisé et signalé", async () => {
+    const garde = await import("../garde-mission-portes");
+    vi.mocked(garde.controlerGardeMission).mockImplementation(async (t: string) =>
+      t === B
+        ? ({ mode: "refuser", refus: ["Attestation échue."], avertissements: [] } as never)
+        : ({ mode: "coupee", refus: [], avertissements: [] } as never),
+    );
+    const r = await proposerRangSuivant(SESSION, "refus", MAINTENANT);
+    expect(r).toMatchObject({ fait: "propose", rang: 3, trainerId: C });
+    expect(h.prisma.choixFormateurSession.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { sessionId: SESSION, trainerId: B, sauteAt: null } }),
+    );
+    expect(h.journaliser).toHaveBeenCalledWith(
+      h.prisma,
+      expect.objectContaining({
+        action: "qualiopi.mission.rang_saute",
+        changes: expect.objectContaining({ raisons: ["garde"] }),
+      }),
+    );
+    vi.mocked(garde.controlerGardeMission).mockImplementation(
+      async () => ({ mode: "coupee", refus: [], avertissements: [] }) as never,
+    );
+  });
+
+  it("un indépendant n'est jamais proposé sur une session réglée par le relevé mensuel", async () => {
+    // Pas de date de passage au paiement par mission.
+    h.prisma.trainer.findUnique.mockImplementation(
+      async () => ({ tarifJourneeHtCents: 50_000, statut: "sous_traitant" }) as never,
+    );
+    const r = await proposerRangSuivant(SESSION, "refus", MAINTENANT);
+    expect(r).toMatchObject({ fait: "a_pourvoir" });
+    expect(h.proposer).not.toHaveBeenCalled();
+    expect(JSON.stringify(h.journaliser.mock.calls)).toContain("releve_mensuel");
+    h.prisma.trainer.findUnique.mockImplementation(
+      async () => ({ tarifJourneeHtCents: null }) as never,
+    );
+  });
+
+  it("session réglée par mission (date de passage, 1re journée après) : l'indépendant est proposé", async () => {
+    h.etat.settings.set("formateurs.passage_paiement", { date: "2026-11-01" });
+    h.prisma.trainingSession.findUnique.mockImplementation(
+      async () => ({ ...h.etat.session, jours: [] }) as never,
+    );
+    h.prisma.trainer.findUnique.mockImplementation(
+      async () => ({ tarifJourneeHtCents: 50_000, statut: "sous_traitant" }) as never,
+    );
+    const r = await proposerRangSuivant(SESSION, "refus", MAINTENANT);
+    expect(r).toMatchObject({ fait: "propose", rang: 2 });
+    h.prisma.trainer.findUnique.mockImplementation(
+      async () => ({ tarifJourneeHtCents: null }) as never,
+    );
+    h.prisma.trainingSession.findUnique.mockImplementation(async () => h.etat.session as never);
   });
 });
 

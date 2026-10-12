@@ -87,6 +87,13 @@ import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
+import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
+import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
+import { ContratCadrePanel } from "@/components/admin/qualiopi/ContratCadrePanel";
+import {
+  lireContratsCadreFiche,
+  versionContratAEmettre,
+} from "@/server/qualiopi/formateurs-independants/contrat-cadre-emission";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -380,6 +387,14 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     trainer.organismeSousTraitantId === null &&
     peutEngager(role, "habiliter_formateur") &&
     (await interrupteurAllume("fin_collaboration"));
+  // Lot L7b — contrat-cadre préparé depuis la fiche : indépendant en nom propre, rôle
+  // `contresigner`, interrupteur allumé. Rôle jugé AVANT toute lecture.
+  const voitContratCadre =
+    trainer.statut === "sous_traitant" &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "contresigner") &&
+    (await interrupteurAllume("contrat_cadre_emission"));
+  const contratsCadre = voitContratCadre ? await lireContratsCadreFiche(trainer.id) : [];
   const jourIso = (d: Date) => d.toISOString().slice(0, 10);
   const decideeAt = trainer.finCollaborationDecideeAt ?? trainer.finCollaborationAt;
   const motifFin = trainer.finCollaborationMotifPrevu ?? trainer.finCollaborationMotif;
@@ -412,12 +427,25 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           .catch(() => null)
       : null;
   const retourLieu = voitLieu ? ((await searchParams) ?? {})["lieu"] : undefined;
+  // Lot L6 — dossier en ligne : rôle jugé AVANT toute lecture ; interrupteur
+  // `formateurs.dossier_en_ligne` absent = panneau absent.
+  const voitDossier =
+    trainer.dossierStatut !== null &&
+    peutEngager(role, "habiliter_formateur") &&
+    (await envoiAllume("dossier_en_ligne"));
+  const retourDossier = voitDossier ? ((await searchParams) ?? {})["dossier"] : undefined;
   // Lot S2 (R4) — un refus ou un silence est un droit du sous-traitant : sa
   // fiche ne montre que les missions acceptées et réalisées (interrupteur).
   const missionsIndependant =
     trainer.statut === "sous_traitant" && (await interrupteurAllume("affectation_sure"))
       ? await missionsVisiblesIndependant(trainer.id, now)
       : null;
+
+  // Lot L12i — « Présentation faite le … » : interrupteur absent = panneau absent.
+  const voitPresentation =
+    trainer.statut === "sous_traitant" &&
+    peutEngager(role, "remunerer_formateur") &&
+    (await interrupteurAllume("presentation_payee"));
 
   return (
     <AdminPageShell width="wide">
@@ -474,6 +502,23 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           codePostalPro={trainer.codePostalPro}
           commune={communeLieu ? `${communeLieu.nom} (${communeLieu.departement})` : null}
           retour={retourLieu}
+        />
+      ) : null}
+
+      {voitDossier && trainer.dossierStatut ? (
+        <DossierEnLignePanel
+          trainerId={trainer.id}
+          dossierStatut={trainer.dossierStatut}
+          retour={retourDossier}
+        />
+      ) : null}
+
+      {voitContratCadre ? (
+        <ContratCadrePanel
+          trainerId={trainer.id}
+          versionArretee={versionContratAEmettre()}
+          contrats={contratsCadre}
+          lienVerifier={`/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}/verifier`}
         />
       ) : null}
 
@@ -599,6 +644,8 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           }}
         />
       )}
+
+      {voitPresentation && <PresentationMethodePanel trainerId={trainer.id} />}
 
       {/*
         Fixe récupérable sur commissions — 2026-09-12.

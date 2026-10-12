@@ -745,9 +745,9 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "Pour vous confier la mission [intitulé], il nous manque un élément",
         paragraphes: [
           "Pour vous confier cette mission, il nous manque : [motif].",
-          "Déposez-le depuis votre espace : la lettre partira aussitôt.",
+          "Vous pouvez y remédier depuis votre espace : la lettre partira aussitôt.",
         ],
-        boutons: ["Déposer depuis mon espace"],
+        boutons: ["Ouvrir mon espace"],
       },
     ],
   },

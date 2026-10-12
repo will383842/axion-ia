@@ -61,6 +61,7 @@ import { Worker, type Job } from "bullmq";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
 import { envoyerMessagesAppel } from "@/server/calendly/rappels-appel";
+import { envoyerMessagesEchangeFormateur } from "@/server/calendly/rappels-echange-formateur";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
 import { CALENDLY_SLOTS_PATHS } from "@/server/calendly/revalider-creneaux";
@@ -148,6 +149,28 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
           `[appel-${res.moment}] PLAFOND ATTEINT — signe d'un emballement : le marqueur d'envoi n'est probablement plus pose`,
         );
       }
+    }
+    // Famille `formateur` (lot F-CAL-2) : interrupteur `formateurs.suivi_echange` coupé =
+    // aucun passage (une lecture du réglage seulement). Ne lève jamais.
+    try {
+      for (const res of await envoyerMessagesEchangeFormateur(new Date())) {
+        if (res.envoyes > 0) {
+          console.warn(`[echange-formateur-${res.moment}] ${res.envoyes} message(s) envoye(s)`);
+        }
+        if (!res.ok) console.warn(`[echange-formateur-${res.moment}] passage en echec`);
+        // Des compteurs par motif, aucune donnée personnelle : un texte non validé ou un
+        // crochet non rempli se voit au lieu de se taire.
+        if (Object.keys(res.refus).length > 0) {
+          console.warn(`[echange-formateur-${res.moment}] refus ${JSON.stringify(res.refus)}`);
+        }
+        if (res.plafondAtteint) {
+          console.error(`[echange-formateur-${res.moment}] PLAFOND ATTEINT`);
+        }
+      }
+    } catch (e) {
+      console.warn(
+        `[echange-formateur] passage impossible : ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
     return;
   }

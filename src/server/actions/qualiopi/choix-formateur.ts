@@ -20,7 +20,9 @@ import { requireFormateurAction } from "@/server/formateur/guard";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { figerChoix } from "@/server/qualiopi/formateurs-independants/choix-formateur";
+import { sessionPayeeParMission } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import {
+  abandonnerChoix,
   enregistrerChoix,
   lireCartesChoix,
   seDesister,
@@ -75,6 +77,18 @@ export async function choisirFormateursSessionAction(
   const fige = figerChoix(parsed.data.choix, [...cartes.disponibles, ...cartes.indisponibles]);
   if (!fige.ok) return { error: fige.erreur };
   const premier = fige.choix[0]!;
+  // ARGENT — le montant figé au choix n'est payé que par le paiement par mission.
+  // Une session réglée par le relevé mensuel (pas de date de passage, ou première
+  // journée avant elle) paierait le tarif de la fiche : on ne l'annonce pas.
+  if (
+    fige.choix.some((c) => c.tarifHtCents !== null) &&
+    !(await sessionPayeeParMission(sessionId))
+  ) {
+    return {
+      error:
+        "Cette session est réglée par le relevé mensuel : les honoraires figés au choix ne seraient pas ceux payés. Choisissez un formateur indépendant par « Affecter ou retirer directement », ou une session réglée par mission.",
+    };
+  }
 
   // Le 1er choix tient déjà la place avec une proposition vivante : ses
   // conditions sont figées sur elle, on ne les change pas en silence.
@@ -125,6 +139,7 @@ export async function choisirFormateursSessionAction(
         trainerId: c.trainerId,
         tarifHtCents: c.tarifHtCents,
         forfaitDeplacementParJourHtCents: c.forfaitDeplacementParJourHtCents,
+        regimeTvaFige: c.regimeTvaFige,
       })),
     },
     session: admin,
@@ -132,7 +147,12 @@ export async function choisirFormateursSessionAction(
   if (dejaPropose) return { data: { missionProposee: false, avertissements: [] } };
 
   const r = await assignTrainerToSessionAction({ sessionId, trainerId: premier.trainerId });
-  if ("error" in r) return { error: r.error };
+  if ("error" in r) {
+    // Le choix vient d'être écrit (la proposition y lit ses conditions) : il
+    // n'est pas retenu, et le passage du rang suivant ne le proposera jamais.
+    await abandonnerChoix(sessionId, maintenant);
+    return { error: `${r.error} Le choix n'est pas retenu : refaites-le une fois ce point levé.` };
+  }
   return {
     data: { missionProposee: r.data.missionProposee, avertissements: r.data.avertissements },
   };
@@ -197,7 +217,13 @@ export async function seDesisterDepuisFormulaireAction(formData: FormData): Prom
 export async function repondreDepuisFormulaireAction(formData: FormData): Promise<void> {
   const missionId = String(formData.get("missionId") ?? "");
   if (!z.string().uuid().safeParse(missionId).success) redirect(FORMATEUR_BASE_PATH);
-  const reponse = formData.get("reponse") === "acceptee" ? "acceptee" : "refusee";
+  const brute = formData.get("reponse");
+  // Deux réponses possibles, et seulement deux : toute autre valeur est rejetée,
+  // jamais lue comme un refus.
+  if (brute !== "acceptee" && brute !== "refusee") {
+    redirect(`${FORMATEUR_BASE_PATH}?mission=${missionId}&erreur=reponse`);
+  }
+  const reponse: "acceptee" | "refusee" = brute;
   const motif = [
     String(formData.get("choix") ?? "").trim(),
     String(formData.get("motif") ?? "").trim(),

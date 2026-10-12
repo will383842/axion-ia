@@ -43,11 +43,21 @@ function euros(c: number): string {
   return `${signe}${Math.floor(a / 100)},${String(a % 100).padStart(2, "0")}`;
 }
 
+export interface OptionsDas2 {
+  /**
+   * L12h : ne garder que les bénéficiaires « à déclarer » (cumul du SIREN
+   * strictement au-dessus du seuil). Sans l'option, tout le monde est listé
+   * avec la colonne `a_declarer`, comme FAC-9 l'a livré.
+   */
+  readonly seulementADeclarer?: boolean;
+}
+
 /** Pure : le CSV (séparateur « ; », BOM, CRLF), trié par flux puis bénéficiaire. */
 export function construireDas2Commune(
   annee: number,
   lignes: ReadonlyArray<LigneDas2Commune>,
   seuilCents: number = SEUIL_DAS2_COMMUN_CENTS,
+  options: OptionsDas2 = {},
 ): string {
   const entete = [
     "annee",
@@ -63,13 +73,19 @@ export function construireDas2Commune(
   ];
   // Le seuil s'apprécie PAR BÉNÉFICIAIRE : une même entreprise (même SIREN) payée
   // comme apporteur ET comme formateur cumule ses deux flux.
+  // Clé = les seuls CHIFFRES du SIREN : « 123 456 789 » et « 123456789 » cumulent.
+  const cle = (siren: string | null): string => (siren ?? "").replace(/\D/g, "");
   const cumulParSiren = new Map<string, number>();
   for (const l of lignes) {
-    if (l.siren) cumulParSiren.set(l.siren, (cumulParSiren.get(l.siren) ?? 0) + l.totalCents);
+    const k = cle(l.siren);
+    if (k) cumulParSiren.set(k, (cumulParSiren.get(k) ?? 0) + l.totalCents);
   }
   const total = (l: LigneDas2Commune): number =>
-    l.siren ? (cumulParSiren.get(l.siren) ?? l.totalCents) : l.totalCents;
-  const triees = [...lignes].sort((a, b) =>
+    cle(l.siren) ? (cumulParSiren.get(cle(l.siren)) ?? l.totalCents) : l.totalCents;
+  const retenues = options.seulementADeclarer
+    ? lignes.filter((l) => total(l) > seuilCents)
+    : lignes;
+  const triees = [...retenues].sort((a, b) =>
     a.flux === b.flux
       ? a.beneficiaire.localeCompare(b.beneficiaire, "fr")
       : a.flux < b.flux
@@ -122,13 +138,17 @@ export function regrouperRelevesPayes(
   const parBeneficiaire = new Map<string, LigneDas2Commune>();
   for (const r of releves) {
     const cle = `${r.flux}:${r.beneficiaireId}`;
+    // Un SIRET saisi avec des espaces ou des points (« 987 654 321 00012 ») garde
+    // ses 9 premiers CHIFFRES pour SIREN : le cumul par bénéficiaire en dépend.
+    const siret = r.siret ? r.siret.replace(/\D/g, "") || null : null;
     const cur = parBeneficiaire.get(cle);
     parBeneficiaire.set(cle, {
       flux: r.flux,
       beneficiaire: r.beneficiaire,
-      denomination: null,
-      siren: r.siret ? r.siret.slice(0, 9) : null,
-      siret: r.siret,
+      // Un organisme est une personne morale : sa raison sociale est aussi sa dénomination.
+      denomination: r.flux === "organisme" ? r.beneficiaire : null,
+      siren: siret ? siret.slice(0, 9) : null,
+      siret,
       adresse: r.adresse,
       totalCents: (cur?.totalCents ?? 0) + r.totalTtcCents,
       pieces: (cur?.pieces ?? 0) + 1,
@@ -137,8 +157,21 @@ export function regrouperRelevesPayes(
   return [...parBeneficiaire.values()];
 }
 
-/** La déclaration commune de l'année, lue en base (lecture seule). */
-export async function exportDas2Commune(annee: number): Promise<string> {
+/**
+ * Les fiches formateur du banc d'essai (autofacture « spécimen ») : jamais dans la
+ * DAS 2. Filtre NOMMÉ, distinct de celui des rencontres de test
+ * (`HORS_RENCONTRES_DE_TEST`), qui ne porte pas sur les mêmes lignes.
+ */
+export const HORS_FICHES_DU_BANC = { NOT: { estTestInterne: true } } as const;
+
+/**
+ * La déclaration commune de l'année, lue en base (lecture seule).
+ *
+ * L12h : un relevé tenu PAR UN ORGANISME (décision 88) est déclaré au nom de
+ * l'organisme, qui est le bénéficiaire du versement ; une fiche du banc d'essai
+ * (`estTestInterne`, autofacture « spécimen ») n'y entre jamais.
+ */
+export async function exportDas2Commune(annee: number, options: OptionsDas2 = {}): Promise<string> {
   const [{ lignesDas2Apporteurs }, { prisma }] = await Promise.all([
     import("@/features/apporteurs-reseau/commissions"),
     import("@/lib/prisma"),
@@ -146,11 +179,13 @@ export async function exportDas2Commune(annee: number): Promise<string> {
   const [apporteurs, payes] = await Promise.all([
     lignesDas2Apporteurs(annee),
     prisma.trainerStatement.findMany({
-      where: { statut: "paye", payeAt: bornesAnnee(annee) },
+      where: { statut: "paye", payeAt: bornesAnnee(annee), trainer: HORS_FICHES_DU_BANC },
       select: {
         trainerId: true,
         totalTtcCents: true,
         montantFactureTtcCents: true,
+        organismeSousTraitantId: true,
+        organismeSousTraitant: { select: { nom: true, siret: true } },
         trainer: {
           select: { prenom: true, nom: true, siret: true, adresseProfessionnelle: true },
         },
@@ -159,13 +194,23 @@ export async function exportDas2Commune(annee: number): Promise<string> {
   ]);
   const formateurs = regrouperRelevesPayes(
     payes.map((r) => ({
-      beneficiaireId: r.trainerId,
-      flux: "formateur" as const,
-      beneficiaire: `${r.trainer.prenom} ${r.trainer.nom}`.trim(),
-      siret: r.trainer.siret,
-      adresse: r.trainer.adresseProfessionnelle,
       // Ce qui a été versé : la facture rapprochée, sinon le relevé.
       totalTtcCents: r.montantFactureTtcCents ?? r.totalTtcCents,
+      ...(r.organismeSousTraitantId !== null && r.organismeSousTraitant !== null
+        ? {
+            beneficiaireId: r.organismeSousTraitantId,
+            flux: "organisme" as const,
+            beneficiaire: r.organismeSousTraitant.nom,
+            siret: r.organismeSousTraitant.siret,
+            adresse: null,
+          }
+        : {
+            beneficiaireId: r.trainerId,
+            flux: "formateur" as const,
+            beneficiaire: `${r.trainer.prenom} ${r.trainer.nom}`.trim(),
+            siret: r.trainer.siret,
+            adresse: r.trainer.adresseProfessionnelle,
+          }),
     })),
   );
   const lignes: LigneDas2Commune[] = [
@@ -181,5 +226,5 @@ export async function exportDas2Commune(annee: number): Promise<string> {
     })),
     ...formateurs,
   ];
-  return construireDas2Commune(annee, lignes);
+  return construireDas2Commune(annee, lignes, SEUIL_DAS2_COMMUN_CENTS, options);
 }

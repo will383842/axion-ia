@@ -48,7 +48,9 @@ const h = vi.hoisted(() => {
       update: vi.fn(async () => ({})),
     },
     sessionFormateur: { findUnique: vi.fn(async () => ({ tarifHtCents: 40_000 })) },
-    $transaction: vi.fn(async (f: (tx: unknown) => Promise<unknown>) => {
+    $transaction: vi.fn(async (f: ((tx: unknown) => Promise<unknown>) | Promise<unknown>[]) => {
+      // Forme « tableau » (écritures groupées) : elle ne prend pas le verrou simulé.
+      if (Array.isArray(f)) return Promise.all(f);
       const tour = file.then(() => f({ $executeRaw: vi.fn(async () => 1) }));
       file = tour.catch(() => undefined);
       return tour;
@@ -116,7 +118,8 @@ beforeEach(() => {
     lettreBlocageMotif: null,
     tarifHtCents: 35_000,
     forfaitDeplacementParJourHtCents: 8_000,
-    regimeTvaFige: null,
+    // Conditions figées au choix (L11b), recopiées sur la mission.
+    regimeTvaFige: "franchise_293b",
     trainer: {
       statut: "sous_traitant",
       organismeSousTraitantId: null,
@@ -174,14 +177,12 @@ describe("lettre due (T8)", () => {
     expect(h.envoyer).toHaveBeenCalledTimes(1);
   });
 
-  it("tarif et régime de TVA figés APRÈS une émission réussie ; l'empreinte est rangée", async () => {
+  it("correctif ARGENT : la lettre lit les conditions figées au choix, sans rien réécrire ; l'empreinte est rangée", async () => {
     await reevaluerMission(MISSION, "convention", MAINTENANT);
-    const fige = h.prisma.missionFormateur.updateMany.mock.invocationCallOrder[0]!;
-    expect(fige).toBeGreaterThan(h.generer.mock.invocationCallOrder[0]!);
-    expect(h.prisma.missionFormateur.updateMany).toHaveBeenCalledWith({
-      where: { id: MISSION, regimeTvaFige: null },
-      data: { regimeTvaFige: "franchise_293b" },
-    });
+    // Aucun gel après coup : tarif et régime viennent du choix, jamais recalculés.
+    expect(h.prisma.missionFormateur.updateMany).not.toHaveBeenCalled();
+    expect(h.etat.mission!.tarifHtCents).toBe(35_000);
+    expect(h.etat.mission!.regimeTvaFige).toBe("franchise_293b");
     const meta = (
       h.prisma.documentGenere.update.mock.calls[0] as unknown as [
         { data: { metadata: Record<string, unknown> } },
@@ -189,6 +190,39 @@ describe("lettre due (T8)", () => {
     )[0].data.metadata;
     expect(meta.empreinteMission).toMatch(/^[0-9a-f]{64}$/);
     expect(meta.renderData).toEqual({});
+  });
+
+  it("correctif EXACTITUDE : la lettre est demandée pour CETTE mission", async () => {
+    await reevaluerMission(MISSION, "convention", MAINTENANT);
+    expect(h.generer).toHaveBeenCalledWith(expect.objectContaining({ missionId: MISSION }));
+  });
+
+  it("correctif EXACTITUDE : lettre liée ailleurs → alerte, journal, arrêt (ni empreinte ni F26)", async () => {
+    h.generer.mockImplementationOnce(async () => {
+      // Le générateur a lié la lettre à une autre mission : celle-ci reste sans lettre.
+      return { ok: true as const, documentId: DOC, numero: "AXI-LM-1", lettreAnnuleeId: null };
+    });
+    const r = await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(r.action).toBe("erreur");
+    expect(h.prisma.documentGenere.update).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.journaliser).toHaveBeenCalledWith(
+      h.prisma,
+      expect.objectContaining({
+        action: "qualiopi.mission.lettre_liee_ailleurs",
+        targetId: MISSION,
+      }),
+    );
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie/);
+  });
+
+  it("F26 qui ne part pas : journalisé et signalé, jamais perdu en silence", async () => {
+    h.envoyer.mockResolvedValueOnce("indisponible" as never);
+    await reevaluerMission(MISSION, "convention", MAINTENANT);
+    expect(h.journaliser).toHaveBeenCalledWith(
+      h.prisma,
+      expect.objectContaining({ action: "qualiopi.mission.envoi_non_parti" }),
+    );
   });
 
   it("F26 : tous les crochets remplis, jobId déterministe, montant de la lettre", async () => {
@@ -207,18 +241,22 @@ describe("lettre due (T8)", () => {
     expect((envoi.payload.valeurs as Record<string, string>).total).toBe("685");
   });
 
-  it("mission sans tarif : le tarif de l'affectation, comme la lettre (F26 et gel)", async () => {
-    h.etat.mission!.tarifHtCents = null;
-    await reevaluerMission(MISSION, "convention", MAINTENANT);
-    expect(h.prisma.missionFormateur.updateMany).toHaveBeenCalledWith({
-      where: { id: MISSION, tarifHtCents: null },
-      data: { tarifHtCents: 40_000 },
-    });
-    const envoi = (
-      h.envoyer.mock.calls[0] as unknown as [{ payload: { valeurs: Record<string, string> } }]
-    )[0];
-    // 1 journée (400 €) + 1 demi-journée (200 €) + 2 × 80 € de déplacement.
-    expect(envoi.payload.valeurs.total).toBe("760");
+  it("correctif ARGENT : mission sans honoraires ou sans régime figés → aucune lettre automatique, jamais le tarif de l'affectation", async () => {
+    for (const vide of [{ tarifHtCents: null }, { regimeTvaFige: null }]) {
+      vi.clearAllMocks();
+      Object.assign(
+        h.etat.mission!,
+        { tarifHtCents: 35_000, regimeTvaFige: "franchise_293b" },
+        vide,
+      );
+      h.etat.mission!.lettreBlocageMotif = null;
+      expect((await reevaluerMission(MISSION, "convention", MAINTENANT)).action).toBe(
+        "lettre_refusee",
+      );
+      expect(h.generer).not.toHaveBeenCalled();
+      expect(h.envoyer).not.toHaveBeenCalled();
+      expect(h.prisma.sessionFormateur.findUnique).not.toHaveBeenCalled();
+    }
   });
 
   it("émission refusée : rien n'est figé, alerte sans nom", async () => {

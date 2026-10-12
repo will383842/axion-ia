@@ -590,6 +590,22 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Modalités de coordination des intervenants : qui pilote, quels points de coordination, sur quel support et à quelle fréquence (condition de couverture off.18).",
   },
+
+  // ── Contrat-cadre des formateurs indépendants (lot L7b) ───────────────────
+  // Deux mentions imprimées par le contrat-cadre v3 (articles 1 et 34), absentes
+  // de l'identité commune. Défaut VIDE, jamais inventé : tant qu'elles le restent,
+  // la préparation du contrat REFUSE en nommant le champ manquant
+  // (`champsManquantsContratCadre`).
+  nda_region: {
+    ...str(),
+    description:
+      "Région du préfet auprès duquel la déclaration d'activité est enregistrée (imprimée dans le contrat-cadre des formateurs indépendants).",
+  },
+  adresse_formateurs: {
+    ...str(),
+    description:
+      "Adresse électronique à laquelle les formateurs indépendants écrivent à Axion (article 34 du contrat-cadre).",
+  },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;

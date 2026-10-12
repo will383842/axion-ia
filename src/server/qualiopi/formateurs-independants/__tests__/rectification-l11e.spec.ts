@@ -39,17 +39,24 @@ const h = vi.hoisted(() => {
       update: vi.fn(async () => ({})),
     },
     sessionFormateur: { findUnique: vi.fn(async () => null) },
-    $transaction: vi.fn(async (f: (tx: unknown) => unknown) => f({ $executeRaw: vi.fn() })),
+    // Forme « tableau » (écritures groupées, correctif #1502) : résolue telle quelle.
+    $transaction: vi.fn(async (f: ((tx: unknown) => unknown) | Promise<unknown>[]) =>
+      Array.isArray(f) ? Promise.all(f) : f({ $executeRaw: vi.fn() }),
+    ),
   };
   return {
     etat,
     prisma,
-    generer: vi.fn(async () => ({
-      ok: true as const,
-      documentId: NOUVELLE,
-      numero: "AXI-LM-2",
-      lettreAnnuleeId: null,
-    })),
+    // Le générateur lie la nouvelle lettre à la mission traitée (correctif #1502).
+    generer: vi.fn(async () => {
+      (etat.mission as Record<string, unknown>).lettreMissionId = NOUVELLE;
+      return {
+        ok: true as const,
+        documentId: NOUVELLE,
+        numero: "AXI-LM-2",
+        lettreAnnuleeId: null,
+      };
+    }),
     envoyer: vi.fn(async () => "envoye"),
     telegram: vi.fn(async () => true),
   };

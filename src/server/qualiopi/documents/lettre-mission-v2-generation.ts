@@ -39,6 +39,12 @@ export type ResultatLettreV2 =
 export async function genererLettreMissionV2(input: {
   sessionId: string;
   trainerId: string;
+  /**
+   * La mission à laquelle lier la lettre (moteur L11c). Absente : la plus
+   * récemment sollicitée du couple, comme avant. Présente, elle DOIT être celle
+   * de ce couple session/formateur, sinon rien n'est émis.
+   */
+  missionId?: string;
   rectificationMotif?: string;
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
@@ -78,7 +84,11 @@ export async function genererLettreMissionV2(input: {
       },
     }),
     prisma.missionFormateur.findFirst({
-      where: { sessionId: input.sessionId, trainerId: input.trainerId },
+      where: {
+        sessionId: input.sessionId,
+        trainerId: input.trainerId,
+        ...(input.missionId !== undefined ? { id: input.missionId } : {}),
+      },
       orderBy: { solliciteAt: "desc" },
       select: {
         id: true,
@@ -121,6 +131,10 @@ export async function genererLettreMissionV2(input: {
   ]);
   if (session === null) return { ok: false, erreur: "Session introuvable" };
   if (trainer === null) return { ok: false, erreur: "Formateur introuvable" };
+  // Une lettre n'est jamais liée à la mission d'un autre couple.
+  if (input.missionId !== undefined && mission === null) {
+    return { ok: false, erreur: "Mission introuvable pour cette session et ce formateur" };
+  }
 
   const faits = (numero: string): FaitsLettreV2 => ({
     numero,

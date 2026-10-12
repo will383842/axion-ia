@@ -124,6 +124,8 @@ export type ResultatControle =
       readonly ok: true;
       readonly verdict: VerdictRegistre;
       readonly motifs: ReadonlyArray<MotifControle>;
+      /** Le SIRET effectivement interrogé et inscrit dans la preuve (`null` : absent ou invalide). */
+      readonly siret: string | null;
     }
   | { readonly ok: false; readonly raison: "introuvable" | "hors_perimetre" };
 
@@ -199,7 +201,7 @@ export async function controlerRegistreFormateur(
     );
   });
 
-  return { ok: true, verdict: v.verdict, motifs: v.motifs };
+  return { ok: true, verdict: v.verdict, motifs: v.motifs, siret: siretValide ? siret : null };
 }
 
 export type ResultatValidation =

@@ -106,60 +106,70 @@ export async function VueMission({
           // Formulaire HTML sans JavaScript (écran F-8) : deux boutons de même
           // taille, le motif d'un refus reste facultatif (refus libre) ou est
           // demandé comme avant (interrupteur `formateurs.affectation_sure`).
-          <form action={repondreDepuisFormulaireAction} className="space-y-4">
-            <input type="hidden" name="missionId" value={mission.id} />
+          // Deux formulaires : la touche Entrée dans le volet du motif ne peut
+          // soumettre que le refus, jamais « J'accepte ». Le bouton du refus est
+          // rattaché à son formulaire par l'attribut `form` (sans JavaScript).
+          <div className="space-y-4">
             <p className="text-mocha text-sm">{PHRASE_LIBERTE}</p>
             <div className="grid grid-cols-2 gap-3">
+              <form action={repondreDepuisFormulaireAction}>
+                <input type="hidden" name="missionId" value={mission.id} />
+                <input type="hidden" name="reponse" value="acceptee" />
+                <button
+                  type="submit"
+                  className="bg-terracotta inline-flex min-h-[48px] w-full items-center justify-center rounded-md px-4 text-sm font-semibold text-white hover:opacity-90"
+                >
+                  J&apos;accepte
+                </button>
+              </form>
               <button
                 type="submit"
-                name="reponse"
-                value="acceptee"
-                className="bg-terracotta inline-flex min-h-[48px] w-full items-center justify-center rounded-md px-4 text-sm font-semibold text-white hover:opacity-90"
-              >
-                J&apos;accepte
-              </button>
-              <button
-                type="submit"
-                name="reponse"
-                value="refusee"
+                form={`mission-refus-${mission.id}`}
                 className="border-border text-mocha hover:bg-sand inline-flex min-h-[48px] w-full items-center justify-center rounded-md border px-4 text-sm font-semibold"
               >
                 Je ne suis pas disponible
               </button>
             </div>
-            <details className="border-border rounded-lg border p-4">
-              <summary className="text-mocha cursor-pointer text-sm">
-                {QUESTION_REFUS_LIBRE}{" "}
-                <span className="text-fg-muted">
-                  {refusLibre
-                    ? "(facultatif)"
-                    : `(si vous refusez, ${MOTIF_REFUS_MIN} caractères au moins)`}
-                </span>
-              </summary>
-              <fieldset className="mt-3 flex flex-wrap gap-2">
-                <legend className="sr-only">{QUESTION_REFUS_LIBRE}</legend>
-                {CHOIX_MOTIF_REFUS_LIBRE.map((c) => (
-                  <label
-                    key={c}
-                    className="border-border text-mocha inline-flex min-h-[48px] items-center gap-2 rounded-md border px-4 text-sm"
-                  >
-                    <input type="radio" name="choix" value={c} />
-                    {c}
-                  </label>
-                ))}
-              </fieldset>
-              <label htmlFor="mission-motif" className="text-mocha mt-3 block text-sm font-medium">
-                Un mot si vous le souhaitez
-              </label>
-              <textarea
-                id="mission-motif"
-                name="motif"
-                rows={2}
-                maxLength={1960}
-                className="border-border w-full rounded-md border px-3 py-2 text-sm"
-              />
-            </details>
-          </form>
+            <form id={`mission-refus-${mission.id}`} action={repondreDepuisFormulaireAction}>
+              <input type="hidden" name="missionId" value={mission.id} />
+              <input type="hidden" name="reponse" value="refusee" />
+              <details className="border-border rounded-lg border p-4">
+                <summary className="text-mocha cursor-pointer text-sm">
+                  {QUESTION_REFUS_LIBRE}{" "}
+                  <span className="text-fg-muted">
+                    {refusLibre
+                      ? "(facultatif)"
+                      : `(si vous refusez, ${MOTIF_REFUS_MIN} caractères au moins)`}
+                  </span>
+                </summary>
+                <fieldset className="mt-3 flex flex-wrap gap-2">
+                  <legend className="sr-only">{QUESTION_REFUS_LIBRE}</legend>
+                  {CHOIX_MOTIF_REFUS_LIBRE.map((c) => (
+                    <label
+                      key={c}
+                      className="border-border text-mocha inline-flex min-h-[48px] items-center gap-2 rounded-md border px-4 text-sm"
+                    >
+                      <input type="radio" name="choix" value={c} />
+                      {c}
+                    </label>
+                  ))}
+                </fieldset>
+                <label
+                  htmlFor="mission-motif"
+                  className="text-mocha mt-3 block text-sm font-medium"
+                >
+                  Un mot si vous le souhaitez
+                </label>
+                <textarea
+                  id="mission-motif"
+                  name="motif"
+                  rows={2}
+                  maxLength={1960}
+                  className="border-border w-full rounded-md border px-3 py-2 text-sm"
+                />
+              </details>
+            </form>
+          </div>
         ) : (
           <div role="status" className="border-border rounded-lg border p-4">
             <p className="text-mocha text-sm font-semibold">
