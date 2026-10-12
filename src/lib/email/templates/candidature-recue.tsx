@@ -41,12 +41,13 @@ interface Payload {
 
 /** F0 — texte validé (`TEXTES-A-VALIDER`, bloc F0). Français seulement. */
 const MISSION = {
-  subject: "Votre candidature de formateur indépendant est bien arrivée",
-  title: "Votre candidature est bien arrivée",
-  preview: "Si votre profil correspond, nous vous proposerons un échange de 20 minutes.",
-  body: "Votre candidature à la mission de formateur IA indépendant est bien arrivée.",
+  subject: "Bien reçu : votre candidature de formateur",
+  title: "Bien reçu, merci",
+  preview:
+    "Une personne la lit. Si votre profil correspond, nous vous proposerons un échange de 20 minutes.",
+  body: "Votre candidature à nos missions de formateur IA indépendant est bien arrivée.",
   suite:
-    "Chaque candidature est lue par une personne. Si votre profil correspond, nous vous proposerons un échange de 20 minutes en visio pour faire connaissance, sans engagement.",
+    "Merci pour votre intérêt. Chaque candidature est lue par une personne. Si votre profil correspond, nous vous proposerons un échange de 20 minutes en visio pour faire connaissance, sans engagement.",
 } as const;
 
 const COPY = {
