@@ -163,7 +163,12 @@ function casTropPercuImpute(statutSuivant: Releve["statut"] = "facture_recue") {
     ],
     [
       { statementId: suivant, montantHtCents: 200_000, statut: "calcule" },
-      { statementId: suivant, montantHtCents: -50_000, statut: "calcule", imputeDeStatementId: avoir },
+      {
+        statementId: suivant,
+        montantHtCents: -50_000,
+        statut: "calcule",
+        imputeDeStatementId: avoir,
+      },
     ],
   );
 }
@@ -273,7 +278,12 @@ describe("contre-calcul de la LECTURE du cumul : chaque somme une fois", () => {
       ],
       [
         { statementId: suivant, montantHtCents: 200_000, statut: "valide" },
-        { statementId: suivant, montantHtCents: -50_000, statut: "annule", imputeDeStatementId: avoir },
+        {
+          statementId: suivant,
+          montantHtCents: -50_000,
+          statut: "annule",
+          imputeDeStatementId: avoir,
+        },
       ],
     );
     expect(await lireCumulHonorairesHtCents(T, db)).toBe(550_000);

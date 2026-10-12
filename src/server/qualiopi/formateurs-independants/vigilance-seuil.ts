@@ -64,7 +64,8 @@ export function cumulDesReleves(releves: ReadonlyArray<ReleveCumul>): number {
     if (!COMPTE.has(r.statut) || !Number.isFinite(r.totalHtCents)) continue;
     if (r.avoirDe && !COMPTE.has(r.avoirDe.statut)) continue;
     const rendu = (r.imputations ?? []).reduce(
-      (s, l) => (Number.isFinite(l.montantHtCents) && l.montantHtCents < 0 ? s - l.montantHtCents : s),
+      (s, l) =>
+        Number.isFinite(l.montantHtCents) && l.montantHtCents < 0 ? s - l.montantHtCents : s,
       0,
     );
     total += r.totalHtCents + rendu;
