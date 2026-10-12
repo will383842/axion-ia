@@ -574,7 +574,7 @@ export function faitsNda(l: LigneNda): FaitsCampagne | null {
   };
 }
 
-async function lireLignesNda(maintenant: Date): Promise<LigneNda[]> {
+async function lireLignesNda(_maintenant: Date): Promise<LigneNda[]> {
   const trainers = await prisma.trainer.findMany({
     where: {
       statut: "sous_traitant",
