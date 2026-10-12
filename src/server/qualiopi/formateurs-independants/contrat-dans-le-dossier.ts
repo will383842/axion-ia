@@ -13,7 +13,7 @@
  *      signature AVANT de consommer le code ; un lien est émis par le système
  *      (`emettreLienSignature`, jamais envoyé), le code est vérifié, et le moteur commun
  *      (`signerDocument`, partie `sous_traitant`) scelle la signature ;
- *   3. F10 (`envoyerAccuseDossier`) part avec la copie de la signature en pièce jointe.
+ *   3. F10 (`accuse-dossier.ts`) part avec la copie de la signature en pièce jointe.
  *
  * Coupé (ou sans version arrêtée) : l'étape 4 garde son comportement d'avant, le dossier
  * part sans signature.
@@ -47,7 +47,6 @@ import { apresSignature } from "@/server/qualiopi/documents/signature/apres-sign
 import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
-import { archiverCopiePartielle } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 import {
   lireEtablissementParSiret,
@@ -57,7 +56,6 @@ import {
 import { envoyerCodeSignature } from "./code-signature-envoi";
 import { preparerContratCadre, versionContratAEmettre } from "./contrat-cadre-emission";
 import { controlerRegistreFormateur } from "./controle";
-import { envoyer, type ResultatEnvoiFormateur } from "./envois";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 import { sourceRegistreCommune } from "./source-registre";
@@ -348,27 +346,6 @@ export async function signerContratDuDossier(
     sansCopiePartielle: true,
   });
   return { ok: true, documentId: contrat.id };
-}
-
-/** F10 — « Bien reçu », avec la copie de la signature du contrat en pièce jointe. */
-export async function envoyerAccuseDossier(
-  d: FormateurDuDossier,
-  documentGenereId: string,
-): Promise<ResultatEnvoiFormateur> {
-  const copie = await archiverCopiePartielle(documentGenereId, PARTIE);
-  // F10 annonce une pièce jointe : sans elle, il ne part pas.
-  if (!copie.ok) return "indisponible";
-  return envoyer({
-    gabarit: "formateur-dossier-recu",
-    destinataire: d.email,
-    payload: d.prenom.trim() ? { prenom: d.prenom.trim() } : {},
-    entityType: "Trainer",
-    entityId: d.id,
-    jobId: `fi-dossier-recu-${d.id}-${documentGenereId}`,
-    attachments: [
-      { filename: copie.nomFichier, r2Key: copie.r2Key, contentType: "application/pdf" },
-    ],
-  });
 }
 
 /**

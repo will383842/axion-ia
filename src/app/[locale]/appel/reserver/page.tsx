@@ -173,13 +173,11 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // un jeton faux ou expiré ne change rien au formulaire.
   // Lot B (M25) : échange formateur ouvert depuis F1 ou F7, même règle (jeton signé,
   // candidature de formateur freelance seulement ; sinon formulaire vide).
-  const prerempli = reprise
-    ? null
-    : choix === "apporteur"
-      ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL])
-      : choix === "formateur"
-        ? await identiteDuJetonReservation(sp[PARAM_JETON_VSL])
-        : null;
+  const prerempli =
+    (!reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null) ??
+    (!reprise && choix === "formateur"
+      ? await identiteDuJetonReservation(sp[PARAM_JETON_VSL])
+      : null);
 
   return (
     <div className="bg-canvas min-h-screen pt-6 pb-16 sm:pt-10">

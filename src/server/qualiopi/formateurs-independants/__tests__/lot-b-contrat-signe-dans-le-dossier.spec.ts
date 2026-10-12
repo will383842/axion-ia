@@ -106,10 +106,10 @@ vi.mock("@/server/qualiopi/documents/signature/transmission-exemplaire", () => (
 }));
 vi.mock("../envois", () => ({ envoyer: (...a: unknown[]) => h.envoyer(...a) }));
 
+import { envoyerAccuseDossier } from "../accuse-dossier";
 import { etatsParDefaut } from "../interrupteurs";
 import {
   demanderCodeDuDossier,
-  envoyerAccuseDossier,
   modeContratDossier,
   signerContratDuDossier,
 } from "../contrat-dans-le-dossier";

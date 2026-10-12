@@ -55,12 +55,12 @@ import {
 } from "@/server/qualiopi/formateurs-independants/envois-dossier";
 import {
   demanderCodeDuDossier,
-  envoyerAccuseDossier,
   lienPdfContratDossier,
   modeContratDossier,
   signerContratDuDossier,
   type FormateurDuDossier,
 } from "@/server/qualiopi/formateurs-independants/contrat-dans-le-dossier";
+import { envoyerAccuseDossier } from "@/server/qualiopi/formateurs-independants/accuse-dossier";
 import { sourceRegistreCommune } from "@/server/qualiopi/formateurs-independants/source-registre";
 import {
   codeVigilanceBienForme,

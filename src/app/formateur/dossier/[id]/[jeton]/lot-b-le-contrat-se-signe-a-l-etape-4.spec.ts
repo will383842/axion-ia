@@ -44,11 +44,13 @@ vi.mock("@/server/qualiopi/formateurs-independants/contrat-dans-le-dossier", () 
     h.ordre.push("signer");
     return h.signer(...a);
   },
+  lienPdfContratDossier: (...a: unknown[]) => h.pdf(...a),
+}));
+vi.mock("@/server/qualiopi/formateurs-independants/accuse-dossier", () => ({
   envoyerAccuseDossier: (...a: unknown[]) => {
     h.ordre.push("F10");
     return h.accuse(...a);
   },
-  lienPdfContratDossier: (...a: unknown[]) => h.pdf(...a),
 }));
 vi.mock("@/server/registre-entreprises/annuaire", () => ({
   lireEtablissementParSiret: (...a: unknown[]) => h.registre(...a),
