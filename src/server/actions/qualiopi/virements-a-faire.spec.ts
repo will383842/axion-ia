@@ -16,6 +16,8 @@ const envoyerFaits = vi.fn();
 const envoyerAttente = vi.fn();
 const ibanClair = vi.fn();
 const etats = vi.fn();
+const relevesMission = vi.fn();
+const virementDu = vi.fn();
 const log = vi.fn();
 const redirect = vi.fn((u: string) => {
   throw new Error(`NEXT_REDIRECT ${u}`);
@@ -41,6 +43,8 @@ vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-bas
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/virements-a-faire-lecture", () => ({
   etatsVirementsMission: (...a: unknown[]) => etats(...a),
+  relevesDeMissionParmi: (...a: unknown[]) => relevesMission(...a),
+  aUnVirementMissionDu: (...a: unknown[]) => virementDu(...a),
 }));
 vi.mock("next/navigation", () => ({ redirect: (u: string) => redirect(u) }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
@@ -63,6 +67,8 @@ beforeEach(() => {
   transition.mockResolvedValue({ data: { id: A, statut: "paye" } });
   ibanClair.mockResolvedValue({ iban: IBAN, empreinte: E });
   envoyerAttente.mockResolvedValue("envoye");
+  relevesMission.mockImplementation(async (ids: string[]) => new Set(ids));
+  virementDu.mockResolvedValue(true);
 });
 
 function fd(champs: Array<[string, string]>): FormData {
@@ -101,6 +107,14 @@ describe("« Copier l'IBAN »", () => {
     expect(entree.targetId).toBe(T);
     expect(JSON.stringify(entree)).not.toContain(IBAN);
     expect(JSON.stringify(entree)).not.toContain("0189");
+  });
+
+  it("formateur sans relevé de mission dû : refus, rien n'est lu ni journalisé", async () => {
+    virementDu.mockResolvedValue(false);
+    expect(await revelerIbanVirementAction(T)).toEqual({ error: expect.any(String) });
+    expect(virementDu).toHaveBeenCalledWith(T);
+    expect(ibanClair).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
   });
 
   it("identifiant non UUID : refus, aucun journal", async () => {
@@ -144,6 +158,39 @@ describe("« Virements faits (N) »", () => {
     expect(envoyerFaits).toHaveBeenCalledWith([A]);
     expect(u).toMatch(/1 virement/);
     expect(u).toMatch(/CONTESTÉE/);
+  });
+
+  it("un relevé MENSUEL glissé dans le formulaire est refusé, jamais payé ici", async () => {
+    // A est un relevé de mission, B un relevé mensuel (POST forgé).
+    relevesMission.mockResolvedValue(new Set([A]));
+    const u = await redirige(
+      virementsFaitsFormAction(
+        fd([
+          ["confirmer", "oui"],
+          ["releve", A],
+          ["releve", B],
+        ]),
+      ),
+    );
+    expect(transition).toHaveBeenCalledTimes(1);
+    expect(transition.mock.calls[0]![0].id).toBe(A);
+    expect(envoyerFaits).toHaveBeenCalledWith([A]);
+    expect(u).toMatch(/pas un relevé de mission/);
+  });
+
+  it("seulement des relevés mensuels : refus complet, rien n'est payé", async () => {
+    relevesMission.mockResolvedValue(new Set());
+    const u = await redirige(
+      virementsFaitsFormAction(
+        fd([
+          ["confirmer", "oui"],
+          ["releve", B],
+        ]),
+      ),
+    );
+    expect(transition).not.toHaveBeenCalled();
+    expect(envoyerFaits).toHaveBeenCalledWith([]);
+    expect(u).toMatch(/erreur=/);
   });
 
   it("identifiants forgés écartés ; plus de 50 refusés", async () => {

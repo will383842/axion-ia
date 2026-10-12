@@ -9,18 +9,28 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const findMany = vi.fn();
+const count = vi.fn();
 const contexte = vi.fn();
 const ibanAffiche = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { trainerStatement: { findMany: (...a: unknown[]) => findMany(...a) } },
+  prisma: {
+    trainerStatement: {
+      findMany: (...a: unknown[]) => findMany(...a),
+      count: (...a: unknown[]) => count(...a),
+    },
+  },
 }));
 vi.mock("../virement-mission-base", () => ({
   contexteVirementMission: (...a: unknown[]) => contexte(...a),
   ibanAffichePourVirement: (...a: unknown[]) => ibanAffiche(...a),
 }));
 
-import { etatsVirementsMission } from "../virements-a-faire-lecture";
+import {
+  aUnVirementMissionDu,
+  etatsVirementsMission,
+  relevesDeMissionParmi,
+} from "../virements-a-faire-lecture";
 
 const A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const T = "22222222-2222-4222-8222-222222222222";
@@ -76,5 +86,40 @@ describe("etatsVirementsMission", () => {
     expect(findMany).not.toHaveBeenCalled();
     contexte.mockRejectedValue(new Error("clé"));
     expect((await etatsVirementsMission([A], MAINTENANT)).get(A)!.motifs).toEqual(["iban_absent"]);
+  });
+});
+
+describe("relevesDeMissionParmi (défaut 1)", () => {
+  it("ne garde que les relevés d'origine passage_mission", async () => {
+    findMany.mockResolvedValue([{ id: A }]);
+    const B = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+    expect(await relevesDeMissionParmi([A, B])).toEqual(new Set([A]));
+    expect(findMany.mock.calls[0]![0].where).toEqual({
+      id: { in: [A, B] },
+      origine: "passage_mission",
+    });
+  });
+
+  it("aucun identifiant : aucune lecture", async () => {
+    expect(await relevesDeMissionParmi([])).toEqual(new Set());
+    expect(findMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("aUnVirementMissionDu (défaut 2)", () => {
+  it("cherche un relevé de mission facture reçue, non payé, de CE formateur", async () => {
+    count.mockResolvedValue(1);
+    expect(await aUnVirementMissionDu(T)).toBe(true);
+    expect(count.mock.calls[0]![0].where).toEqual({
+      trainerId: T,
+      origine: "passage_mission",
+      statut: "facture_recue",
+      payeAt: null,
+    });
+  });
+
+  it("aucun relevé dû : faux", async () => {
+    count.mockResolvedValue(0);
+    expect(await aUnVirementMissionDu(T)).toBe(false);
   });
 });

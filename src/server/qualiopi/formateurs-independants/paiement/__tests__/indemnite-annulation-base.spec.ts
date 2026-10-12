@@ -100,6 +100,17 @@ describe("ecrireIndemniteDecidee", () => {
     expect(e.indemnite.montantHtCents).toBe(45_000);
   });
 
+  it("montant vu à l'aperçu différent du montant recalculé : « aperçu périmé », aucune transaction", async () => {
+    const r = await ecrireIndemniteDecidee({ ...decision, montantVuHtCents: 30_000 });
+    expect(r.issue).toBe("apercu_perime");
+    expect(transaction).not.toHaveBeenCalled();
+  });
+
+  it("montant vu identique (450 € HT) : écrit", async () => {
+    const r = await ecrireIndemniteDecidee({ ...decision, montantVuHtCents: 45_000 });
+    expect(r.issue).toBe("ecrite");
+  });
+
   it("rejeu : « déjà écrite », rien de plus", async () => {
     ecrire.mockResolvedValue("deja_ecrite");
     expect((await ecrireIndemniteDecidee(decision)).issue).toBe("deja_ecrite");
