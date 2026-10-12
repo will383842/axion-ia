@@ -25,6 +25,8 @@ const h = vi.hoisted(() => {
       update: vi.fn(async () => ({})),
       updateMany: vi.fn(async () => ({ count: 1 })),
       findMany: vi.fn(async () => []),
+      // Aucune autre mission avec accord pour le couple (correctif #1502).
+      count: vi.fn(async () => 0),
     },
     documentGenere: {
       count: vi.fn(async (a: { where: Record<string, unknown> }) =>
