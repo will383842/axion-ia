@@ -202,11 +202,14 @@ function buildNav(
   adminPrefix: string,
   formateursFreelance = false,
   dossiersEtContrats = false,
+  virementsAFaire = false,
 ): NavItem[] {
   // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
   // AdminCommandPalette qui consomme la même source. Copie mutable (la SSOT
   // renvoie un `readonly[]`).
-  return [...buildAdminNav(adminPrefix, { formateursFreelance, dossiersEtContrats })];
+  return [
+    ...buildAdminNav(adminPrefix, { formateursFreelance, dossiersEtContrats, virementsAFaire }),
+  ];
 }
 
 // Server Action de déconnexion exposée au footer profil de la sidebar (rail
@@ -285,9 +288,18 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const showSidebar = Boolean(session?.user);
   // Lot L0h — groupe « Formateurs freelance », interrupteur `formateurs.menu_freelance`.
   // Lot L8 — entrée « Dossiers et contrats », interrupteur `formateurs.dossiers_contrats`.
-  const { menu_freelance: formateursFreelance, dossiers_contrats: dossiersEtContrats } =
-    await lireEtatsEntree();
-  const nav: NavItem[] = buildNav(adminPrefix, formateursFreelance, dossiersEtContrats);
+  // Lot D (M9) — entrée « Virements à faire », interrupteur `formateurs.virements_a_faire`.
+  const {
+    menu_freelance: formateursFreelance,
+    dossiers_contrats: dossiersEtContrats,
+    virements_a_faire: virementsAFaire,
+  } = await lireEtatsEntree();
+  const nav: NavItem[] = buildNav(
+    adminPrefix,
+    formateursFreelance,
+    dossiersEtContrats,
+    virementsAFaire,
+  );
   const adminBase = `/fr/${adminPrefix}`;
 
   // Sprint A-suite P6 — Item 2. Badge rouge failed jobs sidebar.

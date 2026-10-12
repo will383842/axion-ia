@@ -42,6 +42,12 @@ vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-bas
   }),
 }));
 
+// Lot D (M6) : contrat-cadre signé et SIREN actif, supposés acquis ici.
+vi.mock("@/server/qualiopi/formateurs-independants/paiement/garanties-paiement-mission", () => ({
+  garantiesPaiementMission: vi.fn().mockResolvedValue([]),
+  LIBELLE_GARANTIE_PAIEMENT: {},
+}));
+
 import { transitionStatementAction } from "./trainer-remuneration";
 
 const ID = "11111111-1111-4111-8111-111111111111";

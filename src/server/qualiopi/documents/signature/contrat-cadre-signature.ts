@@ -364,3 +364,35 @@ export async function objectionContratCadre(input: {
   }
   return null;
 }
+
+/**
+ * Lot D (M6) — SIREN ACTIF au paiement d'une mission, par la MÊME règle qu'à la
+ * signature : un contrôle de moins de 30 jours qui confirme suffit ; un rouge
+ * récent refuse sans relire ; sinon le registre est relu (ligne de preuve en
+ * ajout seul). Fermé par défaut : SIRET absent, registre muet, entreprise
+ * fermée ou SIRET relu différent = `false`.
+ */
+export async function entrepriseActiveAuPaiement(
+  trainerId: string,
+  maintenant: Date,
+  adminId: string | null,
+  source?: SourceRegistre,
+): Promise<boolean> {
+  const t = await prisma.trainer.findUnique({ where: { id: trainerId }, select: { siret: true } });
+  const siret = (t?.siret ?? "").replace(/\s+/g, "");
+  if (!/^\d{14}$/.test(siret)) return false;
+  const recent = await controleRecent(trainerId, siret, maintenant);
+  if (recent.issue === "rouge") return false;
+  if (recent.issue === "confirme") return true;
+  let r: Awaited<ReturnType<typeof controlerRegistreFormateur>>;
+  try {
+    r = await controlerRegistreFormateur(prisma, source ?? sourceRegistreAnnuaire(), {
+      trainerId,
+      verifieParId: adminId,
+      maintenant,
+    });
+  } catch {
+    return false;
+  }
+  return r.ok && r.siret === siret && entrepriseActiveConfirmee(r.verdict, r.motifs);
+}

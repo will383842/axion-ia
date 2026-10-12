@@ -449,7 +449,11 @@ export const ADMIN_ROUTES_EPINGLEES: ReadonlyArray<string> = Object.values(ADMIN
  */
 export function buildAdminNav(
   adminPrefix: string,
-  options: { readonly formateursFreelance?: boolean; readonly dossiersEtContrats?: boolean } = {},
+  options: {
+    readonly formateursFreelance?: boolean;
+    readonly dossiersEtContrats?: boolean;
+    readonly virementsAFaire?: boolean;
+  } = {},
 ): ReadonlyArray<AdminNavItem> {
   const items = buildAdminNavSocle(adminPrefix);
   if (!options.formateursFreelance) return items;
@@ -476,6 +480,18 @@ export function buildAdminNav(
       navLevel: 0,
     },
     ...dossiers,
+    // Lot D (M9) — la vue commune des virements, éteinte par `formateurs.virements_a_faire`.
+    ...(options.virementsAFaire
+      ? [
+          {
+            href: `/fr/${adminPrefix}/qualiopi/remuneration/virements`,
+            label: "Virements à faire",
+            icon: "Banknote",
+            group: "formateurs-freelance",
+            navLevel: 0,
+          } satisfies AdminNavItem,
+        ]
+      : []),
   ];
 }
 

@@ -40,6 +40,8 @@ export interface VirementLu {
   readonly nonConforme?: boolean;
   /** Formateur seulement : relevé validé, facture pas encore émise ni reçue. */
   readonly factureAttendue?: boolean;
+  /** Formateur seulement : origine du relevé (`passage_mission` : gardes du virement de mission). */
+  readonly origineReleve?: string;
 }
 
 export interface VirementSortant extends VirementLu {
@@ -160,6 +162,7 @@ export async function lireVirementsSortants(
         autofactureAt: true,
         dateFacture: true,
         createdAt: true,
+        origine: true,
         trainer: { select: { prenom: true, nom: true } },
       },
     }),
@@ -193,6 +196,7 @@ export async function lireVirementsSortants(
         nonConforme:
           r.montantFactureTtcCents !== null && r.montantFactureTtcCents !== r.totalTtcCents,
         factureAttendue: r.statut === "valide",
+        origineReleve: r.origine,
         emissionAt: r.autofactureAt ?? r.dateFacture ?? r.createdAt,
         echeance: echeance ? jourParis(echeance) : null,
       };

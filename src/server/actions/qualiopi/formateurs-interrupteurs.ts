@@ -502,6 +502,14 @@ export async function basculerFormateursDossiersContratsAction(
   return basculerEntree("dossiers_contrats", formData);
 }
 
+// Lot D (M9) — la vue « Virements à faire ».
+export async function basculerFormateursVirementsAFaireAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("virements_a_faire", formData);
+}
+
 export async function basculerFormateursSuiviEchangeAction(
   _prev: EtatBascule,
   formData: FormData,
