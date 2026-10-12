@@ -33,6 +33,8 @@ import {
   type CleInterrupteurSignature,
   estDateDePassage,
   estPositionSure,
+  reglagesActifs,
+  reglagesFillesACouper,
   etatsDepuisLignes,
   prealablesManquants,
   valeurJson,
@@ -42,6 +44,38 @@ import {
 import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 
 export type EtatBascule = { ok: true; message: string } | { ok: false; error: string };
+
+const CLAUSE_LIGNES = {
+  OR: [{ key: { startsWith: PREFIXE_CLES_FORMATEURS } }, { key: { startsWith: "signature." } }],
+};
+
+/**
+ * COUPURE EN CASCADE (lot F, M23) : couper une clé mère coupe ses filles allumées,
+ * dans la MÊME transaction, une ligne de journal par fille (la clé est dans
+ * `changes`, jamais dans `targetId`, colonne `uuid`). Rien n'est supprimé : la
+ * ligne de la fille passe à `{ actif: false }`.
+ */
+async function couperLesFilles(
+  tx: Pick<typeof prisma, "setting" | "activityLog">,
+  mere: string,
+  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+  userId: string,
+): Promise<void> {
+  for (const fille of reglagesFillesACouper(mere, reglagesActifs(lignes))) {
+    await tx.setting.update({
+      where: { key: fille },
+      data: { value: { actif: false } as never, updatedBy: userId },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: userId,
+        action: "formateurs.interrupteur_coupe",
+        targetType: "setting",
+        changes: { cle: fille, avant: true, apres: false, cascade: mere } as never,
+      },
+    });
+  }
+}
 
 const ROLES_PAR_HABILITATION: Readonly<Record<Habilitation, ReadonlyArray<string>>> = {
   technique: ["super_admin", "admin"],
@@ -123,7 +157,7 @@ function ecrire(
 ): Promise<string[]> {
   return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
-      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      where: CLAUSE_LIGNES,
       select: { key: true, value: true },
     });
     const etats = etatsDepuisLignes(lignes);
@@ -151,6 +185,7 @@ function ecrire(
         changes: { cle: cleSetting(cle), avant, apres: valeur } as never,
       },
     });
+    if (coupe) await couperLesFilles(tx, cleSetting(cle), lignes, userId);
     return [];
   });
 }
@@ -227,12 +262,6 @@ export async function basculerFormateursLettreAutoAction(
 ): Promise<EtatBascule> {
   return basculer("lettre_auto", formData);
 }
-export async function basculerFormateursChoixSuivantsAction(
-  _prev: EtatBascule,
-  formData: FormData,
-): Promise<EtatBascule> {
-  return basculer("choix_suivants", formData);
-}
 export async function basculerFormateursPassagePaiementAction(
   _prev: EtatBascule,
   formData: FormData,
@@ -301,12 +330,7 @@ function ecrireSignature(
   return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
       // Les préalables lisent les seize ET ce registre (dont `signature.*`).
-      where: {
-        OR: [
-          { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
-          { key: { startsWith: "signature." } },
-        ],
-      },
+      where: CLAUSE_LIGNES,
       select: { key: true, value: true },
     });
     const manquants = prealablesManquantsSignature(
@@ -351,6 +375,7 @@ function ecrireSignature(
         changes: { cle: key, avant, apres: valeur } as never,
       },
     });
+    if (!valeur) await couperLesFilles(tx, key, lignes, userId);
     return [];
   });
 }
@@ -437,7 +462,7 @@ function ecrireEntree(
   const key = cleSettingEntree(cle);
   return prisma.$transaction(async (tx) => {
     const lignes = await tx.setting.findMany({
-      where: { key: { startsWith: PREFIXE_CLES_FORMATEURS } },
+      where: CLAUSE_LIGNES,
       select: { key: true, value: true },
     });
     const manquants = prealablesManquantsEntree(cle, valeur, etatsDepuisLignes(lignes));
@@ -462,6 +487,7 @@ function ecrireEntree(
         changes: { cle: key, avant, apres: valeur } as never,
       },
     });
+    if (!valeur) await couperLesFilles(tx, key, lignes, userId);
     return [];
   });
 }
@@ -501,6 +527,14 @@ export async function basculerFormateursDossiersContratsAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerEntree("dossiers_contrats", formData);
+}
+
+// Lot D (M9) — la vue « Virements à faire ».
+export async function basculerFormateursVirementsAFaireAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("virements_a_faire", formData);
 }
 
 export async function basculerFormateursSuiviEchangeAction(

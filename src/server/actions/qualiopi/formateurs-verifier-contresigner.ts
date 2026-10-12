@@ -29,7 +29,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { publicUrl } from "@/lib/public-url";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
-import { logQualiopiActivity, requireHabilitation } from "@/server/actions/qualiopi/_guards";
+import { requireHabilitation } from "@/server/actions/qualiopi/_guards";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { validateTrainerDocumentAction } from "@/server/actions/qualiopi/trainer-documents";
 import { setTrainerHabilitationsAction } from "@/server/actions/qualiopi/trainers";
@@ -42,6 +42,11 @@ import { validerControleOrange } from "@/server/qualiopi/formateurs-independants
 import { marquerDossierVerifie } from "@/server/qualiopi/formateurs-independants/dossier-verifie";
 import { SOURCE_VALIDATION_ORANGE } from "@/server/qualiopi/formateurs-independants/controle-regles";
 import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import {
+  demanderComplementW4,
+  refuserDossier,
+  type ResultatDossier,
+} from "@/server/qualiopi/formateurs-independants/envois-dossier";
 import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
 import { validerAttestationVigilance } from "@/server/qualiopi/formateurs-independants/validation-vigilance";
@@ -262,7 +267,11 @@ const complementSchema = z
   .object({ trainerId: z.string().uuid(), motif: z.enum(MOTIFS_COMPLEMENT) })
   .strict();
 
-/** « Demander un complément » : F12, motif d'une liste fermée. Aucun état changé. */
+/**
+ * « Demander un complément » : F12, motif d'une liste fermée. Le dossier « à vérifier »
+ * est ROUVERT (« à compléter », nouvelle version d'accès : les anciens liens sont
+ * révoqués) et l'e-mail donne le nouveau lien (M7, lot A).
+ */
 export async function demanderComplementFormateurAction(
   input: z.input<typeof complementSchema>,
 ): Promise<ResultatW4> {
@@ -271,15 +280,24 @@ export async function demanderComplementFormateurAction(
   const parsed = complementSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Choisissez un motif dans la liste." };
   const { trainerId, motif } = parsed.data;
-  // Un double clic n'envoie qu'un e-mail : un même motif, une fois par jour.
-  const jour = new Date().toISOString().slice(0, 10);
-  const cle = `fi-complement-${trainerId}-${MOTIFS_COMPLEMENT.indexOf(motif)}-${jour}`;
-  return envoyerAuFormateur(session, trainerId, "formateur-dossier-a-completer", { motif }, cle);
+  const r = await demanderComplementW4({
+    trainerId,
+    motif,
+    parId: session.userId,
+    maintenant: new Date(),
+  });
+  return resultatDossier(r, {
+    eteint: "Le dossier en ligne est éteint : aucun lien ne peut être donné. Rien n'est parti.",
+    etat: "Le dossier n'est pas en attente de vérification (déjà rouvert ?) : rien n'est parti.",
+  });
 }
 
 const refusSchema = z.object({ trainerId: z.string().uuid() }).strict();
 
-/** « Refuser le dossier » : F13, seulement sur un registre rouge. Aucun état changé. */
+/**
+ * « Refuser le dossier » : F13, seulement sur un registre rouge. L'état « refusé » est
+ * écrit (ligne ajoutée au registre des contrôles) avant l'e-mail (M7, lot A).
+ */
 export async function refuserDossierFormateurAction(
   input: z.input<typeof refusSchema>,
 ): Promise<ResultatW4> {
@@ -292,57 +310,37 @@ export async function refuserDossierFormateurAction(
   if (!refusPossible(ecran.faits)) {
     return { ok: false, error: "Le refus n'est proposé que sur un registre rouge." };
   }
-  const motif = motifRefus(ecran.faits);
-  return envoyerAuFormateur(
-    session,
-    ecran.trainerId,
-    "formateur-dossier-refuse",
-    { motif },
-    `fi-dossier-refuse-${ecran.trainerId}`,
-  );
+  const r = await refuserDossier({
+    trainerId: ecran.trainerId,
+    motif: motifRefus(ecran.faits),
+    parId: session.userId,
+  });
+  return resultatDossier(r, {
+    eteint: "Rien n'est parti.",
+    etat: "Le registre a changé, ou la fiche n'est plus refusable : rechargez la page.",
+  });
 }
 
-async function envoyerAuFormateur(
-  session: Awaited<ReturnType<typeof requireHabilitation>>,
-  trainerId: string,
-  gabarit: "formateur-dossier-a-completer" | "formateur-dossier-refuse",
-  payload: Record<string, unknown>,
-  jobId: string,
-): Promise<ResultatW4> {
-  const t = await prisma.trainer.findUnique({
-    where: { id: trainerId },
-    select: { email: true, statut: true },
-  });
-  if (t === null || t.statut !== "sous_traitant" || !t.email) {
-    return { ok: false, error: "Formateur indépendant introuvable." };
+function resultatDossier(
+  r: ResultatDossier,
+  messages: { eteint: string; etat: string },
+): ResultatW4 {
+  rafraichir();
+  if (!r.ok) {
+    if (r.raison === "texte-non-valide") {
+      return {
+        ok: false,
+        error: "Le texte de cet e-mail n'est pas encore validé : rien n'est parti.",
+      };
+    }
+    return { ok: false, error: r.raison === "eteint" ? messages.eteint : messages.etat };
   }
-  const r = await envoyer({
-    gabarit,
-    destinataire: t.email,
-    payload,
-    entityType: "Trainer",
-    entityId: trainerId,
-    jobId,
-  });
-  if (r === "texte-non-valide") {
-    return {
-      ok: false,
-      error: "Le texte de cet e-mail n'est pas encore validé : rien n'est parti.",
-    };
-  }
-  if (r !== "envoye" && r !== "en-validation") {
+  if (r.envoi !== "envoye" && r.envoi !== "en-validation") {
     return { ok: false, error: "L'e-mail n'a pas pu partir : réessayez." };
   }
-  await logQualiopiActivity({
-    action: `qualiopi.formateur.${gabarit === "formateur-dossier-refuse" ? "dossier_refuse" : "complement_demande"}`,
-    targetType: "Trainer",
-    targetId: trainerId,
-    changes: { motif: payload.motif },
-    session,
-  });
-  rafraichir();
   return {
     ok: true,
-    message: r === "envoye" ? "E-mail envoyé." : "E-mail préparé : il attend votre relecture.",
+    message:
+      r.envoi === "envoye" ? "E-mail envoyé." : "E-mail préparé : il attend votre relecture.",
   };
 }

@@ -662,7 +662,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Registre", p.registre),
         formatKV(
           "Vérifier et contresigner",
-          `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}`,
+          `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}/verifier`,
         ),
       ]
         .filter((v): v is string => v !== null)

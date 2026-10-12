@@ -22,12 +22,21 @@ import {
   type LigneMission,
 } from "@/server/qualiopi/formateurs-independants/missions-console";
 import type { QuiAgit } from "@/server/qualiopi/formateurs-independants/etape-mission";
+import { peutEngager } from "@/server/auth/habilitations";
+import { ecrireIndemniteAnnulationFormAction } from "@/server/actions/qualiopi/indemnite-annulation";
+import {
+  apercuDecisionIndemnite,
+  lireMissionsAIndemniser,
+  type MissionAIndemniser,
+} from "@/server/qualiopi/formateurs-independants/paiement/indemnite-annulation-base";
+import type { ApercuIndemnite } from "@/server/qualiopi/formateurs-independants/paiement/indemnite-annulation-decision";
+import { montantEnTexte } from "@/server/qualiopi/formateurs-independants/paiement/virement-fait-envoi";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ qui?: string; tout?: string }>;
+  searchParams: Promise<{ qui?: string; tout?: string; ok?: string; erreur?: string }>;
 }
 
 const ONGLETS: ReadonlyArray<{ cle: QuiAgit; libelle: string }> = [
@@ -79,12 +88,52 @@ export default async function MissionsFormateursPage({ params, searchParams }: P
   );
   const base = `/${locale}/${adminPrefix}`;
   const compte = (c: QuiAgit) => lignes.filter((l) => l.quiAgit === c).length;
+  // Lot D (M11) — missions fermées, lettre signée : la décision d'indemnité.
+  const aIndemniser = peutEngager(acces.role, "remunerer_formateur")
+    ? await lireMissionsAIndemniser()
+    : [];
+  const apercus = await Promise.all(
+    aIndemniser.map((m) =>
+      m.annuleeAProposee === null
+        ? null
+        : apercuDecisionIndemnite({
+            missionId: m.missionId,
+            annuleeA: m.annuleeAProposee,
+            parAxion: true,
+          }).catch(() => null),
+    ),
+  );
 
   return (
     <div className="mx-auto max-w-5xl space-y-[var(--space-admin-5)] p-[var(--space-admin-6)]">
       <h1 className="text-[length:var(--text-admin-xl)] font-semibold text-[color:var(--color-admin-fg)]">
         Missions
       </h1>
+      {sp.ok !== undefined && (
+        <div className="admin-alert admin-alert-success" role="status">
+          {sp.ok}
+        </div>
+      )}
+      {sp.erreur !== undefined && (
+        <div className="admin-alert admin-alert-error" role="alert">
+          {sp.erreur}
+        </div>
+      )}
+      {aIndemniser.length > 0 && (
+        <section className="space-y-[var(--space-admin-3)]" aria-labelledby="indemnites">
+          <h2 id="indemnites" className="text-[length:var(--text-admin-lg)] font-semibold">
+            Missions annulées, lettre signée : indemnité à décider
+          </h2>
+          {aIndemniser.map((m, i) => (
+            <DecisionIndemnite
+              key={m.missionId}
+              mission={m}
+              apercu={apercus[i] ?? null}
+              retour={`${base}/qualiopi/formateurs/missions`}
+            />
+          ))}
+        </section>
+      )}
       <nav className="flex flex-wrap gap-[var(--space-admin-2)]" aria-label="Qui doit agir">
         {ONGLETS.map((o) => (
           <Link
@@ -142,5 +191,72 @@ function Ligne({ ligne: l, base }: { ligne: LigneMission; base: string }) {
         {BOUTON[l.quiAgit]}
       </Link>
     </li>
+  );
+}
+
+const SAISIE_PARIS = new Intl.DateTimeFormat("sv-SE", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+/** « AAAA-MM-JJTHH:MM » à l'heure de Paris, pour un champ `datetime-local`. */
+function saisieParis(d: Date): string {
+  return SAISIE_PARIS.format(d).replace(" ", "T");
+}
+
+function DecisionIndemnite({
+  mission: m,
+  apercu,
+  retour,
+}: {
+  mission: MissionAIndemniser;
+  apercu: ApercuIndemnite | null;
+  retour: string;
+}) {
+  const champ = `annulee-${m.missionId}`;
+  return (
+    <form
+      action={ecrireIndemniteAnnulationFormAction}
+      className="space-y-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+    >
+      <input type="hidden" name="retour" value={retour} />
+      <input type="hidden" name="missionId" value={m.missionId} />
+      <p className="text-[length:var(--text-admin-sm)] font-semibold">
+        {m.intitule} · {m.numero} · {m.formateur}
+      </p>
+      {apercu !== null && (
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {apercu.indemnite.due
+            ? `Aperçu à l'instant proposé : ${apercu.demiJourneesAnnulees} demi-journée(s) annulée(s), ${montantEnTexte(apercu.totaux.totalHtCents)} € HT + ${montantEnTexte(apercu.totaux.tvaCents)} € de TVA = ${montantEnTexte(apercu.totaux.totalTtcCents)} € TTC, à régler avant le ${new Date(`${apercu.indemnite.echeance}T12:00:00Z`).toLocaleDateString("fr-FR")}.`
+            : "Aperçu à l'instant proposé : aucune indemnité due (annulation à plus de 72 heures ou aucune demi-journée annulée)."}
+        </p>
+      )}
+      <label htmlFor={champ} className="admin-label">
+        Annulée par Axion le (heure de Paris)
+      </label>
+      <input
+        id={champ}
+        type="datetime-local"
+        name="annuleeA"
+        required
+        defaultValue={m.annuleeAProposee === null ? undefined : saisieParis(m.annuleeAProposee)}
+        className="admin-input"
+      />
+      <label className="flex items-center gap-[var(--space-admin-2)]">
+        <input type="checkbox" name="parAxion" value="oui" defaultChecked />
+        L&apos;annulation vient d&apos;Axion (un désistement du formateur n&apos;ouvre aucun droit)
+      </label>
+      <label className="flex items-center gap-[var(--space-admin-2)]">
+        <input type="checkbox" name="confirmer" value="oui" required />
+        Je décide d&apos;écrire l&apos;indemnité (50 % des demi-journées annulées, hors forfait)
+      </label>
+      <button type="submit" className="admin-button min-h-[40px]">
+        Écrire l&apos;indemnité d&apos;annulation
+      </button>
+    </form>
   );
 }

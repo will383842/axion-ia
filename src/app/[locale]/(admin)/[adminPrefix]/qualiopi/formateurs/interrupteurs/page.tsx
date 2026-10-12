@@ -40,6 +40,7 @@ import {
   basculerFormateursAjoutConsoleAction,
   basculerFormateursSuiviEchangeAction,
   basculerFormateursDossiersContratsAction,
+  basculerFormateursVirementsAFaireAction,
   basculerFormateursReponsesFormateursAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
@@ -60,7 +61,6 @@ import {
   basculerSignatureExemplaireCaptationAction,
   basculerSignatureExemplaireContratTravailAction,
   basculerFormateursActivationAutoAction,
-  basculerFormateursChoixSuivantsAction,
   basculerFormateursCommunesGeoCronAction,
   basculerFormateursContratAutoAction,
   basculerFormateursControleRegistrePeriodiqueAction,
@@ -98,7 +98,6 @@ const ACTIONS: Record<CleInterrupteur, typeof basculerFormateursTextesValidesAct
   activation_auto: basculerFormateursActivationAutoAction,
   garde_mission: basculerFormateursGardeMissionAction,
   lettre_auto: basculerFormateursLettreAutoAction,
-  choix_suivants: basculerFormateursChoixSuivantsAction,
   passage_paiement: basculerFormateursPassagePaiementAction,
   communes_geo_cron: basculerFormateursCommunesGeoCronAction,
   proches_bloc: basculerFormateursProchesBlocAction,
@@ -137,6 +136,7 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     suivi_echange: basculerFormateursSuiviEchangeAction,
     dossiers_contrats: basculerFormateursDossiersContratsAction,
     reponses_formateurs: basculerFormateursReponsesFormateursAction,
+    virements_a_faire: basculerFormateursVirementsAFaireAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

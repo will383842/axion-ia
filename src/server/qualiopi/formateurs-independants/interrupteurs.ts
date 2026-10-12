@@ -113,10 +113,6 @@ export const INTERRUPTEURS = {
     habilitation: "technique",
   },
   lettre_auto: envoi("Lettres de mission automatiques", "Préparer la lettre de chaque mission."),
-  choix_suivants: envoi(
-    "Message aux candidats suivants",
-    "Prévenir les autres candidats quand un formateur est choisi.",
-  ),
   passage_paiement: {
     sorte: "date",
     positionSure: null,
@@ -276,6 +272,10 @@ export type FaitsPrealables = Readonly<Partial<Record<FaitPrealable, boolean>>>;
 
 const exige = (cle: CleEnvoi): Prealable => ({ sorte: "interrupteur", cle });
 
+/** À remplacer par un préalable lisible quand le canal de changement de compte existera. */
+const LIBELLE_CANAL_CHANGEMENT_DE_COMPTE =
+  "Le formateur doit pouvoir demander un changement de compte bancaire depuis son espace (ce canal n'existe pas encore).";
+
 /**
  * Préalables à l'ALLUMAGE (sortie de la position sûre). Couper n'en a aucun.
  */
@@ -305,17 +305,20 @@ export const PREALABLES: Readonly<Record<CleInterrupteur, ReadonlyArray<Prealabl
   activation_auto: [exige("contrat_auto")],
   garde_mission: [exige("controle_registre_periodique")],
   lettre_auto: [exige("contrat_auto"), exige("textes_valides")],
-  choix_suivants: [exige("textes_valides")],
-  passage_paiement: [],
+  // Plan §8.10 n° 12 : sans canal pour changer de compte bancaire, le formateur ne
+  // peut pas corriger un IBAN une fois le paiement par mission en route. Le canal
+  // (demande depuis l'espace, validation par Will) n'est écrit par aucun code : tant
+  // qu'il n'existe pas, la date de passage ne peut pas être posée.
+  passage_paiement: [{ sorte: "non_lisible", libelle: LIBELLE_CANAL_CHANGEMENT_DE_COMPTE }],
   communes_geo_cron: [],
   // Sans référentiel des communes, l'encadré rangerait tout le monde en « lieu inconnu ».
   proches_bloc: [exige("communes_geo_cron")],
 };
 
 /**
- * Table des dépendances de COUPURE : clé mère → clés filles qui l'exigent.
- * Couper une mère devrait couper ses filles — ce n'est câblé nulle part encore
- * (lot futur) ; la table est déduite des préalables, jamais recopiée.
+ * Table des dépendances de COUPURE : clé mère → clés filles qui l'exigent (les
+ * seize seulement). Déduite des préalables, jamais recopiée. Le câblage — couper
+ * une mère coupe ses filles, tous registres confondus — est `reglagesFillesACouper`.
  */
 export const DEPENDANCES_DE_COUPURE: Readonly<
   Partial<Record<CleInterrupteur, ReadonlyArray<CleInterrupteur>>>
@@ -566,15 +569,11 @@ export const PREALABLES_SIGNATURE: Readonly<
   lettre_v2: [],
   // Le contrôle du registre ne reste récent que s'il est relu chaque mois.
   garde_mission_portes: [exige("controle_registre_periodique")],
-  // L'écriture exige M-D et l'élargissement du CHECK historique : deux
-  // changements de schéma qu'aucune règle lisible ne vérifie encore ici.
-  presentation_payee: [
-    {
-      sorte: "non_lisible",
-      libelle:
-        "La base doit d'abord accepter une ligne d'honoraires sans session et plusieurs relevés par mois (changement de schéma à venir).",
-    },
-  ],
+  // Plan §8.10 : M-D (retrait de l'unique mensuel) précède la bascule du paiement. La
+  // présentation hors mission coexiste avec un relevé du même mois : elle se débloque
+  // donc avec la date de passage, qui ne peut être posée qu'une fois le paiement par
+  // mission prêt.
+  presentation_payee: [{ sorte: "date_passage_paiement" }],
   das2_commun: [],
   fin_collaboration: [],
   // Les honoraires figés au choix ne sont payés que par le paiement par mission :
@@ -744,6 +743,16 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.reponses_formateurs",
   },
+  // Lot D (M9) — la vue « Virements à faire » (W-8) et son entrée de menu. Coupé :
+  // la page n'existe pas, le menu est celui d'avant, « Virement fait » reste sur
+  // chaque relevé et sur la page des commissions.
+  virements_a_faire: {
+    ...envoi(
+      "Virements à faire",
+      "Une seule vue pour les virements des apporteurs et des formateurs indépendants (orange à J-5, rouge à l'échéance) : copie de l'IBAN, du montant et de la référence, « Virements faits » groupés, e-mails F37 et F38.",
+    ),
+    cle: "formateurs.virements_a_faire",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -765,6 +774,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
     dossiers_contrats: [],
     reponses_formateurs: [],
+    virements_a_faire: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {
@@ -801,4 +811,91 @@ export function prealablesManquantsEntree(
     if (p.sorte === "non_lisible" || p.sorte === "fait") return [p.libelle];
     return etats[p.cle] === true ? [] : [`« ${INTERRUPTEURS[p.cle].libelle} » doit être allumé.`];
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COUPURE EN CASCADE — lot F (M23)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Couper une clé mère coupe ses filles, tous registres confondus. La table est
+// déduite des trois tables de préalables, jamais recopiée. Le plan (§8.10) :
+// « couper une clé mère suspend ses campagnes filles ».
+
+const CLE_PASSAGE_PAIEMENT = cleSetting("passage_paiement");
+
+/** Mère → filles directes, en clés complètes de `settings`. */
+const FILLES_DIRECTES: ReadonlyMap<string, ReadonlyArray<string>> = (() => {
+  const table = new Map<string, string[]>();
+  const relier = (mere: string, fille: string) => {
+    const l = table.get(mere) ?? [];
+    if (!l.includes(fille)) l.push(fille);
+    table.set(mere, l);
+  };
+  for (const fille of CLES_INTERRUPTEURS) {
+    for (const p of PREALABLES[fille]) {
+      if (p.sorte === "interrupteur") relier(cleSetting(p.cle), cleSetting(fille));
+    }
+  }
+  for (const fille of CLES_INTERRUPTEURS_SIGNATURE) {
+    for (const p of PREALABLES_SIGNATURE[fille]) {
+      if (p.sorte === "interrupteur") relier(cleSetting(p.cle), cleSettingSignature(fille));
+      else if (p.sorte === "signature") {
+        relier(cleSettingSignature(p.cle), cleSettingSignature(fille));
+      } else if (p.sorte === "date_passage_paiement") {
+        relier(CLE_PASSAGE_PAIEMENT, cleSettingSignature(fille));
+      }
+    }
+  }
+  for (const fille of CLES_INTERRUPTEURS_ENTREE) {
+    for (const p of PREALABLES_ENTREE[fille]) {
+      if (p.sorte === "interrupteur") relier(cleSetting(p.cle), cleSettingEntree(fille));
+    }
+  }
+  return table;
+})();
+
+/**
+ * Les clés complètes de `settings` actuellement ALLUMÉES, d'après les lignes lues :
+ * un envoi à `{ actif: true }` (les trois registres) et la date de passage posée.
+ * Une garde n'est jamais « allumée » ni « coupée » ici (elle n'a pas de fille).
+ */
+export function reglagesActifs(
+  lignes: ReadonlyArray<{ key: string; value: unknown }>,
+): ReadonlySet<string> {
+  const connues = new Set<string>([
+    ...CLES_INTERRUPTEURS.filter((c) => INTERRUPTEURS[c].sorte === "envoi").map(cleSetting),
+    ...CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature),
+    ...CLES_INTERRUPTEURS_ENTREE.map(cleSettingEntree),
+  ]);
+  const actifs = new Set<string>();
+  for (const l of lignes) {
+    if (l.key === CLE_PASSAGE_PAIEMENT) {
+      if (lireValeur("passage_paiement", l.value).valeur !== null) actifs.add(l.key);
+    } else if (connues.has(l.key) && lireValeurSignature(l.value).valeur) {
+      actifs.add(l.key);
+    }
+  }
+  return actifs;
+}
+
+/**
+ * Les filles (transitives) de `mere` qui sont allumées, à couper avec elle. Ne rend
+ * jamais la mère. L'ordre est celui du parcours en largeur.
+ */
+export function reglagesFillesACouper(mere: string, actifs: ReadonlySet<string>): string[] {
+  const vues = new Set<string>([mere]);
+  const file = [mere];
+  const aCouper: string[] = [];
+  while (file.length > 0) {
+    const courante = file.shift() as string;
+    for (const fille of FILLES_DIRECTES.get(courante) ?? []) {
+      if (vues.has(fille)) continue;
+      vues.add(fille);
+      // Une fille déjà coupée est traversée quand même : ses propres filles peuvent
+      // être restées allumées (ligne écrite à la main, état hérité).
+      if (actifs.has(fille)) aCouper.push(fille);
+      file.push(fille);
+    }
+  }
+  return aCouper;
 }
