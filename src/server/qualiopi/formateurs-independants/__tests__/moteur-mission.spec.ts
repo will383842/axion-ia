@@ -138,6 +138,7 @@ beforeEach(() => {
       dateFin: new Date("2026-11-05T16:00:00Z"),
       formateurPrincipalId: TRAINER,
       lieuType: "sur_site",
+      modalite: "presentiel",
       lieuAdresse: "12 rue Exemple",
       lieuCodePostal: "69003",
       lieuVille: "Lyon",
@@ -251,6 +252,17 @@ describe("lettre due (T8)", () => {
     }
     // 1 journée + 1 demi-journée = 525 € ; 2 journées de déplacement × 80 € = 160 €.
     expect((envoi.payload.valeurs as Record<string, string>).total).toBe("685");
+  });
+
+  it("F26 — session sans lieu renseigné, modalité à distance : aucun forfait (même règle que la lettre et le paiement)", async () => {
+    const sess = h.etat.mission!.session as Record<string, unknown>;
+    Object.assign(sess, { lieuType: null, modalite: "distanciel" });
+    await reevaluerMission(MISSION, "convention", MAINTENANT);
+    const envoi = (
+      h.envoyer.mock.calls[0] as unknown as [{ payload: { valeurs: Record<string, string> } }]
+    )[0];
+    // 1 journée + 1 demi-journée = 525 € ; à distance, déplacement compris.
+    expect(envoi.payload.valeurs.total).toBe("525");
   });
 
   it("correctif ARGENT : mission sans honoraires ou sans régime figés → aucune lettre automatique, jamais le tarif de l'affectation", async () => {

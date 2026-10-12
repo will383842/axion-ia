@@ -33,7 +33,7 @@ import { PIECES_ENGAGEANTES } from "@/server/qualiopi/documents/signature/pieces
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import type { Prisma } from "../../../../prisma/generated/client";
 
-import { eurosCourts } from "./choix-formateur";
+import { eurosCourts, forfaitSelonLieu } from "./choix-formateur";
 import { lireContratCadreSigne } from "./contrat-cadre-en-vigueur";
 import { empreinteDeMetadata, empreinteMission } from "./empreinte-mission";
 import { envoyer } from "./envois";
@@ -151,6 +151,7 @@ const MISSION_SELECT = {
       dateFin: true,
       formateurPrincipalId: true,
       lieuType: true,
+      modalite: true,
       lieuAdresse: true,
       lieuCodePostal: true,
       lieuVille: true,
@@ -279,7 +280,8 @@ export async function lireEtatMission(
     codePostal: s.lieuCodePostal,
     ville: s.lieuVille,
     tarifHtCents: tarifEffectif,
-    forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
+    // La règle de la lettre : à distance, aucun forfait (`forfaitSelonLieu`).
+    forfaitDeplacementParJourHtCents: forfaitSelonLieu(m.forfaitDeplacementParJourHtCents, s),
     regimeTva: regime,
     role: m.role,
     versionContratCadre: contrat?.version ?? null,
@@ -483,8 +485,10 @@ async function emettreLettre(
   const jours = [...m.session.jours]
     .map((j) => ({ date: dateCivile(j.date), heureDebut: j.heureDebut, heureFin: j.heureFin }))
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  // Le lieu s'écrit comme sur la lettre ; le forfait suit la règle de la
+  // lettre et du paiement (à distance, aucun forfait).
   const distanciel = m.session.lieuType === "distanciel";
-  const forfait = distanciel ? null : m.forfaitDeplacementParJourHtCents;
+  const forfait = forfaitSelonLieu(m.forfaitDeplacementParJourHtCents, m.session);
   const premier = jours[0];
   const dernier = jours[jours.length - 1];
   if (premier !== undefined && dernier !== undefined) {
