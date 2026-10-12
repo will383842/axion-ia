@@ -47,7 +47,7 @@ import { Euro, FileText } from "lucide-react";
 
 import { prisma } from "@/lib/prisma";
 import { signalerDesaccordFormAction } from "@/server/actions/formateur/desaccord.actions";
-import { requireFormateur } from "@/server/formateur/guard";
+import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
 import { LONGUEUR_MAX_DESACCORD } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-mission";
 import { listRelevesDuFormateur } from "@/server/qualiopi/remuneration/queries";
@@ -121,7 +121,8 @@ export default async function RemunerationFormateurPage({
 }: {
   searchParams: Promise<{ desaccord?: string; signale?: string }>;
 }) {
-  const session = await requireFormateur();
+  // Lot E (M14) — reste ouverte en lecture seule après une fin de collaboration.
+  const session = await requireFormateurLecture();
   const sp = await searchParams;
   const [releves, moi] = await Promise.all([
     listRelevesDuFormateur(session.trainerId),

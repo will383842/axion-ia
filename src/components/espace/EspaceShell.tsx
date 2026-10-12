@@ -36,6 +36,17 @@
  */
 
 import type { LucideIcon } from "lucide-react";
+
+/**
+ * Une icône de navigation : une icône `lucide-react`, ou un SVG rendu par le serveur
+ * qui accepte les mêmes trois props (cf. `espace-formateur/icones-navigation.tsx`).
+ */
+export interface EspaceIconeProps {
+  className?: string;
+  strokeWidth?: number;
+  "aria-hidden"?: boolean | "true" | "false";
+}
+export type EspaceIcone = LucideIcon | React.ComponentType<EspaceIconeProps>;
 // `next/link` et non le `Link` typé de `@/i18n/navigation` : les espaces privés
 // ne sont pas déclarés dans `pathnames` (noindex, FR uniquement), et les y
 // inscrire ferait entrer des routes internes dans le routage public.
@@ -49,7 +60,7 @@ export interface EspaceNavItem {
   label: string;
   /** Libellé court pour la barre du bas (mobile). Défaut : `label`. */
   labelCourt?: string;
-  icone: LucideIcon;
+  icone: EspaceIcone;
   /**
    * Nombre d'actions en attente. `0` ou absent = aucune pastille.
    * Une pastille qui affiche « 0 » inquiète sans rien signaler.

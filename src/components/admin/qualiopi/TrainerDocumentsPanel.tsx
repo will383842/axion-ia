@@ -25,6 +25,11 @@ import type {
 } from "@/server/qualiopi/trainers/conformite";
 import type { PieceValideeEcartee } from "@/server/qualiopi/trainers/piece-competence";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
+import {
+  MOTIFS_REFUS_PIECE,
+  estMotifRefusPiece,
+  type MotifRefusPiece,
+} from "@/server/qualiopi/formateurs-independants/pieces-motifs-refus";
 
 export interface TrainerDocumentView {
   id: string;
@@ -52,6 +57,11 @@ export interface TrainerDocumentsPanelProps {
   basePiecesDeposees?: string | undefined;
   /** Le RIB déposé ne s'ouvre qu'avec le droit de rémunérer. */
   voitRib?: boolean;
+  /**
+   * Lot E (M13) — formateur indépendant : le rejet propose la liste FERMÉE de motifs,
+   * seule à partir dans l'e-mail au formateur. Absent : rejet par motif libre, comme avant.
+   */
+  motifsFermes?: boolean;
 }
 
 // Libellés pour un tableau (capitalisés) — les libellés de `conformite.ts` sont
@@ -131,6 +141,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
   // Rejet : la ligne en cours de rejet + son motif (obligatoire côté action).
   const [rejetPourId, setRejetPourId] = useState<string | null>(null);
   const [rejetMotif, setRejetMotif] = useState("");
+  const [motifFerme, setMotifFerme] = useState<MotifRefusPiece | "">("");
 
   function run(fn: () => Promise<{ error: string } | { data: unknown }>, ok: string): void {
     setMsg(null);
@@ -169,6 +180,15 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
   }
 
   function confirmerRejet(id: string): void {
+    if (props.motifsFermes && motifFerme !== "") {
+      run(
+        () => validateTrainerDocumentAction({ id, statutValidation: "rejete", motifFerme }),
+        "Pièce rejetée.",
+      );
+      setRejetPourId(null);
+      setMotifFerme("");
+      return;
+    }
     if (rejetMotif.trim() === "") {
       setError("Un motif est requis pour rejeter une pièce.");
       return;
@@ -299,6 +319,26 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
                   <td className="py-[var(--space-admin-3)]">
                     {rejetPourId === d.id ? (
                       <div className="flex flex-col gap-[var(--space-admin-2)]">
+                        {props.motifsFermes && (
+                          <select
+                            value={motifFerme}
+                            onChange={(e) =>
+                              setMotifFerme(
+                                estMotifRefusPiece(e.target.value) ? e.target.value : "",
+                              )
+                            }
+                            disabled={isPending}
+                            aria-label="Motif dit au formateur"
+                            className="admin-input"
+                          >
+                            <option value="">Motif libre (rien n&apos;est envoyé)</option>
+                            {Object.entries(MOTIFS_REFUS_PIECE).map(([cle, libelle]) => (
+                              <option key={cle} value={cle}>
+                                {libelle} (dit au formateur)
+                              </option>
+                            ))}
+                          </select>
+                        )}
                         <input
                           value={rejetMotif}
                           onChange={(e) => setRejetMotif(e.target.value)}

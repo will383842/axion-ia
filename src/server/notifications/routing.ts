@@ -75,6 +75,9 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
   CANDIDAT_REPLIED: { channels: ["telegram"], severity: "info" },
   TRAINER_DOSSIER_RECU: { channels: ["telegram"], severity: "info" },
+  TRAINER_PIECE_DEPOSEE: { channels: ["telegram"], severity: "info" },
+  // Protection contre la fraude au changement de compte : chaque demande se voit.
+  TRAINER_CHANGEMENT_DEMANDE: { channels: ["telegram"], severity: "warn" },
   FORMATEUR_REPLIED: { channels: ["telegram"], severity: "info" },
   CANDIDAT_SELF_ERASED: { channels: ["telegram"], severity: "info" },
 
@@ -194,6 +197,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // candidatures — jamais dans le salon des apporteurs (deux mondes distincts).
   CANDIDAT_REPLIED: "candidatures",
   TRAINER_DOSSIER_RECU: "candidatures",
+  TRAINER_PIECE_DEPOSEE: "candidatures",
+  TRAINER_CHANGEMENT_DEMANDE: "candidatures",
   FORMATEUR_REPLIED: "candidatures",
   // L'effacement d'un dossier par le candidat lui-même (2026-10-11).
   CANDIDAT_SELF_ERASED: "candidatures",

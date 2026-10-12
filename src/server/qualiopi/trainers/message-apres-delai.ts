@@ -25,6 +25,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyMagicToken } from "@/lib/magic-token";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { LIBELLE_STATUT_MISSION } from "@/server/qualiopi/trainers/mission-formateur";
+import { ecritureFormateurPermise } from "@/server/qualiopi/formateurs-independants/version-session";
 
 function isStub(): boolean {
   return Boolean(process.env["DATABASE_URL"]?.includes("stub.invalid"));
@@ -67,11 +68,15 @@ export async function ecrireApresDelai(input: {
     select: {
       id: true,
       statut: true,
-      trainer: { select: { prenom: true, nom: true, email: true } },
+      trainer: { select: { prenom: true, nom: true, email: true, finCollaborationAt: true } },
       session: { select: { id: true, numero: true, titreSession: true, dateDebut: true } },
     },
   });
   if (mission === null) return { ok: false, erreur: "Cette proposition n'existe pas." };
+  // Lot E (M14) — garde commune : collaboration close ou version dépassée → lien révoqué.
+  if (!ecritureFormateurPermise(verified.version, mission.trainer)) {
+    return { ok: false, erreur: "Ce lien n'est plus valide." };
+  }
   if (mission.statut === "en_attente") {
     return {
       ok: false,
