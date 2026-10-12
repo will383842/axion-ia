@@ -40,6 +40,7 @@ import {
 } from "./contrat-cadre-emission-regles";
 import { versionDuContrat } from "./faits-activation";
 import { VERSION_MINIMALE_CONTRAT_INDEPENDANT } from "./garde-activation-complete";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** Motif système d'annulation d'un contrat jamais signé, remplacé par une version plus récente. */
 export const MOTIF_CONTRAT_REMPLACE = "Remplacé par une version plus récente du contrat-cadre";
@@ -110,7 +111,7 @@ export async function lireFaitsEmissionContrat(
     },
   });
   if (t === null) return null;
-  const [contrats, controles, preuves, registre] = await Promise.all([
+  const [contrats, controles, preuves, registre, cumul] = await Promise.all([
     prisma.documentGenere.findMany({
       where: { trainerId, type: "contrat_sous_traitance" },
       select: {
@@ -142,6 +143,7 @@ export async function lireFaitsEmissionContrat(
     t.statut === "sous_traitant" && t.organismeSousTraitantId === null
       ? lireRegistre(t.siret, lire)
       : Promise.resolve<RegistreLu>({ lu: false }),
+    lireCumulHonorairesHtCents(trainerId),
   ]);
   return {
     statut: t.statut,
@@ -166,6 +168,7 @@ export async function lireFaitsEmissionContrat(
     controles,
     pieces: t.documents,
     preuvesVigilance: preuves,
+    cumulHonorairesHtCents: cumul,
     registre,
   };
 }

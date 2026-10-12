@@ -114,6 +114,14 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
   listTrainerDocuments: vi.fn(),
   cumulAnnuelFormateurCents: vi.fn(),
 }));
+// Lot G1 — le cumul retenu est celui des honoraires HT FACTURÉS, et l'alerte
+// d'approche dépend des interrupteurs des relances de pièces.
+vi.mock("@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture", () => ({
+  lireCumulsHonorairesHtCents: vi.fn(),
+}));
+vi.mock("@/server/qualiopi/formateurs-independants/interrupteurs-etat", () => ({
+  lireEtatsInterrupteurs: vi.fn(),
+}));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
@@ -127,10 +135,10 @@ import {
   listBaremesEnVigueur,
   resolveBaremeOpco,
 } from "@/server/qualiopi/financements/bareme-opco";
-import {
-  cumulAnnuelFormateurCents,
-  listTrainerDocuments,
-} from "@/server/qualiopi/trainers/documents";
+import { listTrainerDocuments } from "@/server/qualiopi/trainers/documents";
+import { lireCumulsHonorairesHtCents } from "@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture";
+import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
+import { etatsParDefaut } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { evaluerAlertes, evaluerAlertesDetaille, PLAFOND_CANDIDATES_PAR_REGLE } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
 import { refusEmissionLieu } from "@/server/qualiopi/lieu/resolve-lieu-document";
@@ -182,7 +190,13 @@ const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 const mockDernierReleveFonds = dernierReleveEtatFonds as ReturnType<typeof vi.fn>;
 const mockResolveBareme = resolveBaremeOpco as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
-const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
+const mockCumuls = lireCumulsHonorairesHtCents as ReturnType<typeof vi.fn>;
+const mockInterrupteurs = lireEtatsInterrupteurs as ReturnType<typeof vi.fn>;
+/** Le même cumul HT facturé pour chaque formateur lu (`null` = illisible). */
+const mockCumulAnnuel = {
+  mockResolvedValue: (c: number | null) =>
+    mockCumuls.mockImplementation(async (ids: string[]) => new Map(ids.map((id) => [id, c]))),
+};
 
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
@@ -191,6 +205,7 @@ function setupEmptyMocks() {
   mockResolveBareme.mockResolvedValue({ id: "bareme-applicable" }); // lot A4 : barème trouvé
   mockListTrainerDocs.mockResolvedValue([]); // aucune pièce formateur
   mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
+  mockInterrupteurs.mockResolvedValue(etatsParDefaut()); // tout éteint
   mp.reclamation.findMany.mockResolvedValue([]);
   mp.enrollment.findMany.mockResolvedValue([]);
   mp.trainingSession.findMany.mockResolvedValue([]);
@@ -1853,6 +1868,51 @@ describe("evaluerAlertes — vigilance_urssaf", () => {
     mockCumulAnnuel.mockResolvedValue(4000_00);
     const alertes = await evaluerAlertes();
     expect(alertes.filter((a) => a.code.startsWith("vigilance_urssaf"))).toHaveLength(0);
+    // Interrupteurs éteints : pas d'alerte d'approche non plus.
+    expect(alertes.filter((a) => a.code === "vigilance_seuil_approche")).toHaveLength(0);
+  });
+
+  it("lot G1 : à l'approche, relances de pièces allumées → alerte interne, pas de critique", async () => {
+    mockInterrupteurs.mockResolvedValue({
+      ...etatsParDefaut(),
+      dossier_en_ligne: true,
+      pieces_cron: true,
+    });
+    mockCumulAnnuel.mockResolvedValue(4200_00);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "vigilance_seuil_approche");
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleId).toBe("tr-010");
+    expect(alertes.filter((x) => x.code.startsWith("vigilance_urssaf"))).toHaveLength(0);
+  });
+
+  it("lot G1 : à l'approche AVEC une attestation valable → rien", async () => {
+    mockInterrupteurs.mockResolvedValue({
+      ...etatsParDefaut(),
+      dossier_en_ligne: true,
+      pieces_cron: true,
+    });
+    mockCumulAnnuel.mockResolvedValue(4200_00);
+    mockListTrainerDocs.mockResolvedValue([attestation(30)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((x) => x.code.startsWith("vigilance_"))).toHaveLength(0);
+  });
+
+  it("lot G1 : sous l'approche, rien, même allumé", async () => {
+    mockInterrupteurs.mockResolvedValue({
+      ...etatsParDefaut(),
+      dossier_en_ligne: true,
+      pieces_cron: true,
+    });
+    mockCumulAnnuel.mockResolvedValue(3999_99);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((x) => x.code.startsWith("vigilance_"))).toHaveLength(0);
+  });
+
+  it("lot G1 : cumul illisible → seuil réputé atteint (garde fermée)", async () => {
+    mockCumulAnnuel.mockResolvedValue(null);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "vigilance_urssaf_absente")?.niveau).toBe("critique");
   });
 
   it("🔴 seuil atteint SANS attestation → critique (responsabilité solidaire)", async () => {

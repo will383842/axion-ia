@@ -12,6 +12,7 @@
 
 import type { StatutControle } from "./controle-regles";
 import { codeVigilanceBienForme, normaliserCodeVigilance } from "./vigilance";
+import { LIBELLE_ATTESTATION_PLUS_TARD } from "./vigilance-seuil";
 
 export type Pastille = "vert" | "orange" | "a_faire" | "rouge" | "neutre";
 
@@ -50,6 +51,12 @@ export interface FaitsW4 {
     /** Validée, non échue ET portant sa preuve de vérification. */
     readonly prouvee: boolean;
   } | null;
+  /**
+   * Lot G1 — le cumul des honoraires HT a atteint le seuil de vigilance : l'attestation
+   * est exigée. Absent : OUI (comportement d'avant le lot). Sous le seuil, une attestation
+   * déposée reste vérifiable ici, sans bloquer la contresignature.
+   */
+  readonly vigilanceExigible?: boolean;
   readonly pieces: {
     readonly cv: PieceW4 | null;
     readonly rcPro: PieceW4 | null;
@@ -166,7 +173,7 @@ const orangeCoche = (s: SaisieW4): boolean =>
   s.motifOrange !== null &&
   (MOTIFS_ORANGE as ReadonlyArray<string>).includes(s.motifOrange);
 
-const attestationCochee = (s: SaisieW4): boolean =>
+export const attestationCochee = (s: SaisieW4): boolean =>
   s.attestationAuthentique && codeVigilanceBienForme(normaliserCodeVigilance(s.codeAttestation));
 
 const DATE = new Intl.DateTimeFormat("fr-FR", {
@@ -215,22 +222,30 @@ export function blocsW4(f: FaitsW4, s: SaisieW4): Bloc[] {
   };
 
   const a = f.attestation;
+  const exigible = f.vigilanceExigible !== false;
   const attestation: Bloc = {
     cle: "attestation",
     titre: "3 · Attestation URSSAF",
-    ...(a === null
-      ? { pastille: "rouge", detail: "Pas déposée." }
-      : a.prouvee
-        ? { pastille: "vert", detail: "Vérifiée sur urssaf.fr." }
-        : a.statutValidation !== "en_attente"
-          ? {
-              pastille: "rouge",
-              detail: "Refusée ou échue : une nouvelle attestation est à déposer.",
-            }
-          : {
-              pastille: attestationCochee(s) ? "vert" : "a_faire",
-              detail: "À vérifier sur urssaf.fr avec son code.",
-            }),
+    ...(!exigible && (a === null || (!a.prouvee && a.statutValidation !== "en_attente"))
+      ? { pastille: "neutre", detail: `Pas exigée : ${LIBELLE_ATTESTATION_PLUS_TARD}.` }
+      : !exigible && a !== null && !a.prouvee && !attestationCochee(s)
+        ? {
+            pastille: "neutre",
+            detail: `Déposée sans être exigée (${LIBELLE_ATTESTATION_PLUS_TARD}) : vérifiez-la sur urssaf.fr avec son code si vous le pouvez.`,
+          }
+        : a === null
+          ? { pastille: "rouge", detail: "Pas déposée." }
+          : a.prouvee
+            ? { pastille: "vert", detail: "Vérifiée sur urssaf.fr." }
+            : a.statutValidation !== "en_attente"
+              ? {
+                  pastille: "rouge",
+                  detail: "Refusée ou échue : une nouvelle attestation est à déposer.",
+                }
+              : {
+                  pastille: attestationCochee(s) ? "vert" : "a_faire",
+                  detail: "À vérifier sur urssaf.fr avec son code.",
+                }),
   };
 
   const md = manquesDossier(f);
@@ -278,10 +293,13 @@ export function manquesPourContresigner(f: FaitsW4, s: SaisieW4): string[] {
   else if (orangeAVerifier(f) && !orangeCoche(s)) m.push("la vérification du registre");
 
   const a = f.attestation;
-  if (a === null || (!a.prouvee && a.statutValidation !== "en_attente")) {
-    m.push("l'attestation URSSAF");
-  } else if (!a.prouvee && !attestationCochee(s)) {
-    m.push("l'attestation vérifiée");
+  // Lot G1 : sous le seuil de vigilance, l'attestation ne manque jamais.
+  if (f.vigilanceExigible !== false) {
+    if (a === null || (!a.prouvee && a.statutValidation !== "en_attente")) {
+      m.push("l'attestation URSSAF");
+    } else if (!a.prouvee && !attestationCochee(s)) {
+      m.push("l'attestation vérifiée");
+    }
   }
 
   const md = manquesDossier(f);

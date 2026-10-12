@@ -15,7 +15,9 @@
  *   4. numéro de déclaration vu sur la liste publique, ou orange validé
  *      (numéro « en cours » : l'activation passe, la mission reste gardée) ;
  *   5. attestation de vigilance validée, non échue, AVEC sa ligne
- *      `PreuveVigilance` valide (L4b) ;
+ *      `PreuveVigilance` valide (L4b) — SEULEMENT quand le cumul des honoraires HT
+ *      a atteint le seuil de vigilance (lot G1, `vigilance-seuil.ts`) ; en dessous,
+ *      elle n'est pas exigée (une attestation déposée reste vérifiée comme avant) ;
  *   6. CV déposé (`TrainerDocument` `cv`) et validé, de moins de 24 mois ;
  *   7. régime de TVA, IBAN, déclarations versionnées, au moins une habilitation
  *      active ;
@@ -35,6 +37,7 @@ import { aUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 
 import { etatControle, type LigneControle } from "./controle-regles";
 import { pieceGardeeProbante, type VerdictActivation } from "./gardes";
+import { vigilanceExigible } from "./vigilance-seuil";
 
 /**
  * Première version du contrat-cadre qui vaut « en vigueur » pour un nouvel
@@ -79,6 +82,11 @@ export interface FaitsActivationComplete {
   readonly controles: ReadonlyArray<ControleLu>;
   readonly pieces: ReadonlyArray<PieceLueActivation>;
   readonly preuvesVigilance: ReadonlyArray<PreuveVigilanceLue>;
+  /**
+   * Lot G1 — cumul des honoraires HT (relevés facturés). Absent ou illisible : seuil
+   * atteint, l'attestation est exigée (garde fermée, comportement d'avant le lot).
+   */
+  readonly cumulHonorairesHtCents?: number | null;
 }
 
 export const MANQUES_COMPLETS = {
@@ -87,7 +95,8 @@ export const MANQUES_COMPLETS = {
   controle: "Le contrôle du registre n'est pas vert, ou son orange n'est pas validé.",
   siret: "Le SIRET manque, ou n'est pas celui du contrôle du registre.",
   nda: "Le numéro de déclaration n'est pas vu sur la liste publique, ni validé.",
-  vigilance: "L'attestation URSSAF n'est pas vérifiée sur urssaf.fr, ou elle est échue.",
+  vigilance:
+    "Le seuil de vigilance est atteint : l'attestation URSSAF n'est pas vérifiée sur urssaf.fr, ou elle est échue.",
   cv: `Le CV validé manque, ou il a plus de ${CV_VALIDITE_MOIS} mois.`,
   tva: "Le régime de TVA n'est pas renseigné.",
   iban: "L'IBAN n'est pas renseigné.",
@@ -148,6 +157,21 @@ export function vigilanceProuvee(
 }
 
 /**
+ * Condition 5 avec le seuil (lot G1) : sous le seuil, satisfaite sans attestation ;
+ * au seuil (ou cumul illisible), il faut l'attestation prouvée.
+ */
+export function vigilanceSatisfaite(
+  pieces: ReadonlyArray<PieceLueActivation>,
+  preuves: ReadonlyArray<PreuveVigilanceLue>,
+  maintenant: Date,
+  cumulHonorairesHtCents: number | null | undefined,
+): boolean {
+  return (
+    !vigilanceExigible(cumulHonorairesHtCents) || vigilanceProuvee(pieces, preuves, maintenant)
+  );
+}
+
+/**
  * Un indépendant peut-il être ACTIVÉ selon la règle complète ? Les manques
  * sont rendus en clair, dans l'ordre des huit conditions.
  */
@@ -178,7 +202,7 @@ export function peutActiverFormateurIndependantComplet(
     if (!dateLisible(f.ndaVerifieListeAt) && etat.statut !== "orange_valide") {
       manques.push(MANQUES_COMPLETS.nda);
     }
-    if (!vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)) {
+    if (!vigilanceSatisfaite(f.pieces, f.preuvesVigilance, maintenant, f.cumulHonorairesHtCents)) {
       manques.push(MANQUES_COMPLETS.vigilance);
     }
     if (!cvProbant(f.pieces, maintenant)) manques.push(MANQUES_COMPLETS.cv);

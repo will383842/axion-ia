@@ -31,6 +31,7 @@ import {
   lireValeurSignature,
   type NiveauGardeMission,
 } from "./interrupteurs";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 export interface ControleGardeMission extends IssueGarde {
   readonly mode: ModeGardeMission;
@@ -80,7 +81,7 @@ export async function controlerGardeMission(
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }
   try {
-    const [niveau, t, contrat] = await Promise.all([
+    const [niveau, t, contrat, cumul] = await Promise.all([
       lireNiveau(),
       prisma.trainer.findUnique({
         where: { id: trainerId },
@@ -105,6 +106,7 @@ export async function controlerGardeMission(
         },
       }),
       lireContratCadreSigne(trainerId),
+      lireCumulHonorairesHtCents(trainerId),
     ]);
     if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
     const mode = modeGardeMission(true, niveau, t.activationValideeSource);
@@ -119,6 +121,7 @@ export async function controlerGardeMission(
         activationValideeSource: t.activationValideeSource,
         pieces: t.documents as DocumentConformite[],
         contratCadreVersion: contrat?.version ?? null,
+        cumulHonorairesHtCents: cumul,
       },
       GABARIT_VERSIONS.contrat_sous_traitance,
       maintenant,

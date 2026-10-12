@@ -13,6 +13,7 @@
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { normaliserNaf } from "@/lib/siret";
 import { COMMISSION_CONFERENCE_EUR } from "@/content/pricing";
+import { etatSeuilVigilance } from "@/lib/vigilance";
 
 import {
   LIBELLE_PIECE,
@@ -55,11 +56,16 @@ export const ADRESSE_VALIDE_JOURS = 45;
 /** Art. 4.6 : part du parrain, en points de base, et sa durée depuis la signature du filleul. */
 export const PARRAINAGE_BPS = 1000;
 export const PARRAINAGE_MOIS = 6;
-/** Art. 5.4 et 6.2 (L.8222-1, D.8222-5) : seuil de vigilance, et son approche. */
-export const SEUIL_VIGILANCE_CENTS = 500_000;
-export const APPROCHE_VIGILANCE_CENTS = 400_000;
-// Durée de validité retenue pour l'attestation de vigilance : valeur commune (FAC-5).
-export { VIGILANCE_VALIDITE_MOIS } from "@/lib/vigilance";
+/**
+ * Art. 5.4 et 6.2 (L.8222-1, D.8222-5) : seuil de vigilance, et son approche. Valeurs
+ * COMMUNES aux apporteurs et aux formateurs indépendants (lot G1) : elles vivent dans
+ * `lib/vigilance.ts`, et la durée de validité aussi (FAC-5).
+ */
+export {
+  APPROCHE_VIGILANCE_CENTS,
+  SEUIL_VIGILANCE_CENTS,
+  VIGILANCE_VALIDITE_MOIS,
+} from "@/lib/vigilance";
 
 const JOUR_MS = 86_400_000;
 
@@ -405,12 +411,7 @@ export function etatVigilance(e: {
   nouvelleCents: number;
   piecesValides: boolean;
 }): { demander: boolean; attendre: boolean } {
-  const apres = e.cumulCents + e.nouvelleCents;
-  if (e.piecesValides) return { demander: false, attendre: false };
-  return {
-    demander: apres >= APPROCHE_VIGILANCE_CENTS,
-    attendre: apres >= SEUIL_VIGILANCE_CENTS,
-  };
+  return etatSeuilVigilance(e);
 }
 
 /** « 1 234,56 € » */

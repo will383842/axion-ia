@@ -19,7 +19,9 @@
  * La porte vérifie TOUT, côté serveur, à l'instant :
  *   1. la pièce est le contrat en VIGUEUR (dernière version arrêtée), non annulé ;
  *   2. le formateur l'a signé (partie `sous_traitant`, signature non révoquée) ;
- *   3. l'attestation URSSAF validée, non échue, avec sa preuve de vérification ;
+ *   3. l'attestation URSSAF validée, non échue, avec sa preuve de vérification —
+ *      seulement quand le cumul des honoraires HT a atteint le seuil de vigilance
+ *      (lot G1, `vigilance-seuil.ts`) ; le SIREN actif (5), lui, est TOUJOURS relu ;
  *   4. les pièces requises présentes et validées (CV de moins de 24 mois, RIB,
  *      RC pro si elle est déposée) ;
  *   5. le SIREN actif relu EN DIRECT au registre, sur le SIRET du contrat
@@ -44,7 +46,12 @@ import {
 import { derniereVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
 import type { SourceRegistre } from "./controle";
 import { versionDuContrat } from "./faits-activation";
-import { cvProbant, vigilanceProuvee, type PieceLueActivation } from "./garde-activation-complete";
+import {
+  cvProbant,
+  vigilanceSatisfaite,
+  type PieceLueActivation,
+} from "./garde-activation-complete";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** Le nom de l'écran vers lequel chaque refus renvoie. */
 const ECRAN_W4 = "écran Vérifier et contresigner";
@@ -118,7 +125,7 @@ export async function objectionContresignatureContratCadre(input: {
 
     // 3 et 4. Attestation prouvée et pièces validées, relues en base à l'instant.
     const trainerId = piece.trainerId;
-    const [t, preuves] = await Promise.all([
+    const [t, preuves, cumul] = await Promise.all([
       prisma.trainer.findUnique({
         where: { id: trainerId },
         select: {
@@ -143,10 +150,13 @@ export async function objectionContresignatureContratCadre(input: {
         where: { trainerId },
         select: { trainerDocumentId: true, resultat: true },
       }),
+      lireCumulHonorairesHtCents(trainerId),
     ]);
     if (t === null || t.statut !== "sous_traitant") return { message: m.fiche };
     const docs: Doc[] = t.documents ?? [];
-    if (!vigilanceProuvee(docs, preuves ?? [], maintenant)) return { message: m.attestation };
+    if (!vigilanceSatisfaite(docs, preuves ?? [], maintenant, cumul)) {
+      return { message: m.attestation };
+    }
     if (!piecesRequisesValidees(docs, maintenant)) return { message: m.pieces };
   }
 

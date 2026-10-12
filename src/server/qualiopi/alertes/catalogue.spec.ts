@@ -49,6 +49,7 @@ const CODES_ATTENDUS: string[] = [
   "vigilance_urssaf_absente",
   "vigilance_urssaf_perimee",
   "vigilance_urssaf_expire_j30",
+  "vigilance_seuil_approche",
   "kit_sorties_non_pretes",
   "responsable_qualite_absent",
   "facture_mentions_legales_absentes",

@@ -7,6 +7,10 @@
  *   relances continuent après l'échéance : ce sont elles qui débloquent.
  * - **S6 bis — CV et assurance RC pro (F41)** : 30 jours puis 15 jours avant l'échéance
  *   (texte F41 soumis à Will). Rien après l'échéance.
+ * - **Lot G1 — attestation URSSAF à l'APPROCHE du seuil (F40, variante 4, validée à part)** :
+ *   une seule demande par épisode, quand le cumul des honoraires HT facturés atteint
+ *   l'approche du seuil de vigilance sans attestation valable (`vigilance-seuil.ts`).
+ *   S6 (le renouvellement) ne vise plus que les formateurs qui ont ATTEINT le seuil.
  *
  * ⚠️ La règle J-30/J-15/J0 et `clePiece` de `pieces-a-renouveler.ts` (L13) ne sont PAS
  * utilisées : le texte F41 soumis à Will annonce deux envois (J-30, J-15), et la clé de
@@ -40,12 +44,20 @@ import { MARQUE_EFFACEMENT } from "@/server/email/relecture-au-depart";
 import type { DeclarationCampagne, FaitsCampagne } from "@/server/relances/registre-campagnes";
 
 import { PIECES_SUIVIES, etatPiece, type EtatPiece, type PieceLue } from "./pieces-a-renouveler";
+import {
+  SEUIL_VIGILANCE_LIBELLE,
+  phaseVigilanceFormateur,
+  vigilanceExigible,
+} from "./vigilance-seuil";
+import { lireCumulsHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
 
 /** Identifiants des campagnes : ils entrent dans la clé d'envoi (`fi-vigilance-…`, `fi-piece-…`). */
 const CAMPAGNE_VIGILANCE_ID = "vigilance";
 const CAMPAGNE_PIECES_ID = "piece";
+/** Lot G1 — ne commence PAS par `vigilance-` : aucun préfixe partagé avec S6. */
+const CAMPAGNE_SEUIL_ID = "seuil-urssaf";
 
 /**
  * Une fiche telle que lue pour les relances : l'identité, et TOUT ce qui décide si la
@@ -126,6 +138,11 @@ export interface LecturePieces {
   readonly opposes: ReadonlySet<string>;
   /** Fiches dont l'adresse a rebondi définitivement. */
   readonly adressesMortes: ReadonlySet<string>;
+  /**
+   * Lot G1 — cumul des honoraires HT facturés, par fiche (`null` : illisible). Absent :
+   * illisible pour tous — S6 garde son comportement d'avant, la demande au seuil se tait.
+   */
+  readonly cumuls?: ReadonlyMap<string, number | null>;
 }
 
 // ── Les règles ───────────────────────────────────────────────────────────
@@ -144,6 +161,21 @@ export const REGLE_VIGILANCE: RegleCampagne<EtapeVigilance> = {
   // Un jour de grâce après la dernière étape pour un passage manqué, puis plus rien.
   silenceApresMs: 31 * JOUR_MS,
   max: 3,
+  unParJour: true,
+  fenetre: FENETRE_ENVOI_PAR_DEFAUT,
+};
+
+export type EtapeSeuil = "demande";
+
+/**
+ * Lot G1 : UNE demande par épisode (clé = la dernière attestation au dossier, ou
+ * « aucune »). L'origine est le passage lui-même ; le plafond fait le reste.
+ */
+export const REGLE_VIGILANCE_SEUIL: RegleCampagne<EtapeSeuil> = {
+  etapes: [{ id: "demande", delaiMs: 0 }],
+  ecartMinMs: 15 * JOUR_MS,
+  silenceApresMs: 365 * JOUR_MS,
+  max: 1,
   unParJour: true,
   fenetre: FENETRE_ENVOI_PAR_DEFAUT,
 };
@@ -169,8 +201,12 @@ const VIGILANCE_DEBUT_AVANT_ECHEANCE_MS = 15 * JOUR_MS;
 const VIGILANCE_FIN_APRES_ECHEANCE_MS =
   REGLE_VIGILANCE.silenceApresMs - VIGILANCE_DEBUT_AVANT_ECHEANCE_MS;
 
-/** Variantes du texte F40 (1 = à la signature, 2 = avant l'échéance, 3 = avant une formation). */
+/**
+ * Variantes du texte F40 (1 = à la signature, 2 = avant l'échéance, 3 = avant une
+ * formation, 4 = à l'approche du seuil — lot G1, validée à part).
+ */
 const VARIANTE_F40_AVANT_ECHEANCE = 2;
+const VARIANTE_F40_APPROCHE_SEUIL = 4;
 /** Variantes du texte F41 (1 = premier rappel, 2 = relance, 3 = pièce refusée). */
 const VARIANTES_F41: Readonly<Record<EtapePieceF41, number>> = { j30: 1, j15: 2 };
 
@@ -224,12 +260,19 @@ function etatCommun(
   };
 }
 
+/** Le cumul lu pour cette fiche ; `null` : illisible (ou non lu). */
+function cumulDe(l: LecturePieces, id: string): number | null {
+  return l.cumuls === undefined ? null : (l.cumuls.get(id) ?? null);
+}
+
 /**
  * S6 : une ligne par fiche de la population dont l'attestation est dans la fenêtre
- * (J-15 de l'échéance à J+16), à renouveler ou échue.
+ * (J-15 de l'échéance à J+16), à renouveler ou échue. Lot G1 : seulement les fiches qui
+ * ont ATTEINT le seuil de vigilance (cumul illisible : comme avant, garde fermée).
  */
 export function faitsVigilance(l: LecturePieces, maintenant: Date): FaitsCampagne[] {
   return population(l).flatMap((fiche): FaitsCampagne[] => {
+    if (!vigilanceExigible(cumulDe(l, fiche.id))) return [];
     const e: EtatPiece = etatPiece(
       l.pieces.get(fiche.id) ?? [],
       "attestation_vigilance_urssaf",
@@ -254,6 +297,50 @@ export function faitsVigilance(l: LecturePieces, maintenant: Date): FaitsCampagn
           envois: envoisDe(l, CAMPAGNE_VIGILANCE_ID, fiche.id, origineId),
         },
         payload: { prenom: fiche.prenom, valeurs: {}, origineRelance: origineId },
+      },
+    ];
+  });
+}
+
+/**
+ * Lot G1 — la demande à l'APPROCHE du seuil : une ligne par fiche de la population dont
+ * le cumul (LISIBLE : on n'écrit pas sur une donnée inconnue) atteint l'approche, sans
+ * attestation valable. Au seuil, une attestation ÉCHUE relève de S6 (le renouvellement) :
+ * jamais deux demandes pour la même chose. Une attestation déposée en vérification est
+ * « action faite ».
+ */
+export function faitsVigilanceSeuil(l: LecturePieces, maintenant: Date): FaitsCampagne[] {
+  return population(l).flatMap((fiche): FaitsCampagne[] => {
+    const cumul = cumulDe(l, fiche.id);
+    if (cumul === null) return [];
+    const phase = phaseVigilanceFormateur(cumul);
+    if (phase === "sous_le_seuil") return [];
+    const pieces = l.pieces.get(fiche.id) ?? [];
+    const e = etatPiece(pieces, "attestation_vigilance_urssaf", maintenant);
+    if (e.etat === "valable" || e.etat === "a_renouveler") return [];
+    if (phase === "seuil_atteint" && e.etat === "echue") return [];
+    // L'épisode : la dernière attestation au dossier (une nouvelle pièce en ouvre un autre).
+    const derniere = pieces
+      .filter((p) => p.type === "attestation_vigilance_urssaf" && p.archiveAt === null)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+    const origineId = derniere?.id ?? "aucune";
+    return [
+      {
+        entityId: fiche.id,
+        personneId: fiche.id,
+        origineId,
+        destinataire: fiche.email,
+        etat: {
+          ...etatCommun(l, fiche),
+          actionFaite: e.etat === "en_verification",
+          origine: maintenant,
+          envois: envoisDe(l, CAMPAGNE_SEUIL_ID, fiche.id, origineId),
+        },
+        payload: {
+          prenom: fiche.prenom,
+          valeurs: { montant: SEUIL_VIGILANCE_LIBELLE },
+          origineRelance: origineId,
+        },
       },
     ];
   });
@@ -376,7 +463,11 @@ export async function lirePourRelances(seulement?: string): Promise<LecturePiece
     .filter((f) => motifHorsPopulation(f) === null);
   if (fiches.length === 0) return LECTURE_VIDE;
   const ids = fiches.map((f) => f.id);
-  const prefixes = [`fi-${CAMPAGNE_VIGILANCE_ID}-`, `fi-${CAMPAGNE_PIECES_ID}-`];
+  const prefixes = [
+    `fi-${CAMPAGNE_VIGILANCE_ID}-`,
+    `fi-${CAMPAGNE_PIECES_ID}-`,
+    `fi-${CAMPAGNE_SEUIL_ID}-`,
+  ];
   const empreintes = new Map<string, string>();
   for (const f of fiches) {
     const h = hashEmailForLookup(f.email);
@@ -384,7 +475,7 @@ export async function lirePourRelances(seulement?: string): Promise<LecturePiece
   }
   const parAdresse = new Map(fiches.map((f) => [f.email.trim().toLowerCase(), f.id]));
 
-  const [docs, journal, corbeille, oppositions, rebonds] = await Promise.all([
+  const [docs, journal, corbeille, oppositions, rebonds, cumuls] = await Promise.all([
     prisma.trainerDocument.findMany({
       where: {
         trainerId: { in: ids },
@@ -429,6 +520,8 @@ export async function lirePourRelances(seulement?: string): Promise<LecturePiece
       select: { recipient: true },
       distinct: ["recipient"],
     }),
+    // Lot G1 — illisible : `null` pour tous (S6 comme avant, demande au seuil muette).
+    lireCumulsHonorairesHtCents(ids),
   ]);
 
   // Une lecture tronquée pourrait cacher la pièce valable la plus récente et faire partir
@@ -463,7 +556,7 @@ export async function lirePourRelances(seulement?: string): Promise<LecturePiece
       return id ? [id] : [];
     }),
   );
-  return { fiches, pieces, envois, opposes, adressesMortes };
+  return { fiches, pieces, envois, opposes, adressesMortes, cumuls };
 }
 
 // ── Les déclarations ─────────────────────────────────────────────────────
@@ -477,6 +570,18 @@ export const CAMPAGNE_VIGILANCE: DeclarationCampagne<EtapeVigilance> = {
   interrupteurs: ["dossier_en_ligne", "pieces_cron"],
   variante: () => VARIANTE_F40_AVANT_ECHEANCE,
   lireFaits: async (maintenant) => faitsVigilance(await lirePourRelances(), maintenant),
+};
+
+/** Lot G1 — F40 variante 4, à l'approche du seuil ; mêmes interrupteurs que S6. */
+export const CAMPAGNE_VIGILANCE_SEUIL: DeclarationCampagne<EtapeSeuil> = {
+  id: CAMPAGNE_SEUIL_ID,
+  gabarit: "formateur-vigilance",
+  entityType: "Trainer",
+  classe: "B",
+  regle: REGLE_VIGILANCE_SEUIL,
+  interrupteurs: ["dossier_en_ligne", "pieces_cron"],
+  variante: () => VARIANTE_F40_APPROCHE_SEUIL,
+  lireFaits: async (maintenant) => faitsVigilanceSeuil(await lirePourRelances(), maintenant),
 };
 
 export const CAMPAGNE_PIECES: DeclarationCampagne<EtapePieceF41> = {
@@ -511,8 +616,14 @@ export async function motifRetenueRelancePiece(
   interrupteursAllumes: (cles: DeclarationCampagne["interrupteurs"]) => Promise<boolean>,
   maintenant: Date = new Date(),
 ): Promise<string | null> {
-  const campagne = CAMPAGNE_PAR_GABARIT.get(gabarit);
-  if (!campagne) return null;
+  const parGabarit = CAMPAGNE_PAR_GABARIT.get(gabarit);
+  if (!parGabarit) return null;
+  // Lot G1 : F40 porte deux campagnes ; la variante 4 est la demande au seuil.
+  const campagne =
+    parGabarit === CAMPAGNE_VIGILANCE &&
+    (payload as { etape?: unknown } | null | undefined)?.etape === VARIANTE_F40_APPROCHE_SEUIL
+      ? CAMPAGNE_VIGILANCE_SEUIL
+      : parGabarit;
   const origine = (payload as { origineRelance?: unknown } | null | undefined)?.origineRelance;
   if (entityType !== "Trainer" || !entityId || typeof origine !== "string") {
     return "relance de pièce sans origine lisible — état invérifiable";
@@ -524,7 +635,11 @@ export async function motifRetenueRelancePiece(
     const l = await lirePourRelances(entityId);
     if (l.fiches.length === 0) return "la personne n'est plus concernée par ces relances";
     const faits =
-      campagne === CAMPAGNE_VIGILANCE ? faitsVigilance(l, maintenant) : faitsPieces(l, maintenant);
+      campagne === CAMPAGNE_VIGILANCE_SEUIL
+        ? faitsVigilanceSeuil(l, maintenant)
+        : campagne === CAMPAGNE_VIGILANCE
+          ? faitsVigilance(l, maintenant)
+          : faitsPieces(l, maintenant);
     const f = faits.find((x) => x.entityId === entityId && x.origineId === origine);
     if (!f) return "la pièce n'est plus à renouveler";
     if (f.etat.actionFaite) return "une nouvelle pièce a été déposée";

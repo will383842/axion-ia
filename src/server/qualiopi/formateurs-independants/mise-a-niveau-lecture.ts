@@ -25,6 +25,7 @@ import {
   type CleElement,
   type FaitsMiseANiveau,
 } from "./mise-a-niveau-regles";
+import { lireCumulsHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** Le gabarit du dossier envoyé : sa première trace après la liste figée date l'envoi. */
 export const GABARIT_DOSSIER_MISE_A_NIVEAU = "formateur-dossier-lien";
@@ -147,6 +148,8 @@ export async function lireEcranMiseANiveau(maintenant: Date): Promise<EcranMiseA
     }),
   ]);
 
+  // Lot G1 — l'attestation n'est à reprendre qu'au seuil de vigilance.
+  const cumuls = await lireCumulsHonorairesHtCents(ids);
   const aMettreANiveau: LigneMiseANiveau[] = [];
   const aResigner: LigneAResigner[] = [];
   for (const f of lues) {
@@ -179,6 +182,7 @@ export async function lireEcranMiseANiveau(maintenant: Date): Promise<EcranMiseA
         (d) => d.type === "attestation_vigilance_urssaf" || d.type === "cv",
       ),
       preuvesVigilance: preuves.filter((p) => p.trainerId === f.id),
+      cumulHonorairesHtCents: cumuls.get(f.id) ?? null,
       piecesAdministratives: f.documents.filter(
         (d) => d.type === "nda_sous_traitant" || d.type === "kbis_avis_sirene",
       ),

@@ -5,9 +5,10 @@
  * facture conforme, pièce non contestée) pour les seuls relevés du paiement par
  * mission (ADR 0066 v2 (e), décisions 72 et 87) :
  *
- *   - **attestation de vigilance échue À LA DATE DE LA MISSION** : le virement
- *     attend (l'autofacture, elle, est émise) — rubrique « en attente
- *     d'attestation URSSAF » ;
+ *   - **attestation de vigilance échue À LA DATE DE LA MISSION**, quand le cumul
+ *     des honoraires HT du formateur a atteint le seuil (lot G1, `vigilance-seuil.ts`) :
+ *     le virement attend (l'autofacture, elle, est émise) — rubrique « en attente
+ *     d'attestation URSSAF ». Sous le seuil, AUCUNE suspension pour ce motif ;
  *   - **demande de changement d'IBAN en attente** : aucun virement — rubrique
  *     « compte bancaire à valider » (l'ancien compte n'est plus proposé) ;
  *   - **nouvel IBAN validé il y a moins de 48 h** (depuis la demande) : attendre ;
@@ -31,6 +32,7 @@ import {
   PARAMETRES_ARGENT_FORMATEURS,
   type ParametresArgentFormateurs,
 } from "../argent/parametres";
+import { SEUIL_VIGILANCE_LIBELLE } from "../vigilance-seuil";
 
 export type MotifSuspensionVirement =
   | "attestation_urssaf_echue_a_la_mission"
@@ -41,8 +43,7 @@ export type MotifSuspensionVirement =
   | "reglement_a_la_main";
 
 export const LIBELLE_SUSPENSION_VIREMENT: Record<MotifSuspensionVirement, string> = {
-  attestation_urssaf_echue_a_la_mission:
-    "En attente d'attestation URSSAF : l'attestation était échue à la date de la mission.",
+  attestation_urssaf_echue_a_la_mission: `En attente d'attestation URSSAF : les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT, et aucune attestation vérifiée n'était valable à la date de la mission.`,
   compte_bancaire_a_valider:
     "Compte bancaire à valider : une demande de changement d'IBAN attend votre accord.",
   nouvel_iban_moins_de_48h:
@@ -64,6 +65,11 @@ export interface ContexteVirementMission {
   readonly totalTtcCents: number;
   /** Fins de validité des attestations URSSAF VALIDÉES et non archivées (jours civils). */
   readonly attestationsValidesJusquau: ReadonlyArray<JourCivil>;
+  /**
+   * Lot G1 : le cumul des honoraires HT a-t-il atteint le seuil de vigilance
+   * (`vigilanceExigible`) ? Absent : OUI — la garde reste celle d'avant le lot.
+   */
+  readonly vigilanceExigible?: boolean;
   readonly demandeIbanEnAttente: boolean;
   /** Dernière demande d'IBAN ACCEPTÉE : demandée le…, validée le… */
   readonly dernierChangementIban: { readonly demandeA: Date; readonly valideA: Date } | null;
@@ -81,14 +87,30 @@ export interface VerdictVirementMission {
   readonly retard: Retard;
 }
 
+/**
+ * Le virement attend-il l'attestation URSSAF ? Seulement au seuil (lot G1), et tant
+ * qu'aucune attestation vérifiée n'est valable à la date de la mission. La console
+ * (« Virements à faire ») et l'espace du formateur lisent CETTE fonction.
+ */
+export function attenteAttestationALaMission(
+  c: Pick<
+    ContexteVirementMission,
+    "vigilanceExigible" | "attestationsValidesJusquau" | "derniereJournee"
+  >,
+): boolean {
+  return (
+    c.vigilanceExigible !== false &&
+    !c.attestationsValidesJusquau.some((fin) => fin >= c.derniereJournee)
+  );
+}
+
 export function gardeVirementMission(
   c: ContexteVirementMission,
   p: ParametresArgentFormateurs = PARAMETRES_ARGENT_FORMATEURS,
 ): VerdictVirementMission {
   const motifs: MotifSuspensionVirement[] = [];
   if (c.finPourDeces) motifs.push("reglement_a_la_main");
-  if (!c.attestationsValidesJusquau.some((fin) => fin >= c.derniereJournee))
-    motifs.push("attestation_urssaf_echue_a_la_mission");
+  if (attenteAttestationALaMission(c)) motifs.push("attestation_urssaf_echue_a_la_mission");
   if (c.demandeIbanEnAttente) motifs.push("compte_bancaire_a_valider");
   if (c.dernierChangementIban) {
     const des = nouvelIbanUtilisableDes(c.dernierChangementIban, p);

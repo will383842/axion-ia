@@ -20,6 +20,7 @@ import type { CleEnvoi } from "@/server/qualiopi/formateurs-independants/interru
 import {
   CAMPAGNE_PIECES,
   CAMPAGNE_VIGILANCE,
+  CAMPAGNE_VIGILANCE_SEUIL,
 } from "@/server/qualiopi/formateurs-independants/pieces-relances";
 import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 import { CAMPAGNE_S1 } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
@@ -104,6 +105,8 @@ export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
   // L13b — S6 et S6 bis : relances des pièces à renouveler.
   CAMPAGNE_VIGILANCE,
   CAMPAGNE_PIECES,
+  // Lot G1 — F40 à l'approche du seuil de vigilance, derrière les mêmes interrupteurs.
+  CAMPAGNE_VIGILANCE_SEUIL as DeclarationCampagne,
   // S1 (L-INV) — rappels de l'invitation à l'échange formateur (F2), J+3 et J+7.
   CAMPAGNE_S1 as DeclarationCampagne,
   // Lot C (M16) — S4 : F18 (contrat) ; F45 (nouvelle version) ; F27 (lettre, deux relances) ;
