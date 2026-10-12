@@ -141,6 +141,8 @@ export async function lireReleveAutofacture(id: string) {
       trainerId: true,
       origine: true,
       echeanceAt: true,
+      /** Lot D2 (M10) : la pièce REMPLACE une facture annulée par avoir (désaccord accepté). */
+      remplaceId: true,
       trainer: {
         select: {
           nom: true,
@@ -256,6 +258,8 @@ interface PieceEmise {
   readonly doc: { readonly id: string; readonly hashSha256: string };
   readonly mandatOrigine: unknown;
   readonly transmission: PieceATransmettre;
+  /** Facture rectifiée d'un désaccord accepté (relevé de mission) : F39 part avec elle. */
+  readonly rectifiee: boolean;
 }
 
 /**
@@ -318,6 +322,17 @@ export async function emettreAutofacture(
   });
 
   const transmise = await transmettreAutofacture(piece.transmission, "emission");
+  // Lot D2 (M10) — la facture rectifiée d'un désaccord accepté : F39 (avoir et
+  // nouvelle facture joints). Jamais pour un relevé mensuel (pas de `remplaceId`).
+  if (piece.rectifiee) {
+    try {
+      const { envoyerFactureRectifiee } =
+        await import("@/server/qualiopi/formateurs-independants/paiement/facture-rectifiee-envoi");
+      await envoyerFactureRectifiee(statementId);
+    } catch {
+      // Un e-mail manqué ne défait jamais une pièce émise ; l'écran du relevé le redit.
+    }
+  }
   return { data: { numero: piece.numero, transmise } };
 }
 
@@ -539,6 +554,7 @@ async function emettreSousVerrou(
     numero,
     doc: { id: doc.id, hashSha256: doc.hashSha256 },
     mandatOrigine: mandat.origine,
+    rectifiee: releve.origine === "passage_mission" && releve.remplaceId != null,
     transmission: {
       statementId: releve.id,
       numero,
@@ -676,4 +692,121 @@ export async function transmettreAutofacture(
     `[autofacture] ${releve.numero} transmise (${origine}) — contestation jusqu'au ${dateFr(contestationAvant)}`,
   );
   return true;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+ * 3. L'avoir d'une autofacture de MISSION (lot D2, M10)
+ * ────────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Numéro (série `AXI-AUTOF`, la même que les factures) et PDF de l'AVOIR écrit par
+ * `emettreAvoirMission` quand un désaccord est accepté. Mêmes gabarit et calcul que
+ * l'avoir des apporteurs : montants positifs, renvoi à la facture annulée.
+ *
+ * Idempotent : un avoir déjà numéroté rend son numéro, rien n'est réémis. Sous le
+ * verrou de série, comme toute émission. L'avoir ne se transmet pas seul : il part
+ * joint à F39, avec la facture rectifiée. `null` : rien n'a pu être émis.
+ */
+export async function emettrePieceAvoirMission(
+  avoirId: string,
+): Promise<{ numero: string; documentId: string | null } | null> {
+  let issue: IssueVerrouAutofacture<{ numero: string; documentId: string | null } | null>;
+  try {
+    issue = await avecVerrouEmissionAutofacture(async () => {
+      const a = await prisma.trainerStatement.findUnique({
+        where: { id: avoirId },
+        select: {
+          id: true,
+          origine: true,
+          trainerId: true,
+          tvaRegime: true,
+          totalTtcCents: true,
+          numeroFacture: true,
+          autofactureDocumentId: true,
+          periodeYear: true,
+          periodeMonth: true,
+          avoirDe: {
+            select: { numeroFacture: true, dateFacture: true, echeanceAt: true },
+          },
+          trainer: {
+            select: {
+              nom: true,
+              prenom: true,
+              email: true,
+              siret: true,
+              numeroTvaIntracom: true,
+              adresseProfessionnelle: true,
+            },
+          },
+          feeLines: {
+            where: { nature: "honoraire_du", statut: { not: "annule" } },
+            select: { prestationType: true, heures: true, montantHtCents: true, objet: true },
+            orderBy: { montantHtCents: "asc" },
+          },
+        },
+      });
+      if (a === null || a.origine !== "passage_mission" || a.avoirDe === null) return null;
+      if (a.numeroFacture !== null) {
+        return { numero: a.numeroFacture, documentId: a.autofactureDocumentId };
+      }
+      if (a.avoirDe.numeroFacture === null || a.feeLines.length === 0) return null;
+      if (a.trainer.siret === null || a.trainer.adresseProfessionnelle === null) return null;
+      // Le gabarit d'un avoir porte des montants POSITIFS : on nie les lignes niées.
+      const lignes = a.feeLines.map((l) => ({
+        designation: designationLigne(l),
+        montantHtCents: -l.montantHtCents,
+      }));
+      if (!verifierTotauxConformes(lignes, a.tvaRegime, -a.totalTtcCents).conforme) return null;
+      const identite = await getOrganismeIdentite();
+      const maintenant = new Date();
+      const numero = await nextNumero("autofacture", maintenant.getFullYear(), async (prefixe) => {
+        const rows = await prisma.trainerStatement.findMany({
+          where: { numeroFacture: { startsWith: prefixe } },
+          select: { numeroFacture: true },
+        });
+        return rows.map((r) => ({ numero: r.numeroFacture }));
+      });
+      const genere = await generateDocument({
+        type: "autofacture_honoraires",
+        identite,
+        refs: { trainerId: a.trainerId },
+        buildElement: () =>
+          AutofactureHonorairesPdf({
+            data: {
+              numero,
+              dateEmission: dateFr(maintenant),
+              dateEcheance: dateFr(a.avoirDe!.echeanceAt ?? maintenant),
+              contestationAvant: dateFr(dateLimiteContestation(maintenant)),
+              periodeLabel: periodeLabel(a.periodeYear, a.periodeMonth),
+              sousTraitant: {
+                nom: `${a.trainer.prenom} ${a.trainer.nom}`.trim(),
+                siret: a.trainer.siret as string,
+                numeroTvaIntracom: a.trainer.numeroTvaIntracom,
+                adresseProfessionnelle: a.trainer.adresseProfessionnelle as string,
+                email: a.trainer.email,
+              },
+              identite,
+              lignes,
+              regimeHonoraires: a.tvaRegime,
+              avoir: {
+                factureInitiale: a.avoirDe!.numeroFacture as string,
+                dateFactureInitiale:
+                  a.avoirDe!.dateFacture !== null ? dateFr(a.avoirDe!.dateFacture) : null,
+                imputation:
+                  "annule la facture d'origine en totalité ; une facture rectifiée la remplace",
+              },
+            },
+          }),
+      });
+      // Conditionnelle : un second appel trouve l'avoir déjà numéroté.
+      const { count } = await prisma.trainerStatement.updateMany({
+        where: { id: a.id, numeroFacture: null },
+        data: { numeroFacture: numero, dateFacture: maintenant, autofactureDocumentId: genere.id },
+      });
+      return count === 1 ? { numero, documentId: genere.id } : null;
+    });
+  } catch {
+    return null;
+  }
+  return issue.acquis ? issue.valeur : null;
 }

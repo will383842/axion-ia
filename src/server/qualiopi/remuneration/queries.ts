@@ -8,6 +8,11 @@
  * build SSG, où `DATABASE_URL` pointe sur `stub.invalid`. Jamais de `*OrThrow`.
  */
 
+import {
+  lireAnomaliesMission,
+  type AnomalieMission,
+} from "@/server/qualiopi/formateurs-independants/paiement/anomalies-mission";
+import { ISSUE_DESACCORD_NON_RETENU } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-regle";
 import { prisma } from "@/lib/prisma";
 import { echeanceEffective, joursDeRetard } from "./echeance";
 import { contestationOuverte } from "./autofacturation";
@@ -118,6 +123,20 @@ export interface ReleveDetail extends ReleveListe {
     contesteeAt: Date | null;
     contestationMotif: string | null;
   };
+  /** Lot D2 (M10) : la clôture d'un désaccord (qui, quand, issue, motif). */
+  desaccord: {
+    closeAt: Date | null;
+    closeParId: string | null;
+    closeIssue: string | null;
+    closeMotif: string | null;
+  };
+  /** Ce relevé est l'avoir de… / remplace… (paiement par mission). */
+  avoirDeId: string | null;
+  remplaceId: string | null;
+  avoirs: Array<{ id: string; numeroFacture: string | null }>;
+  remplacements: Array<{ id: string; numeroFacture: string | null; statut: StatementStatut }>;
+  /** Lot D2 (M22) : anomalies constatées par le passage, conservées sur le relevé. */
+  anomaliesMission: AnomalieMission[];
   lignes: LigneListe[];
 }
 
@@ -154,6 +173,16 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         payeAt: true,
         moyenPaiement: true,
         origine: true,
+        // Lot D2 (M10, M22) : désaccord, avoir et réémission, anomalies du passage.
+        contestationCloseAt: true,
+        contestationCloseParId: true,
+        contestationCloseIssue: true,
+        contestationCloseMotif: true,
+        avoirDeId: true,
+        remplaceId: true,
+        anomaliesMission: true,
+        avoirs: { where: { statut: { not: "annule" } }, select: { id: true, numeroFacture: true } },
+        remplacements: { select: { id: true, numeroFacture: true, statut: true } },
         trainer: { select: { nom: true, prenom: true } },
       },
     });
@@ -207,6 +236,17 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         contesteeAt: r.contesteeAt,
         contestationMotif: r.contestationMotif,
       },
+      desaccord: {
+        closeAt: r.contestationCloseAt,
+        closeParId: r.contestationCloseParId,
+        closeIssue: r.contestationCloseIssue,
+        closeMotif: r.contestationCloseMotif,
+      },
+      avoirDeId: r.avoirDeId,
+      remplaceId: r.remplaceId,
+      avoirs: r.avoirs,
+      remplacements: r.remplacements,
+      anomaliesMission: lireAnomaliesMission(r.anomaliesMission),
       nbLignes: lignes.length,
       lignes: lignes.map((l) => ({
         id: l.id,
@@ -355,6 +395,13 @@ export interface ReleveDuFormateur {
   /** Terme de son droit de contestation. `null` si la pièce ne lui est pas parvenue. */
   contestationAvantAt: Date | null;
   contesteeAt: Date | null;
+  /** Relevé du paiement PAR MISSION (lot D2) : « Signaler un désaccord » depuis l'espace. */
+  deMission: boolean;
+  /** Avoir : il annule la facture désignée (numéro), il ne se paie pas. */
+  estAvoir: boolean;
+  avoirDeNumero: string | null;
+  /** Le désaccord a été examiné et non retenu : le règlement reprend. */
+  desaccordNonRetenu: boolean;
   /**
    * La fenêtre de contestation est-elle ENCORE ouverte ?
    *
@@ -407,6 +454,11 @@ export async function listRelevesDuFormateur(
         payeAt: true,
         contestationAvantAt: true,
         contesteeAt: true,
+        // Lot D2 (M10) : désaccord sur une facture de mission, avoir.
+        origine: true,
+        avoirDeId: true,
+        avoirDe: { select: { numeroFacture: true } },
+        contestationCloseIssue: true,
       },
       orderBy: [{ periodeYear: "desc" }, { periodeMonth: "desc" }],
       take: 36,
@@ -426,6 +478,10 @@ export async function listRelevesDuFormateur(
       payeAt: r.payeAt,
       contestationAvantAt: r.contestationAvantAt,
       contesteeAt: r.contesteeAt,
+      deMission: r.origine === "passage_mission",
+      avoirDeNumero: r.avoirDeId !== null ? (r.avoirDe?.numeroFacture ?? null) : null,
+      estAvoir: r.avoirDeId !== null,
+      desaccordNonRetenu: r.contestationCloseIssue === ISSUE_DESACCORD_NON_RETENU,
       /*
         🔴 LA RÈGLE VIENT DU MODULE, elle n'est PAS réécrite ici.
 

@@ -992,18 +992,23 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 ## F39 — Facture rectifiée
 
 - **Gabarit** : `formateur-facture-rectifiee`
-- **Envoyé quand** : vous acceptez un désaccord (avoir, puis nouvelle facture).
+- **Envoyé quand** : la nouvelle facture d'un désaccord accepté est émise (avoir, relevé recalculé validé, puis nouvelle facture). Une fois par avoir.
+- **Réécrit (lot D2)** : les trois numéros sont distincts. [numéro] = la facture d'origine ; [numéro de l'avoir] ; [numéro de la nouvelle facture]. L'avoir et la nouvelle facture sont joints.
 
 - **Objet** : Facture n° [numéro] corrigée
 - **Titre** : Facture n° [numéro] corrigée
-- **Aperçu** : Suite à votre remarque, la facture n° [numéro] est corrigée.
+- **Aperçu** : Suite à votre remarque, nous avons corrigé la facture n° [numéro].
 - **Corps** :
 
   > Bonjour Prénom,
   >
-  > Suite à votre remarque, la facture n° [numéro] est corrigée.
+  > Suite à votre remarque, nous avons corrigé la facture n° [numéro].
   >
-  > Elle est annulée par l'avoir n° [numéro], et la facture rectifiée n° [numéro] est jointe.
+  > Elle est annulée par l'avoir n° [numéro de l'avoir].
+  >
+  > La nouvelle facture porte le n° [numéro de la nouvelle facture]. L'avoir et la nouvelle facture sont joints à ce message.
+  >
+  > Le virement reste prévu au plus tard le [date].
 
 - **Bouton** : aucun
 

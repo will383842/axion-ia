@@ -28,13 +28,16 @@
  * foi. Laisser croire l'inverse ferait contester un bulletin sur la base d'un
  * écran.
  *
- * ## Ce que la page NE fait pas
+ * ## Le désaccord sur une facture de MISSION (lot D2, M10)
  *
- * ⛔ Aucun bouton de contestation ici. La clause dit « en répondant » — et le
- * formateur répond à l'e-mail qui porte la pièce. Ajouter un second canal sans
- * que l'organisme sache où regarder créerait deux files de réclamations dont
- * une serait ignorée. La page DIT la date limite et dit comment contester ;
- * elle n'invente pas un circuit.
+ * Pour une facture du paiement par mission, la page porte « Signaler un
+ * désaccord » pendant les 8 jours de la fenêtre : un texte court, qui bloque le
+ * paiement de CETTE facture et prévient l'administrateur (F58 accuse réception).
+ * Le formulaire s'ouvre par un paramètre (`?desaccord=<relevé>`) : aucune route
+ * nouvelle. La réponse à l'e-mail de la facture reste possible ; les deux arrivent
+ * au même endroit, l'écran du relevé côté console.
+ *
+ * ⛔ Pour un relevé MENSUEL, rien ne change : pas de bouton, on répond à l'e-mail.
  *
  * Server Component : aucune ligne de JavaScript client.
  */
@@ -42,7 +45,11 @@
 import type { Metadata } from "next";
 import { Euro, FileText } from "lucide-react";
 
+import { prisma } from "@/lib/prisma";
+import { signalerDesaccordFormAction } from "@/server/actions/formateur/desaccord.actions";
 import { requireFormateur } from "@/server/formateur/guard";
+import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import { LONGUEUR_MAX_DESACCORD } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-mission";
 import { listRelevesDuFormateur } from "@/server/qualiopi/remuneration/queries";
 import { lireRemunerationDuFormateur } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { CoquilleFormateur } from "../_coquille";
@@ -73,12 +80,55 @@ const euros = (cents: number): string =>
 
 const jour = (d: Date): string => d.toLocaleDateString("fr-FR");
 
-export default async function RemunerationFormateurPage() {
+/** Le retour d'un signalement, au ton des e-mails (vouvoiement, « nous »). */
+const RETOUR_SIGNALEMENT: Record<string, { ok: boolean; texte: string }> = {
+  enregistre: {
+    ok: true,
+    texte:
+      "Votre désaccord est bien enregistré. Le règlement de cette facture attend notre réponse, que vous recevrez par écrit.",
+  },
+  deja_signale: { ok: true, texte: "Un désaccord est déjà enregistré sur cette facture." },
+  texte_invalide: {
+    ok: false,
+    texte: `Écrivez en quelques mots ce qui ne correspond pas (${LONGUEUR_MAX_DESACCORD} caractères au plus).`,
+  },
+  hors_delai: {
+    ok: false,
+    texte:
+      "Le délai de 8 jours est passé. Répondez à l'e-mail qui porte la facture : nous la regarderons avec vous.",
+  },
+  non_contestable: {
+    ok: false,
+    texte: "Cette facture ne peut pas recevoir de désaccord depuis votre espace.",
+  },
+  introuvable: { ok: false, texte: "Cette facture est introuvable." },
+  coupe: { ok: false, texte: "Ce service n'est pas encore ouvert." },
+  trop_tot: { ok: false, texte: "Trop de demandes en peu de temps. Réessayez dans une heure." },
+};
+
+/** Payé à la mission : indépendant, et le paiement par mission a une date de bascule. */
+async function payeALaMission(statut: string | undefined): Promise<boolean> {
+  if (statut !== "sous_traitant") return false;
+  try {
+    return (await lireDateBascule(prisma)) !== null;
+  } catch {
+    return false;
+  }
+}
+
+export default async function RemunerationFormateurPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ desaccord?: string; signale?: string }>;
+}) {
   const session = await requireFormateur();
+  const sp = await searchParams;
   const [releves, moi] = await Promise.all([
     listRelevesDuFormateur(session.trainerId),
     lireRemunerationDuFormateur(session.trainerId),
   ]);
+  const aLaMission = await payeALaMission(moi?.statut);
+  const retour = sp.signale !== undefined ? RETOUR_SIGNALEMENT[sp.signale] : undefined;
 
   /*
     ⚠️ On teste « PAS sous-traitant » plutôt que « salarié », et l'écart compte :
@@ -170,6 +220,12 @@ export default async function RemunerationFormateurPage() {
         </section>
       )}
 
+      {retour !== undefined && (
+        <p className="mt-6 rounded-lg border p-3 text-sm" role={retour.ok ? "status" : "alert"}>
+          {retour.texte}
+        </p>
+      )}
+
       {releves.length === 0 ? (
         /*
           🔴 DEUX ÉTATS VIDES, PARCE QU'ILS NE DISENT PAS LA MÊME CHOSE.
@@ -184,6 +240,13 @@ export default async function RemunerationFormateurPage() {
           <p className="mt-8 text-sm opacity-70">
             Vous êtes rémunéré par la paie : vous n&apos;avez pas de relevé d&apos;honoraires ni de
             facture. Ce que vos formations ajoutent à votre salaire est indiqué ci-dessus.
+          </p>
+        ) : aLaMission ? (
+          // Lot D2 : payé à la mission, il n'attend pas la fin du mois.
+          <p className="mt-8 text-sm opacity-70">
+            Aucune facture pour l&apos;instant. Après chaque mission, une fois vos feuilles de
+            présence signées, nous établissons la facture à votre nom. Le virement est prévu au plus
+            tard 30 jours après la dernière journée.
           </p>
         ) : (
           <p className="mt-8 text-sm opacity-70">
@@ -202,7 +265,7 @@ export default async function RemunerationFormateurPage() {
             const paye = r.payeAt !== null;
 
             return (
-              <li key={r.id} className="rounded-lg border p-4">
+              <li key={r.id} id={`releve-${r.id}`} className="rounded-lg border p-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <strong>
                     {MOIS[r.periodeMonth - 1]} {r.periodeYear}
@@ -218,11 +281,22 @@ export default async function RemunerationFormateurPage() {
                   {r.numeroFacture !== null && <> · facture {r.numeroFacture}</>}
                 </p>
 
-                {paye ? (
+                {r.estAvoir ? (
+                  <p className="mt-2 text-sm">
+                    Avoir : il annule la facture {r.avoirDeNumero ?? ""} en totalité. Une facture
+                    corrigée la remplace.
+                  </p>
+                ) : paye ? (
                   <p className="mt-2 text-sm">Payé le {jour(r.payeAt as Date)}.</p>
                 ) : r.echeance !== null ? (
                   <p className="mt-2 text-sm">
                     Règlement prévu au plus tard le {jour(r.echeance)}.
+                  </p>
+                ) : r.deMission ? (
+                  // Lot D2 : à la mission, l'échéance ne part pas de l'émission.
+                  <p className="mt-2 text-sm opacity-80">
+                    La facture n&apos;est pas encore établie. Le virement est prévu au plus tard 30
+                    jours après la dernière journée de la mission.
                   </p>
                 ) : (
                   // Pas de facture, donc pas d'échéance. On le DIT : une case
@@ -233,14 +307,61 @@ export default async function RemunerationFormateurPage() {
                   </p>
                 )}
 
-                {r.contesteeAt !== null && (
-                  <p className="mt-2 text-sm font-medium">
-                    Vous avez signalé un désaccord le {jour(r.contesteeAt)}. Le règlement est
-                    suspendu le temps qu&apos;il soit réglé.
-                  </p>
+                {r.contesteeAt !== null &&
+                  (r.desaccordNonRetenu ? (
+                    <p className="mt-2 text-sm font-medium">
+                      Nous avons examiné votre désaccord du {jour(r.contesteeAt)} et nous vous avons
+                      répondu par e-mail. Le règlement de cette facture reprend.
+                    </p>
+                  ) : (
+                    <p className="mt-2 text-sm font-medium">
+                      Vous avez signalé un désaccord le {jour(r.contesteeAt)}. Le règlement est
+                      suspendu le temps qu&apos;il soit réglé.
+                    </p>
+                  ))}
+
+                {r.contestable && r.deMission && r.contestationAvantAt !== null && (
+                  <div className="mt-2 text-sm">
+                    <p>
+                      Si le détail ne correspond pas à ce que vous avez réalisé, signalez-le avant
+                      le <strong>{jour(r.contestationAvantAt)}</strong> inclus : ici, ou en
+                      répondant à l&apos;e-mail qui porte cette facture.
+                    </p>
+                    {sp.desaccord === r.id ? (
+                      <form
+                        action={signalerDesaccordFormAction}
+                        className="mt-2 flex flex-col gap-2"
+                      >
+                        <input type="hidden" name="statementId" value={r.id} />
+                        <label htmlFor={`texte-${r.id}`}>
+                          Ce qui ne correspond pas (quelques mots suffisent) :
+                        </label>
+                        <textarea
+                          id={`texte-${r.id}`}
+                          name="texte"
+                          required
+                          maxLength={LONGUEUR_MAX_DESACCORD}
+                          rows={4}
+                          className="rounded border p-2"
+                        />
+                        <p className="opacity-80">
+                          Le règlement de cette facture attendra notre réponse écrite.
+                        </p>
+                        <button type="submit" className="self-start rounded border px-3 py-2">
+                          Envoyer mon désaccord
+                        </button>
+                      </form>
+                    ) : (
+                      <p className="mt-2">
+                        <a className="underline" href={`?desaccord=${r.id}#releve-${r.id}`}>
+                          Signaler un désaccord
+                        </a>
+                      </p>
+                    )}
+                  </div>
                 )}
 
-                {r.contestable && r.contestationAvantAt !== null && (
+                {r.contestable && !r.deMission && r.contestationAvantAt !== null && (
                   /*
                     ⚠️ La date limite est ÉCRITE, jamais « sous huitaine ». C'est
                     lui qui subit le délai : le lui faire calculer, c'est le lui

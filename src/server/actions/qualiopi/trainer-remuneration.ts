@@ -24,6 +24,10 @@
 
 "use server";
 
+import {
+  desaccordBloquant,
+  ISSUE_DESACCORD_NON_RETENU,
+} from "@/server/qualiopi/formateurs-independants/paiement/desaccord-regle";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -217,6 +221,7 @@ export async function transitionStatementAction(
       // juste en dessous).
       contesteeAt: true,
       contestationMotif: true,
+      contestationCloseIssue: true,
       // Paiement par mission (L12c/L12d) : échéance fixe et gardes propres.
       origine: true,
       echeanceAt: true,
@@ -297,7 +302,9 @@ export async function transitionStatementAction(
     // `undefined` passerait le test strict et ferait PLANTER le paiement sur
     // `.toLocaleDateString()`. Une garde ne doit jamais casser le chemin
     // qu'elle protège — surtout pas celui qui sort de l'argent.
-    if (releve.contesteeAt != null) {
+    // Lot D2 (M10) : seul un désaccord clos « non retenu » (motif écrit, F59,
+    // tracé sur le relevé) lève le blocage. Une règle, `desaccordBloquant`.
+    if (releve.contesteeAt != null && desaccordBloquant(releve)) {
       return {
         error: `Facture CONTESTÉE le ${releve.contesteeAt.toLocaleDateString("fr-FR")} : le paiement est bloqué. Motif reçu : « ${releve.contestationMotif ?? "non précisé"} ». Réglez le désaccord — corrigez le relevé, ou annulez la pièce — avant de payer.`,
       };
@@ -419,7 +426,12 @@ export async function transitionStatementAction(
           // Une contestation consignée entre la lecture et l'écriture
           // (`contesterAutofactureAction`) bloque le paiement, comme la garde
           // plus haut : sinon le virement partirait sur une pièce contestée.
-          ...(v.to === "paye" ? { contesteeAt: null } : {}),
+          // Lot D2 (M10) : ou un désaccord clos « non retenu » (même règle).
+          ...(v.to === "paye"
+            ? {
+                OR: [{ contesteeAt: null }, { contestationCloseIssue: ISSUE_DESACCORD_NON_RETENU }],
+              }
+            : {}),
         },
         data: {
           statut: v.to,
