@@ -2088,6 +2088,21 @@ async function handleMoteurMissions(): Promise<void> {
   const { proposerRangsSuivants } =
     await import("@/server/qualiopi/formateurs-independants/choix-formateur-service");
   const moteur = await passerMoteurMissions(maintenant);
+  // Lot C (M16) — relance (à mi-délai) et expiration des propositions À L'HEURE,
+  // pas une fois par jour. `formateurs.choix_cartes` éteint : rien.
+  const { passerRelancesPropositionsHoraires } =
+    await import("@/server/qualiopi/formateurs-independants/relances-propositions-horaires");
+  const relances = await passerRelancesPropositionsHoraires(maintenant);
+  // Lot C (M16) — F21 : l'alerte interne à 90 jours (mêmes interrupteurs que la relance).
+  const { passerAlerteNda } =
+    await import("@/server/qualiopi/formateurs-independants/relances-missions");
+  await passerAlerteNda(maintenant);
+  if (relances.relancees + relances.sansReponse + relances.expirees > 0) {
+    console.log(
+      `[formation-crons] propositions (horaire): ${relances.relancees} relance(s), ` +
+        `${relances.sansReponse} sans réponse dans le délai, ${relances.expirees} expirée(s)`,
+    );
+  }
   const suivants = dansLaFenetre(maintenant)
     ? await proposerRangsSuivants(maintenant)
     : { proposes: 0, aPourvoir: 0 };

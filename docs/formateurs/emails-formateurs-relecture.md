@@ -811,6 +811,24 @@ Comment lire chaque fiche :
 
 - **Bouton** : aucun
 
+### F30, variante « sans lettre »
+
+- **Envoyé quand** : la mission avait été acceptée, mais aucune lettre de mission n'avait encore été adressée ; elle est retirée. Aucune indemnité n'est annoncée. Variante neuve (lot C), à valider par Will (clé `formateur-mission-retiree#sans-lettre`).
+- **Objet** : Une mission ne vous est plus confiée
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > La mission [intitulé] du [date] ne vous est plus confiée.
+  >
+  > La raison : [motif].
+  >
+  > Nous ne vous avions pas encore adressé de lettre de mission : vous n'avez rien à faire.
+  >
+  > Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.
+
+- **Bouton** : aucun
+
 ## F31 — Formation annulée
 
 - **Gabarit** : `formateur-formation-annulee`
@@ -840,6 +858,20 @@ Comment lire chaque fiche :
   > La formation [intitulé] du [date] est annulée, et votre mission avec elle.
   >
   > La lettre de mission, que vous n'aviez pas encore signée, est annulée.
+
+- **Bouton** : aucun
+
+### F31, variante « sans lettre »
+
+- **Envoyé quand** : la mission avait été acceptée, mais aucune lettre de mission n'avait encore été adressée ; la session est annulée. Aucune indemnité n'est annoncée. Variante neuve (lot C), à valider par Will (clé `formateur-formation-annulee#sans-lettre`).
+- **Objet** : La formation [intitulé] du [date] est annulée
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > La formation [intitulé] du [date] est annulée, et votre mission avec elle.
+  >
+  > Nous ne vous avions pas encore adressé de lettre de mission : vous n'avez rien à faire.
 
 - **Bouton** : aucun
 
@@ -1344,3 +1376,12 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
   > De nouvelles missions peuvent vous être proposées. Rien d'autre à faire de votre part.
 
 - **Bouton** : aucun
+
+## Convocation pratique (J-7) d'un formateur indépendant — ligne ajoutée (lot C)
+
+- **Gabarit** : `formateur-convocation-j7` (message existant, commun à tous les formateurs). Pour un formateur **indépendant** seulement, et seulement si `formateurs.lettre_auto` est allumé, quand sa lettre de mission n'est pas encore signée, une ligne est ajoutée avant le dernier paragraphe, avec un lien vers la lettre. Un fichier d'agenda (`session.ics`, un événement par journée) est joint à ce même message.
+- **Ligne ajoutée** :
+
+  > **Votre lettre de mission attend encore votre signature.** Signez-la avant la session, en quelques minutes : Signer ma lettre de mission.
+
+- Rien ne change pour un salarié ni pour l'intervenant d'un organisme, ni au rappel J-1.

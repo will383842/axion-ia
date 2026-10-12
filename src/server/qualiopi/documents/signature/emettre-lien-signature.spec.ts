@@ -9,24 +9,30 @@ const h = vi.hoisted(() => ({
   p: {
     documentGenere: { findUnique: vi.fn() },
     documentSignature: { count: vi.fn() },
-    documentSignatureToken: { count: vi.fn() },
+    documentSignatureToken: { count: vi.fn(), findFirst: vi.fn() },
     trainer: { findUnique: vi.fn() },
     sousTraitant: { findUnique: vi.fn() },
   },
   creerToken: vi.fn(),
   log: vi.fn(),
+  journal: vi.fn(),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("next/headers", () => ({ headers: async () => new Headers() }));
 vi.mock("@/lib/prisma", () => ({ prisma: h.p }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({ logQualiopiActivity: h.log }));
+vi.mock("@/server/journal/journaliser", () => ({ journaliser: h.journal }));
 vi.mock("./token-document", () => ({
   creerTokenDocument: h.creerToken,
   TokenDocumentError: class TokenDocumentError extends Error {},
 }));
 
-import { emettreLienSignature, resoudreIdentite } from "./emettre-lien-signature";
+import {
+  emettreLienSignature,
+  emettreLienSignatureSystem,
+  resoudreIdentite,
+} from "./emettre-lien-signature";
 
 const DOC = "33333333-3333-4333-8333-333333333333";
 const TRAINER = "44444444-4444-4444-8444-444444444444";
@@ -155,5 +161,90 @@ describe("emettreLienSignature — le service (b)", () => {
     });
     expect(r).toEqual({ error: "Entrée invalide." });
     expect(h.p.documentGenere.findUnique).not.toHaveBeenCalled();
+  });
+});
+
+describe("emettreLienSignatureSystem — une relance ne rouvre JAMAIS un lien qu'un humain a fermé", () => {
+  const PIECE = {
+    id: DOC,
+    type: "contrat_sous_traitance",
+    numero: "AXI-DOC-2026-201",
+    hashSha256: "c".repeat(64),
+    metadata: {},
+    annuleeAt: null,
+    ...PIECE_SANS_RATTACHEMENT,
+    trainerId: TRAINER,
+    suppressionPrevueAt: new Date("2031-01-01T00:00:00Z"),
+  };
+
+  beforeEach(() => {
+    h.p.documentGenere.findUnique.mockResolvedValue(PIECE);
+    h.p.documentSignature.count.mockResolvedValue(0);
+    h.p.trainer.findUnique.mockResolvedValue({
+      statut: "sous_traitant",
+      prenom: "Ada",
+      nom: "Lovelace",
+      email: "ada@exemple.test",
+    });
+    h.creerToken.mockResolvedValue({ token: "JETON-SECRET", expiresAt: new Date() });
+  });
+
+  it("dernier lien révoqué par l'administrateur (`revokedById`) : refus, aucun jeton créé", async () => {
+    h.p.documentSignatureToken.findFirst.mockResolvedValue({
+      revokedAt: new Date("2026-10-10T09:00:00Z"),
+      revokedById: "55555555-5555-4555-8555-555555555555",
+    });
+    const r = await emettreLienSignatureSystem(DOC, "sous_traitant");
+    expect(r).toEqual({ error: "Lien révoqué par l'administrateur." });
+    expect(h.creerToken).not.toHaveBeenCalled();
+    expect(h.journal).not.toHaveBeenCalled();
+  });
+
+  it("aucun lien vivant (révoqué sans auteur : effacement RGPD, fin de collaboration) : refus", async () => {
+    h.p.documentSignatureToken.findFirst.mockResolvedValue({
+      revokedAt: new Date("2026-10-10T09:00:00Z"),
+      revokedById: null,
+    });
+    expect(await emettreLienSignatureSystem(DOC, "sous_traitant")).toHaveProperty("error");
+    h.p.documentSignatureToken.findFirst.mockResolvedValue(null);
+    expect(await emettreLienSignatureSystem(DOC, "sous_traitant")).toHaveProperty("error");
+    expect(h.creerToken).not.toHaveBeenCalled();
+  });
+
+  it("lien remplacé puis un lien vivant : la relance le renouvelle", async () => {
+    // Le plus récent est le lien vivant ; l'ancien, « Remplacé par un nouveau lien »,
+    // ne compte pas.
+    h.p.documentSignatureToken.findFirst.mockResolvedValue({ revokedAt: null, revokedById: null });
+    const r = await emettreLienSignatureSystem(DOC, "sous_traitant");
+    expect(r).toHaveProperty("data");
+    expect(h.creerToken).toHaveBeenCalledTimes(1);
+    expect(h.p.documentSignatureToken.findFirst.mock.calls[0]![0]).toMatchObject({
+      where: { documentGenereId: DOC, partie: "sous_traitant" },
+      orderBy: { createdAt: "desc" },
+    });
+  });
+
+  it("l'émission système est journalisée (acteur système, cible UUID) sans le lien ni le jeton", async () => {
+    h.p.documentSignatureToken.findFirst.mockResolvedValue({ revokedAt: null, revokedById: null });
+    await emettreLienSignatureSystem(DOC, "sous_traitant");
+    expect(h.journal).toHaveBeenCalledTimes(1);
+    const entree = h.journal.mock.calls[0]![1];
+    expect(entree).toMatchObject({
+      action: "qualiopi.piece.lien_signature",
+      targetType: "DocumentGenere",
+      targetId: DOC,
+      session: null,
+      changes: {
+        numero: "AXI-DOC-2026-201",
+        type: "contrat_sous_traitance",
+        partie: "sous_traitant",
+        reemission: true,
+        systeme: true,
+      },
+    });
+    const brut = JSON.stringify(h.journal.mock.calls);
+    expect(brut).not.toContain("JETON-SECRET");
+    expect(brut).not.toContain("/portail/signer");
+    expect(brut).not.toMatch(/"(url|token|lien)"/);
   });
 });

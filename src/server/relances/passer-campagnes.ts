@@ -255,10 +255,26 @@ export async function passerCampagnes(
     }
     const etapeIndex = c.campagne.regle.etapes.findIndex((e) => e.id === c.etape);
     const variante = c.campagne.variante?.(c.etape) ?? etapeIndex + 1;
+    let payload = c.faits.payload;
+    if (c.faits.completerPayload) {
+      let complet: Record<string, unknown> | null = null;
+      try {
+        // L'étape est connue du hook : il vérifie les crochets de la BONNE variante avant
+        // toute émission irréversible (un lien de signature neuf révoque le précédent).
+        complet = await c.faits.completerPayload({ ...payload, etape: variante });
+      } catch {
+        complet = null;
+      }
+      if (complet === null) {
+        ecarter("payload-indisponible");
+        continue;
+      }
+      payload = complet;
+    }
     const r = await d.envoyer({
       gabarit: c.campagne.gabarit,
       destinataire: c.faits.destinataire,
-      payload: { ...c.faits.payload, etape: variante },
+      payload: { ...payload, etape: variante },
       entityType: c.campagne.entityType,
       entityId: c.faits.entityId,
       jobId,

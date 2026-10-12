@@ -768,6 +768,20 @@ export const TEXTES_FORMATEUR = {
         ],
         boutons: [],
       },
+      // Lot C (M11) — accord donné, mais aucune lettre n'avait encore été adressée : rien à
+      // annuler, aucune indemnité annoncée. Variante neuve, à valider par Will.
+      {
+        etape: "sans lettre",
+        objet: "Une mission ne vous est plus confiée",
+        objetPropose: "La mission [intitulé] ne vous est plus confiée",
+        paragraphes: [
+          "La mission [intitulé] du [date] ne vous est plus confiée.",
+          "La raison : [motif].",
+          "Nous ne vous avions pas encore adressé de lettre de mission : vous n'avez rien à faire.",
+          "Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.",
+        ],
+        boutons: [],
+      },
     ],
   },
   "formateur-formation-annulee": {
@@ -797,6 +811,18 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
           "La lettre de mission, que vous n'aviez pas encore signée, est annulée.",
+        ],
+        boutons: [],
+      },
+      // Lot C (M11) — accord donné, mais aucune lettre n'avait encore été adressée.
+      // Variante neuve, à valider par Will.
+      {
+        etape: "sans lettre",
+        objet: "La formation [intitulé] du [date] est annulée",
+        objetPropose: null,
+        paragraphes: [
+          "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
+          "Nous ne vous avions pas encore adressé de lettre de mission : vous n'avez rien à faire.",
         ],
         boutons: [],
       },
