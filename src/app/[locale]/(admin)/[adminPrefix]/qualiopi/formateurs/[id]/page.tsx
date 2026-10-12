@@ -89,6 +89,11 @@ import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupt
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
 import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
 import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
+import { ContratCadrePanel } from "@/components/admin/qualiopi/ContratCadrePanel";
+import {
+  lireContratsCadreFiche,
+  versionContratAEmettre,
+} from "@/server/qualiopi/formateurs-independants/contrat-cadre-emission";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -382,6 +387,14 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
     trainer.organismeSousTraitantId === null &&
     peutEngager(role, "habiliter_formateur") &&
     (await interrupteurAllume("fin_collaboration"));
+  // Lot L7b — contrat-cadre préparé depuis la fiche : indépendant en nom propre, rôle
+  // `contresigner`, interrupteur allumé. Rôle jugé AVANT toute lecture.
+  const voitContratCadre =
+    trainer.statut === "sous_traitant" &&
+    trainer.organismeSousTraitantId === null &&
+    peutEngager(role, "contresigner") &&
+    (await interrupteurAllume("contrat_cadre_emission"));
+  const contratsCadre = voitContratCadre ? await lireContratsCadreFiche(trainer.id) : [];
   const jourIso = (d: Date) => d.toISOString().slice(0, 10);
   const decideeAt = trainer.finCollaborationDecideeAt ?? trainer.finCollaborationAt;
   const motifFin = trainer.finCollaborationMotifPrevu ?? trainer.finCollaborationMotif;
@@ -497,6 +510,15 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
           trainerId={trainer.id}
           dossierStatut={trainer.dossierStatut}
           retour={retourDossier}
+        />
+      ) : null}
+
+      {voitContratCadre ? (
+        <ContratCadrePanel
+          trainerId={trainer.id}
+          versionArretee={versionContratAEmettre()}
+          contrats={contratsCadre}
+          lienVerifier={`/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}/verifier`}
         />
       ) : null}
 

@@ -216,6 +216,20 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
   //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
   "src/features/admin-job-applications/candidat-formateur-actions.ts",
+  // Suivi de l'échange formateur (lots F-CAL-2 et U7-f) : `formateurs.suivi_echange`, lu par
+  //    `lireEtatsEntree` (ne lève jamais) ; F3, F4 et l'issue partent par le module d'envoi
+  //    des formateurs (`envois.ts`), jamais par une copie.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/appels/[id]/page.tsx",
+  "src/features/admin-rendezvous/issue-formateur-actions.ts",
+  "src/features/admin-rendezvous/issue-formateur-envoi.ts",
+  "src/server/calendly/enrich.ts",
+  "src/server/calendly/rappels-echange-formateur.ts",
+  // Invitation à l'échange et réponses des formateurs (lots L-INV et CAMP-4) : le geste
+  //    « J'ai répondu ailleurs » et le rattrapage F55 (envoi par le module d'invitation des
+  //    formateurs, jamais par une copie) ; le relevé des candidatures appelle le rapprochement
+  //    des réponses formateurs (import paresseux, interrupteur `formateurs.reponses_formateurs`).
+  "src/features/admin-job-applications/invitation-formateur-actions.ts",
+  "src/features/admin-job-applications/reponses-entrantes-candidature.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -490,6 +504,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/formateur/echeances-formateur.spec.ts",
   "src/server/formateur/etapes-formateur.spec.ts",
   "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
+  // L16b-2 — la notice « Formateurs indépendants » dit vrai : le test lit les durées et
+  // les seuils (conservation, lien du dossier, statistiques) dans le domaine, au lieu
+  // de les recopier. Une notice ne se vérifie pas sans lire ce qu'elle décrit.
+  "src/content/__tests__/la-notice-dit-vrai-sur-les-formateurs-independants.spec.ts",
   // Compare le pied de page des e-mails aux SSOT dont il dérive — dont
   // `MENTION_NON_AGREMENT` et `NDA_NUMERO`. C'est le test qui empêche la
   // recopie : il ne peut pas vérifier la dérivation sans lire la source.

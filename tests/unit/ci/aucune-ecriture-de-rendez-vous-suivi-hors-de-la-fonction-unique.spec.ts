@@ -12,6 +12,8 @@
  *     (appelée par `enregistrerSuivi` et `enregistrerSuiviDansLaTransaction`) ;
  *   · `src/features/admin-rendezvous/issue-apporteur-actions.ts` → l'issue
  *     d'un échange APPORTEUR, qui n'a pas de rencontre (PA-9) ;
+ *   · `src/features/admin-rendezvous/issue-formateur-actions.ts` → l'issue
+ *     d'un échange FORMATEUR, même motif (F-CAL-2) ;
  *   · `src/lib/rgpd-erase.ts` → `eraseCalendlyEventsForEmail` (la note sur la
  *     personne part avec elle).
  *
@@ -35,6 +37,9 @@ const ECRITURE =
 const AUTORISES: Readonly<Record<string, ReadonlyArray<string>>> = {
   "src/features/dossier-client/suivi.ts": ["enregistrerSuiviDans"],
   "src/features/admin-rendezvous/issue-apporteur-actions.ts": ["*"],
+  // L'issue d'un échange FORMATEUR (lot F-CAL-2) : même motif que l'apporteur, un échange
+  // formateur n'a pas de rencontre (il est hors des familles client depuis F-CAL-1).
+  "src/features/admin-rendezvous/issue-formateur-actions.ts": ["enregistrerIssueFormateurAction"],
   "src/lib/rgpd-erase.ts": ["eraseCalendlyEventsForEmail"],
 };
 

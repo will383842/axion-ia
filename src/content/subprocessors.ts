@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-09-30" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-10-11" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -296,10 +296,12 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // les alertes suivent une règle unique : prénom + initiale du nom, et un
     // lien vers la fiche console (`notifications/personne.ts`). Le garde-fou
     // `telegram-sans-coordonnees-personnelles.spec.ts` le vérifie sur tout `src/`.
+    // Lot L16b-2 : l'alerte « dossier de formateur reçu » ne porte aucun nom
+    // (`TRAINER_DOSSIER_RECU` dans `notifications/format.ts`) — déclarée à part.
     dataCategoriesFr:
-      "Données minimisées pour toutes les alertes. **Demandes RGPD** : initiales (`J. D.`) et référence du dossier. **Autres alertes** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous, avis) : prénom et initiale du nom (« Marie D. »), nom de l'entreprise, ville, provenance, montant ou statut, et un lien vers la fiche dans la console. Aucune adresse e-mail, aucun numéro de téléphone ni aucun contenu de message ne sont transmis. S'y ajoutent dates et identifiants techniques.",
+      "Données minimisées pour toutes les alertes. **Demandes RGPD** : initiales (`J. D.`) et référence du dossier. **Dossier d'un formateur indépendant reçu** : un identifiant court et le résultat de la vérification au registre, sans aucun nom. **Autres alertes** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous, avis) : prénom et initiale du nom (« Marie D. »), nom de l'entreprise, ville, provenance, montant ou statut, et un lien vers la fiche dans la console. Aucune adresse e-mail, aucun numéro de téléphone ni aucun contenu de message ne sont transmis. S'y ajoutent dates et identifiants techniques.",
     dataCategoriesEn:
-      'Minimised data for every alert. **GDPR requests**: initials (`J. D.`) and case reference. **Other alerts** (contact form, quote/audit/intervention request, job application, invitation, booking, review): first name and last-name initial ("Marie D."), company name, city, origin, amount or status, and a link to the record in the admin console. No email address, phone number or message content is sent. Plus dates and technical identifiers.',
+      'Minimised data for every alert. **GDPR requests**: initials (`J. D.`) and case reference. **Independent trainer file received**: a short identifier and the result of the register check, without any name. **Other alerts** (contact form, quote/audit/intervention request, job application, invitation, booking, review): first name and last-name initial ("Marie D."), company name, city, origin, amount or status, and a link to the record in the admin console. No email address, phone number or message content is sent. Plus dates and technical identifiers.',
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "scc",

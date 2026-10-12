@@ -45,6 +45,9 @@ import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
+import { rattacherEchangeFormateur } from "./rattachement-formateur";
+import { estEchangeFormateur } from "./echange-formateur";
+import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { creerFicheDepuisRendezVous } from "./fiche-rendez-vous-apporteur";
 import { attributionDeLaFiche, estFicheVideo, recopieAttribution } from "./attribution-origine";
 import { estRendezVousApporteur } from "./appel-apporteur";
@@ -470,6 +473,36 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     }
   } catch (e) {
     Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
+  }
+  // ── Rattachement d'un échange FORMATEUR à sa candidature (lot F-CAL-2) ──────
+  //
+  // Interrupteur `formateurs.suivi_echange` COUPÉ (ligne absente) : rien, comme avant.
+  // Allumé : le marqueur `fa-<id>` lu dans la réponse de l'API (jamais la colonne, que la
+  // route publique peut avoir remplie), puis l'adresse confirmée ; le nom seul, jamais.
+  if (
+    estEchangeFormateur({
+      typeRendezVous,
+      eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+    })
+  ) {
+    try {
+      if ((await lireEtatsEntree()).suivi_echange) {
+        await rattacherEchangeFormateur(
+          {
+            id: eventId,
+            eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+            typeRendezVous,
+            inviteeEmail,
+            inviteeName: d.inviteeName ?? null,
+            linkedSubmissionId: row.linkedSubmissionId,
+            linkedJobApplicationId: row.linkedJobApplicationId,
+          },
+          utm.utmContent,
+        );
+      }
+    } catch (e) {
+      Sentry.captureException(e, { tags: { service: "calendly-rattachement-formateur" } });
+    }
   }
   // ── La fiche rattachée, lue UNE fois (2026-10-10) ───────────────────────────
   // Une fiche de la page vidéo porte l'attribution d'origine de la personne

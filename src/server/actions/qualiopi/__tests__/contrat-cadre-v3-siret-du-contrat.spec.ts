@@ -1,7 +1,7 @@
 /**
  * L7c — l'entreprise confirmée active doit être CELLE QUI CONTRACTE.
  *
- * Le contrat v3 porte son propre SIRET figé (`renderData.cocontractant.siret`,
+ * Le contrat v3 porte son propre SIRET figé (`renderData.data.cocontractant.siret`,
  * rendu dans son texte). Si la fiche a changé de SIRET depuis l'émission (A
  * cessé → B actif), relire le registre sur B ne dit rien de A : aux TROIS portes
  * (demande de code, signature, contresignature), le contrat est refusé, sans code
@@ -32,7 +32,10 @@ vi.mock("@/lib/prisma", () => ({
         metadata: {
           renderData: {
             gabaritVersion: 3,
-            cocontractant: h.siretContrat === undefined ? {} : { siret: h.siretContrat },
+            // La forme réelle de l'instantané : le cocontractant vit sous `data`.
+            data: {
+              cocontractant: h.siretContrat === undefined ? {} : { siret: h.siretContrat },
+            },
           },
         },
         trainerId: "t-1",

@@ -36,7 +36,9 @@ import {
   basculerFormateursMenuFreelanceAction,
   basculerFormateursModelesComposeurAction,
   basculerFormateursAjoutConsoleAction,
+  basculerFormateursSuiviEchangeAction,
   basculerFormateursDossiersContratsAction,
+  basculerFormateursReponsesFormateursAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
@@ -44,6 +46,9 @@ import {
   basculerFormateursPresentationPayeeAction,
   basculerFormateursDas2CommunAction,
   basculerFormateursFinCollaborationAction,
+  basculerFormateursContratCadreEmissionAction,
+  basculerFormateursMiseANiveauAction,
+  basculerFormateursNouvelleVersionContratAction,
   basculerFormateursSuiteContratCadreAction,
   basculerSignatureAlertesHorsJetonAction,
   basculerSignatureCopiePartielleAction,
@@ -109,6 +114,9 @@ const ACTIONS_SIGNATURE: Record<
   presentation_payee: basculerFormateursPresentationPayeeAction,
   das2_commun: basculerFormateursDas2CommunAction,
   fin_collaboration: basculerFormateursFinCollaborationAction,
+  contrat_cadre_emission: basculerFormateursContratCadreEmissionAction,
+  mise_a_niveau: basculerFormateursMiseANiveauAction,
+  nouvelle_version_contrat: basculerFormateursNouvelleVersionContratAction,
 };
 
 const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTextesValidesAction> =
@@ -118,7 +126,9 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     menu_freelance: basculerFormateursMenuFreelanceAction,
     modeles_composeur: basculerFormateursModelesComposeurAction,
     ajout_console: basculerFormateursAjoutConsoleAction,
+    suivi_echange: basculerFormateursSuiviEchangeAction,
     dossiers_contrats: basculerFormateursDossiersContratsAction,
+    reponses_formateurs: basculerFormateursReponsesFormateursAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

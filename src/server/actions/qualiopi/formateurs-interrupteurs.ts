@@ -490,6 +490,19 @@ export async function basculerFormateursDossiersContratsAction(
   return basculerEntree("dossiers_contrats", formData);
 }
 
+export async function basculerFormateursSuiviEchangeAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("suivi_echange", formData);
+}
+export async function basculerFormateursReponsesFormateursAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerEntree("reponses_formateurs", formData);
+}
+
 export async function basculerFormateursAffectationSureAction(
   _prev: EtatBascule,
   formData: FormData,
@@ -525,4 +538,22 @@ export async function basculerFormateursFinCollaborationAction(
   formData: FormData,
 ): Promise<EtatBascule> {
   return basculerSignature("fin_collaboration", formData);
+}
+export async function basculerFormateursContratCadreEmissionAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("contrat_cadre_emission", formData);
+}
+export async function basculerFormateursMiseANiveauAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("mise_a_niveau", formData);
+}
+export async function basculerFormateursNouvelleVersionContratAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("nouvelle_version_contrat", formData);
 }

@@ -118,6 +118,8 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
 
   // ── Coordination des intervenants ──
   modalites_coordination: "Modalités de coordination des intervenants",
+  nda_region: "Région de la déclaration d'activité",
+  adresse_formateurs: "Adresse électronique dédiée aux formateurs",
 };
 
 /** Libellés lisibles des options, pour les clés à choix fermé (rendues en <select>). */
