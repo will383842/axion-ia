@@ -3,14 +3,14 @@
 // Les crochets à choix (« [motif : a / b] ») sont alignés sur une clé simple.
 import { describe, expect, it } from "vitest";
 
-import { MOTIFS_COMPLEMENT } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
+import { MOTIFS_COMPLEMENT } from "../verifier-contresigner-regles";
 
-import { remplir, varianteDe } from "./_formateur-independant";
+import { remplir, varianteDe } from "@/lib/email/templates/_formateur-independant";
 import {
   CROCHET_NON_REMPLI,
   TEXTES_FORMATEUR,
   type GabaritFormateurIndependant,
-} from "./formateur-independant-textes";
+} from "@/lib/email/templates/formateur-independant-textes";
 
 function crochetsVides(g: GabaritFormateurIndependant, payload: Record<string, unknown>): string[] {
   const v = varianteDe(g, payload);

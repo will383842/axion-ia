@@ -4,11 +4,10 @@
 import { describe, expect, it } from "vitest";
 
 import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
-import { VARIANTES_VALIDEES_A_PART } from "@/server/qualiopi/formateurs-independants/envois-variantes";
 import { VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
-import { VARIANTE_F23_HONORAIRES } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 
 import {
+  VARIANTES_VALIDEES_A_PART,
   cleDuTexte,
   estTexteFormateurAValider,
   TEXTES_FORMATEURS_A_VALIDER,
@@ -30,7 +29,7 @@ describe("textes formateurs à valider", () => {
     }
     expect(TEXTES_FORMATEURS_A_VALIDER).toContainEqual({
       gabarit: "formateur-mission-proposee",
-      variante: VARIANTE_F23_HONORAIRES,
+      variante: "honoraires",
     });
   });
 

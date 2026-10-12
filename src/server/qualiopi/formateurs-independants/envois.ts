@@ -36,11 +36,11 @@ import {
   type ApercuRendu,
   type ResultatEnvoi,
 } from "@/server/email/envoi-monde";
+import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import { enqueueEmail } from "@/server/queue/queues";
 
-import { VARIANTES_VALIDEES_A_PART } from "./envois-variantes";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
 

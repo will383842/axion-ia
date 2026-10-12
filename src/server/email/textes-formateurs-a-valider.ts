@@ -10,10 +10,29 @@
  * Pur : l'écran et les actions le lisent ; le registre reste `textes-valides.ts`.
  */
 
-import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
-import { VARIANTES_VALIDEES_A_PART } from "@/server/qualiopi/formateurs-independants/envois-variantes";
+import {
+  TEXTES_FORMATEUR,
+  type GabaritFormateurIndependant,
+} from "@/lib/email/templates/formateur-independant-textes";
 
 import { cleTexteValide } from "./textes-valides";
+
+/**
+ * Variantes ajoutées APRÈS la validation possible du gabarit : elles se
+ * valident à part (`textes_valides.<gabarit>#<variante>`). Sans cette clé,
+ * rien ne part — jamais un texte neuf sous une validation ancienne.
+ * Clé : gabarit → (n° d'étape du payload → nom de la variante).
+ *
+ * Lu par l'adaptateur d'envoi des formateurs (`envois.ts`) ET par l'écran de
+ * validation : l'écran ne propose que ce que l'envoi exigera.
+ */
+export const VARIANTES_VALIDEES_A_PART: Readonly<
+  Partial<Record<GabaritFormateurIndependant, Readonly<Record<number, string>>>>
+> = {
+  // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
+  "formateur-mission-retiree": { 2: "lettre-non-signee" },
+  "formateur-formation-annulee": { 2: "lettre-non-signee" },
+};
 
 export interface TexteAValider {
   readonly gabarit: string;
