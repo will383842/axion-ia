@@ -2126,6 +2126,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "*/5 * * * *",
         jobId: "formation-crons-invitations-formateurs-cron",
       },
+      // Lot E, M5 (2026-10-12) — recontrôle périodique du registre des entreprises
+      // (formateurs actifs contrôlés il y a plus de 25 jours, 20 au plus par passage).
+      // 08:35 UTC (09:35 ou 10:35 à Paris), chaque jour. Arrêté tant que
+      // `formateurs.controle_registre_periodique` n'est pas allumé.
+      {
+        type: "formation-crons.controle-registre-periodique",
+        pattern: "35 8 * * *",
+        jobId: "formation-crons-controle-registre-periodique-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {
