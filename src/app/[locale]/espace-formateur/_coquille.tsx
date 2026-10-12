@@ -26,6 +26,8 @@ import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLo
 import { getFormateurSession } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
+import { prisma } from "@/lib/prisma";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 
 export type SectionFormateur = "accueil" | "formations" | "remuneration" | "accompagnements";
 
@@ -37,7 +39,14 @@ export type SectionFormateur = "accueil" | "formations" | "remuneration" | "acco
  * rémunération du formateur autant que la preuve de l'organisme. C'est la seule
  * chose que l'espace lui RÉCLAME.
  */
-function construireNavigation(aSigner: number): readonly EspaceNavItem[] {
+function construireNavigation(
+  aSigner: number,
+  /**
+   * Lot L11b-ux — formateur indépendant, interrupteur `formateurs.choix_cartes`
+   * allumé : « Mes missions » et « Mes honoraires ». Faux : les libellés d'avant.
+   */
+  libellesIndependant = false,
+): readonly EspaceNavItem[] {
   return [
     {
       cle: "accueil",
@@ -49,8 +58,8 @@ function construireNavigation(aSigner: number): readonly EspaceNavItem[] {
     {
       cle: "formations",
       href: FORMATEUR_SESSIONS_PATH,
-      label: "Mes formations",
-      labelCourt: "Formations",
+      label: libellesIndependant ? "Mes missions" : "Mes formations",
+      labelCourt: libellesIndependant ? "Missions" : "Formations",
       icone: CalendarDays,
     },
     {
@@ -59,8 +68,8 @@ function construireNavigation(aSigner: number): readonly EspaceNavItem[] {
       // lui doit : une facture établie en son nom ne vivait que dans un e-mail.
       cle: "remuneration",
       href: `${FORMATEUR_BASE_PATH}/remuneration`,
-      label: "Ma rémunération",
-      labelCourt: "Rémunération",
+      label: libellesIndependant ? "Mes honoraires" : "Ma rémunération",
+      labelCourt: libellesIndependant ? "Honoraires" : "Rémunération",
       icone: Euro,
     },
     {
@@ -73,6 +82,20 @@ function construireNavigation(aSigner: number): readonly EspaceNavItem[] {
       icone: UserRound,
     },
   ];
+}
+
+/** Interrupteur `formateurs.choix_cartes` allumé ET formateur indépendant. Ne lève jamais. */
+async function estIndependantEnCartes(trainerId: string): Promise<boolean> {
+  if (!(await interrupteurAllume("choix_cartes"))) return false;
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true },
+    });
+    return t?.statut === "sous_traitant";
+  } catch {
+    return false;
+  }
 }
 
 export interface CoquilleFormateurProps {
@@ -89,12 +112,13 @@ export async function CoquilleFormateur({
 }: CoquilleFormateurProps) {
   const session = await getFormateurSession();
   const nom = session ? `${session.prenom} ${session.nom}`.trim() : "";
+  const libellesIndependant = session !== null && (await estIndependantEnCartes(session.trainerId));
 
   return (
     <EspaceShell
       titreEspace="Espace formateur"
       sousTitreEspace="Vos formations et vos documents"
-      navigation={construireNavigation(aSigner)}
+      navigation={construireNavigation(aSigner, libellesIndependant)}
       sectionActive={section}
       {...(nom !== "" ? { utilisateur: { nom } } : {})}
       actionSortie={<FormateurLogoutButton />}

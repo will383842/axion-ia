@@ -175,10 +175,13 @@ describe("T4 — tout écrivain d'affectation passe par la garde", () => {
     "src/server/actions/qualiopi/trainers.ts",
     "src/server/actions/qualiopi/sessions.ts",
     "src/server/actions/qualiopi/sessions-recurrentes.ts",
+    // Lot L11h — le moteur du rang suivant affecte le choix suivant (évaluation
+    // complète, garde relue avant l'écriture, dossier ouvert, place conditionnelle).
+    "src/server/qualiopi/formateurs-independants/choix-formateur-service.ts",
   ];
   const ECRITURE = /\bsessionFormateur\.(create|createMany|upsert)\s*\(/;
 
-  it("les trois portes écrivent une affectation et appellent la garde", () => {
+  it("les portes écrivent une affectation et appellent la garde", () => {
     for (const f of PORTES) {
       const src = readFileSync(join(RACINE, f), "utf8");
       expect(src, f).toMatch(ECRITURE);

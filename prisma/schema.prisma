@@ -16042,6 +16042,9 @@ model ChoixFormateurSession {
   rang                             Int
   tarifHtCents                     Int?            @map("tarif_ht_cents")
   forfaitDeplacementParJourHtCents Int?            @map("forfait_deplacement_par_jour_ht_cents")
+  /// Régime de TVA du formateur FIGÉ au choix (correctif L11b) : recopié sur la
+  /// mission avec le tarif et le forfait. Null = choix d'avant cette colonne, ou salarié.
+  regimeTvaFige                    TvaRegimeHonoraires? @map("regime_tva_fige")
   sauteAt                          DateTime?       @map("saute_at")
   sauteMotif                       String?         @map("saute_motif") @db.Text
   createdAt                        DateTime        @default(now()) @map("created_at")

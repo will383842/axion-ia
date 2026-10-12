@@ -27,6 +27,7 @@ import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qua
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
+import { SectionChoixFormateur } from "@/components/admin/qualiopi/SectionChoixFormateur";
 import { MissionFormateurPanel } from "@/components/admin/qualiopi/MissionFormateurPanel";
 import {
   lireMissionCourante,
@@ -1061,11 +1062,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
         <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
           <h2 className={sectionHeadCls}>Formateur principal</h2>
-          <AssignFormateurForm
-            sessionId={id}
-            currentTrainerId={trainingSession.formateurPrincipalId}
-            trainers={formateurOptions}
-          />
+          {/* Lot L11b — cartes « 1er · 2e · 3e choix » derrière l'interrupteur
+                `formateurs.choix_cartes` ; coupé, la liste d'avant seule. */}
+          <SectionChoixFormateur sessionId={id}>
+            <AssignFormateurForm
+              sessionId={id}
+              currentTrainerId={trainingSession.formateurPrincipalId}
+              trainers={formateurOptions}
+            />
+          </SectionChoixFormateur>
           {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
                 pas une confirmation : tant qu'il n'a pas accepté, la session n'a
                 pas de formateur sûr, et l'écran doit le dire là où on l'affecte. */}

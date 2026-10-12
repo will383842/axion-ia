@@ -2083,12 +2083,26 @@ async function handleMissionsFormateur(): Promise<void> {
     console.log("[formation-crons] missions-formateur: stub DB, skip");
     return;
   }
-  const bilan = await relancerEtExpirerMissions(new Date());
+  const maintenant = new Date();
+  const bilan = await relancerEtExpirerMissions(maintenant);
   console.log(
     `[formation-crons] missions-formateur: ${bilan.relancees} relance(s) envoyée(s), ` +
       `${bilan.sansReponse} sans réponse dans le délai (session libérée), ` +
       `${bilan.expirees} proposition(s) expirée(s), ${bilan.erreurs} erreur(s)`,
   );
+  // Lot L11h — le choix suivant des sessions libérées (interrupteur
+  // `formateurs.rang_suivant` ; coupé : rien n'est lu au-delà de l'interrupteur).
+  // Import À LA DEMANDE : le module tire l'adaptateur d'envoi, que ce worker
+  // n'a pas à charger tant que rien ne s'allume.
+  const { proposerRangsSuivants } =
+    await import("@/server/qualiopi/formateurs-independants/choix-formateur-service");
+  const suivants = await proposerRangsSuivants(maintenant);
+  if (suivants.proposes > 0 || suivants.aPourvoir > 0) {
+    console.log(
+      `[formation-crons] missions-formateur: ${suivants.proposes} choix suivant(s) proposé(s), ` +
+        `${suivants.aPourvoir} session(s) à pourvoir`,
+    );
+  }
 }
 
 /**

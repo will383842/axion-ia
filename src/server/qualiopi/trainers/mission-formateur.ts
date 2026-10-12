@@ -44,6 +44,8 @@ import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/colle
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
+import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
+import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
@@ -284,6 +286,13 @@ export async function proposerMissionFormateur(
       return { proposee: false, raison: `garde de mission : ${garde.refus.join(" ")}` };
     }
 
+    // Lot L11b — les conditions financières FIGÉES au choix en cartes sont
+    // recopiées sur la mission (interrupteur `formateurs.choix_cartes` ; coupé :
+    // `null`, la mission se crée exactement comme avant).
+    // Le choix en cartes ne vaut que pour le formateur PRINCIPAL.
+    const conditions =
+      role === "principal" ? await lireConditionsFigees(session.id, trainer.id) : null;
+
     const mission = await prisma.$transaction(async (tx) => {
       await tx.missionFormateur.updateMany({
         where: { sessionId: session.id, trainerId: trainer.id, statut: "en_attente" },
@@ -296,6 +305,13 @@ export async function proposerMissionFormateur(
           role,
           solliciteAt: now,
           echeanceReponseAt: echeanceReponse(session.dateDebut, now),
+          ...(conditions !== null
+            ? {
+                tarifHtCents: conditions.tarifHtCents,
+                forfaitDeplacementParJourHtCents: conditions.forfaitDeplacementParJourHtCents,
+                regimeTvaFige: conditions.regimeTvaFige,
+              }
+            : {}),
         },
         select: { id: true },
       });
@@ -357,6 +373,9 @@ async function envoyerProposition(args: {
     ...session,
     lieuType: session.lieuType as "sur_site" | "nos_locaux" | "distanciel" | null,
   });
+  // Lot L11b-ux — variante chiffrée de F23 (montant avant « J'accepte »), seulement
+  // si elle est validée par Will ; sinon l'ancien texte part, inchangé.
+  const chiffree = await champsF23Honoraires(args.missionId);
   const envoi = await enqueueEmail(
     "formateur-mission-proposee",
     trainer.email,
@@ -380,6 +399,7 @@ async function envoyerProposition(args: {
       delaiReponse: libelleEcheance(echeance, now),
       infosPratiques: libelleInfosPratiques(session.dateDebut, now),
       ...(args.relance ? { relance: true } : {}),
+      ...(chiffree ?? {}),
     },
     {
       jobId: `formateur-mission-${args.missionId}-${args.relance ? "relance" : "proposition"}`,
@@ -949,6 +969,8 @@ export async function listerMissionsAConfirmer(trainerId: string): Promise<
     id: string;
     role: SessionFormateurRole;
     solliciteAt: Date;
+    /** Lot L11b-ux — la date limite, dite sur l'accueil « À faire ». */
+    echeanceReponseAt: Date | null;
     session: { id: string; numero: string; titreSession: string; dateDebut: Date; dateFin: Date };
   }>
 > {
@@ -960,6 +982,7 @@ export async function listerMissionsAConfirmer(trainerId: string): Promise<
         id: true,
         role: true,
         solliciteAt: true,
+        echeanceReponseAt: true,
         session: {
           select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },
         },

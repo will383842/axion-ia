@@ -317,6 +317,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // formateur hors de l'espace formateur : la garde serait verte et
   // l'architecture fausse.
   "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // Lots L11b-ux et L11h (2026-10-11) : la proposition chiffrée en six
+  // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
+  // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le
+  // statut du formateur connecté, pour nommer le menu (« Mes missions »,
+  // « Mes honoraires »). `VueMission` : la page d'une mission (lecture bornée
+  // au `trainerId` de la session, `where: { id, trainerId }` ; deux actions qui
+  // revérifient l'appartenance).
+  "src/components/espace-formateur/VueMission.tsx",
+  "src/app/[locale]/espace-formateur/_coquille.tsx",
+  "src/components/espace-formateur/PropositionSixLignes.tsx",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la
   // même partout : un même document téléchargé depuis la console et depuis

@@ -17,7 +17,7 @@ import {
 } from "./interrupteurs";
 
 describe("interrupteurs du socle de signature", () => {
-  it("quatorze clés, chacune protégée de l'éditeur générique", () => {
+  it("seize clés, chacune protégée de l'éditeur générique", () => {
     expect(CLES_INTERRUPTEURS_SIGNATURE.map(cleSettingSignature).sort()).toEqual(
       [
         // Lot S2 — affectation et acceptation sûres, livré éteint.
@@ -31,6 +31,10 @@ describe("interrupteurs du socle de signature", () => {
         "formateurs.das2_commun",
         // Lot L14 — fin de collaboration, livrée éteinte.
         "formateurs.fin_collaboration",
+        // Lots L11b et L11b-ux — choix du formateur en cartes, livré éteint.
+        "formateurs.choix_cartes",
+        // Lot L11h — choix suivant et désistement, livrés éteints.
+        "formateurs.rang_suivant",
         // Lots L7b, L9b, L7d — contrat-cadre émis, mise à niveau, nouvelle version, éteints.
         "formateurs.contrat_cadre_emission",
         "formateurs.mise_a_niveau",
@@ -104,5 +108,32 @@ describe("date d'allumage (`signature.exemplaire_captation`)", () => {
     ).toEqual(new Date("2026-10-09T08:00:00.000Z"));
     expect(dateAllumageSignature({ actif: true }, MAJ)).toEqual(MAJ);
     expect(dateAllumageSignature({ actif: true, allumeLe: "n'importe" }, MAJ)).toEqual(MAJ);
+  });
+});
+
+describe("correctifs L11b et L11h — préalables du choix en cartes et du rang suivant", () => {
+  const etats = etatsParDefaut();
+  it("le choix en cartes exige une date de passage au paiement par mission", () => {
+    expect(prealablesManquantsSignature("choix_cartes", true, etats)).toHaveLength(1);
+    expect(
+      prealablesManquantsSignature("choix_cartes", true, {
+        ...etats,
+        passage_paiement: "2026-12-01",
+      }),
+    ).toEqual([]);
+  });
+  it("le rang suivant exige la garde aux portes et l'affectation sûre", () => {
+    const sig = etatsSignatureParDefaut();
+    const avecTextes = { ...etats, textes_valides: true };
+    expect(prealablesManquantsSignature("rang_suivant", true, avecTextes, sig)).toHaveLength(2);
+    expect(
+      prealablesManquantsSignature("rang_suivant", true, avecTextes, {
+        ...sig,
+        garde_mission_portes: true,
+        affectation_sure: true,
+      }),
+    ).toEqual([]);
+    // États du registre non fournis : le plus strict.
+    expect(prealablesManquantsSignature("rang_suivant", true, avecTextes)).toHaveLength(2);
   });
 });

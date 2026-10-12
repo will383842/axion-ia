@@ -55,6 +55,7 @@ import {
 import { HEURES_PAR_JOUR_DEFAUT } from "./calcul";
 import {
   cleRevendication,
+  ecarterConditionsFigees,
   filtrerPrestationsApresBascule,
 } from "@/server/qualiopi/formateurs-independants/paiement/apres-bascule";
 import {
@@ -328,6 +329,60 @@ async function apresBascule(
   });
 }
 
+/** Statuts d'une sollicitation dont les conditions financières font foi (comme le passage). */
+const MISSIONS_ACCEPTEES = ["acceptee", "accord_hors_outil", "desistee"] as const;
+
+/**
+ * Correctif L11b (ARGENT) — écarte du relevé mensuel les couples (indépendant,
+ * session) dont la mission acceptée porte des honoraires figés au choix : ils
+ * sont payés par mission, au montant annoncé, jamais ici au tarif de la fiche.
+ * Chaque couple écarté devient une anomalie. Aucune mission figée : rien ne change.
+ * 🔴 Une lecture en échec LÈVE, comme `apresBascule`.
+ */
+async function sansConditionsFigees(
+  prestations: PrestationACalculer[],
+  formateurs: Map<string, FormateurContexte>,
+): Promise<{ prestations: PrestationACalculer[]; anomalies: Anomalie[] }> {
+  const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
+  if (sessionIds.length === 0) return { prestations, anomalies: [] };
+  // La mission acceptée la PLUS RÉCENTE de chaque couple fait foi (comme la
+  // lettre) : une ancienne mission figée ne fixe jamais le prix d'une nouvelle.
+  const missions = await prisma.missionFormateur.findMany({
+    where: { sessionId: { in: sessionIds }, statut: { in: [...MISSIONS_ACCEPTEES] } },
+    orderBy: { solliciteAt: "desc" },
+    select: { trainerId: true, sessionId: true, tarifHtCents: true },
+  });
+  const vus = new Set<string>();
+  const figees = new Set<string>();
+  for (const m of missions) {
+    const cle = cleRevendication(m.trainerId, m.sessionId);
+    if (vus.has(cle)) continue;
+    vus.add(cle);
+    if (m.tarifHtCents !== null) figees.add(cle);
+  }
+  const r = ecarterConditionsFigees(prestations, {
+    statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
+    figees,
+  });
+  // Un couple qui arrive ici n'est PAS payé par mission : `apresBascule` a déjà
+  // écarté tous ceux qui le sont (première journée ≥ D sans revendication, ou
+  // revendiqués `par_mission`). Il reste donc à régler à la main : on le dit.
+  return {
+    prestations: r.prestations,
+    anomalies: r.ecartees.map(({ trainerId, prestation }) => ({
+      motif: "conditions_figees_hors_mission" as const,
+      trainerId,
+      prestation: {
+        type: prestation.type,
+        sessionId: prestation.sessionId,
+        coachingSessionId: prestation.coachingSessionId,
+        bookingId: prestation.bookingId,
+        auditMissionId: prestation.auditMissionId,
+      },
+    })),
+  };
+}
+
 /* ──────────────────────────────────────────────────────────────────────────────
  * Écriture
  * ────────────────────────────────────────────────────────────────────────────── */
@@ -364,9 +419,11 @@ export async function runRemunerationMensuelle(
   // Paiement par mission (ADR 0066 v2 (e)) : SANS date de bascule, rien ne change.
   // Après la bascule, un indépendant n'est traité ici que pour les sessions que le
   // relevé mensuel a revendiquées ; le reste appartient au paiement par mission.
-  const prestations = await apresBascule(lues, formateurs);
+  const apres = await apresBascule(lues, formateurs);
+  // Correctif L11b — un montant figé au choix n'est jamais payé ici à un autre prix.
+  const { prestations, anomalies: anomaliesFigees } = await sansConditionsFigees(apres, formateurs);
 
-  const anomalies: Anomalie[] = [];
+  const anomalies: Anomalie[] = [...anomaliesFigees];
   const lignesParFormateur = new Map<string, LigneAPersister[]>();
 
   for (const prestation of prestations) {

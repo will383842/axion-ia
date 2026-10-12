@@ -45,7 +45,22 @@ import { listerMissionsAConfirmer } from "@/server/qualiopi/trainers/mission-for
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { lirePropositionChiffree } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
+import { eurosCourts } from "@/server/qualiopi/formateurs-independants/choix-formateur";
+
+import { VueMission } from "@/components/espace-formateur/VueMission";
+
 import { CoquilleFormateur } from "./_coquille";
+
+const reponseAvant = new Intl.DateTimeFormat("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "Europe/Paris",
+});
 
 export const dynamic = "force-dynamic";
 
@@ -55,8 +70,28 @@ const dateCourte = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 });
 
-export default async function EspaceFormateurAccueilPage(): Promise<React.ReactElement> {
+export default async function EspaceFormateurAccueilPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ mission?: string; fait?: string; erreur?: string; reponse?: string }>;
+}): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
+
+  // Lots L11b-ux / L11h — la page d'UNE mission, rendue ici (aucune route de
+  // plus). Interrupteur `formateurs.choix_cartes` coupé : le paramètre est
+  // ignoré, l'accueil d'avant s'affiche.
+  const sp = (await searchParams) ?? {};
+  if (
+    typeof sp.mission === "string" &&
+    /^[0-9a-f-]{36}$/i.test(sp.mission) &&
+    (await interrupteurAllume("choix_cartes"))
+  ) {
+    return (
+      <CoquilleFormateur section="accueil">
+        <VueMission trainerId={trainerId} id={sp.mission} sp={sp} />
+      </CoquilleFormateur>
+    );
+  }
 
   // Lu APRÈS la garde d'authentification : les deux lectures ne connaissent que
   // `trainerId`, elles n'ont aucun moyen de vérifier elles-mêmes que l'appelant
@@ -81,6 +116,16 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
     // vouloir prendre.
     listerMissionsAConfirmer(trainerId),
   ]);
+  // Lot L11b-ux (F-7) — chaque proposition avec son montant, sa date limite et
+  // « Voir et répondre » (interrupteur `formateurs.choix_cartes` ; coupé : rien
+  // n'est lu de plus, la liste d'avant).
+  const chiffrees = (await interrupteurAllume("choix_cartes"))
+    ? new Map(
+        await Promise.all(
+          missions.map(async (m) => [m.id, await lirePropositionChiffree(m.id)] as const),
+        ),
+      )
+    : null;
 
   // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
   // les lettres déjà signées restent affichées (c'est sa preuve), mais elles
@@ -120,12 +165,33 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
                   {dateCourte.format(m.session.dateFin)}
                   {" — "}proposée le {dateCourte.format(m.solliciteAt)}.
                 </p>
-                <Link
-                  href={`${FORMATEUR_SESSIONS_PATH}/${m.session.id}`}
-                  className="text-terracotta mt-2 inline-flex min-h-[24px] items-center text-sm hover:underline"
-                >
-                  Accepter ou refuser cette mission
-                </Link>
+                {chiffrees !== null ? (
+                  <>
+                    {chiffrees.get(m.id) != null ? (
+                      <p className="text-mocha mt-1 text-sm">
+                        Total <strong>{eurosCourts(chiffrees.get(m.id)!.totalHtCents)} HT</strong>
+                      </p>
+                    ) : null}
+                    {m.echeanceReponseAt !== null ? (
+                      <p className="text-fg-soft text-sm">
+                        Réponse avant le {reponseAvant.format(m.echeanceReponseAt)}
+                      </p>
+                    ) : null}
+                    <Link
+                      href={`${FORMATEUR_BASE_PATH}?mission=${m.id}`}
+                      className="bg-terracotta mt-3 inline-flex min-h-[48px] items-center justify-center rounded-md px-5 text-sm font-semibold text-white hover:opacity-90"
+                    >
+                      Voir et répondre
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    href={`${FORMATEUR_SESSIONS_PATH}/${m.session.id}`}
+                    className="text-terracotta mt-2 inline-flex min-h-[24px] items-center text-sm hover:underline"
+                  >
+                    Accepter ou refuser cette mission
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

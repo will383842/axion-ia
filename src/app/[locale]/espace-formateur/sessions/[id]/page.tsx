@@ -46,6 +46,8 @@ import {
   formulerHoraires,
 } from "@/server/qualiopi/trainers/convocation-formateur";
 import { MissionReponseForm } from "@/components/espace-formateur/MissionReponseForm";
+import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
+import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import {
   FORMATEUR_SESSIONS_PATH,
   MODALITE_LABELS,
@@ -96,6 +98,9 @@ export default async function Page({
   const mission = await lireMissionCourante(id, trainerId);
   // Lot S2 (S-UX-6) — refus d'un indépendant sans motif exigé (interrupteur).
   const refusLibre = mission !== null && (await refusLibrePour(trainerId));
+  // Lots L11b-ux / L11h — la page de la mission (proposition chiffrée,
+  // désistement) ; interrupteur `formateurs.choix_cartes` coupé : aucun lien.
+  const pageMission = mission !== null && (await interrupteurAllume("choix_cartes"));
   // 🔴 ADR 0060 — dossier clos : le formateur ne fait plus signer À LA PLACE
   // d'un stagiaire (écriture VERROU, refusée par le serveur). Lu APRÈS la garde
   // de propriété. Sa contresignature reste ouverte.
@@ -257,6 +262,17 @@ export default async function Page({
             {session.convocationJ7EnvoyeeAt !== null
               ? ` Informations pratiques envoyées le ${dateFmt.format(session.convocationJ7EnvoyeeAt)}.`
               : ""}
+            {pageMission ? (
+              <>
+                {" "}
+                <Link
+                  href={`${FORMATEUR_BASE_PATH}?mission=${mission.id}`}
+                  className="text-terracotta hover:underline"
+                >
+                  Voir ma mission
+                </Link>
+              </>
+            ) : null}
           </p>
         ) : null}
 

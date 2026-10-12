@@ -12,6 +12,7 @@ import { prendreVerrousRemuneration } from "@/server/qualiopi/remuneration/verro
 import { journaliser } from "@/server/journal/journaliser";
 
 import { totaliser } from "../argent/calcul-mission";
+import { forfaitSelonLieu } from "../choix-formateur";
 import { jourDeColonneDate } from "../argent/dates";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
@@ -58,6 +59,8 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     select: {
       id: true,
       dateDebut: true,
+      lieuType: true,
+      modalite: true,
       jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
       sessionFormateurs: { select: { trainerId: true, role: true } },
     },
@@ -76,9 +79,10 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     prisma.missionFormateur.findMany({
       where: {
         sessionId: { in: ids },
+        // Toutes les missions acceptées : la PLUS RÉCENTE fait foi. Sans prix
+        // figé, elle n'en reçoit jamais un d'une mission plus ancienne
+        // (anomalie `conditions_absentes`).
         statut: { in: [...MISSIONS_ACCEPTEES] },
-        tarifHtCents: { not: null },
-        regimeTvaFige: { not: null },
       },
       orderBy: { solliciteAt: "desc" },
       select: {
@@ -105,7 +109,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
       parFormateur.set(sig.trainerId, [...(parFormateur.get(sig.trainerId) ?? []), sig]);
     }
     for (const [trainerId, sigs] of parFormateur) {
-      // La plus récente des sollicitations acceptées, à prix figé.
+      // La plus récente des sollicitations acceptées ; son prix figé, ou aucun.
       const m = missions.find((x) => x.sessionId === s.id && x.trainerId === trainerId);
       // Affecté à la session (principal ou co-formateur) : les journées sans
       // formateur désigné lui reviennent aussi.
@@ -118,7 +122,12 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
           m && m.tarifHtCents !== null && m.regimeTvaFige !== null
             ? {
                 tarifJourneeHtCents: m.tarifHtCents,
-                forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
+                // À distance, aucun forfait : la règle de la proposition et de
+                // la lettre (`forfaitSelonLieu`), jamais le seul forfait figé.
+                forfaitDeplacementParJourHtCents: forfaitSelonLieu(
+                  m.forfaitDeplacementParJourHtCents,
+                  s,
+                ),
                 regimeTva: m.regimeTvaFige as TvaRegimeHonoraires,
               }
             : null,
