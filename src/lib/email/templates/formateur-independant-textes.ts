@@ -818,7 +818,7 @@ export const TEXTES_FORMATEUR = {
           "Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].",
           "Déposez-le depuis votre espace : la lettre de mission partira aussitôt.",
         ],
-        boutons: ["Ouvrir mon espace"],
+        boutons: ["Déposer depuis mon espace"],
       },
     ],
   },
