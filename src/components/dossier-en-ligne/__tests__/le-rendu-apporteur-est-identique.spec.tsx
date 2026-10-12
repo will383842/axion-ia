@@ -10,8 +10,15 @@ vi.mock("@/app/apporteur/dossier/retrouver/actions", () => ({ demanderLienEspace
 import REFERENCE from "./rendus-apporteur-reference.json";
 import { rendus } from "./_rendus";
 
+// Les rendus de référence portent la date du jour du gel (`max` de la date de
+// délivrance) : l'horloge est figée à ce jour, sinon le test rougit chaque minuit.
+const JOUR_DU_GEL = new Date("2026-10-11T12:00:00Z");
+
 describe("rendu apporteur identique, octet pour octet", () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(JOUR_DU_GEL);
   const actuels = rendus();
+  vi.useRealTimers();
   it("les mêmes cas sont figés", () => {
     expect(Object.keys(actuels).sort()).toEqual(Object.keys(REFERENCE).sort());
   });
