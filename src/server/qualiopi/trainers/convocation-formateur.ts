@@ -29,6 +29,10 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { formulerEffectif } from "./mission-formateur";
+import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import { sendTelegram } from "@/lib/telegram";
+import { uploadToR2 } from "@/lib/r2-storage";
+import { construireAgendaSession } from "./agenda-formateur-ics";
 
 function isStub(): boolean {
   return Boolean(process.env["DATABASE_URL"]?.includes("stub.invalid"));
@@ -103,17 +107,30 @@ export function formulerAdresseComplete(l: {
 interface InfosChargees {
   destinataire: string;
   payload: Record<string, unknown>;
+  /** Lot C (M19) : le fichier d'agenda joint, pour un formateur indépendant seulement. */
+  attachments?: Array<{ filename: string; r2Key: string; contentType: string }>;
+  /** Lot C (M19) : la lettre de mission de cette session n'est pas signée par le formateur. */
+  lettreNonSignee?: { numeroSession: string };
 }
 
 async function chargerInfosPratiques(
   sessionFormateurId: string,
   now: Date,
+  quoi: "convocation-j7" | "rappel-j1" = "convocation-j7",
 ): Promise<InfosChargees | null> {
   const sf = await prisma.sessionFormateur.findUnique({
     where: { id: sessionFormateurId },
     select: {
       trainerId: true,
-      trainer: { select: { email: true, prenom: true, nom: true } },
+      trainer: {
+        select: {
+          email: true,
+          prenom: true,
+          nom: true,
+          statut: true,
+          organismeSousTraitantId: true,
+        },
+      },
       session: {
         select: {
           id: true,
@@ -150,7 +167,16 @@ async function chargerInfosPratiques(
     prisma.missionFormateur.findFirst({
       where: { sessionId: s.id, trainerId: sf.trainerId },
       orderBy: { solliciteAt: "desc" },
-      select: { statut: true },
+      select: {
+        statut: true,
+        lettreMissionId: true,
+        lettreMission: {
+          select: {
+            annuleeAt: true,
+            signatures: { where: { revokedAt: null }, select: { partie: true } },
+          },
+        },
+      },
     }),
     prisma.supportFormation.findFirst({
       where: { formationId: s.formationId, type: "kit_formateur_imprime", pdfKey: { not: null } },
@@ -166,9 +192,50 @@ async function chargerInfosPratiques(
   const optionnel = (cle: string, v: string | undefined): Record<string, string> =>
     v !== undefined && v !== "" ? { [cle]: v } : {};
 
+  // Lot C (M19), côté FORMATEUR seulement : un indépendant dont la lettre n'est pas signée
+  // en est averti dans la convocation, et reçoit son agenda. Interrupteur
+  // `formateurs.lettre_auto` éteint, ou formateur salarié / intervenant d'organisme :
+  // le message d'avant, à l'identique.
+  const independant =
+    sf.trainer.statut === "sous_traitant" && sf.trainer.organismeSousTraitantId === null;
+  const lettreActive =
+    quoi === "convocation-j7" && independant && (await envoiAllume("lettre_auto"));
+  const lettre = mission?.lettreMission;
+  const lettreNonSignee =
+    lettreActive &&
+    mission?.lettreMissionId != null &&
+    lettre != null &&
+    lettre.annuleeAt === null &&
+    !lettre.signatures.some((x) => x.partie === "formateur");
+  let attachments: InfosChargees["attachments"];
+  if (lettreActive) {
+    const ics = construireAgendaSession({
+      affectationId: sessionFormateurId,
+      titre: s.titreSession,
+      lieu: formatLieu(lieuFields) ?? "",
+      description: `Session ${s.numero} — Axion-IA`,
+      jours: s.jours,
+      maintenant: now,
+    });
+    if (ics !== null) {
+      const r2Key = `agenda-formateur/${sessionFormateurId}.ics`;
+      try {
+        await uploadToR2(r2Key, Buffer.from(ics, "utf8"), "text/calendar; charset=utf-8");
+        attachments = [{ filename: "session.ics", r2Key, contentType: "text/calendar" }];
+      } catch {
+        // Pas d'agenda joint si le stockage ne répond pas : la convocation part sans.
+      }
+    }
+  }
+
   return {
     destinataire: sf.trainer.email,
+    ...(attachments ? { attachments } : {}),
+    ...(lettreNonSignee ? { lettreNonSignee: { numeroSession: s.numero } } : {}),
     payload: {
+      ...(lettreNonSignee && mission?.lettreMissionId
+        ? { lienLettre: `${base}${FORMATEUR_BASE_PATH}/lettre/${mission.lettreMissionId}` }
+        : {}),
       formateurPrenomNom: `${sf.trainer.prenom} ${sf.trainer.nom}`,
       titreFormation: s.titreSession,
       numeroSession: s.numero,
@@ -203,7 +270,7 @@ async function envoyer(
   quoi: "convocation-j7" | "rappel-j1",
 ): Promise<boolean> {
   if (isStub()) return false;
-  const infos = await chargerInfosPratiques(sessionFormateurId, new Date());
+  const infos = await chargerInfosPratiques(sessionFormateurId, new Date(), quoi);
   if (infos === null) return false;
 
   const envoi = await enqueueEmail(
@@ -215,6 +282,7 @@ async function envoyer(
       jobId: `formateur-${quoi}-${sessionFormateurId}`,
       entityType: "SessionFormateur",
       entityId: sessionFormateurId,
+      ...(infos.attachments ? { attachments: infos.attachments } : {}),
     },
   );
   if (!envoi.enqueued) {
@@ -234,6 +302,17 @@ async function envoyer(
         ? { convocationJ7EnvoyeeAt: new Date() }
         : { rappelJ1EnvoyeAt: new Date() },
   });
+  // Lot C (M19) : l'alerte INTERNE propre à une lettre non signée, une fois, avec la
+  // convocation (qui ne part qu'une fois par affectation). Aucun nom, aucun montant.
+  if (quoi === "convocation-j7" && infos.lettreNonSignee) {
+    const jours = infos.payload["joursAvantDebut"];
+    await sendTelegram({
+      tag: "AUTO",
+      body: `✍️ Session ${infos.lettreNonSignee.numeroSession} : la lettre de mission n'est pas signée par le formateur${
+        typeof jours === "number" ? ` (début dans ${jours} j)` : ""
+      }.`,
+    }).catch(() => false);
+  }
   return true;
 }
 
