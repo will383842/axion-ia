@@ -26,7 +26,7 @@ import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { CopiesVirement } from "@/components/admin/paiements-sortants/CopiesVirement";
+import { CopiesVirement } from "@/components/admin/qualiopi/remuneration/CopiesVirement";
 import {
   prevenirVirementEnAttenteFormAction,
   virementsFaitsFormAction,
