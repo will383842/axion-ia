@@ -129,7 +129,10 @@ export interface SignMagicTokenInput {
   email?: string;
   /** Override TTL (ms). Par défaut : `TTL_MS[scope]`. */
   ttlMs?: number;
-  /** Lot E (M14) — version d'accès à revérifier par l'appelant (`Trainer.accesVersion`). */
+  /**
+   * Lot E (M14) — version à revérifier par l'appelant. Pour un formateur, c'est la
+   * version de SESSION (`versionSessionFormateur`), jamais `Trainer.accesVersion`.
+   */
   version?: number;
 }
 
