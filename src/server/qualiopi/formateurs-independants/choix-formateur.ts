@@ -77,6 +77,17 @@ export interface LieuChoix {
   readonly codePostal: string | null;
 }
 
+/**
+ * La session se tient-elle à distance ? LA règle du lieu, lue par les cartes,
+ * la proposition, la lettre et le paiement.
+ */
+export function sessionADistance(s: {
+  readonly lieuType: string | null;
+  readonly modalite: string;
+}): boolean {
+  return s.lieuType === "distanciel";
+}
+
 export type Proximite = "distanciel" | "meme_departement" | "meme_region" | "ailleurs" | "inconnu";
 
 /** Ordre de tri : département, puis région, puis le reste ; lieu inconnu à la fin. */

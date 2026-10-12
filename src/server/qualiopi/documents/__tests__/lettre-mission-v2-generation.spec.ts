@@ -213,3 +213,35 @@ describe("coupé : la lettre d'avant, à l'identique", () => {
     expect(composantGabarit("lettre_mission", 2)).toBe(LettreMissionV2Pdf);
   });
 });
+
+describe("forfait de déplacement — seulement sur place (relecture argent #1501, 2e tour)", () => {
+  async function deplacementImprime(lieu: { lieuType: string | null; modalite: string }) {
+    const s = (await h.m.session()) as Record<string, unknown>;
+    h.m.session.mockResolvedValue({ ...s, ...lieu });
+    h.m.vivantes.mockResolvedValue([]);
+    h.m.mission.mockResolvedValue({
+      ...mission(),
+      tarifHtCents: 35_000,
+      forfaitDeplacementParJourHtCents: 8_000,
+      regimeTvaFige: "assujetti_20",
+    });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toMatchObject({ ok: true });
+    const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
+      buildElement: (n: string) => { props: { data: { deplacement: unknown } } };
+    };
+    return entree.buildElement("AXI-DOC-2026-0100").props.data.deplacement;
+  }
+
+  it("lieu non renseigné, modalité à distance : aucun forfait sur la lettre", async () => {
+    expect(await deplacementImprime({ lieuType: null, modalite: "distanciel" })).toBeNull();
+  });
+
+  it("sur place : le forfait figé est imprimé", async () => {
+    expect(await deplacementImprime({ lieuType: "sur_site", modalite: "presentiel" })).toEqual({
+      forfaitParJourHtCents: 8_000,
+      joursDeplacement: 1,
+      totalHtCents: 8_000,
+    });
+  });
+});
