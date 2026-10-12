@@ -761,7 +761,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Une mission ne vous est plus confiée",
         objetPropose: "La mission [intitulé] ne vous est plus confiée",
         paragraphes: [
-          "La mission [intitulé] du [date] ne vous est plus confiée : [motif].",
+          "La mission [intitulé] du [date] ne vous est plus confiée.",
+          "La raison : [motif].",
           "La lettre de mission, que vous n'aviez pas encore signée, est annulée.",
           "Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.",
         ],
@@ -794,7 +795,7 @@ export const TEXTES_FORMATEUR = {
         objet: "La formation [intitulé] du [date] est annulée",
         objetPropose: null,
         paragraphes: [
-          "La formation [intitulé] du [date] est annulée. Votre mission est donc annulée aussi.",
+          "La formation [intitulé] du [date] est annulée, et votre mission avec elle.",
           "La lettre de mission, que vous n'aviez pas encore signée, est annulée.",
         ],
         boutons: [],
