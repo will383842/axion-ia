@@ -374,6 +374,38 @@ describe("accepterDesaccord — avoir TOTAL puis réémission, une seule fois", 
     });
   });
 
+  it("franchise 293 B : l'avoir recopie une TVA nulle, et HT + TVA = TTC", async () => {
+    // Pièce d'origine en franchise : 65 000 / 0 / 65 000. L'avoir NIE ces trois
+    // montants ; il ne recalcule jamais une TVA à 20 % sur le HT.
+    courant = fauxTx(piece({ tvaRegime: "franchise_293b", tvaCents: 0, totalTtcCents: 65_000 }));
+    findUnique.mockResolvedValue(
+      piece({ tvaRegime: "franchise_293b", tvaCents: 0, totalTtcCents: 65_000 }),
+    );
+    candidats.mockResolvedValue([candidat("franchise_293b")]);
+    const r = await accepterDesaccord({
+      statementId: R,
+      htVuCents: 130_000,
+      parId: ADMIN,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toMatchObject({ issue: "acceptee" });
+    const [avoir] = courant.crees;
+    expect(avoir).toMatchObject({
+      avoirDeId: R,
+      tvaRegime: "franchise_293b",
+      totalHtCents: -65_000,
+      totalTtcCents: -65_000,
+    });
+    const { totalHtCents, tvaCents, totalTtcCents } = avoir as {
+      totalHtCents: number;
+      tvaCents: number;
+      totalTtcCents: number;
+    };
+    // `-0` (négation d'un zéro) s'écrit 0 en base : on compare par valeur.
+    expect(tvaCents === 0).toBe(true);
+    expect(totalHtCents + tvaCents).toBe(totalTtcCents);
+  });
+
   it("le HT recalculé n'est plus celui de l'aperçu : rien n'est écrit", async () => {
     const r = await accepterDesaccord({
       statementId: R,

@@ -134,6 +134,10 @@ import { apresSignature } from "@/server/qualiopi/documents/signature/apres-sign
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { controlerRegistreFormateur } from "@/server/qualiopi/formateurs-independants/controle";
 import { marquerDossierVerifie } from "@/server/qualiopi/formateurs-independants/dossier-verifie";
+import {
+  MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE,
+  objectionContresignatureContratCadre,
+} from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
 
 import {
   contresignerParLotAction,
@@ -270,6 +274,20 @@ describe("🔴 les autres contrôles de la porte", () => {
     const r = await contresignerUne();
     expect(r).toMatchObject({ ok: false });
     rienNEstEcrit();
+  });
+
+  it("la porte elle-même refuse un contrat non signé, pour CETTE raison-là", async () => {
+    // Relecture #1513 (2e tour) : par l'action, le cas ci-dessus est refusé plus
+    // tôt par l'ordre de signature du moteur, et resterait vert sans le contrôle
+    // de la porte. On interroge donc la porte seule : dossier par ailleurs
+    // complet, attestation prouvée, registre vert.
+    h.signeeParFormateur = false;
+    const r = await objectionContresignatureContratCadre({
+      documentGenereId: DOC,
+      type: "contrat_sous_traitance",
+      metadata: { renderData: { gabaritVersion: 3, data: { cocontractant: { siret: SIRET } } } },
+    });
+    expect(r).toEqual({ message: MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE.nonSigne });
   });
 
   it("contrat d'une version qui n'est pas en vigueur : refus", async () => {

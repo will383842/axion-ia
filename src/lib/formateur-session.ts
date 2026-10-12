@@ -35,8 +35,9 @@ interface SessionPayload {
   /** Expiration (unix ms). */
   exp: number;
   /**
-   * Lot E (M14) — version d'accès de la fiche formateur (`Trainer.accesVersion`) au
-   * moment de la connexion. Facultative : un jeton signé avant ce lot n'en porte pas.
+   * Lot E (M14) — version de session de la fiche formateur (`versionSessionFormateur`,
+   * jamais `Trainer.accesVersion`) au moment de la connexion. Facultative : un jeton
+   * signé avant ce lot n'en porte pas.
    */
   ver?: number;
 }
