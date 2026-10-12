@@ -41,7 +41,11 @@ export function empreinteMission(f: FaitsEmpreinte): string {
   void f.versionContratCadre;
   void f.gabaritVersion;
   const canon = JSON.stringify({
-    v: 1,
+    // v2 (L11e) : les versions du contrat-cadre et du gabarit sont sorties du
+    // hachage. ⚠️ Une lettre émise sous v1 (moteur #1502 allumé seul) serait vue
+    // périmée, et rectifiée, au premier passage : allumer le moteur APRÈS la
+    // mise en ligne de #1503, jamais entre les deux.
+    v: 2,
     intitule: net(f.intitule),
     jours,
     lieu: f.distanciel ? "distanciel" : [net(f.adresse), net(f.codePostal), net(f.ville)],

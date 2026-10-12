@@ -76,7 +76,12 @@ vi.mock("../contrat-cadre-en-vigueur", () => ({
   lireContratCadreSigne: vi.fn(async () => ({ version: 3, signeLe: new Date("2026-10-01") })),
 }));
 
-import { MOTIF_RECTIFICATION, ceQuiChange, reevaluerMission } from "../moteur-mission";
+import {
+  MOTIF_DATES_MODIFIEES,
+  MOTIF_RECTIFICATION,
+  ceQuiChange,
+  reevaluerMission,
+} from "../moteur-mission";
 
 const MAINTENANT = new Date("2026-10-12T09:00:00Z");
 
@@ -149,6 +154,21 @@ describe("L11e — lettre périmée", () => {
     expect(envoi.gabarit).toBe("formateur-lettre-rectifiee");
     expect(envoi.payload.valeurs["ce qui change"]).toBe("les dates");
     expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie|IA pour managers/);
+  });
+
+  it("correctif : l'ancienne lettre non signée est annulée au motif fermé « dates_modifiees »", async () => {
+    h.etat.mission = mission(false);
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.generer).toHaveBeenCalledWith(
+      expect.objectContaining({ missionId: MISSION, motifAnnulation: MOTIF_DATES_MODIFIEES }),
+    );
+  });
+
+  it("correctif : F29 qui ne part pas est journalisé et signalé", async () => {
+    h.etat.mission = mission(false);
+    h.envoyer.mockResolvedValueOnce("indisponible" as never);
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(JSON.stringify(h.telegram.mock.calls)).toContain("formateur-lettre-rectifiee");
   });
 
   it("signée : lettre RECTIFICATIVE, avec son motif", async () => {

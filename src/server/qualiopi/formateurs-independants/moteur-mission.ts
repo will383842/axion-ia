@@ -205,6 +205,64 @@ export interface EtatMission {
   readonly tarifEffectif: number;
 }
 
+/** Ce que l'empreinte lit d'une mission (lecture unique, partagée avec le passage). */
+const EMPREINTE_SELECT = {
+  role: true,
+  tarifHtCents: true,
+  forfaitDeplacementParJourHtCents: true,
+  regimeTvaFige: true,
+  trainer: { select: { regimeTvaHonoraires: true } },
+  session: {
+    select: {
+      titreSession: true,
+      lieuType: true,
+      lieuAdresse: true,
+      lieuCodePostal: true,
+      lieuVille: true,
+      jours: { select: { date: true, heureDebut: true, heureFin: true } },
+    },
+  },
+} as const;
+
+type MissionPourEmpreinte = Prisma.MissionFormateurGetPayload<{ select: typeof EMPREINTE_SELECT }>;
+
+/**
+ * L'empreinte actuelle d'une mission — SEUL calcul, lu par le moteur et par le
+ * passage horaire (qui ne réévalue que les missions où elle a changé).
+ */
+export function empreinteDeLaMission(m: MissionPourEmpreinte): {
+  tarifEffectif: number;
+  empreinte: string;
+} {
+  const s = m.session;
+  // Jamais le tarif de l'affectation (08 §2.8 : la source des salariés) : le
+  // moteur n'émet que sur des conditions figées au choix (cf. `emettreLettre`).
+  const tarifEffectif = m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
+  const distanciel = s.lieuType === "distanciel";
+  return {
+    tarifEffectif,
+    empreinte: empreinteMission({
+      intitule: s.titreSession,
+      jours: s.jours.map((j) => ({
+        date: dateCivile(j.date),
+        heureDebut: j.heureDebut,
+        heureFin: j.heureFin,
+      })),
+      distanciel,
+      adresse: s.lieuAdresse,
+      codePostal: s.lieuCodePostal,
+      ville: s.lieuVille,
+      tarifHtCents: tarifEffectif,
+      forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
+      regimeTva: m.regimeTvaFige ?? m.trainer.regimeTvaHonoraires,
+      role: m.role,
+      // Hors de l'empreinte depuis v2 : passés pour la forme seulement.
+      versionContratCadre: null,
+      gabaritVersion: GABARIT_LETTRE,
+    }),
+  };
+}
+
 /**
  * Lit les faits d'une mission d'indépendant et calcule son étape. `null` si
  * la mission n'est pas celle d'un indépendant en nom propre au rang principal
@@ -228,65 +286,42 @@ export async function lireEtatMission(
     return null;
   }
   const s = m.session;
-  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] =
-    await Promise.all([
-      prisma.documentGenere.count({
-        where: {
-          sessionId: m.sessionId,
-          type: { in: [...PIECES_ENGAGEANTES] },
-          statutSignature: "signee",
-          annuleeAt: null,
-        },
-      }),
-      prisma.documentGenere.count({
-        where: {
-          sessionId: m.sessionId,
-          conditionSuspensiveOpco: true,
-          etatConditionSuspensive: "en_attente",
-          annuleeAt: null,
-        },
-      }),
-      controlerGardeMission(m.trainerId, maintenant),
-      lireContratCadreSigne(m.trainerId),
-      // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
-      // c'est SA lettre ; le moteur n'en émet pas d'autre.
-      m.lettreMission === null || m.lettreMission.annuleeAt !== null
-        ? prisma.documentGenere.findFirst({
-            where: {
-              type: "lettre_mission",
-              sessionId: m.sessionId,
-              trainerId: m.trainerId,
-              annuleeAt: null,
-              signatures: { some: { revokedAt: null, partie: "formateur" } },
-            },
-            select: { signatures: { where: { revokedAt: null }, select: { partie: true } } },
-          })
-        : Promise.resolve(null),
-    ]);
-  // Jamais le tarif de l'affectation (08 §2.8 : la source des salariés) : le
-  // moteur n'émet que sur des conditions figées au choix (cf. `emettreLettre`).
-  const tarifEffectif = m.tarifHtCents ?? TARIF_JOURNEE_HT_CENTS;
-  const regime = m.regimeTvaFige ?? m.trainer.regimeTvaHonoraires;
-  const jours = s.jours.map((j) => ({
-    date: dateCivile(j.date),
-    heureDebut: j.heureDebut,
-    heureFin: j.heureFin,
-  }));
-  const distanciel = s.lieuType === "distanciel";
-  const empreinteActuelle = empreinteMission({
-    intitule: s.titreSession,
-    jours,
-    distanciel,
-    adresse: s.lieuAdresse,
-    codePostal: s.lieuCodePostal,
-    ville: s.lieuVille,
-    tarifHtCents: tarifEffectif,
-    forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
-    regimeTva: regime,
-    role: m.role,
-    versionContratCadre: contrat?.version ?? null,
-    gabaritVersion: GABARIT_LETTRE,
-  });
+  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] = await Promise.all([
+    prisma.documentGenere.count({
+      where: {
+        sessionId: m.sessionId,
+        type: { in: [...PIECES_ENGAGEANTES] },
+        statutSignature: "signee",
+        annuleeAt: null,
+      },
+    }),
+    prisma.documentGenere.count({
+      where: {
+        sessionId: m.sessionId,
+        conditionSuspensiveOpco: true,
+        etatConditionSuspensive: "en_attente",
+        annuleeAt: null,
+      },
+    }),
+    controlerGardeMission(m.trainerId, maintenant),
+    lireContratCadreSigne(m.trainerId),
+    // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
+    // c'est SA lettre ; le moteur n'en émet pas d'autre.
+    m.lettreMission === null || m.lettreMission.annuleeAt !== null
+      ? prisma.documentGenere.findFirst({
+          where: {
+            type: "lettre_mission",
+            sessionId: m.sessionId,
+            trainerId: m.trainerId,
+            annuleeAt: null,
+            signatures: { some: { revokedAt: null, partie: "formateur" } },
+          },
+          select: { signatures: { where: { revokedAt: null }, select: { partie: true } } },
+        })
+      : Promise.resolve(null),
+  ]);
+  void contrat;
+  const { tarifEffectif, empreinte: empreinteActuelle } = empreinteDeLaMission(m);
   const lettre =
     m.lettreMission !== null && m.lettreMission.annuleeAt === null
       ? {
@@ -355,6 +390,9 @@ async function agir(
       return { etape, action: "rien" };
   }
 }
+
+/** Motif système (fermé) d'annulation d'une lettre non signée devenue périmée. */
+export const MOTIF_DATES_MODIFIEES = "Dates, lieu ou honoraires modifiés (dates_modifiees)";
 
 /** Motif de rectification d'une lettre déjà signée (L11e, D-L7). */
 export const MOTIF_RECTIFICATION = "Conditions de la mission modifiées (dates, lieu ou honoraires)";
@@ -505,6 +543,9 @@ async function emettreLettre(
     // La lettre est liée à CETTE mission, jamais à une autre du couple.
     missionId: m.id,
     ...(rectification?.motif !== undefined ? { rectificationMotif: rectification.motif } : {}),
+    // Une lettre non signée remplacée parce que ses conditions ont changé porte le
+    // motif fermé `dates_modifiees` (08b §3.4), pas « remplacée ».
+    ...(rectification !== undefined ? { motifAnnulation: MOTIF_DATES_MODIFIEES } : {}),
     maintenant,
   });
   if (!r.ok) return refuserLettre(m, r.erreur, etapeDepart);
@@ -536,26 +577,44 @@ async function emettreLettre(
       ? (doc.metadata as Record<string, unknown>)
       : {};
   // L'empreinte, le résumé et la levée du blocage dans la même transaction.
-  await prisma.$transaction([
-    prisma.documentGenere.update({
-      where: { id: r.documentId },
-      data: {
-        metadata: {
-          ...meta,
-          empreinteMission: empreinte,
-          resumeMission: resumeDe(m, tarif),
-        } as never,
-      },
-    }),
-    ...(m.lettreBlocageMotif !== null
-      ? [
-          prisma.missionFormateur.update({
-            where: { id: m.id },
-            data: { lettreBlocageMotif: null, lettreBlocageNotifieAt: null },
-          }),
-        ]
-      : []),
-  ]);
+  // Sans empreinte, la lettre ne serait plus jamais vue périmée : un échec se dit.
+  try {
+    await prisma.$transaction([
+      prisma.documentGenere.update({
+        where: { id: r.documentId },
+        data: {
+          metadata: {
+            ...meta,
+            empreinteMission: empreinte,
+            resumeMission: resumeDe(m, tarif),
+          } as never,
+        },
+      }),
+      ...(m.lettreBlocageMotif !== null
+        ? [
+            prisma.missionFormateur.update({
+              where: { id: m.id },
+              data: { lettreBlocageMotif: null, lettreBlocageNotifieAt: null },
+            }),
+          ]
+        : []),
+    ]);
+  } catch (err) {
+    await journaliser(prisma, {
+      action: "qualiopi.mission.empreinte_non_rangee",
+      targetType: "MissionFormateur",
+      targetId: m.id,
+      changes: { documentId: r.documentId },
+      session: null,
+    });
+    await alerter(
+      `🚨 Session ${m.session.numero} : lettre émise, mais son empreinte n'est pas rangée (elle ne sera pas suivie). ${lienFiche(m.sessionId)}`,
+    );
+    console.error(
+      `[moteur-mission] empreinte non rangée (mission ${m.id}) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
   await journaliser(prisma, {
     action: "qualiopi.mission.lettre_emise",
     targetType: "MissionFormateur",
@@ -574,7 +633,7 @@ async function emettreLettre(
   if (rectification !== undefined) {
     // F29 — la lettre rectifiée remplace la précédente ; Will est prévenu.
     const lien = lienEspaceFormateur();
-    await envoyer({
+    const issueF29 = await envoyer({
       gabarit: "formateur-lettre-rectifiee",
       destinataire: m.trainer.email,
       entityType: "Trainer",
@@ -586,6 +645,7 @@ async function emettreLettre(
         valeurs: { intitulé: m.session.titreSession, "ce qui change": rectification.changements },
       },
     });
+    await signalerEnvoi(m, "formateur-lettre-rectifiee", issueF29);
     await alerter(
       `📝 Session ${m.session.numero} : lettre de mission rectifiée (conditions modifiées). ${lienFiche(m.sessionId)}`,
     );
@@ -712,8 +772,28 @@ export async function reevaluerMissionsDeLaSession(
   return missions.length;
 }
 
-/** Au plus 30 missions par passage. */
+/**
+ * Plafond d'ÉMISSIONS par passage (lettres émises ou rectifiées), sur le modèle
+ * des passages planifiés du plan (plafond de 30 e-mails par passage). Il borne
+ * ce qui PART, jamais ce qui est REVU : une mission en ordre ne prend pas de
+ * place, et celles qui ont émis sortent de la liste au passage suivant.
+ */
 export const MISSIONS_PAR_PASSAGE = 30;
+
+/**
+ * La mission a-t-elle quelque chose à faire au passage ? Aucune lettre vivante
+ * liée (à émettre, bloquée), ou une lettre du moteur (avec empreinte) dont
+ * l'empreinte a changé (périmée). Une lettre sans empreinte (v1, manuelle) ou à
+ * jour : rien.
+ */
+export function aQuelqueChoseAFaire(
+  lettre: { readonly annuleeAt: Date | null; readonly metadata: unknown } | null,
+  empreinteActuelle: string,
+): boolean {
+  if (lettre === null || lettre.annuleeAt !== null) return true;
+  const rangee = empreinteDeMetadata(lettre.metadata);
+  return rangee !== null && rangee !== empreinteActuelle;
+}
 
 /** Le moteur ne travaille que de 8 h à 19 h, heure de Paris (décision 59). */
 export function dansLaFenetre(maintenant: Date): boolean {
@@ -735,6 +815,8 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
 }> {
   const bilan = { reevaluees: 0, lettres: 0 };
   if (isStub() || !dansLaFenetre(maintenant) || !(await moteurAllume())) return bilan;
+  // Lecture en lot de TOUTES les missions acceptées à venir ; seules celles qui
+  // ont quelque chose à faire sont réévaluées, les plus proches d'abord.
   const missions = await prisma.missionFormateur.findMany({
     where: {
       role: "principal",
@@ -742,17 +824,26 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
       trainer: { statut: "sous_traitant", organismeSousTraitantId: null },
       session: { statut: "planifiee", dateDebut: { gt: maintenant } },
     },
-    orderBy: { session: { dateDebut: "asc" } },
-    select: { id: true },
-    take: MISSIONS_PAR_PASSAGE,
+    orderBy: [{ session: { dateDebut: "asc" } }, { id: "asc" }],
+    select: {
+      id: true,
+      ...EMPREINTE_SELECT,
+      lettreMission: { select: { annuleeAt: true, metadata: true } },
+    },
   });
-  if (missions.length === MISSIONS_PAR_PASSAGE) {
-    // Les plus proches d'abord ; le reste attend le passage suivant. Dit, pas tu.
-    console.warn(
-      `[moteur-mission] ${MISSIONS_PAR_PASSAGE} missions par passage atteintes : les suivantes attendent.`,
-    );
-  }
-  for (const x of missions) {
+  const aFaire = missions.filter((x) =>
+    aQuelqueChoseAFaire(x.lettreMission, empreinteDeLaMission(x).empreinte),
+  );
+  for (const x of aFaire) {
+    if (bilan.lettres >= MISSIONS_PAR_PASSAGE) {
+      // Le plafond d'émissions est atteint : le reste part au passage suivant.
+      console.warn(
+        `[moteur-mission] ${MISSIONS_PAR_PASSAGE} lettres émises dans ce passage : ${
+          aFaire.length - bilan.reevaluees
+        } missions attendent le suivant.`,
+      );
+      break;
+    }
     const r = await reevaluerMission(x.id, "passage", maintenant);
     bilan.reevaluees += 1;
     if (r.action === "lettre_emise" || r.action === "lettre_rectifiee") bilan.lettres += 1;
