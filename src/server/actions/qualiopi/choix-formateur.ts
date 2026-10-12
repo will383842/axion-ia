@@ -19,7 +19,10 @@ import { z } from "zod";
 import { requireFormateurAction } from "@/server/formateur/guard";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
-import { figerChoix } from "@/server/qualiopi/formateurs-independants/choix-formateur";
+import {
+  FORFAIT_MAX_HT_CENTS,
+  figerChoix,
+} from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { sessionPayeeParMission } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import {
   abandonnerChoix,
@@ -44,7 +47,12 @@ const choixSchema = z.object({
       z.object({
         trainerId: z.string().uuid(),
         rang: z.number().int().min(1).max(3),
-        forfaitDeplacementParJourHtCents: z.number().int().min(0).max(100_000).nullable(),
+        forfaitDeplacementParJourHtCents: z
+          .number()
+          .int()
+          .min(0)
+          .max(FORFAIT_MAX_HT_CENTS)
+          .nullable(),
       }),
     )
     .min(1)

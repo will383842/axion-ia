@@ -122,6 +122,7 @@ vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
 }));
 
 import {
+  MOTIF_AFFECTE_SANS_PROPOSITION,
   MOTIF_CHAINE_ARRETEE,
   MOTIF_CHOIX_EPUISES,
   MOTIF_CHOIX_REMPLACE,
@@ -406,6 +407,10 @@ describe("rang suivant (T15)", () => {
     h.proposer.mockResolvedValueOnce({ proposee: false, raison: "erreur" } as never);
     await proposerRangSuivant(SESSION, "refus", MAINTENANT);
     expect(JSON.stringify(h.telegram.mock.calls)).toContain("pas partie");
+    // La chaîne s'arrête : un retrait ultérieur ne relancera ni ce rang ni le suivant.
+    expect(JSON.stringify(h.prisma.choixFormateurSession.updateMany.mock.calls)).toContain(
+      MOTIF_AFFECTE_SANS_PROPOSITION,
+    );
   });
 
   it("le choix en cartes coupé coupe aussi le rang suivant", async () => {
@@ -461,13 +466,26 @@ describe("correctif EXACTITUDE — rang relancé après retrait", () => {
     expect(h.proposer).not.toHaveBeenCalled();
   });
 
-  it("aucune mission depuis le choix : la chaîne n'a pas commencé, rien", async () => {
+  it("aucune mission juste après le choix : la chaîne n'a pas commencé, rien", async () => {
     h.etat.missions = [];
-    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toEqual({
+    const juste = new Date(CHOISI.getTime() + 5 * 60 * 1000);
+    expect(await proposerRangSuivant(SESSION, "passage", juste)).toEqual({
       fait: "rien",
       raison: "chaîne pas commencée",
     });
     expect(h.prisma.choixFormateurSession.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("aucune mission longtemps après le choix (salarié retiré) : chaîne arrêtée, la session sort du passage", async () => {
+    h.etat.missions = [];
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toEqual({
+      fait: "rien",
+      raison: "chaîne arrêtée par l'équipe",
+    });
+    expect(JSON.stringify(h.prisma.choixFormateurSession.updateMany.mock.calls)).toContain(
+      MOTIF_CHAINE_ARRETEE,
+    );
+    expect(h.proposer).not.toHaveBeenCalled();
   });
 
   it("refus, silence et désistement passent la main", async () => {
