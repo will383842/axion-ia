@@ -61,6 +61,11 @@ export async function genererLettreMissionV2(input: {
    */
   missionId?: string;
   rectificationMotif?: string;
+  /**
+   * Motif système posé sur l'ancienne lettre NON signée qu'elle remplace (L11e :
+   * `dates_modifiees`). Absent : « remplacée », comme avant.
+   */
+  motifAnnulation?: string;
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
   const maintenant = input.maintenant ?? new Date();
@@ -263,7 +268,11 @@ export async function genererLettreMissionV2(input: {
   if (aAnnuler.length > 0) {
     const r = await prisma.documentGenere.updateMany({
       where: { id: { in: aAnnuler }, annuleeAt: null },
-      data: { annuleeAt: maintenant, annuleeMotif: MOTIF_LETTRE_REMPLACEE, annuleePar: "system" },
+      data: {
+        annuleeAt: maintenant,
+        annuleeMotif: input.motifAnnulation ?? MOTIF_LETTRE_REMPLACEE,
+        annuleePar: "system",
+      },
     });
     if (r.count > 0) lettreAnnuleeId = aAnnuler[0] ?? null;
   }
