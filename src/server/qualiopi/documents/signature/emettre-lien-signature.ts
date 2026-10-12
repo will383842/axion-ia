@@ -31,6 +31,7 @@ import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { prisma } from "@/lib/prisma";
 import { publicUrl } from "@/lib/public-url";
 import { hashIp } from "@/lib/security/ip-hash";
+import { journaliser } from "@/server/journal/journaliser";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import type { PartieSignataire } from "./document-signature-hash";
@@ -407,6 +408,105 @@ export async function emettreLienSignature(
   } catch (err) {
     if (err instanceof TokenDocumentError) return { error: err.message };
     Sentry.captureException(err, { tags: { action: "emettreLienSignatureAction" } });
+    return { error: "Le lien n'a pas pu être émis." };
+  }
+}
+
+/**
+ * Lot C (M16) — émet un lien de signature HORS de toute requête : la relance d'un
+ * contrat-cadre (F18, F45) part d'un passage du worker, sans administrateur ni
+ * en-têtes. Mêmes gardes que `emettreLienSignature` (pièce vivante, non
+ * spécimen, empreinte, pas déjà signée, identité lue en base) ; l'acteur est le
+ * système, la trace en témoigne (`session: null`, `systeme: true`). Réémettre
+ * INVALIDE le lien précédent.
+ *
+ * 🔴 Une tâche ne fait que RENOUVELER un lien humain encore vivant. Si le dernier
+ * lien de (pièce, partie) a été révoqué — par l'administrateur (`revokedById` :
+ * erreur de destinataire, pièce retirée, demande RGPD), par un effacement ou une
+ * fin de collaboration — ou s'il n'y en a jamais eu, AUCUN lien n'est émis : une
+ * relance ne rouvre jamais ce qu'un humain a fermé. Seule une réémission
+ * (`revokedById` à `null`, « Remplacé par un nouveau lien ») laisse un lien plus
+ * récent, vivant, que la tâche peut renouveler.
+ *
+ * Le lien en clair n'est ni stocké ni journalisé.
+ */
+export async function emettreLienSignatureSystem(
+  documentGenereId: string,
+  partie: PartieSignataire,
+): Promise<ResultatEmission<{ url: string }>> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible pendant le build" };
+  }
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: documentGenereId },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      hashSha256: true,
+      metadata: true,
+      annuleeAt: true,
+      clientId: true,
+      traineeId: true,
+      sousTraitantId: true,
+      sessionId: true,
+      trainerId: true,
+      suppressionPrevueAt: true,
+    },
+  });
+  if (piece === null) return { error: "Pièce introuvable." };
+  const circuit = circuitPour(piece.type);
+  if (circuit === null || !circuit.parties.includes(partie)) {
+    return { error: "Cette pièce n'appelle pas la signature de cette partie." };
+  }
+  if (piece.annuleeAt !== null) return { error: "Pièce annulée." };
+  const meta = piece.metadata;
+  const estSpecimen =
+    typeof meta === "object" && meta !== null && !Array.isArray(meta)
+      ? (meta as Record<string, unknown>)["specimen"] === true
+      : false;
+  if (estSpecimen) return { error: "Pièce spécimen." };
+  if (nettoyer(piece.hashSha256) === null) return { error: "Pièce sans empreinte." };
+  if (
+    (await prisma.documentSignature.count({
+      where: { documentGenereId, partie, revokedAt: null },
+    })) > 0
+  ) {
+    return { error: "Cette partie a déjà signé cette pièce." };
+  }
+  const dernier = await prisma.documentSignatureToken.findFirst({
+    where: { documentGenereId, partie },
+    orderBy: { createdAt: "desc" },
+    select: { revokedAt: true, revokedById: true },
+  });
+  if (dernier?.revokedById != null) return { error: "Lien révoqué par l'administrateur." };
+  if (dernier == null || dernier.revokedAt !== null) {
+    return { error: "Aucun lien vivant à renouveler." };
+  }
+  const resolution = await resoudreIdentite(partie, piece);
+  if (!resolution.ok) return { error: resolution.motif };
+  try {
+    const { token } = await creerTokenDocument({
+      documentGenereId,
+      partie,
+      signataireNom: resolution.identite.nom,
+      signataireEmail: resolution.identite.email,
+      signataireQualite: resolution.identite.qualite,
+      borneMetier: piece.suppressionPrevueAt,
+      createdIpHash: null,
+    });
+    await journaliser(prisma, {
+      action: "qualiopi.piece.lien_signature",
+      targetType: "DocumentGenere",
+      targetId: documentGenereId,
+      // ⚠️ Le LIEN n'est JAMAIS journalisé : il vaut signature.
+      changes: { numero: piece.numero, type: piece.type, partie, reemission: true, systeme: true },
+      session: null,
+    });
+    return { data: { url: publicUrl(`/fr/portail/signer/${token}`).toString() } };
+  } catch (err) {
+    if (err instanceof TokenDocumentError) return { error: err.message };
+    Sentry.captureException(err, { tags: { action: "emettreLienSignatureSystem" } });
     return { error: "Le lien n'a pas pu être émis." };
   }
 }

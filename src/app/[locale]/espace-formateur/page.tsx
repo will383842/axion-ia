@@ -73,7 +73,13 @@ const dateCourte = new Intl.DateTimeFormat("fr-FR", {
 export default async function EspaceFormateurAccueilPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ mission?: string; fait?: string; erreur?: string; reponse?: string }>;
+  searchParams?: Promise<{
+    mission?: string;
+    fait?: string;
+    erreur?: string;
+    reponse?: string;
+    lettre?: string;
+  }>;
 }): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
 
@@ -102,7 +108,7 @@ export default async function EspaceFormateurAccueilPage({
   // Le repli sur liste vide vaut pour les lettres, pas contre elles — la
   // signature est le devoir premier de cette page, elle ne doit pas disparaître
   // parce que le calcul des échéances a échoué.
-  const [lettres, contrats, echeances, missions] = await Promise.all([
+  const [lettresLues, contrats, echeances, missions] = await Promise.all([
     lireLettresMissionDuFormateur(trainerId),
     // 🔴 Le contrat de travail est la pièce la plus engageante que cet écran
     // présente, et elle n'y figurait pas : un salarié ne pouvait ni la lire ni
@@ -126,6 +132,11 @@ export default async function EspaceFormateurAccueilPage({
         ),
       )
     : null;
+
+  // Lot C (M18) : le lien de F26 (`?lettre=<id>`) met CETTE lettre en tête de la liste.
+  const lettres = [...lettresLues].sort(
+    (a, b) => Number(b.documentGenereId === sp.lettre) - Number(a.documentGenereId === sp.lettre),
+  );
 
   // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
   // les lettres déjà signées restent affichées (c'est sa preuve), mais elles

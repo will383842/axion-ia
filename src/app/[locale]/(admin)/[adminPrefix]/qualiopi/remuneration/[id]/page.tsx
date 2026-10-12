@@ -27,6 +27,8 @@ import {
   transmettreAutofactureFormAction,
 } from "@/server/actions/qualiopi/autofacture";
 import { getReleveDetail } from "@/server/qualiopi/remuneration/queries";
+import { ibanAffichePourVirement } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import { prisma } from "@/lib/prisma";
 import { transitionsPossibles } from "@/server/qualiopi/remuneration/run";
 import {
   euros,
@@ -73,6 +75,12 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
   // La facture n'est réclamée qu'au moment où on la reçoit.
   const demandeFacture = cibles.includes("facture_recue");
   const demandePaiement = cibles.includes("paye");
+  // Lot D (M6) : un relevé de mission se paie sur l'IBAN AFFICHÉ ici ; son
+  // empreinte repart avec le formulaire et est comparée au clic.
+  const ibanAffiche =
+    demandePaiement && releve.origine === "passage_mission"
+      ? await ibanAffichePourVirement(prisma, releve.trainerId).catch(() => null)
+      : null;
   const ecartFacture =
     releve.montantFactureTtcCents !== null &&
     releve.montantFactureTtcCents !== releve.totalTtcCents;
@@ -400,6 +408,24 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
                   </label>
                   <input id="referenceVirement" name="referenceVirement" className="admin-input" />
                 </div>
+                {releve.origine === "passage_mission" &&
+                  (ibanAffiche !== null ? (
+                    <p className="admin-muted w-full">
+                      Virement sur le compte se terminant par{" "}
+                      <strong className="tabular-nums">{ibanAffiche.fin4}</strong>. Si le compte
+                      change avant votre clic, le paiement est refusé.
+                      <input
+                        type="hidden"
+                        name="ibanEmpreinteAffichee"
+                        value={ibanAffiche.empreinte}
+                      />
+                    </p>
+                  ) : (
+                    <p className="admin-alert admin-alert-error w-full" role="alert">
+                      Aucun IBAN lisible pour ce formateur : le virement ne peut pas être marqué
+                      fait.
+                    </p>
+                  ))}
               </fieldset>
             )}
 

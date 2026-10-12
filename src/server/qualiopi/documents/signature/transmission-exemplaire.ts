@@ -338,6 +338,8 @@ export async function transmettreCopiePartielle(
         annuleeAt: true,
         clientId: true,
         hashSha256: true,
+        trainerId: true,
+        trainer: { select: { statut: true, organismeSousTraitantId: true, prenom: true } },
         signatures: {
           where: { revokedAt: null, partie: partie as never },
           select: { signataireEmail: true, signataireNom: true },
@@ -362,6 +364,36 @@ export async function transmettreCopiePartielle(
       metadonneesEmpreinte(piece.hashSha256, rendu.buffer),
     ).catch(() => null);
     if (archive === null) return { ok: false, motif: "archivage_impossible" };
+
+    // Lot C (M16) — la lettre de mission d'un formateur INDÉPENDANT : sa copie part par
+    // F28 (texte validé). Si F28 ne peut pas partir, la copie générique d'avant.
+    const f = piece.trainer;
+    if (
+      piece.type === "lettre_mission" &&
+      partie === "formateur" &&
+      piece.trainerId !== null &&
+      f != null &&
+      f.statut === "sous_traitant" &&
+      f.organismeSousTraitantId === null
+    ) {
+      const { envoyer } = await import("@/server/qualiopi/formateurs-independants/envois");
+      const issue = await envoyer({
+        gabarit: "formateur-lettre-copie-signature",
+        destinataire: to,
+        entityType: "Trainer",
+        entityId: piece.trainerId,
+        jobId: `formateur-lettre-copie-signature-${piece.id}`,
+        payload: { prenom: f.prenom, valeurs: { numéro: piece.numero } },
+        attachments: [
+          {
+            filename: rendu.nomFichier.replace(/\.pdf$/, "-copie.pdf"),
+            r2Key,
+            contentType: "application/pdf",
+          },
+        ],
+      });
+      if (issue === "envoye" || issue === "en-validation") return { ok: true, r2Key };
+    }
 
     const libellePiece = circuitPour(piece.type)?.libelle ?? "la pièce";
     const res = await enqueueEmail(

@@ -90,6 +90,8 @@ export interface ReleveDetail extends ReleveListe {
   montantFactureTtcCents: number | null;
   payeAt: Date | null;
   moyenPaiement: string | null;
+  /** Lot D (M6) : un relevé de mission se paie avec l'empreinte de l'IBAN affiché. */
+  origine: string;
   /** Échéance effective (colonne, ou `dateFacture + 30 j`). `null` sans facture. */
   echeance: Date | null;
   /** Jours de retard, `null` si le relevé n'est pas en retard. */
@@ -151,6 +153,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         contestationMotif: true,
         payeAt: true,
         moyenPaiement: true,
+        origine: true,
         trainer: { select: { nom: true, prenom: true } },
       },
     });
@@ -193,6 +196,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
       montantFactureTtcCents: r.montantFactureTtcCents,
       payeAt: r.payeAt,
       moyenPaiement: r.moyenPaiement,
+      origine: r.origine,
       echeance: echeanceEffective(r),
       retardJours: joursDeRetard(r, now),
       autofacture: {

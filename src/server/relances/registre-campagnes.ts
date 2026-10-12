@@ -23,6 +23,13 @@ import {
 } from "@/server/qualiopi/formateurs-independants/pieces-relances";
 import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 import { CAMPAGNE_S1 } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
+import {
+  CAMPAGNE_CONTRAT,
+  CAMPAGNE_LETTRE_1RE,
+  CAMPAGNE_LETTRE_J3,
+  CAMPAGNE_NDA,
+  CAMPAGNE_NOUVELLE_VERSION,
+} from "@/server/qualiopi/formateurs-independants/relances-missions";
 
 /** A sollicitation (invitation) ; B obligation (pièce, signature) ; C information et argent. */
 export type ClasseCampagne = "A" | "B" | "C";
@@ -43,6 +50,14 @@ export interface FaitsCampagne {
   readonly etat: EtatCampagne;
   /** Le payload de l'e-mail (valeurs des crochets, lien). */
   readonly payload: Record<string, unknown>;
+  /**
+   * Lot C (M16) — complète le payload AU MOMENT de l'envoi, jamais à la lecture (un lien de
+   * signature neuf révoque le précédent : on ne l'émet que pour une relance qui part).
+   * `null` : rien n'est envoyé à ce passage (la relance sera redécidée au suivant).
+   */
+  readonly completerPayload?: (
+    payload: Record<string, unknown>,
+  ) => Promise<Record<string, unknown> | null>;
 }
 
 export interface DeclarationCampagne<E extends string = string> {
@@ -91,4 +106,11 @@ export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
   CAMPAGNE_PIECES,
   // S1 (L-INV) — rappels de l'invitation à l'échange formateur (F2), J+3 et J+7.
   CAMPAGNE_S1 as DeclarationCampagne,
+  // Lot C (M16) — S4 : F18 (contrat) ; F45 (nouvelle version) ; F27 (lettre, deux relances) ;
+  // F21 (numéro de déclaration « en cours »).
+  CAMPAGNE_CONTRAT as DeclarationCampagne,
+  CAMPAGNE_NOUVELLE_VERSION as DeclarationCampagne,
+  CAMPAGNE_LETTRE_1RE as DeclarationCampagne,
+  CAMPAGNE_LETTRE_J3 as DeclarationCampagne,
+  CAMPAGNE_NDA as DeclarationCampagne,
 ];

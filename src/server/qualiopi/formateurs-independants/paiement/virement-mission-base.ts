@@ -93,3 +93,45 @@ export async function contexteVirementMission(
   });
   return { verdict, preuve: { ibanFin4: ibanFin4(clair), ibanEmpreinte: trainer.ibanEmpreinte } };
 }
+
+/** Le strict nécessaire pour lire l'IBAN d'un formateur. */
+export interface ClientIbanFormateur {
+  trainer: {
+    findUnique(a: unknown): Promise<{ iban: string | null; ibanEmpreinte: string | null } | null>;
+  };
+}
+
+/**
+ * L'IBAN en clair et son empreinte, au moment de la lecture. `null` : aucun
+ * IBAN, aucune empreinte ou déchiffrement impossible. 🔒 Jamais journalisé :
+ * l'appelant ne garde que l'empreinte, ou n'affiche que la fin.
+ */
+export async function ibanEnClairPourVirement(
+  db: ClientIbanFormateur,
+  trainerId: string,
+): Promise<{ iban: string; empreinte: string } | null> {
+  const t = await db.trainer.findUnique({
+    where: { id: trainerId },
+    select: { iban: true, ibanEmpreinte: true },
+  });
+  if (!t?.iban || !t.ibanEmpreinte) return null;
+  try {
+    const iban = decryptPii(t.iban, { aad: `trainer:${trainerId}:iban`, cleExigee: true });
+    return { iban: iban.replace(/\s+/g, "").toUpperCase(), empreinte: t.ibanEmpreinte };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Lot D (M6) — ce que l'écran de paiement AFFICHE : les quatre derniers
+ * caractères de l'IBAN et l'empreinte que le formulaire renverra au clic.
+ */
+export async function ibanAffichePourVirement(
+  db: ClientIbanFormateur,
+  trainerId: string,
+): Promise<{ fin4: string; empreinte: string } | null> {
+  const lu = await ibanEnClairPourVirement(db, trainerId);
+  if (lu === null || lu.iban.length < 4) return null;
+  return { fin4: ibanFin4(lu.iban), empreinte: lu.empreinte };
+}

@@ -18,7 +18,7 @@
 // DÉMARRE DANS UNE SEMAINE » pour une session du lendemain. On DÉRIVE donc les
 // deux du délai réel, porté par la charge utile.
 
-import { Text } from "@react-email/components";
+import { Link, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
 import {
@@ -30,6 +30,8 @@ import type { Locale } from "../../../../prisma/generated/client";
 type Payload = InfosPratiquesFormateur & {
   /** Vrai si le formateur n'a pas encore répondu à la proposition de mission. */
   missionEnAttente?: boolean;
+  /** Lot C (M19) : lien vers la lettre de mission, présent seulement si elle n'est pas signée. */
+  lienLettre?: string;
   /** Jours civils (Paris) entre l'envoi et le démarrage. Absent ⇒ on ne dit rien. */
   joursAvantDebut?: number;
 };
@@ -143,6 +145,13 @@ export function FormateurConvocationJ7Email({
         <Text style={{ ...emailStyles.paragraphStyle, marginTop: 12 }}>
           <strong>Vous n&apos;avez pas encore confirmé cette mission.</strong> Répondez depuis votre
           espace, sinon nous devrons chercher un autre intervenant.
+        </Text>
+      ) : null}
+      {p.lienLettre ? (
+        <Text style={{ ...emailStyles.paragraphStyle, marginTop: 12 }}>
+          <strong>Votre lettre de mission attend encore votre signature.</strong> Signez-la avant la
+          session, en quelques minutes :{" "}
+          <Link href={p.lienLettre}>Signer ma lettre de mission</Link>.
         </Text>
       ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, marginTop: 12 }}>
