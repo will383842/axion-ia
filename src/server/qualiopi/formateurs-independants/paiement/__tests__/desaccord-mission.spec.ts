@@ -11,6 +11,9 @@
  *   · contre-calcul chiffré (HT, TVA, TTC) : avoir et relevé réémis, assujetti et franchise.
  */
 
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { CandidatMission } from "../passage-mission";
@@ -486,5 +489,16 @@ describe("desaccordBloquant — une règle, lue par la transition et par la vue"
       desaccordBloquant({ contesteeAt: MAINTENANT, contestationCloseIssue: "non_retenue" }),
     ).toBe(false);
     expect(desaccordBloquant({ contesteeAt: null })).toBe(false);
+  });
+});
+
+describe("la vue des virements écrit la valeur en clair (module neutre)", () => {
+  it("reste égale à ISSUE_DESACCORD_NON_RETENU", async () => {
+    const { ISSUE_DESACCORD_NON_RETENU } = await import("../desaccord-regle");
+    const src = readFileSync(
+      path.join(process.cwd(), "src/server/paiements-sortants/virements.ts"),
+      "utf8",
+    );
+    expect(src).toContain(`contestationCloseIssue: "${ISSUE_DESACCORD_NON_RETENU}"`);
   });
 });
