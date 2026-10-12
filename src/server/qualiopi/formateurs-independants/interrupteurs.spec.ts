@@ -26,11 +26,10 @@ function etats(partiel: Partial<EtatsInterrupteurs> = {}): EtatsInterrupteurs {
 }
 
 describe("la liste des interrupteurs", () => {
-  it("compte les seize clés `formateurs.*` du chantier, sans doublon", () => {
+  it("compte les quinze clés `formateurs.*` du chantier (`choix_suivants` retiré), sans doublon", () => {
     expect([...CLES_INTERRUPTEURS].sort()).toEqual(
       [
         "activation_auto",
-        "choix_suivants",
         "communes_geo_cron",
         "contrat_auto",
         "controle_registre_periodique",

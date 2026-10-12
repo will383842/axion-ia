@@ -17,6 +17,13 @@
 // exécuter de script, ni lire la page qui le contient. Le contenu vient de nos
 // gabarits, mais un aperçu n'a aucune raison de pouvoir agir.
 //
+// ## Validation du texte (M1, lot A)
+//
+// Pour un texte d'e-mail aux formateurs indépendants (gabarit ou variante validée à
+// part), la page dit s'il est validé, et le super-admin le valide — ou retire la
+// validation — d'ici, sous l'aperçu qu'il vient de lire. Les autres rôles voient
+// l'état, sans bouton ; le serveur refuse de toute façon.
+//
 // FR uniquement (admin FR).
 
 import type { Metadata } from "next";
@@ -27,7 +34,13 @@ import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/compon
 import { CATALOGUE, LIBELLE_CATEGORIE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { estSuperAdmin } from "@/server/auth/habilitations";
+import { estTexteFormateurAValider } from "@/server/email/textes-formateurs-a-valider";
+import { estTexteValide } from "@/server/email/textes-valides";
+import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import type { EmailJobName } from "@/server/queue/types";
+
+import { BoutonValidationTexte } from "./BoutonValidationTexte";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +93,12 @@ export default async function ApercuGabaritPage({
   }
 
   const dormant = fiche.source === null;
+
+  const aValider = estTexteFormateurAValider(nom, variante ?? undefined);
+  const valide = aValider
+    ? estTexteValide(await lireTextesValides(), nom, variante ?? undefined)
+    : false;
+  const peutValider = estSuperAdmin((session.user as { role?: string }).role);
 
   return (
     <AdminPageShell width="wide">
@@ -193,6 +212,37 @@ export default async function ApercuGabaritPage({
               </p>
             )}
           </AdminCard>
+
+          {aValider ? (
+            <AdminCard>
+              <h2 className="text-fg mb-2 text-sm font-semibold">
+                Validation du texte{variante !== null ? ` (variante « ${variante} »)` : ""}
+              </h2>
+              <p className="mb-3">
+                {valide ? (
+                  <AdminBadge tone="success" dot>
+                    validé
+                  </AdminBadge>
+                ) : (
+                  <AdminBadge tone="warning" dot>
+                    non validé — rien ne part
+                  </AdminBadge>
+                )}
+              </p>
+              <p className="text-fg-soft mb-3 text-sm">
+                {variante !== null
+                  ? "Cette variante se valide à part : elle ne part que si le texte de base ET elle sont validés."
+                  : "Le texte ne part que s'il est validé ici ET que l'interrupteur « textes validés » des formateurs est allumé."}
+              </p>
+              {peutValider ? (
+                <BoutonValidationTexte gabarit={nom} variante={variante} valide={valide} />
+              ) : (
+                <p className="text-fg-soft text-sm">
+                  Seule la direction (super-admin) valide les textes.
+                </p>
+              )}
+            </AdminCard>
+          ) : null}
 
           <AdminCard>
             <h2 className="text-fg mb-2 text-sm font-semibold">Données affichées</h2>

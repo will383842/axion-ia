@@ -347,7 +347,7 @@ Comment lire chaque fiche :
   >
   > Merci pour votre dossier. Pour continuer, il nous manque : [motif].
   >
-  > Déposez-le avec le même lien : il suffit de reprendre votre dossier.
+  > Déposez-le avec le bouton ci-dessous : il suffit de reprendre votre dossier.
 
 - **Bouton** : « Reprendre mon dossier »
 
@@ -365,11 +365,12 @@ Comment lire chaque fiche :
   >
   > Merci pour le temps consacré à votre dossier.
   >
-  > Le registre public n'indique pas d'activité ouverte à ce numéro [motif : entreprise fermée / numéro introuvable].
+  > Le registre public n'indique pas d'activité ouverte à ce numéro : [motif].
   >
   > Une micro-entreprise suffit. Dès que votre entreprise est créée ou régularisée, écrivez-nous : nous reprendrons votre dossier.
 
 - **Bouton** : aucun
+- **[motif]** (rempli par l'outil, liste fermée) : « entreprise fermée » ou « numéro introuvable ». Le refus est inscrit sur la fiche (contrôle du registre « refusé par vous »).
 
 ## F14 — Retrouver mon espace (lien demandé par la personne)
 
@@ -589,6 +590,59 @@ Comment lire chaque fiche :
   > Vous préférez rester sur la version actuelle ? Répondez simplement à ce message.
 
 - **Bouton** : aucun
+
+## F23 — Proposition de mission chiffrée (variante « honoraires »)
+
+- **Gabarit** : `formateur-mission-proposee`, variante `honoraires` — validée à part (le texte de base, partagé avec les formateurs salariés, ne change pas et part tant que la variante n'est pas validée)
+- **Envoyé quand** : vous proposez une mission à un formateur indépendant aux conditions figées (carte de choix). Rappel 3 jours plus tard sans réponse.
+- **Gabarit commun des formateurs** : « Bonjour Prénom, », signature courte du fondateur, pas de rangée de réseaux sociaux.
+
+### F23 — 1er envoi
+
+- **Objet** : Proposition de mission : [intitulé]
+- **Titre** : Proposition de mission : [intitulé]
+- **Aperçu** : Nous avons une mission de formation à vous proposer.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > Nous avons une mission de formation à vous proposer. Voici le détail :
+  >
+  > • Formation : [intitulé]
+  > • Dates : [dates]
+  > • Lieu : [lieu]
+  > • Honoraires : [honoraires]
+  > • Déplacement : [déplacement]
+  >
+  > Merci de nous répondre avant le [date limite].
+  >
+  > Vous êtes libre d'accepter ou de refuser, sans aucune conséquence. Sans réponse avant cette date, la proposition sera faite à quelqu'un d'autre.
+
+- **Bouton** : « Voir et répondre »
+
+### F23 — Rappel (3 jours plus tard, sans réponse)
+
+- **Objet** : Cette mission vous attend : [intitulé]
+- **Titre** : Cette mission vous attend : [intitulé]
+- **Aperçu** : Nous n'avons pas encore votre réponse pour cette mission.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > Nous n'avons pas encore votre réponse pour cette mission. Vous pouvez répondre avant le [date limite].
+  >
+  > Pour mémoire, voici le détail :
+  >
+  > • Formation : [intitulé]
+  > • Dates : [dates]
+  > • Lieu : [lieu]
+  > • Honoraires : [honoraires]
+  > • Déplacement : [déplacement]
+  >
+  > Sans réponse avant cette date, la proposition sera faite à quelqu'un d'autre. Vous êtes libre d'accepter ou de refuser, sans aucune conséquence.
+
+- **Bouton** : « Voir et répondre »
+- **Ce qui change par rapport au texte précédent** : la mise en page (gabarit commun), la salutation au prénom, une première phrase qui ne répète plus le titre, un objet de rappel sans « Relance » et un corps de rappel propre. Aucun fait ne change : mêmes dates, lieu, honoraires, déplacement, date limite, liberté de refuser.
 
 ## F24 — Proposition close (sans réponse)
 
@@ -833,11 +887,12 @@ Comment lire chaque fiche :
 
   > Bonjour Prénom,
   >
-  > Pour vous confier cette mission, il nous manque : [motif : attestation URSSAF à jour / numéro de déclaration d'activité / pièce à renvoyer].
+  > Pour vous confier cette mission, il nous manque : [motif].
   >
   > Déposez-le depuis votre espace : la lettre de mission partira aussitôt.
 
 - **Bouton** : « Déposer depuis mon espace »
+- **[motif]** (rempli par l'outil, un ou plusieurs, séparés par une virgule) : « une attestation URSSAF à jour », « votre numéro de déclaration d'activité », « la signature de votre contrat-cadre ».
 
 ## F35 — Feuilles de présence manquantes
 
