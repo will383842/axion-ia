@@ -585,6 +585,13 @@ export async function basculerFormateursFinCollaborationAction(
 ): Promise<EtatBascule> {
   return basculerSignature("fin_collaboration", formData);
 }
+/** Lot E (M12) — changement de compte bancaire et d'adresse. */
+export async function basculerFormateursChangementCoordonneesAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("changement_coordonnees", formData);
+}
 export async function basculerFormateursChoixCartesAction(
   _prev: EtatBascule,
   formData: FormData,

@@ -669,6 +669,22 @@ export async function updateTrainerFacturationAction(
     };
   }
 
+  // Lot E (M14) — F46 ne part qu'à la PREMIÈRE saisie d'une révocation : on lit l'état
+  // d'avant. Lecture en échec : pas d'annonce (la révocation s'enregistre quand même).
+  let revoqueAvant: Date | null | undefined;
+  if (v.mandatAutofacturationRevoqueAt != null) {
+    try {
+      revoqueAvant = (
+        await prisma.trainer.findUnique({
+          where: { id },
+          select: { mandatAutofacturationRevoqueAt: true },
+        })
+      )?.mandatAutofacturationRevoqueAt;
+    } catch {
+      revoqueAvant = undefined;
+    }
+  }
+
   try {
     await prisma.trainer.update({
       where: { id },
@@ -697,6 +713,21 @@ export async function updateTrainerFacturationAction(
     changes: v,
     session,
   });
+
+  // Lot E (M14) — F46 au formateur indépendant (interrupteur `fin_collaboration`).
+  // Import paresseux ; une panne ne défait pas l'enregistrement.
+  if (v.mandatAutofacturationRevoqueAt != null && revoqueAvant === null) {
+    try {
+      const { annoncerFinAutofacturation } =
+        await import("@/server/qualiopi/formateurs-independants/fin-autofacturation");
+      await annoncerFinAutofacturation({
+        trainerId: id,
+        revoqueAt: v.mandatAutofacturationRevoqueAt,
+      });
+    } catch {
+      // Le registre est à jour ; la confirmation peut être renvoyée à la main.
+    }
+  }
 
   return { data: { id } };
 }

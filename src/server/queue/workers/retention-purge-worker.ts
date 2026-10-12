@@ -57,6 +57,8 @@ import { prisma } from "@/lib/prisma";
 import { purgerOutboxCrm } from "@/server/newsletter/retention";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
+import { decryptPii } from "@/lib/pii-crypto";
+import { candidaturesAConserverPour } from "@/lib/rgpd-formateur-independant";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -96,6 +98,10 @@ export function candidaturesEchuesWhere(limite: Date) {
     replies: { none: { repliedAt: { gte: limite } } },
     reponsesRecues: { none: { receivedAt: { gte: limite } } },
     interviews: { none: { scheduledAt: { gte: limite } } },
+    // Lot E (M21) — jamais la candidature d'une personne devenue formateur. Exclue dès
+    // la lecture : gardée à chaque passe, elle occuperait sinon la tête du lot.
+    trainerId: null,
+    fichesFormateurOuvertes: { none: {} },
   };
 }
 
@@ -132,6 +138,7 @@ export async function executerPurgeRetention(): Promise<void> {
     crmOutbox: 0,
     candidatures: 0,
     candidaturesRecruteesEpargnees: 0,
+    candidaturesFormateursEpargnees: 0,
   };
 
   // ── 🛑 AUCUN EFFACEMENT AUTOMATIQUE DE DONNÉES DE PERSONNES. DÉCISION DE WILL. ──
@@ -234,7 +241,15 @@ export async function executerPurgeRetention(): Promise<void> {
     const limite = monthsAgo(CANDIDATURES_MOIS);
     const echues = await prisma.jobApplication.findMany({
       where: candidaturesEchuesWhere(limite),
-      select: { id: true, cvStoragePath: true, photoStoragePath: true },
+      select: {
+        id: true,
+        cvStoragePath: true,
+        photoStoragePath: true,
+        // Lot E (M21) — de quoi reconnaître la candidature d'une personne devenue formateur.
+        email: true,
+        trainerId: true,
+        fichesFormateurOuvertes: { select: { id: true }, take: 1 },
+      },
       orderBy: { submittedAt: "asc" },
       take: CANDIDATURES_PAR_PASSE,
     });
@@ -245,6 +260,23 @@ export async function executerPurgeRetention(): Promise<void> {
     });
 
     for (const c of echues) {
+      // 🛑 Lot E (M21) — jamais la candidature d'une personne devenue formateur : reliée
+      // à une fiche (même interrupteur coupé), ou retenue par la règle de l'effacement à
+      // la demande (`candidaturesAConserverPour`, lien contractuel). Dans le doute — la
+      // consultation échoue —, on garde : la passe de demain réessaie.
+      let aGarder: boolean;
+      try {
+        aGarder =
+          c.trainerId != null ||
+          (c.fichesFormateurOuvertes?.length ?? 0) > 0 ||
+          (await candidaturesAConserverPour(decryptPii(c.email))).has(c.id);
+      } catch {
+        aGarder = true;
+      }
+      if (aGarder) {
+        counts.candidaturesFormateursEpargnees += 1;
+        continue;
+      }
       // Fichiers d'abord : si la suppression disque échoue, la ligne reste et
       // la passe de demain réessaie. L'inverse perdrait le chemin du fichier
       // et le rendrait introuvable — donc ineffaçable.
@@ -272,6 +304,7 @@ export async function executerPurgeRetention(): Promise<void> {
       `crmOutbox=${counts.crmOutbox} ` +
       `candidatures=${counts.candidatures} ` +
       `candidaturesRecruteesEpargnees=${counts.candidaturesRecruteesEpargnees} ` +
+      `candidaturesFormateursEpargnees=${counts.candidaturesFormateursEpargnees} ` +
       `autresDonneesDePersonnes=CONSERVÉES (décision Will 2026-10-07)`,
   );
 }

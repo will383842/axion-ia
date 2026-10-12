@@ -49,6 +49,10 @@ import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
 import {
+  ecritureFormateurPermise,
+  versionSessionFormateur,
+} from "@/server/qualiopi/formateurs-independants/version-session";
+import {
   archiverAffectationsRetirees,
   lireAffectationsAvantRetrait,
 } from "@/server/qualiopi/trainers/affectation-retiree";
@@ -259,7 +263,15 @@ export async function proposerMissionFormateur(
         // 🔴 `statut` n'était PAS lu. C'est la colonne qui dit si l'accord de
         // cette personne est requis — sans elle, on demandait au dirigeant de
         // l'organisme s'il acceptait d'animer sa propre session.
-        select: { id: true, email: true, prenom: true, nom: true, actif: true, statut: true },
+        select: {
+          id: true,
+          email: true,
+          prenom: true,
+          nom: true,
+          actif: true,
+          statut: true,
+          finCollaborationAt: true,
+        },
       }),
       prisma.enrollment.count({
         where: { sessionId: input.sessionId, ...inscriptionsActives() },
@@ -380,7 +392,13 @@ async function envoyerProposition(args: {
     lieuSalle: string | null;
     lieuVisioUrl: string | null;
   };
-  trainer: { id: string; email: string; prenom: string; nom: string };
+  trainer: {
+    id: string;
+    email: string;
+    prenom: string;
+    nom: string;
+    finCollaborationAt?: Date | null;
+  };
   inscrits: number;
   role: SessionFormateurRole;
   /** Échéance réelle de réponse ; absente sur une proposition ancienne. */
@@ -392,6 +410,11 @@ async function envoyerProposition(args: {
     scope: "formateur_mission",
     resourceId: args.missionId,
     ttlMs: ttlJusquAuDemarrage(session.dateDebut, now),
+    // Lot E (M14) — une fin de collaboration (version de session changée) éteint le
+    // lien ; l'envoi du dossier (`accesVersion`) ne le touche pas.
+    ...(trainer.finCollaborationAt !== undefined
+      ? { version: versionSessionFormateur({ finCollaborationAt: trainer.finCollaborationAt }) }
+      : {}),
   });
   const lieu = formatLieu({
     ...session,
@@ -607,7 +630,9 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
       solliciteAt: true,
       echeanceReponseAt: true,
       session: { select: SESSION_POUR_MISSION },
-      trainer: { select: { id: true, email: true, prenom: true, nom: true } },
+      trainer: {
+        select: { id: true, email: true, prenom: true, nom: true, finCollaborationAt: true },
+      },
     },
   });
   const aRelancer = candidates.filter((m) => {
@@ -1061,7 +1086,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
         statut: true,
         role: true,
         echeanceReponseAt: true,
-        trainer: { select: { id: true, prenom: true, nom: true } },
+        trainer: { select: { id: true, prenom: true, nom: true, finCollaborationAt: true } },
         session: {
           select: {
             ...SESSION_POUR_MISSION,
@@ -1071,6 +1096,9 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       },
     });
     if (m === null) return null;
+    // Lot E (M14) — garde commune : collaboration close (jeton avec ou sans version) ou
+    // version dépassée → le lien ne désigne plus rien.
+    if (!ecritureFormateurPermise(verified.version, m.trainer)) return null;
     return {
       id: m.id,
       statut: m.statut,
@@ -1078,7 +1106,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       echeanceReponseAt: m.echeanceReponseAt,
       delaiDepasse:
         m.echeanceReponseAt !== null && m.echeanceReponseAt.getTime() <= new Date().getTime(),
-      trainer: m.trainer,
+      trainer: { id: m.trainer.id, prenom: m.trainer.prenom, nom: m.trainer.nom },
       session: {
         id: m.session.id,
         numero: m.session.numero,

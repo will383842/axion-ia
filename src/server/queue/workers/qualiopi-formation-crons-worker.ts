@@ -202,6 +202,10 @@ export type FormationCronJobType =
   // 15 à 20 min après la candidature, et clôture « sans suite » à J+30. Toutes les 5 min ;
   // arrêté tant que `formateurs.invitation_auto` ou `formateurs.suivi_echange` est coupé.
   | "formation-crons.invitations-formateurs"
+  // Lot E, M5 — recontrôle périodique du registre des entreprises (formateurs actifs
+  // dont le dernier contrôle a plus de 25 jours). QUOTIDIEN ; arrêté tant que
+  // `formateurs.controle_registre_periodique` est coupé.
+  | "formation-crons.controle-registre-periodique"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2680,7 +2684,38 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.communes-geo": handleCommunesGeo,
   "formation-crons.fin-collaboration": handleFinCollaboration,
   "formation-crons.invitations-formateurs": handleInvitationsFormateurs,
+  "formation-crons.controle-registre-periodique": handleControleRegistrePeriodique,
 };
+
+/**
+ * Lot E, M5 — recontrôle périodique du registre. Corps dans
+ * `formateurs-independants/controle.ts` (interrupteur lu AVANT toute autre requête,
+ * plage 8 h-19 h à Paris, plafond par passage) ; ici on déclenche et on trace des
+ * compteurs, aucune donnée personnelle. Import PARESSEUX ; ne lève jamais.
+ */
+async function handleControleRegistrePeriodique(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const [{ passerControleRegistrePeriodique }, { sourceRegistreCommune }] = await Promise.all([
+      import("@/server/qualiopi/formateurs-independants/controle"),
+      import("@/server/qualiopi/formateurs-independants/source-registre"),
+    ]);
+    const b = await passerControleRegistrePeriodique(prisma, sourceRegistreCommune(), {
+      maintenant: new Date(),
+    });
+    if (!b.passe) return;
+    const ligne =
+      `[formation-crons] controle-registre-periodique: ${b.controles} contrôle(s), ` +
+      `${b.echecs} échec(s)`;
+    if (b.echecs > 0) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] controle-registre-periodique: erreur:",
+      err instanceof Error ? err.name : "erreur",
+    );
+  }
+}
 
 /**
  * Lot L-INV — invitation automatique des candidats formateurs indépendants. Corps dans
