@@ -34,7 +34,6 @@ import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import type { Prisma } from "../../../../prisma/generated/client";
 
 import { eurosCourts } from "./choix-formateur";
-import { lireContratCadreSigne } from "./contrat-cadre-en-vigueur";
 import { empreinteDeMetadata, empreinteMission } from "./empreinte-mission";
 import { envoyer } from "./envois";
 import { etapeMission, type EtapeMission } from "./etape-mission";
@@ -286,7 +285,7 @@ export async function lireEtatMission(
     return null;
   }
   const s = m.session;
-  const [clientEngage, financeurEnAttente, garde, contrat, v1Signee] = await Promise.all([
+  const [clientEngage, financeurEnAttente, garde, v1Signee] = await Promise.all([
     prisma.documentGenere.count({
       where: {
         sessionId: m.sessionId,
@@ -304,7 +303,6 @@ export async function lireEtatMission(
       },
     }),
     controlerGardeMission(m.trainerId, maintenant),
-    lireContratCadreSigne(m.trainerId),
     // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
     // c'est SA lettre ; le moteur n'en émet pas d'autre.
     m.lettreMission === null || m.lettreMission.annuleeAt !== null
@@ -320,7 +318,6 @@ export async function lireEtatMission(
         })
       : Promise.resolve(null),
   ]);
-  void contrat;
   const { tarifEffectif, empreinte: empreinteActuelle } = empreinteDeLaMission(m);
   const lettre =
     m.lettreMission !== null && m.lettreMission.annuleeAt === null
@@ -553,7 +550,7 @@ async function emettreLettre(
       id: { not: m.id },
     },
   });
-  if (autresAccords > 0) return refuserLettre(m, MOTIF_PLUSIEURS_ACCORDS);
+  if (autresAccords > 0) return refuserLettre(m, MOTIF_PLUSIEURS_ACCORDS, etapeDepart);
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,
@@ -863,7 +860,10 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
     }
     const r = await reevaluerMission(x.id, "passage", maintenant);
     bilan.reevaluees += 1;
-    if (r.action === "lettre_emise" || r.action === "lettre_rectifiee") bilan.lettres += 1;
+    // Une réévaluation en erreur a pu émettre un document : elle compte aussi.
+    if (r.action === "lettre_emise" || r.action === "lettre_rectifiee" || r.action === "erreur") {
+      bilan.lettres += 1;
+    }
   }
   return bilan;
 }
