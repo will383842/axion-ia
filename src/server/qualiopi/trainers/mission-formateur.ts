@@ -297,6 +297,7 @@ export async function proposerMissionFormateur(
         where: {
           sessionId: session.id,
           trainerId: trainer.id,
+          role,
           statut: { in: [...STATUTS_ACCORD_DONNE] },
         },
         select: { id: true },

@@ -503,6 +503,10 @@ async function refuserLettre(
 export const MOTIF_CONDITIONS_NON_FIGEES =
   "Honoraires ou régime de TVA non figés au choix : lettre à émettre depuis la console.";
 
+/** Motif : plusieurs missions avec accord pour le même couple session/formateur. */
+export const MOTIF_PLUSIEURS_ACCORDS =
+  "Plusieurs accords pour cette session et ce formateur : à régler depuis la console.";
+
 /** Un envoi qui n'est pas parti se dit : journal (codes) et alerte sans nom. */
 async function signalerEnvoi(
   m: MissionLue,
@@ -537,6 +541,19 @@ async function emettreLettre(
   if (m.tarifHtCents === null || m.regimeTvaFige === null) {
     return refuserLettre(m, MOTIF_CONDITIONS_NON_FIGEES, etapeDepart);
   }
+  // EXACTITUDE — deux accords pour le même couple (données d'avant le moteur,
+  // ou course entre un renvoi et un « J'accepte ») : chaque lettre annulerait
+  // celle de l'autre mission, à chaque passage. Rien n'est émis ; Will tranche.
+  const autresAccords = await prisma.missionFormateur.count({
+    where: {
+      sessionId: m.sessionId,
+      trainerId: m.trainerId,
+      role: "principal",
+      statut: { in: [...STATUTS_ACCORD_DONNE] },
+      id: { not: m.id },
+    },
+  });
+  if (autresAccords > 0) return refuserLettre(m, MOTIF_PLUSIEURS_ACCORDS);
   const r = await genererLettreMissionV2({
     sessionId: m.sessionId,
     trainerId: m.trainerId,

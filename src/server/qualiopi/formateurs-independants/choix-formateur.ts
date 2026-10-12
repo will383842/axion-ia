@@ -33,6 +33,7 @@
 
 import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul";
 
+import { PARAMETRES_ARGENT_FORMATEURS } from "./argent/parametres";
 import { MANQUES_MISSION } from "./garde-mission";
 import { departementDeCodePostal, regionDeDepartement } from "./departement-region";
 import {
@@ -58,8 +59,13 @@ export function estRang(x: unknown): x is Rang {
   return x === 1 || x === 2 || x === 3;
 }
 
-/** Plafond de saisie du forfait de déplacement : 1 000 € HT par journée. */
-export const FORFAIT_MAX_HT_CENTS = 100_000;
+/**
+ * Plafond de saisie du forfait de déplacement : CELUI DU PAIEMENT (150 € HT par
+ * journée, `PARAMETRES_ARGENT_FORMATEURS`). Un forfait au-dessus serait annoncé
+ * puis rangé en anomalie au paiement : il ne se saisit pas.
+ */
+export const FORFAIT_MAX_HT_CENTS =
+  PARAMETRES_ARGENT_FORMATEURS.plafondForfaitDeplacementParJourHtCents;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Proximité et forfait

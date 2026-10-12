@@ -345,22 +345,32 @@ async function sansConditionsFigees(
 ): Promise<{ prestations: PrestationACalculer[]; anomalies: Anomalie[] }> {
   const sessionIds = [...new Set(prestations.flatMap((p) => (p.sessionId ? [p.sessionId] : [])))];
   if (sessionIds.length === 0) return { prestations, anomalies: [] };
-  const figees = await prisma.missionFormateur.findMany({
-    where: {
-      sessionId: { in: sessionIds },
-      statut: { in: [...MISSIONS_ACCEPTEES] },
-      tarifHtCents: { not: null },
-    },
-    select: { trainerId: true, sessionId: true },
+  // La mission acceptée la PLUS RÉCENTE de chaque couple fait foi (comme la
+  // lettre) : une ancienne mission figée ne fixe jamais le prix d'une nouvelle.
+  const missions = await prisma.missionFormateur.findMany({
+    where: { sessionId: { in: sessionIds }, statut: { in: [...MISSIONS_ACCEPTEES] } },
+    orderBy: { solliciteAt: "desc" },
+    select: { trainerId: true, sessionId: true, tarifHtCents: true },
   });
+  const vus = new Set<string>();
+  const figees = new Set<string>();
+  for (const m of missions) {
+    const cle = cleRevendication(m.trainerId, m.sessionId);
+    if (vus.has(cle)) continue;
+    vus.add(cle);
+    if (m.tarifHtCents !== null) figees.add(cle);
+  }
   const r = ecarterConditionsFigees(prestations, {
     statutParTrainer: new Map([...formateurs].map(([id, f]) => [id, f.statut])),
-    figees: new Set(figees.map((m) => cleRevendication(m.trainerId, m.sessionId))),
+    figees,
   });
+  // Un couple qui arrive ici n'est PAS payé par mission : `apresBascule` a déjà
+  // écarté tous ceux qui le sont (première journée ≥ D sans revendication, ou
+  // revendiqués `par_mission`). Il reste donc à régler à la main : on le dit.
   return {
     prestations: r.prestations,
     anomalies: r.ecartees.map(({ trainerId, prestation }) => ({
-      motif: "conditions_figees_mission" as const,
+      motif: "conditions_figees_hors_mission" as const,
       trainerId,
       prestation: {
         type: prestation.type,

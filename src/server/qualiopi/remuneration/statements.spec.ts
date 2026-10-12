@@ -532,15 +532,34 @@ describe("runRemunerationMensuelle — correctif L11b : honoraires figés au cho
     mockTrainingFindMany.mockResolvedValue([sessionRow()]);
     mockTrainerFindMany.mockResolvedValue([trainerRow()]);
     mockRuleFindMany.mockResolvedValue([ruleRow()]);
-    mockMissionFindMany.mockResolvedValue([{ trainerId: "t1", sessionId: "s1" }]);
+    mockMissionFindMany.mockResolvedValue([
+      { trainerId: "t1", sessionId: "s1", tarifHtCents: 35_000 },
+    ]);
 
     const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
 
     expect(r.lignesEcrites).toBe(0);
     expect(r.relevesEcrits).toBe(0);
+    // Pas de date de passage : personne ne paie automatiquement, et le libellé le dit.
     expect(r.anomalies).toContainEqual(
-      expect.objectContaining({ motif: "conditions_figees_mission", trainerId: "t1" }),
+      expect.objectContaining({ motif: "conditions_figees_hors_mission", trainerId: "t1" }),
     );
+  });
+
+  it("seule la mission acceptée la PLUS RÉCENTE fait foi : une ancienne mission figée ne compte pas", async () => {
+    mockTrainingFindMany.mockResolvedValue([sessionRow()]);
+    mockTrainerFindMany.mockResolvedValue([trainerRow()]);
+    mockRuleFindMany.mockResolvedValue([ruleRow()]);
+    // Triées par sollicitation décroissante : la nouvelle (sans prix figé) d'abord.
+    mockMissionFindMany.mockResolvedValue([
+      { trainerId: "t1", sessionId: "s1", tarifHtCents: null },
+      { trainerId: "t1", sessionId: "s1", tarifHtCents: 35_000 },
+    ]);
+
+    const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
+
+    expect(r.lignesEcrites).toBe(1);
+    expect(r.anomalies.some((a) => a.motif.startsWith("conditions_figees"))).toBe(false);
   });
 
   it("aucune mission figée : le run d'avant, inchangé (une ligne au barème)", async () => {
@@ -551,14 +570,16 @@ describe("runRemunerationMensuelle — correctif L11b : honoraires figés au cho
     const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
 
     expect(r.lignesEcrites).toBe(1);
-    expect(r.anomalies.some((a) => a.motif === "conditions_figees_mission")).toBe(false);
+    expect(r.anomalies.some((a) => a.motif === "conditions_figees_hors_mission")).toBe(false);
   });
 
   it("un salarié n'est jamais écarté, même avec une mission chiffrée", async () => {
     mockTrainingFindMany.mockResolvedValue([sessionRow()]);
     mockTrainerFindMany.mockResolvedValue([trainerRow({ statut: "salarie" })]);
     mockRuleFindMany.mockResolvedValue([ruleRow()]);
-    mockMissionFindMany.mockResolvedValue([{ trainerId: "t1", sessionId: "s1" }]);
+    mockMissionFindMany.mockResolvedValue([
+      { trainerId: "t1", sessionId: "s1", tarifHtCents: 35_000 },
+    ]);
 
     const r = await runRemunerationMensuelle(JUIN, { dryRun: true });
 

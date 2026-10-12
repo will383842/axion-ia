@@ -38,6 +38,8 @@ const h = vi.hoisted(() => {
         return { count: 1 };
       }),
       findMany: vi.fn(async () => []),
+      // Autres missions avec accord pour le même couple (aucune par défaut).
+      count: vi.fn(async () => 0),
     },
     documentGenere: {
       count: vi.fn(async ({ where }: { where: Record<string, unknown> }) =>
@@ -214,6 +216,16 @@ describe("lettre due (T8)", () => {
       }),
     );
     expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie/);
+  });
+
+  it("correctif EXACTITUDE : deux accords pour le même couple → aucune lettre, alerte une fois, pas de boucle", async () => {
+    h.prisma.missionFormateur.count.mockResolvedValue(1);
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("lettre_refusee");
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("lettre_refusee");
+    expect(h.generer).not.toHaveBeenCalled();
+    expect(h.envoyer).not.toHaveBeenCalled();
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+    h.prisma.missionFormateur.count.mockResolvedValue(0);
   });
 
   it("F26 qui ne part pas : journalisé et signalé, jamais perdu en silence", async () => {

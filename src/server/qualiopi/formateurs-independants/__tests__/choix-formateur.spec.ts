@@ -173,7 +173,8 @@ describe("figer le choix (T3 : une carte grisée n'est jamais acceptée)", () =>
     expect(r.ok).toBe(false);
   });
   it("refuse un forfait hors département non saisi, négatif ou fractionnaire", () => {
-    for (const f of [null, -1, 10.5, 1_000_000]) {
+    // 200 € HT : au-dessus du plafond du paiement (150 €), jamais annoncé.
+    for (const f of [null, -1, 10.5, 20_000, 1_000_000]) {
       expect(
         figerChoix([{ trainerId: "b", rang: 1, forfaitDeplacementParJourHtCents: f }], cartes).ok,
       ).toBe(false);
