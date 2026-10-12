@@ -113,9 +113,17 @@ async function estIndependantEnCartes(trainerId: string): Promise<boolean> {
   }
 }
 
-/** Interrupteur `formateurs.dossier_en_ligne` allumé ET formateur indépendant. Ne lève jamais. */
+/**
+ * `formateurs.dossier_en_ligne` (pièces) ou `formateurs.changement_coordonnees` (compte
+ * bancaire, adresse — lot E, M12) allumé, ET formateur indépendant. Ne lève jamais.
+ */
 async function aUnDossier(trainerId: string): Promise<boolean> {
-  if (!(await envoiAllume("dossier_en_ligne"))) return false;
+  if (
+    !(await envoiAllume("dossier_en_ligne")) &&
+    !(await interrupteurAllume("changement_coordonnees"))
+  ) {
+    return false;
+  }
   try {
     const t = await prisma.trainer.findUnique({
       where: { id: trainerId },

@@ -17,6 +17,10 @@ import { redirect } from "next/navigation";
 
 import { getFormateurSession } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
+import {
+  demanderChangementAdresse,
+  demanderChangementIban,
+} from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
 import { deposerDepuisMonDossier } from "@/server/qualiopi/formateurs-independants/mon-dossier";
 
 import { codeDuMessage } from "./messages";
@@ -52,6 +56,49 @@ export async function deposerMaPieceAction(fd: FormData): Promise<void> {
   } catch (e) {
     console.error("[espace-formateur] dépôt de pièce :", e instanceof Error ? e.name : "erreur");
     code = "erreur";
+  }
+  redirect(`${CHEMIN}?issue=${code}`);
+}
+
+/**
+ * Lot E (M12) — demande de changement d'IBAN. L'IBAN saisi ne revient JAMAIS dans
+ * l'adresse ni dans un journal ; la fiche n'est pas touchée avant la validation.
+ */
+export async function demanderChangementIbanAction(fd: FormData): Promise<void> {
+  const session = await getFormateurSession();
+  if (!session) redirect(FORMATEUR_CONNEXION_PATH);
+  let code: string;
+  try {
+    const r = await demanderChangementIban(
+      session.trainerId,
+      String(fd.get("iban") ?? "").slice(0, 50),
+      new Date(),
+    );
+    code = r.ok ? "demande" : codeDuMessage(r.message, "changement_erreur");
+  } catch (e) {
+    console.error("[espace-formateur] changement d'IBAN :", e instanceof Error ? e.name : "erreur");
+    code = "changement_erreur";
+  }
+  redirect(`${CHEMIN}?issue=${code}`);
+}
+
+/** Lot E (M12) — demande de changement d'adresse professionnelle. */
+export async function demanderChangementAdresseAction(fd: FormData): Promise<void> {
+  const session = await getFormateurSession();
+  if (!session) redirect(FORMATEUR_CONNEXION_PATH);
+  let code: string;
+  try {
+    const r = await demanderChangementAdresse(
+      session.trainerId,
+      String(fd.get("adresse") ?? "").slice(0, 600),
+    );
+    code = r.ok ? "demande" : codeDuMessage(r.message, "changement_erreur");
+  } catch (e) {
+    console.error(
+      "[espace-formateur] changement d'adresse :",
+      e instanceof Error ? e.name : "erreur",
+    );
+    code = "changement_erreur";
   }
   redirect(`${CHEMIN}?issue=${code}`);
 }

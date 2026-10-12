@@ -327,6 +327,17 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/espace-formateur/VueMission.tsx",
   "src/app/[locale]/espace-formateur/_coquille.tsx",
   "src/components/espace-formateur/PropositionSixLignes.tsx",
+  // Lot E (M13, M12, M14) — « Mon dossier » de l'espace formateur : l'état des pièces
+  //    suivies (règles L13), le dépôt par `deposerPieceFormateur` (antivirus, chiffrement)
+  //    et la DEMANDE de changement de compte ou d'adresse, tous bornés au `trainerId` de la
+  //    SESSION ; les issues passent par un code fermé (`messages.ts`, et son test).
+  //    `acces-apres-fin.ts` ne lit que l'interrupteur `formateurs.fin_collaboration` : la
+  //    même règle d'accès en lecture seule aux trois portes (lien, connexion, session).
+  "src/app/[locale]/espace-formateur/dossier/page.tsx",
+  "src/app/[locale]/espace-formateur/dossier/actions.ts",
+  "src/app/[locale]/espace-formateur/dossier/messages.ts",
+  "src/app/[locale]/espace-formateur/dossier/__tests__/messages.spec.ts",
+  "src/server/formateur/acces-apres-fin.ts",
   // La route qui sert le PDF de cette page. Elle n'importe du domaine que
   // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la
   // même partout : un même document téléchargé depuis la console et depuis
