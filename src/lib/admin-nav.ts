@@ -461,6 +461,8 @@ export function buildAdminNav(
       readonly missions?: boolean;
       readonly honoraires?: boolean;
     };
+    /** Lot D (M9) — « Virements à faire », derrière `formateurs.virements_a_faire`. */
+    readonly virementsAFaire?: boolean;
   } = {},
 ): ReadonlyArray<AdminNavItem> {
   const items = buildAdminNavSocle(adminPrefix);
@@ -490,6 +492,10 @@ export function buildAdminNav(
     // elle dans le menu (une adresse partagée allumerait deux entrées à la fois).
     ...(plus.honoraires
       ? [entree("qualiopi/remuneration?vue=formateurs-freelance", "Honoraires", "Banknote")]
+      : []),
+    // Lot D (M9) — la vue commune des virements, éteinte par `formateurs.virements_a_faire`.
+    ...(options.virementsAFaire
+      ? [entree("qualiopi/remuneration/virements", "Virements à faire", "Banknote")]
       : []),
   ];
 }

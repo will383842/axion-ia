@@ -733,6 +733,16 @@ export const INTERRUPTEURS_ENTREE = {
     ),
     cle: "formateurs.reponses_formateurs",
   },
+  // Lot D (M9) — la vue « Virements à faire » (W-8) et son entrée de menu. Coupé :
+  // la page n'existe pas, le menu est celui d'avant, « Virement fait » reste sur
+  // chaque relevé et sur la page des commissions.
+  virements_a_faire: {
+    ...envoi(
+      "Virements à faire",
+      "Une seule vue pour les virements des apporteurs et des formateurs indépendants (orange à J-5, rouge à l'échéance) : copie de l'IBAN, du montant et de la référence, « Virements faits » groupés, e-mails F37 et F38.",
+    ),
+    cle: "formateurs.virements_a_faire",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurEntree = keyof typeof INTERRUPTEURS_ENTREE;
@@ -754,6 +764,7 @@ export const PREALABLES_ENTREE: Readonly<Record<CleInterrupteurEntree, ReadonlyA
     suivi_echange: [exige("echange_ouvert"), exige("textes_valides")],
     dossiers_contrats: [],
     reponses_formateurs: [],
+    virements_a_faire: [],
   };
 
 export function cleSettingEntree(cle: CleInterrupteurEntree): string {

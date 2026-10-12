@@ -328,6 +328,13 @@ export async function transitionStatementAction(
   if (v.to === "paye" && releveDeMission) {
     if (releve.echeanceAt == null)
       return { error: "Relevé de mission sans échéance : paiement refusé." };
+    // Lot D (M6) : aucun virement sans contrat-cadre signé ni SIREN actif confirmé.
+    const { garantiesPaiementMission, LIBELLE_GARANTIE_PAIEMENT } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/garanties-paiement-mission");
+    const manques = await garantiesPaiementMission(releve.trainerId, maintenant, session.userId);
+    if (manques.length > 0) {
+      return { error: manques.map((m) => LIBELLE_GARANTIE_PAIEMENT[m]).join(" ") };
+    }
     const { contexteVirementMission } =
       await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base");
     const { LIBELLE_SUSPENSION_VIREMENT } =
@@ -827,10 +834,18 @@ export async function transitionStatementFormAction(formData: FormData): Promise
     factureUrl: champ(formData, "factureUrl"),
     moyenPaiement: champ(formData, "moyenPaiement"),
     referenceVirement: champ(formData, "referenceVirement"),
+    // Lot D (M6) : l'empreinte de l'IBAN AFFICHÉ, relue et comparée au clic.
+    ibanEmpreinteAffichee: champ(formData, "ibanEmpreinteAffichee"),
   });
 
   if ("error" in res) {
     redirect(`${base}?erreur=${encodeURIComponent(res.error)}`);
+  }
+  if (res.data.statut === "paye") {
+    // Lot D (M9) — F37 ; ne vise que les relevés de MISSION (le mensuel n'envoie rien).
+    const { envoyerVirementsFaits } =
+      await import("@/server/qualiopi/formateurs-independants/paiement/virement-fait-envoi");
+    await envoyerVirementsFaits([res.data.id]);
   }
   revalidatePath(base);
   redirect(`${base}?ok=${encodeURIComponent(`Relevé passé en « ${res.data.statut} »`)}`);

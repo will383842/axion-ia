@@ -209,6 +209,7 @@ function buildNav(
   formateursFreelance = false,
   dossiersEtContrats = false,
   entreesFormateurs: { missions: boolean } = { missions: false },
+  virementsAFaire = false,
 ): NavItem[] {
   // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
   // AdminCommandPalette qui consomme la même source. Copie mutable (la SSOT
@@ -224,6 +225,7 @@ function buildNav(
         honoraires: formateursFreelance,
         missions: entreesFormateurs.missions,
       },
+      virementsAFaire,
     }),
   ];
 }
@@ -304,14 +306,22 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const showSidebar = Boolean(session?.user);
   // Lot L0h — groupe « Formateurs freelance », interrupteur `formateurs.menu_freelance`.
   // Lot L8 — entrée « Dossiers et contrats », interrupteur `formateurs.dossiers_contrats`.
-  const { menu_freelance: formateursFreelance, dossiers_contrats: dossiersEtContrats } =
-    await lireEtatsEntree();
+  // Lot D (M9) — entrée « Virements à faire », interrupteur `formateurs.virements_a_faire`.
+  const {
+    menu_freelance: formateursFreelance,
+    dossiers_contrats: dossiersEtContrats,
+    virements_a_faire: virementsAFaire,
+  } = await lireEtatsEntree();
   const missionsConsole = formateursFreelance
     ? await interrupteurAllume("missions_console")
     : false;
-  const nav: NavItem[] = buildNav(adminPrefix, formateursFreelance, dossiersEtContrats, {
-    missions: missionsConsole,
-  });
+  const nav: NavItem[] = buildNav(
+    adminPrefix,
+    formateursFreelance,
+    dossiersEtContrats,
+    { missions: missionsConsole },
+    virementsAFaire,
+  );
   const adminBase = `/fr/${adminPrefix}`;
 
   // Sprint A-suite P6 — Item 2. Badge rouge failed jobs sidebar.

@@ -46,6 +46,34 @@ export function jourParis(instant: Date): JourCivil {
   return `${p.year}-${p.month}-${p.day}`;
 }
 
+const PARIS_HEURE = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+/**
+ * L'instant d'une heure « HH:MM » de Paris, un jour civil donné (lot D, M11 :
+ * début d'une demi-journée annulée). Deux passes suffisent à absorber le
+ * décalage d'été ou d'hiver du jour.
+ */
+export function instantParis(jour: JourCivil, heure: string): Date {
+  const m = /^(\d{2}):(\d{2})$/.exec(heure);
+  if (m === null) throw new Error(`heure invalide : ${heure}`);
+  const voulu = exiger(jour).getTime() + (Number(m[1]) * 60 + Number(m[2])) * 60_000;
+  let t = voulu;
+  for (let i = 0; i < 2; i++) {
+    const p = Object.fromEntries(
+      PARIS_HEURE.formatToParts(new Date(t)).map((x) => [x.type, x.value]),
+    );
+    const lu =
+      exiger(jourParis(new Date(t))).getTime() + (Number(p.hour) * 60 + Number(p.minute)) * 60_000;
+    t += voulu - lu;
+  }
+  return new Date(t);
+}
+
 /**
  * Le jour civil d'une colonne `@db.Date` lue par Prisma (minuit UTC). Ne JAMAIS
  * passer par `jourParis` : minuit UTC du 05/11 est déjà le 05/11 à Paris, mais
