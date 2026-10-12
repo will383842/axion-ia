@@ -465,10 +465,15 @@ async function fermerMission(m: MissionLue, maintenant: Date): Promise<ResultatR
   // L'état de la SESSION prime : une mission retirée sur une session ensuite
   // annulée (ou reportée) se ferme pour cette raison-là (F31), pas pour un
   // changement de formateur.
-  const cause = causeFermeture({
-    sessionStatut: m.session.statut,
-    affecte: m.statut !== "retiree" && m.session.formateurPrincipalId === m.trainerId,
-  });
+  // Mais un formateur RETIRÉ n'est pas reconduit par un report : pour lui, la
+  // cause reste le changement de formateur (F30), jamais le report.
+  const cause =
+    m.statut === "retiree" && m.session.statut !== "annulee"
+      ? "changement_formateur"
+      : causeFermeture({
+          sessionStatut: m.session.statut,
+          affecte: m.statut !== "retiree" && m.session.formateurPrincipalId === m.trainerId,
+        });
   if (cause === null) return { etape: "close", action: "rien" };
 
   const signee = lettre.signatures.some((x) => x.partie === "formateur");
@@ -1091,15 +1096,15 @@ export async function passerMoteurMissions(maintenant: Date): Promise<{
   // Les fermetures ont leur propre plafond, APRÈS les émissions : un arriéré
   // ne retarde jamais la lettre d'une session imminente.
   const aFermer = fermees
-    .filter(
-      (x) =>
-        // Retirée puis réaffectée à la même personne : rien à fermer, jamais
-        // relue à chaque passage.
-        (x.statut === "retiree" && x.session.formateurPrincipalId !== x.trainerId) ||
-        causeFermeture({
-          sessionStatut: x.session.statut,
-          affecte: x.session.formateurPrincipalId === x.trainerId,
-        }) !== null,
+    .filter((x) =>
+      // Retirée puis réaffectée à la même personne : rien à fermer, jamais
+      // relue à chaque passage.
+      x.statut === "retiree"
+        ? x.session.formateurPrincipalId !== x.trainerId
+        : causeFermeture({
+            sessionStatut: x.session.statut,
+            affecte: x.session.formateurPrincipalId === x.trainerId,
+          }) !== null,
     )
     .filter((x) => !vus.has(x.id));
   for (const x of aFaire) {

@@ -365,3 +365,22 @@ describe("correctifs du 1er tour de relecture de #1507 — passage", () => {
     expect(h.prisma.missionFormateur.findUnique).not.toHaveBeenCalled();
   });
 });
+
+describe("réserves du relecteur (#1507)", () => {
+  it("mission RETIRÉE puis session REPORTÉE : le retiré n'est pas reconduit, F30 lui est envoyé", async () => {
+    h.etat.mission = mission({ statut: "retiree", sessionStatut: "reportee" });
+    await reevaluerMission(MISSION, "passage", MAINTENANT);
+    expect(h.envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({ gabarit: "formateur-mission-retiree" }),
+    );
+  });
+
+  it("retirée puis réaffectée, session annulée : jamais relue à chaque passage", async () => {
+    const { passerMoteurMissions } = await import("../moteur-mission");
+    const reaffectee = mission({ statut: "retiree", principal: TRAINER, sessionStatut: "annulee" });
+    h.prisma.missionFormateur.findMany
+      .mockResolvedValueOnce([] as never)
+      .mockResolvedValueOnce([reaffectee] as never);
+    expect((await passerMoteurMissions(MAINTENANT)).reevaluees).toBe(0);
+  });
+});
