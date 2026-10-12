@@ -224,6 +224,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/features/admin-rendezvous/issue-formateur-envoi.ts",
   "src/server/calendly/enrich.ts",
   "src/server/calendly/rappels-echange-formateur.ts",
+  // Invitation à l'échange et réponses des formateurs (lots L-INV et CAMP-4) : le geste
+  //    « J'ai répondu ailleurs » et le rattrapage F55 (envoi par le module d'invitation des
+  //    formateurs, jamais par une copie) ; le relevé des candidatures appelle le rapprochement
+  //    des réponses formateurs (import paresseux, interrupteur `formateurs.reponses_formateurs`).
+  "src/features/admin-job-applications/invitation-formateur-actions.ts",
+  "src/features/admin-job-applications/reponses-entrantes-candidature.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

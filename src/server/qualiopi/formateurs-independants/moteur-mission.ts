@@ -36,7 +36,7 @@ import { PIECES_ENGAGEANTES } from "@/server/qualiopi/documents/signature/pieces
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import type { Prisma } from "../../../../prisma/generated/client";
 
-import { eurosCourts } from "./choix-formateur";
+import { eurosCourts, forfaitSelonLieu } from "./choix-formateur";
 import { empreinteDeMetadata, empreinteMission } from "./empreinte-mission";
 import { envoyer } from "./envois";
 import { etapeMission, type EtapeMission } from "./etape-mission";
@@ -155,6 +155,7 @@ const MISSION_SELECT = {
       dateFin: true,
       formateurPrincipalId: true,
       lieuType: true,
+      modalite: true,
       lieuAdresse: true,
       lieuCodePostal: true,
       lieuVille: true,
@@ -219,6 +220,7 @@ const EMPREINTE_SELECT = {
     select: {
       titreSession: true,
       lieuType: true,
+      modalite: true,
       lieuAdresse: true,
       lieuCodePostal: true,
       lieuVille: true,
@@ -256,7 +258,8 @@ export function empreinteDeLaMission(m: MissionPourEmpreinte): {
       codePostal: s.lieuCodePostal,
       ville: s.lieuVille,
       tarifHtCents: tarifEffectif,
-      forfaitDeplacementParJourHtCents: m.forfaitDeplacementParJourHtCents,
+      // La règle de la lettre : à distance, aucun forfait (`forfaitSelonLieu`).
+      forfaitDeplacementParJourHtCents: forfaitSelonLieu(m.forfaitDeplacementParJourHtCents, s),
       regimeTva: m.regimeTvaFige ?? m.trainer.regimeTvaHonoraires,
       role: m.role,
       // Hors de l'empreinte depuis v2 : passés pour la forme seulement.
@@ -582,7 +585,7 @@ function resumeDe(m: MissionLue, tarif: number): ResumeMission {
       s.lieuType === "distanciel"
         ? "distanciel"
         : [s.lieuAdresse, s.lieuCodePostal, s.lieuVille].filter(Boolean).join(" "),
-    honoraires: `${tarif}/${s.lieuType === "distanciel" ? 0 : (m.forfaitDeplacementParJourHtCents ?? 0)}`,
+    honoraires: `${tarif}/${forfaitSelonLieu(m.forfaitDeplacementParJourHtCents, s) ?? 0}`,
   };
 }
 
@@ -847,8 +850,10 @@ async function emettreLettre(
   const jours = [...m.session.jours]
     .map((j) => ({ date: dateCivile(j.date), heureDebut: j.heureDebut, heureFin: j.heureFin }))
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  // Le lieu s'écrit comme sur la lettre ; le forfait suit la règle de la
+  // lettre et du paiement (à distance, aucun forfait).
   const distanciel = m.session.lieuType === "distanciel";
-  const forfait = distanciel ? null : m.forfaitDeplacementParJourHtCents;
+  const forfait = forfaitSelonLieu(m.forfaitDeplacementParJourHtCents, m.session);
   const premier = jours[0];
   const dernier = jours[jours.length - 1];
   if (premier !== undefined && dernier !== undefined) {

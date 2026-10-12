@@ -126,6 +126,15 @@ describe("livré éteint", () => {
       expect(c.interrupteurs.some((cle) => etats[cle] !== true)).toBe(true);
     }
   });
+  it("le registre ne porte que des campagnes déclarées par leur lot (S3 : L6, S6 : L13b, S1 : L-INV), toutes sous interrupteur", () => {
+    expect(REGISTRE_CAMPAGNES.map((c) => c.id)).toEqual([
+      "dossier-relance",
+      "vigilance",
+      "piece",
+      "invit-relance",
+    ]);
+    for (const c of REGISTRE_CAMPAGNES) expect(c.interrupteurs.length).toBeGreaterThan(0);
+  });
   it("interrupteurs absents : aucune campagne active, rien ne part", async () => {
     const b = await passerCampagnes(
       MAINTENANT,
