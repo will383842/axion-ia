@@ -113,10 +113,19 @@ export async function choisirFormateursSessionAction(
           trainerId: premier.trainerId,
           statut: { in: ["en_attente", ...STATUTS_ACCORD_DONNE] },
         },
-        select: { forfaitDeplacementParJourHtCents: true },
+        select: { tarifHtCents: true, forfaitDeplacementParJourHtCents: true },
       }),
     ]);
     dejaPropose = session?.formateurPrincipalId === premier.trainerId && vivante !== null;
+    // Faite avant les cartes, la proposition ne porte AUCUN honoraire figé : la
+    // garder laisserait la lettre retomber sur le tarif de la fiche, et le
+    // paiement en anomalie. Le choix en cartes exige de la retirer d'abord.
+    if (dejaPropose && premier.tarifHtCents !== null && vivante?.tarifHtCents === null) {
+      return {
+        error:
+          "Le 1er choix a déjà reçu une proposition sans honoraires figés : retirez-la d'abord, puis choisissez à nouveau.",
+      };
+    }
     // Une proposition déjà faite porte ses conditions : on ne les change pas en
     // silence. Faite avant les cartes (aucun forfait sur la mission), elle ne
     // vaut que « déplacement compris » : un autre forfait exige de la retirer.

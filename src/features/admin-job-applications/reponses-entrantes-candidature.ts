@@ -485,6 +485,22 @@ export async function passerReponsesEntrantesCandidats(
     }
   }
 
+  // CAMP-4 — les réponses des formateurs indépendants, dans CE relevé (même liste, même
+  // curseur). Interrupteur `formateurs.reponses_formateurs` coupé : rien. Ne lève jamais ;
+  // une écriture ratée retient le curseur, comme pour une candidature.
+  try {
+    const { rapprocherReponsesFormateurs } =
+      await import("@/server/qualiopi/formateurs-independants/reponses-entrantes");
+    const f = await rapprocherReponsesFormateurs(liste.messages, client, debut);
+    erreurs += f.erreurs;
+    alertes += f.alertes;
+  } catch (e) {
+    console.warn(
+      "[reponses-candidats] rapprochement formateurs impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+
   // Le curseur n'avance que sur un passage SANS erreur ni message remis : un
   // message raté ou remis est relu au passage suivant.
   if (erreurs === 0 && remises === 0) {

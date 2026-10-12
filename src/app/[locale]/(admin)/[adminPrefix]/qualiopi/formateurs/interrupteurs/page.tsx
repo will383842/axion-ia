@@ -39,6 +39,7 @@ import {
   basculerFormateursAjoutConsoleAction,
   basculerFormateursSuiviEchangeAction,
   basculerFormateursDossiersContratsAction,
+  basculerFormateursReponsesFormateursAction,
   basculerFormateursNatureOffreAction,
   basculerFormateursAffectationSureAction,
   basculerFormateursLettreV2Action,
@@ -134,6 +135,7 @@ const ACTIONS_ENTREE: Record<CleInterrupteurEntree, typeof basculerFormateursTex
     ajout_console: basculerFormateursAjoutConsoleAction,
     suivi_echange: basculerFormateursSuiviEchangeAction,
     dossiers_contrats: basculerFormateursDossiersContratsAction,
+    reponses_formateurs: basculerFormateursReponsesFormateursAction,
   };
 
 function libelleEtat(valeur: boolean | string | null, cle: CleInterrupteur): string {

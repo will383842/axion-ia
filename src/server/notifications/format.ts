@@ -106,6 +106,7 @@ const TITLES: Record<NotificationCategory, string> = {
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
   TRAINER_DOSSIER_RECU: "Dossier de formateur reçu, à vérifier",
+  FORMATEUR_REPLIED: "Un formateur indépendant a répondu par e-mail",
   CANDIDAT_SELF_ERASED: "Un candidat a supprimé sa candidature",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
@@ -661,6 +662,27 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Registre", p.registre),
         formatKV(
           "Vérifier et contresigner",
+          `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "FORMATEUR_REPLIED": {
+      // Minimisée (CAMP-4) : identifiant court, heure, lien. Rien d'autre.
+      const p = event.payload;
+      return [
+        formatKV("Fiche", p.trainerId.slice(0, 8)),
+        formatKV(
+          "Reçu le",
+          new Date(p.receivedAt).toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+        ),
+        formatKV(
+          "Voir en console",
           `${SITE_URL}${adminPath("fr", "qualiopi/formateurs")}/${p.trainerId}`,
         ),
       ]

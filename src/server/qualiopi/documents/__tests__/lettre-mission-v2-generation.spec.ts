@@ -24,6 +24,12 @@ const h = vi.hoisted(() => {
     count: vi.fn(async (..._a: unknown[]) => 0),
     docUpdateMany: vi.fn(async (..._a: unknown[]) => ({ count: 1 })),
     missionUpdate: vi.fn(async (..._a: unknown[]) => ({})),
+    missionUpdateMany: vi.fn(async (..._a: unknown[]) => ({ count: 1 })),
+    // Sans `missionId` : les missions dont l'accord est donné (une par défaut).
+    missions: vi.fn(async (...a: unknown[]): Promise<unknown[]> => {
+      const r = await m.mission(...a);
+      return r ? [r] : [];
+    }),
     generate: vi.fn(async (..._a: unknown[]) => ({ id: "doc-neuf", numero: "AXI-DOC-2026-0100" })),
   };
   const prisma = {
@@ -32,7 +38,9 @@ const h = vi.hoisted(() => {
     sessionFormateur: { findUnique: (...a: unknown[]) => m.affectation(...a) },
     missionFormateur: {
       findFirst: (...a: unknown[]) => m.mission(...a),
+      findMany: (...a: unknown[]) => m.missions(...a),
       update: (...a: unknown[]) => m.missionUpdate(...a),
+      updateMany: (...a: unknown[]) => m.missionUpdateMany(...a),
     },
     documentGenere: {
       findFirst: (...a: unknown[]) => m.contrat(...a),
@@ -125,8 +133,9 @@ describe("allumé : la lettre v2", () => {
     };
     expect(entree.gabaritVersion).toBe(2);
     expect(entree.estCopie).toBe(false);
-    expect(h.m.missionUpdate).toHaveBeenCalledWith({
-      where: { id: "mi-1" },
+    // Lien CONDITIONNEL : la mission de CE couple, et elle seule.
+    expect(h.m.missionUpdateMany).toHaveBeenCalledWith({
+      where: { id: "mi-1", sessionId: SESSION_ID, trainerId: TRAINER_ID },
       data: { lettreMissionId: "doc-neuf" },
     });
   });
@@ -211,5 +220,163 @@ describe("coupé : la lettre d'avant, à l'identique", () => {
     expect(GABARIT_VERSIONS.lettre_mission).toBe(1);
     expect(composantGabarit("lettre_mission", 1)).toBe(LettreMissionPdf);
     expect(composantGabarit("lettre_mission", 2)).toBe(LettreMissionV2Pdf);
+  });
+});
+
+describe("forfait de déplacement — seulement sur place (relecture argent #1501, 2e tour)", () => {
+  async function deplacementImprime(lieu: { lieuType: string | null; modalite: string }) {
+    const s = (await h.m.session()) as Record<string, unknown>;
+    h.m.session.mockResolvedValue({ ...s, ...lieu });
+    h.m.vivantes.mockResolvedValue([]);
+    h.m.mission.mockResolvedValue({
+      ...mission(),
+      tarifHtCents: 35_000,
+      forfaitDeplacementParJourHtCents: 8_000,
+      regimeTvaFige: "assujetti_20",
+    });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toMatchObject({ ok: true });
+    const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
+      buildElement: (n: string) => { props: { data: { deplacement: unknown } } };
+    };
+    return entree.buildElement("AXI-DOC-2026-0100").props.data.deplacement;
+  }
+
+  it("lieu non renseigné, modalité à distance : aucun forfait sur la lettre", async () => {
+    expect(await deplacementImprime({ lieuType: null, modalite: "distanciel" })).toBeNull();
+  });
+
+  it("sur place : le forfait figé est imprimé", async () => {
+    expect(await deplacementImprime({ lieuType: "sur_site", modalite: "presentiel" })).toEqual({
+      forfaitParJourHtCents: 8_000,
+      joursDeplacement: 1,
+      totalHtCents: 8_000,
+    });
+  });
+});
+
+describe("rattachement de la lettre — appel console compris (relecture #1502, 2e tour)", () => {
+  const AUTRE_SESSION = "a5a5a5a5-0000-4000-8000-00000000000b";
+  const AUTRE_FORMATEUR = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+  type M = ReturnType<typeof mission> & {
+    sessionId: string;
+    trainerId: string;
+    solliciteAt: Date;
+  };
+  let base: M[] = [];
+
+  /** Une base en mémoire : le `where` est réellement appliqué. */
+  function correspond(x: M, where: Record<string, unknown>): boolean {
+    if (where.sessionId !== undefined && x.sessionId !== where.sessionId) return false;
+    if (where.trainerId !== undefined && x.trainerId !== where.trainerId) return false;
+    if (where.id !== undefined && x.id !== where.id) return false;
+    const st = where.statut as { in?: string[] } | undefined;
+    if (st?.in !== undefined && !st.in.includes(x.statut)) return false;
+    return true;
+  }
+  function lire(a: unknown): M[] {
+    const { where } = a as { where: Record<string, unknown> };
+    return base
+      .filter((x) => correspond(x, where))
+      .sort((p, q) => q.solliciteAt.getTime() - p.solliciteAt.getTime());
+  }
+
+  beforeEach(() => {
+    h.m.vivantes.mockResolvedValue([]);
+    h.m.mission.mockImplementation(async (a: unknown) => lire(a)[0] ?? null);
+    h.m.missions.mockImplementation(async (a: unknown) => lire(a));
+    h.m.missionUpdateMany.mockImplementation(async (a: unknown) => ({ count: lire(a).length }));
+    base = [
+      {
+        ...mission(),
+        id: "mi-acceptee",
+        sessionId: SESSION_ID,
+        trainerId: TRAINER_ID,
+        solliciteAt: new Date("2026-10-01T08:00:00Z"),
+      },
+    ];
+  });
+
+  it("missionId d'une AUTRE session : refusé, aucun numéro alloué", async () => {
+    base.push({
+      ...mission(),
+      id: "mi-autre-session",
+      sessionId: AUTRE_SESSION,
+      trainerId: TRAINER_ID,
+      solliciteAt: new Date("2026-10-02T08:00:00Z"),
+    });
+    const r = await genererLettreMissionV2({
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+      missionId: "mi-autre-session",
+    });
+    expect(r.ok).toBe(false);
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("missionId d'un AUTRE formateur : refusé, aucun numéro alloué", async () => {
+    base.push({
+      ...mission(),
+      id: "mi-autre-formateur",
+      sessionId: SESSION_ID,
+      trainerId: AUTRE_FORMATEUR,
+      solliciteAt: new Date("2026-10-02T08:00:00Z"),
+    });
+    const r = await genererLettreMissionV2({
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+      missionId: "mi-autre-formateur",
+    });
+    expect(r.ok).toBe(false);
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("console, sans missionId : une acceptée ancienne et une refusée plus récente → liée à l'ACCEPTÉE", async () => {
+    base.push({
+      ...mission(),
+      id: "mi-refusee",
+      statut: "refusee",
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+      solliciteAt: new Date("2026-10-05T08:00:00Z"),
+    });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toMatchObject({ ok: true });
+    expect(h.m.missionUpdateMany).toHaveBeenCalledWith({
+      where: { id: "mi-acceptee", sessionId: SESSION_ID, trainerId: TRAINER_ID },
+      data: { lettreMissionId: "doc-neuf" },
+    });
+  });
+
+  it("console, sans missionId : DEUX missions avec accord → refus, rien n'est émis", async () => {
+    base.push({
+      ...mission(),
+      id: "mi-acceptee-2",
+      sessionId: SESSION_ID,
+      trainerId: TRAINER_ID,
+      solliciteAt: new Date("2026-10-05T08:00:00Z"),
+    });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r.ok).toBe(false);
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("console, sans missionId : aucune mission avec accord → refus, rien n'est émis", async () => {
+    base[0]!.statut = "refusee";
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r.ok).toBe(false);
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("le lien ne s'écrit pas (count ≠ 1) : la lettre neuve est annulée, l'ancienne reste vivante", async () => {
+    h.m.vivantes.mockResolvedValue([{ id: "doc-ancien", signatures: [] }]);
+    h.m.missionUpdateMany.mockResolvedValueOnce({ count: 0 });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r.ok).toBe(false);
+    const annulations = h.m.docUpdateMany.mock.calls.map(
+      (c) => (c[0] as { where: { id?: unknown } }).where.id,
+    );
+    expect(annulations).toContain("doc-neuf");
+    expect(annulations).not.toContainEqual({ in: ["doc-ancien"] });
   });
 });
