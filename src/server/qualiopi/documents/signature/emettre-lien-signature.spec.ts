@@ -224,6 +224,14 @@ describe("emettreLienSignatureSystem — une relance ne rouvre JAMAIS un lien qu
     });
   });
 
+  it("la garde est rejouée DANS la transaction du jeton (`exigerVivant`) : une révocation concurrente l'emporte", async () => {
+    // Relecture #1511 : entre la lecture du dernier lien et la création, un
+    // administrateur peut révoquer. `creerTokenDocument` refuse alors, sous
+    // transaction, s'il n'y a plus de lien vivant à remplacer.
+    await emettreLienSignatureSystem(DOC, "sous_traitant");
+    expect(h.creerToken.mock.calls[0]![0]).toMatchObject({ exigerVivant: true });
+  });
+
   it("l'émission système est journalisée (acteur système, cible UUID) sans le lien ni le jeton", async () => {
     h.p.documentSignatureToken.findFirst.mockResolvedValue({ revokedAt: null, revokedById: null });
     await emettreLienSignatureSystem(DOC, "sous_traitant");

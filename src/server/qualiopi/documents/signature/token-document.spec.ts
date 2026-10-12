@@ -261,6 +261,27 @@ describe("émission — ce qui est écrit", () => {
     );
   });
 
+  it("🔴 `exigerVivant` : plus aucun lien vivant au moment d'écrire → refus, aucun jeton créé", async () => {
+    // Relecture #1511 — un administrateur a révoqué entre la lecture de
+    // l'appelant et cette transaction : le jeton qu'il a fermé n'est pas remplacé.
+    mockPrisma.documentSignatureToken.updateMany.mockResolvedValueOnce({ count: 0 });
+    await expect(creerTokenDocument(entree({ exigerVivant: true }))).rejects.toMatchObject({
+      motif: "lien_non_vivant",
+    });
+    expect(mockPrisma.documentSignatureToken.create).not.toHaveBeenCalled();
+  });
+
+  it("`exigerVivant` avec un lien vivant : il est remplacé comme d'habitude", async () => {
+    await creerTokenDocument(entree({ exigerVivant: true }));
+    expect(mockPrisma.documentSignatureToken.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("sans `exigerVivant`, aucun lien vivant n'empêche une première émission", async () => {
+    mockPrisma.documentSignatureToken.updateMany.mockResolvedValueOnce({ count: 0 });
+    await creerTokenDocument(entree());
+    expect(mockPrisma.documentSignatureToken.create).toHaveBeenCalledTimes(1);
+  });
+
   it("scope le jeton à `document_signature`", async () => {
     // Un jeton d'émargement ne doit pas pouvoir signer une pièce contractuelle.
     await creerTokenDocument(entree());
