@@ -12,6 +12,7 @@ import { expect, test } from "@playwright/test";
 import { SLUG_OFFRE_BANC } from "../fixtures/formateurs/allumage";
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
+import { ipSuivante } from "../fixtures/formateurs/parcours";
 import { SIRET_BANC } from "../fixtures/formateurs/registre-entreprises";
 import {
   attendreLeWorker,
@@ -51,7 +52,7 @@ test.describe("@formateurs E07 — SIRET rouge et opposition", () => {
 
   test("(b) opposée avant le balayage : aucune invitation, jamais", async () => {
     const email = decor.adresse("opposee");
-    const cand = await deposer(email, "192.0.2.111");
+    const cand = await deposer(email, ipSuivante());
     await attendreLeWorker(email);
     const opposition = await etape<{ ok: boolean }>({ etape: "opposer", args: { email } });
     expect(opposition.valeur.ok).toBe(true);
@@ -75,7 +76,7 @@ test.describe("@formateurs E07 — SIRET rouge et opposition", () => {
   // fenêtre de 72 h sans être close. Cf. rapport de vérification.
   test.fixme("(b) V1-A-2 — la candidature attend AVEC SON MOTIF, et une tuile le dit", async () => {
     const email = decor.adresse("opposee-motif");
-    const cand = await deposer(email, "192.0.2.112");
+    const cand = await deposer(email, ipSuivante());
     await etape({ etape: "opposer", args: { email } });
     await etape({
       etape: "passage-invitations",
@@ -93,7 +94,7 @@ test.describe("@formateurs E07 — SIRET rouge et opposition", () => {
   // entreprise fermée. Cf. rapport de vérification.
   test.fixme("(a) V1-A-1 — SIRET déclaré « rouge » : aucune invitation, motif conservé", async () => {
     const email = decor.adresse("siret-rouge");
-    const cand = await deposer(email, "192.0.2.113", SIRET_BANC);
+    const cand = await deposer(email, ipSuivante(), SIRET_BANC);
     expect(cand.answers).toBeTruthy();
     await etape({
       etape: "passage-invitations",

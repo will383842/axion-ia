@@ -9,6 +9,8 @@
 // l'horloge du serveur) et passe F1 à l'instant réel : la suite du parcours
 // avance ensuite par `maintenant`, dans l'ordre de la production.
 
+import { randomInt } from "node:crypto";
+
 import { expect } from "@playwright/test";
 
 import { SLUG_OFFRE_BANC } from "./allumage";
@@ -17,11 +19,15 @@ import { eventUriDe, rendezVousFictif } from "./calendly-simule";
 import { etape } from "./etapes";
 import { attendreLeWorker, candidaturesDe, plus } from "./scenario";
 
-let ip = 0;
-/** Une adresse IP de documentation par dépôt : les compteurs anti-abus sont par adresse. */
+/**
+ * Une adresse IP par dépôt, tirée dans la plage réservée aux bancs d'essai
+ * (198.18.0.0/15, RFC 2544) : le formulaire compte les dépôts aboutis PAR
+ * ADRESSE (8 par heure), et deux runs du banc dans l'heure ne doivent pas se
+ * partager ce compteur.
+ */
 export function ipSuivante(): string {
-  ip = (ip % 200) + 1;
-  return `198.51.100.${ip}`;
+  const n = randomInt(0, 2 * 256 * 256);
+  return `198.${18 + (n >> 16)}.${(n >> 8) & 255}.${n & 255}`;
 }
 
 /** Dépose une candidature freelance par le vrai formulaire ; rend la ligne. */

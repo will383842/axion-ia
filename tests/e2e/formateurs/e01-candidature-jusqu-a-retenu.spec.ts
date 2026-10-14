@@ -24,6 +24,7 @@ import { SLUG_OFFRE_BANC } from "../fixtures/formateurs/allumage";
 import { prisma } from "../fixtures/formateurs/base";
 import { eventUriDe, rendezVousFictif } from "../fixtures/formateurs/calendly-simule";
 import { etape } from "../fixtures/formateurs/etapes";
+import { ipSuivante } from "../fixtures/formateurs/parcours";
 import type { AppelReseau } from "../fixtures/formateurs/reseau-simule";
 import {
   attendreLeWorker,
@@ -61,7 +62,7 @@ test.describe("@formateurs E01 — candidature freelance jusqu'à « Retenu »",
     const depot = await etape<{ ok: boolean; applicationId?: string }>({
       etape: "deposer-candidature",
       args: { offre: SLUG_OFFRE_BANC, prenom: "Maëlle", nom: "Banc-Essai", email },
-      ip: "192.0.2.101",
+      ip: ipSuivante(),
     });
     reseau.push(...depot.reseau);
     expect(depot.valeur.ok).toBe(true);

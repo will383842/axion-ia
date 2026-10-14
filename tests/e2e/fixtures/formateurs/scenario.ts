@@ -54,6 +54,13 @@ export async function ouvrirScenario(nom: string): Promise<DecorScenario> {
   });
   const jeton = `${nom}:${randomUUID()}`;
   await prendreVerrou(redis, jeton);
+  // Le worker de production bride les e-mails à 40 par heure (`email-worker.ts`,
+  // `limiter`) pour protéger la boîte réelle. Devant un puits, ce bridage n'a pas
+  // d'objet, et un banc complet dépasse 40 envois : sans remise à zéro, les
+  // derniers scénarios attendraient une heure. Le compteur du limiteur (clé BullMQ
+  // de la file `emails`) est donc remis à zéro au début de chaque scénario — chacun
+  // reste très en dessous de 40 envois.
+  await redis.del("bull:emails:limiter");
   const eteindre = await allumerLeBanc(jeton);
   const cle = randomUUID().slice(0, 8);
   const emailAdmin = `admin.${nom}.${cle}@example.test`;

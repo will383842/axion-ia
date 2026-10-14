@@ -10,6 +10,7 @@ import { expect, test } from "@playwright/test";
 import { SLUG_OFFRE_BANC } from "../fixtures/formateurs/allumage";
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
+import { ipSuivante } from "../fixtures/formateurs/parcours";
 import {
   attendreLeWorker,
   candidaturesDe,
@@ -36,7 +37,7 @@ test.describe("@formateurs E02 — deux candidatures, une invitation", () => {
 
   test("une seule F1 par personne, la seconde candidature n'est pas invitée", async () => {
     const email = decor.adresse("deux-fois");
-    for (const ip of ["192.0.2.102", "192.0.2.103"]) {
+    for (const ip of [ipSuivante(), ipSuivante()]) {
       const depot = await etape<{ ok: boolean }>({
         etape: "deposer-candidature",
         args: { offre: SLUG_OFFRE_BANC, prenom: "Ilan", nom: "Banc-Essai", email },
