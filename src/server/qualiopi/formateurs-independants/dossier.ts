@@ -40,6 +40,7 @@ import {
   type PieceDossier,
   type RegimeTvaDossier,
 } from "./dossier-regles";
+import { nomPropre } from "./depot";
 import { estPieceArchivee } from "./gardes";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
@@ -367,7 +368,7 @@ export async function deposerPiece(
             taille: octets.length,
             sha256: controle.sha256,
             mime: controle.typeMime,
-            nomOriginal: p.nomFichier.slice(0, 255),
+            nomOriginal: nomPropre(p.nomFichier),
           },
         },
       },

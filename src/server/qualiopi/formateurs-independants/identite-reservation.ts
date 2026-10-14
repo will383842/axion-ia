@@ -46,6 +46,8 @@ export async function identiteDuJetonReservation(
         email: true,
         offerTitleSnap: true,
         natureCollaboration: true,
+        trainerId: true,
+        _count: { select: { calendlyEvents: true, fichesFormateurOuvertes: true } },
         offer: {
           select: {
             slug: true,
@@ -57,6 +59,10 @@ export async function identiteDuJetonReservation(
       },
     });
     if (!c || !estCandidatureFormateurFreelance(c)) return null;
+    // Le jeton vaut 30 jours mais ne sert qu'AVANT la réservation : une candidature qui a déjà
+    // un rendez-vous ou une fiche formateur ne livre plus nom ni e-mail (réponse neutre).
+    if (c.trainerId || (c._count?.calendlyEvents ?? 0) > 0) return null;
+    if ((c._count?.fichesFormateurOuvertes ?? 0) > 0) return null;
     const email = clair(c.email);
     if (!isDecryptedEmailUsable(email) || email.endsWith("@erased.local")) return null;
     const nom = `${clair(c.firstName)} ${clair(c.lastName)}`.replace(/\s+/g, " ").trim();

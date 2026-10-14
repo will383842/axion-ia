@@ -122,6 +122,29 @@ describe("identiteDuJetonReservation — le préremplissage", () => {
     ).toBeNull();
   });
 
+  it("candidature qui a déjà une réservation : rien (réponse neutre)", async () => {
+    h.findUnique.mockResolvedValue({
+      ...(await h.findUnique()),
+      trainerId: null,
+      _count: { calendlyEvents: 1, fichesFormateurOuvertes: 0 },
+    });
+    expect(
+      await identiteDuJetonReservation(jetonReservationFormateur(CAND, MAINTENANT), MAINTENANT),
+    ).toBeNull();
+  });
+
+  it("candidature qui a déjà une fiche formateur : rien (réponse neutre)", async () => {
+    for (const fiche of [
+      { trainerId: "t-1", _count: { calendlyEvents: 0, fichesFormateurOuvertes: 0 } },
+      { trainerId: null, _count: { calendlyEvents: 0, fichesFormateurOuvertes: 1 } },
+    ]) {
+      h.findUnique.mockResolvedValue({ ...(await h.findUnique()), ...fiche });
+      expect(
+        await identiteDuJetonReservation(jetonReservationFormateur(CAND, MAINTENANT), MAINTENANT),
+      ).toBeNull();
+    }
+  });
+
   it("adresse effacée : rien", async () => {
     h.findUnique.mockResolvedValue({
       firstName: "enc:Camille",
