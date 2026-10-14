@@ -21,6 +21,8 @@
  * dit ce qui s'est passé. `maintenant` est un paramètre (aucune horloge truquée).
  */
 
+import * as Sentry from "@sentry/nextjs";
+
 import type { TvaRegimeHonoraires } from "@/server/qualiopi/remuneration/calcul";
 import {
   demiJourneesPrevues,
@@ -278,6 +280,12 @@ export async function passerPaiementsMission(
           `[paiement-mission] mois ${m.releve.mois} de la session ${m.sessionId} non écrit :`,
           err instanceof Error ? err.message.slice(0, 200) : String(err),
         );
+        // Chantier C4 : un mois qui lève chaque jour n'est plus jamais payé ; un
+        // console.error ne le dit à personne. Remonté comme les autres erreurs du module.
+        signaler(err, "paiement-mission:mois_non_ecrit", {
+          mois: m.releve.mois,
+          sessionId: m.sessionId,
+        });
         continue;
       }
       if (issue === "ecrit") ecrits += 1;
@@ -298,6 +306,16 @@ export async function passerPaiementsMission(
       anomalies: plan.anomalies,
     };
   } catch (err) {
+    signaler(err, "paiement-mission:passage_en_echec", {});
     return { etat: "echec", message: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/** Observabilité : jamais bloquante, identifiants techniques seulement. */
+function signaler(err: unknown, action: string, extra: Record<string, string>): void {
+  try {
+    Sentry.captureException(err, { tags: { action }, extra });
+  } catch {
+    // Jamais bloquant.
   }
 }

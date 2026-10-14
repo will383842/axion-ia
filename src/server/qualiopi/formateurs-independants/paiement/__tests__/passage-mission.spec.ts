@@ -16,6 +16,11 @@
 
 import { describe, expect, it, vi } from "vitest";
 
+const captureException = vi.fn();
+vi.mock("@sentry/nextjs", () => ({
+  captureException: (...a: unknown[]) => captureException(...a),
+}));
+
 import { filtrerPrestationsApresBascule } from "../apres-bascule";
 import {
   passerPaiementsMission,
@@ -187,6 +192,27 @@ describe("passerPaiementsMission (éteint par défaut)", () => {
   it("avant la date de bascule : coupé", async () => {
     const d = deps({ dateBascule: vi.fn(async () => "2027-01-01") });
     expect(await passerPaiementsMission(MAINTENANT, d)).toEqual({ etat: "coupe" });
+  });
+
+  it("🔴 C4 — un mois qui lève est REMONTÉ à Sentry (pas seulement console.error), sans donnée personnelle", async () => {
+    captureException.mockClear();
+    const d = deps({
+      ecrireMois: vi.fn(async () => {
+        throw new Error("unique constraint trainer_fee_lines_mission_unique");
+      }),
+    });
+    expect(await passerPaiementsMission(MAINTENANT, d)).toMatchObject({ erreurs: 1 });
+    expect(captureException).toHaveBeenCalledTimes(1);
+    expect(captureException.mock.calls[0]![1]).toMatchObject({
+      tags: { action: "paiement-mission:mois_non_ecrit" },
+    });
+    // Une panne de la passe entière aussi.
+    const panne = deps({ candidats: vi.fn(async () => Promise.reject(new Error("base"))) });
+    await passerPaiementsMission(MAINTENANT, panne);
+    expect(captureException).toHaveBeenCalledTimes(2);
+    expect(captureException.mock.calls[1]![1]).toMatchObject({
+      tags: { action: "paiement-mission:passage_en_echec" },
+    });
   });
 
   it("unique historique encore en base (M-D non fait) : bloqué, rien n'est écrit", async () => {
