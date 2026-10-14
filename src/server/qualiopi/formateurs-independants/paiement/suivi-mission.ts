@@ -25,6 +25,7 @@
 import { prisma } from "@/lib/prisma";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { sendTelegram } from "@/lib/telegram";
+import { journaliser } from "@/server/journal/journaliser";
 import {
   DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION,
   prendreVerrousRemuneration,
@@ -75,6 +76,35 @@ async function alerter(body: string): Promise<void> {
   } catch {
     // Une alerte manquée ne défait rien.
   }
+}
+
+/** Lot 8B — trace « alerte de feuilles partie », une par (formateur, session, mois, étape). */
+export const ACTION_ALERTE_FEUILLES = {
+  alerte: "qualiopi.formateur.feuilles_alerte_j10",
+  sur_constat: "qualiopi.formateur.feuilles_alerte_j20",
+} as const;
+
+/**
+ * Pose la trace AVANT d'alerter : `false` si elle existe déjà, ou si elle n'a pas pu
+ * être écrite (sans trace, l'alerte se répéterait chaque jour). Identifiants seuls.
+ */
+async function premiereAlerteFeuilles(
+  etape: keyof typeof ACTION_ALERTE_FEUILLES,
+  m: { trainerId: string; sessionId: string; mois: string },
+): Promise<boolean> {
+  const action = ACTION_ALERTE_FEUILLES[etape];
+  const cle = `${m.sessionId}:${m.mois}`;
+  const deja = await prisma.activityLog.count({
+    where: { action, targetId: m.trainerId, changes: { path: ["cle"], equals: cle } },
+  });
+  if (deja > 0) return false;
+  return journaliser(prisma, {
+    action,
+    targetType: "Trainer",
+    targetId: m.trainerId,
+    changes: { cle, sessionId: m.sessionId, mois: m.mois },
+    session: null,
+  });
 }
 
 /** Le mois civil qui précède `maintenant` (heure de Paris). */
@@ -239,9 +269,10 @@ const JOUR_LONG = new Intl.DateTimeFormat("fr-FR", {
 
 /**
  * 4 — feuilles de présence manquantes (M8, sans pièce juridique nouvelle) : F35
- * une fois par (formateur, session, mois) dès J+3 ; alertes internes à J+10 et à
- * J+20 (« payer sur constat » n'est pas livré : décision humaine). Les trois
- * délais viennent de `argent/parametres.ts`.
+ * une fois par (formateur, session, mois) dès J+3 ; alertes internes dès J+10 et
+ * dès J+20, une fois chacune (lot 8B : trace au journal d'activité) — « payer sur
+ * constat » n'est pas livré : décision humaine. Les trois délais viennent de
+ * `argent/parametres.ts`.
  */
 async function feuilles(
   maintenant: Date,
@@ -291,13 +322,13 @@ async function feuilles(
       }
     }
     const session = numero.get(m.sessionId) ?? "session";
-    if (etapes.includes("alerte")) {
+    if (etapes.includes("alerte") && (await premiereAlerteFeuilles("alerte", m))) {
       alertes += 1;
       await alerter(
         `Feuilles de présence incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesAlerteJours} jours après la dernière journée (${session}, ${m.mois}) : ${m.manquantes.length} demi-journée(s) sans contresignature. Le formateur a été relancé ; la facture attend.`,
       );
     }
-    if (etapes.includes("sur_constat")) {
+    if (etapes.includes("sur_constat") && (await premiereAlerteFeuilles("sur_constat", m))) {
       alertes += 1;
       await alerter(
         `Feuilles toujours incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesSurConstatJours} jours après la dernière journée (${session}, ${m.mois}). « Payer sur constat » n'est pas encore disponible : à décider à la main.`,

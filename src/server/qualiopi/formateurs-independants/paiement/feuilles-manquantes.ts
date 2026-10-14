@@ -73,8 +73,11 @@ export function feuillesManquantes(
 
 /**
  * Ce qui est dû AUJOURD'HUI pour un mois incomplet. La relance F35 est due dès
- * J+3 (l'appelant la garde unique par sa clé) ; les deux alertes internes, le
- * jour exact (le passage est quotidien) : elles ne se répètent pas.
+ * J+3 ; les deux alertes internes, dès J+10 et dès J+20. L'appelant garde
+ * chacune unique par sa clé (journal des envois, journal d'activité).
+ *
+ * 🔴 Lot 8B — les deux alertes se déclenchaient par égalité (`j === 10`) : un
+ * passage manqué ce jour-là (panne, redémarrage) et l'alerte ne partait jamais.
  */
 export function etapesFeuilles(
   derniereJournee: JourCivil,
@@ -87,7 +90,7 @@ export function etapesFeuilles(
   const j = joursEntre(derniereJournee, aujourdhui);
   const out: EtapeFeuilles[] = [];
   if (j >= p.feuillesRelanceJours) out.push("relance");
-  if (j === p.feuillesAlerteJours) out.push("alerte");
-  if (j === p.feuillesSurConstatJours) out.push("sur_constat");
+  if (j >= p.feuillesAlerteJours) out.push("alerte");
+  if (j >= p.feuillesSurConstatJours) out.push("sur_constat");
   return out;
 }
