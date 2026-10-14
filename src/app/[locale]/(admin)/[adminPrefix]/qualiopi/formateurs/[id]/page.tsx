@@ -1014,6 +1014,8 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
             adresseProfessionnelle: trainer.adresseProfessionnelle,
             tarifJourneeHtCents: trainer.tarifJourneeHtCents,
             sousTraitantNda: trainer.sousTraitantNda,
+            // Jour UTC : la colonne est posée à minuit UTC (cf. `remisLe` plus haut).
+            dateEmbauche: trainer.dateEmbauche?.toISOString().slice(0, 10) ?? "",
           }}
         />
       </div>

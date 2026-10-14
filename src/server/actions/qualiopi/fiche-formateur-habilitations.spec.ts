@@ -46,9 +46,27 @@ const mockTrainerDocumentCount = vi.fn();
 const mockTrainerDocumentGroupBy = vi.fn();
 const mockTrainerDocumentFindMany = vi.fn();
 const mockFormationFindMany = vi.fn();
+// Remplacement de la fiche (2026-10-13) : fiches précédentes, journal des
+// versements, auteur nommé, et la transaction qui écrit le tout d'un bloc.
+const mockDocumentGenereFindMany = vi.fn();
+const mockDocumentGenereUpdateMany = vi.fn();
+const mockActivityLogFindMany = vi.fn();
+const mockAdminUserFindUnique = vi.fn();
+const mockTransaction = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    documentGenere: {
+      findMany: (...a: unknown[]) => mockDocumentGenereFindMany(...a),
+      updateMany: (...a: unknown[]) => mockDocumentGenereUpdateMany(...a),
+    },
+    activityLog: {
+      findMany: (...a: unknown[]) => mockActivityLogFindMany(...a),
+    },
+    adminUser: {
+      findUnique: (...a: unknown[]) => mockAdminUserFindUnique(...a),
+    },
+    $transaction: (...a: unknown[]) => mockTransaction(...a),
     trainer: {
       findUnique: (...a: unknown[]) => mockTrainerFindUnique(...a),
       findMany: (...a: unknown[]) => mockTrainerFindMany(...a),
@@ -105,6 +123,7 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { verserFicheFormateurAction, genererListeFormateursAction } from "./documents";
+import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { genererCvFormateurAction } from "./exports-pdf";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -196,6 +215,12 @@ beforeEach(() => {
   mockTrainerUpdate.mockResolvedValue({});
   mockFormationFindMany.mockResolvedValue([]);
   mockTrainerFindMany.mockResolvedValue([]);
+  // Par défaut : un PREMIER versement — aucune fiche précédente, journal vide.
+  mockDocumentGenereFindMany.mockResolvedValue([]);
+  mockDocumentGenereUpdateMany.mockResolvedValue({ count: 0 });
+  mockActivityLogFindMany.mockResolvedValue([]);
+  mockAdminUserFindUnique.mockResolvedValue({ name: "Williams Jullin" });
+  mockTransaction.mockImplementation((ops: Array<Promise<unknown>>) => Promise.all(ops));
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -233,6 +258,169 @@ describe("verserFicheFormateurAction — habilitations déclarables", () => {
 
     expect(r).toHaveProperty("data");
     expect(mockGenerateDocument).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 2026-10-13 — « Remplacer la fiche au dossier » ne remplaçait rien.
+//
+// Le bouton versait une nouvelle pièce `cv_formateur` (AXI-DOC-2026-047) et
+// laissait l'ancienne (AXI-DOC-2026-022) en vigueur : les deux s'affichaient à
+// l'indicateur 21 du mode auditeur et partaient ensemble dans le dossier ZIP,
+// en se contredisant.
+//
+// ⚠️ Une fiche `cv_formateur` ne porte AUCUNE colonne qui la relie à son
+// formateur. Les seuls liens écrits sont : `Trainer.cvUrl` (l'id de la dernière
+// fiche), le journal `qualiopi.formateur.fiche.versee` (formateur + id de la
+// pièce) et, depuis ce correctif, `metadata.trainerId`. On n'annule QUE ce que
+// l'un de ces trois liens désigne — jamais « toutes les fiches du registre ».
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 verserFicheFormateurAction — la nouvelle fiche REMPLACE les précédentes", () => {
+  const DOC_022 = "0a000000-0000-4000-8000-000000000022";
+  const DOC_047 = "0a000000-0000-4000-8000-000000000047";
+  const NOUVELLE = { id: "0a000000-0000-4000-8000-000000000048", numero: "AXI-DOC-2026-048" };
+  const CV_URL_047 = `https://axion-ia.com/api/qualiopi/documents/${DOC_047}`;
+
+  beforeEach(() => {
+    mockGenerateDocument.mockResolvedValue(NOUVELLE);
+    mockTrainerFindUnique.mockResolvedValue(makeTrainer({ cvUrl: CV_URL_047 }));
+    // Le journal des versements de CE formateur : 022 puis 047.
+    mockActivityLogFindMany.mockResolvedValue([
+      { changes: { documentId: DOC_022, numero: "AXI-DOC-2026-022" } },
+      { changes: { documentId: DOC_047, numero: "AXI-DOC-2026-047" } },
+    ]);
+    mockDocumentGenereFindMany.mockResolvedValue([
+      { id: DOC_022, numero: "AXI-DOC-2026-022" },
+      { id: DOC_047, numero: "AXI-DOC-2026-047" },
+    ]);
+  });
+
+  it("annule les fiches précédentes : date, auteur NOMMÉ, motif qui cite la remplaçante", async () => {
+    const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+    expect(r).toEqual({ data: { documentId: NOUVELLE.id, numero: NOUVELLE.numero } });
+
+    expect(mockDocumentGenereUpdateMany).toHaveBeenCalledTimes(1);
+    const appel = mockDocumentGenereUpdateMany.mock.calls[0]![0] as {
+      where: { id: { in: string[] }; annuleeAt: null };
+      data: {
+        annuleeAt: Date;
+        annuleeMotif: string;
+        annuleePar: string;
+        remplaceeParNumero: string;
+      };
+    };
+    expect([...appel.where.id.in].sort()).toEqual([DOC_022, DOC_047]);
+    // Une pièce déjà annulée garde sa date et son motif d'origine.
+    expect(appel.where.annuleeAt).toBeNull();
+    expect(appel.data.annuleeAt).toBeInstanceOf(Date);
+    expect(appel.data.annuleePar).toBe("Williams Jullin");
+    expect(appel.data.annuleeMotif).toBe(
+      `Remplacée par la fiche AXI-DOC-2026-048 versée le ${appel.data.annuleeAt.toLocaleDateString("fr-FR")}`,
+    );
+    expect(appel.data.remplaceeParNumero).toBe("AXI-DOC-2026-048");
+  });
+
+  it("ne cherche QUE des fiches `cv_formateur` en vigueur reliées à CE formateur", async () => {
+    // Une ligne de journal illisible ne doit ni planter ni élargir la recherche.
+    mockActivityLogFindMany.mockResolvedValue([
+      { changes: { documentId: DOC_022 } },
+      { changes: { documentId: "pas-un-uuid" } },
+      { changes: null },
+    ]);
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    expect(mockActivityLogFindMany.mock.calls[0]?.[0]).toMatchObject({
+      where: {
+        action: "qualiopi.formateur.fiche.versee",
+        targetType: "Trainer",
+        targetId: TRAINER_ID,
+      },
+    });
+    const where = (
+      mockDocumentGenereFindMany.mock.calls[0]![0] as {
+        where: {
+          type: string;
+          annuleeAt: null;
+          OR: [{ id: { in: string[] } }, { metadata: { path: string[]; equals: string } }];
+        };
+      }
+    ).where;
+    expect(where.type).toBe("cv_formateur");
+    expect(where.annuleeAt).toBeNull();
+    // `cvUrl` (047) + journal (022) — et rien d'autre.
+    expect([...where.OR[0].id.in].sort()).toEqual([DOC_022, DOC_047]);
+    expect(where.OR[1]).toEqual({ metadata: { path: ["trainerId"], equals: TRAINER_ID } });
+  });
+
+  it("écrit le formateur et les annulations dans la MÊME transaction", async () => {
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    expect(mockTransaction).toHaveBeenCalledTimes(1);
+    expect(mockTransaction.mock.calls[0]![0]).toHaveLength(2);
+    expect(mockTrainerUpdate).toHaveBeenCalledTimes(1);
+    expect(mockDocumentGenereUpdateMany).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 si la transaction échoue, rien n'est annoncé comme fait", async () => {
+    mockTransaction.mockRejectedValue(new Error("base injoignable"));
+    const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    expect(r).toMatchObject({ error: expect.stringContaining("AXI-DOC-2026-048") });
+    expect(logQualiopiActivity).not.toHaveBeenCalled();
+  });
+
+  it("trace CHAQUE annulation au journal, comme une annulation faite à la main", async () => {
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    for (const [id, numero] of [
+      [DOC_022, "AXI-DOC-2026-022"],
+      [DOC_047, "AXI-DOC-2026-047"],
+    ]) {
+      expect(logQualiopiActivity).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: "qualiopi.document.annulee",
+          targetType: "DocumentGenere",
+          targetId: id,
+          changes: expect.objectContaining({ numero, annuleePar: "Williams Jullin" }),
+        }),
+      );
+    }
+  });
+
+  it("la nouvelle fiche porte son formateur — le prochain remplacement la retrouvera", async () => {
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+    expect(mockGenerateDocument.mock.calls[0]?.[0]).toMatchObject({
+      type: "cv_formateur",
+      metadata: { trainerId: TRAINER_ID },
+    });
+  });
+
+  it("un PREMIER versement n'annule rien et ne journalise aucune annulation", async () => {
+    mockTrainerFindUnique.mockResolvedValue(makeTrainer({ cvUrl: null }));
+    mockActivityLogFindMany.mockResolvedValue([]);
+    mockDocumentGenereFindMany.mockResolvedValue([]);
+
+    const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    expect(r).toHaveProperty("data");
+    expect(mockDocumentGenereUpdateMany).not.toHaveBeenCalled();
+    expect(logQualiopiActivity).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action: "qualiopi.document.annulee" }),
+    );
+  });
+
+  it("un CV téléversé dans `cvUrl` n'est pas pris pour une fiche", async () => {
+    mockTrainerFindUnique.mockResolvedValue(
+      makeTrainer({ cvUrl: "https://drive.example/cv-claire.pdf" }),
+    );
+    mockActivityLogFindMany.mockResolvedValue([]);
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    const where = (
+      mockDocumentGenereFindMany.mock.calls[0]![0] as { where: { OR: [{ id: { in: string[] } }] } }
+    ).where;
+    expect(where.OR[0].id.in).toEqual([]);
   });
 });
 
