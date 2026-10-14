@@ -37,7 +37,7 @@ vi.mock("next/navigation", () => ({
 
 import { NextRequest } from "next/server";
 import { GET } from "@/app/[locale]/espace-formateur/connexion/[token]/route";
-import { empreinteSessionFormateur } from "@/server/qualiopi/formateurs-independants/version-session";
+import { empreinteSessionFormateur } from "../acces-apres-fin";
 import { getFormateurSession } from "../guard";
 
 const ADRESSE = "camille@exemple.test";
