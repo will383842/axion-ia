@@ -130,6 +130,8 @@ import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
 import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
+import { regleCertificatRealisationManquant } from "./regle-certificat-realisation-manquant";
+import { regleAvisFinanceurManquant } from "./regle-avis-financeur-manquant";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -5082,6 +5084,11 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
     nom: "attestation_sans_evaluation_evaluee_depuis",
     fn: regleAttestationSansEvaluationEvalueeDepuis,
   },
+  // Lot 8B — ce qui reste à faire à la fin d'une session (décisions du dirigeant) :
+  // le certificat de réalisation (créé seul, derrière son interrupteur) et l'avis
+  // du financeur (saisi à la main), quand ils manquent.
+  { nom: "certificat_realisation_manquant", fn: regleCertificatRealisationManquant },
+  { nom: "avis_financeur_manquant", fn: regleAvisFinanceurManquant },
   { nom: "satisfaction_sous_seuil", fn: regleSatisfactionSousSeuil },
   { nom: "qualiopi_expiration", fn: regleQualiopiExpiration },
   { nom: "bpf", fn: regleBpf },

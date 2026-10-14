@@ -8,12 +8,26 @@
  *
  * 🔒 Aucune donnée bancaire n'entre dans un e-mail ni dans une clé d'envoi.
  * Un échec d'envoi ne remonte jamais : le virement, lui, est acquis.
+ *
+ * Lot 8B — chaque relevé dont le F37 a été traité porte une trace au journal
+ * d'activité ; le suivi quotidien reprend les relevés payés sans trace (lot
+ * « Virements faits » interrompu avant l'envoi, file indisponible).
  */
 
 import { createHash } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
+import { journaliser } from "@/server/journal/journaliser";
 import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+
+/** Lot 8B — le F37 de ce relevé est traité (enfilé, garé, retenu ou écarté par une garde). */
+export const ACTION_F37_TRAITE = "qualiopi.formateur.f37_traite";
+/** La reprise ne touche pas un lot en cours : payé depuis 30 minutes au moins… */
+const REPRISE_F37_APRES_MS = 30 * 60 * 1000;
+/** … et depuis 7 jours au plus (au-delà, un e-mail « virement effectué » n'apprend plus rien). */
+const REPRISE_F37_FENETRE_MS = 7 * 24 * 60 * 60 * 1000;
+/** Un F37 de l'ancien code part dans l'heure du paiement (fin du lot). */
+const F37_ANCIEN_DANS_MS = 60 * 60 * 1000;
 
 const DATE_LONGUE = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -77,7 +91,7 @@ export async function envoyerVirementsFaits(statementIds: ReadonlyArray<string>)
         .digest("hex")
         .slice(0, 24);
       const premier = lot[0]!;
-      await envoyer({
+      const r = await envoyer({
         gabarit: "formateur-virement-fait",
         destinataire: premier.trainer.email,
         entityType: "Trainer",
@@ -91,10 +105,75 @@ export async function envoyerVirementsFaits(statementIds: ReadonlyArray<string>)
             date: DATE_LONGUE.format(new Date(dernier)),
           },
         },
-      }).catch(() => undefined);
+      }).catch(() => "indisponible" as const);
+      // « indisponible » seul est repris : les autres issues sont des décisions (texte
+      // non validé, fin de collaboration…) que la reprise ne doit pas contourner.
+      if (r === "indisponible") continue;
+      for (const l of lot) {
+        await journaliser(prisma, {
+          action: ACTION_F37_TRAITE,
+          targetType: "TrainerStatement",
+          targetId: l.id,
+          changes: { resultat: r },
+          session: null,
+        });
+      }
     }
   } catch {
     // Lecture en échec : rien n'est envoyé, le virement reste acquis.
+  }
+}
+
+/**
+ * Lot 8B — reprise de F37 (relecture de #1514). Un lot « Virements faits » interrompu
+ * (délai dépassé) laissait des relevés payés sans F37, et un rejeu les trouvait payés :
+ * l'e-mail était perdu. Au passage quotidien, les relevés de mission payés depuis 30 min
+ * à 7 jours, sans trace F37, partent une fois (même chemin, même clé d'idempotence pour
+ * le même ensemble de relevés). Un relevé payé avant la trace dont un F37 est parti
+ * dans l'heure n'est pas repris. Rend le nombre de relevés repris ; ne lève jamais.
+ */
+export async function reprendreVirementsFaitsSansF37(maintenant: Date): Promise<number> {
+  try {
+    const payes = await prisma.trainerStatement.findMany({
+      where: {
+        statut: "paye",
+        origine: "passage_mission",
+        avoirDeId: null,
+        payeAt: {
+          gte: new Date(maintenant.getTime() - REPRISE_F37_FENETRE_MS),
+          lte: new Date(maintenant.getTime() - REPRISE_F37_APRES_MS),
+        },
+      },
+      select: { id: true, trainerId: true, payeAt: true },
+      take: 200,
+    });
+    if (payes.length === 0) return 0;
+    const tracees = new Set(
+      (
+        await prisma.activityLog.findMany({
+          where: { action: ACTION_F37_TRAITE, targetId: { in: payes.map((p) => p.id) } },
+          select: { targetId: true },
+        })
+      ).map((t) => t.targetId),
+    );
+    const aReprendre: string[] = [];
+    for (const p of payes) {
+      if (tracees.has(p.id) || p.payeAt === null) continue;
+      const ancien = await prisma.emailLog.count({
+        where: {
+          template: "formateur-virement-fait",
+          entityType: "Trainer",
+          entityId: p.trainerId,
+          status: { not: "failed" },
+          createdAt: { gte: p.payeAt, lte: new Date(p.payeAt.getTime() + F37_ANCIEN_DANS_MS) },
+        },
+      });
+      if (ancien === 0) aReprendre.push(p.id);
+    }
+    if (aReprendre.length > 0) await envoyerVirementsFaits(aReprendre);
+    return aReprendre.length;
+  } catch {
+    return 0;
   }
 }
 

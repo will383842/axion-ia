@@ -80,6 +80,10 @@ vi.mock("@/lib/prisma", () => ({
     // Lot OPCO A7c — `etat_fonds_perime` (OPCO sans relevé) et
     // `fonds_opco_suspendus_session` lisent les relevés d'état des fonds.
     etatFondsOpco: { findMany: vi.fn() },
+    // Lot 8B — `certificat_realisation_manquant` lit l'interrupteur (et LÈVE si la
+    // lecture échoue) ; `avis_financeur_manquant` lit les appréciations.
+    setting: { findUnique: vi.fn() },
+    appreciation: { findMany: vi.fn() },
   },
 }));
 

@@ -88,6 +88,11 @@ vi.mock("@/server/qualiopi/evaluations/attestation-service", () => ({
   })),
 }));
 
+// Lot 8B — le certificat de réalisation créé à la fin de la formation.
+const mockCertificatsAuto = vi.fn();
+vi.mock("@/server/qualiopi/documents/certificat-auto", () => ({
+  emettreCertificatsFinDeFormation: (...a: unknown[]) => mockCertificatsAuto(...a),
+}));
 vi.mock("@/server/qualiopi/indicateurs/service", () => ({
   invalidateIndicateursCache: vi.fn(),
 }));
@@ -1001,6 +1006,32 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     //
     mockPrisma.enrollment.findMany.mockResolvedValue([]);
     mockPrisma.enrollment.count.mockResolvedValue(0);
+  });
+
+  it("🔴 8B — le même passage crée les certificats de réalisation (service dédié, éteint par défaut)", async () => {
+    mockCertificatsAuto.mockResolvedValue({
+      etat: "fait",
+      crees: 1,
+      refuses: 0,
+      dejaPresents: 0,
+      erreurs: 0,
+    });
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+    expect(mockCertificatsAuto).toHaveBeenCalledOnce();
+    expect(mockCertificatsAuto.mock.calls[0]![0]).toBeInstanceOf(Date);
+  });
+
+  it("8B — un échec des certificats ne fait pas échouer le passage des attestations", async () => {
+    mockCertificatsAuto.mockRejectedValue(new Error("base"));
+    await expect(
+      formationCronsHandler({
+        type: "formation-crons.attestations-auto",
+        tick: "2026-08-03T09:00:00Z",
+      }),
+    ).resolves.not.toThrow();
   });
 
   it("D1 : évaluation finale OU délai de grâce de R05 écoulé depuis la fin de session", async () => {

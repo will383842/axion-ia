@@ -16,7 +16,9 @@
  *      verrous ; sans relevé suivant à 60 jours, la demande de remboursement est
  *      marquée et F54 part, une fois par avoir ;
  *   4. **feuilles manquantes** (M8) : F35, 4e marche, et alertes internes aux
- *      délais existants (`feuilles-manquantes.ts`).
+ *      délais existants (`feuilles-manquantes.ts`) ;
+ *   5. **reprise de F37** (lot 8B) : les relevés payés dont le F37 s'est perdu
+ *      (lot « Virements faits » interrompu) le reçoivent, une fois.
  *
  * 🔴 ÉTEINT : sans date `formateurs.passage_paiement`, rien ne se passe. Ne lève
  * jamais. Alertes et journaux : des compteurs et des numéros de pièce, aucun nom.
@@ -25,6 +27,7 @@
 import { prisma } from "@/lib/prisma";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { sendTelegram } from "@/lib/telegram";
+import { journaliser } from "@/server/journal/journaliser";
 import {
   DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION,
   prendreVerrousRemuneration,
@@ -39,7 +42,7 @@ import { etapesFeuilles, feuillesManquantes } from "./feuilles-manquantes";
 import { lireCandidats } from "./passage-mission-base";
 import { lireDateBascule } from "./lecture-passage";
 import { alerteReleveNonValide, brouillonMensuelAPreparer } from "./releve-mensuel-auto";
-import { montantEnTexte } from "./virement-fait-envoi";
+import { montantEnTexte, reprendreVirementsFaitsSansF37 } from "./virement-fait-envoi";
 
 const NOM_MOIS = new Intl.DateTimeFormat("fr-FR", {
   month: "long",
@@ -57,6 +60,8 @@ export interface BilanSuiviMission {
   /** Lot D2 (M8) : F35 parties, alertes internes J+10 et J+20. */
   readonly f35: number;
   readonly alertesFeuilles: number;
+  /** Lot 8B : relevés payés dont le F37 perdu est repris. */
+  readonly f37Repris: number;
 }
 
 const VIDE = {
@@ -67,6 +72,7 @@ const VIDE = {
   f54: 0,
   f35: 0,
   alertesFeuilles: 0,
+  f37Repris: 0,
 } as const;
 
 async function alerter(body: string): Promise<void> {
@@ -75,6 +81,35 @@ async function alerter(body: string): Promise<void> {
   } catch {
     // Une alerte manquée ne défait rien.
   }
+}
+
+/** Lot 8B — trace « alerte de feuilles partie », une par (formateur, session, mois, étape). */
+export const ACTION_ALERTE_FEUILLES = {
+  alerte: "qualiopi.formateur.feuilles_alerte_j10",
+  sur_constat: "qualiopi.formateur.feuilles_alerte_j20",
+} as const;
+
+/**
+ * Pose la trace AVANT d'alerter : `false` si elle existe déjà, ou si elle n'a pas pu
+ * être écrite (sans trace, l'alerte se répéterait chaque jour). Identifiants seuls.
+ */
+async function premiereAlerteFeuilles(
+  etape: keyof typeof ACTION_ALERTE_FEUILLES,
+  m: { trainerId: string; sessionId: string; mois: string },
+): Promise<boolean> {
+  const action = ACTION_ALERTE_FEUILLES[etape];
+  const cle = `${m.sessionId}:${m.mois}`;
+  const deja = await prisma.activityLog.count({
+    where: { action, targetId: m.trainerId, changes: { path: ["cle"], equals: cle } },
+  });
+  if (deja > 0) return false;
+  return journaliser(prisma, {
+    action,
+    targetType: "Trainer",
+    targetId: m.trainerId,
+    changes: { cle, sessionId: m.sessionId, mois: m.mois },
+    session: null,
+  });
 }
 
 /** Le mois civil qui précède `maintenant` (heure de Paris). */
@@ -239,9 +274,10 @@ const JOUR_LONG = new Intl.DateTimeFormat("fr-FR", {
 
 /**
  * 4 — feuilles de présence manquantes (M8, sans pièce juridique nouvelle) : F35
- * une fois par (formateur, session, mois) dès J+3 ; alertes internes à J+10 et à
- * J+20 (« payer sur constat » n'est pas livré : décision humaine). Les trois
- * délais viennent de `argent/parametres.ts`.
+ * une fois par (formateur, session, mois) dès J+3 ; alertes internes dès J+10 et
+ * dès J+20, une fois chacune (lot 8B : trace au journal d'activité) — « payer sur
+ * constat » n'est pas livré : décision humaine. Les trois délais viennent de
+ * `argent/parametres.ts`.
  */
 async function feuilles(
   maintenant: Date,
@@ -291,13 +327,13 @@ async function feuilles(
       }
     }
     const session = numero.get(m.sessionId) ?? "session";
-    if (etapes.includes("alerte")) {
+    if (etapes.includes("alerte") && (await premiereAlerteFeuilles("alerte", m))) {
       alertes += 1;
       await alerter(
         `Feuilles de présence incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesAlerteJours} jours après la dernière journée (${session}, ${m.mois}) : ${m.manquantes.length} demi-journée(s) sans contresignature. Le formateur a été relancé ; la facture attend.`,
       );
     }
-    if (etapes.includes("sur_constat")) {
+    if (etapes.includes("sur_constat") && (await premiereAlerteFeuilles("sur_constat", m))) {
       alertes += 1;
       await alerter(
         `Feuilles toujours incomplètes ${PARAMETRES_ARGENT_FORMATEURS.feuillesSurConstatJours} jours après la dernière journée (${session}, ${m.mois}). « Payer sur constat » n'est pas encore disponible : à décider à la main.`,
@@ -314,6 +350,7 @@ export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMi
     const { rappel, nonValides } = await rappelsMensuels(maintenant);
     const t = await tropPercus(maintenant);
     const f = await feuilles(maintenant, bascule);
+    const f37Repris = await reprendreVirementsFaitsSansF37(maintenant);
     return {
       etat: "fait",
       rappelBrouillon: rappel,
@@ -323,6 +360,7 @@ export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMi
       f54: t.f54,
       f35: f.f35,
       alertesFeuilles: f.alertes,
+      f37Repris,
     };
   } catch {
     return { etat: "echec", ...VIDE };

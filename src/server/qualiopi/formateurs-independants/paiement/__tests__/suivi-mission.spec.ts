@@ -23,6 +23,10 @@ const candidats = vi.fn();
 const emailLogs = vi.fn();
 const formateurs = vi.fn();
 const corbeille = vi.fn();
+const repriseF37 = vi.fn();
+/** Journal d'activité en mémoire : la trace « alerte partie » s'y lit et s'y écrit. */
+const journal: Array<{ action: string; targetId: string | null; changes: { cle?: string } }> = [];
+const journalEnPanne = { oui: false };
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -34,6 +38,22 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: { findMany: async () => [{ id: "s1", numero: "AXI-SESS-2026-042" }] },
     emailLog: { count: (...a: unknown[]) => emailLogs(...a) },
     emailOutbox: { count: (...a: unknown[]) => corbeille(...a) },
+    activityLog: {
+      count: async (a: {
+        where: { action: string; targetId: string; changes: { path: string[]; equals: string } };
+      }) =>
+        journal.filter(
+          (j) =>
+            j.action === a.where.action &&
+            j.targetId === a.where.targetId &&
+            j.changes.cle === a.where.changes.equals,
+        ).length,
+      create: async (a: { data: (typeof journal)[number] }) => {
+        if (journalEnPanne.oui) throw new Error("journal indisponible");
+        journal.push(a.data);
+        return a.data;
+      },
+    },
     $transaction: async (fn: (t: unknown) => Promise<unknown>) => fn({ tx: true }),
   },
 }));
@@ -47,6 +67,10 @@ vi.mock("../../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }))
 vi.mock("../corrections-mission", () => ({ traiterTropPercu: (...a: unknown[]) => traiter(...a) }));
 vi.mock("../lecture-passage", () => ({ lireDateBascule: (...a: unknown[]) => bascule(...a) }));
 vi.mock("../passage-mission-base", () => ({ lireCandidats: (...a: unknown[]) => candidats(...a) }));
+vi.mock("../virement-fait-envoi", async (orig) => ({
+  ...(await orig<typeof import("../virement-fait-envoi")>()),
+  reprendreVirementsFaitsSansF37: (...a: unknown[]) => repriseF37(...a),
+}));
 
 import { passerSuiviMission } from "../suivi-mission";
 
@@ -79,6 +103,8 @@ function base(
 
 beforeEach(() => {
   vi.clearAllMocks();
+  journal.length = 0;
+  journalEnPanne.oui = false;
   bascule.mockResolvedValue("2026-11-01");
   findFirst.mockResolvedValue(null);
   traiter.mockResolvedValue({ imputeHtCents: 0, demandesRemboursement: 0 });
@@ -90,6 +116,7 @@ beforeEach(() => {
   });
   base();
   candidats.mockResolvedValue([]);
+  repriseF37.mockResolvedValue(0);
   emailLogs.mockResolvedValue(0);
   corbeille.mockResolvedValue(0);
   formateurs.mockResolvedValue([
@@ -103,6 +130,17 @@ describe("passerSuiviMission", () => {
     expect((await passerSuiviMission(new Date("2026-12-01T08:00:00Z"))).etat).toBe("coupe");
     expect(findMany).not.toHaveBeenCalled();
     expect(telegram).not.toHaveBeenCalled();
+  });
+
+  it("🔴 8B — chaque passage reprend les F37 perdus par un lot interrompu ; coupé : jamais", async () => {
+    repriseF37.mockResolvedValue(2);
+    const maintenant = new Date("2026-12-03T08:00:00Z");
+    expect((await passerSuiviMission(maintenant)).f37Repris).toBe(2);
+    expect(repriseF37).toHaveBeenCalledWith(maintenant);
+    repriseF37.mockClear();
+    bascule.mockResolvedValue(null);
+    expect((await passerSuiviMission(maintenant)).f37Repris).toBe(0);
+    expect(repriseF37).not.toHaveBeenCalled();
   });
 
   it("le 1er du mois : un rappel interne, aucun calcul", async () => {
@@ -238,6 +276,39 @@ describe("feuilles manquantes (M8) — F35, alertes J+10 et J+20", () => {
     expect(corps).toMatch(/AXI-SESS-2026-042/);
     expect(corps).toMatch(/Payer sur constat/);
     expect(corps).not.toContain("Paule");
+  });
+
+  it("🔴 8B — le passage de J+10 manqué : l'alerte part à J+12, puis plus jamais", async () => {
+    candidats.mockResolvedValue([mission]);
+    emailLogs.mockResolvedValue(1);
+    // Aucun passage le 27/11 (J+10) : avant, l'alerte ne partait jamais (`===`).
+    expect((await passerSuiviMission(new Date("2026-11-29T08:00:00Z"))).alertesFeuilles).toBe(1);
+    expect((await passerSuiviMission(new Date("2026-11-30T08:00:00Z"))).alertesFeuilles).toBe(0);
+    expect((await passerSuiviMission(new Date("2026-12-01T08:00:00Z"))).alertesFeuilles).toBe(0);
+    // La trace porte la mission et le mois, jamais un nom.
+    expect(journal).toHaveLength(1);
+    expect(journal[0]).toMatchObject({
+      action: "qualiopi.formateur.feuilles_alerte_j10",
+      targetId: T,
+      changes: { cle: "s1:2026-11" },
+    });
+    expect(JSON.stringify(journal)).not.toContain("Paule");
+  });
+
+  it("🔴 8B — premier passage à J+25 : J+10 et J+20 partent chacune une fois, sans doublon", async () => {
+    candidats.mockResolvedValue([mission]);
+    emailLogs.mockResolvedValue(1);
+    expect((await passerSuiviMission(new Date("2026-12-12T08:00:00Z"))).alertesFeuilles).toBe(2);
+    expect((await passerSuiviMission(new Date("2026-12-13T08:00:00Z"))).alertesFeuilles).toBe(0);
+    expect(telegram).toHaveBeenCalledTimes(2);
+  });
+
+  it("8B — trace impossible à écrire : pas d'alerte (sinon elle se répéterait chaque jour)", async () => {
+    candidats.mockResolvedValue([mission]);
+    emailLogs.mockResolvedValue(1);
+    journalEnPanne.oui = true;
+    expect((await passerSuiviMission(new Date("2026-11-29T08:00:00Z"))).alertesFeuilles).toBe(0);
+    expect(telegram).not.toHaveBeenCalled();
   });
 
   it("feuilles complètes, ou formateur salarié : rien", async () => {

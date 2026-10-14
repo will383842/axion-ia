@@ -107,6 +107,9 @@ const CODES_ATTENDUS: string[] = [
   // attestation « non réalisée » n'avaient aucune surface.
   "attestation_non_emise_automatiquement",
   "attestation_sans_evaluation_evaluee_depuis",
+  // Lot 8B — fin de session : certificat de réalisation et avis du financeur manquants.
+  "certificat_realisation_manquant",
+  "avis_financeur_manquant",
   "satisfaction_sous_seuil",
   "reclamation_sans_reponse_j15",
   "qualiopi_expire_j90",

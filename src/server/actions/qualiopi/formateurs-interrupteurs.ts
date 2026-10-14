@@ -636,3 +636,10 @@ export async function basculerFormateursBilanFinFormationAction(
 ): Promise<EtatBascule> {
   return basculerSignature("bilan_fin_formation", formData);
 }
+/** Lot 8B — le certificat de réalisation créé à la fin de la formation. */
+export async function basculerFormateursCertificatAutoAction(
+  _prev: EtatBascule,
+  formData: FormData,
+): Promise<EtatBascule> {
+  return basculerSignature("certificat_auto", formData);
+}

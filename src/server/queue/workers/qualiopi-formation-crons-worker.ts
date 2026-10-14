@@ -10,6 +10,7 @@
 //
 // Jobs actifs (T9) :
 //   - formation-crons.attestations-auto : scan sessions realisee → génère attestations
+//     (+ lot 8B : certificats de réalisation, `documents/certificat-auto.ts`, éteint par défaut)
 //                                         pour enrollments sans attestation (daily 09:00).
 //
 // Extension T15 (RAPPELS — hors T6) :
@@ -659,6 +660,28 @@ async function handleAttestationsAuto(): Promise<void> {
         err instanceof Error ? err.message : String(err),
       );
     }
+  }
+
+  // Lot 8B — le certificat de réalisation, créé par le MÊME service que le clic de la
+  // console (gardes comprises), éteint par défaut ; jamais envoyé. Fail-soft : un échec
+  // ici ne défait aucune attestation.
+  // Import différé : la chaîne de production des pièces (rendu PDF) ne se charge que
+  // pour ce passage, comme dans `trainer-remuneration.ts`.
+  try {
+    const { emettreCertificatsFinDeFormation } =
+      await import("@/server/qualiopi/documents/certificat-auto");
+    const c = await emettreCertificatsFinDeFormation(new Date());
+    if (c.etat !== "coupe") {
+      console.log(
+        `[formation-crons] certificats-auto (${c.etat}) : ${c.crees} créés, ${c.refuses} refusés ` +
+          `par la garde (alerte levée), ${c.dejaPresents} déjà présents, ${c.erreurs} erreurs`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] certificats-auto: erreur",
+      err instanceof Error ? err.message : String(err),
+    );
   }
 
   console.log(

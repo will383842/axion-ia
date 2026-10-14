@@ -547,6 +547,16 @@ export const INTERRUPTEURS_SIGNATURE = {
     ),
     cle: "formateurs.bilan_fin_formation",
   },
+  // Lot 8B — le certificat de réalisation créé seul à la fin de la formation (décision du
+  // dirigeant). Coupé : rien n'est créé ni signalé, le clic de la console reste le seul
+  // chemin, exactement comme avant 8B.
+  certificat_auto: {
+    ...envoi(
+      "Certificat de réalisation créé à la fin de la formation",
+      "À partir de J+2, chaque matin, pour chaque stagiaire actif d'une session réalisée (finie le jour de l'allumage ou après), le certificat de réalisation est créé comme par le bouton de la console, une seule fois. Aucun e-mail : comme après le bouton, il est visible dans l'espace du stagiaire. Une alerte signale celui qui n'a pas pu l'être (taux de présence non mesuré, aucune trace d'émargement).",
+    ),
+    cle: "formateurs.certificat_realisation_auto",
+  },
 } as const satisfies Record<string, DefinitionEnvoi & { readonly cle: string }>;
 
 export type CleInterrupteurSignature = keyof typeof INTERRUPTEURS_SIGNATURE;
@@ -616,6 +626,8 @@ export const PREALABLES_SIGNATURE: Readonly<
   // relance (F61) part seulement si son texte est validé (adaptateur d'envoi) — couper
   // `textes_valides` ne doit PAS lever en silence la condition de paiement.
   bilan_fin_formation: [],
+  // Aucun : rien n'est envoyé, la pièce est seulement créée.
+  certificat_auto: [],
 };
 
 export function cleSettingSignature(cle: CleInterrupteurSignature): string {
