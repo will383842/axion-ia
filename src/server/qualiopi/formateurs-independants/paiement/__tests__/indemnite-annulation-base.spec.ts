@@ -125,6 +125,43 @@ describe("ecrireIndemniteDecidee", () => {
     expect(transaction).not.toHaveBeenCalled();
   });
 
+  it("🔴 C4 — instant saisi AVANT une demi-journée contresignée par CE formateur : refus, aucune transaction", async () => {
+    missionFindUnique.mockResolvedValue(
+      mission({
+        session: {
+          ...mission().session,
+          emargementContresignatures: [
+            { trainerId: T, date: new Date("2026-11-16T00:00:00Z"), demiJournee: "matin" },
+          ],
+        },
+      }),
+    );
+    const r = await ecrireIndemniteDecidee({ ...decision, montantVuHtCents: 0 });
+    expect(r.issue).toBe("instant_anterieur_signature");
+    expect(transaction).not.toHaveBeenCalled();
+    // La requête lit les contresignatures non révoquées.
+    const select = missionFindUnique.mock.calls[0]![0].select;
+    expect(select.session.select.emargementContresignatures.where).toEqual({ revokedAt: null });
+  });
+
+  it("C4 — la signature d'un AUTRE formateur ne bloque pas (450 € HT écrits)", async () => {
+    missionFindUnique.mockResolvedValue(
+      mission({
+        session: {
+          ...mission().session,
+          emargementContresignatures: [
+            { trainerId: "autre", date: new Date("2026-11-16T00:00:00Z"), demiJournee: "matin" },
+          ],
+        },
+      }),
+    );
+    expect(await ecrireIndemniteDecidee(decision)).toEqual({
+      issue: "ecrite",
+      montantHtCents: 45_000,
+      totalTtcCents: 54_000,
+    });
+  });
+
   it("mission sans décision ouverte, sans tarif ou sans régime figé : refus", async () => {
     for (const over of [
       { lettreBlocageMotif: null },

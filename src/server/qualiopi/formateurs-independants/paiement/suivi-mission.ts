@@ -155,21 +155,30 @@ async function tropPercus(
     }, DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION);
     imputeHtCents += b.imputeHtCents;
     demandes += b.demandesRemboursement;
-    if (b.demandesRemboursement > 0)
-      f54 += await envoyerDemandesRemboursement(trainerId, maintenant);
+    // Chantier C4 (défaut 3) : à CHAQUE passage, pas seulement quand une demande
+    // vient d'être posée — un F54 en échec hier est repris aujourd'hui.
+    f54 += await envoyerDemandesRemboursement(trainerId);
   }
   return { imputeHtCents, demandes, f54 };
 }
 
 /**
- * F54 — une fois par avoir, pour les demandes posées PAR CE PASSAGE (date égale).
+ * F54 — une fois par avoir dont le remboursement est DEMANDÉ et dont aucun envoi
+ * n'est parti (journal des envois sous la clé `formateur-trop-percu-<id>`, un échec
+ * ne compte pas). Chantier C4 : la demande posée un jour dont l'envoi échoue est
+ * reprise au passage suivant (avant, seules les demandes de CE passage partaient).
  * Le reste dû est relu sur l'avoir et ses imputations ; le TTC vient de `totaliser`.
  * Les coordonnées bancaires sont celles d'AXION (celles de ses factures), jamais
  * celles d'un formateur ; elles ne vont dans aucun journal.
  */
-async function envoyerDemandesRemboursement(trainerId: string, maintenant: Date): Promise<number> {
+async function envoyerDemandesRemboursement(trainerId: string): Promise<number> {
   const avoirs = await prisma.trainerStatement.findMany({
-    where: { trainerId, avoirDeId: { not: null }, remboursementDemandeAt: maintenant },
+    where: {
+      trainerId,
+      avoirDeId: { not: null },
+      statut: { not: "annule" },
+      remboursementDemandeAt: { not: null },
+    },
     select: {
       id: true,
       numeroFacture: true,
@@ -188,12 +197,21 @@ async function envoyerDemandesRemboursement(trainerId: string, maintenant: Date)
       -a.totalHtCents + a.imputations.reduce((s, l) => s + l.montantHtCents, 0),
     );
     if (resteHtCents === 0) continue;
+    const jobId = `formateur-trop-percu-${a.id}`;
+    // Une seule fois : le journal des envois fait foi (un échec ne compte pas), et
+    // un F54 garé en corbeille de validation (en attente, approuvé ou refusé par un
+    // humain) n'est jamais regaré chaque jour.
+    const [journal, corbeille] = await Promise.all([
+      prisma.emailLog.count({ where: { jobId, status: { not: "failed" } } }),
+      prisma.emailOutbox.count({ where: { jobId } }),
+    ]);
+    if (journal + corbeille > 0) continue;
     const r = await envoyer({
       gabarit: "formateur-trop-percu",
       destinataire: a.trainer.email,
       entityType: "Trainer",
       entityId: trainerId,
-      jobId: `formateur-trop-percu-${a.id}`,
+      jobId,
       payload: {
         prenom: a.trainer.prenom,
         valeurs: {

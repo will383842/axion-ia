@@ -320,9 +320,11 @@ function DecisionIndemnite({
       {apercu !== null && saisie !== null && (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {`Aperçu pour une annulation le ${saisie.brut.replace("T", " à ")}${saisie.parAxion ? "" : ", hors du fait d'Axion"} : `}
-          {apercu.indemnite.due
-            ? `${apercu.demiJourneesAnnulees} demi-journée(s) annulée(s), ${montantEnTexte(apercu.totaux.totalHtCents)} € HT + ${montantEnTexte(apercu.totaux.tvaCents)} € de TVA = ${montantEnTexte(apercu.totaux.totalTtcCents)} € TTC, à régler avant le ${new Date(`${apercu.indemnite.echeance}T12:00:00Z`).toLocaleDateString("fr-FR")}.`
-            : "aucune indemnité due (annulation à plus de 72 heures, pas du fait d'Axion, ou aucune demi-journée annulée)."}
+          {apercu.refus !== null
+            ? `refusé : cet instant précède une demi-journée contresignée par le formateur (début le ${apercu.debutDerniereSignee?.toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short", timeStyle: "short" }) ?? "—"}). Elle a eu lieu et se paie par son relevé : saisissez l'instant réel de l'annulation.`
+            : apercu.indemnite.due
+              ? `${apercu.demiJourneesAnnulees} demi-journée(s) annulée(s), ${montantEnTexte(apercu.totaux.totalHtCents)} € HT + ${montantEnTexte(apercu.totaux.tvaCents)} € de TVA = ${montantEnTexte(apercu.totaux.totalTtcCents)} € TTC, à régler avant le ${new Date(`${apercu.indemnite.echeance}T12:00:00Z`).toLocaleDateString("fr-FR")}.`
+              : "aucune indemnité due (annulation à plus de 72 heures, pas du fait d'Axion, ou aucune demi-journée annulée)."}
         </p>
       )}
       <label htmlFor={champ} className="admin-label">

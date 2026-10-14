@@ -4466,6 +4466,9 @@ async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
       statut: "valide",
       autofactureAt: null,
       numeroFacture: null,
+      // Un AVOIR (paiement par mission) n'a pas d'autofacture à émettre : même
+      // filtre que le rattrapage horaire (`autofacture-rattrapage.ts`).
+      avoirDeId: null,
       // ⛔ Indépendants SEULEMENT. Un salarié n'est pas payé sur facture :
       // l'alerter reviendrait à lui réclamer un SIRET qu'il n'a pas, chaque
       // jour, sans qu'aucun geste puisse la fermer.
