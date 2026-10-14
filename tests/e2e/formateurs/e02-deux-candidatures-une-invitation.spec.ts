@@ -27,7 +27,7 @@ test.describe("@formateurs E02 — deux candidatures, une invitation", () => {
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e02");
   });
   test.afterAll(async () => {

@@ -46,7 +46,7 @@ test.describe("@formateurs E01 — candidature freelance jusqu'à « Retenu »",
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e01");
   });
   test.afterAll(async () => {

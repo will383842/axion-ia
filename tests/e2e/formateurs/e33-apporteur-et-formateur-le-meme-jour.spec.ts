@@ -28,7 +28,7 @@ test.describe("@formateurs E33 — apporteur et formateur le même jour", () => 
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e33");
   });
   test.afterAll(async () => {

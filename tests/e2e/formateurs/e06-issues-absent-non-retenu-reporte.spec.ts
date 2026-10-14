@@ -37,7 +37,7 @@ test.describe("@formateurs E06 — absent, non retenu, reporté, à revoir", () 
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e06");
     email = decor.adresse("issues");
     candidatureId = (await deposerCandidature(email, "Aël")).id;

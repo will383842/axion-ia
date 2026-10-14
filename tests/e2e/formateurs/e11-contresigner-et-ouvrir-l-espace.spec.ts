@@ -33,7 +33,7 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e11", { organisme: true });
     email = decor.adresse("w4");
     const { fiche, lien } = await formateurRetenu(email, "Maël", decor.admin);

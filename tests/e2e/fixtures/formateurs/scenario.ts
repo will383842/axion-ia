@@ -39,13 +39,14 @@ export interface DecorScenario {
 }
 
 async function prendreVerrou(redis: Redis, jeton: string): Promise<void> {
-  const limite = Date.now() + 15 * 60_000;
+  // Les scénarios s'enchaînent (~16 min au total) : le dernier peut attendre presque tout le banc.
+  const limite = Date.now() + 40 * 60_000;
   while (Date.now() < limite) {
     const pris = await redis.set(CLE_VERROU, jeton, "PX", DUREE_VERROU_MS, "NX");
     if (pris === "OK") return;
     await new Promise((r) => setTimeout(r, 500));
   }
-  throw new Error("banc @formateurs : verrou des scénarios non obtenu en 15 min");
+  throw new Error("banc @formateurs : verrou des scénarios non obtenu en 40 min");
 }
 
 /** Ouvre un scénario : verrou, allumage, administrateur. */

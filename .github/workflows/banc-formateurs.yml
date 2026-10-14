@@ -197,8 +197,8 @@ jobs:
         # pas ce qu'il affirme. Pas de navigateur : aucun spec du banc n'ouvre
         # de page (une spec d'écran reste dans Gate B, sans le tag).
         run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0
-        # Les scénarios de vérification passent un par un (verrou) : ~25 min.
-        timeout-minutes: 40
+        # Les scénarios de vérification passent un par un (verrou) : ~16 min mesurées.
+        timeout-minutes: 50
       - name: Journal du worker
         if: ${{ always() }}
         run: |

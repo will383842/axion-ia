@@ -64,7 +64,7 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e12", { organisme: true });
   });
   test.afterAll(async () => {

@@ -48,7 +48,7 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e10", { organisme: true });
   });
   test.afterAll(async () => {

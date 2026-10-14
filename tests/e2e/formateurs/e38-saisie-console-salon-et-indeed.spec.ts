@@ -32,7 +32,7 @@ test.describe("@formateurs E38 — saisie en console : salon et Indeed", () => {
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e38");
   });
   test.afterAll(async () => {

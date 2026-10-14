@@ -31,7 +31,7 @@ test.describe("@formateurs E37 — pont : échange réservé par le lien du comp
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(45 * 60_000);
     decor = await ouvrirScenario("e37");
   });
   test.afterAll(async () => {
