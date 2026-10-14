@@ -32,6 +32,8 @@ const LIBELLE: Record<string, string> = {
   deja_ecrite: "L'indemnité de cette mission est déjà écrite.",
   releve_fige_a_la_main:
     "Le relevé de mission de ce mois est déjà validé : l'indemnité s'ajoute à la main, par une correction.",
+  instant_anterieur_signature:
+    "L'instant saisi précède une demi-journée que le formateur a contresignée : elle a eu lieu et se paie par son relevé. Saisissez l'instant réel de l'annulation, après la dernière demi-journée signée.",
   apercu_perime:
     "Le montant a changé depuis l'aperçu : relisez le nouvel aperçu avant de confirmer.",
   contract_non_fait:
