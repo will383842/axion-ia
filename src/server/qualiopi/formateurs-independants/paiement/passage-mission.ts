@@ -9,7 +9,8 @@
  *      couple (formateur, session), tous mois confondus (propriétaire en conflit) ;
  *   3. pour chaque mois civil dont TOUTES les demi-journées prévues sont signées,
  *      écrire UN relevé de mission (`a_valider`) et ses lignes, calculés par la
- *      seule source (`argent/calcul-mission.ts`), échéance fixe posée.
+ *      seule source (`argent/calcul-mission.ts`), échéance PROVISOIRE posée — la
+ *      définitive part de la date de l'autofacture (`echeance-autofacture.ts`).
  *
  * 🔴 ÉTEINT PAR DÉFAUT. Sans date `formateurs.passage_paiement`, rien ne se
  * passe ; tant que l'unique historique (M-D) est en base, rien ne s'écrit non

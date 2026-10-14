@@ -66,6 +66,11 @@ import {
 } from "@/server/qualiopi/remuneration/autofacturation";
 import { verifierTotauxConformes } from "@/server/qualiopi/remuneration/autofacture-pieces";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
+import { jourParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
+import {
+  echeanceAutofactureMission,
+  instantDuJourCivil,
+} from "@/server/qualiopi/formateurs-independants/paiement/echeance-autofacture";
 import { resoudreMandat } from "@/server/qualiopi/remuneration/mandat-source";
 import {
   avecVerrouEmissionAutofacture,
@@ -458,12 +463,22 @@ async function emettreSousVerrou(
     };
   }
 
-  // Paiement par mission : l'échéance est FIXE (dernière journée + 30 jours),
-  // posée à la création du relevé, jamais repoussée par l'émission. Le relevé
-  // mensuel garde sa règle (émission + 30 jours).
+  // Paiement par mission (décision du 14/10/2026, « comme les apporteurs ») : le relevé
+  // n'existe que quand tout est complet (feuilles et, pour le dernier mois, bilan), et le
+  // virement part au plus tard 30 jours après la date de CETTE autofacture. Une facture
+  // rectifiée garde la date limite de celle qu'elle remplace ; une indemnité d'annulation
+  // ou une présentation de la méthode garde sa date fixe si elle est plus proche
+  // (`echeance-autofacture.ts`). Le relevé mensuel garde sa règle (émission + 30 jours).
   const echeance =
-    releve.origine === "passage_mission" && releve.echeanceAt !== null
-      ? releve.echeanceAt
+    releve.origine === "passage_mission"
+      ? instantDuJourCivil(
+          echeanceAutofactureMission({
+            jourAutofacture: jourParis(maintenant),
+            echeanceDuReleve: releve.echeanceAt === null ? null : jourParis(releve.echeanceAt),
+            remplace: releve.remplaceId != null,
+            objets: releve.feeLines.map((l) => l.objet ?? null),
+          }),
+        )
       : calculerEcheanceHonoraires(maintenant);
   const contestationAvant = dateLimiteContestation(maintenant);
 

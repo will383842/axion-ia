@@ -193,7 +193,9 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
           maintenant: MAINTENANT,
         }),
       ).toBe("ecrite");
-      // Animation des 03 et 04/12 (échéance 03/01/2032), indemnité au 10/12 (09/01/2032).
+      // Animation des 03 et 04/12 écrite le 20/12 (échéance provisoire 20/12 + 30 =
+      // 19/01/2032, décision du 14/10/2026), indemnité au 10/12 (09/01/2032) : la plus
+      // proche, celle de l'indemnité, est gardée.
       expect(
         await ecrireMoisDansTransaction(
           tx,
@@ -209,7 +211,7 @@ describe("petits défauts du paiement par mission (vraie base)", () => {
       expect([r.totalHtCents, r.totalTtcCents, r.echeanceAt?.toISOString().slice(0, 10)]).toEqual([
         105_000,
         105_000,
-        "2032-01-03",
+        "2032-01-09",
       ]);
       expect(r.feeLines.map((l) => [l.objet, l.montantHtCents])).toEqual([
         ["indemnite_annulation", 35_000],

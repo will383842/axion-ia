@@ -43,7 +43,7 @@ export type MotifSuspensionVirement =
   | "reglement_a_la_main";
 
 export const LIBELLE_SUSPENSION_VIREMENT: Record<MotifSuspensionVirement, string> = {
-  attestation_urssaf_echue_a_la_mission: `En attente d'attestation URSSAF : les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT, et aucune attestation vérifiée n'était valable à la date de la mission.`,
+  attestation_urssaf_echue_a_la_mission: `En attente d'attestation URSSAF : les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT, et aucune attestation vérifiée n'était valable à la date de la mission. Le délai de paiement est suspendu, et non dépassé, jusqu'à son dépôt (contrat-cadre, art. 16.7).`,
   compte_bancaire_a_valider:
     "Compte bancaire à valider : une demande de changement d'IBAN attend votre accord.",
   nouvel_iban_moins_de_48h:

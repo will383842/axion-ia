@@ -18,6 +18,7 @@ import { bilanExige, remetLeBilan } from "../bilan-fin-formation/regles";
 import { jourDeColonneDate, jourParis } from "../argent/dates";
 import { journeesDuFormateur } from "../argent/journees-du-formateur";
 import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
+import { echeanceProvisoireDuReleve } from "./echeance-autofacture";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
 
@@ -211,6 +212,14 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   return out;
 }
 
+/** L'échéance provisoire d'un mois écrit maintenant (`echeanceProvisoireDuReleve`). */
+function echeanceProvisoire(m: MoisAEcrire, maintenant: Date): string {
+  return echeanceProvisoireDuReleve({
+    jourEcriture: jourParis(maintenant),
+    echeanceDerniereJournee: m.releve.echeance,
+  });
+}
+
 const OCCUPANTS = ["brouillon", "a_valider", "valide", "facture_recue", "paye"] as const;
 
 type Tx = Parameters<Parameters<Awaited<ReturnType<typeof client>>["$transaction"]>[0]>[0];
@@ -331,7 +340,9 @@ export async function ecrireMoisDansTransaction(
       totalHtCents: m.releve.totalHtCents,
       tvaCents: m.releve.tvaCents,
       totalTtcCents: m.releve.totalTtcCents,
-      echeanceAt: instantDuJour(m.releve.echeance),
+      // Décision du 14/10/2026 : l'échéance définitive part de l'autofacture (posée à
+      // l'émission) ; d'ici là, celle d'une autofacture émise aujourd'hui.
+      echeanceAt: instantDuJour(echeanceProvisoire(m, maintenant)),
       // Lot D2 (M22) : l'écart avec la part prévue du mois est conservé et affiché ;
       // le relevé reste « à valider » (validation humaine gardée).
       ...(m.sansEcart
@@ -377,7 +388,7 @@ export async function ecrireMoisDansTransaction(
       changes: {
         mois: m.releve.mois,
         totalHtCents: m.releve.totalHtCents,
-        echeance: m.releve.echeance,
+        echeance: echeanceProvisoire(m, maintenant),
         sansEcart: m.sansEcart,
       },
       session: null,
@@ -455,7 +466,7 @@ async function completerReleveIndemnite(
     select: { montantHtCents: true },
   });
   const t = totaliser(lignes, m.regimeTva);
-  const echeanceMois = instantDuJour(m.releve.echeance);
+  const echeanceMois = instantDuJour(echeanceProvisoire(m, maintenant));
   const echeanceAt =
     r.echeanceAt && r.echeanceAt.getTime() < echeanceMois.getTime() ? r.echeanceAt : echeanceMois;
   await tx.trainerStatement.update({

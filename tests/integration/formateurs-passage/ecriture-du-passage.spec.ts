@@ -104,7 +104,7 @@ function mois(trainerId: string, sessionId: string): MoisAEcrire {
 const MAINTENANT = new Date("2031-12-04T09:00:00Z");
 
 describe("écriture d'un mois du paiement par mission (vraie base)", () => {
-  it("écrit une fois, puis plus rien ; relevé à valider, échéance fixe, revendication, journal", async () => {
+  it("écrit une fois, puis plus rien ; relevé à valider, échéance provisoire, revendication, journal", async () => {
     await dansTransactionAnnulee(async (tx) => {
       const { trainerId, sessionId } = await fixture(tx);
       expect(await ecrireMoisDansTransaction(tx, mois(trainerId, sessionId), MAINTENANT)).toBe(
@@ -127,7 +127,10 @@ describe("écriture d'un mois du paiement par mission (vraie base)", () => {
         35_000,
         35_000,
       ]);
-      expect(r.echeanceAt?.toISOString().slice(0, 10)).toBe("2032-01-02");
+      // Échéance PROVISOIRE (décision du 14/10/2026) : celle d'une autofacture émise le
+      // jour de l'écriture (04/12 + 30 = 03/01/2032), jamais avant la dernière journée
+      // + 30 (02/01/2032). La définitive est posée à l'émission de l'autofacture.
+      expect(r.echeanceAt?.toISOString().slice(0, 10)).toBe("2032-01-03");
       expect(
         r.feeLines.map((l) => [l.objet, l.origine, l.demiJournees, l.montantHtCents, l.statut]),
       ).toEqual([["animation", "passage_mission", 2, 35_000, "calcule"]]);
