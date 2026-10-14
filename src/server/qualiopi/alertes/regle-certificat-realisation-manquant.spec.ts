@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   debut: null as Date | null,
+  panne: false,
   inscrits: vi.fn(),
   pieces: vi.fn(),
 }));
@@ -17,8 +18,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("@/server/qualiopi/documents/certificat-auto-allumage", () => ({
+  DELAI_CERTIFICAT_AUTO_JOURS: 2,
   FENETRE_CERTIFICAT_AUTO_JOURS: 90,
-  lireDebutCertificatAuto: async () => h.debut,
+  lireDebutCertificatAutoOuLever: async () => {
+    if (h.panne) throw new Error("délai dépassé");
+    return h.debut;
+  },
 }));
 
 import { ALERTE_CATALOGUE } from "./catalogue";
@@ -43,6 +48,7 @@ function inscrit(id: string, traineeId: string) {
 
 beforeEach(() => {
   h.debut = new Date("2026-11-09T23:00:00Z");
+  h.panne = false;
   h.inscrits.mockReset().mockResolvedValue([inscrit(E1, "t1"), inscrit(E2, "t2")]);
   h.pieces.mockReset().mockResolvedValue([]);
 });
@@ -81,8 +87,19 @@ describe("certificat_realisation_manquant", () => {
     });
   });
 
-  it("délai : laisse passer deux émissions automatiques avant d'alerter", () => {
-    expect(DELAI_ALERTE_CERTIFICAT_JOURS).toBe(3);
+  it("délai : laisse passer deux émissions automatiques (J+2, J+3) avant d'alerter", () => {
+    expect(DELAI_ALERTE_CERTIFICAT_JOURS).toBe(4);
+  });
+
+  it("réglage illisible : la règle LÈVE (compte en échec), elle ne referme pas les alertes", async () => {
+    h.panne = true;
+    await expect(regleCertificatRealisationManquant(NOW)).rejects.toThrow();
+  });
+
+  it("le message dit quand l'alerte se referme seule", async () => {
+    const a = await regleCertificatRealisationManquant(NOW);
+    expect(a[0]!.message).toMatch(/au plus tard 90 jours après la fin/);
+    expect(a[0]!.message).not.toMatch(/exige/);
   });
 
   it("se referme seule quand le certificat existe (résolution automatique)", () => {

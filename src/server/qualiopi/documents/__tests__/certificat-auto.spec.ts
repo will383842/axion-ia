@@ -18,12 +18,16 @@ const inscriptions = vi.fn();
 const pieces = vi.fn();
 const journal = vi.fn();
 const produire = vi.fn();
+const entreTemps = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     setting: { findUnique: (...a: unknown[]) => reglage(...a) },
     enrollment: { findMany: (...a: unknown[]) => inscriptions(...a) },
-    documentGenere: { findMany: (...a: unknown[]) => pieces(...a) },
+    documentGenere: {
+      findMany: (...a: unknown[]) => pieces(...a),
+      findFirst: (...a: unknown[]) => entreTemps(...a),
+    },
     activityLog: { create: (...a: unknown[]) => journal(...a) },
   },
 }));
@@ -33,6 +37,7 @@ vi.mock("@/server/qualiopi/documents/production/producteurs", () => ({
 
 import {
   ACTION_CERTIFICAT_AUTO,
+  CERTIFICATS_AUTO_PAR_PASSAGE,
   CLE_CERTIFICAT_AUTO,
   emettreCertificatsFinDeFormation,
 } from "../certificat-auto";
@@ -57,6 +62,7 @@ beforeEach(() => {
     { id: E2, traineeId: T2, sessionId: S },
   ]);
   pieces.mockResolvedValue([]);
+  entreTemps.mockResolvedValue(null);
   journal.mockResolvedValue({});
   produire.mockResolvedValue({
     ok: true,
@@ -85,6 +91,11 @@ describe("certificat de réalisation créé à la fin de la formation", () => {
     expect(where.session.statut).toBe("realisee");
     // Jamais rétroactif : fin le jour de l'allumage (00:00 Paris = 23:00 UTC la veille) ou après.
     expect(where.session.dateFin.gte).toEqual(new Date("2026-11-09T23:00:00Z"));
+    // À partir de J+2 seulement : le taux de présence doit être définitif.
+    expect(where.session.dateFin.lte).toEqual(new Date("2026-11-18T09:00:00Z"));
+    // Les sessions les plus récentes d'abord, sans limite posée sur la requête.
+    expect(inscriptions.mock.calls[0]![0].orderBy).toEqual({ session: { dateFin: "desc" } });
+    expect(inscriptions.mock.calls[0]![0].take).toBeUndefined();
     // Abandon et exclu : aucun certificat (R.6313-3), comme le clic.
     expect(where.statut).toEqual({ notIn: ["abandon", "exclu"] });
     // Le MÊME service que le clic de la console, marqué automatique.
@@ -116,6 +127,30 @@ describe("certificat de réalisation créé à la fin de la formation", () => {
       sessionId: { in: [S] },
       traineeId: { in: [T1, T2] },
     });
+  });
+
+  it("relecture : un clic en console PENDANT le passage n'obtient pas de seconde pièce", async () => {
+    entreTemps.mockResolvedValueOnce({ id: "clic" });
+    const b = await emettreCertificatsFinDeFormation(MAINTENANT);
+    expect(b).toMatchObject({ crees: 1, dejaPresents: 1 });
+    expect(produire).toHaveBeenCalledTimes(1);
+    expect(produire.mock.calls[0]![0]).toBe(E2);
+  });
+
+  it("au-delà de la limite du passage : les pièces déjà faites n'occupent pas les places", async () => {
+    const n = CERTIFICATS_AUTO_PAR_PASSAGE + 5;
+    inscriptions.mockResolvedValue(
+      Array.from({ length: n + 3 }, (_, i) => ({
+        id: `e${i}`,
+        traineeId: `t${i}`,
+        sessionId: S,
+      })),
+    );
+    // Les trois premières (les plus récentes) ont déjà leur certificat.
+    pieces.mockResolvedValue([0, 1, 2].map((i) => ({ sessionId: S, traineeId: `t${i}` })));
+    const b = await emettreCertificatsFinDeFormation(MAINTENANT);
+    expect(b).toMatchObject({ crees: CERTIFICATS_AUTO_PAR_PASSAGE, dejaPresents: 3 });
+    expect(produire.mock.calls[0]![0]).toBe("e3");
   });
 
   it("rejeu le lendemain : la pièce créée hier suffit, rien n'est recréé", async () => {

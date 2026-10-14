@@ -57,6 +57,9 @@ describe("avis_financeur_manquant", () => {
       }),
     ]);
     expect(a[0]!.message).toMatch(/AXI-SESS-s1/);
+    // L'indicateur 30 rattache l'avis du financeur par le CLIENT : le message le demande.
+    expect(a[0]!.message).toMatch(/client de la session/);
+    expect(a[0]!.message).toMatch(/au plus tard 120 jours/);
     const where = h.sessions.mock.calls[0]![0].where;
     expect(where.statut).toBe("realisee");
     expect(where.dateFin.lte).toEqual(new Date(NOW.getTime() - DELAI_AVIS_FINANCEUR_JOURS * J));

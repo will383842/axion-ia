@@ -80,7 +80,9 @@ export async function regleAvisFinanceurManquant(now: Date): Promise<AlerteCandi
         `Aucun avis du financeur n'est enregistré pour la session ${s.numero}, ` +
         `${DELAI_AVIS_FINANCEUR_JOURS} jours après sa fin (indicateur 30). Recueillez-le auprès ` +
         "du financeur, puis saisissez-le dans « Appréciations » (qualité « Financeur »), " +
-        "rattaché à une inscription de la session.",
+        "avec le client de la session (c'est lui qui rattache l'avis à l'indicateur 30) et " +
+        "une inscription de la session. Cette alerte se referme dès que l'avis est saisi, et " +
+        `au plus tard ${BORNE_BASSE_AVIS_FINANCEUR_JOURS} jours après la fin de la session.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     }));

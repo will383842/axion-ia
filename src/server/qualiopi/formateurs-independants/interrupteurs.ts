@@ -553,7 +553,7 @@ export const INTERRUPTEURS_SIGNATURE = {
   certificat_auto: {
     ...envoi(
       "Certificat de réalisation créé à la fin de la formation",
-      "Chaque matin, pour chaque stagiaire actif d'une session réalisée (finie le jour de l'allumage ou après), le certificat de réalisation est créé comme par le bouton de la console, une seule fois, et rangé au dossier sans être envoyé. Une alerte signale celui qui n'a pas pu l'être (taux de présence non mesuré, aucune trace d'émargement).",
+      "À partir de J+2, chaque matin, pour chaque stagiaire actif d'une session réalisée (finie le jour de l'allumage ou après), le certificat de réalisation est créé comme par le bouton de la console, une seule fois. Aucun e-mail : comme après le bouton, il est visible dans l'espace du stagiaire. Une alerte signale celui qui n'a pas pu l'être (taux de présence non mesuré, aucune trace d'émargement).",
     ),
     cle: "formateurs.certificat_realisation_auto",
   },

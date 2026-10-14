@@ -12,12 +12,14 @@
  *
  *   - 🔴 ÉTEINT par défaut (`formateurs.certificat_realisation_auto`) : rien n'est lu ;
  *   - jamais rétroactif : sessions finies le jour (Paris) de l'allumage ou après, et
- *     depuis 90 jours au plus ;
+ *     depuis 90 jours au plus ; à partir de J+2 seulement (émargement en retard,
+ *     relevé importé le lendemain : le taux doit être définitif) ;
  *   - jamais en double : un certificat existant pour ce stagiaire et cette session,
  *     quel que soit son état (même annulé à la main, même copie), arrête tout ;
  *   - jamais pour une session annulée ou reportée (seul `realisee` est lu) ;
- *   - n'ENVOIE rien : la pièce est créée et rangée au dossier ; la remettre au client,
- *     au stagiaire ou au financeur reste un geste humain.
+ *   - n'ENVOIE rien : aucun e-mail, aucune notification. ⚠️ Comme après le clic de la
+ *     console, la pièce devient VISIBLE dans l'espace du stagiaire (portail, pièce
+ *     « après réalisation ») ; la transmettre au client ou au financeur reste humain.
  *
  * Ne lève jamais. Journal : identifiants seuls.
  */
@@ -29,9 +31,13 @@ import { produireCertificatRealisation } from "@/server/qualiopi/documents/produ
 
 import {
   CLE_CERTIFICAT_AUTO,
+  DELAI_CERTIFICAT_AUTO_JOURS,
   FENETRE_CERTIFICAT_AUTO_JOURS,
   lireDebutCertificatAuto,
 } from "./certificat-auto-allumage";
+
+/** Au plus par passage, les sessions les plus récentes d'abord ; le reste le lendemain. */
+export const CERTIFICATS_AUTO_PAR_PASSAGE = 100;
 
 export { CLE_CERTIFICAT_AUTO };
 export const ACTION_CERTIFICAT_AUTO = "qualiopi.document.certificat_realisation.genere_auto";
@@ -59,36 +65,56 @@ export async function emettreCertificatsFinDeFormation(
     const borne = new Date(
       Math.max(debut.getTime(), maintenant.getTime() - FENETRE_CERTIFICAT_AUTO_JOURS * JOUR_MS),
     );
-    const candidats = await prisma.enrollment.findMany({
+    // Toute la fenêtre est lue (90 jours au plus : un volume borné), PUIS les inscriptions
+    // déjà pourvues sont écartées, et seulement alors la limite s'applique : une limite
+    // posée sur la requête laisserait les pièces déjà faites occuper les places.
+    const lus = await prisma.enrollment.findMany({
       where: {
         ...inscriptionsActives(),
-        session: { statut: "realisee", dateFin: { gte: borne } },
+        session: {
+          statut: "realisee",
+          dateFin: {
+            gte: borne,
+            lte: new Date(maintenant.getTime() - DELAI_CERTIFICAT_AUTO_JOURS * JOUR_MS),
+          },
+        },
       },
+      orderBy: { session: { dateFin: "desc" } },
       select: { id: true, traineeId: true, sessionId: true },
-      take: 200,
     });
-    if (candidats.length === 0) return { etat: "fait", ...RIEN };
+    if (lus.length === 0) return { etat: "fait", ...RIEN };
 
     const existants = await prisma.documentGenere.findMany({
       where: {
         type: "certificat_realisation",
-        sessionId: { in: [...new Set(candidats.map((c) => c.sessionId))] },
-        traineeId: { in: [...new Set(candidats.map((c) => c.traineeId))] },
+        sessionId: { in: [...new Set(lus.map((c) => c.sessionId))] },
+        traineeId: { in: [...new Set(lus.map((c) => c.traineeId))] },
       },
       select: { sessionId: true, traineeId: true },
     });
     const deja = new Set(existants.map((p) => `${p.sessionId}:${p.traineeId}`));
+    const candidats = lus.filter((c) => !deja.has(`${c.sessionId}:${c.traineeId}`));
+    let dejaPresents = lus.length - candidats.length;
 
     let crees = 0;
     let refuses = 0;
-    let dejaPresents = 0;
     let erreurs = 0;
-    for (const c of candidats) {
-      if (deja.has(`${c.sessionId}:${c.traineeId}`)) {
-        dejaPresents++;
-        continue;
-      }
+    for (const c of candidats.slice(0, CERTIFICATS_AUTO_PAR_PASSAGE)) {
       try {
+        // Relu juste avant : un clic en console pendant le passage (des PDF à rendre,
+        // donc des minutes) ne doit pas recevoir une seconde pièce numérotée.
+        const entreTemps = await prisma.documentGenere.findFirst({
+          where: {
+            type: "certificat_realisation",
+            sessionId: c.sessionId,
+            traineeId: c.traineeId,
+          },
+          select: { id: true },
+        });
+        if (entreTemps !== null) {
+          dejaPresents++;
+          continue;
+        }
         const r = await produireCertificatRealisation(c.id, {
           metadata: { genereAutomatiquement: true, origine: "fin_de_formation" },
         });

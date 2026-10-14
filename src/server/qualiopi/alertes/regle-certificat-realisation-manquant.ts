@@ -10,25 +10,29 @@
  *
  * Mêmes bornes que l'émission : 🔴 éteinte avec l'interrupteur
  * `formateurs.certificat_realisation_auto` ; jamais rétroactive (sessions finies
- * depuis l'allumage) ; 90 jours au plus. J+3 après la fin : la session passe
- * « réalisée » à J+1 (clôture automatique) et l'émission tourne chaque matin — deux
- * passages avant d'alerter. Se referme seule dès qu'un certificat vivant existe.
+ * depuis l'allumage) ; 90 jours au plus. J+4 après la fin : l'émission commence à
+ * J+2 et tourne chaque matin — deux passages avant d'alerter. Se referme seule dès
+ * qu'un certificat vivant existe, quand l'interrupteur est coupé, ou à 90 jours (le
+ * message le dit). Une lecture du réglage en échec LÈVE : la règle compte en échec et
+ * la résolution automatique est suspendue.
  */
 
 import { prisma } from "@/lib/prisma";
 import {
+  DELAI_CERTIFICAT_AUTO_JOURS,
   FENETRE_CERTIFICAT_AUTO_JOURS,
-  lireDebutCertificatAuto,
+  lireDebutCertificatAutoOuLever,
 } from "@/server/qualiopi/documents/certificat-auto-allumage";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import type { AlerteCandidate } from "./evaluateur";
 
-export const DELAI_ALERTE_CERTIFICAT_JOURS = 3;
+/** Deux passages de l'émission (J+2 et J+3 à 09:00) avant l'alerte (07:00). */
+export const DELAI_ALERTE_CERTIFICAT_JOURS = DELAI_CERTIFICAT_AUTO_JOURS + 2;
 const JOUR_MS = 24 * 60 * 60 * 1000;
 
 export async function regleCertificatRealisationManquant(now: Date): Promise<AlerteCandidate[]> {
-  const debut = await lireDebutCertificatAuto(prisma);
+  const debut = await lireDebutCertificatAutoOuLever(prisma);
   if (debut === null) return [];
   const borne = new Date(
     Math.max(debut.getTime(), now.getTime() - FENETRE_CERTIFICAT_AUTO_JOURS * JOUR_MS),
@@ -72,9 +76,11 @@ export async function regleCertificatRealisationManquant(now: Date): Promise<Ale
       titre: "Certificat de réalisation manquant",
       message:
         `Le certificat de réalisation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) ` +
-        `n'existe pas ${DELAI_ALERTE_CERTIFICAT_JOURS} jours après la fin de la formation : le financeur ` +
-        "l'exige pour payer. Générez-le depuis les documents de la session ; le bouton dit ce " +
-        "qui manque (taux de présence non calculé, aucune signature d'émargement).",
+        `n'existe pas ${DELAI_ALERTE_CERTIFICAT_JOURS} jours après la fin de la formation : les ` +
+        "financeurs le demandent pour régler un dossier, et l'audit le contrôle. Générez-le " +
+        "depuis les documents de la session ; le bouton dit ce qui manque (taux de présence " +
+        "non calculé, aucune signature d'émargement). Cette alerte se referme dès que le " +
+        `certificat existe, et au plus tard ${FENETRE_CERTIFICAT_AUTO_JOURS} jours après la fin de la session.`,
       cibleType: "Enrollment",
       cibleId: e.id,
     }));
