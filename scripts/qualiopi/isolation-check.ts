@@ -579,6 +579,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
+  //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
+  //    paiement des formateurs (passage par mission, autofacture, virements,
+  //    relances, IBAN) avec l'instant en paramètre : une copie de cette logique
+  //    dans le test ne prouverait rien. Il ne fait que jouer des étapes et rendre
+  //    leur résultat ; les specs constatent en base.
+  "tests/e2e/fixtures/formateurs/argent-executer.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
