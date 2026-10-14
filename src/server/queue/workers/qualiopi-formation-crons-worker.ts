@@ -2101,6 +2101,11 @@ async function handleMoteurMissions(): Promise<void> {
   const { passerAlerteNda } =
     await import("@/server/qualiopi/formateurs-independants/relances-missions");
   await passerAlerteNda(maintenant);
+  // Lot G2 — l'alerte interne à J+10 du bilan de fin de formation manquant.
+  // `formateurs.bilan_fin_formation` éteint : rien n'est lu au-delà de l'interrupteur.
+  const { passerAlerteBilanFinFormation } =
+    await import("@/server/qualiopi/formateurs-independants/bilan-fin-formation/relance");
+  await passerAlerteBilanFinFormation(maintenant);
   if (relances.relancees + relances.sansReponse + relances.expirees > 0) {
     console.log(
       `[formation-crons] propositions (horaire): ${relances.relancees} relance(s), ` +

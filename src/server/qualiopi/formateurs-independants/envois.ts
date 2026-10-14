@@ -82,6 +82,7 @@ export const GABARITS_FORMATEUR: readonly GabaritFormateur[] = [
   "formateur-feuilles-manquantes",
   "formateur-desistement-recu",
   "formateur-releve-connexion",
+  "formateur-bilan-fin-formation",
   "formateur-virement-fait",
   "formateur-virement-en-attente",
   "formateur-facture-rectifiee",

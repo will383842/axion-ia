@@ -322,6 +322,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `signalerDesaccord`, qui revérifie côté serveur que le relevé appartient au
   // formateur de la SESSION (le cookie, jamais le formulaire).
   "src/server/actions/formateur/desaccord.actions.ts",
+  // Lot G2 (2026-10-12) : le bilan de fin de formation, formulaires de la page de
+  // la session. L'action n'importe que le service du bilan, qui revérifie côté
+  // serveur que le formateur a animé la session et que le stagiaire en fait partie.
+  "src/server/actions/formateur/bilan-fin-formation.actions.ts",
   // Lots L11b-ux et L11h (2026-10-11) : la proposition chiffrée en six
   // lignes, composant serveur de la page d'une mission (rendue par l'accueil).
   // La coquille ne lit que l'interrupteur `formateurs.choix_cartes` et le
