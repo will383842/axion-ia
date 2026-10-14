@@ -11,8 +11,12 @@
 // contrôle de propriété, qu'on veut éprouver.
 
 import { signFormateurSession } from "@/lib/formateur-session";
+// Le banc éprouve les ROUTES et ACTIONS elles-mêmes, pas une copie de leur garde.
+// eslint-disable-next-line no-restricted-imports
 import { enregistrerVousAction } from "@/app/formateur/dossier/[id]/[jeton]/actions";
+// eslint-disable-next-line no-restricted-imports
 import { GET as telechargerPiece } from "@/app/api/espace-formateur/documents/[id]/route";
+// eslint-disable-next-line no-restricted-imports
 import { GET as telechargerKit } from "@/app/api/espace-formateur/kit/[sessionId]/route";
 import { evaluerStagiaireFormAction } from "@/server/actions/formateur/bilan-fin-formation.actions";
 import { signalerDesaccordFormAction } from "@/server/actions/formateur/desaccord.actions";
@@ -36,7 +40,7 @@ import {
   prisma,
   type Independant,
 } from "../donnees";
-import { poserCookie } from "../faux-next-headers";
+import { poserCookie } from "../../../../fixtures/formateurs/securite-serveur/faux-next-headers";
 
 /** L'adresse d'une redirection Next (`redirect()` lève), ou la valeur rendue. */
 async function issue(f: () => Promise<unknown>): Promise<string> {

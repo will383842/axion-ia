@@ -1,5 +1,8 @@
 // Banc @formateurs, équipe sécurité — les DONNÉES d'un scénario, côté `tsx`.
 //
+// Rangé sous `tests/e2e/qualiopi/` : il importe le domaine Qualiopi, que
+// `pnpm qualiopi:isolation-check` cantonne à ses zones dédiées.
+//
 // Tout est fictif et reconnaissable : domaine `example.test` (RFC 2606),
 // noms « Banc-Sécu », suffixe aléatoire par scénario. Chaque création est
 // notée, et `menage()` l'efface en fin de scénario, dans l'ordre inverse.
@@ -23,7 +26,7 @@ import { validerTexteEmailAction } from "@/server/email/textes-valides-actions";
 import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
 import { cleTexteValide } from "@/server/email/textes-valides";
 
-import { poserSession } from "./faux-auth";
+import { poserSession } from "../../../fixtures/formateurs/securite-serveur/faux-auth";
 
 export type Role =
   "super_admin" | "admin" | "editor" | "reader" | "responsable_qualite" | "secretaire";

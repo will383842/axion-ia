@@ -34,7 +34,7 @@ import {
   seConnecter,
   validerTextesParLaConsole,
 } from "../donnees";
-import { poserCookie } from "../faux-next-headers";
+import { poserCookie } from "../../../../fixtures/formateurs/securite-serveur/faux-next-headers";
 
 async function sessionAvec(jeton: string | null): Promise<boolean> {
   poserCookie(FORMATEUR_COOKIE_NAME, jeton);

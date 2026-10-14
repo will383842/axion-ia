@@ -6,7 +6,8 @@
 // `crochets.ts` sont posés AVANT tout chargement de `src/`, pour que les
 // Server Actions trouvent une session et des cookies.
 //
-// Un scénario est un module de `scenarios/` dont l'export par défaut reçoit
+// Un scénario est un module de `tests/e2e/qualiopi/formateurs/securite/scenarios/`
+// (zone où le domaine Qualiopi peut être importé, cf. `qualiopi:isolation-check`) dont l'export par défaut reçoit
 // les paramètres du spec et rend des OBSERVATIONS (ce que le code a répondu,
 // ce qui est en base) ; le spec, lui, porte les `expect`.
 
@@ -40,7 +41,9 @@ async function principal(): Promise<void> {
   if (!/^[a-z0-9-]+$/.test(entree.scenario)) {
     throw new Error(`banc @formateurs : scénario illisible (${entree.scenario})`);
   }
-  const scenario = (await import(`./scenarios/${entree.scenario}.ts`)) as {
+  const scenario = (await import(
+    `../../../qualiopi/formateurs/securite/scenarios/${entree.scenario}.ts`
+  )) as {
     default: (parametres: unknown) => Promise<unknown>;
   };
   const resultat = await scenario.default(entree.parametres);
