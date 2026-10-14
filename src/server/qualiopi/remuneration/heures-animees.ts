@@ -95,25 +95,42 @@ function heure(h: string): string {
  * qui ne coche aucune borne (horaires incohérents) compte UNE demi-journée, au
  * créneau de son début : ne jamais prévoir zéro pour une journée qui existe.
  */
+export interface BornesDemiJournee {
+  readonly matinAvant: string;
+  readonly apresMidiApres: string;
+  readonly milieuDeJournee: string;
+}
+
+/**
+ * 🔑 LE découpage d'une journée en créneaux — SEULE règle, lue par le paiement,
+ * la lettre de mission et la proposition chiffrée (étape 4 : ce qui est annoncé
+ * est ce qui est versé). Le matin si elle commence avant `matinAvant`,
+ * l'après-midi si elle finit après `apresMidiApres` ; ni l'un ni l'autre
+ * (horaires incohérents) : UN créneau, celui de son début.
+ */
+export function creneauxDuJour(
+  heureDebut: string,
+  heureFin: string,
+  bornes: BornesDemiJournee,
+): Creneau[] {
+  // Comparaison de chaînes : sûre seulement sur « HH:MM » à deux chiffres.
+  const debut = heure(heureDebut);
+  const fin = heure(heureFin);
+  const out: Creneau[] = [];
+  if (debut < bornes.matinAvant) out.push("matin");
+  if (fin > bornes.apresMidiApres) out.push("apres_midi");
+  if (out.length === 0) out.push(debut < bornes.milieuDeJournee ? "matin" : "apres_midi");
+  return out;
+}
+
 export function demiJourneesPrevues(
   journees: ReadonlyArray<JourneePrevue>,
-  bornes: {
-    readonly matinAvant: string;
-    readonly apresMidiApres: string;
-    readonly milieuDeJournee: string;
-  },
+  bornes: BornesDemiJournee,
 ): DemiJourneeDatee[] {
   const out: DemiJourneeDatee[] = [];
   for (const j of journees) {
-    // Comparaison de chaînes : sûre seulement sur « HH:MM » à deux chiffres.
-    const debut = heure(j.heureDebut);
-    const fin = heure(j.heureFin);
-    const matin = debut < bornes.matinAvant;
-    const apresMidi = fin > bornes.apresMidiApres;
-    if (matin) out.push({ jour: j.jour, creneau: "matin" });
-    if (apresMidi) out.push({ jour: j.jour, creneau: "apres_midi" });
-    if (!matin && !apresMidi)
-      out.push({ jour: j.jour, creneau: debut < bornes.milieuDeJournee ? "matin" : "apres_midi" });
+    for (const creneau of creneauxDuJour(j.heureDebut, j.heureFin, bornes))
+      out.push({ jour: j.jour, creneau });
   }
   return dedoublonner(out);
 }

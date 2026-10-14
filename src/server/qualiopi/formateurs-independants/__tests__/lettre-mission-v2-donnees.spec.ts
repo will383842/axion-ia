@@ -10,6 +10,7 @@ import { assemblerLettreV2, type FaitsLettreV2 } from "../lettre-mission-v2-donn
 
 const faits = (over: Partial<FaitsLettreV2> = {}): FaitsLettreV2 => ({
   numero: "LM-2026-0001",
+  trainerId: "t-marie",
   trainer: {
     prenom: "Marie",
     nom: "Dupont",
@@ -26,9 +27,10 @@ const faits = (over: Partial<FaitsLettreV2> = {}): FaitsLettreV2 => ({
     statut: "acceptee",
     reponduAt: new Date("2026-10-12T07:41:00Z"),
     accordHorsOutilAt: null,
-    tarifHtCents: null,
+    // Étape 4 : sans conditions FIGÉES, aucune lettre (le paiement ne verserait rien).
+    tarifHtCents: 35_000,
     forfaitDeplacementParJourHtCents: null,
-    regimeTvaFige: null,
+    regimeTvaFige: "franchise_293b",
   },
   session: {
     titre: "IA pour managers",
@@ -38,9 +40,20 @@ const faits = (over: Partial<FaitsLettreV2> = {}): FaitsLettreV2 => ({
     financeurEnAttente: false,
     lieu: "12 rue Exemple, Lyon",
     distanciel: false,
+    affectes: [{ trainerId: "t-marie" }],
     jours: [
-      { date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" },
-      { date: new Date("2026-11-05T00:00:00Z"), heureDebut: "09:00", heureFin: "12:30" },
+      {
+        date: new Date("2026-11-04T00:00:00Z"),
+        heureDebut: "09:00",
+        heureFin: "17:00",
+        trainerId: null,
+      },
+      {
+        date: new Date("2026-11-05T00:00:00Z"),
+        heureDebut: "09:00",
+        heureFin: "12:30",
+        trainerId: null,
+      },
     ],
   },
   dateMission: new Date("2026-10-12T08:00:00Z"),
@@ -124,8 +137,18 @@ describe("assemblerLettreV2 — ce qui s'imprime", () => {
         session: {
           ...faits().session,
           jours: [
-            { date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" },
-            { date: new Date("2026-12-10T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" },
+            {
+              date: new Date("2026-11-04T00:00:00Z"),
+              heureDebut: "09:00",
+              heureFin: "17:00",
+              trainerId: null,
+            },
+            {
+              date: new Date("2026-12-10T00:00:00Z"),
+              heureDebut: "09:00",
+              heureFin: "17:00",
+              trainerId: null,
+            },
           ],
         },
       }),
@@ -145,7 +168,8 @@ describe("assemblerLettreV2 — aucune lettre ne part sans…", () => {
     ["accord", { mission: { ...faits().mission!, statut: "en_attente" as const } }],
     ["accord", { mission: null }],
     ["journée", { session: { ...faits().session, jours: [] } }],
-    ["régime de TVA", { trainer: { ...faits().trainer, regimeTvaHonoraires: null } }],
+    ["tarif figé", { mission: { ...faits().mission!, tarifHtCents: null } }],
+    ["régime de TVA figé", { mission: { ...faits().mission!, regimeTvaFige: null } }],
   ])("refusée sans %s", (_quoi, over) => {
     expect(assemblerLettreV2(faits(over as Partial<FaitsLettreV2>)).ok).toBe(false);
   });
@@ -165,6 +189,8 @@ describe("assemblerLettreV2 — aucune lettre ne part sans…", () => {
     const motifs = [
       assemblerLettreV2(faits({ contratCadre: null })),
       assemblerLettreV2(faits({ mission: null })),
+      assemblerLettreV2(faits({ mission: { ...faits().mission!, tarifHtCents: null } })),
+      assemblerLettreV2(faits({ mission: { ...faits().mission!, regimeTvaFige: null } })),
     ].flatMap((r) => (r.ok ? [] : [r.motif]));
     for (const m of motifs) {
       expect(m).not.toMatch(/obligatoire|vous devez|rémunération|salaire|poste|entretien/i);

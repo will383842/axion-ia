@@ -132,10 +132,13 @@ describe("paiement par mission — forfait figé à 80 €, session passée à d
 describe("proposition chiffrée — même règle que le paiement", () => {
   function mission(lieu: { lieuType: string | null; modalite: string }) {
     return {
+      trainerId: TRAINER,
       tarifHtCents: 35_000,
       forfaitDeplacementParJourHtCents: 8_000,
+      regimeTvaFige: "franchise_293b",
       session: {
         titreSession: "IA pour managers",
+        sessionFormateurs: [{ trainerId: TRAINER }],
         ...lieu,
         lieuIntitule: null,
         lieuAdresse: null,

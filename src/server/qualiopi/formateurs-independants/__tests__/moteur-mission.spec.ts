@@ -65,7 +65,13 @@ const h = vi.hoisted(() => {
       await new Promise((r) => setTimeout(r, 5));
       etat.mission!.lettreMissionId = DOC;
       etat.mission!.lettreMission = { annuleeAt: null, metadata: {}, signatures: [] };
-      return { ok: true as const, documentId: DOC, numero: "AXI-LM-1", lettreAnnuleeId: null };
+      return {
+        ok: true as const,
+        documentId: DOC,
+        numero: "AXI-LM-1",
+        lettreAnnuleeId: null,
+        annonce: annonceDe(etat.mission!),
+      };
     }),
     envoyer: vi.fn(async () => "envoye"),
     telegram: vi.fn(async () => true),
@@ -97,6 +103,40 @@ import { CROCHET_NON_REMPLI } from "@/lib/email/templates/formateur-independant-
 import { remplir } from "@/lib/email/templates/_formateur-independant";
 import { TEXTES_FORMATEUR } from "@/lib/email/templates/formateur-independant-textes";
 import { passerMoteurMissions, reevaluerMission } from "../moteur-mission";
+import { forfaitSelonLieu } from "../choix-formateur";
+import { decompterJournees, honorairesLettre } from "../lettre-mission-v2-calcul";
+
+/**
+ * L'annonce que rendrait le vrai générateur (étape 4) : la règle de la lettre
+ * (`honorairesLettre`, `forfaitSelonLieu`) sur les journées de la mission. Le
+ * moteur la reprend telle quelle dans F26.
+ */
+function annonceDe(m: Record<string, unknown>) {
+  const s = m.session as {
+    lieuType: string | null;
+    modalite: string;
+    jours: Array<{ date: Date; heureDebut: string; heureFin: string }>;
+  };
+  const jours = s.jours
+    .map((j) => ({
+      date: j.date.toISOString().slice(0, 10),
+      heureDebut: j.heureDebut,
+      heureFin: j.heureFin,
+    }))
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
+  const forfait = forfaitSelonLieu(m.forfaitDeplacementParJourHtCents as number | null, s);
+  const hl = honorairesLettre({
+    jours,
+    tarifJourneeHtCents: m.tarifHtCents as number,
+    forfaitDeplacementParJourHtCents: forfait,
+    joursDeplacement: forfait !== null && forfait > 0 ? jours.length : 0,
+  });
+  return {
+    ...decompterJournees(jours),
+    totalHtCents: hl.totalHtCents,
+    jours,
+  };
+}
 
 const MAINTENANT = new Date("2026-10-12T09:00:00Z"); // 11 h à Paris
 
@@ -204,7 +244,13 @@ describe("lettre due (T8)", () => {
   it("correctif EXACTITUDE : lettre liée ailleurs → alerte, journal, arrêt (ni empreinte ni F26)", async () => {
     h.generer.mockImplementationOnce(async () => {
       // Le générateur a lié la lettre à une autre mission : celle-ci reste sans lettre.
-      return { ok: true as const, documentId: DOC, numero: "AXI-LM-1", lettreAnnuleeId: null };
+      return {
+        ok: true as const,
+        documentId: DOC,
+        numero: "AXI-LM-1",
+        lettreAnnuleeId: null,
+        annonce: annonceDe(h.etat.mission!),
+      };
     });
     const r = await reevaluerMission(MISSION, "passage", MAINTENANT);
     expect(r.action).toBe("erreur");

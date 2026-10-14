@@ -26,6 +26,7 @@ describe("lettre de mission v2 — rendu", () => {
   it("rend un PDF", { timeout: 30_000 }, async () => {
     const a = assemblerLettreV2({
       numero: "LM-TEST",
+      trainerId: "t-1",
       trainer: {
         prenom: "Marie",
         nom: "Dupont",
@@ -42,9 +43,9 @@ describe("lettre de mission v2 — rendu", () => {
         statut: "accord_hors_outil",
         reponduAt: null,
         accordHorsOutilAt: new Date("2026-10-12T07:41:00Z"),
-        tarifHtCents: null,
+        tarifHtCents: 35_000,
         forfaitDeplacementParJourHtCents: 8_000,
-        regimeTvaFige: null,
+        regimeTvaFige: "assujetti_20",
       },
       session: {
         titre: "IA pour managers",
@@ -54,9 +55,20 @@ describe("lettre de mission v2 — rendu", () => {
         financeurEnAttente: true,
         lieu: "12 rue Exemple, Lyon",
         distanciel: false,
+        affectes: [{ trainerId: "t-1" }],
         jours: [
-          { date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" },
-          { date: new Date("2026-12-10T00:00:00Z"), heureDebut: "14:00", heureFin: "17:30" },
+          {
+            date: new Date("2026-11-04T00:00:00Z"),
+            heureDebut: "09:00",
+            heureFin: "17:00",
+            trainerId: null,
+          },
+          {
+            date: new Date("2026-12-10T00:00:00Z"),
+            heureDebut: "14:00",
+            heureFin: "17:30",
+            trainerId: null,
+          },
         ],
       },
       dateMission: new Date("2026-10-12T08:00:00Z"),

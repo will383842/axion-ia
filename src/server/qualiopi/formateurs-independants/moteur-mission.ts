@@ -44,12 +44,7 @@ import { MANQUES_MISSION } from "./garde-mission";
 import { controlerGardeMission } from "./garde-mission-portes";
 import { interrupteurAllume } from "./interrupteur-allume";
 import { envoiAllume } from "./interrupteurs-envoi";
-import {
-  TARIF_JOURNEE_HT_CENTS,
-  decompterJournees,
-  echeancePaiement,
-  honorairesLettre,
-} from "./lettre-mission-v2-calcul";
+import { TARIF_JOURNEE_HT_CENTS, echeancePaiement } from "./lettre-mission-v2-calcul";
 
 const isStub = (): boolean => process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
 
@@ -972,10 +967,10 @@ async function emettreLettre(
     return { etape: etapeDepart, action: "lettre_rectifiee" };
   }
 
-  // F26 — la lettre est prête. Les montants sont ceux de la lettre (même règle).
-  const jours = [...m.session.jours]
-    .map((j) => ({ date: dateCivile(j.date), heureDebut: j.heureDebut, heureFin: j.heureFin }))
-    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  // F26 — la lettre est prête. Les montants et les journées sont CEUX DE LA
+  // LETTRE (`r.annonce`), jamais recalculés ici : en co-animation, la lettre ne
+  // porte que les journées du formateur.
+  const jours = r.annonce.jours;
   // Le lieu s'écrit comme sur la lettre ; le forfait suit la règle de la
   // lettre et du paiement (à distance, aucun forfait).
   const distanciel = m.session.lieuType === "distanciel";
@@ -983,13 +978,7 @@ async function emettreLettre(
   const premier = jours[0];
   const dernier = jours[jours.length - 1];
   if (premier !== undefined && dernier !== undefined) {
-    const h = honorairesLettre({
-      jours,
-      tarifJourneeHtCents: tarif,
-      forfaitDeplacementParJourHtCents: forfait,
-      joursDeplacement: forfait !== null && forfait > 0 ? jours.length : 0,
-    });
-    const { journees, demiJournees } = decompterJournees(jours);
+    const { journees, demiJournees, totalHtCents } = r.annonce;
     // Lot C (M18) : le bouton ouvre la lettre elle-même (chemin sur la liste blanche).
     const lien = lienEspaceFormateur(`?lettre=${r.documentId}`);
     const issue = await envoyer({
@@ -1011,7 +1000,7 @@ async function emettreLettre(
             ? "distance"
             : [m.session.lieuVille, m.session.lieuCodePostal].filter(Boolean).join(" ") ||
               "l'adresse indiquée dans la lettre",
-          total: eurosCourts(h.totalHtCents).replace(/ €$/, ""),
+          total: eurosCourts(totalHtCents).replace(/ €$/, ""),
           "le cas échéant":
             forfait !== null && forfait > 0
               ? `(${eurosCourts(forfait)} HT par journée)`

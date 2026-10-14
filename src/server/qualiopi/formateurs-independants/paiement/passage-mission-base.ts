@@ -14,6 +14,7 @@ import { journaliser } from "@/server/journal/journaliser";
 import { totaliser } from "../argent/calcul-mission";
 import { forfaitSelonLieu } from "../choix-formateur";
 import { jourDeColonneDate, jourParis } from "../argent/dates";
+import { journeesDuFormateur } from "../argent/journees-du-formateur";
 import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
@@ -118,9 +119,6 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     for (const [trainerId, sigs] of parFormateur) {
       // La plus récente des sollicitations acceptées ; son prix figé, ou aucun.
       const m = missions.find((x) => x.sessionId === s.id && x.trainerId === trainerId);
-      // Affecté à la session (principal ou co-formateur) : les journées sans
-      // formateur désigné lui reviennent aussi.
-      const affecte = s.sessionFormateurs.some((sf) => sf.trainerId === trainerId);
       out.push({
         trainerId,
         sessionId: s.id,
@@ -142,13 +140,13 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
           jour: jourDeColonneDate(x.date),
           demiJournee: x.demiJournee,
         })),
-        journeesPrevues: s.jours
-          .filter((j) => j.trainerId === trainerId || (j.trainerId === null && affecte))
-          .map((j) => ({
-            jour: jourDeColonneDate(j.date),
-            heureDebut: j.heureDebut,
-            heureFin: j.heureFin,
-          })),
+        // Ses journées, et les journées sans formateur désigné s'il est affecté :
+        // la règle partagée avec la lettre et la proposition.
+        journeesPrevues: journeesDuFormateur(s.jours, trainerId, s.sessionFormateurs).map((j) => ({
+          jour: jourDeColonneDate(j.date),
+          heureDebut: j.heureDebut,
+          heureFin: j.heureFin,
+        })),
         // ⚠️ La condition suspensive du financeur (PR OPCO encore ouverte) n'est
         // pas encore lisible : faute de mieux, on ne paie que ce qui est signé.
         conditionFinanceurEnAttente: false,

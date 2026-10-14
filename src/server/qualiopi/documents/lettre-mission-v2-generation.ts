@@ -28,6 +28,7 @@ import {
   assemblerLettreV2,
   type FaitsLettreV2,
 } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-donnees";
+import type { JourLettre } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-calcul";
 
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
@@ -47,7 +48,19 @@ const MISSION_LETTRE_SELECT = {
 } as const;
 
 export type ResultatLettreV2 =
-  | { ok: true; documentId: string; numero: string; lettreAnnuleeId: string | null }
+  | {
+      ok: true;
+      documentId: string;
+      numero: string;
+      lettreAnnuleeId: string | null;
+      /** Ce que la lettre annonce (F26 le reprend tel quel, jamais recalculé). */
+      annonce: {
+        journees: number;
+        demiJournees: number;
+        totalHtCents: number;
+        jours: ReadonlyArray<JourLettre>;
+      };
+    }
   | { ok: false; erreur: string };
 
 export async function genererLettreMissionV2(input: {
@@ -74,86 +87,77 @@ export async function genererLettreMissionV2(input: {
   maintenant?: Date;
 }): Promise<ResultatLettreV2> {
   const maintenant = input.maintenant ?? new Date();
-  const [
-    session,
-    trainer,
-    missions,
-    contratCadre,
-    lettresVivantes,
-    affectation,
-    conditionEnAttente,
-  ] = await Promise.all([
-    prisma.trainingSession.findUnique({
-      where: { id: input.sessionId },
-      select: {
-        numero: true,
-        titreSession: true,
-        nbParticipantsPrevus: true,
-        modalite: true,
-        ...LIEU_DOCUMENT_SELECT,
-        client: { select: { raisonSociale: true } },
-        jours: { select: { date: true, heureDebut: true, heureFin: true } },
-      },
-    }),
-    prisma.trainer.findUnique({
-      where: { id: input.trainerId },
-      select: {
-        prenom: true,
-        nom: true,
-        statut: true,
-        siret: true,
-        sousTraitantNda: true,
-        regimeTvaHonoraires: true,
-        mandatAutofacturationSigneAt: true,
-        mandatAutofacturationRevoqueAt: true,
-        organismeSousTraitantId: true,
-      },
-    }),
-    // Session, formateur ET id filtrés dans la MÊME requête ; sans id, seules
-    // les missions dont l'accord est donné, jamais « la plus récente » d'un
-    // couple qui a pu être refusée ou retirée.
-    prisma.missionFormateur.findMany({
-      where: {
-        sessionId: input.sessionId,
-        trainerId: input.trainerId,
-        ...(input.missionId !== undefined
-          ? { id: input.missionId }
-          : // Le rôle de la lettre, comme le moteur : jamais un accord de co-formateur.
-            { role: "principal", statut: { in: [...STATUTS_ACCORD_DONNE] } }),
-      },
-      orderBy: { solliciteAt: "desc" },
-      take: 2,
-      select: MISSION_LETTRE_SELECT,
-    }),
-    lireContratCadreSigne(input.trainerId),
-    // Toutes les lettres VIVANTES de ce formateur sur cette session, v1 comprise :
-    // le lien `lettreMissionId` n'existe que depuis la v2.
-    prisma.documentGenere.findMany({
-      where: {
-        type: "lettre_mission",
-        sessionId: input.sessionId,
-        trainerId: input.trainerId,
-        annuleeAt: null,
-      },
-      select: {
-        id: true,
-        signatures: { where: { revokedAt: null, partie: "formateur" }, select: { id: true } },
-      },
-    }),
-    // Tarif figé à l'AFFECTATION : repli quand la mission ne porte pas encore le sien.
-    prisma.sessionFormateur.findUnique({
-      where: { sessionId_trainerId: { sessionId: input.sessionId, trainerId: input.trainerId } },
-      select: { tarifHtCents: true },
-    }),
-    prisma.documentGenere.count({
-      where: {
-        sessionId: input.sessionId,
-        conditionSuspensiveOpco: true,
-        etatConditionSuspensive: "en_attente",
-        annuleeAt: null,
-      },
-    }),
-  ]);
+  const [session, trainer, missions, contratCadre, lettresVivantes, conditionEnAttente] =
+    await Promise.all([
+      prisma.trainingSession.findUnique({
+        where: { id: input.sessionId },
+        select: {
+          numero: true,
+          titreSession: true,
+          nbParticipantsPrevus: true,
+          modalite: true,
+          ...LIEU_DOCUMENT_SELECT,
+          client: { select: { raisonSociale: true } },
+          // Le formateur désigné de chaque journée et les affectés : la lettre ne
+          // liste que les journées de CE formateur (la règle du paiement).
+          jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
+          sessionFormateurs: { select: { trainerId: true } },
+        },
+      }),
+      prisma.trainer.findUnique({
+        where: { id: input.trainerId },
+        select: {
+          prenom: true,
+          nom: true,
+          statut: true,
+          siret: true,
+          sousTraitantNda: true,
+          regimeTvaHonoraires: true,
+          mandatAutofacturationSigneAt: true,
+          mandatAutofacturationRevoqueAt: true,
+          organismeSousTraitantId: true,
+        },
+      }),
+      // Session, formateur ET id filtrés dans la MÊME requête ; sans id, seules
+      // les missions dont l'accord est donné, jamais « la plus récente » d'un
+      // couple qui a pu être refusée ou retirée.
+      prisma.missionFormateur.findMany({
+        where: {
+          sessionId: input.sessionId,
+          trainerId: input.trainerId,
+          ...(input.missionId !== undefined
+            ? { id: input.missionId }
+            : // Le rôle de la lettre, comme le moteur : jamais un accord de co-formateur.
+              { role: "principal", statut: { in: [...STATUTS_ACCORD_DONNE] } }),
+        },
+        orderBy: { solliciteAt: "desc" },
+        take: 2,
+        select: MISSION_LETTRE_SELECT,
+      }),
+      lireContratCadreSigne(input.trainerId),
+      // Toutes les lettres VIVANTES de ce formateur sur cette session, v1 comprise :
+      // le lien `lettreMissionId` n'existe que depuis la v2.
+      prisma.documentGenere.findMany({
+        where: {
+          type: "lettre_mission",
+          sessionId: input.sessionId,
+          trainerId: input.trainerId,
+          annuleeAt: null,
+        },
+        select: {
+          id: true,
+          signatures: { where: { revokedAt: null, partie: "formateur" }, select: { id: true } },
+        },
+      }),
+      prisma.documentGenere.count({
+        where: {
+          sessionId: input.sessionId,
+          conditionSuspensiveOpco: true,
+          etatConditionSuspensive: "en_attente",
+          annuleeAt: null,
+        },
+      }),
+    ]);
   if (session === null) return { ok: false, erreur: "Session introuvable" };
   if (trainer === null) return { ok: false, erreur: "Formateur introuvable" };
   // Une lettre n'est jamais liée à la mission d'un autre couple.
@@ -173,6 +177,7 @@ export async function genererLettreMissionV2(input: {
 
   const faits = (numero: string): FaitsLettreV2 => ({
     numero,
+    trainerId: input.trainerId,
     trainer: {
       prenom: trainer.prenom,
       nom: trainer.nom,
@@ -190,7 +195,8 @@ export async function genererLettreMissionV2(input: {
         ? null
         : {
             ...mission,
-            tarifHtCents: mission.tarifHtCents ?? affectation?.tarifHtCents ?? null,
+            // Le tarif FIGÉ sur la mission, et lui seul : c'est celui que le
+            // paiement versera. Jamais le tarif de l'affectation en repli.
             // À distance, aucun forfait : la règle de la proposition et du
             // paiement (`forfaitSelonLieu`).
             forfaitDeplacementParJourHtCents: forfaitSelonLieu(
@@ -206,6 +212,7 @@ export async function genererLettreMissionV2(input: {
       financeurEnAttente: conditionEnAttente > 0,
       lieu: formatLieu(session) ?? "lieu communiqué par Axion",
       distanciel: session.lieuType === "distanciel",
+      affectes: session.sessionFormateurs,
       jours: session.jours,
     },
     dateMission: maintenant,
@@ -245,6 +252,8 @@ export async function genererLettreMissionV2(input: {
     },
     refs: { sessionId: input.sessionId, trainerId: input.trainerId },
     gabaritVersion: 2,
+    // Ce que la lettre annonce, mois par mois : l'écart d'un relevé s'y compare.
+    metadata: { annonceLettre: essai.annonce },
     // L'original de SA mission, jamais un duplicata : la seule autre lettre
     // vivante possible est déjà signée, et la rectification la désigne.
     ...(input.rectificationMotif === undefined ? { estCopie: false } : {}),
@@ -297,5 +306,16 @@ export async function genererLettreMissionV2(input: {
     },
     data: { annuleeAt: maintenant, annuleeMotif: MOTIF_CHANGEMENT_FORMATEUR, annuleePar: "system" },
   });
-  return { ok: true, documentId: doc.id, numero: doc.numero, lettreAnnuleeId };
+  return {
+    ok: true,
+    documentId: doc.id,
+    numero: doc.numero,
+    lettreAnnuleeId,
+    annonce: {
+      journees: essai.data.journees,
+      demiJournees: essai.data.demiJournees,
+      totalHtCents: essai.data.totalHtCents,
+      jours: essai.jours,
+    },
+  };
 }

@@ -38,8 +38,8 @@ import { MANQUES_MISSION } from "./garde-mission";
 import { departementDeCodePostal, regionDeDepartement } from "./departement-region";
 import {
   TARIF_JOURNEE_HT_CENTS,
+  creneauxDeLaJournee,
   decompterJournees,
-  demiJourneesDuJour,
   honorairesLettre,
   type JourLettre,
 } from "./lettre-mission-v2-calcul";
@@ -490,10 +490,12 @@ const JOUR_PARIS = new Intl.DateTimeFormat("fr-FR", {
 /** « mardi 4 novembre · matin et après-midi » — une ligne par journée. */
 export function ligneJour(j: JourLettre): string {
   const d = new Date(`${j.date}T12:00:00.000Z`);
+  // Le créneau PAYÉ (découpage unique du paiement), jamais une autre lecture.
+  const creneaux = creneauxDeLaJournee(j);
   const moment =
-    demiJourneesDuJour(j) === 2
+    creneaux.length === 2
       ? "matin et après-midi"
-      : j.heureDebut < "12:30"
+      : creneaux[0] === "matin"
         ? "matin"
         : "après-midi";
   return `${JOUR_PARIS.format(d)} · ${moment}`;

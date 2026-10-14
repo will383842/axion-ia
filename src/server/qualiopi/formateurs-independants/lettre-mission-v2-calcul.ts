@@ -13,6 +13,9 @@
  */
 
 import { estJourFerieFrance } from "@/lib/jours-ouvres";
+import { creneauxDuJour, type Creneau } from "@/server/qualiopi/remuneration/heures-animees";
+
+import { PARAMETRES_ARGENT_FORMATEURS } from "./argent/parametres";
 
 /** 350 € HT la journée (texte arrêté). */
 export const TARIF_JOURNEE_HT_CENTS = 35_000;
@@ -29,17 +32,19 @@ export interface JourLettre {
   readonly heureFin: string;
 }
 
-/** Midi et demi : avant, c'est le matin ; après, l'après-midi. */
-const PIVOT_MINUTES = 12 * 60 + 30;
-
-function minutes(hhmm: string): number {
-  const [h, m] = hhmm.split(":").map(Number);
-  return (h ?? 0) * 60 + (m ?? 0);
+/**
+ * Les créneaux d'une journée de la lettre : LE découpage du paiement
+ * (`creneauxDuJour`, bornes de `argent/parametres.ts` : matin avant 12:00,
+ * après-midi après 13:30). Jamais une seconde règle : ce que la lettre annonce
+ * est ce que le paiement verse (« 09:00-13:00 » = le matin seul).
+ */
+export function creneauxDeLaJournee(j: JourLettre): Creneau[] {
+  return creneauxDuJour(j.heureDebut, j.heureFin, PARAMETRES_ARGENT_FORMATEURS);
 }
 
 /** 2 si le jour couvre le matin ET l'après-midi, 1 sinon. */
 export function demiJourneesDuJour(j: JourLettre): 1 | 2 {
-  return minutes(j.heureDebut) < PIVOT_MINUTES && minutes(j.heureFin) > PIVOT_MINUTES ? 2 : 1;
+  return creneauxDeLaJournee(j).length === 2 ? 2 : 1;
 }
 
 /** « N journée(s) et M demi-journée(s) » de la lettre. */
