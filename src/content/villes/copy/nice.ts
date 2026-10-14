@@ -247,7 +247,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available but never triggered to date on our Côte d'Azur missions).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -335,7 +335,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, sessions en français, anglais ou bilingue selon votre équipe.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur, sessions en français, anglais ou bilingue selon votre équipe.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Nice come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
@@ -421,7 +421,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector, sessions in French, English or bilingual per your team.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your sector, sessions in French, English or bilingual per your team.",
       },
     },
     implementation: {
@@ -509,7 +509,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Modèles, données et runbook restent intégralement chez vous, transférables à tout intégrateur Côte d'Azur ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Modèles, données et runbook restent intégralement chez vous, transférables à tout intégrateur Côte d'Azur ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Nice brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off in Nice or the Sophia Antipolis basin depending on your location.",
@@ -595,7 +595,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {

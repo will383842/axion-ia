@@ -104,7 +104,9 @@ describe("le matcher du proxy n'exclut jamais une route localisée", () => {
       "/3a5c32d22b04f1430690cc33eaec6be9.txt",
       "/williams-jullin.vcf",
       "/catalogue/index.html",
-      "/catalogue-formations-ia-axion-ia.pdf",
+      // Le PDF racine du catalogue est hors ligne depuis le 2026-10-14 (mention
+      // Qualiopi) : un PDF réellement servi tient sa place.
+      "/imprimes/guide-ia-entreprise-2026-axion-ia.pdf",
       "/logo-axion-ia.png",
       "/images/illustrations/x.webp",
       "/fonts/inter.woff2",

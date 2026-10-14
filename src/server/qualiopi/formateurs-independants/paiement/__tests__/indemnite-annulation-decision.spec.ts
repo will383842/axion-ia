@@ -21,6 +21,7 @@ const base = {
   accepteeAvant: true,
   parAxion: true,
   regimeTva: "assujetti_20" as const,
+  contresignatures: [],
 };
 
 describe("instantParis", () => {
@@ -89,5 +90,81 @@ describe("aperçu de l'indemnité d'annulation", () => {
     const a = apercuIndemniteAnnulation({ ...base, annuleeA: new Date("2026-11-18T08:00:00Z") });
     expect(a.demiJourneesAnnulees).toBe(0);
     expect(a.indemnite.due).toBe(false);
+  });
+});
+
+describe("chantier C4 (défaut 2) — jamais deux fois la même demi-journée", () => {
+  it("🔴 instant saisi AVANT une demi-journée contresignée : refus, rien n'est dû", () => {
+    // Le 16 au matin a été animé ET signé : une annulation saisie le 14 la
+    // compterait « annulée » et la paierait une seconde fois (50 %).
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      contresignatures: [{ jour: "2026-11-16", demiJournee: "matin" }],
+      annuleeA: new Date("2026-11-14T08:00:00Z"),
+    });
+    expect(a.refus).toBe("instant_anterieur_a_une_signature");
+    // Début de la dernière demi-journée signée : 16/11 09:00 Paris.
+    expect(a.debutDerniereSignee?.toISOString()).toBe("2026-11-16T08:00:00.000Z");
+    expect(a.demiJourneesAnnulees).toBe(0);
+    expect(a.indemnite.due).toBe(false);
+    expect([a.totaux.totalHtCents, a.totaux.tvaCents, a.totaux.totalTtcCents]).toEqual([0, 0, 0]);
+  });
+
+  it("une révoquée ne compte pas : le témoin passe comme sans signature", () => {
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      contresignatures: [{ jour: "2026-11-16", demiJournee: "journee", revoquee: true }],
+      annuleeA: new Date("2026-11-14T08:00:00Z"),
+    });
+    expect(a.refus).toBeNull();
+    expect(a.indemnite.montantHtCents).toBe(45_000);
+  });
+
+  it("annulée après la journée signée du 16 : seule la matinée du 17 compte, la signée est exclue", () => {
+    // Le 16 entier signé ; annulation le 16 à 18 h (Paris) : reste le 17 au matin.
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      contresignatures: [{ jour: "2026-11-16", demiJournee: "journee" }],
+      annuleeA: new Date("2026-11-16T17:00:00Z"),
+    });
+    expect(a.refus).toBeNull();
+    expect(a.demiJourneesAnnulees).toBe(1);
+    // Contre-calcul : 1 × 60 000 / 2 = 30 000 ; 50 % = 15 000 HT ; TVA 3 000 ; TTC 18 000.
+    expect(a.totaux.totalHtCents).toBe(15_000);
+    expect(a.totaux.tvaCents).toBe(3_000);
+    expect(a.totaux.totalTtcCents).toBe(18_000);
+  });
+
+  it("une demi-journée signée n'est jamais comptée « annulée », même postérieure au découpage prévu", () => {
+    // Le 17 au matin signé (journée courte) ; annulation le 17 à 10 h : signée après
+    // son début, donc pas de refus — et elle n'est pas comptée.
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      contresignatures: [
+        { jour: "2026-11-16", demiJournee: "journee" },
+        { jour: "2026-11-17", demiJournee: "matin" },
+      ],
+      annuleeA: new Date("2026-11-17T09:00:00Z"),
+    });
+    expect(a.refus).toBeNull();
+    expect(a.demiJourneesAnnulees).toBe(0);
+    expect(a.indemnite.due).toBe(false);
+  });
+});
+
+describe("chantier C4 — heures saisies sans zéro initial", () => {
+  it("« 9:00 » : l'après-midi commence à 13:00, pas à 9 h (2 demi-journées annulées à 12 h 30)", () => {
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      journeesPrevues: [
+        { jour: "2026-11-16", heureDebut: "9:00", heureFin: "17:00" },
+        { jour: "2026-11-17", heureDebut: "9:00", heureFin: "12:30" },
+      ],
+      annuleeA: new Date("2026-11-16T11:30:00Z"),
+    });
+    expect(a.demiJourneesAnnulees).toBe(2);
+    // 2 × 60 000 / 2 = 60 000 ; 50 % = 30 000 HT ; TVA 6 000 ; TTC 36 000.
+    expect(a.totaux.totalHtCents).toBe(30_000);
+    expect(a.totaux.totalTtcCents).toBe(36_000);
   });
 });

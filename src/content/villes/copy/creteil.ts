@@ -145,7 +145,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
       },
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Créteil se tiennent sur site, dans vos locaux de la préfecture du Val-de-Marne. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel, prêts à servir dès le lendemain matin. Les formats vont de la session de 4 heures à l'accompagnement approfondi sur deux journées, calibrés selon la taille de l'équipe et le secteur dominant — santé humaine et action sociale autour du CHU Henri-Mondor, administration publique, enseignement lié à l'UPEC, activités juridiques ou commerce de détail. Chaque session est ancrée dans votre activité, sans contenu générique recyclé, et le déplacement sur l'ensemble du Val-de-Marne est compris dans la prestation.",
@@ -241,7 +241,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
       },
     },
     sitesWeb: {

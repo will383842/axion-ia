@@ -401,7 +401,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
     priorite: 2,
     niveau: 3,
     injection: {
-      h1: "Votre premier projet IA PME — budget maîtrisé, résultat garanti, zéro surprise",
+      h1: "Votre premier projet IA PME — budget maîtrisé, résultat mesurable, zéro surprise",
       metaTitle: "Premier projet IA PME budget maîtrisé | Axion-IA",
       metaDescription:
         "Axion-IA structure votre premier projet IA PME pour maîtriser votre investissement : scope fixe, délai fixe, résultat mesurable. Devis en 48h.",

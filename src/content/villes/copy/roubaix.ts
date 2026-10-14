@@ -138,7 +138,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés et configurés sur leur poste, séance de remédiation offerte. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
+          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
       },
       en: {
         hero: "Axion-IA anime à Roubaix des formations IA en entreprise sur site, dans vos locaux. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés et configurés sur leur poste, prêts à servir leur travail réel dès le lendemain. Le tissu roubaisien — héritage VPC reconverti en e-commerce avec La Redoute et Damart, RetailTech de Blanchemaille by EuraTechnologies, datacenters RBX d'OVHcloud et filières textiles de l'écoquartier de l'Union — combine contraintes métier historiques et besoins numériques concrets. Le format d'entrée « Formation 4 heures » démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes. Différenciateur : chaque démo s'appuie sur vos propres documents anonymisés (relances, devis, fiches produit, reporting), pas sur des cas génériques recyclés.",
@@ -228,7 +228,7 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés et configurés sur leur poste, séance de remédiation offerte. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
+          "Créneau garanti dès la confirmation de réservation à Roubaix. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Démos calibrées sur vos données anonymisées, vocabulaire ajusté à votre secteur roubaisien — commerce, logistique, textile ou numérique — et aucune session générique recyclée. Vous gardez la main sur vos comptes et vos données, sans dépendance Axion-IA.",
       },
     },
     sitesWeb: {

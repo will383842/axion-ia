@@ -251,7 +251,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available, never triggered to date).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -339,7 +339,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur sarthois, aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur sarthois, aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Le Mans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work in insurance, automotive, manufacturing and services.",
@@ -425,7 +425,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Sarthe sector, no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your Sarthe sector, no recycled generic session.",
       },
     },
     implementation: {
@@ -513,7 +513,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause et ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Le Mans brings your AI cases to production with contractually-costed ROI, team training included. Hybrid on-site / remote mode, with a mandatory Le Mans kick-off. Priority sectors: insurance (claim reading, contract automation), automotive and manufacturing (quality, logistics, supply chain), B2B services.",
@@ -599,7 +599,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause and offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
 
@@ -684,7 +684,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
+          "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs.",
@@ -770,7 +770,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your insurance, automotive or industrial data does not leave your Le Mans premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
+          "Strict confidentiality: your insurance, automotive or industrial data does not leave your Le Mans premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session.",
       },
     },
     sitesWeb: {

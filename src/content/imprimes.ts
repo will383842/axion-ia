@@ -147,22 +147,24 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
         role: "Le catalogue qui se tourne page par page, en doubles. C’est le lien à partager : il porte un aperçu Open Graph, donc il s’affiche avec une image dans WhatsApp ou LinkedIn.",
       },
       {
-        chemin: "catalogue-formations-ia-axion-ia.pdf",
-        nom: "Le PDF, pages à l’unité",
-        role: "48 pages, à envoyer par mail ou à imprimer chez soi. S’ouvre en doubles pages dans un lecteur qui respecte la mise en page.",
-      },
-      {
-        chemin: "catalogue/catalogue-axion-ia.pdf",
-        nom: "Le PDF en doubles pages",
-        role: "25 planches de 420 × 297 mm, sans fond perdu ni repère : la lecture à l’écran.",
-      },
-      {
         chemin: "catalogue/og-catalogue.jpg",
         nom: "L’image de partage",
         role: "1200 × 630. La vignette que WhatsApp, LinkedIn ou Slack affichent quand on partage le lien du feuilletoir.",
       },
     ],
     fichiersHorsLigne: [
+      {
+        nom: "catalogue-formations-ia-axion-ia.pdf (48 pages à l’unité)",
+        ou: "docs/pdf-hors-ligne-certification/ (dans le dépôt)",
+        pourquoi:
+          "Retiré du site le 2026-10-14 : ce PDF figé affirme la certification Qualiopi, non encore délivrée (audit initial le 16/10), et promet « jusqu’à 100 % » et un reste à charge nul. Le lien de la page Formations est retiré. À remettre sous public/ (même chemin) une fois le certificat délivré.",
+      },
+      {
+        nom: "catalogue-axion-ia.pdf (25 doubles pages)",
+        ou: "docs/pdf-hors-ligne-certification/catalogue/ (dans le dépôt)",
+        pourquoi:
+          "Retiré du site le 2026-10-14 : ce PDF figé affirme la certification Qualiopi, non encore délivrée (audit initial le 16/10), et porte les mêmes promesses de financement. Les boutons de /catalogue et du feuilletoir sont retirés. À remettre sous public/ (même chemin) une fois le certificat délivré.",
+      },
       {
         nom: "catalogue-axion-ia-CMYK.pdf",
         ou: "Catalogue_formations_Axion_IA/catalogue-axion-ia-v2/export/",
@@ -192,29 +194,15 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
       "pages 2-3 conçues comme une seule double page, bandeau traversant le pli",
     resume:
       "Les 21 formations et le séminaire sur une seule page, avec les prix publics et la prise en charge OPCO. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
-    fichiersPublics: [
+    fichiersPublics: [],
+    fichiersHorsLigne: [
       {
-        chemin: "imprimes/depliant-formations-axion-ia.pdf",
-        nom: "Les 4 pages A4",
-        role: "À lire à l'écran et à envoyer par mail. Page 1 la couverture, page 2 le temps gagné et le parcours, page 3 les 22 formations, page 4 les tarifs et le contact.",
-      },
-      {
-        chemin: "imprimes/depliant-formations-axion-ia-A3.pdf",
-        nom: "Les 2 planches A3, imposées",
-        role: "Recto « page 4 | page 1 », verso « page 2 | page 3 » : imprimé en recto-verso sur A3 et plié au centre, il tombe dans le bon ordre. Pour le tirage bureautique.",
-      },
-      {
-        chemin: "imprimes/depliant-formations-axion-ia-VISTAPRINT.pdf",
-        nom: "Fichier Vistaprint — 422 × 299 mm",
-        role: "2 planches A3 recto-verso, aux cotes exactes du gabarit « Dépliant pli central » (fini 420 × 297, soit 1 mm de fond perdu par bord). C'est CE fichier qu'on téléverse chez Vistaprint.",
-      },
-      {
-        chemin: "imprimes/depliant-formations-axion-ia-EXAPRINT.pdf",
-        nom: "Fichier Exaprint — 426 × 303 mm",
-        role: "Le même document avec 3 mm de fond perdu, le standard des offsets français. ⚠️ Ces 3 mm viennent de l'usage, pas d'un gabarit Exaprint lu : à confronter à leur gabarit avant de lancer un tirage.",
+        nom: "Les 4 PDF du dépliant (A4, A3, VISTAPRINT, EXAPRINT)",
+        ou: "docs/pdf-hors-ligne-certification/imprimes/ (dans le dépôt)",
+        pourquoi:
+          "Retirés du site le 2026-10-14 : ces PDF figés affirment la certification Qualiopi, non encore délivrée (audit initial le 16/10), et promettent « jusqu’à 100 % » et un reste à charge nul. Le script scripts/build-depliant-formations.ts les régénère sous public/imprimes/ : ne pas le relancer avant la délivrance. À remettre sous public/imprimes/ (mêmes noms) une fois le certificat délivré.",
       },
     ],
-    fichiersHorsLigne: [],
     avantTirage: [
       "⛔ NE PAS IMPRIMER AVANT LA DÉLIVRANCE DE QUALIOPI. Le dépliant l'affiche quatre fois, dont la bande de couverture — c'est irréversible sur papier. Distribution prévue une fois la certification obtenue (décision Will, 2026-08-25).",
       "Les prix et les 22 intitulés sont DÉRIVÉS de catalog-v2.ts × pricing.ts : ils ne peuvent pas diverger du site, mais ils gèlent au moment du tirage. Refabriquer juste avant d'imprimer : pnpm tsx scripts/build-depliant-formations.ts",
@@ -230,14 +218,15 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
     resume: `La présentation courte d’Axion-IA : les cinq activités, la prise en charge OPCO jusqu’au reste à charge nul, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
-    fichiersPublics: [
+    fichiersPublics: [],
+    fichiersHorsLigne: [
       {
-        chemin: "imprimes/flyer-a5-axion-ia.pdf",
-        nom: "Le flyer, recto-verso",
-        role: "Deux pages. Recto : l’accroche et les deux arguments d’argent. Verso : les cinq activités avec leurs prix planchers, le déroulé en trois temps, le contact.",
+        nom: "flyer-a5-axion-ia.pdf",
+        ou: "docs/pdf-hors-ligne-certification/imprimes/ (dans le dépôt)",
+        pourquoi:
+          "Retiré du site le 2026-10-14 : ce PDF figé affirme à deux endroits la certification Qualiopi, non encore délivrée (audit initial le 16/10). Sa source vit hors dépôt (Catalogue_formations_Axion_IA/). À remettre sous public/ (même chemin) une fois le certificat délivré.",
       },
     ],
-    fichiersHorsLigne: [],
     avantTirage: [
       "Confirmer la certification Qualiopi : le flyer l’affiche à deux endroits.",
       "Vérifier les prix planchers — ils sont repris du catalogue, lui-même branché sur pricing.ts.",

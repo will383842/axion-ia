@@ -243,7 +243,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. For sensitive sectors (defence, industrial maritime), option to deploy AI on sovereign infra at your premises. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. For sensitive sectors (defence, industrial maritime), option to deploy AI on sovereign infra at your premises. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -331,7 +331,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur et aux spécificités toulonnaises, aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur et aux spécificités toulonnaises, aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Toulon come in on-site formats from one to several days. Your teams don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you're a services SME, a boating industry mid-cap or a maritime-defence engineering team.",
@@ -417,7 +417,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector and Toulon specificities, no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your sector and Toulon specificities, no recycled generic session.",
       },
     },
     implementation: {
@@ -505,7 +505,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Pour les secteurs sensibles (défense, maritime industrielle), déploiement possible sur infra souveraine chez vous. Aucun lock-in technologique : vos modèles, vos données, votre runbook.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Pour les secteurs sensibles (défense, maritime industrielle), déploiement possible sur infra souveraine chez vous. Aucun lock-in technologique : vos modèles, vos données, votre runbook.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Toulon brings your AI cases to production with contractually-costed ROI, team training included. Hybrid on-site / remote mode, mandatory Toulon kick-off. We understand the data sovereignty and confidentiality constraints specific to the Toulon ecosystem (maritime defence, naval engineering, maritime economy).",
@@ -591,7 +591,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. For sensitive sectors (defence, industrial maritime), deployment possible on sovereign infra at your premises. No tech lock-in: your models, your data, your runbook.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. For sensitive sectors (defence, industrial maritime), deployment possible on sovereign infra at your premises. No tech lock-in: your models, your data, your runbook.",
       },
     },
     unAUn: {
@@ -679,7 +679,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entretien de positionnement inclus : si à l'issue de cet entretien le coaching ne correspond pas à vos besoins, aucune facturation. Programme remis avant tout engagement financier. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Aucun lock-in : les outils et méthodes appris sont utilisables en autonomie totale sans dépendance à Axion-IA. Remboursement de la dernière séance si vous estimez ne pas avoir progressé sur l'objectif fixé en début de séance.",
+          "Entretien de positionnement inclus. Programme remis avant tout engagement financier. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Aucun lock-in : les outils et méthodes appris sont utilisables en autonomie totale sans dépendance à Axion-IA.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Toulon is an individual accompaniment designed for Var executives, managers and senior professionals who want to master AI at their own pace, starting from their concrete business reality. No group, no generic programme: each session is built around your real challenges — whether you lead a city-centre SME, work within the Naval Group / DCNS ecosystem, manage R&D at Toulon Var Technologie or research at UTLN. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT.",
@@ -765,7 +765,7 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included: if after this interview the coaching does not match your needs, no charge. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Travel expenses detailed and validated with you before each in-person session. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency. Refund of the last session if you feel you have not progressed on the objective set at the start of that session.",
+          "Positioning interview included. Programme delivered before any financial commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Travel expenses detailed and validated with you before each in-person session. No lock-in: tools and methods learned are usable in full autonomy without Axion-IA dependency.",
       },
     },
     sitesWeb: {

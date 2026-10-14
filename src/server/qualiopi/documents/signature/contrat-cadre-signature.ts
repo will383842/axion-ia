@@ -244,8 +244,9 @@ async function controleRecent(
   trainerId: string,
   siret: string,
   maintenant: Date,
+  db: Pick<ClientEntrepriseActive, "verificationRegistreSousTraitance"> = prisma,
 ): Promise<{ issue: "confirme" | "a_refaire" } | { issue: "rouge"; motifs: string[] }> {
-  const lignes = await prisma.verificationRegistreSousTraitance.findMany({
+  const lignes = await db.verificationRegistreSousTraitance.findMany({
     where: { trainerId },
     orderBy: { createdAt: "desc" },
     take: 5,
@@ -372,6 +373,33 @@ export async function objectionContratCadre(input: {
  * ajout seul). Fermé par défaut : SIRET absent, registre muet, entreprise
  * fermée ou SIRET relu différent = `false`.
  */
+/** Le strict nécessaire d'un client Prisma (le client global, ou une transaction). */
+export interface ClientEntrepriseActive {
+  trainer: Pick<typeof prisma.trainer, "findUnique">;
+  verificationRegistreSousTraitance: Pick<
+    typeof prisma.verificationRegistreSousTraitance,
+    "findMany"
+  >;
+}
+
+/**
+ * Chantier C4 (défaut 5) — la même garantie RELUE dans la transaction du
+ * virement, sous verrou, SANS appel au registre : `entrepriseActiveAuPaiement`
+ * vient de rafraîchir le contrôle ; on relit son dernier état et le SIRET de la
+ * fiche. Seul un contrôle `confirme` laisse passer (rouge, périmé, SIRET changé :
+ * refus).
+ */
+export async function entrepriseActiveConfirmeeEnBase(
+  db: ClientEntrepriseActive,
+  trainerId: string,
+  maintenant: Date,
+): Promise<boolean> {
+  const t = await db.trainer.findUnique({ where: { id: trainerId }, select: { siret: true } });
+  const siret = (t?.siret ?? "").replace(/\s+/g, "");
+  if (!/^\d{14}$/.test(siret)) return false;
+  return (await controleRecent(trainerId, siret, maintenant, db)).issue === "confirme";
+}
+
 export async function entrepriseActiveAuPaiement(
   trainerId: string,
   maintenant: Date,

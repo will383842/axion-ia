@@ -54,6 +54,7 @@ import type { JobOffer } from "../../../../../prisma/generated/client";
 import { buildOfferFaq, RECRUTEMENT_REGULIER } from "@/lib/careers/faq-offre";
 import { buildOfferFaqFreelance } from "@/lib/careers/faq-offre-freelance";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 export const revalidate = 3600;
 
@@ -157,7 +158,10 @@ export default async function JobOfferDetailPage({
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const offer = await getJobOfferBySlug(slug);
+  // Audit Qualiopi du 16/10/2026 — une offre EN BASE se disait « gardienne de
+  // notre certification Qualiopi ». Neutralisée au rendu selon l'interrupteur,
+  // sans toucher la base : cf. `affirmations-en-base.ts`.
+  const offer = neutraliserSelonInterrupteur(await getJobOfferBySlug(slug));
   if (!offer) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;

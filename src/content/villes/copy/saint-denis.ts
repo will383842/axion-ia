@@ -197,7 +197,7 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur — logistique, audiovisuel, BTP, ESS — aucune session générique recyclée.",
+    "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur — logistique, audiovisuel, BTP, ESS — aucune session générique recyclée.",
 };
 
 // === IMPLÉMENTATION ===
@@ -285,7 +285,7 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+    "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
 };
 
 // === UN-A-UN ===
@@ -373,7 +373,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     },
   ],
   guarantees:
-    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances. Si la première séance ne délivre pas de valeur concrète mesurable, remboursement intégral.",
+    "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances.",
 };
 
 // === SITES WEB AUGMENTÉS ===

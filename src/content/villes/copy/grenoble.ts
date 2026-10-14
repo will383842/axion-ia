@@ -246,7 +246,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available but never triggered to date on our Grenoble missions).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -334,7 +334,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur grenoblois, aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur grenoblois, aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Grenoble come in on-site formats from one to several days, tailored to the Grenoble basin's specific profiles: R&D engineers, industrial production teams, deep-tech managers and SME leadership. Your staff don't leave with slides: they leave with AI tools installed and configured for their real work.",
@@ -420,7 +420,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Grenoble sector, no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your Grenoble sector, no recycled generic session.",
       },
     },
     implementation: {
@@ -508,7 +508,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs IA internes formés sont pleinement autonomes après le go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs IA internes formés sont pleinement autonomes après le go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Grenoble brings your use cases to production with contractually-costed ROI, team training included. Hybrid on-site / remote mode, with a mandatory kick-off at your Grenoble offices. Typical cases range from R&D documentary automation to AI integration in your business tools (PLM, ERP, test toolchains, CRM).",
@@ -594,7 +594,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal AI ambassadors are fully autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal AI ambassadors are fully autonomous after go-live.",
       },
     },
 
@@ -679,7 +679,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions grenobloises).",
+          "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises.",
@@ -765,7 +765,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your technical data and strategic challenges do not leave your Grenoble premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Grenoble missions).",
+          "Strict confidentiality: your technical data and strategic challenges do not leave your Grenoble premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session.",
       },
     },
     sitesWeb: {
