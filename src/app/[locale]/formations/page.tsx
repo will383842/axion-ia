@@ -32,7 +32,6 @@ import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
-  getFormationsV2,
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
   getSeminairesV2,
@@ -126,10 +125,6 @@ export default async function FormationsHub({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  // Compteurs DÉRIVÉS du catalogue (SSOT) — jamais en dur : le séminaire, sur
-  // devis, est compté à part des formations à prix public.
-  const nbFormationsCatalogue = getFormationsV2().length;
-  const nbSeminairesCatalogue = getSeminairesV2().length;
 
   const breadcrumbItems = [
     {
@@ -1243,38 +1238,13 @@ export default async function FormationsHub({ params }: Props) {
         </Container>
       </section>
 
-      {/* TÉLÉCHARGER LE CATALOGUE + RÉSERVER (ajout 2026-07-19, Will) :
-          PDF du catalogue en public/ + réservation d'appel (URL + QR). */}
+      {/* RÉSERVER (ajout 2026-07-19, Will) : réservation d'appel (URL + QR).
+          La carte « Recevez le catalogue en PDF » est retirée le 2026-10-14 :
+          le PDF figé affirmait la certification Qualiopi, non encore délivrée.
+          Le fichier est rangé dans docs/pdf-hors-ligne-certification/. */}
       <section className="py-14 sm:py-16">
         <Container>
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Télécharger le catalogue */}
-            <div className="bg-paper shadow-subtle flex flex-col justify-between rounded-2xl border border-black/10 p-7">
-              <div>
-                <p className="text-terracotta mb-2 text-[12px] font-semibold tracking-[0.16em] uppercase">
-                  {isFr ? "Le catalogue complet" : "The full catalogue"}
-                </p>
-                <h2
-                  className="text-fg text-2xl font-semibold tracking-tight"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {isFr ? "Recevez le catalogue en PDF" : "Get the catalogue as a PDF"}
-                </h2>
-                <p className="text-fg-soft mt-2 text-sm leading-relaxed">
-                  {isFr
-                    ? `${nbFormationsCatalogue} formations et ${nbSeminairesCatalogue} séminaire, prix publics par groupe, financement OPCO et méthode AXION.`
-                    : `${nbFormationsCatalogue} trainings and ${nbSeminairesCatalogue} seminar, public prices per group, OPCO funding and the AXION method.`}
-                </p>
-              </div>
-              <a
-                href="/catalogue-formations-ia-axion-ia.pdf"
-                download
-                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-subtle mt-5 inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
-              >
-                {isFr ? "Télécharger le catalogue (PDF)" : "Download the catalogue (PDF)"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </a>
-            </div>
+          <div className="grid gap-6">
             {/* Réserver un appel — URL + QR */}
             <div className="bg-paper shadow-subtle flex items-center gap-6 rounded-2xl border border-black/10 p-7">
               <div className="flex-1">

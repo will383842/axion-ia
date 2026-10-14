@@ -72,6 +72,8 @@ describe.skipIf(texte === null)("le document apporteur publié", () => {
     ["formations / mois", /formations \/ mois/i],
     ["Ce qui l'intéresse", /ce qui l.intéresse/i],
     ["Souvent financé", /souvent financé/i],
+    // 2026-10-14 : la certification n'est pas délivrée (audit initial le 16/10).
+    ["Qualiopi", /qualiopi/i],
   ])("🔴 ne contient plus « %s »", (_nom, motif) => {
     expect(t).not.toMatch(motif);
   });
