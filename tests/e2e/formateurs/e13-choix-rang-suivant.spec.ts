@@ -17,16 +17,15 @@ import { expect, test } from "@playwright/test";
 import { prisma } from "../fixtures/formateurs/base";
 import { horlogePilotee } from "../fixtures/formateurs/horloge";
 import {
-  aParis,
   creerFormateurPret,
   creerSession,
   envoisVers,
+  prochainPassage,
   gabaritsVers,
-  jourCivil,
-  textesCaptes,
   type FormateurBanc,
   type SessionBanc,
 } from "../fixtures/formateurs/missions-donnees";
+import { envoiRendu } from "../fixtures/formateurs/missions-gestes";
 import {
   ATTENTE_FILE,
   cadreScenario,
@@ -48,17 +47,6 @@ let a: FormateurBanc;
 let b: FormateurBanc;
 let c: FormateurBanc;
 let session: SessionBanc;
-
-/** Le prochain passage horaire du worker (:25) dans la fenêtre 8 h - 19 h de Paris. */
-function prochainPassage(apres: Date): Date {
-  for (let n = 0; n < 3; n += 1) {
-    for (let h = 8; h < 19; h += 1) {
-      const t = aParis(jourCivil(apres, n), h, 25);
-      if (t.getTime() > apres.getTime()) return t;
-    }
-  }
-  throw new Error("aucun passage trouvé");
-}
 
 async function missionDe(trainerId: string) {
   return prisma.missionFormateur.findFirstOrThrow({
@@ -150,10 +138,10 @@ test.describe("@formateurs E13 — choix 1/2/3, refus, rang suivant, expiration,
     } | null>(CHIFFREE, "lirePropositionChiffree", [mA.id]);
     // 2 journées × 350 € + 2 × 60 € de forfait.
     expect(proposition?.totalHtCents).toBe(2 * 35_000 + 2 * 6_000);
-    await expect.poll(async () => (await textesCaptes(a.email)).length, ATTENTE_FILE).toBe(1);
-    const [f23] = await textesCaptes(a.email);
-    expect(f23?.texte).toMatch(/350/);
-    expect(f23?.texte).toMatch(/60/);
+    const f23 = await envoiRendu(pilote, `formateur-mission-${mA.id}-proposition`);
+    expect(f23.to).toBe(a.email);
+    expect(f23.texte).toMatch(/350/);
+    expect(f23.texte).toMatch(/forfait de 60[\s\u00a0\u202f]?€ HT par journée/);
 
     // ── Refus du 1er choix, SANS motif (indépendant) ─────────────────────────
     const refus = await pilote.appeler<Resultat<{ statut: string }>>(
@@ -185,10 +173,10 @@ test.describe("@formateurs E13 — choix 1/2/3, refus, rang suivant, expiration,
       select: { formateurPrincipalId: true },
     });
     expect(sessionApresB.formateurPrincipalId).toBe(b.id);
-    await expect.poll(async () => (await textesCaptes(b.email)).length, ATTENTE_FILE).toBe(1);
-    const [f23b] = await textesCaptes(b.email);
-    // Le forfait du 2e choix est affiché dans sa proposition.
-    expect(f23b?.texte).toMatch(/35/);
+    // Le forfait du 2e choix est affiché dans sa proposition, avant « J'accepte ».
+    const f23b = await envoiRendu(pilote, `formateur-mission-${mB.id}-proposition`);
+    expect(f23b.to).toBe(b.email);
+    expect(f23b.texte).toMatch(/forfait de 35[\s\u00a0\u202f]?€ HT par journée/);
 
     // ── Silence du 2e choix jusqu'à l'échéance : sans réponse, F24 ───────────
     expect(mB.echeanceReponseAt).not.toBeNull();

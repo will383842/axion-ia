@@ -80,6 +80,20 @@ export function prochainDixHeures(): Date {
   throw new Error("aucun 10 h trouvé");
 }
 
+/**
+ * Le premier instant ≥ `apres` où tombe un passage horaire du worker (à :25) dans la
+ * fenêtre d'envoi 8 h - 19 h de Paris.
+ */
+export function prochainPassage(apres: Date): Date {
+  for (let n = 0; n < 4; n += 1) {
+    for (let h = 8; h < 19; h += 1) {
+      const t = aParis(jourCivil(apres, n), h, 25);
+      if (t.getTime() >= apres.getTime()) return t;
+    }
+  }
+  throw new Error("aucun passage trouvé");
+}
+
 export interface FormateurBanc {
   readonly id: string;
   readonly email: string;

@@ -8,6 +8,8 @@
 //     banc a SIGNÉ avec la vraie fonction (`signFormateurSession`), et aucun en-tête ;
 //   · `next/cache` (revalidation de pages) → sans effet : il n'y a pas de page.
 // `server-only` est neutralisé : il ne fait que refuser d'être chargé hors de Next.
+// `@/lib/r2-storage` écrit dans un dossier local : le banc n'a aucun seau
+// (cf. `missions-bouchons/r2-storage.mjs`).
 //
 // Rien d'autre : ni horloge, ni base, ni file, ni réseau ne passe par ici.
 // Chargé par `--import` AVANT le module serveur (`missions-serveur.ts`).
@@ -23,6 +25,7 @@ const BOUCHONS = {
   "next/cache": ici("next-cache.mjs"),
   "next/cache.js": ici("next-cache.mjs"),
   "server-only": ici("server-only.mjs"),
+  "@/lib/r2-storage": ici("r2-storage.mjs"),
 };
 
 registerHooks({
@@ -33,6 +36,10 @@ registerHooks({
     // `src/auth.ts` importé par un chemin relatif (`../auth`) : même remplacement.
     if (resolu.url.endsWith("/src/auth.ts")) {
       return { url: BOUCHONS["@/auth"], format: "module", shortCircuit: true };
+    }
+    // Le vrai module reste joignable par le bouchon lui-même (suffixe `?reel`).
+    if (resolu.url.endsWith("/src/lib/r2-storage.ts")) {
+      return { url: BOUCHONS["@/lib/r2-storage"], format: "module", shortCircuit: true };
     }
     return resolu;
   },
