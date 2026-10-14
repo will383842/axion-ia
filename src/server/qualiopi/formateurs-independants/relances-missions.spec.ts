@@ -41,6 +41,7 @@ vi.mock("@/server/qualiopi/documents/signature/emettre-lien-signature", () => ({
 
 import { decisionCampagne } from "@/lib/relances/campagne";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
+import { REGISTRE_CAMPAGNES } from "@/server/relances/registre-campagnes";
 import {
   CAMPAGNE_CONTRAT,
   REGLE_CONTRAT,
@@ -362,5 +363,38 @@ describe("F18 de bout en bout — un lien révoqué par l'administrateur n'est j
     expect(bilan.envoyes).toBe(1);
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(pz.creerToken).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Relecture du lot 8A — la réponse du formateur se compare à l'ENVOI DE DÉPART de la
+// campagne (F26, la lettre), jamais à l'origine de calcul de l'échéance (J-3 du début).
+describe("F27 « J-3 » : une réponse après la lettre F26 l'arrête", () => {
+  const J3 = REGISTRE_CAMPAGNES.find((c) => c.id === "lettre-j3")!;
+  async function passer(reponseAvant: number) {
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    // Mission dans 3 jours (J-3 = aujourd'hui) ; F26 partie à J-20, soit il y a 17 jours.
+    const ligne = lettre(3, 17);
+    const bilan = await passerCampagnes(MAINTENANT, {
+      registre: [{ ...J3, lireFaits: async (m: Date) => [faitsLettre(ligne, "j3", m)!] }],
+      lireInterrupteurs: async () =>
+        Object.fromEntries(J3.interrupteurs.map((c) => [c, true])) as never,
+      relanceesAujourdhui: async () => new Set<string>(),
+      dejaTente: async () => false,
+      reponsesFormateurs: async () => new Map([["t1", [avant(reponseAvant)]]]),
+      envoyer,
+    });
+    return { bilan, envoyer };
+  }
+
+  it("F26 à J-20, réponse humaine à J-15 : la relance J-3 ne part pas", async () => {
+    const { bilan, envoyer } = await passer(12);
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(bilan.ecartes["reponse-humaine"]).toBe(1);
+  });
+
+  it("réponse AVANT la lettre F26 (autre échange) : la relance J-3 part", async () => {
+    const { bilan, envoyer } = await passer(20);
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(bilan.envoyes).toBe(1);
   });
 });
