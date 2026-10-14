@@ -235,6 +235,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/a-propos/page.tsx",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
   "src/app/[locale]/avis/page.tsx",
+  // /catalogue (2026-10-14) : lit `isQualiopiCertificationObtenue()` pour rediriger vers
+  //    /fr/formations tant que la certification n'est pas délivrée (feuilletoir au logo Qualiopi).
+  "src/app/[locale]/catalogue/page.tsx",
   "src/app/[locale]/certification-qualiopi/page.tsx",
   "src/app/[locale]/equipe/[slug]/page.tsx",
   "src/app/[locale]/financement-opco-france-travail/page.tsx",
