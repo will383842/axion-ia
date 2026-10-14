@@ -120,6 +120,9 @@ export interface Monde {
     readonly clients: string[];
     readonly documents: string[];
     readonly adresses: string[];
+    readonly stagiaires: string[];
+    /** Lignes du référentiel des communes créées par le banc (et seulement elles). */
+    readonly communes: string[];
   };
 }
 
@@ -150,6 +153,9 @@ export async function creerMonde(nom: string): Promise<Monde> {
       slug: `banc-formation-${cle}`,
       offreSiteId: offre.id,
       dureeHeures: 7,
+      // Publiée et active : la console n'ouvre de session que sur une telle formation.
+      statut: "actif",
+      statutGeneration: "publie",
     } as Prisma.FormationUncheckedCreateInput,
     select: { id: true },
   });
@@ -186,6 +192,8 @@ export async function creerMonde(nom: string): Promise<Monde> {
       clients: [client.id],
       documents: [],
       adresses: [adminEmail, `client.${cle}@example.test`],
+      stagiaires: [],
+      communes: [],
     },
   };
 }
@@ -218,6 +226,7 @@ export interface OptionsFormateur {
   readonly tarifJourneeHtCents?: number;
   readonly codePostalPro?: string;
   readonly geo?: { readonly lat: number; readonly lng: number };
+  readonly communeInsee?: string;
 }
 
 /** Version du contrat-cadre posée (la dernière arrêtée, lue dans le code). */
@@ -249,6 +258,7 @@ export async function creerFormateurPret(
       adresseProfessionnelle: "1 rue du Banc d'Essai, 69003 Lyon",
       codePostalPro: o.codePostalPro ?? "69003",
       ...(o.geo ? { geoLat: o.geo.lat, geoLng: o.geo.lng } : {}),
+      ...(o.communeInsee ? { communeInsee: o.communeInsee } : {}),
       activationValideeSource: "anterieure_au_controle",
       activationValideeAt: new Date(maintenant.getTime() - 10 * JOUR_MS),
     } as Prisma.TrainerUncheckedCreateInput,
@@ -330,6 +340,86 @@ export async function poserAttestationVigilance(trainerId: string, ilYaJours = 1
       dateEmission: emission,
     } as Prisma.TrainerDocumentUncheckedCreateInput,
   });
+}
+
+/** Une commune du référentiel, posée si elle manque (et alors effacée en fin de test). */
+export async function poserCommune(
+  monde: Monde,
+  c: {
+    codeInsee: string;
+    nom: string;
+    codePostal: string;
+    lat: number;
+    lng: number;
+    departement: string;
+  },
+): Promise<void> {
+  const existe = await prisma.communeGeo.findUnique({ where: { codeInsee: c.codeInsee } });
+  if (existe !== null) return;
+  await prisma.communeGeo.create({
+    data: {
+      codeInsee: c.codeInsee,
+      nom: c.nom,
+      codesPostaux: [c.codePostal],
+      latitude: c.lat,
+      longitude: c.lng,
+      departement: c.departement,
+      majAt: new Date(),
+    } as Prisma.CommuneGeoUncheckedCreateInput,
+  });
+  monde.traces.communes.push(c.codeInsee);
+}
+
+/**
+ * Des avis de satisfaction « à chaud » sur une session RÉALISÉE animée par ce
+ * formateur, il y a deux mois : une note par stagiaire.
+ */
+export async function poserAvisSatisfaction(
+  monde: Monde,
+  trainerId: string,
+  notes: readonly number[],
+): Promise<void> {
+  compteur += 1;
+  const debut = new Date(Date.now() - 60 * JOUR_MS);
+  const s = await prisma.trainingSession.create({
+    data: {
+      numero: `BANC-R-${monde.cle}-${compteur}`.slice(0, 40),
+      titreSession: `Session réalisée du banc ${compteur}`,
+      formationId: monde.formationId,
+      clientId: monde.clientId,
+      dateDebut: debut,
+      dateFin: new Date(debut.getTime() + 8 * 3_600_000),
+      modalite: "presentiel",
+      montantHtCents: 100_000,
+      nbParticipantsPrevus: notes.length,
+      statut: "realisee",
+      formateurPrincipalId: trainerId,
+    } as Prisma.TrainingSessionUncheckedCreateInput,
+    select: { id: true },
+  });
+  monde.traces.sessions.push(s.id);
+  for (const [i, note] of notes.entries()) {
+    const email = `stagiaire.${compteur}.${i}.${monde.cle}@example.test`;
+    const t = await prisma.trainee.create({
+      data: { nom: `Stagiaire${i}`, prenom: "Banc", email } as Prisma.TraineeUncheckedCreateInput,
+      select: { id: true },
+    });
+    monde.traces.stagiaires.push(t.id);
+    monde.traces.adresses.push(email);
+    const e = await prisma.enrollment.create({
+      data: { sessionId: s.id, traineeId: t.id } as Prisma.EnrollmentUncheckedCreateInput,
+      select: { id: true },
+    });
+    await prisma.questionnaire.create({
+      data: {
+        enrollmentId: e.id,
+        type: "satisfaction_chaud",
+        tokenHash: hex64(`${email}-${randomUUID()}`),
+        noteGlobale: note,
+        reponduAt: new Date(debut.getTime() + 9 * 3_600_000),
+      } as Prisma.QuestionnaireUncheckedCreateInput,
+    });
+  }
 }
 
 export interface OptionsSession {
@@ -446,7 +536,13 @@ async function sans(f: () => Promise<unknown>): Promise<void> {
 
 /** Efface tout le monde, dans l'ordre des dépendances. Ne lève jamais. */
 export async function effacerMonde(monde: Monde): Promise<void> {
-  const { trainers, sessions, clients, adresses } = monde.traces;
+  const { trainers, clients, adresses } = monde.traces;
+  // Les sessions créées par la console (création, report) sur la formation du monde.
+  const creeesParLaConsole = await prisma.trainingSession.findMany({
+    where: { formationId: monde.formationId },
+    select: { id: true },
+  });
+  const sessions = [...new Set([...monde.traces.sessions, ...creeesParLaConsole.map((x) => x.id)])];
   const docs = await prisma.documentGenere.findMany({
     where: {
       OR: [
@@ -495,6 +591,11 @@ export async function effacerMonde(monde: Monde): Promise<void> {
   await sans(() => prisma.sessionFormateur.deleteMany({ where: { sessionId: { in: sessions } } }));
   await sans(() => prisma.sessionJour.deleteMany({ where: { sessionId: { in: sessions } } }));
   await sans(() =>
+    prisma.questionnaire.deleteMany({ where: { enrollment: { sessionId: { in: sessions } } } }),
+  );
+  await sans(() => prisma.enrollment.deleteMany({ where: { sessionId: { in: sessions } } }));
+  await sans(() => prisma.trainee.deleteMany({ where: { id: { in: monde.traces.stagiaires } } }));
+  await sans(() =>
     prisma.trainingSession.updateMany({
       where: { id: { in: sessions } },
       data: { formateurPrincipalId: null },
@@ -513,6 +614,9 @@ export async function effacerMonde(monde: Monde): Promise<void> {
   await sans(() => prisma.activityLog.deleteMany({ where: { targetId: { in: cibles } } }));
   await sans(() => prisma.activityLog.deleteMany({ where: { adminUserId: monde.admin.id } }));
   await sans(() => prisma.adminUser.deleteMany({ where: { id: monde.admin.id } }));
+  await sans(() =>
+    prisma.communeGeo.deleteMany({ where: { codeInsee: { in: monde.traces.communes } } }),
+  );
   await sans(() => prisma.emailLog.deleteMany({ where: { recipient: { in: adresses } } }));
   for (const a of adresses) await sans(() => viderPuitsPour(a));
 }
