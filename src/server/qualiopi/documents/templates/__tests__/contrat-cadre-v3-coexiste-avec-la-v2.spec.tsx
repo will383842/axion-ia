@@ -215,9 +215,11 @@ const EMPREINTES_ARRETEES: Readonly<Record<string, string>> = {
   // Lot S5 — lettre de mission v2, arrêtée le 10/10/2026, figée à l'étape 3 du C4.
   "archives/lettre-mission-v2.v2.tsx":
     "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
-  // Étape 3 du C4 — contrat-cadre v4 et lettre de mission v3, arrêtés le 14/10/2026.
-  "contrat-cadre.tsx": "1135eaae50e69a0c150fd6873c84dc142f2406c881e98c0e1c6c2761bb7ec1a9",
-  "lettre-mission-v2.tsx": "713318a29da2e8d2c355d368a7bf9d1a91949f54515ae27745ab6d209c4d91c7",
+  // Étape 3 du C4 — contrat-cadre v4 et lettre de mission v3, arrêtés le 14/10/2026,
+  // retouchés le même jour AVANT toute signature (décision du dirigeant : paiement
+  // 30 jours après l'autofacture, délai suspendu faute d'attestation URSSAF).
+  "contrat-cadre.tsx": "2c8a6ec6e91f2ba9f9f2f0c802301b445e726c5c9eeaf683aed2b19bfed4eba6",
+  "lettre-mission-v2.tsx": "d36f90c00185f0e8696396628264afc469c8b0be8202d28ad68d96f8ca41f10e",
 };
 
 function texteMesurable(source: string): string {

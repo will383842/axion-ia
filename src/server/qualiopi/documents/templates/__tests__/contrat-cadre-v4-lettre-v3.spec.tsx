@@ -61,9 +61,15 @@ const contrat = (C: typeof ContratCadrePdf) =>
   net(collectPdfTextNormalized(React.createElement(C, { data: INDEPENDANT, identite: IDENTITE })));
 
 const ARTICLE_18_2 =
-  "Vous nous transmettez une attestation de vigilance URSSAF dès que le cumul de vos honoraires avec nous approche 5 000 € hors taxes, puis tous les six mois. À partir de ce seuil, le règlement de vos honoraires attend cette attestation.";
+  "Vous nous transmettez une attestation de vigilance URSSAF dès que le cumul de vos honoraires avec nous approche 5 000 € hors taxes, puis tous les six mois. À partir de ce seuil, le règlement de vos honoraires attend cette attestation : le délai de paiement est suspendu, et non dépassé, tant qu'elle manque (article 16.7).";
+// Décision du 14/10/2026 (« comme les apporteurs ») : facture quand tout est complet,
+// virement au plus tard 30 jours après SA date.
+const ARTICLE_16_1 =
+  "16.1 Date limite. Axion établit votre autofacture dès que tout est complet : vos feuilles de présence contresignées (article 12) et, pour le dernier mois de la mission, le bilan de fin de formation remis, quand il vous revient (article 20.2). Axion vous paie par virement au plus tard 30 jours après la date de cette autofacture. Si une pièce arrive en retard, l'autofacture est simplement établie plus tard, et le virement suit toujours dans les 30 jours de sa date.";
 const PAIEMENT_LETTRE =
-  "Vos honoraires sont réglés au plus tard 30 jours après la dernière journée, une fois les feuilles de présence contresignées et, pour le dernier mois de la mission, le bilan de fin de formation remis ; s'ils sont remis plus tard, le délai court à partir de leur remise.";
+  "Le virement part au plus tard 30 jours après la date de la facture, que le client ait réglé ou non. Si une pièce arrive en retard, la facture est simplement établie plus tard, et le virement suit dans les 30 jours.";
+const FACTURE_LETTRE =
+  "Axion établit la facture à votre nom (autofacture) dès que tout est complet : les feuilles de présence signées et, pour le dernier mois de la mission, le bilan de fin de formation remis s'il vous revient.";
 
 describe("registre : v4 et v3 arrêtées, les anciennes figées", () => {
   it("le contrat-cadre émis est la v4 ; la v3 se rend avec sa copie figée", () => {
@@ -95,10 +101,20 @@ describe("contrat-cadre v4 — le texte de Will, sans contradiction", () => {
     expect(v4).not.toMatch(/avant la contresignature d.Axion, une attestation/);
   });
 
-  it("art. 16 : le délai de 30 jours suit la remise des feuilles et du bilan ; jamais « ne recule jamais »", () => {
-    expect(v4).toMatch(/bilan de fin de formation/);
-    expect(v4).toMatch(/s.ils sont remis plus tard, le délai court à partir de leur remise/);
+  it("art. 16 : 30 jours après la date de l'autofacture, établie quand tout est complet ; jamais « ne recule jamais »", () => {
+    expect(v4).toContain(ARTICLE_16_1);
+    expect(v4).not.toMatch(/le délai court à partir de leur remise/);
     expect(v4).not.toMatch(/Elle ne recule jamais/);
+    // 16.7 : suspendu, et non dépassé, faute d'attestation à jour.
+    expect(v4).toMatch(
+      /le délai de paiement est suspendu, et non dépassé\. L.autofacture est émise normalement/,
+    );
+    // 13.2 : l'autofacture attend aussi le bilan du dernier mois.
+    expect(v4).toMatch(/Axion émet l.autofacture dès que tout est complet pour la mission/);
+    // 16.5 : la facture rectifiée garde la date limite de celle qu'elle remplace (le code).
+    expect(v4).toMatch(/date limite de l.autofacture qu.elle remplace/);
+    // 20.2 : seul le formateur de la dernière journée remet le bilan (#1530).
+    expect(v4).toMatch(/si vous animez la dernière journée, faites ensuite/);
   });
 
   it("annexe 2 : l'attestation suit le seuil", () => {
@@ -164,12 +180,16 @@ describe("lettre de mission v3 — le paiement", () => {
   const lettre = (C: typeof LettreMissionV2Pdf) =>
     net(collectPdfTextNormalized(React.createElement(C, { data: a.data, identite: IDENTITE })));
 
-  it("v3 : la phrase arrêtée par Will, mot pour mot", () => {
-    expect(lettre(LettreMissionV2Pdf)).toContain(PAIEMENT_LETTRE);
+  it("v3 : la règle de paiement, mot pour mot", () => {
+    const t = lettre(LettreMissionV2Pdf);
+    expect(t).toContain(FACTURE_LETTRE);
+    expect(t).toContain(PAIEMENT_LETTRE);
+    expect(t).toMatch(/le délai de paiement est suspendu tant qu.elle manque/);
+    expect(t).not.toMatch(/délai court à partir de leur remise/);
   });
 
-  it("v3 : la date limite reste dite, sous sa condition", () => {
-    expect(lettre(LettreMissionV2Pdf)).toMatch(/au plus tard le \d\d\/\d\d\/\d{4}/);
+  it("v3 : plus aucune date de paiement fixe (la date de la facture n'est pas connue à l'émission)", () => {
+    expect(lettre(LettreMissionV2Pdf)).not.toMatch(/au plus tard le \d\d\/\d\d\/\d{4}/);
   });
 
   it("v2 figée : intacte", () => {

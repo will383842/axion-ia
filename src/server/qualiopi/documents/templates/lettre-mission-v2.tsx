@@ -2,11 +2,12 @@
  * Qualiopi — Lettre de mission, VERSION 3 (étape 3 du C4 ; v2 = lot S5, texte
  * ARRÊTÉ par Will le 10/10/2026).
  *
- * v3 — 14/10/2026, décision (d) de Will : la section 4 dit que les honoraires sont
- * réglés au plus tard 30 jours après la dernière journée, une fois les feuilles
- * contresignées et, pour le dernier mois, le bilan de fin de formation remis — le délai
- * courant de leur remise s'ils arrivent plus tard ; et que, au seuil de 5 000 € HT, le
- * règlement attend l'attestation URSSAF (art. 18.2 du contrat-cadre). La v2 est figée,
+ * v3 — 14/10/2026, décisions de Will : la section 4 dit que la facture est établie dès
+ * que tout est complet (feuilles signées et, pour le dernier mois, bilan de fin de
+ * formation remis s'il revient au formateur), que le virement part au plus tard 30 jours
+ * après la date de cette facture, et que, au seuil de 5 000 € HT, le règlement attend
+ * l'attestation URSSAF, délai suspendu (art. 18.2 du contrat-cadre). Elle ne porte plus de
+ * date de paiement : la date de la facture n'est pas connue à l'émission. La v2 est figée,
  * mot pour mot, dans `archives/lettre-mission-v2.v2.tsx`. Le fichier garde son nom :
  * ses types (`LettreMissionV2Data`) sont ceux du calcul.
  *
@@ -208,34 +209,33 @@ export function LettreMissionV2Pdf({
         <DocSection title="4. Facture et paiement">
           {data.autofacturation ? (
             <Text style={pdfStyles.paragraph}>
-              Axion établit la facture à votre nom (autofacture) dès que les feuilles de présence
-              sont signées. Vous la recevez dans votre espace et par e-mail, et vous pouvez la
-              contester dans les 8 jours.
+              Axion établit la facture à votre nom (autofacture) dès que tout est complet : les
+              feuilles de présence signées et, pour le dernier mois de la mission, le bilan de fin
+              de formation remis s&apos;il vous revient. Vous la recevez dans votre espace et par
+              e-mail, et vous pouvez la contester dans les 8 jours.
             </Text>
           ) : (
-            <Text style={pdfStyles.paragraph}>Vous adressez votre facture à Axion.</Text>
+            <Text style={pdfStyles.paragraph}>
+              Vous adressez votre facture à Axion dès que tout est complet : les feuilles de
+              présence signées et, pour le dernier mois de la mission, le bilan de fin de formation
+              remis s&apos;il vous revient.
+            </Text>
           )}
           <Text style={pdfStyles.paragraph}>
-            Vos honoraires sont réglés au plus tard 30 jours après la dernière journée, une fois les
-            feuilles de présence contresignées et, pour le dernier mois de la mission, le bilan de
-            fin de formation remis ; s&apos;ils sont remis plus tard, le délai court à partir de
-            leur remise.
+            <Text style={{ fontWeight: "bold" }}>
+              Le virement part au plus tard 30 jours après la date de la facture
+            </Text>
+            , que le client ait réglé ou non. Si une pièce arrive en retard, la facture est
+            simplement établie plus tard, et le virement suit dans les 30 jours.
+            {data.echeancesParMois && data.echeancesParMois.length > 1
+              ? " Une facture et un virement par mois de journées réalisées."
+              : ""}
           </Text>
           <Text style={pdfStyles.paragraph}>
-            Si tout est remis à temps,{" "}
-            <Text style={{ fontWeight: "bold" }}>
-              le virement part au plus tard le {data.echeancePaiement}
-            </Text>
-            , que le client ait réglé ou non. À partir de 5 000 € hors taxes d&apos;honoraires avec
-            nous, le règlement attend aussi votre attestation de vigilance URSSAF (article 18.2 du
-            contrat-cadre).
+            À partir de 5 000 € hors taxes d&apos;honoraires avec nous, le règlement attend aussi
+            votre attestation de vigilance URSSAF : le délai de paiement est suspendu tant
+            qu&apos;elle manque (article 18.2 du contrat-cadre).
           </Text>
-          {data.echeancesParMois && data.echeancesParMois.length > 1 ? (
-            <Text style={pdfStyles.paragraph}>
-              Un virement par mois de journées réalisées : au plus tard le{" "}
-              {data.echeancesParMois.join(", le ")}.
-            </Text>
-          ) : null}
         </DocSection>
 
         <DocSection title="5. Feuilles de présence">

@@ -93,14 +93,15 @@ function empreinte(fichier: string): string {
 const EMPREINTES: Readonly<Record<string, string>> = {
   "contrat-sous-traitance.tsx": "826c87dd9c49c4d2424bfb8a9457e22bd6b99cbb8c14752e6588fb05a01136eb",
   // Étape 3 du C4 : les textes v3 / v2 vivent désormais dans leurs copies figées, à
-  // l'empreinte IDENTIQUE ; les fichiers courants portent la v4 et la v3.
+  // l'empreinte IDENTIQUE ; les fichiers courants portent la v4 et la v3 (retouchées le
+  // 14/10/2026 avant toute signature : paiement 30 jours après l'autofacture).
   "archives/contrat-cadre.v3.tsx":
     "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
-  "contrat-cadre.tsx": "1135eaae50e69a0c150fd6873c84dc142f2406c881e98c0e1c6c2761bb7ec1a9",
+  "contrat-cadre.tsx": "2c8a6ec6e91f2ba9f9f2f0c802301b445e726c5c9eeaf683aed2b19bfed4eba6",
   "lettre-mission.tsx": "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
   "archives/lettre-mission-v2.v2.tsx":
     "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
-  "lettre-mission-v2.tsx": "713318a29da2e8d2c355d368a7bf9d1a91949f54515ae27745ab6d209c4d91c7",
+  "lettre-mission-v2.tsx": "d36f90c00185f0e8696396628264afc469c8b0be8202d28ad68d96f8ca41f10e",
 };
 
 describe("le registre porte les deux familles, sans que l'une écrase l'autre", () => {

@@ -55,8 +55,9 @@ export const VERSIONS_ARRETEES: Readonly<
       Composant: ContratCadrePdfV3 as unknown as ComposantPiece,
     },
     // v4 — étape 3 du C4 : art. 18.2 (attestation URSSAF au seuil) et paiement
-    // harmonisé avec la lettre v3. Sans `resumePourLeFormateur` : la direction ne l'a
-    // pas écrit, l'envoi « nouvelle version » aux signataires v3 reste refusé.
+    // harmonisé avec la lettre v3. Sans `resumePourLeFormateur`, et c'est voulu
+    // (décision du 14/10/2026) : aucun formateur n'a signé la v3, il n'y a personne à
+    // qui envoyer une « nouvelle version » — la v4 est la première que l'on signe.
     4: {
       arreteeLe: "2026-10-14",
       fichier: "contrat-cadre.tsx",
