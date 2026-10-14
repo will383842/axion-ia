@@ -13,6 +13,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const findMany = vi.fn();
 const findUnique = vi.fn();
 const envoyer = vi.fn();
+const traces = vi.fn();
+const tracer = vi.fn();
+const f37Anciens = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -20,6 +23,11 @@ vi.mock("@/lib/prisma", () => ({
       findMany: (...a: unknown[]) => findMany(...a),
       findUnique: (...a: unknown[]) => findUnique(...a),
     },
+    activityLog: {
+      findMany: (...a: unknown[]) => traces(...a),
+      create: (...a: unknown[]) => tracer(...a),
+    },
+    emailLog: { count: (...a: unknown[]) => f37Anciens(...a) },
   },
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
@@ -27,9 +35,11 @@ vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
 }));
 
 import {
+  ACTION_F37_TRAITE,
   envoyerVirementEnAttente,
   envoyerVirementsFaits,
   montantEnTexte,
+  reprendreVirementsFaitsSansF37,
 } from "../virement-fait-envoi";
 
 const T1 = "22222222-2222-4222-8222-222222222222";
@@ -53,6 +63,9 @@ function r(id: string, trainerId: string, numero: string, ttc: number) {
 beforeEach(() => {
   vi.clearAllMocks();
   envoyer.mockResolvedValue("envoye");
+  traces.mockResolvedValue([]);
+  tracer.mockResolvedValue({});
+  f37Anciens.mockResolvedValue(0);
 });
 
 describe("montant en texte (centimes entiers, jamais de flottant)", () => {
@@ -109,6 +122,79 @@ describe("F37 — virements faits", () => {
   it("un échec d'envoi ne remonte jamais (le virement est acquis)", async () => {
     findMany.mockRejectedValue(new Error("base"));
     await expect(envoyerVirementsFaits([A])).resolves.toBeUndefined();
+  });
+});
+
+describe("🔴 8B — reprise de F37 après un lot interrompu (relecture de #1514)", () => {
+  const MAINTENANT = new Date("2032-01-05T14:00:00Z");
+
+  it("F37 traité : une trace PAR relevé du lot (identifiants seuls)", async () => {
+    findMany.mockResolvedValue([r(A, T1, "N1", 100), r(B, T1, "N2", 200)]);
+    await envoyerVirementsFaits([A, B]);
+    const ecrites = tracer.mock.calls.map((c) => c[0].data);
+    expect(ecrites.map((d) => d.targetId).sort()).toEqual([A, B].sort());
+    for (const d of ecrites) {
+      expect(d.action).toBe(ACTION_F37_TRAITE);
+      expect(d.targetType).toBe("TrainerStatement");
+      expect(JSON.stringify(d)).not.toContain("Camille");
+    }
+  });
+
+  it("F37 indisponible (file en panne) : aucune trace, le passage suivant le reprendra", async () => {
+    findMany.mockResolvedValue([r(A, T1, "N1", 100)]);
+    envoyer.mockResolvedValue("indisponible");
+    await envoyerVirementsFaits([A]);
+    expect(tracer).not.toHaveBeenCalled();
+  });
+
+  it("lot interrompu : les relevés payés sans F37 partent au passage suivant, une fois", async () => {
+    // 1er appel : la lecture de la reprise ; 2e : celle de `envoyerVirementsFaits`.
+    findMany
+      .mockResolvedValueOnce([
+        { id: A, trainerId: T1, payeAt: PAYE },
+        { id: B, trainerId: T1, payeAt: PAYE },
+      ])
+      .mockResolvedValueOnce([r(A, T1, "N1", 100), r(B, T1, "N2", 200)]);
+    expect(await reprendreVirementsFaitsSansF37(MAINTENANT)).toBe(2);
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(envoyer.mock.calls[0]![0].payload.valeurs.numéro).toBe("N1, N2");
+    // Fenêtre : payés depuis 30 min au moins (un lot en cours n'est pas repris) et
+    // depuis 7 jours au plus. Seuls les relevés de mission.
+    const w = findMany.mock.calls[0]![0].where;
+    expect(w).toMatchObject({ statut: "paye", origine: "passage_mission", avoirDeId: null });
+    expect(w.payeAt.lte).toEqual(new Date("2032-01-05T13:30:00Z"));
+    expect(w.payeAt.gte).toEqual(new Date("2031-12-29T14:00:00Z"));
+    expect(tracer).toHaveBeenCalledTimes(2);
+  });
+
+  it("déjà tracé : rien ne repart (une seule fois)", async () => {
+    findMany.mockResolvedValueOnce([{ id: A, trainerId: T1, payeAt: PAYE }]);
+    traces.mockResolvedValue([{ targetId: A }]);
+    expect(await reprendreVirementsFaitsSansF37(MAINTENANT)).toBe(0);
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(traces.mock.calls[0]![0].where).toEqual({
+      action: ACTION_F37_TRAITE,
+      targetId: { in: [A] },
+    });
+  });
+
+  it("payé avant la trace (ancien code) avec son F37 au journal des envois : rien ne repart", async () => {
+    findMany.mockResolvedValueOnce([{ id: A, trainerId: T1, payeAt: PAYE }]);
+    f37Anciens.mockResolvedValue(1);
+    expect(await reprendreVirementsFaitsSansF37(MAINTENANT)).toBe(0);
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(f37Anciens.mock.calls[0]![0].where).toMatchObject({
+      template: "formateur-virement-fait",
+      entityType: "Trainer",
+      entityId: T1,
+      status: { not: "failed" },
+      createdAt: { gte: PAYE, lte: new Date("2032-01-05T11:00:00Z") },
+    });
+  });
+
+  it("ne lève jamais", async () => {
+    findMany.mockRejectedValue(new Error("base"));
+    await expect(reprendreVirementsFaitsSansF37(MAINTENANT)).resolves.toBe(0);
   });
 });
 

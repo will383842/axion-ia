@@ -16,7 +16,9 @@
  *      verrous ; sans relevé suivant à 60 jours, la demande de remboursement est
  *      marquée et F54 part, une fois par avoir ;
  *   4. **feuilles manquantes** (M8) : F35, 4e marche, et alertes internes aux
- *      délais existants (`feuilles-manquantes.ts`).
+ *      délais existants (`feuilles-manquantes.ts`) ;
+ *   5. **reprise de F37** (lot 8B) : les relevés payés dont le F37 s'est perdu
+ *      (lot « Virements faits » interrompu) le reçoivent, une fois.
  *
  * 🔴 ÉTEINT : sans date `formateurs.passage_paiement`, rien ne se passe. Ne lève
  * jamais. Alertes et journaux : des compteurs et des numéros de pièce, aucun nom.
@@ -40,7 +42,7 @@ import { etapesFeuilles, feuillesManquantes } from "./feuilles-manquantes";
 import { lireCandidats } from "./passage-mission-base";
 import { lireDateBascule } from "./lecture-passage";
 import { alerteReleveNonValide, brouillonMensuelAPreparer } from "./releve-mensuel-auto";
-import { montantEnTexte } from "./virement-fait-envoi";
+import { montantEnTexte, reprendreVirementsFaitsSansF37 } from "./virement-fait-envoi";
 
 const NOM_MOIS = new Intl.DateTimeFormat("fr-FR", {
   month: "long",
@@ -58,6 +60,8 @@ export interface BilanSuiviMission {
   /** Lot D2 (M8) : F35 parties, alertes internes J+10 et J+20. */
   readonly f35: number;
   readonly alertesFeuilles: number;
+  /** Lot 8B : relevés payés dont le F37 perdu est repris. */
+  readonly f37Repris: number;
 }
 
 const VIDE = {
@@ -68,6 +72,7 @@ const VIDE = {
   f54: 0,
   f35: 0,
   alertesFeuilles: 0,
+  f37Repris: 0,
 } as const;
 
 async function alerter(body: string): Promise<void> {
@@ -345,6 +350,7 @@ export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMi
     const { rappel, nonValides } = await rappelsMensuels(maintenant);
     const t = await tropPercus(maintenant);
     const f = await feuilles(maintenant, bascule);
+    const f37Repris = await reprendreVirementsFaitsSansF37(maintenant);
     return {
       etat: "fait",
       rappelBrouillon: rappel,
@@ -354,6 +360,7 @@ export async function passerSuiviMission(maintenant: Date): Promise<BilanSuiviMi
       f54: t.f54,
       f35: f.f35,
       alertesFeuilles: f.alertes,
+      f37Repris,
     };
   } catch {
     return { etat: "echec", ...VIDE };

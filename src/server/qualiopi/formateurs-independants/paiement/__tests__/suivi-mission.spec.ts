@@ -23,6 +23,7 @@ const candidats = vi.fn();
 const emailLogs = vi.fn();
 const formateurs = vi.fn();
 const corbeille = vi.fn();
+const repriseF37 = vi.fn();
 /** Journal d'activité en mémoire : la trace « alerte partie » s'y lit et s'y écrit. */
 const journal: Array<{ action: string; targetId: string | null; changes: { cle?: string } }> = [];
 const journalEnPanne = { oui: false };
@@ -66,6 +67,10 @@ vi.mock("../../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }))
 vi.mock("../corrections-mission", () => ({ traiterTropPercu: (...a: unknown[]) => traiter(...a) }));
 vi.mock("../lecture-passage", () => ({ lireDateBascule: (...a: unknown[]) => bascule(...a) }));
 vi.mock("../passage-mission-base", () => ({ lireCandidats: (...a: unknown[]) => candidats(...a) }));
+vi.mock("../virement-fait-envoi", async (orig) => ({
+  ...(await orig<typeof import("../virement-fait-envoi")>()),
+  reprendreVirementsFaitsSansF37: (...a: unknown[]) => repriseF37(...a),
+}));
 
 import { passerSuiviMission } from "../suivi-mission";
 
@@ -111,6 +116,7 @@ beforeEach(() => {
   });
   base();
   candidats.mockResolvedValue([]);
+  repriseF37.mockResolvedValue(0);
   emailLogs.mockResolvedValue(0);
   corbeille.mockResolvedValue(0);
   formateurs.mockResolvedValue([
@@ -124,6 +130,17 @@ describe("passerSuiviMission", () => {
     expect((await passerSuiviMission(new Date("2026-12-01T08:00:00Z"))).etat).toBe("coupe");
     expect(findMany).not.toHaveBeenCalled();
     expect(telegram).not.toHaveBeenCalled();
+  });
+
+  it("🔴 8B — chaque passage reprend les F37 perdus par un lot interrompu ; coupé : jamais", async () => {
+    repriseF37.mockResolvedValue(2);
+    const maintenant = new Date("2026-12-03T08:00:00Z");
+    expect((await passerSuiviMission(maintenant)).f37Repris).toBe(2);
+    expect(repriseF37).toHaveBeenCalledWith(maintenant);
+    repriseF37.mockClear();
+    bascule.mockResolvedValue(null);
+    expect((await passerSuiviMission(maintenant)).f37Repris).toBe(0);
+    expect(repriseF37).not.toHaveBeenCalled();
   });
 
   it("le 1er du mois : un rappel interne, aucun calcul", async () => {
