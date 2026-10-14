@@ -19,7 +19,12 @@ const EXECUTEUR = path.join(ICI, "securite-serveur", "executer.ts");
 /** Démarrage de `tsx` (~3 s), chargement des actions, puis le scénario. */
 const DELAI_MS = 150_000;
 
-export function executerScenarioSecurite<T>(scenario: string, parametres: unknown): Promise<T> {
+export function executerScenarioSecurite<T>(
+  scenario: string,
+  parametres: unknown,
+  /** Variables d'environnement propres à CE processus (jamais au worker). */
+  env: Readonly<Record<string, string>> = {},
+): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     execFile(
       TSX,
@@ -28,7 +33,7 @@ export function executerScenarioSecurite<T>(scenario: string, parametres: unknow
         cwd: RACINE,
         timeout: DELAI_MS,
         maxBuffer: 16 * 1024 * 1024,
-        env: { ...process.env, BANC_ENTREE: JSON.stringify({ scenario, parametres }) },
+        env: { ...process.env, ...env, BANC_ENTREE: JSON.stringify({ scenario, parametres }) },
       },
       (erreur, sortie, erreurs) => {
         const ligne = sortie.split("\n").find((l) => l.startsWith(MARQUEUR_RESULTAT));
