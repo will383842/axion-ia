@@ -186,6 +186,9 @@ export async function reponsesFormateurs(
   }
 }
 
+/** Lot 8A — l'envoi auquel une réponse du formateur répond : le départ, sinon l'origine. */
+const departDe = (f: FaitsCampagne): Date => f.depart ?? f.etat.origine;
+
 const RANG_CLASSE: Readonly<Record<ClasseCampagne, number>> = { B: 0, A: 1, C: 2 };
 
 async function dependancesParDefaut(
@@ -251,7 +254,7 @@ export async function passerCampagnes(
     }
     let reponses: ReadonlyMap<string, readonly Date[]> | null = new Map();
     if (campagne.arreteeParReponseFormateur && faits.length > 0) {
-      const depuis = new Date(Math.min(...faits.map((f) => f.etat.origine.getTime())));
+      const depuis = new Date(Math.min(...faits.map((f) => departDe(f).getTime())));
       reponses = await d.reponsesFormateurs(
         faits.map((f) => f.entityId),
         depuis,
@@ -262,10 +265,10 @@ export async function passerCampagnes(
         ecarter("reponses-illisibles");
         continue;
       }
-      // Une réponse humaine APRÈS l'origine arrête la relance ; une plus ancienne relève
-      // d'un autre échange et ne compte pas.
+      // Une réponse humaine APRÈS l'envoi de départ arrête la relance ; une plus ancienne
+      // relève d'un autre échange et ne compte pas.
       const repondu = (reponses.get(f0.entityId) ?? []).some(
-        (r) => r.getTime() > f0.etat.origine.getTime(),
+        (r) => r.getTime() > departDe(f0).getTime(),
       );
       const f: FaitsCampagne = repondu ? { ...f0, etat: { ...f0.etat, reponseHumaine: true } } : f0;
       let decision: ReturnType<typeof decisionCampagne>;

@@ -50,6 +50,13 @@ export interface FaitsCampagne {
    * « une relance par personne et par jour » sur toutes les campagnes (journal ET corbeille).
    */
   readonly etat: EtatCampagne;
+  /**
+   * Lot 8A — la date de l'ENVOI DE DÉPART de la campagne (l'e-mail auquel le formateur
+   * répond). Une réponse humaine postérieure arrête la relance. Absente : l'origine, qui
+   * l'est presque partout ; à poser quand l'origine n'est qu'un repère de calendrier
+   * (F27 « J-3 » : 3 jours avant la mission, alors que la lettre F26 est partie avant).
+   */
+  readonly depart?: Date;
   /** Le payload de l'e-mail (valeurs des crochets, lien). */
   readonly payload: Record<string, unknown>;
   /**
