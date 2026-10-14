@@ -22,21 +22,24 @@ describe("liensImprimesPourEmail", () => {
   const liens = liensImprimesPourEmail(ORIGINE);
 
   // JUR-T44b : « devenir-apporteur » est retiré jusqu'à la réécriture du document (JUR-T45).
-  it("rend les deux imprimés attendus, ni plus ni moins", () => {
-    expect(liens.map((l) => l.id).sort()).toEqual(["depliant-formations", "flyer-a5"].sort());
+  // 2026-10-14 : le dépliant et le flyer affirment la certification Qualiopi, non
+  // encore délivrée. Leurs PDF sont rangés hors de public/ (fichiersPublics vide) :
+  // la dérivation fait donc disparaître leurs deux boutons. Ils reviendront seuls
+  // quand les fichiers seront republiés.
+  it("ne rend aucun imprimé tant que le dépliant et le flyer sont hors ligne", () => {
+    expect(liens.map((l) => l.id)).toEqual([]);
   });
 
-  it.each(liens.map((l) => l))(
-    "« %s » pointe vers un fichier qui EXISTE sous public/",
-    (lien: { id: string; url: string }) => {
+  it("chaque lien rendu pointe vers un fichier qui EXISTE sous public/", () => {
+    for (const lien of liens) {
       const chemin = lien.url.replace(`${ORIGINE}/`, "");
       const absolu = join(process.cwd(), "public", chemin);
       expect(
         existsSync(absolu),
         `${lien.url} ne correspond à aucun fichier réel (${absolu}) : un bouton d'insertion pointerait vers un 404`,
       ).toBe(true);
-    },
-  );
+    }
+  });
 
   it("🔴 DÉRIVE de IMPRIMES — un id absent du référentiel ne produit AUCUN lien inventé", () => {
     // Preuve par le vide : si `IMPRIMES` ne connaît plus un id qu'on proposait,

@@ -6,9 +6,15 @@
 // deux fichiers statiques ne doivent JAMAIS changer.
 //
 // Server Component pur, aucun JS client : la page est ouverte au téléphone, en
-// clientèle, souvent sur un réseau médiocre. Deux sorties seulement — feuilleter
-// (HTML autonome, 4 Mo) ou télécharger (PDF, 8 Mo) — servies en statique depuis
-// `public/catalogue/`, donc par le CDN et non par le serveur Next.
+// clientèle, souvent sur un réseau médiocre. Une sortie — feuilleter (HTML
+// autonome, 4 Mo) — servie en statique depuis `public/catalogue/`, donc par le
+// CDN et non par le serveur Next.
+//
+// ⚠️ 2026-10-14 : le bouton « Télécharger le PDF » est RETIRÉ. Le PDF figé
+// affirmait la certification Qualiopi, non encore délivrée (audit initial le
+// 16/10). Le fichier est rangé dans `docs/pdf-hors-ligne-certification/` : le
+// remettre sous `public/catalogue/` et rétablir le bouton une fois le
+// certificat délivré.
 //
 // ⚠️ AUCUNE mention Qualiopi ici : son affichage public est gaté par
 // `OF_PUBLIC_DISCLOSURE_ENABLED` (cf. server/qualiopi/config/flag.ts) et cette
@@ -17,7 +23,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { BookOpen, Download } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -30,10 +36,9 @@ interface Props {
 
 const PATH = "/catalogue";
 
-// Les deux fichiers sont statiques et versionnés dans `public/` : rien à
-// revalider côté serveur, mais on garde l'ISR par cohérence avec le reste.
+// Le fichier est statique et versionné dans `public/` : rien à revalider
+// côté serveur, mais on garde l'ISR par cohérence avec le reste.
 const HTML_FEUILLETER = "/catalogue/index.html";
-const PDF_TELECHARGER = "/catalogue/catalogue-axion-ia.pdf";
 
 export const revalidate = 3600;
 
@@ -43,8 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   const title = isFr ? "Catalogue des offres Axion-IA" : "Axion-IA offering catalogue";
   const description = isFr
-    ? "Feuilletez le catalogue complet des offres Axion-IA : formations IA, coaching individuel, audits et implémentations. Une double page par offre — le programme réel, les acquis, la durée et le prix. À consulter en ligne ou à télécharger en PDF."
-    : "Browse the complete Axion-IA catalogue: AI training, one-to-one coaching, audits and implementations. One double page per offering — the real programme, the learning outcomes, the duration and the price. Read online or download as PDF.";
+    ? "Feuilletez le catalogue complet des offres Axion-IA : formations IA, coaching individuel, audits et implémentations. Une double page par offre — le programme réel, les acquis, la durée et le prix. À consulter en ligne."
+    : "Browse the complete Axion-IA catalogue: AI training, one-to-one coaching, audits and implementations. One double page per offering — the real programme, the learning outcomes, the duration and the price. Read it online.";
   return {
     ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: `${title} · Axion-IA` },
@@ -84,23 +89,7 @@ export default async function CataloguePage({ params }: Props) {
             <BookOpen aria-hidden className="h-5 w-5" />
             {isFr ? "Feuilleter le catalogue" : "Browse the catalogue"}
           </Cta>
-          <Cta
-            href={PDF_TELECHARGER}
-            external
-            variant="outline"
-            size="xl"
-            track="catalogue-telecharger"
-          >
-            <Download aria-hidden className="h-5 w-5" />
-            {isFr ? "Télécharger le PDF" : "Download the PDF"}
-          </Cta>
         </div>
-
-        <p className="text-fg-muted mt-4 text-sm">
-          {isFr
-            ? "Le PDF pèse environ 8 Mo — préférez le Wi-Fi si vous êtes en déplacement."
-            : "The PDF is around 8 MB — prefer Wi-Fi if you are on the move."}
-        </p>
       </Container>
     </div>
   );
