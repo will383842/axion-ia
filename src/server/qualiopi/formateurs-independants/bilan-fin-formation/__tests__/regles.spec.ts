@@ -373,6 +373,15 @@ describe("remetLeBilan — le formateur de la dernière journée", () => {
     expect(remetLeBilan(A, { formateurPrincipalId: null, jours })).toBe(true);
   });
 
+  it("deux journées finissant à la même heure (groupes en parallèle) : chacun le remet, quel que soit l'ordre", () => {
+    const jours = [j("2026-11-05", "17:00", A), j("2026-11-05", "17:00", B)];
+    for (const ordre of [jours, [...jours].reverse()]) {
+      const s = { formateurPrincipalId: A, jours: ordre };
+      expect(remetLeBilan(A, s)).toBe(true);
+      expect(remetLeBilan(B, s)).toBe(true);
+    }
+  });
+
   it("formateur seul sur sa session : il le remet (rien ne change)", () => {
     expect(
       remetLeBilan(A, { formateurPrincipalId: A, jours: [j("2026-11-05", "17:00", null)] }),

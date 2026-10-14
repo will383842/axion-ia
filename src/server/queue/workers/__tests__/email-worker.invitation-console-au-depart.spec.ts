@@ -67,6 +67,10 @@ vi.mock("@/server/email/email-log", () => ({
 }));
 
 import { startEmailWorker } from "../email-worker";
+import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
+
+/** Lot 8A — une validation porte l'empreinte du texte actuel. */
+const validation = (cle: string) => ({ valide: true, empreinte: empreinteAttendue(cle) });
 
 type Processeur = (job: Record<string, unknown>) => Promise<void>;
 function processeur(): Processeur {
@@ -107,7 +111,9 @@ function reglages(o: { texteValide: boolean; invitationAuto: boolean }) {
       if (q.where.key.startsWith === "formateurs.") {
         return [{ key: "formateurs.textes_valides", value: { actif: true } }, ...auto];
       }
-      return o.texteValide ? [{ key: `textes_valides.${F1}`, value: { valide: true } }] : [];
+      return o.texteValide
+        ? [{ key: `textes_valides.${F1}`, value: validation(`textes_valides.${F1}`) }]
+        : [];
     },
   );
 }

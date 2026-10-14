@@ -161,24 +161,29 @@ export function remetLeBilan(
     }>;
   },
 ): boolean {
-  let derniere: { jour: JourCivil; heureFin: string; trainerId: string | null } | null = null;
+  // Les journées qui finissent le plus tard (date, puis heure de fin). Plusieurs à égalité
+  // (groupes en parallèle) : chacun de leurs formateurs remet le bilan — jamais un choix
+  // qui dépendrait de l'ordre des lignes en base.
+  let fin: { jour: JourCivil; heureFin: string } | null = null;
+  let dernieres: Array<string | null> = [];
   for (const j of s.jours) {
     const jour = jourDeColonneDate(j.date);
-    if (
-      derniere === null ||
-      jour > derniere.jour ||
-      (jour === derniere.jour && j.heureFin > derniere.heureFin)
-    ) {
-      derniere = { jour, heureFin: j.heureFin, trainerId: j.trainerId };
+    if (fin === null || jour > fin.jour || (jour === fin.jour && j.heureFin > fin.heureFin)) {
+      fin = { jour, heureFin: j.heureFin };
+      dernieres = [j.trainerId];
+    } else if (jour === fin.jour && j.heureFin === fin.heureFin) {
+      dernieres.push(j.trainerId);
     }
   }
-  if (derniere === null) return true;
-  const animateur =
-    derniere.trainerId ??
+  if (fin === null) return true;
+  const principal =
     s.formateurPrincipalId ??
     s.sessionFormateurs?.find((sf) => sf.role === "principal")?.trainerId ??
     null;
-  return animateur === null || animateur === trainerId;
+  const animateurs = dernieres.map((t) => t ?? principal);
+  // Un animateur inconnu : personne n'est écarté (comme avant).
+  if (animateurs.some((a) => a === null)) return true;
+  return animateurs.includes(trainerId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

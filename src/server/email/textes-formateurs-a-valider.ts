@@ -13,6 +13,7 @@
 import { createHash } from "node:crypto";
 
 import {
+  LIGNE_OPPOSITION,
   TEXTE_F23_HONORAIRES,
   TEXTES_FORMATEUR,
   type GabaritFormateurIndependant,
@@ -120,8 +121,17 @@ function contenuDuTexte(t: TexteAValider): unknown {
   return { ...fiche, variantes: fiche.variantes.filter((_, i) => !exclus.has(i)) };
 }
 
+/**
+ * L'empreinte couvre aussi la ligne d'opposition que la mise en page commune ajoute aux
+ * sollicitations : la changer fait tomber leurs validations. La mise en page elle-même
+ * (en-tête, pied, signature) n'est pas un texte validé ici.
+ */
 export function empreinteDuTexte(t: TexteAValider): string {
-  return empreinteDe(contenuDuTexte(t));
+  const sollicitation = TEXTES_FORMATEUR[t.gabarit as GabaritFormateurIndependant]?.sollicitation;
+  return empreinteDe({
+    texte: contenuDuTexte(t),
+    ...(sollicitation === true ? { opposition: LIGNE_OPPOSITION } : {}),
+  });
 }
 
 const EMPREINTES: ReadonlyMap<string, string> = new Map(

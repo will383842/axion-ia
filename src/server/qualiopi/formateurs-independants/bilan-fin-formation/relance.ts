@@ -79,7 +79,7 @@ export async function lireLignesBilan(maintenant: Date): Promise<LigneBilanLue[]
       numero: true,
       titreSession: true,
       formateurPrincipalId: true,
-      sessionFormateurs: { select: { trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true, role: true } },
       jours: { select: { date: true, heureFin: true, trainerId: true } },
     },
   });

@@ -104,6 +104,11 @@ describe("les actions de validation", () => {
       }),
     );
   });
+  it("POST forgé SANS champ empreinte : refus, rien n'est écrit", async () => {
+    const r = await validerTexteEmailFormAction(INITIAL, form({ ...F, valide: "1" }));
+    expect(r.ok).toBe(false);
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
+  });
   it("texte changé entre l'affichage et le clic : refus, rien n'est écrit", async () => {
     const r = await validerTexteEmailFormAction(
       INITIAL,

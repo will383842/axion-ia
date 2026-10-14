@@ -47,7 +47,7 @@ export async function lireBilansConsole(sessionId: string): Promise<LigneBilanCo
     where: { id: sessionId },
     select: {
       formateurPrincipalId: true,
-      sessionFormateurs: { select: { trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true, role: true } },
       jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
     },
   });

@@ -77,6 +77,10 @@ import {
   GABARITS_SOLLICITATION_FORMATEUR_LOCAL,
   estSollicitationSoumiseAOpposition,
 } from "@/server/email/verdict-envoi";
+import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
+
+/** Lot 8A — une validation porte l'empreinte du texte actuel. */
+const validation = (cle: string) => ({ valide: true, empreinte: empreinteAttendue(cle) });
 
 type Processeur = (job: Record<string, unknown>) => Promise<void>;
 function processeur(): Processeur {
@@ -108,7 +112,10 @@ function valides(...gabarits: string[]) {
   d.settings.mockImplementation(async (q: { where: { key: { startsWith: string } } }) =>
     q.where.key.startsWith === "formateurs."
       ? [{ key: "formateurs.textes_valides", value: { actif: true } }]
-      : gabarits.map((g) => ({ key: `textes_valides.${g}`, value: { valide: true } })),
+      : gabarits.map((g) => ({
+          key: `textes_valides.${g}`,
+          value: validation(`textes_valides.${g}`),
+        })),
   );
 }
 
@@ -121,7 +128,10 @@ function relancesAllumees(...gabarits: string[]) {
           { key: "formateurs.dossier_en_ligne", value: { actif: true } },
           { key: "formateurs.relances_auto", value: { actif: true } },
         ]
-      : gabarits.map((g) => ({ key: `textes_valides.${g}`, value: { valide: true } })),
+      : gabarits.map((g) => ({
+          key: `textes_valides.${g}`,
+          value: validation(`textes_valides.${g}`),
+        })),
   );
 }
 

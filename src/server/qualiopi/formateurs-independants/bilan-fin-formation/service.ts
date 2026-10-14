@@ -82,7 +82,7 @@ async function lireSession(sessionId: string) {
       titreSession: true,
       statut: true,
       formateurPrincipalId: true,
-      sessionFormateurs: { select: { trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true, role: true } },
       jours: { select: { date: true, heureFin: true, trainerId: true } },
       formation: { select: { objectifsPedagogiques: true } },
     },

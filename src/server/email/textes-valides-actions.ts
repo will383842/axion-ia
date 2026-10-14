@@ -33,7 +33,7 @@ export async function validerTexteEmailAction(d: {
   gabarit: string;
   variante?: string;
   valide: boolean;
-  /** Lot 8A — l'empreinte du texte affiché ; différente de l'actuelle : refus. */
+  /** Lot 8A — l'empreinte du texte affiché ; exigée pour un texte formateur, sinon refus. */
   empreinte?: string;
 }): Promise<EtatValidation> {
   const session = await auth();
@@ -54,7 +54,7 @@ export async function validerTexteEmailAction(d: {
   // Lot 8A — un texte formateur se valide AVEC l'empreinte du texte relu : s'il change
   // ensuite, la validation tombe (`textes-valides-lecture.ts`).
   const empreinte = empreinteAttendue(cle);
-  if (d.valide && empreinte !== null && d.empreinte !== undefined && d.empreinte !== empreinte) {
+  if (d.valide && empreinte !== null && d.empreinte !== empreinte) {
     return {
       ok: false,
       error: "Le texte a changé depuis l'affichage : rechargez la page et relisez-le.",
