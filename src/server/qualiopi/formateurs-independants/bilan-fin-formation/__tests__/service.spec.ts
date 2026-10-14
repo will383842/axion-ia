@@ -416,6 +416,12 @@ describe("payer quand même (administrateur)", () => {
     expect(m.db.bilanFinFormation.update).not.toHaveBeenCalled();
     expect(m.journaliser).not.toHaveBeenCalled();
   });
+
+  it("session annulée : refus, aucune ligne", async () => {
+    m.db.trainingSession.findUnique.mockResolvedValue(session({ statut: "annulee" }));
+    expect(await payer("Le formateur a remis son bilan sur papier.")).toBe("non_concerne");
+    expect(m.db.bilanFinFormation.upsert).not.toHaveBeenCalled();
+  });
 });
 
 describe("le motif affiché au formateur (même règle que le paiement)", () => {

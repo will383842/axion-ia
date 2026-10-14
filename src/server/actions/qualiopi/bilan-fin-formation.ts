@@ -22,7 +22,7 @@ const LIBELLES: Record<string, string> = {
   eteint: "Le bilan de fin de formation n'est pas ouvert (interrupteur éteint).",
   introuvable: "Ce formateur n'a pas animé cette session.",
   non_concerne:
-    "Ce formateur n'est pas indépendant (salarié, dirigeant ou formateur d'organisme) : son paiement n'attend aucun bilan.",
+    "Aucun bilan n'est attendu ici : formateur non indépendant (salarié, dirigeant ou formateur d'organisme), ou session annulée ou reportée.",
   motif_invalide: "Écrivez le motif (10 à 500 caractères) : il reste au dossier.",
   deja_fait: "« Payer quand même » est déjà posé pour ce formateur.",
 };

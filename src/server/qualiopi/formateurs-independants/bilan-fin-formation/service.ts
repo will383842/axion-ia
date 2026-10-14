@@ -436,9 +436,9 @@ export type IssuePayerQuandMeme =
  * « Payer quand même » : lève l'exigence du bilan pour CE formateur sur CETTE session
  * (jamais celle des feuilles), c'est-à-dire pour le relevé du dernier mois de la mission.
  * Réservé au formateur indépendant en nom propre, comme le bilan lui-même : un salarié, un
- * dirigeant ou un formateur d'organisme est refusé, aucune ligne n'est créée. Motif
- * obligatoire ; auteur, date et motif posés sur la ligne, l'acte tracé au journal
- * (identifiants seuls). Aucun montant ne bouge.
+ * dirigeant ou un formateur d'organisme est refusé, comme une session annulée ou
+ * reportée : aucune ligne n'est créée. Motif obligatoire ; auteur, date et motif posés
+ * sur la ligne, l'acte tracé au journal (identifiants seuls). Aucun montant ne bouge.
  */
 export async function payerQuandMemeBilan(i: {
   readonly sessionId: string;
@@ -461,7 +461,8 @@ export async function payerQuandMemeBilan(i: {
   if (
     trainer === null ||
     trainer.statut !== "sous_traitant" ||
-    trainer.organismeSousTraitantId !== null
+    trainer.organismeSousTraitantId !== null ||
+    STATUTS_SANS_BILAN.has(session.statut)
   ) {
     return "non_concerne";
   }

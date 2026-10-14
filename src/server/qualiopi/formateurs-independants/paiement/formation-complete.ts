@@ -69,9 +69,11 @@ export function formationCompletePourFormateur(e: {
 
 /**
  * Le même verdict à l'échelle de la SESSION entière, pour l'affichage (console) : les
- * demi-journées prévues de ce formateur, ses contresignatures, et le bilan. Le bilan n'y
- * joue qu'une fois TOUTES les feuilles complètes, celles du dernier mois comprises :
- * c'est donc bien le relevé du dernier mois qu'il retient, et le motif le dit. Mêmes
+ * demi-journées prévues de ce formateur, ses contresignatures, et le bilan. Il rend le
+ * PREMIER motif qui retient un paiement : les feuilles d'abord, le bilan ensuite. Le
+ * passage, lui, juge mois par mois : le dernier mois peut attendre le bilan alors qu'un
+ * mois précédent attend encore ses feuilles ; la console ne montre alors que les feuilles,
+ * et le bilan apparaît dès qu'elles sont complètes. Mêmes
  * fonctions que le passage (`heures-animees.ts`), jamais une seconde lecture des feuilles.
  */
 export function formationCompleteSurLaSession(
