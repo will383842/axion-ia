@@ -28,6 +28,7 @@ import {
   desaccordBloquant,
   ISSUE_DESACCORD_NON_RETENU,
 } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-regle";
+import type { Prisma } from "../../../../prisma/generated/client";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -270,6 +271,24 @@ export async function transitionStatementAction(
     }
   }
 
+  /**
+   * 🔴 Chantier C4 — UNE PIÈCE DE MISSION ÉMISE NE S'ANNULE PAS D'UN CLIC.
+   *
+   * L'autofacture numérotée est partie chez le formateur : l'annuler en silence
+   * laisserait une facture vivante chez lui et un trou dans notre série. La
+   * correction passe par un AVOIR (`emettreAvoirMission`), qui annule la pièce
+   * ET ses lignes, et libère le mois pour la réémission.
+   */
+  if (
+    releveDeMission &&
+    v.to === "annule" &&
+    (releve.numeroFacture != null || releve.autofactureAt != null)
+  ) {
+    return {
+      error: `L'autofacture ${releve.numeroFacture ?? ""} de cette mission a été émise : elle ne s'annule pas, elle se corrige par un avoir.`,
+    };
+  }
+
   // ── Gardes propres à la cible ──
   if (v.to === "facture_recue") {
     if (v.numeroFacture === undefined || v.numeroFacture === "") {
@@ -332,11 +351,21 @@ export async function transitionStatementAction(
    * passent jamais ici : leur chemin est inchangé.
    */
   let preuveIban: { ibanFin4: string; ibanEmpreinte: string } | null = null;
+  /**
+   * Chantier C4 (défaut 5) — de quoi RELIRE les garanties sous verrou : la même
+   * lecture du contexte, et les garanties sans appel réseau, avec le client de la
+   * transaction. `null` hors relevé de mission payé.
+   */
+  let relectureSousVerrou: ((tx: Prisma.TransactionClient) => Promise<string | null>) | null = null;
   if (v.to === "paye" && releveDeMission) {
     if (releve.echeanceAt == null)
       return { error: "Relevé de mission sans échéance : paiement refusé." };
     // Lot D (M6) : aucun virement sans contrat-cadre signé ni SIREN actif confirmé.
-    const { garantiesPaiementMission, LIBELLE_GARANTIE_PAIEMENT } =
+    const {
+      garantiesPaiementMission,
+      garantiesPaiementMissionSousVerrou,
+      LIBELLE_GARANTIE_PAIEMENT,
+    } =
       await import("@/server/qualiopi/formateurs-independants/paiement/garanties-paiement-mission");
     const manques = await garantiesPaiementMission(releve.trainerId, maintenant, session.userId);
     if (manques.length > 0) {
@@ -346,15 +375,16 @@ export async function transitionStatementAction(
       await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base");
     const { LIBELLE_SUSPENSION_VIREMENT } =
       await import("@/server/qualiopi/formateurs-independants/paiement/virement-mission");
+    const aPayer = {
+      trainerId: releve.trainerId,
+      echeanceAt: releve.echeanceAt,
+      totalTtcCents: releve.totalTtcCents,
+    };
     let c: Awaited<ReturnType<typeof contexteVirementMission>>;
     try {
       c = await contexteVirementMission(
         prisma,
-        {
-          trainerId: releve.trainerId,
-          echeanceAt: releve.echeanceAt,
-          totalTtcCents: releve.totalTtcCents,
-        },
+        aPayer,
         v.ibanEmpreinteAffichee ?? null,
         maintenant,
       );
@@ -370,10 +400,34 @@ export async function transitionStatementAction(
       };
     }
     preuveIban = c.preuve;
+    // Rend le motif de refus en clair, ou `null` : le virement peut partir.
+    relectureSousVerrou = async (tx) => {
+      const sousVerrou = await garantiesPaiementMissionSousVerrou(tx, releve.trainerId, maintenant);
+      if (sousVerrou.length > 0)
+        return sousVerrou.map((m) => LIBELLE_GARANTIE_PAIEMENT[m]).join(" ");
+      let relu: Awaited<ReturnType<typeof contexteVirementMission>>;
+      try {
+        relu = await contexteVirementMission(
+          tx,
+          aPayer,
+          v.ibanEmpreinteAffichee ?? null,
+          maintenant,
+        );
+      } catch {
+        return "Déchiffrement de l'IBAN impossible : paiement refusé.";
+      }
+      if (!relu.verdict.autorise || relu.preuve === null)
+        return (
+          relu.verdict.motifs.map((m) => LIBELLE_SUSPENSION_VIREMENT[m]).join(" ") ||
+          "Paiement refusé."
+        );
+      return null;
+    };
   }
   let aChange = false;
   let ibanChange = false;
   let ibanAValider = false;
+  let refusSousVerrou: string | null = null;
   try {
     await prisma.$transaction(async (tx) => {
       /**
@@ -418,11 +472,24 @@ export async function transitionStatementAction(
           return;
         }
       }
+      /**
+       * 🔴 Chantier C4 (défaut 5) — CONTRAT-CADRE, SIREN ET ATTESTATION URSSAF
+       * RELUS SOUS VERROU, comme l'IBAN. Lus avant la transaction seulement, une
+       * pièce annulée, un SIREN passé au rouge ou une attestation archivée entre
+       * la garde et l'écriture laissaient partir le virement.
+       */
+      if (relectureSousVerrou !== null) {
+        refusSousVerrou = await relectureSousVerrou(tx);
+        if (refusSousVerrou !== null) return;
+      }
       const ecrit = await tx.trainerStatement.updateMany({
         where: {
           id: v.id,
           statut: from,
           autofactureAt: releve.autofactureAt,
+          // Chantier C4 : une autofacture émise entre la lecture et le verrou
+          // refuse l'annulation (la pièce passe alors par un avoir).
+          ...(releveDeMission && v.to === "annule" ? { numeroFacture: null } : {}),
           // Une contestation consignée entre la lecture et l'écriture
           // (`contesterAutofactureAction`) bloque le paiement, comme la garde
           // plus haut : sinon le virement partirait sur une pièce contestée.
@@ -484,6 +551,23 @@ export async function transitionStatementAction(
         });
       }
 
+      /**
+       * 🔴 Chantier C4 — ANNULER UN RELEVÉ DE MISSION ANNULE SES LIGNES.
+       *
+       * Laissées `calcule`/`valide` sous un relevé `annule`, elles occupaient
+       * toujours l'index unique `trainer_fee_lines_mission_unique` (statut ≠
+       * annule) : le passage suivant, qui réécrit le mois, levait chaque jour et
+       * le mois n'était plus jamais payé (et l'indemnité restait « déjà écrite »).
+       * Même transaction, derrière la même écriture conditionnelle. Un statut,
+       * jamais un DELETE.
+       */
+      if (releveDeMission && v.to === "annule") {
+        await tx.trainerFeeLine.updateMany({
+          where: { statementId: v.id, statut: { not: "annule" } },
+          data: { statut: "annule", annuleMotif: "autre" },
+        });
+      }
+
       // Redescendre DÉGÈLE. Sans cela, le relevé redevient recalculable alors que
       // ses lignes restent `valide` : le prochain run, qui n'efface que le
       // non-`valide`, en recréerait à côté et doublerait le montant du mois.
@@ -504,6 +588,7 @@ export async function transitionStatementAction(
     }
     return { error: "Erreur lors du changement de statut." };
   }
+  if (refusSousVerrou !== null) return { error: refusSousVerrou };
   if (ibanAValider) {
     return {
       error:

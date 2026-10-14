@@ -14,9 +14,20 @@ export interface ContratCadreSigne {
   readonly signeLe: Date;
 }
 
-/** Le dernier contrat-cadre intégralement signé et non annulé, ou `null`. */
-export async function lireContratCadreSigne(trainerId: string): Promise<ContratCadreSigne | null> {
-  const contrat = await prisma.documentGenere.findFirst({
+/** Le strict nécessaire d'un client Prisma (le client global, ou une transaction). */
+export interface ClientContratCadre {
+  documentGenere: Pick<typeof prisma.documentGenere, "findFirst">;
+}
+
+/**
+ * Le dernier contrat-cadre intégralement signé et non annulé, ou `null`. `db` :
+ * une transaction, pour relire la pièce sous verrou (virement d'une mission).
+ */
+export async function lireContratCadreSigne(
+  trainerId: string,
+  db: ClientContratCadre = prisma,
+): Promise<ContratCadreSigne | null> {
+  const contrat = await db.documentGenere.findFirst({
     where: {
       trainerId,
       type: "contrat_sous_traitance",
