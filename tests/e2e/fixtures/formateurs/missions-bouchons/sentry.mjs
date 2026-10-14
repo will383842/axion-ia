@@ -31,4 +31,3 @@ export const httpContextIntegration = integration;
 export const globalHandlersIntegration = integration;
 export const functionToStringIntegration = integration;
 export const dedupeIntegration = integration;
-export default { captureException, captureMessage, setTag, init, withScope, startSpan, flush };
