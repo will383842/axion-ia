@@ -83,9 +83,10 @@ function mission() {
     statut: "acceptee",
     reponduAt: new Date("2026-10-12T07:41:00Z"),
     accordHorsOutilAt: null,
-    tarifHtCents: null,
+    // Étape 4 : sans conditions FIGÉES sur la mission, aucune lettre.
+    tarifHtCents: 35_000,
     forfaitDeplacementParJourHtCents: null,
-    regimeTvaFige: null,
+    regimeTvaFige: "franchise_293b",
   };
 }
 
@@ -103,7 +104,15 @@ beforeEach(() => {
     lieuSalle: null,
     lieuVisioUrl: null,
     client: { raisonSociale: "Client SAS" },
-    jours: [{ date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" }],
+    sessionFormateurs: [{ trainerId: TRAINER_ID }],
+    jours: [
+      {
+        date: new Date("2026-11-04T00:00:00Z"),
+        heureDebut: "09:00",
+        heureFin: "17:00",
+        trainerId: null,
+      },
+    ],
   });
   h.m.trainer.mockResolvedValue({
     prenom: "Marie",
@@ -178,13 +187,51 @@ describe("allumé : la lettre v2", () => {
     expect(h.m.docUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("tarif : celui figé à l'affectation quand la mission n'en porte pas", async () => {
+  it("étape 4 — tarif non figé sur la mission : refus clair, jamais le tarif de l'affectation", async () => {
     h.m.affectation.mockResolvedValue({ tarifHtCents: 40_000 });
-    await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    h.m.mission.mockResolvedValue({ ...mission(), tarifHtCents: null });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toEqual({ ok: false, erreur: expect.stringMatching(/tarif.*n'est pas figé/i) });
+    expect(h.m.generate).not.toHaveBeenCalled();
+  });
+
+  it("étape 4 — l'annonce de la lettre est rangée avec elle, et rendue au moteur", async () => {
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
-      buildElement: (n: string) => { props: { data: { totalHtCents: number } } };
+      metadata: Record<string, unknown>;
     };
-    expect(entree.buildElement("N").props.data.totalHtCents).toBe(40_000);
+    // Une journée 09:00-17:00 à 35 000 c, à distance : 35 000 c HT en novembre.
+    expect(entree.metadata).toEqual({
+      annonceLettre: { totalHtCents: 35_000, parMois: { "2026-11": 35_000 } },
+    });
+    expect(r).toMatchObject({
+      ok: true,
+      annonce: { journees: 1, demiJournees: 0, totalHtCents: 35_000 },
+    });
+  });
+
+  it("étape 4 — co-animation : seules les journées de CE formateur", async () => {
+    const s = (await h.m.session()) as Record<string, unknown>;
+    h.m.session.mockResolvedValue({
+      ...s,
+      sessionFormateurs: [{ trainerId: TRAINER_ID }, { trainerId: "autre" }],
+      jours: [
+        {
+          date: new Date("2026-11-04T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: null,
+        },
+        {
+          date: new Date("2026-11-05T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: "autre",
+        },
+      ],
+    });
+    const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toMatchObject({ ok: true, annonce: { journees: 1, totalHtCents: 35_000 } });
   });
 
   it("une lettre déjà SIGNÉE n'est jamais annulée en silence : motif exigé", async () => {
