@@ -19,16 +19,28 @@
 // ⚠️ AUCUNE mention Qualiopi ici : son affichage public est gaté par
 // `OF_PUBLIC_DISCLOSURE_ENABLED` (cf. server/qualiopi/config/flag.ts) et cette
 // page n'a pas à porter ce risque. AUCUNE mention CPF (verrou doctrinal).
+//
+// ⛔ 2026-10-14 : tant que `isQualiopiCertificationObtenue()` est faux, la page
+// REDIRIGE vers /fr/formations. Les images du feuilletoir (pages-web/*.jpg)
+// reproduisent le catalogue papier : logo Qualiopi et « Jusqu'à 100 % financé ».
+// Le QR imprimé mène ainsi à une page utile, et la page revient d'elle-même
+// quand l'interrupteur repasse à true. Aucune image n'est supprimée.
+//
+// RENDU DYNAMIQUE, et c'est voulu : `QUALIOPI_CERTIFICATION_OBTENUE` est une
+// variable d'EXÉCUTION, absente du build GitHub Actions. Une page statique (ou
+// ISR) figerait la redirection dans l'image. `force-dynamic` la lit à chaque
+// requête ; la page est minuscule et sans appel à la base.
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { BookOpen } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -36,15 +48,17 @@ interface Props {
 
 const PATH = "/catalogue";
 
-// Le fichier est statique et versionné dans `public/` : rien à revalider
-// côté serveur, mais on garde l'ISR par cohérence avec le reste.
 const HTML_FEUILLETER = "/catalogue/index.html";
 
-export const revalidate = 3600;
+/** Destination tant que la certification n'est pas délivrée. */
+const REDIRECTION_SANS_CERTIFICATION = "/fr/formations";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  if (!isQualiopiCertificationObtenue()) return {};
   const isFr = locale === "fr";
   const title = isFr ? "Catalogue des offres Axion-IA" : "Axion-IA offering catalogue";
   const description = isFr
@@ -59,6 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CataloguePage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  if (!isQualiopiCertificationObtenue()) redirect(REDIRECTION_SANS_CERTIFICATION);
   setRequestLocale(locale);
   const isFr = locale === "fr";
 
