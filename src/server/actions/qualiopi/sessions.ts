@@ -339,7 +339,15 @@ export async function createSessionAction(
 
     // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
     // coupé : aucun effet). Avant la création, donc avant toute écriture.
-    const garde = await controlerGardeMission(v.trainerId);
+    // Étape 3 (C4) : la mission de cette session compte pour le seuil URSSAF — rien
+    // n'est encore en base, son montant est sur-estimé depuis la période.
+    const garde = await controlerGardeMission(v.trainerId, new Date(), {
+      nouvelleSession: {
+        debut: v.dateDebut,
+        fin: v.dateFin,
+        distanciel: v.modalite === "distanciel",
+      },
+    });
     if (garde.refus.length > 0) {
       return { error: `Assignation refusée : ${garde.refus.join(" ")}` };
     }

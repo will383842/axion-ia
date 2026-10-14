@@ -91,12 +91,35 @@ export function vigilanceExigible(cumulHtCents: number | null | undefined): bool
 }
 
 /**
+ * Étape 3 (C4), décision de Will : le seuil COMPTE LA MISSION EN COURS. L'attestation est
+ * exigée AVANT une mission (proposition, affectation, acceptation, lettre) qui fait
+ * atteindre le seuil au cumul — pas seulement quand le cumul déjà facturé l'a atteint.
+ *
+ *   - `missionHtCents` absent (`undefined`) : aucune mission en jeu, la règle du cumul
+ *     seul (`vigilanceExigible`) ;
+ *   - illisible (`null`, non fini) : exigée — dans le doute, on sur-estime ;
+ *   - négatif : ne fait jamais baisser le cumul (compté 0).
+ */
+export function vigilanceExigiblePourMission(
+  cumulHtCents: number | null | undefined,
+  missionHtCents: number | null | undefined,
+): boolean {
+  if (vigilanceExigible(cumulHtCents)) return true;
+  if (missionHtCents === undefined) return false;
+  if (!lisible(missionHtCents)) return true;
+  return vigilanceExigible((cumulHtCents as number) + Math.max(0, missionHtCents));
+}
+
+/**
  * Faut-il demander l'attestation, et ce qui doit être payé attend-il ? La même fonction
- * que les apporteurs, sur le cumul HT du formateur.
+ * que les apporteurs, sur le cumul HT du formateur — et, quand une mission est en jeu,
+ * sur le cumul APRÈS elle (`missionHtCents`, la « nouvelle somme » des apporteurs).
  */
 export function etatVigilanceFormateur(e: {
   readonly cumulHtCents: number | null | undefined;
   readonly attestationValide: boolean;
+  /** Étape 3 (C4) — le montant HT de la mission en jeu ; illisible : seuil atteint. */
+  readonly missionHtCents?: number | null;
 }): {
   phase: PhaseVigilance;
   exigible: boolean;
@@ -106,12 +129,23 @@ export function etatVigilanceFormateur(e: {
   const phase = phaseVigilanceFormateur(e.cumulHtCents);
   // Illisible : traité comme pile au seuil (garde fermée).
   const cumul = lisible(e.cumulHtCents) ? e.cumulHtCents : SEUIL_VIGILANCE_CENTS;
+  // La mission en jeu est la « nouvelle somme » ; illisible, elle porte le cumul au seuil.
+  const mission =
+    e.missionHtCents === undefined
+      ? 0
+      : lisible(e.missionHtCents)
+        ? Math.max(0, e.missionHtCents)
+        : SEUIL_VIGILANCE_CENTS;
   const s = etatSeuilVigilance({
     cumulCents: cumul,
-    nouvelleCents: 0,
+    nouvelleCents: mission,
     piecesValides: e.attestationValide,
   });
-  return { phase, exigible: phase === "seuil_atteint", ...s };
+  return {
+    phase,
+    exigible: vigilanceExigiblePourMission(e.cumulHtCents, e.missionHtCents),
+    ...s,
+  };
 }
 
 // Les libellés vivent avec les nombres (`lib/vigilance.ts`) : le dossier en ligne les lit

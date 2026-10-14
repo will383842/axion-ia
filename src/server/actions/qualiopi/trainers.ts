@@ -1015,7 +1015,7 @@ export async function assignTrainerToSessionAction(
 
     // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
     // coupé : aucun effet). Avant toute écriture d'affectation.
-    const garde = await controlerGardeMission(trainerId);
+    const garde = await controlerGardeMission(trainerId, new Date(), { sessionId });
     if (garde.refus.length > 0) {
       return { error: `Assignation refusée : ${garde.refus.join(" ")}` };
     }

@@ -11,7 +11,9 @@
  *   3. contrôle du registre relu il y a un mois au plus ;
  *   4. numéro de déclaration d'activité renseigné ;
  *   5. attestation de vigilance URSSAF valable AUJOURD'HUI — seulement quand le
- *      cumul des honoraires HT a atteint le seuil de vigilance (lot G1).
+ *      cumul des honoraires HT a atteint le seuil de vigilance (lot G1), MISSION EN
+ *      JEU COMPRISE (étape 3 du C4, décision de Will) : une mission qui fait atteindre
+ *      le seuil exige l'attestation AVANT d'être confiée.
  *
  * Les salariés et le dirigeant-formateur ne sont jamais concernés.
  *
@@ -28,7 +30,9 @@
 
 import { pieceGardeeProbante, type FormateurPourActivation } from "./gardes";
 import type { NiveauGardeMission } from "./interrupteurs";
-import { vigilanceExigible } from "./vigilance-seuil";
+import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
+
+import { vigilanceExigible, vigilanceExigiblePourMission } from "./vigilance-seuil";
 
 /** Un contrôle du registre plus vieux qu'un mois ne vaut plus (ADR 0066 (d)). */
 export const REGISTRE_VALIDITE_MOIS = 1;
@@ -41,6 +45,12 @@ export interface FaitsGardeMission extends FormateurPourActivation {
   readonly contratCadreVersion: number | null;
   /** Lot G1 — cumul des honoraires HT ; absent ou illisible : attestation exigée. */
   readonly cumulHonorairesHtCents?: number | null;
+  /**
+   * Étape 3 (C4) — montant HT de la mission en jeu (`montant-mission.ts`, le calcul de
+   * la lettre, sur-estimé dans le doute). Absent : aucune mission en jeu (règle du cumul
+   * seul) ; `null` (illisible) : attestation exigée.
+   */
+  readonly montantMissionHtCents?: number | null;
 }
 
 export const MANQUES_MISSION = {
@@ -50,6 +60,7 @@ export const MANQUES_MISSION = {
   registre: "Le contrôle du registre public date de plus d'un mois.",
   nda: "Le numéro de déclaration d'activité n'est pas renseigné.",
   vigilance: "L'attestation de vigilance URSSAF n'est pas valable aujourd'hui.",
+  vigilanceMission: `Avec cette mission, les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT : son attestation de vigilance URSSAF doit être vérifiée avant de la lui confier.`,
   erreur: "Le contrôle du formateur n'a pas pu aboutir.",
 } as const;
 
@@ -88,16 +99,31 @@ export function peutRecevoirMission(
       manques.push(MANQUES_MISSION.registre);
     }
     if ((f.sousTraitantNda ?? "").trim() === "") manques.push(MANQUES_MISSION.nda);
-    if (
-      vigilanceExigible(f.cumulHonorairesHtCents) &&
-      !f.pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))
-    ) {
-      manques.push(MANQUES_MISSION.vigilance);
-    }
+    const manqueVigilance = manqueVigilanceMission(f, maintenant);
+    if (manqueVigilance !== null) manques.push(manqueVigilance);
     return manques.length === 0 ? { ok: true } : { ok: false, manques };
   } catch {
     return { ok: false, manques: [MANQUES_MISSION.erreur] };
   }
+}
+
+/**
+ * Le manque d'attestation URSSAF pour CETTE mission, ou `null`. Seuil déjà atteint sans
+ * la mission : le message d'avant ; atteint PAR la mission : il le dit.
+ */
+export function manqueVigilanceMission(
+  f: Pick<FaitsGardeMission, "pieces" | "cumulHonorairesHtCents" | "montantMissionHtCents">,
+  maintenant: Date,
+): string | null {
+  if (!vigilanceExigiblePourMission(f.cumulHonorairesHtCents, f.montantMissionHtCents)) {
+    return null;
+  }
+  if (f.pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))) {
+    return null;
+  }
+  return vigilanceExigible(f.cumulHonorairesHtCents)
+    ? MANQUES_MISSION.vigilance
+    : MANQUES_MISSION.vigilanceMission;
 }
 
 export type ModeGardeMission = "coupee" | "avertir" | "refuser";

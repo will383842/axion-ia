@@ -44,7 +44,9 @@ import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/colle
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import { MANQUES_MISSION } from "@/server/qualiopi/formateurs-independants/garde-mission";
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
+import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
 import { lireConditionsFigees } from "@/server/qualiopi/formateurs-independants/conditions-figees";
 import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/proposition-chiffree";
 import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
@@ -295,7 +297,7 @@ export async function proposerMissionFormateur(
     }
     // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
     // coupé : aucun effet). Aucune proposition à qui ne peut pas recevoir de mission.
-    const garde = await controlerGardeMission(trainer.id, now);
+    const garde = await controlerGardeMission(trainer.id, now, { sessionId: session.id });
     if (garde.refus.length > 0) {
       return { proposee: false, raison: `garde de mission : ${garde.refus.join(" ")}` };
     }
@@ -801,6 +803,27 @@ const MISSION_INTROUVABLE = "Cette proposition n'existe pas.";
 export const PROPOSITION_SUSPENDUE =
   "Cette proposition est suspendue. Nous revenons vers vous rapidement.";
 
+/**
+ * Étape 3 (C4) — l'acceptation attend l'attestation URSSAF : c'est l'affaire du
+ * formateur, on la lui dit en clair (les autres raisons de la garde restent internes).
+ */
+export const ACCEPTATION_ATTEND_ATTESTATION = {
+  avecLaMission: `Avec cette mission, vos honoraires avec nous atteignent ${SEUIL_VIGILANCE_LIBELLE} hors taxes : nous avons besoin de votre attestation de vigilance URSSAF avant qu'elle commence. Déposez-la dans votre espace ; dès qu'elle est vérifiée, vous pourrez accepter.`,
+  aRenouveler:
+    "Votre attestation de vigilance URSSAF n'est plus à jour. Déposez-en une nouvelle dans votre espace ; dès qu'elle est vérifiée, vous pourrez accepter.",
+} as const;
+
+/** Le message du « J'accepte » refusé par la garde : clair si seule l'attestation manque. */
+export function messageAcceptationSuspendue(refus: ReadonlyArray<string>): string {
+  if (refus.length > 0 && refus.every((r) => r === MANQUES_MISSION.vigilanceMission)) {
+    return ACCEPTATION_ATTEND_ATTESTATION.avecLaMission;
+  }
+  if (refus.length > 0 && refus.every((r) => r === MANQUES_MISSION.vigilance)) {
+    return ACCEPTATION_ATTEND_ATTESTATION.aRenouveler;
+  }
+  return PROPOSITION_SUSPENDUE;
+}
+
 /** Lot S2 (T6) — la proposition a changé ENTRE la lecture et l'écriture (retrait, réponse croisée). */
 export const PROPOSITION_CHANGEE =
   "Cette proposition vient de changer. Rechargez la page pour voir son état.";
@@ -884,13 +907,17 @@ export async function repondreMission(
   if (input.reponse === "acceptee") {
     // 🔴 L3 — la garde de mission est relue au « J'accepte » (interrupteur
     // `formateurs.garde_mission_portes` ; coupé : aucun effet). Réponse neutre :
-    // la raison est interne.
-    const garde = await controlerGardeMission(mission.trainerId, now);
+    // la raison est interne — sauf l'attestation URSSAF, que seul le formateur
+    // peut fournir (étape 3 du C4) : elle est dite en clair.
+    const garde = await controlerGardeMission(mission.trainerId, now, {
+      sessionId: mission.sessionId,
+      missionId: mission.id,
+    });
     if (garde.refus.length > 0) {
       console.error(
         `[mission-formateur] acceptation suspendue par la garde de mission (mission ${mission.id}) : ${garde.refus.join(" ")}`,
       );
-      return { ok: false, erreur: PROPOSITION_SUSPENDUE };
+      return { ok: false, erreur: messageAcceptationSuspendue(garde.refus) };
     }
     if (affectationSure) {
       // 🔴 T6 — l'acceptation ne recontrôlait rien. Une fiche désactivée entre
@@ -1389,7 +1416,9 @@ export async function consignerAccordHorsOutil(input: {
   // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
   // coupé : aucun effet). Un accord ne se note pas pour qui ne peut pas recevoir
   // de mission.
-  const garde = await controlerGardeMission(input.trainerId);
+  const garde = await controlerGardeMission(input.trainerId, new Date(), {
+    sessionId: input.sessionId,
+  });
   if (garde.refus.length > 0) {
     return { ok: false, erreur: `Accord non consigné : ${garde.refus.join(" ")}` };
   }

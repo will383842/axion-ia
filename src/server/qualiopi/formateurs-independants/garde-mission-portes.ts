@@ -18,6 +18,7 @@ import {
   AUCUNE_ISSUE,
   MANQUES_MISSION,
   appliquerGarde,
+  manqueVigilanceMission,
   modeGardeMission,
   peutRecevoirMission,
   type IssueGarde,
@@ -31,7 +32,10 @@ import {
   lireValeurSignature,
   type NiveauGardeMission,
 } from "./interrupteurs";
+import { lireMontantMissionHtCents, type MissionEnJeu } from "./montant-mission-lecture";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
+
+export type { MissionEnJeu } from "./montant-mission-lecture";
 
 export interface ControleGardeMission extends IssueGarde {
   readonly mode: ModeGardeMission;
@@ -53,23 +57,20 @@ async function lireNiveau(): Promise<NiveauGardeMission> {
 }
 
 /**
- * La garde de mission pour CE formateur, aujourd'hui. Ne lève jamais : allumée,
- * une erreur de lecture rend un refus.
+ * L'interrupteur `formateurs.garde_mission_portes`, lu ICI et pas par
+ * `interrupteurAllume` : celui-ci rend « coupé » sur toute erreur, et une panne de la
+ * base passagère ne doit pas laisser passer une affectation alors que la garde est
+ * allumée. Ligne ABSENTE = coupée (comportement d'avant L3) ; lecture en ÉCHEC = refus
+ * (rendu tel quel).
  */
-export async function controlerGardeMission(
-  trainerId: string,
-  maintenant: Date = new Date(),
-): Promise<ControleGardeMission> {
-  // L'interrupteur est lu ICI, pas par `interrupteurAllume` : celui-ci rend
-  // « coupé » sur toute erreur, et une panne de la base passagère ne doit pas
-  // laisser passer une affectation alors que la garde est allumée. Ligne
-  // ABSENTE = coupée (comportement d'avant L3) ; lecture en ÉCHEC = refus.
+async function lireAllumage(): Promise<ControleGardeMission | "allumee"> {
   try {
     const ligne = await prisma.setting.findUnique({
       where: { key: cleSettingSignature("garde_mission_portes") },
       select: { value: true },
     });
     if (!lireValeurSignature(ligne?.value).valeur) return COUPEE;
+    return "allumee";
   } catch {
     // Un client sans table `setting` (doublure de test d'une autre suite) n'est
     // pas une panne : on garde le comportement d'avant L3.
@@ -80,8 +81,26 @@ export async function controlerGardeMission(
     }
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }
+}
+
+/**
+ * La garde de mission pour CE formateur, aujourd'hui. Ne lève jamais : allumée,
+ * une erreur de lecture rend un refus.
+ *
+ * Étape 3 (C4) — `enJeu` : la mission dont on décide. Son montant (calcul de la
+ * lettre, sur-estimé dans le doute) s'ajoute au cumul pour le seuil de vigilance :
+ * l'attestation est exigée AVANT une mission qui fait atteindre 5 000 € HT. Absent :
+ * le cumul seul, comme avant.
+ */
+export async function controlerGardeMission(
+  trainerId: string,
+  maintenant: Date = new Date(),
+  enJeu?: MissionEnJeu,
+): Promise<ControleGardeMission> {
+  const allumage = await lireAllumage();
+  if (allumage !== "allumee") return allumage;
   try {
-    const [niveau, t, contrat, cumul] = await Promise.all([
+    const [niveau, t, contrat, cumul, montantMission] = await Promise.all([
       lireNiveau(),
       prisma.trainer.findUnique({
         where: { id: trainerId },
@@ -107,6 +126,7 @@ export async function controlerGardeMission(
       }),
       lireContratCadreSigne(trainerId),
       lireCumulHonorairesHtCents(trainerId),
+      enJeu === undefined ? undefined : lireMontantMissionHtCents(trainerId, enJeu),
     ]);
     if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
     const mode = modeGardeMission(true, niveau, t.activationValideeSource);
@@ -122,11 +142,69 @@ export async function controlerGardeMission(
         pieces: t.documents as DocumentConformite[],
         contratCadreVersion: contrat?.version ?? null,
         cumulHonorairesHtCents: cumul,
+        ...(enJeu === undefined ? {} : { montantMissionHtCents: montantMission ?? null }),
       },
       GABARIT_VERSIONS.contrat_sous_traitance,
       maintenant,
     );
     return { mode, ...appliquerGarde(mode, verdict) };
+  } catch {
+    return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
+  }
+}
+
+/**
+ * Étape 3 (C4) — à l'ÉMISSION DE LA LETTRE : la seule question de l'attestation URSSAF,
+ * avec le montant que la lettre annonce. Même interrupteur et même mode que la garde de
+ * mission (coupée : rien n'est lu, rien n'est refusé). Ne lève jamais.
+ *
+ * Les autres conditions de la garde (registre, contrat, NDA…) restent celles des portes
+ * d'affectation et du moteur : la lettre n'en ajoute pas.
+ */
+export async function controlerVigilanceLettre(
+  trainerId: string,
+  montantLettreHtCents: number,
+  maintenant: Date = new Date(),
+): Promise<ControleGardeMission> {
+  const allumage = await lireAllumage();
+  if (allumage !== "allumee") return allumage;
+  try {
+    const [niveau, t, cumul] = await Promise.all([
+      lireNiveau(),
+      prisma.trainer.findUnique({
+        where: { id: trainerId },
+        select: {
+          statut: true,
+          activationValideeSource: true,
+          documents: {
+            where: { type: "attestation_vigilance_urssaf", statutValidation: "valide" },
+            select: {
+              type: true,
+              statutValidation: true,
+              fichierUrl: true,
+              dateEmission: true,
+              dateExpiration: true,
+            },
+          },
+        },
+      }),
+      lireCumulHonorairesHtCents(trainerId),
+    ]);
+    if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
+    if (t.statut === "salarie" || t.statut === "dirigeant") return COUPEE;
+    const mode = modeGardeMission(true, niveau, t.activationValideeSource);
+    const manque = manqueVigilanceMission(
+      {
+        pieces: t.documents as DocumentConformite[],
+        cumulHonorairesHtCents: cumul,
+        montantMissionHtCents: montantLettreHtCents,
+      },
+      maintenant,
+    );
+    return {
+      mode,
+      ...appliquerGarde(mode, manque === null ? { ok: true } : { ok: false, manques: [manque] }),
+    };
   } catch {
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }

@@ -357,6 +357,7 @@ function coFormateursDe(ancienne: {
  */
 async function coFormateursRefusesParGarde(
   ancienne: {
+    id: string;
     formateurPrincipalId: string | null;
     coFormateurs: unknown;
     sessionFormateurs: ReadonlyArray<{ trainerId: string; role: string }>;
@@ -365,7 +366,8 @@ async function coFormateursRefusesParGarde(
 ): Promise<Set<string>> {
   const refuses = new Set<string>();
   for (const id of coFormateursDe(ancienne)) {
-    const garde = await controlerGardeMission(id);
+    // Étape 3 (C4) : les journées de la session reportée valent celles du report.
+    const garde = await controlerGardeMission(id, new Date(), { sessionId: ancienne.id });
     if (garde.refus.length > 0) {
       refuses.add(id);
       avertissements.push(`Co-formateur non reconduit : ${garde.refus.join(" ")}`);
@@ -643,7 +645,10 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
   // 🔴 L3 — la garde de mission s'applique aussi au report (interrupteur
   // `formateurs.garde_mission_portes` ; coupé : aucun effet).
   if (formateurRetenuId !== null) {
-    const garde = await controlerGardeMission(formateurRetenuId);
+    // Étape 3 (C4) : les journées de la session reportée valent celles du report.
+    const garde = await controlerGardeMission(formateurRetenuId, new Date(), {
+      sessionId: ancienne.id,
+    });
     if (garde.refus.length > 0) {
       formateurRetenuId = null;
       avertissementsReport.push(`Formateur non reconduit : ${garde.refus.join(" ")}`);

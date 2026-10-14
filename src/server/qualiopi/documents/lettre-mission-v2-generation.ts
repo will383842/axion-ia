@@ -24,6 +24,7 @@ import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 import { forfaitSelonLieu } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { lireContratCadreSigne } from "@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur";
+import { controlerVigilanceLettre } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import {
   assemblerLettreV2,
   type FaitsLettreV2,
@@ -221,6 +222,18 @@ export async function genererLettreMissionV2(input: {
   // Les refus se disent AVANT d'allouer un numéro.
   const essai = assemblerLettreV2(faits("—"));
   if (!essai.ok) return { ok: false, erreur: essai.motif };
+
+  // Étape 3 (C4) — le seuil de vigilance compte la mission : si le montant que la
+  // lettre annonce fait atteindre 5 000 € HT au cumul, l'attestation URSSAF est exigée
+  // AVANT la lettre (interrupteur `formateurs.garde_mission_portes` ; coupé : rien).
+  const vigilance = await controlerVigilanceLettre(
+    input.trainerId,
+    essai.annonce.totalHtCents,
+    maintenant,
+  );
+  if (vigilance.refus.length > 0) {
+    return { ok: false, erreur: `Lettre non émise : ${vigilance.refus.join(" ")}` };
+  }
 
   // Une lettre vivante par mission : une lettre déjà signée par le formateur
   // n'est jamais remplacée en silence (motif exigé) ; les autres sont annulées

@@ -25,6 +25,7 @@
  */
 
 import { sendTelegram } from "@/lib/telegram";
+import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
 import { prisma } from "@/lib/prisma";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 import { journaliser } from "@/server/journal/journaliser";
@@ -119,6 +120,11 @@ function lienEspaceFormateur(suite = ""): string | null {
  */
 const MANQUE_POUR_LE_FORMATEUR: ReadonlyMap<string, string> = new Map([
   [MANQUES_MISSION.vigilance, "une attestation URSSAF à jour"],
+  // Étape 3 (C4) : la mission fait atteindre le seuil — l'attestation est demandée avant.
+  [
+    MANQUES_MISSION.vigilanceMission,
+    `votre attestation de vigilance URSSAF (avec cette mission, vos honoraires avec nous atteignent ${SEUIL_VIGILANCE_LIBELLE} hors taxes)`,
+  ],
   [MANQUES_MISSION.nda, "votre numéro de déclaration d'activité"],
   [MANQUES_MISSION.contrat, "la signature de votre contrat-cadre"],
 ]);
@@ -314,7 +320,7 @@ export async function lireEtatMission(
         annuleeAt: null,
       },
     }),
-    controlerGardeMission(m.trainerId, maintenant),
+    controlerGardeMission(m.trainerId, maintenant, { sessionId: m.sessionId, missionId: m.id }),
     // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
     // c'est SA lettre ; le moteur n'en émet pas d'autre.
     m.lettreMission === null || m.lettreMission.annuleeAt !== null
