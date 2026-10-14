@@ -63,6 +63,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/garde-engagement";
+import { objectionLettreMissionPerimee } from "@/server/qualiopi/formateurs-independants/lettre-mission-perimee";
 
 /**
  * 🔴 Les parties attendues viennent du SSOT, jamais d'une liste locale.
@@ -76,7 +77,11 @@ import { peutSignerPourOrganisme } from "@/server/qualiopi/documents/signature/g
 const PARTIES_LETTRE: readonly PartieSignataire[] = partiesRequisesPour("lettre_mission") ?? [];
 
 export type RefusLettreMission =
-  RefusSignatureDocument | "requete_invalide" | "role_insuffisant" | "stockage";
+  | RefusSignatureDocument
+  | "requete_invalide"
+  | "role_insuffisant"
+  | "stockage"
+  | "piece_non_signable_maintenant";
 
 export type ResultatSignatureLettreMission =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -155,7 +160,7 @@ export async function signerLettreMissionFormateurAction(input: {
   // et la partie « formateur » est acceptable sur d'autres circuits.
   const piece = await prisma.documentGenere.findUnique({
     where: { id: donnees.documentGenereId },
-    select: { type: true, numero: true, sessionId: true, trainerId: true },
+    select: { type: true, numero: true, sessionId: true, trainerId: true, metadata: true },
   });
   if (piece === null || piece.type !== "lettre_mission") {
     return { ...LETTRE_INTROUVABLE };
@@ -181,6 +186,17 @@ export async function signerLettreMissionFormateurAction(input: {
     // Même réponse qu'un identifiant inconnu : la lettre d'un autre formateur
     // ne doit pas se distinguer d'une lettre qui n'existe pas.
     return { ...LETTRE_INTROUVABLE };
+  }
+
+  // C4 — une lettre périmée (conditions changées depuis l'émission) ne se signe plus.
+  const perimee = await objectionLettreMissionPerimee({
+    documentGenereId: donnees.documentGenereId,
+    type: piece.type,
+    metadata: piece.metadata,
+    partie: "formateur",
+  });
+  if (perimee !== null) {
+    return { ok: false, raison: "piece_non_signable_maintenant", message: perimee.message };
   }
 
   try {
@@ -260,10 +276,21 @@ export async function contresignerLettreMissionAction(input: {
 
   const piece = await prisma.documentGenere.findUnique({
     where: { id: donnees.documentGenereId },
-    select: { type: true, numero: true },
+    select: { type: true, numero: true, metadata: true },
   });
   if (piece === null || piece.type !== "lettre_mission") {
     return { ok: false, raison: "piece_introuvable", message: "Lettre de mission introuvable." };
+  }
+
+  // C4 — une lettre périmée ne se contresigne pas.
+  const perimee = await objectionLettreMissionPerimee({
+    documentGenereId: donnees.documentGenereId,
+    type: piece.type,
+    metadata: piece.metadata,
+    partie: "axionia",
+  });
+  if (perimee !== null) {
+    return { ok: false, raison: "piece_non_signable_maintenant", message: perimee.message };
   }
 
   try {

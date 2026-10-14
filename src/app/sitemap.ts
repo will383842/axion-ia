@@ -716,6 +716,9 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
     )
       continue;
+    // Catalogue : redirige vers /fr/formations tant que la certification n'est
+    // pas délivrée (feuilletoir avec logo Qualiopi, 2026-10-14) → hors sitemap.
+    if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
     // Page financement OPCO/France Travail : Phase-B only (mentions financement
     // interdites avant l'agrément OF) → hors sitemap en Phase A.
     if (

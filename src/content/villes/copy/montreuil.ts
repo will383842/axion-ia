@@ -276,7 +276,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -364,7 +364,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur montreuillois — jeu vidéo, finance, numérique, ESS — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur montreuillois — jeu vidéo, finance, numérique, ESS — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Montreuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in a gaming studio, a financial directorate, a consulting team or an IT back-office.",
@@ -450,7 +450,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Montreuil sector — gaming, finance, digital, social economy — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Montreuil sector — gaming, finance, digital, social economy — no recycled generic session.",
       },
     },
     implementation: {
@@ -538,7 +538,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Montreuil brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Montreuil offices — Bas-Montreuil, Croix de Chavaux or a neighbouring commune.",
@@ -624,7 +624,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -705,10 +705,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           {
             q: "Ce format est-il adapté aux indépendants et créateurs montreuillois ?",
             a: "Oui. Le tarif d'entrée est accessible aux indépendants, studios solos et freelances. Le format est précisément conçu pour aller droit au but sur VOS cas, sans vous noyer dans du contenu générique.",
-          },
-          {
-            q: "Que se passe-t-il si je ne trouve pas l'IA utile après la première session ?",
-            a: "Si après la première session vous estimez que l'IA ne peut pas vous apporter de valeur sur vos cas d'usage, nous ne facturerons pas la suite. Notre objectif est votre autonomie, pas de prolonger artificiellement un accompagnement.",
           },
         ],
         guarantees:
@@ -792,13 +788,9 @@ export const MONTREUIL_COPY: VilleCopy = {
             q: "Is this format suitable for Montreuil freelancers and creators?",
             a: "Yes. The entry price is accessible to freelancers, solo studios and independents. The format is designed precisely to go straight to YOUR cases without drowning you in generic content.",
           },
-          {
-            q: "What if I don't find AI useful after the first session?",
-            a: "If after the first session you feel that AI cannot bring value to your use cases, we won't charge for the rest. Our goal is your autonomy, not artificially prolonging an engagement.",
-          },
         ],
         guarantees:
-          "Full confidentiality guaranteed by Strict confidentiality before each pathway. Operational sessions: you leave with active tools on your workstation from the first session. No recycled generic content: each session works on your real documents and real projects. If AI brings no concrete value after the first session, no charge for the rest.",
+          "Full confidentiality guaranteed by Strict confidentiality before each pathway. Operational sessions: you leave with active tools on your workstation from the first session. No recycled generic content: each session works on your real documents and real projects.",
       },
     },
     sitesWeb: {

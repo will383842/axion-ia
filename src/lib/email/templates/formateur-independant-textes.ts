@@ -1358,6 +1358,28 @@ export const TEXTES_FORMATEUR = {
       },
     ],
   },
+  "formateur-email-modifie": {
+    code: "F61",
+    titre: "Adresse e-mail modifiée",
+    quand:
+      "l'équipe change, depuis la console, l'adresse e-mail d'un formateur indépendant. Part à l'**ancienne** adresse seulement, et ne contient jamais la nouvelle.",
+    famille: "B",
+    interne: false,
+    sollicitation: false,
+    variantes: [
+      {
+        etape: null,
+        objet: "Votre adresse e-mail a été modifiée",
+        objetPropose: null,
+        paragraphes: [
+          "Le [date], l'adresse e-mail de votre fiche formateur a été remplacée par une autre.",
+          "Nos messages et vos liens de connexion partent désormais vers cette nouvelle adresse. Par sécurité, vos connexions en cours ont été fermées.",
+          "Vous n'êtes pas à l'origine de ce changement ? Répondez immédiatement à ce message.",
+        ],
+        boutons: [],
+      },
+    ],
+  },
 } as const satisfies Record<string, TexteFormateur>;
 
 export type GabaritFormateurIndependant = keyof typeof TEXTES_FORMATEUR;

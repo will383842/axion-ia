@@ -657,14 +657,6 @@ async function seedFAQs() {
       aFr: "Maintenance optionnelle 290 €/mois HT (correctifs + monitoring + 2 h/mois d'évolution). Sans engagement, résiliable mensuellement.",
       aEn: "Optional maintenance €290/month excl. VAT (fixes + monitoring + 2h/month of evolution). No commitment, monthly cancellation.",
     },
-    {
-      slug: "garantie-resultat",
-      category: "general",
-      qFr: "Avez-vous une garantie de résultat ?",
-      qEn: "Do you offer a results guarantee?",
-      aFr: "Sur l'audit : si le rapport ne contient pas au moins 5 quick-wins chiffrés, il est refait gratuitement. Sur l'implémentation : engagement délai et budget contractuels.",
-      aEn: "Audit: if the report doesn't contain at least 5 quantified quick-wins, it's redone for free. Implementation: contractual deadline and budget commitments.",
-    },
   ] as const;
 
   for (const [i, f] of faqs.entries()) {

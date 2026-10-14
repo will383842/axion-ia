@@ -6,6 +6,7 @@ import { hasLocale } from "next-intl";
 import { SITE_URL } from "@/lib/seo";
 import { listFaqs } from "@/lib/knowledge/readers";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 // runtime nodejs (au lieu de edge) car les readers utilisent Prisma
 // (incompatible avec edge runtime).
@@ -40,7 +41,10 @@ export async function GET(_req: Request, { params }: RouteContext) {
   const render = (s: string) =>
     isFr ? collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")) : resolvePriceTokens(s, "en");
 
-  const faqs = await listFaqs();
+  // Audit Qualiopi du 16/10/2026 — certaines FAQ EN BASE (extraites des articles)
+  // nient ou affirment la certification : neutralisées au rendu selon
+  // l'interrupteur, cf. `affirmations-en-base.ts`.
+  const faqs = neutraliserSelonInterrupteur(await listFaqs());
   const items = faqs
     .map((f) => {
       const link = `${SITE_URL}/${locale}/faq/${f.slug}`;

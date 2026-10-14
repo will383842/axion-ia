@@ -16,6 +16,7 @@ const m = vi.hoisted(() => ({
   controler: vi.fn(),
   trainerFindUnique: vi.fn(),
   docCreate: vi.fn(),
+  docUpdateMany: vi.fn(),
   docFindUnique: vi.fn(),
   contenuCreate: vi.fn(),
   logCreate: vi.fn(),
@@ -26,6 +27,7 @@ vi.mock("@/lib/prisma", () => {
     trainer: { findUnique: (...a: unknown[]) => m.trainerFindUnique(...a) },
     trainerDocument: {
       create: (...a: unknown[]) => m.docCreate(...a),
+      updateMany: (...a: unknown[]) => m.docUpdateMany(...a),
       findUnique: (...a: unknown[]) => m.docFindUnique(...a),
     },
     trainerDocumentContenu: { create: (...a: unknown[]) => m.contenuCreate(...a) },
@@ -83,6 +85,7 @@ beforeEach(() => {
   });
   m.trainerFindUnique.mockResolvedValue({ id: TRAINER, statut: "sous_traitant" });
   m.docCreate.mockResolvedValue({ id: DOC });
+  m.docUpdateMany.mockResolvedValue({ count: 0 });
   m.contenuCreate.mockResolvedValue({});
   m.logCreate.mockResolvedValue({});
 });
@@ -106,6 +109,32 @@ describe("deposerPieceFormateur — écriture du dépôt", () => {
     expect(c.taille).toBe((c.octets as Buffer).length);
     const log = (m.logCreate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
     expect(log).toMatchObject({ action: ACTION_DEPOT_FORMATEUR, adminUserId: null, targetId: DOC });
+  });
+
+  it("🔴 archive la pièce précédente NON validée du même type, avant d'écrire la nouvelle", async () => {
+    const ordre: string[] = [];
+    m.docUpdateMany.mockImplementation(async () => (ordre.push("archive"), { count: 1 }));
+    m.docCreate.mockImplementation(async () => (ordre.push("cree"), { id: DOC }));
+    expect((await depot()).ok).toBe(true);
+    expect(ordre).toEqual(["archive", "cree"]);
+    const arg = m.docUpdateMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(arg.where).toMatchObject({
+      trainerId: TRAINER,
+      type: "cv",
+      archiveAt: null,
+      statutValidation: { not: "valide" },
+    });
+    expect(arg.data).toMatchObject({ archiveMotif: "remplacee_par_le_formateur" });
+    expect(arg.data.archiveAt).toBeInstanceOf(Date);
+  });
+
+  it("le nom d'origine est nettoyé (ni chemin, ni balise)", async () => {
+    await depot({ nomFichier: "../../etc/<b>cv.pdf" });
+    const c = (m.contenuCreate.mock.calls[0]![0] as { data: { nomOriginal: string } }).data;
+    expect(c.nomOriginal).toBe("_b_cv.pdf");
   });
 
   it("interrupteur éteint → rien n'est contrôlé ni écrit", async () => {

@@ -25,6 +25,11 @@
  *   Planche verso  : [ page 2 | page 3 ]
  *
  * Lancer :  pnpm tsx scripts/build-depliant-formations.ts
+ *
+ * ⛔ 2026-10-14 : NE PAS LANCER AVANT LA DÉLIVRANCE DU CERTIFICAT QUALIOPI. Le
+ * dépliant affirme la certification et promet « jusqu'à 100 % » / « 0 € de
+ * reste à charge ». Ses PDF ont été retirés de `public/imprimes/` et rangés dans
+ * `docs/pdf-hors-ligne-certification/imprimes/` ; ce script les republierait.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";

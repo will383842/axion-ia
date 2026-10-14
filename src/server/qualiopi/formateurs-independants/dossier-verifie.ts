@@ -7,8 +7,9 @@
  *     population des relances de pièces (S6, `pieces-relances.ts`) ;
  *   - `accesVersion + 1` : le lien du dossier (même en lecture seule) est RÉVOQUÉ.
  *
- * Seul un dossier ouvert (en cours, à compléter ou à vérifier) passe : une fiche sans
- * dossier en ligne, ou déjà vérifiée, n'est pas touchée. Le journal ne porte que
+ * Seul un dossier À VÉRIFIER (envoyé par le formateur) passe (C4) : un dossier en
+ * cours de saisie ou rouvert pour complément, une fiche sans dossier en ligne, ou
+ * déjà vérifiée, n'est pas touchée. Le journal ne porte que
  * l'identifiant de la fiche.
  *
  * Le rôle (contresigner) est gardé par l'appelant.
@@ -28,7 +29,7 @@ export async function marquerDossierVerifie(p: {
     const r = await tx.trainer.updateMany({
       where: {
         id: p.trainerId,
-        dossierStatut: { in: ["en_cours", "a_completer", "a_verifier"] },
+        dossierStatut: "a_verifier",
       },
       data: {
         dossierStatut: "verifie",

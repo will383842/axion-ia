@@ -311,6 +311,7 @@ export async function createSessionAction(
           actif: true,
           statut: true,
           sousTraitantVerifieAt: true,
+          finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
           tarifJourneeHtCents: true,
           // 🔴 `retireAt: null` — la dé-habilitation ne SUPPRIME plus la ligne
           // depuis le 2026-08-17 (migration `trainer_habilitation_retrait`) :

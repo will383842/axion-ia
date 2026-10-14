@@ -273,7 +273,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -361,7 +361,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur bisontin — microtechniques, médical, industrie de précision, recherche — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur bisontin — microtechniques, médical, industrie de précision, recherche — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Besançon come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the precision workshop, medical lab, office or in the field.",
@@ -447,7 +447,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Besançon sector — microtechnologies, medical, precision industry, research — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Besançon sector — microtechnologies, medical, precision industry, research — no recycled generic session.",
       },
     },
     implementation: {
@@ -535,7 +535,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Besançon brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Besançon offices — TEMIS Innovation, TEMIS Santé, Châteaufarine or a Grand Besançon commune.",
@@ -621,7 +621,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -709,7 +709,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité absolue : Confidentialité stricte, aucun partage de vos données ou stratégie. Contenu 100 % personnalisé sur vos cas d'usage bisontins réels — aucune session générique. Si après la première session vous estimez que le format ne vous convient pas, remboursement des sessions non réalisées. Vos outils et prompts vous appartiennent à l'issue de l'accompagnement.",
+          "Confidentialité absolue : Confidentialité stricte, aucun partage de vos données ou stratégie. Contenu 100 % personnalisé sur vos cas d'usage bisontins réels — aucune session générique. Vos outils et prompts vous appartiennent à l'issue de l'accompagnement.",
       },
       en: {
         hero: "Axion-IA's one-to-one AI coaching in Besançon is for executives, decision-makers and experts who want to build their personal AI strategy and move to action — precision industry, medical, research, B2B services. Bespoke sessions at your pace, in person at your Besançon offices or remotely.",
@@ -795,7 +795,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Absolute confidentiality: systematic Strict confidentiality, no sharing of your data or strategy. 100% personalised content on your real Besançon use cases — no generic session. If after the first session you feel the format doesn't suit you, refund of unrealised sessions. Your tools and prompts belong to you after coaching.",
+          "Absolute confidentiality: systematic Strict confidentiality, no sharing of your data or strategy. 100% personalised content on your real Besançon use cases — no generic session. Your tools and prompts belong to you after coaching.",
       },
     },
     sitesWeb: {

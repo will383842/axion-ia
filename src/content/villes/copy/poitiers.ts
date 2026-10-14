@@ -136,7 +136,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. Les outils sont opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Tarifs publics — Formation 4 heures à {{price:intervention-4h|flat}}, autres formats sur devis HT selon durée et effectif — sans abonnement caché ni dépendance à un éditeur. Vocabulaire et démos ajustés à votre secteur poitevin, jamais une session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. Les outils sont opérationnels le soir même. Tarifs publics — Formation 4 heures à {{price:intervention-4h|flat}}, autres formats sur devis HT selon durée et effectif — sans abonnement caché ni dépendance à un éditeur. Vocabulaire et démos ajustés à votre secteur poitevin, jamais une session générique recyclée.",
       },
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Poitiers se déroulent sur site, dans vos locaux du centre roman, du Téléport au Futuroscope ou d'une commune de la Vienne. Le principe est simple : vos collaborateurs ne repartent pas avec un classeur de slides, mais avec des outils IA installés et configurés sur leur poste, prêts pour leur travail réel dès le lendemain matin. Nous calibrons chaque session sur votre métier — assurance, services tertiaires, numérique, tourisme, relation client externalisée — et sur vos vrais documents. Les formats vont de la Formation 4 heures à la formation de deux jours, en passant par un cadrage Dirigeant en huis-clos pour les comités de direction poitevins.",
@@ -222,7 +222,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. Les outils sont opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation est offerte. Tarifs publics — Formation 4 heures à {{price:intervention-4h|flat}}, autres formats sur devis HT selon durée et effectif — sans abonnement caché ni dépendance à un éditeur. Vocabulaire et démos ajustés à votre secteur poitevin, jamais une session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. Les outils sont opérationnels le soir même. Tarifs publics — Formation 4 heures à {{price:intervention-4h|flat}}, autres formats sur devis HT selon durée et effectif — sans abonnement caché ni dépendance à un éditeur. Vocabulaire et démos ajustés à votre secteur poitevin, jamais une session générique recyclée.",
       },
     },
     sitesWeb: {

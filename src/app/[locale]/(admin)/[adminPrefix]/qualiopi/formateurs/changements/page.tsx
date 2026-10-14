@@ -36,6 +36,10 @@ const ISSUES: Readonly<Record<string, string>> = {
   valide: "Changement validé : la fiche est à jour et le formateur est prévenu.",
   refusee: "Demande refusée : la fiche n'a pas été modifiée.",
   trop_tot: "Trop tôt : une demande se valide au plus tôt 48 heures après sa création.",
+  non_avisee:
+    "Validation impossible : l'avis de changement d'IBAN n'est pas parti à l'adresse connue du formateur. Sans cet avis, il n'a pas pu s'y opposer ; refusez la demande, il pourra en faire une nouvelle.",
+  fiche_close:
+    "Validation impossible : la fiche du formateur n'est plus active, ou la collaboration est terminée.",
   deja_traitee: "Cette demande a déjà été traitée.",
   motif: "Motif obligatoire : indiquez pourquoi la demande est refusée.",
   introuvable: "Demande introuvable.",

@@ -36,6 +36,8 @@ function complet(extra: Partial<FormateurPourActivation> = {}): FormateurPourAct
     sousTraitantVerifieAt: ilYa(5),
     sousTraitantNda: "84691234569",
     sousTraitantContratSigneAt: ilYa(4),
+    contratsSousTraitance: [{ statutSignature: "signee", annuleeAt: null }],
+    finCollaborationAt: null,
     pieces: [piece("attestation_vigilance_urssaf"), piece("kbis_avis_sirene")],
     ...extra,
   };
@@ -53,6 +55,8 @@ describe("peutActiverFormateurIndependant", () => {
         sousTraitantVerifieAt: null,
         sousTraitantNda: null,
         sousTraitantContratSigneAt: null,
+        contratsSousTraitance: [],
+        finCollaborationAt: null,
         pieces: [],
       },
       MAINTENANT,
@@ -142,12 +146,46 @@ describe("peutActiverFormateurIndependant", () => {
     expect(v).toEqual({ activable: false, manques: [MANQUES.sirene] });
   });
 
-  it("un contrat signé « demain » ne compte pas", () => {
+  // 🔴 Lot C4 — la date « contrat signé le » se saisit à la main : elle ne prouve rien.
+  it("🔴 une date de signature saisie, SANS contrat réellement signé, ne suffit plus", () => {
     const v = peutActiverFormateurIndependant(
-      complet({ sousTraitantContratSigneAt: new Date(MAINTENANT.getTime() + JOUR) }),
+      complet({ sousTraitantContratSigneAt: ilYa(4), contratsSousTraitance: [] }),
       MAINTENANT,
     );
     expect(v).toEqual({ activable: false, manques: [MANQUES.contrat] });
+  });
+
+  it("le contrat signé suffit, même sans date saisie", () => {
+    const v = peutActiverFormateurIndependant(
+      complet({ sousTraitantContratSigneAt: null }),
+      MAINTENANT,
+    );
+    expect(v).toEqual({ activable: true });
+  });
+
+  it.each([
+    ["en attente de signature", { statutSignature: "en_attente", annuleeAt: null }],
+    ["signé en partie", { statutSignature: "partielle", annuleeAt: null }],
+    ["refusé", { statutSignature: "refusee", annuleeAt: null }],
+    ["signé puis annulé", { statutSignature: "signee", annuleeAt: ilYa(1) }],
+  ])("un contrat %s ne compte pas", (_cas, contrat) => {
+    const v = peutActiverFormateurIndependant(
+      complet({ contratsSousTraitance: [contrat] }),
+      MAINTENANT,
+    );
+    expect(v).toEqual({ activable: false, manques: [MANQUES.contrat] });
+  });
+
+  it("contrats non lus (champ absent) : garde FERMÉE", () => {
+    const { contratsSousTraitance: _retire, ...sansContrats } = complet();
+    const v = peutActiverFormateurIndependant(sansContrats, MAINTENANT);
+    expect(v).toEqual({ activable: false, manques: [MANQUES.contrat] });
+  });
+
+  // 🔴 Lot C4 — une collaboration terminée ne se rouvre pas par une réactivation.
+  it("🔴 une collaboration terminée bloque, même dossier complet", () => {
+    const v = peutActiverFormateurIndependant(complet({ finCollaborationAt: ilYa(2) }), MAINTENANT);
+    expect(v).toEqual({ activable: false, manques: [MANQUES.finCollaboration] });
   });
 
   it.each(["salarie", "dirigeant"])(
@@ -159,6 +197,7 @@ describe("peutActiverFormateurIndependant", () => {
           sousTraitantVerifieAt: null,
           sousTraitantNda: null,
           sousTraitantContratSigneAt: null,
+          finCollaborationAt: null,
           pieces: [],
         },
         MAINTENANT,

@@ -4942,6 +4942,15 @@ describe("autofacture_a_emettre", () => {
     expect((where as Record<string, unknown>)["trainer"]).toEqual({ statut: "sous_traitant" });
   });
 
+  it("🔴 n'interroge pas les AVOIRS (fausse alerte : un avoir n'a pas d'autofacture)", async () => {
+    // Même filtre que le rattrapage horaire (`autofacture-rattrapage.ts`).
+    await evaluerAlertes();
+    const where = mp.trainerStatement.findMany.mock.calls
+      .map((c: unknown[]) => (c[0] as { where?: Record<string, unknown> })?.where)
+      .find((w) => w !== undefined && "autofactureAt" in w && w["statut"] === "valide");
+    expect((where as Record<string, unknown>)["avoirDeId"]).toBeNull();
+  });
+
   it("🔑 la règle n'est pas en échec silencieux", async () => {
     mp.trainerStatement.findMany.mockResolvedValue([valide({ siret: null })]);
     const { reglesEnEchec } = await evaluerAlertesDetaille();

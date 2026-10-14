@@ -247,7 +247,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -335,7 +335,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur boulonnais — médias, automobile, finance, conseil, numérique — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur boulonnais — médias, automobile, finance, conseil, numérique — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Boulogne-Billancourt come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in agencies, studios, offices or in the field.",
@@ -421,7 +421,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Boulogne sector — media, automotive, finance, consulting, digital — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Boulogne sector — media, automotive, finance, consulting, digital — no recycled generic session.",
       },
     },
     implementation: {
@@ -509,7 +509,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Boulogne-Billancourt brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Boulogne offices — Trapèze, Quai du Point-du-Jour, Île Seguin or town centre.",
@@ -595,7 +595,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -683,7 +683,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions au rythme qui vous convient, sans engagement de volume minimum. Confidentialité totale : Confidentialité stricte, format 1-to-1, aucun partage. Outils opérationnels dès la première session : vous pratiquez sur vos vrais cas, pas des exercices fictifs. Si après la première session vous estimez que le format ne vous correspond pas, remboursement intégral.",
+          "Sessions au rythme qui vous convient, sans engagement de volume minimum. Confidentialité totale : Confidentialité stricte, format 1-to-1, aucun partage. Outils opérationnels dès la première session : vous pratiquez sur vos vrais cas, pas des exercices fictifs.",
       },
       en: {
         hero: "Axion-IA's individual coaching in Boulogne-Billancourt targets executives, managers and consultants who want to embed AI into their daily professional practice — no group session, no standard programme. Each journey is built around YOUR real use cases, in person at your Boulogne offices or over video, at the pace that suits you.",
@@ -769,7 +769,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions at the pace that suits you, no minimum volume commitment. Total confidentiality: Strict confidentiality, 1-to-1 format, no sharing. Operational tools from the first session: you practise on your real cases, not fictitious exercises. If after the first session you feel the format is not right for you, full refund.",
+          "Sessions at the pace that suits you, no minimum volume commitment. Total confidentiality: Strict confidentiality, 1-to-1 format, no sharing. Operational tools from the first session: you practise on your real cases, not fictitious exercises.",
       },
     },
     sitesWeb: {

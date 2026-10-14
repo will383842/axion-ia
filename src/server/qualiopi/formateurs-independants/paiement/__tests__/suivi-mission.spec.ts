@@ -22,6 +22,7 @@ const rib = vi.fn();
 const candidats = vi.fn();
 const emailLogs = vi.fn();
 const formateurs = vi.fn();
+const corbeille = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -32,6 +33,7 @@ vi.mock("@/lib/prisma", () => ({
     trainer: { findMany: (...a: unknown[]) => formateurs(...a) },
     trainingSession: { findMany: async () => [{ id: "s1", numero: "AXI-SESS-2026-042" }] },
     emailLog: { count: (...a: unknown[]) => emailLogs(...a) },
+    emailOutbox: { count: (...a: unknown[]) => corbeille(...a) },
     $transaction: async (fn: (t: unknown) => Promise<unknown>) => fn({ tx: true }),
   },
 }));
@@ -52,21 +54,25 @@ const T = "22222222-2222-4222-8222-222222222222";
 const AV = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 
 /** Répond selon la requête : statuts du mois, avoirs ouverts, avoirs à rembourser. */
-function base(over: { statuts?: string[]; ouverts?: string[]; regime?: string } = {}) {
+function base(
+  over: { statuts?: string[]; ouverts?: string[]; regime?: string; aRembourser?: boolean } = {},
+) {
   findMany.mockImplementation(async (a: { where: Record<string, unknown> }) => {
     if ("periodeYear" in a.where) return (over.statuts ?? []).map((statut) => ({ statut }));
     if ("remboursementDemandeAt" in a.where)
-      return [
-        {
-          id: AV,
-          numeroFacture: "AXI-AUTOF-2026-0010",
-          totalHtCents: -10_000,
-          tvaRegime: over.regime ?? "assujetti_20",
-          avoirDe: { numeroFacture: "AXI-AUTOF-2026-0007" },
-          imputations: [],
-          trainer: { email: "f@exemple.test", prenom: "Paule" },
-        },
-      ];
+      return over.aRembourser === false
+        ? []
+        : [
+            {
+              id: AV,
+              numeroFacture: "AXI-AUTOF-2026-0010",
+              totalHtCents: -10_000,
+              tvaRegime: over.regime ?? "assujetti_20",
+              avoirDe: { numeroFacture: "AXI-AUTOF-2026-0007" },
+              imputations: [],
+              trainer: { email: "f@exemple.test", prenom: "Paule" },
+            },
+          ];
     return (over.ouverts ?? []).map((trainerId) => ({ trainerId }));
   });
 }
@@ -85,6 +91,7 @@ beforeEach(() => {
   base();
   candidats.mockResolvedValue([]);
   emailLogs.mockResolvedValue(0);
+  corbeille.mockResolvedValue(0);
   formateurs.mockResolvedValue([
     { id: T, email: "f@exemple.test", prenom: "Paule", statut: "sous_traitant" },
   ]);
@@ -136,8 +143,45 @@ describe("passerSuiviMission", () => {
     expect(envoyer.mock.calls[0]![0].payload.valeurs.montant).toBe("100,00");
   });
 
-  it("relevé suivant recalculable : imputé sous les verrous de SA période, aucun F54", async () => {
+  it("🔴 C4 — F54 échoué hier : REPRIS au passage suivant, même sans nouvelle demande", async () => {
+    // Hier : demande posée, F54 parti en échec (journal `failed` ou rien). Aujourd'hui,
+    // `traiterTropPercu` ne pose plus de demande (déjà demandée) : le F54 doit repartir.
     base({ ouverts: [T] });
+    traiter.mockResolvedValue({ imputeHtCents: 0, demandesRemboursement: 0 });
+    emailLogs.mockResolvedValue(0);
+    const b = await passerSuiviMission(new Date("2027-02-03T08:00:00Z"));
+    expect(b.f54).toBe(1);
+    expect(envoyer.mock.calls[0]![0].jobId).toBe(`formateur-trop-percu-${AV}`);
+    // Toutes les demandes posées (pas seulement celles de CE passage).
+    const where = findMany.mock.calls
+      .map((c) => c[0].where as Record<string, unknown>)
+      .find((w) => "remboursementDemandeAt" in w);
+    expect(where!.remboursementDemandeAt).toEqual({ not: null });
+    // Le journal des envois fait foi (un échec ne compte pas).
+    expect(emailLogs).toHaveBeenCalledWith({
+      where: { jobId: `formateur-trop-percu-${AV}`, status: { not: "failed" } },
+    });
+  });
+
+  it("C4 — F54 déjà parti (journal non en échec) : pas de second envoi", async () => {
+    base({ ouverts: [T] });
+    traiter.mockResolvedValue({ imputeHtCents: 0, demandesRemboursement: 0 });
+    emailLogs.mockResolvedValue(1);
+    expect((await passerSuiviMission(new Date("2027-02-03T08:00:00Z"))).f54).toBe(0);
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("C4 — F54 garé en corbeille de validation : jamais regaré chaque jour", async () => {
+    base({ ouverts: [T] });
+    corbeille.mockResolvedValue(1);
+    expect((await passerSuiviMission(new Date("2027-02-03T08:00:00Z"))).f54).toBe(0);
+    expect(corbeille).toHaveBeenCalledWith({ where: { jobId: `formateur-trop-percu-${AV}` } });
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("relevé suivant recalculable : imputé sous les verrous de SA période, aucun F54", async () => {
+    // Imputé, donc jamais demandé : aucun avoir « à rembourser ».
+    base({ ouverts: [T], aRembourser: false });
     findFirst.mockResolvedValue({ id: "r2", periodeYear: 2027, periodeMonth: 1 });
     traiter.mockResolvedValue({ imputeHtCents: 10_000, demandesRemboursement: 0 });
     const b = await passerSuiviMission(new Date("2027-02-02T08:00:00Z"));

@@ -278,7 +278,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -366,7 +366,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur perpignanais — logistique, agroalimentaire, viticulture, énergies renouvelables — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur perpignanais — logistique, agroalimentaire, viticulture, énergies renouvelables — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Perpignan come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in logistics warehouses, on the Saint-Charles platform, in the office or in the field.",
@@ -452,7 +452,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Perpignan sector — logistics, agri-food, viticulture, renewables — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Perpignan sector — logistics, agri-food, viticulture, renewables — no recycled generic session.",
       },
     },
     implementation: {
@@ -540,7 +540,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Perpignan brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Perpignan offices — Saint-Charles, Tecnosud, Agrosud, Polygone Nord or a Métropole commune.",
@@ -626,7 +626,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -714,7 +714,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme entièrement sur mesure : aucun contenu standard recyclé. Confidentialité totale de vos données et de votre stratégie. Outils configurés sur vos cas réels dès la première séance. Si après la première séance le programme ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée : vous maîtrisez le rythme et la fin du programme.",
+          "Programme entièrement sur mesure : aucun contenu standard recyclé. Confidentialité totale de vos données et de votre stratégie. Outils configurés sur vos cas réels dès la première séance. Aucun engagement de durée : vous maîtrisez le rythme et la fin du programme.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 programme in Perpignan is an individual coaching for executives and independents who want to build AI skills at their own pace. On-site sessions in Perpignan or remote, calibrated to your business reality — Saint-Charles trader, Roussillon wine grower, France-Spain cross-border entrepreneur, healthcare professional or independent consultant.",
@@ -800,7 +800,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entirely tailored programme: no recycled standard content. Strict confidentiality ensured, total confidentiality of your data and strategy. Tools configured on your real use cases from the first session. If after the first session the programme does not match your expectations, full refund. No duration commitment: you control the pace and end of the programme.",
+          "Entirely tailored programme: no recycled standard content. Strict confidentiality ensured, total confidentiality of your data and strategy. Tools configured on your real use cases from the first session. No duration commitment: you control the pace and end of the programme.",
       },
     },
     sitesWeb: {

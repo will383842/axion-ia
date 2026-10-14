@@ -247,7 +247,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -335,7 +335,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur orléanais — cosmétique, pharma, géosciences, industrie, numérique — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur orléanais — cosmétique, pharma, géosciences, industrie, numérique — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Orléans come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in the lab, at the office, on the production floor or with clients.",
@@ -421,7 +421,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Orléans sector — cosmetics, pharma, geosciences, industry, digital — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Orléans sector — cosmetics, pharma, geosciences, industry, digital — no recycled generic session.",
       },
     },
     implementation: {
@@ -509,7 +509,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Orléans brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Orléans offices — city centre, La Source, Saint-Jean-de-Braye, Ormes or an agglomération commune.",
@@ -595,7 +595,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -683,7 +683,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité absolue : Confidentialité stricte dès la première séance, données et échanges jamais partagés. Si après la première séance vous estimez que l'accompagnement n'est pas adapté à votre situation, remboursement intégral. Outils opérationnels sur votre poste à l'issue de chaque séance d'installation. Aucun engagement de durée : vous pilotez votre rythme.",
+          "Confidentialité absolue : Confidentialité stricte dès la première séance, données et échanges jamais partagés. Outils opérationnels sur votre poste à l'issue de chaque séance d'installation. Aucun engagement de durée : vous pilotez votre rythme.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 individual coaching in Orléans is aimed at executives, managers and experts who want to master AI in their own practice — at their own pace, on their real subjects. On-site or hybrid format depending on your schedule.",
@@ -769,7 +769,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Absolute confidentiality: Strict confidentiality from the first session, data and exchanges never shared. If after the first session you feel the coaching doesn't fit your situation, full refund. Operational tools on your workstation at the end of each installation session. No duration commitment: you set your own pace.",
+          "Absolute confidentiality: Strict confidentiality from the first session, data and exchanges never shared. Operational tools on your workstation at the end of each installation session. No duration commitment: you set your own pace.",
       },
     },
     sitesWeb: {

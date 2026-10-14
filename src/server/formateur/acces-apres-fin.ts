@@ -28,5 +28,6 @@ export async function accesFormateur(t: {
 // mission (`mission-formateur.ts`) la lise sans dépendre de l'espace.
 export {
   ecritureFormateurPermise,
+  empreinteSessionFormateur,
   versionSessionFormateur,
 } from "@/server/qualiopi/formateurs-independants/version-session";

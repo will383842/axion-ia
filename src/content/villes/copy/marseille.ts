@@ -242,7 +242,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available, never triggered to date).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
 
@@ -331,7 +331,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur marseillais, aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur marseillais, aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Marseille come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — logistics, health, commerce or services.",
@@ -417,7 +417,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Marseille sector, no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your Marseille sector, no recycled generic session.",
       },
     },
 
@@ -506,7 +506,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause et ajustement déploiement offert. Modèles, données et runbook restent chez vous, transférables à tout intégrateur méditerranéen ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Modèles, données et runbook restent chez vous, transférables à tout intégrateur méditerranéen ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Marseille brings your use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Marseille kick-off. Priority sectors: transport/logistics, health/biotech, B2B services.",
@@ -592,7 +592,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause and offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
 
@@ -681,7 +681,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Tout ce que vous construisez en session (prompts, workflows, fiches méthode adaptées à votre secteur maritime, logistique ou santé) vous appartient en propriété exclusive. Après la dernière session, vous êtes autonome.",
+          "Première session pilote. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Tout ce que vous construisez en session (prompts, workflows, fiches méthode adaptées à votre secteur maritime, logistique ou santé) vous appartient en propriété exclusive. Après la dernière session, vous êtes autonome.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Marseille is a tailored individual programme designed for executives, managers and entrepreneurs in the Marseille business ecosystem — Euroméditerranée maritime mid-caps, Joliette logistics SMEs, Centrale Méditerranée and AMU leadership, Luminy health professionals. Sessions in person at your offices or by video depending on your schedule. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT. You progress at your own pace, on your own real business cases.",
@@ -767,7 +767,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "First pilot session: if after this session you feel the format doesn't meet your expectations, full refund no questions asked. Multi-session programme: fixed flat-rate quote at signature, no drift. Full confidentiality: Confidentiality ensured from kick-off, your business cases, data and documents handled in session never leave our perimeter. No lock-in: everything you build in session (prompts, workflows, method sheets) belongs to you. After the final session, you are autonomous.",
+          "First pilot session. Multi-session programme: fixed flat-rate quote at signature, no drift. Full confidentiality: Confidentiality ensured from kick-off, your business cases, data and documents handled in session never leave our perimeter. No lock-in: everything you build in session (prompts, workflows, method sheets) belongs to you. After the final session, you are autonomous.",
       },
     },
     sitesWeb: {

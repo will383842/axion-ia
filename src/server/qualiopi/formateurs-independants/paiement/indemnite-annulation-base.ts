@@ -35,7 +35,9 @@ export interface DecisionIndemnite {
 }
 
 export type IssueDecisionIndemnite =
-  | { readonly issue: "refusee" | "non_due" | "apercu_perime" }
+  | {
+      readonly issue: "refusee" | "non_due" | "apercu_perime" | "instant_anterieur_signature";
+    }
   | {
       readonly issue: IssueIndemnite;
       readonly montantHtCents: number;
@@ -52,6 +54,11 @@ const SELECT_MISSION = {
   session: {
     select: {
       jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
+      // Chantier C4 (défaut 2) : une demi-journée signée n'est jamais « annulée ».
+      emargementContresignatures: {
+        where: { revokedAt: null },
+        select: { trainerId: true, date: true, demiJournee: true },
+      },
     },
   },
 } as const;
@@ -65,6 +72,11 @@ type MissionLue = {
   lettreBlocageMotif: string | null;
   session: {
     jours: Array<{ date: Date; heureDebut: string; heureFin: string; trainerId: string | null }>;
+    emargementContresignatures?: Array<{
+      trainerId: string;
+      date: Date;
+      demiJournee: "matin" | "apres_midi" | "journee";
+    }>;
   };
 };
 
@@ -97,6 +109,9 @@ function apercuDe(m: MissionLue | null, d: Omit<DecisionIndemnite, "missionId">)
     accepteeAvant: true,
     parAxion: d.parAxion,
     regimeTva,
+    contresignatures: (m.session.emargementContresignatures ?? [])
+      .filter((c) => c.trainerId === m.trainerId)
+      .map((c) => ({ jour: jourDeColonneDate(c.date), demiJournee: c.demiJournee })),
   });
   return { apercu, regimeTva };
 }
@@ -122,6 +137,8 @@ export async function ecrireIndemniteDecidee(
   const lu = apercuDe(m, d);
   if (lu === null) return { issue: "refusee" };
   const { apercu, regimeTva } = lu;
+  // Chantier C4 (défaut 2) : l'instant saisi précède une demi-journée signée.
+  if (apercu.refus !== null) return { issue: "instant_anterieur_signature" };
   const htRecalcule = apercu.indemnite.due ? apercu.totaux.totalHtCents : 0;
   if (d.montantVuHtCents !== undefined && d.montantVuHtCents !== htRecalcule) {
     return { issue: "apercu_perime" };

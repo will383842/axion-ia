@@ -61,9 +61,15 @@ export function QualiopiContentBadge({ locale = "fr" }: { locale?: string }) {
     // revendiquer le certificat. Texte seul : aucun logo officiel, aucun JSON-LD
     // de certification. Bonus non recherché mais bienvenu : zéro image en pied
     // d'article tant que la Phase A dure.
+    //
+    // 🔴 2026-10-14 (audit initial du 16/10) : l'ancienne phrase « démarche
+    // qualité alignée sur le référentiel national qualité (Qualiopi) » citait la
+    // marque sur chaque article, et se lisait comme une revendication — usage
+    // relevé par l'auditrice. On dit désormais seulement que la certification
+    // est en préparation, sans nommer la marque.
     const texteNonAssertif = isFr
-      ? "Axion-IA applique une démarche qualité alignée sur le référentiel national qualité (Qualiopi) pour ses formations, audits et accompagnements en intelligence artificielle."
-      : "Axion-IA applies a quality approach aligned with the French national quality framework (Qualiopi) for its AI trainings, audits and coaching.";
+      ? "Axion-IA prépare la certification qualité de ses actions de formation (démarche en cours)."
+      : "Axion-IA is preparing the quality certification of its training actions (process under way).";
 
     return (
       <aside

@@ -27,7 +27,12 @@ vi.mock("@/lib/prisma", () => {
     documentGenere: {
       findMany: vi.fn(async () => [
         {
-          metadata: { renderData: { gabaritVersion: 3 } },
+          metadata: {
+            renderData: {
+              gabaritVersion: 3,
+              data: { cocontractant: { siret: "12345678900011" } },
+            },
+          },
           statutSignature: "signee",
           annuleeAt: null,
         },
@@ -74,6 +79,8 @@ function ficheComplete(): Record<string, unknown> {
     sousTraitantNda: "84691234569",
     sousTraitantContratSigneAt: ilYa(1),
     finCollaborationAt: null,
+    // Lot C4 — règle provisoire : le contrat généré signé (relation lue avec la fiche).
+    documentsGeneres: [{ statutSignature: "signee", annuleeAt: null }],
     siret: "12345678900011",
     ndaVerifieListeAt: ilYa(1),
     regimeTvaHonoraires: "franchise",
@@ -134,7 +141,8 @@ describe("changerActivationFormateur — interrupteurs ABSENTS (comportement d'a
     expect(r).toEqual({ ok: true, actif: true, inchange: false, sollicitationsRetirees: 0 });
     expect(h.updateMany).toHaveBeenCalledTimes(1);
     expect(h.updateMany).toHaveBeenCalledWith({
-      where: { id: ID, statut: "sous_traitant", actif: false },
+      // Lot C4 — seul ajout : une fiche close ne se réactive pas.
+      where: { id: ID, statut: "sous_traitant", actif: false, finCollaborationAt: null },
       data: { actif: true },
     });
   });
@@ -224,7 +232,8 @@ describe("changerActivationFormateur — activation_auto ALLUMÉ (lot L9)", () =
     });
     expect(r.ok).toBe(true);
     expect(h.updateMany).toHaveBeenCalledWith({
-      where: { id: ID, statut: "sous_traitant", actif: false },
+      // Lot C4 — seul ajout : une fiche close ne se réactive pas.
+      where: { id: ID, statut: "sous_traitant", actif: false, finCollaborationAt: null },
       data: { actif: true },
     });
   });

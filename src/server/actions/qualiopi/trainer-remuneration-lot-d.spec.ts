@@ -47,6 +47,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-bas
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/paiement/garanties-paiement-mission", () => ({
   garantiesPaiementMission: (...a: unknown[]) => garanties(...a),
+  garantiesPaiementMissionSousVerrou: async () => [],
   LIBELLE_GARANTIE_PAIEMENT: {
     contrat_cadre_absent: "Aucun contrat-cadre signé",
     siren_non_confirme: "SIREN non confirmé",
