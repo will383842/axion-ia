@@ -147,6 +147,9 @@ export function planifierPassage(
     const prevues = demiJourneesPrevues(c.journeesPrevues, bornes);
     const prevuesParMois = new Map(parMoisCivil(prevues).map((m) => [m.mois, m] as const));
     const moisSignes = new Set(parMoisCivil(signees).map((m) => m.mois));
+    // Décision de Will : seul le DERNIER mois de la mission (celui de la dernière journée
+    // prévue de ce formateur, `parMoisCivil` trie les mois) attend le bilan.
+    const dernierMoisPrevu = [...prevuesParMois.keys()].at(-1);
     if (aujourdhui) {
       for (const pm of prevuesParMois.values()) {
         if (!moisSignes.has(pm.mois) && pm.derniereJournee < aujourdhui)
@@ -171,12 +174,13 @@ export function planifierPassage(
         ? demiJourneesSansSignature(prevuDuMois.detail, mois.detail).length
         : 0;
       // Lot G2 : « formation complète » = la règle des feuilles (`moisPayable`, reprise
-      // telle quelle) ET le bilan de fin de formation quand il est exigé.
+      // telle quelle) ET, pour le dernier mois de la mission seulement, le bilan de fin de
+      // formation quand il est exigé. Les mois précédents : les feuilles seules.
       const verdict = formationCompletePourFormateur({
         signees: mois.demiJournees,
         manquantes,
         conditionFinanceurEnAttente: c.conditionFinanceurEnAttente,
-        bilan: c.bilanFinFormation ?? null,
+        bilan: mois.mois === dernierMoisPrevu ? (c.bilanFinFormation ?? null) : null,
       });
       if (!verdict.payable) {
         enAttente.push({
