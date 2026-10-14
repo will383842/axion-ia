@@ -62,7 +62,8 @@ export interface PieceSignaturePanelProps {
     methode: "trace" | "confirmation_accessible";
     imageDataUrl?: string;
   }) => Promise<
-    { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
+    | { ok: true; signatureId: string; statutSignature: string; activationRefusee?: string }
+    | { ok: false; message: string }
   >;
   /**
    * Émet le lien ET l'envoie au signataire, à l'adresse de sa fiche.
@@ -112,6 +113,8 @@ export function PieceSignaturePanel({
   const router = useRouter();
   const [enCours, startTransition] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
+  // Étape 3 du C4 — contrat-cadre contresigné, espace du formateur NON ouvert : pourquoi.
+  const [activationRefusee, setActivationRefusee] = useState<string | null>(null);
   const [lien, setLien] = useState<{ partie: string; url: string; reemission: boolean } | null>(
     null,
   );
@@ -152,6 +155,7 @@ export function PieceSignaturePanel({
 
   function contresigner() {
     setErreur(null);
+    setActivationRefusee(null);
     startTransition(async () => {
       const res = await contresignerAction({
         documentGenereId,
@@ -160,6 +164,7 @@ export function PieceSignaturePanel({
       });
       if (res.ok) {
         setContresigneOuvert(false);
+        if (res.activationRefusee) setActivationRefusee(res.activationRefusee);
         router.refresh();
       } else setErreur(res.message);
     });
@@ -429,6 +434,15 @@ export function PieceSignaturePanel({
           className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
         >
           {erreur}
+        </p>
+      )}
+
+      {activationRefusee !== null && (
+        <p
+          role="alert"
+          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+        >
+          {activationRefusee}
         </p>
       )}
     </div>

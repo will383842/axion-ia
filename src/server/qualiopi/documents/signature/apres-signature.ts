@@ -247,6 +247,10 @@ export interface ActivationRefusee {
   readonly manques: ReadonlyArray<string>;
 }
 
+/** Ce que la console lit avant le motif d'un refus d'activation après contresignature. */
+export const PREFIXE_ACTIVATION_REFUSEE =
+  "Contrat contresigné, mais l'espace du formateur n'est pas ouvert.";
+
 /** Ce que l'après-signature rend à l'appelant. Ne lève jamais. */
 export interface ResultatApresSignature {
   /** Contrat-cadre contresigné mais espace NON ouvert : pourquoi. `null` sinon. */
