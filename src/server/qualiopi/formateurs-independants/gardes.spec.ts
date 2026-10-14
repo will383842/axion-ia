@@ -48,7 +48,9 @@ describe("peutActiverFormateurIndependant", () => {
     expect(peutActiverFormateurIndependant(complet(), MAINTENANT)).toEqual({ activable: true });
   });
 
-  it("un dossier VIDE liste les cinq manques, dans l'ordre", () => {
+  // Étape 3 (C4) : l'avis SIRENE / Kbis n'est plus exigé (aligné sur la contresignature) ;
+  // l'attestation l'est toujours quand le cumul n'est pas lu (garde fermée).
+  it("un dossier VIDE liste les quatre manques, dans l'ordre", () => {
     const v = peutActiverFormateurIndependant(
       {
         statut: "sous_traitant",
@@ -63,13 +65,7 @@ describe("peutActiverFormateurIndependant", () => {
     );
     expect(v).toEqual({
       activable: false,
-      manques: [
-        MANQUES.controleRegistre,
-        MANQUES.nda,
-        MANQUES.contrat,
-        MANQUES.vigilance,
-        MANQUES.sirene,
-      ],
+      manques: [MANQUES.controleRegistre, MANQUES.nda, MANQUES.contrat, MANQUES.vigilance],
     });
   });
 
@@ -111,13 +107,13 @@ describe("peutActiverFormateurIndependant", () => {
     const v = peutActiverFormateurIndependant(
       complet({
         pieces: [
-          piece("attestation_vigilance_urssaf"),
-          piece("kbis_avis_sirene", { dateEmission: null }),
+          piece("attestation_vigilance_urssaf", { dateEmission: null }),
+          piece("kbis_avis_sirene"),
         ],
       }),
       MAINTENANT,
     );
-    expect(v).toEqual({ activable: false, manques: [MANQUES.sirene] });
+    expect(v).toEqual({ activable: false, manques: [MANQUES.vigilance] });
   });
 
   it("une pièce en attente ou rejetée (archivée comprise) ne compte pas", () => {
@@ -130,20 +126,21 @@ describe("peutActiverFormateurIndependant", () => {
       }),
       MAINTENANT,
     );
-    expect(v).toEqual({ activable: false, manques: [MANQUES.vigilance, MANQUES.sirene] });
+    expect(v).toEqual({ activable: false, manques: [MANQUES.vigilance] });
   });
 
-  it("un avis SIRENE de plus de 3 mois bloque", () => {
-    const v = peutActiverFormateurIndependant(
-      complet({
-        pieces: [
-          piece("attestation_vigilance_urssaf"),
-          piece("kbis_avis_sirene", { dateEmission: ilYa(100) }),
-        ],
-      }),
-      MAINTENANT,
-    );
-    expect(v).toEqual({ activable: false, manques: [MANQUES.sirene] });
+  it("étape 3 (C4) — un avis SIRENE absent ou de plus de 3 mois ne bloque plus", () => {
+    for (const pieces of [
+      [piece("attestation_vigilance_urssaf")],
+      [
+        piece("attestation_vigilance_urssaf"),
+        piece("kbis_avis_sirene", { dateEmission: ilYa(100) }),
+      ],
+    ]) {
+      expect(peutActiverFormateurIndependant(complet({ pieces }), MAINTENANT)).toEqual({
+        activable: true,
+      });
+    }
   });
 
   // 🔴 Lot C4 — la date « contrat signé le » se saisit à la main : elle ne prouve rien.

@@ -47,6 +47,7 @@ import {
   type VerdictActivation,
 } from "./gardes";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** L'acte qui ouvre l'activation d'un indépendant — pas `editor`. */
 export const ACTE_ACTIVATION_INDEPENDANT = "habiliter_formateur" as const;
@@ -120,32 +121,37 @@ export function actifALaCreation(input: {
 async function lireFormateurPourGarde(
   trainerId: string,
 ): Promise<(FormateurPourActivation & { actif: boolean }) | null> {
-  const t = await prisma.trainer.findUnique({
-    where: { id: trainerId },
-    select: {
-      statut: true,
-      actif: true,
-      sousTraitantVerifieAt: true,
-      sousTraitantNda: true,
-      sousTraitantContratSigneAt: true,
-      finCollaborationAt: true,
-      // Lot C4 — la preuve de signature est la pièce générée, pas la date saisie.
-      documentsGeneres: {
-        where: { type: "contrat_sous_traitance" },
-        select: { statutSignature: true, annuleeAt: true },
-      },
-      documents: {
-        where: { type: { in: [...TYPES_PIECES_GARDEES] }, statutValidation: "valide" },
-        select: {
-          type: true,
-          statutValidation: true,
-          fichierUrl: true,
-          dateEmission: true,
-          dateExpiration: true,
+  // Étape 3 du C4 : le cumul HT règle l'exigence de l'attestation, comme à la
+  // contresignature (illisible : `null`, attestation exigée).
+  const [t, cumul] = await Promise.all([
+    prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: {
+        statut: true,
+        actif: true,
+        sousTraitantVerifieAt: true,
+        sousTraitantNda: true,
+        sousTraitantContratSigneAt: true,
+        finCollaborationAt: true,
+        // Lot C4 — la preuve de signature est la pièce générée, pas la date saisie.
+        documentsGeneres: {
+          where: { type: "contrat_sous_traitance" },
+          select: { statutSignature: true, annuleeAt: true },
+        },
+        documents: {
+          where: { type: { in: [...TYPES_PIECES_GARDEES] }, statutValidation: "valide" },
+          select: {
+            type: true,
+            statutValidation: true,
+            fichierUrl: true,
+            dateEmission: true,
+            dateExpiration: true,
+          },
         },
       },
-    },
-  });
+    }),
+    lireCumulHonorairesHtCents(trainerId),
+  ]);
   if (!t) return null;
   return {
     statut: t.statut,
@@ -159,6 +165,7 @@ async function lireFormateurPourGarde(
     })),
     finCollaborationAt: t.finCollaborationAt ?? null,
     pieces: (t.documents ?? []) as DocumentConformite[],
+    cumulHonorairesHtCents: cumul,
   };
 }
 
