@@ -63,13 +63,31 @@ export type EtapeArgent =
     }
   /** Le suivi quotidien (`passerSuiviMission`) : F35, alertes, rappels, reprise F37. */
   | { readonly etape: "suivi"; readonly maintenant: string }
-  /** Les demandes de contresignature (F34, `envoyerDemandesContresignature`). */
-  | { readonly etape: "demandes-contresignature"; readonly maintenant: string }
-  /** Le passage des campagnes (`passerCampagnes`), restreint aux fiches du test. */
+  /**
+   * Les demandes de contresignature (F34, `envoyerDemandesContresignature`).
+   *
+   * `retenirLeWorker` : la file d'e-mails est mise en PAUSE le temps du passage, puis
+   * reprise. Raison : défaut V1-C-11 — `enqueueEmail` pose le job AVANT la ligne
+   * « pending » du journal ; un worker qui le termine entre les deux crée sa propre
+   * ligne, et le même envoi en compte deux. F34 compte ces lignes (rang, plafond de 3) :
+   * la course couperait un rappel au hasard. La pause écarte la course (consignée à part)
+   * pour éprouver la CADENCE ; rien du passage lui-même n'est changé.
+   */
+  | {
+      readonly etape: "demandes-contresignature";
+      readonly maintenant: string;
+      readonly retenirLeWorker?: boolean;
+    }
+  /**
+   * Le passage des campagnes (`passerCampagnes`), restreint aux fiches du test.
+   * `retenirLeWorker` : voir `demandes-contresignature` (V1-C-11 — les campagnes aussi
+   * comptent les lignes du journal pour décider de l'étape suivante).
+   */
   | {
       readonly etape: "campagnes";
       readonly maintenant: string;
       readonly trainerIds: readonly string[];
+      readonly retenirLeWorker?: boolean;
     }
   /** La vue « Virements à faire » (`lireVirementsSortants`), restreinte aux pièces du test. */
   | { readonly etape: "virements"; readonly maintenant: string; readonly ids: readonly string[] }

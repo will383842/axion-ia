@@ -5,7 +5,6 @@ import { expect } from "@playwright/test";
 import { prisma } from "./base";
 import { jouerUne } from "./argent-execution";
 import { semerInterrupteurs, type ValeurInterrupteur } from "./interrupteurs";
-import { lireJournalEnvois } from "./journal-envois";
 import { jobEnFile } from "./argent-puits";
 import { URL_PUITS } from "./puits-smtp";
 
@@ -49,12 +48,36 @@ export async function semerTextesValides(
   return semerInterrupteurs(lignes);
 }
 
-/** Attend que le journal des envois porte `n` lignes de ce gabarit pour cette adresse. */
+/**
+ * Les ENVOIS d'un gabarit pour une adresse : une entrée par `jobId` distinct (la plus
+ * ancienne ligne). Défaut V1-C-11 : un même envoi peut laisser DEUX lignes au journal
+ * (une « sent » écrite par le worker, une « pending » écrite par l'enfilage) ; compter
+ * des lignes ferait dépendre le constat de cette course.
+ */
+export async function envoisDistincts(filtre: { destinataire: string; gabarit?: string }) {
+  const lignes = await prisma.emailLog.findMany({
+    where: {
+      recipient: filtre.destinataire,
+      ...(filtre.gabarit ? { template: filtre.gabarit } : {}),
+    },
+    orderBy: { createdAt: "asc" },
+    select: { id: true, jobId: true, template: true, status: true, createdAt: true },
+  });
+  const vus = new Set<string>();
+  return lignes.filter((l) => {
+    const cle = l.jobId ?? l.id;
+    if (vus.has(cle)) return false;
+    vus.add(cle);
+    return true;
+  });
+}
+
+/** Attend que `n` envois distincts de ce gabarit soient enfilés pour cette adresse. */
 export async function attendreEnvois(destinataire: string, gabarit: string, n: number) {
   await expect
-    .poll(async () => (await lireJournalEnvois({ destinataire, gabarit })).length, ATTENTE)
+    .poll(async () => (await envoisDistincts({ destinataire, gabarit })).length, ATTENTE)
     .toBe(n);
-  return lireJournalEnvois({ destinataire, gabarit });
+  return envoisDistincts({ destinataire, gabarit });
 }
 
 /**
@@ -63,15 +86,16 @@ export async function attendreEnvois(destinataire: string, gabarit: string, n: n
  * `enqueueEmail` date sa ligne à l'heure réelle (il ne reçoit pas d'instant), et
  * certaines gardes relisent cette date pour espacer les envois (F34 : 23 h). Le banc
  * joue des journées en 2037 : sans recalage, l'écart serait de onze ans et la garde
- * ne serait pas éprouvée. Seule la colonne `created_at` de la ligne nommée est
- * touchée, et seulement pour la placer à l'instant où le passage l'a écrite.
+ * ne serait pas éprouvée. Seule la colonne `created_at` des lignes de cet envoi est
+ * touchée, et seulement pour la placer à l'instant où le passage l'a écrit.
  */
 export async function recalerJournal(jobId: string, instant: Date): Promise<void> {
   const { count } = await prisma.emailLog.updateMany({
     where: { jobId },
     data: { createdAt: instant },
   });
-  if (count !== 1) throw new Error(`recalage : ${count} ligne(s) pour ${jobId}`);
+  // Toutes les lignes du même envoi (V1-C-11 : il peut y en avoir deux).
+  if (count < 1) throw new Error(`recalage : aucune ligne pour ${jobId}`);
 }
 
 /**

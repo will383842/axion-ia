@@ -76,13 +76,17 @@ async function rcProExpirant(trainerId: string, jour: string): Promise<void> {
   });
 }
 
-/** Les relances de campagne (`fi-…`) parties pour ce formateur, dans l'ordre. */
+/**
+ * Les relances de campagne (`fi-…`) parties pour ce formateur, dans l'ordre : une par
+ * `jobId` (V1-C-11 : un même envoi peut laisser deux lignes au journal).
+ */
 async function relances(trainerId: string) {
-  return prisma.emailLog.findMany({
+  const lignes = await prisma.emailLog.findMany({
     where: { entityId: trainerId, jobId: { startsWith: "fi-" }, status: { not: "failed" } },
     orderBy: { createdAt: "asc" },
     select: { template: true, jobId: true },
   });
+  return lignes.filter((l, i) => lignes.findIndex((x) => x.jobId === l.jobId) === i);
 }
 
 /**
@@ -107,6 +111,8 @@ const passage = (jour: string, trainerIds: string[]) => ({
   etape: "campagnes" as const,
   maintenant: aParis(jour, "10:00").toISOString(),
   trainerIds,
+  // V1-C-11 : la décision d'étape compte les lignes du journal ; on écarte la course.
+  retenirLeWorker: true,
 });
 
 test.describe("@formateurs E25 — pièces à renouveler, une relance par jour", () => {

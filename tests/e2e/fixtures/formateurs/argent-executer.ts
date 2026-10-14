@@ -123,6 +123,21 @@ async function retirerF36ApresUnRefus(statementId: string): Promise<void> {
   await job.remove().catch(() => undefined);
 }
 
+/**
+ * Joue `fn` file d'e-mails en PAUSE, puis la reprend (V1-C-11, voir le protocole) : les
+ * jobs enfilés pendant `fn` attendent que leur ligne « pending » soit écrite, et le worker
+ * la met à jour au lieu d'en créer une seconde.
+ */
+async function sousWorkerRetenu<T>(fn: () => Promise<T>): Promise<T> {
+  if (!emailsQueue) return fn();
+  await emailsQueue.pause();
+  try {
+    return await fn();
+  } finally {
+    await emailsQueue.resume();
+  }
+}
+
 async function jouerEtape(e: EtapeArgent): Promise<unknown> {
   switch (e.etape) {
     case "passage": {
@@ -213,16 +228,21 @@ async function jouerEtape(e: EtapeArgent): Promise<unknown> {
     }
     case "suivi":
       return passerSuiviMission(quand(e.maintenant));
-    case "demandes-contresignature":
-      return envoyerDemandesContresignature(quand(e.maintenant));
+    case "demandes-contresignature": {
+      const passer = () => envoyerDemandesContresignature(quand(e.maintenant));
+      return e.retenirLeWorker ? sousWorkerRetenu(passer) : passer();
+    }
     case "campagnes": {
       const miens = new Set(e.trainerIds);
-      return passerCampagnes(quand(e.maintenant), {
-        registre: REGISTRE_CAMPAGNES.map((c) => ({
-          ...c,
-          lireFaits: async (m: Date) => (await c.lireFaits(m)).filter((f) => miens.has(f.entityId)),
-        })),
-      });
+      const passer = () =>
+        passerCampagnes(quand(e.maintenant), {
+          registre: REGISTRE_CAMPAGNES.map((c) => ({
+            ...c,
+            lireFaits: async (m: Date) =>
+              (await c.lireFaits(m)).filter((f) => miens.has(f.entityId)),
+          })),
+        });
+      return e.retenirLeWorker ? sousWorkerRetenu(passer) : passer();
     }
     case "virements": {
       const ids = new Set(e.ids);
