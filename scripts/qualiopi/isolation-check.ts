@@ -230,6 +230,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    des réponses formateurs (import paresseux, interrupteur `formateurs.reponses_formateurs`).
   "src/features/admin-job-applications/invitation-formateur-actions.ts",
   "src/features/admin-job-applications/reponses-entrantes-candidature.ts",
+  // Banc @formateurs — vérification n° 1 (équipe A) : le banc VÉRIFIE le domaine, il ne le
+  //    réimplémente pas. L'allumage lit les règles de préalables et les empreintes de textes
+  //    (`allumage.ts`) ; l'exécuteur appelle les actions et passages réels (`etapes-catalogue.ts`) ;
+  //    trois specs lisent une règle PURE (motifs orange, version du gabarit, règle de mission).
+  "tests/e2e/fixtures/formateurs/allumage.ts",
+  "tests/e2e/fixtures/formateurs/serveur/etapes-catalogue.ts",
+  "tests/e2e/formateurs/e09-registre-orange-et-muet.spec.ts",
+  "tests/e2e/formateurs/e10-code-signature-et-contrat.spec.ts",
+  "tests/e2e/formateurs/e12-nda-en-cours.spec.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",

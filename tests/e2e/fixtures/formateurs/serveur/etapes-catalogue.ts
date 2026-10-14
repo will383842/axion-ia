@@ -12,6 +12,8 @@ import type { NextRequest } from "next/server";
 
 // eslint-disable-next-line no-restricted-imports
 import { POST as recevoirWebhookCalendly } from "@/app/api/calendly/webhook/route";
+// eslint-disable-next-line no-restricted-imports
+import { POST as capterClientEvent } from "@/app/api/calendly/client-event/route";
 import { ajouterCandidatFormateurAction } from "@/features/admin-job-applications/candidat-formateur-actions";
 import { passerReponsesEntrantesCandidats } from "@/features/admin-job-applications/reponses-entrantes-candidature";
 import {
@@ -20,6 +22,9 @@ import {
 } from "@/features/admin-rendezvous/issue-formateur-actions";
 import { listRendezVousAFaireLePoint } from "@/features/admin-rendezvous/suivi-queries";
 import { submitJobApplicationAction } from "@/features/job-application/actions";
+// Les portes PUBLIQUES du dossier, telles que la page les appelle (comme la route
+// webhook, plus haut) : le banc appelle l'action, pas une copie de sa logique.
+// eslint-disable-next-line no-restricted-imports
 import * as dossier from "@/app/formateur/dossier/[id]/[jeton]/actions";
 import { contresignerEtOuvrirEspaceAction } from "@/server/actions/qualiopi/formateurs-verifier-contresigner";
 import { setQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -50,6 +55,8 @@ import type { ClientZohoMail } from "@/server/zoho-mail/client";
 import {
   corpsInviteeCanceled,
   corpsInviteeCreated,
+  eventUriDe,
+  inviteeUriDe,
   type RendezVousSimule,
 } from "../calendly-simule";
 import type { EntreeEtape } from "../protocole";
@@ -259,6 +266,35 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
     const rdv = (entree.calendly ?? []).find((r) => r.cle === a["cle"]);
     if (!rdv) throw new Error("banc @formateurs : rendez-vous à livrer absent du décor");
     return livrer(rdv, a["annulation"] === true);
+  },
+
+  /**
+   * La capture par l'IFRAME de la page de réservation (`CalendlyEventCapture`) : le
+   * navigateur n'envoie que les deux URI, le slug et les UTM de la page ; la route
+   * relit le reste à l'API Calendly (simulée).
+   */
+  async "capter-iframe"(a, entree) {
+    reinitialiserCacheTypesRendezVous();
+    const rdv = (entree.calendly ?? []).find((r) => r.cle === a["cle"]);
+    if (!rdv) throw new Error("banc @formateurs : rendez-vous à capter absent du décor");
+    const corps = JSON.stringify({
+      eventName: "calendly.event_scheduled",
+      payload: { event: { uri: eventUriDe(rdv) }, invitee: { uri: inviteeUriDe(rdv) } },
+      eventTypeSlug: String(a["slug"]),
+      ...(a["utmContent"] ? { utmContent: String(a["utmContent"]) } : {}),
+      pageUrl: String(a["pageUrl"]),
+    });
+    const requete = new Request("https://axion-ia.com/api/calendly/client-event", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        origin: "https://axion-ia.com",
+        "x-forwarded-for": entree.ip ?? "192.0.2.10",
+      },
+      body: corps,
+    });
+    const reponse = await capterClientEvent(requete as unknown as NextRequest);
+    return { statut: reponse.status, corps: await reponse.text() };
   },
 
   /** « Ajouter un candidat formateur » — l'action de la console. */

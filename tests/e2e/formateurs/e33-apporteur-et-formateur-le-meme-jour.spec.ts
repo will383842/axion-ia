@@ -106,4 +106,40 @@ test.describe("@formateurs E33 — apporteur et formateur le même jour", () => 
       }),
     ).toBe(0);
   });
+
+  test("capté par l'iframe de la page de réservation : hors CRM, sans alerte, rattaché", async () => {
+    const formateur = decor.adresse("iframe");
+    const cand = await candidatureInvitee(formateur, "Lena");
+    const rdv = rendezVousFictif({
+      nomType: "Échange formateur indépendant (20 min)",
+      typeConnu: null,
+      prenom: "Lena",
+      email: formateur,
+      joursPlusTard: 2,
+      tracking: { utm_content: `formateur:fa-${cand.id}` },
+    });
+    const capture = await etape<{ statut: number; corps: string }>({
+      etape: "capter-iframe",
+      args: {
+        cle: rdv.cle,
+        slug: "echange-formateur-independant",
+        utmContent: `formateur:fa-${cand.id}`,
+        pageUrl: `https://axion-ia.com/fr/appel/formateur-independant?depuis=fa-${cand.id}`,
+      },
+      calendly: [rdv],
+      ip: "198.18.200.1",
+    });
+    expect(capture.valeur.statut, capture.valeur.corps).toBe(200);
+    const ligne = await prisma.calendlyEvent.findFirstOrThrow({
+      where: { eventUri: eventUriDe(rdv) },
+    });
+    expect(ligne.linkedJobApplicationId).toBe(cand.id);
+    expect(
+      await prisma.crmSyncOutbox.count({
+        where: { subjectRef: `site:calendly_event:${ligne.id}` },
+      }),
+    ).toBe(0);
+    // Aucune alerte n'a même été tentée (Telegram).
+    expect(capture.reseau.filter((a) => /telegram/i.test(new URL(a.url).host))).toEqual([]);
+  });
 });
