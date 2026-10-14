@@ -184,8 +184,48 @@ describe("M12 — validation en console (W-7)", () => {
     valeur: `enc:v2:demande:${DEMANDE}:iban|${Buffer.from(IBAN).toString("hex")}`,
     valeurEmpreinte: "a".repeat(64),
     createdAt: new Date(MAINTENANT.getTime() - DELAI_VALIDATION_CHANGEMENT_MS - 1000),
-    trainer: { statut: "sous_traitant", prenom: "Camille", email: "camille@example.test" },
+    ancienneAdresseAviseeAt: new Date(MAINTENANT.getTime() - DELAI_VALIDATION_CHANGEMENT_MS),
+    trainer: {
+      statut: "sous_traitant",
+      actif: true,
+      finCollaborationAt: null,
+      prenom: "Camille",
+      email: "camille@example.test",
+    },
     ...over,
+  });
+
+  it("C4 — IBAN dont le titulaire n'a pas été prévenu : refusée, rien n'est écrit", async () => {
+    db.demandeChangementFormateur.findUnique.mockResolvedValue(
+      demande({ ancienneAdresseAviseeAt: null }),
+    );
+    const r = await validerDemandeChangement({
+      demandeId: DEMANDE,
+      adminId: ADMIN,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toEqual({ ok: false, raison: "non_avisee" });
+    expect(db.demandeChangementFormateur.updateMany).not.toHaveBeenCalled();
+    expect(db.trainer.update).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["fiche inactive", { actif: false }],
+    ["collaboration terminée", { finCollaborationAt: new Date("2026-01-01T00:00:00Z") }],
+  ])("C4 — %s : refusée, rien n'est écrit", async (_q, over) => {
+    const d = demande();
+    db.demandeChangementFormateur.findUnique.mockResolvedValue({
+      ...d,
+      trainer: { ...d.trainer, ...over },
+    });
+    const r = await validerDemandeChangement({
+      demandeId: DEMANDE,
+      adminId: ADMIN,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toEqual({ ok: false, raison: "fiche_close" });
+    expect(db.demandeChangementFormateur.updateMany).not.toHaveBeenCalled();
+    expect(db.trainer.update).not.toHaveBeenCalled();
   });
 
   it("avant 48 h : refusée, rien n'est écrit", async () => {
@@ -229,7 +269,13 @@ describe("M12 — validation en console (W-7)", () => {
 
   it("adresse validée : écrite sur l'adresse professionnelle", async () => {
     db.demandeChangementFormateur.findUnique.mockResolvedValue(
-      demande({ nature: "adresse", valeur: "12 rue des Lilas", valeurEmpreinte: null }),
+      // Une adresse n'envoie aucun avis : elle se valide sans.
+      demande({
+        nature: "adresse",
+        valeur: "12 rue des Lilas",
+        valeurEmpreinte: null,
+        ancienneAdresseAviseeAt: null,
+      }),
     );
     await validerDemandeChangement({ demandeId: DEMANDE, adminId: ADMIN, maintenant: MAINTENANT });
     expect(db.trainer.update.mock.calls[0]![0].data).toEqual({

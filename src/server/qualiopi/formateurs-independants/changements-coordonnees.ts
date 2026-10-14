@@ -292,14 +292,24 @@ export type ResultatTraitement =
   | { ok: true }
   | {
       ok: false;
-      raison: "coupe" | "introuvable" | "trop_tot" | "deja_traitee" | "motif" | "erreur";
+      raison:
+        | "coupe"
+        | "introuvable"
+        | "trop_tot"
+        | "non_avisee"
+        | "fiche_close"
+        | "deja_traitee"
+        | "motif"
+        | "erreur";
     };
 
 class DejaTraitee extends Error {}
 
 /**
  * Validation par un administrateur (l'action a vérifié l'habilitation). Après le délai
- * seulement. La fiche reçoit la nouvelle valeur dans la même transaction que la
+ * seulement ; pour un IBAN, seulement si l'avis F43 est bien parti à l'adresse connue
+ * (sans lui, le titulaire n'a pas pu s'opposer pendant les 48 h) ; et seulement sur
+ * une fiche encore active, sans fin de collaboration (C4). La fiche reçoit la nouvelle valeur dans la même transaction que la
  * décision ; F44 confirme au formateur.
  */
 export async function validerDemandeChangement(p: {
@@ -319,7 +329,16 @@ export async function validerDemandeChangement(p: {
         valeur: true,
         valeurEmpreinte: true,
         createdAt: true,
-        trainer: { select: { statut: true, prenom: true, email: true } },
+        ancienneAdresseAviseeAt: true,
+        trainer: {
+          select: {
+            statut: true,
+            actif: true,
+            finCollaborationAt: true,
+            prenom: true,
+            email: true,
+          },
+        },
       },
     });
     if (
@@ -334,6 +353,13 @@ export async function validerDemandeChangement(p: {
       return { ok: false, raison: "trop_tot" };
     }
     const nature = d.nature as NatureChangement;
+    // C4 — un IBAN ne change pas sans que le titulaire ait été prévenu.
+    if (nature === "iban" && d.ancienneAdresseAviseeAt === null) {
+      return { ok: false, raison: "non_avisee" };
+    }
+    if (!d.trainer.actif || d.trainer.finCollaborationAt !== null) {
+      return { ok: false, raison: "fiche_close" };
+    }
 
     let ecriture: { iban: string; ibanEmpreinte: string } | { adresseProfessionnelle: string };
     if (nature === "iban") {
