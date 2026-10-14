@@ -34,6 +34,10 @@ vi.mock("next/headers", () => ({
   headers: vi.fn(async () => new Headers()),
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+const perimee = vi.hoisted(() => vi.fn());
+vi.mock("@/server/qualiopi/formateurs-independants/lettre-mission-perimee", () => ({
+  objectionLettreMissionPerimee: perimee,
+}));
 
 // ⚠️ `resolvePrincipalTrainerId` n'est PAS mocké : c'est le résolveur que le
 // générateur emploie pour imprimer le nom sur la pièce. Le mocker validerait
@@ -71,6 +75,7 @@ const ENTREE = { documentGenereId: DOC, methode: "trace" as const, imageDataUrl:
 
 beforeEach(() => {
   vi.clearAllMocks();
+  perimee.mockResolvedValue(null);
   mockFormateur.mockResolvedValue({
     trainerId: TRAINER,
     nom: "Jullin",
@@ -92,6 +97,41 @@ beforeEach(() => {
     signatureId: "sig-1",
     selfHash: "a".repeat(64),
     statutSignature: "partielle",
+  });
+});
+
+describe("C4 — une lettre PÉRIMÉE ne se signe plus, ni par le formateur ni en console", () => {
+  beforeEach(() => {
+    perimee.mockImplementation(async ({ partie }: { partie: string }) => ({
+      message: partie === "formateur" ? "périmée (formateur)" : "périmée (console)",
+    }));
+  });
+
+  it("formateur : refus avec son message, rien n'est signé", async () => {
+    const res = await signerLettreMissionFormateurAction(ENTREE);
+    expect(res).toEqual({
+      ok: false,
+      raison: "piece_non_signable_maintenant",
+      message: "périmée (formateur)",
+    });
+    expect(perimee).toHaveBeenCalledWith(
+      expect.objectContaining({
+        documentGenereId: DOC,
+        type: "lettre_mission",
+        partie: "formateur",
+      }),
+    );
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("console : refus avec son message, rien n'est contresigné", async () => {
+    const res = await contresignerLettreMissionAction(ENTREE);
+    expect(res).toEqual({
+      ok: false,
+      raison: "piece_non_signable_maintenant",
+      message: "périmée (console)",
+    });
+    expect(mockSigner).not.toHaveBeenCalled();
   });
 });
 
