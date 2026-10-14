@@ -30,6 +30,7 @@ import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-servic
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 import { interrupteurAllume } from "../interrupteur-allume";
+import { LIBELLE_MOTIF_FORMATION_INCOMPLETE } from "../paiement/formation-complete";
 import { lireAllumageBilan } from "./allumage";
 import {
   bilanExige,
@@ -187,8 +188,10 @@ export interface VueBilan {
   readonly avis: { readonly note: number | null; readonly commentaire: string | null } | null;
   readonly termineAt: Date | null;
   readonly etat: EtatDuBilan;
-  /** Le paiement attend-il ce bilan ? (session finie après l'allumage) */
+  /** Le paiement (du dernier mois de la mission) attend-il ce bilan ? (session finie après l'allumage) */
   readonly attenduPourPaiement: boolean;
+  /** Le motif affiché au formateur, le même que dans la console ; `null` s'il n'est pas attendu. */
+  readonly motifPaiement: string | null;
 }
 
 /** `null` : aucun bloc (interrupteur éteint, pas son formateur, pas encore fini…). */
@@ -217,6 +220,15 @@ export async function lireBilanFormateur(
           })
         : null;
     const derniere = derniereJourneeDe(g.session.jours);
+    const attenduPourPaiement =
+      derniere !== null &&
+      bilan?.payerQuandMemeAt == null &&
+      bilanExige({
+        statut: "sous_traitant",
+        organismeSousTraitantId: null,
+        allumeLe,
+        derniereJournee: derniere.jour,
+      });
     return {
       objectifs: g.objectifs,
       stagiaires: inscrits.map((i) => ({
@@ -239,15 +251,10 @@ export async function lireBilanFormateur(
         avisDonne: bilan?.appreciationId != null,
         termineAt: bilan?.termineAt ?? null,
       }),
-      attenduPourPaiement:
-        derniere !== null &&
-        bilan?.payerQuandMemeAt == null &&
-        bilanExige({
-          statut: "sous_traitant",
-          organismeSousTraitantId: null,
-          allumeLe,
-          derniereJournee: derniere.jour,
-        }),
+      attenduPourPaiement,
+      motifPaiement: attenduPourPaiement
+        ? LIBELLE_MOTIF_FORMATION_INCOMPLETE.bilan_fin_formation_manquant
+        : null,
     };
   } catch {
     // Le bloc ne doit jamais faire tomber la page de la session.
@@ -426,8 +433,9 @@ export type IssuePayerQuandMeme = "ok" | "eteint" | "introuvable" | "motif_inval
 
 /**
  * « Payer quand même » : lève l'exigence du bilan pour CE formateur sur CETTE session
- * (jamais celle des feuilles). Motif obligatoire ; auteur, date et motif posés sur la
- * ligne, l'acte tracé au journal (identifiants seuls). Aucun montant ne bouge.
+ * (jamais celle des feuilles), c'est-à-dire pour le relevé du dernier mois de la mission.
+ * Motif obligatoire ; auteur, date et motif posés sur la ligne, l'acte tracé au journal
+ * (identifiants seuls). Aucun montant ne bouge.
  */
 export async function payerQuandMemeBilan(i: {
   readonly sessionId: string;

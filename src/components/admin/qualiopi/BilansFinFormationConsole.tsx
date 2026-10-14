@@ -3,7 +3,8 @@
  * (lot G2), sur la page « Évaluations des acquis ».
  *
  * Pour chacun : bilan terminé ou non, le MOTIF EXACT qui retient son paiement (même règle
- * que le passage du paiement), et le geste « Payer quand même » (motif obligatoire,
+ * que le passage du paiement : seul le relevé du dernier mois de la mission attend le
+ * bilan), et le geste « Payer quand même » (motif obligatoire,
  * confirmation). Composant serveur ; rendu seulement si l'interrupteur
  * `formateurs.bilan_fin_formation` est allumé (la page passe `null` sinon).
  */
@@ -103,7 +104,7 @@ export function BilansFinFormationConsole({
                   </label>
                   <label className={`${discret} flex items-center gap-2`}>
                     <input type="checkbox" name="confirmer" value="oui" required />
-                    Le paiement n&apos;attendra plus ce bilan.
+                    Le relevé du dernier mois de la mission n&apos;attendra plus ce bilan.
                   </label>
                   <button
                     type="submit"

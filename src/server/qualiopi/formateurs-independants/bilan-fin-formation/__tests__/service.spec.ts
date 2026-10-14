@@ -64,6 +64,7 @@ import {
   payerQuandMemeBilan,
   terminerBilanFormateur,
 } from "../service";
+import { LIBELLE_MOTIF_FORMATION_INCOMPLETE } from "../../paiement/formation-complete";
 
 function session(over: Record<string, unknown> = {}) {
   return {
@@ -400,5 +401,36 @@ describe("payer quand même (administrateur)", () => {
   it("interrupteur éteint : refus", async () => {
     m.allume.mockResolvedValue(false);
     expect(await payer("Le formateur a remis son bilan sur papier.")).toBe("eteint");
+  });
+});
+
+describe("le motif affiché au formateur (même règle que le paiement)", () => {
+  beforeEach(() => {
+    // Allumé avant la dernière journée (2026-11-04) : le bilan est exigé.
+    m.db.setting.findUnique.mockResolvedValue({
+      value: { actif: true, allumeLe: "2026-10-01T08:00:00Z" },
+      updatedAt: null,
+    });
+  });
+
+  it("bilan attendu : le motif dit que seul le dernier mois de la mission l'attend", async () => {
+    const vue = await lireBilanFormateur(SESSION, MOI, APRES);
+    expect(vue?.attenduPourPaiement).toBe(true);
+    expect(vue?.motifPaiement).toBe(
+      LIBELLE_MOTIF_FORMATION_INCOMPLETE.bilan_fin_formation_manquant,
+    );
+    expect(vue?.motifPaiement).toContain("seul le relevé du dernier mois de la mission");
+  });
+
+  it("« payer quand même » posé : plus de motif", async () => {
+    m.db.bilanFinFormation.findUnique.mockResolvedValue({
+      id: BILAN,
+      appreciationId: null,
+      termineAt: null,
+      payerQuandMemeAt: APRES,
+    });
+    const vue = await lireBilanFormateur(SESSION, MOI, APRES);
+    expect(vue?.attenduPourPaiement).toBe(false);
+    expect(vue?.motifPaiement).toBeNull();
   });
 });

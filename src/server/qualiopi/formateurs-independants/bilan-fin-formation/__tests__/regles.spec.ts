@@ -132,7 +132,7 @@ describe("formationCompletePourFormateur", () => {
     });
     expect(v).toEqual({ payable: false, raison: "bilan_fin_formation_manquant", manquantes: 0 });
     expect(LIBELLE_MOTIF_FORMATION_INCOMPLETE[v.raison!]).toBe(
-      "il manque le bilan de fin de formation",
+      "il manque le bilan de fin de formation (seul le relevé du dernier mois de la mission l'attend ; les mois précédents se paient sur les feuilles de présence contresignées)",
     );
   });
 

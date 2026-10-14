@@ -35,6 +35,7 @@ export interface VueBilanFinFormation {
     readonly peutTerminer: boolean;
   };
   readonly attenduPourPaiement: boolean;
+  readonly motifPaiement: string | null;
 }
 
 export interface BilanFinFormationProps {
@@ -118,9 +119,9 @@ export function BilanFinFormation({
       ) : (
         <>
           <p className="text-mocha text-sm">Trois étapes, quelques minutes.</p>
-          {vue.attenduPourPaiement ? (
+          {vue.attenduPourPaiement && vue.motifPaiement !== null ? (
             <p className="text-mocha bg-sand rounded-md px-3 py-2 text-sm">
-              Paiement : il manque le bilan de fin de formation.
+              Paiement : {vue.motifPaiement}.
             </p>
           ) : null}
           {message !== undefined ? (

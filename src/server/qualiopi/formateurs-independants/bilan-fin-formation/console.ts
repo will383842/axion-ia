@@ -1,8 +1,9 @@
 /**
  * Lot G2 — ce que la CONSOLE montre du bilan de fin de formation d'une session : pour
  * chaque formateur indépendant qui l'a animée, l'état du bilan et le MOTIF EXACT qui
- * retient son paiement (« il manque le bilan de fin de formation »…), lu par la même règle
- * que le passage (`formationCompleteSurLaSession`).
+ * retient son paiement (« il manque le bilan de fin de formation (seul le relevé du dernier
+ * mois de la mission l'attend…) »), lu par la même règle que le passage
+ * (`formationCompleteSurLaSession`) : seul le dernier mois de la mission attend le bilan.
  *
  * `null` : interrupteur `formateurs.bilan_fin_formation` éteint — rien n'est montré, rien
  * n'est lu au-delà de lui.

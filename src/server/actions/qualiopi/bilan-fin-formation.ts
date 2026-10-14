@@ -54,7 +54,10 @@ export async function payerQuandMemeBilanFormAction(formData: FormData): Promise
     vers("erreur", LIBELLES.introuvable!);
   }
   if (champ(formData, "confirmer") !== "oui") {
-    vers("erreur", "Cochez la confirmation : le paiement n'attendra plus ce bilan.");
+    vers(
+      "erreur",
+      "Cochez la confirmation : le relevé du dernier mois de la mission n'attendra plus ce bilan.",
+    );
   }
   const issue = await payerQuandMemeBilan({
     sessionId: sessionId!,
@@ -67,6 +70,6 @@ export async function payerQuandMemeBilanFormAction(formData: FormData): Promise
   if (issue !== "ok") vers("erreur", LIBELLES[issue] ?? "Rien n'est écrit.");
   vers(
     "ok",
-    "C'est noté : le paiement n'attend plus le bilan de ce formateur. Le relevé passera « à valider » au prochain passage.",
+    "C'est noté : le relevé du dernier mois de la mission n'attend plus le bilan de ce formateur. Il passera « à valider » au prochain passage.",
   );
 }

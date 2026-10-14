@@ -5,7 +5,9 @@
  * formation que s'il a fait tout ce qui lui revient pour cette formation, c'est-à-dire :
  *   1. ses feuilles de présence contresignées — la règle EXISTANTE (`moisPayable`),
  *      reprise telle quelle, jamais recopiée ;
- *   2. ET son bilan de fin de formation terminé (évaluations finales + avis).
+ *   2. ET son bilan de fin de formation terminé (évaluations finales + avis) — pour le
+ *      DERNIER mois de la mission seulement (décision de Will) : sur une mission payée
+ *      sur plusieurs mois, les mois précédents se paient sur les feuilles seules.
  *
  * `bilan: null` = le bilan n'est pas exigé (interrupteur `formateurs.bilan_fin_formation`
  * éteint, session finie avant son allumage, salarié…) : le verdict est EXACTEMENT celui de
@@ -47,7 +49,8 @@ export const LIBELLE_MOTIF_FORMATION_INCOMPLETE: Readonly<
   aucune_signature: "aucune feuille de présence n'est contresignée",
   feuilles_incompletes: "il manque des feuilles de présence contresignées",
   condition_financeur_en_attente: "une condition du financeur est en attente",
-  bilan_fin_formation_manquant: "il manque le bilan de fin de formation",
+  bilan_fin_formation_manquant:
+    "il manque le bilan de fin de formation (seul le relevé du dernier mois de la mission l'attend ; les mois précédents se paient sur les feuilles de présence contresignées)",
 };
 
 export function formationCompletePourFormateur(e: {
@@ -66,7 +69,9 @@ export function formationCompletePourFormateur(e: {
 
 /**
  * Le même verdict à l'échelle de la SESSION entière, pour l'affichage (console) : les
- * demi-journées prévues de ce formateur, ses contresignatures, et le bilan. Mêmes
+ * demi-journées prévues de ce formateur, ses contresignatures, et le bilan. Le bilan n'y
+ * joue qu'une fois TOUTES les feuilles complètes, celles du dernier mois comprises :
+ * c'est donc bien le relevé du dernier mois qu'il retient, et le motif le dit. Mêmes
  * fonctions que le passage (`heures-animees.ts`), jamais une seconde lecture des feuilles.
  */
 export function formationCompleteSurLaSession(
