@@ -21,6 +21,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-
 const LIBELLES: Record<string, string> = {
   eteint: "Le bilan de fin de formation n'est pas ouvert (interrupteur éteint).",
   introuvable: "Ce formateur n'a pas animé cette session.",
+  non_concerne:
+    "Ce formateur n'est pas indépendant (salarié, dirigeant ou formateur d'organisme) : son paiement n'attend aucun bilan.",
   motif_invalide: "Écrivez le motif (10 à 500 caractères) : il reste au dossier.",
   deja_fait: "« Payer quand même » est déjà posé pour ce formateur.",
 };

@@ -429,12 +429,15 @@ export async function terminerBilanFormateur(i: {
 // Le geste de l'administrateur
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type IssuePayerQuandMeme = "ok" | "eteint" | "introuvable" | "motif_invalide" | "deja_fait";
+export type IssuePayerQuandMeme =
+  "ok" | "eteint" | "introuvable" | "non_concerne" | "motif_invalide" | "deja_fait";
 
 /**
  * « Payer quand même » : lève l'exigence du bilan pour CE formateur sur CETTE session
  * (jamais celle des feuilles), c'est-à-dire pour le relevé du dernier mois de la mission.
- * Motif obligatoire ; auteur, date et motif posés sur la ligne, l'acte tracé au journal
+ * Réservé au formateur indépendant en nom propre, comme le bilan lui-même : un salarié, un
+ * dirigeant ou un formateur d'organisme est refusé, aucune ligne n'est créée. Motif
+ * obligatoire ; auteur, date et motif posés sur la ligne, l'acte tracé au journal
  * (identifiants seuls). Aucun montant ne bouge.
  */
 export async function payerQuandMemeBilan(i: {
@@ -450,6 +453,17 @@ export async function payerQuandMemeBilan(i: {
   const session = await lireSession(i.sessionId);
   if (session === null || !formateursDeLaSession(session).includes(i.trainerId)) {
     return "introuvable";
+  }
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: i.trainerId },
+    select: { statut: true, organismeSousTraitantId: true },
+  });
+  if (
+    trainer === null ||
+    trainer.statut !== "sous_traitant" ||
+    trainer.organismeSousTraitantId !== null
+  ) {
+    return "non_concerne";
   }
   const { id: bilanId } = await ligneBilan(i.sessionId, i.trainerId);
   return prisma.$transaction(async (tx) => {

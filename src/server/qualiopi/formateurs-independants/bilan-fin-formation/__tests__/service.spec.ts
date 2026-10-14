@@ -402,6 +402,20 @@ describe("payer quand même (administrateur)", () => {
     m.allume.mockResolvedValue(false);
     expect(await payer("Le formateur a remis son bilan sur papier.")).toBe("eteint");
   });
+
+  it("formateur non indépendant (salarié, dirigeant, formateur d'organisme) : refus, aucune ligne", async () => {
+    for (const t of [
+      { statut: "salarie", organismeSousTraitantId: null },
+      { statut: "dirigeant", organismeSousTraitantId: null },
+      { statut: "sous_traitant", organismeSousTraitantId: "org-1" },
+    ]) {
+      m.db.trainer.findUnique.mockResolvedValue({ ...t, finCollaborationAt: null });
+      expect(await payer("Le formateur a remis son bilan sur papier.")).toBe("non_concerne");
+    }
+    expect(m.db.bilanFinFormation.upsert).not.toHaveBeenCalled();
+    expect(m.db.bilanFinFormation.update).not.toHaveBeenCalled();
+    expect(m.journaliser).not.toHaveBeenCalled();
+  });
 });
 
 describe("le motif affiché au formateur (même règle que le paiement)", () => {
