@@ -96,7 +96,10 @@ import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signatur
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
-import { genererLettreMissionV2 } from "@/server/qualiopi/documents/lettre-mission-v2-generation";
+import {
+  genererLettreMissionV2,
+  VERSION_LETTRE_EMISE,
+} from "@/server/qualiopi/documents/lettre-mission-v2-generation";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
   LIEU_DOCUMENT_SELECT,
@@ -1971,7 +1974,7 @@ export async function genererLettreMissionAction(input: {
       changes: {
         documentId: v2.documentId,
         numero: v2.numero,
-        gabaritVersion: 2,
+        gabaritVersion: VERSION_LETTRE_EMISE,
         ...(v2.lettreAnnuleeId !== null ? { lettreAnnuleeId: v2.lettreAnnuleeId } : {}),
       },
       session: adminSession,

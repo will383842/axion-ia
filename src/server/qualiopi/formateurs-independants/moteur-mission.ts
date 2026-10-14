@@ -71,8 +71,8 @@ export interface ResultatReevaluation {
   readonly action: ActionMoteur;
 }
 
-/** Version du gabarit de la lettre émise par le moteur (v2). */
-const GABARIT_LETTRE = 2;
+/** Version du gabarit de la lettre émise par le moteur (v3 depuis l'étape 3 du C4). */
+const GABARIT_LETTRE = 3;
 
 /** Les deux interrupteurs du moteur. Lus à l'appel ; absents = arrêté. */
 export async function moteurAllume(): Promise<boolean> {

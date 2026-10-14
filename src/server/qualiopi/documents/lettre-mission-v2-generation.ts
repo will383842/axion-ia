@@ -31,6 +31,12 @@ import {
 } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-donnees";
 import type { JourLettre } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-calcul";
 
+/**
+ * Version du gabarit de la lettre émise (étape 3 du C4 : v3, section 4 du paiement).
+ * Les lettres déjà émises gardent la leur (v2 figée dans `archives/`).
+ */
+export const VERSION_LETTRE_EMISE = 3;
+
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
 /** Motif système : une lettre neuve que sa mission n'a pas pu recevoir. */
@@ -264,7 +270,7 @@ export async function genererLettreMissionV2(input: {
       return React.createElement(LettreMissionV2Pdf, { data: a.data, identite });
     },
     refs: { sessionId: input.sessionId, trainerId: input.trainerId },
-    gabaritVersion: 2,
+    gabaritVersion: VERSION_LETTRE_EMISE,
     // Ce que la lettre annonce, mois par mois : l'écart d'un relevé s'y compare.
     metadata: { annonceLettre: essai.annonce },
     // L'original de SA mission, jamais un duplicata : la seule autre lettre

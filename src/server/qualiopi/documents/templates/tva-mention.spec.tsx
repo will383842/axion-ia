@@ -159,6 +159,16 @@ describe("Mention TVA — garde-fou au niveau des sources", () => {
     // texte arrêté, la mention que portera l'autofacture selon le régime DU
     // FORMATEUR. Ce n'est pas le régime d'Axion, et rien n'y est déduit.
     path.join("src", "server", "qualiopi", "documents", "templates", "contrat-cadre.tsx"),
+    // Sa v3, figée mot pour mot à l'étape 3 du C4 (le même article 14.1).
+    path.join(
+      "src",
+      "server",
+      "qualiopi",
+      "documents",
+      "templates",
+      "archives",
+      "contrat-cadre.v3.tsx",
+    ),
   ];
 
   function fichiersDeRendu(): string[] {

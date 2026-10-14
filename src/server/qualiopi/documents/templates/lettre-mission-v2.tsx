@@ -1,6 +1,14 @@
 /**
- * Qualiopi — Lettre de mission, VERSION 2 (lot S5 du chantier formateurs
- * freelance ; texte ARRÊTÉ par Will le 10/10/2026).
+ * Qualiopi — Lettre de mission, VERSION 3 (étape 3 du C4 ; v2 = lot S5, texte
+ * ARRÊTÉ par Will le 10/10/2026).
+ *
+ * v3 — 14/10/2026, décision (d) de Will : la section 4 dit que les honoraires sont
+ * réglés au plus tard 30 jours après la dernière journée, une fois les feuilles
+ * contresignées et, pour le dernier mois, le bilan de fin de formation remis — le délai
+ * courant de leur remise s'ils arrivent plus tard ; et que, au seuil de 5 000 € HT, le
+ * règlement attend l'attestation URSSAF (art. 18.2 du contrat-cadre). La v2 est figée,
+ * mot pour mot, dans `archives/lettre-mission-v2.v2.tsx`. Le fichier garde son nom :
+ * ses types (`LettreMissionV2Data`) sont ceux du calcul.
  *
  * Une page : la lettre ne dit que ce qui change d'une formation à l'autre (la
  * formation, les dates, le lieu, les journées, les honoraires) ; le reste vit
@@ -202,21 +210,26 @@ export function LettreMissionV2Pdf({
             <Text style={pdfStyles.paragraph}>
               Axion établit la facture à votre nom (autofacture) dès que les feuilles de présence
               sont signées. Vous la recevez dans votre espace et par e-mail, et vous pouvez la
-              contester dans les 8 jours.{" "}
-              <Text style={{ fontWeight: "bold" }}>
-                Le virement part au plus tard le {data.echeancePaiement}
-              </Text>
-              , que le client ait réglé ou non.
+              contester dans les 8 jours.
             </Text>
           ) : (
-            <Text style={pdfStyles.paragraph}>
-              Vous adressez votre facture à Axion.{" "}
-              <Text style={{ fontWeight: "bold" }}>
-                Le virement part au plus tard le {data.echeancePaiement}
-              </Text>
-              , que le client ait réglé ou non.
-            </Text>
+            <Text style={pdfStyles.paragraph}>Vous adressez votre facture à Axion.</Text>
           )}
+          <Text style={pdfStyles.paragraph}>
+            Vos honoraires sont réglés au plus tard 30 jours après la dernière journée, une fois les
+            feuilles de présence contresignées et, pour le dernier mois de la mission, le bilan de
+            fin de formation remis ; s&apos;ils sont remis plus tard, le délai court à partir de
+            leur remise.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Si tout est remis à temps,{" "}
+            <Text style={{ fontWeight: "bold" }}>
+              le virement part au plus tard le {data.echeancePaiement}
+            </Text>
+            , que le client ait réglé ou non. À partir de 5 000 € hors taxes d&apos;honoraires avec
+            nous, le règlement attend aussi votre attestation de vigilance URSSAF (article 18.2 du
+            contrat-cadre).
+          </Text>
           {data.echeancesParMois && data.echeancesParMois.length > 1 ? (
             <Text style={pdfStyles.paragraph}>
               Un virement par mois de journées réalisées : au plus tard le{" "}

@@ -1,5 +1,12 @@
 /**
- * Contrat-cadre de sous-traitance de formation — VERSION 3 (lot L7a).
+ * Contrat-cadre de sous-traitance de formation — VERSION 4 (étape 3 du C4).
+ *
+ * v4 — 14/10/2026, décisions de Will : art. 18.2 (attestation URSSAF à l'approche de
+ * 5 000 € HT, avant une mission qui ferait dépasser ce seuil, puis tous les six mois ;
+ * au-delà, le règlement attend l'attestation) ; harmonisés avec lui et avec la lettre de
+ * mission v3 : 4.5, 16.1, 16.3, 16.7, 20.2 (bilan de fin de formation), annexes 1 et 2
+ * (passées en version 2). La v3 est figée, mot pour mot, dans
+ * `archives/contrat-cadre.v3.tsx` : ses exemplaires signés se rejouent avec elle.
  *
  * Un seul contrat pour un formateur indépendant et pour un organisme de
  * formation sous-traitant : seules les clauses marquées « si indépendant » ou
@@ -39,8 +46,8 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 // Types
 // ============================================================
 
-/** Date d'arrêt de la version 3, imprimée en tête du contrat. */
-export const DATE_ARRET_CONTRAT_CADRE_V3 = "10 octobre 2026";
+/** Date d'arrêt de la version 4, imprimée en tête du contrat. */
+export const DATE_ARRET_CONTRAT_CADRE_V4 = "14 octobre 2026";
 
 export type NatureCocontractant = "independant" | "organisme";
 
@@ -224,7 +231,7 @@ export function ContratCadrePdf({
     <Document>
       <Feuillet data={data} identite={identite}>
         <Text style={pdfStyles.legalNote}>
-          Version 3 du {DATE_ARRET_CONTRAT_CADRE_V3} · Annexe 1 version 1 · Annexe 2 version 1 ·
+          Version 4 du {DATE_ARRET_CONTRAT_CADRE_V4} · Annexe 1 version 2 · Annexe 2 version 2 ·
           Annexe 3 version 1 · Annexe 4 version 1
         </Text>
 
@@ -368,7 +375,7 @@ export function ContratCadrePdf({
             <B>4.5 Conditions pour recevoir une proposition.</B> Axion ne vous propose une mission
             que si ce contrat est en vigueur et que les pièces de l&apos;article 18 et de
             l&apos;annexe 2 sont à jour, en particulier le numéro de déclaration d&apos;activité
-            (article 19) et l&apos;attestation URSSAF (article 18.2).
+            (article 19) et, à partir du seuil de l&apos;article 18.2, l&apos;attestation URSSAF.
           </P>
           <P>
             <B>4.6 Formation attendant l&apos;accord de son financeur.</B> Lorsqu&apos;une formation
@@ -660,10 +667,12 @@ export function ContratCadrePdf({
         <DocSection title="Article 16 — Paiement">
           <P>
             <B>16.1 Date limite.</B> Axion vous paie par virement{" "}
-            <B>au plus tard 30 jours après la dernière journée réalisée</B> de la mission. Cette
-            date est fixée dès la fin de la mission et figure sur la lettre de mission. Elle ne
-            recule jamais : ni la contresignature d&apos;Axion, ni la validation d&apos;un relevé,
-            ni le paiement du client ne la déplacent.
+            <B>au plus tard 30 jours après la dernière journée réalisée</B> de la mission, une fois
+            les feuilles de présence contresignées (article 12) et, pour le dernier mois de la
+            mission, le bilan de fin de formation remis (article 20.2) ; s&apos;ils sont remis plus
+            tard, le délai court à partir de leur remise. La lettre de mission indique la date
+            limite qui vaut quand ces pièces sont remises à temps. Ni la validation d&apos;un
+            relevé, ni le paiement du client ne la déplacent.
           </P>
           <P>
             <B>16.2</B> Vous êtes payé que le client ait payé Axion ou non.
@@ -671,7 +680,9 @@ export function ContratCadrePdf({
           <P>
             <B>16.3 Formation sur plusieurs mois.</B> Pour une formation dont les journées
             s&apos;étalent sur plusieurs mois, Axion vous paie chaque mois les journées réalisées
-            dans ce mois, au plus tard 30 jours après la dernière journée réalisée du mois.
+            dans ce mois, au plus tard 30 jours après la dernière journée réalisée du mois, dans les
+            conditions de l&apos;article 16.1. Seul le dernier mois attend le bilan de fin de
+            formation.
           </P>
           <P>
             <B>16.4 Jour non ouvré.</B> Si la date limite tombe un samedi, un dimanche ou un jour
@@ -691,9 +702,9 @@ export function ContratCadrePdf({
             n&apos;est accordé pour un paiement anticipé.
           </P>
           <P>
-            <B>16.7 Attestation URSSAF.</B> Si votre attestation URSSAF n&apos;est plus à jour à la
-            date du virement, le virement attend le dépôt d&apos;une attestation à jour (article
-            18.2). L&apos;autofacture est émise normalement.
+            <B>16.7 Attestation URSSAF.</B> À partir du seuil de l&apos;article 18.2, si votre
+            attestation URSSAF n&apos;est pas à jour à la date du virement, le virement attend le
+            dépôt d&apos;une attestation à jour. L&apos;autofacture est émise normalement.
           </P>
           <P>
             <B>16.8 Somme versée en trop.</B> Si Axion vous a versé une somme qui ne vous était pas
@@ -728,13 +739,14 @@ export function ContratCadrePdf({
             sont demandées et leur durée de validité figurent à l&apos;annexe 2.
           </P>
           <P>
-            <B>18.2 Attestation URSSAF.</B> Vous déposez dans votre dossier, avant la
-            contresignature d&apos;Axion, une attestation de vigilance délivrée par l&apos;URSSAF
-            depuis moins de 6 mois. Vous en déposez ensuite une nouvelle tous les 6 mois, pendant
-            toute la durée du contrat. Axion vérifie l&apos;authenticité de chaque attestation
-            auprès de l&apos;URSSAF, avec son code de sécurité, et garde la trace de cette
-            vérification. Axion vous prévient avant la fin de validité de votre attestation. Tant
-            qu&apos;une attestation n&apos;est plus à jour :
+            <B>18.2 Attestation URSSAF.</B> Vous nous transmettez une attestation de vigilance
+            URSSAF dès que le cumul de vos honoraires avec nous approche 5 000 € hors taxes, puis
+            tous les six mois. À partir de ce seuil, le règlement de vos honoraires attend cette
+            attestation. Elle vous est aussi demandée avant une mission qui ferait dépasser ce
+            seuil. Axion vérifie l&apos;authenticité de chaque attestation auprès de l&apos;URSSAF,
+            avec son code de sécurité, et garde la trace de cette vérification. Axion vous prévient
+            avant la fin de validité de votre attestation. À partir du seuil, tant qu&apos;une
+            attestation à jour manque :
           </P>
           <BulletList
             items={[
@@ -813,6 +825,7 @@ export function ContratCadrePdf({
               "animez la formation conformément au programme et aux compétences visées ;",
               "tenez compte des adaptations qu'Axion vous signale pour une personne en situation de handicap, avec les moyens que vous jugez adaptés ;",
               "faites signer les feuilles de présence par demi-journée (article 12) ;",
+              "après la dernière journée, faites depuis votre espace le bilan de fin de formation : l'évaluation finale des acquis de chaque stagiaire présent et votre avis sur la session ;",
               "remettez aux stagiaires les évaluations qu'Axion vous transmet, au début et à la fin de la formation, dans l'outil d'Axion ou sur papier, et les remettez à Axion ;",
               "transmettez à Axion, dès que vous en avez connaissance, toute réclamation ou difficulté exprimée par un stagiaire ou par le client, pour qu'Axion la traite.",
             ]}
@@ -1190,7 +1203,7 @@ export function ContratCadrePdf({
         </DocSection>
       </Feuillet>
       <Feuillet data={data} identite={identite}>
-        <DocSection title="Annexe 1 — Honoraires, déplacements et annulation (version 1)">
+        <DocSection title="Annexe 1 — Honoraires, déplacements et annulation (version 2)">
           <DataTable
             columns={[
               { key: "element", header: "Élément", flex: 3 },
@@ -1229,13 +1242,13 @@ export function ContratCadrePdf({
               {
                 element: "Date limite de paiement",
                 regle:
-                  "dernière journée réalisée + 30 jours (par mois pour une formation sur plusieurs mois)",
+                  "dernière journée réalisée + 30 jours (par mois pour une formation sur plusieurs mois), une fois les feuilles de présence contresignées et, pour le dernier mois, le bilan de fin de formation remis ; s'ils sont remis plus tard, 30 jours à partir de leur remise (article 16.1)",
               },
             ]}
           />
         </DocSection>
 
-        <DocSection title="Annexe 2 — Pièces à fournir et durée de validité (version 1)">
+        <DocSection title="Annexe 2 — Pièces à fournir et durée de validité (version 2)">
           <DataTable
             columns={[
               { key: "piece", header: "Pièce", flex: 3 },
@@ -1252,10 +1265,11 @@ export function ContratCadrePdf({
               },
               {
                 piece: "Attestation de vigilance URSSAF, vérifiée par Axion avec son code",
-                quand: "dans le dossier, avant la contresignature",
+                quand:
+                  "dès que vos honoraires avec Axion approchent 5 000 € HT, et avant une mission qui ferait dépasser ce seuil (article 18.2)",
                 validite: "6 mois",
                 manque:
-                  "aucune nouvelle mission ; virement en attente ; autofacture émise normalement",
+                  "à partir du seuil : aucune nouvelle mission ; virement en attente ; autofacture émise normalement",
               },
               {
                 piece: "Numéro de déclaration d'activité",
