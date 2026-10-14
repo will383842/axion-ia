@@ -2,9 +2,9 @@
 // `echange_ouvert` coupé avec des F2 dus — aucun F9 ni F2 ne part.
 //
 // Tout est allumé par la console, puis COUPÉ par la console (c'est le geste
-// d'un humain qui suspend). Témoins : avant la coupure, un F9 et un F2 partent
-// réellement par la file. Après : les e-mails déjà en file sont retenus au
-// départ, et le passage des campagnes n'enfile plus rien — le passage est
+// d'un humain qui suspend). Les e-mails déjà en file sont retenus au départ, et
+// le motif de chaque retenue NOMME la coupure (c'est ce qui distingue ce refus
+// d'un autre) ; le passage des campagnes n'enfile plus rien — le passage est
 // appelé avec SES campagnes réelles, restreintes aux fiches du banc pour ne
 // rien envoyer aux fixtures des autres specs.
 
@@ -110,12 +110,8 @@ export default async function e39(): Promise<unknown> {
       }));
       const passage = () => passerCampagnes(dansLaFenetre(), { registre } as never);
 
-      // ── Témoins : tout allumé ───────────────────────────────────────────
+      // ── Témoin : tout allumé, les deux campagnes sont actives ──────────
       const passageAvant = await passage();
-      await f9(0);
-      await f2(0);
-      const temoinF9 = await finies(t.email, 1);
-      const temoinF2 = await finies(emailCandidat, 1);
 
       // ── En file au moment de la coupure ─────────────────────────────────
       const enFile = { f9: await f9(15_000), f2: await f2(15_000) };
@@ -135,15 +131,13 @@ export default async function e39(): Promise<unknown> {
       });
 
       const passageApres = await passage();
-      const apresF9 = await finies(t.email, 2);
-      const apresF2 = await finies(emailCandidat, 2);
+      const apresF9 = await finies(t.email, 1);
+      const apresF2 = await finies(emailCandidat, 1);
 
       await prisma.emailLog.deleteMany({ where: { recipient: { in: [t.email, emailCandidat] } } });
       return {
         adresses: [t.email, emailCandidat],
         passageAvant,
-        temoinF9,
-        temoinF2,
         enFile,
         coupures,
         filles: Object.fromEntries(filles.map((f) => [f.key, f.value])),

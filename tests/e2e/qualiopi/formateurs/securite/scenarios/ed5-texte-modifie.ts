@@ -12,7 +12,7 @@
 
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
-import { envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { envoyer, texteValide } from "@/server/qualiopi/formateurs-independants/envois";
 import { cleTexteValide } from "@/server/email/textes-valides";
 
 import {
@@ -67,10 +67,11 @@ export default async function ed5(): Promise<unknown> {
           entityId: t.id,
         });
 
-      // Témoins : validés, les deux partent.
+      // Témoins, LUS sans rien envoyer (le worker du banc est bridé à 40 e-mails par
+      // heure, partagés par tous les specs) : validés, les deux textes peuvent partir.
       const temoins = {
-        entier: await envoi(textes.entier),
-        variante: await envoi(textes.variante),
+        entier: await texteValide("formateur-espace-ouvert"),
+        variante: await texteValide("formateur-mission-retiree", "lettre-non-signee"),
       };
       // Deux e-mails déjà EN FILE (relances programmées) au moment de la modification.
       const enFile = async (x: (typeof textes)[keyof typeof textes]) => {

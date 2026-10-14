@@ -21,7 +21,7 @@ interface Ligne {
 }
 interface Observations {
   adresse: string;
-  temoins: { entier: string; variante: string };
+  temoins: { entier: boolean; variante: boolean };
   fileEntier: { r: { enqueued: boolean }; id: string | null };
   fileVariante: { r: { enqueued: boolean }; id: string | null };
   apresModification: { entier: string; variante: string };
@@ -44,8 +44,8 @@ test.describe("@formateurs E-D5 — texte modifié après validation", () => {
     await prisma.$disconnect();
   });
 
-  test("témoin : validés, le gabarit et la variante partent", () => {
-    expect(o.temoins).toEqual({ entier: "envoye", variante: "envoye" });
+  test("témoin : validés, le gabarit et la variante peuvent partir", () => {
+    expect(o.temoins).toEqual({ entier: true, variante: true });
     expect(o.fileEntier.r.enqueued).toBe(true);
     expect(o.fileVariante.r.enqueued).toBe(true);
   });

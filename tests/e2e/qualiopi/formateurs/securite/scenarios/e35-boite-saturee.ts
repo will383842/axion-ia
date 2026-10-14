@@ -7,7 +7,7 @@
 // pour une heure et ferait échouer les autres équipes. Le scénario sépare donc
 // les deux preuves :
 //   (A) l'ORDRE, par la vraie file et le vrai worker : la file est suspendue un
-//       instant, on y pose 3 relances (avec la priorité que leur donne le
+//       instant, on y pose 2 relances (avec la priorité que leur donne le
 //       passage des campagnes), PUIS F17 (`envoyerCodeSignature`) et le lien de
 //       connexion (`sendFormateurMagicLinkAction`) ; on relâche, et on lit
 //       l'heure de prise de chaque job ;
@@ -53,7 +53,7 @@ async function partieA() {
   let connexion: unknown;
   let files: { attente: string[]; prioritaires: string[] } = { attente: [], prioritaires: [] };
   try {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       await enqueueEmail(
         "formateur-dossier-relance" as EmailJobName,
         t.email,
@@ -100,7 +100,7 @@ async function partieA() {
         where: { recipient: t.email },
         select: { template: true, status: true, jobId: true },
       }),
-    (l) => l.length === 5 && l.every((x) => x.status !== "pending"),
+    (l) => l.length === 4 && l.every((x) => x.status !== "pending"),
     90_000,
   );
   const prises: Array<{

@@ -1,9 +1,8 @@
 // @formateurs E39 — Coupure en cascade : `dossier_en_ligne` coupé avec des F9
 // en file ; `echange_ouvert` coupé avec des F2 dus — aucun F9 ni F2 ne part.
 //
-// Tout est allumé PUIS coupé par la console. Témoins : avant la coupure, un F9
-// et un F2 partent réellement par la file jusqu'au puits ; le passage des
-// campagnes compte ses deux campagnes actives. Après : les filles sont coupées
+// Tout est allumé PUIS coupé par la console. Témoin : avant la coupure, le
+// passage des campagnes compte ses deux campagnes actives. Après : les filles sont coupées
 // dans la même opération (une ligne de journal chacune, avec sa mère), les
 // e-mails déjà en file sont retenus au départ, et le passage n'a plus aucune
 // campagne active.
@@ -12,6 +11,10 @@
 // du plan n'existe pas dans le code de main (ni dans « À faire maintenant »,
 // ni ailleurs dans la console). La suspension se lit aujourd'hui sur l'écran
 // Interrupteurs et au journal — c'est ce que le test constate.
+//
+// Pas d'envoi témoin : le worker du banc est bridé à 40 e-mails par heure pour
+// tout le job. Le motif de chaque retenue nomme la coupure, ce qui suffit à la
+// distinguer de tout autre refus.
 
 import { expect, test } from "@playwright/test";
 
@@ -32,8 +35,6 @@ interface Passage {
 interface Observations {
   adresses: string[];
   passageAvant: Passage;
-  temoinF9: Ligne[];
-  temoinF2: Ligne[];
   enFile: { f9: { enqueued: boolean }; f2: { enqueued: boolean } };
   coupures: Record<string, { ok: boolean }>;
   filles: Record<string, unknown>;
@@ -59,9 +60,7 @@ test.describe("@formateurs E39 — coupure en cascade", () => {
     await prisma.$disconnect();
   });
 
-  test("témoins : tout allumé, F9 et F2 partent, deux campagnes actives", () => {
-    expect(o.temoinF9.map((l) => l.status)).toEqual(["sent"]);
-    expect(o.temoinF2.map((l) => l.status)).toEqual(["sent"]);
+  test("témoin : tout allumé, deux campagnes actives, deux e-mails en file", () => {
     expect(o.passageAvant).toMatchObject({ horsFenetre: false, campagnesActives: 2 });
     expect(o.enFile).toEqual({ f9: { enqueued: true }, f2: { enqueued: true } });
   });
@@ -89,16 +88,20 @@ test.describe("@formateurs E39 — coupure en cascade", () => {
   });
 
   test("aucun F9 ni F2 en file ne part", () => {
-    expect(o.apresF9[1]).toEqual({
-      template: "formateur-dossier-relance",
-      status: "cancelled",
-      error: "Retenu à l'envoi : dossier en ligne coupé",
-    });
-    expect(o.apresF2[1]).toEqual({
-      template: "formateur-invitation-relance",
-      status: "cancelled",
-      error: "Retenu à l'envoi : invitation automatique ou suivi de l'échange coupé",
-    });
+    expect(o.apresF9).toEqual([
+      {
+        template: "formateur-dossier-relance",
+        status: "cancelled",
+        error: "Retenu à l'envoi : dossier en ligne coupé",
+      },
+    ]);
+    expect(o.apresF2).toEqual([
+      {
+        template: "formateur-invitation-relance",
+        status: "cancelled",
+        error: "Retenu à l'envoi : invitation automatique ou suivi de l'échange coupé",
+      },
+    ]);
   });
 
   test("et le passage des campagnes n'en enfile plus aucun", () => {

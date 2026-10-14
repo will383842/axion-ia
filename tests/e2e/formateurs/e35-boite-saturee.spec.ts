@@ -5,7 +5,7 @@
 // ÉCARTS de dimension, imposés par le banc (le code de main fait foi) :
 //   · le worker d'e-mails est bridé à 40 envois/heure et PARTAGÉ par tous les
 //     specs du job : 40 vraies relances l'épuiseraient pour une heure. L'ordre
-//     est donc prouvé par la vraie file avec 3 relances ; le plafond de 30, par
+//     est donc prouvé par la vraie file avec 2 relances ; le plafond de 30, par
 //     le vrai passage des campagnes sur 40 fiches dues, dont seul l'envoi final
 //     est relevé au lieu d'être enfilé ;
 //   · F17 est scellé avec la clé PII : celle du job est fictive et non conforme,
@@ -79,7 +79,6 @@ test.describe("@formateurs E35 — boîte saturée", () => {
     expect(o.a.files.prioritaires).toEqual([
       "formateur-dossier-relance",
       "formateur-dossier-relance",
-      "formateur-dossier-relance",
     ]);
     expect(o.prioriteRelance).toBeGreaterThan(0);
   });
@@ -89,7 +88,7 @@ test.describe("@formateurs E35 — boîte saturée", () => {
     const relances = o.a.prises.filter((p) => p.template === "formateur-dossier-relance");
     expect(connexion?.status).toBe("sent");
     expect(connexion?.priorite).toBe(0);
-    expect(relances).toHaveLength(3);
+    expect(relances).toHaveLength(2);
     for (const r of relances) {
       expect(r.priorite).toBe(o.prioriteRelance);
       expect(r.prisA ?? 0).toBeGreaterThanOrEqual(connexion?.prisA ?? Number.MAX_SAFE_INTEGER);
