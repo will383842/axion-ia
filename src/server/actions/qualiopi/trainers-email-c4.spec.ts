@@ -106,7 +106,8 @@ describe("updateTrainerAction — e-mail d'un indépendant", () => {
   it("🔴 les liens de connexion encore en attente sont consommés", async () => {
     m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
     await updateTrainerAction({ id: ID, email: NOUVELLE });
-    expect(m.magicLinkUpdateMany).toHaveBeenCalledTimes(1);
+    // Avant l'écriture (échec = refus) et après (course d'un lien créé entre-temps).
+    expect(m.magicLinkUpdateMany).toHaveBeenCalledTimes(2);
     const arg = m.magicLinkUpdateMany.mock.calls[0]?.[0] as {
       where: Record<string, unknown>;
       data: Record<string, unknown>;
@@ -129,10 +130,36 @@ describe("updateTrainerAction — e-mail d'un indépendant", () => {
     expect(JSON.stringify(e["payload"])).not.toContain(NOUVELLE);
   });
 
+  it("🔴 relecture — un `editor` ne requalifie pas un indépendant (contournement en deux temps)", async () => {
+    m.session = { userId: "editeur-uuid", role: "editor" };
+    m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
+    const r = await updateTrainerAction({ id: ID, statut: "salarie" });
+    expect(r).toHaveProperty("error");
+    expect(m.trainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 relecture — les liens en attente sont consommés AVANT l'écriture ; échec = refus", async () => {
+    m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
+    m.magicLinkUpdateMany.mockRejectedValueOnce(new Error("base indisponible"));
+    const r = await updateTrainerAction({ id: ID, email: NOUVELLE });
+    expect(r).toHaveProperty("error");
+    expect(m.trainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 relecture — le journal dit qu'une adresse d'indépendant a changé, sans la valeur", async () => {
+    m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
+    await updateTrainerAction({ id: ID, email: NOUVELLE });
+    const entree = m.log.mock.calls[0]?.[0] as { changes: Record<string, unknown> };
+    expect(entree.changes).toEqual({ champs: ["email"], emailIndependantModifie: true });
+  });
+
   it("un envoi en échec n'annule pas le changement", async () => {
     m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
     m.envoyer.mockRejectedValue(new Error("file indisponible"));
-    m.magicLinkUpdateMany.mockRejectedValue(new Error("base indisponible"));
+    // Le second passage (après l'écriture) échoue : l'adresse reste changée.
+    m.magicLinkUpdateMany
+      .mockResolvedValueOnce({ count: 0 })
+      .mockRejectedValue(new Error("base indisponible"));
     const r = await updateTrainerAction({ id: ID, email: NOUVELLE });
     expect(r).toEqual({ data: { id: ID } });
   });
@@ -167,6 +194,13 @@ describe("updateTrainerAction — e-mail d'un salarié ou d'un dirigeant : INCHA
       expect(m.envoyer).not.toHaveBeenCalled();
     },
   );
+
+  it("un `editor` requalifie un salarié comme avant", async () => {
+    m.session = { userId: "editeur-uuid", role: "editor" };
+    m.trainerFindUnique.mockResolvedValue(fiche("salarie"));
+    const r = await updateTrainerAction({ id: ID, statut: "dirigeant" });
+    expect(r).toEqual({ data: { id: ID } });
+  });
 
   it("une mise à jour sans e-mail ne lit rien de plus", async () => {
     const r = await updateTrainerAction({ id: ID, telephone: "0102030405" });

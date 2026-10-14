@@ -46,6 +46,7 @@ import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-g
 import {
   apresChangementEmail,
   donneesChangementEmail,
+  journalChangementEmail,
   preparerChangementEmail,
 } from "@/server/qualiopi/formateurs-independants/changement-email-console";
 import {
@@ -421,9 +422,9 @@ export async function updateTrainerAction(
       action: "qualiopi.trainer.update",
       targetType: "Trainer",
       targetId: id,
-      // Lot C4 — la LISTE des champs modifiés, jamais leurs valeurs (nom, e-mail,
+      // Lot C4 — la LISTE des champs soumis, jamais leurs valeurs (nom, e-mail,
       // téléphone, adresse) : `targetId` désigne la fiche, comme à la création.
-      changes: { champs: Object.keys(fields) },
+      changes: { champs: Object.keys(fields), ...journalChangementEmail(email.changement) },
       session,
     });
     await apresChangementEmail(id, email.changement);

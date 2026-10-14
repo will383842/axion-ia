@@ -2,7 +2,7 @@
  * Lot E (M14) — version de session de l'espace formateur, séparée de `accesVersion`.
  */
 
-import { createHash } from "node:crypto";
+import { createHmac } from "node:crypto";
 
 /**
  * Version de SESSION de l'espace formateur (session de l'espace et jeton de mission).
@@ -55,7 +55,9 @@ export function ecritureFormateurPermise(
  * révèlent pas l'adresse à qui lit son propre cookie.
  */
 export function empreinteSessionFormateur(email: string): string {
-  return createHash("sha256")
+  // HMAC du secret de session (relecture C4) : sans lui, on ne vérifie pas une adresse
+  // candidate contre l'empreinte. Secret absent : aucune session n'est signée de toute façon.
+  return createHmac("sha256", process.env["AUTH_SECRET"] ?? "")
     .update(`session-formateur:${email.trim().toLowerCase()}`)
     .digest("hex")
     .slice(0, 16);

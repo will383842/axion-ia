@@ -5,10 +5,13 @@
  * l'espace et du dossier partent vers elle. La changer d'un clic, c'était pouvoir
  * détourner son espace (ses honoraires, son dossier, ses pièces) sans que le
  * titulaire le sache. Désormais, `updateTrainerAction` appelle ce module, et :
- *  - le changement exige l'acte `habiliter_formateur` (pas `editor`) ;
+ *  - le changement exige l'acte `habiliter_formateur` (pas `editor`) — tout comme
+ *    faire QUITTER le statut `sous_traitant` à une fiche (sinon : requalifier,
+ *    changer l'adresse, re-requalifier contournait la garde) ;
  *  - les liens du dossier sont révoqués (`accesVersion + 1`) dans la MÊME écriture
  *    que l'adresse ;
- *  - les liens de connexion encore en attente sont consommés, et les sessions de
+ *  - les liens de connexion encore en attente sont consommés (avant l'écriture, échec
+ *    = refus ; puis une seconde fois après), et les sessions de
  *    l'espace ouvertes sous l'ancienne adresse tombent (empreinte d'adresse portée
  *    par la session, `version-session.ts`) ;
  *  - l'ANCIENNE adresse reçoit un e-mail court (F61) — qui ne contient jamais la
@@ -58,7 +61,8 @@ export async function preparerChangementEmail(input: {
   readonly nouveauStatut: string | undefined;
   readonly session: AdminSession;
 }): Promise<PreparationChangementEmail> {
-  if (input.nouvelEmail === undefined) return { ok: true, changement: null };
+  const quitteStatut = input.nouveauStatut !== undefined && input.nouveauStatut !== "sous_traitant";
+  if (input.nouvelEmail === undefined && !quitteStatut) return { ok: true, changement: null };
   let avant: { statut: string; email: string; prenom: string } | null;
   try {
     avant = await prisma.trainer.findUnique({
@@ -69,19 +73,46 @@ export async function preparerChangementEmail(input: {
     return { ok: false, error: "Erreur lors de la lecture du formateur." };
   }
   // Fiche introuvable : l'écriture échouera d'elle-même.
-  if (avant === null || memeAdresse(avant.email, input.nouvelEmail)) {
+  if (avant === null) return { ok: true, changement: null };
+  const refus = (objet: string): PreparationChangementEmail => ({
+    ok: false,
+    error: `${objet} refusé : ${MOTIF_REFUS[ACTE_CHANGEMENT_EMAIL_INDEPENDANT]}`,
+  });
+  const habilite = peutEngager(input.session.role, ACTE_CHANGEMENT_EMAIL_INDEPENDANT);
+  // Relecture C4 — sans cette garde, un indépendant requalifié salarié, son adresse
+  // changée, puis remis indépendant échappait à tout ce qui suit (en trois demandes).
+  if (avant.statut === "sous_traitant" && quitteStatut && !habilite) {
+    return refus("Changement de statut d'un formateur indépendant");
+  }
+  if (input.nouvelEmail === undefined || memeAdresse(avant.email, input.nouvelEmail)) {
     return { ok: true, changement: null };
   }
   if (avant.statut !== "sous_traitant" && input.nouveauStatut !== "sous_traitant") {
     return { ok: true, changement: null };
   }
-  if (!peutEngager(input.session.role, ACTE_CHANGEMENT_EMAIL_INDEPENDANT)) {
-    return {
-      ok: false,
-      error: `Changement d'adresse refusé : ${MOTIF_REFUS[ACTE_CHANGEMENT_EMAIL_INDEPENDANT]}`,
-    };
+  if (!habilite) return refus("Changement d'adresse");
+  // Relecture C4 — les liens de connexion en attente (envoyés à l'ANCIENNE adresse)
+  // tombent AVANT l'écriture : un échec ici refuse, il ne laisse rien d'ouvert.
+  try {
+    await consommerLiensConnexion(input.trainerId, new Date());
+  } catch {
+    return { ok: false, error: "Erreur lors de la fermeture des liens de connexion." };
   }
   return { ok: true, changement: { ancienneAdresse: avant.email, prenom: avant.prenom } };
+}
+
+function consommerLiensConnexion(trainerId: string, maintenant: Date) {
+  return prisma.formateurMagicLink.updateMany({
+    where: { trainerId, usedAt: null },
+    data: { usedAt: maintenant },
+  });
+}
+
+/** À étaler dans les `changes` du journal : le fait, jamais la valeur. */
+export function journalChangementEmail(changement: ChangementEmailIndependant | null): {
+  emailIndependantModifie?: true;
+} {
+  return changement === null ? {} : { emailIndependantModifie: true };
 }
 
 /** À étaler dans le `data` de l'écriture : les liens du dossier tombent avec l'adresse. */
@@ -101,11 +132,10 @@ export async function apresChangementEmail(
   maintenant: Date = new Date(),
 ): Promise<void> {
   if (changement === null) return;
+  // Second passage : un lien demandé par l'ancienne adresse ENTRE la préparation et
+  // l'écriture. Le premier, avant l'écriture, a fermé les autres.
   try {
-    await prisma.formateurMagicLink.updateMany({
-      where: { trainerId, usedAt: null },
-      data: { usedAt: maintenant },
-    });
+    await consommerLiensConnexion(trainerId, maintenant);
   } catch (err) {
     console.error(
       `[formateurs-independants] liens de connexion non consommés (${trainerId}):`,

@@ -67,6 +67,16 @@ describe("empreinteSessionFormateur", () => {
     expect(e).not.toContain("camille");
     expect(e).toMatch(/^[0-9a-f]{16}$/);
   });
+
+  it("relecture — est une HMAC du secret de session : sans le secret, rien ne se vérifie", () => {
+    const avant = process.env["AUTH_SECRET"];
+    process.env["AUTH_SECRET"] = "secret-a-0123456789abcdef0123456789";
+    const a = empreinteSessionFormateur(ADRESSE);
+    process.env["AUTH_SECRET"] = "secret-b-0123456789abcdef0123456789";
+    const b = empreinteSessionFormateur(ADRESSE);
+    process.env["AUTH_SECRET"] = avant;
+    expect(a).not.toBe(b);
+  });
 });
 
 describe("connexion — la session porte l'empreinte de l'adresse", () => {
