@@ -6,6 +6,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  MANQUE_DOSSIER_ENVOYE,
   MOTIFS_ORANGE,
   blocsW4,
   manquesPourContresigner,
@@ -38,6 +39,7 @@ function faits(extra: Partial<FaitsW4> = {}): FaitsW4 {
     contrat: { id: "c", numero: "CST-1", statutSignature: "partielle" },
     actif: false,
     finCollaboration: false,
+    dossierStatut: "a_verifier",
     ...extra,
   };
 }
@@ -179,5 +181,25 @@ describe("écran W-4 — bouton grisé avec la raison (maquette)", () => {
     expect(textes).not.toMatch(
       /poste|entretien|recrutement|salaire|rémunération|bienvenue|vous devez|obligatoire|agent commercial|grenoble/i,
     );
+  });
+});
+
+describe("C4 — l'état du dossier", () => {
+  it.each(["en_cours", "a_completer"])(
+    "dossier « %s » : un seul manque, clair",
+    (dossierStatut) => {
+      expect(manquesPourContresigner(faits({ dossierStatut }), coche)).toEqual([
+        MANQUE_DOSSIER_ENVOYE,
+      ]);
+    },
+  );
+
+  it("dossier à vérifier, ou fiche créée en console : rien ne manque", () => {
+    expect(manquesPourContresigner(faits({ dossierStatut: "a_verifier" }), coche)).toEqual([]);
+    expect(manquesPourContresigner(faits({ dossierStatut: null }), coche)).toEqual([]);
+  });
+
+  it("« vérifié » (reprise, ou contrat ré-émis) : rien ne manque", () => {
+    expect(manquesPourContresigner(faits({ dossierStatut: "verifie" }), coche)).toEqual([]);
   });
 });

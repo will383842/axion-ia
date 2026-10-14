@@ -27,7 +27,12 @@ vi.mock("@/lib/prisma", () => {
     documentGenere: {
       findMany: vi.fn(async () => [
         {
-          metadata: { renderData: { gabaritVersion: 3 } },
+          metadata: {
+            renderData: {
+              gabaritVersion: 3,
+              data: { cocontractant: { siret: "12345678900011" } },
+            },
+          },
           statutSignature: "signee",
           annuleeAt: null,
         },

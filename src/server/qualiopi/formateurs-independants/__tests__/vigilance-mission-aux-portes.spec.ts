@@ -31,7 +31,9 @@ const h = vi.hoisted(() => {
     trainer: { findUnique: vi.fn(async () => etat.trainer) },
     documentGenere: {
       findFirst: vi.fn(async () => ({
-        metadata: { renderData: { gabaritVersion: 3 } },
+        metadata: {
+          renderData: { gabaritVersion: 3, data: { sousTraitant: { siret: "12345678900011" } } },
+        },
         signatures: [{ signeAt: new Date("2026-09-01T10:00:00Z") }],
       })),
     },
@@ -85,6 +87,7 @@ beforeEach(() => {
   h.etat.trainer = {
     statut: "sous_traitant",
     actif: true,
+    siret: "12345678900011",
     sousTraitantVerifieAt: new Date("2026-10-01T10:00:00Z"),
     sousTraitantNda: "84380000000",
     sousTraitantContratSigneAt: new Date("2026-09-01T10:00:00Z"),

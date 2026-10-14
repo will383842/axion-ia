@@ -108,6 +108,7 @@ function ecran() {
       contrat: { id: "doc-1", numero: "CST-1", statutSignature: "partielle" },
       actif: false,
       finCollaboration: false,
+      dossierStatut: "a_verifier",
     },
   };
 }

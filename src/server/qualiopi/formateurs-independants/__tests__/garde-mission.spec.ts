@@ -56,6 +56,8 @@ const faits = (over: Partial<FaitsGardeMission> = {}): FaitsGardeMission => ({
   sousTraitantNda: "84380000000",
   sousTraitantContratSigneAt: new Date("2026-09-01T10:00:00Z"),
   contratCadreVersion: 3,
+  siret: "12345678900011",
+  contratCadreSiret: "12345678900011",
   pieces: [vigilance(new Date("2026-09-01T00:00:00Z"))] as never,
   ...over,
 });
@@ -78,6 +80,13 @@ describe("peutRecevoirMission (pur)", () => {
       { sousTraitantVerifieAt: new Date("2026-09-01T10:00:00Z") },
       MANQUES_MISSION.registre,
     ],
+    [
+      "C4 — SIRET de la fiche changé après la contresignature",
+      { siret: "98765432100022" },
+      MANQUES_MISSION.siretContrat,
+    ],
+    ["C4 — contrat sans SIRET lisible", { contratCadreSiret: null }, MANQUES_MISSION.siretContrat],
+    ["C4 — fiche sans SIRET", { siret: null }, MANQUES_MISSION.siretContrat],
     ["numéro absent", { sousTraitantNda: " " }, MANQUES_MISSION.nda],
     [
       "attestation échue aujourd'hui",
@@ -88,6 +97,30 @@ describe("peutRecevoirMission (pur)", () => {
     const v = peutRecevoirMission(faits(over as Partial<FaitsGardeMission>), 3, MAINTENANT);
     expect(v.ok).toBe(false);
     if (!v.ok) expect(v.manques).toContain(manque);
+  });
+});
+
+describe("C4 — contrats de l'ancien gabarit (v1/v2)", () => {
+  it("v2 sans SIRET inscrit : rien à comparer, la mission passe", () => {
+    expect(
+      peutRecevoirMission(
+        faits({ contratCadreVersion: 2, contratCadreSiret: null }),
+        2,
+        MAINTENANT,
+      ),
+    ).toEqual({ ok: true });
+  });
+  it("v2 avec un SIRET inscrit qui n'est plus celui de la fiche : refus", () => {
+    const v = peutRecevoirMission(
+      faits({ contratCadreVersion: 2, contratCadreSiret: "98765432100022" }),
+      2,
+      MAINTENANT,
+    );
+    expect(v).toEqual({ ok: false, manques: [MANQUES_MISSION.siretContrat] });
+  });
+  it("v3 sans SIRET lisible : refus (garde fermée)", () => {
+    const v = peutRecevoirMission(faits({ contratCadreSiret: null }), 2, MAINTENANT);
+    expect(v).toEqual({ ok: false, manques: [MANQUES_MISSION.siretContrat] });
   });
 });
 
@@ -159,6 +192,48 @@ describe("controlerGardeMission (lecture des interrupteurs)", () => {
     h.prisma.setting.findUnique.mockRejectedValueOnce(new Error("panne"));
     const r = await controlerGardeMission("t-1", MAINTENANT);
     expect(r.refus).toEqual([MANQUES_MISSION.erreur]);
+  });
+
+  it("C4 — allumée : le SIRET figé dans le contrat est relu et comparé à la fiche", async () => {
+    h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
+    h.etat.trainer = {
+      ...h.etat.trainer!,
+      siret: "98765432100022",
+      documents: [vigilance(new Date("2026-09-01T00:00:00Z"))],
+    };
+    h.etat.contrat = {
+      metadata: {
+        renderData: {
+          gabaritVersion: 99,
+          data: { cocontractant: { siret: "123 456 789 00011" } },
+        },
+      },
+      signatures: [{ signeAt: new Date("2026-09-01T10:00:00Z") }],
+    };
+    const r = await controlerGardeMission("t-1", MAINTENANT);
+    expect(r.refus).toEqual([MANQUES_MISSION.siretContrat]);
+    h.etat.trainer = { ...h.etat.trainer!, siret: "12345678900011" };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([]);
+  });
+
+  it("C4 — un contrat v2 range son SIRET sous `sousTraitant` : il est lu", async () => {
+    h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
+    h.etat.trainer = {
+      ...h.etat.trainer!,
+      siret: "98765432100022",
+      documents: [vigilance(new Date("2026-09-01T00:00:00Z"))],
+    };
+    h.etat.contrat = {
+      metadata: {
+        renderData: { gabaritVersion: 2, data: { sousTraitant: { siret: "12345678900011" } } },
+      },
+      signatures: [{ signeAt: new Date("2026-09-01T10:00:00Z") }],
+    };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([
+      MANQUES_MISSION.siretContrat,
+    ]);
+    h.etat.trainer = { ...h.etat.trainer!, siret: "12345678900011" };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([]);
   });
 
   it("allumée, lecture en échec : refus (garde fermée)", async () => {

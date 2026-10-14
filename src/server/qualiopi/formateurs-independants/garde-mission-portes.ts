@@ -108,6 +108,7 @@ export async function controlerGardeMission(
         select: {
           statut: true,
           actif: true,
+          siret: true,
           sousTraitantVerifieAt: true,
           sousTraitantNda: true,
           sousTraitantContratSigneAt: true,
@@ -142,6 +143,8 @@ export async function controlerGardeMission(
         activationValideeSource: t.activationValideeSource,
         pieces: t.documents as DocumentConformite[],
         contratCadreVersion: contrat?.version ?? null,
+        siret: t.siret,
+        contratCadreSiret: contrat?.siret ?? null,
         cumulHonorairesHtCents: cumul,
         ...(enJeu === undefined ? {} : { montantMissionHtCents: montantMission ?? null }),
       },

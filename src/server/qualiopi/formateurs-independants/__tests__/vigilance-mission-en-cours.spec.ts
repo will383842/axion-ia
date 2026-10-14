@@ -80,6 +80,8 @@ describe("garde de mission — la mission en jeu fait franchir le seuil", () => 
     sousTraitantNda: "84123456789",
     sousTraitantContratSigneAt: ilYa(10),
     contratCadreVersion: 3,
+    siret: "12345678900011",
+    contratCadreSiret: "12345678900011",
     pieces,
     cumulHonorairesHtCents: cumul,
     ...(mission === undefined ? {} : { montantMissionHtCents: mission }),

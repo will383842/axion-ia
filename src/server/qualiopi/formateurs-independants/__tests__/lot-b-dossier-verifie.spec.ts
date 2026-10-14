@@ -29,12 +29,13 @@ beforeEach(() => {
 });
 
 describe("marquerDossierVerifie", () => {
-  it("passe le dossier ouvert à « vérifié » et révoque son lien", async () => {
+  it("passe le dossier À VÉRIFIER à « vérifié » et révoque son lien", async () => {
     expect(
       await marquerDossierVerifie({ trainerId: T, parId: ADMIN, maintenant: MAINTENANT }),
     ).toBe(true);
     expect(updateMany).toHaveBeenCalledWith({
-      where: { id: T, dossierStatut: { in: ["en_cours", "a_completer", "a_verifier"] } },
+      // C4 — jamais un dossier en cours de saisie ou rouvert pour complément.
+      where: { id: T, dossierStatut: "a_verifier" },
       data: {
         dossierStatut: "verifie",
         dossierVerifieAt: MAINTENANT,
