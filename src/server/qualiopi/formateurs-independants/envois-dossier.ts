@@ -29,6 +29,7 @@ import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
 import { dejaTente } from "@/server/relances/passer-campagnes";
 
+import { SOURCE_REFUS_ADMINISTRATEUR } from "./controle-regles";
 import { envoyer, texteValide, type ResultatEnvoiFormateur } from "./envois";
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
@@ -195,7 +196,7 @@ async function complementAvecNouveauLien(
 }
 
 /** La source de la ligne « dossier refusé » du registre des contrôles (F13). */
-export const SOURCE_REFUS_DOSSIER = "refus_administrateur";
+export const SOURCE_REFUS_DOSSIER = SOURCE_REFUS_ADMINISTRATEUR;
 
 /**
  * F13 — refuser le dossier sur un registre ROUGE. Sous le verrou des contrôles du

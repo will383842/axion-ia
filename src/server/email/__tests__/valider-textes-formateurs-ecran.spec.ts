@@ -30,6 +30,7 @@ import {
 } from "../textes-valides-actions";
 import {
   cleDuTexte,
+  empreinteDuTexte,
   listeDesTextesAffichee,
   TEXTES_FORMATEURS_A_VALIDER,
 } from "../textes-formateurs-a-valider";
@@ -54,7 +55,15 @@ describe("validerTexteEmailFormAction (un texte)", () => {
     connecte("super_admin");
     const r = await validerTexteEmailFormAction(
       INITIAL,
-      form({ gabarit: "formateur-mission-retiree", variante: "lettre-non-signee", valide: "1" }),
+      form({
+        gabarit: "formateur-mission-retiree",
+        variante: "lettre-non-signee",
+        valide: "1",
+        empreinte: empreinteDuTexte({
+          gabarit: "formateur-mission-retiree",
+          variante: "lettre-non-signee",
+        }),
+      }),
     );
     expect(r.ok).toBe(true);
     const cle = cleTexteValide("formateur-mission-retiree", "lettre-non-signee");
@@ -171,7 +180,13 @@ describe("validerTousTextesFormateursAction (d'un coup)", () => {
   it("confirmé : chaque texte non encore validé est écrit, UNE ligne de journal sans targetId", async () => {
     connecte("super_admin");
     const dejaValide = cleDuTexte(TEXTES_FORMATEURS_A_VALIDER[0]!);
-    tx.setting.findMany.mockResolvedValueOnce([{ key: dejaValide, value: { valide: true } }]);
+    // Lot 8A — « déjà validé » = validé avec l'empreinte du texte actuel.
+    tx.setting.findMany.mockResolvedValueOnce([
+      {
+        key: dejaValide,
+        value: { valide: true, empreinte: empreinteDuTexte(TEXTES_FORMATEURS_A_VALIDER[0]!) },
+      },
+    ]);
     const r = await validerTousTextesFormateursAction(
       INITIAL,
       form({ confirme: "oui", nombre: N, liste: L }),

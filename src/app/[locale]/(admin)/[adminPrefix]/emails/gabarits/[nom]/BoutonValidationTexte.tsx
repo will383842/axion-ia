@@ -14,10 +14,12 @@ interface Props {
   gabarit: string;
   variante: string | null;
   valide: boolean;
+  /** Lot 8A — l'empreinte du texte affiché : l'action refuse si le texte a changé depuis. */
+  empreinte: string;
 }
 
 /** M1 — valider le texte affiché, ou retirer sa validation (super-admin). */
-export function BoutonValidationTexte({ gabarit, variante, valide }: Props) {
+export function BoutonValidationTexte({ gabarit, variante, valide, empreinte }: Props) {
   const [etat, formAction, enCours] = useActionState(validerTexteEmailFormAction, INITIAL);
   return (
     <div className="space-y-2">
@@ -35,6 +37,7 @@ export function BoutonValidationTexte({ gabarit, variante, valide }: Props) {
         <input type="hidden" name="gabarit" value={gabarit} />
         <input type="hidden" name="variante" value={variante ?? ""} />
         <input type="hidden" name="valide" value={valide ? "0" : "1"} />
+        <input type="hidden" name="empreinte" value={empreinte} />
         <button
           type="submit"
           className={valide ? "admin-button-ghost" : "admin-button"}

@@ -27,7 +27,10 @@ import {
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
 import { EmargementDemandeContresignature } from "@/components/espace-formateur/EmargementDemandeContresignature";
-import { BilanFinFormation } from "@/components/espace-formateur/BilanFinFormation";
+import {
+  BilanFinFormation,
+  BilanRemisParUnAutre,
+} from "@/components/espace-formateur/BilanFinFormation";
 import { lireBilanFormateur } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/service";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
@@ -153,7 +156,9 @@ export default async function Page({
         <EmargementDemandeContresignature demiJournees={aContresigner} />
 
         {/* Lot G2 — « Fin de formation » : évaluer, donner son avis, terminer. */}
-        {bilan !== null ? (
+        {bilan !== null && "remisParUnAutre" in bilan ? (
+          <BilanRemisParUnAutre message={bilan.message} />
+        ) : bilan !== null ? (
           <BilanFinFormation
             sessionId={id}
             vue={bilan}

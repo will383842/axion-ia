@@ -53,6 +53,13 @@ export const LIBELLE_MOTIF_FORMATION_INCOMPLETE: Readonly<
     "il manque le bilan de fin de formation (seul le relevé du dernier mois de la mission l'attend ; les mois précédents se paient sur les feuilles de présence contresignées)",
 };
 
+/**
+ * Lot 8A — ce que lisent la console ET l'espace d'un co-formateur qui n'anime pas la
+ * dernière journée : une seule phrase, la même des deux côtés.
+ */
+export const LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE =
+  "Le bilan de fin de formation est remis par le formateur qui anime la dernière journée de la session. Les autres formateurs sont payés sur leurs feuilles de présence contresignées seules, dernier mois compris.";
+
 export function formationCompletePourFormateur(e: {
   readonly signees: number;
   readonly manquantes: number;

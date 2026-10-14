@@ -36,11 +36,12 @@ import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloa
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import {
+  empreinteDuTexte,
   estTexteFormateurAValider,
   phraseValidationVariante,
 } from "@/server/email/textes-formateurs-a-valider";
-import { estTexteValide } from "@/server/email/textes-valides";
-import { lireTextesValides } from "@/server/email/textes-valides-lecture";
+import { cleTexteValide, estTexteValide } from "@/server/email/textes-valides";
+import { lireEtatsTextes } from "@/server/email/textes-valides-lecture";
 import type { EmailJobName } from "@/server/queue/types";
 
 import { BoutonValidationTexte } from "./BoutonValidationTexte";
@@ -98,9 +99,16 @@ export default async function ApercuGabaritPage({
   const dormant = fiche.source === null;
 
   const aValider = estTexteFormateurAValider(nom, variante ?? undefined);
-  const valide = aValider
-    ? estTexteValide(await lireTextesValides(), nom, variante ?? undefined)
+  const etatsTextes = aValider ? await lireEtatsTextes() : null;
+  const valide = etatsTextes
+    ? estTexteValide(etatsTextes.valides, nom, variante ?? undefined)
     : false;
+  // Lot 8A — validé sur un AUTRE texte que l'actuel : la validation est tombée.
+  const aRevalider =
+    etatsTextes !== null && etatsTextes.aRevalider.has(cleTexteValide(nom, variante ?? undefined));
+  const empreinte = aValider
+    ? empreinteDuTexte({ gabarit: nom, ...(variante !== null ? { variante } : {}) })
+    : "";
   const peutValider = estSuperAdmin((session.user as { role?: string }).role);
 
   return (
@@ -226,6 +234,10 @@ export default async function ApercuGabaritPage({
                   <AdminBadge tone="success" dot>
                     validé
                   </AdminBadge>
+                ) : aRevalider ? (
+                  <AdminBadge tone="warning" dot>
+                    à revalider — le texte a changé depuis sa validation, rien ne part
+                  </AdminBadge>
                 ) : (
                   <AdminBadge tone="warning" dot>
                     non validé — rien ne part
@@ -238,7 +250,12 @@ export default async function ApercuGabaritPage({
                   : "Le texte ne part que s'il est validé ici ET que l'interrupteur « textes validés » des formateurs est allumé."}
               </p>
               {peutValider ? (
-                <BoutonValidationTexte gabarit={nom} variante={variante} valide={valide} />
+                <BoutonValidationTexte
+                  gabarit={nom}
+                  variante={variante}
+                  valide={valide}
+                  empreinte={empreinte}
+                />
               ) : (
                 <p className="text-fg-soft text-sm">
                   Seule la direction (super-admin) valide les textes.

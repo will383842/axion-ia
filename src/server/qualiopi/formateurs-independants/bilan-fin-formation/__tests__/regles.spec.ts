@@ -18,6 +18,7 @@ import { describe, expect, it } from "vitest";
 import {
   bilanAAlerter,
   bilanExige,
+  remetLeBilan,
   derniereJourneeDe,
   derniereJourneePassee,
   etatDuBilan,
@@ -173,7 +174,7 @@ describe("formationCompletePourFormateur", () => {
 });
 
 describe("bilanExige", () => {
-  const ind = { statut: "sous_traitant", organismeSousTraitantId: null };
+  const ind = { statut: "sous_traitant", organismeSousTraitantId: null, remetLeBilan: true };
 
   it("interrupteur éteint : jamais", () => {
     expect(bilanExige({ ...ind, allumeLe: null, derniereJournee: "2026-11-04" })).toBe(false);
@@ -200,6 +201,7 @@ describe("bilanExige", () => {
         bilanExige({
           statut,
           organismeSousTraitantId: null,
+          remetLeBilan: true,
           allumeLe: "2026-11-01",
           derniereJournee: "2026-11-04",
         }),
@@ -316,5 +318,85 @@ describe("formationCompleteSurLaSession (affichage console)", () => {
         bilan: { termine: true, payerQuandMeme: false },
       }).payable,
     ).toBe(true);
+  });
+});
+
+// Lot 8A (décision du dirigeant) — sur une session à plusieurs formateurs, SEUL celui qui
+// anime la DERNIÈRE journée remet le bilan ; les autres sont payés sur leurs feuilles.
+describe("remetLeBilan — le formateur de la dernière journée", () => {
+  const A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  const B = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+  const j = (date: string, heureFin: string, trainerId: string | null) => ({
+    date: new Date(`${date}T00:00:00Z`),
+    heureFin,
+    trainerId,
+  });
+
+  it("journée désignée : seul son formateur le remet", () => {
+    const s = {
+      formateurPrincipalId: A,
+      jours: [j("2026-11-04", "17:00", A), j("2026-11-05", "17:00", B)],
+    };
+    expect(remetLeBilan(B, s)).toBe(true);
+    expect(remetLeBilan(A, s)).toBe(false);
+  });
+
+  it("dernière journée sans formateur désigné : c'est le principal", () => {
+    const s = {
+      formateurPrincipalId: A,
+      jours: [j("2026-11-04", "17:00", B), j("2026-11-05", "17:00", null)],
+    };
+    expect(remetLeBilan(A, s)).toBe(true);
+    expect(remetLeBilan(B, s)).toBe(false);
+  });
+
+  it("même jour : la journée qui finit le plus tard tranche", () => {
+    const s = {
+      formateurPrincipalId: A,
+      jours: [j("2026-11-05", "12:30", A), j("2026-11-05", "17:00", B)],
+    };
+    expect(remetLeBilan(B, s)).toBe(true);
+    expect(remetLeBilan(A, s)).toBe(false);
+  });
+
+  it("principal inconnu : le rôle « principal » de l'affectation, sinon chacun (comme avant)", () => {
+    const jours = [j("2026-11-05", "17:00", null)];
+    const avecRole = {
+      jours,
+      sessionFormateurs: [
+        { trainerId: A, role: "co_formateur" },
+        { trainerId: B, role: "principal" },
+      ],
+    };
+    expect(remetLeBilan(B, avecRole)).toBe(true);
+    expect(remetLeBilan(A, avecRole)).toBe(false);
+    expect(remetLeBilan(A, { formateurPrincipalId: null, jours })).toBe(true);
+  });
+
+  it("deux journées finissant à la même heure (groupes en parallèle) : chacun le remet, quel que soit l'ordre", () => {
+    const jours = [j("2026-11-05", "17:00", A), j("2026-11-05", "17:00", B)];
+    for (const ordre of [jours, [...jours].reverse()]) {
+      const s = { formateurPrincipalId: A, jours: ordre };
+      expect(remetLeBilan(A, s)).toBe(true);
+      expect(remetLeBilan(B, s)).toBe(true);
+    }
+  });
+
+  it("formateur seul sur sa session : il le remet (rien ne change)", () => {
+    expect(
+      remetLeBilan(A, { formateurPrincipalId: A, jours: [j("2026-11-05", "17:00", null)] }),
+    ).toBe(true);
+  });
+
+  it("bilanExige : un formateur qui ne le remet pas n'est jamais retenu par le bilan", () => {
+    expect(
+      bilanExige({
+        statut: "sous_traitant",
+        organismeSousTraitantId: null,
+        remetLeBilan: false,
+        allumeLe: "2026-11-01",
+        derniereJournee: "2026-11-04",
+      }),
+    ).toBe(false);
   });
 });
