@@ -11,6 +11,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { QualiopiContentBadge } from "@/components/qualiopi/QualiopiContentBadge";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
@@ -87,7 +88,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const view = await loadBlogArticleForView(slug, locale);
+  // Même neutralisation Qualiopi que le corps (cf. le rendu plus bas).
+  const view = neutraliserSelonInterrupteur(await loadBlogArticleForView(slug, locale));
   if (!view) {
     // Audit indexation 2026-05-15 P0-7 — soft-410 tombstone metadata.
     if (locale === "fr") {
@@ -270,7 +272,10 @@ export default async function BlogArticle({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const view = await loadBlogArticleForView(slug, loc);
+  // Audit Qualiopi du 16/10/2026 — des articles EN BASE affirment ou nient la
+  // certification d'Axion-IA (corps, tableau, FAQ). Neutralisés au rendu selon
+  // l'interrupteur, sans toucher la base : cf. `affirmations-en-base.ts`.
+  const view = neutraliserSelonInterrupteur(await loadBlogArticleForView(slug, loc));
   if (!view) {
     // Audit indexation 2026-05-15 P0-5 — redirect permanent via ArticleSlugHistory
     // si rename slug. Préserve SEO accumulé (avant patch : 404 immédiat = perte

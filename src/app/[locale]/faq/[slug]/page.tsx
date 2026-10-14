@@ -38,6 +38,7 @@ import { WasHelpful } from "@/components/marketing/WasHelpful";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { getFaqCategory, FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -85,7 +86,8 @@ const SOFT_404_META: Metadata = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return SOFT_404_META;
-  const faqs = await listFaqs();
+  // La description SERP reprend la réponse : même neutralisation que la page.
+  const faqs = neutraliserSelonInterrupteur(await listFaqs());
   const entry = faqs.find((f) => f.slug === slug);
   if (!entry) return SOFT_404_META;
   const isFr = locale === "fr";
@@ -120,7 +122,13 @@ export default async function FaqEntryPage({ params }: Props) {
   // Une réponse contenant un token `{{price:…}}` l'aurait donc affiché en clair
   // ici. Les prix restent ainsi pilotés par le SSOT `pricing.ts` — le test
   // `no-hardcoded-prices` interdit d'écrire un montant dans le corpus.
-  const faqs = resolvePriceTokensDeep(await listFaqs(), locale as Locale);
+  // Audit Qualiopi du 16/10/2026 — certaines FAQ EN BASE (extraites des articles)
+  // nient ou affirment la certification : neutralisées au rendu selon
+  // l'interrupteur, cf. `affirmations-en-base.ts`.
+  const faqs = resolvePriceTokensDeep(
+    neutraliserSelonInterrupteur(await listFaqs()),
+    locale as Locale,
+  );
   const entry = faqs.find((f) => f.slug === slug);
   if (!entry) {
     // GEO-082 — rattrapage par l'historique de slugs avant de rendre un 404.
