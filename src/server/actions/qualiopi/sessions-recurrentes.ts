@@ -655,6 +655,9 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
       debut: v.nouvelleDateDebut,
       fin: v.nouvelleDateFin,
       distanciel: sessionADistance({ lieuType: ancienne.lieuType, modalite: ancienne.modalite }),
+      // La mission de la session reportée (encore ouverte ici) est celle que le report
+      // remplace : elle n'est pas comptée en plus.
+      remplaceSessionId: ancienne.id,
     },
   };
   // 🔴 L3 — la garde de mission s'applique aussi au report (interrupteur

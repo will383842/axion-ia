@@ -41,6 +41,11 @@ export type MissionEnJeu =
         readonly debut: Date;
         readonly fin: Date | null;
         readonly distanciel: boolean;
+        /**
+         * Report : la session reportée, dont la mission (encore ouverte au moment de
+         * la garde) est celle que le report remplace — jamais comptée en plus.
+         */
+        readonly remplaceSessionId?: string;
       };
     };
 
@@ -200,7 +205,12 @@ async function factureParSession(
     where: {
       sessionId: { in: [...sessionIds] },
       statut: { not: "annule" },
-      montantHtCents: { gt: 0 },
+      // Les HONORAIRES de la mission seulement (animation, déplacement ; NULL = ligne
+      // du relevé mensuel) : une indemnité d'annulation, une pénalité ou une
+      // présentation de méthode est au cumul, mais n'est pas une part de la mission.
+      // Les lignes négatives (avoir partiel) comptent : le cumul les déduit aussi.
+      nature: "honoraire_du",
+      OR: [{ objet: null }, { objet: { in: ["animation", "deplacement"] } }],
       statement: { trainerId, statut: { in: [...STATUTS_RELEVE_CUMUL] } },
     },
     select: { sessionId: true, montantHtCents: true },
@@ -209,6 +219,8 @@ async function factureParSession(
     if (l.sessionId === null) continue;
     parSession.set(l.sessionId, (parSession.get(l.sessionId) ?? 0) + l.montantHtCents);
   }
+  // Jamais négatif : un avoir ne gonfle pas l'engagement au-delà de la mission.
+  for (const [id, v] of parSession) parSession.set(id, Math.max(0, v));
   return parSession;
 }
 
@@ -223,12 +235,14 @@ export async function lireEngagementHtCents(
 ): Promise<number | null> {
   try {
     const sessionEnJeu = "sessionId" in enJeu ? enJeu.sessionId : null;
+    const exclue =
+      "sessionId" in enJeu ? enJeu.sessionId : (enJeu.nouvelleSession.remplaceSessionId ?? null);
     const borne = new Date(maintenant.getTime() - FENETRE_MISSIONS_JOURS * 86_400_000);
     const autres = await prisma.missionFormateur.findMany({
       where: {
         trainerId,
         statut: { in: [...STATUTS_MISSION_OUVERTE] },
-        ...(sessionEnJeu === null ? {} : { sessionId: { not: sessionEnJeu } }),
+        ...(exclue === null ? {} : { sessionId: { not: exclue } }),
         // Une session annulée ou reportée n'engage plus rien : ce qui en reste dû
         // (indemnité d'annulation) passe par un relevé, donc par le cumul ; la session
         // qui remplace une session reportée porte sa propre mission.

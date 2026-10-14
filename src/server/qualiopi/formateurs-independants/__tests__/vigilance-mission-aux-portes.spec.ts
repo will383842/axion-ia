@@ -215,6 +215,46 @@ describe("relecture de l'étape 3 — l'engagement entier, jamais compté deux f
     });
   });
 
+  it("seuls les HONORAIRES de la mission se déduisent (ni indemnité, ni pénalité, ni présentation)", async () => {
+    await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    const [arg] = h.prisma.trainerFeeLine.findMany.mock.calls[0] as unknown as [
+      { where: Record<string, unknown> },
+    ];
+    expect(arg.where).toMatchObject({
+      nature: "honoraire_du",
+      OR: [{ objet: null }, { objet: { in: ["animation", "deplacement"] } }],
+    });
+    expect(arg.where).not.toHaveProperty("montantHtCents");
+  });
+
+  it("un avoir sur une autre mission se déduit du déjà-facturé : 4 000 + 700 + (700 − 0) → refus", async () => {
+    h.etat.session = { ...h.etat.session!, jours: [jour("2026-11-02"), jour("2026-11-03")] };
+    h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
+    h.etat.sessions.set("s-2", autreSession(2));
+    h.etat.facture = [
+      { sessionId: "s-2", montantHtCents: 70_000 },
+      { sessionId: "s-2", montantHtCents: -70_000 },
+    ];
+    const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
+  });
+
+  it("report : la mission de la session reportée n'est pas comptée en plus de celle du report", async () => {
+    await controlerGardeMission("t-1", MAINTENANT, {
+      nouvelleSession: {
+        formationId: null,
+        debut: new Date("2026-11-02T08:00:00Z"),
+        fin: new Date("2026-11-02T16:00:00Z"),
+        distanciel: true,
+        remplaceSessionId: "s-ancienne",
+      },
+    });
+    const autres = h.prisma.missionFormateur.findMany.mock.calls
+      .map(([a]) => a as { where: { sessionId?: unknown } })
+      .find((a) => typeof a.where.sessionId !== "string");
+    expect(autres?.where.sessionId).toEqual({ not: "s-ancienne" });
+  });
+
   it("une autre mission illisible : refus (garde fermée)", async () => {
     h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
     h.etat.session = null;
