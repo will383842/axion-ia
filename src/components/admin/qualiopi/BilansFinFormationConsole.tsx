@@ -11,6 +11,7 @@
 
 import { payerQuandMemeBilanFormAction } from "@/server/actions/qualiopi/bilan-fin-formation";
 import type { LigneBilanConsole } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/console";
+import { LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE } from "@/server/qualiopi/formateurs-independants/paiement/formation-complete";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -65,13 +66,15 @@ export function BilansFinFormationConsole({
             >
               <p className={`${texte} font-medium`}>{l.nom}</p>
               <p className={texte}>
-                {l.termineAt !== null
-                  ? `Bilan terminé le ${dateFmt.format(l.termineAt)}.`
-                  : `Bilan non terminé${l.avisDonne ? " (avis donné)" : ""}.`}
+                {!l.remetLeBilan
+                  ? LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE
+                  : l.termineAt !== null
+                    ? `Bilan terminé le ${dateFmt.format(l.termineAt)}.`
+                    : `Bilan non terminé${l.avisDonne ? " (avis donné)" : ""}.`}
               </p>
               <p className={texte}>
                 Paiement : {l.motif === null ? "rien ne manque." : <strong>{l.motif}</strong>}
-                {!l.exige && l.termineAt === null ? (
+                {l.remetLeBilan && !l.exige && l.termineAt === null ? (
                   <span className={discret}>
                     {" "}
                     — session finie avant l&apos;allumage : le bilan n&apos;est pas attendu.

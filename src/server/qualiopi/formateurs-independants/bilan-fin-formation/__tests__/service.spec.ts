@@ -64,7 +64,10 @@ import {
   payerQuandMemeBilan,
   terminerBilanFormateur,
 } from "../service";
-import { LIBELLE_MOTIF_FORMATION_INCOMPLETE } from "../../paiement/formation-complete";
+import {
+  LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE,
+  LIBELLE_MOTIF_FORMATION_INCOMPLETE,
+} from "../../paiement/formation-complete";
 
 function session(over: Record<string, unknown> = {}) {
   return {
@@ -424,6 +427,13 @@ describe("payer quand même (administrateur)", () => {
   });
 });
 
+/** La vue du formateur qui remet le bilan (le cas du co-formateur est testé plus bas). */
+async function vueDuBilan(trainerId: string) {
+  const vue = await lireBilanFormateur(SESSION, trainerId, APRES);
+  if (vue !== null && "remisParUnAutre" in vue) throw new Error("vue inattendue");
+  return vue;
+}
+
 describe("le motif affiché au formateur (même règle que le paiement)", () => {
   beforeEach(() => {
     // Allumé avant la dernière journée (2026-11-04) : le bilan est exigé.
@@ -434,7 +444,7 @@ describe("le motif affiché au formateur (même règle que le paiement)", () => 
   });
 
   it("bilan attendu : le motif dit que seul le dernier mois de la mission l'attend", async () => {
-    const vue = await lireBilanFormateur(SESSION, MOI, APRES);
+    const vue = await vueDuBilan(MOI);
     expect(vue?.attenduPourPaiement).toBe(true);
     expect(vue?.motifPaiement).toBe(
       LIBELLE_MOTIF_FORMATION_INCOMPLETE.bilan_fin_formation_manquant,
@@ -449,8 +459,56 @@ describe("le motif affiché au formateur (même règle que le paiement)", () => 
       termineAt: null,
       payerQuandMemeAt: APRES,
     });
-    const vue = await lireBilanFormateur(SESSION, MOI, APRES);
+    const vue = await vueDuBilan(MOI);
     expect(vue?.attenduPourPaiement).toBe(false);
     expect(vue?.motifPaiement).toBeNull();
+  });
+});
+
+// Lot 8A — co-animation : seul le formateur de la DERNIÈRE journée remet le bilan. L'autre
+// voit la même phrase que la console, et ne peut rien écrire.
+describe("co-formateur qui n'anime pas la dernière journée", () => {
+  beforeEach(() => {
+    m.db.trainingSession.findUnique.mockResolvedValue(
+      session({
+        sessionFormateurs: [{ trainerId: MOI }, { trainerId: AUTRE_FORMATEUR }],
+        jours: [
+          { date: new Date("2026-11-03T00:00:00Z"), heureFin: "17:00", trainerId: MOI },
+          { date: new Date("2026-11-04T00:00:00Z"), heureFin: "17:00", trainerId: AUTRE_FORMATEUR },
+        ],
+      }),
+    );
+    m.db.setting.findUnique.mockResolvedValue({
+      value: { actif: true, allumeLe: "2026-10-01T08:00:00Z" },
+      updatedAt: null,
+    });
+  });
+
+  it("l'espace dit que le bilan est remis par le formateur de la dernière journée", async () => {
+    const vue = await lireBilanFormateur(SESSION, MOI, APRES);
+    expect(vue).toEqual({ remisParUnAutre: true, message: LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE });
+  });
+
+  it("aucune écriture : évaluer, donner son avis, terminer sont refusés", async () => {
+    expect(await evaluer()).toBe("non_concerne");
+    expect(m.createEvaluation).not.toHaveBeenCalled();
+    expect(
+      await terminerBilanFormateur({ sessionId: SESSION, trainerId: MOI, maintenant: APRES }),
+    ).toBe("non_concerne");
+    expect(
+      await payerQuandMemeBilan({
+        sessionId: SESSION,
+        trainerId: MOI,
+        adminUserId: ADMIN,
+        motif: "motif assez long pour passer",
+        maintenant: APRES,
+      }),
+    ).toBe("non_concerne");
+  });
+
+  it("le formateur de la dernière journée garde son bloc", async () => {
+    const vue = await lireBilanFormateur(SESSION, AUTRE_FORMATEUR, APRES);
+    expect(vue).not.toBeNull();
+    expect(vue && "remisParUnAutre" in vue).toBe(false);
   });
 });

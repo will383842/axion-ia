@@ -20,7 +20,7 @@ import {
   type VerdictFormationComplete,
 } from "../paiement/formation-complete";
 import { lireAllumageBilan } from "./allumage";
-import { bilanExige, derniereJourneeDe } from "./regles";
+import { bilanExige, derniereJourneeDe, remetLeBilan } from "./regles";
 
 export interface LigneBilanConsole {
   readonly trainerId: string;
@@ -30,6 +30,11 @@ export interface LigneBilanConsole {
   readonly payerQuandMeme: { readonly at: Date; readonly motif: string | null } | null;
   /** Le paiement attend-il le bilan ? (session finie après l'allumage) */
   readonly exige: boolean;
+  /**
+   * Lot 8A — anime-t-il la dernière journée ? Sinon, le bilan n'est pas le sien : il est
+   * payé sur ses feuilles seules (`LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE`).
+   */
+  readonly remetLeBilan: boolean;
   readonly verdict: VerdictFormationComplete;
   /** Le motif en clair, ou `null` si la formation est complète pour ce formateur. */
   readonly motif: string | null;
@@ -79,8 +84,10 @@ export async function lireBilansConsole(sessionId: string): Promise<LigneBilanCo
   return formateurs.map((t) => {
     const b = bilans.find((x) => x.trainerId === t.id);
     const affecte = session.sessionFormateurs.some((sf) => sf.trainerId === t.id);
+    const remet = remetLeBilan(t.id, session);
     const exige =
-      derniere !== null && bilanExige({ ...t, allumeLe, derniereJournee: derniere.jour });
+      derniere !== null &&
+      bilanExige({ ...t, remetLeBilan: remet, allumeLe, derniereJournee: derniere.jour });
     const verdict = formationCompleteSurLaSession({
       journeesPrevues: session.jours
         .filter((j) => j.trainerId === t.id || (j.trainerId === null && affecte))
@@ -108,6 +115,7 @@ export async function lireBilansConsole(sessionId: string): Promise<LigneBilanCo
           ? { at: b.payerQuandMemeAt, motif: b.payerQuandMemeMotif ?? null }
           : null,
       exige,
+      remetLeBilan: remet,
       verdict,
       motif: verdict.raison === null ? null : LIBELLE_MOTIF_FORMATION_INCOMPLETE[verdict.raison],
     };
