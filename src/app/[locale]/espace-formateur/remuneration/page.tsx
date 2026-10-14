@@ -50,6 +50,8 @@ import { signalerDesaccordFormAction } from "@/server/actions/formateur/desaccor
 import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
 import { LONGUEUR_MAX_DESACCORD } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-mission";
+import { relevesMissionEnAttenteAttestation } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import { SEUIL_VIGILANCE_LIBELLE } from "@/server/qualiopi/formateurs-independants/vigilance-seuil";
 import { listRelevesDuFormateur } from "@/server/qualiopi/remuneration/queries";
 import { lireRemunerationDuFormateur } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { CoquilleFormateur } from "../_coquille";
@@ -106,6 +108,9 @@ const RETOUR_SIGNALEMENT: Record<string, { ok: boolean; texte: string }> = {
   trop_tot: { ok: false, texte: "Trop de demandes en peu de temps. Réessayez dans une heure." },
 };
 
+/** Lot G1 — le motif du virement en attente, tel que le formateur le lit. */
+const MESSAGE_ATTENTE_ATTESTATION = `Virement en attente de votre attestation URSSAF : vos honoraires avec nous atteignent ${SEUIL_VIGILANCE_LIBELLE} HT. Déposez-la dans « Mon dossier » : le virement part dès qu'elle est vérifiée.`;
+
 /** Payé à la mission : indépendant, et le paiement par mission a une date de bascule. */
 async function payeALaMission(statut: string | undefined): Promise<boolean> {
   if (statut !== "sous_traitant") return false;
@@ -129,6 +134,10 @@ export default async function RemunerationFormateurPage({
     lireRemunerationDuFormateur(session.trainerId),
   ]);
   const aLaMission = await payeALaMission(moi?.statut);
+  // Lot G1 : virements de mission qui attendent l'attestation URSSAF (seuil atteint).
+  const enAttenteAttestation = aLaMission
+    ? await relevesMissionEnAttenteAttestation(prisma, session.trainerId)
+    : new Set<string>();
   const retour = sp.signale !== undefined ? RETOUR_SIGNALEMENT[sp.signale] : undefined;
 
   /*
@@ -306,6 +315,10 @@ export default async function RemunerationFormateurPage({
                     La facture n&apos;est pas encore établie ; l&apos;échéance partira de son
                     émission.
                   </p>
+                )}
+
+                {!paye && !r.estAvoir && enAttenteAttestation.has(r.id) && (
+                  <p className="mt-2 text-sm font-medium">{MESSAGE_ATTENTE_ATTESTATION}</p>
                 )}
 
                 {r.contesteeAt !== null &&

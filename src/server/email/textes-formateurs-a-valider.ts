@@ -32,6 +32,8 @@ export const VARIANTES_VALIDEES_A_PART: Readonly<
   // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
   "formateur-mission-retiree": { 2: "lettre-non-signee", 3: "sans-lettre" },
   "formateur-formation-annulee": { 2: "lettre-non-signee", 3: "sans-lettre" },
+  // Lot G1 — F40 à l'approche du seuil de vigilance.
+  "formateur-vigilance": { 4: "approche-seuil" },
 };
 
 export interface TexteAValider {
@@ -66,4 +68,23 @@ export function estTexteFormateurAValider(gabarit: string, variante?: string): b
   } catch {
     return false;
   }
+}
+
+/**
+ * La liste des textes telle que l'écran l'affiche : les clés, dans l'ordre, une par
+ * ligne. « Valider tous les textes » la renvoie et l'action la compare à la liste du
+ * moment : un texte remplacé par un autre, à nombre égal, est refusé.
+ */
+export function listeDesTextesAffichee(): string {
+  return TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte).join("\n");
+}
+
+/**
+ * La phrase de l'écran d'une VARIANTE : ce que l'envoi exige vraiment. Le texte de
+ * base n'est cité que s'il se valide lui aussi (F23 chiffrée : seule la variante).
+ */
+export function phraseValidationVariante(gabarit: string): string {
+  return estTexteFormateurAValider(gabarit)
+    ? "Cette variante se valide à part : elle ne part que si le texte de base ET elle sont validés."
+    : "Cette variante se valide à part : elle ne part que si elle est validée ici.";
 }

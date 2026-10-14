@@ -25,8 +25,14 @@ export function estPieceDossier(v: unknown): v is PieceDossier {
   return typeof v === "string" && (PIECES_DOSSIER as readonly string[]).includes(v);
 }
 
-/** Pièces facultatives : jamais un manque. */
+/**
+ * Pièces facultatives : jamais un manque. L'attestation URSSAF l'est depuis le lot G1
+ * (décision du 12/10) : elle est demandée plus tard, à l'approche du seuil de vigilance
+ * (`vigilance-seuil.ts`). Déposée quand même, elle est vérifiée comme avant (son code
+ * de sécurité reste demandé).
+ */
 export const PIECES_FACULTATIVES: ReadonlySet<PieceDossier> = new Set([
+  "attestation_vigilance_urssaf",
   "assurance_rc_pro",
   "diplome",
 ]);

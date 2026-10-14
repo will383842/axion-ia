@@ -269,6 +269,17 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Lot G1 (décision du 12/10) — un formateur indépendant APPROCHE le seuil de
+  // vigilance (cumul des honoraires HT facturés) sans attestation valable : elle
+  // lui est demandée. Émise seulement relances de pièces allumées ; se referme
+  // seule quand l'attestation arrive ou que le seuil est atteint (la critique
+  // ci-dessus prend le relais) — une fois par épisode.
+  vigilance_seuil_approche: {
+    niveau: "important",
+    titre: "Seuil de vigilance URSSAF bientôt atteint",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Même défaut, même correctif (`D5-4-01`). Guichet `formateur` : ce sont les
   // sorties de démonstration du kit d'animation, préparées par celui qui anime.
   kit_sorties_non_pretes: {

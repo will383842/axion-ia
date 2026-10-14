@@ -57,6 +57,7 @@ import {
 import {
   MOTIFS_COMPLEMENT,
   MOTIFS_ORANGE,
+  attestationCochee,
   manquesPourContresigner,
   motifRefus,
   motifsCouverts,
@@ -113,8 +114,14 @@ export async function contresignerEtOuvrirEspaceAction(
   if (manques.length > 0) return { ok: false, error: raisonGrise(manques) };
 
   try {
-    // 1. Attestation URSSAF (L4b).
-    if (f.attestation !== null && !f.attestation.prouvee) {
+    // 1. Attestation URSSAF (L4b). Lot G1 : sous le seuil de vigilance, elle n'est
+    //    vérifiée que si la personne l'a cochée (une attestation déposée spontanément).
+    if (
+      f.attestation !== null &&
+      !f.attestation.prouvee &&
+      f.attestation.statutValidation === "en_attente" &&
+      (f.vigilanceExigible !== false || attestationCochee(s))
+    ) {
       const r = await validerAttestationVigilance({
         trainerDocumentId: f.attestation.id,
         codeVerification: s.codeAttestation,

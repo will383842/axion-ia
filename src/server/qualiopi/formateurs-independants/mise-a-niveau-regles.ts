@@ -16,7 +16,7 @@ import { etatControle } from "./controle-regles";
 import {
   contratContresigne,
   cvProbant,
-  vigilanceProuvee,
+  vigilanceSatisfaite,
   type FaitsActivationComplete,
 } from "./garde-activation-complete";
 
@@ -86,7 +86,10 @@ export function elementsMiseANiveau(
     ),
     piece_nda: sur(() => pieceValidee(f.piecesAdministratives, "nda_sous_traitant")),
     piece_kbis: sur(() => pieceValidee(f.piecesAdministratives, "kbis_avis_sirene")),
-    vigilance: sur(() => vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)),
+    // Lot G1 : sous le seuil de vigilance, rien à reprendre pour l'attestation.
+    vigilance: sur(() =>
+      vigilanceSatisfaite(f.pieces, f.preuvesVigilance, maintenant, f.cumulHonorairesHtCents),
+    ),
     cv: sur(() => cvProbant(f.pieces, maintenant)),
     tva: (f.regimeTvaHonoraires ?? "") !== "",
     siret: /^\d{14}$/.test((f.siret ?? "").replace(/\s+/g, "")),

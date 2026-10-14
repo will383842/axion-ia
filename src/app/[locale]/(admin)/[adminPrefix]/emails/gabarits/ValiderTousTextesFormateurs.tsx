@@ -11,11 +11,19 @@ import {
 const INITIAL: EtatValidation = { ok: true, message: "" };
 
 /** M1 — « Valider tous les textes formateurs d'un coup », avec confirmation. */
-export function ValiderTousTextesFormateurs({ nombre }: { nombre: number }) {
+export function ValiderTousTextesFormateurs({
+  nombre,
+  liste,
+}: {
+  nombre: number;
+  /** Les clés affichées (`listeDesTextesAffichee`) : l'action les recompare. */
+  liste: string;
+}) {
   const [etat, formAction, enCours] = useActionState(validerTousTextesFormateursAction, INITIAL);
   return (
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="nombre" value={String(nombre)} />
+      <input type="hidden" name="liste" value={liste} />
       <label className="text-fg-soft flex items-start gap-2 text-sm">
         <input type="checkbox" name="confirme" value="oui" required className="mt-1" />
         <span>

@@ -18,14 +18,22 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
 const mockTrainerFindUnique = vi.fn();
 const mockDocumentFindMany = vi.fn();
 const mockSessionFormateurFindMany = vi.fn();
+const mockStatementFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainer: { findUnique: (...a: unknown[]) => mockTrainerFindUnique(...a) },
     trainerDocument: { findMany: (...a: unknown[]) => mockDocumentFindMany(...a) },
     sessionFormateur: { findMany: (...a: unknown[]) => mockSessionFormateurFindMany(...a) },
+    trainerStatement: { findMany: (...a: unknown[]) => mockStatementFindMany(...a) },
   },
 }));
+
+/** Lot G1 — cumul HT des relevés facturés (la base du seuil URSSAF). */
+const cumulFacture = (cents: number) =>
+  mockStatementFindMany.mockResolvedValue([
+    { trainerId: "t1", statut: "paye", totalHtCents: cents, avoirDe: null, feeLines: [] },
+  ]);
 
 import {
   cumulAnnuelFormateurCents,
@@ -53,6 +61,8 @@ beforeEach(() => {
   mockSessionFormateurFindMany.mockReset();
   mockDocumentFindMany.mockResolvedValue([]);
   mockSessionFormateurFindMany.mockResolvedValue([]);
+  mockStatementFindMany.mockReset();
+  cumulFacture(0);
 });
 
 describe("listTrainerDocuments", () => {
@@ -274,9 +284,10 @@ describe("getTrainerConformite", () => {
       doc("assurance_rc_pro"),
       doc("cv"),
     ]);
-    mockSessionFormateurFindMany.mockResolvedValue([{ tarifHtCents: 100000 }]); // 1 000 €
+    cumulFacture(100000); // 1 000 € HT facturés
     const r = await getTrainerConformite("t1", 2026, NOW);
     expect(r?.montantRetenuCents).toBe(100000);
+    expect(r?.cumulIllisible).toBe(false);
     expect(r?.manquements.map((m) => m.type)).not.toContain("attestation_vigilance_urssaf");
     expect(r?.conforme).toBe(true);
   });
@@ -290,10 +301,8 @@ describe("getTrainerConformite", () => {
       doc("assurance_rc_pro"),
       doc("cv"),
     ]);
-    // 6 jours à 900 € = 5 400 € > 5 000 €
-    mockSessionFormateurFindMany.mockResolvedValue(
-      Array.from({ length: 6 }, () => ({ tarifHtCents: 90000 })),
-    );
+    // 6 missions facturées à 900 € HT = 5 400 € > 5 000 €
+    cumulFacture(540000);
     const r = await getTrainerConformite("t1", 2026, NOW);
     expect(r?.montantRetenuCents).toBe(540000);
     const m = r?.manquements.find((x) => x.code === "vigilance_urssaf_absente");
@@ -321,7 +330,7 @@ describe("getTrainerConformite", () => {
       doc("assurance_rc_pro"),
       doc("cv"),
     ]);
-    mockSessionFormateurFindMany.mockResolvedValue([{ tarifHtCents: 600000 }]);
+    cumulFacture(600000);
     const r = await getTrainerConformite("t1", 2026, NOW, {
       seuilVigilanceCents: 500_000,
       vigilanceValiditeMois: 6,
@@ -330,6 +339,33 @@ describe("getTrainerConformite", () => {
       rcProBloquante: false,
     });
     expect(r?.conforme).toBe(false);
+  });
+
+  it("lot G1 : le seuil se lit sur les relevés FACTURÉS, plus sur les affectations prévues", async () => {
+    mockTrainerFindUnique.mockResolvedValue({ statut: "sous_traitant" });
+    // 6 jours prévus à 900 € (5 400 €), mais rien de facturé : pas d'exigence.
+    mockSessionFormateurFindMany.mockResolvedValue(
+      Array.from({ length: 6 }, () => ({ tarifHtCents: 90000 })),
+    );
+    cumulFacture(0);
+    const r = await getTrainerConformite("t1", 2026, NOW);
+    expect(r?.montantRetenuCents).toBe(0);
+    expect(r?.manquements.map((m) => m.type)).not.toContain("attestation_vigilance_urssaf");
+    const arg = mockStatementFindMany.mock.calls[0]?.[0] as {
+      where: { trainerId: string; statut: { in: string[] } };
+    };
+    expect(arg.where).toEqual({
+      trainerId: "t1",
+      statut: { in: ["valide", "facture_recue", "paye"] },
+    });
+  });
+
+  it("lot G1 : cumul illisible → seuil réputé atteint (garde fermée)", async () => {
+    mockTrainerFindUnique.mockResolvedValue({ statut: "sous_traitant" });
+    mockStatementFindMany.mockRejectedValue(new Error("no db"));
+    const r = await getTrainerConformite("t1", 2026, NOW);
+    expect(r?.cumulIllisible).toBe(true);
+    expect(r?.manquements.some((m) => m.code === "vigilance_urssaf_absente")).toBe(true);
   });
 
   it("stub-safe : erreur sur le formateur → null", async () => {

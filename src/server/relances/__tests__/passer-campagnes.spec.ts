@@ -131,6 +131,7 @@ describe("livré éteint", () => {
       "dossier-relance",
       "vigilance",
       "piece",
+      "seuil-urssaf",
       "invit-relance",
       "contrat-relance",
       "contrat-version-relance",

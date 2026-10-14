@@ -30,6 +30,8 @@
  * d'outil : on ne bloque donc pas sur une règle non validée, mais on la signale.
  */
 
+import { SEUIL_VIGILANCE_CENTS, VIGILANCE_VALIDITE_MOIS } from "@/lib/vigilance";
+
 import {
   pieceAUnFichier,
   estPieceCompetenceProbante,
@@ -89,8 +91,9 @@ export interface ConformiteConfig {
 }
 
 export const CONFORMITE_DEFAUTS: ConformiteConfig = {
-  seuilVigilanceCents: 500_000,
-  vigilanceValiditeMois: 6,
+  // Valeurs communes aux apporteurs et aux formateurs (`lib/vigilance.ts`, lot G1).
+  seuilVigilanceCents: SEUIL_VIGILANCE_CENTS,
+  vigilanceValiditeMois: VIGILANCE_VALIDITE_MOIS,
   cvValiditeMois: 12,
   vigilanceBloquante: false,
   rcProBloquante: false,

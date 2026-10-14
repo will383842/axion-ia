@@ -6,6 +6,8 @@
 // (garde : `le-dossier-formateur-respecte-le-lexique.spec.ts`).
 // « e‑mail » porte un trait d'union INSÉCABLE (U+2011).
 
+import { LIBELLE_ATTESTATION_PLUS_TARD } from "@/lib/vigilance";
+
 export const ADRESSE_CONTACT = "contact@axion-ia.com";
 
 export const ETAPES = ["Vous", "Votre activité", "Vos documents", "Votre contrat"] as const;
@@ -89,8 +91,7 @@ export const TEXTES = {
 
   // Étape 3 · Vos documents
   aidePiece: {
-    attestation_vigilance_urssaf:
-      "Moins de 6 mois. Téléchargez-la sur urssaf.fr, rubrique Mes attestations.",
+    attestation_vigilance_urssaf: `Pas nécessaire pour l'instant : ${LIBELLE_ATTESTATION_PLUS_TARD}. Si vous l'avez déjà : moins de 6 mois, sur urssaf.fr, rubrique Mes attestations.`,
     rib: "Le relevé d'identité bancaire du compte indiqué.",
     cv: "Votre parcours et vos formations.",
     recepisse_declaration_activite: "Le récépissé de dépôt de votre déclaration.",

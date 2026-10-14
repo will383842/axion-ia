@@ -1123,9 +1123,9 @@ export const TEXTES_FORMATEUR = {
   },
   "formateur-vigilance": {
     code: "F40",
-    titre: "Attestation URSSAF (3 variantes)",
+    titre: "Attestation URSSAF (4 variantes)",
     quand:
-      "à la signature du contrat ; avant l'échéance (15 jours avant, puis tous les 15 jours, 3 fois au plus) ; tout de suite si elle expire dans les 7 jours avant une formation.",
+      "à la signature du contrat ; avant l'échéance (15 jours avant, puis tous les 15 jours, 3 fois au plus) ; tout de suite si elle expire dans les 7 jours avant une formation ; une fois, quand vos honoraires approchent le seuil de vigilance (lot G1, validée à part).",
     famille: "B",
     interne: false,
     sollicitation: false,
@@ -1157,6 +1157,18 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "Votre attestation URSSAF expire avant la formation du [date].",
           "Déposez la nouvelle depuis votre espace : sans elle, nous ne pouvons pas maintenir la mission.",
+        ],
+        boutons: ["Déposer mon attestation"],
+      },
+      {
+        // Lot G1 (décision du 12/10) : demandée à l'APPROCHE du seuil, plus à l'entrée.
+        etape: "à l'approche du seuil",
+        objet: "Votre attestation URSSAF pour la suite",
+        objetPropose: null,
+        paragraphes: [
+          "Merci pour les missions réalisées avec nous.",
+          "Vos honoraires approchent [montant]. À partir de ce montant, la loi nous demande votre attestation de vigilance URSSAF, puis une nouvelle tous les 6 mois.",
+          "Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la depuis votre espace : nous la vérifions, et vos virements suivent leur cours.",
         ],
         boutons: ["Déposer mon attestation"],
       },

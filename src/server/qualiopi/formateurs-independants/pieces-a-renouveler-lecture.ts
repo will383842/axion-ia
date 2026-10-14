@@ -17,6 +17,8 @@ import {
   type EtatPiece,
   type PieceLue,
 } from "./pieces-a-renouveler";
+import { phaseVigilanceFormateur } from "./vigilance-seuil";
+import { lireCumulsHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 export interface LignePieces {
   readonly trainerId: string;
@@ -62,6 +64,9 @@ export async function lirePiecesARenouveler(maintenant: Date): Promise<LignePiec
       valideAt: true,
     },
   });
+  // Lot G1 : l'attestation URSSAF ne bloque qu'au seuil de vigilance, et n'est
+  // attendue qu'à partir de son approche (`vigilance-seuil.ts`).
+  const cumuls = await lireCumulsHonorairesHtCents(fiches.map((f) => f.id));
   const parFiche = new Map<string, PieceLue[]>();
   for (const d of docs) {
     const l = parFiche.get(d.trainerId) ?? [];
@@ -69,12 +74,29 @@ export async function lirePiecesARenouveler(maintenant: Date): Promise<LignePiec
     parFiche.set(d.trainerId, l);
   }
   return fiches.flatMap((f): LignePieces[] => {
-    const pieces = PIECES_SUIVIES.map((p) => ({
-      type: p.type,
-      bloquante: p.bloquante,
-      etat: etatPiece(parFiche.get(f.id) ?? [], p.type, maintenant),
-    }));
-    const aSuivre = pieces.some((p) => demandeUnGeste(p.etat) || p.etat.etat === "en_verification");
-    return aSuivre ? [{ trainerId: f.id, nom: `${f.prenom} ${f.nom}`.trim(), pieces }] : [];
+    const phase = phaseVigilanceFormateur(cumuls.get(f.id) ?? null);
+    const pieces = PIECES_SUIVIES.map((p) => {
+      const attestation = p.type === "attestation_vigilance_urssaf";
+      return {
+        type: p.type,
+        bloquante: attestation ? p.bloquante && phase === "seuil_atteint" : p.bloquante,
+        etat: etatPiece(parFiche.get(f.id) ?? [], p.type, maintenant),
+        pasEncore: attestation && phase === "sous_le_seuil",
+      };
+    });
+    const aSuivre = pieces.some(
+      (p) =>
+        (demandeUnGeste(p.etat) && !(p.pasEncore && p.etat.etat === "absente")) ||
+        p.etat.etat === "en_verification",
+    );
+    return aSuivre
+      ? [
+          {
+            trainerId: f.id,
+            nom: `${f.prenom} ${f.nom}`.trim(),
+            pieces: pieces.map(({ pasEncore: _pasEncore, ...p }) => p),
+          },
+        ]
+      : [];
   });
 }

@@ -30,6 +30,11 @@ import {
   libelleEtatPiece,
   type PieceLue,
 } from "./pieces-a-renouveler";
+import { LIBELLE_ATTESTATION_PLUS_TARD, vigilanceExigible } from "./vigilance-seuil";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
+
+/** Lot G1 — l'attestation absente, sous le seuil : rien n'est attendu pour l'instant. */
+const LIBELLE_ATTESTATION_PAS_ENCORE = `Pas nécessaire pour l'instant : ${LIBELLE_ATTESTATION_PLUS_TARD}.`;
 
 /** Les pièces que « Mon dossier » montre et reçoit : celles qu'on relance. */
 export const TYPES_MON_DOSSIER = PIECES_SUIVIES.map((p) => p.type);
@@ -99,17 +104,24 @@ export async function lireMonDossier(
   if (!(await envoiAllume("dossier_en_ligne"))) return null;
   try {
     if (!(await estIndependant(trainerId))) return null;
-    const docs = await lirePiecesSuivies(trainerId);
+    const [docs, cumul] = await Promise.all([
+      lirePiecesSuivies(trainerId),
+      lireCumulHonorairesHtCents(trainerId),
+    ]);
+    // Lot G1 : sous le seuil de vigilance, l'attestation n'est ni bloquante ni attendue.
+    const exigible = vigilanceExigible(cumul);
     return {
-      bloque: dossierBloque(docs, maintenant),
+      bloque: exigible && dossierBloque(docs, maintenant),
       pieces: PIECES_SUIVIES.map((p) => {
         const e = etatPiece(docs, p.type, maintenant);
+        const attestation = p.type === "attestation_vigilance_urssaf";
+        const pasEncore = attestation && !exigible && e.etat === "absente";
         return {
           type: p.type,
           libelleType: LIBELLES_PIECE_MON_DOSSIER[p.type] ?? p.type,
-          libelle: libelleEtatPiece(e),
-          geste: demandeUnGeste(e),
-          bloquante: p.bloquante,
+          libelle: pasEncore ? LIBELLE_ATTESTATION_PAS_ENCORE : libelleEtatPiece(e),
+          geste: pasEncore ? false : demandeUnGeste(e),
+          bloquante: attestation ? exigible && p.bloquante : p.bloquante,
         };
       }),
     };

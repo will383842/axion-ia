@@ -1184,10 +1184,11 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 
 - **Bouton** : aucun
 
-## F40 — Attestation URSSAF (3 variantes)
+## F40 — Attestation URSSAF (4 variantes)
 
 - **Gabarit** : `formateur-vigilance`
-- **Envoyé quand** : à la signature du contrat ; avant l'échéance (15 jours avant, puis tous les 15 jours, 3 fois au plus) ; tout de suite si elle expire dans les 7 jours avant une formation.
+- **Envoyé quand** : à la signature du contrat ; avant l'échéance (15 jours avant, puis tous les 15 jours, 3 fois au plus) ; tout de suite si elle expire dans les 7 jours avant une formation ; une fois, quand vos honoraires approchent le seuil de vigilance (lot G1, validée à part).
+- **Lot G1 (décision du 12/10)** : l'attestation n'est plus demandée à l'entrée. Elle l'est à l'approche du seuil de 5 000 € d'honoraires HT (variante 4), puis renouvelée tous les 6 mois une fois le seuil atteint (variante « avant l'échéance »). Aucun envoi automatique n'utilise la variante « à la signature ».
 
 ### F40 — à la signature
 
@@ -1232,6 +1233,26 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
   >
   > Déposez la nouvelle depuis votre espace : sans elle, nous ne pouvons pas maintenir la mission.
 
+- **Bouton** : « Déposer mon attestation »
+
+### F40 — à l'approche du seuil (lot G1, validée à part)
+
+- **Validation** : texte distinct, `textes_valides.formateur-vigilance#approche-seuil` ; rien ne part sans elle, même si F40 est déjà validé.
+- **Envoyé quand** : une seule fois par épisode, quand le cumul des honoraires HT facturés atteint 4 000 € sans attestation valable au dossier (relances de pièces allumées).
+- **Objet** : Votre attestation URSSAF pour la suite
+- **Titre** : Votre attestation URSSAF pour la suite
+- **Aperçu** : Merci pour les missions réalisées avec nous.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > Merci pour les missions réalisées avec nous.
+  >
+  > Vos honoraires approchent [montant]. À partir de ce montant, la loi nous demande votre attestation de vigilance URSSAF, puis une nouvelle tous les 6 mois.
+  >
+  > Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la depuis votre espace : nous la vérifions, et vos virements suivent leur cours.
+
+- **[montant]** (rempli par l'outil) : « 5 000 € », tiré du seuil commun aux apporteurs et aux formateurs.
 - **Bouton** : « Déposer mon attestation »
 
 ## F41 — Autres pièces à renouveler (3 variantes)

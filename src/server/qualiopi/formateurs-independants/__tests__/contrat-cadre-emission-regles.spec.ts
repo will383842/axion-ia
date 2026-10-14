@@ -103,6 +103,18 @@ describe("verdictEmissionContrat (L7b)", () => {
     expect(refus({ preuvesVigilance: [] })).toContain(REFUS_EMISSION.vigilance);
   });
 
+  it("lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée ; au seuil, si", () => {
+    expect(refus({ preuvesVigilance: [], cumulHonorairesHtCents: 499_999 })).not.toContain(
+      REFUS_EMISSION.vigilance,
+    );
+    expect(refus({ preuvesVigilance: [], cumulHonorairesHtCents: 500_000 })).toContain(
+      REFUS_EMISSION.vigilance,
+    );
+    expect(refus({ preuvesVigilance: [], cumulHonorairesHtCents: null })).toContain(
+      REFUS_EMISSION.vigilance,
+    );
+  });
+
   it("registre : rouge, trop ancien, ou SIRET différent du contrat : refus", () => {
     expect(
       refus({

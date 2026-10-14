@@ -10,7 +10,8 @@
  *      de la pièce signée, jamais dans une date saisie seule) ;
  *   3. contrôle du registre relu il y a un mois au plus ;
  *   4. numéro de déclaration d'activité renseigné ;
- *   5. attestation de vigilance URSSAF valable AUJOURD'HUI.
+ *   5. attestation de vigilance URSSAF valable AUJOURD'HUI — seulement quand le
+ *      cumul des honoraires HT a atteint le seuil de vigilance (lot G1).
  *
  * Les salariés et le dirigeant-formateur ne sont jamais concernés.
  *
@@ -27,6 +28,7 @@
 
 import { pieceGardeeProbante, type FormateurPourActivation } from "./gardes";
 import type { NiveauGardeMission } from "./interrupteurs";
+import { vigilanceExigible } from "./vigilance-seuil";
 
 /** Un contrôle du registre plus vieux qu'un mois ne vaut plus (ADR 0066 (d)). */
 export const REGISTRE_VALIDITE_MOIS = 1;
@@ -37,6 +39,8 @@ export interface FaitsGardeMission extends FormateurPourActivation {
   readonly activationValideeSource: "controle" | "anterieure_au_controle" | null;
   /** Version du dernier contrat-cadre intégralement signé (instantané), ou `null`. */
   readonly contratCadreVersion: number | null;
+  /** Lot G1 — cumul des honoraires HT ; absent ou illisible : attestation exigée. */
+  readonly cumulHonorairesHtCents?: number | null;
 }
 
 export const MANQUES_MISSION = {
@@ -84,7 +88,10 @@ export function peutRecevoirMission(
       manques.push(MANQUES_MISSION.registre);
     }
     if ((f.sousTraitantNda ?? "").trim() === "") manques.push(MANQUES_MISSION.nda);
-    if (!f.pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))) {
+    if (
+      vigilanceExigible(f.cumulHonorairesHtCents) &&
+      !f.pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))
+    ) {
       manques.push(MANQUES_MISSION.vigilance);
     }
     return manques.length === 0 ? { ok: true } : { ok: false, manques };

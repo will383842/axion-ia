@@ -23,6 +23,8 @@ import {
   vigilanceProuvee,
 } from "./garde-activation-complete";
 import type { FaitsW4, PieceW4 } from "./verifier-contresigner-regles";
+import { vigilanceExigible } from "./vigilance-seuil";
+import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 export interface LienPiece {
   readonly libelle: string;
@@ -116,7 +118,7 @@ export async function lireEcranVerifierContresigner(
   });
   if (t === null || t.statut !== "sous_traitant") return null;
 
-  const [controles, preuves, contrats, formations] = await Promise.all([
+  const [controles, preuves, contrats, formations, cumul] = await Promise.all([
     prisma.verificationRegistreSousTraitance.findMany({
       where: { trainerId },
       orderBy: { createdAt: "desc" },
@@ -148,6 +150,7 @@ export async function lireEcranVerifierContresigner(
       orderBy: { titre: "asc" },
       select: { id: true, titre: true },
     }),
+    lireCumulHonorairesHtCents(trainerId),
   ]);
 
   const etat = etatControle(controles, maintenant);
@@ -187,6 +190,8 @@ export async function lireEcranVerifierContresigner(
             code: att.numeroPiece ?? null,
             prouvee: vigilanceProuvee([att], preuves, maintenant),
           },
+    // Lot G1 : la même règle que la garde de contresignature et l'activation.
+    vigilanceExigible: vigilanceExigible(cumul),
     pieces: { cv, rcPro, rib },
     dossier: {
       // Même test que la règle complète, sur la pièce telle qu'elle sera validée.

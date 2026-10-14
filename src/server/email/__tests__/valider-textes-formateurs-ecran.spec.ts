@@ -28,7 +28,11 @@ import {
   validerTexteEmailFormAction,
   validerTousTextesFormateursAction,
 } from "../textes-valides-actions";
-import { cleDuTexte, TEXTES_FORMATEURS_A_VALIDER } from "../textes-formateurs-a-valider";
+import {
+  cleDuTexte,
+  listeDesTextesAffichee,
+  TEXTES_FORMATEURS_A_VALIDER,
+} from "../textes-formateurs-a-valider";
 import { cleTexteValide } from "../textes-valides";
 
 const INITIAL = { ok: true as const, message: "" };
@@ -86,6 +90,17 @@ describe("validerTexteEmailFormAction (un texte)", () => {
     expect(tx.setting.upsert).not.toHaveBeenCalled();
   });
 
+  it("sans session : refusé, rien n'est lu ni écrit", async () => {
+    auth.mockResolvedValue(null);
+    const r = await validerTexteEmailFormAction(
+      INITIAL,
+      form({ gabarit: "formateur-dossier-lien", valide: "1" }),
+    );
+    expect(r).toEqual({ ok: false, error: "Session expirée." });
+    expect(tx.setting.findUnique).not.toHaveBeenCalled();
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
+  });
+
   it("un administrateur qui n'est pas super-admin est refusé", async () => {
     connecte("admin");
     const r = await validerTexteEmailFormAction(
@@ -99,6 +114,7 @@ describe("validerTexteEmailFormAction (un texte)", () => {
 
 describe("validerTousTextesFormateursAction (d'un coup)", () => {
   const N = String(TEXTES_FORMATEURS_A_VALIDER.length);
+  const L = listeDesTextesAffichee();
 
   it("sans la case de confirmation : rien n'est écrit", async () => {
     connecte("super_admin");
@@ -118,11 +134,35 @@ describe("validerTousTextesFormateursAction (d'un coup)", () => {
     expect(tx.setting.upsert).not.toHaveBeenCalled();
   });
 
+  it("même nombre, mais un texte remplacé par un autre : rien n'est écrit", async () => {
+    connecte("super_admin");
+    const cles = TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte);
+    const vue = [...cles.slice(0, -1), "textes_valides.formateur-texte-disparu"].join("\n");
+    const r = await validerTousTextesFormateursAction(
+      INITIAL,
+      form({ confirme: "oui", nombre: N, liste: vue }),
+    );
+    expect(r.ok).toBe(false);
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
+    expect(tx.activityLog.create).not.toHaveBeenCalled();
+  });
+
+  it("sans session : refusé, rien n'est lu ni écrit", async () => {
+    auth.mockResolvedValue(null);
+    const r = await validerTousTextesFormateursAction(
+      INITIAL,
+      form({ confirme: "oui", nombre: N, liste: L }),
+    );
+    expect(r).toEqual({ ok: false, error: "Session expirée." });
+    expect(tx.setting.findMany).not.toHaveBeenCalled();
+    expect(tx.setting.upsert).not.toHaveBeenCalled();
+  });
+
   it("un administrateur qui n'est pas super-admin est refusé", async () => {
     connecte("admin");
     const r = await validerTousTextesFormateursAction(
       INITIAL,
-      form({ confirme: "oui", nombre: N }),
+      form({ confirme: "oui", nombre: N, liste: L }),
     );
     expect(r.ok).toBe(false);
     expect(tx.setting.upsert).not.toHaveBeenCalled();
@@ -134,7 +174,7 @@ describe("validerTousTextesFormateursAction (d'un coup)", () => {
     tx.setting.findMany.mockResolvedValueOnce([{ key: dejaValide, value: { valide: true } }]);
     const r = await validerTousTextesFormateursAction(
       INITIAL,
-      form({ confirme: "oui", nombre: N }),
+      form({ confirme: "oui", nombre: N, liste: L }),
     );
     expect(r.ok).toBe(true);
     const ecrites = (

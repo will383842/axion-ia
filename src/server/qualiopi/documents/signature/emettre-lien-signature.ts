@@ -516,6 +516,9 @@ export async function emettreLienSignatureSystem(
       signataireQualite: resolution.identite.qualite,
       borneMetier: piece.suppressionPrevueAt,
       createdIpHash: null,
+      // La garde ci-dessus, rejouée sous transaction : une révocation concurrente
+      // par l'administrateur l'emporte (aucun jeton neuf derrière elle).
+      exigerVivant: true,
     });
     await journaliser(prisma, {
       action: "qualiopi.piece.lien_signature",
