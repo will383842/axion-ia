@@ -254,7 +254,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available, never triggered to date on our Lille missions).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
 
@@ -343,7 +343,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur lillois (retail, e-commerce, logistique, IT, agroalimentaire), aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur lillois (retail, e-commerce, logistique, IT, agroalimentaire), aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Lille come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether you're a retail, logistics, IT or finance team.",
@@ -429,7 +429,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your Lille sector (retail, e-commerce, logistics, IT, agri-food), no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your Lille sector (retail, e-commerce, logistics, IT, agri-food), no recycled generic session.",
       },
     },
 
@@ -518,7 +518,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Lille brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Lille premises. Typical cases: e-commerce automation (product sheets, customer emails), supply chain (stock forecasting, anomaly sorting), IT (support agents, incident classification).",
@@ -604,7 +604,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
 
@@ -689,7 +689,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité stricte : vos données commerciales et stratégiques ne quittent pas vos locaux lillois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions lilloise).",
+          "Confidentialité stricte : vos données commerciales et stratégiques ne quittent pas vos locaux lillois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Lille is for the executive, manager or expert who wants to progress on AI at their own pace, on their own data and business challenges, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Lille premises — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq or a metropolitan large-group HQ.",
@@ -775,7 +775,7 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Strict confidentiality: your commercial and strategic data does not leave your Lille premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Lille missions).",
+          "Strict confidentiality: your commercial and strategic data does not leave your Lille premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session.",
       },
     },
     sitesWeb: {

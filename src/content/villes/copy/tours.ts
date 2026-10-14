@@ -248,7 +248,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available but never triggered to date on our Tours missions).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -336,7 +336,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Tours come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Suited to industrial, service and commercial teams across Tours Métropole.",
@@ -422,7 +422,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector, no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary adjusted to your sector, no recycled generic session.",
       },
     },
     implementation: {
@@ -510,7 +510,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Tours brings your AI cases to production with contractually-costed ROI, team training included. Hybrid mode on-site / remote, with a mandatory Tours kick-off. Focus on integrations into your existing tools (ERP, CMMS, CRM, email) — no stack rebuild.",
@@ -596,7 +596,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -684,7 +684,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
+          "Entretien de positionnement inclus sans engagement. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Tours is for executives, managers and engineers at industrial mid-caps (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson), S2E2 Smart Electricity SMEs and the Mame and Village by CA innovation ecosystem. No group programme: each session is built around your real challenges, your sector and your executive pace. Entry rate from €990 excl. VAT.",
@@ -770,7 +770,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. No lock-in: skills acquired are usable in full autonomy.",
+          "Positioning interview included without commitment. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
     sitesWeb: {

@@ -276,7 +276,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -364,7 +364,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur — commerce, BTP, logistique, services — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur — commerce, BTP, logistique, services — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Argenteuil come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — on a building site, in a shop, at the office or with clients.",
@@ -450,7 +450,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your sector — commerce, construction, logistics, services — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your sector — commerce, construction, logistics, services — no recycled generic session.",
       },
     },
     implementation: {
@@ -538,7 +538,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Argenteuil brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Argenteuil offices — Val d'Argent business park, activity zone or basin commune.",
@@ -624,7 +624,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -712,7 +712,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances. Si la première séance ne délivre pas de valeur concrète mesurable, remboursement intégral.",
+          "Sessions sur mesure : chaque séance est construite autour de VOS cas métier réels. Outils opérationnels en fin de séance : vous repartez autonome avec des outils configurés, pas avec des slides. Suivi garanti : une séance de suivi incluse dans tout programme multi-séances.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Argenteuil is for the executive, manager or freelancer who wants to build AI skills at their own pace — on their real business cases in commerce, construction or services. Flexible format: one to several days, on site in the Argenteuil basin or remote depending on your schedule.",
@@ -794,11 +794,11 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "What if I see no concrete result after the first session?",
-            a: "If after the first session you haven't identified at least one use case where AI saves you time, the session is fully refunded. Axion-IA quality commitment.",
+            a: "Axion-IA quality commitment.",
           },
         ],
         guarantees:
-          "Tailor-made sessions: each session is built around YOUR real business cases. Operational tools at session end: you leave autonomous with configured tools, not with slides. Follow-up guaranteed: one follow-up session included in any multi-session programme. If the first session delivers no measurable concrete value, full refund.",
+          "Tailor-made sessions: each session is built around YOUR real business cases. Operational tools at session end: you leave autonomous with configured tools, not with slides. Follow-up guaranteed: one follow-up session included in any multi-session programme.",
       },
     },
     sitesWeb: {
