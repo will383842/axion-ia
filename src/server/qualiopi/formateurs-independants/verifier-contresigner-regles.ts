@@ -79,6 +79,11 @@ export interface FaitsW4 {
   } | null;
   readonly actif: boolean;
   readonly finCollaboration: boolean;
+  /**
+   * C4 — état du dossier en ligne (`Trainer.dossierStatut`) ; `null` = fiche
+   * créée en console, sans dossier en ligne.
+   */
+  readonly dossierStatut: string | null;
 }
 
 /** Ce que la personne coche à l'écran. */
@@ -276,12 +281,27 @@ export function blocsW4(f: FaitsW4, s: SaisieW4): Bloc[] {
   return [entreprise, nda, attestation, pieces, formations];
 }
 
+/** C4 — le manque dit quand le dossier n'a pas été envoyé par le formateur. */
+export const MANQUE_DOSSIER_ENVOYE =
+  "un dossier envoyé par le formateur (il est encore en cours de saisie, ou un complément lui a été demandé)";
+
+/**
+ * C4 — on ne contresigne qu'un dossier ENVOYÉ (`a_verifier`), ou une fiche créée
+ * en console (aucun dossier en ligne). « Vérifié » ne passe qu'en reprise (second
+ * clic) : le contrat est déjà contresigné, le dossier vient d'être marqué.
+ */
+export function dossierAContresigner(f: FaitsW4): boolean {
+  if (f.dossierStatut === null || f.dossierStatut === "a_verifier") return true;
+  return f.dossierStatut === "verifie" && f.contrat?.statutSignature === "signee";
+}
+
 /**
  * Ce qui manque pour contresigner, dans l'ordre des blocs. Vide = bouton actif.
  * Le serveur appelle la même fonction avant tout geste.
  */
 export function manquesPourContresigner(f: FaitsW4, s: SaisieW4): string[] {
   if (f.finCollaboration) return ["une collaboration en cours"];
+  if (!dossierAContresigner(f)) return [MANQUE_DOSSIER_ENVOYE];
   const m: string[] = [];
   if (
     f.contrat === null ||

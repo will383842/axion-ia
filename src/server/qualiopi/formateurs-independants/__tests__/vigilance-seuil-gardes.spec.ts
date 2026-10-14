@@ -154,6 +154,7 @@ describe("écran Vérifier et contresigner (W-4)", () => {
     contrat: { id: "c", numero: "CST-1", statutSignature: "partielle" },
     actif: false,
     finCollaboration: false,
+    dossierStatut: "a_verifier",
   });
 
   it("sous le seuil, sans attestation : rien ne manque, bloc neutre", () => {

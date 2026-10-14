@@ -92,6 +92,7 @@ export async function lireEcranVerifierContresigner(
       statut: true,
       actif: true,
       finCollaborationAt: true,
+      dossierStatut: true,
       sousTraitantNda: true,
       ndaVerifieListeAt: true,
       regimeTvaHonoraires: true,
@@ -208,6 +209,7 @@ export async function lireEcranVerifierContresigner(
         : { id: contrat.id, numero: contrat.numero, statutSignature: contrat.statutSignature },
     actif: t.actif,
     finCollaboration: t.finCollaborationAt !== null,
+    dossierStatut: t.dossierStatut ?? null,
   };
 
   const liens: LienPiece[] = [
