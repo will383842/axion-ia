@@ -30,6 +30,14 @@ import {
 } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-donnees";
 import type { JourLettre } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-calcul";
 
+/**
+ * Version du gabarit de la lettre émise : la v3 (étape 3 du C4 — section 4 du paiement :
+ * facture établie quand tout est complet, virement 30 jours après sa date, URSSAF). Aucun
+ * formateur n'a signé de contrat-cadre avant la v4 (décision du 14/10/2026) : la v3
+ * s'émet à tous. La v2 reste figée dans `archives/`, pour rejouer ce qui aurait été émis.
+ */
+export const VERSION_LETTRE_EMISE = 3;
+
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
 /** Motif système : une lettre neuve que sa mission n'a pas pu recevoir. */
@@ -53,6 +61,8 @@ export type ResultatLettreV2 =
       documentId: string;
       numero: string;
       lettreAnnuleeId: string | null;
+      /** Version du gabarit émise (`VERSION_LETTRE_EMISE`). */
+      gabaritVersion: typeof VERSION_LETTRE_EMISE;
       /** Ce que la lettre annonce (F26 le reprend tel quel, jamais recalculé). */
       annonce: {
         journees: number;
@@ -222,6 +232,10 @@ export async function genererLettreMissionV2(input: {
   const essai = assemblerLettreV2(faits("—"));
   if (!essai.ok) return { ok: false, erreur: essai.motif };
 
+  // Décision du 14/10/2026 (contrat-cadre v4, art. 18.2) : la lettre suit une mission
+  // ACCEPTÉE, qui est maintenue même sans attestation URSSAF — seul son paiement l'attend.
+  // L'attestation se demande avant d'accepter (garde de mission aux portes), jamais ici.
+
   // Une lettre vivante par mission : une lettre déjà signée par le formateur
   // n'est jamais remplacée en silence (motif exigé) ; les autres sont annulées
   // APRÈS l'émission de la nouvelle, jamais avant (un rendu en échec ne laisse
@@ -251,7 +265,7 @@ export async function genererLettreMissionV2(input: {
       return React.createElement(LettreMissionV2Pdf, { data: a.data, identite });
     },
     refs: { sessionId: input.sessionId, trainerId: input.trainerId },
-    gabaritVersion: 2,
+    gabaritVersion: VERSION_LETTRE_EMISE,
     // Ce que la lettre annonce, mois par mois : l'écart d'un relevé s'y compare.
     metadata: { annonceLettre: essai.annonce },
     // L'original de SA mission, jamais un duplicata : la seule autre lettre
@@ -311,6 +325,7 @@ export async function genererLettreMissionV2(input: {
     documentId: doc.id,
     numero: doc.numero,
     lettreAnnuleeId,
+    gabaritVersion: VERSION_LETTRE_EMISE,
     annonce: {
       journees: essai.data.journees,
       demiJournees: essai.data.demiJournees,

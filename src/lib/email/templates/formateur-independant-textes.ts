@@ -660,7 +660,7 @@ export const TEXTES_FORMATEUR = {
           "Votre lettre de mission pour [intitulé] est prête.",
           "Elle couvre [N] journée(s) et [M] demi-journée(s), du [date de début] au [date de fin], à [lieu].",
           "Elle rappelle votre contrat de sous-traitance, vos honoraires ([total] € HT) et le forfait de déplacement [le cas échéant].",
-          "Elle rappelle aussi la date limite de paiement de vos honoraires : le [date limite] au plus tard, 30 jours après la dernière journée.",
+          "Elle rappelle aussi comment vous êtes payé : nous établissons votre facture dès que tout est complet (feuilles de présence signées et, pour le dernier mois, bilan de fin de formation s'il vous revient), et le virement part au plus tard 30 jours après la date de cette facture.",
         ],
         boutons: ["Signer ma lettre"],
       },
@@ -840,9 +840,9 @@ export const TEXTES_FORMATEUR = {
       {
         etape: null,
         objet: "Votre mission : il nous manque un élément",
-        objetPropose: "Pour vous confier la mission [intitulé], il nous manque un élément",
+        objetPropose: null,
         paragraphes: [
-          "Pour vous confier cette mission, il nous manque : [motif].",
+          "Votre mission est bien notée. Pour vous adresser votre lettre de mission, il nous manque : [motif].",
           "Déposez-le depuis votre espace : la lettre de mission partira aussitôt.",
         ],
         boutons: ["Déposer depuis mon espace"],
@@ -1135,7 +1135,8 @@ export const TEXTES_FORMATEUR = {
         objet: "Votre attestation de vigilance URSSAF",
         objetPropose: null,
         paragraphes: [
-          "Pour vous confier des missions, nous avons besoin de votre attestation de vigilance URSSAF, datée de moins de 6 mois.",
+          "Votre attestation de vigilance URSSAF nous sera demandée dès que vos honoraires avec nous approchent 5 000 € hors taxes, ou avant une mission qui les ferait dépasser. Vous pouvez déjà la déposer si vous le souhaitez.",
+          "À partir de ce montant, tant qu'elle manque, vos missions déjà acceptées sont maintenues : seul le paiement de vos honoraires l'attend, et nous ne pouvons pas vous proposer de nouvelle mission.",
           "Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la ensuite depuis votre espace.",
         ],
         boutons: ["Déposer mon attestation"],
@@ -1156,7 +1157,8 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "Votre attestation URSSAF doit être renouvelée avant le [date]",
         paragraphes: [
           "Votre attestation URSSAF expire avant la formation du [date].",
-          "Déposez la nouvelle depuis votre espace : sans elle, nous ne pouvons pas maintenir la mission.",
+          "Votre mission est maintenue. Déposez la nouvelle attestation depuis votre espace : le paiement de vos honoraires l'attend, et nous ne pouvons pas vous proposer de nouvelle mission sans elle.",
+          "Elle se télécharge en quelques minutes sur urssaf.fr.",
         ],
         boutons: ["Déposer mon attestation"],
       },
@@ -1167,7 +1169,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: null,
         paragraphes: [
           "Merci pour les missions réalisées avec nous.",
-          "Vos honoraires approchent [montant]. À partir de ce montant, la loi nous demande votre attestation de vigilance URSSAF, puis une nouvelle tous les 6 mois.",
+          "Vos honoraires approchent [montant]. À partir de ce montant, la loi nous demande votre attestation de vigilance URSSAF, puis une nouvelle tous les 6 mois. Elle vous sera aussi demandée avant une mission qui ferait dépasser ce montant.",
           "Elle se télécharge en quelques minutes sur urssaf.fr. Déposez-la depuis votre espace : nous la vérifions, et vos virements suivent leur cours.",
         ],
         boutons: ["Déposer mon attestation"],

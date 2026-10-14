@@ -20,7 +20,7 @@ import { AdminButton } from "@/components/admin/ui/AdminButton";
 
 type Etat =
   | { statut: "repos" }
-  | { statut: "fait"; message: string; refus: string[] }
+  | { statut: "fait"; message: string; refus: string[]; activationsRefusees: string[] }
   | { statut: "erreur"; message: string };
 
 export function ContresignerLotButton({ ids }: { ids: string[] }): React.ReactElement | null {
@@ -33,6 +33,10 @@ export function ContresignerLotButton({ ids }: { ids: string[] }): React.ReactEl
         statut: "fait",
         message: `${r.signees} pièce${r.signees > 1 ? "s" : ""} contresignée${r.signees > 1 ? "s" : ""}.`,
         refus: r.resultats.filter((x) => !x.ok).map((x) => ("message" in x ? x.message : "")),
+        // Étape 3 du C4 — signée, mais l'espace du formateur n'a pas été ouvert.
+        activationsRefusees: r.resultats.flatMap((x) =>
+          x.ok && x.activationRefusee ? [x.activationRefusee] : [],
+        ),
       };
     },
     { statut: "repos" },
@@ -46,6 +50,13 @@ export function ContresignerLotButton({ ids }: { ids: string[] }): React.ReactEl
         {etat.refus.length > 0 && (
           <ul className="text-[color:var(--color-admin-fg-muted)]">
             {etat.refus.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
+          </ul>
+        )}
+        {etat.activationsRefusees.length > 0 && (
+          <ul role="alert" className="text-[color:var(--color-admin-error)]">
+            {etat.activationsRefusees.map((m, i) => (
               <li key={i}>{m}</li>
             ))}
           </ul>

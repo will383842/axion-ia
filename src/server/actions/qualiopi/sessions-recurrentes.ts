@@ -44,7 +44,11 @@ import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-inp
 import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
 import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
 import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
-import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
+import { sessionADistance } from "@/server/qualiopi/formateurs-independants/choix-formateur";
+import {
+  controlerGardeMission,
+  type MissionEnJeu,
+} from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import {
@@ -362,10 +366,12 @@ async function coFormateursRefusesParGarde(
     sessionFormateurs: ReadonlyArray<{ trainerId: string; role: string }>;
   },
   avertissements: string[],
+  enJeu: MissionEnJeu,
 ): Promise<Set<string>> {
   const refuses = new Set<string>();
   for (const id of coFormateursDe(ancienne)) {
-    const garde = await controlerGardeMission(id);
+    // Étape 3 (C4) : la mission de la session de report compte pour le seuil URSSAF.
+    const garde = await controlerGardeMission(id, new Date(), enJeu);
     if (garde.refus.length > 0) {
       refuses.add(id);
       avertissements.push(`Co-formateur non reconduit : ${garde.refus.join(" ")}`);
@@ -640,10 +646,24 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
       // sans formateur et l'alerte le signale — jamais l'inverse.
     }
   }
+  // Étape 3 (C4) — la mission de la session de REPORT, pour le seuil URSSAF : ses
+  // journées seront régénérées depuis la durée de la formation, sans formateur désigné
+  // (le report les recrée ainsi), sur les nouvelles dates.
+  const missionDuReport: MissionEnJeu = {
+    nouvelleSession: {
+      formationId: ancienne.formationId,
+      debut: v.nouvelleDateDebut,
+      fin: v.nouvelleDateFin,
+      distanciel: sessionADistance({ lieuType: ancienne.lieuType, modalite: ancienne.modalite }),
+      // La mission de la session reportée (encore ouverte ici) est celle que le report
+      // remplace : elle n'est pas comptée en plus.
+      remplaceSessionId: ancienne.id,
+    },
+  };
   // 🔴 L3 — la garde de mission s'applique aussi au report (interrupteur
   // `formateurs.garde_mission_portes` ; coupé : aucun effet).
   if (formateurRetenuId !== null) {
-    const garde = await controlerGardeMission(formateurRetenuId);
+    const garde = await controlerGardeMission(formateurRetenuId, new Date(), missionDuReport);
     if (garde.refus.length > 0) {
       formateurRetenuId = null;
       avertissementsReport.push(`Formateur non reconduit : ${garde.refus.join(" ")}`);
@@ -668,7 +688,7 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
   // n'est pas reconduit.
   const coEcartes = new Set([
     ...(affectationSure ? await coFormateursNonReconductibles(ancienne, cibleReport) : []),
-    ...(await coFormateursRefusesParGarde(ancienne, avertissementsReport)),
+    ...(await coFormateursRefusesParGarde(ancienne, avertissementsReport, missionDuReport)),
   ]);
   const coFormateursReportes =
     formateurEcarteId !== null || coEcartes.size > 0

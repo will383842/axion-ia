@@ -234,7 +234,32 @@ async function classerContratTravail(documentGenereId: string, numero: string): 
  * concerne aucune fiche formateur : rien à faire ici. ⚠️ Salariés et
  * dirigeants : hors parcours (ADR 0066 a) — rien n'est écrit sur leur fiche.
  */
-async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promise<void> {
+/**
+ * Étape 3 du C4 (décision de Will) — l'activation demandée après une contresignature
+ * réussie a été REFUSÉE. Le refus n'est plus avalé : il est rendu à l'appelant (qui
+ * l'affiche en console), signalé à Sentry et journalisé. La signature reste acquise.
+ * Aucune donnée personnelle : le message et les manques sont ceux de la garde.
+ */
+export interface ActivationRefusee {
+  readonly code: string;
+  /** Message d'écran : le motif, puis la liste des manques. */
+  readonly message: string;
+  readonly manques: ReadonlyArray<string>;
+}
+
+/** Ce que la console lit avant le motif d'un refus d'activation après contresignature. */
+export const PREFIXE_ACTIVATION_REFUSEE =
+  "Contrat contresigné, mais l'espace du formateur n'est pas ouvert.";
+
+/** Ce que l'après-signature rend à l'appelant. Ne lève jamais. */
+export interface ResultatApresSignature {
+  /** Contrat-cadre contresigné mais espace NON ouvert : pourquoi. `null` sinon. */
+  readonly activationRefusee: ActivationRefusee | null;
+}
+
+async function contratSousTraitanceFormateur(
+  ctx: ContexteApresSignature,
+): Promise<ActivationRefusee | null> {
   const piece = await prisma.documentGenere.findUnique({
     where: { id: ctx.documentGenereId },
     select: {
@@ -249,13 +274,13 @@ async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promi
     },
   });
   const trainerId = piece?.trainerId ?? null;
-  if (piece == null || trainerId === null) return;
+  if (piece == null || trainerId === null) return null;
 
   const trainer = await prisma.trainer.findUnique({
     where: { id: trainerId },
     select: { statut: true },
   });
-  if (trainer?.statut !== "sous_traitant") return;
+  if (trainer?.statut !== "sous_traitant") return null;
 
   const signeLe = piece.signatures[0]?.signeAt ?? new Date();
 
@@ -316,7 +341,7 @@ async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promi
   }
 
   // 4. Activation demandée — jamais par un signataire, jamais par « système ».
-  if (ctx.acteur.type !== "administrateur") return;
+  if (ctx.acteur.type !== "administrateur") return null;
   // Lot B (M15) : contresigné par l'administrateur, quel que soit l'écran — le dossier
   // en ligne passe « vérifié » et son lien est révoqué (sans effet sur la session de
   // l'espace). Écriture conditionnelle : une fiche sans dossier ouvert n'est pas touchée.
@@ -336,13 +361,31 @@ async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promi
     acteur: { type: "administrateur", session: ctx.acteur.session },
     motif: `Contrat-cadre de sous-traitance ${ctx.numero} intégralement signé.`,
   });
-  if (!r.ok && r.code !== "garde") {
-    Sentry.captureMessage("Activation après contrat-cadre non aboutie", {
-      level: "warning",
-      tags: { action: "apresSignature:activation", code: r.code },
-      extra: { documentGenereId: ctx.documentGenereId },
+  if (r.ok) return null;
+  // Étape 3 du C4 : le refus de la GARDE n'est plus avalé — il est signalé comme les
+  // autres, journalisé et rendu à l'appelant.
+  Sentry.captureMessage("Activation après contrat-cadre non aboutie", {
+    level: "warning",
+    tags: { action: "apresSignature:activation", code: r.code },
+    extra: { documentGenereId: ctx.documentGenereId, manques: r.manques.length },
+  });
+  const refus: ActivationRefusee = {
+    code: r.code,
+    message: r.manques.length === 0 ? r.message : `${r.message} ${r.manques.join(" ")}`,
+    manques: r.manques,
+  };
+  try {
+    await logQualiopiActivity({
+      action: "qualiopi.trainer.activation_refusee",
+      targetType: "Trainer",
+      targetId: trainerId,
+      changes: { documentGenereId: ctx.documentGenereId, numero: ctx.numero, ...refus },
+      session: ctx.acteur.session,
     });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "apresSignature:activation-journal" } });
   }
+  return refus;
 }
 
 /**
@@ -350,7 +393,8 @@ async function contratSousTraitanceFormateur(ctx: ContexteApresSignature): Promi
  *
  * Ne lève jamais : chaque branche est encapsulée (voir l'en-tête).
  */
-export async function apresSignature(ctx: ContexteApresSignature): Promise<void> {
+export async function apresSignature(ctx: ContexteApresSignature): Promise<ResultatApresSignature> {
+  let activationRefusee: ActivationRefusee | null = null;
   const circuit = circuitPour(ctx.type);
   const libelle = circuit?.libelle ?? "pièce";
 
@@ -422,7 +466,7 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
     }
   }
 
-  if (ctx.statutSignature !== "signee") return;
+  if (ctx.statutSignature !== "signee") return { activationRefusee: null };
 
   // ── 3. Pièce engageante : positionnement, puis lettre de mission due ──────
   if (estPieceEngageante(ctx.type)) {
@@ -436,7 +480,7 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
     } catch (err) {
       capturer(err, "lettre_due", ctx);
     }
-    return;
+    return { activationRefusee: null };
   }
 
   // ── 4. Branches propres à un type ──────────────────────────────────────────
@@ -445,9 +489,10 @@ export async function apresSignature(ctx: ContexteApresSignature): Promise<void>
     else if (ctx.type === "contrat_travail") {
       await classerContratTravail(ctx.documentGenereId, ctx.numero);
     } else if (ctx.type === "contrat_sous_traitance" && interrupteurs.suite_contrat_cadre) {
-      await contratSousTraitanceFormateur(ctx);
+      activationRefusee = await contratSousTraitanceFormateur(ctx);
     }
   } catch (err) {
     capturer(err, ctx.type, ctx);
   }
+  return { activationRefusee };
 }

@@ -24,7 +24,8 @@ const IL_Y_A_UN_MOIS = new Date(MAINTENANT.getTime() - 30 * 24 * 3600 * 1000);
 
 const h = vi.hoisted(() => ({
   type: "contrat_sous_traitance",
-  version: 3,
+  // Étape 3 du C4 : la version en vigueur (dernière arrêtée) est la v4.
+  version: 4,
   annuleeAt: null as Date | null,
   signeeParFormateur: true,
   attestationProuvee: false,
@@ -176,7 +177,7 @@ function rienNEstEcrit(): void {
 beforeEach(() => {
   vi.clearAllMocks();
   h.type = "contrat_sous_traitance";
-  h.version = 3;
+  h.version = 4;
   h.annuleeAt = null;
   h.signeeParFormateur = true;
   h.attestationProuvee = false;
@@ -308,13 +309,15 @@ describe("🔴 les autres contrôles de la porte", () => {
     const r = await objectionContresignatureContratCadre({
       documentGenereId: DOC,
       type: "contrat_sous_traitance",
-      metadata: { renderData: { gabaritVersion: 3, data: { cocontractant: { siret: SIRET } } } },
+      metadata: { renderData: { gabaritVersion: 4, data: { cocontractant: { siret: SIRET } } } },
     });
     expect(r).toEqual({ message: MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE.nonSigne });
   });
 
   it("contrat d'une version qui n'est pas en vigueur : refus", async () => {
-    h.version = 4;
+    // Étape 3 du C4 : une v3 signée par le formateur mais pas contresignée n'est plus en
+    // vigueur — la v4 lui est présentée.
+    h.version = 3;
     const r = await contresignerUne();
     expect((r as { message: string }).message).toMatch(/version en vigueur/);
     rienNEstEcrit();

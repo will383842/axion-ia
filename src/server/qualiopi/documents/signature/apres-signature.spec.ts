@@ -109,7 +109,7 @@ describe("remise de l'exemplaire", () => {
 
   it("une panne de remise ne lève jamais", async () => {
     h.transmettre.mockRejectedValue(new Error("redis"));
-    await expect(apresSignature(ctx())).resolves.toBeUndefined();
+    await expect(apresSignature(ctx())).resolves.toEqual({ activationRefusee: null });
   });
 });
 
@@ -206,6 +206,34 @@ describe("contrat de sous-traitance d'un formateur indépendant", () => {
     h.p.documentGenere.findUnique.mockResolvedValue({ trainerId: null, signatures: [] });
     await apresSignature(ctx({ type: "contrat_sous_traitance" }));
     expect(h.activer).not.toHaveBeenCalled();
+  });
+
+  it("étape 3 (C4) — activation REFUSÉE par la garde : le refus est RENDU à l'appelant, et signalé", async () => {
+    const Sentry = await import("@sentry/nextjs");
+    h.activer.mockResolvedValue({
+      ok: false,
+      code: "garde",
+      message: "Activation refusée : le dossier du formateur indépendant est incomplet.",
+      manques: ["Le numéro de déclaration d'activité n'est pas renseigné."],
+    });
+    const r = await apresSignature(ctx({ type: "contrat_sous_traitance" }));
+    expect(r.activationRefusee).toEqual({
+      code: "garde",
+      message:
+        "Activation refusée : le dossier du formateur indépendant est incomplet. Le numéro de déclaration d'activité n'est pas renseigné.",
+      manques: ["Le numéro de déclaration d'activité n'est pas renseigné."],
+    });
+    expect(Sentry.captureMessage).toHaveBeenCalledWith(
+      "Activation après contrat-cadre non aboutie",
+      expect.objectContaining({ tags: expect.objectContaining({ code: "garde" }) }),
+    );
+  });
+
+  it("activation réussie, ou autre pièce : rien n'est rendu comme refus", async () => {
+    expect((await apresSignature(ctx({ type: "contrat_sous_traitance" }))).activationRefusee).toBe(
+      null,
+    );
+    expect((await apresSignature(ctx())).activationRefusee).toBe(null);
   });
 
   it("un casier déjà classé n'est pas doublé", async () => {

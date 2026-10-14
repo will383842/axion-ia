@@ -115,14 +115,14 @@ describe("preparerContratCadre", () => {
       ok: true,
       documentId: "doc-neuf",
       numero: "AXI-FORM-2026-010",
-      version: 3,
+      version: 4,
       remplaces: 0,
     });
     const appel = d.generer.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(appel).toMatchObject({
       type: "contrat_sous_traitance",
       refs: { trainerId: ID },
-      gabaritVersion: 3,
+      gabaritVersion: 4,
       estCopie: false,
     });
     expect(d.annuler).not.toHaveBeenCalled();
@@ -146,12 +146,12 @@ describe("preparerContratCadre", () => {
     expect(d.generer).not.toHaveBeenCalled();
   });
 
-  it("une v3 déjà émise : jamais refaite", async () => {
+  it("une v4 (dernière arrêtée) déjà émise : jamais refaite", async () => {
     d.contrats.mockResolvedValue([
       {
         id: "c",
         numero: "N",
-        metadata: { renderData: { gabaritVersion: 3 } },
+        metadata: { renderData: { gabaritVersion: 4 } },
         statutSignature: "en_attente",
         annuleeAt: null,
         _count: { signatures: 0 },
@@ -191,10 +191,10 @@ describe("preparerContratCadre", () => {
 
 describe("préparations simultanées", () => {
   it("une autre préparation a émis la même version juste avant : la nôtre est annulée", async () => {
-    // 1re lecture (faits) : rien ; 2e lecture (après émission) : deux v3 vivantes.
+    // 1re lecture (faits) : rien ; 2e lecture (après émission) : deux v4 vivantes.
     d.contrats.mockResolvedValueOnce([]).mockResolvedValueOnce([
-      { id: "autre", metadata: { renderData: { gabaritVersion: 3 } } },
-      { id: "doc-neuf", metadata: { renderData: { gabaritVersion: 3 } } },
+      { id: "autre", metadata: { renderData: { gabaritVersion: 4 } } },
+      { id: "doc-neuf", metadata: { renderData: { gabaritVersion: 4 } } },
     ]);
     const r = await preparerContratCadre({ trainerId: ID, maintenant: MAINTENANT, lire });
     expect(r.ok).toBe(false);

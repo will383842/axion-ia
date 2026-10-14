@@ -103,7 +103,9 @@ describe("(1) copie partielle au signataire — signature.copie_partielle", () =
 
   it("lecture des réglages en panne : comme clé absente", async () => {
     h.p.setting.findMany.mockRejectedValue(new Error("db"));
-    await expect(apresSignature(ctx({ canal: "lien_a_jeton" }))).resolves.toBeUndefined();
+    await expect(apresSignature(ctx({ canal: "lien_a_jeton" }))).resolves.toEqual({
+      activationRefusee: null,
+    });
     expect(h.copie).not.toHaveBeenCalled();
   });
 
@@ -230,7 +232,7 @@ describe("(4) suite du contrat-cadre formateur — formateurs.suite_contrat_cadr
   it("lot B (M15) : une panne du passage « vérifié » ne défait ni la signature ni l'activation", async () => {
     allumer("formateurs.suite_contrat_cadre");
     h.verifie.mockRejectedValue(new Error("panne"));
-    await expect(apresSignature(signe())).resolves.toBeUndefined();
+    await expect(apresSignature(signe())).resolves.toEqual({ activationRefusee: null });
     expect(h.activer).toHaveBeenCalledOnce();
   });
 

@@ -37,7 +37,9 @@ import {
   composantGabarit,
   rendreExemplaireSigne,
 } from "@/server/qualiopi/documents/signature/exemplaire-signe";
-import { ContratCadrePdf } from "@/server/qualiopi/documents/templates/contrat-cadre";
+// Étape 3 du C4 : le texte v3 vit dans sa copie figée ; `contrat-cadre.tsx` porte la v4.
+import { ContratCadrePdf } from "@/server/qualiopi/documents/templates/archives/contrat-cadre.v3";
+import { ContratCadrePdf as ContratCadrePdfV4 } from "@/server/qualiopi/documents/templates/contrat-cadre";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
 import {
@@ -132,7 +134,8 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
   it("la v3 du contrat-cadre est arrêtée au 10/10/2026", () => {
     expect(versionArretee("contrat_sous_traitance", 3)).toBe(true);
     expect(VERSIONS_ARRETEES.contrat_sous_traitance?.[3]?.arreteeLe).toBe("2026-10-10");
-    expect(derniereVersionArretee("contrat_sous_traitance")).toBe(3);
+    // Étape 3 du C4 : la v4 (14/10/2026) est arrêtée au-dessus d'elle.
+    expect(derniereVersionArretee("contrat_sous_traitance")).toBe(4);
   });
 
   it("🔴 livré ÉTEINT : la version émise par défaut reste la v2", () => {
@@ -144,7 +147,8 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
   it("l'émetteur peut demander la v3, et seulement une version courante ou arrêtée", () => {
     expect(versionGabaritAEcrire("contrat_sous_traitance", 3)).toBe(3);
     expect(versionGabaritAEcrire("contrat_sous_traitance", 2)).toBe(2);
-    expect(() => versionGabaritAEcrire("contrat_sous_traitance", 4)).toThrow(/émission refusée/);
+    expect(versionGabaritAEcrire("contrat_sous_traitance", 4)).toBe(4);
+    expect(() => versionGabaritAEcrire("contrat_sous_traitance", 5)).toThrow(/émission refusée/);
     expect(() => versionGabaritAEcrire("contrat_sous_traitance", 1)).toThrow(/émission refusée/);
     expect(() => versionGabaritAEcrire("convention", 3)).toThrow(/émission refusée/);
     expect(versionGabaritAEcrire("attestation", 3)).toBeNull();
@@ -154,9 +158,9 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
   // contrat-cadre, et la v1 reste émise par défaut (cf.
   // `versions-arretees-deux-familles.spec.ts`).
   it("la lettre de mission a sa propre version arrêtée (S5), sans toucher au contrat-cadre", () => {
-    expect(derniereVersionArretee("lettre_mission")).toBe(2);
+    expect(derniereVersionArretee("lettre_mission")).toBe(3);
     expect(versionGabaritCourante("lettre_mission")).toBe(1);
-    expect(derniereVersionArretee("contrat_sous_traitance")).toBe(3);
+    expect(derniereVersionArretee("contrat_sous_traitance")).toBe(4);
   });
 
   it("documents-service inscrit la version demandée, validée avant le numéro", () => {
@@ -174,10 +178,11 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
 });
 
 describe("L7a — chaque exemplaire signé se rejoue avec SA version", () => {
-  it("v2 → composant v2 ; v3 → composant v3 ; v4 et v1 → aucun", () => {
+  it("v2 → composant v2 ; v3 → composant v3 (figé) ; v4 → v4 ; v5 et v1 → aucun", () => {
     expect(composantGabarit("contrat_sous_traitance", 2)).toBe(ContratSousTraitancePdf);
     expect(composantGabarit("contrat_sous_traitance", 3)).toBe(ContratCadrePdf);
-    expect(composantGabarit("contrat_sous_traitance", 4)).toBeNull();
+    expect(composantGabarit("contrat_sous_traitance", 4)).toBe(ContratCadrePdfV4);
+    expect(composantGabarit("contrat_sous_traitance", 5)).toBeNull();
     expect(composantGabarit("contrat_sous_traitance", 1)).toBeNull();
   });
 
@@ -192,7 +197,7 @@ describe("L7a — chaque exemplaire signé se rejoue avec SA version", () => {
   }, 60_000);
 
   it("une version inconnue est refusée, jamais rendue approchée", async () => {
-    const r = await exemplaire(DATA_V3, 4);
+    const r = await exemplaire(DATA_V3, 5);
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.raison).toBe("gabarit_modifie");
   }, 60_000);
@@ -204,9 +209,17 @@ describe("L7a — chaque exemplaire signé se rejoue avec SA version", () => {
  * `gabarit-empreinte.spec.ts` (commentaires retirés, espaces normalisés).
  */
 const EMPREINTES_ARRETEES: Readonly<Record<string, string>> = {
-  "contrat-cadre.tsx": "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
-  // Lot S5 — lettre de mission v2, arrêtée le 10/10/2026.
-  "lettre-mission-v2.tsx": "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
+  // v3 — figée mot pour mot à l'étape 3 du C4 : empreinte inchangée.
+  "archives/contrat-cadre.v3.tsx":
+    "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
+  // Lot S5 — lettre de mission v2, arrêtée le 10/10/2026, figée à l'étape 3 du C4.
+  "archives/lettre-mission-v2.v2.tsx":
+    "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
+  // Étape 3 du C4 — contrat-cadre v4 et lettre de mission v3, arrêtés le 14/10/2026,
+  // retouchés le même jour AVANT toute signature (décision du dirigeant : paiement
+  // 30 jours après l'autofacture, délai suspendu faute d'attestation URSSAF).
+  "contrat-cadre.tsx": "2c8a6ec6e91f2ba9f9f2f0c802301b445e726c5c9eeaf683aed2b19bfed4eba6",
+  "lettre-mission-v2.tsx": "d36f90c00185f0e8696396628264afc469c8b0be8202d28ad68d96f8ca41f10e",
 };
 
 function texteMesurable(source: string): string {

@@ -7,7 +7,9 @@
  * n'intervient une fois la clé obtenue.
  *
  * Règles (ADR 0066 v2 (e), plan 08 §2.7) :
- *   - échéance = dernière journée réalisée + 30 jours, sur TOUS les chemins ;
+ *   - échéance du VIREMENT = date de l'autofacture + 30 jours (décision du 14/10/2026,
+ *     `paiement/echeance-autofacture.ts`) ; « dernière journée + 30 » (`echeanceLegale`)
+ *     n'en est plus que le plancher, posé à l'écriture du relevé ;
  *   - date cible du virement = dernier jour OUVRÉ au plus tard à l'échéance
  *     (week-ends et jours fériés de métropole, source unique `lib/jours-ouvres.ts`) ;
  *   - l'orange et le rouge se calculent sur la date cible, jamais sur l'échéance.
@@ -111,7 +113,12 @@ export function dernierJourOuvreAuPlusTard(j: JourCivil): JourCivil {
   return dernierOuvre(j);
 }
 
-/** Échéance légale : dernière journée réalisée + 30 jours (jamais déplacée par Axion). */
+/**
+ * Dernière journée réalisée + 30 jours. Depuis le 14/10/2026, le PLANCHER de l'échéance
+ * (la plus proche date possible) ; l'échéance du virement part de l'autofacture
+ * (`paiement/echeance-autofacture.ts`). Reste la date fixe de l'indemnité d'annulation
+ * (art. 11.3) et de la présentation de la méthode (art. 21.2).
+ */
 export function echeanceLegale(
   derniereJournee: JourCivil,
   p: Pick<ParametresArgentFormateurs, "delaiPaiementJours"> = PARAMETRES_ARGENT_FORMATEURS,

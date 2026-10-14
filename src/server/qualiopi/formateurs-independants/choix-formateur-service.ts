@@ -504,7 +504,7 @@ export async function proposerRangSuivant(
       // T4 — la garde de mission est relue au plus près de l'écriture
       // (l'évaluation ci-dessus l'a déjà lue ; une pièce a pu expirer entre-temps).
       const [garde, verrou, trainer] = await Promise.all([
-        controlerGardeMission(c.trainerId, maintenant),
+        controlerGardeMission(c.trainerId, maintenant, { sessionId }),
         chargerEtatVerrou(sessionId),
         prisma.trainer.findUnique({
           where: { id: c.trainerId },

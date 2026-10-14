@@ -18,11 +18,14 @@
  * « activable » sans rien examiner — leur comportement est inchangé.
  */
 
+import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
 import {
   addMonths,
   type DocumentConformite,
   type TrainerStatutValue,
 } from "@/server/qualiopi/trainers/conformite";
+
+import { vigilanceExigible } from "./vigilance-seuil";
 
 /** Validité de l'attestation de vigilance URSSAF (art. L.8222-1, D.8222-5). */
 export const VIGILANCE_VALIDITE_MOIS = 6;
@@ -123,6 +126,16 @@ export interface FormateurPourActivation {
   readonly finCollaborationAt: Date | null;
   /** Pièces du formateur (la garde filtre elle-même les validées). */
   readonly pieces: ReadonlyArray<DocumentConformite>;
+  /**
+   * Étape 3 du C4 — cumul des honoraires HT (lot G1). Absent ou illisible : l'attestation
+   * URSSAF reste exigée (garde fermée).
+   */
+  readonly cumulHonorairesHtCents?: number | null;
+  /**
+   * Étape 3 du C4 — formateur rattaché à un ORGANISME sous-traitant : l'extrait Kbis
+   * (ou l'avis SIRENE) reste exigé, comme l'art. 18.3 du contrat-cadre le prévoit.
+   */
+  readonly organismeSousTraitantId?: string | null;
 }
 
 export type VerdictActivation =
@@ -138,7 +151,7 @@ export const MANQUES = {
   contrat: "Le contrat-cadre de sous-traitance n'est pas signé.",
   vigilance:
     "L'attestation de vigilance URSSAF validée manque, ou a plus de " +
-    `${VIGILANCE_VALIDITE_MOIS} mois.`,
+    `${VIGILANCE_VALIDITE_MOIS} mois : elle est exigée à partir de ${SEUIL_VIGILANCE_LIBELLE} HT d'honoraires.`,
   sirene:
     "L'avis de situation SIRENE (ou l'extrait Kbis) validé manque, ou a plus de " +
     `${AVIS_SIRENE_VALIDITE_MOIS} mois.`,
@@ -165,9 +178,15 @@ export function contratSousTraitanceSigne(
  *
  * Un `sous_traitant` ne l'est que si TOUT est réuni : collaboration non terminée,
  * contrôle registre posé, numéro de déclaration d'activité non vide, contrat de
- * sous-traitance réellement signé (pièce générée `signee`, non annulée), attestation
- * de vigilance URSSAF et avis SIRENE validés et non périmés. Les manques sont
+ * sous-traitance réellement signé (pièce générée `signee`, non annulée), et — au seuil
+ * de vigilance seulement — attestation URSSAF validée et non périmée. Les manques sont
  * rendus en clair, dans l'ordre, pour l'écran.
+ *
+ * Étape 3 du C4 (décision de Will) : alignée sur la porte de contresignature, qui
+ * n'exige l'attestation qu'au seuil (`vigilanceExigible`) et ne demande plus d'avis
+ * SIRENE / Kbis — l'entreprise active est prouvée par le registre public relu à la
+ * contresignature. `MANQUES.sirene` ne sort plus que pour un formateur rattaché à un
+ * ORGANISME sous-traitant, que l'art. 18.3 du contrat-cadre tient au Kbis.
  */
 export function peutActiverFormateurIndependant(
   formateur: FormateurPourActivation,
@@ -193,10 +212,16 @@ export function peutActiverFormateurIndependant(
     // Lot C4 — la pièce signée, jamais la date saisie à la main.
     if (!contratSousTraitanceSigne(formateur.contratsSousTraitance)) manques.push(MANQUES.contrat);
     const pieces = formateur.pieces ?? [];
-    if (!pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))) {
+    if (
+      vigilanceExigible(formateur.cumulHonorairesHtCents) &&
+      !pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))
+    ) {
       manques.push(MANQUES.vigilance);
     }
-    if (!pieces.some((p) => pieceGardeeProbante(p, "kbis_avis_sirene", maintenant))) {
+    if (
+      typeof formateur.organismeSousTraitantId === "string" &&
+      !pieces.some((p) => pieceGardeeProbante(p, "kbis_avis_sirene", maintenant))
+    ) {
       manques.push(MANQUES.sirene);
     }
     return manques.length === 0 ? { activable: true } : { activable: false, manques };

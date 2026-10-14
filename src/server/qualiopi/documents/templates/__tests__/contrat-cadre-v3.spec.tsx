@@ -24,7 +24,7 @@ import {
   ContratCadrePdf,
   champsManquantsContratCadre,
   type ContratCadreData,
-} from "../contrat-cadre";
+} from "../archives/contrat-cadre.v3";
 
 beforeAll(() => {
   registerPdfTestFontsFallback();

@@ -37,6 +37,11 @@ import { requireHabilitation, logQualiopiActivity } from "@/server/actions/quali
 import { runRemunerationMensuelle } from "@/server/qualiopi/remuneration/statements";
 import { transitionAutorisee, type StatementStatut } from "@/server/qualiopi/remuneration/run";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
+import { jourParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
+import {
+  echeanceAutofactureMission,
+  instantDuJourCivil,
+} from "@/server/qualiopi/formateurs-independants/paiement/echeance-autofacture";
 import {
   DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION,
   prendreVerrousRemuneration,
@@ -228,6 +233,13 @@ export async function transitionStatementAction(
       echeanceAt: true,
       // L12g : un AVOIR est une pièce de correction, jamais un relevé à faire vivre.
       avoirDeId: true,
+      // Décision du 14/10/2026 : l'échéance d'une facture de mission part de SA date ;
+      // une facture rectifiée, ou une somme à date fixe (indemnité, présentation), garde
+      // la sienne si elle est plus proche (`echeance-autofacture.ts`).
+      remplaceId: true,
+      feeLines: { where: { statut: { not: "annule" } }, select: { objet: true } },
+      // La date de la mission (vigilance URSSAF) se lit sur les journées de la session.
+      sessionId: true,
     },
   });
   if (releve === null) return { error: "Relevé introuvable." };
@@ -375,6 +387,11 @@ export async function transitionStatementAction(
       trainerId: releve.trainerId,
       echeanceAt: releve.echeanceAt,
       totalTtcCents: releve.totalTtcCents,
+      sessionId: releve.sessionId ?? null,
+      periodeYear: releve.periodeYear,
+      periodeMonth: releve.periodeMonth,
+      dateFacture: releve.dateFacture ?? null,
+      objets: (releve.feeLines ?? []).map((l) => l.objet ?? null),
     };
     let c: Awaited<ReturnType<typeof contexteVirementMission>>;
     try {
@@ -512,9 +529,23 @@ export async function transitionStatementAction(
            * rattrapé par le repli de `echeanceEffective` et par
            * `pnpm backfill:echeance-honoraires`.
            */
-          // Un relevé de MISSION garde son échéance fixe (dernière journée + 30 j).
-          ...(v.dateFacture !== undefined && !releveDeMission
-            ? { echeanceAt: calculerEcheanceHonoraires(v.dateFacture) }
+          // Un relevé de MISSION (facture déposée par le formateur ou l'organisme) : la
+          // même règle que l'autofacture — 30 jours après la date de SA facture
+          // (contrat-cadre v4, art. 16.1), avec les mêmes exceptions.
+          ...(v.dateFacture !== undefined
+            ? {
+                echeanceAt: releveDeMission
+                  ? instantDuJourCivil(
+                      echeanceAutofactureMission({
+                        jourAutofacture: jourParis(v.dateFacture),
+                        echeanceDuReleve:
+                          releve.echeanceAt == null ? null : jourParis(releve.echeanceAt),
+                        remplace: releve.remplaceId != null,
+                        objets: (releve.feeLines ?? []).map((l) => l.objet ?? null),
+                      }),
+                    )
+                  : calculerEcheanceHonoraires(v.dateFacture),
+              }
             : {}),
           ...(v.montantFactureTtcEuros !== undefined
             ? { montantFactureTtcCents: v.montantFactureTtcEuros }

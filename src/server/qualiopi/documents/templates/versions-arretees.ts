@@ -23,6 +23,8 @@
  */
 
 import type { ComposantPiece } from "./archives";
+import { ContratCadrePdf as ContratCadrePdfV3 } from "./archives/contrat-cadre.v3";
+import { LettreMissionV2Pdf as LettreMissionPdfV2 } from "./archives/lettre-mission-v2.v2";
 import { ContratCadrePdf } from "./contrat-cadre";
 import { LettreMissionV2Pdf } from "./lettre-mission-v2";
 import { GABARIT_VERSIONS, typeGabarit, type TypeGabaritSignable } from "./gabarit-versions";
@@ -45,17 +47,35 @@ export const VERSIONS_ARRETEES: Readonly<
   Partial<Record<TypeGabaritSignable, Readonly<Record<number, VersionArretee>>>>
 > = {
   contrat_sous_traitance: {
+    // v3 — figée mot pour mot (copie de l'ancien `contrat-cadre.tsx`) : les contrats
+    // signés en v3 gardent leur texte.
     3: {
       arreteeLe: "2026-10-10",
+      fichier: "archives/contrat-cadre.v3.tsx",
+      Composant: ContratCadrePdfV3 as unknown as ComposantPiece,
+    },
+    // v4 — étape 3 du C4 : art. 18.2 (attestation URSSAF au seuil) et paiement
+    // harmonisé avec la lettre v3. Sans `resumePourLeFormateur`, et c'est voulu
+    // (décision du 14/10/2026) : aucun formateur n'a signé la v3, il n'y a personne à
+    // qui envoyer une « nouvelle version » — la v4 est la première que l'on signe.
+    4: {
+      arreteeLe: "2026-10-14",
       fichier: "contrat-cadre.tsx",
       Composant: ContratCadrePdf as unknown as ComposantPiece,
     },
   },
-  // Lot S5 — lettre de mission v2 d'une page, conditions particulières du
-  // contrat-cadre v3. La v1 reste la version émise par défaut.
+  // Lot S5 — lettre de mission d'une page, conditions particulières du contrat-cadre.
+  // La v1 reste la version émise par défaut.
   lettre_mission: {
+    // v2 — figée mot pour mot (copie de l'ancien `lettre-mission-v2.tsx`).
     2: {
       arreteeLe: "2026-10-10",
+      fichier: "archives/lettre-mission-v2.v2.tsx",
+      Composant: LettreMissionPdfV2 as unknown as ComposantPiece,
+    },
+    // v3 — étape 3 du C4 : la section 4 (paiement, feuilles, bilan, URSSAF).
+    3: {
+      arreteeLe: "2026-10-14",
       fichier: "lettre-mission-v2.tsx",
       Composant: LettreMissionV2Pdf as unknown as ComposantPiece,
     },

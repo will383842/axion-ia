@@ -31,7 +31,7 @@ vi.mock("@/lib/prisma", () => ({
         numero: "AXI-DOC-2026-990",
         metadata: {
           renderData: {
-            gabaritVersion: 3,
+            gabaritVersion: 4,
             // La forme réelle de l'instantané : le cocontractant vit sous `data`.
             data: {
               cocontractant: h.siretContrat === undefined ? {} : { siret: h.siretContrat },

@@ -34,5 +34,9 @@ export function etatSeuilVigilance(e: {
 /** « 5 000 € » — pour les textes, depuis la constante, jamais recopié. */
 export const SEUIL_VIGILANCE_LIBELLE = `${(SEUIL_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} €`;
 
-/** Ce que disent les écrans d'une attestation des formateurs qui n'est pas (encore) exigée. */
-export const LIBELLE_ATTESTATION_PLUS_TARD = `demandée plus tard, à partir de ${SEUIL_VIGILANCE_LIBELLE} d'honoraires`;
+/**
+ * Ce que disent les écrans d'une attestation des formateurs qui n'est pas (encore) exigée.
+ * Étape 3 du C4 : aligné sur l'art. 18.2 du contrat-cadre v4 — demandée à l'APPROCHE du
+ * seuil (pas au seuil), et avant une mission qui ferait dépasser le seuil.
+ */
+export const LIBELLE_ATTESTATION_PLUS_TARD = `demandée plus tard, quand les honoraires approchent ${SEUIL_VIGILANCE_LIBELLE} HT ou avant une mission qui les ferait dépasser`;

@@ -72,7 +72,7 @@ export async function evaluerAffectation(
       const texte = habilitation.raison ?? "Formateur non habilité sur cette formation.";
       return { refus: [raison(codeHabilitation(texte), texte)], avertissements: [] };
     }
-    const garde = await controlerGardeMission(trainerId, maintenant);
+    const garde = await controlerGardeMission(trainerId, maintenant, { sessionId: session.id });
     if (garde.refus.length > 0) {
       return { refus: garde.refus.map(raisonGarde), avertissements: [] };
     }

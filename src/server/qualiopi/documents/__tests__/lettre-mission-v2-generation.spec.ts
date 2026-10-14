@@ -133,20 +133,35 @@ beforeEach(() => {
 });
 
 describe("allumé : la lettre v2", () => {
-  it("datée v2, liée à la mission, jamais un duplicata", async () => {
+  it("datée v3, liée à la mission, jamais un duplicata", async () => {
     const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     expect(r).toMatchObject({ ok: true, documentId: "doc-neuf", lettreAnnuleeId: null });
     const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
       gabaritVersion: number;
       estCopie: boolean;
     };
-    expect(entree.gabaritVersion).toBe(2);
+    expect(entree.gabaritVersion).toBe(3);
     expect(entree.estCopie).toBe(false);
     // Lien CONDITIONNEL : la mission de CE couple, et elle seule.
     expect(h.m.missionUpdateMany).toHaveBeenCalledWith({
       where: { id: "mi-1", sessionId: SESSION_ID, trainerId: TRAINER_ID },
       data: { lettreMissionId: "doc-neuf" },
     });
+  });
+
+  it("décision du 14/10/2026 — aucun signataire v3 : la lettre v3 pour tout contrat-cadre signé (v3 ou v4)", async () => {
+    type Entree = { gabaritVersion: number; buildElement: (n: string) => { type: unknown } };
+    for (const version of [3, 4]) {
+      h.m.generate.mockClear();
+      h.m.contrat.mockResolvedValue({
+        metadata: { renderData: { gabaritVersion: version } },
+        signatures: [{ signeAt: new Date("2026-10-13T10:00:00Z") }],
+      });
+      await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+      const e = h.m.generate.mock.calls[0]?.[0] as unknown as Entree;
+      expect(e.gabaritVersion).toBe(3);
+      expect(e.buildElement("N").type).toBe(LettreMissionV2Pdf);
+    }
   });
 
   it("refuse sans contrat-cadre v3 signé, sans rien émettre", async () => {
@@ -263,10 +278,12 @@ describe("coupé : la lettre d'avant, à l'identique", () => {
     expect(ACTION.match(/gabaritVersion: 1,/g)?.length).toBe(2);
   });
 
-  it("la v1 reste la version émise par défaut ; la v2 est une version arrêtée", () => {
+  it("la v1 reste la version émise par défaut ; les v2 (figée) et v3 sont arrêtées", () => {
     expect(GABARIT_VERSIONS.lettre_mission).toBe(1);
     expect(composantGabarit("lettre_mission", 1)).toBe(LettreMissionPdf);
-    expect(composantGabarit("lettre_mission", 2)).toBe(LettreMissionV2Pdf);
+    expect(composantGabarit("lettre_mission", 3)).toBe(LettreMissionV2Pdf);
+    expect(composantGabarit("lettre_mission", 2)).not.toBe(LettreMissionV2Pdf);
+    expect(composantGabarit("lettre_mission", 2)).not.toBeNull();
   });
 });
 

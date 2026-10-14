@@ -109,7 +109,7 @@ const RETOUR_SIGNALEMENT: Record<string, { ok: boolean; texte: string }> = {
 };
 
 /** Lot G1 — le motif du virement en attente, tel que le formateur le lit. */
-const MESSAGE_ATTENTE_ATTESTATION = `Virement en attente de votre attestation URSSAF : vos honoraires avec nous atteignent ${SEUIL_VIGILANCE_LIBELLE} HT. Déposez-la dans « Mon dossier » : le virement part dès qu'elle est vérifiée.`;
+const MESSAGE_ATTENTE_ATTESTATION = `Virement en attente de votre attestation URSSAF : vos honoraires avec nous atteignent ${SEUIL_VIGILANCE_LIBELLE} HT. Déposez-la dans « Mon dossier » : le virement part dès qu'elle est vérifiée. Jusque-là, le délai de paiement est suspendu.`;
 
 /** Payé à la mission : indépendant, et le paiement par mission a une date de bascule. */
 async function payeALaMission(statut: string | undefined): Promise<boolean> {
@@ -254,9 +254,10 @@ export default async function RemunerationFormateurPage({
         ) : aLaMission ? (
           // Lot D2 : payé à la mission, il n'attend pas la fin du mois.
           <p className="mt-8 text-sm opacity-70">
-            Aucune facture pour l&apos;instant. Après chaque mission, une fois vos feuilles de
-            présence signées, nous établissons la facture à votre nom. Le virement est prévu au plus
-            tard 30 jours après la dernière journée.
+            Aucune facture pour l&apos;instant. Après chaque mission, nous établissons la facture à
+            votre nom dès que tout est complet : vos feuilles de présence contresignées et, pour le
+            dernier mois de la mission, le bilan de fin de formation s&apos;il vous revient. Le
+            virement part au plus tard 30 jours après la date de cette facture.
           </p>
         ) : (
           <p className="mt-8 text-sm opacity-70">
@@ -298,15 +299,16 @@ export default async function RemunerationFormateurPage({
                   </p>
                 ) : paye ? (
                   <p className="mt-2 text-sm">Payé le {jour(r.payeAt as Date)}.</p>
+                ) : r.deMission && r.numeroFacture === null ? (
+                  // Décision du 14/10/2026 : l'échéance part de la facture. Avant elle, la
+                  // date portée par le relevé n'est qu'une estimation : jamais affichée ici.
+                  <p className="mt-2 text-sm opacity-80">
+                    Votre facture est en préparation. Le virement part au plus tard 30 jours après
+                    sa date.
+                  </p>
                 ) : r.echeance !== null ? (
                   <p className="mt-2 text-sm">
                     Règlement prévu au plus tard le {jour(r.echeance)}.
-                  </p>
-                ) : r.deMission ? (
-                  // Lot D2 : à la mission, l'échéance ne part pas de l'émission.
-                  <p className="mt-2 text-sm opacity-80">
-                    La facture n&apos;est pas encore établie. Le virement est prévu au plus tard 30
-                    jours après la dernière journée de la mission.
                   </p>
                 ) : (
                   // Pas de facture, donc pas d'échéance. On le DIT : une case

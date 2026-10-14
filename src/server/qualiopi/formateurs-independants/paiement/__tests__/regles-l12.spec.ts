@@ -23,6 +23,31 @@ const base: ContexteVirementMission = {
   finPourDeces: false,
 };
 
+describe("décision du 14/10/2026 — délai SUSPENDU, et non dépassé, faute d'attestation (art. 16.7)", () => {
+  // Échéance 05/12, au seuil. Attestation vérifiée le 15/12, virement le 16/12 :
+  // 1 jour de retard (16/12 − 15/12), pas 11 (16/12 − 05/12).
+  const auSeuil = { ...base, vigilanceExigible: true, aujourdhui: "2026-12-16" };
+  it("tant que l'attestation manque : suspendu, aucun retard affiché", () => {
+    const v = gardeVirementMission({ ...auSeuil, attestationsValidesJusquau: [] });
+    expect(v.motifs).toContain("attestation_urssaf_echue_a_la_mission");
+    expect(v.retard.joursDeRetard).toBe(0);
+    expect(v.retard.indemniteRecouvrementCents).toBe(0);
+  });
+  it("vérifiée après l'échéance : le retard ne court qu'à partir de la vérification", () => {
+    expect(
+      gardeVirementMission({ ...auSeuil, attestationVerifieeLe: "2026-12-15" }).retard
+        .joursDeRetard,
+    ).toBe(1);
+    expect(gardeVirementMission(auSeuil).retard.joursDeRetard).toBe(11);
+  });
+  it("vérifiée avant l'échéance : l'échéance d'origine", () => {
+    expect(
+      gardeVirementMission({ ...auSeuil, attestationVerifieeLe: "2026-11-01" }).retard
+        .joursDeRetard,
+    ).toBe(11);
+  });
+});
+
 describe("L12d — garde du virement d'un relevé de mission", () => {
   it("tout est en ordre : autorisé, aucun retard", () => {
     expect(gardeVirementMission(base)).toEqual({

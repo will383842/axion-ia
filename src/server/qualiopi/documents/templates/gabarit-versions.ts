@@ -169,6 +169,11 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
     (`versions-arretees.ts`), à côté du contrat-cadre v3, et n'est émise que
     sur demande explicite du générateur v2. Le jour où elle devient la version
     par défaut, elle passe ici et la v1 part dans `archives/`.
+    v3 — 14/10/2026, étape 3 du C4 : section 4 (paiement à 30 jours une fois les
+    feuilles contresignées et, pour le dernier mois, le bilan remis ; attestation URSSAF
+    au seuil). Arrêtée elle aussi ; la v2 est figée dans `archives/lettre-mission-v2.v2.tsx`.
+    Même chemin pour le contrat-cadre : v4 arrêtée le 14/10/2026 (art. 18.2), v3 figée
+    dans `archives/contrat-cadre.v3.tsx`.
   */
   lettre_mission: 1,
   mandat_opco: 1,

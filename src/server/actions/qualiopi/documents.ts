@@ -1724,7 +1724,7 @@ export async function genererLettreMissionAction(input: {
       changes: {
         documentId: v2.documentId,
         numero: v2.numero,
-        gabaritVersion: 2,
+        gabaritVersion: v2.gabaritVersion,
         ...(v2.lettreAnnuleeId !== null ? { lettreAnnuleeId: v2.lettreAnnuleeId } : {}),
       },
       session: adminSession,

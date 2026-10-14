@@ -135,7 +135,7 @@ export async function transmettreAutofactureAction(
       periodeYear: releve.periodeYear,
       periodeMonth: releve.periodeMonth,
       totalTtcCents: releve.totalTtcCents,
-      // Paiement par mission : l'échéance est FIXE (dernière journée + 30 jours).
+      // Paiement par mission : l'échéance posée À L'ÉMISSION (date de l'autofacture + 30 jours).
       echeance:
         releve.origine === "passage_mission" && releve.echeanceAt !== null
           ? releve.echeanceAt

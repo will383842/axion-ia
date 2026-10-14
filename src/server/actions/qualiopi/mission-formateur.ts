@@ -195,7 +195,7 @@ export async function renvoyerPropositionMissionAction(
 
   // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
   // coupé : aucun effet). Dite ici en clair, à la console.
-  const garde = await controlerGardeMission(trainerId);
+  const garde = await controlerGardeMission(trainerId, new Date(), { sessionId });
   if (garde.refus.length > 0) {
     return { error: `Proposition impossible : ${garde.refus.join(" ")}` };
   }

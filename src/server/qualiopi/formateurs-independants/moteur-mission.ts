@@ -42,11 +42,10 @@ import { empreinteDeMetadata } from "./empreinte-mission";
 import { EMPREINTE_SELECT, empreinteDeLaMission } from "./empreinte-mission-lecture";
 import { envoyer } from "./envois";
 import { etapeMission, type EtapeMission } from "./etape-mission";
-import { MANQUES_MISSION } from "./garde-mission";
+import { MANQUES_MISSION, MANQUES_VIGILANCE } from "./garde-mission";
 import { controlerGardeMission } from "./garde-mission-portes";
 import { interrupteurAllume } from "./interrupteur-allume";
 import { envoiAllume } from "./interrupteurs-envoi";
-import { echeancePaiement } from "./lettre-mission-v2-calcul";
 
 const isStub = (): boolean => process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
 
@@ -116,7 +115,8 @@ function lienEspaceFormateur(suite = ""): string | null {
  * son fait (registre, fiche inactive, erreur) ne lui est jamais écrit.
  */
 const MANQUE_POUR_LE_FORMATEUR: ReadonlyMap<string, string> = new Map([
-  [MANQUES_MISSION.vigilance, "une attestation URSSAF à jour"],
+  // L'attestation URSSAF n'y figure plus (décision du 14/10/2026) : elle ne bloque jamais
+  // la lettre d'une mission acceptée (`MANQUES_VIGILANCE`), seul le paiement l'attend.
   [MANQUES_MISSION.nda, "votre numéro de déclaration d'activité"],
   [MANQUES_MISSION.contrat, "la signature de votre contrat-cadre"],
 ]);
@@ -250,6 +250,7 @@ export async function lireEtatMission(
         annuleeAt: null,
       },
     }),
+    // Sans mission en jeu : la mission est déjà acceptée, son montant ne décide de rien.
     controlerGardeMission(m.trainerId, maintenant),
     // Une lettre émise avant le moteur (non liée), déjà signée par le formateur :
     // c'est SA lettre ; le moteur n'en émet pas d'autre.
@@ -266,6 +267,10 @@ export async function lireEtatMission(
         })
       : Promise.resolve(null),
   ]);
+  // Décision du 14/10/2026 (contrat-cadre v4, art. 18.2) : une mission ACCEPTÉE est
+  // maintenue sans attestation URSSAF ; seul le virement l'attend (`virement-mission.ts`).
+  // Les autres manques bloquent toujours la lettre.
+  const gardeRefus = garde.refus.filter((r) => !MANQUES_VIGILANCE.has(r));
   const { tarifEffectif, empreinte: empreinteActuelle } = empreinteDeLaMission(m);
   const lettre =
     m.lettreMission !== null && m.lettreMission.annuleeAt === null
@@ -291,13 +296,13 @@ export async function lireEtatMission(
       affecte: s.formateurPrincipalId === m.trainerId,
       clientEngage: clientEngage > 0,
       financeurEnAttente: financeurEnAttente > 0,
-      gardeRefus: garde.refus,
+      gardeRefus,
       lettre,
       empreinteActuelle,
     },
     maintenant,
   );
-  return { mission: m, etape, gardeRefus: garde.refus, empreinteActuelle, tarifEffectif };
+  return { mission: m, etape, gardeRefus, empreinteActuelle, tarifEffectif };
 }
 
 async function agir(
@@ -950,7 +955,6 @@ async function emettreLettre(
             forfait !== null && forfait > 0
               ? `(${eurosCourts(forfait)} HT par journée)`
               : "(compris dans les honoraires)",
-          "date limite": civileLongue(echeancePaiement(dernier.date)),
         },
       },
     });

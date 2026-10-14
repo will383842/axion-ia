@@ -33,7 +33,17 @@ export async function etatsVirementsMission(
   if (pieceIds.length === 0) return etats;
   const releves = await prisma.trainerStatement.findMany({
     where: { id: { in: [...pieceIds] }, origine: "passage_mission" },
-    select: { id: true, trainerId: true, echeanceAt: true, totalTtcCents: true },
+    select: {
+      id: true,
+      trainerId: true,
+      echeanceAt: true,
+      totalTtcCents: true,
+      sessionId: true,
+      periodeYear: true,
+      periodeMonth: true,
+      dateFacture: true,
+      feeLines: { where: { statut: { not: "annule" } }, select: { objet: true } },
+    },
   });
   for (const r of releves) {
     const iban = await ibanAffichePourVirement(prisma, r.trainerId).catch(() => null);
@@ -49,7 +59,16 @@ export async function etatsVirementsMission(
     try {
       const c = await contexteVirementMission(
         prisma,
-        { trainerId: r.trainerId, echeanceAt: r.echeanceAt, totalTtcCents: r.totalTtcCents },
+        {
+          trainerId: r.trainerId,
+          echeanceAt: r.echeanceAt,
+          totalTtcCents: r.totalTtcCents,
+          sessionId: r.sessionId,
+          periodeYear: r.periodeYear,
+          periodeMonth: r.periodeMonth,
+          dateFacture: r.dateFacture,
+          objets: (r.feeLines ?? []).map((l) => l.objet),
+        },
         iban?.empreinte ?? null,
         maintenant,
       );

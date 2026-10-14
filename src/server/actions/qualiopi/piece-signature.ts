@@ -46,7 +46,10 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
-import { apresSignature } from "@/server/qualiopi/documents/signature/apres-signature";
+import {
+  apresSignature,
+  PREFIXE_ACTIVATION_REFUSEE,
+} from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
   signerDocument,
@@ -105,7 +108,17 @@ export type RefusSignaturePiece =
   | "code_indisponible";
 
 export type ResultatSignaturePiece =
-  | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
+  | {
+      ok: true;
+      signatureId: string;
+      statutSignature: "partielle" | "signee";
+      /**
+       * Contrat-cadre contresigné, mais l'espace du formateur n'a PAS été ouvert : le
+       * motif, en clair, pour la console (étape 3 du C4). Absent sinon. La signature,
+       * elle, est acquise.
+       */
+      activationRefusee?: string;
+    }
   | { ok: false; raison: RefusSignaturePiece; message: string };
 
 /**
@@ -689,7 +702,7 @@ async function contresignerUne(
     });
     if (!res.ok) return res;
 
-    await apresSignature({
+    const apres = await apresSignature({
       documentGenereId: donnees.documentGenereId,
       type: piece.type,
       numero: piece.numero,
@@ -697,6 +710,12 @@ async function contresignerUne(
       partie: "axionia",
       acteur: { type: "administrateur", session },
     });
+    // Étape 3 du C4 — un refus d'activation n'est plus seulement journalisé : l'écran
+    // de contresignature le dit (`ResultatApresSignature.activationRefusee`).
+    const activationRefusee =
+      apres?.activationRefusee != null
+        ? `${PREFIXE_ACTIVATION_REFUSEE} ${apres.activationRefusee.message}`
+        : undefined;
 
     await logQualiopiActivity({
       action: "qualiopi.piece.contresignature",
@@ -711,7 +730,12 @@ async function contresignerUne(
       session,
     });
 
-    return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
+    return {
+      ok: true,
+      signatureId: res.signatureId,
+      statutSignature: res.statutSignature,
+      ...(activationRefusee ? { activationRefusee } : {}),
+    };
   } catch (err) {
     if (err instanceof SignatureStockageError) return refusStockage(err);
     Sentry.captureException(err, { tags: { action: "contresignerPieceAction" } });

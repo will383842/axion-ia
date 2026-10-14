@@ -13,8 +13,11 @@ import { forfaitSelonLieu } from "./choix-formateur";
 import { empreinteMission } from "./empreinte-mission";
 import { TARIF_JOURNEE_HT_CENTS } from "./lettre-mission-v2-calcul";
 
-/** Version du gabarit de la lettre émise par le moteur (v2). */
-export const GABARIT_LETTRE = 2;
+/**
+ * Version du gabarit passée à l'empreinte, qui ne la hache plus (v2 de l'empreinte). La
+ * version émise est `VERSION_LETTRE_EMISE` (v3).
+ */
+export const GABARIT_LETTRE = 3;
 
 function dateCivile(d: Date): string {
   return d.toISOString().slice(0, 10);

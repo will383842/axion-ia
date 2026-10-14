@@ -9,7 +9,8 @@
  *   - un montant TTC ÉGAL au dû (sinon : « facture non conforme », comme le
  *     paiement existant) ;
  *   - une date de facture ni future, ni antérieure à la dernière journée facturée.
- * L'échéance ne bouge pas : dernière journée + 30 jours, jamais facture + 30.
+ * L'échéance part de la DATE DE LA FACTURE (+ 30 jours), comme pour l'autofacture
+ * (décision du 14/10/2026, contrat-cadre v4 art. 16.1 : `echeance-autofacture.ts`).
  * Le contrôle antivirus et le format du fichier passent par le dépôt de pièces
  * commun (hors de ce module).
  */

@@ -31,7 +31,10 @@ import {
   lireValeurSignature,
   type NiveauGardeMission,
 } from "./interrupteurs";
+import { lireEngagementHtCents, type MissionEnJeu } from "./montant-mission-lecture";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
+
+export type { MissionEnJeu } from "./montant-mission-lecture";
 
 export interface ControleGardeMission extends IssueGarde {
   readonly mode: ModeGardeMission;
@@ -53,23 +56,20 @@ async function lireNiveau(): Promise<NiveauGardeMission> {
 }
 
 /**
- * La garde de mission pour CE formateur, aujourd'hui. Ne lève jamais : allumée,
- * une erreur de lecture rend un refus.
+ * L'interrupteur `formateurs.garde_mission_portes`, lu ICI et pas par
+ * `interrupteurAllume` : celui-ci rend « coupé » sur toute erreur, et une panne de la
+ * base passagère ne doit pas laisser passer une affectation alors que la garde est
+ * allumée. Ligne ABSENTE = coupée (comportement d'avant L3) ; lecture en ÉCHEC = refus
+ * (rendu tel quel).
  */
-export async function controlerGardeMission(
-  trainerId: string,
-  maintenant: Date = new Date(),
-): Promise<ControleGardeMission> {
-  // L'interrupteur est lu ICI, pas par `interrupteurAllume` : celui-ci rend
-  // « coupé » sur toute erreur, et une panne de la base passagère ne doit pas
-  // laisser passer une affectation alors que la garde est allumée. Ligne
-  // ABSENTE = coupée (comportement d'avant L3) ; lecture en ÉCHEC = refus.
+async function lireAllumage(): Promise<ControleGardeMission | "allumee"> {
   try {
     const ligne = await prisma.setting.findUnique({
       where: { key: cleSettingSignature("garde_mission_portes") },
       select: { value: true },
     });
     if (!lireValeurSignature(ligne?.value).valeur) return COUPEE;
+    return "allumee";
   } catch {
     // Un client sans table `setting` (doublure de test d'une autre suite) n'est
     // pas une panne : on garde le comportement d'avant L3.
@@ -80,8 +80,27 @@ export async function controlerGardeMission(
     }
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }
+}
+
+/**
+ * La garde de mission pour CE formateur, aujourd'hui. Ne lève jamais : allumée,
+ * une erreur de lecture rend un refus.
+ *
+ * Étape 3 (C4) — `enJeu` : la mission dont on décide. Son montant (calcul de la
+ * lettre, sur-estimé dans le doute), net de ce qui en est déjà facturé, et celui des
+ * autres missions ouvertes du formateur s'ajoutent au cumul pour le seuil de vigilance
+ * (`lireEngagementHtCents`) : l'attestation est exigée AVANT une mission qui fait
+ * atteindre 5 000 € HT. Absent : le cumul seul, comme avant.
+ */
+export async function controlerGardeMission(
+  trainerId: string,
+  maintenant: Date = new Date(),
+  enJeu?: MissionEnJeu,
+): Promise<ControleGardeMission> {
+  const allumage = await lireAllumage();
+  if (allumage !== "allumee") return allumage;
   try {
-    const [niveau, t, contrat, cumul] = await Promise.all([
+    const [niveau, t, contrat, cumul, montantMission] = await Promise.all([
       lireNiveau(),
       prisma.trainer.findUnique({
         where: { id: trainerId },
@@ -108,6 +127,7 @@ export async function controlerGardeMission(
       }),
       lireContratCadreSigne(trainerId),
       lireCumulHonorairesHtCents(trainerId),
+      enJeu === undefined ? undefined : lireEngagementHtCents(trainerId, enJeu, maintenant),
     ]);
     if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
     const mode = modeGardeMission(true, niveau, t.activationValideeSource);
@@ -125,6 +145,7 @@ export async function controlerGardeMission(
         siret: t.siret,
         contratCadreSiret: contrat?.siret ?? null,
         cumulHonorairesHtCents: cumul,
+        ...(enJeu === undefined ? {} : { montantMissionHtCents: montantMission ?? null }),
       },
       GABARIT_VERSIONS.contrat_sous_traitance,
       maintenant,
