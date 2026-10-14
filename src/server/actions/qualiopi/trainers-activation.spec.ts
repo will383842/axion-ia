@@ -67,6 +67,8 @@ function independantNu(extra: Record<string, unknown> = {}) {
     sousTraitantVerifieAt: null,
     sousTraitantNda: null,
     sousTraitantContratSigneAt: null,
+    finCollaborationAt: null,
+    documentsGeneres: [],
     documents: [],
     ...extra,
   };
@@ -78,6 +80,8 @@ function independantComplet(extra: Record<string, unknown> = {}) {
     sousTraitantVerifieAt: ilYa(10),
     sousTraitantNda: "84691234569",
     sousTraitantContratSigneAt: ilYa(9),
+    // Lot C4 — le contrat de sous-traitance GÉNÉRÉ et signé, pas la date saisie.
+    documentsGeneres: [{ statutSignature: "signee", annuleeAt: null }],
     documents: [
       {
         type: "attestation_vigilance_urssaf",
@@ -158,6 +162,39 @@ describe("setTrainerActifAction — activation d'un indépendant", () => {
     const r = await setTrainerActifAction({ id: TRAINER_ID, actif: true });
     expect(r).toHaveProperty("error");
     expect(aEcritActifVrai()).toBe(false);
+  });
+
+  it("🔴 C4 — REFUSE quand le contrat n'est « signé » que par une date saisie à la main", async () => {
+    m.trainerFindUnique.mockResolvedValue(independantComplet({ documentsGeneres: [] }));
+    const r = await setTrainerActifAction({ id: TRAINER_ID, actif: true });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) expect(r.error).toMatch(/contrat-cadre/);
+    expect(aEcritActifVrai()).toBe(false);
+  });
+
+  it("C4 — la lecture de la garde porte les contrats générés et la fin de collaboration", async () => {
+    m.trainerFindUnique.mockResolvedValue(independantComplet());
+    await setTrainerActifAction({ id: TRAINER_ID, actif: true });
+    const arg = m.trainerFindUnique.mock.calls[0]?.[0] as { select: Record<string, unknown> };
+    expect(arg.select["finCollaborationAt"]).toBe(true);
+    expect(arg.select["documentsGeneres"]).toMatchObject({
+      where: { type: "contrat_sous_traitance" },
+    });
+  });
+
+  it("🔴 C4 — REFUSE de réactiver un indépendant dont la collaboration est terminée", async () => {
+    m.trainerFindUnique.mockResolvedValue(independantComplet({ finCollaborationAt: ilYa(3) }));
+    const r = await setTrainerActifAction({ id: TRAINER_ID, actif: true });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) expect(r.error).toMatch(/collaboration .* terminée/);
+    expect(aEcritActifVrai()).toBe(false);
+  });
+
+  it("🔴 C4 — l'écriture provisoire est conditionnée à l'absence de fin de collaboration", async () => {
+    m.trainerFindUnique.mockResolvedValue(independantComplet());
+    await setTrainerActifAction({ id: TRAINER_ID, actif: true });
+    const arg = m.trainerUpdateMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(arg.where).toMatchObject({ finCollaborationAt: null, actif: false });
   });
 
   it("un administrateur active un sous-traitant au dossier complet", async () => {
