@@ -173,6 +173,11 @@ export async function allumerLeBanc(porteur: string): Promise<() => Promise<void
           update: { value: l.value },
         });
       }
+      // Allumé « il y a deux heures » : F1 n'invite que les candidatures déposées APRÈS
+      // l'allumage (`allumeLe` = date de la ligne), et les scénarios rangent leur
+      // candidature 20 minutes dans le passé (`parcours.ts`). Une date de ligne, jamais
+      // l'horloge du serveur.
+      await tx.$executeRaw`UPDATE settings SET updated_at = (now() AT TIME ZONE 'UTC') - interval '2 hours' WHERE key = ANY(${lignes.map((l) => l.key)})`;
       const offre = await tx.jobOffer.findUnique({ where: { slug: SLUG_OFFRE_BANC } });
       if (offre === null) await tx.jobOffer.create({ data: OFFRE_BANC as never });
       const nouvel: EtatPorteurs = { porteurs: [porteur], avant, offreCreee: offre === null };

@@ -169,7 +169,13 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
     const entetes = new Map(
       (a["messages"] as Array<Record<string, unknown>>).map((m, i) => [
         `banc-${String(m["cle"] ?? i)}`,
-        (m["entetes"] ?? {}) as Record<string, string>,
+        // En-têtes au format du client Zoho : nom en minuscules → valeurs.
+        Object.fromEntries(
+          Object.entries((m["entetes"] ?? {}) as Record<string, string>).map(([k, v]) => [
+            k.toLowerCase(),
+            [v],
+          ]),
+        ),
       ]),
     );
     const client: ClientZohoMail = {

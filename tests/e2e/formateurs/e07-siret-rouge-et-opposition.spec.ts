@@ -23,10 +23,13 @@ import {
 } from "../fixtures/formateurs/scenario";
 
 test.describe("@formateurs E07 — SIRET rouge et opposition", () => {
+  test.describe.configure({ mode: "serial" });
   test.setTimeout(300_000);
   let decor: DecorScenario;
 
   test.beforeAll(async () => {
+    // Les scénarios passent un par un (verrou) : l'attente peut être longue.
+    test.setTimeout(20 * 60_000);
     decor = await ouvrirScenario("e07");
   });
   test.afterAll(async () => {

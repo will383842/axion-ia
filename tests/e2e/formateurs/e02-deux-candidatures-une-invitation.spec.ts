@@ -20,10 +20,13 @@ import {
 } from "../fixtures/formateurs/scenario";
 
 test.describe("@formateurs E02 — deux candidatures, une invitation", () => {
+  test.describe.configure({ mode: "serial" });
   test.setTimeout(300_000);
   let decor: DecorScenario;
 
   test.beforeAll(async () => {
+    // Les scénarios passent un par un (verrou) : l'attente peut être longue.
+    test.setTimeout(20 * 60_000);
     decor = await ouvrirScenario("e02");
   });
   test.afterAll(async () => {

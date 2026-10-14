@@ -25,11 +25,14 @@ import {
 type EtatAjout = { ok: true; id: string; message: string } | { ok: false; message: string };
 
 test.describe("@formateurs E38 — saisie en console : salon et Indeed", () => {
+  test.describe.configure({ mode: "serial" });
   test.setTimeout(300_000);
   let decor: DecorScenario;
   const idsRelais: string[] = [];
 
   test.beforeAll(async () => {
+    // Les scénarios passent un par un (verrou) : l'attente peut être longue.
+    test.setTimeout(20 * 60_000);
     decor = await ouvrirScenario("e38");
   });
   test.afterAll(async () => {

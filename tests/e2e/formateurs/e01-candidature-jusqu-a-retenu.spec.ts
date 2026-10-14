@@ -39,10 +39,13 @@ import {
 const SIGNAUX_INTERDITS = /facebook|meta|plausible|google-analytics|googletagmanager/i;
 
 test.describe("@formateurs E01 — candidature freelance jusqu'à « Retenu »", () => {
+  test.describe.configure({ mode: "serial" });
   test.setTimeout(600_000);
   let decor: DecorScenario;
 
   test.beforeAll(async () => {
+    // Les scénarios passent un par un (verrou) : l'attente peut être longue.
+    test.setTimeout(20 * 60_000);
     decor = await ouvrirScenario("e01");
   });
   test.afterAll(async () => {
