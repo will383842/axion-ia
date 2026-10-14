@@ -206,8 +206,9 @@ async function idsCandidaturesSansEmpreinte(adresse: string): Promise<string[]> 
 /** Efface une fiche formateur du banc et ce qui y est accroché. */
 export async function effacerFiche(trainerId: string): Promise<void> {
   // Les tables accrochées à une fiche sont nombreuses ; on efface ce que les
-  // scénarios d'entrée écrivent, puis la fiche. Une table de PREUVE (ajout seul)
-  // refuse l'effacement : la fiche est alors seulement désactivée et marquée.
+  // scénarios d'entrée écrivent, puis la fiche. Une table de PREUVE (ajout seul :
+  // contrôles du registre, signatures) refuse l'effacement — c'est voulu : la fiche
+  // est alors désactivée, close, et son adresse remplacée par une adresse du banc.
   await prisma.activityLog.deleteMany({ where: { targetId: trainerId } });
   try {
     await prisma.trainer.delete({ where: { id: trainerId } });

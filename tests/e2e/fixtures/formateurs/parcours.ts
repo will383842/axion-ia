@@ -299,3 +299,47 @@ export async function signerDossier(
   await signerAvecCode(lien, email, registre, code);
   return code;
 }
+
+/** Le dossier où le stockage R2 simulé du banc garde ses objets. */
+export const OBJETS_R2_BANC = "/tmp/banc-formateurs/r2/objets";
+
+/**
+ * Une formation ACTIVE du catalogue (et son offre), pour l'habilitation de W-4 ;
+ * rend son identifiant et la fonction qui l'efface.
+ */
+export async function formationDuBanc(cle: string) {
+  const offre = await prisma.offreSite.create({
+    data: {
+      code: `BANC-${cle}`,
+      titreFr: "Offre du banc d'essai",
+      slug: `banc-offre-${cle}`,
+      formatPedagogique: "collectif_1jour",
+      publicViseFr: "Équipes administratives (banc).",
+      dureeHeuresMin: 7,
+      dureeHeuresMax: 7,
+      tarifType: "sur_devis",
+      promessePrincipaleFr: "Offre fictive du banc @formateurs.",
+      anglePedagogiqueFr: "Banc d'essai.",
+    },
+    select: { id: true },
+  });
+  const formation = await prisma.formation.create({
+    data: {
+      numero: `BANC-F-${cle}`,
+      titre: "Formation du banc d'essai",
+      slug: `banc-formation-${cle}`,
+      offreSiteId: offre.id,
+      dureeHeures: 7,
+      statut: "actif",
+    },
+    select: { id: true },
+  });
+  return {
+    id: formation.id,
+    async effacer() {
+      await prisma.trainerHabilitation.deleteMany({ where: { formationId: formation.id } });
+      await prisma.formation.deleteMany({ where: { id: formation.id } });
+      await prisma.offreSite.deleteMany({ where: { id: offre.id } });
+    },
+  };
+}
