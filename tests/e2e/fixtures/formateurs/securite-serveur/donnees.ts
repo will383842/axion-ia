@@ -406,3 +406,24 @@ export async function valeursDuBanc(gabarit: string): Promise<Record<string, str
 export function jourDeParis(d: Date): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(d);
 }
+
+/** Une candidature fictive à l'offre de formateur freelance (champs chiffrés comme en production). */
+export async function creerCandidatureFreelance(email: string): Promise<string> {
+  const { encryptPii } = await import("@/lib/pii-crypto");
+  const c = await prisma.jobApplication.create({
+    data: {
+      offerTitleSnap: "Formateur IA freelance",
+      firstName: encryptPii("Hortense") ?? "",
+      lastName: encryptPii(`Banc-Sécu-${CLE}`) ?? "",
+      email: encryptPii(email) ?? "",
+      phone: encryptPii("0600000000") ?? "",
+      consentVersion: "banc",
+    } as never,
+    select: { id: true },
+  });
+  aNettoyer(async () => {
+    await prisma.calendlyEvent.deleteMany({ where: { linkedJobApplicationId: c.id } });
+    await prisma.jobApplication.delete({ where: { id: c.id } });
+  });
+  return c.id;
+}

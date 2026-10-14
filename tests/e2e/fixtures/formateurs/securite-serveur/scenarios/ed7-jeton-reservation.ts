@@ -6,36 +6,16 @@
 // réservation est posée comme la chaîne Calendly la rattache : un rendez-vous
 // lié à la candidature (`linkedJobApplicationId`).
 
-import { encryptPii } from "@/lib/pii-crypto";
 import { identiteDuJetonReservation } from "@/server/qualiopi/formateurs-independants/identite-reservation";
 import { jetonReservationFormateur } from "@/server/qualiopi/formateurs-independants/jeton-reservation";
 
-import { aNettoyer, adresse, CLE, menage, prisma } from "../donnees";
-
-async function candidature(email: string) {
-  const c = await prisma.jobApplication.create({
-    data: {
-      offerTitleSnap: "Formateur IA freelance",
-      firstName: encryptPii("Hortense") ?? "",
-      lastName: encryptPii(`Banc-Sécu-${CLE}`) ?? "",
-      email: encryptPii(email) ?? "",
-      phone: encryptPii("0600000000") ?? "",
-      consentVersion: "banc",
-    } as never,
-    select: { id: true },
-  });
-  aNettoyer(async () => {
-    await prisma.calendlyEvent.deleteMany({ where: { linkedJobApplicationId: c.id } });
-    await prisma.jobApplication.delete({ where: { id: c.id } });
-  });
-  return c.id;
-}
+import { adresse, CLE, creerCandidatureFreelance, menage, prisma } from "../donnees";
 
 export default async function ed7(): Promise<unknown> {
   try {
     const maintenant = new Date();
     const email = adresse("candidat");
-    const id = await candidature(email);
+    const id = await creerCandidatureFreelance(email);
     const jeton = jetonReservationFormateur(id, maintenant) ?? "";
 
     const avant = await identiteDuJetonReservation(jeton, maintenant);
