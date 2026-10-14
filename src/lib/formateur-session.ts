@@ -42,14 +42,14 @@ interface SessionPayload {
   ver?: number;
   /**
    * Lot C4 — empreinte de l'adresse e-mail de la fiche au moment de la connexion
-   * (`empreinteSessionFormateur`, 16 caractères hexadécimaux, jamais l'adresse).
+   * (`empreinteSessionFormateur`, 16 caractères base64url, jamais l'adresse).
    * Facultative : un jeton signé avant ce lot n'en porte pas.
    */
   emp?: string;
 }
 
 /** Forme d'une empreinte d'adresse admise dans le jeton. */
-const EMPREINTE = /^[0-9a-f]{16}$/;
+const EMPREINTE = /^[A-Za-z0-9_-]{16}$/;
 
 function b64urlEncode(bytes: Uint8Array): string {
   let bin = "";

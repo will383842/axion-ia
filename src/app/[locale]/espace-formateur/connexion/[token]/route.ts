@@ -63,7 +63,8 @@ export async function GET(
     "formateur",
     undefined,
     versionSessionFormateur(trainer),
-    typeof trainer.email === "string" ? empreinteSessionFormateur(trainer.email) : undefined,
+    (typeof trainer.email === "string" ? empreinteSessionFormateur(trainer.email) : null) ??
+      undefined,
   );
   await setFormateurCookie(sessionToken);
   await prisma.trainer.update({

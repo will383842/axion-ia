@@ -65,7 +65,7 @@ describe("empreinteSessionFormateur", () => {
     expect(empreinteSessionFormateur("  Camille@Exemple.TEST ")).toBe(e);
     expect(empreinteSessionFormateur("autre@exemple.test")).not.toBe(e);
     expect(e).not.toContain("camille");
-    expect(e).toMatch(/^[0-9a-f]{16}$/);
+    expect(e).toMatch(/^[A-Za-z0-9_-]{16}$/);
   });
 
   it("relecture — est une HMAC du secret de session : sans le secret, rien ne se vérifie", () => {
