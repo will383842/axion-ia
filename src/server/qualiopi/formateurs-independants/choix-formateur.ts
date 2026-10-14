@@ -157,6 +157,7 @@ const LEVEE_GARDE: Readonly<Record<keyof typeof MANQUES_MISSION, string | null>>
   inactif: "Réactiver la fiche du formateur.",
   finCollaboration: null,
   contrat: "Faire signer et contresigner le contrat-cadre en vigueur.",
+  siretContrat: "Émettre un contrat-cadre à jour, au SIRET de la fiche, et le faire signer.",
   registre: "Relancer le contrôle du registre depuis sa fiche.",
   nda: "Renseigner son numéro de déclaration d'activité.",
   vigilance: "Recevoir et valider une attestation URSSAF à jour.",

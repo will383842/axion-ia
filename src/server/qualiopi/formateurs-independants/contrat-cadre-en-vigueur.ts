@@ -7,11 +7,14 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { siretDuContrat } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 export interface ContratCadreSigne {
   readonly version: number;
   readonly signeLe: Date;
+  /** C4 — SIRET figé dans le contrat (normalisé), ou `null` s'il est illisible. */
+  readonly siret: string | null;
 }
 
 /** Le dernier contrat-cadre intégralement signé et non annulé, ou `null`. */
@@ -38,5 +41,9 @@ export async function lireContratCadreSigne(trainerId: string): Promise<ContratC
   const meta = contrat.metadata as { renderData?: unknown } | null;
   const signeLe = contrat.signatures[0]?.signeAt ?? null;
   if (signeLe === null) return null;
-  return { version: versionGabaritInstantane(meta?.renderData), signeLe };
+  return {
+    version: versionGabaritInstantane(meta?.renderData),
+    signeLe,
+    siret: siretDuContrat(contrat.metadata),
+  };
 }

@@ -56,6 +56,8 @@ const faits = (over: Partial<FaitsGardeMission> = {}): FaitsGardeMission => ({
   sousTraitantNda: "84380000000",
   sousTraitantContratSigneAt: new Date("2026-09-01T10:00:00Z"),
   contratCadreVersion: 3,
+  siret: "12345678900011",
+  contratCadreSiret: "12345678900011",
   pieces: [vigilance(new Date("2026-09-01T00:00:00Z"))] as never,
   ...over,
 });
@@ -78,6 +80,13 @@ describe("peutRecevoirMission (pur)", () => {
       { sousTraitantVerifieAt: new Date("2026-09-01T10:00:00Z") },
       MANQUES_MISSION.registre,
     ],
+    [
+      "C4 — SIRET de la fiche changé après la contresignature",
+      { siret: "98765432100022" },
+      MANQUES_MISSION.siretContrat,
+    ],
+    ["C4 — contrat sans SIRET lisible", { contratCadreSiret: null }, MANQUES_MISSION.siretContrat],
+    ["C4 — fiche sans SIRET", { siret: null }, MANQUES_MISSION.siretContrat],
     ["numéro absent", { sousTraitantNda: " " }, MANQUES_MISSION.nda],
     [
       "attestation échue aujourd'hui",
@@ -159,6 +168,28 @@ describe("controlerGardeMission (lecture des interrupteurs)", () => {
     h.prisma.setting.findUnique.mockRejectedValueOnce(new Error("panne"));
     const r = await controlerGardeMission("t-1", MAINTENANT);
     expect(r.refus).toEqual([MANQUES_MISSION.erreur]);
+  });
+
+  it("C4 — allumée : le SIRET figé dans le contrat est relu et comparé à la fiche", async () => {
+    h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
+    h.etat.trainer = {
+      ...h.etat.trainer!,
+      siret: "98765432100022",
+      documents: [vigilance(new Date("2026-09-01T00:00:00Z"))],
+    };
+    h.etat.contrat = {
+      metadata: {
+        renderData: {
+          gabaritVersion: 99,
+          data: { cocontractant: { siret: "123 456 789 00011" } },
+        },
+      },
+      signatures: [{ signeAt: new Date("2026-09-01T10:00:00Z") }],
+    };
+    const r = await controlerGardeMission("t-1", MAINTENANT);
+    expect(r.refus).toEqual([MANQUES_MISSION.siretContrat]);
+    h.etat.trainer = { ...h.etat.trainer!, siret: "12345678900011" };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([]);
   });
 
   it("allumée, lecture en échec : refus (garde fermée)", async () => {

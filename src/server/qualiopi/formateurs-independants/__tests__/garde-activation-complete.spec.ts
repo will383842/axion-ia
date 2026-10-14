@@ -31,7 +31,7 @@ function complet(extra: Partial<FaitsActivationComplete> = {}): FaitsActivationC
     ibanPresent: true,
     declarationsVersion: "1",
     habilitationsActives: 1,
-    contrats: [{ version: 3, statutSignature: "signee", annuleeAt: null }],
+    contrats: [{ version: 3, statutSignature: "signee", annuleeAt: null, siret: "12345678900011" }],
     controles: [
       {
         verdict: "vert",
@@ -164,10 +164,53 @@ describe("peutActiverFormateurIndependantComplet", () => {
 
   it("le SIRET de la fiche doit être celui du dernier contrôle", () => {
     const v = peutActiverFormateurIndependantComplet(
-      complet({ siret: "99999999900011" }),
+      complet({
+        siret: "99999999900011",
+        // Contrat au SIRET de la fiche : seul l'écart avec le contrôle est en cause.
+        contrats: [
+          { version: 3, statutSignature: "signee", annuleeAt: null, siret: "99999999900011" },
+        ],
+      }),
       MAINTENANT,
     );
     expect(v).toEqual({ activable: false, manques: [MANQUES_COMPLETS.siret] });
+  });
+
+  it("C4 — le SIRET inscrit dans le contrat contresigné doit être celui de la fiche", () => {
+    // La fiche a changé de SIRET après la contresignature (fiche ET contrôle à jour) :
+    // le contrat porte encore l'ancienne entreprise.
+    const nouveau = "98765432100022";
+    const v = peutActiverFormateurIndependantComplet(
+      complet({
+        siret: nouveau,
+        controles: [
+          {
+            verdict: "vert",
+            source: "registre_entreprises+liste_of",
+            verifieAt: ilYa(1),
+            createdAt: ilYa(1),
+            siret: nouveau,
+          },
+        ],
+      }),
+      MAINTENANT,
+    );
+    expect(v).toEqual({ activable: false, manques: [MANQUES_COMPLETS.siretContrat] });
+  });
+
+  it("C4 — un contrat sans SIRET lisible est refusé (garde fermée)", () => {
+    for (const siret of [null, undefined]) {
+      const v = peutActiverFormateurIndependantComplet(
+        complet({ contrats: [{ version: 3, statutSignature: "signee", annuleeAt: null, siret }] }),
+        MAINTENANT,
+      );
+      expect(v).toEqual({ activable: false, manques: [MANQUES_COMPLETS.siretContrat] });
+    }
+  });
+
+  it("C4 — sans contrat contresigné, un seul manque (pas de doublon SIRET)", () => {
+    const v = peutActiverFormateurIndependantComplet(complet({ contrats: [] }), MAINTENANT);
+    expect(v).toEqual({ activable: false, manques: [MANQUES_COMPLETS.contrat] });
   });
 
   it("une attestation validée SANS preuve de vérification ne suffit pas", () => {

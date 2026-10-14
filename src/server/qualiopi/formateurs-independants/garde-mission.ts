@@ -7,7 +7,8 @@
  * aujourd'hui ? Dans cet ordre :
  *   1. fiche active, collaboration non terminée ;
  *   2. contrat-cadre signé, dans la version EN VIGUEUR (lue dans l'instantané
- *      de la pièce signée, jamais dans une date saisie seule) ;
+ *      de la pièce signée, jamais dans une date saisie seule), et dont le SIRET
+ *      figé est celui de la fiche (C4) ;
  *   3. contrôle du registre relu il y a un mois au plus ;
  *   4. numéro de déclaration d'activité renseigné ;
  *   5. attestation de vigilance URSSAF valable AUJOURD'HUI — seulement quand le
@@ -39,6 +40,10 @@ export interface FaitsGardeMission extends FormateurPourActivation {
   readonly activationValideeSource: "controle" | "anterieure_au_controle" | null;
   /** Version du dernier contrat-cadre intégralement signé (instantané), ou `null`. */
   readonly contratCadreVersion: number | null;
+  /** C4 — SIRET de la fiche. */
+  readonly siret: string | null;
+  /** C4 — SIRET figé dans ce même contrat (`siretDuContrat`), ou `null`. */
+  readonly contratCadreSiret: string | null;
   /** Lot G1 — cumul des honoraires HT ; absent ou illisible : attestation exigée. */
   readonly cumulHonorairesHtCents?: number | null;
 }
@@ -47,6 +52,8 @@ export const MANQUES_MISSION = {
   inactif: "La fiche du formateur n'est pas active.",
   finCollaboration: "La collaboration avec ce formateur est terminée.",
   contrat: "Le contrat-cadre en vigueur n'est pas signé.",
+  siretContrat:
+    "Le SIRET inscrit dans le contrat-cadre signé n'est plus celui de la fiche : un contrat à jour doit être signé.",
   registre: "Le contrôle du registre public date de plus d'un mois.",
   nda: "Le numéro de déclaration d'activité n'est pas renseigné.",
   vigilance: "L'attestation de vigilance URSSAF n'est pas valable aujourd'hui.",
@@ -78,6 +85,11 @@ export function peutRecevoirMission(
       f.sousTraitantContratSigneAt.getTime() <= maintenant.getTime();
     if (!signe || (f.contratCadreVersion ?? 0) < versionContratEnVigueur) {
       manques.push(MANQUES_MISSION.contrat);
+    } else {
+      const siret = (f.siret ?? "").replace(/\s+/g, "");
+      if (siret === "" || (f.contratCadreSiret ?? "").replace(/\s+/g, "") !== siret) {
+        manques.push(MANQUES_MISSION.siretContrat);
+      }
     }
     const verifie = f.sousTraitantVerifieAt;
     if (
