@@ -11,7 +11,9 @@
  *   1. contrat-cadre CONTRESIGNÉ, version ≥ 3, non annulé ;
  *   2. dernier contrôle du registre vert, ou orange validé par un humain ;
  *      jamais rouge ; de moins de 30 jours ;
- *   3. SIRET présent, et le même que celui du contrôle ;
+ *   3. SIRET présent, et le même que celui du contrôle ; et le même que celui
+ *      FIGÉ dans le contrat contresigné (C4 — un SIRET changé après la
+ *      contresignature n'est plus l'entreprise qui a contracté) ;
  *   4. numéro de déclaration vu sur la liste publique, ou orange validé
  *      (numéro « en cours » : l'activation passe, la mission reste gardée) ;
  *   5. attestation de vigilance validée, non échue, AVEC sa ligne
@@ -53,6 +55,11 @@ export interface ContratLu {
   readonly version: number;
   readonly statutSignature: string;
   readonly annuleeAt: Date | null;
+  /**
+   * C4 — SIRET figé dans le contrat (`siretDuContrat`), normalisé. Absent ou
+   * `null` : le contrat ne prouve aucune entreprise, la règle complète refuse.
+   */
+  readonly siret?: string | null | undefined;
 }
 
 export interface ControleLu extends LigneControle {
@@ -94,6 +101,8 @@ export const MANQUES_COMPLETS = {
   contrat: "Le contrat-cadre en vigueur n'est pas contresigné.",
   controle: "Le contrôle du registre n'est pas vert, ou son orange n'est pas validé.",
   siret: "Le SIRET manque, ou n'est pas celui du contrôle du registre.",
+  siretContrat:
+    "Le SIRET inscrit dans le contrat-cadre contresigné n'est plus celui de la fiche : émettez un contrat à jour et faites-le signer.",
   nda: "Le numéro de déclaration n'est pas vu sur la liste publique, ni validé.",
   vigilance:
     "Le seuil de vigilance est atteint : l'attestation URSSAF n'est pas vérifiée sur urssaf.fr, ou elle est échue.",
@@ -121,6 +130,28 @@ export function contratContresigne(contrats: ReadonlyArray<ContratLu>): boolean 
       c.version >= VERSION_MINIMALE_CONTRAT_INDEPENDANT &&
       c.statutSignature === "signee" &&
       c.annuleeAt === null,
+  );
+}
+
+/**
+ * C4 — un contrat v3+ contresigné, non annulé, dont le SIRET FIGÉ est celui de
+ * la fiche. Le SIRET de la fiche peut changer après la contresignature
+ * (`updateTrainerFacturationAction`) : le contrat, lui, ne bouge pas.
+ */
+export function contratAuSiretDeLaFiche(
+  contrats: ReadonlyArray<ContratLu>,
+  siretFiche: string | null,
+): boolean {
+  const siret = siretNormalise(siretFiche);
+  return (
+    siret !== "" &&
+    contrats.some(
+      (c) =>
+        c.version >= VERSION_MINIMALE_CONTRAT_INDEPENDANT &&
+        c.statutSignature === "signee" &&
+        c.annuleeAt === null &&
+        siretNormalise(c.siret) === siret,
+    )
   );
 }
 
@@ -197,6 +228,10 @@ export function peutActiverFormateurIndependantComplet(
     const siret = siretNormalise(f.siret);
     if (siret === "" || dernier === undefined || siretNormalise(dernier.siret) !== siret) {
       manques.push(MANQUES_COMPLETS.siret);
+    }
+    // C4 — seulement si un contrat est contresigné : sinon le manque « contrat » suffit.
+    if (contratContresigne(f.contrats) && !contratAuSiretDeLaFiche(f.contrats, f.siret)) {
+      manques.push(MANQUES_COMPLETS.siretContrat);
     }
 
     if (!dateLisible(f.ndaVerifieListeAt) && etat.statut !== "orange_valide") {

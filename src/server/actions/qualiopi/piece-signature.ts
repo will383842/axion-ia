@@ -65,6 +65,7 @@ import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
+import { objectionLettreMissionPerimee } from "@/server/qualiopi/formateurs-independants/lettre-mission-perimee";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -541,6 +542,9 @@ async function objectionAvantSignature(input: {
 }): Promise<{ message: string } | null> {
   const metier = await objectionMetier(input.type, input.documentGenereId);
   if (metier !== null) return metier;
+  // C4 — une lettre de mission périmée ne se signe plus, d'aucun côté.
+  const perimee = await objectionLettreMissionPerimee(input);
+  if (perimee !== null) return perimee;
   if (input.partie === "axionia") {
     return objectionContresignatureContratCadre({
       documentGenereId: input.documentGenereId,

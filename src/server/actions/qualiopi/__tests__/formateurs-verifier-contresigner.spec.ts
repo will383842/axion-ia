@@ -64,6 +64,8 @@ vi.mock("@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture
   motifsControle: (m: string | null) => (m ? m.split(",") : []),
 }));
 
+import { MANQUE_DOSSIER_ENVOYE } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
+
 import { contresignerEtOuvrirEspaceAction } from "../formateurs-verifier-contresigner";
 
 const TRAINER = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
@@ -92,6 +94,7 @@ function ecran(extra: Record<string, unknown> = {}) {
       contrat: { id: "doc-1", numero: "CST-1", statutSignature: "partielle" },
       actif: false,
       finCollaboration: false,
+      dossierStatut: "a_verifier",
       ...extra,
     },
   };
@@ -152,6 +155,27 @@ describe("contresignerEtOuvrirEspaceAction", () => {
     });
     expect(h.vigilance).not.toHaveBeenCalled();
     expect(h.contresigner).not.toHaveBeenCalled();
+  });
+
+  it.each(["en_cours", "a_completer"])(
+    "C4 — dossier « %s » (pas encore envoyé) : refus clair, rien n'est écrit",
+    async (dossierStatut) => {
+      h.lireEcran.mockResolvedValue(ecran({ dossierStatut }));
+      const r = await contresignerEtOuvrirEspaceAction(saisie);
+      expect(r).toEqual({
+        ok: false,
+        error: `Pour contresigner, il manque : ${MANQUE_DOSSIER_ENVOYE}.`,
+      });
+      expect(h.vigilance).not.toHaveBeenCalled();
+      expect(h.contresigner).not.toHaveBeenCalled();
+      expect(h.activer).not.toHaveBeenCalled();
+    },
+  );
+
+  it("C4 — fiche créée en console (aucun dossier en ligne) : contresignable", async () => {
+    h.lireEcran.mockResolvedValue(ecran({ dossierStatut: null }));
+    expect((await contresignerEtOuvrirEspaceAction(saisie)).ok).toBe(true);
+    expect(h.contresigner).toHaveBeenCalledTimes(1);
   });
 
   it("chemin complet : vérifie, habilite, contresigne, active au nom de la personne, F20 une fois", async () => {

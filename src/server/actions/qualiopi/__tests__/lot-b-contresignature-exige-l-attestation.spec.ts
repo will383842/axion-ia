@@ -30,6 +30,7 @@ const h = vi.hoisted(() => ({
   attestationProuvee: false,
   documents: [] as unknown[],
   partieJeton: "axionia",
+  dossierStatut: "a_verifier" as string | null,
 }));
 
 function documents(): unknown[] {
@@ -64,7 +65,11 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(async () => (h.signeeParFormateur ? [{ partie: "sous_traitant" }] : [])),
     },
     trainer: {
-      findUnique: vi.fn(async () => ({ statut: "sous_traitant", documents: h.documents })),
+      findUnique: vi.fn(async () => ({
+        statut: "sous_traitant",
+        dossierStatut: h.dossierStatut,
+        documents: h.documents,
+      })),
     },
     preuveVigilance: {
       findMany: vi.fn(async () =>
@@ -177,6 +182,24 @@ beforeEach(() => {
   h.attestationProuvee = false;
   h.documents = documents();
   h.partieJeton = "axionia";
+  h.dossierStatut = "a_verifier";
+});
+
+describe("C4 — la contresignature, par tout chemin, exige un dossier envoyé", () => {
+  it.each(["en_cours", "a_completer"])(
+    "dossier « %s » : refus depuis la fiche et par lot, rien n'est écrit",
+    async (statut) => {
+      h.dossierStatut = statut;
+      expect(await contresignerUne()).toEqual({
+        ok: false,
+        raison: "piece_non_signable_maintenant",
+        message: MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE.dossier,
+      });
+      const lot = await contresignerLot();
+      expect(lot).toMatchObject({ ok: true, signees: 0, refusees: 1 });
+      rienNEstEcrit();
+    },
+  );
 });
 
 describe("🔴 contrat v3 signé par le formateur, attestation URSSAF non prouvée", () => {

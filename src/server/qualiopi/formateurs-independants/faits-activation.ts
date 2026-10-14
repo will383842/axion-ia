@@ -12,6 +12,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { siretDuContrat } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 import type { FaitsActivationComplete } from "./garde-activation-complete";
@@ -97,6 +98,7 @@ export async function lireFaitsActivationComplete(
       version: versionDuContrat(c.metadata),
       statutSignature: c.statutSignature,
       annuleeAt: c.annuleeAt ?? null,
+      siret: siretDuContrat(c.metadata),
     })),
     controles,
     pieces: t.documents,

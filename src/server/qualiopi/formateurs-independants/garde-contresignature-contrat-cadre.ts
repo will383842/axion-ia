@@ -63,6 +63,7 @@ export const MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE = {
   version:
     "Ce contrat n'est pas dans la version en vigueur : émettez un contrat à jour depuis la fiche du formateur.",
   annule: "Ce contrat est annulé : il ne se contresigne plus.",
+  dossier: `Le dossier du formateur n'a pas été envoyé : il est encore en cours de saisie, ou un complément lui a été demandé. Attendez son envoi (${ECRAN_W4}).`,
   fiche: `La fiche du cocontractant n'est pas celle d'un formateur indépendant (${ECRAN_W4}).`,
 } as const;
 
@@ -130,6 +131,7 @@ export async function objectionContresignatureContratCadre(input: {
         where: { id: trainerId },
         select: {
           statut: true,
+          dossierStatut: true,
           documents: {
             where: {
               type: { in: ["attestation_vigilance_urssaf", "cv", "assurance_rc_pro", "rib"] },
@@ -153,6 +155,12 @@ export async function objectionContresignatureContratCadre(input: {
       lireCumulHonorairesHtCents(trainerId),
     ]);
     if (t === null || t.statut !== "sous_traitant") return { message: m.fiche };
+    // C4 — on ne contresigne pas un dossier encore ouvert au formateur (même
+    // règle que W-4, `dossierAContresigner`) : une fiche créée en console (sans
+    // dossier en ligne) ou un dossier envoyé passent.
+    if (t.dossierStatut === "en_cours" || t.dossierStatut === "a_completer") {
+      return { message: m.dossier };
+    }
     const docs: Doc[] = t.documents ?? [];
     if (!vigilanceSatisfaite(docs, preuves ?? [], maintenant, cumul)) {
       return { message: m.attestation };

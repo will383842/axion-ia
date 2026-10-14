@@ -38,7 +38,7 @@ function sansAttestation(extra: Partial<FaitsActivationComplete> = {}): FaitsAct
     ibanPresent: true,
     declarationsVersion: "1",
     habilitationsActives: 1,
-    contrats: [{ version: 3, statutSignature: "signee", annuleeAt: null }],
+    contrats: [{ version: 3, statutSignature: "signee", annuleeAt: null, siret: "12345678900011" }],
     controles: [
       {
         verdict: "vert",
@@ -108,6 +108,8 @@ describe("garde de mission", () => {
     sousTraitantNda: "84123456789",
     sousTraitantContratSigneAt: ilYa(10),
     contratCadreVersion: 3,
+    siret: "12345678900011",
+    contratCadreSiret: "12345678900011",
     pieces: [],
     cumulHonorairesHtCents: cumul,
   });
@@ -152,6 +154,7 @@ describe("écran Vérifier et contresigner (W-4)", () => {
     contrat: { id: "c", numero: "CST-1", statutSignature: "partielle" },
     actif: false,
     finCollaboration: false,
+    dossierStatut: "a_verifier",
   });
 
   it("sous le seuil, sans attestation : rien ne manque, bloc neutre", () => {
