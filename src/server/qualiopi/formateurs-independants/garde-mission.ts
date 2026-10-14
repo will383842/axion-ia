@@ -31,6 +31,9 @@ import { pieceGardeeProbante, type FormateurPourActivation } from "./gardes";
 import type { NiveauGardeMission } from "./interrupteurs";
 import { vigilanceExigible } from "./vigilance-seuil";
 
+/** C4 — première version du contrat-cadre qui inscrit toujours le SIRET (gabarit v3). */
+export const VERSION_CONTRAT_AVEC_SIRET = 3;
+
 /** Un contrôle du registre plus vieux qu'un mois ne vaut plus (ADR 0066 (d)). */
 export const REGISTRE_VALIDITE_MOIS = 1;
 
@@ -86,8 +89,14 @@ export function peutRecevoirMission(
     if (!signe || (f.contratCadreVersion ?? 0) < versionContratEnVigueur) {
       manques.push(MANQUES_MISSION.contrat);
     } else {
+      // C4 — un contrat d'avant la v3 (ancien gabarit) peut n'inscrire aucun SIRET :
+      // rien à comparer. Dès qu'un SIRET est inscrit, ou en v3+, il doit être celui
+      // de la fiche.
       const siret = (f.siret ?? "").replace(/\s+/g, "");
-      if (siret === "" || (f.contratCadreSiret ?? "").replace(/\s+/g, "") !== siret) {
+      const inscrit = (f.contratCadreSiret ?? "").replace(/\s+/g, "");
+      const ancienSansSiret =
+        inscrit === "" && (f.contratCadreVersion ?? 0) < VERSION_CONTRAT_AVEC_SIRET;
+      if (!ancienSansSiret && (siret === "" || inscrit !== siret)) {
         manques.push(MANQUES_MISSION.siretContrat);
       }
     }

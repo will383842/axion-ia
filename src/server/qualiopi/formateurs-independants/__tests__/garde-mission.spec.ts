@@ -100,6 +100,30 @@ describe("peutRecevoirMission (pur)", () => {
   });
 });
 
+describe("C4 — contrats de l'ancien gabarit (v1/v2)", () => {
+  it("v2 sans SIRET inscrit : rien à comparer, la mission passe", () => {
+    expect(
+      peutRecevoirMission(
+        faits({ contratCadreVersion: 2, contratCadreSiret: null }),
+        2,
+        MAINTENANT,
+      ),
+    ).toEqual({ ok: true });
+  });
+  it("v2 avec un SIRET inscrit qui n'est plus celui de la fiche : refus", () => {
+    const v = peutRecevoirMission(
+      faits({ contratCadreVersion: 2, contratCadreSiret: "98765432100022" }),
+      2,
+      MAINTENANT,
+    );
+    expect(v).toEqual({ ok: false, manques: [MANQUES_MISSION.siretContrat] });
+  });
+  it("v3 sans SIRET lisible : refus (garde fermée)", () => {
+    const v = peutRecevoirMission(faits({ contratCadreSiret: null }), 2, MAINTENANT);
+    expect(v).toEqual({ ok: false, manques: [MANQUES_MISSION.siretContrat] });
+  });
+});
+
 describe("le mode", () => {
   it("portes coupées : « coupee », quel que soit le niveau", () => {
     expect(modeGardeMission(false, "refuser", "controle")).toBe("coupee");
@@ -188,6 +212,26 @@ describe("controlerGardeMission (lecture des interrupteurs)", () => {
     };
     const r = await controlerGardeMission("t-1", MAINTENANT);
     expect(r.refus).toEqual([MANQUES_MISSION.siretContrat]);
+    h.etat.trainer = { ...h.etat.trainer!, siret: "12345678900011" };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([]);
+  });
+
+  it("C4 — un contrat v2 range son SIRET sous `sousTraitant` : il est lu", async () => {
+    h.etat.settings.set("formateurs.garde_mission_portes", { actif: true });
+    h.etat.trainer = {
+      ...h.etat.trainer!,
+      siret: "98765432100022",
+      documents: [vigilance(new Date("2026-09-01T00:00:00Z"))],
+    };
+    h.etat.contrat = {
+      metadata: {
+        renderData: { gabaritVersion: 2, data: { sousTraitant: { siret: "12345678900011" } } },
+      },
+      signatures: [{ signeAt: new Date("2026-09-01T10:00:00Z") }],
+    };
+    expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([
+      MANQUES_MISSION.siretContrat,
+    ]);
     h.etat.trainer = { ...h.etat.trainer!, siret: "12345678900011" };
     expect((await controlerGardeMission("t-1", MAINTENANT)).refus).toEqual([]);
   });

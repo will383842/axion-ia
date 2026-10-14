@@ -10,6 +10,21 @@ import { prisma } from "@/lib/prisma";
 import { siretDuContrat } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
+/**
+ * C4 — le SIRET FIGÉ dans un contrat-cadre, quel que soit son gabarit : v3+
+ * (`data.cocontractant.siret`, `siretDuContrat`) ou v1/v2 de l'ancien gabarit
+ * (`data.sousTraitant.siret`, facultatif). Normalisé ; `null` s'il est absent.
+ */
+export function siretFigeDuContrat(metadata: unknown): string | null {
+  const v3 = siretDuContrat(metadata);
+  if (v3 !== null) return v3;
+  const rd = (metadata as { renderData?: { data?: { sousTraitant?: { siret?: unknown } } } } | null)
+    ?.renderData;
+  const v = rd?.data?.sousTraitant?.siret;
+  const s = typeof v === "string" ? v.replace(/\s+/g, "") : "";
+  return /^\d{14}$/.test(s) ? s : null;
+}
+
 export interface ContratCadreSigne {
   readonly version: number;
   readonly signeLe: Date;
@@ -44,6 +59,6 @@ export async function lireContratCadreSigne(trainerId: string): Promise<ContratC
   return {
     version: versionGabaritInstantane(meta?.renderData),
     signeLe,
-    siret: siretDuContrat(contrat.metadata),
+    siret: siretFigeDuContrat(contrat.metadata),
   };
 }
