@@ -73,6 +73,15 @@ export interface DependancesPassage {
   /** Vrai si cette clé a déjà été tentée (journal OU corbeille) ; `null` : inconnu. */
   readonly dejaTente: (jobId: string) => Promise<boolean | null>;
   readonly envoyer: (e: EnvoiFormateur) => Promise<ResultatEnvoiFormateur>;
+  /**
+   * Lot 8A — les réponses HUMAINES des formateurs reçues depuis `depuis`, par fiche. Lue
+   * seulement pour une campagne `arreteeParReponseFormateur`. `null` : on ne sait pas, rien
+   * ne part pour cette campagne.
+   */
+  readonly reponsesFormateurs: (
+    trainerIds: readonly string[],
+    depuis: Date,
+  ) => Promise<ReadonlyMap<string, readonly Date[]> | null>;
 }
 
 /** Journal des envois ET corbeille de validation. Inconnu (`null`) si l'un ne répond pas. */
@@ -134,6 +143,49 @@ export async function relanceesAujourdhui(
   }
 }
 
+/**
+ * Lot 8A — réponses humaines rangées sur la fiche (`trainerId`) ou sur la candidature d'où
+ * elle vient (`Trainer.candidatureId`). Interrupteur `formateurs.reponses_formateurs` coupé :
+ * aucune réponse n'est rangée, donc rien n'est lu (carte vide, comportement d'avant).
+ */
+export async function reponsesFormateurs(
+  trainerIds: readonly string[],
+  depuis: Date,
+): Promise<ReadonlyMap<string, readonly Date[]> | null> {
+  const sortie = new Map<string, Date[]>();
+  if (trainerIds.length === 0) return sortie;
+  const { lireEtatsEntree } =
+    await import("@/server/qualiopi/formateurs-independants/etats-entree");
+  if (!(await lireEtatsEntree()).reponses_formateurs) return sortie;
+  const ids = [...new Set(trainerIds)];
+  try {
+    const fiches = await prisma.trainer.findMany({
+      where: { id: { in: ids }, candidatureId: { not: null } },
+      select: { id: true, candidatureId: true },
+    });
+    const parCandidature = new Map(
+      fiches.flatMap((f) => (f.candidatureId ? [[f.candidatureId, f.id] as const] : [])),
+    );
+    const lignes = await prisma.reponseEntranteFormateur.findMany({
+      where: {
+        auto: false,
+        recuLe: { gte: depuis },
+        OR: [{ trainerId: { in: ids } }, { candidatureId: { in: [...parCandidature.keys()] } }],
+      },
+      select: { trainerId: true, candidatureId: true, recuLe: true },
+    });
+    for (const l of lignes) {
+      const fiche =
+        l.trainerId ?? (l.candidatureId ? parCandidature.get(l.candidatureId) : undefined);
+      if (!fiche) continue;
+      sortie.set(fiche, [...(sortie.get(fiche) ?? []), l.recuLe]);
+    }
+    return sortie;
+  } catch {
+    return null;
+  }
+}
+
 const RANG_CLASSE: Readonly<Record<ClasseCampagne, number>> = { B: 0, A: 1, C: 2 };
 
 async function dependancesParDefaut(
@@ -148,6 +200,7 @@ async function dependancesParDefaut(
     relanceesAujourdhui,
     dejaTente,
     envoyer,
+    reponsesFormateurs,
   };
 }
 
@@ -196,7 +249,25 @@ export async function passerCampagnes(
       ecarter("lecture-impossible");
       continue;
     }
-    for (const f of faits) {
+    let reponses: ReadonlyMap<string, readonly Date[]> | null = new Map();
+    if (campagne.arreteeParReponseFormateur && faits.length > 0) {
+      const depuis = new Date(Math.min(...faits.map((f) => f.etat.origine.getTime())));
+      reponses = await d.reponsesFormateurs(
+        faits.map((f) => f.entityId),
+        depuis,
+      );
+    }
+    for (const f0 of faits) {
+      if (reponses === null) {
+        ecarter("reponses-illisibles");
+        continue;
+      }
+      // Une réponse humaine APRÈS l'origine arrête la relance ; une plus ancienne relève
+      // d'un autre échange et ne compte pas.
+      const repondu = (reponses.get(f0.entityId) ?? []).some(
+        (r) => r.getTime() > f0.etat.origine.getTime(),
+      );
+      const f: FaitsCampagne = repondu ? { ...f0, etat: { ...f0.etat, reponseHumaine: true } } : f0;
       let decision: ReturnType<typeof decisionCampagne>;
       try {
         decision = decisionCampagne({ etat: f.etat, maintenant, regle: campagne.regle });

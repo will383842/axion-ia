@@ -76,6 +76,12 @@ export interface DeclarationCampagne<E extends string = string> {
    * le texte validé n'a pas une variante par étape (F41 : la 3e variante est le refus).
    */
   readonly variante?: (etape: string) => number;
+  /**
+   * Lot 8A (décision du dirigeant, #1511) — une réponse HUMAINE du formateur, reçue après
+   * l'origine, arrête la relance (motif `reponse-humaine`). Réservé aux campagnes sur une
+   * fiche formateur (`entityType: "Trainer"`) ; aucune campagne apporteur ni client ne le lit.
+   */
+  readonly arreteeParReponseFormateur?: boolean;
   /** Lecture en lot des personnes candidates. Lève : le passage saute la campagne. */
   readonly lireFaits: (maintenant: Date) => Promise<readonly FaitsCampagne[]>;
 }
@@ -100,7 +106,7 @@ export function cleRelance(
  * Inscrites : S3 et S5 (L6), derrière `relances_auto` ; S6 et S6 bis (L13b), derrière `pieces_cron`. S1 (L-INV), derrière `invitation_auto`.
  * Chacune reste éteinte tant que ses interrupteurs ne sont pas TOUS allumés.
  */
-export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
+const DECLAREES: readonly DeclarationCampagne[] = [
   // L6 — S3 (et S5 par son origine F12) : relances du dossier en ligne.
   CAMPAGNE_RELANCE_DOSSIER as DeclarationCampagne,
   // L13b — S6 et S6 bis : relances des pièces à renouveler.
@@ -121,3 +127,11 @@ export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
   // derrière `formateurs.bilan_fin_formation` (lu par la campagne elle-même).
   CAMPAGNE_BILAN as DeclarationCampagne,
 ];
+
+/**
+ * Lot 8A — chaque campagne sur une fiche formateur s'arrête quand il répond. S1 (sur la
+ * candidature) lit déjà ses réponses elle-même (`invitation-formateurs-faits.ts`).
+ */
+export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = DECLAREES.map((c) =>
+  c.entityType === "Trainer" ? { ...c, arreteeParReponseFormateur: true } : c,
+);
