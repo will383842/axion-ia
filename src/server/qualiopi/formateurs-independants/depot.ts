@@ -81,7 +81,7 @@ const alerteAntivirus = alerteAntivirusLimitee(() => {
 });
 
 /** Nom d'origine affichable : sans chemin ni balise, 255 signes au plus. */
-function nomPropre(nom: string): string {
+export function nomPropre(nom: string): string {
   const base = nom.split(/[\\/]/).pop() ?? "";
   const propre = base.replace(/[^\p{L}\p{N}._ -]/gu, "_").slice(-255);
   return propre === "" ? "piece" : propre;
@@ -148,6 +148,17 @@ export async function deposerPieceFormateur(entree: EntreeDepot): Promise<Result
 
   try {
     const documentId = await prisma.$transaction(async (tx) => {
+      // Jamais deux pièces actives du type (comme `dossier.ts`) : la précédente, non vérifiée,
+      // est ARCHIVÉE dans la même transaction — jamais supprimée.
+      await tx.trainerDocument.updateMany({
+        where: {
+          trainerId: fiche.id,
+          type: entree.type as TypeDeposable,
+          archiveAt: null,
+          statutValidation: { not: "valide" },
+        },
+        data: { archiveAt: new Date(), archiveMotif: "remplacee_par_le_formateur" },
+      });
       const doc = await tx.trainerDocument.create({
         data: {
           trainerId: fiche.id,
