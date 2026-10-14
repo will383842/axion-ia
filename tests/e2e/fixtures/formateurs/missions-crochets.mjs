@@ -8,6 +8,7 @@
 //     banc a SIGNÉ avec la vraie fonction (`signFormateurSession`), et aucun en-tête ;
 //   · `next/cache` (revalidation de pages) → sans effet : il n'y a pas de page.
 // `server-only` est neutralisé : il ne fait que refuser d'être chargé hors de Next.
+// `@sentry/nextjs` est coupé (signalement = envoi extérieur), comme le réseau.
 // `@/lib/r2-storage` écrit dans un dossier local : le banc n'a aucun seau
 // (cf. `missions-bouchons/r2-storage.mjs`).
 //
@@ -26,6 +27,7 @@ const BOUCHONS = {
   "next/cache.js": ici("next-cache.mjs"),
   "server-only": ici("server-only.mjs"),
   "@/lib/r2-storage": ici("r2-storage.mjs"),
+  "@sentry/nextjs": ici("sentry.mjs"),
 };
 
 registerHooks({

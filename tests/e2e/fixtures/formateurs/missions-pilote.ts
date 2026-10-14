@@ -20,6 +20,24 @@ const SERVEUR = path.join(ICI, "missions-serveur.ts");
 const CROCHETS = path.join(ICI, "missions-crochets.mjs");
 const MARQUEUR = "@@BANC-MISSIONS@@";
 
+/**
+ * La base Redis des scénarios missions : la MÊME instance, une autre base (n° 1).
+ *
+ * 🔑 Les e-mails des scénarios entrent dans la VRAIE file BullMQ (`enqueueEmail`,
+ * journal `email_logs` écrit, job rangé avec ses données) — mais une file que le
+ * worker du job ne consomme pas. Raison : le worker plafonne à 40 envois par heure
+ * (`email-worker.ts`, `limiter`) et un passage des scénarios en enfile environ 70 ;
+ * consommés, ils épuiseraient le plafond et la preuve de LIVRAISON au puits
+ * (`envois-par-la-file.spec.ts`) attendrait une heure derrière eux. Les scénarios
+ * prouvent ce qui est enfilé et son contenu rendu (`envoiRendu`) ; la livraison
+ * elle-même est prouvée, une fois, par ce spec-là.
+ */
+function redisDuBanc(): string {
+  const u = new URL(process.env["REDIS_URL"] ?? "redis://localhost:6379");
+  u.pathname = "/1";
+  return u.toString();
+}
+
 /** Démarrage (~10 s, les actions tirent beaucoup de modules) puis un geste. */
 const DELAI_GESTE_MS = 60_000;
 
@@ -106,6 +124,7 @@ export async function demarrerPilote(): Promise<Pilote> {
       ...process.env,
       // Les mêmes valeurs FICTIVES que l'exécuteur commun (`execution.ts`).
       CRM_SYNC_ENABLED: "true",
+      REDIS_URL: redisDuBanc(),
     },
   });
   let tampon = "";

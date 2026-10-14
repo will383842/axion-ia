@@ -141,4 +141,45 @@ test.describe("@formateurs E18 — double emploi le même jour", () => {
       ).formateurPrincipalId,
     ).toBe(a.id);
   });
+
+  // Décision récente : un formateur en FIN DE COLLABORATION n'est pas affectable.
+  test("fin de collaboration : non affectable, grisé dans les cartes", async () => {
+    const { pilote, monde } = sc;
+    const f = await creerFormateurPret(monde, { prenom: "Gilles" });
+    const s = await creerSession(monde, { dansJours: 28 });
+    const fin = await pilote.appeler<{ ok: boolean; close?: boolean; raison?: string }>(
+      "@/server/qualiopi/formateurs-independants/fin-collaboration-service",
+      "deciderFinCollaboration",
+      [
+        {
+          trainerId: f.id,
+          // SIRET cessé : fin sans préavis, effet le jour même.
+          motif: "siret_cesse",
+          dateEffet: new Date(),
+          note: "Le SIRET du formateur est cessé au registre (banc).",
+          irreparable: false,
+          userId: monde.admin.id,
+          role: monde.admin.role,
+          annuleePar: "Direction Banc",
+        },
+        new Date(),
+      ],
+    );
+    expect(fin, JSON.stringify(fin)).toMatchObject({ ok: true, close: true });
+    const cartes = await pilote.appeler<{
+      disponibles: Array<{ trainerId: string }>;
+      indisponibles: Array<{ trainerId: string }>;
+    }>(M.serviceChoix, "lireCartesChoix", [s.id, new Date()]);
+    expect(cartes.disponibles.map((x) => x.trainerId)).not.toContain(f.id);
+    const aff = await pilote.appeler<Resultat<unknown>>(
+      TRAINERS,
+      "assignTrainerToSessionAction",
+      [{ sessionId: s.id, trainerId: f.id }],
+      sc.console(),
+    );
+    expect("error" in aff && aff.error).toMatch(
+      /collaboration avec ce formateur est terminée|inactif/i,
+    );
+    expect(await envoisVers(f.email, "formateur-mission-proposee")).toEqual([]);
+  });
 });
