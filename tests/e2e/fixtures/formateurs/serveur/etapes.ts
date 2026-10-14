@@ -37,8 +37,11 @@ function exigerBaseLocale(): void {
   }
 }
 
-function routeRegistre(reponse: NonNullable<EntreeEtape["registre"]>): RouteSimulee {
-  const simule = registreSimule(reponse);
+function routeRegistre(registre: NonNullable<EntreeEtape["registre"]>): RouteSimulee {
+  const simule =
+    typeof registre === "string"
+      ? registreSimule(registre)
+      : registreSimule(registre.reponse, registre.profil);
   return (url, init) =>
     url.host === "recherche-entreprises.api.gouv.fr" ? simule.fetch(url.href, init) : null;
 }

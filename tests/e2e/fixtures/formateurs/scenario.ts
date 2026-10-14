@@ -14,6 +14,7 @@ import { randomUUID } from "node:crypto";
 
 import { Redis } from "ioredis";
 
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 import { allumerLeBanc } from "./allumage";
@@ -48,7 +49,13 @@ async function prendreVerrou(redis: Redis, jeton: string): Promise<void> {
 }
 
 /** Ouvre un scénario : verrou, allumage, administrateur. */
-export async function ouvrirScenario(nom: string): Promise<DecorScenario> {
+export async function ouvrirScenario(
+  nom: string,
+  options: {
+    /** Le scénario va jusqu'au contrat-cadre : l'identité de l'organisme est posée. */
+    readonly organisme?: boolean;
+  } = {},
+): Promise<DecorScenario> {
   const redis = new Redis(process.env["REDIS_URL"] ?? "redis://localhost:6379", {
     maxRetriesPerRequest: 2,
   });
@@ -75,8 +82,15 @@ export async function ouvrirScenario(nom: string): Promise<DecorScenario> {
     select: { id: true },
   });
   const adresses = new Set<string>();
+  const session: SessionBanc = {
+    id: admin.id,
+    email: emailAdmin,
+    role: "super_admin",
+    name: "Direction banc",
+  };
+  const remettreOrganisme = options.organisme ? await configurerOrganisme(session) : null;
   return {
-    admin: { id: admin.id, email: emailAdmin, role: "super_admin", name: "Direction banc" },
+    admin: session,
     adresses,
     adresse(role) {
       const a = `${role}.${nom}.${cle}.${adresses.size}@example.test`.toLowerCase();
@@ -85,6 +99,7 @@ export async function ouvrirScenario(nom: string): Promise<DecorScenario> {
     },
     async liberer() {
       try {
+        if (remettreOrganisme) await remettreOrganisme();
         for (const a of adresses) await effacerPersonne(a);
         await prisma.activityLog.deleteMany({ where: { adminUserId: admin.id } });
         await prisma.adminUser.deleteMany({ where: { id: admin.id } });
@@ -212,10 +227,16 @@ export async function gabaritsVers(adresse: string): Promise<string[]> {
 }
 
 /** Attend que toutes les lignes du journal d'une adresse soient closes par le worker. */
-export async function attendreLeWorker(adresse: string): Promise<void> {
+export async function attendreLeWorker(
+  adresse: string,
+  /** Gabarits volontairement laissés en file (un retard BullMQ posé par le scénario). */
+  sauf: readonly string[] = [],
+): Promise<void> {
   const limite = Date.now() + ATTENTE_WORKER.timeout;
   for (;;) {
-    const lignes = await lireJournalEnvois({ destinataire: adresse });
+    const lignes = (await lireJournalEnvois({ destinataire: adresse })).filter(
+      (l) => !sauf.includes(l.template),
+    );
     if (lignes.every((l) => l.status !== "pending")) return;
     if (Date.now() > limite) {
       throw new Error(
@@ -260,4 +281,66 @@ export function jourOuvre(depart: Date, jours: number): Date {
 export function plus(d: Date, duree: { jours?: number; heures?: number; minutes?: number }): Date {
   const { jours = 0, heures = 0, minutes = 0 } = duree;
   return new Date(d.getTime() + ((jours * 24 + heures) * 60 + minutes) * 60_000);
+}
+
+// ── L'organisme, tel que le contrat-cadre l'imprime ──────────────────────────
+
+/** Ce que la console tient en production et que la base du banc n'a pas. */
+const IDENTITE_QUALIOPI_BANC: Readonly<Record<string, string>> = {
+  adresse_siege: "1 rue du Banc d'Essai, 38000 Grenoble",
+  nda_region: "Auvergne-Rhône-Alpes",
+  adresse_formateurs: "formateurs.banc@example.test",
+};
+
+/**
+ * Pose l'identité de l'organisme (configuration Qualiopi par le service de la
+ * console, identité légale par sa ligne `legal_overrides`) ; rend la fonction qui
+ * remet l'état d'avant. Valeurs du banc : capital et adresses fictifs, SIREN de la
+ * table d'identité légale du dépôt (publique).
+ */
+export async function configurerOrganisme(admin: SessionBanc): Promise<() => Promise<void>> {
+  const cles = [
+    ...Object.keys(IDENTITE_QUALIOPI_BANC).map((k) => `qualiopi.${k}`),
+    "legal_overrides",
+  ];
+  const avant = await prisma.siteSetting.findMany({ where: { key: { in: cles } } });
+  const { etape } = await import("./etapes");
+  await etape({
+    etape: "configurer-organisme",
+    args: { valeurs: IDENTITE_QUALIOPI_BANC },
+    session: admin,
+  });
+  const legal = avant.find((r) => r.key === "legal_overrides")?.value;
+  const base = legal && typeof legal === "object" && !Array.isArray(legal) ? legal : {};
+  await prisma.siteSetting.upsert({
+    where: { key: "legal_overrides" },
+    create: {
+      key: "legal_overrides",
+      value: {
+        ...base,
+        capitalSocial: "1 000 €",
+        rcsVille: "Grenoble",
+        siren: IDENTITE_LEGALE.siren,
+      },
+    },
+    update: {
+      value: {
+        ...base,
+        capitalSocial: "1 000 €",
+        rcsVille: "Grenoble",
+        siren: IDENTITE_LEGALE.siren,
+      },
+    },
+  });
+  return async () => {
+    for (const key of cles) {
+      const ligne = avant.find((r) => r.key === key);
+      if (ligne === undefined) await prisma.siteSetting.deleteMany({ where: { key } });
+      else
+        await prisma.siteSetting.update({
+          where: { key },
+          data: { value: ligne.value as never, updatedByAdminId: ligne.updatedByAdminId },
+        });
+    }
+  };
 }

@@ -4,6 +4,7 @@
 // `serveur/executer.ts`, qui s'exécute dès son chargement.
 
 import type { RendezVousSimule } from "./calendly-simule";
+import type { ProfilRegistre, ReponseRegistre } from "./registre-entreprises";
 import type { AppelReseau } from "./reseau-simule";
 
 /** Préfixe de la ligne de résultat sur la sortie standard de l'exécuteur. */
@@ -79,7 +80,8 @@ export interface EntreeEtape {
   readonly args?: Readonly<Record<string, unknown>>;
   readonly session?: SessionBanc | null;
   readonly calendly?: readonly RendezVousSimule[];
-  readonly registre?: "vert" | "orange" | "rouge" | "muet" | "429";
+  readonly registre?:
+    ReponseRegistre | { readonly reponse: ReponseRegistre; readonly profil: ProfilRegistre };
   /** Adresse IP de la requête simulée (les compteurs anti-abus sont par adresse). */
   readonly ip?: string;
 }

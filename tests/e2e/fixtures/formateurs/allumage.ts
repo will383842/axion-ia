@@ -25,13 +25,16 @@ import {
   cleSettingEntree,
   cleSettingSignature,
   etatsDepuisLignes,
+  etatsSignatureDepuisLignes,
   prealablesManquants,
   prealablesManquantsEntree,
+  prealablesManquantsSignature,
   valeurJson,
   type CleInterrupteur,
   type CleInterrupteurEntree,
   type CleInterrupteurSignature,
 } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireFaitsPrealables } from "@/server/qualiopi/formateurs-independants/prealables-faits";
 import {
   cleDuTexte,
   empreinteDuTexte,
@@ -47,6 +50,10 @@ export const ALLUMES_FORMATEURS: readonly CleInterrupteur[] = [
   "invitation_auto",
   "dossier_en_ligne",
   "relances_auto",
+  // Le contrat se signe DANS le dossier (décision 93) : exige une version arrêtée.
+  "contrat_auto",
+  // L'écran W-4 « Contresigner et ouvrir son espace » et la règle d'activation complète.
+  "activation_auto",
 ];
 
 export const ALLUMES_ENTREE: readonly CleInterrupteurEntree[] = [
@@ -60,7 +67,12 @@ export const ALLUMES_ENTREE: readonly CleInterrupteurEntree[] = [
   "reponses_formateurs",
 ];
 
-export const ALLUMES_SIGNATURE: readonly CleInterrupteurSignature[] = [];
+export const ALLUMES_SIGNATURE: readonly CleInterrupteurSignature[] = [
+  // La suite du contrat-cadre une fois contresigné (exemplaire F19, activation).
+  "suite_contrat_cadre",
+  // La copie partielle de la signature (F10 la porte).
+  "copie_partielle",
+];
 
 /** Textes validés en plus de ceux de l'écran formateur (clé complète → valeur). */
 export const TEXTES_HORS_ECRAN: Readonly<Record<string, Prisma.InputJsonValue>> = {};
@@ -110,7 +122,7 @@ function lignesAPoser(): Array<{ key: string; value: Prisma.InputJsonValue }> {
   const etats = () => etatsDepuisLignes(poses);
 
   for (const cle of ALLUMES_FORMATEURS) {
-    const manque = prealablesManquants(cle, true, etats(), {});
+    const manque = prealablesManquants(cle, true, etats(), lireFaitsPrealables());
     if (manque.length > 0) {
       throw new Error(
         `banc @formateurs : la console refuserait « ${cle} » — ${manque.join(" ; ")}`,
@@ -129,8 +141,22 @@ function lignesAPoser(): Array<{ key: string; value: Prisma.InputJsonValue }> {
     }
     lignes.push({ key: cleSettingEntree(cle), value: { actif: true } });
   }
+  const signes: Array<{ key: string; value: unknown }> = [];
   for (const cle of ALLUMES_SIGNATURE) {
-    lignes.push({ key: cleSettingSignature(cle), value: { actif: true } });
+    const manque = prealablesManquantsSignature(
+      cle,
+      true,
+      etats(),
+      etatsSignatureDepuisLignes(signes),
+    );
+    if (manque.length > 0) {
+      throw new Error(
+        `banc @formateurs : la console refuserait « ${cle} » — ${manque.join(" ; ")}`,
+      );
+    }
+    const ligne = { key: cleSettingSignature(cle), value: { actif: true } };
+    lignes.push(ligne);
+    signes.push(ligne);
   }
   for (const t of TEXTES_FORMATEURS_A_VALIDER) {
     lignes.push({ key: cleDuTexte(t), value: { valide: true, empreinte: empreinteDuTexte(t) } });

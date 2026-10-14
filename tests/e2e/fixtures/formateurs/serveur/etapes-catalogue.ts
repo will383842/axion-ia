@@ -20,6 +20,17 @@ import {
 } from "@/features/admin-rendezvous/issue-formateur-actions";
 import { listRendezVousAFaireLePoint } from "@/features/admin-rendezvous/suivi-queries";
 import { submitJobApplicationAction } from "@/features/job-application/actions";
+import * as dossier from "@/app/formateur/dossier/[id]/[jeton]/actions";
+import { contresignerEtOuvrirEspaceAction } from "@/server/actions/qualiopi/formateurs-verifier-contresigner";
+import { setQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { renvoyerLienDossierFormAction } from "@/server/actions/qualiopi/formateur-dossier-envois";
+import { setTrainerActifAction, updateTrainerAction } from "@/server/actions/qualiopi/trainers";
+import { setFormateurActifAction } from "@/server/actions/coaching-admin/formateurs.actions";
+import { changerActivationFormateur } from "@/server/qualiopi/formateurs-independants/activation";
+import { verifierCodeSignature } from "@/server/qualiopi/documents/signature/code-signature";
+import { enqueueEmail } from "@/server/queue/queues";
+import { lireDossierParLien } from "@/server/qualiopi/formateurs-independants/dossier";
+import { lireEcranVerifierContresigner } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture";
 import { modeFormateurFreelance } from "@/lib/careers/formulaire-formateur-freelance";
 import { prisma } from "@/lib/prisma";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
@@ -78,7 +89,128 @@ async function livrer(rdv: RendezVousSimule, annulation: boolean) {
   return { statut: reponse.status, corps: await reponse.text() };
 }
 
+/** Les portes PUBLIQUES du dossier en ligne, telles que la page les appelle. */
+const ACTIONS_DOSSIER = {
+  vous: dossier.enregistrerVousAction,
+  activite: dossier.enregistrerActiviteAction,
+  piece: dossier.deposerPieceAction,
+  urssaf: dossier.enregistrerCodeUrssafAction,
+  envoyer: dossier.envoyerDossierAction,
+  code: dossier.demanderCodeContratAction,
+  signer: dossier.signerEtEnvoyerDossierAction,
+} as const;
+
 export const ETAPES: Readonly<Record<string, Etape>> = {
+  /**
+   * Une action du dossier en ligne, avec le lien de la personne (`id`, `jeton`) et
+   * les champs du formulaire. Un fichier (`fichier`) part en base64.
+   */
+  async "action-dossier"(a) {
+    const nom = String(a["action"]) as keyof typeof ACTIONS_DOSSIER;
+    const action = ACTIONS_DOSSIER[nom];
+    if (!action) throw new Error(`banc @formateurs : action du dossier inconnue « ${nom} »`);
+    const fd = formulaire(a["champs"] as Record<string, string>);
+    const f = a["fichier"] as { nom: string; type: string; base64: string } | undefined;
+    if (f) fd.set("fichier", new File([Buffer.from(f.base64, "base64")], f.nom, { type: f.type }));
+    return action(fd);
+  },
+
+  /** Ce que la page du dossier lit par le lien : `null` = la page neutre (404). */
+  async "lire-dossier"(a) {
+    const d = await lireDossierParLien(String(a["id"]), String(a["jeton"]));
+    return d === null ? null : { etat: d.etat, statut: d.statut, ibanSaisi: d.ibanSaisi };
+  },
+
+  /**
+   * L'identité de l'organisme que le contrat-cadre imprime, écrite par le service de
+   * la console (`setQualiopiConfig`, schémas compris). Le spec remet l'état d'avant.
+   */
+  async "configurer-organisme"(a, entree) {
+    const valeurs = a["valeurs"] as Record<string, string>;
+    const session = { userId: entree.session?.id ?? "", role: entree.session?.role ?? "" };
+    for (const [cle, valeur] of Object.entries(valeurs)) {
+      await setQualiopiConfig(cle as never, valeur as never, session as never);
+    }
+    return Object.keys(valeurs);
+  },
+
+  /** « Renvoyer le lien » (fiche du formateur) : F8, l'ancien lien révoqué. */
+  async "renvoyer-lien"(a) {
+    const fd = formulaire({ trainerId: String(a["trainerId"]), id: String(a["trainerId"]) });
+    try {
+      await renvoyerLienDossierFormAction(fd);
+      return { redirige: null };
+    } catch (e) {
+      // L'action termine par `redirect()` : Next le signale en levant `NEXT_REDIRECT`.
+      const digest = (e as { digest?: unknown }).digest;
+      if (typeof digest === "string" && digest.startsWith("NEXT_REDIRECT")) {
+        return { redirige: digest.split(";")[2] ?? "" };
+      }
+      throw e;
+    }
+  },
+
+  /** La fiche formateur modifiée en console (ici : son adresse e-mail). */
+  async "modifier-fiche"(a) {
+    return updateTrainerAction(a["champs"] as never);
+  },
+
+  /** Les anciennes portes d'activation (fiche formateur, coaching). */
+  async "porte-activation"(a) {
+    const id = String(a["trainerId"]);
+    return a["porte"] === "coaching"
+      ? setFormateurActifAction({ id, actif: true } as never)
+      : setTrainerActifAction({ id, actif: true } as never);
+  },
+
+  /** Une activation demandée par un traitement automatique (le worker, un cron). */
+  async "activer-par-le-systeme"(a) {
+    return changerActivationFormateur({
+      trainerId: String(a["trainerId"]),
+      actif: true,
+      motif: "Activation demandée par un traitement planifié (banc)",
+      acteur: { type: "systeme", source: "banc-formateurs" },
+    } as never);
+  },
+
+  /** Le code de signature, vérifié une seconde fois par le moteur commun. */
+  async "verifier-code"(a) {
+    return verifierCodeSignature({
+      documentGenereId: String(a["documentGenereId"]),
+      partie: "sous_traitant",
+      code: String(a["code"]),
+    });
+  },
+
+  /**
+   * Une relance F9 déjà EN FILE (retard BullMQ) : posée par le passage, pas encore
+   * partie — l'état que la relecture au départ doit rattraper.
+   */
+  async "enfiler-relance-dossier"(a) {
+    return enqueueEmail(
+      "formateur-dossier-relance",
+      String(a["email"]),
+      "fr",
+      { prenom: String(a["prenom"]), lien: String(a["lien"]), etape: 1 },
+      {
+        entityType: "Trainer",
+        entityId: String(a["trainerId"]),
+        delayMs: Number(a["delaiMs"]),
+        jobId: `banc-f9-${String(a["trainerId"])}`,
+      },
+    );
+  },
+
+  /** L'écran W-4 « Vérifier et contresigner », tel que la console le lit. */
+  async "ecran-w4"(a) {
+    return lireEcranVerifierContresigner(String(a["trainerId"]));
+  },
+
+  /** « Contresigner et ouvrir son espace » — l'action de la console. */
+  async "contresigner-w4"(a) {
+    return contresignerEtOuvrirEspaceAction(a["saisie"] as never);
+  },
+
   /** Le formulaire public de l'offre, en mode « formateur indépendant » (4 blocs). */
   async "deposer-candidature"(a) {
     const offre = await prisma.jobOffer.findUnique({

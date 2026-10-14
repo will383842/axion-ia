@@ -6,7 +6,9 @@
 // est remplacé, parce qu'il n'existe pas hors d'une requête :
 //   · `server-only` → module vide (le marqueur lève hors du bundler) ;
 //   · `@/auth`      → la session déclarée par le spec (`doublures/auth.mjs`) ;
-//   · `next/headers`, `next/cache` → une requête sans cookie, une invalidation vide.
+//   · `next/headers`, `next/cache` → une requête sans cookie, une invalidation vide ;
+//   · `@sentry/nextjs` → sa construction SERVEUR (celle que Next charge), relayée
+//     par `doublures/sentry.mjs`. Sans client initialisé, rien ne part.
 // Ni l'horloge ni le réseau ne passent par ici.
 import { register } from "node:module";
 
@@ -19,6 +21,7 @@ const DOUBLURES = {
   "next/cache": "${ICI}next-cache.mjs",
   "next/cache.js": "${ICI}next-cache.mjs",
   "@/auth": "${ICI}auth.mjs",
+  "@sentry/nextjs": "${ICI}sentry.mjs",
 };
 export async function resolve(s, c, n) {
   if (Object.prototype.hasOwnProperty.call(DOUBLURES, s)) {
