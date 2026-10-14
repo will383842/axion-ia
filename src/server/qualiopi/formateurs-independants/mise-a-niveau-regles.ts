@@ -32,7 +32,12 @@ export const ELEMENTS_MISE_A_NIVEAU = [
   { cle: "nda_liste", libelle: "Numéro de déclaration vu sur la liste publique" },
   { cle: "piece_nda", libelle: "Pièce « déclaration d'activité » validée" },
   { cle: "piece_kbis", libelle: "Pièce « avis de situation » validée" },
-  { cle: "vigilance", libelle: "Attestation URSSAF de moins de 6 mois, vérifiée" },
+  // Décision (8) du 14/10/2026 : sous le seuil, rien à reprendre (`vigilanceSatisfaite`).
+  {
+    cle: "vigilance",
+    libelle:
+      "Attestation URSSAF de moins de 6 mois, vérifiée (à partir de 5 000 € HT d'honoraires)",
+  },
   { cle: "cv", libelle: "CV validé, de moins de 24 mois" },
   { cle: "tva", libelle: "Régime de TVA" },
   { cle: "siret", libelle: "SIRET" },

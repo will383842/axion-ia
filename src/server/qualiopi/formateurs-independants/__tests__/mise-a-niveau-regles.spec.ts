@@ -68,6 +68,27 @@ describe("mise à niveau (L9b)", () => {
     ).toBe(true);
   });
 
+  it("décision (8) du 14/10/2026 — attestation URSSAF : sous le seuil, rien à reprendre ; au seuil ou illisible, à reprendre", () => {
+    // Même règle que pour un nouveau formateur (`vigilanceSatisfaite`) : 4 999,99 € HT
+    // cumulés → rien n'est demandé ; 5 000 € HT → l'attestation vérifiée est exigée.
+    expect(
+      elementsMiseANiveau({ ...ANCIEN, cumulHonorairesHtCents: 0 }, MAINTENANT).vigilance,
+    ).toBe(true);
+    expect(
+      elementsMiseANiveau({ ...ANCIEN, cumulHonorairesHtCents: 499_999 }, MAINTENANT).vigilance,
+    ).toBe(true);
+    expect(
+      elementsMiseANiveau({ ...ANCIEN, cumulHonorairesHtCents: 500_000 }, MAINTENANT).vigilance,
+    ).toBe(false);
+    expect(
+      elementsMiseANiveau({ ...ANCIEN, cumulHonorairesHtCents: null }, MAINTENANT).vigilance,
+    ).toBe(false);
+    // Et le libellé de l'écran le dit.
+    expect(ELEMENTS_MISE_A_NIVEAU.find((e) => e.cle === "vigilance")?.libelle).toMatch(
+      /à partir de 5 000 € HT/,
+    );
+  });
+
   it("éléments présents lus en base", () => {
     const e = elementsMiseANiveau(
       {
