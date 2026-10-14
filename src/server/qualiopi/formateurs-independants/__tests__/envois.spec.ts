@@ -24,6 +24,7 @@ vi.mock("@/lib/email/templates", () => ({
 }));
 
 import { GABARITS_FORMATEUR, apercu, envoyer, type EnvoiFormateur } from "../envois";
+import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
 import {
   GABARITS_FORMATEUR_INDEPENDANT,
   TEXTES_FORMATEUR,
@@ -41,9 +42,10 @@ function reglages(o: { interrupteur?: boolean; valides?: string[] }) {
         : [{ key: "formateurs.textes_valides", value: { actif: o.interrupteur } }];
     }
     if (p === "textes_valides.") {
+      // Lot 8A — une validation porte l'empreinte du texte actuel.
       return (o.valides ?? []).map((g) => ({
         key: `textes_valides.${g}`,
-        value: { valide: true },
+        value: { valide: true, empreinte: empreinteAttendue(`textes_valides.${g}`) },
       }));
     }
     return [];

@@ -85,6 +85,25 @@ const BOUTON =
 const CHOIX =
   "border-border text-mocha peer-checked:bg-terracotta peer-checked:border-terracotta peer-focus-visible:ring-terracotta flex min-h-12 items-center justify-center rounded-lg border px-3 text-center text-sm font-medium peer-checked:text-white peer-focus-visible:ring-2";
 
+/**
+ * Lot 8A — co-animation : le formateur qui n'anime pas la dernière journée ne remet pas
+ * le bilan. Il lit la même phrase que la console, sans aucun geste.
+ */
+export function BilanRemisParUnAutre({ message }: { readonly message: string }) {
+  return (
+    <section
+      id="fin-de-formation"
+      aria-labelledby="fin-de-formation-titre"
+      className="border-border scroll-mt-24 space-y-2 rounded-lg border p-4 sm:p-5"
+    >
+      <h2 id="fin-de-formation-titre" className="text-espresso font-serif text-xl">
+        Fin de formation
+      </h2>
+      <p className="text-mocha text-sm">{message}</p>
+    </section>
+  );
+}
+
 export function BilanFinFormation({
   sessionId,
   vue,

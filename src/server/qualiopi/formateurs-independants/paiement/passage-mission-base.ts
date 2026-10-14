@@ -14,7 +14,7 @@ import { journaliser } from "@/server/journal/journaliser";
 import { totaliser } from "../argent/calcul-mission";
 import { forfaitSelonLieu } from "../choix-formateur";
 import { lireAllumageBilan } from "../bilan-fin-formation/allumage";
-import { bilanExige } from "../bilan-fin-formation/regles";
+import { bilanExige, remetLeBilan } from "../bilan-fin-formation/regles";
 import { jourDeColonneDate, jourParis } from "../argent/dates";
 import { journeesDuFormateur } from "../argent/journees-du-formateur";
 import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
@@ -66,6 +66,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
       dateDebut: true,
       lieuType: true,
       modalite: true,
+      formateurPrincipalId: true,
       jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
       sessionFormateurs: { select: { trainerId: true, role: true } },
     },
@@ -147,7 +148,10 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     const bilanDuCandidat = (trainerId: string) => {
       const fiche = fiches.get(trainerId);
       if (fiche === undefined || derniereJournee === null) return {};
-      if (!bilanExige({ ...fiche, allumeLe, derniereJournee })) return {};
+      // Lot 8A — co-animation : seul le formateur de la dernière journée le remet ; les
+      // autres sont payés sur leurs feuilles seules, dernier mois compris.
+      const remet = remetLeBilan(trainerId, s);
+      if (!bilanExige({ ...fiche, remetLeBilan: remet, allumeLe, derniereJournee })) return {};
       return {
         bilanFinFormation: bilans.get(`${trainerId}|${s.id}`) ?? {
           termine: false,

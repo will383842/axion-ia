@@ -110,3 +110,56 @@ describe("lireCandidats et le bilan de fin de formation", () => {
     expect((await lireCandidats("2026-11-01"))[0]).not.toHaveProperty("bilanFinFormation");
   });
 });
+
+// Lot 8A — co-animation : seul le formateur de la DERNIÈRE journée porte le bilan.
+describe("lireCandidats et le co-formateur", () => {
+  const CO = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+  beforeEach(() => {
+    h.m.sessions.mockResolvedValue([
+      {
+        id: SESSION,
+        dateDebut: new Date("2026-11-04T08:00:00Z"),
+        lieuType: "sur_site",
+        modalite: "presentiel",
+        formateurPrincipalId: T,
+        jours: [
+          {
+            date: new Date("2026-11-04T00:00:00Z"),
+            heureDebut: "09:00",
+            heureFin: "17:00",
+            trainerId: CO,
+          },
+          { date: JOUR, heureDebut: "09:00", heureFin: "17:00", trainerId: null },
+        ],
+        sessionFormateurs: [
+          { trainerId: T, role: "principal" },
+          { trainerId: CO, role: "co_formateur" },
+        ],
+      },
+    ]);
+    h.m.signatures.mockResolvedValue([
+      { sessionId: SESSION, trainerId: T, date: JOUR, demiJournee: "matin" },
+      {
+        sessionId: SESSION,
+        trainerId: CO,
+        date: new Date("2026-11-04T00:00:00Z"),
+        demiJournee: "matin",
+      },
+    ]);
+    h.m.trainers.mockResolvedValue([
+      { id: T, statut: "sous_traitant", organismeSousTraitantId: null },
+      { id: CO, statut: "sous_traitant", organismeSousTraitantId: null },
+    ]);
+    h.m.bilans.mockResolvedValue([]);
+    allume("2026-11-01T08:00:00.000Z");
+  });
+
+  it("le principal (dernière journée) porte le bilan ; le co-formateur, payé sur ses feuilles, n'en porte aucun", async () => {
+    const candidats = await lireCandidats("2026-11-01");
+    const principal = candidats.find((c) => c.trainerId === T);
+    const co = candidats.find((c) => c.trainerId === CO);
+    expect(principal?.bilanFinFormation).toEqual({ termine: false, payerQuandMeme: false });
+    expect(co).toBeDefined();
+    expect(co).not.toHaveProperty("bilanFinFormation");
+  });
+});

@@ -124,13 +124,66 @@ export function etatDuBilan(e: {
 export function bilanExige(e: {
   readonly statut: string;
   readonly organismeSousTraitantId: string | null;
+  /** Lot 8A — ce formateur anime-t-il la dernière journée (`remetLeBilan`) ? */
+  readonly remetLeBilan: boolean;
   /** Jour (Paris) d'allumage de `formateurs.bilan_fin_formation` ; `null` = éteint. */
   readonly allumeLe: JourCivil | null;
   readonly derniereJournee: JourCivil;
 }): boolean {
   if (e.allumeLe === null) return false;
   if (e.statut !== "sous_traitant" || e.organismeSousTraitantId !== null) return false;
+  if (!e.remetLeBilan) return false;
   return e.derniereJournee >= e.allumeLe;
+}
+
+/**
+ * Lot 8A (décision du dirigeant) — sur une session à plusieurs formateurs, SEUL le
+ * formateur qui anime la DERNIÈRE journée remet le bilan ; les autres sont payés sur leurs
+ * feuilles de présence seules (dernier mois compris).
+ *
+ * La dernière journée est la plus tardive (date, puis heure de fin). Son formateur est
+ * celui qui y est désigné (`SessionJour.trainerId`), sinon le formateur principal de la
+ * session (`formateurPrincipalId`, sinon l'affectation de rôle « principal »). Sans aucun
+ * de ces repères, personne n'est écarté : chacun garde le bilan, comme avant.
+ */
+export function remetLeBilan(
+  trainerId: string,
+  s: {
+    readonly formateurPrincipalId?: string | null;
+    readonly sessionFormateurs?: ReadonlyArray<{
+      readonly trainerId: string;
+      readonly role?: string;
+    }>;
+    readonly jours: ReadonlyArray<{
+      readonly date: Date;
+      readonly heureFin: string;
+      readonly trainerId: string | null;
+    }>;
+  },
+): boolean {
+  // Les journées qui finissent le plus tard (date, puis heure de fin). Plusieurs à égalité
+  // (groupes en parallèle) : chacun de leurs formateurs remet le bilan — jamais un choix
+  // qui dépendrait de l'ordre des lignes en base.
+  let fin: { jour: JourCivil; heureFin: string } | null = null;
+  let dernieres: Array<string | null> = [];
+  for (const j of s.jours) {
+    const jour = jourDeColonneDate(j.date);
+    if (fin === null || jour > fin.jour || (jour === fin.jour && j.heureFin > fin.heureFin)) {
+      fin = { jour, heureFin: j.heureFin };
+      dernieres = [j.trainerId];
+    } else if (jour === fin.jour && j.heureFin === fin.heureFin) {
+      dernieres.push(j.trainerId);
+    }
+  }
+  if (fin === null) return true;
+  const principal =
+    s.formateurPrincipalId ??
+    s.sessionFormateurs?.find((sf) => sf.role === "principal")?.trainerId ??
+    null;
+  const animateurs = dernieres.map((t) => t ?? principal);
+  // Un animateur inconnu : personne n'est écarté (comme avant).
+  if (animateurs.some((a) => a === null)) return true;
+  return animateurs.includes(trainerId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -324,3 +324,67 @@ describe("la clé d'une relance", () => {
     expect(cleRelance("x", "y".repeat(300), "o", "j3")).toHaveLength(200);
   });
 });
+
+// Lot 8A (décision du dirigeant, #1511) — une réponse du formateur ARRÊTE ses relances en
+// cours (F18 J+7, F45 J+21 et les autres campagnes formateurs du registre). Seules les
+// campagnes qui portent l'option l'appliquent ; les autres sont inchangées.
+describe("une réponse du formateur arrête ses relances", () => {
+  const ORIGINE = new Date(MAINTENANT.getTime() - 4 * JOUR);
+  function avecReponses(
+    registre: DeclarationCampagne[],
+    reponses: ReadonlyMap<string, readonly Date[]> | null,
+  ): Partial<DependancesPassage> {
+    return { ...deps(registre), reponsesFormateurs: async () => reponses };
+  }
+
+  it("réponse humaine APRÈS l'origine : la relance ne part pas (motif reponse-humaine)", async () => {
+    const reponses = new Map([["t1", [new Date(ORIGINE.getTime() + JOUR)]]]);
+    const b = await passerCampagnes(
+      MAINTENANT,
+      avecReponses(
+        [campagne("dossier", [faits(1), faits(2)], { arreteeParReponseFormateur: true })],
+        reponses,
+      ),
+    );
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(envoyer.mock.calls[0]?.[0]).toMatchObject({ entityId: "t2" });
+    expect(b.ecartes["reponse-humaine"]).toBe(1);
+  });
+
+  it("réponse AVANT l'origine (ancienne conversation) : la relance part", async () => {
+    const reponses = new Map([["t1", [new Date(ORIGINE.getTime() - JOUR)]]]);
+    await passerCampagnes(
+      MAINTENANT,
+      avecReponses(
+        [campagne("dossier", [faits(1)], { arreteeParReponseFormateur: true })],
+        reponses,
+      ),
+    );
+    expect(envoyer).toHaveBeenCalledTimes(1);
+  });
+
+  it("campagne SANS l'option : une réponse ne change rien, et les réponses ne sont pas lues", async () => {
+    const lire = vi.fn(async () => new Map([["t1", [MAINTENANT]]]));
+    await passerCampagnes(MAINTENANT, {
+      ...deps([campagne("dossier", [faits(1)])]),
+      reponsesFormateurs: lire,
+    });
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(lire).not.toHaveBeenCalled();
+  });
+
+  it("réponses illisibles : on ne relance pas (inconnu = pas de relance)", async () => {
+    const b = await passerCampagnes(
+      MAINTENANT,
+      avecReponses([campagne("dossier", [faits(1)], { arreteeParReponseFormateur: true })], null),
+    );
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(b.ecartes["reponses-illisibles"]).toBe(1);
+  });
+
+  it("toutes les campagnes du registre sur une fiche formateur portent l'option ; S1 (candidature) garde sa propre règle", () => {
+    for (const c of REGISTRE_CAMPAGNES) {
+      expect(c.arreteeParReponseFormateur === true).toBe(c.entityType === "Trainer");
+    }
+  });
+});

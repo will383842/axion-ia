@@ -35,6 +35,7 @@ import {
   ANCRE_BILAN,
   bilanAAlerter,
   bilanExige,
+  remetLeBilan,
   derniereJourneeDe,
   derniereJourneePassee,
   faitsRelanceBilan,
@@ -78,7 +79,7 @@ export async function lireLignesBilan(maintenant: Date): Promise<LigneBilanLue[]
       numero: true,
       titreSession: true,
       formateurPrincipalId: true,
-      sessionFormateurs: { select: { trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true, role: true } },
       jours: { select: { date: true, heureFin: true, trainerId: true } },
     },
   });
@@ -105,7 +106,10 @@ export async function lireLignesBilan(maintenant: Date): Promise<LigneBilanLue[]
     fs.flatMap((trainerId) => {
       const t = parId.get(trainerId);
       if (t === undefined) return [];
-      if (!bilanExige({ ...t, allumeLe, derniereJournee: derniere })) return [];
+      const remet = remetLeBilan(trainerId, s);
+      if (!bilanExige({ ...t, remetLeBilan: remet, allumeLe, derniereJournee: derniere })) {
+        return [];
+      }
       return [{ s, derniere, t }];
     }),
   );

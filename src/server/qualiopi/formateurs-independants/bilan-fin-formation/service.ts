@@ -30,13 +30,17 @@ import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-servic
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 import { interrupteurAllume } from "../interrupteur-allume";
-import { LIBELLE_MOTIF_FORMATION_INCOMPLETE } from "../paiement/formation-complete";
+import {
+  LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE,
+  LIBELLE_MOTIF_FORMATION_INCOMPLETE,
+} from "../paiement/formation-complete";
 import { lireAllumageBilan } from "./allumage";
 import {
   bilanExige,
   derniereJourneeDe,
   derniereJourneePassee,
   etatDuBilan,
+  remetLeBilan,
   stagiairesAEvaluer,
   type EtatDuBilan,
 } from "./regles";
@@ -78,7 +82,7 @@ async function lireSession(sessionId: string) {
       titreSession: true,
       statut: true,
       formateurPrincipalId: true,
-      sessionFormateurs: { select: { trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true, role: true } },
       jours: { select: { date: true, heureFin: true, trainerId: true } },
       formation: { select: { objectifsPedagogiques: true } },
     },
@@ -88,7 +92,13 @@ async function lireSession(sessionId: string) {
 type SessionLue = NonNullable<Awaited<ReturnType<typeof lireSession>>>;
 
 type Garde =
-  | { readonly ok: true; readonly session: SessionLue; readonly objectifs: string[] }
+  | {
+      readonly ok: true;
+      readonly session: SessionLue;
+      readonly objectifs: string[];
+      /** Lot 8A — anime-t-il la dernière journée ? Sinon, aucune écriture du bilan. */
+      readonly remet: boolean;
+    }
   | { readonly ok: false; readonly issue: IssueBilan };
 
 /** La garde de TOUTE lecture et écriture du formateur. */
@@ -114,7 +124,12 @@ async function garder(sessionId: string, trainerId: string, maintenant: Date): P
   }
   if (!derniereJourneePassee(session.jours, maintenant)) return { ok: false, issue: "pas_encore" };
   const objectifs = normaliserObjectifsPedagogiques(session.formation?.objectifsPedagogiques);
-  return { ok: true, session, objectifs: objectifs.length > 0 ? objectifs : [OBJECTIF_PAR_DEFAUT] };
+  return {
+    ok: true,
+    session,
+    objectifs: objectifs.length > 0 ? objectifs : [OBJECTIF_PAR_DEFAUT],
+    remet: remetLeBilan(trainerId, session),
+  };
 }
 
 /** Les inscrits de CETTE session (stagiaires effacés exclus), avec présence et finale. */
@@ -194,16 +209,25 @@ export interface VueBilan {
   readonly motifPaiement: string | null;
 }
 
+/** Lot 8A — le co-formateur qui n'anime pas la dernière journée : une phrase, aucun geste. */
+export interface VueBilanRemisParUnAutre {
+  readonly remisParUnAutre: true;
+  readonly message: string;
+}
+
 /** `null` : aucun bloc (interrupteur éteint, pas son formateur, pas encore fini…). */
 export async function lireBilanFormateur(
   sessionId: string,
   trainerId: string,
   maintenant: Date,
-): Promise<VueBilan | null> {
+): Promise<VueBilan | VueBilanRemisParUnAutre | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
   try {
     const g = await garder(sessionId, trainerId, maintenant);
     if (!g.ok) return null;
+    // Lot 8A — un co-formateur qui n'anime pas la dernière journée lit la même phrase que
+    // la console : le bilan n'est pas le sien, il est payé sur ses feuilles seules.
+    if (!g.remet) return { remisParUnAutre: true, message: LIBELLE_BILAN_REMIS_PAR_LA_DERNIERE };
     const [inscrits, bilan, allumeLe] = await Promise.all([
       lireInscrits(sessionId),
       prisma.bilanFinFormation.findUnique({
@@ -226,6 +250,7 @@ export async function lireBilanFormateur(
       bilanExige({
         statut: "sous_traitant",
         organismeSousTraitantId: null,
+        remetLeBilan: true,
         allumeLe,
         derniereJournee: derniere.jour,
       });
@@ -276,6 +301,8 @@ export async function enregistrerEvaluationFinaleFormateur(i: {
 }): Promise<IssueBilan> {
   const g = await garder(i.sessionId, i.trainerId, i.maintenant);
   if (!g.ok) return g.issue;
+  // Lot 8A — co-animation : seul le formateur de la dernière journée remet le bilan.
+  if (!g.remet) return "non_concerne";
   // Le stagiaire doit être inscrit, actif et présent DANS CETTE SESSION.
   const inscrits = await lireInscrits(i.sessionId);
   if (!inscrits.some((x) => x.enrollmentId === i.enrollmentId)) return "stagiaire_inconnu";
@@ -342,6 +369,8 @@ export async function enregistrerAvisFormateur(i: {
 }): Promise<IssueBilan> {
   const g = await garder(i.sessionId, i.trainerId, i.maintenant);
   if (!g.ok) return g.issue;
+  // Lot 8A — co-animation : seul le formateur de la dernière journée remet le bilan.
+  if (!g.remet) return "non_concerne";
   const commentaire = i.commentaire.trim();
   if (
     commentaire.length < AVIS_MIN ||
@@ -392,6 +421,8 @@ export async function terminerBilanFormateur(i: {
 }): Promise<IssueBilan> {
   const g = await garder(i.sessionId, i.trainerId, i.maintenant);
   if (!g.ok) return g.issue;
+  // Lot 8A — co-animation : seul le formateur de la dernière journée remet le bilan.
+  if (!g.remet) return "non_concerne";
   const { id: bilanId } = await ligneBilan(i.sessionId, i.trainerId);
   const inscrits = await lireInscrits(i.sessionId);
   return prisma.$transaction(async (tx) => {
@@ -462,7 +493,10 @@ export async function payerQuandMemeBilan(i: {
     trainer === null ||
     trainer.statut !== "sous_traitant" ||
     trainer.organismeSousTraitantId !== null ||
-    STATUTS_SANS_BILAN.has(session.statut)
+    STATUTS_SANS_BILAN.has(session.statut) ||
+    // Lot 8A — le bilan d'un co-formateur qui n'anime pas la dernière journée n'est pas
+    // attendu : rien à lever.
+    !remetLeBilan(i.trainerId, session)
   ) {
     return "non_concerne";
   }

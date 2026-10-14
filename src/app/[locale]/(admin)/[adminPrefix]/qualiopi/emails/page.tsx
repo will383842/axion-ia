@@ -31,6 +31,7 @@ import {
   libelleTemplateEmail,
   reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
+import { lireReponsesSurRelancesGarees } from "@/server/relances/reponse-relance-garee";
 
 /**
  * Natures d'email réglables. On expose les deux listes plutôt que la seule
@@ -101,6 +102,9 @@ export default async function EmailsAValiderPage({
         payload: true,
         attachments: true,
         createdAt: true,
+        entityType: true,
+        entityId: true,
+        jobId: true,
         client: { select: { raisonSociale: true } },
       },
     }),
@@ -134,6 +138,9 @@ export default async function EmailsAValiderPage({
       select: { id: true, raisonSociale: true },
     }),
   ]);
+
+  // Lot 8A — une relance formateur garée ici peut encore partir après sa réponse : on le dit.
+  const reponduLe = await lireReponsesSurRelancesGarees(enAttente);
 
   const carte =
     "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
@@ -188,7 +195,17 @@ export default async function EmailsAValiderPage({
                 sujet={e.sujet}
                 clientNom={e.client?.raisonSociale ?? null}
                 creeLe={dateFr(e.createdAt)}
-                apercu={construireApercu(e.payload)}
+                apercu={[
+                  ...(reponduLe.has(e.id)
+                    ? [
+                        {
+                          label: "Attention",
+                          valeur: `le formateur a répondu le ${dateFr(reponduLe.get(e.id)!)}, après la mise en attente de cette relance`,
+                        },
+                      ]
+                    : []),
+                  ...construireApercu(e.payload),
+                ]}
                 nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
                 approuverAction={approuverEmailAction}
                 refuserAction={refuserEmailAction}

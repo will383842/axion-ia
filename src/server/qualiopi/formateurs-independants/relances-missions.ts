@@ -410,6 +410,9 @@ export function faitsLettre(
     personneId: l.trainerId,
     origineId: l.documentId,
     destinataire: l.email,
+    // L'envoi de départ des deux relances est la lettre F26, même quand l'échéance se
+    // compte depuis J-3 : une réponse du formateur après F26 les arrête (lot 8A).
+    depart: l.envoyeeAt,
     etat: {
       origine,
       envois: quelle === "1re" ? l.relances1re : l.relancesJ3,
