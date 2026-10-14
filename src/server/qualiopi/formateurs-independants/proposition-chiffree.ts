@@ -5,8 +5,12 @@
  * Le montant vient des conditions FIGÉES sur la mission (recopiées du choix,
  * `conditions-figees.ts`) et des journées de la session, calculé par la même
  * règle que la lettre (`honorairesProposition` → `honorairesLettre`). Une
- * mission sans tarif figé (proposée avant les cartes, ou à un salarié) n'a pas
- * de montant : `null`, et les écrans gardent leur forme d'avant.
+ * mission sans tarif OU sans régime de TVA figé (proposée avant les cartes, ou
+ * à un salarié) n'a pas de montant : `null`, et les écrans gardent leur forme
+ * d'avant — le paiement ne verserait rien, la proposition n'annonce rien.
+ *
+ * 🔑 En co-animation, seules les journées du FORMATEUR comptent
+ * (`journeesDuFormateur`, la règle du paiement) : jamais celles d'un autre.
  *
  * Module NEUTRE (Prisma seulement) : le worker le charge. Ne lève jamais.
  */
@@ -16,6 +20,7 @@ import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 
+import { journeesDuFormateur } from "./argent/journees-du-formateur";
 import { eurosCourts, honorairesProposition, ligneJour, sessionADistance } from "./choix-formateur";
 import { interrupteurAllume } from "./interrupteur-allume";
 import { lireDrapeauEnvoi } from "./interrupteurs";
@@ -46,8 +51,10 @@ export async function lirePropositionChiffree(
     const m = await prisma.missionFormateur.findUnique({
       where: { id: missionId },
       select: {
+        trainerId: true,
         tarifHtCents: true,
         forfaitDeplacementParJourHtCents: true,
+        regimeTvaFige: true,
         session: {
           select: {
             titreSession: true,
@@ -59,14 +66,15 @@ export async function lirePropositionChiffree(
             lieuVille: true,
             lieuSalle: true,
             lieuVisioUrl: true,
-            jours: { select: { date: true, heureDebut: true, heureFin: true } },
+            sessionFormateurs: { select: { trainerId: true } },
+            jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
           },
         },
       },
     });
-    if (m === null || m.tarifHtCents === null) return null;
+    if (m === null || m.tarifHtCents === null || m.regimeTvaFige === null) return null;
     const s = m.session;
-    const jours = [...s.jours]
+    const jours = journeesDuFormateur(s.jours, m.trainerId, s.sessionFormateurs)
       .map((j) => ({ date: dateCivile(j.date), heureDebut: j.heureDebut, heureFin: j.heureFin }))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
     const distanciel = sessionADistance(s);

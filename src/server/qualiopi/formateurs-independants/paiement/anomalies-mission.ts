@@ -14,7 +14,12 @@ export type CodeAnomalieMission =
   /** Le relevé diffère de la part PRÉVUE du mois (demi-journées ou déplacement). */
   | "ecart_prevu"
   /** Des demi-journées ont été signées APRÈS l'écriture du relevé : non payées. */
-  | "complement_signe";
+  | "complement_signe"
+  /**
+   * Le relevé diffère de la part du mois ANNONCÉE par la lettre signée (étape 4).
+   * Constatée à la lecture, jamais conservée : la lettre fait foi.
+   */
+  | "ecart_lettre";
 
 export interface AnomalieMission {
   readonly code: CodeAnomalieMission;
@@ -24,7 +29,7 @@ export interface AnomalieMission {
   readonly constateLe: string;
 }
 
-const CODES: ReadonlySet<string> = new Set(["ecart_prevu", "complement_signe"]);
+const CODES: ReadonlySet<string> = new Set(["ecart_prevu", "complement_signe", "ecart_lettre"]);
 
 /** Lecture tolérante de la colonne JSON : ce qui n'a pas la forme attendue est ignoré. */
 export function lireAnomaliesMission(json: unknown): AnomalieMission[] {
@@ -52,6 +57,49 @@ export function ajouterAnomalie(
   return [...existantes, nouvelle];
 }
 
+/**
+ * La part d'un mois (`AAAA-MM`) annoncée par une lettre de mission, lue dans ses
+ * métadonnées (`annonceLettre.parMois`, rangé à l'émission). `null` : lettre
+ * d'avant l'étape 4, mois absent, ou forme inattendue — jamais deviné.
+ */
+export function annonceDuMois(metadata: unknown, mois: string): number | null {
+  if (metadata === null || typeof metadata !== "object" || Array.isArray(metadata)) return null;
+  const a = (metadata as Record<string, unknown>).annonceLettre;
+  if (a === null || typeof a !== "object" || Array.isArray(a)) return null;
+  const parMois = (a as Record<string, unknown>).parMois;
+  if (parMois === null || typeof parMois !== "object" || Array.isArray(parMois)) return null;
+  const v = (parMois as Record<string, unknown>)[mois];
+  return typeof v === "number" && Number.isInteger(v) && v >= 0 ? v : null;
+}
+
+/**
+ * Les anomalies d'un relevé de mission FACE À LA LETTRE SIGNÉE (étape 4) : ce
+ * qui a été annoncé au formateur est la référence de l'écart.
+ *  - sans annonce lisible : les anomalies conservées, inchangées ;
+ *  - avec : l'écart au prévu recalculé (`ecart_prevu`) cède la place à la
+ *    comparaison avec la lettre — `ecart_lettre` si le HT payé (animation et
+ *    déplacement) diffère de la part annoncée du mois.
+ * Rien n'est écrit : les anomalies conservées restent en base telles quelles.
+ */
+export function anomaliesFaceALaLettre(
+  conservees: ReadonlyArray<AnomalieMission>,
+  annonceHtCents: number | null,
+  payeHtCents: number,
+  constateLe: string,
+): AnomalieMission[] {
+  if (annonceHtCents === null) return [...conservees];
+  const autres = conservees.filter((a) => a.code !== "ecart_prevu" && a.code !== "ecart_lettre");
+  if (annonceHtCents === payeHtCents) return autres;
+  return [
+    ...autres,
+    {
+      code: "ecart_lettre",
+      detail: `annoncé ${annonceHtCents} c HT par la lettre signée, calculé ${payeHtCents} c HT`,
+      constateLe,
+    },
+  ];
+}
+
 /** Pourquoi, et quoi faire — toujours un geste (W-9 : aucune anomalie sans bouton). */
 export const LIBELLE_ANOMALIE_MISSION: Readonly<
   Record<CodeAnomalieMission, { readonly pourquoi: string; readonly quoiFaire: string }>
@@ -60,6 +108,11 @@ export const LIBELLE_ANOMALIE_MISSION: Readonly<
     pourquoi: "Le relevé diffère de ce qui était prévu pour ce mois.",
     quoiFaire:
       "Vérifiez les journées et le forfait de la mission, puis validez le relevé s'il est juste.",
+  },
+  ecart_lettre: {
+    pourquoi: "Le relevé diffère de ce que la lettre de mission signée annonçait pour ce mois.",
+    quoiFaire:
+      "Vérifiez les journées signées face à la lettre ; si les dates ont changé, rectifiez la lettre, puis validez le relevé s'il est juste.",
   },
   complement_signe: {
     pourquoi:

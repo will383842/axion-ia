@@ -9,9 +9,12 @@
  */
 
 import {
+  annonceDuMois,
+  anomaliesFaceALaLettre,
   lireAnomaliesMission,
   type AnomalieMission,
 } from "@/server/qualiopi/formateurs-independants/paiement/anomalies-mission";
+import { jourParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
 import { ISSUE_DESACCORD_NON_RETENU } from "@/server/qualiopi/formateurs-independants/paiement/desaccord-regle";
 import { prisma } from "@/lib/prisma";
 import { echeanceEffective, joursDeRetard } from "./echeance";
@@ -141,6 +144,71 @@ export interface ReleveDetail extends ReleveListe {
 }
 
 /**
+ * Étape 4 — les anomalies d'un relevé de mission, l'écart se comparant à la
+ * part du mois ANNONCÉE par la lettre signée quand elle existe (rangée à son
+ * émission, `annonceLettre`). Lecture seule ; en cas d'échec, les anomalies
+ * conservées, telles quelles.
+ */
+async function anomaliesFaceALaLettreSignee(
+  r: {
+    id: string;
+    trainerId: string;
+    sessionId: string | null;
+    origine: string;
+    statut: string;
+    avoirDeId: string | null;
+    periodeYear: number;
+    periodeMonth: number;
+    anomaliesMission: unknown;
+  },
+  lignes: ReadonlyArray<{
+    statementId: string | null;
+    statut: string;
+    objet: string | null;
+    montantHtCents: number;
+  }>,
+  now: Date,
+): Promise<AnomalieMission[]> {
+  const conservees = lireAnomaliesMission(r.anomaliesMission);
+  if (
+    r.origine !== "passage_mission" ||
+    r.sessionId === null ||
+    r.avoirDeId !== null ||
+    r.statut === "annule"
+  ) {
+    return conservees;
+  }
+  try {
+    const lettre = await prisma.documentGenere.findFirst({
+      where: {
+        type: "lettre_mission",
+        sessionId: r.sessionId,
+        trainerId: r.trainerId,
+        annuleeAt: null,
+        signatures: { some: { revokedAt: null, partie: "formateur" } },
+      },
+      orderBy: { createdAt: "desc" },
+      select: { metadata: true },
+    });
+    const mois = `${r.periodeYear}-${String(r.periodeMonth).padStart(2, "0")}`;
+    const annonce = lettre === null ? null : annonceDuMois(lettre.metadata, mois);
+    // Ce que la lettre annonce : l'animation et le déplacement du mois (jamais
+    // une indemnité d'annulation ni un ajustement rangés sur le même relevé).
+    const paye = lignes
+      .filter(
+        (l) =>
+          l.statementId === r.id &&
+          l.statut !== "annule" &&
+          (l.objet === "animation" || l.objet === "deplacement"),
+      )
+      .reduce((s, l) => s + l.montantHtCents, 0);
+    return anomaliesFaceALaLettre(conservees, annonce, paye, jourParis(now));
+  } catch {
+    return conservees;
+  }
+}
+
+/**
  * Un relevé et TOUTES les lignes du formateur sur la période — pas seulement
  * celles qui lui sont rattachées. Une ligne `previsionnel` ou `analytique` ne
  * pèse pas sur la facture mais explique le mois : la cacher rendrait le total
@@ -180,6 +248,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         contestationCloseMotif: true,
         avoirDeId: true,
         remplaceId: true,
+        sessionId: true,
         anomaliesMission: true,
         avoirs: { where: { statut: { not: "annule" } }, select: { id: true, numeroFacture: true } },
         remplacements: { select: { id: true, numeroFacture: true, statut: true } },
@@ -205,9 +274,11 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         caBaseCents: true,
         motif: true,
         statementId: true,
+        objet: true,
       },
       orderBy: { montantHtCents: "desc" },
     });
+    const anomaliesMission = await anomaliesFaceALaLettreSignee(r, lignes, now);
 
     return {
       id: r.id,
@@ -246,7 +317,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
       remplaceId: r.remplaceId,
       avoirs: r.avoirs,
       remplacements: r.remplacements,
-      anomaliesMission: lireAnomaliesMission(r.anomaliesMission),
+      anomaliesMission,
       nbLignes: lignes.length,
       lignes: lignes.map((l) => ({
         id: l.id,

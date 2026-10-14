@@ -303,3 +303,100 @@ describe("le run mensuel après la bascule", () => {
     expect(r[0]!.affectations).toEqual([]);
   });
 });
+
+describe("planifierPassage — lot G2 : le bilan de fin de formation", () => {
+  it("sans exigence (interrupteur éteint) : rien ne change, le mois signé est écrit", () => {
+    const p = planifierPassage([candidat()], "2026-12-01");
+    expect(p.aEcrire).toHaveLength(1);
+    expect(p.enAttente).toEqual([]);
+  });
+
+  it("bilan exigé et non terminé : aucun relevé, en attente « bilan » ; aucun montant ne bouge", () => {
+    const p = planifierPassage(
+      [candidat({ bilanFinFormation: { termine: false, payerQuandMeme: false } })],
+      "2026-12-01",
+    );
+    expect(p.aEcrire).toEqual([]);
+    expect(p.enAttente).toEqual([
+      {
+        trainerId: "t1",
+        sessionId: "s1",
+        mois: "2026-12",
+        raison: "bilan_fin_formation_manquant",
+        manquantes: 0,
+      },
+    ]);
+  });
+
+  it("bilan terminé ou « payer quand même » : le même relevé, au même montant", () => {
+    const temoin = planifierPassage([candidat()], "2026-12-01").aEcrire;
+    for (const bilan of [
+      { termine: true, payerQuandMeme: false },
+      { termine: false, payerQuandMeme: true },
+    ]) {
+      const p = planifierPassage([candidat({ bilanFinFormation: bilan })], "2026-12-01");
+      expect(p.aEcrire).toEqual(temoin);
+    }
+  });
+
+  // Décision de Will : sur une mission payée sur plusieurs mois, SEUL le dernier mois (celui
+  // de la dernière journée prévue du formateur) attend le bilan ; les mois précédents se
+  // paient sur les feuilles contresignées seules.
+  const TROIS_MOIS = ["2027-01-25", "2027-02-08", "2027-03-08"];
+  const missionTroisMois = (over: Partial<CandidatMission> = {}) =>
+    candidat({
+      premiereJournee: TROIS_MOIS[0]!,
+      contresignatures: TROIS_MOIS.map(SIG),
+      journeesPrevues: TROIS_MOIS.map(JOUR),
+      ...over,
+    });
+
+  it("mission sur trois mois, bilan non terminé : mois 1 et 2 écrits, seul le dernier attend", () => {
+    const p = planifierPassage(
+      [missionTroisMois({ bilanFinFormation: { termine: false, payerQuandMeme: false } })],
+      "2027-01-01",
+    );
+    expect(p.aEcrire.map((m) => m.releve.mois)).toEqual(["2027-01", "2027-02"]);
+    expect(p.enAttente).toEqual([
+      {
+        trainerId: "t1",
+        sessionId: "s1",
+        mois: "2027-03",
+        raison: "bilan_fin_formation_manquant",
+        manquantes: 0,
+      },
+    ]);
+    // Les mois payés sans bilan ont exactement le montant de la règle des feuilles seule.
+    const temoin = planifierPassage([missionTroisMois()], "2027-01-01").aEcrire;
+    expect(p.aEcrire).toEqual(temoin.slice(0, 2));
+  });
+
+  it("mois signé AVANT le dernier mois prévu (la suite pas encore faite) : payable sans bilan", () => {
+    const p = planifierPassage(
+      [
+        missionTroisMois({
+          contresignatures: [SIG(TROIS_MOIS[0]!)],
+          bilanFinFormation: { termine: false, payerQuandMeme: false },
+        }),
+      ],
+      "2027-01-01",
+      undefined,
+      "2027-01-31",
+    );
+    expect(p.aEcrire.map((m) => m.releve.mois)).toEqual(["2027-01"]);
+    expect(p.enAttente).toEqual([]);
+  });
+
+  it("mission sur trois mois, bilan terminé ou « payer quand même » : le dernier mois est écrit au même montant", () => {
+    const temoin = planifierPassage([missionTroisMois()], "2027-01-01").aEcrire;
+    expect(temoin.map((m) => m.releve.mois)).toEqual(["2027-01", "2027-02", "2027-03"]);
+    for (const bilan of [
+      { termine: true, payerQuandMeme: false },
+      { termine: false, payerQuandMeme: true },
+    ]) {
+      const p = planifierPassage([missionTroisMois({ bilanFinFormation: bilan })], "2027-01-01");
+      expect(p.aEcrire).toEqual(temoin);
+      expect(p.enAttente).toEqual([]);
+    }
+  });
+});

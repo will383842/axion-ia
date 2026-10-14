@@ -24,6 +24,7 @@ import {
 } from "@/server/qualiopi/formateurs-independants/pieces-relances";
 import { CAMPAGNE_RELANCE_DOSSIER } from "@/server/qualiopi/formateurs-independants/relance-dossier";
 import { CAMPAGNE_S1 } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
+import { CAMPAGNE_BILAN } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/relance";
 import {
   CAMPAGNE_CONTRAT,
   CAMPAGNE_LETTRE_1RE,
@@ -116,4 +117,7 @@ export const REGISTRE_CAMPAGNES: readonly DeclarationCampagne[] = [
   CAMPAGNE_LETTRE_1RE as DeclarationCampagne,
   CAMPAGNE_LETTRE_J3 as DeclarationCampagne,
   CAMPAGNE_NDA as DeclarationCampagne,
+  // Lot G2 — F61 : le bilan de fin de formation, J+2 et J+7 après la dernière journée,
+  // derrière `formateurs.bilan_fin_formation` (lu par la campagne elle-même).
+  CAMPAGNE_BILAN as DeclarationCampagne,
 ];

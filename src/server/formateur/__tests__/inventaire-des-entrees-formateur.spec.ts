@@ -29,6 +29,8 @@ const INVENTAIRE = [
   "src/server/actions/formateur/coaching.actions.ts",
   // Lot D2 (M10) — « Signaler un désaccord » : session du cookie, propriété du relevé revérifiée.
   "src/server/actions/formateur/desaccord.actions.ts",
+  // Lot G2 — bilan de fin de formation : session du cookie, animation et stagiaire revérifiés.
+  "src/server/actions/formateur/bilan-fin-formation.actions.ts",
   // Lot L11h — « Je ne peux plus assurer cette mission » (appartenance revérifiée).
   "src/server/actions/qualiopi/choix-formateur.ts",
   "src/server/actions/qualiopi/contrat-travail-signature.ts",

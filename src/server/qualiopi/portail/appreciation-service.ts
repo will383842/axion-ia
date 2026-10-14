@@ -87,7 +87,11 @@ export interface StatsAppreciations {
  * - Valide note ∈ [1..5] si fournie.
  * - Stub-aware : lève si DATABASE_URL contient "stub.invalid".
  */
-export async function creerAppreciation(input: CreerAppreciationInput): Promise<{ id: string }> {
+export async function creerAppreciation(
+  input: CreerAppreciationInput,
+  /** Lot G2 : la transaction de l'appelant (avis du formateur rattaché à son bilan). */
+  client: Pick<typeof prisma, "appreciation"> = prisma,
+): Promise<{ id: string }> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("creerAppreciation: stub DB — non disponible au build");
   }
@@ -99,7 +103,7 @@ export async function creerAppreciation(input: CreerAppreciationInput): Promise<
     throw new Error(`note invalide : ${input.note} — doit être un entier entre 1 et 5`);
   }
 
-  const created = await prisma.appreciation.create({
+  const created = await client.appreciation.create({
     data: {
       source: input.source,
       ...(input.enrollmentId !== undefined ? { enrollmentId: input.enrollmentId } : {}),

@@ -6060,6 +6060,8 @@ model TrainingSession {
   sessionFormateurs          SessionFormateur[]
   /// Sollicitations (journal des propositions de mission) — 2026-09-03.
   missionsFormateur          MissionFormateur[]
+  /// Lot G2 — les bilans de fin de formation de ses formateurs indépendants.
+  bilansFinFormation         BilanFinFormation[]
   /// Schéma n° 1 formateurs — formateurs choisis, par rang.
   choixFormateurs            ChoixFormateurSession[]
   /// Schéma n° 2 formateurs — relevés PAR MISSION (paiement par mission, éteint).
@@ -6330,6 +6332,8 @@ model Trainer {
   /// Appreciations dont ce formateur est l'auteur (off.30, qualite `formateur`).
   appreciations               Appreciation[]
   missionsFormateur           MissionFormateur[]
+  /// Lot G2 — ses bilans de fin de formation (un par session animée).
+  bilansFinFormation          BilanFinFormation[]
   /// Affectations RETIRÉES — « il a un jour été le formateur de cette session » (D6).
   affectationsRetirees        SessionFormateurRetire[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
@@ -8941,6 +8945,8 @@ model Appreciation {
   commentaire       String?            @db.Text
   dateAppreciation  DateTime           @map("date_appreciation")
   createdAt         DateTime           @default(now()) @map("created_at")
+  /// Lot G2 — l'avis donné dans le bilan de fin de formation d'un formateur.
+  bilanFinFormation BilanFinFormation?
 
   @@index([source])
   @@index([dateAppreciation])
@@ -8948,6 +8954,35 @@ model Appreciation {
   @@index([coachingSessionId])
   @@index([trainerId])
   @@map("appreciations")
+}
+
+/// Lot G2 — le BILAN DE FIN DE FORMATION d'un formateur indépendant pour une session
+/// (évaluations finales des acquis + son avis, puis « Terminer »). Une ligne par
+/// formateur et par session. Le paiement par mission l'attend quand l'interrupteur
+/// `formateurs.bilan_fin_formation` est allumé ; « payer quand même » est le geste de
+/// l'administrateur, motivé et tracé. Rien n'est jamais supprimé.
+/// rgpd: technique — identifiants, dates et motif d'un administrateur ; l'avis du formateur reste dans « appreciations »
+model BilanFinFormation {
+  id                  String          @id @default(uuid()) @db.Uuid
+  sessionId           String          @map("session_id") @db.Uuid
+  session             TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  trainerId           String          @map("trainer_id") @db.Uuid
+  trainer             Trainer         @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  /// L'avis du formateur (appréciation de qualité `formateur`, off.30) : une seule par bilan.
+  appreciationId      String?         @unique @map("appreciation_id") @db.Uuid
+  appreciation        Appreciation?   @relation(fields: [appreciationId], references: [id], onDelete: SetNull)
+  /// « Terminer » : l'ensemble est figé à cet instant.
+  termineAt           DateTime?       @map("termine_at")
+  /// « Payer quand même » (administrateur) : auteur, date et motif obligatoire.
+  payerQuandMemeAt    DateTime?       @map("payer_quand_meme_at")
+  payerQuandMemeParId String?         @map("payer_quand_meme_par_id") @db.Uuid
+  payerQuandMemeMotif String?         @map("payer_quand_meme_motif") @db.Text
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  @@unique([sessionId, trainerId])
+  @@index([trainerId])
+  @@map("bilans_fin_formation")
 }
 
 /// Demande RGPD d'un stagiaire (export ou suppression). Traçabilité du droit

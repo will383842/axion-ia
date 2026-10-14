@@ -34,11 +34,9 @@ import {
 
 import {
   calculerReleveDuMois,
-  moisPayable,
   montantPrevuDuMoisHtCents,
   releveSansEcart,
   type ConditionsMission,
-  type RaisonNonPayable,
   type ReleveMissionCalcule,
 } from "../argent/calcul-mission";
 import { jourParis } from "../argent/dates";
@@ -46,6 +44,11 @@ import {
   PARAMETRES_ARGENT_FORMATEURS,
   type ParametresArgentFormateurs,
 } from "../argent/parametres";
+import {
+  formationCompletePourFormateur,
+  type EtatBilanPourPaiement,
+  type RaisonFormationIncomplete,
+} from "./formation-complete";
 
 /** Un couple (formateur indépendant, session) lu en base. */
 export interface CandidatMission {
@@ -66,6 +69,12 @@ export interface CandidatMission {
    * (le run mensuel l'écarte à cause de la revendication : personne ne paierait).
    */
   readonly revendiqueParMission?: boolean;
+  /**
+   * Lot G2 — le bilan de fin de formation, quand il est EXIGÉ (interrupteur
+   * `formateurs.bilan_fin_formation` allumé, session finie après l'allumage). Absent :
+   * rien n'est exigé au-delà des feuilles, exactement comme avant.
+   */
+  readonly bilanFinFormation?: EtatBilanPourPaiement;
 }
 
 export interface MoisAEcrire {
@@ -92,7 +101,7 @@ export interface Plan {
     trainerId: string;
     sessionId: string;
     mois: string;
-    raison: RaisonNonPayable | "aucune_signature_mois_passe";
+    raison: RaisonFormationIncomplete | "aucune_signature_mois_passe";
     manquantes: number;
   }>;
   readonly anomalies: ReadonlyArray<{
@@ -138,6 +147,9 @@ export function planifierPassage(
     const prevues = demiJourneesPrevues(c.journeesPrevues, bornes);
     const prevuesParMois = new Map(parMoisCivil(prevues).map((m) => [m.mois, m] as const));
     const moisSignes = new Set(parMoisCivil(signees).map((m) => m.mois));
+    // Décision de Will : seul le DERNIER mois de la mission (celui de la dernière journée
+    // prévue de ce formateur, `parMoisCivil` trie les mois) attend le bilan.
+    const dernierMoisPrevu = [...prevuesParMois.keys()].at(-1);
     if (aujourdhui) {
       for (const pm of prevuesParMois.values()) {
         if (!moisSignes.has(pm.mois) && pm.derniereJournee < aujourdhui)
@@ -161,10 +173,14 @@ export function planifierPassage(
       const manquantes = prevuDuMois
         ? demiJourneesSansSignature(prevuDuMois.detail, mois.detail).length
         : 0;
-      const verdict = moisPayable({
+      // Lot G2 : « formation complète » = la règle des feuilles (`moisPayable`, reprise
+      // telle quelle) ET, pour le dernier mois de la mission seulement, le bilan de fin de
+      // formation quand il est exigé. Les mois précédents : les feuilles seules.
+      const verdict = formationCompletePourFormateur({
         signees: mois.demiJournees,
         manquantes,
         conditionFinanceurEnAttente: c.conditionFinanceurEnAttente,
+        bilan: mois.mois === dernierMoisPrevu ? (c.bilanFinFormation ?? null) : null,
       });
       if (!verdict.payable) {
         enAttente.push({

@@ -13,7 +13,10 @@ import { journaliser } from "@/server/journal/journaliser";
 
 import { totaliser } from "../argent/calcul-mission";
 import { forfaitSelonLieu } from "../choix-formateur";
+import { lireAllumageBilan } from "../bilan-fin-formation/allumage";
+import { bilanExige } from "../bilan-fin-formation/regles";
 import { jourDeColonneDate, jourParis } from "../argent/dates";
+import { journeesDuFormateur } from "../argent/journees-du-formateur";
 import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
 import type { CandidatMission, DepsPassage, IssueEcriture, MoisAEcrire } from "./passage-mission";
@@ -102,9 +105,56 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   ]);
   const parMission = new Set(revendiquees.map((r) => `${r.trainerId}|${r.sessionId}`));
 
+  // Lot G2 — le bilan de fin de formation, lu SEULEMENT si l'interrupteur est allumé.
+  // Éteint : aucune lecture de plus, aucun candidat ne porte d'exigence (comme avant).
+  const allumeLe = await lireAllumageBilan(prisma);
+  const bilans = new Map<string, { termine: boolean; payerQuandMeme: boolean }>();
+  const fiches = new Map<string, { statut: string; organismeSousTraitantId: string | null }>();
+  if (allumeLe !== null) {
+    const trainerIds = [
+      ...new Set([...signatures.map((x) => x.trainerId), ...missions.map((x) => x.trainerId)]),
+    ];
+    const [lignes, formateurs] = await Promise.all([
+      prisma.bilanFinFormation.findMany({
+        where: { sessionId: { in: ids } },
+        select: { sessionId: true, trainerId: true, termineAt: true, payerQuandMemeAt: true },
+      }),
+      prisma.trainer.findMany({
+        where: { id: { in: trainerIds } },
+        select: { id: true, statut: true, organismeSousTraitantId: true },
+      }),
+    ]);
+    for (const b of lignes) {
+      bilans.set(`${b.trainerId}|${b.sessionId}`, {
+        termine: b.termineAt !== null,
+        payerQuandMeme: b.payerQuandMemeAt !== null,
+      });
+    }
+    for (const f of formateurs) {
+      fiches.set(f.id, { statut: f.statut, organismeSousTraitantId: f.organismeSousTraitantId });
+    }
+  }
+
   const out: CandidatMission[] = [];
   for (const s of sessions) {
     const premiereJournee = premiereJourneeSession(s);
+    const derniereJournee = s.jours.reduce<string | null>((max, j) => {
+      const jour = jourDeColonneDate(j.date);
+      return max === null || jour > max ? jour : max;
+    }, null);
+    // L'exigence (indépendant en nom propre, session finie le jour de l'allumage ou
+    // après) et l'état du bilan ; rien du tout quand elle ne s'applique pas.
+    const bilanDuCandidat = (trainerId: string) => {
+      const fiche = fiches.get(trainerId);
+      if (fiche === undefined || derniereJournee === null) return {};
+      if (!bilanExige({ ...fiche, allumeLe, derniereJournee })) return {};
+      return {
+        bilanFinFormation: bilans.get(`${trainerId}|${s.id}`) ?? {
+          termine: false,
+          payerQuandMeme: false,
+        },
+      };
+    };
     const parFormateur = new Map<string, typeof signatures>();
     for (const sig of signatures) {
       if (sig.sessionId !== s.id) continue;
@@ -118,9 +168,6 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     for (const [trainerId, sigs] of parFormateur) {
       // La plus récente des sollicitations acceptées ; son prix figé, ou aucun.
       const m = missions.find((x) => x.sessionId === s.id && x.trainerId === trainerId);
-      // Affecté à la session (principal ou co-formateur) : les journées sans
-      // formateur désigné lui reviennent aussi.
-      const affecte = s.sessionFormateurs.some((sf) => sf.trainerId === trainerId);
       out.push({
         trainerId,
         sessionId: s.id,
@@ -142,17 +189,18 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
           jour: jourDeColonneDate(x.date),
           demiJournee: x.demiJournee,
         })),
-        journeesPrevues: s.jours
-          .filter((j) => j.trainerId === trainerId || (j.trainerId === null && affecte))
-          .map((j) => ({
-            jour: jourDeColonneDate(j.date),
-            heureDebut: j.heureDebut,
-            heureFin: j.heureFin,
-          })),
+        // Ses journées, et les journées sans formateur désigné s'il est affecté :
+        // la règle partagée avec la lettre et la proposition.
+        journeesPrevues: journeesDuFormateur(s.jours, trainerId, s.sessionFormateurs).map((j) => ({
+          jour: jourDeColonneDate(j.date),
+          heureDebut: j.heureDebut,
+          heureFin: j.heureFin,
+        })),
         // ⚠️ La condition suspensive du financeur (PR OPCO encore ouverte) n'est
         // pas encore lisible : faute de mieux, on ne paie que ce qui est signé.
         conditionFinanceurEnAttente: false,
         revendiqueParMission: parMission.has(`${trainerId}|${s.id}`),
+        ...bilanDuCandidat(trainerId),
       });
     }
   }

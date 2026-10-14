@@ -18,7 +18,13 @@ vi.mock("@/lib/prisma", () => ({
     setting: {
       findUnique: vi.fn(async () => ({ value: { actif: true } })),
     },
-    missionFormateur: { findMany: vi.fn(async () => h.missions) },
+    // Première lecture : les missions acceptées à venir ; seconde : les
+    // missions à FERMER (aucune ici).
+    missionFormateur: {
+      findMany: vi.fn(async (a: { select?: Record<string, unknown> }) =>
+        a.select?.lettreMission !== undefined ? h.missions : [],
+      ),
+    },
     // La réévaluation d'UNE mission passe par sa transaction : on la compte.
     $transaction: vi.fn(async (f: (tx: unknown) => Promise<unknown>) => {
       let cle = "";
@@ -49,6 +55,7 @@ function mission(n: number, lettre: "aucune" | "a_jour" | "perimee" | "sans_empr
   const m = {
     id: `m-${String(n).padStart(3, "0")}`,
     role: "principal",
+    trainerId: "t-1",
     tarifHtCents: 35_000,
     forfaitDeplacementParJourHtCents: 0,
     regimeTvaFige: "franchise_293b",
@@ -59,7 +66,15 @@ function mission(n: number, lettre: "aucune" | "a_jour" | "perimee" | "sans_empr
       lieuAdresse: null,
       lieuCodePostal: null,
       lieuVille: null,
-      jours: [{ date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" }],
+      sessionFormateurs: [{ trainerId: "t-1" }],
+      jours: [
+        {
+          date: new Date("2026-11-04T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: null,
+        },
+      ],
     },
   };
   const actuelle = empreinteDeLaMission(m as never).empreinte;
@@ -134,6 +149,36 @@ describe("empreinte : une version de contrat ou de gabarit changée ne périme p
     };
     expect(empreinteMission({ ...base, versionContratCadre: 3, gabaritVersion: 2 })).toBe(
       empreinteMission({ ...base, versionContratCadre: 4, gabaritVersion: 3 }),
+    );
+  });
+});
+
+describe("étape 4 — l'empreinte suit les journées de la LETTRE (celles du formateur)", () => {
+  const avec = (jours: Array<Record<string, unknown>>) =>
+    empreinteDeLaMission({
+      ...mission(1, "aucune"),
+      session: {
+        ...(mission(1, "aucune").session as Record<string, unknown>),
+        sessionFormateurs: [{ trainerId: "t-1" }, { trainerId: "t-2" }],
+        jours,
+      },
+    } as never).empreinte;
+  const jour = (d: string, trainerId: string | null) => ({
+    date: new Date(`${d}T00:00:00Z`),
+    heureDebut: "09:00",
+    heureFin: "17:00",
+    trainerId,
+  });
+
+  it("une journée ajoutée au co-formateur ne périme pas la lettre", () => {
+    expect(avec([jour("2026-11-04", null), jour("2026-11-05", "t-2")])).toBe(
+      avec([jour("2026-11-04", null)]),
+    );
+  });
+
+  it("une journée retirée au formateur (passée au co-formateur) la périme", () => {
+    expect(avec([jour("2026-11-04", null), jour("2026-11-05", "t-2")])).not.toBe(
+      avec([jour("2026-11-04", null), jour("2026-11-05", "t-1")]),
     );
   });
 });

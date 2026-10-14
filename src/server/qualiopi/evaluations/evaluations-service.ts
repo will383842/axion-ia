@@ -18,6 +18,13 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { computeEvaluationScore, niveauFromScore, reussiteFromScore } from "./scoring";
 import type { EvaluationAcquis } from "../../../../prisma/generated/client";
 
+/**
+ * Le client des deux écritures de `createEvaluation` : `prisma` par défaut, ou la
+ * transaction de l'appelant (lot G2 : l'espace formateur vérifie « pas de finale en
+ * double » et crée dans la MÊME transaction, sous verrou).
+ */
+export type ClientEvaluation = Pick<typeof prisma, "enrollment" | "evaluationAcquis">;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Types internes
 // ─────────────────────────────────────────────────────────────────────────────
@@ -149,7 +156,10 @@ export function incoherenceDateEvaluation(params: {
  *
  * Stub-aware : lève si DATABASE_URL contient "stub.invalid" (pas de mutation au build).
  */
-export async function createEvaluation(input: CreateEvaluationInput): Promise<{ id: string }> {
+export async function createEvaluation(
+  input: CreateEvaluationInput,
+  client: ClientEvaluation = prisma,
+): Promise<{ id: string }> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("createEvaluation: stub DB — non disponible au build");
   }
@@ -162,7 +172,7 @@ export async function createEvaluation(input: CreateEvaluationInput): Promise<{ 
   // du questionnaire de positionnement) — la garde tient donc les deux.
   const dateEvaluation = new Date(input.dateEvaluation);
 
-  const inscription = await prisma.enrollment.findUnique({
+  const inscription = await client.enrollment.findUnique({
     where: { id: input.enrollmentId },
     select: { session: { select: { dateDebut: true } } },
   });
@@ -208,7 +218,7 @@ export async function createEvaluation(input: CreateEvaluationInput): Promise<{ 
   const reussite =
     input.type === "initiale" ? false : reussiteFromScore(scorePct, seuilReussitePct);
 
-  const created = await prisma.evaluationAcquis.create({
+  const created = await client.evaluationAcquis.create({
     data: {
       enrollmentId: input.enrollmentId,
       type: input.type,

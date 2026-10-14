@@ -983,6 +983,44 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 
 - **Bouton** : « Signer le relevé »
 
+## F61 — Bilan de fin de formation (2 rappels au plus, lot G2)
+
+- **Gabarit** : `formateur-bilan-fin-formation`
+- **Envoyé quand** : 2 jours puis 7 jours après la dernière journée, tant que le bilan n'est pas terminé. Plus rien dès qu'il l'est, ou si la collaboration est finie. Vous recevez une alerte à 10 jours.
+- ⚠️ Ne part que si l'interrupteur `formateurs.bilan_fin_formation` est allumé **et** ce texte validé.
+
+### F61 — J+2
+
+- **Objet** : Votre bilan de fin de formation
+- **Titre** : Votre bilan de fin de formation
+- **Aperçu** : La formation [intitulé] est terminée. Merci pour votre travail.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > La formation [intitulé] est terminée. Merci pour votre travail.
+  >
+  > Il reste votre bilan : l'évaluation de chaque stagiaire et votre avis sur la session. Comptez quelques minutes, depuis votre téléphone si vous le souhaitez.
+  >
+  > Nous en avons besoin pour établir votre facture.
+
+- **Bouton** : « Faire mon bilan »
+
+### F61 — J+7
+
+- **Objet** : Votre bilan de fin de formation attend
+- **Titre** : Votre bilan de fin de formation attend
+- **Aperçu** : Votre bilan de fin de formation pour [intitulé] n'est pas encore terminé.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > Votre bilan de fin de formation pour [intitulé] n'est pas encore terminé.
+  >
+  > Nous en avons besoin pour établir votre facture.
+
+- **Bouton** : « Faire mon bilan »
+
 ## F36 — Facture établie à votre nom (variante « mission », lot D2)
 
 - **Gabarit** : `autofacture-transmission` (existant), avec la valeur `missionLabel`.
