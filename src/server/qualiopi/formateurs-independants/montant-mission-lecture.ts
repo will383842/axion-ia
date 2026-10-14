@@ -47,6 +47,9 @@ export type MissionEnJeu =
 /** Missions OUVERTES : un engagement qui n'est pas (encore) facturé. */
 const STATUTS_MISSION_OUVERTE = ["en_attente", "acceptee", "accord_hors_outil"] as const;
 
+/** Sessions dont les missions encore ouvertes n'engagent plus rien. */
+const STATUTS_SESSION_CLOSE = ["annulee", "reportee"] as const;
+
 /** Au-delà, une mission ouverte d'une session finie est réputée réglée (cumul). */
 const FENETRE_MISSIONS_JOURS = 120;
 
@@ -226,7 +229,10 @@ export async function lireEngagementHtCents(
         trainerId,
         statut: { in: [...STATUTS_MISSION_OUVERTE] },
         ...(sessionEnJeu === null ? {} : { sessionId: { not: sessionEnJeu } }),
-        session: { dateFin: { gte: borne } },
+        // Une session annulée ou reportée n'engage plus rien : ce qui en reste dû
+        // (indemnité d'annulation) passe par un relevé, donc par le cumul ; la session
+        // qui remplace une session reportée porte sa propre mission.
+        session: { dateFin: { gte: borne }, statut: { notIn: [...STATUTS_SESSION_CLOSE] } },
       },
       select: { id: true, sessionId: true },
     });

@@ -205,6 +205,16 @@ describe("relecture de l'étape 3 — l'engagement entier, jamais compté deux f
     expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
   });
 
+  it("les missions restées ouvertes d'une session annulée ou reportée ne comptent pas", async () => {
+    await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    const autres = h.prisma.missionFormateur.findMany.mock.calls
+      .map(([a]) => a as { where: { sessionId?: unknown; session?: unknown } })
+      .find((a) => typeof a.where.sessionId !== "string");
+    expect(autres?.where.session).toMatchObject({
+      statut: { notIn: ["annulee", "reportee"] },
+    });
+  });
+
   it("une autre mission illisible : refus (garde fermée)", async () => {
     h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
     h.etat.session = null;
