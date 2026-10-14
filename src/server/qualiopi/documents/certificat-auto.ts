@@ -24,19 +24,17 @@
 
 import { prisma } from "@/lib/prisma";
 import { journaliser } from "@/server/journal/journaliser";
-import { debutDuJourDeParis } from "@/server/qualiopi/financements/condition-suspensive";
-import { jourParis } from "@/server/qualiopi/formateurs-independants/argent/dates";
-import {
-  cleSettingSignature,
-  dateAllumageSignature,
-} from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { produireCertificatRealisation } from "@/server/qualiopi/documents/production/producteurs";
 
-export const CLE_CERTIFICAT_AUTO = cleSettingSignature("certificat_auto");
+import {
+  CLE_CERTIFICAT_AUTO,
+  FENETRE_CERTIFICAT_AUTO_JOURS,
+  lireDebutCertificatAuto,
+} from "./certificat-auto-allumage";
+
+export { CLE_CERTIFICAT_AUTO };
 export const ACTION_CERTIFICAT_AUTO = "qualiopi.document.certificat_realisation.genere_auto";
-/** Au-delà, un refus de garde n'est plus retenté chaque matin (l'alerte a parlé). */
-export const FENETRE_CERTIFICAT_AUTO_JOURS = 90;
 const JOUR_MS = 24 * 60 * 60 * 1000;
 
 export interface BilanCertificatsAuto {
@@ -50,35 +48,6 @@ export interface BilanCertificatsAuto {
 }
 
 const RIEN = { crees: 0, refuses: 0, dejaPresents: 0, erreurs: 0 } as const;
-
-export interface ClientAllumageCertificat {
-  readonly setting: {
-    findUnique(args: {
-      where: { key: string };
-      select: { value: true; updatedAt: true };
-    }): PromiseLike<{ value: unknown; updatedAt: Date | null } | null>;
-  };
-}
-
-/**
- * Le premier instant couvert : 00:00 (Paris) du jour d'allumage, ou `null` si éteint.
- * Une lecture en échec vaut « éteint ». Lu aussi par l'alerte.
- */
-export async function lireDebutCertificatAuto(
-  client: ClientAllumageCertificat,
-): Promise<Date | null> {
-  try {
-    const ligne = await client.setting.findUnique({
-      where: { key: CLE_CERTIFICAT_AUTO },
-      select: { value: true, updatedAt: true },
-    });
-    if (ligne == null) return null;
-    const allume = dateAllumageSignature(ligne.value, ligne.updatedAt ?? null);
-    return allume === null ? null : debutDuJourDeParis(jourParis(allume));
-  } catch {
-    return null;
-  }
-}
 
 export async function emettreCertificatsFinDeFormation(
   maintenant: Date,

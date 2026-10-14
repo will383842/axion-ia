@@ -869,6 +869,30 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  /**
+   * Lot 8B (décision du dirigeant, a) — le certificat de réalisation, pièce que le
+   * financeur exige pour payer, manque à J+3 alors que l'émission automatique est
+   * allumée : la garde l'a refusé (taux non mesuré, aucune trace) ou il a été annulé
+   * sans remplacement. Se referme seule dès qu'un certificat vivant existe.
+   */
+  certificat_realisation_manquant: {
+    niveau: "important",
+    titre: "Certificat de réalisation manquant",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * Lot 8B (décision du dirigeant, b) — l'avis du financeur (indicateur 30) reste
+   * saisi à la main ; cette alerte dit qu'il manque, à J+30 d'une session financée
+   * par un tiers. Se referme seule dès qu'il est saisi.
+   */
+  avis_financeur_manquant: {
+    niveau: "important",
+    titre: "Avis du financeur non recueilli",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+
   // ── Qualiopi expiration ────────────────────────────────────────────────────
   qualiopi_expire_j90: {
     niveau: "important",
