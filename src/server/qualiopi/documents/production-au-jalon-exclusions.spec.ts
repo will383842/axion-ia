@@ -90,7 +90,7 @@ describe("les exclusions de la production au jalon disent la vérité", () => {
     expect(emetLaPiece(action, "certificat_realisation")).toBe(false);
   });
 
-  it("AUCUN worker ni cron n'émet le certificat de réalisation — clic admin seulement", () => {
+  it("AUCUN worker ni cron ne CONSTRUIT le certificat de réalisation — ils délèguent au service", () => {
     const coupables = readdirSync(WORKERS_DIR)
       .filter((f) => f.endsWith(".ts") && !f.includes(".spec."))
       .filter((f) =>
@@ -105,6 +105,17 @@ describe("les exclusions de la production au jalon disent la vérité", () => {
         "Faire descendre la garde dans un service partagé D'ABORD, puis mettre à jour le " +
         "commentaire de TYPES_HORS_LOT_DOCUMENTS_AUTO.",
     ).toEqual([]);
+  });
+
+  it("lot 8B — le circuit automatique du certificat DÉLÈGUE au même service que le clic", () => {
+    const auto = readFileSync(
+      join(RACINE, "src", "server", "qualiopi", "documents", "certificat-auto.ts"),
+      "utf8",
+    );
+    expect(auto).toContain("produireCertificatRealisation(");
+    // Il LIT les certificats existants (`type: "certificat_realisation"` dans sa
+    // requête), il n'en construit aucun : pas de `generateDocument` ici.
+    expect(auto).not.toContain("generateDocument");
   });
 
   it("`attestation-service` n'émet PAS le certificat, contrairement à ce que le commentaire disait", () => {
