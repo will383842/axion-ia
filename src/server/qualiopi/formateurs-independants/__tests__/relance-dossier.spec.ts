@@ -41,7 +41,11 @@ function decision(l: LigneRelanceDossier, maintenant: Date) {
 
 describe("relances du dossier (S3, F9)", () => {
   it("déclarée au registre, éteinte derrière dossier_en_ligne ET relances_auto", () => {
-    expect(REGISTRE_CAMPAGNES).toContain(CAMPAGNE_RELANCE_DOSSIER);
+    // Lot 8A — le registre ajoute l'arrêt sur réponse du formateur : même campagne, copie.
+    expect(REGISTRE_CAMPAGNES.find((c) => c.id === CAMPAGNE_RELANCE_DOSSIER.id)).toMatchObject({
+      ...CAMPAGNE_RELANCE_DOSSIER,
+      arreteeParReponseFormateur: true,
+    });
     expect(CAMPAGNE_RELANCE_DOSSIER.interrupteurs).toEqual(["dossier_en_ligne", "relances_auto"]);
     expect(CAMPAGNE_RELANCE_DOSSIER.gabarit).toBe("formateur-dossier-relance");
   });
