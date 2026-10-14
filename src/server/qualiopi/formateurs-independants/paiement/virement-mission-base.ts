@@ -11,7 +11,14 @@ import { decryptPii } from "@/lib/pii-crypto";
 
 import { ajouterJours, jourDeColonneDate, jourParis } from "../argent/dates";
 import { PARAMETRES_ARGENT_FORMATEURS } from "../argent/parametres";
-import { gardeVirementMission, ibanFin4, type VerdictVirementMission } from "./virement-mission";
+import { vigilanceExigible } from "../vigilance-seuil";
+import { lireCumulHonorairesHtCents, type ClientCumulHonoraires } from "../vigilance-seuil-lecture";
+import {
+  attenteAttestationALaMission,
+  gardeVirementMission,
+  ibanFin4,
+  type VerdictVirementMission,
+} from "./virement-mission";
 
 /** Le strict nécessaire d'un client Prisma. */
 export interface ClientVirementMission {
@@ -25,6 +32,11 @@ export interface ClientVirementMission {
     count(a: unknown): Promise<number>;
     findFirst(a: unknown): Promise<{ createdAt: Date; traiteAt: Date | null } | null>;
   };
+  /**
+   * Lot G1 — le cumul des honoraires HT (seuil de vigilance). Absent ou illisible :
+   * l'attestation reste exigée (garde d'avant le lot).
+   */
+  trainerStatement?: ClientCumulHonoraires["trainerStatement"];
 }
 
 export interface ReleveAPayer {
@@ -44,7 +56,7 @@ export async function contexteVirementMission(
 }> {
   const echeance = jourParis(releve.echeanceAt);
   const derniereJournee = ajouterJours(echeance, -PARAMETRES_ARGENT_FORMATEURS.delaiPaiementJours);
-  const [trainer, attestations, enAttente, dernier] = await Promise.all([
+  const [trainer, attestations, enAttente, dernier, cumul] = await Promise.all([
     db.trainer.findUnique({
       where: { id: releve.trainerId },
       select: { iban: true, ibanEmpreinte: true },
@@ -66,6 +78,10 @@ export async function contexteVirementMission(
       orderBy: { traiteAt: "desc" },
       select: { createdAt: true, traiteAt: true },
     }),
+    // Ce relevé est « facture reçue » : il est DANS le cumul (la mission en cours de paiement).
+    db.trainerStatement
+      ? lireCumulHonorairesHtCents(releve.trainerId, { trainerStatement: db.trainerStatement })
+      : Promise.resolve(null),
   ]);
   const verdict = gardeVirementMission({
     derniereJournee,
@@ -77,6 +93,8 @@ export async function contexteVirementMission(
     attestationsValidesJusquau: attestations.flatMap((a) =>
       a.dateExpiration ? [jourDeColonneDate(a.dateExpiration)] : [],
     ),
+    // Lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée pour payer.
+    vigilanceExigible: vigilanceExigible(cumul),
     demandeIbanEnAttente: enAttente > 0,
     dernierChangementIban:
       dernier?.traiteAt != null ? { demandeA: dernier.createdAt, valideA: dernier.traiteAt } : null,
@@ -92,6 +110,72 @@ export async function contexteVirementMission(
     cleExigee: true,
   });
   return { verdict, preuve: { ibanFin4: ibanFin4(clair), ibanEmpreinte: trainer.ibanEmpreinte } };
+}
+
+/**
+ * Lot G1 — les relevés de MISSION non payés de ce formateur dont le virement attend
+ * l'attestation URSSAF (seuil atteint, aucune attestation vérifiée valable à la date de
+ * la mission). Même règle que « Virement fait » (`attenteAttestationALaMission`), sans
+ * rien lire de l'IBAN. Lecture en échec : ensemble vide (l'écran n'affirme rien).
+ */
+export async function relevesMissionEnAttenteAttestation(
+  db: Pick<ClientVirementMission, "trainerDocument"> & {
+    trainerStatement: ClientCumulHonoraires["trainerStatement"] & {
+      findMany(a: unknown): Promise<unknown>;
+    };
+  },
+  trainerId: string,
+): Promise<Set<string>> {
+  try {
+    const [lus, attestations, cumul] = await Promise.all([
+      db.trainerStatement.findMany({
+        where: {
+          trainerId,
+          origine: "passage_mission",
+          // Les mêmes que « Virements à faire » (`aUnVirementMissionDu`).
+          statut: "facture_recue",
+          payeAt: null,
+          avoirDeId: null,
+        },
+        select: { id: true, echeanceAt: true },
+      }),
+      db.trainerDocument.findMany({
+        where: {
+          trainerId,
+          type: "attestation_vigilance_urssaf",
+          statutValidation: "valide",
+          archiveAt: null,
+        },
+        select: { dateExpiration: true },
+      }),
+      lireCumulHonorairesHtCents(trainerId, { trainerStatement: db.trainerStatement }),
+    ]);
+    const releves = lus as Array<{ id: string; echeanceAt: Date | null }>;
+    const exigible = vigilanceExigible(cumul);
+    const valables = attestations.flatMap((a) =>
+      a.dateExpiration ? [jourDeColonneDate(a.dateExpiration)] : [],
+    );
+    const ids = new Set<string>();
+    for (const r of releves) {
+      if (r.echeanceAt === null) continue;
+      const derniereJournee = ajouterJours(
+        jourParis(r.echeanceAt),
+        -PARAMETRES_ARGENT_FORMATEURS.delaiPaiementJours,
+      );
+      if (
+        attenteAttestationALaMission({
+          vigilanceExigible: exigible,
+          attestationsValidesJusquau: valables,
+          derniereJournee,
+        })
+      ) {
+        ids.add(r.id);
+      }
+    }
+    return ids;
+  } catch {
+    return new Set();
+  }
 }
 
 /** Le strict nécessaire pour lire l'IBAN d'un formateur. */

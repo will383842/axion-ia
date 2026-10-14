@@ -83,10 +83,15 @@ import {
   vigilancePerimee,
   vigilanceRequise,
 } from "@/server/qualiopi/trainers/conformite";
+import { listTrainerDocuments } from "@/server/qualiopi/trainers/documents";
+import { SEUIL_VIGILANCE_CENTS } from "@/lib/vigilance";
+import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
 import {
-  cumulAnnuelFormateurCents,
-  listTrainerDocuments,
-} from "@/server/qualiopi/trainers/documents";
+  SEUIL_VIGILANCE_LIBELLE,
+  phaseVigilanceFormateur,
+} from "@/server/qualiopi/formateurs-independants/vigilance-seuil";
+import { lireCumulsHonorairesHtCents } from "@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture";
 import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
 // SSOT du prédicat « pièce en attente de signature ». À n'appeler, jamais à
 // recopier — la recopie est ce qui a produit la divergence du constat `D3-4-06`.
@@ -2891,10 +2896,20 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
  * Vigilance URSSAF des sous-traitants (art. L.8222-1) — demandé par Will le
  * 2026-08-01.
  *
- * L'attestation vaut 6 mois et devient obligatoire dès 5 000 € de cumul
- * annuel ; sans elle, l'OF est SOLIDAIREMENT responsable des cotisations
- * impayées du prestataire. La fiche formateur la signalait déjà en rouge —
- * mais il fallait OUVRIR la fiche pour le voir. Ici, elle remonte chaque matin.
+ * L'attestation vaut 6 mois et devient obligatoire dès 5 000 € de cumul ;
+ * sans elle, l'OF est SOLIDAIREMENT responsable des cotisations impayées du
+ * prestataire. La fiche formateur la signalait déjà en rouge — mais il fallait
+ * OUVRIR la fiche pour le voir. Ici, elle remonte chaque matin.
+ *
+ * 🔑 Lot G1 (décision du 12/10) — le cumul est celui des HONORAIRES HT FACTURÉS
+ * (relevés validés, facture reçue, payés), la règle unique des formateurs
+ * indépendants (`formateurs-independants/vigilance-seuil.ts`), comme chez les
+ * apporteurs. Sous le seuil, aucune alerte `vigilance_urssaf_*`. Illisible : le
+ * seuil (garde fermée). À L'APPROCHE du seuil sans attestation valable, une
+ * alerte interne `vigilance_seuil_approche` — ÉTEINTE tant que les relances de
+ * pièces (`dossier_en_ligne` + `pieces_cron`) ne sont pas allumées ; elle se
+ * referme seule quand l'attestation arrive ou que le seuil est atteint (l'alerte
+ * critique prend alors le relais) : une seule fois par épisode.
  *
  * 🔴 Zéro logique dupliquée : seuil (`vigilanceRequise`), sélection de la
  * pièce (`trouverValide`) et péremption (`vigilancePerimee`) sont LES MÊMES
@@ -2911,19 +2926,40 @@ async function regleVigilanceUrssaf(now: Date): Promise<AlerteCandidate[]> {
   });
   if (trainersST.length === 0) return alertes;
 
-  const annee = now.getFullYear();
+  const [cumuls, interrupteurs] = await Promise.all([
+    lireCumulsHonorairesHtCents(trainersST.map((t) => t.id)),
+    lireEtatsInterrupteurs(),
+  ]);
+  const approcheAllumee =
+    lireDrapeauEnvoi(interrupteurs, "dossier_en_ligne") &&
+    lireDrapeauEnvoi(interrupteurs, "pieces_cron");
+
   for (const t of trainersST) {
-    const [documents, montantRetenuCents] = await Promise.all([
-      listTrainerDocuments(t.id),
-      cumulAnnuelFormateurCents(t.id, annee),
-    ]);
-
-    // Sous le seuil : aucune obligation, aucune alerte — un formateur à 800 €
-    // de cumul n'a pas à fournir d'attestation.
-    if (!vigilanceRequise("sous_traitant", montantRetenuCents, CONFORMITE_DEFAUTS)) continue;
-
+    const documents = await listTrainerDocuments(t.id);
+    const cumul = cumuls.get(t.id) ?? null;
+    const montantRetenuCents = cumul ?? SEUIL_VIGILANCE_CENTS;
     const nomComplet = `${t.prenom} ${t.nom}`.trim();
     const doc = trouverValide(documents, "attestation_vigilance_urssaf", now);
+
+    // Sous le seuil : aucune obligation, aucune alerte `vigilance_urssaf_*` — un
+    // formateur à 800 € de cumul n'a pas à fournir d'attestation.
+    if (!vigilanceRequise("sous_traitant", montantRetenuCents, CONFORMITE_DEFAUTS)) {
+      if (
+        approcheAllumee &&
+        phaseVigilanceFormateur(cumul) === "approche" &&
+        vigilancePerimee(doc, now, CONFORMITE_DEFAUTS)
+      ) {
+        alertes.push({
+          code: "vigilance_seuil_approche",
+          niveau: "important",
+          titre: "Seuil de vigilance URSSAF bientôt atteint",
+          message: `Les honoraires facturés de ${nomComplet} approchent ${SEUIL_VIGILANCE_LIBELLE} HT et aucune attestation de vigilance URSSAF valable n'est au dossier : elle lui est demandée. Au seuil, ses virements de mission l'attendront.`,
+          cibleType: "Trainer",
+          cibleId: t.id,
+        });
+      }
+      continue;
+    }
 
     if (vigilancePerimee(doc, now, CONFORMITE_DEFAUTS)) {
       alertes.push({
@@ -2935,7 +2971,7 @@ async function regleVigilanceUrssaf(now: Date): Promise<AlerteCandidate[]> {
             : "Attestation de vigilance URSSAF périmée (responsabilité solidaire)",
         message:
           doc === null
-            ? `Le sous-traitant ${nomComplet} a dépassé le seuil de ${CONFORMITE_DEFAUTS.seuilVigilanceCents / 100} € de cumul annuel sans attestation de vigilance URSSAF valide (art. L.8222-1) : la demander et la verser à sa fiche.`
+            ? `Le sous-traitant ${nomComplet} a atteint le seuil de ${CONFORMITE_DEFAUTS.seuilVigilanceCents / 100} € d'honoraires facturés sans attestation de vigilance URSSAF valide (art. L.8222-1) : la demander et la verser à sa fiche.`
             : `L'attestation de vigilance URSSAF de ${nomComplet} a plus de ${CONFORMITE_DEFAUTS.vigilanceValiditeMois} mois : en demander une nouvelle (art. L.8222-1, renouvellement semestriel).`,
         cibleType: "Trainer",
         cibleId: t.id,

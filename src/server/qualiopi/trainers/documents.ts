@@ -16,6 +16,8 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { SEUIL_VIGILANCE_CENTS } from "@/lib/vigilance";
+import { lireCumulHonorairesHtCents } from "@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture";
 import {
   evaluerConformiteFormateur,
   type ConformiteConfig,
@@ -136,8 +138,14 @@ export async function cumulAnnuelFormateurCents(trainerId: string, annee: number
 }
 
 export interface TrainerConformite extends ConformiteResultat {
-  /** Montant retenu pour apprécier le seuil URSSAF (cumul annuel approché). */
+  /**
+   * Montant retenu pour apprécier le seuil URSSAF : depuis le lot G1, le cumul HT des
+   * honoraires FACTURÉS du formateur (relevés validés, facture reçue, payés), la règle
+   * des formateurs indépendants (`vigilance-seuil.ts`). Illisible : le seuil (garde fermée).
+   */
   montantRetenuCents: number;
+  /** Le cumul n'a pas pu être lu : le seuil est réputé atteint. */
+  cumulIllisible: boolean;
   annee: number;
 }
 
@@ -163,10 +171,12 @@ export async function getTrainerConformite(
     return null;
   }
 
-  const [documents, montantRetenuCents] = await Promise.all([
+  // Lot G1 : la MÊME base que l'alerte du matin et les gardes des indépendants.
+  const [documents, cumul] = await Promise.all([
     listTrainerDocuments(trainerId),
-    cumulAnnuelFormateurCents(trainerId, annee),
+    lireCumulHonorairesHtCents(trainerId),
   ]);
+  const montantRetenuCents = cumul ?? SEUIL_VIGILANCE_CENTS;
 
   const resultat = evaluerConformiteFormateur(
     {
@@ -178,5 +188,5 @@ export async function getTrainerConformite(
     now,
   );
 
-  return { ...resultat, montantRetenuCents, annee };
+  return { ...resultat, montantRetenuCents, cumulIllisible: cumul === null, annee };
 }

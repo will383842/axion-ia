@@ -27,6 +27,8 @@
  * console ouvrirait une page reelle au nom de quelqu'un.
  */
 
+import { SEUIL_VIGILANCE_LIBELLE } from "@/lib/vigilance";
+
 export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   amountTtc: "1 450,00 €",
   appels: 12,
@@ -239,5 +241,9 @@ export const VARIANTES_EXEMPLE: Readonly<
   "formateur-formation-annulee": {
     "lettre-non-signee": { etape: 2 },
     "sans-lettre": { etape: 3 },
+  },
+  // Lot G1 — F40 à l'approche du seuil de vigilance (étape 4), validée à part.
+  "formateur-vigilance": {
+    "approche-seuil": { etape: 4, valeurs: { montant: SEUIL_VIGILANCE_LIBELLE } },
   },
 };

@@ -11,8 +11,8 @@
  *     et une version signée n'est jamais touchée — une nouvelle version est une NOUVELLE
  *     pièce ;
  *   - un contrat qui attend la contresignature bloque toute nouvelle émission ;
- *   - attestation URSSAF vérifiée (L4b) et contrôle du registre probant sur le SIRET même
- *     que le contrat portera ;
+ *   - attestation URSSAF vérifiée (L4b) — seulement au seuil de vigilance (lot G1) — et
+ *     contrôle du registre probant sur le SIRET même que le contrat portera ;
  *   - entreprise individuelle confirmée au registre : un formateur en société n'a pas
  *     encore ses champs (dénomination, forme, capital) en base, le contrat n'est donc pas
  *     préparé par l'outil.
@@ -27,7 +27,7 @@ import { etatControle } from "./controle-regles";
 import {
   MANQUES_COMPLETS,
   VERSION_MINIMALE_CONTRAT_INDEPENDANT,
-  vigilanceProuvee,
+  vigilanceSatisfaite,
   type ControleLu,
   type PieceLueActivation,
   type PreuveVigilanceLue,
@@ -76,6 +76,8 @@ export interface FaitsEmissionContrat {
   readonly controles: ReadonlyArray<ControleLu>;
   readonly pieces: ReadonlyArray<PieceLueActivation>;
   readonly preuvesVigilance: ReadonlyArray<PreuveVigilanceLue>;
+  /** Lot G1 — cumul des honoraires HT ; absent ou illisible : attestation exigée. */
+  readonly cumulHonorairesHtCents?: number | null;
   readonly registre: RegistreLu;
 }
 
@@ -164,7 +166,10 @@ export function verdictEmissionContrat(
       refus.push(REFUS_EMISSION.lienEnCours);
     }
 
-    if (!dossier && !vigilanceProuvee(f.pieces, f.preuvesVigilance, maintenant)) {
+    if (
+      !dossier &&
+      !vigilanceSatisfaite(f.pieces, f.preuvesVigilance, maintenant, f.cumulHonorairesHtCents)
+    ) {
       refus.push(REFUS_EMISSION.vigilance);
     }
     const controle = etatControle(f.controles, maintenant);

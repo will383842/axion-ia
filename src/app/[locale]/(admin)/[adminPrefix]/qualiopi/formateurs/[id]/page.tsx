@@ -8,6 +8,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
+import { APPROCHE_VIGILANCE_CENTS, SEUIL_VIGILANCE_CENTS } from "@/lib/vigilance";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { mentionActivationFormateur } from "@/lib/careers/fiche-formateur";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -622,9 +623,17 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
 
           {trainer.statut === "sous_traitant" && (
             <p className="admin-meta mt-3">
-              Cumul {conformite.annee} retenu pour le seuil URSSAF :{" "}
-              <strong>{(conformite.montantRetenuCents / 100).toLocaleString("fr-FR")} €</strong>{" "}
-              (approché sur les tarifs figés des affectations).
+              Cumul retenu pour le seuil URSSAF :{" "}
+              {conformite.cumulIllisible ? (
+                <strong>illisible (seuil réputé atteint)</strong>
+              ) : (
+                <strong>
+                  {(conformite.montantRetenuCents / 100).toLocaleString("fr-FR")} € HT
+                </strong>
+              )}{" "}
+              (honoraires facturés : relevés validés, reçus ou payés). L&apos;attestation est
+              demandée à partir de {(APPROCHE_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € et
+              exigée à partir de {(SEUIL_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} €.
             </p>
           )}
         </div>

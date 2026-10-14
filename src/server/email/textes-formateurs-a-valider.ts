@@ -32,6 +32,8 @@ export const VARIANTES_VALIDEES_A_PART: Readonly<
   // L11e (fin de mission) — lettre non signée : aucune indemnité annoncée.
   "formateur-mission-retiree": { 2: "lettre-non-signee", 3: "sans-lettre" },
   "formateur-formation-annulee": { 2: "lettre-non-signee", 3: "sans-lettre" },
+  // Lot G1 — F40 à l'approche du seuil de vigilance.
+  "formateur-vigilance": { 4: "approche-seuil" },
 };
 
 export interface TexteAValider {

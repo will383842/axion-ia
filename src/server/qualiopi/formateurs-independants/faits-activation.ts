@@ -15,11 +15,15 @@ import { prisma } from "@/lib/prisma";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 import type { FaitsActivationComplete } from "./garde-activation-complete";
+import { lireCumulHonorairesHtCents, type ClientCumulHonoraires } from "./vigilance-seuil-lecture";
 
 type Client = Pick<
   typeof prisma,
   "trainer" | "documentGenere" | "verificationRegistreSousTraitance" | "preuveVigilance"
->;
+> & {
+  /** Lot G1 — cumul des honoraires HT. Absent : `null`, l'attestation reste exigée. */
+  trainerStatement?: ClientCumulHonoraires["trainerStatement"];
+};
 
 /** Version de gabarit d'un contrat, lue dans son instantané figé. */
 export function versionDuContrat(metadata: unknown): number {
@@ -59,7 +63,7 @@ export async function lireFaitsActivationComplete(
   });
   if (t === null) return null;
 
-  const [contrats, controles, preuves] = await Promise.all([
+  const [contrats, controles, preuves, cumul] = await Promise.all([
     db.documentGenere.findMany({
       where: { trainerId, type: "contrat_sous_traitance" },
       select: { metadata: true, statutSignature: true, annuleeAt: true },
@@ -74,6 +78,9 @@ export async function lireFaitsActivationComplete(
       where: { trainerId },
       select: { trainerDocumentId: true, resultat: true },
     }),
+    db.trainerStatement
+      ? lireCumulHonorairesHtCents(trainerId, { trainerStatement: db.trainerStatement })
+      : Promise.resolve(null),
   ]);
 
   return {
@@ -94,5 +101,6 @@ export async function lireFaitsActivationComplete(
     controles,
     pieces: t.documents,
     preuvesVigilance: preuves,
+    cumulHonorairesHtCents: cumul,
   };
 }
