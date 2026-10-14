@@ -133,6 +133,7 @@ export async function effacerFormateur(trainerId: string): Promise<void> {
   await prisma.trainer.delete({ where: { id: trainerId } });
 }
 
+let sessions = 0;
 /** Une session de formation fictive (offre, formation, session). */
 export async function creerSessionFormation(debut: Date): Promise<{
   id: string;
@@ -141,11 +142,13 @@ export async function creerSessionFormation(debut: Date): Promise<{
   dateFin: Date;
   statut: string;
 }> {
+  sessions += 1;
+  const k = `${CLE}-${sessions}`;
   const offre = await prisma.offreSite.create({
     data: {
-      code: `BANC-SECU-${CLE}`,
-      titreFr: `Offre banc ${CLE}`,
-      slug: `banc-secu-${CLE}`,
+      code: `BANC-SECU-${k}`,
+      titreFr: `Offre banc ${k}`,
+      slug: `banc-secu-${k}`,
       formatPedagogique: "collectif_1jour",
       publicViseFr: "Banc",
       dureeHeuresMin: 7,
@@ -158,9 +161,9 @@ export async function creerSessionFormation(debut: Date): Promise<{
   });
   const formation = await prisma.formation.create({
     data: {
-      numero: `BANC-F-${CLE}`,
-      titre: `Formation banc ${CLE}`,
-      slug: `formation-banc-secu-${CLE}`,
+      numero: `BANC-F-${k}`,
+      titre: `Formation banc ${k}`,
+      slug: `formation-banc-secu-${k}`,
       offreSiteId: offre.id,
       dureeHeures: 7,
     },
@@ -169,8 +172,8 @@ export async function creerSessionFormation(debut: Date): Promise<{
   const fin = new Date(debut.getTime() + 8 * 3_600_000);
   const session = await prisma.trainingSession.create({
     data: {
-      numero: `BANC-S-${CLE}`,
-      titreSession: `Session banc ${CLE}`,
+      numero: `BANC-S-${k}`,
+      titreSession: `Session banc ${k}`,
       formationId: formation.id,
       dateDebut: debut,
       dateFin: fin,
@@ -244,6 +247,7 @@ const ACTIONS: Readonly<Record<string, string>> = {
   garde_mission_portes: "basculerFormateursGardeMissionPortesAction",
   controle_registre_periodique: "basculerFormateursControleRegistrePeriodiqueAction",
   changement_coordonnees: "basculerFormateursChangementCoordonneesAction",
+  bilan_fin_formation: "basculerFormateursBilanFinFormationAction",
 };
 
 type EtatAction = { ok: true; message: string } | { ok: false; error: string };
