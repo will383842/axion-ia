@@ -286,13 +286,13 @@ export const MANQUE_DOSSIER_ENVOYE =
   "un dossier envoyé par le formateur (il est encore en cours de saisie, ou un complément lui a été demandé)";
 
 /**
- * C4 — on ne contresigne qu'un dossier ENVOYÉ (`a_verifier`), ou une fiche créée
- * en console (aucun dossier en ligne). « Vérifié » ne passe qu'en reprise (second
- * clic) : le contrat est déjà contresigné, le dossier vient d'être marqué.
+ * C4 — on ne contresigne pas un dossier encore ouvert au formateur (en cours de
+ * saisie, ou rouvert pour complément). Un dossier envoyé (`a_verifier`), déjà
+ * vérifié (reprise, ou contrat ré-émis), ou une fiche créée en console (aucun
+ * dossier en ligne) passent.
  */
 export function dossierAContresigner(f: FaitsW4): boolean {
-  if (f.dossierStatut === null || f.dossierStatut === "a_verifier") return true;
-  return f.dossierStatut === "verifie" && f.contrat?.statutSignature === "signee";
+  return f.dossierStatut !== "en_cours" && f.dossierStatut !== "a_completer";
 }
 
 /**

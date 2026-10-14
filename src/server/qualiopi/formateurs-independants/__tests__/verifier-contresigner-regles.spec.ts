@@ -199,18 +199,7 @@ describe("C4 — l'état du dossier", () => {
     expect(manquesPourContresigner(faits({ dossierStatut: null }), coche)).toEqual([]);
   });
 
-  it("« vérifié » : seulement en reprise, une fois le contrat contresigné", () => {
-    expect(manquesPourContresigner(faits({ dossierStatut: "verifie" }), coche)).toEqual([
-      MANQUE_DOSSIER_ENVOYE,
-    ]);
-    expect(
-      manquesPourContresigner(
-        faits({
-          dossierStatut: "verifie",
-          contrat: { id: "c", numero: "CST-1", statutSignature: "signee" },
-        }),
-        coche,
-      ),
-    ).toEqual([]);
+  it("« vérifié » (reprise, ou contrat ré-émis) : rien ne manque", () => {
+    expect(manquesPourContresigner(faits({ dossierStatut: "verifie" }), coche)).toEqual([]);
   });
 });
