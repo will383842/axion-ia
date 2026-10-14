@@ -8,3 +8,8 @@
 # empreintes, propres au commit 71b66f47, sont donc ignorées ici.
 71b66f472aea2a64dfc1ae66f3cdf988b7558eb9:src/lib/security/__tests__/lien-signe.spec.ts:generic-api-key:11
 71b66f472aea2a64dfc1ae66f3cdf988b7558eb9:src/features/apporteurs-reseau/__tests__/le-jeton-apporteur-passe-par-la-fabrique.spec.ts:generic-api-key:12
+#
+# Vérification n° 1 (banc @formateurs, PR #1534) : clé de chiffrement FICTIVE du banc
+# (0123…cdef), écrite en littéral dans le workflow au commit 5e72cfd5, puis remplacée par
+# une clé tirée au hasard à chaque run. L'historique ne se réécrit pas.
+5e72cfd5c150d93c01ebf6f941bf85a3434bccc8:.github/workflows/banc-formateurs.yml:generic-api-key:122

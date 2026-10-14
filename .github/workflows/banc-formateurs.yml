@@ -30,10 +30,10 @@ name: Banc formateurs
 # vers 127.0.0.1 sur cette machine seule, avec un certificat de confiance locale ;
 # le SDK S3 réel lui parle, aucun objet ne sort. Clés R2 FICTIVES.
 #
-# Clés : `PII_ENCRYPTION_KEY` et `IBAN_EMPREINTE_SECRET` portent des valeurs
-# FICTIVES au BON FORMAT (64 caractères hexadécimaux pour la première) : le
-# dossier refuse d'écrire un IBAN sans chiffrement, et une clé mal formée
-# laisserait les données personnelles en clair dans la base du banc.
+# Clés : `PII_ENCRYPTION_KEY` est TIRÉE AU HASARD à chaque run (64 hexadécimaux,
+# le format exigé) et `IBAN_EMPREINTE_SECRET` est fictive : le dossier refuse
+# d'écrire un IBAN sans chiffrement, et une clé mal formée laisserait les données
+# personnelles en clair dans la base du banc. Aucune clé n'est écrite ici.
 
 on:
   pull_request:
@@ -118,8 +118,6 @@ jobs:
       # Valeurs FICTIVES, les mêmes que Gate B : elles ne protègent rien de réel.
       AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
       IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
-      # Fictive, au format exigé (64 hexadécimaux) — jamais une clé de production.
-      PII_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
       IBAN_EMPREINTE_SECRET: "banc-formateurs-empreinte-iban-fictive"
       # Le stockage R2 SIMULÉ (cf. en-tête) : compte, seau et clés fictifs.
       R2_ACCOUNT_ID: "banc"
@@ -160,6 +158,8 @@ jobs:
           done
           echo "::error::Mailpit ne répond pas sur :8025"
           exit 1
+      - name: Clé de chiffrement du banc (tirée au hasard)
+        run: echo "PII_ENCRYPTION_KEY=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
       - name: Démarrer le stockage R2 simulé
         run: scripts/banc-formateurs/demarrer-stockage-r2.sh /tmp/banc-formateurs/r2 banc-formateurs
       - name: L'antivirus répond
