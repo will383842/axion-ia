@@ -115,7 +115,6 @@ describe("Défaut 1 — annuler un relevé de mission annule ses lignes, dans la
       id: ID,
       statut: "a_valider",
       autofactureAt: null,
-      numeroFacture: null,
     });
     // Les lignes vivantes (calcule ET valide) s'annulent : un statut, jamais un DELETE.
     expect(tx.trainerFeeLine.updateMany).toHaveBeenCalledWith({
@@ -166,9 +165,6 @@ describe("Défaut 1 — annuler un relevé de mission annule ses lignes, dans la
       data: { id: ID, statut: "annule" },
     });
     expect(tx.trainerFeeLine.updateMany).not.toHaveBeenCalled();
-    expect(tx.trainerStatement.updateMany.mock.calls[0]![0].where).not.toHaveProperty(
-      "numeroFacture",
-    );
   });
 });
 

@@ -77,10 +77,13 @@ export function apercuIndemniteAnnulation(
   const debutDe = (d: DemiJourneeDatee): Date => {
     const j = parJour.get(d.jour);
     // Signée un jour sans journée prévue : début au plus tôt du créneau.
-    const heureDebut = j?.heureDebut ?? (d.creneau === "matin" ? "00:00" : p.milieuDeJournee);
+    // « 9:00 » → « 09:00 » AVANT de comparer : sinon « 9:00 » ≥ « 13:00 ».
+    const heureDebut = (
+      j?.heureDebut ?? (d.creneau === "matin" ? "00:00" : p.milieuDeJournee)
+    ).padStart(5, "0");
     const heure =
       d.creneau === "matin" || heureDebut >= p.milieuDeJournee ? heureDebut : p.milieuDeJournee;
-    return instantParis(d.jour, heure.padStart(5, "0"));
+    return instantParis(d.jour, heure);
   };
   const signees = demiJourneesSignees(f.contresignatures);
   const signee = new Set(signees.map((d) => `${d.jour}|${d.creneau}`));

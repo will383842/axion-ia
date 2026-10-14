@@ -151,3 +151,20 @@ describe("chantier C4 (défaut 2) — jamais deux fois la même demi-journée", 
     expect(a.indemnite.due).toBe(false);
   });
 });
+
+describe("chantier C4 — heures saisies sans zéro initial", () => {
+  it("« 9:00 » : l'après-midi commence à 13:00, pas à 9 h (2 demi-journées annulées à 12 h 30)", () => {
+    const a = apercuIndemniteAnnulation({
+      ...base,
+      journeesPrevues: [
+        { jour: "2026-11-16", heureDebut: "9:00", heureFin: "17:00" },
+        { jour: "2026-11-17", heureDebut: "9:00", heureFin: "12:30" },
+      ],
+      annuleeA: new Date("2026-11-16T11:30:00Z"),
+    });
+    expect(a.demiJourneesAnnulees).toBe(2);
+    // 2 × 60 000 / 2 = 60 000 ; 50 % = 30 000 HT ; TVA 6 000 ; TTC 36 000.
+    expect(a.totaux.totalHtCents).toBe(30_000);
+    expect(a.totaux.totalTtcCents).toBe(36_000);
+  });
+});

@@ -279,11 +279,7 @@ export async function transitionStatementAction(
    * correction passe par un AVOIR (`emettreAvoirMission`), qui annule la pièce
    * ET ses lignes, et libère le mois pour la réémission.
    */
-  if (
-    releveDeMission &&
-    v.to === "annule" &&
-    (releve.numeroFacture != null || releve.autofactureAt != null)
-  ) {
+  if (releveDeMission && v.to === "annule" && releve.autofactureAt != null) {
     return {
       error: `L'autofacture ${releve.numeroFacture ?? ""} de cette mission a été émise : elle ne s'annule pas, elle se corrige par un avoir.`,
     };
@@ -486,10 +482,9 @@ export async function transitionStatementAction(
         where: {
           id: v.id,
           statut: from,
+          // (Chantier C4 : c'est aussi ce qui refuse l'annulation d'un relevé de
+          // mission dont l'autofacture est émise entre la lecture et le verrou.)
           autofactureAt: releve.autofactureAt,
-          // Chantier C4 : une autofacture émise entre la lecture et le verrou
-          // refuse l'annulation (la pièce passe alors par un avoir).
-          ...(releveDeMission && v.to === "annule" ? { numeroFacture: null } : {}),
           // Une contestation consignée entre la lecture et l'écriture
           // (`contesterAutofactureAction`) bloque le paiement, comme la garde
           // plus haut : sinon le virement partirait sur une pièce contestée.
