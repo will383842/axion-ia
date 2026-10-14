@@ -250,7 +250,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -338,7 +338,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain, séance de remédiation offerte. Vocabulaire et démos ajustés Ã  votre secteur messin — industrie, finance, numérique, collectivités.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés Ã  votre secteur messin — industrie, finance, numérique, collectivités.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Metz come in on-site formats from one to several days depending on your teams. Your staff leave with AI tools installed on their workstations, configured for their real work — on the factory floor, at the office, with clients or in the cross-border Metz-Luxembourg context.",
@@ -424,7 +424,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning, free remediation session offered. Vocabulary and demos adjusted to your Metz sector — industry, finance, digital, public administration.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Metz sector — industry, finance, digital, public administration.",
       },
     },
     implementation: {
@@ -512,7 +512,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus Ã  la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel reste très en deçÃ  de la prédiction, audit gratuit + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus Ã  la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Metz brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Metz offices — Technopôle, Quartier de l'Amphithéâtre or a Eurométropole commune.",
@@ -598,7 +598,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in.",
       },
     },
     unAUn: {
@@ -686,7 +686,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Satisfaction garantie Ã  l'issue du programme : si vous estimez ne pas avoir progressé sur vos objectifs définis en diagnostic, la dernière séance est remboursée. Session inaugurale en présentiel Ã  Metz garantie dès la réservation. Confidentialité totale — vos données, vos stratégies, vos documents restent chez vous. Outils configurés opérationnels dès la première séance.",
+          "Session inaugurale en présentiel Ã  Metz garantie dès la réservation. Confidentialité totale — vos données, vos stratégies, vos documents restent chez vous. Outils configurés opérationnels dès la première séance.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Metz is a bespoke 1-to-1 program for executives, managers and experts across the Eurométropole. Hybrid format — inaugural in-person session at your Metz offices or a Technopôle workspace, then structured remote follow-up. You progress at your own pace on your real professional challenges.",
@@ -772,7 +772,7 @@ export const METZ_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Satisfaction guaranteed at programme end: if you feel you have not progressed on your goals as defined at diagnosis, the final session is refunded. Inaugural in-person session in Metz guaranteed upon booking. Full confidentiality — your data, your strategies, your documents stay with you. Tools configured and operational from the first session.",
+          "Inaugural in-person session in Metz guaranteed upon booking. Full confidentiality — your data, your strategies, your documents stay with you. Tools configured and operational from the first session.",
       },
     },
     sitesWeb: {

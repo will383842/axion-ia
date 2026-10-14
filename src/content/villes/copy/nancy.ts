@@ -249,7 +249,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house.",
       },
     },
     interventions: {
@@ -337,7 +337,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain sur les outils installés, séance de remédiation offerte. Vocabulaire et démos ajustés à votre secteur nancéien — industrie, santé, recherche, services — aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même. Vocabulaire et démos ajustés à votre secteur nancéien — industrie, santé, recherche, services — aucune session générique recyclée.",
       },
       en: {
         hero: "Axion-IA's AI sessions in Nancy come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — in industry, in the lab, in clinical settings or at the office.",
@@ -423,7 +423,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary and demos adjusted to your Nancy sector — industry, health, research, services — no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening. Vocabulary and demos adjusted to your Nancy sector — industry, health, research, services — no recycled generic session.",
       },
     },
     implementation: {
@@ -511,7 +511,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Nancy brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Nancy offices — city centre, Brabois, Artem campus or a Grand Nancy commune.",
@@ -597,7 +597,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
     unAUn: {
@@ -685,7 +685,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme construit sur mesure dès le bilan d'entrée : aucun module générique. Confidentialité totale. Chaque séance produit un livrable utilisable immédiatement. Si après les deux premières séances vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral des séances restantes. Aucun lock-in : vos acquis, vos prompts, vos workflows vous appartiennent entièrement.",
+          "Programme construit sur mesure dès le bilan d'entrée : aucun module générique. Confidentialité totale. Chaque séance produit un livrable utilisable immédiatement. Aucun lock-in : vos acquis, vos prompts, vos workflows vous appartiennent entièrement.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Nancy is an intensive 1-to-1 for executives, managers and researchers in the Nancy basin who want to move from AI discovery to real operational mastery. Each session is grounded in your concrete cases — Brabois Technopole, Artem campus, Lorraine industry, business services. No lock-in, your learnings stay yours.",
@@ -771,7 +771,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme built on entry assessment: no generic modules. Full confidentiality. Each session produces an immediately usable deliverable. If after the first two sessions you feel the coaching does not meet your expectations, full refund of remaining sessions. No lock-in: your achievements, prompts and workflows belong entirely to you.",
+          "Programme built on entry assessment: no generic modules. Full confidentiality. Each session produces an immediately usable deliverable. No lock-in: your achievements, prompts and workflows belong entirely to you.",
       },
     },
     sitesWeb: {
