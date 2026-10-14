@@ -196,6 +196,11 @@ export const DELAI_RECONTROLE_JOURS = 25;
  * contrôle validé : un orange validé vaut un vert, aux mêmes dates.
  */
 export const SOURCE_VALIDATION_ORANGE = "validation_administrateur";
+/**
+ * Source de la ligne « dossier refusé » (F13, `envois-dossier.ts`). Lot 8A : un contrôle
+ * VERT qui suit un refus remet le dossier « à vérifier » (`controle.ts`).
+ */
+export const SOURCE_REFUS_ADMINISTRATEUR = "refus_administrateur";
 
 const JOUR_MS = 24 * 3600 * 1000;
 

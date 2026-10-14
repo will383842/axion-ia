@@ -27,6 +27,7 @@ import type { PrismaClient, VerdictRegistre } from "../../../../prisma/generated
 import { journaliser } from "@/server/journal/journaliser";
 
 import {
+  SOURCE_REFUS_ADMINISTRATEUR,
   SOURCE_VALIDATION_ORANGE,
   aRecontroler,
   dansLaPlageDuPassage,
@@ -119,6 +120,65 @@ async function verrouFormateur(tx: ClientVerrou, trainerId: string): Promise<voi
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`controle_registre:${trainerId}`}))`;
 }
 
+/**
+ * Lot 8A (décision du dirigeant, #1510-4) — le PREMIER contrôle vert qui suit un refus
+ * (F13) lève ce refus : le dossier reçu ou vérifié repasse « à vérifier », pour qu'un
+ * administrateur le reprenne. Jamais d'activation : seul `dossierStatut` est écrit. Une
+ * ligne au journal, identifiants seuls. Dans la transaction du contrôle, sous son verrou.
+ */
+async function leverRefusSiVert(
+  tx: Pick<Db, "trainer" | "verificationRegistreSousTraitance" | "activityLog">,
+  p: { trainerId: string; controleId: string; verifieParId: string | null },
+): Promise<void> {
+  const refus = await tx.verificationRegistreSousTraitance.findFirst({
+    where: { trainerId: p.trainerId, source: SOURCE_REFUS_ADMINISTRATEUR },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, createdAt: true },
+  });
+  if (refus === null) return;
+  // Un vert (ou un orange validé) déjà inscrit depuis ce refus l'a levé : rien à refaire.
+  const leve = await tx.verificationRegistreSousTraitance.findFirst({
+    where: {
+      trainerId: p.trainerId,
+      id: { not: p.controleId },
+      createdAt: { gt: refus.createdAt },
+      OR: [{ verdict: "vert" }, { source: SOURCE_VALIDATION_ORANGE }],
+    },
+    select: { id: true },
+  });
+  if (leve !== null) return;
+  // Un formateur déjà actif garde son état : seul un dossier pas encore activé est repris.
+  // (`actif` est lu, jamais écrit ici : `activation.ts` en reste le seul écrivain.)
+  const fiche = await tx.trainer.findUnique({
+    where: { id: p.trainerId },
+    select: { actif: true },
+  });
+  const r =
+    fiche?.actif === true
+      ? { count: 0 }
+      : await tx.trainer.updateMany({
+          where: {
+            id: p.trainerId,
+            activationValideeAt: null,
+            finCollaborationAt: null,
+            // Un dossier que le formateur remplit encore (en cours, complément) reste à lui.
+            dossierStatut: { in: ["a_verifier", "verifie"] },
+          },
+          data: { dossierStatut: "a_verifier" },
+        });
+  await journaliser(
+    tx,
+    {
+      action: "qualiopi.formateur.dossier_refus_leve",
+      targetType: "Trainer",
+      targetId: p.trainerId,
+      changes: { controleId: p.controleId, refusId: refus.id, rouvert: r.count === 1 },
+      session: p.verifieParId ? { userId: p.verifieParId } : null,
+    },
+    { exiger: true },
+  );
+}
+
 export type ResultatControle =
   | {
       readonly ok: true;
@@ -169,7 +229,7 @@ export async function controlerRegistreFormateur(
 
   await db.$transaction(async (tx) => {
     await verrouFormateur(tx, t.id);
-    await tx.verificationRegistreSousTraitance.create({
+    const cree = await tx.verificationRegistreSousTraitance.create({
       data: {
         trainerId: t.id,
         verifieAt: p.maintenant,
@@ -183,7 +243,15 @@ export async function controlerRegistreFormateur(
         motif: v.motifs.length > 0 ? v.motifs.join(",") : null,
         verifieParId: p.verifieParId,
       },
+      select: { id: true },
     });
+    if (v.verdict === "vert") {
+      await leverRefusSiVert(tx, {
+        trainerId: t.id,
+        controleId: cree.id,
+        verifieParId: p.verifieParId,
+      });
+    }
     // Seule la LECTURE de la liste publique vaut « numéro vérifié » (09-SÉCURITÉ a).
     if (v.ndaSurLaListe && v.verdict !== "rouge") {
       await tx.trainer.update({ where: { id: t.id }, data: { ndaVerifieListeAt: p.maintenant } });
