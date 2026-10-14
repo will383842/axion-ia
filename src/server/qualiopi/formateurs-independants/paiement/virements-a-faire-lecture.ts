@@ -42,6 +42,7 @@ export async function etatsVirementsMission(
       periodeYear: true,
       periodeMonth: true,
       dateFacture: true,
+      feeLines: { where: { statut: { not: "annule" } }, select: { objet: true } },
     },
   });
   for (const r of releves) {
@@ -66,6 +67,7 @@ export async function etatsVirementsMission(
           periodeYear: r.periodeYear,
           periodeMonth: r.periodeMonth,
           dateFacture: r.dateFacture,
+          objets: (r.feeLines ?? []).map((l) => l.objet),
         },
         iban?.empreinte ?? null,
         maintenant,

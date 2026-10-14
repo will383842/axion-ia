@@ -98,3 +98,26 @@ describe("derniereJourneeDuMois : la date de la mission, où se juge l'attestati
     );
   });
 });
+
+describe("derniereJourneeDuReleve : pièce à date fixe seule → l'événement (échéance − 30)", () => {
+  it("indemnité seule : le jour de l'annulation, jamais la journée annulée ni la facture", async () => {
+    const { derniereJourneeDuReleve } = await import("../virement-mission-base");
+    const db = { trainingSession: { findUnique: async () => null } };
+    expect(
+      await derniereJourneeDuReleve(
+        db,
+        {
+          trainerId: "t",
+          sessionId: "s",
+          periodeYear: 2026,
+          periodeMonth: 10,
+          dateFacture: new Date("2026-10-25T10:00:00Z"),
+          // Annulation le 05/10 → échéance fixe 04/11 (05/10 + 30).
+          echeanceAt: new Date("2026-11-04T12:00:00Z"),
+          objets: ["indemnite_annulation"],
+        },
+        new Date("2026-10-26T10:00:00Z"),
+      ),
+    ).toBe("2026-10-05");
+  });
+});

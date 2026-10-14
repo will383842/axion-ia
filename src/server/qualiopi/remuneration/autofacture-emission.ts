@@ -77,7 +77,9 @@ import {
   type IssueVerrouAutofacture,
 } from "@/server/qualiopi/remuneration/verrou-emission-autofacture";
 
-const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
+// Heure de Paris : l'échéance d'une facture de mission se compte en jours civils de
+// Paris ; une émission à 0 h 30 ne doit pas s'imprimer à la date de la veille.
+const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
 const euros = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 

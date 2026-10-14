@@ -391,6 +391,7 @@ export async function transitionStatementAction(
       periodeYear: releve.periodeYear,
       periodeMonth: releve.periodeMonth,
       dateFacture: releve.dateFacture ?? null,
+      objets: (releve.feeLines ?? []).map((l) => l.objet ?? null),
     };
     let c: Awaited<ReturnType<typeof contexteVirementMission>>;
     try {

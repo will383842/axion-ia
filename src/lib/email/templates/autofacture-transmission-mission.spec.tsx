@@ -26,9 +26,7 @@ describe("autofacture-transmission — variante mission (F36)", () => {
     expect(r.text).not.toContain("pour la période de");
     expect(r.text).toContain("« Signaler un désaccord »");
     expect(r.text).toContain("jusqu'au 03/12/2026 inclus");
-    expect(r.text).toContain(
-      "Le virement est prévu au plus tard le 17/12/2026, 30 jours après la date de cette facture.",
-    );
+    expect(r.text).toContain("Le virement est prévu au plus tard le 17/12/2026.");
   });
 
   it("sans `missionLabel` : le texte du relevé mensuel, inchangé", async () => {

@@ -95,8 +95,9 @@ const COPY = {
 
 /**
  * F36, variante « mission » (lot D2) : « Mission » à la place de « période », le
- * désaccord se signale aussi depuis l'espace, l'échéance part de la date de la facture
- * (décision du 14/10/2026). Français seulement (l'espace formateur est en français).
+ * désaccord se signale aussi depuis l'espace. L'échéance est dite sans sa règle : 30 jours
+ * après la facture le plus souvent, mais une facture rectifiée garde celle de la pièce
+ * remplacée et une indemnité sa date fixe (`echeance-autofacture.ts`). Français seulement (l'espace formateur est en français).
  */
 const COPY_MISSION = {
   corps: (num: string, mission: string, montant: string) =>
@@ -105,8 +106,7 @@ const COPY_MISSION = {
     d
       ? `Si quelque chose vous semble inexact, vous avez huit jours pour nous le signaler, soit jusqu'au ${d} inclus : depuis votre espace (« Signaler un désaccord »), ou en répondant à cet e-mail. Passé ce délai, la facture est réputée acceptée.`
       : "Si quelque chose vous semble inexact, signalez-le depuis votre espace (« Signaler un désaccord »), ou répondez à cet e-mail.",
-  echeance: (d: string) =>
-    d ? `Le virement est prévu au plus tard le ${d}, 30 jours après la date de cette facture.` : "",
+  echeance: (d: string) => (d ? `Le virement est prévu au plus tard le ${d}.` : ""),
 } as const;
 
 export const autofactureTransmissionSubject = (

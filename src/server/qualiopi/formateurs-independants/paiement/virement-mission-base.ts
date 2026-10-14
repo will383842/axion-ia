@@ -9,11 +9,12 @@
 
 import { decryptPii } from "@/lib/pii-crypto";
 
-import { jourDeColonneDate, jourParis, type JourCivil } from "../argent/dates";
+import { ajouterJours, jourDeColonneDate, jourParis, type JourCivil } from "../argent/dates";
+import { PARAMETRES_ARGENT_FORMATEURS } from "../argent/parametres";
 import { journeesDuFormateur } from "../argent/journees-du-formateur";
 import { vigilanceExigible } from "../vigilance-seuil";
 import { lireCumulHonorairesHtCents, type ClientCumulHonoraires } from "../vigilance-seuil-lecture";
-import { derniereJourneeDuMois } from "./echeance-autofacture";
+import { derniereJourneeDuMois, OBJETS_A_DATE_FIXE } from "./echeance-autofacture";
 import {
   attenteAttestationALaMission,
   gardeVirementMission,
@@ -27,7 +28,7 @@ export interface ClientVirementMission {
     findUnique(a: unknown): Promise<{ iban: string | null; ibanEmpreinte: string | null } | null>;
   };
   trainerDocument: {
-    findMany(a: unknown): Promise<Array<{ dateExpiration: Date | null }>>;
+    findMany(a: unknown): Promise<Array<{ dateExpiration: Date | null; valideAt?: Date | null }>>;
   };
   demandeChangementFormateur: {
     count(a: unknown): Promise<number>;
@@ -62,6 +63,8 @@ export interface ReleveAPayer {
   readonly periodeYear: number;
   readonly periodeMonth: number;
   readonly dateFacture: Date | null;
+  /** Objets des lignes non annulées (`animation`, `indemnite_annulation`…). */
+  readonly objets: ReadonlyArray<string | null>;
 }
 
 /**
@@ -72,9 +75,24 @@ export interface ReleveAPayer {
  */
 export async function derniereJourneeDuReleve(
   db: ClientJourneesSession,
-  r: Pick<ReleveAPayer, "trainerId" | "sessionId" | "periodeYear" | "periodeMonth" | "dateFacture">,
+  r: Pick<
+    ReleveAPayer,
+    | "trainerId"
+    | "sessionId"
+    | "periodeYear"
+    | "periodeMonth"
+    | "dateFacture"
+    | "echeanceAt"
+    | "objets"
+  >,
   maintenant: Date,
 ): Promise<JourCivil> {
+  // Une pièce qui ne porte QUE des sommes à date fixe (indemnité d'annulation, art. 11.3 ;
+  // présentation de la méthode, art. 21.2) garde cette date à l'émission, toujours plus
+  // proche que la facture + 30 : l'événement est donc son échéance − 30, au jour près.
+  if (r.objets.length > 0 && r.objets.every((o) => o !== null && OBJETS_A_DATE_FIXE.has(o))) {
+    return ajouterJours(jourParis(r.echeanceAt), -PARAMETRES_ARGENT_FORMATEURS.delaiPaiementJours);
+  }
   let journees: JourCivil[] = [];
   if (r.sessionId !== null) {
     try {
@@ -124,7 +142,7 @@ export async function contexteVirementMission(
         statutValidation: "valide",
         archiveAt: null,
       },
-      select: { dateExpiration: true },
+      select: { dateExpiration: true, valideAt: true },
     }),
     db.demandeChangementFormateur.count({
       where: { trainerId: releve.trainerId, nature: "iban", statut: "en_attente" },
@@ -139,8 +157,16 @@ export async function contexteVirementMission(
       ? lireCumulHonorairesHtCents(releve.trainerId, { trainerStatement: db.trainerStatement })
       : Promise.resolve(null),
   ]);
+  const exigible = vigilanceExigible(cumul);
+  // Délai suspendu (art. 16.7) : le jour où l'attestation qui couvre la mission a été
+  // vérifiée — la plus ancienne vérification parmi celles qui la couvrent.
+  const verifiees = attestations
+    .filter((a) => a.dateExpiration && jourDeColonneDate(a.dateExpiration) >= derniereJournee)
+    .flatMap((a) => (a.valideAt ? [jourParis(a.valideAt)] : []))
+    .sort();
   const verdict = gardeVirementMission({
     derniereJournee,
+    attestationVerifieeLe: exigible ? (verifiees[0] ?? null) : null,
     echeance,
     aujourdhui: jourParis(maintenant),
     maintenant,
@@ -150,7 +176,7 @@ export async function contexteVirementMission(
       a.dateExpiration ? [jourDeColonneDate(a.dateExpiration)] : [],
     ),
     // Lot G1 : sous le seuil de vigilance, l'attestation n'est pas exigée pour payer.
-    vigilanceExigible: vigilanceExigible(cumul),
+    vigilanceExigible: exigible,
     demandeIbanEnAttente: enAttente > 0,
     dernierChangementIban:
       dernier?.traiteAt != null ? { demandeA: dernier.createdAt, valideA: dernier.traiteAt } : null,
@@ -200,6 +226,7 @@ export async function relevesMissionEnAttenteAttestation(
           periodeYear: true,
           periodeMonth: true,
           dateFacture: true,
+          feeLines: { where: { statut: { not: "annule" } }, select: { objet: true } },
         },
       }),
       db.trainerDocument.findMany({
@@ -220,6 +247,7 @@ export async function relevesMissionEnAttenteAttestation(
       periodeYear: number;
       periodeMonth: number;
       dateFacture: Date | null;
+      feeLines?: Array<{ objet: string | null }>;
     }>;
     const exigible = vigilanceExigible(cumul);
     const valables = attestations.flatMap((a) =>
@@ -228,7 +256,16 @@ export async function relevesMissionEnAttenteAttestation(
     const ids = new Set<string>();
     for (const r of releves) {
       if (r.echeanceAt === null) continue;
-      const derniereJournee = await derniereJourneeDuReleve(db, { trainerId, ...r }, new Date());
+      const derniereJournee = await derniereJourneeDuReleve(
+        db,
+        {
+          trainerId,
+          ...r,
+          echeanceAt: r.echeanceAt,
+          objets: (r.feeLines ?? []).map((l) => l.objet),
+        },
+        new Date(),
+      );
       if (
         attenteAttestationALaMission({
           vigilanceExigible: exigible,

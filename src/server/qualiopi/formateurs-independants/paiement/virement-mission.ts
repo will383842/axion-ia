@@ -78,6 +78,13 @@ export interface ContexteVirementMission {
   /** Empreinte affichée à l'opérateur (envoyée par le formulaire). */
   readonly ibanEmpreinteAffichee: string | null;
   readonly finPourDeces: boolean;
+  /**
+   * Contrat-cadre v4, art. 16.7 et 18.2 (décision du 14/10/2026) : au seuil, le délai
+   * de paiement est SUSPENDU, et non dépassé, tant qu'aucune attestation à jour n'est
+   * vérifiée. Jour (Paris) où l'attestation qui couvre la mission a été vérifiée ; le
+   * retard ne court qu'à partir du plus tardif de ce jour et de l'échéance. Absent : rien.
+   */
+  readonly attestationVerifieeLe?: JourCivil | null;
 }
 
 export interface VerdictVirementMission {
@@ -120,13 +127,19 @@ export function gardeVirementMission(
   if (c.ibanEmpreinteActuelle === null) motifs.push("iban_absent");
   else if (c.ibanEmpreinteAffichee !== c.ibanEmpreinteActuelle)
     motifs.push("iban_change_depuis_l_affichage");
+  // Délai suspendu (16.7) : aucun retard tant que l'attestation manque ; ensuite, il
+  // ne court qu'à partir de sa vérification si elle est postérieure à l'échéance.
+  const suspendu = motifs.includes("attestation_urssaf_echue_a_la_mission");
+  const echeance =
+    c.attestationVerifieeLe != null && c.attestationVerifieeLe > c.echeance
+      ? c.attestationVerifieeLe
+      : c.echeance;
   return {
     autorise: motifs.length === 0,
     motifs,
-    retard: retardDePaiement(
-      { totalTtcCents: c.totalTtcCents, echeance: c.echeance, payeLe: c.aujourdhui },
-      p,
-    ),
+    retard: suspendu
+      ? { joursDeRetard: 0, penalitesCents: 0, indemniteRecouvrementCents: 0 }
+      : retardDePaiement({ totalTtcCents: c.totalTtcCents, echeance, payeLe: c.aujourdhui }, p),
   };
 }
 
