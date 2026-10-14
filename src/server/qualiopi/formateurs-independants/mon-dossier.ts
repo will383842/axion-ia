@@ -30,7 +30,11 @@ import {
   libelleEtatPiece,
   type PieceLue,
 } from "./pieces-a-renouveler";
-import { LIBELLE_ATTESTATION_PLUS_TARD, vigilanceExigible } from "./vigilance-seuil";
+import {
+  LIBELLE_ATTESTATION_PLUS_TARD,
+  phaseVigilanceFormateur,
+  vigilanceExigible,
+} from "./vigilance-seuil";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 /** Lot G1 — l'attestation absente, sous le seuil : rien n'est attendu pour l'instant. */
@@ -115,7 +119,10 @@ export async function lireMonDossier(
       pieces: PIECES_SUIVIES.map((p) => {
         const e = etatPiece(docs, p.type, maintenant);
         const attestation = p.type === "attestation_vigilance_urssaf";
-        const pasEncore = attestation && !exigible && e.etat === "absente";
+        // Étape 3 du C4 : « pas nécessaire pour l'instant » seulement SOUS l'approche —
+        // à l'approche, l'e-mail F40 vient de la demander.
+        const pasEncore =
+          attestation && phaseVigilanceFormateur(cumul) === "sous_le_seuil" && e.etat === "absente";
         return {
           type: p.type,
           libelleType: LIBELLES_PIECE_MON_DOSSIER[p.type] ?? p.type,

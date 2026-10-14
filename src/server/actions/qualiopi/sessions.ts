@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { proposerMissionFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import { constaterDoubleEmploi } from "@/server/qualiopi/trainers/double-emploi";
+import { sessionADistance } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { controlerGardeMission } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import {
@@ -340,12 +341,14 @@ export async function createSessionAction(
     // 🔴 L3 — garde de mission (interrupteur `formateurs.garde_mission_portes` ;
     // coupé : aucun effet). Avant la création, donc avant toute écriture.
     // Étape 3 (C4) : la mission de cette session compte pour le seuil URSSAF — rien
-    // n'est encore en base, son montant est sur-estimé depuis la période.
+    // n'est encore en base : son montant est estimé sur les journées que la création
+    // proposera (durée de la formation) et sur la période, la plus haute des deux.
     const garde = await controlerGardeMission(v.trainerId, new Date(), {
       nouvelleSession: {
+        formationId: v.formationId,
         debut: v.dateDebut,
         fin: v.dateFin,
-        distanciel: v.modalite === "distanciel",
+        distanciel: sessionADistance({ lieuType: v.lieuType ?? null, modalite: v.modalite }),
       },
     });
     if (garde.refus.length > 0) {

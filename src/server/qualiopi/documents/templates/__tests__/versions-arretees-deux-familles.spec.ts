@@ -96,7 +96,7 @@ const EMPREINTES: Readonly<Record<string, string>> = {
   // l'empreinte IDENTIQUE ; les fichiers courants portent la v4 et la v3.
   "archives/contrat-cadre.v3.tsx":
     "4b20c6f75447e7b8dccaaaf78be0db0c95aad7d7d275a0e6edde5ed119db76d0",
-  "contrat-cadre.tsx": "70aea660750f3a3132283885c373cf9e586a5491ae8fca97df32d1bc8554a01d",
+  "contrat-cadre.tsx": "1135eaae50e69a0c150fd6873c84dc142f2406c881e98c0e1c6c2761bb7ec1a9",
   "lettre-mission.tsx": "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
   "archives/lettre-mission-v2.v2.tsx":
     "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",

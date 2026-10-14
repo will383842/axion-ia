@@ -71,7 +71,10 @@ export interface ResultatReevaluation {
   readonly action: ActionMoteur;
 }
 
-/** Version du gabarit de la lettre émise par le moteur (v3 depuis l'étape 3 du C4). */
+/**
+ * Version du gabarit passée à l'empreinte, qui ne la hache plus (v2 de l'empreinte). La
+ * version RÉELLEMENT émise suit le contrat-cadre signé (`versionLettrePourContrat`).
+ */
 const GABARIT_LETTRE = 3;
 
 /** Les deux interrupteurs du moteur. Lus à l'appel ; absents = arrêté. */

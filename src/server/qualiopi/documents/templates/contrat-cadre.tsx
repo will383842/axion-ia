@@ -668,11 +668,12 @@ export function ContratCadrePdf({
           <P>
             <B>16.1 Date limite.</B> Axion vous paie par virement{" "}
             <B>au plus tard 30 jours après la dernière journée réalisée</B> de la mission, une fois
-            les feuilles de présence contresignées (article 12) et, pour le dernier mois de la
-            mission, le bilan de fin de formation remis (article 20.2) ; s&apos;ils sont remis plus
-            tard, le délai court à partir de leur remise. La lettre de mission indique la date
-            limite qui vaut quand ces pièces sont remises à temps. Ni la validation d&apos;un
-            relevé, ni le paiement du client ne la déplacent.
+            les feuilles de présence contresignées par vous (article 12) et, pour le dernier mois de
+            la mission, le bilan de fin de formation remis (article 20.2) ; s&apos;ils sont remis
+            plus tard, le délai court à partir de leur remise. La lettre de mission indique la date
+            limite qui vaut quand ces pièces sont remises à temps. Ni la contresignature
+            d&apos;Axion, ni la validation d&apos;un relevé, ni le paiement du client ne la
+            déplacent.
           </P>
           <P>
             <B>16.2</B> Vous êtes payé que le client ait payé Axion ou non.
@@ -691,8 +692,8 @@ export function ContratCadrePdf({
           <P>
             <B>16.5 Contestation.</B> Une contestation porte sur une ligne précise. Elle ne retarde
             pas le paiement de la part non contestée. Si elle est reconnue fondée, Axion émet un
-            avoir et une nouvelle autofacture, payée au plus tard à la date limite d&apos;origine
-            ou, si elle est dépassée, dans les 8 jours.
+            avoir et une nouvelle autofacture, payée au plus tard à la date limite de l&apos;article
+            16.1 ou, si elle est dépassée, dans les 8 jours.
           </P>
           <P>
             <B>16.6 Retard.</B> Tout retard de paiement au-delà de la date limite fait courir de

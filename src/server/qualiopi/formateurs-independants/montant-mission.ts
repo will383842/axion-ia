@@ -16,7 +16,7 @@
  *     de déplacement AU PLAFOND du paiement (à distance : aucun) ;
  *   - tarif impair en centimes : arrondi au-dessus (la lettre le refuserait) ;
  *   - aucune journée déclarée : chaque jour calendaire de la période vaut une journée
- *     entière, forfait compris ;
+ *     entière, forfait compris ; des journées toutes désignées à d'autres : 0 ;
  *   - ni journée ni période, ou une erreur : `null` — la garde lit « attestation exigée ».
  */
 
@@ -76,6 +76,9 @@ export function montantMissionHtCents(f: FaitsMontantMission): number | null {
       ? f.affectes
       : [...f.affectes, { trainerId: f.trainerId }];
     const siens = journeesDuFormateur(f.jours, f.trainerId, affectes);
+    // Des journées déclarées, toutes désignées à d'autres : rien ne lui revient (la
+    // lettre refuserait de toute façon).
+    if (f.jours.length > 0 && siens.length === 0) return 0;
     if (siens.length > 0) {
       return honorairesLettre({
         jours: siens.map((j) => ({

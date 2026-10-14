@@ -14,6 +14,13 @@ const h = vi.hoisted(() => {
     session: null as Record<string, unknown> | null,
     missions: [] as unknown[],
     choix: null as Record<string, unknown> | null,
+    /** Autres missions OUVERTES du formateur (`{ id, sessionId }`). */
+    autres: [] as Array<{ id: string; sessionId: string }>,
+    /** Sessions par id, quand une autre que `session` est lue. */
+    sessions: new Map<string, Record<string, unknown>>(),
+    /** Lignes déjà facturées (`{ sessionId, montantHtCents }`). */
+    facture: [] as Array<{ sessionId: string; montantHtCents: number }>,
+    dureeHeures: 21,
   };
   const prisma = {
     setting: {
@@ -29,8 +36,24 @@ const h = vi.hoisted(() => {
       })),
     },
     trainerStatement: { findMany: vi.fn(async () => etat.releves) },
-    trainingSession: { findUnique: vi.fn(async () => etat.session) },
-    missionFormateur: { findMany: vi.fn(async () => etat.missions) },
+    trainingSession: {
+      findUnique: vi.fn(
+        async ({ where }: { where: { id: string } }) => etat.sessions.get(where.id) ?? etat.session,
+      ),
+    },
+    missionFormateur: {
+      // Les conditions figées d'UNE session (sessionId donné) ; sinon, les autres
+      // missions ouvertes du formateur.
+      findMany: vi.fn(async ({ where }: { where: { sessionId?: unknown } }) =>
+        typeof where.sessionId === "string" ? etat.missions : etat.autres,
+      ),
+    },
+    trainerFeeLine: {
+      findMany: vi.fn(async ({ where }: { where: { sessionId: { in: string[] } } }) =>
+        etat.facture.filter((l) => where.sessionId.in.includes(l.sessionId)),
+      ),
+    },
+    formation: { findUnique: vi.fn(async () => ({ dureeHeures: etat.dureeHeures })) },
     choixFormateurSession: { findUnique: vi.fn(async () => etat.choix) },
   };
   return { etat, prisma };
@@ -81,6 +104,10 @@ beforeEach(() => {
   };
   h.etat.missions = [];
   h.etat.choix = null;
+  h.etat.autres = [];
+  h.etat.sessions.clear();
+  h.etat.facture = [];
+  h.etat.dureeHeures = 21;
 });
 
 describe("controlerGardeMission avec la mission en jeu", () => {
@@ -108,6 +135,7 @@ describe("controlerGardeMission avec la mission en jeu", () => {
   it("session pas encore créée : la période, sur-estimée (4 jours × 350 €)", async () => {
     const r = await controlerGardeMission("t-1", MAINTENANT, {
       nouvelleSession: {
+        formationId: null,
         debut: new Date("2026-11-02T08:00:00Z"),
         fin: new Date("2026-11-05T16:00:00Z"),
         distanciel: true,
@@ -129,14 +157,89 @@ describe("controlerGardeMission avec la mission en jeu", () => {
   });
 });
 
+describe("relecture de l'étape 3 — l'engagement entier, jamais compté deux fois", () => {
+  const autreSession = (jours: number) => ({
+    lieuType: "distanciel",
+    dateDebut: new Date("2026-12-01T08:00:00Z"),
+    dateFin: new Date("2026-12-10T16:00:00Z"),
+    jours: Array.from({ length: jours }, (_, i) => jour(`2026-12-0${i + 1}`)),
+    sessionFormateurs: [{ trainerId: "t-1" }],
+  });
+
+  it("B2 — une autre mission acceptée non facturée s'ajoute : 4 000 + 700 + 700 = 5 400 € → refus", async () => {
+    h.etat.session = { ...h.etat.session!, jours: [jour("2026-11-02"), jour("2026-11-03")] };
+    h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
+    h.etat.sessions.set("s-2", autreSession(2));
+    const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
+  });
+
+  it("une autre mission DÉJÀ facturée ne compte pas deux fois : 4 000 + 700 + (700 − 700) → passe", async () => {
+    h.etat.session = { ...h.etat.session!, jours: [jour("2026-11-02"), jour("2026-11-03")] };
+    h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
+    h.etat.sessions.set("s-2", autreSession(2));
+    h.etat.facture = [{ sessionId: "s-2", montantHtCents: 70_000 }];
+    const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    expect(r.refus).toEqual([]);
+  });
+
+  it("la mission en jeu, déjà facturée en partie, n'ajoute que le reste : 4 000 + (1 400 − 700) → passe", async () => {
+    h.etat.facture = [{ sessionId: "s-1", montantHtCents: 70_000 }];
+    const r = await controlerGardeMission("t-1", MAINTENANT, { sessionId: "s-1" });
+    expect(r.refus).toEqual([]);
+  });
+
+  it("création : les journées tirées de la durée (21 h = 3 j) priment sur une période plus courte", async () => {
+    h.etat.releves = [releve(380_000)];
+    // Période d'un jour (350 €) → 4 150 € ; journées de la durée : 3 × 350 € → 4 850 €.
+    // Avec 28 h (4 j) : 5 200 € → refus.
+    h.etat.dureeHeures = 28;
+    const r = await controlerGardeMission("t-1", MAINTENANT, {
+      nouvelleSession: {
+        formationId: "f-1",
+        debut: new Date("2026-11-02T08:00:00Z"),
+        fin: new Date("2026-11-02T16:00:00Z"),
+        distanciel: true,
+      },
+    });
+    expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
+  });
+
+  it("une autre mission illisible : refus (garde fermée)", async () => {
+    h.etat.autres = [{ id: "m-autre", sessionId: "s-2" }];
+    h.etat.session = null;
+    const r = await controlerGardeMission("t-1", MAINTENANT, {
+      nouvelleSession: {
+        formationId: null,
+        debut: new Date("2026-11-02T08:00:00Z"),
+        fin: new Date("2026-11-02T16:00:00Z"),
+        distanciel: true,
+      },
+    });
+    expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
+  });
+});
+
 describe("controlerVigilanceLettre — à l'émission de la lettre", () => {
   it("4 000 € + une lettre de 1 400 € sans attestation : refusée", async () => {
-    const r = await controlerVigilanceLettre("t-1", 140_000, MAINTENANT);
+    const r = await controlerVigilanceLettre(
+      "t-1",
+      { sessionId: "s-1", montantHtCents: 140_000 },
+      MAINTENANT,
+    );
     expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
   });
 
   it("4 000 € + 700 € : la lettre part", async () => {
-    expect((await controlerVigilanceLettre("t-1", 70_000, MAINTENANT)).refus).toEqual([]);
+    expect(
+      (
+        await controlerVigilanceLettre(
+          "t-1",
+          { sessionId: "s-1", montantHtCents: 70_000 },
+          MAINTENANT,
+        )
+      ).refus,
+    ).toEqual([]);
   });
 
   it("avec une attestation valable : la lettre part", async () => {
@@ -152,13 +255,25 @@ describe("controlerVigilanceLettre — à l'émission de la lettre", () => {
         },
       ],
     };
-    expect((await controlerVigilanceLettre("t-1", 140_000, MAINTENANT)).refus).toEqual([]);
+    expect(
+      (
+        await controlerVigilanceLettre(
+          "t-1",
+          { sessionId: "s-1", montantHtCents: 140_000 },
+          MAINTENANT,
+        )
+      ).refus,
+    ).toEqual([]);
   });
 
   it("ancien stock en « avertir » : averti, jamais bloqué", async () => {
     h.etat.settings.set("formateurs.garde_mission", { valeur: "avertir" });
     h.etat.trainer = { ...h.etat.trainer!, activationValideeSource: "anterieure_au_controle" };
-    const r = await controlerVigilanceLettre("t-1", 140_000, MAINTENANT);
+    const r = await controlerVigilanceLettre(
+      "t-1",
+      { sessionId: "s-1", montantHtCents: 140_000 },
+      MAINTENANT,
+    );
     expect(r).toMatchObject({ mode: "avertir", refus: [] });
     expect(r.avertissements).toEqual([MANQUES_MISSION.vigilanceMission]);
   });
@@ -202,6 +317,7 @@ describe("les portes passent la mission en jeu", () => {
       service.match(/controlerGardeMission\([\w.]+, (?:now|new Date\(\)), \{\s*sessionId/g)?.length,
     ).toBe(3);
     const report = lire("src/server/actions/qualiopi/sessions-recurrentes.ts");
-    expect(report.match(/sessionId: ancienne\.id/g)?.length).toBe(2);
+    expect(report).toMatch(/const missionDuReport: MissionEnJeu = \{\s*nouvelleSession/);
+    expect(report.match(/controlerGardeMission\([^\n]*(enJeu|missionDuReport)\)/g)?.length).toBe(2);
   });
 });

@@ -131,6 +131,11 @@ export interface FormateurPourActivation {
    * URSSAF reste exigée (garde fermée).
    */
   readonly cumulHonorairesHtCents?: number | null;
+  /**
+   * Étape 3 du C4 — formateur rattaché à un ORGANISME sous-traitant : l'extrait Kbis
+   * (ou l'avis SIRENE) reste exigé, comme l'art. 18.3 du contrat-cadre le prévoit.
+   */
+  readonly organismeSousTraitantId?: string | null;
 }
 
 export type VerdictActivation =
@@ -180,7 +185,8 @@ export function contratSousTraitanceSigne(
  * Étape 3 du C4 (décision de Will) : alignée sur la porte de contresignature, qui
  * n'exige l'attestation qu'au seuil (`vigilanceExigible`) et ne demande plus d'avis
  * SIRENE / Kbis — l'entreprise active est prouvée par le registre public relu à la
- * contresignature. `MANQUES.sirene` ne sort donc plus de cette garde.
+ * contresignature. `MANQUES.sirene` ne sort plus que pour un formateur rattaché à un
+ * ORGANISME sous-traitant, que l'art. 18.3 du contrat-cadre tient au Kbis.
  */
 export function peutActiverFormateurIndependant(
   formateur: FormateurPourActivation,
@@ -211,6 +217,12 @@ export function peutActiverFormateurIndependant(
       !pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))
     ) {
       manques.push(MANQUES.vigilance);
+    }
+    if (
+      typeof formateur.organismeSousTraitantId === "string" &&
+      !pieces.some((p) => pieceGardeeProbante(p, "kbis_avis_sirene", maintenant))
+    ) {
+      manques.push(MANQUES.sirene);
     }
     return manques.length === 0 ? { activable: true } : { activable: false, manques };
   } catch {

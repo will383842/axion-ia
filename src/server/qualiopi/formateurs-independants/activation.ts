@@ -133,6 +133,7 @@ async function lireFormateurPourGarde(
         sousTraitantNda: true,
         sousTraitantContratSigneAt: true,
         finCollaborationAt: true,
+        organismeSousTraitantId: true,
         // Lot C4 — la preuve de signature est la pièce générée, pas la date saisie.
         documentsGeneres: {
           where: { type: "contrat_sous_traitance" },
@@ -166,6 +167,7 @@ async function lireFormateurPourGarde(
     finCollaborationAt: t.finCollaborationAt ?? null,
     pieces: (t.documents ?? []) as DocumentConformite[],
     cumulHonorairesHtCents: cumul,
+    organismeSousTraitantId: t.organismeSousTraitantId ?? null,
   };
 }
 

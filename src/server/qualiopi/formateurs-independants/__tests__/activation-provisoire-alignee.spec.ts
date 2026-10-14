@@ -75,6 +75,18 @@ describe("activation provisoire alignée sur la contresignature", () => {
     }
   });
 
+  it("relecture : un ORGANISME sous-traitant reste tenu au Kbis (art. 18.3 du contrat-cadre)", () => {
+    const organisme = sansPiece({ cumulHonorairesHtCents: 0, organismeSousTraitantId: "org-1" });
+    expect(peutActiverFormateurIndependant(organisme, MAINTENANT)).toEqual({
+      activable: false,
+      manques: [MANQUES.sirene],
+    });
+    const kbis: DocumentConformite = { ...attestation, type: "kbis_avis_sirene" };
+    expect(peutActiverFormateurIndependant({ ...organisme, pieces: [kbis] }, MAINTENANT)).toEqual({
+      activable: true,
+    });
+  });
+
   it("le message de la console dit le seuil", () => {
     expect(MANQUES.vigilance).toMatch(/5\s000 € HT/);
   });

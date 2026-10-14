@@ -255,10 +255,11 @@ export default async function RemunerationFormateurPage({
           // Lot D2 : payé à la mission, il n'attend pas la fin du mois.
           <p className="mt-8 text-sm opacity-70">
             Aucune facture pour l&apos;instant. Après chaque mission, une fois vos feuilles de
-            présence signées, nous établissons la facture à votre nom. Vos honoraires sont réglés au
-            plus tard 30 jours après la dernière journée, une fois les feuilles de présence
+            présence contresignées, nous établissons la facture à votre nom. Vos honoraires sont
+            réglés au plus tard 30 jours après la dernière journée, une fois ces feuilles
             contresignées et, pour le dernier mois de la mission, le bilan de fin de formation remis
-            ; s&apos;ils sont remis plus tard, le délai court à partir de leur remise.
+            s&apos;il vous est demandé ; s&apos;ils sont remis plus tard, le délai court à partir de
+            leur remise.
           </p>
         ) : (
           <p className="mt-8 text-sm opacity-70">
@@ -310,8 +311,8 @@ export default async function RemunerationFormateurPage({
                     La facture n&apos;est pas encore établie. Le virement part au plus tard 30 jours
                     après la dernière journée du mois facturé, une fois les feuilles de présence
                     contresignées et, pour le dernier mois de la mission, le bilan de fin de
-                    formation remis ; s&apos;ils sont remis plus tard, le délai court à partir de
-                    leur remise.
+                    formation remis s&apos;il vous est demandé ; s&apos;ils sont remis plus tard, le
+                    délai court à partir de leur remise.
                   </p>
                 ) : (
                   // Pas de facture, donc pas d'échéance. On le DIT : une case

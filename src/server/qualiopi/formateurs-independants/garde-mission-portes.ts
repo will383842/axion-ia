@@ -32,7 +32,7 @@ import {
   lireValeurSignature,
   type NiveauGardeMission,
 } from "./interrupteurs";
-import { lireMontantMissionHtCents, type MissionEnJeu } from "./montant-mission-lecture";
+import { lireEngagementHtCents, type MissionEnJeu } from "./montant-mission-lecture";
 import { lireCumulHonorairesHtCents } from "./vigilance-seuil-lecture";
 
 export type { MissionEnJeu } from "./montant-mission-lecture";
@@ -88,9 +88,10 @@ async function lireAllumage(): Promise<ControleGardeMission | "allumee"> {
  * une erreur de lecture rend un refus.
  *
  * Étape 3 (C4) — `enJeu` : la mission dont on décide. Son montant (calcul de la
- * lettre, sur-estimé dans le doute) s'ajoute au cumul pour le seuil de vigilance :
- * l'attestation est exigée AVANT une mission qui fait atteindre 5 000 € HT. Absent :
- * le cumul seul, comme avant.
+ * lettre, sur-estimé dans le doute), net de ce qui en est déjà facturé, et celui des
+ * autres missions ouvertes du formateur s'ajoutent au cumul pour le seuil de vigilance
+ * (`lireEngagementHtCents`) : l'attestation est exigée AVANT une mission qui fait
+ * atteindre 5 000 € HT. Absent : le cumul seul, comme avant.
  */
 export async function controlerGardeMission(
   trainerId: string,
@@ -126,7 +127,7 @@ export async function controlerGardeMission(
       }),
       lireContratCadreSigne(trainerId),
       lireCumulHonorairesHtCents(trainerId),
-      enJeu === undefined ? undefined : lireMontantMissionHtCents(trainerId, enJeu),
+      enJeu === undefined ? undefined : lireEngagementHtCents(trainerId, enJeu, maintenant),
     ]);
     if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
     const mode = modeGardeMission(true, niveau, t.activationValideeSource);
@@ -163,13 +164,13 @@ export async function controlerGardeMission(
  */
 export async function controlerVigilanceLettre(
   trainerId: string,
-  montantLettreHtCents: number,
+  lettre: { readonly sessionId: string; readonly montantHtCents: number },
   maintenant: Date = new Date(),
 ): Promise<ControleGardeMission> {
   const allumage = await lireAllumage();
   if (allumage !== "allumee") return allumage;
   try {
-    const [niveau, t, cumul] = await Promise.all([
+    const [niveau, t, cumul, engagement] = await Promise.all([
       lireNiveau(),
       prisma.trainer.findUnique({
         where: { id: trainerId },
@@ -189,6 +190,9 @@ export async function controlerVigilanceLettre(
         },
       }),
       lireCumulHonorairesHtCents(trainerId),
+      // Le montant annoncé par la lettre, net de son déjà-facturé, plus les autres
+      // missions ouvertes du formateur.
+      lireEngagementHtCents(trainerId, lettre, maintenant),
     ]);
     if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
     if (t.statut === "salarie" || t.statut === "dirigeant") return COUPEE;
@@ -197,7 +201,7 @@ export async function controlerVigilanceLettre(
       {
         pieces: t.documents as DocumentConformite[],
         cumulHonorairesHtCents: cumul,
-        montantMissionHtCents: montantLettreHtCents,
+        montantMissionHtCents: engagement,
       },
       maintenant,
     );

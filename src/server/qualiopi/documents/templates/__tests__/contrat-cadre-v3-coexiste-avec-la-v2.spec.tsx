@@ -216,7 +216,7 @@ const EMPREINTES_ARRETEES: Readonly<Record<string, string>> = {
   "archives/lettre-mission-v2.v2.tsx":
     "0272584e43169a8e7aeacb0735e02c1a462610e1e72ca10667c110ae06393b54",
   // Étape 3 du C4 — contrat-cadre v4 et lettre de mission v3, arrêtés le 14/10/2026.
-  "contrat-cadre.tsx": "70aea660750f3a3132283885c373cf9e586a5491ae8fca97df32d1bc8554a01d",
+  "contrat-cadre.tsx": "1135eaae50e69a0c150fd6873c84dc142f2406c881e98c0e1c6c2761bb7ec1a9",
   "lettre-mission-v2.tsx": "713318a29da2e8d2c355d368a7bf9d1a91949f54515ae27745ab6d209c4d91c7",
 };
 

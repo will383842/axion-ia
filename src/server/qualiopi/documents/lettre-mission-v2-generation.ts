@@ -20,6 +20,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { LIEU_DOCUMENT_SELECT } from "@/server/qualiopi/lieu/resolve-lieu-document";
+import { LettreMissionV2Pdf as LettreMissionPdfV2Figee } from "@/server/qualiopi/documents/templates/archives/lettre-mission-v2.v2";
 import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 import { forfaitSelonLieu } from "@/server/qualiopi/formateurs-independants/choix-formateur";
@@ -32,10 +33,24 @@ import {
 import type { JourLettre } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-calcul";
 
 /**
- * Version du gabarit de la lettre émise (étape 3 du C4 : v3, section 4 du paiement).
- * Les lettres déjà émises gardent la leur (v2 figée dans `archives/`).
+ * Version du gabarit de la lettre émise À UN SIGNATAIRE DU CONTRAT-CADRE V4 (étape 3 du
+ * C4 : v3, section 4 du paiement — feuilles, bilan, délai, URSSAF).
  */
 export const VERSION_LETTRE_EMISE = 3;
+
+/** La lettre v3 n'est émise qu'à qui a signé ce contrat-cadre (ou plus récent). */
+export const VERSION_CONTRAT_POUR_LETTRE_V3 = 4;
+
+/**
+ * 🔑 La version de la lettre suit le contrat-cadre SIGNÉ (relecture de l'étape 3) : la
+ * lettre v3 annonce des conditions de paiement (bilan, délai courant de la remise) que
+ * le contrat v3 ne porte pas — or le contrat l'emporte (art. 9 de la lettre) et un
+ * engagement ajouté exige une signature (art. 32.3). Un signataire v3 reçoit donc la
+ * lettre v2, figée mot pour mot ; un signataire v4, la v3.
+ */
+export function versionLettrePourContrat(versionContrat: number | null | undefined): 2 | 3 {
+  return (versionContrat ?? 0) >= VERSION_CONTRAT_POUR_LETTRE_V3 ? 3 : 2;
+}
 
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
@@ -60,6 +75,13 @@ export type ResultatLettreV2 =
       documentId: string;
       numero: string;
       lettreAnnuleeId: string | null;
+      /** Version du gabarit émise : 3 pour un contrat-cadre v4, 2 (figée) sinon. */
+      gabaritVersion: 2 | 3;
+      /**
+       * Garde « avertir » (ancien stock) : la lettre est partie, mais l'attestation URSSAF
+       * manque — la console le dit au lieu de le perdre.
+       */
+      avertissements: ReadonlyArray<string>;
       /** Ce que la lettre annonce (F26 le reprend tel quel, jamais recalculé). */
       annonce: {
         journees: number;
@@ -234,7 +256,7 @@ export async function genererLettreMissionV2(input: {
   // AVANT la lettre (interrupteur `formateurs.garde_mission_portes` ; coupé : rien).
   const vigilance = await controlerVigilanceLettre(
     input.trainerId,
-    essai.annonce.totalHtCents,
+    { sessionId: input.sessionId, montantHtCents: essai.annonce.totalHtCents },
     maintenant,
   );
   if (vigilance.refus.length > 0) {
@@ -257,6 +279,7 @@ export async function genererLettreMissionV2(input: {
   }
   const aAnnuler = lettresVivantes.filter((l) => l.signatures.length === 0).map((l) => l.id);
 
+  const versionLettre = versionLettrePourContrat(contratCadre?.version);
   const identite = await getOrganismeIdentite();
   const doc = await generateDocument({
     type: "lettre_mission",
@@ -267,10 +290,13 @@ export async function genererLettreMissionV2(input: {
       const a = assemblerLettreV2(faits(numero));
       // Mêmes faits qu'à l'essai : ne peut pas refuser ici.
       if (!a.ok) throw new Error(a.motif);
-      return React.createElement(LettreMissionV2Pdf, { data: a.data, identite });
+      return React.createElement(
+        versionLettre === 3 ? LettreMissionV2Pdf : LettreMissionPdfV2Figee,
+        { data: a.data, identite },
+      );
     },
     refs: { sessionId: input.sessionId, trainerId: input.trainerId },
-    gabaritVersion: VERSION_LETTRE_EMISE,
+    gabaritVersion: versionLettre,
     // Ce que la lettre annonce, mois par mois : l'écart d'un relevé s'y compare.
     metadata: { annonceLettre: essai.annonce },
     // L'original de SA mission, jamais un duplicata : la seule autre lettre
@@ -330,6 +356,8 @@ export async function genererLettreMissionV2(input: {
     documentId: doc.id,
     numero: doc.numero,
     lettreAnnuleeId,
+    gabaritVersion: versionLettre,
+    avertissements: vigilance.avertissements,
     annonce: {
       journees: essai.data.journees,
       demiJournees: essai.data.demiJournees,
