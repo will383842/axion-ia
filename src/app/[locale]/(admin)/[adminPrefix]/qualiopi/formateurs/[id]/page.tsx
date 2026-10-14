@@ -632,8 +632,9 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
                 </strong>
               )}{" "}
               (honoraires facturés : relevés validés, reçus ou payés). L&apos;attestation est
-              demandée à partir de {(APPROCHE_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € et
-              exigée à partir de {(SEUIL_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} €.
+              demandée à partir de {(APPROCHE_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € HT
+              et exigée à partir de {(SEUIL_VIGILANCE_CENTS / 100).toLocaleString("fr-FR")} € HT — y
+              compris avant une mission qui ferait atteindre ce montant.
             </p>
           )}
         </div>
