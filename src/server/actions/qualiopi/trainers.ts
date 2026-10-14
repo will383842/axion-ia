@@ -130,6 +130,25 @@ const createTrainerSchema = z.object({
   actif: z.boolean().optional(),
 });
 
+/**
+ * « Début de collaboration » saisi depuis le formulaire d'identité (2026-10-13).
+ *
+ * Le jour arrive en `AAAA-MM-JJ` (input natif) et se range à minuit UTC, comme
+ * les dates du contrat de travail (`trainer-contrat.ts`) : une date sans heure
+ * lue en heure locale reculerait d'un jour la moitié de l'année.
+ *
+ * 🔑 `null` EFFACE, `undefined` laisse intact. ⚠️ Surtout pas `z.coerce.date()`,
+ * qui se tenait ici : il transforme `null` en 01/01/1970, et cette date part
+ * sur la fiche versée au dossier (ind. 21).
+ */
+const jourDebutCollaboration = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .nullable()
+  .optional()
+  .transform((v) => (v === null || v === undefined ? v : new Date(`${v}T00:00:00.000Z`)))
+  .refine((d) => d === null || d === undefined || !Number.isNaN(d.getTime()));
+
 const updateTrainerSchema = z.object({
   id: z.string().uuid(),
   nom: z.string().min(1).max(200).optional(),
@@ -156,7 +175,7 @@ const updateTrainerSchema = z.object({
   adresseProfessionnelle: z.string().max(500).optional(),
   cvUrl: z.string().url().optional(),
   domainesCompetences: z.array(z.unknown()).optional(),
-  dateEmbauche: z.coerce.date().optional(),
+  dateEmbauche: jourDebutCollaboration,
   tarifJourneeHtCents: z.number().int().min(0).optional(),
   sousTraitantNda: z.string().max(20).optional(),
 });
@@ -344,12 +363,24 @@ export async function createTrainerAction(
  * est désactivée par l'écrivain unique, et la réponse le dit (`desactive`).
  */
 export async function updateTrainerAction(
-  input: z.infer<typeof updateTrainerSchema>,
+  input: z.input<typeof updateTrainerSchema>,
 ): Promise<ActionResult<{ id: string; desactive?: boolean; manques?: ReadonlyArray<string> }>> {
   const session = await requireAdminWrite();
   const parsed = updateTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
+
+  // Une collaboration ne commence pas demain : la date est imprimée sur la fiche
+  // versée au dossier. Comparée au jour CIVIL de Paris, pas à l'instant UTC —
+  // sinon « aujourd'hui » serait refusé entre minuit et 2 h du matin.
+  if (fields.dateEmbauche != null) {
+    const aujourdhui = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(
+      new Date(),
+    );
+    if (fields.dateEmbauche.toISOString().slice(0, 10) > aujourdhui) {
+      return { error: "Le début de collaboration ne peut pas être dans le futur." };
+    }
+  }
 
   // Le statut AVANT la mise à jour : seul un CHANGEMENT vers `sous_traitant`
   // déclenche la garde (un indépendant déjà actif n'est pas concerné par ce lot).

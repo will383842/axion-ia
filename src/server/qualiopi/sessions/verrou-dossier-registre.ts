@@ -471,6 +471,13 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
       "Annuler une pièce d'un dossier clos retire une preuve (et une pièce signée exige « revoquer_signature »).",
   },
   {
+    action: "verserFicheFormateurAction",
+    fichier: "documents.ts",
+    decision: O,
+    raison:
+      "N'annule que les fiches formateur (cv_formateur) qu'elle remplace : ces pièces ne sont rattachées à aucune session, aucun dossier de session n'est touché.",
+  },
+  {
     action: "revoquerSignatureAction",
     fichier: "signature-revocation.ts",
     decision: V,

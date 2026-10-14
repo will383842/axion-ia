@@ -3148,6 +3148,86 @@ const DEV_ACTION_LABELS: Record<string, string> = {
   autre: "Autre",
 };
 
+/** L'id d'une pièce dans l'adresse `…/api/qualiopi/documents/<id>` que cette action écrit dans `Trainer.cvUrl`. */
+const RE_ID_PIECE_DANS_CV_URL =
+  /\/api\/qualiopi\/documents\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/?$/i;
+const RE_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Les fiches `cv_formateur` EN VIGUEUR de ce formateur — celles qu'un nouveau
+ * versement remplace.
+ *
+ * 🔴 Une fiche ne porte AUCUNE colonne qui la relie à son formateur
+ * (`generateDocument` était appelé sans `refs`). On ne peut donc pas écrire
+ * « les fiches de ce formateur » en une clause, et il n'est pas question
+ * d'annuler « les autres fiches du registre » : ce seraient celles des autres
+ * intervenants. Trois liens existent, tous ÉCRITS par cette action, tous
+ * porteurs de l'id exact de la pièce :
+ *
+ *   1. `Trainer.cvUrl` — l'adresse de la DERNIÈRE fiche versée ;
+ *   2. le journal `qualiopi.formateur.fiche.versee` — une ligne par versement,
+ *      ciblée sur le formateur, qui porte `documentId` ;
+ *   3. `metadata.trainerId` — posé sur chaque fiche versée depuis le 2026-10-13.
+ *
+ * ⚠️ Les deux premiers peuvent MANQUER (le journal est écrit en « au mieux »,
+ * `cvUrl` peut être réécrit par la fiche d'identité) : une vieille fiche qu'aucun
+ * lien ne désigne reste alors en vigueur, et s'annule à la main depuis le
+ * registre. Ils ne peuvent pas désigner la fiche d'un AUTRE formateur. C'est le
+ * bon sens de l'erreur : mieux vaut une annulation manquée qu'une pièce d'un
+ * tiers retirée du dossier de preuves.
+ *
+ * `annuleeAt: null` : une pièce déjà annulée garde sa date et son motif.
+ */
+async function fichesFormateurEnVigueur(
+  trainerId: string,
+  cvUrl: string | null,
+): Promise<Array<{ id: string; numero: string }>> {
+  const ids = new Set<string>();
+  const pointee = cvUrl === null ? undefined : RE_ID_PIECE_DANS_CV_URL.exec(cvUrl.trim())?.[1];
+  if (pointee !== undefined) ids.add(pointee.toLowerCase());
+
+  const versements = await prisma.activityLog.findMany({
+    where: {
+      action: "qualiopi.formateur.fiche.versee",
+      targetType: "Trainer",
+      targetId: trainerId,
+    },
+    select: { changes: true },
+  });
+  for (const v of versements) {
+    const id = (v.changes as { documentId?: unknown } | null)?.documentId;
+    // Un id illisible ferait lever Postgres sur la colonne `uuid` : on l'écarte.
+    if (typeof id === "string" && RE_UUID.test(id)) ids.add(id.toLowerCase());
+  }
+
+  return prisma.documentGenere.findMany({
+    where: {
+      type: "cv_formateur",
+      annuleeAt: null,
+      OR: [{ id: { in: [...ids] } }, { metadata: { path: ["trainerId"], equals: trainerId } }],
+    },
+    select: { id: true, numero: true },
+  });
+}
+
+/**
+ * L'auteur d'une annulation, NOMMÉ : « annulée par 4f3a-… » ne dit rien à un
+ * auditeur. Repli sur le rôle si le compte n'a pas de nom — mieux vaut
+ * « Administrateur » qu'un UUID.
+ */
+async function nomAuteurAnnulation(adminSession: {
+  userId: string;
+  role: string;
+}): Promise<string> {
+  const auteur = await prisma.adminUser.findUnique({
+    where: { id: adminSession.userId },
+    select: { name: true },
+  });
+  return typeof auteur?.name === "string" && auteur.name.trim() !== ""
+    ? auteur.name.trim()
+    : adminSession.role;
+}
+
 /**
  * Verse la fiche formateur au dossier de preuves et ferme la boucle ind. 21.
  *
@@ -3165,6 +3245,17 @@ const DEV_ACTION_LABELS: Record<string, string> = {
  * prestataire », pas seulement qu'un CV existe. Ce document matérialise cette
  * vérification en rattachant explicitement les compétences aux formations
  * habilitées ; il ne dispense pas de tenir cette vérification à jour.
+ *
+ * 🔴 2026-10-13 — un nouveau versement REMPLACE les fiches précédentes du même
+ * formateur : elles sont ANNULÉES au registre (jamais supprimées), avec les
+ * champs et la trace de `annulerDocumentAction`, dans la transaction qui pose
+ * `cvUrl`. Avant, « Remplacer la fiche au dossier » ajoutait une pièce et
+ * laissait l'ancienne en vigueur : deux fiches contradictoires à l'indicateur
+ * 21 du mode auditeur et dans le dossier ZIP (AXI-DOC-2026-022 et -047).
+ *
+ * ⚠️ Pas de révocation de liens de signature ici, contrairement à
+ * `annulerDocumentAction` : `cv_formateur` n'est pas une pièce signable
+ * (`parties-requises.ts`), elle n'a ni signature ni lien en circulation.
  */
 export async function verserFicheFormateurAction(input: {
   trainerId: string;
@@ -3314,12 +3405,28 @@ export async function verserFicheFormateurAction(input: {
     actionsDeveloppement,
   };
 
+  // Lues AVANT la génération : si la base ne répond pas, on échoue sans avoir
+  // consommé de numéro ni laissé au registre une fiche de plus.
+  let precedentes: Array<{ id: string; numero: string }>;
+  let annuleePar: string;
+  try {
+    precedentes = await fichesFormateurEnVigueur(trainerId, trainer.cvUrl);
+    annuleePar = await nomAuteurAnnulation(adminSession);
+  } catch {
+    return { error: "Fiche non versée : les fiches déjà au dossier n'ont pas pu être lues." };
+  }
+
   let doc: { id: string; numero: string };
   try {
     doc = await generateDocument({
       type: "cv_formateur",
       buildElement: () => React.createElement(CvFormateurPdf, { data, identite }),
       identite,
+      // Le lien que le PROCHAIN versement lira pour retrouver cette fiche.
+      // ⚠️ `metadata`, pas `refs.trainerId` : une référence entrerait dans
+      // l'identité de la pièce (`filtreMemePiece`) et filigranerait « COPIE » la
+      // fiche qui remplace.
+      metadata: { trainerId },
     });
   } catch (err) {
     // `generateDocument` peut lever : identité d'organisme incomplète, échec de
@@ -3346,18 +3453,40 @@ export async function verserFicheFormateurAction(input: {
     /\/+$/,
     "",
   );
+  // Le motif est lu par l'auditeur : il nomme la pièce qui fait désormais foi.
+  const motifRemplacement = `Remplacée par la fiche ${doc.numero} versée le ${formatDateFr(maintenant)}`;
   try {
-    await prisma.trainer.update({
-      where: { id: trainerId },
-      data: {
-        cvUrl: `${baseUrl}/api/qualiopi/documents/${doc.id}`,
-        cvUploadedAt: maintenant,
-      },
-    });
+    // UNE transaction : le formateur pointe la nouvelle fiche ET les anciennes
+    // cessent de faire foi, ou rien. Séparés, un échec entre les deux laisserait
+    // exactement les deux fiches concurrentes que ce remplacement supprime.
+    await prisma.$transaction([
+      prisma.trainer.update({
+        where: { id: trainerId },
+        data: {
+          cvUrl: `${baseUrl}/api/qualiopi/documents/${doc.id}`,
+          cvUploadedAt: maintenant,
+        },
+      }),
+      ...(precedentes.length > 0
+        ? [
+            prisma.documentGenere.updateMany({
+              where: { id: { in: precedentes.map((p) => p.id) }, annuleeAt: null },
+              data: {
+                annuleeAt: maintenant,
+                annuleeMotif: motifRemplacement,
+                annuleePar,
+                remplaceeParNumero: doc.numero,
+              },
+            }),
+          ]
+        : []),
+    ]);
   } catch {
     // Le document EXISTE désormais au dossier (numéro consommé, PDF conservé)
     // mais la boucle n'est pas fermée : l'indicateur 21 restera non couvert.
     // On le dit explicitement plutôt que de laisser croire à un succès.
+    // (Au versement suivant, `metadata.trainerId` fait retrouver et annuler
+    // cette fiche restée sans pointeur.)
     return {
       error: `Fiche générée (${doc.numero}) mais le formateur n'a pas pu être mis à jour. Relancez le versement.`,
     };
@@ -3376,9 +3505,23 @@ export async function verserFicheFormateurAction(input: {
       nbHabilitations: titresHabilitations.length,
       nbActionsDeveloppement: actionsDeveloppement.length,
       pieceCompetences: data.pieceCompetences,
+      fichesRemplacees: precedentes.map((p) => p.numero),
     },
     session: adminSession,
   });
+
+  // Chaque annulation a SA ligne au journal, sous la même action qu'une
+  // annulation faite à la main : qui cherche « pourquoi la 022 est-elle
+  // annulée ? » la trouve au même endroit, quel que soit le geste.
+  for (const p of precedentes) {
+    await logQualiopiActivity({
+      action: "qualiopi.document.annulee",
+      targetType: "DocumentGenere",
+      targetId: p.id,
+      changes: { numero: p.numero, motif: motifRemplacement, annuleePar },
+      session: adminSession,
+    });
+  }
 
   return { data: { documentId: doc.id, numero: doc.numero } };
 }
@@ -3557,17 +3700,8 @@ export async function annulerDocumentAction(input: {
   // produire.
   if (doc.annuleeAt !== null) return { error: `La pièce ${doc.numero} est déjà annulée.` };
 
-  // L'auteur est nommé, jamais réduit à un identifiant : « annulée par
-  // 4f3a-… » ne dit rien à un auditeur. Repli sur le rôle si le compte n'a pas
-  // de nom — mieux vaut « Administrateur » qu'un UUID.
-  const auteur = await prisma.adminUser.findUnique({
-    where: { id: adminSession.userId },
-    select: { name: true },
-  });
-  const annuleePar =
-    typeof auteur?.name === "string" && auteur.name.trim() !== ""
-      ? auteur.name.trim()
-      : adminSession.role;
+  // L'auteur est nommé, jamais réduit à un identifiant (cf. `nomAuteurAnnulation`).
+  const annuleePar = await nomAuteurAnnulation(adminSession);
 
   await prisma.documentGenere.update({
     where: { id: documentId },

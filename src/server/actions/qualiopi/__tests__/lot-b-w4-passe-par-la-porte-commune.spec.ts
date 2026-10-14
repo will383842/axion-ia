@@ -13,7 +13,7 @@
  */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join, relative, sep } from "node:path";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -197,7 +197,8 @@ describe("inventaire des chemins de contresignature", () => {
   it("les seuls appelants du moteur `signerDocument` sont connus", () => {
     const appelants = fichiers(join(RACINE, "src"))
       .filter((p) => /\bsignerDocument\(/.test(readFileSync(p, "utf8")))
-      .map((p) => relative(RACINE, p))
+      // Séparateurs normalisés : sous Windows, `relative` rend des « \ ».
+      .map((p) => relative(RACINE, p).split(sep).join("/"))
       .sort();
     expect(appelants).toEqual([
       "src/server/actions/qualiopi/contrat-travail-signature.ts",
