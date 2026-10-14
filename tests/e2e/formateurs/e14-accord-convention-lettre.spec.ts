@@ -69,7 +69,11 @@ test.describe("@formateurs E14 — accord, convention, lettre, signatures", () =
     await pilote.appeler(M.moteur, "passerMoteurMissions", [passage.maintenant()]);
 
     const lettres = await lettresVivantes(session.id, a.id);
-    expect(lettres, "une seule lettre vivante").toHaveLength(1);
+    const etat = await derniereMission(session.id, a.id);
+    expect(
+      lettres,
+      `une seule lettre vivante (mission ${etat.statut}, blocage : ${etat.lettreBlocageMotif ?? "aucun"})`,
+    ).toHaveLength(1);
     const lettre = lettres[0]!;
     expect((await derniereMission(session.id, a.id)).lettreMissionId).toBe(lettre.id);
     expect((await derniereMission(session.id, a.id)).id).toBe(missionId);

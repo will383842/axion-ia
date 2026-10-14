@@ -9,6 +9,16 @@
 //
 // Hors du job du banc (pas de puits SMTP, pas de file), le fichier est sauté : ces
 // scénarios constatent des ENVOIS, qu'aucune autre suite ne sait voir.
+//
+// 🔑 UN fichier de scénario missions à la fois (verrou fichier, `prendreTour`).
+// Plusieurs scénarios appellent des passages GLOBAUX avec l'horloge du banc avancée
+// de plusieurs jours (expiration des propositions à J+2, relances jusqu'à J+21,
+// moteur des lettres) : ces passages lisent TOUTES les missions de la base. Lancés
+// en parallèle, ils expireraient la proposition d'un autre scénario en plein
+// milieu de son parcours. Les autres specs du banc, elles, restent parallèles.
+
+import { mkdir, open, readFile, stat, unlink } from "node:fs/promises";
+import path from "node:path";
 
 import { expect, test } from "@playwright/test";
 
@@ -36,6 +46,45 @@ export interface CadreScenario {
 /** Le worker tourne à part : on lui laisse le temps de prendre un job. */
 export const ATTENTE_FILE = { timeout: 60_000, intervals: [500, 1_000, 2_000] };
 
+const VERROU = path.join(
+  process.env["IMAGE_BANK_STORAGE_PATH"]
+    ? path.dirname(process.env["IMAGE_BANK_STORAGE_PATH"])
+    : "/tmp/banc-formateurs/stockage",
+  "scenarios-missions.verrou",
+);
+/** Un verrou plus vieux que ceci appartient à un processus mort. */
+const VERROU_PERIME_MS = 15 * 60_000;
+
+/** Attend son tour : crée le verrou en exclusif, ou patiente tant qu'un autre le tient. */
+async function prendreTour(jeton: string): Promise<void> {
+  await mkdir(path.dirname(VERROU), { recursive: true });
+  for (;;) {
+    try {
+      const f = await open(VERROU, "wx");
+      await f.writeFile(jeton);
+      await f.close();
+      return;
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code !== "EEXIST") throw e;
+      try {
+        if (Date.now() - (await stat(VERROU)).mtimeMs > VERROU_PERIME_MS) await unlink(VERROU);
+      } catch {
+        // Rendu entre-temps : on retente.
+      }
+      await new Promise((r) => setTimeout(r, 500));
+    }
+  }
+}
+
+/** Rend le tour — seulement s'il est bien le sien. */
+async function rendreTour(jeton: string): Promise<void> {
+  try {
+    if ((await readFile(VERROU, "utf8")) === jeton) await unlink(VERROU);
+  } catch {
+    // Déjà rendu.
+  }
+}
+
 export function cadreScenario(nom: string): CadreScenario {
   const cadre = {} as CadreScenario;
   test.describe.configure({ mode: "serial" });
@@ -45,8 +94,11 @@ export function cadreScenario(nom: string): CadreScenario {
   );
 
   let pris = false;
+  const jeton = `${process.pid}:${nom}:${Date.now()}:${Math.random()}`;
   test.beforeAll(async () => {
-    test.setTimeout(300_000);
+    // L'attente du tour compte dans ce délai : jusqu'à onze fichiers avant celui-ci.
+    test.setTimeout(540_000);
+    await prendreTour(jeton);
     cadre.pilote = await demarrerPilote();
     cadre.monde = await creerMonde(nom);
     cadre.console = () => ({ admin: cadre.monde.admin });
@@ -57,10 +109,14 @@ export function cadreScenario(nom: string): CadreScenario {
 
   test.afterAll(async () => {
     test.setTimeout(120_000);
-    if (cadre.monde) await effacerMonde(cadre.monde);
-    if (pris) await rendreInterrupteurs();
-    if (cadre.pilote) await cadre.pilote.arreter();
-    await prisma.$disconnect();
+    try {
+      if (cadre.monde) await effacerMonde(cadre.monde);
+      if (pris) await rendreInterrupteurs();
+      if (cadre.pilote) await cadre.pilote.arreter();
+    } finally {
+      await rendreTour(jeton);
+      await prisma.$disconnect();
+    }
   });
 
   return cadre;
