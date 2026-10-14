@@ -6,6 +6,7 @@
 // l'intérieur d'une requête Next. Le banc ne lance aucun serveur Next ; pour
 // éprouver les gardes RÉELLES de ces actions (rôle, propriété du dossier,
 // jeton), on leur présente une session et des cookies posés par le scénario.
+// `server-only`, paquet du seul compilateur de Next, est neutralisé.
 // L'application n'est pas touchée : ni route de test, ni horloge truquée.
 //
 // À importer EN PREMIER, avant tout module de `src/` (l'exécuteur ne charge le
@@ -32,10 +33,13 @@ const ICI = new URL(".", import.meta.url);
 const FAUX_AUTH = new URL("faux-auth.ts", ICI).href;
 const FAUX_CACHE = new URL("faux-next-cache.ts", ICI).href;
 const FAUX_ENTETES = new URL("faux-next-headers.ts", ICI).href;
+const FAUX_SERVER_ONLY = new URL("faux-server-only.ts", ICI).href;
 const FAUX = new Set([FAUX_AUTH, FAUX_CACHE, FAUX_ENTETES]);
 
 registerHooks({
   resolve(specifier, context, suivant) {
+    // Introuvable hors de Next : on ne demande même pas au résolveur suivant.
+    if (specifier === "server-only") return { url: FAUX_SERVER_ONLY, shortCircuit: true };
     const resolu = suivant(specifier, context);
     // Un faux module importe le VRAI (`export * from "next/cache"`) : on ne
     // le redirige pas vers lui-même.
