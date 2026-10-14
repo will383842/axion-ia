@@ -401,6 +401,7 @@ async function coFormateursNonReconductibles(
           actif: true,
           statut: true,
           sousTraitantVerifieAt: true,
+          finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
           habilitations: { where: { ...HABILITATION_ACTIVE_WHERE }, select: { formationId: true } },
         },
       });
@@ -598,6 +599,7 @@ export async function reportSessionAction(input: z.infer<typeof reportSessionSch
           actif: true,
           statut: true,
           sousTraitantVerifieAt: true,
+          finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
           // Habilitations ACTIVES seulement : la dé-habilitation historise au
           // lieu de supprimer, lire sans ce filtre serait lire l'historique.
           habilitations: {

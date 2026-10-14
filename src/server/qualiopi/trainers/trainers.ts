@@ -200,7 +200,7 @@ export async function getTrainerByEmail(email: string): Promise<Trainer | null> 
  */
 export type TrainerHabilitationFields = Pick<
   Trainer,
-  "statut" | "sousTraitantVerifieAt" | "actif"
+  "statut" | "sousTraitantVerifieAt" | "actif" | "finCollaborationAt"
 > & { formationIdsHabilites: readonly string[] };
 
 export interface HabilitationCheck {
@@ -213,6 +213,9 @@ export interface HabilitationCheck {
  *
  * Règles (RNQ off.6/19) :
  *   - le formateur doit être ACTIF ;
+ *   - sa collaboration ne doit pas être TERMINÉE (lot C4) : une fin avec préavis
+ *     close à sa date d'effet pose `finCollaborationAt` sans toucher à `actif` (la
+ *     désactivation reste un geste de la console) — l'affectation, elle, se ferme ;
  *   - la formation doit figurer dans ses habilitations (`TrainerHabilitation`) ;
  *   - si SOUS-TRAITANT : `sousTraitantVerifieAt` doit être renseigné
  *     (vérification data.gouv.fr — cf. validateSousTraitant).
@@ -220,9 +223,14 @@ export interface HabilitationCheck {
 export function isTrainerHabilite(
   trainer: TrainerHabilitationFields,
   formationId: string,
+  maintenant: Date = new Date(),
 ): HabilitationCheck {
   if (!trainer.actif) {
     return { ok: false, raison: "Formateur inactif." };
+  }
+  const fin = trainer.finCollaborationAt;
+  if (fin != null && (Number.isNaN(fin.getTime()) || fin.getTime() <= maintenant.getTime())) {
+    return { ok: false, raison: "La collaboration avec ce formateur est terminée." };
   }
   if (!trainer.formationIdsHabilites.includes(formationId)) {
     return {

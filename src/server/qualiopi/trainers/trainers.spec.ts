@@ -35,6 +35,7 @@ function makeTrainer(overrides: Record<string, unknown> = {}) {
     statut: "salarie" as const,
     formationIdsHabilites: [FORMATION_ID],
     sousTraitantVerifieAt: null as Date | null,
+    finCollaborationAt: null as Date | null,
     actif: true,
     ...overrides,
   };
@@ -92,6 +93,33 @@ describe("isTrainerHabilite", () => {
         FORMATION_ID,
       ).ok,
     ).toBe(true);
+  });
+});
+
+// 🔴 Lot C4 — une fin avec préavis clôt la collaboration (`finCollaborationAt`) sans
+// toucher à `actif` : sans ce contrôle, le formateur restait affectable.
+describe("isTrainerHabilite — collaboration terminée", () => {
+  const verifie = { statut: "sous_traitant", sousTraitantVerifieAt: new Date() };
+
+  it("🔴 refuse un formateur ACTIF dont la collaboration est terminée", () => {
+    const r = isTrainerHabilite(
+      makeTrainer({ ...verifie, finCollaborationAt: new Date(Date.now() - 60_000) }),
+      FORMATION_ID,
+    );
+    expect(r.ok).toBe(false);
+    expect(r.raison).toContain("collaboration");
+  });
+
+  it("une date de fin illisible refuse aussi (garde fermée)", () => {
+    const r = isTrainerHabilite(
+      makeTrainer({ ...verifie, finCollaborationAt: new Date("pas une date") }),
+      FORMATION_ID,
+    );
+    expect(r.ok).toBe(false);
+  });
+
+  it("sans fin de collaboration : inchangé", () => {
+    expect(isTrainerHabilite(makeTrainer(verifie), FORMATION_ID).ok).toBe(true);
   });
 });
 

@@ -305,6 +305,23 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     expect(arg.data.formateurPrincipalId).toBe(TRAINER_ID);
   });
 
+  it("🔴 C4 — refuse un formateur encore ACTIF dont la collaboration est terminée", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "sous_traitant",
+      habilitations: [{ formationId: FORMATION_ID }],
+      sousTraitantVerifieAt: new Date(),
+      finCollaborationAt: new Date(Date.now() - 24 * 3600 * 1000),
+    });
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) expect(r.error).toMatch(/collaboration .* terminée/);
+    expect(mockSessionUpdate).not.toHaveBeenCalled();
+    const arg = mockTrainerFindUnique.mock.calls[0]?.[0] as { select: Record<string, unknown> };
+    expect(arg.select["finCollaborationAt"]).toBe(true);
+  });
+
   it("dual-write : upsert la ligne SessionFormateur principal + snapshot tarif", async () => {
     mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({

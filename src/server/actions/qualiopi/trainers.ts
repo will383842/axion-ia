@@ -937,6 +937,7 @@ export async function assignTrainerToSessionAction(
           actif: true,
           statut: true,
           sousTraitantVerifieAt: true,
+          finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
           tarifJourneeHtCents: true,
           // 🔴 `retireAt: null` — même correctif que la garde de création, et
           // pour la même raison. Le passage du `deleteMany` à l'`updateMany`

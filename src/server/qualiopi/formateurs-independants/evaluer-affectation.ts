@@ -57,6 +57,7 @@ export async function evaluerAffectation(
         actif: true,
         statut: true,
         sousTraitantVerifieAt: true,
+        finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
         habilitations: { where: { retireAt: null }, select: { formationId: true } },
       },
     });

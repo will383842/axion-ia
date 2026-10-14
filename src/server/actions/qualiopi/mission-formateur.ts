@@ -227,6 +227,7 @@ async function refusRenvoi(sessionId: string, trainerId: string): Promise<string
           actif: true,
           statut: true,
           sousTraitantVerifieAt: true,
+          finCollaborationAt: true, // lot C4 : collaboration terminée = non affectable
           habilitations: { where: { ...HABILITATION_ACTIVE_WHERE }, select: { formationId: true } },
         },
       }),
