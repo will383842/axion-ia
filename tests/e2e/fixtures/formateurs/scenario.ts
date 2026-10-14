@@ -158,6 +158,14 @@ export async function effacerPersonne(adresse: string): Promise<void> {
   await prisma.jobApplication.deleteMany({ where: { id: { in: idsCand } } });
   await prisma.submission.deleteMany({ where: { id: { in: idsSub } } });
   await prisma.consentEvent.deleteMany({ where: { personKey: empreinte } });
+  // Une opposition prévient aussi le CRM (ligne d'outbox) : les deux s'effacent.
+  const oppositions = await prisma.emailOpposition.findMany({
+    where: { emailHash: empreinte },
+    select: { id: true },
+  });
+  await prisma.crmSyncOutbox.deleteMany({
+    where: { subjectRef: { in: oppositions.map((o) => `site:email_opposition:${o.id}`) } },
+  });
   await prisma.emailOpposition.deleteMany({ where: { emailHash: empreinte } });
   await prisma.emailOutbox.deleteMany({ where: { recipient: adresse } });
   await prisma.emailLog.deleteMany({ where: { recipient: adresse } });

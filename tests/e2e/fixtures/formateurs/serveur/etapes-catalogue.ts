@@ -33,6 +33,7 @@ import { reinitialiserCacheTypesRendezVous } from "@/server/calendly/type-rendez
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { passerInvitationsFormateurs } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
+import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import type { ClientZohoMail } from "@/server/zoho-mail/client";
 
 import {
@@ -201,6 +202,13 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
   async "relire-pont"(a) {
     reinitialiserCacheTypesRendezVous();
     return relireEchangesDuPont(date(a["maintenant"]), enrichCalendlyEvent);
+  },
+
+  /** L'opposition aux sollicitations, comme le lien de désinscription la pose. */
+  async opposer(a) {
+    return enregistrerOppositionPourAdresse(String(a["email"]), {
+      origine: "lien-desinscription",
+    });
   },
 
   /** Les données Google de l'offre, calculées comme la page de l'offre les calcule. */
