@@ -98,12 +98,29 @@ export function estPieceArchivee(rejetMotif: string | null | undefined): boolean
   return typeof rejetMotif === "string" && rejetMotif.startsWith(MARQUE_ARCHIVE);
 }
 
+/** Un contrat de sous-traitance GÉNÉRÉ (`DocumentGenere`), tel que la garde le lit. */
+export interface ContratSousTraitanceLu {
+  readonly statutSignature: string;
+  readonly annuleeAt: Date | null;
+}
+
 /** Ce que la garde examine — rien de plus. */
 export interface FormateurPourActivation {
   readonly statut: TrainerStatutValue | string;
   readonly sousTraitantVerifieAt: Date | null;
   readonly sousTraitantNda: string | null;
+  /**
+   * Date SAISIE à la main sur la fiche. ⚠️ Lot C4 : la garde d'activation ne la lit
+   * plus — elle ne prouve aucune signature (voir `contratsSousTraitance`).
+   */
   readonly sousTraitantContratSigneAt: Date | null;
+  /**
+   * Lot C4 — contrats de sous-traitance générés pour ce formateur. Absent : non lus,
+   * donc garde FERMÉE (« contrat non signé »).
+   */
+  readonly contratsSousTraitance?: ReadonlyArray<ContratSousTraitanceLu>;
+  /** Lot C4 — date de fin de collaboration close, ou `null`. */
+  readonly finCollaborationAt: Date | null;
   /** Pièces du formateur (la garde filtre elle-même les validées). */
   readonly pieces: ReadonlyArray<DocumentConformite>;
 }
@@ -114,6 +131,8 @@ export type VerdictActivation =
 
 export const MANQUES = {
   statutInconnu: "Statut du formateur inconnu : activation impossible.",
+  finCollaboration:
+    "La collaboration avec ce formateur est terminée : sa fiche ne peut pas être réactivée.",
   controleRegistre: "Le contrôle du sous-traitant (registre public) n'a pas été effectué.",
   nda: "Le numéro de déclaration d'activité n'est pas renseigné.",
   contrat: "Le contrat-cadre de sous-traitance n'est pas signé.",
@@ -131,10 +150,22 @@ function dateValideEtPassee(d: Date | null, maintenant: Date): boolean {
 }
 
 /**
+ * Lot C4 — un contrat de sous-traitance RÉELLEMENT signé : statut `signee` (toutes les
+ * parties ont signé), non annulé. Toute version : la version en vigueur est l'affaire
+ * de la règle complète.
+ */
+export function contratSousTraitanceSigne(
+  contrats: ReadonlyArray<ContratSousTraitanceLu> | undefined,
+): boolean {
+  return (contrats ?? []).some((c) => c.statutSignature === "signee" && c.annuleeAt === null);
+}
+
+/**
  * Un formateur peut-il être ACTIVÉ ?
  *
- * Un `sous_traitant` ne l'est que si TOUT est réuni : contrôle registre posé,
- * numéro de déclaration d'activité non vide, contrat-cadre signé, attestation
+ * Un `sous_traitant` ne l'est que si TOUT est réuni : collaboration non terminée,
+ * contrôle registre posé, numéro de déclaration d'activité non vide, contrat de
+ * sous-traitance réellement signé (pièce générée `signee`, non annulée), attestation
  * de vigilance URSSAF et avis SIRENE validés et non périmés. Les manques sont
  * rendus en clair, dans l'ordre, pour l'écran.
  */
@@ -150,14 +181,17 @@ export function peutActiverFormateurIndependant(
       return { activable: false, manques: [MANQUES.statutInconnu] };
     }
 
+    // Lot C4 — une fin de collaboration close ne se rouvre pas par une réactivation.
+    if (formateur.finCollaborationAt !== null && formateur.finCollaborationAt !== undefined) {
+      return { activable: false, manques: [MANQUES.finCollaboration] };
+    }
     const manques: string[] = [];
     if (!dateValideEtPassee(formateur.sousTraitantVerifieAt, maintenant)) {
       manques.push(MANQUES.controleRegistre);
     }
     if ((formateur.sousTraitantNda ?? "").trim() === "") manques.push(MANQUES.nda);
-    if (!dateValideEtPassee(formateur.sousTraitantContratSigneAt, maintenant)) {
-      manques.push(MANQUES.contrat);
-    }
+    // Lot C4 — la pièce signée, jamais la date saisie à la main.
+    if (!contratSousTraitanceSigne(formateur.contratsSousTraitance)) manques.push(MANQUES.contrat);
     const pieces = formateur.pieces ?? [];
     if (!pieces.some((p) => pieceGardeeProbante(p, "attestation_vigilance_urssaf", maintenant))) {
       manques.push(MANQUES.vigilance);

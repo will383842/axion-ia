@@ -128,6 +128,12 @@ async function lireFormateurPourGarde(
       sousTraitantVerifieAt: true,
       sousTraitantNda: true,
       sousTraitantContratSigneAt: true,
+      finCollaborationAt: true,
+      // Lot C4 — la preuve de signature est la pièce générée, pas la date saisie.
+      documentsGeneres: {
+        where: { type: "contrat_sous_traitance" },
+        select: { statutSignature: true, annuleeAt: true },
+      },
       documents: {
         where: { type: { in: [...TYPES_PIECES_GARDEES] }, statutValidation: "valide" },
         select: {
@@ -147,6 +153,11 @@ async function lireFormateurPourGarde(
     sousTraitantVerifieAt: t.sousTraitantVerifieAt ?? null,
     sousTraitantNda: t.sousTraitantNda ?? null,
     sousTraitantContratSigneAt: t.sousTraitantContratSigneAt ?? null,
+    contratsSousTraitance: (t.documentsGeneres ?? []).map((c) => ({
+      statutSignature: c.statutSignature,
+      annuleeAt: c.annuleeAt ?? null,
+    })),
+    finCollaborationAt: t.finCollaborationAt ?? null,
     pieces: (t.documents ?? []) as DocumentConformite[],
   };
 }
@@ -273,9 +284,15 @@ export async function changerActivationFormateur(
   try {
     // Écriture CONDITIONNELLE : si la fiche a changé de statut entre la
     // lecture et l'écriture, rien n'est activé (0 ligne) — on ne valide pas
-    // une garde évaluée sur un autre état.
+    // une garde évaluée sur un autre état. Lot C4 : ni une fiche close entre-temps
+    // (même filtre que la règle complète).
     const r = await prisma.trainer.updateMany({
-      where: { id: input.trainerId, statut: formateur.statut as never, actif: false },
+      where: {
+        id: input.trainerId,
+        statut: formateur.statut as never,
+        actif: false,
+        finCollaborationAt: null,
+      },
       data: { actif: true },
     });
     if (r.count === 0) {

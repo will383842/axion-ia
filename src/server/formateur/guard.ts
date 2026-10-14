@@ -23,6 +23,9 @@
  *    la collaboration est close, reconnecté après la fin, quand l'interrupteur
  *    `formateurs.fin_collaboration` est allumé. Seules les pages « Mes honoraires »,
  *    « Mon dossier » et le téléchargement de ses pièces la lisent.
+ *
+ * Lot C4 — la session porte aussi l'EMPREINTE de l'adresse e-mail à la connexion : si
+ * la console change l'adresse d'un indépendant, sa session tombe.
  */
 
 import { redirect } from "next/navigation";
@@ -32,6 +35,7 @@ import { getFormateurToken } from "./cookie";
 import {
   accesFormateur,
   ecritureFormateurPermise,
+  empreinteSessionFormateur,
   versionSessionFormateur,
 } from "./acces-apres-fin";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "./routes";
@@ -75,6 +79,15 @@ async function lireSession() {
   if (!trainer) return null;
   // Version signée et dépassée : la session a été révoquée (fin de collaboration…).
   if (result.version !== undefined && result.version !== versionSessionFormateur(trainer)) {
+    return null;
+  }
+  // Lot C4 — adresse d'un indépendant changée depuis la connexion : la session tombe.
+  // Une session sans empreinte (signée avant ce lot) n'est pas jugée sur l'adresse.
+  if (
+    trainer.statut === "sous_traitant" &&
+    result.empreinte !== undefined &&
+    result.empreinte !== empreinteSessionFormateur(trainer.email)
+  ) {
     return null;
   }
   return { trainer, version: result.version };

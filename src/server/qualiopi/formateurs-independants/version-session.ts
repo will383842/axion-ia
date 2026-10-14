@@ -2,6 +2,8 @@
  * Lot E (M14) — version de session de l'espace formateur, séparée de `accesVersion`.
  */
 
+import { fabriqueLienSigne } from "@/lib/security/lien-signe";
+
 /**
  * Version de SESSION de l'espace formateur (session de l'espace et jeton de mission).
  *
@@ -42,4 +44,25 @@ export function ecritureFormateurPermise(
 ): boolean {
   if (t.finCollaborationAt != null) return false;
   return versionSignee === undefined || versionSignee === versionSessionFormateur(t);
+}
+
+/** Lot C4 — signature de l'empreinte d'adresse : la fabrique commune, domaine à part. */
+const EMPREINTE_SESSION = fabriqueLienSigne({
+  domaine: "formateur-session-email",
+  version: 1,
+  cle: "axion-formateur-session-email",
+});
+
+/**
+ * Lot C4 — EMPREINTE de l'adresse e-mail portée par la session de l'espace : quand la
+ * console change l'adresse d'un indépendant, toute session ouverte sous l'ancienne
+ * tombe (garde de `server/formateur/guard.ts`). Sans migration : rien n'est stocké.
+ *
+ * Insensible à la casse (la colonne est `citext`) ; 16 caractères d'une signature du
+ * secret de session : sans lui, on ne vérifie pas une adresse candidate. `null` quand
+ * rien ne peut être signé (pas de secret en production) — la garde refuse alors.
+ */
+export function empreinteSessionFormateur(email: string): string | null {
+  const jeton = EMPREINTE_SESSION.signer(email.trim().toLowerCase());
+  return jeton === null ? null : jeton.slice(0, 16);
 }
