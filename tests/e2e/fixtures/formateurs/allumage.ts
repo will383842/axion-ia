@@ -69,7 +69,35 @@ const CLE_PORTEURS = "banc.formateurs.allumage";
 /** Verrou consultatif du banc (constante arbitraire, propre au banc). */
 const VERROU = 7_340_021;
 
+/** L'offre « Formateur IA freelance » du banc — le slug que le code reconnaît. */
+export const SLUG_OFFRE_BANC = "formateur-ia-freelance";
+
+const OFFRE_BANC = {
+  slug: SLUG_OFFRE_BANC,
+  status: "published",
+  category: "ia",
+  natureCollaboration: "freelance",
+  employmentType: "CONTRACTOR",
+  // Une fourchette AFFICHÉE : sans la règle « formateur indépendant », Google
+  // recevrait un `baseSalary` — c'est ce que le scénario E01 vérifie.
+  salaryMin: 300,
+  salaryMax: 600,
+  salaryPeriod: "DAY",
+  salaryVisible: true,
+  publishedAt: new Date("2026-10-01T08:00:00.000Z"),
+  titleFr: "Formateur IA freelance (banc d'essai)",
+  titleEn: "Freelance AI trainer (test bench)",
+  summaryFr: "Offre fictive du banc @formateurs.",
+  summaryEn: "Fictitious offer of the @formateurs bench.",
+  bodyFr: "<p>Offre fictive du banc.</p>",
+  bodyTextFr: "Offre fictive du banc.",
+  bodyEn: "<p>Fictitious bench offer.</p>",
+  bodyTextEn: "Fictitious bench offer.",
+} as const;
+
 interface EtatPorteurs {
+  /** L'offre du banc a été créée par le premier porteur (sinon elle existait). */
+  readonly offreCreee?: boolean;
   readonly porteurs: string[];
   /** Valeur d'avant de chaque clé posée ; `null` = la ligne n'existait pas. */
   readonly avant: Record<string, Prisma.JsonValue | null>;
@@ -145,7 +173,9 @@ export async function allumerLeBanc(porteur: string): Promise<() => Promise<void
           update: { value: l.value },
         });
       }
-      const nouvel: EtatPorteurs = { porteurs: [porteur], avant };
+      const offre = await tx.jobOffer.findUnique({ where: { slug: SLUG_OFFRE_BANC } });
+      if (offre === null) await tx.jobOffer.create({ data: OFFRE_BANC as never });
+      const nouvel: EtatPorteurs = { porteurs: [porteur], avant, offreCreee: offre === null };
       await tx.setting.upsert({
         where: { key: CLE_PORTEURS },
         create: { key: CLE_PORTEURS, value: nouvel as never, description: "banc @formateurs" },
@@ -175,6 +205,10 @@ export async function allumerLeBanc(porteur: string): Promise<() => Promise<void
       for (const [key, valeur] of Object.entries(etat.avant)) {
         if (valeur === null) await tx.setting.deleteMany({ where: { key } });
         else await tx.setting.update({ where: { key }, data: { value: valeur as never } });
+      }
+      if (etat.offreCreee) {
+        // Chaque spec a effacé ses candidatures : l'offre n'est plus référencée.
+        await tx.jobOffer.deleteMany({ where: { slug: SLUG_OFFRE_BANC } });
       }
       await tx.setting.delete({ where: { key: CLE_PORTEURS } });
     });

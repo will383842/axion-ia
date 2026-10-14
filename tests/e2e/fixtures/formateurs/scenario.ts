@@ -1,0 +1,248 @@
+// Banc @formateurs — ce que tout SCÉNARIO de vérification partage.
+//
+//   · un VERROU : les scénarios appellent les passages planifiés avec leur propre
+//     `maintenant` (J+3, J+30…), et un passage traite TOUTE la base — celui d'un
+//     scénario relancerait les candidatures d'un autre. Ils passent donc un par un
+//     (verrou Redis), quel que soit le nombre de workers de Playwright ;
+//   · un ADMINISTRATEUR du banc, réel en base (les actions de la console écrivent
+//     son identifiant au journal), effacé avec son journal à la fin ;
+//   · l'ALLUMAGE partagé (`allumage.ts`) ;
+//   · le MÉNAGE : chaque scénario efface ce qu'il a écrit, personne par personne ;
+//   · les INSTANTS : un passage de relance ne part qu'entre 8 h et 19 h à Paris.
+
+import { randomUUID } from "node:crypto";
+
+import { Redis } from "ioredis";
+
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+
+import { allumerLeBanc } from "./allumage";
+import { prisma } from "./base";
+import { lireJournalEnvois } from "./journal-envois";
+import type { SessionBanc } from "./protocole";
+import { messagesCaptes, viderPuitsPour } from "./puits-smtp";
+
+/** Le worker tourne à part : on lui laisse le temps de prendre ses jobs. */
+export const ATTENTE_WORKER = { timeout: 60_000, intervals: [500, 1_000, 2_000] };
+
+const CLE_VERROU = "banc:formateurs:scenario";
+const DUREE_VERROU_MS = 10 * 60_000;
+
+export interface DecorScenario {
+  readonly admin: SessionBanc;
+  /** Rend une adresse fictive propre au scénario (domaine `example.test`). */
+  adresse(role: string): string;
+  /** Ce qui sera effacé à la fin (adresses et candidatures du scénario). */
+  readonly adresses: Set<string>;
+  liberer(): Promise<void>;
+}
+
+async function prendreVerrou(redis: Redis, jeton: string): Promise<void> {
+  const limite = Date.now() + 15 * 60_000;
+  while (Date.now() < limite) {
+    const pris = await redis.set(CLE_VERROU, jeton, "PX", DUREE_VERROU_MS, "NX");
+    if (pris === "OK") return;
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error("banc @formateurs : verrou des scénarios non obtenu en 15 min");
+}
+
+/** Ouvre un scénario : verrou, allumage, administrateur. */
+export async function ouvrirScenario(nom: string): Promise<DecorScenario> {
+  const redis = new Redis(process.env["REDIS_URL"] ?? "redis://localhost:6379", {
+    maxRetriesPerRequest: 2,
+  });
+  const jeton = `${nom}:${randomUUID()}`;
+  await prendreVerrou(redis, jeton);
+  const eteindre = await allumerLeBanc(jeton);
+  const cle = randomUUID().slice(0, 8);
+  const emailAdmin = `admin.${nom}.${cle}@example.test`;
+  const admin = await prisma.adminUser.create({
+    data: {
+      name: `Direction banc ${nom}`,
+      email: emailAdmin,
+      // Jamais utilisé pour se connecter : la session est déclarée par le spec.
+      passwordHash: "banc-formateurs-aucun-mot-de-passe",
+      role: "super_admin",
+    },
+    select: { id: true },
+  });
+  const adresses = new Set<string>();
+  return {
+    admin: { id: admin.id, email: emailAdmin, role: "super_admin", name: "Direction banc" },
+    adresses,
+    adresse(role) {
+      const a = `${role}.${nom}.${cle}.${adresses.size}@example.test`.toLowerCase();
+      adresses.add(a);
+      return a;
+    },
+    async liberer() {
+      try {
+        for (const a of adresses) await effacerPersonne(a);
+        await prisma.activityLog.deleteMany({ where: { adminUserId: admin.id } });
+        await prisma.adminUser.deleteMany({ where: { id: admin.id } });
+      } finally {
+        try {
+          await eteindre();
+        } finally {
+          if ((await redis.get(CLE_VERROU)) === jeton) await redis.del(CLE_VERROU);
+          redis.disconnect();
+        }
+      }
+    },
+  };
+}
+
+/** Les candidatures d'une adresse (par l'empreinte, comme le code les regroupe). */
+export async function candidaturesDe(adresse: string) {
+  const empreinte = hashEmailForLookup(adresse);
+  return prisma.jobApplication.findMany({
+    where: { emailHash: empreinte ?? "∅" },
+    orderBy: { submittedAt: "asc" },
+  });
+}
+
+/** Efface tout ce qu'une personne du banc a laissé : candidatures, échanges, fiche, envois. */
+export async function effacerPersonne(adresse: string): Promise<void> {
+  const empreinte = hashEmailForLookup(adresse) ?? "∅";
+  const rdvs = await prisma.calendlyEvent.findMany({
+    where: { inviteeEmail: adresse },
+    select: { id: true, linkedSubmissionId: true },
+  });
+  const candidatures = await prisma.jobApplication.findMany({
+    where: {
+      OR: [{ emailHash: empreinte }, { id: { in: await idsCandidaturesSansEmpreinte(adresse) } }],
+    },
+    select: { id: true },
+  });
+  const idsCand = candidatures.map((c) => c.id);
+  const fiches = await prisma.trainer.findMany({
+    where: { OR: [{ email: adresse }, { candidatureId: { in: idsCand } }] },
+    select: { id: true },
+  });
+  const idsFiches = fiches.map((f) => f.id);
+  const idsRdv = rdvs.map((r) => r.id);
+  const lies = await prisma.calendlyEvent.findMany({
+    where: { linkedJobApplicationId: { in: idsCand } },
+    select: { id: true },
+  });
+  idsRdv.push(...lies.map((l) => l.id).filter((id) => !idsRdv.includes(id)));
+
+  await prisma.rendezVousSuivi.deleteMany({ where: { calendlyEventId: { in: idsRdv } } });
+  await prisma.crmSyncOutbox.deleteMany({
+    where: { subjectRef: { in: idsRdv.map((id) => `site:calendly_event:${id}`) } },
+  });
+  const submissions = await prisma.submission.findMany({
+    where: {
+      OR: [
+        { contactEmailHash: empreinte },
+        { id: { in: rdvs.map((r) => r.linkedSubmissionId).filter((x): x is string => !!x) } },
+      ],
+    },
+    select: { id: true },
+  });
+  const idsSub = submissions.map((s) => s.id);
+  await prisma.calendlyEvent.deleteMany({ where: { id: { in: idsRdv } } });
+  await prisma.activityLog.deleteMany({
+    where: { targetId: { in: [...idsCand, ...idsFiches, ...idsSub] } },
+  });
+  await prisma.jobApplication.updateMany({
+    where: { id: { in: idsCand } },
+    data: { trainerId: null },
+  });
+  for (const id of idsFiches) await effacerFiche(id);
+  await prisma.jobApplicationInboundReply.deleteMany({
+    where: { applicationId: { in: idsCand } },
+  });
+  await prisma.jobApplicationEvent.deleteMany({ where: { applicationId: { in: idsCand } } });
+  await prisma.jobApplication.deleteMany({ where: { id: { in: idsCand } } });
+  await prisma.submission.deleteMany({ where: { id: { in: idsSub } } });
+  await prisma.consentEvent.deleteMany({ where: { personKey: empreinte } });
+  await prisma.emailOpposition.deleteMany({ where: { emailHash: empreinte } });
+  await prisma.emailOutbox.deleteMany({ where: { recipient: adresse } });
+  await prisma.emailLog.deleteMany({ where: { recipient: adresse } });
+  await viderPuitsPour(adresse);
+}
+
+/** Candidatures saisies en console avec une adresse relais (sans empreinte). */
+async function idsCandidaturesSansEmpreinte(adresse: string): Promise<string[]> {
+  const logs = await prisma.emailLog.findMany({
+    where: { recipient: adresse, entityType: "JobApplication" },
+    select: { entityId: true },
+  });
+  return logs.map((l) => l.entityId).filter((x): x is string => !!x);
+}
+
+/** Efface une fiche formateur du banc et ce qui y est accroché. */
+export async function effacerFiche(trainerId: string): Promise<void> {
+  // Les tables accrochées à une fiche sont nombreuses ; on efface ce que les
+  // scénarios d'entrée écrivent, puis la fiche. Une table de PREUVE (ajout seul)
+  // refuse l'effacement : la fiche est alors seulement désactivée et marquée.
+  await prisma.activityLog.deleteMany({ where: { targetId: trainerId } });
+  try {
+    await prisma.trainer.delete({ where: { id: trainerId } });
+  } catch {
+    await prisma.trainer.updateMany({
+      where: { id: trainerId },
+      data: { actif: false, email: `efface.${trainerId}@example.test` },
+    });
+  }
+}
+
+// ── Les envois ───────────────────────────────────────────────────────────────
+
+/** Les gabarits partis (ou en file) vers une adresse, dans l'ordre. */
+export async function gabaritsVers(adresse: string): Promise<string[]> {
+  return (await lireJournalEnvois({ destinataire: adresse })).map((l) => l.template);
+}
+
+/** Attend que toutes les lignes du journal d'une adresse soient closes par le worker. */
+export async function attendreLeWorker(adresse: string): Promise<void> {
+  const limite = Date.now() + ATTENTE_WORKER.timeout;
+  for (;;) {
+    const lignes = await lireJournalEnvois({ destinataire: adresse });
+    if (lignes.every((l) => l.status !== "pending")) return;
+    if (Date.now() > limite) {
+      throw new Error(
+        `banc @formateurs : le worker n'a pas clos les envois vers ${adresse} : ${JSON.stringify(lignes)}`,
+      );
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+}
+
+/** Les sujets captés par le puits SMTP pour une adresse. */
+export async function sujetsCaptes(adresse: string): Promise<string[]> {
+  return (await messagesCaptes(adresse)).map((m) => m.sujet);
+}
+
+// ── Les instants ─────────────────────────────────────────────────────────────
+
+const HEURE_MS = 3_600_000;
+
+/** L'heure de Paris d'un instant (0-23). */
+function heureParis(d: Date): number {
+  return Number(
+    new Intl.DateTimeFormat("fr-FR", { hour: "numeric", hour12: false, timeZone: "Europe/Paris" })
+      .format(d)
+      .replace(/\D/g, ""),
+  );
+}
+
+/**
+ * `depart` + `jours`, avancé si besoin jusqu'à la prochaine heure ouvrée de
+ * Paris (10 h) : les relances ne partent qu'entre 8 h et 19 h. L'écart avec
+ * `depart` reste dans [jours, jours + 1[ — la même étape de relance.
+ */
+export function jourOuvre(depart: Date, jours: number): Date {
+  let t = new Date(depart.getTime() + jours * 24 * HEURE_MS);
+  for (let i = 0; i < 24 && (heureParis(t) < 9 || heureParis(t) >= 18); i++) {
+    t = new Date(t.getTime() + HEURE_MS);
+  }
+  return t;
+}
+
+export function plus(d: Date, duree: { jours?: number; heures?: number; minutes?: number }): Date {
+  const { jours = 0, heures = 0, minutes = 0 } = duree;
+  return new Date(d.getTime() + ((jours * 24 + heures) * 60 + minutes) * 60_000);
+}
