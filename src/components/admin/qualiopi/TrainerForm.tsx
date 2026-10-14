@@ -31,6 +31,8 @@ export interface TrainerFormProps {
     adresseProfessionnelle?: string | null;
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
+    /** « Début de collaboration », en `AAAA-MM-JJ` (jour UTC de la colonne) ou vide. */
+    dateEmbauche?: string;
   };
 }
 
@@ -62,6 +64,13 @@ export function TrainerForm({
     initial?.tarifJourneeHtCents != null ? String(initial.tarifJourneeHtCents / 100) : "",
   );
   const [nda, setNda] = useState(initial?.sousTraitantNda ?? "");
+  const [debut, setDebut] = useState(initial?.dateEmbauche ?? "");
+  // « Début de collaboration » : imprimé sur la fiche versée au dossier (ind. 21).
+  // ⚠️ PAS pour un salarié : sa date d'entrée se saisit dans le panneau du
+  // contrat de travail, et deux champs pour la même colonne sur une page se
+  // désynchronisent (cf. le commentaire du statut, plus bas). Lu sur `initial`,
+  // pas sur l'état : le statut se change ailleurs.
+  const saisitDebut = mode === "edit" && initial?.statut !== "salarie";
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -110,6 +119,8 @@ export function TrainerForm({
             ? { tarifJourneeHtCents: tarifCents }
             : {}),
           ...(statut === "sous_traitant" && nda ? { sousTraitantNda: nda } : {}),
+          // Champ vidé = date effacée (`null`) : elle est facultative.
+          ...(saisitDebut ? { dateEmbauche: debut === "" ? null : debut } : {}),
         });
         if ("error" in result) {
           setError(result.error);
@@ -301,6 +312,21 @@ export function TrainerForm({
             className={inputCls}
           />
         </div>
+        {saisitDebut && (
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="t-debut">
+              Début de collaboration
+            </label>
+            <input
+              id="t-debut"
+              type="date"
+              value={debut}
+              onChange={(e) => setDebut(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+        )}
         {statut === "sous_traitant" && (
           <div className={fieldCls}>
             <label className={labelCls} htmlFor="t-nda">

@@ -101,6 +101,7 @@ import {
   setTrainerActifAction,
   assignTrainerToSessionAction,
   updateTrainerSousTraitancePiecesAction,
+  updateTrainerAction,
 } from "./trainers";
 
 const FORMATION_ID = "11111111-1111-1111-1111-111111111111";
@@ -708,5 +709,61 @@ describe("createTrainerAction — journal sans donnée personnelle", () => {
       changes: { statut: "sous_traitant", actif: false },
     });
     expect(JSON.stringify(entree)).not.toMatch(/Dupont|Marie|marie@example\.com|0611223344/);
+  });
+});
+
+// 🔴 2026-10-13 — « Début de collaboration » (fiche formateur, ind. 21).
+//
+// La date imprimée sur la fiche (`Trainer.dateEmbauche`) n'avait d'écran que
+// pour un SALARIÉ (panneau du contrat de travail). Pour le dirigeant-formateur
+// elle valait le 18/07/2026 — AVANT l'immatriculation de la société — et rien
+// ne permettait de la corriger. Le formulaire d'identité l'envoie désormais à
+// `updateTrainerAction` ; ces tests fixent ce que l'action accepte.
+describe("updateTrainerAction — début de collaboration", () => {
+  const dataEcrite = () => (mockUpdate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+
+  beforeEach(() => {
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+  });
+
+  it("enregistre le jour saisi, à minuit UTC", async () => {
+    const r = await updateTrainerAction({ id: TRAINER_ID, dateEmbauche: "2026-07-30" });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    expect(dataEcrite()["dateEmbauche"]).toEqual(new Date("2026-07-30T00:00:00.000Z"));
+  });
+
+  it("la date est FACULTATIVE : un champ vidé l'efface (et n'écrit pas le 01/01/1970)", async () => {
+    const r = await updateTrainerAction({ id: TRAINER_ID, dateEmbauche: null });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+    expect(dataEcrite()).toHaveProperty("dateEmbauche", null);
+  });
+
+  it("absente de l'envoi, elle reste intacte", async () => {
+    await updateTrainerAction({ id: TRAINER_ID, nom: "Jullin" });
+    expect(dataEcrite()).not.toHaveProperty("dateEmbauche");
+  });
+
+  it("🔴 REFUSE une date dans le futur — une collaboration n'a pas commencé demain", async () => {
+    const dansDixJours = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const r = await updateTrainerAction({ id: TRAINER_ID, dateEmbauche: dansDixJours });
+    expect(r).toMatchObject({ error: expect.stringContaining("futur") });
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("accepte le jour même", async () => {
+    const aujourdhui = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(
+      new Date(),
+    );
+    const r = await updateTrainerAction({ id: TRAINER_ID, dateEmbauche: aujourdhui });
+    expect(r).toEqual({ data: { id: TRAINER_ID } });
+  });
+
+  it("🔴 REFUSE une valeur qui n'est pas un jour `AAAA-MM-JJ`", async () => {
+    const r = await updateTrainerAction({
+      id: TRAINER_ID,
+      dateEmbauche: "30/07/2026" as never,
+    });
+    expect(r).toHaveProperty("error");
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });
