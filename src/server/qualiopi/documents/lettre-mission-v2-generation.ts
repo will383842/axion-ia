@@ -20,12 +20,10 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { LIEU_DOCUMENT_SELECT } from "@/server/qualiopi/lieu/resolve-lieu-document";
-import { LettreMissionV2Pdf as LettreMissionPdfV2Figee } from "@/server/qualiopi/documents/templates/archives/lettre-mission-v2.v2";
 import { LettreMissionV2Pdf } from "@/server/qualiopi/documents/templates/lettre-mission-v2";
 import { STATUTS_ACCORD_DONNE } from "@/server/qualiopi/trainers/mission-formateur";
 import { forfaitSelonLieu } from "@/server/qualiopi/formateurs-independants/choix-formateur";
 import { lireContratCadreSigne } from "@/server/qualiopi/formateurs-independants/contrat-cadre-en-vigueur";
-import { controlerVigilanceLettre } from "@/server/qualiopi/formateurs-independants/garde-mission-portes";
 import {
   assemblerLettreV2,
   type FaitsLettreV2,
@@ -33,24 +31,12 @@ import {
 import type { JourLettre } from "@/server/qualiopi/formateurs-independants/lettre-mission-v2-calcul";
 
 /**
- * Version du gabarit de la lettre émise À UN SIGNATAIRE DU CONTRAT-CADRE V4 (étape 3 du
- * C4 : v3, section 4 du paiement — feuilles, bilan, délai, URSSAF).
+ * Version du gabarit de la lettre émise : la v3 (étape 3 du C4 — section 4 du paiement :
+ * facture établie quand tout est complet, virement 30 jours après sa date, URSSAF). Aucun
+ * formateur n'a signé de contrat-cadre avant la v4 (décision du 14/10/2026) : la v3
+ * s'émet à tous. La v2 reste figée dans `archives/`, pour rejouer ce qui aurait été émis.
  */
 export const VERSION_LETTRE_EMISE = 3;
-
-/** La lettre v3 n'est émise qu'à qui a signé ce contrat-cadre (ou plus récent). */
-export const VERSION_CONTRAT_POUR_LETTRE_V3 = 4;
-
-/**
- * 🔑 La version de la lettre suit le contrat-cadre SIGNÉ (relecture de l'étape 3) : la
- * lettre v3 annonce des conditions de paiement (bilan, délai courant de la remise) que
- * le contrat v3 ne porte pas — or le contrat l'emporte (art. 9 de la lettre) et un
- * engagement ajouté exige une signature (art. 32.3). Un signataire v3 reçoit donc la
- * lettre v2, figée mot pour mot ; un signataire v4, la v3.
- */
-export function versionLettrePourContrat(versionContrat: number | null | undefined): 2 | 3 {
-  return (versionContrat ?? 0) >= VERSION_CONTRAT_POUR_LETTRE_V3 ? 3 : 2;
-}
 
 /** Motif système d'annulation d'une lettre remplacée avant toute signature. */
 export const MOTIF_LETTRE_REMPLACEE = "Remplacée par une nouvelle lettre de mission";
@@ -75,13 +61,8 @@ export type ResultatLettreV2 =
       documentId: string;
       numero: string;
       lettreAnnuleeId: string | null;
-      /** Version du gabarit émise : 3 pour un contrat-cadre v4, 2 (figée) sinon. */
-      gabaritVersion: 2 | 3;
-      /**
-       * Garde « avertir » (ancien stock) : la lettre est partie, mais l'attestation URSSAF
-       * manque — la console le dit au lieu de le perdre.
-       */
-      avertissements: ReadonlyArray<string>;
+      /** Version du gabarit émise (`VERSION_LETTRE_EMISE`). */
+      gabaritVersion: typeof VERSION_LETTRE_EMISE;
       /** Ce que la lettre annonce (F26 le reprend tel quel, jamais recalculé). */
       annonce: {
         journees: number;
@@ -251,17 +232,9 @@ export async function genererLettreMissionV2(input: {
   const essai = assemblerLettreV2(faits("—"));
   if (!essai.ok) return { ok: false, erreur: essai.motif };
 
-  // Étape 3 (C4) — le seuil de vigilance compte la mission : si le montant que la
-  // lettre annonce fait atteindre 5 000 € HT au cumul, l'attestation URSSAF est exigée
-  // AVANT la lettre (interrupteur `formateurs.garde_mission_portes` ; coupé : rien).
-  const vigilance = await controlerVigilanceLettre(
-    input.trainerId,
-    { sessionId: input.sessionId, montantHtCents: essai.annonce.totalHtCents },
-    maintenant,
-  );
-  if (vigilance.refus.length > 0) {
-    return { ok: false, erreur: `Lettre non émise : ${vigilance.refus.join(" ")}` };
-  }
+  // Décision du 14/10/2026 (contrat-cadre v4, art. 18.2) : la lettre suit une mission
+  // ACCEPTÉE, qui est maintenue même sans attestation URSSAF — seul son paiement l'attend.
+  // L'attestation se demande avant d'accepter (garde de mission aux portes), jamais ici.
 
   // Une lettre vivante par mission : une lettre déjà signée par le formateur
   // n'est jamais remplacée en silence (motif exigé) ; les autres sont annulées
@@ -279,7 +252,6 @@ export async function genererLettreMissionV2(input: {
   }
   const aAnnuler = lettresVivantes.filter((l) => l.signatures.length === 0).map((l) => l.id);
 
-  const versionLettre = versionLettrePourContrat(contratCadre?.version);
   const identite = await getOrganismeIdentite();
   const doc = await generateDocument({
     type: "lettre_mission",
@@ -290,13 +262,10 @@ export async function genererLettreMissionV2(input: {
       const a = assemblerLettreV2(faits(numero));
       // Mêmes faits qu'à l'essai : ne peut pas refuser ici.
       if (!a.ok) throw new Error(a.motif);
-      return React.createElement(
-        versionLettre === 3 ? LettreMissionV2Pdf : LettreMissionPdfV2Figee,
-        { data: a.data, identite },
-      );
+      return React.createElement(LettreMissionV2Pdf, { data: a.data, identite });
     },
     refs: { sessionId: input.sessionId, trainerId: input.trainerId },
-    gabaritVersion: versionLettre,
+    gabaritVersion: VERSION_LETTRE_EMISE,
     // Ce que la lettre annonce, mois par mois : l'écart d'un relevé s'y compare.
     metadata: { annonceLettre: essai.annonce },
     // L'original de SA mission, jamais un duplicata : la seule autre lettre
@@ -356,8 +325,7 @@ export async function genererLettreMissionV2(input: {
     documentId: doc.id,
     numero: doc.numero,
     lettreAnnuleeId,
-    gabaritVersion: versionLettre,
-    avertissements: vigilance.avertissements,
+    gabaritVersion: VERSION_LETTRE_EMISE,
     annonce: {
       journees: essai.data.journees,
       demiJournees: essai.data.demiJournees,

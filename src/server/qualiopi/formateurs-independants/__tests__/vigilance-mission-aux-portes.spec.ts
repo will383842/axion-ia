@@ -1,7 +1,8 @@
 /**
  * Étape 3 (C4) — aux PORTES : la garde de mission lit le montant de la mission en jeu
- * (calcul de la lettre) et l'ajoute au cumul ; la lettre ne part pas sans attestation
- * quand le montant qu'elle annonce fait atteindre le seuil.
+ * (calcul de la lettre) et l'ajoute au cumul : une NOUVELLE mission qui fait atteindre le
+ * seuil n'est ni proposée ni acceptée sans attestation. Décision du 14/10/2026 : une
+ * mission déjà acceptée est maintenue (la lettre part), seul son paiement attend.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -63,7 +64,7 @@ const h = vi.hoisted(() => {
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
 
 import { MANQUES_MISSION } from "../garde-mission";
-import { controlerGardeMission, controlerVigilanceLettre } from "../garde-mission-portes";
+import { controlerGardeMission } from "../garde-mission-portes";
 
 const MAINTENANT = new Date("2026-10-14T10:00:00Z");
 const releve = (totalHtCents: number) => ({
@@ -273,67 +274,8 @@ describe("relecture de l'étape 3 — l'engagement entier, jamais compté deux f
   });
 });
 
-describe("controlerVigilanceLettre — à l'émission de la lettre", () => {
-  it("4 000 € + une lettre de 1 400 € sans attestation : refusée", async () => {
-    const r = await controlerVigilanceLettre(
-      "t-1",
-      { sessionId: "s-1", montantHtCents: 140_000 },
-      MAINTENANT,
-    );
-    expect(r.refus).toEqual([MANQUES_MISSION.vigilanceMission]);
-  });
-
-  it("4 000 € + 700 € : la lettre part", async () => {
-    expect(
-      (
-        await controlerVigilanceLettre(
-          "t-1",
-          { sessionId: "s-1", montantHtCents: 70_000 },
-          MAINTENANT,
-        )
-      ).refus,
-    ).toEqual([]);
-  });
-
-  it("avec une attestation valable : la lettre part", async () => {
-    h.etat.trainer = {
-      ...h.etat.trainer!,
-      documents: [
-        {
-          type: "attestation_vigilance_urssaf",
-          statutValidation: "valide",
-          fichierUrl: "r2://a",
-          dateEmission: new Date("2026-09-01T00:00:00Z"),
-          dateExpiration: null,
-        },
-      ],
-    };
-    expect(
-      (
-        await controlerVigilanceLettre(
-          "t-1",
-          { sessionId: "s-1", montantHtCents: 140_000 },
-          MAINTENANT,
-        )
-      ).refus,
-    ).toEqual([]);
-  });
-
-  it("ancien stock en « avertir » : averti, jamais bloqué", async () => {
-    h.etat.settings.set("formateurs.garde_mission", { valeur: "avertir" });
-    h.etat.trainer = { ...h.etat.trainer!, activationValideeSource: "anterieure_au_controle" };
-    const r = await controlerVigilanceLettre(
-      "t-1",
-      { sessionId: "s-1", montantHtCents: 140_000 },
-      MAINTENANT,
-    );
-    expect(r).toMatchObject({ mode: "avertir", refus: [] });
-    expect(r.avertissements).toEqual([MANQUES_MISSION.vigilanceMission]);
-  });
-});
-
 describe("les portes passent la mission en jeu", () => {
-  it("affectation, proposition, acceptation, accord, choix, moteur, report, lettre", async () => {
+  it("affectation, proposition, acceptation, accord, choix, report (jamais la lettre d'une mission acceptée)", async () => {
     const { readFileSync } = await import("node:fs");
     const { join } = await import("node:path");
     const lire = (f: string) => readFileSync(join(process.cwd(), f), "utf8");
@@ -354,17 +296,20 @@ describe("les portes passent la mission en jeu", () => {
         "src/server/qualiopi/formateurs-independants/choix-formateur-service.ts",
         /controlerGardeMission\(c\.trainerId, maintenant, \{ sessionId \}\)/,
       ],
-      ["src/server/qualiopi/formateurs-independants/moteur-mission.ts", /missionId: m\.id/],
       [
         "src/server/qualiopi/formateurs-independants/evaluer-affectation.ts",
         /sessionId: session\.id/,
       ],
-      [
-        "src/server/qualiopi/documents/lettre-mission-v2-generation.ts",
-        /controlerVigilanceLettre\(/,
-      ],
     ];
     for (const [f, motif] of attendus) expect(lire(f), f).toMatch(motif);
+    // Décision du 14/10/2026 : une mission ACCEPTÉE est maintenue sans attestation — ni
+    // la lettre ni le moteur (qui ne voit que des missions acceptées) ne la refusent.
+    expect(lire("src/server/qualiopi/documents/lettre-mission-v2-generation.ts")).not.toMatch(
+      /controlerVigilanceLettre|controlerGardeMission/,
+    );
+    expect(lire("src/server/qualiopi/formateurs-independants/moteur-mission.ts")).toMatch(
+      /garde\.refus\.filter\(\(r\) => !MANQUES_VIGILANCE\.has\(r\)\)/,
+    );
     const service = lire("src/server/qualiopi/trainers/mission-formateur.ts");
     expect(
       service.match(/controlerGardeMission\([\w.]+, (?:now|new Date\(\)), \{\s*sessionId/g)?.length,

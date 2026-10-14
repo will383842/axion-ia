@@ -1972,7 +1972,6 @@ export async function genererLettreMissionAction(input: {
         documentId: v2.documentId,
         numero: v2.numero,
         gabaritVersion: v2.gabaritVersion,
-        ...(v2.avertissements.length > 0 ? { avertissements: v2.avertissements } : {}),
         ...(v2.lettreAnnuleeId !== null ? { lettreAnnuleeId: v2.lettreAnnuleeId } : {}),
       },
       session: adminSession,

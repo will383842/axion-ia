@@ -74,6 +74,17 @@ export const MANQUES_MISSION = {
   erreur: "Le contrôle du formateur n'a pas pu aboutir.",
 } as const;
 
+/**
+ * Décision du dirigeant (14/10/2026, contrat-cadre v4 art. 18.2) — les manques de
+ * l'attestation URSSAF. Ils refusent une NOUVELLE mission (proposition, acceptation,
+ * accord hors outil, affectation, report) ; une mission DÉJÀ ACCEPTÉE est maintenue,
+ * seul son paiement attend l'attestation : le moteur de la lettre les ignore.
+ */
+export const MANQUES_VIGILANCE: ReadonlySet<string> = new Set([
+  MANQUES_MISSION.vigilance,
+  MANQUES_MISSION.vigilanceMission,
+]);
+
 export type VerdictMission =
   { readonly ok: true } | { readonly ok: false; readonly manques: ReadonlyArray<string> };
 

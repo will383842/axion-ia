@@ -394,14 +394,39 @@ describe("lettre due (T8)", () => {
     expect(h.generer).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["cumul au seuil", MANQUES_MISSION.vigilance],
+    ["la mission fait atteindre le seuil", MANQUES_MISSION.vigilanceMission],
+  ])(
+    "décision du 14/10/2026 — mission ACCEPTÉE (%s) : l'attestation URSSAF manquante ne bloque jamais la lettre, aucun F32",
+    async (_cas, manque) => {
+      h.etat.gardeRefus = [manque];
+      expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("lettre_emise");
+      expect(h.generer).toHaveBeenCalledTimes(1);
+      expect(
+        h.envoyer.mock.calls.map((c) => (c as unknown as [{ gabarit: string }])[0].gabarit),
+      ).not.toContain("formateur-mission-en-attente");
+    },
+  );
+
+  it("mission acceptée : un AUTRE manque bloque toujours, et F32 ne parle jamais de l'URSSAF", async () => {
+    h.etat.gardeRefus = [MANQUES_MISSION.vigilance, MANQUES_MISSION.nda];
+    expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
+      "bloquee_notifiee",
+    );
+    expect(JSON.stringify(h.envoyer.mock.calls)).not.toMatch(/URSSAF/);
+    expect(JSON.stringify(h.envoyer.mock.calls)).toMatch(/déclaration d'activité/);
+    expect(h.generer).not.toHaveBeenCalled();
+  });
+
   it("garde refusée : F32 une fois par motif, et jamais pour un manque qui n'est pas le sien", async () => {
-    h.etat.gardeRefus = [MANQUES_MISSION.vigilance];
+    h.etat.gardeRefus = [MANQUES_MISSION.nda];
     expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
       "bloquee_notifiee",
     );
     expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe("rien");
     expect(h.envoyer).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie|URSSAF/);
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toMatch(/Marie|déclaration/);
     h.envoyer.mockClear();
     h.etat.gardeRefus = [MANQUES_MISSION.registre];
     expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
@@ -415,7 +440,7 @@ describe("lettre due (T8)", () => {
     const { remplir, varianteDe } = await import("@/lib/email/templates/_formateur-independant");
     const { CROCHET_NON_REMPLI } =
       await import("@/lib/email/templates/formateur-independant-textes");
-    h.etat.gardeRefus = [MANQUES_MISSION.vigilance, MANQUES_MISSION.nda];
+    h.etat.gardeRefus = [MANQUES_MISSION.contrat, MANQUES_MISSION.nda];
     expect((await reevaluerMission(MISSION, "passage", MAINTENANT)).action).toBe(
       "bloquee_notifiee",
     );

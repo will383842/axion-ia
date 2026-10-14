@@ -15,7 +15,7 @@ import { TARIF_JOURNEE_HT_CENTS } from "./lettre-mission-v2-calcul";
 
 /**
  * Version du gabarit passée à l'empreinte, qui ne la hache plus (v2 de l'empreinte). La
- * version RÉELLEMENT émise suit le contrat-cadre signé (`versionLettrePourContrat`).
+ * version émise est `VERSION_LETTRE_EMISE` (v3).
  */
 export const GABARIT_LETTRE = 3;
 

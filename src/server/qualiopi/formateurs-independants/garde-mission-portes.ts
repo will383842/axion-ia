@@ -18,7 +18,6 @@ import {
   AUCUNE_ISSUE,
   MANQUES_MISSION,
   appliquerGarde,
-  manqueVigilanceMission,
   modeGardeMission,
   peutRecevoirMission,
   type IssueGarde,
@@ -152,66 +151,6 @@ export async function controlerGardeMission(
       maintenant,
     );
     return { mode, ...appliquerGarde(mode, verdict) };
-  } catch {
-    return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
-  }
-}
-
-/**
- * Étape 3 (C4) — à l'ÉMISSION DE LA LETTRE : la seule question de l'attestation URSSAF,
- * avec le montant que la lettre annonce. Même interrupteur et même mode que la garde de
- * mission (coupée : rien n'est lu, rien n'est refusé). Ne lève jamais.
- *
- * Les autres conditions de la garde (registre, contrat, NDA…) restent celles des portes
- * d'affectation et du moteur : la lettre n'en ajoute pas.
- */
-export async function controlerVigilanceLettre(
-  trainerId: string,
-  lettre: { readonly sessionId: string; readonly montantHtCents: number },
-  maintenant: Date = new Date(),
-): Promise<ControleGardeMission> {
-  const allumage = await lireAllumage();
-  if (allumage !== "allumee") return allumage;
-  try {
-    const [niveau, t, cumul, engagement] = await Promise.all([
-      lireNiveau(),
-      prisma.trainer.findUnique({
-        where: { id: trainerId },
-        select: {
-          statut: true,
-          activationValideeSource: true,
-          documents: {
-            where: { type: "attestation_vigilance_urssaf", statutValidation: "valide" },
-            select: {
-              type: true,
-              statutValidation: true,
-              fichierUrl: true,
-              dateEmission: true,
-              dateExpiration: true,
-            },
-          },
-        },
-      }),
-      lireCumulHonorairesHtCents(trainerId),
-      // Le montant annoncé par la lettre, net de son déjà-facturé, plus les autres
-      // missions ouvertes du formateur.
-      lireEngagementHtCents(trainerId, lettre, maintenant),
-    ]);
-    if (t === null) return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
-    if (t.statut === "salarie" || t.statut === "dirigeant") return COUPEE;
-    const mode = modeGardeMission(true, niveau, t.activationValideeSource);
-    const manque = manqueVigilanceMission(
-      {
-        pieces: t.documents as DocumentConformite[],
-        cumulHonorairesHtCents: cumul,
-        montantMissionHtCents: engagement,
-      },
-      maintenant,
-    );
-    return {
-      mode,
-      ...appliquerGarde(mode, manque === null ? { ok: true } : { ok: false, manques: [manque] }),
-    };
   } catch {
     return { mode: "refuser", refus: [MANQUES_MISSION.erreur], avertissements: [] };
   }

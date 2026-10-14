@@ -133,14 +133,14 @@ beforeEach(() => {
 });
 
 describe("allumé : la lettre v2", () => {
-  it("datée selon le contrat signé (v3 → lettre v2), liée à la mission, jamais un duplicata", async () => {
+  it("datée v3, liée à la mission, jamais un duplicata", async () => {
     const r = await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
     expect(r).toMatchObject({ ok: true, documentId: "doc-neuf", lettreAnnuleeId: null });
     const entree = h.m.generate.mock.calls[0]?.[0] as unknown as {
       gabaritVersion: number;
       estCopie: boolean;
     };
-    expect(entree.gabaritVersion).toBe(2);
+    expect(entree.gabaritVersion).toBe(3);
     expect(entree.estCopie).toBe(false);
     // Lien CONDITIONNEL : la mission de CE couple, et elle seule.
     expect(h.m.missionUpdateMany).toHaveBeenCalledWith({
@@ -149,25 +149,19 @@ describe("allumé : la lettre v2", () => {
     });
   });
 
-  it("étape 3 du C4 — contrat v3 signé : la lettre v2 FIGÉE (le contrat v3 l'emporte) ; contrat v4 : la v3", async () => {
-    const { LettreMissionV2Pdf: FigeeV2 } =
-      await import("../templates/archives/lettre-mission-v2.v2");
+  it("décision du 14/10/2026 — aucun signataire v3 : la lettre v3 pour tout contrat-cadre signé (v3 ou v4)", async () => {
     type Entree = { gabaritVersion: number; buildElement: (n: string) => { type: unknown } };
-    // Contrat v3 (fixture par défaut).
-    await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
-    const v3 = h.m.generate.mock.calls[0]?.[0] as unknown as Entree;
-    expect(v3.gabaritVersion).toBe(2);
-    expect(v3.buildElement("N").type).toBe(FigeeV2);
-    // Contrat v4.
-    h.m.generate.mockClear();
-    h.m.contrat.mockResolvedValue({
-      metadata: { renderData: { gabaritVersion: 4 } },
-      signatures: [{ signeAt: new Date("2026-10-13T10:00:00Z") }],
-    });
-    await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
-    const v4 = h.m.generate.mock.calls[0]?.[0] as unknown as Entree;
-    expect(v4.gabaritVersion).toBe(3);
-    expect(v4.buildElement("N").type).toBe(LettreMissionV2Pdf);
+    for (const version of [3, 4]) {
+      h.m.generate.mockClear();
+      h.m.contrat.mockResolvedValue({
+        metadata: { renderData: { gabaritVersion: version } },
+        signatures: [{ signeAt: new Date("2026-10-13T10:00:00Z") }],
+      });
+      await genererLettreMissionV2({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+      const e = h.m.generate.mock.calls[0]?.[0] as unknown as Entree;
+      expect(e.gabaritVersion).toBe(3);
+      expect(e.buildElement("N").type).toBe(LettreMissionV2Pdf);
+    }
   });
 
   it("refuse sans contrat-cadre v3 signé, sans rien émettre", async () => {
