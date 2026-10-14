@@ -61,7 +61,8 @@ describe("heures suivies — une seule définition", () => {
 
   it("🔴 certificat, attestation, e-mail et alertes lisent la MÊME définition", () => {
     const lire = (chemin: string) => readFileSync(join(process.cwd(), "src", chemin), "utf8");
-    const certificat = lire("server/actions/qualiopi/documents.ts");
+    // Lot 8B — le certificat se construit dans le service partagé (clic + automatique).
+    const certificat = lire("server/qualiopi/documents/production/producteurs.ts");
     expect(certificat).toContain("minutesSuiviesPresence(");
     expect(certificat).not.toMatch(
       /Math\.round\(\(enrollment\.tauxPresencePct \* baseDuree\) \/ 100\)/,
@@ -98,7 +99,9 @@ describe("heures suivies — même base de durée, formulation exacte", () => {
     expect(base({ dureeReelleHeures: 16, dureeSnapshotHeures: 12, dureeCatalogueHeures: 14 })).toBe(
       16,
     );
-    expect(lire("server/actions/qualiopi/documents.ts")).toContain("dureeReferenceHeures(");
+    expect(lire("server/qualiopi/documents/production/producteurs.ts")).toContain(
+      "dureeReferenceHeures(",
+    );
     expect(lire("server/qualiopi/evaluations/attestation-service.ts")).toContain(
       "dureeReferenceHeures(",
     );
@@ -111,6 +114,7 @@ describe("heures suivies — même base de durée, formulation exacte", () => {
       "server/qualiopi/evaluations/heures-suivies.ts",
       "server/qualiopi/evaluations/attestation-service.ts",
       "server/actions/qualiopi/documents.ts",
+      "server/qualiopi/documents/production/producteurs.ts",
       "server/qualiopi/alertes/evaluateur.ts",
       "server/qualiopi/notifications/notifications-service.ts",
     ];
