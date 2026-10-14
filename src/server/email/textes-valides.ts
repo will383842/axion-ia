@@ -46,6 +46,13 @@ export function lireValidation(brut: unknown): boolean {
   );
 }
 
+/** Lot 8A — l'empreinte portée par une validation (`{ valide: true, empreinte }`), ou `null`. */
+export function lireEmpreinte(brut: unknown): string | null {
+  if (brut === null || typeof brut !== "object" || Array.isArray(brut)) return null;
+  const e = (brut as Record<string, unknown>).empreinte;
+  return typeof e === "string" && /^[0-9a-f]{64}$/.test(e) ? e : null;
+}
+
 /** Le registre à partir des lignes `settings` lues (n'importe quel ordre). */
 export function textesValidesDepuisLignes(
   lignes: ReadonlyArray<{ key: string; value: unknown }>,

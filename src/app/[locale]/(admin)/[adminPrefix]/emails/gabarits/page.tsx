@@ -49,7 +49,7 @@ import {
   listeDesTextesAffichee,
   TEXTES_FORMATEURS_A_VALIDER,
 } from "@/server/email/textes-formateurs-a-valider";
-import { lireTextesValides } from "@/server/email/textes-valides-lecture";
+import { lireEtatsTextes } from "@/server/email/textes-valides-lecture";
 
 import { ValiderTousTextesFormateurs } from "./ValiderTousTextesFormateurs";
 
@@ -81,11 +81,14 @@ export default async function GabaritsEmailPage({
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const registre = await lireTextesValides();
+  // Lot 8A — « à revalider » : validé sur un autre texte que l'actuel, la validation est tombée.
+  const registre = await lireEtatsTextes();
   const textesFormateurs = TEXTES_FORMATEURS_A_VALIDER.map((t) => ({
     ...t,
-    valide: registre.has(cleDuTexte(t)),
+    valide: registre.valides.has(cleDuTexte(t)),
+    aRevalider: registre.aRevalider.has(cleDuTexte(t)),
   }));
+  const nbARevalider = textesFormateurs.filter((t) => t.aRevalider).length;
   const nbValides = textesFormateurs.filter((t) => t.valide).length;
   const peutValider = estSuperAdmin((session.user as { role?: string }).role);
 
@@ -156,6 +159,9 @@ export default async function GabaritsEmailPage({
           {nbValides} validé{nbValides > 1 ? "s" : ""} sur {textesFormateurs.length}. Un texte non
           validé ne part jamais. Ouvrez un texte pour le lire, puis le valider (ou retirer sa
           validation) sous son aperçu.
+          {nbARevalider > 0
+            ? ` ${nbARevalider} texte${nbARevalider > 1 ? "s ont" : " a"} changé depuis sa validation : à revalider, rien n'en part d'ici là.`
+            : ""}
         </p>
         <details className="mt-3">
           <summary className="text-primary cursor-pointer text-sm">Voir la liste</summary>
@@ -180,7 +186,9 @@ export default async function GabaritsEmailPage({
                     {t.variante !== undefined ? ` · ${t.variante}` : ""}
                   </code>
                 </Link>
-                <span className="text-fg-muted text-xs">{t.valide ? "validé" : "non validé"}</span>
+                <span className="text-fg-muted text-xs">
+                  {t.valide ? "validé" : t.aRevalider ? "à revalider (texte changé)" : "non validé"}
+                </span>
               </li>
             ))}
           </ul>

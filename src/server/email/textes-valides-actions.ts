@@ -19,11 +19,13 @@ import { estSuperAdmin } from "@/server/auth/habilitations";
 
 import {
   cleDuTexte,
+  empreinteAttendue,
+  empreinteDuTexte,
   estTexteFormateurAValider,
   listeDesTextesAffichee,
   TEXTES_FORMATEURS_A_VALIDER,
 } from "./textes-formateurs-a-valider";
-import { cleTexteValide, estNomValide, lireValidation } from "./textes-valides";
+import { cleTexteValide, estNomValide, lireEmpreinte, lireValidation } from "./textes-valides";
 
 export type EtatValidation = { ok: true; message: string } | { ok: false; error: string };
 
@@ -31,6 +33,8 @@ export async function validerTexteEmailAction(d: {
   gabarit: string;
   variante?: string;
   valide: boolean;
+  /** Lot 8A — l'empreinte du texte affiché ; différente de l'actuelle : refus. */
+  empreinte?: string;
 }): Promise<EtatValidation> {
   const session = await auth();
   if (!session?.user?.id) return { ok: false, error: "Session expirée." };
@@ -47,8 +51,18 @@ export async function validerTexteEmailAction(d: {
   }
   if (typeof d.valide !== "boolean") return { ok: false, error: "Valeur invalide." };
   const cle = cleTexteValide(d.gabarit, d.variante);
+  // Lot 8A — un texte formateur se valide AVEC l'empreinte du texte relu : s'il change
+  // ensuite, la validation tombe (`textes-valides-lecture.ts`).
+  const empreinte = empreinteAttendue(cle);
+  if (d.valide && empreinte !== null && d.empreinte !== undefined && d.empreinte !== empreinte) {
+    return {
+      ok: false,
+      error: "Le texte a changé depuis l'affichage : rechargez la page et relisez-le.",
+    };
+  }
   const userId = session.user.id;
   const valide = d.valide;
+  const valeur = valide && empreinte !== null ? { valide, empreinte } : { valide };
   const ip = await getClientIp();
   try {
     await prisma.$transaction(async (tx) => {
@@ -59,11 +73,11 @@ export async function validerTexteEmailAction(d: {
         where: { key: cle },
         create: {
           key: cle,
-          value: { valide } as never,
+          value: valeur as never,
           description: "E-mails › Texte validé par la direction",
           updatedBy: userId,
         },
-        update: { value: { valide } as never, updatedBy: userId },
+        update: { value: valeur as never, updatedBy: userId },
       });
       await tx.activityLog.create({
         data: {
@@ -71,7 +85,12 @@ export async function validerTexteEmailAction(d: {
           action: valide ? "email.texte_valide" : "email.texte_invalide",
           targetType: "setting",
           ipAddress: ip,
-          changes: { cle, avant, apres: valide } as never,
+          changes: {
+            cle,
+            avant,
+            apres: valide,
+            ...("empreinte" in valeur ? { empreinte: valeur.empreinte } : {}),
+          } as never,
         },
       });
     });
@@ -109,10 +128,15 @@ export async function validerTexteEmailFormAction(
   if (!estTexteFormateurAValider(gabarit, variante)) {
     return { ok: false, error: "Ce texte ne se valide pas depuis cet écran." };
   }
+  // Lot 8A — l'écran envoie l'empreinte du texte qu'il montre : on ne valide que ce qu'on
+  // a lu. Absente : chaîne vide, que l'acte refuse (après sa garde de session).
+  const lue = formData.get("empreinte");
+  const empreinte = typeof lue === "string" ? lue : "";
   const r = await validerTexteEmailAction({
     gabarit,
     ...(variante !== undefined ? { variante } : {}),
     valide: valide === "1",
+    empreinte,
   });
   if (r.ok) rafraichirGabarits();
   return r;
@@ -152,7 +176,10 @@ export async function validerTousTextesFormateursAction(
       error: "La liste des textes a changé depuis l'affichage : rechargez la page et relisez-la.",
     };
   }
-  const cles = TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte);
+  const attendues = new Map(
+    TEXTES_FORMATEURS_A_VALIDER.map((t) => [cleDuTexte(t), empreinteDuTexte(t)]),
+  );
+  const cles = [...attendues.keys()];
   const userId = session.user.id;
   const ip = await getClientIp();
   let ecrites: string[] = [];
@@ -162,18 +189,26 @@ export async function validerTousTextesFormateursAction(
         where: { key: { in: cles } },
         select: { key: true, value: true },
       });
-      const deja = new Set(lignes.filter((l) => lireValidation(l.value)).map((l) => l.key));
+      // Déjà validé = validé SUR LE TEXTE ACTUEL (lot 8A) ; une validation tombée est réécrite.
+      const deja = new Set(
+        lignes
+          .filter((l) => lireValidation(l.value) && lireEmpreinte(l.value) === attendues.get(l.key))
+          .map((l) => l.key),
+      );
       const aEcrire = cles.filter((c) => !deja.has(c));
       for (const cle of aEcrire) {
         await tx.setting.upsert({
           where: { key: cle },
           create: {
             key: cle,
-            value: { valide: true } as never,
+            value: { valide: true, empreinte: attendues.get(cle) } as never,
             description: "E-mails › Texte validé par la direction",
             updatedBy: userId,
           },
-          update: { value: { valide: true } as never, updatedBy: userId },
+          update: {
+            value: { valide: true, empreinte: attendues.get(cle) } as never,
+            updatedBy: userId,
+          },
         });
       }
       if (aEcrire.length > 0) {

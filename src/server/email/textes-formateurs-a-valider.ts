@@ -10,7 +10,10 @@
  * Pur : l'écran et les actions le lisent ; le registre reste `textes-valides.ts`.
  */
 
+import { createHash } from "node:crypto";
+
 import {
+  TEXTE_F23_HONORAIRES,
   TEXTES_FORMATEUR,
   type GabaritFormateurIndependant,
 } from "@/lib/email/templates/formateur-independant-textes";
@@ -70,13 +73,79 @@ export function estTexteFormateurAValider(gabarit: string, variante?: string): b
   }
 }
 
+// ── Lot 8A (#1510-1) — l'EMPREINTE du texte validé ────────────────────────────
+
+/** SHA-256 (hex) d'un contenu, sérialisé à clés triées : l'ordre d'écriture ne compte pas. */
+export function empreinteDe(contenu: unknown): string {
+  const stable = (v: unknown): unknown =>
+    Array.isArray(v)
+      ? v.map(stable)
+      : v !== null && typeof v === "object"
+        ? Object.fromEntries(
+            Object.keys(v as Record<string, unknown>)
+              .sort()
+              .map((k) => [k, stable((v as Record<string, unknown>)[k])]),
+          )
+        : v;
+  return createHash("sha256")
+    .update(JSON.stringify(stable(contenu)))
+    .digest("hex");
+}
+
 /**
- * La liste des textes telle que l'écran l'affiche : les clés, dans l'ordre, une par
- * ligne. « Valider tous les textes » la renvoie et l'action la compare à la liste du
- * moment : un texte remplacé par un autre, à nombre égal, est refusé.
+ * Ce que la direction relit pour ce texte, donc ce que l'empreinte couvre :
+ *   · une VARIANTE validée à part : ses seules variantes (étapes qui la portent) ;
+ *     F23 chiffrée : `TEXTE_F23_HONORAIRES` ;
+ *   · le texte de BASE : la fiche du gabarit, SANS les variantes validées à part (les
+ *     changer ne fait tomber que leur propre validation).
+ */
+function contenuDuTexte(t: TexteAValider): unknown {
+  if (t.gabarit === F23_HONORAIRES.gabarit && t.variante === F23_HONORAIRES.variante) {
+    return TEXTE_F23_HONORAIRES;
+  }
+  const fiche = TEXTES_FORMATEUR[t.gabarit as GabaritFormateurIndependant];
+  const aPart = VARIANTES_VALIDEES_A_PART[t.gabarit as GabaritFormateurIndependant] ?? {};
+  // L'étape n du payload est la variante d'indice n - 1 (`texteParDefautFormateur`).
+  const indicesAPart = (nom?: string) =>
+    new Set(
+      Object.entries(aPart)
+        .filter(([, v]) => nom === undefined || v === nom)
+        .map(([etape]) => Number(etape) - 1),
+    );
+  if (t.variante !== undefined) {
+    const indices = indicesAPart(t.variante);
+    return { variante: t.variante, variantes: fiche.variantes.filter((_, i) => indices.has(i)) };
+  }
+  const exclus = indicesAPart();
+  return { ...fiche, variantes: fiche.variantes.filter((_, i) => !exclus.has(i)) };
+}
+
+export function empreinteDuTexte(t: TexteAValider): string {
+  return empreinteDe(contenuDuTexte(t));
+}
+
+const EMPREINTES: ReadonlyMap<string, string> = new Map(
+  TEXTES_FORMATEURS_A_VALIDER.map((t) => [cleDuTexte(t), empreinteDuTexte(t)]),
+);
+
+/**
+ * L'empreinte que doit porter la validation de cette clé ; `null` pour un texte qui ne
+ * relève pas de cet écran (sa validation garde la règle d'avant : `{ valide: true }`).
+ */
+export function empreinteAttendue(cle: string): string | null {
+  return EMPREINTES.get(cle) ?? null;
+}
+
+/**
+ * La liste des textes telle que l'écran l'affiche : `clé=empreinte`, dans l'ordre, une
+ * par ligne. « Valider tous les textes » la renvoie et l'action la compare à la liste du
+ * moment : un texte remplacé par un autre, à nombre égal, OU dont un mot a changé entre
+ * l'affichage et le clic, est refusé.
  */
 export function listeDesTextesAffichee(): string {
-  return TEXTES_FORMATEURS_A_VALIDER.map(cleDuTexte).join("\n");
+  return TEXTES_FORMATEURS_A_VALIDER.map((t) => `${cleDuTexte(t)}=${empreinteDuTexte(t)}`).join(
+    "\n",
+  );
 }
 
 /**
