@@ -76,7 +76,15 @@ import { REGLEMENT_INTERIEUR_VERSION } from "@/content/reglement-interieur-versi
 import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
 import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
-import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  estInscriptionActive,
+  inscriptionsActives,
+} from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  dureeReferenceHeures,
+  minutesSuiviesPresence,
+} from "@/server/qualiopi/evaluations/heures-suivies";
+import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
 import {
   chargerDossierPretADeposer,
   type DossierPretADeposer,
@@ -1526,4 +1534,289 @@ export async function produireKitOpco(
   });
 
   return { ok: true, documentId: doc.id, numero: doc.numero };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Certificat de réalisation (R.6313-3 — durée en centièmes)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Certificat de réalisation d'un stagiaire (R.6313-3), GARDES COMPRISES.
+ *
+ * Lot 8B — la construction et ses gardes sont DESCENDUES de
+ * `genererCertificatRealisationAction` (le clic de la console) vers ce service, pour
+ * que l'émission automatique de fin de formation (`certificat-auto.ts`) emprunte
+ * exactement le même chemin : inscription active, taux de présence MESURÉ, trace
+ * vérifiable (signature d'émargement non révoquée ou créneau importé). Une seule
+ * garde, deux appelants — jamais de jumelle.
+ *
+ * ⚠️ DURÉE EN CENTIÈMES OBLIGATOIRE : formatHeuresCentiemes(dureeHeures).
+ *    Utilisé par OPCO Atlas. La durée réelle est lue depuis dureeReelleHeures
+ *    si disponible, sinon fallback sur la durée de formation prévue.
+ *
+ * N'envoie rien : la pièce est créée, sa remise reste un geste humain.
+ */
+export async function produireCertificatRealisation(
+  enrollmentId: string,
+  opts?: OptionsProduction,
+): Promise<ResultatProduction> {
+  const enrollment = await prisma.enrollment.findUnique({
+    where: { id: enrollmentId },
+    select: {
+      id: true,
+      statut: true,
+      tauxPresencePct: true,
+      trainee: {
+        select: {
+          id: true,
+          nom: true,
+          prenom: true,
+          fonction: true,
+        },
+      },
+      session: {
+        select: {
+          id: true,
+          titreSession: true,
+          dateDebut: true,
+          dateFin: true,
+          dureeReelleHeures: true,
+          // F30 — portée sur le certificat de réalisation (arrêté 21/12/2018).
+          modalite: true,
+          formationSnapshot: true,
+          formation: {
+            select: {
+              dureeHeures: true,
+              titre: true,
+            },
+          },
+          client: {
+            select: {
+              raisonSociale: true,
+              siret: true,
+              adresse: true,
+            },
+          },
+        },
+      },
+      // 🔴 3e relecture A09 — créneaux de présence (minutes réalisées / prévues), lus comme l'attestation.
+      presences: {
+        select: {
+          dureePrevueMinutes: true,
+          dureeRealiseeMinutes: true,
+          date: true,
+          demiJournee: true,
+        },
+      },
+    },
+  });
+  if (!enrollment) return { ok: false, motif: "Inscription introuvable" };
+
+  // Conformité R.6313-3 : un certificat de réalisation atteste d'heures réellement
+  // suivies. Un stagiaire sorti du dispositif ne peut PAS recevoir de certificat.
+  //
+  // 🔴 2026-08-21 — ce commentaire disait « cohérent avec l'attestation, cf.
+  // attestation-service.ts ». Une prière en commentaire pour que deux gardes
+  // restent identiques est l'aveu qu'on sait qu'elles vont diverger : les deux
+  // écrivaient bien la même règle, mais dans un ORDRE différent, chacune de son
+  // côté. Elles appellent maintenant le même prédicat, et la cohérence n'est
+  // plus une intention mais un fait.
+  if (!estInscriptionActive(enrollment.statut)) {
+    return {
+      ok: false,
+      motif:
+        "Certificat refusé : le stagiaire est en abandon/exclu. Aucun certificat de réalisation ne peut être émis (R.6313-3).",
+    };
+  }
+
+  // 🔴 Constaté EN PRODUCTION le 2026-07-26 — et déjà matérialisé.
+  //
+  // Le statut d'abandon était la SEULE garde. Plus bas, la durée n'est pondérée
+  // par le taux de présence que `if (tauxPresencePct !== null)` : quand le taux
+  // est inconnu, le certificat atteste donc la durée PRÉVUE comme si elle avait
+  // été réalisée. Rien n'exigeait qu'une seule heure ait été constatée.
+  //
+  // Ce n'est pas théorique : un `certificat_realisation` a été émis le 22/07 en
+  // production alors que `emargement_signatures` comptait ZÉRO ligne. La pièce
+  // que l'auditrice contrôle en premier attestait d'heures que rien ne prouvait.
+  //
+  // R.6313-3 : un certificat de réalisation atteste d'heures RÉELLEMENT suivies.
+  // Deux conditions, donc, et elles sont distinctes :
+  //   1. le taux de présence doit avoir été MESURÉ — un taux inconnu n'est pas un
+  //      taux de 100 % ;
+  //   2. il doit reposer sur une TRACE — au moins une signature d'émargement
+  //      rattachée à cette inscription. Un taux saisi à la main sans émargement
+  //      est une déclaration, pas une preuve, et c'est précisément ce qu'un
+  //      contrôle de service fait sanctionne.
+  //
+  // On refuse plutôt que d'émettre une pièce fausse : un certificat manquant se
+  // rattrape en émargeant, un certificat surdéclaré engage l'organisme devant le
+  // financeur.
+  if (enrollment.tauxPresencePct === null) {
+    return {
+      ok: false,
+      motif:
+        "Certificat refusé : le taux de présence n'a pas été calculé. Un certificat de réalisation atteste d'heures réellement suivies (R.6313-3) — il ne peut pas reposer sur la durée prévue.",
+    };
+  }
+
+  // 🔴 `D2-3-C1` (2026-08-20) — le certificat était STRUCTURELLEMENT impossible
+  // pour une session 100 % distancielle.
+  //
+  // La garde n'acceptait qu'une `EmargementSignature`, écrite par le seul
+  // service de signature manuscrite/canvas. L'import d'un relevé de connexion
+  // n'en écrit aucune — et le PDF du relevé affirme pourtant, en toutes lettres :
+  // « Ce document remplace la feuille d'émargement pour les formations
+  // dispensées à distance. »
+  //
+  // Une session à distance parfaitement menée — CSV de la plateforme importé,
+  // taux calculé, relevé archivé avec son empreinte — n'obtenait donc JAMAIS la
+  // pièce que l'OPCO exige pour financer. Et le trou n'apparaissait qu'au moment
+  // de justifier.
+  //
+  // ## Ce que la garde exige VRAIMENT, et qui ne change pas
+  //
+  // 🔑 Une trace VÉRIFIABLE, pas une saisie. C'est le sens de R.6313-3 et des
+  // indicateurs 9 et 11 : le taux ne doit pas reposer sur ce qu'un humain a tapé
+  // dans une grille.
+  //
+  // Le relevé de connexion satisfait cette exigence : ses créneaux portent
+  // `importId`, c'est-à-dire le rattachement au fichier d'origine, archivé avec
+  // son empreinte SHA-256. On peut le rejouer, le recompter, le confronter.
+  //
+  // ⚠️ `source: "manuel"` reste EXCLU, et c'est tout le propos : une présence
+  // saisie à la main n'est pas une trace, quelle que soit la modalité. Accepter
+  // n'importe quel `PresenceCreneau` aurait vidé la garde de sa substance —
+  // elle aurait continué d'exister en refusant seulement les dossiers vides.
+  const signatures = await prisma.emargementSignature.count({
+    where: {
+      enrollmentId: enrollment.id,
+      // 🔴 2026-08-24, cahier D3-4 — `revokedAt: null` MANQUAIT ici.
+      //
+      // Une signature révoquée est une signature retirée du registre : c'est
+      // le geste par lequel on constate qu'une preuve ne vaut pas. Sans ce
+      // filtre, révoquer TOUTES les signatures d'une inscription n'empêchait
+      // pas d'émettre le certificat de réalisation qu'elles fondaient — la
+      // pièce continuait d'affirmer une assiduité que le registre niait.
+      //
+      // 🔑 Le jumeau le faisait déjà : `emargement/revocation-service.ts`
+      // compte les « restantes » avec ce même filtre et remet
+      // `emargementSigneAt` à `null` quand il n'en reste aucune. La révocation
+      // nettoyait donc partout SAUF dans la garde qui délivre la pièce.
+      revokedAt: null,
+    },
+  });
+  const creneauxImportes =
+    signatures > 0
+      ? 0
+      : await prisma.presenceCreneau.count({
+          where: {
+            enrollmentId: enrollment.id,
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            // Le rattachement au fichier archivé : c'est LUI qui rend la trace
+            // vérifiable. Un créneau `import_*` orphelin ne prouverait rien.
+            importId: { not: null },
+          },
+        });
+
+  if (signatures === 0 && creneauxImportes === 0) {
+    return {
+      ok: false,
+      motif:
+        "Certificat refusé : aucune trace vérifiable n'est rattachée à cette inscription — ni signature d'émargement, ni relevé de connexion importé. Le taux de présence doit reposer sur une preuve, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
+    };
+  }
+
+  const identite = await getOrganismeIdentite();
+  const session = enrollment.session;
+  const trainee = enrollment.trainee;
+  // Durée + intitulé depuis le snapshot légal (WS5), repli LIVE si legacy.
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+
+  // Durée RÉALISÉE PAR CE STAGIAIRE (R.6313-3) : base = durée réelle de la session
+  // si déclarée, sinon durée prévue ; puis TOUJOURS pondérée par le taux de présence
+  // individuel quand il est connu.
+  //
+  // 🔴 #2 — avant, la pondération par le taux ne s'appliquait QUE si `dureeReelleHeures`
+  // était null : un stagiaire à 50 % d'une session de 16 h réelles obtenait un
+  // certificat « 16 h réalisées » (durée SESSION) alors que son attestation portait
+  // « 8 h suivies » (durée INDIVIDUELLE). Deux pièces du même dossier divergeaient, et
+  // le certificat SUR-DÉCLARAIT les heures à l'OPCO. Les deux mesurent désormais les
+  // heures réellement suivies par le bénéficiaire = taux × (durée réelle ?? prévue).
+  // 🔴 4e relecture A09 — même repli que l'attestation (`dureeReferenceHeures`).
+  const baseDuree = dureeReferenceHeures({
+    dureeReelleHeures: session.dureeReelleHeures,
+    dureeSnapshotHeures: formationDoc.dureeHeures,
+    dureeCatalogueHeures: session.formation.dureeHeures,
+  });
+  let dureeHeures = baseDuree;
+  if (enrollment.tauxPresencePct !== null) {
+    // 🔴 3e relecture A09 — MÊME calcul que l'attestation du même stagiaire
+    // (`heures-suivies.ts`) : proportion des minutes réalisées sur les minutes
+    // prévues des créneaux, sinon taux, sans
+    // arrondi à l'heure. 93 % de 7 h donnait « 7,00 » ici et « 6 h 31 » sur
+    // l'attestation : la divergence que le commentaire #2 ci-dessus refuse.
+    dureeHeures =
+      minutesSuiviesPresence(
+        { tauxPresencePct: enrollment.tauxPresencePct, creneaux: enrollment.presences },
+        baseDuree,
+      ) / 60;
+  }
+
+  const dirigeant = await getQualiopiConfig("dirigeant_nom");
+
+  const doc = await generateDocument({
+    type: "certificat_realisation",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...optionsGenerate(opts),
+    buildElement: (numero) =>
+      React.createElement(CertificatRealisationPdf, {
+        data: {
+          numero,
+          dateEmission: formatDateFr(new Date()),
+          identite,
+          ...(dirigeant ? { dirigeant } : {}),
+          entreprise: {
+            raisonSociale: session.client?.raisonSociale ?? identite.raisonSociale,
+            ...(session.client?.siret !== null && session.client?.siret !== undefined
+              ? { siret: session.client.siret }
+              : {}),
+            ...(session.client?.adresse !== null && session.client?.adresse !== undefined
+              ? { adresse: session.client.adresse }
+              : {}),
+          },
+          stagiaire: {
+            nom: trainee.nom,
+            prenom: trainee.prenom,
+            ...(trainee.fonction !== null && trainee.fonction !== undefined
+              ? { fonction: trainee.fonction }
+              : {}),
+          },
+          // #9 — intitulé de la SESSION (comme convention/convocation/émargement/
+          // attestation), pas le titre catalogue : sinon un certificat de
+          // réalisation portait un intitulé divergent des autres pièces du dossier.
+          intituleAction: session.titreSession ?? formationDoc.titre ?? session.formation.titre,
+          dateDebut: formatDate(new Date(session.dateDebut)),
+          dateFin: formatDate(new Date(session.dateFin)),
+          // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
+          dureeHeures,
+          // F30 — modalité réelle de la session. Le modèle annexé à l'arrêté du
+          // 21 décembre 2018 distingue présentiel et distanciel, et un contrôle
+          // de service fait porte précisément là-dessus. La nature de l'action
+          // prend son défaut « action de formation » dans le template.
+          modalite: session.modalite,
+        },
+      }),
+    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
+    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
+    // « copie » toutes les pièces des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
+  });
+
+  return {
+    ok: true,
+    documentId: doc.id,
+    numero: doc.numero,
+    details: { dureeHeures, sessionId: session.id },
+  };
 }

@@ -41,6 +41,16 @@ const ATTESTATION_SERVICE = join(
 );
 const WORKERS_DIR = join(RACINE, "src", "server", "queue", "workers");
 const ACTION_CERTIFICAT = join(RACINE, "src", "server", "actions", "qualiopi", "documents.ts");
+/** Lot 8B — la garde du certificat est descendue dans le service partagé. */
+const PRODUCTEUR_CERTIFICAT = join(
+  RACINE,
+  "src",
+  "server",
+  "qualiopi",
+  "documents",
+  "production",
+  "producteurs.ts",
+);
 
 /** Émission d'une pièce : `type: "<valeur>"` passé à `generateDocument`. */
 function emetLaPiece(source: string, type: string): boolean {
@@ -67,10 +77,17 @@ describe("les exclusions de la production au jalon disent la vérité", () => {
   });
 
   it("TÉMOIN POSITIF — la sonde SAIT reconnaître une émission de certificat", () => {
-    // Elle en trouve une, là où elle doit s'en trouver une : la Server Action.
-    // C'est ce témoin qui rend interprétable le zéro du test suivant.
-    const source = readFileSync(ACTION_CERTIFICAT, "utf8");
+    // Elle en trouve une, là où elle doit s'en trouver une : le service partagé
+    // (lot 8B — la garde est descendue de la Server Action). C'est ce témoin qui
+    // rend interprétable le zéro du test suivant.
+    const source = readFileSync(PRODUCTEUR_CERTIFICAT, "utf8");
     expect(emetLaPiece(source, "certificat_realisation")).toBe(true);
+  });
+
+  it("lot 8B — le clic de la console DÉLÈGUE au service : aucune seconde construction", () => {
+    const action = readFileSync(ACTION_CERTIFICAT, "utf8");
+    expect(action).toContain("produireCertificatRealisation(");
+    expect(emetLaPiece(action, "certificat_realisation")).toBe(false);
   });
 
   it("AUCUN worker ni cron n'émet le certificat de réalisation — clic admin seulement", () => {
