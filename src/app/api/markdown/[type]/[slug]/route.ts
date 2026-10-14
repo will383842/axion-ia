@@ -41,6 +41,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 interface RouteParams {
   params: Promise<{ type: string; slug: string }>;
@@ -287,7 +288,9 @@ export async function GET(_req: NextRequest, ctx: RouteParams): Promise<Response
   }
 
   try {
-    const content = await loadContent(type, slug);
+    // Audit Qualiopi du 16/10/2026 — même réécriture que les pages publiques
+    // (articles et FAQ EN BASE), selon l'interrupteur : cf. `affirmations-en-base.ts`.
+    const content = neutraliserSelonInterrupteur(await loadContent(type, slug));
     if (!content) {
       return new Response(`Not found: /${type}/${slug}`, {
         status: 404,

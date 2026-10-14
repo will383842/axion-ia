@@ -25,6 +25,7 @@ import {
 import { listFaqs, listFaqsByCategory, type FaqItem } from "@/lib/knowledge/readers";
 import { getFaqCategory, getAllFaqCategorySlugs, FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 interface Props {
   params: Promise<{ locale: string; categorie: string }>;
@@ -94,7 +95,11 @@ export default async function FaqCategoryPage({ params }: Props) {
   const CatIcon = FAQ_CATEGORY_ICONS[categorie] ?? FAQ_CATEGORY_ICON_FALLBACK;
 
   // Q/A de la thématique + tout le corpus (pour les compteurs « autres thèmes »).
-  const [faqs, allFaqs] = await Promise.all([listFaqsByCategory(categorie), listFaqs()]);
+  const [faqsBrutes, allFaqs] = await Promise.all([listFaqsByCategory(categorie), listFaqs()]);
+  // Audit Qualiopi du 16/10/2026 — certaines FAQ EN BASE (extraites des articles)
+  // nient ou affirment la certification : neutralisées au rendu selon
+  // l'interrupteur, cf. `affirmations-en-base.ts`.
+  const faqs = neutraliserSelonInterrupteur(faqsBrutes);
   const visible = visibleCategoryFaqs(faqs);
   const items = visible.map((entry) => ({
     id: entry.slug,

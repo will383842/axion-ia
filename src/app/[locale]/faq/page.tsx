@@ -36,6 +36,7 @@ import { listFaqs } from "@/lib/knowledge/readers";
 import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { FAQ_CATEGORY_ICONS, FAQ_CATEGORY_ICON_FALLBACK } from "@/content/faq-category-icons";
+import { neutraliserSelonInterrupteur } from "@/components/qualiopi/affirmations-en-base";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -88,7 +89,10 @@ export default async function FaqPage({ params }: Props) {
   // base (knowledge_entries / FAQ_GLOBAL) et porte des tokens de prix ; cette page ne les
   // résolvait pas. Le résolveur SSOT existait déjà — il manquait l'appel.
   // Règle du dépôt : on résout depuis la SSOT, on n'invente JAMAIS un prix.
-  const faqs = resolvePriceTokensDeep(await listFaqs(), loc);
+  // Audit Qualiopi du 16/10/2026 — certaines FAQ EN BASE (extraites des articles)
+  // nient ou affirment la certification : neutralisées au rendu selon
+  // l'interrupteur, cf. `affirmations-en-base.ts`.
+  const faqs = resolvePriceTokensDeep(neutraliserSelonInterrupteur(await listFaqs()), loc);
   const items = faqs.map((entry) => ({
     id: entry.slug,
     question: isFr ? entry.questionFr : entry.questionEn,
