@@ -44,6 +44,11 @@ import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import {
+  apresChangementEmail,
+  donneesChangementEmail,
+  preparerChangementEmail,
+} from "@/server/qualiopi/formateurs-independants/changement-email-console";
+import {
   actifALaCreation,
   changerActivationFormateur,
   desactiverSiGardeNonRemplie,
@@ -357,10 +362,21 @@ export async function updateTrainerAction(
     }
   }
 
+  // 🔴 Lot C4 — l'adresse d'un indépendant est son identité de connexion : acte
+  // habilité, liens du dossier révoqués avec elle, ancienne adresse prévenue.
+  const email = await preparerChangementEmail({
+    trainerId: id,
+    nouvelEmail: fields.email,
+    nouveauStatut: fields.statut,
+    session,
+  });
+  if (!email.ok) return { error: email.error };
+
   try {
     await prisma.trainer.update({
       where: { id },
       data: {
+        ...donneesChangementEmail(email.changement),
         ...(fields.nom !== undefined ? { nom: fields.nom } : {}),
         ...(fields.prenom !== undefined ? { prenom: fields.prenom } : {}),
         ...(fields.email !== undefined ? { email: fields.email } : {}),
@@ -405,9 +421,12 @@ export async function updateTrainerAction(
       action: "qualiopi.trainer.update",
       targetType: "Trainer",
       targetId: id,
-      changes: fields,
+      // Lot C4 — la LISTE des champs modifiés, jamais leurs valeurs (nom, e-mail,
+      // téléphone, adresse) : `targetId` désigne la fiche, comme à la création.
+      changes: { champs: Object.keys(fields) },
       session,
     });
+    await apresChangementEmail(id, email.changement);
 
     if (devientSousTraitant) {
       const garde = await desactiverSiGardeNonRemplie({

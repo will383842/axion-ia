@@ -1398,6 +1398,26 @@ Le texte ci-dessus est celui de la variante « avec remplaçant » (le formateur
 
 - **Bouton** : aucun
 
+## F61 — Adresse e-mail modifiée
+
+- **Gabarit** : `formateur-email-modifie`
+- **Envoyé quand** : l'équipe change, depuis la console, l'adresse e-mail d'un formateur indépendant. Part à l'**ancienne** adresse seulement, et ne contient jamais la nouvelle (lot C4).
+
+- **Objet** : Votre adresse e-mail a été modifiée
+- **Titre** : Votre adresse e-mail a été modifiée
+- **Aperçu** : Le [date], l'adresse e-mail de votre fiche formateur a été remplacée par une autre.
+- **Corps** :
+
+  > Bonjour Prénom,
+  >
+  > Le [date], l'adresse e-mail de votre fiche formateur a été remplacée par une autre.
+  >
+  > Nos messages et vos liens de connexion partent désormais vers cette nouvelle adresse. Par sécurité, vos connexions en cours ont été fermées.
+  >
+  > Vous n'êtes pas à l'origine de ce changement ? Répondez immédiatement à ce message.
+
+- **Bouton** : aucun
+
 ## Convocation pratique (J-7) d'un formateur indépendant — ligne ajoutée (lot C)
 
 - **Gabarit** : `formateur-convocation-j7` (message existant, commun à tous les formateurs). Pour un formateur **indépendant** seulement, et seulement si `formateurs.lettre_auto` est allumé, quand sa lettre de mission n'est pas encore signée, une ligne est ajoutée avant le dernier paragraphe, avec un lien vers la lettre. Un fichier d'agenda (`session.ics`, un événement par journée) est joint à ce même message.

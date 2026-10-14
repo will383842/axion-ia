@@ -40,7 +40,16 @@ interface SessionPayload {
    * signé avant ce lot n'en porte pas.
    */
   ver?: number;
+  /**
+   * Lot C4 — empreinte de l'adresse e-mail de la fiche au moment de la connexion
+   * (`empreinteSessionFormateur`, 16 caractères hexadécimaux, jamais l'adresse).
+   * Facultative : un jeton signé avant ce lot n'en porte pas.
+   */
+  emp?: string;
 }
+
+/** Forme d'une empreinte d'adresse admise dans le jeton. */
+const EMPREINTE = /^[0-9a-f]{16}$/;
 
 function b64urlEncode(bytes: Uint8Array): string {
   let bin = "";
@@ -85,12 +94,15 @@ export async function signFormateurSession(
   ttlSeconds: number = FORMATEUR_SESSION_MAX_AGE_SECONDS,
   /** Lot E (M14) — version d'accès de la fiche, revérifiée côté Node à chaque requête. */
   version?: number,
+  /** Lot C4 — empreinte de l'adresse de la fiche, revérifiée côté Node à chaque requête. */
+  empreinte?: string,
 ): Promise<string> {
   const payload: SessionPayload = {
     sub: subjectId,
     aud: audience,
     exp: Date.now() + ttlSeconds * 1000,
     ...(version !== undefined && Number.isInteger(version) && version >= 0 ? { ver: version } : {}),
+    ...(empreinte !== undefined && EMPREINTE.test(empreinte) ? { emp: empreinte } : {}),
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
   const payloadB64 = b64urlEncode(payloadBytes);
@@ -102,7 +114,7 @@ export async function signFormateurSession(
 }
 
 export type FormateurSessionResult =
-  | { ok: true; trainerId: string; version?: number }
+  | { ok: true; trainerId: string; version?: number; empreinte?: string }
   | { ok: false; reason: "malformed" | "invalid_signature" | "expired" | "wrong_audience" };
 
 /**
@@ -153,9 +165,11 @@ export async function verifyFormateurSession(
     return { ok: false, reason: "expired" };
   }
   const ver = payload.ver;
+  const emp = payload.emp;
   return {
     ok: true,
     trainerId: payload.sub,
     ...(typeof ver === "number" && Number.isInteger(ver) && ver >= 0 ? { version: ver } : {}),
+    ...(typeof emp === "string" && EMPREINTE.test(emp) ? { empreinte: emp } : {}),
   };
 }

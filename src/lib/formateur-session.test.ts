@@ -16,6 +16,29 @@ describe("formateur-session", () => {
     expect(result).toEqual({ ok: true, trainerId: "trainer-123" });
   });
 
+  it("🔴 C4 — porte l'empreinte d'adresse fournie à la signature", async () => {
+    const token = await signFormateurSession(
+      "trainer-123",
+      "formateur",
+      undefined,
+      0,
+      "0123456789abcdef",
+    );
+    const result = await verifyFormateurSession(token, "formateur");
+    expect(result).toEqual({
+      ok: true,
+      trainerId: "trainer-123",
+      version: 0,
+      empreinte: "0123456789abcdef",
+    });
+  });
+
+  it("C4 — une empreinte mal formée n'est ni signée ni rendue", async () => {
+    const token = await signFormateurSession("trainer-123", "formateur", undefined, 0, "pas hex !");
+    const result = await verifyFormateurSession(token, "formateur");
+    expect(result).toEqual({ ok: true, trainerId: "trainer-123", version: 0 });
+  });
+
   it("rejette un jeton mal formé", async () => {
     const result = await verifyFormateurSession("pas-un-jeton", "formateur");
     expect(result).toEqual({ ok: false, reason: "malformed" });

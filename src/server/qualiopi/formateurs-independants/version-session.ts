@@ -2,6 +2,8 @@
  * Lot E (M14) — version de session de l'espace formateur, séparée de `accesVersion`.
  */
 
+import { createHash } from "node:crypto";
+
 /**
  * Version de SESSION de l'espace formateur (session de l'espace et jeton de mission).
  *
@@ -42,4 +44,19 @@ export function ecritureFormateurPermise(
 ): boolean {
   if (t.finCollaborationAt != null) return false;
   return versionSignee === undefined || versionSignee === versionSessionFormateur(t);
+}
+
+/**
+ * Lot C4 — EMPREINTE de l'adresse e-mail portée par la session de l'espace : quand la
+ * console change l'adresse d'un indépendant, toute session ouverte sous l'ancienne
+ * tombe (garde de `server/formateur/guard.ts`). Sans migration : rien n'est stocké.
+ *
+ * Insensible à la casse (la colonne est `citext`) ; 16 caractères hexadécimaux, qui ne
+ * révèlent pas l'adresse à qui lit son propre cookie.
+ */
+export function empreinteSessionFormateur(email: string): string {
+  return createHash("sha256")
+    .update(`session-formateur:${email.trim().toLowerCase()}`)
+    .digest("hex")
+    .slice(0, 16);
 }

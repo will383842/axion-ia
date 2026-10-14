@@ -98,6 +98,7 @@ export const GABARITS_FORMATEUR: readonly GabaritFormateur[] = [
   "formateur-fin-collaboration",
   "formateur-avertissement",
   "formateur-dossier-a-jour",
+  "formateur-email-modifie",
 ];
 
 /** Après une fin de collaboration, seuls ceux-ci partent encore (même nom que chez les apporteurs). */
