@@ -188,14 +188,14 @@ export function assemblerLettreV2(f: FaitsLettreV2): LettreV2Assemblee {
     return {
       ok: false,
       motif:
-        "Le tarif de la mission n'est pas figé : la lettre n'annonce que ce que le paiement versera. Figez les conditions de la mission (choix du formateur) avant d'émettre la lettre.",
+        "Le tarif de la mission n'est pas figé : la lettre n'annonce que ce que le paiement versera. La mission doit porter son tarif et son régime de TVA figés avant toute lettre.",
     };
   }
   if (m.regimeTvaFige === null) {
     return {
       ok: false,
       motif:
-        "Le régime de TVA de la mission n'est pas figé : la lettre n'annonce que ce que le paiement versera. Figez les conditions de la mission (choix du formateur) avant d'émettre la lettre.",
+        "Le régime de TVA de la mission n'est pas figé : la lettre n'annonce que ce que le paiement versera. La mission doit porter son tarif et son régime de TVA figés avant toute lettre.",
     };
   }
   const regime = m.regimeTvaFige;

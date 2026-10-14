@@ -122,7 +122,15 @@ function mission(o: {
       lieuAdresse: "12 rue Exemple",
       lieuCodePostal: "69003",
       lieuVille: "Lyon",
-      jours: [{ date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" }],
+      sessionFormateurs: [{ trainerId: TRAINER }],
+      jours: [
+        {
+          date: new Date("2026-11-04T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: null,
+        },
+      ],
     },
     lettreMission: {
       annuleeAt: null,

@@ -236,3 +236,23 @@ describe("l'annonce de la lettre, mois par mois, pour l'écart avec le paiement"
     expect(r.data.totalHtCents).toBe(70_000);
   });
 });
+
+describe("proposition : un forfait au-dessus du plafond du paiement n'annonce rien", () => {
+  it("15 001 c par journée : null (la lettre et le paiement refuseraient)", () => {
+    expect(
+      honorairesProposition({
+        jours: [{ date: "2026-11-04", heureDebut: "09:00", heureFin: "17:00" }],
+        tarifJourneeHtCents: 35_000,
+        forfaitDeplacementParJourHtCents: 15_001,
+        distanciel: false,
+      }),
+    ).toBeNull();
+    expect(
+      assemblerLettreV2(
+        faits([jourSession("2026-11-04", "09:00", "17:00")], {
+          mission: { ...MISSION, forfaitDeplacementParJourHtCents: 15_001 },
+        }),
+      ).ok,
+    ).toBe(false);
+  });
+});

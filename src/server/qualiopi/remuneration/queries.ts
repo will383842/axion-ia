@@ -155,6 +155,7 @@ async function anomaliesFaceALaLettreSignee(
     trainerId: string;
     sessionId: string | null;
     origine: string;
+    statut: string;
     avoirDeId: string | null;
     periodeYear: number;
     periodeMonth: number;
@@ -169,7 +170,12 @@ async function anomaliesFaceALaLettreSignee(
   now: Date,
 ): Promise<AnomalieMission[]> {
   const conservees = lireAnomaliesMission(r.anomaliesMission);
-  if (r.origine !== "passage_mission" || r.sessionId === null || r.avoirDeId !== null) {
+  if (
+    r.origine !== "passage_mission" ||
+    r.sessionId === null ||
+    r.avoirDeId !== null ||
+    r.statut === "annule"
+  ) {
     return conservees;
   }
   try {

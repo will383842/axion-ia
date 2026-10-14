@@ -120,7 +120,15 @@ function mission(signee: boolean, dateDebut = "2026-11-04T08:00:00Z") {
       lieuAdresse: "12 rue Exemple",
       lieuCodePostal: "69003",
       lieuVille: "Lyon",
-      jours: [{ date: new Date("2026-11-06T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" }],
+      sessionFormateurs: [{ trainerId: TRAINER }],
+      jours: [
+        {
+          date: new Date("2026-11-06T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: null,
+        },
+      ],
     },
     // L'ancienne lettre portait d'autres dates : empreinte et résumé différents.
     lettreMission: {

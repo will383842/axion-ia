@@ -37,6 +37,7 @@ import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import type { Prisma } from "../../../../prisma/generated/client";
 
 import { eurosCourts, forfaitSelonLieu } from "./choix-formateur";
+import { journeesDuFormateur } from "./argent/journees-du-formateur";
 import { empreinteDeMetadata, empreinteMission } from "./empreinte-mission";
 import { envoyer } from "./envois";
 import { etapeMission, type EtapeMission } from "./etape-mission";
@@ -157,7 +158,8 @@ const MISSION_SELECT = {
       lieuAdresse: true,
       lieuCodePostal: true,
       lieuVille: true,
-      jours: { select: { date: true, heureDebut: true, heureFin: true } },
+      jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true } },
     },
   },
   lettreMission: {
@@ -210,6 +212,7 @@ export interface EtatMission {
 /** Ce que l'empreinte lit d'une mission (lecture unique, partagée avec le passage). */
 const EMPREINTE_SELECT = {
   role: true,
+  trainerId: true,
   tarifHtCents: true,
   forfaitDeplacementParJourHtCents: true,
   regimeTvaFige: true,
@@ -222,7 +225,8 @@ const EMPREINTE_SELECT = {
       lieuAdresse: true,
       lieuCodePostal: true,
       lieuVille: true,
-      jours: { select: { date: true, heureDebut: true, heureFin: true } },
+      jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
+      sessionFormateurs: { select: { trainerId: true } },
     },
   },
 } as const;
@@ -246,7 +250,10 @@ export function empreinteDeLaMission(m: MissionPourEmpreinte): {
     tarifEffectif,
     empreinte: empreinteMission({
       intitule: s.titreSession,
-      jours: s.jours.map((j) => ({
+      // Les journées de la LETTRE : celles du formateur (étape 4). Une journée
+      // d'un co-formateur ne périme pas sa lettre ; une journée qui lui est
+      // retirée, si.
+      jours: journeesDuFormateur(s.jours, m.trainerId, s.sessionFormateurs).map((j) => ({
         date: dateCivile(j.date),
         heureDebut: j.heureDebut,
         heureFin: j.heureFin,
@@ -698,7 +705,9 @@ interface ResumeMission {
 function resumeDe(m: MissionLue, tarif: number): ResumeMission {
   const s = m.session;
   return {
-    dates: s.jours.map((j) => `${dateCivile(j.date)} ${j.heureDebut}-${j.heureFin}`).sort(),
+    dates: journeesDuFormateur(s.jours, m.trainerId, s.sessionFormateurs)
+      .map((j) => `${dateCivile(j.date)} ${j.heureDebut}-${j.heureFin}`)
+      .sort(),
     lieu:
       s.lieuType === "distanciel"
         ? "distanciel"

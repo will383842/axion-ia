@@ -183,9 +183,20 @@ beforeEach(() => {
       lieuAdresse: "12 rue Exemple",
       lieuCodePostal: "69003",
       lieuVille: "Lyon",
+      sessionFormateurs: [{ trainerId: TRAINER }],
       jours: [
-        { date: new Date("2026-11-04T00:00:00Z"), heureDebut: "09:00", heureFin: "17:00" },
-        { date: new Date("2026-11-05T00:00:00Z"), heureDebut: "09:00", heureFin: "12:00" },
+        {
+          date: new Date("2026-11-04T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "17:00",
+          trainerId: null,
+        },
+        {
+          date: new Date("2026-11-05T00:00:00Z"),
+          heureDebut: "09:00",
+          heureFin: "12:00",
+          trainerId: null,
+        },
       ],
     },
     lettreMission: null,

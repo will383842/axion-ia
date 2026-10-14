@@ -448,6 +448,9 @@ export function honorairesProposition(entree: {
 }): HonorairesProposition | null {
   if (entree.jours.length === 0 || entree.tarifJourneeHtCents === null) return null;
   const forfait = entree.distanciel ? null : entree.forfaitDeplacementParJourHtCents;
+  // Au-dessus du plafond du paiement, la lettre et le paiement refusent : la
+  // proposition n'annonce donc rien.
+  if (forfait !== null && forfait > FORFAIT_MAX_HT_CENTS) return null;
   const joursDeplacement = forfait !== null && forfait > 0 ? entree.jours.length : 0;
   let h: ReturnType<typeof honorairesLettre>;
   try {

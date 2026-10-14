@@ -89,12 +89,6 @@ function heure(h: string): string {
   return `${m[1]!.padStart(2, "0")}:${m[2]}`;
 }
 
-/**
- * Demi-journées PRÉVUES d'une journée : le matin si elle commence avant
- * `matinAvant`, l'après-midi si elle finit après `apresMidiApres`. Une journée
- * qui ne coche aucune borne (horaires incohérents) compte UNE demi-journée, au
- * créneau de son début : ne jamais prévoir zéro pour une journée qui existe.
- */
 export interface BornesDemiJournee {
   readonly matinAvant: string;
   readonly apresMidiApres: string;
@@ -123,6 +117,12 @@ export function creneauxDuJour(
   return out;
 }
 
+/**
+ * Demi-journées PRÉVUES d'une journée : le matin si elle commence avant
+ * `matinAvant`, l'après-midi si elle finit après `apresMidiApres`. Une journée
+ * qui ne coche aucune borne (horaires incohérents) compte UNE demi-journée, au
+ * créneau de son début : ne jamais prévoir zéro pour une journée qui existe.
+ */
 export function demiJourneesPrevues(
   journees: ReadonlyArray<JourneePrevue>,
   bornes: BornesDemiJournee,
