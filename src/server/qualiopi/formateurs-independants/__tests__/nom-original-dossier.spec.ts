@@ -26,7 +26,9 @@ vi.mock("@/lib/prisma", () => {
   };
   return { prisma: client };
 });
-vi.mock("@/server/journal/journaliser", () => ({ journaliser: vi.fn().mockResolvedValue(undefined) }));
+vi.mock("@/server/journal/journaliser", () => ({
+  journaliser: vi.fn().mockResolvedValue(undefined),
+}));
 vi.mock("@/server/pieces/depot-controle", () => ({
   alerteAntivirusLimitee: () => ({ alerter: vi.fn() }),
   controlerPiece: async () => ({ ok: true, typeMime: "application/pdf", taille: 4, sha256: "ab" }),
@@ -55,9 +57,11 @@ describe("deposerPiece (dossier à jeton) — nom d'origine", () => {
       } as Parameters<typeof deposerPiece>[1],
     );
     expect(r).toEqual({ ok: true });
-    const data = (m.docCreate.mock.calls[0]![0] as {
-      data: { contenu: { create: { nomOriginal: string } } };
-    }).data;
+    const data = (
+      m.docCreate.mock.calls[0]![0] as {
+        data: { contenu: { create: { nomOriginal: string } } };
+      }
+    ).data;
     expect(data.contenu.create.nomOriginal).toBe("_b_cv.pdf");
   });
 });
