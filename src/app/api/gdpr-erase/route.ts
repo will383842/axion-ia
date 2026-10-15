@@ -34,6 +34,7 @@ import {
   formateurIndependantASignalerPour,
 } from "@/lib/rgpd-formateur-independant";
 import { effacerDemandesPodcastPour } from "@/features/podcast-request/rgpd";
+import { effacerPiecesJointesContactPour } from "@/server/contact/pieces-jointes";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
@@ -121,6 +122,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // rattachement conversation↔lead se fait par `contactEmail`, qui sera hashé
   // par eraseSubmissionsForEmail.
   const chatResult = await eraseChatDataForEmail(email);
+
+  // Pièces jointes du formulaire de contact (2026-10-15) — objets R2 ET lignes,
+  // AVANT l'anonymisation : elles se retrouvent par l'empreinte de la demande,
+  // que `eraseSubmissionsForEmail` remet à NULL. Best-effort, comme ci-dessus.
+  const piecesJointesResult = await effacerPiecesJointesContactPour(email).catch((err: unknown) => {
+    console.error("[gdpr-erase] effacement des pièces jointes impossible :", err);
+    return { supprimees: 0 };
+  });
 
   // Lot L16a (W5 I-11) — lu AVANT les effacements : les candidatures d'origine
   // d'un formateur sous lien contractuel sont CONSERVÉES. Éteint
@@ -281,6 +290,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
+        piecesJointesContactSupprimees: piecesJointesResult.supprimees,
         dossierClient: dossierClientResult,
         reseauApporteur: { ...reseauApporteurResult },
         formateurIndependant,
