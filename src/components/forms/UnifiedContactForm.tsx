@@ -41,7 +41,7 @@ import { useForm, useWatch, type Control } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Paperclip } from "lucide-react";
 import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import {
   unifiedContactSchema,
@@ -140,6 +140,8 @@ const LABELS = {
     piecesLabel: "Pièces jointes (cahier des charges, devis, PDF…)",
     piecesHint:
       "Facultatif. Jusqu'à 3 fichiers, 10 Mo chacun, 20 Mo au total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG ou JPG.",
+    piecesChoisir: "Choisir des fichiers",
+    piecesChanger: "Choisir d'autres fichiers",
     piecesRetirer: "Retirer",
     piecesRetirerAria: (nom: string) => `Retirer ${nom}`,
     piecesNonRecues: (n: number) =>
@@ -228,6 +230,8 @@ const LABELS = {
     piecesLabel: "Attachments (specifications, quote, PDF…)",
     piecesHint:
       "Optional. Up to 3 files, 10 MB each, 20 MB in total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG or JPG.",
+    piecesChoisir: "Choose files",
+    piecesChanger: "Choose other files",
     piecesRetirer: "Remove",
     piecesRetirerAria: (nom: string) => `Remove ${nom}`,
     piecesNonRecues: (n: number) =>
@@ -965,27 +969,43 @@ function UnifiedContactFormBody({
         ) : null}
       </div>
 
-      {/* Pièces jointes — champ NATIF, facultatif. Le bloc est toujours rendu
-          (aucun décalage au chargement) ; la liste n'apparaît qu'après un choix
-          de la personne. Le serveur revérifie tout, octets compris. */}
+      {/* Pièces jointes — champ NATIF, facultatif, masqué en `sr-only` : le
+          contrôle fichier de Chrome ne rétrécit pas sous ~312 px (garde
+          `formulaires-mobile-first.spec.ts`). Le déclencheur est son <label>,
+          qui l'enveloppe — le focus clavier s'y voit par `focus-within`.
+          Le bloc est toujours rendu (aucun décalage au chargement) ; la liste
+          n'apparaît qu'après un choix de la personne. Le serveur revérifie
+          tout, octets compris. */}
       <div className="grid gap-1.5">
-        <Label htmlFor="unified-pieces">{t.piecesLabel}</Label>
+        <p id="unified-pieces-titre" className="text-fg text-sm leading-none font-medium">
+          {t.piecesLabel}
+        </p>
         <p id="unified-pieces-hint" className="text-fg-muted text-[12.5px] leading-relaxed">
           {t.piecesHint}
         </p>
-        <input
-          ref={piecesRef}
-          id="unified-pieces"
-          type="file"
-          multiple
-          accept={ACCEPT_PIECES_JOINTES}
-          onChange={(e) => choisirPieces(Array.from(e.currentTarget.files ?? []))}
-          aria-invalid={erreurPieces ? true : undefined}
-          aria-describedby={
-            erreurPieces ? "unified-pieces-hint unified-pieces-err" : "unified-pieces-hint"
-          }
-          className="text-fg-soft file:border-border-strong file:bg-paper file:text-fg hover:file:border-terracotta focus-visible:ring-terracotta block w-full min-w-0 text-[13.5px] file:mr-3 file:rounded-lg file:border file:px-3 file:py-2 file:text-[13px] file:font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        />
+        <label
+          htmlFor="unified-pieces"
+          className="border-border-strong bg-paper text-fg hover:border-terracotta focus-within:ring-terracotta/30 flex w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-3 text-[13.5px] font-semibold transition-colors focus-within:ring-4"
+        >
+          <Paperclip aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+          {pieces.length > 0 ? t.piecesChanger : t.piecesChoisir}
+          <input
+            ref={piecesRef}
+            id="unified-pieces"
+            type="file"
+            // `className` AVANT tout gestionnaire : la garde mobile-first lit la
+            // balise jusqu'au premier `>`, et une flèche `=>` en porte un.
+            className="sr-only"
+            multiple
+            accept={ACCEPT_PIECES_JOINTES}
+            onChange={(e) => choisirPieces(Array.from(e.currentTarget.files ?? []))}
+            aria-labelledby="unified-pieces-titre"
+            aria-invalid={erreurPieces ? true : undefined}
+            aria-describedby={
+              erreurPieces ? "unified-pieces-hint unified-pieces-err" : "unified-pieces-hint"
+            }
+          />
+        </label>
         {pieces.length > 0 ? (
           <ul className="text-fg-soft space-y-1 text-[13px]">
             {pieces.map((f, i) => (
