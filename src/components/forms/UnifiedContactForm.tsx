@@ -54,6 +54,12 @@ import {
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
 import { submitUnifiedContactAction } from "@/features/unified-contact/actions";
+import {
+  ACCEPT_PIECES_JOINTES,
+  CHAMP_PIECES_JOINTES,
+  controlerListePiecesJointes,
+  tailleLisiblePieceJointe,
+} from "@/lib/contact/pieces-jointes";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -131,6 +137,13 @@ const LABELS = {
       "12+": "12+ semaines",
     },
     selectNone: "Non précisé",
+    piecesLabel: "Pièces jointes (cahier des charges, devis, PDF…)",
+    piecesHint:
+      "Facultatif. Jusqu'à 3 fichiers, 10 Mo chacun, 20 Mo au total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG ou JPG.",
+    piecesRetirer: "Retirer",
+    piecesRetirerAria: (nom: string) => `Retirer ${nom}`,
+    piecesNonRecues: (n: number) =>
+      `Votre demande est bien arrivée, mais ${n > 1 ? `${n} pièces jointes n'ont` : "une pièce jointe n'a"} pas pu être enregistrée${n > 1 ? "s" : ""}. Envoyez-la${n > 1 ? "s" : ""} à contact@axion-ia.com en rappelant la référence ci-dessous.`,
     consentLead: "J'accepte que mes données servent à traiter cette demande, conformément à la ",
     consentLink: "politique de confidentialité",
     consentTail: ". Aucune revente, aucun profilage, désinscription à tout moment.",
@@ -212,6 +225,13 @@ const LABELS = {
       "12+": "12+ weeks",
     },
     selectNone: "Not specified",
+    piecesLabel: "Attachments (specifications, quote, PDF…)",
+    piecesHint:
+      "Optional. Up to 3 files, 10 MB each, 20 MB in total. PDF, Word, Excel, PowerPoint, ODT, TXT, CSV, PNG or JPG.",
+    piecesRetirer: "Remove",
+    piecesRetirerAria: (nom: string) => `Remove ${nom}`,
+    piecesNonRecues: (n: number) =>
+      `Your request arrived, but ${n > 1 ? `${n} attachments` : "one attachment"} could not be saved. Please email ${n > 1 ? "them" : "it"} to contact@axion-ia.com with the reference below.`,
     consentLead: "I agree my data is used to handle this request, per the ",
     consentLink: "privacy policy",
     consentTail: ". No resale, no profiling, one-click unsubscribe.",
@@ -531,8 +551,41 @@ function UnifiedContactFormBody({
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
+  // Pièces jointes (2026-10-15) — champ natif, hors react-hook-form : la liste
+  // retenue vit ici, le champ n'est que le moyen de la choisir.
+  const piecesRef = React.useRef<HTMLInputElement>(null);
+  const [pieces, setPieces] = React.useState<File[]>([]);
+  const [erreurPieces, setErreurPieces] = React.useState<string | null>(null);
+  const [piecesNonRecues, setPiecesNonRecues] = React.useState(0);
+
+  function choisirPieces(liste: File[]) {
+    setPieces(liste);
+    setErreurPieces(controlerListePiecesJointes(liste));
+  }
+
+  function retirerPiece(index: number) {
+    const reste = pieces.filter((_, i) => i !== index);
+    // Le champ natif doit montrer la même liste : `DataTransfer` la reconstruit.
+    // Sans lui (navigateur ancien), on vide le champ et la liste.
+    try {
+      const dt = new DataTransfer();
+      reste.forEach((f) => dt.items.add(f));
+      if (piecesRef.current) piecesRef.current.files = dt.files;
+      choisirPieces(reste);
+    } catch {
+      if (piecesRef.current) piecesRef.current.value = "";
+      choisirPieces([]);
+    }
+  }
+
   async function onSubmit(values: UnifiedContactInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
+    const refusPieces = controlerListePiecesJointes(pieces);
+    if (refusPieces) {
+      setErreurPieces(refusPieces);
+      piecesRef.current?.focus();
+      throw new Error(refusPieces);
+    }
     // Zéro friction (Will 2026-07-01) : on n'empêche PLUS l'envoi si Turnstile
     // n'a pas produit de token (bloqueur/DNS). Le serveur soft-fail le captcha
     // (honeypot + rate-limit protègent). On envoie le token s'il existe.
@@ -554,6 +607,7 @@ function UnifiedContactFormBody({
       if (effectiveSubType) fd.set("subType", effectiveSubType);
       fd.set("consent", values.consent ? "true" : "false");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
+      pieces.forEach((f) => fd.append(CHAMP_PIECES_JOINTES, f, f.name));
       reporterLeurre(fd, event?.target);
 
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
@@ -564,6 +618,7 @@ function UnifiedContactFormBody({
         throw new Error(message);
       }
       setSubmissionId(result.submissionId || null);
+      setPiecesNonRecues(result.piecesNonRecues ?? 0);
     } catch (err) {
       // Deploy-skew (Server Action introuvable car page chargée avant un
       // déploiement) → message « rechargez » plutôt que générique.
@@ -599,6 +654,11 @@ function UnifiedContactFormBody({
           {t.successTitle}
         </p>
         <p className="text-fg-soft mt-3 text-base leading-relaxed">{t.successBody}</p>
+        {piecesNonRecues > 0 ? (
+          <Alert variant="warning" className="mt-4">
+            <AlertDescription>{t.piecesNonRecues(piecesNonRecues)}</AlertDescription>
+          </Alert>
+        ) : null}
         {submissionId ? (
           <p className="text-fg-muted mt-4 text-sm">
             {t.referenceLabel} :{" "}
@@ -901,6 +961,56 @@ function UnifiedContactFormBody({
         {errors.message ? (
           <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
             {errors.message.message}
+          </p>
+        ) : null}
+      </div>
+
+      {/* Pièces jointes — champ NATIF, facultatif. Le bloc est toujours rendu
+          (aucun décalage au chargement) ; la liste n'apparaît qu'après un choix
+          de la personne. Le serveur revérifie tout, octets compris. */}
+      <div className="grid gap-1.5">
+        <Label htmlFor="unified-pieces">{t.piecesLabel}</Label>
+        <p id="unified-pieces-hint" className="text-fg-muted text-[12.5px] leading-relaxed">
+          {t.piecesHint}
+        </p>
+        <input
+          ref={piecesRef}
+          id="unified-pieces"
+          type="file"
+          multiple
+          accept={ACCEPT_PIECES_JOINTES}
+          onChange={(e) => choisirPieces(Array.from(e.currentTarget.files ?? []))}
+          aria-invalid={erreurPieces ? true : undefined}
+          aria-describedby={
+            erreurPieces ? "unified-pieces-hint unified-pieces-err" : "unified-pieces-hint"
+          }
+          className="text-fg-soft file:border-border-strong file:bg-paper file:text-fg hover:file:border-terracotta focus-visible:ring-terracotta block w-full min-w-0 text-[13.5px] file:mr-3 file:rounded-lg file:border file:px-3 file:py-2 file:text-[13px] file:font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        />
+        {pieces.length > 0 ? (
+          <ul className="text-fg-soft space-y-1 text-[13px]">
+            {pieces.map((f, i) => (
+              <li key={`${f.name}-${i}`} className="flex items-center justify-between gap-3">
+                <span className="min-w-0 truncate">
+                  {f.name}{" "}
+                  <span className="text-fg-muted tabular-nums">
+                    · {tailleLisiblePieceJointe(f.size)}
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => retirerPiece(i)}
+                  aria-label={t.piecesRetirerAria(f.name)}
+                  className="text-terracotta-deep focus-visible:ring-terracotta shrink-0 rounded text-[12.5px] font-semibold underline underline-offset-2 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {t.piecesRetirer}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {erreurPieces ? (
+          <p id="unified-pieces-err" role="alert" className="text-accent-red text-xs">
+            {erreurPieces}
           </p>
         ) : null}
       </div>
