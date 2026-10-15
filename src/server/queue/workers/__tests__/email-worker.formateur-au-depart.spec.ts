@@ -77,7 +77,10 @@ import {
   GABARITS_SOLLICITATION_FORMATEUR_LOCAL,
   estSollicitationSoumiseAOpposition,
 } from "@/server/email/verdict-envoi";
-import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
+import {
+  VARIANTES_VALIDEES_A_PART,
+  empreinteAttendue,
+} from "@/server/email/textes-formateurs-a-valider";
 
 /** Lot 8A — une validation porte l'empreinte du texte actuel. */
 const validation = (cle: string) => ({ valide: true, empreinte: empreinteAttendue(cle) });
@@ -238,6 +241,35 @@ describe("texte validé, relu au départ", () => {
       job("formateur-dossier-lien", { entityType: undefined, entityId: undefined }),
     );
     expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+});
+
+// V1-D-3 — l'enfilage exige la validation de la VARIANTE (`envois.ts`, `texteValide`) ;
+// le départ la relit aussi : une variante dont la validation est tombée (texte changé
+// depuis) ne part pas, même déjà en file.
+describe("variante validée à part, relue au départ (V1-D-3)", () => {
+  const F30 = "formateur-mission-retiree";
+  const VARIANTE = `${F30}#lettre-non-signee`;
+  it("gabarit validé mais variante non : retenu, clos annulé", async () => {
+    valides(F30);
+    await processeur()(job(F30, { payload: { etape: 2 } }));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/variante.*non validé/));
+  });
+  it("gabarit et variante validés : part", async () => {
+    valides(F30, VARIANTE);
+    await processeur()(job(F30, { payload: { etape: 2 } }));
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+  it("étape sans variante à part : le gabarit validé suffit", async () => {
+    valides(F30);
+    await processeur()(job(F30, { payload: { etape: 1 } }));
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+  it("chaque variante validée à part a son lecteur au départ", () => {
+    for (const g of Object.keys(VARIANTES_VALIDEES_A_PART)) {
+      expect(RELECTURES_AU_DEPART.has(g)).toBe(true);
+    }
   });
 });
 
