@@ -600,3 +600,83 @@ describe("🔴 [I13] une personne des deux mondes : les deux fiches, UNE alerte"
     expect(categories()).toEqual(["CANDIDAT_REPLIED"]);
   });
 });
+
+// V1-A-3 — une réponse venue de l'ADRESSE RELAIS (Indeed) : la candidature saisie en console
+// n'a pas d'empreinte, le rapprochement par empreinte ne la voit pas. Elle est rangée « à
+// vérifier » (visible en console) et n'arrête RIEN avant le clic humain.
+describe("V1-A-3 — une réponse depuis l'adresse relais tombe « à vérifier »", () => {
+  const RELAIS = "banc-essai-123@indeedemail.com";
+  const relais = (over: Ligne = {}): Ligne => ({
+    id: "cand-relais",
+    emailHash: null,
+    email: `enc:${RELAIS}`,
+    origine: "console",
+    firstName: "enc:Ewen",
+    lastName: "enc:Banc-Essai",
+    offerTitleSnap: "Formateur IA freelance",
+    needsAttention: false,
+    lastActivityAt: null,
+    ...over,
+  });
+  const depuisRelais = (over: Partial<MessageZoho> = {}) =>
+    message({ messageId: "relais-1", fromAddress: RELAIS, ...over });
+
+  it("rattachée à la candidature relais, sans empreinte, journalisée « à vérifier »", async () => {
+    db.candidatures = [relais()];
+    db.emailLogs = [];
+    const r = await passerReponsesEntrantesCandidats({
+      client: clientDouble([depuisRelais()]),
+      maintenant: MAINTENANT,
+    });
+    expect(r.aVerifier).toBe(1);
+    expect(db.reponsesCandidats).toHaveLength(1);
+    expect(db.reponsesCandidats[0]).toMatchObject({
+      applicationId: "cand-relais",
+      zohoMessageId: "relais-1",
+      auto: false,
+    });
+    expect(db.reponsesCandidats[0]!["fromEmailHash"]).toBe(hashEmailForLookup(RELAIS));
+    expect(db.evenements).toHaveLength(1);
+    expect(String(db.evenements[0]!["summary"])).toMatch(/à vérifier/i);
+    expect(db.candidatures[0]!["needsAttention"]).toBe(true);
+    // Pas d'alerte Telegram : la file de la console suffit.
+    expect(db.notify).not.toHaveBeenCalled();
+  });
+
+  it("deux passages : une seule ligne", async () => {
+    db.candidatures = [relais()];
+    db.emailLogs = [];
+    const client = clientDouble([depuisRelais()]);
+    for (const minutes of [0, 15]) {
+      await passerReponsesEntrantesCandidats({
+        client,
+        maintenant: new Date(MAINTENANT.getTime() + minutes * 60_000),
+      });
+    }
+    expect(db.reponsesCandidats).toHaveLength(1);
+    expect(db.evenements).toHaveLength(1);
+  });
+
+  it("une réponse automatique relais est gardée, sans journal", async () => {
+    db.candidatures = [relais()];
+    db.emailLogs = [];
+    const m = depuisRelais({ subject: "Réponse automatique : absente" });
+    await passerReponsesEntrantesCandidats({
+      client: clientDouble([m], { [m.messageId]: AUTOMATIQUE }),
+      maintenant: MAINTENANT,
+    });
+    expect(db.reponsesCandidats[0]!["auto"]).toBe(true);
+    expect(db.evenements).toHaveLength(0);
+  });
+
+  it("un expéditeur inconnu (aucune candidature à cette adresse) n'écrit rien", async () => {
+    db.candidatures = [relais()];
+    db.emailLogs = [];
+    const r = await passerReponsesEntrantesCandidats({
+      client: clientDouble([depuisRelais({ fromAddress: "quelquun@autre.fr" })]),
+      maintenant: MAINTENANT,
+    });
+    expect(r.aVerifier).toBe(0);
+    expect(db.reponsesCandidats).toHaveLength(0);
+  });
+});

@@ -128,15 +128,15 @@ test.describe("@formateurs E06 — absent, non retenu, reporté, à revoir", () 
     ).toBe("new");
   });
 
-  // V1-A-5 — au second « Absent », la console dit seulement « Deuxième absence : aucun
-  // nouveau créneau n'est proposé. » (`issue-formateur-envoi.ts`) : elle ne SUGGÈRE pas
-  // « Non retenu », alors que la version apporteur le fait. Cf. rapport de vérification.
-  test.fixme("V1-A-5 — au second « Absent », « Non retenu » est suggéré", async () => {
+  // V1-A-5 — au second « Absent », la console ne propose aucun créneau ET suggère « Non
+  // retenu », comme la version apporteur.
+  test("V1-A-5 — au second « Absent », « Non retenu » est suggéré", async () => {
     const apercu = await etape<Apercu>({
       etape: "apercu-issue",
       args: { calendlyEventId: echanges[1], issue: "absent" },
       session: decor.admin,
     });
+    expect(apercu.valeur.sansEmail).toMatch(/Deuxième absence/);
     expect(apercu.valeur.sansEmail).toMatch(/Non retenu/);
   });
 });

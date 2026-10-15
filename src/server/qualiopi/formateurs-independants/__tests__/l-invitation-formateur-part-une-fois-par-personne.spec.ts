@@ -20,6 +20,7 @@ interface Cand {
   clotureSansSuiteAt: Date | null;
   trainerId: string | null;
   offer: null;
+  answers?: unknown;
 }
 const base = {
   candidatures: [] as Cand[],
@@ -447,6 +448,117 @@ describe("F55 — le rattrapage unique du stock", () => {
     ).toEqual({
       ok: false,
       motif: "coupe",
+    });
+  });
+});
+
+describe("V1-A-1 — le SIRET du formulaire est contrôlé au registre AVANT l'invitation", () => {
+  const SIRET = "73282932000074";
+  const avecSiret = (siret = SIRET) => ({ answers: { "Numéro SIRET": siret } });
+
+  it("entreprise FERMÉE au registre : aucune invitation, la candidature attend (non close)", async () => {
+    const c = cand(avecSiret());
+    base.candidatures = [c];
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    const controleSiret = vi.fn().mockResolvedValue("ferme");
+    const b = await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyer,
+      controleSiret,
+    });
+    expect(controleSiret).toHaveBeenCalledWith(SIRET);
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(b.invitees).toBe(0);
+    expect(b.ecartees["siret-ferme"]).toBe(1);
+    expect(c.invitationFormateurAt).toBeNull();
+    expect(c.clotureSansSuiteAt).toBeNull();
+  });
+
+  it("registre MUET ou en erreur : pas d'invitation automatique, la candidature attend avec son motif", async () => {
+    for (const reponse of ["muet", "erreur"] as const) {
+      base.candidatures = [cand(avecSiret())];
+      const envoyer = vi.fn().mockResolvedValue("envoye");
+      const controleSiret =
+        reponse === "erreur"
+          ? vi.fn().mockRejectedValue(new Error("registre en panne"))
+          : vi.fn().mockResolvedValue("muet");
+      const b = await passerInvitationsFormateurs(MAINTENANT, {
+        allume,
+        ...etat,
+        envoyer,
+        controleSiret,
+      });
+      expect(envoyer).not.toHaveBeenCalled();
+      expect(b.ecartees["registre-muet"]).toBe(1);
+    }
+  });
+
+  it("entreprise ouverte : F1 part", async () => {
+    base.candidatures = [cand(avecSiret())];
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    const b = await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyer,
+      controleSiret: async () => "ok",
+    });
+    expect(b.invitees).toBe(1);
+  });
+
+  it("sans SIRET au formulaire : le registre n'est pas interrogé, F1 part comme avant", async () => {
+    base.candidatures = [cand()];
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    const controleSiret = vi.fn();
+    const b = await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyer,
+      controleSiret,
+    });
+    expect(controleSiret).not.toHaveBeenCalled();
+    expect(b.invitees).toBe(1);
+  });
+
+  it("le rattrapage F55 écarte aussi une entreprise fermée ou un registre muet de sa liste", async () => {
+    const fermee = cand({
+      ...avecSiret("11111111100011"),
+      submittedAt: new Date("2026-10-10T10:00:00Z"),
+    });
+    const muette = cand({
+      ...avecSiret("22222222200022"),
+      submittedAt: new Date("2026-10-11T10:00:00Z"),
+    });
+    const libre = cand({ submittedAt: new Date("2026-10-12T10:00:00Z") });
+    base.candidatures = [fermee, muette, libre];
+    const reponses = new Map([
+      ["11111111100011", "ferme"],
+      ["22222222200022", "muet"],
+    ]);
+    const liste = await listerRattrapage(
+      MAINTENANT,
+      async () => new Date("2026-10-15T00:00:00Z"),
+      async (siret) => (reponses.get(siret) ?? "ok") as "ok" | "ferme" | "muet",
+    );
+    expect(liste.lignes.map((l) => l.candidatureId)).toEqual([libre.id]);
+  });
+});
+
+describe("V1-A-3 — une réponse « à vérifier » (adresse relais) n'arrête rien", () => {
+  it("le fait « réponse humaine » ne lit que les réponses d'une candidature qui a une empreinte", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    base.candidatures = [cand()];
+    await passerInvitationsFormateurs(MAINTENANT, {
+      allume,
+      ...etat,
+      envoyer: vi.fn().mockResolvedValue("envoye"),
+    });
+    const appel = vi.mocked(prisma.jobApplicationInboundReply.findMany).mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+    };
+    expect(appel.where).toMatchObject({
+      auto: false,
+      application: { emailHash: { not: null } },
     });
   });
 });

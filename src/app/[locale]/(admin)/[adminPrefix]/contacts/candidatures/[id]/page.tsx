@@ -44,6 +44,7 @@ import { env } from "@/env";
 import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
 import { extraireLiensVideo, montreDuTravail, sourcesDeLiens } from "@/lib/careers/liens-video";
 import { prisma } from "@/lib/prisma";
+import { resumeInvitationDeLaFiche } from "@/server/qualiopi/formateurs-independants/suivi-invitations";
 import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
 import { tailleLisible } from "@/lib/careers/videos";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
@@ -202,6 +203,12 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           })
           .catch(() => null)
       : null;
+  // V1-A-2 / V1-A-4 : le motif qui retient l'invitation, ou le « à décider » après J+14.
+  const resumeInvitation = invitationFormateur
+    ? await resumeInvitationDeLaFiche(a.id).catch(() =>
+        resumeInvitationFormateur(invitationFormateur),
+      )
+    : null;
   const montrerFicheFormateur =
     formateurLie !== null ||
     (peutEngager(acteur.role, "contresigner") &&
@@ -495,7 +502,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <InvitationFormateur
             candidatureId={a.id}
             peutDeclarer={peutEngager(acteur.role, "habiliter_formateur")}
-            resume={resumeInvitationFormateur(invitationFormateur)}
+            resume={resumeInvitation ?? resumeInvitationFormateur(invitationFormateur)}
           />
         </AdminCard>
       ) : null}

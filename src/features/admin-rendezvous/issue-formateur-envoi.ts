@@ -184,7 +184,9 @@ export async function preparerIssueFormateur(input: {
   );
   if (!gabarit) {
     const sansEmail =
-      input.issue === "absent" ? "Deuxième absence : aucun nouveau créneau n'est proposé." : null;
+      input.issue === "absent"
+        ? "Deuxième absence : aucun nouveau créneau n'est proposé. Vous pouvez classer la personne « Non retenu »."
+        : null;
     return { ...base, envoi: null, sansEmail };
   }
   if (efface) return { ...base, envoi: null, sansEmail: "La candidature a été effacée." };

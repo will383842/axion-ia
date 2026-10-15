@@ -146,3 +146,21 @@ describe("preparerIssueFormateur", () => {
     expect(p.ok).toBe(false);
   });
 });
+
+describe("V1-A-5 — le second « Absent » suggère « Non retenu »", () => {
+  it("dit qu'aucun créneau n'est proposé ET suggère « Non retenu », comme la version apporteur", async () => {
+    countSuivi.mockResolvedValue(1);
+    const p = await preparerIssueFormateur({ calendlyEventId: "evt_f1", issue: "absent" });
+    expect(p).toMatchObject({ ok: true, envoi: null });
+    if (!p.ok) throw new Error("attendu : ok");
+    expect(p.sansEmail).toMatch(/Deuxième absence : aucun nouveau créneau n'est proposé/);
+    expect(p.sansEmail).toMatch(/« Non retenu »/);
+  });
+
+  it("au premier « Absent », rien n'est suggéré (F7 part)", async () => {
+    const p = await preparerIssueFormateur({ calendlyEventId: "evt_f1", issue: "absent" });
+    expect(p).toMatchObject({ ok: true });
+    if (!p.ok) throw new Error("attendu : ok");
+    expect(p.envoi?.gabarit).toBe("formateur-issue-absent");
+  });
+});

@@ -48,6 +48,11 @@ import { envoyerMessagesEchangeFormateur } from "@/server/calendly/rappels-echan
 import { reinitialiserCacheTypesRendezVous } from "@/server/calendly/type-rendez-vous";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { passerInvitationsFormateurs } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
+import {
+  listerInvitationsADecider,
+  resumeInvitationDeLaFiche,
+} from "@/server/qualiopi/formateurs-independants/suivi-invitations";
+import { lireReponsesAVerifier } from "@/features/admin-job-applications/reponses-recues";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import type { ClientZohoMail } from "@/server/zoho-mail/client";
@@ -248,6 +253,21 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
   /** Le balayage F1 du worker (toutes les 5 minutes en production). */
   async "passage-invitations"(a) {
     return passerInvitationsFormateurs(date(a["maintenant"]));
+  },
+
+  /** La phrase « Invitation à l'échange » de la fiche candidature (motif d'attente, « à décider »). */
+  async "resume-invitation"(a) {
+    return resumeInvitationDeLaFiche(String(a["candidatureId"]), date(a["maintenant"]));
+  },
+
+  /** La tuile « Invitées, à décider » du suivi des candidatures. */
+  async "a-decider"(a) {
+    return listerInvitationsADecider(date(a["maintenant"]));
+  },
+
+  /** La file « Réponses à vérifier » (adresses relais) du suivi des candidatures. */
+  async "reponses-a-verifier"(a) {
+    return lireReponsesAVerifier({ role: "super_admin" }, date(a["maintenant"]));
   },
 
   /** Le passage des campagnes de relance (F2, F9, F21…), tel que le worker l'appelle. */
