@@ -12,7 +12,7 @@ import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
-import { journaliserEnAttente, marquerAnnule } from "@/server/email/email-log";
+import { journaliserEnAttente, marquerEchecMiseEnFile } from "@/server/email/email-log";
 import type {
   EmailJobData,
   EmailJobName,
@@ -1086,7 +1086,7 @@ export async function enqueueEmail(
   // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
   // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
   // ici des lignes qui ne seront jamais closes.
-  let lignePosee = false;
+  let lignePosee: string | null = null;
   if (journalise) {
     lignePosee = await journaliserEnAttente({
       template,
@@ -1094,6 +1094,8 @@ export async function enqueueEmail(
       locale,
       marketing: options?.marketing === true,
       jobId,
+      // Le verrou anti-doublon ne sert qu'à une clé de l'appelant : `email-<uuid>` est unique.
+      cleAppelant: options?.jobId !== undefined,
       // L'échéance, et non la seule date de création : sans elle, un envoi
       // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
       // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
@@ -1112,10 +1114,18 @@ export async function enqueueEmail(
     );
   } catch (e) {
     // File injoignable : aucun job n'existe, donc aucun worker ne clora la ligne. On
-    // referme celle que CET enfilage a posée (jamais celle d'un autre enfilage de la
-    // même clé, dont le job vit peut-être), puis l'erreur remonte comme avant.
-    if (lignePosee && jobId !== undefined) {
-      await marquerAnnule(jobId, "Mise en file impossible : l'e-mail n'est pas parti.");
+    // referme celle que CET enfilage a posée, désignée par son `id` (jamais celle d'un
+    // autre enfilage de la même clé, dont le job vit peut-être), puis l'erreur de la file
+    // remonte à l'appelant, inchangée.
+    //
+    // 🔴 En ÉCHEC, jamais « annulé » : `dejaTente` et les lecteurs des campagnes ne
+    // mettent de côté que `failed`. Une ligne « annulé » comptait comme une relance déjà
+    // tentée, et la relance à clé fixe ne repartait plus (relecture de la PR #1537).
+    if (lignePosee) {
+      await marquerEchecMiseEnFile(
+        lignePosee,
+        "Mise en file impossible : l'e-mail n'est pas parti.",
+      );
     }
     throw e;
   }

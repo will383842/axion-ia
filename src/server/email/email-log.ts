@@ -71,12 +71,18 @@ export interface EntreeJournal {
  * peut pas l'être : une ligne par tentative). La course avec le worker, elle, est
  * fermée par l'ordre : la ligne est écrite avant que le job n'existe.
  *
- * @returns `true` si CET appel a posé la ligne ; `false` si elle existait déjà, au
+ * Le verrou ne sert qu'aux clés données par l'appelant (`cleAppelant`). Un identifiant
+ * fabriqué par `enqueueEmail` (`email-<uuid>`) ne peut entrer en concurrence avec
+ * personne : sa ligne est créée directement, sans transaction ni lecture.
+ *
+ * @returns l'`id` de la ligne si CET appel l'a posée ; `null` si elle existait déjà, au
  *          build, ou si la base a refusé (fail-soft). `enqueueEmail` s'en sert pour ne
  *          refermer, sur une file injoignable, que la ligne qu'il a lui-même posée.
  */
-export async function journaliserEnAttente(entree: EntreeJournal): Promise<boolean> {
-  if (estStub()) return false;
+export async function journaliserEnAttente(
+  entree: EntreeJournal & { cleAppelant?: boolean | undefined },
+): Promise<string | null> {
+  if (estStub()) return null;
   const donnees = {
     template: entree.template,
     recipient: entree.recipient,
@@ -91,9 +97,9 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<boole
   };
   try {
     const jobId = entree.jobId;
-    if (jobId === undefined) {
-      await prisma.emailLog.create({ data: donnees });
-      return true;
+    if (jobId === undefined || entree.cleAppelant !== true) {
+      const posee = await prisma.emailLog.create({ data: donnees, select: { id: true } });
+      return posee.id;
     }
     return await prisma.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`email_log:${jobId}`}))`;
@@ -101,16 +107,52 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<boole
         where: { jobId },
         select: { id: true },
       });
-      if (existante) return false;
-      await tx.emailLog.create({ data: donnees });
-      return true;
+      if (existante) return null;
+      const posee = await tx.emailLog.create({ data: donnees, select: { id: true } });
+      return posee.id;
     });
   } catch (e) {
     console.error(
       `[email-log] écriture « en attente » impossible (${entree.template} → ${entree.recipient}) :`,
       e instanceof Error ? e.message : String(e),
     );
-    return false;
+    return null;
+  }
+}
+
+/**
+ * Referme en ÉCHEC la ligne « en attente » qu'un enfilage vient de poser, quand la mise
+ * en file a échoué (Redis injoignable) : aucun job n'existe, aucun worker ne la clora.
+ *
+ * 🔴 Relecture de la PR #1537, point bloquant 1. Cette ligne était close « annulé ». Or
+ * `dejaTente` et les lecteurs des campagnes (`relances-missions.ts`, `passer-campagnes.ts`)
+ * ne mettent de côté que `failed` : une ligne « annulé » comptait comme une relance déjà
+ * tentée, et la relance portant cette clé ne repartait JAMAIS. `failed` est la sémantique
+ * « échec définitif, retentable » que ces lecteurs connaissent déjà : le passage suivant
+ * retente, et le worker de ce nouvel essai clôt cette même ligne (`cloturerJournal`).
+ *
+ * ⚠️ Visée par son `id`, jamais par le seul `jobId` : un autre enfilage de la même clé a
+ * peut-être un job vivant, et sa ligne n'est pas à nous. La garde `status: pending` évite
+ * de réécrire une ligne déjà close entre-temps.
+ *
+ * Fail-soft comme le reste du module.
+ *
+ * @returns le nombre de lignes refermées (0 ou 1).
+ */
+export async function marquerEchecMiseEnFile(id: string, motif: string): Promise<number> {
+  if (estStub()) return 0;
+  try {
+    const r = await prisma.emailLog.updateMany({
+      where: { id, status: EmailLogStatus.pending },
+      data: { status: EmailLogStatus.failed, error: motif, failedAt: new Date() },
+    });
+    return r.count;
+  } catch (e) {
+    console.error(
+      `[email-log] cloture « échec » impossible (${id}) :`,
+      e instanceof Error ? e.message : String(e),
+    );
+    return 0;
   }
 }
 

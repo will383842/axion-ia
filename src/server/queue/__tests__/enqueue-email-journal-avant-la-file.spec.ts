@@ -15,7 +15,7 @@ const d = vi.hoisted(() => ({
   ordre: [] as string[],
   add: vi.fn(),
   journaliser: vi.fn(),
-  annuler: vi.fn(),
+  echec: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -44,7 +44,7 @@ vi.mock("@/server/email/suppression", () => ({
 }));
 vi.mock("@/server/email/email-log", () => ({
   journaliserEnAttente: (...a: unknown[]) => d.journaliser(...a),
-  marquerAnnule: (...a: unknown[]) => d.annuler(...a),
+  marquerEchecMiseEnFile: (...a: unknown[]) => d.echec(...a),
 }));
 
 import { enqueueEmail } from "../queues";
@@ -59,9 +59,9 @@ beforeEach(() => {
   });
   d.journaliser.mockReset().mockImplementation(async () => {
     d.ordre.push("journal");
-    return true;
+    return "log-1";
   });
-  d.annuler.mockReset().mockResolvedValue(1);
+  d.echec.mockReset().mockResolvedValue(1);
 });
 
 describe("V1-C-11 — la ligne « en attente » est écrite AVANT la mise en file", () => {
@@ -114,22 +114,28 @@ describe("V1-C-11 — la ligne « en attente » est écrite AVANT la mise en fil
     });
   });
 
-  it("file injoignable : la ligne posée par CET enfilage est close, l'erreur remonte", async () => {
+  it("file injoignable : la ligne de CET enfilage est close en échec par son id, l'erreur remonte", async () => {
     d.add.mockRejectedValue(new Error("Redis coupé"));
     await expect(enqueueEmail("facture-envoi", "c@exemple.fr", "fr", {})).rejects.toThrow(
       "Redis coupé",
     );
-    const jobId = (d.journaliser.mock.calls[0]![0] as { jobId: string }).jobId;
-    expect(d.annuler).toHaveBeenCalledWith(jobId, expect.stringMatching(/mise en file/i));
+    expect(d.echec).toHaveBeenCalledWith("log-1", expect.stringMatching(/mise en file/i));
+  });
+
+  it("le verrou n'est demandé que pour une clé de l'appelant", async () => {
+    await enqueueEmail("facture-envoi", "c@exemple.fr", "fr", {});
+    await enqueueEmail("facture-envoi", "c@exemple.fr", "fr", {}, { jobId: "cle-1" });
+    expect(d.journaliser.mock.calls[0]![0]).toMatchObject({ cleAppelant: false });
+    expect(d.journaliser.mock.calls[1]![0]).toMatchObject({ cleAppelant: true, jobId: "cle-1" });
   });
 
   it("file injoignable, ligne déjà là (même clé, autre enfilage) : on n'y touche pas", async () => {
-    d.journaliser.mockResolvedValue(false);
+    d.journaliser.mockResolvedValue(null);
     d.add.mockRejectedValue(new Error("Redis coupé"));
     await expect(
       enqueueEmail("facture-envoi", "c@exemple.fr", "fr", {}, { jobId: "cle-1" }),
     ).rejects.toThrow();
-    expect(d.annuler).not.toHaveBeenCalled();
+    expect(d.echec).not.toHaveBeenCalled();
   });
 
   it("submission-reply garde son suivi propre : ni journal, ni identifiant fabriqué", async () => {

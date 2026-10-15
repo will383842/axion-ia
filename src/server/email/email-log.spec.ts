@@ -47,6 +47,7 @@ import {
   cloturerJournal,
   noterTentativeEchouee,
   marquerAnnule,
+  marquerEchecMiseEnFile,
 } from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
@@ -69,7 +70,7 @@ beforeEach(() => {
 
 describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
   it("écrit une ligne `pending` à 0 tentative", async () => {
-    await journaliserEnAttente({ ...BASE, jobId: "job-1" });
+    await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true });
     expect(createMock).toHaveBeenCalledWith({
       data: expect.objectContaining({
         template: BASE.template,
@@ -78,6 +79,7 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
         attempts: 0,
         jobId: "job-1",
       }),
+      select: { id: true },
     });
   });
 
@@ -88,7 +90,11 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
   // surveillance alerterait sur un envoi parti depuis longtemps.
   it("ne repose pas de ligne quand le jobId est déjà connu", async () => {
     findFirstMock.mockResolvedValue({ id: "log-existant" });
-    await journaliserEnAttente({ ...BASE, jobId: "qualiopi-convocation-42-2026-08-16" });
+    await journaliserEnAttente({
+      ...BASE,
+      jobId: "qualiopi-convocation-42-2026-08-16",
+      cleAppelant: true,
+    });
     expect(createMock).not.toHaveBeenCalled();
   });
 
@@ -100,7 +106,9 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
     verrouMock.mockImplementation(async () => ordre.push("verrou"));
     findFirstMock.mockImplementation(async () => (ordre.push("lecture"), null));
     createMock.mockImplementation(async () => (ordre.push("ecriture"), { id: "log-1" }));
-    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(true);
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true })).toBe(
+      "log-1",
+    );
     expect(transactionMock).toHaveBeenCalledTimes(1);
     expect(ordre).toEqual(["verrou", "lecture", "ecriture"]);
     const [gabarit, ...valeurs] = verrouMock.mock.calls[0] as [TemplateStringsArray, ...unknown[]];
@@ -108,12 +116,28 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
     expect(valeurs).toEqual(["email_log:job-1"]);
   });
 
-  it("V1-C-11 : dit si la ligne a été posée (false si elle existait, ou base muette)", async () => {
+  it("V1-C-11 : rend l'id de la ligne posée (null si elle existait, ou base muette)", async () => {
     findFirstMock.mockResolvedValue({ id: "log-existant" });
-    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(false);
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true })).toBe(null);
     findFirstMock.mockResolvedValue(null);
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true })).toBe(
+      "log-1",
+    );
     createMock.mockRejectedValue(new Error("connexion perdue"));
-    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(false);
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true })).toBe(null);
+  });
+
+  // Relecture #1537, point 3 — un identifiant fabriqué (`email-<uuid>`) ne peut entrer en
+  // concurrence avec personne : ni transaction, ni verrou, ni lecture.
+  it("identifiant fabriqué (pas de clé de l'appelant) : création directe, sans verrou", async () => {
+    expect(await journaliserEnAttente({ ...BASE, jobId: "email-abc" })).toBe("log-1");
+    expect(transactionMock).not.toHaveBeenCalled();
+    expect(verrouMock).not.toHaveBeenCalled();
+    expect(findFirstMock).not.toHaveBeenCalled();
+    expect(createMock).toHaveBeenCalledWith({
+      data: expect.objectContaining({ jobId: "email-abc", status: EmailLogStatus.pending }),
+      select: { id: true },
+    });
   });
 
   it("ne cherche pas de doublon en l'absence de jobId", async () => {
@@ -134,7 +158,10 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
   // convocation ne partirait pas parce que son journal n'a pas pu s'écrire.
   it("n'échoue pas quand la base refuse l'écriture", async () => {
     createMock.mockRejectedValue(new Error("connexion perdue"));
-    await expect(journaliserEnAttente({ ...BASE, jobId: "job-1" })).resolves.toBe(false);
+    await expect(
+      journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true }),
+    ).resolves.toBe(null);
+    await expect(journaliserEnAttente({ ...BASE, jobId: "email-abc" })).resolves.toBe(null);
   });
 });
 
@@ -284,6 +311,32 @@ describe("lot 2 — une ligne par job", () => {
  * sa ligne restait ouverte POUR TOUJOURS. C'est le seul cas où la pose est
  * juste, la clôture légitime, et pourtant personne ne referme.
  */
+// Relecture #1537, point bloquant 1 — file injoignable : la ligne posée par l'enfilage est
+// close en ÉCHEC (retentable), jamais « annulé » (compté comme déjà tenté), et visée par
+// son `id`, jamais par le seul `jobId`.
+describe("marquerEchecMiseEnFile", () => {
+  it("clôt en `failed`, par son id, et seulement si elle est encore « en attente »", async () => {
+    await expect(marquerEchecMiseEnFile("log-7", "Mise en file impossible")).resolves.toBe(1);
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { id: "log-7", status: EmailLogStatus.pending },
+      data: {
+        status: EmailLogStatus.failed,
+        error: "Mise en file impossible",
+        failedAt: expect.any(Date),
+      },
+    });
+  });
+
+  it("n'échoue pas quand la base refuse, et reste muette au build", async () => {
+    updateManyMock.mockRejectedValue(new Error("connexion perdue"));
+    await expect(marquerEchecMiseEnFile("log-7", "motif")).resolves.toBe(0);
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    updateManyMock.mockClear();
+    await expect(marquerEchecMiseEnFile("log-7", "motif")).resolves.toBe(0);
+    expect(updateManyMock).not.toHaveBeenCalled();
+  });
+});
+
 describe("marquerAnnule", () => {
   beforeEach(() => {
     updateManyMock.mockReset();
