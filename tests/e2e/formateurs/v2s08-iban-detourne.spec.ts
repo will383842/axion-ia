@@ -14,7 +14,7 @@ import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
 import { viderPuitsPour } from "../fixtures/formateurs/puits-smtp";
-import { DELAI_SPEC_MS, scenarioV2 } from "../fixtures/formateurs/v2s-commun";
+import { scenarioV2 } from "../fixtures/formateurs/v2s-commun";
 
 interface Observations {
   allumage: { ok: boolean };
@@ -36,12 +36,12 @@ interface Observations {
 
 test.describe("@formateurs V2-S08 — changement d'IBAN puis virement", () => {
   test.describe.configure({ mode: "serial" });
-  test.setTimeout(DELAI_SPEC_MS);
+  test.setTimeout(240_000);
 
   let o: Observations;
 
   test.beforeAll(async () => {
-    test.setTimeout(DELAI_SPEC_MS);
+    test.setTimeout(240_000);
     o = await scenarioV2<Observations>("v2s08-iban-mise-a-niveau");
   });
 

@@ -4,9 +4,6 @@
 
 import { executerScenarioSecurite } from "./securite-execution";
 
-/** Délai d'un spec : tsx (~3 s), verrou des interrupteurs, puis le scénario. */
-export const DELAI_SPEC_MS = 240_000;
-
 export function scenarioV2<T>(
   nom: string,
   parametres: unknown = {},

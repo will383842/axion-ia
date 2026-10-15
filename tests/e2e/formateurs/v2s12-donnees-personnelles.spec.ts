@@ -13,7 +13,6 @@ import { prisma } from "../fixtures/formateurs/base";
 import { messagesCaptes, viderPuitsPour } from "../fixtures/formateurs/puits-smtp";
 import { corpsCaptes } from "../fixtures/formateurs/securite-puits";
 import {
-  DELAI_SPEC_MS,
   RESSEMBLE_A_UN_EMAIL,
   RESSEMBLE_A_UN_IBAN,
   RESSEMBLE_A_UN_TELEPHONE,
@@ -39,12 +38,12 @@ const ATTENTE = { timeout: 30_000, intervals: [500, 1_000] };
 
 test.describe("@formateurs V2-S12 — aucune donnée personnelle hors de sa place", () => {
   test.describe.configure({ mode: "serial" });
-  test.setTimeout(DELAI_SPEC_MS);
+  test.setTimeout(240_000);
 
   let o: Observations;
 
   test.beforeAll(async () => {
-    test.setTimeout(DELAI_SPEC_MS);
+    test.setTimeout(240_000);
     o = await scenarioV2<Observations>("v2s12-donnees-personnelles");
   });
 

@@ -9,7 +9,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { DELAI_SPEC_MS, scenarioV2 } from "../fixtures/formateurs/v2s-commun";
+import { scenarioV2 } from "../fixtures/formateurs/v2s-commun";
 
 interface Observations {
   r: {
@@ -31,12 +31,12 @@ const NON_VALABLE = { ok: false, message: "Ce lien n'est pas valable" };
 
 test.describe("@formateurs V2-S05 — lien du dossier en ligne rejoué", () => {
   test.describe.configure({ mode: "serial" });
-  test.setTimeout(DELAI_SPEC_MS);
+  test.setTimeout(240_000);
 
   let o: Observations;
 
   test.beforeAll(async () => {
-    test.setTimeout(DELAI_SPEC_MS);
+    test.setTimeout(240_000);
     o = await scenarioV2<Observations>("v2s05-jeton-dossier");
   });
 

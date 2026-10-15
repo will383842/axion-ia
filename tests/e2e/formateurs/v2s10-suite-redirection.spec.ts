@@ -7,7 +7,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { DELAI_SPEC_MS, scenarioV2 } from "../fixtures/formateurs/v2s-commun";
+import { scenarioV2 } from "../fixtures/formateurs/v2s-commun";
 
 const UUID = "0b6f0d55-6c1d-4d0e-9f73-0d2a1b7c3e44";
 const ESPACE = "/fr/espace-formateur";
@@ -49,7 +49,7 @@ interface Suivi {
 }
 
 test.describe("@formateurs V2-S10 — aucune redirection ouverte par `suite`", () => {
-  test.setTimeout(DELAI_SPEC_MS);
+  test.setTimeout(240_000);
 
   test.afterAll(async () => {
     await prisma.$disconnect();
