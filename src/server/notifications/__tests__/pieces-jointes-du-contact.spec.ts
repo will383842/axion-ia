@@ -22,12 +22,12 @@ const evenement = (extra: Record<string, unknown>) =>
   }) as unknown as NotificationEvent;
 
 describe("alerte d'un message — pièces jointes", () => {
-  it("affiche le nombre de pièces jointes, sans leurs noms", () => {
+  it("affiche le nombre de pièces jointes ANNONCÉES, sans leurs noms", () => {
     const { text } = formatNotification(
       evenement({ piecesJointes: 2, piecesJointesNoms: ["CDC-CANARI.pdf", "Devis.xlsx"] }),
       "info",
     );
-    expect(text).toContain("📎 Pièces jointes* : 2");
+    expect(text).toContain("📎 Pièces jointes annoncées* : 2");
     expect(text).not.toContain("CANARI");
     expect(text).not.toContain("Devis");
   });

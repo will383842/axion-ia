@@ -350,10 +350,11 @@ function formatBody(event: NotificationEvent): string {
         "eventDate" in p ? formatKV("Date événement", p.eventDate) : null,
         "firm" in p ? formatKV("Société", p.firm) : null,
         "source" in p ? formatKV("Source", p.source) : null,
-        // Pièces jointes (2026-10-15) : le NOMBRE seulement — un nom de fichier
-        // est du contenu saisi, et ne part pas sur Telegram (décision du 11/10).
+        // Pièces jointes (2026-10-15) : le NOMBRE ANNONCÉ seulement — un nom de
+        // fichier est du contenu saisi, et ne part pas sur Telegram (décision du
+        // 11/10). L'alerte part avant les fichiers : la fiche dit lesquels sont reçus.
         "piecesJointes" in p && typeof p.piecesJointes === "number"
-          ? formatKV("📎 Pièces jointes", p.piecesJointes)
+          ? formatKV("📎 Pièces jointes annoncées", p.piecesJointes)
           : null,
         formatKV("Locale", p.locale),
         formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),

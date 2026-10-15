@@ -1,29 +1,33 @@
 // @vitest-environment node
 
 /**
- * Formulaire de contact unifié — les pièces jointes, de bout en bout dans
- * l'action (stockage R2 SIMULÉ).
+ * Formulaire de contact unifié — les pièces jointes dans l'ACTION (2026-10-15,
+ * envoi direct vers R2 : le formulaire n'annonce que nom et taille).
  *
  * Ce qui est verrouillé :
- *   · sans fichier, RIEN ne change : aucune écriture R2, aucune ligne de pièce,
- *     ni notification ni accusé ne portent de champ nouveau ;
- *   · un fichier refusé (exécutable déguisé, .docm, virus) revient au
- *     formulaire AVANT toute écriture de la demande ;
- *   · un fichier accepté part dans R2 (clé aléatoire), puis sa ligne ;
- *   · un stockage indisponible ne perd JAMAIS la demande.
+ *   · sans fichier, RIEN ne change : même charge utile d'accusé, même alerte,
+ *     même retour, aucune URL, aucune ligne de pièce ;
+ *   · une URL d'envoi n'est délivrée qu'APRÈS la limite de fréquence, le
+ *     leurre, Turnstile et l'écriture de la demande ;
+ *   · Turnstile en échec : aucune URL, mais la demande est enregistrée avec la
+ *     mention « pièces non reçues » ;
+ *   · la clé de stockage est tirée par le serveur : rien de ce qu'envoie le
+ *     navigateur n'y entre ;
+ *   · un stockage indisponible ne perd JAMAIS la demande ;
+ *   · avec fichiers, l'accusé attend la fin de l'envoi (il dira combien sont reçus).
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const h = vi.hoisted(() => ({
   submissionCreate: vi.fn(),
-  attachmentCreate: vi.fn(),
-  uploadToR2: vi.fn(),
-  deleteFromR2: vi.fn(),
+  attachmentCreateMany: vi.fn(),
+  signerEnvoiDirectR2: vi.fn(),
   isR2Configured: vi.fn(() => true),
-  analyserOctets: vi.fn(),
   notify: vi.fn(),
   enqueueEmail: vi.fn(),
+  checkRateLimit: vi.fn(),
+  verifyTurnstile: vi.fn(),
 }));
 
 vi.mock("next/headers", () => ({
@@ -34,15 +38,14 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     submission: { create: h.submissionCreate },
-    submissionAttachment: { create: h.attachmentCreate },
+    submissionAttachment: { createMany: h.attachmentCreateMany },
   },
 }));
 vi.mock("@/lib/r2-storage", () => ({
-  uploadToR2: h.uploadToR2,
-  deleteFromR2: h.deleteFromR2,
+  signerEnvoiDirectR2: h.signerEnvoiDirectR2,
   isR2Configured: h.isR2Configured,
 }));
-vi.mock("@/server/careers/clamav", () => ({ analyserOctets: h.analyserOctets }));
+vi.mock("@/server/careers/clamav", () => ({ analyserFlux: vi.fn() }));
 vi.mock("@/server/notifications", () => ({ notify: h.notify }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: h.enqueueEmail }));
 vi.mock("@/server/crm-sync", () => ({ syncFormSubmissionToCrm: vi.fn() }));
@@ -50,9 +53,13 @@ vi.mock("@/lib/consents", () => ({
   CONSENT_FORM_REFS: { unifiedContact: "unified-contact" },
   recordConsentEvent: vi.fn(),
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: true }) }));
-vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: async () => true }));
-vi.mock("@/lib/pii-crypto", () => ({ encryptPii: (v: string) => `enc:${v}` }));
+vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: h.checkRateLimit }));
+vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: h.verifyTurnstile }));
+vi.mock("@/lib/pii-crypto", () => ({
+  encryptPii: (v: string) => `enc:${v}`,
+  decryptPii: (v: string) => v,
+  isDecryptedEmailUsable: () => true,
+}));
 vi.mock("@/lib/security/ip-hash", () => ({ hashIp: () => "iphash" }));
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "emailhash" }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
@@ -60,14 +67,7 @@ vi.mock("@/lib/security/honeypot-observable", () => ({ signalerHoneypot: vi.fn()
 
 import { submitUnifiedContactAction } from "../actions";
 
-const PDF = Buffer.from("%PDF-1.7\n1 0 obj\n<<>>\nendobj\n");
-const EXE = Buffer.concat([Buffer.from([0x4d, 0x5a, 0x90, 0x00]), Buffer.from("DOS mode")]);
-const DOCX = Buffer.concat([
-  Buffer.from([0x50, 0x4b, 0x03, 0x04]),
-  Buffer.from("....[Content_Types].xml....word/document.xml"),
-]);
-
-function formulaire(fichiers: File[] = []): FormData {
+function formulaire(annonce?: unknown): FormData {
   const fd = new FormData();
   fd.set("type", "formation");
   fd.set("nom", "Camille Exemple");
@@ -77,141 +77,204 @@ function formulaire(fichiers: File[] = []): FormData {
   fd.set("message", "Demande de formation, voir le cahier des charges joint.");
   fd.set("locale", "fr");
   fd.set("consent", "true");
-  for (const f of fichiers) fd.append("piecesJointes", f, f.name);
+  fd.set("cf-turnstile-response", "jeton-turnstile");
+  if (annonce !== undefined) fd.set("piecesAnnoncees", JSON.stringify(annonce));
   return fd;
 }
 
-const fichier = (nom: string, contenu: Buffer) =>
-  new File([new Uint8Array(contenu)], nom, { type: "application/pdf" });
+const DEUX_PIECES = [
+  { nom: "Cahier des charges.pdf", taille: 18 * 1024 * 1024 },
+  { nom: "plans.zip", taille: 22 * 1024 * 1024 },
+];
 
 const ETAT = { ok: false as const, error: "" };
 
 beforeEach(() => {
   vi.clearAllMocks();
   h.isR2Configured.mockReturnValue(true);
+  h.checkRateLimit.mockResolvedValue({ allowed: true });
+  h.verifyTurnstile.mockResolvedValue(true);
   h.submissionCreate.mockResolvedValue({ id: "sub-1", submittedAt: new Date() });
-  h.attachmentCreate.mockResolvedValue({});
-  h.uploadToR2.mockImplementation(async (key: string, buf: Uint8Array) => ({
-    key,
-    etag: null,
-    sizeBytes: buf.byteLength,
-  }));
-  h.analyserOctets.mockResolvedValue({ issue: "sain" });
+  h.attachmentCreateMany.mockResolvedValue({ count: 2 });
+  h.signerEnvoiDirectR2.mockImplementation(
+    async (cle: string, taille: number) => `https://r2.invalid/${cle}?len=${taille}`,
+  );
   h.notify.mockResolvedValue({ ok: true });
-  h.enqueueEmail.mockResolvedValue(undefined);
+  h.enqueueEmail.mockResolvedValue({ enqueued: true });
 });
 
 describe("sans pièce jointe, rien ne change", () => {
-  it("la demande est enregistrée, sans R2, sans ligne de pièce, sans champ nouveau", async () => {
+  it("même retour, même alerte, même accusé, aucune URL ni ligne de pièce", async () => {
     const r = await submitUnifiedContactAction(ETAT, formulaire());
     expect(r).toEqual({ ok: true, submissionId: "sub-1" });
-    expect(h.submissionCreate).toHaveBeenCalledTimes(1);
-    expect(h.uploadToR2).not.toHaveBeenCalled();
-    expect(h.attachmentCreate).not.toHaveBeenCalled();
-    expect(h.analyserOctets).not.toHaveBeenCalled();
-    const payload = h.notify.mock.calls[0]![0].payload;
-    expect(payload).not.toHaveProperty("piecesJointes");
-    expect(payload).not.toHaveProperty("piecesJointesNoms");
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+    expect(h.attachmentCreateMany).not.toHaveBeenCalled();
+    const details = h.submissionCreate.mock.calls[0]![0].data.details;
+    expect(Object.keys(details).some((k) => /pieces|accuse/i.test(k))).toBe(false);
+    expect(h.notify.mock.calls[0]![0].payload).not.toHaveProperty("piecesJointes");
+    // La charge utile d'AVANT, au champ près.
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
+    expect(h.enqueueEmail.mock.calls[0]![3]).toEqual({
+      contactName: "Camille Exemple",
+      submissionId: "sub-1",
+      type: "formation",
+      subType: undefined,
+      size: undefined,
+      industry: undefined,
+      auditType: undefined,
+    });
+    expect(h.enqueueEmail.mock.calls[0]![4]).toEqual({
+      entityType: "Submission",
+      entityId: "sub-1",
+    });
+  });
+
+  it("une annonce vide ne change rien non plus", async () => {
+    const r = await submitUnifiedContactAction(ETAT, formulaire([]));
+    expect(r).toEqual({ ok: true, submissionId: "sub-1" });
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
+});
+
+describe("les URL d'envoi ne sont délivrées qu'après les contrôles", () => {
+  it("contrôles passés : une URL par fichier, APRÈS l'écriture de la demande", async () => {
+    const r = await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.envoiPieces?.envois).toHaveLength(2);
+    expect(r.envoiPieces?.jeton).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    expect(r).not.toHaveProperty("piecesNonRecues");
+    // Ordre : la demande d'abord, les URL ensuite.
+    expect(h.submissionCreate.mock.invocationCallOrder[0]).toBeLessThan(
+      h.signerEnvoiDirectR2.mock.invocationCallOrder[0]!,
+    );
+    // La longueur annoncée est celle que l'URL signe.
+    expect(h.signerEnvoiDirectR2.mock.calls.map((c) => c[1])).toEqual([
+      18 * 1024 * 1024,
+      22 * 1024 * 1024,
+    ]);
+    // Les lignes : attendues, sous l'empreinte du jeton (jamais le jeton).
+    const lignes = h.attachmentCreateMany.mock.calls[0]![0].data;
+    expect(lignes.map((l: { statut: string }) => l.statut)).toEqual(["attendue", "attendue"]);
+    expect(lignes[0].jetonHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(JSON.stringify(lignes)).not.toContain(r.envoiPieces!.jeton);
+  });
+
+  it("limite de fréquence atteinte : ni demande, ni URL", async () => {
+    h.checkRateLimit.mockResolvedValue({ allowed: false });
+    const r = await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
+    expect(r.ok).toBe(false);
+    expect(h.submissionCreate).not.toHaveBeenCalled();
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
+
+  it("leurre rempli : succès silencieux, aucune URL", async () => {
+    const fd = formulaire(DEUX_PIECES);
+    fd.set("website", "http://robot.invalid");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r).toEqual({ ok: true, submissionId: "" });
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
+
+  it("Turnstile en échec : aucune URL, mais la demande est enregistrée, pièces « non reçues »", async () => {
+    h.verifyTurnstile.mockResolvedValue(false);
+    const r = await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
+    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 2 });
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+    expect(h.attachmentCreateMany).not.toHaveBeenCalled();
+    const details = h.submissionCreate.mock.calls[0]![0].data.details;
+    expect(details).toMatchObject({
+      turnstilePassed: false,
+      piecesJointesAnnoncees: 2,
+      piecesJointesNonRecues: "turnstile",
+    });
+    expect(details).not.toHaveProperty("accuseDiffere");
+    // Aucun fichier n'arrivera : l'accusé part tout de suite, sans « pièces reçues ».
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
     expect(h.enqueueEmail.mock.calls[0]![3]).not.toHaveProperty("piecesJointesRecues");
   });
 
-  it("un champ fichier laissé vide (fichier sans nom, 0 octet) est ignoré", async () => {
-    const fd = formulaire();
-    fd.append("piecesJointes", new File([], ""), "");
-    const r = await submitUnifiedContactAction(ETAT, fd);
-    expect(r).toEqual({ ok: true, submissionId: "sub-1" });
-    expect(h.uploadToR2).not.toHaveBeenCalled();
-  });
-});
-
-describe("pièces acceptées", () => {
-  it("chaque fichier part dans R2 sous une clé aléatoire, puis sa ligne", async () => {
+  it("une annonce hors limites (26 Mo) : aucune URL, la demande reste", async () => {
     const r = await submitUnifiedContactAction(
       ETAT,
-      formulaire([fichier("Cahier des charges.pdf", PDF), fichier("../annexe.docx", DOCX)]),
+      formulaire([{ nom: "plans.pdf", taille: 26 * 1024 * 1024 }]),
     );
-    expect(r).toEqual({ ok: true, submissionId: "sub-1" });
-    expect(h.uploadToR2).toHaveBeenCalledTimes(2);
-    const [cle, , mime] = h.uploadToR2.mock.calls[0]!;
-    expect(cle).toMatch(/^contact\/pieces-jointes\/\d{4}\/sub-1\/[0-9a-f-]{36}\.pdf$/);
-    expect(cle).not.toContain("Cahier");
-    expect(mime).toBe("application/pdf");
-    expect(h.attachmentCreate.mock.calls[1]![0].data).toMatchObject({
-      submissionId: "sub-1",
-      nomFichier: "annexe.docx",
-      format: "docx",
-      antivirus: "sain",
-    });
+    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 1 });
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
 
+  it("un .docm annoncé : aucune URL", async () => {
+    const r = await submitUnifiedContactAction(
+      ETAT,
+      formulaire([{ nom: "cdc.docm", taille: 2048 }]),
+    );
+    expect(r).toMatchObject({ ok: true, piecesNonRecues: 1 });
+    expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
+});
+
+describe("la clé n'est pas contrôlable par le navigateur", () => {
+  it("clé tirée par le serveur, dans le préfixe temporaire ; ni nom, ni chemin, ni champ fourni", async () => {
+    const r = await submitUnifiedContactAction(
+      ETAT,
+      formulaire([
+        {
+          nom: "../../invoices/2026/AXION-2026-0001.pdf",
+          taille: 4096,
+          cle: "invoices/2026/AXION-2026-0001.pdf",
+          cleStockage: "invoices/x",
+          bucket: "autre",
+        },
+      ]),
+    );
+    expect(r.ok).toBe(true);
+    const [cle] = h.signerEnvoiDirectR2.mock.calls[0]!;
+    expect(cle).toMatch(
+      /^contact\/pieces-temporaires\/\d{4}-\d{2}-\d{2}\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
+    expect(cle).not.toMatch(/invoices|AXION|\.\./);
+    const ligne = h.attachmentCreateMany.mock.calls[0]![0].data[0];
+    expect(ligne.cleStockage).toBe(cle);
+    // Le nom affiché est assaini (aucun chemin).
+    expect(ligne.nomFichier).toBe("AXION-2026-0001.pdf");
+  });
+});
+
+describe("aucune demande perdue à cause d'un fichier", () => {
+  it("lignes impossibles à écrire : la demande reste, pièces non reçues, accusé immédiat", async () => {
+    h.attachmentCreateMany.mockRejectedValue(new Error("relation does not exist"));
+    const r = await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
+    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 2 });
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("R2 non configuré : la demande reste, pièces non reçues", async () => {
+    h.isR2Configured.mockReturnValue(false);
+    const r = await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
+    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 2 });
+    expect(h.submissionCreate.mock.calls[0]![0].data.details).toMatchObject({
+      piecesJointesNonRecues: "stockage",
+    });
+  });
+
+  it("annonce illisible : la demande reste", async () => {
+    const fd = formulaire();
+    fd.set("piecesAnnoncees", "{pas du json");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r).toMatchObject({ ok: true, submissionId: "sub-1", piecesNonRecues: 1 });
+  });
+});
+
+describe("avec fichiers, l'alerte part tout de suite et l'accusé attend", () => {
+  it("alerte : le NOMBRE annoncé ; accusé : différé, gabarit rangé dans la demande", async () => {
+    await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
     const payload = h.notify.mock.calls[0]![0].payload;
     expect(payload.piecesJointes).toBe(2);
-    expect(payload.piecesJointesNoms).toEqual(["Cahier des charges.pdf", "annexe.docx"]);
-    expect(h.enqueueEmail.mock.calls[0]![3].piecesJointesRecues).toBe(2);
-  });
-
-  it("antivirus muet : la pièce est gardée, marquée non vérifiée", async () => {
-    h.analyserOctets.mockResolvedValue({ issue: "indisponible", raison: "connexion" });
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("a.pdf", PDF)]));
-    expect(r.ok).toBe(true);
-    expect(h.attachmentCreate.mock.calls[0]![0].data.antivirus).toBe("non_verifie");
-  });
-});
-
-describe("pièces refusées — avant toute écriture", () => {
-  it.each([
-    ["un exécutable déguisé en .pdf", fichier("cahier.pdf", EXE), /ne correspond pas/],
-    ["un .docm", fichier("cahier.docm", DOCX), /macros/],
-    ["un .html", fichier("page.html", Buffer.from("<html></html>")), /format non accepté/],
-  ])("%s", async (_libelle, f, message) => {
-    const r = await submitUnifiedContactAction(ETAT, formulaire([f]));
-    expect(r.ok).toBe(false);
-    expect(r.ok === false && r.error).toMatch(message);
-    expect(h.submissionCreate).not.toHaveBeenCalled();
-    expect(h.uploadToR2).not.toHaveBeenCalled();
-  });
-
-  it("un fichier signalé par l'antivirus", async () => {
-    h.analyserOctets.mockResolvedValue({ issue: "infecte", signature: "Eicar-Test" });
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("a.pdf", PDF)]));
-    expect(r.ok === false && r.error).toMatch(/antivirus/);
-    expect(h.submissionCreate).not.toHaveBeenCalled();
-  });
-
-  it("quatre fichiers", async () => {
-    const f = () => fichier("a.pdf", PDF);
-    const r = await submitUnifiedContactAction(ETAT, formulaire([f(), f(), f(), f()]));
-    expect(r.ok === false && r.error).toMatch(/3 fichiers au maximum/);
-    expect(h.submissionCreate).not.toHaveBeenCalled();
-  });
-
-  it("un fichier de plus de 10 Mo", async () => {
-    const gros = Buffer.concat([PDF, Buffer.alloc(10 * 1024 * 1024)]);
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("gros.pdf", gros)]));
-    expect(r.ok === false && r.error).toMatch(/dépasse 10 Mo/);
-    expect(h.submissionCreate).not.toHaveBeenCalled();
-  });
-});
-
-describe("stockage indisponible — la demande n'est jamais perdue", () => {
-  it("R2 non configuré : demande enregistrée, pièces signalées non reçues", async () => {
-    h.isR2Configured.mockReturnValue(false);
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("a.pdf", PDF)]));
-    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 1 });
-    expect(h.submissionCreate).toHaveBeenCalledTimes(1);
-    expect(h.notify.mock.calls[0]![0].payload).not.toHaveProperty("piecesJointes");
-  });
-
-  it("envoi R2 en échec : idem", async () => {
-    h.uploadToR2.mockRejectedValue(new Error("réseau"));
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("a.pdf", PDF)]));
-    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 1 });
-    expect(h.attachmentCreate).not.toHaveBeenCalled();
-  });
-
-  it("table absente (migration pas jouée) : l'objet écrit est retiré, la demande reste", async () => {
-    h.attachmentCreate.mockRejectedValue(Object.assign(new Error("P2021"), { code: "P2021" }));
-    const r = await submitUnifiedContactAction(ETAT, formulaire([fichier("a.pdf", PDF)]));
-    expect(r).toEqual({ ok: true, submissionId: "sub-1", piecesNonRecues: 1 });
-    expect(h.deleteFromR2).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(payload)).not.toContain("Cahier");
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+    expect(h.submissionCreate.mock.calls[0]![0].data.details).toMatchObject({
+      piecesJointesAnnoncees: 2,
+      accuseDiffere: "contact-confirmed",
+    });
   });
 });
