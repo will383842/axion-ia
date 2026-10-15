@@ -36,6 +36,11 @@ import {
   motifNePasInviter,
   type CandidatureInvitation,
 } from "./invitation-formateurs-faits";
+import {
+  controleSiretParDefaut,
+  motifRegistreSiret,
+  type ControleSiretCandidature,
+} from "./controle-siret-candidature";
 import type { EnvoiFormateur, ResultatEnvoiFormateur } from "./envois";
 import { lienEchangeFormateur } from "./jeton-reservation";
 
@@ -80,6 +85,8 @@ export interface DependancesInvitation {
   /** F1 enfilés ou garés dans l'heure écoulée. `null` : illisible, rien ne part. */
   readonly envoyesDerniereHeure: (maintenant: Date) => Promise<number | null>;
   readonly envoyer: (e: EnvoiFormateur) => Promise<ResultatEnvoiFormateur>;
+  /** V1-A-1 : le SIRET du formulaire est-il ouvert au registre ? Une panne vaut « muet ». */
+  readonly controleSiret: ControleSiretCandidature;
 }
 
 async function allumeParDefaut(): Promise<boolean> {
@@ -120,6 +127,7 @@ function dependances(deps?: Partial<DependancesInvitation>): DependancesInvitati
     allumeLe: deps?.allumeLe ?? allumeLeParDefaut,
     envoyesDerniereHeure: deps?.envoyesDerniereHeure ?? envoyesDerniereHeureParDefaut,
     envoyer: deps?.envoyer ?? envoyerParDefaut,
+    controleSiret: deps?.controleSiret ?? controleSiretParDefaut,
   };
 }
 
@@ -211,6 +219,14 @@ export async function passerInvitationsFormateurs(
     if (invitees + refus >= plafond) {
       plafondAtteint = true;
       break;
+    }
+    // V1-A-1 : le SIRET du formulaire, au registre, AVANT d'inviter. Fermé ou registre
+    // muet : rien ne part, la candidature n'est pas close — elle attend avec son motif
+    // (relu à l'affichage), et sera revue au passage suivant dans la fenêtre de 72 h.
+    const motifSiret = await motifRegistreSiret(f.siret, d.controleSiret);
+    if (motifSiret) {
+      ecartees[motifSiret] = (ecartees[motifSiret] ?? 0) + 1;
+      continue;
     }
     servies.add(f.personneId);
     const r = await d.envoyer({
@@ -399,6 +415,7 @@ export function empreinteRattrapage(ids: readonly string[]): string {
 export async function listerRattrapage(
   maintenant: Date,
   allumeLe: () => Promise<Date | null> = allumeLeParDefaut,
+  controleSiret: ControleSiretCandidature = controleSiretParDefaut,
 ): Promise<{
   lignes: LigneRattrapage[];
   destinataires: Map<string, { destinataire: string; prenom: string | null; personneId: string }>;
@@ -434,6 +451,8 @@ export async function listerRattrapage(
   for (const c of candidatures) {
     const f = faits.get(c.id);
     if (!f || motifNePasInviter(f) || vues.has(f.personneId)) continue;
+    // V1-A-1 : l'aperçu de Will ne liste pas une entreprise fermée ni un registre muet.
+    if (await motifRegistreSiret(f.siret, controleSiret)) continue;
     vues.add(f.personneId);
     let initiale = "";
     try {
@@ -482,7 +501,7 @@ export async function envoyerRattrapage(
 ): Promise<ResultatRattrapage> {
   const d = dependances(deps);
   if (!(await d.allume())) return { ok: false, motif: "coupe" };
-  const liste = await listerRattrapage(maintenant, d.allumeLe);
+  const liste = await listerRattrapage(maintenant, d.allumeLe, d.controleSiret);
   if (liste.empreinte !== empreinteVue) return { ok: false, motif: "liste-changee" };
   let envoyes = 0;
   let refus = 0;

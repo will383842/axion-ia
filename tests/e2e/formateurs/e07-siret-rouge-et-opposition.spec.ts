@@ -70,40 +70,76 @@ test.describe("@formateurs E07 — SIRET rouge et opposition", () => {
     expect(apres).toMatchObject({ invitationFormateurAt: null, status: "new" });
   });
 
-  // V1-A-2 — l'opposition ne laisse AUCUNE trace sur la candidature : le motif n'est
-  // écrit nulle part (seul un compteur en mémoire du passage le connaît), la fiche dit
-  // « Pas encore invitée. », aucune tuile ne le montre, et la candidature sort de la
-  // fenêtre de 72 h sans être close. Cf. rapport de vérification.
-  test.fixme("(b) V1-A-2 — la candidature attend AVEC SON MOTIF, et une tuile le dit", async () => {
+  // V1-A-2 — la candidature d'une personne opposée attend AVEC SON MOTIF : le motif n'est
+  // écrit nulle part (le schéma n'a pas de colonne pour lui), il est CALCULÉ à l'affichage
+  // avec les mêmes faits que le balayage. L'oracle lit la phrase de la fiche (étape
+  // `resume-invitation`), pas la ligne en base.
+  test("(b) V1-A-2 — la candidature attend AVEC SON MOTIF, et la fiche le dit", async () => {
     const email = decor.adresse("opposee-motif");
     const cand = await deposer(email, ipSuivante());
     await etape({ etape: "opposer", args: { email } });
-    await etape({
-      etape: "passage-invitations",
-      args: { maintenant: plus(cand.submittedAt, { minutes: 16 }) },
-    });
+    const maintenant = plus(cand.submittedAt, { minutes: 16 }).toISOString();
+    await etape({ etape: "passage-invitations", args: { maintenant } });
     const apres = await prisma.jobApplication.findUnique({ where: { id: cand.id } });
-    // Ce que le plan exige : un état lisible qui dit pourquoi rien ne part.
     expect(apres?.invitationFormateurAt).toBeNull();
-    expect(JSON.stringify(apres)).toMatch(/opposition/i);
+    const phrase = await etape<string>({
+      etape: "resume-invitation",
+      args: { candidatureId: cand.id, maintenant },
+    });
+    expect(phrase.valeur).toMatch(/opposée aux sollicitations/);
+    expect(phrase.valeur).not.toMatch(/Pas encore invitée/);
   });
 
-  // V1-A-1 — aucun contrôle du registre avant F1 : le SIRET déclaré au formulaire n'est
-  // jamais lu (`invitation-formateurs-faits.ts`, « registreRouge » ne lit que les
-  // vérifications d'une fiche formateur, qui n'existe pas encore). F1 part vers une
-  // entreprise fermée. Cf. rapport de vérification.
-  test.fixme("(a) V1-A-1 — SIRET déclaré « rouge » : aucune invitation, motif conservé", async () => {
+  // V1-A-1 — le SIRET déclaré au formulaire est contrôlé au registre AVANT F1 : une
+  // entreprise fermée n'est pas invitée, la candidature attend avec son motif.
+  test("(a) V1-A-1 — SIRET déclaré « rouge » : aucune invitation, motif affiché", async () => {
     const email = decor.adresse("siret-rouge");
     const cand = await deposer(email, ipSuivante(), SIRET_BANC);
     expect(cand.answers).toBeTruthy();
-    await etape({
-      etape: "passage-invitations",
-      args: { maintenant: plus(cand.submittedAt, { minutes: 16 }) },
-      registre: "rouge",
-    });
+    const maintenant = plus(cand.submittedAt, { minutes: 16 }).toISOString();
+    await etape({ etape: "passage-invitations", args: { maintenant }, registre: "rouge" });
     await attendreLeWorker(email);
     expect(await gabaritsVers(email)).toEqual(["candidature-recue"]);
     const apres = await prisma.jobApplication.findUnique({ where: { id: cand.id } });
     expect(apres?.invitationFormateurAt).toBeNull();
+    expect(apres?.clotureSansSuiteAt).toBeNull();
+    const phrase = await etape<string>({
+      etape: "resume-invitation",
+      args: { candidatureId: cand.id, maintenant },
+      registre: "rouge",
+    });
+    expect(phrase.valeur).toMatch(/fermée au registre/);
+  });
+
+  test("(a) V1-A-1 — registre muet : pas d'invitation automatique, la candidature attend", async () => {
+    const email = decor.adresse("siret-muet");
+    const cand = await deposer(email, ipSuivante(), SIRET_BANC);
+    const maintenant = plus(cand.submittedAt, { minutes: 16 }).toISOString();
+    await etape({ etape: "passage-invitations", args: { maintenant }, registre: "muet" });
+    await attendreLeWorker(email);
+    expect(await gabaritsVers(email)).toEqual(["candidature-recue"]);
+    const apres = await prisma.jobApplication.findUnique({ where: { id: cand.id } });
+    expect(apres?.invitationFormateurAt).toBeNull();
+    const phrase = await etape<string>({
+      etape: "resume-invitation",
+      args: { candidatureId: cand.id, maintenant },
+      registre: "muet",
+    });
+    expect(phrase.valeur).toMatch(/registre des entreprises n'a pas répondu/);
+  });
+
+  test("(a) V1-A-1 — entreprise ouverte au registre : F1 part", async () => {
+    const email = decor.adresse("siret-vert");
+    const cand = await deposer(email, ipSuivante(), SIRET_BANC);
+    await etape({
+      etape: "passage-invitations",
+      args: { maintenant: plus(cand.submittedAt, { minutes: 16 }).toISOString() },
+      registre: "vert",
+    });
+    await attendreLeWorker(email);
+    expect(await gabaritsVers(email)).toEqual([
+      "candidature-recue",
+      "formateur-invitation-echange",
+    ]);
   });
 });

@@ -24,6 +24,8 @@ export interface ReponseRecueCandidat {
   /** Extrait déchiffré ; `null` s'il n'y en a pas ou s'il est illisible. */
   readonly extrait: string | null;
   readonly automatique: boolean;
+  /** V1-A-3 : venue d'une adresse relais, sans empreinte — à vérifier à la main. */
+  readonly aVerifier: boolean;
   readonly lienZoho: string;
 }
 
@@ -71,7 +73,50 @@ export async function lireReponsesRecuesCandidat(
       objet: l.subject,
       extrait,
       automatique: l.auto,
+      aVerifier: empreinte === null && !l.auto,
       lienZoho: lienZoho(dc, l.zohoMessageId),
     };
   });
+}
+
+/** Une réponse de la file « à vérifier » : assez pour ouvrir la fiche, sans le contenu. */
+export interface ReponseAVerifier {
+  readonly applicationId: string;
+  readonly recueLe: Date;
+  readonly objet: string;
+}
+
+/** On ne remonte pas plus loin : au-delà, la file n'est plus une urgence. */
+const FENETRE_A_VERIFIER_MS = 60 * 24 * 60 * 60 * 1000;
+
+/**
+ * V1-A-3 — la file « à vérifier » : les réponses venues d'une adresse relais (candidature
+ * sans empreinte), tant que la candidature est encore « nouvelle » (le clic humain —
+ * changer son statut, ou « J'ai répondu ailleurs » — la fait sortir de la file). Rend `[]` à
+ * un rôle qui n'ouvre pas les dossiers. Lève si la base ne répond pas.
+ */
+export async function lireReponsesAVerifier(
+  acteur: { role: string | null | undefined },
+  maintenant: Date = new Date(),
+): Promise<ReponseAVerifier[]> {
+  if (!peutOuvrirDossierCandidat(acteur.role)) return [];
+  const lignes = await prisma.jobApplicationInboundReply.findMany({
+    where: {
+      auto: false,
+      receivedAt: { gte: new Date(maintenant.getTime() - FENETRE_A_VERIFIER_MS) },
+      application: {
+        emailHash: null,
+        status: "new",
+        reponsesFormateur: { none: {} },
+      },
+    },
+    orderBy: { receivedAt: "desc" },
+    take: 50,
+    select: { applicationId: true, receivedAt: true, subject: true },
+  });
+  return lignes.map((l) => ({
+    applicationId: l.applicationId,
+    recueLe: l.receivedAt,
+    objet: l.subject,
+  }));
 }
