@@ -323,6 +323,11 @@ const alerteAntivirus = alerteAntivirusLimitee(() => {
     .catch(() => undefined);
 });
 
+/** Minuit UTC du jour : une date de pièce, jamais une heure. */
+function debutDuJourUtc(d: Date): Date {
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+}
+
 /** Étape 3 : une pièce, contrôlée (FAC-6), chiffrée au repos, l'ancienne archivée. */
 export async function deposerPiece(
   d: DossierVue,
@@ -367,7 +372,10 @@ export async function deposerPiece(
         trainerId: d.id,
         type: p.type,
         hashSha256: controle.sha256,
-        dateEmission: p.dateEmission,
+        // V1-A-6 — le CV transmis dans le dossier est le CV ACTUEL de la personne : il est
+        // daté de sa transmission. Sans date, la règle du CV de moins de 24 mois (W-4,
+        // contresignature, activation) le tenait pour non daté, donc jamais probant.
+        dateEmission: p.dateEmission ?? (p.type === "cv" ? debutDuJourUtc(maintenant) : null),
         dateExpiration:
           p.type === "attestation_vigilance_urssaf" && p.dateEmission
             ? finValiditeVigilance(p.dateEmission)

@@ -372,6 +372,11 @@ const INVENTAIRE: Record<string, Ligne> = {
     "demanderChangementAdresseAction",
     fd({ adresse: "1 rue de la Paix, 75002 Paris" }),
   ),
+  [`${A.dossier}#transmettreMonNumeroAction`]: formateur(
+    A.dossier,
+    "transmettreMonNumeroAction",
+    fd({ nda: "84691234569" }),
+  ),
 
   // ── Ma rémunération : signaler un désaccord sur une facture d'honoraires ──
   [`${A.desaccord}#signalerDesaccordFormAction`]: formateur(
