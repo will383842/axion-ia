@@ -1165,6 +1165,21 @@ export async function bootRepeatableJobs(): Promise<void> {
     { repeat: { pattern: "0 3 * * *" }, jobId: "retention-purge-cron" },
   );
 
+  // 2026-10-15 — pièces jointes du formulaire de contact : envois abandonnés
+  // (repris à 1 h) et objets temporaires (supprimés à 24 h). Toutes les heures,
+  // à la 23e minute, sur la même file (aiguillage par nom de tâche dans
+  // `retention-purge-worker.ts`).
+  await retentionPurgeQueue.removeRepeatable(
+    "pieces-jointes-contact",
+    { pattern: "23 * * * *" },
+    "pieces-jointes-contact-cron",
+  );
+  await retentionPurgeQueue.add(
+    "pieces-jointes-contact",
+    { tick: new Date().toISOString() },
+    { repeat: { pattern: "23 * * * *" }, jobId: "pieces-jointes-contact-cron" },
+  );
+
   // ── Sondage Calendly (2026-08-09) — VIVANT, c'est le canal de RDV réel ─────
   //
   // Trois passes à trois cadences, pour tenir le quota de 60 requêtes/minute de
