@@ -119,7 +119,8 @@ describe("discoverNewCalendlyEvents", () => {
     // pas « (non communiqué) » : c'est tout l'intérêt de l'enchaînement.
     expect(notifyMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        category: "CALENDLY_INVITEE_CREATED",
+        // Décision Will 15/10 : un premier contact est un CLIENT.
+        category: "CLIENT_CALL_BOOKED",
         payload: expect.objectContaining({ inviteeEmail: "marie@example.test" }),
       }),
     );

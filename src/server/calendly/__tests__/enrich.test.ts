@@ -170,7 +170,8 @@ describe("enrichCalendlyEvent", () => {
       category: string;
       payload: { oldStart: string; newStart: string; inviteeEmail: string };
     };
-    expect(call.category).toBe("CALENDLY_INVITEE_RESCHEDULED");
+    // Décision Will 15/10 : un premier contact est un CLIENT → salon « Clients ».
+    expect(call.category).toBe("CLIENT_CALL_RESCHEDULED");
     expect(call.payload.oldStart).toBe("2026-08-01T08:00:00.000Z");
     expect(call.payload.newStart).toBe("2026-08-03T09:00:00.000Z");
     expect(call.payload.inviteeEmail).toBe("jean@example.com");
@@ -205,9 +206,70 @@ describe("enrichCalendlyEvent", () => {
     expect(data["status"]).toBe("canceled");
 
     const call = notifyMock.mock.calls[0]?.[0] as { category: string; dedupKey: string };
-    expect(call.category).toBe("CALENDLY_INVITEE_CANCELED");
+    expect(call.category).toBe("CLIENT_CALL_CANCELED");
     // Relancer « Enrichir » à la main ne doit pas re-sonner l'alerte.
     expect(call.dedupKey).toBe("cal-cancel-evt_1");
+  });
+
+  // Décision Will 15/10 : le MOTIF ÉCRIT par la personne, lu dans l'API v2,
+  // remplace « Annulation constatée côté Calendly ».
+  it("🔴 l'annulation porte le motif écrit, qui a annulé, et le téléphone", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({
+        status: "scheduled",
+        inviteeEmail: "jean@example.com",
+        inviteePhone: "+33755512345",
+      }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(
+      apiData({
+        calendlyStatus: "canceled",
+        cancellation: {
+          reason: "Un imprévu, je reprends un créneau la semaine prochaine.",
+          canceledBy: "Jean Dupont",
+          cancelerType: "invitee",
+        },
+      }),
+    );
+    await enrichCalendlyEvent("evt_1");
+    const call = notifyMock.mock.calls[0]?.[0] as {
+      category: string;
+      payload: Record<string, unknown>;
+    };
+    expect(call.payload).toMatchObject({
+      reason: "Un imprévu, je reprends un créneau la semaine prochaine.",
+      canceledBy: "Jean Dupont",
+      cancelerType: "invitee",
+      inviteePhone: "+33755512345",
+    });
+    expect(JSON.stringify(call.payload)).not.toContain("Annulation constatée");
+  });
+
+  it("annulation sans motif écrit : aucun motif inventé", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "scheduled", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+    await enrichCalendlyEvent("evt_1");
+    const call = notifyMock.mock.calls[0]?.[0] as { payload: Record<string, unknown> };
+    expect(call.payload["reason"]).toBeUndefined();
+  });
+
+  it("🔴 client ≠ apporteur : l'annulation d'un échange apporteur reste au salon 📅", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({
+        status: "scheduled",
+        inviteeEmail: "jean@example.com",
+        eventTypeName: "Échange apporteur d'affaires",
+        eventTypeSlug: "echange-apporteur",
+      }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(
+      apiData({ calendlyStatus: "canceled", eventTypeName: "Échange apporteur d'affaires" }),
+    );
+    await enrichCalendlyEvent("evt_1");
+    const call = notifyMock.mock.calls[0]?.[0] as { category: string };
+    expect(call.category).toBe("CALENDLY_INVITEE_CANCELED");
   });
 
   it("ne ré-alerte pas une annulation déjà enregistrée", async () => {

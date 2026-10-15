@@ -33,6 +33,7 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { notify } from "@/server/notifications";
+import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { CALENDLY_API_BASE, isCalendlyApiConfigured } from "./api";
 import { enrichCalendlyEvent } from "./enrich";
 import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal";
@@ -471,7 +472,9 @@ export async function discoverNewCalendlyEvents(
     // évènement commercial, quel que soit le chemin emprunté par le client.
     try {
       await notify({
-        category: "CALENDLY_INVITEE_CREATED",
+        // Décision Will 15/10 : un client part au salon « Clients » (tout le
+        // détail), un candidat apporteur ou un formateur reste au salon 📅.
+        category: categorieAlerteCalendly("reservation", { typeRendezVous, eventTypeName: name }),
         payload: {
           eventUri: row.id,
           inviteeEmail: inviteeEmail ?? "(non communiqué)",

@@ -149,6 +149,19 @@ describe("l'événement CRM d'une réservation prise sur /appel", () => {
     ).toBe("+33 6 12 34 56 78");
   });
 
+  // Décision Will 15/10 : `notifyPhone` était lu et jamais transmis à l'alerte.
+  it("🔴 l'alerte du salon « Clients » porte AUSSI le téléphone et le lieu", async () => {
+    const { POST } = await import("../route");
+    await POST(requete(RESERVATION));
+    const alerte = notifyMock.mock.calls[0]?.[0] as {
+      category: string;
+      payload: Record<string, unknown>;
+    };
+    expect(alerte.category).toBe("CLIENT_CALL_BOOKED");
+    expect(alerte.payload["inviteePhone"]).toBe("+33 6 12 34 56 78");
+    expect(alerte.payload["lieu"]).toBe("+33 6 12 34 56 78");
+  });
+
   it("🔴 porte le format, et DANS `payload`", async () => {
     const { POST } = await import("../route");
     await POST(requete(RESERVATION));
