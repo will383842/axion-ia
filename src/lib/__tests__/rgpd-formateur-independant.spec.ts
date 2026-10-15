@@ -360,7 +360,12 @@ describe("effacerFormateurIndependant — art. 17, pseudonymisation", () => {
     const r = await effacer();
     expect(r.formateur).toBe("conserve_obligation_legale");
     const data = (m.trainerUpdate.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
-    expect(data).toEqual({ telephone: null, accesVersion: { increment: 1 } });
+    expect(data).toEqual({
+      telephone: null,
+      emailRemplace: null,
+      emailRemplaceAt: null,
+      accesVersion: { increment: 1 },
+    });
     expect(pieces.find((p) => p.id === "p-diplome")!.archiveAt).toBeNull();
     expect(pieces.find((p) => p.id === "p-cv")!.archiveAt).toBeInstanceOf(Date);
     expect(r).toMatchObject({ piecesMasquees: 2, piecesLegalesIntactes: 4 });

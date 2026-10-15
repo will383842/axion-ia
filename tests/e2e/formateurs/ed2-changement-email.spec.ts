@@ -6,8 +6,10 @@
 // Chaque lien est d'abord relu AVANT le changement : il marchait (témoin).
 //
 // Deux défauts consignés (`test.fixme`, cf. le rapport de la PR) :
-//   · V1-D-1 — le lien de réponse à une proposition de mission survit ;
-//   · V1-D-2 — le lien du dossier « reçu » (lecture seule) survit.
+//   · V1-D-1 — le lien de réponse à une proposition de mission survivait :
+//     corrigé (lot 2 de la vérification 1), le lien porte l'empreinte de l'adresse ;
+//   · V1-D-2 — le lien du dossier « reçu » (lecture seule) survit (erreur du test,
+//     cf. la synthèse : le jeton éprouvé n'est jamais émis par le produit).
 // ÉCART consigné : une session ouverte AVANT le lot C4 (sans empreinte
 // d'adresse) n'est pas jugée sur l'adresse — choix écrit dans
 // `src/server/formateur/guard.ts`, qui s'éteint avec la durée de vie d'une
@@ -26,6 +28,7 @@ interface Liens {
   dossierA: boolean;
   dossierB: boolean;
   mission: boolean;
+  missionSansEmpreinte: boolean;
   connexion?: boolean;
 }
 interface Observations {
@@ -66,6 +69,7 @@ test.describe("@formateurs E-D2 — changement d'e-mail d'un indépendant", () =
       dossierA: true,
       dossierB: true,
       mission: true,
+      missionSansEmpreinte: true,
     });
     expect(o.changementA.error).toBeUndefined();
     expect(o.changementB.error).toBeUndefined();
@@ -97,13 +101,14 @@ test.describe("@formateurs E-D2 — changement d'e-mail d'un indépendant", () =
     expect(o.apres.sessionSansEmpreinte).toBe(true);
   });
 
-  // V1-D-1 — gravité moyenne. Le lien de réponse à une proposition de mission,
-  // envoyé à l'ancienne adresse, désigne encore la mission après le changement.
-  // Probable : src/server/qualiopi/trainers/mission-formateur.ts (signature du
-  // lien ~l. 413, relecture ~l. 1133) — le lien n'est lié qu'à la version de
-  // session, pas à l'adresse.
-  test.fixme("V1-D-1 — le lien de réponse à une mission est mort", () => {
+  // V1-D-1 — corrigé (lot 2). Le lien de réponse à une proposition de mission,
+  // envoyé à l'ancienne adresse, ne désigne plus la mission après le changement :
+  // le jeton porte l'empreinte de l'adresse (`signerJetonMission`), relue par
+  // `lireMissionParJeton`. Un lien émis AVANT la correction (sans empreinte) tombe
+  // aussi, dès qu'un changement d'adresse est enregistré sur la fiche.
+  test("V1-D-1 — le lien de réponse à une mission est mort", () => {
     expect(o.apres.mission).toBe(false);
+    expect(o.apres.missionSansEmpreinte).toBe(false);
   });
 
   // V1-D-2 — gravité faible. Le lien du dossier déjà envoyé (« à vérifier »)
