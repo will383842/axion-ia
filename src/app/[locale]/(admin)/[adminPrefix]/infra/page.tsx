@@ -267,6 +267,11 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   routing += process.env["TELEGRAM_CHAT_ID_INCIDENTS"]
     ? " · Incidents dédié"
     : " · Incidents → Système (ou canal par défaut)";
+  // Salon 🔥 Clients (décision Will 15/10) : sans lui, chaque demande de client
+  // retombe dans sa route d'avant, avec le message allégé. Pas une panne.
+  routing += process.env["TELEGRAM_CHAT_ID_CLIENTS"]
+    ? " · Clients dédié (détail complet)"
+    : " · Clients → routes d'avant (message allégé, TELEGRAM_CHAT_ID_CLIENTS absent)";
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
