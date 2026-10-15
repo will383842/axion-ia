@@ -706,7 +706,9 @@ model SubmissionInboundReply {
 // `contacts/messages/[id]/pieces-jointes/[pieceId]`. Aucune URL publique.
 //
 // Rétention : celle de la demande (cascade). Effacement art. 17 :
-// `effacerPiecesJointesContactPour` (objet R2 ET ligne).
+// `erasePiecesJointesContactForEmail` (objet R2 ET ligne, `rgpd-erase.ts`) ;
+// export art. 15 : copie sur demande (`EXCLUSIONS_EXPORT_DOSSIER`).
+/// rgpd: dossier-client
 model SubmissionAttachment {
   id           String   @id @default(uuid()) @db.Uuid
   submissionId String   @map("submission_id") @db.Uuid

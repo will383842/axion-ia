@@ -24,7 +24,6 @@ import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
 import { deleteFromR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   CHAMP_PIECES_JOINTES,
   MESSAGES_PIECES_JOINTES,
@@ -234,27 +233,4 @@ export async function supprimerObjetsPiecesJointes(cles: ReadonlyArray<string>):
       Sentry.captureException(err, { tags: { step: "pieces-jointes", motif: "suppression" } });
     }
   }
-}
-
-/**
- * Effacement art. 17 : les pièces jointes des demandes de cette adresse —
- * objets R2 ET lignes. À appeler AVANT `eraseSubmissionsForEmail`, qui remet
- * `contactEmailHash` à NULL et rendrait les demandes introuvables.
- */
-export async function effacerPiecesJointesContactPour(
-  email: string,
-): Promise<{ readonly supprimees: number }> {
-  const empreinte = hashEmailForLookup(email);
-  const lignes = await prisma.submissionAttachment.findMany({
-    where: {
-      submission: {
-        OR: [...(empreinte ? [{ contactEmailHash: empreinte }] : []), { contactEmail: email }],
-      },
-    },
-    select: { id: true, cleStockage: true },
-  });
-  if (lignes.length === 0) return { supprimees: 0 };
-  await prisma.submissionAttachment.deleteMany({ where: { id: { in: lignes.map((l) => l.id) } } });
-  await supprimerObjetsPiecesJointes(lignes.map((l) => l.cleStockage));
-  return { supprimees: lignes.length };
 }
