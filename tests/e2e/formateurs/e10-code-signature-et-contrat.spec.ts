@@ -97,14 +97,20 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
       "formateur-code-signature",
       "formateur-dossier-recu",
     ]);
-    const f10 = await prisma.emailLog.findFirstOrThrow({
-      where: { recipient: email, template: "formateur-dossier-recu" },
-      select: {
-        status: true,
-        entityId: true,
-        contenu: { select: { subject: true, attachmentNames: true } },
-      },
-    });
+    const lireF10 = () =>
+      prisma.emailLog.findFirstOrThrow({
+        where: { recipient: email, template: "formateur-dossier-recu" },
+        select: {
+          status: true,
+          entityId: true,
+          contenu: { select: { subject: true, attachmentNames: true } },
+        },
+      });
+    // La copie est écrite par le worker JUSTE APRÈS la clôture « envoyé » : on l'attend.
+    await expect
+      .poll(async () => (await lireF10()).contenu !== null, { timeout: 10_000 })
+      .toBe(true);
+    const f10 = await lireF10();
     expect(f10.status).toBe("sent");
     expect(f10.entityId).toBe(fiche.id);
     expect(f10.contenu?.attachmentNames.length).toBe(1);
