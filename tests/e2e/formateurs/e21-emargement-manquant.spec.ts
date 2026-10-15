@@ -13,8 +13,8 @@
 // `papier_scanne`, photo d'une feuille papier, depuis l'espace : à trancher avec le même
 // report.)
 //
-// DÉFAUT V1-C-11 (test.fixme) : un même envoi peut laisser DEUX lignes au journal des
-// envois. `enqueueEmail` pose le job en file AVANT d'écrire la ligne « pending »
+// DÉFAUT V1-C-11 (corrigé au lot 4, test levé) : un même envoi pouvait laisser DEUX
+// lignes au journal des envois. `enqueueEmail` posait le job AVANT la ligne « pending »
 // (server/queue/queues.ts ~l. 1048 puis ~l. 1087) ; la garde de `journaliserEnAttente`
 // (server/email/email-log.ts ~l. 69, lire puis créer) n'est pas atomique. Un worker qui
 // termine l'envoi entre les deux CRÉE sa ligne « sent » (`cloturerJournal`, ~l. 194-200),
@@ -281,9 +281,13 @@ test.describe("@formateurs E21 — émargement manquant, F34, F35, alerte", () =
     });
   });
 
-  // DÉFAUT V1-C-11 — un envoi, deux lignes au journal, quand le worker devance l'enfilage.
-  // Course : le test peut passer par chance ; il échoue dès que le worker est plus rapide.
-  test.fixme("V1-C-11 : chaque F34 parti laisse UNE ligne au journal des envois", async () => {
+  // V1-C-11 — corrigé (lot 4) : `enqueueEmail` écrit la ligne « en attente » AVANT la
+  // mise en file, sous l'identifiant que le job portera ; le worker la clôt toujours.
+  // ORACLE (corrigé, cf. synthèse) : une ligne et une seule pour cet envoi, quel que soit
+  // son statut — le worker du banc est bridé à 40 envois par heure, l'envoi effectif dans
+  // la minute n'est pas garanti. On observe la ligne une minute (ou jusqu'à « envoyé ») :
+  // elle ne doit JAMAIS se dédoubler.
+  test("V1-C-11 : chaque F34 parti laisse UNE ligne au journal des envois", async () => {
     await avecVerrouArgent(async () => {
       const f = await semerFormateur({ prenom: "Jules" });
       const JOUR = "2038-05-03";
@@ -308,18 +312,19 @@ test.describe("@formateurs E21 — émargement manquant, F34, F35, alerte", () =
         { etape: "demandes-contresignature", maintenant: aParis(JOUR, "17:25").toISOString() },
       ]);
       await attendreEnvois(f.email, "formateur-contresignature", 1);
-      await expect
-        .poll(
-          async () =>
-            (
-              await prisma.emailLog.findMany({
-                where: { recipient: f.email, template: "formateur-contresignature" },
-                select: { status: true },
-              })
-            ).map((l) => l.status),
-          { timeout: 60_000 },
-        )
-        .toEqual(["sent"]);
+      const lignes = () =>
+        prisma.emailLog.findMany({
+          where: { recipient: f.email, template: "formateur-contresignature" },
+          select: { status: true },
+        });
+      const limite = Date.now() + 60_000;
+      for (;;) {
+        const l = await lignes();
+        expect(l, "un envoi, une ligne au journal").toHaveLength(1);
+        expect(["pending", "sent"]).toContain(l[0]!.status);
+        if (l[0]!.status === "sent" || Date.now() > limite) break;
+        await new Promise((r) => setTimeout(r, 1_000));
+      }
     });
   });
 });

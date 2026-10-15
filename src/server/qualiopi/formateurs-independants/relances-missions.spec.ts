@@ -10,6 +10,9 @@ const pz = vi.hoisted(() => ({
     documentSignature: { count: vi.fn() },
     documentSignatureToken: { findFirst: vi.fn() },
     trainer: { findUnique: vi.fn() },
+    missionFormateur: { findMany: vi.fn() },
+    emailLog: { findMany: vi.fn() },
+    emailOpposition: { findMany: vi.fn() },
   },
   creerToken: vi.fn(),
 }));
@@ -38,12 +41,17 @@ vi.mock("./envois", () => ({
 vi.mock("@/server/qualiopi/documents/signature/emettre-lien-signature", () => ({
   emettreLienSignatureSystem: h.lien,
 }));
+vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
+  STATUTS_ACCORD_DONNE: ["acceptee", "accord_hors_outil"],
+}));
 
 import { decisionCampagne } from "@/lib/relances/campagne";
 import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import { REGISTRE_CAMPAGNES } from "@/server/relances/registre-campagnes";
 import {
   CAMPAGNE_CONTRAT,
+  CAMPAGNE_LETTRE_1RE,
+  CAMPAGNE_LETTRE_J3,
   REGLE_CONTRAT,
   REGLE_LETTRE_1RE,
   REGLE_LETTRE_J3,
@@ -396,5 +404,88 @@ describe("F27 « J-3 » : une réponse après la lettre F26 l'arrête", () => {
     const { bilan, envoyer } = await passer(20);
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(bilan.envoyes).toBe(1);
+  });
+});
+
+// V1-B-2 — après un changement de dates, la lettre RECTIFIÉE part par F29 (jamais par
+// F26). Sans la compter comme envoi de départ, la nouvelle lettre n'avait plus aucune
+// relance de signature.
+describe("F27 sur une lettre rectifiée (F29) — V1-B-2", () => {
+  const F26 = "formateur-lettre-a-signer";
+  const F29 = "formateur-lettre-rectifiee";
+  // L'ancienne lettre L1 a reçu F26 ; la rectifiée L2 a reçu F29 il y a 2 jours.
+  const journal = (f29Avant: number) => [
+    {
+      id: "log-f26",
+      entityId: "t1",
+      template: F26,
+      jobId: `${F26}-L1`,
+      status: "sent",
+      createdAt: avant(10),
+      bounceType: null,
+    },
+    {
+      id: "log-f29",
+      entityId: "t1",
+      template: F29,
+      jobId: `${F29}-L2`,
+      status: "sent",
+      createdAt: avant(f29Avant),
+      bounceType: null,
+    },
+  ];
+  beforeEach(() => {
+    pz.prisma.missionFormateur.findMany.mockReset().mockResolvedValue([
+      {
+        lettreMissionId: "L2",
+        trainerId: "t1",
+        trainer: { email: "m@ex.test", prenom: "Marie", finCollaborationAt: null },
+        session: { titreSession: "IA en entreprise", dateDebut: apres(30) },
+        lettreMission: { signatures: [] },
+      },
+    ]);
+    pz.prisma.emailLog.findMany.mockReset().mockResolvedValue(journal(2));
+    pz.prisma.emailOpposition.findMany.mockReset().mockResolvedValue([]);
+  });
+
+  it("le journal lu porte F29, et la lettre rectifiée a son envoi de départ", async () => {
+    const [f] = await CAMPAGNE_LETTRE_1RE.lireFaits(MAINTENANT);
+    expect(pz.prisma.emailLog.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          template: { in: expect.arrayContaining([F26, F29]) },
+        }),
+      }),
+    );
+    expect(f).toMatchObject({ origineId: "L2", depart: avant(2) });
+    expect(
+      decisionCampagne({ etat: f!.etat, maintenant: MAINTENANT, regle: REGLE_LETTRE_1RE }),
+    ).toMatchObject({ envoyer: true, etape: "1re" });
+    // J-3 aussi : son envoi de départ est la lettre rectifiée.
+    const [j3] = await CAMPAGNE_LETTRE_J3.lireFaits(MAINTENANT);
+    expect(j3).toMatchObject({ origineId: "L2", depart: avant(2) });
+  });
+
+  it("une réponse du formateur après F29 arrête ses relances", async () => {
+    const envoyer = vi.fn().mockResolvedValue("envoye");
+    const premiere = REGISTRE_CAMPAGNES.find((c) => c.id === "lettre-1re")!;
+    const bilan = await passerCampagnes(MAINTENANT, {
+      registre: [premiere],
+      lireInterrupteurs: async () =>
+        Object.fromEntries(premiere.interrupteurs.map((c) => [c, true])) as never,
+      relanceesAujourdhui: async () => new Set<string>(),
+      dejaTente: async () => false,
+      reponsesFormateurs: async () => new Map([["t1", [avant(1)]]]),
+      envoyer,
+    });
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(bilan.ecartes["reponse-humaine"]).toBe(1);
+  });
+
+  it("le F29 d'une AUTRE lettre ne compte pas", async () => {
+    pz.prisma.emailLog.findMany.mockResolvedValue(
+      journal(2).map((l) => (l.template === F29 ? { ...l, jobId: `${F29}-L9` } : l)),
+    );
+    expect(await CAMPAGNE_LETTRE_1RE.lireFaits(MAINTENANT)).toEqual([]);
   });
 });

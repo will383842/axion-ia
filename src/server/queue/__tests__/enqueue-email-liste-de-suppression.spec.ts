@@ -166,7 +166,8 @@ describe("enqueueEmail — corbeille de validation (lot 2)", () => {
     expect(doublures.add).toHaveBeenCalledWith(
       "devis-envoi",
       expect.objectContaining({ sujet: "Votre devis, version corrigée" }),
-      undefined,
+      // V1-C-11 : l'identifiant du job est fixé avant la mise en file.
+      { jobId: expect.stringMatching(/^email-/) },
     );
   });
 });
