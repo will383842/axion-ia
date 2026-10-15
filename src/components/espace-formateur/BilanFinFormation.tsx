@@ -4,8 +4,9 @@
  * Trois gestes, dans l'ordre, sur la page EXISTANTE de la session (aucune route
  * nouvelle) : évaluer chaque stagiaire présent, donner son avis, « Terminer ».
  *
- * Composant SERVEUR, formulaires HTML simples : aucun JavaScript client (la coquille
- * et ses pages n'en embarquent pas), gros boutons, utilisable au téléphone. Le bloc
+ * Composant SERVEUR, formulaires HTML simples, gros boutons, utilisable au téléphone.
+ * Seul l'avis est un composant client (`AvisBilanForm`) : un refus du serveur doit y
+ * garder le texte écrit (V2-N-3). Le bloc
  * n'est rendu que si la page lui passe une vue : interrupteur allumé, formateur
  * indépendant ayant animé la session, dernière journée passée.
  *
@@ -14,10 +15,12 @@
  */
 
 import {
-  donnerAvisFormAction,
   evaluerStagiaireFormAction,
   terminerBilanFormAction,
 } from "@/server/actions/formateur/bilan-fin-formation.actions";
+
+import { AvisBilanForm } from "./AvisBilanForm";
+import { MESSAGES_BILAN } from "./bilan-fin-formation-messages";
 
 export interface VueBilanFinFormation {
   readonly objectifs: readonly string[];
@@ -57,22 +60,6 @@ const NIVEAU: Record<string, string> = {
   acquis: "Acquis",
 };
 
-/** Ce que dit l'écran après un geste. Court, sans jargon. */
-const MESSAGES: Record<string, { texte: string; ok: boolean }> = {
-  ok: { texte: "C'est enregistré.", ok: true },
-  deja_evalue: { texte: "Ce stagiaire est déjà évalué.", ok: true },
-  deja_donne: { texte: "Votre avis est déjà enregistré.", ok: true },
-  notes_invalides: { texte: "Choisissez une réponse pour chaque objectif.", ok: false },
-  avis_invalide: { texte: "Écrivez quelques lignes (10 caractères au moins).", ok: false },
-  incomplet: { texte: "Il reste quelque chose à faire avant de terminer.", ok: false },
-  dossier_clos: {
-    texte: "Le dossier de cette session est clos : prévenez l'organisme pour cette évaluation.",
-    ok: false,
-  },
-  stagiaire_inconnu: { texte: "Ce stagiaire n'est pas à évaluer ici.", ok: false },
-  termine: { texte: "Votre bilan est déjà terminé.", ok: true },
-};
-
 const dateFmt = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
   month: "long",
@@ -109,7 +96,7 @@ export function BilanFinFormation({
   vue,
   issue,
 }: BilanFinFormationProps): React.ReactElement {
-  const message = issue !== null ? MESSAGES[issue] : undefined;
+  const message = issue !== null ? MESSAGES_BILAN[issue] : undefined;
   const evalues = vue.stagiaires.filter((s) => s.finale !== null).length;
 
   return (
@@ -220,42 +207,7 @@ export function BilanFinFormation({
                 ) : null}
               </div>
             ) : (
-              <form action={donnerAvisFormAction} className="space-y-3">
-                <input type="hidden" name="sessionId" value={sessionId} />
-                <fieldset className="space-y-1.5">
-                  <legend className="text-mocha text-sm">Votre note (facultative)</legend>
-                  <div className="grid grid-cols-6 gap-2">
-                    {["", "1", "2", "3", "4", "5"].map((v) => (
-                      <label key={v || "aucune"} className="cursor-pointer">
-                        <input
-                          type="radio"
-                          name="note"
-                          value={v}
-                          defaultChecked={v === ""}
-                          className="peer sr-only"
-                        />
-                        <span className={CHOIX}>{v === "" ? "—" : v}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-                <label className="block space-y-1.5">
-                  <span className="text-mocha text-sm">
-                    Quelques lignes : déroulé, incidents, absences, suggestions.
-                  </span>
-                  <textarea
-                    name="commentaire"
-                    required
-                    minLength={10}
-                    maxLength={2000}
-                    rows={4}
-                    className="border-border text-mocha w-full rounded-lg border p-3 text-base"
-                  />
-                </label>
-                <button type="submit" className={BOUTON}>
-                  Enregistrer mon avis
-                </button>
-              </form>
+              <AvisBilanForm sessionId={sessionId} bouton={BOUTON} choix={CHOIX} />
             )}
           </div>
 

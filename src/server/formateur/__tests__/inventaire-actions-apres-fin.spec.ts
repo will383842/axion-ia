@@ -213,14 +213,17 @@ const formateur = (
   arg: unknown | ((token: string) => unknown),
   porte: Porte = "session",
   statutMission?: string,
+  /** Action à état (`useActionState`) : reçoit l'état précédent avant le formulaire. */
+  aEtat = false,
 ): Ligne => ({
   classe: "formateur",
   porte,
   ...(statutMission !== undefined ? { statutMission } : {}),
-  appel: async (token) =>
-    (await action(module, nom)())(
-      typeof arg === "function" ? (arg as (t: string) => unknown)(token) : arg,
-    ),
+  appel: async (token) => {
+    const a = typeof arg === "function" ? (arg as (t: string) => unknown)(token) : arg;
+    const f = await action(module, nom)();
+    return aEtat ? f(null, a) : f(a);
+  },
 });
 
 /** Une route GET : 401 = refusée. */
@@ -388,10 +391,14 @@ const INVENTAIRE: Record<string, Ligne> = {
     "evaluerStagiaireFormAction",
     fd({ sessionId: SESSION, enrollmentId: DOC, "note-0": "3" }),
   ),
-  [`${A.bilan}#donnerAvisFormAction`]: formateur(
+  // V2-N-3 — action à état (`useActionState`) : l'état précédent d'abord.
+  [`${A.bilan}#donnerAvisAction`]: formateur(
     A.bilan,
-    "donnerAvisFormAction",
+    "donnerAvisAction",
     fd({ sessionId: SESSION, commentaire: "Groupe motivé, rien à signaler." }),
+    "session",
+    undefined,
+    true,
   ),
   [`${A.bilan}#terminerBilanFormAction`]: formateur(
     A.bilan,
