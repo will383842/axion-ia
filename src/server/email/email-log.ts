@@ -13,7 +13,8 @@
  * qui est rigoureusement indistinguable de « aucun e-mail à envoyer ». Le
  * tableau de bord ne pouvait pas voir la panne qu'il existe pour montrer.
  *
- * La ligne est donc posée à L'ENFILAGE, et le worker la CLÔT. Une ligne restée
+ * La ligne est donc posée à L'ENFILAGE — avant la mise en file, pour que le worker la
+ * trouve toujours (V1-C-11) —, et le worker la CLÔT. Une ligne restée
  * `pending` au-delà de quelques minutes est le signal d'une chaîne rompue —
  * c'est ce que `health.ts` surveille.
  *
@@ -54,7 +55,7 @@ export interface EntreeJournal {
 }
 
 /**
- * Pose la ligne `pending` au moment de l'enfilage.
+ * Pose la ligne `pending` au moment de l'enfilage — AVANT la mise en file (V1-C-11).
  *
  * ⚠️ Garde anti-doublon sur `jobId`. `enqueueEmail` passe un `jobId` stable
  * pour toute la chaîne Qualiopi (`qualiopi-convocation-{id}-{date}`), et BullMQ
@@ -62,36 +63,54 @@ export interface EntreeJournal {
  * d'idempotence. Sans cette garde, chaque passage de cron déposerait une ligne
  * `pending` fantôme pour un job qui n'a jamais été réenfilé, et la surveillance
  * de `health.ts` crierait sur son propre bruit.
+ *
+ * 🔴 V1-C-11 — la garde « lire puis créer » n'était pas atomique : deux enfilages
+ * concurrents du même jobId (deux passages qui se chevauchent) posaient chacun leur
+ * ligne. La lecture et l'écriture se font désormais sous un verrou transactionnel
+ * propre à ce jobId — sans toucher au schéma (`jobId` n'est pas unique en base, et ne
+ * peut pas l'être : une ligne par tentative). La course avec le worker, elle, est
+ * fermée par l'ordre : la ligne est écrite avant que le job n'existe.
+ *
+ * @returns `true` si CET appel a posé la ligne ; `false` si elle existait déjà, au
+ *          build, ou si la base a refusé (fail-soft). `enqueueEmail` s'en sert pour ne
+ *          refermer, sur une file injoignable, que la ligne qu'il a lui-même posée.
  */
-export async function journaliserEnAttente(entree: EntreeJournal): Promise<void> {
-  if (estStub()) return;
+export async function journaliserEnAttente(entree: EntreeJournal): Promise<boolean> {
+  if (estStub()) return false;
+  const donnees = {
+    template: entree.template,
+    recipient: entree.recipient,
+    locale: entree.locale,
+    marketing: entree.marketing,
+    attempts: 0,
+    status: EmailLogStatus.pending,
+    ...(entree.entityType ? { entityType: entree.entityType } : {}),
+    ...(entree.entityId ? { entityId: entree.entityId } : {}),
+    ...(entree.jobId ? { jobId: entree.jobId } : {}),
+    ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
+  };
   try {
-    if (entree.jobId !== undefined) {
-      const existante = await prisma.emailLog.findFirst({
-        where: { jobId: entree.jobId },
+    const jobId = entree.jobId;
+    if (jobId === undefined) {
+      await prisma.emailLog.create({ data: donnees });
+      return true;
+    }
+    return await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`email_log:${jobId}`}))`;
+      const existante = await tx.emailLog.findFirst({
+        where: { jobId },
         select: { id: true },
       });
-      if (existante) return;
-    }
-    await prisma.emailLog.create({
-      data: {
-        template: entree.template,
-        recipient: entree.recipient,
-        locale: entree.locale,
-        marketing: entree.marketing,
-        attempts: 0,
-        status: EmailLogStatus.pending,
-        ...(entree.entityType ? { entityType: entree.entityType } : {}),
-        ...(entree.entityId ? { entityId: entree.entityId } : {}),
-        ...(entree.jobId ? { jobId: entree.jobId } : {}),
-        ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
-      },
+      if (existante) return false;
+      await tx.emailLog.create({ data: donnees });
+      return true;
     });
   } catch (e) {
     console.error(
       `[email-log] écriture « en attente » impossible (${entree.template} → ${entree.recipient}) :`,
       e instanceof Error ? e.message : String(e),
     );
+    return false;
   }
 }
 
@@ -171,7 +190,9 @@ export interface ClotureJournal extends EntreeJournal {
  * justifient, et ils sont tous normaux :
  *   - une nouvelle tentative (la ligne de la tentative précédente est déjà
  *     close) → on conserve ainsi une ligne par tentative, comme avant ;
- *   - la course entre l'enfilage et un worker très rapide ;
+ *   - une ligne « en attente » que la base a refusé d'écrire à l'enfilage (fail-soft).
+ *     La course entre l'enfilage et un worker très rapide n'en est plus un : la ligne
+ *     est écrite AVANT la mise en file (V1-C-11) ;
  *   - les jobs enfilés AVANT ce correctif, qui n'ont pas de ligne `pending`.
  */
 export async function cloturerJournal(cloture: ClotureJournal): Promise<void> {

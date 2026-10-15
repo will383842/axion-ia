@@ -22,16 +22,25 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const findFirstMock = vi.fn();
 const createMock = vi.fn();
 const updateManyMock = vi.fn();
+const verrouMock = vi.fn();
+const transactionMock = vi.fn();
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
     emailLog: {
       findFirst: (...a: unknown[]) => findFirstMock(...a),
       create: (...a: unknown[]) => createMock(...a),
       updateMany: (...a: unknown[]) => updateManyMock(...a),
     },
-  },
-}));
+    $executeRaw: (...a: unknown[]) => verrouMock(...a),
+    // La transaction passe le même client : l'ordre des appels se lit sur les doublures.
+    $transaction: (f: (tx: unknown) => unknown) => {
+      transactionMock();
+      return f(prisma);
+    },
+  };
+  return { prisma };
+});
 
 import {
   journaliserEnAttente,
@@ -53,6 +62,7 @@ beforeEach(() => {
   delete process.env["DATABASE_URL"];
   findFirstMock.mockResolvedValue(null);
   createMock.mockResolvedValue({ id: "log-1" });
+  verrouMock.mockResolvedValue(1);
   updateManyMock.mockResolvedValue({ count: 1 });
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -82,6 +92,30 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
     expect(createMock).not.toHaveBeenCalled();
   });
 
+  // V1-C-11 — la ligne est désormais posée AVANT la mise en file, et deux enfilages
+  // concurrents du même jobId (deux passages qui se chevauchent) ne doivent pas en poser
+  // deux : la lecture et l'écriture se font sous un verrou propre à ce jobId.
+  it("V1-C-11 : lit puis écrit sous un verrou transactionnel propre au jobId", async () => {
+    const ordre: string[] = [];
+    verrouMock.mockImplementation(async () => ordre.push("verrou"));
+    findFirstMock.mockImplementation(async () => (ordre.push("lecture"), null));
+    createMock.mockImplementation(async () => (ordre.push("ecriture"), { id: "log-1" }));
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(true);
+    expect(transactionMock).toHaveBeenCalledTimes(1);
+    expect(ordre).toEqual(["verrou", "lecture", "ecriture"]);
+    const [gabarit, ...valeurs] = verrouMock.mock.calls[0] as [TemplateStringsArray, ...unknown[]];
+    expect(gabarit.join("?")).toContain("pg_advisory_xact_lock");
+    expect(valeurs).toEqual(["email_log:job-1"]);
+  });
+
+  it("V1-C-11 : dit si la ligne a été posée (false si elle existait, ou base muette)", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-existant" });
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(false);
+    findFirstMock.mockResolvedValue(null);
+    createMock.mockRejectedValue(new Error("connexion perdue"));
+    expect(await journaliserEnAttente({ ...BASE, jobId: "job-1" })).toBe(false);
+  });
+
   it("ne cherche pas de doublon en l'absence de jobId", async () => {
     await journaliserEnAttente({ ...BASE });
     expect(findFirstMock).not.toHaveBeenCalled();
@@ -100,7 +134,7 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
   // convocation ne partirait pas parce que son journal n'a pas pu s'écrire.
   it("n'échoue pas quand la base refuse l'écriture", async () => {
     createMock.mockRejectedValue(new Error("connexion perdue"));
-    await expect(journaliserEnAttente({ ...BASE, jobId: "job-1" })).resolves.toBeUndefined();
+    await expect(journaliserEnAttente({ ...BASE, jobId: "job-1" })).resolves.toBe(false);
   });
 });
 
