@@ -26,6 +26,7 @@ const { tx, horsTx, etat } = vi.hoisted(() => {
         update: vi.fn(async (_a: unknown) => ({})),
       },
       activityLog: { create: vi.fn(async (_a: unknown) => ({})) },
+      $executeRaw: vi.fn(async (..._a: unknown[]) => 1),
     },
     horsTx: {
       setting: { findMany: vi.fn(), upsert: vi.fn() },
@@ -45,6 +46,7 @@ import {
   basculerFormateursEchangeOuvertAction,
   basculerFormateursGardeMissionAction,
   basculerFormateursInvitationAutoAction,
+  basculerFormateursNatureOffreAction,
   basculerFormateursPassagePaiementAction,
   basculerFormateursRelancesAutoAction,
   basculerFormateursTextesValidesAction,
@@ -274,5 +276,48 @@ describe("lot F (M23) — couper une clé mère coupe ses filles allumées", () 
     expect(tx.setting.update).toHaveBeenCalledWith(
       expect.objectContaining({ where: { key: "signature.copie_partielle" } }),
     );
+  });
+});
+
+describe("V2-S-2 — les écritures des trois registres sont sérialisées", () => {
+  /** Ordre des appels : le verrou doit précéder la relecture des lignes. */
+  function ordre(): string[] {
+    const appels: Array<[string, number]> = [
+      ...tx.$executeRaw.mock.invocationCallOrder.map((n): [string, number] => ["verrou", n]),
+      ...tx.setting.findMany.mock.invocationCallOrder.map((n): [string, number] => ["lecture", n]),
+    ];
+    return appels.sort((a, b) => a[1] - b[1]).map(([nom]) => nom);
+  }
+  function verrouPris(): boolean {
+    const [gabarit] = tx.$executeRaw.mock.calls[0] as unknown as [TemplateStringsArray];
+    return gabarit.join("?").includes("pg_advisory_xact_lock");
+  }
+
+  it("formateurs.* : verrou de transaction AVANT la relecture des préalables", async () => {
+    connecte("admin");
+    etat.lignes = [ligne("dossier_en_ligne", { actif: true })];
+    await basculerFormateursRelancesAutoAction(INITIAL, fd({ actif: "1" }));
+    expect(verrouPris()).toBe(true);
+    expect(ordre()).toEqual(["verrou", "lecture"]);
+  });
+
+  it("couper une mère prend le même verrou (la cascade relit sous verrou)", async () => {
+    connecte("admin");
+    etat.lignes = [
+      ligne("dossier_en_ligne", { actif: true }),
+      ligne("relances_auto", { actif: true }),
+    ];
+    await basculerFormateursDossierEnLigneAction(INITIAL, fd({ actif: "0" }));
+    expect(ordre()).toEqual(["verrou", "lecture"]);
+  });
+
+  it("signature.* et le registre d'entrée : le même verrou", async () => {
+    connecte("admin");
+    await basculerSignatureAlertesHorsJetonAction(INITIAL, fd({ actif: "0" }));
+    expect(ordre()).toEqual(["verrou", "lecture"]);
+    vi.clearAllMocks();
+    connecte("super_admin");
+    await basculerFormateursNatureOffreAction(INITIAL, fd({ actif: "0" }));
+    expect(ordre()).toEqual(["verrou", "lecture"]);
   });
 });

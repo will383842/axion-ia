@@ -12,6 +12,9 @@
  * 🔴 Interrupteur absent ou illisible = ÉTEINT : aucune page, aucune écriture (position sûre).
  * 🔴 L'IBAN n'est jamais relu en clair ni réaffiché ; il ne se saisit qu'AVANT l'envoi du
  *    dossier (un changement ultérieur passe par une demande validée).
+ * 🔴 V2-S-1 — l'IBAN d'un formateur ACTIF est celui des virements : le dossier de mise à
+ *    niveau ne le remplace jamais. Un IBAN différent saisi là devient une DEMANDE de
+ *    changement de compte (avis F43, 48 h, accord d'un administrateur, virement suspendu).
  * 🔴 Journal : identifiants seulement (UUID), jamais de nom, d'IBAN, de SIRET ni de code.
  *
  * Rendu à la demande : la base factice du build (`stub.invalid`) rend `null` partout.
@@ -71,6 +74,11 @@ export interface DossierVue {
   readonly statut: DossierFormateurStatut;
   /** L'IBAN est-il déjà envoyé (dossier déjà parti une fois) : plus saisissable ici. */
   readonly ibanFige: boolean;
+  /**
+   * V2-S-1 — fiche ACTIVE qui porte déjà l'IBAN des virements (mise à niveau) : un IBAN
+   * différent saisi ici ne remplace pas le compte, il ouvre une demande de changement.
+   */
+  readonly ibanParDemande?: boolean;
   readonly prenom: string;
   readonly nom: string;
   readonly email: string;
@@ -93,6 +101,7 @@ export interface DossierVue {
 const SELECTION = {
   id: true,
   statut: true,
+  actif: true,
   prenom: true,
   nom: true,
   email: true,
@@ -159,6 +168,7 @@ function vue(t: Ligne, etat: EtatPage): DossierVue {
     etat,
     statut: t.dossierStatut!,
     ibanFige: t.dossierEnvoyeAt !== null && t.ibanEmpreinte !== null,
+    ibanParDemande: t.dossierEnvoyeAt === null && t.actif && t.ibanEmpreinte !== null,
     prenom: t.prenom,
     nom: t.nom,
     email: t.email,
@@ -287,6 +297,29 @@ export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<R
         message: "Votre IBAN n'a pas pu être enregistré. Réessayez dans quelques minutes.",
       };
     }
+    // V2-S-1 — la fiche porte l'IBAN des virements d'un formateur actif : il ne change
+    // que par le circuit de changement de compte (relu en base, pas sur la vue).
+    const compte = await compteDesVirements(d.id);
+    if (compte !== null) {
+      if (compte !== empreinte) {
+        // Chargé ici seulement : le circuit tire la file d'envoi, inutile au reste du dossier.
+        const { MESSAGES_CHANGEMENT, demanderChangementIban } =
+          await import("./changements-coordonnees");
+        const demande = await demanderChangementIban(d.id, a.iban, new Date());
+        if (!demande.ok) {
+          return {
+            ok: false,
+            message:
+              demande.message === MESSAGES_CHANGEMENT.indisponible
+                ? IBAN_PAR_DEMANDE_INDISPONIBLE
+                : demande.message,
+          };
+        }
+      }
+      // Même compte, ou demande enregistrée : le reste de l'étape s'écrit, l'IBAN non.
+      const r = await prisma.trainer.updateMany({ where, data });
+      return r.count === 1 ? { ok: true } : LIEN_PERIME;
+    }
     // Chiffré `enc:v2:`, lié à la fiche ; clé exigée (lève sans clé : jamais en clair).
     data.iban = encryptPii(ibanNormalise(a.iban), {
       aad: `trainer:${d.id}:iban`,
@@ -295,9 +328,26 @@ export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<R
     data.ibanEmpreinte = empreinte;
     // L'IBAN ne se saisit qu'avant l'envoi : la clause l'exige aussi en base.
     where.dossierEnvoyeAt = null;
+    // V2-S-1 — ni sur une fiche devenue active, porteuse d'un IBAN, entre-temps.
+    where.AND = [{ OR: [{ actif: false }, { ibanEmpreinte: null }] }];
   }
   const r = await prisma.trainer.updateMany({ where, data });
   return r.count === 1 ? { ok: true } : LIEN_PERIME;
+}
+
+const IBAN_PAR_DEMANDE_INDISPONIBLE =
+  "Votre IBAN est celui de vos virements : il ne se change pas ici. Écrivez-nous : nous vérifierons le nouveau compte avant tout virement.";
+
+/**
+ * V2-S-1 — l'empreinte de l'IBAN des virements quand la fiche est ACTIVE et en porte
+ * un ; sinon `null` (candidat, ou aucun IBAN encore : la saisie du dossier vaut).
+ */
+async function compteDesVirements(trainerId: string): Promise<string | null> {
+  const t = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: { actif: true, ibanEmpreinte: true },
+  });
+  return t?.actif === true && t.ibanEmpreinte !== null ? t.ibanEmpreinte : null;
 }
 
 // Antivirus muet : une alerte au plus par quart d'heure (garde du dépôt commun, FAC-6),
