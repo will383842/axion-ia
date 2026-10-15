@@ -5,13 +5,9 @@
 //     bilan) ;
 //   · B est payé les mois 1 et 2 sur ses feuilles ; le mois 3 SEULEMENT après la remise
 //     du bilan de fin de formation ;
-//   · décision du dirigeant : l'autofacture du dernier mois est DATÉE DE LA REMISE DU
-//     BILAN, et le virement part au plus tard 30 jours après.
-//
-// DÉFAUT V1-C-4 (test.fixme plus bas) : l'autofacture est datée de son ÉMISSION
-// (`emettreAutofacture` : `dateFacture = new Date()`, après la validation humaine),
-// jamais du jour où le bilan a été remis (`BilanFinFormation.termineAt` n'est lu par
-// aucune ligne de l'émission).
+//   · décision V1-C-4 (14/10, lot 3 #1540) : l'autofacture du dernier mois est DATÉE DE SON
+//     ÉMISSION (`emettreAutofacture` : `dateFacture = new Date()`, après la validation
+//     humaine), et non du jour de la remise du bilan ; l'échéance en découle.
 //
 // ÉCARTS : M-D déclaré par le banc (voir E20) ; validation écrite par le banc ; date
 // d'émission à l'horloge réelle.
@@ -176,17 +172,21 @@ test.describe("@formateurs E-C1 — mission sur trois mois, deux formateurs", ()
     });
   });
 
-  // DÉFAUT V1-C-4 — l'autofacture du dernier mois n'est pas datée de la remise du bilan.
-  test.fixme("V1-C-4 : l'autofacture du dernier mois de B est datée de la remise du bilan", async () => {
+  // V1-C-4 — l'autofacture du dernier mois est datée de son émission, pas de la remise du bilan.
+  test("V1-C-4 : l'autofacture du dernier mois de B est datée de son émission", async () => {
     await avecVerrouArgent(async () => {
       const { b } = await derouler();
       const janB = (await relevesDe(b.id)).at(-1)!;
+      const avant = jourDeParis(new Date());
       await jouer([{ etape: "valider-et-emettre", statementId: janB.id }]);
+      const apres = jourDeParis(new Date());
       const facture = (await relevesDe(b.id)).at(-1)!;
-      expect(jourDeParis(facture.dateFacture!)).toBe(jourDeParis(new Date(REMISE_BILAN)));
-      expect(jourDeParis(facture.echeanceAt!)).toBe(
-        echeanceDepuisFacture(jourDeParis(new Date(REMISE_BILAN))),
-      );
+      const jourFacture = jourDeParis(facture.dateFacture!);
+      // Émission à l'horloge réelle : le jour de la facture est celui de l'appel (tolère
+      // un passage de minuit pendant l'appel), et ce n'est PAS la remise du bilan.
+      expect([avant, apres]).toContain(jourFacture);
+      expect(jourFacture).not.toBe(jourDeParis(new Date(REMISE_BILAN)));
+      expect(jourDeParis(facture.echeanceAt!)).toBe(echeanceDepuisFacture(jourFacture));
     });
   });
 });
