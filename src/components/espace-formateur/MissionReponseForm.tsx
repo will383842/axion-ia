@@ -43,11 +43,10 @@ export interface MissionReponseFormProps {
   readonly refusLibre?: boolean;
 }
 
+// V2-N-10 — l'erreur n'est plus une phase : elle s'affiche AU-DESSUS de la phase en
+// cours, et un refus refusé par le serveur garde son panneau ouvert, texte compris.
 type Etat =
-  | { phase: "choix" }
-  | { phase: "refus" }
-  | { phase: "fait"; statut: "acceptee" | "refusee" }
-  | { phase: "erreur"; message: string };
+  { phase: "choix" } | { phase: "refus" } | { phase: "fait"; statut: "acceptee" | "refusee" };
 
 export function MissionReponseForm({
   cible,
@@ -60,8 +59,10 @@ export function MissionReponseForm({
   const [etat, setEtat] = useState<Etat>({ phase: "choix" });
   const [motif, setMotif] = useState("");
   const [choix, setChoix] = useState<string | null>(null);
+  const [erreur, setErreur] = useState<string | null>(null);
 
   function envoyer(reponse: "acceptee" | "refusee") {
+    setErreur(null);
     startTransition(async () => {
       // Refus libre : le choix et le mot, s'il y en a, réunis ; rien sinon.
       const motifEnvoye = refusLibre
@@ -73,7 +74,7 @@ export function MissionReponseForm({
           ? await repondreMissionParJetonAction({ token: cible.token, ...input })
           : await repondreMissionFormateurAction({ missionId: cible.missionId, ...input });
       if ("error" in r) {
-        setEtat({ phase: "erreur", message: r.error });
+        setErreur(r.error);
         return;
       }
       setEtat({ phase: "fait", statut: reponse });
@@ -108,9 +109,9 @@ export function MissionReponseForm({
     <div className="border-border space-y-4 rounded-lg border p-4">
       <p className="text-mocha text-sm">{resume}</p>
 
-      {etat.phase === "erreur" ? (
+      {erreur !== null ? (
         <p role="alert" className="text-sm font-semibold text-red-700">
-          {etat.message}
+          {erreur}
         </p>
       ) : null}
 
@@ -169,7 +170,10 @@ export function MissionReponseForm({
               type="button"
               className={boutonSecondaire}
               disabled={isPending}
-              onClick={() => setEtat({ phase: "choix" })}
+              onClick={() => {
+                setErreur(null);
+                setEtat({ phase: "choix" });
+              }}
             >
               Revenir
             </button>
@@ -204,7 +208,10 @@ export function MissionReponseForm({
               type="button"
               className={boutonSecondaire}
               disabled={isPending}
-              onClick={() => setEtat({ phase: "choix" })}
+              onClick={() => {
+                setErreur(null);
+                setEtat({ phase: "choix" });
+              }}
             >
               Revenir
             </button>
@@ -224,7 +231,10 @@ export function MissionReponseForm({
             type="button"
             className={boutonSecondaire}
             disabled={isPending}
-            onClick={() => setEtat({ phase: "refus" })}
+            onClick={() => {
+              setErreur(null);
+              setEtat({ phase: "refus" });
+            }}
           >
             {refusLibre ? "Je ne suis pas disponible" : "Je refuse (motif demandé)"}
           </button>

@@ -81,19 +81,20 @@ describe("V2-N · se connecter à son espace (lien par e-mail)", () => {
   // V2-N-8 (mineur) — « Votre adresse e-mail PROFESSIONNELLE » : le compte du formateur est
   // ouvert sur l'adresse de sa CANDIDATURE, souvent personnelle. Une autre adresse ne reçoit
   // rien, et le message neutre (anti-énumération) ne permet pas de comprendre pourquoi.
-  // `FormateurLoginForm.tsx` l. 19-21.
-  it.fails(
-    "V2-N-8 — le libellé renvoie à l'adresse de la candidature, pas à une adresse « professionnelle »",
-    () => {
-      render(<FormateurLoginForm />);
-      expect(screen.queryByText(/professionnelle/i)).toBeNull();
-    },
-  );
+  // `FormateurLoginForm.tsx` l. 19-21. CORRIGÉ : « Celle de votre candidature… ».
+  it("V2-N-8 — le libellé renvoie à l'adresse de la candidature, pas à une adresse « professionnelle »", () => {
+    render(<FormateurLoginForm />);
+    expect(screen.queryByText(/professionnelle/i)).toBeNull();
+    expect(screen.getByRole("textbox", { name: /adresse e-mail/i })).toHaveAccessibleDescription(
+      /Celle de votre candidature/,
+    );
+  });
 
   // V2-N-9 (mineur) — le champ est en 14 px (`text-sm`) : sur iPhone, toucher le champ
   // fait zoomer la page (seuil 16 px). Et la réponse (« Si un compte… ») n'est pas
   // annoncée aux lecteurs d'écran (pas de `role="status"`). `FormateurLoginForm.tsx`.
-  it.fails("V2-N-9 — champ de 16 px et réponse annoncée (role=status)", async () => {
+  // CORRIGÉ.
+  it("V2-N-9 — champ de 16 px et réponse annoncée (role=status)", async () => {
     const u = userEvent.setup();
     h.lien.mockResolvedValue({ ok: true, message: "Si un compte formateur correspond…" });
     render(<FormateurLoginForm />);
@@ -129,7 +130,7 @@ describe("V2-N · répondre à une proposition de mission", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(/une semaine avant/);
   });
 
-  it("un refus du serveur n'efface pas le mot écrit (il est retrouvé en rouvrant le refus)", async () => {
+  it("un refus du serveur n'efface pas le mot écrit, et le message dit pourquoi", async () => {
     const u = userEvent.setup();
     h.mission.mockResolvedValue({ error: "Cette proposition a expiré." });
     render(<MissionReponseForm cible={{ missionId: "m1" }} resume="…" motifMin={10} refusLibre />);
@@ -137,29 +138,23 @@ describe("V2-N · répondre à une proposition de mission", () => {
     await u.type(screen.getByRole("textbox"), "Je suis en congé cette semaine-là");
     await u.click(screen.getByRole("button", { name: "Envoyer ma réponse" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Cette proposition a expiré.");
-    await u.click(screen.getByRole("button", { name: "Je ne suis pas disponible" }));
     expect(screen.getByRole("textbox")).toHaveValue("Je suis en congé cette semaine-là");
   });
 
   // V2-N-10 (mineur) — après un refus du serveur, le panneau du refus se REFERME : le
   // formateur voit l'erreur au-dessus des deux boutons du début, et doit rouvrir « Je ne
   // suis pas disponible » pour retrouver son texte. `MissionReponseForm.tsx`, l'état
-  // `erreur` remplace l'état `refus`.
-  it.fails(
-    "V2-N-10 — après une erreur, le champ du refus reste ouvert sous le message",
-    async () => {
-      const u = userEvent.setup();
-      h.mission.mockResolvedValue({ error: "Réessayez dans un instant." });
-      render(
-        <MissionReponseForm cible={{ missionId: "m1" }} resume="…" motifMin={10} refusLibre />,
-      );
-      await u.click(screen.getByRole("button", { name: "Je ne suis pas disponible" }));
-      await u.type(screen.getByRole("textbox"), "Trop loin pour moi");
-      await u.click(screen.getByRole("button", { name: "Envoyer ma réponse" }));
-      await screen.findByRole("alert");
-      expect(screen.getByRole("textbox")).toHaveValue("Trop loin pour moi");
-    },
-  );
+  // `erreur` remplace l'état `refus`. CORRIGÉ : l'erreur s'affiche au-dessus de la phase.
+  it("V2-N-10 — après une erreur, le champ du refus reste ouvert sous le message", async () => {
+    const u = userEvent.setup();
+    h.mission.mockResolvedValue({ error: "Réessayez dans un instant." });
+    render(<MissionReponseForm cible={{ missionId: "m1" }} resume="…" motifMin={10} refusLibre />);
+    await u.click(screen.getByRole("button", { name: "Je ne suis pas disponible" }));
+    await u.type(screen.getByRole("textbox"), "Trop loin pour moi");
+    await u.click(screen.getByRole("button", { name: "Envoyer ma réponse" }));
+    await screen.findByRole("alert");
+    expect(screen.getByRole("textbox")).toHaveValue("Trop loin pour moi");
+  });
 });
 
 describe("V2-N · bilan de fin de formation", () => {
@@ -240,17 +235,26 @@ describe("V2-N · ce que le formateur lit dans son espace", () => {
   // V2-N-11 (mineur) — la barre du bas, sur téléphone, affiche le libellé COURT :
   // « Suivi 1-to-1 » (anglais), et l'entrée reste visible pour un indépendant qui n'a
   // aucun accompagnement individuel (page vide). `_coquille.tsx` ~l. 101-107.
-  it.fails("V2-N-11 — aucun libellé anglais dans la barre de navigation du téléphone", () => {
+  // CORRIGÉ : « Suivis », et l'entrée est ôtée pour un indépendant sans séance.
+  it("V2-N-11 — aucun libellé anglais dans la barre de navigation du téléphone", () => {
     const coquille = lire("src/app/[locale]/espace-formateur/_coquille.tsx");
     expect(coquille).not.toMatch(/labelCourt:\s*"[^"]*1-to-1/);
+    // L'entrée suit les séances : un indépendant sans accompagnement ne la voit pas.
+    expect(coquille).toMatch(/coachingSession\.count\(\{ where: \{ trainerId \} \}\)/);
+    expect(coquille).toMatch(/\.\.\.\(avecAccompagnements\s*\?/);
   });
 
   // V2-N-12 (mineur) — la page des honoraires s'intitule « Ma rémunération » pour TOUS,
   // alors que le menu dit « Mes honoraires » à l'indépendant (et que le lexique du chantier
   // proscrit « rémunération » pour lui : vocabulaire du salariat).
   // `remuneration/page.tsx` (titre de l'onglet et <h1>).
-  it.fails("V2-N-12 — l'indépendant lit « Mes honoraires » en titre, comme dans le menu", () => {
+  // CORRIGÉ : le titre suit le statut, et le menu dit « Mes honoraires » à tout indépendant.
+  it("V2-N-12 — l'indépendant lit « Mes honoraires » en titre, comme dans le menu", () => {
     const page = lire("src/app/[locale]/espace-formateur/remuneration/page.tsx");
     expect(page).not.toMatch(/<h1[^>]*>Ma rémunération<\/h1>/);
+    expect(page).toMatch(/<h1[^>]*>\{surPaie \? "Ma rémunération" : "Mes honoraires"\}<\/h1>/);
+    expect(page).not.toMatch(/title: "Ma rémunération/);
+    const coquille = lire("src/app/[locale]/espace-formateur/_coquille.tsx");
+    expect(coquille).toMatch(/libellesIndependant \|\| honoraires \? "Mes honoraires"/);
   });
 });
