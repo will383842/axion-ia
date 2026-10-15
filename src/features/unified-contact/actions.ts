@@ -314,10 +314,10 @@ export async function submitUnifiedContactAction(
       contactName: data.nom,
       contactEmail: data.email,
       ...(telephone ? { contactPhone: telephone } : {}),
-      // Le contenu du message part dans la notif (demande Will 2026-08-12) —
-      // tronqué : Telegram plafonne à 4096 c. et l'écran verrouillé n'en montre
-      // que quelques lignes de toute façon.
-      ...(data.message ? { message: data.message.slice(0, 500) } : {}),
+      // Le message INTÉGRAL (décision Will 15/10) : le salon « Clients » le
+      // découpe en plusieurs messages au besoin. Les autres salons ne
+      // l'affichent jamais (gabarit allégé du 11/10/2026).
+      ...(data.message ? { message: data.message } : {}),
       ...(data.ville ? { ville: data.ville } : {}),
       ...(data.companyName ? { companyName: data.companyName } : {}),
       ...(data.companySize ? { companySize: data.companySize } : {}),
@@ -325,7 +325,16 @@ export async function submitUnifiedContactAction(
       ...(data.timingWeeks ? { timingWeeks: data.timingWeeks } : {}),
       ...(data.subType ? { subType: data.subType } : {}),
       ...(data.source ? { source: data.source } : {}),
-      ...(category === "CONTACT_FORM_SUBMITTED" ? { formType: data.type } : {}),
+      // Le type de demande en clair, pour toutes les catégories (« Formation
+      // IA » et « Coaching 1 to 1 » partagent INTERVENTION_REQUEST_SUBMITTED).
+      formType: data.type,
+      ...(data.companySector ? { companySector: data.companySector } : {}),
+      ...(utm.utm_source ? { utmSource: utm.utm_source } : {}),
+      ...(utm.utm_medium ? { utmMedium: utm.utm_medium } : {}),
+      ...(utm.utm_campaign ? { utmCampaign: utm.utm_campaign } : {}),
+      ...(utm.utm_content ? { utmContent: utm.utm_content } : {}),
+      ...(funnel.referrerCity ? { referrerCity: funnel.referrerCity } : {}),
+      submittedAt: submission.submittedAt.toISOString(),
       ...(category === "QUOTE_REQUEST_RECEIVED" && data.budgetIndicative
         ? { budget: data.budgetIndicative }
         : {}),

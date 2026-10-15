@@ -198,6 +198,8 @@ export async function submitRoiReportAction(
           ...(data.companyName ? { companyName: data.companyName } : {}),
           companySize: headcountLabel,
           formType: "simulateur_roi",
+          ...(answers.sector ? { companySector: sectorLabel } : {}),
+          submittedAt: submission.submittedAt.toISOString(),
           // Le montant estimé est le premier critère de priorisation d'un
           // rappel : il doit être visible dans la notification, pas dans un
           // second clic.
@@ -357,8 +359,10 @@ export async function attachRoiCallbackAction(
         category: "CONTACT_FORM_SUBMITTED",
         payload: {
           submissionId: existing.id,
-          contactName: "—",
-          contactEmail: "—",
+          // Décision Will 15/10 : le salon « Clients » dit QUI rappeler. Le
+          // nom et l'adresse sont relus de la fiche (chiffrés au repos).
+          contactName: decryptPii(existing.contactName) || "—",
+          contactEmail: decryptPii(existing.contactEmail) || "—",
           contactPhone: telephone,
           ...(existing.companyName && existing.companyName !== "—"
             ? { companyName: existing.companyName }
