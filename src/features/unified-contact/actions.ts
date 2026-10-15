@@ -219,7 +219,16 @@ export async function submitUnifiedContactAction(
   // 4 bis. Pièces jointes (2026-10-15) — contrôlées AVANT toute écriture :
   // nombre, taille, premiers octets, macros, antivirus. Un refus revient au
   // formulaire, qui garde la saisie. Sans fichier, rien ne change.
-  const lecturePieces = await lirePiecesJointes(formData);
+  const lecturePieces = await lirePiecesJointes(formData).catch((err: unknown) => {
+    Sentry.captureException(err, {
+      tags: { action: "submitUnifiedContactAction", step: "pieces-jointes-lecture" },
+    });
+    return {
+      ok: false as const,
+      message:
+        "Vos pièces jointes n'ont pas pu être lues. Réessayez, ou envoyez votre demande sans pièce jointe.",
+    };
+  });
   if (!lecturePieces.ok) {
     return { ok: false, error: lecturePieces.message };
   }
