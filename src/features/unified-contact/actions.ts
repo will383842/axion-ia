@@ -47,8 +47,16 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { normaliserTelephone } from "@/lib/telephone";
+import { lirePiecesJointes, enregistrerPiecesJointes } from "@/server/contact/pieces-jointes";
 
-export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
+export type UnifiedContactState =
+  | {
+      ok: true;
+      submissionId: string;
+      /** Pièces jointes contrôlées mais non enregistrées (stockage indisponible). */
+      piecesNonRecues?: number;
+    }
+  | { ok: false; error: string };
 
 const CONSENT_VERSION = "v1-2026-05-24";
 
@@ -208,6 +216,14 @@ export async function submitUnifiedContactAction(
   }
   const data = parsed.data;
 
+  // 4 bis. Pièces jointes (2026-10-15) — contrôlées AVANT toute écriture :
+  // nombre, taille, premiers octets, macros, antivirus. Un refus revient au
+  // formulaire, qui garde la saisie. Sans fichier, rien ne change.
+  const lecturePieces = await lirePiecesJointes(formData);
+  if (!lecturePieces.ok) {
+    return { ok: false, error: lecturePieces.message };
+  }
+
   // 🔑 UNE SEULE FORME RANGÉE, pour les TROIS destinations de ce champ :
   //    la base (chiffrée), le CRM et la notification Telegram. Depuis que le
   //    formulaire accepte `06 12 34 56 78`, normaliser ici est ce qui évite
@@ -304,6 +320,17 @@ export async function submitUnifiedContactAction(
       userAgent,
     });
 
+    // 6 ter. Pièces jointes — APRÈS la demande, jamais bloquant : la demande est
+    // en base quoi qu'il arrive au stockage (cf. `server/contact/pieces-jointes.ts`).
+    const pieces = await enregistrerPiecesJointes(submission.id, lecturePieces.pieces).catch(
+      (err: unknown) => {
+        Sentry.captureException(err, {
+          tags: { action: "submitUnifiedContactAction", step: "pieces-jointes", type: data.type },
+        });
+        return { recues: [], nonEnregistrees: lecturePieces.pieces.length };
+      },
+    );
+
     // 7. Telegram notification — via hub typé (cf. ADR 0027).
     // dedupKey = submission.id pour neutraliser un éventuel double-submit
     // qui passerait au niveau DB (improbable car idempotencyKey, mais
@@ -325,6 +352,13 @@ export async function submitUnifiedContactAction(
       ...(data.timingWeeks ? { timingWeeks: data.timingWeeks } : {}),
       ...(data.subType ? { subType: data.subType } : {}),
       ...(data.source ? { source: data.source } : {}),
+      // Pièces jointes reçues : le nombre, et les noms (déjà assainis).
+      ...(pieces.recues.length > 0
+        ? {
+            piecesJointes: pieces.recues.length,
+            piecesJointesNoms: pieces.recues.map((p) => p.nom),
+          }
+        : {}),
       ...(category === "CONTACT_FORM_SUBMITTED" ? { formType: data.type } : {}),
       ...(category === "QUOTE_REQUEST_RECEIVED" && data.budgetIndicative
         ? { budget: data.budgetIndicative }
@@ -366,6 +400,8 @@ export async function submitUnifiedContactAction(
           size: data.companySize,
           industry: data.companySector,
           auditType: data.subType,
+          // « N pièce(s) jointe(s) bien reçue(s) » dans l'accusé (2026-10-15).
+          ...(pieces.recues.length > 0 ? { piecesJointesRecues: pieces.recues.length } : {}),
         },
         // 🔑 L'entité liée (2026-09-18) : la fiche du message dit alors EXACTEMENT
         // si l'accusé est parti — cf. `admin-submissions/accuse-reception.ts`.
@@ -378,7 +414,11 @@ export async function submitUnifiedContactAction(
       });
     }
 
-    return { ok: true, submissionId: submission.id };
+    return {
+      ok: true,
+      submissionId: submission.id,
+      ...(pieces.nonEnregistrees > 0 ? { piecesNonRecues: pieces.nonEnregistrees } : {}),
+    };
   } catch (err) {
     // Seul un échec de l'écriture DB (capture du lead) arrive ici = vraie erreur.
     // On logge le message RÉEL (visible dans les logs Coolify) pour diagnostic.

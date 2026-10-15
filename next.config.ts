@@ -251,14 +251,20 @@ const nextConfig: NextConfig = {
       // à `Host`, ce qui arrête une requête croisée d'un NAVIGATEUR, pas un client
       // hors navigateur (curl, script), qui pose l'`Origin` qu'il veut. Le seul
       // rempart d'une action reste sa propre garde (session, rôle, validation).
-      bodySizeLimit: "16mb",
+      // 2026-10-15 — 21 Mo : pièces jointes du formulaire de contact, 20 Mo au
+      // total (`src/lib/contact/pieces-jointes.ts`) + l'enveloppe multipart et
+      // les champs texte (la doc Next compte 10-20 Ko de surcoût multipart).
+      // L'action contrôle elle-même nombre, taille et contenu de chaque fichier.
+      bodySizeLimit: "21mb",
     },
     // ADR 0063 — la page du projet passe par `src/proxy.ts`, qui met le corps
     // en mémoire et le TRONQUE au-delà de 10 Mo par défaut (Next 16.3,
     // `proxyClientMaxBodySize.md`) : un fichier de 12 Mo arriverait coupé. Même
     // valeur que `bodySizeLimit`. Test :
     // `src/features/dossier-client/documents/__tests__/la-limite-de-corps-laisse-passer-quinze-mo.spec.ts`.
-    proxyClientMaxBodySize: "16mb",
+    // 2026-10-15 — même valeur que `bodySizeLimit` (21 Mo) : `/contact` passe
+    // aussi par le proxy, qui tronquerait des pièces jointes de 20 Mo.
+    proxyClientMaxBodySize: "21mb",
   },
   // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`
   // devDep + Babel takeover that slows Turbopack builds. Re-evaluate Sprint 17
