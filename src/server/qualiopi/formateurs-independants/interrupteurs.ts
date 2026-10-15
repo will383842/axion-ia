@@ -475,7 +475,7 @@ export const INTERRUPTEURS_SIGNATURE = {
   changement_coordonnees: {
     ...envoi(
       "Changement de compte bancaire et d'adresse",
-      "Le formateur indépendant demande depuis son espace à changer d'IBAN ou d'adresse ; l'ancien compte reste utilisé jusqu'à la validation en console, au plus tôt 48 heures après la demande (alerte à chaque demande).",
+      "Le formateur indépendant demande depuis son espace à changer d'IBAN ou d'adresse ; les virements sont mis en attente le temps de la vérification, jusqu'à la validation en console (au plus tôt 48 heures après la demande), puis versés sur le nouveau compte (alerte à chaque demande).",
     ),
     cle: "formateurs.changement_coordonnees",
   },

@@ -76,6 +76,18 @@ interface MagicPayload {
   jti: string;
   /** Lot E (M14) — version d'accès du destinataire au moment de l'envoi (facultative). */
   ver?: number;
+  /**
+   * Vérification 1 (V1-D-1) — empreinte de l'adresse du destinataire à l'envoi
+   * (16 caractères signés, jamais l'adresse). Facultative ; l'appelant la revérifie.
+   */
+  emp?: string;
+}
+
+/** Forme d'une empreinte d'adresse admise dans le jeton (calque de la session formateur). */
+const EMPREINTE = /^[A-Za-z0-9_-]{16}$/;
+
+function empreinteValide(e: unknown): e is string {
+  return typeof e === "string" && EMPREINTE.test(e);
 }
 
 function b64urlEncode(bytes: Uint8Array): string {
@@ -134,6 +146,8 @@ export interface SignMagicTokenInput {
    * version de SESSION (`versionSessionFormateur`), jamais `Trainer.accesVersion`.
    */
   version?: number;
+  /** Vérification 1 (V1-D-1) — empreinte d'adresse à revérifier par l'appelant. */
+  empreinte?: string;
 }
 
 export async function signMagicToken(input: SignMagicTokenInput): Promise<string> {
@@ -144,6 +158,7 @@ export async function signMagicToken(input: SignMagicTokenInput): Promise<string
     exp: Date.now() + (input.ttlMs ?? TTL_MS[input.scope]),
     jti: randomJti(),
     ...(versionValide(input.version) ? { ver: input.version } : {}),
+    ...(empreinteValide(input.empreinte) ? { emp: input.empreinte } : {}),
   };
   const payloadBytes = ENCODER.encode(JSON.stringify(payload));
   const payloadB64 = b64urlEncode(payloadBytes);
@@ -164,6 +179,8 @@ export type VerifyResult =
       jti: string;
       /** Présente seulement si le jeton a été signé avec une version. */
       version?: number;
+      /** Présente seulement si le jeton a été signé avec une empreinte d'adresse. */
+      empreinte?: string;
     }
   | { ok: false; reason: VerifyFailReason };
 
@@ -230,5 +247,6 @@ export async function verifyMagicToken(
     ...(payload.email ? { email: payload.email } : {}),
     jti: payload.jti,
     ...(versionValide(payload.ver) ? { version: payload.ver } : {}),
+    ...(empreinteValide(payload.emp) ? { empreinte: payload.emp } : {}),
   };
 }

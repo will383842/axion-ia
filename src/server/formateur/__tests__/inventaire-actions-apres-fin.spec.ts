@@ -50,6 +50,8 @@ const prismaMock = vi.hoisted(() => {
     statut: "sous_traitant",
     accesVersion: 3,
     finCollaborationAt: etat.fin,
+    // V1-D-1 — aucun changement d'adresse enregistré : le lien sans empreinte vaut.
+    emailRemplaceAt: null,
   });
   const mission = () => ({
     id: "5b6c7d8e-9f01-4a2b-8c3d-4e5f6a7b8c9d",

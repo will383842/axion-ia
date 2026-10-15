@@ -24,20 +24,30 @@ const m = vi.hoisted(() => ({
   trainerUpdate: vi.fn(),
   trainerFindUnique: vi.fn(),
   magicLinkUpdateMany: vi.fn(),
+  codesUpdateMany: vi.fn(),
+  transaction: vi.fn(),
   envoyer: vi.fn(),
   log: vi.fn(),
   session: { userId: "admin-uuid", role: "super_admin" } as { userId: string; role: string },
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
     trainer: {
       update: (...a: unknown[]) => m.trainerUpdate(...a),
       findUnique: (...a: unknown[]) => m.trainerFindUnique(...a),
     },
     formateurMagicLink: { updateMany: (...a: unknown[]) => m.magicLinkUpdateMany(...a) },
-  },
-}));
+    documentGenere: { findMany: async () => [{ id: "contrat-uuid" }] },
+    documentSignatureCode: { updateMany: (...a: unknown[]) => m.codesUpdateMany(...a) },
+    // V1-A-8 — la transaction de l'adresse : même client, appels comptés.
+    $transaction: async (fn: (tx: unknown) => unknown) => {
+      m.transaction();
+      return fn(prisma);
+    },
+  };
+  return { prisma };
+});
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(async () => m.session),
@@ -72,6 +82,7 @@ beforeEach(() => {
   m.session = { userId: "admin-uuid", role: "super_admin" };
   m.trainerUpdate.mockResolvedValue({ id: ID });
   m.magicLinkUpdateMany.mockResolvedValue({ count: 1 });
+  m.codesUpdateMany.mockResolvedValue({ count: 1 });
   m.envoyer.mockResolvedValue("texte-non-valide");
   m.log.mockResolvedValue(undefined);
 });
@@ -101,6 +112,22 @@ describe("updateTrainerAction — e-mail d'un indépendant", () => {
     expect(r).toEqual({ data: { id: ID } });
     expect(m.trainerUpdate).toHaveBeenCalledTimes(1);
     expect(dataEcrite()).toMatchObject({ email: NOUVELLE, accesVersion: { increment: 1 } });
+  });
+
+  it("🔴 V1-A-8 — les codes de signature vivants tombent dans la MÊME transaction", async () => {
+    m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
+    await updateTrainerAction({ id: ID, email: NOUVELLE });
+    expect(m.transaction).toHaveBeenCalledTimes(1);
+    expect(m.codesUpdateMany).toHaveBeenCalledWith({
+      where: {
+        documentGenereId: { in: ["contrat-uuid"] },
+        partie: "sous_traitant",
+        utiliseAt: null,
+        invalideAt: null,
+      },
+      data: { invalideAt: expect.any(Date) },
+    });
+    expect(dataEcrite()).toMatchObject({ emailRemplace: ANCIENNE });
   });
 
   it("🔴 les liens de connexion encore en attente sont consommés", async () => {

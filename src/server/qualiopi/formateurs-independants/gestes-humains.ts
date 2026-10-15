@@ -129,9 +129,12 @@ export const GESTES_HUMAINS: ReadonlyArray<GesteHumain> = [
   },
   {
     id: "feuille_presence_papier",
-    geste: "Reporter une feuille de présence papier",
+    // Vérification 1, V1-C-10 : la feuille papier est REPORTÉE pour la contresignature
+    // d'un formateur indépendant (refusée par le service) ; reste celle des stagiaires.
+    geste: "Reporter la feuille de présence papier des stagiaires",
     qui: "Will ou responsable qualité",
-    frequence: "quand l'émargement n'a pas été fait en ligne",
+    frequence:
+      "quand l'émargement des stagiaires n'a pas été fait en ligne (le formateur indépendant contresigne en ligne seulement)",
     raison: "faute_d_automatisme",
     rubrique: "presence",
     automatisable: false,

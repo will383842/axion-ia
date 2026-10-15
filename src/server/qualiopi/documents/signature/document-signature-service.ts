@@ -53,11 +53,13 @@ import {
   type MethodeSignatureDocument,
   type PartieSignataire,
   type ProviderSignature,
-  type TupleDocumentSignatureV1,
+  type FacteurVerificationSignature,
+  type TupleDocumentSignatureV2,
 } from "./document-signature-hash";
 import {
   MENTION_VERSION_DOCUMENT,
   CONSENTEMENT_VERSION_DOCUMENT,
+  CONSENTEMENT_VERSION_DOCUMENT_CODE,
   type VersionConsentementDocument,
 } from "./mentions-document";
 
@@ -859,6 +861,19 @@ export async function signerDocument(
 
   const consentementVersion = input.consentementVersion ?? CONSENTEMENT_VERSION_DOCUMENT;
 
+  // V1-A-7 — le FACTEUR qui a prouvé l'adresse, scellé dans le tuple v2. Affirmé
+  // seulement s'il est constaté en base : le texte « avec code » ET un code consommé
+  // pour cette pièce et cette partie (l'appelant le consomme juste avant). Sans code
+  // consommé, rien n'est affirmé — jamais déduit du seul texte affiché.
+  let facteurVerification: FacteurVerificationSignature | null = null;
+  if (consentementVersion === CONSENTEMENT_VERSION_DOCUMENT_CODE) {
+    const code = await prisma.documentSignatureCode.findFirst({
+      where: { documentGenereId: ctx.id, partie, utiliseAt: { not: null } },
+      select: { id: true },
+    });
+    if (code !== null) facteurVerification = "code_email";
+  }
+
   const socle = {
     contexteType: "document_engagement" as const,
     documentGenereId: ctx.id,
@@ -901,7 +916,7 @@ export async function signerDocument(
         });
         const prevHash = precedente?.selfHash ?? null;
 
-        const tuple: TupleDocumentSignatureV1 = { ...socle, prevHash };
+        const tuple: TupleDocumentSignatureV2 = { ...socle, prevHash, facteurVerification };
         const selfHash = calculerSelfHashDocument(tuple);
 
         const sig = await tx.documentSignature.create({
@@ -926,6 +941,7 @@ export async function signerDocument(
             hashVersion: HASH_VERSION_DOCUMENT,
             mentionVersion: MENTION_VERSION_DOCUMENT,
             consentementVersion,
+            facteurVerification,
             signeAt: maintenant,
             ipHash: input.ipHash ?? null,
             userAgentSha256: input.userAgentSha256 ?? null,

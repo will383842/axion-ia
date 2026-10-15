@@ -128,9 +128,9 @@ describe("non-régression du chemin collectif", () => {
   it("🔴 les versions de tuple sont INDÉPENDANTES entre contextes", () => {
     expect(HASH_VERSION_COURANTE).toBe(1);
     expect(HASH_VERSION_CONTRESIGNATURE).toBe(1);
-    expect(HASH_VERSION_DOCUMENT).toBe(1);
-    // Elles valent toutes 1 aujourd'hui, mais elles sont des constantes
-    // distinctes : le jour où l'une bouge, les autres ne doivent pas.
+    // Le DOCUMENT est passé en v2 (V1-A-7, facteur de vérification) : les deux autres
+    // familles, elles, n'ont pas bougé — c'est la preuve de leur indépendance.
+    expect(HASH_VERSION_DOCUMENT).toBe(2);
   });
 
   it("🔴 la version de mention DOCUMENT est INDÉPENDANTE de celle du collectif", () => {
@@ -167,7 +167,7 @@ describe("non-régression du chemin collectif", () => {
       prevHash: null,
     };
     expect(TUPLE_DOCUMENT.contexteType).not.toBe(TUPLE_COLLECTIF.contexteType);
-    expect(calculerSelfHashDocument(TUPLE_DOCUMENT)).not.toBe(calculerSelfHash(TUPLE_COLLECTIF));
+    expect(calculerSelfHashDocument(TUPLE_DOCUMENT, 1)).not.toBe(calculerSelfHash(TUPLE_COLLECTIF));
   });
 
   it("🔴 `COLONNES_SCELLEES_DOCUMENT` n'admet AUCUNE donnée effaçable", () => {

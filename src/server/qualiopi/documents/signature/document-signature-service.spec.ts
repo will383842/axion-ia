@@ -29,6 +29,7 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn(),
     },
     documentSignatureToken: { findUnique: vi.fn() },
+    documentSignatureCode: { findFirst: vi.fn() },
     trainer: { findUnique: vi.fn() },
     adminUser: { findUnique: vi.fn() },
     $transaction: vi.fn(),
@@ -55,7 +56,11 @@ import {
   HASH_VERSION_DOCUMENT,
   type LigneDocumentSignature,
 } from "./document-signature-hash";
-import { MENTION_VERSION_DOCUMENT, CONSENTEMENT_VERSION_DOCUMENT } from "./mentions-document";
+import {
+  MENTION_VERSION_DOCUMENT,
+  CONSENTEMENT_VERSION_DOCUMENT,
+  CONSENTEMENT_VERSION_DOCUMENT_CODE,
+} from "./mentions-document";
 import { Prisma } from "../../../../../prisma/generated/client";
 
 type Mock = ReturnType<typeof vi.fn>;
@@ -70,6 +75,7 @@ const mockPrisma = prisma as unknown as {
     update: Mock;
   };
   documentSignatureToken: { findUnique: Mock };
+  documentSignatureCode: { findFirst: Mock };
   trainer: { findUnique: Mock };
   adminUser: { findUnique: Mock };
   $transaction: Mock;
@@ -176,6 +182,7 @@ beforeEach(() => {
     }),
   );
   mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(jeton());
+  mockPrisma.documentSignatureCode.findFirst.mockResolvedValue(null);
   mockPrisma.trainer.findUnique.mockResolvedValue({
     nom: "Jullin",
     prenom: "Williams",
@@ -657,6 +664,7 @@ describe("🔴 ce qui est réellement écrit", () => {
       prevHash: null,
       selfHash: d["selfHash"] as string,
       hashVersion: HASH_VERSION_DOCUMENT,
+      facteurVerification: null,
     };
     const rapport = verifierChaine([
       maillonDocumentDepuisLigne(ligne, {
@@ -956,5 +964,91 @@ describe("🔴 canal A — l'identité vient du JETON, jamais de l'entrée", () 
     // où l'organisme atteste l'identité d'un tiers.
     await signerDocument(entreeJeton());
     expect(donneesCreees()["recueilliParAdminId"]).toBeNull();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// V1-A-7 — le facteur qui a prouvé l'adresse est écrit ET scellé
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 V1-A-7 — facteur de vérification de l'adresse", () => {
+  const ENTREE_CODE = {
+    porteur: { ...PORTEUR_JETON, partie: "sous_traitant" as const },
+    partiesRequises: ["sous_traitant", "axionia"] as const,
+    methode: "confirmation_accessible" as const,
+    imageDataUrl: undefined,
+    consentementVersion: CONSENTEMENT_VERSION_DOCUMENT_CODE,
+  };
+
+  function ligneEcrite(d: Record<string, unknown>): LigneDocumentSignature {
+    return {
+      id: d["id"] as string,
+      documentGenereId: DOC,
+      provider: "interne",
+      providerSubmissionId: null,
+      partie: d["partie"] as LigneDocumentSignature["partie"],
+      signataireNom: d["signataireNom"] as string,
+      signataireEmail: d["signataireEmail"] as string | null,
+      signataireQualite: d["signataireQualite"] as string | null,
+      documentHashSha256: "c".repeat(64),
+      methode: d["methode"] as LigneDocumentSignature["methode"],
+      signatureSha256: d["signatureSha256"] as string | null,
+      mentionVersion: d["mentionVersion"] as string,
+      consentementVersion: d["consentementVersion"] as string,
+      signeAt: MAINTENANT,
+      prevHash: null,
+      selfHash: d["selfHash"] as string,
+      hashVersion: d["hashVersion"] as number,
+      facteurVerification: d[
+        "facteurVerification"
+      ] as LigneDocumentSignature["facteurVerification"],
+    };
+  }
+
+  it("code saisi et CONSOMMÉ pour cette partie : `code_email`, scellé (tuple v2)", async () => {
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
+      jeton({ partie: "sous_traitant" }),
+    );
+    mockPrisma.documentSignatureCode.findFirst.mockResolvedValue({ id: "code-1" });
+    const res = await signerDocument(entreeJeton(ENTREE_CODE));
+    expect(res).toMatchObject({ ok: true });
+
+    expect(mockPrisma.documentSignatureCode.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          documentGenereId: DOC,
+          partie: "sous_traitant",
+          utiliseAt: { not: null },
+        }),
+      }),
+    );
+    const d = donneesCreees();
+    expect(d["facteurVerification"]).toBe("code_email");
+    expect(d["hashVersion"]).toBe(2);
+    const piece = { documentNumero: "AXI-CONV-2026-0042", documentType: "convention" };
+    const l = ligneEcrite(d);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, piece)]).valide).toBe(true);
+    // Retirer le facteur après coup : la preuve le voit.
+    expect(
+      verifierChaine([maillonDocumentDepuisLigne({ ...l, facteurVerification: null }, piece)])
+        .valide,
+    ).toBe(false);
+  });
+
+  it("texte « avec code » mais aucun code consommé : rien n'est affirmé (`null`)", async () => {
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
+      jeton({ partie: "sous_traitant" }),
+    );
+    const res = await signerDocument(entreeJeton(ENTREE_CODE));
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["facteurVerification"]).toBeNull();
+  });
+
+  it("signature sans code : `null`, et la table des codes n'est pas lue", async () => {
+    const res = await signerDocument(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["facteurVerification"]).toBeNull();
+    expect(donneesCreees()["hashVersion"]).toBe(2);
+    expect(mockPrisma.documentSignatureCode.findFirst).not.toHaveBeenCalled();
   });
 });

@@ -33,10 +33,15 @@
  * - **Refus uniformes** : un code faux, expiré, épuisé ou inexistant rend le
  *   même message — le refus ne dit pas lequel des quatre, pour ne pas guider
  *   un essai suivant.
+ * - **Lié à l'adresse** (vérification 1, V1-A-8) : un code est envoyé à l'adresse
+ *   de la fiche. Quand la console change cette adresse, les codes encore vivants
+ *   sont invalidés DANS la même transaction (`invaliderCodesSignatureFormateur`) :
+ *   le code reçu à l'ancienne adresse ne signe plus rien.
  */
 
 import { createHmac, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../../../prisma/generated/client";
 import type { PartieSignataire } from "./document-signature-hash";
 
 export const CODE_LONGUEUR = 6;
@@ -191,4 +196,33 @@ export async function verifierCodeSignature(input: {
     data: { utiliseAt: maintenant },
   });
   return consomme.count === 1 ? { ok: true } : REFUS;
+}
+
+/**
+ * V1-A-8 — invalide les codes encore vivants des pièces d'un formateur, avec le
+ * client de la transaction qui change son adresse (jamais après coup : entre les
+ * deux écritures, le code de l'ancienne adresse signerait encore). Seule la partie
+ * `sous_traitant` reçoit un code à l'adresse de la fiche ; les codes d'autres parties
+ * partent ailleurs et ne sont pas touchés. Rend le nombre de codes invalidés.
+ */
+export async function invaliderCodesSignatureFormateur(
+  client: Pick<Prisma.TransactionClient, "documentGenere" | "documentSignatureCode">,
+  trainerId: string,
+  maintenant: Date,
+): Promise<number> {
+  const pieces = await client.documentGenere.findMany({
+    where: { trainerId },
+    select: { id: true },
+  });
+  if (pieces.length === 0) return 0;
+  const r = await client.documentSignatureCode.updateMany({
+    where: {
+      documentGenereId: { in: pieces.map((p) => p.id) },
+      partie: "sous_traitant",
+      utiliseAt: null,
+      invalideAt: null,
+    },
+    data: { invalideAt: maintenant },
+  });
+  return r.count;
 }

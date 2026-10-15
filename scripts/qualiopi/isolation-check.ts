@@ -588,6 +588,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
+  //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
+  //    paiement des formateurs (passage par mission, autofacture, virements,
+  //    relances, IBAN) avec l'instant en paramètre : une copie de cette logique
+  //    dans le test ne prouverait rien. Il ne fait que jouer des étapes et rendre
+  //    leur résultat ; les specs constatent en base.
+  "tests/e2e/fixtures/formateurs/argent-executer.ts",
   // ── Banc @formateurs, scénarios missions (vérification n° 1, équipe B). Les
   //    specs ne nomment le domaine qu'en CHAÎNES, passées au processus `tsx` du
   //    banc ; ce module d'aides, chargé DANS ce processus, est le seul à

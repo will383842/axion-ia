@@ -45,7 +45,7 @@ import { getAllRegionSlugs } from "@/content/regions";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import {
   apresChangementEmail,
-  donneesChangementEmail,
+  ecrireFicheAvecChangementEmail,
   journalChangementEmail,
   preparerChangementEmail,
 } from "@/server/qualiopi/formateurs-independants/changement-email-console";
@@ -405,10 +405,12 @@ export async function updateTrainerAction(
   if (!email.ok) return { error: email.error };
 
   try {
-    await prisma.trainer.update({
-      where: { id },
+    // V1-A-8 — avec un changement d'adresse, une seule transaction : adresse, liens du
+    // dossier, adresse remplacée et codes de signature vivants.
+    await ecrireFicheAvecChangementEmail({
+      trainerId: id,
+      changement: email.changement,
       data: {
-        ...donneesChangementEmail(email.changement),
         ...(fields.nom !== undefined ? { nom: fields.nom } : {}),
         ...(fields.prenom !== undefined ? { prenom: fields.prenom } : {}),
         ...(fields.email !== undefined ? { email: fields.email } : {}),

@@ -91,6 +91,12 @@ export interface EmargementGroupeProps {
    * formateur, elle, reste ouverte (recueil entrant).
    */
   signaturePourStagiaireFermee?: string | null;
+  /**
+   * Vérification 1, V1-C-10 — `false` pour un formateur indépendant : la feuille
+   * papier est reportée, la photo n'est pas proposée pour SA contresignature (le
+   * serveur la refuse aussi). Absent : proposée, comme avant.
+   */
+  contresignaturePapierPossible?: boolean;
 }
 
 export function EmargementGroupe({
@@ -99,6 +105,7 @@ export function EmargementGroupe({
   signerAction,
   contresignerAction,
   signaturePourStagiaireFermee = null,
+  contresignaturePapierPossible = true,
 }: EmargementGroupeProps): React.ReactElement {
   const router = useRouter();
   // La première demi-journée commencée et incomplète : c'est celle sur laquelle
@@ -286,6 +293,7 @@ export function EmargementGroupe({
                     sessionId={sessionId}
                     demiJournee={d}
                     contresignerAction={contresignerAction}
+                    papierPossible={contresignaturePapierPossible}
                   />
                 </li>
               </ul>
@@ -447,10 +455,12 @@ function ContresignatureControl({
   sessionId,
   demiJournee,
   contresignerAction,
+  papierPossible,
 }: {
   sessionId: string;
   demiJournee: DemiJourneeAffichee;
   contresignerAction: EmargementGroupeProps["contresignerAction"];
+  papierPossible: boolean;
 }): React.ReactElement {
   const router = useRouter();
   const [ouvert, setOuvert] = useState(false);
@@ -623,7 +633,7 @@ function ContresignatureControl({
             Revenir au tracé
           </button>
         )}
-        {mode !== "papier" && (
+        {papierPossible && mode !== "papier" && (
           <button
             type="button"
             onClick={() => {

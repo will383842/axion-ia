@@ -54,6 +54,7 @@ import {
 } from "./run";
 import { HEURES_PAR_JOUR_DEFAUT } from "./calcul";
 import {
+  aChevalSurLaBascule,
   cleRevendication,
   ecarterConditionsFigees,
   filtrerPrestationsApresBascule,
@@ -62,6 +63,7 @@ import {
   lireDateBascule,
   premiereJourneeSession,
 } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
+import { jourDeColonneDate } from "@/server/qualiopi/formateurs-independants/argent/dates";
 import {
   ATTENTE_CONNEXION_RUN_MS,
   DELAI_TRANSACTION_RUN_MS,
@@ -367,20 +369,53 @@ async function sansConditionsFigees(
   // Un couple qui arrive ici n'est PAS payé par mission : `apresBascule` a déjà
   // écarté tous ceux qui le sont (première journée ≥ D sans revendication, ou
   // revendiqués `par_mission`). Il reste donc à régler à la main : on le dit.
+  // Sauf (V1-C-2) la session À CHEVAL sur la bascule : le passage la paie au prix
+  // figé (`appartientAuPassage`) ; l'annoncer « à la main » ferait payer deux fois.
+  const aCheval = await sessionsAChevalSurLaBascule(r.ecartees.map((e) => e.prestation.sessionId));
   return {
     prestations: r.prestations,
-    anomalies: r.ecartees.map(({ trainerId, prestation }) => ({
-      motif: "conditions_figees_hors_mission" as const,
-      trainerId,
-      prestation: {
-        type: prestation.type,
-        sessionId: prestation.sessionId,
-        coachingSessionId: prestation.coachingSessionId,
-        bookingId: prestation.bookingId,
-        auditMissionId: prestation.auditMissionId,
-      },
-    })),
+    anomalies: r.ecartees
+      .filter(({ prestation }) => !(prestation.sessionId && aCheval.has(prestation.sessionId)))
+      .map(({ trainerId, prestation }) => ({
+        motif: "conditions_figees_hors_mission" as const,
+        trainerId,
+        prestation: {
+          type: prestation.type,
+          sessionId: prestation.sessionId,
+          coachingSessionId: prestation.coachingSessionId,
+          bookingId: prestation.bookingId,
+          auditMissionId: prestation.auditMissionId,
+        },
+      })),
   };
+}
+
+/**
+ * V1-C-2 — parmi ces sessions, celles qui sont à cheval sur la bascule (première
+ * journée avant `D`, dernière à `D` ou après). Sans date de bascule : aucune.
+ * 🔴 Une lecture en échec LÈVE, comme `apresBascule`.
+ */
+async function sessionsAChevalSurLaBascule(
+  ids: ReadonlyArray<string | null>,
+): Promise<Set<string>> {
+  const sessionIds = [...new Set(ids.filter((x): x is string => x !== null))];
+  if (sessionIds.length === 0) return new Set();
+  const dateBascule = await lireDateBascule(prisma);
+  if (dateBascule === null) return new Set();
+  const sessions = await prisma.trainingSession.findMany({
+    where: { id: { in: sessionIds } },
+    select: { id: true, dateDebut: true, jours: { select: { date: true } } },
+  });
+  const out = new Set<string>();
+  for (const s of sessions) {
+    const jours = s.jours.map((j) => jourDeColonneDate(j.date)).sort();
+    const bornes = {
+      premiereJournee: premiereJourneeSession(s),
+      derniereJournee: jours.at(-1) ?? null,
+    };
+    if (aChevalSurLaBascule(bornes, dateBascule)) out.add(s.id);
+  }
+  return out;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────

@@ -16,7 +16,6 @@
  */
 
 import {
-  demiJourneesPrevues,
   demiJourneesSansSignature,
   demiJourneesSignees,
   parMoisCivil,
@@ -28,7 +27,7 @@ import {
   PARAMETRES_ARGENT_FORMATEURS,
   type ParametresArgentFormateurs,
 } from "../argent/parametres";
-import type { CandidatMission } from "./passage-mission";
+import { demiJourneesPrevuesDuCandidat, type CandidatMission } from "./passage-mission";
 
 export interface FeuillesDuMois {
   readonly trainerId: string;
@@ -55,7 +54,8 @@ export function feuillesManquantes(
   const out: FeuillesDuMois[] = [];
   for (const c of candidats) {
     const signees = demiJourneesSignees(c.contresignatures);
-    for (const m of parMoisCivil(demiJourneesPrevues(c.journeesPrevues, bornes))) {
+    // Session annulée : les journées non signées n'auront pas lieu, rien à réclamer (V1-C-5).
+    for (const m of parMoisCivil(demiJourneesPrevuesDuCandidat(c, bornes))) {
       if (m.derniereJournee >= aujourdhui) continue;
       const manquantes = demiJourneesSansSignature(m.detail, signees);
       if (manquantes.length === 0) continue;

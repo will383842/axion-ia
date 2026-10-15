@@ -47,7 +47,7 @@ import {
   HASH_VERSION_DOCUMENT,
   type LigneDocumentSignature,
   type PartieSignataire,
-  type TupleDocumentSignatureV1,
+  type TupleDocumentSignatureV2,
 } from "./document-signature-hash";
 import {
   construireRapportPiece,
@@ -100,7 +100,7 @@ function chaine(
   parties.forEach((partie, i) => {
     const documentHashSha256 = options.pdfParPartie?.[partie] ?? PDF;
     const signeAt = new Date(Date.UTC(2026, 5, 10, 10, i, 0, 0));
-    const tuple: TupleDocumentSignatureV1 = {
+    const tuple: TupleDocumentSignatureV2 = {
       contexteType: "document_engagement",
       documentGenereId: DOC,
       documentNumero: NUMERO,
@@ -118,6 +118,7 @@ function chaine(
       consentementVersion: "doc-consent-v1",
       signeAtIso: signeAt.toISOString(),
       prevHash,
+      facteurVerification: null,
     };
     const selfHash = calculerSelfHashDocument(tuple);
     lignes.push({
@@ -138,6 +139,7 @@ function chaine(
       prevHash,
       selfHash,
       hashVersion: HASH_VERSION_DOCUMENT,
+      facteurVerification: null,
     });
     prevHash = selfHash;
   });

@@ -33,9 +33,16 @@ export async function semerInterrupteurs(
       if (precedent === undefined) {
         await prisma.setting.deleteMany({ where: { key } });
       } else {
-        await prisma.setting.update({
+        // `upsert` : la ligne a pu être effacée entre-temps (restauration imbriquée d'une
+        // même clé, ou autre scénario) ; l'état d'avant est remis dans tous les cas.
+        await prisma.setting.upsert({
           where: { key },
-          data: {
+          create: {
+            key,
+            value: precedent.value as ValeurInterrupteur,
+            description: precedent.description,
+          },
+          update: {
             value: precedent.value as ValeurInterrupteur,
             description: precedent.description,
           },

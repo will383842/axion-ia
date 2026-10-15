@@ -15,7 +15,7 @@
  */
 export const SEUIL_DAS2_COMMUN_CENTS = 120_000;
 
-/** Orange à J-5 de la date cible du virement ; rouge une fois passée. */
+/** Orange à J-5 de la date cible du virement ; rouge une fois l'échéance dépassée (V1-C-9). */
 export const ORANGE_AVANT_DATE_CIBLE_JOURS = 5;
 
 /**

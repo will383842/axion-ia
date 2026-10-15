@@ -6386,6 +6386,12 @@ model Trainer {
   ibanEmpreinte           String?                             @map("iban_empreinte") @db.Char(64)
   /// Incrémentée pour révoquer les liens d'accès déjà envoyés (calque apporteurs).
   accesVersion            Int                                 @default(0) @map("acces_version")
+  /// Vérification 1 (V1-C-6, V1-D-1) — l'adresse REMPLACÉE par le dernier changement
+  /// fait en console, et sa date. Sert à prévenir aussi l'ancienne adresse d'un
+  /// changement de compte (30 jours) et à juger les liens de mission émis avant la
+  /// correction. Effacée par l'effacement RGPD. Ajout seul.
+  emailRemplace           String?                             @map("email_remplace") @db.Citext
+  emailRemplaceAt         DateTime?                           @map("email_remplace_at")
   /// Fiche du banc d'essai (calque de `Rencontre.estTestInterne`) — colonne seule.
   estTestInterne          Boolean                             @default(false) @map("est_test_interne")
   /// Dossier en ligne à jeton (ADR 0066 étape 5).
@@ -7512,6 +7518,11 @@ model DocumentGenere {
 /// nouvelle signature. Aucun `@default` sur une colonne hachée — un défaut
 /// transformerait un oubli d'insertion en valeur silencieuse et le `selfHash`
 /// cesserait de correspondre.
+/// Vérification 1 (V1-A-7) — facteur qui a prouvé l'adresse du signataire.
+enum FacteurVerificationSignature {
+  code_email
+}
+
 model DocumentSignature {
   id               String         @id @default(uuid()) @db.Uuid
   documentGenereId String         @map("document_genere_id") @db.Uuid
@@ -7562,6 +7573,10 @@ model DocumentSignature {
 
   mentionVersion      String @map("mention_version") @db.VarChar(20)
   consentementVersion String @map("consentement_version") @db.VarChar(20)
+  /// Vérification 1 (V1-A-7) — comment l'adresse du signataire a été PROUVÉE :
+  /// `code_email` quand un code reçu par e-mail a été saisi. HACHÉE à partir de la
+  /// version 2 du tuple ; NULL sur les preuves antérieures, qui ne sont pas réécrites.
+  facteurVerification FacteurVerificationSignature? @map("facteur_verification")
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.

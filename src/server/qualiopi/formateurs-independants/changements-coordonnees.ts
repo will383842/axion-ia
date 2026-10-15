@@ -9,6 +9,11 @@
  *  - F43 part à l'adresse connue de la fiche (« vous n'êtes pas à l'origine de cette
  *    demande ? répondez immédiatement »), et l'équipe reçoit une alerte interne à
  *    CHAQUE demande ;
+ *  - vérification 1 (V1-C-6, décision) : F43 part AUSSI à l'adresse remplacée par la
+ *    console depuis moins de 30 jours — un détournement d'adresse suivi d'un
+ *    changement de compte n'échappe pas au titulaire ;
+ *  - vérification 1 (V1-C-7) : la VALIDATION d'un nouvel IBAN consomme les liens de
+ *    connexion en attente et augmente la version d'accès, dans la même transaction ;
  *  - l'IBAN demandé est chiffré `enc:v2:` (AAD `demande:<id>:iban`, CHECK en base),
  *    puis rechiffré pour la fiche (AAD `trainer:<id>:iban`) à la validation. Il n'est
  *    jamais réaffiché, ni journalisé, ni envoyé dans une alerte ou un e-mail.
@@ -37,6 +42,9 @@ import { interrupteurAllume } from "./interrupteur-allume";
 
 /** Délai minimal entre la demande et sa validation (annoncé par F43 : « au plus tôt dans 48 heures »). */
 export const DELAI_VALIDATION_CHANGEMENT_MS = 48 * 60 * 60 * 1000;
+
+/** V1-C-6 — pendant combien de temps l'adresse remplacée reçoit aussi F43. */
+export const FENETRE_ANCIENNE_ADRESSE_MS = 30 * 24 * 60 * 60 * 1000;
 
 export const NATURES_CHANGEMENT = ["iban", "adresse"] as const;
 export type NatureChangement = (typeof NATURES_CHANGEMENT)[number];
@@ -73,12 +81,33 @@ async function ficheIndependante(trainerId: string) {
       prenom: true,
       email: true,
       ibanEmpreinte: true,
+      emailRemplace: true,
+      emailRemplaceAt: true,
     },
   });
   if (t === null || t.statut !== "sous_traitant" || !t.actif || t.finCollaborationAt !== null) {
     return null;
   }
   return t;
+}
+
+/**
+ * V1-C-6 — l'adresse remplacée par la console depuis moins de 30 jours, si elle
+ * diffère de l'actuelle ; sinon `null`.
+ */
+export function ancienneAdresseAPrevenir(
+  t: {
+    readonly email: string;
+    readonly emailRemplace: string | null;
+    readonly emailRemplaceAt: Date | null;
+  },
+  maintenant: Date,
+): string | null {
+  const ancienne = t.emailRemplace?.trim() ?? "";
+  if (ancienne === "" || t.emailRemplaceAt === null) return null;
+  if (ancienne.toLowerCase() === t.email.trim().toLowerCase()) return null;
+  const depuis = maintenant.getTime() - t.emailRemplaceAt.getTime();
+  return depuis < FENETRE_ANCIENNE_ADRESSE_MS ? ancienne : null;
 }
 
 function estDoublon(e: unknown): boolean {
@@ -177,6 +206,23 @@ export async function demanderChangementIban(
     }
   } catch {
     // La demande est enregistrée ; l'alerte interne est partie.
+  }
+  // V1-C-6 — la même F43 à l'adresse remplacée récemment. Avis supplémentaire : il ne
+  // conditionne pas la validation (l'adresse actuelle reste celle qui fait foi).
+  const ancienne = ancienneAdresseAPrevenir(t, maintenant);
+  if (ancienne !== null) {
+    try {
+      await envoyer({
+        gabarit: "formateur-iban-changement",
+        destinataire: ancienne,
+        entityType: "Trainer",
+        entityId: trainerId,
+        jobId: `fi-changement-${id}-ancienne-adresse`,
+        payload: { prenom: t.prenom, valeurs: { date: JOUR_FR.format(maintenant) } },
+      });
+    } catch {
+      // La demande est enregistrée ; l'adresse actuelle a été prévenue.
+    }
   }
   return { ok: true };
 }
@@ -361,13 +407,17 @@ export async function validerDemandeChangement(p: {
       return { ok: false, raison: "fiche_close" };
     }
 
-    let ecriture: { iban: string; ibanEmpreinte: string } | { adresseProfessionnelle: string };
+    let ecriture:
+      | { iban: string; ibanEmpreinte: string; accesVersion: { increment: number } }
+      | { adresseProfessionnelle: string };
     if (nature === "iban") {
       if (d.valeurEmpreinte === null) return { ok: false, raison: "erreur" };
       const clair = decryptPii(d.valeur, { aad: `demande:${d.id}:iban`, cleExigee: true });
       ecriture = {
         iban: encryptPii(clair, { aad: `trainer:${d.trainerId}:iban`, cleExigee: true }),
         ibanEmpreinte: d.valeurEmpreinte,
+        // V1-C-7 — les liens du dossier émis avant le changement de compte tombent.
+        accesVersion: { increment: 1 },
       };
     } else {
       ecriture = { adresseProfessionnelle: d.valeur };
@@ -380,6 +430,13 @@ export async function validerDemandeChangement(p: {
       });
       if (r.count !== 1) throw new DejaTraitee();
       await tx.trainer.update({ where: { id: d.trainerId }, data: ecriture });
+      if (nature === "iban") {
+        // V1-C-7 — un lien de connexion demandé avant la validation n'ouvre plus rien.
+        await tx.formateurMagicLink.updateMany({
+          where: { trainerId: d.trainerId, usedAt: null },
+          data: { usedAt: p.maintenant },
+        });
+      }
       await journaliser(
         tx,
         {

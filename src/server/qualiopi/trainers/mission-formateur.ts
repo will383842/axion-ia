@@ -52,6 +52,7 @@ import { champsF23Honoraires } from "@/server/qualiopi/formateurs-independants/p
 import { notifierPropositionClose } from "@/server/qualiopi/formateurs-independants/proposition-close";
 import {
   ecritureFormateurPermise,
+  empreinteSessionFormateur,
   versionSessionFormateur,
 } from "@/server/qualiopi/formateurs-independants/version-session";
 import {
@@ -408,15 +409,10 @@ async function envoyerProposition(args: {
 }): Promise<boolean> {
   const { session, trainer, now } = args;
   const echeance = args.echeance ?? echeanceReponse(session.dateDebut, now);
-  const token = await signMagicToken({
-    scope: "formateur_mission",
-    resourceId: args.missionId,
+  const token = await signerJetonMission({
+    missionId: args.missionId,
     ttlMs: ttlJusquAuDemarrage(session.dateDebut, now),
-    // Lot E (M14) — une fin de collaboration (version de session changée) éteint le
-    // lien ; l'envoi du dossier (`accesVersion`) ne le touche pas.
-    ...(trainer.finCollaborationAt !== undefined
-      ? { version: versionSessionFormateur({ finCollaborationAt: trainer.finCollaborationAt }) }
-      : {}),
+    trainer,
   });
   const lieu = formatLieu({
     ...session,
@@ -1081,6 +1077,57 @@ export async function listerMissionsAConfirmer(trainerId: string): Promise<
   }
 }
 
+/**
+ * Le jeton du lien de réponse à une proposition de mission.
+ *
+ * - Lot E (M14) — une fin de collaboration (version de session changée) éteint le
+ *   lien ; l'envoi du dossier (`accesVersion`) ne le touche pas.
+ * - Vérification 1 (V1-D-1) — il porte l'EMPREINTE de l'adresse du destinataire
+ *   (`empreinteSessionFormateur`, celle de la session de l'espace) : un changement
+ *   d'adresse en console éteint le lien envoyé à l'ancienne.
+ */
+export async function signerJetonMission(input: {
+  readonly missionId: string;
+  readonly ttlMs: number;
+  readonly trainer: { readonly email: string; readonly finCollaborationAt?: Date | null };
+}): Promise<string> {
+  const { trainer } = input;
+  const empreinte = empreinteSessionFormateur(trainer.email);
+  return signMagicToken({
+    scope: "formateur_mission",
+    resourceId: input.missionId,
+    ttlMs: input.ttlMs,
+    ...(trainer.finCollaborationAt !== undefined
+      ? { version: versionSessionFormateur({ finCollaborationAt: trainer.finCollaborationAt }) }
+      : {}),
+    ...(empreinte !== null ? { empreinte } : {}),
+  });
+}
+
+/**
+ * V1-D-1 — le lien désigne-t-il encore la personne à l'adresse ACTUELLE de la fiche ?
+ * Même règle que la session de l'espace (`server/formateur/guard.ts`), et pour les
+ * mêmes fiches : les indépendants seulement — salariés et dirigeants, inchangé.
+ *
+ * Lien signé AVANT la correction (sans empreinte) : on ne sait pas à quelle adresse il
+ * est parti. Choix prudent — il tombe dès qu'un changement d'adresse est ENREGISTRÉ sur
+ * la fiche (`emailRemplaceAt`, posé depuis la correction ; tout lien sans empreinte lui
+ * est donc antérieur). Sans changement enregistré, il vaut encore : couper toutes les
+ * propositions en cours priverait les formateurs de leur réponse pour un risque nul.
+ */
+export function adresseDuJetonMissionValide(
+  empreinteSignee: string | undefined,
+  t: {
+    readonly statut: string;
+    readonly email: string;
+    readonly emailRemplaceAt: Date | null;
+  },
+): boolean {
+  if (t.statut !== "sous_traitant") return true;
+  if (empreinteSignee === undefined) return t.emailRemplaceAt === null;
+  return empreinteSignee === empreinteSessionFormateur(t.email);
+}
+
 export interface MissionParJeton {
   id: string;
   statut: MissionFormateurStatut;
@@ -1118,7 +1165,17 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
         statut: true,
         role: true,
         echeanceReponseAt: true,
-        trainer: { select: { id: true, prenom: true, nom: true, finCollaborationAt: true } },
+        trainer: {
+          select: {
+            id: true,
+            prenom: true,
+            nom: true,
+            finCollaborationAt: true,
+            statut: true,
+            email: true,
+            emailRemplaceAt: true,
+          },
+        },
         session: {
           select: {
             ...SESSION_POUR_MISSION,
@@ -1131,6 +1188,8 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
     // Lot E (M14) — garde commune : collaboration close (jeton avec ou sans version) ou
     // version dépassée → le lien ne désigne plus rien.
     if (!ecritureFormateurPermise(verified.version, m.trainer)) return null;
+    // V1-D-1 — adresse changée depuis l'envoi : réponse NEUTRE, celle d'un lien inconnu.
+    if (!adresseDuJetonMissionValide(verified.empreinte, m.trainer)) return null;
     return {
       id: m.id,
       statut: m.statut,
