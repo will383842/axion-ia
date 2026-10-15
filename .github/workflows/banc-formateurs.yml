@@ -56,10 +56,40 @@ permissions:
   contents: read
 
 jobs:
-  banc:
-    name: Banc formateurs · file, worker, puits SMTP
+  # 🔑 UN JOB PAR ÉQUIPE (2026-10-15). Réunis dans un seul job, les scénarios
+  # des équipes A, B et D se gênaient : une base, un Redis, un worker partagés,
+  # et trois verrous d'équipe qui ne se voient pas (run 38663145178 : E02, E03,
+  # E04, E27, E33, E37, E39 rouges, parfois ED5 et ED6). Chaque entrée de la
+  # matrice a ses PROPRES conteneurs de service — sa base, son Redis, son puits
+  # SMTP, son antivirus — et son propre worker. Le découpage vit dans
+  # `scripts/banc-formateurs/groupes.mjs`, qui vérifie à chaque run que chaque
+  # spec `@formateurs` appartient à un groupe et un seul.
+  equipe:
+    name: Banc formateurs · ${{ matrix.titre }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    strategy:
+      # Une équipe rouge n'arrête pas les autres : on veut savoir laquelle.
+      fail-fast: false
+      matrix:
+        include:
+          - groupe: A
+            titre: "équipe A · candidature et contrat"
+            workers: 4
+          - groupe: B
+            titre: "équipe B · missions"
+            workers: 4
+          - groupe: C
+            titre: "équipe C · argent"
+            workers: 4
+          # D bascule les interrupteurs MÈRES (E39, E40, ED5, ED6…) : un seul
+          # worker Playwright, en plus de son verrou d'interrupteurs.
+          - groupe: D
+            titre: "équipe D · sécurité"
+            workers: 1
+          - groupe: socle
+            titre: "socle · file et rendez-vous"
+            workers: 4
     services:
       postgres:
         image: pgvector/pgvector:pg16
@@ -139,6 +169,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Chaque spec du banc a son groupe
+        run: node scripts/banc-formateurs/groupes.mjs verifier
       - name: Generate Prisma client
         run: pnpm prisma:generate
       - name: Migrer et semer la base du banc
@@ -196,8 +228,23 @@ jobs:
         # `--retries=0` : un banc qui ne passe qu'au troisième essai ne prouve
         # pas ce qu'il affirme. Pas de navigateur : aucun spec du banc n'ouvre
         # de page (une spec d'écran reste dans Gate B, sans le tag).
-        run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0
-        # Les scénarios de vérification passent un par un (verrou) : ~16 min mesurées.
+        # Un groupe vide (l'équipe C avant sa fusion) ne lance rien et le dit.
+        env:
+          GROUPE: ${{ matrix.groupe }}
+          WORKERS_BANC: ${{ matrix.workers }}
+        run: |
+          set -e
+          # Liste lue d'abord dans une variable : sous `set -e`, un échec du
+          # script arrête l'étape (une substitution de processus le tairait).
+          LISTE="$(node scripts/banc-formateurs/groupes.mjs liste "$GROUPE")"
+          if [ -z "$LISTE" ]; then
+            echo "::notice::banc @formateurs : aucun spec dans le groupe $GROUPE"
+            exit 0
+          fi
+          mapfile -t FICHIERS <<< "$LISTE"
+          printf '%s\n' "${FICHIERS[@]}"
+          pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0 --workers="$WORKERS_BANC" "${FICHIERS[@]}"
+        # Les scénarios de l'équipe A passent un par un (verrou) : ~13 min mesurées.
         timeout-minutes: 50
       - name: Journal du worker
         if: ${{ always() }}
@@ -208,10 +255,27 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
-          name: banc-formateurs-${{ github.run_id }}-${{ github.run_attempt }}
+          name: banc-formateurs-${{ matrix.groupe }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             playwright-report/
             /tmp/banc-formateurs/worker.log
             /tmp/banc-formateurs/r2/r2.log
           retention-days: 7
           if-no-files-found: ignore
+
+  # Le nom que la file de fusion, les autres PR et la nuit connaissent : vert
+  # seulement si CHAQUE équipe l'est. `always()` : une équipe rouge doit rendre
+  # ce job rouge, pas « sauté ».
+  banc:
+    name: Banc formateurs · file, worker, puits SMTP
+    needs: equipe
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Toutes les équipes sont vertes
+        env:
+          RESULTAT: ${{ needs.equipe.result }}
+        run: |
+          echo "équipes du banc : $RESULTAT"
+          test "$RESULTAT" = "success"
