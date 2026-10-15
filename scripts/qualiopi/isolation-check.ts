@@ -588,6 +588,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Banc @formateurs, scénarios missions (vérification n° 1, équipe B). Les
+  //    specs ne nomment le domaine qu'en CHAÎNES, passées au processus `tsx` du
+  //    banc ; ce module d'aides, chargé DANS ce processus, est le seul à
+  //    l'importer : il produit un contrat-cadre réel d'une version antérieure
+  //    (mêmes briques que `preparerContratCadre`, qui n'émet que la dernière)
+  //    et rend un e-mail en file. Nommé seul, pas le répertoire.
+  "tests/e2e/fixtures/formateurs/missions-aides-serveur.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
