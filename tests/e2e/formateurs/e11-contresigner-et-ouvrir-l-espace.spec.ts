@@ -8,6 +8,8 @@
 
 import { expect, test } from "@playwright/test";
 
+import { MOTIFS_ORANGE } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
+
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
 import {
@@ -87,22 +89,33 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
       expect(ecran.valeur.faits.pieces.cv.fichierPresent).toBe(true);
       expect(ecran.valeur.faits.pieces.rib.fichierPresent).toBe(true);
 
-      const w4 = await etape<{ ok: boolean; error?: string }>({
-        etape: "contresigner-w4",
-        args: {
-          saisie: {
-            trainerId,
-            codeAttestation: "",
-            attestationAuthentique: false,
-            piecesVerifiees: true,
-            formationIds: [formation.id],
-            orangeVerifie: false,
-            motifOrange: null,
+      const contresigner = (orange: { orangeVerifie: boolean; motifOrange: string | null }) =>
+        etape<{ ok: boolean; error?: string }>({
+          etape: "contresigner-w4",
+          args: {
+            saisie: {
+              trainerId,
+              codeAttestation: "",
+              attestationAuthentique: false,
+              piecesVerifiees: true,
+              formationIds: [formation.id],
+              ...orange,
+            },
           },
-        },
-        session: decor.admin,
-        registre: registreDe("Maël"),
-      });
+          session: decor.admin,
+          registre: registreDe("Maël"),
+        });
+
+      // La contresignature relit le registre EN DIRECT, sans la liste publique des
+      // organismes de formation (`sourceRegistreAnnuaire`) : elle inscrit un orange
+      // « liste muette » que l'écran demande de vérifier. C'est le parcours documenté
+      // de W-4 : contrat contresigné, puis « rechargez la page, vérifiez, cliquez de
+      // nouveau ». (Oracle d'origine en un seul clic : il ne tenait pas compte de cette
+      // relecture, que V1-A-6 masquait.)
+      const premier = await contresigner({ orangeVerifie: false, motifOrange: null });
+      expect(premier.valeur.ok).toBe(false);
+      expect(premier.valeur.error).toMatch(/^Contrat contresigné\. Le registre relu/);
+      const w4 = await contresigner({ orangeVerifie: true, motifOrange: MOTIFS_ORANGE[2] });
       expect(w4.valeur.ok, w4.valeur.error).toBe(true);
       const fiche = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
       expect(fiche.actif).toBe(true);
