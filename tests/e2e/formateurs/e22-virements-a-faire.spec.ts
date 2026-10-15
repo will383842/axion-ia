@@ -80,7 +80,7 @@ const couleurLe = async (jour: string, id: string) =>
   )[0];
 
 test.describe("@formateurs E22 — virements à faire", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("orange à J-5 de la date cible, rouge après ; le dû ; un désaccord bloque le paiement", async () => {

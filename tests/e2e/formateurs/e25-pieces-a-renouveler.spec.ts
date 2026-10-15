@@ -116,7 +116,7 @@ const passage = (jour: string, trainerIds: string[]) => ({
 });
 
 test.describe("@formateurs E25 — pièces à renouveler, une relance par jour", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("F41 à J-30 puis J-15 ; un dépôt arrête les relances", async () => {

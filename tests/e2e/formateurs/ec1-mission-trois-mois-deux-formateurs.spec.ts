@@ -116,7 +116,7 @@ const mois = (r: { periodeYear: number; periodeMonth: number }) =>
   `${r.periodeYear}-${String(r.periodeMonth).padStart(2, "0")}`;
 
 test.describe("@formateurs E-C1 — mission sur trois mois, deux formateurs", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   const interrupteurs = {

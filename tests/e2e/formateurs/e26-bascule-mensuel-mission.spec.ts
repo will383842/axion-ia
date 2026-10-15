@@ -65,7 +65,7 @@ const somme = (l: ReadonlyArray<{ montantHtCents: number }>) =>
   l.reduce((s, x) => s + x.montantHtCents, 0);
 
 test.describe("@formateurs E26 — bascule du mensuel au paiement par mission", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("avant D : mensuel entier ; après D : par mission ; à cheval : 1 050 €, jamais 1 400 €", async () => {

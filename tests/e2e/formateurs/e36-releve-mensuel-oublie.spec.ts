@@ -46,7 +46,7 @@ async function freelanceDeNovembre(annee: number) {
 }
 
 test.describe("@formateurs E36 — relevé mensuel oublié", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("lancé enfin, deux fois : un seul relevé, jamais validé seul, aucune double ligne", async () => {

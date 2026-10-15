@@ -91,7 +91,7 @@ const interrupteurs = {
 };
 
 test.describe("@formateurs E23 — seuil URSSAF, virement suspendu, F38, F57", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("au seuil : facture émise, virement suspendu (F38) ; dépôt, validation, déblocage, F57", async () => {

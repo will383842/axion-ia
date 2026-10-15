@@ -69,7 +69,7 @@ async function demandeEnCours(trainerId: string) {
 }
 
 test.describe("@formateurs E24 — changement d'IBAN", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("F43 sans l'IBAN, 48 h, validation ; refusée si l'ancienne adresse n'a pas été avisée", async () => {

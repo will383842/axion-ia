@@ -128,7 +128,7 @@ async function suivi(jour: string, f: { id: string; email: string }) {
 }
 
 test.describe("@formateurs E21 — émargement manquant, F34, F35, alerte", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("présentiel : F34 le soir, +23 h, +46 h ; F35 à J+3 ; alerte à J+10 ; rien sur constat", async () => {

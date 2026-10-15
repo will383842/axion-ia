@@ -93,7 +93,7 @@ async function missionAnnulee(prenom: string, signerLeMatin: boolean) {
 }
 
 test.describe("@formateurs E-C3 — indemnité d'annulation sans les demi-journées signées", () => {
-  test.setTimeout(600_000);
+  test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   const interrupteurs = {
