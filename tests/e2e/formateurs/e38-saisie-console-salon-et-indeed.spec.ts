@@ -117,11 +117,11 @@ test.describe("@formateurs E38 — saisie en console : salon et Indeed", () => {
     });
   });
 
-  // V1-A-3 — une réponse venue de l'adresse relais est IGNORÉE en silence : le relevé
-  // des réponses ne rapproche que par l'empreinte de l'adresse, nulle pour un relais
-  // (`reponses-entrantes-candidature.ts`), et il n'existe aucune file « à vérifier »
-  // pour les e-mails. Cf. rapport de vérification.
-  test.fixme("V1-A-3 — une réponse depuis l'adresse relais tombe « à vérifier »", async () => {
+  // V1-A-3 — une réponse venue de l'adresse relais ne peut rattacher personne avec certitude
+  // (pas d'empreinte) : elle est rangée « à vérifier », visible dans la file de la console, et
+  // n'arrête rien avant le clic humain. L'oracle ne demande pas qu'elle soit « reconnue »
+  // (rattachée par empreinte) : il demande qu'elle soit rangée, visible, et sans effet.
+  test("V1-A-3 — une réponse depuis l'adresse relais tombe « à vérifier »", async () => {
     const indeed = relais();
     const id = await ajouter({
       prenom: "Ewen",
@@ -131,15 +131,38 @@ test.describe("@formateurs E38 — saisie en console : salon et Indeed", () => {
       envoyerInvitation: false,
     });
     idsRelais.push(id);
-    const recu = plus(new Date(), { minutes: -5 });
-    const releve = await etape<{ reconnus: number }>({
+    const maintenant = new Date();
+    const recu = plus(maintenant, { minutes: -5 });
+    const releve = await etape<{ reconnus: number; aVerifier: number }>({
       etape: "releve-reponses",
       args: {
-        maintenant: new Date().toISOString(),
+        maintenant: maintenant.toISOString(),
         messages: [{ cle: id, de: indeed, recuLe: recu.toISOString(), sujet: "Re: candidature" }],
       },
     });
-    expect(releve.valeur.reconnus).toBe(1);
-    expect(await prisma.jobApplicationInboundReply.count({ where: { applicationId: id } })).toBe(1);
+    // Pas rattachée par empreinte : rangée à vérifier.
+    expect(releve.valeur.reconnus).toBe(0);
+    expect(releve.valeur.aVerifier).toBe(1);
+    expect(
+      await prisma.jobApplicationInboundReply.count({ where: { applicationId: id, auto: false } }),
+    ).toBe(1);
+
+    // Visible dans la file de la console.
+    const file = await etape<Array<{ applicationId: string }>>({
+      etape: "reponses-a-verifier",
+      args: { maintenant: maintenant.toISOString() },
+    });
+    expect(file.valeur.map((l) => l.applicationId)).toContain(id);
+
+    // Sans effet : aucune réponse « formateur » (qui arrêterait les relances), aucune
+    // invitation, aucun e-mail vers l'adresse relais, candidature ni décidée ni close.
+    expect(await prisma.reponseEntranteFormateur.count({ where: { candidatureId: id } })).toBe(0);
+    const apres = await prisma.jobApplication.findUniqueOrThrow({ where: { id } });
+    expect(apres).toMatchObject({
+      invitationFormateurAt: null,
+      clotureSansSuiteAt: null,
+      status: "new",
+    });
+    expect(await gabaritsVers(indeed)).toEqual([]);
   });
 });

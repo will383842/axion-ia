@@ -114,8 +114,9 @@ export default async function MonDossierPage({
           <h2 className="text-lg font-semibold">Compte bancaire et adresse</h2>
           <p className="mt-2 text-sm opacity-80">
             Une modification est vérifiée par notre équipe avant d&apos;être prise en compte, au
-            plus tôt 48 heures après votre demande. En attendant, vos virements continuent sur le
-            compte enregistré. Un e-mail vous confirme chaque demande de changement de compte.
+            plus tôt 48 heures après votre demande. Pendant cette vérification, un changement de
+            compte bancaire met vos virements en attente ; ils sont ensuite versés sur le nouveau
+            compte. Un e-mail vous confirme chaque demande de changement de compte.
           </p>
           <div className="mt-4 flex flex-col gap-4">
             <div className="rounded-lg border p-4">

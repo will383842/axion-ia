@@ -212,6 +212,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Modèles « formateur » du composeur (lot L0c-2) : `formateurs.modeles_composeur`, lu par
   //    la fiche de candidature (proposés) et l'action de réponse (revérifiés).
   "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/page.tsx",
+  // Lot 5 (V1-A-4) — la tuile « Invitées, à décider » du suivi des candidatures : une lecture
+  //    seule (`listerInvitationsADecider`) des faits de l'invitation formateur.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/pilotage/page.tsx",
   "src/features/admin-job-applications/reply-actions.ts",
   // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
   //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.
@@ -588,6 +591,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
+  //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
+  //    paiement des formateurs (passage par mission, autofacture, virements,
+  //    relances, IBAN) avec l'instant en paramètre : une copie de cette logique
+  //    dans le test ne prouverait rien. Il ne fait que jouer des étapes et rendre
+  //    leur résultat ; les specs constatent en base.
+  "tests/e2e/fixtures/formateurs/argent-executer.ts",
   // ── Banc @formateurs, scénarios missions (vérification n° 1, équipe B). Les
   //    specs ne nomment le domaine qu'en CHAÎNES, passées au processus `tsx` du
   //    banc ; ce module d'aides, chargé DANS ce processus, est le seul à

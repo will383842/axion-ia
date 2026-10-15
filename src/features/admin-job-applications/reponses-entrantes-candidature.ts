@@ -63,7 +63,7 @@
 // ⚠️ Tourne dans le WORKER (tsx, hors Next) : ni `server-only`, ni `@/env`.
 
 import { prisma } from "@/lib/prisma";
-import { encryptPii } from "@/lib/pii-crypto";
+import { decryptPii, encryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import {
@@ -118,6 +118,8 @@ export interface CompteRenduReponsesCandidats {
   readonly dejaConnues: number;
   /** Personnes des deux mondes : remises au passage suivant (l'autre relevé ne les a pas vues). */
   readonly remises: number;
+  /** V1-A-3 : réponses venues d'une adresse relais, rangées « à vérifier ». */
+  readonly aVerifier: number;
   readonly alertes: number;
   readonly erreurs: number;
   readonly tronque?: true;
@@ -137,6 +139,7 @@ function vide(suspendu?: CompteRenduReponsesCandidats["suspendu"]): CompteRenduR
     enregistrees: { humaines: 0, automatiques: 0 },
     dejaConnues: 0,
     remises: 0,
+    aVerifier: 0,
     alertes: 0,
     erreurs: 0,
   };
@@ -240,6 +243,55 @@ async function rattacher(messages: readonly MessageZoho[]): Promise<Rattachement
       // part n'est pas une réponse (premier contact, autre sujet).
       const envoi = candidats.find((x) => x.le < m.receivedAt.getTime());
       if (envoi) sortie.push({ message: m, empreinte, dossier: envoi.d });
+    }
+  }
+  return sortie;
+}
+
+/** V1-A-3 : un message venu d'une adresse relais, et la candidature saisie à cette adresse. */
+export interface RattachementRelais {
+  readonly message: MessageZoho;
+  readonly empreinte: string;
+  readonly dossier: Dossier;
+}
+
+/**
+ * V1-A-3 — les messages que le rapprochement par empreinte n'a pas pris, venus de
+ * l'adresse d'une candidature SANS empreinte (saisie en console, adresse relais d'un
+ * site d'annonces). Une adresse relais n'identifie personne avec certitude : le message est
+ * rangé « à vérifier », il n'arrête aucune relance avant le clic humain.
+ */
+async function rattacherRelais(
+  messages: readonly MessageZoho[],
+  dejaRattaches: readonly RattachementCandidat[],
+): Promise<RattachementRelais[]> {
+  const pris = new Set(dejaRattaches.map((r) => r.message.messageId));
+  const parAdresse = new Map<string, MessageZoho[]>();
+  for (const m of messages) {
+    if (pris.has(m.messageId)) continue;
+    const adresse = adresseExpediteur(m.fromAddress)?.toLowerCase();
+    if (adresse) parAdresse.set(adresse, [...(parAdresse.get(adresse) ?? []), m]);
+  }
+  if (parAdresse.size === 0) return [];
+
+  const sansEmpreinte = (await prisma.jobApplication.findMany({
+    where: { emailHash: null, origine: "console" },
+    orderBy: { submittedAt: "desc" },
+    take: 500,
+    select: { id: true, email: true, emailHash: true, offerTitleSnap: true },
+  })) as Array<Dossier & { email: string }>;
+
+  const sortie: RattachementRelais[] = [];
+  for (const d of sansEmpreinte) {
+    let adresse: string;
+    try {
+      adresse = decryptPii(d.email).trim().toLowerCase();
+    } catch {
+      continue;
+    }
+    for (const m of parAdresse.get(adresse) ?? []) {
+      const empreinte = hashEmailForLookup(adresse);
+      if (empreinte) sortie.push({ message: m, empreinte, dossier: d });
     }
   }
   return sortie;
@@ -485,6 +537,97 @@ export async function passerReponsesEntrantesCandidats(
     }
   }
 
+  // V1-A-3 — les réponses venues d'une adresse relais : rangées « à vérifier ».
+  let aVerifier = 0;
+  try {
+    const relais = await rattacherRelais(liste.messages, rattachements);
+    if (relais.length > 0) {
+      const deja = await prisma.jobApplicationInboundReply.findMany({
+        where: { zohoMessageId: { in: relais.map((r) => r.message.messageId) } },
+        select: { zohoMessageId: true },
+      });
+      const connus = new Set(deja.map((d) => d.zohoMessageId));
+      for (const r of relais) {
+        const m = r.message;
+        if (connus.has(m.messageId)) {
+          dejaConnues += 1;
+          continue;
+        }
+        let entetes: Entetes | null = null;
+        try {
+          entetes = await client.lireEntetes(m.folderId, m.messageId);
+        } catch {
+          entetes = null;
+        }
+        const objet = objetEnregistre(m.subject);
+        const auto = estReponseAutomatique({ entetes, objet });
+        const internetMessageId = entetes?.["message-id"]?.[0]?.trim().slice(0, 500) || null;
+        const extrait = extraitCourt(m.summary);
+        const recent = debut.getTime() - m.receivedAt.getTime() < RECENT_MS;
+        try {
+          await prisma.$transaction(async (tx) => {
+            const ligne = await tx.jobApplicationInboundReply.create({
+              data: {
+                applicationId: r.dossier.id,
+                receivedAt: m.receivedAt,
+                fromEmailHash: r.empreinte,
+                subject: objet,
+                excerpt: extrait ? encryptPii(extrait) : null,
+                zohoMessageId: m.messageId,
+                zohoFolderId: m.folderId || null,
+                internetMessageId,
+                auto,
+              },
+              select: { id: true },
+            });
+            if (auto) return;
+            await consignerEvenement(
+              {
+                applicationId: r.dossier.id,
+                type: "email_recu",
+                authorId: null,
+                authorName: AUTEUR_RELEVE,
+                occurredAt: m.receivedAt,
+                summary: "Réponse reçue depuis une adresse relais : à vérifier",
+                body: null,
+                meta: {
+                  source: "zoho",
+                  aVerifier: true,
+                  reponseRecueId: ligne.id,
+                  zohoMessageId: m.messageId,
+                },
+              },
+              tx,
+            );
+            if (recent) {
+              await tx.jobApplication.updateMany({
+                where: { id: r.dossier.id },
+                data: { needsAttention: true },
+              });
+            }
+          });
+          if (!auto) aVerifier += 1;
+        } catch (e) {
+          if ((e as { code?: unknown } | null)?.code === "P2002") {
+            dejaConnues += 1;
+            continue;
+          }
+          erreurs += 1;
+          console.error(
+            `[reponses-candidats] réponse relais ${m.messageId} non enregistrée :`,
+            e instanceof Error ? e.message : String(e),
+          );
+        }
+      }
+    }
+  } catch (e) {
+    erreurs += 1;
+    console.warn(
+      "[reponses-candidats] rapprochement des adresses relais impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+
   // CAMP-4 — les réponses des formateurs indépendants, dans CE relevé (même liste, même
   // curseur). Interrupteur `formateurs.reponses_formateurs` coupé : rien. Ne lève jamais ;
   // une écriture ratée retient le curseur, comme pour une candidature.
@@ -526,6 +669,7 @@ export async function passerReponsesEntrantesCandidats(
     enregistrees,
     dejaConnues,
     remises,
+    aVerifier,
     alertes,
     erreurs,
     ...(liste.complet ? {} : { tronque: true as const }),

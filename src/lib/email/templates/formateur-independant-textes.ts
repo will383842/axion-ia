@@ -865,7 +865,7 @@ export const TEXTES_FORMATEUR = {
         paragraphes: [
           "Il manque votre signature sur les feuilles de présence du [jour] ([N] demi-journée(s)).",
           "Elle est nécessaire pour établir votre facture.",
-          "Signez-les depuis votre espace, ou déposez la feuille papier signée.",
+          "Signez-les depuis votre espace.",
         ],
         boutons: ["Signer mes feuilles"],
       },
@@ -1245,7 +1245,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "Demande de modification de vos coordonnées bancaires",
         paragraphes: [
           "Nous avons reçu le [date] une demande de modification de vos coordonnées bancaires.",
-          "Elle sera prise en compte après vérification, au plus tôt dans 48 heures. En attendant, vos virements continuent sur l'ancien compte.",
+          "Elle sera prise en compte après vérification, au plus tôt dans 48 heures. Pendant cette vérification, vos virements sont mis en attente ; ils seront ensuite versés sur le nouveau compte.",
           "Vous n'êtes pas à l'origine de cette demande ? Répondez immédiatement à ce message.",
         ],
         boutons: [],

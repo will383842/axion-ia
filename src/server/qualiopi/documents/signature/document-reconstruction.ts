@@ -72,6 +72,9 @@ export const COLONNES_SCELLEES_DOCUMENT: ReadonlyArray<keyof LigneDocumentSignat
   "consentementVersion",
   "signeAt",
   "prevHash",
+  // Scellé à partir de la version 2 du tuple (V1-A-7) ; une ligne de version 1 qui
+  // en porterait un est jugée irrecalculable.
+  "facteurVerification",
 ];
 
 /**

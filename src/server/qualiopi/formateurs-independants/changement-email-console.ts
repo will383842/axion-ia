@@ -10,6 +10,12 @@
  *    changer l'adresse, re-requalifier contournait la garde) ;
  *  - les liens du dossier sont révoqués (`accesVersion + 1`) dans la MÊME écriture
  *    que l'adresse ;
+ *  - vérification 1 (V1-A-8) : dans la MÊME transaction, les codes de signature
+ *    encore valables tombent (`ecrireFicheAvecChangementEmail`) — le code reçu à
+ *    l'ancienne adresse ne signe plus le contrat ;
+ *  - vérification 1 (V1-C-6, V1-D-1) : l'adresse remplacée est gardée, datée
+ *    (`emailRemplace`, `emailRemplaceAt`) — F43 la prévient pendant 30 jours d'un
+ *    changement de compte, et un lien de mission émis avant la correction tombe ;
  *  - les liens de connexion encore en attente sont consommés (avant l'écriture, échec
  *    = refus ; puis une seconde fois après), et les sessions de
  *    l'espace ouvertes sous l'ancienne adresse tombent (empreinte d'adresse portée
@@ -27,6 +33,9 @@
 import { prisma } from "@/lib/prisma";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
+import { invaliderCodesSignatureFormateur } from "@/server/qualiopi/documents/signature/code-signature";
+
+import type { Prisma } from "../../../../prisma/generated/client";
 
 import { envoyer } from "./envois";
 
@@ -115,11 +124,52 @@ export function journalChangementEmail(changement: ChangementEmailIndependant | 
   return changement === null ? {} : { emailIndependantModifie: true };
 }
 
-/** À étaler dans le `data` de l'écriture : les liens du dossier tombent avec l'adresse. */
-export function donneesChangementEmail(changement: ChangementEmailIndependant | null): {
+/**
+ * À étaler dans le `data` de l'écriture : les liens du dossier tombent avec l'adresse,
+ * et l'adresse remplacée est gardée, datée.
+ */
+export function donneesChangementEmail(
+  changement: ChangementEmailIndependant | null,
+  maintenant: Date = new Date(),
+): {
   accesVersion?: { increment: number };
+  emailRemplace?: string;
+  emailRemplaceAt?: Date;
 } {
-  return changement === null ? {} : { accesVersion: { increment: 1 } };
+  return changement === null
+    ? {}
+    : {
+        accesVersion: { increment: 1 },
+        emailRemplace: changement.ancienneAdresse,
+        emailRemplaceAt: maintenant,
+      };
+}
+
+/**
+ * L'ÉCRITURE de la fiche. Avec un changement d'adresse d'un indépendant : une seule
+ * transaction porte l'adresse, la révocation des liens du dossier, l'adresse
+ * remplacée ET l'invalidation des codes de signature vivants (V1-A-8). Un échec de
+ * l'une annule tout. Sans changement : l'écriture d'avant, inchangée.
+ */
+export async function ecrireFicheAvecChangementEmail(input: {
+  readonly trainerId: string;
+  readonly data: Prisma.TrainerUpdateInput;
+  readonly changement: ChangementEmailIndependant | null;
+  readonly maintenant?: Date;
+}): Promise<void> {
+  const { trainerId, data, changement } = input;
+  if (changement === null) {
+    await prisma.trainer.update({ where: { id: trainerId }, data });
+    return;
+  }
+  const maintenant = input.maintenant ?? new Date();
+  await prisma.$transaction(async (tx) => {
+    await tx.trainer.update({
+      where: { id: trainerId },
+      data: { ...data, ...donneesChangementEmail(changement, maintenant) },
+    });
+    await invaliderCodesSignatureFormateur(tx, trainerId, maintenant);
+  });
 }
 
 /**

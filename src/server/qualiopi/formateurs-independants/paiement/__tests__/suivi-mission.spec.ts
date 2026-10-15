@@ -24,6 +24,8 @@ const emailLogs = vi.fn();
 const formateurs = vi.fn();
 const corbeille = vi.fn();
 const repriseF37 = vi.fn();
+const runMensuel = vi.fn();
+const f38Dus = vi.fn();
 /** Journal d'activité en mémoire : la trace « alerte partie » s'y lit et s'y écrit. */
 const journal: Array<{ action: string; targetId: string | null; changes: { cle?: string } }> = [];
 const journalEnPanne = { oui: false };
@@ -62,6 +64,12 @@ vi.mock("@/lib/telegram", () => ({ sendTelegram: (...a: unknown[]) => telegram(.
 vi.mock("@/server/qualiopi/remuneration/verrou-remuneration", () => ({
   prendreVerrousRemuneration: (...a: unknown[]) => verrous(...a),
   DELAIS_TRANSACTION_SOUS_VERROU_REMUNERATION: {},
+}));
+vi.mock("@/server/qualiopi/remuneration/statements", () => ({
+  runRemunerationMensuelle: (...a: unknown[]) => runMensuel(...a),
+}));
+vi.mock("../virement-en-attente-suivi", () => ({
+  envoyerF38Dus: (...a: unknown[]) => f38Dus(...a),
 }));
 vi.mock("../../envois", () => ({ envoyer: (...a: unknown[]) => envoyer(...a) }));
 vi.mock("../corrections-mission", () => ({ traiterTropPercu: (...a: unknown[]) => traiter(...a) }));
@@ -117,6 +125,8 @@ beforeEach(() => {
   base();
   candidats.mockResolvedValue([]);
   repriseF37.mockResolvedValue(0);
+  runMensuel.mockResolvedValue({ relevesEcrits: 0 });
+  f38Dus.mockResolvedValue(0);
   emailLogs.mockResolvedValue(0);
   corbeille.mockResolvedValue(0);
   formateurs.mockResolvedValue([
@@ -143,6 +153,17 @@ describe("passerSuiviMission", () => {
     expect(repriseF37).not.toHaveBeenCalled();
   });
 
+  it("V1-C-8 — chaque passage envoie les F38 dus (attestation en cause) ; coupé : jamais", async () => {
+    f38Dus.mockResolvedValue(1);
+    const maintenant = new Date("2026-12-03T08:00:00Z");
+    expect((await passerSuiviMission(maintenant)).f38).toBe(1);
+    expect(f38Dus).toHaveBeenCalledWith(maintenant);
+    f38Dus.mockClear();
+    bascule.mockResolvedValue(null);
+    expect((await passerSuiviMission(maintenant)).f38).toBe(0);
+    expect(f38Dus).not.toHaveBeenCalled();
+  });
+
   it("le 1er du mois : un rappel interne, aucun calcul", async () => {
     const b = await passerSuiviMission(new Date("2026-12-01T08:00:00Z"));
     expect(b.rappelBrouillon).toBe(true);
@@ -155,6 +176,48 @@ describe("passerSuiviMission", () => {
     const b = await passerSuiviMission(new Date("2026-12-06T08:00:00Z"));
     expect(b.alerteNonValides).toBe(1);
     expect(telegram.mock.calls.at(-1)![0].body).toMatch(/1 relevé/);
+  });
+
+  it("V1-C-3 — J+5, mois écoulé à payer mais AUCUN relevé : l'oubli est signalé (simulation seule)", async () => {
+    // Aucun relevé de novembre en base ; la simulation du run en préparerait un.
+    base({ statuts: [] });
+    runMensuel.mockResolvedValue({ relevesEcrits: 1 });
+    expect((await passerSuiviMission(new Date("2026-12-05T08:00:00Z"))).alerteNonValides).toBe(0);
+    expect(runMensuel).not.toHaveBeenCalled();
+    const b = await passerSuiviMission(new Date("2026-12-06T08:00:00Z"));
+    expect(b.alerteNonValides).toBe(1);
+    expect(b.relevesNonLances).toBe(1);
+    // Simulation SEULE : jamais d'écriture, jamais de validation automatique.
+    expect(runMensuel).toHaveBeenCalledWith({ year: 2026, month: 11 }, { dryRun: true });
+    expect(telegram.mock.calls.at(-1)![0].body).toMatch(/novembre 2026/);
+    expect(telegram.mock.calls.at(-1)![0].body).toMatch(/pas été lancé/);
+  });
+
+  it("V1-C-3 — calcul lancé (un relevé mensuel existe) : pas de simulation, pas d'alerte « non lancé »", async () => {
+    findMany.mockImplementation(async (a: { where: Record<string, unknown> }) =>
+      "periodeYear" in a.where ? [{ statut: "valide", origine: "releve_mensuel" }] : [],
+    );
+    runMensuel.mockResolvedValue({ relevesEcrits: 3 });
+    const b = await passerSuiviMission(new Date("2026-12-06T08:00:00Z"));
+    expect(runMensuel).not.toHaveBeenCalled();
+    expect(b.alerteNonValides).toBe(0);
+    expect(b.relevesNonLances).toBe(0);
+  });
+
+  it("V1-C-3 — rien à payer le mois écoulé : silence", async () => {
+    base({ statuts: [] });
+    runMensuel.mockResolvedValue({ relevesEcrits: 0 });
+    const b = await passerSuiviMission(new Date("2026-12-06T08:00:00Z"));
+    expect(b.alerteNonValides).toBe(0);
+    expect(telegram).not.toHaveBeenCalled();
+  });
+
+  it("V1-C-3 — la simulation échoue : le suivi continue, sans alerte inventée", async () => {
+    base({ statuts: [] });
+    runMensuel.mockRejectedValue(new Error("base indisponible"));
+    const b = await passerSuiviMission(new Date("2026-12-06T08:00:00Z"));
+    expect(b.etat).toBe("fait");
+    expect(b.relevesNonLances).toBe(0);
   });
 
   it("trop-perçu sans relevé suivant : demande marquée, F54 avec le reste TTC (10 000 HT → 120,00 €)", async () => {

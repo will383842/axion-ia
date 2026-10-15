@@ -26,9 +26,19 @@ const db = vi.hoisted(() => {
       findMany: vi.fn(),
     },
     activityLog: { create: vi.fn() },
+    formateurMagicLink: { updateMany: vi.fn() },
     $transaction: vi.fn(),
+    /** Vrai pendant l'exécution d'une transaction : ce qui s'écrit DEDANS se voit. */
+    enTransaction: false,
   };
-  d.$transaction.mockImplementation(async (fn: (tx: unknown) => unknown) => fn(d));
+  d.$transaction.mockImplementation(async (fn: (tx: unknown) => unknown) => {
+    d.enTransaction = true;
+    try {
+      return await fn(d);
+    } finally {
+      d.enTransaction = false;
+    }
+  });
   return d;
 });
 const allume = vi.hoisted(() => vi.fn());
@@ -75,6 +85,8 @@ const fiche = (over: Record<string, unknown> = {}) => ({
   prenom: "Camille",
   email: "camille@example.test",
   ibanEmpreinte: "ancienne-empreinte",
+  emailRemplace: null,
+  emailRemplaceAt: null,
   ...over,
 });
 
@@ -88,6 +100,7 @@ beforeEach(() => {
   db.demandeChangementFormateur.updateMany.mockResolvedValue({ count: 1 });
   db.activityLog.create.mockResolvedValue({});
   db.trainer.update.mockResolvedValue({});
+  db.formateurMagicLink.updateMany.mockResolvedValue({ count: 0 });
 });
 
 const tout = () =>
@@ -162,6 +175,72 @@ describe("M12 — demande de changement d'IBAN", () => {
     const r = await demanderChangementIban(ID, IBAN, MAINTENANT);
     expect(r).toEqual({ ok: false, message: expect.stringMatching(/déjà en cours/) });
     expect(notify).not.toHaveBeenCalled();
+  });
+});
+
+describe("V1-C-6 — F43 part AUSSI à l'adresse remplacée depuis moins de 30 jours", () => {
+  const JOUR = 24 * 60 * 60 * 1000;
+  const versAncienne = () =>
+    envoyer.mock.calls.filter((c) => c[0].destinataire === "ancienne@example.test");
+
+  it("adresse remplacée il y a 10 jours : F43 aux DEUX adresses, avis distincts", async () => {
+    db.trainer.findUnique.mockResolvedValue(
+      fiche({
+        emailRemplace: "ancienne@example.test",
+        emailRemplaceAt: new Date(MAINTENANT.getTime() - 10 * JOUR),
+      }),
+    );
+    const r = await demanderChangementIban(ID, IBAN, MAINTENANT);
+    expect(r).toEqual({ ok: true });
+    const id = db.demandeChangementFormateur.create.mock.calls[0]![0].data.id;
+    expect(envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        gabarit: "formateur-iban-changement",
+        destinataire: "camille@example.test",
+        jobId: `fi-changement-${id}`,
+      }),
+    );
+    expect(versAncienne()).toHaveLength(1);
+    expect(versAncienne()[0]![0]).toMatchObject({
+      gabarit: "formateur-iban-changement",
+      jobId: `fi-changement-${id}-ancienne-adresse`,
+      payload: { prenom: "Camille" },
+    });
+    // L'avis à l'ancienne adresse ne porte jamais la nouvelle.
+    expect(JSON.stringify(versAncienne())).not.toContain("camille@example.test");
+  });
+
+  it("remplacée il y a 31 jours : seulement l'adresse actuelle", async () => {
+    db.trainer.findUnique.mockResolvedValue(
+      fiche({
+        emailRemplace: "ancienne@example.test",
+        emailRemplaceAt: new Date(MAINTENANT.getTime() - 31 * JOUR),
+      }),
+    );
+    await demanderChangementIban(ID, IBAN, MAINTENANT);
+    expect(envoyer).toHaveBeenCalledTimes(1);
+    expect(versAncienne()).toHaveLength(0);
+  });
+
+  it("aucune adresse remplacée, ou la même (casse comprise) : un seul F43", async () => {
+    await demanderChangementIban(ID, IBAN, MAINTENANT);
+    db.trainer.findUnique.mockResolvedValue(
+      fiche({ emailRemplace: "Camille@Example.test", emailRemplaceAt: MAINTENANT }),
+    );
+    await demanderChangementIban(ID, IBAN, MAINTENANT);
+    expect(envoyer).toHaveBeenCalledTimes(2);
+    expect(versAncienne()).toHaveLength(0);
+  });
+
+  it("l'envoi à l'ancienne adresse échoue : la demande reste enregistrée", async () => {
+    db.trainer.findUnique.mockResolvedValue(
+      fiche({ emailRemplace: "ancienne@example.test", emailRemplaceAt: MAINTENANT }),
+    );
+    envoyer.mockImplementation(async (e: { destinataire: string }) => {
+      if (e.destinataire === "ancienne@example.test") throw new Error("panne");
+      return "envoye";
+    });
+    expect(await demanderChangementIban(ID, IBAN, MAINTENANT)).toEqual({ ok: true });
   });
 });
 
@@ -265,6 +344,43 @@ describe("M12 — validation en console (W-7)", () => {
     );
     expect(envoyer.mock.calls[0]![0].payload.valeurs.nature).toBe("votre compte bancaire");
     expect(tout()).not.toMatch(/FR76|7890189/i);
+  });
+
+  it("🔴 V1-C-7 — IBAN validé : liens de connexion consommés et version d'accès augmentée, DANS la transaction", async () => {
+    db.demandeChangementFormateur.findUnique.mockResolvedValue(demande());
+    const dedans: string[] = [];
+    db.formateurMagicLink.updateMany.mockImplementation(async () => {
+      if (db.enTransaction) dedans.push("liens");
+      return { count: 2 };
+    });
+    db.trainer.update.mockImplementation(async () => {
+      if (db.enTransaction) dedans.push("fiche");
+      return {};
+    });
+    const r = await validerDemandeChangement({
+      demandeId: DEMANDE,
+      adminId: ADMIN,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toEqual({ ok: true });
+    expect(db.formateurMagicLink.updateMany).toHaveBeenCalledWith({
+      where: { trainerId: ID, usedAt: null },
+      data: { usedAt: MAINTENANT },
+    });
+    expect(db.trainer.update.mock.calls[0]![0].data.accesVersion).toEqual({ increment: 1 });
+    expect(dedans.sort()).toEqual(["fiche", "liens"]);
+  });
+
+  it("V1-C-7 — la consommation des liens échoue : rien n'est validé", async () => {
+    db.demandeChangementFormateur.findUnique.mockResolvedValue(demande());
+    db.formateurMagicLink.updateMany.mockRejectedValue(new Error("panne"));
+    const r = await validerDemandeChangement({
+      demandeId: DEMANDE,
+      adminId: ADMIN,
+      maintenant: MAINTENANT,
+    });
+    expect(r).toEqual({ ok: false, raison: "erreur" });
+    expect(envoyer).not.toHaveBeenCalled();
   });
 
   it("adresse validée : écrite sur l'adresse professionnelle", async () => {

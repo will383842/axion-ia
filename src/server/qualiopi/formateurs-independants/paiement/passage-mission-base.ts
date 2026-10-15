@@ -65,6 +65,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     select: {
       id: true,
       dateDebut: true,
+      statut: true,
       lieuType: true,
       modalite: true,
       formateurPrincipalId: true,
@@ -147,6 +148,8 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     // L'exigence (indépendant en nom propre, session finie le jour de l'allumage ou
     // après) et l'état du bilan ; rien du tout quand elle ne s'applique pas.
     const bilanDuCandidat = (trainerId: string) => {
+      // V1-C-5 : une session annulée n'a pas de bilan (le service le refuse).
+      if (s.statut === "annulee") return {};
       const fiche = fiches.get(trainerId);
       if (fiche === undefined || derniereJournee === null) return {};
       // Lot 8A — co-animation : seul le formateur de la dernière journée le remet ; les
@@ -177,6 +180,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
         trainerId,
         sessionId: s.id,
         premiereJournee,
+        derniereJourneeSession: derniereJournee,
         conditions:
           m && m.tarifHtCents !== null && m.regimeTvaFige !== null
             ? {
@@ -205,6 +209,8 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
         // pas encore lisible : faute de mieux, on ne paie que ce qui est signé.
         conditionFinanceurEnAttente: false,
         revendiqueParMission: parMission.has(`${trainerId}|${s.id}`),
+        // V1-C-5 : ses journées non signées ne sont plus prévues, les signées sont payées.
+        sessionAnnulee: s.statut === "annulee",
         ...bilanDuCandidat(trainerId),
       });
     }

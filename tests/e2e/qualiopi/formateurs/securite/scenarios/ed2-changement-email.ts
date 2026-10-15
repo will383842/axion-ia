@@ -19,7 +19,10 @@ import {
   empreinteSessionFormateur,
   versionSessionFormateur,
 } from "@/server/qualiopi/formateurs-independants/version-session";
-import { lireMissionParJeton } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  lireMissionParJeton,
+  signerJetonMission,
+} from "@/server/qualiopi/trainers/mission-formateur";
 
 import {
   adresse,
@@ -79,7 +82,14 @@ export default async function ed2(): Promise<unknown> {
         connexionA: await createFormateurMagicLink(a.id),
         dossierA: jetonDossierFormateur(a.id, 0, maintenant) ?? "",
         dossierB: jetonDossierFormateur(b.id, 1, maintenant) ?? "",
-        missionA: await signMagicToken({
+        // V1-D-1 — le lien tel que le produit l'émet (empreinte de l'adresse comprise)…
+        missionA: await signerJetonMission({
+          missionId: mission.id,
+          ttlMs: 7 * 86_400_000,
+          trainer: { email: a.email, finCollaborationAt: null },
+        }),
+        // … et un lien émis AVANT la correction, sans empreinte.
+        missionSansEmpreinteA: await signMagicToken({
           scope: "formateur_mission",
           resourceId: mission.id,
           ttlMs: 7 * 86_400_000,
@@ -93,6 +103,7 @@ export default async function ed2(): Promise<unknown> {
         dossierA: (await lireDossierParLien(a.id, liens.dossierA)) !== null,
         dossierB: (await lireDossierParLien(b.id, liens.dossierB)) !== null,
         mission: (await lireMissionParJeton(liens.missionA)) !== null,
+        missionSansEmpreinte: (await lireMissionParJeton(liens.missionSansEmpreinteA)) !== null,
       };
 
       seConnecter(direction);
@@ -108,6 +119,7 @@ export default async function ed2(): Promise<unknown> {
         dossierA: (await lireDossierParLien(a.id, liens.dossierA)) !== null,
         dossierB: (await lireDossierParLien(b.id, liens.dossierB)) !== null,
         mission: (await lireMissionParJeton(liens.missionA)) !== null,
+        missionSansEmpreinte: (await lireMissionParJeton(liens.missionSansEmpreinteA)) !== null,
       };
       poserCookie(FORMATEUR_COOKIE_NAME, null);
 
