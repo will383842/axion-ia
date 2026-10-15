@@ -189,13 +189,13 @@ describe("dossier en ligne", () => {
     ).toEqual([]);
   });
 
-  it("déposée, son code de sécurité reste demandé (vérifiée comme avant)", () => {
+  it("V2-N-4 — déposée sans son code de sécurité, elle ne bloque pas le dossier", () => {
     expect(
       manquesEtape3({
         nda: "84123456789",
         piecesDeposees: ["rib", "cv", "attestation_vigilance_urssaf"],
         codeUrssafSaisi: false,
       }),
-    ).toEqual(["le code de sécurité de votre attestation URSSAF"]);
+    ).toEqual([]);
   });
 });

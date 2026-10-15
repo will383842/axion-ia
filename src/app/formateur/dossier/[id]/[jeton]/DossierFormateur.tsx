@@ -59,8 +59,10 @@ export interface DossierPublic {
   piecesDemandees: ReadonlyArray<PieceDossier>;
 }
 
+// V2-N-13 — `border-field` (3,9:1 sur la carte blanche) : le contour suffit à repérer le
+// champ (WCAG 1.4.11). `border-strong` ne faisait que 1,9:1.
 const champ =
-  "border-border-strong bg-paper focus:border-terracotta focus:outline-terracotta mt-1 block min-h-[52px] w-full rounded-xl border px-3.5 text-[17px] focus:outline-2 focus:outline-offset-1";
+  "border-border-field bg-paper focus:border-terracotta focus:outline-terracotta mt-1 block min-h-[52px] w-full rounded-xl border px-3.5 text-[17px] focus:outline-2 focus:outline-offset-1";
 const etiquette = "text-fg-soft block text-[15px] font-semibold";
 const boutonPrincipal =
   "bg-terracotta hover:bg-terracotta-deep focus-visible:outline-terracotta inline-flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl px-6 text-[18px] font-bold text-white focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-solid disabled:bg-sand-deep disabled:text-fg-soft disabled:cursor-not-allowed";
@@ -315,45 +317,48 @@ export function DossierFormateur({
         </h1>
         <div className={`${carte} mt-4 grid gap-4`}>
           <div>
-            <label className="block">
-              <span className={etiquette}>{TEXTES.siret}</span>
-              <div className="mt-1 flex gap-2">
-                <input
-                  className={`${champ} mt-0`}
-                  inputMode="numeric"
-                  value={siret}
-                  onChange={(e) => {
-                    setSiret(e.target.value);
-                    setRecherche(null);
-                  }}
-                />
-                <button
-                  type="button"
-                  className={boutonSecondaire}
-                  disabled={!siretOk || enCours}
-                  onClick={() => {
-                    setErreur(null);
-                    demarrer(async () => {
-                      try {
-                        setRecherche(
-                          await rechercherSiretAction(dossier.id, dossier.jeton, siretNet),
-                        );
-                      } catch {
-                        setErreur(TEXTES.connexionPerdue);
-                      }
-                    });
-                  }}
-                >
-                  {enCours ? TEXTES.recherche : TEXTES.rechercher}
-                </button>
-              </div>
+            {/* V2-N-7 — l'étiquette ne contient que le champ : un <label> qui enveloppait
+                aussi « Rechercher » faisait annoncer « Numéro SIRET Rechercher ». */}
+            <label htmlFor="dossier-siret" className={etiquette}>
+              {TEXTES.siret}
             </label>
+            <div className="mt-1 flex gap-2">
+              <input
+                id="dossier-siret"
+                className={`${champ} mt-0`}
+                inputMode="numeric"
+                value={siret}
+                onChange={(e) => {
+                  setSiret(e.target.value);
+                  setRecherche(null);
+                }}
+              />
+              <button
+                type="button"
+                className={boutonSecondaire}
+                disabled={!siretOk || enCours}
+                onClick={() => {
+                  setErreur(null);
+                  demarrer(async () => {
+                    try {
+                      setRecherche(
+                        await rechercherSiretAction(dossier.id, dossier.jeton, siretNet),
+                      );
+                    } catch {
+                      setErreur(TEXTES.connexionPerdue);
+                    }
+                  });
+                }}
+              >
+                {enCours ? TEXTES.recherche : TEXTES.rechercher}
+              </button>
+            </div>
             {recherche?.ok === false ? <Erreur message={recherche.message} /> : null}
             {recherche?.ok === true && recherche.entreprise && ecran === "trouvee" ? (
               <div className="bg-sand mt-3 rounded-xl p-3">
                 <p className="font-semibold">{recherche.entreprise.denomination}</p>
                 <p className="text-fg-soft text-[15px]">{recherche.entreprise.adresse}</p>
-                <p className="text-sage-deep mt-1 text-[14px] font-bold">{TEXTES.trouveActive}</p>
+                <p className="text-success mt-1 text-[14px] font-bold">{TEXTES.trouveActive}</p>
               </div>
             ) : null}
             {ecran && ecran !== "trouvee" ? (
@@ -587,7 +592,7 @@ export function DossierFormateur({
         {attestation && attestation.statut !== "a_retransmettre" ? (
           <div className={`${carte} mt-3`}>
             {dossier.codeUrssafSaisi ? (
-              <p className="text-sage-deep font-semibold">{TEXTES.codeEnregistre}</p>
+              <p className="text-success font-semibold">{TEXTES.codeEnregistre}</p>
             ) : (
               <>
                 <label className="block">
@@ -668,7 +673,7 @@ export function DossierFormateur({
           )}
         </div>
         {dejaSigne ? (
-          <p className={`${carte} text-sage-deep mt-3 font-semibold`}>{T.contratDejaSigne}</p>
+          <p className={`${carte} text-success mt-3 font-semibold`}>{T.contratDejaSigne}</p>
         ) : null}
         <div className={`${carte} mt-3 grid gap-3`}>
           <label className="flex items-start gap-3 text-[16px]">
