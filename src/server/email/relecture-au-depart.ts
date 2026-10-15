@@ -489,8 +489,13 @@ const relireRelanceLettre: LecteurAuDepart = async (job) => {
       // « Rien après le début de la mission. »
       const mission = await prisma.missionFormateur.findFirst({
         where: { lettreMissionId: lettreId, trainerId: job.entityId! },
-        select: { session: { select: { dateDebut: true } } },
+        select: { session: { select: { dateDebut: true, statut: true } } },
       });
+      // Le passage n'écrit que pour une session « planifiée » : annulée ou reportée pendant
+      // l'attente, la relance n'a plus d'objet (relecture de la PR #1550, non bloquant 1).
+      if (mission?.session && mission.session.statut !== "planifiee") {
+        return "la session n'est plus planifiée";
+      }
       if (mission?.session && mission.session.dateDebut.getTime() <= Date.now()) {
         return "la mission a commencé";
       }

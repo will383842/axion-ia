@@ -124,7 +124,9 @@ beforeEach(() => {
   pz.contrat = { ...aSigner };
   pz.dernierContrat = null;
   pz.lettre = { annuleeAt: null, statutSignature: "en_attente", signatures: [] };
-  pz.mission = { session: { dateDebut: new Date(Date.now() + 10 * 86_400_000) } };
+  pz.mission = {
+    session: { dateDebut: new Date(Date.now() + 10 * 86_400_000), statut: "planifiee" },
+  };
   pz.bilan = null;
   pz.code = {
     expiresAt: new Date(Date.now() + 10 * 60_000),
@@ -284,12 +286,21 @@ describe("F27 — relance de la lettre de mission", () => {
     pz.lettre = { annuleeAt: new Date(), statutSignature: "en_attente", signatures: [] };
     expect(await lire("formateur-lettre-relance", f27)).toMatch(/annulée/);
     pz.lettre = { annuleeAt: null, statutSignature: "en_attente", signatures: [] };
-    pz.mission = { session: { dateDebut: new Date(Date.now() - 1000) } };
+    pz.mission = { session: { dateDebut: new Date(Date.now() - 1000), statut: "planifiee" } };
     expect(await lire("formateur-lettre-relance", f27)).toMatch(/commencé/);
   });
   it("V2-P-2 — le formateur a répondu : retenue", async () => {
     pz.reponses = [{ trainerId: T, candidatureId: null, recuLe: new Date() }];
     expect(await lire("formateur-lettre-relance", f27)).toMatch(/a répondu/);
+  });
+  // Relecture de la PR #1550, non bloquant 1 — le passage n'écrit que pour une session
+  // « planifiée » : le départ relit son statut.
+  it("session annulée ou reportée pendant l'attente : retenue", async () => {
+    const dans10j = new Date(Date.now() + 10 * 86_400_000);
+    pz.mission = { session: { dateDebut: dans10j, statut: "annulee" } };
+    expect(await lire("formateur-lettre-relance", f27)).toMatch(/plus planifiée/);
+    pz.mission = { session: { dateDebut: dans10j, statut: "reportee" } };
+    expect(await lire("formateur-lettre-relance", f27)).toMatch(/plus planifiée/);
   });
 });
 
