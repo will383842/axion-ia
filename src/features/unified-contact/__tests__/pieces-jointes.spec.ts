@@ -270,7 +270,9 @@ describe("avec fichiers, l'alerte part tout de suite et l'accusé attend", () =>
     await submitUnifiedContactAction(ETAT, formulaire(DEUX_PIECES));
     const payload = h.notify.mock.calls[0]![0].payload;
     expect(payload.piecesJointes).toBe(2);
-    expect(JSON.stringify(payload)).not.toContain("Cahier");
+    // Noms annoncés et assainis, en fin de payload (salon « Clients », #1553) ;
+    // le texte Telegram actuel ne les affiche pas (garde de `format.ts`).
+    expect(payload.piecesJointesNoms).toEqual(["Cahier des charges.pdf", "plans.zip"]);
     expect(h.enqueueEmail).not.toHaveBeenCalled();
     expect(h.submissionCreate.mock.calls[0]![0].data.details).toMatchObject({
       piecesJointesAnnoncees: 2,

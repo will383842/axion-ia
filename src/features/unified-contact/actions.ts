@@ -397,7 +397,10 @@ export async function submitUnifiedContactAction(
       locale,
       // Pièces jointes ANNONCÉES (2026-10-15) : le nombre seulement (règle du
       // 11/10/2026). L'alerte part tout de suite : elle n'attend pas les fichiers.
+      // Les noms (ANNONCÉS, assainis) restent en fin de payload pour le salon
+      // « Clients » (#1553) ; le format actuel ne les affiche pas.
       ...(annonce.nombre > 0 ? { piecesJointes: annonce.nombre } : {}),
+      ...(annonce.pieces.length > 0 ? { piecesJointesNoms: annonce.pieces.map((p) => p.nom) } : {}),
     };
     // 7 & 8 = BEST-EFFORT : la notif Telegram et l'email de confirmation NE
     // DOIVENT PAS faire échouer la soumission (le lead est déjà en base). Un
