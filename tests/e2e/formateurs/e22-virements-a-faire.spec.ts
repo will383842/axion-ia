@@ -1,13 +1,18 @@
 // @formateurs E22 — « Virements à faire » (vue COMMUNE avec les apporteurs) :
-//   · orange à J-5 de la date cible, rouge à l'échéance ;
+//   · orange à J-5 de la date cible, rouge UNE FOIS L'ÉCHÉANCE DÉPASSÉE (V1-C-9, règle des
+//     apporteurs `echeanceDepassee`) ;
 //   · « Virements faits (N) » → F37 ; pénalité si retard ; empreinte d'IBAN RELUE au clic ;
 //   · lot interrompu → F37 repris UNE fois ;
 //   · un désaccord du formateur bloque le paiement (décision du dirigeant).
 //
-// DÉFAUT V1-C-9 (test.fixme) : le jour même de la date cible, la ligne est ORANGE ; elle
-// ne devient rouge que le LENDEMAIN (`couleurDe`, paiements-sortants/virements.ts ~l. 63 :
-// rouge si `reste < 0`). Rien n'est perdu (le virement reste dans les délais ce jour-là),
-// mais l'écran ne dit pas « dernier jour ».
+// DÉCISION V1-C-9 (lot 3, #1540) : les couleurs suivent la règle de l'écran des apporteurs.
+// La ligne n'est rouge que si le jour lu est STRICTEMENT après l'échéance ; le jour même de
+// l'échéance, le virement est encore dans les délais (orange). Calcul attendu, écrit ici :
+//   rouge   si jour > échéance ;
+//   orange  sinon, si jour >= date cible - 5 jours (y compris après la date cible, quand
+//           l'échéance tombe un week-end : la date cible est le dernier jour ouvré
+//           au plus tard à l'échéance) ;
+//   a_venir sinon.
 //
 // ÉCARTS :
 //   · « Virements faits » n'a pas de service hors session : le banc lit la garde du
@@ -80,7 +85,7 @@ test.describe("@formateurs E22 — virements à faire", () => {
   test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
-  test("orange à J-5 de la date cible, rouge après ; le dû ; un désaccord bloque le paiement", async () => {
+  test("orange à J-5 de la date cible, rouge une fois l'échéance dépassée ; le dû ; un désaccord bloque le paiement", async () => {
     await avecVerrouArgent(async () => {
       const f = await factureDeMissionEmise({
         prenom: "Victor",
@@ -89,10 +94,19 @@ test.describe("@formateurs E22 — virements à faire", () => {
       const echeance = jourDeParis(f.echeanceAt);
       // Contre-calcul : la date cible est le dernier jour ouvré au plus tard à l'échéance.
       const cible = dernierJourOuvreAuPlusTard(echeance);
+      // Jours lus : cible-6, cible-5, le jour même de l'échéance, le lendemain de l'échéance.
+      // Attendu (règle ci-dessus, échéance >= cible) : a_venir (6 j avant), orange (5 j avant),
+      // orange (jour de l'échéance : pas encore dépassée), rouge (échéance + 1 j).
+      const joursLus = [
+        plusJours(cible, -6),
+        plusJours(cible, -5),
+        echeance,
+        plusJours(echeance, 1),
+      ];
       const vues = await jouer(
-        [-6, -5, -1, 1].map((n) => ({
+        joursLus.map((jour) => ({
           etape: "virements" as const,
-          maintenant: aParis(plusJours(cible, n), "10:00").toISOString(),
+          maintenant: aParis(jour, "10:00").toISOString(),
           ids: [f.statementId],
         })),
       );
@@ -124,15 +138,20 @@ test.describe("@formateurs E22 — virements à faire", () => {
     });
   });
 
-  // DÉFAUT V1-C-9 — le jour de la date cible, la ligne n'est pas rouge.
-  test.fixme("V1-C-9 : rouge à l'échéance (le jour même de la date cible)", async () => {
+  // V1-C-9 — le jour de la date cible n'est rouge que si l'échéance est déjà dépassée.
+  test("V1-C-9 : la date cible n'est rouge que si elle dépasse l'échéance (règle apporteurs)", async () => {
     await avecVerrouArgent(async () => {
       const f = await factureDeMissionEmise({
         prenom: "Wanda",
         jours: ["2038-05-17", "2038-05-18"],
       });
-      const cible = dernierJourOuvreAuPlusTard(jourDeParis(f.echeanceAt));
-      expect((await couleurLe(cible, f.statementId))?.couleur).toBe("rouge");
+      const echeance = jourDeParis(f.echeanceAt);
+      const cible = dernierJourOuvreAuPlusTard(echeance);
+      // cible <= échéance : le jour de la date cible, l'échéance n'est jamais dépassée.
+      expect(cible <= echeance).toBe(true);
+      expect((await couleurLe(cible, f.statementId))?.couleur).toBe("orange");
+      expect((await couleurLe(echeance, f.statementId))?.couleur).toBe("orange");
+      expect((await couleurLe(plusJours(echeance, 1), f.statementId))?.couleur).toBe("rouge");
     });
   });
 
