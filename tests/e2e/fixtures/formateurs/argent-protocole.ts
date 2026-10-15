@@ -10,7 +10,7 @@
 
 export const MARQUEUR_RESULTAT_ARGENT = "@@BANC-ARGENT@@";
 
-export type EtapeArgent =
+export type EtapeNue =
   /**
    * Le passage quotidien du paiement par mission (`passerPaiementsMission`), avec ses
    * dépendances RÉELLES, sauf trois points que le banc déclare :
@@ -21,6 +21,11 @@ export type EtapeArgent =
    */
   | {
       readonly etape: "passage";
+      /**
+       * Le bilan de fin de formation, le temps du passage : allumé à cette date, ou
+       * ÉTEINT (absent). Le passage le lit pour savoir si le dernier mois l'attend.
+       */
+      readonly bilanAllumeLe?: string;
       readonly maintenant: string;
       readonly dateBascule: string;
       readonly sessionIds: readonly string[];
@@ -53,16 +58,29 @@ export type EtapeArgent =
    */
   | { readonly etape: "valider-et-emettre"; readonly statementId: string }
   /** Le calcul mensuel (`runRemunerationMensuelle`), tel que « Lancer le calcul ». */
-  | { readonly etape: "run-mensuel"; readonly year: number; readonly month: number }
+  | {
+      readonly etape: "run-mensuel";
+      readonly year: number;
+      readonly month: number;
+      /** La date de bascule que le calcul lit, posée le temps du calcul. */
+      readonly bascule: string;
+    }
   /** L'avis du formateur puis « Terminer » le bilan de fin de formation. */
   | {
       readonly etape: "terminer-bilan";
+      /** Le bilan de fin de formation allumé à cette date, le temps de l'étape. */
+      readonly bilanAllumeLe: string;
       readonly sessionId: string;
       readonly trainerId: string;
       readonly maintenant: string;
     }
   /** Le suivi quotidien (`passerSuiviMission`) : F35, alertes, rappels, reprise F37. */
-  | { readonly etape: "suivi"; readonly maintenant: string }
+  | {
+      readonly etape: "suivi";
+      readonly maintenant: string;
+      /** La date de bascule que le suivi lit, posée le temps du passage. */
+      readonly bascule: string;
+    }
   /**
    * Les demandes de contresignature (F34, `envoyerDemandesContresignature`).
    *
@@ -135,6 +153,8 @@ export type EtapeArgent =
   /** Le formateur signale un désaccord sur sa facture (`signalerDesaccord`). */
   | {
       readonly etape: "signaler-desaccord";
+      /** Le désaccord n'existe qu'avec une date de bascule : posée le temps de l'étape. */
+      readonly bascule: string;
       readonly trainerId: string;
       readonly statementId: string;
       readonly texte: string;
@@ -190,6 +210,30 @@ export type EtapeArgent =
   | { readonly etape: "chiffrer-iban"; readonly trainerId: string; readonly iban: string }
   /** Les empreintes attendues des textes à valider (`empreinteAttendue`). */
   | { readonly etape: "empreintes-textes"; readonly cles: readonly string[] };
+
+/**
+ * Les RÉGLAGES d'une étape, posés par l'exécuteur juste avant elle, dans son processus.
+ *
+ * 🔑 Pourquoi par étape, et pas autour d'un scénario : les interrupteurs sont GLOBAUX
+ * et le banc est commun à quatre équipes. L'une d'elles (missions) tient les siens par un
+ * compteur de porteurs dont le dernier restaure toutes les clés `formateurs.*`,
+ * `signature.*` et `textes_valides.*` ; un réglage posé pour la durée d'un scénario
+ * entier en serait effacé, et sa restauration effacerait celui des autres. Ici, tout
+ * (`allumer`, `textes`, `poser`, la date de bascule et le bilan de fin de formation) est
+ * posé le temps de l'étape SEULEMENT, puis remis à sa valeur d'avant — et seulement si
+ * personne ne l'a changé entre-temps. Les verrous de `argent-verrou.ts` tiennent les
+ * scénarios des équipes A et B à l'écart pendant ce temps.
+ */
+export interface ReglagesDuPas {
+  /** Clés `settings` à poser allumées (valeur JSON) le temps de l'étape. */
+  readonly allumer?: Readonly<Record<string, unknown>>;
+  /** Textes à valider, avec l'empreinte du texte actuel (`textes_valides.<clé>`). */
+  readonly textes?: readonly string[];
+  /** Clés `settings` posées le temps de l'étape, puis remises (si inchangées). */
+  readonly poser?: Readonly<Record<string, unknown>>;
+}
+
+export type EtapeArgent = EtapeNue & ReglagesDuPas;
 
 export interface EntreeArgent {
   readonly etapes: readonly EtapeArgent[];

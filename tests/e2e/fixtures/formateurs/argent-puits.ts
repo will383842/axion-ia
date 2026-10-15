@@ -26,11 +26,11 @@ export async function messagesLus(adresse: string): Promise<MessageLu[]> {
 
 /**
  * Le job F36 (autofacture) tel qu'il a été POSÉ dans la file : gabarit, destinataire,
- * valeurs. Le puits ne peut pas le recevoir — F36 joint sa pièce depuis R2, le banc n'a
- * aucun seau, et le worker REFUSE alors l'envoi (« pièces jointes demandées mais R2 non
- * configuré »), ce qui est juste. L'exécuteur en garde une copie avant de retirer le job
- * après sa première tentative (`retirerF36ApresUnRefus`) : ce qui a été demandé à la
- * file se constate au centime et à la date près.
+ * valeurs. F36 joint sa pièce depuis R2 : sans seau, le worker REFUSE l'envoi (« pièces
+ * jointes demandées mais R2 non configuré »), ce qui est juste ; avec le stockage R2 simulé
+ * du banc, il peut partir. L'exécuteur en garde une copie avant de retirer le job après sa
+ * première tentative (`retirerF36ApresUnRefus`) : ce qui a été demandé à la file se
+ * constate au centime et à la date près, quel que soit le stockage.
  */
 export async function jobF36(statementId: string): Promise<{
   template: string;

@@ -23,7 +23,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { BASCULE_2037, HORS_BANC, bascule } from "../fixtures/formateurs/argent-commun";
+import { BASCULE_2037, HORS_BANC } from "../fixtures/formateurs/argent-commun";
 import {
   aParis,
   honorairesAnimationCents,
@@ -37,7 +37,6 @@ import {
   semerSession,
 } from "../fixtures/formateurs/argent-semis";
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
-import { semerInterrupteurs } from "../fixtures/formateurs/interrupteurs";
 
 const TARIF = 35_000;
 /** `moteur-mission.ts` : la mission fermée alors que sa lettre est signée. */
@@ -96,14 +95,8 @@ test.describe("@formateurs E-C3 — indemnité d'annulation sans les demi-journ�
   test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
-  const interrupteurs = {
-    ...bascule(BASCULE_2037),
-    "formateurs.bilan_fin_formation": { actif: false },
-  };
-
   test("à moins de 72 h : 50 % des seules demi-journées annulées non signées", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(interrupteurs);
       try {
         const { missionId } = await missionAnnulee("Iris", true);
         const tard = await missionAnnulee("Hugo", false);
@@ -143,7 +136,6 @@ test.describe("@formateurs E-C3 — indemnité d'annulation sans les demi-journ�
         expect(avant72h).toEqual({ issue: "non_due" });
         expect(anterieure).toEqual({ issue: "instant_anterieur_signature" });
       } finally {
-        await restaurer();
         await clore();
       }
     });
@@ -152,7 +144,6 @@ test.describe("@formateurs E-C3 — indemnité d'annulation sans les demi-journ�
   // DÉFAUT V1-C-5 — la demi-journée signée d'une session annulée n'est jamais payée.
   test.fixme("V1-C-5 : le matin signé d'une session annulée est payé par le passage", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(interrupteurs);
       try {
         const { f, s } = await missionAnnulee("Jade", true);
         const [p] = await jouer([
@@ -170,7 +161,6 @@ test.describe("@formateurs E-C3 — indemnité d'annulation sans les demi-journ�
           honorairesAnimationCents(1, TARIF),
         );
       } finally {
-        await restaurer();
         await clore();
       }
     });

@@ -19,7 +19,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { BASCULE_2037, HORS_BANC, bascule } from "../fixtures/formateurs/argent-commun";
+import { BASCULE_2037, HORS_BANC } from "../fixtures/formateurs/argent-commun";
 import {
   echeanceDepuisFacture,
   honorairesAnimationCents,
@@ -35,7 +35,6 @@ import {
   type FormateurSeme,
 } from "../fixtures/formateurs/argent-semis";
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
-import { semerInterrupteurs } from "../fixtures/formateurs/interrupteurs";
 
 const TARIF = 35_000;
 /** Une journée par formateur et par mois ; B anime la toute dernière. */
@@ -56,10 +55,14 @@ interface Deroule {
   passages: unknown[];
 }
 
+/** Bilan de fin de formation allumé AVANT la mission : son exigence s'applique (jamais rétroactive). */
+const BILAN_ALLUME_LE = "2037-09-01T00:00:00.000Z";
+
 function passage(maintenant: string, sessionId: string): EtapeArgent {
   return {
     etape: "passage",
     maintenant,
+    bilanAllumeLe: BILAN_ALLUME_LE,
     dateBascule: BASCULE_2037,
     sessionIds: [sessionId],
     retraitMd: "declare",
@@ -100,7 +103,13 @@ async function derouler(): Promise<Deroule> {
     passage("2037-12-16T07:15:00Z", session.id),
     ...duMois("2038-01"),
     passage("2038-01-13T07:15:00Z", session.id),
-    { etape: "terminer-bilan", sessionId: session.id, trainerId: b.id, maintenant: REMISE_BILAN },
+    {
+      etape: "terminer-bilan",
+      sessionId: session.id,
+      trainerId: b.id,
+      maintenant: REMISE_BILAN,
+      bilanAllumeLe: BILAN_ALLUME_LE,
+    },
     passage("2038-01-15T07:15:00Z", session.id),
   ];
   const sorties = await jouer(etapes);
@@ -119,81 +128,65 @@ test.describe("@formateurs E-C1 — mission sur trois mois, deux formateurs", ()
   test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
-  const interrupteurs = {
-    ...bascule(BASCULE_2037),
-    // Allumé AVANT la mission : l'exigence du bilan s'applique (jamais rétroactive).
-    "formateurs.bilan_fin_formation": { actif: true, allumeLe: "2037-09-01T00:00:00.000Z" },
-  };
-
   test("A chaque mois sur ses feuilles ; B mois 3 seulement après le bilan ; virement ≤ 30 j", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(interrupteurs);
-      try {
-        const { a, b, sessionId, passages } = await derouler();
-        const [nov, dec, jan, bilan, apresBilan] = passages;
-        expect(nov).toMatchObject({ etat: "fait", ecrits: 2, erreurs: 0 });
-        expect(dec).toMatchObject({ etat: "fait", ecrits: 2, erreurs: 0 });
-        // Janvier : A est écrit ; B attend son bilan (une attente, aucune anomalie).
-        expect(jan).toMatchObject({ etat: "fait", ecrits: 1, enAttente: 1, anomalies: [] });
-        expect(bilan).toEqual({ avis: "ok", fin: "ok" });
-        expect(apresBilan).toMatchObject({ etat: "fait", ecrits: 1, enAttente: 0 });
+      const { a, b, sessionId, passages } = await derouler();
+      const [nov, dec, jan, bilan, apresBilan] = passages;
+      expect(nov).toMatchObject({ etat: "fait", ecrits: 2, erreurs: 0 });
+      expect(dec).toMatchObject({ etat: "fait", ecrits: 2, erreurs: 0 });
+      // Janvier : A est écrit ; B attend son bilan (une attente, aucune anomalie).
+      expect(jan).toMatchObject({ etat: "fait", ecrits: 1, enAttente: 1, anomalies: [] });
+      expect(bilan).toEqual({ avis: "ok", fin: "ok" });
+      expect(apresBilan).toMatchObject({ etat: "fait", ecrits: 1, enAttente: 0 });
 
-        // Contre-calcul : une journée (deux demi-journées) par formateur et par mois.
-        const parMois = honorairesAnimationCents(2, TARIF);
-        expect(parMois).toBe(35_000);
-        for (const f of [a, b]) {
-          const releves = await relevesDe(f.id);
-          expect(releves.map((r) => [mois(r), r.origine, r.statut, r.totalHtCents])).toEqual([
-            ["2037-11", "passage_mission", "a_valider", parMois],
-            ["2037-12", "passage_mission", "a_valider", parMois],
-            ["2038-01", "passage_mission", "a_valider", parMois],
-          ]);
-          expect(releves.every((r) => r.sessionId === sessionId)).toBe(true);
-        }
-
-        // Le relevé de janvier de B n'existait pas avant la remise du bilan : il est
-        // écrit par le passage qui la suit, et son échéance provisoire part de ce jour-là.
-        const janB = (await relevesDe(b.id)).at(-1)!;
-        const bilanEnBase = await prisma.bilanFinFormation.findFirstOrThrow({
-          where: { sessionId, trainerId: b.id },
-          select: { termineAt: true },
-        });
-        expect(bilanEnBase.termineAt?.toISOString()).toBe(new Date(REMISE_BILAN).toISOString());
-        expect(jourDeParis(janB.echeanceAt!)).toBe("2038-02-14");
-
-        // Validation humaine, autofacture : virement au plus tard 30 j après SA date.
-        const [emis] = (await jouer([{ etape: "valider-et-emettre", statementId: janB.id }])) as [
-          { valide: boolean; emission: { data?: { numero: string } } },
-        ];
-        expect(emis.valide).toBe(true);
-        expect(emis.emission.data?.numero).toMatch(/\S/);
-        const facture = (await relevesDe(b.id)).at(-1)!;
-        expect(facture.statut).toBe("facture_recue");
-        expect(jourDeParis(facture.echeanceAt!)).toBe(
-          echeanceDepuisFacture(jourDeParis(facture.dateFacture!)),
-        );
-      } finally {
-        await restaurer();
+      // Contre-calcul : une journée (deux demi-journées) par formateur et par mois.
+      const parMois = honorairesAnimationCents(2, TARIF);
+      expect(parMois).toBe(35_000);
+      for (const f of [a, b]) {
+        const releves = await relevesDe(f.id);
+        expect(releves.map((r) => [mois(r), r.origine, r.statut, r.totalHtCents])).toEqual([
+          ["2037-11", "passage_mission", "a_valider", parMois],
+          ["2037-12", "passage_mission", "a_valider", parMois],
+          ["2038-01", "passage_mission", "a_valider", parMois],
+        ]);
+        expect(releves.every((r) => r.sessionId === sessionId)).toBe(true);
       }
+
+      // Le relevé de janvier de B n'existait pas avant la remise du bilan : il est
+      // écrit par le passage qui la suit, et son échéance provisoire part de ce jour-là.
+      const janB = (await relevesDe(b.id)).at(-1)!;
+      const bilanEnBase = await prisma.bilanFinFormation.findFirstOrThrow({
+        where: { sessionId, trainerId: b.id },
+        select: { termineAt: true },
+      });
+      expect(bilanEnBase.termineAt?.toISOString()).toBe(new Date(REMISE_BILAN).toISOString());
+      expect(jourDeParis(janB.echeanceAt!)).toBe("2038-02-14");
+
+      // Validation humaine, autofacture : virement au plus tard 30 j après SA date.
+      const [emis] = (await jouer([{ etape: "valider-et-emettre", statementId: janB.id }])) as [
+        { valide: boolean; emission: { data?: { numero: string } } },
+      ];
+      expect(emis.valide).toBe(true);
+      expect(emis.emission.data?.numero).toMatch(/\S/);
+      const facture = (await relevesDe(b.id)).at(-1)!;
+      expect(facture.statut).toBe("facture_recue");
+      expect(jourDeParis(facture.echeanceAt!)).toBe(
+        echeanceDepuisFacture(jourDeParis(facture.dateFacture!)),
+      );
     });
   });
 
   // DÉFAUT V1-C-4 — l'autofacture du dernier mois n'est pas datée de la remise du bilan.
   test.fixme("V1-C-4 : l'autofacture du dernier mois de B est datée de la remise du bilan", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(interrupteurs);
-      try {
-        const { b } = await derouler();
-        const janB = (await relevesDe(b.id)).at(-1)!;
-        await jouer([{ etape: "valider-et-emettre", statementId: janB.id }]);
-        const facture = (await relevesDe(b.id)).at(-1)!;
-        expect(jourDeParis(facture.dateFacture!)).toBe(jourDeParis(new Date(REMISE_BILAN)));
-        expect(jourDeParis(facture.echeanceAt!)).toBe(
-          echeanceDepuisFacture(jourDeParis(new Date(REMISE_BILAN))),
-        );
-      } finally {
-        await restaurer();
-      }
+      const { b } = await derouler();
+      const janB = (await relevesDe(b.id)).at(-1)!;
+      await jouer([{ etape: "valider-et-emettre", statementId: janB.id }]);
+      const facture = (await relevesDe(b.id)).at(-1)!;
+      expect(jourDeParis(facture.dateFacture!)).toBe(jourDeParis(new Date(REMISE_BILAN)));
+      expect(jourDeParis(facture.echeanceAt!)).toBe(
+        echeanceDepuisFacture(jourDeParis(new Date(REMISE_BILAN))),
+      );
     });
   });
 });

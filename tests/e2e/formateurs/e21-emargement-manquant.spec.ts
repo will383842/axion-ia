@@ -41,11 +41,9 @@ import {
   BASCULE_2037,
   HORS_BANC,
   attendreEnvois,
-  bascule,
   dernierEnvoiRendu,
   envoisDistincts,
   recalerJournal,
-  semerTextesValides,
 } from "../fixtures/formateurs/argent-commun";
 import { aParis, plusJours } from "../fixtures/formateurs/argent-contre-calcul";
 import { jouer } from "../fixtures/formateurs/argent-execution";
@@ -59,10 +57,6 @@ import {
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
 
 const TARIF = 35_000;
-const interrupteurs = {
-  ...bascule(BASCULE_2037),
-  "formateurs.bilan_fin_formation": { actif: false },
-};
 
 interface BilanF34 {
   horsPlage: boolean;
@@ -108,7 +102,12 @@ async function passageF34(sessionId: string, instant: Date): Promise<number> {
  */
 async function suivi(jour: string, f: { id: string; email: string }) {
   const [b] = (await jouer([
-    { etape: "suivi", maintenant: aParis(jour, "08:15").toISOString() },
+    {
+      etape: "suivi",
+      bascule: BASCULE_2037,
+      textes: ["formateur-feuilles-manquantes"],
+      maintenant: aParis(jour, "08:15").toISOString(),
+    },
   ])) as [BilanSuivi];
   expect(b.etat).toBe("fait");
   const [f35, alertes] = await Promise.all([
@@ -133,167 +132,152 @@ test.describe("@formateurs E21 — émargement manquant, F34, F35, alerte", () =
 
   test("présentiel : F34 le soir, +23 h, +46 h ; F35 à J+3 ; alerte à J+10 ; rien sur constat", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides(["formateur-feuilles-manquantes"], interrupteurs);
       const f = await semerFormateur({ prenom: "Gaspard" });
-      try {
-        const JOUR = "2038-04-12";
-        const s = await semerSession({
-          jours: [{ date: JOUR, trainerId: f.id }],
-          formateurs: [f.id],
-          statut: "en_cours",
-        });
-        await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
-        // Les stagiaires ont signé ; le formateur, rien.
-        const inscrit = await semerInscrit({
-          sessionId: s.id,
-          creneaux: [
-            { date: JOUR, demiJournee: "matin" },
-            { date: JOUR, demiJournee: "apres_midi" },
-          ],
-        });
-        const signes = await jouer(
-          inscrit.creneaux.map((c) => ({
-            etape: "signer-stagiaire" as const,
-            creneauId: c.id,
-            enrollmentId: inscrit.enrollmentId,
-            nomConfirme: inscrit.nomComplet,
-            maintenant: aParis(JOUR, c.demiJournee === "matin" ? "09:15" : "14:15").toISOString(),
-          })),
-        );
-        expect(signes).toMatchObject([{ ok: true }, { ok: true }]);
+      const JOUR = "2038-04-12";
+      const s = await semerSession({
+        jours: [{ date: JOUR, trainerId: f.id }],
+        formateurs: [f.id],
+        statut: "en_cours",
+      });
+      await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
+      // Les stagiaires ont signé ; le formateur, rien.
+      const inscrit = await semerInscrit({
+        sessionId: s.id,
+        creneaux: [
+          { date: JOUR, demiJournee: "matin" },
+          { date: JOUR, demiJournee: "apres_midi" },
+        ],
+      });
+      const signes = await jouer(
+        inscrit.creneaux.map((c) => ({
+          etape: "signer-stagiaire" as const,
+          creneauId: c.id,
+          enrollmentId: inscrit.enrollmentId,
+          nomConfirme: inscrit.nomComplet,
+          maintenant: aParis(JOUR, c.demiJournee === "matin" ? "09:15" : "14:15").toISOString(),
+        })),
+      );
+      expect(signes).toMatchObject([{ ok: true }, { ok: true }]);
 
-        // F34 : pas avant la fin de la journée ; le soir ; pas à +22 h ; +23 h ; +46 h ; plafond.
-        const soir = aParis(JOUR, "17:25");
-        const h = (n: number) => new Date(soir.getTime() + n * 3_600_000);
-        expect(await passageF34(s.id, aParis(JOUR, "16:25"))).toBe(0);
-        expect(await passageF34(s.id, soir)).toBe(1);
-        expect(await passageF34(s.id, h(22))).toBe(0);
-        expect(await passageF34(s.id, h(23))).toBe(1);
-        expect(await passageF34(s.id, h(46))).toBe(1);
-        expect(await passageF34(s.id, h(69))).toBe(0);
-        const f34 = await envoisDistincts({
-          destinataire: f.email,
-          gabarit: "formateur-contresignature",
-        });
-        expect(f34.map((l) => l.createdAt.toISOString())).toEqual(
-          [soir, h(23), h(46)].map((d) => d.toISOString()),
-        );
+      // F34 : pas avant la fin de la journée ; le soir ; pas à +22 h ; +23 h ; +46 h ; plafond.
+      const soir = aParis(JOUR, "17:25");
+      const h = (n: number) => new Date(soir.getTime() + n * 3_600_000);
+      expect(await passageF34(s.id, aParis(JOUR, "16:25"))).toBe(0);
+      expect(await passageF34(s.id, soir)).toBe(1);
+      expect(await passageF34(s.id, h(22))).toBe(0);
+      expect(await passageF34(s.id, h(23))).toBe(1);
+      expect(await passageF34(s.id, h(46))).toBe(1);
+      expect(await passageF34(s.id, h(69))).toBe(0);
+      const f34 = await envoisDistincts({
+        destinataire: f.email,
+        gabarit: "formateur-contresignature",
+      });
+      expect(f34.map((l) => l.createdAt.toISOString())).toEqual(
+        [soir, h(23), h(46)].map((d) => d.toISOString()),
+      );
 
-        // F35 : pas à J+2, à J+3, une seule fois (cumuls pour ce formateur).
-        expect(await suivi(plusJours(JOUR, 2), f)).toEqual({ f35: 0, alertes: 0 });
-        expect(await suivi(plusJours(JOUR, 3), f)).toEqual({ f35: 1, alertes: 0 });
-        expect(await suivi(plusJours(JOUR, 4), f)).toEqual({ f35: 1, alertes: 0 });
-        await attendreEnvois(f.email, "formateur-feuilles-manquantes", 1);
+      // F35 : pas à J+2, à J+3, une seule fois (cumuls pour ce formateur).
+      expect(await suivi(plusJours(JOUR, 2), f)).toEqual({ f35: 0, alertes: 0 });
+      expect(await suivi(plusJours(JOUR, 3), f)).toEqual({ f35: 1, alertes: 0 });
+      expect(await suivi(plusJours(JOUR, 4), f)).toEqual({ f35: 1, alertes: 0 });
+      await attendreEnvois(f.email, "formateur-feuilles-manquantes", 1);
 
-        // Alerte interne à J+10, une fois (trace au journal d'activité).
-        expect(await suivi(plusJours(JOUR, 9), f)).toEqual({ f35: 1, alertes: 0 });
-        expect(await suivi(plusJours(JOUR, 10), f)).toEqual({ f35: 1, alertes: 1 });
-        expect(await suivi(plusJours(JOUR, 11), f)).toEqual({ f35: 1, alertes: 1 });
+      // Alerte interne à J+10, une fois (trace au journal d'activité).
+      expect(await suivi(plusJours(JOUR, 9), f)).toEqual({ f35: 1, alertes: 0 });
+      expect(await suivi(plusJours(JOUR, 10), f)).toEqual({ f35: 1, alertes: 1 });
+      expect(await suivi(plusJours(JOUR, 11), f)).toEqual({ f35: 1, alertes: 1 });
 
-        // « Payer sur constat » est reporté : à J+20, une alerte de plus, et RIEN de payé.
-        expect(await suivi(plusJours(JOUR, 20), f)).toEqual({ f35: 1, alertes: 2 });
-        const [p] = await jouer([
-          {
-            etape: "passage",
-            maintenant: aParis(plusJours(JOUR, 21), "08:15").toISOString(),
-            dateBascule: BASCULE_2037,
-            sessionIds: [s.id],
-            retraitMd: "declare",
-          },
-        ]);
-        expect(p).toMatchObject({ etat: "fait", ecrits: 0 });
-        expect(await relevesDe(f.id)).toEqual([]);
-        const surConstat = await prisma.trainerStatement.count({
-          where: { trainerId: f.id, surConstatAt: { not: null } } as never,
-        });
-        expect(surConstat).toBe(0);
+      // « Payer sur constat » est reporté : à J+20, une alerte de plus, et RIEN de payé.
+      expect(await suivi(plusJours(JOUR, 20), f)).toEqual({ f35: 1, alertes: 2 });
+      const [p] = await jouer([
+        {
+          etape: "passage",
+          maintenant: aParis(plusJours(JOUR, 21), "08:15").toISOString(),
+          dateBascule: BASCULE_2037,
+          sessionIds: [s.id],
+          retraitMd: "declare",
+        },
+      ]);
+      expect(p).toMatchObject({ etat: "fait", ecrits: 0 });
+      expect(await relevesDe(f.id)).toEqual([]);
+      const surConstat = await prisma.trainerStatement.count({
+        where: { trainerId: f.id, surConstatAt: { not: null } } as never,
+      });
+      expect(surConstat).toBe(0);
 
-        // Le journal : trois F34 et un F35, rien d'autre ; F35 dit le jour et le nombre.
-        expect(
-          (await envoisDistincts({ destinataire: f.email })).map((l) => l.template).sort(),
-        ).toEqual([
-          "formateur-contresignature",
-          "formateur-contresignature",
-          "formateur-contresignature",
-          "formateur-feuilles-manquantes",
-        ]);
-        const f35 = await dernierEnvoiRendu(f.email, "formateur-feuilles-manquantes");
-        expect(f35.texte).toContain("lundi 12 avril (2 demi-journée(s))");
-      } finally {
-        await restaurer();
-      }
+      // Le journal : trois F34 et un F35, rien d'autre ; F35 dit le jour et le nombre.
+      expect(
+        (await envoisDistincts({ destinataire: f.email })).map((l) => l.template).sort(),
+      ).toEqual([
+        "formateur-contresignature",
+        "formateur-contresignature",
+        "formateur-contresignature",
+        "formateur-feuilles-manquantes",
+      ]);
+      const f35 = await dernierEnvoiRendu(f.email, "formateur-feuilles-manquantes");
+      expect(f35.texte).toContain("lundi 12 avril (2 demi-journée(s))");
     });
   });
 
   test("visio prouvée par un relevé importé : aucun F34, F35 à J+3, une seule campagne", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides(["formateur-feuilles-manquantes"], interrupteurs);
       const f = await semerFormateur({ prenom: "Hortense" });
-      try {
-        const JOUR = "2038-04-19";
-        const s = await semerSession({
-          jours: [{ date: JOUR, trainerId: f.id }],
-          formateurs: [f.id],
-          modalite: "distanciel",
-          statut: "en_cours",
-        });
-        await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
-        // La présence vient d'un relevé de connexion importé (Zoom), grain « journée ».
-        const releve = await prisma.releveConnexionImport.create({
-          data: {
-            sessionId: s.id,
-            plateforme: "zoom",
-            fichierOriginalNom: "banc-releve-zoom.csv",
-            hashSha256: "b".repeat(64),
-          } as never,
-          select: { id: true },
-        });
-        const inscrit = await semerInscrit({ sessionId: s.id, creneaux: [] });
-        await prisma.presenceCreneau.create({
-          data: {
-            enrollmentId: inscrit.enrollmentId,
-            date: new Date(`${JOUR}T00:00:00Z`),
-            demiJournee: "journee",
-            libelle: "Journée (relevé Zoom)",
-            dureePrevueMinutes: 420,
-            source: "import_zoom",
-            importId: releve.id,
-          } as never,
-        });
+      const JOUR = "2038-04-19";
+      const s = await semerSession({
+        jours: [{ date: JOUR, trainerId: f.id }],
+        formateurs: [f.id],
+        modalite: "distanciel",
+        statut: "en_cours",
+      });
+      await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
+      // La présence vient d'un relevé de connexion importé (Zoom), grain « journée ».
+      const releve = await prisma.releveConnexionImport.create({
+        data: {
+          sessionId: s.id,
+          plateforme: "zoom",
+          fichierOriginalNom: "banc-releve-zoom.csv",
+          hashSha256: "b".repeat(64),
+        } as never,
+        select: { id: true },
+      });
+      const inscrit = await semerInscrit({ sessionId: s.id, creneaux: [] });
+      await prisma.presenceCreneau.create({
+        data: {
+          enrollmentId: inscrit.enrollmentId,
+          date: new Date(`${JOUR}T00:00:00Z`),
+          demiJournee: "journee",
+          libelle: "Journée (relevé Zoom)",
+          dureePrevueMinutes: 420,
+          source: "import_zoom",
+          importId: releve.id,
+        } as never,
+      });
 
-        const soir = aParis(JOUR, "17:25");
-        expect(await passageF34(s.id, soir)).toBe(0);
-        expect(await passageF34(s.id, new Date(soir.getTime() + 23 * 3_600_000))).toBe(0);
-        expect(await suivi(plusJours(JOUR, 3), f)).toMatchObject({ f35: 1 });
-        expect(await suivi(plusJours(JOUR, 4), f)).toMatchObject({ f35: 1 });
+      const soir = aParis(JOUR, "17:25");
+      expect(await passageF34(s.id, soir)).toBe(0);
+      expect(await passageF34(s.id, new Date(soir.getTime() + 23 * 3_600_000))).toBe(0);
+      expect(await suivi(plusJours(JOUR, 3), f)).toMatchObject({ f35: 1 });
+      expect(await suivi(plusJours(JOUR, 4), f)).toMatchObject({ f35: 1 });
 
-        const journal = await envoisDistincts({ destinataire: f.email });
-        expect(journal.map((l) => l.template)).toEqual(["formateur-feuilles-manquantes"]);
-      } finally {
-        await restaurer();
-      }
+      const journal = await envoisDistincts({ destinataire: f.email });
+      expect(journal.map((l) => l.template)).toEqual(["formateur-feuilles-manquantes"]);
     });
   });
 
   // DÉFAUT V1-C-10 — F35 propose la feuille papier, reportée.
   test.fixme("V1-C-10 : F35 ne propose pas la feuille papier (reportée)", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides(["formateur-feuilles-manquantes"], interrupteurs);
       const f = await semerFormateur({ prenom: "Isidore" });
-      try {
-        const JOUR = "2038-04-26";
-        const s = await semerSession({
-          jours: [{ date: JOUR, trainerId: f.id }],
-          formateurs: [f.id],
-          statut: "realisee",
-        });
-        await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
-        expect(await suivi(plusJours(JOUR, 3), f)).toMatchObject({ f35: 1 });
-        const f35 = await dernierEnvoiRendu(f.email, "formateur-feuilles-manquantes");
-        expect(f35.texte).not.toMatch(/papier/i);
-      } finally {
-        await restaurer();
-      }
+      const JOUR = "2038-04-26";
+      const s = await semerSession({
+        jours: [{ date: JOUR, trainerId: f.id }],
+        formateurs: [f.id],
+        statut: "realisee",
+      });
+      await semerMissionAcceptee({ sessionId: s.id, trainerId: f.id, tarifHtCents: TARIF });
+      expect(await suivi(plusJours(JOUR, 3), f)).toMatchObject({ f35: 1 });
+      const f35 = await dernierEnvoiRendu(f.email, "formateur-feuilles-manquantes");
+      expect(f35.texte).not.toMatch(/papier/i);
     });
   });
 
@@ -301,46 +285,41 @@ test.describe("@formateurs E21 — émargement manquant, F34, F35, alerte", () =
   // Course : le test peut passer par chance ; il échoue dès que le worker est plus rapide.
   test.fixme("V1-C-11 : chaque F34 parti laisse UNE ligne au journal des envois", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides([], interrupteurs);
       const f = await semerFormateur({ prenom: "Jules" });
-      try {
-        const JOUR = "2038-05-03";
-        const s = await semerSession({
-          jours: [{ date: JOUR, trainerId: f.id }],
-          formateurs: [f.id],
-          statut: "en_cours",
-        });
-        const inscrit = await semerInscrit({
-          sessionId: s.id,
-          creneaux: [{ date: JOUR, demiJournee: "matin" }],
-        });
-        await jouer([
-          {
-            etape: "signer-stagiaire",
-            creneauId: inscrit.creneaux[0]!.id,
-            enrollmentId: inscrit.enrollmentId,
-            nomConfirme: inscrit.nomComplet,
-            maintenant: aParis(JOUR, "09:15").toISOString(),
-          },
-          // SANS retenir le worker : la course est libre.
-          { etape: "demandes-contresignature", maintenant: aParis(JOUR, "17:25").toISOString() },
-        ]);
-        await attendreEnvois(f.email, "formateur-contresignature", 1);
-        await expect
-          .poll(
-            async () =>
-              (
-                await prisma.emailLog.findMany({
-                  where: { recipient: f.email, template: "formateur-contresignature" },
-                  select: { status: true },
-                })
-              ).map((l) => l.status),
-            { timeout: 60_000 },
-          )
-          .toEqual(["sent"]);
-      } finally {
-        await restaurer();
-      }
+      const JOUR = "2038-05-03";
+      const s = await semerSession({
+        jours: [{ date: JOUR, trainerId: f.id }],
+        formateurs: [f.id],
+        statut: "en_cours",
+      });
+      const inscrit = await semerInscrit({
+        sessionId: s.id,
+        creneaux: [{ date: JOUR, demiJournee: "matin" }],
+      });
+      await jouer([
+        {
+          etape: "signer-stagiaire",
+          creneauId: inscrit.creneaux[0]!.id,
+          enrollmentId: inscrit.enrollmentId,
+          nomConfirme: inscrit.nomComplet,
+          maintenant: aParis(JOUR, "09:15").toISOString(),
+        },
+        // SANS retenir le worker : la course est libre.
+        { etape: "demandes-contresignature", maintenant: aParis(JOUR, "17:25").toISOString() },
+      ]);
+      await attendreEnvois(f.email, "formateur-contresignature", 1);
+      await expect
+        .poll(
+          async () =>
+            (
+              await prisma.emailLog.findMany({
+                where: { recipient: f.email, template: "formateur-contresignature" },
+                select: { status: true },
+              })
+            ).map((l) => l.status),
+          { timeout: 60_000 },
+        )
+        .toEqual(["sent"]);
     });
   });
 });
