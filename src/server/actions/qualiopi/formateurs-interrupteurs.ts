@@ -50,6 +50,17 @@ const CLAUSE_LIGNES = {
 };
 
 /**
+ * V2-S-2 — LES TROIS REGISTRES S'ÉCRIVENT UN À LA FOIS. Chaque écriture prend ce verrou
+ * de transaction AVANT de relire les lignes : deux gestes croisés (allumer une fille
+ * pendant qu'on coupe sa mère) ne lisent plus le même état d'avant. Le second relit la
+ * mère APRÈS la validation du premier ; ses préalables la voient coupée et il refuse.
+ * Le verrou tombe avec la transaction (validée ou annulée).
+ */
+async function verrouillerInterrupteurs(tx: Pick<typeof prisma, "$executeRaw">): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('formateurs.interrupteurs'))`;
+}
+
+/**
  * COUPURE EN CASCADE (lot F, M23) : couper une clé mère coupe ses filles allumées,
  * dans la MÊME transaction, une ligne de journal par fille (la clé est dans
  * `changes`, jamais dans `targetId`, colonne `uuid`). Rien n'est supprimé : la
@@ -156,6 +167,7 @@ function ecrire(
   userId: string,
 ): Promise<string[]> {
   return prisma.$transaction(async (tx) => {
+    await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       where: CLAUSE_LIGNES,
       select: { key: true, value: true },
@@ -328,6 +340,7 @@ function ecrireSignature(
   const def = INTERRUPTEURS_SIGNATURE[cle];
   const key = cleSettingSignature(cle);
   return prisma.$transaction(async (tx) => {
+    await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       // Les préalables lisent les seize ET ce registre (dont `signature.*`).
       where: CLAUSE_LIGNES,
@@ -461,6 +474,7 @@ function ecrireEntree(
   const def = INTERRUPTEURS_ENTREE[cle];
   const key = cleSettingEntree(cle);
   return prisma.$transaction(async (tx) => {
+    await verrouillerInterrupteurs(tx);
     const lignes = await tx.setting.findMany({
       where: CLAUSE_LIGNES,
       select: { key: true, value: true },

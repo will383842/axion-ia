@@ -362,9 +362,15 @@ export async function createTrainerAction(
  * indépendant actif, sans aucune pièce. Si la garde n'est pas remplie, la fiche
  * est désactivée par l'écrivain unique, et la réponse le dit (`desactive`).
  */
-export async function updateTrainerAction(
-  input: z.input<typeof updateTrainerSchema>,
-): Promise<ActionResult<{ id: string; desactive?: boolean; manques?: ReadonlyArray<string> }>> {
+export async function updateTrainerAction(input: z.input<typeof updateTrainerSchema>): Promise<
+  ActionResult<{
+    id: string;
+    desactive?: boolean;
+    manques?: ReadonlyArray<string>;
+    /** V2-S-3 — pièces non signées dont le lien (ancienne adresse) est tombé. */
+    piecesARenvoyer?: number;
+  }>
+> {
   const session = await requireAdminWrite();
   const parsed = updateTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -406,10 +412,12 @@ export async function updateTrainerAction(
 
   try {
     // V1-A-8 — avec un changement d'adresse, une seule transaction : adresse, liens du
-    // dossier, adresse remplacée et codes de signature vivants.
-    await ecrireFicheAvecChangementEmail({
+    // dossier, adresse remplacée et codes de signature vivants. V2-S-3 : et les liens
+    // de signature envoyés à l'ancienne adresse.
+    const { piecesARenvoyer } = await ecrireFicheAvecChangementEmail({
       trainerId: id,
       changement: email.changement,
+      parAdminId: session.userId,
       data: {
         ...(fields.nom !== undefined ? { nom: fields.nom } : {}),
         ...(fields.prenom !== undefined ? { prenom: fields.prenom } : {}),
@@ -457,10 +465,15 @@ export async function updateTrainerAction(
       targetId: id,
       // Lot C4 — la LISTE des champs soumis, jamais leurs valeurs (nom, e-mail,
       // téléphone, adresse) : `targetId` désigne la fiche, comme à la création.
-      changes: { champs: Object.keys(fields), ...journalChangementEmail(email.changement) },
+      changes: {
+        champs: Object.keys(fields),
+        ...journalChangementEmail(email.changement),
+        ...(piecesARenvoyer > 0 ? { piecesARenvoyer } : {}),
+      },
       session,
     });
     await apresChangementEmail(id, email.changement);
+    const aRenvoyer = piecesARenvoyer > 0 ? { piecesARenvoyer } : {};
 
     if (devientSousTraitant) {
       const garde = await desactiverSiGardeNonRemplie({
@@ -469,11 +482,11 @@ export async function updateTrainerAction(
         motif: "passage_au_statut_sous_traitant_sans_dossier_complet",
       });
       if (garde.desactive) {
-        return { data: { id, desactive: true, manques: garde.manques } };
+        return { data: { id, desactive: true, manques: garde.manques, ...aRenvoyer } };
       }
     }
 
-    return { data: { id } };
+    return { data: { id, ...aRenvoyer } };
   } catch (err) {
     if ((err as { code?: string })?.code === "P2002") {
       return { error: "Un formateur avec cet email existe déjà." };

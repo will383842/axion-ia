@@ -125,7 +125,13 @@ export function TrainerForm({
         if ("error" in result) {
           setError(result.error);
         } else {
-          setSuccessMsg("Formateur enregistré.");
+          const n = result.data.piecesARenvoyer ?? 0;
+          // V2-S-3 — les liens envoyés à l'ancienne adresse sont coupés : à renvoyer.
+          setSuccessMsg(
+            n > 0
+              ? `Formateur enregistré. ${n} pièce${n > 1 ? "s" : ""} à signer envoyée${n > 1 ? "s" : ""} à l'ancienne adresse : lien coupé, à renvoyer à la nouvelle adresse.`
+              : "Formateur enregistré.",
+          );
           router.refresh();
         }
       }

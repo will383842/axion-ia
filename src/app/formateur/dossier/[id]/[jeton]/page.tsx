@@ -88,6 +88,7 @@ export default async function DossierFormateurPage({ params }: PageProps) {
           regimeTva: dossier.regimeTva,
           ibanSaisi: dossier.ibanSaisi,
           ibanFige: dossier.ibanFige,
+          ibanParDemande: dossier.ibanParDemande === true,
           codeUrssafSaisi: dossier.codeUrssafSaisi,
           pieces: dossier.pieces,
           piecesDemandees: piecesDemandees(dossier.nda),
