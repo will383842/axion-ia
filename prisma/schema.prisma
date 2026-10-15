@@ -576,6 +576,9 @@ model Submission {
   // Candidatures unifiées L4 (2026-10-07) — liens privés de fichiers envoyés à un
   // futur apporteur (créés en L6). En cascade, comme `inboundReplies`.
   liensPartage   LienPartage[]
+  // 2026-10-15 — pièces jointes du formulaire de contact (cahier des charges,
+  // devis…). Fichiers dans le compartiment R2 PRIVÉ ; ici, la fiche de chacun.
+  piecesJointes  SubmissionAttachment[]
 
   @@index([type])
   @@index([status])
@@ -690,6 +693,40 @@ model SubmissionInboundReply {
   @@index([submissionId, receivedAt])
   @@index([fromEmailHash])
   @@map("submission_inbound_replies")
+}
+
+// ============================================================
+// 1b ter. submission_attachments (2026-10-15)
+// ============================================================
+//
+// Les pièces jointes envoyées avec le formulaire de contact unifié : 3 au plus,
+// 10 Mo chacune, 20 Mo au total (`src/lib/contact/pieces-jointes.ts`). Le
+// fichier vit dans le compartiment R2 PRIVÉ (`r2-storage.ts`) sous une clé tirée
+// au hasard ; il ne se lit que par la route admin authentifiée
+// `contacts/messages/[id]/pieces-jointes/[pieceId]`. Aucune URL publique.
+//
+// Rétention : celle de la demande (cascade). Effacement art. 17 :
+// `effacerPiecesJointesContactPour` (objet R2 ET ligne).
+model SubmissionAttachment {
+  id           String   @id @default(uuid()) @db.Uuid
+  submissionId String   @map("submission_id") @db.Uuid
+  /// Nom ASSAINI (affichage et téléchargement). La clé R2 n'en reprend rien.
+  nomFichier   String   @map("nom_fichier") @db.VarChar(160)
+  /// Format reconnu par les premiers octets (`FormatPieceJointe`).
+  format       String   @db.VarChar(10)
+  tailleOctets Int      @map("taille_octets")
+  /// Clé de l'objet dans le compartiment R2 privé.
+  cleStockage  String   @unique @map("cle_stockage") @db.VarChar(300)
+  /// Empreinte SHA-256 du contenu reçu.
+  sha256       String   @db.VarChar(64)
+  /// Verdict antivirus à la réception : `sain` ou `non_verifie` (antivirus muet).
+  antivirus    String   @db.VarChar(20)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@map("submission_attachments")
 }
 
 // ============================================================
