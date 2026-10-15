@@ -56,6 +56,7 @@ export async function lireFaitsActivationComplete(
           type: true,
           statutValidation: true,
           fichierUrl: true,
+          contenu: { select: { trainerDocumentId: true } },
           dateEmission: true,
           dateExpiration: true,
         },

@@ -90,6 +90,7 @@ import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
 import { envoiAllume } from "@/server/qualiopi/formateurs-independants/interrupteurs-envoi";
+import { numeroRecuAVerifier } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 import { LieuFormateurPanel } from "@/components/admin/qualiopi/LieuFormateurPanel";
 import { PresentationMethodePanel } from "@/components/admin/qualiopi/PresentationMethodePanel";
 import { DossierEnLignePanel } from "@/components/admin/qualiopi/DossierEnLignePanel";
@@ -464,6 +465,9 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
   const bandeau = etapeFiche
     ? bandeauEtape(etapeFiche, `/${locale}/${adminPrefix}/qualiopi/formateurs/${trainer.id}`)
     : null;
+  // V1-A-10 (relecture) — numéro transmis depuis l'espace : enregistré, mais pas vérifié.
+  const ndaRecuLe =
+    trainer.statut === "sous_traitant" ? await numeroRecuAVerifier(trainer.id) : null;
 
   return (
     <AdminPageShell width="wide">
@@ -512,6 +516,14 @@ export default async function FicheFormateurPage({ params, searchParams }: PageP
       {mentionActivationFormateur(trainer) ? (
         <p className="admin-alert admin-alert-warning mb-[var(--space-admin-5)]">
           {mentionActivationFormateur(trainer)} — fiche inactive.
+        </p>
+      ) : null}
+
+      {ndaRecuLe ? (
+        <p className="admin-alert admin-alert-warning mb-[var(--space-admin-5)]" role="status">
+          Numéro de déclaration d&apos;activité reçu de l&apos;espace formateur le{" "}
+          {ndaRecuLe.toLocaleDateString("fr-FR")}, à vérifier : aucune mission tant que le contrôle
+          du registre n&apos;a pas été refait.
         </p>
       ) : null}
 

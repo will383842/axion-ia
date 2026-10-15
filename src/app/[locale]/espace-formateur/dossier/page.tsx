@@ -17,12 +17,14 @@ import { requireFormateurLecture } from "@/server/formateur/guard";
 import { lireDemandesEnCours } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { lireMonDossier } from "@/server/qualiopi/formateurs-independants/mon-dossier";
+import { numeroDeclarationAttendu } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 
 import { CoquilleFormateur } from "../_coquille";
 import {
   demanderChangementAdresseAction,
   demanderChangementIbanAction,
   deposerMaPieceAction,
+  transmettreMonNumeroAction,
 } from "./actions";
 import { messageDuCode } from "./messages";
 
@@ -50,7 +52,9 @@ export default async function MonDossierPage({
     !session.lectureSeule && (await interrupteurAllume("changement_coordonnees"))
       ? await lireDemandesEnCours(session.trainerId)
       : null;
-  if (vue === null && changement === null) notFound();
+  // V1-A-10 — signé avec un numéro « en cours » : F21 renvoie ici pour le transmettre.
+  const ndaAttendu = !session.lectureSeule && (await numeroDeclarationAttendu(session.trainerId));
+  if (vue === null && changement === null && !ndaAttendu) notFound();
   const enCours = (nature: string) => changement?.find((d) => d.nature === nature) ?? null;
   const issue = messageDuCode((await searchParams).issue);
 
@@ -73,6 +77,33 @@ export default async function MonDossierPage({
           Votre attestation URSSAF n&apos;est pas valable aujourd&apos;hui : de nouvelles missions
           pourront vous être proposées dès que la nouvelle aura été vérifiée.
         </p>
+      )}
+
+      {ndaAttendu && (
+        <section id="nda" className="mt-8 rounded-lg border p-4">
+          <h2 className="font-semibold">Numéro de déclaration d&apos;activité</h2>
+          <p className="mt-1 text-sm">
+            Vous avez signé avec un numéro « en cours ». Dès que la préfecture vous l&apos;a
+            attribué, indiquez-le ici : il est nécessaire pour vous confier une mission.
+          </p>
+          <form action={transmettreMonNumeroAction} className="mt-3 flex flex-col gap-2 text-sm">
+            <label className="flex flex-col gap-1">
+              <span>Numéro (11 chiffres, sur le récépissé)</span>
+              <input
+                type="text"
+                name="nda"
+                required
+                inputMode="numeric"
+                autoComplete="off"
+                maxLength={20}
+                className="rounded-md border px-2 py-1"
+              />
+            </label>
+            <button type="submit" className="w-fit rounded-md border px-3 py-1.5 font-medium">
+              Transmettre mon numéro
+            </button>
+          </form>
+        </section>
       )}
 
       <ul className="mt-8 flex flex-col gap-4">

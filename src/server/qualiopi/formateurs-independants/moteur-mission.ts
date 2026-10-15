@@ -118,6 +118,7 @@ const MANQUE_POUR_LE_FORMATEUR: ReadonlyMap<string, string> = new Map([
   // L'attestation URSSAF n'y figure plus (décision du 14/10/2026) : elle ne bloque jamais
   // la lettre d'une mission acceptée (`MANQUES_VIGILANCE`), seul le paiement l'attend.
   [MANQUES_MISSION.nda, "votre numéro de déclaration d'activité"],
+  [MANQUES_MISSION.ndaEnCours, "votre numéro de déclaration d'activité"],
   [MANQUES_MISSION.contrat, "la signature de votre contrat-cadre"],
 ]);
 

@@ -228,7 +228,12 @@ export async function codeCapte(email: string): Promise<string> {
 export async function preparerDossier(
   lien: LienDossier,
   prenom: string,
-  options: { ndaEnCours?: boolean; registre?: ReturnType<typeof registreDe> } = {},
+  options: {
+    ndaEnCours?: boolean;
+    registre?: ReturnType<typeof registreDe>;
+    /** V1-A-11 — l'adresse professionnelle, que le registre ne donne pas en diffusion partielle. */
+    adressePro?: string;
+  } = {},
 ) {
   const registre =
     options.registre ?? registreDe(prenom, "vert", options.ndaEnCours ? null : NDA_BANC);
@@ -246,6 +251,7 @@ export async function preparerDossier(
         ...(options.ndaEnCours ? { ndaEnCours: "1" } : { nda: NDA_BANC }),
         regimeTva: "franchise_293b",
         iban: IBAN_BANC,
+        ...(options.adressePro ? { adressePro: options.adressePro } : {}),
       },
       { registre },
     ),

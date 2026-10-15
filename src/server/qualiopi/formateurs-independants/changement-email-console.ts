@@ -13,6 +13,10 @@
  *  - vérification 1 (V1-A-8) : dans la MÊME transaction, les codes de signature
  *    encore valables tombent (`ecrireFicheAvecChangementEmail`) — le code reçu à
  *    l'ancienne adresse ne signe plus le contrat ;
+ *  - vérification 2 (V2-S-3) : dans la MÊME transaction, les liens de signature encore
+ *    vivants des pièces du formateur (contrat-cadre, lettres de mission, autres pièces)
+ *    sont révoqués — ils avaient été envoyés à l'ancienne adresse. Les pièces qu'il n'a
+ *    pas signées sont rendues à la console « à renvoyer » à la nouvelle adresse ;
  *  - vérification 1 (V1-C-6, V1-D-1) : l'adresse remplacée est gardée, datée
  *    (`emailRemplace`, `emailRemplaceAt`) — F43 la prévient pendant 30 jours d'un
  *    changement de compte, et un lien de mission émis avant la correction tombe ;
@@ -117,6 +121,65 @@ function consommerLiensConnexion(trainerId: string, maintenant: Date) {
   });
 }
 
+/** V2-S-3 — les parties au titre desquelles le formateur signe ses propres pièces. */
+const PARTIES_DU_FORMATEUR = ["formateur", "sous_traitant"] as const;
+
+/** V2-S-3 — motif lisible des liens coupés par le changement d'adresse. */
+export const MOTIF_LIEN_ADRESSE_CHANGEE =
+  "Adresse e-mail du formateur changée : lien envoyé à l'ancienne adresse, à renvoyer à la nouvelle.";
+
+/**
+ * V2-S-3 — révoque, DANS la transaction de l'adresse, les liens de signature vivants des
+ * pièces du formateur (et les codes de signature de la partie « formateur » ; ceux du
+ * contrat-cadre tombent par `invaliderCodesSignatureFormateur`). Rend le nombre de
+ * pièces dont un lien est tombé et que le formateur n'a pas signées : à renvoyer.
+ */
+async function revoquerLiensSignatureFormateur(
+  tx: Prisma.TransactionClient,
+  trainerId: string,
+  maintenant: Date,
+  parAdminId: string | null,
+): Promise<number> {
+  const pieces = await tx.documentGenere.findMany({
+    where: {
+      trainerId,
+      signatureTokens: { some: { revokedAt: null, partie: { in: [...PARTIES_DU_FORMATEUR] } } },
+    },
+    select: {
+      id: true,
+      annuleeAt: true,
+      signatures: {
+        where: { revokedAt: null, partie: { in: [...PARTIES_DU_FORMATEUR] } },
+        select: { id: true },
+      },
+    },
+  });
+  if (pieces.length === 0) return 0;
+  const ids = pieces.map((p) => p.id);
+  await tx.documentSignatureToken.updateMany({
+    where: {
+      documentGenereId: { in: ids },
+      partie: { in: [...PARTIES_DU_FORMATEUR] },
+      revokedAt: null,
+    },
+    data: {
+      revokedAt: maintenant,
+      revokedMotif: MOTIF_LIEN_ADRESSE_CHANGEE,
+      revokedById: parAdminId,
+    },
+  });
+  await tx.documentSignatureCode.updateMany({
+    where: {
+      documentGenereId: { in: ids },
+      partie: "formateur",
+      utiliseAt: null,
+      invalideAt: null,
+    },
+    data: { invalideAt: maintenant },
+  });
+  return pieces.filter((p) => p.annuleeAt === null && p.signatures.length === 0).length;
+}
+
 /** À étaler dans les `changes` du journal : le fait, jamais la valeur. */
 export function journalChangementEmail(changement: ChangementEmailIndependant | null): {
   emailIndependantModifie?: true;
@@ -148,27 +211,39 @@ export function donneesChangementEmail(
 /**
  * L'ÉCRITURE de la fiche. Avec un changement d'adresse d'un indépendant : une seule
  * transaction porte l'adresse, la révocation des liens du dossier, l'adresse
- * remplacée ET l'invalidation des codes de signature vivants (V1-A-8). Un échec de
- * l'une annule tout. Sans changement : l'écriture d'avant, inchangée.
+ * remplacée, l'invalidation des codes de signature vivants (V1-A-8) ET la révocation
+ * des liens de signature envoyés à l'ancienne adresse (V2-S-3). Un échec de l'une
+ * annule tout. Sans changement : l'écriture d'avant, inchangée.
+ *
+ * Rend le nombre de pièces non signées dont le lien est tombé : à renvoyer.
  */
 export async function ecrireFicheAvecChangementEmail(input: {
   readonly trainerId: string;
   readonly data: Prisma.TrainerUpdateInput;
   readonly changement: ChangementEmailIndependant | null;
   readonly maintenant?: Date;
-}): Promise<void> {
+  /** L'administrateur qui change l'adresse : il signe la révocation des liens. */
+  readonly parAdminId?: string | null;
+}): Promise<{ piecesARenvoyer: number }> {
   const { trainerId, data, changement } = input;
   if (changement === null) {
     await prisma.trainer.update({ where: { id: trainerId }, data });
-    return;
+    return { piecesARenvoyer: 0 };
   }
   const maintenant = input.maintenant ?? new Date();
-  await prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx) => {
     await tx.trainer.update({
       where: { id: trainerId },
       data: { ...data, ...donneesChangementEmail(changement, maintenant) },
     });
     await invaliderCodesSignatureFormateur(tx, trainerId, maintenant);
+    const piecesARenvoyer = await revoquerLiensSignatureFormateur(
+      tx,
+      trainerId,
+      maintenant,
+      input.parAdminId ?? null,
+    );
+    return { piecesARenvoyer };
   });
 }
 

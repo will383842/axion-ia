@@ -73,6 +73,11 @@ export const TEXTES = {
   situationPortage: "Je suis en portage salarial ou en coopérative",
   situationEtranger: "J'exerce hors de France",
   situationSansEntreprise: "Je n'ai pas encore d'entreprise",
+  adressePro: "Votre adresse professionnelle",
+  adresseProAide:
+    "Le registre public ne la donne pas pour votre entreprise : indiquez-la (numéro, rue, code postal, ville). Elle figurera sur votre contrat.",
+  adresseProManquante:
+    "Le registre public ne donne pas l'adresse de votre entreprise : indiquez votre adresse professionnelle (numéro, rue, code postal, ville).",
   nda: "Numéro de déclaration d'activité",
   ndaAide: "11 chiffres, sur le récépissé de votre déclaration.",
   ndaEnCours: "Je n'ai pas encore de numéro",
@@ -86,6 +91,8 @@ export const TEXTES = {
   iban: "IBAN",
   ibanEnregistre: "IBAN enregistré. Laissez vide pour le garder.",
   ibanFige: "IBAN enregistré. Pour le changer, écrivez-nous : nous le vérifierons d'abord.",
+  ibanParDemande:
+    "IBAN de vos virements enregistré. Laissez vide pour le garder. Un nouveau compte saisi ici sera vérifié avant tout virement : nous vous écrirons à votre adresse connue.",
   ibanInvalide:
     "Cet IBAN n'est pas valide, ou n'est pas celui d'un compte de la zone SEPA (Europe), où nous versons vos honoraires : vérifiez-le.",
 

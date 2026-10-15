@@ -6,12 +6,10 @@
 // « Retenu », créer la fiche depuis une candidature, changer l'e-mail d'un
 // indépendant. Rien ne doit avoir bougé en base.
 //
-// ÉCART consigné (le code de main fait foi) : AJOUTER une pièce de garde est
-// permis à l'éditeur (`createTrainerDocumentAction`, garde d'écriture simple).
-// La pièce démarre « en attente » et ne compte pour aucune garde tant qu'une
-// personne habilitée — et différente de celle qui l'a saisie — ne l'a pas
-// VALIDÉE ; la validation, elle, est refusée à l'éditeur. Le test constate les
-// deux.
+// Écart E29 (vérification n° 1) CORRIGÉ : AJOUTER une pièce de garde est refusé
+// à l'éditeur, comme la valider (`createTrainerDocumentAction`, droit
+// `habiliter_formateur`). La pièce que la validation éprouve est posée par le
+// banc ; elle reste « en attente ».
 
 import { expect, test } from "@playwright/test";
 
@@ -57,9 +55,9 @@ test.describe("@formateurs E29 — l'éditeur est refusé partout", () => {
     expect(o.apres.actif).toBe(false);
   });
 
-  test("pièce de garde : validation refusée ; l'ajout reste « en attente » (ÉCART)", () => {
+  test("pièce de garde : ajout et validation refusés, la pièce reste « en attente »", () => {
     expect(o.reponses["valider_piece"]).toEqual({ leve: `forbidden: ${HAB}` });
-    expect(o.reponses["ajouter_piece"]).toMatchObject({ data: { id: expect.any(String) } });
+    expect(o.reponses["ajouter_piece"]).toEqual({ error: `Ajout refusé : ${HAB}` });
     expect(o.pieceApres).toEqual([
       { type: "attestation_vigilance_urssaf", statutValidation: "en_attente" },
     ]);
