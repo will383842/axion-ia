@@ -160,6 +160,7 @@ const LEVEE_GARDE: Readonly<Record<keyof typeof MANQUES_MISSION, string | null>>
   siretContrat: "Émettre un contrat-cadre à jour, au SIRET de la fiche, et le faire signer.",
   registre: "Relancer le contrôle du registre depuis sa fiche.",
   nda: "Renseigner son numéro de déclaration d'activité.",
+  ndaEnCours: "Attendre son numéro : il le transmet depuis son espace, « Mon dossier ».",
   vigilance: "Recevoir et valider une attestation URSSAF à jour.",
   vigilanceMission: "Recevoir et valider son attestation URSSAF avant de lui confier la mission.",
   erreur: "Réessayer dans un instant.",

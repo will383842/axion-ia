@@ -103,7 +103,13 @@ export async function ouvrirScenario(
         if (remettreOrganisme) await remettreOrganisme();
         for (const a of adresses) await effacerPersonne(a);
         await prisma.activityLog.deleteMany({ where: { adminUserId: admin.id } });
-        await prisma.adminUser.deleteMany({ where: { id: admin.id } });
+        // Une contresignature (W-4) garde la personne qui l'a recueillie, en
+        // `onDelete: Restrict` : la preuve ne perd jamais son signataire. L'admin du
+        // banc reste alors en base (adresse tirée au hasard, aucune collision).
+        const recueillies = await prisma.documentSignature.count({
+          where: { recueilliParAdminId: admin.id },
+        });
+        if (recueillies === 0) await prisma.adminUser.deleteMany({ where: { id: admin.id } });
       } finally {
         try {
           await eteindre();

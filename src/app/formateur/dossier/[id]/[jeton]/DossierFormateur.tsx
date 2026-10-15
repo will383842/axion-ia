@@ -17,9 +17,11 @@ import {
   DECLARATIONS_FORMATEUR,
   LIBELLE_PIECE,
   PIECES_FACULTATIVES,
+  adresseProValide,
   codePostalValide,
   manquesEtape3,
   ndaEnCours,
+  normaliserAdressePro,
   type PieceDossier,
   type RegimeTvaDossier,
 } from "@/server/qualiopi/formateurs-independants/dossier-regles";
@@ -50,6 +52,8 @@ export interface DossierPublic {
   siret: string | null;
   /** Le SIRET vient de la fiche (déjà enregistré), pas d'une suggestion. */
   siretEnregistre: boolean;
+  /** V1-A-11 — l'adresse professionnelle déjà portée par la fiche. */
+  adressePro: string | null;
   nda: string | null;
   regimeTva: RegimeTvaDossier | null;
   ibanSaisi: boolean;
@@ -147,6 +151,7 @@ export function DossierFormateur({
   // Étape 2
   const [siret, setSiret] = useState(dossier.siret ?? "");
   const [recherche, setRecherche] = useState<ResultatRecherche | null>(null);
+  const [adressePro, setAdressePro] = useState(dossier.adressePro ?? "");
   const [nda, setNda] = useState(dossier.nda && !ndaEnCours(dossier.nda) ? dossier.nda : "");
   const [sansNda, setSansNda] = useState(ndaEnCours(dossier.nda));
   const [tva, setTva] = useState<RegimeTvaDossier | null>(dossier.regimeTva);
@@ -292,8 +297,19 @@ export function DossierFormateur({
         : dossier.siretEnregistre && siretNet === dossier.siret;
     const ndaOk = sansNda || /^\d{11}$/.test(nda.replace(/[\s.-]/g, ""));
     const ibanOk = iban ? ibanValide(iban.replace(/\s+/g, "").toUpperCase()) : dossier.ibanSaisi;
+    // V1-A-11 — le registre ne donne pas l'adresse (diffusion partielle) : elle est
+    // demandée ici, pour le contrat. Le serveur la redemande aussi s'il le constate.
+    const adresseDemandee =
+      (recherche?.ok === true &&
+        recherche.continuer &&
+        recherche.entreprise !== null &&
+        !recherche.entreprise.adresse) ||
+      erreur === TEXTES.adresseProManquante;
+    const adresseNette = normaliserAdressePro(adressePro);
+    const adresseOk = !adresseDemandee || adresseProValide(adresseNette);
     const manques = [
       ...(continuer ? [] : ["votre numéro SIRET, recherché au registre"]),
+      ...(adresseOk ? [] : ["votre adresse professionnelle"]),
       ...(ndaOk ? [] : ["votre numéro de déclaration d'activité"]),
       ...(tva ? [] : ["votre régime de TVA"]),
       ...(ibanOk ? [] : ["un IBAN valide"]),
@@ -442,6 +458,23 @@ export function DossierFormateur({
             </details>
           </div>
 
+          {adresseDemandee ? (
+            <div>
+              <label className="block">
+                <span className={etiquette}>{TEXTES.adressePro}</span>
+                <textarea
+                  className={`${champ} py-3`}
+                  rows={2}
+                  maxLength={300}
+                  autoComplete="street-address"
+                  value={adressePro}
+                  onChange={(e) => setAdressePro(e.target.value)}
+                />
+              </label>
+              <p className="text-fg-soft mt-1 text-[14px]">{TEXTES.adresseProAide}</p>
+            </div>
+          ) : null}
+
           <div>
             <label className="block">
               <span className={etiquette}>{TEXTES.nda}</span>
@@ -530,6 +563,7 @@ export function DossierFormateur({
               fd.set("nda", nda);
               if (sansNda) fd.set("ndaEnCours", "1");
               fd.set("regimeTva", tva ?? "");
+              if (adresseDemandee) fd.set("adressePro", adresseNette);
               if (!dossier.ibanFige) fd.set("iban", iban);
               envoyer(enregistrerActiviteAction, fd, () => {
                 setIban("");

@@ -10,7 +10,8 @@
  *      de la pièce signée, jamais dans une date saisie seule), et dont le SIRET
  *      figé est celui de la fiche (C4) ;
  *   3. contrôle du registre relu il y a un mois au plus ;
- *   4. numéro de déclaration d'activité renseigné ;
+ *   4. numéro de déclaration d'activité renseigné, et pas « en cours » (V1-A-9) : une
+ *      déclaration non encore enregistrée ne permet pas de facturer une formation ;
  *   5. attestation de vigilance URSSAF valable AUJOURD'HUI — seulement quand le
  *      cumul des honoraires HT a atteint le seuil de vigilance (lot G1), MISSION EN
  *      JEU COMPRISE (étape 3 du C4, décision de Will) : une mission qui fait atteindre
@@ -37,6 +38,12 @@ import { vigilanceExigible, vigilanceExigiblePourMission } from "./vigilance-seu
 
 /** C4 — première version du contrat-cadre qui inscrit toujours le SIRET (gabarit v3). */
 export const VERSION_CONTRAT_AVEC_SIRET = 3;
+
+/**
+ * Un numéro « en cours » (la valeur que le dossier écrit, `NDA_EN_COURS`, et toute saisie
+ * de la console qui le dit) : même lecture que le contrôle du registre et F21.
+ */
+const RE_NDA_EN_COURS = /en\s*cours/i;
 
 /** Un contrôle du registre plus vieux qu'un mois ne vaut plus (ADR 0066 (d)). */
 export const REGISTRE_VALIDITE_MOIS = 1;
@@ -69,6 +76,8 @@ export const MANQUES_MISSION = {
     "Le SIRET inscrit dans le contrat-cadre signé n'est plus celui de la fiche : un contrat à jour doit être signé.",
   registre: "Le contrôle du registre public date de plus d'un mois.",
   nda: "Le numéro de déclaration d'activité n'est pas renseigné.",
+  ndaEnCours:
+    "Le numéro de déclaration d'activité est encore « en cours » : aucune mission tant que le formateur ne l'a pas transmis.",
   vigilance: "L'attestation de vigilance URSSAF n'est pas valable aujourd'hui.",
   vigilanceMission: `Avec cette mission, les honoraires de ce formateur atteignent ${SEUIL_VIGILANCE_LIBELLE} HT : son attestation de vigilance URSSAF doit être vérifiée avant de la lui confier.`,
   erreur: "Le contrôle du formateur n'a pas pu aboutir.",
@@ -130,7 +139,9 @@ export function peutRecevoirMission(
     ) {
       manques.push(MANQUES_MISSION.registre);
     }
-    if ((f.sousTraitantNda ?? "").trim() === "") manques.push(MANQUES_MISSION.nda);
+    const nda = (f.sousTraitantNda ?? "").trim();
+    if (nda === "") manques.push(MANQUES_MISSION.nda);
+    else if (RE_NDA_EN_COURS.test(nda)) manques.push(MANQUES_MISSION.ndaEnCours);
     const manqueVigilance = manqueVigilanceMission(f, maintenant);
     if (manqueVigilance !== null) manques.push(manqueVigilance);
     return manques.length === 0 ? { ok: true } : { ok: false, manques };

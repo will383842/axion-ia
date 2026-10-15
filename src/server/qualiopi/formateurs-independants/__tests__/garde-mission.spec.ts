@@ -88,6 +88,13 @@ describe("peutRecevoirMission (pur)", () => {
     ["C4 — contrat sans SIRET lisible", { contratCadreSiret: null }, MANQUES_MISSION.siretContrat],
     ["C4 — fiche sans SIRET", { siret: null }, MANQUES_MISSION.siretContrat],
     ["numéro absent", { sousTraitantNda: " " }, MANQUES_MISSION.nda],
+    // V1-A-9 — « en cours » n'est pas un numéro : la valeur du dossier et une saisie console.
+    ["numéro « en cours »", { sousTraitantNda: "en cours" }, MANQUES_MISSION.ndaEnCours],
+    [
+      "numéro « En cours d'attribution »",
+      { sousTraitantNda: "En cours d'attribution" },
+      MANQUES_MISSION.ndaEnCours,
+    ],
     [
       "attestation échue aujourd'hui",
       { pieces: [vigilance(new Date("2026-03-01T00:00:00Z"))] as never },

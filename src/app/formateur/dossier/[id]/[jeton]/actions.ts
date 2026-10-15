@@ -37,10 +37,12 @@ import {
 } from "@/server/qualiopi/formateurs-independants/dossier";
 import {
   NDA_EN_COURS,
+  adresseProValide,
   codePostalValide,
   estPieceDossier,
   estRegimeTva,
   manquesDuDossier,
+  normaliserAdressePro,
   piecesDemandees,
 } from "@/server/qualiopi/formateurs-independants/dossier-regles";
 import {
@@ -211,13 +213,34 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   if (iban && !ibanValide(iban)) return { ok: false, message: TEXTES.ibanInvalide };
 
   // Le registre est rejugé ICI : le navigateur ne décide pas qu'une entreprise est ouverte.
-  const { v } = await jugerSiret(d, siret, nda);
+  const { registre, v } = await jugerSiret(d, siret, nda);
   if (!ECRANS_QUI_LAISSENT_CONTINUER.has(v.ecran)) {
     if (v.ecran === "statut_non_ouvert" || v.ecran === "hors_france") await statutNonOuvert(d);
     return { ok: false, message: messageEcran(v.ecran) };
   }
+  // V1-A-11 — entreprise en diffusion partielle : le registre ne donne pas l'adresse que
+  // le contrat imprime. Elle est demandée ici, sans quoi le contrat ne se prépare pas.
+  // 🔴 Le registre donne l'adresse : une `adressePro` envoyée quand même est IGNORÉE (elle
+  // écraserait celle du contrat ; seul l'écran normal s'abstient de l'envoyer).
+  const sansAdresseAuRegistre = registre.ok && (registre.entreprise.adresse ?? "").trim() === "";
+  const adressePro = sansAdresseAuRegistre
+    ? normaliserAdressePro(champ(fd, "adressePro", 400))
+    : "";
+  if (adressePro !== "" && !adresseProValide(adressePro)) {
+    return { ok: false, message: TEXTES.adresseProManquante };
+  }
+  if (sansAdresseAuRegistre && adressePro === "" && !(d.adressePro ?? "").trim()) {
+    return { ok: false, message: TEXTES.adresseProManquante };
+  }
   try {
-    return await enregistrerActivite(d, { siret, nda, regimeTva: tva, iban: iban || null });
+    return await enregistrerActivite(d, {
+      siret,
+      nda,
+      regimeTva: tva,
+      iban: iban || null,
+      adressePro: adressePro || null,
+      sansAdresseAuRegistre,
+    });
   } catch (e) {
     signaler("activite", e);
     return ECHEC;

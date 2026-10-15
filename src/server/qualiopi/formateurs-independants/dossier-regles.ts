@@ -66,6 +66,21 @@ export function estRegimeTva(v: unknown): v is RegimeTvaDossier {
 /** Valeur écrite dans `sousTraitantNda` quand la personne n'a pas encore son numéro. */
 export const NDA_EN_COURS = "en cours";
 
+/**
+ * V1-A-11 — l'adresse professionnelle saisie dans le dossier (le registre ne la donne pas
+ * pour une entreprise en diffusion partielle) : espaces resserrés, 300 caractères au plus.
+ */
+export function normaliserAdressePro(brut: string): string {
+  return brut.replace(/\s+/g, " ").trim().slice(0, 300);
+}
+
+/** Une adresse imprimable sur le contrat : une voie et un code postal à 5 chiffres. */
+export function adresseProValide(adresse: string): boolean {
+  return (
+    adresse.length >= 10 && /(^|\D)\d{5}(\D|$)/.test(adresse) && /[a-zA-ZÀ-ÿ]{2}/.test(adresse)
+  );
+}
+
 /** Code postal français à 5 chiffres. */
 export function codePostalValide(brut: string): boolean {
   return /^\d{5}$/.test(brut.replace(/\s+/g, ""));

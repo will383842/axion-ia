@@ -94,10 +94,21 @@ export default async function e29(): Promise<unknown> {
           dateEmission: new Date(Date.now() - 86_400_000).toISOString().slice(0, 10),
         }),
       );
-      const piece = await prisma.trainerDocument.findFirst({
-        where: { trainerId: t.id, type: "attestation_vigilance_urssaf" },
-        select: { id: true, statutValidation: true },
-      });
+      // L'ajout est refusé à l'éditeur (écart E29 corrigé) : la pièce à valider est
+      // posée par le banc, comme la direction l'aurait saisie, pour éprouver la validation.
+      const piece =
+        (await prisma.trainerDocument.findFirst({
+          where: { trainerId: t.id, type: "attestation_vigilance_urssaf" },
+          select: { id: true, statutValidation: true },
+        })) ??
+        (await prisma.trainerDocument.create({
+          data: {
+            trainerId: t.id,
+            type: "attestation_vigilance_urssaf",
+            dateEmission: new Date(Date.now() - 86_400_000),
+          },
+          select: { id: true, statutValidation: true },
+        }));
       r["valider_piece"] = piece
         ? await tenter(() =>
             validateTrainerDocumentAction({ id: piece.id, statutValidation: "valide" }),

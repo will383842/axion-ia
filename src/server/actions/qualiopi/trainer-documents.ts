@@ -19,6 +19,7 @@ import {
   logQualiopiActivity,
   requireHabilitation,
 } from "@/server/actions/qualiopi/_guards";
+import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { motifPieceNonProbante } from "@/server/qualiopi/trainers/piece-competence";
 import {
   ACTION_DEPOT_FORMATEUR,
@@ -85,6 +86,13 @@ export async function createTrainerDocumentAction(
   const parsed = createSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+
+  // 🔴 Vérification n° 1, écart E29 — une pièce de GARDE (vigilance URSSAF, avis SIRENE)
+  // conditionne l'activation et les missions : l'ajouter est réservé, comme la valider,
+  // aux personnes habilitées. Un éditeur ne l'ajoute plus, même « en attente ».
+  if (estPieceGardee(v.type) && !peutEngager(session.role, "habiliter_formateur")) {
+    return { error: `Ajout refusé : ${MOTIF_REFUS.habiliter_formateur}` };
+  }
 
   if (v.dateExpiration !== undefined && v.dateEmission !== undefined) {
     if (v.dateExpiration <= v.dateEmission) {

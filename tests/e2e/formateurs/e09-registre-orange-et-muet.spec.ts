@@ -6,7 +6,7 @@
 //     la preuve du contrôle est ORANGE, avec son motif, et ne se modifie ni ne
 //     s'efface. La validation de l'orange se fait sur W-4, avec un motif de la
 //     liste fermée. L'autre orange courant — l'entreprise en DIFFUSION PARTIELLE —
-//     bloque le dossier (V1-A-11).
+//     fait demander l'adresse professionnelle à l'étape 2 (V1-A-11, corrigé).
 // (b) Muet : le registre ne répond pas.
 //
 // ÉCART AU PLAN (b) : le plan voulait un dossier qui passe « à contrôler » puis
@@ -23,6 +23,8 @@ import { MOTIFS_ORANGE } from "@/server/qualiopi/formateurs-independants/verifie
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
 import {
+  IBAN_BANC,
+  NDA_BANC,
   actionDossier,
   codeCapte,
   demanderCode,
@@ -32,6 +34,7 @@ import {
   registreDe,
   signerAvecCode,
 } from "../fixtures/formateurs/parcours";
+import { SIRET_BANC } from "../fixtures/formateurs/registre-entreprises";
 import {
   attendreLeWorker,
   gabaritsVers,
@@ -96,10 +99,9 @@ test.describe("@formateurs E09 — registre orange et muet, preuve inaltérable"
     expect(relue).toEqual(derniere);
   });
 
-  // V1-A-6 — W-4 ne peut contresigner AUCUN dossier envoyé en ligne : il tient le CV et
-  // le RIB déposés pour absents (cf. E11). La validation de l'orange (étape 5 de W-4)
-  // n'est donc jamais atteinte. Cf. rapport.
-  test.fixme("(a) V1-A-6 — l'orange est validé sur W-4, avec un motif de la liste fermée", async () => {
+  // V1-A-6 (corrigé, cf. E11) — W-4 reconnaît le CV et le RIB déposés en ligne : la
+  // validation de l'orange (étape 5 de W-4) est atteinte.
+  test("(a) V1-A-6 — l'orange est validé sur W-4, avec un motif de la liste fermée", async () => {
     const formation = await formationDuBanc(`e09-${Date.now()}`);
     try {
       const w4 = await etape<{ ok: boolean; error?: string }>({
@@ -129,17 +131,39 @@ test.describe("@formateurs E09 — registre orange et muet, preuve inaltérable"
     }
   });
 
-  // V1-A-11 — une entreprise en DIFFUSION PARTIELLE (cas fréquent des micro-entrepreneurs) :
-  // le registre ne donne pas l'adresse, le dossier ne la demande jamais, et le contrat
-  // refuse de s'imprimer avec ce blanc (« Adresse », `champsManquantsContratCadre`).
-  // La personne lit « Votre contrat ne peut pas être préparé pour l'instant » et reste
-  // bloquée à l'étape 4. Cf. rapport.
-  test.fixme("(a) V1-A-11 — diffusion partielle : le contrat se prépare et le dossier part", async () => {
+  // V1-A-11 (corrigé) — une entreprise en DIFFUSION PARTIELLE (cas fréquent des
+  // micro-entrepreneurs) : le registre ne donne pas l'adresse que le contrat imprime.
+  // L'étape 2 la demande (refus qui le dit, rien d'écrit), puis l'enregistre : le contrat
+  // se prépare et le dossier part.
+  test("(a) V1-A-11 — diffusion partielle : le contrat se prépare et le dossier part", async () => {
     const email = decor.adresse("diffusion");
     const { fiche, lien } = await formateurRetenu(email, "Ilian", decor.admin);
+    const diffusionPartielle = registreDe("Ilian", "orange");
+    await actionDossier(lien, "vous", { telephone: "0600000000", codePostal: "69003" });
+    const sansAdresse = await actionDossier(
+      lien,
+      "activite",
+      {
+        siret: SIRET_BANC,
+        nda: NDA_BANC,
+        regimeTva: "franchise_293b",
+        iban: IBAN_BANC,
+      },
+      { registre: diffusionPartielle },
+    );
+    expect(sansAdresse.valeur.ok).toBe(false);
+    expect(sansAdresse.valeur.message).toMatch(/adresse professionnelle/);
+    expect(
+      (await prisma.trainer.findUniqueOrThrow({ where: { id: fiche.id } })).adresseProfessionnelle,
+    ).toBeNull();
+
     const registre = await preparerDossier(lien, "Ilian", {
-      registre: registreDe("Ilian", "orange"),
+      registre: diffusionPartielle,
+      adressePro: "12 rue des Lilas, 69003 Lyon",
     });
+    expect(
+      (await prisma.trainer.findUniqueOrThrow({ where: { id: fiche.id } })).adresseProfessionnelle,
+    ).toBe("12 rue des Lilas, 69003 Lyon");
     const code = await demanderCode(lien, email, registre);
     await signerAvecCode(lien, email, registre, code);
     expect(

@@ -27,6 +27,7 @@ import {
 import { decryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
+import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
@@ -88,6 +89,18 @@ async function finDeCollaboration(id: string): Promise<boolean> {
 }
 
 /**
+ * La VARIANTE validée à part que porte ce job, s'il en porte une — la même lecture que
+ * l'enfilage (`varianteAValider`, `envois.ts`) : l'étape du payload.
+ */
+function varianteDuJob(gabarit: GabaritFormateurIndependant, payload: unknown): string | undefined {
+  const etape =
+    payload !== null && typeof payload === "object"
+      ? (payload as Record<string, unknown>).etape
+      : undefined;
+  return typeof etape === "number" ? VARIANTES_VALIDEES_A_PART[gabarit]?.[etape] : undefined;
+}
+
+/**
  * Tout e-mail aux formateurs indépendants : le texte doit être encore validé au départ
  * (une validation retirée retient même un e-mail approuvé en corbeille), la fiche doit
  * exister, et une fin de collaboration ne laisse partir que l'argent.
@@ -101,8 +114,14 @@ const relireFormateur: LecteurAuDepart = async (job) => {
     const etats = await lireEtatsInterrupteurs();
     if (!lireDrapeauEnvoi(etats, "textes_valides"))
       return "textes des e-mails formateurs non validés";
-    if (!estTexteValide(await lireTextesValides(), gabarit))
-      return "texte de cet e-mail non validé";
+    const registre = await lireTextesValides();
+    if (!estTexteValide(registre, gabarit)) return "texte de cet e-mail non validé";
+    // V1-D-3 : la variante aussi, comme à l'enfilage — une variante changée depuis sa
+    // validation ne part pas, même déjà en file.
+    const variante = varianteDuJob(gabarit, job.payload);
+    if (variante !== undefined && !estTexteValide(registre, gabarit, variante)) {
+      return "variante de cet e-mail non validée";
+    }
     // L'opposition est déjà relue par le verdict du worker, mais en échec OUVERT (règle
     // historique des apporteurs). Pour une sollicitation formateur, on la relit ici en
     // échec FERMÉ : une table muette retient.

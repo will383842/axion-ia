@@ -83,6 +83,7 @@ export default async function DossierFormateurPage({ params }: PageProps) {
           codePostalPro: dossier.codePostalPro ?? dossier.suggestions.codePostal,
           siret: dossier.siret ?? dossier.suggestions.siret,
           siretEnregistre: dossier.siret !== null,
+          adressePro: dossier.adressePro ?? null,
           nda: dossier.nda ?? dossier.suggestions.nda,
           regimeTva: dossier.regimeTva,
           ibanSaisi: dossier.ibanSaisi,

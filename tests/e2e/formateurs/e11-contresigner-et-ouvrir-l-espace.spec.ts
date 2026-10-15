@@ -24,6 +24,10 @@ import {
   type DecorScenario,
 } from "../fixtures/formateurs/scenario";
 
+/** Un motif de la liste fermée de W-4 (`MOTIFS_ORANGE`), recopié : le banc n'importe
+ * pas le domaine depuis ce scénario (cloisonnement). */
+const MOTIF_LISTE_VERIFIEE = "Numéro de déclaration vérifié à la main sur la liste publique";
+
 test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
   test.describe.configure({ mode: "serial" });
   test.setTimeout(600_000);
@@ -71,13 +75,10 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
     expect(await gabaritsVers(email)).not.toContain("formateur-espace-ouvert");
   });
 
-  // V1-A-6 — BLOQUANT. W-4 tient les pièces déposées en ligne pour ABSENTES : il lit
-  // la présence d'un fichier par `fichierUrl` seul (`verifier-contresigner-lecture.ts`,
-  // `aUnFichier`), alors qu'une pièce déposée dans le dossier n'a pas d'adresse, seulement
-  // ses octets (`TrainerDocumentContenu`). Mesuré sur ce banc : « Pour contresigner, il
-  // manque : le CV · le RIB » pour un dossier qui les a déposés. Aucun formateur passé
-  // par le dossier en ligne ne peut être contresigné ni activé. Cf. rapport.
-  test.fixme("V1-A-6 — W-4 contresigne, active par la personne qui contresigne, F19 et F20 partent", async () => {
+  // V1-A-6 (corrigé) — une pièce déposée dans le dossier n'a pas d'adresse, seulement ses
+  // octets (`TrainerDocumentContenu`) : W-4, la porte de contresignature et l'activation
+  // la reconnaissent désormais (`pieceAUnFichier`, `contenu` chargé).
+  test("V1-A-6 — W-4 contresigne, active par la personne qui contresigne, F19 et F20 partent", async () => {
     const formation = await formationDuBanc(`e11-${Date.now()}`);
     try {
       const ecran = await etape<{
@@ -90,22 +91,33 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
       expect(ecran.valeur.faits.pieces.cv.fichierPresent).toBe(true);
       expect(ecran.valeur.faits.pieces.rib.fichierPresent).toBe(true);
 
-      const w4 = await etape<{ ok: boolean; error?: string }>({
-        etape: "contresigner-w4",
-        args: {
-          saisie: {
-            trainerId,
-            codeAttestation: "",
-            attestationAuthentique: false,
-            piecesVerifiees: true,
-            formationIds: [formation.id],
-            orangeVerifie: false,
-            motifOrange: null,
+      const contresigner = (orange: { orangeVerifie: boolean; motifOrange: string | null }) =>
+        etape<{ ok: boolean; error?: string }>({
+          etape: "contresigner-w4",
+          args: {
+            saisie: {
+              trainerId,
+              codeAttestation: "",
+              attestationAuthentique: false,
+              piecesVerifiees: true,
+              formationIds: [formation.id],
+              ...orange,
+            },
           },
-        },
-        session: decor.admin,
-        registre: registreDe("Maël"),
-      });
+          session: decor.admin,
+          registre: registreDe("Maël"),
+        });
+
+      // La contresignature relit le registre EN DIRECT, sans la liste publique des
+      // organismes de formation (`sourceRegistreAnnuaire`) : elle inscrit un orange
+      // « liste muette » que l'écran demande de vérifier. C'est le parcours documenté
+      // de W-4 : contrat contresigné, puis « rechargez la page, vérifiez, cliquez de
+      // nouveau ». (Oracle d'origine en un seul clic : il ne tenait pas compte de cette
+      // relecture, que V1-A-6 masquait.)
+      const premier = await contresigner({ orangeVerifie: false, motifOrange: null });
+      expect(premier.valeur.ok).toBe(false);
+      expect(premier.valeur.error).toMatch(/^Contrat contresigné\. Le registre relu/);
+      const w4 = await contresigner({ orangeVerifie: true, motifOrange: MOTIF_LISTE_VERIFIEE });
       expect(w4.valeur.ok, w4.valeur.error).toBe(true);
       const fiche = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
       expect(fiche.actif).toBe(true);
