@@ -41,7 +41,10 @@ const RETRY_DELAYS_MS = [5000, 15000] as const;
 const MAX_ATTEMPTS = RETRY_DELAYS_MS.length + 1;
 
 /** Corps 200 qui trahissent pourtant un échec CallMeBot. */
-const CALLMEBOT_ERROR_BODY = /apikey\s+(is\s+)?(invalid|incorrect|wrong)|not allowed|error/i;
+const CALLMEBOT_ERROR_BODY = /^\s*error\b|apikey\s+(is\s+)?(invalid|incorrect|wrong)|not allowed/i;
+
+/** Plafond de messages en attente (en cours d'envoi inclus) : au-delà, on refuse. */
+const MAX_QUEUE_SIZE = 50;
 
 interface Job {
   url: string;
@@ -53,6 +56,8 @@ type AttemptResult = "sent" | { retry: boolean; reason: string };
 const queue: Job[] = [];
 let draining: Promise<void> | null = null;
 let lastAttemptAt = 0;
+/** Messages acceptés et pas encore terminés (en file + en cours). */
+let pending = 0;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -135,6 +140,8 @@ function drain(): Promise<void> {
             await processJob(job);
           } catch {
             // fail-soft : un job ne doit jamais bloquer la file
+          } finally {
+            pending--;
           }
         }
       } finally {
@@ -153,6 +160,7 @@ export async function flushWhatsAppQueue(): Promise<void> {
 /** Remet la file à zéro (tests uniquement). */
 export function resetWhatsAppQueueForTests(): void {
   queue.length = 0;
+  pending = 0;
   lastAttemptAt = 0;
 }
 
@@ -162,6 +170,7 @@ export function resetWhatsAppQueueForTests(): void {
  *
  * @returns
  *   - `"skipped"` si la clé ou le numéro ne sont pas configurés (rien en file).
+ *   - `"failed"`  si la file est pleine (50 messages) — le message est refusé.
  *   - `"queued"`  sinon — le résultat réel n'est connu que de la file (logs/Sentry).
  */
 export async function sendWhatsAppRaw(opts: WhatsAppChannelOptions): Promise<WhatsAppSendStatus> {
@@ -181,6 +190,13 @@ export async function sendWhatsAppRaw(opts: WhatsAppChannelOptions): Promise<Wha
     `&text=${encodeURIComponent(text)}` +
     `&apikey=${encodeURIComponent(apiKey)}`;
 
+  if (pending >= MAX_QUEUE_SIZE) {
+    // Aucune donnée personnelle : ni numéro, ni clé, ni texte.
+    console.error(`[notif:whatsapp] file pleine (${MAX_QUEUE_SIZE} messages), message refusé`);
+    return "failed";
+  }
+
+  pending++;
   queue.push({ url, timeoutMs: opts.timeoutMs ?? 4000 });
   void drain();
   return "queued";

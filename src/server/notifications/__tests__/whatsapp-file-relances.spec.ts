@@ -95,4 +95,48 @@ describe("file WhatsApp", () => {
     await flushWhatsAppQueue();
     expect(errorSpy).toHaveBeenCalledOnce();
   });
+
+  it('traite un 200 "Message queued" comme un succès', async () => {
+    fetchMock.mockResolvedValue(new Response("Message queued", { status: 200 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('ne traite pas un 200 de succès contenant "error" au milieu d\'une phrase comme un échec', async () => {
+    fetchMock.mockResolvedValue(
+      new Response("Message sent, no error was reported by the gateway", { status: 200 }),
+    );
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('traite un 200 "APIKey is invalid" comme un échec', async () => {
+    fetchMock.mockResolvedValue(new Response("APIKey is invalid", { status: 200 }));
+    await sendWhatsAppRaw({ text: "x" });
+    await vi.runAllTimersAsync();
+    await flushWhatsAppQueue();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledOnce();
+  });
+
+  it("refuse le 51e message (file plafonnée à 50) sans donnée personnelle", async () => {
+    // Envoi bloqué : aucun message ne se termine pendant le remplissage.
+    fetchMock.mockReturnValue(new Promise(() => {}));
+    for (let i = 1; i <= 50; i++) {
+      expect(await sendWhatsAppRaw({ text: `m${i}` })).toBe("queued");
+    }
+    expect(await sendWhatsAppRaw({ text: "texte secret" })).toBe("failed");
+    expect(errorSpy).toHaveBeenCalledOnce();
+    const logged = JSON.stringify(errorSpy.mock.calls);
+    expect(logged).not.toContain("33755512345");
+    expect(logged).not.toContain("123456");
+    expect(logged).not.toContain("secret");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
 });
