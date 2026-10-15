@@ -361,18 +361,19 @@ export async function submitUnifiedContactAction(
       ...(data.timingWeeks ? { timingWeeks: data.timingWeeks } : {}),
       ...(data.subType ? { subType: data.subType } : {}),
       ...(data.source ? { source: data.source } : {}),
-      // Pièces jointes reçues : le nombre, et les noms (déjà assainis).
+      ...(category === "CONTACT_FORM_SUBMITTED" ? { formType: data.type } : {}),
+      ...(category === "QUOTE_REQUEST_RECEIVED" && data.budgetIndicative
+        ? { budget: data.budgetIndicative }
+        : {}),
+      locale,
+      // Pièces jointes reçues (2026-10-15) : le nombre, et les noms (déjà
+      // assainis). Telegram n'affiche que le nombre (règle du 11/10/2026).
       ...(pieces.recues.length > 0
         ? {
             piecesJointes: pieces.recues.length,
             piecesJointesNoms: pieces.recues.map((p) => p.nom),
           }
         : {}),
-      ...(category === "CONTACT_FORM_SUBMITTED" ? { formType: data.type } : {}),
-      ...(category === "QUOTE_REQUEST_RECEIVED" && data.budgetIndicative
-        ? { budget: data.budgetIndicative }
-        : {}),
-      locale,
     };
     // 7 & 8 = BEST-EFFORT : la notif Telegram et l'email de confirmation NE
     // DOIVENT PAS faire échouer la soumission (le lead est déjà en base). Un
