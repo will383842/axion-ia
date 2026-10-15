@@ -2,17 +2,10 @@
 //   · F43 à l'adresse connue (et à l'ancienne, si l'adresse a changé) ;
 //   · 48 h d'attente, puis validation — refusée si l'ancienne adresse n'a pas été avisée ;
 //   · les anciens liens meurent ;
-//   · pendant l'attente, les virements continuent sur l'ANCIEN compte (texte de F43,
-//     libellé de l'interrupteur, décision 72).
-//
-// DÉFAUT V1-C-1 (test.fixme) : pendant l'attente, le virement est BLOQUÉ, pas fait sur
-// l'ancien compte. `gardeVirementMission` ajoute `compte_bancaire_a_valider` dès qu'une
-// demande est en attente (paiement/virement-mission.ts ~l. 121, re-vérifié sous verrou
-// dans trainer-remuneration.ts ~l. 487) — à l'inverse de F43 (« vos virements continuent
-// sur l'ancien compte »), de `nouvelIbanUtilisableDes` (argent/calcul-mission.ts ~l. 367 :
-// « avant l'accord, l'ancien compte reste utilisable ») et du libellé de l'interrupteur.
-// Montant en jeu : toute facture due pendant 48 h au moins, retardée (et le retard,
-// pénalités comprises, court contre l'organisme).
+//   · pendant l'attente, le virement est BLOQUÉ (décision V1-C-1, lot 3 #1540, ADR 0066) :
+//     F43 annonce « vos virements sont mis en attente », puis versés sur le nouveau compte.
+//     `gardeVirementMission` ajoute `compte_bancaire_a_valider` dès qu'une demande est en
+//     attente (paiement/virement-mission.ts).
 //
 // DÉFAUT V1-C-6 (test.fixme) : F43 ne part qu'à l'adresse ACTUELLE de la fiche
 // (changements-coordonnees.ts ~l. 160) ; l'adresse précédente n'est conservée nulle part :
@@ -90,7 +83,10 @@ test.describe("@formateurs E24 — changement d'IBAN", () => {
         expect(f43.texte).not.toContain(iban.slice(-4));
         expect(f43.texte.replace(/\s/g, "")).not.toContain(iban);
       }
-      expect(f43.texte).toMatch(/continuent sur l.ancien compte/);
+      // V1-C-1 : F43 annonce le blocage, et ne promet plus de continuer sur l'ancien compte.
+      expect(f43.texte).toMatch(/virements sont mis en attente/);
+      expect(f43.texte).toMatch(/ensuite versés sur le nouveau compte/);
+      expect(f43.texte).not.toMatch(/continuent sur l.ancien compte/);
 
       // 48 h depuis la demande (horloge de la base) : à 47 h, trop tôt ; à 48 h 01, accepté.
       const base = d.createdAt.getTime();
@@ -158,31 +154,35 @@ test.describe("@formateurs E24 — changement d'IBAN", () => {
     });
   });
 
-  // DÉFAUT V1-C-1 — pendant l'attente, le virement est bloqué au lieu de partir sur l'ancien compte.
-  test.fixme("V1-C-1 : pendant les 48 h, le virement part sur l'ANCIEN compte", async () => {
+  // V1-C-1 — pendant les 48 h qui suivent la demande, aucun virement ne part.
+  test("V1-C-1 : pendant les 48 h, le virement est BLOQUÉ (compte bancaire à valider)", async () => {
     await avecVerrouArgent(async () => {
       const f = await factureDeMissionEmise({
         prenom: "Capucine",
         jours: ["2038-08-23", "2038-08-24"],
         emettre: false,
       });
+      const t0 = Date.now();
       await jouer([
         {
           etape: "demander-iban",
           ...IBAN_OUVERT,
           trainerId: f.formateur.id,
           iban: IBAN_B,
-          maintenant: new Date().toISOString(),
+          maintenant: new Date(t0).toISOString(),
         },
       ]);
-      const pendant = await jouerUne<Garde>({
-        etape: "garde-virement",
-        statementId: f.statementId,
-        empreinteAffichee: f.empreinte,
-        maintenant: new Date(Date.now() + H).toISOString(),
-      });
-      expect(pendant.verdict).toMatchObject({ autorise: true, motifs: [] });
-      expect(pendant.ibanFin4).toBe(IBAN_A.slice(-4));
+      // À 1 h, à 24 h et à 47 h de la demande : jamais autorisé, motif explicite.
+      for (const heures of [1, 24, 47]) {
+        const pendant = await jouerUne<Garde>({
+          etape: "garde-virement",
+          statementId: f.statementId,
+          empreinteAffichee: f.empreinte,
+          maintenant: new Date(t0 + heures * H).toISOString(),
+        });
+        expect(pendant.verdict.autorise).toBe(false);
+        expect(pendant.verdict.motifs).toContain("compte_bancaire_a_valider");
+      }
     });
   });
 
