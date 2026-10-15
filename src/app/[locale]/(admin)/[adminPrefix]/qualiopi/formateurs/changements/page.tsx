@@ -4,7 +4,7 @@
  *
  * Les demandes faites par les formateurs indépendants depuis leur espace. Une demande
  * se valide au plus tôt 48 heures après sa création (le serveur le revérifie) ; tant
- * qu'elle n'est pas validée, l'ancien compte reste celui des virements. L'IBAN demandé
+ * qu'elle n'est pas validée, les virements attendent (ADR 0066 ; vérification 1, V1-C-1). L'IBAN demandé
  * n'est JAMAIS affiché : en cas de doute, appelez le formateur au numéro connu.
  *
  * Livré ÉTEINT : interrupteur `formateurs.changement_coordonnees` coupé = la page le dit
@@ -92,7 +92,7 @@ export default async function ChangementsCoordonneesPage({ params, searchParams 
     <AdminPageShell>
       <AdminPageHeader
         title="Changements de compte bancaire et d'adresse"
-        description="Demandes des formateurs indépendants. Validation au plus tôt 48 heures après la demande ; l'ancien compte reste utilisé jusque-là."
+        description="Demandes des formateurs indépendants. Validation au plus tôt 48 heures après la demande ; d'ici là, les virements sont mis en attente, puis versés sur le nouveau compte."
       />
       {issue && (
         <p role="status" className="admin-card mb-[var(--space-admin-4)]">

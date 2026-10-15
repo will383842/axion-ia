@@ -62,6 +62,8 @@ export type RefusContresignature =
   | "nom_requis"
   | "nom_non_concordant"
   | "modules_invalides"
+  /** Vérification 1, V1-C-10 : la feuille papier est reportée pour un formateur indépendant. */
+  | "methode_non_admise"
   | "conflit_concurrent";
 
 export type ResultatContresignature =
@@ -84,6 +86,20 @@ export interface EntreeContresignature {
   userAgentSha256?: string | null | undefined;
   /** Injectable pour les tests. Jamais `new Date()` en dur dans la logique. */
   maintenant?: Date | undefined;
+}
+
+/**
+ * Vérification 1, V1-C-10 — la contresignature par photo d'une feuille papier est-elle
+ * proposée à ce formateur ? Non pour un formateur indépendant (feuille papier
+ * reportée) ; oui sinon, comme avant. Lecture seule, pour l'écran.
+ */
+export async function feuillePapierPossiblePour(trainerId: string): Promise<boolean> {
+  if (estStub()) return true;
+  const t = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: { statut: true },
+  });
+  return t?.statut !== "sous_traitant";
 }
 
 function estStub(): boolean {
@@ -169,13 +185,25 @@ export async function contresignerDemiJournee(
   // co-animation, chacun ayant sa propre chaîne).
   const trainer = await prisma.trainer.findUnique({
     where: { id: input.trainerId },
-    select: { nom: true, prenom: true },
+    select: { nom: true, prenom: true, statut: true },
   });
   if (trainer === null) {
     return {
       ok: false,
       raison: "formateur_introuvable",
       message: "Formateur introuvable.",
+    };
+  }
+  // Vérification 1, V1-C-10 — la feuille papier est REPORTÉE côté formateurs
+  // indépendants (décision du dirigeant) : leur contresignature déclenche leur
+  // paiement, et la validation d'une feuille papier n'est pas livrée. Refus AVANT
+  // toute écriture. Salariés et dirigeants : inchangé.
+  if (input.methode === "papier_scanne" && trainer.statut === "sous_traitant") {
+    return {
+      ok: false,
+      raison: "methode_non_admise",
+      message:
+        "La feuille papier n'est pas disponible pour les formateurs indépendants. Contresignez depuis votre espace, par tracé ou en confirmant votre nom.",
     };
   }
   const formateurNom = `${trainer.prenom} ${trainer.nom}`.trim();

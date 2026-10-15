@@ -33,6 +33,7 @@ import {
 } from "@/components/espace-formateur/BilanFinFormation";
 import { lireBilanFormateur } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/service";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
+import { feuillePapierPossiblePour } from "@/server/qualiopi/emargement/contresignature-service";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
@@ -96,6 +97,8 @@ export default async function Page({
   // 2026-09-15 — la DEMANDE de contresignature, visible en ouvrant la formation.
   // Même bilan que l'e-mail et la fiche session ; appartenance revérifiée dedans.
   const aContresigner = await contresignaturesAttenduesDuFormateur(id, trainerId, maintenant);
+  // Vérification 1, V1-C-10 — pas de feuille papier proposée à un indépendant.
+  const papierPossible = await feuillePapierPossiblePour(trainerId);
   // Lu APRÈS la garde de propriété, comme tout le reste de cette page.
   const etatReleve = await lireEtatSignatureReleve(id, trainerId);
   // Le kit imprime : null s'il n'est pas encore publie pour cette formation.
@@ -448,6 +451,7 @@ export default async function Page({
               signerAction={signerPourStagiaireAction}
               contresignerAction={contresignerDemiJourneeAction}
               signaturePourStagiaireFermee={signaturePourStagiaireFermee}
+              contresignaturePapierPossible={papierPossible}
             />
           )}
         </section>
