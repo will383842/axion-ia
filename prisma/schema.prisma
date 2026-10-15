@@ -700,10 +700,16 @@ model SubmissionInboundReply {
 // ============================================================
 //
 // Les pièces jointes envoyées avec le formulaire de contact unifié : 3 au plus,
-// 10 Mo chacune, 20 Mo au total (`src/lib/contact/pieces-jointes.ts`). Le
-// fichier vit dans le compartiment R2 PRIVÉ (`r2-storage.ts`) sous une clé tirée
-// au hasard ; il ne se lit que par la route admin authentifiée
+// 25 Mo chacune, 50 Mo au total (`src/lib/contact/pieces-jointes.ts`). Le
+// navigateur envoie le fichier DIRECTEMENT au compartiment R2 PRIVÉ
+// (`r2-storage.ts`), sur une URL signée, sous une clé TEMPORAIRE tirée au
+// hasard ; le serveur le contrôle puis le DÉPLACE sous sa clé définitive. Il ne
+// se lit que par la route admin authentifiée
 // `contacts/messages/[id]/pieces-jointes/[pieceId]`. Aucune URL publique.
+//
+// Cycle d'une ligne (`statut`) : `attendue` (URL délivrée) → `controle` (en
+// cours de vérification) → `recue` | `refusee` | `non_recue`. Seule `recue` a
+// un fichier téléchargeable ; les deux autres disent « pièce non reçue ».
 //
 // Rétention : celle de la demande (cascade). Effacement art. 17 :
 // `erasePiecesJointesContactForEmail` (objet R2 ET ligne, `rgpd-erase.ts`) ;
@@ -714,20 +720,28 @@ model SubmissionAttachment {
   submissionId String   @map("submission_id") @db.Uuid
   /// Nom ASSAINI (affichage et téléchargement). La clé R2 n'en reprend rien.
   nomFichier   String   @map("nom_fichier") @db.VarChar(160)
-  /// Format reconnu par les premiers octets (`FormatPieceJointe`).
+  /// Format désigné par l'extension, CONFIRMÉ par les octets à la réception.
   format       String   @db.VarChar(10)
+  /// Taille annoncée et signée dans l'URL d'envoi ; vérifiée par `HEAD`.
   tailleOctets Int      @map("taille_octets")
-  /// Clé de l'objet dans le compartiment R2 privé.
+  /// Clé de l'objet dans le compartiment R2 privé (temporaire, puis définitive).
   cleStockage  String   @unique @map("cle_stockage") @db.VarChar(300)
-  /// Empreinte SHA-256 du contenu reçu.
-  sha256       String   @db.VarChar(64)
+  /// `attendue` | `controle` | `recue` | `refusee` | `non_recue`.
+  statut       String   @default("attendue") @db.VarChar(20)
+  /// Empreinte SHA-256 du jeton d'envoi rendu au navigateur (jamais le jeton).
+  jetonHash    String?  @map("jeton_hash") @db.VarChar(64)
+  /// Motif d'un refus : `format`, `macros`, `contenu`, `taille`, `infecte`.
+  motifRefus   String?  @map("motif_refus") @db.VarChar(20)
+  /// Empreinte SHA-256 du contenu reçu (posée à la réception).
+  sha256       String?  @db.VarChar(64)
   /// Verdict antivirus à la réception : `sain` ou `non_verifie` (antivirus muet).
-  antivirus    String   @db.VarChar(20)
+  antivirus    String?  @db.VarChar(20)
   createdAt    DateTime @default(now()) @map("created_at")
 
   submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([submissionId])
+  @@index([statut, createdAt])
   @@map("submission_attachments")
 }
 
