@@ -44,7 +44,7 @@ export const GROUPES = [
   {
     id: "D",
     titre: "équipe D · sécurité",
-    motif: /^tests\/e2e\/formateurs\/(e(2[7-9]|30|35|39|40)|ed\d+)-[^/]+\.spec\.ts$/,
+    motif: /^tests\/e2e\/formateurs\/(e(2[7-9]|30|35|39|40)|ed\d+|v2s\d+)-[^/]+\.spec\.ts$/,
   },
   {
     // Le socle d'avant le chantier V1 : le banc lui-même, la file, les rendez-vous.
