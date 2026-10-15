@@ -20,7 +20,7 @@ import {
 } from "@/server/actions/formateur/bilan-fin-formation.actions";
 
 import { AvisBilanForm } from "./AvisBilanForm";
-import { MESSAGES_BILAN } from "./bilan-fin-formation-messages";
+import { MESSAGES_BILAN } from "@/server/formateur/bilan-fin-formation-messages";
 
 export interface VueBilanFinFormation {
   readonly objectifs: readonly string[];

@@ -26,7 +26,7 @@ import {
   AVIS_NON_ENREGISTRE,
   MESSAGES_BILAN,
   type EtatAvisBilan,
-} from "@/components/espace-formateur/bilan-fin-formation-messages";
+} from "@/server/formateur/bilan-fin-formation-messages";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 /** Plafond du nombre d'objectifs lus dans un formulaire. */
