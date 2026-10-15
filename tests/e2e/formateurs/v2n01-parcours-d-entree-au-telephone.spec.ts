@@ -74,7 +74,7 @@ test.describe("@formateurs V2-N01 — parcours d'entrée au téléphone, compté
   let email = "";
 
   test.beforeAll(async () => {
-    test.setTimeout(45 * 60_000);
+    test.setTimeout(2_700_000);
     decor = await ouvrirScenario("v2n01", { organisme: true });
   });
   test.afterAll(async () => {
@@ -83,7 +83,7 @@ test.describe("@formateurs V2-N01 — parcours d'entrée au téléphone, compté
   });
 
   test("de l'offre au contrat signé : gestes comptés, e-mails lisibles, liens vivants", async () => {
-    test.setTimeout(15 * 60_000);
+    test.setTimeout(900_000);
     email = decor.adresse("novice");
     const gestes: string[] = [];
 

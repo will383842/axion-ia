@@ -66,7 +66,7 @@ function defautsDuRendu(r: { sujet: string; texte: string }): string[] {
 }
 
 test.describe("@formateurs V2-N03 — mission, lettre, honoraires : ce que le formateur voit", () => {
-  test.setTimeout(10 * 60_000);
+  test.setTimeout(600_000);
 
   test("proposition → « J'accepte » → lettre signée : deux gestes, e-mails lisibles, liens vivants", async () => {
     const { pilote, monde } = sc;
@@ -158,7 +158,7 @@ test.describe("@formateurs V2-N03 — mission, lettre, honoraires : ce que le fo
   });
 
   test("feuilles de présence → facture à son nom → virement : ce que « Mes honoraires » affiche", async () => {
-    test.setTimeout(20 * 60_000);
+    test.setTimeout(1_200_000);
     // Deux journées animées, chaque demi-journée contresignée par le formateur (4 gestes),
     // le passage écrit le relevé, la direction valide : l'autofacture F36 part.
     const emise = await factureDeMissionEmise({

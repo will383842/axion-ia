@@ -45,7 +45,7 @@ test.describe("@formateurs V2-N02 — le candidat se trompe, rien n'est perdu", 
   let decor: DecorScenario;
 
   test.beforeAll(async () => {
-    test.setTimeout(45 * 60_000);
+    test.setTimeout(2_700_000);
     decor = await ouvrirScenario("v2n02", { organisme: true });
   });
   test.afterAll(async () => {
@@ -54,7 +54,7 @@ test.describe("@formateurs V2-N02 — le candidat se trompe, rien n'est perdu", 
   });
 
   test("chaque erreur de saisie : un refus clair, la saisie d'avant gardée, puis ça aboutit", async () => {
-    test.setTimeout(15 * 60_000);
+    test.setTimeout(900_000);
     const email = decor.adresse("maladroit");
     const { fiche, lien } = await formateurRetenu(email, "Hugo", decor.admin);
     const registre = registreDe("Hugo");
@@ -138,7 +138,7 @@ test.describe("@formateurs V2-N02 — le candidat se trompe, rien n'est perdu", 
   });
 
   test("il a perdu l'e-mail du dossier : « Recevoir un nouveau lien » le lui renvoie, et il marche", async () => {
-    test.setTimeout(10 * 60_000);
+    test.setTimeout(600_000);
     const email = decor.adresse("etourdi");
     const { fiche, lien } = await formateurRetenu(email, "Lina", decor.admin);
     await actionDossier(lien, "vous", { telephone: "0600000000", codePostal: "69003" });

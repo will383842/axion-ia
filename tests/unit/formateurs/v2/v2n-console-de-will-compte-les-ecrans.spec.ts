@@ -11,8 +11,6 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { bandeauEtape } from "@/server/qualiopi/formateurs-independants/bandeau-etape";
-
 const RACINE = path.resolve(__dirname, "../../../..");
 const ADMIN = "src/app/[locale]/(admin)/[adminPrefix]";
 const lire = (rel: string) => readFileSync(path.join(RACINE, ADMIN, rel), "utf8");
@@ -37,11 +35,13 @@ describe("V2-N · console — par virement", () => {
 
 describe("V2-N · console — par formateur", () => {
   it("la fiche d'un dossier « à vérifier » mène en un clic à « Vérifier et contresigner »", () => {
-    const b = bandeauEtape(
-      { onglet: "a_verifier", libelle: "À vérifier" } as never,
-      "/fr/admin/qualiopi/formateurs/t1",
-    ) as { lien: { href: string } | null };
-    expect(b.lien?.href).toBe("/fr/admin/qualiopi/formateurs/t1/verifier");
+    // Lu dans le code (le cloisonnement interdit d'importer le domaine Qualiopi ici).
+    const bandeau = readFileSync(
+      path.join(RACINE, "src/server/qualiopi/formateurs-independants/bandeau-etape.ts"),
+      "utf8",
+    );
+    expect(bandeau).toMatch(/onglet === "a_verifier"/);
+    expect(bandeau).toContain('libelle: "Vérifier et contresigner", href: `${urlFiche}/verifier`');
     expect(existsSync(path.join(RACINE, ADMIN, "qualiopi/formateurs/[id]/verifier/page.tsx"))).toBe(
       true,
     );
