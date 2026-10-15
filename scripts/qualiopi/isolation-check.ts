@@ -605,6 +605,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    (mêmes briques que `preparerContratCadre`, qui n'émet que la dernière)
   //    et rend un e-mail en file. Nommé seul, pas le répertoire.
   "tests/e2e/fixtures/formateurs/missions-aides-serveur.ts",
+  // ── Banc @formateurs, vérification n° 2 (rouge sécurité, 2026-10-15). Contrôle
+  //    SANS ÉCRAN : il lit le registre RÉEL des interrupteurs (clés et
+  //    `estCleProtegee`) pour prouver que chaque clé lue par le chantier est
+  //    protégée de l'éditeur de réglages général. Une copie de la liste dans le
+  //    test ne prouverait rien. Nommé seul, pas le répertoire.
+  "tests/unit/formateurs/v2/v2s-cles-et-routes-gardees.spec.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
