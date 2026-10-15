@@ -91,6 +91,8 @@ export const TEXTES = {
   iban: "IBAN",
   ibanEnregistre: "IBAN enregistré. Laissez vide pour le garder.",
   ibanFige: "IBAN enregistré. Pour le changer, écrivez-nous : nous le vérifierons d'abord.",
+  ibanParDemande:
+    "IBAN de vos virements enregistré. Laissez vide pour le garder. Un nouveau compte saisi ici sera vérifié avant tout virement : nous vous écrirons à votre adresse connue.",
   ibanInvalide:
     "Cet IBAN n'est pas valide, ou n'est pas celui d'un compte de la zone SEPA (Europe), où nous versons vos honoraires : vérifiez-le.",
 

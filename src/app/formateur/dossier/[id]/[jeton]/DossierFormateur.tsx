@@ -58,6 +58,8 @@ export interface DossierPublic {
   regimeTva: RegimeTvaDossier | null;
   ibanSaisi: boolean;
   ibanFige: boolean;
+  /** V2-S-1 — formateur actif : un nouvel IBAN devient une demande de changement. */
+  ibanParDemande?: boolean;
   codeUrssafSaisi: boolean;
   pieces: ReadonlyArray<PieceAffichee & { type: PieceDossier }>;
   piecesDemandees: ReadonlyArray<PieceDossier>;
@@ -542,7 +544,9 @@ export function DossierFormateur({
                   onChange={(e) => setIban(e.target.value)}
                 />
                 {dossier.ibanSaisi ? (
-                  <p className="text-fg-soft mt-1 text-[14px]">{TEXTES.ibanEnregistre}</p>
+                  <p className="text-fg-soft mt-1 text-[14px]">
+                    {dossier.ibanParDemande ? TEXTES.ibanParDemande : TEXTES.ibanEnregistre}
+                  </p>
                 ) : null}
               </>
             )}

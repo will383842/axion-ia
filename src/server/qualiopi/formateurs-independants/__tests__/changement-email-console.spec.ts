@@ -41,6 +41,7 @@ const tx = {
   trainer: { update: vi.fn() },
   documentGenere: { findMany: vi.fn() },
   documentSignatureCode: { updateMany: vi.fn() },
+  documentSignatureToken: { updateMany: vi.fn() },
 };
 
 beforeEach(() => {
@@ -48,6 +49,7 @@ beforeEach(() => {
   db.$transaction.mockImplementation(async (fn: (t: unknown) => unknown) => fn(tx));
   tx.documentGenere.findMany.mockResolvedValue([{ id: CONTRAT }]);
   tx.documentSignatureCode.updateMany.mockResolvedValue({ count: 1 });
+  tx.documentSignatureToken.updateMany.mockResolvedValue({ count: 0 });
   tx.trainer.update.mockResolvedValue({ id: ID });
   db.trainer.update.mockResolvedValue({ id: ID });
 });
@@ -109,5 +111,77 @@ describe("V1-A-8 — changement d'adresse : les codes de signature tombent avec 
     expect(db.trainer.update).toHaveBeenCalledWith({ where: { id: ID }, data: { nom: "Durand" } });
     expect(db.$transaction).not.toHaveBeenCalled();
     expect(tx.documentSignatureCode.updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("V2-S-3 — changement d'adresse : les liens de signature tombent avec elle", () => {
+  const LETTRE = "5c6d7e8f-9a0b-4c1d-8e2f-3a4b5c6d7e8f";
+  const SIGNEE = "1b2c3d4e-5f6a-4b7c-9d8e-0f1a2b3c4d5e";
+
+  it("liens vivants révoqués DANS la transaction de l'adresse ; non signées à renvoyer", async () => {
+    tx.documentGenere.findMany.mockImplementation(async (q: { where: object }) =>
+      "signatureTokens" in q.where
+        ? [
+            { id: LETTRE, annuleeAt: null, signatures: [] },
+            { id: CONTRAT, annuleeAt: null, signatures: [] },
+            { id: SIGNEE, annuleeAt: null, signatures: [{ id: "s" }] },
+          ]
+        : [{ id: CONTRAT }],
+    );
+    const r = await ecrireFicheAvecChangementEmail({
+      trainerId: ID,
+      data: { email: "nouvelle@example.test" },
+      changement: CHANGEMENT,
+      maintenant: MAINTENANT,
+      parAdminId: "admin-1",
+    });
+    expect(db.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.documentSignatureToken.updateMany).toHaveBeenCalledWith({
+      where: {
+        documentGenereId: { in: [LETTRE, CONTRAT, SIGNEE] },
+        partie: { in: ["formateur", "sous_traitant"] },
+        revokedAt: null,
+      },
+      data: {
+        revokedAt: MAINTENANT,
+        revokedMotif: expect.stringContaining("à renvoyer"),
+        revokedById: "admin-1",
+      },
+    });
+    // Les codes de la partie « formateur » (lettres de mission) tombent aussi.
+    expect(tx.documentSignatureCode.updateMany).toHaveBeenCalledWith({
+      where: {
+        documentGenereId: { in: [LETTRE, CONTRAT, SIGNEE] },
+        partie: "formateur",
+        utiliseAt: null,
+        invalideAt: null,
+      },
+      data: { invalideAt: MAINTENANT },
+    });
+    expect(r).toEqual({ piecesARenvoyer: 2 });
+  });
+
+  it("la révocation échoue : l'écriture entière échoue (l'adresse ne change pas seule)", async () => {
+    tx.documentGenere.findMany.mockResolvedValue([{ id: LETTRE, annuleeAt: null, signatures: [] }]);
+    tx.documentSignatureToken.updateMany.mockRejectedValue(new Error("panne"));
+    await expect(
+      ecrireFicheAvecChangementEmail({
+        trainerId: ID,
+        data: { email: "nouvelle@example.test" },
+        changement: CHANGEMENT,
+        maintenant: MAINTENANT,
+      }),
+    ).rejects.toThrow("panne");
+  });
+
+  it("sans changement d'adresse : aucun lien touché", async () => {
+    const r = await ecrireFicheAvecChangementEmail({
+      trainerId: ID,
+      data: { nom: "Durand" },
+      changement: null,
+      maintenant: MAINTENANT,
+    });
+    expect(tx.documentSignatureToken.updateMany).not.toHaveBeenCalled();
+    expect(r).toEqual({ piecesARenvoyer: 0 });
   });
 });

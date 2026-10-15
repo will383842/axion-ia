@@ -25,6 +25,9 @@ const m = vi.hoisted(() => ({
   trainerFindUnique: vi.fn(),
   magicLinkUpdateMany: vi.fn(),
   codesUpdateMany: vi.fn(),
+  tokensUpdateMany: vi.fn(),
+  /** V2-S-3 — pièces du formateur qui ont un lien de signature vivant. */
+  piecesAvecLien: [] as Array<{ id: string; annuleeAt: Date | null; signatures: unknown[] }>,
   transaction: vi.fn(),
   envoyer: vi.fn(),
   log: vi.fn(),
@@ -38,8 +41,12 @@ vi.mock("@/lib/prisma", () => {
       findUnique: (...a: unknown[]) => m.trainerFindUnique(...a),
     },
     formateurMagicLink: { updateMany: (...a: unknown[]) => m.magicLinkUpdateMany(...a) },
-    documentGenere: { findMany: async () => [{ id: "contrat-uuid" }] },
+    documentGenere: {
+      findMany: async (q: { where: object }) =>
+        "signatureTokens" in q.where ? m.piecesAvecLien : [{ id: "contrat-uuid" }],
+    },
     documentSignatureCode: { updateMany: (...a: unknown[]) => m.codesUpdateMany(...a) },
+    documentSignatureToken: { updateMany: (...a: unknown[]) => m.tokensUpdateMany(...a) },
     // V1-A-8 — la transaction de l'adresse : même client, appels comptés.
     $transaction: async (fn: (tx: unknown) => unknown) => {
       m.transaction();
@@ -128,6 +135,29 @@ describe("updateTrainerAction — e-mail d'un indépendant", () => {
       data: { invalideAt: expect.any(Date) },
     });
     expect(dataEcrite()).toMatchObject({ emailRemplace: ANCIENNE });
+  });
+
+  it("🔴 V2-S-3 — les liens de signature envoyés à l'ancienne adresse tombent ; la console le dit", async () => {
+    m.trainerFindUnique.mockResolvedValue(fiche("sous_traitant"));
+    m.piecesAvecLien = [{ id: "lettre-uuid", annuleeAt: null, signatures: [] }];
+    try {
+      const r = await updateTrainerAction({ id: ID, email: NOUVELLE });
+      expect(r).toEqual({ data: { id: ID, piecesARenvoyer: 1 } });
+      expect(m.transaction).toHaveBeenCalledTimes(1);
+      expect(m.tokensUpdateMany).toHaveBeenCalledWith({
+        where: {
+          documentGenereId: { in: ["lettre-uuid"] },
+          partie: { in: ["formateur", "sous_traitant"] },
+          revokedAt: null,
+        },
+        data: expect.objectContaining({ revokedAt: expect.any(Date), revokedById: "admin-uuid" }),
+      });
+      expect(m.log).toHaveBeenCalledWith(
+        expect.objectContaining({ changes: expect.objectContaining({ piecesARenvoyer: 1 }) }),
+      );
+    } finally {
+      m.piecesAvecLien = [];
+    }
   });
 
   it("🔴 les liens de connexion encore en attente sont consommés", async () => {
