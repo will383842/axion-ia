@@ -13,7 +13,7 @@
 // une liste de gestes à poser.
 
 import { redirect } from "next/navigation";
-import { ArrowRight, Clock, Inbox, MailX } from "lucide-react";
+import { ArrowRight, Clock, Inbox, MailQuestion, MailX, UserRoundCheck } from "lucide-react";
 import { auth } from "@/auth";
 import {
   AdminPageShell,
@@ -43,6 +43,11 @@ import {
 import { LIBELLE_STATUT, STATUTS_CANDIDATURE, TON_STATUT } from "@/content/recrutement/statuts";
 import type { TonStatut } from "@/content/recrutement/statuts";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import {
+  lireReponsesAVerifier,
+  type ReponseAVerifier,
+} from "@/features/admin-job-applications/reponses-recues";
+import { listerInvitationsADecider } from "@/server/qualiopi/formateurs-independants/suivi-invitations";
 
 export const dynamic = "force-dynamic";
 
@@ -85,9 +90,12 @@ export default async function PilotageRecrutementPage({ params }: PageProps) {
   //    `true` posé par erreur ne se verrait nulle part.
   const role = (session.user as { role?: string }).role ?? null;
   const maintenant = new Date();
-  const [bilan, sommeil] = await Promise.all([
+  // Information ACCESSOIRE : une lecture qui échoue ne ferme pas l'écran, elle vide la tuile.
+  const [bilan, sommeil, aDecider, aVerifier] = await Promise.all([
     construireBilanPilotage(maintenant),
     listerDossiersEnSommeil(maintenant, role),
+    listerInvitationsADecider(maintenant).catch(() => []),
+    lireReponsesAVerifier({ role }, maintenant).catch((): ReponseAVerifier[] => []),
   ]);
 
   const base = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -141,6 +149,20 @@ export default async function PilotageRecrutementPage({ params }: PageProps) {
           tone={sommeil.parMotif.sans_activite > 0 ? "warning" : "success"}
           icon={Clock}
           meta="aucune ligne au journal"
+        />
+        <AdminStatCard
+          label="Invitées, à décider (> 14 j)"
+          value={aDecider.length}
+          tone={aDecider.length > 0 ? "warning" : "success"}
+          icon={UserRoundCheck}
+          meta="invitée à l'échange formateur, ni réservé ni répondu : à vous de décider"
+        />
+        <AdminStatCard
+          label="Réponses à vérifier"
+          value={aVerifier.length}
+          tone={aVerifier.length > 0 ? "warning" : "success"}
+          icon={MailQuestion}
+          meta="venues d'une adresse relais : rien n'est arrêté avant votre clic"
         />
         <AdminStatCard
           label="Délai médian de 1re réponse"

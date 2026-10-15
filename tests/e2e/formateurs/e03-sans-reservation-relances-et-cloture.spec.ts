@@ -95,16 +95,36 @@ test.describe("@formateurs E03 — sans réservation : relances puis clôture", 
     expect(resumeInvitationFormateur(close, j30)).toMatch(/sans suite/);
   });
 
-  // V1-A-4 — aucune tuile ne signale, après J+14, une personne invitée qui n'a ni
-  // réservé ni répondu. La seule lecture de console (`resumeInvitationFormateur`)
-  // dit « Plus aucun rappel prévu » dès J+7, et rien ne lit le silence de la campagne
-  // (`silenceApresMs`). Cf. rapport de vérification.
-  test.fixme("V1-A-4 — après J+14, une tuile signale la personne à décider", async () => {
+  // V1-A-4 — après J+14, une personne invitée qui n'a ni réservé ni répondu apparaît dans la
+  // tuile « Invitées, à décider » du suivi des candidatures (et sa fiche le dit). L'oracle
+  // lit la tuile (étape `a-decider`), pas une phrase du résumé.
+  test("V1-A-4 — après J+14, la tuile « à décider » liste la personne", async () => {
     const email = decor.adresse("a-decider");
     const cand = await candidatureInvitee(email, "Sacha");
     const inv = cand.invitationFormateurAt as Date;
+    const tuile = async (maintenant: Date) =>
+      (
+        await etape<Array<{ candidatureId: string }>>({
+          etape: "a-decider",
+          args: { maintenant: maintenant.toISOString() },
+        })
+      ).valeur.map((l) => l.candidatureId);
+
+    // Avant J+14 : pas dans la tuile.
+    expect(await tuile(jourOuvre(inv, 10))).not.toContain(cand.id);
+    // Après J+14, sans réservation ni réponse : dans la tuile.
     const j15 = jourOuvre(inv, 15);
-    const resume = resumeInvitationFormateur(cand, j15);
-    expect(resume).toMatch(/décider|sans réservation|n'a pas réservé/i);
+    expect(await tuile(j15)).toContain(cand.id);
+    const phrase = await etape<string>({
+      etape: "resume-invitation",
+      args: { candidatureId: cand.id, maintenant: j15.toISOString() },
+    });
+    expect(phrase.valeur).toMatch(/À décider/);
+    // Close « sans suite » à J+30 : elle sort de la tuile.
+    await prisma.jobApplication.update({
+      where: { id: cand.id },
+      data: { clotureSansSuiteAt: jourOuvre(inv, 30) },
+    });
+    expect(await tuile(jourOuvre(inv, 31))).not.toContain(cand.id);
   });
 });

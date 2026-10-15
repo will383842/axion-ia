@@ -6,7 +6,8 @@
  * montre — date, objet, court extrait, « Ouvrir dans Zoho » pour le message
  * entier et ses pièces jointes, qui ne sont JAMAIS copiés chez nous (décision
  * de Will n° 11). Une réponse automatique (absence) est montrée, marquée comme
- * telle : elle n'a rien déclenché.
+ * telle : elle n'a rien déclenché. Une réponse venue d'une adresse relais (candidature sans
+ * empreinte) est marquée « à vérifier » : elle n'arrête aucune relance avant le clic humain.
  *
  * Mêmes briques que la frise juste en dessous (filet à gauche, ligne d'en-tête,
  * badge) — la maquette validée le 07/10 marque ces lignes « lu
@@ -61,6 +62,9 @@ export async function ReponsesRecuesCandidat({
               <span className="admin-meta-small">{DATE_FR.format(r.recueLe)}</span>
               <AdminBadge tone="info">lu automatiquement</AdminBadge>
               {r.automatique ? <AdminBadge tone="neutral">réponse automatique</AdminBadge> : null}
+              {r.aVerifier ? (
+                <AdminBadge tone="warning">à vérifier : adresse relais</AdminBadge>
+              ) : null}
             </div>
             <p className="text-[length:var(--text-admin-sm)]">{r.objet}</p>
             {r.extrait ? (

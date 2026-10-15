@@ -212,6 +212,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // Modèles « formateur » du composeur (lot L0c-2) : `formateurs.modeles_composeur`, lu par
   //    la fiche de candidature (proposés) et l'action de réponse (revérifiés).
   "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/[id]/page.tsx",
+  // Lot 5 (V1-A-4) — la tuile « Invitées, à décider » du suivi des candidatures : une lecture
+  //    seule (`listerInvitationsADecider`) des faits de l'invitation formateur.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/candidatures/pilotage/page.tsx",
   "src/features/admin-job-applications/reply-actions.ts",
   // « Ajouter un candidat formateur » (lot L0c-3) : `formateurs.ajout_console`, et l'invitation F1
   //    par le module d'envoi des formateurs (`envois.ts`), jamais par une copie.

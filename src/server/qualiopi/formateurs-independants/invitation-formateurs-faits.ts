@@ -19,6 +19,8 @@ import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { estCandidatureFreelance } from "@/server/calendly/rattachement-formateur";
 
+import { siretDuFormulaire } from "./controle-siret-candidature";
+
 export const SELECT_CANDIDATURE_INVITATION = {
   id: true,
   email: true,
@@ -33,6 +35,7 @@ export const SELECT_CANDIDATURE_INVITATION = {
   rattrapageAt: true,
   clotureSansSuiteAt: true,
   trainerId: true,
+  answers: true,
   offer: {
     select: { slug: true, titleFr: true, employmentType: true, secondaryEmploymentType: true },
   },
@@ -52,6 +55,8 @@ export interface CandidatureInvitation {
   rattrapageAt: Date | null;
   clotureSansSuiteAt: Date | null;
   trainerId: string | null;
+  /** Les réponses du formulaire (le SIRET y est, pour un formateur indépendant). */
+  answers?: unknown;
   offer: {
     slug: string | null;
     titleFr: string | null;
@@ -77,15 +82,13 @@ export interface FaitsInvitation {
   /** Une fiche formateur est ouverte pour la personne. */
   readonly ficheOuverte: boolean;
   /**
-   * Le dernier contrôle du registre d'une fiche de la personne est rouge.
-   *
-   * ⚠️ Sans effet PROPRE aujourd'hui : seule une personne qui a déjà une fiche formateur
-   * a un contrôle du registre, et cette fiche suffit déjà à écarter l'envoi
-   * (`ficheOuverte`). Une candidature ne porte pas de SIRET : rien n'est vérifié au
-   * registre avant F1. Garde conservée pour le jour où le formulaire recueillera le
-   * SIRET — il faudra alors la brancher sur lui.
+   * Le dernier contrôle du registre d'une fiche de la personne est rouge. (Le SIRET du
+   * FORMULAIRE, lui, se contrôle à part — `controle-siret-candidature.ts`, V1-A-1 : un appel
+   * réseau, fait seulement pour une candidature qui pourrait partir.)
    */
   readonly registreRouge: boolean;
+  /** Le SIRET (14 chiffres) saisi au formulaire, ou `null`. */
+  readonly siret: string | null;
   readonly opposition: boolean;
   /** Rebond dur sur l'adresse (le verdict d'envoi la retiendrait de toute façon). */
   readonly adresseMorte: boolean;
@@ -150,7 +153,13 @@ export async function lireFaitsInvitation(
           })
         : Promise.resolve([]),
       prisma.jobApplicationInboundReply.findMany({
-        where: { applicationId: { in: toutes }, auto: false },
+        // V1-A-3 : une réponse « à vérifier » (adresse relais, candidature sans empreinte)
+        // n'arrête rien avant le clic humain (« J'ai répondu ailleurs »).
+        where: {
+          applicationId: { in: toutes },
+          auto: false,
+          application: { emailHash: { not: null } },
+        },
         select: { applicationId: true, receivedAt: true },
       }),
       prisma.reponseEntranteFormateur.findMany({
@@ -221,6 +230,7 @@ export async function lireFaitsInvitation(
         fichesDeLaPersonne.length > 0 ||
         soeurs.some((s) => lignes.has(s.id) && s.trainerId !== null) ||
         c.trainerId !== null,
+      siret: siretDuFormulaire(c.answers),
       registreRouge: fichesDeLaPersonne.some(
         (f) => f.verificationsRegistre[0]?.verdict === "rouge",
       ),
