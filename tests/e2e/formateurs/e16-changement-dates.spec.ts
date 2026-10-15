@@ -186,14 +186,12 @@ test.describe("@formateurs E16 — relances de la lettre, changement de dates", 
     expect(await envoisVers(f.email, "formateur-lettre-a-signer")).toHaveLength(1);
   });
 
-  // V1-B-2 — DÉFAUT (gravité haute). Après une rectification, la nouvelle lettre n'a
-  // AUCUNE relance F27 : `lireLignesLettre` (relances-missions.ts ~l.476) ne compte
-  // comme « envoyée » qu'une lettre dont le journal porte un F26 de jobId
-  // `formateur-lettre-a-signer-<lettreMissionId>`. Or la lettre rectifiée part par F29
-  // (moteur-mission.ts ~l.901), jamais par F26 : `envoyeeAt` reste nul, `faitsLettre`
-  // rend `null`, ni 1re ni J-3 ne partent. Un formateur dont la session a été décalée
-  // n'est plus jamais relancé pour signer.
-  test.fixme("V1-B-2 — F27 réarmée sur la lettre rectifiée (1re puis J-3)", async () => {
+  // V1-B-2 — corrigé (lot 4). La lettre rectifiée part par F29 (moteur-mission.ts), jamais
+  // par F26 : `lireLignesLettre` (relances-missions.ts) compte désormais F29 de jobId
+  // `formateur-lettre-rectifiee-<lettreMissionId>` comme envoi de départ de la nouvelle
+  // lettre. Les relances F27 (1re puis J-3) sont réarmées sur elle, et une réponse du
+  // formateur après F29 les arrête.
+  test("V1-B-2 — F27 réarmée sur la lettre rectifiée (1re puis J-3)", async () => {
     const { pilote, monde } = sc;
     const f = await creerFormateurPret(monde, { prenom: "Jules" });
     const session = await creerSession(monde, { dansJours: 20 });

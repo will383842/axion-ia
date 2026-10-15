@@ -13,7 +13,8 @@
  * qui est rigoureusement indistinguable de « aucun e-mail à envoyer ». Le
  * tableau de bord ne pouvait pas voir la panne qu'il existe pour montrer.
  *
- * La ligne est donc posée à L'ENFILAGE, et le worker la CLÔT. Une ligne restée
+ * La ligne est donc posée à L'ENFILAGE — avant la mise en file, pour que le worker la
+ * trouve toujours (V1-C-11) —, et le worker la CLÔT. Une ligne restée
  * `pending` au-delà de quelques minutes est le signal d'une chaîne rompue —
  * c'est ce que `health.ts` surveille.
  *
@@ -54,7 +55,7 @@ export interface EntreeJournal {
 }
 
 /**
- * Pose la ligne `pending` au moment de l'enfilage.
+ * Pose la ligne `pending` au moment de l'enfilage — AVANT la mise en file (V1-C-11).
  *
  * ⚠️ Garde anti-doublon sur `jobId`. `enqueueEmail` passe un `jobId` stable
  * pour toute la chaîne Qualiopi (`qualiopi-convocation-{id}-{date}`), et BullMQ
@@ -62,36 +63,96 @@ export interface EntreeJournal {
  * d'idempotence. Sans cette garde, chaque passage de cron déposerait une ligne
  * `pending` fantôme pour un job qui n'a jamais été réenfilé, et la surveillance
  * de `health.ts` crierait sur son propre bruit.
+ *
+ * 🔴 V1-C-11 — la garde « lire puis créer » n'était pas atomique : deux enfilages
+ * concurrents du même jobId (deux passages qui se chevauchent) posaient chacun leur
+ * ligne. La lecture et l'écriture se font désormais sous un verrou transactionnel
+ * propre à ce jobId — sans toucher au schéma (`jobId` n'est pas unique en base, et ne
+ * peut pas l'être : une ligne par tentative). La course avec le worker, elle, est
+ * fermée par l'ordre : la ligne est écrite avant que le job n'existe.
+ *
+ * Le verrou ne sert qu'aux clés données par l'appelant (`cleAppelant`). Un identifiant
+ * fabriqué par `enqueueEmail` (`email-<uuid>`) ne peut entrer en concurrence avec
+ * personne : sa ligne est créée directement, sans transaction ni lecture.
+ *
+ * @returns l'`id` de la ligne si CET appel l'a posée ; `null` si elle existait déjà, au
+ *          build, ou si la base a refusé (fail-soft). `enqueueEmail` s'en sert pour ne
+ *          refermer, sur une file injoignable, que la ligne qu'il a lui-même posée.
  */
-export async function journaliserEnAttente(entree: EntreeJournal): Promise<void> {
-  if (estStub()) return;
+export async function journaliserEnAttente(
+  entree: EntreeJournal & { cleAppelant?: boolean | undefined },
+): Promise<string | null> {
+  if (estStub()) return null;
+  const donnees = {
+    template: entree.template,
+    recipient: entree.recipient,
+    locale: entree.locale,
+    marketing: entree.marketing,
+    attempts: 0,
+    status: EmailLogStatus.pending,
+    ...(entree.entityType ? { entityType: entree.entityType } : {}),
+    ...(entree.entityId ? { entityId: entree.entityId } : {}),
+    ...(entree.jobId ? { jobId: entree.jobId } : {}),
+    ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
+  };
   try {
-    if (entree.jobId !== undefined) {
-      const existante = await prisma.emailLog.findFirst({
-        where: { jobId: entree.jobId },
+    const jobId = entree.jobId;
+    if (jobId === undefined || entree.cleAppelant !== true) {
+      const posee = await prisma.emailLog.create({ data: donnees, select: { id: true } });
+      return posee.id;
+    }
+    return await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`email_log:${jobId}`}))`;
+      const existante = await tx.emailLog.findFirst({
+        where: { jobId },
         select: { id: true },
       });
-      if (existante) return;
-    }
-    await prisma.emailLog.create({
-      data: {
-        template: entree.template,
-        recipient: entree.recipient,
-        locale: entree.locale,
-        marketing: entree.marketing,
-        attempts: 0,
-        status: EmailLogStatus.pending,
-        ...(entree.entityType ? { entityType: entree.entityType } : {}),
-        ...(entree.entityId ? { entityId: entree.entityId } : {}),
-        ...(entree.jobId ? { jobId: entree.jobId } : {}),
-        ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
-      },
+      if (existante) return null;
+      const posee = await tx.emailLog.create({ data: donnees, select: { id: true } });
+      return posee.id;
     });
   } catch (e) {
     console.error(
       `[email-log] écriture « en attente » impossible (${entree.template} → ${entree.recipient}) :`,
       e instanceof Error ? e.message : String(e),
     );
+    return null;
+  }
+}
+
+/**
+ * Referme en ÉCHEC la ligne « en attente » qu'un enfilage vient de poser, quand la mise
+ * en file a échoué (Redis injoignable) : aucun job n'existe, aucun worker ne la clora.
+ *
+ * 🔴 Relecture de la PR #1537, point bloquant 1. Cette ligne était close « annulé ». Or
+ * `dejaTente` et les lecteurs des campagnes (`relances-missions.ts`, `passer-campagnes.ts`)
+ * ne mettent de côté que `failed` : une ligne « annulé » comptait comme une relance déjà
+ * tentée, et la relance portant cette clé ne repartait JAMAIS. `failed` est la sémantique
+ * « échec définitif, retentable » que ces lecteurs connaissent déjà : le passage suivant
+ * retente, et le worker de ce nouvel essai clôt cette même ligne (`cloturerJournal`).
+ *
+ * ⚠️ Visée par son `id`, jamais par le seul `jobId` : un autre enfilage de la même clé a
+ * peut-être un job vivant, et sa ligne n'est pas à nous. La garde `status: pending` évite
+ * de réécrire une ligne déjà close entre-temps.
+ *
+ * Fail-soft comme le reste du module.
+ *
+ * @returns le nombre de lignes refermées (0 ou 1).
+ */
+export async function marquerEchecMiseEnFile(id: string, motif: string): Promise<number> {
+  if (estStub()) return 0;
+  try {
+    const r = await prisma.emailLog.updateMany({
+      where: { id, status: EmailLogStatus.pending },
+      data: { status: EmailLogStatus.failed, error: motif, failedAt: new Date() },
+    });
+    return r.count;
+  } catch (e) {
+    console.error(
+      `[email-log] cloture « échec » impossible (${id}) :`,
+      e instanceof Error ? e.message : String(e),
+    );
+    return 0;
   }
 }
 
@@ -171,7 +232,9 @@ export interface ClotureJournal extends EntreeJournal {
  * justifient, et ils sont tous normaux :
  *   - une nouvelle tentative (la ligne de la tentative précédente est déjà
  *     close) → on conserve ainsi une ligne par tentative, comme avant ;
- *   - la course entre l'enfilage et un worker très rapide ;
+ *   - une ligne « en attente » que la base a refusé d'écrire à l'enfilage (fail-soft).
+ *     La course entre l'enfilage et un worker très rapide n'en est plus un : la ligne
+ *     est écrite AVANT la mise en file (V1-C-11) ;
  *   - les jobs enfilés AVANT ce correctif, qui n'ont pas de ligne `pending`.
  */
 export async function cloturerJournal(cloture: ClotureJournal): Promise<void> {

@@ -80,10 +80,19 @@ const h = vi.hoisted(() => {
     choixFormateurSession: {
       findMany: vi.fn(async () => etat.choix),
       findUnique: vi.fn(async () => etat.choix[0] ?? null),
-      updateMany: vi.fn(async (a: unknown) => {
-        etat.ecritures.push(`choix.updateMany ${JSON.stringify(a)}`);
-        return { count: 1 };
-      }),
+      // Comme la base : marque les choix encore vivants visés, et rend leur nombre.
+      updateMany: vi.fn(
+        async (a: { where: { trainerId?: string; sauteAt?: null }; data: { sauteAt?: Date } }) => {
+          etat.ecritures.push(`choix.updateMany ${JSON.stringify(a)}`);
+          const vises = etat.choix.filter(
+            (c) =>
+              (a.where.trainerId === undefined || c.trainerId === a.where.trainerId) &&
+              (a.where.sauteAt !== null || c.sauteAt === null),
+          );
+          if (a.data.sauteAt !== undefined) for (const c of vises) c.sauteAt = a.data.sauteAt;
+          return { count: vises.length };
+        },
+      ),
     },
     $transaction: vi.fn(async (f: (t: typeof tx) => unknown) => f(tx)),
   };
@@ -357,13 +366,42 @@ describe("rang suivant (T15)", () => {
     expect(await proposerRangSuivant(SESSION, "refus", MAINTENANT)).toEqual({
       fait: "a_pourvoir",
       sautes: 0,
+      annoncee: true,
     });
     expect(h.telegram).toHaveBeenCalledTimes(1);
     h.telegram.mockClear();
     expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toEqual({
       fait: "a_pourvoir",
       sautes: 0,
+      annoncee: false,
     });
+    expect(h.telegram).not.toHaveBeenCalled();
+  });
+
+  // V1-B-1 — le silence du DERNIER choix libère la place hors de ce service ; c'est le
+  // passage planifié qui découvre que plus personne ne reste. Il vient de vider la
+  // liste : il l'annonce, une fois.
+  it("V1-B-1 : le passage qui vide la liste des choix annonce « à pourvoir », une fois", async () => {
+    allumer("rang_suivant");
+    h.etat.missions = [A, B, C].map((t, i) => ({
+      trainerId: t,
+      statut: i === 2 ? "sans_reponse" : "refusee",
+      updatedAt: new Date("2026-10-11T09:30:00Z"),
+    }));
+    expect(await proposerRangsSuivants(MAINTENANT)).toEqual({ proposes: 0, aPourvoir: 1 });
+    expect(h.journaliser).toHaveBeenCalledWith(
+      h.prisma,
+      expect.objectContaining({ action: "qualiopi.mission.a_pourvoir", targetId: SESSION }),
+    );
+    expect(h.telegram).toHaveBeenCalledTimes(1);
+    expect(h.etat.choix.every((c) => c.sauteAt !== null)).toBe(true);
+    // Le passage suivant ne la redit pas : la liste est déjà vide.
+    h.journaliser.mockClear();
+    h.telegram.mockClear();
+    expect(await proposerRangSuivant(SESSION, "passage", MAINTENANT)).toMatchObject({
+      fait: "a_pourvoir",
+    });
+    expect(h.journaliser).not.toHaveBeenCalled();
     expect(h.telegram).not.toHaveBeenCalled();
   });
 

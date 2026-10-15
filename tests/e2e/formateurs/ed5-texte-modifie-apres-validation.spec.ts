@@ -7,7 +7,7 @@
 // close en « cancelled ». Deux textes : un gabarit entier (F20) et une
 // variante validée à part (F30 « lettre non signée »).
 //
-// Défaut consigné : V1-D-3 — au DÉPART, la variante n'est pas relue.
+// Défaut V1-D-3 (corrigé, lot 4) — au DÉPART, la variante est relue.
 
 import { expect, test } from "@playwright/test";
 
@@ -64,12 +64,10 @@ test.describe("@formateurs E-D5 — texte modifié après validation", () => {
     });
   });
 
-  // V1-D-3 — gravité faible. Un e-mail déjà en file dont la VARIANTE a changé
-  // depuis sa validation part quand même : la relecture au départ ne relit que
-  // la validation du gabarit, pas celle de la variante.
-  // Probable : src/server/email/relecture-au-depart.ts ~l. 103-104
-  // (`estTexteValide(…, gabarit)` sans la variante du payload).
-  test.fixme("V1-D-3 — déjà en file : la variante modifiée est retenue au départ", () => {
+  // V1-D-3 — corrigé (lot 4). La relecture au départ relit aussi la validation de la
+  // VARIANTE que porte le job (son étape), comme l'enfilage : une variante changée depuis
+  // sa validation est retenue, ligne close en « cancelled ».
+  test("V1-D-3 — déjà en file : la variante modifiée est retenue au départ", () => {
     expect(o.auDepart.variante?.status).toBe("cancelled");
   });
 });

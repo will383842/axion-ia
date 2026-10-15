@@ -76,12 +76,17 @@ test.describe("@formateurs E01 — candidature freelance jusqu'à « Retenu »",
     await attendreLeWorker(email);
     expect(await gabaritsVers(email)).toEqual(["candidature-recue"]);
     // F0 est la variante « mission » : la copie de l'envoi en porte la phrase.
-    const f0 = await prisma.emailLog.findFirst({
-      where: { recipient: email, template: "candidature-recue" },
-      select: { status: true, contenu: { select: { text: true } } },
-    });
-    expect(f0?.status).toBe("sent");
-    expect(f0?.contenu?.text).toContain("missions de formateur IA indépendant");
+    // La copie est écrite par le worker JUSTE APRÈS la clôture « envoyé » : on l'attend,
+    // sans quoi la lecture tombe parfois entre les deux écritures.
+    const f0 = async () =>
+      prisma.emailLog.findFirst({
+        where: { recipient: email, template: "candidature-recue" },
+        select: { status: true, contenu: { select: { text: true } } },
+      });
+    expect((await f0())?.status).toBe("sent");
+    await expect
+      .poll(async () => (await f0())?.contenu?.text ?? "", { timeout: 10_000 })
+      .toContain("missions de formateur IA indépendant");
 
     // 2. F1 : pas avant 15 minutes, puis une fois.
     const t0 = cand.submittedAt;
