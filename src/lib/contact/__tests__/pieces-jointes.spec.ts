@@ -4,8 +4,9 @@
  * Pièces jointes du formulaire de contact — le contrôle des fichiers.
  *
  * Mutations qui rougissent : se fier à l'extension seule (le `.pdf` qui est un
- * exécutable passe), oublier les macros (le `.docm`, ou un `.docx` qui porte
- * un `vbaProject.bin`), relever une limite sans l'autre.
+ * exécutable passe), oublier les macros (le `.docm`, ou un `.docx` dont le
+ * RÉPERTOIRE CENTRAL porte un `vbaProject.bin`), relever une limite sans
+ * l'autre, ne chercher le balisage que dans les 2 premiers Ko.
  */
 
 import { describe, expect, it } from "vitest";
@@ -13,12 +14,18 @@ import { describe, expect, it } from "vitest";
 import {
   ACCEPT_PIECES_JOINTES,
   NOMBRE_MAX_PIECES,
+  ScruteurPieceJointe,
+  TAILLE_ENTETE_ANALYSEE,
   TAILLE_MAX_PIECE_OCTETS,
   TAILLE_MAX_TOTALE_OCTETS,
   analyserOctetsPieceJointe,
   assainirNomPieceJointe,
   controlerListePiecesJointes,
+  localiserRepertoireZip,
+  nomsRepertoireZip,
+  ressembleABalisage,
 } from "../pieces-jointes";
+import { fabriquerZip } from "./zip-de-test";
 
 const octets = (...parts: Array<number[] | string>): Uint8Array =>
   Uint8Array.from(parts.flatMap((p) => (typeof p === "string" ? Array.from(Buffer.from(p)) : p)));
@@ -26,12 +33,27 @@ const octets = (...parts: Array<number[] | string>): Uint8Array =>
 const PDF = octets("%PDF-1.7\n1 0 obj\n");
 const PNG = octets([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], "IHDR");
 const JPG = octets([0xff, 0xd8, 0xff, 0xe0], "JFIF");
-const ZIP = [0x50, 0x4b, 0x03, 0x04];
-const DOCX = octets(ZIP, "....[Content_Types].xml....word/document.xml....");
-const DOCX_MACROS = octets(ZIP, "....[Content_Types].xml....word/vbaProject.bin....");
-const XLSX = octets(ZIP, "....[Content_Types].xml....xl/workbook.xml....");
-const PPTX = octets(ZIP, "....[Content_Types].xml....ppt/presentation.xml....");
-const ODT = octets(ZIP, "........mimetypeapplication/vnd.oasis.opendocument.text....");
+const CT = ["[Content_Types].xml", "<Types/>"] as const;
+const DOCX = fabriquerZip([CT, ["word/document.xml", "<w:document/>"]]);
+const DOCX_MACROS = fabriquerZip([
+  CT,
+  ["word/document.xml", "<w:document/>"],
+  ["word/vbaProject.bin", "VBA"],
+]);
+const XLSX = fabriquerZip([CT, ["xl/workbook.xml", "<workbook/>"]]);
+const PPTX = fabriquerZip([CT, ["ppt/presentation.xml", "<p/>"]]);
+const ODT = fabriquerZip([
+  ["mimetype", "application/vnd.oasis.opendocument.text"],
+  ["content.xml", "<office:document-content/>"],
+]);
+const ODT_MACROS = fabriquerZip([
+  ["mimetype", "application/vnd.oasis.opendocument.text"],
+  ["Basic/Standard/Module1.xml", "Sub Main"],
+]);
+const ZIP_PLANS = fabriquerZip([
+  ["plans/rdc.pdf", "%PDF-1.7"],
+  ["photos/facade.jpg", "JFIF"],
+]);
 const OLE = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1];
 const DOC = octets(OLE, "....WordDocument....");
 const DOC_MACROS = octets(
@@ -54,6 +76,7 @@ describe("contrôle des octets — le type réel, pas l'extension", () => {
     ["ancien.xls", DOC, "xls"],
     ["notes.txt", octets("Bonjour,\nvoici le besoin.\n"), "txt"],
     ["export.csv", octets("nom;quantité\nposte;12\r\n"), "csv"],
+    ["plans-et-photos.zip", ZIP_PLANS, "zip"],
     // Un CSV exporté par Excel en Windows-1252 (« é » = 0xE9) reste accepté.
     ["excel.csv", octets("libell", [0xe9], ";12\r\n"), "csv"],
   ])("%s est accepté", (nom, o, format) => {
@@ -97,9 +120,33 @@ describe("contrôle des octets — le type réel, pas l'extension", () => {
   });
 
   it("un ZIP quelconque renommé en .docx est refusé", () => {
-    expect(analyserOctetsPieceJointe("faux.docx", octets(ZIP, "archive.zip"))).toMatchObject({
+    expect(analyserOctetsPieceJointe("faux.docx", ZIP_PLANS)).toMatchObject({
       ok: false,
+      motif: "contenu",
     });
+  });
+
+  it("un ODT qui porte des macros (Basic/) est refusé", () => {
+    expect(analyserOctetsPieceJointe("note.odt", ODT_MACROS)).toMatchObject({ motif: "macros" });
+  });
+
+  it("le nom « vbaProject.bin » cité DANS le contenu d'une entrée ne compte pas : seul le répertoire fait foi", () => {
+    const docx = fabriquerZip([CT, ["word/document.xml", "voir vbaProject.bin"]]);
+    expect(analyserOctetsPieceJointe("cdc.docx", docx)).toMatchObject({ ok: true });
+  });
+
+  it("un .docx sans répertoire central lisible est refusé", () => {
+    expect(analyserOctetsPieceJointe("cdc.docx", DOCX.subarray(0, DOCX.length - 22))).toMatchObject(
+      { ok: false, motif: "contenu" },
+    );
+  });
+
+  it("un .zip qui n'est pas une archive est refusé ; un .zip n'est jamais ouvert", () => {
+    expect(analyserOctetsPieceJointe("plans.zip", PDF)).toMatchObject({ ok: false });
+    // Une archive dont le contenu contiendrait un exécutable reste acceptée :
+    // le serveur ne lit que la signature (et l'antivirus le flux).
+    const avecExe = fabriquerZip([["setup.exe", "MZ"]]);
+    expect(analyserOctetsPieceJointe("outils.zip", avecExe)).toMatchObject({ ok: true });
   });
 
   it.each([
@@ -118,6 +165,13 @@ describe("contrôle des octets — le type réel, pas l'extension", () => {
     expect(analyserOctetsPieceJointe("a.csv", octets("\uFEFF  <svg onload=x>"))).toMatchObject({
       ok: false,
     });
+  });
+
+  it("le balisage est cherché dans les 8 premiers Ko, pas seulement les 2 premiers", () => {
+    const loin = octets("a".repeat(6000), "<script>alert(1)</script>");
+    expect(ressembleABalisage(loin)).toBe(true);
+    expect(analyserOctetsPieceJointe("notes.txt", loin)).toMatchObject({ ok: false });
+    expect(TAILLE_ENTETE_ANALYSEE).toBeGreaterThanOrEqual(8 * 1024);
   });
 
   it("un .txt binaire (octet nul) est refusé", () => {
@@ -143,20 +197,26 @@ describe("contrôle de la liste — nombre, taille, total", () => {
     );
   });
 
-  it("10 Mo par fichier : 10 Mo passe, un octet de plus non", () => {
+  it("25 Mo par fichier : 25 Mo passe, un octet de plus non, avec la marche à suivre", () => {
+    expect(TAILLE_MAX_PIECE_OCTETS).toBe(25 * 1024 * 1024);
     expect(controlerListePiecesJointes([f("a.pdf", TAILLE_MAX_PIECE_OCTETS)])).toBeNull();
-    expect(controlerListePiecesJointes([f("a.pdf", TAILLE_MAX_PIECE_OCTETS + 1)])).toMatch(
-      /dépasse 10 Mo/,
+    expect(controlerListePiecesJointes([f("a.pdf", TAILLE_MAX_PIECE_OCTETS + 1)])).toBe(
+      "« a.pdf » dépasse 25 Mo. Fichier trop lourd : envoyez-le par e-mail à " +
+        "contact@axion-ia.com ou avec un lien de partage (WeTransfer, Drive) dans votre message.",
     );
   });
 
-  it("20 Mo au total", () => {
-    const neuf = 9 * 1024 * 1024;
-    expect(TAILLE_MAX_TOTALE_OCTETS).toBe(20 * 1024 * 1024);
-    expect(controlerListePiecesJointes([f("a.pdf", neuf), f("b.pdf", neuf)])).toBeNull();
+  it("50 Mo au total", () => {
+    const vingt = 20 * 1024 * 1024;
+    expect(TAILLE_MAX_TOTALE_OCTETS).toBe(50 * 1024 * 1024);
+    expect(controlerListePiecesJointes([f("a.pdf", vingt), f("b.pdf", vingt)])).toBeNull();
     expect(
-      controlerListePiecesJointes([f("a.pdf", neuf), f("b.pdf", neuf), f("c.pdf", neuf)]),
-    ).toMatch(/20 Mo au total/);
+      controlerListePiecesJointes([f("a.pdf", vingt), f("b.pdf", vingt), f("c.pdf", vingt)]),
+    ).toMatch(/50 Mo au total/);
+  });
+
+  it("un .zip est accepté à l'annonce", () => {
+    expect(controlerListePiecesJointes([f("plans.zip", 10)])).toBeNull();
   });
 
   it("un fichier vide est refusé", () => {
@@ -170,6 +230,7 @@ describe("contrôle de la liste — nombre, taille, total", () => {
   it("l'attribut accept ne propose ni HTML, ni SVG, ni macros", () => {
     expect(ACCEPT_PIECES_JOINTES).toContain(".pdf");
     expect(ACCEPT_PIECES_JOINTES).toContain(".docx");
+    expect(ACCEPT_PIECES_JOINTES).toContain(".zip");
     expect(ACCEPT_PIECES_JOINTES).not.toMatch(/\.(html?|svg|docm|xlsm|exe)\b/);
   });
 });
@@ -190,5 +251,39 @@ describe("nom de fichier assaini", () => {
     const nom = assainirNomPieceJointe(`${"x".repeat(500)}.pdf`);
     expect(nom.length).toBeLessThanOrEqual(120);
     expect(nom.endsWith(".pdf")).toBe(true);
+  });
+});
+
+describe("répertoire central d'une archive — lu sans rien décompresser", () => {
+  it("localise le répertoire depuis la seule FIN du fichier, commentaire compris", () => {
+    const zip = fabriquerZip([CT, ["word/document.xml", "x".repeat(5000)]], {
+      commentaire: "généré par un outil",
+    });
+    const fin = zip.subarray(zip.length - 200);
+    const plage = localiserRepertoireZip(fin, zip.length);
+    expect(plage).not.toBeNull();
+    const noms = nomsRepertoireZip(zip.subarray(plage!.debut, plage!.debut + plage!.taille));
+    expect(noms).toEqual(["[Content_Types].xml", "word/document.xml"]);
+  });
+
+  it("rend null sur une fin sans enregistrement, ou un répertoire mal formé", () => {
+    expect(localiserRepertoireZip(octets("pas une archive"), 15)).toBeNull();
+    expect(nomsRepertoireZip(octets("PK\u0001\u0002 tronqué"))).toBeNull();
+  });
+});
+
+describe("lecture en flux — un motif coupé entre deux morceaux est vu", () => {
+  it("_VBA_PROJECT à cheval sur deux morceaux d'un .doc", () => {
+    const s = new ScruteurPieceJointe("doc");
+    s.pousser(DOC_MACROS.subarray(0, 14));
+    s.pousser(DOC_MACROS.subarray(14));
+    expect(s.verdict("ancien.doc")).toMatchObject({ ok: false, motif: "macros" });
+  });
+
+  it("un octet nul au milieu d'un long .txt", () => {
+    const s = new ScruteurPieceJointe("txt");
+    s.pousser(octets("a".repeat(20_000)));
+    s.pousser(octets("b", [0], "c"));
+    expect(s.verdict("notes.txt")).toMatchObject({ ok: false, motif: "contenu" });
   });
 });
