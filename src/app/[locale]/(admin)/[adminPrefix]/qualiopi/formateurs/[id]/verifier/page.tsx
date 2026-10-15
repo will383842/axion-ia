@@ -11,13 +11,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { gardePage } from "@/server/auth/garde-page";
 import { peutEngager } from "@/server/auth/habilitations";
-import { lireDrapeauEnvoi } from "@/server/qualiopi/formateurs-independants/interrupteurs";
+import {
+  INTERRUPTEURS,
+  lireDrapeauEnvoi,
+} from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { lireEtatsInterrupteurs } from "@/server/qualiopi/formateurs-independants/interrupteurs-etat";
 import { lireEcranVerifierContresigner } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-lecture";
 
@@ -51,12 +54,11 @@ export default async function VerifierContresignerPage({ params }: PageProps) {
 
   if (!lireDrapeauEnvoi(await lireEtatsInterrupteurs(), "activation_auto")) {
     return (
-      <AdminPageShell>
-        <AdminPageHeader title="Vérifier et contresigner" />
-        <AdminCard>
-          <p>Cet écran n&apos;est pas encore ouvert.</p>
-        </AdminCard>
-      </AdminPageShell>
+      <EcranPasEncoreOuvert
+        titre="Vérifier et contresigner"
+        interrupteurs={[INTERRUPTEURS.activation_auto.libelle]}
+        base={`/${locale}/${adminPrefix}`}
+      />
     );
   }
 

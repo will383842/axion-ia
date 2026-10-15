@@ -24,13 +24,12 @@ describe("V2-N · console — par virement", () => {
 
   // V2-N-15 (mineur) — texte interne visible par Will sur « Virements à faire » :
   // « taux BCE non renseigné », « décision 87 en attente ». Un numéro de décision du
-  // chantier n'a pas de sens à l'écran. `virements/page.tsx` ~l. 199-204.
-  it.fails(
-    "V2-N-15 — aucune référence interne (« décision 87 ») dans l'écran des virements",
-    () => {
-      expect(lire("qualiopi/remuneration/virements/page.tsx")).not.toMatch(/décision \d+/);
-    },
-  );
+  // chantier n'a pas de sens à l'écran. `virements/page.tsx` ~l. 199-204. CORRIGÉ.
+  it("V2-N-15 — aucune référence interne (« décision 87 ») dans l'écran des virements", () => {
+    const page = lire("qualiopi/remuneration/virements/page.tsx");
+    expect(page).not.toMatch(/décision \d+/);
+    expect(page).not.toMatch(/taux BCE/);
+  });
 });
 
 describe("V2-N · console — par formateur", () => {
@@ -53,33 +52,40 @@ describe("V2-N · console — par formateur", () => {
   // candidature, il faut en plus passer par « Rendez-vous » pour noter « Retenu » (la
   // fiche de candidature n'a aucun lien vers l'échange) : candidature → rendez-vous →
   // dossiers → fiche → vérifier = 5 écrans. `dossiers/page.tsx` ~l. 103-110,
-  // `contacts/candidatures/[id]/page.tsx`.
-  it.fails(
-    "V2-N-6 — dossier « à vérifier » : « Ouvrir » mène droit à l'écran de vérification",
-    () => {
-      const page = lire("qualiopi/formateurs/dossiers/page.tsx");
-      expect(page).toMatch(/href=\{`\$\{base\}\/\$\{l\.trainerId\}\/verifier`\}/);
-    },
-  );
+  // `contacts/candidatures/[id]/page.tsx`. CORRIGÉ : « Vérifier et contresigner » dans la
+  // liste, et la fiche de candidature mène à « Rendez-vous › À faire le point ».
+  it("V2-N-6 — dossier « à vérifier » : « Ouvrir » mène droit à l'écran de vérification", () => {
+    const page = lire("qualiopi/formateurs/dossiers/page.tsx");
+    expect(page).toMatch(/href=\{`\$\{base\}\/\$\{l\.trainerId\}\/verifier`\}/);
+  });
 
-  it.fails("V2-N-6 (suite) — la fiche de candidature relie à l'échange où noter « Retenu »", () => {
+  it("V2-N-6 (suite) — la fiche de candidature relie à l'échange où noter « Retenu »", () => {
     const page = lire("contacts/candidatures/[id]/page.tsx");
     expect(page).toMatch(/rendez-vous|contacts\/appels/);
   });
 
-  // V2-N-16 (mineur) — un écran éteint dit seulement « Cet écran n'est pas encore
-  // ouvert. », sans nommer l'interrupteur ni mener à l'écran Interrupteurs.
-  // `formateurs/[id]/verifier/page.tsx` l. 57, `formateurs/dossiers/page.tsx` l. 54.
-  it.fails("V2-N-16 — un écran éteint nomme ce qui l'allume", () => {
+  // V2-N-16 (mineur) — un écran éteint disait seulement « Cet écran n'est pas encore
+  // ouvert. », sans nommer l'interrupteur ni mener à l'écran Interrupteurs. CORRIGÉ : les
+  // écrans éteints du groupe passent par `EcranPasEncoreOuvert`, qui nomme l'interrupteur
+  // (son libellé, lu dans le registre des interrupteurs) et mène à l'écran Interrupteurs.
+  it("V2-N-16 — un écran éteint nomme ce qui l'allume", () => {
     for (const rel of [
       "qualiopi/formateurs/[id]/verifier/page.tsx",
       "qualiopi/formateurs/dossiers/page.tsx",
+      "qualiopi/formateurs/a-faire/page.tsx",
+      "qualiopi/formateurs/mise-a-niveau/page.tsx",
     ]) {
       const page = lire(rel);
-      const i = page.indexOf("pas encore ouvert");
-      expect(i).toBeGreaterThan(0);
-      expect(page.slice(i - 600, i + 600)).toMatch(/interrupteur/i);
+      expect(page, rel).not.toContain("pas encore ouvert");
+      expect(page, rel).toMatch(/<EcranPasEncoreOuvert[\s\S]*?interrupteurs=\{\[\s*INTERRUPTEURS/);
     }
+    const ecran = readFileSync(
+      path.join(RACINE, "src/components/admin/qualiopi/EcranPasEncoreOuvert.tsx"),
+      "utf8",
+    );
+    expect(ecran).toContain("pas encore ouvert");
+    expect(ecran).toMatch(/interrupteur/i);
+    expect(ecran).toContain("/qualiopi/formateurs/interrupteurs");
   });
 });
 

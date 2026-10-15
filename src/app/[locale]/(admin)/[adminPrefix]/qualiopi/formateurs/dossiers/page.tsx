@@ -11,6 +11,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
@@ -18,6 +19,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { gardePage } from "@/server/auth/garde-page";
+import { INTERRUPTEURS_ENTREE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { lireDossiersEtContrats } from "@/server/qualiopi/formateurs-independants/dossiers-et-contrats-lecture";
 import {
   LIBELLES_ONGLETS,
@@ -48,12 +50,14 @@ export default async function DossiersEtContratsPage({ params, searchParams }: P
   const entree = await lireEtatsEntree();
   if (!entree.dossiers_contrats || !entree.menu_freelance) {
     return (
-      <AdminPageShell>
-        <AdminPageHeader title="Dossiers et contrats" />
-        <AdminCard>
-          <p>Cet écran n&apos;est pas encore ouvert.</p>
-        </AdminCard>
-      </AdminPageShell>
+      <EcranPasEncoreOuvert
+        titre="Dossiers et contrats"
+        interrupteurs={[
+          INTERRUPTEURS_ENTREE.menu_freelance.libelle,
+          INTERRUPTEURS_ENTREE.dossiers_contrats.libelle,
+        ]}
+        base={`/${locale}/${adminPrefix}`}
+      />
     );
   }
 
@@ -105,9 +109,17 @@ export default async function DossiersEtContratsPage({ params, searchParams }: P
                   </td>
                   <td>{l.etape.libelle}</td>
                   <td>
-                    <Link className="admin-button-ghost" href={`${base}/${l.trainerId}`}>
-                      Ouvrir
-                    </Link>
+                    {/* V2-N-6 — un dossier à vérifier mène droit à l'écran de vérification :
+                        la fiche (25 panneaux) n'était qu'un détour vers son bandeau. */}
+                    {l.etape.onglet === "a_verifier" ? (
+                      <Link className="admin-button" href={`${base}/${l.trainerId}/verifier`}>
+                        Vérifier et contresigner
+                      </Link>
+                    ) : (
+                      <Link className="admin-button-ghost" href={`${base}/${l.trainerId}`}>
+                        Ouvrir
+                      </Link>
+                    )}
                   </td>
                 </tr>
               ))}
