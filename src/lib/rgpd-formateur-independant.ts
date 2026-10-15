@@ -65,6 +65,7 @@ const SELECT_FICHE = {
   prenom: true,
   nom: true,
   email: true,
+  emailRemplace: true,
   telephone: true,
   statut: true,
   siret: true,
@@ -105,6 +106,7 @@ export interface ExportFormateurIndependant {
     readonly prenom: string;
     readonly nom: string;
     readonly email: string;
+    readonly emailRemplace: string | null;
     readonly telephone: string | null;
     readonly adresseProfessionnelle: string | null;
     readonly adressePersonnelle: string | null;
@@ -195,6 +197,8 @@ export async function exporterFormateurIndependantPour(
       prenom: t.prenom,
       nom: t.nom,
       email: t.email,
+      // V1-C-6 — l'adresse remplacée par la console, gardée 30 jours utiles.
+      emailRemplace: t.emailRemplace,
       telephone: t.telephone,
       adresseProfessionnelle: t.adresseProfessionnelle,
       adressePersonnelle: t.adressePersonnelle,
@@ -408,7 +412,13 @@ export async function effacerFormateurIndependant(
     if (lien) {
       await tx.trainer.update({
         where: { id: t.id },
-        data: { telephone: null, accesVersion: { increment: 1 } },
+        // V1-C-6 — l'adresse remplacée n'est pas l'identité de facturation : effacée.
+        data: {
+          telephone: null,
+          emailRemplace: null,
+          emailRemplaceAt: null,
+          accesVersion: { increment: 1 },
+        },
       });
     } else {
       await tx.trainer.update({
@@ -420,6 +430,8 @@ export async function effacerFormateurIndependant(
           // (recandidature) ne heurte jamais l'unicité de `trainers.email`.
           email: `erased:${t.id}@erased.local`,
           emailHash: null,
+          emailRemplace: null,
+          emailRemplaceAt: null,
           telephone: null,
           iban: null,
           ibanEmpreinte: null,

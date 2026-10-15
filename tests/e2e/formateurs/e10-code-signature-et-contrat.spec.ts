@@ -18,7 +18,9 @@ import path from "node:path";
 
 import { expect, test } from "@playwright/test";
 
+import { maillonDocumentDepuisLigne } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
@@ -45,6 +47,8 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
   test.describe.configure({ mode: "serial" });
   test.setTimeout(900_000);
   let decor: DecorScenario;
+  /** La fiche qui a signé dans le premier test : sa preuve est relue par V1-A-7. */
+  let ficheSignee: string | undefined;
 
   test.beforeAll(async () => {
     // Les scénarios passent un par un (verrou) : l'attente peut être longue.
@@ -59,6 +63,7 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
   test("code faux ×5 bloqué, nouveau code, signature v4, F10 avec la copie, code réutilisé refusé", async () => {
     const email = decor.adresse("signe");
     const { fiche, lien } = await formateurRetenu(email, "Anouk", decor.admin);
+    ficheSignee = fiche.id;
     const registre = await preparerDossier(lien, "Anouk");
     const premier = await demanderCode(lien, email, registre);
     const signer = (code: string) =>
@@ -147,11 +152,11 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
     expect(html).not.toContain(second);
   });
 
-  // V1-A-8 — après un changement d'adresse en console, le code F17 envoyé à
-  // l'ANCIENNE adresse signe encore, sur le nouveau lien envoyé à la nouvelle : le
-  // changement révoque les liens du dossier (`changement-email-console.ts`) mais pas
-  // le code vivant (`code-signature.ts` ne lie le code à aucune adresse). Cf. rapport.
-  test.fixme("V1-A-8 — adresse différente : le code envoyé à l'ancienne adresse ne signe plus", async () => {
+  // V1-A-8 — corrigé (lot 2 de la vérification 1). Le changement d'adresse en console
+  // invalide, dans la MÊME transaction que l'adresse, les codes de signature vivants
+  // (`ecrireFicheAvecChangementEmail` → `invaliderCodesSignatureFormateur`) : le code
+  // F17 reçu à l'ANCIENNE adresse ne signe plus, même sur le nouveau lien.
+  test("V1-A-8 — adresse différente : le code envoyé à l'ancienne adresse ne signe plus", async () => {
     const email = decor.adresse("ancienne");
     const nouvelle = decor.adresse("nouvelle");
     const { fiche, lien } = await formateurRetenu(email, "Basile", decor.admin);
@@ -197,14 +202,25 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
     ).toBe(0);
   });
 
-  // V1-A-7 — le facteur de vérification n'est enregistré nulle part : aucune colonne
-  // `facteurVerification` (ni dans le schéma, ni dans le code). Que la personne a prouvé
-  // son adresse par un code e-mail ne se déduit qu'indirectement (version de
-  // consentement « doc-consent-code-v1 » + un code consommé). Cf. rapport.
-  test.fixme("V1-A-7 — la preuve porte `facteurVerification = code_email`", async () => {
-    const colonnes = await prisma.$queryRaw<Array<{ column_name: string }>>`
-      SELECT column_name FROM information_schema.columns
-      WHERE table_name = 'document_signatures' AND column_name = 'facteur_verification'`;
-    expect(colonnes).toHaveLength(1);
+  // V1-A-7 — corrigé (lot 2). Oracle réécrit (la synthèse le signalait : il testait un
+  // nom de colonne) : la preuve écrite par le PREMIER test de ce fichier — signée avec
+  // un code reçu par e-mail — porte `facteurVerification = code_email`, ET ce facteur
+  // est SCELLÉ (tuple v2) : la chaîne se vérifie, et retirer le facteur après coup la
+  // casse. Les preuves antérieures ne sont pas réécrites (facteur nul, tuple v1).
+  test("V1-A-7 — la preuve porte le facteur `code_email`, scellé dans l'empreinte", async () => {
+    expect(ficheSignee, "le premier test a signé").toBeDefined();
+    const contrat = await prisma.documentGenere.findFirstOrThrow({
+      where: { trainerId: ficheSignee ?? "∅", type: "contrat_sous_traitance", annuleeAt: null },
+      select: { id: true, numero: true, type: true },
+    });
+    const preuve = await prisma.documentSignature.findFirstOrThrow({
+      where: { documentGenereId: contrat.id, partie: "sous_traitant", revokedAt: null },
+    });
+    expect(preuve.facteurVerification).toBe("code_email");
+    expect(preuve.hashVersion).toBe(2);
+    const piece = { documentNumero: contrat.numero, documentType: contrat.type };
+    expect(verifierChaine([maillonDocumentDepuisLigne(preuve, piece)]).valide).toBe(true);
+    const falsifiee = { ...preuve, facteurVerification: null };
+    expect(verifierChaine([maillonDocumentDepuisLigne(falsifiee, piece)]).valide).toBe(false);
   });
 });

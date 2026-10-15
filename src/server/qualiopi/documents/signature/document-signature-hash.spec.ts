@@ -26,6 +26,7 @@ import {
   type LigneDocumentSignature,
   type PieceScellee,
   type TupleDocumentSignatureV1,
+  type TupleDocumentSignatureV2,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 
@@ -73,21 +74,23 @@ function ligne(over: Partial<LigneDocumentSignature> = {}): LigneDocumentSignatu
     consentementVersion: "doc-consent-v1",
     signeAt: new Date("2026-06-10T10:15:30.123Z"),
     prevHash: null,
-    selfHash: calculerSelfHashDocument(TUPLE),
-    hashVersion: HASH_VERSION_DOCUMENT,
+    selfHash: calculerSelfHashDocument(TUPLE, 1),
+    // Preuve de VERSION 1 : celles qui existent déjà et ne seront jamais réécrites.
+    hashVersion: 1,
+    facteurVerification: null,
     ...over,
   };
 }
 
 describe("forme canonique", () => {
   it("🔴 la forme canonique V1 est FIGÉE — clés triées, RFC 8785", () => {
-    expect(tupleDocumentCanonique(TUPLE)).toBe(
+    expect(tupleDocumentCanonique(TUPLE, 1)).toBe(
       '{"consentementVersion":"doc-consent-v1","contexteType":"document_engagement","documentGenereId":"11111111-1111-4111-8111-111111111111","documentHashSha256":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","documentNumero":"AXI-CONV-2026-0042","documentType":"convention","mentionVersion":"doc-v1","methode":"trace","partie":"client","prevHash":null,"provider":"interne","providerSubmissionId":null,"signataireEmail":"camille@example.test","signataireNom":"Camille Durand","signataireQualite":"Directrice des ressources humaines","signatureSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","signeAt":"2026-06-10T10:15:30.123Z","v":1}',
     );
   });
 
   it("🔴 le vecteur d'or de l'empreinte est FIGÉ", () => {
-    expect(calculerSelfHashDocument(TUPLE)).toBe(
+    expect(calculerSelfHashDocument(TUPLE, 1)).toBe(
       "63898b6d0b0e4f2023f85efbaef1e1254bc5fb8cd17048b1af277ef63977af2e",
     );
   });
@@ -121,17 +124,17 @@ describe("🔴 chaque champ scellé change réellement l'empreinte", () => {
     ["prevHash", { prevHash: "e".repeat(64) }],
   ];
 
-  const reference = calculerSelfHashDocument(TUPLE);
+  const reference = calculerSelfHashDocument(TUPLE, 1);
 
   it.each(VARIANTES)("modifier %s change l'empreinte", (_champ, patch) => {
-    expect(calculerSelfHashDocument({ ...TUPLE, ...patch })).not.toBe(reference);
+    expect(calculerSelfHashDocument({ ...TUPLE, ...patch }, 1)).not.toBe(reference);
   });
 
   it("🔴 `null` et absence ne se confondent pas", () => {
     // Un e-mail nul et un e-mail vide sont deux faits différents ; les
     // canonicaliser pareil permettrait de passer de l'un à l'autre sans trace.
-    expect(calculerSelfHashDocument({ ...TUPLE, signataireEmail: null })).not.toBe(
-      calculerSelfHashDocument({ ...TUPLE, signataireEmail: "" }),
+    expect(calculerSelfHashDocument({ ...TUPLE, signataireEmail: null }, 1)).not.toBe(
+      calculerSelfHashDocument({ ...TUPLE, signataireEmail: "" }, 1),
     );
   });
 });
@@ -191,7 +194,7 @@ describe("chaînage", () => {
       signataireEmail: "w@axion.test",
       signataireQualite: null,
       prevHash: premiere.selfHash,
-      selfHash: calculerSelfHashDocument(tupleSecond),
+      selfHash: calculerSelfHashDocument(tupleSecond, 1),
     });
 
     const rapport = verifierChaine([
@@ -216,5 +219,67 @@ describe("chaînage", () => {
     ]);
     expect(rapport.valide).toBe(false);
     expect(rapport.anomalies.map((a) => a.type)).toContain("rupture_chainage");
+  });
+});
+
+describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", () => {
+  const TUPLE_V2: TupleDocumentSignatureV2 = {
+    ...TUPLE,
+    methode: "confirmation_accessible",
+    signatureSha256: null,
+    consentementVersion: "doc-consent-code-v1",
+    facteurVerification: "code_email",
+  };
+
+  it("la version courante est 2, et la version 1 reste recalculable", () => {
+    expect(HASH_VERSION_DOCUMENT).toBe(2);
+    expect(versionDocumentRecalculable(1)).toBe(true);
+    expect(versionDocumentRecalculable(2)).toBe(true);
+  });
+
+  it("la forme v2 porte `facteurVerification` et `v: 2`", () => {
+    const canon = tupleDocumentCanonique(TUPLE_V2);
+    expect(canon).toContain('"facteurVerification":"code_email"');
+    expect(canon).toContain('"v":2');
+  });
+
+  it("modifier le facteur change l'empreinte ; nul et `code_email` ne se confondent pas", () => {
+    expect(calculerSelfHashDocument(TUPLE_V2)).not.toBe(
+      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }),
+    );
+  });
+
+  it("un tuple v2 SANS facteur ne se hache pas (absent n'est pas nul)", () => {
+    expect(() => calculerSelfHashDocument(TUPLE)).toThrow(/sans facteurVerification/);
+  });
+
+  it("la v1 ignore le facteur : une preuve existante garde son empreinte", () => {
+    expect(calculerSelfHashDocument(TUPLE_V2, 1)).toBe(
+      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }, 1),
+    );
+  });
+
+  it("une ligne v2 se reconstruit et se vérifie, facteur compris", () => {
+    const l = ligne({
+      methode: "confirmation_accessible",
+      signatureSha256: null,
+      consentementVersion: "doc-consent-code-v1",
+      hashVersion: 2,
+      facteurVerification: "code_email",
+      selfHash: calculerSelfHashDocument(TUPLE_V2),
+    });
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V2);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    // Le facteur retiré après coup : la preuve le dit.
+    const falsifiee = verifierChaine([
+      maillonDocumentDepuisLigne({ ...l, facteurVerification: null }, PIECE),
+    ]);
+    expect(falsifiee.valide).toBe(false);
+  });
+
+  it("une ligne v1 qui porte un facteur a été écrite après coup : irrecalculable", () => {
+    expect(
+      tupleDocumentDepuisLigne(ligne({ facteurVerification: "code_email" }), PIECE),
+    ).toBeNull();
   });
 });

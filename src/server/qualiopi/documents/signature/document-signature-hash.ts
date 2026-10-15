@@ -47,8 +47,14 @@ import { createHash } from "node:crypto";
 import { canonicalJson, type CanonicalValue } from "@/server/qualiopi/emargement/canonical";
 import type { MaillonChaine } from "@/server/qualiopi/emargement/hash";
 
-/** Version courante du tuple de signature au grain document. */
-export const HASH_VERSION_DOCUMENT = 1;
+/**
+ * Version courante du tuple de signature au grain document.
+ *
+ * 2 (vérification 1, V1-A-7) : le tuple scelle aussi le FACTEUR qui a prouvé
+ * l'adresse du signataire (`facteurVerification`). Les preuves de version 1 ne
+ * sont pas réécrites : elles se recalculent avec leur sérialiseur, figé ci-dessous.
+ */
+export const HASH_VERSION_DOCUMENT = 2;
 
 /**
  * Versions encore recalculables — même doctrine que les deux autres familles :
@@ -57,9 +63,10 @@ export const HASH_VERSION_DOCUMENT = 1;
  * vérifiable pour toujours, et le recalcul se fait avec la version DE LA LIGNE.
  */
 const SERIALISEURS_DOCUMENT: Readonly<
-  Record<number, (t: TupleDocumentSignatureV1) => CanonicalValue>
+  Record<number, (t: TupleDocumentSignature) => CanonicalValue>
 > = {
   1: versCanonicalDocumentV1,
+  2: versCanonicalDocumentV2,
 };
 
 /** Vrai si ce code sait recalculer une empreinte de document de cette version. */
@@ -83,6 +90,9 @@ export type ProviderSignature = "docuseal" | "manual_upload" | "physical_signed"
 
 /** Modalité de recueil. Reprend l'enum DB `DocumentSignatureMethode`. */
 export type MethodeSignatureDocument = "trace" | "papier_scanne" | "confirmation_accessible";
+
+/** Facteur qui a prouvé l'adresse. Reprend l'enum DB `FacteurVerificationSignature`. */
+export type FacteurVerificationSignature = "code_email";
 
 /**
  * Données figées au moment de la signature d'une pièce.
@@ -169,7 +179,34 @@ export interface TupleDocumentSignatureV1 {
   prevHash: string | null;
 }
 
-function versCanonicalDocumentV1(t: TupleDocumentSignatureV1): CanonicalValue {
+/**
+ * Version 2 : la version 1, plus le FACTEUR de vérification de l'adresse.
+ *
+ * 🔴 HACHÉ : sans lui, un `UPDATE facteur_verification = 'code_email'` ferait dire
+ * après coup à une preuve que l'adresse a été prouvée par un code — ou l'inverse,
+ * effacerait cette force probante. `null` = aucun facteur (et non « inconnu »).
+ */
+export interface TupleDocumentSignatureV2 extends TupleDocumentSignatureV1 {
+  facteurVerification: FacteurVerificationSignature | null;
+}
+
+/** Tout tuple recalculable, quelle que soit sa version. */
+export type TupleDocumentSignature = TupleDocumentSignatureV1 | TupleDocumentSignatureV2;
+
+function versCanonicalDocumentV2(t: TupleDocumentSignature): CanonicalValue {
+  const facteur = "facteurVerification" in t ? t.facteurVerification : undefined;
+  if (facteur === undefined) {
+    // Absent n'est pas nul : un tuple v2 sans facteur ne se hache pas.
+    throw new Error("[document-signature-hash] Tuple v2 sans facteurVerification");
+  }
+  return {
+    ...(versCanonicalDocumentV1(t) as Record<string, CanonicalValue>),
+    v: 2,
+    facteurVerification: facteur,
+  };
+}
+
+function versCanonicalDocumentV1(t: TupleDocumentSignature): CanonicalValue {
   // L'ordre littéral n'a aucune importance : `canonicalJson` trie les clés.
   return {
     v: 1,
@@ -195,7 +232,7 @@ function versCanonicalDocumentV1(t: TupleDocumentSignatureV1): CanonicalValue {
 
 /** Représentation canonique exacte qui sera hachée. Exposée pour l'audit et les tests. */
 export function tupleDocumentCanonique(
-  t: TupleDocumentSignatureV1,
+  t: TupleDocumentSignature,
   version = HASH_VERSION_DOCUMENT,
 ): string {
   const serialiseur = SERIALISEURS_DOCUMENT[version];
@@ -207,7 +244,7 @@ export function tupleDocumentCanonique(
 
 /** Empreinte SHA-256 hex (64 caractères) du tuple. */
 export function calculerSelfHashDocument(
-  t: TupleDocumentSignatureV1,
+  t: TupleDocumentSignature,
   version = HASH_VERSION_DOCUMENT,
 ): string {
   return createHash("sha256").update(tupleDocumentCanonique(t, version), "utf8").digest("hex");
@@ -240,6 +277,7 @@ export interface LigneDocumentSignature {
   prevHash: string | null;
   selfHash: string;
   hashVersion: number;
+  facteurVerification: FacteurVerificationSignature | null;
 }
 
 /**
@@ -272,10 +310,13 @@ export interface PieceScellee {
 export function tupleDocumentDepuisLigne(
   ligne: LigneDocumentSignature,
   piece: PieceScellee,
-): TupleDocumentSignatureV1 | null {
+): TupleDocumentSignature | null {
   if (!versionDocumentRecalculable(ligne.hashVersion)) return null;
+  // Une preuve de version 1 n'a jamais porté de facteur : en trouver un, c'est une
+  // écriture après coup. Irrecalculable, donc signalée — jamais ignorée.
+  if (ligne.hashVersion === 1 && ligne.facteurVerification !== null) return null;
 
-  return {
+  const v1: TupleDocumentSignatureV1 = {
     contexteType: "document_engagement",
     documentGenereId: ligne.documentGenereId,
     documentNumero: piece.documentNumero,
@@ -294,6 +335,7 @@ export function tupleDocumentDepuisLigne(
     signeAtIso: ligne.signeAt.toISOString(),
     prevHash: ligne.prevHash,
   };
+  return ligne.hashVersion === 1 ? v1 : { ...v1, facteurVerification: ligne.facteurVerification };
 }
 
 /**

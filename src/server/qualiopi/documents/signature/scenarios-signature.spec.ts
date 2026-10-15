@@ -25,6 +25,7 @@ import {
   type PartieSignataire,
   type PieceScellee,
   type TupleDocumentSignatureV1,
+  type TupleDocumentSignatureV2,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emargement/hash";
@@ -65,9 +66,10 @@ function signer(
     signeAt: new Date("2026-06-10T10:00:00.000Z"),
     prevHash,
     hashVersion: HASH_VERSION_DOCUMENT,
+    facteurVerification: null,
     ...over,
   };
-  const tuple: TupleDocumentSignatureV1 = {
+  const tuple: TupleDocumentSignatureV2 = {
     contexteType: "document_engagement",
     documentGenereId: base.documentGenereId,
     documentNumero: PIECE.documentNumero,
@@ -85,8 +87,13 @@ function signer(
     consentementVersion: base.consentementVersion,
     signeAtIso: base.signeAt.toISOString(),
     prevHash: base.prevHash,
+    facteurVerification: base.facteurVerification,
   };
-  return { id: `sig-${partie}-${nom}`, ...base, selfHash: calculerSelfHashDocument(tuple) };
+  return {
+    id: `sig-${partie}-${nom}`,
+    ...base,
+    selfHash: calculerSelfHashDocument(tuple, base.hashVersion),
+  };
 }
 
 /** Vérifie une chaîne dans l'ordre d'insertion, comme le fait le registre. */
@@ -279,7 +286,10 @@ describe("🔴 SCÉNARIO — les familles de preuve ne se confondent jamais", ()
       ...commun,
     };
 
-    const empreintes = new Set([calculerSelfHash(collectif), calculerSelfHashDocument(document)]);
+    const empreintes = new Set([
+      calculerSelfHash(collectif),
+      calculerSelfHashDocument(document, 1),
+    ]);
     expect(empreintes.size).toBe(2);
   });
 });
