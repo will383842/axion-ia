@@ -20,6 +20,7 @@ import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
 import {
+  ATTENTE,
   BASCULE_2037,
   HORS_BANC,
   bascule,
@@ -157,8 +158,8 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
         expect(jourDeParis(f.autofactureAt!)).toBe(jourFacture);
 
         // F36 : une ligne au journal, et le job posé en file porte le montant et la date
-        // limite contre-calculés. ÉCART d'environnement : le banc n'a pas de seau R2, le
-        // worker refuse donc d'envoyer une facture sans sa pièce jointe — rien au puits.
+        // limite contre-calculés. Le banc a un seau R2 simulé (job `banc-formateurs`) : le
+        // worker joint la pièce et l'e-mail ARRIVE au puits, objet portant le numéro de la facture.
         await attendreEnvois(formateur.email, "autofacture-transmission", 1);
         const job = await jobF36(r.id);
         expect(job?.to).toBe(formateur.email);
@@ -169,7 +170,11 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
         });
         expect(String(job?.payload["montantLabel"]).replace(/\s/g, " ")).toBe("700,00 € TTC");
         expect(String(job?.payload["missionLabel"])).toContain("du 12/10/2037 au 13/10/2037");
-        expect(await messagesLus(formateur.email)).toEqual([]);
+        await expect
+          .poll(async () => (await messagesLus(formateur.email)).length, ATTENTE)
+          .toBe(1);
+        const [recu] = await messagesLus(formateur.email);
+        expect(recu!.sujet).toContain(f.numeroFacture!);
 
         // ── Le calcul mensuel d'octobre ne paie PAS ce couple une seconde fois.
         await jouer([{ etape: "run-mensuel", year: 2037, month: 10 }]);

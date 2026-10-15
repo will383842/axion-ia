@@ -196,8 +196,9 @@ jobs:
         # `--retries=0` : un banc qui ne passe qu'au troisième essai ne prouve
         # pas ce qu'il affirme. Pas de navigateur : aucun spec du banc n'ouvre
         # de page (une spec d'écran reste dans Gate B, sans le tag).
-        run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0
-        # Les scénarios de vérification passent un par un (verrou) : ~16 min mesurées.
+        run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0 --workers=1
+        # Un seul worker : les équipes A, B, C et D posent des interrupteurs et lancent des
+        # passages GLOBAUX, et leurs verrous ne s'excluent pas entre eux (main seul : 7 échecs).
         timeout-minutes: 50
       - name: Journal du worker
         if: ${{ always() }}
