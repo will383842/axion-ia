@@ -98,6 +98,40 @@ describe("journaliserEnAttente — la trace posée à l'enfilage", () => {
     expect(createMock).not.toHaveBeenCalled();
   });
 
+  // Vérification n° 2 (V2P4) — file injoignable puis rétablie : la relance formateur
+  // réenfilée sous sa clé reprend SA ligne « échec », remise « en attente ».
+  it("V2P4 : relance formateur réenfilée après un échec de mise en file : la ligne redevient en attente", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-echec", status: EmailLogStatus.failed });
+    expect(
+      await journaliserEnAttente({
+        ...BASE,
+        jobId: "fi-contrat-relance-t-o-j3",
+        cleAppelant: true,
+      }),
+    ).toBe("log-echec");
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { id: "log-echec", status: EmailLogStatus.failed },
+      data: expect.objectContaining({ status: EmailLogStatus.pending, attempts: 0, error: null }),
+    });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+  it("V2P4 : hors relance formateur, ou ligne non en échec : rien n'est reposé (règle d'avant)", async () => {
+    findFirstMock.mockResolvedValue({ id: "log-echec", status: EmailLogStatus.failed });
+    expect(
+      await journaliserEnAttente({ ...BASE, jobId: "relance-invitation-42-j2", cleAppelant: true }),
+    ).toBe(null);
+    findFirstMock.mockResolvedValue({ id: "log-parti", status: EmailLogStatus.sent });
+    expect(
+      await journaliserEnAttente({
+        ...BASE,
+        jobId: "fi-contrat-relance-t-o-j3",
+        cleAppelant: true,
+      }),
+    ).toBe(null);
+    expect(updateManyMock).not.toHaveBeenCalled();
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
   // V1-C-11 — la ligne est désormais posée AVANT la mise en file, et deux enfilages
   // concurrents du même jobId (deux passages qui se chevauchent) ne doivent pas en poser
   // deux : la lecture et l'écriture se font sous un verrou propre à ce jobId.
