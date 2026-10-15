@@ -1,4 +1,4 @@
-// Banc @formateurs, équipe sécurité — trois modules de Next remplacés DANS LE
+// Banc @formateurs, équipe sécurité — des modules de Next remplacés DANS LE
 // SEUL PROCESSUS `tsx` du banc, par les crochets de chargement de Node.
 //
 // Pourquoi : les Server Actions de la console et de l'espace formateur lisent
@@ -34,7 +34,8 @@ const FAUX_AUTH = new URL("faux-auth.ts", ICI).href;
 const FAUX_CACHE = new URL("faux-next-cache.ts", ICI).href;
 const FAUX_ENTETES = new URL("faux-next-headers.ts", ICI).href;
 const FAUX_SERVER_ONLY = new URL("faux-server-only.ts", ICI).href;
-const FAUX = new Set([FAUX_AUTH, FAUX_CACHE, FAUX_ENTETES]);
+const FAUX_SENTRY = new URL("faux-sentry.ts", ICI).href;
+const FAUX = new Set([FAUX_AUTH, FAUX_CACHE, FAUX_ENTETES, FAUX_SENTRY]);
 
 registerHooks({
   resolve(specifier, context, suivant) {
@@ -47,6 +48,9 @@ registerHooks({
     if (resolu.url.endsWith("/src/auth.ts")) return { ...resolu, url: FAUX_AUTH };
     if (specifier === "next/cache") return { ...resolu, url: FAUX_CACHE };
     if (specifier === "next/headers") return { ...resolu, url: FAUX_ENTETES };
+    // Vérification n° 2 : sous `tsx`, `Sentry.captureException` est `undefined`
+    // (cf. `faux-sentry.ts`) — une garde qui signale son refus levait.
+    if (specifier === "@sentry/nextjs") return { ...resolu, url: FAUX_SENTRY };
     return resolu;
   },
 });
