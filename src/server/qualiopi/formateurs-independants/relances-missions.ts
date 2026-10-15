@@ -5,7 +5,8 @@
  *   · F18 — le contrat-cadre pas encore signé : J+3 puis J+7 après F16 ;
  *   · F45 — la nouvelle version du contrat : J+7 puis J+21 après l'envoi ;
  *   · F27 — la lettre de mission pas encore signée : une 1re relance 2 jours après
- *     F26, puis une seconde 3 jours avant le début. Rien après le début ;
+ *     F26 (ou F29 pour une lettre rectifiée), puis une seconde 3 jours avant le début.
+ *     Rien après le début ;
  *   · F21 — le numéro de déclaration d'activité « en cours » : 30 puis 60 jours après
  *     la contresignature, et une ALERTE interne à 90 jours.
  *
@@ -361,6 +362,12 @@ export const CAMPAGNE_NOUVELLE_VERSION: DeclarationCampagne<"j7" | "j21"> = {
 
 const F26 = "formateur-lettre-a-signer";
 const F27 = "formateur-lettre-relance";
+/**
+ * La lettre RECTIFIÉE (après un changement de dates ou de conditions) part par F29,
+ * jamais par F26 : c'est elle l'envoi de départ des relances de la nouvelle lettre
+ * (V1-B-2). Même forme de clé : `<gabarit>-<lettreMissionId>` (`moteur-mission.ts`).
+ */
+const F29 = "formateur-lettre-rectifiee";
 export const ID_CAMPAGNE_LETTRE_1RE = "lettre-1re";
 export const ID_CAMPAGNE_LETTRE_J3 = "lettre-j3";
 
@@ -410,8 +417,9 @@ export function faitsLettre(
     personneId: l.trainerId,
     origineId: l.documentId,
     destinataire: l.email,
-    // L'envoi de départ des deux relances est la lettre F26, même quand l'échéance se
-    // compte depuis J-3 : une réponse du formateur après F26 les arrête (lot 8A).
+    // L'envoi de départ des deux relances est la lettre F26 (F29 si elle est rectifiée),
+    // même quand l'échéance se compte depuis J-3 : une réponse du formateur après cet
+    // envoi les arrête (lot 8A).
     depart: l.envoyeeAt,
     etat: {
       origine,
@@ -468,7 +476,7 @@ async function lireLignesLettre(maintenant: Date): Promise<LigneLettre[]> {
       where: {
         entityType: "Trainer",
         entityId: { in: ids },
-        template: { in: [F26, F27] },
+        template: { in: [F26, F27, F29] },
         status: { not: "failed" },
         createdAt: { gte: depuis },
       },
@@ -498,11 +506,13 @@ async function lireLignesLettre(maintenant: Date): Promise<LigneLettre[]> {
   return aRelancer.map((m): LigneLettre => {
     const doc = m.lettreMissionId as string;
     const lignes = journal.filter((j) => j.entityId === m.trainerId);
+    // L'envoi de la lettre : F26, ou F29 pour une lettre rectifiée (V1-B-2). Le
+    // journal est lu dans l'ordre : le plus récent des deux l'emporte.
     const envoi = lignes
       .filter(
         (j) =>
-          j.template === F26 &&
-          j.jobId === `${F26}-${doc}` &&
+          ((j.template === F26 && j.jobId === `${F26}-${doc}`) ||
+            (j.template === F29 && j.jobId === `${F29}-${doc}`)) &&
           (j.status === "pending" || j.status === "sent"),
       )
       .at(-1);

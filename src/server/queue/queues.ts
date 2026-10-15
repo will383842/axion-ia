@@ -6,12 +6,13 @@
 // Toggle dev : si `BULLMQ_DISABLED=true`, toutes les queues sont `null` et
 // les helpers `enqueueEmail` / `bootRepeatableJobs` no-op proprement.
 
+import { randomUUID } from "node:crypto";
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
-import { journaliserEnAttente } from "@/server/email/email-log";
+import { journaliserEnAttente, marquerEchecMiseEnFile } from "@/server/email/email-log";
 import type {
   EmailJobData,
   EmailJobName,
@@ -1041,15 +1042,12 @@ export async function enqueueEmail(
       ? { attachments: options.attachments }
       : {}),
   };
+  const journalise = template !== "submission-reply";
+  const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
-  if (options?.jobId) addOptions["jobId"] = options.jobId;
+  if (jobId) addOptions["jobId"] = jobId;
   if (options?.priority && options.priority > 0) addOptions["priority"] = options.priority;
-  const job = await emailsQueue.add(
-    template,
-    data,
-    Object.keys(addOptions).length > 0 ? addOptions : undefined,
-  );
 
   // 🔴 Audit du 2026-08-16 — la ligne « en attente » qui manquait.
   //
@@ -1062,10 +1060,15 @@ export async function enqueueEmail(
   // On pose la ligne ICI, le worker la clôt. Une ligne restée `pending` est
   // désormais le signal d'une chaîne rompue, et `verifierSanteEmails()` la lit.
   //
-  // `await` volontaire plutôt qu'un `void` : la fonction ne lève jamais (elle
-  // avale ses propres erreurs), et l'attendre garantit que la ligne existe
-  // avant que le worker ne cherche à la clôturer — sinon on créerait deux
-  // lignes pour un seul envoi sur les files rapides.
+  // 🔴 V1-C-11 — la ligne est écrite AVANT la mise en file, sous l'identifiant que le
+  // job portera. Écrite après, un worker rapide pouvait terminer l'envoi entre les
+  // deux : ne trouvant aucune ligne à clore, il créait la sienne (« envoyé »), puis
+  // l'enfilage créait la seconde, restée « en attente » pour toujours — deux lignes
+  // pour un envoi, et les relances qui les comptent (F34, F40/F41) sautaient un
+  // rappel. Sans clé d'idempotence de l'appelant, l'identifiant est donc fabriqué ICI
+  // (BullMQ refuse « : » et les identifiants entiers : `email-<uuid>` n'a ni l'un ni
+  // l'autre). `await` volontaire : la fonction ne lève jamais (elle avale ses propres
+  // erreurs).
   //
   // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
   // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
@@ -1083,13 +1086,16 @@ export async function enqueueEmail(
   // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
   // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
   // ici des lignes qui ne seront jamais closes.
-  if (template !== "submission-reply") {
-    await journaliserEnAttente({
+  let lignePosee: string | null = null;
+  if (journalise) {
+    lignePosee = await journaliserEnAttente({
       template,
       recipient: to,
       locale,
       marketing: options?.marketing === true,
-      jobId: job.id,
+      jobId,
+      // Le verrou anti-doublon ne sert qu'à une clé de l'appelant : `email-<uuid>` est unique.
+      cleAppelant: options?.jobId !== undefined,
       // L'échéance, et non la seule date de création : sans elle, un envoi
       // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
       // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
@@ -1098,6 +1104,30 @@ export async function enqueueEmail(
       ...(options?.entityType ? { entityType: options.entityType } : {}),
       ...(options?.entityId ? { entityId: options.entityId } : {}),
     });
+  }
+
+  try {
+    await emailsQueue.add(
+      template,
+      data,
+      Object.keys(addOptions).length > 0 ? addOptions : undefined,
+    );
+  } catch (e) {
+    // File injoignable : aucun job n'existe, donc aucun worker ne clora la ligne. On
+    // referme celle que CET enfilage a posée, désignée par son `id` (jamais celle d'un
+    // autre enfilage de la même clé, dont le job vit peut-être), puis l'erreur de la file
+    // remonte à l'appelant, inchangée.
+    //
+    // 🔴 En ÉCHEC, jamais « annulé » : `dejaTente` et les lecteurs des campagnes ne
+    // mettent de côté que `failed`. Une ligne « annulé » comptait comme une relance déjà
+    // tentée, et la relance à clé fixe ne repartait plus (relecture de la PR #1537).
+    if (lignePosee) {
+      await marquerEchecMiseEnFile(
+        lignePosee,
+        "Mise en file impossible : l'e-mail n'est pas parti.",
+      );
+    }
+    throw e;
   }
 
   return { enqueued: true };

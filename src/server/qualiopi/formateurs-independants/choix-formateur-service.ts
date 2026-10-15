@@ -345,7 +345,12 @@ export type ResultatRangSuivant =
       readonly trainerId: string;
       readonly proposee: boolean;
     }
-  | { readonly fait: "a_pourvoir"; readonly sautes: number };
+  | {
+      readonly fait: "a_pourvoir";
+      readonly sautes: number;
+      /** La session vient d'être annoncée « à pourvoir » (journal + alerte). */
+      readonly annoncee: boolean;
+    };
 
 /**
  * Le rang suivant n'a de sens qu'avec le choix en cartes : il exige les DEUX
@@ -583,16 +588,24 @@ export async function proposerRangSuivant(
     }
     // Plus personne : la session revient « à pourvoir ». On ne le dit qu'une
     // fois : quand un événement vient de libérer la place, ou quand ce passage
-    // vient de sauter le dernier rang.
+    // vient de VIDER la liste des choix — un rang sauté, ou des choix encore
+    // vivants marqués épuisés ici même.
     // Les choix restants sont marqués épuisés : le passage planifié ne les
     // reprend plus (un nouveau choix les rouvre).
+    // V1-B-1 : le silence du DERNIER choix libère la place hors de ce service
+    // (`passerLesSansReponse`) ; c'est ce passage qui découvre que plus personne ne
+    // reste. Sans compter les choix qu'il vient d'épuiser, la session revenait
+    // « à pourvoir » en silence.
+    let epuises = 0;
     if (choix.length > 0) {
-      await prisma.choixFormateurSession.updateMany({
+      const r = await prisma.choixFormateurSession.updateMany({
         where: { sessionId, rang: { lte: 3 }, sauteAt: null },
         data: { sauteAt: maintenant, sauteMotif: MOTIF_CHOIX_EPUISES },
       });
+      epuises = r.count;
     }
-    if (cause !== "passage" || sautes > 0) {
+    const annoncee = cause !== "passage" || sautes > 0 || epuises > 0;
+    if (annoncee) {
       await journaliser(prisma, {
         action: "qualiopi.mission.a_pourvoir",
         targetType: "TrainingSession",
@@ -604,7 +617,7 @@ export async function proposerRangSuivant(
         `📭 Session ${session.numero} : plus aucun choix disponible, formateur à choisir. ${lienFicheSession(sessionId)}`,
       );
     }
-    return { fait: "a_pourvoir", sautes };
+    return { fait: "a_pourvoir", sautes, annoncee };
   } catch (err) {
     console.error(
       `[choix-formateur] rang suivant impossible (session ${sessionId}) :`,
@@ -647,7 +660,7 @@ export async function proposerRangsSuivants(maintenant: Date): Promise<{
   for (const s of sessions) {
     const r = await proposerRangSuivant(s.id, "passage", maintenant);
     if (r.fait === "propose") bilan.proposes += 1;
-    if (r.fait === "a_pourvoir" && r.sautes > 0) bilan.aPourvoir += 1;
+    if (r.fait === "a_pourvoir" && r.annoncee) bilan.aPourvoir += 1;
   }
   return bilan;
 }

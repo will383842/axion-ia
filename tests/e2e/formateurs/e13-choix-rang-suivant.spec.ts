@@ -64,6 +64,8 @@ async function missionDe(trainerId: string) {
 }
 
 test.describe("@formateurs E13 — choix 1/2/3, refus, rang suivant, expiration, à pourvoir", () => {
+  // V1-B-1 lit la session du parcours complet : les deux tests tournent dans l'ordre.
+  test.describe.configure({ mode: "serial" });
   test.setTimeout(240_000);
 
   test("le parcours complet, une seule proposition vivante à chaque instant", async () => {
@@ -232,15 +234,11 @@ test.describe("@formateurs E13 — choix 1/2/3, refus, rang suivant, expiration,
     ]);
   });
 
-  // V1-B-1 — DÉFAUT (gravité moyenne). Quand le DERNIER choix se tait, la place est
-  // libérée par `passerLesSansReponse` (mission-formateur.ts ~l.700), puis le passage
-  // horaire appelle `proposerRangsSuivants`, qui passe la cause « passage » à
-  // `proposerRangSuivant` (choix-formateur-service.ts:648). Or l'annonce « plus aucun
-  // choix disponible » (journal `qualiopi.mission.a_pourvoir` + alerte) n'est écrite
-  // que si `cause !== "passage" || sautes > 0` (choix-formateur-service.ts:595) : ici
-  // ni l'un ni l'autre. La session revient à pourvoir EN SILENCE ; l'équipe n'est
-  // prévenue que par les alertes génériques « session sans formateur », plus tard.
-  test.fixme("V1-B-1 — « À pourvoir » est annoncé quand le silence du dernier choix libère la place", async () => {
+  // V1-B-1 — corrigé (lot 4). Quand le DERNIER choix se tait, la place est libérée par
+  // `passerLesSansReponse`, puis le passage horaire (`proposerRangsSuivants`, cause
+  // « passage ») découvre que plus personne ne reste. Il vient de VIDER la liste des
+  // choix : il l'annonce — journal `qualiopi.mission.a_pourvoir` + alerte —, une fois.
+  test("V1-B-1 — « À pourvoir » est annoncé quand le silence du dernier choix libère la place", async () => {
     const journal = await prisma.activityLog.findMany({
       where: { targetId: session.id, action: "qualiopi.mission.a_pourvoir" },
       select: { action: true },
