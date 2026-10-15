@@ -185,6 +185,17 @@ export function pdfFictif(titre: string) {
   };
 }
 
+/**
+ * Date du CV (15/10) — les champs du dépôt d'une pièce : le CV porte la date du CV,
+ * en mois et année (« AAAA-MM »), ici six mois avant aujourd'hui (règle des 24 mois tenue).
+ */
+export function champsDePiece(type: string): Record<string, string> {
+  if (type !== "cv") return { type };
+  const a = new Date();
+  const d = new Date(Date.UTC(a.getUTCFullYear(), a.getUTCMonth() - 6, 1));
+  return { type, dateCv: d.toISOString().slice(0, 7) };
+}
+
 /** Une action publique du dossier, avec le lien. */
 export function actionDossier(
   lien: LienDossier,
@@ -260,7 +271,7 @@ export async function preparerDossier(
     ? ["rib", "cv", "recepisse_declaration_activite"]
     : ["rib", "cv"];
   for (const type of pieces) {
-    await pas(actionDossier(lien, "piece", { type }, { fichier: pdfFictif(type) }));
+    await pas(actionDossier(lien, "piece", champsDePiece(type), { fichier: pdfFictif(type) }));
   }
   return registre;
 }

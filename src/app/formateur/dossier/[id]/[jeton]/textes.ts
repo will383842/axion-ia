@@ -109,6 +109,7 @@ export const TEXTES = {
     "Ce code n'est pas lisible : recopiez les lettres et chiffres du bas de l'attestation.",
   enregistrerCode: "Enregistrer le code",
   codeEnregistre: "Code enregistré",
+  dateDuCv: "Date de votre CV (mois et année)",
   attestationPerimee:
     "Cette attestation date de plus de 6 mois. Téléchargez-en une nouvelle sur urssaf.fr : c'est immédiat.",
   depot: {

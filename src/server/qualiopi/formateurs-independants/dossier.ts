@@ -278,6 +278,13 @@ export interface Activite {
   sansAdresseAuRegistre?: boolean;
 }
 
+const sansEspaces = (v: string | null): string => (v ?? "").replace(/\s+/g, "");
+
+/** Le SIRET ou le numéro de déclaration saisi diffère de celui de la fiche (ou la fiche n'en avait pas). */
+function numeroOuSiretChange(d: Pick<DossierVue, "siret" | "nda">, a: Activite): boolean {
+  return sansEspaces(a.siret) !== sansEspaces(d.siret) || sansEspaces(a.nda) !== sansEspaces(d.nda);
+}
+
 /** Étape 2 : SIRET, numéro de déclaration, régime de TVA et, avant l'envoi, l'IBAN. */
 export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<ResultatEcriture> {
   const data: Prisma.TrainerUpdateManyMutationInput = {
@@ -287,6 +294,9 @@ export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<R
     ...(a.sansAdresseAuRegistre === true && a.adressePro
       ? { adresseProfessionnelle: a.adressePro }
       : {}),
+    // Un numéro ou un SIRET saisi ou changé ici n'est pas un numéro vérifié (comme la
+    // saisie depuis l'espace, #1539) : la mission attend que la console revérifie.
+    ...(numeroOuSiretChange(d, a) ? { sousTraitantVerifieAt: null } : {}),
   };
   const where = gardeEcriture(d);
   if (a.iban !== null) {
@@ -330,11 +340,6 @@ const alerteAntivirus = alerteAntivirusLimitee(() => {
     .catch(() => undefined);
 });
 
-/** Minuit UTC du jour : une date de pièce, jamais une heure. */
-function debutDuJourUtc(d: Date): Date {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
-}
-
 /** Étape 3 : une pièce, contrôlée (FAC-6), chiffrée au repos, l'ancienne archivée. */
 export async function deposerPiece(
   d: DossierVue,
@@ -342,6 +347,7 @@ export async function deposerPiece(
     type: PieceDossier;
     nomFichier: string;
     octets: Uint8Array;
+    /** Attestation : sa date de délivrance. CV : la date du CV déclarée (1er du mois). */
     dateEmission: Date | null;
   },
 ): Promise<ResultatEcriture> {
@@ -379,10 +385,11 @@ export async function deposerPiece(
         trainerId: d.id,
         type: p.type,
         hashSha256: controle.sha256,
-        // V1-A-6 — le CV transmis dans le dossier est le CV ACTUEL de la personne : il est
-        // daté de sa transmission. Sans date, la règle du CV de moins de 24 mois (W-4,
-        // contresignature, activation) le tenait pour non daté, donc jamais probant.
-        dateEmission: p.dateEmission ?? (p.type === "cv" ? debutDuJourUtc(maintenant) : null),
+        // Date du CV (décision du 15/10) : pour un CV, `dateEmission` est la date DÉCLARÉE
+        // par le formateur (mois et année), jamais celle du dépôt. Absente, future ou de
+        // plus de 24 mois : la règle des 24 mois ne la tient pas, le CV reste à vérifier.
+        dateEmission: p.dateEmission,
+        ...(p.type === "cv" ? { dateCvDeclaree: p.dateEmission } : {}),
         dateExpiration:
           p.type === "attestation_vigilance_urssaf" && p.dateEmission
             ? finValiditeVigilance(p.dateEmission)

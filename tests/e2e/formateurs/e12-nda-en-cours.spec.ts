@@ -20,6 +20,7 @@ import { etape } from "../fixtures/formateurs/etapes";
 import {
   NDA_BANC,
   actionDossier,
+  champsDePiece,
   formateurRetenu,
   formationDuBanc,
   pdfFictif,
@@ -94,7 +95,7 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
     );
     expect(activite.valeur.ok, activite.valeur.message).toBe(true);
     for (const type of ["rib", "cv"]) {
-      await actionDossier(lien, "piece", { type }, { fichier: pdfFictif(type) });
+      await actionDossier(lien, "piece", champsDePiece(type), { fichier: pdfFictif(type) });
     }
     const code = await actionDossier(lien, "code", {}, { registre });
     expect(code.valeur.ok, code.valeur.message).toBe(true);

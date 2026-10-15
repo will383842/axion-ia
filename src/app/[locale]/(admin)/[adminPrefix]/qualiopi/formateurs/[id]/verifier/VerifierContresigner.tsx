@@ -184,6 +184,7 @@ export function VerifierContresigner({ ecran, peutContresigner, peutVerifier }: 
               {l.libelle}
             </a>
           ))}
+          {ecran.dateDuCv !== null ? <span>{ecran.dateDuCv}</span> : null}
           {blocs.find((b) => b.cle === "pieces")?.pastille !== "rouge" ? (
             <label className="flex items-center gap-[var(--space-admin-2)]">
               <input

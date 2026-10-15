@@ -614,6 +614,9 @@ export function DossierFormateur({
                 piece={p ? { statut: p.statut, motif: p.motif, nomFichier: p.nomFichier } : null}
                 motifLibelle={p?.statut === "a_retransmettre" ? p.motif : null}
                 avecDate={type === "attestation_vigilance_urssaf"}
+                {...(type === "cv"
+                  ? { moisAnnee: { libelle: TEXTES.dateDuCv, champ: "dateCv" } }
+                  : {})}
               />
             );
           })}
