@@ -77,6 +77,11 @@ export interface DossierVue {
   readonly telephone: string | null;
   readonly codePostalPro: string | null;
   readonly siret: string | null;
+  /**
+   * V1-A-11 — l'adresse professionnelle de la fiche (celle que le contrat imprime).
+   * Demandée à l'étape 2 quand le registre ne la donne pas (diffusion partielle).
+   */
+  readonly adressePro?: string | null;
   readonly nda: string | null;
   readonly regimeTva: RegimeTvaDossier | null;
   readonly ibanSaisi: boolean;
@@ -104,6 +109,7 @@ const SELECTION = {
   organismeSousTraitantId: true,
   codePostalPro: true,
   siret: true,
+  adresseProfessionnelle: true,
   sousTraitantNda: true,
   regimeTvaHonoraires: true,
   ibanEmpreinte: true,
@@ -165,6 +171,7 @@ function vue(t: Ligne, etat: EtatPage): DossierVue {
     telephone: t.telephone,
     codePostalPro: t.codePostalPro,
     siret: t.siret,
+    adressePro: t.adresseProfessionnelle,
     nda: t.sousTraitantNda,
     regimeTva: t.regimeTvaHonoraires,
     ibanSaisi: t.ibanEmpreinte !== null,
@@ -262,6 +269,8 @@ export interface Activite {
   regimeTva: RegimeTvaDossier;
   /** IBAN saisi, déjà validé (SEPA) ; `null` = inchangé. */
   iban: string | null;
+  /** V1-A-11 — adresse professionnelle saisie, déjà validée ; absente ou `null` = inchangée. */
+  adressePro?: string | null;
 }
 
 /** Étape 2 : SIRET, numéro de déclaration, régime de TVA et, avant l'envoi, l'IBAN. */
@@ -270,6 +279,7 @@ export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<R
     siret: a.siret,
     sousTraitantNda: a.nda,
     regimeTvaHonoraires: a.regimeTva,
+    ...(a.adressePro ? { adresseProfessionnelle: a.adressePro } : {}),
   };
   const where = gardeEcriture(d);
   if (a.iban !== null) {

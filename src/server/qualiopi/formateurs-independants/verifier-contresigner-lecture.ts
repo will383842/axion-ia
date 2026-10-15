@@ -13,7 +13,7 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import { aUnFichier } from "@/server/qualiopi/trainers/piece-competence";
+import { aUnFichier, pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 
 import { etatControle, LIBELLES_MOTIFS, type MotifControle } from "./controle-regles";
 import { versionDuContrat } from "./faits-activation";
@@ -57,14 +57,37 @@ function raisonControle(motifs: ReadonlyArray<MotifControle>): string | null {
   return motifs.length > 0 ? motifs.map((m) => LIBELLES_MOTIFS[m]).join(" ") : null;
 }
 
+/** Où ouvrir une pièce déposée dans le dossier en ligne (route console, lecture journalisée). */
+export interface OptionsEcranW4 {
+  /** `…/qualiopi/formateurs/{id}/pieces` ; absent : aucun lien vers une pièce déposée. */
+  readonly basePiecesDeposees?: string;
+  /** La route ne sert le RIB qu'à qui peut rémunérer : sans ce droit, pas de lien. */
+  readonly voitRib?: boolean;
+}
+
+interface DocW4 {
+  id: string;
+  type: string;
+  statutValidation: string;
+  fichierUrl: string | null;
+  contenu?: { trainerDocumentId: string } | null;
+}
+
+/**
+ * Le lien d'une pièce : son adresse, ou — pièce déposée dans le dossier en ligne, qui
+ * n'a que ses octets (V1-A-6) — la route console qui la sert.
+ */
+function lienDe(d: DocW4, options: OptionsEcranW4): string | null {
+  if (aUnFichier(d.fichierUrl)) return d.fichierUrl;
+  if (!pieceAUnFichier(d) || options.basePiecesDeposees === undefined) return null;
+  if (d.type === "rib" && options.voitRib !== true) return null;
+  return `${options.basePiecesDeposees}/${d.id}`;
+}
+
 function pieceW4(
-  docs: ReadonlyArray<{
-    id: string;
-    type: string;
-    statutValidation: string;
-    fichierUrl: string | null;
-  }>,
+  docs: ReadonlyArray<DocW4>,
   type: string,
+  options: OptionsEcranW4,
 ): (PieceW4 & { url: string | null }) | null {
   // La plus récente non rejetée d'abord, sinon la plus récente.
   const duType = docs.filter((d) => d.type === type);
@@ -73,8 +96,9 @@ function pieceW4(
   return {
     id: d.id,
     statutValidation: d.statutValidation,
-    fichierPresent: aUnFichier(d.fichierUrl),
-    url: aUnFichier(d.fichierUrl) ? d.fichierUrl : null,
+    // Adresse OU octets déposés : une pièce du dossier en ligne n'a pas d'adresse.
+    fichierPresent: pieceAUnFichier(d),
+    url: lienDe(d, options),
   };
 }
 
@@ -82,6 +106,7 @@ function pieceW4(
 export async function lireEcranVerifierContresigner(
   trainerId: string,
   maintenant: Date = new Date(),
+  options: OptionsEcranW4 = {},
 ): Promise<EcranW4 | null> {
   const t = await prisma.trainer.findUnique({
     where: { id: trainerId },
@@ -110,6 +135,7 @@ export async function lireEcranVerifierContresigner(
           type: true,
           statutValidation: true,
           fichierUrl: true,
+          contenu: { select: { trainerDocumentId: true } },
           numeroPiece: true,
           dateEmission: true,
           dateExpiration: true,
@@ -166,9 +192,9 @@ export async function lireEcranVerifierContresigner(
     (c) => versionDuContrat(c.metadata) >= VERSION_MINIMALE_CONTRAT_INDEPENDANT,
   );
 
-  const cv = pieceW4(t.documents, "cv");
-  const rcPro = pieceW4(t.documents, "assurance_rc_pro");
-  const rib = pieceW4(t.documents, "rib");
+  const cv = pieceW4(t.documents, "cv", options);
+  const rcPro = pieceW4(t.documents, "assurance_rc_pro", options);
+  const rib = pieceW4(t.documents, "rib", options);
   const habilitees = new Set(t.habilitations.map((h) => h.formationId));
 
   const faits: FaitsW4 = {
@@ -224,7 +250,7 @@ export async function lireEcranVerifierContresigner(
     signeLe: contrat?.signatures[0]?.signeAt ?? null,
     faits,
     liens,
-    lienAttestation: att !== undefined && aUnFichier(att.fichierUrl) ? att.fichierUrl : null,
+    lienAttestation: att === undefined ? null : lienDe(att, options),
     formations: formations.map((f) => ({ ...f, habilite: habilitees.has(f.id) })),
     habilitationsActives: [...habilitees],
   };

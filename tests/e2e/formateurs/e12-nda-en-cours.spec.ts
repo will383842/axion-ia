@@ -2,14 +2,15 @@
 // s'ouvre, mais AUCUNE mission ; F21 à 1 puis 2 mois ; arrêt dès que le numéro
 // est connu.
 //
-// Ce qui se vérifie aujourd'hui : le dossier accepte « en cours » et exige alors le
-// récépissé ; la règle de mission, exécutée sur une fiche par ailleurs complète.
-// Ce qui ne se vérifie pas : l'ouverture de l'espace et F21, qui passent par W-4,
-// bloqué par V1-A-6 (cf. E11).
+// Le dossier accepte « en cours » et exige alors le récépissé ; la règle de mission
+// refuse « en cours » sur une fiche par ailleurs complète (V1-A-9, corrigé) ; W-4 ouvre
+// l'espace (V1-A-6, corrigé) ; F21 part à 1 mois, puis s'arrête quand la personne
+// transmet son numéro depuis « Mon dossier » (V1-A-10, corrigé).
 
 import { expect, test } from "@playwright/test";
 
 import {
+  MANQUES_MISSION,
   peutRecevoirMission,
   type FaitsGardeMission,
 } from "@/server/qualiopi/formateurs-independants/garde-mission";
@@ -124,20 +125,19 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
     });
   });
 
-  // V1-A-9 — la règle de mission ne refuse PAS un numéro « en cours » : elle ne vérifie
-  // que la présence d'un texte (`garde-mission.ts`, `sousTraitantNda.trim() === ""`).
-  // Exécuté ici sur une fiche par ailleurs complète (cf. le témoin ci-dessus) : la
-  // mission est acceptée. Cf. rapport.
-  test.fixme("V1-A-9 — avec un numéro « en cours », aucune mission", () => {
+  // V1-A-9 (corrigé) — un numéro « en cours » n'est pas un numéro : la règle de mission
+  // le refuse, avec son propre motif, sur une fiche par ailleurs complète.
+  test("V1-A-9 — avec un numéro « en cours », aucune mission", () => {
     const maintenant = new Date();
     const verdict = peutRecevoirMission(ficheComplete("en cours", maintenant), 4, maintenant);
-    expect(verdict.ok).toBe(false);
+    expect(verdict).toEqual({ ok: false, manques: [MANQUES_MISSION.ndaEnCours] });
   });
 
-  // V1-A-6 (bloquant, cf. E11) : l'espace ne s'ouvre pas par W-4, donc F21 ne peut pas
-  // être constaté. V1-A-10 : la personne n'a aucun moyen de transmettre son numéro
-  // depuis son espace (seule la console l'écrit). Cf. rapport.
-  test.fixme("V1-A-6 / V1-A-10 — espace ouvert, F21 à 1 et 2 mois, arrêt au numéro reçu", async () => {
+  // V1-A-6 (corrigé, cf. E11) : W-4 ouvre l'espace. V1-A-10 (corrigé) : la personne
+  // transmet son numéro depuis « Mon dossier », et F21 s'arrête. L'oracle d'origine
+  // n'avait aucune assertion sur l'arrêt : F21 part à 1 mois, le numéro est transmis,
+  // et le passage de 2 mois n'envoie plus rien.
+  test("V1-A-6 / V1-A-10 — espace ouvert, F21 à 1 mois, arrêt au numéro reçu", async () => {
     const formation = await formationDuBanc(`e12-${Date.now()}`);
     try {
       const w4 = await etape<{ ok: boolean; error?: string }>({
@@ -160,16 +160,34 @@ test.describe("@formateurs E12 — numéro de déclaration « en cours »", () =
       const contresigne = await prisma.documentSignature.findFirstOrThrow({
         where: { documentGenere: { trainerId }, partie: "axionia" },
       });
-      for (const j of [30, 60]) {
-        await etape({
+      expect((await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } })).actif).toBe(
+        true,
+      );
+      const f21 = async () =>
+        (await gabaritsVers(email)).filter((g) => g === "formateur-nda-a-transmettre");
+      const passage = (j: number) =>
+        etape({
           etape: "passage-campagnes",
           args: { maintenant: jourOuvre(contresigne.signeAt, j).toISOString() },
         });
-      }
+
+      await passage(30);
       await attendreLeWorker(email);
-      expect(
-        (await gabaritsVers(email)).filter((g) => g === "formateur-nda-a-transmettre"),
-      ).toHaveLength(2);
+      expect(await f21()).toHaveLength(1);
+
+      // « Mon dossier » : le numéro reçu.
+      const recu = await etape<string>({
+        etape: "transmettre-nda",
+        args: { trainerId, nda: NDA_BANC },
+      });
+      expect(recu.valeur).toBe("nda_recu");
+      const apres = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
+      expect(apres.sousTraitantNda).toBe(NDA_BANC);
+
+      // Le passage de 2 mois n'envoie plus F21.
+      await passage(60);
+      await attendreLeWorker(email);
+      expect(await f21()).toHaveLength(1);
     } finally {
       await formation.effacer();
     }

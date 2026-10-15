@@ -96,6 +96,7 @@ export async function lireEcranMiseANiveau(maintenant: Date): Promise<EcranMiseA
           type: true,
           statutValidation: true,
           fichierUrl: true,
+          contenu: { select: { trainerDocumentId: true } },
           dateEmission: true,
           dateExpiration: true,
         },

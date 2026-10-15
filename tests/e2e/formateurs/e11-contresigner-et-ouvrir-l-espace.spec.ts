@@ -71,13 +71,10 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
     expect(await gabaritsVers(email)).not.toContain("formateur-espace-ouvert");
   });
 
-  // V1-A-6 — BLOQUANT. W-4 tient les pièces déposées en ligne pour ABSENTES : il lit
-  // la présence d'un fichier par `fichierUrl` seul (`verifier-contresigner-lecture.ts`,
-  // `aUnFichier`), alors qu'une pièce déposée dans le dossier n'a pas d'adresse, seulement
-  // ses octets (`TrainerDocumentContenu`). Mesuré sur ce banc : « Pour contresigner, il
-  // manque : le CV · le RIB » pour un dossier qui les a déposés. Aucun formateur passé
-  // par le dossier en ligne ne peut être contresigné ni activé. Cf. rapport.
-  test.fixme("V1-A-6 — W-4 contresigne, active par la personne qui contresigne, F19 et F20 partent", async () => {
+  // V1-A-6 (corrigé) — une pièce déposée dans le dossier n'a pas d'adresse, seulement ses
+  // octets (`TrainerDocumentContenu`) : W-4, la porte de contresignature et l'activation
+  // la reconnaissent désormais (`pieceAUnFichier`, `contenu` chargé).
+  test("V1-A-6 — W-4 contresigne, active par la personne qui contresigne, F19 et F20 partent", async () => {
     const formation = await formationDuBanc(`e11-${Date.now()}`);
     try {
       const ecran = await etape<{
