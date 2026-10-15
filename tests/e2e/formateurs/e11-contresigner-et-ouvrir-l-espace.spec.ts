@@ -8,8 +8,6 @@
 
 import { expect, test } from "@playwright/test";
 
-import { MOTIFS_ORANGE } from "@/server/qualiopi/formateurs-independants/verifier-contresigner-regles";
-
 import { prisma } from "../fixtures/formateurs/base";
 import { etape } from "../fixtures/formateurs/etapes";
 import {
@@ -25,6 +23,10 @@ import {
   ouvrirScenario,
   type DecorScenario,
 } from "../fixtures/formateurs/scenario";
+
+/** Un motif de la liste fermée de W-4 (`MOTIFS_ORANGE`), recopié : le banc n'importe
+ * pas le domaine depuis ce scénario (cloisonnement). */
+const MOTIF_LISTE_VERIFIEE = "Numéro de déclaration vérifié à la main sur la liste publique";
 
 test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
   test.describe.configure({ mode: "serial" });
@@ -115,7 +117,7 @@ test.describe("@formateurs E11 — contresigner et ouvrir son espace", () => {
       const premier = await contresigner({ orangeVerifie: false, motifOrange: null });
       expect(premier.valeur.ok).toBe(false);
       expect(premier.valeur.error).toMatch(/^Contrat contresigné\. Le registre relu/);
-      const w4 = await contresigner({ orangeVerifie: true, motifOrange: MOTIFS_ORANGE[2] });
+      const w4 = await contresigner({ orangeVerifie: true, motifOrange: MOTIF_LISTE_VERIFIEE });
       expect(w4.valeur.ok, w4.valeur.error).toBe(true);
       const fiche = await prisma.trainer.findUniqueOrThrow({ where: { id: trainerId } });
       expect(fiche.actif).toBe(true);
