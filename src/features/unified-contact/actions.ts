@@ -491,7 +491,13 @@ export async function finaliserPiecesJointesAction(
     const bilan = await finaliserPiecesJointes(submissionId, jeton);
     if (bilan.controlees) {
       try {
-        await envoyerAccuseDiffere(submissionId);
+        const parti = await envoyerAccuseDiffere(submissionId);
+        if (!parti) {
+          Sentry.captureMessage("[unified-contact] accusé différé non parti", {
+            level: "warning",
+            tags: { action: "finaliserPiecesJointesAction", step: "email" },
+          });
+        }
       } catch (mailErr) {
         Sentry.captureException(mailErr, {
           tags: { action: "finaliserPiecesJointesAction", step: "email" },
