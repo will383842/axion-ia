@@ -19,20 +19,28 @@
 //     audit-trail), Sprint+1 ajoutera `notificationsQueue`.
 
 import {
+  estCategorieClient,
   getRouting,
+  groupeDeRepliClient,
+  resolveSalonClients,
   shouldDispatchAsync,
   shouldNotifyWhatsApp,
-  telegramGroupFor,
   resolveTelegramTarget,
+  resolveTelegramTargetPourCategorie,
 } from "./routing";
 import { formatNotification, formatNotificationWhatsApp } from "./format";
-import { sendTelegramRaw } from "./channels/telegram";
+import {
+  formatNotificationClient,
+  libelleTypeDemande,
+  type EvenementClient,
+} from "./format-clients";
+import { decouperPourTelegram, sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
 import { sendEmailNotification } from "./channels/email";
 import { sendWhatsAppRaw } from "./channels/whatsapp";
-import { isDuplicate } from "./dedup";
+import { isDuplicate, libererDedup } from "./dedup";
 import { checkCategoryRateLimit } from "./rate-limit";
-import type { NotificationChannel, NotifyInput, NotifyResult, NotificationCategory } from "./types";
+import type { NotificationChannel, NotificationEvent, NotifyInput, NotifyResult } from "./types";
 
 export type {
   NotificationEvent,
@@ -43,23 +51,76 @@ export type {
   NotifyResult,
 } from "./types";
 
+/**
+ * Le salon « Clients » (décision Will 15/10) : TOUT le détail, en texte brut,
+ * découpé sous 4096 caractères, toujours AVEC SON.
+ *
+ * Si un morceau n'arrive pas, dernier essai vers la route d'avant de la
+ * catégorie, avec le gabarit ALLÉGÉ : jamais les coordonnées dans un autre
+ * salon, mais jamais non plus une demande de client perdue.
+ */
+async function envoyerAuSalonClients(
+  event: EvenementClient,
+  texteAllege: string,
+): Promise<"sent" | "skipped" | "failed"> {
+  const salon = resolveSalonClients();
+  if (salon) {
+    let toutEstParti = true;
+    for (const morceau of decouperPourTelegram(formatNotificationClient(event))) {
+      const ok = await sendTelegramRaw({
+        text: morceau,
+        brut: true,
+        silent: false,
+        chatId: salon.chatId,
+        botToken: salon.botToken,
+      });
+      if (!ok) {
+        toutEstParti = false;
+        break;
+      }
+    }
+    if (toutEstParti) return "sent";
+  }
+  // Salon pas encore créé, ou envoi échoué : la route d'avant.
+  const repli = resolveTelegramTarget(groupeDeRepliClient(event.category));
+  if (!repli) return salon ? "failed" : "skipped";
+  const ok = await sendTelegramRaw({
+    text: texteAllege,
+    silent: false,
+    chatId: repli.chatId,
+    botToken: repli.botToken,
+  });
+  return ok ? "sent" : "failed";
+}
+
 async function dispatchChannels(
-  category: NotificationCategory,
+  event: NotificationEvent,
   severity: import("./types").NotificationSeverity,
   channels: NotificationChannel[],
   formattedText: string,
-  payload: Record<string, unknown>,
 ): Promise<Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>> {
+  const category = event.category;
+  const payload = event.payload as Record<string, unknown>;
   const results: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">> =
     {};
   const tasks: Array<Promise<void>> = [];
 
   for (const ch of channels) {
-    if (ch === "telegram") {
+    if (ch === "telegram" && estCategorieClient(category)) {
+      tasks.push(
+        envoyerAuSalonClients(event as EvenementClient, formattedText)
+          .then((statut) => {
+            results.telegram = statut;
+          })
+          .catch(() => {
+            results.telegram = "failed";
+          }),
+      );
+    } else if (ch === "telegram") {
       // Routage 8 groupes thématiques (refonte 2026-08-09). `resolveTelegramTarget`
       // rend le COUPLE (bot, salon) — jamais l'un sans l'autre, sinon on peut
       // fabriquer un bot qui vise un salon dont il n'est pas membre.
-      const target = resolveTelegramTarget(telegramGroupFor(category));
+      const target = resolveTelegramTargetPourCategorie(category);
       if (!target) {
         // Ni bot ni salon configurés : ce n'est pas un échec d'envoi, c'est une
         // absence de configuration. On le distingue pour ne pas faire croire à
@@ -112,8 +173,13 @@ async function dispatchChannels(
       // 🔑 Le canal reste — il prévient vite, et c'est son seul rôle. Le détail
       // qui permet de rappeler vit sur Telegram, qui est déclaré et couvert par
       // des clauses contractuelles types. Voir `formatNotificationWhatsApp`.
+      // Pour un client, la sonnette dit le TYPE de demande (« Audit IA ») —
+      // une nature, jamais une donnée de la personne (décision Will 15/10).
+      const typeDemande = estCategorieClient(category)
+        ? libelleTypeDemande(event as EvenementClient)
+        : undefined;
       tasks.push(
-        sendWhatsAppRaw({ text: formatNotificationWhatsApp(category, severity).text })
+        sendWhatsAppRaw({ text: formatNotificationWhatsApp(category, severity, typeDemande).text })
           .then((status) => {
             results.whatsapp = status;
           })
@@ -185,10 +251,24 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
   }
 
   // 3. Format MarkdownV2 (échappement strict)
-  const formatted = formatNotification(
-    { category: input.category, payload } as import("./types").NotificationEvent,
-    severity,
-  );
+  const event = { category: input.category, payload } as NotificationEvent;
+  const formatted = formatNotification(event, severity);
+
+  // Décision Will 15/10 : la clé de dédoublonnage ne survit qu'à un envoi
+  // RÉUSSI. Laissée après un échec, elle faisait passer le rejeu pour un
+  // doublon — l'alerte était perdue pour tout le TTL.
+  const dedupKey = input.dedupKey;
+  const libererSiEchec = async (
+    r: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>,
+  ): Promise<void> => {
+    if (!dedupKey) return;
+    // Telegram porte le détail : s'il n'est pas parti, l'alerte n'est pas faite.
+    const aboutie =
+      "telegram" in r
+        ? r.telegram === "sent"
+        : Object.values(r).some((v) => v === "sent" || v === "queued");
+    if (!aboutie) await libererDedup(input.category, dedupKey);
+  };
 
   // 4. Dispatch sync ou fire-and-forget
   const forceSync = input.sync === true;
@@ -198,7 +278,9 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     // Fire-and-forget : on lance la promise détachée, on retourne tout de suite.
     // On garde une référence attendable (tests / arrêt gracieux) sans bloquer le
     // runtime ; la référence s'auto-supprime à la résolution.
-    const dispatch = dispatchChannels(input.category, severity, channels, formatted.text, payload);
+    const dispatch = dispatchChannels(event, severity, channels, formatted.text).then(
+      libererSiEchec,
+    );
     inFlightDispatches.add(dispatch);
     void dispatch.finally(() => inFlightDispatches.delete(dispatch));
     const queued: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">> =
@@ -207,13 +289,8 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     return { ok: true, channels: queued };
   }
 
-  const results = await dispatchChannels(
-    input.category,
-    severity,
-    channels,
-    formatted.text,
-    payload,
-  );
+  const results = await dispatchChannels(event, severity, channels, formatted.text);
+  await libererSiEchec(results);
   const okOverall = Object.values(results).some((v) => v === "sent" || v === "queued");
   return { ok: okOverall, channels: results };
 }

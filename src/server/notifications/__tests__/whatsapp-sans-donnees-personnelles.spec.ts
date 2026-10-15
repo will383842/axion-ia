@@ -31,6 +31,7 @@
 
 import { describe, it, expect } from "vitest";
 import { formatNotificationWhatsApp, formatNotificationPlain } from "../format";
+import { libelleTypeDemande, type EvenementClient } from "../format-clients";
 import type { NotificationEvent } from "../types";
 
 /** Un événement de contact, avec tout ce qu'un prospect fournit. */
@@ -101,6 +102,56 @@ describe("`D6-5-C1` — le message WhatsApp ne porte aucune donnée personnelle"
     expect(source, "le texte complet ne doit plus atteindre `sendWhatsAppRaw`").not.toMatch(
       /sendWhatsAppRaw\(\{\s*text:\s*markdownV2ToPlain/,
     );
+  });
+});
+
+describe("Décision Will 15/10 — la sonnette WhatsApp des clients", () => {
+  it("🔥 une ligne : nature, type de demande, heure, et où lire le détail", () => {
+    const texte = formatNotificationWhatsApp("AUDIT_REQUEST_SUBMITTED", "info", "Audit IA").text;
+    expect(texte).toMatch(
+      /^🔥 NOUVEAU CLIENT · Audit IA · \d{2}:\d{2} — tout le détail dans Telegram \(salon Clients\)$/,
+    );
+  });
+
+  it("❌ annulation et 🔁 report ont leur propre première ligne", () => {
+    expect(
+      formatNotificationWhatsApp("CLIENT_CALL_CANCELED", "warn", "Diagnostic IA").text,
+    ).toMatch(/^❌ ANNULATION CLIENT · Diagnostic IA · /);
+    expect(formatNotificationWhatsApp("CLIENT_CALL_RESCHEDULED", "info").text).toMatch(
+      /^🔁 REPORT CLIENT · /,
+    );
+  });
+
+  it("🔴 le type de demande transmis ne porte AUCUNE donnée de la personne", () => {
+    const evenements = [
+      EVENEMENT,
+      {
+        category: "CLIENT_CALL_BOOKED",
+        payload: {
+          eventUri: "evt_1",
+          inviteeEmail: "jeanne.dupont@exemple.fr",
+          inviteeName: "Jeanne Dupont",
+          inviteePhone: "+33 6 12 34 56 78",
+          eventStartTime: "2026-10-16T08:00:00Z",
+          eventName: "Diagnostic IA (30 min)",
+          answersText: "douze personnes à former",
+        },
+      },
+      {
+        category: "CLIENT_CALL_CANCELED",
+        payload: {
+          eventUri: "evt_1",
+          inviteeEmail: "jeanne.dupont@exemple.fr",
+          inviteeName: "Jeanne Dupont",
+          reason: "douze personnes malades",
+        },
+      },
+    ] as unknown as EvenementClient[];
+    for (const e of evenements) {
+      const texte = formatNotificationWhatsApp(e.category, "info", libelleTypeDemande(e)).text;
+      for (const fragment of PII)
+        expect(texte, `${e.category} : ${fragment}`).not.toContain(fragment);
+    }
   });
 });
 

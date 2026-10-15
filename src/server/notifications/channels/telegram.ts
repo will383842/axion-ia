@@ -111,8 +111,46 @@ function mentionTroncature(lignesEcartees: number): string {
   return `TRONQUE ${lignesEcartees} lignes non affichees voir la console`;
 }
 
+/**
+ * Découpe un texte en messages qui tiennent chacun sous le plafond de l'API.
+ *
+ * Réservé au salon « Clients » (décision Will 15/10) : là, et là seulement, on
+ * veut TOUT le détail, donc on découpe au lieu de tronquer. Coupe sur une
+ * frontière de ligne ; une ligne seule plus longue que la place (un message
+ * collé d'un bloc) est coupée net — le texte est envoyé brut, aucune entité ne
+ * peut être tranchée. À partir du deuxième, chaque morceau porte « (suite n/N) ».
+ */
+export function decouperPourTelegram(texte: string, plafond = LIMITE_TELEGRAM): string[] {
+  // Place réservée à la mention « (suite 99/99) » et à son saut de ligne.
+  const place = plafond - 20;
+  const morceaux: string[] = [];
+  let courant = "";
+  const pousser = () => {
+    if (courant !== "") morceaux.push(courant);
+    courant = "";
+  };
+  for (const brute of texte.split("\n")) {
+    let ligne = brute;
+    while (ligne.length > place) {
+      pousser();
+      morceaux.push(ligne.slice(0, place));
+      ligne = ligne.slice(place);
+    }
+    const ajout = courant === "" ? ligne : `${courant}\n${ligne}`;
+    if (ajout.length > place) {
+      pousser();
+      courant = ligne;
+    } else {
+      courant = ajout;
+    }
+  }
+  pousser();
+  if (morceaux.length <= 1) return morceaux.length === 1 ? morceaux : [""];
+  return morceaux.map((m, i) => (i === 0 ? m : `(suite ${i + 1}/${morceaux.length})\n${m}`));
+}
+
 export interface TelegramChannelOptions {
-  /** Message MarkdownV2 déjà formaté + échappé. */
+  /** Message MarkdownV2 déjà formaté + échappé — ou texte brut si `brut`. */
   text: string;
   /** Si true, pas de bip côté client Telegram. */
   silent?: boolean;
@@ -131,9 +169,90 @@ export interface TelegramChannelOptions {
    * couple cohérent — ne pas reconstruire l'un des deux à la main ici.
    */
   botToken?: string;
+  /**
+   * Texte BRUT : envoyé sans `parse_mode` et sans la troncature de lecture
+   * (800 caractères / 10 lignes). Réservé au salon « Clients » (décision Will
+   * 15/10), dont le texte libre ne doit jamais pouvoir casser l'envoi.
+   * L'appelant découpe d'abord (`decouperPourTelegram`).
+   */
+  brut?: boolean;
 }
 
-/** Envoie un message, tronque au besoin pour qu'il arrive (GEO-137). */
+/** Délai maximal accepté sur un 429 avant l'unique nouvel essai. */
+const ATTENTE_MAX_429_MS = 5_000;
+
+interface ReponseTelegram {
+  ok: boolean;
+  status: number;
+  /** `parameters` de la réponse d'erreur Telegram, s'il y en a. */
+  parametres?: { retry_after?: unknown; migrate_to_chat_id?: unknown };
+  description?: string;
+}
+
+async function poster(
+  token: string,
+  corps: Record<string, unknown>,
+  timeoutMs: number,
+): Promise<ReponseTelegram> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${TG_API}/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(corps),
+      signal: ctrl.signal,
+    });
+    if (res.ok) return { ok: true, status: res.status };
+    // Telegram explique ses refus dans un corps JSON : `parameters` porte le
+    // délai d'un 429 et le nouvel identifiant d'un salon devenu supergroupe.
+    let json: { description?: unknown; parameters?: ReponseTelegram["parametres"] } = {};
+    try {
+      json = (await res.json()) as typeof json;
+    } catch {
+      // corps illisible : on garde le statut seul
+    }
+    return {
+      ok: false,
+      status: res.status,
+      ...(json.parameters ? { parametres: json.parameters } : {}),
+      ...(typeof json.description === "string" ? { description: json.description } : {}),
+    };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * Signale qu'un salon a changé d'identifiant (devenu supergroupe). Le message
+ * est arrivé — renvoyé au nouvel id — mais la variable d'environnement est à
+ * corriger, sinon chaque alerte paiera un aller-retour de plus.
+ */
+async function signalerMigration(ancien: string, nouveau: string): Promise<void> {
+  const texte =
+    `[notif:telegram] le salon ${ancien} est devenu un supergroupe : nouvel identifiant ${nouveau}. ` +
+    "Mettre à jour la variable TELEGRAM_CHAT_ID_* correspondante (app web ET worker).";
+  console.error(texte);
+  try {
+    const sentry = (await import("@sentry/nextjs")) as unknown as {
+      captureMessage: (m: string, o: { level: "error" }) => void;
+    };
+    sentry.captureMessage(texte, { level: "error" });
+  } catch {
+    // Sentry absent : le journal ci-dessus suffit
+  }
+}
+
+/**
+ * Envoie un message. Tronque au besoin (GEO-137), sauf en mode `brut`.
+ *
+ * Fiabilité (décision Will 15/10) :
+ *  - 429 « trop de requêtes » : attend `retry_after` (au plus 5 s) puis
+ *    réessaie UNE fois ;
+ *  - 400 avec `migrate_to_chat_id` (salon devenu supergroupe) : renvoie au
+ *    nouvel identifiant, et le signale (Sentry + journal) pour qu'on corrige
+ *    la variable.
+ */
 export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boolean> {
   const token = opts.botToken ?? process.env.TELEGRAM_BOT_TOKEN;
   const chatId = opts.chatId ?? process.env.TELEGRAM_CHAT_ID;
@@ -144,30 +263,33 @@ export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boo
     return false;
   }
   const timeoutMs = opts.timeoutMs ?? 3000;
+  const corps = (cible: string): Record<string, unknown> => ({
+    chat_id: cible,
+    ...(opts.brut
+      ? { text: opts.text }
+      : { text: preparerPourTelegram(opts.text), parse_mode: "MarkdownV2" }),
+    disable_notification: opts.silent ?? false,
+  });
   try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-    const res = await fetch(`${TG_API}/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: preparerPourTelegram(opts.text),
-        parse_mode: "MarkdownV2",
-        disable_notification: opts.silent ?? false,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(timer);
+    let cible = chatId;
+    let res = await poster(token, corps(cible), timeoutMs);
+
+    if (!res.ok && res.status === 429) {
+      const delaiS = Number(res.parametres?.retry_after);
+      const attente = Number.isFinite(delaiS) && delaiS > 0 ? delaiS * 1000 : 1000;
+      await new Promise((r) => setTimeout(r, Math.min(attente, ATTENTE_MAX_429_MS)));
+      res = await poster(token, corps(cible), timeoutMs);
+    }
+
+    const migre = res.parametres?.migrate_to_chat_id;
+    if (!res.ok && res.status === 400 && (typeof migre === "number" || typeof migre === "string")) {
+      cible = String(migre);
+      await signalerMigration(chatId, cible);
+      res = await poster(token, corps(cible), timeoutMs);
+    }
+
     if (!res.ok && process.env.NODE_ENV !== "test") {
-      // Diagnostic utile en prod : Telegram renvoie souvent un body JSON
-      // explicatif (description), mais on évite de bloquer si lecture échoue.
-      try {
-        const body = await res.text();
-        console.warn(`[notif:telegram] ${res.status}: ${body.slice(0, 300)}`);
-      } catch {
-        // ignore
-      }
+      console.warn(`[notif:telegram] ${res.status}: ${(res.description ?? "").slice(0, 300)}`);
     }
     return res.ok;
   } catch {
