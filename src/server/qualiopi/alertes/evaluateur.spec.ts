@@ -126,6 +126,17 @@ vi.mock("@/server/qualiopi/formateurs-independants/vigilance-seuil-lecture", () 
 vi.mock("@/server/qualiopi/formateurs-independants/interrupteurs-etat", () => ({
   lireEtatsInterrupteurs: vi.fn(),
 }));
+// Vérification 2 — V2-A-6 : les relevés de mission dont le virement attend
+// l'attestation URSSAF (la règle de la garde, lue telle quelle) ; V2-A-2 : la date de
+// bascule du paiement par mission. Par défaut : aucun, et pas de bascule.
+const mockEnAttenteAttestation = vi.hoisted(() => vi.fn(async () => new Set<string>()));
+const mockBascule = vi.hoisted(() => vi.fn(async () => null as string | null));
+vi.mock("@/server/qualiopi/formateurs-independants/paiement/virement-mission-base", () => ({
+  relevesMissionEnAttenteAttestation: (...a: unknown[]) => mockEnAttenteAttestation(...(a as [])),
+}));
+vi.mock("@/server/qualiopi/formateurs-independants/paiement/lecture-passage", () => ({
+  lireDateBascule: (...a: unknown[]) => mockBascule(...(a as [])),
+}));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
@@ -4703,6 +4714,76 @@ describe("releve_formateur_echu", () => {
     mp.trainerStatement.findMany.mockResolvedValue([releveEchu(2)]);
     const { reglesEnEchec } = await evaluerAlertesDetaille();
     expect(reglesEnEchec).not.toContain("releve_formateur_echu");
+  });
+
+  it("🔴 V2-A-6 — virement SUSPENDU faute d'attestation URSSAF : aucune pénalité annoncée, on attend l'attestation", async () => {
+    const mission = { trainerId: "t-1", origine: "passage_mission" };
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(10, mission)]);
+    mockEnAttenteAttestation.mockResolvedValueOnce(new Set(["st-001"]));
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "releve_formateur_echu");
+    expect(a).toBeDefined();
+    expect(a!.message).not.toMatch(/pénalités/);
+    expect(a!.message).not.toMatch(/Payez/);
+    expect(a!.message).toMatch(/attestation URSSAF/);
+    expect(a!.message).toMatch(/suspendu/);
+    expect(mockEnAttenteAttestation).toHaveBeenCalledWith(expect.anything(), "t-1");
+  });
+
+  it("🔑 V2-A-6 contre-témoin : relevé de mission NON suspendu, les pénalités sont annoncées", async () => {
+    const mission = { trainerId: "t-1", origine: "passage_mission" };
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(10, mission)]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "releve_formateur_echu");
+    expect(a!.message).toMatch(/pénalités/);
+  });
+});
+
+describe("honoraires_organisme_a_traiter (V2-A-2)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  function intervenant(id: string, organisme: string, sessions: string[]) {
+    return {
+      id,
+      organismeSousTraitant: { nom: organisme },
+      emargementContresignatures: sessions.map((s) => ({
+        sessionId: s,
+        session: { numero: `AXI-${s}` },
+      })),
+    };
+  }
+
+  it("deux intervenants du même organisme sur une session : UNE alerte, à traiter à la main", async () => {
+    mockBascule.mockResolvedValue("2040-01-01");
+    mp.trainer.findMany.mockImplementation(async (a: { where?: Record<string, unknown> }) =>
+      a?.where && "organismeSousTraitantId" in a.where
+        ? [
+            intervenant("i1", "Organisme Banc", ["s1", "s1"]),
+            intervenant("i2", "Organisme Banc", ["s1", "s1"]),
+          ]
+        : [],
+    );
+    const alertes = (await evaluerAlertes()).filter(
+      (x) => x.code === "honoraires_organisme_a_traiter",
+    );
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]!.cibleType).toBe("TrainingSession");
+    expect(alertes[0]!.cibleId).toBe("s1");
+    expect(alertes[0]!.message).toMatch(/4 demi-journée/);
+    expect(alertes[0]!.message).toMatch(/Organisme Banc/);
+    expect(alertes[0]!.message).toMatch(/à la main/);
+    expect(alertes[0]!.message).toMatch(/aucun virement ne part automatiquement/);
+  });
+
+  it("sans date de bascule (paiement par mission éteint) : rien n'est lu", async () => {
+    mockBascule.mockResolvedValue(null);
+    const { candidates, reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(candidates.some((x) => x.code === "honoraires_organisme_a_traiter")).toBe(false);
+    expect(reglesEnEchec).not.toContain("honoraires_organisme_a_traiter");
   });
 });
 

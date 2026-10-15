@@ -7,7 +7,7 @@
 // Attendu : rien n'est payé en leur nom propre — le paiement va à l'organisme, sur une
 // pièce, pour les deux journées (et jamais à la fois à l'organisme et aux intervenants).
 //
-// DÉFAUT V2-A-2 (test.fixme) : le passage écrit UN relevé de mission par intervenant, à
+// DÉFAUT V2-A-2 (corrigé, ex-test.fixme) : le passage écrit UN relevé de mission par intervenant, à
 // SON nom (`organismeSousTraitantId` vide) — `lireCandidats` retient toute
 // contresignature d'un `sous_traitant` sans regarder l'organisme
 // (paiement/passage-mission-base.ts ~l. 83), et l'écriture pose le relevé au nom du
@@ -34,7 +34,7 @@ test.describe("@formateurs V2-A2 — organisme à deux intervenants", () => {
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   // DÉFAUT V2-A-2 — chaque intervenant reçoit un relevé de mission à son nom.
-  test.fixme("V2-A-2 : aucun relevé au nom propre d'un intervenant d'organisme", async () => {
+  test("V2-A-2 : aucun relevé au nom propre d'un intervenant d'organisme", async () => {
     await avecVerrouArgent(async () => {
       const o = await semerOrganisme();
       const i1 = await semerFormateur({ prenom: "Irene", tarifJourneeHtCents: TARIF });

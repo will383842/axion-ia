@@ -12,7 +12,7 @@
 // e-mails du banc) ; son relevé est passé « facture reçue » par le banc — le seul statut
 // que lisent le cumul et la garde.
 //
-// DÉFAUT V2-A-7 (test.fixme) : la garde du virement lit la fin de validité SAISIE de
+// DÉFAUT V2-A-7 (corrigé, ex-test.fixme) : la garde du virement lit la fin de validité SAISIE de
 // l'attestation (`dateExpiration`) telle quelle (paiement/virement-mission-base.ts
 // ~l. 139-178 ; `attenteAttestationALaMission`, paiement/virement-mission.ts ~l. 110),
 // alors que la règle des pièces gardées retient la PLUS PROCHE de la date saisie et de
@@ -117,7 +117,7 @@ test.describe("@formateurs V2-A10 — seuil URSSAF au paiement d'une mission", (
   });
 
   // DÉFAUT V2-A-7 — une fin de validité saisie au-delà de 6 mois prolonge l'attestation.
-  test.fixme("V2-A-7 : une attestation émise il y a 9 mois, saisie « jusqu'en 2099 », ne débloque pas le virement", async () => {
+  test("V2-A-7 : une attestation émise il y a 9 mois, saisie « jusqu'en 2099 », ne débloque pas le virement", async () => {
     await avecVerrouArgent(async () => {
       const f = await missionAuSeuil("Urbain", ["2041-06-04", "2041-06-05"]);
       await factureRecue(f.statementId, f.totalTtcCents);

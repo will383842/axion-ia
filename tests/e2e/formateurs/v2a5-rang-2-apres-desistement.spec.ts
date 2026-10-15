@@ -10,7 +10,7 @@
 // (a) Journées SANS formateur désigné : le rang 2 est payé de ses deux journées, une fois ;
 //     le désisté n'a rien, ni relevé, ni relance de feuilles, ni alerte.
 //
-// DÉFAUT V2-A-4 (test.fixme) — (b) journées DÉSIGNÉES au premier choix (`SessionJour.trainerId`,
+// DÉFAUT V2-A-4 (corrigé, ex-test.fixme) — (b) journées DÉSIGNÉES au premier choix (`SessionJour.trainerId`,
 // la co-animation ou un planning nominatif) : le désistement ne retire que l'affectation,
 // jamais la désignation des journées (aucun code n'écrit `sessionJour.trainerId` hors de la
 // console). Le rang 2, qui anime et contresigne, n'a alors AUCUNE journée « prévue »
@@ -106,7 +106,7 @@ test.describe("@formateurs V2-A5 — rang 2 après désistement", () => {
   });
 
   // DÉFAUT V2-A-4 — journées désignées au désisté : le rang 2 n'est jamais payé, le désisté est relancé.
-  test.fixme("V2-A-4 : (b) journées désignées au désisté — le rang 2 est payé, le désisté n'est pas relancé", async () => {
+  test("V2-A-4 : (b) journées désignées au désisté — le rang 2 est payé, le désisté n'est pas relancé", async () => {
     await avecVerrouArgent(async () => {
       const { r1, r2 } = await apresDesistement(true, ["2041-01-14", "2041-01-15"]);
       expect((await relevesDe(r2.id)).map((r) => [r.statut, r.totalHtCents])).toEqual([

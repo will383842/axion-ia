@@ -12,7 +12,7 @@
 // ÉCART : l'émission lit l'horloge réelle (elle ne reçoit pas d'instant) ; le scénario
 // est donc daté par rapport au jour réel (journées il y a 60 jours), et non en 2040.
 //
-// DÉFAUT V2-A-5 (test.fixme) : à l'émission, l'échéance devient « jour de l'autofacture
+// DÉFAUT V2-A-5 (corrigé, ex-test.fixme) : à l'émission, l'échéance devient « jour de l'autofacture
 // + 30 » (`echeanceAutofactureMission`, paiement/echeance-autofacture.ts ~l. 52 ;
 // remuneration/autofacture-emission.ts ~l. 468), jour de l'autofacture = jour du CLIC
 // (`maintenant` réel). L'échéance provisoire, posée au jour où tout était complet, est
@@ -91,7 +91,7 @@ test.describe("@formateurs V2-A7 — échéance qui recule", () => {
   });
 
   // DÉFAUT V2-A-5 — la validation tardive d'Axion recule la date limite du virement.
-  test.fixme("V2-A-5 : une validation tardive ne recule pas la date limite du virement", async () => {
+  test("V2-A-5 : une validation tardive ne recule pas la date limite du virement", async () => {
     await avecVerrouArgent(async () => {
       const { complet, provisoire, apres, aujourdhui } = await valideAvecRetard(true);
       expect(apres.statut).toBe("facture_recue");

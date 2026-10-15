@@ -76,6 +76,8 @@ import {
   remiseCddEnSouffrance,
 } from "@/server/rh/remise-contrat";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
+import { relevesMissionEnAttenteAttestation } from "@/server/qualiopi/formateurs-independants/paiement/virement-mission-base";
+import { lireDateBascule } from "@/server/qualiopi/formateurs-independants/paiement/lecture-passage";
 import {
   CONFORMITE_DEFAUTS,
   addMonths,
@@ -4686,6 +4688,8 @@ async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
     where: { statut: { in: [...STATUTS_RELEVE_DU] }, payeAt: null },
     select: {
       id: true,
+      trainerId: true,
+      origine: true,
       statut: true,
       dateFacture: true,
       echeanceAt: true,
@@ -4698,6 +4702,21 @@ async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
     },
     take: 200,
   });
+
+  // Vérification 2, V2-A-6 — un relevé de MISSION dont le virement est SUSPENDU faute
+  // d'attestation URSSAF (seuil de vigilance atteint) : aucun retard ne court pendant
+  // l'attente (art. 16.7), et payer est précisément ce que la garde refuse. L'alerte le
+  // dit, au lieu d'annoncer des pénalités. Même règle que la garde du virement.
+  const suspendus = new Set<string>();
+  const formateursMission = [
+    ...new Set(
+      releves.flatMap((r) => (r.origine === "passage_mission" && r.trainerId ? [r.trainerId] : [])),
+    ),
+  ];
+  for (const trainerId of formateursMission) {
+    for (const id of await relevesMissionEnAttenteAttestation(prisma as never, trainerId))
+      suspendus.add(id);
+  }
 
   const out: AlerteCandidate[] = [];
   for (const r of releves) {
@@ -4712,6 +4731,21 @@ async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
       currency: "EUR",
     });
     const piece = r.numeroFacture !== null ? `facture ${r.numeroFacture}` : "facture d'honoraires";
+    if (suspendus.has(r.id)) {
+      out.push({
+        code: "releve_formateur_echu",
+        niveau: "important",
+        titre: "Honoraires de formateur : virement suspendu, attestation URSSAF attendue",
+        message:
+          `${montant} TTC sont dus à ${qui} (${piece}, période ${String(r.periodeMonth).padStart(2, "0")}/${r.periodeYear}), ` +
+          `mais le virement est suspendu : ses honoraires atteignent le seuil de vigilance URSSAF et aucune attestation ` +
+          `vérifiée ne couvre la mission. Le délai de paiement est suspendu tant que l'attestation manque. ` +
+          `On attend son attestation URSSAF : dès qu'elle est déposée et vérifiée, le virement peut partir.`,
+        cibleType: "TrainerStatement",
+        cibleId: r.id,
+      });
+      continue;
+    }
     out.push({
       code: "releve_formateur_echu",
       niveau: "important",
@@ -4726,6 +4760,70 @@ async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
     });
   }
   return out;
+}
+
+/**
+ * Vérification 2, V2-A-2 — DES JOURNÉES ANIMÉES PAR LES INTERVENANTS D'UN ORGANISME.
+ *
+ * Un organisme sous-traitant facture pour ses intervenants. Le paiement par mission ne
+ * paie JAMAIS un intervenant en son nom propre (`intervenant_organisme`, passage) et le
+ * circuit des organismes (L11f) n'est pas livré : ces journées sont donc à traiter à la
+ * main, sans virement automatique. Cette alerte est la seule trace qui le dise.
+ *
+ * Une alerte par session (les contresignatures depuis la date de bascule), qui nomme
+ * l'organisme et compte les demi-journées. `resolutionAuto: false` : rien en base ne dit
+ * que l'organisme a été payé à la main ; c'est la personne qui le traite qui la ferme.
+ * Une demi-journée signée de plus change le message, donc la rouvre.
+ */
+async function regleHonorairesOrganismeATraiter(_now: Date): Promise<AlerteCandidate[]> {
+  const bascule = await lireDateBascule(prisma);
+  if (bascule === null) return [];
+  const intervenants = await prisma.trainer.findMany({
+    where: {
+      organismeSousTraitantId: { not: null },
+      emargementContresignatures: {
+        some: { revokedAt: null, sessionId: { not: null }, date: { gte: new Date(bascule) } },
+      },
+    },
+    select: {
+      id: true,
+      organismeSousTraitant: { select: { nom: true } },
+      emargementContresignatures: {
+        where: { revokedAt: null, sessionId: { not: null }, date: { gte: new Date(bascule) } },
+        select: { sessionId: true, session: { select: { numero: true } } },
+      },
+    },
+    take: 200,
+  });
+  const parSession = new Map<
+    string,
+    { numero: string; organismes: Set<string>; demiJournees: number }
+  >();
+  for (const t of intervenants) {
+    for (const c of t.emargementContresignatures ?? []) {
+      if (c.sessionId === null) continue;
+      const e = parSession.get(c.sessionId) ?? {
+        numero: c.session?.numero ?? "session",
+        organismes: new Set<string>(),
+        demiJournees: 0,
+      };
+      e.organismes.add(t.organismeSousTraitant?.nom ?? "organisme sous-traitant");
+      e.demiJournees += 1;
+      parSession.set(c.sessionId, e);
+    }
+  }
+  return [...parSession].map(([sessionId, e]) => ({
+    code: "honoraires_organisme_a_traiter",
+    niveau: "important" as AlerteNiveau,
+    titre: "Journées d'un organisme sous-traitant : paiement à traiter à la main",
+    message:
+      `Session ${e.numero} : ${e.demiJournees} demi-journée(s) contresignée(s) par des intervenants de ` +
+      `${[...e.organismes].sort().join(", ")}. C'est l'organisme qui facture ces journées : aucun relevé ` +
+      `n'est écrit au nom des intervenants et aucun virement ne part automatiquement. Traitez le paiement ` +
+      `de l'organisme à la main, puis fermez cette alerte.`,
+    cibleType: "TrainingSession",
+    cibleId: sessionId,
+  }));
 }
 
 /**
@@ -5166,6 +5264,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "facture_auto_non_emise", fn: regleFactureAutoNonEmise },
   // 2026-09-09 — la première règle du moteur qui surveille l'argent qu'on DOIT.
   { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
+  // Vérification 2, V2-A-2 — les journées des intervenants d'un organisme.
+  { nom: "honoraires_organisme_a_traiter", fn: regleHonorairesOrganismeATraiter },
   // 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation.
   { nom: "autofacture_non_transmise", fn: regleAutofactureNonTransmise },
   // 2026-09-12 — depuis que l'émission est automatique, un échec ne laisse plus

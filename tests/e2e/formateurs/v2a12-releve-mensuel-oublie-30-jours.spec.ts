@@ -7,7 +7,7 @@
 // Attendu : l'oubli reste signalé tant que le mois n'est pas calculé, pas seulement le
 // mois qui suit.
 //
-// DÉFAUT V2-A-8 (test.fixme) : les deux alertes du suivi (« calcul non lancé » et
+// DÉFAUT V2-A-8 (corrigé, ex-test.fixme) : les deux alertes du suivi (« calcul non lancé » et
 // « relevé non validé ») ne regardent que le MOIS ÉCOULÉ (`moisEcoule`, paiement/
 // suivi-mission.ts ~l. 135 et ~l. 152) : dès le 1er du mois suivant, un mois oublié
 // sort de toute surveillance, en silence — au moment même où il dépasse 30 jours.
@@ -61,7 +61,7 @@ test.describe("@formateurs V2-A12 — relevé mensuel oublié plus de 30 jours",
   });
 
   // DÉFAUT V2-A-8 — passé le mois suivant, le mois oublié n'est plus signalé.
-  test.fixme("V2-A-8 : le 6 novembre, septembre toujours pas calculé est encore signalé", async () => {
+  test("V2-A-8 : le 6 novembre, septembre toujours pas calculé est encore signalé", async () => {
     await avecVerrouArgent(async () => {
       const f = await freelanceDeSeptembre();
       const [j36] = (await jouer([

@@ -10,6 +10,14 @@
  * Des pièces remises en retard retardent l'autofacture, donc le paiement — qui reste
  * toujours à 30 jours au plus de la facture (art. L441-10 du code de commerce).
  *
+ * Vérification 2, V2-A-5 — lettre de mission v3 : « s'ils sont remis plus tard, le délai
+ * court à partir de leur remise ». C'est la REMISE des pièces qui fait courir le délai,
+ * jamais le jour où Axion clique : une autofacture émise par Axion (et datée de son
+ * émission) ne recule pas la date limite au-delà du jour où tout était complet + 30
+ * jours (`echeanceDuJourComplet`, lu par `jour-complet.ts` : dernière feuille du mois,
+ * bilan du dernier mois). Une facture DÉPOSÉE par le formateur garde la règle de sa
+ * propre date (le retard est alors le sien).
+ *
  * Deux cas gardent une date plus proche, jamais une plus lointaine :
  *   - une autofacture qui en REMPLACE une autre (réémission après avoir, art. 16.5 du
  *     contrat-cadre) garde la date limite de la pièce qu'elle remplace ;
@@ -56,6 +64,11 @@ export function echeanceAutofactureMission(
     readonly remplace: boolean;
     /** Les objets de ses lignes (`animation`, `deplacement`, `indemnite_annulation`…). */
     readonly objets: ReadonlyArray<string | null>;
+    /**
+     * V2-A-5 — autofacture établie par Axion : le jour où tout était complet + 30
+     * jours (`jour-complet.ts`). La date limite ne va jamais au-delà.
+     */
+    readonly echeanceDuJourComplet?: JourCivil | null;
   },
   p: Pick<ParametresArgentFormateurs, "delaiPaiementJours"> = PARAMETRES_ARGENT_FORMATEURS,
 ): JourCivil {
@@ -65,6 +78,8 @@ export function echeanceAutofactureMission(
   if (aDateFixe && e.echeanceDuReleve !== null && e.echeanceDuReleve < depuisFacture) {
     return e.echeanceDuReleve;
   }
+  const complet = e.echeanceDuJourComplet ?? null;
+  if (complet !== null && complet < depuisFacture) return complet;
   return depuisFacture;
 }
 

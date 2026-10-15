@@ -7,7 +7,7 @@
 // pas la journée désignée. A contresigne le 12 ET le 13 ; B contresigne le 13.
 // Attendu : chacun payé de SES journées — 350 € à A, 350 € à B, 700 € pour deux journées.
 //
-// DÉFAUT V2-A-1 (test.fixme) : le passage paie à A TOUTES ses demi-journées signées du mois
+// DÉFAUT V2-A-1 (corrigé, ex-test.fixme) : le passage paie à A TOUTES ses demi-journées signées du mois
 // (`calculerReleveDuMois(mois…)` sur les signées, paiement/passage-mission.ts ~l. 260),
 // y compris celles de la journée désignée à B : 700 € à A, 350 € à B, la journée du 13
 // payée deux fois. Seul un mois SANS journée prévue est écarté (`prevu_absent`) ; dans un
@@ -52,7 +52,11 @@ async function coAnimation() {
     passageV2a("2040-03-14T07:15:00Z", [s.id]),
     passageV2a("2040-03-15T07:15:00Z", [s.id]),
   ]);
-  for (const r of sorties.slice(0, 6)) expect(r).toMatchObject({ ok: true });
+  // V2-A-1 corrigé : A ne peut plus contresigner la journée désignée à B (refus, rien
+  // d'écrit) ; ses propres signatures et celles de B passent.
+  for (const i of [0, 1, 4, 5]) expect(sorties[i]).toMatchObject({ ok: true });
+  for (const i of [2, 3])
+    expect(sorties[i]).toMatchObject({ ok: false, raison: "journee_d_un_autre" });
   return { a, b, s, passages: sorties.slice(6) };
 }
 
@@ -73,7 +77,7 @@ test.describe("@formateurs V2-A1 — co-formateur qui signe la journée de l'aut
   });
 
   // DÉFAUT V2-A-1 — la journée désignée à B est aussi payée à A.
-  test.fixme("V2-A-1 : A n'est payé que de SA journée (la journée de B n'est pas payée deux fois)", async () => {
+  test("V2-A-1 : A n'est payé que de SA journée (la journée de B n'est pas payée deux fois)", async () => {
     await avecVerrouArgent(async () => {
       const { a, b } = await coAnimation();
       const [ra] = await relevesDe(a.id);

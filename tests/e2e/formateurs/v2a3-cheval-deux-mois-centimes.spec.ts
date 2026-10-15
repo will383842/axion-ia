@@ -9,7 +9,7 @@
 // de `src/`) : animation ⌊n × tarif / 2⌋, forfait par journée de déplacement, TVA à 20 %
 // sur le total HT du relevé, arrondie au centime. Les passages se répètent : rien deux fois.
 //
-// DÉFAUT V2-A-3 (test.fixme, mineur) : la mission compte QUATRE demi-journées, soit deux
+// DÉFAUT V2-A-3 (corrigé, ex-test.fixme, mineur) : la mission compte QUATRE demi-journées, soit deux
 // journées, soit 700,02 € (contrat : « deux demi-journées font toujours le tarif exact »,
 // argent/calcul-mission.ts ~l. 13). Le passage arrondit CHAQUE MOIS à part
 // (`montantAnimationCents` par relevé, ~l. 40) : 525,01 € + 175,00 € = 700,01 €. Le
@@ -84,10 +84,13 @@ test.describe("@formateurs V2-A3 — mission à cheval sur deux mois, au centime
       expect(passages[2]).toMatchObject({ etat: "fait", ecrits: 1, dejaEcrits: 1 });
       expect(passages[3]).toMatchObject({ etat: "fait", ecrits: 0, dejaEcrits: 2 });
 
-      // Contre-calcul : mai, 3 demi-journées sur 2 journées ; juin, 1 demi-journée.
+      // Contre-calcul : mai, 3 demi-journées sur 2 journées ; juin, 1 demi-journée qui
+      // COMPLÈTE la deuxième journée de la mission (V2-A-3) : elle reçoit le reliquat
+      // du tarif impair, ⌊4 × tarif / 2⌋ − ⌊3 × tarif / 2⌋ = 175,01 €.
+      const animationJuin = honorairesAnimationCents(4, TARIF) - honorairesAnimationCents(3, TARIF);
       const mai = honorairesAnimationCents(3, TARIF) + 2 * FORFAIT;
-      const juin = honorairesAnimationCents(1, TARIF) + 1 * FORFAIT;
-      expect([mai, juin]).toEqual([62_499, 22_499]);
+      const juin = animationJuin + 1 * FORFAIT;
+      expect([mai, juin]).toEqual([62_499, 22_500]);
       const releves = await relevesDe(f.id);
       expect(
         releves.map((r) => [r.periodeMonth, r.statut, r.totalHtCents, r.totalTtcCents]),
@@ -103,14 +106,14 @@ test.describe("@formateurs V2-A3 — mission à cheval sur deux mois, au centime
       expect(releves.flatMap((r) => r.feeLines.map((l) => [l.objet, l.montantHtCents]))).toEqual([
         ["animation", honorairesAnimationCents(3, TARIF)],
         ["deplacement", 2 * FORFAIT],
-        ["animation", honorairesAnimationCents(1, TARIF)],
+        ["animation", animationJuin],
         ["deplacement", FORFAIT],
       ]);
     });
   });
 
   // DÉFAUT V2-A-3 (mineur) — le centime du reliquat est perdu à la fin du mois.
-  test.fixme("V2-A-3 : quatre demi-journées font deux journées exactes, à cheval ou non", async () => {
+  test("V2-A-3 : quatre demi-journées font deux journées exactes, à cheval ou non", async () => {
     await avecVerrouArgent(async () => {
       const { f } = await missionACheval();
       const animation = (await relevesDe(f.id))

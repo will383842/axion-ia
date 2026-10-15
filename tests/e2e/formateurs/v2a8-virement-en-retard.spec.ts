@@ -8,7 +8,7 @@
 // l'autofacture est datée à l'heure réelle : le banc recule donc l'échéance de la pièce
 // de 31 jours (la seule colonne touchée), plutôt que d'avancer une horloge.
 //
-// DÉFAUT V2-A-6 (test.fixme, mineur) : quand le virement est SUSPENDU faute d'attestation
+// DÉFAUT V2-A-6 (corrigé, ex-test.fixme, mineur) : quand le virement est SUSPENDU faute d'attestation
 // URSSAF au seuil (délai suspendu, art. 16.7 : aucune pénalité ne court,
 // `gardeVirementMission` rend un retard nul), l'alerte dit pourtant que « des pénalités
 // au taux BCE majoré de 10 points et une indemnité de 40 € » courent de plein droit
@@ -74,7 +74,7 @@ test.describe("@formateurs V2-A8 — virement de mission en retard", () => {
   });
 
   // DÉFAUT V2-A-6 (mineur) — l'alerte annonce des pénalités pendant une suspension légale.
-  test.fixme("V2-A-6 : virement suspendu (attestation URSSAF au seuil) : l'alerte ne dit pas que des pénalités courent", async () => {
+  test("V2-A-6 : virement suspendu (attestation URSSAF au seuil) : l'alerte ne dit pas que des pénalités courent", async () => {
     await avecVerrouArgent(async () => {
       const f = await factureEchue("Wanda", ["2041-03-12", "2041-03-13"]);
       // Au seuil (4 950 € déjà payés + la mission), attestation échue avant la mission.
