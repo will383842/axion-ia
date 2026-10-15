@@ -35,7 +35,7 @@ import {
   type DocumentConformite,
   type TrainerStatutValue,
 } from "@/server/qualiopi/trainers/conformite";
-import { aUnFichier } from "@/server/qualiopi/trainers/piece-competence";
+import { pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 
 import { etatControle, type LigneControle } from "./controle-regles";
 import { pieceGardeeProbante, type VerdictActivation } from "./gardes";
@@ -155,10 +155,14 @@ export function contratAuSiretDeLaFiche(
   );
 }
 
-/** Condition 6 : un CV validé, avec fichier, non échu, de moins de 24 mois. */
+/**
+ * Condition 6 : un CV validé, avec fichier, non échu, de moins de 24 mois. Le fichier
+ * est son adresse OU ses octets déposés dans le dossier en ligne (`pieceAUnFichier`) :
+ * le lecteur doit charger `contenu`, sans quoi un CV déposé compte pour absent (V1-A-6).
+ */
 export function cvProbant(pieces: ReadonlyArray<DocumentConformite>, maintenant: Date): boolean {
   return pieces.some((p) => {
-    if (p.type !== "cv" || p.statutValidation !== "valide" || !aUnFichier(p.fichierUrl)) {
+    if (p.type !== "cv" || p.statutValidation !== "valide" || !pieceAUnFichier(p)) {
       return false;
     }
     if (!dateLisible(p.dateEmission) || p.dateEmission.getTime() > maintenant.getTime()) {

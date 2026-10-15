@@ -60,12 +60,19 @@ export default async function VerifierContresignerPage({ params }: PageProps) {
     );
   }
 
-  const ecran = await lireEcranVerifierContresigner(id);
-  if (ecran === null) notFound();
-
   const peutContresigner =
     peutEngager(acces.role, "contresigner") && peutEngager(acces.role, "habiliter_formateur");
   const peutVerifier = peutEngager(acces.role, "habiliter_formateur");
+
+  // V1-A-6 — une pièce déposée dans le dossier en ligne s'ouvre par la route console,
+  // qui garde son propre droit et journalise chaque lecture.
+  const ecran = await lireEcranVerifierContresigner(id, new Date(), {
+    ...(peutVerifier
+      ? { basePiecesDeposees: `/${locale}/${adminPrefix}/qualiopi/formateurs/${id}/pieces` }
+      : {}),
+    voitRib: peutEngager(acces.role, "remunerer_formateur"),
+  });
+  if (ecran === null) notFound();
 
   return (
     <AdminPageShell>

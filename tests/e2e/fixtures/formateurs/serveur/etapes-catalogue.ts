@@ -48,6 +48,7 @@ import { envoyerMessagesEchangeFormateur } from "@/server/calendly/rappels-echan
 import { reinitialiserCacheTypesRendezVous } from "@/server/calendly/type-rendez-vous";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { passerInvitationsFormateurs } from "@/server/qualiopi/formateurs-independants/invitation-formateurs";
+import { transmettreNumeroDeclaration } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 import {
   listerInvitationsADecider,
   resumeInvitationDeLaFiche,
@@ -273,6 +274,14 @@ export const ETAPES: Readonly<Record<string, Etape>> = {
   /** Le passage des campagnes de relance (F2, F9, F21…), tel que le worker l'appelle. */
   async "passage-campagnes"(a) {
     return passerCampagnes(date(a["maintenant"]));
+  },
+
+  /**
+   * V1-A-10 — le numéro de déclaration saisi dans « Mon dossier » : ce que l'action de
+   * l'espace appelle, sur la fiche de sa session (`session.trainerId`).
+   */
+  async "transmettre-nda"(a) {
+    return transmettreNumeroDeclaration(String(a["trainerId"]), String(a["nda"]));
   },
 
   /** Confirmation F3 et rappels F4 des échanges formateur rattachés. */

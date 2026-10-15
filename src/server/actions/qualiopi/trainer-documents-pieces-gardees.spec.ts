@@ -44,6 +44,7 @@ import {
   validateTrainerDocumentAction,
   deleteTrainerDocumentAction,
 } from "./trainer-documents";
+import { MOTIF_REFUS } from "@/server/auth/habilitations";
 
 const TRAINER_ID = "11111111-1111-1111-1111-111111111111";
 const DOC_ID = "22222222-2222-2222-2222-222222222222";
@@ -112,6 +113,35 @@ describe("createTrainerDocumentAction — échéance CALCULÉE", () => {
     });
     const data = (m.create.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
     expect(data["dateExpiration"]).toEqual(new Date("2099-12-31"));
+  });
+});
+
+describe("createTrainerDocumentAction — réservé aux personnes habilitées (écart E29)", () => {
+  it("🔴 un éditeur n'ajoute pas une pièce de garde : refus, rien n'est créé", async () => {
+    m.session = { userId: "editeur-a", role: "editor" };
+    const r = await createTrainerDocumentAction({
+      trainerId: TRAINER_ID,
+      type: "attestation_vigilance_urssaf",
+      dateEmission: isoIlYa(10),
+    });
+    expect(r).toEqual({ error: `Ajout refusé : ${MOTIF_REFUS.habiliter_formateur}` });
+    expect(m.create).not.toHaveBeenCalled();
+  });
+
+  it("le responsable qualité ajoute une pièce de garde", async () => {
+    m.session = { userId: "rq-a", role: "responsable_qualite" };
+    const r = await createTrainerDocumentAction({
+      trainerId: TRAINER_ID,
+      type: "kbis_avis_sirene",
+      dateEmission: isoIlYa(10),
+    });
+    expect(r).toEqual({ data: { id: DOC_ID } });
+  });
+
+  it("un éditeur ajoute toujours une pièce qui n'est pas de garde (CV) — INCHANGÉ", async () => {
+    m.session = { userId: "editeur-a", role: "editor" };
+    const r = await createTrainerDocumentAction({ trainerId: TRAINER_ID, type: "cv" });
+    expect(r).toEqual({ data: { id: DOC_ID } });
   });
 });
 

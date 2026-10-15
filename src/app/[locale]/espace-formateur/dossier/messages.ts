@@ -9,6 +9,7 @@ import { MESSAGES_DEPOT } from "@/server/pieces/depot-controle";
 import { MESSAGES_CHANGEMENT } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
 import { MESSAGES_DEPOT_FORMATEUR } from "@/server/qualiopi/formateurs-independants/depot";
 import { MESSAGES_MON_DOSSIER } from "@/server/qualiopi/formateurs-independants/mon-dossier";
+import { MESSAGES_NDA_ESPACE } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 
 export const ISSUES_DEPOT = {
   recu: "Pièce reçue, merci. Nous la vérifions et revenons vers vous si quelque chose ne va pas.",
@@ -18,6 +19,8 @@ export const ISSUES_DEPOT = {
   ...MESSAGES_DEPOT,
   ...MESSAGES_DEPOT_FORMATEUR,
   ...MESSAGES_MON_DOSSIER,
+  // V1-A-10 — le numéro de déclaration d'activité (codes préfixés `nda_`).
+  ...MESSAGES_NDA_ESPACE,
   // Préfixés : « erreur » et « indisponible » existent aussi pour le dépôt.
   changement_indisponible: MESSAGES_CHANGEMENT.indisponible,
   changement_ibanInvalide: MESSAGES_CHANGEMENT.ibanInvalide,
@@ -40,5 +43,8 @@ export function messageDuCode(code: unknown): { texte: string; ok: boolean } | n
   if (typeof code !== "string" || !Object.prototype.hasOwnProperty.call(ISSUES_DEPOT, code)) {
     return null;
   }
-  return { texte: ISSUES_DEPOT[code as CodeIssueDepot], ok: code === "recu" || code === "demande" };
+  return {
+    texte: ISSUES_DEPOT[code as CodeIssueDepot],
+    ok: code === "recu" || code === "demande" || code === "nda_recu",
+  };
 }

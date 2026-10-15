@@ -22,6 +22,7 @@ import {
   demanderChangementIban,
 } from "@/server/qualiopi/formateurs-independants/changements-coordonnees";
 import { deposerDepuisMonDossier } from "@/server/qualiopi/formateurs-independants/mon-dossier";
+import { transmettreNumeroDeclaration } from "@/server/qualiopi/formateurs-independants/numero-declaration-espace";
 
 import { codeDuMessage } from "./messages";
 
@@ -99,6 +100,26 @@ export async function demanderChangementAdresseAction(fd: FormData): Promise<voi
       e instanceof Error ? e.name : "erreur",
     );
     code = "changement_erreur";
+  }
+  redirect(`${CHEMIN}?issue=${code}`);
+}
+
+/**
+ * V1-A-10 — le numéro de déclaration d'activité, transmis par la personne qui a signé
+ * « en cours » (F21 l'y renvoie). Le numéro ne revient jamais dans l'adresse ni au journal.
+ */
+export async function transmettreMonNumeroAction(fd: FormData): Promise<void> {
+  const session = await getFormateurSession();
+  if (!session) redirect(FORMATEUR_CONNEXION_PATH);
+  let code: string;
+  try {
+    code = await transmettreNumeroDeclaration(session.trainerId, String(fd.get("nda") ?? ""));
+  } catch (e) {
+    console.error(
+      "[espace-formateur] numéro de déclaration :",
+      e instanceof Error ? e.name : "erreur",
+    );
+    code = "nda_erreur";
   }
   redirect(`${CHEMIN}?issue=${code}`);
 }

@@ -44,6 +44,7 @@ import {
   objectionContratCadre,
 } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { derniereVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
+import { pieceAUnFichier } from "@/server/qualiopi/trainers/piece-competence";
 import type { SourceRegistre } from "./controle";
 import { versionDuContrat } from "./faits-activation";
 import {
@@ -69,16 +70,20 @@ export const MESSAGES_CONTRESIGNATURE_CONTRAT_CADRE = {
 
 type Doc = PieceLueActivation;
 
-const aUnFichier = (d: Doc): boolean => typeof d.fichierUrl === "string" && d.fichierUrl !== "";
-
-/** Pièces requises : CV probant, RIB validé, RC pro validée si elle est déposée. */
+/**
+ * Pièces requises : CV probant, RIB validé, RC pro validée si elle est déposée. Un fichier
+ * est une adresse OU les octets déposés dans le dossier en ligne (V1-A-6) : `contenu` est
+ * chargé par la lecture ci-dessous.
+ */
 function piecesRequisesValidees(docs: ReadonlyArray<Doc>, maintenant: Date): boolean {
   if (!cvProbant(docs, maintenant)) return false;
-  if (!docs.some((d) => d.type === "rib" && d.statutValidation === "valide" && aUnFichier(d))) {
+  if (
+    !docs.some((d) => d.type === "rib" && d.statutValidation === "valide" && pieceAUnFichier(d))
+  ) {
     return false;
   }
   const rcPro = docs.filter(
-    (d) => d.type === "assurance_rc_pro" && d.statutValidation !== "rejete" && aUnFichier(d),
+    (d) => d.type === "assurance_rc_pro" && d.statutValidation !== "rejete" && pieceAUnFichier(d),
   );
   return rcPro.length === 0 || rcPro.some((d) => d.statutValidation === "valide");
 }
@@ -142,6 +147,7 @@ export async function objectionContresignatureContratCadre(input: {
               type: true,
               statutValidation: true,
               fichierUrl: true,
+              contenu: { select: { trainerDocumentId: true } },
               dateEmission: true,
               dateExpiration: true,
             },
