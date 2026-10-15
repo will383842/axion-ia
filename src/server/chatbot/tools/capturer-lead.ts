@@ -9,7 +9,7 @@ import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { syncFormSubmissionToCrm } from "@/server/crm-sync";
-import { notify } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
@@ -24,9 +24,11 @@ import { encryptPii } from "@/lib/pii-crypto";
  * `sendTelegram` legacy (→ `MONITORING_ALERT`, silencieux, noyé dans 🔔 Système)
  * pour une catégorie typée du salon « Clients », qui porte tout le détail.
  */
-async function notifyNewLead(input: CapturerLeadInput, submissionId: string): Promise<void> {
-  try {
-    await notify({
+function notifyNewLead(input: CapturerLeadInput, submissionId: string): void {
+  // Après la réponse (`after`) : la réponse du bot n'attend pas Telegram
+  // (relecture PR 1553).
+  notifyApresReponse(
+    {
       category: "CHATBOT_LEAD_CAPTURED",
       payload: {
         submissionId,
@@ -38,10 +40,9 @@ async function notifyNewLead(input: CapturerLeadInput, submissionId: string): Pr
         submittedAt: new Date().toISOString(),
       },
       dedupKey: submissionId,
-    });
-  } catch (err) {
-    console.warn("[capturer_lead] notification Telegram échouée:", err);
-  }
+    },
+    "capturer_lead",
+  );
 }
 
 export const CapturerLeadInputSchema = z
@@ -183,7 +184,7 @@ export async function capturerLead(
   // Notification équipe sur NOUVEAU lead uniquement (jamais sur un retry
   // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
   if (!result.idempotent) {
-    await notifyNewLead(input, result.submissionId);
+    notifyNewLead(input, result.submissionId);
 
     // Confirmation au visiteur (2026-08-13). Il laissait son adresse dans une
     // fenêtre de discussion qu'il allait fermer, et ne recevait rien : aucune

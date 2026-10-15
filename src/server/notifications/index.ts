@@ -17,6 +17,11 @@
 //     côté infra, et permet d'éviter une 6ème queue et le risque de drift
 //     de routing. Si besoin d'une vraie queue persistante (retry +
 //     audit-trail), Sprint+1 ajoutera `notificationsQueue`.
+//
+//   ⚠️ « sync » veut dire que l'APPELANT attend — jusqu'à ~24 s pour le salon
+//   « Clients » (429, migration, morceaux, repli). Depuis une Server Action ou
+//   une route, passer par `notifyApresReponse` (`./apres-reponse`, `after()`) :
+//   le visiteur n'attend pas Telegram. Le worker garde `await notify(...)`.
 
 import {
   estCategorieClient,
@@ -31,7 +36,7 @@ import {
 import { formatNotification, formatNotificationWhatsApp } from "./format";
 import {
   formatNotificationClient,
-  libelleTypeDemande,
+  libelleTypeDemandeWhatsApp,
   type EvenementClient,
 } from "./format-clients";
 import { decouperPourTelegram, sendTelegramRaw } from "./channels/telegram";
@@ -62,8 +67,12 @@ export type {
 async function envoyerAuSalonClients(
   event: EvenementClient,
   texteAllege: string,
-): Promise<"sent" | "skipped" | "failed"> {
+): Promise<EnvoiSalonClients> {
   const salon = resolveSalonClients();
+  // Relecture PR 1553 : vrai dès qu'UN message est arrivé quelque part. La clé
+  // anti-doublon est alors gardée même si la suite échoue — sinon un rejeu
+  // renverrait le 1er morceau en double.
+  let unMessageEstParti = false;
   if (salon) {
     let toutEstParti = true;
     for (const morceau of decouperPourTelegram(formatNotificationClient(event))) {
@@ -78,19 +87,34 @@ async function envoyerAuSalonClients(
         toutEstParti = false;
         break;
       }
+      unMessageEstParti = true;
     }
-    if (toutEstParti) return "sent";
+    if (toutEstParti) return { statut: "sent", unMessageEstParti };
   }
   // Salon pas encore créé, ou envoi échoué : la route d'avant.
   const repli = resolveTelegramTarget(groupeDeRepliClient(event.category));
-  if (!repli) return salon ? "failed" : "skipped";
+  if (!repli) return { statut: salon ? "failed" : "skipped", unMessageEstParti };
   const ok = await sendTelegramRaw({
     text: texteAllege,
     silent: false,
     chatId: repli.chatId,
     botToken: repli.botToken,
   });
-  return ok ? "sent" : "failed";
+  return { statut: ok ? "sent" : "failed", unMessageEstParti: unMessageEstParti || ok };
+}
+
+interface EnvoiSalonClients {
+  statut: "sent" | "skipped" | "failed";
+  /** Au moins un message (morceau du salon ou repli) est arrivé. */
+  unMessageEstParti: boolean;
+}
+
+type StatutsCanaux = Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>;
+
+interface ResultatDispatch {
+  results: StatutsCanaux;
+  /** Un morceau est parti au salon « Clients » ou au repli, même si la suite a échoué. */
+  partiellementParti: boolean;
 }
 
 async function dispatchChannels(
@@ -98,19 +122,20 @@ async function dispatchChannels(
   severity: import("./types").NotificationSeverity,
   channels: NotificationChannel[],
   formattedText: string,
-): Promise<Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>> {
+): Promise<ResultatDispatch> {
   const category = event.category;
   const payload = event.payload as Record<string, unknown>;
-  const results: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">> =
-    {};
+  const results: StatutsCanaux = {};
   const tasks: Array<Promise<void>> = [];
+  let partiellementParti = false;
 
   for (const ch of channels) {
     if (ch === "telegram" && estCategorieClient(category)) {
       tasks.push(
         envoyerAuSalonClients(event as EvenementClient, formattedText)
-          .then((statut) => {
+          .then(({ statut, unMessageEstParti }) => {
             results.telegram = statut;
+            partiellementParti = unMessageEstParti;
           })
           .catch(() => {
             results.telegram = "failed";
@@ -176,7 +201,7 @@ async function dispatchChannels(
       // Pour un client, la sonnette dit le TYPE de demande (« Audit IA ») —
       // une nature, jamais une donnée de la personne (décision Will 15/10).
       const typeDemande = estCategorieClient(category)
-        ? libelleTypeDemande(event as EvenementClient)
+        ? libelleTypeDemandeWhatsApp(event as EvenementClient)
         : undefined;
       tasks.push(
         sendWhatsAppRaw({ text: formatNotificationWhatsApp(category, severity, typeDemande).text })
@@ -191,7 +216,7 @@ async function dispatchChannels(
   }
 
   await Promise.all(tasks);
-  return results;
+  return { results, partiellementParti };
 }
 
 /**
@@ -258,14 +283,17 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
   // RÉUSSI. Laissée après un échec, elle faisait passer le rejeu pour un
   // doublon — l'alerte était perdue pour tout le TTL.
   const dedupKey = input.dedupKey;
-  const libererSiEchec = async (
-    r: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>,
-  ): Promise<void> => {
+  const libererSiEchec = async ({
+    results: r,
+    partiellementParti,
+  }: ResultatDispatch): Promise<void> => {
     if (!dedupKey) return;
     // Telegram porte le détail : s'il n'est pas parti, l'alerte n'est pas faite.
+    // Mais si UN morceau est parti, la clé reste : un rejeu le renverrait en
+    // double (relecture PR 1553). Le reste manquant est journalisé.
     const aboutie =
       "telegram" in r
-        ? r.telegram === "sent"
+        ? r.telegram === "sent" || partiellementParti
         : Object.values(r).some((v) => v === "sent" || v === "queued");
     if (!aboutie) await libererDedup(input.category, dedupKey);
   };
@@ -283,14 +311,14 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     );
     inFlightDispatches.add(dispatch);
     void dispatch.finally(() => inFlightDispatches.delete(dispatch));
-    const queued: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">> =
-      {};
+    const queued: StatutsCanaux = {};
     for (const c of channels) queued[c] = "queued";
     return { ok: true, channels: queued };
   }
 
-  const results = await dispatchChannels(event, severity, channels, formatted.text);
-  await libererSiEchec(results);
+  const dispatch = await dispatchChannels(event, severity, channels, formatted.text);
+  await libererSiEchec(dispatch);
+  const results = dispatch.results;
   const okOverall = Object.values(results).some((v) => v === "sent" || v === "queued");
   return { ok: okOverall, channels: results };
 }

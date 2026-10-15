@@ -32,7 +32,7 @@ import { z } from "zod";
 import { requireSameOrigin } from "@/lib/same-origin";
 import { prisma } from "@/lib/prisma";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
-import { notify } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
@@ -468,33 +468,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   //    détail ; un échange apporteur reste au salon 📅 Calendly.
   if (!echangeFormateur) {
     const cleDuFait = dedupKeyDuFait(inviteeUri);
-    await notify({
-      category: apporteur ? "CALENDLY_INVITEE_CREATED" : "CLIENT_CALL_BOOKED",
-      payload: {
-        eventUri: event.id,
-        inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
-        inviteeName: notifyName ?? "(non communiqué)",
-        eventStartTime: notifyStart ?? "(voir mail Calendly)",
-        eventName: parsed.data.eventTypeSlug,
-        // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
-        typeRendezVous,
-        ...(besoin ? { besoin } : {}),
-        // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
-        ...(format === "inconnu" ? {} : { format }),
-        ...(lieuRdv ? { lieu: lieuRdv } : {}),
-        // 🔴 Le téléphone était lu par l'enrichissement et jamais transmis.
-        ...(notifyPhone ? { inviteePhone: notifyPhone } : {}),
-        ...(cancelUrl ? { cancelUrl } : {}),
-        ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
-        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
-        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
-        ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
-        ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+    // Après la réponse (`after`) : les relances Telegram ne retardent plus
+    // le navigateur du visiteur (relecture PR 1553).
+    notifyApresReponse(
+      {
+        category: apporteur ? "CALENDLY_INVITEE_CREATED" : "CLIENT_CALL_BOOKED",
+        payload: {
+          eventUri: event.id,
+          inviteeEmail: notifyEmail ?? "(non communiqué par Calendly Embed)",
+          inviteeName: notifyName ?? "(non communiqué)",
+          eventStartTime: notifyStart ?? "(voir mail Calendly)",
+          eventName: parsed.data.eventTypeSlug,
+          // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
+          typeRendezVous,
+          ...(besoin ? { besoin } : {}),
+          // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
+          ...(format === "inconnu" ? {} : { format }),
+          ...(lieuRdv ? { lieu: lieuRdv } : {}),
+          // 🔴 Le téléphone était lu par l'enrichissement et jamais transmis.
+          ...(notifyPhone ? { inviteePhone: notifyPhone } : {}),
+          ...(cancelUrl ? { cancelUrl } : {}),
+          ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
+          ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
+          ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+          ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+          ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
+        },
+        // Dérivée du FAIT : l'URI d'invité quand Calendly la fournit, sinon
+        // aucune clé (cf. `dedupKeyDuFait`).
+        ...(cleDuFait ? { dedupKey: cleDuFait } : {}),
       },
-      // Dérivée du FAIT : l'URI d'invité quand Calendly la fournit, sinon
-      // aucune clé (cf. `dedupKeyDuFait`).
-      ...(cleDuFait ? { dedupKey: cleDuFait } : {}),
-    });
+      "calendly-client-event",
+    );
   }
 
   // 10. Couleur du format dans l'agenda Google — best-effort, jamais bloquant.

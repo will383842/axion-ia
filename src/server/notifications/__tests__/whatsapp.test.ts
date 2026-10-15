@@ -54,7 +54,7 @@ describe("sendWhatsAppRaw", () => {
 
   it('renvoie "sent" et construit la bonne URL CallMeBot', async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33 7 55 51 23 45"; // espaces volontaires
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33 6 39 98 12 35"; // espaces volontaires
     fetchMock.mockResolvedValueOnce(new Response("Message queued", { status: 200 }));
 
     const status = await sendWhatsAppRaw({ text: "Nouveau lead *Marie*" });
@@ -63,21 +63,21 @@ describe("sendWhatsAppRaw", () => {
 
     const url = String(fetchMock.mock.calls[0]?.[0]);
     expect(url).toContain("api.callmebot.com/whatsapp.php");
-    expect(url).toContain(`phone=${encodeURIComponent("+33755512345")}`); // espaces retirés
+    expect(url).toContain(`phone=${encodeURIComponent("+33639981235")}`); // espaces retirés
     expect(url).toContain("apikey=123456");
     expect(url).toContain(encodeURIComponent("Nouveau lead *Marie*"));
   });
 
   it('renvoie "failed" sur réponse non-2xx', async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValueOnce(new Response("APIKEY invalid", { status: 403 }));
     expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
   });
 
   it('renvoie "failed" si fetch throw (réseau / timeout)', async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockRejectedValueOnce(new Error("network down"));
     expect(await sendWhatsAppRaw({ text: "x" })).toBe("failed");
   });
@@ -207,7 +207,7 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
 
   it("envoie Telegram + WhatsApp quand la clé CallMeBot est configurée", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
     // Demande de devis, et non plus `CONTACT_FORM_SUBMITTED` : ce dernier est
@@ -252,7 +252,7 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
 
   it("PAS de WhatsApp pour une catégorie système (newsletter)", async () => {
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
     const result = await notify({

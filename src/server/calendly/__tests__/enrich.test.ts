@@ -218,7 +218,7 @@ describe("enrichCalendlyEvent", () => {
       emptyRow({
         status: "scheduled",
         inviteeEmail: "jean@example.com",
-        inviteePhone: "+33755512345",
+        inviteePhone: "+33639981235",
       }),
     );
     fetchInviteeMock.mockResolvedValueOnce(
@@ -240,7 +240,7 @@ describe("enrichCalendlyEvent", () => {
       reason: "Un imprévu, je reprends un créneau la semaine prochaine.",
       canceledBy: "Jean Dupont",
       cancelerType: "invitee",
-      inviteePhone: "+33755512345",
+      inviteePhone: "+33639981235",
     });
     expect(JSON.stringify(call.payload)).not.toContain("Annulation constatée");
   });

@@ -127,6 +127,43 @@ export function libelleTypeDemande(event: EvenementClient): string {
   }
 }
 
+/**
+ * Le TYPE de demande pour la sonnette WhatsApp (CallMeBot, `D6-5-C1`).
+ *
+ * 🔴 Relecture PR 1553 : `libelleTypeDemande` recopiait le `besoin` d'un
+ * échange projet dans le titre — un texte LIBRE écrit par le client, qui peut
+ * porter son nom ou son numéro. Ici, AUCUN champ libre n'est lu : seulement
+ * des libellés de catalogue (type classé, type de formulaire, catégorie). Le
+ * nom d'un type Calendly ne sert qu'à CLASSER, jamais à être recopié.
+ */
+export function libelleTypeDemandeWhatsApp(event: EvenementClient): string {
+  switch (event.category) {
+    case "CLIENT_CALL_BOOKED": {
+      const p = event.payload;
+      const typeClasse = estTypeRendezVous(p.typeRendezVous) ? p.typeRendezVous : null;
+      // `besoin` à `null` : le titre ne recopie aucun texte du client.
+      return titreReservation(
+        typeEffectif({ typeRendezVous: typeClasse, eventTypeName: p.eventName }),
+        p.eventName,
+        null,
+      );
+    }
+    case "CLIENT_CALL_CANCELED":
+    case "CLIENT_CALL_RESCHEDULED": {
+      const p = event.payload;
+      const type = typeEffectif({
+        typeRendezVous: estTypeRendezVous(p.typeRendezVous) ? p.typeRendezVous : null,
+        eventTypeName: p.eventName ?? "",
+      });
+      return type === "autre" ? "Rendez-vous" : LIBELLES_TYPE_RENDEZ_VOUS[type];
+    }
+    default:
+      // Formulaires et chatbot : `libelleTypeDemande` ne lit déjà que des
+      // catalogues (`formType` → libellé connu, sinon la catégorie).
+      return libelleTypeDemande(event);
+  }
+}
+
 /** « Libellé : valeur », ou rien quand la valeur manque. */
 function ligne(libelle: string, valeur: string | number | null | undefined): string | null {
   if (valeur === null || valeur === undefined) return null;

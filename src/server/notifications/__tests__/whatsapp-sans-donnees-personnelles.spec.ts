@@ -31,7 +31,11 @@
 
 import { describe, it, expect } from "vitest";
 import { formatNotificationWhatsApp, formatNotificationPlain } from "../format";
-import { libelleTypeDemande, type EvenementClient } from "../format-clients";
+import {
+  libelleTypeDemande,
+  libelleTypeDemandeWhatsApp,
+  type EvenementClient,
+} from "../format-clients";
 import type { NotificationEvent } from "../types";
 
 /** Un événement de contact, avec tout ce qu'un prospect fournit. */
@@ -40,7 +44,7 @@ const EVENEMENT = {
   payload: {
     contactName: "Jeanne Dupont",
     contactEmail: "jeanne.dupont@exemple.fr",
-    contactPhone: "+33 6 12 34 56 78",
+    contactPhone: "+33 6 39 98 12 34",
     message: "Je cherche une formation IA pour douze personnes en novembre.",
     ville: "Grenoble",
     companyName: "Exemple SAS",
@@ -51,8 +55,8 @@ const PII = [
   "Jeanne",
   "Dupont",
   "jeanne.dupont@exemple.fr",
-  "612345678",
-  "6 12 34 56 78",
+  "639981234",
+  "6 39 98 12 34",
   "douze personnes",
   "Grenoble",
   "Exemple SAS",
@@ -131,7 +135,7 @@ describe("Décision Will 15/10 — la sonnette WhatsApp des clients", () => {
           eventUri: "evt_1",
           inviteeEmail: "jeanne.dupont@exemple.fr",
           inviteeName: "Jeanne Dupont",
-          inviteePhone: "+33 6 12 34 56 78",
+          inviteePhone: "+33 6 39 98 12 34",
           eventStartTime: "2026-10-16T08:00:00Z",
           eventName: "Diagnostic IA (30 min)",
           answersText: "douze personnes à former",
@@ -148,10 +152,102 @@ describe("Décision Will 15/10 — la sonnette WhatsApp des clients", () => {
       },
     ] as unknown as EvenementClient[];
     for (const e of evenements) {
-      const texte = formatNotificationWhatsApp(e.category, "info", libelleTypeDemande(e)).text;
+      const texte = formatNotificationWhatsApp(
+        e.category,
+        "info",
+        libelleTypeDemandeWhatsApp(e),
+      ).text;
       for (const fragment of PII)
         expect(texte, `${e.category} : ${fragment}`).not.toContain(fragment);
     }
+  });
+});
+
+describe("Relecture PR 1553 — aucun champ LIBRE n'atteint WhatsApp", () => {
+  // Ce que le client écrit lui-même : nom et numéro glissés dans son besoin.
+  const LIBRE = ["Jeanne", "Dupont", "06 39 98 12 34", "0639981234", "Exemple SAS", "Grenoble"];
+  const BESOIN = "Rappeler Jeanne Dupont au 06 39 98 12 34 (Exemple SAS, Grenoble)";
+
+  it("🔴 réservation avec un besoin portant un nom et un numéro ⇒ absent du WhatsApp", () => {
+    const e = {
+      category: "CLIENT_CALL_BOOKED",
+      payload: {
+        eventUri: "evt_2",
+        inviteeEmail: "jeanne.dupont@exemple.fr",
+        inviteeName: "Jeanne Dupont",
+        eventStartTime: "2026-10-16T08:00:00Z",
+        eventName: "Échange projet",
+        typeRendezVous: "echange_projet",
+        besoin: BESOIN,
+      },
+    } as unknown as EvenementClient;
+    const texte = formatNotificationWhatsApp(
+      e.category,
+      "info",
+      libelleTypeDemandeWhatsApp(e),
+    ).text;
+    for (const fragment of LIBRE) expect(texte, fragment).not.toContain(fragment);
+    expect(texte, "la nature reste dite").toContain("Échange projet réservé");
+    // 🔑 TÉMOIN : le titre Telegram, lui, porte toujours le besoin. Sans ce
+    // témoin, un besoin jamais recopié nulle part passerait aussi au vert.
+    expect(libelleTypeDemande(e)).toContain("Jeanne Dupont");
+  });
+
+  it("🔴 message, réponses, motif, société, ville, nom du type : rien n'atteint WhatsApp", () => {
+    const evenements = [
+      {
+        category: "QUOTE_REQUEST_RECEIVED",
+        payload: {
+          contactName: "Jeanne Dupont",
+          contactEmail: "jeanne.dupont@exemple.fr",
+          contactPhone: "06 39 98 12 34",
+          message: BESOIN,
+          companyName: "Exemple SAS",
+          ville: "Grenoble",
+          // Un `formType` hors catalogue (forgé) ne doit pas être recopié.
+          formType: "Jeanne Dupont 06 39 98 12 34",
+        },
+      },
+      {
+        category: "CLIENT_CALL_RESCHEDULED",
+        payload: {
+          eventUri: "evt_3",
+          inviteeEmail: "jeanne.dupont@exemple.fr",
+          inviteeName: "Jeanne Dupont",
+          eventName: "Jeanne Dupont 06 39 98 12 34",
+          answersText: BESOIN,
+        },
+      },
+      {
+        category: "CLIENT_CALL_CANCELED",
+        payload: {
+          eventUri: "evt_4",
+          inviteeEmail: "jeanne.dupont@exemple.fr",
+          inviteeName: "Jeanne Dupont",
+          eventName: "Diagnostic IA — Jeanne Dupont",
+          reason: BESOIN,
+        },
+      },
+      {
+        category: "CHATBOT_ESCALATION",
+        payload: { escalationId: "e1", question: BESOIN, contexte: BESOIN },
+      },
+    ] as unknown as EvenementClient[];
+    for (const e of evenements) {
+      const texte = formatNotificationWhatsApp(
+        e.category,
+        "info",
+        libelleTypeDemandeWhatsApp(e),
+      ).text;
+      for (const fragment of LIBRE)
+        expect(texte, `${e.category} : ${fragment}`).not.toContain(fragment);
+    }
+  });
+
+  it("🔴 le dispatch passe le libellé WhatsApp, pas celui de Telegram", () => {
+    const source = readSource("src/server/notifications/index.ts");
+    expect(source).toMatch(/libelleTypeDemandeWhatsApp\(event/);
+    expect(source).not.toMatch(/[^A-Za-z]libelleTypeDemande\(/);
   });
 });
 

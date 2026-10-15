@@ -38,7 +38,7 @@ const DEMANDE = {
   submissionId: "sub_42",
   contactName: "Camille Exemple",
   contactEmail: "camille@exemple.fr",
-  contactPhone: "+33 7 55 51 23 45",
+  contactPhone: "+33 6 39 98 12 35",
   formType: "formation",
   ville: "Grenoble",
   companyName: "Atelier Fictif SARL",
@@ -99,7 +99,7 @@ describe("le message complet du salon « Clients »", () => {
       "Nom : Camille Exemple",
       "Entreprise : Atelier Fictif SARL",
       "E-mail : camille@exemple.fr",
-      "Téléphone : +33 7 55 51 23 45",
+      "Téléphone : +33 6 39 98 12 35",
       "Ville : Grenoble",
       "Taille : PME",
       "Budget : 10-20 k€",
@@ -131,7 +131,7 @@ describe("le message complet du salon « Clients »", () => {
         eventUri: "evt_9",
         inviteeEmail: "camille@exemple.fr",
         inviteeName: "Camille Exemple",
-        inviteePhone: "+33 7 55 51 23 45",
+        inviteePhone: "+33 6 39 98 12 35",
         eventName: "Diagnostic IA (30 min)",
         eventStartTime: "2026-10-20T08:00:00.000Z",
         reason: "Empêchement : réunion de dernière minute.",
@@ -142,7 +142,7 @@ describe("le message complet du salon « Clients »", () => {
     expect(texte.split("\n")[0]).toBe("❌ ANNULATION CLIENT — Diagnostic IA (30 min)");
     expect(texte).toContain("Motif :\nEmpêchement : réunion de dernière minute.");
     expect(texte).toContain("Annulé par : Camille Exemple");
-    expect(texte).toContain("Téléphone : +33 7 55 51 23 45");
+    expect(texte).toContain("Téléphone : +33 6 39 98 12 35");
   });
 
   it("annulation sans motif : le dit, plutôt que d'inventer", () => {
@@ -161,7 +161,7 @@ describe("le message complet du salon « Clients »", () => {
         eventUri: "evt_7",
         inviteeEmail: "camille@exemple.fr",
         inviteeName: "Camille Exemple",
-        inviteePhone: "+33 7 55 51 23 45",
+        inviteePhone: "+33 6 39 98 12 35",
         eventStartTime: "2026-10-20T08:00:00.000Z",
         eventName: "Diagnostic IA (30 min)",
         typeRendezVous: "diagnostic",
@@ -176,7 +176,7 @@ describe("le message complet du salon « Clients »", () => {
       "Début : 20 oct. 2026, 10:00",
       "Format : Visio",
       "Lieu : https://meet.exemple.fr/abc",
-      "Téléphone : +33 7 55 51 23 45",
+      "Téléphone : +33 6 39 98 12 35",
       "Effectif : 12",
       "Annuler / déplacer : https://calendly.com/cancellations/xyz",
     ]) {
@@ -205,6 +205,32 @@ describe("découpe sous 4096 caractères", () => {
 
   it("un message court reste un seul message, sans mention", () => {
     expect(decouperPourTelegram("court")).toEqual(["court"]);
+  });
+
+  // Relecture PR 1553 : `slice(0, place)` pouvait couper une paire de
+  // substitution UTF-16 (un emoji) en deux — Telegram affiche alors « � ».
+  const DEMI_PAIRE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+  const sansMention = (m: string) => m.replace(/^\(suite \d+\/\d+\)\n/, "");
+
+  it("🔴 une ligne d'emojis n'est jamais coupée au milieu d'une paire de substitution", () => {
+    // Le « a » décale d'une unité : la coupe d'avant tombait EN PLEINE paire.
+    const ligne = `a${"😀".repeat(3000)}`;
+    const morceaux = decouperPourTelegram(ligne);
+    expect(morceaux.length).toBeGreaterThan(1);
+    for (const m of morceaux) {
+      expect(m.length).toBeLessThanOrEqual(PLAFOND_TELEGRAM);
+      expect(DEMI_PAIRE.test(m), "aucune moitié d'emoji").toBe(false);
+    }
+    expect(morceaux.map(sansMention).join("")).toBe(ligne);
+  });
+
+  it("un emoji composé (famille, ZWJ) reste d'un seul tenant", () => {
+    const famille = "👨‍👩‍👧";
+    const ligne = `ab${famille.repeat(1200)}`;
+    const morceaux = decouperPourTelegram(ligne).map(sansMention);
+    expect(morceaux.length).toBeGreaterThan(1);
+    for (const m of morceaux.slice(1)) expect(m.startsWith(famille)).toBe(true);
+    expect(morceaux.join("")).toBe(ligne);
   });
 });
 
@@ -281,14 +307,14 @@ describe("notify() → salon « Clients »", () => {
   it("WhatsApp : la sonnette d'un client ne porte aucune donnée personnelle", async () => {
     process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
     process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
+    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
     fetchMock.mockImplementation(async () => ok());
     const r = await notify({ category: "INTERVENTION_REQUEST_SUBMITTED", payload: DEMANDE });
     expect(r.channels.whatsapp).toBe("sent");
     const url = decodeURIComponent(urls().find((u) => u.includes("callmebot")) ?? "");
     expect(url).toContain("🔥 NOUVEAU CLIENT · Formation IA · ");
     expect(url).toContain("tout le détail dans Telegram (salon Clients)");
-    for (const pii of ["Camille", "camille@", "55 51", "Grenoble", "Atelier", "former 12"]) {
+    for (const pii of ["Camille", "camille@", "39 98", "Grenoble", "Atelier", "former 12"]) {
       expect(url).not.toContain(pii);
     }
   });
@@ -304,6 +330,40 @@ describe("fiabilité Telegram (décision Will 15/10)", () => {
     });
     expect(r.channels.telegram).toBe("failed");
     expect(redisDelMock).toHaveBeenCalledWith("notif:dedup:CONTACT_FORM_SUBMITTED:sub_42");
+  });
+
+  it("🔴 dédoublonnage : un 1er morceau parti garde la clé, même si la suite échoue", async () => {
+    // Relecture PR 1553 : la clé libérée, un rejeu renvoyait le 1er morceau en
+    // DOUBLE au salon. Un morceau arrivé vaut une alerte commencée.
+    process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
+    fetchMock
+      .mockImplementationOnce(async () => ok())
+      .mockImplementation(async () => new Response('{"ok":false}', { status: 500 }));
+    const message = Array.from({ length: 200 }, (_, i) => `Paragraphe ${i} du besoin.`).join("\n");
+    const r = await notify({
+      category: "CONTACT_FORM_SUBMITTED",
+      payload: { ...DEMANDE, message },
+      dedupKey: "sub_42",
+    });
+    expect(r.channels.telegram, "le reste n'est pas parti, ni au salon ni au repli").toBe("failed");
+    expect(corpsEnvoye(0)["chat_id"]).toBe("-clients");
+    expect(corpsEnvoye(1)["chat_id"]).toBe("-clients");
+    expect(corpsEnvoye(2)["chat_id"]).toBe("-messages");
+    expect(redisDelMock).not.toHaveBeenCalled();
+  });
+
+  it("dédoublonnage : un repli seul arrivé garde aussi la clé", async () => {
+    process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
+    fetchMock
+      .mockImplementationOnce(async () => new Response('{"ok":false}', { status: 500 }))
+      .mockImplementation(async () => ok());
+    const r = await notify({
+      category: "CONTACT_FORM_SUBMITTED",
+      payload: DEMANDE,
+      dedupKey: "sub_42",
+    });
+    expect(r.channels.telegram).toBe("sent");
+    expect(redisDelMock).not.toHaveBeenCalled();
   });
 
   it("dédoublonnage : la clé RESTE après un envoi réussi", async () => {

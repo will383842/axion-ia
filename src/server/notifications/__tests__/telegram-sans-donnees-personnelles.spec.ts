@@ -31,7 +31,7 @@ import type { NotificationCategory, NotificationEvent } from "../types";
 
 const NOM = "Marie Dupontcanari";
 const EMAIL = "marie.canari@exemple.fr";
-const TEL = "+33 6 12 34 56 78";
+const TEL = "+33 6 39 98 12 34";
 const TEXTE = "TEXTE-SAISI-CANARI";
 
 /** Ce qui ne doit JAMAIS ressortir. */
@@ -39,8 +39,8 @@ const INTERDITS = [
   "Dupontcanari",
   "canari@",
   "exemple.fr",
-  "6 12 34 56 78",
-  "612345678",
+  "6 39 98 12 34",
+  "639981234",
   "CANARI",
   "4500 €",
   "12 rue des Témoins",

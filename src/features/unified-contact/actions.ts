@@ -36,7 +36,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
-import { notify, type NotificationCategory } from "@/server/notifications";
+import type { NotificationCategory, NotifyInput } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -344,18 +345,16 @@ export async function submitUnifiedContactAction(
     // DOIVENT PAS faire échouer la soumission (le lead est déjà en base). Un
     // échec (Redis/BullMQ/Telegram down) est loggé mais l'utilisateur voit
     // « Succès ». Décision Will 2026-07-01 (robustesse / zéro perte de lead).
-    try {
-      await notify({
+    // Après la réponse (`after`) : les relances Telegram du salon « Clients »
+    // ne doivent pas faire attendre le visiteur (relecture PR 1553).
+    notifyApresReponse(
+      {
         category,
         payload: notifPayload,
         dedupKey: submission.id,
-      } as Parameters<typeof notify>[0]);
-    } catch (notifErr) {
-      console.error("[unified-contact] notify best-effort a échoué:", notifErr);
-      Sentry.captureException(notifErr, {
-        tags: { action: "submitUnifiedContactAction", step: "notify", type: data.type },
-      });
-    }
+      } as NotifyInput,
+      "unified-contact",
+    );
 
     try {
       await enqueueEmail(

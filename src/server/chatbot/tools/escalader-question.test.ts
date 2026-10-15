@@ -34,6 +34,7 @@ import {
 const ctx = { tenantId: "t1", conversationId: "conv-1" };
 
 beforeEach(() => {
+  vi.unstubAllEnvs();
   escalationCreate.mockReset();
   notify.mockReset();
   enqueueEmail.mockReset();
@@ -48,6 +49,10 @@ describe("T-14 escalader_question", () => {
   });
 
   it("crée une ChatEscalation ouverte et notifie l'équipe", async () => {
+    // L'alerte part après la réponse (`after`, relecture PR 1553) : `notified`
+    // dit qu'une route Telegram existe — ici, le salon « Clients ».
+    vi.stubEnv("TELEGRAM_BOT_TOKEN", "123:abc");
+    vi.stubEnv("TELEGRAM_CHAT_ID_CLIENTS", "-100777");
     escalationCreate.mockResolvedValue({ id: "esc-1", statut: "ouverte" });
     notify.mockResolvedValue({ ok: true, channels: { telegram: "sent" } });
     const r = await escaladerQuestion(
@@ -83,6 +88,7 @@ describe("T-14 escalader_question", () => {
   });
 
   it("fonctionne sans contact ni Telegram configuré (fail-soft → notified=false)", async () => {
+    vi.stubEnv("TELEGRAM_BOT_TOKEN", "");
     escalationCreate.mockResolvedValue({ id: "esc-2", statut: "ouverte" });
     notify.mockResolvedValue({ ok: false, channels: { telegram: "skipped" } });
     const r = await escaladerQuestion({ question: "Question sans contact" }, { tenantId: "t1" });

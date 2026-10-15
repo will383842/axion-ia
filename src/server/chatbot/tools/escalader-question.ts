@@ -10,7 +10,8 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { notify } from "@/server/notifications";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
+import { resolveTelegramTargetPourCategorie } from "@/server/notifications/routing";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
@@ -27,7 +28,7 @@ export type EscaladerQuestionInput = z.infer<typeof EscaladerQuestionInputSchema
 export interface EscalationResult {
   readonly escalationId: string;
   readonly statut: string;
-  /** true si l'équipe a été notifiée (Telegram) ; false si non configuré. */
+  /** true si l'alerte Telegram est programmée (une route existe) ; false si non configuré. */
   readonly notified: boolean;
 }
 
@@ -55,9 +56,13 @@ export async function escaladerQuestion(
   // Décision Will 15/10 : une question escaladée est celle d'un CLIENT. Elle
   // quitte le `sendTelegram` legacy (→ `MONITORING_ALERT`, silencieux) pour le
   // salon « Clients », avec la question en entier et l'adresse s'il l'a donnée.
-  let notified = false;
-  try {
-    const r = await notify({
+  //
+  // Après la réponse (`after`) : la réponse du bot n'attend plus Telegram
+  // (relecture PR 1553). `notified` dit donc qu'une route Telegram existe et
+  // que l'envoi est programmé — un échec réseau ultérieur est journalisé.
+  const notified = resolveTelegramTargetPourCategorie("CHATBOT_ESCALATION") !== undefined;
+  notifyApresReponse(
+    {
       category: "CHATBOT_ESCALATION",
       payload: {
         escalationId: escalation.id,
@@ -67,11 +72,9 @@ export async function escaladerQuestion(
         submittedAt: new Date().toISOString(),
       },
       dedupKey: escalation.id,
-    });
-    notified = r.ok || r.deduped === true || r.rateLimited === true;
-  } catch (err) {
-    console.warn("[escalader_question] notification Telegram échouée:", err);
-  }
+    },
+    "escalader_question",
+  );
 
   // Confirmation au visiteur (2026-08-13). C'est le pire endroit pour un
   // silence : la personne vient d'écrire dans une fenêtre de discussion

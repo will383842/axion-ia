@@ -111,6 +111,31 @@ function mentionTroncature(lignesEcartees: number): string {
   return `TRONQUE ${lignesEcartees} lignes non affichees voir la console`;
 }
 
+/** Découpe en graphèmes : un emoji composé (👨‍👩‍👧, 🇫🇷) reste d'un seul tenant. */
+const GRAPHEMES = new Intl.Segmenter("fr", { granularity: "grapheme" });
+
+/**
+ * Longueur (en unités UTF-16, celle de l'API) du plus long début de `ligne`
+ * qui tient dans `place` SANS couper un caractère — ni une paire de
+ * substitution, ni un emoji composé (relecture PR 1553). Une moitié de paire
+ * part en « � » chez Telegram, ou fait refuser le message.
+ */
+function longueurSansCouperUnCaractere(ligne: string, place: number): number {
+  let n = 0;
+  for (const { segment } of GRAPHEMES.segment(ligne)) {
+    if (n + segment.length > place) break;
+    n += segment.length;
+  }
+  if (n > 0) return n;
+  // Un seul graphème plus long que la place (absurde, mais sans boucle infinie) :
+  // on coupe alors entre deux points de code, jamais dans une paire.
+  for (const car of ligne) {
+    if (n + car.length > place) break;
+    n += car.length;
+  }
+  return Math.max(n, 1);
+}
+
 /**
  * Découpe un texte en messages qui tiennent chacun sous le plafond de l'API.
  *
@@ -133,8 +158,9 @@ export function decouperPourTelegram(texte: string, plafond = LIMITE_TELEGRAM): 
     let ligne = brute;
     while (ligne.length > place) {
       pousser();
-      morceaux.push(ligne.slice(0, place));
-      ligne = ligne.slice(place);
+      const n = longueurSansCouperUnCaractere(ligne, place);
+      morceaux.push(ligne.slice(0, n));
+      ligne = ligne.slice(n);
     }
     const ajout = courant === "" ? ligne : `${courant}\n${ligne}`;
     if (ajout.length > place) {
