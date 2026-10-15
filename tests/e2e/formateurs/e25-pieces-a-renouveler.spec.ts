@@ -18,17 +18,12 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { HORS_BANC, semerTextesValides } from "../fixtures/formateurs/argent-commun";
+import { HORS_BANC } from "../fixtures/formateurs/argent-commun";
 import { aParis, jourDeParis, plusJours } from "../fixtures/formateurs/argent-contre-calcul";
 import { jouer } from "../fixtures/formateurs/argent-execution";
 import { cle, semerFormateur, type FormateurSeme } from "../fixtures/formateurs/argent-semis";
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
 
-const textes = ["formateur-piece-a-renouveler", "formateur-vigilance"];
-const interrupteurs = {
-  "formateurs.dossier_en_ligne": { actif: true },
-  "formateurs.pieces_cron": { actif: true },
-};
 const minuit = (jour: string) => new Date(`${jour}T00:00:00Z`);
 
 /** Un indépendant DANS la population des relances : candidature freelance retenue, dossier vérifié. */
@@ -109,6 +104,11 @@ async function loinDeMinuit(): Promise<void> {
 
 const passage = (jour: string, trainerIds: string[]) => ({
   etape: "campagnes" as const,
+  allumer: {
+    "formateurs.dossier_en_ligne": { actif: true },
+    "formateurs.pieces_cron": { actif: true },
+  },
+  textes: ["formateur-piece-a-renouveler", "formateur-vigilance"],
   maintenant: aParis(jour, "10:00").toISOString(),
   trainerIds,
   // V1-C-11 : la décision d'étape compte les lignes du journal ; on écarte la course.
@@ -122,48 +122,43 @@ test.describe("@formateurs E25 — pièces à renouveler, une relance par jour",
   test("F41 à J-30 puis J-15 ; un dépôt arrête les relances", async () => {
     await avecVerrouArgent(async () => {
       await loinDeMinuit();
-      const restaurer = await semerTextesValides(textes, interrupteurs);
-      try {
-        const aujourdhui = jourDeParis(new Date());
-        const echeance = plusJours(aujourdhui, 30);
-        const sansDepot = await independantSuivi("Josephine");
-        const avecDepot = await independantSuivi("Kevin");
-        for (const f of [sansDepot, avecDepot]) await rcProExpirant(f.id, echeance);
-        const ids = [sansDepot.id, avecDepot.id];
+      const aujourdhui = jourDeParis(new Date());
+      const echeance = plusJours(aujourdhui, 30);
+      const sansDepot = await independantSuivi("Josephine");
+      const avecDepot = await independantSuivi("Kevin");
+      for (const f of [sansDepot, avecDepot]) await rcProExpirant(f.id, echeance);
+      const ids = [sansDepot.id, avecDepot.id];
 
-        // J-30 : une relance chacun.
-        await jouer([passage(aujourdhui, ids)]);
-        for (const f of [sansDepot, avecDepot]) {
-          expect((await relances(f.id)).map((r) => r.jobId?.endsWith("-j30"))).toEqual([true]);
-        }
-        // Kevin dépose sa nouvelle attestation d'assurance (en vérification).
-        await prisma.trainerDocument.create({
-          data: {
-            trainerId: avecDepot.id,
-            type: "assurance_rc_pro",
-            statutValidation: "en_attente",
-            fichierUrl: "banc://rc-pro-neuve.pdf",
-            dateEmission: minuit(aujourdhui),
-            dateExpiration: minuit(plusJours(aujourdhui, 365)),
-          },
-        });
+      // J-30 : une relance chacun.
+      await jouer([passage(aujourdhui, ids)]);
+      for (const f of [sansDepot, avecDepot]) {
+        expect((await relances(f.id)).map((r) => r.jobId?.endsWith("-j30"))).toEqual([true]);
+      }
+      // Kevin dépose sa nouvelle attestation d'assurance (en vérification).
+      await prisma.trainerDocument.create({
+        data: {
+          trainerId: avecDepot.id,
+          type: "assurance_rc_pro",
+          statutValidation: "en_attente",
+          fichierUrl: "banc://rc-pro-neuve.pdf",
+          dateEmission: minuit(aujourdhui),
+          dateExpiration: minuit(plusJours(aujourdhui, 365)),
+        },
+      });
 
-        // Entre-deux (J-29) : rien. J-15 : Joséphine seulement. Le lendemain : rien de plus.
-        await jouer([
-          passage(plusJours(aujourdhui, 1), ids),
-          passage(plusJours(aujourdhui, 15), ids),
-          passage(plusJours(aujourdhui, 16), ids),
-        ]);
-        expect((await relances(sansDepot.id)).map((r) => r.jobId!.split("-").at(-1))).toEqual([
-          "j30",
-          "j15",
-        ]);
-        expect((await relances(avecDepot.id)).length).toBe(1);
-        for (const r of await relances(sansDepot.id)) {
-          expect(r.template).toBe("formateur-piece-a-renouveler");
-        }
-      } finally {
-        await restaurer();
+      // Entre-deux (J-29) : rien. J-15 : Joséphine seulement. Le lendemain : rien de plus.
+      await jouer([
+        passage(plusJours(aujourdhui, 1), ids),
+        passage(plusJours(aujourdhui, 15), ids),
+        passage(plusJours(aujourdhui, 16), ids),
+      ]);
+      expect((await relances(sansDepot.id)).map((r) => r.jobId!.split("-").at(-1))).toEqual([
+        "j30",
+        "j15",
+      ]);
+      expect((await relances(avecDepot.id)).length).toBe(1);
+      for (const r of await relances(sansDepot.id)) {
+        expect(r.template).toBe("formateur-piece-a-renouveler");
       }
     });
   });
@@ -171,53 +166,48 @@ test.describe("@formateurs E25 — pièces à renouveler, une relance par jour",
   test("F40 et F41 dus le même jour : un seul e-mail ce jour-là, l'autre le lendemain", async () => {
     await avecVerrouArgent(async () => {
       await loinDeMinuit();
-      const restaurer = await semerTextesValides(textes, interrupteurs);
       const f = await independantSuivi("Lucien");
-      try {
-        const aujourdhui = jourDeParis(new Date());
-        // Au seuil : 5 200 € HT déjà payés.
-        await prisma.trainerStatement.create({
-          data: {
-            trainerId: f.id,
-            periodeYear: 2036,
-            periodeMonth: 1,
-            statut: "paye",
-            origine: "releve_mensuel",
-            tvaRegime: "franchise_293b",
-            totalHtCents: 520_000,
-            tvaCents: 0,
-            totalTtcCents: 520_000,
-            payeAt: new Date("2036-02-10T10:00:00Z"),
-          } as never,
-        });
-        // F40 dû aujourd'hui (attestation échue dans 15 jours) ; F41 aussi (RC pro, J-30).
-        const finUrssaf = plusJours(aujourdhui, 15);
-        const [a, m, j] = finUrssaf.split("-").map(Number) as [number, number, number];
-        await prisma.trainerDocument.create({
-          data: {
-            trainerId: f.id,
-            type: "attestation_vigilance_urssaf",
-            statutValidation: "valide",
-            numeroPiece: "BANC-URSSAF",
-            dateEmission: new Date(Date.UTC(a, m - 1 - 6, j)),
-            dateExpiration: minuit(finUrssaf),
-            valideAt: new Date(),
-          },
-        });
-        await rcProExpirant(f.id, plusJours(aujourdhui, 30));
+      const aujourdhui = jourDeParis(new Date());
+      // Au seuil : 5 200 € HT déjà payés.
+      await prisma.trainerStatement.create({
+        data: {
+          trainerId: f.id,
+          periodeYear: 2036,
+          periodeMonth: 1,
+          statut: "paye",
+          origine: "releve_mensuel",
+          tvaRegime: "franchise_293b",
+          totalHtCents: 520_000,
+          tvaCents: 0,
+          totalTtcCents: 520_000,
+          payeAt: new Date("2036-02-10T10:00:00Z"),
+        } as never,
+      });
+      // F40 dû aujourd'hui (attestation échue dans 15 jours) ; F41 aussi (RC pro, J-30).
+      const finUrssaf = plusJours(aujourdhui, 15);
+      const [a, m, j] = finUrssaf.split("-").map(Number) as [number, number, number];
+      await prisma.trainerDocument.create({
+        data: {
+          trainerId: f.id,
+          type: "attestation_vigilance_urssaf",
+          statutValidation: "valide",
+          numeroPiece: "BANC-URSSAF",
+          dateEmission: new Date(Date.UTC(a, m - 1 - 6, j)),
+          dateExpiration: minuit(finUrssaf),
+          valideAt: new Date(),
+        },
+      });
+      await rcProExpirant(f.id, plusJours(aujourdhui, 30));
 
-        await jouer([passage(aujourdhui, [f.id]), passage(aujourdhui, [f.id])]);
-        const jour1 = await relances(f.id);
-        expect(jour1.length).toBe(1);
-        await jouer([passage(plusJours(aujourdhui, 1), [f.id])]);
-        const jour2 = await relances(f.id);
-        expect(jour2.length).toBe(2);
-        expect(new Set(jour2.map((r) => r.template))).toEqual(
-          new Set(["formateur-vigilance", "formateur-piece-a-renouveler"]),
-        );
-      } finally {
-        await restaurer();
-      }
+      await jouer([passage(aujourdhui, [f.id]), passage(aujourdhui, [f.id])]);
+      const jour1 = await relances(f.id);
+      expect(jour1.length).toBe(1);
+      await jouer([passage(plusJours(aujourdhui, 1), [f.id])]);
+      const jour2 = await relances(f.id);
+      expect(jour2.length).toBe(2);
+      expect(new Set(jour2.map((r) => r.template))).toEqual(
+        new Set(["formateur-vigilance", "formateur-piece-a-renouveler"]),
+      );
     });
   });
 });

@@ -7,7 +7,7 @@
 //
 // Ce qui est simulé ici, et rien d'autre :
 //   · le RÉSEAU : coupé (`reseau-simule.ts`, aucune route servie). Telegram, le
-//     registre des entreprises, R2… échouent comme une coupure, que le code traite
+//     registre des entreprises… échouent comme une coupure, que le code traite
 //     déjà en « au mieux ». Aucun test d'argent n'atteint un vrai service ;
 //   · les GESTES HUMAINS sans service hors session (valider un relevé) : l'étape écrit
 //     l'effet exact du clic, documenté dans le protocole ;
@@ -88,8 +88,9 @@ function exigerBaseLocale(): void {
 const quand = (iso: string) => new Date(iso);
 
 /**
- * F36 joint sa facture depuis R2 ; le banc n'a pas de seau : le worker REFUSE l'envoi,
- * à bon droit, puis BullMQ le RETENTE cinq fois. Chaque tentative consomme une place du
+ * F36 joint sa facture depuis R2. Sans seau, le worker REFUSE l'envoi, à bon droit, puis
+ * BullMQ le RETENTE cinq fois (avec le stockage R2 simulé du banc, il peut partir du
+ * premier coup : rien ne change alors ici). Chaque tentative consomme une place du
  * bridage du worker (40 e-mails par heure, pour TOUT le banc) : cinq tentatives par
  * facture affameraient les envois des autres scénarios. Le job est donc retiré de la
  * file après sa PREMIÈRE tentative (une place), une fois que le banc l'a vu partir.
@@ -228,6 +229,89 @@ async function jouerCorrection(e: Extract<EtapeArgent, { etape: "correction" }>)
       if (err !== ANNULE) throw err;
     });
   return observe;
+}
+
+const CLE_BASCULE = "formateurs.passage_paiement";
+const CLE_BILAN = "formateurs.bilan_fin_formation";
+
+/** Ce que l'étape pose le temps de son exécution (bascule, bilan), à partir de ses champs. */
+function reglagesPoses(e: EtapeArgent): Record<string, unknown> {
+  const poses: Record<string, unknown> = { ...(e.poser ?? {}) };
+  if (e.etape === "run-mensuel" || e.etape === "suivi" || e.etape === "signaler-desaccord")
+    poses[CLE_BASCULE] = { date: e.bascule };
+  if (e.etape === "passage")
+    poses[CLE_BILAN] = e.bilanAllumeLe
+      ? { actif: true, allumeLe: e.bilanAllumeLe }
+      : { actif: false };
+  if (e.etape === "terminer-bilan") poses[CLE_BILAN] = { actif: true, allumeLe: e.bilanAllumeLe };
+  return poses;
+}
+
+/** Égalité JSON indépendante de l'ordre des clés (jsonb les réordonne). */
+function canonique(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map(canonique);
+  if (v === null || typeof v !== "object") return v;
+  return Object.fromEntries(
+    Object.keys(v)
+      .sort()
+      .map((k) => [k, canonique((v as Record<string, unknown>)[k])]),
+  );
+}
+const memeJson = (a: unknown, b: unknown) =>
+  JSON.stringify(canonique(a)) === JSON.stringify(canonique(b));
+
+/**
+ * Joue `fn` sous les réglages de l'étape (`ReglagesDuPas`, voir le protocole) : les
+ * interrupteurs et textes allumés, la bascule et le bilan sont posés, puis remis à leur
+ * valeur d'avant SI personne ne les a changés entre-temps (une autre équipe qui aurait
+ * posé la sienne pendant l'étape la garde). Le banc d'argent ne laisse donc rien derrière
+ * lui.
+ */
+async function avecReglages<T>(e: EtapeArgent, fn: () => Promise<T>): Promise<T> {
+  const description = "banc @formateurs (argent) — réglage d'une étape";
+  const allumer: Record<string, unknown> = { ...(e.allumer ?? {}) };
+  if (e.textes && e.textes.length > 0) {
+    allumer["formateurs.textes_valides"] = { actif: true };
+    for (const c of e.textes) {
+      const empreinte = empreinteAttendue(`textes_valides.${c}`);
+      if (empreinte === null) throw new Error(`texte « ${c} » : aucune empreinte attendue`);
+      allumer[`textes_valides.${c}`] = { valide: true, empreinte };
+    }
+  }
+  // Tout ce que l'étape allume est rendu à la fin de l'étape, comme la date de bascule :
+  // les verrous des équipes A et B (`argent-verrou.ts`) garantissent que personne d'autre
+  // ne bascule ces lignes pendant ce temps.
+  const poses = { ...allumer, ...reglagesPoses(e) };
+  const avant = new Map<string, { value: unknown; description: string | null } | null>();
+  for (const [key, value] of Object.entries(poses)) {
+    avant.set(
+      key,
+      await prisma.setting.findUnique({
+        where: { key },
+        select: { value: true, description: true },
+      }),
+    );
+    await prisma.setting.upsert({
+      where: { key },
+      create: { key, value: value as never, description },
+      update: { value: value as never },
+    });
+  }
+  try {
+    return await fn();
+  } finally {
+    for (const [key, value] of Object.entries(poses)) {
+      const actuel = await prisma.setting.findUnique({ where: { key }, select: { value: true } });
+      if (!actuel || !memeJson(actuel.value, value)) continue;
+      const precedent = avant.get(key) ?? null;
+      if (precedent === null) await prisma.setting.deleteMany({ where: { key } });
+      else
+        await prisma.setting.update({
+          where: { key },
+          data: { value: precedent.value as never, description: precedent.description },
+        });
+    }
+  }
 }
 
 async function jouerEtape(e: EtapeArgent): Promise<unknown> {
@@ -474,7 +558,7 @@ async function principal(): Promise<void> {
   const reseau = installerReseauSimule([]);
   const resultats: unknown[] = [];
   try {
-    for (const e of etapes) resultats.push(await jouerEtape(e));
+    for (const e of etapes) resultats.push(await avecReglages(e, () => jouerEtape(e)));
   } finally {
     reseau.restaurer();
   }

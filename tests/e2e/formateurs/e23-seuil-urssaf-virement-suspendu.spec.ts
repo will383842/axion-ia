@@ -26,9 +26,7 @@ import {
   BASCULE_2037,
   HORS_BANC,
   attendreEnvois,
-  bascule,
   dernierEnvoiRendu,
-  semerTextesValides,
 } from "../fixtures/formateurs/argent-commun";
 import { ecartJours } from "../fixtures/formateurs/argent-contre-calcul";
 import { jouer, jouerUne } from "../fixtures/formateurs/argent-execution";
@@ -48,6 +46,8 @@ interface Garde {
 }
 
 const SEUIL_CENTS = 500_000;
+/** La position allumée du dossier en ligne (F57 ne part pas sans elle). */
+const DOSSIER_EN_LIGNE = { "formateurs.dossier_en_ligne": { actif: true } };
 /** Honoraires déjà PAYÉS au formateur avant cette mission (un relevé mensuel de 2037). */
 const DEJA_PAYES_HT = 450_000;
 
@@ -83,168 +83,155 @@ async function attestationEchue(trainerId: string): Promise<void> {
   });
 }
 
-const textes = ["formateur-virement-en-attente", "formateur-dossier-a-jour"];
-const interrupteurs = {
-  ...bascule(BASCULE_2037),
-  "formateurs.bilan_fin_formation": { actif: false },
-  "formateurs.dossier_en_ligne": { actif: true },
-};
-
 test.describe("@formateurs E23 — seuil URSSAF, virement suspendu, F38, F57", () => {
   test.setTimeout(2_400_000);
   test.skip(HORS_BANC, "hors du job banc-formateurs : ni file ni puits SMTP");
 
   test("au seuil : facture émise, virement suspendu (F38) ; dépôt, validation, déblocage, F57", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides(textes, interrupteurs);
       let email = "";
-      try {
-        const f = await factureDeMissionEmise({
-          prenom: "Therese",
-          jours: ["2038-07-12", "2038-07-13"],
-        });
-        email = f.formateur.email;
-        await honorairesAnterieurs(f.formateur.id);
-        await attestationEchue(f.formateur.id);
-        // Contre-calcul du cumul : payé + la mission en cours de paiement (facture reçue).
-        expect(DEJA_PAYES_HT + 70_000).toBeGreaterThanOrEqual(SEUIL_CENTS);
+      const f = await factureDeMissionEmise({
+        prenom: "Therese",
+        jours: ["2038-07-12", "2038-07-13"],
+      });
+      email = f.formateur.email;
+      await honorairesAnterieurs(f.formateur.id);
+      await attestationEchue(f.formateur.id);
+      // Contre-calcul du cumul : payé + la mission en cours de paiement (facture reçue).
+      expect(DEJA_PAYES_HT + 70_000).toBeGreaterThanOrEqual(SEUIL_CENTS);
 
-        // La facture EST émise ; le virement est suspendu, sans retard qui court.
-        const suspendu = await jouerUne<Garde>({
-          etape: "garde-virement",
-          statementId: f.statementId,
-          empreinteAffichee: f.empreinte,
-          maintenant: "2038-07-20T08:00:00Z",
-        });
-        expect(suspendu.verdict.autorise).toBe(false);
-        expect(suspendu.verdict.motifs).toEqual(["attestation_urssaf_echue_a_la_mission"]);
-        expect(suspendu.verdict.retard).toEqual({
-          joursDeRetard: 0,
-          penalitesCents: 0,
-          indemniteRecouvrementCents: 0,
-        });
-        // La mission est maintenue.
-        const mission = await prisma.missionFormateur.findFirstOrThrow({
-          where: { trainerId: f.formateur.id, sessionId: f.sessionId },
-          select: { statut: true },
-        });
-        expect(mission.statut).toBe("acceptee");
+      // La facture EST émise ; le virement est suspendu, sans retard qui court.
+      const suspendu = await jouerUne<Garde>({
+        etape: "garde-virement",
+        statementId: f.statementId,
+        empreinteAffichee: f.empreinte,
+        maintenant: "2038-07-20T08:00:00Z",
+      });
+      expect(suspendu.verdict.autorise).toBe(false);
+      expect(suspendu.verdict.motifs).toEqual(["attestation_urssaf_echue_a_la_mission"]);
+      expect(suspendu.verdict.retard).toEqual({
+        joursDeRetard: 0,
+        penalitesCents: 0,
+        indemniteRecouvrementCents: 0,
+      });
+      // La mission est maintenue.
+      const mission = await prisma.missionFormateur.findFirstOrThrow({
+        where: { trainerId: f.formateur.id, sessionId: f.sessionId },
+        select: { statut: true },
+      });
+      expect(mission.statut).toBe("acceptee");
 
-        // F38, une fois par facture (deux clics, un seul e-mail).
-        const [f38, f38bis] = await jouer([
-          { etape: "f38", statementId: f.statementId },
-          { etape: "f38", statementId: f.statementId },
-        ]);
-        expect(f38).toBe("envoye");
-        expect(f38bis).toBe("envoye");
-        await attendreEnvois(email, "formateur-virement-en-attente", 1);
+      // F38, une fois par facture (deux clics, un seul e-mail).
+      const [f38, f38bis] = await jouer([
+        { etape: "f38", textes: ["formateur-virement-en-attente"], statementId: f.statementId },
+        { etape: "f38", textes: ["formateur-virement-en-attente"], statementId: f.statementId },
+      ]);
+      expect(f38).toBe("envoye");
+      expect(f38bis).toBe("envoye");
+      await attendreEnvois(email, "formateur-virement-en-attente", 1);
 
-        // Dépôt d'une attestation neuve : « Reçue, en vérification ».
-        const depot = await prisma.trainerDocument.create({
-          data: {
-            trainerId: f.formateur.id,
-            type: "attestation_vigilance_urssaf",
-            statutValidation: "en_attente",
-            dateEmission: new Date("2038-07-20T00:00:00Z"),
-            numeroPiece: "BANC-URSSAF-NEUVE",
-          },
-          select: { id: true },
-        });
-        const etat = await jouerUne<{ etat: string; libelle: string }>({
-          etape: "etat-piece",
+      // Dépôt d'une attestation neuve : « Reçue, en vérification ».
+      const depot = await prisma.trainerDocument.create({
+        data: {
           trainerId: f.formateur.id,
           type: "attestation_vigilance_urssaf",
-          maintenant: "2038-07-21T08:00:00Z",
-        });
-        expect(etat).toEqual({ etat: "en_verification", libelle: "Reçue, en vérification" });
+          statutValidation: "en_attente",
+          dateEmission: new Date("2038-07-20T00:00:00Z"),
+          numeroPiece: "BANC-URSSAF-NEUVE",
+        },
+        select: { id: true },
+      });
+      const etat = await jouerUne<{ etat: string; libelle: string }>({
+        etape: "etat-piece",
+        trainerId: f.formateur.id,
+        type: "attestation_vigilance_urssaf",
+        maintenant: "2038-07-21T08:00:00Z",
+      });
+      expect(etat).toEqual({ etat: "en_verification", libelle: "Reçue, en vérification" });
 
-        // Validation (effet du clic : valide, vérifiée le 25/07, valable 6 mois), puis
-        // ce qui la suit : le dossier se débloque, F57 part.
-        const verifieeLe = "2038-07-25";
-        await prisma.trainerDocument.update({
-          where: { id: depot.id },
-          data: {
-            statutValidation: "valide",
-            valideAt: new Date(`${verifieeLe}T10:00:00Z`),
-            dateExpiration: new Date("2039-01-20T00:00:00Z"),
-          },
-        });
-        const [decision] = await jouer([
-          {
-            etape: "apres-decision-piece",
-            documentId: depot.id,
-            decision: "valide",
-            maintenant: `${verifieeLe}T10:05:00Z`,
-          },
-        ]);
-        expect(decision).toMatchObject({ etat: "fait", f57: true });
-        await attendreEnvois(email, "formateur-dossier-a-jour", 1);
+      // Validation (effet du clic : valide, vérifiée le 25/07, valable 6 mois), puis
+      // ce qui la suit : le dossier se débloque, F57 part.
+      const verifieeLe = "2038-07-25";
+      await prisma.trainerDocument.update({
+        where: { id: depot.id },
+        data: {
+          statutValidation: "valide",
+          valideAt: new Date(`${verifieeLe}T10:00:00Z`),
+          dateExpiration: new Date("2039-01-20T00:00:00Z"),
+        },
+      });
+      const [decision] = await jouer([
+        {
+          etape: "apres-decision-piece",
+          textes: ["formateur-dossier-a-jour"],
+          allumer: DOSSIER_EN_LIGNE,
+          documentId: depot.id,
+          decision: "valide",
+          maintenant: `${verifieeLe}T10:05:00Z`,
+        },
+      ]);
+      expect(decision).toMatchObject({ etat: "fait", f57: true });
+      await attendreEnvois(email, "formateur-dossier-a-jour", 1);
 
-        // Débloqué : le retard ne court que depuis la vérification (délai suspendu), pas
-        // depuis l'échéance de la facture.
-        const paye = "2038-08-04";
-        const debloque = await jouerUne<Garde>({
-          etape: "garde-virement",
-          statementId: f.statementId,
-          empreinteAffichee: f.empreinte,
-          maintenant: `${paye}T08:00:00Z`,
-        });
-        expect(debloque.verdict).toMatchObject({ autorise: true, motifs: [] });
-        expect(debloque.verdict.retard.joursDeRetard).toBe(ecartJours(verifieeLe, paye));
-        expect(debloque.verdict.retard.joursDeRetard).toBe(10);
+      // Débloqué : le retard ne court que depuis la vérification (délai suspendu), pas
+      // depuis l'échéance de la facture.
+      const paye = "2038-08-04";
+      const debloque = await jouerUne<Garde>({
+        etape: "garde-virement",
+        statementId: f.statementId,
+        empreinteAffichee: f.empreinte,
+        maintenant: `${paye}T08:00:00Z`,
+      });
+      expect(debloque.verdict).toMatchObject({ autorise: true, motifs: [] });
+      expect(debloque.verdict.retard.joursDeRetard).toBe(ecartJours(verifieeLe, paye));
+      expect(debloque.verdict.retard.joursDeRetard).toBe(10);
 
-        // F38 dit le motif sans montant inventé ; F57 dit que le dossier est à jour.
-        const f38Rendu = await dernierEnvoiRendu(email, "formateur-virement-en-attente");
-        expect(f38Rendu.texte).toMatch(/attestation/i);
-        await dernierEnvoiRendu(email, "formateur-dossier-a-jour");
-      } finally {
-        await restaurer();
-      }
+      // F38 dit le motif sans montant inventé ; F57 dit que le dossier est à jour.
+      const f38Rendu = await dernierEnvoiRendu(email, "formateur-virement-en-attente");
+      expect(f38Rendu.texte).toMatch(/attestation/i);
+      await dernierEnvoiRendu(email, "formateur-dossier-a-jour");
     });
   });
 
   test("sous le seuil : attestation échue, aucun blocage", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides([], interrupteurs);
-      try {
-        const f = await factureDeMissionEmise({
-          prenom: "Ulysse",
-          jours: ["2038-07-19", "2038-07-20"],
-          emettre: false,
-        });
-        await attestationEchue(f.formateur.id);
-        // Cumul : la seule mission, 700 € HT.
-        expect(70_000).toBeLessThan(SEUIL_CENTS);
-        const libre = await jouerUne<Garde>({
-          etape: "garde-virement",
-          statementId: f.statementId,
-          empreinteAffichee: f.empreinte,
-          maintenant: "2038-07-27T08:00:00Z",
-        });
-        expect(libre.verdict.motifs).not.toContain("attestation_urssaf_echue_a_la_mission");
-        expect(libre.verdict.autorise).toBe(true);
-      } finally {
-        await restaurer();
-      }
+      const f = await factureDeMissionEmise({
+        prenom: "Ulysse",
+        jours: ["2038-07-19", "2038-07-20"],
+        emettre: false,
+      });
+      await attestationEchue(f.formateur.id);
+      // Cumul : la seule mission, 700 € HT.
+      expect(70_000).toBeLessThan(SEUIL_CENTS);
+      const libre = await jouerUne<Garde>({
+        etape: "garde-virement",
+        statementId: f.statementId,
+        empreinteAffichee: f.empreinte,
+        maintenant: "2038-07-27T08:00:00Z",
+      });
+      expect(libre.verdict.motifs).not.toContain("attestation_urssaf_echue_a_la_mission");
+      expect(libre.verdict.autorise).toBe(true);
     });
   });
 
   // DÉFAUT V1-C-8 — F38 n'est jamais envoyé sans un clic dans la console.
   test.fixme("V1-C-8 : F38 part seul quand la facture est due et l'attestation échue", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerTextesValides(textes, interrupteurs);
-      try {
-        const f = await factureDeMissionEmise({
-          prenom: "Valentin",
-          jours: ["2038-07-26", "2038-07-27"],
-        });
-        await honorairesAnterieurs(f.formateur.id);
-        await attestationEchue(f.formateur.id);
-        await jouer([{ etape: "suivi", maintenant: "2038-08-03T07:15:00Z" }]);
-        await attendreEnvois(f.formateur.email, "formateur-virement-en-attente", 1);
-      } finally {
-        await restaurer();
-      }
+      const f = await factureDeMissionEmise({
+        prenom: "Valentin",
+        jours: ["2038-07-26", "2038-07-27"],
+      });
+      await honorairesAnterieurs(f.formateur.id);
+      await attestationEchue(f.formateur.id);
+      await jouer([
+        {
+          etape: "suivi",
+          bascule: BASCULE_2037,
+          textes: ["formateur-virement-en-attente"],
+          maintenant: "2038-08-03T07:15:00Z",
+        },
+      ]);
+      await attendreEnvois(f.formateur.email, "formateur-virement-en-attente", 1);
     });
   });
 });

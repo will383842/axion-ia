@@ -17,12 +17,11 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import { HORS_BANC, bascule } from "../fixtures/formateurs/argent-commun";
+import { HORS_BANC } from "../fixtures/formateurs/argent-commun";
 import { honorairesAnimationCents } from "../fixtures/formateurs/argent-contre-calcul";
 import { jouer } from "../fixtures/formateurs/argent-execution";
 import { relevesDe, semerFormateur, semerSession } from "../fixtures/formateurs/argent-semis";
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
-import { semerInterrupteurs } from "../fixtures/formateurs/interrupteurs";
 
 const TARIF = 35_000;
 const D = "2038-12-01";
@@ -51,50 +50,42 @@ test.describe("@formateurs E36 — relevé mensuel oublié", () => {
 
   test("lancé enfin, deux fois : un seul relevé, jamais validé seul, aucune double ligne", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(bascule(D));
-      try {
-        const { f, s } = await freelanceDeNovembre(2038);
-        const [j1, j6] = await jouer([
-          { etape: "suivi", maintenant: "2038-12-01T07:15:00Z" },
-          { etape: "suivi", maintenant: "2038-12-06T07:15:00Z" },
-        ]);
-        // Le suivi tourne (la bascule est passée) et rappelle le mois clos, le 1er.
-        expect(j1).toMatchObject({ etat: "fait", rappelBrouillon: true });
-        expect(j6).toMatchObject({ etat: "fait" });
-        // Personne n'a lancé : aucun relevé n'existe, rien n'a été écrit seul.
-        expect(await relevesDe(f.id)).toEqual([]);
+      const { f, s } = await freelanceDeNovembre(2038);
+      const [j1, j6] = await jouer([
+        { etape: "suivi", maintenant: "2038-12-01T07:15:00Z", bascule: D },
+        { etape: "suivi", maintenant: "2038-12-06T07:15:00Z", bascule: D },
+      ]);
+      // Le suivi tourne (la bascule est passée) et rappelle le mois clos, le 1er.
+      expect(j1).toMatchObject({ etat: "fait", rappelBrouillon: true });
+      expect(j6).toMatchObject({ etat: "fait" });
+      // Personne n'a lancé : aucun relevé n'existe, rien n'a été écrit seul.
+      expect(await relevesDe(f.id)).toEqual([]);
 
-        await jouer([
-          { etape: "run-mensuel", year: 2038, month: 11 },
-          { etape: "run-mensuel", year: 2038, month: 11 },
-        ]);
-        const releves = await relevesDe(f.id);
-        const attendu = honorairesAnimationCents(4, TARIF);
-        expect(releves.map((r) => [r.origine, r.periodeMonth, r.statut, r.totalHtCents])).toEqual([
-          ["releve_mensuel", 11, "brouillon", attendu],
-        ]);
-        const lignes = await prisma.trainerFeeLine.findMany({
-          where: { trainerId: f.id, sessionId: s.id, statut: { not: "annule" } },
-          select: { montantHtCents: true },
-        });
-        expect(lignes.reduce((t, l) => t + l.montantHtCents, 0)).toBe(attendu);
-      } finally {
-        await restaurer();
-      }
+      await jouer([
+        { etape: "run-mensuel", year: 2038, month: 11, bascule: D },
+        { etape: "run-mensuel", year: 2038, month: 11, bascule: D },
+      ]);
+      const releves = await relevesDe(f.id);
+      const attendu = honorairesAnimationCents(4, TARIF);
+      expect(releves.map((r) => [r.origine, r.periodeMonth, r.statut, r.totalHtCents])).toEqual([
+        ["releve_mensuel", 11, "brouillon", attendu],
+      ]);
+      const lignes = await prisma.trainerFeeLine.findMany({
+        where: { trainerId: f.id, sessionId: s.id, statut: { not: "annule" } },
+        select: { montantHtCents: true },
+      });
+      expect(lignes.reduce((t, l) => t + l.montantHtCents, 0)).toBe(attendu);
     });
   });
 
   // DÉFAUT V1-C-3 — l'oubli du calcul mensuel n'est signalé à personne.
   test.fixme("V1-C-3 : à J+5, l'oubli du calcul de novembre est signalé", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs(bascule("2039-12-01"));
-      try {
-        await freelanceDeNovembre(2039);
-        const [j6] = await jouer([{ etape: "suivi", maintenant: "2039-12-06T07:15:00Z" }]);
-        expect((j6 as { alerteNonValides: number }).alerteNonValides).toBeGreaterThan(0);
-      } finally {
-        await restaurer();
-      }
+      await freelanceDeNovembre(2039);
+      const [j6] = await jouer([
+        { etape: "suivi", maintenant: "2039-12-06T07:15:00Z", bascule: "2039-12-01" },
+      ]);
+      expect((j6 as { alerteNonValides: number }).alerteNonValides).toBeGreaterThan(0);
     });
   });
 });

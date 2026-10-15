@@ -4,7 +4,6 @@ import { expect } from "@playwright/test";
 
 import { prisma } from "./base";
 import { jouerUne } from "./argent-execution";
-import { semerInterrupteurs, type ValeurInterrupteur } from "./interrupteurs";
 import { jobEnFile } from "./argent-puits";
 import { URL_PUITS } from "./puits-smtp";
 
@@ -16,37 +15,6 @@ export const HORS_BANC = !URL_PUITS && process.env["BANC_FORMATEURS"] !== "1";
 
 /** Bascule commune aux scénarios 2037 (un 1er du mois). */
 export const BASCULE_2037 = "2037-10-01";
-
-/** L'interrupteur de la date de bascule, au format de `interrupteurs.ts`. */
-export function bascule(date: string | null): Record<string, ValeurInterrupteur> {
-  return { "formateurs.passage_paiement": { date } };
-}
-
-/**
- * `formateurs.textes_valides` allumé et chaque texte nommé validé comme après « Valider »
- * sur l'écran des textes : `textes_valides.<gabarit>[#variante]` = `{ valide, empreinte }`,
- * l'empreinte étant celle du texte ACTUEL (sans elle, le texte est « à revalider » et
- * l'envoi refuse). Rend la remise à l'état d'avant.
- */
-export async function semerTextesValides(
-  cles: readonly string[],
-  autres: Record<string, ValeurInterrupteur> = {},
-): Promise<() => Promise<void>> {
-  const empreintes = await jouerUne<Record<string, string | null>>({
-    etape: "empreintes-textes",
-    cles,
-  });
-  const lignes: Record<string, ValeurInterrupteur> = {
-    "formateurs.textes_valides": { actif: true },
-    ...autres,
-  };
-  for (const c of cles) {
-    const e = empreintes[c];
-    if (!e) throw new Error(`texte « ${c} » : aucune empreinte attendue (écran des textes)`);
-    lignes[`textes_valides.${c}`] = { valide: true, empreinte: e };
-  }
-  return semerInterrupteurs(lignes);
-}
 
 /**
  * Les ENVOIS d'un gabarit pour une adresse : une entrée par `jobId` distinct (la plus

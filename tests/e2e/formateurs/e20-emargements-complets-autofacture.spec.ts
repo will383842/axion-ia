@@ -19,13 +19,7 @@
 import { expect, test } from "@playwright/test";
 
 import { prisma } from "../fixtures/formateurs/base";
-import {
-  ATTENTE,
-  BASCULE_2037,
-  HORS_BANC,
-  bascule,
-  attendreEnvois,
-} from "../fixtures/formateurs/argent-commun";
+import { BASCULE_2037, HORS_BANC, attendreEnvois } from "../fixtures/formateurs/argent-commun";
 import {
   echeanceDepuisFacture,
   honorairesAnimationCents,
@@ -34,7 +28,7 @@ import {
   ttcCents,
 } from "../fixtures/formateurs/argent-contre-calcul";
 import { jouer } from "../fixtures/formateurs/argent-execution";
-import { jobF36, messagesLus } from "../fixtures/formateurs/argent-puits";
+import { jobF36 } from "../fixtures/formateurs/argent-puits";
 import {
   lignesVivantes,
   relevesDe,
@@ -43,7 +37,6 @@ import {
   semerSession,
 } from "../fixtures/formateurs/argent-semis";
 import { avecVerrouArgent } from "../fixtures/formateurs/argent-verrou";
-import { semerInterrupteurs } from "../fixtures/formateurs/interrupteurs";
 import { viderPuitsPour } from "../fixtures/formateurs/puits-smtp";
 
 const TARIF = 35_000;
@@ -55,11 +48,6 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
 
   test("relevé de mission, F36, échéance à facture + 30 j, aucun relevé mensuel", async () => {
     await avecVerrouArgent(async () => {
-      const restaurer = await semerInterrupteurs({
-        ...bascule(BASCULE_2037),
-        // Le bilan de fin de formation n'est pas l'objet d'E20 (voir E-C1) : coupé.
-        "formateurs.bilan_fin_formation": { actif: false },
-      });
       const formateur = await semerFormateur({ prenom: "Elise" });
       try {
         const session = await semerSession({
@@ -158,8 +146,8 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
         expect(jourDeParis(f.autofactureAt!)).toBe(jourFacture);
 
         // F36 : une ligne au journal, et le job posé en file porte le montant et la date
-        // limite contre-calculés. Le banc a un seau R2 simulé (job `banc-formateurs`) : le
-        // worker joint la pièce et l'e-mail ARRIVE au puits, objet portant le numéro de la facture.
+        // limite contre-calculés. On ne l'attend pas au puits : sa pièce jointe dépend du
+        // stockage R2 (simulé ou absent selon le banc), et le worker est bridé.
         await attendreEnvois(formateur.email, "autofacture-transmission", 1);
         const job = await jobF36(r.id);
         expect(job?.to).toBe(formateur.email);
@@ -170,14 +158,9 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
         });
         expect(String(job?.payload["montantLabel"]).replace(/\s/g, " ")).toBe("700,00 € TTC");
         expect(String(job?.payload["missionLabel"])).toContain("du 12/10/2037 au 13/10/2037");
-        await expect
-          .poll(async () => (await messagesLus(formateur.email)).length, ATTENTE)
-          .toBe(1);
-        const [recu] = await messagesLus(formateur.email);
-        expect(recu!.sujet).toContain(f.numeroFacture!);
 
         // ── Le calcul mensuel d'octobre ne paie PAS ce couple une seconde fois.
-        await jouer([{ etape: "run-mensuel", year: 2037, month: 10 }]);
+        await jouer([{ etape: "run-mensuel", year: 2037, month: 10, bascule: BASCULE_2037 }]);
         const vivantes = await lignesVivantes(formateur.id, session.id);
         expect(vivantes.map((l) => l.origine)).toEqual(["passage_mission"]);
         expect(vivantes.reduce((s, l) => s + l.montantHtCents, 0)).toBe(ht);
@@ -186,7 +169,6 @@ test.describe("@formateurs E20 — émargements complets, autofacture, échéanc
         });
         expect(mensuels).toBe(0);
       } finally {
-        await restaurer();
         await viderPuitsPour(formateur.email);
       }
     });
