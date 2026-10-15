@@ -167,6 +167,27 @@ describe("dossier en ligne du formateur — cloisonnement (IDOR)", () => {
     });
   });
 
+  it("V1-A-11 (relecture) — l'adresse n'est écrite que si le registre ne la donne pas", async () => {
+    interrupteur(true);
+    h.updateMany.mockResolvedValue({ count: 1 });
+    const jeton = jetonDossierFormateur(A, 0, MAINTENANT)!;
+    const d = (await lireDossierParLien(A, jeton, MAINTENANT))!;
+    const saisie = {
+      siret: "73282932000074",
+      nda: "84691234569",
+      regimeTva: "franchise_293b" as const,
+      iban: null,
+      adressePro: "99 avenue Ailleurs 75001 Paris",
+    };
+    await enregistrerActivite(d, saisie);
+    await enregistrerActivite(d, { ...saisie, sansAdresseAuRegistre: false });
+    await enregistrerActivite(d, { ...saisie, sansAdresseAuRegistre: true });
+    const datas = h.updateMany.mock.calls.map((c) => c[0].data as Record<string, unknown>);
+    expect(datas[0]).not.toHaveProperty("adresseProfessionnelle");
+    expect(datas[1]).not.toHaveProperty("adresseProfessionnelle");
+    expect(datas[2]).toMatchObject({ adresseProfessionnelle: "99 avenue Ailleurs 75001 Paris" });
+  });
+
   it("l'IBAN ne s'enregistre pas sans secret d'empreinte, et n'est jamais écrit en clair", async () => {
     const jeton = jetonDossierFormateur(A, 0, MAINTENANT)!;
     const d = (await lireDossierParLien(A, jeton, MAINTENANT))!;

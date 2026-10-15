@@ -116,6 +116,7 @@ describe("V1-A-11 — l'adresse professionnelle quand le registre ne la donne pa
     expect(r).toEqual({ ok: true });
     expect(h.enregistrerActivite.mock.calls[0]?.[1]).toMatchObject({
       adressePro: "12 rue des Lilas 69003 Lyon",
+      sansAdresseAuRegistre: true,
     });
   });
 
@@ -135,5 +136,24 @@ describe("V1-A-11 — l'adresse professionnelle quand le registre ne la donne pa
     h.lireEtablissementParSiret.mockResolvedValue(registre("1 RUE DU BANC 69000 LYON"));
     expect(await enregistrerActiviteAction(formulaire())).toEqual({ ok: true });
     expect(h.enregistrerActivite.mock.calls[0]?.[1]).toMatchObject({ adressePro: null });
+  });
+
+  it("le registre donne l'adresse : une adresse envoyée quand même est ignorée (relecture)", async () => {
+    h.lireEtablissementParSiret.mockResolvedValue(registre("1 RUE DU BANC 69000 LYON"));
+    const r = await enregistrerActiviteAction(
+      formulaire({ adressePro: "99 avenue Ailleurs 75001 Paris" }),
+    );
+    expect(r).toEqual({ ok: true });
+    expect(h.enregistrerActivite.mock.calls[0]?.[1]).toMatchObject({
+      adressePro: null,
+      sansAdresseAuRegistre: false,
+    });
+    // Même illisible, elle n'est pas jugée : elle n'est pas lue.
+    vi.clearAllMocks();
+    h.lireDossierParLien.mockResolvedValue(dossier(null));
+    h.enregistrerActivite.mockResolvedValue({ ok: true });
+    expect(await enregistrerActiviteAction(formulaire({ adressePro: "chez moi" }))).toEqual({
+      ok: true,
+    });
   });
 });

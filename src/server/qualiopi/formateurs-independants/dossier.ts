@@ -269,8 +269,13 @@ export interface Activite {
   regimeTva: RegimeTvaDossier;
   /** IBAN saisi, déjà validé (SEPA) ; `null` = inchangé. */
   iban: string | null;
-  /** V1-A-11 — adresse professionnelle saisie, déjà validée ; absente ou `null` = inchangée. */
+  /**
+   * V1-A-11 — adresse professionnelle saisie, déjà validée ; absente ou `null` = inchangée.
+   * Écrite SEULEMENT avec `sansAdresseAuRegistre` : sinon le registre fait foi.
+   */
   adressePro?: string | null;
+  /** Le registre, rejugé côté serveur, ne donne pas l'adresse (diffusion partielle). */
+  sansAdresseAuRegistre?: boolean;
 }
 
 /** Étape 2 : SIRET, numéro de déclaration, régime de TVA et, avant l'envoi, l'IBAN. */
@@ -279,7 +284,9 @@ export async function enregistrerActivite(d: DossierVue, a: Activite): Promise<R
     siret: a.siret,
     sousTraitantNda: a.nda,
     regimeTvaHonoraires: a.regimeTva,
-    ...(a.adressePro ? { adresseProfessionnelle: a.adressePro } : {}),
+    ...(a.sansAdresseAuRegistre === true && a.adressePro
+      ? { adresseProfessionnelle: a.adressePro }
+      : {}),
   };
   const where = gardeEcriture(d);
   if (a.iban !== null) {

@@ -220,8 +220,12 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
   }
   // V1-A-11 — entreprise en diffusion partielle : le registre ne donne pas l'adresse que
   // le contrat imprime. Elle est demandée ici, sans quoi le contrat ne se prépare pas.
-  const adressePro = normaliserAdressePro(champ(fd, "adressePro", 400));
+  // 🔴 Le registre donne l'adresse : une `adressePro` envoyée quand même est IGNORÉE (elle
+  // écraserait celle du contrat ; seul l'écran normal s'abstient de l'envoyer).
   const sansAdresseAuRegistre = registre.ok && (registre.entreprise.adresse ?? "").trim() === "";
+  const adressePro = sansAdresseAuRegistre
+    ? normaliserAdressePro(champ(fd, "adressePro", 400))
+    : "";
   if (adressePro !== "" && !adresseProValide(adressePro)) {
     return { ok: false, message: TEXTES.adresseProManquante };
   }
@@ -235,6 +239,7 @@ export async function enregistrerActiviteAction(fd: FormData): Promise<Resultat>
       regimeTva: tva,
       iban: iban || null,
       adressePro: adressePro || null,
+      sansAdresseAuRegistre,
     });
   } catch (e) {
     signaler("activite", e);
