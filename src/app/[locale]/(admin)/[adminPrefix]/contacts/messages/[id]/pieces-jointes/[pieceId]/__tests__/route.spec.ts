@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => ({
   auth: vi.fn(),
   findFirst: vi.fn(),
-  getObjectBufferR2: vi.fn(),
+  fluxTelechargementR2: vi.fn(),
   activityLogCreate: vi.fn(),
 }));
 
@@ -21,7 +21,7 @@ vi.mock("@/lib/prisma", () => ({
     activityLog: { create: h.activityLogCreate },
   },
 }));
-vi.mock("@/lib/r2-storage", () => ({ getObjectBufferR2: h.getObjectBufferR2 }));
+vi.mock("@/lib/r2-storage", () => ({ fluxTelechargementR2: h.fluxTelechargementR2 }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
 
 import { GET } from "../route";
@@ -37,7 +37,7 @@ beforeEach(() => {
     nomFichier: "Cahier des charges.pdf",
     cleStockage: "contact/pieces-jointes/2026/x/y.pdf",
   });
-  h.getObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.7"));
+  h.fluxTelechargementR2.mockResolvedValue(new Blob(["%PDF-1.7"]).stream());
 });
 
 describe("route de téléchargement d'une pièce jointe", () => {
@@ -46,14 +46,14 @@ describe("route de téléchargement d'une pièce jointe", () => {
     const r = await appel();
     expect(r.status).toBe(401);
     expect(h.findFirst).not.toHaveBeenCalled();
-    expect(h.getObjectBufferR2).not.toHaveBeenCalled();
+    expect(h.fluxTelechargementR2).not.toHaveBeenCalled();
   });
 
   it("refuse une session sans rôle admin (403)", async () => {
     h.auth.mockResolvedValue({ user: { id: "u1", role: "stagiaire" } });
     const r = await appel();
     expect(r.status).toBe(403);
-    expect(h.getObjectBufferR2).not.toHaveBeenCalled();
+    expect(h.fluxTelechargementR2).not.toHaveBeenCalled();
   });
 
   it("cherche la pièce DANS sa demande, et rend 404 sinon", async () => {
@@ -61,7 +61,12 @@ describe("route de téléchargement d'une pièce jointe", () => {
     h.findFirst.mockResolvedValue(null);
     const r = await appel();
     expect(r.status).toBe(404);
-    expect(h.findFirst.mock.calls[0]![0].where).toEqual({ id: PIECE, submissionId: SUB });
+    // …et seulement une pièce REÇUE : une pièce en attente ou refusée ne se sert pas.
+    expect(h.findFirst.mock.calls[0]![0].where).toEqual({
+      id: PIECE,
+      submissionId: SUB,
+      statut: "recue",
+    });
   });
 
   it("rend 404 sur un identifiant mal formé, sans requête", async () => {
@@ -82,5 +87,6 @@ describe("route de téléchargement d'une pièce jointe", () => {
     );
     expect(r.headers.get("cache-control")).toBe("private, no-store");
     expect(h.activityLogCreate).toHaveBeenCalledTimes(1);
+    expect(await r.text()).toBe("%PDF-1.7");
   });
 });
