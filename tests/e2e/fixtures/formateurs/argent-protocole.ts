@@ -66,11 +66,11 @@ export type EtapeArgent =
   /**
    * Les demandes de contresignature (F34, `envoyerDemandesContresignature`).
    *
-   * `retenirLeWorker` : la file d'e-mails est mise en PAUSE le temps du passage, puis
-   * reprise. Raison : défaut V1-C-11 — `enqueueEmail` pose le job AVANT la ligne
+   * `retenirLeWorker` : les envois enfilés par le passage sont posés en DIFFÉRÉ le
+   * temps du passage, puis promus (la file, partagée, n'est jamais mise en pause). Raison : défaut V1-C-11 — `enqueueEmail` pose le job AVANT la ligne
    * « pending » du journal ; un worker qui le termine entre les deux crée sa propre
    * ligne, et le même envoi en compte deux. F34 compte ces lignes (rang, plafond de 3) :
-   * la course couperait un rappel au hasard. La pause écarte la course (consignée à part)
+   * la course couperait un rappel au hasard. La retenue écarte la course (consignée à part)
    * pour éprouver la CADENCE ; rien du passage lui-même n'est changé.
    */
   | {

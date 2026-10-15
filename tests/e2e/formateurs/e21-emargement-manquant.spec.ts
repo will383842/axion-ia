@@ -22,7 +22,7 @@
 // (rang et plafond de 3, emargement/demande-contresignature.ts ~l. 214) et les campagnes
 // F40/F41 aussi (pieces-relances.ts ~l. 542) : un rappel peut être sauté au hasard.
 // Constaté sur le banc CI (run 38638829976, tentative 2 : « 2 ligne(s) » pour un F34).
-// Les scénarios d'argent écartent cette course pour éprouver la cadence (file en pause le
+// Les scénarios d'argent écartent cette course pour éprouver la cadence (envois retenus le
 // temps d'un passage, `retenirLeWorker`) et comptent les envois par `jobId` distinct.
 //
 // ÉCARTS : `enqueueEmail` date sa ligne de journal à l'heure RÉELLE ; la garde des 23 h

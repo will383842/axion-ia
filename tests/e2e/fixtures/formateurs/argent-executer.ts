@@ -124,18 +124,110 @@ async function retirerF36ApresUnRefus(statementId: string): Promise<void> {
 }
 
 /**
- * Joue `fn` file d'e-mails en PAUSE, puis la reprend (V1-C-11, voir le protocole) : les
- * jobs enfilés pendant `fn` attendent que leur ligne « pending » soit écrite, et le worker
- * la met à jour au lieu d'en créer une seconde.
+ * Joue `fn` en RETENANT SEULEMENT LES ENVOIS qu'elle enfile (V1-C-11, voir le protocole) :
+ * ces jobs sont posés en différé, puis promus une fois `fn` terminée, quand leur ligne
+ * « pending » est écrite. La file d'e-mails étant PARTAGÉE avec les autres équipes du
+ * job, elle n'est jamais mise en pause : les envois des autres scénarios continuent de
+ * partir pendant ce temps. Seul `add` de CE processus est enveloppé.
  */
 async function sousWorkerRetenu<T>(fn: () => Promise<T>): Promise<T> {
   if (!emailsQueue) return fn();
-  await emailsQueue.pause();
+  const file = emailsQueue;
+  const ajouter = file.add.bind(file);
+  const retenus: Array<{ promote: () => Promise<void> }> = [];
+  (file as { add: unknown }).add = async (nom: string, donnees: unknown, opts?: object) => {
+    const job = await (ajouter as (...a: unknown[]) => Promise<{ promote: () => Promise<void> }>)(
+      nom,
+      donnees,
+      { ...opts, delay: 3_600_000 },
+    );
+    retenus.push(job);
+    return job;
+  };
   try {
     return await fn();
   } finally {
-    await emailsQueue.resume();
+    (file as { add: unknown }).add = ajouter;
+    for (const job of retenus) await job.promote().catch(() => undefined);
   }
+}
+
+async function jouerCorrection(e: Extract<EtapeArgent, { etape: "correction" }>): Promise<unknown> {
+  const ANNULE = new Error("banc : transaction annulée");
+  let observe: unknown = null;
+  await prisma
+    .$transaction(
+      async (tx) => {
+        if (e.retraitMd === "simule")
+          await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
+        const piece = await tx.trainerStatement.findUniqueOrThrow({
+          where: { id: e.statementId },
+          select: { periodeYear: true, periodeMonth: true, tvaRegime: true },
+        });
+        await prendreVerrousRemuneration(tx, {
+          periodes: [{ year: piece.periodeYear, month: piece.periodeMonth }],
+          trainerIds: [e.mois.trainerId],
+        });
+        let correction: unknown;
+        if (e.geste === "avoir") {
+          correction = await emettreAvoirMission(tx, e.statementId, quand(e.maintenant));
+        } else {
+          const { count } = await tx.trainerStatement.updateMany({
+            where: {
+              id: e.statementId,
+              statut: { in: ["brouillon", "a_valider", "valide"] },
+              autofactureAt: null,
+            },
+            data: { statut: "annule" },
+          });
+          if (count === 1) {
+            await tx.trainerFeeLine.updateMany({
+              where: { statementId: e.statementId, statut: { not: "annule" } },
+              data: { statut: "annule", annuleMotif: "autre" },
+            });
+          }
+          correction = { annule: count === 1 };
+        }
+        const [mois] = parMoisCivil(demiJourneesSignees(e.mois.contresignatures));
+        const conditions = {
+          tarifJourneeHtCents: e.mois.tarifJourneeHtCents,
+          forfaitDeplacementParJourHtCents: null,
+          regimeTva: piece.tvaRegime,
+        } as const;
+        const aEcrire = {
+          trainerId: e.mois.trainerId,
+          sessionId: e.mois.sessionId,
+          releve: calculerReleveDuMois(mois!, conditions),
+          regimeTva: piece.tvaRegime,
+          tarifJourneeHtCents: e.mois.tarifJourneeHtCents,
+          sansEcart: true,
+        };
+        // Deux passages successifs : le premier réécrit (ou non), le second n'ajoute rien.
+        const reecritures = [
+          await ecrireMoisDansTransaction(tx, aEcrire, quand(e.maintenant)),
+          await ecrireMoisDansTransaction(tx, aEcrire, quand(e.maintenant)),
+        ];
+        const releves = await tx.trainerStatement.findMany({
+          where: { trainerId: e.mois.trainerId, sessionId: e.mois.sessionId },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            statut: true,
+            avoirDeId: true,
+            totalHtCents: true,
+            totalTtcCents: true,
+            feeLines: { select: { statut: true, montantHtCents: true, objet: true } },
+          },
+        });
+        observe = { correction, reecritures, releves };
+        throw ANNULE;
+      },
+      { timeout: 30_000 },
+    )
+    .catch((err: unknown) => {
+      if (err !== ANNULE) throw err;
+    });
+  return observe;
 }
 
 async function jouerEtape(e: EtapeArgent): Promise<unknown> {
@@ -326,81 +418,23 @@ async function jouerEtape(e: EtapeArgent): Promise<unknown> {
         maintenant: quand(e.maintenant),
       });
     case "correction": {
-      const ANNULE = new Error("banc : transaction annulée");
-      let observe: unknown = null;
-      await prisma
-        .$transaction(
-          async (tx) => {
-            if (e.retraitMd === "simule")
-              await tx.$executeRawUnsafe(`DROP INDEX "statement_unique_trainer_periode"`);
-            const piece = await tx.trainerStatement.findUniqueOrThrow({
-              where: { id: e.statementId },
-              select: { periodeYear: true, periodeMonth: true, tvaRegime: true },
-            });
-            await prendreVerrousRemuneration(tx, {
-              periodes: [{ year: piece.periodeYear, month: piece.periodeMonth }],
-              trainerIds: [e.mois.trainerId],
-            });
-            let correction: unknown;
-            if (e.geste === "avoir") {
-              correction = await emettreAvoirMission(tx, e.statementId, quand(e.maintenant));
-            } else {
-              const { count } = await tx.trainerStatement.updateMany({
-                where: {
-                  id: e.statementId,
-                  statut: { in: ["brouillon", "a_valider", "valide"] },
-                  autofactureAt: null,
-                },
-                data: { statut: "annule" },
-              });
-              if (count === 1) {
-                await tx.trainerFeeLine.updateMany({
-                  where: { statementId: e.statementId, statut: { not: "annule" } },
-                  data: { statut: "annule", annuleMotif: "autre" },
-                });
-              }
-              correction = { annule: count === 1 };
-            }
-            const [mois] = parMoisCivil(demiJourneesSignees(e.mois.contresignatures));
-            const conditions = {
-              tarifJourneeHtCents: e.mois.tarifJourneeHtCents,
-              forfaitDeplacementParJourHtCents: null,
-              regimeTva: piece.tvaRegime,
-            } as const;
-            const aEcrire = {
-              trainerId: e.mois.trainerId,
-              sessionId: e.mois.sessionId,
-              releve: calculerReleveDuMois(mois!, conditions),
-              regimeTva: piece.tvaRegime,
-              tarifJourneeHtCents: e.mois.tarifJourneeHtCents,
-              sansEcart: true,
-            };
-            // Deux passages successifs : le premier réécrit (ou non), le second n'ajoute rien.
-            const reecritures = [
-              await ecrireMoisDansTransaction(tx, aEcrire, quand(e.maintenant)),
-              await ecrireMoisDansTransaction(tx, aEcrire, quand(e.maintenant)),
-            ];
-            const releves = await tx.trainerStatement.findMany({
-              where: { trainerId: e.mois.trainerId, sessionId: e.mois.sessionId },
-              orderBy: { createdAt: "asc" },
-              select: {
-                id: true,
-                statut: true,
-                avoirDeId: true,
-                totalHtCents: true,
-                totalTtcCents: true,
-                feeLines: { select: { statut: true, montantHtCents: true, objet: true } },
-              },
-            });
-            observe = { correction, reecritures, releves };
-            throw ANNULE;
-          },
-          { timeout: 30_000 },
-        )
-        .catch((err: unknown) => {
-          if (err !== ANNULE) throw err;
-        });
-      return observe;
+      if (e.retraitMd !== "simule") return jouerCorrection(e);
+      // `DROP INDEX` pose un verrou exclusif sur la table des relevés jusqu'à l'annulation
+      // de la transaction : les autres équipes du job y écrivent aussi. L'attente est donc
+      // BORNÉE (`lock_timeout`) et l'étape rejouée si le verrou ou un interblocage la refuse,
+      // au lieu de figer ou de faire échouer un scénario voisin.
+      for (let essai = 1; ; essai++) {
+        try {
+          return await jouerCorrection(e);
+        } catch (err) {
+          const code = (err as { meta?: { code?: string }; code?: string }).meta?.code;
+          const msg = String((err as Error).message ?? err);
+          const verrou =
+            code === "55P03" || code === "40P01" || /55P03|40P01|lock timeout|deadlock/i.test(msg);
+          if (!verrou || essai >= 6) throw err;
+          await new Promise((res) => setTimeout(res, 500 * essai));
+        }
+      }
     }
     case "etat-piece": {
       const e2 = etatPiece(await lirePiecesSuivies(e.trainerId), e.type, quand(e.maintenant));

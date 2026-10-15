@@ -13,23 +13,37 @@ import { Redis } from "ioredis";
 
 const CLE = "banc:formateurs:argent:verrou";
 /** Au-delà, un verrou orphelin (processus tué) se libère seul. */
-const BAIL_MS = 180_000;
+const BAIL_MS = 60_000;
+/** Le détenteur vivant renouvelle son bail bien avant l'échéance (un scénario peut durer des minutes). */
+const RENOUVELLEMENT_MS = 10_000;
+
+// Comparer-puis-agir en UN seul appel : un `get` suivi d'un `del` laisserait un
+// intervalle où le verrou a pu changer de main.
+const PROLONGER = `if redis.call("get", KEYS[1]) == ARGV[1] then return redis.call("pexpire", KEYS[1], ARGV[2]) else return 0 end`;
+const LIBERER = `if redis.call("get", KEYS[1]) == ARGV[1] then return redis.call("del", KEYS[1]) else return 0 end`;
 
 export async function avecVerrouArgent<T>(fn: () => Promise<T>): Promise<T> {
   const redis = new Redis(process.env["REDIS_URL"] ?? "redis://localhost:6379", {
     maxRetriesPerRequest: 2,
   });
   const jeton = randomUUID();
+  let renouvellement: ReturnType<typeof setInterval> | undefined;
   try {
     const limite = Date.now() + 600_000;
     while ((await redis.set(CLE, jeton, "PX", BAIL_MS, "NX")) !== "OK") {
       if (Date.now() > limite) throw new Error("verrou argent : attente de plus de 10 min");
       await new Promise((r) => setTimeout(r, 500));
     }
+    // Tant que `fn` tourne, le bail est renouvelé : sans cela, un scénario de plus de
+    // 180 s laissait un second scénario d'argent entrer et couper ses interrupteurs.
+    renouvellement = setInterval(() => {
+      void redis.eval(PROLONGER, 1, CLE, jeton, String(BAIL_MS)).catch(() => undefined);
+    }, RENOUVELLEMENT_MS);
     return await fn();
   } finally {
-    // Ne libère que SON verrou.
-    if ((await redis.get(CLE)) === jeton) await redis.del(CLE);
+    if (renouvellement) clearInterval(renouvellement);
+    // Ne libère que SON verrou (comparaison et suppression atomiques).
+    await redis.eval(LIBERER, 1, CLE, jeton).catch(() => undefined);
     redis.disconnect();
   }
 }
