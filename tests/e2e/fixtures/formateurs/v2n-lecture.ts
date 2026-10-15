@@ -25,7 +25,16 @@ export const HOTES_EXTERIEURS_ADMIS = [
   "formalites.entreprises.gouv.fr",
   "annuaire-entreprises.data.gouv.fr",
   "www.linkedin.com",
+  // Pied commun des e-mails du site (réseaux de la marque).
+  "www.facebook.com",
+  "x.com",
+  "www.instagram.com",
+  "www.youtube.com",
+  // Adresses FICTIVES posées par les données du banc (lieu de visio d'une session).
+  "example.test",
 ];
+
+const LANGUES = new Set(["fr", "en"]);
 
 function feuille(dossier: string): boolean {
   return ["page.tsx", "page.ts", "route.ts", "route.tsx"].some((f) =>
@@ -44,8 +53,10 @@ function enfants(dossier: string): string[] {
 }
 
 function resoudre(dossier: string, segments: readonly string[]): boolean {
-  // Les groupes `(x)` ne consomment aucun segment.
-  for (const g of enfants(dossier).filter((n) => /^\(.+\)$/.test(n))) {
+  // Les groupes `(x)` ne consomment aucun segment. La console (`(admin)/[adminPrefix]`)
+  // est écartée : son préfixe dynamique accepterait n'importe quelle adresse, et un
+  // e-mail au formateur n'a rien à y faire.
+  for (const g of enfants(dossier).filter((n) => /^\(.+\)$/.test(n) && n !== "(admin)")) {
     if (resoudre(path.join(dossier, g), segments)) return true;
   }
   if (segments.length === 0) return feuille(dossier);
@@ -53,6 +64,8 @@ function resoudre(dossier: string, segments: readonly string[]): boolean {
   const noms = enfants(dossier);
   if (noms.includes(tete) && resoudre(path.join(dossier, tete), reste)) return true;
   for (const n of noms.filter((x) => /^\[[^.[\]][^\]]*\]$/.test(x))) {
+    // `[locale]` n'accepte que les langues du site.
+    if (n === "[locale]" && !LANGUES.has(tete)) continue;
     if (resoudre(path.join(dossier, n), reste)) return true;
   }
   // `[[...x]]` (attrape-tout FACULTATIF) mène à une vraie page ; `[...x]` non.
@@ -66,7 +79,8 @@ function resoudre(dossier: string, segments: readonly string[]): boolean {
 export function routeExiste(adresse: string): boolean {
   const u = new URL(adresse, "https://axion-ia.com");
   const segments = decodeURIComponent(u.pathname).split("/").filter(Boolean);
-  return resoudre(APP, segments);
+  // Sans langue en tête (« / », « /a-propos »), le proxy du site redirige vers « /fr/… ».
+  return resoudre(APP, segments) || resoudre(APP, ["fr", ...segments]);
 }
 
 /** L'adresse vise-t-elle le site lui-même ? */
