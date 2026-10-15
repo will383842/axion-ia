@@ -28,7 +28,7 @@ function evenement(rdv: RendezVousSimule): Record<string, unknown> {
   return {
     uri: eventUriDe(rdv),
     name: rdv.nomType,
-    status: "active",
+    status: rdv.annule ? "canceled" : "active",
     event_type: eventTypeUriDe(rdv),
     start_time: rdv.debut,
     end_time: fin.toISOString(),
@@ -42,11 +42,11 @@ function invite(rdv: RendezVousSimule): Record<string, unknown> {
     event: eventUriDe(rdv),
     name: rdv.invite.nom,
     email: rdv.invite.email,
-    status: "active",
+    status: rdv.annule ? "canceled" : "active",
     timezone: "Europe/Paris",
     no_show: null,
     questions_and_answers: [],
-    tracking: {},
+    tracking: rdv.tracking ?? {},
     cancel_url: `https://calendly.example.test/cancellations/BANC-${rdv.cle}`,
     reschedule_url: `https://calendly.example.test/reschedulings/BANC-${rdv.cle}`,
   };
@@ -74,7 +74,11 @@ export function apiCalendlySimulee(rendezVous: readonly RendezVousSimule[]): Rou
       return json({ collection: typesConnus(), pagination: { next_page: null } });
     }
     if (chemin === "/scheduled_events") {
-      return json({ collection: rendezVous.map(evenement), pagination: { next_page: null } });
+      // `status=active` : comme Calendly, la liste ne montre pas un rendez-vous annulé.
+      return json({
+        collection: rendezVous.filter((r) => !r.annule).map(evenement),
+        pagination: { next_page: null },
+      });
     }
     for (const rdv of rendezVous) {
       const ev = new URL(eventUriDe(rdv)).pathname;

@@ -48,3 +48,12 @@ export async function viderPuitsPour(adresse: string): Promise<void> {
   if (!URL_PUITS) return;
   await fetch(requete(adresse), { method: "DELETE" });
 }
+
+/** Le corps HTML et texte d'un message capté. */
+export async function corpsDuMessage(id: string): Promise<{ html: string; texte: string }> {
+  if (!URL_PUITS) throw new Error("banc @formateurs : BANC_PUITS_SMTP_URL absente");
+  const reponse = await fetch(`${URL_PUITS}/api/v1/message/${encodeURIComponent(id)}`);
+  if (!reponse.ok) throw new Error(`puits SMTP : HTTP ${reponse.status}`);
+  const m = (await reponse.json()) as { HTML?: string; Text?: string };
+  return { html: m.HTML ?? "", texte: m.Text ?? "" };
+}

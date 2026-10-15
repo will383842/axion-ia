@@ -29,6 +29,13 @@ export interface RendezVousSimule {
   readonly debut: string;
   readonly dureeMinutes: number;
   readonly invite: { readonly nom: string; readonly email: string };
+  /**
+   * Le `tracking` de l'invité tel que Calendly le rend (`utm_content` porte le
+   * marqueur `fa-<id>` d'un lien de réservation formateur). Absent = `{}`.
+   */
+  readonly tracking?: Readonly<Record<string, string>>;
+  /** L'invité a annulé : l'API rend `status: "canceled"`, la liste ne le montre plus. */
+  readonly annule?: boolean;
 }
 
 const API = "https://api.calendly.com";
@@ -40,20 +47,26 @@ export function rendezVousFictif(entree: {
   readonly prenom: string;
   readonly joursPlusTard?: number;
   readonly dureeMinutes?: number;
+  /** Début exact (ISO 8601) — prime sur `joursPlusTard`. */
+  readonly debut?: string;
+  /** Adresse imposée (la même personne sur deux réservations). */
+  readonly email?: string;
+  readonly tracking?: Readonly<Record<string, string>>;
 }): RendezVousSimule {
   const cle = randomUUID().slice(0, 8);
   const debut = new Date();
   debut.setUTCDate(debut.getUTCDate() + (entree.joursPlusTard ?? 3));
   debut.setUTCHours(10, 0, 0, 0);
   return {
+    ...(entree.tracking ? { tracking: entree.tracking } : {}),
     cle,
     nomType: entree.nomType,
     typeConnu: entree.typeConnu,
-    debut: debut.toISOString(),
+    debut: entree.debut ?? debut.toISOString(),
     dureeMinutes: entree.dureeMinutes ?? 30,
     invite: {
       nom: `${entree.prenom} Banc-Essai`,
-      email: `${entree.prenom.toLowerCase()}.${cle}@example.test`,
+      email: entree.email ?? `${entree.prenom.toLowerCase()}.${cle}@example.test`,
     },
   };
 }
@@ -87,8 +100,17 @@ export const UTILISATEUR_SIMULE = `${API}/users/BANC-UTILISATEUR`;
  * vraie livraison, octet pour octet sérialisé une seule fois.
  */
 export function corpsInviteeCreated(rdv: RendezVousSimule): string {
+  return corpsLivraison(rdv, "invitee.created");
+}
+
+/** Corps d'une livraison `invitee.canceled` — signée comme toute autre. */
+export function corpsInviteeCanceled(rdv: RendezVousSimule): string {
+  return corpsLivraison({ ...rdv, annule: true }, "invitee.canceled");
+}
+
+function corpsLivraison(rdv: RendezVousSimule, evenement: string): string {
   return JSON.stringify({
-    event: "invitee.created",
+    event: evenement,
     created_at: new Date().toISOString(),
     created_by: UTILISATEUR_SIMULE,
     payload: {
@@ -96,7 +118,8 @@ export function corpsInviteeCreated(rdv: RendezVousSimule): string {
       event: eventUriDe(rdv),
       name: rdv.invite.nom,
       email: rdv.invite.email,
-      status: "active",
+      status: rdv.annule ? "canceled" : "active",
+      tracking: rdv.tracking ?? {},
       scheduled_event: {
         uri: eventUriDe(rdv),
         name: rdv.nomType,

@@ -230,6 +230,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    des réponses formateurs (import paresseux, interrupteur `formateurs.reponses_formateurs`).
   "src/features/admin-job-applications/invitation-formateur-actions.ts",
   "src/features/admin-job-applications/reponses-entrantes-candidature.ts",
+  // Banc @formateurs — vérification n° 1 (équipe A) : le banc VÉRIFIE le domaine, il ne le
+  //    réimplémente pas. L'allumage lit les règles de préalables et les empreintes de textes
+  //    (`allumage.ts`) ; l'exécuteur appelle les actions et passages réels (`etapes-catalogue.ts`) ;
+  //    trois specs lisent une règle PURE (motifs orange, version du gabarit, règle de mission).
+  "tests/e2e/fixtures/formateurs/allumage.ts",
+  "tests/e2e/fixtures/formateurs/serveur/etapes-catalogue.ts",
+  "tests/e2e/formateurs/e09-registre-orange-et-muet.spec.ts",
+  "tests/e2e/formateurs/e10-code-signature-et-contrat.spec.ts",
+  "tests/e2e/formateurs/e12-nda-en-cours.spec.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
@@ -586,6 +595,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    dans le test ne prouverait rien. Il ne fait que jouer des étapes et rendre
   //    leur résultat ; les specs constatent en base.
   "tests/e2e/fixtures/formateurs/argent-executer.ts",
+  // ── Banc @formateurs, scénarios missions (vérification n° 1, équipe B). Les
+  //    specs ne nomment le domaine qu'en CHAÎNES, passées au processus `tsx` du
+  //    banc ; ce module d'aides, chargé DANS ce processus, est le seul à
+  //    l'importer : il produit un contrat-cadre réel d'une version antérieure
+  //    (mêmes briques que `preparerContratCadre`, qui n'émet que la dernière)
+  //    et rend un e-mail en file. Nommé seul, pas le répertoire.
+  "tests/e2e/fixtures/formateurs/missions-aides-serveur.ts",
   // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
   //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
   //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
