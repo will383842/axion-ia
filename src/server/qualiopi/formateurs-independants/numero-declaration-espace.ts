@@ -9,8 +9,15 @@
  * 🔑 L'écriture est CONDITIONNELLE : la fiche de la session, indépendante en nom propre,
  * collaboration en cours, et dont le numéro dit encore « en cours ». Un numéro déjà
  * connu ne se remplace pas d'ici (la console le corrige). Le numéro enregistré, F21
- * s'arrête de lui-même (la campagne ne lit que les fiches « en cours ») et la garde de
- * mission ne le refuse plus (V1-A-9).
+ * s'arrête de lui-même (la campagne ne lit que les fiches « en cours »).
+ *
+ * 🔴 Un numéro TAPÉ PAR LE FORMATEUR n'est pas un numéro VÉRIFIÉ : la même écriture
+ * remet `sousTraitantVerifieAt` à `null`. Le contrôle d'avant portait sur « en cours » ;
+ * le garder ouvrirait les missions (donc le paiement) sur 11 chiffres que personne n'a
+ * lus sur la liste des organismes de formation (relecture, V1-A-9). La garde de mission
+ * refuse donc avec le motif `registre` jusqu'à ce que la console revérifie
+ * (`verifyTrainerSousTraitantAction`), et la fiche console dit « numéro reçu, à
+ * vérifier » (`numeroRecuAVerifier`).
  *
  * 🔴 ÉTEINT : tant que `formateurs.dossier_en_ligne` est coupé, rien n'est lu ni écrit.
  * 🔴 Aucun numéro dans le journal ni dans Sentry : la trace dit seulement d'où il vient.
@@ -75,7 +82,7 @@ export async function transmettreNumeroDeclaration(
       ...FICHE_ATTENDUE,
       sousTraitantNda: { contains: "cours", mode: "insensitive" },
     },
-    data: { sousTraitantNda: nda },
+    data: { sousTraitantNda: nda, sousTraitantVerifieAt: null },
   });
   if (r.count !== 1) return "nda_deja_connu";
   await journaliser(prisma, {
@@ -86,4 +93,28 @@ export async function transmettreNumeroDeclaration(
     session: null,
   });
   return "nda_recu";
+}
+
+/**
+ * La fiche porte-t-elle un numéro reçu de l'espace et pas encore revérifié en console ?
+ * Rend la date de la transmission, sinon `null`. Coupé, ou lecture en échec : `null`.
+ */
+export async function numeroRecuAVerifier(trainerId: string): Promise<Date | null> {
+  if (!(await envoiAllume("dossier_en_ligne"))) return null;
+  try {
+    const t = await prisma.trainer.findFirst({
+      where: { id: trainerId, ...FICHE_ATTENDUE, sousTraitantVerifieAt: null },
+      select: { sousTraitantNda: true },
+    });
+    const nda = (t?.sousTraitantNda ?? "").trim();
+    if (nda === "" || RE_EN_COURS.test(nda)) return null;
+    const trace = await prisma.activityLog.findFirst({
+      where: { action: ACTION_NDA_TRANSMIS, targetType: "Trainer", targetId: trainerId },
+      orderBy: { createdAt: "desc" },
+      select: { createdAt: true },
+    });
+    return trace?.createdAt ?? null;
+  } catch {
+    return null;
+  }
 }
