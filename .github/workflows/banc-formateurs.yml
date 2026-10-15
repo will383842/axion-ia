@@ -19,14 +19,21 @@ name: Banc formateurs
 # n'attend rien d'ici). Il tourne sur les PR qui touchent le chantier, chaque
 # nuit (appelé par `nightly.yml`) et à la demande.
 #
-# Antivirus : aucun chemin du banc n'analyse de fichier aujourd'hui. Le mode
-# prévu pour les tests s'applique — `CLAMAV_HOST` pointe sur un hôte qui ne
-# résout pas, donc toute analyse rend « indisponible » et rien n'est montré
-# sans verdict (`src/server/careers/clamav.ts`). Le jour où un lot du chantier
-# dépose un fichier, un conteneur ClamAV rejoindra les services ci-dessous.
+# Antivirus : le dossier en ligne DÉPOSE des pièces (vérification 1, E08-E12),
+# et un dépôt n'est accepté que sur un verdict « sain » de clamd. Un conteneur
+# ClamAV officiel (bases de signatures embarquées, `freshclam` coupé : aucune
+# dépendance au réseau de ClamAV) rejoint donc les services.
 #
-# Stockage : le pilote local du dépôt (dossiers sur disque) ; aucun seau distant
-# n'est configuré, donc aucun envoi de pièce vers R2.
+# Stockage : le contrat-cadre, sa copie (F10) et l'exemplaire contresigné (F19)
+# passent par R2. Le banc démarre un stockage R2 SIMULÉ
+# (`scripts/banc-formateurs/demarrer-stockage-r2.sh`) : le nom R2 du banc pointe
+# vers 127.0.0.1 sur cette machine seule, avec un certificat de confiance locale ;
+# le SDK S3 réel lui parle, aucun objet ne sort. Clés R2 FICTIVES.
+#
+# Clés : `PII_ENCRYPTION_KEY` est TIRÉE AU HASARD à chaque run (64 hexadécimaux,
+# le format exigé) et `IBAN_EMPREINTE_SECRET` est fictive : le dossier refuse
+# d'écrire un IBAN sans chiffrement, et une clé mal formée laisserait les données
+# personnelles en clair dans la base du banc. Aucune clé n'est écrite ici.
 
 on:
   pull_request:
@@ -40,6 +47,7 @@ on:
       - "tests/e2e/formateurs/**"
       - "tests/e2e/fixtures/formateurs/**"
       - "tests/e2e/qualiopi/formateurs/**"
+      - "scripts/banc-formateurs/**"
       - ".github/workflows/banc-formateurs.yml"
   workflow_call:
   workflow_dispatch:
@@ -51,7 +59,7 @@ jobs:
   banc:
     name: Banc formateurs · file, worker, puits SMTP
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 60
     services:
       postgres:
         image: pgvector/pgvector:pg16
@@ -80,6 +88,17 @@ jobs:
         ports:
           - 1025:1025
           - 8025:8025
+      clamav:
+        image: clamav/clamav:1.4.6
+        env:
+          CLAMAV_NO_FRESHCLAMD: "true"
+        ports:
+          - 3310:3310
+        options: >-
+          --health-cmd "clamdcheck.sh"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 30
     env:
       SKIP_ENV_VALIDATION: "true"
       DATABASE_URL: "postgresql://axion_ia_banc:banc_password_dummy@localhost:5432/axion_ia_banc?schema=public"
@@ -92,13 +111,20 @@ jobs:
       BANC_PUITS_SMTP_URL: "http://localhost:8025"
       # Dans ce job, un puits absent est une faute de câblage, pas un saut.
       BANC_FORMATEURS: "1"
-      CLAMAV_HOST: "clamav.invalid"
+      CLAMAV_HOST: "127.0.0.1"
+      CLAMAV_PORT: "3310"
       IMAGE_BANK_STORAGE_PATH: "/tmp/banc-formateurs/stockage/image-bank"
       EDITORIAL_STORAGE_PATH: "/tmp/banc-formateurs/stockage/editorial"
       # Valeurs FICTIVES, les mêmes que Gate B : elles ne protègent rien de réel.
       AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
       IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
-      PII_ENCRYPTION_KEY: "ci-dummy-pii-encryption-key-not-used-in-build-32"
+      IBAN_EMPREINTE_SECRET: "banc-formateurs-empreinte-iban-fictive"
+      # Le stockage R2 SIMULÉ (cf. en-tête) : compte, seau et clés fictifs.
+      R2_ACCOUNT_ID: "banc"
+      R2_BUCKET_NAME: "banc-formateurs"
+      R2_ACCESS_KEY_ID: "banc-cle-fictive"
+      R2_SECRET_ACCESS_KEY: "banc-secret-fictif"
+      NODE_EXTRA_CA_CERTS: "/tmp/banc-formateurs/r2/cert.pem"
       NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
       # Le banc ne charge aucune page : sans cette adresse, Playwright
       # démarrerait `pnpm start`, qui exige un build que ce job ne fait pas.
@@ -132,6 +158,20 @@ jobs:
           done
           echo "::error::Mailpit ne répond pas sur :8025"
           exit 1
+      - name: Clé de chiffrement du banc (tirée au hasard)
+        run: echo "PII_ENCRYPTION_KEY=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+      - name: Démarrer le stockage R2 simulé
+        run: scripts/banc-formateurs/demarrer-stockage-r2.sh /tmp/banc-formateurs/r2 banc-formateurs
+      - name: L'antivirus répond
+        run: |
+          for i in $(seq 1 60); do
+            if printf 'zPING\0' | timeout 3 nc 127.0.0.1 3310 | grep -q PONG; then
+              echo "clamd prêt"; exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::clamd ne répond pas sur :3310"
+          exit 1
       - name: Démarrer le worker (tâche de fond)
         run: |
           mkdir -p /tmp/banc-formateurs/stockage
@@ -157,7 +197,8 @@ jobs:
         # pas ce qu'il affirme. Pas de navigateur : aucun spec du banc n'ouvre
         # de page (une spec d'écran reste dans Gate B, sans le tag).
         run: pnpm exec playwright test --project=chromium --grep "@formateurs" --retries=0
-        timeout-minutes: 10
+        # Les scénarios de vérification passent un par un (verrou) : ~16 min mesurées.
+        timeout-minutes: 50
       - name: Journal du worker
         if: ${{ always() }}
         run: |
@@ -171,5 +212,6 @@ jobs:
           path: |
             playwright-report/
             /tmp/banc-formateurs/worker.log
+            /tmp/banc-formateurs/r2/r2.log
           retention-days: 7
           if-no-files-found: ignore

@@ -36,8 +36,36 @@ export interface RegistreSimule {
   readonly appels: string[];
 }
 
-function ligne(reponse: "vert" | "orange" | "rouge"): Record<string, unknown> {
+/**
+ * Le PROFIL d'un formateur indépendant au registre — facultatif ; absent, la
+ * réponse est celle d'avant (une société, `nature_juridique` 5710).
+ *   · `titulaire` : une entreprise INDIVIDUELLE à son nom (nature 1000), créée
+ *     en 2019 (jamais « création récente ») ;
+ *   · `nda` : le numéro de déclaration d'activité que la liste publique des
+ *     organismes de formation rattache à ce SIREN (absent : liste muette).
+ */
+export interface ProfilRegistre {
+  readonly titulaire?: { readonly prenom: string; readonly nom: string };
+  readonly nda?: string;
+}
+
+function ligne(
+  reponse: "vert" | "orange" | "rouge",
+  profil: ProfilRegistre = {},
+): Record<string, unknown> {
   const masque = reponse === "orange";
+  const t = profil.titulaire;
+  const titulaire = t ? `${t.prenom} ${t.nom}`.toUpperCase() : null;
+  const individuel = t
+    ? {
+        nature_juridique: "1000",
+        date_creation: "2019-03-01",
+        nom_complet: masque ? "[NON-DIFFUSIBLE]" : titulaire,
+        nom_raison_sociale: null,
+        dirigeants: [],
+      }
+    : {};
+  const liste = profil.nda ? { liste_id_organisme_formation: [profil.nda] } : {};
   return {
     siren: SIREN_BANC,
     nom_complet: masque ? "[NON-DIFFUSIBLE]" : DENOMINATION_BANC,
@@ -45,7 +73,7 @@ function ligne(reponse: "vert" | "orange" | "rouge"): Record<string, unknown> {
     etat_administratif: reponse === "rouge" ? "C" : "A",
     nature_juridique: "5710",
     activite_principale: "85.59A",
-    complements: { est_entrepreneur_individuel: false },
+    complements: { est_entrepreneur_individuel: t !== undefined, ...liste },
     siege: {
       siret: SIRET_BANC,
       adresse: masque ? "[NON-DIFFUSIBLE]" : "1 RUE DU BANC D'ESSAI 69000 LYON",
@@ -55,10 +83,14 @@ function ligne(reponse: "vert" | "orange" | "rouge"): Record<string, unknown> {
       etat_administratif: reponse === "rouge" ? "F" : "A",
     },
     matching_etablissements: [],
+    ...individuel,
   };
 }
 
-export function registreSimule(reponse: ReponseRegistre): RegistreSimule {
+export function registreSimule(
+  reponse: ReponseRegistre,
+  profil: ProfilRegistre = {},
+): RegistreSimule {
   const appels: string[] = [];
   const fetch: Fetch = (entree, init) => {
     appels.push(
@@ -82,7 +114,7 @@ export function registreSimule(reponse: ReponseRegistre): RegistreSimule {
       );
     }
     return Promise.resolve(
-      new Response(JSON.stringify({ results: [ligne(reponse)], total_results: 1 }), {
+      new Response(JSON.stringify({ results: [ligne(reponse, profil)], total_results: 1 }), {
         status: 200,
         headers: { "content-type": "application/json" },
       }),

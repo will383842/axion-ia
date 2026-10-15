@@ -1,0 +1,210 @@
+// @formateurs — E10 · Étape 4 : le code F17, la signature, F10 avec la copie.
+//
+//   · cinq codes faux → le code est bloqué : même le bon est ensuite refusé ;
+//   · un nouveau code (après le délai de 2 minutes entre deux codes) signe ;
+//   · un code déjà utilisé est refusé (relu par le moteur commun), et le lien,
+//     révoqué par l'envoi, ne rouvre rien ;
+//   · F10 part avec la copie de la signature en pièce jointe ;
+//   · le contrat signé est le texte EN VIGUEUR (contrat-cadre v4), et l'empreinte
+//     scellée est celle du PDF exact archivé ;
+//   · une adresse différente (changement d'adresse en console après l'envoi du
+//     code) : le code envoyé à l'ancienne adresse ne signe plus.
+//
+// Décision du dirigeant (c) : contrat-cadre v4.
+
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
+import { expect, test } from "@playwright/test";
+
+import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
+
+import { prisma } from "../fixtures/formateurs/base";
+import { etape } from "../fixtures/formateurs/etapes";
+import {
+  OBJETS_R2_BANC,
+  actionDossier,
+  demanderCode,
+  formateurRetenu,
+  lienDuDernierMessage,
+  preparerDossier,
+} from "../fixtures/formateurs/parcours";
+import { corpsDuMessage, messagesCaptes } from "../fixtures/formateurs/puits-smtp";
+import {
+  attendreLeWorker,
+  gabaritsVers,
+  ouvrirScenario,
+  type DecorScenario,
+} from "../fixtures/formateurs/scenario";
+
+/** Deux codes du même contrat sont espacés d'au moins 2 minutes (`code-signature-envoi.ts`). */
+const DELAI_ENTRE_DEUX_CODES_MS = 125_000;
+
+test.describe("@formateurs E10 — code de signature, contrat signé, F10", () => {
+  test.describe.configure({ mode: "serial" });
+  test.setTimeout(900_000);
+  let decor: DecorScenario;
+
+  test.beforeAll(async () => {
+    // Les scénarios passent un par un (verrou) : l'attente peut être longue.
+    test.setTimeout(45 * 60_000);
+    decor = await ouvrirScenario("e10", { organisme: true });
+  });
+  test.afterAll(async () => {
+    await decor?.liberer();
+    await prisma.$disconnect();
+  });
+
+  test("code faux ×5 bloqué, nouveau code, signature v4, F10 avec la copie, code réutilisé refusé", async () => {
+    const email = decor.adresse("signe");
+    const { fiche, lien } = await formateurRetenu(email, "Anouk", decor.admin);
+    const registre = await preparerDossier(lien, "Anouk");
+    const premier = await demanderCode(lien, email, registre);
+    const signer = (code: string) =>
+      actionDossier(lien, "signer", { certifie: "1", accepte: "1", code }, { registre });
+
+    // Cinq codes faux : refusés ; puis le BON est refusé aussi (code bloqué).
+    const faux = premier === "000000" ? "111111" : "000000";
+    for (let i = 0; i < 5; i++) expect((await signer(faux)).valeur.ok).toBe(false);
+    expect((await signer(premier)).valeur.ok).toBe(false);
+    const contrat = await prisma.documentGenere.findFirstOrThrow({
+      where: { trainerId: fiche.id, type: "contrat_sous_traitance", annuleeAt: null },
+    });
+    expect(await prisma.documentSignature.count({ where: { documentGenereId: contrat.id } })).toBe(
+      0,
+    );
+    const bloque = await prisma.documentSignatureCode.findFirstOrThrow({
+      where: { documentGenereId: contrat.id },
+      orderBy: { createdAt: "asc" },
+    });
+    expect(bloque.utiliseAt).toBeNull();
+    expect(bloque.invalideAt).not.toBeNull();
+
+    // Un nouveau code, passé le délai entre deux codes ; il signe et le dossier part.
+    await new Promise((r) => setTimeout(r, DELAI_ENTRE_DEUX_CODES_MS));
+    const second = await demanderCode(lien, email, registre);
+    expect(second).not.toBe(premier);
+    const signe = await signer(second);
+    expect(signe.valeur.ok, signe.valeur.message).toBe(true);
+    await attendreLeWorker(email);
+
+    // F10 est parti, avec la copie de la signature en pièce jointe.
+    expect(await gabaritsVers(email)).toEqual([
+      "candidature-recue",
+      "formateur-issue-retenu",
+      "formateur-code-signature",
+      "formateur-code-signature",
+      "formateur-dossier-recu",
+    ]);
+    const f10 = await prisma.emailLog.findFirstOrThrow({
+      where: { recipient: email, template: "formateur-dossier-recu" },
+      select: {
+        status: true,
+        entityId: true,
+        contenu: { select: { subject: true, attachmentNames: true } },
+      },
+    });
+    expect(f10.status).toBe("sent");
+    expect(f10.entityId).toBe(fiche.id);
+    expect(f10.contenu?.attachmentNames.length).toBe(1);
+    expect(f10.contenu?.attachmentNames[0]).toMatch(/\.pdf$/);
+    const recu = (await messagesCaptes(email)).find((m) => m.sujet === f10.contenu?.subject);
+    expect(recu, "F10 capté par le puits").toBeDefined();
+
+    // Le texte en vigueur : contrat-cadre v4 ; l'empreinte scellée est celle du PDF archivé.
+    const signature = await prisma.documentSignature.findFirstOrThrow({
+      where: { documentGenereId: contrat.id, partie: "sous_traitant", revokedAt: null },
+    });
+    const meta = contrat.metadata as Record<string, unknown>;
+    expect(versionGabaritInstantane(meta["renderData"])).toBe(4);
+    expect(signature.consentementVersion).toBe("doc-consent-code-v1");
+    const annee = contrat.createdAt.getFullYear();
+    const pdf = readFileSync(
+      path.join(
+        OBJETS_R2_BANC,
+        `banc-formateurs__documents__${annee}__contrat_sous_traitance__${contrat.numero}.pdf`,
+      ),
+    );
+    expect(signature.documentHashSha256).toBe(createHash("sha256").update(pdf).digest("hex"));
+    const utilise = await prisma.documentSignatureCode.findFirstOrThrow({
+      where: { documentGenereId: contrat.id, utiliseAt: { not: null } },
+    });
+    expect(utilise.utiliseAt).not.toBeNull();
+
+    // Le code déjà utilisé : refusé par le moteur commun ; et le lien, révoqué par
+    // l'envoi, ne rouvre rien.
+    const reutilise = await etape<{ ok: boolean }>({
+      etape: "verifier-code",
+      args: { documentGenereId: contrat.id, code: second },
+    });
+    expect(reutilise.valeur.ok).toBe(false);
+    expect((await signer(second)).valeur.ok).toBe(false);
+    expect(await prisma.documentSignature.count({ where: { documentGenereId: contrat.id } })).toBe(
+      1,
+    );
+    const html = recu ? (await corpsDuMessage(recu.id)).html : "";
+    expect(html).not.toContain(second);
+  });
+
+  // V1-A-8 — après un changement d'adresse en console, le code F17 envoyé à
+  // l'ANCIENNE adresse signe encore, sur le nouveau lien envoyé à la nouvelle : le
+  // changement révoque les liens du dossier (`changement-email-console.ts`) mais pas
+  // le code vivant (`code-signature.ts` ne lie le code à aucune adresse). Cf. rapport.
+  test.fixme("V1-A-8 — adresse différente : le code envoyé à l'ancienne adresse ne signe plus", async () => {
+    const email = decor.adresse("ancienne");
+    const nouvelle = decor.adresse("nouvelle");
+    const { fiche, lien } = await formateurRetenu(email, "Basile", decor.admin);
+    const registre = await preparerDossier(lien, "Basile");
+    const code = await demanderCode(lien, email, registre);
+
+    // La direction change l'adresse de la fiche, puis renvoie le lien (F8, nouvelle adresse).
+    const modifie = await etape<{ error?: string }>({
+      etape: "modifier-fiche",
+      args: { champs: { id: fiche.id, email: nouvelle } },
+      session: decor.admin,
+    });
+    expect(modifie.valeur.error).toBeUndefined();
+    const renvoi = await etape<{ redirige: string | null }>({
+      etape: "renvoyer-lien",
+      args: { trainerId: fiche.id },
+      session: decor.admin,
+    });
+    expect(renvoi.valeur.redirige ?? "").toContain("dossier=lien_envoye");
+    await attendreLeWorker(nouvelle);
+    const nouveauLien = await lienDuDernierMessage(
+      nouvelle,
+      /\/formateur\/dossier\/([0-9a-f-]{36})\/([^"'\s<>?#]+)/,
+      "formateur-dossier-lien",
+    );
+
+    // L'ancien lien est révoqué.
+    expect((await etape({ etape: "lire-dossier", args: { ...lien } })).valeur).toBeNull();
+    // Le code de l'ANCIENNE adresse, sur le nouveau lien : refusé, rien n'est signé.
+    const tentative = await actionDossier(
+      nouveauLien,
+      "signer",
+      { certifie: "1", accepte: "1", code },
+      { registre },
+    );
+    expect(tentative.valeur.ok).toBe(false);
+    const contrat = await prisma.documentGenere.findFirst({
+      where: { trainerId: fiche.id, type: "contrat_sous_traitance" },
+      select: { id: true },
+    });
+    expect(
+      await prisma.documentSignature.count({ where: { documentGenereId: contrat?.id ?? "∅" } }),
+    ).toBe(0);
+  });
+
+  // V1-A-7 — le facteur de vérification n'est enregistré nulle part : aucune colonne
+  // `facteurVerification` (ni dans le schéma, ni dans le code). Que la personne a prouvé
+  // son adresse par un code e-mail ne se déduit qu'indirectement (version de
+  // consentement « doc-consent-code-v1 » + un code consommé). Cf. rapport.
+  test.fixme("V1-A-7 — la preuve porte `facteurVerification = code_email`", async () => {
+    const colonnes = await prisma.$queryRaw<Array<{ column_name: string }>>`
+      SELECT column_name FROM information_schema.columns
+      WHERE table_name = 'document_signatures' AND column_name = 'facteur_verification'`;
+    expect(colonnes).toHaveLength(1);
+  });
+});
