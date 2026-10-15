@@ -20,6 +20,23 @@ interface PrestationAvecAffectations {
   readonly affectations: ReadonlyArray<{ readonly trainerId: string }>;
 }
 
+/**
+ * Vérification 1, V1-C-2 — la session est À CHEVAL sur la bascule : sa première
+ * journée précède `D`, sa dernière tombe à `D` ou après (jours civils). Une telle
+ * session à PRIX FIGÉ est payée par le passage (jamais au mensuel, correctif L11b) ;
+ * sans prix figé, elle reste ENTIÈRE au mensuel, comme avant.
+ */
+export function aChevalSurLaBascule(
+  s: { readonly premiereJournee: string; readonly derniereJournee: string | null },
+  dateBascule: string,
+): boolean {
+  return (
+    s.premiereJournee < dateBascule &&
+    s.derniereJournee !== null &&
+    s.derniereJournee >= dateBascule
+  );
+}
+
 export function cleRevendication(trainerId: string, sessionId: string): string {
   return `${trainerId}|${sessionId}`;
 }

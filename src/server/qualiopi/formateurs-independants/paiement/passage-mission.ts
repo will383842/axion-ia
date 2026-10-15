@@ -30,7 +30,9 @@ import {
   demiJourneesSansSignature,
   demiJourneesSignees,
   parMoisCivil,
+  type BornesDemiJournee,
   type ContresignatureLue,
+  type DemiJourneeDatee,
   type JourneePrevue,
   type MoisAnime,
 } from "@/server/qualiopi/remuneration/heures-animees";
@@ -43,6 +45,7 @@ import {
   type ReleveMissionCalcule,
 } from "../argent/calcul-mission";
 import { jourParis } from "../argent/dates";
+import { aChevalSurLaBascule } from "./apres-bascule";
 import {
   PARAMETRES_ARGENT_FORMATEURS,
   type ParametresArgentFormateurs,
@@ -78,6 +81,58 @@ export interface CandidatMission {
    * rien n'est exigé au-delà des feuilles, exactement comme avant.
    */
   readonly bilanFinFormation?: EtatBilanPourPaiement;
+  /**
+   * Vérification 1, V1-C-5 — la session est ANNULÉE : ses journées non signées ne
+   * sont plus « prévues » (elles n'auront jamais lieu), les demi-journées déjà
+   * signées sont payées, et aucun bilan de fin de formation n'est attendu.
+   */
+  readonly sessionAnnulee?: boolean;
+  /**
+   * Dernière journée de la SESSION (jour civil). Avec `premiereJournee`, elle dit si
+   * la session est à cheval sur la bascule (V1-C-2). Absente : jamais à cheval.
+   */
+  readonly derniereJourneeSession?: string | null;
+}
+
+/**
+ * Le couple appartient-il au passage ? Session commencée à la bascule ou après, ou
+ * déjà revendiquée par mission, ou — V1-C-2 — à cheval sur la bascule avec une
+ * mission acceptée à PRIX FIGÉ : le relevé mensuel ne paie jamais un prix figé
+ * (correctif L11b), le passage la paie donc entière, à ce prix, une seule fois (la
+ * revendication et le contrôle de ligne mensuelle de l'écriture l'assurent).
+ */
+export function appartientAuPassage(
+  c: Pick<
+    CandidatMission,
+    "premiereJournee" | "revendiqueParMission" | "conditions" | "derniereJourneeSession"
+  >,
+  dateBascule: string,
+): boolean {
+  if (c.premiereJournee >= dateBascule || c.revendiqueParMission === true) return true;
+  return (
+    c.conditions !== null &&
+    aChevalSurLaBascule(
+      { premiereJournee: c.premiereJournee, derniereJournee: c.derniereJourneeSession ?? null },
+      dateBascule,
+    )
+  );
+}
+
+/**
+ * Les demi-journées PRÉVUES d'un candidat. Session annulée : seules celles qui ont
+ * été signées restent prévues — le reste n'aura pas lieu, le réclamer laisserait le
+ * mois « en attente » pour toujours (V1-C-5). Lue par le passage et par F35.
+ */
+export function demiJourneesPrevuesDuCandidat(
+  c: Pick<CandidatMission, "journeesPrevues" | "contresignatures" | "sessionAnnulee">,
+  bornes: BornesDemiJournee,
+): DemiJourneeDatee[] {
+  const prevues = demiJourneesPrevues(c.journeesPrevues, bornes);
+  if (c.sessionAnnulee !== true) return prevues;
+  const signees = new Set(
+    demiJourneesSignees(c.contresignatures).map((d) => `${d.jour}|${d.creneau}`),
+  );
+  return prevues.filter((d) => signees.has(`${d.jour}|${d.creneau}`));
 }
 
 export interface MoisAEcrire {
@@ -116,7 +171,8 @@ export interface Plan {
 
 /**
  * Pure : ce que le passage doit écrire. Une session commencée AVANT la bascule
- * n'est jamais touchée (elle appartient au relevé mensuel).
+ * n'est jamais touchée (elle appartient au relevé mensuel), sauf à cheval sur la
+ * bascule à prix figé (`appartientAuPassage`, V1-C-2).
  */
 export function planifierPassage(
   candidats: ReadonlyArray<CandidatMission>,
@@ -135,7 +191,7 @@ export function planifierPassage(
   };
 
   for (const c of candidats) {
-    if (c.premiereJournee < dateBascule && c.revendiqueParMission !== true) continue;
+    if (!appartientAuPassage(c, dateBascule)) continue;
     const signees = demiJourneesSignees(c.contresignatures);
     if (signees.length === 0) continue;
     if (c.conditions === null) {
@@ -147,7 +203,7 @@ export function planifierPassage(
       continue;
     }
     const conditions = c.conditions;
-    const prevues = demiJourneesPrevues(c.journeesPrevues, bornes);
+    const prevues = demiJourneesPrevuesDuCandidat(c, bornes);
     const prevuesParMois = new Map(parMoisCivil(prevues).map((m) => [m.mois, m] as const));
     const moisSignes = new Set(parMoisCivil(signees).map((m) => m.mois));
     // Décision de Will : seul le DERNIER mois de la mission (celui de la dernière journée
@@ -183,7 +239,11 @@ export function planifierPassage(
         signees: mois.demiJournees,
         manquantes,
         conditionFinanceurEnAttente: c.conditionFinanceurEnAttente,
-        bilan: mois.mois === dernierMoisPrevu ? (c.bilanFinFormation ?? null) : null,
+        // Session annulée : aucun bilan n'aura lieu (le service le refuse), on ne l'attend pas.
+        bilan:
+          mois.mois === dernierMoisPrevu && c.sessionAnnulee !== true
+            ? (c.bilanFinFormation ?? null)
+            : null,
       });
       if (!verdict.payable) {
         enAttente.push({

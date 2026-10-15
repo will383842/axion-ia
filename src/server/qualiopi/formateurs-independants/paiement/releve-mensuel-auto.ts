@@ -45,3 +45,28 @@ export function alerteReleveNonValide(
   if (jour < 1 + p.releveMensuelAlerteJours) return false;
   return statutsDuMoisEcoule.some((s) => !VALIDES.has(s));
 }
+
+/**
+ * Vérification 1, V1-C-3 — alerte « calcul du mois NON LANCÉ » : à partir du 1er +
+ * N jours (le même délai que l'alerte « non validé »), si le mois écoulé a des
+ * relevés à préparer (prestations payables au relevé mensuel) mais AUCUN relevé
+ * mensuel en base. L'alerte « non validé » ne compte que des relevés existants :
+ * sans celle-ci, un calcul oublié n'était signalé à personne. Rien n'est calculé
+ * ni validé seul : la règle dit seulement « alerter ».
+ */
+export function alerteReleveNonLance(
+  maintenant: Date,
+  e: { readonly relevesMensuelsDuMois: number; readonly relevesAPreparer: number },
+  p: Pick<ParametresArgentFormateurs, "releveMensuelAlerteJours"> = PARAMETRES_ARGENT_FORMATEURS,
+): boolean {
+  if (!delaiAlerteReleveAtteint(maintenant, p)) return false;
+  return e.relevesMensuelsDuMois === 0 && e.relevesAPreparer > 0;
+}
+
+/** Le 1er + N jours du mois (heure de Paris) est atteint. */
+export function delaiAlerteReleveAtteint(
+  maintenant: Date,
+  p: Pick<ParametresArgentFormateurs, "releveMensuelAlerteJours"> = PARAMETRES_ARGENT_FORMATEURS,
+): boolean {
+  return Number(jourParis(maintenant).slice(8, 10)) >= 1 + p.releveMensuelAlerteJours;
+}

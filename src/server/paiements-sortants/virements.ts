@@ -56,11 +56,21 @@ function jours(a: string, b: string): number {
   );
 }
 
-/** Couleur d'un virement au regard de sa date cible. */
-export function couleurDe(dateCible: string | null, aujourdhui: string): CouleurVirement {
+/**
+ * Couleur d'un virement au regard de sa date cible. Rouge une fois l'ÉCHÉANCE
+ * dépassée — la règle de l'écran des apporteurs (`echeanceDepassee`, vérification 1,
+ * V1-C-9) : le jour même, le virement est dans les délais (orange). Sans échéance
+ * connue, la date cible en tient lieu.
+ */
+export function couleurDe(
+  dateCible: string | null,
+  aujourdhui: string,
+  echeance: string | null = dateCible,
+): CouleurVirement {
   if (dateCible === null) return "sans_echeance";
+  if (aujourdhui > (echeance ?? dateCible)) return "rouge";
   const reste = jours(aujourdhui, dateCible);
-  if (reste < 0) return "rouge";
+  if (reste < 0) return "orange";
   if (reste <= ORANGE_AVANT_DATE_CIBLE_JOURS) return "orange";
   return "a_venir";
 }
@@ -77,7 +87,7 @@ export function ordonnerVirements(
   return lus
     .map((v): VirementSortant => {
       const dateCible = v.echeance ? dernierJourOuvreAuPlusTard(v.echeance) : null;
-      return { ...v, dateCible, couleur: couleurDe(dateCible, aujourdhui) };
+      return { ...v, dateCible, couleur: couleurDe(dateCible, aujourdhui, v.echeance) };
     })
     .sort((a, b) => {
       if (a.dateCible && b.dateCible && a.dateCible !== b.dateCible)
