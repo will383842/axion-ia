@@ -34,6 +34,17 @@ const e = vi.hoisted(() => ({
   etats: { dossier_en_ligne: true, relances_auto: true } as Record<string, boolean>,
 }));
 vi.mock("./interrupteurs-etat", () => ({ lireEtatsInterrupteurs: async () => e.etats }));
+// V2-P-5 : la clé de la nouvelle version (registre des signatures).
+const sg = vi.hoisted(() => ({ nouvelleVersion: true }));
+vi.mock("./interrupteur-allume", () => ({
+  interrupteurAllume: async (cle: string) =>
+    cle === "nouvelle_version_contrat" ? sg.nouvelleVersion : false,
+}));
+// V2-P-6 : le retrait du lien neuf.
+const lp = vi.hoisted(() => ({ rendre: vi.fn() }));
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", () => ({
+  rendreLienPrecedent: lp.rendre,
+}));
 vi.mock("./envois", () => ({
   texteValide: async () => h.valide,
   valeursManquantes: () => h.manquantes,
@@ -50,6 +61,7 @@ import { passerCampagnes } from "@/server/relances/passer-campagnes";
 import { REGISTRE_CAMPAGNES } from "@/server/relances/registre-campagnes";
 import {
   CAMPAGNE_CONTRAT,
+  CAMPAGNE_NOUVELLE_VERSION,
   CAMPAGNE_LETTRE_1RE,
   CAMPAGNE_LETTRE_J3,
   REGLE_CONTRAT,
@@ -187,6 +199,36 @@ describe("F45 — nouvelle version du contrat", () => {
       decisionCampagne({ etat: f21.etat, maintenant: MAINTENANT, regle: REGLE_NOUVELLE_VERSION }),
     ).toMatchObject({ envoyer: true, etape: "j21" });
     expect((await f21.completerPayload!(f21.payload))!.valeurs).toEqual({ N: "9" });
+  });
+
+  describe("V2-P-5 — `nouvelle_version_contrat` coupée", () => {
+    beforeEach(() => {
+      sg.nouvelleVersion = false;
+      return () => {
+        sg.nouvelleVersion = true;
+      };
+    });
+    it("la campagne ne lit rien : aucune relance n'est décidée", async () => {
+      // Aucune lecture des contrats (le double de la base n'en sait pas faire : elle lèverait).
+      expect(await CAMPAGNE_NOUVELLE_VERSION.lireFaits(MAINTENANT)).toEqual([]);
+    });
+    it("coupée entre la lecture et l'envoi : aucun lien n'est émis", async () => {
+      const f = faitsContrat(v(7), "version", MAINTENANT)!;
+      expect(await f.completerPayload!(f.payload)).toBeNull();
+      expect(h.lien).not.toHaveBeenCalled();
+    });
+    it("la relance du contrat (F18) n'en dépend pas", async () => {
+      const f = faitsContrat(contrat(), "contrat", MAINTENANT)!;
+      expect(await f.completerPayload!(f.payload)).not.toBeNull();
+    });
+  });
+});
+
+describe("V2-P-6 — l'envoi n'est ni enfilé ni garé", () => {
+  it("le lien neuf est retiré, le précédent rendu", async () => {
+    const f = faitsContrat(contrat(), "contrat", MAINTENANT)!;
+    await f.renoncerPayload!({ lien: "https://x.test/fr/portail/signer/neuf" });
+    expect(lp.rendre).toHaveBeenCalledWith("https://x.test/fr/portail/signer/neuf", "supprimer");
   });
 });
 
