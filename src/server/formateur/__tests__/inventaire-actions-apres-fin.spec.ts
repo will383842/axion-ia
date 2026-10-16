@@ -370,7 +370,8 @@ const INVENTAIRE: Record<string, Ligne> = {
   [`${A.dossier}#demanderChangementIbanAction`]: formateur(
     A.dossier,
     "demanderChangementIbanAction",
-    fd({ iban: "FR7630006000011234567890189" }),
+    // Le formulaire joint le RIB du nouveau compte (canal de changement de compte).
+    fd({ iban: "FR7630006000011234567890189", rib: fichier() }),
   ),
   [`${A.dossier}#demanderChangementAdresseAction`]: formateur(
     A.dossier,
