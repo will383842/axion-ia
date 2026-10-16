@@ -1244,6 +1244,31 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  // ── Registre des sous-traitants indépendants tenu par l'outil (ind. 27) ──
+  //
+  // Audit du 16/10 : registre vide, aucune méthode de contrôle. Ces trois codes
+  // portent la méthode (`registre-sous-traitants/controles.config.ts`) ; ils sont
+  // ÉTEINTS tant que `formateurs.alertes_registre_sous_traitants` est coupé.
+  // 🔴 Une pièce EXIGÉE expirée est critique, comme la RC pro expirée d'un
+  // organisme : elle existait, elle est tombée. L'URSSAF garde ses propres codes.
+  sous_traitant_registre_piece_expiree: {
+    niveau: "critique",
+    titre: "Registre des sous-traitants : pièce expirée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  sous_traitant_registre_piece_a_echeance: {
+    niveau: "important",
+    titre: "Registre des sous-traitants : pièce à renouveler sous 30 jours",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  sous_traitant_registre_controle_en_retard: {
+    niveau: "important",
+    titre: "Registre des sous-traitants : contrôle en retard",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 
   // ── OPCO / financement ────────────────────────────────────────────────────
   opco_sans_accord: {

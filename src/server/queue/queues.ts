@@ -2180,6 +2180,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "35 8 * * *",
         jobId: "formation-crons-controle-registre-periodique-cron",
       },
+      // Qualiopi ind. 27 (2026-10-16) — le registre des sous-traitants tenu par l'outil :
+      // chaque formateur indépendant au contrat-cadre signé (ou actif) y est inscrit, sa
+      // sortie datée. 08:50 UTC, APRÈS le recontrôle du registre (08:35) dont il reprend
+      // la date. Arrêté tant que `formateurs.registre_sous_traitants` est coupé.
+      {
+        type: "formation-crons.registre-sous-traitants",
+        pattern: "50 8 * * *",
+        jobId: "formation-crons-registre-sous-traitants-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

@@ -64,6 +64,8 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
   // réalisées seulement (interrupteur `formateurs.affectation_sure`).
   const r4 = await interrupteurAllume("affectation_sure");
   const pageMissions = await interrupteurAllume("missions_console");
+  // Qualiopi ind. 27 — le registre des sous-traitants tenu par l'outil (éteint par défaut).
+  const pageRegistre = await interrupteurAllume("registre_sous_traitants");
   const missionsIndependants = new Map<string, MissionsVisiblesIndependant>(
     r4
       ? await Promise.all(
@@ -112,6 +114,11 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
         {pageMissions ? (
           <Link href={`${base}/missions`} className="admin-button-ghost">
             Missions
+          </Link>
+        ) : null}
+        {pageRegistre ? (
+          <Link href={`${base}/registre-sous-traitants`} className="admin-button-ghost">
+            Registre des sous-traitants
           </Link>
         ) : null}
       </div>

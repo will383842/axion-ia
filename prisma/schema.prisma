@@ -6498,6 +6498,8 @@ model Trainer {
   revendicationsPaiement  RevendicationPaiement[]
   /// Schéma n° 2 formateurs — demandes de changement (adresse, TVA, IBAN, e-mail).
   demandesChangement      DemandeChangementFormateur[]
+  /// Qualiopi ind. 27 — sa ligne au registre des sous-traitants (tenue par l'outil, éteint).
+  registreSousTraitant    RegistreSousTraitantIndependant?
 
   @@index([statut])
   @@index([actif])
@@ -8521,6 +8523,8 @@ model SousTraitant {
   relevesOrganisme TrainerStatement[] @relation("TrainerStatementOrganisme")
   /// Schéma n° 2 formateurs — pièces de l'organisme (vigilance, Kbis…).
   pieces           PieceOrganisme[]
+  /// Qualiopi ind. 27 — la ligne est celle d'un formateur INDÉPENDANT, tenue par l'outil.
+  independant      RegistreSousTraitantIndependant?
 
   @@index([actif])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
@@ -16103,6 +16107,76 @@ model VerificationRegistreSousTraitance {
 
   @@index([trainerId, verifieAt])
   @@map("verifications_registre_sous_traitance")
+}
+
+/// Statut d'un formateur indépendant au registre des sous-traitants (Qualiopi ind. 27).
+/// Une sortie est un statut daté et motivé : la ligne n'est jamais supprimée.
+enum StatutRegistreSousTraitant {
+  actif
+  suspendu
+  sorti
+
+  @@map("statut_registre_sous_traitant")
+}
+
+/// Résultat d'un contrôle de sous-traitance tracé (méthode de contrôle, ind. 27).
+enum ResultatControleSousTraitant {
+  conforme
+  non_conforme
+  a_revoir
+
+  @@map("resultat_controle_sous_traitant")
+}
+
+/// Qualiopi ind. 27 — la place d'un formateur INDÉPENDANT au registre des
+/// sous-traitants, tenue par l'outil (interrupteur `formateurs.registre_sous_traitants`,
+/// éteint par défaut). La ligne visible du registre est la `SousTraitant` liée, écrite
+/// par son service ; celle-ci porte ce que le registre générique n'a pas : date
+/// d'entrée, statut daté (actif, suspendu, sorti avec motif) et les contrôles faits.
+/// Une par formateur (rejeu sans doublon). Jamais supprimée (Restrict des deux côtés).
+/// rgpd: technique — identifiants, dates, statut et motif de sortie (libellé d'une liste fermée) ; l'identité reste sur la fiche formateur
+model RegistreSousTraitantIndependant {
+  id             String                     @id @default(uuid()) @db.Uuid
+  trainerId      String                     @unique @map("trainer_id") @db.Uuid
+  trainer        Trainer                    @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  sousTraitantId String                     @unique @map("sous_traitant_id") @db.Uuid
+  sousTraitant   SousTraitant               @relation(fields: [sousTraitantId], references: [id], onDelete: Restrict)
+  /// Contrat-cadre signé ou activation, la première des deux ; figée à l'entrée.
+  dateEntree     DateTime                   @map("date_entree")
+  statut         StatutRegistreSousTraitant @default(actif)
+  /// Date du dernier changement de statut constaté.
+  statutDepuis   DateTime                   @map("statut_depuis")
+  dateSortie     DateTime?                  @map("date_sortie")
+  motifSortie    String?                    @map("motif_sortie") @db.Text
+  /// Dernier passage de la synchronisation sur cette ligne.
+  synchroniseAt  DateTime                   @map("synchronise_at")
+  createdAt      DateTime                   @default(now()) @map("created_at")
+  updatedAt      DateTime                   @updatedAt @map("updated_at")
+  controles      ControleSousTraitant[]
+
+  @@index([statut])
+  @@map("registre_sous_traitants_independants")
+}
+
+/// Qualiopi ind. 27 — un contrôle FAIT sur un sous-traitant indépendant (méthode de
+/// contrôle portée par l'outil, `registre-sous-traitants/controles.config.ts`). Ajout
+/// seul : un contrôle ne se corrige pas, on en trace un nouveau.
+/// rgpd: technique — code du contrôle, date, auteur (administrateur), résultat et motif saisi par l'administrateur
+model ControleSousTraitant {
+  id         String                          @id @default(uuid()) @db.Uuid
+  registreId String                          @map("registre_id") @db.Uuid
+  registre   RegistreSousTraitantIndependant @relation(fields: [registreId], references: [id], onDelete: Restrict)
+  /// Code d'un contrôle de la configuration (`pieces_entree`, `revue_annuelle`…).
+  code       String                          @db.VarChar(60)
+  faitAt     DateTime                        @map("fait_at")
+  /// Administrateur auteur ; NULL = constat d'une tâche de fond.
+  auteurId   String?                         @map("auteur_id") @db.Uuid
+  resultat   ResultatControleSousTraitant
+  motif      String?                         @db.Text
+  createdAt  DateTime                        @default(now()) @map("created_at")
+
+  @@index([registreId, code, faitAt])
+  @@map("controles_sous_traitants")
 }
 
 /// Vérification d'une attestation de vigilance URSSAF (art. L.8222-1) — PREUVE

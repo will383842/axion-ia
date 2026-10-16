@@ -138,6 +138,7 @@ import { regleConditionSuspensiveOpco } from "./regle-condition-suspensive-opco"
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
 import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
+import { regleRegistreSousTraitants } from "./regle-registre-sous-traitants";
 import { regleDesistementLettreSignee } from "./regle-desistement-lettre-signee";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
@@ -1913,7 +1914,10 @@ async function regleVigilanceSousTraitance(now: Date): Promise<AlerteCandidate[]
 
   const [organismes, formateurs] = await Promise.all([
     prisma.sousTraitant.findMany({
-      where: { actif: true },
+      // Qualiopi ind. 27 — une ligne du registre tenue par l'outil pour un formateur
+      // INDÉPENDANT est déjà surveillée ci-dessous par sa fiche (`trainer`) : la lire
+      // aussi comme un organisme doublerait chaque alerte (RC pro absente…).
+      where: { actif: true, independant: { is: null } },
       select: {
         id: true,
         nom: true,
@@ -5243,6 +5247,9 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
   { nom: "vigilance_sous_traitance", fn: regleVigilanceSousTraitance },
+  // Qualiopi ind. 27 (audit du 16/10) — échéances du registre des sous-traitants
+  // indépendants tenu par l'outil. Éteinte tant que son interrupteur est coupé.
+  { nom: "registre_sous_traitants", fn: regleRegistreSousTraitants },
   { nom: "formateur_desactive_encore_affecte", fn: regleFormateurDesactiveEncoreAffecte },
   {
     nom: "stagiaires_non_prevenus_changement_formateur",
