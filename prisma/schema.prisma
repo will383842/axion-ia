@@ -726,7 +726,7 @@ model SubmissionAttachment {
   tailleOctets Int      @map("taille_octets")
   /// Clé de l'objet dans le compartiment R2 privé (temporaire, puis définitive).
   cleStockage  String   @unique @map("cle_stockage") @db.VarChar(300)
-  /// `attendue` | `controle` | `recue` | `refusee` | `non_recue`.
+  /// `attendue` | `controle` | `recue` | `quarantaine` | `refusee` | `non_recue`.
   statut       String   @default("attendue") @db.VarChar(20)
   /// Empreinte SHA-256 du jeton d'envoi rendu au navigateur (jamais le jeton).
   jetonHash    String?  @map("jeton_hash") @db.VarChar(64)
@@ -734,7 +734,7 @@ model SubmissionAttachment {
   motifRefus   String?  @map("motif_refus") @db.VarChar(20)
   /// Empreinte SHA-256 du contenu reçu (posée à la réception).
   sha256       String?  @db.VarChar(64)
-  /// Verdict antivirus à la réception : `sain` ou `non_verifie` (antivirus muet).
+  /// Verdict antivirus à la réception : `sain` ou `non_verifie` (antivirus muet, pièce en `quarantaine`).
   antivirus    String?  @db.VarChar(20)
   createdAt    DateTime @default(now()) @map("created_at")
 

@@ -38,9 +38,13 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     submission: { create: h.submissionCreate },
-    submissionAttachment: { createMany: h.attachmentCreateMany },
+    submissionAttachment: {
+      createMany: h.attachmentCreateMany,
+      aggregate: async () => ({ _sum: { tailleOctets: 0 } }),
+    },
   },
 }));
+vi.mock("@/lib/redis", () => ({ redis: { set: async () => "OK" } }));
 vi.mock("@/lib/r2-storage", () => ({
   signerEnvoiDirectR2: h.signerEnvoiDirectR2,
   isR2Configured: h.isR2Configured,

@@ -67,7 +67,9 @@ describe("accusé différé", () => {
       entityId: SUB,
       jobId: `accuse-contact-${SUB}`,
     });
-    expect(h.count).toHaveBeenCalledWith({ where: { submissionId: SUB, statut: "recue" } });
+    expect(h.count).toHaveBeenCalledWith({
+      where: { submissionId: SUB, statut: { in: ["recue", "quarantaine"] } },
+    });
   });
 
   it("aucune pièce reçue : l'accusé part quand même, sans la phrase des pièces", async () => {

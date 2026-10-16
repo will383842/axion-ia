@@ -13,7 +13,7 @@
  *   2. `ouvrirEnvoisPiecesJointes` — APRÈS la limite de fréquence, le leurre,
  *      Turnstile et l'écriture de la demande : une ligne `attendue` par fichier,
  *      une clé TEMPORAIRE tirée au hasard par le serveur, une URL `PUT` signée
- *      (10 min, longueur exacte imposée) et un jeton d'envoi. Le navigateur ne
+ *      (30 min, longueur exacte imposée) et un jeton d'envoi. Le navigateur ne
  *      choisit ni la clé, ni la taille, ni le compartiment.
  *   3. Le navigateur envoie chaque fichier sur son URL.
  *   4. `finaliserPiecesJointes` — sur présentation du jeton : taille réelle
@@ -37,6 +37,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import {
   ObjetR2Modifie,
   copierObjetR2,
@@ -52,34 +53,49 @@ import {
   CHAMP_PIECES_ANNONCEES,
   MESSAGES_PIECES_JOINTES,
   NOMBRE_MAX_PIECES,
+  TAILLE_MAX_PIECE_OCTETS,
+  TYPE_ENVOI_PIECE_JOINTE,
+  assainirNomPieceJointe,
+  controlerListePiecesJointes,
+  formatDepuisExtension,
+  type FormatPieceJointe,
+} from "@/lib/contact/pieces-jointes";
+import {
   ScruteurPieceJointe,
   TAILLE_ENTETE_ANALYSEE,
   TAILLE_FIN_ZIP_ANALYSEE,
-  TAILLE_MAX_PIECE_OCTETS,
   TAILLE_MAX_REPERTOIRE_ZIP,
-  TYPE_ENVOI_PIECE_JOINTE,
   analyserEntetePieceJointe,
   analyserRepertoirePieceJointe,
-  assainirNomPieceJointe,
-  controlerListePiecesJointes,
   demandeRepertoireZip,
-  formatDepuisExtension,
   localiserRepertoireZip,
   nomsRepertoireZip,
-  type FormatPieceJointe,
   type MotifRefus,
-} from "@/lib/contact/pieces-jointes";
+} from "@/server/contact/octets-pieces-jointes";
 import { analyserFlux, type VerdictAntivirus } from "@/server/careers/clamav";
 
 /** Préfixe des objets pas encore contrôlés. Rien d'autre ne s'y range. */
 export const PREFIXE_TEMPORAIRE = "contact/pieces-temporaires/";
-/** Durée de vie d'une URL d'envoi. Le délai court au DÉBUT du `PUT`, pas à sa fin. */
-export const TTL_URL_ENVOI_S = 10 * 60;
+/**
+ * Durée de vie d'une URL d'envoi. Le délai court au DÉBUT du `PUT`, pas à sa fin.
+ * 30 min (relecture sécurité 2026-10-16, D4) : 3 × 25 Mo sur une liaison à
+ * ~0,5 Mbps ne finissait pas en 10 min, et la finalisation est à usage unique.
+ */
+export const TTL_URL_ENVOI_S = 30 * 60;
+/**
+ * Plafond d'octets RÉSERVÉS sur 24 h glissantes, toutes demandes confondues
+ * (relecture 2026-10-16, D2). Une pièce reçue n'est jamais purgée : sans plafond
+ * global, des IP tournantes derrière Turnstile remplissent R2 sans alerte.
+ */
+export const PLAFOND_OCTETS_24H = 2 * 1024 * 1024 * 1024;
+const FENETRE_PLAFOND_MS = 24 * 60 * 60 * 1000;
+/** Une alerte Sentry par jour au plus : le verrou Redis vit 24 h. */
+const CLE_ALERTE_PLAFOND = "contact:pieces-jointes:alerte-plafond";
 /** Une ligne restée `attendue` au-delà : envoi abandonné, le nettoyage la reprend. */
 export const DELAI_ABANDON_MS = 60 * 60 * 1000;
 /** Un objet temporaire plus vieux est supprimé, quoi qu'il arrive. */
 export const DELAI_NETTOYAGE_TEMPORAIRES_MS = 24 * 60 * 60 * 1000;
-/** Délai de l'antivirus par fichier. Au-delà, la pièce passe « non vérifiée ». */
+/** Délai de l'antivirus par fichier. Au-delà, la pièce passe en quarantaine. */
 const DELAI_ANTIVIRUS_MS = 20_000;
 
 export type Antivirus = (
@@ -143,6 +159,42 @@ export function lireAnnoncePiecesJointes(formData: FormData): AnnoncePiecesJoint
 
 // ---- 2. Les URL d'envoi ----------------------------------------------------
 
+/** Levée quand le plafond global de 24 h est atteint : les pièces sont « non reçues ». */
+export class PlafondStockageAtteint extends Error {
+  constructor() {
+    super("plafond de stockage des pièces jointes atteint sur 24 h");
+    this.name = "PlafondStockageAtteint";
+  }
+}
+
+/** Alerte Sentry, une fois par jour (verrou Redis ; stub de build : jamais d'alerte). */
+async function alerterPlafondUneFoisParJour(deja: number, demande: number): Promise<void> {
+  let premiere = true;
+  try {
+    premiere = (await redis.set(CLE_ALERTE_PLAFOND, "1", "EX", 24 * 60 * 60, "NX")) === "OK";
+  } catch {
+    // Redis muet : mieux vaut une alerte de trop que pas d'alerte.
+  }
+  if (!premiere) return;
+  Sentry.captureMessage("Pièces jointes du contact : plafond de stockage 24 h atteint", {
+    level: "warning",
+    tags: { step: "pieces-jointes", motif: "plafond-24h" },
+    extra: { octetsReserves24h: deja, octetsDemandes: demande, plafond: PLAFOND_OCTETS_24H },
+  });
+}
+
+/** Octets réservés (URL délivrées) ou conservés sur 24 h, hors pièces refusées / non reçues. */
+async function octetsReserves24h(maintenant: Date): Promise<number> {
+  const r = await prisma.submissionAttachment.aggregate({
+    _sum: { tailleOctets: true },
+    where: {
+      createdAt: { gte: new Date(maintenant.getTime() - FENETRE_PLAFOND_MS) },
+      statut: { in: ["attendue", "controle", "recue", "quarantaine"] },
+    },
+  });
+  return r?._sum?.tailleOctets ?? 0;
+}
+
 /** Clé TEMPORAIRE : le jour, un identifiant aléatoire. Ni nom, ni extension, ni demande. */
 export function cleTemporairePieceJointe(maintenant: Date): string {
   return `${PREFIXE_TEMPORAIRE}${maintenant.toISOString().slice(0, 10)}/${randomUUID()}`;
@@ -186,6 +238,12 @@ export async function ouvrirEnvoisPiecesJointes(
   pieces: ReadonlyArray<PieceAnnoncee>,
   maintenant: Date = new Date(),
 ): Promise<EnvoisOuverts> {
+  const demande = pieces.reduce((t, p) => t + p.taille, 0);
+  const deja = await octetsReserves24h(maintenant);
+  if (deja + demande > PLAFOND_OCTETS_24H) {
+    await alerterPlafondUneFoisParJour(deja, demande);
+    throw new PlafondStockageAtteint();
+  }
   const jeton = randomBytes(32).toString("base64url");
   const jetonHash = empreinteJeton(jeton);
   const lignes = pieces.map((p) => ({
@@ -368,7 +426,9 @@ async function controlerEtRanger(ligne: LigneAControler, antivirus: Antivirus): 
       await prisma.submissionAttachment.update({
         where: { id: ligne.id },
         data: {
-          statut: "recue",
+          // Antivirus muet : gardée en quarantaine (non téléchargeable) jusqu'à la
+          // ré-analyse horaire. La demande, elle, n'est jamais perdue.
+          statut: verdict.antivirus === "sain" ? "recue" : "quarantaine",
           cleStockage: definitive,
           format: verdict.format,
           sha256: verdict.sha256,
@@ -436,7 +496,9 @@ export function issueDeLigne(l: {
   statut: string;
   motifRefus: string | null;
 }): IssuePiece {
-  if (l.statut === "recue") return { id: l.id, statut: "recue" };
+  // En quarantaine : pour la personne, le fichier est bien parti (la ré-analyse
+  // antivirus ne la regarde pas) ; seule la console distingue.
+  if (l.statut === "recue" || l.statut === "quarantaine") return { id: l.id, statut: "recue" };
   if (l.statut === "refusee") {
     return { id: l.id, statut: "refusee", message: messageRefus(l.nomFichier, l.motifRefus) };
   }
@@ -486,7 +548,60 @@ export async function finaliserPiecesJointes(
 
 // ---- Nettoyage (tâche horaire du worker) ------------------------------------
 
+/** Pièces en quarantaine ré-analysées à chaque passe horaire. */
+const REANALYSES_PAR_PASSE = 20;
+
+/**
+ * Ré-analyse d'UNE pièce en quarantaine (antivirus muet à la réception) :
+ * saine → `recue` (téléchargeable) ; infectée ou contenu changé → `refusee`,
+ * objet supprimé ; antivirus encore muet → rien ne change. Rend `true` si le
+ * statut a bougé.
+ */
+async function reanalyserQuarantaine(
+  l: { id: string; cleStockage: string; sha256: string | null },
+  antivirus: Antivirus,
+): Promise<boolean> {
+  const tete = await enteteObjetR2(l.cleStockage);
+  if (!tete) {
+    await prisma.submissionAttachment.updateMany({
+      where: { id: l.id, statut: "quarantaine" },
+      data: { statut: "non_recue" },
+    });
+    return true;
+  }
+  const source = await fluxObjetGeneralR2(l.cleStockage, tete.etag);
+  const hash = createHash("sha256");
+  async function* observe(): AsyncGenerator<Uint8Array> {
+    for await (const m of source) {
+      hash.update(m);
+      yield m;
+    }
+  }
+  const verdict = await antivirus(observe(), DELAI_ANTIVIRUS_MS).catch((): VerdictAntivirus => ({
+    issue: "indisponible",
+    raison: "erreur",
+  }));
+  (source as { destroy?: () => void }).destroy?.();
+  if (verdict.issue === "indisponible") return false;
+  const intact = l.sha256 !== null && hash.digest("hex") === l.sha256;
+  if (verdict.issue === "infecte" || !intact) {
+    await prisma.submissionAttachment.updateMany({
+      where: { id: l.id, statut: "quarantaine" },
+      data: { statut: "refusee", motifRefus: verdict.issue === "infecte" ? "infecte" : "contenu" },
+    });
+    await supprimerSansBruit(l.cleStockage);
+    return true;
+  }
+  await prisma.submissionAttachment.updateMany({
+    where: { id: l.id, statut: "quarantaine" },
+    data: { statut: "recue", antivirus: "sain" },
+  });
+  return true;
+}
+
 export interface BilanNettoyage {
+  /** Pièces sorties de quarantaine (saines, infectées ou disparues) à cette passe. */
+  readonly quarantaineTraitees?: number;
   /** Demandes dont les envois abandonnés ont été repris (et l'accusé envoyé). */
   readonly demandesReprises: number;
   readonly temporairesSupprimes: number;
@@ -499,7 +614,9 @@ export interface BilanNettoyage {
  *   2. les lignes `attendue` depuis plus d'une heure (onglet fermé, fin d'envoi
  *      jamais arrivée) → contrôlées comme le navigateur l'aurait demandé —
  *      l'objet a pu arriver —, puis l'accusé différé part ;
- *   3. les objets du préfixe temporaire de plus de 24 h → supprimés. Ce ne
+ *   3. les pièces en `quarantaine` (antivirus muet à la réception) sont
+ *      ré-analysées ; saines → `recue`, infectées → `refusee` ;
+ *   4. les objets du préfixe temporaire de plus de 24 h → supprimés. Ce ne
  *      sont que des fichiers jamais acceptés : une pièce reçue a déjà quitté
  *      ce préfixe.
  */
@@ -557,6 +674,21 @@ export async function nettoyerPiecesJointesContact(
     }
   }
 
+  let quarantaineTraitees = 0;
+  const enQuarantaine = await prisma.submissionAttachment.findMany({
+    where: { statut: "quarantaine" },
+    select: { id: true, cleStockage: true, sha256: true },
+    orderBy: { createdAt: "asc" },
+    take: REANALYSES_PAR_PASSE,
+  });
+  for (const l of enQuarantaine) {
+    try {
+      if (await reanalyserQuarantaine(l, antivirus)) quarantaineTraitees += 1;
+    } catch (err) {
+      Sentry.captureException(err, { tags: { step: "pieces-jointes", motif: "reanalyse" } });
+    }
+  }
+
   let temporairesSupprimes = 0;
   const seuil = maintenant.getTime() - DELAI_NETTOYAGE_TEMPORAIRES_MS;
   let suite: string | undefined;
@@ -572,7 +704,7 @@ export async function nettoyerPiecesJointesContact(
     if (!r.suite) break;
     suite = r.suite;
   }
-  return { demandesReprises: reprises.size, temporairesSupprimes };
+  return { demandesReprises: reprises.size, temporairesSupprimes, quarantaineTraitees };
 }
 
 // ---- Console et effacements -------------------------------------------------

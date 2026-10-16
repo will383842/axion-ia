@@ -50,6 +50,7 @@ const h = vi.hoisted(() => {
     seau: new Map<string, Objet>(),
     lignes: [] as Ligne[],
     lecturesFlux: 0,
+    verrous: new Set<string>(),
     ObjetR2Modifie,
   };
 });
@@ -67,9 +68,29 @@ function correspond(l: Ligne, where: Record<string, unknown>): boolean {
 }
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
+vi.mock("@/lib/redis", () => ({
+  redis: {
+    set: async (cle: string) => {
+      if (h.verrous.has(cle)) return null;
+      h.verrous.add(cle);
+      return "OK";
+    },
+  },
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     submissionAttachment: {
+      createMany: async ({ data }: { data: Ligne[] }) => {
+        h.lignes.push(...data);
+        return { count: data.length };
+      },
+      aggregate: async () => ({
+        _sum: {
+          tailleOctets: h.lignes
+            .filter((l) => ["attendue", "controle", "recue", "quarantaine"].includes(l.statut))
+            .reduce((t, l) => t + l.tailleOctets, 0),
+        },
+      }),
       updateMany: async ({ where, data }: { where: Record<string, unknown>; data: object }) => {
         const vis = h.lignes.filter((l) => correspond(l, where));
         vis.forEach((l) => Object.assign(l, data));
@@ -141,8 +162,12 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("@/server/careers/clamav", () => ({ analyserFlux: vi.fn() }));
 
 import {
+  PLAFOND_OCTETS_24H,
   PREFIXE_TEMPORAIRE,
+  PlafondStockageAtteint,
+  TTL_URL_ENVOI_S,
   empreinteJeton,
+  ouvrirEnvoisPiecesJointes,
   finaliserPiecesJointes,
   nettoyerPiecesJointesContact,
   type Antivirus,
@@ -201,6 +226,7 @@ beforeEach(() => {
   h.seau.clear();
   h.lignes.length = 0;
   h.lecturesFlux = 0;
+  h.verrous.clear();
   n = 0;
 });
 
@@ -231,13 +257,15 @@ describe("fin d'envoi — accepté, rangé, déplacé", () => {
     expect(l.sha256).toBe(createHash("sha256").update(PDF).digest("hex"));
   });
 
-  it("antivirus muet : la pièce passe « non vérifiée », l'empreinte est relue", async () => {
+  it("antivirus muet : la pièce est en QUARANTAINE (pas téléchargeable), l'empreinte est relue", async () => {
     const l = deposer("cdc.pdf", "pdf", PDF);
-    await finaliserPiecesJointes(SUB, JETON, async () => ({
+    const bilan = await finaliserPiecesJointes(SUB, JETON, async () => ({
       issue: "indisponible",
       raison: "ECONNREFUSED",
     }));
-    expect(l).toMatchObject({ statut: "recue", antivirus: "non_verifie" });
+    expect(l).toMatchObject({ statut: "quarantaine", antivirus: "non_verifie" });
+    // Pour la personne, le fichier est parti : la demande et la pièce ne sont pas « perdues ».
+    expect(bilan.pieces[0]).toEqual({ id: l.id, statut: "recue" });
     expect(l.sha256).toBe(createHash("sha256").update(PDF).digest("hex"));
   });
 });
@@ -375,5 +403,93 @@ describe("nettoyage horaire", () => {
       `contact/pieces-jointes/2025/${SUB}/ancien.pdf`,
       `${PREFIXE_TEMPORAIRE}2026-10-15/recent`,
     ]);
+  });
+});
+
+describe("quarantaine — ré-analyse horaire", () => {
+  async function enQuarantaine() {
+    const l = deposer("cdc.pdf", "pdf", PDF);
+    await finaliserPiecesJointes(SUB, JETON, async () => ({ issue: "indisponible", raison: "x" }));
+    expect(l.statut).toBe("quarantaine");
+    return l;
+  }
+  const passe = (antivirus: Antivirus) =>
+    nettoyerPiecesJointesContact(MAINTENANT, { antivirus, accuse: async () => true });
+
+  it("antivirus encore muet : la pièce reste en quarantaine", async () => {
+    const l = await enQuarantaine();
+    const bilan = await passe(async () => ({ issue: "indisponible", raison: "x" }));
+    expect(l.statut).toBe("quarantaine");
+    expect(bilan.quarantaineTraitees).toBe(0);
+  });
+
+  it("propre : elle passe à « recue », antivirus « sain »", async () => {
+    const l = await enQuarantaine();
+    const bilan = await passe(antivirusSain);
+    expect(l).toMatchObject({ statut: "recue", antivirus: "sain" });
+    expect(bilan.quarantaineTraitees).toBe(1);
+    expect(h.seau.has(l.cleStockage)).toBe(true);
+  });
+
+  it("infectée : refusée et l'objet supprimé", async () => {
+    const l = await enQuarantaine();
+    const cle = l.cleStockage;
+    await passe(async () => ({ issue: "infecte", signature: "Eicar" }));
+    expect(l).toMatchObject({ statut: "refusee", motifRefus: "infecte" });
+    expect(h.seau.has(cle)).toBe(false);
+  });
+
+  it("objet remplacé pendant la quarantaine (empreinte différente) : refusée", async () => {
+    const l = await enQuarantaine();
+    h.seau.get(l.cleStockage)!.octets = new Uint8Array(Buffer.from("%PDF-1.7 autre"));
+    await passe(antivirusSain);
+    expect(l).toMatchObject({ statut: "refusee", motifRefus: "contenu" });
+  });
+
+  it("objet disparu : « non reçue »", async () => {
+    const l = await enQuarantaine();
+    h.seau.delete(l.cleStockage);
+    await passe(antivirusSain);
+    expect(l.statut).toBe("non_recue");
+  });
+});
+
+describe("plafond de stockage global sur 24 h et durée des URL", () => {
+  const piece = (taille: number) => ({ nom: "a.pdf", taille, format: "pdf" as const });
+
+  it("les URL sont valables 30 minutes", () => {
+    expect(TTL_URL_ENVOI_S).toBe(30 * 60);
+  });
+
+  it("sous le plafond : les URL sont signées", async () => {
+    const r2 = await import("@/lib/r2-storage");
+    vi.mocked(r2.signerEnvoiDirectR2).mockResolvedValue("https://r2.test/u");
+    const ouverts = await ouvrirEnvoisPiecesJointes(SUB, [piece(1000)], MAINTENANT);
+    expect(ouverts.envois).toHaveLength(1);
+    expect(r2.signerEnvoiDirectR2).toHaveBeenCalledWith(
+      expect.any(String),
+      1000,
+      expect.any(String),
+      TTL_URL_ENVOI_S,
+    );
+  });
+
+  it("au-delà : aucune URL signée, aucune ligne, une seule alerte Sentry par jour", async () => {
+    const r2 = await import("@/lib/r2-storage");
+    const Sentry = await import("@sentry/nextjs");
+    vi.mocked(r2.signerEnvoiDirectR2).mockClear();
+    vi.mocked(Sentry.captureMessage).mockClear();
+    h.verrous.clear();
+    deposer("gros.pdf", "pdf", PDF, { annonce: PLAFOND_OCTETS_24H - 500 }).statut = "recue";
+    const avant = h.lignes.length;
+    await expect(ouvrirEnvoisPiecesJointes(SUB, [piece(1000)], MAINTENANT)).rejects.toBeInstanceOf(
+      PlafondStockageAtteint,
+    );
+    await expect(ouvrirEnvoisPiecesJointes(SUB, [piece(1000)], MAINTENANT)).rejects.toBeInstanceOf(
+      PlafondStockageAtteint,
+    );
+    expect(r2.signerEnvoiDirectR2).not.toHaveBeenCalled();
+    expect(h.lignes.length).toBe(avant);
+    expect(Sentry.captureMessage).toHaveBeenCalledTimes(1);
   });
 });

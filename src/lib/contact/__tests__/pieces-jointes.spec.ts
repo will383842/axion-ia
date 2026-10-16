@@ -14,17 +14,19 @@ import { describe, expect, it } from "vitest";
 import {
   ACCEPT_PIECES_JOINTES,
   NOMBRE_MAX_PIECES,
-  ScruteurPieceJointe,
-  TAILLE_ENTETE_ANALYSEE,
   TAILLE_MAX_PIECE_OCTETS,
   TAILLE_MAX_TOTALE_OCTETS,
-  analyserOctetsPieceJointe,
   assainirNomPieceJointe,
   controlerListePiecesJointes,
+} from "../pieces-jointes";
+import {
+  ScruteurPieceJointe,
+  TAILLE_ENTETE_ANALYSEE,
+  analyserOctetsPieceJointe,
   localiserRepertoireZip,
   nomsRepertoireZip,
   ressembleABalisage,
-} from "../pieces-jointes";
+} from "@/server/contact/octets-pieces-jointes";
 import { fabriquerZip } from "./zip-de-test";
 
 const octets = (...parts: Array<number[] | string>): Uint8Array =>

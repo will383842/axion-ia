@@ -52,6 +52,7 @@ import {
   finaliserPiecesJointes,
   lireAnnoncePiecesJointes,
   ouvrirEnvoisPiecesJointes,
+  PlafondStockageAtteint,
   type EnvoisOuverts,
   type IssuePiece,
 } from "@/server/contact/pieces-jointes";
@@ -362,9 +363,13 @@ export async function submitUnifiedContactAction(
       try {
         envoiPieces = await ouvrirEnvoisPiecesJointes(submission.id, annonce.pieces);
       } catch (err) {
-        Sentry.captureException(err, {
-          tags: { action: "submitUnifiedContactAction", step: "pieces-jointes", type: data.type },
-        });
+        // Plafond 24 h : déjà alerté (une fois par jour) par le module ; la
+        // demande part, les pièces sont « non reçues ».
+        if (!(err instanceof PlafondStockageAtteint)) {
+          Sentry.captureException(err, {
+            tags: { action: "submitUnifiedContactAction", step: "pieces-jointes", type: data.type },
+          });
+        }
       }
     }
     const piecesNonRecues = envoiPieces ? 0 : annonce.nombre;

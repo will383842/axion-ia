@@ -19,6 +19,7 @@ export const MENTION_PRUDENCE = "Fichier envoyé par un visiteur : ouvrez-le ave
 const LIBELLE_STATUT: Readonly<Record<string, string>> = {
   attendue: "envoi en cours",
   controle: "contrôle en cours",
+  quarantaine: "en attente d'analyse antivirus",
   refusee: "pièce non reçue (refusée au contrôle)",
   non_recue: "pièce non reçue",
 };
@@ -47,7 +48,6 @@ export async function PiecesJointesMessage({
                 <strong>{p.nomFichier}</strong>{" "}
                 <span className="text-[color:var(--color-admin-fg-muted)]">
                   · {tailleLisiblePieceJointe(p.tailleOctets)}
-                  {recue && p.antivirus !== "sain" ? " · antivirus non passé à la réception" : null}
                   {recue ? null : ` · ${LIBELLE_STATUT[p.statut] ?? "pièce non reçue"}`}
                 </span>
                 {recue && FORMATS_A_OUVRIR_AVEC_PRUDENCE.has(p.format) ? (

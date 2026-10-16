@@ -96,7 +96,7 @@ export async function envoyerAccuseDiffere(submissionId: string): Promise<boolea
   if (!isDecryptedEmailUsable(email)) return false;
 
   const recues = await prisma.submissionAttachment.count({
-    where: { submissionId, statut: "recue" },
+    where: { submissionId, statut: { in: ["recue", "quarantaine"] } },
   });
   const type = texte(details["unifiedType"]) ?? "autre";
   const res = await enqueueEmail(
