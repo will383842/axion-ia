@@ -95,6 +95,13 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "ci-dessus ; la pièce d'identité est déjà supprimée après vérification) : copie sur " +
       "demande à contact@axion-ia.com.",
   },
+  {
+    // Formulaire de contact (2026-10-15) : des fichiers fournis par la personne.
+    modele: "SubmissionAttachment",
+    motif:
+      "les fichiers joints à vos messages envoyés par le formulaire de contact (cahier des " +
+      "charges, devis…) : copie, tels que reçus, sur demande à contact@axion-ia.com.",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */

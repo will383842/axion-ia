@@ -41,7 +41,8 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
-import { notify } from "@/server/notifications";
+import { notifierSelonMode, type OptionsNotifier } from "@/server/notifications/mode-envoi";
+import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
@@ -138,7 +139,10 @@ function mapCalendlyStatus(
  * contexte d'appel principal est un beacon navigateur — l'échec de
  * l'enrichissement ne doit jamais faire échouer la capture elle-même.
  */
-export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcome> {
+export async function enrichCalendlyEvent(
+  eventId: string,
+  options: OptionsNotifier = {},
+): Promise<EnrichOutcome> {
   if (!isCalendlyApiConfigured()) return { ok: false, reason: "not_configured" };
 
   let row: {
@@ -665,36 +669,62 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // enrichissement réussi pour un échec.
   if (canceled || rescheduled) {
     try {
+      // Décision Will 15/10 : un client part au salon « Clients » (tout le
+      // détail), un candidat apporteur ou un formateur reste au salon 📅.
+      const rdv = { typeRendezVous, eventTypeName: eventName ?? row.eventTypeName };
+      const telephone =
+        (data["inviteePhone"] as string | undefined) ?? row.inviteePhone ?? undefined;
       if (canceled) {
-        await notify({
-          category: "CALENDLY_INVITEE_CANCELED",
-          payload: {
-            eventUri: eventId,
-            inviteeEmail,
-            reason: "Annulation constatée côté Calendly",
-            ...(inviteeName ? { inviteeName } : {}),
-            ...(eventName ? { eventName } : {}),
-            ...(row.startTime ? { eventStartTime: row.startTime.toISOString() } : {}),
+        // Le MOTIF ÉCRIT par la personne (`cancellation.reason`, API v2) — plus
+        // jamais « Annulation constatée côté Calendly » à sa place.
+        const annulation = d.cancellation ?? null;
+        await notifierSelonMode(
+          {
+            category: categorieAlerteCalendly("annulation", rdv),
+            payload: {
+              eventUri: eventId,
+              inviteeEmail,
+              ...(annulation?.reason ? { reason: annulation.reason } : {}),
+              ...(annulation?.canceledBy ? { canceledBy: annulation.canceledBy } : {}),
+              ...(annulation?.cancelerType ? { cancelerType: annulation.cancelerType } : {}),
+              ...(inviteeName ? { inviteeName } : {}),
+              ...(eventName ? { eventName } : {}),
+              ...(telephone ? { inviteePhone: telephone } : {}),
+              typeRendezVous,
+              ...(row.startTime ? { eventStartTime: row.startTime.toISOString() } : {}),
+            },
+            // Une annulation ne doit être annoncée qu'une fois, même si
+            // l'enrichissement est relancé à la main derrière.
+            dedupKey: `cal-cancel-${eventId}`,
+            dedupTtlSec: 86_400,
           },
-          // Une annulation ne doit être annoncée qu'une fois, même si
-          // l'enrichissement est relancé à la main derrière.
-          dedupKey: `cal-cancel-${eventId}`,
-          dedupTtlSec: 86_400,
-        });
+          options.notifier,
+          "calendly-enrich",
+        );
       } else if (rescheduled && row.startTime && d.startTime) {
-        await notify({
-          category: "CALENDLY_INVITEE_RESCHEDULED",
-          payload: {
-            eventUri: eventId,
-            inviteeEmail,
-            oldStart: row.startTime.toISOString(),
-            newStart: d.startTime.toISOString(),
-            ...(inviteeName ? { inviteeName } : {}),
-            ...(eventName ? { eventName } : {}),
+        const lieu = (data["location"] as string | undefined) ?? row.location ?? undefined;
+        const cancelUrl = (data["cancelUrl"] as string | undefined) ?? row.cancelUrl ?? undefined;
+        await notifierSelonMode(
+          {
+            category: categorieAlerteCalendly("report", rdv),
+            payload: {
+              eventUri: eventId,
+              inviteeEmail,
+              oldStart: row.startTime.toISOString(),
+              newStart: d.startTime.toISOString(),
+              ...(inviteeName ? { inviteeName } : {}),
+              ...(eventName ? { eventName } : {}),
+              ...(telephone ? { inviteePhone: telephone } : {}),
+              typeRendezVous,
+              ...(lieu ? { lieu } : {}),
+              ...(cancelUrl ? { cancelUrl } : {}),
+            },
+            dedupKey: `cal-resched-${eventId}-${d.startTime.toISOString()}`,
+            dedupTtlSec: 86_400,
           },
-          dedupKey: `cal-resched-${eventId}-${d.startTime.toISOString()}`,
-          dedupTtlSec: 86_400,
-        });
+          options.notifier,
+          "calendly-enrich",
+        );
       }
     } catch (e) {
       Sentry.captureException(e);

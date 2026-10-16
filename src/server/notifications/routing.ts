@@ -43,6 +43,10 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
   CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
+  // Chatbot (décision Will 15/10) — sortent de `MONITORING_ALERT`, qui était
+  // silencieux et plafonné à 30/h toutes sources confondues.
+  CHATBOT_LEAD_CAPTURED: { channels: ["telegram"], severity: "info" },
+  CHATBOT_ESCALATION: { channels: ["telegram"], severity: "info" },
 
   // --- Newsletter ---
   NEWSLETTER_PENDING: { channels: ["telegram"], severity: "info" },
@@ -68,6 +72,10 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   CALENDLY_INVITEE_CREATED: { channels: ["telegram"], severity: "info" },
   CALENDLY_INVITEE_CANCELED: { channels: ["telegram"], severity: "warn" },
   CALENDLY_INVITEE_RESCHEDULED: { channels: ["telegram"], severity: "info" },
+  // Les mêmes, pour un CLIENT (décision Will 15/10) : salon « Clients ».
+  CLIENT_CALL_BOOKED: { channels: ["telegram"], severity: "info" },
+  CLIENT_CALL_CANCELED: { channels: ["telegram"], severity: "warn" },
+  CLIENT_CALL_RESCHEDULED: { channels: ["telegram"], severity: "info" },
 
   // --- Reply admin (Chantier 5) — décision Will figée : pas de notif ---
   ADMIN_REPLIED_TO_SUBMISSION: { channels: [], severity: "info" },
@@ -156,6 +164,7 @@ export function shouldDispatchAsync(severity: NotificationSeverity): boolean {
 // qui traite (bot, salon) comme un COUPLE — ne jamais les résoudre séparément.
 
 export type TelegramGroup =
+  | "clients"
   | "calendly"
   | "candidatures"
   | "monteur-video"
@@ -181,7 +190,23 @@ export type TelegramGroup =
  * Ajouter une catégorie dans `types.ts` sans l'ajouter ici ne compile pas.
  */
 const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
-  // 📅 Calendly — et RIEN d'autre. C'est le seul canal de RDV réellement vivant.
+  // 🔥 Clients — RÉSERVÉ aux demandes de clients (décision Will 15/10). Tant
+  // que `TELEGRAM_CHAT_ID_CLIENTS` n'est pas posé, chacune repart vers SA route
+  // d'avant (`REPLI_CLIENTS`), pour ne rien perdre.
+  CONTACT_FORM_SUBMITTED: "clients",
+  AUDIT_REQUEST_SUBMITTED: "clients",
+  INTERVENTION_REQUEST_SUBMITTED: "clients",
+  IMPLEMENTATION_REQUEST_SUBMITTED: "clients",
+  QUOTE_REQUEST_RECEIVED: "clients",
+  CUSTOMER_SUPPORT_REQUEST: "clients",
+  CHATBOT_LEAD_CAPTURED: "clients",
+  CHATBOT_ESCALATION: "clients",
+  CLIENT_CALL_BOOKED: "clients",
+  CLIENT_CALL_CANCELED: "clients",
+  CLIENT_CALL_RESCHEDULED: "clients",
+
+  // 📅 Calendly — les rendez-vous qui ne sont PAS des clients : candidats
+  // apporteurs et formateurs (décision Will 15/10).
   CALENDLY_INVITEE_CREATED: "calendly",
   CALENDLY_INVITEE_CANCELED: "calendly",
   CALENDLY_INVITEE_RESCHEDULED: "calendly",
@@ -224,18 +249,11 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // 💰 Investisseurs
   INVESTOR_INQUIRY_RECEIVED: "investisseurs",
 
-  // 🛠️ Interventions — toute demande de prestation payante.
-  INTERVENTION_REQUEST_SUBMITTED: "interventions",
-  AUDIT_REQUEST_SUBMITTED: "interventions",
-  IMPLEMENTATION_REQUEST_SUBMITTED: "interventions",
-  QUOTE_REQUEST_RECEIVED: "interventions",
-
   // ⭐ Avis clients — sortent du groupe Système, où ils n'avaient rien à faire.
   REVIEW_SUBMITTED: "avis",
 
-  // 💬 Messages — le reste de ce qu'écrit un humain.
-  CONTACT_FORM_SUBMITTED: "messages",
-  CUSTOMER_SUPPORT_REQUEST: "messages",
+  // 💬 Messages — le reste de ce qu'écrit un humain. (Le formulaire de contact
+  // et le support client sont partis au salon « Clients » le 15/10.)
   PODCAST_REQUEST_SUBMITTED: "messages",
   RGPD_REQUEST_SUBMITTED: "messages",
   SPEAKER_INVITATION_RECEIVED: "messages",
@@ -287,6 +305,53 @@ export function telegramGroupFor(category: NotificationCategory): TelegramGroup 
   return CATEGORY_GROUP[category];
 }
 
+/** Les catégories du salon « Clients » (décision Will 15/10). */
+export type CategorieClient =
+  | "CONTACT_FORM_SUBMITTED"
+  | "AUDIT_REQUEST_SUBMITTED"
+  | "INTERVENTION_REQUEST_SUBMITTED"
+  | "IMPLEMENTATION_REQUEST_SUBMITTED"
+  | "QUOTE_REQUEST_RECEIVED"
+  | "CUSTOMER_SUPPORT_REQUEST"
+  | "CHATBOT_LEAD_CAPTURED"
+  | "CHATBOT_ESCALATION"
+  | "CLIENT_CALL_BOOKED"
+  | "CLIENT_CALL_CANCELED"
+  | "CLIENT_CALL_RESCHEDULED";
+
+/**
+ * La route de chaque catégorie client AVANT le salon « Clients » — celle qu'elle
+ * reprend tant que `TELEGRAM_CHAT_ID_CLIENTS` n'est pas posé, et celle du
+ * dernier essai quand l'envoi au salon échoue (décision Will 15/10 : « ne rien
+ * perdre »).
+ *
+ * `Record` exhaustif : une catégorie client ajoutée sans sa route de repli ne
+ * compile pas. Le chatbot passait par `MONITORING_ALERT`, donc 🔔 Système.
+ */
+const REPLI_CLIENTS: Record<CategorieClient, Exclude<TelegramGroup, "clients">> = {
+  CONTACT_FORM_SUBMITTED: "messages",
+  CUSTOMER_SUPPORT_REQUEST: "messages",
+  AUDIT_REQUEST_SUBMITTED: "interventions",
+  INTERVENTION_REQUEST_SUBMITTED: "interventions",
+  IMPLEMENTATION_REQUEST_SUBMITTED: "interventions",
+  QUOTE_REQUEST_RECEIVED: "interventions",
+  CHATBOT_LEAD_CAPTURED: "system",
+  CHATBOT_ESCALATION: "system",
+  CLIENT_CALL_BOOKED: "calendly",
+  CLIENT_CALL_CANCELED: "calendly",
+  CLIENT_CALL_RESCHEDULED: "calendly",
+};
+
+/** Vrai si la catégorie est une demande de CLIENT (salon « Clients »). */
+export function estCategorieClient(category: NotificationCategory): category is CategorieClient {
+  return category in REPLI_CLIENTS;
+}
+
+/** La route d'avant le salon « Clients » d'une catégorie client. */
+export function groupeDeRepliClient(category: CategorieClient): Exclude<TelegramGroup, "clients"> {
+  return REPLI_CLIENTS[category];
+}
+
 /**
  * Toutes les catégories, à l'exécution.
  *
@@ -313,75 +378,34 @@ export const ALL_NOTIFICATION_CATEGORIES = Object.keys(CATEGORY_GROUP) as Notifi
 // ne sont pas définis (cf. `channels/whatsapp.ts`) — cette liste ne fait qu'AUTORISER
 // le doublon, elle ne déclenche rien seule.
 const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<NotificationCategory>([
-  // 📅 Calendly — les TROIS événements.
-  //
-  // `_CANCELED` et `_RESCHEDULED` ajoutés le 2026-08-09 : jusqu'ici seule la
-  // création partait sur WhatsApp. Un client qui annulait 1 h avant le rendez-vous
-  // ne produisait aucune alerte sur le téléphone — le pire cas possible, puisque
-  // c'est précisément celui où il faut réagir vite.
-  "CALENDLY_INVITEE_CREATED",
-  "CALENDLY_INVITEE_CANCELED",
-  "CALENDLY_INVITEE_RESCHEDULED",
-
-  // 🛠️ Demandes de prestation — quelqu'un veut acheter. Après un RDV, c'est le
-  // flux le plus directement lié au chiffre d'affaires.
-  "INTERVENTION_REQUEST_SUBMITTED",
+  // 🔥 Décision Will 15/10 : WhatsApp devient la SONNETTE des CLIENTS, et rien
+  // d'autre. Exactement les catégories du salon « Clients » — le texte ne porte
+  // aucune donnée (`formatNotificationWhatsApp`, décision D6-5-C1 maintenue) et
+  // renvoie au salon Telegram, où se lit tout le détail.
+  "CONTACT_FORM_SUBMITTED",
   "AUDIT_REQUEST_SUBMITTED",
+  "INTERVENTION_REQUEST_SUBMITTED",
   "IMPLEMENTATION_REQUEST_SUBMITTED",
   "QUOTE_REQUEST_RECEIVED",
+  "CUSTOMER_SUPPORT_REQUEST",
+  "CHATBOT_LEAD_CAPTURED",
+  "CHATBOT_ESCALATION",
+  "CLIENT_CALL_BOOKED",
+  "CLIENT_CALL_CANCELED",
+  "CLIENT_CALL_RESCHEDULED",
 
-  // 📰💰🎤 Rare mais à fort enjeu. Ajoutés le 2026-08-09 : ils étaient
-  // Telegram-only par omission, pas par décision. Un investisseur classé `warn`
-  // (donc jugé stratégique par le routage lui-même) qui n'arrivait pas sur le
-  // téléphone, c'était un trou.
-  "PRESS_REQUEST_SUBMITTED",
-  "INVESTOR_INQUIRY_RECEIVED",
-  "SPEAKER_INVITATION_RECEIVED",
-
-  // ⭐ Avis client à modérer.
-  "REVIEW_SUBMITTED",
-
-  // 🎬 Candidatures monteur vidéo — demande EXPLICITE de Will (2026-08-12) pour
-  // CETTE offre seulement. Ce n'est PAS un retour en arrière sur l'exclusion des
-  // candidatures (ci-dessous) : `JOB_APPLICATION_RECEIVED` reste hors WhatsApp.
-  // CallMeBot = un seul fil → la séparation passe par l'en-tête 🎬 MONTEUR VIDÉO.
-  "VIDEO_EDITOR_APPLICATION_RECEIVED",
-
-  // 🧲 Candidatures commerciales (tunnel Mémorial de l'Isère) — même décision
-  // que le monteur vidéo (Will 2026-08-12) : campagne active à fort enjeu, le
-  // doublon WhatsApp est voulu. Séparation par l'en-tête 🧲 COMMERCIAL MÉMO.
-  "COMMERCIAL_APPLICATION_RECEIVED",
-
-  // ✉️ Formulaire de contact — REMIS le 2026-08-16, sur demande explicite de
-  // Will après un envoi de contrôle où il n'a rien reçu sur son téléphone.
+  // ── RETIRÉS de WhatsApp le 15/10 (décision Will) — ils restent sur Telegram ──
+  // Ne pas les remettre sans le lui redemander : `__tests__/whatsapp.test.ts`
+  // verrouille que ce fil ne sonne QUE pour un client.
   //
-  // Il en avait été retiré le 2026-08-09 au motif que « ce sont des gens qui
-  // attendent une réponse, mais rarement dans l'heure ». La décision s'inverse
-  // en connaissance de cause : le formulaire unifié est la porte d'entrée
-  // commerciale principale du site, et laisser une demande dormir jusqu'à la
-  // prochaine ouverture de Telegram coûte plus cher que la dilution du fil.
-  //
-  // ⚠️ C'est le premier flux à VOLUME de cette liste. Si le fil WhatsApp devient
-  // bruyant, c'est ici qu'il faudra revenir — pas sur Calendly ni sur les
-  // demandes de prestation.
-  "CONTACT_FORM_SUBMITTED",
-
-  // ── HORS WhatsApp, sur décision explicite de Will (2026-08-09) ─────────────
-  // Ne pas les remettre sans le lui redemander — leur absence est un CHOIX, pas
-  // un oubli, et `__tests__/whatsapp.test.ts` la verrouille explicitement.
-  //
-  //  · `JOB_APPLICATION_RECEIVED` / `RECRUITMENT_RECEIVED` — y étaient depuis le
-  //    2026-07-19, retirées ici. Une candidature se traite depuis la console, et
-  //    le pic du 05/08 (17 candidatures en une journée) montre que ce volume
-  //    noie un fil qui doit rester réservé à l'urgent. Restent sur Telegram,
-  //    dans leur groupe 💼 Candidatures.
-  //  · `CUSTOMER_SUPPORT_REQUEST`, `PODCAST_REQUEST_SUBMITTED` — retirées le
-  //    2026-08-09 : ce sont des gens qui attendent une réponse, mais rarement
-  //    dans l'heure. (`CONTACT_FORM_SUBMITTED` figurait ici jusqu'au 2026-08-16,
-  //    puis a été REMIS sur demande de Will — voir plus haut.)
-  //  · `NEWSLETTER_*`, `DEPLOY_*`, `BACKUP_*`, `INCIDENT_DETECTED`,
-  //    `SECURITY_ALERT`, `STRIPE_*`, `MONITORING_ALERT` — jamais ajoutées.
-  //  · les 6 dormantes `BOOKING_*`/`OPTION_*` — tunnel éteint, aucun émetteur.
+  //  · `CALENDLY_INVITEE_*` — désormais les rendez-vous des candidats apporteurs
+  //    et des formateurs seulement (ceux des clients sont `CLIENT_CALL_*`) ;
+  //  · `PRESS_REQUEST_SUBMITTED`, `INVESTOR_INQUIRY_RECEIVED`,
+  //    `SPEAKER_INVITATION_RECEIVED`, `PODCAST_REQUEST_SUBMITTED` ;
+  //  · `REVIEW_SUBMITTED` ;
+  //  · `VIDEO_EDITOR_APPLICATION_RECEIVED`, `COMMERCIAL_APPLICATION_RECEIVED`,
+  //    `JOB_APPLICATION_RECEIVED`, `RECRUITMENT_RECEIVED` ;
+  //  · tout le groupe Système (ops, newsletter, Stripe…) — jamais ajouté.
 ]);
 
 /** Vrai si la catégorie doit AUSSI notifier WhatsApp (leads humains). */
@@ -393,6 +417,7 @@ export function shouldNotifyWhatsApp(category: NotificationCategory): boolean {
 
 /** Variable d'env portant le chat_id DÉDIÉ de chaque groupe. */
 const CHAT_ID_ENV: Record<TelegramGroup, string> = {
+  clients: "TELEGRAM_CHAT_ID_CLIENTS",
   calendly: "TELEGRAM_CHAT_ID_CALENDLY",
   candidatures: "TELEGRAM_CHAT_ID_CANDIDATURES",
   "monteur-video": "TELEGRAM_CHAT_ID_MONTEUR_VIDEO",
@@ -417,6 +442,10 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
  * message perdu, pas de « où sont passées mes notifs ».
  */
 const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
+  // Aucun repli PAR SALON : le repli du salon « Clients » dépend de la
+  // catégorie (`REPLI_CLIENTS`) — c'est `resolveTelegramTargetPourCategorie`
+  // qui le choisit. Résoudre « clients » seul ne rend donc que le salon dédié.
+  clients: [],
   calendly: ["TELEGRAM_CHAT_ID_RDV", "TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   candidatures: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   // Tant que Will n'a pas créé le salon dédié, ces candidatures retombent dans
@@ -506,4 +535,26 @@ export function resolveTelegramTarget(group: TelegramGroup): TelegramTarget | un
 /** Réinitialise les avertissements « groupe non configuré » (tests). */
 export function resetTelegramGroupWarnings(): void {
   warnedGroups.clear();
+}
+
+/**
+ * Le salon « Clients » DÉDIÉ — bot historique + `TELEGRAM_CHAT_ID_CLIENTS` —
+ * ou `undefined` tant que Will ne l'a pas créé (décision Will 15/10).
+ */
+export function resolveSalonClients(): TelegramTarget | undefined {
+  const t = resolveTelegramTarget("clients");
+  return t?.dedicated ? t : undefined;
+}
+
+/**
+ * Le couple (bot, salon) d'une catégorie : son groupe, ou — pour une catégorie
+ * client dont le salon n'existe pas encore — la route qu'elle avait avant.
+ */
+export function resolveTelegramTargetPourCategorie(
+  category: NotificationCategory,
+): TelegramTarget | undefined {
+  if (estCategorieClient(category)) {
+    return resolveSalonClients() ?? resolveTelegramTarget(groupeDeRepliClient(category));
+  }
+  return resolveTelegramTarget(telegramGroupFor(category));
 }

@@ -9,36 +9,40 @@ import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { syncFormSubmissionToCrm } from "@/server/crm-sync";
-import { sendTelegram } from "@/lib/telegram";
+import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { encryptPii } from "@/lib/pii-crypto";
-import { lienConsole, prenomEtInitialeDepuisNomComplet } from "@/server/notifications/personne";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
- * jamais échouer la capture). Même canal que l'escalade (Telegram via le hub
- * notify()). No-op silencieux si Telegram non configuré (pas de token).
+ * jamais échouer la capture).
  *
- * Prénom + initiale et structure seulement : coordonnées et besoin se lisent
- * sur la fiche (décision du 11/10/2026).
+ * Décision Will 15/10 : un lead chatbot est un CLIENT. Il quitte le
+ * `sendTelegram` legacy (→ `MONITORING_ALERT`, silencieux, noyé dans 🔔 Système)
+ * pour une catégorie typée du salon « Clients », qui porte tout le détail.
  */
-async function notifyNewLead(input: CapturerLeadInput, submissionId: string): Promise<void> {
-  const body = [
-    "🟢 Nouveau lead chatbot",
-    `Personne : ${prenomEtInitialeDepuisNomComplet(input.nom)}`,
-    input.structure ? `Structure : ${input.structure}` : null,
-    `Voir la fiche : ${lienConsole(`contacts/messages/${submissionId}`)}`,
-  ]
-    .filter((l): l is string => l !== null)
-    .join("\n");
-  try {
-    await sendTelegram({ tag: "CONTACT", body, silent: false });
-  } catch (err) {
-    console.warn("[capturer_lead] notification Telegram échouée:", err);
-  }
+function notifyNewLead(input: CapturerLeadInput, submissionId: string): void {
+  // Après la réponse (`after`) : la réponse du bot n'attend pas Telegram
+  // (relecture PR 1553).
+  notifyApresReponse(
+    {
+      category: "CHATBOT_LEAD_CAPTURED",
+      payload: {
+        submissionId,
+        contactName: input.nom,
+        contactEmail: input.email,
+        ...(input.telephone ? { contactPhone: input.telephone } : {}),
+        ...(input.structure ? { companyName: input.structure } : {}),
+        message: input.besoin_resume,
+        submittedAt: new Date().toISOString(),
+      },
+      dedupKey: submissionId,
+    },
+    "capturer_lead",
+  );
 }
 
 export const CapturerLeadInputSchema = z
@@ -180,7 +184,7 @@ export async function capturerLead(
   // Notification équipe sur NOUVEAU lead uniquement (jamais sur un retry
   // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
   if (!result.idempotent) {
-    await notifyNewLead(input, result.submissionId);
+    notifyNewLead(input, result.submissionId);
 
     // Confirmation au visiteur (2026-08-13). Il laissait son adresse dans une
     // fenêtre de discussion qu'il allait fermer, et ne recevait rien : aucune

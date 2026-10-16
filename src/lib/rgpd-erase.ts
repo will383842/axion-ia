@@ -35,6 +35,7 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { deleteFromR2 } from "@/lib/r2-storage";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 import {
@@ -132,6 +133,42 @@ export async function eraseReponsesEntrantesForEmail(
     where: { fromEmailHash: empreinte },
   });
   return { supprimees: r.count };
+}
+
+/**
+ * Supprime les PIÈCES JOINTES envoyées avec le formulaire de contact
+ * (`submission_attachments`, 2026-10-15) : l'objet dans le compartiment R2
+ * privé, puis la ligne. Elles sont du contenu fourni par la personne (cahier
+ * des charges, devis…) ; l'anonymisation in-place de la demande ne les
+ * toucherait pas.
+ *
+ * 🔑 Par l'EMPREINTE de la demande — donc à appeler AVANT
+ * `eraseSubmissionsForEmail`, qui la remet à NULL. Un objet R2 qui résiste à
+ * la suppression part à Sentry ; sa ligne est supprimée quand même, ce qui le
+ * rend inatteignable depuis la console.
+ */
+export async function erasePiecesJointesContactForEmail(
+  email: string,
+): Promise<{ readonly supprimees: number }> {
+  const empreinte = hashEmailForLookup(email);
+  const lignes = await prisma.submissionAttachment.findMany({
+    where: {
+      submission: {
+        OR: [...(empreinte ? [{ contactEmailHash: empreinte }] : []), { contactEmail: email }],
+      },
+    },
+    select: { id: true, cleStockage: true },
+  });
+  if (lignes.length === 0) return { supprimees: 0 };
+  await prisma.submissionAttachment.deleteMany({ where: { id: { in: lignes.map((l) => l.id) } } });
+  for (const l of lignes) {
+    try {
+      await deleteFromR2(l.cleStockage);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { rgpd: "art17", etape: "pieces-jointes-contact" } });
+    }
+  }
+  return { supprimees: lignes.length };
 }
 
 /**

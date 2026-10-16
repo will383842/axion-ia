@@ -66,6 +66,7 @@ vi.mock("@/lib/rgpd-erase", () => ({
   eraseCalendlyEventsForEmail: async () => ({ anonymized: 0 }),
   eraseReseauApporteurForEmail: async () => ({ apporteur: "aucun", presentationsAnonymisees: 0 }),
   eraseReponsesEntrantesForEmail: async () => ({ supprimees: 0 }),
+  erasePiecesJointesContactForEmail: async () => ({ supprimees: 0 }),
 }));
 vi.mock("@/lib/telegram", () => ({ alertIncident: async () => undefined }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: async () => ({ enqueued: true }) }));

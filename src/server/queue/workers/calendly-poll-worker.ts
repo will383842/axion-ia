@@ -176,7 +176,7 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
   }
 
   if (job.data.type === "discover") {
-    const res = await discoverNewCalendlyEvents();
+    const res = await discoverNewCalendlyEvents(Date.now(), { notifier: "immediat" });
     // 🔴 LE SIGNAL LE PLUS PRÉCOCE DONT ON DISPOSE, et il était jeté.
     //
     // Cette passe tourne à la MINUTE et sait exactement quand une réservation
@@ -243,7 +243,7 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     return;
   }
 
-  const res = await refreshUpcomingCalendlyEvents();
+  const res = await refreshUpcomingCalendlyEvents({ notifier: "immediat" });
   if (res.updated > 0) {
     console.warn(`[calendly-poll] ${res.updated} réservation(s) mise(s) à jour`);
   }

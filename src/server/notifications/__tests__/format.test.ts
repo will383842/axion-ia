@@ -223,7 +223,9 @@ describe("formatNotification", () => {
           contactEmail: "a@b.com",
           locale: "fr" as const,
         },
-        attendu: "🛠️ *INTERVENTION* · ",
+        // Décision Will 15/10 : une demande de devis est un CLIENT. Ce gabarit
+        // allégé ne sert plus qu'au repli (salon « Clients » pas encore créé).
+        attendu: "🔥 *CLIENT* · ",
       },
     ];
     for (const { category, payload, attendu } of cas) {

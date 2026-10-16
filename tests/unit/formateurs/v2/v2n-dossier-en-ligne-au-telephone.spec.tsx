@@ -65,7 +65,6 @@ function dossier(p: Partial<DossierPublic> = {}): DossierPublic {
     adressePro: null,
     siret: null,
     siretEnregistre: false,
-    adressePro: null,
     nda: null,
     regimeTva: null,
     ibanSaisi: false,

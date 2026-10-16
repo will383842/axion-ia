@@ -28,3 +28,21 @@ export async function isDuplicate(
     return false;
   }
 }
+
+/**
+ * Retire la clé de déduplication d'un envoi qui a ÉCHOUÉ (décision Will 15/10).
+ *
+ * `isDuplicate` pose la clé AVANT l'envoi — c'est ce qui empêche deux envois
+ * simultanés du même fait. Mais une clé laissée en place après un échec
+ * transformait le rejeu (même formulaire renvoyé, sondage Calendly suivant) en
+ * « doublon » : l'alerte était perdue pour toute la durée du TTL. On la retire
+ * donc dès que l'envoi n'a pas abouti. Fail-soft : Redis indisponible = rien.
+ */
+export async function libererDedup(category: string, dedupKey: string): Promise<void> {
+  if (process.env.REDIS_URL?.includes("stub.invalid")) return;
+  try {
+    await redis.del(`${PREFIX}${category}:${dedupKey}`);
+  } catch {
+    // ignore : au pire, le rejeu attendra la fin du TTL
+  }
+}

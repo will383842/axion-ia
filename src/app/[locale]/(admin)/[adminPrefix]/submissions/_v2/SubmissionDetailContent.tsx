@@ -31,6 +31,7 @@ import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
 import { ReponsesRecuesApporteur } from "@/components/admin/contacts/ReponsesRecuesApporteur";
+import { PiecesJointesMessage } from "@/components/admin/contacts/PiecesJointesMessage";
 
 interface Props {
   adminPrefix: string;
@@ -294,6 +295,7 @@ export async function SubmissionDetailContent({
             )}
           </div>
         ) : null}
+        <PiecesJointesMessage adminPrefix={adminPrefix} submissionId={submission.id} />
         {estContactApporteur ? null : (
           <div className="admin-card">
             <h2 className="admin-h2">Identité société</h2>
