@@ -339,8 +339,23 @@ export async function Header() {
             Il couvre donc aussi la plage 1280–1440, où la nav horizontale
             s'affichait jusqu'au 2026-08-04 en débordant du viewport. Le drawer
             y rend la MÊME navigation, en entier : c'est un repli, pas une
-            amputation. */}
-        <div className="nav:hidden ml-auto">
+            amputation.
+
+            « Réserver un appel » reste visible À CÔTÉ du ☰ (Will, 2026-10-16) :
+            sur un portable 14 pouces à 150 % (1280 px) il n'était plus
+            joignable qu'en ouvrant le menu. Icône seule sous `sm` (la place
+            d'un téléphone 360 px : logo + 2 × 44 px), libellé complet au-dessus. */}
+        <div className="nav:hidden ml-auto flex items-center gap-2">
+          <Link
+            href={{ pathname: ROUTES.appel, query: { depuis: "entete" } }}
+            aria-label={t("cta.bookCallAria")}
+            data-cta="header-primary-compact"
+            data-cta-tracking="cta_header_book_call_click"
+            className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-full text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto sm:px-5"
+          >
+            <Phone className="h-4 w-4" aria-hidden="true" />
+            <span className="sr-only sm:not-sr-only">{t("cta.bookCall")}</span>
+          </Link>
           <MobileNav>
             <nav aria-label={t("nav.primaryLabel")} className="flex flex-col text-base">
               {/* Recherche site (mobile) — champ factice cliquable vers /recherche,

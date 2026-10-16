@@ -118,4 +118,41 @@ test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () =
     });
     expect(enTiroir, "à 1439 px la nav horizontale doit céder la place au tiroir").toBe(true);
   });
+
+  test("sous le seuil : ☰ et « Réserver un appel » visibles, sans débordement", async ({
+    page,
+  }, info) => {
+    // 🔴 2026-10-16 — entre 1280 et 1440 px, l'en-tête n'affichait QUE le logo :
+    // le ☰ portait `xl:hidden` pendant que la nav attendait `nav`. Les deux tests
+    // ci-dessus ne regardaient qu'au-dessus de 1440 ; celui-ci couvre le reste,
+    // du téléphone au portable 14 pouces à 150 %.
+    test.skip(info.project.name !== "chromium", "Géométrie : un moteur suffit.");
+    await page.goto("/fr", { waitUntil: "networkidle", timeout: 90_000 });
+
+    const constats: string[] = [];
+    for (const largeur of [360, 390, 640, 768, 1024, 1280, 1366, 1439]) {
+      await page.setViewportSize({ width: largeur, height: 900 });
+      await page.waitForTimeout(250);
+      const m = await page.evaluate(() => {
+        const visible = (el: Element | null) => {
+          if (el === null) return false;
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0 && r.right <= window.innerWidth;
+        };
+        // Débordement mesuré sur la RANGÉE du header seule : un débordement du
+        // contenu de la page n'est pas l'affaire de ce test.
+        const rangee = document.querySelector("header > div:last-child");
+        return {
+          debordement: rangee === null ? 0 : rangee.scrollWidth - rangee.clientWidth,
+          menu: visible(document.querySelector("header button[aria-label='Ouvrir le menu']")),
+          appel: visible(document.querySelector("header [data-cta='header-primary-compact']")),
+        };
+      });
+      if (!m.menu) constats.push(`${largeur} px : bouton ☰ invisible`);
+      if (!m.appel) constats.push(`${largeur} px : « Réserver un appel » invisible`);
+      if (m.debordement > 1)
+        constats.push(`${largeur} px : le document déborde de ${m.debordement} px`);
+    }
+    expect(constats, "largeurs où l'en-tête n'offre plus le menu ou l'appel").toEqual([]);
+  });
 });
