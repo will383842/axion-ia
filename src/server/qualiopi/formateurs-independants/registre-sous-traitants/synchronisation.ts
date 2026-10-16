@@ -49,8 +49,8 @@ async function lireFiches(): Promise<FaitsFiche[]> {
     where: {
       OR: [
         {
+          // Les fiches de test sont écartées par `estEligible` (règle pure, testée).
           statut: "sous_traitant",
-          estTestInterne: false,
           OR: [{ sousTraitantContratSigneAt: { not: null } }, { actif: true }],
         },
         { registreSousTraitant: { isNot: null } },
