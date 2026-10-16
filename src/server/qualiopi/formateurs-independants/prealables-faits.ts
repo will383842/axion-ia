@@ -17,7 +17,7 @@
  * Absent ou illisible = non établi (refus).
  */
 
-import { etatsTextesDepuisLignes } from "@/server/email/textes-valides-lecture";
+import { etatsTextesDepuisLignes } from "@/server/email/textes-valides-etats";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { derniereVersionArretee } from "@/server/qualiopi/documents/templates/versions-arretees";
 
