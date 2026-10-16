@@ -12,6 +12,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // Mocks
 // ─────────────────────────────────────────────────────────────────────────────
 
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+const { blocage } = vi.hoisted(() => ({ blocage: vi.fn() }));
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: (...a: unknown[]) => blocage(...a),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     enrollment: {
@@ -220,9 +228,22 @@ const fakeAlerte = {
 describe("envoyerConvocation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    blocage.mockResolvedValue({ bloque: false });
     // Par défaut : accès portail existant (idempotent)
     mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
     mockPrisma.enrollment.update.mockResolvedValue({});
+  });
+
+  it("🔴 INT-T81-A — condition suspensive OPCO en attente : aucune convocation ne part", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      sessionId: "ses-1",
+    });
+    blocage.mockResolvedValue({ bloque: true, motif: "condition_en_attente", numeros: ["C-1"] });
+    expect(await envoyerConvocation(ENROLLMENT_ID)).toBe(false);
+    expect(blocage).toHaveBeenCalledWith("ses-1");
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
   });
 
   it("🔴 file INDISPONIBLE : `convocationEnvoyeeAt` n'est PAS posée", async () => {

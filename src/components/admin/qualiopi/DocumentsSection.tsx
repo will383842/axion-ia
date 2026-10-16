@@ -106,6 +106,16 @@ const MandatOpcoButton = dynamic(() =>
   import("@/components/admin/qualiopi/MandatOpcoButton").then((m) => m.MandatOpcoButton),
 );
 
+/**
+ * INT-T81-A — la levée du blocage de la convocation et de l'émargement : acte
+ * rare d'un administrateur, chargé à la demande pour la même raison.
+ */
+const LeverBlocageConditionForm = dynamic(() =>
+  import("@/components/admin/qualiopi/LeverBlocageConditionForm").then(
+    (m) => m.LeverBlocageConditionForm,
+  ),
+);
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1245,6 +1255,7 @@ function ConditionSuspensiveOpcoSuivi({
           )}
         </span>
       )}
+      {etat === "en_attente" && <LeverBlocageConditionForm documentId={documentId} />}
       {erreur && (
         <span role="alert" className="block text-[color:var(--color-admin-error)]">
           {erreur}

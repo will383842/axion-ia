@@ -17,6 +17,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // ADR 0060 — le verrou du dossier de session a sa propre suite
 // (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: async () => ({ bloque: false }),
+}));
+
 vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
   assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
   assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),

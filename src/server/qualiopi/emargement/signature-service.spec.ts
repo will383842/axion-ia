@@ -14,6 +14,15 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+const { blocage, exiger } = vi.hoisted(() => ({ blocage: vi.fn(), exiger: vi.fn() }));
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: (...a: unknown[]) => blocage(...a),
+  exigerConditionLevee: (...a: unknown[]) => exiger(...a),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     presenceCreneau: { findUnique: vi.fn(), update: vi.fn() },
@@ -101,6 +110,8 @@ function contexte(over: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  blocage.mockResolvedValue({ bloque: false });
+  exiger.mockResolvedValue(undefined);
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour.
   mockPrisma.presenceCreneau.findUnique.mockResolvedValue(contexte());
   mockPrisma.presenceCreneau.update.mockResolvedValue({ id: "cre-1" });
@@ -912,5 +923,57 @@ describe("signerCreneau — le snapshot est celui de LA BONNE journée", () => {
 
     expect(r).toMatchObject({ ok: false, raison: "journee_non_declaree" });
     expect(mockStore).not.toHaveBeenCalled();
+  });
+});
+
+describe("signerCreneau — INT-T81-A : condition suspensive OPCO en attente", () => {
+  const entree = {
+    porteur: PORTEUR_STAGIAIRE,
+    creneauId: "cre-1",
+    methode: "canvas" as const,
+    imageDataUrl: IMAGE,
+    maintenant: MAINTENANT,
+  };
+
+  it("refuse par un refus NOMMÉ, sans image ni écriture, pour les DEUX porteurs", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "condition_en_attente", numeros: ["C-1"] });
+    for (const porteur of [
+      PORTEUR_STAGIAIRE,
+      { type: "formateur", sessionId: "ses-1", trainerId: "tr-1" } as const,
+    ]) {
+      const r = await signerCreneau({ ...entree, porteur });
+      expect(r).toMatchObject({ ok: false, raison: "condition_suspensive_en_attente" });
+    }
+    expect(mockStore).not.toHaveBeenCalled();
+    expect(mockPrisma.emargementSignature.create).not.toHaveBeenCalled();
+  });
+
+  it("relit la garde DANS la transaction : levée entre-temps ⇒ refus, image nettoyée, rien écrit", async () => {
+    const { ConditionSuspensiveEnAttenteError } =
+      await import("@/server/qualiopi/financements/condition-suspensive-service");
+    exiger.mockRejectedValue(
+      new ConditionSuspensiveEnAttenteError({
+        bloque: true,
+        motif: "condition_en_attente",
+        numeros: ["C-1"],
+      }),
+    );
+    const r = await signerCreneau(entree);
+    expect(r).toMatchObject({ ok: false, raison: "condition_suspensive_en_attente" });
+    expect(mockSupprimerImage).toHaveBeenCalled();
+    expect(mockPrisma.emargementSignature.create).not.toHaveBeenCalled();
+  });
+
+  it("règle (2) de la juriste : la SEULE convention caduque refuse par `convention_caduque`", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "convention_caduque", numeros: ["C-1"] });
+    const r = await signerCreneau(entree);
+    expect(r).toMatchObject({ ok: false, raison: "convention_caduque" });
+    expect(mockStore).not.toHaveBeenCalled();
+  });
+
+  it("admis quand la condition est accomplie ou le blocage levé", async () => {
+    const r = await signerCreneau(entree);
+    expect(r.ok).toBe(true);
+    expect(exiger).toHaveBeenCalledWith("ses-1", expect.anything());
   });
 });

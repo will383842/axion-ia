@@ -14,6 +14,14 @@ import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 
 // ADR 0060 — le verrou du dossier de session a sa propre suite
 // (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+const { blocage } = vi.hoisted(() => ({ blocage: vi.fn() }));
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: (...a: unknown[]) => blocage(...a),
+}));
+
 vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
   assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
   assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
@@ -425,7 +433,30 @@ describe("generateSessionCreneauxAction", () => {
 // saveEmargementAction
 // ─────────────────────────────────────────────────────────────────────────────
 
+describe("saveEmargementAction — INT-T81-A : condition suspensive OPCO en attente", () => {
+  it("refuse l'émargement manuel côté serveur, sans rien écrire", async () => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
+    blocage.mockResolvedValue({ bloque: true, motif: "condition_en_attente", numeros: ["C-1"] });
+    const r = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440099",
+      entries: [
+        {
+          enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+          date: "2026-06-10",
+          demiJournee: "matin",
+          present: true,
+          dureeRealiseeMinutes: 180,
+        },
+      ],
+    });
+    expect(r).toEqual({ error: expect.stringContaining("condition suspensive") });
+    expect(mockPrisma.presenceCreneau.update).not.toHaveBeenCalled();
+  });
+});
+
 describe("saveEmargementAction", () => {
+  beforeEach(() => blocage.mockResolvedValue({ bloque: false }));
   const validEntry = {
     enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
     date: "2026-06-10",

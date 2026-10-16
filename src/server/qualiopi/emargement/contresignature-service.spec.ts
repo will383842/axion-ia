@@ -13,6 +13,15 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+// INT-T81-A — le garde de la condition suspensive : ces tests ne le visent pas
+// (il est éprouvé dans `blocage-condition-suspensive.spec.ts`).
+const { blocage, exiger } = vi.hoisted(() => ({ blocage: vi.fn(), exiger: vi.fn() }));
+vi.mock("@/server/qualiopi/financements/condition-suspensive-service", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  blocageConditionSuspensive: (...a: unknown[]) => blocage(...a),
+  exigerConditionLevee: (...a: unknown[]) => exiger(...a),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findUnique: vi.fn() },
@@ -98,6 +107,8 @@ function sessionMock(over: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  blocage.mockResolvedValue({ bloque: false });
+  exiger.mockResolvedValue(undefined);
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour.
   mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionMock());
   mockPrisma.trainer.findUnique.mockResolvedValue({ nom: "Jullin", prenom: "Williams" });
@@ -365,5 +376,22 @@ describe("contresignerDemiJournee — concurrence", () => {
     expect(r).toMatchObject({ ok: false, raison: "deja_contresigne" });
     // L'image écrite avant la transaction ne doit pas rester orpheline sur R2.
     expect(mockSupprimerImage).toHaveBeenCalledWith("emargement/2026/contresignatures/x.png");
+  });
+});
+
+describe("contresignerDemiJournee — INT-T81-A : condition suspensive OPCO en attente", () => {
+  it("refuse par un refus NOMMÉ, sans image ni écriture", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "condition_en_attente", numeros: ["C-1"] });
+    const r = await contresignerDemiJournee(entree());
+    expect(r).toMatchObject({ ok: false, raison: "condition_suspensive_en_attente" });
+    expect(mockStore).not.toHaveBeenCalled();
+    expect(mockPrisma.emargementContresignature.create).not.toHaveBeenCalled();
+  });
+
+  it("règle (2) de la juriste : la SEULE convention caduque refuse par `convention_caduque`", async () => {
+    blocage.mockResolvedValue({ bloque: true, motif: "convention_caduque", numeros: ["C-1"] });
+    const r = await contresignerDemiJournee(entree());
+    expect(r).toMatchObject({ ok: false, raison: "convention_caduque" });
+    expect(mockStore).not.toHaveBeenCalled();
   });
 });
