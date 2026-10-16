@@ -39,10 +39,14 @@ export function MobileNav({ children }: MobileNavProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
+        {/* Aucune classe de visibilité ici : c'est le conteneur `nav:hidden` du
+            Header qui décide. Un `xl:hidden` posé sur ce bouton le cachait dès
+            1280 px alors que la nav horizontale n'apparaît qu'à 1440 : entre
+            les deux, l'en-tête n'affichait plus que le logo (2026-10-16). */}
         <button
           type="button"
           aria-label={t("openMenu")}
-          className="text-fg hover:bg-border/50 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none xl:hidden"
+          className="text-fg hover:bg-border/50 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>

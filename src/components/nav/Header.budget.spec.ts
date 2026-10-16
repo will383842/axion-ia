@@ -132,3 +132,15 @@ describe("budget d'espace du header", () => {
     expect(src).not.toMatch(/(?:^|[^:])\bgap-12\b/);
   });
 });
+
+describe("bouton du menu ☰", () => {
+  it("🔴 n'a aucune visibilité propre : le seuil `nav` du Header décide seul", () => {
+    // Le 2026-10-16 : le bouton portait `xl:hidden` (1280) alors que la nav
+    // horizontale attend `nav` (1440). Entre 1280 et 1440 — portable 14 pouces
+    // à 150 %, portable 1366 — l'en-tête n'affichait plus que le logo.
+    const src = readFileSync("src/components/nav/MobileNav.tsx", "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*\/\/.*$/gm, "");
+    expect(src).not.toMatch(/\b(?:sm|md|lg|xl|2xl|nav|navcta|navair|min-\[[^\]]+\]):hidden\b/);
+  });
+});
