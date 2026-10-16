@@ -498,6 +498,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/relances/passer-campagnes.ts",
   "src/server/relances/registre-campagnes.ts",
   "src/server/relances/__tests__/passer-campagnes.spec.ts",
+  //    Vérification n° 2 (V2-P-2) : la lecture des réponses des formateurs, sortie
+  //    de `passer-campagnes.ts` pour être partagée avec la relecture au départ. Même
+  //    import paresseux qu'avant (`etats-entree.ts`, lecture pure de l'interrupteur
+  //    `formateurs.reponses_formateurs`).
+  "src/server/relances/reponses-formateurs.ts",
   // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
   //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
   //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du

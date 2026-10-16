@@ -82,6 +82,7 @@
   /* ----- Borders & dividers ----- */
   --color-border: #e5ddc8; /* sable doux pour bordures */
   --color-border-strong: #c8bda0; /* sable saturé pour focus rings, dividers marqués */
+  --color-border-field: #8a7f6c; /* contour des champs de saisie — 3,9:1 sur paper (WCAG 1.4.11 ; V2-N-13) */
   --color-border-on-mocha: #4a4239;
 
   /* ----- Compatibilité v1/v2 (ne pas supprimer — composants existants) ----- */

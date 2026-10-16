@@ -21,6 +21,12 @@ import {
   enregistrerEvaluationFinaleFormateur,
   terminerBilanFormateur,
 } from "@/server/qualiopi/formateurs-independants/bilan-fin-formation/service";
+import {
+  AVIS_CONNEXION_EXPIREE,
+  AVIS_NON_ENREGISTRE,
+  MESSAGES_BILAN,
+  type EtatAvisBilan,
+} from "@/server/formateur/bilan-fin-formation-messages";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 /** Plafond du nombre d'objectifs lus dans un formulaire. */
@@ -67,20 +73,41 @@ export async function evaluerStagiaireFormAction(formData: FormData): Promise<vo
   redirect(page(sessionId, issue));
 }
 
-export async function donnerAvisFormAction(formData: FormData): Promise<void> {
-  const { trainerId, sessionId } = await preparer(formData);
+/**
+ * L'avis du formateur — V2-N-3 : à tout refus (avis trop court, dossier clos, connexion
+ * expirée…), l'action REND un état au lieu de rediriger, et le formulaire
+ * (`AvisBilanForm`, `useActionState`) garde le texte écrit au téléphone sous le message.
+ * Le texte ne passe jamais par l'adresse (il peut nommer des stagiaires).
+ */
+export async function donnerAvisAction(
+  _precedent: EtatAvisBilan | null,
+  formData: FormData,
+): Promise<EtatAvisBilan> {
   const commentaire = formData.get("commentaire");
   const note = formData.get("note");
-  const noteLue = typeof note === "string" && /^[1-5]$/.test(note) ? Number(note) : undefined;
+  const saisie = {
+    essai: (_precedent?.essai ?? 0) + 1,
+    commentaire: typeof commentaire === "string" ? commentaire : "",
+    note: typeof note === "string" && /^[1-5]$/.test(note) ? note : "",
+  };
+  const session = await getFormateurSession();
+  if (session === null) return { ok: false, message: AVIS_CONNEXION_EXPIREE, ...saisie };
+  const sessionId = formData.get("sessionId");
+  if (typeof sessionId !== "string" || !UUID.test(sessionId)) {
+    return { ok: false, message: AVIS_NON_ENREGISTRE, ...saisie };
+  }
   const issue = await enregistrerAvisFormateur({
     sessionId,
-    trainerId,
-    commentaire: typeof commentaire === "string" ? commentaire : "",
-    ...(noteLue !== undefined ? { note: noteLue } : {}),
+    trainerId: session.trainerId,
+    commentaire: saisie.commentaire,
+    ...(saisie.note !== "" ? { note: Number(saisie.note) } : {}),
     maintenant: new Date(),
   });
-  revalidatePath(`${FORMATEUR_SESSIONS_PATH}/${sessionId}`);
-  redirect(page(sessionId, issue));
+  if (issue === "ok" || issue === "deja_donne") {
+    revalidatePath(`${FORMATEUR_SESSIONS_PATH}/${sessionId}`);
+    redirect(page(sessionId, issue));
+  }
+  return { ok: false, message: MESSAGES_BILAN[issue]?.texte ?? AVIS_NON_ENREGISTRE, ...saisie };
 }
 
 export async function terminerBilanFormAction(formData: FormData): Promise<void> {

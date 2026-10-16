@@ -22,7 +22,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { scellerCodePourFile } from "@/server/email/code-en-file";
+import { CLE_CODE_SIGNATURE, scellerCodePourFile } from "@/server/email/code-en-file";
 import {
   CODE_VALIDITE_MS,
   emettreCodeSignature,
@@ -127,14 +127,18 @@ export async function envoyerCodeSignature(input: {
     return refus("envoi-impossible");
   }
 
-  let emis: { codeScelle: string; expiresAt: Date };
+  let emis: { codeScelle: string; expiresAt: Date; id: string | undefined };
   try {
     const brut = await emettreCodeSignature({
       documentGenereId: input.documentGenereId,
       partie,
       maintenant: input.maintenant,
     });
-    emis = { codeScelle: scellerCodePourFile(brut.code), expiresAt: brut.expiresAt };
+    emis = {
+      codeScelle: scellerCodePourFile(brut.code),
+      expiresAt: brut.expiresAt,
+      id: typeof brut.id === "string" ? brut.id : undefined,
+    };
   } catch {
     return refus("envoi-impossible");
   }
@@ -162,6 +166,9 @@ export async function envoyerCodeSignature(input: {
     payload: {
       ...(formateur.prenom ? { prenom: formateur.prenom } : {}),
       valeurs: { code: emis.codeScelle, durée: libelleDuree() },
+      // V2-P-7 : la ligne du code, relue au départ (expiré ou remplacé : l'e-mail ne part
+      // pas, le formateur en redemande un). Un identifiant, jamais le code.
+      ...(emis.id ? { [CLE_CODE_SIGNATURE]: emis.id } : {}),
     },
   });
   return r === "envoye" ? { ok: true } : refus("envoi-impossible");

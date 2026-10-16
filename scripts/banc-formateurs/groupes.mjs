@@ -24,17 +24,22 @@ import { fileURLToPath } from "node:url";
 const RACINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const DOSSIER_E2E = "tests/e2e";
 
-/** Chaque groupe : un identifiant de matrice, et les noms de fichiers qu'il porte. */
+/**
+ * Chaque groupe : un identifiant de matrice, et les noms de fichiers qu'il porte
+ * (`motif`, plus une ligne de `motifs` par équipe de vérification rangée dans le groupe).
+ */
 export const GROUPES = [
   {
     id: "A",
     titre: "équipe A · de la candidature au contrat",
     motif: /^tests\/e2e\/formateurs\/e(0[1-9]|1[0-2]|33|37|38)-[^/]+\.spec\.ts$/,
+    // Vérification n° 2, rouge « parcours et e-mails ».
+    motifs: [/^tests\/e2e\/formateurs\/v2p\d+-[^/]+\.spec\.ts$/],
   },
   {
     id: "B",
     titre: "équipe B · missions",
-    motif: /^tests\/e2e\/formateurs\/(e(1[3-9]|31|32|34)|eb\d+)-[^/]+\.spec\.ts$/,
+    motif: /^tests\/e2e\/formateurs\/(e(1[3-9]|31|32|34)|eb\d+|v2n\d+)-[^/]+\.spec\.ts$/,
   },
   {
     id: "C",
@@ -78,7 +83,7 @@ export function partition(fichiers = specsDuBanc()) {
   const orphelins = [];
   const doublons = [];
   for (const f of fichiers) {
-    const groupes = GROUPES.filter((g) => g.motif.test(f));
+    const groupes = GROUPES.filter((g) => [g.motif, ...(g.motifs ?? [])].some((m) => m.test(f)));
     if (groupes.length === 0) orphelins.push(f);
     else if (groupes.length > 1) doublons.push(`${f} (${groupes.map((g) => g.id).join(", ")})`);
     else parGroupe[groupes[0].id].push(f);

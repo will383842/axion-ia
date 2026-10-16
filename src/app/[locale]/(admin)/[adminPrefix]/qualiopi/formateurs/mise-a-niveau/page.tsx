@@ -14,12 +14,13 @@
 
 import type { Metadata } from "next";
 
+import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { MiseANiveauListe } from "@/components/admin/qualiopi/MiseANiveauListe";
 import { gardePage } from "@/server/auth/garde-page";
+import { INTERRUPTEURS_SIGNATURE } from "@/server/qualiopi/formateurs-independants/interrupteurs";
 import { peutEngager } from "@/server/auth/habilitations";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
 import { lireEcranMiseANiveau } from "@/server/qualiopi/formateurs-independants/mise-a-niveau-lecture";
@@ -50,12 +51,15 @@ export default async function MiseANiveauPage({ params }: PageProps) {
   ]);
   if (!miseANiveau && !nouvelleVersion) {
     return (
-      <AdminPageShell>
-        <AdminPageHeader title="Contrats à mettre à niveau" />
-        <AdminCard>
-          <p>Cet écran n&apos;est pas encore ouvert.</p>
-        </AdminCard>
-      </AdminPageShell>
+      <EcranPasEncoreOuvert
+        titre="Contrats à mettre à niveau"
+        interrupteurs={[
+          INTERRUPTEURS_SIGNATURE.mise_a_niveau.libelle,
+          INTERRUPTEURS_SIGNATURE.nouvelle_version_contrat.libelle,
+        ]}
+        faut="un"
+        base={`/${locale}/${adminPrefix}`}
+      />
     );
   }
 
