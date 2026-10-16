@@ -22,6 +22,7 @@ const h = vi.hoisted(() => ({
   registre: vi.fn(),
   controle: vi.fn(),
   alerte: vi.fn(),
+  ecran: vi.fn(),
   ordre: [] as string[],
 }));
 
@@ -57,7 +58,7 @@ vi.mock("@/server/registre-entreprises/annuaire", () => ({
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/regles-admission", async (orig) => ({
   ...(await orig<object>()),
-  jugerAdmissionFormateur: () => ({ ecran: "ok" }),
+  jugerAdmissionFormateur: () => ({ ecran: h.ecran() }),
   ECRANS_QUI_LAISSENT_CONTINUER: new Set(["ok"]),
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/controle", () => ({
@@ -132,6 +133,7 @@ beforeEach(() => {
   h.pdf.mockResolvedValue("https://r2.example/contrat.pdf");
   h.controle.mockResolvedValue({ ok: true });
   h.alerte.mockResolvedValue(undefined);
+  h.ecran.mockReturnValue("ok");
 });
 
 describe("étape 4, contrat à signer dans le dossier", () => {
@@ -168,17 +170,10 @@ describe("étape 4, contrat à signer dans le dossier", () => {
   });
 
   it("« Recevoir mon code » : entreprise bloquante, aucun contrat n'est préparé", async () => {
-    h.registre.mockResolvedValue({ ok: true, entreprise: { active: false } });
-    const { ECRANS_QUI_LAISSENT_CONTINUER } =
-      await import("@/server/qualiopi/formateurs-independants/regles-admission");
-    (ECRANS_QUI_LAISSENT_CONTINUER as Set<string>).delete("ok");
-    try {
-      const r = await demanderCodeContratAction(fd({}));
-      expect(r.ok).toBe(false);
-      expect(h.demander).not.toHaveBeenCalled();
-    } finally {
-      (ECRANS_QUI_LAISSENT_CONTINUER as Set<string>).add("ok");
-    }
+    h.ecran.mockReturnValue("fermee");
+    const r = await demanderCodeContratAction(fd({}));
+    expect(r.ok).toBe(false);
+    expect(h.demander).not.toHaveBeenCalled();
   });
 
   it("signer exige les deux cases et un code de 6 chiffres", async () => {
