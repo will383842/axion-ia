@@ -24,6 +24,8 @@ import {
   HeadObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  CopyObjectCommand,
+  ListObjectsV2Command,
   CreateMultipartUploadCommand,
   UploadPartCommand,
   ListPartsCommand,
@@ -528,4 +530,200 @@ export async function fluxObjetR2(
     new GetObjectCommand({ Bucket: cible.bucket, Key: key }),
   );
   return (r.Body as AsyncIterable<Uint8Array> | undefined) ?? null;
+}
+
+// ====================================================================
+// Envoi DIRECT navigateur → compartiment GÉNÉRAL, puis contrôle par
+// morceaux (pièces jointes du formulaire de contact, 2026-10-15) — AJOUT SEUL.
+// ====================================================================
+//
+// Le fichier ne traverse jamais le serveur Next : le navigateur le pose par
+// `PUT` sur une URL signée, et le serveur le relit ENSUITE par plages
+// (`Range`), sans jamais le charger entier en mémoire. Chaque lecture porte
+// l'`ETag` relevé au premier `HEAD` (`If-Match`) : un objet remplacé entre deux
+// lectures fait échouer la suivante, au lieu d'être accepté sur la foi d'une
+// vérification faite sur un autre contenu.
+
+/** L'objet n'est plus celui qu'on a relevé (`If-Match` refusé). */
+export class ObjetR2Modifie extends Error {
+  constructor(key: string) {
+    super(`objet R2 modifié depuis son relevé : ${key}`);
+    this.name = "ObjetR2Modifie";
+  }
+}
+
+function codeHttp(err: unknown): number | undefined {
+  return (err as { $metadata?: { httpStatusCode?: number } })?.$metadata?.httpStatusCode;
+}
+
+function relancerSiModifie(err: unknown, key: string): never {
+  if (codeHttp(err) === 412 || (err as { name?: string })?.name === "PreconditionFailed") {
+    throw new ObjetR2Modifie(key);
+  }
+  throw err;
+}
+
+/**
+ * Client de SIGNATURE des envois directs. 🔴 Mesuré le 2026-10-15 : avec le
+ * réglage par défaut du SDK (`requestChecksumCalculation: "WHEN_SUPPORTED"`),
+ * l'URL pré-signée d'un `PutObject` embarque `x-amz-checksum-crc32` calculé
+ * sur un corps VIDE — le `PUT` du vrai fichier ne correspondrait jamais.
+ * `WHEN_REQUIRED` le retire ; la longueur, elle, reste signée.
+ */
+let _clientEnvoiDirect: S3Client | null = null;
+
+function getClientEnvoiDirect(): S3Client {
+  if (_clientEnvoiDirect) return _clientEnvoiDirect;
+  const accessKeyId = process.env["R2_ACCESS_KEY_ID"];
+  const secretAccessKey = process.env["R2_SECRET_ACCESS_KEY"];
+  if (!accessKeyId || !secretAccessKey) {
+    throw new Error("R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY missing");
+  }
+  _clientEnvoiDirect = new S3Client({
+    region: "auto",
+    endpoint: getR2Endpoint(),
+    credentials: { accessKeyId, secretAccessKey },
+    forcePathStyle: false,
+    requestChecksumCalculation: "WHEN_REQUIRED",
+  });
+  return _clientEnvoiDirect;
+}
+
+/**
+ * URL signée d'envoi DIRECT d'un objet (`PUT`, corps brut).
+ *
+ * 🔒 La signature porte la longueur EXACTE (`content-length` dans
+ * `X-Amz-SignedHeaders`) et le type : R2 refuse un `PUT` d'une autre longueur
+ * ou d'un autre type. Même raison que `signerMorceauR2` : sans elle, l'adresse
+ * laisserait pousser n'importe quel volume.
+ */
+export async function signerEnvoiDirectR2(
+  key: string,
+  taille: number,
+  contentType: string,
+  expiresInSeconds: number,
+): Promise<string> {
+  if (!Number.isSafeInteger(taille) || taille < 1 || taille > TAILLE_MAX_MORCEAU_R2) {
+    throw new Error(`taille d'envoi invalide : ${taille}`);
+  }
+  return getSignedUrl(
+    getClientEnvoiDirect(),
+    new PutObjectCommand({
+      Bucket: getBucketName(),
+      Key: key,
+      ContentLength: taille,
+      ContentType: contentType,
+    }),
+    { expiresIn: expiresInSeconds, signableHeaders: new Set(["content-length", "content-type"]) },
+  );
+}
+
+/** Taille réelle et `ETag` d'un objet, ou `null` s'il n'existe pas. */
+export async function enteteObjetR2(key: string): Promise<{ taille: number; etag: string } | null> {
+  try {
+    const r = await getClient().send(new HeadObjectCommand({ Bucket: getBucketName(), Key: key }));
+    return { taille: Number(r.ContentLength ?? 0), etag: r.ETag ?? "" };
+  } catch (err) {
+    if (codeHttp(err) === 404 || (err as { name?: string })?.name === "NotFound") return null;
+    throw err;
+  }
+}
+
+/**
+ * Une PLAGE d'un objet (`bytes=0-8191`, ou `bytes=-65557` pour la fin), à
+ * condition qu'il soit toujours celui de l'`ETag` relevé.
+ */
+export async function lirePlageObjetR2(
+  key: string,
+  plage: string,
+  etag: string,
+): Promise<Uint8Array> {
+  try {
+    const r = await getClient().send(
+      new GetObjectCommand({ Bucket: getBucketName(), Key: key, Range: plage, IfMatch: etag }),
+    );
+    if (!r.Body) return new Uint8Array(0);
+    const morceaux: Uint8Array[] = [];
+    for await (const m of r.Body as AsyncIterable<Uint8Array>) morceaux.push(m);
+    return new Uint8Array(Buffer.concat(morceaux));
+  } catch (err) {
+    relancerSiModifie(err, key);
+  }
+}
+
+/** Le flux complet d'un objet du compartiment général, à `ETag` constant. */
+export async function fluxObjetGeneralR2(
+  key: string,
+  etag: string,
+): Promise<AsyncIterable<Uint8Array>> {
+  try {
+    const r = await getClient().send(
+      new GetObjectCommand({ Bucket: getBucketName(), Key: key, IfMatch: etag }),
+    );
+    return (r.Body as AsyncIterable<Uint8Array> | undefined) ?? (async function* () {})();
+  } catch (err) {
+    relancerSiModifie(err, key);
+  }
+}
+
+/**
+ * Copie `source` vers `destination` dans le compartiment général, à condition
+ * que la source soit toujours celle de l'`ETag` contrôlé ; le type est
+ * REMPLACÉ par celui qu'a reconnu le contrôle, jamais celui du navigateur.
+ */
+export async function copierObjetR2(
+  source: string,
+  destination: string,
+  etag: string,
+  contentType: string,
+): Promise<void> {
+  const bucket = getBucketName();
+  try {
+    await getClient().send(
+      new CopyObjectCommand({
+        Bucket: bucket,
+        Key: destination,
+        CopySource: `${bucket}/${source.split("/").map(encodeURIComponent).join("/")}`,
+        CopySourceIfMatch: etag,
+        MetadataDirective: "REPLACE",
+        ContentType: contentType,
+      }),
+    );
+  } catch (err) {
+    relancerSiModifie(err, source);
+  }
+}
+
+/** Une page d'objets sous un préfixe (clé et date d'écriture). */
+export async function listerObjetsR2(
+  prefixe: string,
+  suite?: string,
+): Promise<{ objets: Array<{ cle: string; modifieLe: Date | null }>; suite: string | null }> {
+  const r = await getClient().send(
+    new ListObjectsV2Command({
+      Bucket: getBucketName(),
+      Prefix: prefixe,
+      ...(suite ? { ContinuationToken: suite } : {}),
+    }),
+  );
+  return {
+    objets: (r.Contents ?? [])
+      .filter((o): o is typeof o & { Key: string } => typeof o.Key === "string")
+      .map((o) => ({ cle: o.Key, modifieLe: o.LastModified ?? null })),
+    suite: r.IsTruncated && r.NextContinuationToken ? r.NextContinuationToken : null,
+  };
+}
+
+/**
+ * Le contenu d'un objet du compartiment général en FLUX web, pour le servir
+ * sans le charger en mémoire (pièce jointe de 25 Mo). `null` s'il n'existe pas.
+ */
+export async function fluxTelechargementR2(key: string): Promise<ReadableStream | null> {
+  try {
+    const r = await getClient().send(new GetObjectCommand({ Bucket: getBucketName(), Key: key }));
+    return r.Body ? r.Body.transformToWebStream() : null;
+  } catch (err) {
+    if (codeHttp(err) === 404 || (err as { name?: string })?.name === "NoSuchKey") return null;
+    throw err;
+  }
 }

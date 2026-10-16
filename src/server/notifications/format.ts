@@ -11,7 +11,12 @@ import type {
   NotificationSeverity,
   PalierAlerteIncident,
 } from "./types";
-import { telegramGroupFor, type TelegramGroup } from "./routing";
+import {
+  estCategorieClient,
+  telegramGroupFor,
+  type CategorieClient,
+  type TelegramGroup,
+} from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
@@ -43,6 +48,9 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
  * ⚠️ NE PAS déplacer en fin de message ni faire précéder d'autre chose.
  */
 const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
+  // Décision Will 15/10 : le salon des CLIENTS. Son message complet est rendu
+  // par `format-clients.ts` ; ce thème ne sert qu'au gabarit allégé du repli.
+  clients: { emoji: "🔥", label: "CLIENT" },
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
   // Monteurs ET vidéastes de tournage depuis le 2026-09-26 : le même salon
@@ -85,6 +93,8 @@ const TITLES: Record<NotificationCategory, string> = {
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "Support client",
+  CHATBOT_LEAD_CAPTURED: "Nouveau lead chatbot",
+  CHATBOT_ESCALATION: "Question chatbot sans réponse",
   NEWSLETTER_PENDING: "Newsletter — opt-in en attente",
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
@@ -102,6 +112,9 @@ const TITLES: Record<NotificationCategory, string> = {
   CALENDLY_INVITEE_CREATED: "Nouvelle réservation",
   CALENDLY_INVITEE_CANCELED: "Rendez-vous annulé",
   CALENDLY_INVITEE_RESCHEDULED: "Rendez-vous déplacé",
+  CLIENT_CALL_BOOKED: "Rendez-vous client réservé",
+  CLIENT_CALL_CANCELED: "Rendez-vous client annulé",
+  CLIENT_CALL_RESCHEDULED: "Rendez-vous client déplacé",
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
@@ -204,7 +217,7 @@ const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
  * `new Date("2026")` est une date valide pour JavaScript, donc un texte libre
  * commençant par une année se ferait silencieusement réécrire en 1er janvier.
  */
-function humanDateOrText(value: string | undefined): string | undefined {
+export function humanDateOrText(value: string | undefined): string | undefined {
   if (!value) return undefined;
   return ISO_INSTANT.test(value) ? formatParisDateTime(value) : value;
 }
@@ -270,7 +283,7 @@ function libelleFormat(v: string | undefined): string | undefined {
 // (`besoin`). Tous deux FACULTATIFS : un payload d'avant, sans eux, se classe
 // par le nom (`typeEffectif`), comme partout ailleurs.
 function titreDe(event: NotificationEvent): string {
-  if (event.category === "CALENDLY_INVITEE_CREATED") {
+  if (event.category === "CALENDLY_INVITEE_CREATED" || event.category === "CLIENT_CALL_BOOKED") {
     const p = event.payload as { eventName?: unknown; typeRendezVous?: unknown; besoin?: unknown };
     const nomType = typeof p.eventName === "string" ? p.eventName : "";
     const typeClasse = estTypeRendezVous(p.typeRendezVous) ? p.typeRendezVous : null;
@@ -350,6 +363,12 @@ function formatBody(event: NotificationEvent): string {
         "eventDate" in p ? formatKV("Date événement", p.eventDate) : null,
         "firm" in p ? formatKV("Société", p.firm) : null,
         "source" in p ? formatKV("Source", p.source) : null,
+        // Pièces jointes (2026-10-15) : le NOMBRE ANNONCÉ seulement — un nom de
+        // fichier est du contenu saisi, et ne part pas sur Telegram (décision du
+        // 11/10). L'alerte part avant les fichiers : la fiche dit lesquels sont reçus.
+        "piecesJointes" in p && typeof p.piecesJointes === "number"
+          ? formatKV("📎 Pièces jointes annoncées", p.piecesJointes)
+          : null,
         formatKV("Locale", p.locale),
         formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
       ].filter((v): v is string => v !== null);
@@ -560,7 +579,28 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
-    case "CALENDLY_INVITEE_CREATED": {
+    case "CHATBOT_LEAD_CAPTURED": {
+      const p = event.payload;
+      return [
+        formatKV("Personne", prenomEtInitialeDepuisNomComplet(p.contactName)),
+        formatKV("Structure", p.companyName),
+        formatKV("Voir la fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CHATBOT_ESCALATION": {
+      const p = event.payload;
+      return [
+        formatKV("Contact", event.payload.contactEmail ? "fourni" : "non fourni"),
+        formatKV("Escalade", p.escalationId),
+        formatKV("Voir en console", lienConsole("chatbot/escalades")),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CALENDLY_INVITEE_CREATED":
+    case "CLIENT_CALL_BOOKED": {
       const p = event.payload;
       // `eventUri` porte l'id de la ligne `calendly_events` (pas l'URI Calendly) :
       // c'est ce que passe `POST /api/calendly/client-event`. On en fait donc un
@@ -591,7 +631,8 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
-    case "CALENDLY_INVITEE_CANCELED": {
+    case "CALENDLY_INVITEE_CANCELED":
+    case "CLIENT_CALL_CANCELED": {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
@@ -602,7 +643,8 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
-    case "CALENDLY_INVITEE_RESCHEDULED": {
+    case "CALENDLY_INVITEE_RESCHEDULED":
+    case "CLIENT_CALL_RESCHEDULED": {
       const p = event.payload;
       return [
         formatKV("Type RDV", p.eventName),
@@ -888,6 +930,22 @@ export function phraseAlerteIncident(
   }
 }
 
+/**
+ * Première ligne d'une alerte CLIENT (décision Will 15/10) — la même sur
+ * Telegram (salon « Clients ») et sur WhatsApp, pour que les deux se
+ * reconnaissent d'un coup d'œil.
+ */
+export function enteteClient(category: CategorieClient): string {
+  switch (category) {
+    case "CLIENT_CALL_CANCELED":
+      return "❌ ANNULATION CLIENT";
+    case "CLIENT_CALL_RESCHEDULED":
+      return "🔁 REPORT CLIENT";
+    default:
+      return "🔥 NOUVEAU CLIENT";
+  }
+}
+
 export interface FormattedMessage {
   /** Texte MarkdownV2 prêt pour Telegram. */
   text: string;
@@ -957,7 +1015,26 @@ export function formatNotificationWhatsApp(
   // au premier « juste une ligne de plus ».
   category: NotificationCategory,
   severity: NotificationSeverity,
+  /**
+   * Le TYPE de demande en clair (« Audit IA », « Diagnostic IA réservé »),
+   * calculé par `libelleTypeDemande` — une nature de demande, jamais une
+   * donnée de la personne.
+   */
+  typeDemande?: string,
 ): FormattedMessage {
+  // 🔥 Décision Will 15/10 : WhatsApp est la SONNETTE des clients. Une ligne :
+  // la nature de l'événement, le type, l'heure, et où lire le détail.
+  if (estCategorieClient(category)) {
+    const type = typeDemande?.trim() || TITLES[category];
+    const heure = new Intl.DateTimeFormat("fr-FR", {
+      timeZone: "Europe/Paris",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date());
+    return {
+      text: `${enteteClient(category)} · ${type} · ${heure} — tout le détail dans Telegram (salon Clients)`,
+    };
+  }
   const emoji = SEVERITY_EMOJI[severity];
   const title = TITLES[category];
   const theme = THEME[telegramGroupFor(category)];

@@ -64,6 +64,8 @@ export type RefusContresignature =
   | "modules_invalides"
   /** Vérification 1, V1-C-10 : la feuille papier est reportée pour un formateur indépendant. */
   | "methode_non_admise"
+  /** V2-A-1 : un formateur indépendant ne contresigne pas la journée désignée à un autre. */
+  | "journee_d_un_autre"
   | "conflit_concurrent";
 
 export type ResultatContresignature =
@@ -104,6 +106,28 @@ export async function feuillePapierPossiblePour(trainerId: string): Promise<bool
 
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
+}
+
+/**
+ * V2-A-4 — la désignation d'une journée est caduque quand le formateur désigné n'est
+ * plus affecté et que sa sollicitation la plus récente est un désistement.
+ */
+async function designationCaduque(
+  sessionId: string,
+  designe: string,
+  affectes: ReadonlyArray<{ trainerId: string }>,
+): Promise<boolean> {
+  if (affectes.some((a) => a.trainerId === designe)) return false;
+  const derniere = await prisma.missionFormateur.findFirst({
+    where: {
+      sessionId,
+      trainerId: designe,
+      statut: { in: ["acceptee", "accord_hors_outil", "desistee"] },
+    },
+    orderBy: { solliciteAt: "desc" },
+    select: { statut: true },
+  });
+  return derniere?.statut === "desistee";
 }
 
 /** Normalise un nom pour comparaison : casse, accents et espaces ne doivent pas trancher. */
@@ -150,8 +174,9 @@ export async function contresignerDemiJournee(
       statut: true,
       titreSession: true,
       jours: {
-        select: { date: true, heureDebut: true, heureFin: true, modules: true },
+        select: { date: true, heureDebut: true, heureFin: true, modules: true, trainerId: true },
       },
+      sessionFormateurs: { select: { trainerId: true } },
     },
   });
 
@@ -204,6 +229,24 @@ export async function contresignerDemiJournee(
       raison: "methode_non_admise",
       message:
         "La feuille papier n'est pas disponible pour les formateurs indépendants. Contresignez depuis votre espace, par tracé ou en confirmant votre nom.",
+    };
+  }
+  // Vérification 2, V2-A-1 — la contresignature d'un indépendant DÉCLENCHE son paiement.
+  // La journée désignée à un AUTRE formateur (co-animation, `SessionJour.trainerId`) ne
+  // se contresigne pas : sinon elle serait payée deux fois. Une désignation caduque (le
+  // formateur désigné s'est désisté, V2-A-4) n'arrête pas le remplaçant. Salariés et
+  // dirigeants : inchangé.
+  if (
+    trainer.statut === "sous_traitant" &&
+    jour.trainerId != null &&
+    jour.trainerId !== input.trainerId &&
+    !(await designationCaduque(session.id, jour.trainerId, session.sessionFormateurs ?? []))
+  ) {
+    return {
+      ok: false,
+      raison: "journee_d_un_autre",
+      message:
+        "Cette journée est confiée à un autre formateur : c'est lui qui la contresigne. Si vous l'avez animée, prévenez-nous.",
     };
   }
   const formateurNom = `${trainer.prenom} ${trainer.nom}`.trim();

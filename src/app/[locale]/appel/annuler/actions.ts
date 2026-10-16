@@ -101,7 +101,7 @@ export async function annulerDepuisLeLien(fd: FormData): Promise<void> {
     // ferait disparaître l'événement CRM et l'alerte Telegram, qui dépendent de
     // la TRANSITION.
     try {
-      await enrichCalendlyEvent(rdv.id);
+      await enrichCalendlyEvent(rdv.id, { notifier: "apres-reponse" });
     } catch (e) {
       // Une synchronisation ratée ne remet pas l'annulation en cause : elle a
       // eu lieu chez Calendly, qui fait autorité. Le passage de dix minutes

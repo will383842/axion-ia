@@ -126,7 +126,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       // `old_invitee` quand un invité change de créneau. `discover` crée la
       // nouvelle ligne, et le `refresh` qui suit constate l'annulation de
       // l'ancienne — le couple d'alertes est donc correct sans cas particulier ici.
-      await discoverNewCalendlyEvents();
+      await discoverNewCalendlyEvents(Date.now(), { notifier: "apres-reponse" });
     } else if (eventType === "invitee.canceled" || eventType === "invitee_no_show.created") {
       // `invitee_no_show.created` = l'hôte a coché « Mark as no-show ». Même
       // traitement qu'une annulation : le refresh re-interroge l'invitee, y lit
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       // traité : `enrich.ts` refuse de rétrograder un statut terminal, donc le
       // rejouer ne produirait rien. Rétablir un rendez-vous déclaré absent reste
       // un geste de console.
-      await refreshUpcomingCalendlyEvents();
+      await refreshUpcomingCalendlyEvents({ notifier: "apres-reponse" });
     } else {
       // Type inconnu (Calendly en ajoute au fil du temps) : 200 pour ne pas
       // provoquer de désabonnement, mais on le dit.

@@ -16,7 +16,7 @@ import { forfaitSelonLieu } from "../choix-formateur";
 import { lireAllumageBilan } from "../bilan-fin-formation/allumage";
 import { bilanExige, remetLeBilan } from "../bilan-fin-formation/regles";
 import { jourDeColonneDate, jourParis } from "../argent/dates";
-import { journeesDuFormateur } from "../argent/journees-du-formateur";
+import { desistesDeLaSession, journeesDuFormateur } from "../argent/journees-du-formateur";
 import { ajouterAnomalie, lireAnomaliesMission, type AnomalieMission } from "./anomalies-mission";
 import { echeanceProvisoireDuReleve } from "./echeance-autofacture";
 import { lireDateBascule, premiereJourneeSession, uniqueHistoriqueRetire } from "./lecture-passage";
@@ -96,6 +96,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
       select: {
         sessionId: true,
         trainerId: true,
+        statut: true,
         tarifHtCents: true,
         forfaitDeplacementParJourHtCents: true,
         regimeTvaFige: true,
@@ -107,6 +108,19 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     }),
   ]);
   const parMission = new Set(revendiquees.map((r) => `${r.trainerId}|${r.sessionId}`));
+  const tousLesFormateurs = [
+    ...new Set([...signatures.map((x) => x.trainerId), ...missions.map((x) => x.trainerId)]),
+  ];
+  // V2-A-2 — lu TOUJOURS (pas seulement bilan allumé) : un intervenant d'organisme
+  // n'est jamais payé en son nom propre.
+  const intervenantsOrganisme = new Set(
+    (
+      await prisma.trainer.findMany({
+        where: { id: { in: tousLesFormateurs }, organismeSousTraitantId: { not: null } },
+        select: { id: true },
+      })
+    ).map((t) => t.id),
+  );
 
   // Lot G2 — le bilan de fin de formation, lu SEULEMENT si l'interrupteur est allumé.
   // Éteint : aucune lecture de plus, aucun candidat ne porte d'exigence (comme avant).
@@ -114,9 +128,7 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
   const bilans = new Map<string, { termine: boolean; payerQuandMeme: boolean }>();
   const fiches = new Map<string, { statut: string; organismeSousTraitantId: string | null }>();
   if (allumeLe !== null) {
-    const trainerIds = [
-      ...new Set([...signatures.map((x) => x.trainerId), ...missions.map((x) => x.trainerId)]),
-    ];
+    const trainerIds = tousLesFormateurs;
     const [lignes, formateurs] = await Promise.all([
       prisma.bilanFinFormation.findMany({
         where: { sessionId: { in: ids } },
@@ -173,6 +185,11 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
     for (const m of missions) {
       if (m.sessionId === s.id && !parFormateur.has(m.trainerId)) parFormateur.set(m.trainerId, []);
     }
+    // V2-A-4 : les journées désignées à un formateur désisté reviennent au remplaçant.
+    const desistes = desistesDeLaSession(
+      missions.filter((x) => x.sessionId === s.id),
+      s.sessionFormateurs,
+    );
     for (const [trainerId, sigs] of parFormateur) {
       // La plus récente des sollicitations acceptées ; son prix figé, ou aucun.
       const m = missions.find((x) => x.sessionId === s.id && x.trainerId === trainerId);
@@ -200,17 +217,20 @@ export async function lireCandidats(dateBascule: string): Promise<CandidatMissio
         })),
         // Ses journées, et les journées sans formateur désigné s'il est affecté :
         // la règle partagée avec la lettre et la proposition.
-        journeesPrevues: journeesDuFormateur(s.jours, trainerId, s.sessionFormateurs).map((j) => ({
-          jour: jourDeColonneDate(j.date),
-          heureDebut: j.heureDebut,
-          heureFin: j.heureFin,
-        })),
+        journeesPrevues: journeesDuFormateur(s.jours, trainerId, s.sessionFormateurs, desistes).map(
+          (j) => ({
+            jour: jourDeColonneDate(j.date),
+            heureDebut: j.heureDebut,
+            heureFin: j.heureFin,
+          }),
+        ),
         // ⚠️ La condition suspensive du financeur (PR OPCO encore ouverte) n'est
         // pas encore lisible : faute de mieux, on ne paie que ce qui est signé.
         conditionFinanceurEnAttente: false,
         revendiqueParMission: parMission.has(`${trainerId}|${s.id}`),
         // V1-C-5 : ses journées non signées ne sont plus prévues, les signées sont payées.
         sessionAnnulee: s.statut === "annulee",
+        ...(intervenantsOrganisme.has(trainerId) ? { intervenantOrganisme: true } : {}),
         ...bilanDuCandidat(trainerId),
       });
     }

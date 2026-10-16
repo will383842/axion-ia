@@ -722,7 +722,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Durée de conservation",
           body:
-            "Données clients : conservées tant que la relation dure, puis le temps des délais légaux de réclamation ; les pièces comptables (factures et pièces justificatives) sont conservées dix ans (article L.123-22 du code de commerce). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
+            "Données clients : conservées tant que la relation dure, puis le temps des délais légaux de réclamation ; les pièces comptables (factures et pièces justificatives) sont conservées dix ans (article L.123-22 du code de commerce). Demandes commerciales : conservées pour garder la trace de nos échanges ; elles ne sont pas supprimées automatiquement, et vous pouvez en demander l'effacement à tout moment. Les pièces jointes envoyées avec le formulaire de contact sont conservées avec la demande, pour la même durée, dans un espace de stockage privé accessible à la seule équipe Axion-IA ; elles sont effacées avec elle. Journaux techniques : conservés sans suppression automatique, à l'exception des mesures de performance et d'audience du site, effacées au plus tard 12 mois après leur collecte. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
             CN_FR.conservation,
         },
         {
@@ -806,7 +806,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body:
             "Conformément à l'article 13.1.e du RGPD, Axion-IA tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : " +
             CN_FR.categories +
-            "). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+            "). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires. Lorsque vous nous adressez une demande (formulaire, assistant du site, réservation d'un rendez-vous), la messagerie interne Telegram de l'équipe reçoit le contenu complet de votre demande, afin d'y répondre rapidement.",
         },
         {
           title: "IA générative et transparence (AI Act EU)",
@@ -853,7 +853,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Retention period",
           body:
-            "Client data: kept for as long as the relationship lasts, then for the statutory limitation periods for claims; accounting records (invoices and supporting documents) are kept for ten years (article L.123-22 of the French Commercial Code). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
+            "Client data: kept for as long as the relationship lasts, then for the statutory limitation periods for claims; accounting records (invoices and supporting documents) are kept for ten years (article L.123-22 of the French Commercial Code). Commercial requests: kept to preserve a record of our exchanges; they are not deleted automatically, and you may ask for them to be erased at any time. Attachments sent with the contact form are kept with the request, for the same period, in private storage accessible only to the Axion-IA team; they are erased with it. Technical logs: kept with no automatic deletion, except the site's performance and audience measurements, deleted at most 12 months after collection. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
             CN_EN.conservation,
         },
         {
@@ -912,7 +912,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body:
             "In accordance with GDPR article 13.1.e, Axion-IA maintains an exhaustive public list of its sub-processors at /subprocessors (categories: " +
             CN_EN.categories +
-            "). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
+            "). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes. When you send us a request (form, site assistant, appointment booking), the team's internal Telegram messaging receives the full content of your request, so that it can be answered quickly.",
         },
         {
           title: "Generative AI and transparency (EU AI Act)",

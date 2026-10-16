@@ -603,6 +603,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    dans le test ne prouverait rien. Il ne fait que jouer des étapes et rendre
   //    leur résultat ; les specs constatent en base.
   "tests/e2e/fixtures/formateurs/argent-executer.ts",
+  // ── Vérification n° 2, équipe A (argent, 2026-10-15). Même raison que
+  //    l'exécuteur d'argent : l'exécuteur `tsx` des specs `v2a*` appelle trois
+  //    services réels qu'il n'expose pas (« payer quand même », état des
+  //    virements de mission, moteur d'alertes) ; le spec Vitest éprouve la règle
+  //    pure du cumul URSSAF sans la recopier.
+  "tests/e2e/fixtures/formateurs/v2a-executer.ts",
+  "tests/unit/formateurs/v2/seuil-urssaf-cumul.spec.ts",
   // ── Banc @formateurs, scénarios missions (vérification n° 1, équipe B). Les
   //    specs ne nomment le domaine qu'en CHAÎNES, passées au processus `tsx` du
   //    banc ; ce module d'aides, chargé DANS ce processus, est le seul à

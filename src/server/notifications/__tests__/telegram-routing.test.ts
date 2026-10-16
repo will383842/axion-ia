@@ -2,10 +2,14 @@
 
 import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import {
+  estCategorieClient,
   getRouting,
+  groupeDeRepliClient,
   shouldNotifyWhatsApp,
   telegramGroupFor,
   resolveTelegramTarget,
+  resolveSalonClients,
+  resolveTelegramTargetPourCategorie,
   resetTelegramGroupWarnings,
   ALL_NOTIFICATION_CATEGORIES,
   type TelegramGroup,
@@ -53,14 +57,46 @@ describe("telegramGroupFor", () => {
     expect(telegramGroupFor("INVESTOR_INQUIRY_RECEIVED")).toBe("investisseurs");
   });
 
-  it("🛠️ Interventions : toute demande de prestation payante", () => {
-    const cats: NotificationCategory[] = [
-      "INTERVENTION_REQUEST_SUBMITTED",
-      "AUDIT_REQUEST_SUBMITTED",
-      "IMPLEMENTATION_REQUEST_SUBMITTED",
-      "QUOTE_REQUEST_RECEIVED",
-    ];
-    for (const c of cats) expect(telegramGroupFor(c), c).toBe("interventions");
+  // Décision Will 15/10 : les demandes de prestation sont des CLIENTS. Le
+  // groupe 🛠️ ne garde plus de catégorie propre : il ne sert plus que de REPLI
+  // tant que le salon « Clients » n'existe pas (`groupeDeRepliClient`).
+  it("🔥 Clients : formulaires, chatbot et rendez-vous des clients — et RIEN d'autre", () => {
+    const clients = ALL_NOTIFICATION_CATEGORIES.filter((c) => telegramGroupFor(c) === "clients");
+    expect(clients.sort()).toEqual(
+      [
+        "AUDIT_REQUEST_SUBMITTED",
+        "CHATBOT_ESCALATION",
+        "CHATBOT_LEAD_CAPTURED",
+        "CLIENT_CALL_BOOKED",
+        "CLIENT_CALL_CANCELED",
+        "CLIENT_CALL_RESCHEDULED",
+        "CONTACT_FORM_SUBMITTED",
+        "CUSTOMER_SUPPORT_REQUEST",
+        "IMPLEMENTATION_REQUEST_SUBMITTED",
+        "INTERVENTION_REQUEST_SUBMITTED",
+        "QUOTE_REQUEST_RECEIVED",
+      ].sort(),
+    );
+  });
+
+  it("🔥 Clients : le repli de chaque catégorie est SA route d'avant le 15/10", () => {
+    const attendu: Record<string, TelegramGroup> = {
+      CONTACT_FORM_SUBMITTED: "messages",
+      CUSTOMER_SUPPORT_REQUEST: "messages",
+      AUDIT_REQUEST_SUBMITTED: "interventions",
+      INTERVENTION_REQUEST_SUBMITTED: "interventions",
+      IMPLEMENTATION_REQUEST_SUBMITTED: "interventions",
+      QUOTE_REQUEST_RECEIVED: "interventions",
+      // Le chatbot passait par `MONITORING_ALERT`, donc 🔔 Système.
+      CHATBOT_LEAD_CAPTURED: "system",
+      CHATBOT_ESCALATION: "system",
+      CLIENT_CALL_BOOKED: "calendly",
+      CLIENT_CALL_CANCELED: "calendly",
+      CLIENT_CALL_RESCHEDULED: "calendly",
+    };
+    for (const c of ALL_NOTIFICATION_CATEGORIES.filter(estCategorieClient)) {
+      expect(groupeDeRepliClient(c), c).toBe(attendu[c]);
+    }
   });
 
   // Avant le 2026-08-09, `REVIEW_SUBMITTED` n'était dans aucun Set et tombait
@@ -72,8 +108,6 @@ describe("telegramGroupFor", () => {
 
   it("💬 Messages : le reste de ce qu'écrit un humain", () => {
     const cats: NotificationCategory[] = [
-      "CONTACT_FORM_SUBMITTED",
-      "CUSTOMER_SUPPORT_REQUEST",
       "PODCAST_REQUEST_SUBMITTED",
       "SPEAKER_INVITATION_RECEIVED",
     ];
@@ -96,6 +130,8 @@ describe("telegramGroupFor", () => {
 
   it("chaque catégorie a un groupe valide (aucun trou)", () => {
     const groups: TelegramGroup[] = [
+      // 🔥 Salon réservé aux clients (décision Will 15/10).
+      "clients",
       "calendly",
       "candidatures",
       "monteur-video",
@@ -134,8 +170,12 @@ describe("B6 — titres changés, canaux identiques", () => {
     });
     expect(telegramGroupFor("CALENDLY_INVITEE_CREATED")).toBe("calendly");
     expect(telegramGroupFor("COMMERCIAL_APPLICATION_RECEIVED")).toBe("commercial-memo");
-    expect(shouldNotifyWhatsApp("CALENDLY_INVITEE_CREATED")).toBe(true);
-    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(true);
+    // Décision Will 15/10 : WhatsApp ne sonne plus que pour les clients. La
+    // réservation d'un client est `CLIENT_CALL_BOOKED` ; `CALENDLY_INVITEE_*`
+    // ne porte plus que les échanges apporteur et formateur.
+    expect(shouldNotifyWhatsApp("CALENDLY_INVITEE_CREATED")).toBe(false);
+    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(false);
+    expect(shouldNotifyWhatsApp("CLIENT_CALL_BOOKED")).toBe(true);
   });
 });
 
@@ -262,5 +302,61 @@ describe("resolveTelegramTarget", () => {
     process.env.TELEGRAM_CHAT_ID_PRESSE = "   ";
     process.env.TELEGRAM_CHAT_ID_MESSAGES = "-messages";
     expect(resolveTelegramTarget("presse")?.chatId).toBe("-messages");
+  });
+});
+
+// Décision Will 15/10 — le salon « Clients » : dédié s'il existe, sinon la route
+// d'avant de CHAQUE catégorie, pour ne rien perdre.
+describe("resolveTelegramTargetPourCategorie — salon « Clients »", () => {
+  const saved = { ...process.env };
+
+  beforeEach(() => {
+    resetTelegramGroupWarnings();
+    for (const k of Object.keys(process.env)) {
+      if (k.startsWith("TELEGRAM_")) delete process.env[k];
+    }
+    process.env.TELEGRAM_BOT_TOKEN = "bot-principal";
+    process.env.TELEGRAM_CALENDLY_BOT_TOKEN = "bot-calendly";
+    process.env.TELEGRAM_CHAT_ID_CALENDLY = "-calendly";
+    process.env.TELEGRAM_CHAT_ID_MESSAGES = "-messages";
+    process.env.TELEGRAM_CHAT_ID_INTERVENTIONS = "-interventions";
+  });
+  afterEach(() => {
+    process.env = { ...saved };
+  });
+
+  it("sans TELEGRAM_CHAT_ID_CLIENTS : chaque catégorie garde sa route d'avant", () => {
+    expect(resolveSalonClients()).toBeUndefined();
+    expect(resolveTelegramTargetPourCategorie("CONTACT_FORM_SUBMITTED")?.chatId).toBe("-messages");
+    expect(resolveTelegramTargetPourCategorie("AUDIT_REQUEST_SUBMITTED")?.chatId).toBe(
+      "-interventions",
+    );
+    // Un rendez-vous client garde le salon ET le bot Calendly.
+    expect(resolveTelegramTargetPourCategorie("CLIENT_CALL_BOOKED")).toEqual({
+      botToken: "bot-calendly",
+      chatId: "-calendly",
+      dedicated: true,
+    });
+  });
+
+  it("avec TELEGRAM_CHAT_ID_CLIENTS : bot historique + salon Clients pour tous les clients", () => {
+    process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
+    for (const c of ALL_NOTIFICATION_CATEGORIES.filter(estCategorieClient)) {
+      expect(resolveTelegramTargetPourCategorie(c), c).toEqual({
+        botToken: "bot-principal",
+        chatId: "-clients",
+        dedicated: true,
+      });
+    }
+  });
+
+  it("🔴 client ≠ apporteur : un échange apporteur reste au salon 📅 Calendly", () => {
+    process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
+    expect(resolveTelegramTargetPourCategorie("CALENDLY_INVITEE_CREATED")?.chatId).toBe(
+      "-calendly",
+    );
+    expect(resolveTelegramTargetPourCategorie("COMMERCIAL_APPLICATION_RECEIVED")?.chatId).toBe(
+      "-messages",
+    );
   });
 });
