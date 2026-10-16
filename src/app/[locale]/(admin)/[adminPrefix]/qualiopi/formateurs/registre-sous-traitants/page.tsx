@@ -21,6 +21,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { lienTelechargement } from "@/lib/content-disposition";
 import { EcranPasEncoreOuvert } from "@/components/admin/qualiopi/EcranPasEncoreOuvert";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
@@ -94,7 +95,7 @@ export default async function RegistreSousTraitantsPage({ params }: PageProps) {
         description="Sous-traitance Qualiopi : chaque formateur indépendant au contrat-cadre signé (ou actif) est inscrit par l'outil, et chaque contrôle fait y est tracé. Rien n'est supprimé : une sortie est datée et motivée."
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-            <a href={`${exportHref}?format=csv`} className="admin-button-ghost">
+            <a href={lienTelechargement(`${exportHref}?format=csv`)} className="admin-button-ghost">
               Exporter (CSV)
             </a>
             <a href={`${exportHref}?format=pdf`} className="admin-button-ghost">

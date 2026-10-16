@@ -13,6 +13,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { auth } from "@/auth";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
 import { peutConsulter } from "@/server/auth/habilitations";
 import { journaliser } from "@/server/journal/journaliser";
@@ -53,7 +54,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       status: 200,
       headers: {
         "content-type": "text/csv; charset=utf-8",
-        "content-disposition": `attachment; filename="${nomFichierCsv(maintenant)}"`,
+        "content-disposition": enTeteContentDisposition(
+          dispositionDemandee(req.url),
+          nomFichierCsv(maintenant),
+        ),
         "cache-control": "no-store",
       },
     });
@@ -66,7 +70,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     status: 200,
     headers: {
       "content-type": "application/pdf",
-      "content-disposition": `attachment; filename="${filename}"`,
+      "content-disposition": enTeteContentDisposition(dispositionDemandee(req.url), filename),
       "cache-control": "no-store",
     },
   });
