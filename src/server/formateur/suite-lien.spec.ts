@@ -16,7 +16,8 @@ vi.mock("@/lib/formateur-session", () => ({ signFormateurSession: vi.fn(async ()
 vi.mock("@/server/formateur/cookie", () => ({ setFormateurCookie: vi.fn() }));
 
 import { NextRequest } from "next/server";
-import { GET } from "@/app/[locale]/espace-formateur/connexion/[token]/route";
+// V2-N-5 — le lien est consommé par le bouton de la page (POST), plus par l'ouverture.
+import { POST } from "@/app/[locale]/espace-formateur/connexion/[token]/route";
 import { publicUrl } from "@/lib/public-url";
 import { FORMATEUR_BASE_PATH, buildFormateurMagicLinkUrl } from "./routes";
 import { destinationApresConnexion, suiteAdmise } from "./suite-lien";
@@ -95,7 +96,7 @@ describe("la vraie route de connexion", () => {
   async function connecter(suite?: string): Promise<URL> {
     const url = new URL("https://interne.invalid/fr/espace-formateur/connexion/TOK");
     if (suite !== undefined) url.searchParams.set("suite", suite);
-    const rep = await GET(new NextRequest(url), {
+    const rep = await POST(new NextRequest(url, { method: "POST" }), {
       params: Promise.resolve({ token: "TOK", locale: "fr" }),
     });
     return new URL(rep.headers.get("location")!);

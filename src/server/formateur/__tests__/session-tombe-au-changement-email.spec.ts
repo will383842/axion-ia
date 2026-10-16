@@ -36,7 +36,8 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { NextRequest } from "next/server";
-import { GET } from "@/app/[locale]/espace-formateur/connexion/[token]/route";
+// V2-N-5 — le lien est consommé par le bouton de la page (POST), plus par l'ouverture.
+import { POST } from "@/app/[locale]/espace-formateur/connexion/[token]/route";
 import { empreinteSessionFormateur } from "../acces-apres-fin";
 import { getFormateurSession } from "../guard";
 
@@ -84,7 +85,9 @@ describe("connexion — la session porte l'empreinte de l'adresse", () => {
     h.consommer.mockResolvedValue("trainer-1");
     h.trainer.findUnique.mockResolvedValue(fiche("sous_traitant"));
     const url = new URL("https://interne.invalid/fr/espace-formateur/connexion/TOK");
-    await GET(new NextRequest(url), { params: Promise.resolve({ token: "TOK", locale: "fr" }) });
+    await POST(new NextRequest(url, { method: "POST" }), {
+      params: Promise.resolve({ token: "TOK", locale: "fr" }),
+    });
     expect(h.signer).toHaveBeenCalledTimes(1);
     const args = h.signer.mock.calls[0] as unknown[];
     expect(args[4]).toBe(empreinteSessionFormateur(ADRESSE));

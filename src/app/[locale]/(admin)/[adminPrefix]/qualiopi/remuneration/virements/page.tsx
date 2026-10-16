@@ -198,10 +198,10 @@ export default async function VirementsAFairePage({ params, searchParams }: Page
                           <p className="admin-muted">
                             Retard de {retard.joursDeRetard} j : pénalités{" "}
                             {retard.penalitesCents === null
-                              ? "à calculer (taux BCE non renseigné)"
+                              ? "à calculer (taux de la Banque centrale européenne non renseigné)"
                               : `${montantEnTexte(retard.penalitesCents)} €`}{" "}
                             et indemnité de {montantEnTexte(retard.indemniteRecouvrementCents)} €,
-                            dues de plein droit — non écrites ici (décision 87 en attente).
+                            dues de plein droit — l&apos;outil ne les ajoute pas encore au virement.
                           </p>
                         )}
                       </td>
